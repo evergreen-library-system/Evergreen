@@ -15,14 +15,14 @@ INSERT INTO acq.currency_type (code, label) VALUES ('CAN','Canadian Dollars');
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
 
 CREATE TABLE acq.exchange_rate (
-	id		SERIAL	PRIMARY KEY,
-	from_currency	TEXT	NOT NULL REFERENCES acq.currency_type (code),
-	to_currency	TEXT	NOT NULL REFERENCES acq.currency_type (code),
-	ratio		NUMERIC	NOT NULL,
-	CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
+    id              SERIAL  PRIMARY KEY,
+    from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    to_currency     TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    ratio           NUMERIC NOT NULL,
+    CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
 );
 
-INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAD',1.2);
+INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
 
 CREATE TABLE acq.provider (
@@ -186,10 +186,11 @@ CREATE TRIGGER ingest_picklist_entry_trigger
 	FOR EACH ROW EXECUTE PROCEDURE public.ingest_acq_marc();
 
 CREATE TABLE acq.fund (
-    id      SERIAL  PRIMARY KEY,
-    org     INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    name    TEXT    NOT NULL,
-    year    INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
+    id              SERIAL  PRIMARY KEY,
+    org             INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    name            TEXT    NOT NULL,
+    year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
+    currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code),
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
 );
 
@@ -213,19 +214,78 @@ CREATE TABLE acq.fund_allocation (
     CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
 );
 
+CREATE OR REPLACE FUNCTION acq.exchange_ratio ( from_ex TEXT, to_ex TEXT ) RETURNS NUMERIC AS $$
+DECLARE
+    rat NUMERIC;
+BEGIN
+    IF from_ex = to_ex THEN
+        RETURN 1.0;
+    END IF;
+
+    SELECT ratio INTO rat FROM acq.exchange_rate WHERE from_currency = from_ex AND to_currency = to_ex;
+
+    IF FOUND THEN
+        RETURN rat;
+    ELSE
+        SELECT ratio INTO rat FROM acq.exchange_rate WHERE from_currency = to_ex AND to_currency = from_ex;
+        IF FOUND THEN
+            RETURN 1.0/rat;
+        END IF;
+    END IF;
+
+    RETURN NULL;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE VIEW acq.funding_source_credit_total AS
+    SELECT  funding_source,
+            SUM(amount) AS amount
+      FROM  acq.funding_source_credit
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW acq.funding_source_allocation_total AS
+    SELECT  funding_source,
+            SUM(amount)::NUMERIC(100,2) AS amount
+      FROM (
+            SELECT  funding_source,
+                    SUM(a.amount)::NUMERIC(100,2) AS amount
+              FROM  acq.fund_allocation a
+              WHERE a.percent IS NULL
+              GROUP BY 1
+                            UNION ALL
+            SELECT  funding_source,
+                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
+              FROM  acq.fund_allocation a
+              WHERE a.amount IS NULL
+              GROUP BY 1
+        ) x
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW acq.funding_source_balance AS
+    SELECT  COALESCE(c.funding_source, a.funding_source) AS funding_source,
+            SUM(COALESCE(c.amount,0.0) - COALESCE(a.amount,0.0))::NUMERIC(100,2) AS amount
+      FROM  acq.funding_source_credit_total c
+            FULL JOIN acq.funding_source_allocation_total a USING (funding_source)
+      GROUP BY 1;
+
 CREATE OR REPLACE VIEW acq.fund_allocation_total AS
     SELECT  fund,
             SUM(amount)::NUMERIC(100,2) AS amount
       FROM (
             SELECT  fund,
-                    SUM(amount)::NUMERIC(100,2) AS amount
-              FROM  acq.fund_allocation
-              WHERE percent IS NULL
+                    SUM(a.amount * acq.exchange_ratio(s.currency_type, f.currency_type))::NUMERIC(100,2) AS amount
+              FROM  acq.fund_allocation a
+                    JOIN acq.fund f ON (a.fund = f.id)
+                    JOIN acq.funding_source s ON (a.funding_source = s.id)
+              WHERE a.percent IS NULL
               GROUP BY 1
                             UNION ALL
             SELECT  fund,
-                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
+                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * acq.exchange_ratio(s.currency_type, f.currency_type) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
               FROM  acq.fund_allocation a
+                    JOIN acq.fund f ON (a.fund = f.id)
+                    JOIN acq.funding_source s ON (a.funding_source = s.id)
               WHERE a.amount IS NULL
               GROUP BY 1
         ) x
