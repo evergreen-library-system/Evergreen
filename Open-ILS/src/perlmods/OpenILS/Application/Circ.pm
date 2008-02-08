@@ -890,7 +890,7 @@ sub copy_details_barcode {
     my $e = new_editor();
     my $cid = $e->search_asset_copy({barcode=>$barcode, deleted=>'f'}, {idlist=>1})->[0];
     return $e->event unless $cid;
-	return $self->copy_details( $conn, $auth, $cid );
+	return copy_details( $self, $conn, $auth, $cid );
 }
 
 
