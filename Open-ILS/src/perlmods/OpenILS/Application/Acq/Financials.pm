@@ -35,7 +35,7 @@ sub create_funding_source {
     my($self, $conn, $auth, $funding_source) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner, $funding_source);
+    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner);
     $e->create_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return $funding_source->id;
@@ -164,7 +164,7 @@ sub create_fund {
     my($self, $conn, $auth, $fund) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org, $fund);
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org);
     $e->create_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return $fund->id;
@@ -330,7 +330,7 @@ sub create_fund_alloc {
 
     my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
         or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner, $source);
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
 
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
     return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
