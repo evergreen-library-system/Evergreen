@@ -1,12 +1,13 @@
 dump('entering circ/util.js\n');
+// vim:noet:sw=4:ts=4:
 
-if (typeof circ == 'undefined') var circ = {};
+if (typeof circ == 'undefined') { var circ = {}; }
 circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns', 
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_columns', 
-	'show_last_few_circs', 'abort_transits', 'transit_columns', 'renew_via_barcode',
+	'show_last_few_circs', 'abort_transits', 'transit_columns', 'renew_via_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -16,8 +17,16 @@ circ.util.abort_transits = function(selection_list) {
 	JSAN.use('util.network'); obj.network = new util.network();
 	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 	JSAN.use('util.functional');
-	var msg = 'Are you sure you would like to abort transits for copies:' + util.functional.map_list( selection_list, function(o){return o.copy_id;}).join(', ') + '?';
-	var r = obj.error.yns_alert(msg,'Aborting Transits','Yes','No',null,'Check here to confirm this action');
+	var copies = util.functional.map_list( selection_list, function(o){return o.copy_id;}).join(', ');
+	var msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.abort_transits.confirm', [copies]);
+	var r = obj.error.yns_alert(
+		msg,
+		document.getElementById('circStrings').getString('staff.circ.utils.abort_transits.title'),
+		document.getElementById('circStrings').getString('staff.circ.utils.yes'),
+		document.getElementById('circStrings').getString('staff.circ.utils.no'),
+		null,
+		document.getElementById('circStrings').getString('staff.circ.confirm')
+	);
 	if (r == 0) {
 		try {
 			for (var i = 0; i < selection_list.length; i++) {
@@ -26,10 +35,10 @@ circ.util.abort_transits = function(selection_list) {
 				if (typeof robj.ilsevent != 'undefined') {
 					switch(robj.ilsevent) {
 						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
-							alert('Copy Id = ' + copy_id + '\n' + robj.desc);
+							alert(document.getElementById('circString').getFormattedString('staff.circ.utils.abort_transits.not_allowed', [copy_id]) + '\n' + robj.desc);
 						break;
 						case 1504 /* ACTION_TRANSIT_COPY_NOT_FOUND */ :
-							alert('This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?');
+							alert(document.getElementById('circString').getString('staff.circ.utils.abort_transits.not_found'));
 						break;
 						case 5000 /* PERM_FAILURE */ :
 						break;
@@ -40,7 +49,7 @@ circ.util.abort_transits = function(selection_list) {
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Transit not likely aborted.',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circString').getString('staff.circ.utils.abort_transits.unexpected_error'),E);
 		}
 	}
 }
@@ -66,13 +75,13 @@ circ.util.show_copy_details = function(copy_id) {
 					var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
 					window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
+					obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_patron.failure'), E);
 				}
 			}
 		}
 
 	} catch(E) {
-		obj.error.standard_unexpected_error_alert('Problem retrieving copy details.',E);
+		obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_copy.failure'),E);
 	}
 }
 
@@ -100,13 +109,13 @@ circ.util.show_last_few_circs = function(selection_list,count) {
 						var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
 						window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
 					} catch(E) {
-						obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
+						obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_patron.failure') ,E);
 					}
 				}
 			}
 
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Problem retrieving circulations.',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_circs.failure') ,E);
 		}
 	}
 }
@@ -116,55 +125,56 @@ circ.util.offline_checkout_columns = function(modify,params) {
 	var c = [
 		{ 
 			'id' : 'timestamp', 
-			'label' : 'Timestamp', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.timestamp'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.timestamp; },
 		},
 		{ 
 			'id' : 'checkout_time', 
-			'label' : 'Check Out Time', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.checkout_time'), 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.checkout_time; },
 		},
 		{ 
 			'id' : 'type', 
-			'label' : 'Transaction Type', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.type'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.type; }, 
 		},
 		{
 			'id' : 'noncat',
-			'label' : 'Non-Cataloged?',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.noncat'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.noncat; },
 		},
 		{
 			'id' : 'noncat_type',
-			'label' : 'Non-Cat Type ID',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.noncat_type'),
 			'flex' : 1, 'primary' : false, 'hidden' : true,
 			'render' : function(my) { return my.noncat_type; },
 		},
 		{
 			'id' : 'noncat_count',
-			'label' : 'Count', 'sort_type' : 'number',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.count'),
+			'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
 			'render' : function(my) { return my.noncat_count; },
 		},
 		{ 
 			'id' : 'patron_barcode', 
-			'label' : 'Patron Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.patron_barcode'), 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.patron_barcode; },
 		},
 		{ 
 			'id' : 'barcode', 
-			'label' : 'Item Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.item_barcode'),
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
 			'render' : function(my) { return my.barcode; },
 		},
 		{ 
 			'id' : 'due_date', 
-			'label' : 'Due Date', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.due_date'),
 			'flex' : 1, 'primary' : false, 'hidden' : false, 
 			'render' : function(my) { return my.due_date; },
 		},
@@ -205,25 +215,25 @@ circ.util.offline_checkin_columns = function(modify,params) {
 	var c = [
 		{ 
 			'id' : 'timestamp', 
-			'label' : 'Timestamp', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.timestamp'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.timestamp; },
 		},
 		{ 
 			'id' : 'backdate', 
-			'label' : 'Back Date', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.backdate'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.backdate; },
 		},
 		{ 
 			'id' : 'type', 
-			'label' : 'Transaction Type', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.type'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.type; },
 		},
 		{ 
 			'id' : 'barcode', 
-			'label' : 'Item Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.item_barcode'),
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
 			'render' : function(my) { return my.barcode; },
 		},
@@ -264,37 +274,37 @@ circ.util.offline_renew_columns = function(modify,params) {
 	var c = [
 		{ 
 			'id' : 'timestamp', 
-			'label' : 'Timestamp', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.timestamp'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.timestamp; },
 		},
 		{ 
 			'id' : 'checkout_time', 
-			'label' : 'Check Out Time', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.checkout_time'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.checkout_time; },
 		},
 		{ 
 			'id' : 'type', 
-			'label' : 'Transaction Type', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.type'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.type; },
 		},
 		{ 
 			'id' : 'patron_barcode', 
-			'label' : 'Patron Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.patron_barcode'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.patron_barcode; },
 		},
 		{ 
 			'id' : 'barcode', 
-			'label' : 'Item Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.item_barcode'),
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
 			'render' : function(my) { return my.barcode; },
 		},
 		{ 
 			'id' : 'due_date', 
-			'label' : 'Due Date', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.due_date'), 
 			'flex' : 1, 'primary' : false, 'hidden' : false, 
 			'render' : function(my) { return my.due_date; },
 		},
@@ -335,31 +345,32 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 	var c = [
 		{ 
 			'id' : 'timestamp', 
-			'label' : 'Timestamp', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.timestamp'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.timestamp; },
 		},
 		{ 
 			'id' : 'use_time', 
-			'label' : 'Use Time', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.use_time'), 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.use_time; },
 		},
 		{ 
 			'id' : 'type', 
-			'label' : 'Transaction Type', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.type'),
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
 			'render' : function(my) { return my.type; },
 		},
 		{
 			'id' : 'count',
-			'label' : 'Count', 'sort_type' : 'number',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.count'),
+			'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
 			'render' : function(my) { return my.count; },
 		},
 		{ 
 			'id' : 'barcode', 
-			'label' : 'Item Barcode', 
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.offline.item_barcode'),
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
 			'render' : function(my) { return my.barcode; },
 		},
@@ -428,61 +439,171 @@ circ.util.columns = function(modify,params) {
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'call_number', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { if (my.acp && my.acp.call_number() == -1) { return "Not Cataloged"; } else { if (!my.acn) { var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { return "Not Cataloged"; } else { my.acn = x; return x.label(); } } else { return my.acn.label(); } } },
-			'persist' : 'hidden width ordinal',
-		},
-		{
-			'id' : 'owning_lib', 'label' : 'Owning Lib', 'flex' : 1,
+			'id' : 'call_number',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_call_number'),
+			'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : function(my) { if (Number(my.acn.owning_lib())>=0) { return data.hash.aou[ my.acn.owning_lib() ].shortname(); } else { return my.acn.owning_lib().shortname(); } }, 
+			'render' : function(my) {
+				if (my.acp && my.acp.call_number() == -1) {
+					return document.getElementById('commonStrings').getString('staff.circ.utils.not_cataloged');
+				} else {
+					if (!my.acn) {
+						var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]);
+						if (x.ilsevent) {
+							return document.getElementById('commonStrings').getString('staff.circ.utils.not_cataloged');
+						} else {
+							my.acn = x; return x.label();
+						}
+					} else {
+						return my.acn.label();
+					}
+				}
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'copy_number', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_copy_number'), 'flex' : 1, 'sort_type' : 'number',
+			'id' : 'owning_lib',
+			'label' : document.getElementById('commonStrings').getString('staff.circ.utils.owning_lib'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (Number(my.acn.owning_lib())>=0) {
+					return data.hash.aou[ my.acn.owning_lib() ].shortname();
+				} else {
+					return my.acn.owning_lib().shortname();
+				}
+			}, 
+			'persist' : 'hidden width ordinal',
+		},
+		{
+			'id' : 'copy_number',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_copy_number'),
+			'flex' : 1,
+			'sort_type' : 'number',
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.copy_number(); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'location', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); },
-			'persist' : 'hidden width ordinal',
-		},
-		{
-			'id' : 'loan_duration', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_loan_duration'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 
-			'render' : function(my) { switch(my.acp.loan_duration()){ case 1: return "Short"; break; case 2: return "Normal"; break; case 3: return "Long"; break; }; },
-			'persist' : 'hidden width ordinal',
-		},
-		{
-			'id' : 'circ_lib', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_lib'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { if (Number(my.acp.circ_lib())>=0) return data.hash.aou[ my.acp.circ_lib() ].shortname(); else return my.acp.circ_lib().shortname(); },
-			'persist' : 'hidden width ordinal',
-		},
-		{
-			'id' : 'fine_level', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_fine_level'), 'flex' : 1,
+			'id' : 'location',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_location'),
+			'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : function(my) { switch(my.acp.fine_level()){ case 1: return "Low"; break; case 2: return "Normal"; break; case 3: return "High"; break; }; },
+			'render' : function(my) {
+				if (Number(my.acp.location())>=0) {
+					return data.lookup("acpl", my.acp.location() ).name();
+				} else {
+					return my.acp.location().name();
+				}
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'circulate', 'label' : 'Circulate?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.acp.circulate() ) ? "Yes" : "No"; },
+			'id' : 'loan_duration',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_loan_duration'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true, 
+			'render' : function(my) {
+				switch(my.acp.loan_duration()) {
+					case 1:
+						return document.getElementById('circStrings').getString('staff.circ.utils.loan_duration.short');
+						break;
+					case 2:
+						return document.getElementById('circStrings').getString('staff.circ.utils.loan_duration.normal');
+						break;
+					case 3:
+						return document.getElementById('circStrings').getString('staff.circ.utils.loan_duration.long');
+						break;
+				};
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'deleted', 'label' : 'Deleted?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.acp.deleted() ) ? "Yes" : "No"; },
+			'id' : 'circ_lib',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_lib'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (Number(my.acp.circ_lib())>=0) {
+					return data.hash.aou[ my.acp.circ_lib() ].shortname();
+				} else {
+					return my.acp.circ_lib().shortname();
+				}
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.acp.holdable() ) ? "Yes" : "No"; },
+			'id' : 'fine_level',
+			'label' : document.getElementById('commonStrings').getString('staff.acp_label_fine_level'), 'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				switch(my.acp.fine_level()) {
+					case 1:
+						return document.getElementById('circStrings').getString('staff.circ.utils.fine_level.low');
+						break;
+					case 2:
+						return document.getElementById('circStrings').getString('staff.circ.utils.fine_level.normal');
+						break;
+					case 3:
+						return document.getElementById('circStrings').getString('staff.circ.utils.fine_level.high');
+						break;
+				};
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'opac_visible', 'label' : 'OPAC Visible?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.acp.opac_visible() ) ? "Yes" : "No"; },
+			'id' : 'circulate',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.circulate'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (get_bool( my.acp.circulate() )) {
+					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+				} else {
+					return document.getElementById('circStrings').getString('staff.circ.utils.no');
+				}
+			},
+			'persist' : 'hidden width ordinal',
+		},
+		{
+			'id' : 'deleted',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.deleted'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (get_bool( my.acp.deleted() )) {
+					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+				} else {
+					return document.getElementById('circStrings').getString('staff.circ.utils.no');
+				}
+			},
+			'persist' : 'hidden width ordinal',
+		},
+		{
+			'id' : 'holdable',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.holdable'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (get_bool( my.acp.holdable() )) {
+					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+				} else {
+					return document.getElementById('circStrings').getString('staff.circ.utils.no');
+				}
+			},
+			'persist' : 'hidden width ordinal',
+		},
+		{
+			'id' : 'opac_visible',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.opac_visible'),
+			'flex' : 1,
+			'primary' : false, 'hidden' : true,
+			'render' : function(my) {
+				if (get_bool( my.acp.opac_visible() )) {
+					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+				} else {
+					return document.getElementById('circStrings').getString('staff.circ.utils.no');
+				}
+			},
 			'persist' : 'hidden width ordinal',
 		},
 		{
@@ -1014,7 +1135,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 					}
 				} catch(E) {
 					JSAN.use('util.error'); var error = new util.error();
-					error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
+					error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin) (1): ',E);
 					if (typeof async == 'object') {
 						try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
 					}
@@ -1052,7 +1173,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
+		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin) (2): ',E);
 		if (typeof async == 'object') {
 			try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
 		}
@@ -1300,7 +1421,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
+		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin) (3): ',E);
 		return null;
 	}
 }

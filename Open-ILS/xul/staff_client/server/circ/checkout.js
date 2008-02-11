@@ -52,7 +52,7 @@ circ.checkout.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
-								var items = [ [ 'Barcode:' , 'barcode' ] ].concat(
+								var items = [ [ document.getElementById('circStrings').getString('staff.circ.checkout.barcode') , 'barcode' ] ].concat(
 									util.functional.map_list(
 										util.functional.filter_list(
 											obj.data.list.cnct,
@@ -98,7 +98,7 @@ circ.checkout.prototype = {
 										} else {
 											db.hidden = true;
 											tb.disabled = true;
-											tb.value = 'Non-Cataloged';
+											tb.value = document.getElementById('circStrings').getString('staff.circ.non_cataloged');
 										}
 									}, false
 								);
