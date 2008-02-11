@@ -4,6 +4,9 @@ my $log = 'OpenSRF::Utils::Logger';
 #-------------------------------------------------------------------------------
 package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
+use Parser::RecDescent;
+
+my $_default_grammar_parser = new Parse::RecDescent ( join '', (<DATA>) );
 
 sub compile {
 
@@ -32,6 +35,7 @@ sub compile {
 sub decompose {
 	my $self = shift;
 	my $term = shift;
+	my $parser = shift || $_default_grammar_parser;
 
 	$term =~ s/:/ /go;
 	$term =~ s/\s+--\s+/ /go;
@@ -44,6 +48,7 @@ sub decompose {
 
 	$log->debug("Stripped search term string is [$term]",DEBUG);
 
+	my $parsetree = $parser->search_expression( $term );
 	my @words = $term =~ /\b((?<!!)\w+)\b/go;
 	my @nots = $term =~ /\b(?<=!)(\w+)\b/go;
 
@@ -62,6 +67,7 @@ sub decompose {
 	$self->{ fts_op } = 'ILIKE';
 	$self->{ fts_col } = $self->{ text_col } = 'value';
 	$self->{ raw } = $term;
+	$self->{ parsetree } = $parsetree;
 	$self->{ words } = \@words;
 	$self->{ nots } = \@nots;
 	$self->{ phrases } = \@parts;
@@ -215,3 +221,21 @@ package Class::DBI;
 }
 
 1;
+
+__DATA__
+<autotree>
+
+search_expression: or_expr(s) | and_expr(s) | expr(s)
+or_expr: lexpr '||' rexpr
+and_expr: lexpr '&&' rexpr
+lexpr: expr
+rexpr: expr
+expr: phrase(s) | group(s) | word(s)
+joiner: '||' | '&&'
+phrase: '"' token(s) '"'
+group : '(' search_expression ')'
+word: numeric_range | negative_token | token
+negative_token: '-' .../\D+/ token
+token: /[-\w]+/
+numeric_range: /\d+-\d*/
+
