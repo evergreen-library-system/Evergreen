@@ -17,6 +17,18 @@
             <td class='oils-admin-label'>${_('Funding Source Currency Type')}</td>
             <td>${c.oils.acq.fund_source.currency_type()}</td> 
         </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Funding Source Credit Total')}</td>
+            <td>${c.oils.acq.fund_source.summary()['credit_total']}</td> 
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Funding Source Allocation Total')}</td>
+            <td>${c.oils.acq.fund_source.summary()['allocation_total']}</td> 
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Funding Source Balance')}</td>
+            <td>${c.oils.acq.fund_source.summary()['balance']}</td> 
+        </tr>
     </tbody>
 </table>
 </%def>

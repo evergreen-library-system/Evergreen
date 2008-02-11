@@ -43,10 +43,10 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(source)
         return source
 
-    def retrieve_org_fund_sources(self, limit_perm=None):
+    def retrieve_org_fund_sources(self, options=None):
         sources = self.ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            self.request_mgr.ctx.core.authtoken, None, limit_perm).recv().content()
+            self.request_mgr.ctx.core.authtoken, None, options).recv().content()
         oils.event.Event.parse_and_raise(sources)
         return sources
 

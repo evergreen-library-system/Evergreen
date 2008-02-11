@@ -50,6 +50,7 @@ class FundController(BaseController):
             fund.name(r.ctx.acq.fund_name)
             fund.org(r.ctx.acq.fund_org)
             fund.year(r.ctx.acq.fund_year)
+            fund.currency_type(r.ctx.acq.fund_currency_type)
 
             fund_id = ses.request('open-ils.acq.fund.create', 
                 r.ctx.core.authtoken, fund).recv().content()
@@ -59,6 +60,12 @@ class FundController(BaseController):
 
         usermgr = oilsweb.lib.user.User(r.ctx.core)
         tree = usermgr.highest_work_perm_tree('CREATE_FUND')
+
+        types = ses.request(
+            'open-ils.acq.currency_type.all.retrieve',
+            r.ctx.core.authtoken).recv().content()
+        r.ctx.acq.currency_types = oils.event.Event.parse_and_raise(types)
+
 
         if tree is None:
             return _("Insufficient Permissions") # XXX Return a perm failure template
@@ -76,7 +83,7 @@ class FundController(BaseController):
 
         source_list = ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            r.ctx.core.authtoken, None, 'MANAGE_FUNDING_SOURCE').recv().content()
+            r.ctx.core.authtoken, None, {'limit_perm':'MANAGE_FUNDING_SOURCE', 'flesh_summary':1}).recv().content()
         oils.event.Event.parse_and_raise(source_list)
 
         r.ctx.acq.fund = fund

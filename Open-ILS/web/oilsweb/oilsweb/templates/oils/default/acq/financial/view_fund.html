@@ -6,15 +6,19 @@
 <table class='oils-admin-table'>
     <tbody>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Name')}</td>
+            <td class='oils-admin-label'>${_('Name')}</td>
             <td>${c.oils.acq.fund.name()}</td>
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Owner')}</td>
+            <td class='oils-admin-label'>${_('Owner')}</td>
             <td>${c.oils.acq.fund.org().name()}</td> 
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Year')}</td>
+            <td class='oils-admin-label'>${_('Currency')}</td>
+            <td>${c.oils.acq.fund.currency_type()}</td> 
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Year')}</td>
             <td>${c.oils.acq.fund.year()}</td> 
         </tr>
         <tr>
@@ -22,11 +26,11 @@
             <td>${c.oils.acq.fund.summary()['allocation_total']}</td> 
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Balance (Total - (Spent + Encumberances))')}</td>
+            <td class='oils-admin-label'>${_('Balance (Total - (Spent + Encumberances))')}</td>
             <td>${c.oils.acq.fund.summary()['combined_balance']}</td> 
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Spent Balance (Total - Spent)')}</td>
+            <td class='oils-admin-label'>${_('Spent Balance (Total - Spent)')}</td>
             <td>${c.oils.acq.fund.summary()['spent_balance']}</td> 
        </tr>
        <tr>

@@ -3,26 +3,38 @@ import pylons
 from oilsweb.lib.request import RequestMgr
 import oilsweb.lib.acq.fund
 import osrf.net_obj
-import oils.org
+import oils.org, oils.event, oils.const
 
 
 class FundSourceController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()
+        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
-        fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
-        source = fund_mgr.retrieve_fund_source(kwargs.get('id'))
+
+        source = ses.request(
+            'open-ils.acq.funding_source.retrieve', 
+            r.ctx.core.authtoken, kwargs.get('id'), {"flesh_summary":1}).recv().content()
+        oils.event.Event.parse_and_raise(source)
+
         source.owner(oils.org.OrgUtil.get_org_unit(source.owner())) # flesh the owner
         r.ctx.acq.fund_source = source
         return r.render('acq/financial/view_fund_source.html')
 
     def list(self):
         r = RequestMgr()
-        fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
-        r.ctx.acq.fund_source_list = fund_mgr.retrieve_org_fund_sources()
-        for f in r.ctx.acq.fund_source_list:
-            f.owner(oils.org.OrgUtil.get_org_unit(f.owner()))
+        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+
+        sources = ses.request(
+            'open-ils.acq.funding_source.org.retrieve', 
+            r.ctx.core.authtoken, None, {"flesh_summary":1}).recv().content()
+
+        oils.event.Event.parse_and_raise(sources)
+        r.ctx.acq.fund_source_list = sources
+
+        for source in sources:
+            source.owner(oils.org.OrgUtil.get_org_unit(source.owner()))
         return r.render('acq/financial/list_fund_sources.html')
             
 

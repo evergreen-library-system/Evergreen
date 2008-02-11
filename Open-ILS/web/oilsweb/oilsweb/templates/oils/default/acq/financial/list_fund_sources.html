@@ -18,6 +18,7 @@
             <td>${_('Funding Source Name')}</td>
             <td>${_('Funding Source Owner')}</td>
             <td>${_('Funding Source Currency Type')}</td>
+            <td>${_('Funding Source Balance')}</td>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
             <td><a href='${c.oils.acq.prefix}/fund_source/view/${source.id()}'>${source.name()}</a></td>
             <td>${source.owner().name()}</td> 
             <td>${source.currency_type()}</td> 
+            <td>${source.summary()['balance']}</td> 
         </tr>
         %endfor
     </tbody>

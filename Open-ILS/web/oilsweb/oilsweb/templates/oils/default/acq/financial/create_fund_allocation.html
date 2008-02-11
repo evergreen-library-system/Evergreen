@@ -21,7 +21,8 @@
                 <td> 
                     <select name='${c.oils.acq.fund_allocation_source_.cgi_name}'>
                         % for source in c.oils.acq.fund_source_list:
-                            <option value='${source.id()}'>${source.name()}</option>
+                            <% source_label = _('%(name)s (balance = %(b)s)') % {'name':source.name(), 'b': source.summary()['balance']} %>
+                            <option value='${source.id()}'>${source_label}</option>
                         % endfor
                     </select>
                 </td>

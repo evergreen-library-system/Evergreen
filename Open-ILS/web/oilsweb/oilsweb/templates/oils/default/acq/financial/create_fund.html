@@ -24,11 +24,22 @@
                 </td>
             </tr>
             <tr>
+                <td class='oils-admin-label'>${_('Fund Currency Type')}</td>
+                <td> 
+                    <select name='${c.oils.acq.fund_currency_type_.cgi_name}'>
+                        % for type in c.oils.acq.currency_types:
+                            <option value='${type.code()}'>${type.label()}</option>
+                        % endfor
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td class='oils-admin-label'>${_('Fund Year')}</td>
                 <td> 
                     <input type='text' size='42' year='${c.oils.acq.fund_year_.cgi_name}'/>
                 </td>
             </tr>
+
             <tr>
                 <td colspan='2'>
                     <input type='submit' value='${_("Create Fund")}'/>
