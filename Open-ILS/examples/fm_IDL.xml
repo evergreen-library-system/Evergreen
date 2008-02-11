@@ -2512,7 +2512,7 @@
 	</class>
 
 	<class id="acqfsrcct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fundin_source_credit_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_credit_total">
-		<fields oils_persist:primary="fund">
+		<fields oils_persist:primary="funding_source">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2525,7 +2525,7 @@
 	</class>
 
 	<class id="acqfsrcat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_allocation_total">
-		<fields oils_persist:primary="fund">
+		<fields oils_persist:primary="funding_source">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2538,7 +2538,7 @@
 	</class>
 
 	<class id="acqfsrcb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_balance" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_balance">
-		<fields oils_persist:primary="fund">
+		<fields oils_persist:primary="funding_source">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
