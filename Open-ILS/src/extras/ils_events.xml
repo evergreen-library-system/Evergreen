@@ -592,6 +592,15 @@
 	<event code='1654' textcode='ACQ_FUND_SPENT_BALANCE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.fund_spent_balance was not found</desc>
 	</event>
+	<event code='1655' textcode='ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_credit_total was not found</desc>
+	</event>
+	<event code='1656' textcode='ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_allocation_total was not found</desc>
+	</event>
+	<event code='1657' textcode='ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
+	</event>
 
 
 

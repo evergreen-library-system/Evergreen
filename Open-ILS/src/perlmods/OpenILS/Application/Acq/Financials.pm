@@ -80,12 +80,14 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_funding_source {
-    my($self, $conn, $auth, $funding_source_id) = @_;
+    my($self, $conn, $auth, $funding_source_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->event;
     return $e->event unless $e->allowed(
         ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner, $funding_source); 
+    $funding_source->summary(retrieve_funding_source_summary_impl($e, $funding_source))
+        if $$options{flesh_summary};
     return $funding_source;
 }
 
@@ -107,18 +109,39 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_org_funding_sources {
-    my($self, $conn, $auth, $org_id_list, $limit_perm) = @_;
+    my($self, $conn, $auth, $org_id_list, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    $limit_perm ||= 'ADMIN_FUNDING_SOURCE';
+    my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUNDING_SOURCE';
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
-    return $e->search_acq_funding_source({owner => $org_ids});
+    my $sources = $e->search_acq_funding_source({owner => $org_ids});
+
+    if($$options{flesh_summary}) {
+        for my $source (@$sources) {
+            $source->summary(retrieve_funding_source_summary_impl($e, $source));
+        }
+    }
+
+    return $sources;
 }
+
+sub retrieve_funding_source_summary_impl {
+    my($e, $source) = @_;
+    my $at = $e->search_acq_funding_source_allocation_total({funding_source => $source->id})->[0];
+    my $b = $e->search_acq_funding_source_balance({funding_source => $source->id})->[0];
+    my $ct = $e->search_acq_funding_source_credit_total({funding_source => $source->id})->[0];
+    return {
+        allocation_total => ($at) ? $at->amount : 0,
+        balance => ($b) ? $b->amount : 0,
+        credit_total => ($ct) ? $ct->amount : 0,
+    };
+}
+
 
 # ---------------------------------------------------------------
 # funds
