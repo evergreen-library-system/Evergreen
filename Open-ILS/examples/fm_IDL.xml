@@ -2513,7 +2513,7 @@
 		</links>
 	</class>
 
-	<class id="acqfsrcct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fundin_source_credit_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_credit_total">
+	<class id="acqfsrcct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_credit_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_credit_total">
 		<fields oils_persist:primary="funding_source">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
