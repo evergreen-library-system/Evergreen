@@ -4,6 +4,14 @@
 <%def name="page_title()">${_('Funds')}</%def>
 <%def name="block_content()">
 
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>${_('Funds')}</div>
+    <div id='oils-acq-list-header-create'>
+        <a href='${c.oils.acq.prefix}/fund/create'>${_('New Fund')}</a>
+    </div>
+</div>
+
+
 <table class='oils-admin-table'>
     <thead>
         <tr>
