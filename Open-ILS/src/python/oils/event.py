@@ -43,12 +43,18 @@ class Event(object):
         return None
 
     @staticmethod
-    def parse_and_raise(evt=None):
+    def parse_and_raise(obj=None):
         ''' Parses with parse_event.  If the resulting event is a non-success
-            event, it is converted to an exception and raised '''
-        evt = Event.parse_event(evt)
-        if evt and not evt.success:
+            event, it is converted to an exception and raised.  If the resulting
+            event is a success event, the event object is returned.  If the
+            object is not an event, the original original object is returned 
+            unchanged. '''
+        evt = Event.parse_event(obj)
+        if evt:
+            if evt.success:
+                return evt
             raise evt.to_ex()
+        return obj
 
 
 class EventException(osrf.ex.OSRFException):
