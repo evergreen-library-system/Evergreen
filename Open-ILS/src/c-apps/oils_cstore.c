@@ -623,20 +623,26 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	
 	int err = 0;
 
+	const char* methodtype = osrfHashGet(meta, "methodtype");
 	jsonObject * obj = NULL;
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "create"))
+
+	if (!strcmp(methodtype, "create")) {
 		obj = doCreate(ctx, &err);
-
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "retrieve"))
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "retrieve")) {
 		obj = doRetrieve(ctx, &err);
-
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "update"))
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "update")) {
 		obj = doUpdate(ctx, &err);
-
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "delete"))
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "delete")) {
 		obj = doDelete(ctx, &err);
-
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search")) {
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "search")) {
 
 		obj = doFieldmapperSearch(ctx, class_obj, ctx->params, &err);
 		if(err) return err;
@@ -649,7 +655,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObjectIteratorFree(itr);
 		osrfAppRespondComplete( ctx, NULL );
 
-	} else if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "id_list")) {
+	} else if (!strcmp(methodtype, "id_list")) {
 
 		jsonObject* _p = jsonObjectClone( ctx->params );
 		if (jsonObjectGetIndex( _p, 1 )) {
@@ -659,7 +665,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 			jsonObjectSetIndex( _p, 1, jsonParseString("{}") );
 		}
 
-		growing_buffer* sel_list = buffer_init(16);
+		growing_buffer* sel_list = buffer_init(64);
 		buffer_fadd(sel_list, "{ \"%s\":[\"%s\"] }", osrfHashGet( class_obj, "classname" ), osrfHashGet( class_obj, "primarykey" ));
 		char* _s = buffer_release(sel_list);
 
@@ -2314,6 +2320,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 				"Severe query error -- see error log for more details"
 			);
 		buffer_free(sql_buf);
+		if(defaultselhash) jsonObjectFree(defaultselhash);
 		return NULL;
 	} else {
 		buffer_add(sql_buf, pred);
@@ -2750,6 +2757,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							osrfStringArrayFree(link_fields);
 							jsonObjectIteratorFree(itr);
 							jsonObjectFree(res_list);
+							jsonObjectFree(flesh_blob);
 							return jsonNULL;
 						}
 
