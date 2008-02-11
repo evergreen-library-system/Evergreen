@@ -37,7 +37,7 @@ class CoreContext(SubContext):
         usermgr.fetch_user()
         #self.work_orgs = usermgr.fetch_work_orgs()
 
-Context.applySubContext('core', CoreContext)
+Context.apply_sub_context('core', CoreContext)
 
 
 class UtilContext(SubContext):
@@ -48,6 +48,6 @@ class UtilContext(SubContext):
         self.get_org_type = ContextItem(default_value=oils.org.OrgUtil.get_org_type)
         self.get_min_org_depth = ContextItem(default_value=oils.org.OrgUtil.get_min_depth)
 
-Context.applySubContext('util', UtilContext)
+Context.apply_sub_context('util', UtilContext)
 
 

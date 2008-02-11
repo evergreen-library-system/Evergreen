@@ -65,7 +65,7 @@ class AcqContext(SubContext):
         self.picklist_entry_marc_html = ContextItem()
 
     def postinit(self):
-        self.prefix = "%s/acq" % Context.getContext().core.prefix
+        self.prefix = "%s/acq" % Context.get_context().core.prefix
 
-Context.applySubContext('acq', AcqContext)
+Context.apply_sub_context('acq', AcqContext)
 

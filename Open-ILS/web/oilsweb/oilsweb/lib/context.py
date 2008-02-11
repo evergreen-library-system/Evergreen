@@ -63,14 +63,13 @@ class Context(object):
                 if val is not None and val != f.default_value:
                     session[f.cgi_name] =  val
 
-
     @staticmethod
-    def applySubContext(app, ctx):
+    def apply_sub_context(app, ctx):
         global _subContexts
         _subContexts[app] = ctx
 
     @staticmethod
-    def getContext():
+    def get_context():
         global _context
         return _context
 

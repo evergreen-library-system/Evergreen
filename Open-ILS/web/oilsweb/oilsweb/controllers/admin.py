@@ -15,9 +15,9 @@ class AdminContext(SubContext):
         self.mode = ContextItem(default_value='view')
         self.prefix = ContextItem()
     def postinit(self):
-        self.prefix = "%s/admin" % Context.getContext().core.prefix
+        self.prefix = "%s/admin" % Context.get_context().core.prefix
 
-Context.applySubContext('adm', AdminContext)
+Context.apply_sub_context('adm', AdminContext)
 
 class AdminController(BaseController):
 

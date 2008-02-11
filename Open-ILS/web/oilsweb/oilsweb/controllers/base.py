@@ -9,8 +9,8 @@ log = logging.getLogger(__name__)
 
 class BaseContext(SubContext):
     def postinit(self):
-        self.prefix = "%s/base" % Context.getContext().core.prefix
-Context.applySubContext('base', BaseContext)
+        self.prefix = "%s/base" % Context.get_context().core.prefix
+Context.apply_sub_context('base', BaseContext)
 
 
 class BaseController(BaseController):
