@@ -71,7 +71,8 @@ void oilsEventFree( oilsEvent* event ) {
 	free(event->perm);
 	free(event->file);
 	if(event->json) jsonObjectFree(event->json);
-	if(event->payload) jsonObjectFree(event->payload);
+    /* event->json will contain a pointer to event->payload */
+    else jsonObjectFree(event->payload); 
 	free(event);
 }
 
