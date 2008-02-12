@@ -8,24 +8,42 @@
 
 <%include file='picklist_summary.html'/>
 
+<form method='POST' action='${c.oils.acq.prefix}/picklist/update'>
+<input type='hidden' name='${c.oils.acq.picklist_source_id_.cgi_name}' value='${c.oils.acq.picklist.id()}'/>
 <table id='oils-acq-picklist-table'>
     <thead>
         <tr>
-            <td colspan='4'>
-                <%
-                    c.oils.acq.offset = int(c.oils.acq.offset)
-                    c.oils.acq.limit = int(c.oils.acq.limit)
-                    # set up the paging info
-                    paging = _('Entries %(offset)s - %(limit)s') % {
-                        'offset': c.oils.acq.offset + 1,
-                        'limit': c.oils.acq.limit + c.oils.acq.offset
-                    }
-                %>
-                ${paging}
-                % if c.oils.acq.offset > 0:
-                    <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset - c.oils.acq.limit}'>&#171;</a>
-                % endif
-                <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset + c.oils.acq.limit}'>&#187;</a>
+            <td colspan='3' id='oils-acq-picklist-header-block'>
+                <table id='oils-acq-pikclist-header-subtable'><tr>
+                <td id='oils-acq-picklist-paging-block'>
+                    <%
+                        c.oils.acq.offset = int(c.oils.acq.offset)
+                        c.oils.acq.limit = int(c.oils.acq.limit)
+                        # set up the paging info
+                        paging = _('Entries %(offset)s - %(limit)s') % {
+                            'offset': c.oils.acq.offset + 1,
+                            'limit': c.oils.acq.limit + c.oils.acq.offset
+                        }
+                    %>
+                    ${paging}
+                    % if c.oils.acq.offset > 0:
+                        <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset - c.oils.acq.limit}'>&#171;</a>
+                    % endif
+                    <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset + c.oils.acq.limit}'>&#187;</a>
+                </td>
+                <td id='oils-acq-picklist-actions-block'>
+                    <select name='${c.oils.acq.picklist_action_.cgi_name}'>
+                        <option value='move_selected'>${_('Move Selected to Picklist...')}</option>
+                    </select>
+                    <select name='${c.oils.acq.picklist_dest_id_.cgi_name}'>
+                        <option selected='selected' value=''>${_('-- Select A Picklist --')}</option>
+                        % for list in c.oils.acq.picklist_list:
+                            <option value='${list.id()}'>${list.name()}</option>
+                        % endfor
+                    </select>
+                    <input type='submit' value='${_("Submit")}'/>
+                </td>
+                </tr></table>
             </td>
         </tr>
     </thead>
@@ -44,7 +62,7 @@
                 ${entry.provider().name()}
             % endif
         </td>
-        <td><input type='checkbox' name='${c.oils.acq.picklist_id_list_.cgi_name}' value='${c.oils.acq.picklist.id()}'/></td>
+        <td><input type='checkbox' name='${c.oils.acq.picklist_entry_id_list_.cgi_name}' value='${entry.id()}'/></td>
     </tr>
 
     <tr class='oils-acq-picklist-records-author-row'>
@@ -61,4 +79,5 @@
     % endfor
     </tbody>
 </table>
+</form>
 </%def>

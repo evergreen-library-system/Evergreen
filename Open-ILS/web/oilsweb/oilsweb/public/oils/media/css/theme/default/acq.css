@@ -26,6 +26,7 @@
 .oils-acq-picklist-picklist-td { border-style: solid; border-color: #A1A1A1; border-width: 0px 1px 0px 1px; } 
 .oils-acq-picklist-records-service-td { font-size: 85%; }
 .oils-acq-picklist-entry-delete-link { font-size: 85%; }
+#oils-acq-pikclist-header-subtable tr { border: none; }
 
 #oils-acq-list-header {border-bottom: 1px solid #6BA160;}
 #oils-acq-list-header-label { font-weight: bold; font-size: 110%; }

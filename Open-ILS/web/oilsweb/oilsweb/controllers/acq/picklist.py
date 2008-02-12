@@ -15,6 +15,7 @@ class PicklistController(BaseController):
         pl_manager.retrieve()
         pl_manager.retrieve_entries(flesh_provider=True, offset=r.ctx.acq.offset, limit=r.ctx.acq.limit)
         r.ctx.acq.picklist = pl_manager.picklist
+        r.ctx.acq.picklist_list = pl_manager.retrieve_list()
         return r.render('acq/picklist/view.html')
 
     def create(self, **kwargs):
@@ -83,3 +84,26 @@ class PicklistController(BaseController):
         entry = pl_manager.retrieve_entry(entry_id)
         pl_manager.delete_entry(entry_id)
         return redirect_to(controller='acq/picklist', action='view', id=entry.picklist())
+
+    def update(self):
+        r = RequestMgr()
+        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        ses.connect()
+
+        if r.ctx.acq.picklist_action == 'move_selected':
+            for entry_id in r.ctx.acq.picklist_entry_id_list:
+
+                entry = ses.request(
+                    'open-ils.acq.picklist_entry.retrieve',
+                    r.ctx.core.authtoken, entry_id).recv().content()
+                entry = oils.event.Event.parse_and_raise(entry)
+
+                entry.picklist(r.ctx.acq.picklist_dest_id)
+
+                status = ses.request(
+                    'open-ils.acq.picklist_entry.update',
+                    r.ctx.core.authtoken, entry).recv().content()
+                status = oils.event.Event.parse_and_raise(status)
+
+        ses.disconnect()
+        return redirect_to(controller='acq/picklist', action='list')
