@@ -47,10 +47,13 @@ class AcqContext(SubContext):
         self.fund_summary = ContextItem()
 
         self.fund_source = ContextItem()
+        self.fund_source_id = ContextItem(cgi_name='acq.fsi')
         self.fund_source_list = ContextItem()
         self.fund_source_name = ContextItem(cgi_name='acq.fsn')
         self.fund_source_currency_type = ContextItem(cgi_name='acq.fsc')
         self.fund_source_owner = ContextItem(cgi_name='acq.fso')
+        self.fund_source_credit_amount = ContextItem(cgi_name='acq.fsca')
+        self.fund_source_credit_note = ContextItem(cgi_name='acq.fscn')
 
 
         self.fund_allocation = ContextItem()

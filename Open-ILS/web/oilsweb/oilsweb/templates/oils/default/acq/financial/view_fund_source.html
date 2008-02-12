@@ -3,31 +3,37 @@
 <%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('View Funding Source')}</%def>
 <%def name="block_content()">
+
+<% source = c.oils.acq.fund_source %>
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>${source.name()}</div>
+    <div id='oils-acq-list-header-create'>
+        <a href='${c.oils.acq.prefix}/fund_source/create_credit?${c.oils.acq.fund_source_id_.cgi_name}=${source.id()}'>${_('Add Credit')}</a>
+    </div>
+</div>
+
 <table class='oils-admin-table'>
     <tbody>
         <tr>
-            <td class='oils-admin-label'>${_('Funding Source Name')}</td>
-            <td>${c.oils.acq.fund_source.name()}</td>
-        </tr>
-        <tr>
             <td class='oils-admin-label'>${_('Funding Source Owner')}</td>
-            <td>${c.oils.acq.fund_source.owner().name()}</td> 
+            <td>${source.owner().name()}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Funding Source Currency Type')}</td>
-            <td>${c.oils.acq.fund_source.currency_type()}</td> 
+            <td>${source.currency_type()}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Funding Source Credit Total')}</td>
-            <td>${c.oils.acq.fund_source.summary()['credit_total']}</td> 
+            <td>${source.summary()['credit_total']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Funding Source Allocation Total')}</td>
-            <td>${c.oils.acq.fund_source.summary()['allocation_total']}</td> 
+            <td>${source.summary()['allocation_total']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Funding Source Balance')}</td>
-            <td>${c.oils.acq.fund_source.summary()['balance']}</td> 
+            <td>${source.summary()['balance']}</td> 
         </tr>
     </tbody>
 </table>

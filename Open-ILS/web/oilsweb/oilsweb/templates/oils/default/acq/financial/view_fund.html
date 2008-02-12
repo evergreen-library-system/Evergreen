@@ -3,12 +3,16 @@
 <%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('View Fund')}</%def>
 <%def name="block_content()">
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>${c.oils.acq.fund.name()}</div>
+    <div id='oils-acq-list-header-create'>
+        <a href='${c.oils.acq.prefix}/fund/allocate?${c.oils.acq.fund_id_.cgi_name}=${c.oils.acq.fund.id()}'>${_('Allocate Money')}</a>
+    </div>
+</div>
+
 <table class='oils-admin-table'>
     <tbody>
-        <tr>
-            <td class='oils-admin-label'>${_('Name')}</td>
-            <td>${c.oils.acq.fund.name()}</td>
-        </tr>
         <tr>
             <td class='oils-admin-label'>${_('Owner')}</td>
             <td>${c.oils.acq.fund.org().name()}</td> 
@@ -47,7 +51,4 @@
         </tr>
     </tbody>
 </table>
-<div>
-    <a href='${c.oils.acq.prefix}/fund/allocate?${c.oils.acq.fund_id_.cgi_name}=${c.oils.acq.fund.id()}'>${_('Allocate Money')}</a>
-</div>
 </%def>

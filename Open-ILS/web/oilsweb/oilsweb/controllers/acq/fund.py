@@ -2,8 +2,12 @@ from oilsweb.lib.base import *
 import pylons
 from oilsweb.lib.request import RequestMgr
 import oilsweb.lib.acq.fund, oilsweb.lib.user
-import osrf.net_obj, osrf.ses
-import oils.org, oils.const, oils.event
+import osrf.net_obj
+import oils.const
+from osrf.ses import ClientSession
+from oils.event import Event
+from oils.org import OrgUtil
+
 
 class FundController(BaseController):
 
@@ -11,16 +15,16 @@ class FundController(BaseController):
         ''' Retrieves a fund object with summary and fleshse the org field '''
         fund = ses.request('open-ils.acq.fund.retrieve', 
             r.ctx.core.authtoken, fund_id, {"flesh_summary":1}).recv().content()
-        oils.event.Event.parse_and_raise(fund)
-        fund.org(oils.org.OrgUtil.get_org_unit(fund.org())) # flesh the org
+        Event.parse_and_raise(fund)
+        fund.org(OrgUtil.get_org_unit(fund.org())) # flesh the org
         return fund
 
 
     def view(self, **kwargs):
         r = RequestMgr()
-        r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
+        r.ctx.core.org_tree = OrgUtil.fetch_org_tree()
         fund_id = kwargs['id']
-        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
 
         # grab the fund object
         fund = self._retrieve_fund(r, ses, fund_id)
@@ -29,20 +33,20 @@ class FundController(BaseController):
 
     def list(self):
         r = RequestMgr()
-        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
         funds = ses.request(
             'open-ils.acq.fund.org.retrieve', 
             r.ctx.core.authtoken, None, {"flesh_summary":1}).recv().content()
-        oils.event.Event.parse_and_raise(funds)
+        Event.parse_and_raise(funds)
         for f in funds:
-            f.org(oils.org.OrgUtil.get_org_unit(f.org()))
+            f.org(OrgUtil.get_org_unit(f.org()))
         r.ctx.acq.fund_list = funds
         return r.render('acq/financial/list_funds.html')
             
 
     def create(self):
         r = RequestMgr()
-        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
 
         if r.ctx.acq.fund_name: # create then display the fund
 
@@ -54,7 +58,7 @@ class FundController(BaseController):
 
             fund_id = ses.request('open-ils.acq.fund.create', 
                 r.ctx.core.authtoken, fund).recv().content()
-            oils.event.Event.parse_and_raise(fund_id)
+            Event.parse_and_raise(fund_id)
 
             return redirect_to(controller='acq/fund', action='view', id=fund_id)
 
@@ -64,7 +68,7 @@ class FundController(BaseController):
         types = ses.request(
             'open-ils.acq.currency_type.all.retrieve',
             r.ctx.core.authtoken).recv().content()
-        r.ctx.acq.currency_types = oils.event.Event.parse_and_raise(types)
+        r.ctx.acq.currency_types = Event.parse_and_raise(types)
 
 
         if tree is None:
@@ -74,7 +78,7 @@ class FundController(BaseController):
 
     def allocate(self):
         r = RequestMgr()
-        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
 
         if r.ctx.acq.fund_allocation_source:
             return self._allocate(r, ses)
@@ -84,7 +88,7 @@ class FundController(BaseController):
         source_list = ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
             r.ctx.core.authtoken, None, {'limit_perm':'MANAGE_FUNDING_SOURCE', 'flesh_summary':1}).recv().content()
-        oils.event.Event.parse_and_raise(source_list)
+        Event.parse_and_raise(source_list)
 
         r.ctx.acq.fund = fund
         r.ctx.acq.fund_source_list = source_list
@@ -105,7 +109,7 @@ class FundController(BaseController):
 
         alloc_id = ses.request(
             'open-ils.acq.fund_allocation.create', r.ctx.core.authtoken, alloc).recv().content()
-        oils.event.Event.parse_and_raise(alloc_id)
+        Event.parse_and_raise(alloc_id)
 
         return redirect_to(controller='acq/fund', action='view', id=r.ctx.acq.fund_allocation_fund)
 
