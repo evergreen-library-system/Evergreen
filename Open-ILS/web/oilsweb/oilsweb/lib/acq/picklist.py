@@ -13,7 +13,7 @@ class PicklistMgr(object):
     def retrieve(self):
         picklist = self.ses.request(
             'open-ils.acq.picklist.retrieve', 
-            self.request_mgr.ctx.core.authtoken, self.id).recv().content()
+            self.request_mgr.ctx.core.authtoken, self.id, {'flesh_entry_count':1}).recv().content()
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
@@ -74,7 +74,7 @@ class PicklistMgr(object):
         ''' Returns my list of picklist objects '''
         list = self.ses.request(
             'open-ils.acq.picklist.user.retrieve', 
-            self.request_mgr.ctx.core.authtoken).recv().content()
+            self.request_mgr.ctx.core.authtoken, {'flesh_entry_count':1}).recv().content()
         oils.event.Event.parse_and_raise(list)
 
         usermgr = oilsweb.lib.user.User(self.request_mgr.ctx.core)

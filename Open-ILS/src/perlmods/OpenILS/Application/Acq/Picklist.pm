@@ -89,20 +89,28 @@ sub retrieve_picklist {
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->event;
 
-    if($$options{flesh_entry_count}) {
-        my $count = $e->json_query({
-            select => { 
-                acqple => [{transform => 'count', column => 'id', alias => 'count'}]
-            }, 
-            from => 'acqple', 
-            where => {picklist => $picklist_id}}
-        );
-        $picklist->entry_count($count->[0]->{count});
-    }
+    $picklist->entry_count(retrieve_picklist_entry_count($e, $picklist_id))
+        if $$options{flesh_entry_count};
 
     return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
     return $picklist;
 }
+
+
+# Returns the number of entries associated with this picklist
+sub retrieve_picklist_entry_count {
+    my($e, $picklist_id) = @_;
+    my $count = $e->json_query({
+        select => { 
+            acqple => [{transform => 'count', column => 'id', alias => 'count'}]
+        }, 
+        from => 'acqple', 
+        where => {picklist => $picklist_id}}
+    );
+    return $count->[0]->{count};
+}
+
+
 
 __PACKAGE__->register_method(
 	method => 'retrieve_picklist_name',
@@ -145,7 +153,18 @@ sub retrieve_user_picklist {
     my($self, $conn, $auth, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->search_acq_picklist({owner=>$e->requestor->id, name=>{'!='=>''}},{idlist=>$$options{idlist}});
+
+    # don't grab the PL with name == "", because that is the designated temporary picklist
+    my $list = $e->search_acq_picklist(
+        {owner=>$e->requestor->id, name=>{'!='=>''}},
+        {idlist=>$$options{idlist}}
+    );
+
+    if($$options{flesh_entry_count}) {
+        $_->entry_count(retrieve_picklist_entry_count($e, $_->id)) for @$list;
+    };
+
+    return $list;
 }
 
 

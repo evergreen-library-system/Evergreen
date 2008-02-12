@@ -91,19 +91,25 @@ class PicklistController(BaseController):
         ses.connect()
 
         if r.ctx.acq.picklist_action == 'move_selected':
-            for entry_id in r.ctx.acq.picklist_entry_id_list:
-
-                entry = ses.request(
-                    'open-ils.acq.picklist_entry.retrieve',
-                    r.ctx.core.authtoken, entry_id).recv().content()
-                entry = oils.event.Event.parse_and_raise(entry)
-
-                entry.picklist(r.ctx.acq.picklist_dest_id)
-
-                status = ses.request(
-                    'open-ils.acq.picklist_entry.update',
-                    r.ctx.core.authtoken, entry).recv().content()
-                status = oils.event.Event.parse_and_raise(status)
+            self._move_selected(r, ses)
 
         ses.disconnect()
         return redirect_to(controller='acq/picklist', action='list')
+
+    def _move_selected(self, r, ses):
+        ''' Moves the selected picklist entry's to the destination picklist '''
+        for entry_id in r.ctx.acq.picklist_entry_id_list:
+
+            entry = ses.request(
+                'open-ils.acq.picklist_entry.retrieve',
+                r.ctx.core.authtoken, entry_id).recv().content()
+            entry = oils.event.Event.parse_and_raise(entry)
+
+            entry.picklist(r.ctx.acq.picklist_dest_id)
+
+            status = ses.request(
+                'open-ils.acq.picklist_entry.update',
+                r.ctx.core.authtoken, entry).recv().content()
+            oils.event.Event.parse_and_raise(status)
+
+
