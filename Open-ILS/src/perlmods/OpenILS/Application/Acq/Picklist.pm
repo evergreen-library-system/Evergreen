@@ -276,6 +276,40 @@ sub delete_picklist_entry {
 
 
 __PACKAGE__->register_method(
+	method => 'update_picklist_entry',
+	api_name	=> 'open-ils.acq.picklist_entry.update',
+	signature => {
+        desc => 'Update a picklist_entry',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist entry object update', type => 'object'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub update_picklist_entry {
+    my($self, $conn, $auth, $pl_entry) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $orig_entry = $e->retrieve_acq_picklist_entry([
+        $pl_entry->id,
+        {
+            flesh => 1, # grab the picklist_entry with picklist attached
+            flesh_fields => {acqple => ['picklist']}
+        }
+    ]) or return $e->die_event;
+
+    # don't let anyone update someone else's picklist entry
+    return $BAD_PARAMS if $orig_entry->picklist->owner != $e->requestor->id;
+
+    $e->update_acq_picklist_entry($pl_entry) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
 	method => 'retrieve_pl_picklist_entry',
 	api_name	=> 'open-ils.acq.picklist_entry.picklist.retrieve',
 	signature => {
