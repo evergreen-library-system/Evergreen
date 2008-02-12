@@ -4,10 +4,12 @@
 <%def name="page_title()">${_('View Fund')}</%def>
 <%def name="block_content()">
 
+<% fund = c.oils.acq.fund %>
+
 <div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>${c.oils.acq.fund.name()}</div>
+    <div id='oils-acq-list-header-label'>${fund.name()}</div>
     <div id='oils-acq-list-header-create'>
-        <a href='${c.oils.acq.prefix}/fund/allocate?${c.oils.acq.fund_id_.cgi_name}=${c.oils.acq.fund.id()}'>${_('Allocate Money')}</a>
+        <a href='${c.oils.acq.prefix}/fund/allocate?${c.oils.acq.fund_id_.cgi_name}=${fund.id()}'>${_('Allocate Money')}</a>
     </div>
 </div>
 
@@ -15,40 +17,64 @@
     <tbody>
         <tr>
             <td class='oils-admin-label'>${_('Owner')}</td>
-            <td>${c.oils.acq.fund.org().name()}</td> 
+            <td>${fund.org().name()}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Currency')}</td>
-            <td>${c.oils.acq.fund.currency_type()}</td> 
+            <td>${fund.currency_type()}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Year')}</td>
-            <td>${c.oils.acq.fund.year()}</td> 
+            <td>${fund.year()}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Amount Allocated to this Fund')}</td>
-            <td>${c.oils.acq.fund.summary()['allocation_total']}</td> 
+            <td>${fund.summary()['allocation_total']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Balance (Total - (Spent + Encumberances))')}</td>
-            <td>${c.oils.acq.fund.summary()['combined_balance']}</td> 
+            <td>${fund.summary()['combined_balance']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Spent Balance (Total - Spent)')}</td>
-            <td>${c.oils.acq.fund.summary()['spent_balance']}</td> 
+            <td>${fund.summary()['spent_balance']}</td> 
        </tr>
        <tr>
             <td class='oils-admin-label'>${_('Total Debits (Spent + Encumbered)')}</td>
-            <td>${c.oils.acq.fund.summary()['debit_total']}</td> 
+            <td>${fund.summary()['debit_total']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Total Spent')}</td>
-            <td>${c.oils.acq.fund.summary()['spent_total']}</td> 
+            <td>${fund.summary()['spent_total']}</td> 
         </tr>
         <tr>
             <td class='oils-admin-label'>${_('Total Encumbered')}</td>
-            <td>${c.oils.acq.fund.summary()['encumberance_total']}</td> 
+            <td>${fund.summary()['encumberance_total']}</td> 
         </tr>
     </tbody>
 </table>
+
+<h3>${_('Fund Allocations')}</h3>
+<table class='oils-admin-table'>
+    <thead>
+        <tr>
+            <td>${_('Funding Source')}</td>
+            <td>${_('Amount/Percent')}</td>
+        </tr>
+    </thead>
+    <tbody>
+        % for alloc in fund.allocations():
+        <tr>
+            <td>${alloc.funding_source().name()}</td> 
+            % if alloc.amount() != 0 and alloc.amount() is not None:
+                <td>${alloc.amount()}</td> 
+            % else:
+                <% percent = _('%(p)s%%') % {'p':alloc.percent()} %>
+                <td>${percent}</td> 
+            % endif
+        </tr>
+        % endfor
+    </tbody>
+</table>
+
 </%def>

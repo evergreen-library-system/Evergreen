@@ -26,8 +26,12 @@ class FundController(BaseController):
         fund_id = kwargs['id']
         ses = ClientSession(oils.const.OILS_APP_ACQ)
 
-        # grab the fund object
-        fund = self._retrieve_fund(r, ses, fund_id)
+        fund = ses.request('open-ils.acq.fund.retrieve', 
+            r.ctx.core.authtoken, fund_id, 
+            {"flesh_summary":1, 'flesh_allocations':1, 'flesh_allocation_sources':1}).recv().content()
+        Event.parse_and_raise(fund)
+        fund.org(OrgUtil.get_org_unit(fund.org())) # flesh the org
+
         r.ctx.acq.fund = fund
         return r.render('acq/financial/view_fund.html')
 

@@ -83,9 +83,11 @@ sub retrieve_funding_source {
     my($self, $conn, $auth, $funding_source_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+
     my $flesh = {flesh => 1, flesh_fields => {acqfs => []}};
     push(@{$flesh->{flesh_fields}->{acqfs}}, 'credits') if $$options{flesh_credits};
     push(@{$flesh->{flesh_fields}->{acqfs}}, 'allocations') if $$options{flesh_allocations};
+
     my $funding_source = $e->retrieve_acq_funding_source([$funding_source_id, $flesh]) or return $e->event;
     return $e->event unless $e->allowed(
         ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner, $funding_source); 
@@ -244,9 +246,10 @@ sub retrieve_fund {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    my $flesh = {flesh => 1, flesh_fields => {acqf => []}};
+    my $flesh = {flesh => 2, flesh_fields => {acqf => []}};
     push(@{$flesh->{flesh_fields}->{acqf}}, 'debits') if $$options{flesh_debits};
     push(@{$flesh->{flesh_fields}->{acqf}}, 'allocations') if $$options{flesh_allocations};
+    push(@{$flesh->{flesh_fields}->{acqfa}}, 'funding_source') if $$options{flesh_allocation_sources};
 
     my $fund = $e->retrieve_acq_fund([$fund_id, $flesh]) or return $e->event;
     return $e->event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org, $fund);
