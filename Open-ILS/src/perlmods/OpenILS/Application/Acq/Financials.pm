@@ -83,7 +83,10 @@ sub retrieve_funding_source {
     my($self, $conn, $auth, $funding_source_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->event;
+    my $flesh = {flesh => 1, flesh_fields => {acqfs => []}};
+    push(@{$flesh->{flesh_fields}->{acqfs}}, 'credits') if $$options{flesh_credits};
+    push(@{$flesh->{flesh_fields}->{acqfs}}, 'allocations') if $$options{flesh_allocations};
+    my $funding_source = $e->retrieve_acq_funding_source([$funding_source_id, $flesh]) or return $e->event;
     return $e->event unless $e->allowed(
         ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner, $funding_source); 
     $funding_source->summary(retrieve_funding_source_summary_impl($e, $funding_source))
@@ -140,6 +143,34 @@ sub retrieve_funding_source_summary_impl {
         balance => ($b) ? $b->amount : 0,
         credit_total => ($ct) ? $ct->amount : 0,
     };
+}
+
+
+__PACKAGE__->register_method(
+	method => 'create_funding_source_credit',
+	api_name	=> 'open-ils.acq.funding_source_credit.create',
+	signature => {
+        desc => 'Create a new funding source credit',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'funding source credit object', type => 'object'}
+        ],
+        return => {desc => 'The ID of the new funding source credit on success, Event on failure'}
+    }
+);
+
+sub create_funding_source_credit {
+    my($self, $conn, $auth, $fs_credit) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->event unless $e->checkauth;
+
+    my $fs = $e->retrieve_acq_funding_source($fs_credit->funding_source)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed(['MANAGE_FUNDING_SOURCE'], $fs->owner, $fs); 
+
+    $e->create_acq_funding_source_credit($fs_credit) or return $e->die_event;
+    $e->commit;
+    return $fs_credit->id;
 }
 
 
@@ -212,9 +243,13 @@ sub retrieve_fund {
     my($self, $conn, $auth, $fund_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    return $e->event unless
-        $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org, $fund);
+
+    my $flesh = {flesh => 1, flesh_fields => {acqf => []}};
+    push(@{$flesh->{flesh_fields}->{acqf}}, 'debits') if $$options{flesh_debits};
+    push(@{$flesh->{flesh_fields}->{acqf}}, 'allocations') if $$options{flesh_allocations};
+
+    my $fund = $e->retrieve_acq_fund([$fund_id, $flesh]) or return $e->event;
+    return $e->event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org, $fund);
     $fund->summary(retrieve_fund_summary_impl($e, $fund))
         if $$options{flesh_summary};
     return $fund;
@@ -402,6 +437,38 @@ sub retrieve_fund_alloc {
 
     return $fund_alloc;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_funding_source_allocations',
+	api_name	=> 'open-ils.acq.funding_source.allocations.retrieve',
+	signature => {
+        desc => 'Retrieves a new fund_allocation',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'fund Allocation ID', type => 'number'}
+        ],
+        return => {desc => 'The fund allocation object on success, Event on failure'}
+    }
+);
+
+sub retrieve_fund_alloc {
+    my($self, $conn, $auth, $fund_alloc_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $fund_alloc = $e->retrieve_acq_fund_allocation($fund_alloc_id) or return $e->event;
+
+    my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner, $source);
+
+    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+
+    return $fund_alloc;
+}
+
+
 
 
 # ----------------------------------------------------------------------------
