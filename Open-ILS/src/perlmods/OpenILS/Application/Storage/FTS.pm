@@ -4,7 +4,7 @@ my $log = 'OpenSRF::Utils::Logger';
 #-------------------------------------------------------------------------------
 package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
-use Parser::RecDescent;
+use Parse::RecDescent;
 
 my $_default_grammar_parser = new Parse::RecDescent ( join '', (<DATA>) );
 
