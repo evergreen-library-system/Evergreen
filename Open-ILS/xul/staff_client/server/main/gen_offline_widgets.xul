@@ -1,6 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Main, Authentication Window -->
+<!--
+ vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
@@ -11,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -36,9 +39,7 @@
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 			if (typeof JSAN == 'undefined') {
-				throw(
-					"The JSAN library object is missing."
-				);
+				throw(document.getElementById('commonStrings').getString('common.jsan.missing'));
 			}
 			/////////////////////////////////////////////////////////////////////////////
 
@@ -87,7 +88,7 @@
 
 			save_object('print_list_templates',g.data.print_list_templates);
 
-			$('placeholder').setAttribute('value','Offline interface synchronized with server.');
+			$('placeholder').setAttribute('value', $('commonStrings').getString('staff.main.gen_offline_widgets.synced'));
 
 		}
 
@@ -107,7 +108,10 @@
 				util.functional.map_list( 
 					/*util.fm_utils.flatten_ou_branch(g.data.tree.aou)*/ g.data.list.aou,
 					function(obj) { 
-						var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
+						var sname = obj.shortname();
+						for (i = sname.length; i < 20; i++) {
+							sname += ' ';
+						}
 						return [ 
 							obj.name() ? sname + ' ' + obj.name() : obj.shortname(),
 							obj.id(), 
@@ -187,7 +191,7 @@
 									[ b.owning_lib(), b.name() ]
 								);
 							} catch(E) {
-								alert('error in noncat sorting: ' + E);
+								alert($('commonStrings').getString('staff.main.gen_offline_widgets.noncat_sort.error') + E);
 								return 0;
 							}
 						}

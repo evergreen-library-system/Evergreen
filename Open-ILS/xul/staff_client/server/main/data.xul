@@ -1,6 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Main, Authentication Window -->
+<!--
+ vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
@@ -19,7 +22,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -47,9 +50,7 @@
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 			if (typeof JSAN == 'undefined') {
-				throw(
-					"The JSAN library object is missing."
-				);
+				throw(document.getElementById("commonStrings").getString('common.jsan.missing'));
 			}
 			/////////////////////////////////////////////////////////////////////////////
 
@@ -195,7 +196,7 @@
 					urls.XUL_OFFLINE_GENERATE_WIDGETS	
 				);
 
-				document.getElementById('caption').setAttribute('label','Data loaded.');
+				document.getElementById('caption').setAttribute('label', document.getElementById('commonStrings').getString('staff.main.data.loaded'));
 
 				xulG.window.open(urls.XUL_MENU_FRAME
 					+ '?server='+window.escape(xulG.url),
@@ -213,7 +214,7 @@
 	</script>
 
 	<groupbox id="data_groupbox" flex="1" class="my_overflow"> 
-		<caption id="caption" label="Loading data..."/> 
+		<caption id="caption" label="&staff.main.data.loading;"/> 
 		<description id="data_progress"/>
 		<iframe id="iframe" />
 	</groupbox>
