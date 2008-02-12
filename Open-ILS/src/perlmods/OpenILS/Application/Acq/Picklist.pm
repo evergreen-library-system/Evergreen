@@ -75,6 +75,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID to retrieve', type => 'number'},
+            {desc => 'Options hash, including "flesh_entry_count" to get the count of attached entries', type => 'hash'},
         ],
         return => {desc => 'Picklist object on success, Event on error'}
     }
@@ -87,6 +88,17 @@ sub retrieve_picklist {
 
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->event;
+
+    if($$options{flesh_entry_count}) {
+        my $count = $e->json_query({
+            select => { 
+                acqple => [{transform => 'count', column => 'id', alias => 'count'}]
+            }, 
+            from => 'acqple', 
+            where => {picklist => $picklist_id}}
+        );
+        $picklist->entry_count($count->[0]->{count});
+    }
 
     return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
     return $picklist;
