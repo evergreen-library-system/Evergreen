@@ -89,8 +89,11 @@ sub retrieve_funding_source {
     push(@{$flesh->{flesh_fields}->{acqfs}}, 'allocations') if $$options{flesh_allocations};
 
     my $funding_source = $e->retrieve_acq_funding_source([$funding_source_id, $flesh]) or return $e->event;
+
     return $e->event unless $e->allowed(
-        ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner, $funding_source); 
+        ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE', 'VIEW_FUNDING_SOURCE'], 
+        $funding_source->owner, $funding_source); 
+
     $funding_source->summary(retrieve_funding_source_summary_impl($e, $funding_source))
         if $$options{flesh_summary};
     return $funding_source;
@@ -119,6 +122,7 @@ sub retrieve_org_funding_sources {
     return $e->event unless $e->checkauth;
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUNDING_SOURCE';
+    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUNDING_SOURCE/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
@@ -252,7 +256,7 @@ sub retrieve_fund {
     push(@{$flesh->{flesh_fields}->{acqfa}}, 'funding_source') if $$options{flesh_allocation_sources};
 
     my $fund = $e->retrieve_acq_fund([$fund_id, $flesh]) or return $e->event;
-    return $e->event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org, $fund);
+    return $e->event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND', 'VIEW_FUND'], $fund->org, $fund);
     $fund->summary(retrieve_fund_summary_impl($e, $fund))
         if $$options{flesh_summary};
     return $fund;
@@ -283,6 +287,7 @@ sub retrieve_org_funds {
     return $e->event unless $e->checkauth;
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
+    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});

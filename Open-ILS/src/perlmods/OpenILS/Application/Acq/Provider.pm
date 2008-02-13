@@ -31,7 +31,7 @@ sub create_provider {
     my($self, $conn, $auth, $provider) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_PROVIDER', $provider->owner, $provider);
+    return $e->die_event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
     $e->create_acq_provider($provider) or return $e->die_event;
     $e->commit;
     return $provider->id;
@@ -57,8 +57,45 @@ sub retrieve_provider {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $provider = $e->retrieve_acq_provider($provider_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_PROVIDER', $provider->owner, $provider);
+    return $e->event unless $e->allowed(
+        ['ADMIN_PROVIDER', 'MANAGE_PROVIDER', 'VIEW_PROVIDER'], $provider->owner, $provider);
     return $provider;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_org_providers',
+	api_name	=> 'open-ils.acq.provider.org.retrieve',
+	signature => {
+        desc => 'Retrieves all the providers associated with an org unit that the requestor has access to see',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'List of org Unit IDs.  If no IDs are provided, this method returns the 
+                full set of funding sources this user has permission to view', type => 'number'},
+            {desc => q/Limiting permission.  this permission is used find the work-org tree from which  
+                the list of orgs is generated if no org ids are provided.  
+                The default is ADMIN_PROVIDER/, type => 'string'},
+        ],
+        return => {desc => 'The provider objects on success, empty array otherwise'}
+    }
+);
+
+sub retrieve_org_providers {
+    my($self, $conn, $auth, $org_id_list, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_PROVIDER';
+
+    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_PROVIDER/;
+
+    my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
+        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
+
+    return [] unless @$org_ids;
+    my $sources = $e->search_acq_provider({owner => $org_ids});
+
+    return $sources;
 }
 
 
