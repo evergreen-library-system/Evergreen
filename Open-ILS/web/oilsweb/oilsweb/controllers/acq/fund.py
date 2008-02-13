@@ -67,7 +67,7 @@ class FundController(BaseController):
             return redirect_to(controller='acq/fund', action='view', id=fund_id)
 
         usermgr = oilsweb.lib.user.User(r.ctx.core)
-        tree = usermgr.highest_work_perm_tree('CREATE_FUND')
+        tree = usermgr.highest_work_perm_tree('ADMIN_FUND')
 
         types = ses.request(
             'open-ils.acq.currency_type.all.retrieve',

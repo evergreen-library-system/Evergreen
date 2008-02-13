@@ -55,7 +55,6 @@ class AcqContext(SubContext):
         self.fund_source_credit_amount = ContextItem(cgi_name='acq.fsca')
         self.fund_source_credit_note = ContextItem(cgi_name='acq.fscn')
 
-
         self.fund_allocation = ContextItem()
         self.fund_allocation_list = ContextItem()
         self.fund_allocation_source= ContextItem(cgi_name='acq.fas')
@@ -63,6 +62,13 @@ class AcqContext(SubContext):
         self.fund_allocation_amount = ContextItem(cgi_name='acq.faa')
         self.fund_allocation_percent = ContextItem(cgi_name='acq.fap')
         self.fund_allocation_note = ContextItem(cgi_name='acq.fan')
+
+        self.provider = ContextItem()
+        self.provider_id = ContextItem()
+        self.provider_list = ContextItem()
+        self.provider_name = ContextItem(cgi_name='acq.pn')
+        self.provider_currency_type = ContextItem(cgi_name='acq.pct')
+        self.provider_owner = ContextItem(cgi_name='acq.po')
 
 
         # -------------------------------------------------------------
