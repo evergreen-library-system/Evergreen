@@ -139,7 +139,6 @@ CREATE TABLE acq.po_lineitem (
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	marc		TEXT				NOT NULL,
 	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
-	fund_debit	INT				REFERENCES acq.fund_debit (id),
 	list_price	NUMERIC,
 	item_count	INT				NOT NULL DEFAULT 0
 );
