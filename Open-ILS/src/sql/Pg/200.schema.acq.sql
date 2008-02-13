@@ -4,6 +4,10 @@ BEGIN;
 
 CREATE SCHEMA acq;
 
+
+-- Tables
+
+
 CREATE TABLE acq.currency_type (
 	code	TEXT PRIMARY KEY,
 	label	TEXT
@@ -48,6 +52,38 @@ CREATE TABLE acq.funding_source_credit (
 	note	TEXT
 );
 
+CREATE TABLE acq.fund (
+    id              SERIAL  PRIMARY KEY,
+    org             INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    name            TEXT    NOT NULL,
+    year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
+    currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
+);
+
+CREATE TABLE acq.fund_debit (
+	id			SERIAL	PRIMARY KEY,
+	fund			INT     NOT NULL REFERENCES acq.fund (id),
+	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
+	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	amount			NUMERIC	NOT NULL,
+	encumberance		BOOL	NOT NULL DEFAULT TRUE,
+	debit_type		TEXT	NOT NULL,
+	xfer_destination	INT	REFERENCES acq.fund (id)
+);
+
+CREATE TABLE acq.fund_allocation (
+    id          SERIAL  PRIMARY KEY,
+    funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    amount      NUMERIC,
+    percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
+    allocator   INT NOT NULL REFERENCES actor.usr (id),
+    note        TEXT,
+    CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
+);
+
+
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id),
@@ -57,6 +93,32 @@ CREATE TABLE acq.picklist (
 	CONSTRAINT name_once_per_owner UNIQUE (name,owner)
 );
 
+CREATE TABLE acq.purchase_order (
+	id			SERIAL				PRIMARY KEY,
+	owner			INT				NOT NULL REFERENCES actor.usr (id),
+	default_fund		INT				REFERENCES acq.fund (id),
+	create_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	provider		INT				NOT NULL REFERENCES acq.provider (id),
+	state			TEXT				NOT NULL DEFAULT 'new',
+	expected_recv_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW() + '30 days',
+	recv_time		TIMESTAMP WITH TIME ZONE
+);
+CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
+CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
+CREATE INDEX po_state_idx ON acq.purchase_order (state);
+
+CREATE TABLE acq.po_note (
+	id		SERIAL				PRIMARY KEY,
+	purchase_order	INT				NOT NULL REFERENCES acq.purchase_order (id),
+	creator		INT				NOT NULL REFERENCES actor.usr (id),
+	editor		INT				NOT NULL REFERENCES actor.usr (id),
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	value		TEXT				NOT NULL
+);
+CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
+
 CREATE TABLE acq.picklist_entry (
 	id		BIGSERIAL			PRIMARY KEY,
 	picklist	INT				NOT NULL REFERENCES acq.picklist (id) ON DELETE CASCADE,
@@ -64,9 +126,45 @@ CREATE TABLE acq.picklist_entry (
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	marc		TEXT				NOT NULL,
-	eg_bib_id	INT,
+	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
 	source_label	TEXT
 );
+
+CREATE TABLE acq.po_lineitem (
+	id		BIGSERIAL			PRIMARY KEY,
+	purchase_order	INT				NOT NULL REFERENCES acq.purchase_order (id),
+	fund		INT				REFERENCES acq.fund (id),
+	fund_debit	INT				REFERENCES acq.fund_debit (id),
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	marc		TEXT				NOT NULL,
+	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
+	fund_debit	INT				REFERENCES acq.fund_debit (id),
+	list_price	NUMERIC,
+	item_count	INT				NOT NULL DEFAULT 0
+);
+CREATE INDEX po_li_po_idx ON acq.po_lineitem (purchase_order);
+
+CREATE TABLE acq.po_li_note (
+	id		SERIAL				PRIMARY KEY,
+	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	creator		INT				NOT NULL REFERENCES actor.usr (id),
+	editor		INT				NOT NULL REFERENCES actor.usr (id),
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	value		TEXT				NOT NULL
+);
+CREATE INDEX po_li_note_li_idx ON acq.po_li_note (po_lineitem);
+
+CREATE TABLE acq.po_li_detail (
+	id		BIGSERIAL			PRIMARY KEY,
+	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	eg_copy_id	BIGINT				REFERENCES asset.copy (id),
+	barcode		TEXT,
+	cn_label	TEXT
+);
+
+CREATE INDEX po_li_detail_li_idx ON acq.po_li_detail (po_lineitem);
 
 CREATE TABLE acq.picklist_entry_attr (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -76,21 +174,15 @@ CREATE TABLE acq.picklist_entry_attr (
 	attr_value	TEXT		NOT NULL
 );
 
-CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT array_to_string( array_accum( output ),' ' ) FROM xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
-$$ LANGUAGE SQL;
+CREATE TABLE acq.po_li_attr (
+	id		BIGSERIAL	PRIMARY KEY,
+	po_lineitem	BIGINT		NOT NULL REFERENCES acq.po_lineitem (id),
+	attr_type	TEXT		NOT NULL,
+	attr_name	TEXT		NOT NULL,
+	attr_value	TEXT		NOT NULL
+);
 
-CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('acq.picklist_entry', $1, $2);
-$$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('biblio.record_entry', $1, $2);
-$$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION public.extract_authority_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('authority.record_entry', $1, $2);
-$$ LANGUAGE SQL;
+CREATE INDEX po_li_attr_li_idx ON acq.po_li_attr (po_lineitem);
 
 CREATE TABLE acq.picklist_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -117,6 +209,10 @@ CREATE TABLE acq.picklist_usr_attr_definition (
 	usr		INT	NOT NULL REFERENCES actor.usr (id)
 ) INHERITS (acq.picklist_attr_definition);
 
+
+-- Seed data
+
+
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('title','Title of work','//*[@tag="245"]/*[contains("abcmnopr",@code)]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('author','Author of work','//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('language','Lanuage of work','//*[@tag="240"]/*[@code="l"][1]');
@@ -128,6 +224,26 @@ INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUE
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
+
+
+-- Functions
+
+
+CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
+	SELECT array_to_string( array_accum( output ),' ' ) FROM xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
+	SELECT public.extract_marc_field('acq.picklist_entry', $1, $2);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
+	SELECT public.extract_marc_field('biblio.record_entry', $1, $2);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.extract_authority_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
+	SELECT public.extract_marc_field('authority.record_entry', $1, $2);
+$$ LANGUAGE SQL;
 
 -- For example:
 -- INSERT INTO acq.picklist_provider_attr_definition ( provider, code, description, xpath ) VALUES (1,'price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
@@ -184,35 +300,6 @@ CREATE TRIGGER cleanup_picklist_entry_trigger
 CREATE TRIGGER ingest_picklist_entry_trigger
 	AFTER INSERT OR UPDATE ON acq.picklist_entry 
 	FOR EACH ROW EXECUTE PROCEDURE public.ingest_acq_marc();
-
-CREATE TABLE acq.fund (
-    id              SERIAL  PRIMARY KEY,
-    org             INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    name            TEXT    NOT NULL,
-    year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
-    currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code),
-    CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
-);
-
-CREATE TABLE acq.fund_debit (
-	id			SERIAL	PRIMARY KEY,
-	fund			INT     NOT NULL REFERENCES acq.fund (id),
-	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
-	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
-	amount			NUMERIC	NOT NULL,
-	encumberance		BOOL	NOT NULL DEFAULT TRUE
-);
-
-CREATE TABLE acq.fund_allocation (
-    id          SERIAL  PRIMARY KEY,
-    funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    amount      NUMERIC,
-    percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
-    allocator   INT NOT NULL REFERENCES actor.usr (id),
-    note        TEXT,
-    CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
-);
 
 CREATE OR REPLACE FUNCTION acq.exchange_ratio ( from_ex TEXT, to_ex TEXT ) RETURNS NUMERIC AS $$
 DECLARE
