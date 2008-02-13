@@ -4,6 +4,7 @@ import logging, pylons
 import oilsweb.lib.context, oilsweb.lib.util
 import oilsweb.lib.bib, oilsweb.lib.acq.search, oilsweb.lib.acq.picklist
 import oils.const, oils.utils.utils
+import osrf.net_obj
 from osrf.ses import ClientSession
 from oils.event import Event
 from oils.org import OrgUtil
