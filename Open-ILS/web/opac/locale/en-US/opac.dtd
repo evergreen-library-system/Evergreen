@@ -380,7 +380,7 @@ Please see a librarian to renew your account.">
 <!ENTITY footer.library.about "About PINES">
 <!ENTITY footer.union.url "http://www.galileo.usg.edu/">
 <!ENTITY footer.union "GALILEO">
-<!ENTITY footer.copyright "Copyright &#xA9; 2006 Georgia Public Library Service">
+<!ENTITY footer.copyright "Copyright &#xA9; 2006-2008 Georgia Public Library Service">
 <!ENTITY footer.logo "Powered by"> <!-- Introduces the logo for the project -->
 
 <!--	================================================================= 
