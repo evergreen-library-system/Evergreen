@@ -65,7 +65,7 @@
 	</groupbox>
 	<splitter><grippy/></splitter>
 	<groupbox flex="1">
-		<caption label="Lost / Claimed Returned / Long Overdue" />
+		<caption label="&staff.patron_navbar.items.problem_items.caption;" />
 		<vbox flex="0">
 			<hbox id="items_top_ui2" />
 		</vbox>
