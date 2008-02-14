@@ -1132,6 +1132,7 @@
 <!ENTITY staff.patron_navbar.info.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
 <!ENTITY staff.patron_navbar.items.accesskey 'I'>
+<!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost / Claimed Returned / Long Overdue / Has Unpaid Billings'>
 <!ENTITY staff.patron_navbar.refresh 'Refresh'>
 <!ENTITY staff.patron_navbar.refresh.accesskey 'R'>
 <!ENTITY staff.patron_navbar.retrieve 'Retrieve Patron'>
