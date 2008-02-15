@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%namespace file='../../common/widgets.html' name='widget'/>
+<%def name="page_title()">${_('View Provider')}</%def>
+<%def name="block_content()">
+
+<% provider = c.oils.acq.provider %>
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>${provider.name()}</div>
+</div>
+
+<table class='oils-admin-table'>
+    <tbody>
+        <tr>
+            <td class='oils-admin-label'>${_('Owner')}</td>
+            <td>${provider.owner().name()}</td> 
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Currency')}</td>
+            <td>${provider.currency_type()}</td> 
+        </tr>
+    </tbody>
+</table>
+</%def>

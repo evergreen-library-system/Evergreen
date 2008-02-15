@@ -1,0 +1,66 @@
+from oilsweb.lib.base import *
+from oilsweb.lib.request import RequestMgr
+from osrf.ses import ClientSession
+from osrf.net_obj import NetworkObject
+from oils.event import Event
+from oils.org import OrgUtil
+from oilsweb.lib.user import User
+import oils.const
+
+
+class ProviderController(BaseController):
+
+    def view(self, **kwargs):
+        r = RequestMgr()
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
+        provider = ses.request('open-ils.acq.provider.retrieve', 
+            r.ctx.core.authtoken, kwargs.get('id')).recv().content()
+        Event.parse_and_raise(provider)
+        provider.owner(OrgUtil.get_org_unit(provider.owner()))
+        r.ctx.acq.provider = provider
+        return r.render('acq/financial/view_provider.html')
+
+
+    def create(self):
+        r = RequestMgr()
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
+
+        if r.ctx.acq.provider_name: # create then display the provider
+
+            provider = NetworkObject.acqpro()
+            provider.name(r.ctx.acq.provider_name)
+            provider.owner(r.ctx.acq.provider_owner)
+            provider.currency_type(r.ctx.acq.provider_currency_type)
+
+            provider_id = ses.request('open-ils.acq.provider.create', 
+                r.ctx.core.authtoken, provider).recv().content()
+            Event.parse_and_raise(provider_id)
+
+            return redirect_to(controller='acq/provider', action='view', id=provider_id)
+
+        usermgr = User(r.ctx.core)
+        tree = usermgr.highest_work_perm_tree('ADMIN_PROVIDER')
+
+        types = ses.request(
+            'open-ils.acq.currency_type.all.retrieve',
+            r.ctx.core.authtoken).recv().content()
+        r.ctx.acq.currency_types = Event.parse_and_raise(types)
+
+
+        if tree is None:
+            return _("Insufficient Permissions") # XXX Return a perm failure template
+
+        return r.render('acq/financial/create_provider.html')
+
+    def list(self):
+        r = RequestMgr()
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
+        providers = ses.request(
+            'open-ils.acq.provider.org.retrieve', 
+            r.ctx.core.authtoken, None, {"flesh_summary":1}).recv().content()
+        Event.parse_and_raise(providers)
+        for f in providers:
+            f.owner(OrgUtil.get_org_unit(f.owner()))
+        r.ctx.acq.provider_list = providers
+        return r.render('acq/financial/list_providers.html')
+
