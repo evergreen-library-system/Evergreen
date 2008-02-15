@@ -96,7 +96,7 @@
 		</fields>
 	</class>
 
-	<class id="ccmtr" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_test_result" oils_persist:virtual="true">
+	<class id="amtr" controller="open-ils.cstore" oils_obj:fieldmapper="action::matrix_test_result" oils_persist:virtual="true">
 		<fields oils_persist:primary="matchpoint">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -171,6 +171,42 @@
 		<links/>
 	</class>
 
+	<class id="chmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::hold_matrix_matchpoint" oils_persist:tablename="config.hold_matrix_matchpoint" reporter:label="Hold Matrix Matchpoint">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.hold_matrix_matchpoint_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Matchpoint ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Active?" name="active" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="User Home Library" name="user_home_ou" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Request Library" name="request_ou" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Pickup Library" name="pickup_ou" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="item_owning_ou" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Item Circ Library" name="item_circ_ou" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="User Permission Group" name="usr_grp" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Requestor Permission Group" name="requestor_grp" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_obj:array_position="12" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="MARC Type" name="marc_type" oils_obj:array_position="13" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="MARC Form" name="marc_form" oils_obj:array_position="14" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="Videorecording Format" name="marc_vr_format" oils_obj:array_position="15" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="Reference?" name="ref_flag" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="request_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="pickup_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="item_owning_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="item_circ_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="requestor_grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="circ_modifier" reltype="has_a" key="id" map="" class="ccm"/>
+			<link field="marc_type" reltype="has_a" key="id" map="" class="ccm"/>
+			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
+			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
+			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
+		</links>
+	</class>
+
 	<class id="ccmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_matchpoint" oils_persist:tablename="config.circ_matrix_matchpoint" reporter:label="Circulation Matrix Matchpoint">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_matchpoint_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -196,6 +232,25 @@
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
+		</links>
+	</class>
+
+	<class id="chmt" controller="open-ils.cstore" oils_obj:fieldmapper="config::hold_matrix_test" oils_persist:tablename="config.hold_matrix_test" reporter:label="Hold Matrix Test Set">
+		<fields oils_persist:primary="matchpoint">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Holdable?" name="holdable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Range is from Owning Lib?" name="distance_is_from_owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Transit Range" name="transit_range" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Max Holds" name="max_holds" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Max includes Frozen" name="include_frozen_holds" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
+			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
 		</links>
 	</class>
 
