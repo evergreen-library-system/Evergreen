@@ -140,7 +140,7 @@ sub create_hold {
 
 		$hold->requestor($e->requestor->id); 
 		$hold->request_lib($e->requestor->ws_ou);
-		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
+		$hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
 		$hold = $e->create_action_hold_request($hold) or return $e->event;
 	}
 
