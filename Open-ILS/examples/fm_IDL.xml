@@ -96,6 +96,20 @@
 		</fields>
 	</class>
 
+	<class id="ccmtr" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_test_result" oils_persist:virtual="true">
+		<fields oils_persist:primary="matchpoint">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Success" name="success" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Failure Part" name="fail_part" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
+		</links>
+	</class>
+
 
 	<!-- Actually in the DB -->
 	<class id="auoi" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_org_unit_opt_in" oils_persist:tablename="actor.usr_org_unit_opt_in" reporter:label="User Sharing Opt-in">
@@ -225,8 +239,8 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Duration Rule" name="duration_rule" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
