@@ -93,11 +93,13 @@ class PicklistController(BaseController):
         r = RequestMgr()
         ses = ClientSession(oils.const.OILS_APP_ACQ)
         ses.connect()
-
-        page = redirect_to(controller='acq/picklist', action='list')
+        page = None
 
         if r.ctx.acq.picklist_action == 'move_selected':
             page = self._move_selected(r, ses)
+
+        if not page:
+            page = redirect_to(controller='acq/picklist', action='list')
 
         ses.disconnect()
         return page
