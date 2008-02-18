@@ -164,7 +164,55 @@ sub retrieve_user_picklist {
         $_->entry_count(retrieve_picklist_entry_count($e, $_->id)) for @$list;
     };
 
+    if($$options{flesh_username}) {
+        $_->owner($e->retrieve_actor_user($_->owner)->usrname) for @$list;
+    }
+
     return $list;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_all_user_picklist',
+	api_name	=> 'open-ils.acq.picklist.user.all.retrieve',
+    stream => 1,
+	signature => {
+        desc => 'Retrieves all of the picklists a user is allowed to see',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Options, including "idlist", whch forces the return
+                of a list of IDs instead of objects', type => 'hash'},
+        ],
+        return => {desc => 'Picklist objects on success, Event on error'}
+    }
+);
+
+sub retrieve_all_user_picklist {
+    my($self, $conn, $auth, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $my_list = $e->search_acq_picklist(
+        {owner=>$e->requestor->id, name=>{'!='=>''}}, {idlist=>1});
+
+    my $picklist_ids = $e->objects_allowed('VIEW_PICKLIST', 'acqpl');
+
+    return undef unless @$my_list or @$picklist_ids;
+
+    if($$options{idlist}) {
+        return [@$my_list, @$picklist_ids];
+    }
+
+    for my $pl (@$my_list, @$picklist_ids) {
+        my $picklist = $e->retrieve_acq_picklist($pl) or return $e->event;
+        $picklist->entry_count(retrieve_picklist_entry_count($e, $picklist->id))
+            if($$options{flesh_entry_count});
+        $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname)
+            if $$options{flesh_username};
+        $conn->respond($picklist);
+    }
+
+    return undef;
 }
 
 
