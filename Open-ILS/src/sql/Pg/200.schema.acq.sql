@@ -94,15 +94,13 @@ CREATE TABLE acq.picklist (
 );
 
 CREATE TABLE acq.purchase_order (
-	id			SERIAL				PRIMARY KEY,
-	owner			INT				NOT NULL REFERENCES actor.usr (id),
-	default_fund		INT				REFERENCES acq.fund (id),
-	create_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	edit_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	provider		INT				NOT NULL REFERENCES acq.provider (id),
-	state			TEXT				NOT NULL DEFAULT 'new',
-	expected_recv_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW() + '30 days',
-	recv_time		TIMESTAMP WITH TIME ZONE
+	id		SERIAL				PRIMARY KEY,
+	owner		INT				NOT NULL REFERENCES actor.usr (id),
+	default_fund	INT				REFERENCES acq.fund (id),
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	provider	INT				NOT NULL REFERENCES acq.provider (id),
+	state		TEXT				NOT NULL DEFAULT 'new',
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
@@ -131,16 +129,16 @@ CREATE TABLE acq.picklist_entry (
 );
 
 CREATE TABLE acq.po_lineitem (
-	id		BIGSERIAL			PRIMARY KEY,
-	purchase_order	INT				NOT NULL REFERENCES acq.purchase_order (id),
-	fund		INT				REFERENCES acq.fund (id),
-	fund_debit	INT				REFERENCES acq.fund_debit (id),
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	marc		TEXT				NOT NULL,
-	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
-	list_price	NUMERIC,
-	item_count	INT				NOT NULL DEFAULT 0
+	id			BIGSERIAL			PRIMARY KEY,
+	purchase_order		INT				NOT NULL REFERENCES acq.purchase_order (id),
+	fund			INT				REFERENCES acq.fund (id),
+	expected_recv_time	TIMESTAMP WITH TIME ZONE,
+	create_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	marc			TEXT				NOT NULL,
+	eg_bib_id		INT				REFERENCES biblio.record_entry (id),
+	list_price		NUMERIC,
+	item_count		INT				NOT NULL DEFAULT 0
 );
 CREATE INDEX po_li_po_idx ON acq.po_lineitem (purchase_order);
 
@@ -158,9 +156,11 @@ CREATE INDEX po_li_note_li_idx ON acq.po_li_note (po_lineitem);
 CREATE TABLE acq.po_li_detail (
 	id		BIGSERIAL			PRIMARY KEY,
 	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	fund_debit	INT				REFERENCES acq.fund_debit (id),
 	eg_copy_id	BIGINT				REFERENCES asset.copy (id),
 	barcode		TEXT,
-	cn_label	TEXT
+	cn_label	TEXT,
+	recv_time	TIMESTAMP WITH TIME ZONE
 );
 
 CREATE INDEX po_li_detail_li_idx ON acq.po_li_detail (po_lineitem);

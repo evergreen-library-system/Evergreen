@@ -2624,9 +2624,7 @@
 			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Provider" name="provider" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="State" name="state" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Actual Receive Date" name="recv_time" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
@@ -2693,8 +2691,9 @@
 			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="List Price" name="list_price" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="14" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
@@ -2767,6 +2766,8 @@
 			<field reporter:label="Evergreen Copy ID" name="eg_copy_id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Barcode" name="barcode" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Call Number Label" name="cn_label" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Actual Receive Date" name="recv_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Fund Debit" name="fund_debit" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="money" />
 		</fields>
 		<links>
 			<link field="po_lineitem" reltype="has_a" key="id" map="" class="acqpoli"/>
