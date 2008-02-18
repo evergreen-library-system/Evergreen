@@ -2615,15 +2615,13 @@ __PACKAGE__->register_method(
 	/
 );
 
-# XXX Make me retun undef if no user has the ID 
-
 sub usrname_exists {
 	my( $self, $conn, $auth, $usrname ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $a = $e->search_actor_user({usrname => $usrname, deleted=>'f'}, {idlist=>1});
 	return $$a[0] if $a and @$a;
-	return 0;
+	return undef;
 }
 
 __PACKAGE__->register_method(
@@ -2639,7 +2637,7 @@ sub barcode_exists {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
-    return 0 unless @$card;
+    return undef unless @$card;
     return $card->[0]->usr;
 }
 
