@@ -67,7 +67,7 @@ function uEditBarcodeBlur(field) {
 	req.callback( 
 		function(r) {
 			var res = r.getResultObject();
-			if( res !== null && res != patron.id() ) {
+			if( res == 1 ) {
 				field.widget.onblur = null; /* prevent alert storm */
 				alertId('ue_dup_barcode');
 				field.widget.onblur = uEditBarcodeBlur;
