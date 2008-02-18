@@ -15,7 +15,7 @@ class AdminContext(SubContext):
         self.mode = ContextItem(default_value='view')
         self.prefix = ContextItem()
     def postinit(self):
-        self.prefix = "%s/admin" % Context.get_context().core.prefix
+        self.prefix.value = "%s/admin" % Context.get_context().core.prefix.value
 
 Context.apply_sub_context('adm', AdminContext)
 
@@ -23,11 +23,11 @@ class AdminController(BaseController):
 
     def init(self, obj_type, obj_id=None):
         r = RequestMgr()
-        r.ctx.adm.object_class = obj_type
-        meta = r.ctx.adm.object_meta = oils.utils.idl.IDLParser.get_class(obj_type)
+        r.ctx.adm.object_class.value = obj_type
+        meta = r.ctx.adm.object_meta.value = oils.utils.idl.IDLParser.get_class(obj_type)
 
         if obj_id is not None:
-            r.ctx.adm.object = osrf.ses.ClientSession.atomic_request(
+            r.ctx.adm.object.value = osrf.ses.ClientSession.atomic_request(
                 'open-ils.cstore',
                 'open-ils.cstore.direct.%s.retrieve' % 
                     meta.fieldmapper.replace('::', '.'), obj_id)
@@ -39,22 +39,22 @@ class AdminController(BaseController):
 
     def view(self, **kwargs):
         r = self.init(kwargs['type'], kwargs['id'])
-        r.ctx.adm.mode = 'view'
+        r.ctx.adm.mode.value = 'view'
         return r.render('admin/object.html')
 
     def update(self, **kwargs):
         r = self.init(kwargs['type'], kwargs['id'])
-        r.ctx.adm.mode = 'update'
+        r.ctx.adm.mode.value = 'update'
         return r.render('admin/object.html')
 
     def create(self, **kwargs):
         r = self.init(kwargs['type'])
-        r.ctx.adm.mode = 'create'
+        r.ctx.adm.mode.value = 'create'
         return r.render('admin/object.html')
 
     def delete(self, **kwargs):
         r = self.init(kwargs['type'], kwargs['id'])
-        r.ctx.adm.mode = 'delete'
+        r.ctx.adm.mode.value = 'delete'
         return r.render('admin/object.html')
 
         

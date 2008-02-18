@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 <div class='oils-base-navigate-item'>
-    <a href='${c.oils.core.prefix}/acq/base/index'>${_('Home')}</a>
+    <a href='${c.oils.core.prefix.value}/acq/base/index'>${_('Home')}</a>
 </div>
 <div class='oils-base-navigate-item'>
-    <a href='${c.oils.core.prefix}/acq/picklist/list'>${_('Picklists')}</a>
+    <a href='${c.oils.core.prefix.value}/acq/picklist/list'>${_('Picklists')}</a>
 </div>
-% if c.oils.core.page.startswith('acq/picklist'):
+% if c.oils.core.page.value.startswith('acq/picklist'):
     <div class='oils-base-navigate-sub-list'>
         <%include file='picklist/navigate.html'/>
     </div>
 % endif
 <div class='oils-base-navigate-item'>
-    <a href='${c.oils.core.prefix}/acq/fund/list'>${_('Funds')}</a>
+    <a href='${c.oils.core.prefix.value}/acq/fund/list'>${_('Funds')}</a>
 </div>
-% if c.oils.core.page.startswith('acq/financial'):
+% if c.oils.core.page.value.startswith('acq/financial'):
     <div class='oils-base-navigate-sub-list'>
         <%include file='financial/navigate.html'/>
     </div>

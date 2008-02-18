@@ -7,7 +7,7 @@
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Providers')}</div>
     <div id='oils-acq-list-header-create'>
-        <a href='${c.oils.acq.prefix}/provider/create'>${_('New Provider')}</a>
+        <a href='${c.oils.acq.prefix.value}/provider/create'>${_('New Provider')}</a>
     </div>
 </div>
 
@@ -21,9 +21,9 @@
         </tr>
     </thead>
     <tbody>
-        % for provider in c.oils.acq.provider_list:
+        % for provider in c.oils.acq.provider_list.value:
         <tr>
-            <td><a href='${c.oils.acq.prefix}/provider/view/${provider.id()}'>${provider.name()}</a></td>
+            <td><a href='${c.oils.acq.prefix.value}/provider/view/${provider.id()}'>${provider.name()}</a></td>
             <td>${provider.owner().name()}</td> 
             <td>${provider.currency_type()}</td> 
         </tr>

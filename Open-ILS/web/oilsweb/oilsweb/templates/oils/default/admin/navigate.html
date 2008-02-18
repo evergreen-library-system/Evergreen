@@ -1,17 +1,17 @@
 <span>
-    <a href='${c.oils.adm.prefix}/search/${c.oils.adm.object_class}'>${_('Search')}</a>
+    <a href='${c.oils.adm.prefix.value}/search/${c.oils.adm.object_class.value}'>${_('Search')}</a>
 </span>
-% if c.oils.adm.mode != 'create' and c.oils.core.page != 'admin/index.html':
+% if c.oils.adm.mode.value != 'create' and c.oils.core.page.value != 'admin/index.html':
     <span>
-        <a href='${c.oils.adm.prefix}/create/${c.oils.adm.object_class}'>${_('Create')}</a>
+        <a href='${c.oils.adm.prefix.value}/create/${c.oils.adm.object_class.value}'>${_('Create')}</a>
     </span>
-    % if c.oils.adm.mode != 'update':
+    % if c.oils.adm.mode.value != 'update':
         <span>
-            <a href='${c.oils.adm.prefix}/update/${c.oils.adm.object_class}/${c.oils.adm.object.id()}'>${_('Update')}</a>
+            <a href='${c.oils.adm.prefix.value}/update/${c.oils.adm.object_class.value}/${c.oils.adm.object.value.id()}'>${_('Update')}</a>
         </span>
     % endif
     <span>
-        <a href='${c.oils.adm.prefix}/delete/${c.oils.adm.object_class}/${c.oils.adm.object.id()}'>${_('Delete')}</a>
+        <a href='${c.oils.adm.prefix.value}/delete/${c.oils.adm.object_class.value}/${c.oils.adm.object.value.id()}'>${_('Delete')}</a>
     </span>
 % endif
 

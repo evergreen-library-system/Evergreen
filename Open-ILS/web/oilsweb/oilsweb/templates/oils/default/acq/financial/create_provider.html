@@ -5,29 +5,31 @@
 <%def name="page_title()">${_('Create Provider')}</%def>
 <%def name="block_content()">
 
-<form action='${c.oils.acq.prefix}/provider/create' method='POST'>
+<% from oils.org import OrgUtil %>
+
+<form action='${c.oils.acq.prefix.value}/provider/create' method='POST'>
     <table class='oils-admin-table'>
         <tbody>
             <tr>
                 <td class='oils-admin-label'>${_('Provider Name')}</td>
                 <td> 
-                    <input type='text' size='42' name='${c.oils.acq.provider_name_.cgi_name}'/>
+                    <input type='text' size='42' name='${c.oils.acq.provider_name.cgi_name}'/>
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Provider Owner')}</td>
                 <td> 
                     ${widget.org_select(
-                        c.oils.acq.provider_owner_.cgi_name, 
-                        c.oils.core.perm_tree['ADMIN_PROVIDER'], c.oils.core.workstation.id(),
-                        c.oils.util.get_min_org_depth(c.oils.core.high_perm_orgs['ADMIN_PROVIDER']))}
+                        c.oils.acq.provider_owner.cgi_name, 
+                        c.oils.core.perm_tree.value['ADMIN_PROVIDER'], c.oils.core.workstation.value.id(),
+                        OrgUtil.get_min_depth(c.oils.core.high_perm_orgs.value['ADMIN_PROVIDER']))}
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Provider Currency Type')}</td>
                 <td> 
-                    <select name='${c.oils.acq.provider_currency_type_.cgi_name}'>
-                        % for type in c.oils.acq.currency_types:
+                    <select name='${c.oils.acq.provider_currency_type.cgi_name}'>
+                        % for type in c.oils.acq.currency_types.value:
                             <option value='${type.code()}'>${type.label()}</option>
                         % endfor
                     </select>

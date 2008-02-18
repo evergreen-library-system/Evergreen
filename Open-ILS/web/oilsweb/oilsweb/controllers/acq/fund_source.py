@@ -14,15 +14,15 @@ class FundSourceController(BaseController):
     def view(self, **kwargs):
         r = RequestMgr()
         ses = ClientSession(oils.const.OILS_APP_ACQ)
-        r.ctx.core.org_tree = OrgUtil.fetch_org_tree()
+        r.ctx.core.org_tree.value = OrgUtil.fetch_org_tree()
 
         source = ses.request(
             'open-ils.acq.funding_source.retrieve', 
-            r.ctx.core.authtoken, kwargs.get('id'), {"flesh_summary":1}).recv().content()
+            r.ctx.core.authtoken.value, kwargs.get('id'), {"flesh_summary":1}).recv().content()
         Event.parse_and_raise(source)
 
         source.owner(OrgUtil.get_org_unit(source.owner())) # flesh the owner
-        r.ctx.acq.fund_source = source
+        r.ctx.acq.fund_source.value = source
         return r.render('acq/financial/view_fund_source.html')
 
     def list(self):
@@ -31,10 +31,10 @@ class FundSourceController(BaseController):
 
         sources = ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            r.ctx.core.authtoken, None, {"flesh_summary":1}).recv().content()
+            r.ctx.core.authtoken.value, None, {"flesh_summary":1}).recv().content()
 
         Event.parse_and_raise(sources)
-        r.ctx.acq.fund_source_list = sources
+        r.ctx.acq.fund_source_list.value = sources
 
         for source in sources:
             source.owner(OrgUtil.get_org_unit(source.owner()))
@@ -45,25 +45,25 @@ class FundSourceController(BaseController):
         r = RequestMgr()
         fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
 
-        if r.ctx.acq.fund_source_name:
+        if r.ctx.acq.fund_source_name.value:
             source = osrf.net_obj.NetworkObject.acqfs()
-            source.name(r.ctx.acq.fund_source_name)
-            source.owner(r.ctx.acq.fund_source_owner)
-            source.currency_type(r.ctx.acq.fund_source_currency_type)
+            source.name(r.ctx.acq.fund_source_name.value)
+            source.owner(r.ctx.acq.fund_source_owner.value)
+            source.currency_type(r.ctx.acq.fund_source_currency_type.value)
             source_id = fund_mgr.create_fund_source(source)
             return redirect_to(controller='acq/fund_source', action='view', id=source_id)
 
         perm_orgs = ClientSession.atomic_request(
             'open-ils.actor',
             'open-ils.actor.user.work_perm.highest_org_set',
-            r.ctx.core.authtoken, 'CREATE_FUNDING_SOURCE');
+            r.ctx.core.authtoken.value, 'CREATE_FUNDING_SOURCE');
 
         if len(perm_orgs) == 0:
             return _("Insufficient Permissions") # XXX Return a perm failure template
 
-        r.ctx.core.perm_tree['CREATE_FUNDING_SOURCE'] = OrgUtil.get_union_tree(perm_orgs)
-        r.ctx.core.high_perm_orgs['CREATE_FUNDING_SOURCE'] = perm_orgs
-        r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
+        r.ctx.core.perm_tree.value['CREATE_FUNDING_SOURCE'] = OrgUtil.get_union_tree(perm_orgs)
+        r.ctx.core.high_perm_orgs.value['CREATE_FUNDING_SOURCE'] = perm_orgs
+        r.ctx.acq.currency_types.value = fund_mgr.fetch_currency_types()
         return r.render('acq/financial/create_fund_source.html')
 
 
@@ -71,22 +71,22 @@ class FundSourceController(BaseController):
         r = RequestMgr()
         ses = ClientSession(oils.const.OILS_APP_ACQ)
 
-        if r.ctx.acq.fund_source_credit_amount:
+        if r.ctx.acq.fund_source_credit_amount.value:
 
             credit = osrf.net_obj.NetworkObject.acqfscred()
-            credit.funding_source(r.ctx.acq.fund_source_id)
-            credit.amount(r.ctx.acq.fund_source_credit_amount)
-            credit.note(r.ctx.acq.fund_source_credit_note)
+            credit.funding_source(r.ctx.acq.fund_source_id.value)
+            credit.amount(r.ctx.acq.fund_source_credit_amount.value)
+            credit.note(r.ctx.acq.fund_source_credit_note.value)
 
             status = ses.request(
                 'open-ils.acq.funding_source_credit.create',
-                r.ctx.core.authtoken, credit).recv().content()
+                r.ctx.core.authtoken.value, credit).recv().content()
             status = Event.parse_and_raise(status)
-            return redirect_to(controller='acq/fund_source', action='view', id=r.ctx.acq.fund_source_id)
+            return redirect_to(controller='acq/fund_source', action='view', id=r.ctx.acq.fund_source_id.value)
 
         source = ses.request('open-ils.acq.funding_source.retrieve',
-            r.ctx.core.authtoken, r.ctx.acq.fund_source_id, {"flesh_summary":1}).recv().content()
-        r.ctx.acq.fund_source = Event.parse_and_raise(source)
+            r.ctx.core.authtoken.value, r.ctx.acq.fund_source_id.value, {"flesh_summary":1}).recv().content()
+        r.ctx.acq.fund_source.value = Event.parse_and_raise(source)
         source.owner(OrgUtil.get_org_unit(source.owner()))
         return r.render('acq/financial/create_funding_source_credit.html')
 

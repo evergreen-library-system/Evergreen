@@ -28,26 +28,13 @@ class CoreContext(SubContext):
         self.perm_tree = ContextItem(default_value={})
 
     def postinit(self):
-        self.prefix = pylons.config['oils_prefix']
-        self.media_prefix = pylons.config['oils_media_prefix']
-        self.ac_prefix = pylons.config['oils_added_content_prefix']
-        self.skin = 'default' # XXX
-        self.theme = 'default' # XXX
+        self.prefix.value = pylons.config['oils_prefix']
+        self.media_prefix.value = pylons.config['oils_media_prefix']
+        self.ac_prefix.value = pylons.config['oils_added_content_prefix']
+        self.skin.value = 'default' # XXX
+        self.theme.value = 'default' # XXX
         usermgr = oilsweb.lib.user.User(self)
         usermgr.fetch_user()
         #self.work_orgs = usermgr.fetch_work_orgs()
 
 Context.apply_sub_context('core', CoreContext)
-
-
-class UtilContext(SubContext):
-    ''' The UtilContext maintains a set of general use functions '''
-    def __init__(self):
-        import oilsweb.lib.bib
-        self.scrub_isbn = ContextItem(default_value=oilsweb.lib.bib.scrub_isbn)
-        self.get_org_type = ContextItem(default_value=oils.org.OrgUtil.get_org_type)
-        self.get_min_org_depth = ContextItem(default_value=oils.org.OrgUtil.get_min_depth)
-
-Context.apply_sub_context('util', UtilContext)
-
-

@@ -38,8 +38,8 @@ class RequestMgr(object):
             would be 'base/dashboard.html'
             '''
         self.finalize()
-        self.ctx.core.page = tpath
-        return pylons.templating.render('oils/%s/%s' % (self.ctx.core.skin, tpath))
+        self.ctx.core.page.value = tpath
+        return pylons.templating.render('oils/%s/%s' % (self.ctx.core.skin.value, tpath))
 
 
 

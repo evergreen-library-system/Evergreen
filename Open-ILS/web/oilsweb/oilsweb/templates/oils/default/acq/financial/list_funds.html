@@ -7,7 +7,7 @@
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funds')}</div>
     <div id='oils-acq-list-header-create'>
-        <a href='${c.oils.acq.prefix}/fund/create'>${_('New Fund')}</a>
+        <a href='${c.oils.acq.prefix.value}/fund/create'>${_('New Fund')}</a>
     </div>
 </div>
 
@@ -22,9 +22,9 @@
         </tr>
     </thead>
     <tbody>
-        % for fund in c.oils.acq.fund_list:
+        % for fund in c.oils.acq.fund_list.value:
         <tr>
-            <td><a href='${c.oils.acq.prefix}/fund/view/${fund.id()}'>${fund.name()}</a></td>
+            <td><a href='${c.oils.acq.prefix.value}/fund/view/${fund.id()}'>${fund.name()}</a></td>
             <td>${fund.org().name()}</td> 
             <td>${fund.year()}</td> 
             <td>${fund.summary()['combined_balance']}</td> 

@@ -13,7 +13,7 @@ class PicklistMgr(object):
     def retrieve(self):
         picklist = self.ses.request(
             'open-ils.acq.picklist.retrieve', 
-            self.request_mgr.ctx.core.authtoken, self.id, {'flesh_entry_count':1}).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, self.id, {'flesh_entry_count':1}).recv().content()
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
@@ -33,14 +33,14 @@ class PicklistMgr(object):
         picklist_id = picklist_id or self.id
         status = self.ses.request(
             'open-ils.acq.picklist.delete',
-            self.request_mgr.ctx.core.authtoken, picklist_id).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, picklist_id).recv().content()
         oils.event.Event.parse_and_raise(status)
         return status
 
     def delete_entry(self, entry_id):
         status = self.ses.request(
             'open-ils.acq.picklist_entry.delete',
-            self.request_mgr.ctx.core.authtoken, entry_id).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, entry_id).recv().content()
         oils.event.Event.parse_and_raise(status)
         return status
 
@@ -49,7 +49,7 @@ class PicklistMgr(object):
         # grab the picklist entries
         entries = self.ses.request(
             'open-ils.acq.picklist_entry.picklist.retrieve',
-            self.request_mgr.ctx.core.authtoken, 
+            self.request_mgr.ctx.core.authtoken.value, 
             self.picklist.id(),
             {
                 "offset" : kwargs.get('offset'),
@@ -64,7 +64,7 @@ class PicklistMgr(object):
                 if entry.provider():
                     provider = self.ses.request(
                         'open-ils.acq.provider.retrieve', 
-                        self.request_mgr.ctx.core.authtoken, 
+                        self.request_mgr.ctx.core.authtoken.value, 
                         entry.provider()).recv().content()
                     entry.provider(provider)
 
@@ -74,7 +74,7 @@ class PicklistMgr(object):
         ''' Returns my list of picklist objects '''
         list = self.ses.request(
             'open-ils.acq.picklist.user.retrieve', 
-            self.request_mgr.ctx.core.authtoken, {'flesh_entry_count':1}).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, {'flesh_entry_count':1}).recv().content()
         oils.event.Event.parse_and_raise(list)
 
         usermgr = oilsweb.lib.user.User(self.request_mgr.ctx.core)
@@ -95,13 +95,13 @@ class PicklistMgr(object):
         args = {'flesh': kwargs.get('flesh')}
         entry = self.ses.request(
             'open-ils.acq.picklist_entry.retrieve',
-            self.request_mgr.ctx.core.authtoken, entry_id, args).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, entry_id, args).recv().content()
         oils.event.Event.parse_and_raise(entry)
         if kwargs.get('flesh_provider'):
             if entry.provider():
                 provider = self.ses.request(
                     'open-ils.acq.provider.retrieve', 
-                    self.request_mgr.ctx.core.authtoken, 
+                    self.request_mgr.ctx.core.authtoken.value, 
                     entry.provider()).recv().content()
                 entry.provider(provider)
 
@@ -112,18 +112,18 @@ class PicklistMgr(object):
         # find and delete any existing picklist with the requested name
         data = self.ses.request(
             'open-ils.acq.picklist.name.retrieve',
-            self.request_mgr.ctx.core.authtoken, pl_name).recv()
+            self.request_mgr.ctx.core.authtoken.value, pl_name).recv()
         if data:
             self.delete(data.content().id())
         
         # create the new one
         picklist = osrf.net_obj.NetworkObject.acqpl()
         picklist.name(pl_name)
-        picklist.owner(self.request_mgr.ctx.core.user.id()) 
+        picklist.owner(self.request_mgr.ctx.core.user.value.id()) 
 
         picklist = self.ses.request(
             'open-ils.acq.picklist.create',
-            self.request_mgr.ctx.core.authtoken, picklist).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, picklist).recv().content()
         oils.event.Event.parse_and_raise(picklist)
 
         return picklist
@@ -131,7 +131,7 @@ class PicklistMgr(object):
     def create_entry(self, entry):
         status = self.ses.request(
             'open-ils.acq.picklist_entry.create',
-            self.request_mgr.ctx.core.authtoken, entry).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, entry).recv().content()
         oils.event.Event.parse_and_raise(status)
         return status
 

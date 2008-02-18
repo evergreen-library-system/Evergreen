@@ -17,20 +17,20 @@ class PicklistController(BaseController):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
         pl_manager.retrieve()
-        pl_manager.retrieve_entries(flesh_provider=True, offset=r.ctx.acq.offset, limit=r.ctx.acq.limit)
-        r.ctx.acq.picklist = pl_manager.picklist
-        r.ctx.acq.picklist_list = pl_manager.retrieve_list()
+        pl_manager.retrieve_entries(flesh_provider=True, offset=r.ctx.acq.offset.value, limit=r.ctx.acq.limit.value)
+        r.ctx.acq.picklist.value = pl_manager.picklist
+        r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
         return r.render('acq/picklist/view.html')
 
     def create(self, **kwargs):
         r = RequestMgr()
-        if r.ctx.acq.picklist_name:
+        if r.ctx.acq.picklist_name.value:
             picklist = osrf.net_obj.NetworkObject.acqpl()
-            picklist.name(r.ctx.acq.picklist_name)
-            picklist.owner(r.ctx.core.user.id())
+            picklist.name(r.ctx.acq.picklist_name.value)
+            picklist.owner(r.ctx.core.user.value.id())
             picklist_id = ClientSession.atomic_request(
                 oils.const.OILS_APP_ACQ,
-                'open-ils.acq.picklist.create', r.ctx.core.authtoken, picklist)
+                'open-ils.acq.picklist.create', r.ctx.core.authtoken.value, picklist)
             Event.parse_and_raise(picklist_id)
             return redirect_to(controller='acq/picklist', action='view', id=picklist_id)
         return r.render('acq/picklist/create.html')
@@ -41,30 +41,30 @@ class PicklistController(BaseController):
         entry = pl_manager.retrieve_entry(kwargs.get('id'), flesh=1, flesh_provider=True)
         pl_manager.id = entry.picklist()
         picklist = pl_manager.retrieve()
-        r.ctx.acq.picklist = pl_manager.picklist
-        r.ctx.acq.picklist_entry = entry
-        r.ctx.acq.picklist_entry_marc_html = oilsweb.lib.bib.marc_to_html(entry.marc())
+        r.ctx.acq.picklist.value = pl_manager.picklist
+        r.ctx.acq.picklist_entry.value = entry
+        r.ctx.acq.picklist_entry_marc_html.value = oilsweb.lib.bib.marc_to_html(entry.marc())
         return r.render('acq/picklist/view_entry.html')
 
     def list(self):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        r.ctx.acq.picklist_list = pl_manager.retrieve_list()
+        r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
         return r.render('acq/picklist/view_list.html')
          
 
     def search(self):
         r = RequestMgr()
-        r.ctx.acq.z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
+        r.ctx.acq.z39_sources.value = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
 
         sc = {}
-        for data in r.ctx.acq.z39_sources.values():
+        for data in r.ctx.acq.z39_sources.value.values():
             for key, val in data['attrs'].iteritems():
                 sc[key] = val.get('label') or key
-        r.ctx.acq.search_classes = sc
+        r.ctx.acq.search_classes.value = sc
         keys = sc.keys()
         keys.sort()
-        r.ctx.acq.search_classes_sorted = keys
+        r.ctx.acq.search_classes_sorted.value = keys
             
         return r.render('acq/picklist/search.html')
 
@@ -95,7 +95,7 @@ class PicklistController(BaseController):
         ses.connect()
         page = None
 
-        if r.ctx.acq.picklist_action == 'move_selected':
+        if r.ctx.acq.picklist_action.value == 'move_selected':
             page = self._move_selected(r, ses)
 
         if not page:
@@ -106,20 +106,20 @@ class PicklistController(BaseController):
 
     def _move_selected(self, r, ses):
         ''' Moves the selected picklist entry's to the destination picklist '''
-        for entry_id in r.ctx.acq.picklist_entry_id_list:
+        for entry_id in r.ctx.acq.picklist_entry_id_list.value:
 
             entry = ses.request(
                 'open-ils.acq.picklist_entry.retrieve',
-                r.ctx.core.authtoken, entry_id).recv().content()
+                r.ctx.core.authtoken.value, entry_id).recv().content()
             entry = Event.parse_and_raise(entry)
 
-            entry.picklist(r.ctx.acq.picklist_dest_id)
+            entry.picklist(r.ctx.acq.picklist_dest_id.value)
 
             status = ses.request(
                 'open-ils.acq.picklist_entry.update',
-                r.ctx.core.authtoken, entry).recv().content()
+                r.ctx.core.authtoken.value, entry).recv().content()
             Event.parse_and_raise(status)
 
-        return redirect_to(controller='acq/picklist', action='view', id=r.ctx.acq.picklist_dest_id)
+        return redirect_to(controller='acq/picklist', action='view', id=r.ctx.acq.picklist_dest_id.value)
 
 

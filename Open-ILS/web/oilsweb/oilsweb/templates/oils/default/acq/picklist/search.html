@@ -3,19 +3,19 @@
 <%def name="page_title()">${_('Evergreen Acquisitions Search')}</%def>
 
 <%def name="block_content()">
-    <form method='GET' action='${c.oils.acq.prefix}/picklist/do_search'>
+    <form method='GET' action='${c.oils.acq.prefix.value}/picklist/do_search'>
         <div id='oils-acq-search-block' class='container'>
             <div id='oils-acq-search-sources-block'>
                 <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
                 <ul id='oils-acq-search-sources-list'>
-                    <li><input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' 
+                    <li><input type='checkbox' name='${c.oils.acq.search_source.cgi_name}' 
                         value='native-evergreen-catalog'>${_('Evergreen Catalog')}</input></li>
                     <li>
                         <div class='oils-acq-search-subsources-label'>${_("Z39.50 Sources")}</div>
                         <ul class='oils-acq-search-sources-sublist'>
-                            % for src,cfg in c.oils.acq.z39_sources.iteritems():
+                            % for src,cfg in c.oils.acq.z39_sources.value.iteritems():
                             <li>
-                                <input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' value='${src}'>
+                                <input type='checkbox' name='${c.oils.acq.search_source.cgi_name}' value='${src}'>
                                     ${src} ${cfg["host"]}:${cfg["db"]}
                                     % if cfg['auth'] == 't':
                                         <span class='oils-acq-search-source-auth'>*</span>
@@ -30,19 +30,19 @@
             <div id='oils-acq-search-form-block'>
                 <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
                 <table id='oils-acq-search-fields-table'>
-                % for cls in c.oils.acq.search_classes_sorted:
+                % for cls in c.oils.acq.search_classes_sorted.value:
                 <tr class='oils-acq-search-form-row'>
-                    <td class='oils-acq-search-form-label'>${c.oils.acq.search_classes[cls]}</td>
+                    <td class='oils-acq-search-form-label'>${c.oils.acq.search_classes.value[cls]}</td>
                     <td class='oils-acq-search-form-input'>
                         <input name='${cls}' size='24'/>
-                        <input type='hidden' name='${c.oils.acq.search_class_.cgi_name}' value='${cls}'/>
+                        <input type='hidden' name='${c.oils.acq.search_class.cgi_name}' value='${cls}'/>
                     </td>
                 </tr>
                 % endfor
                 <tr>
                     <td>${_('Results Per Source')}</td>
                     <td>
-                        <select name='${c.oils.acq.limit_.cgi_name}'>
+                        <select name='${c.oils.acq.limit.cgi_name}'>
                             <option value='5'>5</option>
                             <option value='10' selected='selected'>10</option>
                             <option value='15'>15</option>

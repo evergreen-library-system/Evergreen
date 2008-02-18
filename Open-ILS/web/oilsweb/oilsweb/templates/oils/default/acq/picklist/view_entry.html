@@ -6,7 +6,7 @@
 <%include file='picklist_summary.html'/>
 <%include file='picklist_entry_summary.html'/>
 <table id='oils-acq-picklist-entry-summary'>
-    % for attr in c.oils.acq.picklist_entry.attributes():
+    % for attr in c.oils.acq.picklist_entry.value.attributes():
         <tr>
             <td class='oils-acq-picklist-entry-attr-name'>
                 ${attr.attr_name()}
@@ -20,7 +20,7 @@
 
 <div id='oils-acq-picklist-entry-marc-block'>
     <div id='oils-acq-picklist-entry-marc'>
-        ${unicode(c.oils.acq.picklist_entry_marc_html, 'utf-8')}
+        ${unicode(c.oils.acq.picklist_entry_marc_html.value, 'utf-8')}
     </div>
 </div>
 

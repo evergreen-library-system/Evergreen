@@ -4,12 +4,12 @@
 <%def name="page_title()">${_('View Funding Source')}</%def>
 <%def name="block_content()">
 
-<% source = c.oils.acq.fund_source %>
+<% source = c.oils.acq.fund_source.value %>
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${source.name()}</div>
     <div id='oils-acq-list-header-create'>
-        <a href='${c.oils.acq.prefix}/fund_source/create_credit?${c.oils.acq.fund_source_id_.cgi_name}=${source.id()}'>${_('Add Credit')}</a>
+        <a href='${c.oils.acq.prefix.value}/fund_source/create_credit?${c.oils.acq.fund_source_id.cgi_name}=${source.id()}'>${_('Add Credit')}</a>
     </div>
 </div>
 

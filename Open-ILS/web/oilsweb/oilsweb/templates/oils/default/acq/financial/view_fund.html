@@ -4,12 +4,12 @@
 <%def name="page_title()">${_('View Fund')}</%def>
 <%def name="block_content()">
 
-<% fund = c.oils.acq.fund %>
+<% fund = c.oils.acq.fund.value %>
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${fund.name()}</div>
     <div id='oils-acq-list-header-create'>
-        <a href='${c.oils.acq.prefix}/fund/allocate?${c.oils.acq.fund_id_.cgi_name}=${fund.id()}'>${_('Allocate Money')}</a>
+        <a href='${c.oils.acq.prefix.value}/fund/allocate?${c.oils.acq.fund_id.cgi_name}=${fund.id()}'>${_('Allocate Money')}</a>
     </div>
 </div>
 

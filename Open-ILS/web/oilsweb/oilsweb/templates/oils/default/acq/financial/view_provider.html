@@ -4,7 +4,7 @@
 <%def name="page_title()">${_('View Provider')}</%def>
 <%def name="block_content()">
 
-<% provider = c.oils.acq.provider %>
+<% provider = c.oils.acq.provider.value %>
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${provider.name()}</div>

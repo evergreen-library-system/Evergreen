@@ -1,15 +1,19 @@
-<!-- vim:set filetype=mako: -->
+<!-- 
+    vim:ft=mako: 
+-->
 
 <!--
     Define some common widgets 
 -->
 
+
 <%def name='org_draw_node(node, indent=0, selected=None, disable_depth=-1)'>
+    <% import oils.org %>
     <option value='${node.id()}'
     % if selected == node.id():
         selected='selected'
     % endif
-    % if c.oils.util.get_org_type(node).depth() < disable_depth:
+    % if oils.org.OrgUtil.get_org_type(node).depth() < disable_depth:
         disabled='disabled'
     % endif
     >
@@ -36,7 +40,7 @@
     -->
     <%
         if tree is None:
-            tree = c.oils.core.org_tree
+            tree = c.oils.core.org_tree.value
     %>
     <select name='${select_name}'>
         ${org_draw_node(tree, 0, selected, disable_depth)}

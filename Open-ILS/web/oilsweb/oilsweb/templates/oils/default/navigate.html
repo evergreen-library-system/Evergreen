@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 <div id='oils-base-navigate-list'>
     <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix}/base/dashboard'>${_('Dashboard')}</a>
+        <a href='${c.oils.core.prefix.value}/base/dashboard'>${_('Dashboard')}</a>
     </div>
     <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix}/acq/base/index'>${_('Acquisitions')}</a>
+        <a href='${c.oils.core.prefix.value}/acq/base/index'>${_('Acquisitions')}</a>
     </div>
-    % if c.oils.core.page.startswith('acq'):
+    % if c.oils.core.page.value.startswith('acq'):
         <div class='oils-base-navigate-sub-list'>
             <%include file='acq/navigate.html'/>
         </div>
     % endif
     <!--
     <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix}/ser/index'>${_('Serials')}</a>
+        <a href='${c.oils.core.prefix.value}/ser/index'>${_('Serials')}</a>
     </div>
     -->
     <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix}/admin/index'>${_('Admin')}</a>
+        <a href='${c.oils.core.prefix.value}/admin/index'>${_('Admin')}</a>
     </div>
 </div>
 

@@ -5,22 +5,22 @@
 <%def name="page_title()">${_('Create Funding Allocation')}</%def>
 <%def name="block_content()">
 
-<form action='${c.oils.acq.prefix}/fund/allocate' method='POST'>
+<form action='${c.oils.acq.prefix.value}/fund/allocate' method='POST'>
     <table class='oils-admin-table'>
         <tbody>
             <tr>
                 <td class='oils-admin-label'>${_('Fund')}</td>
                 <td>
-                    <input type='hidden' name='${c.oils.acq.fund_allocation_fund_.cgi_name}' value='${c.oils.acq.fund_id}'/>
-                    <span>${c.oils.acq.fund.name()}</span>
-                    <span>${c.oils.acq.fund.org().shortname()}</span>
+                    <input type='hidden' name='${c.oils.acq.fund_allocation_fund.cgi_name}' value='${c.oils.acq.fund_id.value}'/>
+                    <span>${c.oils.acq.fund.value.name()}</span>
+                    <span>${c.oils.acq.fund.value.org().shortname()}</span>
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Funding Source')}</td>
                 <td> 
-                    <select name='${c.oils.acq.fund_allocation_source_.cgi_name}'>
-                        % for source in c.oils.acq.fund_source_list:
+                    <select name='${c.oils.acq.fund_allocation_source.cgi_name}'>
+                        % for source in c.oils.acq.fund_source_list.value:
                             <% source_label = _('%(name)s (balance = %(b)s)') % {'name':source.name(), 'b': source.summary()['balance']} %>
                             <option value='${source.id()}'>${source_label}</option>
                         % endfor
@@ -30,19 +30,19 @@
             <tr>
                 <td class='oils-admin-label'>${_('Allocation Amount')}</td>
                 <td> 
-                    <input type='text' size='12' name='${c.oils.acq.fund_allocation_amount_.cgi_name}'/>
+                    <input type='text' size='12' name='${c.oils.acq.fund_allocation_amount.cgi_name}'/>
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Allocation Percent')}</td>
                 <td> 
-                    <input type='text' size='4' name='${c.oils.acq.fund_allocation_percent_.cgi_name}'/>
+                    <input type='text' size='4' name='${c.oils.acq.fund_allocation_percent.cgi_name}'/>
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Note')}</td>
                 <td> 
-                    <textarea name='${c.oils.acq.fund_allocation_note_.cgi_name}'> </textarea>
+                    <textarea name='${c.oils.acq.fund_allocation_note.cgi_name}'> </textarea>
                 </td>
             </tr>
             <tr>

@@ -14,10 +14,10 @@ class ProviderController(BaseController):
         r = RequestMgr()
         ses = ClientSession(oils.const.OILS_APP_ACQ)
         provider = ses.request('open-ils.acq.provider.retrieve', 
-            r.ctx.core.authtoken, kwargs.get('id')).recv().content()
+            r.ctx.core.authtoken.value, kwargs.get('id')).recv().content()
         Event.parse_and_raise(provider)
         provider.owner(OrgUtil.get_org_unit(provider.owner()))
-        r.ctx.acq.provider = provider
+        r.ctx.acq.provider.value = provider
         return r.render('acq/financial/view_provider.html')
 
 
@@ -25,15 +25,15 @@ class ProviderController(BaseController):
         r = RequestMgr()
         ses = ClientSession(oils.const.OILS_APP_ACQ)
 
-        if r.ctx.acq.provider_name: # create then display the provider
+        if r.ctx.acq.provider_name.value: # create then display the provider
 
             provider = NetworkObject.acqpro()
-            provider.name(r.ctx.acq.provider_name)
-            provider.owner(r.ctx.acq.provider_owner)
-            provider.currency_type(r.ctx.acq.provider_currency_type)
+            provider.name(r.ctx.acq.provider_name.value)
+            provider.owner(r.ctx.acq.provider_owner.value)
+            provider.currency_type(r.ctx.acq.provider_currency_type.value)
 
             provider_id = ses.request('open-ils.acq.provider.create', 
-                r.ctx.core.authtoken, provider).recv().content()
+                r.ctx.core.authtoken.value, provider).recv().content()
             Event.parse_and_raise(provider_id)
 
             return redirect_to(controller='acq/provider', action='view', id=provider_id)
@@ -43,8 +43,8 @@ class ProviderController(BaseController):
 
         types = ses.request(
             'open-ils.acq.currency_type.all.retrieve',
-            r.ctx.core.authtoken).recv().content()
-        r.ctx.acq.currency_types = Event.parse_and_raise(types)
+            r.ctx.core.authtoken.value).recv().content()
+        r.ctx.acq.currency_types.value = Event.parse_and_raise(types)
 
 
         if tree is None:
@@ -57,10 +57,10 @@ class ProviderController(BaseController):
         ses = ClientSession(oils.const.OILS_APP_ACQ)
         providers = ses.request(
             'open-ils.acq.provider.org.retrieve', 
-            r.ctx.core.authtoken, None, {"flesh_summary":1}).recv().content()
+            r.ctx.core.authtoken.value, None, {"flesh_summary":1}).recv().content()
         Event.parse_and_raise(providers)
         for f in providers:
             f.owner(OrgUtil.get_org_unit(f.owner()))
-        r.ctx.acq.provider_list = providers
+        r.ctx.acq.provider_list.value = providers
         return r.render('acq/financial/list_providers.html')
 

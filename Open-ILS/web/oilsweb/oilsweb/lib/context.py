@@ -16,6 +16,7 @@ class ContextItem(object):
         self.qname = None
         self.multi = kwargs.get('multi')
         self.session = kwargs.get('session')
+        self.value = self.default_value
 
 class SubContext(object):
     ''' A SubContext is a class-specific context object that lives inside the global context object '''
@@ -43,7 +44,7 @@ class Context(object):
         q = ''
         for f in self._fields:
             if f.cgi_name and not f.session:
-                val = getattr(getattr(self, f.app), f.name)
+                val = f.value
                 if val != f.default_value:
                     if isinstance(val, list):
                         for v in val:
@@ -59,7 +60,7 @@ class Context(object):
         from oilsweb.lib.base import session
         for f in self._fields:
             if f.cgi_name and f.session:
-                val = getattr(getattr(self, f.app), f.name)
+                val = f.value
                 if val is not None and val != f.default_value:
                     session[f.cgi_name] =  val
 
@@ -97,29 +98,20 @@ class Context(object):
                 # session cache, and finally see if the data is in a cookie.  If 
                 # no data is found, use the default
                 # -------------------------------------------------------------------
-                set = False
                 if item.cgi_name:
                     if item.cgi_name in req.params:
                         if item.multi:
-                            setattr(getattr(c, app), name, req.params.getall(item.cgi_name))
+                            item.value = req.params.getall(item.cgi_name)
                         else:
-                            setattr(getattr(c, app), name, req.params[item.cgi_name])
-                        set = True
+                            item.value = req.params[item.cgi_name]
                     else:
                         if item.session:
                             if item.cgi_name in session:
-                                setattr(getattr(c, app), name, session[item.cgi_name])
+                                item.value = session[item.cgi_name]
                                 set = True
                             else:
                                 if item.cgi_name in req.cookies:
-                                    setattr(getattr(c, app), name, req.cookies[item.cgi_name])
-                                    set = True
-
-                if not set:
-                    setattr(getattr(c, app), name, item.default_value)
-
-                # store the metatdata at <name>_
-                setattr(getattr(c, app), "%s_" % name, item)
+                                    item.value = req.cookies[item.cgi_name]
 
         # run postinit after all contexts have been loaded
         for app in _subContexts.keys():
@@ -127,4 +119,3 @@ class Context(object):
             ctx.postinit()
 
         return c
-
