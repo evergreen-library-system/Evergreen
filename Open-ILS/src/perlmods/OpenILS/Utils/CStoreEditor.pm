@@ -416,7 +416,9 @@ sub allowed {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
         if($object) {
-            $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $object->json_hint, $object->id, $org];
+            my $params = [$perm, $object->json_hint, $object->id];
+            push(@$params, $org) if $org;
+            $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = $params;
             $OBJECT_PERM_QUERY->{where}->{id} = $uid;
             return 1 if $U->is_true($self->json_query($OBJECT_PERM_QUERY)->[0]->{has_perm});
 
@@ -431,6 +433,33 @@ sub allowed {
 	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
 	$self->event($e);
 	return undef;
+}
+
+
+# -----------------------------------------------------------------------------
+# Returns the list of object IDs this user has object-specific permissions for
+# -----------------------------------------------------------------------------
+sub objects_allowed {
+    my($self, $perm, $obj_type) = @_;
+
+    my $query = {
+        select => {puopm => ['object_id']},
+        from => {
+            puopm => {
+                ppl => {field => 'id',fkey => 'perm'}
+            }
+        },
+        where => {
+            '+puopm' => {usr => $self->requestor->id, object_type => $obj_type},
+            '+ppl' => {code => $perm}
+        }
+    };
+
+   my $list = $self->json_query($query);
+   my @ids;
+   push(@ids, 0+$_->{object_id}) for @$list;
+
+   return \@ids;
 }
 
 
