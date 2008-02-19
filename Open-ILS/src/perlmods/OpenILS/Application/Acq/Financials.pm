@@ -499,6 +499,24 @@ sub retrieve_all_currency_type {
     return $e->retrieve_all_acq_currency_type();
 }
 
+sub currency_conversion_impl {
+    my($src_currency, $dest_currency, $amount) = @_;
+    my $result = new_editor()->json_query({
+        select => {
+            acqct => [{
+                params => [$dest_currency, $amount],
+                transform => 'acq.exchange_ratio',
+                column => 'code',
+                alias => 'value'
+            }]
+        },
+        where => {code => $src_currency},
+        from => 'acqct'
+    });
+
+    return $result->{value};
+}
+
 
 # ----------------------------------------------------------------------------
 # Purchase Orders
@@ -715,6 +733,64 @@ sub create_po_lineitem {
     return $po_li->id;
 }
 
+__PACKAGE__->register_method(
+	method => 'create_po_li_detail',
+	api_name	=> 'open-ils.acq.po_li_detail.create',
+	signature => {
+        desc => q/Creates a new purchase order line item detail.  
+            Additionally creates the associated fund_debit/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase order line item to create', type => 'object'},
+            {desc => q/Options hash.  fund_id, the fund funding this line item
+                price, the price we are paying the vendor, in the vendor's currency/, type => 'hash'}
+        ],
+        return => {desc => 'The purchase order line item detail id, Event on failure'}
+    }
+);
+
+sub create_po_li_detail {
+    my($self, $conn, $auth, $li_detail, $options) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $po_li = $e->retrieve_acq_po_lineitem($li_detail->po_lineitem)
+        or return $e->die_event;
+
+    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order);
+    my $provider = $e->retrieve_acq_provider($po->provider);
+
+    my $fund = $e->retrieve_acq_fund($$options{fund_id})
+        or return $e->die_event;
+
+    if($e->requestor->id != $po->owner) {
+        return $e->die_event unless 
+            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
+    }
+
+    return $e->die_event unless 
+        $e->allowed('MANAGE_FUND', $fund->org, $fund);
+
+    my $fct = $e->retrieve_acq_currency_type($fund->currency_type);
+    my $pct = $e->retrieve_acq_currency_type($provider->currency_type);
+    my $price = $$options{price};
+
+    # create the fund_debit for this line item detail
+    my $fdebit = Fieldmapper::acq::fund_debit->new;
+    $fdebit->fund($$options{fund_id});
+    $fdebit->origin_amount($price);
+    $fdebit->origin_currency_type($pct->code); # == vendor's currency
+    $fdebit->encumberance('t');
+    $fdebit->debit_type(OILS_ACQ_DEBIT_TYPE_PURCHASE);
+    $fdebit->amount(currency_conversion_impl($pct->code, $fct->code, $price));
+    $e->create_acq_fund_debit($fdebit) or return $e->die_event;
+
+    $li_detail->fund_debit($fdebit->id);
+    $e->create_acq_po_li_detail($li_detail) or return $e->die_event;
+
+    $e->commit;
+    return $li_detail->id;
+}
 
 
 
