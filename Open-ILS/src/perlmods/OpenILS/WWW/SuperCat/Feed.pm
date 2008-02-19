@@ -230,6 +230,7 @@ sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/atom:feed';
 	return $self;
@@ -291,6 +292,7 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{item_xpath} = '/atom:entry';
 	$self->{holdings_xpath} = '/atom:entry';
 	$self->{type} = 'application/xml';
@@ -390,6 +392,7 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', undef);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
@@ -442,6 +445,7 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', undef);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', 'mods');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
@@ -510,6 +514,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	return undef unless $self;
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', undef);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/marc:record';
 	return $self;
