@@ -125,7 +125,8 @@ CREATE TABLE acq.picklist_entry (
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	marc		TEXT				NOT NULL,
 	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
-	source_label	TEXT
+	source_label	TEXT,
+	po_lineitem	INT				REFERENCES acq.po_lineitem (id)
 );
 
 CREATE TABLE acq.po_lineitem (
