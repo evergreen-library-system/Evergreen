@@ -320,8 +320,11 @@ sub retrieve_picklist_entry {
     my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
         or return $e->event;
 
-    return OpenILS::Event->new('BAD_PARAMS') 
-        if $picklist->owner != $e->requestor->id;
+    if($picklist->owner != $e->requestor->id) {
+        return $e->event unless 
+            $e->allowed('VIEW_PICKLIST', undef, $picklist);
+    }
+
     return $pl_entry;
 }
 
