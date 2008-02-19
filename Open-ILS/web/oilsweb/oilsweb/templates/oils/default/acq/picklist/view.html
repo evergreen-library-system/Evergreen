@@ -3,6 +3,8 @@
  vim:ft=mako: 
 -->
 <%inherit file='../base.html'/>
+<%namespace file='../../common/widgets.html' name='widget' />
+
 <%def name="page_title()">${_('Picklist')}</%def>
 <%def name="block_content()">
 
@@ -19,22 +21,11 @@
     <thead>
         <tr>
             <td colspan='3' id='oils-acq-picklist-header-block'>
-                <table id='oils-acq-pikclist-header-subtable'><tr>
+                <table id='oils-acq-picklist-header-subtable'><tr>
                 <td id='oils-acq-picklist-paging-block'>
-                    <%
-                        c.oils.acq.offset.value = int(c.oils.acq.offset.value)
-                        c.oils.acq.limit.value = int(c.oils.acq.limit.value)
-                        # set up the paging info
-                        paging = _('Entries %(offset)s - %(limit)s') % {
-                            'offset': c.oils.acq.offset.value + 1,
-                            'limit': c.oils.acq.limit.value + c.oils.acq.offset.value
-                        }
-                    %>
-                    ${paging}
-                    % if c.oils.acq.offset.value > 0:
-                        <a href='?${c.oils.acq.offset.cgi_name}=${c.oils.acq.offset.value - c.oils.acq.limit.value}'>&#171;</a>
-                    % endif
-                    <a href='?${c.oils.acq.offset.cgi_name}=${c.oils.acq.offset.value + c.oils.acq.limit.value}'>&#187;</a>
+		  ${widget.paging(c.oils.acq.offset.value,
+		                  c.oils.acq.limit.value,
+		                  c.oils.acq.picklist.value.entry_count())}
                 </td>
                 <td id='oils-acq-picklist-actions-block'>
                     <select name='${c.oils.acq.picklist_action.cgi_name}'>

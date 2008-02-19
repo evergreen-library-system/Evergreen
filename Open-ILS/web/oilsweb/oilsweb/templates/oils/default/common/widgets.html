@@ -46,3 +46,31 @@
         ${org_draw_node(tree, 0, selected, disable_depth)}
     </select>
 </%def>
+
+<%def name='paging(start, count, max)'>
+    <!--
+	Creating paging links to move from page to page in long
+	list of results
+      -->
+
+    <%
+       start = int(start)
+       if (start + count > max):
+           end = max
+       else:
+           end = start + count
+       # set up the paging info
+       paging = _('Entries %(offset)d - %(limit)d of %(max)d') % {
+           'offset': start + 1, 'limit': end, 'max': max }
+    %>
+
+    % if start > 0:
+        <a href='?${c.oils.acq.offset.cgi_name}=${start - count}'>&#171;</a>
+    % endif
+
+    ${paging}
+
+    % if end < max:
+        <a href='?${c.oils.acq.offset.cgi_name}=${end}'>&#187;</a>
+    % endif
+</%def>
