@@ -325,6 +325,10 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION acq.exchange_ratio ( TEXT, TEXT, NUMERIC ) RETURNS NUMERIC AS $$
+    SELECT $3 * acq.exchange_ratio($1, $2);
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE VIEW acq.funding_source_credit_total AS
     SELECT  funding_source,
             SUM(amount) AS amount
