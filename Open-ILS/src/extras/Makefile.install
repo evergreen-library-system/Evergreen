@@ -3,11 +3,13 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch) and Gentoo.  Installs Perl prereqs, 
+# Currently supports Debian (etch), Ubuntu (gutsy) and Gentoo.  Installs Perl prereqs, 
 # libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
 # 	make -f Makefile.install debian
+# 	- or -
+# 	make -f Makefile.install ubuntu
 # 	- or -
 # 	make -f Makefile.install gentoo
 #
@@ -28,8 +30,8 @@
 # not require fetching the sources externally ... needs testing/updating in here
 
  
-LIBJS=js-1.60
-LIBJS_PERL=JavaScript-SpiderMonkey-0.17
+LIBJS=js-1.7.0
+LIBJS_PERL=JavaScript-SpiderMonkey-0.19
 LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
 LIBJS_PERL_URL=ftp://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
 # used for installing libjs lib and header files
@@ -52,7 +54,6 @@ DEBS =  \
 	psmisc\
 	ntpdate\
     memcached\
-    postgresql-client\
     libxml2-dev\
     libmodule-build-perl\
     libexpat1-dev\
@@ -92,9 +93,25 @@ DEBS =  \
     apache2-mpm-prefork\
     apache2-prefork-dev\
     libapache2-mod-perl2\
-    libreadline5-dev
+    libreadline5-dev\
+	libtext-csv-perl\
+	libspreadsheet-writeexcel-perl\
+	libtie-ixhash-perl\
+	python-setuptools 
 
+PGSQL_DEBIAN = \
+	postgresql-8.1\
+	postgresql-client-8.1\
+	postgresql-contrib-8.1\
+	postgresql-plperl-8.1\
+	postgresql-server-dev-8.1
 
+PGSQL_UBUNTU = \
+	postgresql-8.2\
+	postgresql-client-8.2\
+	postgresql-contrib-8.2\
+	postgresql-plperl-8.2\
+	postgresql-server-dev-8.2
 
 GENTOOS = \
     vim\
@@ -128,7 +145,10 @@ GENTOOS = \
     dev-perl/Net-Jabber\
     dev-perl/libwww-perl\
     dev-perl/Template-Toolkit\
-    dev-perl/Error
+    dev-perl/Error\
+    dev-perl/Text-CSV_XS\
+    dev-perl/Spreadsheet-WriteExcel\
+    dev-perl/Tie-IxHash
 
 GENTOO_RC = \
     ejabberd\
@@ -140,7 +160,7 @@ GENTOO_PERL = \
     Class::DBI::AbstractSearch\
     MARC::Record \
     Net::Z3950::ZOOM \
-	Text::CSV
+    Text::CSV
 
 DEB_APACHE_MODS = \
     expires\
@@ -157,7 +177,7 @@ CPAN_MODULES = \
     TMTM/Class-DBI-0.96.tar.gz \
     RHANDOM/Net-Server-0.90.tar.gz \
     MARC::Charset MARC::File::XML\
-	Net::Z3950::ZOOM
+    Net::Z3950::ZOOM
 
 
 # ----------------------------------------------------------------------------
@@ -169,9 +189,11 @@ all:
 # these should be the same for any distro
 install: install_yaz install_cpan install_js_sm install_libdbi 
 
-debian: install_debs install debian_sys_config
+debian: install_pgsql_debian install_debs install debian_sys_config
 
 gentoo: install_gentoos install_gentoo_rc install_gentoo_perl install
+
+ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
 
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -198,7 +220,7 @@ install_js_sm:
 	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/
 	cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/
-	cd JavaScript-SpiderMonkey-0.17 && perl Makefile.PL -E4X && make && make test && make install
+	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
 
 
 # Install libdbi and the postgres drivers
@@ -236,7 +258,11 @@ debian_sys_config:
 install_debs:
 	apt-get install $(DEBS)
 
+install_pgsql_debian:
+	apt-get install $(PGSQL_DEBIAN)
 
+install_pgsql_ubuntu:
+	apt-get install $(PGSQL_UBUNTU)
 
 # ------------------------------------------------------------------
 # - GENTOO ---------------------------------------------------------
