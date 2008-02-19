@@ -563,8 +563,10 @@ sub create_po_lineitem {
     my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
         or return $e->die_event;
 
-    return OpenILS::Event->new('BAD_PARAMS') 
-        unless $e->requestor->id == $po->owner;
+    if($e->requestor->id != $po->owner) {
+        return $e->die_event unless 
+            $e->allowed('MANAGE_PURCHASE_ORDER', undef, $po);
+    }
 
     if($$options{picklist_entry}) {
         # if a picklist_entry ID is provided, use that as the basis for this item
@@ -587,6 +589,7 @@ sub create_po_lineitem {
     return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
 
     $e->create_acq_po_lineitem($po_li) or return $e->die_event;
+    $e->commit;
     return $po_li->id;
 }
 
