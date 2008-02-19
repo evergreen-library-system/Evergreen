@@ -541,6 +541,109 @@ sub create_purchase_order {
     return $p_order->id;
 }
 
+__PACKAGE__->register_method(
+	method => 'retrieve_all_user_purchase_order',
+	api_name	=> 'open-ils.acq.purchase_order.user.all.retrieve',
+    stream => 1,
+	signature => {
+        desc => 'Retrieves a purchase order',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase_order to retrieve', type => 'number'},
+            {desc => q/Options hash.  flesh_lineitems, to get the po_lineitems and po_li_attrs; 
+                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)/, 
+                type => 'hash'}
+        ],
+        return => {desc => 'The purchase order, Event on failure'}
+    }
+);
+
+sub retrieve_all_user_purchase_order {
+    my($self, $conn, $auth, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    # grab purchase orders I have 
+    my $perm_orgs = $U->find_highest_work_orgs($e, 'MANAGE_PROVIDER', {descendants =>1});
+    my $provider_ids = $e->search_acq_provider({owner => $perm_orgs}, {idlist=>1});
+    my $po_ids = $e->search_acq_purchase_order({provider => $provider_ids}, {idlist=>1});
+
+    # grab my purchase orders
+    push(@$po_ids, @{$e->search_acq_purchase_order({owner => $e->requestor->id}, {idlist=>1})});
+
+    my %dedup;
+    $dedup{$_} = 1 for @$po_ids;
+    $conn->respond(retrieve_purchase_order_impl($e, $_, $options)) for keys %dedup;
+
+    return undef;
+}
+
+__PACKAGE__->register_method(
+	method => 'retrieve_purchase_order',
+	api_name	=> 'open-ils.acq.purchase_order.retrieve',
+	signature => {
+        desc => 'Retrieves a purchase order',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase_order to retrieve', type => 'number'},
+            {desc => q/Options hash.  flesh_lineitems, to get the po_lineitems and po_li_attrs; 
+                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)/, 
+                type => 'hash'}
+        ],
+        return => {desc => 'The purchase order, Event on failure'}
+    }
+);
+
+sub retrieve_purchase_order {
+    my($self, $conn, $auth, $po_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return retrieve_purchase_order_impl($e, $po_id, $options);
+}
+
+sub retrieve_purchase_order_impl {
+    my($e, $po_id, $options) = @_;
+
+    $options ||= {};
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+
+    my $provider = $e->retrieve_acq_provider($po->provider)
+        or return $e->event;
+
+    if($e->requestor->id != $po->owner) {
+        return $e->die_event unless 
+            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
+    }
+
+    if($$options{flesh_lineitems}) {
+        my $items = $e->search_acq_po_lineitem([
+            {purchase_order => $po_id},
+            {
+                flesh => 1,
+                flesh_fields => {
+                    acqpoli => ['attributes']
+                }
+            }
+        ]);
+
+        if($$options{clear_marc}) {
+            $_->clear_marc for @$items;
+        }
+
+        $po->lineitems($items);
+    }
+
+    if($$options{flesh_lineitem_count}) {
+        my $items = $e->search_acq_po_lineitem({purchase_order => $po_id}, {idlist=>1});
+        $po->lineitem_count(scalar(@$items));
+    }
+
+
+    return $po;
+}
+
+
 
 __PACKAGE__->register_method(
 	method => 'create_po_lineitem',
@@ -549,7 +652,9 @@ __PACKAGE__->register_method(
         desc => 'Creates a new purchase order line item',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'purchase order line item to create', type => 'object'}
+            {desc => 'purchase order line item to create', type => 'object'},
+            {desc => q/Options hash.  picklist_entry (required) is the id of the 
+                picklist_entry object used as the reference for this line item/, type => 'hash'}
         ],
         return => {desc => 'The purchase order line item id, Event on failure'}
     }
@@ -563,9 +668,14 @@ sub create_po_lineitem {
     my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
         or return $e->die_event;
 
+    my $provider = $e->retrieve_acq_provider($po->provider)
+        or return $e->die_event;
+
+    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
+
     if($e->requestor->id != $po->owner) {
         return $e->die_event unless 
-            $e->allowed('MANAGE_PURCHASE_ORDER', undef, $po);
+            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
     }
 
     # if a picklist_entry ID is provided, use that as the basis for this item
@@ -584,11 +694,6 @@ sub create_po_lineitem {
         return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
     }
 
-    my $provider = $e->retrieve_acq_provider($po->provider)
-        or return $e->die_event;
-
-    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
-
     $e->create_acq_po_lineitem($po_li) or return $e->die_event;
 
     for my $plea (@{$ple->attributes}) {
@@ -600,6 +705,11 @@ sub create_po_lineitem {
         $attr->po_lineitem($po_li->id);
         $e->create_acq_po_li_attr($attr) or return $e->die_event;
     }
+
+    # update the picklist entry and point it to the line item
+    $ple->po_lineitem($po_li->id);
+    $ple->edit_time('now');
+    $e->update_acq_picklist_entry($ple) or return $e->die_event;
 
     $e->commit;
     return $po_li->id;

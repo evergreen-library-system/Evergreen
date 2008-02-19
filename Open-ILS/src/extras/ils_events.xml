@@ -601,6 +601,9 @@
 	<event code='1657' textcode='ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
 	</event>
+	<event code='1658' textcode='ACQ_PO_LINEITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.po_lineitem was not found</desc>
+	</event>
 
 
 
