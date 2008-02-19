@@ -1,7 +1,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
-#include "objson/object.h"
+#include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 #include "openils/oils_utils.h"
 #include "openils/oils_constants.h"

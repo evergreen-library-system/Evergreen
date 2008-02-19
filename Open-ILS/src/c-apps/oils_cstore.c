@@ -2,10 +2,11 @@
 #include "opensrf/osrf_settings.h"
 #include "opensrf/osrf_message.h"
 #include "opensrf/utils.h"
-#include "objson/object.h"
+#include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 #include "openils/oils_idl.h"
 #include <dbi/dbi.h>
+#include <objson/object.h>
 
 #include <time.h>
 #include <stdlib.h>

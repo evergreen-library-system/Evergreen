@@ -1,4 +1,4 @@
-LDLIBS += -lobjson -lopensrf #-lfieldmapper 
+LDLIBS +=  -lopensrf #-lfieldmapper 
 LDFLAGS += -Wl,-rpath=$(LIBDIR) -L$(DBI_LIBS)
 CFLAGS += -DOSRF_LOG_PARAMS
 
