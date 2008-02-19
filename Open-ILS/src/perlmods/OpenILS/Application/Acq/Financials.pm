@@ -568,13 +568,14 @@ sub create_po_lineitem {
             $e->allowed('MANAGE_PURCHASE_ORDER', undef, $po);
     }
 
-    if($$options{picklist_entry}) {
-        # if a picklist_entry ID is provided, use that as the basis for this item
-        my $ple = $e->retrieve_acq_picklist_entry($$options{picklist_entry})
-            or return $e->die_event;
-        $po_li->marc($ple->marc);
-        $po_li->eg_bib_id($ple->eg_bib_id);
-    }
+    # if a picklist_entry ID is provided, use that as the basis for this item
+    my $ple = $e->retrieve_acq_picklist_entry([
+        $$options{picklist_entry}, 
+        {flesh => 1, flesh_fields => {acqple => ['attributes']}}
+    ]) or return $e->die_event;
+
+    $po_li->marc($ple->marc);
+    $po_li->eg_bib_id($ple->eg_bib_id);
 
     if($po_li->fund) {
         # check fund perms if using the non-default fund
@@ -589,6 +590,17 @@ sub create_po_lineitem {
     return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
 
     $e->create_acq_po_lineitem($po_li) or return $e->die_event;
+
+    for my $plea (@{$ple->attributes}) {
+        # now that we have the line item, copy the attributes over from the picklist entry
+        my $attr = Fieldmapper::acq::po_li_attr->new;
+        $attr->attr_type($plea->attr_type);
+        $attr->attr_value($plea->attr_value);
+        $attr->attr_name($plea->attr_name);
+        $attr->po_lineitem($po_li->id);
+        $e->create_acq_po_li_attr($attr) or return $e->die_event;
+    }
+
     $e->commit;
     return $po_li->id;
 }
