@@ -514,7 +514,7 @@ sub currency_conversion_impl {
         from => 'acqct'
     });
 
-    return $result->{value};
+    return $result->[0]->{value};
 }
 
 
@@ -771,8 +771,8 @@ sub create_po_li_detail {
     return $e->die_event unless 
         $e->allowed('MANAGE_FUND', $fund->org, $fund);
 
-    my $fct = $e->retrieve_acq_currency_type($fund->currency_type);
-    my $pct = $e->retrieve_acq_currency_type($provider->currency_type);
+    my $fct = $e->search_acq_currency_type({code => $fund->currency_type})->[0];
+    my $pct = $e->search_acq_currency_type({code => $provider->currency_type})->[0];
     my $price = $$options{price};
 
     # create the fund_debit for this line item detail
