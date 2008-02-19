@@ -442,24 +442,30 @@ sub allowed {
 sub objects_allowed {
     my($self, $perm, $obj_type) = @_;
 
-    my $query = {
-        select => {puopm => ['object_id']},
-        from => {
-            puopm => {
-                ppl => {field => 'id',fkey => 'perm'}
+    my $perms = (ref($perm) eq 'ARRAY') ? $perm : [$perm];
+    my @ids;
+
+    for $perm (@$perms) {
+        my $query = {
+            select => {puopm => ['object_id']},
+            from => {
+                puopm => {
+                    ppl => {field => 'id',fkey => 'perm'}
+                }
+            },
+            where => {
+                '+puopm' => {usr => $self->requestor->id, object_type => $obj_type},
+                '+ppl' => {code => $perm}
             }
-        },
-        where => {
-            '+puopm' => {usr => $self->requestor->id, object_type => $obj_type},
-            '+ppl' => {code => $perm}
-        }
-    };
+        };
+    
+        my $list = $self->json_query($query);
+        push(@ids, 0+$_->{object_id}) for @$list;
+    }
 
-   my $list = $self->json_query($query);
-   my @ids;
-   push(@ids, 0+$_->{object_id}) for @$list;
-
-   return \@ids;
+   my %trim
+   $trim{$_} = 1 for @ids;
+   return keys %trim;
 }
 
 
