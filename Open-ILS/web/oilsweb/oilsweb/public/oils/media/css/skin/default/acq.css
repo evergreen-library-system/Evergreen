@@ -43,7 +43,7 @@
 
 #oils-acq-list-header { margin: 10px; width: 98%;}
 #oils-acq-list-header-label { float: left; }
-#oils-acq-list-header-create { float: right; }
+#oils-acq-list-header-actions { float: right; }
 
 /* picklist entry page */
 #oils-acq-picklist-entry-header { padding: 4px; margin-bottom: 20px; }

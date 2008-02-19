@@ -30,7 +30,7 @@
 
 #oils-acq-list-header {border-bottom: 1px solid #6BA160;}
 #oils-acq-list-header-label { font-weight: bold; font-size: 110%; }
-#oils-acq-list-header-create { font-weight: bold; }
+#oils-acq-list-header-actions { font-weight: bold; }
 
 
 /* entry display */
