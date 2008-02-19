@@ -1,5 +1,5 @@
 package OpenILS::Application::Acq::Provider;
-use base qw/OpenILS::Application::Acq/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenILS::Event;
@@ -11,8 +11,6 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 
 my $U = 'OpenILS::Application::AppUtils';
-my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
-
 
 __PACKAGE__->register_method(
 	method => 'create_provider',
@@ -87,7 +85,8 @@ sub retrieve_org_providers {
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_PROVIDER';
 
-    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_PROVIDER/;
+    return OpenILS::Event->new('BAD_PARAMS')
+        unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_PROVIDER/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});

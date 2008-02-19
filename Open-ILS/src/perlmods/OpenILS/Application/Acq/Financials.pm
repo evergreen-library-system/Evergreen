@@ -1,5 +1,5 @@
 package OpenILS::Application::Acq::Financials;
-use base qw/OpenILS::Application::Acq/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenSRF::Utils::Logger qw(:logger);
@@ -10,9 +10,6 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
-
-my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
-
 
 # ----------------------------------------------------------------------------
 # Funding Sources
@@ -122,7 +119,8 @@ sub retrieve_org_funding_sources {
     return $e->event unless $e->checkauth;
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUNDING_SOURCE';
-    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUNDING_SOURCE/;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUNDING_SOURCE/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
@@ -287,7 +285,8 @@ sub retrieve_org_funds {
     return $e->event unless $e->checkauth;
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
-    return $BAD_PARAMS unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
@@ -460,7 +459,7 @@ __PACKAGE__->register_method(
     }
 );
 
-sub retrieve_fund_alloc {
+sub retrieve_funding_source_allocations {
     my($self, $conn, $auth, $fund_alloc_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
@@ -475,9 +474,6 @@ sub retrieve_fund_alloc {
 
     return $fund_alloc;
 }
-
-
-
 
 # ----------------------------------------------------------------------------
 # Currency
@@ -502,6 +498,99 @@ sub retrieve_all_currency_type {
     return $e->event unless $e->allowed('GENERAL_ACQ');
     return $e->retrieve_all_acq_currency_type();
 }
+
+
+# ----------------------------------------------------------------------------
+# Purchase Orders
+# ----------------------------------------------------------------------------
+
+__PACKAGE__->register_method(
+	method => 'create_purchase_order',
+	api_name	=> 'open-ils.acq.purchase_order.create',
+	signature => {
+        desc => 'Creates a new purchase order',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase_order to create', type => 'object'}
+        ],
+        return => {desc => 'The purchase order id, Event on failure'}
+    }
+);
+
+sub create_purchase_order {
+    my($self, $conn, $auth, $p_order) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    $p_order->owner($e->requestor->id);
+
+    if($p_order->default_fund) {
+        # if a default fund is provided, make sure the requestor
+        # actually has permission to spend from that fund
+        my $fund = $e->retrieve_acq_fund($p_order->default_fund)
+            or return $e->die_event;
+        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    } 
+
+    my $provider = $e->retrieve_acq_provider($p_order->provider)
+        or return $e->die_event;
+
+    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
+
+    $e->create_acq_purchase_order($p_order) or return $e->die_event;
+    $e->commit;
+    return $p_order->id;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'create_po_lineitem',
+	api_name	=> 'open-ils.acq.po_lineitem.create',
+	signature => {
+        desc => 'Creates a new purchase order line item',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase order line item to create', type => 'object'}
+        ],
+        return => {desc => 'The purchase order line item id, Event on failure'}
+    }
+);
+
+sub create_po_lineitem {
+    my($self, $conn, $auth, $po_li, $options) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
+        or return $e->die_event;
+
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless $e->requestor->id == $po->owner;
+
+    if($$options{picklist_entry}) {
+        # if a picklist_entry ID is provided, use that as the basis for this item
+        my $ple = $e->retrieve_acq_picklist_entry($$options{picklist_entry})
+            or return $e->die_event;
+        $po_li->marc($ple->marc);
+        $po_li->eg_bib_id($ple->eg_bib_id);
+    }
+
+    if($po_li->fund) {
+        # check fund perms if using the non-default fund
+        my $fund = $e->retrieve_acq_fund($po_li->fund)
+            or return $e->die_event;
+        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    }
+
+    my $provider = $e->retrieve_acq_provider($po->provider)
+        or return $e->die_event;
+
+    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
+
+    $e->create_acq_po_lineitem($po_li) or return $e->die_event;
+    return $po_li->id;
+}
+
+
 
 
 1;

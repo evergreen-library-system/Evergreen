@@ -1,5 +1,5 @@
 package OpenILS::Application::Acq::Picklist;
-use base qw/OpenILS::Application::Acq/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenSRF::Utils::Logger qw(:logger);
@@ -8,8 +8,6 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
-
-my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
 
 
 __PACKAGE__->register_method(
@@ -30,7 +28,8 @@ sub create_picklist {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST');
-    return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
+    return OpenILS::Event->new('BAD_PARAMS')
+        unless $e->requestor->id == $picklist->owner;
     $e->create_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
     return $picklist->id;
@@ -58,7 +57,7 @@ sub update_picklist {
     # don't let them change the owner
     my $o_picklist = $e->retrieve_acq_picklist($picklist->id)
         or return $e->die_event;
-    return $BAD_PARAMS if (
+    return OpenILS::Event->new('BAD_PARAMS') if (
         $o_picklist->owner != $picklist->owner or
         $picklist->owner != $e->requestor->id );
 
@@ -92,7 +91,11 @@ sub retrieve_picklist {
     $picklist->entry_count(retrieve_picklist_entry_count($e, $picklist_id))
         if $$options{flesh_entry_count};
 
-    return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
+    if($e->requestor->id != $picklist->owner) {
+        return $e->event unless 
+            $e->allowed('VIEW_PICKLIST', undef, $picklist);
+    }
+
     return $picklist;
 }
 
@@ -237,7 +240,8 @@ sub delete_picklist {
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->die_event;
     # don't let anyone delete someone else's picklist
-    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
+    return OpenILS::Event->new('BAD_PARAMS')
+        if $picklist->owner != $e->requestor->id;
 
     $e->delete_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
@@ -270,7 +274,8 @@ sub create_picklist_entry {
 
     my $picklist = $e->retrieve_acq_picklist($entry->picklist)
         or return $e->die_event;
-    return $BAD_PARAMS unless $picklist->owner == $e->requestor->id;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless $picklist->owner == $e->requestor->id;
 
     # indicate the picklist was updated
     $picklist->edit_time('now');
@@ -315,7 +320,8 @@ sub retrieve_picklist_entry {
     my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
         or return $e->event;
 
-    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        if $picklist->owner != $e->requestor->id;
     return $pl_entry;
 }
 
@@ -346,7 +352,8 @@ sub delete_picklist_entry {
         or return $e->die_event;
 
     # don't let anyone delete someone else's picklist entry
-    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        if $picklist->owner != $e->requestor->id;
 
     $e->delete_acq_picklist_entry($pl_entry) or return $e->die_event;
     $e->commit;
@@ -381,7 +388,8 @@ sub update_picklist_entry {
     ]) or return $e->die_event;
 
     # don't let anyone update someone else's picklist entry
-    return $BAD_PARAMS if $orig_entry->picklist->owner != $e->requestor->id;
+    return OpenILS::Event->new('BAD_PARAMS') 
+        if $orig_entry->picklist->owner != $e->requestor->id;
 
     $e->update_acq_picklist_entry($pl_entry) or return $e->die_event;
     $e->commit;
