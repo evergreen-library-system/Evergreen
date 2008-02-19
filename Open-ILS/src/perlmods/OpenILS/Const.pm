@@ -89,6 +89,9 @@ econst OILS_HOLD_TYPE_METARECORD  => 'M';
 econst OILS_BILLING_TYPE_OVERDUE_MATERIALS => 'Overdue materials';
 econst OILS_BILLING_TYPE_COLLECTION_FEE => 'Long Overdue Collection Fee';
 
+econst OILS_ACQ_DEBIT_TYPE_PURCHASE => 'purchase';
+econst OILS_ACQ_DEBIT_TYPE_TRANSFER => 'xfer';
+
 
 
 # ---------------------------------------------------------------------
