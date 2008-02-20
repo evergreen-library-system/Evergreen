@@ -1,4 +1,5 @@
-LDLIBS += -lreadline -loils_utils -lopensrf -lobjson -lxml2 -loils_idl
+LDLIBS += -lreadline -loils_utils -lopensrf -lobjson -lxml2 -loils_idl -L../c-apps
+CFLAGS += -I../../include
 all:	oils_requestor
 
 oils_requestor:	oils_requestor.o

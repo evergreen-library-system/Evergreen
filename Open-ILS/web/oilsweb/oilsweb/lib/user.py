@@ -38,7 +38,7 @@ class User(object):
 
         evt = oils.event.Event.parse_event(self.ctx.user.value)
         if evt and evt.text_code == 'NO_SESSION':
-            # our authtoken.value has timed out.  See if we can autologin
+            # our authtoken has timed out.  See if we can autologin
             self.try_auto_login()
             if not self.ctx.authtoken.value:
                 raise AuthException(_('No authentication token provided'))
