@@ -40,9 +40,9 @@ JS_INSTALL_PREFIX=/usr/
 
 # The libdbi sources can be fetched from sourceforge.net.  They are stored on
 # the open-ils.org site now for ease of direct linking
-LIBDBI=libdbi-0.8.2
-LIBDBI_DRIVERS=libdbi-drivers-0.8.2-1
-LIBDBI_HOST=http://open-ils.org/~erickson/evergreen
+LIBDBI=libdbi-0.8.3
+LIBDBI_DRIVERS=libdbi-drivers-0.8.3
+LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 YAZ=yaz-2.1.56
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
