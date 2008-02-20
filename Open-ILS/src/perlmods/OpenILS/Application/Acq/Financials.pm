@@ -80,6 +80,7 @@ sub retrieve_funding_source {
     my($self, $conn, $auth, $funding_source_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
 
     my $flesh = {flesh => 1, flesh_fields => {acqfs => []}};
     push(@{$flesh->{flesh_fields}->{acqfs}}, 'credits') if $$options{flesh_credits};
@@ -117,6 +118,7 @@ sub retrieve_org_funding_sources {
     my($self, $conn, $auth, $org_id_list, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUNDING_SOURCE';
     return OpenILS::Event->new('BAD_PARAMS') 
@@ -247,6 +249,7 @@ sub retrieve_fund {
     my($self, $conn, $auth, $fund_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
 
     my $flesh = {flesh => 2, flesh_fields => {acqf => []}};
     push(@{$flesh->{flesh_fields}->{acqf}}, 'debits') if $$options{flesh_debits};
@@ -283,6 +286,7 @@ sub retrieve_org_funds {
     my($self, $conn, $auth, $org_id_list, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
     return OpenILS::Event->new('BAD_PARAMS') 
@@ -588,6 +592,7 @@ sub retrieve_all_user_purchase_order {
     my($self, $conn, $auth, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
 
     # grab purchase orders I have 
     my $perm_orgs = $U->find_highest_work_orgs($e, 'MANAGE_PROVIDER', {descendants =>1});
@@ -637,23 +642,33 @@ sub retrieve_purchase_order {
     my($self, $conn, $auth, $po_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    return $e->event if po_perm_failure($e, $po_id);
     return retrieve_purchase_order_impl($e, $po_id, $options);
 }
+
+
+# if the user does not have permission to perform actions on this PO, return the perm failure event
+sub po_perm_failure {
+    my($e, $po_id, $fund_id) = @_;
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    my $provider = $e->retrieve_acq_provider($po->provider) or return $e->event;
+    return $e->event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
+    if($fund_id) {
+        my $fund = $e->retrieve_acq_fund($po->default_fund);
+        return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    } elsif($po->default_fund) {
+        my $fund = $e->retrieve_acq_fund($po->default_fund);
+        return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    }
+    return undef;
+}
+
 
 sub retrieve_purchase_order_impl {
     my($e, $po_id, $options) = @_;
 
     $options ||= {};
-
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
-
-    my $provider = $e->retrieve_acq_provider($po->provider)
-        or return $e->event;
-
-    if($e->requestor->id != $po->owner) {
-        return $e->die_event unless 
-            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
-    }
 
     if($$options{flesh_lineitems}) {
         my $items = $e->search_acq_po_lineitem([
@@ -681,7 +696,6 @@ sub retrieve_purchase_order_impl {
         $po->lineitem_count(scalar(@$items));
     }
 
-
     return $po;
 }
 
@@ -706,19 +720,23 @@ sub create_po_lineitem {
     my($self, $conn, $auth, $po_li, $options) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $options ||= {};
 
-    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
-        or return $e->die_event;
+    return $e->die_event if 
+        po_perm_failure($e, $po_li->purchase_order, $po_li->fund);
 
-    my $provider = $e->retrieve_acq_provider($po->provider)
-        or return $e->die_event;
-
-    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
-
-    if($e->requestor->id != $po->owner) {
-        return $e->die_event unless 
-            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
-    }
+#    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
+#        or return $e->die_event;
+#
+#    my $provider = $e->retrieve_acq_provider($po->provider)
+#        or return $e->die_event;
+#
+#    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
+#
+#    if($e->requestor->id != $po->owner) {
+#        return $e->die_event unless 
+#            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
+#    }
 
     # if a picklist_entry ID is provided, use that as the basis for this item
     my $ple = $e->retrieve_acq_picklist_entry([
@@ -729,12 +747,12 @@ sub create_po_lineitem {
     $po_li->marc($ple->marc);
     $po_li->eg_bib_id($ple->eg_bib_id);
 
-    if($po_li->fund) {
-        # check fund perms if using the non-default fund
-        my $fund = $e->retrieve_acq_fund($po_li->fund)
-            or return $e->die_event;
-        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
+#    if($po_li->fund) {
+#        # check fund perms if using the non-default fund
+#        my $fund = $e->retrieve_acq_fund($po_li->fund)
+#            or return $e->die_event;
+#        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
+#    }
 
     $e->create_acq_po_lineitem($po_li) or return $e->die_event;
 
@@ -777,6 +795,7 @@ sub create_po_li_detail {
     my($self, $conn, $auth, $li_detail, $options) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $options ||= {};
 
     my $po_li = $e->retrieve_acq_po_lineitem($li_detail->po_lineitem)
         or return $e->die_event;
@@ -789,7 +808,7 @@ sub create_po_li_detail {
 
     if($e->requestor->id != $po->owner) {
         return $e->die_event unless 
-            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
+            $e->allowed('MANAGE_PROVIDER', $provider->owner, $po);
     }
 
     return $e->die_event unless 
@@ -814,6 +833,45 @@ sub create_po_li_detail {
 
     $e->commit;
     return $li_detail->id;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_po_lineitem',
+	api_name	=> 'open-ils.acq.po_lineitem.retrieve',
+	signature => {
+        desc => q/Retrieve a lineitem/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'po_lineitem ID', type => 'number'},
+            {desc => q/Options hash.  /, 
+                type => 'hash'}
+        ],
+        return => {desc => 'The lineitem object, Event on failure'}
+    }
+);
+
+sub retrieve_po_lineitem {
+    my($self, $conn, $auth, $li_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    $options ||= {};
+
+    my $po_li = $e->retrieve_acq_po_lineitem($li_id) or return $e->event;
+    return $e->die_event if po_perm_failure($e, $po_li->purchase_order, $po_li->fund);
+
+    if($$options{flesh_li_details}) {
+        my $details = $e->search_acq_po_li_detail({po_lineitem => $li_id});
+        $po_li->lineitem_details($details);
+    }
+
+    if($$options{flesh_li_attrs}) {
+        my $attrs = $e->search_acq_po_li_attr({po_lineitem => $li_id});
+        $po_li->attributes($attrs);
+    }
+
+    $po_li->clear_marc if $$options{clear_marc};
+    return $po_li;
 }
 
 
