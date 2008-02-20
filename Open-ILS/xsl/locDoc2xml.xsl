@@ -39,8 +39,8 @@ Here's an easy way to use this:
 
 curl -o - http://www.loc.gov/marc/bibliographic/ecbd{ldrd,cntr,007s,008s,numb,clas,main,tils,impr,phys,sers,not1,not2,subj,adde,link,srae,hold}.html | \
  tidy -asxml -n -q -utf8 | \
- xsltproc &hyphen;&hyphen;html &hyphen;&hyphen;novalid locDoc2xml.xsl - | \
- xmllint &hyphen;&hyphen;format &hyphen;&hyphen;noblanks - > marcedit-tooltips.xml
+ xsltproc -\-html -\-novalid locDoc2xml.xsl - | \
+ xmllint -\-format -\-noblanks - > marcedit-tooltips.xml
 
 -->
 
