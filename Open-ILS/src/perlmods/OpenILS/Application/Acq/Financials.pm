@@ -581,6 +581,7 @@ __PACKAGE__->register_method(
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
                 li_order_by : lineitem sort definition if fleshing line items
+                flesh_lineitem_detail_count : flesh lineitem_detail_count field
                 /,
                 type => 'hash'}
         ],
@@ -631,6 +632,7 @@ __PACKAGE__->register_method(
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
                 li_order_by : lineitem sort definition if fleshing line items
+                flesh_lineitem_detail_count : flesh lineitem_detail_count field
                 /, 
                 type => 'hash'}
         ],
@@ -688,6 +690,13 @@ sub retrieve_purchase_order_impl {
             $_->clear_marc for @$items;
         }
 
+        if($$options{flesh_lineitem_details_count}) {
+            for my $item (@$items) {
+                my $ids = $e->search_acq_po_li_detail({po_lineitem => $item->id}, {idlist => 1});
+                $item->lineitem_details_count(scalar(@$ids));
+            }
+        }
+
         $po->lineitems($items);
     }
 
@@ -722,21 +731,7 @@ sub create_po_lineitem {
     return $e->die_event unless $e->checkauth;
     $options ||= {};
 
-    return $e->die_event if 
-        po_perm_failure($e, $po_li->purchase_order, $po_li->fund);
-
-#    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order)
-#        or return $e->die_event;
-#
-#    my $provider = $e->retrieve_acq_provider($po->provider)
-#        or return $e->die_event;
-#
-#    return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
-#
-#    if($e->requestor->id != $po->owner) {
-#        return $e->die_event unless 
-#            $e->allowed('MANAGE_PURCHASE_ORDER', $provider->owner, $po);
-#    }
+    return $e->die_event if po_perm_failure($e, $po_li->purchase_order);
 
     # if a picklist_entry ID is provided, use that as the basis for this item
     my $ple = $e->retrieve_acq_picklist_entry([
@@ -746,14 +741,6 @@ sub create_po_lineitem {
 
     $po_li->marc($ple->marc);
     $po_li->eg_bib_id($ple->eg_bib_id);
-
-#    if($po_li->fund) {
-#        # check fund perms if using the non-default fund
-#        my $fund = $e->retrieve_acq_fund($po_li->fund)
-#            or return $e->die_event;
-#        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
-#    }
-
     $e->create_acq_po_lineitem($po_li) or return $e->die_event;
 
     for my $plea (@{$ple->attributes}) {
@@ -803,7 +790,7 @@ sub create_po_li_detail {
     my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order);
     my $provider = $e->retrieve_acq_provider($po->provider);
 
-    my $fund = $e->retrieve_acq_fund($$options{fund_id})
+    my $fund = $e->retrieve_acq_fund($li_detail->fund)
         or return $e->die_event;
 
     if($e->requestor->id != $po->owner) {
@@ -844,7 +831,8 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'po_lineitem ID', type => 'number'},
-            {desc => q/Options hash.  /, 
+            {desc => q/Options hash. flesh_li_details: fleshes the details objects, which
+                additionally flesh the fund_debit and fund objects/, 
                 type => 'hash'}
         ],
         return => {desc => 'The lineitem object, Event on failure'}
@@ -858,12 +846,18 @@ sub retrieve_po_lineitem {
     $options ||= {};
 
     my $po_li = $e->retrieve_acq_po_lineitem($li_id) or return $e->event;
-    return $e->die_event if po_perm_failure($e, $po_li->purchase_order, $po_li->fund);
+    return $e->die_event if po_perm_failure($e, $po_li->purchase_order);
 
     if($$options{flesh_li_details}) {
-        my $details = $e->search_acq_po_li_detail({po_lineitem => $li_id});
+        my $details = $e->search_acq_po_li_detail([
+            {po_lineitem => $li_id}, {
+                flesh => 1,
+                flesh_fields => {acqpolid => ['fund_debit', 'fund']}
+            }
+        ]);
         $po_li->lineitem_details($details);
     }
+
 
     if($$options{flesh_li_attrs}) {
         my $attrs = $e->search_acq_po_li_attr({po_lineitem => $li_id});
@@ -873,7 +867,6 @@ sub retrieve_po_lineitem {
     $po_li->clear_marc if $$options{clear_marc};
     return $po_li;
 }
-
 
 
 1;
