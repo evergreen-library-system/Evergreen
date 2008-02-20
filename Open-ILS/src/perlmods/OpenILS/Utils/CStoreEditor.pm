@@ -463,9 +463,9 @@ sub objects_allowed {
         push(@ids, 0+$_->{object_id}) for @$list;
     }
 
-   my %trim
+   my %trim;
    $trim{$_} = 1 for @ids;
-   return keys %trim;
+   return [ keys %trim ];
 }
 
 
