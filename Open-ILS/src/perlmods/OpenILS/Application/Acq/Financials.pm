@@ -568,8 +568,16 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to retrieve', type => 'number'},
-            {desc => q/Options hash.  flesh_lineitems, to get the po_lineitems and po_li_attrs; 
-                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)/, 
+            {desc => q/Options hash.  flesh_lineitems: to get the po_lineitems and po_li_attrs; 
+                clear_marc: to clear the MARC data from the po_lineitem (for reduced bandwidth);
+                limit: number of items to return ,defaults to 50;
+                offset: offset in the list of items to return
+                order_by: sort the result, provide one or more colunm names, separated by commas,
+                optionally followed by ASC or DESC as a single string 
+                li_limit : number of lineitems to return if fleshing line items;
+                li_offset : lineitem offset if fleshing line items
+                li_order_by : lineitem sort definition if fleshing line items
+                /,
                 type => 'hash'}
         ],
         return => {desc => 'The purchase order, Event on failure'}
@@ -614,7 +622,11 @@ __PACKAGE__->register_method(
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to retrieve', type => 'number'},
             {desc => q/Options hash.  flesh_lineitems, to get the po_lineitems and po_li_attrs; 
-                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)/, 
+                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)
+                li_limit : number of lineitems to return if fleshing line items;
+                li_offset : lineitem offset if fleshing line items
+                li_order_by : lineitem sort definition if fleshing line items
+                /, 
                 type => 'hash'}
         ],
         return => {desc => 'The purchase order, Event on failure'}
@@ -650,7 +662,10 @@ sub retrieve_purchase_order_impl {
                 flesh => 1,
                 flesh_fields => {
                     acqpoli => ['attributes']
-                }
+                },
+                limit => $$options{li_limit} || 50,
+                offset => $$options{li_offset} || 0,
+                order_by => {acqpoli => $$options{li_order_by} || 'create_time'}
             }
         ]);
 
