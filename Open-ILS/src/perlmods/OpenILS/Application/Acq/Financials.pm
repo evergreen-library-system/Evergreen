@@ -589,10 +589,19 @@ sub retrieve_all_user_purchase_order {
     # grab my purchase orders
     push(@$po_ids, @{$e->search_acq_purchase_order({owner => $e->requestor->id}, {idlist=>1})});
 
-    my %dedup;
-    $dedup{$_} = 1 for @$po_ids;
-    $conn->respond(retrieve_purchase_order_impl($e, $_, $options)) for keys %dedup;
+    # now get the db to limit/sort for us
+    $po_ids = $e->search_acq_purchase_order(
+        [
+            {id => $po_ids}, {
+                limit => $$options{limit} || 50,
+                offset => $$options{offset} || 0,
+                order_by => {acqpo => $$options{order_by} || 'create_time'}
+            }
+        ],
+        {idlist => 1}
+    );
 
+    $conn->respond(retrieve_purchase_order_impl($e, $_, $options)) for @$po_ids;
     return undef;
 }
 
