@@ -607,6 +607,9 @@
 	<event code='1659' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
 	</event>
+	<event code='1670' textcode='ACQ_PO_LI_DETAIL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.po_li_detail was not found</desc>
+	</event>
 
 
 
