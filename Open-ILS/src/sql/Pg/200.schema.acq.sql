@@ -132,7 +132,6 @@ CREATE TABLE acq.picklist_entry (
 CREATE TABLE acq.po_lineitem (
 	id			BIGSERIAL			PRIMARY KEY,
 	purchase_order		INT				NOT NULL REFERENCES acq.purchase_order (id),
-	fund			INT				REFERENCES acq.fund (id),
 	expected_recv_time	TIMESTAMP WITH TIME ZONE,
 	create_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
@@ -157,6 +156,7 @@ CREATE INDEX po_li_note_li_idx ON acq.po_li_note (po_lineitem);
 CREATE TABLE acq.po_li_detail (
 	id		BIGSERIAL			PRIMARY KEY,
 	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	fund		INT				REFERENCES acq.fund (id),
 	fund_debit	INT				REFERENCES acq.fund_debit (id),
 	eg_copy_id	BIGINT				REFERENCES asset.copy (id),
 	barcode		TEXT,
