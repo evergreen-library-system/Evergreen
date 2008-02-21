@@ -161,6 +161,7 @@ sub fetch_noncat {
 
 __PACKAGE__->register_method(
 	method => 'fetch_open_noncats',
+    authoritative => 1,
 	api_name	=> 'open-ils.circ.open_non_cataloged_circulation.user',
 	signature => q/
 		Returns an id-list of non-cataloged circulations that are considered

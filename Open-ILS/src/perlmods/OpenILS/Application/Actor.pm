@@ -914,6 +914,7 @@ sub search_username {
 
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_by_barcode",
+    authoritative => 1,
 	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",);
 
 sub user_retrieve_by_barcode {
@@ -1340,6 +1341,7 @@ sub check_user_perms4 {
 __PACKAGE__->register_method(
 	method	=> "user_fines_summary",
 	api_name	=> "open-ils.actor.user.fines.summary",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns a short summary of the users total open fines, excluding voided fines
 	Params are login_session, user_id
@@ -1636,6 +1638,7 @@ sub user_transaction_retrieve {
 __PACKAGE__->register_method(
 	method	=> "hold_request_count",
 	api_name	=> "open-ils.actor.user.hold_requests.count",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns hold ready/total counts
@@ -1719,6 +1722,7 @@ sub checkedout_count {
 __PACKAGE__->register_method(
 	method		=> "checked_out",
 	api_name		=> "open-ils.actor.user.checked_out",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/
 		Returns a structure of circulations objects sorted by
@@ -1736,6 +1740,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method		=> "checked_out",
 	api_name		=> "open-ils.actor.user.checked_out.count",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/@see open-ils.actor.user.checked_out/
 );
@@ -1907,6 +1912,7 @@ sub _checked_out_WHAT {
 __PACKAGE__->register_method(
 	method		=> "checked_in_with_fines",
 	api_name		=> "open-ils.actor.user.checked_in_with_fines",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/@see open-ils.actor.user.checked_out/
 );
@@ -1969,6 +1975,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_balance",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have a balance, optionally by type
@@ -1983,6 +1990,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_bill",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has billings
@@ -2431,6 +2439,7 @@ sub workstation_list {
 __PACKAGE__->register_method (
 	method		=> 'fetch_patron_note',
 	api_name		=> 'open-ils.actor.note.retrieve.all',
+    authoritative => 1,
 	signature	=> q/
 		Returns a list of notes for a given user
 		Requestor must have VIEW_USER permission if pub==false and
@@ -2627,6 +2636,7 @@ sub usrname_exists {
 __PACKAGE__->register_method(
 	method => 'barcode_exists',
 	api_name	=> 'open-ils.actor.barcode.exists',
+    authoritative => 1,
 	signature => q/
 		Returns 1 if the requested barcode exists, returns 0 otherwise
 	/

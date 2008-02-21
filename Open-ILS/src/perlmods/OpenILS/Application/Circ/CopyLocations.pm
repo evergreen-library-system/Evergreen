@@ -139,6 +139,7 @@ sub cl_update {
 
 __PACKAGE__->register_method(
 	method => 'fetch_loc',
+    authoritative => 1,
 	api_name => 'open-ils.circ.copy_location.retrieve',
 );
 

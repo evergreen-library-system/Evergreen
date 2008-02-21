@@ -301,6 +301,7 @@ NOTE
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_holds",
+    authoritative => 1,
 	api_name	=> "open-ils.circ.holds.id_list.retrieve",
 	notes		=> <<NOTE);
 Retrieves all the hold ids for the specified
@@ -1518,6 +1519,7 @@ sub all_rec_holds {
 
 __PACKAGE__->register_method(
 	method => 'uber_hold',
+    authoritative => 1,
 	api_name => 'open-ils.circ.hold.details.retrieve'
 );
 

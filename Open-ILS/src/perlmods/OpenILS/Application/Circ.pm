@@ -884,6 +884,7 @@ sub age_hold_rules {
 
 __PACKAGE__->register_method(
 	method => 'copy_details_barcode',
+    authoritative => 1,
 	api_name => 'open-ils.circ.copy_details.retrieve.barcode');
 sub copy_details_barcode {
 	my( $self, $conn, $auth, $barcode ) = @_;
@@ -1054,6 +1055,7 @@ sub magic_fetch {
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_circ_retrieve",
+    authoritative => 1,
 	api_name	=> "open-ils.circ.fleshed.retrieve",);
 
 sub fleshed_circ_retrieve {

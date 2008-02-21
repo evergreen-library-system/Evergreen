@@ -102,6 +102,7 @@ sub record_id_to_mods {
 
 __PACKAGE__->register_method(
 	method	=> "record_id_to_mods_slim",
+    authoritative => 1,
 	api_name	=> "open-ils.search.biblio.record.mods_slim.retrieve",
 	argc		=> 1, 
 	note		=> "Provide ID, we provide the mods"
@@ -130,6 +131,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method	=> "record_id_to_copy_count",
+    authoritative => 1,
 	api_name	=> "open-ils.search.biblio.record.copy_count.staff",
 );
 
@@ -234,6 +236,7 @@ sub volume_retrieve {
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve_batch",
+    authoritative => 1,
 	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve");
 
 sub fleshed_copy_retrieve_batch { 
@@ -1324,6 +1327,7 @@ sub cn_browse {
 
 __PACKAGE__->register_method(
 	method => "fetch_cn",
+    authoritative => 1,
 	api_name => "open-ils.search.callnumber.retrieve",
 	notes		=> "retrieves a callnumber based on ID",
 	);

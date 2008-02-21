@@ -256,6 +256,7 @@ sub retrieve_payments {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_payments2",
+    authoritative => 1,
 	api_name	=> "open-ils.circ.money.payment.retrieve.all",
 	notes		=> "Returns a list of payments attached to a given transaction"
 	);
@@ -342,6 +343,7 @@ sub fetch_grocery {
 
 __PACKAGE__->register_method(
 	method	=> "billing_items",
+    authoritative => 1,
 	api_name	=> "open-ils.circ.money.billing.retrieve.all",
 	notes		=><<"	NOTE");
 	Returns a list of billing items for the given transaction.
@@ -504,6 +506,7 @@ sub _check_open_xact {
 
 __PACKAGE__->register_method (
 	method => 'fetch_mbts',
+    authoritative => 1,
 	api_name => 'open-ils.circ.money.billable_xact_summary.retrieve'
 );
 sub fetch_mbts {
