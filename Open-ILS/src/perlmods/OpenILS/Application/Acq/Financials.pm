@@ -632,7 +632,6 @@ __PACKAGE__->register_method(
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
                 li_order_by : lineitem sort definition if fleshing line items
-                flesh_lineitem_detail_count : flesh lineitem_detail_count field
                 /, 
                 type => 'hash'}
         ],
@@ -688,13 +687,6 @@ sub retrieve_purchase_order_impl {
 
         if($$options{clear_marc}) {
             $_->clear_marc for @$items;
-        }
-
-        if($$options{flesh_lineitem_details_count}) {
-            for my $item (@$items) {
-                my $ids = $e->search_acq_po_li_detail({po_lineitem => $item->id}, {idlist => 1});
-                $item->lineitem_details_count(scalar(@$ids));
-            }
         }
 
         $po->lineitems($items);
