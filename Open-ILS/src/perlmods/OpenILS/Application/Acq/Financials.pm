@@ -845,7 +845,15 @@ sub retrieve_po_lineitem {
     return $e->event unless $e->checkauth;
     $options ||= {};
 
-    my $po_li = $e->retrieve_acq_po_lineitem($li_id) or return $e->event;
+    my $po_li = $e->retrieve_acq_po_lineitem([
+        $li_id, 
+        {   flesh => 1,
+            flesh_fields => {
+                acqpoli => ['attributes']
+            },
+        }
+    ]) or return $e->event;
+
     return $e->die_event if po_perm_failure($e, $po_li->purchase_order);
 
     if($$options{flesh_li_details}) {
