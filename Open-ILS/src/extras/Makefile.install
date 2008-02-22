@@ -53,6 +53,7 @@ DEBS =  \
 	syslog-ng\
 	psmisc\
 	ntpdate\
+	less\
     memcached\
     libxml2-dev\
     libmodule-build-perl\
