@@ -39,7 +39,25 @@
 
 #oils-acq-picklist-paging-block { width: 50%; text-align: left;}
 #oils-acq-picklist-actions-block { width: 50%; text-align: right;}
-#oils-acq-pikclist-header-subtable { width: 100%; }
+#oils-acq-picklist-header-subtable { width: 100%; }
+
+/* list of pos */
+#oils-acq-po-list-table {width: 100%;}
+#oils-acq-po-list-table td {padding: 3px;}
+
+/* a single po */
+#oils-acq-po-table { width: 100%; }
+#oils-acq-po-header { padding: 4px; margin-bottom: 20px; }
+.oils-acq-po-records-jacket-td { width: 46px; }
+.oils-acq-po-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-po-records-title-row {}
+.oils-acq-po-records-author-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row {}
+
+#oils-acq-po-paging-block { width: 50%; text-align: left;}
+#oils-acq-po-actions-block { width: 50%; text-align: right;}
+#oils-acq-po-header-subtable { width: 100%; }
 
 #oils-acq-list-header { margin: 10px; width: 98%;}
 #oils-acq-list-header-label { float: left; }

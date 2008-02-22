@@ -70,6 +70,10 @@ class AcqContext(SubContext):
         self.provider_currency_type = ContextItem(cgi_name='acq.pct')
         self.provider_owner = ContextItem(cgi_name='acq.po')
 
+        self.po = ContextItem()
+        self.po_list = ContextItem()
+        self.po_id = ContextItem(cgi_name='acq.poid')
+        self.po_li_id_list = ContextItem(cgi_name='acq.poliil', multi=True)
 
         # -------------------------------------------------------------
         # utility functions

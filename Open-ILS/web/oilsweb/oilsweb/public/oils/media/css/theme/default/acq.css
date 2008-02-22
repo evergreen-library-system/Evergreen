@@ -28,6 +28,18 @@
 .oils-acq-picklist-entry-delete-link { font-size: 85%; }
 #oils-acq-pikclist-header-subtable tr { border: none; }
 
+#oils-acq-po-table thead tr { border: 1px solid #A1A1A1; }
+#oils-acq-po-header {border: 1px solid #85C777;}
+#oils-acq-po-entry-header {border: 1px solid #85C777;}
+#oils-acq-po-name { font-weight: bold; font-style: italic; }
+.oils-acq-po-attributes { font-size: 90%; margin-left: 15px;}
+.oils-acq-po-entry-attributes { font-size: 90%; margin-left: 15px;}
+.oils-acq-po-records-phys_desc-row { border-bottom: 1px solid #6BA160; }
+.oils-acq-po-po-td { border-style: solid; border-color: #A1A1A1; border-width: 0px 1px 0px 1px; } 
+.oils-acq-po-records-service-td { font-size: 85%; }
+.oils-acq-po-entry-delete-link { font-size: 85%; }
+#oils-acq-po-header-subtable tr { border: none; }
+
 #oils-acq-list-header {border-bottom: 1px solid #6BA160;}
 #oils-acq-list-header-label { font-weight: bold; font-size: 110%; }
 #oils-acq-list-header-actions { font-weight: bold; }

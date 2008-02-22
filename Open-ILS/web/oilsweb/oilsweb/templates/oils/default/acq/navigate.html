@@ -18,4 +18,12 @@
         <%include file='financial/navigate.html'/>
     </div>
 % endif
+<div class='oils-base-navigate-item'>
+    <a href='${c.oils.core.prefix.value}/acq/po/list'>${_('POs')}</a>
+</div>
+% if c.oils.core.page.value.startswith('acq/po'):
+    <div class='oils-base-navigate-sub-list'>
+        <%include file='po/navigate.html' />
+    </div>
+% endif
 
