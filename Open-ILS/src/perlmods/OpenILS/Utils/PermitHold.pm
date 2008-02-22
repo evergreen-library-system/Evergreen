@@ -34,6 +34,7 @@ sub permit_copy_hold {
 		_direct	=> {
 			requestLib	=> $$params{request_lib},
 			pickupLib	=> $$params{pickup_lib},
+            newHold    => $$params{new_hold},
 		}
 	};
 

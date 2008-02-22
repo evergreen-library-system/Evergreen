@@ -43,6 +43,7 @@ var currentLocation	= environment.location;
 var holdRequestLib	= environment.requestLib;
 var holdPickupLib       = environment.pickupLib; /* hold pickup lib */
 var requestor = environment.requestor || patron;
+var newHold = environment.newHold;
 
 
 

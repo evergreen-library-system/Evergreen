@@ -10,10 +10,12 @@ var isStaffHold = isGroupDescendantId('Staff', requestor.profile);
 
 /* non-staff members are allowed 50 open holds at most */
 if( ! isStaffHold ) {
-   var count = userHoldCount(patron.id);
-   log_info("patron has " + count + " open holds");
-   if( count >= 50 ) 
-      result.events.push('MAX_HOLDS');
+    if(newHold) {
+        var count = userHoldCount(patron.id);
+        log_info("patron has " + count + " open holds");
+        if( count >= 50 ) 
+            result.events.push('MAX_HOLDS');
+    }
 } else {
     log_info("This is a staff-placed hold");
 }

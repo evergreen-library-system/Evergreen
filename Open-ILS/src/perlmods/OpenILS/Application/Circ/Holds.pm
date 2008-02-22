@@ -1335,7 +1335,8 @@ sub verify_copy_for_hold {
 			title				=> $title, 
 			title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
 			pickup_lib			=> $pickup_lib,
-			request_lib			=> $request_lib 
+			request_lib			=> $request_lib,
+            new_hold            => 1
 		} 
 	);
 	return 0;
