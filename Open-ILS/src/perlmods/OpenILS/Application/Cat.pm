@@ -769,8 +769,7 @@ __PACKAGE__->register_method(
 	signature	=> q/
 		Merges a group of records
 		@param auth The login session key
-		@param master The id of the record all other r
-			ecords should be merged into
+		@param master The id of the record all other records should be merged into
 		@param records Array of records to be merged into the master record
 		@return 1 on success, Event on error.
 	/
@@ -783,8 +782,44 @@ sub merge {
 	my $editor = new_editor( requestor => $reqr, xact => 1 );
 	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
 	return $v if $v;
-	$editor->finish;
-	return 1;
+	$editor->commit;
+    # tell the client the merge is complete, then merge the holds
+    $conn->respond_complete(1);
+    merge_holds($master, $records);
+	return undef;
+}
+
+sub merge_holds {
+    my($master, $records) = @_;
+    return unless $master and @$records;
+    return if @$records == 1 and $master == $$records[0];
+
+    my $e = new_editor(xact=>1);
+    my $holds = $e->search_action_hold_request(
+        {   cancel_time => undef, 
+            fulfillment_time => undef,
+            hold_type => 'T',
+            target => $records
+        },
+        {idlist=>1}
+    );
+
+    for my $hold_id (@$holds) {
+
+        my $hold = $e->retrieve_action_hold_request($hold_id);
+
+        $logger->info("Changing hold ".$hold->id.
+            " target from ".$hold->target." to $master in record merge");
+
+        $hold->target($master);
+        unless($e->update_action_hold_request($hold)) {
+            my $evt = $e->event;
+            $logger->error("Error updating hold ". $evt->textcode .":". $evt->desc .":". $evt->stacktrace); 
+        }
+    }
+
+    $e->commit;
+    return undef;
 }
 
 
