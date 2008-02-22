@@ -218,11 +218,38 @@ sub merge_volumes {
 		$_->edit_date('now');
 		return (undef,$editor->die_event) unless $editor->allowed('UPDATE_VOLUME', $_->owning_lib);
 		$editor->update_asset_call_number($_) or return (undef, $editor->die_event);
+        merge_volume_holds($editor, $bigcn, $_->id);
 	}
 
 	my ($mvol) = grep { $_->id == $bigcn } @$volumes;
 	$logger->debug("merge: returning master volume ".$mvol->id);
 	return ($mvol);
+}
+
+sub merge_volume_holds {
+    my($e, $master_id, $vol_id) = @_;
+
+    my $holds = $e->search_action_hold_request(
+        {   cancel_time => undef, 
+            fulfillment_time => undef,
+            hold_type => 'V',
+            target => $vol_id
+        }
+    );
+
+    for my $hold (@$holds) {
+
+        $logger->info("Changing hold ".$hold->id.
+            " target from ".$hold->target." to $master_id in volume merge");
+
+        $hold->target($master_id);
+        unless($e->update_action_hold_request($hold)) {
+            my $evt = $e->event;
+            $logger->error("Error updating hold ". $evt->textcode .":". $evt->desc .":". $evt->stacktrace); 
+        }
+    }
+
+    return undef;
 }
 
 
