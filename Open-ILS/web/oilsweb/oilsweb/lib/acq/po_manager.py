@@ -34,12 +34,18 @@ class PO_Manager(object):
 
         return list
 
-    def retrieve(self):
+    def retrieve(self, **kwargs):
+        if 'flesh_lineitems' in kwargs:
+            flesh = kwargs['flesh_lineitems']
+        else:
+            flesh = 1
+
         po = self.ses.request('open-ils.acq.purchase_order.retrieve',
                               self.request_mgr.ctx.core.authtoken.value,
-                              self.id, {'flesh_lineitems':1}).recv().content()
-
+                              self.id,
+                              {'flesh_lineitems':flesh}).recv().content()
         oils.event.Event.parse_and_raise(po)
+
         datefmt = oilsweb.lib.user.User(self.request_mgr.ctx.core).get_date_format()
 
         po.create_time(mx.DateTime.ISO.ParseAny(po.create_time()).strftime(datefmt))

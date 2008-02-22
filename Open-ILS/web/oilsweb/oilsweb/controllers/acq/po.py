@@ -35,4 +35,10 @@ class PoController(BaseController):
         r = RequestMgr()
         po_mgr = oilsweb.lib.acq.po_manager.PO_Manager(r, liid=kwargs['id'])
         po_mgr.retrieve_lineitem()
+        r.ctx.acq.po_li.value = po_mgr.li
+
+        po_mgr.id = po_mgr.li.purchase_order()
+        po_mgr.retrieve(flesh_lineitems=0)
+        r.ctx.acq.po.value = po_mgr.po
+
         return r.render('acq/po/view_lineitem.html')

@@ -63,6 +63,16 @@
 #oils-acq-list-header-label { float: left; }
 #oils-acq-list-header-actions { float: right; }
 
+/* purchase order line item detail page */
+#oils-acq-po-li-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-po-li-summary {}
+#oils-acq-po-li-summary td {padding: 2px;}
+.oils-acq-po-li-attr {}
+.oils-acq-po-li-attr-type {}
+.oils-acq-po-li-attr-name {}
+.oils-acq-po-li-attr-value {}
+#oils-acq-po-li-marc-block { margin-top: 10px; padding: 6px; }
+
 /* picklist entry page */
 #oils-acq-picklist-entry-header { padding: 4px; margin-bottom: 20px; }
 #oils-acq-picklist-entry-summary {}

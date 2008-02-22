@@ -1,0 +1,11 @@
+<div id='oils-acq-po-li-header'>
+    ${_('Purchase Order Line Item')}
+    <div class='oils-acq-po-li-attributes'>
+        <%
+        ctime = _("Create date %(data)s") % {"data":c.oils.acq.po_li.value.create_time()}
+        etime = _("Last update time %(data)s") % {"data":c.oils.acq.po_li.value.edit_time()}
+        %>
+        <div>${ctime}</div>
+        <div>${etime}</div>
+    </div>
+</div>
