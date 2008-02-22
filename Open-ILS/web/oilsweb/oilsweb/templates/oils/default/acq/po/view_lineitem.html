@@ -8,4 +8,21 @@
 <%include file='po_summary.html' />
 <%include file='po_li_summary.html' />
 
+<%
+   from oilsweb.lib.acq.po_manager import PO_Manager
+%>
+
+<table id="oils-acq-po-li-details-table">
+  <Thead>
+    <tr><td>Fund</td><td># of Copies</td></tr>
+  </thead>
+  <tbody>
+    % for fund, count in c.oils.acq.po_li_sum.value.iteritems():
+    <tr class="oils-acq-po-li-detail-row">
+      <td>${fund}</td><td>${count}</td>
+    </tr>
+    % endfor
+  </tbody>
+</table>
+
 </%def>

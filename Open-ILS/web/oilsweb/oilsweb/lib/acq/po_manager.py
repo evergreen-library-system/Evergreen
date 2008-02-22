@@ -52,10 +52,10 @@ class PO_Manager(object):
         po.edit_time(mx.DateTime.ISO.ParseAny(po.edit_time()).strftime(datefmt))
         self.po = po
 
-    def retrieve_lineitem(self):
+    def retrieve_lineitem(self, **kwargs):
         li = self.ses.request('open-ils.acq.po_lineitem.retrieve',
                               self.request_mgr.ctx.core.authtoken.value,
-                              self.liid, {'flesh_details':1}).recv().content()
+                              self.liid, {'flesh_li_details':1}).recv().content()
         datefmt = oilsweb.lib.user.User(self.request_mgr.ctx.core).get_date_format()
         li.create_time(mx.DateTime.ISO.ParseAny(li.create_time()).strftime(datefmt))
         li.edit_time(mx.DateTime.ISO.ParseAny(li.edit_time()).strftime(datefmt))
@@ -63,6 +63,8 @@ class PO_Manager(object):
 
     @staticmethod
     def find_li_attr(li, attr_name, attr_type='picklist_marc_attr_definition'):
+        if not li.attributes():
+            return ''
         for li_attr in li.attributes():
             if li_attr.attr_type() == attr_type and li_attr.attr_name() == attr_name:
                 return li_attr.attr_value()

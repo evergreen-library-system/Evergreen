@@ -75,6 +75,7 @@ class AcqContext(SubContext):
         self.po_id = ContextItem(cgi_name='acq.poid')
         self.po_li_id_list = ContextItem(cgi_name='acq.poliil', multi=True)
         self.po_li = ContextItem()
+        self.po_li_sum = ContextItem()
 
         # -------------------------------------------------------------
         # utility functions

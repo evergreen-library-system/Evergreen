@@ -72,6 +72,8 @@
 .oils-acq-po-li-attr-name {}
 .oils-acq-po-li-attr-value {}
 #oils-acq-po-li-marc-block { margin-top: 10px; padding: 6px; }
+#oils-acq-po-li-details-table { width: 100%; }
+.oils-acq-po-li-detail-row {}
 
 /* picklist entry page */
 #oils-acq-picklist-entry-header { padding: 4px; margin-bottom: 20px; }

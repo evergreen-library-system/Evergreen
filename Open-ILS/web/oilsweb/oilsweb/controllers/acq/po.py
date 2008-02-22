@@ -37,6 +37,15 @@ class PoController(BaseController):
         po_mgr.retrieve_lineitem()
         r.ctx.acq.po_li.value = po_mgr.li
 
+        summary = dict()
+        for det in po_mgr.li.lineitem_details():
+            fund = det.fund().name()
+            try:
+                summary[fund] += 1
+            except LookupError:
+                summary[fund] = 1
+        r.ctx.acq.po_li_sum.value = summary
+
         po_mgr.id = po_mgr.li.purchase_order()
         po_mgr.retrieve(flesh_lineitems=0)
         r.ctx.acq.po.value = po_mgr.po
