@@ -1,5 +1,11 @@
 <div id='oils-acq-po-header'>
+    % if c.oils.acq.po_li.value:
+    <a href="../view/${c.oils.acq.po.value.id()}">
+    % endif
     ${_('Purchase Order')} <span id="oils-acq-po-name">${c.oils.acq.po.value.id()}</span>
+    % if c.oils.acq.po_li_sum:
+    </a>
+    % endif
     <div class='oils-acq-po-attributes'>
         <%
         meta = _("Create date %(date)s") % {"date":c.oils.acq.po.value.create_time()}
