@@ -149,6 +149,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 			$id =~ s/\D+//gso;
 		}
+		$id = '' if (exists $dontuse_id{$id});
 	}
 
 	if (!$id) {
@@ -168,7 +169,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	my $tcn;
 	($rec, $tcn) = preprocess($rec, $id);
 
-    $tcn->add_subfields(c => $id);
+	$tcn->add_subfields(c => $id);
 
 	$rec->delete_field( $_ ) for ($rec->field($id_field));
 	$rec->append_fields( $tcn );
@@ -214,12 +215,14 @@ sub preprocess {
 	my $rec = shift;
 	my $id = shift;
 
-	my ($source, $value) = ('','','');
+	my ($source, $value) = ('','');
+
+	$id = '' if (exists $dontuse_id{$id});
 
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
-        $id = '' if (exists $dontuse_id{$id});
+		$id = '' if (exists $dontuse_id{$id});
 	}
 
 	if (!$id || exists $dontuse_id{$source.$id}) {
