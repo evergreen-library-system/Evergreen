@@ -166,7 +166,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	}
 
 	my $tcn;
-	($rec, $tcn) = preprocess($rec);
+	($rec, $tcn) = preprocess($rec, $id);
 
     $tcn->add_subfields(c => $id);
 
@@ -212,8 +212,9 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 sub preprocess {
 	my $rec = shift;
+	my $id = shift;
 
-	my ($id, $source, $value) = ('','','');
+	my ($source, $value) = ('','','');
 
 	if (!$id) {
 		my $f = $rec->field('001');
