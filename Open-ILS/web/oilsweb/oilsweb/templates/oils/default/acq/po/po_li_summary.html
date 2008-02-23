@@ -2,8 +2,10 @@
     ${_('Purchase Order Line Item')}
     <div class='oils-acq-po-li-attributes'>
         <%
-        ctime = _("Create date %(data)s") % {"data":c.oils.acq.po_li.value.create_time()}
-        etime = _("Last update time %(data)s") % {"data":c.oils.acq.po_li.value.edit_time()}
+	li = c.oils.acq.po_li.value
+
+        ctime = _("Create date %(data)s") % {"data":li.create_time()}
+        etime = _("Last update time %(data)s") % {"data":li.edit_time()}
         %>
         <div>${ctime}</div>
         <div>${etime}</div>
@@ -13,8 +15,6 @@
  <%
     import oilsweb.lib.bib
     from oilsweb.lib.acq.po_manager import PO_Manager
-
-    li = c.oils.acq.po_li.value
 %>
 
 	<tr class='oils-acq-po-records-title-row'>
@@ -22,7 +22,7 @@
             <img class='oils-acq-po-records-jacket'
                  src='${c.oils.core.ac_prefix.value}/jacket/small/${oilsweb.lib.bib.scrub_isbn(PO_Manager.find_li_attr(li, "isbn"))}'/>
           </td>
-          <td>
+          <td>${PO_Manager.find_li_attr(li, "title")}</td>
 	</tr>
 
 	<tr class='oils-acq-po-records-author-row'>
@@ -36,7 +36,6 @@
           </td>
 	  <td>${PO_Manager.find_li_attr(li, "price")}</td>
 	</tr>
-
       </table>
     </div>
 </div>

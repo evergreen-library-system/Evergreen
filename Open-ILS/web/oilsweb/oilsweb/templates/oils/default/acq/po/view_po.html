@@ -23,6 +23,7 @@
 	    </td>
 	</tr></table>
     </td></tr>
+    <tr><td colspan="2">Item</td><td># of Copies</td><td>Select</td>
   </thead>
   <tbody>
  <%
@@ -38,6 +39,7 @@
         <td>
             <a href='../view_lineitem/${li.id()}'>${PO_Manager.find_li_attr(li, "title")}</a>
         </td>
+	<td>${li.item_count()}</td>
         <td><input type='checkbox' name='${c.oils.acq.po_li_id_list.cgi_name}' value='${li.id()}'/></td>
     </tr>
 
@@ -55,8 +57,6 @@
     </tr>
     % endfor
   </tbody>
-  <tr><th>
 </table>
-<input type="submit" value="">
 </form>
 </%def>
