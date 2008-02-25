@@ -1,5 +1,6 @@
 from oilsweb.lib.base import *
 from oilsweb.lib.request import RequestMgr
+from oilsweb.lib.acq import provider_mgr
 from osrf.ses import ClientSession
 from osrf.net_obj import NetworkObject
 from oils.event import Event
@@ -12,10 +13,7 @@ class ProviderController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-        provider = ses.request('open-ils.acq.provider.retrieve', 
-            r.ctx.core.authtoken.value, kwargs.get('id')).recv().content()
-        Event.parse_and_raise(provider)
+        provider = provider_mgr.retrieve(r, kwargs['id'])
         provider.owner(OrgUtil.get_org_unit(provider.owner()))
         r.ctx.acq.provider.value = provider
         return r.render('acq/financial/view_provider.html')
@@ -54,11 +52,7 @@ class ProviderController(BaseController):
 
     def list(self):
         r = RequestMgr()
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-        providers = ses.request(
-            'open-ils.acq.provider.org.retrieve', 
-            r.ctx.core.authtoken.value, None, {"flesh_summary":1}).recv().content()
-        Event.parse_and_raise(providers)
+        providers = provider_mgr.list(r)
         for f in providers:
             f.owner(OrgUtil.get_org_unit(f.owner()))
         r.ctx.acq.provider_list.value = providers

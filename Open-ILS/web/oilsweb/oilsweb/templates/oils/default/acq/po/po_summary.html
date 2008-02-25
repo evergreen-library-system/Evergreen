@@ -10,7 +10,7 @@
         <%
         meta = _("Create date %(date)s") % {"date":c.oils.acq.po.value.create_time()}
         meta2 = _("Last updated %(date)s") % {"date":c.oils.acq.po.value.edit_time()}
-	meta3 = _("Provider: %(provider)s") % {"provider":c.oils.acq.po.value.provider()}
+	meta3 = _("Provider: %(provider)s") % {"provider":c.oils.acq.provider.value.name()}
         %>
         <div>${meta}</div>
         <div>${meta2}</div>

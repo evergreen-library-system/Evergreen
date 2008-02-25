@@ -15,6 +15,7 @@
     <thead>
         <tr>
             <td>${_('ID')}</td>
+	    <td>${_('Provider')}</td>
             <td>${_('Creation Date')}</td>
             <td>${_('Edit Date')}</td>
             <td>${_('Number of Entries')}</td>
@@ -26,6 +27,7 @@
     % for po in c.oils.acq.po_list.value:
     <tr>
         <td><a href='${c.oils.acq.prefix.value}/po/view/${po.id()}'>${po.id()}</a></td>
+	<td>${po.provider()}</td>
         <td>${po.create_time()}</td>
         <td>${po.edit_time()}</td>
         <td>${po.lineitem_count()}</td>

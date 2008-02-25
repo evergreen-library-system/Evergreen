@@ -1,5 +1,6 @@
 from oilsweb.lib.base import *
 from oilsweb.lib.request import RequestMgr
+from oilsweb.lib.acq import provider_mgr;
 import oilsweb.lib.user
 import osrf.net_obj
 import oils.const
@@ -19,7 +20,13 @@ class PoController(BaseController):
     def list(self, **kwargs):
         r = RequestMgr()
         po_mgr = oilsweb.lib.acq.po_manager.PO_Manager(r)
-        r.ctx.acq.po_list.value = po_mgr.retrieve_po_list()
+        po_list = po_mgr.retrieve_po_list()
+        provider_map = dict()
+        for po in po_list:
+            if not (po.provider() in provider_map):
+                provider_map[po.provider()] = provider_mgr.retrieve(r, po.provider()).name()
+            po.provider(provider_map[po.provider()])
+        r.ctx.acq.po_list.value = po_list
         return r.render('acq/po/view_po_list.html')
 
     # Render display of individual PO: list of line items
@@ -28,6 +35,7 @@ class PoController(BaseController):
         po_mgr = oilsweb.lib.acq.po_manager.PO_Manager(r, poid=kwargs['id'])
         po_mgr.retrieve()
         r.ctx.acq.po.value = po_mgr.po
+        r.ctx.acq.provider.value = provider_mgr.retrieve(r, po_mgr.po.provider())
         return r.render('acq/po/view_po.html')
 
     # Render individual line item: list of detail info
