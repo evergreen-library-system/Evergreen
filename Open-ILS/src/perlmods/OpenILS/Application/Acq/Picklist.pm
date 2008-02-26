@@ -96,6 +96,9 @@ sub retrieve_picklist {
             $e->allowed('VIEW_PICKLIST', undef, $picklist);
     }
 
+    $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname) 
+        if($$options{flesh_username});
+
     return $picklist;
 }
 
