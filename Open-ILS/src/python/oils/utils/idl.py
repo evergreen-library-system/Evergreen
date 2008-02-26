@@ -152,7 +152,7 @@ class IDLParser(object):
             try:
                 keys[obj.position] = obj.name
             except Exception, e:
-                osrf.log.log_error("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
+                osrf.log.log_warn("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
                 raise e
 
             idlobj.fields.append(obj)
