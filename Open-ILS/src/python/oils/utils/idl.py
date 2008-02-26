@@ -152,7 +152,7 @@ class IDLParser(object):
             try:
                 keys[obj.position] = obj.name
             except Exception, e:
-                osrf.log.log_warn("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
+                osrf.log.log_error("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
                 raise e
 
             idlobj.fields.append(obj)
@@ -184,7 +184,7 @@ class IDLClass(object):
             return [f for f in self.fields if f.name == field_name][0]
         except:
             msg = "No field '%s' in IDL class '%s'" % (field_name, self.name)
-            osrf.log.log_error(msg)
+            osrf.log.log_warn(msg)
             #raise IDLException(msg)
 
 class IDLField(object):
