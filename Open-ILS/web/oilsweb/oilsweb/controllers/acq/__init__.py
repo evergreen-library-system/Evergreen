@@ -39,7 +39,7 @@ class AcqContext(SubContext):
 
         self.fund = ContextItem()
         self.fund_id = ContextItem(cgi_name='acq.fi')
-        self.fund_list = ContextItem()
+        self.fund_list = ContextItem(cgi_name='acq.fl')
         self.fund_name = ContextItem(cgi_name='acq.fn')
         self.fund_year = ContextItem(cgi_name='acq.fc')
         self.fund_org = ContextItem(cgi_name='acq.fo')
@@ -64,7 +64,7 @@ class AcqContext(SubContext):
         self.fund_allocation_note = ContextItem(cgi_name='acq.fan')
 
         self.provider = ContextItem()
-        self.provider_id = ContextItem()
+        self.provider_id = ContextItem(cgi_name='acq.proid')
         self.provider_list = ContextItem()
         self.provider_name = ContextItem(cgi_name='acq.pn')
         self.provider_currency_type = ContextItem(cgi_name='acq.pct')

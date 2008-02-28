@@ -13,7 +13,7 @@ class PicklistMgr(object):
     def retrieve(self):
         picklist = self.ses.request(
             'open-ils.acq.picklist.retrieve', 
-            self.request_mgr.ctx.core.authtoken.value, self.id, {'flesh_entry_count':1}).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, self.id, {'flesh_entry_count':1, 'flesh_username':1}).recv().content()
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
@@ -54,6 +54,7 @@ class PicklistMgr(object):
             {
                 "offset" : kwargs.get('offset'),
                 "limit" : kwargs.get('limit'),
+                "idlist" : kwargs.get('idlist'),
                 "flesh" : 1,
                 "clear_marc" : 1
             }

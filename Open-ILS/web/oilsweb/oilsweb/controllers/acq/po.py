@@ -1,6 +1,6 @@
 from oilsweb.lib.base import *
 from oilsweb.lib.request import RequestMgr
-from oilsweb.lib.acq import provider_mgr;
+from oilsweb.lib.acq import provider_mgr
 import oilsweb.lib.user
 import osrf.net_obj
 import oils.const
@@ -9,10 +9,8 @@ from oils.event import Event
 from oils.org import OrgUtil
 import mx.DateTime.ISO
 import oilsweb.lib.acq.po_manager
-
-# open-ils.acq.purchase_order.retrieve "2f9697131c80e49fb9f2515781102f6a",
-# 8, {"flesh_lineitems":1,"clear_marc":1}
-
+from oilsweb.lib.acq.picklist import PicklistMgr
+from oilsweb.lib.acq.fund import FundMgr
 
 class PoController(BaseController):
 
@@ -38,6 +36,48 @@ class PoController(BaseController):
         r.ctx.acq.provider.value = provider_mgr.retrieve(r, po_mgr.po.provider())
         return r.render('acq/po/view_po.html')
 
+    # Create PO from contents of picklist
+    def create(self, **kwargs):
+        r = RequestMgr()
+        if not r.ctx.acq.picklist_source_id.value:
+            plmgr = PicklistMgr(r,
+                                picklist_id=r.ctx.acq.picklist_source_id.value)
+            r.ctx.acq.picklist_list.value = plmgr.retrieve_list(r)
+
+            r.ctx.acq.fund_list.value = FundMgr(r).retrieve_org_funds()
+            provider_list = provider_mgr.list(r)
+            for p in provider_list:
+                p.owner(OrgUtil.get_org_unit(p.owner()))
+            r.ctx.acq.provider_list.value = provider_list
+            return r.render('acq/po/create.html')
+
+        po = osrf.net_obj.NetworkObject.acqpo()
+        po.owner(r.ctx.core.user.value.id())
+        po.provider(r.ctx.acq.provider_id.value)
+        po.default_fund(r.ctx.acq.fund_id.value)
+
+        po_id = ClientSession.atomic_request(oils.const.OILS_APP_ACQ,
+                                             'open-ils.acq.purchase_order.create',
+                                             r.ctx.core.authtoken.value, po)
+        Event.parse_and_raise(po_id)
+
+        plmgr = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=r.ctx.acq.picklist_source_id.value)
+
+        plmgr.retrieve()
+        plmgr.retrieve_entries(idlist=1)
+
+        for pl_item in plmgr.picklist.entries():
+            po_lineitem = osrf.net_obj.NetworkObject.acqpoli()
+            po_lineitem.purchase_order(po_id)
+            po_lineitem_id = ClientSession.atomic_request(oils.const.OILS_APP_ACQ,
+                                                          'open-ils.acq.po_lineitem.create',
+                                                          r.ctx.core.authtoken.value,
+                                                          po_lineitem,
+                                                          { 'picklist_entry': pl_item})
+            Event.parse_and_raise(po_lineitem_id)
+
+        return redirect_to(controller='acq/po', action='view', id=po_id)
+
     # Render individual line item: list of detail info
     def view_lineitem(self, **kwargs):
         r = RequestMgr()
@@ -59,3 +99,10 @@ class PoController(BaseController):
         r.ctx.acq.po.value = po_mgr.po
 
         return r.render('acq/po/view_lineitem.html')
+
+    def delete(self, **kwargs):
+        r = RequestMgr()
+        ClientSession.atomic_request(oils.const.OILS_APP_ACQ,
+                                     'open-ils.acq.purchase_order.delete',
+                                     r.ctx.core.authtoken.value, kwargs['id'])
+        return r.render('acq/po/list')
