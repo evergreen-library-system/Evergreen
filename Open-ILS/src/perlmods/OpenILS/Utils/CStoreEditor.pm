@@ -543,7 +543,7 @@ sub runmethod {
 	$self->clear_event;
 
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
-		if(!$self->{xact}) {
+		if(!($self->{xact} or $always_xact)) {
 			$logger->error("Attempt to update DB while not in a transaction : $method");
 			throw OpenSRF::EX::ERROR ("Attempt to update DB while not in a transaction : $method");
 		}
