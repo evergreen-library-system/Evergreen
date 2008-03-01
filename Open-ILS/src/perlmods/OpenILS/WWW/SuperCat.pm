@@ -1344,7 +1344,7 @@ sub sru_search {
         ) for @$recs;
 
     	print $cgi->header( -type => 'application/xml' );
-    	print entityize($resp->toXML) . "\n";
+    	print entityize($resp->asXML) . "\n";
 	    return Apache2::Const::OK;
     }
 }
