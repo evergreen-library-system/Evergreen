@@ -1334,7 +1334,7 @@ sub sru_search {
 			'open-ils.search.biblio.multiclass.query' => {} => $search_string
 		)->gather(1);
 
-        $recs = $supercat->request( 'open-ils.supercat.record.object.retrieve' => $recs->{ids} );
+        $recs = $supercat->request( 'open-ils.supercat.record.object.retrieve' => $recs->{ids} )->gather(1);
 
         $resp->addRecord(
             SRU::Response::Record->new(
@@ -1452,7 +1452,7 @@ sub sru_search {
         if ( $qualifier ) {
 
             if ( exists($qualifier_map{lc($qualifier)}) ) {
-                $qualifier = 'kw' unless ( defined($qualifier_map{lc($qualifier)}) );
+                $qualifier = $qualifier_map{lc($qualifier)} || 'kw';
             }
 
 
