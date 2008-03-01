@@ -1449,26 +1449,32 @@ sub sru_search {
         my $relation  = $self->getRelation();
 
         my $query;
-        if ( $qualifier and $qualifier_map{lc($qualifier)} ) {
-            my $base      = $relation->getBase();
-            my @modifiers = $relation->getModifiers();
+        if ( $qualifier ) {
 
-            foreach my $m ( @modifiers ) {
-                if( $m->[ 1 ] eq 'fuzzy' ) {
-                    $term = "$term~";
-                }
+            if ( exists($qualifier_map{lc($qualifier)}) ) {
+                $qualifier = 'kw' unless ( defined($qualifier_map{lc($qualifier)}) );
             }
 
+
+            #my @modifiers = $relation->getModifiers();
+
+            #foreach my $m ( @modifiers ) {
+            #    if( $m->[ 1 ] eq 'fuzzy' ) {
+            #        $term = "$term~";
+            #    }
+            #}
+
+            my $base = $relation->getBase();
             if( $base eq '=' ) {
                 $base = ':';
             } else {
                 croak( "Evergreen doesn't support relations other than '='" );
             }
+
             return "$qualifier$base$term";
-        } elsif ($qualifier) {
-            return "kw:$term";
+
         } else {
-            return "";
+            return "kw:$term";
         }
     }
 }
