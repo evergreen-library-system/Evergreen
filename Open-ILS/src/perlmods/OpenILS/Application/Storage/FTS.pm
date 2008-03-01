@@ -6,7 +6,25 @@ package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
 use Parse::RecDescent;
 
-my $_default_grammar_parser = new Parse::RecDescent ( join '', (<DATA>) );
+my $_default_grammar_parser = new Parse::RecDescent ( <<'GRAMMAR' );
+
+<autotree>
+
+search_expression: or_expr(s) | and_expr(s) | expr(s)
+or_expr: lexpr '||' rexpr
+and_expr: lexpr '&&' rexpr
+lexpr: expr
+rexpr: expr
+expr: phrase(s) | group(s) | word(s)
+joiner: '||' | '&&'
+phrase: '"' token(s) '"'
+group : '(' search_expression ')'
+word: numeric_range | negative_token | token
+negative_token: '-' .../\D+/ token
+token: /[-\w]+/
+numeric_range: /\d+-\d*/
+
+GRAMMAR
 
 sub compile {
 
@@ -93,6 +111,11 @@ sub fts_query {
 sub raw {
 	my $self = shift;
 	return $self->{raw};
+}
+
+sub parse_tree {
+	my $self = shift;
+	return $self->{parsetree};
 }
 
 sub fts_col {
@@ -221,21 +244,4 @@ package Class::DBI;
 }
 
 1;
-
-__DATA__
-<autotree>
-
-search_expression: or_expr(s) | and_expr(s) | expr(s)
-or_expr: lexpr '||' rexpr
-and_expr: lexpr '&&' rexpr
-lexpr: expr
-rexpr: expr
-expr: phrase(s) | group(s) | word(s)
-joiner: '||' | '&&'
-phrase: '"' token(s) '"'
-group : '(' search_expression ')'
-word: numeric_range | negative_token | token
-negative_token: '-' .../\D+/ token
-token: /[-\w]+/
-numeric_range: /\d+-\d*/
 
