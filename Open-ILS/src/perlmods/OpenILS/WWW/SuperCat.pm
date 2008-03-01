@@ -9,6 +9,8 @@ use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use CGI;
 use Data::Dumper;
+use SRU::Request;
+use SRU::Response;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils qw/:datetime/;
@@ -1314,6 +1316,161 @@ sub string_browse {
 	my ($header,$content) = $browse_types{$axis}{$format}->($tree,$prev,$next);
 	print $header.$content;
 	return Apache2::Const::OK;
+}
+
+sub sru_search {
+    my $cgi = new CGI;
+
+    my $req = SRU::Request->newFromCGI( $cgi );
+    my $resp = SRU::Response->newFromRequest( $req );
+
+    if ( $resp->type eq 'searchRetrieve' ) {
+		my $cql_query = $req->query;
+		my $search_string = $req->cql->toEvergreen;
+
+        warn "SRU search string [$cql_query] converted to [$search_string]\n";
+
+ 		my $recs = $search->request(
+			'open-ils.search.biblio.multiclass.query' => {} => $search_string
+		)->gather(1);
+
+        $recs = $supercat->request( 'open-ils.supercat.record.object.retrieve' => $recs->{ids} );
+
+        $resp->addRecord(
+            SRU::Response::Record->new(
+                recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
+                recordData => $_->marc
+            )
+        ) for @$recs;
+
+    	print $cgi->header( -type => 'application/xml' );
+    	print entityize($resp->toXML) . "\n";
+	    return Apache2::Const::OK;
+    }
+}
+
+{
+    package CQL::BooleanNode;
+
+    sub toEvergreen {
+        my $self     = shift;
+        my $left     = $self->left();
+        my $right    = $self->right();
+        my $leftStr  = $left->isa('CQL::TermNode') ? $left->toEvergreen()
+            : '('.$left->toEvergreen().')';
+        my $rightStr = $right->isa('CQL::TermNode') ? $right->toEvergreen()
+            : '('.$right->toEvergreen().')';
+
+        my $op =  '||' if uc $self->op() eq 'OR';
+        $op ||=  '&&';
+
+        return  "$leftStr $rightStr";
+    }
+
+    package CQL::TermNode;
+
+    our %qualifier_map = (
+
+        # Title class:
+        'dc.title'              => 'title',
+        'bib.titleabbreviated'  => 'title|abbreviated',
+        'bib.titleuniform'      => 'title|uniform',
+        'bib.titletranslated'   => 'title|translated',
+        'bib.titlealternative'  => 'title',
+        'bib.titleseries'       => 'series',
+
+        # Author/Name class:
+        'creator'               => 'author',
+        'dc.creator'            => 'author',
+        'dc.contributer'        => 'author',
+        'dc.publisher'          => 'keyword',
+        'bib.name'              => 'author',
+        'bib.namepersonal'      => 'author|personal',
+        'bib.namepersonalfamily'=> 'author|personal',
+        'bib.namepersonalgiven' => 'author|personal',
+        'bib.namecorporate'     => 'author|corporate',
+        'bib.nameconference'    => 'author|converence',
+
+        # Subject class:
+        'dc.subject'            => 'subject',
+        'bib.subjectplace'      => 'subject|geographic',
+        'bib.subjecttitle'      => 'keyword',
+        'bib.subjectname'       => 'subject|name',
+        'bib.subjectoccupation' => 'keyword',
+
+        # Keyword class:
+        'srw.serverchoice'      => 'keyword',
+
+        # Identifiers:
+        'dc.identifier'         => 'keyword',
+
+        # Dates:
+        'bib.dateissued'        => undef,
+        'bib.datecreated'       => undef,
+        'bib.datevalid'         => undef,
+        'bib.datemodified'      => undef,
+        'bib.datecopyright'     => undef,
+
+        # Resource Type:
+        'dc.type'               => undef,
+
+        # Format:
+        'dc.format'             => undef,
+
+        # Genre:
+        'bib.genre'             => undef,
+
+        # Target Audience:
+        'bib.audience'          => undef,
+
+        # Place of Origin:
+        'bib.originplace'       => undef,
+
+        # Language
+        'dc.language'           => 'lang',
+
+        # Edition
+        'bib.edition'           => undef,
+
+        # Part:
+        'bib.volume'            => undef,
+        'bib.issue'             => undef,
+        'bib.startpage'         => undef,
+        'bib.endpage'          => undef,
+
+        # Issuance:
+        'bib.issuance'          => undef,
+    );
+
+    sub toEvergreen {
+        my $self      = shift;
+        my $qualifier = maybeQuote( $self->getQualifier() );
+        my $term      = $self->getTerm();
+        my $relation  = $self->getRelation();
+
+        my $query;
+        if ( $qualifier and $qualifier_map{lc($qualifier)} ) {
+            my $base      = $relation->getBase();
+            my @modifiers = $relation->getModifiers();
+
+            foreach my $m ( @modifiers ) {
+                if( $m->[ 1 ] eq 'fuzzy' ) {
+                    $term = "$term~";
+                }
+            }
+
+            if( $base eq '=' ) {
+                $base = ':';
+            } else {
+                croak( "Evergreen doesn't support relations other than '='" );
+            }
+            return "$qualifier$base$term";
+        } elsif ($qualifier) {
+            return "kw:$term";
+        } else {
+            return "";
+        }
+    }
 }
 
 1;
