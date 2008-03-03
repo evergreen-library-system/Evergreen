@@ -1328,20 +1328,29 @@ sub sru_search {
 		my $cql_query = $req->query;
 		my $search_string = $req->cql->toEvergreen;
 
+        my $offset = $req->startRecord;
+        $offset-- if ($offset);
+        $offset ||= 0;
+
+        my $limit = $req->maximumRecords;
+        $limit ||= 10;
+
         warn "SRU search string [$cql_query] converted to [$search_string]\n";
 
  		my $recs = $search->request(
-			'open-ils.search.biblio.multiclass.query' => {} => $search_string
+			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string
 		)->gather(1);
 
-        $recs = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
+        my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
 
         $resp->addRecord(
             SRU::Response::Record->new(
                 recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
                 recordData => $_->marc
             )
-        ) for @$recs;
+        ) for @$bre;
+
+        $resp->numberOfRecords($recs->{count}}
 
     	print $cgi->header( -type => 'application/xml' );
     	print entityize($resp->asXML) . "\n";
@@ -1370,6 +1379,12 @@ sub sru_search {
     package CQL::TermNode;
 
     our %qualifier_map = (
+
+        # Som EG qualifiers
+        'eg.site'               => 'site',
+        'eg.sort'               => 'sort',
+        'eg.direction'          => 'dir',
+        'eg.available'          => 'available',
 
         # Title class:
         'dc.title'              => 'title',
@@ -1418,7 +1433,7 @@ sub sru_search {
         'dc.format'             => undef,
 
         # Genre:
-        'bib.genre'             => undef,
+        'bib.genre'             => 'keyword',
 
         # Target Audience:
         'bib.audience'          => undef,
@@ -1430,21 +1445,21 @@ sub sru_search {
         'dc.language'           => 'lang',
 
         # Edition
-        'bib.edition'           => undef,
+        'bib.edition'           => 'keyword',
 
         # Part:
-        'bib.volume'            => undef,
-        'bib.issue'             => undef,
-        'bib.startpage'         => undef,
-        'bib.endpage'          => undef,
+        'bib.volume'            => 'keyword',
+        'bib.issue'             => 'keyword',
+        'bib.startpage'         => 'keyword',
+        'bib.endpage'          => 'keyword',
 
         # Issuance:
-        'bib.issuance'          => undef,
+        'bib.issuance'          => 'keyword',
     );
 
     sub toEvergreen {
         my $self      = shift;
-        my $qualifier = maybeQuote( $self->getQualifier() );
+        my $qualifier = $self->getQualifier();
         my $term      = $self->getTerm();
         my $relation  = $self->getRelation();
 
@@ -1456,22 +1471,27 @@ sub sru_search {
             }
 
 
-            #my @modifiers = $relation->getModifiers();
-
-            #foreach my $m ( @modifiers ) {
-            #    if( $m->[ 1 ] eq 'fuzzy' ) {
-            #        $term = "$term~";
-            #    }
-            #}
+            my @modifiers = $relation->getModifiers();
 
             my $base = $relation->getBase();
-            if( $base eq '=' ) {
-                $base = ':';
+            if ( grep { $base eq $_ } qw/= scr exact all/ ) {
+
+                my $quote_it = 1;
+                foreach my $m ( @modifiers ) {
+                    if( grep { $m->[ 1 ] eq $_ } qw/cql.fuzzy cql.stem cql.relevant cql.word/ ) {
+                        $quote_it = 0;
+                        last;
+                    }
+                }
+
+                $quote_it = 0 if ( $base eq 'all' );
+                $term = maybeQuote($term) if $quote_it;
+
             } else {
-                croak( "Evergreen doesn't support relations other than '='" );
+                croak( "Evergreen doesn't support the $base relations" );
             }
 
-            return "$qualifier$base$term";
+            return "$qualifier:$term";
 
         } else {
             return "kw:$term";
