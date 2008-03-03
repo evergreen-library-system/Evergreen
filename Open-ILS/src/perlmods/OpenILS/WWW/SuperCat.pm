@@ -1365,10 +1365,8 @@ sub sru_search {
         my $self     = shift;
         my $left     = $self->left();
         my $right    = $self->right();
-        my $leftStr  = $left->isa('CQL::TermNode') ? $left->toEvergreen()
-            : '('.$left->toEvergreen().')';
-        my $rightStr = $right->isa('CQL::TermNode') ? $right->toEvergreen()
-            : '('.$right->toEvergreen().')';
+        my $leftStr  = $left->toEvergreen;
+        my $rightStr = $right->toEvergreen();
 
         my $op =  '||' if uc $self->op() eq 'OR';
         $op ||=  '&&';
