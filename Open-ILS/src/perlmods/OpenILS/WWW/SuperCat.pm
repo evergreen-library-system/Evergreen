@@ -1451,7 +1451,7 @@ sub sru_search {
         'bib.volume'            => 'keyword',
         'bib.issue'             => 'keyword',
         'bib.startpage'         => 'keyword',
-        'bib.endpage'          => 'keyword',
+        'bib.endpage'           => 'keyword',
 
         # Issuance:
         'bib.issuance'          => 'keyword',
