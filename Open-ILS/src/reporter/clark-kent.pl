@@ -1,7 +1,6 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
-use diagnostics;
 use DBI;
 use FileHandle;
 use XML::LibXML;
