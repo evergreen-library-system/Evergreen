@@ -1350,7 +1350,7 @@ sub sru_search {
             )
         ) for @$bre;
 
-        $resp->numberOfRecords($recs->{count}}
+        $resp->numberOfRecords($recs->{count});
 
     	print $cgi->header( -type => 'application/xml' );
     	print entityize($resp->asXML) . "\n";
