@@ -178,6 +178,7 @@ CPAN_MODULES = \
     TMTM/Class-DBI-0.96.tar.gz \
     RHANDOM/Net-Server-0.90.tar.gz \
     MARC::Charset MARC::File::XML\
+    SRU \
     Net::Z3950::ZOOM
 
 
@@ -279,5 +280,4 @@ install_gentoo_perl:
 
 # ------------------------------------------------------------------
     
-
 
