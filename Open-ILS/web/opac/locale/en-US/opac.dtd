@@ -209,23 +209,22 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
-<!ENTITY myopac.holds.freeze_selected "Freeze">
-<!ENTITY myopac.holds.thaw_selected "Un-freeze">
-<!ENTITY myopac.holds.thaw_date_selected "Set Un-freeze date">
+<!ENTITY myopac.holds.freeze_selected "Suspend">
+<!ENTITY myopac.holds.thaw_selected "Activate">
+<!ENTITY myopac.holds.thaw_date_selected "Set Active Date">
 <!ENTITY myopac.holds.cancel_selected "Cancel">
 <!ENTITY myopac.holds.processing "Processing holds... This may take a moment.">
 <!ENTITY myopac.holds.actions 'Actions for selected holds'>
 <!ENTITY myopac.holds.cancel.confirm 'Are you sure you wish to cancel the selected holds?'>
-<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to freeze the selected holds?
-Note that if an item has already been selected to fulfill the hold, it will not be frozen'>
-<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to un-freeze the selected holds?'>
-<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the un-freeze date for the selected holds?'>
-<!ENTITY myopac.holds.freeze.select_thaw "Select an 'Un-Freeze' date.  This is the date at which the holds will become active again.
-If no date is chosen, the holds will remain frozen until they are manually un-frozen.">
+<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to suspend the selected holds?
+If an item has already been selected to fulfill the hold, it will not be suspended'>
+<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to activate the selected holds?'>
+<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the activate date for the selected holds?'>
+<!ENTITY myopac.holds.freeze.select_thaw "Select a 'Suspend' date.  This is the date at which the holds will become active again.  If no date is chosen, the holds will remain suspended until they are manually activated.">
 
-<!ENTITY opac.holds.freeze "Freeze this hold">
-<!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">
-<!ENTITY opac.holds.freeze.thaw_date "Automatically un-freeze hold on:">
+<!ENTITY opac.holds.freeze "Suspend this hold">
+<!ENTITY opac.holds.freeze.help "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.">
+<!ENTITY opac.holds.freeze.thaw_date "Automatically activate hold on:">
 <!ENTITY opac.holds.freeze.thaw_date.format "YYYY-MM-DD">
 
 <!--	================================================================= 
@@ -249,8 +248,8 @@ If no date is chosen, the holds will remain frozen until they are manually un-fr
 <!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
 By default, holds will use the notification style you choose here.  
 However, you will still have the option to change individual holds regardless of this setting.">
-<!ENTITY myopac.holds.unfrozen "Un-Frozen">
-<!ENTITY myopac.holds.frozen.until "Frozen Until">
+<!ENTITY myopac.holds.unfrozen "Active">
+<!ENTITY myopac.holds.frozen.until "Suspend Until...">
 
 <!--	================================================================= 
 	 MyOPAC Summary page

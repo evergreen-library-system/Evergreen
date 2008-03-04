@@ -1334,7 +1334,7 @@ function myopacSelectedHoldsRows() {
 }
 
 var myopacProcessedHolds = 0;
-var myopacTotalHoldsToProcess = 0;
+var myopacHoldsToProcess = 0;
 function myopacDoHoldAction() {
 
     var selectedRows = myopacSelectedHoldsRows();
@@ -1345,7 +1345,6 @@ function myopacDoHoldAction() {
     myopacProcessedHolds = 0;
 
     if(!confirmId('myopac.holds.'+action+'.confirm')) return;
-
     myopacSelectNoneHolds(); /* clear the selection */
 
 
@@ -1370,17 +1369,23 @@ function myopacDoHoldAction() {
                 break;
         }
     }
-    myopacTotalHoldsToProcess = holds.length;
-    if(myopacTotalHoldsToProcess == 0) return;
+    myopacHoldsToProcess = holds;
+    if(myopacHoldsToProcess.length == 0) return;
+
+    if(action == 'thaw_date' || action == 'freeze') 
+        myopacDrawHoldThawDateForm();
+    else
+    myopacProcessHolds(action);
+}
+
+
+function myopacProcessHolds(action, thawDate) {
+
     myopacShowHoldProcessing();
-
-    var thawDate = null;
-    var thawDateSet = false;
-
     /* now we process them */
-    for(var i = 0; i < holds.length; i++) {
+    for(var i = 0; i < myopacHoldsToProcess.length; i++) {
 
-        hold = holds[i];
+        hold = myopacHoldsToProcess[i];
         
         var req;
         switch(action) { 
@@ -1396,23 +1401,12 @@ function myopacDoHoldAction() {
                 break;
 
             case 'thaw_date':
-                if(!thawDateSet)
-                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML) || null;
-                thawDateSet = true;
-                hold.thaw_date(thawDate);
-                req = new Request(UPDATE_HOLD, G.user.session, hold);
-                break;
-
-
             case 'freeze':
-                if(!thawDateSet)
-                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
-                thawDateSet = true;
                 hold.frozen('t');
-                if(thawDate) 
-                    hold.thaw_date(thawDate); 
+                hold.thaw_date(thawDate); 
                 req = new Request(UPDATE_HOLD, G.user.session, hold);
                 break;
+                //thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
 
         }
 
@@ -1420,6 +1414,25 @@ function myopacDoHoldAction() {
         req.send();
         req = null;
     }
+}
+
+function myopacDrawHoldThawDateForm() {
+    hideMe($('myopac_holds_main_table'));
+    unHideMe($('myopac_holds_thaw_date_form'));
+    $('myopac_holds_thaw_date_input').focus();
+    Calendar.setup({
+        inputField  : "myopac_holds_thaw_date_input",
+        ifFormat    : "%Y-%m-%d",
+        button      : "myopac_holds_thaw_date_img",
+        align       : "Tl",
+        singleClick : true
+    });
+}
+
+function myopacApplyThawDate() {
+    var dateString = $('myopac_holds_thaw_date_input').value;
+    dateString = (dateString == null) ? null : Date.parseIso8601(dateString).iso8601Format('YMDHM', false, false, true);
+    myopacProcessHolds('freeze', dateString);
 }
 
 function myopacHoldIDFromRow(row) {
@@ -1434,11 +1447,13 @@ function myopacShowHoldProcessing() {
 function myopacHideHoldProcessing() {
     hideMe($('myopac_holds_processing'));
     unHideMe($('myopac_holds_main_table'));
+    hideMe($('myopac_holds_thaw_date_form'));
 }
 
 function myopacBatchHoldCallback(r) {
-    r.getResultObject();
-    if(++myopacProcessedHolds >= myopacTotalHoldsToProcess) {
+    if(r) /* force load any exceptions */
+        r.getResultObject();
+    if(++myopacProcessedHolds >= myopacHoldsToProcess.length) {
         myopacHideHoldProcessing();
         holdCache = {};
         holdStatusCache = {};
