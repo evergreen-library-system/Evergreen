@@ -230,6 +230,14 @@ var CIRC_MOD_MAP = {
 		maxFine					: 'overdue_mid'
 	},
 
+	'dvd-mid'							: {
+		SIPMediaType			: '006',
+		magneticMedia			: 'f',
+		durationRule			: '7_days_2_renew',
+		recurringFinesRule	    : '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
 	'e-book' : {
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
@@ -355,6 +363,15 @@ var CIRC_MOD_MAP = {
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
+
+	'video-mid'	: {
+		SIPMediaType			: '005',
+		magneticMedia			: 'f',
+		durationRule			: '7_days_2_renew',
+		recurringFinesRule	    : '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
 
 	'facbestslr'	: {
 		SIPMediaType			: '001',
