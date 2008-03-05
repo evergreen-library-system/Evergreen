@@ -7,20 +7,12 @@
     <!-- The OpenSRF Routers's name on the network -->
     <!-- You should never need to change this -->
     <router_name>router</router_name>
-
-    <routers>
-
-      <!-- List of router domains we should register with. 
-        We must at least have our default jabber domain in here -->
-      <router>localhost</router>
-
+	<routers>
+        <router>localhost</router>
     </routers>
-    <domains>
 
-      <!-- Our jabber domain, currently only one domain is supported -->
-      <domain>localhost</domain>
-
-    </domains>
+    <!-- Our jabber domain -->
+    <domain>localhost</domain>
     <username>client</username>
     <passwd>mypass</passwd>
     <port>5222</port>
@@ -99,43 +91,45 @@
 
   <!-- ======================================================================================== -->
 
-  <router>
+  <routers>
+    <router>
+  
+      <!-- do not change -->
+      <component>0</component>
+  
+      <trusted_domains>
+  
+        <!-- Trusted servers are allowed to register apps with the router -->
+        <server>localhost</server>
+  
+        <!-- Trusted clients are allowed to send packets through the router -->
+        <client>localhost</client>
+  
+      </trusted_domains>
+  
+      <transport>
+  
+        <!-- jabber server are we connecting to -->
+        <server>localhost</server>
+        <port>5222</port>
+  
+        <!-- if this is changed, all "router_name" settings 
+                  will need to be updated to match this setting -->
+        <username>router</username>
+        <password>mypassword</password>
+  
+        <!-- router's jabber resource -->
+        <!-- do not change this -->
+        <resource>router</resource>
+        <connect_timeout>10</connect_timeout>
+        <max_reconnect_attempts>5</max_reconnect_attempts>
+  
+      </transport>
+      <logfile>/openils/var/log/router.log</logfile>
+      <loglevel>3</loglevel>
+    </router>
 
-    <!-- do not change -->
-    <component>0</component>
-
-    <trusted_domains>
-
-      <!-- Trusted servers are allowed to register apps with the router -->
-      <server>localhost</server>
-
-      <!-- Trusted clients are allowed to send packets through the router -->
-      <client>localhost</client>
-
-    </trusted_domains>
-
-    <transport>
-
-      <!-- jabber server are we connecting to -->
-      <server>localhost</server>
-      <port>5222</port>
-
-      <!-- if this is changed, all "router_name" settings 
-                will need to be updated to match this setting -->
-      <username>router</username>
-      <password>mypassword</password>
-
-      <!-- router's jabber resource -->
-      <!-- do not change this -->
-      <resource>router</resource>
-      <connect_timeout>10</connect_timeout>
-      <max_reconnect_attempts>5</max_reconnect_attempts>
-
-    </transport>
-    <logfile>/openils/var/log/router.log</logfile>
-    <loglevel>3</loglevel>
-
-  </router>
+  </routers>
 
   <!-- ======================================================================================== -->
 
