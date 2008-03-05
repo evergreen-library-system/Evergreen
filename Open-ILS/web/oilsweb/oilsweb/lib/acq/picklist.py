@@ -13,7 +13,7 @@ class PicklistMgr(object):
     def retrieve(self):
         picklist = self.ses.request(
             'open-ils.acq.picklist.retrieve', 
-            self.request_mgr.ctx.core.authtoken.value, self.id, {'flesh_entry_count':1, 'flesh_username':1}).recv().content()
+            self.request_mgr.ctx.core.authtoken.value, self.id, {'flesh_lineitem_count':1, 'flesh_username':1}).recv().content()
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
@@ -37,18 +37,18 @@ class PicklistMgr(object):
         oils.event.Event.parse_and_raise(status)
         return status
 
-    def delete_entry(self, entry_id):
+    def delete_lineitem(self, lineitem_id):
         status = self.ses.request(
-            'open-ils.acq.picklist_entry.delete',
-            self.request_mgr.ctx.core.authtoken.value, entry_id).recv().content()
+            'open-ils.acq.lineitem.delete',
+            self.request_mgr.ctx.core.authtoken.value, lineitem_id).recv().content()
         oils.event.Event.parse_and_raise(status)
         return status
 
 
-    def retrieve_entries(self, **kwargs):
-        # grab the picklist entries
-        entries = self.ses.request(
-            'open-ils.acq.picklist_entry.picklist.retrieve',
+    def retrieve_lineitems(self, **kwargs):
+        # grab the lineitems
+        lineitems = self.ses.request(
+            'open-ils.acq.lineitem.picklist.retrieve',
             self.request_mgr.ctx.core.authtoken.value, 
             self.picklist.id(),
             {
@@ -61,15 +61,15 @@ class PicklistMgr(object):
         ).recv().content()
 
         if kwargs.get('flesh_provider'):
-            for entry in entries:
-                if entry.provider():
+            for lineitem in lineitems:
+                if lineitem.provider():
                     provider = self.ses.request(
                         'open-ils.acq.provider.retrieve', 
                         self.request_mgr.ctx.core.authtoken.value, 
-                        entry.provider()).recv().content()
-                    entry.provider(provider)
+                        lineitem.provider()).recv().content()
+                    lineitem.provider(provider)
 
-        self.picklist.entries(entries)
+        self.picklist.entries(lineitems)
 
     def retrieve_list(self, all=False):
         ''' Returns my list of picklist objects '''
@@ -80,7 +80,7 @@ class PicklistMgr(object):
 
         list = self.ses.request(request,
                                 self.request_mgr.ctx.core.authtoken.value,
-                                {'flesh_entry_count':1, 'flesh_username':1}).recv().content()
+                                {'flesh_lineitem_count':1, 'flesh_username':1}).recv().content()
         oils.event.Event.parse_and_raise(list)
 
         usermgr = oilsweb.lib.user.User(self.request_mgr.ctx.core)
@@ -97,21 +97,21 @@ class PicklistMgr(object):
         return list
         
 
-    def retrieve_entry(self, entry_id, **kwargs):
+    def retrieve_lineitem(self, lineitem_id, **kwargs):
         args = {'flesh': kwargs.get('flesh')}
-        entry = self.ses.request(
-            'open-ils.acq.picklist_entry.retrieve',
-            self.request_mgr.ctx.core.authtoken.value, entry_id, args).recv().content()
-        oils.event.Event.parse_and_raise(entry)
+        lineitem = self.ses.request(
+            'open-ils.acq.lineitem.retrieve',
+            self.request_mgr.ctx.core.authtoken.value, lineitem_id, args).recv().content()
+        oils.event.Event.parse_and_raise(lineitem)
         if kwargs.get('flesh_provider'):
-            if entry.provider():
+            if lineitem.provider():
                 provider = self.ses.request(
                     'open-ils.acq.provider.retrieve', 
                     self.request_mgr.ctx.core.authtoken.value, 
-                    entry.provider()).recv().content()
-                entry.provider(provider)
+                    lineitem.provider()).recv().content()
+                lineitem.provider(provider)
 
-        return entry
+        return lineitem
 
     def create_or_replace(self, pl_name):
 
@@ -134,18 +134,18 @@ class PicklistMgr(object):
 
         return picklist
 
-    def create_entry(self, entry):
+    def create_lineitem(self, lineitem):
         status = self.ses.request(
-            'open-ils.acq.picklist_entry.create',
-            self.request_mgr.ctx.core.authtoken.value, entry).recv().content()
+            'open-ils.acq.lineitem.create',
+            self.request_mgr.ctx.core.authtoken.value, lineitem).recv().content()
         oils.event.Event.parse_and_raise(status)
         return status
 
     @staticmethod
-    def find_entry_attr(entry, attr_name, attr_type='picklist_marc_attr_definition'):
-        for entry_attr in entry.attributes():
-            if entry_attr.attr_type() == attr_type and entry_attr.attr_name() == attr_name:
-                return entry_attr.attr_value()
+    def find_lineitem_attr(lineitem, attr_name, attr_type='lineitem_marc_attr_definition'):
+        for lineitem_attr in lineitem.attributes():
+            if lineitem_attr.attr_type() == attr_type and lineitem_attr.attr_name() == attr_name:
+                return lineitem_attr.attr_value()
         return ''
 
             

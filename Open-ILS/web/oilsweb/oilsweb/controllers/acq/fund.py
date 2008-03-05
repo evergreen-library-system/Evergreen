@@ -97,7 +97,7 @@ class FundController(BaseController):
         Event.parse_and_raise(source_list)
 
         r.ctx.acq.fund.value = fund
-        r.ctx.acq.fund_source_list.value = source_list
+        r.ctx.acq.funding_source_list.value = source_list
         return r.render('acq/financial/create_fund_allocation.html')
 
     def _allocate(self, r, ses):

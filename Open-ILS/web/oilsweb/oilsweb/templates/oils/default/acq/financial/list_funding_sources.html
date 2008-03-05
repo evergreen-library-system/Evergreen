@@ -7,7 +7,7 @@
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
     <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/fund_source/create'>${_('New Funding Source')}</a>
+        <a href='${c.oils.acq.prefix.value}/funding_source/create'>${_('New Funding Source')}</a>
     </div>
 </div>
 
@@ -22,9 +22,9 @@
         </tr>
     </thead>
     <tbody>
-        % for source in c.oils.acq.fund_source_list.value:
+        % for source in c.oils.acq.funding_source_list.value:
         <tr>
-            <td><a href='${c.oils.acq.prefix.value}/fund_source/view/${source.id()}'>${source.name()}</a></td>
+            <td><a href='${c.oils.acq.prefix.value}/funding_source/view/${source.id()}'>${source.name()}</a></td>
             <td>${source.owner().name()}</td> 
             <td>${source.currency_type()}</td> 
             <td>${source.summary()['balance']}</td> 

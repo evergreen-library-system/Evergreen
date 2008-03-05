@@ -20,7 +20,7 @@
                 <td class='oils-admin-label'>${_('Funding Source')}</td>
                 <td> 
                     <select name='${c.oils.acq.fund_allocation_source.cgi_name}'>
-                        % for source in c.oils.acq.fund_source_list.value:
+                        % for source in c.oils.acq.funding_source_list.value:
                             <% source_label = _('%(name)s (balance = %(b)s)') % {'name':source.name(), 'b': source.summary()['balance']} %>
                             <option value='${source.id()}'>${source_label}</option>
                         % endfor

@@ -9,7 +9,7 @@ from oils.event import Event
 from oils.org import OrgUtil
 
 
-class FundSourceController(BaseController):
+class FundingSourceController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()

@@ -36,14 +36,14 @@ class FundMgr(object):
         return fund_id
 
     
-    def retrieve_fund_source(self, source_id):
+    def retrieve_funding_source(self, source_id):
         source = self.ses.request(
             'open-ils.acq.funding_source.retrieve', 
             self.request_mgr.ctx.core.authtoken.value, source_id).recv().content()
         oils.event.Event.parse_and_raise(source)
         return source
 
-    def retrieve_org_fund_sources(self, options=None):
+    def retrieve_org_funding_sources(self, options=None):
         sources = self.ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
             self.request_mgr.ctx.core.authtoken.value, None, options).recv().content()
@@ -51,7 +51,7 @@ class FundMgr(object):
         return sources
 
 
-    def create_fund_source(self, source):
+    def create_funding_source(self, source):
         source_id = self.ses.request(
             'open-ils.acq.funding_source.create', 
             self.request_mgr.ctx.core.authtoken.value, source).recv().content()

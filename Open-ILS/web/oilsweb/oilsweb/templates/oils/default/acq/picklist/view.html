@@ -44,32 +44,32 @@
         </tr>
     </thead>
     <tbody>
-    % for entry in c.oils.acq.picklist.value.entries():
+    % for lineitem in c.oils.acq.picklist.value.entries():
     <tr class='oils-acq-picklist-records-title-row'>
         <td rowspan='3'>
             <img class='oils-acq-picklist-records-jacket'
-                src='${c.oils.core.ac_prefix.value}/jacket/small/${oilsweb.lib.bib.scrub_isbn(PicklistMgr.find_entry_attr(entry, "isbn"))}'/>
+                src='${c.oils.core.ac_prefix.value}/jacket/small/${oilsweb.lib.bib.scrub_isbn(PicklistMgr.find_lineitem_attr(lineitem, "isbn"))}'/>
         </td>
         <td>
-            <a href='../view_entry/${entry.id()}'>${PicklistMgr.find_entry_attr(entry, "title")}</a>
+            <a href='../view_lineitem/${lineitem.id()}'>${h.util.html_escape(PicklistMgr.find_lineitem_attr(lineitem, "title"))}</a>
         </td>
         <td class='oils-acq-picklist-records-service-td'>
-            % if entry.provider():
-                ${entry.provider().name()}
+            % if lineitem.provider():
+                ${lineitem.provider().name()}
             % endif
         </td>
-        <td><input type='checkbox' name='${c.oils.acq.picklist_entry_id_list.cgi_name}' value='${entry.id()}'/></td>
+        <td><input type='checkbox' name='${c.oils.acq.lineitem_id_list.cgi_name}' value='${lineitem.id()}'/></td>
     </tr>
 
     <tr class='oils-acq-picklist-records-author-row'>
-        <td colspan='4'>${PicklistMgr.find_entry_attr(entry, "author")}
+        <td colspan='4'>${PicklistMgr.find_lineitem_attr(lineitem, "author")}</td>
     </tr>
     <tr class='oils-acq-picklist-records-phys_desc-row'>
         <td colspan='4'>
-            ${PicklistMgr.find_entry_attr(entry, "isbn")} |
-            ${PicklistMgr.find_entry_attr(entry, "pubdate")} |
-            ${PicklistMgr.find_entry_attr(entry, "pagination")}
-            <a class='oils-acq-picklist-entry-delete-link' href='${c.oils.acq.prefix.value}/picklist/delete_entry/${entry.id()}'>${_('Delete')}</a>
+            ${PicklistMgr.find_lineitem_attr(lineitem, "isbn")} |
+            ${PicklistMgr.find_lineitem_attr(lineitem, "pubdate")} |
+            ${PicklistMgr.find_lineitem_attr(lineitem, "pagination")}
+            <a class='oils-acq-picklist-lineitem-delete-link' href='${c.oils.acq.prefix.value}/picklist/delete_lineitem/${lineitem.id()}'>${_('Delete')}</a>
         </td>
     </tr>
     % endfor

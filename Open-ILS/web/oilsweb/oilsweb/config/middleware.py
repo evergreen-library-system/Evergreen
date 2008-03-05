@@ -54,4 +54,9 @@ def make_app(global_conf, full_stack=True, **app_conf):
     javascripts_app = StaticJavascripts()
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, javascripts_app, app])
+
+#    import oilsweb.middleware.xmllint
+#    app = oilsweb.middleware.xmllint.XMLLintMiddleware(app)
+
     return app
+

@@ -17,7 +17,7 @@ class PicklistController(BaseController):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
         pl_manager.retrieve()
-        pl_manager.retrieve_entries(flesh_provider=True, offset=r.ctx.acq.offset.value, limit=r.ctx.acq.limit.value)
+        pl_manager.retrieve_lineitems(flesh_provider=True, offset=r.ctx.acq.offset.value, limit=r.ctx.acq.limit.value)
         r.ctx.acq.picklist.value = pl_manager.picklist
         r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
         return r.render('acq/picklist/view.html')
@@ -35,16 +35,16 @@ class PicklistController(BaseController):
             return redirect_to(controller='acq/picklist', action='view', id=picklist_id)
         return r.render('acq/picklist/create.html')
 
-    def view_entry(self, **kwargs):
+    def view_lineitem(self, **kwargs):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        entry = pl_manager.retrieve_entry(kwargs.get('id'), flesh=1, flesh_provider=True)
-        pl_manager.id = entry.picklist()
+        lineitem = pl_manager.retrieve_lineitem(kwargs.get('id'), flesh=1, flesh_provider=True)
+        pl_manager.id = lineitem.picklist()
         picklist = pl_manager.retrieve()
         r.ctx.acq.picklist.value = pl_manager.picklist
-        r.ctx.acq.picklist_entry.value = entry
-        r.ctx.acq.picklist_entry_marc_html.value = oilsweb.lib.bib.marc_to_html(entry.marc())
-        return r.render('acq/picklist/view_entry.html')
+        r.ctx.acq.lineitem.value = lineitem
+        r.ctx.acq.lineitem_marc_html.value = oilsweb.lib.bib.marc_to_html(lineitem.marc())
+        return r.render('acq/picklist/view_lineitem.html')
 
     def list(self):
         r = RequestMgr()
@@ -86,13 +86,13 @@ class PicklistController(BaseController):
         return redirect_to(controller='acq/picklist', action='list')
 
 
-    def delete_entry(self, **kwargs):
+    def delete_lineitem(self, **kwargs):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        entry_id = kwargs['id']
-        entry = pl_manager.retrieve_entry(entry_id)
-        pl_manager.delete_entry(entry_id)
-        return redirect_to(controller='acq/picklist', action='view', id=entry.picklist())
+        lineitem_id = kwargs['id']
+        lineitem = pl_manager.retrieve_lineitem(lineitem_id)
+        pl_manager.delete_lineitem(lineitem_id)
+        return redirect_to(controller='acq/picklist', action='view', id=lineitem.picklist())
 
     def update(self):
         r = RequestMgr()
@@ -110,19 +110,19 @@ class PicklistController(BaseController):
         return page
 
     def _move_selected(self, r, ses):
-        ''' Moves the selected picklist entry's to the destination picklist '''
-        for entry_id in r.ctx.acq.picklist_entry_id_list.value:
+        ''' Moves the selected picklist lineitem's to the destination picklist '''
+        for lineitem_id in r.ctx.acq.lineitem_id_list.value:
 
-            entry = ses.request(
-                'open-ils.acq.picklist_entry.retrieve',
-                r.ctx.core.authtoken.value, entry_id).recv().content()
-            entry = Event.parse_and_raise(entry)
+            lineitem = ses.request(
+                'open-ils.acq.lineitem.retrieve',
+                r.ctx.core.authtoken.value, lineitem_id).recv().content()
+            lineitem = Event.parse_and_raise(lineitem)
 
-            entry.picklist(r.ctx.acq.picklist_dest_id.value)
+            lineitem.picklist(r.ctx.acq.picklist_dest_id.value)
 
             status = ses.request(
-                'open-ils.acq.picklist_entry.update',
-                r.ctx.core.authtoken.value, entry).recv().content()
+                'open-ils.acq.lineitem.update',
+                r.ctx.core.authtoken.value, lineitem).recv().content()
             Event.parse_and_raise(status)
 
         return redirect_to(controller='acq/picklist', action='view', id=r.ctx.acq.picklist_dest_id.value)

@@ -28,9 +28,9 @@ class AcqContext(SubContext):
         self.picklist = ContextItem() # picklist object
         self.picklist_list = ContextItem() # list of picklist objects
         self.picklist_id_list = ContextItem(cgi_name='acq.plil', multi=True) # list of picklist IDs
-        self.picklist_entry = ContextItem() # picklist_entry object
+        self.lineitem = ContextItem() # lineitem object
         self.picklist_name = ContextItem(cgi_name='acq.pln')
-        self.picklist_entry_id_list = ContextItem(cgi_name='acq.pleil', multi=True)
+        self.lineitem_id_list = ContextItem(cgi_name='acq.pleil', multi=True)
         self.picklist_action = ContextItem(cgi_name='acq.pla')
         self.picklist_source_id = ContextItem(cgi_name='acq.plsi')
         self.picklist_dest_id = ContextItem(cgi_name='acq.pldi')
@@ -46,14 +46,14 @@ class AcqContext(SubContext):
         self.fund_currency_type = ContextItem(cgi_name='acq.fc')
         self.fund_summary = ContextItem()
 
-        self.fund_source = ContextItem()
-        self.fund_source_id = ContextItem(cgi_name='acq.fsi')
-        self.fund_source_list = ContextItem()
-        self.fund_source_name = ContextItem(cgi_name='acq.fsn')
-        self.fund_source_currency_type = ContextItem(cgi_name='acq.fsc')
-        self.fund_source_owner = ContextItem(cgi_name='acq.fso')
-        self.fund_source_credit_amount = ContextItem(cgi_name='acq.fsca')
-        self.fund_source_credit_note = ContextItem(cgi_name='acq.fscn')
+        self.funding_source = ContextItem()
+        self.funding_source_id = ContextItem(cgi_name='acq.fsi')
+        self.funding_source_list = ContextItem()
+        self.funding_source_name = ContextItem(cgi_name='acq.fsn')
+        self.funding_source_currency_type = ContextItem(cgi_name='acq.fsc')
+        self.funding_source_owner = ContextItem(cgi_name='acq.fso')
+        self.funding_source_credit_amount = ContextItem(cgi_name='acq.fsca')
+        self.funding_source_credit_note = ContextItem(cgi_name='acq.fscn')
 
         self.fund_allocation = ContextItem()
         self.fund_allocation_list = ContextItem()
@@ -77,12 +77,7 @@ class AcqContext(SubContext):
         self.po_li = ContextItem()
         self.po_li_sum = ContextItem()
 
-        # -------------------------------------------------------------
-        # utility functions
-        self.find_entry_attr = ContextItem(
-            default_value=oilsweb.lib.acq.picklist.PicklistMgr.find_entry_attr)
-
-        self.picklist_entry_marc_html = ContextItem()
+        self.lineitem_marc_html = ContextItem()
 
     def postinit(self):
         self.prefix.value = "%s/acq" % Context.get_context().core.prefix.value

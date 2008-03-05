@@ -76,14 +76,14 @@
 .oils-acq-po-li-detail-row {}
 
 /* picklist entry page */
-#oils-acq-picklist-entry-header { padding: 4px; margin-bottom: 20px; }
-#oils-acq-picklist-entry-summary {}
-#oils-acq-picklist-entry-summary td {padding: 2px;}
-.oils-acq-picklist-entry-attr {}
-.oils-acq-picklist-entry-attr-type {}
-.oils-acq-picklist-entry-attr-name {}
-.oils-acq-picklist-entry-attr-value {}
-#oils-acq-picklist-entry-marc-block { margin-top: 10px; padding: 6px; }
+#oils-acq-lineitem-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-lineitem-summary {}
+#oils-acq-lineitem-summary td {padding: 2px;}
+.oils-acq-lineitem-attr {}
+.oils-acq-lineitem-attr-type {}
+.oils-acq-lineitem-attr-name {}
+.oils-acq-lineitem-attr-value {}
+#oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
 
 
 

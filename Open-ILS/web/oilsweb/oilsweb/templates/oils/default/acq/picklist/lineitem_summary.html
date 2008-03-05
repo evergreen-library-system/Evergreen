@@ -1,0 +1,20 @@
+<div id='oils-acq-lineitem-header'>
+    ${_('Picklist Entry')}
+    <div class='oils-acq-lineitem-attributes'>
+        <%
+        provider = c.oils.acq.lineitem.value.provider() or ''
+        if provider: provider.name() 
+        meta = _("Source %(data)s") % {"data":c.oils.acq.lineitem.value.source_label()}
+        meta2 = _("Provider %(data)s") % {"data":provider}
+        meta3 = _("Create date %(data)s") % {"data":c.oils.acq.lineitem.value.create_time()}
+        meta4 = _("Last update time %(data)s") % {"data":c.oils.acq.lineitem.value.edit_time()}
+        %>
+        <div>${meta}</div>
+        <div>${meta2}</div>
+        <div>${meta3}</div>
+        <div>${meta4}</div>
+    </div>
+</div>
+
+
+

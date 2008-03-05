@@ -7,20 +7,20 @@
 
 <% from oils.org import OrgUtil %>
 
-<form action='${c.oils.acq.prefix.value}/fund_source/create' method='POST'>
+<form action='${c.oils.acq.prefix.value}/funding_source/create' method='POST'>
     <table class='oils-admin-table'>
         <tbody>
             <tr>
                 <td class='oils-admin-label'>${_('Funding Source Name')}</td>
                 <td> 
-                    <input type='text' size='42' name='${c.oils.acq.fund_source_name.cgi_name}'/>
+                    <input type='text' size='42' name='${c.oils.acq.funding_source_name.cgi_name}'/>
                 </td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Funding Source Owner')}</td>
                 <td> 
                     ${widget.org_select(
-                        c.oils.acq.fund_source_owner.cgi_name, 
+                        c.oils.acq.funding_source_owner.cgi_name, 
                         c.oils.core.perm_tree.value['CREATE_FUNDING_SOURCE'], c.oils.core.workstation.value.id(),
                         OrgUtil.get_min_depth(c.oils.core.high_perm_orgs.value['CREATE_FUNDING_SOURCE']))}
                 </td>
@@ -28,7 +28,7 @@
             <tr>
                 <td class='oils-admin-label'>${_('Funding Source Currency Type')}</td>
                 <td> 
-                    <select name='${c.oils.acq.fund_source_currency_type.cgi_name}'>
+                    <select name='${c.oils.acq.funding_source_currency_type.cgi_name}'>
                         % for type in c.oils.acq.currency_types.value:
                             <option value='${type.code()}'>${type.label()}</option>
                         % endfor

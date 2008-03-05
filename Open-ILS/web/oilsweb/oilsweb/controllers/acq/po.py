@@ -64,7 +64,7 @@ class PoController(BaseController):
         plmgr = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=r.ctx.acq.picklist_source_id.value)
 
         plmgr.retrieve()
-        plmgr.retrieve_entries(idlist=1)
+        plmgr.retrieve_lineitems(idlist=1)
 
         for pl_item in plmgr.picklist.entries():
             po_lineitem = osrf.net_obj.NetworkObject.acqpoli()

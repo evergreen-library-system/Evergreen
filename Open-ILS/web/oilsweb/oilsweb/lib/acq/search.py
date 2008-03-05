@@ -29,12 +29,12 @@ def multi_search(request_mgr, search):
 
         res = resp.content()
         for record in res['records']:
-            entry = osrf.net_obj.NetworkObject.acqple()
-            entry.picklist(picklist_id)
-            entry.source_label(res['service'])
-            entry.marc(record['marcxml'])
-            entry.eg_bib_id(record.get('bibid'))
-            pl_manager.create_entry(entry)
+            lineitem = osrf.net_obj.NetworkObject.jub()
+            lineitem.picklist(picklist_id)
+            lineitem.source_label(res['service'])
+            lineitem.marc(record['marcxml'])
+            lineitem.eg_bib_id(record.get('bibid'))
+            pl_manager.create_lineitem(lineitem)
 
     return picklist_id
 
@@ -56,9 +56,12 @@ def compile_multi_search(request_mgr):
         search['password'].append("") # XXX config values? in-db?
 
     # collect the search classes
+    import oilsweb.middleware.hilite
+    oilsweb.middleware.hilite.terms = []
     for cls in request_mgr.ctx.acq.search_class.value:
         if request_mgr.request.params[cls]:
             search['search'][cls] = request_mgr.request.params[cls]
+            oilsweb.middleware.hilite.terms.append(request_mgr.request.params[cls])
 
     return search
 

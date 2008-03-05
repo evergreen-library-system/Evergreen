@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%def name="page_title()">${_('Evergreen Picklist Entry')}</%def>
+<%def name="block_content()">
+
+<%include file='picklist_summary.html'/>
+<%include file='lineitem_summary.html'/>
+<table id='oils-acq-lineitem-summary'>
+    % for attr in c.oils.acq.lineitem.value.attributes():
+        <tr>
+            <td class='oils-acq-lineitem-attr-name'>
+                ${attr.attr_name()}
+            </td>
+            <td class='oils-acq-lineitem-attr-value'>
+                ${attr.attr_value()}
+            </td>
+        </tr>
+    % endfor
+</table>
+
+<div id='oils-acq-lineitem-marc-block'>
+    <div id='oils-acq-lineitem-marc'>
+        ${unicode(c.oils.acq.lineitem_marc_html.value, 'utf-8')}
+    </div>
+</div>
+
+</%def>
+
