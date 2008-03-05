@@ -96,11 +96,11 @@ CREATE TABLE acq.picklist (
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id),
-	default_fund	INT				REFERENCES acq.fund (id),
+	ordering_agency		INT				NOT NULL REFERENCES actor.org_unit (id),
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	provider	INT				NOT NULL REFERENCES acq.provider (id),
-	state		TEXT				NOT NULL DEFAULT 'new',
+	state		TEXT				NOT NULL DEFAULT 'new'
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
@@ -117,113 +117,99 @@ CREATE TABLE acq.po_note (
 );
 CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
 
-CREATE TABLE acq.picklist_entry (
-	id		BIGSERIAL			PRIMARY KEY,
-	picklist	INT				NOT NULL REFERENCES acq.picklist (id) ON DELETE CASCADE,
-	provider	INT				REFERENCES acq.provider (id),
-	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	marc		TEXT				NOT NULL,
-	eg_bib_id	INT				REFERENCES biblio.record_entry (id),
-	source_label	TEXT,
-	po_lineitem	INT				REFERENCES acq.po_lineitem (id)
+CREATE TABLE acq.lineitem (
+	id                  BIGSERIAL                   PRIMARY KEY,
+	selector            INT                         NOT NULL REFERENCES actor.org_unit (id),
+	provider            INT                         REFERENCES acq.provider (id),
+	purchase_order      INT                         REFERENCES acq.purchase_order (id),
+	picklist            INT                         REFERENCES acq.picklist (id),
+	expected_recv_time  TIMESTAMP WITH TIME ZONE,
+	create_time         TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
+	edit_time           TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
+	marc                TEXT                        NOT NULL,
+	eg_bib_id           INT                         REFERENCES biblio.record_entry (id),
+	source_label        TEXT,
+	item_count          INT                         NOT NULL DEFAULT 0,
+	state               TEXT                        NOT NULL DEFAULT 'new',
+    CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
+CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);
+CREATE INDEX li_pl_idx ON acq.lineitem (picklist);
 
-CREATE TABLE acq.po_lineitem (
-	id			BIGSERIAL			PRIMARY KEY,
-	purchase_order		INT				NOT NULL REFERENCES acq.purchase_order (id),
-	expected_recv_time	TIMESTAMP WITH TIME ZONE,
-	create_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	edit_time		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	marc			TEXT				NOT NULL,
-	eg_bib_id		INT				REFERENCES biblio.record_entry (id),
-	list_price		NUMERIC,
-	item_count		INT				NOT NULL DEFAULT 0
-);
-CREATE INDEX po_li_po_idx ON acq.po_lineitem (purchase_order);
-
-CREATE TABLE acq.po_li_note (
+CREATE TABLE acq.lineitem_note (
 	id		SERIAL				PRIMARY KEY,
-	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id),
 	creator		INT				NOT NULL REFERENCES actor.usr (id),
 	editor		INT				NOT NULL REFERENCES actor.usr (id),
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	value		TEXT				NOT NULL
 );
-CREATE INDEX po_li_note_li_idx ON acq.po_li_note (po_lineitem);
+CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 
-CREATE TABLE acq.po_li_detail (
+CREATE TABLE acq.lineitem_detail (
 	id		BIGSERIAL			PRIMARY KEY,
-	po_lineitem	INT				NOT NULL REFERENCES acq.po_lineitem (id),
+	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id),
 	fund		INT				REFERENCES acq.fund (id),
 	fund_debit	INT				REFERENCES acq.fund_debit (id),
-	eg_copy_id	BIGINT				REFERENCES asset.copy (id),
+	eg_copy_id	BIGINT			REFERENCES asset.copy (id),
 	barcode		TEXT,
 	cn_label	TEXT,
 	recv_time	TIMESTAMP WITH TIME ZONE
 );
 
-CREATE INDEX po_li_detail_li_idx ON acq.po_li_detail (po_lineitem);
+CREATE INDEX li_detail_li_idx ON acq.lineitem_detail (lineitem);
 
-CREATE TABLE acq.picklist_entry_attr (
+CREATE TABLE acq.lineitem_attr (
 	id		BIGSERIAL	PRIMARY KEY,
-	picklist_entry	BIGINT		NOT NULL REFERENCES acq.picklist_entry (id) ON DELETE CASCADE,
+	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id),
 	attr_type	TEXT		NOT NULL,
 	attr_name	TEXT		NOT NULL,
 	attr_value	TEXT		NOT NULL
 );
 
-CREATE TABLE acq.po_li_attr (
-	id		BIGSERIAL	PRIMARY KEY,
-	po_lineitem	BIGINT		NOT NULL REFERENCES acq.po_lineitem (id),
-	attr_type	TEXT		NOT NULL,
-	attr_name	TEXT		NOT NULL,
-	attr_value	TEXT		NOT NULL
-);
+CREATE INDEX li_attr_li_idx ON acq.lineitem_attr (lineitem);
 
-CREATE INDEX po_li_attr_li_idx ON acq.po_li_attr (po_lineitem);
-
-CREATE TABLE acq.picklist_attr_definition (
+CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
 	code		TEXT		NOT NULL,
 	description	TEXT		NOT NULL,
 	xpath		TEXT		NOT NULL
 );
 
-CREATE TABLE acq.picklist_marc_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.picklist_attr_definition_id_seq')
-) INHERITS (acq.picklist_attr_definition);
+CREATE TABLE acq.lineitem_marc_attr_definition (
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
+) INHERITS (acq.lineitem_attr_definition);
 
-CREATE TABLE acq.picklist_provider_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.picklist_attr_definition_id_seq'),
+CREATE TABLE acq.lineitem_provider_attr_definition (
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
 	provider	INT	NOT NULL REFERENCES acq.provider (id)
-) INHERITS (acq.picklist_attr_definition);
+) INHERITS (acq.lineitem_attr_definition);
 
-CREATE TABLE acq.picklist_generated_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.picklist_attr_definition_id_seq')
-) INHERITS (acq.picklist_attr_definition);
+CREATE TABLE acq.lineitem_generated_attr_definition (
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
+) INHERITS (acq.lineitem_attr_definition);
 
-CREATE TABLE acq.picklist_usr_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.picklist_attr_definition_id_seq'),
+CREATE TABLE acq.lineitem_usr_attr_definition (
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
 	usr		INT	NOT NULL REFERENCES actor.usr (id)
-) INHERITS (acq.picklist_attr_definition);
+) INHERITS (acq.lineitem_attr_definition);
 
 
 -- Seed data
 
 
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('title','Title of work','//*[@tag="245"]/*[contains("abcmnopr",@code)]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('author','Author of work','//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('language','Lanuage of work','//*[@tag="240"]/*[@code="l"][1]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('pagination','Pagination','//*[@tag="300"]/*[@code="a"][1]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('identifier','Identifier','//*[@tag="001"]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('title','Title of work','//*[@tag="245"]/*[contains("abcmnopr",@code)]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('author','Author of work','//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('language','Lanuage of work','//*[@tag="240"]/*[@code="l"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('pagination','Pagination','//*[@tag="300"]/*[@code="a"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('identifier','Identifier','//*[@tag="001"]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
 
 
 -- Functions
@@ -234,7 +220,7 @@ CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT ) RETU
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('acq.picklist_entry', $1, $2);
+	SELECT public.extract_marc_field('acq.lineitem', $1, $2);
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
@@ -246,7 +232,7 @@ CREATE OR REPLACE FUNCTION public.extract_authority_marc_field ( BIGINT, TEXT ) 
 $$ LANGUAGE SQL;
 
 -- For example:
--- INSERT INTO acq.picklist_provider_attr_definition ( provider, code, description, xpath ) VALUES (1,'price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
+-- INSERT INTO acq.lineitem_provider_attr_definition ( provider, code, description, xpath ) VALUES (1,'price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
 
 /*
 Suggested vendor fields:
@@ -264,17 +250,17 @@ DECLARE
 	prov	INT;
 	adef	RECORD;
 BEGIN
-	FOR adef IN SELECT *,tableoid FROM acq.picklist_attr_definition LOOP
+	FOR adef IN SELECT *,tableoid FROM acq.lineitem_attr_definition LOOP
 
 		SELECT relname::TEXT INTO atype FROM pg_class WHERE oid = adef.tableoid;
-		IF (atype = 'picklist_provider_attr_definition') THEN
-			SELECT provider INTO prov FROM acq.picklist_provider_attr_definition WHERE id = adef.id;
+		IF (atype = 'lineitem_provider_attr_definition') THEN
+			SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
 			CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
 		END IF;
 
-		SELECT extract_acq_marc_field(id, adef.xpath) INTO value FROM acq.picklist_entry WHERE id = NEW.id;
+		SELECT extract_acq_marc_field(id, adef.xpath) INTO value FROM acq.lineitem WHERE id = NEW.id;
 		IF (value IS NOT NULL AND value <> '') THEN
-			INSERT INTO acq.picklist_entry_attr (picklist_entry, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
+			INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
 		END IF;
 	END LOOP;
 
@@ -284,21 +270,22 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION public.cleanup_acq_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
-	DELETE FROM acq.picklist_entry_attr WHERE picklist_entry = OLD.id;
 	IF TG_OP = 'UPDATE' THEN
+	    DELETE FROM acq.lineitem_attr WHERE lineitem = OLD.id AND attr_type IN ('lineitem_provider_attr_definition', 'lineitem_marc_attr_definition');
 		RETURN NEW;
 	ELSE
+	    DELETE FROM acq.lineitem_attr WHERE lineitem = OLD.id;
 		RETURN OLD;
 	END IF;
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER cleanup_picklist_entry_trigger
-	BEFORE UPDATE OR DELETE ON acq.picklist_entry 
+CREATE TRIGGER cleanup_lineitem_trigger
+	BEFORE UPDATE OR DELETE ON acq.lineitem
 	FOR EACH ROW EXECUTE PROCEDURE public.cleanup_acq_marc();
 
-CREATE TRIGGER ingest_picklist_entry_trigger
-	AFTER INSERT OR UPDATE ON acq.picklist_entry 
+CREATE TRIGGER ingest_lineitem_trigger
+	AFTER INSERT OR UPDATE ON acq.lineitem
 	FOR EACH ROW EXECUTE PROCEDURE public.ingest_acq_marc();
 
 CREATE OR REPLACE FUNCTION acq.exchange_ratio ( from_ex TEXT, to_ex TEXT ) RETURNS NUMERIC AS $$

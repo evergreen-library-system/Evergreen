@@ -2388,8 +2388,8 @@
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
-            <link field="allocations" reltype="has_many" key="funding_source" class="acqfa"/>
-            <link field="credits" reltype="has_many" key="funding_source" class="acqfscred"/>
+            <link field="allocations" reltype="has_many" map="" key="funding_source" class="acqfa"/>
+            <link field="credits" reltype="has_many" key="funding_source" map="" class="acqfscred"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -2452,8 +2452,8 @@
 		<links>
 			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
-            <link field="allocations" reltype="has_many" key="fund" class="acqfa"/>
-            <link field="debits" reltype="has_many" key="fund" class="acqfdeb"/>
+            <link field="allocations" reltype="has_many" key="fund" map="" class="acqfa"/>
+            <link field="debits" reltype="has_many" key="fund" map="" class="acqfdeb"/>
 		</links>
 	</class>
 
@@ -2609,7 +2609,7 @@
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
-			<link field="entries" reltype="has_many" key="picklist" map="" class="acqple"/>
+			<link field="entries" reltype="has_many" key="picklist" map="" class="jub"/>
 		</links>
 	</class>
 
@@ -2620,19 +2620,18 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Purchase Order ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
 			<field reporter:label="Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Default Fund" name="default_fund" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Provider" name="provider" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="State" name="state" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Count" name="lineitem_count" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="State" name="state" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Count" name="lineitem_count" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="default_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
-			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="acqpoli"/>
+			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
 		</links>
 	</class>
 
@@ -2656,63 +2655,47 @@
 		</links>
 	</class>
 
-	<class id="acqple" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_entry" oils_persist:tablename="acq.picklist_entry">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_entry_id_seq">
+	<class id="jub" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Picklist Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Picklist" name="picklist" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Provider" name="provider" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="MARC" name="marc" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Source Label" name="source_label" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Purchase Order Lineitem" name="po_lineitem" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Attributes" name="attributes" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Lineitem ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Selecting Org Unit" name="selector" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Picklist" name="picklist" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Purchase Order" name="purchase_order" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="MARC" name="marc" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Source Label" name="source_label" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="State" name="state" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
-			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl"/>
-			<link field="po_lineitem" reltype="has_a" key="id" map="" class="acqpoli"/>
+			<link field="selector" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
-			<link field="eg_bib_id" reltype="has_a" key="id" map="" class="bre"/>
-			<link field="attributes" reltype="has_many" key="picklist_entry" map="" class="acqplea"/>
-		</links>
-	</class>
-
-	<class id="acqpoli" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_lineitem" oils_persist:tablename="acq.po_lineitem">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_lineitem_id_seq">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="PO Line Item ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Purchase Order" name="purchase_order" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="MARC" name="marc" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="List Price" name="list_price" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="money" />
-			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link" />
-		</fields>
-		<links>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl"/>
 			<link field="eg_bib_id" reltype="has_a" key="id" map="" class="bre"/>
-			<link field="attributes" reltype="has_many" key="po_lineitem" map="" class="acqpolia"/>
-			<link field="lineitem_details" reltype="has_many" key="po_lineitem" map="" class="acqpolid"/>
+			<link field="attributes" reltype="has_many" key="lineitem" map="" class="acqlia"/>
+			<link field="lineitem_details" reltype="has_many" key="lineitem" map="" class="acqlid"/>
+			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
 		</links>
 	</class>
 
-	<class id="acqpolin" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_li_note" oils_persist:tablename="acq.po_li_note">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_li_note_id_seq">
+	<class id="acqlin" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_note" oils_persist:tablename="acq.lineitem_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="PO Line Item Note ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Line Item" name="po_lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Line Item" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Creator" name="creator" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
@@ -2722,49 +2705,33 @@
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
-			<link field="po_lineitem" reltype="has_a" key="id" map="" class="acqpoli"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 		</links>
 	</class>
 
-	<class id="acqplea" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_entry_attr" oils_persist:tablename="acq.picklist_entry_attr">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_entry_attr_id_seq">
+	<class id="acqlia" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_attr" oils_persist:tablename="acq.lineitem_attr">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Attribute Value ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Picklist Entry" name="picklist_entry" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Lineitem" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Type" name="attr_type" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Name" name="attr_name" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Value" name="attr_value" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links>
-			<link field="picklist_entry" reltype="has_a" key="id" map="" class="acqple"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 		</links>
 	</class>
 
-	<class id="acqpolia" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_li_attr" oils_persist:tablename="acq.po_li_attr">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_li_attr_id_seq">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Attribute Value ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="PO Line Item" name="po_lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Type" name="attr_type" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Name" name="attr_name" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Value" name="attr_value" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
-		</fields>
-		<links>
-			<link field="po_lineitem" reltype="has_a" key="id" map="" class="acqpoli"/>
-		</links>
-	</class>
-
-	<class id="acqpolid" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_li_detail" oils_persist:tablename="acq.po_li_detail">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_li_detail_id_seq">
+	<class id="acqlid" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_detail" oils_persist:tablename="acq.lineitem_detail">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_detail_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Item Detail ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="PO Line Item" name="po_lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="PO Line Item" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Evergreen Copy ID" name="eg_copy_id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Barcode" name="barcode" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Call Number Label" name="cn_label" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
@@ -2773,30 +2740,15 @@
 			<field reporter:label="Fund Debit" name="fund_debit" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link" />
 		</fields>
 		<links>
-			<link field="po_lineitem" reltype="has_a" key="id" map="" class="acqpoli"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 			<link field="eg_copy_id" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
 		</links>
 	</class>
 
-	<class id="acqplead" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_attr_definition" oils_persist:tablename="acq.picklist_attr_definition">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_attr_definition_id_seq">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
-		</fields>
-		<links>
-			<link field="picklist_entry" reltype="has_a" key="id" map="" class="acqpl"/>
-		</links>
-	</class>
-
-	<class id="acqplemad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_marc_attr_definition" oils_persist:tablename="acq.picklist_marc_attr_definition">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_attr_definition_id_seq">
+	<class id="acqliad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_attr_definition" oils_persist:tablename="acq.lineitem_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2808,8 +2760,8 @@
 		<links/>
 	</class>
 
-	<class id="acqplegad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_generated_attr_definition" oils_persist:tablename="acq.picklist_generated_attr_definition">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_attr_definition_id_seq">
+	<class id="acqlimad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_marc_attr_definition" oils_persist:tablename="acq.lineitem_marc_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2818,13 +2770,24 @@
 			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
 			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
-		<links>
-			<link field="picklist_entry" reltype="has_a" key="id" map="" class="acqpl"/>
-		</links>
+		<links/>
 	</class>
 
-	<class id="acqplepad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_provider_attr_definition" oils_persist:tablename="acq.picklist_provider_attr_definition">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_attr_definition_id_seq">
+	<class id="acqligad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_generated_attr_definition" oils_persist:tablename="acq.lineitem_generated_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links/>
+	</class>
+
+	<class id="acqlipad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_provider_attr_definition" oils_persist:tablename="acq.lineitem_provider_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2839,8 +2802,8 @@
 		</links>
 	</class>
 
-	<class id="acqpleuad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist_usr_attr_definition" oils_persist:tablename="acq.picklist_usr_attr_definition">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_attr_definition_id_seq">
+	<class id="acqliuad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_usr_attr_definition" oils_persist:tablename="acq.lineitem_usr_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -2851,7 +2814,7 @@
 			<field reporter:label="User" name="usr" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
 		</fields>
 		<links>
-			<link field="provider" reltype="has_a" key="id" map="" class="au"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
 
