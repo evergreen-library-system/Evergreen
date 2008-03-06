@@ -532,7 +532,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'id' : 'owning_lib',
-			'label' : document.getElementById('commonStrings').getString('staff.circ.utils.owning_lib'),
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.owning_lib'),
 			'flex' : 1,
 			'primary' : false,
 			'hidden' : true,
