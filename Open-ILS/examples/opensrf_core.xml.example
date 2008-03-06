@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+<!-- 
+vim:et:ts=2:sw=2:
+-->
 <config>
 
   <!-- bootstrap config for OpenSRF apps -->
@@ -7,8 +10,8 @@
     <!-- The OpenSRF Routers's name on the network -->
     <!-- You should never need to change this -->
     <router_name>router</router_name>
-	<routers>
-        <router>localhost</router>
+    <routers>
+      <router>localhost</router>
     </routers>
 
     <!-- Our jabber domain -->
@@ -21,12 +24,12 @@
     <logfile>/openils/var/log/osrfsys.log</logfile>
 
     <!-- Log to syslog. You can use this same layout for 
-        defining the logging of all services in this file -->
-<!--
+    defining the logging of all services in this file -->
+    <!--
     <logfile>syslog</logfile>
     <syslog>local2</syslog>
     <actlog>local1</actlog>
--->
+    -->
 
     <!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
     <loglevel>3</loglevel>
@@ -55,7 +58,7 @@
   <gateway>
 
     <!-- we consider ourselves to be the "originating" client for requests,
-            which means we define the log XID string for log traces -->
+    which means we define the log XID string for log traces -->
     <client>true</client>
 
     <!--  the routers's name on the network -->
@@ -66,10 +69,10 @@
       <domain>localhost</domain>
     </domains>
 
-<!-- These are the services that the gateway will serve. 
-	Any other requests will receive an HTTP_NOT_FOUND (404) 
-	DO NOT put any services here that you don't want the internet to have access to
--->
+    <!-- These are the services that the gateway will serve. 
+    Any other requests will receive an HTTP_NOT_FOUND (404) 
+    DO NOT put any services here that you don't want the internet to have access to
+    -->
     <services>
       <service>opensrf.math</service>
       <service>open-ils.cat</service>
@@ -93,37 +96,37 @@
 
   <routers>
     <router>
-  
+
       <!-- do not change -->
       <component>0</component>
-  
+
       <trusted_domains>
-  
+
         <!-- Trusted servers are allowed to register apps with the router -->
         <server>localhost</server>
-  
+
         <!-- Trusted clients are allowed to send packets through the router -->
         <client>localhost</client>
-  
+
       </trusted_domains>
-  
+
       <transport>
-  
+
         <!-- jabber server are we connecting to -->
         <server>localhost</server>
         <port>5222</port>
-  
+
         <!-- if this is changed, all "router_name" settings 
-                  will need to be updated to match this setting -->
+        will need to be updated to match this setting -->
         <username>router</username>
         <password>mypassword</password>
-  
+
         <!-- router's jabber resource -->
         <!-- do not change this -->
         <resource>router</resource>
         <connect_timeout>10</connect_timeout>
         <max_reconnect_attempts>5</max_reconnect_attempts>
-  
+
       </transport>
       <logfile>/openils/var/log/router.log</logfile>
       <loglevel>3</loglevel>
