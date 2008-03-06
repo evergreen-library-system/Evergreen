@@ -553,11 +553,8 @@
 	<event code='1641' textcode='ACQ_PICKLIST_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
 	</event>
-	<event code='1642' textcode='ACQ_PICKLIST_ENTRY_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested acq.picklist_entry was not found</desc>
-	</event>
-	<event code='1643' textcode='ACQ_PICKLIST_ENTRY_ATTR_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested acq.picklist_entry_attr was not found</desc>
+	<event code='1643' textcode='ACQ_LINEITEM_ATTR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_attr was not found</desc>
 	</event>
 	<event code='1644' textcode='ACQ_FUNDING_SOURCE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.funding_source was not found</desc>
@@ -601,7 +598,7 @@
 	<event code='1657' textcode='ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
 	</event>
-	<event code='1658' textcode='ACQ_PO_LINEITEM_NOT_FOUND'>
+	<event code='1658' textcode='ACQ_LINEITEM_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.po_lineitem was not found</desc>
 	</event>
 	<event code='1659' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
