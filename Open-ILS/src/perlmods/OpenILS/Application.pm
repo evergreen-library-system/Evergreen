@@ -14,6 +14,16 @@ __PACKAGE__->register_method(
     method      => 'ils_version',
 );
 
+__PACKAGE__->register_method(
+    api_name => 'opensrf.open-ils.fetch_idl.file',
+    api_level => 1,
+    method => 'get_idl_file',
+);
+sub get_idl_file {
+    use OpenSRF::Utils::SettingsClient;
+    return OpenSRF::Utils::SettingsClient->new->config_value('IDL');
+}
+
 sub register_method {
     my $class = shift;
     my %args = @_;
