@@ -65,9 +65,7 @@ vim:et:ts=2:sw=2:
     <router_name>router</router_name>
 
     <!-- jabber domains to connect to (domain1, domain2, ...) -->
-    <domains>
-      <domain>localhost</domain>
-    </domains>
+    <domain>localhost</domain>
 
     <!-- These are the services that the gateway will serve. 
     Any other requests will receive an HTTP_NOT_FOUND (404) 
