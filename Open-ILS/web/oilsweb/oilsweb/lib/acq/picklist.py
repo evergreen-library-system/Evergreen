@@ -55,7 +55,7 @@ class PicklistMgr(object):
                 "offset" : kwargs.get('offset'),
                 "limit" : kwargs.get('limit'),
                 "idlist" : kwargs.get('idlist'),
-                "flesh" : 1,
+                "flesh_attrs" : 1,
                 "clear_marc" : 1
             }
         ).recv().content()
@@ -98,7 +98,7 @@ class PicklistMgr(object):
         
 
     def retrieve_lineitem(self, lineitem_id, **kwargs):
-        args = {'flesh': kwargs.get('flesh')}
+        args = {'flesh_attrs': kwargs.get('flesh_attrs')}
         lineitem = self.ses.request(
             'open-ils.acq.lineitem.retrieve',
             self.request_mgr.ctx.core.authtoken.value, lineitem_id, args).recv().content()

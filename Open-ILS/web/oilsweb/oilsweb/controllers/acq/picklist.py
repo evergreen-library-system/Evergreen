@@ -10,7 +10,6 @@ from oils.event import Event
 from oils.org import OrgUtil
 
 
-
 class PicklistController(BaseController):
 
     def view(self, **kwargs):
@@ -38,7 +37,7 @@ class PicklistController(BaseController):
     def view_lineitem(self, **kwargs):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        lineitem = pl_manager.retrieve_lineitem(kwargs.get('id'), flesh=1, flesh_provider=True)
+        lineitem = pl_manager.retrieve_lineitem(kwargs.get('id'), flesh_attrs=1, flesh_provider=True)
         pl_manager.id = lineitem.picklist()
         picklist = pl_manager.retrieve()
         r.ctx.acq.picklist.value = pl_manager.picklist
