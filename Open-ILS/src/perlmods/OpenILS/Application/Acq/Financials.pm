@@ -572,8 +572,8 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to retrieve', type => 'number'},
-            {desc => q/Options hash.  flesh_lineitems: to get the po_lineitems and po_li_attrs; 
-                clear_marc: to clear the MARC data from the po_lineitem (for reduced bandwidth);
+            {desc => q/Options hash.  flesh_lineitems: to get the lineitems and lineitem_attrs; 
+                clear_marc: to clear the MARC data from the lineitem (for reduced bandwidth);
                 limit: number of items to return ,defaults to 50;
                 offset: offset in the list of items to return
                 order_by: sort the result, provide one or more colunm names, separated by commas,
@@ -603,10 +603,11 @@ sub retrieve_all_user_purchase_order {
     # grab my purchase orders
     push(@$po_ids, @{$e->search_acq_purchase_order({owner => $e->requestor->id}, {idlist=>1})});
 
+    return undef unless @$po_ids;
+
     # now get the db to limit/sort for us
     $po_ids = $e->search_acq_purchase_order(
-        [
-            {id => $po_ids}, {
+        [   {id => $po_ids}, {
                 limit => $$options{limit} || 50,
                 offset => $$options{offset} || 0,
                 order_by => {acqpo => $$options{order_by} || 'create_time'}
@@ -627,8 +628,8 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to retrieve', type => 'number'},
-            {desc => q/Options hash.  flesh_lineitems, to get the po_lineitems and po_li_attrs; 
-                clear_marc, to clear the MARC data from the po_lineitem (for reduced bandwidth)
+            {desc => q/Options hash.  flesh_lineitems, to get the lineitems and lineitem_attrs; 
+                clear_marc, to clear the MARC data from the lineitem (for reduced bandwidth)
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
                 li_order_by : lineitem sort definition if fleshing line items
@@ -672,16 +673,16 @@ sub retrieve_purchase_order_impl {
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
 
     if($$options{flesh_lineitems}) {
-        my $items = $e->search_acq_po_lineitem([
+        my $items = $e->search_acq_lineitem([
             {purchase_order => $po_id},
             {
                 flesh => 1,
                 flesh_fields => {
-                    acqpoli => ['attributes']
+                    jub => ['attributes']
                 },
                 limit => $$options{li_limit} || 50,
                 offset => $$options{li_offset} || 0,
-                order_by => {acqpoli => $$options{li_order_by} || 'create_time'}
+                order_by => {jub => $$options{li_order_by} || 'create_time'}
             }
         ]);
 
@@ -693,7 +694,7 @@ sub retrieve_purchase_order_impl {
     }
 
     if($$options{flesh_lineitem_count}) {
-        my $items = $e->search_acq_po_lineitem({purchase_order => $po_id}, {idlist=>1});
+        my $items = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist=>1});
         $po->lineitem_count(scalar(@$items));
     }
 
@@ -701,10 +702,10 @@ sub retrieve_purchase_order_impl {
 }
 
 
-
+=head
 __PACKAGE__->register_method(
-	method => 'create_po_lineitem',
-	api_name	=> 'open-ils.acq.po_lineitem.create',
+	method => 'create_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.create',
 	signature => {
         desc => 'Creates a new purchase order line item',
         params => [
@@ -717,13 +718,13 @@ __PACKAGE__->register_method(
     }
 );
 
-sub create_po_lineitem {
-    my($self, $conn, $auth, $po_li, $options) = @_;
+sub create_lineitem {
+    my($self, $conn, $auth, $li, $options) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     $options ||= {};
 
-    return $e->die_event if po_perm_failure($e, $po_li->purchase_order);
+    return $e->die_event if po_perm_failure($e, $li->purchase_order);
 
     # if a picklist_entry ID is provided, use that as the basis for this item
     my $ple = $e->retrieve_acq_picklist_entry([
@@ -731,32 +732,34 @@ sub create_po_lineitem {
         {flesh => 1, flesh_fields => {acqple => ['attributes']}}
     ]) or return $e->die_event;
 
-    $po_li->marc($ple->marc);
-    $po_li->eg_bib_id($ple->eg_bib_id);
-    $e->create_acq_po_lineitem($po_li) or return $e->die_event;
+    $li->marc($ple->marc);
+    $li->eg_bib_id($ple->eg_bib_id);
+    $e->create_acq_lineitem($li) or return $e->die_event;
 
     for my $plea (@{$ple->attributes}) {
         # now that we have the line item, copy the attributes over from the picklist entry
-        my $attr = Fieldmapper::acq::po_li_attr->new;
+        my $attr = Fieldmapper::acq::li_attr->new;
         $attr->attr_type($plea->attr_type);
         $attr->attr_value($plea->attr_value);
         $attr->attr_name($plea->attr_name);
-        $attr->po_lineitem($po_li->id);
-        $e->create_acq_po_li_attr($attr) or return $e->die_event;
+        $attr->lineitem($li->id);
+        $e->create_acq_li_attr($attr) or return $e->die_event;
     }
 
     # update the picklist entry and point it to the line item
-    $ple->po_lineitem($po_li->id);
+    $ple->lineitem($li->id);
     $ple->edit_time('now');
     $e->update_acq_picklist_entry($ple) or return $e->die_event;
 
     $e->commit;
-    return $po_li->id;
+    return $li->id;
 }
+=cut
+
 
 __PACKAGE__->register_method(
-	method => 'create_po_li_detail',
-	api_name	=> 'open-ils.acq.po_li_detail.create',
+	method => 'create_lineitem_detail',
+	api_name	=> 'open-ils.acq.lineitem_detail.create',
 	signature => {
         desc => q/Creates a new purchase order line item detail.  
             Additionally creates the associated fund_debit/,
@@ -770,16 +773,16 @@ __PACKAGE__->register_method(
     }
 );
 
-sub create_po_li_detail {
+sub create_lineitem_detail {
     my($self, $conn, $auth, $li_detail, $options) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     $options ||= {};
 
-    my $po_li = $e->retrieve_acq_po_lineitem($li_detail->po_lineitem)
+    my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
         or return $e->die_event;
 
-    my $po = $e->retrieve_acq_purchase_order($po_li->purchase_order);
+    my $po = $e->retrieve_acq_purchase_order($li->purchase_order);
     my $provider = $e->retrieve_acq_provider($po->provider);
 
     my $fund = $e->retrieve_acq_fund($li_detail->fund)
@@ -808,21 +811,22 @@ sub create_po_li_detail {
     $e->create_acq_fund_debit($fdebit) or return $e->die_event;
 
     $li_detail->fund_debit($fdebit->id);
-    $e->create_acq_po_li_detail($li_detail) or return $e->die_event;
+    $e->create_acq_li_detail($li_detail) or return $e->die_event;
 
     $e->commit;
     return $li_detail->id;
 }
 
 
+=head
 __PACKAGE__->register_method(
-	method => 'retrieve_po_lineitem',
-	api_name	=> 'open-ils.acq.po_lineitem.retrieve',
+	method => 'retrieve_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.retrieve',
 	signature => {
         desc => q/Retrieve a lineitem/,
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'po_lineitem ID', type => 'number'},
+            {desc => 'lineitem ID', type => 'number'},
             {desc => q/Options hash. flesh_li_details: fleshes the details objects, which
                 additionally flesh the fund_debit and fund objects/, 
                 type => 'hash'}
@@ -831,42 +835,43 @@ __PACKAGE__->register_method(
     }
 );
 
-sub retrieve_po_lineitem {
+sub retrieve_lineitem {
     my($self, $conn, $auth, $li_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     $options ||= {};
 
-    my $po_li = $e->retrieve_acq_po_lineitem([
+    my $li = $e->retrieve_acq_lineitem([
         $li_id, 
         {   flesh => 1,
             flesh_fields => {
-                acqpoli => ['attributes']
+                jub => ['attributes']
             },
         }
     ]) or return $e->event;
 
-    return $e->die_event if po_perm_failure($e, $po_li->purchase_order);
+    return $e->die_event if po_perm_failure($e, $li->purchase_order);
 
     if($$options{flesh_li_details}) {
-        my $details = $e->search_acq_po_li_detail([
-            {po_lineitem => $li_id}, {
+        my $details = $e->search_acq_li_detail([
+            {lineitem => $li_id}, {
                 flesh => 1,
-                flesh_fields => {acqpolid => ['fund_debit', 'fund']}
+                flesh_fields => {acqlid => ['fund_debit', 'fund']}
             }
         ]);
-        $po_li->lineitem_details($details);
+        $li->lineitem_details($details);
     }
 
 
     if($$options{flesh_li_attrs}) {
-        my $attrs = $e->search_acq_po_li_attr({po_lineitem => $li_id});
-        $po_li->attributes($attrs);
+        my $attrs = $e->search_acq_li_attr({lineitem => $li_id});
+        $li->attributes($attrs);
     }
 
-    $po_li->clear_marc if $$options{clear_marc};
-    return $po_li;
+    $li->clear_marc if $$options{clear_marc};
+    return $li;
 }
+=cut
 
 
 1;
