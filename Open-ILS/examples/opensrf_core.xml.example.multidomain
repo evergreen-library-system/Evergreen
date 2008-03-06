@@ -94,6 +94,8 @@
                 <!-- allow private services to register with this router 
                      and public client to send requests to this router. -->
                 <server>private.localhost</server>
+                <!-- also allow private clients to send to the router so it can receive error messages -->
+                <client>private.localhost</client>
                 <client>public.localhost</client>
             </trusted_domains>
             <transport>
