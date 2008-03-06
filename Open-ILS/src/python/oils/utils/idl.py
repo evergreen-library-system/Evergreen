@@ -13,8 +13,9 @@ Typical usage:
 biblio.record_entry
 """
 import sys, string, xml.dom.minidom
-import osrf.net_obj, osrf.log, osrf.set, osrf.ex
-from oils.const import OILS_NS_OBJ, OILS_NS_PERSIST, OILS_NS_REPORTER
+#import osrf.net_obj, osrf.log, osrf.set, osrf.ex, osrf.ses
+import osrf.net_obj, osrf.log, osrf.ex, osrf.ses
+from oils.const import OILS_NS_OBJ, OILS_NS_PERSIST, OILS_NS_REPORTER, OILS_APP_ACTOR
 
 class IDLException(osrf.ex.OSRFException):
     pass
@@ -40,7 +41,9 @@ class IDLParser(object):
             the global IDL repository '''
         if IDLParser._global_parser is None:
             parser = IDLParser()
-            parser.set_IDL(osrf.set.get('IDL'))
+            idl_path = osrf.ses.ClientSession.atomic_request(
+                OILS_APP_ACTOR, 'opensrf.open-ils.fetch_idl.file')
+            parser.set_IDL(idl_path)
             parser.parse_IDL()
             IDLParser._global_parser = parser
 
