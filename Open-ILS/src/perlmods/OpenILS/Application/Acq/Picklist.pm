@@ -74,7 +74,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID to retrieve', type => 'number'},
-            {desc => 'Options hash, including "flesh_entry_count" to get the count of attached entries', type => 'hash'},
+            {desc => 'Options hash, including "flesh_lineitem_count" to get the count of attached entries', type => 'hash'},
         ],
         return => {desc => 'Picklist object on success, Event on error'}
     }
@@ -88,8 +88,8 @@ sub retrieve_picklist {
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->event;
 
-    $picklist->entry_count(retrieve_picklist_entry_count($e, $picklist_id))
-        if $$options{flesh_entry_count};
+    $picklist->entry_count(retrieve_lineitem_count($e, $picklist_id))
+        if $$options{flesh_lineitem_count};
 
     if($e->requestor->id != $picklist->owner) {
         return $e->event unless 
@@ -104,13 +104,13 @@ sub retrieve_picklist {
 
 
 # Returns the number of entries associated with this picklist
-sub retrieve_picklist_entry_count {
+sub retrieve_lineitem_count {
     my($e, $picklist_id) = @_;
     my $count = $e->json_query({
         select => { 
-            acqple => [{transform => 'count', column => 'id', alias => 'count'}]
+            jub => [{transform => 'count', column => 'id', alias => 'count'}]
         }, 
-        from => 'acqple', 
+        from => 'jub', 
         where => {picklist => $picklist_id}}
     );
     return $count->[0]->{count};
@@ -166,8 +166,8 @@ sub retrieve_user_picklist {
         {idlist=>$$options{idlist}}
     );
 
-    if($$options{flesh_entry_count}) {
-        $_->entry_count(retrieve_picklist_entry_count($e, $_->id)) for @$list;
+    if($$options{flesh_lineitem_count}) {
+        $_->entry_count(retrieve_lineitem_count($e, $_->id)) for @$list;
     };
 
     if($$options{flesh_username}) {
@@ -211,8 +211,8 @@ sub retrieve_all_user_picklist {
 
     for my $pl (@$my_list, @$picklist_ids) {
         my $picklist = $e->retrieve_acq_picklist($pl) or return $e->event;
-        $picklist->entry_count(retrieve_picklist_entry_count($e, $picklist->id))
-            if($$options{flesh_entry_count});
+        $picklist->entry_count(retrieve_lineitem_count($e, $picklist->id))
+            if($$options{flesh_lineitem_count});
         $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname)
             if $$options{flesh_username};
         $conn->respond($picklist);
@@ -226,7 +226,8 @@ __PACKAGE__->register_method(
 	method => 'delete_picklist',
 	api_name	=> 'open-ils.acq.picklist.delete',
 	signature => {
-        desc => 'Deletes a picklist',
+        desc => q/Deletes a picklist.  It also deletes any lineitems in the "new" state.  
+            Other attached lineitems are detached'/,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID to delete', type => 'number'}
@@ -246,6 +247,26 @@ sub delete_picklist {
     return OpenILS::Event->new('BAD_PARAMS')
         if $picklist->owner != $e->requestor->id;
 
+    # delete all 'new' lineitems
+    my $lis = $e->search_acq_lineitem({picklist => $picklist->id, state => 'new'});
+    for my $li (@$lis) {
+        $e->delete_acq_lineitem($li) or return $e->die_event;
+    }
+
+    # detach all non-'new' lineitems
+    $lis = $e->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}});
+    for my $li (@$lis) {
+        $li->clear_picklist;
+        $e->update_acq_lineitem($li) or return $e->die_event;
+    }
+
+    # remove any picklist-specific object perms
+    my $ops = $e->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => $picklist->id});
+    for my $op (@$ops) {
+        $e->delete_usr_object_perm_map($op) or return $e->die_event;
+    }
+
+
     $e->delete_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
     return 1;
@@ -257,25 +278,25 @@ sub delete_picklist {
 # ----------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_picklist_entry',
-	api_name	=> 'open-ils.acq.picklist_entry.create',
+	method => 'create_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.create',
 	signature => {
-        desc => 'Creates a picklist entry',
+        desc => 'Creates a lineitem',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'The picklist_entry object to create', type => 'object'},
+            {desc => 'The lineitem object to create', type => 'object'},
         ],
-        return => {desc => 'ID of newly created picklist_entry on success, Event on error'}
+        return => {desc => 'ID of newly created lineitem on success, Event on error'}
     }
 );
 
-sub create_picklist_entry {
-    my($self, $conn, $auth, $entry) = @_;
+sub create_lineitem {
+    my($self, $conn, $auth, $li) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST');
 
-    my $picklist = $e->retrieve_acq_picklist($entry->picklist)
+    my $picklist = $e->retrieve_acq_picklist($li->picklist)
         or return $e->die_event;
     return OpenILS::Event->new('BAD_PARAMS') 
         unless $picklist->owner == $e->requestor->id;
@@ -284,43 +305,59 @@ sub create_picklist_entry {
     $picklist->edit_time('now');
     $e->update_acq_picklist($picklist) or return $e->die_event;
 
-    $e->create_acq_picklist_entry($entry) or return $e->die_event;
+    $li->selector($e->requestor->id);
+    $e->create_acq_lineitem($li) or return $e->die_event;
 
     $e->commit;
-    return $entry->id;
+    return $li->id;
 }
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_picklist_entry',
-	api_name	=> 'open-ils.acq.picklist_entry.retrieve',
+	method => 'retrieve_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.retrieve',
 	signature => {
-        desc => 'Retrieves a picklist_entry',
+        desc => 'Retrieves a lineitem',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist entry ID to retrieve', type => 'number'},
-            {options => 'Hash of options, including "flesh", which fleshes the attributes', type => 'hash'},
+            {desc => 'lineitem ID to retrieve', type => 'number'},
+            {options => q/Hash of options, including 
+                "flesh_attrs", which fleshes the attributes; 
+                "flesh_li_details", which fleshes the order details objects/, type => 'hash'},
         ],
-        return => {desc => 'Picklist entry object on success, Event on error'}
+        return => {desc => 'lineitem object on success, Event on error'}
     }
 );
 
-sub retrieve_picklist_entry {
-    my($self, $conn, $auth, $pl_entry_id, $options) = @_;
+sub retrieve_lineitem {
+    my($self, $conn, $auth, $li_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $options ||= {};
 
-    my $pl_entry;
-    if($$options{flesh}) {
-        $pl_entry = $e->retrieve_acq_picklist_entry([
-            $pl_entry_id, {flesh => 1, flesh_fields => {acqple => ['attributes']}}])
+    # XXX finer grained perms...
+
+    my $li;
+
+    if($$options{flesh_attrs}) {
+        $li = $e->retrieve_acq_lineitem([
+            $li_id, {flesh => 1, flesh_fields => {jub => ['attributes']}}])
             or return $e->event;
     } else {
-        $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
-            or return $e->event;
+        $li = $e->retrieve_acq_lineitem($li_id) or return $e->event;
     }
 
-    my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
+    if($$options{flesh_li_details}) {
+        my $details = $e->search_acq_lineitem_detail([
+            {lineitem => $li_id}, {
+                flesh => 1,
+                flesh_fields => {acqlid => ['fund_debit', 'fund']}
+            }
+        ]);
+        $li->lineitem_details($details);
+    }
+
+    my $picklist = $e->retrieve_acq_picklist($li->picklist)
         or return $e->event;
 
     if($picklist->owner != $e->requestor->id) {
@@ -328,85 +365,86 @@ sub retrieve_picklist_entry {
             $e->allowed('VIEW_PICKLIST', undef, $picklist);
     }
 
-    return $pl_entry;
+    $li->clear_marc if $$options{clear_marc};
+
+    return $li;
 }
 
 
 
 __PACKAGE__->register_method(
-	method => 'delete_picklist_entry',
-	api_name	=> 'open-ils.acq.picklist_entry.delete',
+	method => 'delete_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.delete',
 	signature => {
-        desc => 'Deletes a picklist_entry',
+        desc => 'Deletes a lineitem',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist entry ID to delete', type => 'number'}
+            {desc => 'lineitem ID to delete', type => 'number'},
         ],
         return => {desc => '1 on success, Event on error'}
     }
 );
 
-sub delete_picklist_entry {
-    my($self, $conn, $auth, $pl_entry_id) = @_;
+sub delete_lineitem {
+    my($self, $conn, $auth, $li_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
+    my $li = $e->retrieve_acq_lineitem($li_id)
         or return $e->die_event;
 
-    my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
+    my $picklist = $e->retrieve_acq_picklist($li->picklist)
         or return $e->die_event;
 
-    # don't let anyone delete someone else's picklist entry
+    # don't let anyone delete someone else's lineitem
     return OpenILS::Event->new('BAD_PARAMS') 
         if $picklist->owner != $e->requestor->id;
 
-    $e->delete_acq_picklist_entry($pl_entry) or return $e->die_event;
+    $e->delete_acq_lineitem($li) or return $e->die_event;
     $e->commit;
     return 1;
 }
 
 
 __PACKAGE__->register_method(
-	method => 'update_picklist_entry',
-	api_name	=> 'open-ils.acq.picklist_entry.update',
+	method => 'update_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.update',
 	signature => {
-        desc => 'Update a picklist_entry',
+        desc => 'Update a lineitem',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist entry object update', type => 'object'}
+            {desc => 'lineitem object update', type => 'object'}
         ],
         return => {desc => '1 on success, Event on error'}
     }
 );
 
-sub update_picklist_entry {
-    my($self, $conn, $auth, $pl_entry) = @_;
+sub update_lineitem {
+    my($self, $conn, $auth, $li) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $orig_entry = $e->retrieve_acq_picklist_entry([
-        $pl_entry->id,
-        {
-            flesh => 1, # grab the picklist_entry with picklist attached
-            flesh_fields => {acqple => ['picklist']}
+    my $orig_li = $e->retrieve_acq_lineitem([
+        $li->id,
+        {   flesh => 1, # grab the lineitem with picklist attached
+            flesh_fields => {jub => ['picklist']}
         }
     ]) or return $e->die_event;
 
-    # don't let anyone update someone else's picklist entry
+    # don't let anyone update someone else's lineitem
     return OpenILS::Event->new('BAD_PARAMS') 
-        if $orig_entry->picklist->owner != $e->requestor->id;
+        if $orig_li->picklist->owner != $e->requestor->id;
 
-    $e->update_acq_picklist_entry($pl_entry) or return $e->die_event;
+    $e->update_acq_lineitem($li) or return $e->die_event;
     $e->commit;
     return 1;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_pl_picklist_entry',
-	api_name	=> 'open-ils.acq.picklist_entry.picklist.retrieve',
+	method => 'retrieve_pl_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.picklist.retrieve',
 	signature => {
-        desc => 'Retrieves picklist_entry objects according to picklist',
+        desc => 'Retrieves lineitem objects according to picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID whose entries to retrieve', type => 'number'},
@@ -417,33 +455,33 @@ __PACKAGE__->register_method(
                 "limit", retrieval limit;
                 "offset", retrieval offset;
                 "idlist", return a list of IDs instead of objects
-                "flesh", additionaly return the list of flattened attributes
+                "flesh_attrs", additionaly return the list of flattened attributes
                 "clear_marc", discards the raw MARC data to reduce data size
                 /, 
                 type => 'hash'}
         ],
-        return => {desc => 'Array of picklist entry objects or IDs,  on success, Event on error'}
+        return => {desc => 'Array of lineitem objects or IDs,  on success, Event on error'}
     }
 );
 
 
 # some defaults are filled in for reference
 my $PL_ENTRY_JSON_QUERY = {
-    select => {acqple => ['id']}, # display fields
+    select => {jub => ['id']}, # display fields
     from => {
-        acqple => { # selecting from picklist_entry_attr
-            acqplea => {field => 'picklist_entry', fkey => 'id'}
+        jub => { # selecting from lineitem_attr
+            acqlia => {field => 'lineitem', fkey => 'id'}
         }
     },
     where => {
-        '+acqple' => {picklist => 1},
-        '+acqplea' => { # grab attr rows with the requested type and name for sorting
-            'attr_type' => 'picklist_marc_attr_definition',
+        '+jub' => {picklist => 1},
+        '+acqlia' => { # grab attr rows with the requested type and name for sorting
+            'attr_type' => 'lineitem_marc_attr_definition',
             'attr_name' => 'title'
         }
     },
     'order_by' => {
-        acqplea => {
+        acqlia => {
             'attr_value' => {direction => 'asc'}
         }
     },
@@ -451,22 +489,22 @@ my $PL_ENTRY_JSON_QUERY = {
     offset => 0
 };
 
-sub retrieve_pl_picklist_entry {
+sub retrieve_pl_lineitem {
     my($self, $conn, $auth, $picklist_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
     # collect the retrieval options
     my $sort_attr = $$options{sort_attr} || 'title';
-    my $sort_attr_type = $$options{sort_attr_type} || 'picklist_marc_attr_definition';
+    my $sort_attr_type = $$options{sort_attr_type} || 'lineitem_marc_attr_definition';
     my $sort_dir = $$options{sort_dir} || 'asc';
     my $limit = $$options{limit} || 10;
     my $offset = $$options{offset} || 0;
 
-    $PL_ENTRY_JSON_QUERY->{where}->{'+acqple'}->{picklist} = $picklist_id;
-    $PL_ENTRY_JSON_QUERY->{where}->{'+acqplea'}->{attr_name} = $sort_attr;
-    $PL_ENTRY_JSON_QUERY->{where}->{'+acqplea'}->{attr_type} = $sort_attr_type;
-    $PL_ENTRY_JSON_QUERY->{order_by}->{acqplea}->{attr_value}->{direction} = $sort_dir;
+    $PL_ENTRY_JSON_QUERY->{where}->{'+jub'}->{picklist} = $picklist_id;
+    $PL_ENTRY_JSON_QUERY->{where}->{'+acqlia'}->{attr_name} = $sort_attr;
+    $PL_ENTRY_JSON_QUERY->{where}->{'+acqlia'}->{attr_type} = $sort_attr_type;
+    $PL_ENTRY_JSON_QUERY->{order_by}->{acqlia}->{attr_value}->{direction} = $sort_dir;
     $PL_ENTRY_JSON_QUERY->{limit} = $limit;
     $PL_ENTRY_JSON_QUERY->{offset} = $offset;
 
@@ -477,13 +515,13 @@ sub retrieve_pl_picklist_entry {
     push(@ids, $_->{id}) for @$entries;
     return \@ids if $$options{idlist};
 
-    if($$options{flesh}) {
-        $entries = $e->search_acq_picklist_entry([
+    if($$options{flesh_attrs}) {
+        $entries = $e->search_acq_lineitem([
             {id => \@ids},
-            {flesh => 1, flesh_fields => {acqple => ['attributes']}}
+            {flesh => 1, flesh_fields => {jub => ['attributes']}}
         ]);
     } else {
-        $entries = $e->batch_retrieve_acq_picklist_entry(\@ids);
+        $entries = $e->batch_retrieve_acq_lineitem(\@ids);
     }
 
     if($$options{clear_marc}) {
@@ -494,7 +532,7 @@ sub retrieve_pl_picklist_entry {
 }
 
 =head comment
-request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"acqple":[{"transform":"count", "attregate":1, "column":"id","alias":"count"}]}, "from":"acqple","where":{"picklist":1}}
+request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"jub":[{"transform":"count", "attregate":1, "column":"id","alias":"count"}]}, "from":"jub","where":{"picklist":1}}
 =cut
 
 
