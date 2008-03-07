@@ -2313,7 +2313,6 @@ sub staged_fts {
 	my %args = @_;
 	
 	my $ou = $args{org_unit};
-	my $pref_lang = $args{prefered_language} || 'eng'; # XXX not used currently
 	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
 
@@ -2415,7 +2414,7 @@ sub staged_fts {
 	}
 
 	my $param_search_ou = $ou;
-	my $param_depth = $args{depth}; $param_depth ||= 'NULL'
+	my $param_depth = $args{depth}; $param_depth = 'NULL' unless (defined($param_depth) and length($param_depth) > 0 );
     my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
     my $param_statuses = '$${' . join(',', map { s/\$//go } @statuses) . '}$$';
     my $param_audience = '$${' . join(',', map { s/\$//go } @aud) . '}$$';
@@ -2424,6 +2423,8 @@ sub staged_fts {
     my $param_types = '$${' . join(',', map { s/\$//go } @types) . '}$$';
     my $param_forms = '$${' . join(',', map { s/\$//go } @forms) . '}$$';
     my $param_vformats = '$${' . join(',', map { s/\$//go } @vformats) . '}$$';
+	my $param_pref_lang = $args{prefered_language}; $param_perf_lang =~ s/\$//go; $param_perf_lang = '$$'.$param_perf_lang.'$$';
+	my $param_pref_lang_multiplier = $args{prefered_language_weight}; $param_perf_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
 	my $param_sort_desc = (defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'");
 	my $metarecord = ($self->api_name =~ /metabib/o) ? "'t'" : "'f'");
@@ -2445,6 +2446,8 @@ sub staged_fts {
                     $param_types,
                     $param_forms,
                     $param_vformats,
+                    $param_pref_lang,
+                    $param_pref_lang_multiplier,
                     $param_sort,
                     $param_sort_desc,
                     $metarecord,
