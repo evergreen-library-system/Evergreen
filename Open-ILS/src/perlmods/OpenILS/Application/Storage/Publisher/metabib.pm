@@ -2426,9 +2426,9 @@ sub staged_fts {
 	my $param_pref_lang = $args{preferred_language}; $param_perf_lang =~ s/\$//go; $param_perf_lang = '$$'.$param_perf_lang.'$$';
 	my $param_pref_lang_multiplier = $args{preferred_language_weight}; $param_perf_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
-	my $param_sort_desc = (defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'");
-	my $metarecord = ($self->api_name =~ /metabib/o) ? "'t'" : "'f'");
-	my $staff = ($self->api_name =~ /staff/o) ? "'t'" : "'f'");
+	my $param_sort_desc = defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'";
+	my $metarecord = $self->api_name =~ /metabib/o) ? "'t'" : "'f'";
+	my $staff = $self->api_name =~ /staff/o) ? "'t'" : "'f'";
     my $param_rel_limit = $args{core_limit}; $param_rel_limit ||= 'NULL';
     my $param_chk_limit = $args{check_limit}; $param_chk_limit ||= 'NULL';
     my $param_skip_chk = $args{skip_check}; $param_skip_chk ||= 'NULL';
