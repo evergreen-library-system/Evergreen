@@ -172,21 +172,21 @@ BEGIN
                       ORDER BY id
                       LIMIT 1;
 
-                    tmp_text := 'value ILIKE ' || quote_literal( tmp_text || '%' );
+                    tmp_text := query_part.table_alias || '.value ILIKE ' || quote_literal( tmp_text || '%' );
 
                 ELSIF rank_adjust.bump_type = 'word_order' THEN
                     SELECT  array_to_string( array_accum( term ), '%' ) INTO tmp_text
                       FROM  search.parse_search_args(param_searches)
                       WHERE table_alias = query_part.table_alias AND term_type = 'word';
 
-                    tmp_text := 'value ILIKE ' || quote_literal( '%' || tmp_text || '%' );
+                    tmp_text := query_part.table_alias || '.value ILIKE ' || quote_literal( '%' || tmp_text || '%' );
 
                 ELSIF rank_adjust.bump_type = 'full_match' THEN
                     SELECT  array_to_string( array_accum( term ), E'\\s+' ) INTO tmp_text
                       FROM  search.parse_search_args(param_searches)
                       WHERE table_alias = query_part.table_alias AND term_type = 'word';
 
-                    tmp_text := 'value  ~ ' || quote_literal( '^' || tmp_text || E'\\W*$' );
+                    tmp_text := query_part.table_alias || '.value  ~ ' || quote_literal( '^' || tmp_text || E'\\W*$' );
 
                 END IF;
 
@@ -209,7 +209,7 @@ BEGIN
               WHERE term_type = 'phrase'
                     AND table_alias = query_part.table_alias LOOP
 
-            inner_where_clause := inner_where_clause || ' AND ' || 'value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(phrase_query_part.term, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
+            inner_where_clause := inner_where_clause || ' AND ' || query_part.table_alias || '.value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(phrase_query_part.term, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
 
         END LOOP;
 
