@@ -1915,10 +1915,6 @@ sub biblio_search_multi_class_fts {
 		$ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
 	}
 
-	if (!defined($args{org_unit})) {
-		die "No target organizational unit passed to ".$self->api_name;
-	}
-
 	if (! scalar( keys %{$args{searches}} )) {
 		die "No search arguments were passed to ".$self->api_name;
 	}
@@ -2308,6 +2304,216 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 	cachable	=> 1,
 );
+
+# XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
+sub staged_fts {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+	
+	my $ou = $args{org_unit};
+	my $pref_lang = $args{prefered_language} || 'eng'; # XXX not used currently
+	my $limit = $args{limit} || 10;
+	my $offset = $args{offset} || 0;
+
+	if (!$ou) {
+		$ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
+	}
+
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No search arguments were passed to ".$self->api_name;
+	}
+
+	my (@statuses,@types,@forms,@lang,@aud,@lit_form,@vformats);
+
+	if ($args{available}) {
+		@statuses = (0,7);
+	}
+
+	if (my $s = $args{statuses}) {
+		$s = [$s] if (!ref($s));
+		@statuses = @$s;
+	}
+
+	if (my $a = $args{audience}) {
+		$a = [$a] if (!ref($a));
+		@aud = @$a;
+	}
+
+	if (my $l = $args{language}) {
+		$l = [$l] if (!ref($l));
+		@lang = @$l;
+	}
+
+	if (my $f = $args{lit_form}) {
+		$f = [$f] if (!ref($f));
+		@lit_form = @$f;
+	}
+
+	if (my $f = $args{item_form}) {
+		$f = [$f] if (!ref($f));
+		@forms = @$f;
+	}
+
+	if (my $t = $args{item_type}) {
+		$t = [$t] if (!ref($t));
+		@types = @$t;
+	}
+
+	if (my $v = $args{vr_format}) {
+		$v = [$v] if (!ref($v));
+		@vformats = @$v;
+	}
+
+	# XXX legacy format and item type support
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		@types = split '', $t;
+		@forms = split '', $f;
+	}
+
+    my %stored_proc_search_args;
+	for my $search_group (sort keys %{$args{searches}}) {
+		(my $search_group_name = $search_group) =~ s/\|/_/gso;
+		my ($search_class,$search_field) = split /\|/, $search_group;
+		$log->debug("Searching class [$search_class] and field [$search_field]",DEBUG);
+
+		if ($search_field) {
+			unless ( config::metabib_field->search( field_class => $search_class, name => $search_field )->next ) {
+				$log->warn("Requested class [$search_class] or field [$search_field] does not exist!");
+				return undef;
+			}
+		}
+
+		my $class = $_cdbi->{$search_class};
+		my $search_table = $class->table;
+
+		my ($index_col) = $class->columns('FTS');
+		$index_col ||= 'value';
+
+		
+		my $fts = OpenILS::Application::Storage::FTS->compile(
+            $search_class => $args{searches}{$search_group}{term},
+            $search_group_name.'.value',
+            "$search_group_name.$index_col"
+        );
+		$fts->sql_where_clause; # this builds the ranks for us
+
+		my @fts_ranks = $fts->fts_rank;
+		my @fts_queries = $fts->fts_query;
+		my @phrases = map { lc($_) } $fts->phrases;
+		my @words = map { lc($_) } $fts->words;
+
+        $stored_proc_search_args{$search_group} = {
+            fts_rank    => \@fts_ranks,
+            fts_query   => \@fts_query,
+            phrase      => \@phrases,
+            word        => \@words,
+        };
+
+	}
+
+	my $param_search_ou = $ou;
+	my $param_depth = $args{depth}; $param_depth ||= 'NULL'
+    my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
+    my $param_statuses = '$${' . join(',', map { s/\$//go } @statuses) . '}$$';
+    my $param_audience = '$${' . join(',', map { s/\$//go } @aud) . '}$$';
+    my $param_language = '$${' . join(',', map { s/\$//go } @lang) . '}$$';
+    my $param_lit_form = '$${' . join(',', map { s/\$//go } @lit_form) . '}$$';
+    my $param_types = '$${' . join(',', map { s/\$//go } @types) . '}$$';
+    my $param_forms = '$${' . join(',', map { s/\$//go } @forms) . '}$$';
+    my $param_vformats = '$${' . join(',', map { s/\$//go } @vformats) . '}$$';
+	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
+	my $param_sort_desc = (defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'");
+	my $metarecord = ($self->api_name =~ /metabib/o) ? "'t'" : "'f'");
+	my $staff = ($self->api_name =~ /staff/o) ? "'t'" : "'f'");
+    my $param_rel_limit = $args{core_limit}; $param_rel_limit ||= 'NULL';
+    my $param_chk_limit = $args{check_limit}; $param_chk_limit ||= 'NULL';
+    my $param_skip_chk = $args{skip_check}; $param_skip_chk ||= 'NULL';
+
+	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
+        SELECT  *
+          FROM  search.staged_fts(
+                    $param_search_ou,
+                    $param_depth,
+                    $param_searches,
+                    $param_statuses,
+                    $param_audience,
+                    $param_language,
+                    $param_lit_form,
+                    $param_types,
+                    $param_forms,
+                    $param_vformats,
+                    $param_sort,
+                    $param_sort_desc,
+                    $metarecord,
+                    $staff,
+                    $param_rel_limit,
+                    $param_chk_limit,
+                    $param_skip_chk
+                );
+    SQL
+
+    my $recs = $sth->fetchall_arrayref({});
+    my $summary_row = pop @$recs;
+
+    my $total = $$summary_row{total};
+    my $checked = $$summary_row{checked};
+    my $visible = $$summary_row{visible};
+    my $deleted = $$summary_row{deleted};
+    my $excluded = $$summary_row{excluded};
+
+    my $estimate = $visible;
+    if ( $total > $checked ) {
+        my $deleted_ratio = $deleted / $checked;
+        my $exclution_ratio = $excluded / $checked;
+        my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
+
+        $estimate = $$summary_row{estimated_hit_count} = int($delete_adjusted_total - ( $delete_adjusted_total * $exclution_ratio ));
+    }
+
+    delete $$summary_row{id};
+    delete $$summary_row{rel};
+    delete $$summary_row{record};
+
+    $client->respond( $summary_row );
+
+	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
+
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+		$client->respond( $rec );
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts",
+	method		=> 'staged_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts.staff",
+	method		=> 'staged_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts",
+	method		=> 'staged_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts.staff",
+	method		=> 'staged_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 
 sub xref_count {
 	my $self = shift;
