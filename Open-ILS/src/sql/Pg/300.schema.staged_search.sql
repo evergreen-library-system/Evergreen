@@ -345,7 +345,7 @@ BEGIN
             mrd_used := TRUE;
         END IF;
 
-        where_clause = where_clause || $$ AND mrd.vr_format IN ('$$ || array_to_string(param_types, $$','$$) || $$') $$;
+        where_clause = where_clause || $$ AND mrd.vr_format IN ('$$ || array_to_string(param_vformats, $$','$$) || $$') $$;
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||
