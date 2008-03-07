@@ -2406,7 +2406,7 @@ sub staged_fts {
 
         $stored_proc_search_args{$search_group} = {
             fts_rank    => \@fts_ranks,
-            fts_query   => \@fts_query,
+            fts_query   => \@fts_queries,
             phrase      => \@phrases,
             word        => \@words,
         };
