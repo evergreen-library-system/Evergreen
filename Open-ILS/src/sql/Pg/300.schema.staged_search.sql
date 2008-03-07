@@ -396,7 +396,12 @@ BEGIN
             current_res.id = core_result.id;
             current_res.rel = core_result.rel;
 
-            IF array_upper(core_result.records, 1) = 1 THEN
+            tmp_int := 1;
+            IF metarecord THEN
+                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+            END IF;
+
+            IF tmp_int = 1 THEN
                 current_res.record = core_result.records[1];
             ELSE
                 current_res.record = NULL;
@@ -458,7 +463,12 @@ BEGIN
         current_res.id = core_result.id;
         current_res.rel = core_result.rel;
 
-        IF array_upper(core_result.records, 1) = 1 THEN
+        tmp_int := 1;
+        IF metarecord THEN
+            SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+        END IF;
+
+        IF tmp_int = 1 THEN
             current_res.record = core_result.records[1];
         ELSE
             current_res.record = NULL;
