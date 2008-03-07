@@ -717,7 +717,6 @@ main.menu.prototype = {
 		var tab = this.controller.view.tabs.childNodes[idx];
 		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-		tab.setAttribute('label', offlineStrings.getFormattedString('menu.close_tab.update_tab_label', [(idx+1)]));
 		if (idx == 0) {
 			try {
 				this.controller.view.tabs.advanceSelectedTab(+1);
@@ -794,7 +793,8 @@ main.menu.prototype = {
 		var tab = this.controller.view.tabs.childNodes[ tc ];
 		tab.hidden = false;
 		if (!content_params) content_params = {};
-		if (!params) params = { 'tab_name' : offlineStrings.getString('menu.new_tab.tab', [(tc+1)]) };
+		if (!params) params = {};
+		if (!params.tab_name) params.tab_name = offlineStrings.getString('menu.new_tab.tab');
 		if (!params.nofocus) params.focus = true; /* make focus the default */
 		try {
 			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
