@@ -18,7 +18,6 @@
                 <script language='javascript' src='/opac/common/js/init.js'> </script>
                 <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
                 <script language='javascript' src='/opac/common/js/sprintf.js'> </script>
-		<script language='javascript' src='take_survey.js'> </script>
                 <script language='javascript' src='user_edit.js'> </script>
 
 
