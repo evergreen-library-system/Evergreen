@@ -154,6 +154,75 @@ SELECT	x.id AS id,
 	JOIN reporter.demographic dem ON (dem.id = u.id)
 	JOIN actor.usr_address paddr ON (paddr.id = u.billing_address);
 
+CREATE OR REPLACE VIEW reporter.classic_item_list AS
+SELECT  t.value as title,
+    a.value as author,
+    p.value as pubdate,
+    cp.id,
+    cp.price,
+    cp.barcode,
+    cn.label as call_number_label,
+    CASE
+        WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+            THEN
+                btrim(
+                    to_char(
+                        10 * floor((call_number_dewey(cn.label)::float) / 10), '000'
+                    )
+                )
+        ELSE NULL
+    END AS dewey_block_tens,
+    CASE
+        WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+            THEN
+                btrim(
+                    to_char(
+                        100 * floor((call_number_dewey(cn.label)::float) / 100), '000'
+                    )
+                )
+        ELSE NULL
+    END AS dewey_block_hundreds,
+    (SELECT COUNT(*) FROM action.circulation WHERE target_copy = cp.id) as use_count,
+    cp.circ_modifier,
+    sl.name AS shelving_location,
+    sc1.stat_cat_entry AS stat_cat_1,
+    sc2.stat_cat_entry AS stat_cat_2,
+    sce1.value AS stat_cat_1_value,
+    sce2.value AS stat_cat_2_value,
+    cp.edit_date,
+    cp.create_date,
+    ol.shortname AS owning_lib_name,
+    cn.owning_lib,
+    cl.shortname AS circ_lib_name,
+    cl.id AS circ_lib,
+    cp.creator,
+    cp.age_protect,
+    cp.opac_visible,
+    cp.ref,
+    cp.deposit_amount,
+    cp.deleted,
+    b.tcn_value,
+    cp.status,
+    circ.stop_fines,
+    circ.due_date,
+    circ_card.barcode as patron_barcode,
+    circ_u.first_given_name || ' ' || circ_u.family_name as patron_name
+  FROM  asset.copy cp
+    JOIN asset.copy_location sl ON (cp.location = sl.id)
+    JOIN asset.call_number cn ON (cp.call_number = cn.id)
+    JOIN biblio.record_entry b ON (cn.record = b.id)
+    JOIN actor.org_unit ol ON (cn.owning_lib = ol.id)
+    JOIN actor.org_unit cl ON (cp.circ_lib = cl.id)
+    LEFT JOIN metabib.full_rec t ON (cn.record = t.record AND t.tag = '245' and t.subfield = 'a')
+    LEFT JOIN metabib.full_rec a ON (cn.record = a.record AND a.tag = '100' and a.subfield = 'a')
+    LEFT JOIN metabib.full_rec p ON (cn.record = p.record AND p.tag = '260' and p.subfield = 'c')
+    LEFT JOIN action.circulation circ ON (circ.target_copy = cp .id AND circ.checkin_time IS NULL)
+    LEFT JOIN actor.usr circ_u ON (circ_u.id = circ.usr)
+    LEFT JOIN actor.card circ_card ON (circ_u.id = circ_card.usr)
+    LEFT JOIN asset.stat_cat_entry_copy_map sc1 ON (sc1.owning_copy = cp.id AND sc1.stat_cat = 1)
+    LEFT JOIN asset.stat_cat_entry sce1 ON (sce1.id = sc1.stat_cat_entry)
+    LEFT JOIN asset.stat_cat_entry_copy_map sc2 ON (sc2.owning_copy = cp.id AND sc2.stat_cat = 2)
+    LEFT JOIN asset.stat_cat_entry sce2 ON (sce2.id = sc2.stat_cat_entry);
 
 COMMIT;
 
