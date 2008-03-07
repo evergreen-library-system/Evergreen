@@ -2458,6 +2458,8 @@ sub staged_fts {
                 );
     SQL
 
+    $sth->execute;
+
     my $recs = $sth->fetchall_arrayref({});
     my $summary_row = pop @$recs;
 
