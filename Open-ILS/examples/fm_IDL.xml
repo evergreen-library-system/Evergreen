@@ -1050,7 +1050,7 @@
 		</links>
 	</class>
 	<class id="aoccbcm" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circ_count_by_circ_mod" oils_persist:tablename="action.open_circ_count_by_circ_mod">
-		<fields>
+		<fields oils_persist:primary="usr">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
