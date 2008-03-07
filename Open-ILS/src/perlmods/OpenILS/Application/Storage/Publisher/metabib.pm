@@ -2487,6 +2487,13 @@ sub staged_fts {
 	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
 
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+        delete $$summary_row{checked};
+        delete $$summary_row{visible};
+        delete $$summary_row{excluded};
+        delete $$summary_row{deleted};
+        delete $$summary_row{total};
+        $$summary_row{rel} = sprintf('%0.3f',$$summary_row{rel});
+
 		$client->respond( $rec );
 	}
 	return undef;
