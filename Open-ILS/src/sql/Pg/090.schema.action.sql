@@ -108,6 +108,16 @@ CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE chec
 CREATE INDEX circ_circ_lib_idx ON "action".circulation (circ_lib);
 CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_finish IS NULL;
 
+CREATE OR REPLACE VIEW action.open_circ_count_by_circ_mod AS
+    SELECT  circ.usr,
+            cp.circ_modifier,
+            count(circ.id)
+      FROM  action.circulation circ
+            JOIN asset.copy cp ON (circ.target_copy = cp.id)
+      WHERE circ.checkin_time IS NULL
+            AND ( circ.stop_fines IN ('LOST','LONGOVERDUE','CLAIMSRETURNED') OR circ.stop_fines IS NULL )
+      GROUP BY 1;
+
 
 CREATE OR REPLACE VIEW action.open_circulation AS
 	SELECT	*
