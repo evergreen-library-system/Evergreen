@@ -493,7 +493,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY), {}, { 'perm_editor' : true });
 				}
 			],
 			'cmd_print_list_template_edit' : [

@@ -58,7 +58,11 @@
 				tb.focus();
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Check Out'); } catch(E) { alert(E); }
+                    if (xul_param('perm_editor')) {
+					    try { window.xulG.set_tab_name('User Permission Editor'); } catch(E) { alert(E); }
+                    } else {
+    					try { window.xulG.set_tab_name('Check Out'); } catch(E) { alert(E); }
+                    }
 				}
 
 				if (xul_param('error')) { 
@@ -153,21 +157,36 @@
 		}
 
 		function spawn(barcode) {
+            if (xul_param('perm_editor')) { spawn_perm_editor(barcode); } else { spawn_checkout(barcode); }
+        }
+
+		function spawn_checkout(barcode) {
 			try {
 				var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
-
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
-
 					window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
 				} else {
-
 					location.href = loc + '?barcode=' + window.escape(barcode);
-;
 				}
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('spawning patron display',E);
 			}
 		}
+
+		function spawn_perm_editor(barcode) {
+			try {
+				JSAN.use('patron.util'); var patron_obj = patron.util.retrieve_fleshed_au_via_barcode( ses(), barcode );
+				var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + patron_obj.id();
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+					window.xulG.set_tab( loc, {}, {} );
+				} else {
+					location.href = loc;
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('spawning user perm editor',E);
+			}
+		}
+
 
 		function default_focus() { try { setTimeout( function() { document.getElementById('barcode_tb').focus(); }, 0); } catch(E) {} }
 	]]>
