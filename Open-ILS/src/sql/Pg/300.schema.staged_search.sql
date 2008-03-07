@@ -209,7 +209,7 @@ BEGIN
               WHERE term_type = 'phrase'
                     AND table_alias = query_part.table_alias LOOP
 
-            inner_where_clause := inner_where_clause || ' AND ' || query_part.table_alias || '.value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(phrase_query_part.term, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
+            inner_where_clause := inner_where_clause || ' AND ' || 'value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(phrase_query_part.term, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
 
         END LOOP;
 
