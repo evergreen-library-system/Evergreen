@@ -6,6 +6,7 @@ use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils::Cache;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use Digest::MD5 qw/md5_hex/;
 
