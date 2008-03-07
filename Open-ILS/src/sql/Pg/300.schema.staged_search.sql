@@ -59,6 +59,8 @@ CREATE OR REPLACE FUNCTION search.staged_fts (
     param_types     TEXT[],
     param_forms     TEXT[],
     param_vformats  TEXT[],
+    param_pref_lang TEXT,
+    param_pref_lang_multiplier REAL,
     param_sort      TEXT,
     param_sort_desc BOOL,
     metarecord      BOOL,
@@ -90,7 +92,7 @@ DECLARE
     mb_field_list       INT[];
     search_org_list     INT[];
     select_clause       TEXT := 'SELECT';
-    from_clause         TEXT := ' FROM  metabib.metarecord_source_map m ';
+    from_clause         TEXT := ' FROM  metabib.metarecord_source_map m JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record) ';
     where_clause        TEXT := ' WHERE 1=1 ';
     mrd_used            BOOL := FALSE;
     sort_desc           BOOL := FALSE;
@@ -226,7 +228,14 @@ BEGIN
 
     END LOOP;
 
-    current_rank := ' AVG( (' || array_to_string( ranks, ') + (' ) || ') )';
+    IF param_pref_lang IS NOT NULL AND param_pref_lang_multiplier IS NOT NULL THEN
+        current_rank := ' CASE WHEN mrd.item_lang = ' || quote_literal( param_pref_lang ) ||
+            ' THEN ' || param_pref_lang_multiplier || '::REAL ELSE 1.0 END ';
+
+        --ranks := array_append( ranks, current_rank );
+    END IF;
+
+    current_rank := ' AVG( ( (' || array_to_string( ranks, ') + (' ) || ') ) * ' || current_rank || ' ) ';
     select_clause := select_clause || current_rank || ' AS rel,';
 
     sort_desc = param_sort_desc;
@@ -282,69 +291,36 @@ BEGIN
 
     ELSIF param_sort = 'create_date' THEN
             current_rank := $$( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )$$;
-
     ELSIF param_sort = 'edit_date' THEN
             current_rank := $$( FIRST (( SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )$$;
-
     ELSE
         sort_desc := NOT COALESCE(param_sort_desc, FALSE);
-
     END IF;
 
     select_clause := select_clause || current_rank || ' AS rank';
 
     -- now add the other qualifiers
     IF param_audience IS NOT NULL AND array_upper(param_audience, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.audience IN ('$$ || array_to_string(param_audience, $$','$$) || $$') $$;
     END IF;
 
     IF param_language IS NOT NULL AND array_upper(param_language, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.item_lang IN ('$$ || array_to_string(param_language, $$','$$) || $$') $$;
     END IF;
 
     IF param_lit_form IS NOT NULL AND array_upper(param_lit_form, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.lit_form IN ('$$ || array_to_string(param_lit_form, $$','$$) || $$') $$;
     END IF;
 
     IF param_types IS NOT NULL AND array_upper(param_types, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.item_type IN ('$$ || array_to_string(param_types, $$','$$) || $$') $$;
     END IF;
 
     IF param_forms IS NOT NULL AND array_upper(param_forms, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.item_form IN ('$$ || array_to_string(param_forms, $$','$$) || $$') $$;
     END IF;
 
     IF param_vformats IS NOT NULL AND array_upper(param_vformats, 1) > 0 THEN
-        IF NOT mrd_used THEN
-            from_clause := from_clause || ' JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)';
-            mrd_used := TRUE;
-        END IF;
-
         where_clause = where_clause || $$ AND mrd.vr_format IN ('$$ || array_to_string(param_vformats, $$','$$) || $$') $$;
     END IF;
 
