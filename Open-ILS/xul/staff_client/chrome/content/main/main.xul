@@ -52,7 +52,7 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/main.js"/>
 	<script>
-		dump("lang.version = " + &lang.version; + '\n');
+		dump("lang.version = &lang.version;" + '\n');
 	</script>
 
 	<messagecatalog id="authStrings" src="chrome://open_ils_staff_client/locale/auth.properties"/>
