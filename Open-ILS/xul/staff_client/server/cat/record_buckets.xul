@@ -79,6 +79,8 @@
 	]]>
 	</script>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+
 	<commandset id="record_buckets_cmds">
 		<command id="sel_clip1" />
 		<command id="sel_clip2" />

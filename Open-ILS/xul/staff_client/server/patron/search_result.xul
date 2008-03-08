@@ -80,6 +80,8 @@
 		<command id="cmd_save_cols" />
 	</commandset>
 
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+
 	<box id="patron_search_result_main" />
 
 </window>

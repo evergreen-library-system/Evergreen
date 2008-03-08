@@ -338,6 +338,8 @@
 	]]>
 	</script>
 
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+
 	<vbox flex="1" class="my_overflow">
         <vbox id="v1" persist="height" flex="1">
     		<label id="patron_name" class="patronNameLarge"/>

@@ -176,6 +176,8 @@
 	]]>
 	</script>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+
 	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
 		<caption label="Item Summary" id="caption"/>
 		<deck id="item_deck" persist="selectedIndex">

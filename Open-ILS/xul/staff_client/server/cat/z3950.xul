@@ -75,6 +75,8 @@
 	]]>
 	</script>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+
 	<commandset id="cat_z3950_cmds">
 		<command id="cmd_broken" />
 		<command id="cmd_export" />

@@ -97,6 +97,9 @@
 
 	</commandset>
 
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+
 	<box id="checkin_main" />
 
 </window>

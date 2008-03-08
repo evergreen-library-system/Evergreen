@@ -31,6 +31,8 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="/xul/server/cat/spine_labels.js"/>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+
 	<vbox id="spine_labels_main" flex="1" class="my_overflow">
 		<hbox flex="1" class="my_overflow">
 		<vbox>

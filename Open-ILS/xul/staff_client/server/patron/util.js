@@ -14,64 +14,66 @@ patron.util.mbts_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date');
 
+    var commonStrings = document.getElementById('commonStrings');
+
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : commonStrings.getString('staff.mbts_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.id(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : 'User', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : commonStrings.getString('staff.mbts_usr_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.usr() ? "Id = " + my.mbts.usr() : ""; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact_type', 'label' : 'Type', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'xact_type', 'label' : commonStrings.getString('staff.mbts_xact_type_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'balance_owed', 'label' : 'Balance Owed', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'balance_owed', 'label' : commonStrings.getString('staff.mbts_balance_owed_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.balance_owed() ); },
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'total_owed', 'label' : 'Total Billed', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'total_owed', 'label' : commonStrings.getString('staff.mbts_total_owed_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.total_owed() ); },
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'total_paid', 'label' : 'Total Paid', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'total_paid', 'label' : commonStrings.getString('staff.mbts_total_paid_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.total_paid() ); },
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_billing_note', 'label' : 'Last Billing Note', 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'last_billing_note', 'label' : commonStrings.getString('staff.mbts_last_billing_note_label'), 'flex' : 2,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_billing_note(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_billing_type', 'label' : 'Last Billing Type', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'last_billing_type', 'label' : commonStrings.getString('staff.mbts_last_billing_type_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_billing_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : 'Last Billed', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : commonStrings.getString('staff.mbts_last_billing_timestamp_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_billing_ts(), "" ); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : 'Last Payment Note', 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : commonStrings.getString('staff.mbts_last_payment_note_label'), 'flex' : 2,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_payment_note(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_payment_type', 'label' : 'Last Payment Type', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'last_payment_type', 'label' : commonStrings.getString('staff.mbts_last_payment_type_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_payment_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : 'Last Payment', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : commonStrings.getString('staff.mbts_last_payment_timestamp_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_payment_ts(), "" ); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Created', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : commonStrings.getString('staff.mbts_xact_start_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : 'Closed', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : commonStrings.getString('staff.mbts_xact_finish_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""; },
 		},
 	];
@@ -110,42 +112,44 @@ patron.util.mb_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date');
 
+    var commonStrings = document.getElementById('commonStrings');
+
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : commonStrings.getString('staff.mb_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.id(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'voided', 'label' : 'Voided', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'voided', 'label' : commonStrings.getString('staff.mb_voided_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return get_bool( my.mb.voided() ) ? "Yes" : "No"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'voider', 'label' : 'Voider', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'voider', 'label' : commonStrings.getString('staff.mb_voider_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.voider() ? "Id = " + my.mb.voider() : ""; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : 'Void Time', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : commonStrings.getString('staff.mb_void_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.void_time(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : commonStrings.getString('staff.mb_amount_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mb.amount() ); },
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'billing_type', 'label' : 'Type', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'billing_type', 'label' : commonStrings.getString('staff.mb_billing_type_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mb.billing_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : 'When', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : commonStrings.getString('staff.mb_billing_ts_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.billing_ts(), "" ); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Note', 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : commonStrings.getString('staff.mb_note_label'), 'flex' : 2,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mb.note(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : commonStrings.getString('staff.mb_xact_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.xact(); },
 		},
 	];
@@ -185,38 +189,40 @@ patron.util.mp_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date'); JSAN.use('patron.util');
 
+    var commonStrings = document.getElementById('commonStrings');
+
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : 'ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : commonStrings.getString('staff.mp_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mp.id(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_amount', 'label' : 'Amount', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_amount', 'label' : commonStrings.getString('staff.mp_amount_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mp.amount() ); },
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_type', 'label' : 'Type', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_type', 'label' : commonStrings.getString('staff.mp_payment_type_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.payment_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : 'When', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : commonStrings.getString('staff.mp_payment_timestamp_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.date.formatted_date( my.mp.payment_ts(), "" ); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : 'Note', 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : commonStrings.getString('staff.mp_note_label'), 'flex' : 2,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.note(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_ws', 'label' : 'Workstation', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_ws', 'label' : commonStrings.getString('staff.mp_cash_drawer_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.cash_drawer().name(); }, 
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : 'Staff', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : function(my) { var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); return s.card().barcode() + " @ " + data.hash.aou[ s.home_ou() ].shortname(); },
+			'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : commonStrings.getString('staff.mp_accepting_usr_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : function(my) { var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); return s.family_name() + " (" + s.card().barcode() + ") @ " + data.hash.aou[ s.home_ou() ].shortname(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : 'Transaction ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : commonStrings.getString('staff.mp_xact_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mp.xact(); },
 		},
 	];
@@ -255,123 +261,129 @@ patron.util.columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
+    var commonStrings = document.getElementById('commonStrings');
+
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : 'Barcode', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : commonStrings.getString('staff.card_barcode_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.card().barcode(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'usrname', 'label' : 'Login Name', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : function(my) { my.au.usrname(); },
+			'persist' : 'hidden width ordinal', 'id' : 'usrname', 'label' : commonStrings.getString('staff.au_usrname_label'), 'flex' : 1, 
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.usrname(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'profile', 'label' : commonStrings.getString('staff.au_profile_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.pgt[ my.au.profile() ].name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : document.getElementById('commonStrings').getString('staff.au_label_active'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : commonStrings.getString('staff.au_active_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.active() ) ? "Yes" : "No"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'barred', 'label' : 'Barred', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'barred', 'label' : commonStrings.getString('staff.au_barred_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.barred() ) ? "Yes" : "No"; },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : document.getElementById('commonStrings').getString('staff.au_label_id'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : document.getElementById('commonStrings').getString('staff.au_id_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.id(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : document.getElementById('commonStrings').getString('staff.au_label_prefix'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : document.getElementById('commonStrings').getString('staff.au_name_prefix_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.prefix(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_family_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : document.getElementById('commonStrings').getString('staff.au_family_name_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.family_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_first_given_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_first_given_name_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.first_given_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_second_given_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_second_given_name_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.second_given_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : document.getElementById('commonStrings').getString('staff.au_label_suffix'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : document.getElementById('commonStrings').getString('staff.au_name_suffix_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.suffix(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : commonStrings.getString('staff.au_alert_message_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.alert_message(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'claims_returned_count', 'label' : 'Returns Claimed', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'claims_returned_count', 'label' : commonStrings.getString('staff.au_claims_returned_count_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.claims_returned_count(); },
 			'sort_type' : 'number',
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : 'Created On', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : commonStrings.getString('staff.au_create_date_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.create_date(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : 'Expires On', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : commonStrings.getString('staff.au_expire_date_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.expire_date().substr(0,10); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : 'Home Lib', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : commonStrings.getString('staff.au_home_library_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.aou[ my.au.home_ou() ].shortname(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'credit_forward_balance', 'label' : 'Credit', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'home_ou_fullname', 'label' : commonStrings.getString('staff.au_home_library_fullname_label'), 'flex' : 1, 
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.aou[ my.au.home_ou() ].name(); },
+		},
+		{ 
+			'persist' : 'hidden width ordinal', 'id' : 'credit_forward_balance', 'label' : commonStrings.getString('staff.au_credit_forward_balance_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.credit_forward_balance(); },
 			'sort_type' : 'money',
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'day_phone', 'label' : 'Day Phone', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'day_phone', 'label' : commonStrings.getString('staff.au_day_phone_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.day_phone(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'evening_phone', 'label' : 'Evening Phone', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'evening_phone', 'label' : commonStrings.getString('staff.au_evening_phone_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.evening_phone(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'other_phone', 'label' : 'Other Phone', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'other_phone', 'label' : commonStrings.getString('staff.au_other_phone_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.other_phone(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'email', 'label' : 'Email', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'email', 'label' : commonStrings.getString('staff.au_email_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.email(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : 'Birth Date', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : commonStrings.getString('staff.au_birth_date_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.dob().substr(0,10); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : 'Ident Type', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : commonStrings.getString('staff.au_ident_type_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.cit[ my.au.ident_type() ].name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'ident_value', 'label' : 'Ident Value', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'ident_value', 'label' : commonStrings.getString('staff.au_ident_value_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.ident_value(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'ident_type2', 'label' : 'Ident Type 2', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'ident_type2', 'label' : commonStrings.getString('staff.au_ident_type2_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.cit[ my.au.ident_type2() ].name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'ident_value2', 'label' : 'Ident Value 2', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'ident_value2', 'label' : commonStrings.getString('staff.au_ident_value2_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.ident_value2(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'net_access_level', 'label' : 'Net Access', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'net_access_level', 'label' : commonStrings.getString('staff.au_net_access_level_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.net_access_level(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'master_account', 'label' : 'Group Lead', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'master_account', 'label' : commonStrings.getString('staff.au_master_account_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.master_account() ) ? "Yes" : "No"; },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'usrgroup', 'label' : 'Group ID', 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'usrgroup', 'label' : commonStrings.getString('staff.au_group_id_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.usrgroup(); },
 		},
 	];
@@ -405,29 +417,7 @@ patron.util.columns = function(modify,params) {
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
-/*
-patron.util.std_map_row_to_column = function(error_value) {
-	return function(row,col) {
-		// row contains { 'my' : { 'au' : {} } }
-		// col contains one of the objects listed above in columns
-		
-		var obj = {}; obj.OpenILS = {}; 
-		JSAN.use('util.error'); obj.error = new util.error();
-		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
-		JSAN.use('util.date'); JSAN.use('util.money');
 
-		var my = row.my;
-		var value;
-		try { 
-			value = eval( col.render );
-		} catch(E) {
-			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-			if (error_value) { value = error_value; } else { value = '   ' };
-		}
-		return value;
-	}
-}
-*/
 patron.util.std_map_row_to_columns = function(error_value) {
 	return function(row,cols) {
 		// row contains { 'my' : { 'au' : {} } }

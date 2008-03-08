@@ -54,6 +54,7 @@
 	</script>
 
 	<messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
+	<messagecatalog id="circStrings" src='/xul/server/locale/<!--#echo var="locale"-->/circ.properties'/>
 
 	<vbox flex="1" class="my_overflow">
 		<hbox>

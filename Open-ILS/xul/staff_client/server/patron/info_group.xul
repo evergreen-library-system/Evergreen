@@ -414,6 +414,8 @@
 		</popup>
 	</popupset>
 
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+
 	<vbox flex="1" class="my_overflow" id="group_panel">
 		<groupbox flex="1">
 			<caption label="Group Members"/>
