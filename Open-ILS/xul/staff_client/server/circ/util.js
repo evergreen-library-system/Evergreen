@@ -33,7 +33,7 @@ circ.util.abort_transits = function(selection_list) {
 				var copy_id = selection_list[i].copy_id;
 				var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'copyid' : copy_id } ]);
 				if (typeof robj.ilsevent != 'undefined') {
-					switch(robj.ilsevent) {
+					switch(Number(robj.ilsevent)) {
 						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
 							alert(document.getElementById('circString').getFormattedString('staff.circ.utils.abort_transits.not_allowed', [copy_id]) + '\n' + robj.desc);
 						break;
@@ -514,12 +514,12 @@ circ.util.columns = function(modify,params) {
 			'hidden' : true,
 			'render' : function(my) {
 				if (my.acp && my.acp.call_number() == -1) {
-					return document.getElementById('commonStrings').getString('staff.circ.utils.not_cataloged');
+					return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
 				} else {
 					if (!my.acn) {
 						var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]);
 						if (x.ilsevent) {
-							return document.getElementById('commonStrings').getString('staff.circ.utils.not_cataloged');
+							return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
 						} else {
 							my.acn = x; return x.label();
 						}
@@ -577,7 +577,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) {
-				switch(my.acp.loan_duration()) {
+				switch(Number(my.acp.loan_duration())) {
 					case 1:
 						return document.getElementById('circStrings').getString('staff.circ.utils.loan_duration.short');
 						break;
@@ -613,7 +613,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) {
-				switch(my.acp.fine_level()) {
+				switch(Number(my.acp.fine_level())) {
 					case 1:
 						return document.getElementById('circStrings').getString('staff.circ.utils.fine_level.low');
 						break;
@@ -1379,21 +1379,17 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : false,
 			'render' : function(my) {
-				switch (my.status) {
+				switch (Number(my.status)) {
 					case 1:
-					case "1":
 						return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.1');
 						break;
 					case 2:
-					case "2":
 						return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.2');
 						break;
 					case 3:
-					case "3":
 						return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.3');
 						break;
 					case 4:
-					case "4":
 						return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.4');
 						break;
 					default:
@@ -1991,7 +1987,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_not_cataloged', [copy_status]);
 				msg + '\n';
 			}
-			switch(check.copy.status()) {
+			switch(Number(check.copy.status())) {
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
 					if (msg) {
@@ -2231,7 +2227,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
 		} else {
 
-			switch (check.ilsevent) {
+			switch (Number(check.ilsevent)) {
 				case 1203 /* COPY_BAD_STATUS */ :
 				case 1213 /* PATRON_BARRED */ :
 				case 1217 /* PATRON_INACTIVE */ :
@@ -2271,7 +2267,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 				var renew = req.getResultObject();
 				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
 				for (var j = 0; j < renew.length; j++) {
-					switch(renew[j].ilsevent) {
+					switch(Number(renew[j].ilsevent)) {
 						case 0 /* SUCCESS */ : break;
 						case 5000 /* PERM_FAILURE */: break;
 						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;

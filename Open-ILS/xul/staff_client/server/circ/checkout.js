@@ -614,10 +614,10 @@ circ.checkout.prototype = {
 				if (test_event(permit,1202 /* ITEM_NOT_CATALOGED */)) {
 
 					if ( 1 == obj.error.yns_alert(
-						documents.getElementById('circStrings').getString('staff.circ.checkout.not_cataloged.confirm'),
-						documents.getElementById('circStrings').getString('staff.circ.alert'),
-						documents.getElementById('circStrings').getString('staff.circ.cancel'),
-						documents.getElementById('circStrings').getString('staff.circ.non_cataloged'),
+						document.getElementById('circStrings').getString('staff.circ.checkout.not_cataloged.confirm'),
+						document.getElementById('circStrings').getString('staff.circ.alert'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.non_cataloged'),
 						null,
 						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/book_question.png'
@@ -646,7 +646,7 @@ circ.checkout.prototype = {
 
 				var stop_checkout = false;
 				for (var i = 0; i < test_permit.length; i++) {
-					switch(test_permit[i].ilsevent) {
+					switch(Number(test_permit[i].ilsevent)) {
 						case 1216 /* PATRON_CARD_INACTIVE */ :
 						case 1217 /* PATRON_INACTIVE */ :
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
@@ -657,7 +657,7 @@ circ.checkout.prototype = {
 
 				for (var i = 0; i < test_permit.length; i++) {
 					dump('found [' + test_permit[i].ilsevent + ']\n');
-					switch(test_permit[i].ilsevent) {
+					switch(Number(test_permit[i].ilsevent)) {
 						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ :
 							found_handled = true;
 						break;
