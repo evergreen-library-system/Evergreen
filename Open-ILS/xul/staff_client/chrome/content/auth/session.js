@@ -47,7 +47,7 @@ auth.session.prototype = {
 
 				var robj = this.network.simple_request( 'AUTH_COMPLETE', [ params ]);
 
-				switch (robj.ilsevent) {
+				switch (Number(robj.ilsevent)) {
 					case 0:
 						this.key = robj.payload.authtoken;
 						this.authtime = robj.payload.authtime;

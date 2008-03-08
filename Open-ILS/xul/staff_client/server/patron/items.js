@@ -376,7 +376,7 @@ patron.items.prototype = {
 				dump('Mark barcode lost = ' + barcode);
 				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
 				if (typeof robj.ilsevent != 'undefined') { 
-                    switch(robj.ilsevent) {
+                    switch(Number(robj.ilsevent)) {
                         case 7018 /* COPY_MARKED_LOST */ :
                             alert( 'Item Barcode ' + barcode + '\n' + robj.desc );
                         break;

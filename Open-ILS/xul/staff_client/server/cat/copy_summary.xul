@@ -105,7 +105,7 @@
 							try {
 								var cn = rreq.getResultObject();
 								if (typeof cn.ilsevent != 'undefined') {
-									switch(cn.ilsevent) {
+									switch(Number(cn.ilsevent)) {
 										case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
 											$w('callnumber','Not Cataloged');	
 										break;

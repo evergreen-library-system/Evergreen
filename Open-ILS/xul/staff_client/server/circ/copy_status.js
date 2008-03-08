@@ -478,7 +478,7 @@ circ.copy_status.prototype = {
 								);
 	
                                 if (typeof robj.ilsevent != 'undefined') {
-									switch(robj.ilsevent) {
+									switch(Number(robj.ilsevent)) {
 										case 1208 /* TITLE_LAST_COPY */:
 										case 1227 /* COPY_DELETE_WARNING */:
 										break;
@@ -699,7 +699,7 @@ circ.copy_status.prototype = {
 											[ ses(), volumes, false ]
 										);
                                         if (typeof r.ilsevent != 'undefined') {
-                                            switch(r.ilsevent) {
+                                            switch(Number(r.ilsevent)) {
                                                 case 1705 /* VOLUME_LABEL_EXISTS */ :
                                                     alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.duplicate'));
                                                     break;
@@ -1002,7 +1002,7 @@ circ.copy_status.prototype = {
 					if (details == null) {
 						throw(document.getElementById('circStrings').getString('staff.circ.copy_status.status.null_result'));
 					} else if (details.ilsevent) {
-						switch(details.ilsevent) {
+						switch(Number(details.ilsevent)) {
 							case -1: 
 								obj.error.standard_network_error_alert(); 
 								obj.controller.view.copy_status_barcode_entry_textbox.select();

@@ -433,7 +433,7 @@ cat.copy_buckets.prototype = {
 
 								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								if (typeof robj.ilsevent != 'undefined') {
-									switch(robj.ilsevent) {
+									switch(Number(robj.ilsevent)) {
 										case 1227 /* COPY_DELETE_WARNING */ : 
 											var copy;
 											for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }

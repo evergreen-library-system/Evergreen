@@ -589,7 +589,7 @@ patron.holds.prototype = {
                                                 for (var i = 0; i < transits.length; i++) {
                                                     var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : transits[i] } ]);
                                                     if (typeof robj.ilsevent != 'undefined') {
-                                                        switch(robj.ilsevent) {
+                                                        switch(Number(robj.ilsevent)) {
                                                             case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
                                                                 alert(robj.desc);
                                                             break;

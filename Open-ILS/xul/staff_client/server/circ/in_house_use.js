@@ -259,7 +259,7 @@ circ.in_house_use.prototype = {
 
 				var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
 				if (copy.ilsevent) { 
-					switch(copy.ilsevent) {
+					switch(Number(copy.ilsevent)) {
 						case -1 : 
 							obj.error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.in_house_use.failed.verbose'));
 							break;

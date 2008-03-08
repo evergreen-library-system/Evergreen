@@ -827,7 +827,7 @@ g.panes_and_field_names = {
 	[
 		"Loan Duration",
 		{ 
-			render: 'switch(fm.loan_duration()){ case 1: case "1": "Short"; break; case 2: case "2": "Normal"; break; case 3:case "3": "Long"; break; }',
+			render: 'switch(Number(fm.loan_duration())){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
 			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
@@ -835,7 +835,7 @@ g.panes_and_field_names = {
 	[
 		"Fine Level",
 		{
-			render: 'switch(fm.fine_level()){ case 1: case "1": "Low"; break; case 2: case "2": "Normal"; break; case 3: case "3": "High"; break; }',
+			render: 'switch(Number(fm.fine_level())){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
 			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],

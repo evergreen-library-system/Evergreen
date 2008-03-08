@@ -583,7 +583,7 @@ patron.bills.prototype = {
 			);
 			if (robj == 1) { return true; } 
 			if (typeof robj.ilsevent != 'undefined') {
-				switch(robj.ilsevent) {
+				switch(Number(robj.ilsevent)) {
 					case 0 /* SUCCESS */ : return true; break;
 					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc + '\n\nAnother way to "zero" this transaction is to use Add Billing and add a misc bill to counter the negative balance.'); return false; break;
 					default: throw(robj); break;
@@ -1060,7 +1060,7 @@ patron.bills.prototype = {
 			if (r == 0) {
 				var robj = obj.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
 				if (robj.ilsevent) {
-					switch(robj.ilsevent) {
+					switch(Number(robj.ilsevent)) {
 						default: 
 							obj.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
 							obj.refresh(); return; 

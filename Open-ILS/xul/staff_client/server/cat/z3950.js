@@ -530,7 +530,7 @@ cat.z3950.prototype = {
 						try {
 							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
 							if (typeof r.ilsevent != 'undefined') {
-								switch(r.ilsevent) {
+								switch(Number(r.ilsevent)) {
 									case 1704 /* TCN_EXISTS */ :
 										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
 										var title = 'Import Collision';
@@ -655,7 +655,7 @@ cat.z3950.prototype = {
 							if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
 							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
 							if (typeof r.ilsevent != 'undefined') {
-								switch(r.ilsevent) {
+								switch(Number(r.ilsevent)) {
 									case 1704 /* TCN_EXISTS */ :
 										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
 										var title = 'Import Collision';

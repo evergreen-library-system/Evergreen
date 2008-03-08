@@ -61,7 +61,7 @@
 			if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE';
 			g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
 			if (g.mbts_ids.ilsevent) {
-				switch(g.mbts_ids.ilsevent) {
+				switch(Number(g.mbts_ids.ilsevent)) {
 					case -1: g.error.standard_network_error_alert('Please close this window and try again.'); break;
 					default: g.error.standard_unexpected_error_alert('Please close this window and try again.',g.mbts_ids); break;
 				}
@@ -113,7 +113,7 @@
 					try {
 						g.mbts = req.getResultObject();
 						if (g.mbts.ilsevent) {
-							switch(g.mbts.ilsevent) {
+							switch(Number(g.mbts.ilsevent)) {
 								case -1: g.error.standard_network_error_alert('mbts_id = ' + g.mbts_id); break;
 								default: g.error.standard_unexpected_error_alert('mbts_id = ' + g.mbts_id,g.mbts); break;
 							}

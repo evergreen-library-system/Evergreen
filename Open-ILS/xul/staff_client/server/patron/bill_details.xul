@@ -274,7 +274,7 @@
 				if (r == 0) {
 					var robj = g.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
 					if (robj.ilsevent) {
-						switch(robj.ilsevent) {
+						switch(Number(robj.ilsevent)) {
 							default: 
 								g.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
 								retrieve_mbts();

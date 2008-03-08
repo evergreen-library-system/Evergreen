@@ -547,7 +547,7 @@ cat.copy_browser.prototype = {
 											[ ses(), volumes, true ]
 										);
 										if (typeof r.ilsevent != 'undefined') {
-                                            switch(r.ilsevent) {
+                                            switch(Number(r.ilsevent)) {
                                                 case 1705 /* VOLUME_LABEL_EXISTS */ :
                                                     alert("Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead.");
                                                     break;
