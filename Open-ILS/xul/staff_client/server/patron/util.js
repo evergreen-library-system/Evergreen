@@ -273,7 +273,7 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'usrname', 'label' : 'Login Name', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : function(my) { my.au.usrname(); },
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.usrname(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
