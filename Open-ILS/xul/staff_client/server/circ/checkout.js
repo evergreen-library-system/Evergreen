@@ -617,7 +617,7 @@ circ.checkout.prototype = {
 						document.getElementById('circStrings').getString('staff.circ.checkout.not_cataloged.confirm'),
 						document.getElementById('circStrings').getString('staff.circ.alert'),
 						document.getElementById('circStrings').getString('staff.circ.cancel'),
-						document.getElementById('circStrings').getString('staff.circ.non_cataloged'),
+						document.getElementById('circStrings').getString('staff.circ.pre_cataloged'),
 						null,
 						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/book_question.png'
@@ -636,7 +636,7 @@ circ.checkout.prototype = {
 						if (params.dummy_title !== '') { 
 							obj._checkout( params );
 						} else {
-							throw(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled'));
+							alert(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled'));
 						}
 					} 
 				}
