@@ -509,6 +509,10 @@ patron.bills.prototype = {
 						);
 					}
 				}
+                if ( payment_blob.payments.length == 0 && payment_blob.patron_credit == '0.00' ) {
+                    alert('No payments or patron credit applied.');
+                    return;
+                }
 				if ( obj.pay( payment_blob ) ) {
 
 					obj.data.voided_billings = []; obj.data.stash('voided_billings');
