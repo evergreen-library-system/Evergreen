@@ -153,6 +153,21 @@
 				</body>
 			</method>
 
+			<method name="testString">
+				<parameter name="key"/>
+				<body>
+					<![CDATA[
+						try {
+                            var str = this._props[key];
+                            return (typeof str != 'undefined');
+						} catch(e) {
+                            return false;
+						}
+					]]>
+				</body>
+			</method>
+
+
 			<method name="getString">
 				<parameter name="key"/>
 				<body>
