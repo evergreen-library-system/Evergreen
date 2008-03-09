@@ -105,6 +105,7 @@ cat.z3950.prototype = {
 							['command'],
 							function() {
 								obj.save_creds();
+                                setTimeout( function() { obj.focus(); }, 0 );
 							}
 						],
 						'marc_view' : [
@@ -167,10 +168,24 @@ cat.z3950.prototype = {
 								}
 							},
 						],
+                        'z3950_deck' : [ ['render'], function(e) { return function() { e.selectedIndex = 0; }; } ],
 						'search' : [
 							['command'],
 							function() {
+                                obj.controller.view.z3950_deck.selectedIndex = 1;
 								obj.initial_search();
+							},
+						],
+						'search_form' : [
+							['command'],
+							function() {
+                                obj.controller.view.z3950_deck.selectedIndex = 0;
+							},
+						],
+						'results_page' : [
+							['command'],
+							function() {
+                                obj.controller.view.z3950_deck.selectedIndex = 1;
 							},
 						],
 						'page_next' : [
@@ -256,7 +271,7 @@ cat.z3950.prototype = {
                                                         tb.setAttribute('mytype','search_class');
                                                         tb.setAttribute('search_class',i);
                                                         row.appendChild(tb);
-                                                        tb.addEventListener('keypress',function(ev) { dump('foo\n'); return obj.handle_enter(ev); },false);
+                                                        tb.addEventListener('keypress',function(ev) { return obj.handle_enter(ev); },false);
                                                     }
                                                 }
                                             } catch(E) {
@@ -479,7 +494,8 @@ cat.z3950.prototype = {
                     var x = obj.controller.view.marc_view;
                     if (x.getAttribute('toggle') == '0') x.disabled = true;
                     for (var j = 0; j < obj.result_set[ obj.number_of_result_sets ].records.length; j++) {
-                        obj.list.append(
+                        var f;
+                        var n = obj.list.append(
                             {
                                 'retrieve_id' : String( obj.number_of_result_sets ) + '-' + String( j ),
                                 'row' : {
@@ -490,6 +506,7 @@ cat.z3950.prototype = {
                                 }
                             }
                         );
+                        if (!f) { n.my_node.parentNode.focus(); f = n; } 
                     }
                 } else {
                     x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
@@ -805,7 +822,7 @@ cat.z3950.prototype = {
 	'handle_enter' : function(ev) {
 		var obj = this;
 		if (ev.target.tagName != 'textbox') return;
-		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
+		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.controller.view.z3950_deck.selectedIndex = 1; obj.initial_search(); }, 0);
 	},
 }
 
