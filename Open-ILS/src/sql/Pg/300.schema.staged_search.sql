@@ -222,7 +222,7 @@ BEGIN
                     CASE WHEN core_rel_limit > 0 THEN ' LIMIT ' || core_rel_limit::TEXT ELSE '' END || ' ) AS ' || query_part.table_alias ||
                 ' ON ( m.source = ' || query_part.table_alias || '.source )' ||
             ' JOIN config.metabib_field AS ' || query_part.table_alias || '_weight' ||
-                ' ON ( ' || query_part.table_alias || '.field = ' || query_part.table_alias || '_weight.id )';
+                ' ON ( ' || query_part.table_alias || '.field = ' || query_part.table_alias || '_weight.id  AND  ' || query_part.table_alias || '_weight.search_field)';
 
         from_alias_array := array_append(from_alias_array, query_part.table_alias);
 
