@@ -545,16 +545,10 @@ sub create_purchase_order {
     return $e->die_event unless $e->checkauth;
     $p_order->owner($e->requestor->id);
 
-    if($p_order->default_fund) {
-        # if a default fund is provided, make sure the requestor
-        # actually has permission to spend from that fund
-        my $fund = $e->retrieve_acq_fund($p_order->default_fund)
-            or return $e->die_event;
-        return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    } 
-
     my $provider = $e->retrieve_acq_provider($p_order->provider)
         or return $e->die_event;
+
+    $p_order->ordering_agency($e->requestor->ws_ou) or return $e->die_event;
 
     return $e->die_event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
 
@@ -597,6 +591,8 @@ sub retrieve_all_user_purchase_order {
 
     # grab purchase orders I have 
     my $perm_orgs = $U->find_highest_work_orgs($e, 'MANAGE_PROVIDER', {descendants =>1});
+	return OpenILS::Event->new('PERM_FAILURE', ilsperm => 'MANAGE_PROVIDER')
+        unless @$perm_orgs;
     my $provider_ids = $e->search_acq_provider({owner => $perm_orgs}, {idlist=>1});
     my $po_ids = $e->search_acq_purchase_order({provider => $provider_ids}, {idlist=>1});
 
@@ -656,10 +652,7 @@ sub po_perm_failure {
     my $provider = $e->retrieve_acq_provider($po->provider) or return $e->event;
     return $e->event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
     if($fund_id) {
-        my $fund = $e->retrieve_acq_fund($po->default_fund);
-        return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    } elsif($po->default_fund) {
-        my $fund = $e->retrieve_acq_fund($po->default_fund);
+        my $fund = $e->retrieve_acq_fund($po->$fund_id);
         return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
     }
     return undef;
