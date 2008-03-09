@@ -1,27 +1,32 @@
 #include "openils/oils_utils.h"
 #include "openils/oils_idl.h"
 
-osrfHash* oilsInitIDL(char* idl_filename) {
+osrfHash* oilsInitIDL(const char* idl_filename) {
 
-    int freeme = 0;
-    if(!idl_filename) {
-	    idl_filename = osrf_settings_host_value("/IDL");
-        freeme = 1;
-    }
+	char* freeable_filename = NULL;
+	const char* filename;
 
-	if (!idl_filename) {
+	if(idl_filename)
+		filename = idl_filename;
+	else {
+		freeable_filename = osrf_settings_host_value("/IDL");
+		filename = freeable_filename;
+	}
+
+	if (!filename) {
 		osrfLogError(OSRF_LOG_MARK, "No settings config for '/IDL'");
 		return NULL;
 	}
 
-    osrfLogInfo(OSRF_LOG_MARK, "Parsing IDL %s", idl_filename);
+	osrfLogInfo(OSRF_LOG_MARK, "Parsing IDL %s", filename);
 
-	if (!oilsIDLInit( idl_filename )) {
-		osrfLogError(OSRF_LOG_MARK, "Problem loading IDL file [%s]!", idl_filename);
+	if (!oilsIDLInit( filename )) {
+		osrfLogError(OSRF_LOG_MARK, "Problem loading IDL file [%s]!", filename);
+		if(freeable_filename) free(freeable_filename);
 		return NULL;
 	}
 
-    if(freeme) free(idl_filename);
+	if(freeable_filename) free(freeable_filename);
 	return oilsIDL();
 }
 
@@ -143,6 +148,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 	if(!card) { jsonObjectFree(params); return NULL; }
 
 	char* usr = oilsFMGetString(card, "usr");
+	jsonObjectFree(card);
 	if(!usr) return NULL;
 	double iusr = strtod(usr, NULL);
 	free(usr);

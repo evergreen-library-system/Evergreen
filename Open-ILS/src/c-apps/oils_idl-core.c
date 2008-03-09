@@ -87,6 +87,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						osrfStringArrayAdd(controller, strdup(_controller_class));
 					}
 				}
+				free(controller_list);
 			}
 			osrfHashSet( usrData, controller, "controller");
 
@@ -245,6 +246,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									osrfStringArrayAdd(map, strdup(_map_class));
 								}
 							}
+							free(map_list);
 						}
 						osrfHashSet( _tmp, map, "map");
 
@@ -283,11 +285,11 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				}
 
 				_cur = _cur->next;
-			}
+			} // end while
 		}
 
 		kid = kid->next;
-	}
+	} // end while
 
 	osrfLogInfo(OSRF_LOG_MARK, "...IDL XML parsed");
 

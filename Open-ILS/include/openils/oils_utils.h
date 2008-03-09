@@ -17,7 +17,7 @@
   @param idl_filename If not provided, we'll fetch the 
   filename from the settings server
  */
-osrfHash* oilsInitIDL( char* idl_filename );
+osrfHash* oilsInitIDL( const char* idl_filename );
 
 /**
   Returns the string value for field 'field' in the given object.

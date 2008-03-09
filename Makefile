@@ -1,4 +1,3 @@
-#!/bin/bash
 # vim:noet:ts=4
 # --------------------------------------------------------------------
 # Copyright (C) 2005  Georgia Public Library Service 
@@ -14,6 +13,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 # --------------------------------------------------------------------
+
+SHELL=/bin/bash
 
 all: build
 
