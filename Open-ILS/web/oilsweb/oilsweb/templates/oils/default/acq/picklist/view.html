@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 <!-- 
- vim:ft=mako: 
+ vim:ts=4:sw=4:et:ft=mako: 
 -->
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget' />
@@ -64,8 +64,8 @@ o        </select>&nbsp;<input type='submit' value='${_("Submit")}'/>
 			   value="${c.oils.acq.picklist.value.id()}" />
 	            <input name="${c.oils.acq.lineitem_item_count.cgi_name}"
 		       type="text" size="3" value="${lineitem.item_count()}" />
-		    <button name='${c.oils.acq.lineitem_id.cgi_name}'
-			value='${lineitem.id()}'>Update</button>
+            <button name='${c.oils.acq.lineitem_id.cgi_name}'
+             value='${lineitem.id()}'>_("Update")</button>
 		</form>
 	    </td>
         </tr>
