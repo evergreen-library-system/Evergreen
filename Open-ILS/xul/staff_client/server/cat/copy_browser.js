@@ -823,6 +823,8 @@ cat.copy_browser.prototype = {
 
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
 			if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
+            JSAN.use('util.functional'); 
+            obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
 
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			//obj.show_libs( org );
@@ -1224,7 +1226,7 @@ cat.copy_browser.prototype = {
 			};
 		
 			var acn_tree_list;
-			if ( obj.org_ids.indexOf( org.id() ) == -1 ) {
+			if ( obj.org_ids.indexOf( Number( org.id() ) ) == -1 ) {
 				if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
 					data.row.my.volume_count = '0';
 					data.row.my.copy_count = '<0>';
@@ -1619,6 +1621,9 @@ cat.copy_browser.prototype = {
 			obj.map_acn = {};
 			obj.map_acp = {};
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
+            JSAN.use('util.functional'); 
+            obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
 			/*
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			obj.show_libs( org );
