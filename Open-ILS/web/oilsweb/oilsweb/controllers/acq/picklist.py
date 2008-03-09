@@ -16,7 +16,12 @@ class PicklistController(BaseController):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
         pl_manager.retrieve()
-        pl_manager.retrieve_lineitems(flesh_provider=True, offset=r.ctx.acq.offset.value, limit=r.ctx.acq.limit.value)
+        # sort by author suppresses lineitems that don't have an author
+        pl_manager.retrieve_lineitems(flesh_provider=True,
+                                      #sort_attr="author",
+                                      #sort_dir="asc",
+                                      offset=r.ctx.acq.offset.value,
+                                      limit=r.ctx.acq.limit.value)
         r.ctx.acq.picklist.value = pl_manager.picklist
         r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
         return r.render('acq/picklist/view.html')
@@ -99,7 +104,9 @@ class PicklistController(BaseController):
         ses.connect()
         page = None
 
-        if r.ctx.acq.picklist_action.value == 'move_selected':
+        if r.ctx.acq.lineitem_id:
+            page = self._update_lineitem_count(r, ses)
+        elif r.ctx.acq.picklist_action.value == 'move_selected':
             page = self._move_selected(r, ses)
 
         if not page:
@@ -107,6 +114,41 @@ class PicklistController(BaseController):
 
         ses.disconnect()
         return page
+
+    def _update_lineitem_count(self, r, ses):
+        ''' Updates # of copies to order for single lineitem '''
+
+        picklist_id = r.ctx.acq.picklist_source_id.value
+        lineitem_id = r.ctx.acq.lineitem_id.value
+        new_count = int(r.ctx.acq.lineitem_item_count.value)
+
+        lineitem = ses.request('open-ils.acq.lineitem.retrieve',
+                               r.ctx.core.authtoken.value,
+                               lineitem_id).recv().content()
+        lineitem = Event.parse_and_raise(lineitem)
+
+        # Can't remove detail records yet
+        assert (lineitem.item_count() <= new_count), "Can't delete detail records"
+
+        for i in range(new_count - lineitem.item_count()):
+            detail = osrf.net_obj.NetworkObject.acqlid()
+            detail.lineitem(lineitem.id())
+            detail = ses.request('open-ils.acq.lineitem_detail.create',
+                                 r.ctx.core.authtoken.value,
+                                 detail, dict())
+            Event.parse_and_raise(detail)
+
+        if (lineitem.item_count() != new_count):
+            # Update the number of detail records
+            lineitem.item_count(new_count)
+            lineitem = ses.request('open-ils.acq.lineitem.update',
+                                   r.ctx.core.authtoken.value,
+                                   lineitem)
+            Event.parse_and_raise(lineitem)
+
+        # fail()
+        return redirect_to(controller='acq/picklist', action='view',
+                           id=picklist_id)
 
     def _move_selected(self, r, ses):
         ''' Moves the selected picklist lineitem's to the destination picklist '''
@@ -124,6 +166,7 @@ class PicklistController(BaseController):
                 r.ctx.core.authtoken.value, lineitem).recv().content()
             Event.parse_and_raise(status)
 
-        return redirect_to(controller='acq/picklist', action='view', id=r.ctx.acq.picklist_dest_id.value)
+        return redirect_to(controller='acq/picklist', action='view',
+                           id=r.ctx.acq.picklist_dest_id.value)
 
 

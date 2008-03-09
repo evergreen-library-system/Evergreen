@@ -1,3 +1,4 @@
+.spacer {clear: both}
 
 #oils-acq-index-block { font-weight:bold; }
 /*
@@ -30,16 +31,14 @@
 /* a single picklist */
 #oils-acq-picklist-table { width: 100%; }
 #oils-acq-picklist-header { padding: 4px; margin-bottom: 20px; }
-.oils-acq-picklist-records-jacket-td { width: 46px; }
+.oils-acq-picklist-records-jacket-td { width: 46px; height: 54px; }
 .oils-acq-picklist-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
-.oils-acq-picklist-records-title-row {}
-.oils-acq-picklist-records-author-row td { padding-left: 30px; }
-.oils-acq-picklist-records-phys_desc-row td { padding-left: 30px; }
-.oils-acq-picklist-records-phys_desc-row {}
-
-#oils-acq-picklist-paging-block { width: 50%; text-align: left;}
-#oils-acq-picklist-actions-block { width: 50%; text-align: right;}
+.oils-acq-picklist-records-title {vertical-align: top}
+.oils-acq-picklist-records-copies {text-align: right; width: 200px}
+#oils-acq-picklist-paging-block { width: 25%; float: left; position: relative; }
+#oils-acq-picklist-actions-block { width: 75%; text-align: right; float: right; position: relative; }
 #oils-acq-picklist-header-subtable { width: 100%; }
+#oils-acq-picklist-header-block { width: 100%; display: block }
 
 /* list of pos */
 #oils-acq-po-list-table {width: 100%;}

@@ -28,12 +28,15 @@ class AcqContext(SubContext):
         self.picklist = ContextItem() # picklist object
         self.picklist_list = ContextItem() # list of picklist objects
         self.picklist_id_list = ContextItem(cgi_name='acq.plil', multi=True) # list of picklist IDs
-        self.lineitem = ContextItem() # lineitem object
         self.picklist_name = ContextItem(cgi_name='acq.pln')
-        self.lineitem_id_list = ContextItem(cgi_name='acq.pleil', multi=True)
         self.picklist_action = ContextItem(cgi_name='acq.pla')
         self.picklist_source_id = ContextItem(cgi_name='acq.plsi')
         self.picklist_dest_id = ContextItem(cgi_name='acq.pldi')
+
+        self.lineitem = ContextItem() # lineitem object
+        self.lineitem_id = ContextItem(cgi_name='acq.liid')
+        self.lineitem_item_count = ContextItem(cgi_name='acq.pllic')
+        self.lineitem_id_list = ContextItem(cgi_name='acq.pleil', multi=True)
 
         self.currency_types = ContextItem()
 
