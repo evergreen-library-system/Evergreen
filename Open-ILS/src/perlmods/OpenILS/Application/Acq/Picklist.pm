@@ -509,11 +509,17 @@ sub retrieve_pl_lineitem {
     $PL_ENTRY_JSON_QUERY->{offset} = $offset;
 
     my $entries = $e->json_query($PL_ENTRY_JSON_QUERY);
-    return [] unless $entries and @$entries;
 
     my @ids;
     push(@ids, $_->{id}) for @$entries;
+
+    # collect lineitems that don't have the requested sort attr
+    my $other_entries = $e->search_acq_lineitem(
+        {id => {'not in' => [@ids]}, picklist=>$picklist_id},{idlist=>1});
+    push(@ids, $_) for @$other_entries;
+
     return \@ids if $$options{idlist};
+    return [] unless @ids;
 
     if($$options{flesh_attrs}) {
         $entries = $e->search_acq_lineitem([
