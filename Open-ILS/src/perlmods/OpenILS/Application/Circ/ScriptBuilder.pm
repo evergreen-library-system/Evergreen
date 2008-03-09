@@ -394,13 +394,14 @@ sub insert_user_funcs {
 	$runner->insert(__OILS_FUNC_userCircsByCircmod  => 
 		sub {
 			my( $write_key, $userid ) = @_;
+            use OpenSRF::Utils::JSON;
 
             # this bug ugly thing generates a count of checkouts by circ_modifier
              my $query = {
                 "select" => {
-                    "acp" => ["circ_modifier"]
+                    "acp" => ["circ_modifier"],
                     "circ"=>[{
-                        "aggregate"=>1,
+                        "aggregate"=> OpenSRF::Utils::JSON->true,
                         "transform"=>"count",
                         "alias"=>"count",
                         "column"=>"id"
@@ -422,7 +423,6 @@ sub insert_user_funcs {
             my $mods = $e->json_query($query);
             my $breakdown = {};
             $breakdown->{$_->{circ_modifier}} = $_->{count} for @$mods;
-            use OpenSRF::Utils::JSON;
             $logger->info("script_runner: Loaded checkouts by circ_modifier breakdown:". 
                 OpenSRF::Utils::JSON->perl2JSON($breakdown));
 			$runner->insert($write_key, $breakdown, 1) if (keys %$breakdown);
