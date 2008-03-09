@@ -56,12 +56,9 @@ def compile_multi_search(request_mgr):
         search['password'].append("") # XXX config values? in-db?
 
     # collect the search classes
-    import oilsweb.middleware.hilite
-    oilsweb.middleware.hilite.terms = []
     for cls in request_mgr.ctx.acq.search_class.value:
         if request_mgr.request.params[cls]:
             search['search'][cls] = request_mgr.request.params[cls]
-            oilsweb.middleware.hilite.terms.append(request_mgr.request.params[cls])
 
     return search
 
