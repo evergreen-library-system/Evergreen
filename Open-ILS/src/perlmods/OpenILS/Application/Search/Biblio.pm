@@ -451,6 +451,7 @@ sub multiclass_query {
     my($self, $conn, $arghash, $query, $docache) = @_;
 
     $logger->debug("initial search query => $query");
+    my $orig_query = $query;
 
     $query = decode_utf8($query);
     $query =~ s/\+/ /go;
@@ -526,6 +527,7 @@ sub multiclass_query {
 
     $arghash->{limit} = $ol if $ol;
     $data->{compiled_search} = $arghash;
+    $data->{query} = $orig_query;
 
     $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
 
@@ -719,6 +721,76 @@ sub the_quest_for_knowledge {
 }
 
 
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.biblio.multiclass.staged');
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.biblio.multiclass.staged.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.metabib.multiclass.staged',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+
+my $CACHE_LIMIT = 200;
+
+sub staged_search {
+	my($self, $conn, $search_hash, $nocache) = @_;
+
+    my $method = ($self->api_name =~ /metabib/) ?
+        'open-ils.storage.metabib.multiclass.staged.search_fts':
+        'open-ils.storage.biblio.multiclass.staged.search_fts';
+
+    $method .= '.staff' if $self->api_name =~ /staff$/;
+    $method .= '.atomic';
+
+    my $results = try_staged_search_cache($method, $search_hash);
+
+    if($results) {
+        $nocache = 1;
+
+    } else {
+        $results = $U->storagereq($method, %$search_hash);
+        unless($nocache) {
+            # XXX cache me
+        }
+    }
+
+    return {
+        summary => shift(@$results),
+        results => $results
+    };
+}
+
+sub try_staged_search_cache {
+    my $method = shift;
+    my $search_hash = shift;
+    my $key = search_cache_key($method, $search_hash);
+    my $start = $search_hash->{offset};
+    my $end = $start + $search_hash->{limit} - 1;
+
+    # XXX pull me from the cache
+    return undef;
+}
+
+# creates a unique token to represent the query in the cache
+sub search_cache_key {
+    my $method = shift;
+    my $search_hash = shift;
+	my @sorted;
+    for my $key (sort keys %$search_hash) {
+	    push(@sorted, ($key => $$search_hash{$key})) 
+            if $key ne 'limit' and $key ne 'offset';
+    }
+	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
+	return $pfx . md5_hex($method . $s);
+}
+
 
 sub search_cache {
 
@@ -739,7 +811,6 @@ sub search_cache {
 	$data = $data->[1];
 
 	return undef unless $offset < $count;
-
 
 	my @result;
 	for( my $i = $offset; $i <= $end; $i++ ) {
