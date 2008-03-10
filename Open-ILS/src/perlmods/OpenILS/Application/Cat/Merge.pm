@@ -1,6 +1,6 @@
 use strict; use warnings;
 package OpenILS::Application::Cat::Merge;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use OpenSRF::Application;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::Utils;

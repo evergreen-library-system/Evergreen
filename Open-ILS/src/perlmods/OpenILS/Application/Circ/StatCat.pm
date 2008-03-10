@@ -14,7 +14,7 @@
 # ---------------------------------------------------------------
 
 package OpenILS::Application::Circ::StatCat;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenSRF::Utils::Logger qw($logger);

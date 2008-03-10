@@ -1,5 +1,5 @@
 package OpenILS::Application::Actor::UserGroups;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor q/:funcs/;

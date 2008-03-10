@@ -1,5 +1,5 @@
 package OpenILS::Application::Circ::NonCat;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;

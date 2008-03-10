@@ -15,7 +15,7 @@
 
 
 package OpenILS::Application::Circ::Money;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";

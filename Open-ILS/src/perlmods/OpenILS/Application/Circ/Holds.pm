@@ -15,7 +15,7 @@
 
 
 package OpenILS::Application::Circ::Holds;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;

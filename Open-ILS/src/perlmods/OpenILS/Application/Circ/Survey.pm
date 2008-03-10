@@ -14,7 +14,7 @@
 # ---------------------------------------------------------------
 
 package OpenILS::Application::Circ::Survey;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::AppUtils;

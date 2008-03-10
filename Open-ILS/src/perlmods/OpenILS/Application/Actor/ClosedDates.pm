@@ -1,5 +1,5 @@
 package OpenILS::Application::Actor::ClosedDates;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Editor q/:funcs/;

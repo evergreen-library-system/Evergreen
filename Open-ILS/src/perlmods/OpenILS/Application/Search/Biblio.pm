@@ -1,5 +1,5 @@
 package OpenILS::Application::Search::Biblio;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 

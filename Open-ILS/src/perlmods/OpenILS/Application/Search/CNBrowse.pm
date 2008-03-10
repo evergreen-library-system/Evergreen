@@ -1,5 +1,5 @@
 package OpenILS::Application::Search::CNBrowse;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenSRF::EX qw(:try);

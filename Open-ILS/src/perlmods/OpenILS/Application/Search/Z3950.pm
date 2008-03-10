@@ -1,6 +1,6 @@
 package OpenILS::Application::Search::Z3950;
 use strict; use warnings;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 
 use OpenILS::Utils::ZClient;
 use MARC::Record;
