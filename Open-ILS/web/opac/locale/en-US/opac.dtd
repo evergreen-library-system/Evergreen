@@ -69,15 +69,14 @@
 <!ENTITY opac.style.reddish "Reddish">
 
 <!ENTITY holds.where_am_i
-	"PINES is a statewide system with both patrons and items
-	associated with over 250 libraries, holds lists are not as simple as
-	'first come, first served' in PINES.  A complex matrix combining
+	"Holds lists are not as simple as
+	'first come, first served.'  A complex matrix combining
 	consideration of item ownership, patron home library, and item purchase
 	date determines  priorities for holds; the list is dynamic, changing
 	with every hold placed.  Therefore, any indication of a place in the
-	holds list would be inaccurate.  The PINES holds system is designed to
+	holds list would be inaccurate.  The holds system is designed to
 	obtain a requested item in the fastest and most efficient way possible.
-	Your PINES library will contact you when you hold items become
+	Your library will contact you when you hold items become
 	available.">
 
 <!ENTITY holds.advanced_options 
@@ -146,7 +145,7 @@ To see the public view of a shared Bookbag, click the "View" link in the
 "Shared" column of the Bookbag list at the top of this page.'>
 <!ENTITY myopac.item.confirm "Are you sure you wish to remove this bookbag item?">
 <!ENTITY myopac.publish.confirm "Sharing this bookbag will allow the contents 
-of the bookback to be seen by others.  Are you sure you wish to share this bookbag?">
+of the bookbag to be seen by others.  Are you sure you wish to share this bookbag?">
 <!ENTITY myopac.unpublish.confirm "Are you sure you wish to hide this bookbag?">
 <!ENTITY myopac.update.success "The Bookbag was successfully updated.">
 <!ENTITY myopac.updated.success "Bookbag successfully updated">
@@ -174,7 +173,7 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.checked.renew.success "item(s) successfully renewed">
 <!ENTITY myopac.checked.renew.confirm "Are you sure you wish to renew the selected item(s)?">
 <!ENTITY myopac.checked.renew.fail "The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.">
-<!ENTITY myopac.checked.renew.fail2 "PINES policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
+<!ENTITY myopac.checked.renew.fail2 "Library policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
 
 <!--	================================================================= 
 	MyOPAC Fines Page 
