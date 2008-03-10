@@ -604,8 +604,8 @@
 	<event code='1659' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
 	</event>
-	<event code='1670' textcode='ACQ_PO_LI_DETAIL_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested acq.po_li_detail was not found</desc>
+	<event code='1670' textcode='ACQ_LINEITEM_DETAIL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_detail was not found</desc>
 	</event>
 	<event code='1671' textcode='PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission.usr_object_perm_map was not found</desc>
