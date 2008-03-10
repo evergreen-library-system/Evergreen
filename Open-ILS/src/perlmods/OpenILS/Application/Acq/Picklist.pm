@@ -465,28 +465,25 @@ __PACKAGE__->register_method(
 );
 
 
-# some defaults are filled in for reference
 my $PL_ENTRY_JSON_QUERY = {
-    select => {jub => ['id']}, # display fields
-    from => {
-        jub => { # selecting from lineitem_attr
-            acqlia => {field => 'lineitem', fkey => 'id'}
+    select => {jub => ["id"], "acqlia" => ["attr_value"]},
+    "from" => {
+        "jub" => {
+            "acqlia" => {
+                "fkey" => "id", 
+                "field" => "lineitem", 
+                "type" => "left", 
+                "filter" => {
+                    "attr_type" => "lineitem_marc_attr_definition", 
+                    "attr_name" => "author" 
+                }
+            }
         }
-    },
-    where => {
-        '+jub' => {picklist => 1},
-        '+acqlia' => { # grab attr rows with the requested type and name for sorting
-            'attr_type' => 'lineitem_marc_attr_definition',
-            'attr_name' => 'title'
-        }
-    },
-    'order_by' => {
-        acqlia => {
-            'attr_value' => {direction => 'asc'}
-        }
-    },
-    limit => 10,
-    offset => 0
+    }, 
+    "order_by" => {"acqlia" => {"attr_value" => {"direction"=>"asc"}}}, 
+    "limit" => 10,
+    "where" => {"+jub" => {"picklist"=>2}},
+    "offset" => 0
 };
 
 sub retrieve_pl_lineitem {
@@ -502,8 +499,8 @@ sub retrieve_pl_lineitem {
     my $offset = $$options{offset} || 0;
 
     $PL_ENTRY_JSON_QUERY->{where}->{'+jub'}->{picklist} = $picklist_id;
-    $PL_ENTRY_JSON_QUERY->{where}->{'+acqlia'}->{attr_name} = $sort_attr;
-    $PL_ENTRY_JSON_QUERY->{where}->{'+acqlia'}->{attr_type} = $sort_attr_type;
+    $PL_ENTRY_JSON_QUERY->{from}->{jub}->{acqlia}->{filter}->{attr_name} = $sort_attr;
+    $PL_ENTRY_JSON_QUERY->{from}->{jub}->{acqlia}->{filter}->{attr_type} = $sort_attr_type;
     $PL_ENTRY_JSON_QUERY->{order_by}->{acqlia}->{attr_value}->{direction} = $sort_dir;
     $PL_ENTRY_JSON_QUERY->{limit} = $limit;
     $PL_ENTRY_JSON_QUERY->{offset} = $offset;
@@ -512,14 +509,7 @@ sub retrieve_pl_lineitem {
 
     my @ids;
     push(@ids, $_->{id}) for @$entries;
-
-    # collect lineitems that don't have the requested sort attr
-    my $other_entries = $e->search_acq_lineitem(
-        {id => {'not in' => [@ids]}, picklist=>$picklist_id},{idlist=>1});
-    push(@ids, $_) for @$other_entries;
-
-    return \@ids if $$options{idlist};
-    return [] unless @ids;
+    return \@ids if $$options{idlist} or not @ids;
 
     if($$options{flesh_attrs}) {
         $entries = $e->search_acq_lineitem([
