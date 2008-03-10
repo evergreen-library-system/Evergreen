@@ -775,24 +775,18 @@ sub create_lineitem_detail {
     my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
         or return $e->die_event;
 
-    my $po = $e->retrieve_acq_purchase_order($li->purchase_order);
-    my $provider = $e->retrieve_acq_provider($po->provider);
+    # XXX check lineitem provider perms
 
-    my $fund = $e->retrieve_acq_fund($li_detail->fund)
-        or return $e->die_event;
-
-    if($e->requestor->id != $po->owner) {
+    if($li_detail->fund) {
+        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
         return $e->die_event unless 
-            $e->allowed('MANAGE_PROVIDER', $provider->owner, $po);
+            $e->allowed('MANAGE_FUND', $fund->org, $fund);
     }
 
-    return $e->die_event unless 
-        $e->allowed('MANAGE_FUND', $fund->org, $fund);
-
+=head XXX move to new method
     my $fct = $e->search_acq_currency_type({code => $fund->currency_type})->[0];
     my $pct = $e->search_acq_currency_type({code => $provider->currency_type})->[0];
     my $price = $$options{price};
-
     # create the fund_debit for this line item detail
     my $fdebit = Fieldmapper::acq::fund_debit->new;
     $fdebit->fund($$options{fund_id});
@@ -804,8 +798,9 @@ sub create_lineitem_detail {
     $e->create_acq_fund_debit($fdebit) or return $e->die_event;
 
     $li_detail->fund_debit($fdebit->id);
-    $e->create_acq_li_detail($li_detail) or return $e->die_event;
+=cut
 
+    $e->create_acq_lineitem_detail($li_detail) or return $e->die_event;
     $e->commit;
     return $li_detail->id;
 }
