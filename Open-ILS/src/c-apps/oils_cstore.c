@@ -663,7 +663,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
 			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
 		} else {
-			jsonObjectSetIndex( _p, 1, jsonParseString("{}") );
+			jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
 		}
 
 		growing_buffer* sel_list = buffer_init(64);
@@ -948,8 +948,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		}
 		else {
 
-			jsonObject* fake_params = jsonParseString("[]");
-			jsonObjectPush(fake_params, jsonParseString("{}"));
+			jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
+			jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH));
 
 			jsonObjectSetKey(
 				jsonObjectGetIndex(fake_params, 0),
@@ -998,8 +998,8 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		id
 	);
 
-	jsonObject* fake_params = jsonParseString("[]");
-	jsonObjectPush(fake_params, jsonParseString("{}"));
+	jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
+	jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH));
 
 	jsonObjectSetKey(
 		jsonObjectGetIndex(fake_params, 0),
@@ -1424,7 +1424,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 	if (join_hash->type == JSON_STRING) {
 		// create a wrapper around a copy of the original
 		char* _tmp = jsonObjectToSimpleString( join_hash );
-		freeable_hash = jsonParseString("{}");
+		freeable_hash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey(freeable_hash, _tmp, NULL);
 		free(_tmp);
 		working_hash = freeable_hash;
@@ -1760,13 +1760,13 @@ static char* SELECT (
 	// if the select list is empty, or the core class field list is '*',
 	// build the default select list ...
 	if (!selhash) {
-		selhash = defaultselhash = jsonParseString( "{}" );
-		jsonObjectSetKey( selhash, core_class, jsonParseString( "[]" ) );
+		selhash = defaultselhash = jsonNewObjectType(JSON_HASH);
+		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
 	} else if ( (tmp_const = jsonObjectGetKeyConst( selhash, core_class )) && tmp_const->type == JSON_STRING ) {
 		char* _x = jsonObjectToSimpleString( tmp_const );
 		if (!strncmp( "*", _x, 1 )) {
 			jsonObjectRemoveKey( selhash, core_class );
-			jsonObjectSetKey( selhash, core_class, jsonParseString( "[]" ) );
+			jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
 		}
 		free(_x);
 	}
@@ -2215,12 +2215,12 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	growing_buffer* select_buf = buffer_init(128);
 
 	if ( !(selhash = jsonObjectGetKey( order_hash, "select" )) ) {
-		defaultselhash = jsonParseString( "{}" );
+		defaultselhash = jsonNewObjectType(JSON_HASH);
 		selhash = defaultselhash;
 	}
 	
 	if ( !jsonObjectGetKeyConst(selhash,core_class) ) {
-		jsonObjectSetKey( selhash, core_class, jsonParseString( "[]" ) );
+		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
 		jsonObject* flist = jsonObjectGetKey( selhash, core_class );
 		
 		int i = 0;
@@ -2564,7 +2564,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
-	jsonObject* res_list = jsonParseString("[]");
+	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 		osrfHash* dedup = osrfNewHash();
@@ -2676,7 +2676,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						osrfStringArray* link_map = osrfHashGet( kid_link, "map" );
 
 						if (link_map->size > 0) {
-							jsonObject* _kid_key = jsonParseString("[]");
+							jsonObject* _kid_key = jsonNewObjectType(JSON_ARRAY);
 							jsonObjectPush(
 								_kid_key,
 								jsonNewObject( osrfStringArrayGetString( link_map, 0 ) )
@@ -2698,9 +2698,9 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							osrfHashGet(kid_link, "reltype")
 						);
 
-						jsonObject* fake_params = jsonParseString("[]");
-						jsonObjectPush(fake_params, jsonParseString("{}")); // search hash
-						jsonObjectPush(fake_params, jsonParseString("{}")); // order/flesh hash
+						jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
+						jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH)); // search hash
+						jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH)); // order/flesh hash
 
 						osrfLogDebug(OSRF_LOG_MARK, "Creating dummy params object...");
 
@@ -2767,7 +2767,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						jsonObject* X = NULL;
 						if ( link_map->size > 0 && kids->size > 0 ) {
 							X = kids;
-							kids = jsonParseString("[]");
+							kids = jsonNewObjectType(JSON_ARRAY);
 
 							jsonObjectNode* _k_node;
 							jsonObjectIterator* _k = jsonNewObjectIterator( X );
@@ -3191,18 +3191,17 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
-					memset(&_tmp_dt, '\0', sizeof(_tmp_dt));
 
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
 					localtime_r( &_tmp_dt, &gmdt );
 
 					if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, 255, "%T", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
 					} else if (!(attr & DBI_DATETIME_TIME)) {
-						strftime(dt_string, 255, "%F", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%F", &gmdt);
 					} else {
-						strftime(dt_string, 255, "%FT%T%z", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%FT%T%z", &gmdt);
 					}
 
 					jsonObjectSetIndex( object, fmIndex, jsonNewObject(dt_string) );
@@ -3271,18 +3270,17 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 
 					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
-					memset(&_tmp_dt, '\0', sizeof(_tmp_dt));
 
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
 					localtime_r( &_tmp_dt, &gmdt );
 
 					if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, 255, "%T", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
 					} else if (!(attr & DBI_DATETIME_TIME)) {
-						strftime(dt_string, 255, "%F", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%F", &gmdt);
 					} else {
-						strftime(dt_string, 255, "%FT%T%z", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%FT%T%z", &gmdt);
 					}
 
 					jsonObjectSetKey( object, columnName, jsonNewObject(dt_string) );
