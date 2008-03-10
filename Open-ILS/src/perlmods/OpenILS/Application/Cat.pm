@@ -495,6 +495,7 @@ sub _tcn_exists {
 __PACKAGE__->register_method(
 	method	=> "biblio_record_record_metadata",
 	api_name	=> "open-ils.cat.biblio.record.metadata.retrieve",
+    authoritative => 1,
 	argc		=> 1, #(session_id, biblio_tree ) 
 	notes		=> "Walks the tree and commits any changed nodes " .
 					"adds any new nodes, and deletes any deleted nodes",
@@ -625,6 +626,7 @@ sub _update_record_metadata {
 
 __PACKAGE__->register_method(
 	method	=> "orgs_for_title",
+    authoritative => 1,
 	api_name	=> "open-ils.cat.actor.org_unit.retrieve_by_title"
 );
 
@@ -643,6 +645,7 @@ sub orgs_for_title {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_copies",
+    authoritative => 1,
 	api_name	=> "open-ils.cat.asset.copy_tree.retrieve");
 
 __PACKAGE__->register_method(

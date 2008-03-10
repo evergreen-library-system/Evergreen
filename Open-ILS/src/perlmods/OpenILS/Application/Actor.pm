@@ -914,6 +914,7 @@ sub search_username {
 
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_by_barcode",
+    authoritative => 1,
 	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",);
 
 sub user_retrieve_by_barcode {
@@ -1036,33 +1037,6 @@ sub get_org_tree {
 }
 
 
-# turns an org list into an org tree
-sub build_org_tree {
-
-	my( $self, $orglist) = @_;
-
-	return $orglist unless ref $orglist;
-    return $$orglist[0] if @$orglist == 1;
-
-	my @list = sort { 
-		$a->ou_type <=> $b->ou_type ||
-		$a->name cmp $b->name } @$orglist;
-
-	for my $org (@list) {
-
-		next unless ($org and defined($org->parent_ou));
-		my ($parent) = grep { $_->id == $org->parent_ou } @list;
-		next unless $parent;
-
-		$parent->children([]) unless defined($parent->children); 
-		push( @{$parent->children}, $org );
-	}
-
-	return $list[0];
-
-}
-
-
 __PACKAGE__->register_method(
 	method	=> "get_org_descendants",
 	api_name	=> "open-ils.actor.org_tree.descendants.retrieve"
@@ -1075,7 +1049,7 @@ sub get_org_descendants {
 			"open-ils.storage", 
 			"open-ils.storage.actor.org_unit.descendants.atomic",
 			$org_unit, $depth );
-	return $self->build_org_tree($orglist);
+	return $U->build_org_tree($orglist);
 }
 
 
@@ -1091,7 +1065,7 @@ sub get_org_ancestors {
 			"open-ils.storage", 
 			"open-ils.storage.actor.org_unit.ancestors.atomic",
 			$org_unit, $depth );
-	return $self->build_org_tree($orglist);
+	return $U->build_org_tree($orglist);
 }
 
 
@@ -1294,23 +1268,8 @@ sub check_user_perms3 {
 		$authtoken, $userid, 'VIEW_PERMISSION' );
 	return $evt if $evt;
 
-	my $tree = $self->get_org_tree();
-	return _find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
-}
-
-
-sub _find_highest_perm_org {
-	my ( $perm, $userid, $start_org, $org_tree ) = @_;
-	my $org = $apputils->find_org($org_tree, $start_org );
-
-	my $lastid = -1;
-	while( $org ) {
-		last if ($apputils->check_perms( $userid, $org->id, $perm )); # perm failed
-		$lastid = $org->id;
-		$org = $apputils->find_org( $org_tree, $org->parent_ou() );
-	}
-
-	return $lastid;
+	my $tree = $U->get_org_tree();
+	return $U->find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
 }
 
 
@@ -1368,10 +1327,10 @@ sub check_user_perms4 {
 
 	my @arr;
 	return [] unless ref($perms);
-	my $tree = $self->get_org_tree();
+	my $tree = $U->get_org_tree();
 
 	for my $p (@$perms) {
-		push( @arr, _find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
+		push( @arr, $U->find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
 	}
 	return \@arr;
 }
@@ -1382,6 +1341,7 @@ sub check_user_perms4 {
 __PACKAGE__->register_method(
 	method	=> "user_fines_summary",
 	api_name	=> "open-ils.actor.user.fines.summary",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns a short summary of the users total open fines, excluding voided fines
 	Params are login_session, user_id
@@ -1678,6 +1638,7 @@ sub user_transaction_retrieve {
 __PACKAGE__->register_method(
 	method	=> "hold_request_count",
 	api_name	=> "open-ils.actor.user.hold_requests.count",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns hold ready/total counts
@@ -1761,6 +1722,7 @@ sub checkedout_count {
 __PACKAGE__->register_method(
 	method		=> "checked_out",
 	api_name		=> "open-ils.actor.user.checked_out",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/
 		Returns a structure of circulations objects sorted by
@@ -1778,6 +1740,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method		=> "checked_out",
 	api_name		=> "open-ils.actor.user.checked_out.count",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/@see open-ils.actor.user.checked_out/
 );
@@ -1949,6 +1912,7 @@ sub _checked_out_WHAT {
 __PACKAGE__->register_method(
 	method		=> "checked_in_with_fines",
 	api_name		=> "open-ils.actor.user.checked_in_with_fines",
+    authoritative => 1,
 	argc			=> 2,
 	signature	=> q/@see open-ils.actor.user.checked_out/
 );
@@ -2011,6 +1975,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_balance",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have a balance, optionally by type
@@ -2025,6 +1990,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_bill",
+    authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has billings
@@ -2473,6 +2439,7 @@ sub workstation_list {
 __PACKAGE__->register_method (
 	method		=> 'fetch_patron_note',
 	api_name		=> 'open-ils.actor.note.retrieve.all',
+    authoritative => 1,
 	signature	=> q/
 		Returns a list of notes for a given user
 		Requestor must have VIEW_USER permission if pub==false and
@@ -2657,20 +2624,19 @@ __PACKAGE__->register_method(
 	/
 );
 
-# XXX Make me retun undef if no user has the ID 
-
 sub usrname_exists {
 	my( $self, $conn, $auth, $usrname ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $a = $e->search_actor_user({usrname => $usrname, deleted=>'f'}, {idlist=>1});
 	return $$a[0] if $a and @$a;
-	return 0;
+	return undef;
 }
 
 __PACKAGE__->register_method(
 	method => 'barcode_exists',
 	api_name	=> 'open-ils.actor.barcode.exists',
+    authoritative => 1,
 	signature => q/
 		Returns 1 if the requested barcode exists, returns 0 otherwise
 	/
@@ -2681,7 +2647,7 @@ sub barcode_exists {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
-    return 0 unless @$card;
+    return undef unless @$card;
     return $card->[0]->usr;
 }
 
@@ -2945,7 +2911,7 @@ sub user_opt_in_at_org {
     my($self, $conn, $auth, $user_id) = @_;
 
     # see if we even need to enforce the opt-in value
-    return 1 unless $self->user_opt_in_enabled;
+    return 1 unless user_opt_in_enabled($self);
 
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;

@@ -13,6 +13,7 @@ sub initialize { return 1; }
 __PACKAGE__->register_method(
 	method => 'get_users_from_usergroup',
 	api_name	=> 'open-ils.actor.usergroup.members.retrieve',
+    authoritative => 1,
 	signature	=> q/
 		Returns a list of ids for users that are in the given usergroup
 	/
