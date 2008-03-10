@@ -256,7 +256,7 @@ circ.checkout.prototype = {
 		this.check_disable();
 
 		var robj = obj.network.simple_request(
-			'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
+			'FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative',
 			[ ses(), obj.patron_id ]
 		);
 		obj.items_out_count = (robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );

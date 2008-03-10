@@ -147,7 +147,7 @@
 				var p = patron.util.retrieve_au_via_id(ses(),g.patron_id);
 				if ((p == null) || (typeof p.ilsevent != 'undefined') ) throw(p);
 				var robj = g.network.simple_request(
-					'FM_AU_LIST_RETRIEVE_VIA_GROUP',
+					'FM_AU_LIST_RETRIEVE_VIA_GROUP.authoritative',
 					[ ses(), p.usrgroup() ]
 				);
 				if ((robj == null) || (typeof robj.ilsevent != 'undefined') ) throw(robj);

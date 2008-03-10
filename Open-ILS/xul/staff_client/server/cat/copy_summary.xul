@@ -126,7 +126,7 @@
 							acn_callback( { 'getResultObject' : function() { return callnumber; } } );
 						} else {
 							g.network.simple_request(
-								'FM_ACN_RETRIEVE',
+								'FM_ACN_RETRIEVE.authoritative',
 								[ copy.call_number() ], acn_callback
 							);
 						}

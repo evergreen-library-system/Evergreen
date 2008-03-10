@@ -112,9 +112,8 @@
 									);
 								break;
 								default:
-									row.my.mvr = g.network.request(
-										api.MODS_SLIM_RECORD_RETRIEVE.app,
-										api.MODS_SLIM_RECORD_RETRIEVE.method,
+									row.my.mvr = g.network.simple_request(
+										'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 										[ row.my.ahr.target() ]
 									);
 									if (row.my.ahr.current_copy()) {

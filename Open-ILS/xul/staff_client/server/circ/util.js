@@ -517,7 +517,7 @@ circ.util.columns = function(modify,params) {
 					return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
 				} else {
 					if (!my.acn) {
-						var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]);
+						var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ my.acp.call_number() ]);
 						if (x.ilsevent) {
 							return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
 						} else {
@@ -1946,7 +1946,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		}
 
 		if (check.circ) {
-			network.simple_request('FM_MBTS_RETRIEVE',[ses(),check.circ.id()], function(req) {
+			network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),check.circ.id()], function(req) {
 				JSAN.use('util.money');
 				var bill = req.getResultObject();
 				if (Number(bill.balance_owed()) == 0) { return; }

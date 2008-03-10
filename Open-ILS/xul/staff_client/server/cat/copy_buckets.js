@@ -481,7 +481,7 @@ cat.copy_buckets.prototype = {
 									}
 								)
 
-								var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 								var msg = 'Transfer the items in bucket "';
 								msg += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';

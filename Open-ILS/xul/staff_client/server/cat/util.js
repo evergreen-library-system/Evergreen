@@ -113,7 +113,7 @@ cat.util.transfer_copies = function(params) {
 
 		JSAN.use('util.functional');
 
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ params.copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ params.copy_ids ]);
 
 		for (var i = 0; i < copies.length; i++) {
 			copies[i].call_number( data.marked_volume );
@@ -259,7 +259,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
 		JSAN.use('util.error'); error = new util.error();
 		JSAN.use('util.functional');
 		JSAN.use('util.network'); var network = new util.network();
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
 		if (typeof copies.ilsevent != 'undefined') throw(copies);
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {
@@ -301,7 +301,7 @@ cat.util.mark_item_missing = function(copy_ids) {
 		JSAN.use('util.error'); error = new util.error();
 		JSAN.use('util.functional');
 		JSAN.use('util.network'); var network = new util.network();
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
 		if (typeof copies.ilsevent != 'undefined') throw(copies);
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {

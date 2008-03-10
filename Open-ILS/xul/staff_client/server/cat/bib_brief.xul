@@ -66,9 +66,8 @@
 
 					data.last_record = docid; data.stash('last_record');
 
-					g.network.request(
-						api.MODS_SLIM_RECORD_RETRIEVE.app,
-						api.MODS_SLIM_RECORD_RETRIEVE.method,
+					g.network.simple_request(
+						'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 						[ docid ],
 						function (req) {
 							var mods = req.getResultObject();
@@ -97,9 +96,8 @@
 								}
 							}
 	
-							g.network.request(
-								api.FM_BRE_RETRIEVE_VIA_ID.app,
-								api.FM_BRE_RETRIEVE_VIA_ID.method,
+							g.network.simple_request(
+								'FM_BRE_RETRIEVE_VIA_ID.authoritative',
 								[ ses(), [ docid ] ],
 								function (req) {
 									try {

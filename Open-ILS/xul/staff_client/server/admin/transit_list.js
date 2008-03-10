@@ -324,7 +324,7 @@ admin.transit_list.prototype = {
 					row.my.acp = r_acp;
 
 					obj.network.simple_request(
-						'FM_ACN_RETRIEVE',
+						'FM_ACN_RETRIEVE.authoritative',
 						[ r_acp.call_number() ],
 						function(req2) {
 							try {
@@ -334,7 +334,7 @@ admin.transit_list.prototype = {
 
 								if (row.my.acn.record() > 0) {
 									obj.network.simple_request(
-										'MODS_SLIM_RECORD_RETRIEVE',
+										'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 										[ r_acn.record() ],
 										function(req3) {
 											try {

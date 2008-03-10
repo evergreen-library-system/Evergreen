@@ -59,7 +59,7 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
-						obj.network.simple_request('FM_AHR_BLOB_RETRIEVE', [ ses(), row.my.hold_id ],
+						obj.network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative', [ ses(), row.my.hold_id ],
 							function(blob_req) {
 								try {
 									var blob = blob_req.getResultObject();
@@ -648,7 +648,7 @@ patron.holds.prototype = {
 											opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
 										break;
 										case 'V' :
-											var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ htarget ]);
+											var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
 										break;
 										case 'C' :
@@ -657,7 +657,7 @@ patron.holds.prototype = {
 											if (typeof my_acp.call_number() == 'object') {
 												my_acn = my.acp.call_number();
 											} else {
-												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', 
+												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', 
 													[ my_acp.call_number() ]);
 											}
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
@@ -785,7 +785,7 @@ patron.holds.prototype = {
 			var method; var params = [ ses() ];
             switch(obj.hold_interface_type) {
                 case 'patron' :
-				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU'; 
+				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative'; 
     				params.push( obj.patron_id ); 
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
                 break;

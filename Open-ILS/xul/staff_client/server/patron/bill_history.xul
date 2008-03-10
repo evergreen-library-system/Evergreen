@@ -57,8 +57,8 @@
 
 		function retrieve_mbts_for_list() {
 			//var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
-			var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY';
-			if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE';
+			var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
+			if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
 			g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
 			if (g.mbts_ids.ilsevent) {
 				switch(Number(g.mbts_ids.ilsevent)) {
@@ -108,7 +108,7 @@
 		}
 
 		function retrieve_specific_mbts() {
-			if (g.mbts_id) g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
+			if (g.mbts_id) g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -164,7 +164,7 @@
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(
-							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+							'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 							[ r_circ.target_copy() ],
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();
@@ -217,7 +217,7 @@
 					if (id) {
 						if (typeof row.my == 'undefined') row.my = {};
 						if ( typeof row.my.mbts == 'undefined' ) {
-							var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),id]);
+							var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),id]);
 							row.my.mbts = mbts_obj;
 						}
 					}

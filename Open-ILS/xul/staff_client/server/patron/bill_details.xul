@@ -56,7 +56,7 @@
 		}
 
 		function retrieve_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
+			g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -120,7 +120,7 @@
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(
-							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+							'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 							[ r_circ.target_copy() ],
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();
@@ -180,7 +180,7 @@
 		}
 
 		function retrieve_mb() {
-			g.mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ] );
+			g.mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ] );
 			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(g.mb_list) ));
 
 			var mb_funcs = [];
@@ -200,7 +200,7 @@
 		}
 
 		function retrieve_mp() {
-			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ]);
+			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ]);
 			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(mp_list) ));
 
 			var mp_funcs = [];

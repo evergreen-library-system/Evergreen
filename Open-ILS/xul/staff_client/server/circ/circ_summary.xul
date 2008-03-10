@@ -59,7 +59,7 @@
 
 				g.copy = g.network.simple_request('FM_ACP_RETRIEVE',[ g.copy_id ]);
 				if (typeof g.copy.ilsevent != 'undefined') throw(g.copy);
-				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
+				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
 				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
 				$('top').setAttribute('src',urls.XUL_BIB_BRIEF);// + '?docid=' + g.callnumber.record());

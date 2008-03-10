@@ -21,7 +21,7 @@ patron.bills.prototype = {
 
 	'current_payments' : [],
 
-	'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
+	'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative',
 	//'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_STILL_OPEN',
 	//'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE',
 	/*'SHOW_ME_THE_BILLS' : 'FM_MOBTS_OPEN',*/
@@ -45,7 +45,7 @@ patron.bills.prototype = {
 					} else if (instanceOf(obj.bills[i],mbts)) {
 						obj.bills[i] = { 'transaction' : obj.bills[i] }
 					} else {
-						var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
+						var robj = obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),obj.bills[i]]);
 						//alert('refresh robj = ' + js2JSON(robj));
 						obj.bills[i] = { 'transaction' : robj }
 					}
@@ -672,7 +672,7 @@ patron.bills.prototype = {
 						} else if (instanceOf(obj.bills[i],mbts)) {
 							obj.bills[i] = { 'transaction' : obj.bills[i] }
 						} else {
-							var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
+							var robj = obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),obj.bills[i]]);
 							//alert('robj = ' + js2JSON(robj));
 							obj.bills[i] = { 'transaction' : robj }
 						}
@@ -886,7 +886,7 @@ patron.bills.prototype = {
 											}
 										}
 										obj.network.simple_request(
-											'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+											'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 											[ r_circ.target_copy() ],
 											function (rreq) {
 												var r_mvr = rreq.getResultObject();
@@ -1044,7 +1044,7 @@ patron.bills.prototype = {
 			var obj = this;
 			JSAN.use('util.functional');
 			
-			var mb_list = obj.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), mobts_id ] );
+			var mb_list = obj.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), mobts_id ] );
 			if (typeof mb_list.ilsevent != 'undefined') throw(mb_list);
 
 			mb_list = util.functional.filter_list( mb_list, function(o) { return ! get_bool( o.voided() ) });

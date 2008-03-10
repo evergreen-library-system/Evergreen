@@ -34,9 +34,9 @@
 					var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ g.barcodes[i] ] );
 					if (typeof copy.ilsevent != 'undefined') throw(copy);
 					if (!g.volumes[ copy.call_number() ]) {
-						var volume = g.network.simple_request( 'FM_ACN_RETRIEVE', [ copy.call_number() ] );
+						var volume = g.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ copy.call_number() ] );
 						if (typeof volume.ilsevent != 'undefined') throw(volume);
-						var record = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE', [ volume.record() ]);
+						var record = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative', [ volume.record() ]);
 						volume.record( record );
 						g.volumes[ volume.id() ] = volume;
 					}

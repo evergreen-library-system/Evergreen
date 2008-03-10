@@ -800,7 +800,7 @@ cat.copy_browser.prototype = {
 										}
 									);
 
-									var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+									var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 									JSAN.use('cat.util'); cat.util.transfer_copies( { 
 										'copy_ids' : list, 
@@ -821,7 +821,7 @@ cat.copy_browser.prototype = {
 
 			obj.list_init(params);
 
-			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
 			if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
@@ -913,7 +913,7 @@ cat.copy_browser.prototype = {
 	'show_consortial_count' : function() {
 		var obj = this;
 		try {
-			obj.network.simple_request('FM_ACP_COUNT',[ obj.data.tree.aou.id(), obj.docid ],function(req){ 
+			obj.network.simple_request('FM_ACP_COUNT.authoritative',[ obj.data.tree.aou.id(), obj.docid ],function(req){ 
 				try {
 					var robj = req.getResultObject();
 					var x = document.getElementById('consortial_total');
@@ -1237,7 +1237,7 @@ cat.copy_browser.prototype = {
 			} else {
 				var v_count = 0; var c_count = 0;
 				acn_tree_list = obj.network.simple_request(
-					'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS',
+					'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS.authoritative',
 					[ ses(), obj.docid, [ org.id() ] ]
 				);
 				for (var i = 0; i < acn_tree_list.length; i++) {
@@ -1620,7 +1620,7 @@ cat.copy_browser.prototype = {
 			obj.map_tree = {};
 			obj.map_acn = {};
 			obj.map_acp = {};
-			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
 			if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });

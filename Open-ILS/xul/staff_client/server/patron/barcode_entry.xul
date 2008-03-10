@@ -93,7 +93,7 @@
 
 				tb.disabled = true;
 				document.getElementById('progress').setAttribute('hidden','false');
-				net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ],
+				net.simple_request('PATRON_BARCODE_EXISTS.authoritative',[ ses(), barcode ],
 					function(req) {
 						document.getElementById('progress').setAttribute('hidden','true');
 						tb.disabled = false; tb.select(); tb.focus(); ;

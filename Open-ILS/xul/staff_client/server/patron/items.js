@@ -140,7 +140,7 @@ patron.items.prototype = {
 	'show_noncats' : function() {
 		var obj = this; var checkout = {};
 		try {
-			var robj = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_USER',[ ses(), obj.patron_id ]);
+			var robj = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_USER.authoritative',[ ses(), obj.patron_id ]);
 			if (typeof robj.ilsevent != 'undefined') throw(robj);
 
 			for (var ii = 0; ii < robj.length; ii++) {
@@ -560,7 +560,7 @@ patron.items.prototype = {
     
     			if (!row.my.circ) {
     				obj.network.simple_request(
-    					'FM_CIRC_DETAILS',
+    					'FM_CIRC_DETAILS.authoritative',
     					[ row.my.circ_id ],
     					function(req) {
     						try { 
@@ -590,7 +590,7 @@ patron.items.prototype = {
     								params.on_retrieve(row);
     							}
     						} catch(E) {
-    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
+    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js',E);
     						}
     					}
     				);
@@ -700,7 +700,7 @@ patron.items.prototype = {
 			obj.checkouts = [];
 			obj.checkouts2 = [];
 			var robj = obj.network.simple_request(
-				'FM_CIRC_RETRIEVE_VIA_USER',
+				'FM_CIRC_RETRIEVE_VIA_USER.authoritative',
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {
@@ -713,7 +713,7 @@ patron.items.prototype = {
 				obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
 			}
 			var robj = obj.network.simple_request(
-				'FM_CIRC_IN_WITH_FINES_VIA_USER',
+				'FM_CIRC_IN_WITH_FINES_VIA_USER.authoritative',
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {

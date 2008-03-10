@@ -172,7 +172,7 @@ OpenILS.data.prototype = {
 			if (obj.hash[key] && obj.hash[key][value]) return obj.hash[key][value];
 			switch(key) {
 				case 'acpl': 
-					found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID',[ value ]);
+					found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID.authoritative',[ value ]);
 				break;
 				default: return undefined; break;
 			}

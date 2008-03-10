@@ -746,7 +746,7 @@ cat.record_buckets.prototype = {
 	'flesh_item_for_list' : function(docid,bucket_item_id) {
 		var obj = this;
 		try {
-			var record = obj.network.simple_request( 'MODS_SLIM_RECORD_RETRIEVE', [ docid ]);
+			var record = obj.network.simple_request( 'MODS_SLIM_RECORD_RETRIEVE.authoritative', [ docid ]);
 			if (record == null || typeof(record.ilsevent) != 'undefined') {
 				throw(record);
 			} else {

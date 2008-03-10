@@ -29,7 +29,7 @@ function my_init() {
 		if (!copy_ids) copy_ids = [];
 
 		if (copy_ids.length > 0) g.copies = g.network.simple_request(
-			'FM_ACP_FLESHED_BATCH_RETRIEVE',
+			'FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative',
 			[ copy_ids ]
 		);
 
@@ -74,7 +74,7 @@ function my_init() {
                                     lib = o.circ_lib(); // base perms on circ_lib instead of owning_lib if pre-cat
                                 } else {
                                     if (! g.map_acn[ cn_id ]) {
-                                        var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                                        var req = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ cn_id ]);
                                         if (typeof req.ilsevent == 'undefined') {
                                             g.map_acn[ cn_id ] = req;
                                             lib = g.map_acn[ cn_id ].owning_lib();
@@ -432,7 +432,7 @@ g.apply_owning_lib = function(ou_id) {
 		var copy = g.copies[i];
 		try {
 			if (!g.map_acn[copy.call_number()]) {
-				var volume = g.network.simple_request('FM_ACN_RETRIEVE',[ copy.call_number() ]);
+				var volume = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ copy.call_number() ]);
 				if (typeof volume.ilsevent != 'undefined') {
 					g.error.standard_unexpected_error_alert('Error retrieving Volume information for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",volume);
 					continue;
@@ -559,7 +559,7 @@ g.get_acpl_list = function() {
 			var cn_id = typeof callnumber == 'object' ? callnumber.id() : callnumber;
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-					var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+					var req = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ cn_id ]);
                     if (typeof req.ilsevent == 'undefined') {
     					g.map_acn[ cn_id ] = req;
                     } else {
@@ -659,9 +659,8 @@ g.special_exception = {
 	'Owning Lib : Call Number' : function(label,value) {
 		JSAN.use('util.widgets');
 		if (value>0) { /* an existing call number */
-			g.network.request(
-				api.FM_ACN_RETRIEVE.app,
-				api.FM_ACN_RETRIEVE.method,
+			g.network.simple_request(
+				'FM_ACN_RETRIEVE.authoritative',
 				[ value ],
 				function(req) {
 					var cn = '??? id = ' + value;
@@ -1395,7 +1394,7 @@ g.populate_stat_cats = function() {
             var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-                    var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    var req = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ cn_id ]);
                     if (typeof req.ilsevent == 'undefined') {
     					g.map_acn[ cn_id ] = req;
                     } else {

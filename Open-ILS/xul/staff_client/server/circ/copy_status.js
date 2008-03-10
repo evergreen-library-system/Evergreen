@@ -378,7 +378,7 @@ circ.copy_status.prototype = {
 										continue; /* ignore magic pre-cat volume */
 									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 									var record_id = map_acn[ volume_id ].record();
 									var ou_id = map_acn[ volume_id ].owning_lib();
@@ -507,7 +507,7 @@ circ.copy_status.prototype = {
 
 									var list = util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } );
 
-									var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+									var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 									JSAN.use('cat.util'); cat.util.transfer_copies( { 
 										'copy_ids' : list, 
@@ -538,7 +538,7 @@ circ.copy_status.prototype = {
 										continue; /* ignore magic pre-cat volume */
 									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 									var record_id = map_acn[ volume_id ].record();
 									var ou_id = map_acn[ volume_id ].owning_lib();
@@ -609,7 +609,7 @@ circ.copy_status.prototype = {
 										continue; /* ignore magic pre-cat volume */
 									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 										map_acn[ volume_id ].copies( [] );
 									}
 									var record_id = map_acn[ volume_id ].record();
@@ -735,7 +735,7 @@ circ.copy_status.prototype = {
 										continue; /* ignore magic pre-cat volume */
 									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 								}
 
@@ -825,7 +825,7 @@ circ.copy_status.prototype = {
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
 
 								if (list.length == 1) {
-									var v = obj.network.simple_request('FM_ACN_RETRIEVE',[list[0]]);
+									var v = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[list[0]]);
 									var owning_lib = v.owning_lib();
 									if (typeof owning_lib == 'object') {
 										owning_lib = owning_lib.id();
@@ -872,7 +872,7 @@ circ.copy_status.prototype = {
 											continue; /* ignore magic pre-cat volume */
 										}
 										if (! map_acn[volume_id]) {
-											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 										}
 									}
 
@@ -1096,7 +1096,7 @@ circ.copy_status.prototype = {
 					obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
 				}
 			}
-			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ]);
+			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), barcode ]);
 			handle_req({'getResultObject':function(){return result;}}); // used to be async
 			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();

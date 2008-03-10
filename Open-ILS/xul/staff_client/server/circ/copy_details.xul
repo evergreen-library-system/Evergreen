@@ -81,7 +81,7 @@
 					$('circ_caption').setAttribute('tooltiptext', tt_msg);
 				}
 
-				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
+				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
 				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
 				$('top').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.callnumber.record());
