@@ -210,20 +210,22 @@ static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, d
 
 	if(!_oilsAuthOPACTimeout) { /* Load the default timeouts */
 
-		_oilsAuthOPACTimeout =
-			jsonObjectGetNumber( 
-				osrf_settings_host_value_object( 
-					"/apps/open-ils.auth/app_settings/default_timeout/opac"));
+		jsonObject* value_obj;
 
-		_oilsAuthStaffTimeout =
-			jsonObjectGetNumber( 
-				osrf_settings_host_value_object( 
-					"/apps/open-ils.auth/app_settings/default_timeout/staff" ));
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/default_timeout/opac" );
+		_oilsAuthOPACTimeout = jsonObjectGetNumber(value_obj);
+		jsonObjectFree(value_obj);
 
-		_oilsAuthOverrideTimeout =
-			jsonObjectGetNumber( 
-				osrf_settings_host_value_object( 
-					"/apps/open-ils.auth/app_settings/default_timeout/temp" ));
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/default_timeout/staff" );
+		_oilsAuthStaffTimeout = jsonObjectGetNumber(value_obj);
+		jsonObjectFree(value_obj);
+
+		value_obj = osrf_settings_host_value_object(
+				"/apps/open-ils.auth/app_settings/default_timeout/temp" );
+		_oilsAuthOverrideTimeout = jsonObjectGetNumber(value_obj);
+		jsonObjectFree(value_obj);
 
 
 		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timetouts: opac => %d : staff => %d : temp => %d",
