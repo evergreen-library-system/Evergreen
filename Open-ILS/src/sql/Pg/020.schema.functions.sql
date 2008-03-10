@@ -17,9 +17,12 @@ CREATE OR REPLACE FUNCTION public.non_filing_normalize ( TEXT, "char" ) RETURNS 
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
+    use Unicode::Normalize;
+
 	my $txt = lc(shift);
 	my $sf = shift;
 
+    $txt = NFD($txt);
 	$txt =~ s/\pM+//go;	# Remove diacritics
 
 	$txt =~ s/\xE6/AE/go;	# Convert ae digraph
@@ -33,7 +36,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 	$txt =~ tr/\x{2113}\xF0\!\"\(\)\-\{\}\<\>\;\:\.\?\xA1\xBF\/\\\@\*\%\=\xB1\+\xAE\xA9\x{2117}\$\xA3\x{FFE1}\xB0\^\_\~\`/LD /;	# Convert Misc
 	$txt =~ tr/\'\[\]\|//d;							# Remove Misc
 
-	if ($sf =~ /^a/o) {
+	if ($sf && $sf =~ /^a/o) {
 		my $commapos = index($txt,',');
 		if ($commapos > -1) {
 			if ($commapos != length($txt) - 1) {
@@ -58,6 +61,36 @@ $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
 	SELECT public.naco_normalize($1,'');
 $func$ LANGUAGE 'sql' STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.normalize_space( TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace(regexp_replace(regexp_replace($1, E'\\n', ' ', 'g'), E'(?:^\\s+)|(\\s+$)', '', 'g'), E'\\s+', ' ', 'g');
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.lowercase( TEXT ) RETURNS TEXT AS $$
+    return lc(shift);
+$$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION public.uppercase( TEXT ) RETURNS TEXT AS $$
+    return uc(shift);
+$$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION public.remove_diacritics( TEXT ) RETURNS TEXT AS $$
+    use Unicode::Normalize;
+
+    my $x = NFD(shift);
+    $x =~ s/\pM+//go;
+    return $x;
+
+$$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION public.entityize( TEXT ) RETURNS TEXT AS $$
+    use Unicode::Normalize;
+
+    my $x = NFC(shift);
+    $x =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+    return $x;
+
+$$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	my $txt = shift;
