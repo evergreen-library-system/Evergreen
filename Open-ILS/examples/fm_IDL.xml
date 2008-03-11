@@ -463,9 +463,7 @@
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="TRANSIT_COPY" context_field="owner">
-                    <context link="target_copy" field="circ_lib"/>
-                </create>
+                <create permission="TRANSIT_COPY"/>
                 <retrieve/>
                 <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
                 <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
