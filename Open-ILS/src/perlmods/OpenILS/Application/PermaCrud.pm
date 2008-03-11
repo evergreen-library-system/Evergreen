@@ -128,7 +128,7 @@ sub CRUD_action_object_permcheck {
                     }
                 }
             } else {
-                $pok++ if ($e->allowed($perm => undef => $obj)) {
+                $pok++ if ($e->allowed($perm => undef => $obj));
             }
         }
 

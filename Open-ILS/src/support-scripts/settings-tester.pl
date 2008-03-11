@@ -306,6 +306,7 @@ sub get_debug_info {
 __DATA__
 LWP::UserAgent
 XML::LibXML
+XML::LibXML::XPathContext
 XML::LibXSLT
 Net::Server::PreFork
 Cache::Memcached
