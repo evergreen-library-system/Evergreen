@@ -169,7 +169,7 @@ sub search_permacrud {
     return undef;
 }
 
-for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $class_node ) ) {
+for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $idl->documentElement ) ) {
     my $hint = $class_node->getAttribute('id');
 
     for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
