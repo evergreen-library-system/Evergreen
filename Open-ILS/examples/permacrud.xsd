@@ -47,6 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
  </xs:complexType>
+ <xs:attribute name="all_perms"/>
  <xs:attribute name="global_requried"/>
 </xs:element>
 
@@ -58,6 +59,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="permission"/>
   <xs:attribute name="context_field"/>
  </xs:complexType>
+ <xs:attribute name="all_perms"/>
  <xs:attribute name="global_requried"/>
 </xs:element>
 
@@ -69,6 +71,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
  </xs:complexType>
+ <xs:attribute name="all_perms"/>
  <xs:attribute name="global_requried"/>
 </xs:element>
 
@@ -80,6 +83,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
  </xs:complexType>
+ <xs:attribute name="all_perms"/>
  <xs:attribute name="global_requried"/>
 </xs:element>
 
