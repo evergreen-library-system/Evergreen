@@ -416,7 +416,8 @@ sub allowed {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
         if($object) {
-            my $params = [$perm, $object->json_hint, $object->id];
+            my $id_field = $object->Identity;
+            my $params = [$perm, $object->json_hint, $object->$id_field];
             push(@$params, $org) if $org;
             $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = $params;
             $OBJECT_PERM_QUERY->{where}->{id} = $uid;
