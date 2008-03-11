@@ -68,10 +68,11 @@ sub CRUD_action_object_permcheck {
 
     my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
     my ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$action", $class_node );
+    my $all_perms = $xpc->getAttribute( 'all_perms', $action_node );
 
     my $perm_field_value = $aciton_node->getAttribute('permission');
 
-    if (defined($perm_field_value)) 
+    if (defined($perm_field_value)) {
         my @perms = split '|', $aciton_node->getAttribute('permission');
 
         my @context_ous;
@@ -88,34 +89,42 @@ sub CRUD_action_object_permcheck {
                     my $context_field = $context_node->getAttribute('field');
                     my $link_field = $context_node->getAttribute('link');
 
-                    my ($link_node) = $xpc->findnodes( "idl:links/idl:link[\@field='$link_field']", $class_node );
-                    my $link_class_hint = $link_node->getAttribute('class');
-                    my $remote_field = $link_node->getAttribute('key');
+                    if ($link_field) {
 
-                    my ($remote_class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
-                    my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $remote_class_node );
-                    $search_method =~ s/::/_/go;
+                        my ($link_node) = $xpc->findnodes( "idl:links/idl:link[\@field='$link_field']", $class_node );
+                        my $link_class_hint = $link_node->getAttribute('class');
+                        my $remote_field = $link_node->getAttribute('key');
 
-                    for my $remote_object ( @{$e->$search_method( { $key => $obj->$link_field } )} ) {
-                        push @context_ous, $remote_object->$context_field;
+                        my ($remote_class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
+                        my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $remote_class_node );
+                        $search_method =~ s/::/_/go;
+
+                        for my $remote_object ( @{$e->$search_method( { $key => $obj->$link_field } )} ) {
+                            push @context_ous, $remote_object->$context_field;
+                        }
+                    } else {
+                        push @context_ous, $obj->$_ for ( split '|', $context_field );
                     }
                 }
             }
         }
 
-        my ($pok, $cok) = (0, 0);
+        my $pok = 0;
         for my $perm (@perms) {
-            for my $c_ou (@context_ous) {
-                if ($e->allowed($perm => $c_ou => $obj)) {
-                    $cok++;
-                    last;
+            if (@context_ous) {
+                for my $c_ou (@context_ous) {
+                    if ($e->allowed($perm => $c_ou => $obj)) {
+                        $pok++;
+                        last;
+                    }
                 }
+            } else {
+                $pok++ if ($e->allowed($perm => undef => $obj));
+                next;
             }
-            $pok++ if ($cok);
-            $cok = 0;
         }
 
-        unless (@perms == $pok) {
+        if ((lc($all_perms) eq 'true' && @perms != $pok) or !$pok) {
             throw OpenSRF::DomainObject::oilsException->new(
                 statusCode => 500,
                 status => "Perm failure -- action: $action, object type: $self->{json_hint}",
