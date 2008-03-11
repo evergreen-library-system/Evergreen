@@ -406,7 +406,7 @@ my $OBJECT_PERM_QUERY = {
 };
 
 sub allowed {
-	my( $self, $perm, $org, $object ) = @_;
+	my( $self, $perm, $org, $object, $hint ) = @_;
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
 
@@ -416,8 +416,15 @@ sub allowed {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
         if($object) {
-            my $id_field = $object->Identity;
-            my $params = [$perm, $object->json_hint, $object->$id_field];
+            my $params;
+            if(ref $object) {
+                # determine the ID field and json_hint from the object
+                my $id_field = $object->Identity;
+                $params = [$perm, $object->json_hint, $object->$id_field];
+            } else {
+                # we were passed an object-id and json_hint
+                $params = [$perm, $hint, $object];
+            }
             push(@$params, $org) if $org;
             $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = $params;
             $OBJECT_PERM_QUERY->{where}->{id} = $uid;
