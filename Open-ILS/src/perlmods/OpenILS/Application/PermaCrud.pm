@@ -1,3 +1,5 @@
+# vim:et:ts=4:sw=4:
+
 package OpenILS::Application::PermaCrud;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
@@ -63,12 +65,19 @@ sub CRUD_action_object_permcheck {
         );
     }
 
-    my $action = $self->api_name =~ s/^open-ils\.admin\.([^\.])\..+$/$1/o;
-    my $o_type = $obj->cdbi =~ s/::/./go;
-
     my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
     my ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$action", $class_node );
     my $all_perms = $xpc->getAttribute( 'all_perms', $action_node );
+
+    if (!ref($obj)) {
+        my $retrieve_method = 'retrieve_' . $xpc->findvalue( '@oils_obj:fieldmapper', $class_node );
+        $retrieve_method =~ s/::/_/go;
+        $obj = $e->retrieve_method( $obj )->gather(1);
+    }
+
+    my $action = $self->api_name =~ s/^open-ils\.admin\.([^\.])\..+$/$1/o;
+    my $o_type = $obj->cdbi =~ s/::/./go;
+    my $id_field = $obj->Identity;
 
     my $perm_field_value = $aciton_node->getAttribute('permission');
 
@@ -119,8 +128,7 @@ sub CRUD_action_object_permcheck {
                     }
                 }
             } else {
-                $pok++ if ($e->allowed($perm => undef => $obj));
-                next;
+                $pok++ if ($e->allowed($perm => undef => $obj)) {
             }
         }
 
@@ -131,20 +139,58 @@ sub CRUD_action_object_permcheck {
             );
         }
     }
+
+    return $obj if ($action eq 'retrieve');
+
+    return $e->session->request("open-ils.cstore.direct.$o_type.$action" => $obj )->gather(1);
 }
 
-for my $class_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:$action", $class_node ) ) {
+sub search_permacrud {
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my @args = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+ 
+    my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
+    my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $remote_class_node );
+    $search_method =~ s/::/_/go;
+
+    my $retriever = $self->method_lookup( $self->{retriever} );
+    my $obj_list = $e->$search_method( @args );
+
+    for my $o ( @$obj_list ) {
+        my ($o) = $retriever->run( $o );
+        $client->respond( $o ) if ($o);
+    }
+
+    return undef;
+}
+
+for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $class_node ) ) {
     my $hint = $class_node->getAttribute('id');
 
     for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
         my $method = $action_node->localname =~ s/^.+:(.+)$/$1/o;
 
         __PACKAGE__->register_method(
-            method      => 'CRUD_action_object_permcheck',
-            api_name    => 'open-ils.permacrud.' . $method . '.' . $hint,
-            class_hint  => $hint,
+            method          => 'CRUD_action_object_permcheck',
+            api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
+            authoritative   => 1,
+            class_hint      => $hint,
         );
 
+        if ($method eq 'retrieve') {
+            __PACKAGE__->register_method(
+                method      => 'search_permcheck',
+                api_name    => 'open-ils.permacrud.search.' . $hint,
+                class_hint  => $hint,
+                retriever   => 'open-ils.permacrud.retrieve.' . $hint,
+                stream      => 1
+            );
+        }
     }
 }
     
