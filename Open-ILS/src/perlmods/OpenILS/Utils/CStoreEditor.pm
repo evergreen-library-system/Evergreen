@@ -392,8 +392,21 @@ my $PERM_QUERY = {
     where => {},
 };
 
+my $OBJECT_PERM_QUERY = {
+    select => {
+        au => [ {
+            transform => 'permission.usr_has_object_perm',
+            alias => 'has_perm',
+            column => 'id',
+            params => []
+        } ]
+    },
+    from => 'au',
+    where => {},
+};
+
 sub allowed {
-	my( $self, $perm, $org ) = @_;
+	my( $self, $perm, $org, $object ) = @_;
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
 
@@ -402,17 +415,58 @@ sub allowed {
     for $perm (@$perms) {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
-        # fill in the search hash
-        $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
-        $PERM_QUERY->{where}->{id} = $uid;
-    
-        return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+        if($object) {
+            my $id_field = $object->Identity;
+            my $params = [$perm, $object->json_hint, $object->$id_field];
+            push(@$params, $org) if $org;
+            $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = $params;
+            $OBJECT_PERM_QUERY->{where}->{id} = $uid;
+            return 1 if $U->is_true($self->json_query($OBJECT_PERM_QUERY)->[0]->{has_perm});
+
+        } else {
+            $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
+            $PERM_QUERY->{where}->{id} = $uid;
+            return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+        }
     }
 
     # set the perm failure event if the permission check returned false
 	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
 	$self->event($e);
 	return undef;
+}
+
+
+# -----------------------------------------------------------------------------
+# Returns the list of object IDs this user has object-specific permissions for
+# -----------------------------------------------------------------------------
+sub objects_allowed {
+    my($self, $perm, $obj_type) = @_;
+
+    my $perms = (ref($perm) eq 'ARRAY') ? $perm : [$perm];
+    my @ids;
+
+    for $perm (@$perms) {
+        my $query = {
+            select => {puopm => ['object_id']},
+            from => {
+                puopm => {
+                    ppl => {field => 'id',fkey => 'perm'}
+                }
+            },
+            where => {
+                '+puopm' => {usr => $self->requestor->id, object_type => $obj_type},
+                '+ppl' => {code => $perm}
+            }
+        };
+    
+        my $list = $self->json_query($query);
+        push(@ids, 0+$_->{object_id}) for @$list;
+    }
+
+   my %trim;
+   $trim{$_} = 1 for @ids;
+   return [ keys %trim ];
 }
 
 
