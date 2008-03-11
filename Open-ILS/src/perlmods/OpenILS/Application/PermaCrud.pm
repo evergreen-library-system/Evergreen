@@ -69,33 +69,71 @@ sub CRUD_action_object_permcheck {
         );
     }
 
-    my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
-    my ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$action", $class_node );
-    my $all_perms = $action_node->getAttribute( 'all_perms' );
+    my $class_node;
+    try {
+        ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
+    } catch Error with {
+        my $error = shift;
+        $log->error("Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]");
+        throw OpenSRF::DomainObject::oilsException->new(
+            statusCode => 500,
+            status => "Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]"
+        );
+    };
 
-    if (!ref($obj)) {
-        my $retrieve_method = 'retrieve_' . $xpc->findvalue( '@oils_obj:fieldmapper', $class_node );
-        $retrieve_method =~ s/::/_/go;
-        $obj = $e->retrieve_method( $obj )->gather(1);
+    if (!$class_node) {
+        $log->error("Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]");
+        throw OpenSRF::DomainObject::oilsException->new(
+            statusCode => 500,
+            status => "Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]"
+        );
     }
 
-    my $action = $self->api_name =~ s/^open-ils\.admin\.([^\.])\..+$/$1/o;
-    my $o_type = $obj->cdbi =~ s/::/./go;
+    my $action_node;
+    try {
+        ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$self->{action}", $class_node );
+    } catch Error with {
+        my $error = shift;
+        $log->error("Error finding action node: $error [perm:permacrud/perm:actions/perm:$self->{action}]");
+        throw OpenSRF::DomainObject::oilsException->new(
+            statusCode => 500,
+            status => "Error finding action node: $error [perm:permacrud/perm:actions/perm:$self->{action}]"
+        );
+    };
+
+    if (!$action_node) {
+        $log->error("Error finding action node: $error [perm:permacrud/perm:actions/perm:$self->{action}]");
+        throw OpenSRF::DomainObject::oilsException->new(
+            statusCode => 500,
+            status => "Error finding action node: $error [perm:permacrud/perm:actions/perm:$self->{action}]"
+        );
+    }
+
+    my $all_perms = $action_node->getAttribute( 'all_perms' );
+
+    my $fm_class = $xpc->findvalue( '@oils_obj:fieldmapper', $class_node );
+    if (!ref($obj)) {
+        my $retrieve_method = 'retrieve_' . $fm_class;
+        $retrieve_method =~ s/::/_/go;
+        $obj = $e->$retrieve_method( $obj );
+    }
+
+    (my $o_type = $fm_class) =~ s/::/./go;
     my $id_field = $obj->Identity;
 
-    my $perm_field_value = $aciton_node->getAttribute('permission');
+    my $perm_field_value = $action_node->getAttribute('permission');
 
-    if (defined($perm_field_value)) {
-        my @perms = split '|', $aciton_node->getAttribute('permission');
+    if ($perm_field_value) {
+        my @perms = split '|', $action_node->getAttribute('permission');
 
         my @context_ous;
-        if ($aciton_node->getAttribute('global_required')) {
+        if ($action_node->getAttribute('global_required')) {
             push @context_ous, $e->search_actor_org_unit( { parent_ou => undef } )->[0]->id;
 
         } else {
-            my $context_field_value = $aciton_node->getAttribute('context_field');
+            my $context_field_value = $action_node->getAttribute('context_field');
 
-            if (defined($context_field_value)) {
+            if ($context_field_value) {
                 push @context_ous, $obj->$_ for ( split '|', $context_field_value );
             } else {  
                 for my $context_node ( $xpc->findnodes( "perm:context", $action_node ) ) {
@@ -139,14 +177,14 @@ sub CRUD_action_object_permcheck {
         if ((lc($all_perms) eq 'true' && @perms != $pok) or !$pok) {
             throw OpenSRF::DomainObject::oilsException->new(
                 statusCode => 500,
-                status => "Perm failure -- action: $action, object type: $self->{json_hint}",
+                status => "Perm failure -- action: $self->{action}, object type: $self->{json_hint}",
             );
         }
     }
 
-    return $obj if ($action eq 'retrieve');
+    return $obj if ($self->{action} eq 'retrieve');
 
-    return $e->session->request("open-ils.cstore.direct.$o_type.$action" => $obj )->gather(1);
+    return $e->session->request("open-ils.cstore.direct.$o_type.$self->{action}" => $obj )->gather(1);
 }
 
 sub search_permacrud {
@@ -155,18 +193,31 @@ sub search_permacrud {
     my $auth = shift;
     my @args = @_;
 
-    my $e = new_editor(authtoken => $auth);
+    my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->event unless $e->checkauth;
  
-    my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
-    my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $remote_class_node );
+    my $class_node;
+    try {
+        ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
+    } catch Error with {
+        my $error = shift;
+        $log->error("Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]");
+        throw OpenSRF::DomainObject::oilsException->new(
+            statusCode => 500,
+            status => "Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]"
+        );
+    };
+
+    my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $class_node );
     $search_method =~ s/::/_/go;
 
-    my $retriever = $self->method_lookup( $self->{retriever} );
-    my $obj_list = $e->$search_method( @args );
+    $log->debug("Calling CStoreEditor search method: $search_method");
 
+    my $obj_list = $e->$search_method( \@args );
+
+    my $retriever = $self->method_lookup( $self->{retriever} );
     for my $o ( @$obj_list ) {
-        my ($o) = $retriever->run( $o );
+        my ($o) = $retriever->run( $auth, $o );
         $client->respond( $o ) if ($o);
     }
 
@@ -186,17 +237,17 @@ sub generate_methods {
                 __PACKAGE__->register_method(
                     method          => 'CRUD_action_object_permcheck',
                     api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
-                    authoritative   => 1,
                     class_hint      => $hint,
+                    action          => $method,
                 );
         
                 if ($method eq 'retrieve') {
                     __PACKAGE__->register_method(
-                        method      => 'search_permcheck',
-                        api_name    => 'open-ils.permacrud.search.' . $hint,
-                        class_hint  => $hint,
-                        retriever   => 'open-ils.permacrud.retrieve.' . $hint,
-                        stream      => 1
+                        method          => 'search_permacrud',
+                        api_name        => 'open-ils.permacrud.search.' . $hint,
+                        class_hint      => $hint,
+                        retriever       => 'open-ils.permacrud.retrieve.' . $hint,
+                        stream          => 1
                     );
                 }
             }
