@@ -46,6 +46,8 @@ sub initialize {
     $idl = $parser->parse_file( $idl_file );
 
     $log->debug( 'IDL XML file loaded' );
+
+    generate_methods();
 }
 sub child_init {}
 
@@ -169,31 +171,32 @@ sub search_permacrud {
     return undef;
 }
 
-for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $idl->documentElement ) ) {
-    my $hint = $class_node->getAttribute('id');
-
-    for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
-        my $method = $action_node->localname =~ s/^.+:(.+)$/$1/o;
-
-        __PACKAGE__->register_method(
-            method          => 'CRUD_action_object_permcheck',
-            api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
-            authoritative   => 1,
-            class_hint      => $hint,
-        );
-
-        if ($method eq 'retrieve') {
+sub generate_methods {
+    for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $idl->documentElement ) ) {
+        my $hint = $class_node->getAttribute('id');
+    
+        for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
+            my $method = $action_node->localname =~ s/^.+:(.+)$/$1/o;
+    
             __PACKAGE__->register_method(
-                method      => 'search_permcheck',
-                api_name    => 'open-ils.permacrud.search.' . $hint,
-                class_hint  => $hint,
-                retriever   => 'open-ils.permacrud.retrieve.' . $hint,
-                stream      => 1
+                method          => 'CRUD_action_object_permcheck',
+                api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
+                authoritative   => 1,
+                class_hint      => $hint,
             );
+    
+            if ($method eq 'retrieve') {
+                __PACKAGE__->register_method(
+                    method      => 'search_permcheck',
+                    api_name    => 'open-ils.permacrud.search.' . $hint,
+                    class_hint  => $hint,
+                    retriever   => 'open-ils.permacrud.retrieve.' . $hint,
+                    stream      => 1
+                );
+            }
         }
     }
 }
-    
 
 
 1;
