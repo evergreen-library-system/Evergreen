@@ -146,11 +146,11 @@ sub CRUD_action_object_permcheck {
                         my $link_class_hint = $link_node->getAttribute('class');
                         my $remote_field = $link_node->getAttribute('key');
 
-                        my ($remote_class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
+                        my ($remote_class_node) = $xpc->findnodes( "//idl:class[\@id='$link_class_hint']", $idl->documentElement );
                         my $search_method = 'search_' . $xpc->findvalue( '@oils_obj:fieldmapper', $remote_class_node );
                         $search_method =~ s/::/_/go;
 
-                        for my $remote_object ( @{$e->$search_method( { $key => $obj->$link_field } )} ) {
+                        for my $remote_object ( @{$e->$search_method( { $remote_field => $obj->$link_field } )} ) {
                             push @context_ous, $remote_object->$context_field;
                         }
                     } else {
