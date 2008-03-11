@@ -62,7 +62,7 @@ sub CRUD_action_object_permcheck {
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->event unless $e->checkauth;
 
-    unless ($obj->json_hint eq $self->{class_hint}) {
+    if (ref($obj) && $obj->json_hint ne $self->{class_hint}) {
         throw OpenSRF::DomainObject::oilsException->new(
             statusCode => 500,
             status => "Class missmatch: $self->{class_hint} method called with " . $obj->json_hint,
