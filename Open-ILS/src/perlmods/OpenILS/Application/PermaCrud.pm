@@ -71,7 +71,7 @@ sub CRUD_action_object_permcheck {
 
     my ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
     my ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$action", $class_node );
-    my $all_perms = $xpc->getAttribute( 'all_perms', $action_node );
+    my $all_perms = $action_node->getAttribute( 'all_perms' );
 
     if (!ref($obj)) {
         my $retrieve_method = 'retrieve_' . $xpc->findvalue( '@oils_obj:fieldmapper', $class_node );
