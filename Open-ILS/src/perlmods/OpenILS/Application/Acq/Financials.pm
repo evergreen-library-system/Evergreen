@@ -758,7 +758,7 @@ __PACKAGE__->register_method(
             Additionally creates the associated fund_debit/,
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'purchase order line item to create', type => 'object'},
+            {desc => 'lineitem_detail to create', type => 'object'},
             {desc => q/Options hash.  fund_id, the fund funding this line item
                 price, the price we are paying the vendor, in the vendor's currency/, type => 'hash'}
         ],
@@ -861,5 +861,66 @@ sub retrieve_lineitem {
 }
 =cut
 
+__PACKAGE__->register_method(
+	method => 'update_lineitem_detail',
+	api_name	=> 'open-ils.acq.lineitem_detail.update',
+	signature => {
+        desc => q/Updates a lineitem detail/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem_detail to update', type => 'object'},
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
+);
 
+sub update_lineitem_detail {
+    my($self, $conn, $auth, $li_detail) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    if($li_detail->fund) {
+        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
+        return $e->die_event unless 
+            $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    }
+
+    # XXX check lineitem perms
+
+    $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_lineitem_detail',
+	api_name	=> 'open-ils.acq.lineitem_detail.retrieve',
+	signature => {
+        desc => q/Updates a lineitem detail/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem_detail to retrieve', type => 'object'},
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
+);
+sub retrieve_lineitem_detail {
+    my($self, $conn, $auth, $li_detail_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $li_detail = $e->retrieve_acq_lineitem_detail($li_detail_id)
+        or return $e->event;
+
+    if($li_detail->fund) {
+        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->event;
+        return $e->event unless 
+            $e->allowed('MANAGE_FUND', $fund->org, $fund);
+    }
+
+    # XXX check lineitem perms
+    return $li_detail;
+}
 1;
+
