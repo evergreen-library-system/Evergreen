@@ -25,6 +25,7 @@ our %namespace_map = (
     oils_obj    => {ns => 'http://open-ils.org/spec/opensrf/IDL/objects/v1'},
     idl         => {ns => 'http://opensrf.org/spec/IDL/base/v1'},
     reporter    => {ns => 'http://open-ils.org/spec/opensrf/IDL/reporter/v1'},
+    perm        => {ns => 'http://open-ils.org/spec/opensrf/IDL/permacrud/v1'},
 );
 
 
@@ -48,6 +49,7 @@ sub initialize {
     $log->debug( 'IDL XML file loaded' );
 
     generate_methods();
+
 }
 sub child_init {}
 
@@ -172,30 +174,37 @@ sub search_permacrud {
 }
 
 sub generate_methods {
-    for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $idl->documentElement ) ) {
-        my $hint = $class_node->getAttribute('id');
-    
-        for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
-            my $method = $action_node->localname =~ s/^.+:(.+)$/$1/o;
-    
-            __PACKAGE__->register_method(
-                method          => 'CRUD_action_object_permcheck',
-                api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
-                authoritative   => 1,
-                class_hint      => $hint,
-            );
-    
-            if ($method eq 'retrieve') {
+    try {
+        for my $class_node ( $xpc->findnodes( '//idl:class[perm:permacrud]', $idl->documentElement ) ) {
+            my $hint = $class_node->getAttribute('id');
+            $log->debug("permacrud class_node $hint");
+        
+            for my $action_node ( $xpc->findnodes( "perm:permacrud/perm:actions/perm:*", $class_node ) ) {
+                (my $method = $action_node->localname) =~ s/^.+:(.+)$/$1/o;
+                $log->internal("permacrud method = $method");
+        
                 __PACKAGE__->register_method(
-                    method      => 'search_permcheck',
-                    api_name    => 'open-ils.permacrud.search.' . $hint,
-                    class_hint  => $hint,
-                    retriever   => 'open-ils.permacrud.retrieve.' . $hint,
-                    stream      => 1
+                    method          => 'CRUD_action_object_permcheck',
+                    api_name        => 'open-ils.permacrud.' . $method . '.' . $hint,
+                    authoritative   => 1,
+                    class_hint      => $hint,
                 );
+        
+                if ($method eq 'retrieve') {
+                    __PACKAGE__->register_method(
+                        method      => 'search_permcheck',
+                        api_name    => 'open-ils.permacrud.search.' . $hint,
+                        class_hint  => $hint,
+                        retriever   => 'open-ils.permacrud.retrieve.' . $hint,
+                        stream      => 1
+                    );
+                }
             }
         }
-    }
+    } catch Error with {
+        my $e = shift;
+        $log->error("error generating permacrud methods: $e");
+    };
 }
 
 
