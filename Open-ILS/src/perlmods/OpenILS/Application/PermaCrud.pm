@@ -185,8 +185,9 @@ sub CRUD_action_object_permcheck {
     return $obj if ($self->{action} eq 'retrieve');
 
     my $val = $e->session->request("open-ils.cstore.direct.$o_type.$self->{action}" => $obj )->gather(1);
-
     $e->commit;
+
+    return $val;
 }
 
 sub search_permacrud {
