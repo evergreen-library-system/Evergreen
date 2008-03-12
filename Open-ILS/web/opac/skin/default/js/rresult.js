@@ -223,7 +223,7 @@ function rresultHandleRIds(r) {
 }
 
 function _rresultHandleIds(ids, count) {
-	var json = js2JSON({ids:ids,count:count});
+	//var json = js2JSON({ids:ids,count:count});
 	/*
 	cookieManager.write(COOKIE_SRIDS, json, '+1d');
 	*/
@@ -300,6 +300,7 @@ function rresultFilterSearchResults(r) {
 			ids.push(result.ids[i][0]);
 	}
 
+    resultCompiledSearch = result.compiled_search;
     cookieManager.write(COOKIE_SEARCH, js2JSON(result.compiled_search), -1);
 	_rresultHandleIds( ids, result.count );
 }
