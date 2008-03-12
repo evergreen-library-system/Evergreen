@@ -18,6 +18,13 @@ function holdsHandleStaff() {
 		{if(userPressedEnter(evt)) { _holdsHandleStaff(); } };
 	$('xul_recipient_barcode_submit').onclick = _holdsHandleStaff;
 	$('xul_recipient_me').onclick = _holdsHandleStaffMe;
+
+	$('xul_recipient_barcode').onkeyup = function(evt) {
+        if($('xul_recipient_barcode').value == '') 
+            $('xul_recipient_me').disabled = false;
+        else
+            $('xul_recipient_me').disabled = true;
+    };
 }
 
 function _holdsHandleStaffMe() {
