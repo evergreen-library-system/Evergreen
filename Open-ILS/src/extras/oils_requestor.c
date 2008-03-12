@@ -22,9 +22,10 @@ int main( int argc, char* argv[] ) {
 	char* config		= NULL;
 	char* context		= NULL;
 	char* idl_filename	= NULL;
+    char* hostname      = NULL;
 	char* request;
 
-	while( (c = getopt( argc, argv, "f:u:p:s:c:i:" )) != -1 ) {
+	while( (c = getopt( argc, argv, "f:u:p:s:c:i:h:" )) != -1 ) {
 		switch(c) {
 			case '?': return -1;
 			case 'f': config		= strdup(optarg); break;
@@ -33,17 +34,8 @@ int main( int argc, char* argv[] ) {
 			case 'p': password	= strdup(optarg); break;
 			case 's': script		= strdup(optarg); break;
 			case 'i': idl_filename		= strdup(optarg); break;
+            case 'h': hostname  = strdup(optarg); break;
 		}
-	}
-
-	if (!idl_filename) {
-		fprintf(stderr, "IDL file not provided. Exiting...\n");
-		return -1;
-	}
-
-	if (!oilsInitIDL( idl_filename )) {
-		fprintf(stderr, "IDL file could not be loaded. Exiting...\n");
-		return -1;
 	}
 
 	if(!(config && context)) {
@@ -55,6 +47,19 @@ int main( int argc, char* argv[] ) {
 		fprintf(stderr, "Unable to connect to OpenSRF network... [config:%s : context:%s]\n", config, context);
 		return 1;
 	}
+
+    if(!idl_filename) {
+        if(!hostname) {
+		    fprintf(stderr, "We need an IDL file name or a settings server hostname...\n");
+		    return 1;
+        }
+        osrf_settings_retrieve(hostname);
+    }
+
+    if (!oilsInitIDL( idl_filename )) {
+        fprintf(stderr, "IDL file could not be loaded. Exiting...\n");
+        return -1;
+    }
 
 	printf("Connected to OpenSRF network...\n");
 
@@ -76,6 +81,7 @@ int main( int argc, char* argv[] ) {
 	free(script);
 	free(authtoken);
 	free(idl_filename);
+	osrf_settings_free_host_config(NULL);
 	return 1;
 }
 
