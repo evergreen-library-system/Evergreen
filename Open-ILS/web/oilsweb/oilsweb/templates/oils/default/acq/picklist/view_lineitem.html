@@ -5,6 +5,29 @@
 
 <%include file='picklist_summary.html'/>
 <%include file='lineitem_summary.html'/>
+
+<%
+     fund_map = [(fund.id(), fund.name()) for fund in c.oils.acq.fund_list.value]
+     selection_prefix = "<select name='" + c.oils.acq.fund_id.cgi_name + "'>\n"
+     selection_suffix = "\n</select>"
+     option_format = "<option %s value='%s'>%s</option>"
+
+     def fund_selection(selected_id):
+         if not selected_id:
+             optionlist = ["<option value='' selected='selected'>%s</option>\n" % _("-- Select Fund --")]
+         else:
+             optionlist = []
+
+         for (id, name) in fund_map:
+             if id == selected_id:
+                 sel = "selected='selected'"
+             else:
+                 sel = ""
+
+             optionlist.append(option_format % (sel, id, name))
+
+         return selection_prefix + "\n".join(optionlist) + selection_suffix
+%>
 <table id='oils-acq-lineitem-summary'>
     % for attr in c.oils.acq.lineitem.value.attributes():
         <tr>
@@ -18,6 +41,30 @@
     % endfor
 </table>
 
+<table id="oils-acq-lineitem-details-table">
+    <thead>
+        <tr><td>Fund</td><td>Location</td><td>Selector</td><td>&nbsp;</td></tr>
+    </thead>
+    <tbody>
+        % for detail in c.oils.acq.lineitem.value.lineitem_details():
+	    <tr>
+	        <td>
+		    <form method="post"
+			  action="${c.oils.acq.prefix.value}/picklist/update_lineitem">
+		        <input type="hidden"
+			       name="${c.oils.acq.lineitem_id.cgi_name}"
+			       value="${c.oils.acq.lineitem.value.id()}">
+		        <button name='${c.oils.acq.lineitem_detail_id.cgi_name}'
+				value='${detail.id()}'>${_("Update")}</button>
+		        ${fund_selection(detail.fund())}
+		    </form>
+		</td>
+		<td>LOCATION</td>
+		<td>SELECTOR</td>
+	    </tr>
+	% endfor
+    </tbody>
+</table>
 <div id='oils-acq-lineitem-marc-block'>
     <div id='oils-acq-lineitem-marc'>
         ${unicode(c.oils.acq.lineitem_marc_html.value, 'utf-8')}
