@@ -394,7 +394,6 @@ sub insert_user_funcs {
 	$runner->insert(__OILS_FUNC_userCircsByCircmod  => 
 		sub {
 			my( $write_key, $userid ) = @_;
-            $logger->error("script_runner: here");
             my $mods = $e->search_action_open_circ_count_by_circ_mod({usr=>$userid});
             my $breakdown = {};
             $breakdown->{$_->circ_modifier} = $_->count for @$mods;
