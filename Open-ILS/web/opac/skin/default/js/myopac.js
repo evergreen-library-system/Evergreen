@@ -1437,7 +1437,12 @@ function myopacDrawHoldThawDateForm() {
 
 function myopacApplyThawDate() {
     var dateString = $('myopac_holds_thaw_date_input').value;
-    dateString = (dateString == null) ? null : Date.parseIso8601(dateString).iso8601Format('YMDHM', false, false, true);
+    if(dateString) {
+        dateString = (dateString == null) ? null : 
+            Date.parseIso8601(dateString).iso8601Format('YMDHM', false, false, true);
+    } else {
+        dateString = null;
+    }
     myopacProcessHolds('freeze', dateString);
 }
 

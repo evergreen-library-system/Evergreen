@@ -27,7 +27,7 @@
     </table>
 
     <div id='myopac_holds_thaw_date_form' class='hide_me'>
-        <p>&myopac.holds.freeze.select_thaw;</p>
+        <div id='myopac_holds_freeze_select_thaw'>&myopac.holds.freeze.select_thaw;</div>
         <p>
             <input type='text' id='myopac_holds_thaw_date_input'/> 
             <img src="<!--#echo var='OILS_OPAC_JS_HOST'-->/common/js/jscalendar/img.gif"  id='myopac_holds_thaw_date_img' class='cal_img'/>
