@@ -559,7 +559,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY common.isbn.label "ISBN:">
 <!ENTITY common.issn.label "ISSN:">
 <!ENTITY common.copy.barcode.label "Copy Barcode:">
-<!ENTITY common.hold.place "Place hold for me">
+<!ENTITY common.hold.place "Place hold for my account">
 <!ENTITY common.hold.check "Checking for possibility of hold fulfillment...">
 <!ENTITY common.hold.create "Create / Edit a Hold">
 <!ENTITY common.hold.update "Update Hold">

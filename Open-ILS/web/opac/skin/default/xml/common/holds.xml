@@ -12,13 +12,10 @@
 					<tr>
 						<td>&opac.holds.xulRecipient;:</td>
 						<td><input type='text' id='xul_recipient_barcode' /></td>
-						<td><input type='submit' value='&common.submit;' 
-							id='xul_recipient_barcode_submit' /></td>
-						<td><input type='submit' value='&common.hold.place;' 
-							id='xul_recipient_me' /></td>
+						<td><input type='submit' value='&common.submit;' id='xul_recipient_barcode_submit' /></td>
 						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();' /></td>
+						<td><input type='submit' value='&common.hold.place;' id='xul_recipient_me' /></td>
 					</tr>
-
 				</tbody>
 			</table>
 		</center>
