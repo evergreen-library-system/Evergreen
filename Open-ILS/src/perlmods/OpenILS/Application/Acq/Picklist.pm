@@ -348,12 +348,13 @@ sub retrieve_lineitem {
     }
 
     if($$options{flesh_li_details}) {
-        my $details = $e->search_acq_lineitem_detail([
-            {lineitem => $li_id}, {
-                flesh => 1,
-                flesh_fields => {acqlid => ['fund_debit', 'fund']}
-            }
-        ]);
+        my $ops = {
+            flesh => 1,
+            flesh_fields => {acqlid => []}
+        };
+        push(@{$ops->{flesh_fields}->{acqlid}}, 'fund') if $$options{flesh_fund};
+        push(@{$ops->{flesh_fields}->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
+        my $details = $e->search_acq_lineitem_detail([{lineitem => $li_id}, $ops]);
         $li->lineitem_details($details);
     }
 
