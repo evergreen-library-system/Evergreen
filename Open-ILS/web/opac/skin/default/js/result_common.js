@@ -4,6 +4,7 @@ var recordsCache = [];
 var lowHitCount = 4;
 
 var resultFetchAllRecords = false;
+var resultCompiledSearch = null;
 
 /* set up the event handlers */
 if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
@@ -171,16 +172,18 @@ function resultLowHits() {
 	if(getHitCount() > 0)
 		unHideMe($('result_low_hits_msg'));
 
-	var sreq = new Request(CHECK_SPELL, getTerm());
+    alert(js2JSON(resultCompiledSearch));
+
+    var words = [];
+    for(var key in resultCompiledSearch.searches) 
+        words.push(resultCompiledSearch.searches[key].term);
+
+	var sreq = new Request(CHECK_SPELL, words.join(' '));
 	sreq.callback(resultSuggestSpelling);
 	sreq.send();
 
-    /* XXX patch to use the search results */
-
-	var words = getTerm().split(' ');
-	var word;
-	while( word = words.shift() ) {
-		var areq = new Request(FETCH_CROSSREF, getStype(), getTerm() );
+    for(var key in resultCompiledSearch.searches) {
+		var areq = new Request(FETCH_CROSSREF, key, resultCompiledSearch.searches[key].term);
 		areq.callback(resultLowHitXRef);
 		areq.send();
 	}
