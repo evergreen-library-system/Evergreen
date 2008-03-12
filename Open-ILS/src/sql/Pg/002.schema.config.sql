@@ -100,7 +100,7 @@ $$;
 
 CREATE TABLE config.xml_transform (
 	name		TEXT	PRIMARY KEY,
-	namespace_uri	TEXT	NOT NULL UNIQUE,
+	namespace_uri	TEXT	NOT NULL,
 	prefix		TEXT	NOT NULL,
 	xslt		TEXT	NOT NULL
 );

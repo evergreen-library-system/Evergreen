@@ -9,9 +9,6 @@ INSERT INTO config.bib_source (quality, source, transcendant) VALUES
 INSERT INTO config.standing (value) VALUES (oils_i18n_gettext('Good'));
 INSERT INTO config.standing (value) VALUES (oils_i18n_gettext('Barred'));
 
-INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/slim', 'marc', '---' );
-INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '/home/miker/MARC21slim2MODS.xsl' );
-
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
     ( 'series', 'seriestitle', $$//mods:mods/mods:relatedItem[@type="series"]/mods:titleInfo$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
@@ -41,7 +38,7 @@ INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES
 --INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
 --  ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim *;
+    ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
 
 INSERT INTO config.non_cataloged_type ( owning_lib, name ) VALUES ( 1, oils_i18n_gettext('Paperback Book') );
 
@@ -1160,3 +1157,10 @@ INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','
 --040.schema.asset.sql:
 INSERT INTO asset.copy_location (name,owning_lib) VALUES (oils_i18n_gettext('Stacks'),1);
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
+
+-- some more from 002.schema.config.sql:
+INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/slim', 'marc', '---' );
+INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '');
+INSERT INTO config.xml_transform VALUES ( 'mods3', 'http://www.loc.gov/mods/v3', 'mods3', '');
+INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3', 'mods32', '');
+
