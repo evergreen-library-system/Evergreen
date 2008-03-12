@@ -1,14 +1,16 @@
 from oilsweb.lib.base import *
-from oilsweb.lib.request import RequestMgr
 import logging, pylons
 import oilsweb.lib.context, oilsweb.lib.util
-import oilsweb.lib.bib, oilsweb.lib.acq.search, oilsweb.lib.acq.picklist
+import oilsweb.lib.bib, oilsweb.lib.acq.search
 import oils.const, oils.utils.utils
 import osrf.net_obj
 from osrf.ses import ClientSession
 from oils.event import Event
 from oils.org import OrgUtil
 
+from oilsweb.lib.request import RequestMgr
+from oilsweb.lib.acq.fund import FundMgr
+from oilsweb.lib.acq.picklist import PicklistMgr
 
 class PicklistController(BaseController):
 
@@ -42,12 +44,18 @@ class PicklistController(BaseController):
     def view_lineitem(self, **kwargs):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        lineitem = pl_manager.retrieve_lineitem(kwargs.get('id'), flesh_attrs=1, flesh_provider=True)
+        fmgr = FundMgr(r)
+        lineitem = pl_manager.retrieve_lineitem(kwargs.get('id'),
+                                                flesh_attrs=1,
+                                                flesh_provider=1,
+                                                flesh_li_details=1)
         pl_manager.id = lineitem.picklist()
         picklist = pl_manager.retrieve()
         r.ctx.acq.picklist.value = pl_manager.picklist
         r.ctx.acq.lineitem.value = lineitem
         r.ctx.acq.lineitem_marc_html.value = oilsweb.lib.bib.marc_to_html(lineitem.marc())
+
+        r.ctx.acq.fund_list.value = fmgr.retrieve_org_funds()
         return r.render('acq/picklist/view_lineitem.html')
 
     def list(self):
@@ -115,6 +123,29 @@ class PicklistController(BaseController):
         ses.disconnect()
         return page
 
+    def update_lineitem(self):
+        r = RequestMgr()
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
+        ses.connect()
+
+        if r.ctx.acq.lineitem_detail_id.value:
+            # update fund assignment, etc
+            detail = ses.request('open-ils.acq.lineitem_detail.retrieve',
+                                 r.ctx.core.authtoken.value,
+                                 r.ctx.acq.lineitem_detail_id.value).recv().content()
+            detail = Event.parse_and_raise(detail)
+
+            # Update all the fields that are editable via the form
+            detail.fund(r.ctx.acq.fund_id.value)
+
+            detail = ses.request('open-ils.acq.lineitem_detail.update',
+                                 r.ctx.core.authtoken.value,
+                                 detail).recv().content()
+            Event.parse_and_raise(detail)
+            
+        return redirect_to(controller='acq/picklist', action='view_lineitem',
+                           id=r.ctx.acq.lineitem_id.value)
+
     def _update_lineitem_count(self, r, ses):
         ''' Updates # of copies to order for single lineitem '''
 
@@ -124,8 +155,11 @@ class PicklistController(BaseController):
 
         lineitem = ses.request('open-ils.acq.lineitem.retrieve',
                                r.ctx.core.authtoken.value,
-                               lineitem_id).recv().content()
+                               lineitem_id, {'flesh_li_details':1}).recv().content()
         lineitem = Event.parse_and_raise(lineitem)
+
+        # Make sure the lineitem count is correct.
+        lineitem.item_count(len(lineitem.lineitem_details()))
 
         # Can't remove detail records yet
         assert (lineitem.item_count() <= new_count), "Can't delete detail records"
@@ -141,10 +175,10 @@ class PicklistController(BaseController):
         if (lineitem.item_count() != new_count):
             # Update the number of detail records
             lineitem.item_count(new_count)
-            lineitem = ses.request('open-ils.acq.lineitem.update',
-                                   r.ctx.core.authtoken.value,
-                                   lineitem)
-            Event.parse_and_raise(lineitem)
+
+        lineitem = ses.request('open-ils.acq.lineitem.update',
+                               r.ctx.core.authtoken.value, lineitem)
+        Event.parse_and_raise(lineitem)
 
         # fail()
         return redirect_to(controller='acq/picklist', action='view',
