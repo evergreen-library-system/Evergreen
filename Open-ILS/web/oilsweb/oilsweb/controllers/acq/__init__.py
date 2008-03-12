@@ -37,6 +37,7 @@ class AcqContext(SubContext):
         self.lineitem_id = ContextItem(cgi_name='acq.liid')
         self.lineitem_item_count = ContextItem(cgi_name='acq.pllic')
         self.lineitem_id_list = ContextItem(cgi_name='acq.pleil', multi=True)
+        self.lineitem_detail_id = ContextItem(cgi_name='acq.lidid')
 
         self.currency_types = ContextItem()
 
