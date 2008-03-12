@@ -900,9 +900,9 @@ __PACKAGE__->register_method(
         desc => q/Updates a lineitem detail/,
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail to retrieve', type => 'object'},
+            {desc => 'id of lineitem_detail to retrieve', type => 'number'},
         ],
-        return => {desc => '1 on success, Event on failure'}
+        return => {desc => 'object on success, Event on failure'}
     }
 );
 sub retrieve_lineitem_detail {
