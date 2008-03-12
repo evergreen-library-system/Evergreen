@@ -585,6 +585,27 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
+	<class id="cxt" controller="open-ils.cstore" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
+		<fields oils_persist:primary="name">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field_class" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field reporter:label="Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Namespace URI" name="namespace_uri" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Namespace Prefix" name="prefix" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="XSLT" name="xslt" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_XML_TRANSFORM" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_XML_TRANSFORM" global_required="true"/>
+                <delete permission="DELETE_XML_TRANSFORM" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="cmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
