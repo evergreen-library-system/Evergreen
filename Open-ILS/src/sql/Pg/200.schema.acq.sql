@@ -152,9 +152,11 @@ CREATE TABLE acq.lineitem_detail (
 	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id),
 	fund		INT				REFERENCES acq.fund (id),
 	fund_debit	INT				REFERENCES acq.fund_debit (id),
-	eg_copy_id	BIGINT			REFERENCES asset.copy (id),
+	eg_copy_id	BIGINT			REFERENCES asset.copy (id) ON DELETE SET NULL,
 	barcode		TEXT,
 	cn_label	TEXT,
+    owning_lib  INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL,
+    location    INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL,
 	recv_time	TIMESTAMP WITH TIME ZONE
 );
 
