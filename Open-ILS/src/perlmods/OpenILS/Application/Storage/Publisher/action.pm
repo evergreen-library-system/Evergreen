@@ -951,11 +951,7 @@ sub new_hold_copy_targeter {
 	
 			if (!scalar(@good_copies)) {
 				$log->info("\tNo (non-current) copies eligible to fill the hold.");
-				if (
-				  $old_best &&
-				  grep { $old_best eq $_ } @$all_copies &&
-				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef, cancel_time => undef })
-				) {
+				if ( $old_best && grep { ''.$old_best->id eq ''.$_->id } @$all_copies ) {
 					# the old copy is still available
 					$log->debug("\tPushing current_copy back onto the targeting list");
 					push @good_copies, $old_best;
