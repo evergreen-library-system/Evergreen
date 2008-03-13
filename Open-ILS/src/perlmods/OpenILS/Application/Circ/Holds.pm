@@ -113,16 +113,16 @@ sub create_hold {
 		push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
 		if( $t eq OILS_HOLD_TYPE_METARECORD ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
 
 		if( $t eq OILS_HOLD_TYPE_TITLE ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
+			{ $pevt = $e->event unless $e->allowed('TITLE_HOLDS', $porg);  }
 
 		if( $t eq OILS_HOLD_TYPE_VOLUME ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('VOLUME_HOLDS', $porg); }
 
 		if( $t eq OILS_HOLD_TYPE_COPY ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('COPY_HOLDS', $porg); }
 
 		return $pevt if $pevt;
 
