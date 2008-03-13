@@ -993,6 +993,7 @@ sub check_title_hold {
 	my $depth		= $params{depth} || 0;
 	my $pickup_lib	= $params{pickup_lib};
 	my $hold_type	= $params{hold_type} || 'T';
+    my $selection_ou = $params{selection_ou} || $pickup_lib;
 
 	my $e = new_editor(authtoken=>$authtoken);
 	return $e->event unless $e->checkauth;
@@ -1035,12 +1036,12 @@ sub check_title_hold {
 			or return $e->event;
 
 		return _check_volume_hold_is_possible(
-			$volume, $title, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+			$volume, $title, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
@@ -1048,7 +1049,7 @@ sub check_title_hold {
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
 			return 1 if (_check_title_hold_is_possible(
-				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib));
+				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou));
 		}
 		return 0;	
 	}
@@ -1200,10 +1201,35 @@ sub _check_metarecord_hold_is_possible {
    return 0;
 }
 
+sub create_ranged_org_filter {
+    my($e, $selection_ou, $depth) = @_;
+
+    # find the orgs from which this hold may be fulfilled, 
+    # based on the selection_ou and depth
+
+    my $top_org = $e->search_actor_org_unit([
+        {parent_ou => undef}, 
+        {flesh=>1, flesh_fields=>{aou=>['ou_type']}}])->[0];
+    my %org_filter;
+
+    return () if $depth == $top_org->ou_type->depth;
+
+    my $org_list = $U->storagereq('open-ils.storage.actor.org_unit.descendants.atomic', $selection_ou, $depth);
+    %org_filter = (circ_lib => []);
+    push(@{$org_filter{circ_lib}}, $_->id) for @$org_list;
+
+    $logger->info("hold org filter at depth $depth and selection_ou ".
+        "$selection_ou created list of @{$org_filter{circ_lib}}");
+
+    return %org_filter;
+}
+
+
 sub _check_title_hold_is_possible {
-	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
    
-   my $e = new_editor();
+    my $e = new_editor();
+    my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
 
     # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
     my $copies = $e->json_query(
@@ -1227,7 +1253,7 @@ sub _check_title_hold_is_possible {
                 }
             }, 
             where => {
-                '+acp' => { circulate => 't', deleted => 'f', holdable => 't' }
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
             }
         }
     );
@@ -1313,8 +1339,9 @@ sub _check_title_hold_is_possible {
 
 
 sub _check_volume_hold_is_possible {
-	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
-	my $copies = new_editor->search_asset_copy({call_number => $vol->id});
+	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
+	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
 	for my $copy ( @$copies ) {
 		return 1 if verify_copy_for_hold( 
