@@ -640,6 +640,14 @@
 			<field reporter:label="Audience" name="value" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_AUDIENCE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_AUDIENCE" global_required="true"/>
+                <delete permission="DELETE_AUDIENCE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="cifm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map" reporter:label="Item Form Map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
@@ -650,6 +658,14 @@
 			<field reporter:label="Item Form" name="value" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ITEM_FORM" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_ITEM_FORM" global_required="true"/>
+                <delete permission="DELETE_ITEM_FORM" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="acn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
@@ -676,6 +692,14 @@
 			<link field="notes" reltype="has_many" key="call_number" map="" class="acnn"/>
 			<link field="copies" reltype="has_many" key="call_number" map="" class="acp"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_VOLUME" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="UPDATE_VOLUME" context_field="owning_lib"/>
+                <delete permission="DELETE_VOLUME" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="cst" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_id_seq">
@@ -715,6 +739,13 @@
 			<link field="collector" reltype="has_a" key="id" map="" class="au"/>
 			<link field="location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="money.collections_tracker.create" context_field="location"/>
+                <retrieve/>
+                <delete permission="money.collections_tracker.create" context_field="location"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="bre" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry" reporter:core="true" reporter:label="Bibliographic Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry_id_seq">
@@ -764,6 +795,13 @@
 			<link field="series_field_entries" reltype="has_many" key="source" map="" class="msefe"/>
 			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_MARC|IMPORT_MARC" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_MARC" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="aouhoo" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -790,6 +828,14 @@
 		<links>
 			<link field="org_unit" reltype="might_have" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_HOURS_OF_OPERATION" context_field="org_unit"/>
+                <retrieve/>
+                <update permission="UPDATE_HOURS_OF_OPERATION" context_field="org_unit"/>
+                <delete permission="DELETE_HOURS_OF_OPERATION" context_field="org_unit"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="aoucd" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_closed_id_seq">
@@ -805,6 +851,14 @@
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ORG_UNIT_CLOSING" context_field="org_unit"/>
+                <retrieve/>
+                <update permission="UPDATE_ORG_UNIT_CLOSING" context_field="org_unit"/>
+                <delete permission="DELETE_ORG_UNIT_CLOSING" context_field="org_unit"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="crcd" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_circ_duration_id_seq">
@@ -820,6 +874,14 @@
 		</fields>
 		<links>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_CIRC_DURATION" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_CIRC_DURATION" global_required="true"/>
+                <delete permission="DELETE_CIRC_DURATION" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mobts" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -972,6 +1034,22 @@
 			<link field="owning_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY_NOTE">
+                    <context link="owning_copy" field="circ_lib"/>
+                </create>
+                <retrieve permission="VIEW_COPY_NOTES">
+                    <context link="owning_copy" field="circ_lib"/>
+                </retrieve>
+                <update permission="UPDATE_COPY_NOTE">
+                    <context link="owning_copy" field="circ_lib"/>
+                </update>
+                <delete permission="DELETE_COPY_NOTE">
+                    <context link="owning_copy" field="circ_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mfr" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::full_rec" oils_persist:tablename="metabib.full_rec" reporter:label="Flattened MARC Fields">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.full_rec_id_seq">
@@ -1015,6 +1093,14 @@
 			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_NET_ACCESS_LEVEL" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_NET_ACCESS_LEVEL" global_required="true"/>
+                <delete permission="DELETE_NET_ACCESS_LEVEL" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ppl" controller="open-ils.cstore" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.perm_list_id_seq">
@@ -1026,6 +1112,14 @@
 			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="code" reporter:datatype="id"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_PERM" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_PERM" global_required="true"/>
+                <delete permission="DELETE_PERM" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mmrsm" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_source_map_id_seq">
@@ -1140,6 +1234,14 @@
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY_STATUS" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_COPY_STATUS" global_required="true"/>
+                <delete permission="DELETE_COPY_STATUS" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ausp" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_standing_penalty_id_seq">
@@ -1192,6 +1294,22 @@
 		<links>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_VOLUME_NOTE">
+                    <context link="call_number" field="owning_lib"/>
+                </create>
+                <retrieve permission="VIEW_VOLUME_NOTES">
+                    <context link="call_number" field="owning_lib"/>
+                </retrieve>
+                <update permission="UPDATE_VOLUME_NOTE">
+                    <context link="call_number" field="owning_lib"/>
+                </update>
+                <delete permission="DELETE_VOLUME_NOTE">
+                    <context link="call_number" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="arn" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_note_id_seq">
@@ -1344,6 +1462,14 @@
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY_LOCATION" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="UPDATE_COPY_LOCATION" context_field="owning_lib"/>
+                <delete permission="DELETE_COPY_LOCATION" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ascecm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
