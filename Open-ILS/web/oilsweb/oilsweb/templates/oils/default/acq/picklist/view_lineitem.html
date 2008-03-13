@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
+<%namespace file='picklist_summary.html' name='picklist' />
+
 <%def name="page_title()">${_('Evergreen Picklist Entry')}</%def>
 <%def name="block_content()">
 
-<%include file='picklist_summary.html'/>
+${picklist.summary(c.oils.acq.picklist.value, link=True)}
+
 <%include file='lineitem_summary.html'/>
 
 <%
@@ -43,7 +46,7 @@
 
 <table id="oils-acq-lineitem-details-table">
     <thead>
-        <tr><td>Fund</td><td>Location</td><td>Selector</td><td>&nbsp;</td></tr>
+        <tr><td>Fund</td><td>Home Library</td></tr>
     </thead>
     <tbody>
         % for detail in c.oils.acq.lineitem.value.lineitem_details():
@@ -59,8 +62,7 @@
 		        ${fund_selection(detail.fund())}
 		    </form>
 		</td>
-		<td>LOCATION</td>
-		<td>SELECTOR</td>
+		<td>${detail.owning_lib() or '&nbsp;'}</td>
 	    </tr>
 	% endfor
     </tbody>

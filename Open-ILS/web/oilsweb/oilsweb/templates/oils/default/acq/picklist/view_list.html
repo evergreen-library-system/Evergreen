@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <td>${_('Name')}</td>
-            <td>${_('Creation Date')}</td>
+            <td>${_('Selector')}</td>
             <td>${_('Edit Date')}</td>
             <td>${_('Number of Entries')}</td>
             <td/>
@@ -26,7 +26,7 @@
     % for picklist in c.oils.acq.picklist_list.value:
     <tr>
         <td><a href='${c.oils.acq.prefix.value}/picklist/view/${picklist.id()}'>${picklist.name()}</a></td>
-        <td>${picklist.create_time()}</td>
+        <td>${picklist.owner()}</td>
         <td>${picklist.edit_time()}</td>
         <td>${picklist.entry_count()}</td>
         <td><a href='${c.oils.acq.prefix.value}/picklist/delete/${picklist.id()}'>${_('Delete')}</a></td>

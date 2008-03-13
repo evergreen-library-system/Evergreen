@@ -4,16 +4,16 @@
 -->
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget' />
-
+<%namespace file='picklist_summary.html' name='picklist' />
 <%def name="page_title()">${_('Picklist')}</%def>
 <%def name="block_content()">
-
-<%include file='picklist_summary.html'/>
 
 <%
     import oilsweb.lib.bib
     from oilsweb.lib.acq.picklist import PicklistMgr
 %>
+
+${picklist.summary(c.oils.acq.picklist.value)}
 
 <div id='oils-acq-picklist-header-block'>
     <div class='spacer'>&nbsp;</div>
