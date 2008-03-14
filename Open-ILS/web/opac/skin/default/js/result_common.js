@@ -14,7 +14,9 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
-      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))});
+      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
+	  fetchGoogleBooks);
+
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
 	attachEvt( "common", "locationUpdated", resultSBSubmit );
@@ -578,9 +580,7 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 	}
 }
 
-
-function resultPageIsDone(pos) {
-
+function fetchGoogleBooks () {
     if (isbnList && googleBooks) {
         var scriptElement = document.createElement("script");
         scriptElement.setAttribute("id", "jsonScript");
@@ -591,6 +591,9 @@ function resultPageIsDone(pos) {
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);
     }
+}
+
+function resultPageIsDone(pos) {
 
 	return (recordsHandled == getDisplayCount() 
 		|| recordsHandled + getOffset() == getHitCount());
