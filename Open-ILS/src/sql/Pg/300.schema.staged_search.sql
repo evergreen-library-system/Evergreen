@@ -163,7 +163,7 @@ BEGIN
 
         END IF;
 
-        FOR rank_adjust IN SELECT * FROM search.relevance_adjustment WHERE field IN ( SELECT * FROM search.explode_array( mb_field_list ) ) LOOP
+        FOR rank_adjust IN SELECT * FROM search.relevance_adjustment WHERE active AND field IN ( SELECT * FROM search.explode_array( mb_field_list ) ) LOOP
 
             IF NOT rank_adjust.bump_type = ANY (used_ranks) THEN
 
