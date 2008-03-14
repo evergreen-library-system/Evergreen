@@ -737,7 +737,7 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
 	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
 
-my $CHECK_SIZE = 1000;
+my $PAGE_SIZE = 1000;
 my $SEARCH_PAGES = 25;
 sub staged_search {
 	my($self, $conn, $search_hash, $nocache) = @_;
@@ -755,7 +755,8 @@ sub staged_search {
     # we're grabbing results on a per-superpage basis, which means the 
     # limit and offset should coincide with superpage boundaries
     $search_hash->{offset} = 0;
-    $search_hash->{limit} = $CHECK_SIZE;
+    $search_hash->{limit} = $PAGE_SIZE;
+    $search_hash->{check_limit} = $PAGE_SIZE; # force a well-known check_limit
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
@@ -764,8 +765,8 @@ sub staged_search {
     # keep retrieving results until we find enough to 
     # fulfill the user-specified limit and offset
     my $all_results = [];
-    my $avg_hit_count = 0;
     my $page; # current superpage
+    my $est_hit_count;
 
     for($page = 0; $page < $SEARCH_PAGES; $page++) {
 
@@ -784,7 +785,7 @@ sub staged_search {
         } else {
             # retrieve the window of results from the database
             $logger->debug("staged search: fetching results from the database");
-            $search_hash->{skip_check} = $page * $CHECK_SIZE;
+            $search_hash->{skip_check} = $page * $PAGE_SIZE;
             $results = $U->storagereq($method, %$search_hash);
             $summary = shift(@$results);
 
@@ -802,10 +803,12 @@ sub staged_search {
         push(@$all_results, grep {defined $_} @$results);
 
         my $current_count = scalar(@$all_results);
-        $avg_hit_count += $summary->{estimated_hit_count} || $summary->{visible};
+
+        $est_hit_count = $summary->{estimated_hit_count} || $summary->{visible}
+            if $page == 0;
 
         $logger->debug("staged search: located $current_count, with estimated hits=".
-            $summary->{estimated_hit_count}." : visible=".$summary->{visible});
+            $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
 
         # we've found all the possible hits
         last if $current_count == $summary->{visible}
@@ -813,16 +816,16 @@ sub staged_search {
 
         # we've found enough results to satisfy the requested limit/offset
         last if $current_count >= ($user_limit + $user_offset);
+
+        # we've scanned all possible hits
+        last if $summary->{checked} < $PAGE_SIZE;
     }
 
     # calculate the average estimated hit count from the data we've collected thus far
-    $avg_hit_count = int($avg_hit_count / ++$page);
-    $avg_hit_count = scalar(@$all_results) if scalar(@$all_results) > $avg_hit_count;
-
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
     return {
-        count => $avg_hit_count,
+        count => $est_hit_count,
         results => \@results
     };
 }
