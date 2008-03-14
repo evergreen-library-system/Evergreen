@@ -176,8 +176,6 @@ function resultLowHits() {
 	if(getHitCount() > 0)
 		unHideMe($('result_low_hits_msg'));
 
-    alert(js2JSON(resultCompiledSearch));
-
     var words = [];
     for(var key in resultCompiledSearch.searches) 
         words.push(resultCompiledSearch.searches[key].term);
