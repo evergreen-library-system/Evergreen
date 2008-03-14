@@ -175,8 +175,11 @@
             
 	            <span class='search_page_nav_link' id='page_numbers2'> </span>
 	               <a  class='search_page_nav_link' id='next_link2' 
-	                  title='&rdetail.page.next;'>&#187;</a><a class='search_page_nav_link' 
+	                  title='&rdetail.page.next;'>&#187;</a>
+                      <!--
+                      <a class='search_page_nav_link' 
 	                  id='end_link2' title="&rdetail.page.last;">&rdetail.end;</a>
+                      -->
 	            </span>
                         
 	         </td>
