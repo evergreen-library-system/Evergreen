@@ -990,13 +990,6 @@ sub opensearch_feed {
 	}
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
-	$terms = decode_utf8($terms);
-	$terms =~ s/\+/ /go;
-	$terms =~ s/'//go;
-	$terms =~ s/^\s+//go;
-	my $term_copy = $terms;
-
-	my $complex_terms = 0;
 	if ($terms eq 'help') {
 		print $cgi->header(-type => 'text/html');
 		print <<"		HTML";
@@ -1010,37 +1003,10 @@ sub opensearch_feed {
 			</html>
 		HTML
 		return Apache2::Const::OK;
-	}
-
-	my $cache_key = '';
-	my $searches = {};
-	while ($term_copy =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang):[^:]+)$//so) {
-		my ($c,$t) = split ':' => $1;
-		if ($c eq 'site') {
-			$org = $t;
-			$org =~ s/^\s*//o;
-			$org =~ s/\s*$//o;
-		} elsif ($c eq 'sort') {
-			($sort = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'dir') {
-			($sortdir = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'lang') {
-			($lang = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} else {
-			$$searches{$c}{term} .= ' '.$t;
-			$cache_key .= $c . $t;
-			$complex_terms = 1;
-		}
-	}
-
+    }
+	
+	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
-
-	if ($term_copy) {
-		no warnings;
-		$class = 'keyword' if ($class eq '-');
-		$$searches{$class}{term} .= " $term_copy";
-		$cache_key .= $class . $term_copy;
-	}
 
 	my $org_unit;
 	if ($org eq '-') {
@@ -1053,38 +1019,19 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
-	{ no warnings; $cache_key .= $org.$sort.$sortdir.$lang; }
-
-	my $rs_name = $cgi->cookie('os_session');
-	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
-
-	my $recs;
-	if (!($recs = $$cached_res{os_results}{$cache_key})) {
-		$rs_name = $cgi->remote_host . '::' . rand(time);
-		$recs = $search->request(
-			'open-ils.search.biblio.multiclass' => {
-				searches	=> $searches,
-				org_unit	=> $org_unit->[0]->id,
-				offset		=> 0,
-				limit		=> 5000,
-				($sort ?    ( 'sort'     => $sort    ) : ()),
-				($sortdir ? ( 'sort_dir' => $sortdir ) : ($sort ? (sort_dir => 'asc') : (sort_dir => 'desc') )),
-				($lang ?    ( 'language' => $lang    ) : ()),
-			}
-		)->gather(1);
-		try {
-			$$cached_res{os_results}{$cache_key} = $recs;
-			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
-		} catch Error with {
-			warn "supercat unable to store IDs in memcache server\n";
-			$logger->error("supercat unable to store IDs in memcache server");
-		};
-	}
+    my $recs = $search->request(
+        'open-ils.search.biblio.multiclass.query' => {
+			org_unit	=> $org_unit->[0]->id,
+			offset		=> $limit,
+			limit		=> $offset,
+			($lang ?    ( 'language' => $lang    ) : ()),
+		} => $terms
+	)->gather(1);
 
 	my $feed = create_record_feed(
 		'record',
 		$type,
-		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
+		[ map { $_->[0] } @{$recs->{ids}} ],
 		$unapi,
 		$org,
 		$flesh_feed
