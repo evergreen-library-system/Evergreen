@@ -398,7 +398,7 @@ function buildunAPISpan (span, type, id) {
 
 function unhideGoogleBooks (data) {
     for ( var i in data ) {
-        if (data[i].preview == 'noview') continue;
+        //if (data[i].preview == 'noview') continue;
 
         var gbspan = $n(document.documentElement, 'googleBooks-' + i);
         var gba = $n(gbspan, "googleBooks-link");
