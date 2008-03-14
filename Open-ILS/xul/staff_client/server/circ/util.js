@@ -515,6 +515,8 @@ circ.util.columns = function(modify,params) {
 			'render' : function(my) {
 				if (my.acp && my.acp.call_number() == -1) {
 					return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+				} else if (my.acp && my.acp.call_number() == -2) {
+					return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
 				} else {
 					if (!my.acn) {
 						var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ my.acp.call_number() ]);

@@ -24,7 +24,7 @@ cat.copy_buckets.prototype = {
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.copy_ids.length; i++) {
-			var item = obj.flesh_item_for_list( obj.copy_ids[i] );
+			var item = obj.prep_item_for_list( obj.copy_ids[i] );
 			if (item) obj.list1.append( item );
 		}
 	},
@@ -49,11 +49,39 @@ cat.copy_buckets.prototype = {
 
 		JSAN.use('util.list'); 
 
+        function retrieve_row(params) {
+            var row = params.row;
+            try {
+                obj.network.simple_request('FM_ACP_DETAILS', [ ses(), row.my.copy_id ],
+                    function(blob_req) {
+                        try {
+                            var blob = blob_req.getResultObject();
+                            if (typeof blob.ilsevent != 'undefined') throw(blob);
+                            row.my.acp = blob.copy;
+                            row.my.mvr = blob.mvr;
+                            row.my.acn = blob.volume;
+                            row.my.ahr = blob.hold;
+                            row.my.circ = blob.circ;
+                            params.row_node.setAttribute('retrieve_id', js2JSON( [ blob.copy.id(), blob.copy.barcode(), row.my.bucket_item_id ] ));
+                            if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert('Error retrieving details for item with copy id =' + row.my.acp_id, E);
+                        }
+                    }
+                );
+            } catch(E) {
+                obj.error.sdump('D_ERROR','retrieve_row: ' + E );
+            }
+            return row;
+        }
+
 		obj.list1 = new util.list('pending_copies_list');
 		obj.list1.init(
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -84,6 +112,7 @@ cat.copy_buckets.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -202,7 +231,7 @@ cat.copy_buckets.prototype = {
 									var items = bucket.items() || [];
 									obj.list2.clear();
 									for (var i = 0; i < items.length; i++) {
-										var item = obj.flesh_item_for_list( 
+										var item = obj.prep_item_for_list( 
 											items[i].target_copy(),
 											items[i].id()
 										);
@@ -239,7 +268,7 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( obj.copy_ids[i], robj );
+									var item = obj.prep_item_for_list( obj.copy_ids[i], robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
@@ -255,7 +284,7 @@ cat.copy_buckets.prototype = {
 							var bucket_id = obj.controller.view.bucket_menulist.value;
 							if (!bucket_id) return;
 							for (var i = 0; i < obj.selection_list1.length; i++) {
-	                                                        var acp_id = obj.selection_list1[i][0];
+                                var acp_id = obj.selection_list1[i][0];
 								//var barcode = obj.selection_list1[i][1];
 								var bucket_item = new ccbi();
 								bucket_item.isnew('1');
@@ -267,7 +296,7 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( acp_id, robj );
+									var item = obj.prep_item_for_list( acp_id, robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
@@ -285,7 +314,7 @@ cat.copy_buckets.prototype = {
 								var acp_id = obj.selection_list2[i][0];
 								//var barcode = obj.selection_list1[i][1];
 								//var bucket_item_id = obj.selection_list1[i][2];
-								var item = obj.flesh_item_for_list( acp_id );
+								var item = obj.prep_item_for_list( acp_id );
 								if (item) {
 									obj.list1.append( item );
 									obj.copy_ids.push( acp_id );
@@ -480,7 +509,7 @@ cat.copy_buckets.prototype = {
 										return JSON2js(o)[0]; // acp_id
 									}
 								)
-
+alert('foo');
 								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 								var msg = 'Transfer the items in bucket "';
@@ -618,17 +647,22 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								obj.list2.select_all();
-								JSAN.use('util.functional');
-								var barcodes = util.functional.map_list(
-									obj.list2.dump_retrieve_ids(),
-									function(o) { return JSON2js(o)[1]; }
-								);
-								var url = urls.XUL_COPY_STATUS; // + '?barcodes=' + window.escape( js2JSON(barcodes) );
-								//JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-								//data.temp_barcodes_for_copy_status = barcodes;
-								//data.stash('temp_barcodes_for_copy_status');
-								xulG.new_tab( url, {}, { 'barcodes' : barcodes });
+                                obj.list2.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            obj.list2.select_all();
+                                            JSAN.use('util.functional');
+                                            var barcodes = util.functional.map_list(
+                                                obj.list2.dump_retrieve_ids(),
+                                                function(o) { return JSON2js(o)[1]; }
+                                            );
+                                            var url = urls.XUL_COPY_STATUS;
+                                            xulG.new_tab( url, {}, { 'barcodes' : barcodes });
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('export to copy status',E);
+                                        }
+                                    }
+                                obj.list2.full_retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
 							}
@@ -649,24 +683,20 @@ cat.copy_buckets.prototype = {
 	
 	},
 
-	'flesh_item_for_list' : function(acp_id,bucket_item_id) {
+	'prep_item_for_list' : function(acp_id,bucket_item_id) {
 		var obj = this;
 		try {
-			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ acp_id ]);
-			if (copy == null || typeof copy.ilsevent != 'undefined') {
-				throw(copy);
-			} else {
-				var item = {
-					'retrieve_id' : js2JSON( [ copy.id(), copy.barcode(), bucket_item_id ] ),
-					'row' : {
-						'my' : {
-							'mvr' : obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]),
-							'acp' : copy,
-						}
-					}
-				};
-				return item;
-			}
+            var item = {
+                'retrieve_id' : js2JSON( [ acp_id, null, bucket_item_id ] ),
+                'row' : {
+                    'my' : {
+                        'acn' : -2,
+                        'copy_id' : acp_id,
+                        'bucket_item_id' : bucket_item_id
+                    }
+                }
+            };
+            return item;
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('List building failed.',E);
 			return null;
