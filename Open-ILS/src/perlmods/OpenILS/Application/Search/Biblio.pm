@@ -431,7 +431,7 @@ __PACKAGE__->register_method(
                 subclasses, specified with a "|". For example, "title|proper:gone with the wind" 
                 For more, see config.metabib_field
 
-        @param nocache @see open-ils.search.biblio.multiclass
+        @param docache @see open-ils.search.biblio.multiclass
     #
 );
 __PACKAGE__->register_method(
@@ -521,7 +521,15 @@ sub multiclass_query {
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
 
+	my $sclient = OpenSRF::Utils::SettingsClient->new;
+
     (my $method = $self->api_name) =~ s/\.query//o;
+
+    $method =~ s/multiclass/multiclass.staged/
+        if $sclient->config_value(apps => 'open-ils.search',
+            app_settings => 'use_staged_search') =~ /true/i;
+
+
 	$method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
 
@@ -740,7 +748,7 @@ __PACKAGE__->register_method(
 my $PAGE_SIZE = 1000;
 my $SEARCH_PAGES = 25;
 sub staged_search {
-	my($self, $conn, $search_hash, $nocache) = @_;
+	my($self, $conn, $search_hash, $docache) = @_;
 
     my $method = ($self->api_name =~ /metabib/) ?
         'open-ils.storage.metabib.multiclass.staged.search_fts':
@@ -789,18 +797,19 @@ sub staged_search {
             $results = $U->storagereq($method, %$search_hash);
             $summary = shift(@$results);
 
-            # Clean up the raw search results
+            # Create backwards-compatible result structures
             if($self->api_name =~ /biblio/) {
-                $results = [map {$_->{id}} @$results];
+                $results = [map {[$_->{id}]} @$results];
             } else {
-                delete $_->{rel} for @$results;
+                $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
             }
 
-            cache_staged_search_page($key, $page, $summary, $results) unless $nocache;
+            $results = [grep {defined $_->[0]} @$results];
+            cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
 
         # add the new set of results to the set under construction
-        push(@$all_results, grep {defined $_} @$results);
+        push(@$all_results, @$results);
 
         my $current_count = scalar(@$all_results);
 
@@ -826,7 +835,7 @@ sub staged_search {
 
     return {
         count => $est_hit_count,
-        results => \@results
+        ids => \@results
     };
 }
 
