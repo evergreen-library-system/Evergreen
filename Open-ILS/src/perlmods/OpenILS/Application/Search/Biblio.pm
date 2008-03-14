@@ -737,9 +737,8 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
 	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
 
-my $CACHE_LIMIT = 200;
-my $CHECK_LIMIT = 1000;
-
+my $CHECK_SIZE = 1000;
+my $SEARCH_PAGES = 25;
 sub staged_search {
 	my($self, $conn, $search_hash, $nocache) = @_;
 
@@ -750,53 +749,87 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
 
-    $search_hash->{skip_check} ||= 0;
+    my $user_offset = $search_hash->{offset} || 0; # user-specified offset
+    my $user_limit = $search_hash->{limit} || 10;
 
-    my ($hit_count, $results) = try_staged_search_cache($method, $search_hash);
+    # we're grabbing results on a per-superpage basis, which means the 
+    # limit and offset should coincide with superpage boundaries
+    $search_hash->{offset} = 0;
+    $search_hash->{limit} = $CHECK_SIZE;
 
-    if($results) {
-        $nocache = 1;
+    # pull any existing results from the cache
+    my $key = search_cache_key($method, $search_hash);
+    my $cache_data = $cache->get_cache($key) || {};
 
-    } else {
-        $results = $U->storagereq($method, %$search_hash);
-        my $summary = shift(@$results);
-        $hit_count = $summary->{estimated_hit_count};
+    # keep retrieving results until we find enough to 
+    # fulfill the user-specified limit and offset
+    my $all_results = [];
+    my $avg_hit_count = 0;
+    my $page; # current superpage
 
-        # Clean up the results
-        if($self->api_name =~ /biblio/) {
-            $results = [map {$_->{id}} @$results];
+    for($page = 0; $page < $SEARCH_PAGES; $page++) {
+
+        my $data = $cache_data->{$page};
+        my $results;
+        my $summary;
+
+        $logger->debug("staged search: analyzing superpage $page");
+
+        if($data) {
+            # this window of results is already cached
+            $logger->debug("staged search: found cached results");
+            $summary = $data->{summary};
+            $results = $data->{results};
+
         } else {
-            delete $_->{rel} for @$results;
+            # retrieve the window of results from the database
+            $logger->debug("staged search: fetching results from the database");
+            $search_hash->{skip_check} = $page * $CHECK_SIZE;
+            $results = $U->storagereq($method, %$search_hash);
+            $summary = shift(@$results);
+
+            # Clean up the raw search results
+            if($self->api_name =~ /biblio/) {
+                $results = [map {$_->{id}} @$results];
+            } else {
+                delete $_->{rel} for @$results;
+            }
+
+            cache_staged_search_page($key, $page, $summary, $results) unless $nocache;
         }
-            
-        cache_staged_search($method, $search_hash, $summary, $results) unless $nocache;
+
+        # add the new set of results to the set under construction
+        push(@$all_results, grep {defined $_} @$results);
+
+        my $current_count = scalar(@$all_results);
+        $avg_hit_count += $summary->{estimated_hit_count} || $summary->{visible};
+
+        $logger->debug("staged search: located $current_count, with estimated hits=".
+            $summary->{estimated_hit_count}." : visible=".$summary->{visible});
+
+        # no results for this search
+        last if $current_count == 0;
+
+        # we've found all the possible hits
+        last if $current_count == $summary->{visible} 
+            and not defined $summary->{estimated_hit_count};
+
+        # we've found enough results to satisfy the requested limit/offset
+        last if $current_count >= ($user_limit + $user_offset);
+
+
     }
 
+    # calculate the average estimated hit count from the data we've collected thus far
+    $avg_hit_count = int($avg_hit_count / ++$page);
+    $avg_hit_count = scalar(@$all_results) if scalar(@$all_results) > $avg_hit_count;
+
+    my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
+
     return {
-        count => $hit_count,
-        results => $results
+        count => $avg_hit_count,
+        results => \@results
     };
-}
-
-sub try_staged_search_cache {
-    my $method = shift;
-    my $search_hash = shift;
-
-    my $key = search_cache_key($method, $search_hash);
-    my $start = $search_hash->{offset};
-    my $end = $start + $search_hash->{limit} - 1;
-    my $data = $cache->get_cache($key);
-
-    $logger->info("searching search cache $key with skip_check $$search_hash{skip_check}");
-    return undef unless $data;
-    $logger->info("searching search cache $key with skip_check $$search_hash{skip_check}");
-    return undef unless $data = $data->{$$search_hash{skip_check}};
-    $logger->info("returning search cache $key with skip_check $$search_hash{skip_check}");
-
-    return (
-        $data->{summary}->{estimated_hit_count}, 
-        $data->{results}
-    );
 }
 
 # creates a unique token to represent the query in the cache
@@ -814,17 +847,20 @@ sub search_cache_key {
 	return $pfx . md5_hex($method . $s);
 }
 
-sub cache_staged_search {
-    my($method, $search_hash, $summary, $results) = @_;
-    my $cache_key = search_cache_key($method, $search_hash);
-    my $data = $cache->get_cache($cache_key);
+sub cache_staged_search_page {
+    # puts this set of results into the cache
+    my($key, $page, $summary, $results) = @_;
+    my $data = $cache->get_cache($key);
     $data ||= {};
-    $data->{$search_hash->{skip_check}} = {
+    $data->{$page} = {
         summary => $summary,
         results => $results
     };
-    $logger->info("cached ranged search with skip_check $$search_hash{skip_check} and key $cache_key");
-    $cache->put_cache($data);
+
+    $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
+        $summary->{estimated_hit_count}.", visible=".$summary->{visible});
+
+    $cache->put_cache($key, $data);
 }
 
 sub search_cache {
