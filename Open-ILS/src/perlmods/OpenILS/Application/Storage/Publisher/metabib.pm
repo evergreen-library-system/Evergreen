@@ -2470,7 +2470,7 @@ sub staged_fts {
     my $excluded = $$summary_row{excluded};
 
     my $estimate = $visible;
-    if ( $total > $checked ) {
+    if ( $total > $checked && $checked ) {
         my $deleted_ratio = $deleted / $checked;
         my $exclution_ratio = $excluded / $checked;
         my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
