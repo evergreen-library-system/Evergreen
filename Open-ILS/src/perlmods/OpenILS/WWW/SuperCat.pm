@@ -1041,11 +1041,7 @@ sub opensearch_feed {
 	$feed->search($terms);
 	$feed->class($class);
 
-	if ($complex_terms) {
-		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
-	} else {
-		$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
-	}
+	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
 
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
@@ -1121,12 +1117,6 @@ sub opensearch_feed {
 #			join('&', map { 'rl=' . $_->[0] } grep { ref $_ && defined $_->[0] } @{$recs->{ids}} ),
 #		'text/html'
 #	);
-
-	print $cgi->header(
-		-type		=> $feed->type,
-		-charset	=> 'UTF-8',
-		-cookie		=> $cgi->cookie( -name => 'os_session', -value => $rs_name, -expires => '+30m' ),
-	);
 
 	print entityize($feed->toString) . "\n";
 
