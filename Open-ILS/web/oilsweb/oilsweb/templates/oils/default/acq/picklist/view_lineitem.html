@@ -1,36 +1,19 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
+<%namespace file='../../common/widgets.html' name='widget' />
 <%namespace file='picklist_summary.html' name='picklist' />
 
 <%def name="page_title()">${_('Evergreen Picklist Entry')}</%def>
 <%def name="block_content()">
 
+<%
+     fund_map = [(fund.id(), fund.name()) for fund in c.oils.acq.fund_list.value]
+%>
+
 ${picklist.summary(c.oils.acq.picklist.value, link=True)}
 
 <%include file='lineitem_summary.html'/>
 
-<%
-     fund_map = [(fund.id(), fund.name()) for fund in c.oils.acq.fund_list.value]
-     selection_prefix = "<select name='" + c.oils.acq.fund_id.cgi_name + "'>\n"
-     selection_suffix = "\n</select>"
-     option_format = "<option %s value='%s'>%s</option>"
-
-     def fund_selection(selected_id):
-         if not selected_id:
-             optionlist = ["<option value='' selected='selected'>%s</option>\n" % _("-- Select Fund --")]
-         else:
-             optionlist = []
-
-         for (id, name) in fund_map:
-             if id == selected_id:
-                 sel = "selected='selected'"
-             else:
-                 sel = ""
-
-             optionlist.append(option_format % (sel, id, name))
-
-         return selection_prefix + "\n".join(optionlist) + selection_suffix
-%>
 <table id='oils-acq-lineitem-summary'>
     % for attr in c.oils.acq.lineitem.value.attributes():
         <tr>
@@ -56,10 +39,10 @@ ${picklist.summary(c.oils.acq.picklist.value, link=True)}
 			  action="${c.oils.acq.prefix.value}/picklist/update_lineitem">
 		        <input type="hidden"
 			       name="${c.oils.acq.lineitem_id.cgi_name}"
-			       value="${c.oils.acq.lineitem.value.id()}">
+			       value="${c.oils.acq.lineitem.value.id()}" />
 		        <button name='${c.oils.acq.lineitem_detail_id.cgi_name}'
 				value='${detail.id()}'>${_("Update")}</button>
-		        ${fund_selection(detail.fund())}
+		        ${widget.build_selector(c.oils.acq.fund_id.cgi_name, fund_map, detail.fund())}
 		    </form>
 		</td>
 		<td>${detail.owning_lib() or '&nbsp;'}</td>

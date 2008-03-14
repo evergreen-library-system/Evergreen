@@ -11,6 +11,7 @@ from oils.org import OrgUtil
 from oilsweb.lib.request import RequestMgr
 from oilsweb.lib.acq.fund import FundMgr
 from oilsweb.lib.acq.picklist import PicklistMgr
+from oilsweb.lib.acq import provider_mgr
 
 class PicklistController(BaseController):
 
@@ -55,7 +56,9 @@ class PicklistController(BaseController):
         r.ctx.acq.lineitem.value = lineitem
         r.ctx.acq.lineitem_marc_html.value = oilsweb.lib.bib.marc_to_html(lineitem.marc())
 
+        r.ctx.acq.provider_list.value = provider_mgr.list(r)
         r.ctx.acq.fund_list.value = fmgr.retrieve_org_funds()
+
         return r.render('acq/picklist/view_lineitem.html')
 
     def list(self):
@@ -142,6 +145,17 @@ class PicklistController(BaseController):
                                  r.ctx.core.authtoken.value,
                                  detail).recv().content()
             Event.parse_and_raise(detail)
+        elif r.ctx.acq.provider_id.value:
+            lineitem = ses.request('open-ils.acq.lineitem.retrieve',
+                                   r.ctx.core.authtoken.value,
+                                   r.ctx.acq.lineitem_id.value).recv().content()
+            lineitem = Event.parse_and_raise(lineitem)
+
+            lineitem.provider(r.ctx.acq.provider_id.value)
+            lineitem = ses.request('open-ils.acq.lineitem.update',
+                                   r.ctx.core.authtoken.value,
+                                   lineitem).recv().content()
+            Event.parse_and_raise(lineitem)
             
         return redirect_to(controller='acq/picklist', action='view_lineitem',
                            id=r.ctx.acq.lineitem_id.value)

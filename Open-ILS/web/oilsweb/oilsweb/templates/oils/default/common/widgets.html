@@ -74,3 +74,25 @@
         <a href='?${c.oils.acq.offset.cgi_name}=${end}'>&#187;</a>
     % endif
 </%def>
+
+<%def name='build_selector(name, optionmap, chosen=None)'>
+    <div style='display:none'>
+        NAME '${name}'
+	CHOSEN ${chosen}
+        OPTIONMAP ${optionmap}
+    </div>
+    <select name="${name}">
+
+    %if not selected:
+        <option value="" selected="selected">${_("-- Select --")}</option>
+    %endif
+
+    %for (id, name) in optionmap:
+        <option value="${id}"
+            %if id == chosen:
+                selected='selected'
+            %endif
+     >${name}</option>
+    %endfor
+    </select>
+</%def>
