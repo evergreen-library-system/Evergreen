@@ -807,17 +807,12 @@ sub staged_search {
         $logger->debug("staged search: located $current_count, with estimated hits=".
             $summary->{estimated_hit_count}." : visible=".$summary->{visible});
 
-        # no results for this search
-        last if $current_count == 0;
-
         # we've found all the possible hits
-        last if $current_count == $summary->{visible} 
+        last if $current_count == $summary->{visible}
             and not defined $summary->{estimated_hit_count};
 
         # we've found enough results to satisfy the requested limit/offset
         last if $current_count >= ($user_limit + $user_offset);
-
-
     }
 
     # calculate the average estimated hit count from the data we've collected thus far
