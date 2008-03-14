@@ -129,7 +129,7 @@
 										<!-- unAPI URI goes here -->
 									</abbr>
 
-									<!-- Empty span used for creating unAPI links -->
+									<!-- Empty span used for creating Google Book Search-->
 									<span name="googleBooks" class="hide_me">
 										<a style='padding-left: 8px;' class='classic_link' name="googleBooks-link">&result.googleBooks.browse;</a>
 									</span>
