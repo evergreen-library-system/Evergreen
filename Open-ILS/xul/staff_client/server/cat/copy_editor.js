@@ -85,7 +85,7 @@ function my_init() {
                                         lib = g.map_acn[ cn_id ].owning_lib();
                                     }
                                 }
-                                return lib;
+                                return typeof lib == 'object' ? lib.id() : lib;
                             }
                         ),
                         g.copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
