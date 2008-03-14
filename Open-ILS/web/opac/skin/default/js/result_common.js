@@ -3,7 +3,7 @@ var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
 var isbnList = '';
-var googleBooks = false;
+var googleBooks = true;
 
 var resultFetchAllRecords = false;
 var resultCompiledSearch = null;
@@ -400,10 +400,10 @@ function unhideGoogleBooks (data) {
     for ( var i in data ) {
         if (data[i].preview == 'noview') continue;
 
-        var gbspan = $n('googleBooks-' + i);
-        var gba = $n("googleBooks-link",gbspan)
+        var gbspan = $n(document.documentElement, 'googleBooks-' + i);
+        var gba = $n(gbspan, "googleBooks-link");
 
-        gba..setAttribute(
+        gba.setAttribute(
             'href',
             data[i].info_url
         );
