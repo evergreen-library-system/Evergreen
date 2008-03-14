@@ -554,6 +554,7 @@ We recommend that you remove this title from any bookbags it may have been added
 
 <!ENTITY result.table.keyword "View titles for this record">
 <!ENTITY result.table.author "Perform an Author Search">
+<!ENTITY result.googleBooks.browse "Browse in Google Books Search">
 
 <!ENTITY common.call.number.label "Call Number:">
 <!ENTITY common.isbn.label "ISBN:">

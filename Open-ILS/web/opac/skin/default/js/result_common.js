@@ -2,6 +2,8 @@
 var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
+var isbnList = '';
+var googleBooks = false;
 
 var resultFetchAllRecords = false;
 var resultCompiledSearch = null;
@@ -394,6 +396,21 @@ function buildunAPISpan (span, type, id) {
 	);
 }
 
+function unhideGoogleBooks (data) {
+    for ( var i in data ) {
+        if (data[i].preview == 'noview') continue;
+
+        var gbspan = $n('googleBooks-' + i);
+        var gba = $n("googleBooks-link",gbspan)
+
+        gba..setAttribute(
+            'href',
+            data[i].info_url
+        );
+        removeCSSClass( gbspan, 'hide_me' );
+    }
+}
+
 /* display the record info in the record display table 'pos' is the 
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
@@ -403,8 +420,21 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	recordsCache.push(rec);
 
 	var r = table.rows[pos + 1];
+    var currentISBN = cleanISBN(rec.isbn());
 
-	
+    if (googleBooks) {
+	    var gbspan = $n(r, "googleBooks");
+        if (currentISBN) {
+            gbspan.setAttribute(
+                'name',
+                gbspan.getAttribute('name') + '-' + currentISBN
+            );
+
+            if (isbnList) isbnList += ', ';
+            isbnList += currentISBN;
+        }
+    }
+
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
 		rank		= parseInt( rank * 100 );
@@ -414,7 +444,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	} catch(e){ }
 
 	var pic = $n(r, config.names.result.item_jacket);
-	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
+	pic.setAttribute("src", buildISBNSrc(currentISBN));
 
 	var title_link = $n(r, config.names.result.item_title);
 	var author_link = $n(r, config.names.result.item_author);
@@ -550,6 +580,18 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 
 
 function resultPageIsDone(pos) {
+
+    if (isbnList && googleBooks) {
+        var scriptElement = document.createElement("script");
+        scriptElement.setAttribute("id", "jsonScript");
+        scriptElement.setAttribute("src",
+            "http://books.google.com/books?bibkeys=" + 
+            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooks");
+        scriptElement.setAttribute("type", "text/javascript");
+        // make the request to Google Book Search
+        document.documentElement.firstChild.appendChild(scriptElement);
+    }
+
 	return (recordsHandled == getDisplayCount() 
 		|| recordsHandled + getOffset() == getHitCount());
 }

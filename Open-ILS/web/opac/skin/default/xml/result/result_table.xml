@@ -120,14 +120,20 @@
 									</span>
 
 									<span class='hide_me' name='place_hold_span'>
-										<a style='padding-left: 8px; padding-right: 10px;' href='javascript:void(0);' 
+										<a style='padding-left: 8px;' href='javascript:void(0);' 
 											class='classic_link' name='place_hold_link'>&opac.holds.placeHold;</a>
 									</span>
 
 									<!-- Empty span used for creating unAPI links -->
-									<abbr name="unapi" class="unapi-id">
+									<abbr style='padding-left: 8px;' name="unapi" class="unapi-id">
 										<!-- unAPI URI goes here -->
 									</abbr>
+
+									<!-- Empty span used for creating unAPI links -->
+									<span name="googleBooks" class="hide_me">
+										<a style='padding-left: 8px;' class='classic_link' name="googleBooks-link">&result.googleBooks.browse;</a>
+									</span>
+
 
 								</td>
 							</tr>
