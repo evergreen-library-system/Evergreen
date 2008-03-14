@@ -738,6 +738,7 @@ __PACKAGE__->register_method(
 	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
 
 my $CACHE_LIMIT = 200;
+my $CHECK_LIMIT = 1000;
 
 sub staged_search {
 	my($self, $conn, $search_hash, $nocache) = @_;
@@ -749,20 +750,30 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
 
-    my $results = try_staged_search_cache($method, $search_hash);
+    $search_hash->{skip_check} ||= 0;
+
+    my ($hit_count, $results) = try_staged_search_cache($method, $search_hash);
 
     if($results) {
         $nocache = 1;
 
     } else {
         $results = $U->storagereq($method, %$search_hash);
-        unless($nocache) {
-            # XXX cache me
+        my $summary = shift(@$results);
+        $hit_count = $summary->{estimated_hit_count};
+
+        # Clean up the results
+        if($self->api_name =~ /biblio/) {
+            $results = [map {$_->{id}} @$results];
+        } else {
+            delete $_->{rel} for @$results;
         }
+            
+        cache_staged_search($method, $search_hash, $summary, $results) unless $nocache;
     }
 
     return {
-        summary => shift(@$results),
+        count => $hit_count,
         results => $results
     };
 }
@@ -770,12 +781,22 @@ sub staged_search {
 sub try_staged_search_cache {
     my $method = shift;
     my $search_hash = shift;
+
     my $key = search_cache_key($method, $search_hash);
     my $start = $search_hash->{offset};
     my $end = $start + $search_hash->{limit} - 1;
+    my $data = $cache->get_cache($key);
 
-    # XXX pull me from the cache
-    return undef;
+    $logger->info("searching search cache $key with skip_check $$search_hash{skip_check}");
+    return undef unless $data;
+    $logger->info("searching search cache $key with skip_check $$search_hash{skip_check}");
+    return undef unless $data = $data->{$$search_hash{skip_check}};
+    $logger->info("returning search cache $key with skip_check $$search_hash{skip_check}");
+
+    return (
+        $data->{summary}->{estimated_hit_count}, 
+        $data->{results}
+    );
 }
 
 # creates a unique token to represent the query in the cache
@@ -785,12 +806,26 @@ sub search_cache_key {
 	my @sorted;
     for my $key (sort keys %$search_hash) {
 	    push(@sorted, ($key => $$search_hash{$key})) 
-            if $key ne 'limit' and $key ne 'offset';
+            unless $key eq 'limit' or 
+                $key eq 'offset' or 
+                $key eq 'skip_check';
     }
 	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
 	return $pfx . md5_hex($method . $s);
 }
 
+sub cache_staged_search {
+    my($method, $search_hash, $summary, $results) = @_;
+    my $cache_key = search_cache_key($method, $search_hash);
+    my $data = $cache->get_cache($cache_key);
+    $data ||= {};
+    $data->{$search_hash->{skip_check}} = {
+        summary => $summary,
+        results => $results
+    };
+    $logger->info("cached ranged search with skip_check $$search_hash{skip_check} and key $cache_key");
+    $cache->put_cache($data);
+}
 
 sub search_cache {
 
