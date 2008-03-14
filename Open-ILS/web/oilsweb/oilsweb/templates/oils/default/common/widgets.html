@@ -76,11 +76,6 @@
 </%def>
 
 <%def name='build_selector(name, optionmap, chosen=None)'>
-    <div style='display:none'>
-        NAME '${name}'
-	CHOSEN ${chosen}
-        OPTIONMAP ${optionmap}
-    </div>
     <select name="${name}">
 
     %if not selected:
