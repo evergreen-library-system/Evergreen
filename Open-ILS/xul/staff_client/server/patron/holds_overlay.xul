@@ -24,10 +24,8 @@
 		<menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E"/>
 		<menuitem label="Edit Thaw Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
 		<menuitem label="Set Freeze" command="cmd_holds_edit_freeze" accesskey="F"/>
-		<!--
 		<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R"/>
 		<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F"/>
-		-->
 		<menuseparator />
 		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
@@ -87,10 +85,8 @@
                 <menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E" />
                 <menuitem label="Edit Thaw Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
                 <menuitem label="Set Freeze" command="cmd_holds_edit_freeze" accesskey="F"/>
-                <!--
                 <menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R" />
                 <menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F" />
-                -->
                 <menuseparator />
                 <menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
                 <menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
