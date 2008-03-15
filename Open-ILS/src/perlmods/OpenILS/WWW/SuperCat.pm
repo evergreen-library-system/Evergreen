@@ -1305,7 +1305,7 @@ sub sru_search {
         warn "SRU search string [$cql_query] converted to [$search_string]\n";
 
  		my $recs = $search->request(
-			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string
+			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string => 1
 		)->gather(1);
 
         my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
