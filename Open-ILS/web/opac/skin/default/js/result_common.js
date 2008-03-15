@@ -437,6 +437,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
         }
     }
 
+/*
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
 		rank		= parseInt( rank * 100 );
@@ -444,6 +445,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		relspan.appendChild(text(rank));
 		unHideMe(relspan.parentNode);
 	} catch(e){ }
+*/
 
 	var pic = $n(r, config.names.result.item_jacket);
 	pic.setAttribute("src", buildISBNSrc(currentISBN));
