@@ -964,7 +964,7 @@ sub opensearch_feed {
 	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
 	$sortdir ||= '';
 
-	$terms .= " " if ($terms);
+	$terms .= " " if ($terms && $cgi->param('searchTerms'));
 	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
@@ -1026,9 +1026,13 @@ sub opensearch_feed {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => parent_ou => undef
 		)->gather(1);
-	} else {
+	} elsif ($org !~ /^\d+$/o) {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
+		)->gather(1);
+	} else {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => id => $org
 		)->gather(1);
 	}
 
@@ -1037,6 +1041,8 @@ sub opensearch_feed {
 			org_unit	=> $org_unit->[0]->id,
 			offset		=> $offset - 1,
 			limit		=> $limit,
+			sort		=> $sort,
+			sort_dir	=> $sortdir,
 			($lang ?    ( 'language' => $lang    ) : ()),
 		} => $terms => 1
 	)->gather(1);
