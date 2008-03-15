@@ -1157,6 +1157,7 @@ util.list.prototype = {
 			data.list_clipboard = dump; data.stash('list_clipboard');
 			JSAN.use('util.window'); var win = new util.window();
 			win.open(urls.XUL_LIST_CLIPBOARD,'list_clipboard','chrome,resizable,modal');
+            window.focus(); // sometimes the main window will lower after a clipboard action
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('clipboard',E);
 		}
