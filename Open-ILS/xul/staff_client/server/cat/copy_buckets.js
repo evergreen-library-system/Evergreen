@@ -509,7 +509,7 @@ cat.copy_buckets.prototype = {
 										return JSON2js(o)[0]; // acp_id
 									}
 								)
-alert('foo');
+
 								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 								var msg = 'Transfer the items in bucket "';
