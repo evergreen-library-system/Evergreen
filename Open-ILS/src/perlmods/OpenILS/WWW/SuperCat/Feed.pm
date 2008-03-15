@@ -5,7 +5,10 @@ use OpenSRF::EX qw(:try);
 use XML::LibXML;
 use XML::LibXSLT;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Logger qw/$logger/;
 use CGI;
+
+my $log = 'OpenSRF::Utils::Logger';
 
 sub exists {
 	my $class = shift;
@@ -212,6 +215,7 @@ sub composeDoc {
 sub toString {
 	my $self = shift;
 	$self->composeDoc;
+	$log->debug("Document composed");
 	return $self->{doc}->toString(1);
 }
 

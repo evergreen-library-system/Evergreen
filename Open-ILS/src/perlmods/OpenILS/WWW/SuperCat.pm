@@ -29,6 +29,8 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use MARC::Record;
 use MARC::File::XML;
 
+my $log = 'OpenSRF::Utils::Logger';
+
 # set the bootstrap config when this module is loaded
 my ($bootstrap, $cstore, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
 
@@ -957,9 +959,11 @@ sub opensearch_feed {
 	$lang = $cgi->param('searchLang') if $cgi->param('searchLang');
 	$lang = '' if ($lang eq '*');
 
-	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
-	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
-	$terms .= " " . $cgi->param('searchTerms') if $cgi->param('searchTerms');
+	$sort = $cgi->param('searchSort') || '';
+	$sortdir = $cgi->param('searchSortDir') || '';
+
+	$terms .= " " if ($terms);
+	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
 	$class ||= '-';
@@ -977,11 +981,16 @@ sub opensearch_feed {
 	my $sut = $cgi->param('su');
 	my $set = $cgi->param('se');
 
-	$terms .= " keyword: $kwt" if ($kwt);
-	$terms .= " title: $tit" if ($tit);
-	$terms .= " author: $aut" if ($aut);
-	$terms .= " subject: $sut" if ($sut);
-	$terms .= " series: $set" if ($set);
+	$terms .= " " if ($terms && $kwt);
+	$terms .= "keyword: $kwt" if ($kwt);
+	$terms .= " " if ($terms && $tit);
+	$terms .= "title: $tit" if ($tit);
+	$terms .= " " if ($terms && $aut);
+	$terms .= "author: $aut" if ($aut);
+	$terms .= " " if ($terms && $sut);
+	$terms .= "subject: $sut" if ($sut);
+	$terms .= " " if ($terms && $set);
+	$terms .= "series: $set" if ($set);
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -1008,6 +1017,8 @@ sub opensearch_feed {
 	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
 
+	$log->debug("OpenSearch terms: $terms");
+
 	my $org_unit;
 	if ($org eq '-') {
 	 	$org_unit = $actor->request(
@@ -1022,11 +1033,13 @@ sub opensearch_feed {
     my $recs = $search->request(
         'open-ils.search.biblio.multiclass.query' => {
 			org_unit	=> $org_unit->[0]->id,
-			offset		=> $limit,
-			limit		=> $offset,
+			offset		=> $offset - 1,
+			limit		=> $limit,
 			($lang ?    ( 'language' => $lang    ) : ()),
-		} => $terms
+		} => $terms => 1
 	)->gather(1);
+
+	$log->debug("Hits for [$terms]: $recs->{count}");
 
 	my $feed = create_record_feed(
 		'record',
@@ -1036,12 +1049,15 @@ sub opensearch_feed {
 		$org,
 		$flesh_feed
 	);
+
+	$log->debug("Feed created...");
+
 	$feed->root($root);
 	$feed->lib($org);
 	$feed->search($terms);
 	$feed->class($class);
 
-	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
+	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
 
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
@@ -1066,6 +1082,8 @@ sub opensearch_feed {
 		'itemsPerPage',
 		$limit,
 	);
+
+	$log->debug("...basic feed data added...");
 
 	$feed->link(
 		next =>
@@ -1111,6 +1129,8 @@ sub opensearch_feed {
 
 	$feed->link( 'unapi-server' => $unapi);
 
+	$log->debug("...feed links added...");
+
 #	$feed->link(
 #		opac =>
 #		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
@@ -1118,7 +1138,9 @@ sub opensearch_feed {
 #		'text/html'
 #	);
 
-	print entityize($feed->toString) . "\n";
+	print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
+
+	$log->debug("...and feed returned.");
 
 	return Apache2::Const::OK;
 }
