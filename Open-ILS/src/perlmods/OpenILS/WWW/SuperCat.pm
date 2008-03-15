@@ -959,8 +959,10 @@ sub opensearch_feed {
 	$lang = $cgi->param('searchLang') if $cgi->param('searchLang');
 	$lang = '' if ($lang eq '*');
 
-	$sort = $cgi->param('searchSort') || '';
-	$sortdir = $cgi->param('searchSortDir') || '';
+	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
+	$sort ||= '';
+	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
+	$sortdir ||= '';
 
 	$terms .= " " if ($terms);
 	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
