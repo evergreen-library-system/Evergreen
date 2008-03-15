@@ -1834,7 +1834,7 @@ circ.util.std_map_row_to_columns = function(error_value) {
 		try {
 			for (var i = 0; i < cols.length; i++) {
 				switch (typeof cols[i].render) {
-					case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; dump(E+'\n'); } break;
+					case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
 					case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
 					default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
 				}

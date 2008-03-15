@@ -44,6 +44,7 @@ util.error.prototype = {
 		'D_TRACE' :  { 'dump' : true }, 
 		'D_ALERT' : { 'alert' : true, 'dump' : true },
 		'D_WARN' : false, 
+		'D_COLUMN_RENDER_ERROR' : false, 
 		'D_XULRUNNER' : false, 
 		'D_DECK' : { 'dump' : true },
 		'D_TRACE_ENTER' :  false, 
