@@ -254,6 +254,7 @@ util.file.prototype = {
 	'export_file' : function(params) {
 		try {
 			var obj = this;
+            if (typeof params == 'undefined') params = {};
             params.mode = 'save';
             if (typeof params.data == 'undefined') throw('Need a .data field to export');
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -282,6 +283,7 @@ util.file.prototype = {
 	'import_file' : function(params) {
 		try {
 			var obj = this;
+            if (typeof params == 'undefined') params = {};
             params.mode = 'open';
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var f = obj.pick_file(params);
