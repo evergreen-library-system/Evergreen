@@ -31,10 +31,15 @@
 </vbox>
 
 <hbox id="pending_buckets_bottom_ui">
+	<button id="pending_buckets_export_list" label="Export List" type="menu" allowevents="true">
+        <menupopup id="pending_buckets_export_actions">
+    	    <menuitem command="cmd_pending_buckets_csv_to_printer" label="Print List CSV" />
+        	<menuitem command="cmd_pending_buckets_csv_to_clipboard" label="Copy List CSV to Clipboard" accesskey=""/>
+        	<menuitem command="cmd_pending_buckets_csv_to_file" label="Save List CSV to File" accesskey=""/>
+        </menupopup>
+    </button>
 	<button id="save_button1" command="save_columns1" label="Save Columns" />
 	<button id="clip_button1" command="sel_clip1" label="Copy to Clipboard" disabled="true" />
-	<button id="cmd_print_export_btn1" command="cmd_print_export1" label="Print CSV" />
-	<button id="cmd_export_btn1" command="cmd_export1" label="CVS to Clipboard" />
 	<spacer flex="1"/>
 	<button label="Add All" id="record_buckets_add" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
 	<button label="Add Selected" id="record_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
@@ -61,11 +66,13 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-	<button id="cmd_print_export_btn2" command="cmd_print_export2" label="Print CSV" />
-	<button id="record_buckets_export" 
-		label="CSV to Clipboard"
-		command="cmd_record_buckets_export"
-		accesskey=""/>
+	<button id="record_buckets_export_list" label="Export List" type="menu" allowevents="true">
+        <menupopup id="record_buckets_export_actions">
+    	    <menuitem command="cmd_record_buckets_csv_to_printer" label="Print List CSV" />
+          	<menuitem command="cmd_record_buckets_csv_to_clipboard" label="Copy List CSV to Clipboard" accesskey=""/>
+          	<menuitem command="cmd_record_buckets_csv_to_file" label="Save List CSV to File" accesskey=""/>
+        </menupopup>
+    </button>
 	<spacer flex="1"/>
 	<hbox style="background: grey">
 		<vbox><spacer flex="1"/><label value="Batch:" style="font-weight: bold"/><spacer flex="1"/></vbox>

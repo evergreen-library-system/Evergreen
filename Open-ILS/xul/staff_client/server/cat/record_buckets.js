@@ -445,66 +445,12 @@ cat.record_buckets.prototype = {
 						}
 					],
 					
-					'cmd_record_buckets_export' : [
-						['command'],
-						function() {
-							obj.list2.dump_csv_to_clipboard();
-						}
-					],
-
-					'cmd_export1' : [
-						['command'],
-						function() {
-							obj.list1.dump_csv_to_clipboard();
-						}
-					],
-
-                    'cmd_print_export1' : [
-                        ['command'],
-                        function() {
-                            try {
-                                obj.list1.on_all_fleshed =
-                                    function() {
-                                        try {
-                                            dump( obj.list1.dump_csv() + '\n' );
-                                            //copy_to_clipboard(obj.list.dump_csv());
-                                            JSAN.use('util.print'); var print = new util.print();
-                                            print.simple(obj.list1.dump_csv(),{'content_type':'text/plain'});
-                                            setTimeout(function(){ obj.list1.on_all_fleshed = null; },0);
-                                        } catch(E) {
-                                            obj.error.standard_unexpected_error_alert('print export',E);
-                                        }
-                                    }
-                                obj.list1.full_retrieve();
-                            } catch(E) {
-                                obj.error.standard_unexpected_error_alert('print export',E);
-                            }
-                        }
-                    ],
-
-
-                    'cmd_print_export2' : [
-                        ['command'],
-                        function() {
-                            try {
-                                obj.list2.on_all_fleshed =
-                                    function() {
-                                        try {
-                                            dump( obj.list2.dump_csv() + '\n' );
-                                            //copy_to_clipboard(obj.list.dump_csv());
-                                            JSAN.use('util.print'); var print = new util.print();
-                                            print.simple(obj.list2.dump_csv(),{'content_type':'text/plain'});
-                                            setTimeout(function(){ obj.list2.on_all_fleshed = null; },0);
-                                        } catch(E) {
-                                            obj.error.standard_unexpected_error_alert('print export',E);
-                                        }
-                                    }
-                                obj.list2.full_retrieve();
-                            } catch(E) {
-                                obj.error.standard_unexpected_error_alert('print export',E);
-                            }
-                        }
-                    ],
+					'cmd_pending_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list1.dump_csv_to_clipboard(); } ], 
+					'cmd_record_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list2.dump_csv_to_clipboard(); } ],
+                    'cmd_pending_buckets_csv_to_printer' : [ ['command'], function() { obj.list1.dump_csv_to_printer(); } ],
+                    'cmd_record_buckets_csv_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
+                    'cmd_pending_buckets_csv_to_file' : [ ['command'], function() { obj.list1.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
+                    'cmd_record_buckets_csv_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
 
 					'cmd_export_records_usmarc' : [
 						['command'],
@@ -691,12 +637,6 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() { alert('Not Yet Implemented'); }
 					],
-					'cmd_record_buckets_done' : [
-						['command'],
-						function() {
-							window.close();
-						}
-					],
 					'cmd_sel_opac' : [
 						['command'],
 						function() {
@@ -737,9 +677,6 @@ cat.record_buckets.prototype = {
 		if (typeof xulG == 'undefined') {
 			obj.controller.view.cmd_sel_opac.disabled = true;
 			obj.controller.view.cmd_sel_opac.setAttribute('disabled',true);
-		} else {
-			obj.controller.view.cmd_record_buckets_done.disabled = true;
-			obj.controller.view.cmd_record_buckets_done.setAttribute('disabled',true);
 		}
 	},
 

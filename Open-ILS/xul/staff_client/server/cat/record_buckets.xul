@@ -86,14 +86,15 @@
 		<command id="sel_clip2" />
 		<command id="save_columns1" />
 		<command id="save_columns2" />
-		<command id="cmd_print_export1" />
-		<command id="cmd_export1" />
-		<command id="cmd_print_export2" />
-		<command id="cmd_record_buckets_submit_barcode" />
-		<command id="cmd_record_buckets_print" />
-		<command id="cmd_record_buckets_export" />
-		<command id="cmd_record_buckets_reprint" />
-		<command id="cmd_record_buckets_done" />
+
+		<command id="cmd_pending_buckets_csv_to_printer" />
+		<command id="cmd_pending_buckets_csv_to_clipboard" />
+		<command id="cmd_pending_buckets_csv_to_file" />
+
+		<command id="cmd_record_buckets_csv_to_printer" />
+		<command id="cmd_record_buckets_csv_to_clipboard" />
+		<command id="cmd_record_buckets_csv_to_file" />
+
 		<command id="cmd_merge_records" />
 		<command id="cmd_export_records_usmarc" />
 		<command id="cmd_export_records_unimarc" />
