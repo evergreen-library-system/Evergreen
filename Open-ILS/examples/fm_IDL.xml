@@ -158,6 +158,14 @@
 			<field reporter:label="Magnetic Media" name="magnetic_media" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_CIRC_MOD" context_field="parent_ou"/>
+                <retrieve/>
+                <update permission="UPDATE_CIRC_MOD" context_field="parent_ou"/>
+                <delete permission="DELETE_CIRC_MOD" context_field="parent_ou"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="cvrfm" controller="open-ils.cstore" oils_obj:fieldmapper="config::videorecording_format_map" oils_persist:tablename="config.videorecording_format_map" reporter:label="Videorecording Format">
@@ -169,6 +177,14 @@
 			<field reporter:label="Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_VR_FORMAT" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_VR_FORMAT" global_required="true"/>
+                <delete permission="DELETE_VR_FORMAT" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="chmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::hold_matrix_matchpoint" oils_persist:tablename="config.hold_matrix_matchpoint" reporter:label="Hold Matrix Matchpoint">
@@ -556,6 +572,14 @@
 			<field reporter:label="Language" name="value" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_LANGUAGE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_LANGUAGE" global_required="true"/>
+                <delete permission="DELETE_LANGUAGE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mccp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
@@ -1488,7 +1512,7 @@
 		</links>
 	</class>
 	<class id="citm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map">
-		<fields oils_persist:primary="code" oils_persist:sequence="">
+		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -1496,6 +1520,37 @@
 			<field reporter:label="Item Type" name="value" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ITEM_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_ITEM_TYPE" global_required="true"/>
+                <delete permission="DELETE_ITEM_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="sra" controller="open-ils.cstore" oils_obj:fieldmapper="search::relevance_adjustment" oils_persist:tablename="search.relevance_adjustment" reporter:label="Relevance Adjustment">
+		<fields oils_persist:primary="id" oils_persist:sequence="search.relevance_adjustment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="id"/>
+			<field reporter:label="Active" name="active" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="bool"/>
+			<field reporter:label="Index Field" name="field" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Bump Type" name="bump" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Multiplier" name="multiplier" oils_obj:array_position="7" oils_persist:virtual="false"  reporter:datatype="number"/>
+		</fields>
+		<links>
+            <link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
+                <delete permission="DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="aoup" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_proximity" oils_persist:tablename="actor.org_unit_proximity">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_id_seq">
@@ -1511,6 +1566,22 @@
 			<link field="from_org" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="to_org" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+	</class>
+	<class id="ssr" controller="open-ils.cstore" oils_obj:fieldmapper="search::search_result" oils_persist:tablename="search.search_result" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Relevance" name="rel" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="float"/>
+			<field reporter:label="Record" name="record" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Total Results" name="total" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Checked" name="checked" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Visible" name="visible" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Deleted" name="deleted" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Excluded" name="excluded" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="int"/>
+		</fields>
+		<links/>
 	</class>
 	<class id="asv" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey" reporter:label="Survey">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_id_seq">
@@ -1535,6 +1606,14 @@
 			<link field="responses" reltype="has_many" key="survey" map="" class="asvr"/>
 			<link field="questions" reltype="has_many" key="survey" map="" class="asvq"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_SURVEY" context_field="owner"/>
+                <retrieve/>
+                <update permission="UPDATE_SURVEY" context_field="owner"/>
+                <delete permission="DELETE_SURVEY" context_field="owner"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="aoa" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_address_id_seq">
@@ -1556,6 +1635,14 @@
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ORG_ADDRESS" context_field="org_unit"/>
+                <retrieve/>
+                <update permission="UPDATE_ORG_ADDRESS" context_field="org_unit"/>
+                <delete permission="DELETE_ORG_ADDRESS" context_field="org_unit"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
@@ -1650,6 +1737,14 @@
 			<link field="checkins" reltype="has_many" key="checkin_lib" map="" class="circ"/>
 			<link field="workstations" reltype="has_many" key="owning_lib" map="" class="aws"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ORG_UNIT" context_field="parent_ou"/>
+                <retrieve/>
+                <update permission="UPDATE_ORG_UNIT" context_field="parent_ou"/>
+                <delete permission="DELETE_ORG_UNIT" context_field="parent_ou"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ccnb" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket" oils_persist:tablename="container.call_number_bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_id_seq">
@@ -1975,6 +2070,14 @@
 			<field reporter:label="LitF Name" name="value" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_LIT_FORM" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_LIT_FORM" global_required="true"/>
+                <delete permission="DELETE_LIT_FORM" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mwp" controller="open-ils.cstore" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment" reporter:label="Work Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
