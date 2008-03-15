@@ -1073,10 +1073,47 @@ util.list.prototype = {
 
     'dump_csv_to_clipboard' : function(params) {
         var obj = this;
-        if (params && params.no_full_retrieve) {
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
             copy_to_clipboard( obj.dump_csv( params ) );
         } else {
             obj.wrap_in_full_retrieve( function() { copy_to_clipboard( obj.dump_csv( params ) ); } );
+        }
+    },
+
+    'dump_csv_to_printer' : function(params) {
+        var obj = this;
+        JSAN.use('util.print'); var print = new util.print();
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
+            print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
+        } else {
+            obj.wrap_in_full_retrieve( 
+                function() { 
+                    print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
+                }
+            );
+        }
+    },
+
+    'dump_csv_to_file' : function(params) {
+        var obj = this;
+        JSAN.use('util.file'); var f = new util.file();
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
+            params.data = obj.dump_csv( params );
+            params.not_json = true;
+            if (!params.title) params.title = 'Save List CSV As';
+            f.export_file( params );
+        } else {
+            obj.wrap_in_full_retrieve( 
+                function() { 
+                    params.data = obj.dump_csv( params );
+                    params.not_json = true;
+                    if (!params.title) params.title = 'Save List CSV As';
+                    f.export_file( params );
+                }
+            );
         }
     },
 
