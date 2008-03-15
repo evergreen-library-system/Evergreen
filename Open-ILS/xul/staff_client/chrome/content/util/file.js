@@ -227,6 +227,7 @@ util.file.prototype = {
 	'pick_file' : function(params) {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (typeof params == 'undefined') params = {};
             if (typeof params.mode == 'undefined') params.mode = 'open';
 			var nsIFilePicker = Components.interfaces.nsIFilePicker;
 			var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
@@ -235,6 +236,9 @@ util.file.prototype = {
                 typeof params.title == 'undefined' ? params.mode : params.title,
 				params.mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
 			);
+            if (params.defaultFileName) {
+                fp.defaultString = params.defaultFileName;
+            }
 			fp.appendFilters( nsIFilePicker.filterAll );
 			var fp_result = fp.show();
 			if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
