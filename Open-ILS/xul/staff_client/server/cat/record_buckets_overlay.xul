@@ -14,20 +14,47 @@
 </box>
 
 <vbox id="cmvb1" flex="1">
-	<groupbox flex="1">
-		<caption label="Pending Records" />
-		<hbox id="pending_buckets_top_ui" />
-		<tree id="pending_records_list" flex="1" enableColumnDrag="true"/>
-		<hbox id="pending_buckets_bottom_ui" />
-	</groupbox>
-	<splitter><grippy /></splitter>
-	<groupbox flex="2">
-		<caption label="Bucket View" />
-		<hbox id="record_buckets_top_ui" />
-		<hbox id="info_box" />
-		<tree id="records_in_bucket_list" flex="1" enableColumnDrag="true"/>
-		<hbox id="record_buckets_bottom_ui" />
-	</groupbox>
+    <tabbox id="record_buckets_tabbox" flex="1" persist="selectedIndex">
+        <tabs>
+            <tab id="record_query_tab" label="Record Query" accesskey="Q"/>
+            <tab id="pending_records_tab" label="Pending Records" accesskey="P"/>
+            <tab id="bucket_view_tab" label="Bucket View" accesskey="V" />
+        </tabs>
+        <tabpanels flex="1">
+            <tabpanel id="record_query_panel">
+            </tabpanel>
+            <tabpanel id="pending_records_panel">
+                <groupbox flex="1">
+                    <caption label="Pending Records" />
+                    <hbox id="pending_buckets_top_ui" />
+                    <tree id="pending_records_list" flex="1" enableColumnDrag="true"/>
+                    <hbox id="pending_buckets_bottom_ui" />
+                </groupbox>
+            </tabpanel>
+            <tabpanel id="bucket_view_panel">
+                <vbox flex="1">
+                    <hbox>
+                        <hbox id="record_buckets_menulist_placeholder" />
+                        <button id="record_buckets_action_list" label="Bucket Actions" type="menu" allowevents="true">
+                            <menupopup id="record_buckets_action_list_popup">
+                                <menuitem command="cmd_record_buckets_new_bucket" label="New Bucket"/>
+                                <menuitem command="cmd_record_buckets_delete_bucket" label="Delete Bucket"/>
+                                <menuitem command="cmd_record_buckets_refresh" label="Refresh"/>
+                            </menupopup>
+                        </button>
+                    </hbox>
+                    <groupbox flex="1">
+                        <caption>
+                            <hbox id="info_box" />
+                        </caption>
+                        <hbox id="record_buckets_top_ui" />
+                        <tree id="records_in_bucket_list" flex="1" enableColumnDrag="true"/>
+                        <hbox id="record_buckets_bottom_ui" />
+                    </groupbox>
+                </vbox>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
 </vbox>
 
 <hbox id="pending_buckets_bottom_ui">
@@ -41,22 +68,13 @@
         </menupopup>
     </button>
 	<spacer flex="1"/>
-	<button command="cmd_record_buckets_add" label="Add All" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
-	<button command="cmd_record_buckets_sel_add" label="Add Selected" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
+	<button command="cmd_record_buckets_add" label="Add All to current Bucket" accesskey="A" image="/xul/server/skin/media/images/right_arrow.png"/>
+	<button command="cmd_record_buckets_sel_add" label="Add Selected to current Bucket" accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
 </hbox>
 
 <hbox id="record_buckets_top_ui">
-	<hbox id="record_buckets_menulist_placeholder" />
-	<button id="record_buckets_action_list" label="Bucket Actions" type="menu" allowevents="true">
-        <menupopup id="record_buckets_action_list_popup">
-            <menuitem command="cmd_record_buckets_new_bucket" label="New Bucket"/>
-            <menuitem command="cmd_record_buckets_delete_bucket" label="Delete Bucket"/>
-            <menuitem command="cmd_record_buckets_refresh" label="Refresh"/>
-        </menupopup>
-    </button>
-	<spacer flex="1"/>
 	<button command="cmd_record_buckets_delete_item" label="Remove Selected from Bucket" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button command="cmd_pending_buckets_to_record_buckets" label="Add Selected to Bucket" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
+	<button command="cmd_pending_buckets_to_record_buckets" label="Add Selected to Pending Records" disabled="true" image="/xul/server/skin/media/images/left_arrow.png"/>
 </hbox>
 
 <hbox id="info_box" hidden="true" style="font-size: large;">

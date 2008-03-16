@@ -8,6 +8,8 @@ cat.record_buckets = function (params) {
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	this.first_pause = true;
+    var x = document.getElementById("record_buckets_tabbox");
+    if (x) x.selectedIndex = 2;
 };
 
 cat.record_buckets.pick_file = function (defaultFileName) {
@@ -409,6 +411,15 @@ cat.record_buckets.prototype = {
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
 								alert("Action completed.");
+								var x = document.getElementById('info_box');
+                                x.setAttribute('hidden','true');
+                                obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
+                                obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','true');
+                                obj.controller.view.record_buckets_export_records.disabled = true;
+                                obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
+                                obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
+                                obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
+                                obj.controller.view.record_buckets_list_actions.disabled = true;
 								obj.controller.render('record_buckets_menulist_placeholder');
 								setTimeout(
 									function() {
