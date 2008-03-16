@@ -277,7 +277,7 @@ cat.record_buckets.prototype = {
 										x = document.getElementById('bucket_owner');
 										var s = bucket.owner(); JSAN.use('patron.util');
 										if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); 
-										x.setAttribute('value',s.card().barcode() + " @ " + obj.data.hash.aou[ s.home_ou() ].shortname());
+										x.setAttribute('value',s.family_name() + ' (' + s.card().barcode() + ") @ " + obj.data.hash.aou[ s.home_ou() ].shortname());
 									} catch(E) {
 										alert(E);
 									}
