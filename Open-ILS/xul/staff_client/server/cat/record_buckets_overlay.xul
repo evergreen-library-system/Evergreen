@@ -42,6 +42,7 @@
                                 <menuitem command="cmd_record_buckets_refresh" label="Refresh"/>
                             </menupopup>
                         </button>
+                        <label id="bucket_item_count" />
                     </hbox>
                     <groupbox flex="1">
                         <caption>

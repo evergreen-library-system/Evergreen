@@ -263,7 +263,9 @@ cat.record_buckets.prototype = {
 									}
 									if (!bucket_id) return;
 									var x = document.getElementById('info_box');
-									x.setAttribute('hidden','true');
+									if (x) x.setAttribute('hidden','true');
+                                    x = document.getElementById('bucket_item_count');
+                                    if (x) x.setAttribute('label','');
                                     obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
                                     obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','true');
                                     obj.controller.view.record_buckets_export_records.disabled = true;
@@ -307,6 +309,9 @@ cat.record_buckets.prototype = {
 									}
 									var items = bucket.items() || [];
 									obj.list2.clear();
+                                    var x = document.getElementById('bucket_item_count');
+                                    var catStrings = document.getElementById('catStrings');    
+                                    if (x && catStrings) x.setAttribute('value',catStrings.getFormattedString('cat.total_bucket_items_in_bucket',[items.length]));
 									for (var i = 0; i < items.length; i++) {
 										var item = obj.prep_record_for_list( 
 											items[i].target_biblio_record_entry(),

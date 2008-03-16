@@ -80,6 +80,7 @@
 	</script>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
 	<commandset id="record_buckets_cmds">
 		<command id="sel_clip1" disabled="true"/>
