@@ -134,6 +134,7 @@ const api = {
 	'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve', 'secure' : false },
 	'FM_BRE_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve.authoritative', 'secure' : false },
 	'FM_BRE_ID_SEARCH_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.find_by_barcode', 'secure' : false },
+    'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.multiclass.query.staff' },
 	'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn', 'secure' : false },
 	'FM_BRE_DELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.delete', 'secure' : false },
 	'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn', 'secure' : false },

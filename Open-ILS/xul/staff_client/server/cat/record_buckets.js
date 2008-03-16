@@ -70,6 +70,7 @@ cat.record_buckets.export_records = function(obj, output_type) {
 
 
 cat.record_buckets.prototype = {
+	'selection_list0' : [],
 	'selection_list1' : [],
 	'selection_list2' : [],
 	'bucket_id_name_map' : {},
@@ -131,6 +132,35 @@ cat.record_buckets.prototype = {
             return row;
         }
 
+		obj.list0 = new util.list('record_query_list');
+		obj.list0.init(
+			{
+				'columns' : columns,
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
+				'on_select' : function(ev) {
+					try {
+						JSAN.use('util.functional');
+						var sel = obj.list0.retrieve_selection();
+						obj.controller.view.sel_clip1.setAttribute('disabled', sel.length < 1 ? "true" : "false");
+						obj.selection_list0 = util.functional.map_list(
+							sel,
+							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+						);
+						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 0 = ' + js2JSON(obj.selection_list1) );
+						if (obj.selection_list0.length == 0) {
+							obj.controller.view.cmd_add_sel_query_to_pending.setAttribute('disabled','true');
+						} else {
+							obj.controller.view.cmd_add_sel_query_to_pending.setAttribute('disabled','false');
+						}
+					} catch(E) {
+						alert('FIXME: ' + E);
+					}
+				},
+
+			}
+		);
+
 		obj.list1 = new util.list('pending_records_list');
 		obj.list1.init(
 			{
@@ -148,9 +178,9 @@ cat.record_buckets.prototype = {
 						);
 						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 1 = ' + js2JSON(obj.selection_list1) );
 						if (obj.selection_list1.length == 0) {
-							obj.controller.view.cmd_record_buckets_sel_add.setAttribute('disabled','true');
+							obj.controller.view.cmd_add_sel_pending_to_record_bucket.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.cmd_record_buckets_sel_add.setAttribute('disabled','false');
+							obj.controller.view.cmd_add_sel_pending_to_record_bucket.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -180,10 +210,10 @@ cat.record_buckets.prototype = {
 						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
 						if (obj.selection_list2.length == 0) {
 							obj.controller.view.cmd_record_buckets_delete_item.setAttribute('disabled','true');
-							obj.controller.view.cmd_pending_buckets_to_record_buckets.setAttribute('disabled','true');
+							obj.controller.view.cmd_record_buckets_to_pending_buckets.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.cmd_record_buckets_delete_item.setAttribute('disabled','false');
-							obj.controller.view.cmd_pending_buckets_to_record_buckets.setAttribute('disabled','false');
+							obj.controller.view.cmd_record_buckets_to_pending_buckets.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -204,6 +234,10 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() { obj.list1.save_columns(); }
 					],
+					'save_columns0' : [
+						['command'],
+						function() { obj.list0.save_columns(); }
+					],
 					'sel_clip2' : [
 						['command'],
 						function() { obj.list2.clipboard(); }
@@ -212,6 +246,23 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() { obj.list1.clipboard(); }
 					],
+					'sel_clip0' : [
+						['command'],
+						function() { obj.list0.clipboard(); }
+					],
+                    'record_query_input' : [
+                        ['render'],
+                        function(ev) {
+                            ev.addEventListener('keypress',function(ev){
+                                if (ev.target.tagName != 'textbox') return;
+                                if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.submit(); }, 0);
+                            },false);
+                        }
+                    ],
+                    'cmd_submit_query' : [
+                        ['command'],
+                        function() { obj.submit(); }
+                    ],
 					'record_buckets_menulist_placeholder' : [
 						['render'],
 						function(e) {
@@ -310,7 +361,6 @@ cat.record_buckets.prototype = {
 									var items = bucket.items() || [];
 									obj.list2.clear();
                                     var x = document.getElementById('bucket_item_count');
-                                    var catStrings = document.getElementById('catStrings');    
                                     if (x && catStrings) x.setAttribute('value',catStrings.getFormattedString('cat.total_bucket_items_in_bucket',[items.length]));
 									for (var i = 0; i < items.length; i++) {
 										var item = obj.prep_record_for_list( 
@@ -338,7 +388,43 @@ cat.record_buckets.prototype = {
                         }
                     ],
 
-					'cmd_record_buckets_add' : [
+					'cmd_add_all_query_to_pending' : [
+						['command'],
+						function() {
+    						obj.list0.select_all();
+							for (var i = 0; i < obj.selection_list0.length; i++) {
+								var docid = obj.selection_list0[i].docid;
+								try {
+									var item = obj.prep_record_for_list( docid );
+									if (!item) continue;
+									obj.list1.append( item );
+                                    obj.record_ids.push( docid );
+								} catch(E) {
+									alert( js2JSON(E) );
+								}
+							}
+						}
+					],
+
+					'cmd_add_sel_query_to_pending' : [
+						['command'],
+						function() {
+							for (var i = 0; i < obj.selection_list0.length; i++) {
+								var docid = obj.selection_list0[i].docid;
+								try {
+									var item = obj.prep_record_for_list( docid );
+									if (!item) continue;
+									obj.list1.append( item );
+                                    obj.record_ids.push( docid );
+								} catch(E) {
+									alert( js2JSON(E) );
+								}
+							}
+						}
+					],
+
+
+					'cmd_add_all_pending_to_record_bucket' : [
 						['command'],
 						function() {
 							var bucket_id = obj.controller.view.bucket_menulist.value;
@@ -364,7 +450,7 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-					'cmd_record_buckets_sel_add' : [
+					'cmd_add_sel_pending_to_record_bucket' : [
 						['command'],
 						function() {                                                        
 							var bucket_id = obj.controller.view.bucket_menulist.value;
@@ -392,7 +478,7 @@ cat.record_buckets.prototype = {
 
 						}
 					],
-					'cmd_pending_buckets_to_record_buckets' : [
+					'cmd_record_buckets_to_pending_buckets' : [
 						['command'],
 						function() {                                                        
 							for (var i = 0; i < obj.selection_list2.length; i++) {
@@ -502,10 +588,13 @@ cat.record_buckets.prototype = {
 						}
 					],
 					
+					'cmd_record_query_csv_to_clipboard' : [ ['command'], function() { obj.list0.dump_csv_to_clipboard(); } ], 
 					'cmd_pending_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list1.dump_csv_to_clipboard(); } ], 
 					'cmd_record_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list2.dump_csv_to_clipboard(); } ],
+                    'cmd_record_query_csv_to_printer' : [ ['command'], function() { obj.list0.dump_csv_to_printer(); } ],
                     'cmd_pending_buckets_csv_to_printer' : [ ['command'], function() { obj.list1.dump_csv_to_printer(); } ],
                     'cmd_record_buckets_csv_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
+                    'cmd_record_query_csv_to_file' : [ ['command'], function() { obj.list0.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
                     'cmd_pending_buckets_csv_to_file' : [ ['command'], function() { obj.list1.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
                     'cmd_record_buckets_csv_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
 
@@ -739,6 +828,48 @@ cat.record_buckets.prototype = {
 			obj.controller.view.cmd_sel_opac.setAttribute('disabled',true);
 		}
 	},
+
+    'submit' : function() {
+        try {
+            var obj = this;
+            obj.list0.clear();
+            var x = document.getElementById('record_query_input'); 
+            if (x.value == '') return;
+            var y = document.getElementById('query_status');
+            x.disabled = true;
+            if (y) y.value = 'Searching...';
+            obj.network.simple_request(
+                'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY',
+                [ {}, x.value, 1 ],
+                function(req) {
+                    try {
+                        var resp = req.getResultObject();
+                        if (y) y.value = catStrings.getFormattedString('cat.results_returned',[resp.count]);
+                        x.disabled = false;
+                        if (resp.count > 0) {
+                            JSAN.use('util.exec'); var exec = new util.exec();
+                            var funcs = [];
+                            for (var i = 0; i < resp.ids.length; i++) {
+                                funcs.push(
+                                    function(b){
+                                        return function() {
+                                            obj.list0.append(obj.prep_record_for_list(b));
+                                        };
+                                    }(resp.ids[i][0])
+                                );
+                            }
+                            exec.chain( funcs ); 
+                        }
+                        obj.controller.view.record_query_input.focus();
+                    } catch(E) {
+                        obj.error.standard_unexpected_error_alert('submit_query_callback',E);
+                    }
+                }
+            );
+        } catch(E) {
+            this.error.standard_unexpected_error_alert('submit_query',E);
+        }
+    },
 
 	'prep_record_for_list' : function(docid,bucket_item_id) {
 		var obj = this;

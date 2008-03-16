@@ -32,12 +32,16 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+        var catStrings;
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 				/* ugly hack so we don't have to upgrade the chrome for quick buckets */
 				if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
+
+                catStrings = document.getElementById('catStrings');    
 
                 if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
@@ -83,10 +87,16 @@
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
 	<commandset id="record_buckets_cmds">
+		<command id="sel_clip0" disabled="true"/>
 		<command id="sel_clip1" disabled="true"/>
 		<command id="sel_clip2" disabled="true"/>
+		<command id="save_columns0" />
 		<command id="save_columns1" />
 		<command id="save_columns2" />
+
+		<command id="cmd_record_query_csv_to_printer" />
+		<command id="cmd_record_query_csv_to_clipboard" />
+		<command id="cmd_record_query_csv_to_file" />
 
 		<command id="cmd_pending_buckets_csv_to_printer" />
 		<command id="cmd_pending_buckets_csv_to_clipboard" />
@@ -97,14 +107,17 @@
 		<command id="cmd_record_buckets_refresh" disabled="true"/>
 
     	<command id="cmd_record_buckets_delete_item" />
-    	<command id="cmd_pending_buckets_to_record_buckets" />
+    	<command id="cmd_record_buckets_to_pending_buckets" />
 
 		<command id="cmd_record_buckets_csv_to_printer" />
 		<command id="cmd_record_buckets_csv_to_clipboard" />
 		<command id="cmd_record_buckets_csv_to_file" />
 		
-        <command id="cmd_record_buckets_add" />
-        <command id="cmd_record_buckets_sel_add" />
+        <command id="cmd_add_all_query_to_pending" />
+        <command id="cmd_add_sel_query_to_pending" />
+
+        <command id="cmd_add_all_pending_to_record_bucket" />
+        <command id="cmd_add_sel_pending_to_record_bucket" />
 
 		<command id="cmd_merge_records" disabled="true" />
 		<command id="cmd_export_records_usmarc" />
@@ -113,6 +126,8 @@
 		<command id="cmd_export_records_bre" />
 		<command id="cmd_delete_records" disabled="true" />
 		<command id="cmd_sel_opac" disabled="true" />
+		
+        <command id="cmd_submit_query" />
 	</commandset>
 
 	<box id="record_buckets_main" />
