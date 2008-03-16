@@ -116,16 +116,16 @@ cat.record_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list1.retrieve_selection();
-						document.getElementById('clip_button1').disabled = sel.length < 1;
+						obj.controller.view.sel_clip1.setAttribute('disabled', sel.length < 1 ? "true" : "false");
 						obj.selection_list1 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
 						);
 						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 1 = ' + js2JSON(obj.selection_list1) );
 						if (obj.selection_list1.length == 0) {
-							obj.controller.view.record_buckets_sel_add.disabled = true;
+							obj.controller.view.cmd_record_buckets_sel_add.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.record_buckets_sel_add.disabled = false;
+							obj.controller.view.cmd_record_buckets_sel_add.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -146,22 +146,18 @@ cat.record_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list2.retrieve_selection();
-						document.getElementById('clip_button2').disabled = sel.length < 1;
+						obj.controller.view.sel_clip2.setAttribute('disabled', sel.length < 1 ? "true" : "false");
 						obj.selection_list2 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
 						);
 						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
 						if (obj.selection_list2.length == 0) {
-							obj.controller.view.record_buckets_delete_item.disabled = true;
-							obj.controller.view.record_buckets_delete_item.setAttribute('disabled','true');
-							obj.controller.view.record_buckets_export.disabled = true;
-							obj.controller.view.record_buckets_export.setAttribute('disabled','true');
+							obj.controller.view.cmd_record_buckets_delete_item.setAttribute('disabled','true');
+							obj.controller.view.cmd_pending_buckets_to_record_buckets.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.record_buckets_delete_item.disabled = false;
-							obj.controller.view.record_buckets_delete_item.setAttribute('disabled','false');
-							obj.controller.view.record_buckets_export.disabled = false;
-							obj.controller.view.record_buckets_export.setAttribute('disabled','false');
+							obj.controller.view.cmd_record_buckets_delete_item.setAttribute('disabled','false');
+							obj.controller.view.cmd_pending_buckets_to_record_buckets.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -240,6 +236,15 @@ cat.record_buckets.prototype = {
 										ev.target.setAttribute('value',bucket_id);
 									}
 									if (!bucket_id) return;
+									var x = document.getElementById('info_box');
+									x.setAttribute('hidden','true');
+                                    obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','true');
+                                    obj.controller.view.record_buckets_export_records.disabled = true;
+                                    obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
+                                    obj.controller.view.record_buckets_list_actions.disabled = true;
 									var bucket = obj.network.simple_request(
 										'BUCKET_FLESH',
 										[ ses(), 'biblio', bucket_id ]
@@ -253,6 +258,14 @@ cat.record_buckets.prototype = {
 										return;
 									}
 									try {
+                                        obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_record_buckets_refresh.setAttribute('disabled','false');
+                                        obj.controller.view.record_buckets_export_records.disabled = false;
+                                        obj.controller.view.cmd_merge_records.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_delete_records.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_sel_opac.setAttribute('disabled','false');
+                                        obj.controller.view.record_buckets_list_actions.disabled = false;
+
 										var x = document.getElementById('info_box');
 										x.setAttribute('hidden','false');
 										x = document.getElementById('bucket_number');
@@ -283,14 +296,18 @@ cat.record_buckets.prototype = {
 								}, false);
 								obj.controller.view.bucket_menulist = ml;
 								JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
-								document.getElementById('refresh').addEventListener( 'command', function() {
-									JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
-								}, false);
 							};
 						},
 					],
 
-					'record_buckets_add' : [
+                    'cmd_record_buckets_refresh' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                        }
+                    ],
+
+					'cmd_record_buckets_add' : [
 						['command'],
 						function() {
 							var bucket_id = obj.controller.view.bucket_menulist.value;
@@ -316,7 +333,7 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-					'record_buckets_sel_add' : [
+					'cmd_record_buckets_sel_add' : [
 						['command'],
 						function() {                                                        
 							var bucket_id = obj.controller.view.bucket_menulist.value;
@@ -344,7 +361,7 @@ cat.record_buckets.prototype = {
 
 						}
 					],
-					'record_buckets_export' : [
+					'cmd_pending_buckets_to_record_buckets' : [
 						['command'],
 						function() {                                                        
 							for (var i = 0; i < obj.selection_list2.length; i++) {
@@ -358,7 +375,7 @@ cat.record_buckets.prototype = {
 						}
 					],
 
-					'record_buckets_delete_item' : [
+					'cmd_record_buckets_delete_item' : [
 						['command'],
 						function() {
 							for (var i = 0; i < obj.selection_list2.length; i++) {
@@ -380,7 +397,7 @@ cat.record_buckets.prototype = {
 							);
 						}
 					],
-					'record_buckets_delete_bucket' : [
+					'cmd_record_buckets_delete_bucket' : [
 						['command'],
 						function() {
 							try {
@@ -405,7 +422,7 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-					'record_buckets_new_bucket' : [
+					'cmd_record_buckets_new_bucket' : [
 						['command'],
 						function() {
 							try {
@@ -668,7 +685,8 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-
+                    'record_buckets_export_records' : [ ['render'], function(){} ],
+                    'record_buckets_list_actions' : [ ['render'], function(){} ]
 				}
 			}
 		);

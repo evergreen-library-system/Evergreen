@@ -31,30 +31,32 @@
 </vbox>
 
 <hbox id="pending_buckets_bottom_ui">
-	<button id="pending_buckets_export_list" label="Export List" type="menu" allowevents="true">
-        <menupopup id="pending_buckets_export_actions">
+	<button id="pending_buckets_list_actions" label="List Actions" type="menu" allowevents="true">
+        <menupopup id="pending_buckets_list_actions_popup">
+        	<menuitem command="sel_clip1" label="Copy Field from selected row to Clipboard" disabled="true" />
     	    <menuitem command="cmd_pending_buckets_csv_to_printer" label="Print List CSV" />
         	<menuitem command="cmd_pending_buckets_csv_to_clipboard" label="Copy List CSV to Clipboard" accesskey=""/>
         	<menuitem command="cmd_pending_buckets_csv_to_file" label="Save List CSV to File" accesskey=""/>
+	        <menuitem command="save_columns1" label="Save List Configuration" />
         </menupopup>
     </button>
-	<button id="save_button1" command="save_columns1" label="Save Columns" />
-	<button id="clip_button1" command="sel_clip1" label="Copy to Clipboard" disabled="true" />
 	<spacer flex="1"/>
-	<button label="Add All" id="record_buckets_add" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
-	<button label="Add Selected" id="record_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
+	<button command="cmd_record_buckets_add" label="Add All" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
+	<button command="cmd_record_buckets_sel_add" label="Add Selected" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
 </hbox>
 
 <hbox id="record_buckets_top_ui">
 	<hbox id="record_buckets_menulist_placeholder" />
-	<button id="record_buckets_new_bucket" label="New Bucket"/>
-	<button id="record_buckets_delete_bucket" label="Delete Bucket"/>
-	<button id="refresh" label="Refresh"/>
+	<button id="record_buckets_action_list" label="Bucket Actions" type="menu" allowevents="true">
+        <menupopup id="record_buckets_action_list_popup">
+            <menuitem command="cmd_record_buckets_new_bucket" label="New Bucket"/>
+            <menuitem command="cmd_record_buckets_delete_bucket" label="Delete Bucket"/>
+            <menuitem command="cmd_record_buckets_refresh" label="Refresh"/>
+        </menupopup>
+    </button>
 	<spacer flex="1"/>
-	<button id="save_button2" command="save_columns2" label="Save Columns" />
-	<button id="clip_button2" command="sel_clip2" label="Copy to Clipboard" disabled="true" />
-	<button id="record_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button id="record_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
+	<button command="cmd_record_buckets_delete_item" label="Remove Selected from Bucket" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
+	<button command="cmd_pending_buckets_to_record_buckets" label="Add Selected to Bucket" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
 <hbox id="info_box" hidden="true" style="font-size: large;">
@@ -66,20 +68,22 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-	<button id="record_buckets_export_list" label="Export List" type="menu" allowevents="true">
-        <menupopup id="record_buckets_export_actions">
+	<button id="record_buckets_list_actions" label="List Actions" type="menu" allowevents="true" disabled="true">
+        <menupopup id="record_buckets_list_actions_popup">
+	        <menuitem command="sel_clip2" label="Copy Field from selected row to Clipboard" disabled="true" />
     	    <menuitem command="cmd_record_buckets_csv_to_printer" label="Print List CSV" />
           	<menuitem command="cmd_record_buckets_csv_to_clipboard" label="Copy List CSV to Clipboard" accesskey=""/>
           	<menuitem command="cmd_record_buckets_csv_to_file" label="Save List CSV to File" accesskey=""/>
+	        <menuitem command="save_columns2" label="Save List Configuration" />
         </menupopup>
     </button>
 	<spacer flex="1"/>
 	<hbox style="background: grey">
 		<vbox><spacer flex="1"/><label value="Batch:" style="font-weight: bold"/><spacer flex="1"/></vbox>
 		<button command="cmd_sel_opac" label="Show All in Catalog" accesskey="S"/>
-		<button id="record_buckets_delete_records" command="cmd_delete_records" label="Delete All Records"/>
-		<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
-		<button id="record_buckets_export_records" label="Export All Records" type="menu" allowevents="true">
+		<button command="cmd_delete_records" label="Delete All Records"/>
+		<button command="cmd_merge_records" label="Merge All Records"/>
+		<button id="record_buckets_export_records" label="Export All Records" type="menu" allowevents="true" disabled="true">
 			<menupopup id="record_buckets_export_record_types" allowevents="true">
 				<menuitem command="cmd_export_records_usmarc" label="MARC21"/>
 				<menuitem command="cmd_export_records_unimarc" label="UNIMARC"/>
