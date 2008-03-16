@@ -1285,6 +1285,231 @@ sub string_browse {
 	return Apache2::Const::OK;
 }
 
+our %qualifier_map = (
+
+    # Som EG qualifiers
+    'eg.site'               => 'site',
+    'eg.sort'               => 'sort',
+    'eg.direction'          => 'dir',
+    'eg.available'          => 'available',
+
+    # Title class:
+    'eg.title'              => 'title',
+    'dc.title'              => 'title',
+    'bib.titleabbreviated'  => 'title|abbreviated',
+    'bib.titleuniform'      => 'title|uniform',
+    'bib.titletranslated'   => 'title|translated',
+    'bib.titlealternative'  => 'title',
+    'bib.titleseries'       => 'series',
+    'eg.series'             => 'title',
+
+    # Author/Name class:
+    'eg.author'             => 'title',
+    'eg.name'               => 'title',
+    'creator'               => 'author',
+    'dc.creator'            => 'author',
+    'dc.contributer'        => 'author',
+    'dc.publisher'          => 'keyword',
+    'bib.name'              => 'author',
+    'bib.namepersonal'      => 'author|personal',
+    'bib.namepersonalfamily'=> 'author|personal',
+    'bib.namepersonalgiven' => 'author|personal',
+    'bib.namecorporate'     => 'author|corporate',
+    'bib.nameconference'    => 'author|conference',
+
+    # Subject class:
+    'eg.subject'            => 'subject',
+    'dc.subject'            => 'subject',
+    'bib.subjectplace'      => 'subject|geographic',
+    'bib.subjecttitle'      => 'keyword',
+    'bib.subjectname'       => 'subject|name',
+    'bib.subjectoccupation' => 'keyword',
+
+    # Keyword class:
+    'eg.keyword'            => 'keyword',
+    'srw.serverchoice'      => 'keyword',
+
+    # Identifiers:
+    'dc.identifier'         => 'keyword',
+
+    # Dates:
+    'bib.dateissued'        => undef,
+    'bib.datecreated'       => undef,
+    'bib.datevalid'         => undef,
+    'bib.datemodified'      => undef,
+    'bib.datecopyright'     => undef,
+
+    # Resource Type:
+    'dc.type'               => undef,
+
+    # Format:
+    'dc.format'             => undef,
+
+    # Genre:
+    'bib.genre'             => 'keyword',
+
+    # Target Audience:
+    'bib.audience'          => undef,
+
+    # Place of Origin:
+    'bib.originplace'       => undef,
+
+    # Language
+    'dc.language'           => 'lang',
+
+    # Edition
+    'bib.edition'           => 'keyword',
+
+    # Part:
+    'bib.volume'            => 'keyword',
+    'bib.issue'             => 'keyword',
+    'bib.startpage'         => 'keyword',
+    'bib.endpage'           => 'keyword',
+
+    # Issuance:
+    'bib.issuance'          => 'keyword',
+);
+
+our %qualifier_ids = (
+		eg => 'http://open-ils.org/spec/SRU/context-set/evergreen/v1',
+		dc => 'info:srw/cql-context-set/1/dc-v1.1',
+		bib => 'info:srw/cql-context-set/1/bib-v1.0',
+		srw	=> ''
+);
+
+our %nested_qualifier_map = (
+		eg => {
+			site		=> ['site','Evergreen Site Code (shortname)'],
+			sort		=> ['sort','Sort on relevance, title, author, pubdate, create_date or edit_date'],
+			direction	=> ['dir','Sort direction (asc|desc)'],
+			available	=> ['available','Filter to availble (true|false)'],
+			title		=> ['title'],
+			author		=> ['author'],
+			name		=> ['author'],
+			subject		=> ['subject'],
+			keyword		=> ['keyword'],
+			series		=> ['series'],
+		},
+		dc => {
+			title		=> ['title'],
+			creator		=> ['author'],
+			contributor	=> ['author'],
+			publisher	=> ['keyword'],
+			subject		=> ['subject'],
+			identifier	=> ['keyword'],
+			type		=> [undef],
+			format		=> [undef],
+			language	=> ['lang'],
+		},
+		bib => {
+		# Title class:
+	        titleAbbreviated	=> ['title'],
+		    titleUniform		=> ['title'],
+			titleTranslated		=> ['title'],
+	        titleAlternative	=> ['title'],
+		    titleSeries			=> ['series'],
+
+    # Author/Name class:
+			name				=> ['author'],
+			namePersonal		=> ['author'],
+			namePersonalFamily	=> ['author'],
+			namePersonalGiven	=> ['author'],
+			nameCorporate		=> ['author'],
+			nameConference		=> ['author'],
+
+		# Subject class:
+			subjectPlace		=> ['subject'],
+			subjectTitle		=> ['keyword'],
+			subjectName			=> ['subject|name'],
+			subjectOccupation	=> ['keyword'],
+
+    # Keyword class:
+
+    # Dates:
+			dateIssued			=> [undef],
+			dateCreated			=> [undef],
+			dateValid			=> [undef],
+			dateModified		=> [undef],
+			dateCopyright		=> [undef],
+
+    # Genre:
+			genre				=> ['keyword'],
+
+    # Target Audience:
+			audience			=> [undef],
+
+    # Place of Origin:
+			originPlace			=> [undef],
+
+    # Edition
+			edition				=> ['keyword'],
+
+    # Part:
+			volume				=> ['keyword'],
+			issue				=> ['keyword'],
+			startPage			=> ['keyword'],
+			endPage				=> ['keyword'],
+
+    # Issuance:
+			issuance			=> ['keyword'],
+		},
+		srw	=> {
+			serverChoice		=> ['keyword'],
+		},
+);
+
+
+my $base_explain = <<XML;
+<explain
+		id="evergreen-sru-explain-full"
+		authoritative="true"
+		xmlns:z="http://explain.z3950.org/dtd/2.0/"
+		xmlns="http://explain.z3950.org/dtd/2.0/">
+	<serverInfo transport="http" protocol="SRU" version="1.1">
+		<host/>
+		<port/>
+		<database/>
+	</serverInfo>
+
+	<databaseInfo>
+		<title primary="true"/>
+		<description primary="true"/>
+	</databaseInfo>
+
+	<indexInfo>
+		<set identifier="info:srw/cql-context-set/1/cql-v1.2" name="cql"/>
+	</indexInfo>
+
+	<schemaInfo>
+		<schema
+				identifier="info:srw/schema/1/marcxml-v1.1"
+				location="http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"
+				sort="true"
+				retrieve="true"
+				name="marcxml">
+			<title>MARC21Slim (marcxml)</title>
+		</schema>
+	</schemaInfo>
+
+	<configInfo>
+		<default type="numberOfRecords">10</default>
+		<default type="contextSet">eg</default>
+		<default type="index">keyword</default>
+		<default type="relation">all</default>
+		<default type="sortSchema">marcxml</default>
+		<default type="retrieveSchema">marcxml</default>
+		<setting type="maximumRecords">10</setting>
+		<supports type="relationModifier">relevant</supports>
+		<supports type="relationModifier">stem</supports>
+		<supports type="relationModifier">fuzzy</supports>
+		<supports type="relationModifier">word</supports>
+	</configInfo>
+
+</explain>
+XML
+
+
+my $ex_doc;
 sub sru_search {
     my $cgi = new CGI;
 
@@ -1319,11 +1544,76 @@ sub sru_search {
 
         $resp->numberOfRecords($recs->{count});
 
-    	print $cgi->header( -type => 'application/xml' );
-    	print entityize($resp->asXML) . "\n";
-	    return Apache2::Const::OK;
-    }
+    } elsif ( $resp->type eq 'explain' ) {
+		if (!$ex_doc) {
+			my $host = $cgi->virtual_host || $cgi->server_name;
+
+			my $add_path = 0;
+			if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+				my $rel_name = $cgi->url(-relative=>1);
+				$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+			}
+			my $base = $cgi->url(-base=>1);
+			my $url = $cgi->url(-path_info=>$add_path);
+			$url =~ s/^$base\///o;
+
+			my $doc = $parser->parse_string($base_explain);
+			my $e = $doc->documentElement;
+			$e->findnodes('/z:explain/z:serverInfo/z:host')->shift->appendText( $host );
+			$e->findnodes('/z:explain/z:serverInfo/z:port')->shift->appendText( $cgi->server_port );
+			$e->findnodes('/z:explain/z:serverInfo/z:database')->shift->appendText( $url );
+
+			for my $name ( keys %OpenILS::WWW::SuperCat::nested_qualifier_map ) {
+
+				my $identifier = $OpenILS::WWW::SuperCat::qualifier_ids{ $name };
+
+				next unless $identifier;
+
+				my $set_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'set' );
+				$set_node->setAttribute( identifier => $identifier );
+				$set_node->setAttribute( name => $name );
+
+				$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
+
+				for my $index ( keys %{ $OpenILS::WWW::SuperCat::nested_qualifier_map{$name} } ) {
+					my $desc = $OpenILS::WWW::SuperCat::nested_qualifier_map{$name}{$index}[1] || $index;
+
+					my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
+
+					my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
+					$map_node->appendChild( $name_node );
+
+					my $title_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'title' );
+
+					my $index_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'index' );
+					$index_node->appendChild( $title_node );
+					$index_node->appendChild( $map_node );
+
+					$index_node->setAttribute( id => $name . '.' . $index );
+					$title_node->appendText( $desc );
+					$name_node->setAttribute( set => $name );
+					$name_node->appendText($index );
+
+					$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
+				}
+			}
+
+			$ex_doc = $e->toString;
+		}
+
+		$resp->record(
+			SRU::Response::Record->new(
+				recordSchema	=> 'info:srw/cql-context-set/2/zeerex-1.1',
+				recordData		=> $ex_doc
+			)
+		);
+	}
+
+   	print $cgi->header( -type => 'application/xml' );
+   	print entityize($resp->asXML) . "\n";
+    return Apache2::Const::OK;
 }
+
 
 {
     package CQL::BooleanNode;
@@ -1343,85 +1633,6 @@ sub sru_search {
 
     package CQL::TermNode;
 
-    our %qualifier_map = (
-
-        # Som EG qualifiers
-        'eg.site'               => 'site',
-        'eg.sort'               => 'sort',
-        'eg.direction'          => 'dir',
-        'eg.available'          => 'available',
-
-        # Title class:
-        'dc.title'              => 'title',
-        'bib.titleabbreviated'  => 'title|abbreviated',
-        'bib.titleuniform'      => 'title|uniform',
-        'bib.titletranslated'   => 'title|translated',
-        'bib.titlealternative'  => 'title',
-        'bib.titleseries'       => 'series',
-
-        # Author/Name class:
-        'creator'               => 'author',
-        'dc.creator'            => 'author',
-        'dc.contributer'        => 'author',
-        'dc.publisher'          => 'keyword',
-        'bib.name'              => 'author',
-        'bib.namepersonal'      => 'author|personal',
-        'bib.namepersonalfamily'=> 'author|personal',
-        'bib.namepersonalgiven' => 'author|personal',
-        'bib.namecorporate'     => 'author|corporate',
-        'bib.nameconference'    => 'author|converence',
-
-        # Subject class:
-        'dc.subject'            => 'subject',
-        'bib.subjectplace'      => 'subject|geographic',
-        'bib.subjecttitle'      => 'keyword',
-        'bib.subjectname'       => 'subject|name',
-        'bib.subjectoccupation' => 'keyword',
-
-        # Keyword class:
-        'srw.serverchoice'      => 'keyword',
-
-        # Identifiers:
-        'dc.identifier'         => 'keyword',
-
-        # Dates:
-        'bib.dateissued'        => undef,
-        'bib.datecreated'       => undef,
-        'bib.datevalid'         => undef,
-        'bib.datemodified'      => undef,
-        'bib.datecopyright'     => undef,
-
-        # Resource Type:
-        'dc.type'               => undef,
-
-        # Format:
-        'dc.format'             => undef,
-
-        # Genre:
-        'bib.genre'             => 'keyword',
-
-        # Target Audience:
-        'bib.audience'          => undef,
-
-        # Place of Origin:
-        'bib.originplace'       => undef,
-
-        # Language
-        'dc.language'           => 'lang',
-
-        # Edition
-        'bib.edition'           => 'keyword',
-
-        # Part:
-        'bib.volume'            => 'keyword',
-        'bib.issue'             => 'keyword',
-        'bib.startpage'         => 'keyword',
-        'bib.endpage'           => 'keyword',
-
-        # Issuance:
-        'bib.issuance'          => 'keyword',
-    );
-
     sub toEvergreen {
         my $self      = shift;
         my $qualifier = $self->getQualifier();
@@ -1430,11 +1641,13 @@ sub sru_search {
 
         my $query;
         if ( $qualifier ) {
+			my ($qset, $qname) = split(/\./, $qualifier);
 
-            if ( exists($qualifier_map{lc($qualifier)}) ) {
-                $qualifier = $qualifier_map{lc($qualifier)} || 'kw';
-            }
+			warn "!!! $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n";
 
+            if ( exists($OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}) ) {
+                $qualifier = $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0] || 'kw';
+			}
 
             my @modifiers = $relation->getModifiers();
 
@@ -1456,11 +1669,12 @@ sub sru_search {
                 croak( "Evergreen doesn't support the $base relations" );
             }
 
-            return "$qualifier:$term";
 
         } else {
-            return "kw:$term";
+            $qualifier = "kw";
         }
+
+        return "$qualifier:$term";
     }
 }
 
