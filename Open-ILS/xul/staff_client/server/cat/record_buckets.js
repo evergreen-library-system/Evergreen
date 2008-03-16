@@ -832,9 +832,12 @@ cat.record_buckets.prototype = {
     'submit' : function() {
         try {
             var obj = this;
-            obj.list0.clear();
             var x = document.getElementById('record_query_input'); 
-            if (x.value == '') return;
+            if (x.value == '') {
+                setTimeout( function() { obj.controller.view.record_query_input.focus(); obj.controller.view.record_query_input.select(); }, 0 );
+                return;
+            }
+            obj.list0.clear();
             var y = document.getElementById('query_status');
             x.disabled = true;
             if (y) y.value = 'Searching...';
@@ -858,9 +861,16 @@ cat.record_buckets.prototype = {
                                     }(resp.ids[i][0])
                                 );
                             }
+                            funcs.push(
+                                function() {
+                                    obj.controller.view.record_query_input.focus();
+                                    obj.controller.view.record_query_input.select();
+                                }
+                            );
                             exec.chain( funcs ); 
+                        } else {
+                            setTimeout( function() { obj.controller.view.record_query_input.focus(); obj.controller.view.record_query_input.select(); }, 0 );
                         }
-                        obj.controller.view.record_query_input.focus();
                     } catch(E) {
                         obj.error.standard_unexpected_error_alert('submit_query_callback',E);
                     }

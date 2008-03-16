@@ -66,8 +66,11 @@
 </vbox>
 
 <hbox id="record_query_top_ui">
+    <label id="record_query_label" value="Query" accesskey="y" control="record_query_input"/>
     <textbox id="record_query_input" flex="1"/>
     <button command="cmd_submit_query" label="Submit" accesskey="S"/>
+    <button id="query_help" label="Help" accesskey="H" oncommand="window.open('/xul/server/locale/<!--#echo var='locale' -->/multiclass_search_help.html','multiclass_search_help','chrome,modal,resizable');" >
+    </button>
 </hbox>
 
 <hbox id="record_query_bottom_ui">
