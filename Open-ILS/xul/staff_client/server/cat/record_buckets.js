@@ -83,7 +83,7 @@ cat.record_buckets.prototype = {
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.record_ids.length; i++) {
-			var item = obj.flesh_item_for_list( obj.record_ids[i] );
+			var item = obj.prep_record_for_list( obj.record_ids[i] );
 			if (item) obj.list1.append( item );
 		}
 	},
@@ -109,11 +109,34 @@ cat.record_buckets.prototype = {
 
 		JSAN.use('util.list'); 
 
+        function retrieve_row(params) {
+            var row = params.row;
+            try {
+			    obj.network.simple_request( 'MODS_SLIM_RECORD_RETRIEVE.authoritative', [ row.my.docid ],
+                    function(req) {
+                        try {
+                            var record = req.getResultObject();
+                            if (typeof req.ilsevent != 'undefined') throw(req);
+                            row.my.mvr = record;
+                            if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert('Error retrieving mvr for record with id =' + row.my.docid, E);
+                        }
+                    }
+                );
+            } catch(E) {
+                obj.error.sdump('D_ERROR','retrieve_row: ' + E );
+            }
+            return row;
+        }
+
 		obj.list1 = new util.list('pending_records_list');
 		obj.list1.init(
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -144,6 +167,7 @@ cat.record_buckets.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -284,7 +308,7 @@ cat.record_buckets.prototype = {
 									var items = bucket.items() || [];
 									obj.list2.clear();
 									for (var i = 0; i < items.length; i++) {
-										var item = obj.flesh_item_for_list( 
+										var item = obj.prep_record_for_list( 
 											items[i].target_biblio_record_entry(),
 											items[i].id()
 										);
@@ -325,7 +349,7 @@ cat.record_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( obj.record_ids[i], robj );
+									var item = obj.prep_record_for_list( obj.record_ids[i], robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
@@ -352,7 +376,7 @@ cat.record_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( docid, robj );
+									var item = obj.prep_record_for_list( docid, robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
@@ -368,7 +392,7 @@ cat.record_buckets.prototype = {
 						function() {                                                        
 							for (var i = 0; i < obj.selection_list2.length; i++) {
 								var docid = obj.selection_list2[i].docid;
-								var item = obj.flesh_item_for_list( docid );
+								var item = obj.prep_record_for_list( docid );
 								if (item) {
 									obj.list1.append( item );
 									obj.record_ids.push( docid );
@@ -711,28 +735,23 @@ cat.record_buckets.prototype = {
 		}
 	},
 
-	'flesh_item_for_list' : function(docid,bucket_item_id) {
+	'prep_record_for_list' : function(docid,bucket_item_id) {
 		var obj = this;
 		try {
-			var record = obj.network.simple_request( 'MODS_SLIM_RECORD_RETRIEVE.authoritative', [ docid ]);
-			if (record == null || typeof(record.ilsevent) != 'undefined') {
-				throw(record);
-			} else {
-				var item = {
-					'retrieve_id' : js2JSON( { 'docid' : docid, 'bucket_item_id' : bucket_item_id } ),
-					'row' : {
-						'my' : {
-							'mvr' : record,
-						}
-					}
-				};
-				return item;
-			}
+            var item = {
+                'retrieve_id' : js2JSON( { 'docid' : docid, 'bucket_item_id' : bucket_item_id } ),
+                'row' : {
+                    'my' : {
+                        'docid' : docid,
+                        'bucket_item_id' : bucket_item_id
+                    }
+                }
+            };
+            return item;
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Could not retrieve this record: ' + docid,E);
 			return null;
 		}
-
 	},
 	
 };
