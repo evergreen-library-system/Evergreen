@@ -1461,6 +1461,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				);
 				buffer_free(join_buf);
 				free(field);
+				jsonObjectIteratorFree(search_itr);
 				return NULL;
 			}
 			fkey = strdup( fkey );
@@ -1478,6 +1479,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				);
 				buffer_free(join_buf);
 				free(fkey);
+				jsonObjectIteratorFree(search_itr);
 				return NULL;
 			}
 			field = strdup( field );
@@ -1524,6 +1526,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				jsonObjectIteratorFree(search_itr);
 				return NULL;
 			}
 
@@ -1664,7 +1667,8 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     );
                     buffer_free(sql_buf);
                     free(table);
-                    return NULL;
+					jsonObjectIteratorFree(search_itr);
+					return NULL;
                 }
 
                 char* subpred = searchPredicate( class, field, node->item );
@@ -2131,6 +2135,7 @@ static char* SELECT (
 			buffer_free(order_buf);
 			buffer_free(sql_buf);
 			if (defaultselhash) jsonObjectFree(defaultselhash);
+			jsonObjectIteratorFree(class_itr);
 			return NULL;
 		}
 
@@ -2796,6 +2801,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 									)
 								);
 							}
+							jsonObjectIteratorFree(_k);
 						}
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" )) || !(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
