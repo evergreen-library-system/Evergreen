@@ -4,25 +4,26 @@
 
 		<style type="text/css">
 			@import "/conify/js/dijit/themes/tundra/tundra.css";
-			@import "conify/js/dojo/resources/dojo.css"
+			@import "conify/js/dojo/resources/dojo.css";
 		</style>
 
 		<!-- The OpenSRF API writ JS -->
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opensrf.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opensrf_xhr.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/opensrf.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/opensrf_xhr.js' type='text/javascript'></script>
 
 		<!-- Fieldmapper objects -->
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmall.js' type='text/javascript'></script>
-		<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/fmgen.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/confiy/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/conify/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 		<script type="text/javascript">
 			dojo.require('dojo.parser');
+			dojo.require('dojo.data.ItemFileReadStore');
 			dojo.require('dijit.Tree');
 			dojo.require('dijit.layout.ContentPane');
 			dojo.require('dijit.layout.TabContainer');
@@ -37,12 +38,40 @@
 
 			var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
-			var ou_list_store = {label : 'shortname', identifier : 'id', items : [] };
+			var ou_list_data = {label : 'shortname', identifier : 'id' };
+			var ou_list_store;
 
 			var req = pCRUD.request({
-				method : 'open-ils.permacrud.search.aou',
-				params : [ses, { id : { "!=" : null } } ];
-				onresponse : function (r) { ou_list_store.items.push( r.recv().content.toHash() ); }
+				method : 'open-ils.permacrud.search.aou.atomic',
+				params : [ses, { id : { "!=" : null } } ],
+				onerror : function (r) { alert('Problem fetching org units'); },
+				onresponse : function (r) {
+					var _data = r.recv().content;
+
+					var item_data = [];
+					for (var i in _data) {
+						var ou = _data[i].toHash();
+						ou.children = [];
+
+						for (var j in _data) {
+							var kid = _data[i];
+							if (kid.parent_ou() == ou['id'])
+								ou.children.push( { _reference: kid.id() } );
+						}
+
+						item_data.push( ou );
+					}
+
+					alert(item_data.length);
+
+					ou_list_store.items = item_data;
+					ou_list_store = new dojo.data.ItemFileReadStore({ data : ou_list_data });
+
+					var t = dojo.byId('dijit_ou_tree');
+					t.setAttribute( 'store', 'ou_list_store' )
+					t.setAttribute( 'dojoType', 'dijit.Tree' )
+					dojo.parser.parse( t );
+				}
 			});
 			req.send();
 
@@ -57,9 +86,11 @@
 		  style="width: 100%; height: 100%;"
 		>
 			<div dojoType="dijit.layout.ContentPane" sizeMin="150">
-				<div id="dijit_ou_tree" dojoType="dijit.Tree" store="ou_list_store" label="Org Units"/>
+				<div id="dijit_ou_tree" label="Org Units"/>
 			</div>
-			<div dojoType="dijit.layout.ContentPane"/>
+			<div dojoType="dijit.layout.ContentPane">
+				stuff goes here
+			</div>
 		</div>
 
 	</body>
