@@ -1063,10 +1063,10 @@ circ.copy_status.prototype = {
 								'acn' : details.volume,
 								'atc' : details.transit,
 								'circ' : details.circ,
-								'ahr' : details.hold,
+								'ahr' : details.hold
 							}
 						},
-						'to_top' : true,
+						'to_top' : true
 					};
 					if (!refresh) {
 						var nparams = obj.list.append(params);

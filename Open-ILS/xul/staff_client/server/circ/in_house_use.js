@@ -25,7 +25,7 @@ circ.in_house_use.prototype = {
 				'status' : { 'hidden' : false },
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
-				'uses' : { 'hidden' : false },
+				'uses' : { 'hidden' : false }
 			} 
 		);
 
@@ -178,7 +178,7 @@ circ.in_house_use.prototype = {
 						['command'],
 						function() {
 						}
-					],
+					]
 				}
 			}
 		);
@@ -302,10 +302,10 @@ circ.in_house_use.prototype = {
 						'my' : {
 							'mvr' : mods,
 							'acp' : copy,
-							'uses' : result.length,
+							'uses' : result.length
 						}
 					},
-					'to_top' : true,
+					'to_top' : true
 				//I could override map_row_to_column here
 				}
 			);

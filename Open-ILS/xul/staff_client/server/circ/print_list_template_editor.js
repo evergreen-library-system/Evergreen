@@ -38,8 +38,8 @@ circ.print_list_template_editor.prototype = {
 					'change_given' : '0.00',
 					'credit_given' : '0.00',
 					'note' : "We refunded this because...",
-					'new_balance' : '16.36',
-				},
+					'new_balance' : '16.36'
+				}
 			}
 
 			this.test_list = {
@@ -85,7 +85,7 @@ circ.print_list_template_editor.prototype = {
 				'offline_checkout' : [],
 				'offline_checkin' : [],
 				'offline_renew' : [],
-				'offline_inhouse_use' : [],
+				'offline_inhouse_use' : []
 			}
 
 			obj.controller_init();
@@ -284,7 +284,7 @@ circ.print_list_template_editor.prototype = {
 									obj.controller.view.template_type_menu = ml;
 								}
 							}
-						],
+						]
 
 					}
 				}
@@ -311,7 +311,7 @@ circ.print_list_template_editor.prototype = {
 				'type' : this.controller.view.template_type_menu.value,
 				'list' : list,
 				'data' : data,
-				'sample_frame' : this.controller.view.sample,
+				'sample_frame' : this.controller.view.sample
 			};
 			JSAN.use('util.print'); var print = new util.print();
 			print.tree_list( params );
@@ -370,7 +370,7 @@ circ.print_list_template_editor.prototype = {
 		} catch(E) {
 			this.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.print_list_template.import.error'),E);
 		}
-	},
+	}
 
 }
 

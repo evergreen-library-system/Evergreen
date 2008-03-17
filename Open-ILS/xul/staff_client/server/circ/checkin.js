@@ -29,10 +29,10 @@ circ.checkin.prototype = {
 				'status' : { 'hidden' : false },
 				'route_to' : { 'hidden' : false },
 				'alert_message' : { 'hidden' : false },
-				'checkin_time' : { 'hidden' : false },
+				'checkin_time' : { 'hidden' : false }
 			},
 			{
-				'except_these' : [ 'uses', 'checkin_time_full' ],
+				'except_these' : [ 'uses', 'checkin_time_full' ]
 			}
 		);
 
@@ -76,8 +76,7 @@ circ.checkin.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
-
+				}
 			}
 		);
 		
@@ -260,7 +259,7 @@ circ.checkin.prototype = {
 						['command'],
 						function() {
 						}
-					],
+					]
 				}
 			}
 		);
@@ -365,10 +364,10 @@ circ.checkin.prototype = {
 							'acp' : checkin.copy,
 							'status' : checkin.status,
 							'route_to' : checkin.route_to,
-							'message' : checkin.message,
+							'message' : checkin.message
 						}
 					},
-					'to_top' : true,
+					'to_top' : true
 				//I could override map_row_to_column here
 				}
 			);
@@ -433,7 +432,7 @@ circ.checkin.prototype = {
 
 		JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
-	},
+	}
 
 }
 

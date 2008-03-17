@@ -872,7 +872,7 @@ circ.util.columns = function(modify,params) {
 			'flex' : 1,
 			'primary' : false,
 			'hidden' : true,
-			'render' : function(my) { return my.circ.xact_finish(); },
+			'render' : function(my) { return my.circ.xact_finish(); }
 		},
 		{
 			'persist' : 'hidden width ordinal',
@@ -1407,7 +1407,7 @@ circ.util.hold_columns = function(modify,params) {
 			'flex' : 0,
 			'primary' : false,
 			'hidden' : true,
-			'render' : function(my) { return my.ahr.hold_type(); },
+			'render' : function(my) { return my.ahr.hold_type(); }
 		},
         {
 			'persist' : 'hidden width ordinal',
@@ -1906,7 +1906,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 					},
 					'7010' : function(r) {
 						return r.payload;
-					},
+					}
 				}
 			}
 		);
