@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>clocking fun</title>
+		<style type="text/css">
+			@import "../resources/dojo.css";
+		</style>
+		<script type="text/javascript" src="../../../dojo/dojo.js" djConfig="isDebug:true"></script>
+		<script type="text/javascript" src="../functional.js"></script>
+		<script type="text/javascript">
+			dojo.addOnLoad(function(){
+				var LEN = 1000, ITER = 100, SUM = (LEN - 1) * LEN / 2;
+				var foldl_1 = function(/*Array*/ a, /*Function*/ f, /*Object*/ z){
+					for(var i = 0; i < a.length; z = f.call(dojo.global, z, a[i++]));
+					return z;
+				};
+				var foldl_2 = function(/*Array*/ a, /*Function*/ f, /*Object*/ z){
+					dojo.forEach(a, function(x){ z = f.call(dojo.global, z, x); });
+					return z;
+				};
+				var foldl_3 = function(/*Array*/ a, /*Function*/ f, /*Object*/ z){
+					a.forEach(function(x){ z = f.call(dojo.global, z, x); });
+					return z;
+				};
+				var sample = dojox.lang.functional.repeat(LEN, function(x){ return x + 1; }, 0);
+				console.profile("dojox.lang.functional.foldl");
+				for(var i = 0; i < ITER; ++i){
+					var t = dojox.lang.functional.foldl(sample, function(a, b){ return a + b; }, 0);
+					console.assert(t == SUM);
+				}
+				console.profileEnd("dojox.lang.functional.foldl");
+				console.profile("dojox.lang.functional.reduce");
+				for(var i = 0; i < ITER; ++i){
+					var t = dojox.lang.functional.reduce(sample, function(a, b){ return a + b; });
+					console.assert(t == SUM);
+				}
+				console.profileEnd("dojox.lang.functional.reduce");
+				console.profile("raw loop");
+				for(var i = 0; i < ITER; ++i){
+					var t = foldl_1(sample, function(a, b){ return a + b; }, 0);
+					console.assert(t == SUM);
+				}
+				console.profileEnd("raw loop");
+				console.profile("dojo.forEach");
+				for(var i = 0; i < ITER; ++i){
+					var t = foldl_2(sample, function(a, b){ return a + b; }, 0);
+					console.assert(t == SUM);
+				}
+				console.profileEnd("dojo.forEach");
+				console.profile("Array.forEach");
+				for(var i = 0; i < ITER; ++i){
+					var t = foldl_3(sample, function(a, b){ return a + b; }, 0);
+					console.assert(t == SUM);
+				}
+				console.profileEnd("Array.forEach");
+			});
+		</script>
+	</head>
+	<body>
+		<p>This test is meant to run on Firefox with Firebug installed.</p>
+	</body>
+</html>

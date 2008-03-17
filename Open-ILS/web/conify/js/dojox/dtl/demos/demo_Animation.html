@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>Testing dojox.dtl using animation to change attributes</title>
+		<script src="../../../dojo/dojo.js" djConfig="parseOnLoad: true, usePlainJson: true"></script>
+		<script>
+			dojo.require("dojox.dtl.widget");
+
+			dojo.provide("demo");
+
+			dojo.declare("demo.Animation", dojox.dtl._Widget,
+			{
+				buffer: 0, // Note: Sensitivity is 0 by default, but this is to emphasize we're not doing any buffering
+				constructor: function(props, node){
+					this.context = new dojox.dtl.Context({ x: 0, y: 0 });
+					this.template = new dojox.dtl.HtmlTemplate(dojo.moduleUrl("dojox.dtl.demos.templates", "animation.html"));
+				},
+				postCreate: function(){
+					this.render(this.template, this.context);
+					var anim = new dojo._Animation({
+						curve: [0, 300],
+						rate: 10,
+						duration: 5000,
+						easing: dojo._defaultEasing
+					});
+					dojo.connect(anim, "onAnimate", this, "_reDraw");
+					anim.play();
+				},
+				_reDraw: function(obj){
+					this.context.x = obj;
+					this.context.y = Math.sqrt(obj) * 10;
+
+					dojo.style(this.blue, "left", this.context.x);
+					dojo.style(this.blue, "top", this.context.y + 10);
+
+					this.render(this.template, this.context);
+				}
+			});
+
+			dojo.require("dojo.parser");
+		</script>
+	</head>
+	<body>
+		<div dojoType="dojox.dtl.AttachPoint">
+			<div dojoType="demo.Animation" />
+		</div>
+	</body>
+</html>
