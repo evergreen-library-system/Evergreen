@@ -734,8 +734,8 @@ function holdHandleCreateResponse(r, recurse) {
 
 	if(!recurse) {
 		var res = r.getResultObject();
-		if(!res || checkILSEvent(res) ) {
-			if(!res) {
+		if(checkILSEvent(res) || res.success != 1) {
+			if(res.success != 1) {
 				alert($('hold_not_allowed').innerHTML);
 			} else {
 				if( res.textcode == 'PATRON_BARRED' ) {
@@ -747,6 +747,7 @@ function holdHandleCreateResponse(r, recurse) {
 			swapCanvas($('holds_box'));
 			return;
 		}
+        r._hold.selection_depth(res.depth);
 	}	
 
 	holdCreateHold(r._recurse, r._hold);
