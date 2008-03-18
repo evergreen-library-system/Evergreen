@@ -364,7 +364,12 @@ BEGIN
             CONTINUE;
         END IF;
 
-        PERFORM 1 FROM biblio.record_entry b JOIN config.bib_source s ON (b.source = s.id) WHERE b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+        PERFORM 1
+          FROM  biblio.record_entry b
+                JOIN config.bib_source s ON (b.source = s.id)
+          WHERE s.transcendant
+                AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+
         IF FOUND THEN
             -- RAISE NOTICE ' % were all transcendant ... ', core_result.records;
             visible_count := visible_count + 1;
