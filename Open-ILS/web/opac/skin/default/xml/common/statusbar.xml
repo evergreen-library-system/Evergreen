@@ -13,7 +13,7 @@
 					</i>
 				</td>
                 <td align='right'>
-                    <!--#if expr="$OILS_PAGE='rresult.xml'"-->
+                    <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
                     <!--#include virtual="../result/filtersort.xml" -->
                     <!--#endif -->
                 </td>
