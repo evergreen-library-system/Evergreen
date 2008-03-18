@@ -1028,9 +1028,16 @@ sub check_title_hold {
             return {success => 0};
         }
 
-    } elsif(defined $soft_ceiling) {
-        $logger->info("performing hold possibility check with soft ceiling $soft_ceiling");
-        # XXX soft ceilings.  work up the tree until a potential copy is found
+    } elsif(defined $soft_ceiling and $$params{depth} < $soft_ceiling) {
+        my $depth = $soft_ceiling;
+        # work up the tree and as soon as we find a potential copy, use that depth
+        while($depth >= $$params{depth}) {
+            $logger->info("performing hold possibility check with soft ceiling $depth");
+            return {success => 1, depth => $depth}
+                if do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            $depth--;
+        }
+        return {success => 0};
 
     } else {
         $logger->info("performing hold possibility check with no ceiling");
