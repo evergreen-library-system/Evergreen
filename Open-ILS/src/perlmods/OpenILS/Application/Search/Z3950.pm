@@ -145,7 +145,7 @@ sub do_class_search {
 		my $ev = $connections[$index - 1]->last_event();
 		$logger->debug("z3950: Received event $ev");
 		if ($ev == OpenILS::Utils::ZClient::EVENT_END()) {
-			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset} );
+			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset}, $$args{service}[$index -1] );
 			$$munged{service} = $$args{service}[$index - 1];
 			$conn->respond($munged);
 		}
@@ -167,9 +167,9 @@ sub do_service_search {
 	
 	my $info = $services{$$args{service}};
 
-	$$args{host}	= $$info{host},
-	$$args{port}	= $$info{port},
-	$$args{db}		= $$info{db},
+	$$args{host}	= $$info{host};
+	$$args{port}	= $$info{port};
+	$$args{db}		= $$info{db};
 
 	return do_search( $self, $conn, $auth, $args );
 }
@@ -238,7 +238,7 @@ sub do_search {
 
 	return {result => $results, connection => $connection} if ($async);
 
-	my $munged = process_results($results, $limit, $offset);
+	my $munged = process_results($results, $limit, $offset, $$args{service});
 	$munged->{query} = $query;
 
 	return $munged;
@@ -253,8 +253,11 @@ sub process_results {
 	my $results	= shift;
 	my $limit	= shift || 10;
 	my $offset	= shift || 0;
+    my $service = shift;
 
-	$results->option(elementSetName => "FI"); # full records with no holdings
+    my $rformat = $services{$service}->{record_format} || 'FI';
+	$results->option(elementSetName => $rformat);
+    $logger->info("z3950: using record format '$rformat'");
 
 	my @records;
 	my $res = {};
