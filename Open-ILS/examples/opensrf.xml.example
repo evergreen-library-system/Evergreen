@@ -93,6 +93,8 @@ Example opensrf config file for OpenILS
                     <host>z3950.loc.gov</host>
                     <port>7090</port>
                     <db>Voyager</db>
+                    <!-- fetch the full record with no holdings. FI is the default -->
+                    <record_format>FI</record_format> 
                     <attrs>
                         <tcn><code>12</code><format>1</format></tcn>
                         <isbn><code>7</code><format>6</format></isbn>

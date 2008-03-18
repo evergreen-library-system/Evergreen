@@ -195,7 +195,7 @@ sub do_search {
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
-	my $munged = process_results($results, $limit, $offset);
+	my $munged = process_results($results, $limit, $offset, $$args{service});
 	$munged->{query} = $query;
 
 	return $munged;
@@ -210,8 +210,11 @@ sub process_results {
 	my $results	= shift;
 	my $limit	= shift;
 	my $offset	= shift;
+    my $service = shift;
 
-	$results->option(elementSetName => "FI"); # full records with no holdings
+    my $rformat = $services{$service}->{record_format} || 'FI';
+	$results->option(elementSetName => $rformat);
+    $logger->info("z3950: using record format '$rformat'");
 
 	my @records;
 	my $res = {};
