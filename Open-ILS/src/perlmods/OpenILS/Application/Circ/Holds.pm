@@ -967,6 +967,14 @@ sub fetch_captured_holds {
 	}
 }
 
+sub find_hold_ceilings {
+    my $org = shift;
+    return (
+        $U->ou_ancestor_setting_value($org, OILS_SETTING_HOLD_SOFT_CEILING),
+        $U->ou_ancestor_setting_value($org, OILS_SETTING_HOLD_HARD_CEILING)
+    );
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "check_title_hold",
@@ -989,7 +997,7 @@ sub check_title_hold {
 	my $titleid		= $params{titleid} ||"";
 	my $volid		= $params{volume_id};
 	my $copyid		= $params{copy_id};
-	my $mrid			= $params{mrid} ||"";
+	my $mrid		= $params{mrid} ||"";
 	my $depth		= $params{depth} || 0;
 	my $pickup_lib	= $params{pickup_lib};
 	my $hold_type	= $params{hold_type} || 'T';
@@ -1007,12 +1015,44 @@ sub check_title_hold {
 
 	return OpenILS::Event->new('PATRON_BARRED') if $U->is_true($patron->barred);
 
-	my $rangelib	= $params{range_lib} || $patron->home_ou;
-
 	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
 		or return $e->event;
 
-	$logger->info("checking hold possibility with type $hold_type");
+    my($soft_ceiling, $hard_ceiling) = find_hold_ceilings($selection_ou);
+
+    if(defined $hard_ceiling and $$params{depth} < $hard_ceiling) {
+        $logger->info("performing hold possibility check with hard ceiling $hard_ceiling");
+        if(do_possibility_checks($e, $patron, $request_lib, $hard_ceiling, %params)) {
+            return {success => 1, depth => $hard_ceiling}
+        } else {
+            return {success => 0};
+        }
+
+    } elsif(defined $soft_ceiling) {
+        $logger->info("performing hold possibility check with soft ceiling $soft_ceiling");
+        # XXX soft ceilings.  work up the tree until a potential copy is found
+
+    } else {
+        $logger->info("performing hold possibility check with no ceiling");
+        if(do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params)) {
+            return {success => 1, depth => $hard_ceiling};
+        } else {
+            return {success => 0};
+        }
+    }
+}
+
+sub do_possibility_checks {
+    my($e, $patron, $request_lib, $depth, %params) = @_;
+
+	my $titleid		= $params{titleid} ||"";
+	my $volid		= $params{volume_id};
+	my $copyid		= $params{copy_id};
+	my $mrid		= $params{mrid} ||"";
+	my $pickup_lib	= $params{pickup_lib};
+	my $hold_type	= $params{hold_type} || 'T';
+    my $selection_ou = $params{selection_ou} || $pickup_lib;
+
 
 	my $copy;
 	my $volume;
@@ -1036,12 +1076,12 @@ sub check_title_hold {
 			or return $e->event;
 
 		return _check_volume_hold_is_possible(
-			$volume, $title, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
+			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
+			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
@@ -1049,47 +1089,10 @@ sub check_title_hold {
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
 			return 1 if (_check_title_hold_is_possible(
-				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou));
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou));
 		}
 		return 0;	
 	}
-}
-
-
-
-sub ___check_title_hold_is_possible {
-	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
-
-	my $limit	= 10;
-	my $offset	= 0;
-	my $title;
-
-	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
-
-	while( $title = $U->storagereq(
-				'open-ils.storage.biblio.record_entry.ranged_tree', 
-				$titleid, $rangelib, $depth, $limit, $offset ) ) {
-
-		last unless 
-			ref($title) and 
-			ref($title->call_numbers) and 
-			@{$title->call_numbers};
-
-		for my $cn (@{$title->call_numbers}) {
-	
-			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
-	
-			for my $copy (@{$cn->copies}) {
-				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
-				return 1 if verify_copy_for_hold( 
-					$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
-				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
-			}
-		}
-
-		$offset += $limit;
-	}
-	return 0;
 }
 
 my %prox_cache;
@@ -1226,7 +1229,7 @@ sub create_ranged_org_filter {
 
 
 sub _check_title_hold_is_possible {
-	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+	my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
    
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
@@ -1339,7 +1342,7 @@ sub _check_title_hold_is_possible {
 
 
 sub _check_volume_hold_is_possible {
-	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+	my( $vol, $title, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
     my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
@@ -1394,7 +1397,7 @@ sub find_nearest_permitted_hold {
 	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
 
 
-    my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.hold_stalling.soft');
+    my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, OILS_SETTING_HOLD_SOFT_STALL);
 
 	$logger->info("circulator: searching for best hold at org ".$user->ws_ou.
         " and copy $bc with a hold stalling interval of ". ($hold_stall_interval || "(none)"));
