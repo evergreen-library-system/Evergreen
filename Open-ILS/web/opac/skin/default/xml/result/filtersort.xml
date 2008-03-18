@@ -1,6 +1,6 @@
 <span>
-    &result.limit2avail;<input type='checkbox' id='opac.result.limit2avail' onclick='searchBarSubmit();'/>
-    <select id='opac.result.sort' onchange='searchBarSubmit();'>
+    &result.limit2avail;<input type='checkbox' id='opac.result.limit2avail' onclick='searchBarSubmit(true);'/>
+    <select id='opac.result.sort' onchange='searchBarSubmit(true);'>
         <option selected='selected' value=''>&result.sort_by;</option>
         <optgroup label='&result.sort_by.title;'>
             <option id='opac.result.title.a2z' label='&common.a2z.titla;' value='title.asc'>&common.a2z.title;</option>
