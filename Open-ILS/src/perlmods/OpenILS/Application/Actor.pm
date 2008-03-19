@@ -119,21 +119,21 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
-	my( $self, $client, $user_session, $uid, $setting ) = @_;
-	
-	my( $staff, $user, $evt ) = 
-		$apputils->checkses_requestor( $user_session, $uid, 'VIEW_USER' );
-	return $evt if $evt;
+	my( $self, $client, $auth, $user_id, $setting ) = @_;
 
-	$logger->debug("User " . $staff->id . " fetching user $uid\n");
-	my $s = $apputils->simplereq(
-		'open-ils.cstore',
-		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
+    my $patron = $e->retrieve_actor_user($user_id) or return $e->event;
+    if($e->requestor->id != $user_id) {
+        return $e->event unless $e->allowed('VIEW_USER', $patron->home_ou);
+    }
+
+    my $s = $e->search_actor_user_setting({usr => $user_id});
 	my $settings =  { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
 
-   return $$settings{$setting} if $setting;
-   return $settings;
+    return $$settings{$setting} if $setting;
+    return $settings;
 }
 
 
@@ -2963,10 +2963,6 @@ sub create_user_opt_in_at_org {
 
     return $opt_in->id;
 }
-
-
-
-
 
 
 1;
