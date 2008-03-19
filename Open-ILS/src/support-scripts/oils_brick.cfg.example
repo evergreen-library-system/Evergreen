@@ -1,3 +1,5 @@
+# install prefix
+export PREFIX=/openils
 # this is the lead machine
 export MASTER="10.1.0.10"
 # array of drone machines
@@ -8,8 +10,6 @@ export LDIRECTOR_FILE="/$PREFIX/var/web/ldirectorping.txt"
 export OILS_SRC_DIR=/home/opensrf/current
 # OpenSRF sources directory
 export OSRF_SRC_DIR=/home/opensrf/OpenSRF-0.9
-# install prefix
-export PREFIX=/openils
 # XUL install prefix
 export XUL_BASE="/$PREFIX/var/web/xul"
 # OpenSRF bootstrap config
