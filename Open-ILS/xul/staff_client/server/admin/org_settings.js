@@ -140,7 +140,7 @@ function osUpdate( setting, allOrgs ) {
 
 function osUpdateOrg( setting, value, org ) {
 	var s = {};
-	s[setting] = value;
+    s[setting] = (value.match(/^\s*$/) == null) ? value : null;
 	var req = new Request(ORG_SETTING_UPDATE, SESSION, org, s);
 	req.request.alertEvent = false;
 	req.send(true);
