@@ -967,15 +967,6 @@ sub fetch_captured_holds {
 	}
 }
 
-sub find_hold_ceilings {
-    my $org = shift;
-    return (
-        $U->ou_ancestor_setting_value($org, OILS_SETTING_HOLD_SOFT_CEILING),
-        $U->ou_ancestor_setting_value($org, OILS_SETTING_HOLD_HARD_CEILING)
-    );
-}
-
-
 __PACKAGE__->register_method(
 	method	=> "check_title_hold",
 	api_name	=> "open-ils.circ.title_hold.is_possible",
@@ -1018,31 +1009,40 @@ sub check_title_hold {
 	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
 		or return $e->event;
 
-    my($soft_ceiling, $hard_ceiling) = find_hold_ceilings($selection_ou);
+    my $soft_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_SOFT_BOUNDARY);
+    my $hard_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_HARD_BOUNDARY);
 
-    if(defined $hard_ceiling and $$params{depth} < $hard_ceiling) {
-        $logger->info("performing hold possibility check with hard ceiling $hard_ceiling");
-        if(do_possibility_checks($e, $patron, $request_lib, $hard_ceiling, %params)) {
-            return {success => 1, depth => $hard_ceiling}
-        } else {
-            return {success => 0};
-        }
-
-    } elsif(defined $soft_ceiling and $$params{depth} < $soft_ceiling) {
-        my $depth = $soft_ceiling;
+    if(defined $soft_boundary and $$params{depth} < $soft_boundary) {
         # work up the tree and as soon as we find a potential copy, use that depth
-        while($depth >= $$params{depth}) {
-            $logger->info("performing hold possibility check with soft ceiling $depth");
+        # also, make sure we don't go past the hard boundary if it exists
+
+        # our min boundary is the greater of user-specified boundary or hard boundary
+        my $min_depth = (defined $hard_boundary and $hard_boundary > $$params{depth}) ?  
+            $hard_boundary : $$params{depth};
+
+        my $depth = $soft_boundary;
+        while($depth >= $min_depth) {
+            $logger->info("performing hold possibility check with soft boundary $depth");
             return {success => 1, depth => $depth}
                 if do_possibility_checks($e, $patron, $request_lib, $depth, %params);
             $depth--;
         }
         return {success => 0};
 
+    } elsif(defined $hard_boundary and $$params{depth} < $hard_boundary) {
+        # there is no soft boundary, enforce the hard boundary if it exists
+        $logger->info("performing hold possibility check with hard boundary $hard_boundary");
+        if(do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params)) {
+            return {success => 1, depth => $hard_boundary}
+        } else {
+            return {success => 0};
+        }
+
     } else {
-        $logger->info("performing hold possibility check with no ceiling");
+        # no boundaries defined, fall back to user specifed boundary or no boundary
+        $logger->info("performing hold possibility check with no boundary");
         if(do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params)) {
-            return {success => 1, depth => $hard_ceiling};
+            return {success => 1, depth => $hard_boundary};
         } else {
             return {success => 0};
         }
