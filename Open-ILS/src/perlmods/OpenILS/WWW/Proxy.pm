@@ -15,10 +15,12 @@ use OpenSRF::System;
 # set the bootstrap config and template include directory when 
 # this module is loaded
 my $bootstrap;
+my $ssl_off;
 
 sub import {
 	my $self = shift;
 	$bootstrap = shift;
+	$ssl_off = shift;
 }
 
 
@@ -45,7 +47,7 @@ sub handler {
 	my $url = $cgi->url;
 
 	# push everyone to the secure site
-	if ($url =~ /^http:/o) {
+	if (!$ssl_off && $url =~ /^http:/o) {
 		$url =~ s/^http:/https:/o;
 		print "Location: $url\n\n";
 		return Apache2::Const::OK;
