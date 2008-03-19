@@ -79,8 +79,8 @@ econst OILS_SETTING_CHARGE_LOST_ON_ZERO => 'circ.charge_lost_on_zero';
 econst OILS_SETTING_VOID_OVERDUE_ON_LOST => 'circ.void_overdue_on_lost';
 econst OILS_SETTING_HOLD_SOFT_STALL => 'circ.hold_stalling.soft';
 econst OILS_SETTING_HOLD_HARD_STALL => 'circ.hold_stalling.hard';
-econst OILS_SETTING_HOLD_SOFT_CEILING => 'circ.hold_ceiling.soft';
-econst OILS_SETTING_HOLD_HARD_CEILING => 'circ.hold_ceiling.hard';
+econst OILS_SETTING_HOLD_SOFT_BOUNDARY => 'circ.hold_boundary.soft';
+econst OILS_SETTING_HOLD_HARD_BOUNDARY => 'circ.hold_boundary.hard';
 
 
 
