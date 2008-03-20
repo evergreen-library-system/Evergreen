@@ -3,8 +3,8 @@
 		<title>Confiy :: Global :: Actor :: Org Units</title>
 
 		<style type="text/css">
-			@import "/conify/js/dijit/themes/tundra/tundra.css";
-			@import "conify/js/dojo/resources/dojo.css";
+			@import "/conify/js/dijit/themes/tundra/tundra.css">;
+			@import "/conify/js/dojo/resources/dojo.css";
 		</style>
 
 		<!-- The OpenSRF API writ JS -->
@@ -20,8 +20,9 @@
 		<script language='javascript' src='/opac/common/js/fmgen.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/conify/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/conify/js/dojo/dojo.js.uncompressed.js" djConfig="parseOnLoad: true"></script>
 		<script type="text/javascript">
+			dojo.require('conify.fieldmapper.addToHash', true);
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileReadStore');
 			dojo.require('dijit.Tree');
@@ -33,51 +34,11 @@
 		<script type="text/javascript">
 			var cgi = new CGI();
 			var cookieManager = new HTTP.Cookies();
-
 			var ses = cookieManager.read('ses') || cgi.param('ses');
-
 			var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
-
-			var ou_list_data = {label : 'shortname', identifier : 'id' };
-			var ou_list_store;
-
-			var req = pCRUD.request({
-				method : 'open-ils.permacrud.search.aou.atomic',
-				params : [ses, { id : { "!=" : null } } ],
-				onerror : function (r) { alert('Problem fetching org units'); },
-				onresponse : function (r) {
-					var _data = r.recv().content;
-
-					var item_data = [];
-					for (var i in _data) {
-						var ou = _data[i].toHash();
-						ou.children = [];
-
-						for (var j in _data) {
-							var kid = _data[i];
-							if (kid.parent_ou() == ou['id'])
-								ou.children.push( { _reference: kid.id() } );
-						}
-
-						item_data.push( ou );
-					}
-
-					alert(item_data.length);
-
-					ou_list_store.items = item_data;
-					ou_list_store = new dojo.data.ItemFileReadStore({ data : ou_list_data });
-
-					var t = dojo.byId('dijit_ou_tree');
-					t.setAttribute( 'store', 'ou_list_store' )
-					t.setAttribute( 'dojoType', 'dijit.Tree' )
-					dojo.parser.parse( t );
-				}
-			});
-			req.send();
-
 		</script>
 	</head>
-	<body>
+	<body class="tundra" id='pagebody'>
 
 		<div
 		  dojoType="dijit.layout.SplitContainer"
@@ -86,7 +47,52 @@
 		  style="width: 100%; height: 100%;"
 		>
 			<div dojoType="dijit.layout.ContentPane" sizeMin="150">
-				<div id="dijit_ou_tree" label="Org Units"/>
+				<script type="dojo/method">
+
+					var ou_list_data = {label : 'shortname', identifier : 'id' };
+		
+					var req = pCRUD.request({
+						method : 'open-ils.permacrud.search.aou.atomic',
+						timeout : 10,
+						params : [ ses, { id : { "!=" : null } } ],
+						onerror : function (r) { throw 'Problem fetching org units';},
+					});
+					req.send();
+		
+					var _data = req.recv().content();
+					var ou_hash_list = [];
+					for (var i in _data) ou_hash_list.push( _data[i].toHash() );
+
+					var _find_root = {};
+					for (var i in ou_hash_list) _find_root[ou_hash_list[i].id] = ou_hash_list[i]; 
+		
+					var item_data = [];
+					for (var i in ou_hash_list) {
+						var ou = ou_hash_list[i]
+						ou.children = [];
+		
+						for (var j in ou_hash_list) {
+							var kid = ou_hash_list[j];
+							if (kid.parent_ou == ou.id) {
+								ou.children.push({ _reference: kid.id });
+								if (_find_root[kid.id]) delete _find_root[kid.id];
+							}
+						}
+
+						item_data.push( ou );
+					}
+
+					for (var i in _find_root) {
+						_find_root.isTop = true;
+					}
+
+					ou_list_data.items = item_data;
+					window.ou_list_store = new dojo.data.ItemFileReadStore({ data : ou_list_data });
+
+					alert(js2JSON(item_data));
+
+				</script>
+				<div id="dijit_ou_tree" label="Oragnizational Units" query='{isTop:true}' dojoType="dijit.Tree" store="ou_list_store"/>
 			</div>
 			<div dojoType="dijit.layout.ContentPane">
 				stuff goes here
