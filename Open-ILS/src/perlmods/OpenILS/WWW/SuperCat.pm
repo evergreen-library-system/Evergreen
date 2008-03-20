@@ -699,7 +699,7 @@ sub bookbag_feed {
 	$feed->update_ts(gmtime_ISO8601());
 
 	$feed->link(alternate => $base . "/rss2-full/$id" => 'application/rss+xml');
-	$feed->link(atom => $base . "/atmo-full/$id" => 'application/atom+xml');
+	$feed->link(atom => $base . "/atom-full/$id" => 'application/atom+xml');
 	$feed->link(html => $base . "/html-full/$id" => 'text/html');
 	$feed->link(unapi => $unapi);
 
