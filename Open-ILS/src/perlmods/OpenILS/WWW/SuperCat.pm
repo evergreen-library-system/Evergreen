@@ -734,7 +734,7 @@ sub changes_feed {
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
-	my $base = (split 'freshmeat', $url)[0] . 'freshmeat';
+	my $base = (split 'freshmeat', $url)[0] . '/freshmeat';
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
 	my $path = $cgi->path_info;
