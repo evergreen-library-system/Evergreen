@@ -231,7 +231,7 @@ sub new {
 	my $self = $class->SUPER::build('<feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/atom+xml';
 	$self->{item_xpath} = '/atom:feed';
 	return $self;
 }
@@ -295,7 +295,7 @@ sub new {
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{item_xpath} = '/atom:entry';
 	$self->{holdings_xpath} = '/atom:entry';
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/atom+xml';
 	return $self;
 }
 
@@ -308,7 +308,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<rss version="2.0"><channel/></rss>');
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/rss+xml';
 	$self->{item_xpath} = '/rss/channel';
 	return $self;
 }
@@ -357,7 +357,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/rss+xml';
 	$self->{item_xpath} = '/item';
 	$self->{holdings_xpath} = '/item';
 	return $self;
