@@ -794,7 +794,9 @@ sub staged_search {
             # retrieve the window of results from the database
             $logger->debug("staged search: fetching results from the database");
             $search_hash->{skip_check} = $page * $PAGE_SIZE;
+            my $start = time;
             $results = $U->storagereq($method, %$search_hash);
+            $logger->info("staged search: DB call took ".(time - $start)." seconds");
             $summary = shift(@$results);
 
             # Create backwards-compatible result structures
