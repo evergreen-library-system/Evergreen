@@ -101,6 +101,7 @@ function resultFireXRefBatch(treeName, xrefCache, stype) {
 	var query = [];
 	for( var i = 0; i != xrefCache.length; i++ ) {
 		var topic = xrefCache[i];
+        topic.term = (topic.term+'').replace(/\\/g,'');
 		query.push( [ topic.type, topic.term ] );
 	}
 	var req = new Request(FETCH_CROSSREF_BATCH, query);

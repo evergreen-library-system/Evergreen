@@ -42,7 +42,7 @@
 <!ENTITY common.user_not_found "User not found">
 <!ENTITY opac.advanced.wizard.title "Advanced Search">
 <!ENTITY common.nowSearching "Now searching ">
-<!ENTITY common.ofAtLeast " of at least ">
+<!ENTITY common.ofAtLeast " of about ">
 <!ENTITY common.relevancy "Match Score: ">
 <!ENTITY common.tips "Tips:">
 <!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">

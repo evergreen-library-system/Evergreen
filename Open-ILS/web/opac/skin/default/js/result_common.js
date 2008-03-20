@@ -77,6 +77,8 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
 
+    TERM = (TERM+'').replace(/\\/g,'');
+
 	_debug('Search args: ' + js2JSON(args));
 	_debug('Raw query: ' + getTerm());
 
@@ -340,11 +342,13 @@ function resultPaginate() {
 		if( getHitCount() % getDisplayCount() == 0 ) 
 			args[PARAM_OFFSET] -= getDisplayCount();
 
+        /*
 		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
 
 		$('end_link2').setAttribute("href", buildOPACLink(args)); 
 		addCSSClass($('end_link2'), config.css.result.nav_active);
+        */
 	}
 
 	if( o > 0 ) {
