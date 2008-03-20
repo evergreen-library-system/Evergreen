@@ -912,8 +912,12 @@ sub opensearch_feed {
 	$lang = '' if ($lang eq '*');
 
 	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
+	$sort ||= '';
 	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
-	$terms .= " " . $cgi->param('searchTerms') if $cgi->param('searchTerms');
+	$sortdir ||= '';
+
+	$terms .= " " if ($terms && $cgi->param('searchTerms'));
+	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
 	$class ||= '-';
@@ -931,11 +935,16 @@ sub opensearch_feed {
 	my $sut = $cgi->param('su');
 	my $set = $cgi->param('se');
 
-	$terms .= " keyword: $kwt" if ($kwt);
-	$terms .= " title: $tit" if ($tit);
-	$terms .= " author: $aut" if ($aut);
-	$terms .= " subject: $sut" if ($sut);
-	$terms .= " series: $set" if ($set);
+	$terms .= " " if ($terms && $kwt);
+	$terms .= "keyword: $kwt" if ($kwt);
+	$terms .= " " if ($terms && $tit);
+	$terms .= "title: $tit" if ($tit);
+	$terms .= " " if ($terms && $aut);
+	$terms .= "author: $aut" if ($aut);
+	$terms .= " " if ($terms && $sut);
+	$terms .= "subject: $sut" if ($sut);
+	$terms .= " " if ($terms && $set);
+	$terms .= "series: $set" if ($set);
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -944,13 +953,6 @@ sub opensearch_feed {
 	}
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
-	$terms = decode_utf8($terms);
-	$terms =~ s/\+/ /go;
-	$terms =~ s/'//go;
-	$terms =~ s/^\s+//go;
-	my $term_copy = $terms;
-
-	my $complex_terms = 0;
 	if ($terms eq 'help') {
 		print $cgi->header(-type => 'text/html');
 		print <<"		HTML";
@@ -966,93 +968,56 @@ sub opensearch_feed {
 		return Apache2::Const::OK;
 	}
 
-	my $cache_key = '';
-	my $searches = {};
-	while ($term_copy =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang):[^:]+)$//so) {
-		my ($c,$t) = split ':' => $1;
-		if ($c eq 'site') {
-			$org = $t;
-			$org =~ s/^\s*//o;
-			$org =~ s/\s*$//o;
-		} elsif ($c eq 'sort') {
-			($sort = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'dir') {
-			($sortdir = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'lang') {
-			($lang = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} else {
-			$$searches{$c}{term} .= ' '.$t;
-			$cache_key .= $c . $t;
-			$complex_terms = 1;
-		}
-	}
-
+	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
 
-	if ($term_copy) {
-		no warnings;
-		$class = 'keyword' if ($class eq '-');
-		$$searches{$class}{term} .= " $term_copy";
-		$cache_key .= $class . $term_copy;
-	}
+	$log->debug("OpenSearch terms: $terms");
 
 	my $org_unit;
 	if ($org eq '-') {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => parent_ou => undef
 		)->gather(1);
-	} else {
+	} elsif ($org !~ /^\d+$/o) {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
 		)->gather(1);
-	}
-
-	{ no warnings; $cache_key .= $org.$sort.$sortdir.$lang; }
-
-	my $rs_name = $cgi->cookie('os_session');
-	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
-
-	my $recs;
-	if (!($recs = $$cached_res{os_results}{$cache_key})) {
-		$rs_name = $cgi->remote_host . '::' . rand(time);
-		$recs = $search->request(
-			'open-ils.search.biblio.multiclass' => {
-				searches	=> $searches,
-				org_unit	=> $org_unit->[0]->id,
-				offset		=> 0,
-				limit		=> 5000,
-				($sort ?    ( 'sort'     => $sort    ) : ()),
-				($sortdir ? ( 'sort_dir' => $sortdir ) : ($sort ? (sort_dir => 'asc') : (sort_dir => 'desc') )),
-				($lang ?    ( 'language' => $lang    ) : ()),
-			}
+	} else {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => id => $org
 		)->gather(1);
-		try {
-			$$cached_res{os_results}{$cache_key} = $recs;
-			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
-		} catch Error with {
-			warn "supercat unable to store IDs in memcache server\n";
-			$logger->error("supercat unable to store IDs in memcache server");
-		};
 	}
+
+    my $recs = $search->request(
+        'open-ils.search.biblio.multiclass.query' => {
+				org_unit	=> $org_unit->[0]->id,
+			offset		=> $offset - 1,
+			limit		=> $limit,
+			sort		=> $sort,
+			sort_dir	=> $sortdir,
+				($lang ?    ( 'language' => $lang    ) : ()),
+		} => $terms => 1
+		)->gather(1);
+
+	$log->debug("Hits for [$terms]: $recs->{count}");
 
 	my $feed = create_record_feed(
 		'record',
 		$type,
-		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
+		[ map { $_->[0] } @{$recs->{ids}} ],
 		$unapi,
 		$org,
 		$flesh_feed
 	);
+
+	$log->debug("Feed created...");
+
 	$feed->root($root);
 	$feed->lib($org);
 	$feed->search($terms);
 	$feed->class($class);
 
-	if ($complex_terms) {
 		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
-	} else {
-		$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
-	}
 
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
@@ -1077,6 +1042,8 @@ sub opensearch_feed {
 		'itemsPerPage',
 		$limit,
 	);
+
+	$log->debug("...basic feed data added...");
 
 	$feed->link(
 		next =>
@@ -1122,6 +1089,8 @@ sub opensearch_feed {
 
 	$feed->link( 'unapi-server' => $unapi);
 
+	$log->debug("...feed links added...");
+
 #	$feed->link(
 #		opac =>
 #		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
@@ -1129,13 +1098,9 @@ sub opensearch_feed {
 #		'text/html'
 #	);
 
-	print $cgi->header(
-		-type		=> $feed->type,
-		-charset	=> 'UTF-8',
-		-cookie		=> $cgi->cookie( -name => 'os_session', -value => $rs_name, -expires => '+30m' ),
-	);
+	print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
 
-	print entityize($feed->toString) . "\n";
+	$log->debug("...and feed returned.");
 
 	return Apache2::Const::OK;
 }
