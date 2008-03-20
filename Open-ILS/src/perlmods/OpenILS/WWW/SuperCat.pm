@@ -746,8 +746,8 @@ sub bookbag_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2-full/$id" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom-full/$id" => 'application/atom+xml');
+	$feed->link(alternate => $base . "/rss2-full/$id" => 'application/rss+xml');
+	$feed->link(atom => $base . "/atom-full/$id" => 'application/atom+xml');
 	$feed->link(html => $base . "/html-full/$id" => 'text/html');
 	$feed->link(unapi => $unapi);
 
@@ -782,7 +782,7 @@ sub changes_feed {
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
-	my $base = (split 'freshmeat', $url)[0] . 'freshmeat';
+	my $base = (split 'freshmeat', $url)[0] . '/freshmeat';
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
 	my $path = $cgi->path_info;
@@ -815,8 +815,8 @@ sub changes_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
+	$feed->link(alternate => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
+	$feed->link(atom => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
 	$feed->link(html => $base . "/html-full/$rtype/$axis/$limit/$date" => 'text/html');
 	$feed->link(unapi => $unapi);
 
@@ -1112,13 +1112,13 @@ sub opensearch_feed {
 	);
 
 	$feed->link(
-		rss =>
+		alternate =>
 		$base .  "/$version/$org/rss2-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/rss+xml'
 	);
 
 	$feed->link(
-		alternate =>
+		atom =>
 		$base .  "/$version/$org/atom-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/atom+xml'
 	);
