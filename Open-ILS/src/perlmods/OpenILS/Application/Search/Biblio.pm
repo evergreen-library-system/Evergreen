@@ -830,8 +830,7 @@ sub staged_search {
         last if $summary->{checked} < $PAGE_SIZE;
     }
 
-    # calculate the average estimated hit count from the data we've collected thus far
-    my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
+    my @results = @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
     return {
         count => $est_hit_count,
