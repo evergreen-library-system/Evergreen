@@ -3,8 +3,19 @@
 		<title>Confiy :: Global :: Actor :: Org Units</title>
 
 		<style type="text/css">
-			@import "/conify/js/dijit/themes/tundra/tundra.css">;
-			@import "/conify/js/dojo/resources/dojo.css";
+			@import url("/conify/js/dojo/resources/dojo.css");
+			@import url("/conify/js/dijit/themes/tundra/tundra.css");
+		</style>
+
+		<style>
+			html, body
+			{
+				height: 100%;
+				width: 100%;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				overflow: hidden;
+			}
 		</style>
 
 		<!-- The OpenSRF API writ JS -->
@@ -21,10 +32,13 @@
 
 		<!-- Dojo goodness -->
 		<script type="text/javascript" src="/conify/js/dojo/dojo.js.uncompressed.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/conify/js/dijit/dijit.js.uncompressed.js"></script>
+
 		<script type="text/javascript">
 			dojo.require('conify.fieldmapper.addToHash', true);
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileReadStore');
+			dojo.require('dijit.InlineEditBox');
 			dojo.require('dijit.Tree');
 			dojo.require('dijit.layout.ContentPane');
 			dojo.require('dijit.layout.TabContainer');
@@ -36,17 +50,21 @@
 			var cookieManager = new HTTP.Cookies();
 			var ses = cookieManager.read('ses') || cgi.param('ses');
 			var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+
+			function ouTreeOnClick (item, node) {
+				alert(js2JSON(item));
+				dijit.byId('editor_pane_name');
+			}
+
 		</script>
+
 	</head>
+
 	<body class="tundra" id='pagebody'>
 
-		<div
-		  dojoType="dijit.layout.SplitContainer"
-		  orientation="horizontal"
-		  activeSizing="true"
-		  style="width: 100%; height: 100%;"
-		>
-			<div dojoType="dijit.layout.ContentPane" sizeMin="150">
+		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
+
+			<div dojoType="dijit.layout.ContentPane" sizeMin="200" sizeShare="100">
 				<script type="dojo/method">
 
 					var ou_list_data = {label : 'shortname', identifier : 'id' };
@@ -74,7 +92,8 @@
 						for (var j in ou_hash_list) {
 							var kid = ou_hash_list[j];
 							if (kid.parent_ou == ou.id) {
-								ou.children.push({ _reference: kid.id });
+								ou.children.push( { _reference : kid.id } );
+								kid.iskid = true;
 								if (_find_root[kid.id]) delete _find_root[kid.id];
 							}
 						}
@@ -82,21 +101,34 @@
 						item_data.push( ou );
 					}
 
-					for (var i in _find_root) {
-						_find_root.isTop = true;
+					for (var j in _find_root) {
+						_find_root[j]['top'] = 'true';
 					}
 
 					ou_list_data.items = item_data;
 					window.ou_list_store = new dojo.data.ItemFileReadStore({ data : ou_list_data });
 
-					alert(js2JSON(item_data));
-
 				</script>
-				<div id="dijit_ou_tree" label="Oragnizational Units" query='{isTop:true}' dojoType="dijit.Tree" store="ou_list_store"/>
+				<div id="dijit_ou_tree" label="Oragnizational Units" query="{'top':'true'}" dojoType="dijit.Tree" store="ou_list_store" minSize="200" onClick="ouTreeOnClick(item,node)"/>
 			</div>
-			<div dojoType="dijit.layout.ContentPane">
-				stuff goes here
+
+			<div id="editor_pane" dojoType="dijit.layout.ContentPane" sizeMin="200" sizeShare="100">
+				<table class="tundra">
+					<tr>
+						<th>Library Name</th>
+						<td><span id="editor_pane_name" dojoType="dijit.InlineEditBox"/></td>
+					</tr>
+					<tr>
+						<th>Library Policy Code</th>
+						<td><span id="editor_pane_shortname" dojoType="dijit.InlineEditBox"/><td>
+					</tr>
+					<tr>
+						<th>Parent</th>
+						<td><span id="editor_pane_parent_ou" dojoType="dijit.InlineEditBox"/><td>
+					</tr>
+				</table>
 			</div>
+
 		</div>
 
 	</body>
