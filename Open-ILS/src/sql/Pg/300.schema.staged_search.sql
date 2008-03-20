@@ -437,6 +437,35 @@ BEGIN
                 CONTINUE;
             END IF;
 
+        ELSE
+
+            PERFORM 1
+              FROM  asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+                    JOIN actor.org_unit a ON (cp.circ_lib = a.id)
+                    JOIN asset.copy_location cl ON (cp.location = cl.id)
+                    JOIN config.copy_status cs ON (cp.status = cs.id)
+              WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+
+                PERFORM 1
+                  FROM  asset.call_number cn
+                  WHERE cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                  LIMIT 1;
+
+                IF FOUND THEN
+                    -- RAISE NOTICE ' % were all visibility-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
+
+            END IF;
+
         END IF;
 
         visible_count := visible_count + 1;
