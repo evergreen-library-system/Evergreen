@@ -38,7 +38,9 @@
 			dojo.require('conify.fieldmapper.addToHash', true);
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileReadStore');
-			dojo.require('dijit.InlineEditBox');
+			dojo.require('dijit.form.TextBox');
+			dojo.require('dijit.form.CheckBox');
+			dojo.require('dijit.form.FilteringSelect');
 			dojo.require('dijit.Tree');
 			dojo.require('dijit.layout.ContentPane');
 			dojo.require('dijit.layout.TabContainer');
@@ -51,9 +53,15 @@
 			var ses = cookieManager.read('ses') || cgi.param('ses');
 			var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
-			function ouTreeOnClick (item, node) {
-				alert(js2JSON(item));
-				dijit.byId('editor_pane_name');
+			function ouTreeOnClick (m) {
+				if (m.event != 'execute') return;
+
+				editor_pane_name.setValue( m.item.name );
+				editor_pane_shortname.setValue( m.item.shortname );
+				editor_pane_email.setValue( m.item.email );
+				editor_pane_phone.setValue( m.item.phone );
+				editor_pane_parent_ou.setValue( m.item.parent_ou );
+				editor_pane_opac_visible.setChecked( m.item.opac_visible == 't' ? true : false );
 			}
 
 		</script>
@@ -67,12 +75,12 @@
 			<div dojoType="dijit.layout.ContentPane" sizeMin="200" sizeShare="100">
 				<script type="dojo/method">
 
-					var ou_list_data = {label : 'shortname', identifier : 'id' };
+					var ou_list_data = { label : 'displayLabel', identifier : 'id' };
 		
 					var req = pCRUD.request({
 						method : 'open-ils.permacrud.search.aou.atomic',
 						timeout : 10,
-						params : [ ses, { id : { "!=" : null } } ],
+						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
 						onerror : function (r) { throw 'Problem fetching org units';},
 					});
 					req.send();
@@ -82,7 +90,10 @@
 					for (var i in _data) ou_hash_list.push( _data[i].toHash() );
 
 					var _find_root = {};
-					for (var i in ou_hash_list) _find_root[ou_hash_list[i].id] = ou_hash_list[i]; 
+					for (var i in ou_hash_list) {
+						_find_root[ou_hash_list[i].id] = ou_hash_list[i]; 
+						ou_hash_list[i].displayLabel = ou_hash_list[i].shortname + ' (' + ou_hash_list[i].name + ')';
+					}
 		
 					var item_data = [];
 					for (var i in ou_hash_list) {
@@ -106,27 +117,76 @@
 					}
 
 					ou_list_data.items = item_data;
+
 					window.ou_list_store = new dojo.data.ItemFileReadStore({ data : ou_list_data });
 
 				</script>
-				<div id="dijit_ou_tree" label="Oragnizational Units" query="{'top':'true'}" dojoType="dijit.Tree" store="ou_list_store" minSize="200" onClick="ouTreeOnClick(item,node)"/>
+				<div
+				  id="dijit_ou_tree"
+				  label="Oragnizational Units"
+				  query="{'top':'true'}"
+				  dojoType="dijit.Tree"
+				  store="ou_list_store"
+				  minSize="200"
+				  jsId="ou_tree"
+				>
+					<script type="dojo/method">
+						tree_execute_sub = dojo.subscribe('dijit_ou_tree',null,ouTreeOnClick);
+					</script>
+					<script type="dojo/connect" event="destroy">
+						dojo.unsubscribe(tree_execute_sub);
+					</script>
+				</div>
 			</div>
 
-			<div id="editor_pane" dojoType="dijit.layout.ContentPane" sizeMin="200" sizeShare="100">
-				<table class="tundra">
-					<tr>
-						<th>Library Name</th>
-						<td><span id="editor_pane_name" dojoType="dijit.InlineEditBox"/></td>
-					</tr>
-					<tr>
-						<th>Library Policy Code</th>
-						<td><span id="editor_pane_shortname" dojoType="dijit.InlineEditBox"/><td>
-					</tr>
-					<tr>
-						<th>Parent</th>
-						<td><span id="editor_pane_parent_ou" dojoType="dijit.InlineEditBox"/><td>
-					</tr>
-				</table>
+			<div id="right_tabpane" dojoType="dijit.layout.TabContainer" sizeMin="200" sizeShare="300">
+				<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
+					<table class="tundra">
+						<tr>
+							<th>Parent</th>
+							<td>
+								<div
+								  id="editor_pane_parent_ou"
+								  dojoType="dijit.form.FilteringSelect"
+								  jsId="editor_pane_parent_ou"
+								  store="ou_list_store"
+								  searchAttr="displayLabel"
+								  ignoreCase="true"
+								/>
+							</td>
+							<th>OPAC Visible</th>
+							<td>
+								<input
+								  id="editor_pane_opac_visible"
+								  jsId="editor_pane_opac_visible"
+								  type="checkbox"
+								  dojoType="dijit.form.CheckBox"
+								  value='t'
+								/>
+							</td>
+						</tr>
+						<tr>
+							<th>Library Name</th>
+							<td>
+								<span id="editor_pane_name" dojoType="dijit.form.TextBox" jsId="editor_pane_name"/>
+							</td>
+							<th>Library Policy Code</th>
+							<td>
+								<span id="editor_pane_shortname" dojoType="dijit.form.TextBox" jsId="editor_pane_shortname"/>
+							</td>
+						</tr>
+						<tr>
+							<th>Main Email Address</th>
+							<td>
+								<span id="editor_pane_email" dojoType="dijit.form.TextBox" jsId="editor_pane_email"/>
+							</td>
+							<th>Main Phone Number</th>
+							<td>
+								<span id="editor_pane_phone" dojoType="dijit.form.TextBox" jsId="editor_pane_phone"/>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 
 		</div>
