@@ -196,6 +196,11 @@ sub search_permacrud {
     my $auth = shift;
     my @args = @_;
 
+    if (@args > 1) {
+        delete $args[1]{flesh};
+        delete $args[1]{flesh_fields};
+    }
+
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->event unless $e->checkauth;
  
