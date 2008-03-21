@@ -905,7 +905,7 @@ sub fleshed_volume_update {
 		}
 
 		# now update any attached copies
-		if( @$copies and !$vol->isdeleted ) {
+		if( $copies and @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
 			$evt = update_fleshed_copies( $editor, $override, $vol, $copies, $delete_stats );
 			return $evt if $evt;
