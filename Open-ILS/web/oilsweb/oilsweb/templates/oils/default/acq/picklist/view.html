@@ -57,16 +57,21 @@ o        </select>&nbsp;<input type='submit' value='${_("Submit")}'/>
 	        ${PicklistMgr.find_lineitem_attr(lineitem, "price")}
 	    </td>
 	    <td class="oils-acq-picklist-records-copies">
-	        <form method="POST"
-		      action="${c.oils.acq.prefix.value}/picklist/update">
-		    <input name="${c.oils.acq.picklist_source_id.cgi_name}"
-			   type="hidden"
-			   value="${c.oils.acq.picklist.value.id()}" />
-	            <input name="${c.oils.acq.lineitem_item_count.cgi_name}"
-		       type="text" size="3" value="${lineitem.item_count()}" />
-            <button name='${c.oils.acq.lineitem_id.cgi_name}'
-             value='${lineitem.id()}'>${_("Update")}</button>
-		</form>
+	        % if lineitem.state() == 'approved':
+		    ${lineitem.item_count()} Approved
+		% else:
+	            <form method="POST"
+			  action="${c.oils.acq.prefix.value}/picklist/update">
+		        <input name="${c.oils.acq.picklist_source_id.cgi_name}"
+			       type="hidden"
+			       value="${c.oils.acq.picklist.value.id()}" />
+			<input name="${c.oils.acq.lineitem_item_count.cgi_name}"
+			       type="text" size="3"
+			       value="${lineitem.item_count()}" />
+			<button name='${c.oils.acq.lineitem_id.cgi_name}'
+				value='${lineitem.id()}'>${_("Update")}</button>
+		    </form>
+		% endif
 	    </td>
         </tr>
     % endfor

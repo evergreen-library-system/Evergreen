@@ -160,6 +160,26 @@ class PicklistController(BaseController):
         return redirect_to(controller='acq/picklist', action='view_lineitem',
                            id=r.ctx.acq.lineitem_id.value)
 
+    def approve_lineitem(self):
+        r = RequestMgr()
+        ses = ClientSession(oils.const.OILS_APP_ACQ)
+        ses.connect
+
+        li = ses.request('open-ils.acq.lineitem.retrieve',
+                         r.ctx.core.authtoken.value,
+                         r.ctx.acq.lineitem_id.value).Recv().content()
+        li = Event.parse_and_raise(li)
+
+        li.state("approved")
+
+        li = ses.request('open-ils.acq.lineitem.update',
+                         r.ctx.core.authtoken.value,
+                         li).recv().content()
+        li = Event.parse_and_raise(li)
+
+        return redirect_to(controller='acq/picklist', action='view',
+                           id=r.ctx.acq.picklist_id.value)
+
     def _update_lineitem_count(self, r, ses):
         ''' Updates # of copies to order for single lineitem '''
 

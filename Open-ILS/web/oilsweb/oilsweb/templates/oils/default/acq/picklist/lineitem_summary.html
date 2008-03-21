@@ -1,6 +1,9 @@
 <%namespace file='../../common/widgets.html' name='widget' />
+<%
+    from oilsweb.lib.acq.picklist import PicklistMgr
+%>
 <div id='oils-acq-lineitem-header'>
-    ${_('Picklist Entry')}
+    ${PicklistMgr.find_lineitem_attr(c.oils.acq.lineitem.value, 'title')}
     <div class='oils-acq-lineitem-attributes'>
         <%
 	provider_map = [(provider.id(), provider.name()) for provider in c.oils.acq.provider_list.value]
@@ -13,6 +16,8 @@
         meta4 = _("Last update time %s") % c.oils.acq.lineitem.value.edit_time()
         %>
         <div>${meta}</div>
+        <div>${meta3}</div>
+        <div>${meta4}</div>
         <div>
 	    <form method="post"
 		  action="${c.oils.acq.prefix.value}/picklist/update_lineitem">
@@ -25,8 +30,16 @@
 		  
 	    </form>
 	</div>
-        <div>${meta3}</div>
-        <div>${meta4}</div>
+	<div>
+	    <form method="post"
+		    action="${c.oils.acq.prefix.value}/picklist/approve_lineitem">
+	      
+	        <button name="${c.oils.acq.lineitem_id.cgi_name}"
+			value="${c.oils.acq.lineitem.value.id()}">
+		    ${_("Approve for Purchase")}
+		</button>
+	    </form>
+	</div>
     </div>
 </div>
 
