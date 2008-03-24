@@ -43,6 +43,7 @@
 			dojo.require('conify.fieldmapper.addFromStoreItem', true);
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileWriteStore');
+			dojo.require('dojo.date.stamp');
 			dojo.require('dijit.form.TextBox');
 			dojo.require('dijit.form.TimeTextBox');
 			dojo.require('dijit.form.ValidationTextBox');
@@ -83,21 +84,35 @@
 					timeout : 1,
 					onerror : function (r) { throw 'Problem fetching hours of operation for ' + ou_list_store.getValue( current_ou, 'name' );},
 					oncomplete : function (r) {
-						alert('back from hoo call');
+						current_ou_hoo = null;
+
 						var res = r.recv();
 						if (res) {
 							if (res.content()) current_ou_hoo = res.content();
-						} else {
+						}
+
+						if (!current_ou_hoo) {
 							current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
 							current_ou_hoo.isnew(1);
+							for (var i = 0; i < 7; i++) {
+								current_ou_hoo['dow_' + i + '_open']('09:00:00');
+								current_ou_hoo['dow_' + i + '_close']('17:00:00');
+							}
 						}
 
 						for (var i = 0; i < 7; i++) {
-							window['dow_' + i + '_open'].setValue( current_ou_hoo['dow_' + i + '_open']() );
-							window['dow_' + i + '_close'].setValue( current_ou_hoo['dow_' + i + '_close']() );
+							window['dow_' + i + '_open'].setValue(
+								dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_open']() )
+							);
+							window['dow_' + i + '_close'].setValue(
+								dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_close']() )
+							);
 						}
+
+						highlighter.hoo_pane.green.play();
 					}
 				}).send();
+
 			}
 		</script>
 
@@ -182,8 +197,11 @@
 				<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
 					<script type="dojo/method">
 						highlighter.editor_pane = {};
+						highlighter.hoo_pane = {};
 						highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
 						highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
+						highlighter.hoo_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'hoo_pane', duration : 500 } );
+						highlighter.hoo_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'hoo_pane', duration : 500 } );
 					</script>
 					<table class="tundra" style="margin:10px;">
 						<tr>
@@ -435,32 +453,32 @@
 					<table class="tundra" style="margin:10px;">
 						<tr><th/><th>Open time</th><th>Close time</th></tr>
 						<tr><th>Monday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Tuesday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Wednesday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Thursday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Friday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Saturday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getDisplayedValue() );"/></td>
 						</tr>
 						<tr><th>Sunday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getValue );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getDisplayedValue() );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getDisplayedValue() );"/></td>
 						</tr>
 					</table>
 
