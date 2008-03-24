@@ -832,7 +832,7 @@ sub staged_search {
         last if $summary->{checked} < $PAGE_SIZE;
     }
 
-    my @results = @$all_results[$user_offset..($user_offset + $user_limit - 1)];
+    my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
     return {
         count => $est_hit_count,
