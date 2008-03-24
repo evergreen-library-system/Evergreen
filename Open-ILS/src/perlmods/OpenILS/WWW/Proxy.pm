@@ -17,6 +17,35 @@ use OpenSRF::System;
 my $bootstrap;
 my $ssl_off;
 
+my $default_template = <<HTML
+<html>
+	<head>
+		<title>TITLE</title>
+	</head>
+	<body>
+		<br/><br/><br/>
+		<center>
+		<form method='POST'>
+			<table style='border-collapse: collapse; border: 1px solid black;'>
+				<tr>
+					<th colspan='2' align='center'><u>DESCRIPTION</u></th>
+				</tr>
+				<tr>
+					<th align="right">Username or barcode:</th>
+					<td><input type="text" name="user"/></td>
+				</tr>
+				<tr>
+					<th align="right">Password:</th>
+					<td><input type="password" name="passwd"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="Log in"/>
+		</form>
+		</center>
+	</body>
+</html>
+HTML
+
 sub import {
 	my $self = shift;
 	$bootstrap = shift;
@@ -61,7 +90,7 @@ sub handler {
 
 			print $cgi->header(-type=>'text/html', -expires=>'-1d');
 			if (!$proxyhtml) {
-				$proxyhtml = join '', <DATA>;
+				$proxyhtml = $default_template;
 				$proxyhtml =~ s/TITLE/$title/gso;
 				$proxyhtml =~ s/DESCRIPTION/$desc/gso;
 			} else {
@@ -149,35 +178,5 @@ sub oils_login {
         return $response->{payload}->{authtoken};
 }
 
-
-
 1;
-
-__DATA__
-<html>
-	<head>
-		<title>TITLE</title>
-	</head>
-	<body>
-		<br/><br/><br/>
-		<center>
-		<form method='POST'>
-			<table style='border-collapse: collapse; border: 1px solid black;'>
-				<tr>
-					<th colspan='2' align='center'><u>DESCRIPTION</u></th>
-				</tr>
-				<tr>
-					<th align="right">Username or barcode:</th>
-					<td><input type="text" name="user"/></td>
-				</tr>
-				<tr>
-					<th align="right">Password:</th>
-					<td><input type="password" name="passwd"/></td>
-				</tr>
-			</table>
-			<input type="submit" value="Log in"/>
-		</form>
-		</center>
-	</body>
-</html>
 
