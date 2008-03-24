@@ -40,6 +40,7 @@
 			dojo.require('conify.fieldmapper.addToHash', true);
 			dojo.require('conify.fieldmapper.addFromHash', true);
 			dojo.require('conify.fieldmapper.addToStoreData', true);
+			dojo.require('conify.fieldmapper.addFromStoreItem', true);
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileWriteStore');
 			dojo.require('dijit.form.TextBox');
@@ -52,6 +53,7 @@
 			dojo.require('dijit.layout.LayoutContainer');
 			dojo.require('dijit.layout.SplitContainer');
 			dojo.require('dojox.widget.Toaster');
+			dojo.require('dojox.fx');
 		</script>
 
 		<script type="text/javascript">
@@ -65,6 +67,9 @@
 			var current_ou;
 			var virgin_ou_id = -1;
 
+			var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
+
+			var highlighter = {};
 		</script>
 
 	</head>
@@ -78,16 +83,14 @@
 
 					var ou_list_data = { label : 'shortname', identifier : 'id' };
 		
-					var req = pCRUD.request({
+					pCRUD.request({
 						method : 'open-ils.permacrud.search.aou.atomic',
 						timeout : 10,
 						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
 						onerror : function (r) { throw 'Problem fetching org units';},
-					});
-					req.send();
+						oncomplete : function (r) { window.ou_list_store = new dojo.data.ItemFileWriteStore({ data : aou.toStoreData( r.recv().content() ) }); }
+					}).send();
 		
-					window.ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
-					window.ou_list_store = new dojo.data.ItemFileWriteStore({ data : aou.toStoreData( req.recv().content() ) });
 
 				</script>
 				<div
@@ -102,6 +105,7 @@
 
 					<script type="dojo/method" event="onClick" args="item,node">
 
+						highlighter.editor_pane.green.play();
 
 						new_kid_button.disabled = false;
 						save_ou_button.disabled = false;
@@ -114,16 +118,20 @@
 							var field = main_settings_fields[i];
 							var value = this.store.getValue( current_ou, field );
 
-							if (!value) window["editor_pane_" + field].setValue( '' ); // unset the value
-							else window["editor_pane_" + field].setValue( value );
+							if (!value) {
+								window["editor_pane_" + field].setValue( '' ); // unset the value
+								window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+							} else window["editor_pane_" + field].setValue( value );
 						}
 
 						if ( this.store.getValue( current_ou, '_trueRoot' ) == 'true' ) {
 							editor_pane_parent_ou.disabled = true;
 							editor_pane_parent_ou.setValue(null);
 							editor_pane_parent_ou.setDisplayedValue('');
+							editor_pane_parent_ou.validate(false);
 						} else {
 							editor_pane_parent_ou.disabled = false;
+							editor_pane_parent_ou.validate(true);
 							editor_pane_parent_ou.setValue( this.store.getValue( current_ou, 'parent_ou' ) );
 						}
 
@@ -141,13 +149,18 @@
 			<div id="right_tabpane" dojoType="dijit.layout.TabContainer" sizeMin="200" sizeShare="300">
 
 				<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
+					<script type="dojo/method">
+						highlighter.editor_pane = {};
+						highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
+						highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
+					</script>
 					<table class="tundra" style="margin:10px;">
 						<tr>
 							<th>Org Unit Name</th>
 							<td>
 								<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+">
 									<script type="dojo/connect" event="onChange">
-										ou_list_store.setValue( current_ou, "name", this.getValue() );
+										if (current_ou) ou_list_store.setValue( current_ou, "name", this.getValue() );
 									</script>
 								</span>
 							</td>
@@ -157,7 +170,7 @@
 							<td>
 								<span id="editor_pane_shortname" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_shortname" uppercase="true" regExp=".+">
 									<script type="dojo/connect" event="onChange">
-										ou_list_store.setValue( current_ou, "shortname", this.getValue() );
+										if (current_ou) ou_list_store.setValue( current_ou, "shortname", this.getValue() );
 									</script>
 								</span>
 							</td>
@@ -167,7 +180,7 @@
 							<td>
 								<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+\@\w+(?:\.\w+)+$">
 									<script type="dojo/connect" event="onChange">
-										ou_list_store.setValue( current_ou, "email", this.getValue() );
+										if (current_ou) ou_list_store.setValue( current_ou, "email", this.getValue() );
 									</script>
 								</span>
 							</td>
@@ -177,7 +190,7 @@
 							<td>
 								<span id="editor_pane_phone" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_phone" regExp="^(?:(?:\d{1}[ -\.])?\(?\d{3}\)?[ -\.]{1})?\d{3}[ -\.]{1}\d{4}(| \S+.*)$">
 									<script type="dojo/connect" event="onChange">
-										ou_list_store.setValue( current_ou, "phone", this.getValue() );
+										if (current_ou) ou_list_store.setValue( current_ou, "phone", this.getValue() );
 									</script>
 								</span>
 							</td>
@@ -194,7 +207,7 @@
 								  ignoreCase="true"
 								>
 									<script type="dojo/method" event="onChange">
-										ou_list_store.setValue( current_ou, "ou_type", this.getValue() );
+										if (current_ou) ou_list_store.setValue( current_ou, "ou_type", this.getValue() );
 									</script>
 								</div>
 							</td>
@@ -211,7 +224,7 @@
 								  ignoreCase="true"
 								>
 									<script type="dojo/method" event="onChange">
-										this.store.setValue( current_ou, "parent_ou", this.getValue() );
+										if (current_ou) this.store.setValue( current_ou, "parent_ou", this.getValue() );
 									</script>
 								</div>
 							</td>
@@ -227,14 +240,14 @@
 								  value='t'
 								>
 									<script type="dojo/connect" event="onChange">
-										ou_list_store.setValue( current_ou, "opac_visible", this.isChecked() ? "t":"f" );
+										if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.isChecked() ? "t":"f" );
 									</script>
 								</input>
 							</td>
 						</tr>
 					</table>
 
-					<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 50px;">
+					<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
 
 						<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save">
 							<script type="dojo/connect" event="startup">
@@ -242,9 +255,27 @@
 							</script>
 							<script type="dojo/connect" event="onClick">
 
-								var modified_ou = new aou().fromHash( current_ou );
+								var modified_ou = new aou().fromStoreItem( current_ou );
 								modified_ou.ischanged( 1 );
-								modified_ou.isnew( ou_list_store.getValue( current_ou, 'isnew' ) );
+
+								pCRUD.request({
+									method : 'open-ils.permacrud.update.aou',
+									timeout : 10,
+									params : [ ses, modified_ou ],
+									onerror : function (r) {
+										highlighter.editor_pane.red.play();
+										throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+									},
+									oncomplete : function (r) {
+										var res = r.recv();
+										if ( res && res.content() ) {
+											highlighter.editor_pane.green.play();
+										} else {
+											highlighter.editor_pane.red.play();
+											throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+										}
+									},
+								}).send();
 
 							</script>
 						</button>
@@ -255,11 +286,68 @@
 							</script>
 							<script type="dojo/connect" event="onClick">
 
-								var modified_ou = new aou().fromHash( current_ou );
-								modified_ou.isdeleted( 1 );
+								if ( current_ou.children ) {
+									var kids = current_ou.children;
+									if (!dojo.isArray(kids)) kids = [kids];
 
-								ou_list_store.deleteItem( current_ou );
-								current_ou = null;
+									var existing_kids = dojo.filter(
+										kids,
+										function(kid){ return kid.isdeleted[0] != 1 }
+									);
+									if ( existing_kids.length > 0) {
+										highlighter.editor_pane.red.play();
+										alert(existing_kids.length + ' kids still exist');
+										return;
+									}
+								}
+
+								if ( confirm('Are you sure you want to delete ' + current_ou.name + '?')) {
+									ou_list_store.setValue( current_ou, 'isdeleted', 1 );
+
+									var modified_ou = new aou().fromStoreItem( current_ou );
+									modified_ou.isdeleted( 1 );
+
+									pCRUD.request({
+										method : 'open-ils.permacrud.delete.aou',
+										timeout : 10,
+										params : [ ses, modified_ou ],
+										onerror : function (r) {
+											highlighter.editor_pane.red.play();
+											throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
+										},
+										oncomplete : function (r) {
+											var res = r.recv();
+											if ( res && res.content() ) {
+
+												ou_list_store.fetch({
+													query : { id : ou_list_store.getValue( current_ou, 'id' ) },
+													queryOptions : { deep : true },
+													onItem : function (item, req) { try { this.deleteItem( item ); } catch (e) { /* meh */ } },
+													scope : ou_list_store
+												});
+
+												current_ou = null;
+
+												new_kid_button.disabled = true;
+												save_ou_button.disabled = true;
+												delete_ou_button.disabled = true;
+		
+												var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
+												for ( var i in main_settings_fields ) {
+													var field = main_settings_fields[i];
+													window["editor_pane_" + field].setValue( '' ); // unset the value
+													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+												}
+		
+												highlighter.editor_pane.green.play();
+											} else {
+												highlighter.editor_pane.red.play();
+												throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
+											}
+										},
+									}).send();
+
+								}
 
 							</script>
 						</button>
@@ -272,15 +360,40 @@
 						</script>
 						<script type="dojo/connect" event="onClick">
 
-							var new_ou = ou_list_store.newItem(
-								{ id		: virgin_ou_id--,
-								  isnew		: 1,
-								  parent_ou	: ou_list_store.getValue( current_ou, 'id' ),
-								},
-								{ parent : current_ou, attribute : 'children' }
-							);
+							var new_fm_obj = new aou().fromHash({
+								isnew			: 1,
+								name			: 'New Branch',
+								opac_visible	: 'f',
+								shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
+								parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
+								ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
+							});
 
-							current_ou = new_ou;
+							var new_obj;
+
+							pCRUD.request({
+								method : 'open-ils.permacrud.create.aou',
+								timeout : 10,
+								params : [ ses, new_fm_obj ],
+								onerror : function (r) {
+									highlighter.editor_pane.red.play();
+									throw 'Problem creating child Org Unit';
+								},
+								oncomplete : function (r) {
+									var res = r.recv();
+									if ( res && res.content() ) {
+										ou_list_store.newItem(
+											res.content().toHash(),
+											{ parent : current_ou, attribute : 'children' }
+										);
+									} else {
+										highlighter.editor_pane.red.play();
+										throw 'Problem creating child Org Unit';
+									}
+								},
+							}).send();
+
+							highlighter.editor_pane.green.play();
 
 						</script>
 					</button>
