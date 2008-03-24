@@ -119,7 +119,6 @@ sub CRUD_action_object_permcheck {
     }
 
     (my $o_type = $fm_class) =~ s/::/./go;
-    my $id_field = $obj->Identity;
 
     my $perm_field_value = $action_node->getAttribute('permission');
 
