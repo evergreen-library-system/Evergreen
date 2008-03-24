@@ -17,7 +17,7 @@ use OpenSRF::System;
 my $bootstrap;
 my $ssl_off;
 
-my $default_template = <<HTML
+my $default_template = <<HTML;
 <html>
 	<head>
 		<title>TITLE</title>
