@@ -3205,7 +3205,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 					localtime_r( &_tmp_dt, &gmdt );
 
 					if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
+						strftime(dt_string, sizeof(dt_string), "%T%z", &gmdt);
 					} else if (!(attr & DBI_DATETIME_TIME)) {
 						strftime(dt_string, sizeof(dt_string), "%F", &gmdt);
 					} else {
