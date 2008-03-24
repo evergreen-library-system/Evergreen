@@ -44,6 +44,7 @@
 			dojo.require('dojo.parser');
 			dojo.require('dojo.data.ItemFileWriteStore');
 			dojo.require('dijit.form.TextBox');
+			dojo.require('dijit.form.TimeTextBox');
 			dojo.require('dijit.form.ValidationTextBox');
 			dojo.require('dijit.form.CheckBox');
 			dojo.require('dijit.form.FilteringSelect');
@@ -64,12 +65,40 @@
 			var ses = cookieManager.read('ses') || cgi.param('ses');
 			var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
-			var current_ou;
+			var current_ou, current_ou_hoo;
 			var virgin_ou_id = -1;
 
 			var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
 
 			var highlighter = {};
+
+			function hoo_load () {
+				// empty result not coming through ...
+				current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
+				current_ou_hoo.isnew(1);
+
+				pCRUD.request({
+					method : 'open-ils.permacrud.retrieve.aouhoo',
+					params : [ ses, ou_list_store.getValue( current_ou, 'id' ) ],
+					timeout : 1,
+					onerror : function (r) { throw 'Problem fetching hours of operation for ' + ou_list_store.getValue( current_ou, 'name' );},
+					oncomplete : function (r) {
+						alert('back from hoo call');
+						var res = r.recv();
+						if (res) {
+							if (res.content()) current_ou_hoo = res.content();
+						} else {
+							current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
+							current_ou_hoo.isnew(1);
+						}
+
+						for (var i = 0; i < 7; i++) {
+							window['dow_' + i + '_open'].setValue( current_ou_hoo['dow_' + i + '_open']() );
+							window['dow_' + i + '_close'].setValue( current_ou_hoo['dow_' + i + '_close']() );
+						}
+					}
+				}).send();
+			}
 		</script>
 
 	</head>
@@ -136,6 +165,8 @@
 						}
 
 						editor_pane_opac_visible.setChecked( this.store.getValue( current_ou, 'opac_visible' ) == 't' ? true : false );
+
+						hoo_load();
 
 					</script>
 
@@ -401,6 +432,66 @@
 				</div>
 
 				<div id="hoo_pane" dojoType="dijit.layout.ContentPane" title="Hours of Operation">
+					<table class="tundra" style="margin:10px;">
+						<tr><th/><th>Open time</th><th>Close time</th></tr>
+						<tr><th>Monday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Tuesday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Wednesday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Thursday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Friday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Saturday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getValue );"/></td>
+						</tr>
+						<tr><th>Sunday</th>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getValue );"/></td>
+							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getValue );"/></td>
+						</tr>
+					</table>
+
+					<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save">
+						<script type="dojo/connect" event="onClick">
+
+							var method_name = 'open-ils.permacrud.update.aouhoo';
+							if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.permacrud.create.aouhoo';
+
+							pCRUD.request({
+								method : method_name,
+								params : [ ses, current_ou_hoo ],
+								onerror : function (r) {
+									highlighter.editor_pane.red.play();
+									throw 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' );
+								},
+								oncomplete : function (r) {
+									var res = r.recv();
+									if ( res && res.content() ) {
+										current_ou_hoo.isnew(0);
+										highlighter.editor_pane.green.play();
+									} else {
+										highlighter.editor_pane.red.play();
+										throw 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' );
+									}
+								},
+							}).send();
+
+						</script>
+					</button>
+
 				</div>
 
 			</div>
