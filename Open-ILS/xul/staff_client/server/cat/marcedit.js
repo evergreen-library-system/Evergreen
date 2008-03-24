@@ -1,3 +1,4 @@
+// vim: noet:sw=4:ts=4:
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
@@ -111,7 +112,27 @@ function my_init() {
 
 		// Get the tooltip xml all async like
 		req =  new XMLHttpRequest();
-		req.open('GET','marcedit-tooltips.xml',true);
+
+		// Set a default locale in case preferences fail us
+		var locale = "en-US";
+
+		// Try to get the locale from our preferences - not working
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        try {
+            var Cc = Components.classes;
+            var Ci = Components.interfaces;
+            locale =
+                Cc["@mozilla.org/preferences-service;1"].
+                getService(Ci.nsIPrefService).getBranch("general.useragent").
+                getCharPref("locale");
+        }
+		catch (e) { }
+
+		// Get the locale-specific tooltips
+		// TODO: We should send a HEAD request to check for the existence of the desired file
+		// then fall back to the default locale if preferred locale is not necessary
+		req.open('GET','/xul/server/locale/' + locale + '/marcedit-tooltips.xml',true);
+
 		req.onreadystatechange = function () {
 			if (req.readyState == 4) {
 				bib_data = new XML( req.responseText.replace(xmlDeclaration, '') );
