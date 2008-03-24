@@ -95,9 +95,9 @@ admin.offline_manage_xacts.prototype = {
 					'label' : $('adminStrings').getString('staff.admin.offline_manage_xacts.init_list.processing'),
 					'render' : function(my) {
 						if (my.end_time) {
-							return 'Completed'
+							return $('adminStrings').getString('staff.admin.offline_manage_xacts.completed')
 						} else {
-							return get_bool(my.in_process) ? 'Yes' : 'No'
+							return get_bool(my.in_process) ? $('adminStrings').getString('staff.admin.offline_manage_xacts.yes') : $('adminStrings').getString('staff.admin.offline_manage_xacts.no')
 						};
 					}
 				},
@@ -288,7 +288,7 @@ admin.offline_manage_xacts.prototype = {
 				{
 					'id' : 'noncat', 'flex' : '1', 'hidden' : 'true',
 					'label' : $('adminStrings').getString('staff.admin.offline_manage_xacts.init_error_list.noncat'),
-					'render' : function(my) { return get_bool(my.command.noncat) ? "Yes" : "No"; }
+					'render' : function(my) { return get_bool(my.command.noncat) ? $('adminStrings').getString('staff.admin.offline_manage_xacts.yes') : $('adminStrings').getString('staff.admin.offline_manage_xacts.no'); }
 				},
 				{
 					'id' : 'noncat_type', 'flex' : '1', 'hidden' : 'true',
