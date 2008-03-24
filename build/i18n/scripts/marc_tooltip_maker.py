@@ -110,8 +110,9 @@ class MarcField(object):
 
     You can directly access and manipulate the indicators and subfields lists
     """
-    def __init__(self, tag, repeatable, description):
+    def __init__(self, tag, name, repeatable, description):
         self.tag = tag
+        self.name = name
         self.repeatable = repeatable
         self.description = description
         self.indicators = []
@@ -122,6 +123,7 @@ class MarcField(object):
         Convert the MARC field to XML representation
         """
         xml = u"  <field repeatable='%s' tag='%s'>\n" % (self.repeatable, self.tag)
+        xml += u"    <name>%s</name>\n" % (self.name)
         xml += u"    <description>%s</description>\n" % (self.description)
         for ind in self.indicators:
             xml += ind.to_xml()
@@ -187,7 +189,7 @@ def process_indicator(field, position, raw_ind):
         matches = re.compile(r'^(\S(-\S)?)\s*-\s*(.+)$', re.S).search(text)
         if matches is None: 
             continue
-        new_ind = Indicator(position, matches.group(1), matches.group(3))
+        new_ind = Indicator(position, matches.group(1).replace('\n', ' ').rstrip(), matches.group(3).replace('\n', ' ').rstrip())
         field.indicators.append(new_ind)
 
 def process_subfield(field, subfield):
@@ -213,13 +215,14 @@ def process_subfield(field, subfield):
     if (not matches):
         print "No subfield match for field: " + field.tag
         return None
-    field.subfields.append(Subfield(matches.group(1), repeatable, matches.group(2)))
+    field.subfields.append(Subfield(matches.group(1).replace('\n', ' ').rstrip(), repeatable, matches.group(2).replace('\n', ' ').rstrip()))
 
 def process_tag(tag):
     """
     Given a chunk of XML representing a MARC field, generate a MarcField object
     """
     repeatable = 'true'
+    name = u''
     description = u''
 
     # Get tag
@@ -230,6 +233,11 @@ def process_tag(tag):
     # Get repeatable - most stored in <span>, some stored in <small>
     if (re.compile(r'\(NR\)').search(tag.renderContents())):
         repeatable = 'false'
+
+    # Get name - stored in <h2> like:
+    # <h2><a id="mrcb250">250 - Mention d'&#233;dition <span class="small">(NR)</span></a>
+    name = re.compile(r'^.+?-\s*(.+)\s*\(.+$', re.S).sub(r'\1', ''.join(tag.findAll(text=True)))
+    name = name.replace('\n', ' ').rstrip()
 
     # Get description
     desc = tag.parent.findNextSibling('p')
@@ -244,9 +252,10 @@ def process_tag(tag):
                 print u' '.join(desc.findAll(text=True))
         else:
             description += desc.string
+    description = description.replace('\n', ' ').rstrip()
 
     # Create the tag
-    field = MarcField(tag_num, repeatable, description)
+    field = MarcField(tag_num, name, repeatable, description)
 
     for desc in tag.parent.findNextSiblings():
         if (str(desc.__class__) == 'BeautifulSoup.Tag'):
