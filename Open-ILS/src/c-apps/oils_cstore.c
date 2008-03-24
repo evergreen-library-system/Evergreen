@@ -3202,13 +3202,15 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
-					localtime_r( &_tmp_dt, &gmdt );
 
 					if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, sizeof(dt_string), "%T%z", &gmdt);
+						gmtime_r( &_tmp_dt, &gmdt );
+						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
 					} else if (!(attr & DBI_DATETIME_TIME)) {
+						localtime_r( &_tmp_dt, &gmdt );
 						strftime(dt_string, sizeof(dt_string), "%F", &gmdt);
 					} else {
+						localtime_r( &_tmp_dt, &gmdt );
 						strftime(dt_string, sizeof(dt_string), "%FT%T%z", &gmdt);
 					}
 
@@ -3281,13 +3283,15 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
-					localtime_r( &_tmp_dt, &gmdt );
 
 					if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, sizeof(dt_string), "%T%z", &gmdt);
+						gmtime_r( &_tmp_dt, &gmdt );
+						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
 					} else if (!(attr & DBI_DATETIME_TIME)) {
+						localtime_r( &_tmp_dt, &gmdt );
 						strftime(dt_string, sizeof(dt_string), "%F", &gmdt);
 					} else {
+						localtime_r( &_tmp_dt, &gmdt );
 						strftime(dt_string, sizeof(dt_string), "%FT%T%z", &gmdt);
 					}
 
