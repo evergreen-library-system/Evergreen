@@ -1184,7 +1184,9 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 
 	        	char* val = jsonObjectToSimpleString(func_item);
 
-       		    if ( dbi_conn_quote_string(dbhandle, &val) ) {
+       		    if ( !val ) {
+	    		    buffer_add( sql_buf, ",NULL" );
+       		    } else if ( dbi_conn_quote_string(dbhandle, &val) ) {
 	    		    buffer_fadd( sql_buf, ",%s", val );
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
