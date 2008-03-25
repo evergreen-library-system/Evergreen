@@ -1993,7 +1993,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
 					if (msg) {
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to', [check.route_to]);
+						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
 						msg += '\n';
 					}
 				break;
@@ -2006,7 +2006,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 							msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
 							msg += '\n';
 						} else {
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to', [check.route_to]);
+							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
 							msg += '.\n';
 						}
 					} else {
@@ -2087,10 +2087,10 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					if (document.getElementById('do_not_alert_on_precat')) {
 						var x = document.getElementById('do_not_alert_on_precat');
 						if (! x.checked) {
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to', [check.route_to]);
+							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
 						}
 					} else {
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to', [check.route_to]);
+						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
 					}
 					if (document.getElementById('no_change_label')) {
 						var m = document.getElementById('no_change_label').getAttribute('value');
@@ -2105,7 +2105,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					msg += '\n';
 					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.copy_status.error', [copy_status]);
 					msg += '\n';
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to', [check.route_to]);
+					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
 				break;
 			}
 			if (msg) {
