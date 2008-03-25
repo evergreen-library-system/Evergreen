@@ -17,6 +17,14 @@
 				padding: 0px 0px 0px 0px;
 				overflow: hidden;
 			}
+
+			th
+			{
+				text-align: right;
+				font-weight: bold;
+				padding-left: 20px;
+				padding-right: 5px;
+			}
 		</style>
 
 		<!-- The OpenSRF API writ JS -->
@@ -73,6 +81,34 @@
 
 			var highlighter = {};
 
+			function save_org () {
+				var modified_ou = new aou().fromStoreItem( current_ou );
+				modified_ou.ischanged( 1 );
+
+				new_kid_button.disabled = false;
+				save_ou_button.disabled = false;
+				delete_ou_button.disabled = false;
+
+				pCRUD.request({
+					method : 'open-ils.permacrud.update.aou',
+					timeout : 10,
+					params : [ ses, modified_ou ],
+					onerror : function (r) {
+						highlighter.editor_pane.red.play();
+						throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+					},
+					oncomplete : function (r) {
+						var res = r.recv();
+						if ( res && res.content() ) {
+							highlighter.editor_pane.green.play();
+						} else {
+							highlighter.editor_pane.red.play();
+							throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+						}
+					},
+				}).send();
+			}
+	
 			function hoo_load () {
 				// empty result not coming through ...
 				current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
@@ -81,7 +117,6 @@
 				pCRUD.request({
 					method : 'open-ils.permacrud.retrieve.aouhoo',
 					params : [ ses, ou_list_store.getValue( current_ou, 'id' ) ],
-					timeout : 1,
 					onerror : function (r) { throw 'Problem fetching hours of operation for ' + ou_list_store.getValue( current_ou, 'name' );},
 					oncomplete : function (r) {
 						current_ou_hoo = null;
@@ -114,6 +149,141 @@
 				}).send();
 
 			}
+
+			function addr_load () {
+				// empty result not coming through ...
+
+				save_ill_address.disabled = false;
+				save_holds_address.disabled = false;
+				save_mailing_address.disabled = false;
+				save_billing_address.disabled = false;
+
+				if (ou_list_store.getValue( current_ou, 'billing_address' )) {
+					pCRUD.request({
+						method : 'open-ils.permacrud.retrieve.aoa',
+						params : [ ses, ou_list_store.getValue( current_ou, 'billing_address' ) ],
+						onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+						oncomplete : function (r) {
+							current_billing_address = null;
+
+							var res = r.recv();
+							if (res) {
+								if (res.content()) current_billing_address = res.content();
+							}
+
+							if (!current_billing_address) {
+								current_billing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+								current_billing_address.isnew(1);
+							}
+
+							set_addr_inputs('billing');
+							highlighter.addresses_pane.green.play();
+						}
+					}).send();
+				} else {
+					current_billing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+					current_billing_address.isnew(1);
+					set_addr_inputs('billing');
+				}
+
+				if (ou_list_store.getValue( current_ou, 'mailing_address' )) {
+					pCRUD.request({
+						method : 'open-ils.permacrud.retrieve.aoa',
+						params : [ ses, ou_list_store.getValue( current_ou, 'mailing_address' ) ],
+						onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+						oncomplete : function (r) {
+							current_mailing_address = null;
+
+							var res = r.recv();
+							if (res) {
+								if (res.content()) current_mailing_address = res.content();
+							}
+
+							if (!current_mailing_address) {
+								current_mailing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+								current_mailing_address.isnew(1);
+							}
+
+							set_addr_inputs('mailing');
+							highlighter.addresses_pane.green.play();
+						}
+					}).send();
+				} else {
+					current_mailing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+					current_mailing_address.isnew(1);
+					set_addr_inputs('mailing');
+				}
+
+				if (ou_list_store.getValue( current_ou, 'holds_address' )) {
+					pCRUD.request({
+						method : 'open-ils.permacrud.retrieve.aoa',
+						params : [ ses, ou_list_store.getValue( current_ou, 'holds_address' ) ],
+						onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+						oncomplete : function (r) {
+							current_holds_address = null;
+
+							var res = r.recv();
+							if (res) {
+								if (res.content()) current_holds_address = res.content();
+							}
+
+							if (!current_holds_address) {
+								current_holds_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+								current_holds_address.isnew(1);
+							}
+
+							set_addr_inputs('holds');
+							highlighter.addresses_pane.green.play();
+						}
+					}).send();
+				} else {
+					current_holds_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+					current_holds_address.isnew(1);
+					set_addr_inputs('holds');
+				}
+
+				if (ou_list_store.getValue( current_ou, 'ill_address' )) {
+					pCRUD.request({
+						method : 'open-ils.permacrud.retrieve.aoa',
+						params : [ ses, ou_list_store.getValue( current_ou, 'ill_address' ) ],
+						onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+						oncomplete : function (r) {
+							current_ill_address = null;
+
+							var res = r.recv();
+							if (res) {
+								if (res.content()) current_ill_address = res.content();
+							}
+
+							if (!current_ill_address) {
+								current_ill_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+								current_ill_address.isnew(1);
+							}
+
+							set_addr_inputs('ill');
+							highlighter.addresses_pane.green.play();
+						}
+					}).send();
+				} else {
+					current_ill_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
+					current_ill_address.isnew(1);
+					set_addr_inputs('ill');
+				}
+
+			}
+
+			function set_addr_inputs (type) {
+				window[type + '_addr_valid'].setChecked( window['current_' + type + '_address'].valid() == 't' ? true : false );
+				window[type + '_addr_type'].setValue( window['current_' + type + '_address'].address_type() || '' );
+				window[type + '_addr_street1'].setValue( window['current_' + type + '_address'].street1() || '' );
+				window[type + '_addr_street2'].setValue( window['current_' + type + '_address'].street2() || '' );
+				window[type + '_addr_city'].setValue( window['current_' + type + '_address'].city() || '' );
+				window[type + '_addr_county'].setValue( window['current_' + type + '_address'].county() || '' );
+				window[type + '_addr_country'].setValue( window['current_' + type + '_address'].country() || '' );
+				window[type + '_addr_state'].setValue( window['current_' + type + '_address'].state() || '' );
+				window[type + '_addr_post_code'].setValue( window['current_' + type + '_address'].post_code() || '' );
+			}
+
 		</script>
 
 	</head>
@@ -149,13 +319,15 @@
 
 					<script type="dojo/method" event="onClick" args="item,node">
 
+						current_ou = item;
+
 						highlighter.editor_pane.green.play();
 
 						new_kid_button.disabled = false;
 						save_ou_button.disabled = false;
 						delete_ou_button.disabled = false;
 
-						current_ou = item;
+						dojo.byId('current_ou_name').innerHTML = this.store.getValue( current_ou, 'name' );
 
 						var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type' ];
 						for ( var i in main_settings_fields ) {
@@ -182,6 +354,7 @@
 						editor_pane_opac_visible.setChecked( this.store.getValue( current_ou, 'opac_visible' ) == 't' ? true : false );
 
 						hoo_load();
+						addr_load();
 
 					</script>
 
@@ -192,329 +365,613 @@
 				</div>
 			</div>
 
-			<div id="right_tabpane" dojoType="dijit.layout.TabContainer" sizeMin="200" sizeShare="300">
+			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeMin="200" sizeShare="300">
+				<div><span style="font-weight:bold; margin-right:10px;">Now editing:</span><span id="current_ou_name"></span></div>
 
-				<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
-					<script type="dojo/method">
-						highlighter.editor_pane = {};
-						highlighter.hoo_pane = {};
-						highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
-						highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
-						highlighter.hoo_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'hoo_pane', duration : 500 } );
-						highlighter.hoo_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'hoo_pane', duration : 500 } );
-					</script>
-					<table class="tundra" style="margin:10px;">
-						<tr>
-							<th>Org Unit Name</th>
-							<td>
-								<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+">
-									<script type="dojo/connect" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "name", this.getValue() );
-									</script>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th>Org Unit Policy Code</th>
-							<td>
-								<span id="editor_pane_shortname" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_shortname" uppercase="true" regExp=".+">
-									<script type="dojo/connect" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "shortname", this.getValue() );
-									</script>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th>Main Email Address</th>
-							<td>
-								<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+\@\w+(?:\.\w+)+$">
-									<script type="dojo/connect" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "email", this.getValue() );
-									</script>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th>Main Phone Number</th>
-							<td>
-								<span id="editor_pane_phone" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_phone" regExp="^(?:(?:\d{1}[ -\.])?\(?\d{3}\)?[ -\.]{1})?\d{3}[ -\.]{1}\d{4}(| \S+.*)$">
-									<script type="dojo/connect" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "phone", this.getValue() );
-									</script>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<th>Org Unit Type</th>
-							<td>
-								<div
-								  id="editor_pane_ou_type"
-								  dojoType="dijit.form.FilteringSelect"
-								  jsId="editor_pane_ou_type"
-								  store="ou_type_store"
-								  searchAttr="name"
-								  ignoreCase="true"
-								>
-									<script type="dojo/method" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "ou_type", this.getValue() );
-									</script>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>Parent Org Unit</th>
-							<td>
-								<div
-								  id="editor_pane_parent_ou"
-								  dojoType="dijit.form.FilteringSelect"
-								  jsId="editor_pane_parent_ou"
-								  store="ou_list_store"
-								  searchAttr="shortname"
-								  ignoreCase="true"
-								>
-									<script type="dojo/method" event="onChange">
-										if (current_ou) this.store.setValue( current_ou, "parent_ou", this.getValue() );
-									</script>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>OPAC Visible</th>
-							<td>
-								<input
-								  id="editor_pane_opac_visible"
-								  jsId="editor_pane_opac_visible"
-								  type="checkbox"
-								  dojoType="dijit.form.CheckBox"
-								  value='t'
-								>
-									<script type="dojo/connect" event="onChange">
-										if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.isChecked() ? "t":"f" );
-									</script>
-								</input>
-							</td>
-						</tr>
-					</table>
-
-					<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
-
-						<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save">
+				<div id="right_tabpane" dojoType="dijit.layout.TabContainer">
+	
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
+						<script type="dojo/method">
+							highlighter.editor_pane = {};
+							highlighter.hoo_pane = {};
+							highlighter.addresses_pane = {};
+							highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
+							highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
+							highlighter.hoo_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'hoo_pane', duration : 500 } );
+							highlighter.hoo_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'hoo_pane', duration : 500 } );
+							highlighter.addresses_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'addresses_pane', duration : 500 } );
+							highlighter.addresses_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'addresses_pane', duration : 500 } );
+						</script>
+	
+						<table class="tundra" style="margin:10px;">
+							<tr>
+								<th>Org Unit Name</th>
+								<td>
+									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "name", this.getValue() );
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Org Unit Policy Code</th>
+								<td>
+									<span id="editor_pane_shortname" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_shortname" uppercase="true" regExp=".+" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "shortname", this.getValue() );
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Main Email Address</th>
+								<td>
+									<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+\@\w+(?:\.\w+)+$">
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "email", this.getValue() );
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Main Phone Number</th>
+								<td>
+									<span id="editor_pane_phone" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_phone" regExp="^(?:(?:\d{1}[ -\.])?\(?\d{3}\)?[ -\.]{1})?\d{3}[ -\.]{1}\d{4}(| \S+.*)$">
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "phone", this.getValue() );
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Org Unit Type</th>
+								<td>
+									<div
+									  id="editor_pane_ou_type"
+									  dojoType="dijit.form.FilteringSelect"
+									  jsId="editor_pane_ou_type"
+									  store="ou_type_store"
+									  searchAttr="name"
+									  ignoreCase="true"
+									  required="true"
+									>
+										<script type="dojo/method" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "ou_type", this.getValue() );
+										</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>Parent Org Unit</th>
+								<td>
+									<div
+									  id="editor_pane_parent_ou"
+									  dojoType="dijit.form.FilteringSelect"
+									  jsId="editor_pane_parent_ou"
+									  store="ou_list_store"
+									  searchAttr="shortname"
+									  ignoreCase="true"
+									  required="true"
+									>
+										<script type="dojo/method" event="onChange">
+											if (current_ou) this.store.setValue( current_ou, "parent_ou", this.getValue() );
+											if ( this.store.getValue( current_ou, '_trueRoot' ) == 'true' ) this.required = false;
+											else this.required = true;
+										</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>OPAC Visible</th>
+								<td>
+									<input
+									  id="editor_pane_opac_visible"
+									  jsId="editor_pane_opac_visible"
+									  type="checkbox"
+									  dojoType="dijit.form.CheckBox"
+									  value='t'
+									>
+										<script type="dojo/connect" event="onChange">
+											if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.isChecked() ? "t":"f" );
+										</script>
+									</input>
+								</td>
+							</tr>
+						</table>
+	
+						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
+	
+							<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save" onClick="save_org()">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+							</button>
+	
+							<button jsId="delete_ou_button" dojoType="dijit.form.Button" label="Delete">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+								<script type="dojo/connect" event="onClick">
+	
+									if ( current_ou.children ) {
+										var kids = current_ou.children;
+										if (!dojo.isArray(kids)) kids = [kids];
+	
+										var existing_kids = dojo.filter(
+											kids,
+											function(kid){ return kid.isdeleted[0] != 1 }
+										);
+										if ( existing_kids.length > 0) {
+											highlighter.editor_pane.red.play();
+											alert(existing_kids.length + ' kids still exist');
+											return;
+										}
+									}
+	
+									if ( confirm('Are you sure you want to delete ' + current_ou.name + '?')) {
+										ou_list_store.setValue( current_ou, 'isdeleted', 1 );
+	
+										var modified_ou = new aou().fromStoreItem( current_ou );
+										modified_ou.isdeleted( 1 );
+	
+										pCRUD.request({
+											method : 'open-ils.permacrud.delete.aou',
+											timeout : 10,
+											params : [ ses, modified_ou ],
+											onerror : function (r) {
+												highlighter.editor_pane.red.play();
+												throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+	
+													ou_list_store.fetch({
+														query : { id : ou_list_store.getValue( current_ou, 'id' ) },
+														queryOptions : { deep : true },
+														onItem : function (item, req) { try { this.deleteItem( item ); } catch (e) { /* meh */ } },
+														scope : ou_list_store
+													});
+	
+													current_ou = null;
+	
+													new_kid_button.disabled = true;
+													save_ou_button.disabled = true;
+													delete_ou_button.disabled = true;
+			
+													var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
+													for ( var i in main_settings_fields ) {
+														var field = main_settings_fields[i];
+														window["editor_pane_" + field].setValue( '' ); // unset the value
+														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+													}
+			
+													highlighter.editor_pane.green.play();
+												} else {
+													highlighter.editor_pane.red.play();
+													throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
+												}
+											},
+										}).send();
+	
+									}
+	
+								</script>
+							</button>
+	
+						</div>
+	
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
 							<script type="dojo/connect" event="startup">
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
-
-								var modified_ou = new aou().fromStoreItem( current_ou );
-								modified_ou.ischanged( 1 );
-
+	
+								var new_fm_obj = new aou().fromHash({
+									isnew			: 1,
+									name			: 'New Branch',
+									opac_visible	: 'f',
+									shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
+									parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
+									ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
+								});
+	
+								var new_obj;
+	
 								pCRUD.request({
-									method : 'open-ils.permacrud.update.aou',
+									method : 'open-ils.permacrud.create.aou',
 									timeout : 10,
-									params : [ ses, modified_ou ],
+									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+										throw 'Problem creating child Org Unit';
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
 										if ( res && res.content() ) {
-											highlighter.editor_pane.green.play();
+											ou_list_store.newItem(
+												res.content().toHash(),
+												{ parent : current_ou, attribute : 'children' }
+											);
 										} else {
 											highlighter.editor_pane.red.play();
-											throw 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' );
+											throw 'Problem creating child Org Unit';
 										}
 									},
 								}).send();
-
+	
+								highlighter.editor_pane.green.play();
+	
 							</script>
 						</button>
-
-						<button jsId="delete_ou_button" dojoType="dijit.form.Button" label="Delete">
-							<script type="dojo/connect" event="startup">
-								this.disabled = true;
-							</script>
-							<script type="dojo/connect" event="onClick">
-
-								if ( current_ou.children ) {
-									var kids = current_ou.children;
-									if (!dojo.isArray(kids)) kids = [kids];
-
-									var existing_kids = dojo.filter(
-										kids,
-										function(kid){ return kid.isdeleted[0] != 1 }
-									);
-									if ( existing_kids.length > 0) {
-										highlighter.editor_pane.red.play();
-										alert(existing_kids.length + ' kids still exist');
-										return;
-									}
-								}
-
-								if ( confirm('Are you sure you want to delete ' + current_ou.name + '?')) {
-									ou_list_store.setValue( current_ou, 'isdeleted', 1 );
-
-									var modified_ou = new aou().fromStoreItem( current_ou );
-									modified_ou.isdeleted( 1 );
-
-									pCRUD.request({
-										method : 'open-ils.permacrud.delete.aou',
-										timeout : 10,
-										params : [ ses, modified_ou ],
-										onerror : function (r) {
-											highlighter.editor_pane.red.play();
-											throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
-										},
-										oncomplete : function (r) {
-											var res = r.recv();
-											if ( res && res.content() ) {
-
-												ou_list_store.fetch({
-													query : { id : ou_list_store.getValue( current_ou, 'id' ) },
-													queryOptions : { deep : true },
-													onItem : function (item, req) { try { this.deleteItem( item ); } catch (e) { /* meh */ } },
-													scope : ou_list_store
-												});
-
-												current_ou = null;
-
-												new_kid_button.disabled = true;
-												save_ou_button.disabled = true;
-												delete_ou_button.disabled = true;
-		
-												var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
-												for ( var i in main_settings_fields ) {
-													var field = main_settings_fields[i];
-													window["editor_pane_" + field].setValue( '' ); // unset the value
-													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-												}
-		
-												highlighter.editor_pane.green.play();
-											} else {
-												highlighter.editor_pane.red.play();
-												throw 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' );
-											}
-										},
-									}).send();
-
-								}
-
-							</script>
-						</button>
-
+	
 					</div>
 
-					<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
-						<script type="dojo/connect" event="startup">
-							this.disabled = true;
-						</script>
-						<script type="dojo/connect" event="onClick">
-
-							var new_fm_obj = new aou().fromHash({
-								isnew			: 1,
-								name			: 'New Branch',
-								opac_visible	: 'f',
-								shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
-								parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
-								ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
-							});
-
-							var new_obj;
-
-							pCRUD.request({
-								method : 'open-ils.permacrud.create.aou',
-								timeout : 10,
-								params : [ ses, new_fm_obj ],
-								onerror : function (r) {
-									highlighter.editor_pane.red.play();
-									throw 'Problem creating child Org Unit';
-								},
-								oncomplete : function (r) {
-									var res = r.recv();
-									if ( res && res.content() ) {
-										ou_list_store.newItem(
-											res.content().toHash(),
-											{ parent : current_ou, attribute : 'children' }
-										);
-									} else {
-										highlighter.editor_pane.red.play();
-										throw 'Problem creating child Org Unit';
-									}
-								},
-							}).send();
-
-							highlighter.editor_pane.green.play();
-
-						</script>
-					</button>
-
-				</div>
-
-				<div id="hoo_pane" dojoType="dijit.layout.ContentPane" title="Hours of Operation">
-					<table class="tundra" style="margin:10px;">
-						<tr><th/><th>Open time</th><th>Close time</th></tr>
-						<tr><th>Monday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Tuesday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Wednesday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Thursday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Friday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Saturday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getDisplayedValue() );"/></td>
-						</tr>
-						<tr><th>Sunday</th>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getDisplayedValue() );"/></td>
-							<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getDisplayedValue() );"/></td>
-						</tr>
-					</table>
-
-					<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save">
-						<script type="dojo/connect" event="onClick">
-
-							var method_name = 'open-ils.permacrud.update.aouhoo';
-							if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.permacrud.create.aouhoo';
-
-							pCRUD.request({
-								method : method_name,
-								params : [ ses, current_ou_hoo ],
-								onerror : function (r) {
-									highlighter.editor_pane.red.play();
-									throw 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' );
-								},
-								oncomplete : function (r) {
-									var res = r.recv();
-									if ( res && res.content() ) {
-										current_ou_hoo.isnew(0);
-										highlighter.editor_pane.green.play();
-									} else {
+					<div id="hoo_pane" dojoType="dijit.layout.ContentPane" title="Hours of Operation">
+						<table class="tundra" style="margin:10px;">
+							<tr><th/><th>Open time</th><th>Close time</th></tr>
+							<tr><th>Monday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_0_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_0_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Tuesday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_1_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_1_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Wednesday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_2_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_2_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Thursday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_3_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_3_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Friday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_4_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_4_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Saturday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_5_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_5_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+							<tr><th>Sunday</th>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.TimeTextBox" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getDisplayedValue() );"/></td>
+								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_6_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_6_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+							</tr>
+						</table>
+	
+						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="Save">
+							<script type="dojo/connect" event="onClick">
+	
+								var method_name = 'open-ils.permacrud.update.aouhoo';
+								if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.permacrud.create.aouhoo';
+	
+								pCRUD.request({
+									method : method_name,
+									params : [ ses, current_ou_hoo ],
+									onerror : function (r) {
 										highlighter.editor_pane.red.play();
 										throw 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' );
-									}
-								},
-							}).send();
+									},
+									oncomplete : function (r) {
+										var res = r.recv();
+										if ( res && res.content() ) {
+											current_ou_hoo.isnew(0);
+											highlighter.editor_pane.green.play();
+										} else {
+											highlighter.editor_pane.red.play();
+											throw 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' );
+										}
+									},
+								}).send();
+	
+							</script>
+						</button>
+	
+					</div>
+	
+					<div id="addresses_pane" dojoType="dijit.layout.ContentPane" title="Addresses">
+						
+						<div id="billing_address_pane" dojoType="dijit.layout.TabContainer" sizeMin="200" sizeShare="300" style="margin-top:10px">
+	
+							<script type="dojo/method">
+								window.current_billing_address = null;
+								window.current_mailing_address = null;
+								window.current_holds_address = null;
+								window.current_ill_address = null;
+							</script>
+	
+							<div id="billing_address" dojoType="dijit.layout.ContentPane" title="Physical Address">
+								<table class="tundra" style="margin:10px;">
+									<tr>
+										<th>Type</th><td colspan="3"><span jsId="billing_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_billing_address.address_type( this.getValue() )"/></td>
+										<th>Valid</th><td>
+											<input
+											  type="checkbox"
+											  jsId="billing_addr_valid"
+											  dojoType="dijit.form.CheckBox"
+											  value='t'
+											/>
+												<script type="dojo/connect" event="onChange">
+													if (current_billing_address) current_billing_address.valid( this.isChecked() ? 't' : 'f' );
+												</script>
+										</td>
+									</tr>
+									<tr>
+										<th>Street 1</th><td colspan="5"><span jsId="billing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.street1( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Street 2</th><td colspan="5"><span jsId="billing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_billing_address.street2( this.getValue() )"/></td>
+									</tr>
+									<tr>
+										<th>City</th><td><span jsId="billing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.city( this.getValue() )" required="true"/></td>
+										<th>State</th><td><span jsId="billing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_billing_address.state( this.getValue() )" required="true"/></td>
+										<th>Zip</th><td><span jsId="billing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_billing_address.post_code( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Country</th><td colspan="2"><span jsId="billing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.country( this.getValue() )" required="true"/></td>
+										<th>County</th><td colspan="2"><span jsId="billing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.county( this.getValue() )" required="true"/></td>
+									</tr>
+								</table>
+	
+								<button jsId="save_billing_address" dojoType="dijit.form.Button" label="Save">
+									<script type="dojo/connect" event="startup">
+										this.disabled = true;
+									</script>
+									<script type="dojo/connect" event="onClick">
+	
+										var method_name = 'open-ils.permacrud.update.aoa';
+										if (current_billing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+	
+										pCRUD.request({
+											method : method_name,
+											params : [ ses, current_billing_address ],
+											onerror : function (r) {
+												highlighter.addresses_pane.red.play();
+												throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+													if (current_billing_address.isnew() == 1) {
+														current_billing_address = res.content();
+														ou_list_store.setValue( current_ou, 'billing_address', current_billing_address.id() );
+														save_org();
+													}
+													current_billing_address.isnew(0);
+													highlighter.addresses_pane.green.play();
+												} else {
+													highlighter.addresses_pane.red.play();
+													throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												}
+											},
+										}).send();
+	
+									</script>
+								</button>
+							</div>
 
-						</script>
-					</button>
+							<div id="holds_address" dojoType="dijit.layout.ContentPane" title="Holds Address">
+								<table class="tundra" style="margin:10px;">
+									<tr>
+										<th>Type</th><td colspan="3"><span jsId="holds_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.address_type( this.getValue() )"/></td>
+										<th>Valid</th><td>
+											<input
+											  type="checkbox"
+											  jsId="holds_addr_valid"
+											  dojoType="dijit.form.CheckBox"
+											  value='t'
+											/>
+												<script type="dojo/connect" event="onChange">
+													if (current_holds_address) current_holds_address.valid( this.isChecked() ? 't' : 'f' );
+												</script>
+										</td>
+									</tr>
+									<tr>
+										<th>Street 1</th><td colspan="5"><span jsId="holds_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.street1( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Street 2</th><td colspan="5"><span jsId="holds_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.street2( this.getValue() )"/></td>
+									</tr>
+									<tr>
+										<th>City</th><td><span jsId="holds_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.city( this.getValue() )" required="true"/></td>
+										<th>State</th><td><span jsId="holds_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_holds_address.state( this.getValue() )" required="true"/></td>
+										<th>Zip</th><td><span jsId="holds_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_holds_address.post_code( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Country</th><td colspan="2"><span jsId="holds_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.country( this.getValue() )" required="true"/></td>
+										<th>County</th><td colspan="2"><span jsId="holds_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.county( this.getValue() )" required="true"/></td>
+									</tr>
+								</table>
+	
+								<button jsId="save_holds_address" dojoType="dijit.form.Button" label="Save">
+									<script type="dojo/connect" event="startup">
+										this.disabled = true;
+									</script>
+									<script type="dojo/connect" event="onClick">
+	
+										var method_name = 'open-ils.permacrud.update.aoa';
+										if (current_holds_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+	
+										pCRUD.request({
+											method : method_name,
+											params : [ ses, current_holds_address ],
+											onerror : function (r) {
+												highlighter.addresses_pane.red.play();
+												throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+													if (current_holds_address.isnew() == 1) {
+														current_holds_address = res.content();
+														ou_list_store.setValue( current_ou, 'holds_address', current_holds_address.id() );
+														save_org();
+													}
+													current_holds_address.isnew(0);
+													highlighter.addresses_pane.green.play();
+												} else {
+													highlighter.addresses_pane.red.play();
+													throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												}
+											},
+										}).send();
+	
+									</script>
+								</button>
+							</div>
 
+							<div id="mailing_address" dojoType="dijit.layout.ContentPane" title="Mailing Address">
+								<table class="tundra" style="margin:10px;">
+									<tr>
+										<th>Type</th><td colspan="3"><span jsId="mailing_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.address_type( this.getValue() )"/></td>
+										<th>Valid</th><td>
+											<input
+											  type="checkbox"
+											  jsId="mailing_addr_valid"
+											  dojoType="dijit.form.CheckBox"
+											  value='t'
+											/>
+												<script type="dojo/connect" event="onChange">
+													if (current_mailing_address) current_mailing_address.valid( this.isChecked() ? 't' : 'f' );
+												</script>
+										</td>
+									</tr>
+									<tr>
+										<th>Street 1</th><td colspan="5"><span jsId="mailing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.street1( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Street 2</th><td colspan="5"><span jsId="mailing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.street2( this.getValue() )"/></td>
+									</tr>
+									<tr>
+										<th>City</th><td><span jsId="mailing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.city( this.getValue() )" required="true"/></td>
+										<th>State</th><td><span jsId="mailing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_mailing_address.state( this.getValue() )" required="true"/></td>
+										<th>Zip</th><td><span jsId="mailing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_mailing_address.post_code( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Country</th><td colspan="2"><span jsId="mailing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.country( this.getValue() )" required="true"/></td>
+										<th>County</th><td colspan="2"><span jsId="mailing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.county( this.getValue() )" required="true"/></td>
+									</tr>
+								</table>
+	
+								<button jsId="save_mailing_address" dojoType="dijit.form.Button" label="Save">
+									<script type="dojo/connect" event="startup">
+										this.disabled = true;
+									</script>
+									<script type="dojo/connect" event="onClick">
+	
+										var method_name = 'open-ils.permacrud.update.aoa';
+										if (current_mailing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+	
+										pCRUD.request({
+											method : method_name,
+											params : [ ses, current_mailing_address ],
+											onerror : function (r) {
+												highlighter.addresses_pane.red.play();
+												throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+													if (current_mailing_address.isnew() == 1) {
+														current_mailing_address = res.content();
+														ou_list_store.setValue( current_ou, 'mailing_address', current_mailing_address.id() );
+														save_org();
+													}
+													current_mailing_address.isnew(0);
+													highlighter.addresses_pane.green.play();
+												} else {
+													highlighter.addresses_pane.red.play();
+													throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												}
+											},
+										}).send();
+	
+									</script>
+								</button>
+							</div>
+
+							<div id="ill_address" dojoType="dijit.layout.ContentPane" title="ILL Address">
+								<table class="tundra" style="margin:10px;">
+									<tr>
+										<th>Type</th><td colspan="3"><span jsId="ill_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.address_type( this.getValue() )"/></td>
+										<th>Valid</th><td>
+											<input
+											  type="checkbox"
+											  jsId="ill_addr_valid"
+											  dojoType="dijit.form.CheckBox"
+											  value='t'
+											/>
+												<script type="dojo/connect" event="onChange">
+													if (current_ill_address) current_ill_address.valid( this.isChecked() ? 't' : 'f' );
+												</script>
+										</td>
+									</tr>
+									<tr>
+										<th>Street 1</th><td colspan="5"><span jsId="ill_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.street1( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Street 2</th><td colspan="5"><span jsId="ill_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.street2( this.getValue() )"/></td>
+									</tr>
+									<tr>
+										<th>City</th><td><span jsId="ill_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.city( this.getValue() )" required="true"/></td>
+										<th>State</th><td><span jsId="ill_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_ill_address.state( this.getValue() )" required="true"/></td>
+										<th>Zip</th><td><span jsId="ill_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_ill_address.post_code( this.getValue() )" required="true"/></td>
+									</tr>
+									<tr>
+										<th>Country</th><td colspan="2"><span jsId="ill_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.country( this.getValue() )" required="true"/></td>
+										<th>County</th><td colspan="2"><span jsId="ill_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.county( this.getValue() )" required="true"/></td>
+									</tr>
+								</table>
+	
+								<button jsId="save_ill_address" dojoType="dijit.form.Button" label="Save">
+									<script type="dojo/connect" event="startup">
+										this.disabled = true;
+									</script>
+									<script type="dojo/connect" event="onClick">
+	
+										var method_name = 'open-ils.permacrud.update.aoa';
+										if (current_ill_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+	
+										pCRUD.request({
+											method : method_name,
+											params : [ ses, current_ill_address ],
+											onerror : function (r) {
+												highlighter.addresses_pane.red.play();
+												throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+													if (current_ill_address.isnew() == 1) {
+														current_ill_address = res.content();
+														ou_list_store.setValue( current_ou, 'ill_address', current_ill_address.id() );
+														save_org();
+													}
+													current_ill_address.isnew(0);
+													highlighter.addresses_pane.green.play();
+												} else {
+													highlighter.addresses_pane.red.play();
+													throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												}
+											},
+										}).send();
+	
+									</script>
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
-
 			</div>
-
 		</div>
-
 	</body>
 </html>
