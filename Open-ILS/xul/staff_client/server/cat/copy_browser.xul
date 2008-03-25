@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Copy Browser -->
+<!--
+vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -25,10 +28,10 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">
+	<script type="text/javascript">
 		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 	</script>
-        <scripts id="openils_util_scripts"/>
+	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
@@ -36,7 +39,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') {
+					throw("The JSAN library object is missing.");
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -61,7 +66,8 @@
 	]]>
 	</script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset id="cat_copy_browser">
 		<command id="save_columns" />

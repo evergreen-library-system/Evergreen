@@ -63,7 +63,7 @@ vim: noet:sw=4:ts=4:
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 
-				document.getElementById('caption').setAttribute('tooltiptext',document.getElementById('catStrings').getFormattedString('staff.cat.bib_brief.record_id' + [docid]));
+				document.getElementById('caption').setAttribute('tooltiptext',document.getElementById('catStrings').getFormattedString('staff.cat.bib_brief.record_id', [docid]));
 
 				if (docid > -1) {
 
