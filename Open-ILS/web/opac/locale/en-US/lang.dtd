@@ -1652,3 +1652,13 @@
 <!ENTITY staff.main.ws_info.name "Name">
 <!ENTITY staff.main.ws_info.register_btn.label "Register">
 <!ENTITY staff.main.ws_info.register_btn.accesskey "R">
+<!ENTITY staff.cat.bib_brief.record_summary "Record Summary">
+<!ENTITY staff.cat.bib_brief.title "Title:">
+<!ENTITY staff.cat.bib_brief.view_marc "View MARC">
+<!ENTITY staff.cat.bib_brief.author "Author:">
+<!ENTITY staff.cat.bib_brief.edition "Edition:">
+<!ENTITY staff.cat.bib_brief.pub_date "Publication Date:">
+<!ENTITY staff.cat.bib_brief.title_control_number "TCN:">
+<!ENTITY staff.cat.bib_brief.created_by "Created By:">
+<!ENTITY staff.cat.bib_brief.last_edited_by "Last Edited By:">
+<!ENTITY staff.cat.bib_brief.last_edited_on "Last Edited On:">
