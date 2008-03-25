@@ -116,15 +116,14 @@ function my_init() {
 		// Set a default locale in case preferences fail us
 		var locale = "en-US";
 
-		// Try to get the locale from our preferences - not working
+		// Try to get the locale from our preferences
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         try {
-            var Cc = Components.classes;
-            var Ci = Components.interfaces;
-            locale =
-                Cc["@mozilla.org/preferences-service;1"].
-                getService(Ci.nsIPrefService).getBranch("general.useragent").
-                getCharPref("locale");
+            const Cc = Components.classes;
+            const Ci = Components.interfaces;
+            locale = Cc["@mozilla.org/preferences-service;1"].
+				getService(Ci.nsIPrefBranch).
+				getCharPref("general.useragent.locale");
         }
 		catch (e) { }
 
