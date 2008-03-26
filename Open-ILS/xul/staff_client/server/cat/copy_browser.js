@@ -607,7 +607,21 @@ cat.copy_browser.prototype = {
 										}
 									);
 
-									var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' volumes' : 'this one volume') + '?', 'Delete Volumes?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+									var del_prompt;
+									if (list.length == 1) {
+										del_prompt = document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.prompt');
+									} else {
+										del_prompt = document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.delete_volumes.prompt.plural', [list.length]);
+									}
+
+									var r = obj.error.yns_alert(
+											del_prompt,
+											document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.title'),
+											document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.delete'),
+											document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.cancel'),
+											null,
+											document.getElementById('commonStrings').getString('common.confirm')
+									);
 
 									if (r == 0) {
 										for (var i = 0; i < list.length; i++) {
@@ -618,7 +632,7 @@ cat.copy_browser.prototype = {
 											[ ses(), list, true ],
 											null,
 											{
-												'title' : 'Override Delete Failure?',
+												'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.override'),
 												'overridable_events' : [
 												]
 											}
@@ -626,16 +640,16 @@ cat.copy_browser.prototype = {
 										if (robj == null) throw(robj);
 										if (typeof robj.ilsevent != 'undefined') {
 											if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
-												alert('You must delete all the copies on the volume before you may delete the volume itself.');
+												alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain'));
 												return;
 											}
 											if (robj.ilsevent != 0) throw(robj);
 										}
-										alert('Volumes deleted.');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.success'));
 										obj.refresh_list();
 									}
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('copy browser -> delete volumes',E);
+									obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.exception'),E);
 									obj.refresh_list();
 								}
 
