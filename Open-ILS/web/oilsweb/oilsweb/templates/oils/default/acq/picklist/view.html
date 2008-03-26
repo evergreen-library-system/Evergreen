@@ -30,7 +30,7 @@ ${picklist.summary(c.oils.acq.picklist.value)}
             % for list in c.oils.acq.picklist_list.value:
                 <option value='${list.id()}'>${list.name()}</option>
             % endfor
-o        </select>&nbsp;<input type='submit' value='${_("Submit")}'/>
+        </select>&nbsp;<button dojoType="dijit.form.Button" type='submit' value='${_("Submit")}'>${_("Submit")}</button>
     </div>
     <div class='spacer'>&nbsp;</div>
 </div>
@@ -60,15 +60,18 @@ o        </select>&nbsp;<input type='submit' value='${_("Submit")}'/>
 	        % if lineitem.state() == 'approved':
 		    ${lineitem.item_count()} Approved
 		% else:
-	            <form method="POST"
+	            <form dojoType="dijit.form.Form" method="POST"
 			  action="${c.oils.acq.prefix.value}/picklist/update">
 		        <input name="${c.oils.acq.picklist_source_id.cgi_name}"
 			       type="hidden"
 			       value="${c.oils.acq.picklist.value.id()}" />
 			<input name="${c.oils.acq.lineitem_item_count.cgi_name}"
 			       type="text" size="3"
-			       value="${lineitem.item_count()}" />
-			<button name='${c.oils.acq.lineitem_id.cgi_name}'
+			       value="${lineitem.item_count()}"
+			       dojoType="dijit.form.NumberTextBox"
+			       constraints="{min:0,places:0}" />
+			<button dojotype='dijit.form.Button'
+				name='${c.oils.acq.lineitem_id.cgi_name}'
 				value='${lineitem.id()}'>${_("Update")}</button>
 		    </form>
 		% endif

@@ -15,6 +15,7 @@
         <%def name="page_title()">${_('Evergreen Acquisitions')}</%def>
         <title>${self.page_title()}</title>
         ${self.block_css()}
+	${self.block_js()}
     </head>
 </%def>
 
@@ -24,7 +25,20 @@
 <%def name='block_body_content()'/>
 
 <%def name='block_css()'>
+    <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/tundra/tundra.css" />
+    <link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
     <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/skin/${c.oils.core.skin.value}.css'/>
     <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/theme/${c.oils.core.theme.value}.css'/>
 </%def>
 
+<%def name='block_js()'>
+    <script type="text/javascript" src="/dojo/dojo/dojo.js"
+            djConfig="parseOnLoad: true"></script>
+    <script type="text/javascript">
+        dojo.require("dojo.parser");
+	dojo.require("dijit.form.Form")
+	dojo.require("dijit.form.Button");
+	dojo.require("dijit.form.TextBox");
+	dojo.require("dijit.form.NumberTextBox");
+    </script>
+</%def>

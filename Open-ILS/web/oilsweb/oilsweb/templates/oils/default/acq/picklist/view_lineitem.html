@@ -50,7 +50,7 @@ ${picklist.summary(c.oils.acq.picklist.value, link=True)}
 		    </td>
 		    <td>${detail.owning_lib() or 'None'}</td>
 		    <td>
-		        <button name='${c.oils.acq.lineitem_detail_id.cgi_name}'
+		        <button dojotype='dijit.form.Button' name='${c.oils.acq.lineitem_detail_id.cgi_name}'
 				value='${detail.id()}'>${_("Update")}</button>
 		    </td>
 		</tr>
