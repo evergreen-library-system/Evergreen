@@ -2,22 +2,28 @@
 <%inherit file='../base.html'/>
 
 <%def name='block_body_content()'>
-    <div id='oils-base-body-block' class='tundra'> 
-        <div id='oils-base-header-block'>
+    <div id="oils-base-body-block" class="tundra"
+	 dojoType="dijit.layout.LayoutContainer"> 
+
+        <div id="oils-base-header-block"
+	     dojoType="dijit.layout.ContentPane" layoutAlign="top">
             ${self.block_header()}
         </div>
-        <div id='oils-base-main-block' class='container'>
-            <div id='oils-base-navigate-block'>
+
+        <div id="oils-base-main-block"
+             dojoType="dijit.layout.LayoutContainer" layoutAlign="client">
+            <div id="oils-base-navigate-block"
+		 dojoType="dijit.layout.ContentPane" layoutAlign="left">
                 ${self.block_navigate()}
             </div>
-            <div id='oils-base-content-block'>
+            <div id="oils-base-content-block"
+		 dojoType="dijit.layout.ContentPane" layoutAlign="client">
                 ${self.block_global_content()}
             </div>
-            <div id='oils-base-sidebar-block'>
-                ${self.block_sidebar()}
-            </div>
         </div>
-        <div id='oils-base-footer-block'>
+
+        <div id="oils-base-footer-block"
+             dojoType="dijit.layout.ContentPane" layoutAlign="bottom">
             ${self.block_footer()}
         </div>
     </div>
