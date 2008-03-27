@@ -59,7 +59,7 @@ sub CRUD_action_object_permcheck {
     my $auth = shift;
     my $obj = shift;
 
-    my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = shift || new_editor(authtoken => $auth, xact => 1);
     return $e->event unless $e->checkauth;
 
     if (ref($obj) && $obj->json_hint ne $self->{class_hint}) {
@@ -123,7 +123,7 @@ sub CRUD_action_object_permcheck {
     my $perm_field_value = $action_node->getAttribute('permission');
 
     if ($perm_field_value) {
-        my @perms = split '\|', $action_node->getAttribute('permission');
+        my @perms = split '\|', $perm_field_value;
 
         my @context_ous;
         if ($action_node->getAttribute('global_required')) {
@@ -175,7 +175,7 @@ sub CRUD_action_object_permcheck {
 
         if ((lc($all_perms) eq 'true' && @perms != $pok) or !$pok) {
             throw OpenSRF::DomainObject::oilsException->new(
-                statusCode => 500,
+                statusCode => 403,
                 status => "Perm failure -- action: $self->{action}, object type: $self->{json_hint}",
             );
         }
@@ -224,8 +224,10 @@ sub search_permacrud {
 
     my $retriever = $self->method_lookup( $self->{retriever} );
     for my $o ( @$obj_list ) {
-        my ($o) = $retriever->run( $auth, $o );
-        $client->respond( $o ) if ($o);
+        try {
+            ($o) = $retriever->run( $auth, $o, $e );
+            $client->respond( $o ) if ($o);
+        };
     }
 
     return undef;
