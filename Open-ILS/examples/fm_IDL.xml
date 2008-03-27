@@ -1916,6 +1916,14 @@
 			<link field="children" reltype="has_many" key="parent" map="" class="aout"/>
 			<link field="org_units" reltype="has_many" key="ou_type" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_ORG_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_ORG_TYPE" global_required="true"/>
+                <delete permission="DELETE_ORG_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="bren" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_note_id_seq">
