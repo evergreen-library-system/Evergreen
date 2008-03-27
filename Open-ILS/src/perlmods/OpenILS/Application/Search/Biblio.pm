@@ -453,7 +453,6 @@ sub multiclass_query {
     $logger->debug("initial search query => $query");
     my $orig_query = $query;
 
-    $query = decode_utf8($query);
     $query =~ s/\+/ /go;
     $query =~ s/'//go;
     $query =~ s/^\s+//go;
