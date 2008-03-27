@@ -220,7 +220,7 @@ BEGIN
             tmp_text := replace( tmp_text, '[', E'\\[' );
             tmp_text := replace( tmp_text, ']', E'\\]' );
 
-            inner_where_clause := inner_where_clause || ' AND ' || 'value  ILIKE ' || quote_literal( E'(^|\\W+)' || regexp_replace(tmp_text, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
+            inner_where_clause := inner_where_clause || ' AND ' || 'value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(tmp_text, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
 
         END LOOP;
 
@@ -335,7 +335,7 @@ BEGIN
 
     core_rel_query := select_clause || from_clause || where_clause ||
                         ' GROUP BY 1 ORDER BY 4' || CASE WHEN sort_desc THEN ' DESC' ELSE ' ASC' END || ';';
-    --RAISE NOTICE 'Base Query:  %', core_rel_query;
+    RAISE NOTICE 'Base Query:  %', core_rel_query;
 
     IF param_depth IS NOT NULL THEN
         SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou, param_depth );
