@@ -110,10 +110,12 @@
 
 					<script type="dojo/method" event="onClick" args="item,node">
 
+						right_pane_toggler.show();
+
 						current_ou = item;
 
 						highlighter.editor_pane.green.play();
-						status_update( 'Now editing' + this.store.getValue( item, 'name' ) );
+						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
 
 						new_kid_button.disabled = false;
 						save_ou_button.disabled = false;
@@ -159,7 +161,11 @@
 				</div>
 			</div>
 
-			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeMin="200" sizeShare="300">
+			<div jsId="right_pane" id="right_pane" dojoType="dijit.layout.ContentPane"  sizeMin="200" sizeShare="300">
+				<script type="dojo/method">
+					window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
+					window.right_pane_toggler.hide();
+				</script>
 
 				<div id="right_tabpane" dojoType="dijit.layout.TabContainer">
 	
@@ -290,6 +296,14 @@
 								</script>
 								<script type="dojo/connect" event="onClick">
 	
+									var old_name = ou_list_store.getValue( current_ou, 'name' );
+
+									if (ou_list_store.getValue( current_ou, '_trueRoot' ) == 'true') {
+										highlighter.editor_pane.red.play();
+										status_update( 'Cannot delete' + ou_list_store.getValue( current_ou, 'name' ) + ', you need at least one.' );
+										return false;
+									}
+
 									if ( current_ou.children ) {
 										var kids = current_ou.children;
 										if (!dojo.isArray(kids)) kids = [kids];
@@ -317,7 +331,7 @@
 											params : [ ses, modified_ou ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
-												status_update( 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' ) );
+												status_update( 'Problem deleting ' + old_name );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -344,12 +358,12 @@
 													}
 			
 													highlighter.editor_pane.green.play();
-													status_update( ou_list_store.getValue( current_ou, 'name' ) + ' deleted' );
+													status_update( old_name + ' deleted' );
 												} else {
 													highlighter.editor_pane.red.play();
-													status_update( 'Problem deleting ' + ou_list_store.getValue( current_ou, 'name' ) );
+													status_update( 'Problem deleting ' + old_name );
 												}
-											},
+											}
 										}).send();
 	
 									}
