@@ -273,6 +273,8 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+                    <!-- Default to using staged search -->
+                    <use_staged_search>true</use_staged_search>
                     <!-- zip code database file -->
                     <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
                 </app_settings>
