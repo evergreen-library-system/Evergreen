@@ -1922,7 +1922,7 @@
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_ORG_TYPE" global_required="true"/>
-                <retrieve/>
+                <retrieve permission="CREATE_ORG_UNIT|UPDATE_ORG_UNIT|DELETE_ORG_UNIT" global_required="true"/>
                 <update permission="UPDATE_ORG_TYPE" global_required="true"/>
                 <delete permission="DELETE_ORG_TYPE" global_required="true"/>
             </actions>
