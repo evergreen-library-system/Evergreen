@@ -211,7 +211,16 @@ BEGIN
               WHERE term_type = 'phrase'
                     AND table_alias = query_part.table_alias LOOP
 
-            inner_where_clause := inner_where_clause || ' AND ' || 'value  ~* ' || quote_literal( E'(^|\\W+)' || regexp_replace(phrase_query_part.term, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
+            tmp_text := replace( phrase_query_part.term, '*', E'\\*' );
+            tmp_text := replace( tmp_text, '?', E'\\?' );
+            tmp_text := replace( tmp_text, '+', E'\\+' );
+            tmp_text := replace( tmp_text, '|', E'\\|' );
+            tmp_text := replace( tmp_text, '(', E'\\(' );
+            tmp_text := replace( tmp_text, ')', E'\\)' );
+            tmp_text := replace( tmp_text, '[', E'\\[' );
+            tmp_text := replace( tmp_text, ']', E'\\]' );
+
+            inner_where_clause := inner_where_clause || ' AND ' || 'value  ILIKE ' || quote_literal( E'(^|\\W+)' || regexp_replace(tmp_text, E'\\s+',E'\\\\s+','g') || E'(\\W+|\$)' );
 
         END LOOP;
 
