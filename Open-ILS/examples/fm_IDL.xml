@@ -1740,8 +1740,11 @@
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_ORG_UNIT" context_field="parent_ou"/>
-                <retrieve/>
-                <update permission="UPDATE_ORG_UNIT" context_field="parent_ou"/>
+                <retrieve permission="CREATE_ORG_UNIT|UPDATE_ORG_UNIT|DELETE_ORG_UNIT">
+                    <context field="id"/>
+                    <context field="parent_ou"/>
+				</retrieve>
+                <update permission="UPDATE_ORG_UNIT" context_field="id"/>
                 <delete permission="DELETE_ORG_UNIT" context_field="parent_ou"/>
             </actions>
         </permacrud>
