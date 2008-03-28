@@ -2331,6 +2331,14 @@
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="children" reltype="has_many" key="parent" map="" class="pgt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_PERM" global_required="true"/>
+                <retrieve permission="CREATE_PERM|UPDATE_PERM|DELETE_PERM" global_required="true"/>
+                <update permission="UPDATE_PERM" global_required="true"/>
+                <delete permission="DELETE_PERM" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="asva" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_answer" oils_persist:tablename="action.survey_answer" reporter:label="Survey Answer">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_answer_id_seq">
