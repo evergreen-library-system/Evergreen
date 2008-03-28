@@ -5,10 +5,11 @@
 	    %if link:
 	        <A href="${c.oils.acq.prefix.value}/picklist/view/${picklist.id()}">
 	    %endif
-	            ${picklist.name()}</span>
+	            ${picklist.name()}
 	    %if link:
 	        </A>
 	    %endif
+	</span>
 	<div class='oils-acq-picklist-attributes'>
             <%
                meta = _("Create date: %(date)s") % {"date":picklist.create_time()}
