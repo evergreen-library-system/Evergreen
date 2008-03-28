@@ -1,0 +1,400 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Confiy :: Global :: Permission :: Group Tree</title>
+
+		<style type="text/css">
+			@import url("/conify/js/dojo/resources/dojo.css");
+			@import url("/conify/js/dijit/themes/tundra/tundra.css");
+			@import url("/conify/js/dojox/widget/Toaster/Toaster.css");
+		</style>
+
+		<style>
+			html, body
+			{
+				height: 100%;
+				width: 100%;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				overflow: hidden;
+			}
+
+			th
+			{
+				text-align: right;
+				font-weight: bold;
+				padding-left: 20px;
+				padding-right: 5px;
+			}
+		</style>
+
+		<!-- The OpenSRF API writ JS -->
+		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/opensrf.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/opensrf_xhr.js' type='text/javascript'></script>
+
+		<!-- Fieldmapper objects -->
+		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/fmgen.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js' type='text/javascript'></script>
+
+		<!-- Dojo goodness -->
+		<script type="text/javascript" src="/conify/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/conify/js/dijit/dijit.js"></script>
+
+		<script type="text/javascript" src="grp_tree.js"></script>
+
+	</head>
+
+	<body class="tundra" id='pagebody'>
+
+		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
+
+			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
+				<script type="dojo/method">
+					window.dirtyStore = [];
+
+                    pCRUD.request({
+                        method : 'open-ils.permacrud.search.pgt.atomic',
+                        timeout : 10,
+                        params : [ ses, { id : { "!=" : null } }, { order_by : { pgt : 'name' } } ],
+                        onerror : function (r) { status_update('Problem fetching groups') },
+                        oncomplete : function (r) {
+                            ou_group_store = new dojo.data.ItemFileWriteStore({ data : pgt.toStoreData( r.recv().content() ) });
+                            ou_group_store.onSet = function (item, attr, n, o) {
+                                if (attr == 'ischanged') return;
+                                if (n == o) return;
+                                this.setValue( item, 'ischanged', 1);
+                            };
+                            dojo.addOnUnload( function (event) {
+
+                                ou_group_store.fetch({
+                                    query : { ischanged : 1 },
+                                    queryOptions : { deep : true },
+                                    onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                                    scope : ou_group_store
+                                });
+
+                                if (dirtyStore.length > 0) {
+                                    var confirmation = confirm(
+                                        'There are unsaved modified Groups!  '+
+                                        'OK to save these changes, Cancel to abandon them.'
+                                    );
+
+                                    if (confirmation) {
+                                        for (var i in window.dirtyStore) {
+                                            window.current_group = window.dirtyStore[i];
+                                            save_group(true);
+                                        }
+                                    }
+                                }
+
+                            });
+                        }
+                    }).send();
+
+				</script>
+				<div
+				  id="group_tree"
+				  label="Permission Groups"
+				  query="{'_top':'true'}"
+				  dojoType="dijit.Tree"
+				  store="ou_group_store"
+				  minSize="200"
+				  jsId="group_tree"
+				>
+
+					<script type="dojo/method" event="onClick" args="item,node">
+
+						right_pane_toggler.show();
+
+						current_group = item;
+
+						highlighter.editor_pane.green.play();
+						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
+
+						new_kid_button.disabled = false;
+						save_out_button.disabled = false;
+						delete_out_button.disabled = false;
+
+						var main_settings_fields = [ 'name', 'perm_interval', 'description', 'application_perm'];
+						for ( var i in main_settings_fields ) {
+							var field = main_settings_fields[i];
+							var value = this.store.getValue( current_group, field );
+
+							if (!value) {
+								window["editor_pane_" + field].setValue( '' ); // unset the value
+								if (field != 'description') window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+							} else window["editor_pane_" + field].setValue( value );
+						}
+
+						if ( this.store.getValue( current_group, '_trueRoot' ) == 'true' ) {
+							editor_pane_parent.disabled = true;
+							editor_pane_parent.setValue(null);
+							editor_pane_parent.setDisplayedValue('');
+							editor_pane_parent.validate(false);
+						} else {
+							editor_pane_parent.disabled = false;
+							editor_pane_parent.validate(true);
+							editor_pane_parent.setValue( this.store.getValue( current_group, 'parent' ) );
+						}
+
+						editor_pane_usergroup.setChecked( this.store.getValue( current_group, 'usergroup' ) == 't' ? true : false );
+
+					</script>
+
+					<script type="dojo/method" event="getLabel" args="item,pI">
+						var label = this.store.getValue(item,'name');
+						if (this.store.getValue(item,'ischanged') == 1) label = '* ' + label;
+						return label;
+					</script>
+
+				</div>
+			</div>
+
+			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeShare="300">
+				<script type="dojo/method">
+					window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
+					window.right_pane_toggler.hide();
+				</script>
+
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane">
+						<script type="dojo/method">
+							highlighter.group_tree = {};
+							highlighter.editor_pane = {};
+							highlighter.group_tree.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'group_tree', duration : 500 } );
+							highlighter.group_tree.red = dojox.fx.highlight( { color : '#FF2018', node : 'group_tree', duration : 500 } );
+							highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
+							highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
+						</script>
+	
+						<table class="tundra" style="margin:10px;">
+							<tr>
+								<th>Group Name</th>
+								<td>
+									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_group) {
+												ou_group_store.setValue( current_group, "name", this.getValue() );
+											}
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Description</th>
+								<td>
+									<textarea
+									  id="editor_pane_description"
+									  dojoType="dijit.form.Textarea"
+									  jsId="editor_pane_description"
+									  onChange="if (current_group) ou_group_store.setValue( current_group, "description", this.getValue() );"
+									></textarea>
+								</td>
+							</tr>
+							<tr>
+								<th>Permission Interval</th>
+								<td>
+									<span id="editor_pane_perm_interval" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_perm_interval" regExp="^\d+ (?:y.*|mo.*|d.*)$" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_group) {
+												ou_group_store.setValue( current_group, "perm_interval", this.getValue() );
+											}
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Edit Permission</th>
+								<td>
+									<span id="editor_pane_application_perm" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_application_perm">
+										<script type="dojo/connect" event="onChange">
+											if (current_group && this.getValue()) {
+												ou_group_store.setValue( current_group, "application_perm", this.getValue() );
+											}
+										</script>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Parent Group</th>
+								<td>
+									<div
+									  id="editor_pane_parent"
+									  dojoType="dijit.form.FilteringSelect"
+									  jsId="editor_pane_parent"
+									  store="ou_group_store"
+									  searchAttr="name"
+									  ignoreCase="true"
+									  required="true"
+									>
+										<script type="dojo/connect" event="onChange">
+											if (current_group && this.getValue()) {
+												this.store.setValue( current_group, "parent", this.getValue() );
+											}
+										</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>User Group</th>
+								<td>
+									<input
+									  id="editor_pane_usergroup"
+									  jsId="editor_pane_usergroup"
+									  type="checkbox"
+									  dojoType="dijit.form.CheckBox"
+									  onChange='if (current_group) ou_group_store.setValue( current_group, "usergroup", this.checked ? "t" : "f" );'
+									/>
+								</td>
+							</tr>
+						</table>
+	
+						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
+	
+							<button jsId="save_out_button" dojoType="dijit.form.Button" label="Save" onClick="save_group()">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+							</button>
+	
+							<button jsId="delete_out_button" dojoType="dijit.form.Button" label="Delete">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+								<script type="dojo/connect" event="onClick">
+	
+									if (ou_group_store.getValue( current_group, '_trueRoot' ) == 'true') {
+										highlighter.editor_pane.red.play();
+										status_update( 'Cannot delete' + ou_group_store.getValue( current_group, 'name' ) + ', you need at least one.' );
+										return false;
+									}
+
+									if ( current_group.children ) {
+										var kids = current_group.children;
+										if (!dojo.isArray(kids)) kids = [kids];
+	
+										var existing_kids = dojo.filter(
+											kids,
+											function(kid){ return kid.isdeleted[0] != 1 }
+										);
+										if ( existing_kids.length > 0) {
+											highlighter.editor_pane.red.play();
+											status_update( 'Cannot delete' + ou_group_store.getValue( current_group, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
+											return;
+										}
+									}
+	
+									if ( confirm('Are you sure you want to delete ' + current_group.name + '?')) {
+										ou_group_store.setValue( current_group, 'isdeleted', 1 );
+	
+										var modified_pgt = new pgt().fromStoreItem( current_group );
+										modified_pgt.isdeleted( 1 );
+	
+										pCRUD.request({
+											method : 'open-ils.permacrud.delete.pgt',
+											timeout : 10,
+											params : [ ses, modified_pgt ],
+											onerror : function (r) {
+												highlighter.editor_pane.red.play();
+												status_update( 'Problem deleting ' + ou_group_store.getValue( current_group, 'name' ) );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+	
+													var old_name = ou_group_store.getValue( current_group, 'name' );
+
+													ou_group_store.fetch({
+														query : { id : ou_group_store.getValue( current_group, 'id' ) },
+														queryOptions : { deep : true },
+														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+														scope : ou_group_store
+													});
+	
+													current_group = null;
+	
+													new_kid_button.disabled = true;
+													save_out_button.disabled = true;
+													delete_out_button.disabled = true;
+			
+													var main_settings_fields = [ 'name', 'perm_interval', 'description', 'application_perm' ];
+													for ( var i in main_settings_fields ) {
+														var field = main_settings_fields[i];
+														window["editor_pane_" + field].setValue( '' ); // unset the value
+														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+													}
+
+													window["editor_pane_usergroup"].setChecked( false ); // unset the value
+			
+													highlighter.editor_pane.green.play();
+													status_update( old_name + ' deleted' );
+												} else {
+													highlighter.editor_pane.red.play();
+													status_update( 'Problem deleting ' + old_name );
+												}
+											}
+										}).send();
+	
+									}
+	
+								</script>
+							</button>
+	
+						</div>
+	
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
+							<script type="dojo/connect" event="startup">
+								this.disabled = true;
+							</script>
+							<script type="dojo/connect" event="onClick">
+	
+								var new_fm_obj = new pgt().fromHash({
+									isnew			: 1,
+									name			: 'New Group',
+									usergroup		: 'f',
+									parent			: ou_group_store.getValue( current_group, 'id' )
+								});
+	
+								var err = false;
+								pCRUD.request({
+									method : 'open-ils.permacrud.create.pgt',
+									timeout : 10,
+									params : [ ses, new_fm_obj ],
+									onerror : function (r) {
+										highlighter.editor_pane.red.play();
+										status_update( 'Problem calling method to create child Group' );
+										err = true;
+									},
+									oncomplete : function (r) {
+										var res = r.recv();
+										if ( res && res.content() ) {
+											ou_group_store.newItem(
+												res.content().toHash(),
+												{ parent : current_group, attribute : 'children' }
+											);
+										} else {
+											highlighter.editor_pane.red.play();
+											status_update( 'Problem creating child Group' );
+											err = true;
+										}
+									},
+								}).send();
+	
+								if (!err) {
+									highlighter.editor_pane.green.play();
+									highlighter.group_tree.green.play();
+									status_update( 'New child Group created for ' + ou_group_store.getValue( current_group, 'name' ) );
+								}
+	
+							</script>
+						</button>
+	
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
