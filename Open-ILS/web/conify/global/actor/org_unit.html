@@ -52,7 +52,7 @@
 
 		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
 
-			<div dojoType="dijit.layout.ContentPane" sizeMin="200" sizeShare="100">
+			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
 
 					var ou_list_data = { label : 'shortname', identifier : 'id' };
@@ -161,7 +161,7 @@
 				</div>
 			</div>
 
-			<div jsId="right_pane" id="right_pane" dojoType="dijit.layout.ContentPane"  sizeMin="200" sizeShare="300">
+			<div jsId="right_pane" id="right_pane" dojoType="dijit.layout.ContentPane"  sizeShare="200">
 				<script type="dojo/method">
 					window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
 					window.right_pane_toggler.hide();
@@ -257,7 +257,7 @@
 									  required="true"
 									>
 										<script type="dojo/method" event="onChange">
-											if (current_ou) this.store.setValue( current_ou, "parent_ou", this.getValue() );
+											if (current_ou && this.getValue()) this.store.setValue( current_ou, "parent_ou", this.getValue() );
 											if ( this.store.getValue( current_ou, '_trueRoot' ) == 'true' ) this.required = false;
 											else this.required = true;
 										</script>
@@ -272,12 +272,8 @@
 									  jsId="editor_pane_opac_visible"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  value='t'
-									>
-										<script type="dojo/connect" event="onChange">
-											if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.isChecked() ? "t":"f" );
-										</script>
-									</input>
+									  onChange='if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.checked ? "t" : "f" );'
+									/>
 								</td>
 							</tr>
 						</table>
@@ -494,7 +490,7 @@
 	
 					<div id="addresses_pane" dojoType="dijit.layout.ContentPane" title="Addresses">
 						
-						<div id="billing_address_pane" dojoType="dijit.layout.TabContainer" sizeMin="200" sizeShare="300" style="margin-top:10px">
+						<div id="billing_address_pane" dojoType="dijit.layout.TabContainer" style="margin-top:10px">
 	
 							<script type="dojo/method">
 								window.current_billing_address = null;
@@ -513,10 +509,8 @@
 											  jsId="billing_addr_valid"
 											  dojoType="dijit.form.CheckBox"
 											  value='t'
+											  onChange='if (current_billing_address) current_billing_address.valid( this.checked ? "t" : "f" );'
 											/>
-												<script type="dojo/connect" event="onChange">
-													if (current_billing_address) current_billing_address.valid( this.isChecked() ? 't' : 'f' );
-												</script>
 										</td>
 									</tr>
 									<tr>
@@ -584,10 +578,8 @@
 											  jsId="holds_addr_valid"
 											  dojoType="dijit.form.CheckBox"
 											  value='t'
+											  onChange='if (current_holds_address) current_holds_address.valid( this.checked ? "t" : "f" );'
 											/>
-												<script type="dojo/connect" event="onChange">
-													if (current_holds_address) current_holds_address.valid( this.isChecked() ? 't' : 'f' );
-												</script>
 										</td>
 									</tr>
 									<tr>
@@ -654,11 +646,8 @@
 											  type="checkbox"
 											  jsId="mailing_addr_valid"
 											  dojoType="dijit.form.CheckBox"
-											  value='t'
+											  onChange='if (current_mailing_address) current_mailing_address.valid( this.checked ? "t" : "f" );'
 											/>
-												<script type="dojo/connect" event="onChange">
-													if (current_mailing_address) current_mailing_address.valid( this.isChecked() ? 't' : 'f' );
-												</script>
 										</td>
 									</tr>
 									<tr>
@@ -725,11 +714,8 @@
 											  type="checkbox"
 											  jsId="ill_addr_valid"
 											  dojoType="dijit.form.CheckBox"
-											  value='t'
+											  onChange='if (current_ill_address) current_ill_address.valid( this.checked ? "t" : "f" );'
 											/>
-												<script type="dojo/connect" event="onChange">
-													if (current_ill_address) current_ill_address.valid( this.isChecked() ? 't' : 'f' );
-												</script>
 										</td>
 									</tr>
 									<tr>

@@ -41,7 +41,7 @@
 		<script language='javascript' src='/opac/common/js/OrgTree.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/conify/js/dojo/dojo.js.uncompressed.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/conify/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 		<script type="text/javascript" src="/conify/js/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="org_unit_type.js"></script>
@@ -52,14 +52,14 @@
 
 		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
 
-			<div dojoType="dijit.layout.ContentPane" sizeMin="100" sizeShare="100">
+			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
 					window.dirtyStore = [];
 
                     pCRUD.request({
                         method : 'open-ils.permacrud.search.aout.atomic',
                         timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'name' } } ],
+                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'name' } } ],
                         onerror : function (r) { status_update('Problem fetching types') },
                         oncomplete : function (r) {
                             ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( r.recv().content() ) });
@@ -108,6 +108,7 @@
 
 					<script type="dojo/method" event="onClick" args="item,node">
 
+						right_pane_toggler.show();
 						current_type = item;
 
 						highlighter.editor_pane.green.play();
@@ -139,8 +140,8 @@
 							editor_pane_parent.setValue( this.store.getValue( current_type, 'parent' ) );
 						}
 
-						editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == '1' ? true : false );
-						editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == '1' ? true : false );
+						editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == 't' ? true : false );
+						editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == 't' ? true : false );
 
 					</script>
 
@@ -153,7 +154,11 @@
 				</div>
 			</div>
 
-			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeMin="100" sizeShare="300">
+			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeShare="200">
+				<script type="dojo/method">
+					window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
+					window.right_pane_toggler.hide();
+				</script>
 
 					<div id="editor_pane" dojoType="dijit.layout.ContentPane">
 						<script type="dojo/method">
@@ -203,8 +208,8 @@
 									  required="true"
 									>
 										<script type="dojo/method" event="onChange" args=>
-											if (current_type) {
-												if ( this.store.getValue( current_type, 'depth' ) == this.getValue() ) return;
+											if (current_type && this.getValue()) {
+												if ( this.store.getValue( current_type, 'parent' ) == this.getValue() ) return;
 
 												this.store.setValue( current_type, "parent", this.getValue() );
 												this.store.fetch({
@@ -227,14 +232,8 @@
 									  jsId="editor_pane_can_have_vols"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  value='t'
-									>
-										<script type="dojo/connect" event="onChange">
-											if (current_type) {
-												ou_type_store.setValue( current_type, "can_have_vols", this.isChecked() ? "1":"0" );
-											}
-										</script>
-									</input>
+									  onChange='if (current_type) ou_type_store.setValue( current_type, "can_have_vols", this.checked ? "t" : "f" );'
+									/>
 								</td>
 							</tr>
 							<tr>
@@ -245,14 +244,8 @@
 									  jsId="editor_pane_can_have_users"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  value='t'
-									>
-										<script type="dojo/connect" event="onChange">
-											if (current_type) {
-												ou_type_store.setValue( current_type, "can_have_users", this.isChecked() ? "1":"0" );
-											}
-										</script>
-									</input>
+									  onChange='if (current_type) ou_type_store.setValue( current_type, "can_have_users", this.checked ? "t" : "f" );'
+									/>
 								</td>
 							</tr>
 						</table>
@@ -360,8 +353,8 @@
 								var new_fm_obj = new aout().fromHash({
 									isnew			: 1,
 									name			: 'New Type',
-									can_have_vols	: '0',
-									can_have_users	: '0',
+									can_have_vols	: 'f',
+									can_have_users	: 'f',
 									depth			: 1 + parseInt(ou_type_store.getValue( current_type, 'depth' )),
 									opac_label		: ou_type_store.getValue( current_type, 'opac_label' ) + ' child' + virgin_out_id--,
 									parent			: ou_type_store.getValue( current_type, 'id' )
