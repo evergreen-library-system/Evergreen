@@ -17,3 +17,4 @@ for (var i in fmclasses) window[i].prototype.fromStoreItem = _fromStoreItem;
 
 aou.prototype._ignore_fields = ['children'];
 aout.prototype._ignore_fields = ['children'];
+pgt.prototype._ignore_fields = ['children'];
