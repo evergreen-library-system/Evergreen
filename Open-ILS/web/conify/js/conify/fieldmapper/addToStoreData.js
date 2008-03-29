@@ -1,14 +1,18 @@
 
 function _toStoreData (list, label, params) {
 
+	if (!params) params = {};
+
 	// a sane default
 	if (!params.identifier) params.identifier = 'id';
+	if (!label) label = params.label;
+	if (!label) label = params.identifier;
 
-	var data = { label : 'shortname', identifier : 'id', items : [] };
+	var data = { label : label, identifier : params.identifier, items : [] };
 
 	for (var i in list) data.items.push( list[i].toHash() );
 
-	if (params.children && params['parent']) {
+	if (params.children && params.parent) {
 		var _hash_list = data.items;
 
 		var _find_root = {};
@@ -23,7 +27,7 @@ function _toStoreData (list, label, params) {
 
 			for (var j in _hash_list) {
 				var kid = _hash_list[j];
-				if (kid[params['parent']] == obj[params.identifier]) {
+				if (kid[params.parent] == obj[params.identifier]) {
 					obj[params.children].push( { _reference : kid[params.identifier] } );
 					kid._iskid = true;
 					if (_find_root[kid[params.identifier]]) delete _find_root[kid[params.identifier]];
@@ -35,7 +39,7 @@ function _toStoreData (list, label, params) {
 
 		for (var j in _find_root) {
 			_find_root[j]['_top'] = 'true';
-			if (!_find_root[j][params['parent']])
+			if (!_find_root[j][params.parent])
 				_find_root[j]['_trueRoot'] = 'true';
 		}
 
@@ -63,4 +67,10 @@ pgt.toStoreData = function (list, label) {
 	return _toStoreData(list, label, { 'parent' : 'parent', 'children' : 'children' });
 }
 
+/*
+ppl.toStoreData = function (list, label) {
+	if (!label) label = 'code';
+	return _toStoreData(list, label, {});
+}
+*/
 

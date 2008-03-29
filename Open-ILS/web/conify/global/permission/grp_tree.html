@@ -3,9 +3,9 @@
 		<title>Confiy :: Global :: Permission :: Group Tree</title>
 
 		<style type="text/css">
-			@import url("/conify/js/dojo/resources/dojo.css");
-			@import url("/conify/js/dijit/themes/tundra/tundra.css");
-			@import url("/conify/js/dojox/widget/Toaster/Toaster.css");
+			@import url("/js/dojo/resources/dojo.css");
+			@import url("/js/dijit/themes/tundra/tundra.css");
+			@import url("/js/dojox/widget/Toaster/Toaster.css");
 		</style>
 
 		<style>
@@ -41,8 +41,8 @@
 		<script language='javascript' src='/opac/common/js/OrgTree.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/conify/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
-		<script type="text/javascript" src="/conify/js/dijit/dijit.js"></script>
+		<script type="text/javascript" src="/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/js/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="grp_tree.js"></script>
 
@@ -62,19 +62,21 @@
                         params : [ ses, { id : { "!=" : null } }, { order_by : { pgt : 'name' } } ],
                         onerror : function (r) { status_update('Problem fetching groups') },
                         oncomplete : function (r) {
-                            ou_group_store = new dojo.data.ItemFileWriteStore({ data : pgt.toStoreData( r.recv().content() ) });
-                            ou_group_store.onSet = function (item, attr, n, o) {
+                            window._group_list = r.recv().content();
+                            window._group_data = pgt.toStoreData( window._group_list );
+                            window.group_store = new dojo.data.ItemFileWriteStore({ data : window._group_data });
+                            window.group_store.onSet = function (item, attr, n, o) {
                                 if (attr == 'ischanged') return;
                                 if (n == o) return;
                                 this.setValue( item, 'ischanged', 1);
                             };
                             dojo.addOnUnload( function (event) {
 
-                                ou_group_store.fetch({
+                                window.group_store.fetch({
                                     query : { ischanged : 1 },
                                     queryOptions : { deep : true },
                                     onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-                                    scope : ou_group_store
+                                    scope : window.group_store
                                 });
 
                                 if (dirtyStore.length > 0) {
@@ -95,13 +97,84 @@
                         }
                     }).send();
 
+					function get_perm_part(part, model, row) {
+						var value;
+						perm_store.fetchItemByIdentity({
+							identity : model.getRow(row).perm,
+							onItem : function (item) { value = perm_store.getValue( item, part ) }
+						});
+						return value;
+					}
+
+					// XXX Use existing perm grabbing functions??  see old interface
+                    pCRUD.request({
+                        method : 'open-ils.permacrud.search.ppl.atomic',
+                        timeout : 10,
+                        params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
+                        onerror : function (r) { status_update('Problem fetching perms') },
+                        oncomplete : function (r) {
+    
+                            window._perm_list = r.recv().content();
+                            window._perm_data = ppl.toStoreData( window._perm_list, 'code' );
+                            window._perm_name_data = ppl.toStoreData( window._perm_list, 'code', { identifier : 'code' } );
+                            window.perm_store = new dojo.data.ItemFileWriteStore({ data : window._perm_data });
+                            window.perm_name_store = new dojo.data.ItemFileWriteStore({ data : window._perm_name_data });
+    
+                            window.current_perm_grid_layout = [
+                                {   cells : [
+                                        [
+                                            {	name : "Depth",
+												field : "perm",
+												width : "5em",
+												noresize : true
+											}, 
+                                            {	name : "Code",
+												//get : dojo.partial(get_perm_part, "code", perm_map_model),
+												width : "300px"
+											},
+                                            {	name : "Description",
+												//get : dojo.partial(get_perm_part, "code", perm_map_model),
+												width : "auto"
+											}
+                                        ]
+                                    ]
+                                }
+                            ];
+    
+                        }
+                    }).send();
+
+                    pCRUD.request({
+                        method : 'open-ils.permacrud.search.pgmp.atomic',
+                        timeout : 10,
+                        params : [ ses, { id : { "!=" : null } } ],
+                        onerror : function (r) { status_update('Problem fetching perm maps') },
+                        oncomplete : function (r) {
+                            window._perm_map_list = r.recv().content();
+                            window._perm_map_data = pgpm.toStoreData( window._perm_map_list, 'id' );
+                            window.perm_map_store = new dojo.data.ItemFileWriteStore({ data : window._perm_map_data });
+                        }
+                    }).send();
+
+                    pCRUD.request({
+                        method : 'open-ils.permacrud.search.aout.atomic',
+                        timeout : 10,
+                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
+                        onerror : function (r) { status_update('Problem fetching types') },
+                        oncomplete : function (r) {
+							window._ou_type_list =  r.recv().content();
+							window._ou_type_data = aout.toStoreData( window._ou_type_list );
+                            window.ou_type_store = new dojo.data.ItemFileWriteStore({ data : window._ou_type_data });
+                        }
+                    }).send();
+
 				</script>
 				<div
 				  id="group_tree"
 				  label="Permission Groups"
 				  query="{'_top':'true'}"
 				  dojoType="dijit.Tree"
-				  store="ou_group_store"
+				  store="group_store"
 				  minSize="200"
 				  jsId="group_tree"
 				>
@@ -119,7 +192,7 @@
 						save_out_button.disabled = false;
 						delete_out_button.disabled = false;
 
-						var main_settings_fields = [ 'name', 'perm_interval', 'description', 'application_perm'];
+						var main_settings_fields = [ 'name', 'perm_interval', 'description'];
 						for ( var i in main_settings_fields ) {
 							var field = main_settings_fields[i];
 							var value = this.store.getValue( current_group, field );
@@ -141,6 +214,8 @@
 							editor_pane_parent.setValue( this.store.getValue( current_group, 'parent' ) );
 						}
 
+						editor_pane_application_perm.setValue( this.store.getValue( current_group, 'application_perm' ) );
+
 						editor_pane_usergroup.setChecked( this.store.getValue( current_group, 'usergroup' ) == 't' ? true : false );
 
 					</script>
@@ -160,7 +235,8 @@
 					window.right_pane_toggler.hide();
 				</script>
 
-					<div id="editor_pane" dojoType="dijit.layout.ContentPane">
+				<div dojoType="dijit.layout.TabContainer">
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Group Configuration">
 						<script type="dojo/method">
 							highlighter.group_tree = {};
 							highlighter.editor_pane = {};
@@ -177,7 +253,7 @@
 									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
 											if (current_group) {
-												ou_group_store.setValue( current_group, "name", this.getValue() );
+												group_store.setValue( current_group, "name", this.getValue() );
 											}
 										</script>
 									</span>
@@ -190,7 +266,7 @@
 									  id="editor_pane_description"
 									  dojoType="dijit.form.Textarea"
 									  jsId="editor_pane_description"
-									  onChange="if (current_group) ou_group_store.setValue( current_group, "description", this.getValue() );"
+									  onChange="if (current_group) group_store.setValue( current_group, "description", this.getValue() );"
 									></textarea>
 								</td>
 							</tr>
@@ -200,7 +276,7 @@
 									<span id="editor_pane_perm_interval" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_perm_interval" regExp="^\d+ (?:y.*|mo.*|d.*)$" required="true">
 										<script type="dojo/connect" event="onChange">
 											if (current_group) {
-												ou_group_store.setValue( current_group, "perm_interval", this.getValue() );
+												group_store.setValue( current_group, "perm_interval", this.getValue() );
 											}
 										</script>
 									</span>
@@ -209,13 +285,18 @@
 							<tr>
 								<th>Edit Permission</th>
 								<td>
-									<span id="editor_pane_application_perm" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_application_perm">
+									<div
+									  id="editor_pane_application_perm"
+									  dojoType="dijit.form.FilteringSelect"
+									  store="perm_name_store"
+									  jsId="editor_pane_application_perm"
+									>
 										<script type="dojo/connect" event="onChange">
 											if (current_group && this.getValue()) {
-												ou_group_store.setValue( current_group, "application_perm", this.getValue() );
+												group_store.setValue( current_group, "application_perm", this.getValue() );
 											}
 										</script>
-									</span>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -225,7 +306,7 @@
 									  id="editor_pane_parent"
 									  dojoType="dijit.form.FilteringSelect"
 									  jsId="editor_pane_parent"
-									  store="ou_group_store"
+									  store="group_store"
 									  searchAttr="name"
 									  ignoreCase="true"
 									  required="true"
@@ -246,7 +327,7 @@
 									  jsId="editor_pane_usergroup"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  onChange='if (current_group) ou_group_store.setValue( current_group, "usergroup", this.checked ? "t" : "f" );'
+									  onChange='if (current_group) group_store.setValue( current_group, "usergroup", this.checked ? "t" : "f" );'
 									/>
 								</td>
 							</tr>
@@ -266,9 +347,9 @@
 								</script>
 								<script type="dojo/connect" event="onClick">
 	
-									if (ou_group_store.getValue( current_group, '_trueRoot' ) == 'true') {
+									if (group_store.getValue( current_group, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
-										status_update( 'Cannot delete' + ou_group_store.getValue( current_group, 'name' ) + ', you need at least one.' );
+										status_update( 'Cannot delete' + group_store.getValue( current_group, 'name' ) + ', you need at least one.' );
 										return false;
 									}
 
@@ -282,13 +363,13 @@
 										);
 										if ( existing_kids.length > 0) {
 											highlighter.editor_pane.red.play();
-											status_update( 'Cannot delete' + ou_group_store.getValue( current_group, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
+											status_update( 'Cannot delete' + group_store.getValue( current_group, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
 											return;
 										}
 									}
 	
 									if ( confirm('Are you sure you want to delete ' + current_group.name + '?')) {
-										ou_group_store.setValue( current_group, 'isdeleted', 1 );
+										group_store.setValue( current_group, 'isdeleted', 1 );
 	
 										var modified_pgt = new pgt().fromStoreItem( current_group );
 										modified_pgt.isdeleted( 1 );
@@ -299,19 +380,19 @@
 											params : [ ses, modified_pgt ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
-												status_update( 'Problem deleting ' + ou_group_store.getValue( current_group, 'name' ) );
+												status_update( 'Problem deleting ' + group_store.getValue( current_group, 'name' ) );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
 												if ( res && res.content() ) {
 	
-													var old_name = ou_group_store.getValue( current_group, 'name' );
+													var old_name = group_store.getValue( current_group, 'name' );
 
-													ou_group_store.fetch({
-														query : { id : ou_group_store.getValue( current_group, 'id' ) },
+													group_store.fetch({
+														query : { id : group_store.getValue( current_group, 'id' ) },
 														queryOptions : { deep : true },
 														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-														scope : ou_group_store
+														scope : group_store
 													});
 	
 													current_group = null;
@@ -320,7 +401,7 @@
 													save_out_button.disabled = true;
 													delete_out_button.disabled = true;
 			
-													var main_settings_fields = [ 'name', 'perm_interval', 'description', 'application_perm' ];
+													var main_settings_fields = [ 'name', 'perm_interval', 'description' ];
 													for ( var i in main_settings_fields ) {
 														var field = main_settings_fields[i];
 														window["editor_pane_" + field].setValue( '' ); // unset the value
@@ -355,7 +436,7 @@
 									isnew			: 1,
 									name			: 'New Group',
 									usergroup		: 'f',
-									parent			: ou_group_store.getValue( current_group, 'id' )
+									parent			: group_store.getValue( current_group, 'id' )
 								});
 	
 								var err = false;
@@ -371,7 +452,7 @@
 									oncomplete : function (r) {
 										var res = r.recv();
 										if ( res && res.content() ) {
-											ou_group_store.newItem(
+											group_store.newItem(
 												res.content().toHash(),
 												{ parent : current_group, attribute : 'children' }
 											);
@@ -386,13 +467,21 @@
 								if (!err) {
 									highlighter.editor_pane.green.play();
 									highlighter.group_tree.green.play();
-									status_update( 'New child Group created for ' + ou_group_store.getValue( current_group, 'name' ) );
+									status_update( 'New child Group created for ' + group_store.getValue( current_group, 'name' ) );
 								}
 	
 							</script>
 						</button>
 	
 					</div>
+
+					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="Group Permissions">
+						<!--
+						<div dojoType="dojox.grid.data.DojoData" id="perm_data_model"jsId="perm_data_model" rowsPerPage="20" store="perm_store" query="{ code : '*' }"></div>
+						<div id="perm_grid" dojoType="dojox.Grid" model="perm_data_model" structure="perm_grid_layout" jsId="perm_grid"></div>
+						-->
+					</div>
+
 				</div>
 			</div>
 		</div>
