@@ -8,6 +8,8 @@ dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.ValidationTextBox');
 dojo.require('dijit.form.Textarea');
 dojo.require('dijit.layout.ContentPane');
+dojo.require('dijit.layout.LayoutContainer');
+dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
@@ -34,10 +36,6 @@ function save_perm () {
 	var modified_ppl = new ppl().fromStoreItem( current_perm );
 	modified_ppl.ischanged( 1 );
 
-	new_kid_button.disabled = false;
-	save_out_button.disabled = false;
-	delete_out_button.disabled = false;
-
 	pCRUD.request({
 		method : 'open-ils.permacrud.update.ppl',
 		timeout : 10,
@@ -59,4 +57,34 @@ function save_perm () {
 		},
 	}).send();
 }
+
+function save_them_all (event) {
+
+	perm_store.fetch({
+		query : { ischanged : 1 },
+		onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+		scope : perm_store
+	});
+
+	var confirmation = true;
+
+
+	if (event && dirtyStore.length > 0) {
+		confirmation = confirm(
+			'There are unsaved modified Permissions!  '+
+			'OK to save these changes, Cancel to abandon them.'
+		);
+	}
+
+	if (confirmation) {
+		for (var i in window.dirtyStore) {
+			window.current_perm = window.dirtyStore[i];
+			save_perm(true);
+		}
+
+		window.dirtyStore = [];
+	}
+}
+
+dojo.addOnUnload( save_them_all );
 
