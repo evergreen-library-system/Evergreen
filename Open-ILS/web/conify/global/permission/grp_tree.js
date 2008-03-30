@@ -25,7 +25,9 @@ dojo.require('dojox.fx');
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+var server = {};
+server.pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+server.actor = new OpenSRF.ClientSession('open-ils.actor');
 
 var current_group;
 var virgin_out_id = -1;
@@ -45,7 +47,7 @@ function save_group () {
 	save_out_button.disabled = false;
 	delete_out_button.disabled = false;
 
-	pCRUD.request({
+	server.pCRUD.request({
 		method : 'open-ils.permacrud.update.pgt',
 		timeout : 10,
 		params : [ ses, modified_pgt ],

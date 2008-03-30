@@ -56,7 +56,7 @@
 				<script type="dojo/method">
 					window.dirtyStore = [];
 
-                    pCRUD.request({
+                    server.pCRUD.request({
                         method : 'open-ils.permacrud.search.pgt.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { pgt : 'name' } } ],
@@ -107,7 +107,7 @@
 					}
 
 					// XXX Use existing perm grabbing functions??  see old interface
-                    pCRUD.request({
+                    server.pCRUD.request({
                         method : 'open-ils.permacrud.search.ppl.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
@@ -144,7 +144,7 @@
                         }
                     }).send();
 
-                    pCRUD.request({
+                    server.pCRUD.request({
                         method : 'open-ils.permacrud.search.pgmp.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } } ],
@@ -156,7 +156,7 @@
                         }
                     }).send();
 
-                    pCRUD.request({
+                    server.pCRUD.request({
                         method : 'open-ils.permacrud.search.aout.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
@@ -374,7 +374,7 @@
 										var modified_pgt = new pgt().fromStoreItem( current_group );
 										modified_pgt.isdeleted( 1 );
 	
-										pCRUD.request({
+										server.pCRUD.request({
 											method : 'open-ils.permacrud.delete.pgt',
 											timeout : 10,
 											params : [ ses, modified_pgt ],
@@ -440,7 +440,7 @@
 								});
 	
 								var err = false;
-								pCRUD.request({
+								server.pCRUD.request({
 									method : 'open-ils.permacrud.create.pgt',
 									timeout : 10,
 									params : [ ses, new_fm_obj ],
