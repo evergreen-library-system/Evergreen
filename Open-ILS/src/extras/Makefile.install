@@ -98,7 +98,8 @@ DEBS =  \
 	libtext-csv-perl\
 	libspreadsheet-writeexcel-perl\
 	libtie-ixhash-perl\
-	python-setuptools 
+	python-setuptools\
+	libfreezethaw-perl
 
 PGSQL_DEBIAN = \
 	postgresql-8.1\
@@ -149,7 +150,8 @@ GENTOOS = \
     dev-perl/Error\
     dev-perl/Text-CSV_XS\
     dev-perl/Spreadsheet-WriteExcel\
-    dev-perl/Tie-IxHash
+    dev-perl/Tie-IxHash\
+	dev-perl/FreezeThaw
 
 GENTOO_RC = \
     ejabberd\
