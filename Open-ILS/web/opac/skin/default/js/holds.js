@@ -27,6 +27,8 @@ function holdsHandleStaff() {
     };
 }
 
+$('holds_frozen_thaw_input').onchange = 
+        function(){holdsVerifyThawDateUI('holds_frozen_thaw_input');}
 $('holds_frozen_thaw_input').onkeyup = 
         function(){holdsVerifyThawDateUI('holds_frozen_thaw_input');}
 
@@ -467,6 +469,10 @@ function __holdsDrawWindow() {
 	if(holdArgs.type == 'M') hideMe($('hold_physical_desc_row'));
 
 	holdsSetFormatSelector();
+
+    $('holds_frozen_chkbox').checked = false;
+    hideMe($('hold_frozen_thaw_row'));
+
 }
 
 function holdsParseMRFormats(str) {
@@ -711,11 +717,10 @@ function holdsBuildHoldFromWindow() {
         unHideMe($('hold_frozen_thaw_row'));
         thawDate = $('holds_frozen_thaw_input').value;
         if(thawDate) {
-            if(holdsVerifyThawDate(thawDate)) {
+            if(holdsVerifyThawDate(thawDate)) 
                 hold.thaw_date(thawDate);
-            } else {
-                /* XXX */
-            }
+            else
+                return;
         } else {
             hold.thaw_date(null);
         }
@@ -824,15 +829,18 @@ function holdsUpdate(hold, user) {
 
 
 /* verify that the thaw date is valid and after today */
-function holdsVerifyThawDate(thawDate) {
-    thawDate = Date.parseIso8601(thawDate);
-    if(thawDate) {
-        var today = new Date();
-        today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-        if(thawDate > today) 
-            return thawDate.iso8601Format('YMD', false, false, true);
-    }
+function holdsVerifyThawDate(dateString) {
+    if(Date.parseIso8601(dateString) && 
+            holdGreaterThanToday(dateString)) 
+        return dateString;
     return null;
+}
+
+function holdGreaterThanToday(dateString) {
+    thawDate = Date.parseIso8601(dateString);
+    var today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    return thawDate > today;
 }
 
 
