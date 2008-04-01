@@ -725,6 +725,9 @@ function holdsBuildHoldFromWindow() {
         } else {
             hold.thaw_date(null);
         }
+    } else {
+        hold.frozen('f');
+        hold.thaw_date(null);
     }
 
 	//check for alternate hold formats 
