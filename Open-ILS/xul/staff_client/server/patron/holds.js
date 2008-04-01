@@ -583,9 +583,9 @@ patron.holds.prototype = {
 						function() {
 							try {
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Freeze or un-freeze these holds?</description>';
-								xml += '<hbox><button value="freeze" label="Freeze" accesskey="F" name="fancy_submit"/>';
-								xml += '<button value="unfreeze" label="Un-Freeze" accesskey="U" name="fancy_submit"/></hbox>';
+								xml += '<description>Activate or suspend these holds?</description>';
+								xml += '<hbox><button value="freeze" label="Suspend" accesskey="F" name="fancy_submit"/>';
+								xml += '<button value="unfreeze" label="Activate" accesskey="U" name="fancy_submit"/></hbox>';
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
@@ -599,7 +599,7 @@ patron.holds.prototype = {
 									//+ '&bottom_xml_in_stash=temp_bot'
 									//+ '&title=' + window.escape('Set Email Notification for Holds'),
 									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Set Email Notification for Holds' }
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Activate/Suspend Hold' }
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var freeze = fancy_prompt_data.fancy_submit == 'freeze' ? get_db_true() : get_db_false();
@@ -634,7 +634,7 @@ patron.holds.prototype = {
                                     try {
                                         if (! util.date.check('YYYY-MM-DD',value) ) { throw('Invalid Date'); }
                                         if (util.date.check_past('YYYY-MM-DD',value) ) { 
-                                            throw('Thaw date for frozen holds needs to be after today.'); 
+                                            throw('Activation date for suspended holds needs to be after today.'); 
                                         }
                                         return true;
                                     } catch(E) {
@@ -643,7 +643,7 @@ patron.holds.prototype = {
                                     }
                                 }
 
-								var msg = 'Please enter a thaw date for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '\nOr set to blank to unset the thaw date for these holds.  Frozen holds without a thaw date will remain frozen until manually unfrozen, otherwise they unfreeze on the thaw date.';
+								var msg = 'Please enter an activation date for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '\nOr set to blank to unset the activation date for these holds.  Suspended holds without an activation date will remain suspended until manually activated, otherwise they activate on the activation date.';
                                 var value = 'YYYY-MM-DD';
                                 var title = 'Modifying Holds';
 								var thaw_date; var invalid = true;
