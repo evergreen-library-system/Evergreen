@@ -16,7 +16,9 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
-//dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid._data.model');
+dojo.require("dojox.grid.editors");
 
 // some handy globals
 var cgi = new CGI();

@@ -15,7 +15,7 @@ if(!dojo._hasResource['fieldmapper.hash']){
 	function _toHash () {
 		var _hash = {};
 		for ( var i=0; i < this._fields.length; i++) {
-			if (this[this._fields[i]]())
+			if (this[this._fields[i]]() != null)
 				_hash[this._fields[i]] = '' + this[this._fields[i]]();
 		}
 		return _hash;

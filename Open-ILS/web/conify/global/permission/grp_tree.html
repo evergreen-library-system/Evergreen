@@ -3,6 +3,7 @@
 		<title>Confiy :: Global :: Permission :: Group Tree</title>
 
 		<style type="text/css">
+			@import url("/js/dojox/grid/_grid/tundraGrid.css");
 			@import url("/js/dojo/resources/dojo.css");
 			@import url("/js/dijit/themes/tundra/tundra.css");
 			@import url("/js/dojox/widget/Toaster/Toaster.css");
@@ -25,6 +26,18 @@
 				padding-left: 20px;
 				padding-right: 5px;
 			}
+
+            #perm_grid {
+                border: 0px;
+                width: 100%;
+                height: 100%;
+            }
+
+            #grid_container {
+                width: 50%;
+                height: 100%;
+            }
+
 		</style>
 
 		<!-- The OpenSRF API writ JS -->
@@ -97,55 +110,37 @@
                         }
                     }).send();
 
-					function get_perm_part(part, model, row) {
-						var value;
-						perm_store.fetchItemByIdentity({
-							identity : model.getRow(row).perm,
-							onItem : function (item) { value = perm_store.getValue( item, part ) }
-						});
-						return value;
-					}
-
-					// XXX Use existing perm grabbing functions??  see old interface
-                    server.pCRUD.request({
-                        method : 'open-ils.permacrud.search.ppl.atomic',
+                    server.actor.request({
+                        method : 'open-ils.actor.org_types.retrieve',
                         timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
+                        onerror : function (r) { status_update('Problem fetching types') },
+                        oncomplete : function (r) {
+                            window._ou_type_list = r.recv().content();
+                            window._ou_type_data = aout.toStoreData( window._ou_type_list );
+                            window.ou_type_store = new dojo.data.ItemFileReadStore({ data : window._ou_type_data });
+                        }
+                    }).send();
+
+                    server.actor.request({
+                        method : 'open-ils.actor.permissions.retrieve',
+                        timeout : 10,
                         onerror : function (r) { status_update('Problem fetching perms') },
                         oncomplete : function (r) {
     
                             window._perm_list = r.recv().content();
+
                             window._perm_data = ppl.toStoreData( window._perm_list, 'code' );
                             window._perm_name_data = ppl.toStoreData( window._perm_list, 'code', { identifier : 'code' } );
+
                             window.perm_store = new dojo.data.ItemFileWriteStore({ data : window._perm_data });
                             window.perm_name_store = new dojo.data.ItemFileWriteStore({ data : window._perm_name_data });
     
-                            window.current_perm_grid_layout = [
-                                {   cells : [
-                                        [
-                                            {	name : "Depth",
-												field : "perm",
-												width : "5em",
-												noresize : true
-											}, 
-                                            {	name : "Code",
-												//get : dojo.partial(get_perm_part, "code", perm_map_model),
-												width : "300px"
-											},
-                                            {	name : "Description",
-												//get : dojo.partial(get_perm_part, "code", perm_map_model),
-												width : "auto"
-											}
-                                        ]
-                                    ]
-                                }
-                            ];
-    
+   
                         }
                     }).send();
 
                     server.pCRUD.request({
-                        method : 'open-ils.permacrud.search.pgmp.atomic',
+                        method : 'open-ils.permacrud.search.pgpm.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } } ],
                         onerror : function (r) { status_update('Problem fetching perm maps') },
@@ -153,19 +148,9 @@
                             window._perm_map_list = r.recv().content();
                             window._perm_map_data = pgpm.toStoreData( window._perm_map_list, 'id' );
                             window.perm_map_store = new dojo.data.ItemFileWriteStore({ data : window._perm_map_data });
-                        }
-                    }).send();
 
-                    server.pCRUD.request({
-                        method : 'open-ils.permacrud.search.aout.atomic',
-                        timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
-                        onerror : function (r) { status_update('Problem fetching types') },
-                        oncomplete : function (r) {
-							window._ou_type_list =  r.recv().content();
-							window._ou_type_data = aout.toStoreData( window._ou_type_list );
-                            window.ou_type_store = new dojo.data.ItemFileWriteStore({ data : window._ou_type_data });
                         }
+ 
                     }).send();
 
 				</script>
@@ -184,6 +169,10 @@
 						right_pane_toggler.show();
 
 						current_group = item;
+
+						perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+						perm_map_model.refresh();
+						perm_grid.refresh();
 
 						highlighter.editor_pane.green.play();
 						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
@@ -476,10 +465,63 @@
 					</div>
 
 					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="Group Permissions">
-						<!--
-						<div dojoType="dojox.grid.data.DojoData" id="perm_data_model"jsId="perm_data_model" rowsPerPage="20" store="perm_store" query="{ code : '*' }"></div>
-						<div id="perm_grid" dojoType="dojox.Grid" model="perm_data_model" structure="perm_grid_layout" jsId="perm_grid"></div>
-						-->
+						<div id="grid_container" dojoType="dijit.layout.ContentPane">
+							<div dojoType="dojox.grid.data.DojoData" id="perm_map_model"jsId="perm_map_model" store="perm_map_store">
+								<script type="dojo/connect" event="startup">
+
+									function get_item_part(model_field, item_search_field, item_part, model, store, row) {
+										if(!model.getRow(row)) return null;
+										var value = null;
+
+										var q = {};
+										q[item_search_field] = model.getRow(row)[model_field];
+
+										store.fetch({
+											query : q,
+											onItem : function (item) { value = store.getValue( item, item_part ) }
+										});
+
+										return value;
+									}
+
+		                            window.current_perm_grid_layout = [
+		                                {   cells : [
+		                                        [
+		                                            {	name : "Code",
+														field: "perm",
+														get : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
+														width : "300px"
+													},
+		                                            {	name : "Depth",
+														field : "depth",
+														get : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
+														editor : dojox.grid.editors.ComboBox,
+														options : dojo.map( _ou_type_list, function (x) { return x.name() } ),
+														values : dojo.map( _ou_type_list, function (x) { return x.depth() } )
+													}, 
+		                                            {	name : "Grantable",
+														get : function (row) {
+															var curr = perm_map_model.getRow(row);
+															if (!curr || curr.grantable == 'f') return "No";
+															return "Yes";
+														},
+														field : "grantable",
+														editor : dojox.grid.editors.ComboBox,
+														options : [ "Yes","No" ],
+														value : ['t','f']
+													}
+		                                        ]
+		                                    ]
+		                                }
+		                            ];
+
+									perm_grid.setStructure(current_perm_grid_layout);
+								</script>
+							</div>
+							<div id="perm_grid" dojoType="dojox.Grid" model="perm_map_model" jsId="perm_grid"></div>
+							<!--
+							-->
+						</div>
 					</div>
 
 				</div>
