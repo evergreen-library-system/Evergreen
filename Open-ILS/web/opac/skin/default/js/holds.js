@@ -27,6 +27,9 @@ function holdsHandleStaff() {
     };
 }
 
+$('holds_frozen_thaw_input').onkeyup = 
+        function(){holdsVerifyThawDateUI('holds_frozen_thaw_input');}
+
 function _holdsHandleStaffMe() {
 	holdArgs.recipient = G.user;
 	holdsDrawEditor();
@@ -707,10 +710,15 @@ function holdsBuildHoldFromWindow() {
         hold.frozen('t');
         unHideMe($('hold_frozen_thaw_row'));
         thawDate = $('holds_frozen_thaw_input').value;
-        if(thawDate) 
-            hold.thaw_date(thawDate);
-        else
+        if(thawDate) {
+            if(holdsVerifyThawDate(thawDate)) {
+                hold.thaw_date(thawDate);
+            } else {
+                /* XXX */
+            }
+        } else {
             hold.thaw_date(null);
+        }
     }
 
 	//check for alternate hold formats 
@@ -814,4 +822,32 @@ function holdsUpdate(hold, user) {
 	runEvt('common', 'holdUpdated');
 }
 
+
+/* verify that the thaw date is valid and after today */
+function holdsVerifyThawDate(thawDate) {
+    thawDate = Date.parseIso8601(thawDate);
+    if(thawDate) {
+        var today = new Date();
+        today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+        if(thawDate > today) 
+            return thawDate.iso8601Format('YMD', false, false, true);
+    }
+    return null;
+}
+
+
+function holdsVerifyThawDateUI(element) {
+    value = $(element).value;
+
+    if(!value) {
+        removeCSSClass($(element), 'invalid_field');
+        return;
+    }
+
+    if(!holdsVerifyThawDate(value)) {
+        addCSSClass($(element), 'invalid_field');
+    } else {
+        removeCSSClass($(element), 'invalid_field');
+    }
+}
 
