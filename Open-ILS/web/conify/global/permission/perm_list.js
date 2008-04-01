@@ -1,8 +1,6 @@
-dojo.require('conify.fieldmapper.addToHash', true);
-dojo.require('conify.fieldmapper.addFromHash', true);
-dojo.require('conify.fieldmapper.addToStoreData', true);
-dojo.require('conify.fieldmapper.addFromStoreItem', true);
+dojo.require('fieldmapper.dojoData');
 dojo.require('dojo.parser');
+dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.ValidationTextBox');
@@ -35,6 +33,8 @@ function save_perm () {
 
 	var modified_ppl = new ppl().fromStoreItem( current_perm );
 	modified_ppl.ischanged( 1 );
+	modified_ppl.description( dojo.string.trim( modified_ppl.description() ) );
+	modified_ppl.code( dojo.string.trim( modified_ppl.code() ) );
 
 	pCRUD.request({
 		method : 'open-ils.permacrud.update.ppl',

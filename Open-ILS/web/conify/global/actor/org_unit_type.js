@@ -1,7 +1,4 @@
-dojo.require('conify.fieldmapper.addToHash', true);
-dojo.require('conify.fieldmapper.addFromHash', true);
-dojo.require('conify.fieldmapper.addToStoreData', true);
-dojo.require('conify.fieldmapper.addFromStoreItem', true);
+dojo.require('fieldmapper.dojoData');
 dojo.require('dojo.parser');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.stamp');

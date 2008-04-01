@@ -64,12 +64,16 @@
 						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
 						onerror : function (r) { throw 'Problem fetching org units';},
 						oncomplete : function (r) {
-							window.ou_list_store = new dojo.data.ItemFileWriteStore({ data : aou.toStoreData( r.recv().content() ) });
+							window._ou_list = r.recv().content();
+							window._ou_data = aou.toStoreData( window._ou_list );
+							window.ou_list_store = new dojo.data.ItemFileWriteStore({ data : window._ou_data });
+
 							window.ou_list_store.onSet = function (item, attr, n, o) {
 								if (attr == 'ischanged') return;
 								if (n == o) return;
 								this.setValue( item, 'ischanged', 1);
 							};
+
 							dojo.addOnUnload( function (event) {
 
 								ou_list_store.fetch({
@@ -96,6 +100,18 @@
 							});
 						}
 					}).send();
+
+                    pCRUD.request({
+                        method : 'open-ils.permacrud.search.aout.atomic',
+                        timeout : 10,
+                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'name' } } ],
+                        onerror : function (r) { status_update('Problem fetching types') },
+                        oncomplete : function (r) {
+                            window._ou_type_list = r.recv().content();
+                            window._ou_type_data = aout.toStoreData( window._ou_type_list );
+                            window.ou_type_store = new dojo.data.ItemFileReadStore({ data : window._ou_type_data });
+                        }
+                    }).send();
 
 				</script>
 				<div

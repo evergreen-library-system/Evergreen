@@ -12,10 +12,9 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		for (var i in this._ignore_fields)
 			this[this._ignore_fields[i]](null);
 
-		var _fields = fmclasses[this.classname];
-		for ( var i=0; i < _fields.length; i++) {
-			if (dojo.isArray( this[_fields[i]]() ))
-				this[_fields[i]]( this[_fields[i]]()[0] );
+		for ( var i=0; i < this._fields.length; i++) {
+			if (dojo.isArray( this[this._fields[i]]() ))
+				this[this._fields[i]]( this[this._fields[i]]()[0] );
 		}
 		return this;
 	}

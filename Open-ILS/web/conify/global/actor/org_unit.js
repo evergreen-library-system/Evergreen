@@ -1,7 +1,4 @@
-dojo.require('conify.fieldmapper.addToHash', true);
-dojo.require('conify.fieldmapper.addFromHash', true);
-dojo.require('conify.fieldmapper.addToStoreData', true);
-dojo.require('conify.fieldmapper.addFromStoreItem', true);
+dojo.require('fieldmapper.dojoData');
 dojo.require('dojo.parser');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.stamp');
@@ -27,7 +24,7 @@ var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 var current_ou, current_ou_hoo;
 var virgin_ou_id = -1;
 
-var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
+//var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
 
 var highlighter = {};
 
