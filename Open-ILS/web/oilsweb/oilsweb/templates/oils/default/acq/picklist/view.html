@@ -30,7 +30,7 @@ ${picklist.summary(c.oils.acq.picklist.value)}
             % for list in c.oils.acq.picklist_list.value:
                 <option value='${list.id()}'>${list.name()}</option>
             % endfor
-        </select>&nbsp;<button dojoType="dijit.form.Button" type='submit' value='${_("Submit")}'>${_("Submit")}</button>
+        </select>&nbsp;<button type='submit' dojoType="dijit.form.Button">${_("Submit")}</button>
     </div>
     <div class='spacer'>&nbsp;</div>
 </div>
@@ -65,14 +65,17 @@ ${picklist.summary(c.oils.acq.picklist.value)}
 		        <input name="${c.oils.acq.picklist_source_id.cgi_name}"
 			       type="hidden"
 			       value="${c.oils.acq.picklist.value.id()}" />
+		        <input name="${c.oils.acq.lineitem_id.cgi_name}"
+			       type="hidden"
+			       value="${lineitem.id()}" />
 			<input name="${c.oils.acq.lineitem_item_count.cgi_name}"
 			       type="text" size="3"
 			       value="${lineitem.item_count()}"
-			       dojoType="dijit.form.NumberTextBox"
+			       smallDelta="1"
+			       dojoType="dijit.form.NumberSpinner"
 			       constraints="{min:0,places:0}" />
-			<button dojotype='dijit.form.Button'
-				name='${c.oils.acq.lineitem_id.cgi_name}'
-				value='${lineitem.id()}'>${_("Update")}</button>
+			<button type='submit'
+				dojoType="dijit.form.Button">${_("Update")}</button>
 		    </form>
 		% endif
 	    </td>

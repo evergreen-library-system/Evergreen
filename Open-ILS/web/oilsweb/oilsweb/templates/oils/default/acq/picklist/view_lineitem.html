@@ -38,23 +38,25 @@ ${picklist.summary(c.oils.acq.picklist.value, link=True)}
     <tbody>
         ${c.oils.acq.lineitem.value.lineitem_details().sort(sort_lid)}
         % for detail in c.oils.acq.lineitem.value.lineitem_details():
-	    <Form method="post"
-		  action="${c.oils.acq.prefix.value}/picklist/update_lineitem">
-	        <input type="hidden"
-		       name="${c.oils.acq.lineitem_id.cgi_name}"
-		       value="${c.oils.acq.lineitem.value.id()}" />
-		<tr>
-	            <td>${detail.id()}</td>
-	            <td>
-		        ${widget.build_selector(c.oils.acq.fund_id.cgi_name, fund_map, detail.fund())}
-		    </td>
-		    <td>${detail.owning_lib() or 'None'}</td>
-		    <td>
-		        <button dojotype='dijit.form.Button' name='${c.oils.acq.lineitem_detail_id.cgi_name}'
-				value='${detail.id()}'>${_("Update")}</button>
-		    </td>
-		</tr>
-	    </form>
+	<tr>
+	      <td>${detail.id()}</td>
+	      <td>
+		<form dojoType="dijit.form.Form" method="post"
+		      action="${c.oils.acq.prefix.value}/picklist/update_lineitem">
+		    <input type="hidden"
+			   name="${c.oils.acq.lineitem_id.cgi_name}"
+			   value="${c.oils.acq.lineitem.value.id()}" />
+		    <input type="hidden"
+			   name="${c.oils.acq.lineitem_detail_id.cgi_name}"
+			   value="${detail.id()}">
+		    ${widget.build_selector(c.oils.acq.fund_id.cgi_name, fund_map, detail.fund())}
+		    <button type="submit" dojoType="dijit.form.Button">${_("Update")}</button>
+		</form>
+	      </td>
+	      <td>${detail.owning_lib() or 'None'}</td>
+	      <td>
+	      </td>
+	</tr>
 	% endfor
     </tbody>
 </table>

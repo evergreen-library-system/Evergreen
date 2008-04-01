@@ -76,10 +76,10 @@
 </%def>
 
 <%def name='build_selector(name, optionmap, chosen=None)'>
-    <select name="${name}">
+    <select name="${name}" dojoType="dijit.form.FilteringSelect">
 
-    %if not selected:
-        <option value="" selected="selected">${_("-- Select --")}</option>
+    %if not chosen:
+        <option value="" selected="selected" />
     %endif
 
     %for (id, name) in optionmap:
