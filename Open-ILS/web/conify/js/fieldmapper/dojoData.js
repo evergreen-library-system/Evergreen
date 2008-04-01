@@ -22,6 +22,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 	function _toStoreData (list, label, params) {
 
 		if (!params) params = {};
+		if (!list) list = {};
 
 		// a sane default
 		if (!params.identifier) params.identifier = 'id';

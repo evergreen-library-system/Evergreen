@@ -29,7 +29,7 @@ var virgin_ou_id = -1;
 var highlighter = {};
 
 function status_update (markup) {
-	if (parent.status_update) parent.status_update( markup );
+	if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_org () {
