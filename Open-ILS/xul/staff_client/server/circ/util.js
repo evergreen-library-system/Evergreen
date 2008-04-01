@@ -793,6 +793,36 @@ circ.util.hold_columns = function(modify,params) {
 			'persist' : 'hidden width ordinal', 'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.fulfillment_time(); },
 		},
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'frozen',
+            'label' : 'Active',
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'render' : function(my) {
+                if (!get_bool( my.ahr.frozen() )) {
+                    return 'Yes';
+                } else {
+                    return 'No';
+                }
+            }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'thaw_date',
+            'label' : 'Activation Date'
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'render' : function(my) {
+                if (my.ahr.thaw_date() == null) {
+                    return 'None';
+                } else {
+                    return my.ahr.thaw_date().substr(0,10);
+                }
+            }
+        },
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.holdable_formats(); },
