@@ -94,3 +94,5 @@ a:focus { background: #E0F0E0; color: #000000;}
 .check_mark { color: green; }
 
 #myopac_holds_thaw_date_form { border: 1px solid #E0E0E0; } 
+
+.invalid_field { border: 3px solid red; }

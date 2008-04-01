@@ -19,6 +19,9 @@ function clearNodes( node, keepArray ) {
 function myOPACInit() {
 	if(!(G.user && G.user.session)) initLogin();
 	else myOPACChangePage( "summary" );
+
+    $('myopac_holds_thaw_date_input').onkeyup = 
+        function(){holdsVerifyThawDateUI('myopac_holds_thaw_date_input'); }
 }
 
 function myopacReload() {
@@ -1438,8 +1441,8 @@ function myopacDrawHoldThawDateForm() {
 function myopacApplyThawDate() {
     var dateString = $('myopac_holds_thaw_date_input').value;
     if(dateString) {
-        dateString = (dateString == null) ? null : 
-            Date.parseIso8601(dateString).iso8601Format('YMDHM', false, false, true);
+        dateString = holdsVerifyThawDate(dateString);
+        if(!dateString) return;
     } else {
         dateString = null;
     }
