@@ -811,7 +811,7 @@ circ.util.hold_columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'id' : 'thaw_date',
-            'label' : 'Activation Date'
+            'label' : 'Activation Date',
             'flex' : 0,
             'primary' : false,
             'hidden' : true,
