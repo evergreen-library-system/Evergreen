@@ -717,13 +717,17 @@ function holdsBuildHoldFromWindow() {
         unHideMe($('hold_frozen_thaw_row'));
         thawDate = $('holds_frozen_thaw_input').value;
         if(thawDate) {
-            if(holdsVerifyThawDate(thawDate)) 
+            thawDate = holdsVerifyThawDate(thawDate); 
+            if(thawDate) 
                 hold.thaw_date(thawDate);
             else
                 return;
         } else {
             hold.thaw_date(null);
         }
+    } else {
+        hold.frozen('f');
+        hold.thaw_date(null);
     }
 
 	//check for alternate hold formats 
@@ -830,9 +834,9 @@ function holdsUpdate(hold, user) {
 
 /* verify that the thaw date is valid and after today */
 function holdsVerifyThawDate(dateString) {
-    if(Date.parseIso8601(dateString) && 
-            holdGreaterThanToday(dateString)) 
-        return dateString;
+    thawDate = Date.parseIso8601(dateString);
+    if(thawDate && holdGreaterThanToday(dateString)) 
+        return thawDate.iso8601Format('YMD', false, false, true);
     return null;
 }
 

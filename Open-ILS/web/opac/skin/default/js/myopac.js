@@ -1442,11 +1442,12 @@ function myopacDrawHoldThawDateForm() {
 
 function myopacApplyThawDate() {
     var dateString = $('myopac_holds_thaw_date_input').value;
-    if(dateString) 
+    if(dateString) {
         dateString = holdsVerifyThawDate(dateString);
         if(!dateString) return;
-    else
+    } else {
         dateString = null;
+    }
     myopacProcessHolds('freeze', dateString);
 }
 
