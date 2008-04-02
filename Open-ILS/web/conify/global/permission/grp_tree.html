@@ -48,10 +48,8 @@
 		<script language='javascript' src='/opac/common/js/opensrf.js' type='text/javascript'></script>
 		<script language='javascript' src='/opac/common/js/opensrf_xhr.js' type='text/javascript'></script>
 
-		<!-- Fieldmapper objects -->
+		<!-- Fieldmapper objects XXX need to dojo-ize this -->
 		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
-		<script language='javascript' src='/opac/common/js/fmgen.js' type='text/javascript'></script>
-		<script language='javascript' src='/opac/common/js/OrgTree.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
 		<script type="text/javascript" src="/js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
@@ -68,6 +66,7 @@
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
 					window.dirtyStore = [];
+					window.dirtyMapStore = [];
 
                     server.pCRUD.request({
                         method : 'open-ils.permacrud.search.pgt.atomic',
@@ -149,6 +148,14 @@
                             window._perm_map_data = pgpm.toStoreData( window._perm_map_list, 'id' );
                             window.perm_map_store = new dojo.data.ItemFileWriteStore({ data : window._perm_map_data });
 
+							window.perm_map_store.onSet = function (item, attr, o, n) {
+								if (attr == 'ischanged') return;
+								if (n == o) return;
+								this.setValue( item, 'ischanged', 1);
+								alert('changed ' + attr + ' to ' + o);
+							}
+
+                            dojo.addOnUnload( function (event) { save_them_all(); });
                         }
  
                     }).send();
@@ -172,6 +179,7 @@
 
 						perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
 						perm_map_model.refresh();
+						perm_grid.refresh();
 
 						highlighter.editor_pane.green.play();
 						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
@@ -465,76 +473,177 @@
 
 					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="Group Permissions">
 						<script type="dojo/connect" event="onShow">
+							perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+							perm_map_model.refresh();
 							perm_grid.refresh();
 						</script>
-						<div id="grid_container" dojoType="dijit.layout.ContentPane">
-							<div dojoType="dojox.grid.data.DojoData" id="perm_map_model"jsId="perm_map_model" store="perm_map_store">
-								<script type="dojo/connect" event="startup">
+						<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="width:100%; height:100%;">
+							<div id="grid_container" dojoType="dijit.layout.ContentPane" sizeShare="1" layoutAlign="left">
+								<div dojoType="dojox.grid.data.DojoData" id="perm_map_model"jsId="perm_map_model" store="perm_map_store"></div>
+	
+								<div id="perm_grid" dojoType="dojox.Grid" model="perm_map_model" jsId="perm_grid">
+									<script type="dojo/connect" event="startup">
+	
+										function get_item_part(model_field, item_search_field, item_part, model, store, datum, row) {
+											var formatter = true;
+	
+											if (!row && row != '0') {
+												row = datum;
+												formatter = false;
+											}
+	
+											if(!model.getRow(row)) return null;
+											var value = null;
+	
+											if(!formatter) { //this.editor && (this.editor.alwaysOn || (this.grid.edit.info.rowIndex==row && this.grid.edit.info.cell==this))) {
+												return model.getRow(row)[model_field];
+											}
+	
+											var q = {};
+											q[item_search_field] = model.getRow(row)[model_field];
+	
+											store.fetch({
+												query : q,
+												onItem : function (item) { value = store.getValue( item, item_part ) }
+											});
 
-									function get_item_part(model_field, item_search_field, item_part, model, store, datum, row) {
-										var formatter = true;
-
-										if (!row && row != '0') {
-											row = datum;
-											formatter = false;
+											return value;
 										}
-
-										if(!model.getRow(row)) return null;
-										var value = null;
-
-										if(!formatter) { //this.editor && (this.editor.alwaysOn || (this.grid.edit.info.rowIndex==row && this.grid.edit.info.cell==this))) {
-											return model.getRow(row)[model_field];
-										}
-
-										var q = {};
-										q[item_search_field] = model.getRow(row)[model_field];
-
-										store.fetch({
-											query : q,
-											onItem : function (item) { value = store.getValue( item, item_part ) }
-										});
-
-										return value;
-									}
-
-		                            window.current_perm_grid_layout = [
-		                                {   cells : [
-		                                        [
-		                                            {	name : "Code",
-														field: "perm",
-														formatter : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
-														width : "300px"
-													},
-		                                            {	name : "Depth",
-														field : "depth",
-														formatter : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
-														editor : dojox.grid.editors.select,
-														options : dojo.map( _ou_type_list, function (x) { return x.name() } ),
-														values : dojo.map( _ou_type_list, function (x) { return x.depth() } )
-													}, 
-		                                            {	name : "Grantable",
-														field : "grantable",
-														editor : dojox.grid.editors.bool,
-														get : function (row) {
-															var gr = get_item_part("id", "id", "grantable", perm_map_model, perm_map_model.store, row, row);
-															if (gr == 't' || gr === true) return true;
-															return false;
+	
+			                            window.current_perm_grid_layout = [
+			                                {   cells : [
+				                                    [
+					                                    {	name : "Code",
+															field: "perm",
+															formatter : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
+															width : "auto"
 														},
-													}
-		                                        ]
-		                                    ]
-		                                }
-		                            ];
+										                {	name : "Depth",
+															field : "depth",
+															formatter : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
+															editor : dojox.grid.editors.select,
+															options : dojo.map( _ou_type_list, function (x) { return x.name() } ),
+															values : dojo.map( _ou_type_list, function (x) { return x.depth() } )
+														}, 
+			                                            {	name : "Grantable",
+															field : "grantable",
+															editor : dojox.grid.editors.bool,
+															get : function (row) {
+																var gr = get_item_part("id", "id", "grantable", perm_map_model, perm_map_model.store, row, row);
+																if (gr == 't' || gr === true) return true;
+																return false;
+															},
+														}
+											        ]
+												]
+			                                }
+			                            ];
 
-									perm_grid.setStructure(current_perm_grid_layout);
-								</script>
+										perm_grid.setStructure(window.current_perm_grid_layout);
+	
+									</script>
+								</div>
 							</div>
-							<div id="perm_grid" dojoType="dojox.Grid" model="perm_map_model" jsId="perm_grid"></div>
-							<!--
-							-->
+
+							<div id="new_perm_container" dojoType="dijit.layout.ContentPane" sizeShare="1" layoutAlign="client">
+
+								<div dojoType="dijit.layout.LayoutContainer" orientation="vertical" style="margin-bottom: 30px; border-bottom: 1px;">
+									<button jsId="save_pgpm_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button><br/>
+
+					                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="Remove Selected">
+						                <script type="dojo/connect" event="onClick">
+						
+					                        var selected_rows = perm_grid.selection.getSelected();
+					        
+					                        var selected_items = [];
+					                        for (var i in selected_rows) {
+					                            selected_items.push(
+					                                perm_grid.model.getRow( selected_rows[i] ).__dojo_data_item
+					                            );
+					                        }
+				
+					                        perm_grid.selection.clear();
+					
+						                    for (var i in selected_items) {
+							                    window.current_perm_map = selected_items[i];
+				
+								                perm_map_store.setValue( window.current_perm_map, 'isdeleted', 1 );
+								
+									            var modified_pgpm = new pgpm().fromStoreItem( window.current_perm_map );
+										        modified_pgpm.isdeleted( 1 );
+				            
+				                                pCRUD.request({
+				                                    method : 'open-ils.permacrud.delete.pgpm',
+				                                    timeout : 10,
+					                                params : [ ses, modified_pgpm ],
+						                            onerror : function (r) {
+														highlighter.editor_pane.red.play();
+								                        status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ) );
+									                },
+										            oncomplete : function (r) {
+											            var res = r.recv();
+												        if ( res && res.content() ) {
+							
+								                            perm_map_store.fetch({
+									                            query : { id : perm_map_store.getValue( window.current_perm_map, 'id' ) },
+										                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+											                    scope : perm_map_store
+												            });
+			            
+													        window.current_perm_map = null;
+							
+															highlighter.editor_pane.green.play();
+									                        status_update( 'Permission mapping deleted' );
+										                } else {
+															highlighter.editor_pane.red.play();
+												            status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ));
+													    }
+				                                    }
+				                                }).send();
+					        
+					                        }
+				    
+						                </script>
+							        </button>
+	
+								</div>
+	
+								<div>New permission mapping:</div>
+								<table class="tundra">
+									<tr>
+										<td>Permission:</td>
+										<td>
+											<div
+											  dojoType="dijit.form.FilteringSelect"
+											  Id="new_perm_select"
+											  jsId="new_perm_select"
+											  store="perm_store"
+											  searchAttr="code"
+											  ignoreCase="true"
+											  required="true"></div>
+										</div>
+										</td>
+									</tr>
+									<tr>
+										<td>Depth:</td>
+										<td>
+											<div
+											  dojoType="dijit.form.FilteringSelect"
+											  Id="new_depth_select"
+											  jsId="new_depth_select"
+											  store="ou_type_store"
+											  searchAttr="name"
+											  ignoreCase="true"
+											  required="true"></div>
+										</td>
+									</tr>
+								</table>
+								<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
+								</button>
+
+							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

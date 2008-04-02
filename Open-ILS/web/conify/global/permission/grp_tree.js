@@ -68,3 +68,64 @@ function save_group () {
 	}).send();
 }
 
+function save_perm_map () {
+
+	var modified_pgpm = new pgpm().fromStoreItem( current_perm );
+	modified_pgpm.ischanged( 1 );
+
+	new_kid_button.disabled = false;
+	save_out_button.disabled = false;
+	delete_out_button.disabled = false;
+
+	server.pCRUD.request({
+		method : 'open-ils.permacrud.update.pgpm',
+		timeout : 10,
+		params : [ ses, modified_pgpm ],
+		onerror : function (r) {
+			highlighter.editor_pane.red.play();
+			status_update( 'Problem saving permission data for ' + group_store.getValue( current_group, 'name' ) );
+		},
+		oncomplete : function (r) {
+			var res = r.recv();
+			if ( res && res.content() ) {
+				group_store.setValue( current_perm, 'ischanged', 0 );
+				highlighter.editor_pane.green.play();
+				status_update( 'Saved permission changes to ' + group_store.getValue( current_group, 'name' ) );
+			} else {
+				highlighter.editor_pane.red.play();
+				status_update( 'Problem saving permission data for ' + group_store.getValue( current_group, 'name' ) );
+			}
+		},
+	}).send();
+}
+
+function save_them_all (event) {
+
+    perm_map_store.fetch({
+        query : { ischanged : 1 },
+        onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyMapStore.push( item ); } catch (e) { /* meh */ } },
+        scope : perm_map_store
+    });
+
+    var confirmation = true;
+
+
+    if (event && dirtyMapStore.length > 0) {
+        confirmation = confirm(
+            'There are unsaved modified Permission Maps!  '+
+            'OK to save these changes, Cancel to abandon them.'
+        );
+    }
+
+    if (confirmation) {
+        for (var i in window.dirtyMapStore) {
+            window.current_perm = window.dirtyMapStore[i];
+            save_perm_map(true);
+        }
+
+        window.dirtyMapStore = [];
+    }
+}
+
+dojo.addOnUnload( save_them_all );
+
