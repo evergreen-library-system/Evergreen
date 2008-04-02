@@ -172,7 +172,6 @@
 
 						perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
 						perm_map_model.refresh();
-						perm_grid.refresh();
 
 						highlighter.editor_pane.green.play();
 						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
@@ -465,13 +464,27 @@
 					</div>
 
 					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="Group Permissions">
+						<script type="dojo/connect" event="onShow">
+							perm_grid.refresh();
+						</script>
 						<div id="grid_container" dojoType="dijit.layout.ContentPane">
 							<div dojoType="dojox.grid.data.DojoData" id="perm_map_model"jsId="perm_map_model" store="perm_map_store">
 								<script type="dojo/connect" event="startup">
 
-									function get_item_part(model_field, item_search_field, item_part, model, store, row) {
+									function get_item_part(model_field, item_search_field, item_part, model, store, datum, row) {
+										var formatter = true;
+
+										if (!row && row != '0') {
+											row = datum;
+											formatter = false;
+										}
+
 										if(!model.getRow(row)) return null;
 										var value = null;
+
+										if(!formatter) { //this.editor && (this.editor.alwaysOn || (this.grid.edit.info.rowIndex==row && this.grid.edit.info.cell==this))) {
+											return model.getRow(row)[model_field];
+										}
 
 										var q = {};
 										q[item_search_field] = model.getRow(row)[model_field];
@@ -489,26 +502,24 @@
 		                                        [
 		                                            {	name : "Code",
 														field: "perm",
-														get : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
+														formatter : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
 														width : "300px"
 													},
 		                                            {	name : "Depth",
 														field : "depth",
-														get : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
-														editor : dojox.grid.editors.ComboBox,
+														formatter : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
+														editor : dojox.grid.editors.select,
 														options : dojo.map( _ou_type_list, function (x) { return x.name() } ),
 														values : dojo.map( _ou_type_list, function (x) { return x.depth() } )
 													}, 
 		                                            {	name : "Grantable",
-														get : function (row) {
-															var curr = perm_map_model.getRow(row);
-															if (!curr || curr.grantable == 'f') return "No";
-															return "Yes";
-														},
 														field : "grantable",
-														editor : dojox.grid.editors.ComboBox,
-														options : [ "Yes","No" ],
-														value : ['t','f']
+														editor : dojox.grid.editors.bool,
+														get : function (row) {
+															var gr = get_item_part("id", "id", "grantable", perm_map_model, perm_map_model.store, row, row);
+															if (gr == 't' || gr === true) return true;
+															return false;
+														},
 													}
 		                                        ]
 		                                    ]
