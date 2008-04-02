@@ -149,7 +149,7 @@ sub create_hold {
 	$conn->respond_complete(1);
 
     for(@holds) {
-        next if $_->frozen;
+        next if $U->is_true($_->frozen);
 	    $U->storagereq(
 		    'open-ils.storage.action.hold_request.copy_targeter', 
 		    undef, $_->id );
