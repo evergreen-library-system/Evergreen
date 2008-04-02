@@ -161,7 +161,7 @@ circ.print_list_template_editor.prototype = {
 								try {
 									JSAN.use('util.functional');
 									var template_type = obj.controller.view.template_type_menu.value;
-									var macros;
+									var macros = [];
 									switch(template_type) {
 										case 'items':
 											JSAN.use('circ.util');
@@ -176,6 +176,51 @@ circ.print_list_template_editor.prototype = {
 											JSAN.use('circ.util');
 											macros = util.functional.map_list(
 												circ.util.hold_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'transits':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.transit_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'offline_checkout':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.offline_checkout_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'offline_checkin':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.offline_checkin_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'offline_renew':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.offline_renew_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+                                        case 'offline_inhouse_use':
+											JSAN.use('circ.util');
+											macros = util.functional.map_list(
+												circ.util.offline_inhouse_use_columns( {} ),
 												function(o) {
 													return '%' + o.id + '%';
 												}
@@ -213,7 +258,7 @@ circ.print_list_template_editor.prototype = {
 											+ document.getElementById('circStrings').getString('staff.circ.print_list_template.window.title')
 											+ '</title></head>'
 											+ '<body onload="document.getElementById(\'btn\').focus()">'
-											+ '<h1>' +
+											+ '<h1>' 
 											+ document.getElementById('circStrings').getString('staff.circ.print_list_template.window.heading')
 											+ '</h1>'
 											+ '<p>%SHORTNAME%, %TODAY%, %STAFF_FIRSTNAME%, %STAFF_LASTNAME%, '
