@@ -1412,12 +1412,12 @@ circ.util.hold_columns = function(modify,params) {
         {
 			'persist' : 'hidden width ordinal',
 			'id' : 'frozen',
-			'label' : document.getElementById('circStrings').getString('staff.circ.utils.frozen'),
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.active'),
 			'flex' : 0,
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) {
-				if (get_bool( my.ahr.frozen() )) {
+				if (!get_bool( my.ahr.frozen() )) {
 					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
 				} else {
 					return document.getElementById('circStrings').getString('staff.circ.utils.no');
