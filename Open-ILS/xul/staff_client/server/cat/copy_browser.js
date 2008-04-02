@@ -611,7 +611,7 @@ cat.copy_browser.prototype = {
 									if (list.length == 1) {
 										del_prompt = document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.prompt');
 									} else {
-										del_prompt = document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.delete_volumes.prompt.plural', [list.length]);
+										del_prompt = document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.delete_volume.prompt.plural', [list.length]);
 									}
 
 									var r = obj.error.yns_alert(
