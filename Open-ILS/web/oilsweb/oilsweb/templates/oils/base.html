@@ -26,16 +26,8 @@
 
 <%def name='block_css()'>
     <style type="text/css">
-	@import "/js/dijit/themes/tundra/tundra.css";
-	@import "/js/dojo/resources/dojo.css";
-
-        html, body, #oils-base-body-block {
-	    width:100%;
-	    height:100%;
-	    border:0;
-	    margin:0;
-	    padding: 0;
-	}
+        @import "/js/dijit/themes/tundra/tundra.css";
+        @import "/js/dojo/resources/dojo.css";
     </style>
     <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/skin/${c.oils.core.skin.value}.css'/>
     <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/theme/${c.oils.core.theme.value}.css'/>
