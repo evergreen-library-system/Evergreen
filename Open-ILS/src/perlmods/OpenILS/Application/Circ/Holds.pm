@@ -518,6 +518,12 @@ sub update_hold {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
+    my $orig_hold = $e->retrieve_action_hold_request($hold->id)
+        or return $e->die_event;
+
+    # don't allow the user to be changed
+    return OpenILS::Event->new('BAD_PARAMS') if $hold->usr != $orig_hold->usr;
+
     if($hold->usr ne $e->requestor->id) {
         # if the hold is for a different user, make sure the 
         # requestor has the appropriate permissions
@@ -526,12 +532,8 @@ sub update_hold {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
-    my $evt = update_hold_if_frozen($self, $e, $hold);
-    return $evt if $evt;
-
-    $e->update_action_hold_request($hold)
-        or return $e->die_event;
-
+    update_hold_if_frozen($self, $e, $hold);
+    $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
     return $hold->id;
 }
@@ -539,17 +541,22 @@ sub update_hold {
 
 # if the hold is frozen, this method ensures that the hold is not "targeted", 
 # that is, it clears the current_copy and prev_check_time to essentiallly 
-# reset the hold
+# reset the hold.  If it is being activated, it runs the targeter in the background
 sub update_hold_if_frozen {
-    my($self, $e, $hold) = @_;
-    return undef if $hold->capture_time;
-    if($hold->frozen and ($hold->current_copy or $hold->prev_check_time)) {
-        $logger->info("clearing current_copy and check_time for frozen hold");
+    my($self, $e, $hold, $orig_hold) = @_;
+    return if $hold->capture_time;
+
+    if($U->is_true($hold->frozen)) {
+        $logger->info("clearing current_copy and check_time for frozen hold ".$hold->id);
         $hold->clear_current_copy;
         $hold->clear_prev_check_time;
-        $e->update_action_hold_request($hold) or return $e->die_event;
+
+    } else {
+        if($U->is_true($orig_hold->frozen)) {
+            $logger->info("Running targeter on activated hold ".$hold->id);
+	        $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+        }
     }
-    return undef;
 }
 
 
