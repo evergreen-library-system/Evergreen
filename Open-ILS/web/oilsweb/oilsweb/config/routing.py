@@ -27,6 +27,7 @@ def make_map():
     map.connect(prefix+'admin/:action/:type/:id', controller='admin')
     map.connect(prefix+'admin/:action/:type', controller='admin')
 
+    map.connect('osrf-http-translator', controller='translator', action='proxy')
 
     ''' trying a different set of admin routes above...
     map.connect('acq_admin', 'oils/admin', controller='acq_admin')
