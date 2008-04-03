@@ -1683,3 +1683,42 @@
 <!ENTITY staff.cat.bib_brief.created_by "Created By:">
 <!ENTITY staff.cat.bib_brief.last_edited_by "Last Edited By:">
 <!ENTITY staff.cat.bib_brief.last_edited_on "Last Edited On:">
+<!ENTITY staff.circ.holds.copy_to_clipboard "Copy to Clipboard">
+<!ENTITY staff.circ.holds.copy_to_clipboard.accesskey "C">
+<!ENTITY staff.circ.holds.show_in_catalog "Show in Catalog">
+<!ENTITY staff.circ.holds.show_in_catalog.accesskey "S">
+<!ENTITY staff.circ.holds.show_item_details "Show Item Details">
+<!ENTITY staff.circ.holds.show_item_details.accesskey "I">
+<!ENTITY staff.circ.holds.show_last_few_circulations "Show Last Few Circulations">
+<!ENTITY staff.circ.holds.show_last_few_circulations.accesskey "L">
+<!ENTITY staff.circ.holds.retrieve_patron "Retrieve Patron">
+<!ENTITY staff.circ.holds.retrieve_patron.accesskey "P">
+<!ENTITY staff.circ.holds.show_notices "Show Notices">
+<!ENTITY staff.circ.holds.show_notices.accesskey "N">
+<!ENTITY staff.circ.holds.edit_pickup_library "Edit Pickup Library">
+<!ENTITY staff.circ.holds.edit_pickup_library.accesskey "L">
+<!ENTITY staff.circ.holds.edit_phone_notification "Edit Phone Notification">
+<!ENTITY staff.circ.holds.edit_phone_notification.accesskey "P">
+<!ENTITY staff.circ.holds.set_email_notification "Set Email Notification">
+<!ENTITY staff.circ.holds.set_email_notification.accesskey "E">
+<!ENTITY staff.circ.holds.edit_activation_date "Edit Activation Date">
+<!ENTITY staff.circ.holds.edit_activation_date.accesskey "D">
+<!ENTITY staff.circ.holds.activate_hold "Activate Hold">
+<!ENTITY staff.circ.holds.activate_hold.accesskey "A">
+<!ENTITY staff.circ.holds.suspend_hold "Suspend Hold">
+<!ENTITY staff.circ.holds.suspend_hold.accesskey "S">
+<!ENTITY staff.circ.holds.edit_hold_range "Edit Hold Range">
+<!ENTITY staff.circ.holds.edit_hold_range.accesskey "R">
+<!ENTITY staff.circ.holds.edit_hold_focus "Edit Hold Focus">
+<!ENTITY staff.circ.holds.edit_hold_focus.accesskey "F">
+<!ENTITY staff.circ.holds.mark_item_damaged "Mark Item Damaged">
+<!ENTITY staff.circ.holds.mark_item_damaged.accesskey "D">
+<!ENTITY staff.circ.holds.mark_item_missing "Mark Item Missing">
+<!ENTITY staff.circ.holds.mark_item_missing.accesskey "M">
+<!ENTITY staff.circ.holds.retarget "Find Another Target">
+<!ENTITY staff.circ.holds.retarget.accesskey "T">
+<!ENTITY staff.circ.holds.cancel "Cancel Hold">
+<!ENTITY staff.circ.holds.cancel.accesskey "C">
+<!ENTITY staff.circ.holds.save_columns "Save Columns">
+<!ENTITY staff.circ.holds.save_columns.accesskey "">
+
