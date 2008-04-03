@@ -532,7 +532,7 @@ sub update_hold {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
-    update_hold_if_frozen($self, $e, $hold);
+    update_hold_if_frozen($self, $e, $hold, $orig_hold);
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
     return $hold->id;
