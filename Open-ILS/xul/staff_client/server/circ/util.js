@@ -1493,9 +1493,9 @@ circ.util.hold_columns = function(modify,params) {
 			'hidden' : true,
 			'render' : function(my) {
 				if (get_bool(my.ahr.email_notify())) {
-					return document.getElementById('circStrings').getString('staff.circ.utils.current_copy.yes');
+					return document.getElementById('circStrings').getString('staff.circ.utils.yes');
 				} else {
-					return document.getElementById('circStrings').getString('staff.circ.utils.current_copy.no');
+					return document.getElementById('circStrings').getString('staff.circ.utils.no');
 				}
 			}
 		},
