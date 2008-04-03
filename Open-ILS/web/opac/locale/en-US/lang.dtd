@@ -1192,6 +1192,27 @@
 <!ENTITY staff.volume.wizard.page4 "Entering Copy-Level Attribute Defaults">
 <!ENTITY staff.volume.wizard.title "Batch Add Volumes/Copies Wizard">
 <!ENTITY staff.xuleditor_label "XUL TEST">
+<!ENTITY staff.z39_50.search_class.author "Author">
+<!ENTITY staff.z39_50.search_class.isbn "ISBN">
+<!ENTITY staff.z39_50.search_class.issn "ISSN">
+<!ENTITY staff.z39_50.search_class.item_type "Item Type">
+<!ENTITY staff.z39_50.search_class.item_type.all "All Formats"> 
+<!ENTITY staff.z39_50.search_class.item_type.art "Papers/Articles"> 
+<!ENTITY staff.z39_50.search_class.item_type.bks "Books"> 
+<!ENTITY staff.z39_50.search_class.item_type.com "Computer files"> 
+<!ENTITY staff.z39_50.search_class.item_type.map "Maps"> 
+<!ENTITY staff.z39_50.search_class.item_type.mix "Mixed material"> 
+<!ENTITY staff.z39_50.search_class.item_type.rec "Sound recordings"> 
+<!ENTITY staff.z39_50.search_class.item_type.sco "Musical scores"> 
+<!ENTITY staff.z39_50.search_class.item_type.ser "Serials"> 
+<!ENTITY staff.z39_50.search_class.item_type.url "Internet Resources"> 
+<!ENTITY staff.z39_50.search_class.item_type.vis "Visual materials"> 
+<!ENTITY staff.z39_50.search_class.lccn "LCCN">
+<!ENTITY staff.z39_50.search_class.pubdate "PubDate">
+<!ENTITY staff.z39_50.search_class.publisher "Publisher">
+<!ENTITY staff.z39_50.search_class.tcn "Accession #">
+<!ENTITY staff.z39_50.search_class.title "Title">
+<!ENTITY staff.z39_50_import_interface_label "Z39.50 IMPORT">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
