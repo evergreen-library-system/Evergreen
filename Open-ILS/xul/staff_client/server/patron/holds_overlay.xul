@@ -11,30 +11,29 @@
 
 <popupset id="holds_popupset">
 	<popup id="holds_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-		<menuitem label="Show in Catalog" command="cmd_show_catalog" accesskey="S"/>
-		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
+		<menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
+		<menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
+		<menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
 		<menuseparator />
-		<menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
-		<menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
+		<menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
+		<menuitem label="&staff.circ.holds.show_notices;" command="cmd_show_notifications" accesskey="&staff.circ.holds.show_notices.accesskey;" />
 		<menuseparator />
-		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
-		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
-		<menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E"/>
-		<menuitem label="Edit Thaw Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
-		<menuitem label="Set Freeze" command="cmd_holds_edit_freeze" accesskey="F"/>
-		<!--
-		<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R"/>
-		<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F"/>
-		-->
+		<menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
+		<menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
+		<menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
+		<menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date;"/>
+		<menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
+		<menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
+		<menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
+		<menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
 		<menuseparator />
-		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
-		<menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
-		<menuitem label="Cancel Hold" command="cmd_holds_cancel" accesskey="C"/>
+		<menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
+		<menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
+		<menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
+		<menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
 		<menuseparator />
-		<menuitem command="save_columns" label="Save Columns"/>
+		<menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
 	</popup>
 </popupset>
 
@@ -74,30 +73,29 @@
     <menubar>
         <menu label="Actions for Selected Holds" accesskey="S">
             <menupopup>
-                <menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-                <menuitem label="Show in Catalog" command="cmd_show_catalog"  accesskey="S"/>
-                <menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-                <menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+                <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
+                <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
+                <menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
+                <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
                 <menuseparator />
-                <menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
-                <menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
+                <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
+                <menuitem label="&staff.circ.holds.show_notices;" command="cmd_show_notifications" accesskey="&staff.circ.holds.show_notices.accesskey;" />
                 <menuseparator />
-                <menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
-                <menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
-                <menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E" />
-                <menuitem label="Edit Thaw Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
-                <menuitem label="Set Freeze" command="cmd_holds_edit_freeze" accesskey="F"/>
-                <!--
-                <menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R" />
-                <menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F" />
-                -->
+                <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
+                <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
+                <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
+                <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date;"/>
+                <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
+                <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
+                <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
+                <menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
                 <menuseparator />
-                <menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-                <menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
-                <menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
-                <menuitem label="Cancel Hold" command="cmd_holds_cancel"  accesskey="C"/>
+                <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
+                <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
+                <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
+                <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
                 <menuseparator />
-                <menuitem command="save_columns" label="Save Columns"/>
+                <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
             </menupopup>
         </menu>
     </menubar>

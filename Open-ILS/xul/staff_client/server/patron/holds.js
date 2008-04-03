@@ -127,7 +127,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
-						obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_notifications.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
@@ -143,7 +144,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
-						obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
@@ -451,53 +453,90 @@ patron.holds.prototype = {
 							}
 						}
 					],
-                    'cmd_holds_edit_freeze' : [
+                    'cmd_holds_suspend' : [
 						['command'],
 						function() {
 							try {
-								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Freeze or un-freeze these holds?</description>';
-								xml += '<hbox><button value="freeze" label="Freeze" accesskey="F" name="fancy_submit"/>';
-								xml += '<button value="unfreeze" label="Un-Freeze" accesskey="U" name="fancy_submit"/></hbox>';
-								xml += '</vbox>';
-								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								JSAN.use('util.window'); var win = new util.window();
-								var fancy_prompt_data = win.open(
-									urls.XUL_FANCY_PROMPT,
-									//+ '?xml_in_stash=temp_mid'
-									//+ '&bottom_xml_in_stash=temp_bot'
-									//+ '&title=' + window.escape('Set Email Notification for Holds'),
-									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Set Email Notification for Holds' }
-								);
-								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
-								var freeze = fancy_prompt_data.fancy_submit == 'freeze' ? get_db_true() : get_db_false();
-								var msg = 'Are you sure you would like to ' + ( get_bool( freeze ) ? 'freeze' : 'un-freeze' ) + ' hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+								var r = obj.error.yns_alert(
+                                    obj.retrieve_ids.length > 1 ?
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt.plural',[hold_list]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
+                                    null,
+                                    document.getElementById('commonStrings').getString('common.confirm')
+                                );
 								if (r == 0) {
+                                    var already_suspended = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
-										hold.frozen(  freeze ); 
-										if ( ! get_bool( freeze ) ) {
-											hold.thaw_date( null );
-										}
+                                        if ( get_bool( hold.frozen() ) ) {
+                                            already_suspended.push( hold.id() );
+                                            continue; 
+                                        }
+										hold.frozen('t'); 
+										hold.thaw_date(null);
 										hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
+                                    if (already_suspended.length == 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended',[already_suspended[0]]) );
+                                    } else if (already_suspended.length > 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended.plural',[already_suspended.join(', ')]) );
+                                    }
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_suspended'),E);
 							}
 						}
 					],
-
+                    'cmd_holds_activate' : [
+						['command'],
+						function() {
+							try {
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+								var r = obj.error.yns_alert(
+                                    obj.retrieve_ids.length > 1 ?
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt.plural',[hold_list]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
+                                    null,
+                                    document.getElementById('commonStrings').getString('common.confirm')
+                                );
+								if (r == 0) {
+                                    var already_activated = [];
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        if ( ! get_bool( hold.frozen() ) ) {
+                                            already_activated.push( hold.id() );
+                                            continue; 
+                                        }
+										hold.frozen('f'); 
+										hold.thaw_date(null);
+										hold.ischanged('1');
+                                        hold = obj.flatten_copy(hold);
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+                                    if (already_activated.length == 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated',[already_activated[0]]) );
+                                    } else if (already_activated.length > 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated.plural',[already_activated.join(', ')]) );
+                                    }
+									obj.clear_and_retrieve(true);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_activated'),E);
+							}
+						}
+					],
                     'cmd_holds_edit_thaw_date' : [
 						['command'],
 						function() {
@@ -746,7 +785,8 @@ patron.holds.prototype = {
                 obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
 				obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
-				obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
