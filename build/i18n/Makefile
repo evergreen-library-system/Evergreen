@@ -37,7 +37,7 @@ PROGRESS=--progress none
 #   make LOCALE=ll-LL updatepo
 #
 # To create a new set of project files (DTDs, JavaScript message catalogs):
-#   make LOCALE=ll-LL updatepo
+#   make LOCALE=ll-LL newproject
 
 # Generate PO files from all POT files in POOUTDIR for locale LOCALE
 newpo: 
