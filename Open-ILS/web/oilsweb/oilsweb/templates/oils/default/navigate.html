@@ -1,23 +1,25 @@
-# -*- coding: utf-8 -*-
-<div id='oils-base-navigate-list'>
-    <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix.value}/base/dashboard'>${_('Dashboard')}</a>
-    </div>
-    <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix.value}/acq/base/index'>${_('Acquisitions')}</a>
-    </div>
-    % if c.oils.core.page.value.startswith('acq'):
-        <div class='oils-base-navigate-sub-list'>
-            <%include file='acq/navigate.html'/>
-        </div>
-    % endif
-    <!--
-    <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix.value}/ser/index'>${_('Serials')}</a>
-    </div>
-    -->
-    <div class='oils-base-navigate-item'>
-        <a href='${c.oils.core.prefix.value}/admin/index'>${_('Admin')}</a>
-    </div>
+<script>
+    /* Create a simple data store to organize the menu options */
+    dojo.require("dijit.Tree");
+    var menuData = {
+        data : {  
+            label: 'label',
+            identifier: 'id',
+            items: [
+                <%include file='acq/navigate.js'/>,
+                /** add navigation files as needed */
+            ]
+        }
+    };
+    var menuStore = new dojo.data.ItemFileReadStore(menuData);
+    //dojo.addOnLoad(function(){oilsMenuTree.expand()});
+</script>
+
+<div dojoType="dijit.Tree" jsId='oilsMenuTree' store="menuStore" label="${_('Menu')}">
+    <script type="dojo/method" event="onClick" args="item">
+        if(item.dest)
+            location.href = '${c.oils.core.prefix.value}/' + item.dest;
+    </script>
 </div>
+
 
