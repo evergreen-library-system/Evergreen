@@ -9,6 +9,7 @@ var DO_AUTHORITY_LOOKUPS = true;
 var PARAM_TERM			= "t";			/* search term */
 var PARAM_STYPE		= "tp";			/* search type */
 var PARAM_LOCATION	= "l";			/* current location */
+var PARAM_LASSO	= "sg";			/* current location */
 var PARAM_DEPTH		= "d";			/* search depth */
 var PARAM_FORM			= "f";			/* search format */
 var PARAM_OFFSET		= "o";			/* search offset */
@@ -42,6 +43,7 @@ var PARAM_AVAIL     = 'av'; /* limit search results to available items */
 var TERM;  
 var STYPE;  
 var LOCATION;  
+var LASSO;  
 var DEPTH;  
 var FORM; 
 var OFFSET;

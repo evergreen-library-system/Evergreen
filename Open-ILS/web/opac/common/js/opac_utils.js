@@ -109,21 +109,21 @@ function initParams() {
 	/* handle the location var */
 	var org;
 	var loc = cgi.param(PARAM_LOCATION);
+	var lasso = cgi.param(PARAM_LASSO);
+
+    if ( lasso ) {
+		lasso = findOrgLasso( lasso );
+		LASSO = lasso ? lasso.id() : null;
+	}
 
     if (loc) {
 		org = findOrgUnit(loc);
 		LOCATION = org ? org.id() : null;
 
-	    if( !LOCATION ) {
-            if ( loc < 0 ) {
-				org = findOrgLasso( -loc );
-				LOCATION = org ? -org.id() : null;
-			}
-			if ( !LOCATION ){
-				org = findOrgUnit(loc);
-				LOCATION = org ? org.id() : null;
-			}
-    	} 
+		if ( !LOCATION ){
+			org = findOrgUnit(loc);
+			LOCATION = org ? org.id() : null;
+		}
     }
 
 	org = null;
@@ -224,6 +224,7 @@ function initCookies() {
 function getTerm(){return TERM;}
 function getStype(){return STYPE;}
 function getLocation(){return LOCATION;}
+function getLasso(){return LASSO;}
 function getDepth(){return DEPTH;}
 function getForm(){return FORM;}
 function getTform(){return TFORM;}
@@ -357,6 +358,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
 	if(getLocation() != 1) 
 		string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
+	if(getLasso() != null) 
+		string += _appendParam(LASSO, PARAM_LASSO, args, getLasso, string);
 	if(getDepth() != null) 
 		string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
 	if(getForm() && (getForm() != 'all') ) 

@@ -76,6 +76,10 @@ function rresultCollectIds() {
 		defaut:
 			var form = rresultGetForm();
 			var args = { format : form, org : getLocation(), depth : rresultGetDepth() };
+
+			var lasso = getLasso();
+			if (lasso) args.org = -lasso;
+
 			var req = new Request(FETCH_RIDS, getMrid(), args);
 			req.callback( rresultHandleRIds );
 			req.send();
@@ -210,6 +214,10 @@ function rresultHandleRIds(r) {
 		rresultTries++;
 		var form = rresultGetForm();
 		var args = { format : form, org : getLocation(), depth : findOrgDepth(globalOrgTree) };
+
+		var lasso = getLasso();
+		if (lasso) args.org = -lasso;
+
 		var req = new Request(FETCH_RIDS, getMrid(), args );
 		req.callback( rresultHandleRIds );
 		req.send();

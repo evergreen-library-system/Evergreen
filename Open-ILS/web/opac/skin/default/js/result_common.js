@@ -63,7 +63,11 @@ function resultCollectSearchIds( type, method, handler ) {
 			limit = getHitCount() - getOffset();
 	}
 
-	args.org_unit = getLocation();
+	var lasso = getLasso();
+
+	if (lasso) args.org_unit = -lasso;
+	else args.org_unit = getLocation();
+
 	args.depth    = getDepth();
 	args.limit    = limit;
 	args.offset   = getOffset();
@@ -673,7 +677,12 @@ function resultAddCopyCounts(rec, pagePosition) {
 /* collect copy counts for a record using method 'methodName' */
 function resultCollectCopyCounts(rec, pagePosition, methodName) {
 	if(rec == null || rec.doc_id() == null) return;
-	var req = new Request(methodName, getLocation(), rec.doc_id(), getForm() );
+
+	var loc = getLasso();
+	if (loc) loc = -loc;
+	else loc= getLocation();
+
+	var req = new Request(methodName, loc, rec.doc_id(), getForm() );
 	req.request.userdata = [ rec, pagePosition ];
 	req.callback(resultHandleCopyCounts);
 	req.send();
