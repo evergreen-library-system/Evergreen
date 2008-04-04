@@ -1243,6 +1243,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="item_lang" reltype="has_a" key="code" map="" class="clm"/>
 			<link field="item_type" reltype="has_a" key="code" map="" class="citm"/>
+			<link field="bib_level" reltype="has_a" key="code" map="" class="cblvl"/>
 			<link field="item_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="audience" reltype="has_a" key="code" map="" class="cam"/>
 			<link field="lit_form" reltype="has_a" key="code" map="" class="clfm"/>
@@ -1526,6 +1527,24 @@
                 <retrieve/>
                 <update permission="UPDATE_ITEM_TYPE" global_required="true"/>
                 <delete permission="DELETE_ITEM_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="cblvl" controller="open-ils.cstore" oils_obj:fieldmapper="config::bib_level_map" oils_persist:tablename="config.bib_level_map" reporter:label="Bib Level Map">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Bib Level Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Bib Level" name="value" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_BIB_LEVEL" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_BIB_LEVEL" global_required="true"/>
+                <delete permission="DELETE_BIB_LEVEL" global_required="true"/>
             </actions>
         </permacrud>
 	</class>

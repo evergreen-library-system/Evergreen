@@ -683,6 +683,14 @@ INSERT INTO config.item_type_map (code, value) VALUES ('i', oils_i18n_gettext('N
 INSERT INTO config.item_type_map (code, value) VALUES ('j', oils_i18n_gettext('Musical sound recording'));
 INSERT INTO config.item_type_map (code, value) VALUES ('m', oils_i18n_gettext('Computer file'));
 
+INSERT INTO config.bib_level_map (code, value) VALUES ('a', oils_i18n_gettext('Monographic component part'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('b', oils_i18n_gettext('Serial component part'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('c', oils_i18n_gettext('Collection'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('d', oils_i18n_gettext('Subunit'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('i', oils_i18n_gettext('Integrating resource'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('m', oils_i18n_gettext('Monograph/Item'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('Serial'));
+
 --005.schema.actors.sql:
 
 -- The PINES levels

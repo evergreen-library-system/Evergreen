@@ -429,5 +429,10 @@ CREATE TABLE config.item_type_map (
 	value	TEXT	NOT NULL
 );
 
+CREATE TABLE config.bib_level_map (
+	code	TEXT	PRIMARY KEY,
+	value	TEXT	NOT NULL
+);
+
 COMMIT;
 
