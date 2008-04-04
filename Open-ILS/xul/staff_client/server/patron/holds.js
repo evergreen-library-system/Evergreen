@@ -726,7 +726,7 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             obj.pull_from_shelf_interface.current.offset += obj.pull_from_shelf_interface.current.limit;
-                            obj.retrieve();
+                            obj.retrieve(true);
                         }
                     ],
                     'lib_filter_checkbox' : [
@@ -778,7 +778,7 @@ patron.holds.prototype = {
                     if (obj.controller.view.lib_menu) obj.controller.view.lib_menu.disabled = true;
                 }
                 obj.controller.render();
-                obj.retrieve();
+                obj.retrieve(true);
 
                 obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');

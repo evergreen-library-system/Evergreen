@@ -50,7 +50,7 @@
 						'pull' : xul_param('pull'),
 					} 
 				);
-				window.refresh = function(p) { g.holds.retrieve(p); }
+				window.refresh = function(p) { g.holds.list.clear(); g.holds.retrieve(p); }
 
 				default_focus();
 
