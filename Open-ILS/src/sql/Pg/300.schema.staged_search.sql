@@ -59,6 +59,7 @@ CREATE OR REPLACE FUNCTION search.staged_fts (
     param_types     TEXT[],
     param_forms     TEXT[],
     param_vformats  TEXT[],
+    param_bib_level TEXT[],
     param_pref_lang TEXT,
     param_pref_lang_multiplier REAL,
     param_sort      TEXT,
@@ -331,6 +332,10 @@ BEGIN
 
     IF param_vformats IS NOT NULL AND array_upper(param_vformats, 1) > 0 THEN
         where_clause = where_clause || $$ AND mrd.vr_format IN ('$$ || array_to_string(param_vformats, $$','$$) || $$') $$;
+    END IF;
+
+    IF param_bib_level IS NOT NULL AND array_upper(param_bib_level, 1) > 0 THEN
+        where_clause = where_clause || $$ AND mrd.bib_level IN ('$$ || array_to_string(param_bib_level, $$','$$) || $$') $$;
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||

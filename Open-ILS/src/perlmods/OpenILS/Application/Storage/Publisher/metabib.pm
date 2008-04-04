@@ -2324,7 +2324,7 @@ sub staged_fts {
 		die "No search arguments were passed to ".$self->api_name;
 	}
 
-	my (@statuses,@types,@forms,@lang,@aud,@lit_form,@vformats);
+	my (@statuses,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
 
 	if ($args{available}) {
 		@statuses = (0,7);
@@ -2358,6 +2358,11 @@ sub staged_fts {
 	if (my $t = $args{item_type}) {
 		$t = [$t] if (!ref($t));
 		@types = @$t;
+	}
+
+	if (my $b = $args{bib_level}) {
+		$b = [$b] if (!ref($b));
+		@bib_level = @$b;
 	}
 
 	if (my $v = $args{vr_format}) {
@@ -2423,6 +2428,7 @@ sub staged_fts {
     my $param_types = '$${' . join(',', map { s/\$//go; $_ } @types) . '}$$';
     my $param_forms = '$${' . join(',', map { s/\$//go; $_ } @forms) . '}$$';
     my $param_vformats = '$${' . join(',', map { s/\$//go; $_ } @vformats) . '}$$';
+    my $param_bib_level = '$${' . join(',', map { s/\$//go; $_ } @bib_level) . '}$$';
 	my $param_pref_lang = $args{preferred_language}; $param_pref_lang =~ s/\$//go; $param_pref_lang = '$$'.$param_pref_lang.'$$';
 	my $param_pref_lang_multiplier = $args{preferred_language_weight}; $param_pref_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
@@ -2446,6 +2452,7 @@ sub staged_fts {
                     $param_types,
                     $param_forms,
                     $param_vformats,
+                    $param_bib_level,
                     $param_pref_lang,
                     $param_pref_lang_multiplier,
                     $param_sort,
