@@ -22,8 +22,9 @@
 		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 		<menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E"/>
-		<menuitem label="Set Activation Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
-		<menuitem label="Activate/Suspend Hold" command="cmd_holds_edit_freeze" accesskey="F"/>
+		<menuitem label="Edit Activation Date" command="cmd_holds_edit_thaw_date" accesskey="D"/>
+		<menuitem label="Activate Hold" command="cmd_holds_activate" accesskey="A"/>
+		<menuitem label="Suspend Hold" command="cmd_holds_suspend" accesskey="S"/>
 		<!--
 		<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R"/>
 		<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F"/>
@@ -73,8 +74,9 @@
 				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 				<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 				<menuitem label="Set Email Notification" command="cmd_holds_edit_email_notify" accesskey="E" />
-                <menuitem label="Set Activation Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
-                <menuitem label="Activate/Suspend Hold" command="cmd_holds_edit_freeze" accesskey="F"/>
+                <menuitem label="Edit Activation Date" command="cmd_holds_edit_thaw_date" accesskey="T"/>
+                <menuitem label="Activate Hold" command="cmd_holds_activate" accesskey="A"/>
+                <menuitem label="Suspend Hold" command="cmd_holds_suspend" accesskey="S"/>
 				<!--
 				<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R" />
 				<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F" />
