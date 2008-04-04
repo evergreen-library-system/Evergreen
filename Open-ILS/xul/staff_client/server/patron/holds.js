@@ -672,7 +672,7 @@ patron.holds.prototype = {
                                 function check_date(value) {
                                     try {
                                         if (! util.date.check('YYYY-MM-DD',value) ) { throw('Invalid Date'); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) ) { 
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
                                             throw('Activation date for suspended holds needs to be after today.'); 
                                         }
                                         return true;
