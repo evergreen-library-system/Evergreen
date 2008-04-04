@@ -381,7 +381,7 @@ CREATE TABLE actor.org_lasso_map (
     lasso       INT     NOT NULL REFERENCES actor.org_lasso (id) ON DELETE CASCADE,
     org_unit    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE
 );
-CREATE INDEX ou_lasso_lasso_idx ON actor.org_lasso_map (lasso);
+CREATE UNIQUE INDEX ou_lasso_lasso_ou_idx ON actor.org_lasso_map (lasso, org_unit);
 CREATE INDEX ou_lasso_org_unit_idx ON actor.org_lasso_map (org_unit);
 
 CREATE TABLE actor.org_unit_proximity (
