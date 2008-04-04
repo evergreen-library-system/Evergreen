@@ -544,9 +544,9 @@ patron.holds.prototype = {
                                 JSAN.use('util.date');
                                 function check_date(value) {
                                     try {
-                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw('Invalid Date'); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) ) { 
-                                            throw('Thaw date for frozen holds needs to be after today.'); 
+                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.invalid_date')); }
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
+                                            throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.too_early.error'));
                                         }
                                         return true;
                                     } catch(E) {
@@ -555,9 +555,12 @@ patron.holds.prototype = {
                                     }
                                 }
 
-								var msg = 'Please enter a thaw date for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '\nOr set to blank to unset the thaw date for these holds.  Frozen holds without a thaw date will remain frozen until manually unfrozen, otherwise they unfreeze on the thaw date.';
+                                var hold_ids = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
+								var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
+                                var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
-                                var title = 'Modifying Holds';
+                                var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
 								var thaw_date; var invalid = true;
                                 while(invalid) {
                                     thaw_date = window.prompt(msg,value,title);
@@ -570,6 +573,7 @@ patron.holds.prototype = {
                                 if (thaw_date || thaw_date == '') {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        hold.frozen('t');
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -578,7 +582,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve(true);
                                 }
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
 							}
 						}
 					],
