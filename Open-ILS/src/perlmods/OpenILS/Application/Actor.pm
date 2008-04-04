@@ -855,7 +855,7 @@ sub set_user_perms {
 			$map->clear_id;
 		}
 
-		next if (!$all || !grep { $_->perm eq $map->perm and $_->grantable == 1 and $_->depth <= $map->depth } @$perms);
+		next if (!$all || !grep { $_->perm eq $map->perm and $U->is_true($_->grantable) and $_->depth <= $map->depth } @$perms);
 
 		#warn( "Updating permissions with method $method and session $ses and map $map" );
 		$logger->info( "Updating permissions with method $method and map $map" );
