@@ -697,7 +697,9 @@ patron.holds.prototype = {
                                 if (thaw_date || thaw_date == '') {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
-                                        hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
+                                        hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); 
+                                        hold.frozen('t');
+                                        hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
