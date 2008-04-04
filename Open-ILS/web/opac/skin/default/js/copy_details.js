@@ -306,13 +306,35 @@ function cpdShowNotes(copy, args) {
 function cpdShowStats(copy, args) {
 	var entries = copy.stat_cat_entry_copy_maps();
 	if(!entries || entries.length == 0) return;
-		
+
+	var visibleStatCat = false;
+
+	/*
+		check all copy stat cats; if we find one that's OPAC visible,
+		set the flag and break the loop. If we've found one, or we're
+		in the staff client, build the table. if not, we return doing
+		nothing, as though the stat_cat_entry_copy_map was empty or null
+	*/
+
+	for( var n in entries )
+	{
+			var entry = entries[n];
+			if(isTrue(entry.stat_cat().opac_visible()))
+			{
+				visibleStatCat = true;
+				break;
+			}
+	}
+
+	if(!(isXUL() || visibleStatCat)) return;
+
 	var a = _cpdExtrasInit(args);
 	var tbody = a[0];
 	var rowt = a[1];
 
 	for( var n in entries ) {
 		var entry = entries[n];
+		if(!(isXUL() || isTrue(entry.stat_cat().opac_visible()))) continue;
 		var row = rowt.cloneNode(true);
 		$n(row, 'key').appendChild(text(entry.stat_cat().name()));
 		$n(row, 'value').appendChild(text(entry.stat_cat_entry().value()));
