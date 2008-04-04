@@ -315,6 +315,17 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+                                
+                                var deny_edit_because_of_transit = false;
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                    if (hold.status() > 2 /* Which means holds that are In-Transit or Ready for Pickup */) deny_edit_because_of_transit = true;
+                                }
+                                if (deny_edit_because_of_transit) {
+                                    alert(document.getElementById('circStrings').getString('staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit'));
+                                    return;
+                                }
+
 								var list = util.functional.map_list(
 									obj.data.list.aou,
 									function(o) { 
