@@ -86,10 +86,11 @@ perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
 
 if [ "$PROXIMITY" ]
 then
-	echo "Refreshing proximity of org units"
+	echo "Refreshing proximity of org units";
 	perl org_tree_proximity.pl "$CONFIG";
 fi
 
+echo "";
 echo "Done";
 
 )
