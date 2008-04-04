@@ -75,7 +75,8 @@ function buildLocationSelector(newLoc) {
 	removeChildren(selector);
 	
 	var location = findOrgUnit(loc);
-	var type = findOrgType(location.ou_type());
+	var type;
+	if (location) type = findOrgType(location.ou_type());
 
 	while( type && location ) {
 		var n = node.cloneNode(true);	

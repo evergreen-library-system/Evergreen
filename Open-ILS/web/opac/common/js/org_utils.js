@@ -44,7 +44,9 @@ function findOrgType(type_id) {
 /* returns an org unit by id.  if an object is passed in as the id,
 	then the object is assumed to be an org unit and is returned */
 function findOrgUnit(org_id) {
-	return (typeof org_id == 'object') ? org_id : orgArraySearcher[org_id];
+	var o = (typeof org_id == 'object') ? org_id : orgArraySearcher[org_id];
+	if (!o) o = new aou();
+	return o;
 }
 
 function findOrgLasso(lasso_id) {

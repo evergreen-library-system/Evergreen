@@ -111,15 +111,20 @@ function initParams() {
 	var loc = cgi.param(PARAM_LOCATION);
 
     if (loc) {
-    	if(isNaN(loc)) org = findOrgUnitSN(loc);
+		org = findOrgUnit(loc);
+		LOCATION = org ? org.id() : null;
 
-	    if( !org ) {
-            if ( parseInt(loc) < 0 ) org = findOrgLasso( -1 * loc );
-    		else org = findOrgUnit(loc);
+	    if( !LOCATION ) {
+            if ( loc < 0 ) {
+				org = findOrgLasso( -loc );
+				LOCATION = org ? -org.id() : null;
+			}
+			if ( !LOCATION ){
+				org = findOrgUnit(loc);
+				LOCATION = org ? org.id() : null;
+			}
     	} 
     }
-
-	LOCATION = org ? org.id() : null;
 
 	org = null;
 	loc = cgi.param(PARAM_ORIGLOC);
