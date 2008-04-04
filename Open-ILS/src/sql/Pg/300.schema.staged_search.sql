@@ -337,10 +337,16 @@ BEGIN
                         ' GROUP BY 1 ORDER BY 4' || CASE WHEN sort_desc THEN ' DESC' ELSE ' ASC' END || ';';
     --RAISE NOTICE 'Base Query:  %', core_rel_query;
 
-    IF param_depth IS NOT NULL THEN
-        SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou, param_depth );
-    ELSE
-        SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou );
+    IF param_search_ou > 0 THEN
+        IF param_depth IS NOT NULL THEN
+            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou, param_depth );
+        ELSE
+            SELECT array_accum(distinct id) INTO search_org_list FROM actor.org_unit_descendants( param_search_ou );
+        END IF;
+    ELSIF param_search_ou < 0 THEN
+        SELECT array_accum(distinct org_unit) INTO search_org_list FROM actor.org_lasso_map WHERE lasso = -param_search_ou;
+    ELSIF param_search_ou = 0 THEN
+        -- reserved for user lassos (ou_buckets/type='lasso') with ID passed in depth ... hack? sure.
     END IF;
 
     OPEN core_cursor FOR EXECUTE core_rel_query;

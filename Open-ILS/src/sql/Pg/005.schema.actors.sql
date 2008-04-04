@@ -4,7 +4,7 @@ BEGIN;
 CREATE SCHEMA actor;
 COMMENT ON SCHEMA actor IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * Schema: actor
@@ -66,7 +66,7 @@ CREATE TABLE actor.usr (
 );
 COMMENT ON TABLE actor.usr IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * User objects
@@ -150,7 +150,7 @@ CREATE TABLE actor.usr_standing_penalty (
 );
 COMMENT ON TABLE actor.usr_standing_penalty IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * User standing penalties
@@ -180,7 +180,7 @@ CREATE TABLE actor.usr_setting (
 );
 COMMENT ON TABLE actor.usr_setting IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * User settings
@@ -214,7 +214,7 @@ CREATE TABLE actor.stat_cat (
 );
 COMMENT ON TABLE actor.stat_cat IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * User Statistical Catagories
@@ -246,7 +246,7 @@ CREATE TABLE actor.stat_cat_entry (
 );
 COMMENT ON TABLE actor.stat_cat_entry IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * User Statistical Catagory Entries
@@ -280,7 +280,7 @@ CREATE TABLE actor.stat_cat_entry_usr_map (
 );
 COMMENT ON TABLE actor.stat_cat_entry_usr_map IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * Statistical Catagory Entry to User map
@@ -312,7 +312,7 @@ CREATE TABLE actor.card (
 );
 COMMENT ON TABLE actor.card IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * Library Cards
@@ -370,6 +370,19 @@ CREATE INDEX actor_org_unit_ill_address_idx ON actor.org_unit (ill_address);
 CREATE INDEX actor_org_unit_billing_address_idx ON actor.org_unit (billing_address);
 CREATE INDEX actor_org_unit_mailing_address_idx ON actor.org_unit (mailing_address);
 CREATE INDEX actor_org_unit_holds_address_idx ON actor.org_unit (holds_address);
+
+CREATE TABLE actor.org_lasso (
+    id      SERIAL  PRIMARY KEY,
+    name   	TEXT    UNIQUE
+);
+
+CREATE TABLE actor.org_lasso_map (
+    id          SERIAL  PRIMARY KEY,
+    lasso       INT     NOT NULL REFERENCES actor.org_lasso (id) ON DELETE CASCADE,
+    org_unit    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE
+);
+CREATE INDEX ou_lasso_lasso_idx ON actor.org_lasso_map (lasso);
+CREATE INDEX ou_lasso_org_unit_idx ON actor.org_lasso_map (org_unit);
 
 CREATE TABLE actor.org_unit_proximity (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -431,7 +444,7 @@ CREATE TABLE actor.org_unit_setting (
 );
 COMMENT ON TABLE actor.org_unit_setting IS $$
 /*
- * Copyright (C) 2005  Georgia Public Library Service 
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
  * Org Unit settings

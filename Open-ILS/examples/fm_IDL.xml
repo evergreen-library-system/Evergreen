@@ -1546,9 +1546,49 @@
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
-                <retrieve/>
+                <retrieve permission="CREATE_RELEVANCE_ADJUSTMENT|UPDATE_RELEVANCE_ADJUSTMENT|DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
                 <update permission="UPDATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
                 <delete permission="DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="lasso" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_lasso" oils_persist:tablename="actor.org_lasso">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_LASSO" global_required="true"/>
+                <retrieve permission="CREATE_LASSO|UPDATE_LASSO|DELETE_LASSO" global_required="true"/>
+                <update permission="UPDATE_LASSO" global_required="true"/>
+                <delete permission="DELETE_LASSO" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="lmap" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_lasso_map" oils_persist:tablename="actor.org_lasso_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="lasso" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_LASSO_MAP" global_required="true"/>
+                <retrieve permission="CREATE_LASSO_MAP|UPDATE_LASSO_MAP|DELETE_LASSO_MAP" global_required="true"/>
+                <update permission="UPDATE_LASSO_MAP" global_required="true"/>
+                <delete permission="DELETE_LASSO_MAP" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
