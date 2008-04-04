@@ -23,12 +23,13 @@ sub ordered_records_from_metarecord {
 	my $org = shift || 1;
 	my $depth = shift;
 
-	my (@types,@forms);
+	my (@types,@forms,@blvl);
 
 	if ($formats) {
-		my ($t, $f) = split '-', $formats;
+		my ($t, $f, $b) = split '-', $formats;
 		@types = split '', $t;
 		@forms = split '', $f;
+		@blvl = split '', $b;
 	}
 
 	my $descendants =
@@ -140,6 +141,10 @@ sub ordered_records_from_metarecord {
 		$sql .= '				AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
 	}
 
+	if (@blvl) {
+		$sql .= '				AND rd.bib_level IN ('.join(',',map{'?'}@blvl).')';
+	}
+
 
 
 	$sql .= <<"	SQL";
@@ -177,7 +182,7 @@ sub ordered_records_from_metarecord {
 		quality DESC
 	SQL
 
-	my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr", @types, @forms);
+	my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr", @types, @forms, @blvl);
 	return $ids if ($self->api_name =~ /atomic$/o);
 
 	$client->respond( $_ ) for ( @$ids );
@@ -277,19 +282,25 @@ sub metarecord_copy_count {
 	my $copies_visible = 'AND a.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
-	my (@types,@forms);
-	my ($t_filter, $f_filter) = ('','');
+	my (@types,@forms,@blvl);
+	my ($t_filter, $f_filter, $b_filter) = ('','','');
 
 	if ($args{format}) {
-		my ($t, $f) = split '-', $args{format};
+		my ($t, $f, $b) = split '-', $args{format};
 		@types = split '', $t;
 		@forms = split '', $f;
+		@blvl = split '', $b;
+
 		if (@types) {
 			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
 		}
 
 		if (@forms) {
 			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		}
+
+		if (@blvl) {
+			$b_filter .= ' AND rd.bib_level IN ('.join(',',map{'?'}@blvl).')';
 		}
 	}
 
@@ -311,6 +322,7 @@ sub metarecord_copy_count {
 				  	$copies_visible
 					$t_filter
 					$f_filter
+					$b_filter
 				)
 			) AS count,
 			sum(
@@ -329,6 +341,7 @@ sub metarecord_copy_count {
 					$copies_visible
 					$t_filter
 					$f_filter
+					$b_filter
 				)
 			) AS available,
 			sum(
@@ -347,6 +360,7 @@ sub metarecord_copy_count {
 					AND cl.opac_visible IS TRUE
 					$t_filter
 					$f_filter
+					$b_filter
 				)
 			) AS unshadow,
 			sum(	
@@ -367,12 +381,15 @@ sub metarecord_copy_count {
 	$sth->execute(	''.$args{metarecord},
 			@types, 
 			@forms,
+			@blvl,
 			''.$args{metarecord},
 			@types, 
 			@forms,
+			@blvl,
 			''.$args{metarecord},
 			@types, 
 			@forms,
+			@blvl,
 			''.$args{metarecord},
 			''.$args{org_unit}, 
 	); 
