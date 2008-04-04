@@ -265,8 +265,14 @@ sub metarecord_copy_count {
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 	my $out_table = actor::org_unit_type->table;
+
 	my $descendants = "actor.org_unit_descendants(u.id)";
-	my $ancestors = "actor.org_unit_ancestors(?)";
+	my $ancestors = "actor.org_unit_ancestors(?) u JOIN $out_table t ON (u.ou_type = t.id)";
+
+    if ($args{org_unit} < 0) {
+        $args{org_unit} *= -1;
+        $ancestors = "(select org_unit as id from actor.org_lasso_map where lasso = ?) u CROSS JOIN (SELECT -1 AS depth) t";
+    }
 
 	my $copies_visible = 'AND a.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
@@ -353,8 +359,7 @@ sub metarecord_copy_count {
 				)
 			) AS transcendant
 
-		  FROM  $ancestors u
-			JOIN $out_table t ON (u.ou_type = t.id)
+		  FROM  $ancestors
 		  GROUP BY 1,2
 	SQL
 

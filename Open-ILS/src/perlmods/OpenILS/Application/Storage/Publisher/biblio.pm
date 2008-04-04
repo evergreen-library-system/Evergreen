@@ -23,7 +23,12 @@ sub record_copy_count {
 	my $out_table = actor::org_unit_type->table;
 
 	my $descendants = "actor.org_unit_descendants(u.id)";
-	my $ancestors = "actor.org_unit_ancestors(?)";
+	my $ancestors = "actor.org_unit_ancestors(?) u JOIN $out_table t ON (u.ou_type = t.id)";
+
+    if ($args{org_unit} < 0) {
+        $args{org_unit} *= -1;
+	    $ancestors = "(select org_unit as id from actor.org_lasso_map where lasso = ?) u CROSS JOIN (SELECT -1 AS depth) t";
+    }
 
 	my $visible = 'AND a.opac_visible = TRUE AND st.holdable = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
 	if ($self->api_name =~ /staff/o) {
@@ -79,8 +84,7 @@ sub record_copy_count {
                                         AND src.transcendant IS TRUE
                                 )
                         ) AS transcendant
-		  FROM  $ancestors u
-			JOIN $out_table t ON (u.ou_type = t.id)
+		  FROM  $ancestors
 		  GROUP BY 1,2
 	SQL
 
