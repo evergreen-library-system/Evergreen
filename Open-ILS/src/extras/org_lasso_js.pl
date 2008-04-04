@@ -27,8 +27,8 @@ my $lassos = $e->request(
 );
 
 print
-    "var _lasso = [\n  " .
-    join( ",\n  ", map { OpenSRF::Utils::JSON->perl2JSON( $_ ) } @$lassos ) .
-    "\n]; /* Org Search Groups (Lassos) */ \n";
+    "var _lasso = [\n  new lasso(" .
+    join( "),\n  new lasso(", map { OpenSRF::Utils::JSON->perl2JSON( bless($_, 'ARRAY') ) } @$lassos ) .
+    ")\n]; /* Org Search Groups (Lassos) */ \n";
 
 
