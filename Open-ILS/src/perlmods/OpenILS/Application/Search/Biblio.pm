@@ -1543,6 +1543,9 @@ __PACKAGE__->register_method (
 	api_name => 'open-ils.search.biblio.item_type_map.retrieve.all');
 __PACKAGE__->register_method (
 	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all');
+__PACKAGE__->register_method (
+	method => 'bib_extras',
 	api_name => 'open-ils.search.biblio.audience_map.retrieve.all');
 
 sub bib_extras {
@@ -1558,6 +1561,9 @@ sub bib_extras {
 
 	return $e->retrieve_all_config_item_type_map()
 		if( $self->api_name =~ /item_type_map/ );
+
+	return $e->retrieve_all_config_bib_level_map()
+		if( $self->api_name =~ /bib_level_map/ );
 
 	return $e->retrieve_all_config_audience_map()
 		if( $self->api_name =~ /audience_map/ );

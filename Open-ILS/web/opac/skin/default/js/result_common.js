@@ -80,6 +80,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
+	if(getBibLevel()) args.bib_level	= getBibLevel().split(/,/);
 
 	_debug('Search args: ' + js2JSON(args));
 	_debug('Raw query: ' + getTerm());

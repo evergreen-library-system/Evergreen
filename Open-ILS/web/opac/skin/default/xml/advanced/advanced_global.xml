@@ -169,6 +169,17 @@
 							</select>
 						</td>
 					</tr>
+
+					<tr>
+						<td align='right'>
+							<span>Bib Level</span>
+						</td>
+						<td align='left'>
+							<select multiple='multiple' size='3' id='adv_global_bib_level'>
+							</select>	
+						</td>
+					</tr>
+
 				</tbody>
 			</table>
 		</td>

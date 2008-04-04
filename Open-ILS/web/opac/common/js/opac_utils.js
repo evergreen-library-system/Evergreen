@@ -148,6 +148,7 @@ function initParams() {
 	LITFORM	= cgi.param(PARAM_LITFORM);
 	ITEMFORM	= cgi.param(PARAM_ITEMFORM);
 	ITEMTYPE	= cgi.param(PARAM_ITEMTYPE);
+	BIBLEVEL	= cgi.param(PARAM_BIBLEVEL);
 	AUDIENCE	= cgi.param(PARAM_AUDIENCE);
 	SEARCHES = cgi.param(PARAM_SEARCHES);
 	LANGUAGE	= cgi.param(PARAM_LANGUAGE);
@@ -187,6 +188,7 @@ function clearSearchParams() {
 	LITFORM	    = null;
 	ITEMFORM    = null;
 	ITEMTYPE    = null;
+	BIBLEVEL    = null;
 	AUDIENCE    = null;
 	SEARCHES    = null;
 	LANGUAGE    = null;
@@ -234,6 +236,7 @@ function getCallnumber() { return CALLNUM; }
 function getLitForm() { return LITFORM; }
 function getItemForm() { return ITEMFORM; }
 function getItemType() { return ITEMTYPE; }
+function getBibLevel() { return BIBLEVEL; }
 function getAudience() { return AUDIENCE; }
 function getSearches() { return SEARCHES; }
 function getLanguage() { return LANGUAGE; }
@@ -371,6 +374,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(ITEMFORM,	PARAM_ITEMFORM, args, getItemForm, string);
 	if(getItemType())
 		string += _appendParam(ITEMTYPE,	PARAM_ITEMTYPE, args, getItemType, string);
+	if(getBibLevel())
+		string += _appendParam(BIBLEVEL,	PARAM_BIBLEVEL, args, getBibLevel, string);
 	if(getLitForm())
 		string += _appendParam(LITFORM,	PARAM_LITFORM, args, getLitForm, string);
 	if(getAudience())

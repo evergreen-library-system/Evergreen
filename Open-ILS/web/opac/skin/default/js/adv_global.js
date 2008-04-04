@@ -15,7 +15,9 @@ function advgInit() {
 		FETCH_LIT_FORMS, 
 		FETCH_ITEM_FORMS, 
 		FETCH_ITEM_TYPES, 
-		FETCH_AUDIENCES ];
+		FETCH_AUDIENCES,
+		FETCH_BIB_LEVELS 
+    ];
 
 	for( var x in extras ) {
 
@@ -25,6 +27,7 @@ function advgInit() {
 		if(x == 1) req.request.sel = $('adv_global_item_form');
 		if(x == 2) req.request.sel = $('adv_global_item_type');
 		if(x == 3) req.request.sel = $('adv_global_audience');
+		if(x == 4) req.request.sel = $('adv_global_bib_level');
 
 		req.callback(advDrawBibExtras);
 		req.send();
@@ -137,6 +140,7 @@ function advSubmitGlobal() {
 	var itemforms = advGetVisSelectorVals('adv_global_item_form');
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
+	var biblevels = advGetVisSelectorVals('adv_global_bib_level');
 	var languages = getSelectedList($('adv_global_lang')) + '';	
     var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
@@ -149,6 +153,7 @@ function advSubmitGlobal() {
 	args.page = MRESULT;
 	args[PARAM_ITEMFORM] = itemforms;
 	args[PARAM_ITEMTYPE] = itemtypes;
+	args[PARAM_BIBLEVEL] = biblevels;
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
