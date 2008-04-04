@@ -47,6 +47,14 @@ function findOrgUnit(org_id) {
 	return (typeof org_id == 'object') ? org_id : orgArraySearcher[org_id];
 }
 
+function findOrgLasso(lasso_id) {
+	if (typeof lasso_id == 'object') return lasso_id;
+    for (var i in _lasso) {
+        if (_lasso[i].id() == lasso_id) return _lasso[i];
+    }
+    return null;
+}
+
 var orgArraySearcherSN = {};
 function findOrgUnitSN(shortname) {
 	if (typeof shortname == 'object') return shortname;
