@@ -84,6 +84,9 @@ perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";
 echo "Updating OrgTree HTML";
 perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
 
+echo "Updating Search Groups";
+perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";
+
 if [ "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";

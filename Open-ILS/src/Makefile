@@ -105,6 +105,7 @@ autojs-install:
 	@echo $@
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
+	cp extras/org_lasso_js.pl $(BINDIR)
 	cp extras/org_tree_html_options.pl $(BINDIR)
 	cp extras/org_tree_proximity.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
