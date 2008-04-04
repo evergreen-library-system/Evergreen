@@ -693,6 +693,7 @@ function resultHandleCopyCounts(r) {
 }
 
 
+/* XXX Needs to understand Lasso copy counts... */
 /* display the collected copy counts */
 function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	if(copy_counts == null || rec == null) return;
