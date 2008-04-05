@@ -7,29 +7,27 @@
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
     <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/funding_source/create'>${_('New Funding Source')}</a>
+        <a href='${c.oils.acq.prefix.value}/funding-sourceing_source/create'>${_('New Funding Source')}</a>
     </div>
 </div>
 
+<div id='oils-acq-funding-source-grid'> </div>
+<script>
+    dojo.require('openils.acq.FundingSource');
 
-<table class='oils-admin-table'>
-    <thead>
-        <tr>
-            <td>${_('Funding Source Name')}</td>
-            <td>${_('Funding Source Owner')}</td>
-            <td>${_('Funding Source Currency Type')}</td>
-            <td>${_('Funding Source Balance')}</td>
-        </tr>
-    </thead>
-    <tbody>
-        % for source in c.oils.acq.funding_source_list.value:
-        <tr>
-            <td><a href='${c.oils.acq.prefix.value}/funding_source/view/${source.id()}'>${source.name()}</a></td>
-            <td>${source.owner().name()}</td> 
-            <td>${source.currency_type()}</td> 
-            <td>${source.summary()['balance']}</td> 
-        </tr>
-        %endfor
-    </tbody>
-</table>
+    /* define the layout columns */
+    var cols = [{   
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', field: "name"}, 
+            {name: '${_("Owner")}', field: "owner"}, 
+            {name: '${_("Currency Type")}', field: "currency_type"},
+            {name: '${_("Balance")}', field: "balance"}
+        ]]
+    }];
+
+    /* build the funding-source grid on page load */
+    dojo.addOnLoad(function(){
+        openils.acq.FundingSource.createFundingSourceGrid('oils-acq-funding-source-grid', cols)});
+</script>
 </%def>

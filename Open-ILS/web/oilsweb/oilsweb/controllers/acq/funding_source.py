@@ -26,20 +26,7 @@ class FundingSourceController(BaseController):
         return r.render('acq/financial/view_funding_source.html')
 
     def list(self):
-        r = RequestMgr()
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-
-        sources = ses.request(
-            'open-ils.acq.funding_source.org.retrieve', 
-            r.ctx.core.authtoken.value, None, {"flesh_summary":1}).recv().content()
-
-        Event.parse_and_raise(sources)
-        r.ctx.acq.funding_source_list.value = sources
-
-        for source in sources:
-            source.owner(OrgUtil.get_org_unit(source.owner()))
-        return r.render('acq/financial/list_funding_sources.html')
-            
+        return RequestMgr().render('acq/financial/list_funding_sources.html')
 
     def create(self):
         r = RequestMgr()

@@ -38,17 +38,7 @@ class FundController(BaseController):
         return r.render('acq/financial/view_fund.html')
 
     def list(self):
-        r = RequestMgr()
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-        funds = ses.request(
-            'open-ils.acq.fund.org.retrieve', 
-            r.ctx.core.authtoken.value, None, {"flesh_summary":1}).recv().content()
-        Event.parse_and_raise(funds)
-        for f in funds:
-            f.org(OrgUtil.get_org_unit(f.org()))
-        r.ctx.acq.fund_list.value = funds
-        return r.render('acq/financial/list_funds.html')
-            
+        return RequestMgr().render('acq/financial/list_funds.html')
 
     def create(self):
         r = RequestMgr()

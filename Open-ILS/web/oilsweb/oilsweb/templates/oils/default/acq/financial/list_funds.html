@@ -11,25 +11,24 @@
     </div>
 </div>
 
+<div id='oils-acq-fund-grid'> </div>
+<script>
+    dojo.require('openils.acq.Fund');
 
-<table class='oils-admin-table'>
-    <thead>
-        <tr>
-            <td>${_('Fund Name')}</td>
-            <td>${_('Fund Owner')}</td>
-            <td>${_('Fund Year')}</td>
-            <td>${_('Fund Balance')}</td>
-        </tr>
-    </thead>
-    <tbody>
-        % for fund in c.oils.acq.fund_list.value:
-        <tr>
-            <td><a href='${c.oils.acq.prefix.value}/fund/view/${fund.id()}'>${fund.name()}</a></td>
-            <td>${fund.org().name()}</td> 
-            <td>${fund.year()}</td> 
-            <td>${fund.summary()['combined_balance']}</td> 
-        </tr>
-        %endfor
-    </tbody>
-</table>
+    /* define the layout columns */
+    var cols = [{   
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', field: "name"}, 
+            {name: '${_("Owner")}', field: "org"}, 
+            {name: '${_("Year")}', field: "year"},
+            {name: '${_("Currency Type")}', field: "currency_type"},
+            {name: '${_("Balance")}', field: "combined_balance"}
+        ]]
+    }];
+
+    /* build the fund grid on page load */
+    dojo.addOnLoad(function(){
+        openils.acq.Fund.createFundGrid('oils-acq-fund-grid', cols)});
+</script>
 </%def>
