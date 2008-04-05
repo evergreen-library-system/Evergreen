@@ -16,18 +16,16 @@
     dojo.require('openils.acq.FundingSource');
 
     /* define the layout columns */
-    var cols = [{   
-        cells : [[
-            {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Name")}', field: "name"}, 
-            {name: '${_("Owner")}', field: "owner"}, 
-            {name: '${_("Currency Type")}', field: "currency_type"},
-            {name: '${_("Balance")}', field: "balance"}
-        ]]
-    }];
+    var cols = [
+        {name: '${_("ID")}', field: 'id'},
+        {name: '${_("Name")}', field: "name"}, 
+        {name: '${_("Owner")}', field: "owner"}, 
+        {name: '${_("Currency Type")}', field: "currency_type"},
+        {name: '${_("Balance")}', field: "balance"}
+    ];
 
     /* build the funding-source grid on page load */
     dojo.addOnLoad(function(){
-        openils.acq.FundingSource.createFundingSourceGrid('oils-acq-funding-source-grid', cols)});
+        openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols)});
 </script>
 </%def>

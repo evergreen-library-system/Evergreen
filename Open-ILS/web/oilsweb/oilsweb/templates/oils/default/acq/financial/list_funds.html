@@ -16,19 +16,16 @@
     dojo.require('openils.acq.Fund');
 
     /* define the layout columns */
-    var cols = [{   
-        cells : [[
-            {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Name")}', field: "name"}, 
-            {name: '${_("Owner")}', field: "org"}, 
-            {name: '${_("Year")}', field: "year"},
-            {name: '${_("Currency Type")}', field: "currency_type"},
-            {name: '${_("Balance")}', field: "combined_balance"}
-        ]]
-    }];
+    var cols = [
+        {name: '${_("ID")}', field: 'id'},
+        {name: '${_("Name")}', field: "name"}, 
+        {name: '${_("Owner")}', field: "org"}, 
+        {name: '${_("Year")}', field: "year"},
+        {name: '${_("Currency Type")}', field: "currency_type"},
+        {name: '${_("Balance")}', field: "combined_balance"}
+    ];
 
     /* build the fund grid on page load */
-    dojo.addOnLoad(function(){
-        openils.acq.Fund.createFundGrid('oils-acq-fund-grid', cols)});
+    dojo.addOnLoad(function(){openils.acq.Fund.loadGrid('oils-acq-fund-grid', cols)});
 </script>
 </%def>

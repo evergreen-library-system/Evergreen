@@ -15,17 +15,14 @@
     dojo.require('openils.acq.Provider');
 
     /* define the layout columns */
-    var cols = [{   
-        cells : [[
-            {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Name")}', field: "name"}, 
-            {name: '${_("Owner")}', field: "owner"}, 
-            {name: '${_("Currency Type")}', field: "currency_type"}
-        ]]
-    }];
+    var cols = [
+        {name: '${_("ID")}', field: 'id'},
+        {name: '${_("Name")}', field: "name"}, 
+        {name: '${_("Owner")}', field: "owner"}, 
+        {name: '${_("Currency Type")}', field: "currency_type"}
+    ];
 
     /* build the provider grid on page load */
-    dojo.addOnLoad(function(){
-        openils.acq.Provider.createProviderGrid('oils-acq-provider-grid', cols)});
+    dojo.addOnLoad(function(){openils.acq.Provider.loadGrid('oils-acq-provider-grid', cols)});
 </script>
 </%def>
