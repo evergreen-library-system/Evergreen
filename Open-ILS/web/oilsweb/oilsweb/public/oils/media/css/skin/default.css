@@ -1,6 +1,13 @@
 /* import the default css for the install applications */
 @import "default/acq.css";
 @import "default/admin.css";
+/* import the dojo CSS */
+@import "../../js/dojo/dojox/grid/_grid/Grid.css";
+@import "../../js/dojo/dijit/themes/tundra/tundra.css";
+@import "../../js/dojo/dojo/resources/dojo.css";
+
+
+
 
 /* base default style */
 
@@ -38,4 +45,10 @@ html, body, #oils-base-body-block {
 .oils-admin-label { width: auto; }
 
 .label { margin: 1px; }
+
+
+/* local dojo style enhancements ----------------------------------- */
+.dojoxGrid {border: 1px solid #333; height: 90%;}
+.dojoxGrid-cell {padding: 8px;}
+/* ----------------------------------------------------------------- */
 

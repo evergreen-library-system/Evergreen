@@ -15,38 +15,55 @@
         <%def name="page_title()">${_('Evergreen Acquisitions')}</%def>
         <title>${self.page_title()}</title>
         ${self.block_css()}
-	${self.block_js()}
+        ${self.block_js()}
     </head>
 </%def>
 
 <%def name='block_body()'>
-<body>${self.block_body_content()}</body>
+    <body>${self.block_body_content()}</body>
 </%def>
 <%def name='block_body_content()'/>
 
 <%def name='block_css()'>
-    <style type="text/css">
-        @import "/js/dijit/themes/tundra/tundra.css";
-        @import "/js/dojo/resources/dojo.css";
-    </style>
-    <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/skin/${c.oils.core.skin.value}.css'/>
-    <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix.value}/css/theme/${c.oils.core.theme.value}.css'/>
+    <link rel='stylesheet' type='text/css' 
+        href='${c.oils.core.media_prefix.value}/css/skin/${c.oils.core.skin.value}.css'/>
+    <link rel='stylesheet' type='text/css' 
+        href='${c.oils.core.media_prefix.value}/css/theme/${c.oils.core.theme.value}.css'/>
 </%def>
 
 <%def name='block_js()'>
-    <script type="text/javascript" src="/js/dojo/dojo.js"
-            djConfig="parseOnLoad: true"></script>
+
+    <!-- set up some global JS variables -->
+    <script type='text/javascript'>
+        var oilsAuthtoken = '${c.oils.core.authtoken.value}';
+    </script>
+
+    <!-- some of these will dojo-ized ... -->
+    <script src='${c.oils.core.media_prefix.value}/js/opensrf/JSON_v1.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/opensrf/opensrf.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/opensrf/opensrf_xhr.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/openils/fmall.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/openils/fmgen.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/openils/OrgTree.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/openils/org_utils.js'> </script>
+
+    <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/dojo/dojo/dojo.js"
+        djConfig="parseOnLoad: true"></script>
+
     <script type="text/javascript">
         dojo.require("dojo.parser");
-
-	dojo.require("dijit.layout.LayoutContainer")
-	dojo.require("dijit.layout.ContentPane")
-
-	dojo.require("dijit.form.Form")
-	dojo.require("dijit.form.Button");
-	dojo.require("dijit.form.TextBox");
-	dojo.require("dijit.form.NumberTextBox");
-	dojo.require("dijit.form.NumberSpinner");
-	dojo.require("dijit.form.FilteringSelect");
+        dojo.require("dijit.layout.LayoutContainer")
+        dojo.require("dijit.layout.ContentPane")
+        dojo.require("dijit.form.Form")
+        dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.TextBox");
+        dojo.require("dijit.form.NumberTextBox");
+        dojo.require("dijit.form.NumberSpinner");
+        dojo.require("dijit.form.FilteringSelect");
+        dojo.require("dojo.data.ItemFileWriteStore");
+        dojo.require("dojox.grid.Grid");
+        dojo.require("dojox.grid._data.model");
+        dojo.require("fieldmapper.dojoData");
     </script>
 </%def>
+

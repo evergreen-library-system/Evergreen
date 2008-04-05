@@ -50,6 +50,7 @@ class ProviderController(BaseController):
 
         return r.render('acq/financial/create_provider.html')
 
+    ''' Pure Python version
     def list(self):
         r = RequestMgr()
         providers = provider_mgr.list(r)
@@ -57,4 +58,10 @@ class ProviderController(BaseController):
             f.owner(OrgUtil.get_org_unit(f.owner()))
         r.ctx.acq.provider_list.value = providers
         return r.render('acq/financial/list_providers.html')
+    '''
+
+
+    def list(self):
+        return RequestMgr().render('acq/financial/list_providers.html')
+
 
