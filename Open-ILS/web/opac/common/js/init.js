@@ -46,7 +46,11 @@ function init() {
 
 	runEvt("common", "run");
 	//checkUserSkin();
-	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));
+
+	var loc = findOrgLasso(getLasso());
+	if (!loc) loc = findOrgUnit(getLocation());
+
+	G.ui.common.now_searching.appendChild(text(loc.name()));
 }
 
 function windowUnload() { runEvt("common", "unload"); }

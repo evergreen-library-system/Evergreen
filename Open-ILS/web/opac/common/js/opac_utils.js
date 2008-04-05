@@ -790,8 +790,12 @@ function orgSelect(id) {
 	showCanvas();
 	runEvt("common", "locationChanged", id, findOrgDepth(id) );
 
+
+	var loc = findOrgLasso(getLasso());
+	if (!loc) loc = findOrgUnit(id);
+
 	removeChildren(G.ui.common.now_searching);
-	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
+	G.ui.common.now_searching.appendChild(text(loc.name()));
 }
 
 function setFontSize(size) {

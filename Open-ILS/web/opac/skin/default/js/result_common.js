@@ -102,19 +102,21 @@ function resultCollectSearchIds( type, method, handler ) {
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
 
-
-	/* tell the user where the results are coming from */
-	var baseorg = findOrgUnit(getLocation());
-	var depth = getDepth();
-	var mydepth = findOrgDepth(baseorg);
-	if( findOrgDepth(baseorg) != depth ) {
-		var tmporg = baseorg;
-		while( mydepth > depth ) {
-			mydepth--;
-			tmporg = findOrgUnit(tmporg.parent_ou());
+	var lasso = getLasso();
+	if (!lasso) {
+		/* tell the user where the results are coming from */
+		var baseorg = findOrgUnit(getLocation());
+		var depth = getDepth();
+		var mydepth = findOrgDepth(baseorg);
+		if( findOrgDepth(baseorg) != depth ) {
+			var tmporg = baseorg;
+			while( mydepth > depth ) {
+				mydepth--;
+				tmporg = findOrgUnit(tmporg.parent_ou());
+			}
+			unHideMe($('including_results_for'));
+			$('including_results_location').appendChild(text(tmporg.name()));
 		}
-		unHideMe($('including_results_for'));
-		$('including_results_location').appendChild(text(tmporg.name()));
 	}
 
 
