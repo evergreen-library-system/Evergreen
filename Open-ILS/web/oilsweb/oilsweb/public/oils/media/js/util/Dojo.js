@@ -11,12 +11,15 @@ dojo.declare('util.Dojo', null, {
 });
 
 
-util.Dojo.buildSimpleGrid = function(domId, columns, dataList, identifier) {
+util.Dojo.buildSimpleGrid = function(domId, columns, dataList, identifier, delayed) {
     /** Builds a dojo grid based on the provided data.  
      * @param domId The ID of the DOM node where the grid lives.
      * @param structure List of column header objects.
      * @param dataList List of objects (hashes) to be inserted into the grid.
-     * @paramd identifier The identifier field for objects in the grid.  Defaults to 'id'
+     * @param identifier The identifier field for objects in the grid.  Defaults to 'id'
+     * @param delayed If true, method returns before the model is linked to the grid. 
+     *      The purpose of this is to allow the client to fill the grid with data
+     *      before rendering to get past dojo grid display bugs
      */
     identifier = (identifier) ? identifier : 'id';
     domNode = dojo.byId(domId);
@@ -31,7 +34,11 @@ util.Dojo.buildSimpleGrid = function(domId, columns, dataList, identifier) {
 
     var store = new dojo.data.ItemFileWriteStore({data:{identifier:identifier,items:dataList}});
     var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true});
-    var grid = new dojox.Grid({structure: layout, model: model}, domId);
+    var grid = new dojox.Grid({structure: layout}, domId);
+
+    if(delayed)
+        return {grid:grid, store:store, model:model};
+
     grid.setModel(model);
     grid.setStructure(layout);
     grid.startup();

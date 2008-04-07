@@ -12,12 +12,13 @@
 </div>
 
 <div id='oils-acq-funding-source-grid'> </div>
+
 <script>
     dojo.require('openils.acq.FundingSource');
 
     /* define the layout columns */
     var cols = [
-        {name: '${_("ID")}', field: 'id'},
+        {name: '${_("ID")}', field: 'id', 'class':'id-column'},
         {name: '${_("Name")}', field: "name"}, 
         {name: '${_("Owner")}', field: "owner"}, 
         {name: '${_("Currency Type")}', field: "currency_type"},
@@ -25,7 +26,15 @@
     ];
 
     /* build the funding-source grid on page load */
-    dojo.addOnLoad(function(){
-        openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols)});
+    dojo.addOnLoad(
+        function(){
+            var fsGrid = openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols);
+            fsGrid.onRowClick = function(evt) {
+                /** XXX Need to make this more user friendly / obvious ... */
+                id = fsGrid.model.getDatum(evt.rowIndex, 0);
+                location.href = '${c.oils.acq.prefix.value}/funding_source/view/' + id;
+            };
+        }
+    );
 </script>
 </%def>

@@ -8,20 +8,21 @@ dojo.declare('openils.acq.FundingSource', null, {
     /* add instance methods here if necessary */
 });
 
+//openils.acq.FundingSource.loadGrid = function(domId, columns, gridBuiltHandler) {
 openils.acq.FundingSource.loadGrid = function(domId, columns) {
     /** Fetches the list of funding_sources and builds a grid from them */
 
+    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.funding_source.org.retrieve', 
         oilsAuthtoken, null, {flesh_summary:1}); /* XXX make this a streaming call */
 
     req.oncomplete = function(r) {
         srcs = r.recv().content();
-        var items = [];
 
         for(var f in srcs) {
             var src = srcs[f];
-            items.push({
+            gridRefs.store.newItem({
                 id:src.id(),
                 name:src.name(), 
                 owner: findOrgUnit(src.owner()).name(),
@@ -30,9 +31,12 @@ openils.acq.FundingSource.loadGrid = function(domId, columns) {
             });
         }
 
-        util.Dojo.buildSimpleGrid(domId, columns, items);
+        /* set the model after loading all of the data */
+        gridRefs.grid.setModel(gridRefs.model);
     };
     req.send();
+    //return gridRefs;
+    return gridRefs.grid;
 };
 }
 
