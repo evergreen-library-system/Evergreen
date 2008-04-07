@@ -58,7 +58,7 @@ circ.in_house_use.prototype = {
 								var items = [ [ document.getElementById('circStrings').getString('staff.circ.in_house_use.barcode') , 'barcode' ] ].concat(
 									util.functional.map_list(
 										util.functional.filter_list(
-											obj.data.list.cnct,
+											obj.data.list.my_cnct,
 											function(o) {
 												return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), obj.data.list.au[0].ws_ou());
 											}

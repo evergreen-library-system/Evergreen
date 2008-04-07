@@ -704,6 +704,28 @@ OpenILS.data.prototype = {
 		this.chain.push(
 			function() {
 				var f = gen_fm_retrieval_func(
+					'my_cnct',
+					[
+						api.FM_CNCT_RETRIEVE.app,
+						api.FM_CNCT_RETRIEVE.method,
+						[ obj.list.au[0].ws_ou() ], 
+						false
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
+
+
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
 					'acpl',
 					[
 						api.FM_ACPL_RETRIEVE.app,
