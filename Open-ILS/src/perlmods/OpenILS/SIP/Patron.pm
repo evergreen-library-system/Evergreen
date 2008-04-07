@@ -96,6 +96,13 @@ sub name {
 		$u->second_given_name . ' ' . $u->family_name;
 }
 
+sub home_library {
+    my $self = shift;
+    my $lib = $self->{editor}->retrieve_actor_org_unit($self->{user}->home_ou)->shortname;
+	syslog('LOG_DEBUG', "OILS: Patron home library is $lib");
+    return $lib;
+}
+
 sub __addr_string {
 	my $addr = shift;
 	return "" unless $addr;
