@@ -510,4 +510,8 @@ CREATE TABLE actor.org_address (
 
 CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);
 
+CREATE OR REPLACE FUNCTION public.first5 ( TEXT ) RETURNS TEXT AS $$
+	SELECT SUBSTRING( $1, 1, 5);
+$$ LANGUAGE SQL;
+
 COMMIT;

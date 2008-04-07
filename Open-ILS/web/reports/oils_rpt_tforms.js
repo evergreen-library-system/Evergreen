@@ -51,6 +51,11 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Upper case'
 	},
 
+	first5 : {
+		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
+		label : 'First 5 characters (for US ZIP code)'
+	},
+
 	/* timestamp transforms ----------------------- */
 	dow : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
