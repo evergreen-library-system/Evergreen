@@ -38,5 +38,9 @@ CREATE OR REPLACE FUNCTION biblio_field_table ( record BIGINT, field INT ) RETUR
 	SELECT * FROM biblio_field_table( $1, ARRAY[$2] )
 $_$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
+        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
+$$ LANGUAGE SQL;
+
 COMMIT;
 

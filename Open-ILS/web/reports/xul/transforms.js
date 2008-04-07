@@ -93,6 +93,11 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'First 5 characters (for US ZIP code)'
 	},
 
+        first_word : {
+                datatype : [OILS_RPT_DTYPE_STRING, 'text'],
+                label : 'First contiguous non-space string'
+        },
+
 	/* timestamp transforms ----------------------- */
 	dow : {
 		datatype : [ OILS_RPT_DTYPE_TIMESTAMP ],
