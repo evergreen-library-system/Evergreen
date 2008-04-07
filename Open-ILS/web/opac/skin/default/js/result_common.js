@@ -633,7 +633,7 @@ function resultAddCopyCounts(rec, pagePosition) {
 
 	var cchead = null;
 	var ccheadcell = null;
-	if(!resultCCHeaderApplied) {
+	if(!resultCCHeaderApplied && !getLasso()) {
 		ccrow = $('result_thead_row');
 		ccheadcell =  ccrow.removeChild($n(ccrow, "result_thead_ccell"));
 		var t = ccheadcell.cloneNode(true);
@@ -699,6 +699,27 @@ function resultHandleCopyCounts(r) {
 /* display the collected copy counts */
 function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	if(copy_counts == null || rec == null) return;
+
+	if (getLasso()) {
+		var copy_counts_lasso = {
+			transcendant : null,
+			count : 0,
+			unshadow : 0,
+			available : 0,
+			depth : -1,
+			org_unit : getLasso()
+		};
+
+		for (var i in copy_counts) {
+			copy_counts_lasso.transcendant = copy_counts[i].transcendant;
+			copy_counts_lasso.count += parseInt(copy_counts[i].count);
+			copy_counts_lasso.unshadow += parseInt(copy_counts[i].unshadow);
+			copy_counts_lasso.available += parseInt(copy_counts[i].available);
+		}
+
+		copy_counts = [ copy_counts_lasso ];
+	}
+
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = $("copy_count_cell_" + i +"_" + pagePosition);

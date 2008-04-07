@@ -50,6 +50,7 @@ function init() {
 	var loc = findOrgLasso(getLasso());
 	if (!loc) loc = findOrgUnit(getLocation());
 
+	if (getLasso()) G.ui.common.now_searching.appendChild(text('Search group: '));
 	G.ui.common.now_searching.appendChild(text(loc.name()));
 }
 
