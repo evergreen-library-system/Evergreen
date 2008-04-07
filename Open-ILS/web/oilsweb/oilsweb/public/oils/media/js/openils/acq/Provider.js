@@ -13,25 +13,27 @@ dojo.declare('openils.acq.Provider', null, {
 openils.acq.Provider.loadGrid = function(domId, columns) {
     /** Fetches the list of providers and builds a grid from them */
 
+    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.provider.org.retrieve', oilsAuthtoken); /* XXX make this a streaming call */
+    var req = ses.request('open-ils.acq.provider.org.retrieve', oilsAuthtoken);
 
     req.oncomplete = function(r) {
-        var providers = r.recv().content();
-        var items = [];
-
-        for(var p in providers) {
-            var prov = providers[p];
-            items.push({
+        var msg
+        gridRefs.grid.setModel(gridRefs.model);
+        while(msg = r.recv()) {
+            var prov = msg.content();
+            gridRefs.store.newItem({
                 id:prov.id(),
                 name:prov.name(), 
                 owner: findOrgUnit(prov.owner()).name(),
                 currency_type:prov.currency_type()
             });
         }
-        util.Dojo.buildSimpleGrid(domId, columns, items);
+        gridRefs.grid.update();
     };
+
     req.send();
+    return gridRefs.grid;
 };
 }
 

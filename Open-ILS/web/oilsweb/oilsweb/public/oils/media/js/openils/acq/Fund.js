@@ -12,18 +12,17 @@ dojo.declare('openils.acq.Fund', null, {
 openils.acq.Fund.loadGrid = function(domId, columns) {
     /** Fetches the list of funds and builds a grid from them */
 
+    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.fund.org.retrieve', 
-        oilsAuthtoken, null, {flesh_summary:1}); /* XXX make this a streaming call */
+        oilsAuthtoken, null, {flesh_summary:1});
 
     req.oncomplete = function(r) {
-        var funds = r.recv().content();
-        var items = [];
-
-        for(var f in funds) {
-            var fund = funds[f];
-
-            items.push({
+        var msg
+        gridRefs.grid.setModel(gridRefs.model);
+        while(msg = r.recv()) {
+            var fund = msg.content();
+            gridRefs.store.newItem({
                 id:fund.id(),
                 name:fund.name(), 
                 org: findOrgUnit(fund.org()).name(),
@@ -32,9 +31,11 @@ openils.acq.Fund.loadGrid = function(domId, columns) {
                 combined_balance:fund.summary()['combined_balance']
             });
         }
-        util.Dojo.buildSimpleGrid(domId, columns, items);
+        gridRefs.grid.update();
     };
+
     req.send();
+    return gridRefs.grid;
 };
 }
 

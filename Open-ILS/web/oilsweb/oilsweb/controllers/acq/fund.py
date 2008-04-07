@@ -82,7 +82,7 @@ class FundController(BaseController):
         fund = self._retrieve_fund(r, ses, r.ctx.acq.fund_id.value)
 
         source_list = ses.request(
-            'open-ils.acq.funding_source.org.retrieve', 
+            'open-ils.acq.funding_source.org.retrieve.atomic', 
             r.ctx.core.authtoken.value, None, {'limit_perm':'MANAGE_FUNDING_SOURCE', 'flesh_summary':1}).recv().content()
         Event.parse_and_raise(source_list)
 

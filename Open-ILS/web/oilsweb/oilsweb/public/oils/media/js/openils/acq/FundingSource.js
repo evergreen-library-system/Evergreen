@@ -15,13 +15,13 @@ openils.acq.FundingSource.loadGrid = function(domId, columns) {
     var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.funding_source.org.retrieve', 
-        oilsAuthtoken, null, {flesh_summary:1}); /* XXX make this a streaming call */
+        oilsAuthtoken, null, {flesh_summary:1});
 
     req.oncomplete = function(r) {
-        srcs = r.recv().content();
-
-        for(var f in srcs) {
-            var src = srcs[f];
+        var msg
+        gridRefs.grid.setModel(gridRefs.model);
+        while(msg = r.recv()) {
+            var src = msg.content();
             gridRefs.store.newItem({
                 id:src.id(),
                 name:src.name(), 
@@ -30,12 +30,10 @@ openils.acq.FundingSource.loadGrid = function(domId, columns) {
                 balance:src.summary()['balance']
             });
         }
-
-        /* set the model after loading all of the data */
-        gridRefs.grid.setModel(gridRefs.model);
+        gridRefs.grid.update();
     };
+
     req.send();
-    //return gridRefs;
     return gridRefs.grid;
 };
 }

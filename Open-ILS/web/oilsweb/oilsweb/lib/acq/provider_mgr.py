@@ -11,7 +11,7 @@ def retrieve(r, id):
 
 def list(r):
     ses = ClientSession(oils.const.OILS_APP_ACQ)
-    providers = ses.request('open-ils.acq.provider.org.retrieve', 
+    providers = ses.request('open-ils.acq.provider.org.retrieve.atomic', 
                             r.ctx.core.authtoken.value, None,
                             {"flesh_summary":1}).recv().content()
     Event.parse_and_raise(providers)

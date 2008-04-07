@@ -23,7 +23,7 @@ class FundMgr(object):
 
     def retrieve_org_funds(self, limit_perm=None):
         funds = self.ses.request(
-            'open-ils.acq.fund.org.retrieve', 
+            'open-ils.acq.fund.org.retrieve.atomic', 
             self.request_mgr.ctx.core.authtoken.value, None, limit_perm).recv().content()
         oils.event.Event.parse_and_raise(funds)
         return funds
@@ -45,7 +45,7 @@ class FundMgr(object):
 
     def retrieve_org_funding_sources(self, options=None):
         sources = self.ses.request(
-            'open-ils.acq.funding_source.org.retrieve', 
+            'open-ils.acq.funding_source.org.retrieve.atomic', 
             self.request_mgr.ctx.core.authtoken.value, None, options).recv().content()
         oils.event.Event.parse_and_raise(sources)
         return sources
