@@ -64,6 +64,7 @@ sub retrieve_provider {
 __PACKAGE__->register_method(
 	method => 'retrieve_org_providers',
 	api_name	=> 'open-ils.acq.provider.org.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves all the providers associated with an org unit that the requestor has access to see',
         params => [
@@ -92,9 +93,9 @@ sub retrieve_org_providers {
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
-    my $sources = $e->search_acq_provider({owner => $org_ids});
+    $conn->respond($_) for @{$e->search_acq_provider({owner => $org_ids})};
 
-    return $sources;
+    return undef;
 }
 
 

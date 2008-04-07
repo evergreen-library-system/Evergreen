@@ -100,6 +100,7 @@ sub retrieve_funding_source {
 __PACKAGE__->register_method(
 	method => 'retrieve_org_funding_sources',
 	api_name	=> 'open-ils.acq.funding_source.org.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves all the funding_sources associated with an org unit that the requestor has access to see',
         params => [
@@ -130,13 +131,13 @@ sub retrieve_org_funding_sources {
     return [] unless @$org_ids;
     my $sources = $e->search_acq_funding_source({owner => $org_ids});
 
-    if($$options{flesh_summary}) {
-        for my $source (@$sources) {
-            $source->summary(retrieve_funding_source_summary_impl($e, $source));
-        }
+    for my $source (@$sources) {
+        $source->summary(retrieve_funding_source_summary_impl($e, $source))
+            if $$options{flesh_summary};
+        $conn->respond($source);
     }
 
-    return $sources;
+    return undef;
 }
 
 sub retrieve_funding_source_summary_impl {
@@ -266,6 +267,7 @@ sub retrieve_fund {
 __PACKAGE__->register_method(
 	method => 'retrieve_org_funds',
 	api_name	=> 'open-ils.acq.fund.org.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves all the funds associated with an org unit',
         params => [
@@ -297,13 +299,13 @@ sub retrieve_org_funds {
     return [] unless @$org_ids;
     my $funds = $e->search_acq_fund({org => $org_ids});
 
-    if($$options{flesh_summary}) {
-        for my $fund (@$funds) {
-            $fund->summary(retrieve_fund_summary_impl($e, $fund));
-        }
+    for my $fund (@$funds) {
+        $fund->summary(retrieve_fund_summary_impl($e, $fund))
+            if $$options{flesh_summary};
+        $conn->respond($fund);
     }
 
-    return $funds;
+    return undef;
 }
 
 __PACKAGE__->register_method(
