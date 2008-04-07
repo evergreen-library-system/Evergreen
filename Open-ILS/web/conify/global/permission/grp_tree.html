@@ -574,7 +574,7 @@
 									            var modified_pgpm = new pgpm().fromStoreItem( window.current_perm_map );
 										        modified_pgpm.isdeleted( 1 );
 				            
-				                                pCRUD.request({
+				                                server.pCRUD.request({
 				                                    method : 'open-ils.permacrud.delete.pgpm',
 				                                    timeout : 10,
 					                                params : [ ses, modified_pgpm ],
@@ -639,8 +639,79 @@
 											  required="true"></div>
 										</td>
 									</tr>
+									<tr>
+										<td>Grantable:</td>
+										<td>
+											<input
+											  type="checkbox"
+											  dojoType="dijit.form.CheckBox"
+											  Id="new_grant_checkbox"
+											  jsId="new_grant_checkbox"
+											  value="t"></input>
+										</td>
+									</tr>
 								</table>
+
 								<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
+				                    <script type="dojo/connect" event="onClick">
+				
+				                        var new_perm = new_perm_select.getValue();
+				                        if (!new_perm) return;
+
+				                        var new_type_id = new_depth_select.getValue();
+				                        if (!new_type_id) return;
+
+										var new_type;
+		                                window.ou_type_store.fetch({
+    		                                query : { id : new_type_id },
+                    		                onItem : function (item, req) { try { new_type = item } catch (e) { /* meh */ } },
+        		                        });
+
+				                        var new_depth = ou_type_store.getValue( new_type, 'depth')
+				                        var new_grant = new_grant_checkbox.getValue();
+				
+				                        var new_fm_obj = new pgpm().fromHash({
+				                            isnew   	: 1,
+				                            perm    	: new_perm,
+				                            depth   	: new_depth,
+											grp			: group_store.getValue( current_group, 'id' ),
+											grantable	: new_grant ? 't' : 'f'
+				                        });
+				    
+				                        var err = false;
+				                        server.pCRUD.request({
+				                            method : 'open-ils.permacrud.create.pgpm',
+				                            timeout : 10,
+				                            params : [ ses, new_fm_obj ],
+				                            onerror : function (r) {
+				                                highlighter.group_tree.red.play();
+				                                status_update( 'Problem calling method to create new Permission Map' );
+				                                err = true;
+				                            },
+				                            oncomplete : function (r) {
+
+				                                var res = r.recv();
+				                                if ( res && res.content() ) {
+				                                    var new_item_hash = res.content().toHash();
+				                                    perm_map_store.newItem( new_item_hash );
+				                                    status_update( 'New permission map created' );
+				                                    highlighter.group_tree.green.play();
+
+						                            perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+				                                    perm_grid.model.sort(-1);
+						                            perm_map_model.refresh();
+						                            perm_grid.refresh();
+
+				                                } else {
+				                                    highlighter.group_tree.red.play();
+				                                    status_update( 'Problem creating new Permission Map' );
+				                                    err = true;
+				                                }
+				                            }
+				                        }).send();
+    
+				                    </script>
+
 								</button>
 
 							</div>
