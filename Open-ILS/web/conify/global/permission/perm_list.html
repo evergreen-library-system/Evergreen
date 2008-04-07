@@ -70,7 +70,7 @@
                         window._perm_data = ppl.toStoreData( window._perm_list, 'code' );
                         window.perm_store = new dojo.data.ItemFileWriteStore({ data : window._perm_data });
 
-	                    perm_store.onSet = function (item, attr, n, o) {
+	                    perm_store.onSet = function (item, attr, o, n) {
                             if (attr == 'ischanged') return;
                             if (n == o) return;
                             this.setValue( item, 'ischanged', 1);

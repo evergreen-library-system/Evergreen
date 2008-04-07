@@ -61,7 +61,7 @@
                         onerror : function (r) { status_update('Problem fetching types') },
                         oncomplete : function (r) {
                             ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( r.recv().content() ) });
-                            ou_type_store.onSet = function (item, attr, n, o) {
+                            ou_type_store.onSet = function (item, attr, o, n) {
                                 if (attr == 'ischanged') return;
                                 if (n == o) return;
                                 this.setValue( item, 'ischanged', 1);
