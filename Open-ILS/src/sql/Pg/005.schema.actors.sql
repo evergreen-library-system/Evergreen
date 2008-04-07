@@ -524,4 +524,8 @@ CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);
 INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
 
+CREATE OR REPLACE FUNCTION public.first5 ( TEXT ) RETURNS TEXT AS $$
+	SELECT SUBSTRING( $1, 1, 5);
+$$ LANGUAGE SQL;
+
 COMMIT;
