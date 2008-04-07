@@ -1262,7 +1262,7 @@
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_COPY_STATUS" global_required="true"/>
-                <retrieve/>
+                <retrieve permission="CREATE_COPY_STATUS|UPDATE_COPY_STATUS|DELETE_COPY_STATUS" global_required="true"/>
                 <update permission="UPDATE_COPY_STATUS" global_required="true"/>
                 <delete permission="DELETE_COPY_STATUS" global_required="true"/>
             </actions>
