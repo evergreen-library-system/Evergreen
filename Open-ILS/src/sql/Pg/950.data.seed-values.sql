@@ -1024,6 +1024,8 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext('Allow a staff member to define where another staff member has their permissions'));
 
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
+
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, 'Users', NULL, NULL, '3 years', FALSE, 'group_application.user');
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
@@ -1037,6 +1039,7 @@ INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, u
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(10, 'Local System Administrator', 3, 'System maintenance, configuration, etc.', '3 years', TRUE, 'group_application.user.staff.admin.local_admin');
 
+SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_tree));
 
 -- XXX Incomplete base permission setup.  A patch would be appreciated.
 INSERT INTO permission.grp_perm_map VALUES (57, 2, 15, 0, false);
@@ -1148,6 +1151,8 @@ INSERT INTO permission.grp_perm_map VALUES (93, 5, 48, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (94, 5, 53, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
+
+SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 
 -- Admin user account
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', oils_i18n_gettext('Administrator'), oils_i18n_gettext('System Account'), '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
