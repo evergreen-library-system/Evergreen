@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Patron Display -->
+<!--
+ vim:noet:sw=4:ts=4:
+ -->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -12,7 +15,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -37,7 +40,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+            if (typeof JSAN == 'undefined') {
+               throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+            }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -57,8 +62,8 @@
 
 				$('desc').appendChild( document.createTextNode( 
 					(g.copy_ids.length == 1 ?
-						'Copy this 1 item into which bucket?' :
-						'Copy these ' + g.copy_ids.length + ' items into which bucket?') 
+						$('catStrings').getString('staff.cat.copy_buckets_quick.bucket_prompt') :
+						$('catStrings').getFormattedString('staff.cat.copy_buckets_quick.bucket_prompt.plural', [g.copy_ids.length]) 
 				) );
 				var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
 				if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -85,7 +90,11 @@
 
 		g.new_bucket = function() {
 			try {
-				var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+				var name = prompt(
+					$('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt'),
+					'',
+					$('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title')
+				);
 				if (name) {
 					var bucket = new ccb();
 					bucket.btype('staff_client');
@@ -98,7 +107,7 @@
 					g.add_to_bucket(bucket_id);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('Bucket creation failed.',E);
+				g.error.standard_unexpected_error_alert($('catStrings).getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error'), E);
 			}
 		}
 
@@ -123,7 +132,7 @@
 					if (typeof robj == 'object') throw robj;
 
 				} catch(E) {
-					g.error.standard_unexpected_error_alert('Addition likely failed for bucket = ' + bucket_id + ' and copy id = ' + g.copy_ids[i],E);
+					g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_buckets_quick.addition.error', [bucket_id, g.copy_ids[i]]), E);
 				}
 			}
 			window.close();
@@ -141,18 +150,18 @@
 
 	<vbox flex="1" style="overflow: auto">
 	<groupbox flex="1">
-		<caption label="Item Buckets"/>
+		<caption label="&staff.cat.copy_buckets_quick.item_buckets.label;"/>
 		<description id="desc"/>
 		<listbox id="bucket_list" rows="5" flex="1" style="overflow: auto"/>
 		<hbox>
-			<button label="Add to Selected Bucket" accesskey="A" oncommand="g.add_to_bucket()"/>
-			<button label="Add to New Bucket" accesskey="N" oncommand="g.new_bucket()"/>
+			<button label="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey;" oncommand="g.add_to_bucket()"/>
+			<button label="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey;" oncommand="g.new_bucket()"/>
 		</hbox>
 		<hbox>
 			<!--
 			<button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
 			-->
-			<button label="Cancel" accesskey="C" oncommand="window.close()"/>
+			<button label="&staff.cat.copy_buckets_quick.item_buckets.cancel.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey;" oncommand="window.close()"/>
 		</hbox>
 	</groupbox>
 	</vbox>

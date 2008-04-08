@@ -1805,3 +1805,37 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">
 <!ENTITY staff.cat.copy_buckets.window_title "Copy Buckets">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_copies "Pending Copies">
+<!ENTITY staff.cat.copy_buckets_overlay.bucket_view "Bucket View">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.save_columns1 "Save Columns">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.sel_clip1 "Copy to Clipboard">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.cmd_print_export1 "Print Export">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.cmd_export1 "Export">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.label "Add All">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.accesskey "A">
+<!ENTITY staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label "Add Selected">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_new_bucket.label "New Bucket">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label "Delete Bucket">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.refresh.label "Refresh">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.save_columns2.label "Save Columns">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.sel_clip2.label "Copy to Clipboard">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.delete_item.label "Remove Selected From Bucket">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.export.label "Add Selected">
+<!ENTITY staff.cat.copy_buckets_overlay.info_box.bucket.label "Bucket #">
+<!ENTITY staff.cat.copy_buckets_overlay.info_box.owner.label "Owner:">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.print.label "Print">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey "P">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.print_export.label "Print Export">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label "Export">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.batch.label "Batch:">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label "Show Status">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label "Transfer to Specific Volume">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label "Edit Item Attributes">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label "Delete All from Catalog">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.label "Item Buckets">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label "Add to Selected Bucket">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey "A">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.new_bucket.label "Add to New Bucket">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey "N">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.cancel.label "Cancel">
+<!ENTITY staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey "C">
