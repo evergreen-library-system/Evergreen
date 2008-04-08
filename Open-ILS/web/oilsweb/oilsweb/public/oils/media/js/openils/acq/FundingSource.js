@@ -92,5 +92,32 @@ openils.acq.FundingSource.create = function(fields, onCreateComplete) {
     req.send();
 };
 
+
+openils.acq.FundingSource.deleteFromGrid = function(grid, onComplete) {
+    var list = []
+    var selected = grid.selection.getSelected();
+    for(var rowIdx in selected) 
+        list.push(grid.model.getDatum(selected[rowIdx], 0));
+    openils.acq.FundingSource.deleteList(list, onComplete);
+};
+
+openils.acq.FundingSource.deleteList = function(list, onComplete) {
+    openils.acq.FundingSource._deleteList(list, 0, onComplete);
 }
 
+openils.acq.FundingSource._deleteList = function(list, idx, onComplete) {
+    if(idx >= list.length)    
+        return onComplete();
+    var ses = new OpenSRF.ClientSession('open-ils.acq');
+    var req = ses.request('open-ils.acq.funding_source.delete', oilsAuthtoken, list[idx]);
+    req.oncomplete = function(r) {
+        msg = r.recv()
+        stat = msg.content();
+        /* XXX CHECH FOR EVENT */
+        openils.acq.FundingSource._deleteList(list, ++idx, onComplete);
+    }
+    req.send();
+};
+
+
+} /* end dojo._hasResource[] */

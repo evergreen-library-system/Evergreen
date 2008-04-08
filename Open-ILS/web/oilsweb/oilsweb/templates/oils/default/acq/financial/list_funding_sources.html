@@ -33,6 +33,7 @@
     }
 </script>
 
+<div class='oils-acq-actions-div'>
 <div dojoType="dijit.form.DropDownButton">
     <span>${('New Funding Source')}</span>
     <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
@@ -72,12 +73,19 @@
     </div>
 </div> 
 
+<button dojoType="dijit.form.Button" 
+        onclick="openils.acq.FundingSource.deleteFromGrid(fundingSourceGrid, function(){location.href = location.href})">
+    ${_('Delete Selected')}
+</button>
+
+</div>
+
 <div id='oils-acq-funding-source-grid'> </div>
 
 <script>
+    var fundingSourceGrid = null;
     function loadFSGrid() {
         dojo.require('openils.acq.FundingSource');
-        var fundingSourceGrid = null;
     
         var gridCols = [
             {name: '${_("ID")}', field: 'id'},
