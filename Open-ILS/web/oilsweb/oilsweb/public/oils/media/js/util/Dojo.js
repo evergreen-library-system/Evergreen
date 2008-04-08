@@ -45,5 +45,56 @@ util.Dojo.buildSimpleGrid = function(domId, columns, dataList, identifier, delay
 
     return {grid:grid, store:store, model:model};
 };
+
+util.Dojo.expandoGridToggle = function (gridId, inIndex, inShow) {
+    var grid = dijit.byId(gridId);
+    grid.expandedRows[inIndex] = inShow;
+    grid.updateRow(inIndex);
 }
+
+util.Dojo.buildExpandoGrid = function(domId, columns, getSubRowDetail, identColumn) {
+
+    identColumn = (identColumn) ? identColumn : 'id';
+    var grid = new dojox.Grid({}, domId);
+
+    var rowBar = {type: 'dojox.GridRowView', width: '20px' };
+
+    function onBeforeRow(inDataIndex, inRow) {
+        inRow[1].hidden = (!grid.expandedRows || !grid.expandedRows[inDataIndex]);
+    }
+
+    function getCheck(inRowIndex) {
+        var image = (this.grid.expandedRows[inRowIndex]) ? 'open.gif' : 'closed.gif';
+        var show = (this.grid.expandedRows[inRowIndex]) ? 'false' : 'true';
+        return '<img src="/oils/media/js/dojo/dojox/grid/tests/images/' + image + 
+            '" onclick="util.Dojo.expandoGridToggle(\'' + 
+                this.grid.id + '\',' + inRowIndex + ', ' + show + ')" height="11" width="11">';
+    }
+
+    /* XXX i18n name: */
+    columns.unshift({name: 'Details', width: 4.5, get: getCheck, styles: 'text-align: center;' });
+
+    var view = {
+        onBeforeRow: onBeforeRow,
+        cells: [
+            columns,
+            /* XXX i18n name: */
+            [{ name: 'Detail', colSpan: columns.length, get: getSubRowDetail }]
+        ]
+    };
+
+    grid.setStructure([rowBar, view]);
+
+    var store = new dojo.data.ItemFileWriteStore({data:{identifier:identColumn, items:[]}});
+    var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true});
+    grid.startup();
+    grid.expandedRows = [];
+
+    return {grid:grid, model:model};
+};
+
+}
+
+
+
 

@@ -75,27 +75,33 @@
 <div id='oils-acq-funding-source-grid'> </div>
 
 <script>
-    dojo.require('openils.acq.FundingSource');
+    function loadFSGrid() {
+        dojo.require('openils.acq.FundingSource');
+        var fundingSourceGrid = null;
+    
+        var gridCols = [
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', field: "name", width:'auto'}, 
+            {name: '${_("Owner")}', field: "owner", width:'auto'}, 
+            {name: '${_("Currency Type")}', field: "currency_type"},
+            {name: '${_("Balance")}', field: "balance"}
+        ];
 
-    /* define the layout columns */
-    var cols = [
-        {name: '${_("ID")}', field: 'id', 'class':'id-column'},
-        {name: '${_("Name")}', field: "name"}, 
-        {name: '${_("Owner")}', field: "owner"}, 
-        {name: '${_("Currency Type")}', field: "currency_type"},
-        {name: '${_("Balance")}', field: "balance"}
-    ];
-
-    /* build the funding-source grid on page load */
-    dojo.addOnLoad(
-        function(){
-            fsGrid = openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols);
-            fsGrid.onRowClick = function(evt) {
-                /** XXX Need to make this more user friendly / obvious ... */
-                id = fsGrid.model.getDatum(evt.rowIndex, 0);
-                location.href = '${c.oils.acq.prefix.value}/funding_source/view/' + id;
-            };
+        function getSubRowDetail(inRowIndex) {
+            if (fundingSourceGrid.expandedRows[inRowIndex]) {
+                fsId = fundingSourceGrid.model.getDatum(inRowIndex, 0);
+                fs = openils.acq.FundingSource.cache[fsId];
+                return '<b>Viewing grid row for FS: ' + fs.name() + '</b>';
+            } else
+                return '';
         }
-    );
+    
+        var gridRefs = util.Dojo.buildExpandoGrid('oils-acq-funding-source-grid', gridCols, getSubRowDetail);
+        fundingSourceGrid = gridRefs.grid;
+        openils.acq.FundingSource.loadGrid(fundingSourceGrid, gridRefs.model);
+    }
+
+    dojo.addOnLoad(loadFSGrid);
 </script>
+
 </%def>
