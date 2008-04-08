@@ -444,6 +444,7 @@ sub update_lineitem {
 __PACKAGE__->register_method(
 	method => 'retrieve_pl_lineitem',
 	api_name	=> 'open-ils.acq.lineitem.picklist.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves lineitem objects according to picklist',
         params => [
@@ -510,22 +511,23 @@ sub retrieve_pl_lineitem {
 
     my @ids;
     push(@ids, $_->{id}) for @$entries;
-    return \@ids if $$options{idlist} or not @ids;
 
-    if($$options{flesh_attrs}) {
-        $entries = $e->search_acq_lineitem([
-            {id => \@ids},
-            {flesh => 1, flesh_fields => {jub => ['attributes']}}
-        ]);
-    } else {
-        $entries = $e->batch_retrieve_acq_lineitem(\@ids);
+    for my $id (@ids) {
+        if($$options{idlist}) {
+            $conn->respond($id);
+            next;
+        } 
+
+        my $entry;
+        my $flesh = ($$options{flesh_attrs}) ? 
+            {flesh => 1, flesh_fields => {jub => ['attributes']}} : {};
+
+        $entry = $e->retrieve_acq_lineitem([$id, $flesh]);
+        $entry->clear_marc if $$options{clear_marc};
+        $conn->respond($entry);
     }
 
-    if($$options{clear_marc}) {
-        $_->clear_marc for @$entries;
-    }
-
-    return $entries;
+    return undef;
 }
 
 =head comment
