@@ -197,7 +197,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		FETCH_HOLD_STATUS : ['open-ils.circ','open-ils.circ.hold.status.retrieve'],
 		FETCH_NON_CAT_CIRCS : ['open-ils.circ','open-ils.circ.open_non_cataloged_circulation.user'],
 		FETCH_NON_CAT_CIRC : ['open-ils.circ','open-ils.circ.non_cataloged_circulation.retrieve'],
-		FETCH_NON_CAT_TYPES			= "open-ils.circ','open-ils.circ.non_cat_types.retrieve.all'],
+		FETCH_NON_CAT_TYPES : ['open-ils.circ','open-ils.circ.non_cat_types.retrieve.all'],
 		FETCH_BRE : ['open-ils.search','open-ils.search.biblio.record_entry.slim.retrieve'],
 		CHECK_USERNAME : ['open-ils.actor','open-ils.actor.username.exists'],
 		FETCH_CIRC_BY_ID : ['open-ils.circ','open-ils.circ.retrieve'],
