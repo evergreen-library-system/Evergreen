@@ -1721,4 +1721,86 @@
 <!ENTITY staff.circ.holds.cancel.accesskey "C">
 <!ENTITY staff.circ.holds.save_columns "Save Columns">
 <!ENTITY staff.circ.holds.save_columns.accesskey "">
-
+<!ENTITY staff.cat.copy_browser.actions.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.cat.copy_browser.actions.sel_clip.accesskey "C">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label "Add Items to Buckets">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey "B">
+<!ENTITY staff.cat.copy_browser.actions.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.cat.copy_browser.actions.sel_copy_details.accesskey "I">
+<!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
+<!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
+<!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.accesskey "T">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_volumes.label "Add Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_volumes.accesskey "V">
+<!ENTITY staff.cat.copy_browser.actions.cmd_mark_library.label "Mark Library as Volume Transfer Destination">
+<!ENTITY staff.cat.copy_browser.actions.cmd_mark_library.accesskey "M">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_items.label "Add Items">
+<!ENTITY staff.cat.copy_browser.actions.cmd_add_items.accesskey "A">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
+<!ENTITY staff.cat.copy_browser.actions.cmd_mark_volume.label "Mark Volume as Item Transfer Destination">
+<!ENTITY staff.cat.copy_browser.actions.cmd_mark_volume.accesskey "M">
+<!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.label "Transfer Volumes to Previously Marked Library">
+<!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey "T">
+<!ENTITY staff.cat.copy_browser.actions.cmd_delete_items.label "Delete Items">
+<!ENTITY staff.cat.copy_browser.actions.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.label "Mark Item Missing">
+<!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey "g">
+<!ENTITY staff.cat.copy_browser.actions.cmd_print_spine_labels.label "Print Item Spine Labels">
+<!ENTITY staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey "P">
+<!ENTITY staff.cat.copy_browser.actions.cmd_replace_barcode.label "Replace Barcode">
+<!ENTITY staff.cat.copy_browser.actions.save_columns.label "Save Columns">
+<!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.label "Refresh Listing">
+<!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.accesskey "R">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.caption "Holdings Maintenance">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.legend "Green in the list below means the library has volumes for this record.">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_total "Consortial Total:">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_available "Available:">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acns "Show Volumes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acps "Show Items">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.refresh_button.label "Refresh">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_libs.label "Show Libraries With Items">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey "L">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.actions.label "Actions for Selected Rows">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.actions.accesskey "f">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey "C">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label "Add Items to Buckets">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey "B">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey "I">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey "L">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "Edit Item Attributes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey "E">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey "T">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label "Add Volumes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey "V">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label "Mark Library as Volume Transfer Destination">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey "M">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label "Add Items">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey "A">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label "Edit Volumes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey "E">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label "Mark Volume as Item Transfer Destination">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey "M">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label "Transfer Volumes to Previously Marked Library">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey "T">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label "Delete Items">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label "Mark Item Missing">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey "g">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label "Print Item Spine Labels">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey "P">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label "Replace Barcode">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.save_columns.label "Save Columns">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">

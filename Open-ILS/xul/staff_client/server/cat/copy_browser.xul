@@ -15,7 +15,7 @@ vim:noet:sw=4:ts=4:
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,8 +39,8 @@ vim:noet:sw=4:ts=4:
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') {
-					throw("The JSAN library object is missing.");
+				if (typeof JSAN == 'undefined') { 
+					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
 				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
@@ -56,8 +56,7 @@ vim:noet:sw=4:ts=4:
 				//}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/copy_browser.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/copy_browser.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -101,83 +100,83 @@ vim:noet:sw=4:ts=4:
 
 	<popupset>
 		<popup id="copy_browser_actions">
-			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
-			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
-			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuitem command="sel_clip" label="&staff.cat.copy_browser.actions.sel_clip.label;" accesskey="&staff.cat.copy_browser.actions.sel_clip.accesskey;"/>
+			<menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey;"/>
+			<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.actions.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.actions.sel_copy_details.label;" />
+			<menuitem command="sel_patron" label="&staff.cat.copy_browser.actions.sel_patron.label;" accesskey="&staff.cat.copy_browser.actions.sel_patron.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
-			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+			<menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
+			<menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.actions.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_items.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
-			<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+			<menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.actions.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_volumes.accesskey;"/>
+			<menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.actions.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_library.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
-			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
-			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-			<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+			<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.actions.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items.accesskey;"/>
+			<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
+			<menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.actions.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_volume.accesskey;"/>
+			<menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.actions.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
-			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+			<menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.actions.cmd_delete_items.label;" accesskey=""/>
+			<menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.actions.cmd_delete_volumes.label;" accesskey=""/>
 			<menuseparator/>
-			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+			<menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.actions.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey;"/>
+			<menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.actions.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
-			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-			<menuitem command="save_columns" label="Save Columns"/>
-			<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
+			<menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.actions.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey;"/>
+			<menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.actions.cmd_replace_barcode.label;" accesskey=""/>
+			<menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
+			<menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
 		</popup>
 	</popupset>
 
 	<groupbox flex="1" class="my_overflow">
-		<caption label="Holdings Maintenance"/>
-		<hbox><label id="legend" style="font-size: large" class="has_copies" value="Green in the list below means the library has volumes for this record." hidden="true"/></hbox>
+		<caption label="staff.cat.copy_browser.holdings_maintenance.caption"/>
+		<hbox><label id="legend" style="font-size: large" class="has_copies" value="&staff.cat.copy_browser.holdings_maintenance.legend;" hidden="true"/></hbox>
 		<hbox>
 			<hbox id="x_lib_menu"/>
 			<spacer flex="1"/>
-			<label value="Consortial Total:"/><label id="consortial_total"/>
-			<label value="Available:"/><label id="consortial_available"/>
+			<label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
+			<label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
 		</hbox>
 		<hbox>
-			<checkbox id="show_acns" label="Show Volumes" />
-			<checkbox id="show_acps" label="Show Items" />
-			<button id="refresh_button" label="Refresh" command="cmd_refresh_list" />
-			<button label="Show Libs With Items" command="cmd_show_libs_with_copies" accesskey="L"/>
+			<checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
+			<checkbox id="show_acps" label="&staff.cat.copy_browser.holdings_maintenance.show_acps;" />
+			<button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
+			<button label="&staff.cat.copy_browser.holdings_maintenance.show_libs.label;" command="cmd_show_libs_with_copies" accesskey="&staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey;"/>
 			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
 			<!--
 			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
 			-->
 			<spacer flex="1"/>
 			<menubar>
-				<menu label="Actions for Selected Rows" accesskey="f">
+				<menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
 					<menupopup>
-						<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
-						<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
-						<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-						<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+						<menuitem command="sel_clip" label="&staff.cat.copy_browser.holdings_maintenance.sel_clip.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey;"/>
+						<menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey;"/>
+						<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label";" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey;" />
+						<menuitem command="sel_patron" label="&staff.cat.copy_browser.holdings_maintenance.sel_patron.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey;"/>
 						<menuseparator/>
-						<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
-						<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+						<menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey;"/>
+						<menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey;"/>
 						<menuseparator/>
-						<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
-						<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+						<menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;"/>
+						<menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey;"/>
 						<menuseparator/>
-						<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
-						<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
-						<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-						<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+						<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey;"/>
+						<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey;"/>
+						<menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey;"/>
+						<menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey;"/>
 						<menuseparator/>
-						<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
-						<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+						<menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label;" accesskey=""/>
+						<menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label;" accesskey=""/>
 						<menuseparator/>
-						<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-						<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+						<menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey;"/>
+						<menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey;"/>
 						<menuseparator/>
-						<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
-						<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-						<menuitem command="save_columns" label="Save Columns"/>
-						<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
+						<menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey;"/>
+						<menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label;" accesskey=""/>
+						<menuitem command="save_columns" label="&staff.cat.copy_browser.holdings_maintenance.save_columns.label;"/>
+						<menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey;"/>
 					</menupopup>
 				</menu>
 			</menubar>
