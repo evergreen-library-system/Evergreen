@@ -13,19 +13,30 @@
     -->
 </div>
 
+<script>var fsGrid = null;</script>
+
 
 <script type="text/javascript">
     dojo.require("dijit.Dialog");
-    dojo.require("dijit.form.ComboBox");
-    function checkPw(fields) {
-        alert('name = ' + fields.name);
+    dojo.require("dijit.form.FilteringSelect");
+    
+    /** Creates a new funding source */
+    function createFS(fields) {
+        openils.acq.FundingSource.create(
+            fields, 
+            function(fsId) {
+                /** The grid won't update after it's been drawn, 
+                    at least not in FF, so refresh the page... */
+                location.href = location.href;
+            }
+        );
     }
 </script>
 
 <div dojoType="dijit.form.DropDownButton">
     <span>${('New Funding Source')}</span>
-    <div dojoType="dijit.TooltipDialog" execute="checkPw(arguments[0]);">
-        <table>
+    <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
+        <table class='dijitTooltipTable'>
             <tr>
                 <td><label for="name">${_('Name:')} </label></td>
                 <td><input dojoType="dijit.form.TextBox" name="name"></td>
@@ -33,20 +44,29 @@
             <tr>
                 <td><label for="loc">${_('Owning Location:')} </label></td>
                 <td>
-                    <select name="owner" dojoType="dijit.form.ComboBox" autocomplete="false" >
-                        <option >Illinois</option>
-                        <option >New York</option>
-                        <option >Texas</option>
+                    <select name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                        <!-- XXX get orgs from DB... -->
+                        <option value='2'>SYS1</option>
+                        <option value='3'>SYS2</option>
+                        <option value='7'>BR4</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td><label for="currency_type">${_('Currency Type:')}</label></td>
-                <td><input dojoType="dijit.form.TextBox" name="currency_type"></td>
+                <td>
+                    <select name="currency_type" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                        <!-- XXX get-currency-types from DB... -->
+                        <option value='CAN'>CAN</option>
+                        <option value='EUR'>EUR</option>
+                        <option value='USD'>USD</option>
+                    </select>
+                </td>
             </tr>
             <tr>
-                <td><button dojoType=dijit.form.Button type="submit">${_('Create')}</button></td>
-                <td><button dojoType=dijit.form.Button type="submit">${_('Cancel')}</button></td>
+                <td colspan='2' align='center'>
+                    <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -69,7 +89,7 @@
     /* build the funding-source grid on page load */
     dojo.addOnLoad(
         function(){
-            var fsGrid = openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols);
+            fsGrid = openils.acq.FundingSource.loadGrid('oils-acq-funding-source-grid', cols);
             fsGrid.onRowClick = function(evt) {
                 /** XXX Need to make this more user friendly / obvious ... */
                 id = fsGrid.model.getDatum(evt.rowIndex, 0);
