@@ -48,7 +48,7 @@ class PicklistMgr(object):
     def retrieve_lineitems(self, **kwargs):
         # grab the lineitems
         lineitems = self.ses.request(
-            'open-ils.acq.lineitem.picklist.retrieve',
+            'open-ils.acq.lineitem.picklist.retrieve.atomic',
             self.request_mgr.ctx.core.authtoken.value, 
             self.picklist.id(),
             {
