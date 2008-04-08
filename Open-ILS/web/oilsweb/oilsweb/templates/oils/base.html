@@ -12,7 +12,7 @@
 <%def name='block_head()'> <!-- haha.. blockhead -->
     <!-- Construct a sane default HTML head -->
     <head>
-        <%def name="page_title()">${_('Evergreen Acquisitions')}</%def>
+        <%def name="page_title()">${_('Evergreen')}</%def>
         <title>${self.page_title()}</title>
         ${self.block_css()}
         ${self.block_js()}
@@ -20,9 +20,10 @@
 </%def>
 
 <%def name='block_body()'>
-    <body>${self.block_body_content()}</body>
+    <body class='${self.body_css()}'>${self.block_body_content()}</body>
 </%def>
 <%def name='block_body_content()'/>
+<%def name='body_css()'/>
 
 <%def name='block_css()'>
     <link rel='stylesheet' type='text/css' 

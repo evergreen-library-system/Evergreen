@@ -50,5 +50,6 @@ html, body, #oils-base-body-block {
 /* local dojo style enhancements ----------------------------------- */
 .dojoxGrid {border: 1px solid #333; height: 90%;}
 .dojoxGrid-cell {padding: 8px;}
+.dijitTooltipTable td {padding: 3px;} /* custom class for handling dialog tables */
 /* ----------------------------------------------------------------- */
 
