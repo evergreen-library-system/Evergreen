@@ -676,9 +676,16 @@ cat.copy_browser.prototype = {
 									if (list.length == 1) {
 										obj.data.marked_library = { 'lib' : list[0], 'docid' : obj.docid };
 										obj.data.stash('marked_library');
-										alert('Library + Record marked as Volume Transfer Destination');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_library.alert'));
 									} else {
-										obj.error.yns_alert('Choose just one Library to mark as Volume Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+										obj.error.yns_alert(
+												document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_library.prompt'),
+												document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_library.title'),
+												document.getElementById('commonStrings').getString('common.ok'),
+												null,
+												null,
+												document.getElementById('commonStrings').getString('common.confirm')
+												);
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> mark library',E);
@@ -707,9 +714,16 @@ cat.copy_browser.prototype = {
 									if (list.length == 1) {
 										obj.data.marked_volume = list[0];
 										obj.data.stash('marked_volume');
-										alert('Volume marked as Item Transfer Destination');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_volume.alert'));
 									} else {
-										obj.error.yns_alert('Choose just one Volume to mark as Item Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+										obj.error.yns_alert(
+												document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_volume.prompt'),
+												document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_volume.title'),
+												document.getElementById('commonStrings').getString('common.ok'),
+												null,
+												null,
+												document.getElementById('commonStrings').getString('common.confirm')
+												);
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> mark volume',E);
@@ -728,7 +742,7 @@ cat.copy_browser.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_library) {
-										alert('Please mark a library as the destination from within holdings maintenance and then try this again.');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer_volume.alert'));
 										return;
 									}
 									
@@ -749,20 +763,24 @@ cat.copy_browser.prototype = {
 									);
 
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
-									xml += '<description>Transfer volumes ';
 
-									xml += util.functional.map_list(
+									var acn_list = util.functional.map_list(
 										list,
 										function (o) {
 											return obj.map_acn[ 'acn_' + o ].label();
 										}
-									).join(", ");
+									).join(document.getElementById('commonStrings').getString('common.grouping_string'));
 
-									xml += ' to library ' + obj.data.hash.aou[ obj.data.marked_library.lib ].shortname();
-									xml += ' on the following record?</description>';
-									xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
-									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
+									xml += '<description>';
+									xml += document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.transfer.prompt', [acn_list, obj.data.hash.aou[ obj.data.marked_library.lib ].shortname()]);
+									xml += '</description>';
+									xml += '<hbox><button label="' + document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.submit.label') + '" name="fancy_submit"/>';
+									xml += '<button label="' 
+										+ document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.cancel.label') 
+										+ '" accesskey="' 
+										+ document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.cancel.accesskey') 
+										+ '" name="fancy_cancel"/></hbox>';
 									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
 									xml += '</vbox>';
 									JSAN.use('OpenILS.data');
@@ -774,17 +792,23 @@ cat.copy_browser.prototype = {
 										//+ '?xml_in_stash=temp_transfer'
 										//+ '&title=' + window.escape('Volume Transfer'),
 										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
-										{ 'xml' : xml, 'title' : 'Volume Transfer' }
+										{
+											'xml' : xml,
+											'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.title')
+										}
 									);
 
-									if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
+									if (fancy_prompt_data.fancy_status == 'incomplete') {
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.incomplete'));
+										return;
+									}
 
 									var robj = obj.network.simple_request(
 										'FM_ACN_TRANSFER', 
 										[ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : list } ],
 										null,
 										{
-											'title' : 'Override Volume Transfer Failure?',
+											'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.override.failure'),
 											'overridable_events' : [
 												1208 /* TITLE_LAST_COPY */,
 												1219 /* COPY_REMOTE_CIRC_LIB */,
@@ -794,16 +818,16 @@ cat.copy_browser.prototype = {
 
 									if (typeof robj.ilsevent != 'undefined') {
 										if (robj.ilsevent == 1221 /* ORG_CANNOT_HAVE_VOLS */) {
-											alert('That destination cannot have volumes.');
+											alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.ineligible_destination'));
 										} else {
 											throw(robj);
 										}
 									} else {
-										alert('Volumes transferred.');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.success'));
 									}
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('All volumes not likely transferred.',E);
+									obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.unexpected_error'),E);
 								}
 								obj.refresh_list();
 							}
@@ -815,7 +839,7 @@ cat.copy_browser.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_volume) {
-										alert('Please mark a volume as the destination from within holdings maintenance and then try this again.');
+										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer_items.missing_volume'));
 										return;
 									}
 									
@@ -845,7 +869,7 @@ cat.copy_browser.prototype = {
 									} );
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('All copies not likely transferred.',E);
+									obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer_items.unexpected_error'),E);
 								}
 								obj.refresh_list();
 							}
@@ -905,7 +929,7 @@ cat.copy_browser.prototype = {
 					false
 				);
 			} else {
-				throw('Missing library list.\n');
+				throw(document.getElementById('catStrings').getString('staff.cat.copy_browser.missing_library') + '\n');
 			}
 
 			JSAN.use('util.widgets'); 
@@ -956,7 +980,7 @@ cat.copy_browser.prototype = {
 					x = document.getElementById('consortial_available');
 					if (x) x.setAttribute('value',robj[0].available);
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('Error retrieving consortial copy count.',E);
+					obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.consortial_copy_count.error'),E);
 				}
 			});
 		} catch(E) {
@@ -1433,17 +1457,21 @@ cat.copy_browser.prototype = {
 			JSAN.use('circ.util');
 			var columns = [
 				{
-					'id' : 'tree_location', 'label' : 'Location/Barcode', 'flex' : 1,
-					'primary' : true, 'hidden' : false, 
+					'id' : 'tree_location',
+					'label' : document.getElementById('catStrings').getString('staff.cat.copy_browser.list_init.tree_location'),
+					'flex' : 1, 'primary' : true, 'hidden' : false, 
 					'render' : function(my) { return my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; },
 				},
 				{
-					'id' : 'volume_count', 'label' : 'Volumes', 'flex' : 0,
-					'primary' : false, 'hidden' : false, 
+					'id' : 'volume_count',
+					'label' : document.getElementById('catStrings').getString('staff.cat.copy_browser.list_init.volume_count'),
+					'flex' : 0, 'primary' : false, 'hidden' : false, 
 					'render' : function(my) { return my.volume_count; },
 				},
 				{
-					'id' : 'copy_count', 'label' : 'Copies', 'flex' : 0,
+					'id' : 'copy_count',
+					'label' : document.getElementById('catStrings').getString('staff.cat.copy_browser.list_init.copy_count'),
+					'flex' : 0,
 					'primary' : false, 'hidden' : false, 
 					'render' : function(my) { return my.copy_count; },
 				},
@@ -1644,7 +1672,7 @@ cat.copy_browser.prototype = {
 				obj.controller.view.sel_patron.setAttribute('disabled','false');
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Copy Browser Actions',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.actions.error'),E);
 		}
 	},
 
@@ -1667,7 +1695,7 @@ cat.copy_browser.prototype = {
 			// FIXME - we get a null from the copy_count call if we call it too quickly here
 			setTimeout( function() { obj.show_consortial_count(); }, 2000 );
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Problem refreshing the volume/copy tree.',E);
+			this.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.refresh_list.error'),E);
 		}
 	},
 }
