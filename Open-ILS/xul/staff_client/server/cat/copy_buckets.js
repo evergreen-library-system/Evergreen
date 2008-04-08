@@ -1,3 +1,4 @@
+// vim:noet:sw=4:ts=4:
 dump('entering cat.copy_buckets.js\n');
 
 if (typeof cat == 'undefined') cat = {};
@@ -19,7 +20,7 @@ cat.copy_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Action completed.");
+			alert($('catStrings').getString('staff.cat.copy_buckets.render_pending_copies.complete'));
 		}
 		var obj = this;
 		obj.list1.clear();
@@ -66,7 +67,7 @@ cat.copy_buckets.prototype = {
                             if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
 
                         } catch(E) {
-                            obj.error.standard_unexpected_error_alert('Error retrieving details for item with copy id =' + row.my.acp_id, E);
+                            obj.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_buckets.retrieve_row.error', [row.my.acp_id]), E);
                         }
                     }
                 );
@@ -166,7 +167,10 @@ cat.copy_buckets.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
-								var items = [ ['Choose a bucket...',''], ['Retrieve shared bucket...',-1] ].concat(
+								var items = [
+									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.choose_bucket'),''],
+									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.retrieve_bucket'),-1]
+								].concat(
 									util.functional.map_list(
 										obj.network.simple_request(
 											'BUCKET_RETRIEVE_VIA_USER',
@@ -196,7 +200,7 @@ cat.copy_buckets.prototype = {
 								function change_bucket(ev) {
 									var bucket_id = ev.target.value;
 									if (bucket_id < 0 ) {
-										bucket_id = window.prompt('Enter bucket number:');
+										bucket_id = window.prompt($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.prompt'));
 										ev.target.value = bucket_id;
 										ev.target.setAttribute('value',bucket_id);
 									}
@@ -207,9 +211,9 @@ cat.copy_buckets.prototype = {
 									);
 									if (typeof bucket.ilsevent != 'undefined') {
 										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
-											alert('Could not find a bucket with ID = ' + bucket_id);
+											alert($('catStrings').getFormattedString('staff.cat.copy_buckets.menulist.change_bucket.undefined', [bucket_id]));
 										} else {
-											obj.error.standard_unexpected_error_alert('Error retrieving bucket.  Did you use a valid bucket id?',bucket);
+											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.error'),bucket);
 										}
 										return;
 									}
@@ -273,7 +277,7 @@ cat.copy_buckets.prototype = {
 
 									obj.list2.append( item );
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Addition likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_add.error'), E);
 								}
 							}
 						}
@@ -301,7 +305,7 @@ cat.copy_buckets.prototype = {
 
 									obj.list2.append( item );
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_sel_add.error'), E);
 								}
 							}
 
@@ -335,10 +339,10 @@ cat.copy_buckets.prototype = {
 										[ ses(), 'copy', bucket_item_id ]);
 									if (typeof robj == 'object') throw robj;
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.error'), E);
 								}
-                                                        }
-							alert("Action completed.");
+							}
+							alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.complete'));
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -353,15 +357,15 @@ cat.copy_buckets.prototype = {
 							try {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
-								var conf = window.confirm('Delete the bucket named ' + name + '?');
+								var conf = window.confirm($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm', [name]));
 								if (!conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Action completed.");
+								alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.complete'));
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Bucket deletion likely failed.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.error'),E);
 							}
 						}
 					],
@@ -369,7 +373,11 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+								var name = prompt(
+									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.prompt'),
+									'',
+									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.title')
+								);
 
 								if (name) {
 									var bucket = new ccb();
@@ -381,13 +389,13 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') {
 										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
-											alert('You already have a bucket with that name.');
+											alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists'));
 											return;
 										}
 										throw robj;
 									}
 
-									alert('Bucket "' + name + '" created.');
+									alert($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_new_bucket.success', [name]));
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;
@@ -399,7 +407,7 @@ cat.copy_buckets.prototype = {
 									);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Bucket creation failed.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.error'),E);
 							}
 						}
 					],
@@ -474,7 +482,8 @@ cat.copy_buckets.prototype = {
 											err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
 											alert(err);
 										break;
-										default: obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+										default:
+											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.batch.error'), robj);
 									}
 								}
 
@@ -499,7 +508,7 @@ cat.copy_buckets.prototype = {
 
 								obj.data.stash_retrieve();
 								if (!obj.data.marked_volume) {
-									alert('Please mark a volume as the destination from within the copy browser and then try this again.');
+									alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume'));
 									return;
 								}
 
@@ -512,11 +521,14 @@ cat.copy_buckets.prototype = {
 
 								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
-								var msg = 'Transfer the items in bucket "';
-								msg += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';
-								msg += 'from their original volumes to ';
-								msg += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
-								msg += '"' + volume.label() + '" on the following record?';
+								var msg = $('catStrings').getFormattedString(
+									'staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm',
+									[
+										obj.controller.view.bucket_menulist.getAttribute('label'),
+										volume.label(),
+										obj.data.hash.aou[ volume.owning_lib() ].shortname()
+									]
+								);
 
 								JSAN.use('cat.util'); cat.util.transfer_copies( { 
 									'copy_ids' : copy_ids, 
@@ -535,13 +547,13 @@ cat.copy_buckets.prototype = {
 								);
 								
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Items not likely transferred.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error'), E);
 							}
 						}
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($('commonStrings').getString('common.unimplemented')); }
 					],
 					'cmd_copy_buckets_print' : [
 						['command'],
@@ -664,7 +676,7 @@ cat.copy_buckets.prototype = {
                                     }
                                 obj.list2.full_retrieve();
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.cmd_export_to_copy_status.error'), E);
 							}
 						}
 					],
@@ -698,7 +710,7 @@ cat.copy_buckets.prototype = {
             };
             return item;
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('List building failed.',E);
+			obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.prep_item_for_list.error'), E);
 			return null;
 		}
 
