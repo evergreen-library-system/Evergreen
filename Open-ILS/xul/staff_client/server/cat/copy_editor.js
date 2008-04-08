@@ -1,7 +1,10 @@
+// vim:noet:sw=4:ts=4
 var g = {};
 g.map_acn = {};
 
 var xulG = {};
+
+function $(id) { return document.getElementById(id); }
 
 function my_init() {
 	try {
@@ -9,7 +12,9 @@ function my_init() {
 		/* setup JSAN and some initial libraries */
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		if (typeof JSAN == 'undefined') {
+			throw( $('commonStrings').getString('common.jsan.missing') );
+		}
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('/xul/server/');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -97,8 +102,8 @@ function my_init() {
             }
 
 			if (g.edit) {
-                document.getElementById('caption').setAttribute('label','Copy Editor'); 
-    			document.getElementById('save').setAttribute('hidden','false'); 
+                $('caption').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.caption')); 
+    			$('save').setAttribute('hidden','false'); 
     			g.retrieve_templates();
             } else {
 			    $('top_nav').setAttribute('hidden','true');
@@ -110,12 +115,12 @@ function my_init() {
 		if (g.copies.length > 0 && g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 			g.apply("status",5 /* In Process */);
-			$('save').setAttribute('label','Create Copies');
+			$('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
 		} else {
 			g.panes_and_field_names.left_pane = 
 				[
 					[
-						"Status",
+						$('catStrings').getString('staff.cat.copy_editor.status'),
 						{ 
 							render: 'typeof fm.status() == "object" ? fm.status().name() : g.data.hash.ccs[ fm.status() ].name()', 
 							input: g.safe_to_edit_copy_status() ? 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id(), typeof my_constants.magical_statuses[obj.id()] != "undefined" ? true : false ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
@@ -158,8 +163,7 @@ function my_init() {
 		g.render();
 
 	} catch(E) {
-		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-			"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
+		var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_editor.js', E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 		alert(err_msg);
 	}
@@ -188,7 +192,7 @@ g.retrieve_templates = function() {
             false
         );
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error retrieving templates',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.retrieve_templates.error'), E);
 	}
 }
 
@@ -218,7 +222,7 @@ g.apply_template = function() {
 			g.render();
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error applying template',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.apply_templates.error'), E);
 	}
 }
 
@@ -227,7 +231,11 @@ g.apply_template = function() {
 
 g.save_template = function() {
 	try {
-		var name = window.prompt('Enter template name:','','Save As Template');
+		var name = window.prompt(
+			$('catStrings').getString('staff.cat.copy_editor.save_as_template.prompt'),
+			'',
+			$('catStrings').getString('staff.cat.copy_editor.save_as_template.title')
+		);
 		if (!name) return;
 		g.templates[name] = g.changed;
 		var robj = g.network.simple_request(
@@ -236,19 +244,19 @@ g.save_template = function() {
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
 		} else {
-			alert('Template "' + name + '" saved.');
+			alert($('catStrings').getFormattedString('staff.cat.copy_editor.save_as_template.success', [name]));
 			setTimeout(
 				function() {
 					try {
 						g.retrieve_templates();
 					} catch(E) {
-						g.error.standard_unexpected_error_alert('Error saving template',E);
+						g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.save_as_template.error'), E);
 					}
 				},0
 			);
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error saving template',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.save_as_template.error'), E);
 	}
 }
 
@@ -259,7 +267,7 @@ g.delete_template = function() {
 	try {
 		var name = g.template_menu.value;
 		if (!name) return;
-		if (! window.confirm('Delete template "' + name + '"?') ) return;
+		if (! window.confirm($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.confirm', [name])) return;
 		delete(g.templates[name]);
 		var robj = g.network.simple_request(
 			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : g.templates }]
@@ -267,19 +275,19 @@ g.delete_template = function() {
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
 		} else {
-			alert('Template "' + name + '" deleted.');
+			alert($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.confirm', [name]));
 			setTimeout(
 				function() {
 					try {
 						g.retrieve_templates();
 					} catch(E) {
-						g.error.standard_unexpected_error_alert('Error deleting template',E);
+						g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.delete_template.error'), E);
 					}
 				},0
 			);
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error deleting template',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.delete_template.error'), E);
 	}
 }
 
@@ -290,9 +298,9 @@ g.export_templates = function() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		JSAN.use('util.file'); var f = new util.file('');
-        f.export_file( { 'title' : 'Save Templates File As', 'data' : g.templates } );
+        f.export_file( { 'title' : $('catStrings').getString('staff.cat.copy_editor.export_templates.title'), 'data' : g.templates } );
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error exporting templates',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.export_templates.error'), E);
 	}
 }
 
@@ -303,15 +311,19 @@ g.import_templates = function() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		JSAN.use('util.file'); var f = new util.file('');
-        var temp = f.import_file( { 'title' : 'Import Templates File' } );
+        var temp = f.import_file( { 'title' : $('catStrings').getString('staff.cat.copy_editor.import_templates.title') } );
 		if (temp) {
 			for (var i in temp) {
 
 				if (g.templates[i]) {
 
 					var r = g.error.yns_alert(
-						'Replace the existing template with the imported template?\n' + g.error.pretty_print( js2JSON( temp[i] ) ),
-						'Template ' + i + ' already exists.','Yes','No',null,'Click here'
+						$('catStrings').getString('staff.cat.copy_editor.import_templates.replace.prompt') + '\n' + g.error.pretty_print( js2JSON( temp[i] ) ),
+						$('catStrings').getFormattedString('staff.cat.copy_editor.import_templates.replace.title', [i]),
+						$('catStrings').getString('staff.cat.copy_editor.import_templates.replace.yes'),
+						$('catStrings').getString('staff.cat.copy_editor.import_templates.replace.no'),
+						null,
+						$('catStrings').getString('staff.cat.copy_editor.import_templates.replace.click_here')
 					);
 
 					if (r == 0 /* Yes */) g.templates[i] = temp[i];

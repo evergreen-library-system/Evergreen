@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -33,6 +33,9 @@
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="copy_editor.js"/>
+
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<iframe id="brief_display"/>
 
