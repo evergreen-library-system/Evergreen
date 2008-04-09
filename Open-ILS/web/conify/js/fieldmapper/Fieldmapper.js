@@ -57,53 +57,55 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 		isnew : function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; },
 		ischanged : function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; },
-		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; },
-
-		_request : function ( meth, staff, params ) {
-			var ses = OpenSRF.CachedClientSession( meth[0] );
-			if (!ses) return null;
-
-			var result = null;
-			var args = {};
-
-			if (dojo.isObject(params)) {
-				args = params;
-			} else {
-
-				if (dojo.isArray(params)) {
-					args.params = params;
-				} else {
-					args.params = arguments.splice(1, arguments.length - 1);
-				}
-
-				args.timeout = 10;
-			}
-
-			if (!args.onerror) {
-				args.error = function (r) {
-					throw 'Error encountered! ' + r;
-				}
-			}
-
-			if (!args.oncomplete) {
-				args.oncomplete = function (r) {
-					var x = r.recv();
-					if (x) result = x.content();
-				}
-			}
-
-			args.method = meth[1];
-			if (staff && meth[2]) args.method += '.staff';
-
-			ses.request(args).send();
-
-			return result;
-		},
-
-		standardRequest : function (meth, params) { return this._request(meth, false, params) },
-		staffRequest : function (meth, params) { return this._request(meth, true, params) }
-
+		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
 	});
+
+	fieldmapper._request = function ( meth, staff, params ) {
+		var ses = OpenSRF.CachedClientSession( meth[0] );
+		if (!ses) return null;
+
+		var result = null;
+		var args = {};
+
+		if (dojo.isObject(params)) {
+			args = params;
+		} else {
+
+			if (dojo.isArray(params)) {
+				args.params = params;
+			} else {
+				args.params = arguments.splice(1, arguments.length - 1);
+			}
+
+			args.timeout = 10;
+		}
+
+		if (!args.onerror) {
+			args.error = function (r) {
+				throw 'Error encountered! ' + r;
+			}
+		}
+
+		if (!args.oncomplete) {
+			args.oncomplete = function (r) {
+				var x = r.recv();
+				if (x) result = x.content();
+			}
+		}
+
+		args.method = meth[1];
+		if (staff && meth[2]) args.method += '.staff';
+
+		ses.request(args).send();
+
+		return result;
+	};
+
+	fieldmapper.standardRequest = function (meth, params) { return fieldmapper._request(meth, false, params) };
+	fieldmapper.Fieldmapper.prototype.standardRequest = fieldmapper.standardRequest;
+
+	fieldmapper.staffRequest = function (meth, params) { return fieldmapper._request(meth, true, params) };
+	fieldmapper.Fieldmapper.prototype.staffRequest = fieldmapper.staffRequest;
 
 	for( var cl in fmclasses ) {
 		dojo.provide( cl );
@@ -212,10 +214,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		FETCH_BIB_ID_BY_BARCODE : ['open-ils.search','open-ils.search.bib_id.by_barcode'],
 		FETCH_ORG_SETTING : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default']
 	};
-
-	fieldmapper.aou.prototype.fetchOrgSettingDefault = function (name) {
-		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, name ); 
-	}
 
 }
 
