@@ -52,13 +52,14 @@ util.Dojo.expandoGridToggle = function (gridId, inIndex, inShow) {
     grid.updateRow(inIndex);
 }
 
-util.Dojo.buildExpandoGrid = function(domId, columns, getSubRowDetail, identColumn) {
+/**
+ * Constructs an expandable dojox.Grid
+ * @param getSubRowDetail called when the sub-row is expanded.  Should return HTML
+ */
+util.Dojo.buildExpandoGrid = function(domId, columns, getSubRowDetail) {
 
-    identColumn = (identColumn) ? identColumn : 'id';
     var grid = new dojox.Grid({}, domId);
-
     var rowBar = {type: 'dojox.GridRowView', width: '20px' };
-
     function onBeforeRow(inDataIndex, inRow) {
         inRow[1].hidden = (!grid.expandedRows || !grid.expandedRows[inDataIndex]);
     }
@@ -66,6 +67,7 @@ util.Dojo.buildExpandoGrid = function(domId, columns, getSubRowDetail, identColu
     function getCheck(inRowIndex) {
         var image = (this.grid.expandedRows[inRowIndex]) ? 'open.gif' : 'closed.gif';
         var show = (this.grid.expandedRows[inRowIndex]) ? 'false' : 'true';
+        /* XXX JS var for JS root */
         return '<img src="/oils/media/js/dojo/dojox/grid/tests/images/' + image + 
             '" onclick="util.Dojo.expandoGridToggle(\'' + 
                 this.grid.id + '\',' + inRowIndex + ', ' + show + ')" height="11" width="11">';
@@ -78,19 +80,15 @@ util.Dojo.buildExpandoGrid = function(domId, columns, getSubRowDetail, identColu
         onBeforeRow: onBeforeRow,
         cells: [
             columns,
-            /* XXX i18n name: */
             [{ name: 'Detail', colSpan: columns.length, get: getSubRowDetail }]
         ]
     };
 
     grid.setStructure([rowBar, view]);
-
-    var store = new dojo.data.ItemFileWriteStore({data:{identifier:identColumn, items:[]}});
-    var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true});
     grid.startup();
     grid.expandedRows = [];
 
-    return {grid:grid, model:model};
+    return grid;
 };
 
 }

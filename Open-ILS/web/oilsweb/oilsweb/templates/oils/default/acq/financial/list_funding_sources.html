@@ -6,11 +6,6 @@
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
-    <!--
-    <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/funding_source/create'>${_('New Funding Source')}</a>
-    </div>
-    -->
 </div>
 
 <script>var fsGrid = null;</script>
@@ -34,79 +29,165 @@
 </script>
 
 <div class='oils-acq-actions-div'>
-<div dojoType="dijit.form.DropDownButton">
-    <span>${('New Funding Source')}</span>
-    <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
-        <table class='dijitTooltipTable'>
-            <tr>
-                <td><label for="name">${_('Name:')} </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="name"></td>
-            </tr>
-            <tr>
-                <td><label for="loc">${_('Owning Location:')} </label></td>
-                <td>
-                    <select name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
-                        <!-- XXX get orgs from DB... -->
-                        <option value='2'>SYS1</option>
-                        <option value='3'>SYS2</option>
-                        <option value='7'>BR4</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="currency_type">${_('Currency Type:')}</label></td>
-                <td>
-                    <select name="currency_type" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
-                        <!-- XXX get-currency-types from DB... -->
-                        <option value='CAN'>CAN</option>
-                        <option value='EUR'>EUR</option>
-                        <option value='USD'>USD</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan='2' align='center'>
-                    <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div> 
+    <div dojoType="dijit.form.DropDownButton">
+        <span>${('New Funding Source')}</span>
+        <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">${_('Name:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="loc">${_('Owning Location:')} </label></td>
+                    <td>
+                        <select name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                            <!-- XXX get orgs from DB... -->
+                            <option value='2'>SYS1</option>
+                            <option value='3'>SYS2</option>
+                            <option value='7'>BR4</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="currency_type">${_('Currency Type:')}</label></td>
+                    <td>
+                        <select name="currency_type" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                            <!-- XXX get-currency-types from DB... -->
+                            <option value='CAN'>CAN</option>
+                            <option value='EUR'>EUR</option>
+                            <option value='USD'>USD</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
 
-<button dojoType="dijit.form.Button" 
-        onclick="openils.acq.FundingSource.deleteFromGrid(fundingSourceGrid, function(){location.href = location.href})">
-    ${_('Delete Selected')}
-</button>
-
+    <button dojoType="dijit.form.Button" 
+            onclick="openils.acq.FundingSource.deleteFromGrid(fundingSourceGrid, function(){location.href = location.href})">
+        ${_('Delete Selected')}
+    </button>
 </div>
 
+<!-- The actual grid lives here -->
 <div id='oils-acq-funding-source-grid'> </div>
 
 <script>
     var fundingSourceGrid = null;
+
     function loadFSGrid() {
         dojo.require('openils.acq.FundingSource');
+
+        function getDetailData(rowIndex) {
+            var fsId = fundingSourceGrid.model.getRow(this.grid.myDataRow).id;
+            var fs = openils.acq.FundingSource.cache[fsId];
+            switch(this.index) {
+                case 0:
+                    return fs.summary().credit_total;
+                case 1:
+                    return fs.summary().allocation_total;
+                }
+        }
+
+        function getOrgInfo(rowIndex) {
+            data = fundingSourceGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return findOrgUnit(data.owner).name(); /* XXX show shortname by default, but needs fetching */
+        }
+
+        function getBalanceInfo(rowIndex) {
+            data = fundingSourceGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return new String(openils.acq.FundingSource.cache[data.id].summary().balance);
+        }
     
         var gridCols = [
             {name: '${_("ID")}', field: 'id'},
             {name: '${_("Name")}', field: "name", width:'auto'}, 
-            {name: '${_("Owner")}', field: "owner", width:'auto'}, 
+            {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
             {name: '${_("Currency Type")}', field: "currency_type"},
-            {name: '${_("Balance")}', field: "balance"}
+            {name: '${_("Balance")}', field: "balance", get:getBalanceInfo}
         ];
 
-        function getSubRowDetail(inRowIndex) {
-            if (fundingSourceGrid.expandedRows[inRowIndex]) {
-                fsId = fundingSourceGrid.model.getDatum(inRowIndex, 0);
-                fs = openils.acq.FundingSource.cache[fsId];
-                return '<b>Viewing grid row for FS: ' + fs.name() + '</b>';
-            } else
-                return '';
+        var subGridCells = [{
+            noscroll: true,
+            cells: [[
+                {name: "Total Credit"}, 
+                {name: "Total Allocation"}, 
+                {name: "Actions", width:'auto'}
+            ]]
+        }];
+
+        var subGridProps = {
+            structure: subGridCells, 
+            rowCount: 1, 
+            autoHeight: true, 
+            autoRender: false,
+            "get": getDetailData
+        };
+
+
+        function buildSubgrid(inRowIndex, inCell) {
+            var n = inCell.getNode(inRowIndex).firstChild;
+            var id = makeSubgridId(inRowIndex);
+            var subGrid = dijit.byId(id);
+            if (subGrid) {
+                n.appendChild(subGrid.domNode);
+            } else {
+                subGridProps.widgetId = id;
+                subGrid = new dojox.VirtualGrid(subGridProps, n);
+                subGrid.myDataRow = inRowIndex;
+            }
+            if (subGrid) {
+                subGrid.render();
+                subGrid.cacheHeight = subGrid.domNode.offsetHeight;
+                inCell.grid.rowHeightChanged(inRowIndex);
+            }
         }
-    
-        var gridRefs = util.Dojo.buildExpandoGrid('oils-acq-funding-source-grid', gridCols, getSubRowDetail);
-        fundingSourceGrid = gridRefs.grid;
-        openils.acq.FundingSource.loadGrid(fundingSourceGrid, gridRefs.model);
+
+        // identify subgrids by their row indices
+        function makeSubgridId(inRowIndex) {
+            return "fundingSourceGrid_subGrid_" + inRowIndex;
+        }
+
+        // if a subgrid exists at inRowIndex, detach it from the DOM
+        function detachSubgrid(inRowIndex) {
+            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
+            if (subGrid)
+                dojox.grid.removeNode(subGrid.domNode);
+        }
+
+        // provide html for the Detail cell in the master grid
+        function getDetail(inRowIndex) {
+            var cell = this;
+            setTimeout(function() { buildSubgrid(inRowIndex, cell); }, 1);
+            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
+            var h = (subGrid ? subGrid.cacheHeight : "120") + "px";
+            return '<div></div>';
+        }
+
+        // destroy subgrid at inRowIndex
+        function destroySubgrid(inRowIndex) {
+            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
+            if (subGrid) subGrid.destroy();
+        }
+
+        fundingSourceGrid = util.Dojo.buildExpandoGrid(
+            'oils-acq-funding-source-grid', gridCols, getDetail);
+
+        openils.acq.FundingSource.createStore(
+            function(storeData) {
+                var store = new dojo.data.ItemFileWriteStore({data:storeData});
+                var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true});
+                fundingSourceGrid.setModel(model);
+                fundingSourceGrid.update();
+            }
+        );
     }
 
     dojo.addOnLoad(loadFSGrid);

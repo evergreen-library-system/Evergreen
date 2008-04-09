@@ -8,40 +8,10 @@ dojo.declare('openils.acq.FundingSource', null, {
     /* add instance methods here if necessary */
 });
 
+/** cached funding_source objects */
 openils.acq.FundingSource.cache = {};
 
-//openils.acq.FundingSource.loadGrid = function(domId, columns, gridBuiltHandler) {
-openils.acq.FundingSource.loadGrid = function(domId, columns) {
-    /** Fetches the list of funding_sources and builds a grid from them */
-
-    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
-    var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.funding_source.org.retrieve', 
-        oilsAuthtoken, null, {flesh_summary:1});
-
-    req.oncomplete = function(r) {
-        var msg
-        gridRefs.grid.setModel(gridRefs.model);
-        while(msg = r.recv()) {
-            var src = msg.content();
-            openils.acq.FundingSource.cache[src.id()] = src;
-            gridRefs.store.newItem({
-                id:src.id(),
-                name:src.name(), 
-                owner: findOrgUnit(src.owner()).name(),
-                currency_type:src.currency_type(),
-                balance:new String(src.summary()['balance'])
-            });
-        }
-        gridRefs.grid.update();
-    };
-
-    req.send();
-    return gridRefs.grid;
-};
-
-
-openils.acq.FundingSource.loadGrid = function(grid, model) {
+openils.acq.FundingSource.createStore = function(onComplete) {
     /** Fetches the list of funding_sources and builds a grid from them */
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.funding_source.org.retrieve', 
@@ -49,19 +19,14 @@ openils.acq.FundingSource.loadGrid = function(grid, model) {
 
     req.oncomplete = function(r) {
         var msg
-        grid.setModel(model);
+        var items = [];
+        var src = null;
         while(msg = r.recv()) {
-            var src = msg.content();
+            src = msg.content();
             openils.acq.FundingSource.cache[src.id()] = src;
-            model.store.newItem({
-                id:src.id(),
-                name:src.name(), 
-                owner: findOrgUnit(src.owner()).name(),
-                currency_type:src.currency_type(),
-                balance:new String(src.summary()['balance'])
-            });
+            items.push(src);
         }
-        grid.update();
+        onComplete(acqfs.toStoreData(items));
     };
 
     req.send();
