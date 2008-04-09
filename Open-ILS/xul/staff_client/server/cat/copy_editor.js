@@ -337,8 +337,12 @@ g.import_templates = function() {
 			}
 
 			var r = g.error.yns_alert(
-				'Save all of these imported templates permanently to this account?',
-				'Final Warning', 'Yes', 'No', null, 'Click here'
+				$('catStrings').getString('staff.cat.copy_editor.import_templates.save.prompt'),
+				$('catStrings').getFormattedString('staff.cat.copy_editor.import_templates.save.title'),
+				$('catStrings').getString('staff.cat.copy_editor.import_templates.save.yes'),
+				$('catStrings').getString('staff.cat.copy_editor.import_templates.save.no'),
+				null,
+				$('catStrings').getString('staff.cat.copy_editor.import_templates.save.click_here')
 			);
 
 			if (r == 0 /* Yes */) {
@@ -348,13 +352,13 @@ g.import_templates = function() {
 				if (typeof robj.ilsevent != 'undefined') {
 					throw(robj);
 				} else {
-					alert('All templates saved.');
+					alert($('catStrings').getString('staff.cat.copy_editor.import_templates.save.success'));
 					setTimeout(
 						function() {
 							try {
 								g.retrieve_templates();
 							} catch(E) {
-								g.error.standard_unexpected_error_alert('Error saving templates',E);
+								g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.import_templates.save.error'), E);
 							}
 						},0
 					);
@@ -364,12 +368,12 @@ g.import_templates = function() {
 				var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
 				g.template_menu = util.widgets.make_menulist( list );
 				$('template_placeholder').appendChild(g.template_menu);
-				alert("Note: These imported templates will get saved along with any new template you try to create, but if that doesn't happen, then these templates will disappear with the next invocation of the item attribute editor.");
+				alert($('catStrings').getString('staff.cat.copy_editor.import_templates.note'));
 			}
 
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error importing templates',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.import_templates.error'), E);
 	}
 }
 
@@ -446,7 +450,7 @@ g.apply_owning_lib = function(ou_id) {
 			if (!g.map_acn[copy.call_number()]) {
 				var volume = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ copy.call_number() ]);
 				if (typeof volume.ilsevent != 'undefined') {
-					g.error.standard_unexpected_error_alert('Error retrieving Volume information for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",volume);
+					g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.undefined_volume.error', [copy.barcode()]), volume);
 					continue;
 				}
 				g.map_acn[copy.call_number()] = volume;
@@ -457,7 +461,7 @@ g.apply_owning_lib = function(ou_id) {
 				[ses(),old_volume.label(),old_volume.record(),ou_id]
 			);
 			if (typeof acn_id.ilsevent != 'undefined') {
-				g.error.standard_unexpected_error_alert('Error changing owning lib for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",acn_id);
+				g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.call_number.error', [copy.barcode()], acn_id);
 				continue;
 			}
 			copy.call_number(acn_id);
@@ -1061,8 +1065,13 @@ g.render = function() {
 						label1.appendChild( document.createTextNode(value) );
 					}
 					var label2 = document.createElement('description'); row.appendChild(label2);
-					var unit = count == 1 ? 'copy' : 'copies';
-					label2.appendChild( document.createTextNode(count + ' ' + unit) );
+					var copy_count;
+					if (count == 1) {
+						copy_count = $('catStrings').getString('staff.cat.copy_editor.copy_count');
+					} else {
+						copy_count = $('catStrings').getFormattedString('staff.cat.copy_editor.copy_count.plural', [count]);
+					}
+					label2.appendChild( document.createTextNode(copy_count) );
 				}
 				var hbox = document.createElement('hbox'); 
 				hbox.setAttribute('id',fn);
@@ -1173,12 +1182,12 @@ g.render_input = function(node,blob) {
 					util.widgets.remove_children(hbox2);
 					hbox.appendChild(x);
 					var apply = document.createElement('button');
-					apply.setAttribute('label','Apply');
-					apply.setAttribute('accesskey','A');
+					apply.setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.apply.label'));
+					apply.setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.apply.accesskey'));
 					hbox2.appendChild(apply);
 					apply.addEventListener('command',function() { c(x.value); },false);
 					var cancel = document.createElement('button');
-					cancel.setAttribute('label','Cancel');
+					cancel.setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.cancel.label'));
 					cancel.addEventListener('command',function() { setTimeout( function() { g.summarize( g.copies ); g.render(); document.getElementById(caption.id).focus(); }, 0); }, false);
 					hbox2.appendChild(cancel);
 					setTimeout( function() { x.focus(); }, 0 );
@@ -1217,11 +1226,11 @@ g.stash_and_close = function() {
 				if (typeof r.ilsevent != 'undefined') {
 					g.error.standard_unexpected_error_alert('copy update',r);
 				} else {
-					alert('Items added/modified.');
+					alert($('catStrings').getString('staff.cat.copy_editor.handle_update.success'));
 				}
 				/* FIXME -- revisit the return value here */
 			} catch(E) {
-				alert('copy update error: ' + js2JSON(E));
+				alert($('catStrings').getString('staff.cat.copy_editor.handle_update.error') + ' ' + js2JSON(E));
 			}
 		}
 		//g.data.temp_copies = js2JSON( g.copies );
@@ -1322,7 +1331,7 @@ g.add_stat_cat = function(sc) {
 
 		g.panes_and_field_names.right_pane4.push( temp_array );
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error adding stat cat to display definition',E);
+		g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.add_stat_cat.error'), E);
     }
 }
 
@@ -1422,7 +1431,7 @@ g.populate_stat_cats = function() {
         g.panes_and_field_names.right_pane4.sort();
 
     } catch(E) {
-        g.error.standard_unexpected_error_alert('Error populating stat cats for display',E);
+        g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.populate_stat_cat.error'),E);
     }
 }
 
