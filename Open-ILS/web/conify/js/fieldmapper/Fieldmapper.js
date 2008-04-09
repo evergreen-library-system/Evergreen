@@ -213,10 +213,9 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		FETCH_ORG_SETTING : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default']
 	};
 
-	fieldmapper.aou.prototype.fetchOrgSetting = function (name) {
+	fieldmapper.aou.prototype.fetchOrgSettingDefault = function (name) {
 		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, name ); 
 	}
-
 
 }
 
