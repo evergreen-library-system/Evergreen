@@ -1839,3 +1839,30 @@
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey "N">
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.cancel.label "Cancel">
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey "C">
+<!ENTITY staff.cat.copy_editor.window.label "Copies">
+<!ENTITY staff.cat.copy_editor.groupbox1.label "Copy Viewer">
+<!ENTITY staff.cat.copy_editor.templates.label "Templates:">
+<!ENTITY staff.cat.copy_editor.templates.apply_template.label "Apply">
+<!ENTITY staff.cat.copy_editor.templates.apply_template.accesskey "y">
+<!ENTITY staff.cat.copy_editor.templates.delete_template.label "Delete">
+<!ENTITY staff.cat.copy_editor.templates.import_template.label "Import">
+<!ENTITY staff.cat.copy_editor.templates.export_template.label "Export">
+<!ENTITY staff.cat.copy_editor.templates.save_template.label "Save">
+<!ENTITY staff.cat.copy_editor.templates.reset.label "Reset">
+<!ENTITY staff.cat.copy_editor.templates.reset.accesskey "R">
+<!ENTITY staff.cat.copy_editor.identification.label "Identification">
+<!ENTITY staff.cat.copy_editor.identification.location.label "Location">
+<!ENTITY staff.cat.copy_editor.identification.location.accesskey "1">
+<!ENTITY staff.cat.copy_editor.identification.circulation.label "Circulation">
+<!ENTITY staff.cat.copy_editor.identification.circulation.accesskey "2">
+<!ENTITY staff.cat.copy_editor.identification.miscellaneous.label "Miscellaneous">
+<!ENTITY staff.cat.copy_editor.identification.miscellaneous.accesskey "3">
+<!ENTITY staff.cat.copy_editor.identification.statistics.label "Statistics">
+<!ENTITY staff.cat.copy_editor.identification.statistics.accesskey "4">
+<!ENTITY staff.cat.copy_editor.stat_cat_lib_filter_menu.label "Library Filter">
+<!ENTITY staff.cat.copy_editor.copy_notes.label "Copy Notes">
+<!ENTITY staff.cat.copy_editor.copy_notes.accesskey "N">
+<!ENTITY staff.cat.copy_editor.save.label "Modify Copies">
+<!ENTITY staff.cat.copy_editor.save.accesskey "M">
+<!ENTITY staff.cat.copy_editor.cancel.label "Close">
+<!ENTITY staff.cat.copy_editor.cancel.accesskey "C">
