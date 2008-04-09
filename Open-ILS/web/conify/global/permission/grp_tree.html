@@ -34,7 +34,7 @@
             }
 
             #grid_container {
-                width: 50%;
+                width: 75%;
                 height: 100%;
             }
 
@@ -185,8 +185,8 @@
 						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
 
 						new_kid_button.disabled = false;
-						save_out_button.disabled = false;
-						delete_out_button.disabled = false;
+						save_group_button.disabled = false;
+						delete_group_button.disabled = false;
 
 						var main_settings_fields = [ 'name', 'perm_interval', 'description'];
 						for ( var i in main_settings_fields ) {
@@ -279,12 +279,13 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Edit Permission</th>
+								<th>Editing Permission</th>
 								<td>
 									<div
 									  id="editor_pane_application_perm"
 									  dojoType="dijit.form.FilteringSelect"
 									  store="perm_name_store"
+									  searchAttr="code"
 									  jsId="editor_pane_application_perm"
 									>
 										<script type="dojo/connect" event="onChange">
@@ -331,13 +332,13 @@
 	
 						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
 	
-							<button jsId="save_out_button" dojoType="dijit.form.Button" label="Save" onClick="save_group()">
+							<button jsId="save_group_button" dojoType="dijit.form.Button" label="Save" onClick="save_group()">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
 							</button>
 	
-							<button jsId="delete_out_button" dojoType="dijit.form.Button" label="Delete">
+							<button jsId="delete_group_button" dojoType="dijit.form.Button" label="Delete">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
@@ -394,8 +395,8 @@
 													current_group = null;
 	
 													new_kid_button.disabled = true;
-													save_out_button.disabled = true;
-													delete_out_button.disabled = true;
+													save_group_button.disabled = true;
+													delete_group_button.disabled = true;
 			
 													var main_settings_fields = [ 'name', 'perm_interval', 'description' ];
 													for ( var i in main_settings_fields ) {
@@ -547,171 +548,173 @@
 
 							<div id="new_perm_container" dojoType="dijit.layout.ContentPane" sizeShare="1" layoutAlign="client">
 
-								<div dojoType="dijit.layout.LayoutContainer" orientation="vertical" style="margin-bottom: 30px; border-bottom: 1px;">
-									<button jsId="save_pgpm_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button><br/>
+								<div dojoType="dijit.form.DropDownButton" id="new_popup" jsId="new_popup">
+									<span>New Mapping</span>
+									<div  dojoType="dijit.TooltipDialog"> 
+										<table class="tundra">
+											<tr>
+												<td>Permission:</td>
+												<td>
+													<div
+													  dojoType="dijit.form.FilteringSelect"
+													  Id="new_perm_select"
+													  jsId="new_perm_select"
+													  store="perm_store"
+													  searchAttr="code"
+													  ignoreCase="true"
+													  required="true"></div>
+												</td>
+											</tr>
+											<tr>
+												<td>Depth:</td>
+												<td>
+													<div
+													  dojoType="dijit.form.FilteringSelect"
+													  Id="new_depth_select"
+													  jsId="new_depth_select"
+													  store="ou_type_store"
+													  searchAttr="name"
+													  ignoreCase="true"
+													  required="true"></div>
+												</td>
+											</tr>
+											<tr>
+												<td>Grantable:</td>
+												<td>
+													<input
+													  type="checkbox"
+													  dojoType="dijit.form.CheckBox"
+													  Id="new_grant_checkbox"
+													  jsId="new_grant_checkbox"
+													  value="t"></input>
+												</td>
+											</tr>
+										</table>
 
-					                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="Remove Selected">
-						                <script type="dojo/connect" event="onClick">
+										<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
+						                    <script type="dojo/connect" event="onClick">
 						
-					                        var selected_rows = perm_grid.selection.getSelected();
-					        
-					                        var selected_items = [];
-					                        for (var i in selected_rows) {
-					                            selected_items.push(
-					                                perm_grid.model.getRow( selected_rows[i] ).__dojo_data_item
-					                            );
-					                        }
-				
-					                        perm_grid.selection.clear();
-					
-						                    for (var i in selected_items) {
-							                    window.current_perm_map = selected_items[i];
-				
-								                perm_map_store.setValue( window.current_perm_map, 'isdeleted', 1 );
-								
-									            var modified_pgpm = new pgpm().fromStoreItem( window.current_perm_map );
-										        modified_pgpm.isdeleted( 1 );
-				            
-				                                server.pCRUD.request({
-				                                    method : 'open-ils.permacrud.delete.pgpm',
-				                                    timeout : 10,
-					                                params : [ ses, modified_pgpm ],
+						                        var new_perm = new_perm_select.getValue();
+						                        if (!new_perm) return;
+		
+						                        var new_type_id = new_depth_select.getValue();
+						                        if (!new_type_id) return;
+		
+												var new_type;
+				                                window.ou_type_store.fetch({
+		    		                                query : { id : new_type_id },
+		                    		                onItem : function (item, req) { try { new_type = item } catch (e) { /* meh */ } },
+		        		                        });
+		
+						                        var new_depth = ou_type_store.getValue( new_type, 'depth')
+						                        var new_grant = new_grant_checkbox.getValue();
+						
+						                        var new_fm_obj = new pgpm().fromHash({
+						                            isnew   	: 1,
+						                            perm    	: new_perm,
+						                            depth   	: new_depth,
+													grp			: group_store.getValue( current_group, 'id' ),
+													grantable	: new_grant ? 't' : 'f'
+						                        });
+						    
+						                        var err = false;
+						                        server.pCRUD.request({
+						                            method : 'open-ils.permacrud.create.pgpm',
+						                            timeout : 10,
+						                            params : [ ses, new_fm_obj ],
 						                            onerror : function (r) {
-														highlighter.editor_pane.red.play();
-								                        status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ) );
-									                },
-										            oncomplete : function (r) {
-											            var res = r.recv();
-												        if ( res && res.content() ) {
-							
-								                            perm_map_store.fetch({
-									                            query : { id : perm_map_store.getValue( window.current_perm_map, 'id' ) },
-										                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-											                    scope : perm_map_store
-												            });
-			            
-													        window.current_perm_map = null;
-							
-															highlighter.editor_pane.green.play();
-									                        status_update( 'Permission mapping deleted' );
-										                } else {
-															highlighter.editor_pane.red.play();
-												            status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ));
-													    }
-				                                    }
-				                                }).send();
-					        
-					                        }
-				    
-						                </script>
-							        </button>
-	
+						                                highlighter.group_tree.red.play();
+						                                status_update( 'Problem calling method to create new Permission Map' );
+						                                err = true;
+						                            },
+						                            oncomplete : function (r) {
+		
+						                                var res = r.recv();
+						                                if ( res && res.content() ) {
+						                                    var new_item_hash = res.content().toHash();
+						                                    perm_map_store.newItem( new_item_hash );
+						                                    status_update( 'New permission map created' );
+						                                    highlighter.group_tree.green.play();
+		
+								                            perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+						                                    perm_grid.model.sort(-1);
+								                            perm_map_model.refresh();
+								                            perm_grid.refresh();
+		
+						                                } else {
+						                                    highlighter.group_tree.red.play();
+						                                    status_update( 'Problem creating new Permission Map' );
+						                                    err = true;
+						                                }
+						                            }
+						                        }).send();
+
+												new_popup._closeDropDown();
+		    
+						                    </script>
+		
+										</button>
+									</div>
 								</div>
-	
-								<div>New permission mapping:</div>
-								<table class="tundra">
-									<tr>
-										<td>Permission:</td>
-										<td>
-											<div
-											  dojoType="dijit.form.FilteringSelect"
-											  Id="new_perm_select"
-											  jsId="new_perm_select"
-											  store="perm_store"
-											  searchAttr="code"
-											  ignoreCase="true"
-											  required="true"></div>
-										</div>
-										</td>
-									</tr>
-									<tr>
-										<td>Depth:</td>
-										<td>
-											<div
-											  dojoType="dijit.form.FilteringSelect"
-											  Id="new_depth_select"
-											  jsId="new_depth_select"
-											  store="ou_type_store"
-											  searchAttr="name"
-											  ignoreCase="true"
-											  required="true"></div>
-										</td>
-									</tr>
-									<tr>
-										<td>Grantable:</td>
-										<td>
-											<input
-											  type="checkbox"
-											  dojoType="dijit.form.CheckBox"
-											  Id="new_grant_checkbox"
-											  jsId="new_grant_checkbox"
-											  value="t"></input>
-										</td>
-									</tr>
-								</table>
 
-								<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
-				                    <script type="dojo/connect" event="onClick">
+								<button jsId="save_pgpm_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button><br/>
+
+				                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="Remove Selected">
+					                <script type="dojo/connect" event="onClick">
+					
+				                        var selected_rows = perm_grid.selection.getSelected();
+				        
+				                        var selected_items = [];
+				                        for (var i in selected_rows) {
+				                            selected_items.push(
+				                                perm_grid.model.getRow( selected_rows[i] ).__dojo_data_item
+				                            );
+				                        }
+			
+				                        perm_grid.selection.clear();
 				
-				                        var new_perm = new_perm_select.getValue();
-				                        if (!new_perm) return;
-
-				                        var new_type_id = new_depth_select.getValue();
-				                        if (!new_type_id) return;
-
-										var new_type;
-		                                window.ou_type_store.fetch({
-    		                                query : { id : new_type_id },
-                    		                onItem : function (item, req) { try { new_type = item } catch (e) { /* meh */ } },
-        		                        });
-
-				                        var new_depth = ou_type_store.getValue( new_type, 'depth')
-				                        var new_grant = new_grant_checkbox.getValue();
-				
-				                        var new_fm_obj = new pgpm().fromHash({
-				                            isnew   	: 1,
-				                            perm    	: new_perm,
-				                            depth   	: new_depth,
-											grp			: group_store.getValue( current_group, 'id' ),
-											grantable	: new_grant ? 't' : 'f'
-				                        });
+					                    for (var i in selected_items) {
+						                    window.current_perm_map = selected_items[i];
+			
+							                perm_map_store.setValue( window.current_perm_map, 'isdeleted', 1 );
+							
+								            var modified_pgpm = new pgpm().fromStoreItem( window.current_perm_map );
+									        modified_pgpm.isdeleted( 1 );
+			            
+			                                server.pCRUD.request({
+			                                    method : 'open-ils.permacrud.delete.pgpm',
+			                                    timeout : 10,
+				                                params : [ ses, modified_pgpm ],
+					                            onerror : function (r) {
+													highlighter.editor_pane.red.play();
+							                        status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ) );
+								                },
+									            oncomplete : function (r) {
+										            var res = r.recv();
+											        if ( res && res.content() ) {
+						
+							                            perm_map_store.fetch({
+								                            query : { id : perm_map_store.getValue( window.current_perm_map, 'id' ) },
+									                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+										                    scope : perm_map_store
+											            });
+		            
+												        window.current_perm_map = null;
+						
+														highlighter.editor_pane.green.play();
+								                        status_update( 'Permission mapping deleted' );
+									                } else {
+														highlighter.editor_pane.red.play();
+											            status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ));
+												    }
+			                                    }
+			                                }).send();
+				        
+				                        }
 				    
-				                        var err = false;
-				                        server.pCRUD.request({
-				                            method : 'open-ils.permacrud.create.pgpm',
-				                            timeout : 10,
-				                            params : [ ses, new_fm_obj ],
-				                            onerror : function (r) {
-				                                highlighter.group_tree.red.play();
-				                                status_update( 'Problem calling method to create new Permission Map' );
-				                                err = true;
-				                            },
-				                            oncomplete : function (r) {
-
-				                                var res = r.recv();
-				                                if ( res && res.content() ) {
-				                                    var new_item_hash = res.content().toHash();
-				                                    perm_map_store.newItem( new_item_hash );
-				                                    status_update( 'New permission map created' );
-				                                    highlighter.group_tree.green.play();
-
-						                            perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
-				                                    perm_grid.model.sort(-1);
-						                            perm_map_model.refresh();
-						                            perm_grid.refresh();
-
-				                                } else {
-				                                    highlighter.group_tree.red.play();
-				                                    status_update( 'Problem creating new Permission Map' );
-				                                    err = true;
-				                                }
-				                            }
-				                        }).send();
-    
-				                    </script>
-
-								</button>
-
+					                </script>
+						        </button>
+	
 							</div>
 						</div>
 					</div>

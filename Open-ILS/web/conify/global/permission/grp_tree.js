@@ -9,6 +9,8 @@ dojo.require('dijit.form.ValidationTextBox');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Textarea');
+dojo.require('dijit.form.Button');
+dojo.require('dijit.Dialog');
 dojo.require('dijit.Tree');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dijit.layout.TabContainer');
