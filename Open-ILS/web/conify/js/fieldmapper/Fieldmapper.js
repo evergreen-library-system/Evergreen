@@ -1,4 +1,5 @@
 if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
+
 /* generate fieldmapper javascript classes.  This expects a global variable
 	called 'fmclasses' to be fleshed with the classes we need to build */
 
@@ -8,7 +9,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 	dojo._hasResource["fieldmapper.Fieldmapper"] = true;
 	dojo.provide("fieldmapper.Fieldmapper");
-	//dojo.require("opensrf.OpenSRF");
+	dojo.require("OpenSRF");
 
 	dojo.declare( "fieldmapper.Fieldmapper", null, {
 
@@ -56,19 +57,15 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 		isnew : function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; },
 		ischanged : function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; },
-		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
+		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; },
 
 		_request : function ( meth, staff, params ) {
-			var ses = fieldmapper.OpenSRF.session_cache[meth[0]];
-			if (!ses) {
-				ses = fieldmapper.OpenSRF.session_cache[meth[0]] = new OpenSRF.ClientSession( meth[0] );
-			}
-			
+			var ses = OpenSRF.CachedClientSession( meth[0] );
 			if (!ses) return null;
 
 			var result = null;
-
 			var args = {};
+
 			if (dojo.isObject(params)) {
 				args = params;
 			} else {
@@ -80,11 +77,19 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				}
 
 				args.timeout = 10;
-				args.error = function (r) { throw 'Error encountered! ' + r };
+			}
+
+			if (!args.onerror) {
+				args.error = function (r) {
+					throw 'Error encountered! ' + r;
+				}
+			}
+
+			if (!args.oncomplete) {
 				args.oncomplete = function (r) {
 					var x = r.recv();
 					if (x) result = x.content();
-				};
+				}
 			}
 
 			args.method = meth[1];
@@ -101,8 +106,8 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	});
 
 	for( var cl in fmclasses ) {
-		dojo.provide( 'fieldmapper.' + cl );
-		dojo.declare( 'fieldmapper.' + cl , fieldmapper.Fieldmapper, {
+		dojo.provide( cl );
+		dojo.declare( cl , fieldmapper.Fieldmapper, {
 			constructor : function () {
 				if (!this.a) this.a = [];
 				this.classname = this.declaredClass;
@@ -114,18 +119,17 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				}
 			}
 		});
-		window[cl] = fieldmapper[cl]; // alias into place
+		fieldmapper[cl] = window[cl]; // alias into place
 
 	}
 
-	fieldmapper.OpenSRF.session_cache = {};
+	fieldmapper.OpenSRF = {};
+
+	/*	Methods are defined as [ service, method, have_staff ]
+		An optional 3rd component is when a method is followed by true, such methods
+		have a staff counterpart and should have ".staff" appended to the method 
+		before the method is called when in XUL mode */
 	fieldmapper.OpenSRF.methods = {
-		/* ---------------------------------------------------------------------------- */
-		/* Methods are defined as [ service, method, have_staff ]
-			An optional 3rd component is when a method is followed by true, such methods
-			have a staff counterpart and should have ".staff" appended to the method 
-			before the method is called when in XUL mode */
-		
 		SEARCH_MRS : ['open-ils.search','open-ils.search.metabib.multiclass',true],
 		SEARCH_RS : ['open-ils.search','open-ils.search.biblio.multiclass',true],
 		SEARCH_MRS_QUERY : ['open-ils.search','open-ils.search.metabib.multiclass.query',true],
