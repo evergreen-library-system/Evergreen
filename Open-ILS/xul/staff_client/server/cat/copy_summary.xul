@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Brief Bib Display -->
+<!--
+	vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -11,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +42,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { 
+					throw( $("commonStrings").getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -53,7 +58,7 @@
 				var copy = xul_param('copy',{'stash_name':'temp_copy','clear_xpcom':true});
 				var callnumber = xul_param('callnumber',{'stash_name':'temp_callnumber','clear_xpcom':true});
 
-				$('caption').setAttribute('tooltiptext','Copy ID = ' + (copy_id || copy.id() ) );
+				$('caption').setAttribute('tooltiptext', $('catStrings').getFormattedString('staff.cat.copy_summary.copy_id', [(copy_id || copy.id())]));
 
 				JSAN.use('circ.util');
 				var columns = circ.util.columns( 
@@ -68,7 +73,7 @@
 					} 
 				).concat(
 					{
-						'id' : 'total_circs', 'label' : 'Total Circs', 'flex' : 1,
+						'id' : 'total_circs', 'label' : $('catStrings').getString('staff.cat.copy_summary.total_circs.label'), 'flex' : 1,
 						'primary' : false, 'hidden' : false, 'persist' : 'hidden width ordinal',
 						'render' : 'v = obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count; v;' 
 					}
@@ -90,11 +95,11 @@
 						function acn_callback(rreq) {
 							try {
 								$w('barcode',copy.barcode());	
-								$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
-								$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
-								$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
-								$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
-								$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
+								$w('ref',get_bool(copy.ref()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));	
+								$w('opac_visible',get_bool(copy.opac_visible()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));	
+								$w('circulate',get_bool(copy.circulate()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));	
+								$w('holdable',get_bool(copy.holdable()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));	
+								$w('age_protect',copy.age_protect() == null ? $('staff.cat.copy_summary.unset') : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
 								$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
 								$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
 								$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
@@ -107,7 +112,7 @@
 								if (typeof cn.ilsevent != 'undefined') {
 									switch(Number(cn.ilsevent)) {
 										case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
-											$w('callnumber','Not Cataloged');	
+											$w('callnumber', $('catStrings').getString('staff.cat.copy_summary.not_cataloged'));	
 										break;
 										default:
 											throw(cn);
@@ -176,10 +181,12 @@
 	]]>
 	</script>
 
-    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
-		<caption label="Item Summary" id="caption"/>
+		<caption label="&staff.cat.copy_summary.label;" id="caption"/>
 		<deck id="item_deck" persist="selectedIndex">
 			<tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
 			<grid>
@@ -195,43 +202,43 @@
 				</columns>
 				<rows>
 					<row>
-						<label style="font-weight: bold" value="Barcode:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.barcode.label;"/>
 						<label id="barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
-						<label style="font-weight: bold" value="Location:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.location.label;"/>
 						<label id="location"/>
-						<label style="font-weight: bold" value="Call Number:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.call_number.label;"/>
 						<label id="callnumber"/>
-						<label style="font-weight: bold" value="Status:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.status.label;"/>
 						<label id="status"/>
 					</row>
 					<row>
-						<label style="font-weight: bold" value="Circulate:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.circulate.label;"/>
 						<label id="circulate"/>
-						<label style="font-weight: bold" value="Reference:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.reference.label;"/>
 						<label id="ref"/>
-						<label style="font-weight: bold" value="Holdable:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.holdable.label;"/>
 						<label id="holdable"/>
-						<label style="font-weight: bold" value="Opac Visible:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.opac_visible.label;"/>
 						<label id="opac_visible"/>
 					</row>
 					<row>
-						<label style="font-weight: bold" value="Created:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.created.label;"/>
 						<label id="create_date"/>
-						<label style="font-weight: bold" value="Edited:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.edited.label;"/>
 						<label id="edit_date"/>
-						<label style="font-weight: bold" value="Age Protect:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.age_protect.label;"/>
 						<label id="age_protect"/>
-						<label style="font-weight: bold" value="Total Circs:"/>
+						<label style="font-weight: bold" value="&staff.cat.copy_summary.total_circs.label;"/>
 						<label id="total_circs"/>
 					</row>
 				</rows>
 			</grid>
 		</deck>
 		<hbox>
-			<button label="Alternate View" oncommand="toggle_deck()"/>
-			<button id="save_columns" label="Save Columns" oncommand="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
-			<button id="sel_clip" label="Copy to Clipboard" oncommand="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
-			<button id="print_export" label="Print Export" oncommand="try { g.list.on_all_fleshed = function() { JSAN.use('util.print'); var p = new util.print(); p.simple( g.list.dump_csv(), { 'content_type' : 'text/plain' } ); setTimeout( function() { g.list.on_all_fleshed = null; }, 0); }; g.list.full_retrieve(); } catch(E) { alert(E); }"/>
+			<button label="&staff.cat.copy_summary.alternate_view.label;" oncommand="toggle_deck()"/>
+			<button id="save_columns" label="&staff.cat.copy_summary.save_columns.label;" oncommand="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
+			<button id="sel_clip" label="&staff.cat.copy_summary.sel_clip.label;" oncommand="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
+			<button id="print_export" label="&staff.cat.copy_summary.print_export.label;" oncommand="try { g.list.on_all_fleshed = function() { JSAN.use('util.print'); var p = new util.print(); p.simple( g.list.dump_csv(), { 'content_type' : 'text/plain' } ); setTimeout( function() { g.list.on_all_fleshed = null; }, 0); }; g.list.full_retrieve(); } catch(E) { alert(E); }"/>
 		</hbox>
 	</groupbox>
 
