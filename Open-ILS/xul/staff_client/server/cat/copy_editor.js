@@ -267,7 +267,7 @@ g.delete_template = function() {
 	try {
 		var name = g.template_menu.value;
 		if (!name) return;
-		if (! window.confirm($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.confirm', [name])) return;
+		if (! window.confirm($('catStrings').getFormattedString('staff.cat.copy_editor.delete_template.confirm', [name]))) return;
 		delete(g.templates[name]);
 		var robj = g.network.simple_request(
 			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : g.templates }]
@@ -461,7 +461,7 @@ g.apply_owning_lib = function(ou_id) {
 				[ses(),old_volume.label(),old_volume.record(),ou_id]
 			);
 			if (typeof acn_id.ilsevent != 'undefined') {
-				g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.call_number.error', [copy.barcode()], acn_id);
+				g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.call_number.error', [copy.barcode()]), acn_id);
 				continue;
 			}
 			copy.call_number(acn_id);
