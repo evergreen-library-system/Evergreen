@@ -5,83 +5,27 @@
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget' />
 <%namespace file='picklist_summary.html' name='picklist' />
-<%def name="page_title()">${_('Picklist')}</%def>
-<%def name="block_content()">
 
-<%
-    import oilsweb.lib.bib
-    from oilsweb.lib.acq.picklist import PicklistMgr
-%>
+<%def name="page_title()">${_('Picklist')}</%def>
+
+<%def name="block_content()">
 
 ${picklist.summary(c.oils.acq.picklist.value)}
 
-<div id='oils-acq-picklist-header-block'>
-    <div class='spacer'>&nbsp;</div>
-    <div id="oils-acq-picklist-paging-block">
-      ${widget.paging(c.oils.acq.offset.value, c.oils.acq.limit.value,
-                      c.oils.acq.picklist.value.entry_count())}
-    </div>
-    <div id="oils-acq-picklist-actions-block">
-        <select name='${c.oils.acq.picklist_action.cgi_name}'>
-            <option value='move_selected'>${_('Move Selected to Picklist...')}</option>
-        </select>
-        <select name='${c.oils.acq.picklist_dest_id.cgi_name}'>
-            <option selected='selected' value=''>${_('-- Select A Picklist --')}</option>
-            % for list in c.oils.acq.picklist_list.value:
-                <option value='${list.id()}'>${list.name()}</option>
-            % endfor
-        </select>&nbsp;<button type='submit' dojoType="dijit.form.Button">${_("Submit")}</button>
-    </div>
-    <div class='spacer'>&nbsp;</div>
-</div>
-<div id='fred'>
-<table id="oils-acq-picklist-table">
-  <thead>
-    <tr>
-        <td colspan="2">Item Description</td>
-	<td class="oils-acq-picklist-records-copies">#&nbsp;of&nbsp;Copies</td>
-    </tr>
-  </thead>
-  <tbody>
-    % for lineitem in c.oils.acq.picklist.value.entries():
-        <tr class='oils-acq-picklist-records-title'>
-	    <td class='oils-acq-picklist-records-jacket-td'>
-	        <img class='oils-acq-picklist-records-jacket'
-		     src='${c.oils.core.ac_prefix.value}/jacket/small/${oilsweb.lib.bib.scrub_isbn(PicklistMgr.find_lineitem_attr(lineitem, "isbn"))}'/>
-	    </td>
-	    <td><a href='../view_lineitem/${lineitem.id()}'>${h.util.html_escape(PicklistMgr.find_lineitem_attr(lineitem, "title"))}</a>
-	        ${PicklistMgr.find_lineitem_attr(lineitem, "publisher")}
-	        ${PicklistMgr.find_lineitem_attr(lineitem, "pubdate")}
-	        ${PicklistMgr.find_lineitem_attr(lineitem, "pagination")}
-	        ${PicklistMgr.find_lineitem_attr(lineitem, "isbn")}
-	        ${PicklistMgr.find_lineitem_attr(lineitem, "price")}
-	    </td>
-	    <td class="oils-acq-picklist-records-copies">
-	        % if lineitem.state() == 'approved':
-		    ${lineitem.item_count()} Approved
-		% else:
-	            <form dojoType="dijit.form.Form" method="POST"
-			  action="${c.oils.acq.prefix.value}/picklist/update">
-		        <input name="${c.oils.acq.picklist_source_id.cgi_name}"
-			       type="hidden"
-			       value="${c.oils.acq.picklist.value.id()}" />
-		        <input name="${c.oils.acq.lineitem_id.cgi_name}"
-			       type="hidden"
-			       value="${lineitem.id()}" />
-			<input name="${c.oils.acq.lineitem_item_count.cgi_name}"
-			       type="text" size="3"
-			       value="${lineitem.item_count()}"
-			       smallDelta="1"
-			       dojoType="dijit.form.NumberSpinner"
-			       constraints="{min:0,places:0}" />
-			<button type='submit'
-				dojoType="dijit.form.Button">${_("Update")}</button>
-		    </form>
-		% endif
-	    </td>
-        </tr>
-    % endfor
-  </tbody>
-</table>
-</div>
+<div id="oils-acq-picklist-grid"> </div>
+<script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/util/Dojo.js"></script>
+<script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/openils/acq/Picklist.js"></script>
+<script type="text/javascript">
+    dojo.require('openils.acq.Picklist');
+
+    var cols = [
+    {name: "${_('ID')}", field: 'id'},
+    {name: "${_('Title')}", field: 'title'},
+    {name: "${_('Price')}", field: 'price'},
+    {name: "${_('Vendor')}", field: 'provider'},
+    {name: "${_('# of Copies')}", field: 'copies'}
+    ];
+    
+    dojo.addOnLoad(function(){openils.acq.Picklist.loadGrid('oils-acq-picklist-grid', cols, ${c.oils.acq.picklist.value.id()})});
+</script>
 </%def>
