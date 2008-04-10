@@ -70,26 +70,24 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		return data;
 	}
 
-	for (var i in fmclasses) window[i].prototype.fromStoreItem = _fromStoreItem;
+	for (var i in fmclasses) fieldmapper[i].fromStoreItem = _fromStoreItem;
+	for (var i in fmclasses) fieldmapper[i].toStoreData = _toStoreData;
 
-	aou.prototype._ignore_fields = ['children'];
-	aout.prototype._ignore_fields = ['children'];
-	pgt.prototype._ignore_fields = ['children'];
+	fieldmapper.aou.prototype._ignore_fields = ['children'];
+	fieldmapper.aout.prototype._ignore_fields = ['children'];
+	fieldmapper.pgt.prototype._ignore_fields = ['children'];
 
-	// set up the defaults
-	for (var i in fmclasses) window[i].toStoreData = _toStoreData;
-
-	aou.toStoreData = function (list, label) {
+	fieldmapper.aou.toStoreData = function (list, label) {
 		if (!label) label = 'shortname';
 		return _toStoreData(list, label, { 'parent' : 'parent_ou', 'children' : 'children' });
 	}
 
-	aout.toStoreData = function (list, label) {
+	fieldmapper.aout.toStoreData = function (list, label) {
 		if (!label) label = 'name';
 		return _toStoreData(list, label, { 'parent' : 'parent', 'children' : 'children' });
 	}
 
-	pgt.toStoreData = function (list, label) {
+	fieldmapper.pgt.toStoreData = function (list, label) {
 		if (!label) label = 'name';
 		return _toStoreData(list, label, { 'parent' : 'parent', 'children' : 'children' });
 	}
