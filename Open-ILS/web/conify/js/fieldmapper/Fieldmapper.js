@@ -67,18 +67,19 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		var result = null;
 		var args = {};
 
-		if (dojo.isObject(params)) {
-			args = params;
+		if (dojo.isArray(params)) {
+			args.params = params;
 		} else {
 
-			if (dojo.isArray(params)) {
-				args.params = params;
+			if (dojo.isObject(params)) {
+				args = params;
 			} else {
 				args.params = arguments.splice(1, arguments.length - 1);
 			}
 
-			args.timeout = 10;
 		}
+
+		if (!args.timeout) args.timeout = 10;
 
 		if (!args.onerror) {
 			args.error = function (r) {

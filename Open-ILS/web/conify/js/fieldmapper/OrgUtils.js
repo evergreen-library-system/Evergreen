@@ -3,6 +3,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 	dojo._hasResource["fieldmapper.OrgUtils"] = true;
 	dojo.provide("fieldmapper.OrgUtils");
 	dojo.require("fieldmapper.Fieldmapper");
+	dojo.require("fieldmapper.OrgTree", true);
 
 	fieldmapper.aou.globalOrgTree = {};
 	fieldmapper.aou.OrgCache = {};
@@ -24,11 +25,13 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 		}
 	}
 
-	fieldmapper.aou.LoadOrg = function (id) {
-		if (fieldmapper.aou.OrgCache[id] && fieldmapper.aou.OrgCache[id].loaded)
+	fieldmapper.aou.LoadOrg = function (id, slim_ok) {
+		var slim_o = fieldmapper.aou.OrgCache[id];
+
+		if (slim_o && (slim_ok || slim_o.loaded))
 			return fieldmapper.aou.OrgCache[id].org;
 
-		var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],{ params: [null,id]});
+		var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,id]);
 		fieldmapper.aou.OrgCache[o.id()] = { loaded : true, org : o };
 		return o;
 	}
@@ -56,9 +59,10 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 				continue;
 			}
 
-			var parent = fieldmapper.aou.findOrgUnit(x.parent_ou());
+			var parent = fieldmapper.aou.findOrgUnit(x.parent_ou(),true);
 			if (!parent.children()) parent.children([]);
 			parent.children().push(x);
+			fieldmapper.aou.OrgCache[x.id()].treePtr = x;
 		}
 
 		for (var i in globalOrgTypes) {
@@ -156,13 +160,16 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
 	dojo.addOnUnload( function () {
 		for (var i in fieldmapper.aou.OrgCache) {
-			x=fieldmapper.aou.OrgCache[i];
+			x=fieldmapper.aou.OrgCache[i].treePtr;
+			if (!x) continue;
+
 			x.children(null);
 			x.parent_ou(null);
 			fieldmapper.aou.OrgCache[i]=null;
 		}
 		fieldmapper.aou.globalOrgTree = null;
 		fieldmapper.aou.OrgCache = null;
+		fieldmapper.aou.OrgCacheSN = null;
 		fieldmapper.aout.OrgTypeCache = null;
 	});
 }
