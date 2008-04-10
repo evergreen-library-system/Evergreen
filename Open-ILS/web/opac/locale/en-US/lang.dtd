@@ -1883,3 +1883,12 @@
 <!ENTITY staff.cat.copy_summary.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_summary.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.cat.copy_summary.print_export.label "Print Export">
+<!ENTITY staff.cat.marcedit.stackSubfields.label "Stack subfields">
+<!ENTITY staff.cat.marcedit.stackSubfields.accesskey "s">
+<!ENTITY staff.cat.marcedit.validate.label "Validate">
+<!ENTITY staff.cat.marcedit.validate.accesskey "V">
+<!ENTITY staff.cat.marcedit.save-button.accesskey "d">
+<!ENTITY staff.cat.marcedit.help.label "Help">
+<!ENTITY staff.cat.marcedit.help.accesskey "H">
+<!ENTITY staff.cat.marcedit.caption.label "MARC Record">
+<!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">

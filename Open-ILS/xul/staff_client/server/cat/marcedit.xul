@@ -2,28 +2,48 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="marcedit.css" type="text/css"?>
 
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="my_init()">
 
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
 
+<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
+
 <groupbox flex="0">
 	<caption label="Options"/>
 	<hbox flex="1">
-		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
-		<button label="Validate"  accesskey="V" oncommand="validateAuthority(this);"/>
-		<button id="save-button" accesskey="d"/>
-		<button label="Help" accesskey="H" oncommand="alert('Add Row: CTRL+Enter\nInsert Row: CTRL+Shift+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del\nCreate/Replace 006: CTRL+F6\nCreate/Replace 007: CTRL+F7\nCreate/Replace 008: CTRL+F8\n');"/>
+		<checkbox persist="checked" accesskey='&staff.cat.marcedit.stackSubfields.accesskey;' label="&staff.cat.marcedit.stackSubfields.label;" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
+		<button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
+		<button id="save-button" accesskey="&staff.cat.marcedit.save-button.accesskey;"/>
+		<button label="&staff.cat.marcedit.help.label;" accesskey="&staff.cat.marcedit.help.accesskey;"
+			oncommand="alert(
+				$('catStrings').getString('staff.cat.marcedit.help.add_row') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.insert_row') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.add_subfield') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.remove_row') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.remove_subfield') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.replace_006') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.replace_007') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.replace_008')
+			);"
+		/>
 	</hbox>
 </groupbox>
 
 <groupbox flex="1">
-	<caption label="MARC Record"/>
+	<caption label="&staff.cat.marcedit.caption.label;"/>
 	<vbox flex="1" style="overflow: auto;">
 		<hbox>
 		<groupbox flex="0">
 			<caption>
-				<label value="Fixed Fields -- Record type: " ondblclick="toggleFFE();"/>
+				<label value="&staff.cat.marcedit.toggleFFE.label;" ondblclick="toggleFFE();"/>
 				<label id="recordTypeLabel" context="recordTypeMenu"/>
 			</caption>
 			<vbox flex="0">
