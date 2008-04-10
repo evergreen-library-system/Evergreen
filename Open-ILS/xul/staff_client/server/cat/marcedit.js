@@ -14,6 +14,8 @@ var bib_data;
 
 var xml_record;
 
+function $(id) { return document.getElementById(id); }
+
 function mangle_005() {
 	var now = new Date();
 	var y = now.getUTCFullYear();

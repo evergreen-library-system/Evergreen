@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="marcedit.css" type="text/css"?>
 
 <!-- LOCALIZATION -->
@@ -17,7 +19,7 @@
 <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 <groupbox flex="0">
-	<caption label="Options"/>
+	<caption label="&staff.cat.marcedit.options.label;"/>
 	<hbox flex="1">
 		<checkbox persist="checked" accesskey='&staff.cat.marcedit.stackSubfields.accesskey;' label="&staff.cat.marcedit.stackSubfields.label;" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
 		<button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
