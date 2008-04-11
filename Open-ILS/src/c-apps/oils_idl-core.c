@@ -346,7 +346,7 @@ char * oilsIDL_pton (const char* classname, int pos) {
 
 	while ( (f = osrfHashIteratorNext( itr )) ) {
 		if ( atoi(osrfHashGet(f, "array_position")) == pos ) {
-			ret = strdup(itr->current);
+			ret = strdup(osrfHashIteratorKey(itr));
 			break;
 		}
 	}
