@@ -1,0 +1,275 @@
+<!--
+# Copyright (C) 2008  Georgia Public Library Service / Equinox Software, Inc
+# Mike Rylander <miker@esilibrary.com>
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Confiy :: Global :: Config :: Copy Status</title>
+
+		<style type="text/css">
+			@import url("/js/dojo/dojox/grid/_grid/tundraGrid.css");
+			@import url("/js/dojo/dojo/resources/dojo.css");
+			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
+			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+		</style>
+
+		<style>
+			html, body {
+				height: 100%;
+				width: 100%;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				overflow: hidden;
+			}
+
+			#status_grid {
+				border: 0px;
+				width: 100%;
+				height: 100%;
+			}
+
+			#grid_container {
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+
+		<!-- The OpenSRF API writ JS -->
+		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+
+		<!-- Fieldmapper objects -->
+		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
+
+		<!-- Dojo goodness -->
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+
+		<script type="text/javascript" src="copy_status.js"></script>
+
+	</head>
+
+	<body class="tundra" id='pagebody'>
+
+		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
+			<script type="dojo/method">
+				window.highlighter= {};
+				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+
+				window.dirtyStore = [];
+
+                pCRUD.request({
+                    method : 'open-ils.permacrud.search.ccs.atomic',
+                    timeout : 10,
+                    params : [ ses, { id : { "!=" : null } }, { order_by : { ccs : 'name' } } ],
+                    onerror : function (r) { status_update('Problem fetching statuses') },
+                    oncomplete : function (r) {
+
+                        window._status_list = r.recv().content();
+                        window._status_data = ccs.toStoreData( window._status_list, 'name' );
+                        window.status_store = new dojo.data.ItemFileWriteStore({ data : window._status_data });
+
+	                    window.status_store.onSet = function (item, attr, o, n) {
+                            if (attr == 'ischanged') return;
+                            if (n == o) return;
+                            this.setValue( item, 'ischanged', 1);
+
+                            if (attr == 'holdable' && typeof n != 'string')
+                                this.setValue(item, 'holdable', n ? 't' : 'f');
+
+                        };
+
+                        dojo.addOnUnload( function (event) {
+
+                            status_store.fetch({
+                                query : { ischanged : 1 },
+                                onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                                scope : status_store
+                            });
+
+                            if (dirtyStore.length > 0) {
+                                var confirmation = confirm(
+                                    'There are unsaved modified Statuses!  '+
+                                    'OK to save these changes, Cancel to abandon them.'
+                                );
+
+                                if (confirmation) {
+                                    for (var i in window.dirtyStore) {
+                                        window.current_status = window.dirtyStore[i];
+                                        save_status(true);
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                }).send();
+
+			</script>
+
+			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
+				<span>New Status:</span>
+				<div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="New Status Name"></div>
+				<button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="Add"> 
+					<script type="dojo/connect" event="onClick">
+
+						var new_name = new_status_name.getValue();
+						if (!new_name) return;
+
+    	                var new_fm_obj = new ccs().fromHash({
+        	                isnew           : 1,
+            	            name            : new_name
+	                    });
+    
+    	                var err = false;
+        	            pCRUD.request({
+            	            method : 'open-ils.permacrud.create.ccs',
+                	        timeout : 10,
+                    	    params : [ ses, new_fm_obj ],
+	                        onerror : function (r) {
+    	                        highlighter.red.play();
+        	                    status_update( 'Problem calling method to create new Status' );
+            	                err = true;
+                	        },
+	                        oncomplete : function (r) {
+    	                        var res = r.recv();
+        	                    if ( res && res.content() ) {
+            	                    var new_item_hash = res.content().toHash();
+            	                    status_store.newItem( new_item_hash );
+									status_update( 'New ' + new_item_hash.name + ' status created' );
+									status_grid.model.sort(-2);
+									highlighter.green.play();
+                            	} else {
+	                                highlighter.red.play();
+    	                            status_update( 'Problem creating new Status' );
+        	                        err = true;
+            	                }
+                	        }
+                    	}).send();
+    
+	                </script>
+				</button>
+			</div>
+
+			<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
+				<div dojoType="dojox.grid.data.DojoData" id="status_data_model"jsId="status_data_model" store="status_store" query="{ 'id' : '*' }"></div>
+				<div id="status_grid" dojoType="dojox.Grid" jsId="status_grid">
+					<script type="dojo/connect" event="startup">
+						var g = this;
+						var status_grid_layout = [
+							{	cells : [
+									[
+										{ name : "ID",
+										  field : "id",
+										},
+										{ name : "Name",
+										  field : "name",
+										  width : "auto",
+										  editor : dojox.grid.editors.Dijit
+										},
+										{ name : "Holdable",
+										  field : "holdable",
+										  editor : dojox.grid.editors.bool,
+                                          get : function (row) {
+	                                        var r = window.status_data_model.getRow(row);
+											if (r) {
+		                                        var h = r.holdable;
+			                                    if (h == 't' || h === true) return true;
+				                                return false;
+											}
+                                          }
+										}
+									]
+								]
+							}
+						];
+
+						this.setStructure(status_grid_layout);
+						this.setModel(window.status_data_model);
+					</script>
+				</div>
+			</div>
+
+			<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
+		
+				<button jsId="save_ccs_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+		
+				<button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="Delete Selected">
+					<script type="dojo/connect" event="onClick">
+
+						var selected_rows = status_grid.selection.getSelected();
+		
+						var selected_items = [];
+						for (var i in selected_rows) {
+							selected_items.push(
+								status_grid.model.getRow( selected_rows[i] ).__dojo_data_item
+							);
+						}
+
+						status_grid.selection.clear();
+
+						for (var i in selected_items) {
+							current_status = selected_items[i];
+
+							if ( confirm('Are you sure you want to delete ' + status_store.getValue( current_status, 'name' ) + '?')) {
+
+								status_store.setValue( current_status, 'isdeleted', 1 );
+			
+								var modified_ccs = new ccs().fromStoreItem( current_status );
+								modified_ccs.isdeleted( 1 );
+			
+								pCRUD.request({
+									method : 'open-ils.permacrud.delete.ccs',
+									timeout : 10,
+									params : [ ses, modified_ccs ],
+									onerror : function (r) {
+										highlighter.red.play();
+										status_update( 'Problem deleting ' + status_store.getValue( current_status, 'name' ) );
+									},
+									oncomplete : function (r) {
+										var res = r.recv();
+										if ( res && res.content() ) {
+			
+											var old_name = status_store.getValue( current_status, 'name' );
+		
+											status_store.fetch({
+												query : { id : status_store.getValue( current_status, 'id' ) },
+												onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+												scope : status_store
+											});
+			
+											current_status = null;
+			
+											highlighter.green.play();
+											status_update( old_name + ' deleted' );
+										} else {
+											highlighter.red.play();
+											status_update( 'Problem deleting ' + old_name );
+										}
+									}
+								}).send();
+		
+							}
+						}
+	
+					</script>
+				</button>
+	
+			</div>
+		</div>
+	
+	</body>
+</html>

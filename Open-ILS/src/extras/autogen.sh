@@ -70,6 +70,7 @@ done
 [ -z "$CONFIG" ] && usage;
 
 JSDIR="/openils/var/web/opac/common/js/";
+FMDOJODIR="/openils/var/web/js/dojo/fieldmapper/";
 SLIMPACDIR="/openils/var/web/opac/extras/slimpac/";
 
 echo "Updating fieldmapper";
@@ -83,9 +84,11 @@ perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";
 
 echo "Updating OrgTree HTML";
 perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
+cp "$JSDIR/OrgTree.js" "$FMDOJODIR/"
 
 echo "Updating Search Groups";
 perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";
+cp "$JSDIR/OrgLasso.js" "$FMDOJODIR/"
 
 if [ "$PROXIMITY" ]
 then
