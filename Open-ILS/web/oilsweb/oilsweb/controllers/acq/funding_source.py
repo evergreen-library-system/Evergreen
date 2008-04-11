@@ -13,16 +13,7 @@ class FundingSourceController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-        r.ctx.core.org_tree.value = OrgUtil.fetch_org_tree()
-
-        source = ses.request(
-            'open-ils.acq.funding_source.retrieve', 
-            r.ctx.core.authtoken.value, kwargs.get('id'), {"flesh_summary":1}).recv().content()
-        Event.parse_and_raise(source)
-
-        source.owner(OrgUtil.get_org_unit(source.owner())) # flesh the owner
-        r.ctx.acq.funding_source.value = source
+        r.ctx.acq.funding_source_id = kwargs['id']
         return r.render('acq/financial/view_funding_source.html')
 
     def list(self):

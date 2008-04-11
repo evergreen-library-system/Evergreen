@@ -4,37 +4,190 @@
 <%def name="page_title()">${_('View Funding Source')}</%def>
 <%def name="block_content()">
 
-<% source = c.oils.acq.funding_source.value %>
+<script>
+    dojo.require("dijit.Dialog");
+    dojo.require('dijit.layout.TabContainer');
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require("dijit.form.FilteringSelect");
+    dojo.require("dijit.form.Textarea");
+    dojo.require("dijit.form.CurrencyTextBox");
+    dojo.require('openils.acq.FundingSource');
+    
+    var fundingSourceID = ${c.oils.acq.funding_source_id};
+    var fundingSource = null;
+
+    /** creates a new funding_source_credit from the dialog ----- */
+    function applyFSCredit(fields) {
+        fields.funding_source = fundingSourceID;
+        openils.acq.FundingSource.createCredit(
+            fields, 
+            function(fscId) {
+                location.href = location.href;
+            }
+        );
+    }
+
+    /** fetch the fleshed funding source ----- */
+    function loadFS() {
+        var ses = new OpenSRF.ClientSession('open-ils.acq');
+        var req = ses.request(
+            'open-ils.acq.funding_source.retrieve',
+            oilsAuthtoken, 
+            fundingSourceID, 
+            {flesh_summary:1, flesh_credits:1,flesh_allocations:1}
+        );
+
+        req.oncomplete = function(r) {
+            var msg = req.recv();
+            fundingSource = msg.content();
+            loadFSGrid();
+        }
+        req.send();
+    }
+
+    /** Some grid rendering accessor functions ----- */
+    function getOrgInfo(rowIndex) {
+        data = fundingSourceGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return findOrgUnit(data.owner).name(); /* XXX show shortname by default, but needs fetching */
+    }
+
+    function getSummaryInfo(rowIndex) {
+        switch(this.index) {
+            case 2: return new String(fundingSource.summary().balance);
+            case 3: return new String(fundingSource.summary().credit_total);
+            case 4: return new String(fundingSource.summary().allocation_total);
+        }
+    }
+
+    /** builds the credits grid ----- */
+    function loadFSGrid() {
+        var store = new dojo.data.ItemFileReadStore({data:acqfs.toStoreData([fundingSource])});
+        var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        model.query = {id:'*'};
+        fundingSourceGrid.setModel(model);
+        fundingSourceGrid.update();
+    }
+
+
+    /** builds the credits grid ----- */
+    function loadCreditGrid() {
+        if(fsCreditGrid.isLoaded) return;
+        var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fundingSource.credits())});
+        var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        fsCreditGrid.setModel(model);
+        fsCreditGrid.update();
+        fsCreditGrid.isLoaded = true;
+    }
+
+    /** builds the credits grid ----- */
+    function loadAllocationGrid() {
+        if(fsAllocationGrid.isLoaded) return;
+        var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fundingSource.allocations())});
+        var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        fsAllocationGrid.setModel(model);
+        fsAllocationGrid.update();
+        fsAllocationGrid.isLoaded = true;
+    }
+
+    dojo.addOnLoad(loadFS);
+</script>
+
+
 
 <div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>${source.name()}</div>
-    <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/funding_source/create_credit?${c.oils.acq.funding_source_id.cgi_name}=${source.id()}'>${_('Add Credit')}</a>
+    <div id='oils-acq-list-header-label'>${_('Funding Source Details')}</div>
+</div>
+
+<div class='oils-acq-actions-div' style='margin:8px;'> <!-- XXX CSS -->
+
+    <!-- Dropdown menu for creating a new funding source credit -->
+    <div dojoType="dijit.form.DropDownButton">
+        <span>${('Apply Credit')}</span>
+        <div dojoType="dijit.TooltipDialog" execute="applyFSCredit(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="amount">${_('Amount:')} </label></td>
+                    <td>
+                        <!-- XXX get currency from from funding source ... -->
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="note">${_('Note:')} </label></td>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"> </input>
+                        <!-- XXX textarea makes more sense, but it's buggy in the dropdown dialog .. perhaps a height issue?
+                        <textarea dojoType='dijit.form.Textarea' name="note" style='min-height:6em'> 
+                        </textarea>
+                        -->
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">${_('Apply')}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+</div>
+
+<style>
+    .oils-acq-detail-content-pane {height:500px;width:100%}
+</style>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true'>
+            <script>
+                /** Define the columns for the funding source grid ----- */
+                var fundingSourceGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Name")}', field: "name", width:'auto'}, 
+                        {name: '${_("Balance")}', get:getSummaryInfo},
+                        {name: '${_("Total Credits")}', get:getSummaryInfo},
+                        {name: '${_("Total Debits")}', get:getSummaryInfo},
+                        {name: '${_("Currency Type")}', field: "currency_type"},
+                        {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
+                    ]]
+                }];
+            </script>
+            <div jsId='fundingSourceGrid' dojoType="dojox.Grid" structure='fundingSourceGridLayout'> </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Credits')}">
+            <script type='dojo/connect' event='onShow'>loadCreditGrid();</script>
+            <script>
+                /** Define the columns for the funding source credits grid ----- */
+                var fsCreditGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Amount")}', field: "amount"}, 
+                        {name: '${_("Note")}', field: "note", width:'auto'}, 
+                    ]]
+                }];
+            </script>
+            <div jsId='fsCreditGrid' dojoType="dojox.Grid" structure='fsCreditGridLayout'> </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Allocations')}">
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
+            <script>
+                /** Define the columns for the funding source allocations grid ----- */
+                var fsAllocationGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Fund")}', field: "fund"}, 
+                        {name: '${_("Amount")}', field: "amount"}, 
+                        {name: '${_("Percent")}', field: "percent"}, 
+                        {name: '${_("Allocated By")}', field: "allocator"}, 
+                        {name: '${_("Note")}', field: "note", width:'auto'}, 
+                    ]]
+                }];
+            </script>
+            <div jsId='fsAllocationGrid' dojoType="dojox.Grid" structure='fsAllocationGridLayout'> </div>
+        </div>
     </div>
 </div>
 
-<table class='oils-admin-table'>
-    <tbody>
-        <tr>
-            <td class='oils-admin-label'>${_('Funding Source Owner')}</td>
-            <td>${source.owner().name()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Funding Source Currency Type')}</td>
-            <td>${source.currency_type()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Funding Source Credit Total')}</td>
-            <td>${source.summary()['credit_total']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Funding Source Allocation Total')}</td>
-            <td>${source.summary()['allocation_total']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Funding Source Balance')}</td>
-            <td>${source.summary()['balance']}</td> 
-        </tr>
-    </tbody>
-</table>
 </%def>

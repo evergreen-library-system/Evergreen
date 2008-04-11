@@ -8,21 +8,17 @@
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
 </div>
 
-<script>var fsGrid = null;</script>
-
-
 <script type="text/javascript">
     dojo.require("dijit.Dialog");
     dojo.require("dijit.form.FilteringSelect");
-    
-    /** Creates a new funding source */
+    dojo.require('openils.acq.FundingSource');
     function createFS(fields) {
+        /** Creates a new funding source */
         openils.acq.FundingSource.create(
             fields, 
             function(fsId) {
-                /** The grid won't update after it's been drawn, 
-                    at least not in FF, so refresh the page... */
-                location.href = location.href;
+                location.href =  /* go to the details page for this fs */
+                    '${c.oils.acq.prefix.value}/funding_source/view/'+fsId;
             }
         );
     }
@@ -69,123 +65,54 @@
     </div> 
 
     <button dojoType="dijit.form.Button" 
-            onclick="openils.acq.FundingSource.deleteFromGrid(fundingSourceGrid, function(){location.href = location.href})">
+            onclick="openils.acq.FundingSource.deleteFromGrid(
+                fundingSourceListGrid, function(){location.href = location.href})">
         ${_('Delete Selected')}
     </button>
 </div>
 
 <!-- The actual grid lives here -->
-<div id='oils-acq-funding-source-grid'> </div>
+<div id="oils-acq-funding-source-list-grid" jsId='fundingSourceListGrid' dojoType="dojox.Grid"></div>
 
 <script>
-    var fundingSourceGrid = null;
 
     function loadFSGrid() {
-        dojo.require('openils.acq.FundingSource');
-
-        function getDetailData(rowIndex) {
-            var fsId = fundingSourceGrid.model.getRow(this.grid.myDataRow).id;
-            var fs = openils.acq.FundingSource.cache[fsId];
-            switch(this.index) {
-                case 0:
-                    return fs.summary().credit_total;
-                case 1:
-                    return fs.summary().allocation_total;
-                }
-        }
 
         function getOrgInfo(rowIndex) {
-            data = fundingSourceGrid.model.getRow(rowIndex);
+            data = fundingSourceListGrid.model.getRow(rowIndex);
             if(!data) return;
             return findOrgUnit(data.owner).name(); /* XXX show shortname by default, but needs fetching */
         }
 
         function getBalanceInfo(rowIndex) {
-            data = fundingSourceGrid.model.getRow(rowIndex);
+            data = fundingSourceListGrid.model.getRow(rowIndex);
             if(!data) return;
             return new String(openils.acq.FundingSource.cache[data.id].summary().balance);
         }
-    
-        var gridCols = [
-            {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Name")}', field: "name", width:'auto'}, 
-            {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
-            {name: '${_("Currency Type")}', field: "currency_type"},
-            {name: '${_("Balance")}', field: "balance", get:getBalanceInfo}
-        ];
 
-        var subGridCells = [{
-            noscroll: true,
-            cells: [[
-                {name: "Total Credit"}, 
-                {name: "Total Allocation"}, 
-                {name: "Actions", width:'auto'}
+        function getName(rowIndex) {
+            data = fundingSourceListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+data.id+'">'+data.name+'</a>';
+        }
+    
+        var gridStructure = [{
+            cells : [[
+                {name: '${_("ID")}', field: 'id'},
+                {name: '${_("Name")}', field: "name", width:'auto', get:getName}, 
+                {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
+                {name: '${_("Currency Type")}', field: "currency_type"},
+                {name: '${_("Balance")}', field: "balance", get:getBalanceInfo}
             ]]
         }];
-
-        var subGridProps = {
-            structure: subGridCells, 
-            rowCount: 1, 
-            autoHeight: true, 
-            autoRender: false,
-            "get": getDetailData
-        };
-
-
-        function buildSubgrid(inRowIndex, inCell) {
-            var n = inCell.getNode(inRowIndex).firstChild;
-            var id = makeSubgridId(inRowIndex);
-            var subGrid = dijit.byId(id);
-            if (subGrid) {
-                n.appendChild(subGrid.domNode);
-            } else {
-                subGridProps.widgetId = id;
-                subGrid = new dojox.VirtualGrid(subGridProps, n);
-                subGrid.myDataRow = inRowIndex;
-            }
-            if (subGrid) {
-                subGrid.render();
-                subGrid.cacheHeight = subGrid.domNode.offsetHeight;
-                inCell.grid.rowHeightChanged(inRowIndex);
-            }
-        }
-
-        // identify subgrids by their row indices
-        function makeSubgridId(inRowIndex) {
-            return "fundingSourceGrid_subGrid_" + inRowIndex;
-        }
-
-        // if a subgrid exists at inRowIndex, detach it from the DOM
-        function detachSubgrid(inRowIndex) {
-            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
-            if (subGrid)
-                dojox.grid.removeNode(subGrid.domNode);
-        }
-
-        // provide html for the Detail cell in the master grid
-        function getDetail(inRowIndex) {
-            var cell = this;
-            setTimeout(function() { buildSubgrid(inRowIndex, cell); }, 1);
-            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
-            var h = (subGrid ? subGrid.cacheHeight : "120") + "px";
-            return '<div></div>';
-        }
-
-        // destroy subgrid at inRowIndex
-        function destroySubgrid(inRowIndex) {
-            var subGrid = dijit.byId(makeSubgridId(inRowIndex));
-            if (subGrid) subGrid.destroy();
-        }
-
-        fundingSourceGrid = util.Dojo.buildExpandoGrid(
-            'oils-acq-funding-source-grid', gridCols, getDetail);
 
         openils.acq.FundingSource.createStore(
             function(storeData) {
                 var store = new dojo.data.ItemFileWriteStore({data:storeData});
-                var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true});
-                fundingSourceGrid.setModel(model);
-                fundingSourceGrid.update();
+                var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+                fundingSourceListGrid.setStructure(gridStructure);
+                fundingSourceListGrid.setModel(model);
+                fundingSourceListGrid.update();
             }
         );
     }

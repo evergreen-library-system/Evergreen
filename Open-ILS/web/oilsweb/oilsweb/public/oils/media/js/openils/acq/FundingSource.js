@@ -50,9 +50,28 @@ openils.acq.FundingSource.create = function(fields, onCreateComplete) {
     req.oncomplete = function(r) {
         var msg = r.recv();
         var id = msg.content();
-        fs.id(id); /* XXX check for event */
         if(onCreateComplete)
-            onCreateComplete(fs);
+            onCreateComplete(id);
+    };
+    req.send();
+};
+
+
+openils.acq.FundingSource.createCredit = function(fields, onCreateComplete) {
+
+    var fsc = new acqfscred()
+    for(var field in fields) 
+        fsc[field](fields[field]);
+
+    var ses = new OpenSRF.ClientSession('open-ils.acq');
+    var req = ses.request(
+        'open-ils.acq.funding_source_credit.create', oilsAuthtoken, fsc);
+
+    req.oncomplete = function(r) {
+        var msg = r.recv();
+        var id = msg.content();
+        if(onCreateComplete)
+            onCreateComplete(id);
     };
     req.send();
 };
@@ -73,8 +92,11 @@ openils.acq.FundingSource.deleteList = function(list, onComplete) {
 openils.acq.FundingSource._deleteList = function(list, idx, onComplete) {
     if(idx >= list.length)    
         return onComplete();
+
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.funding_source.delete', oilsAuthtoken, list[idx]);
+    delete openils.acq.FundingSource.cache[list[idx]];
+
     req.oncomplete = function(r) {
         msg = r.recv()
         stat = msg.content();
