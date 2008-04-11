@@ -13,8 +13,10 @@
     dojo.require("dijit.form.CurrencyTextBox");
     dojo.require('openils.acq.FundingSource');
     
+    var ses = new OpenSRF.ClientSession('open-ils.acq');
     var fundingSourceID = ${c.oils.acq.funding_source_id};
     var fundingSource = null;
+    var fundCache = {};
 
     /** creates a new funding_source_credit from the dialog ----- */
     function applyFSCredit(fields) {
@@ -29,11 +31,8 @@
 
     /** fetch the fleshed funding source ----- */
     function loadFS() {
-        var ses = new OpenSRF.ClientSession('open-ils.acq');
         var req = ses.request(
-            'open-ils.acq.funding_source.retrieve',
-            oilsAuthtoken, 
-            fundingSourceID, 
+            'open-ils.acq.funding_source.retrieve', oilsAuthtoken, fundingSourceID, 
             {flesh_summary:1, flesh_credits:1,flesh_allocations:1}
         );
 
@@ -58,6 +57,20 @@
             case 3: return new String(fundingSource.summary().credit_total);
             case 4: return new String(fundingSource.summary().allocation_total);
         }
+    }
+    
+    function getFund(rowIndex) {
+        /** synchronous version ... XXX need to refactor this to be async */
+        data = fsAllocationGrid.model.getRow(rowIndex);
+        if(!data) return;
+        var fundId = data.fund;
+        if(!fundCache[fundId]) {
+            req = ses.request('open-ils.acq.fund.retrieve', oilsAuthtoken, fundId);
+            req.timeout = 10;
+            req.send();
+            fundCache[fundId] = req.recv().content();
+        }
+        return fundCache[fundId].name()
     }
 
     /** builds the credits grid ----- */
@@ -177,7 +190,7 @@
                 var fsAllocationGridLayout = [{
                     cells : [[
                         {name: '${_("ID")}', field: 'id'},
-                        {name: '${_("Fund")}', field: "fund"}, 
+                        {name: '${_("Fund")}', field: "fund", get:getFund}, 
                         {name: '${_("Amount")}', field: "amount"}, 
                         {name: '${_("Percent")}', field: "percent"}, 
                         {name: '${_("Allocated By")}', field: "allocator"}, 
