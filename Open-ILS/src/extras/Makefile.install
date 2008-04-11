@@ -98,6 +98,7 @@ DEBS =  \
 	libtext-csv-perl\
 	libspreadsheet-writeexcel-perl\
 	libtie-ixhash-perl\
+	python-dev\
 	python-setuptools\
 	libfreezethaw-perl
 
