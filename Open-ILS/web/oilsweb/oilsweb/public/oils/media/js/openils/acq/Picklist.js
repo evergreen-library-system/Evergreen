@@ -30,9 +30,10 @@ dojo.declare('openils.acq.Picklist', null, {
     req.oncomplete = function(r) {
         var msg
         gridRefs.grid.setModel(gridRefs.model);
+        gridRefs.model.query = {id:'*'};
         while(msg = r.recv()) {
             var jub = msg.content();
-	    alert(js2JSON(jub));
+	    //alert(js2JSON(jub));
             gridRefs.store.newItem({
 		    id:jub.id(),
 		    title:openils.acq.Picklist.find_attr(jub, "title", "lineitem_marc_attr_definition"),
