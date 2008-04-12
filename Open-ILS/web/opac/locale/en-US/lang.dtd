@@ -1739,8 +1739,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_mark_library.accesskey "M">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items.label "Add Items">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items.accesskey "A">
-<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Volumes">
-<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_volumes.label "Edit Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey "E">
 <!ENTITY staff.cat.copy_browser.actions.cmd_mark_volume.label "Mark Volume as Item Transfer Destination">
 <!ENTITY staff.cat.copy_browser.actions.cmd_mark_volume.accesskey "M">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.label "Transfer Volumes to Previously Marked Library">

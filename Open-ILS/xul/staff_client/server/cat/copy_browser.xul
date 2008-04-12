@@ -112,7 +112,7 @@ vim:noet:sw=4:ts=4:
 			<menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.actions.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_library.accesskey;"/>
 			<menuseparator/>
 			<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.actions.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items.accesskey;"/>
-			<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
+			<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.actions.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey;"/>
 			<menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.actions.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_volume.accesskey;"/>
 			<menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.actions.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey;"/>
 			<menuseparator/>
