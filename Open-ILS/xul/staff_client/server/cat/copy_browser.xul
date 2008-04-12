@@ -153,7 +153,7 @@ vim:noet:sw=4:ts=4:
 					<menupopup>
 						<menuitem command="sel_clip" label="&staff.cat.copy_browser.holdings_maintenance.sel_clip.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey;"/>
 						<menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey;"/>
-						<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label";" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey;" />
+						<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey;" />
 						<menuitem command="sel_patron" label="&staff.cat.copy_browser.holdings_maintenance.sel_patron.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey;"/>
 						<menuseparator/>
 						<menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey;"/>
