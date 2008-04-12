@@ -71,7 +71,7 @@ static char* getSourceDefinition( osrfHash* );
 
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
-osrfHash readHandles;
+//static osrfHash * readHandles;
 static jsonObject* jsonNULL = NULL; // 
 static int max_flesh_depth = 100;
 
@@ -451,7 +451,7 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 		
 		if (!ctx->session->userData) {
 			ctx->session->userData = osrfNewHash();
-			((osrfHash*)ctx->session->userData)->freeItem = &sessionDataFree;
+			osrfHashSetCallback((osrfHash*)ctx->session->userData, &sessionDataFree);
 		}
 
 		osrfHashSet( (osrfHash*)ctx->session->userData, strdup( ctx->session->session_id ), "xact_id" );
