@@ -100,7 +100,11 @@ DEBS =  \
 	libtie-ixhash-perl\
 	python-dev\
 	python-setuptools\
-	libfreezethaw-perl
+	libfreezethaw-perl\
+	libbusiness-creditcard-perl\
+	libbusiness-onlinepayment-perl\
+	libbusiness-onlinepayment-authorizenet-perl
+
 
 PGSQL_DEBIAN = \
 	postgresql-8.1\
@@ -183,7 +187,8 @@ CPAN_MODULES = \
     MARC::Charset MARC::File::XML\
     JSON::XS\
     SRU \
-    Net::Z3950::ZOOM
+    Net::Z3950::ZOOM \
+	Business::CreditCard::Object
 
 
 # ----------------------------------------------------------------------------
