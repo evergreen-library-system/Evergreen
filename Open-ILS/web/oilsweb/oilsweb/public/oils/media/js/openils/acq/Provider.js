@@ -31,7 +31,7 @@ openils.acq.Provider.loadGrid = function(domId, columns) {
 
     var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.provider.org.retrieve', oilsAuthtoken);
+    var req = ses.request('open-ils.acq.provider.org.retrieve', openils.User.authtoken);
 
     req.oncomplete = function(r) {
         var msg

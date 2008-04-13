@@ -31,7 +31,7 @@ openils.acq.FundingSource.createStore = function(onComplete) {
     /** Fetches the list of funding_sources and builds a grid from them */
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.funding_source.org.retrieve', 
-        oilsAuthtoken, null, {flesh_summary:1});
+        openils.User.authtoken, null, {flesh_summary:1});
 
     req.oncomplete = function(r) {
         var msg
@@ -61,7 +61,7 @@ openils.acq.FundingSource.create = function(fields, onCreateComplete) {
         fs[field](fields[field]);
 
     var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.funding_source.create', oilsAuthtoken, fs);
+    var req = ses.request('open-ils.acq.funding_source.create', openils.User.authtoken, fs);
 
     req.oncomplete = function(r) {
         var msg = r.recv();
@@ -81,7 +81,7 @@ openils.acq.FundingSource.createCredit = function(fields, onCreateComplete) {
 
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request(
-        'open-ils.acq.funding_source_credit.create', oilsAuthtoken, fsc);
+        'open-ils.acq.funding_source_credit.create', openils.User.authtoken, fsc);
 
     req.oncomplete = function(r) {
         var msg = r.recv();
@@ -110,7 +110,7 @@ openils.acq.FundingSource._deleteList = function(list, idx, onComplete) {
         return onComplete();
 
     var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.funding_source.delete', oilsAuthtoken, list[idx]);
+    var req = ses.request('open-ils.acq.funding_source.delete', openils.User.authtoken, list[idx]);
     delete openils.acq.FundingSource.cache[list[idx]];
 
     req.oncomplete = function(r) {

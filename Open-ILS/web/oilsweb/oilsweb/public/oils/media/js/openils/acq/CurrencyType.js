@@ -28,7 +28,7 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
      */
     openils.acq.CurrencyType.fetchAll = function(onComplete) {
         var req = new OpenSRF.ClientSession('open-ils.acq').request(
-            'open-ils.acq.currency_type.all.retrieve', oilsAuthtoken);
+            'open-ils.acq.currency_type.all.retrieve', openils.User.authtoken);
 
         req.oncomplete = function(r) {
             var msg = r.recv();

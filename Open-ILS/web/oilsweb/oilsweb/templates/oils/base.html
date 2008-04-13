@@ -33,12 +33,6 @@
 </%def>
 
 <%def name='block_js()'>
-
-    <!-- set up some global JS variables -->
-    <script type='text/javascript'>
-        var oilsAuthtoken = '${c.oils.core.authtoken.value}';
-    </script>
-
     <!-- some of these will dojo-ized ... -->
     <script src='${c.oils.core.media_prefix.value}/js/opensrf/JSON_v1.js'> </script>
     <script src='${c.oils.core.media_prefix.value}/js/opensrf/opensrf.js'> </script>
@@ -65,6 +59,12 @@
         dojo.require("dojox.grid._data.model");
         dojo.require("fieldmapper.dojoData");
         dojo.require("fieldmapper.OrgUtils");
+        dojo.require("openils.User");
+    </script>
+
+    <!-- set up some global JS variables -->
+    <script type='text/javascript'>
+        openils.User.authtoken = '${c.oils.core.authtoken.value}';
     </script>
 </%def>
 

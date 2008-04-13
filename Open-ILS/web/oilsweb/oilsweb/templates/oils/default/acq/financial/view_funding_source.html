@@ -32,7 +32,7 @@
     /** fetch the fleshed funding source ----- */
     function loadFS() {
         var req = ses.request(
-            'open-ils.acq.funding_source.retrieve', oilsAuthtoken, fundingSourceID, 
+            'open-ils.acq.funding_source.retrieve', openils.User.authtoken, fundingSourceID, 
             {flesh_summary:1, flesh_credits:1,flesh_allocations:1}
         );
 
@@ -65,7 +65,7 @@
         if(!data) return;
         var fundId = data.fund;
         if(!fundCache[fundId]) {
-            req = ses.request('open-ils.acq.fund.retrieve', oilsAuthtoken, fundId);
+            req = ses.request('open-ils.acq.fund.retrieve', openils.User.authtoken, fundId);
             req.timeout = 10;
             req.send();
             fundCache[fundId] = req.recv().content();

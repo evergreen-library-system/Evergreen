@@ -25,7 +25,7 @@ dojo.declare('openils.acq.Picklist', null, {
     var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var req = ses.request('open-ils.acq.lineitem.picklist.retrieve', 
-        oilsAuthtoken, pl_id, {flesh_attrs:1});
+        openils.User.authtoken, pl_id, {flesh_attrs:1});
 
     req.oncomplete = function(r) {
         var msg
