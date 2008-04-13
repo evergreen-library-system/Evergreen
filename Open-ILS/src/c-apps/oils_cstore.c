@@ -3175,7 +3175,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 							jsonNewNumberObject(dbi_result_get_longlong(result, columnName)));
 					else 
 						jsonObjectSetIndex( object, fmIndex, 
-							jsonNewNumberObject(dbi_result_get_long(result, columnName)));
+							jsonNewNumberObject(dbi_result_get_int(result, columnName)));
 
 					break;
 
@@ -3265,7 +3265,7 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 					if( attr & DBI_INTEGER_SIZE8 ) 
 						jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_longlong(result, columnName)) );
 					else 
-						jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_long(result, columnName)) );
+						jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_int(result, columnName)) );
 					break;
 
 				case DBI_TYPE_DECIMAL :
