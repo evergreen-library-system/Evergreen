@@ -714,7 +714,7 @@ function doLogin(suppressEvents) {
 	return u;
 }
 
-function doLogout(noredirect) {
+function doLogout() {
 
 	/* cancel everything else */
 	abortAllRequests();
