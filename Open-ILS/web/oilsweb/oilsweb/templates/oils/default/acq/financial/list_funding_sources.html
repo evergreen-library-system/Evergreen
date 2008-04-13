@@ -12,6 +12,8 @@
     dojo.require("dijit.Dialog");
     dojo.require("dijit.form.FilteringSelect");
     dojo.require('openils.acq.FundingSource');
+    dojo.require('openils.Event');
+    dojo.require('openils.acq.CurrencyType');
     function createFS(fields) {
         /** Creates a new funding source */
         openils.acq.FundingSource.create(
@@ -36,7 +38,7 @@
                 <tr>
                     <td><label for="loc">${_('Owning Location:')} </label></td>
                     <td>
-                        <select name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                        <select jsId='fsOwnerSelect' name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
                             <!-- XXX get orgs from DB... -->
                             <option value='2'>SYS1</option>
                             <option value='3'>SYS2</option>
@@ -81,7 +83,7 @@
         function getOrgInfo(rowIndex) {
             data = fundingSourceListGrid.model.getRow(rowIndex);
             if(!data) return;
-            return findOrgUnit(data.owner).name(); /* XXX show shortname by default, but needs fetching */
+            return fieldmapper.aou.findOrgUnit(data.owner).shortname();
         }
 
         function getBalanceInfo(rowIndex) {
@@ -109,7 +111,8 @@
         openils.acq.FundingSource.createStore(
             function(storeData) {
                 var store = new dojo.data.ItemFileWriteStore({data:storeData});
-                var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+                var model = new dojox.grid.data.DojoData(null, store, 
+                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
                 fundingSourceListGrid.setStructure(gridStructure);
                 fundingSourceListGrid.setModel(model);
                 fundingSourceListGrid.update();

@@ -48,7 +48,7 @@
     function getOrgInfo(rowIndex) {
         data = fundingSourceGrid.model.getRow(rowIndex);
         if(!data) return;
-        return findOrgUnit(data.owner).name(); /* XXX show shortname by default, but needs fetching */
+        return fieldmapper.aou.findOrgUnit(data.owner).shortname();
     }
 
     function getSummaryInfo(rowIndex) {
