@@ -40,9 +40,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            if (typeof JSAN == 'undefined') {
-               throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-            }
+				if (typeof JSAN == 'undefined') {
+					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -60,11 +60,14 @@
 					}
 				);
 
-				$('desc').appendChild( document.createTextNode( 
-					(g.copy_ids.length == 1 ?
-						$('catStrings').getString('staff.cat.copy_buckets_quick.bucket_prompt') :
-						$('catStrings').getFormattedString('staff.cat.copy_buckets_quick.bucket_prompt.plural', [g.copy_ids.length]) 
-				) );
+				$('desc').appendChild(
+					document.createTextNode( 
+						(g.copy_ids.length == 1 ?
+							$('catStrings').getString('staff.cat.copy_buckets_quick.bucket_prompt') :
+							$('catStrings').getFormattedString('staff.cat.copy_buckets_quick.bucket_prompt.plural', [g.copy_ids.length]) 
+						) 
+					)
+				);
 				var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
 				if (typeof robj.ilsevent != 'undefined') throw(robj);
 
@@ -107,7 +110,7 @@
 					g.add_to_bucket(bucket_id);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert($('catStrings).getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error'), E);
+				g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error'), E);
 			}
 		}
 
@@ -147,6 +150,10 @@
 
 	]]>
 	</script>
+
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<vbox flex="1" style="overflow: auto">
 	<groupbox flex="1">
