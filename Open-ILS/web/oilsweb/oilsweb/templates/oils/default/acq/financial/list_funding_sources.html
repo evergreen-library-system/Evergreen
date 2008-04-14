@@ -17,15 +17,22 @@
 
     function createFS(fields) {
         /** Creates a new funding source */
+        var tree = dijit.byId('oils-acq-funding_source-owner-tree');
+        fields.owner = tree.selected;
         openils.acq.FundingSource.create(
             fields, 
             function(fsId) {
-                location.href =  /* go to the details page for this fs */
-                    '${c.oils.acq.prefix.value}/funding_source/view/'+fsId;
+                var evt = openils.Event.parse(fsId);
+                if(evt) {
+                    alert(evt); /* XXX */
+                    return;
+                } else {
+                    location.href =  /* go to the details page for this fs */
+                        '${c.oils.acq.prefix.value}/funding_source/view/'+fsId;
+                }
             }
         );
     }
-
 </script>
 
 <div class='oils-acq-actions-div'>
@@ -38,19 +45,17 @@
                     <td><input dojoType="dijit.form.TextBox" name="name"></td>
                 </tr>
                 <tr>
-                    <td><label for="loc">${_('Owning Location:')} </label></td>
-                    <td>
-                        <input jsId='fsOwnerSelect' name="owner" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='shortname'>
-                        </input>
-                    </td>
-                </tr>
-                <tr>
                     <td><label for="currency_type">${_('Currency Type:')}</label></td>
                     <td>
                         <input jsId='fsCurrencySelector' name="currency_type" 
                             dojoType="dijit.form.FilteringSelect" searchAttr='code'>
                         </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="owner">${_('Owning Location:')} </label></td>
+                    <td>
+                        <div id='oils-acq-funding_source-owner-tree'> </div>
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +79,7 @@
 
 <script>
 
-    function loadFSGrid() {
+    function loadCurrencyTypes() {
         openils.acq.CurrencyType.fetchAll(
             function(ctypes) {
                 fsCurrencySelector.store = 
@@ -82,31 +87,41 @@
                         {data:acqct.toStoreData(ctypes, 'code', {identifier:'code'})}
                     );
                 fsCurrencySelector.labelAttr = 'code';
-                /* XXX get default currency from setting */
-                fsCurrencySelector.setValue(ctypes[0].code());
-
-                loadPermOrgs();
+                fsCurrencySelector.setValue(ctypes[0].code()); /* XXX get from setting */
             }
         );
     }
-    
+
     function loadPermOrgs() {
-        openils.User.getPermOrgList('ADMIN_FUNDING_SOURCE', drawFSGrid);
+        var ses = new OpenSRF.ClientSession('open-ils.actor');
+        var req = ses.request(
+            'open-ils.actor.user.work_perm.org_unit_list',
+            openils.User.authtoken, 'ADMIN_FUNDING_SOURCE');
+
+        req.oncomplete = function(r) {
+            var orgList = r.recv().content();
+            var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+            var model = new dijit.tree.ForestStoreModel({
+                store: store,
+                query: {_top:'true'},
+                childrenAttrs: ["children"],
+                rootLabel : '${_("Location")}'
+            });
+
+            var tree = new dijit.Tree(
+                {model : model},
+                dojo.byId('oils-acq-funding_source-owner-tree')
+            );
+            dojo.connect(tree, 'onClick', function(item) {tree.selected = item.id[0]});
+            tree.startup()
+        }
+        req.send();
     }
 
-    function drawFSGrid(orgIdList) {
-
-        /* XXX put child orgs in the list as well... */
-        var orgList = [];
-        for(var i in orgIdList)
-            orgList.push(fieldmapper.aou.findOrgUnit(orgIdList[i]));
-
-        fsOwnerSelect.store = 
-            new dojo.data.ItemFileReadStore(
-                {data:aou.toStoreData(orgList)}
-            );
-        fsOwnerSelect.labelAttr = 'shortname';
-        fsOwnerSelect.setValue(orgIdList[0]);
+    function loadFSGrid() {
+        openils.User.getBySession();
+        loadCurrencyTypes();
+        loadPermOrgs();
 
         function getOrgInfo(rowIndex) {
             data = fundingSourceListGrid.model.getRow(rowIndex);
