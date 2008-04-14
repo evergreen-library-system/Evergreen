@@ -30,13 +30,19 @@ if(!dojo._hasResource["openils.User"]) {
 
     openils.User.getBySession = function(onComplete) {
         var req = ses.request('open-ils.auth.session.retrieve', openils.User.authtoken);
-        req.oncomplete = function(r) {
-            var user = r.recv().content();
-            openils.User.user = user;
-            if(onComplete)
-                onComplete(user);
+        if(onComplete) {
+            req.oncomplete = function(r) {
+                var user = r.recv().content();
+                openils.User.user = user;
+                if(onComplete)
+                    onComplete(user);
+            }
+            req.send();
+        } else {
+            req.timeout = 10;
+            req.send();
+            return openils.User.user = req.recv().content();
         }
-        req.send();
     }
 
     openils.User.getById = function(id, onComplete) {
