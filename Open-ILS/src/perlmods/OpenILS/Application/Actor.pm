@@ -1314,7 +1314,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method => 'check_user_work_perms',
-	api_name	=> 'open-ils.actor.user.work_perm.highest_org_tree_set',
+	api_name	=> 'open-ils.actor.user.work_perm.org_tree_list',
     authoritative => 1,
     signature => q/
         @see open-ils.actor.user.work_perm.highest_org_set
@@ -1324,13 +1324,45 @@ __PACKAGE__->register_method(
     /
 );
 
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms',
+	api_name	=> 'open-ils.actor.user.work_perm.org_unit_list',
+    authoritative => 1,
+    signature => q/
+        @see open-ils.actor.user.work_perm.highest_org_set
+        Returns a flat list of all of the org_units where the user
+        has the requested permission.
+    /
+);
+
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms',
+	api_name	=> 'open-ils.actor.user.work_perm.org_id_list',
+    authoritative => 1,
+    signature => q/
+        @see open-ils.actor.user.work_perm.highest_org_set
+        Returns a flat list of all of the org_units where the user
+        has the requested permission.
+    /
+);
+
 sub check_user_work_perms {
     my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $orglist = $U->find_highest_work_orgs($e, $perm, $options);
-    return $orglist unless $self->api_name =~ /tree/;
-    return get_org_descendants($self, $conn, $orglist);
+
+    return $orglist if
+        $self->api_name =~ /highest_org_set/;
+
+    # build a list of org trees
+    return get_org_descendants($self, $conn, $orglist)
+        if $self->api_name =~ /org_tree_set/;
+
+    my @list;
+    push(@list, @{$U->get_org_descendants($_)}) for @$orglist;
+    return \@list if $self->api_name =~ /org_id_list/;
+    return $e->batch_retrieve_actor_org_unit(\@list);
 }
 
 
