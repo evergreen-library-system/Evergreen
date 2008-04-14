@@ -53,7 +53,7 @@ sub initialize {
 }
 sub child_init {}
 
-sub CRUD_action_object_permcheck {
+sub fielder_fetch {
     my $self = shift;
     my $client = shift;
     my $obj = shift;
@@ -91,7 +91,7 @@ sub generate_methods {
             $log->debug("Fielder class_node $hint");
         
             __PACKAGE__->register_method(
-                method          => 'CRUD_action_object_permcheck',
+                method          => 'fielder_fetch',
                 api_name        => 'open-ils.fielder.' . $hint,
                 class_hint      => $hint,
                 stream          => 1,
