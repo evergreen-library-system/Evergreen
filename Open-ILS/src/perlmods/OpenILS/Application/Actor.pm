@@ -1312,12 +1312,27 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms',
+	api_name	=> 'open-ils.actor.user.work_perm.highest_org_tree_set',
+    authoritative => 1,
+    signature => q/
+        @see open-ils.actor.user.work_perm.highest_org_set
+        Returns a list of org trees.  The root of each tree
+        is the highest org in the organization hierarchy where the user has the
+        requested permission.  Below each tree root is its full tree of descendants.  
+    /
+);
+
 sub check_user_work_perms {
     my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $U->find_highest_work_orgs($e, $perm, $options);
+    my $orglist = $U->find_highest_work_orgs($e, $perm, $options);
+    return $orglist unless $self->api_name =~ /tree/;
+    return get_org_descendants($self, $conn, $orglist);
 }
+
 
 __PACKAGE__->register_method(
 	method => 'check_user_perms4',
