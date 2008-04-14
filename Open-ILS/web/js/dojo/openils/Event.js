@@ -45,7 +45,7 @@ if(!dojo._hasResource["openils.Event"]) {
      * null is returned
      */
     openils.Event.parse = function(evt) {
-        if(evt && 'ilsevent' in evt && 'textcode' in evt)
+        if(evt && typeof evt == 'object' && 'ilsevent' in evt && 'textcode' in evt)
             return new openils.Event(evt);
         return null;
     }
