@@ -1026,6 +1026,84 @@ INSERT INTO permission.perm_list VALUES
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
+INSERT INTO permission.perm_list (code) VALUES ('ASSIGN_GROUP_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_AUDIENCE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_BIB_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_CIRC_DURATION');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_CIRC_MOD');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_COPY_STATUS');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_HOURS_OF_OPERATION');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ITEM_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ITEM_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_LANGUAGE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_LASSO');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_LASSO_MAP');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_LIT_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_METABIB_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_NET_ACCESS_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ORG_ADDRESS');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ORG_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ORG_UNIT');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ORG_UNIT_CLOSING');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_RELEVANCE_ADJUSTMENT');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_SURVEY');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_VR_FORMAT');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_XML_TRANSFORM');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_AUDIENCE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_BIB_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_CIRC_DURATION');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_CIRC_MOD');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_COPY_STATUS');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_HOURS_OF_OPERATION');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ITEM_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ITEM_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_LANGUAGE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_LASSO');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_LASSO_MAP');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_LIT_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_METABIB_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_NET_ACCESS_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ORG_ADDRESS');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ORG_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ORG_UNIT');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ORG_UNIT_CLOSING');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_RELEVANCE_ADJUSTMENT');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_SURVEY');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_TRANSIT');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_VR_FORMAT');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_XML_TRANSFORM');
+INSERT INTO permission.perm_list (code) VALUES ('REMOVE_GROUP_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('TRANSIT_COPY');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_AUDIENCE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_BIB_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_CIRC_DURATION');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_CIRC_MOD');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_COPY_NOTE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_COPY_STATUS');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_GROUP_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_HOURS_OF_OPERATION');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ITEM_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ITEM_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_LANGUAGE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_LASSO');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_LASSO_MAP');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_LIT_FORM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_METABIB_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_NET_ACCESS_LEVEL');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_ADDRESS');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_TYPE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_CLOSING');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_RELEVANCE_ADJUSTMENT');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_SURVEY');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_TRANSIT');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_VOLUME_NOTE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_VR_FORMAT');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_XML_TRANSFORM');
+
+
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, 'Users', NULL, NULL, '3 years', FALSE, 'group_application.user');
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
@@ -1176,4 +1254,5 @@ INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/
 INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '');
 INSERT INTO config.xml_transform VALUES ( 'mods3', 'http://www.loc.gov/mods/v3', 'mods3', '');
 INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3', 'mods32', '');
+
 
