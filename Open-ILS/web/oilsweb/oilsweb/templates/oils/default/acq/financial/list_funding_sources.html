@@ -40,12 +40,9 @@
                 <tr>
                     <td><label for="loc">${_('Owning Location:')} </label></td>
                     <td>
-                        <select jsId='fsOwnerSelect' name="owner" dojoType="dijit.form.FilteringSelect" searchAttr='shortname'>
-                            <!-- XXX get orgs from DB... -->
-                            <option value='2'>SYS1</option>
-                            <option value='3'>SYS2</option>
-                            <option value='7'>BR4</option>
-                        </select>
+                        <input jsId='fsOwnerSelect' name="owner" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='shortname'>
+                        </input>
                     </td>
                 </tr>
                 <tr>
@@ -78,19 +75,38 @@
 <script>
 
     function loadFSGrid() {
-        openils.acq.CurrencyType.fetchAll(drawFSGrid);
+        openils.acq.CurrencyType.fetchAll(
+            function(ctypes) {
+                fsCurrencySelector.store = 
+                    new dojo.data.ItemFileReadStore(
+                        {data:acqct.toStoreData(ctypes, 'code', {identifier:'code'})}
+                    );
+                fsCurrencySelector.labelAttr = 'code';
+                /* XXX get default currency from setting */
+                fsCurrencySelector.setValue(ctypes[0].code());
+
+                loadPermOrgs();
+            }
+        );
+    }
+    
+    function loadPermOrgs() {
+        openils.User.getPermOrgList('ADMIN_FUNDING_SOURCE', drawFSGrid);
     }
 
-    function drawFSGrid(ctypes) {
+    function drawFSGrid(orgIdList) {
 
-        fsCurrencySelector.store = 
+        /* XXX put child orgs in the list as well... */
+        var orgList = [];
+        for(var i in orgIdList)
+            orgList.push(fieldmapper.aou.findOrgUnit(orgIdList[i]));
+
+        fsOwnerSelect.store = 
             new dojo.data.ItemFileReadStore(
-                {data:acqct.toStoreData(ctypes, 'code', {identifier:'code'})}
+                {data:aou.toStoreData(orgList)}
             );
-        fsCurrencySelector.labelAttr = 'code';
-
-        /* XXX get default currency from setting */
-        fsCurrencySelector.setValue(ctypes[0].code());
+        fsOwnerSelect.labelAttr = 'shortname';
+        fsOwnerSelect.setValue(orgIdList[0]);
 
         function getOrgInfo(rowIndex) {
             data = fundingSourceListGrid.model.getRow(rowIndex);
