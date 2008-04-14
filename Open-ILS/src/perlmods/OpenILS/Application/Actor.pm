@@ -1330,8 +1330,12 @@ __PACKAGE__->register_method(
     authoritative => 1,
     signature => q/
         @see open-ils.actor.user.work_perm.highest_org_set
-        Returns a flat list of all of the org_units where the user
-        has the requested permission.
+        Returns a list of list of all of the org_units where the user
+        has the requested permission.  The first item in each list
+        is the highest permission org for that section of the
+        org tree.  The remaining items in each sub-list are the 
+        descendants of that org.
+
     /
 );
 
@@ -1341,8 +1345,11 @@ __PACKAGE__->register_method(
     authoritative => 1,
     signature => q/
         @see open-ils.actor.user.work_perm.highest_org_set
-        Returns a flat list of all of the org_units where the user
-        has the requested permission.
+        Returns a list of lists of all of the org_unit IDs where the user
+        has the requested permission.  The first item in each list
+        is the highest permission org for that section of the
+        org tree.  The remaining items in each sub-list are the 
+        descendants of that org.
     /
 );
 
@@ -1352,17 +1359,24 @@ sub check_user_work_perms {
     return $e->event unless $e->checkauth;
     my $orglist = $U->find_highest_work_orgs($e, $perm, $options);
 
-    return $orglist if
-        $self->api_name =~ /highest_org_set/;
+    return $orglist if $self->api_name =~ /highest_org_set/;
 
     # build a list of org trees
     return get_org_descendants($self, $conn, $orglist)
         if $self->api_name =~ /org_tree_list/;
 
     my @list;
-    push(@list, @{$U->get_org_descendants($_)}) for @$orglist;
-    return \@list if $self->api_name =~ /org_id_list/;
-    return $e->batch_retrieve_actor_org_unit(\@list);
+    for my $orgid (@$orglist) {
+        my @sublist = grep {$_ ne $orgid} @{$U->get_org_descendants($orgid)};
+        unshift @sublist, $orgid; # make sure it's at the front of the list
+        if($self->api_name =~ /org_id_list/) {
+            push(@list, \@sublist);
+        } else {
+            push(@list, $e->batch_retrieve_actor_org_unit(\@sublist));
+        }
+    }
+
+    return \@list;
 }
 
 
