@@ -1048,11 +1048,26 @@ __PACKAGE__->register_method(
 # depth is optional.  org_unit is the id
 sub get_org_descendants {
 	my( $self, $client, $org_unit, $depth ) = @_;
-	my $orglist = $apputils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.actor.org_unit.descendants.atomic",
-			$org_unit, $depth );
-	return $U->build_org_tree($orglist);
+
+    if(ref $org_unit eq 'ARRAY') {
+        $depth ||= [];
+        my @trees;
+        for my $i (0..scalar(@$org_unit)-1) {
+            my $list = $U->simple_scalar_request(
+			    "open-ils.storage", 
+			    "open-ils.storage.actor.org_unit.descendants.atomic",
+			    $org_unit->[$i], $depth->[$i] );
+            push(@trees, $U->build_org_tree($list));
+        }
+        return \@trees;
+
+    } else {
+	    my $orglist = $apputils->simple_scalar_request(
+			    "open-ils.storage", 
+			    "open-ils.storage.actor.org_unit.descendants.atomic",
+			    $org_unit, $depth );
+	    return $U->build_org_tree($orglist);
+    }
 }
 
 
