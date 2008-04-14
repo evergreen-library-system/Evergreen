@@ -1357,7 +1357,7 @@ sub check_user_work_perms {
 
     # build a list of org trees
     return get_org_descendants($self, $conn, $orglist)
-        if $self->api_name =~ /org_tree_set/;
+        if $self->api_name =~ /org_tree_list/;
 
     my @list;
     push(@list, @{$U->get_org_descendants($_)}) for @$orglist;
