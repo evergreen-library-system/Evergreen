@@ -61,16 +61,19 @@ sub fielder_fetch {
     my $query = $obj->{query};
     my $fields = $obj->{fields};
 
+    $log->debug( 'Field list: '. OpenSRF::Utils::JSON->perl2JSON( $fields ) );
+    $log->debug( 'Query: '. OpenSRF::Utils::JSON->perl2JSON( $query ) );
+
     return undef unless $fields;
     return undef unless $query;
 
     $fields = [$fields] if (!ref($fields));
 
-    my $e = new_editor();
-
     my $obj_class = $self->{class_hint};
 
-    my $req = $e-json_query({
+    $log->debug( 'Query Class: '. $obj_class );
+
+    my $req = new_editor()->json_query({
         select  => { $obj_class => $fields },
         from    => $obj_class,
         where   => $query
