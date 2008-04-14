@@ -14,6 +14,7 @@
     dojo.require('openils.acq.FundingSource');
     dojo.require('openils.Event');
     dojo.require('openils.acq.CurrencyType');
+
     function createFS(fields) {
         /** Creates a new funding source */
         openils.acq.FundingSource.create(
@@ -24,6 +25,7 @@
             }
         );
     }
+
 </script>
 
 <div class='oils-acq-actions-div'>
@@ -38,7 +40,7 @@
                 <tr>
                     <td><label for="loc">${_('Owning Location:')} </label></td>
                     <td>
-                        <select jsId='fsOwnerSelect' name="owner" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
+                        <select jsId='fsOwnerSelect' name="owner" dojoType="dijit.form.FilteringSelect" searchAttr='shortname'>
                             <!-- XXX get orgs from DB... -->
                             <option value='2'>SYS1</option>
                             <option value='3'>SYS2</option>
@@ -49,12 +51,9 @@
                 <tr>
                     <td><label for="currency_type">${_('Currency Type:')}</label></td>
                     <td>
-                        <select name="currency_type" dojoType="dijit.form.FilteringSelect" autocomplete="false" >
-                            <!-- XXX get-currency-types from DB... -->
-                            <option value='CAN'>CAN</option>
-                            <option value='EUR'>EUR</option>
-                            <option value='USD'>USD</option>
-                        </select>
+                        <input jsId='fsCurrencySelector' name="currency_type" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code'>
+                        </input>
                     </td>
                 </tr>
                 <tr>
@@ -79,6 +78,19 @@
 <script>
 
     function loadFSGrid() {
+        openils.acq.CurrencyType.fetchAll(drawFSGrid);
+    }
+
+    function drawFSGrid(ctypes) {
+
+        fsCurrencySelector.store = 
+            new dojo.data.ItemFileReadStore(
+                {data:acqct.toStoreData(ctypes, 'code', {identifier:'code'})}
+            );
+        fsCurrencySelector.labelAttr = 'code';
+
+        /* XXX get default currency from setting */
+        fsCurrencySelector.setValue(ctypes[0].code());
 
         function getOrgInfo(rowIndex) {
             data = fundingSourceListGrid.model.getRow(rowIndex);
