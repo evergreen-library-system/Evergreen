@@ -105,8 +105,6 @@ CREATE TABLE config.circ_matrix_matchpoint (
 	CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, usr_age_lower_bound, usr_age_upper_bound)
 );
 
-INSERT INTO config.circ_matrix_matchpoint (org_unit,grp) VALUES (1,1);
-
 
 -- Tests to determine if circ can occur for this item at this location for this patron
 CREATE TABLE config.circ_matrix_test (
@@ -127,7 +125,6 @@ CREATE TABLE config.circ_matrix_circ_mod_test (
 );
 
 
-
 -- How to circ, assuming tests pass
 CREATE TABLE config.circ_matrix_ruleset (
 	matchpoint		INT	PRIMARY KEY REFERENCES config.circ_matrix_matchpoint (id),
@@ -135,8 +132,6 @@ CREATE TABLE config.circ_matrix_ruleset (
 	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id),
 	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id)
 );
-
-INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,11,1,1);
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT ) RETURNS INT AS $func$
 DECLARE
