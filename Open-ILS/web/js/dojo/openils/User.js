@@ -83,6 +83,25 @@ if(!dojo._hasResource["openils.User"]) {
 
         initReq.send();
     }
+
+    /**
+     * Returns a list of the "highest" org units where the user
+     * has the given permission.
+     */
+    openils.User.getPermOrgList = function(perm, onload) {
+
+        var ases = new OpenSRF.ClientSession('open-ils.actor');
+        var req = ases.request(
+            'open-ils.actor.user.work_perm.highest_org_set',
+            openils.User.authtoken, perm);
+
+        req.oncomplete = function(r) {
+            org_list = r.recv().content();
+            onload(org_list);
+        }
+
+        req.send();
+    }
 }
 
 
