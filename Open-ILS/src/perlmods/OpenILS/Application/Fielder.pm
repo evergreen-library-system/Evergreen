@@ -73,14 +73,14 @@ sub fielder_fetch {
 
     $log->debug( 'Query Class: '. $obj_class );
 
-    my $req = new_editor()->json_query({
+    my $res = new_editor()->json_query({
         select  => { $obj_class => $fields },
         from    => $obj_class,
         where   => $query
     });
 
-    while (my $res = $req->recv) {
-        $client->respond($res->content);
+    for my $value (@$res) {
+        $client->respond($value);
     }
 
     return undef;
