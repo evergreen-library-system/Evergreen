@@ -1370,9 +1370,9 @@ sub check_user_work_perms {
         my @sublist = grep {$_ ne $orgid} @{$U->get_org_descendants($orgid)};
         unshift @sublist, $orgid; # make sure it's at the front of the list
         if($self->api_name =~ /org_id_list/) {
-            push(@list, \@sublist);
+            push(@list, @sublist);
         } else {
-            push(@list, $e->batch_retrieve_actor_org_unit(\@sublist));
+            push(@list, @{$e->batch_retrieve_actor_org_unit(\@sublist)});
         }
     }
 
