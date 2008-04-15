@@ -61,8 +61,10 @@ sub fielder_fetch {
     my $query = $obj->{query};
     my $fields = $obj->{fields};
 
+    my $obj_class = $self->{class_hint};
+
     if (!$fields) {
-        $fields = [ $obj->real_fields ];
+        $fields = [ "Fieldmapper::$obj_class"->real_fields ];
     }
 
     $log->debug( 'Field list: '. OpenSRF::Utils::JSON->perl2JSON( $fields ) );
@@ -73,7 +75,6 @@ sub fielder_fetch {
 
     $fields = [$fields] if (!ref($fields));
 
-    my $obj_class = $self->{class_hint};
 
     $log->debug( 'Query Class: '. $obj_class );
 
