@@ -83,7 +83,7 @@ function my_init() {
 			window.xulG.record = {};
 			window.xulG.save = {};
 
-			window.xulG.save.label = 'Save Record';
+			window.xulG.save.label = $('catStrings').getString('staff.cat.marcedit.save.label');
 			window.xulG.save.func = function (r) { alert(r); }
 
 			var cgi = new CGI();
@@ -455,44 +455,44 @@ var ff_pos = {
 	TrAr : {
 		_8 : {
 			SCO : {start : 33, len : 1, def : ' ' },
-			REC : {start : 33, len : 1, def : 'n' },
+			REC : {start : 33, len : 1, def : 'n' }
 		},
 		_6 : {
 			SCO : {start : 16, len : 1, def : ' ' },
-			REC : {start : 16, len : 1, def : 'n' },
-		},
+			REC : {start : 16, len : 1, def : 'n' }
+		}
 	},
 	TMat : {
 		_8 : {
-			VIS : {start : 33, len : 1, def : ' ' },
+			VIS : {start : 33, len : 1, def : ' ' }
 		},
 		_6 : {
-			VIS : {start : 16, len : 1, def : ' ' },
+			VIS : {start : 16, len : 1, def : ' ' }
 		},
 	},
 	Time : {
 		_8 : {
-			VIS : {start : 18, len : 3, def : ' ' },
+			VIS : {start : 18, len : 3, def : ' ' }
 		},
 		_6 : {
-			VIS : {start : 1, len : 3, def : ' ' },
-		},
+			VIS : {start : 1, len : 3, def : ' ' }
+		}
 	},
 	Tech : {
 		_8 : {
-			VIS : {start : 34, len : 1, def : 'n' },
+			VIS : {start : 34, len : 1, def : 'n' }
 		},
 		_6 : {
-			VIS : {start : 17, len : 1, def : 'n' },
-		},
+			VIS : {start : 17, len : 1, def : 'n' }
+		}
 	},
 	SrTp : {
 		_8 : {
-			SER : {start : 21, len : 1, def : ' ' },
+			SER : {start : 21, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 4, len : 1, def : ' ' },
-		},
+			SER : {start : 4, len : 1, def : ' ' }
+		}
 	},
 	Srce : {
 		_8 : {
@@ -503,130 +503,130 @@ var ff_pos = {
 			MAP : {start : 39, len : 1, def : 'd' },
 			SCO : {start : 39, len : 1, def : 'd' },
 			REC : {start : 39, len : 1, def : 'd' },
-			COM : {start : 39, len : 1, def : 'd' },
+			COM : {start : 39, len : 1, def : 'd' }
 		}
 	},
 	SpFm : {
 		_8 : {
-			MAP : {start : 33, len : 2, def : ' ' },
+			MAP : {start : 33, len : 2, def : ' ' }
 		},
 		_6 : {
-			MAP : {start : 16, len : 2, def : ' ' },
+			MAP : {start : 16, len : 2, def : ' ' }
 		},
 	},
 	Relf : {
 		_8 : {
-			MAP : {start : 18, len : 4, def : ' ' },
+			MAP : {start : 18, len : 4, def : ' ' }
 		},
 		_6 : {
-			MAP : {start : 1, len : 4, def : ' ' },
-		},
+			MAP : {start : 1, len : 4, def : ' ' }
+		}
 	},
 	Regl : {
 		_8 : {
-			SER : {start : 19, len : 1, def : ' ' },
+			SER : {start : 19, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 2, len : 1, def : ' ' },
-		},
+			SER : {start : 2, len : 1, def : ' ' }
+		}
 	},
 	Proj : {
 		_8 : {
-			MAP : {start : 22, len : 2, def : ' ' },
+			MAP : {start : 22, len : 2, def : ' ' }
 		},
 		_6 : {
-			MAP : {start : 5, len : 2, def : ' ' },
-		},
+			MAP : {start : 5, len : 2, def : ' ' }
+		}
 	},
 	Part : {
 		_8 : {
 			SCO : {start : 21, len : 1, def : ' ' },
-			REC : {start : 21, len : 1, def : 'n' },
+			REC : {start : 21, len : 1, def : 'n' }
 		},
 		_6 : {
 			SCO : {start : 4, len : 1, def : ' ' },
-			REC : {start : 4, len : 1, def : 'n' },
-		},
+			REC : {start : 4, len : 1, def : 'n' }
+		}
 	},
 	Orig : {
 		_8 : {
-			SER : {start : 22, len : 1, def : ' ' },
+			SER : {start : 22, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 5, len : 1, def : ' ' },
-		},
+			SER : {start : 5, len : 1, def : ' ' }
+		}
 	},
 	LTxt : {
 		_8 : {
 			SCO : {start : 30, len : 2, def : ' ' },
-			REC : {start : 30, len : 2, def : ' ' },
+			REC : {start : 30, len : 2, def : ' ' }
 		},
 		_6 : {
 			SCO : {start : 13, len : 2, def : ' ' },
-			REC : {start : 13, len : 2, def : ' ' },
-		},
+			REC : {start : 13, len : 2, def : ' ' }
+		}
 	},
 	Freq : {
 		_8 : {
-			SER : {start : 18, len : 1, def : ' ' },
+			SER : {start : 18, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 1, len : 1, def : ' ' },
-		},
+			SER : {start : 1, len : 1, def : ' ' }
+		}
 	},
 	FMus : {
 		_8 : {
 			SCO : {start : 20, len : 1, def : ' ' },
-			REC : {start : 20, len : 1, def : 'n' },
+			REC : {start : 20, len : 1, def : 'n' }
 		},
 		_6 : {
 			SCO : {start : 3, len : 1, def : ' ' },
-			REC : {start : 3, len : 1, def : 'n' },
-		},
+			REC : {start : 3, len : 1, def : 'n' }
+		}
 	},
 	File : {
 		_8 : {
-			COM : {start : 26, len : 1, def : 'u' },
+			COM : {start : 26, len : 1, def : 'u' }
 		},
 		_6 : {
-			COM : {start : 9, len : 1, def : 'u' },
-		},
+			COM : {start : 9, len : 1, def : 'u' }
+		}
 	},
 	EntW : {
 		_8 : {
-			SER : {start : 24, len : 1, def : ' ' },
+			SER : {start : 24, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 7, len : 1, def : ' ' },
-		},
+			SER : {start : 7, len : 1, def : ' ' }
+		}
 	},
 	AccM : {
 		_8 : {
 			SCO : {start : 24, len : 6, def : ' ' },
-			REC : {start : 24, len : 6, def : ' ' },
+			REC : {start : 24, len : 6, def : ' ' }
 		},
 		_6 : {
 			SCO : {start : 7, len : 6, def : ' ' },
-			REC : {start : 7, len : 6, def : ' ' },
-		},
+			REC : {start : 7, len : 6, def : ' ' }
+		}
 	},
 	Comp : {
 		_8 : {
 			SCO : {start : 18, len : 2, def : ' ' },
-			REC : {start : 18, len : 2, def : ' ' },
+			REC : {start : 18, len : 2, def : ' ' }
 		},
 		_6 : {
 			SCO : {start : 1, len : 2, def : ' ' },
-			REC : {start : 1, len : 2, def : ' ' },
-		},
+			REC : {start : 1, len : 2, def : ' ' }
+		}
 	},
 	CrTp : {
 		_8 : {
-			MAP : {start : 25, len : 1, def : ' ' },
+			MAP : {start : 25, len : 1, def : ' ' }
 		},
 		_6 : {
-			MAP : {start : 8, len : 1, def : ' ' },
-		},
+			MAP : {start : 8, len : 1, def : ' ' }
+		}
 	},
 	Ctry : {
 		_8 : {
@@ -637,7 +637,7 @@ var ff_pos = {
 			MAP : {start : 15, len : 3, def : ' ' },
 			SCO : {start : 15, len : 3, def : ' ' },
 			REC : {start : 15, len : 3, def : ' ' },
-			COM : {start : 15, len : 3, def : ' ' },
+			COM : {start : 15, len : 3, def : ' ' }
 		}
 	},
 	Lang : {
@@ -649,7 +649,7 @@ var ff_pos = {
 			MAP : {start : 35, len : 3, def : ' ' },
 			SCO : {start : 35, len : 3, def : ' ' },
 			REC : {start : 35, len : 3, def : ' ' },
-			COM : {start : 35, len : 3, def : ' ' },
+			COM : {start : 35, len : 3, def : ' ' }
 		}
 	},
 	MRec : {
@@ -661,7 +661,7 @@ var ff_pos = {
 			MAP : {start : 38, len : 1, def : ' ' },
 			SCO : {start : 38, len : 1, def : ' ' },
 			REC : {start : 38, len : 1, def : ' ' },
-			COM : {start : 38, len : 1, def : ' ' },
+			COM : {start : 38, len : 1, def : ' ' }
 		}
 	},
 	DtSt : {
@@ -673,7 +673,7 @@ var ff_pos = {
 			MAP : {start : 6, len : 1, def : ' ' },
 			SCO : {start : 6, len : 1, def : ' ' },
 			REC : {start : 6, len : 1, def : ' ' },
-			COM : {start : 6, len : 1, def : ' ' },
+			COM : {start : 6, len : 1, def : ' ' }
 		}
 	},
 	Type : {
@@ -685,7 +685,7 @@ var ff_pos = {
 			MAP : {start : 6, len : 1, def : 'e' },
 			SCO : {start : 6, len : 1, def : 'c' },
 			REC : {start : 6, len : 1, def : 'i' },
-			COM : {start : 6, len : 1, def : 'm' },
+			COM : {start : 6, len : 1, def : 'm' }
 		}
 	},
 	Ctrl : {
@@ -697,7 +697,7 @@ var ff_pos = {
 			MAP : {start : 8, len : 1, def : ' ' },
 			SCO : {start : 8, len : 1, def : ' ' },
 			REC : {start : 8, len : 1, def : ' ' },
-			COM : {start : 8, len : 1, def : ' ' },
+			COM : {start : 8, len : 1, def : ' ' }
 		}
 	},
 	BLvl : {
@@ -709,7 +709,7 @@ var ff_pos = {
 			MAP : {start : 7, len : 1, def : 'm' },
 			SCO : {start : 7, len : 1, def : 'm' },
 			REC : {start : 7, len : 1, def : 'm' },
-			COM : {start : 7, len : 1, def : 'm' },
+			COM : {start : 7, len : 1, def : 'm' }
 		}
 	},
 	Desc : {
@@ -721,7 +721,7 @@ var ff_pos = {
 			MAP : {start : 18, len : 1, def : ' ' },
 			SCO : {start : 18, len : 1, def : ' ' },
 			REC : {start : 18, len : 1, def : ' ' },
-			COM : {start : 18, len : 1, def : ' ' },
+			COM : {start : 18, len : 1, def : ' ' }
 		}
 	},
 	ELvl : {
@@ -733,17 +733,17 @@ var ff_pos = {
 			MAP : {start : 17, len : 1, def : ' ' },
 			SCO : {start : 17, len : 1, def : ' ' },
 			REC : {start : 17, len : 1, def : ' ' },
-			COM : {start : 17, len : 1, def : ' ' },
+			COM : {start : 17, len : 1, def : ' ' }
 		}
 	},
 	Indx : {
 		_8 : {
 			BKS : {start : 31, len : 1, def : '0' },
-			MAP : {start : 31, len : 1, def : '0' },
+			MAP : {start : 31, len : 1, def : '0' }
 		},
 		_6 : {
 			BKS : {start : 14, len : 1, def : '0' },
-			MAP : {start : 14, len : 1, def : '0' },
+			MAP : {start : 14, len : 1, def : '0' }
 		}
 	},
 	Date1 : {
@@ -755,8 +755,8 @@ var ff_pos = {
 			MAP : {start : 7, len : 4, def : ' ' },
 			SCO : {start : 7, len : 4, def : ' ' },
 			REC : {start : 7, len : 4, def : ' ' },
-			COM : {start : 7, len : 4, def : ' ' },
-		},
+			COM : {start : 7, len : 4, def : ' ' }
+		}
 	},
 	Date2 : {
 		_8 : {
@@ -767,59 +767,59 @@ var ff_pos = {
 			MAP : {start : 11, len : 4, def : ' ' },
 			SCO : {start : 11, len : 4, def : ' ' },
 			REC : {start : 11, len : 4, def : ' ' },
-			COM : {start : 11, len : 4, def : ' ' },
-		},
+			COM : {start : 11, len : 4, def : ' ' }
+		}
 	},
 	LitF : {
 		_8 : {
-			BKS : {start : 33, len : 1, def : '0' },
+			BKS : {start : 33, len : 1, def : '0' }
 		},
 		_6 : {
-			BKS : {start : 16, len : 1, def : '0' },
+			BKS : {start : 16, len : 1, def : '0' }
 		}
 	},
 	Biog : {
 		_8 : {
-			BKS : {start : 34, len : 1, def : ' ' },
+			BKS : {start : 34, len : 1, def : ' ' }
 		},
 		_6 : {
-			BKS : {start : 17, len : 1, def : ' ' },
+			BKS : {start : 17, len : 1, def : ' ' }
 		}
 	},
 	Ills : {
 		_8 : {
-			BKS : {start : 18, len : 4, def : ' ' },
+			BKS : {start : 18, len : 4, def : ' ' }
 		},
 		_6 : {
-			BKS : {start : 1, len : 4, def : ' ' },
+			BKS : {start : 1, len : 4, def : ' ' }
 		}
 	},
 	Fest : {
 		_8 : {
-			BKS : {start : 30, len : 1, def : '0' },
+			BKS : {start : 30, len : 1, def : '0' }
 		},
 		_6 : {
-			BKS : {start : 13, len : 1, def : '0' },
+			BKS : {start : 13, len : 1, def : '0' }
 		}
 	},
 	Conf : {
 		_8 : {
 			BKS : {start : 29, len : 1, def : '0' },
-			SER : {start : 29, len : 1, def : '0' },
+			SER : {start : 29, len : 1, def : '0' }
 		},
 		_6 : {
 			BKS : {start : 12, len : 1, def : '0' },
-			SER : {start : 12, len : 1, def : '0' },
+			SER : {start : 12, len : 1, def : '0' }
 		}
 	},
 	Cont : {
 		_8 : {
 			BKS : {start : 24, len : 4, def : ' ' },
-			SER : {start : 25, len : 3, def : ' ' },
+			SER : {start : 25, len : 3, def : ' ' }
 		},
 		_6 : {
 			BKS : {start : 7, len : 4, def : ' ' },
-			SER : {start : 8, len : 3, def : ' ' },
+			SER : {start : 8, len : 3, def : ' ' }
 		}
 	},
 	GPub : {
@@ -828,14 +828,14 @@ var ff_pos = {
 			SER : {start : 28, len : 1, def : ' ' },
 			VIS : {start : 28, len : 1, def : ' ' },
 			MAP : {start : 28, len : 1, def : ' ' },
-			COM : {start : 28, len : 1, def : ' ' },
+			COM : {start : 28, len : 1, def : ' ' }
 		},
 		_6 : {
 			BKS : {start : 11, len : 1, def : ' ' },
 			SER : {start : 11, len : 1, def : ' ' },
 			VIS : {start : 11, len : 1, def : ' ' },
 			MAP : {start : 11, len : 1, def : ' ' },
-			COM : {start : 11, len : 1, def : ' ' },
+			COM : {start : 11, len : 1, def : ' ' }
 		}
 	},
 	Audn : {
@@ -845,7 +845,7 @@ var ff_pos = {
 			VIS : {start : 22, len : 1, def : ' ' },
 			SCO : {start : 22, len : 1, def : ' ' },
 			REC : {start : 22, len : 1, def : ' ' },
-			COM : {start : 22, len : 1, def : ' ' },
+			COM : {start : 22, len : 1, def : ' ' }
 		},
 		_6 : {
 			BKS : {start : 5, len : 1, def : ' ' },
@@ -853,7 +853,7 @@ var ff_pos = {
 			VIS : {start : 5, len : 1, def : ' ' },
 			SCO : {start : 5, len : 1, def : ' ' },
 			REC : {start : 5, len : 1, def : ' ' },
-			COM : {start : 5, len : 1, def : ' ' },
+			COM : {start : 5, len : 1, def : ' ' }
 		}
 	},
 	Form : {
@@ -864,7 +864,7 @@ var ff_pos = {
 			MIX : {start : 23, len : 1, def : ' ' },
 			MAP : {start : 29, len : 1, def : ' ' },
 			SCO : {start : 23, len : 1, def : ' ' },
-			REC : {start : 23, len : 1, def : ' ' },
+			REC : {start : 23, len : 1, def : ' ' }
 		},
 		_6 : {
 			BKS : {start : 6, len : 1, def : ' ' },
@@ -873,25 +873,25 @@ var ff_pos = {
 			MIX : {start : 6, len : 1, def : ' ' },
 			MAP : {start : 12, len : 1, def : ' ' },
 			SCO : {start : 6, len : 1, def : ' ' },
-			REC : {start : 6, len : 1, def : ' ' },
+			REC : {start : 6, len : 1, def : ' ' }
 		}
 	},
 	'S/L' : {
 		_8 : {
-			SER : {start : 34, len : 1, def : '0' },
+			SER : {start : 34, len : 1, def : '0' }
 		},
 		_6 : {
-			SER : {start : 17, len : 1, def : '0' },
+			SER : {start : 17, len : 1, def : '0' }
 		}
 	},
 	'Alph' : {
 		_8 : {
-			SER : {start : 33, len : 1, def : ' ' },
+			SER : {start : 33, len : 1, def : ' ' }
 		},
 		_6 : {
-			SER : {start : 16, len : 1, def : ' ' },
+			SER : {start : 16, len : 1, def : ' ' }
 		}
-	},
+	}
 };
 
 function recordType (rec) {
@@ -1046,7 +1046,7 @@ function marcLeader (leader) {
 		createLabel(
 			{ value : 'LDR',
 			  class : 'marcTag',
-			  tooltiptext : "MARC Leader" } ),
+			  tooltiptext : $('catStrings').getString('staff.cat.marcedit.marcTag.LDR.label') } ),
 		createLabel(
 			{ value : '',
 			  class : 'marcInd1' } ),
@@ -1269,22 +1269,22 @@ context_menus.appendChild( tag_menu );
 
 tag_menu.appendChild(
 	createMenuitem(
-		{ label : 'Add Row',
+		{ label : $('catStrings').getString('staff.cat.marcedit.add_row.label'),
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,13,0);' +
-			'current_focus.inputField.dispatchEvent(e);',
+			'current_focus.inputField.dispatchEvent(e);'
 		 }
 	)
 );
 
 tag_menu.appendChild(
 	createMenuitem(
-		{ label : 'Remove Row',
+		{ label : $('catStrings').getString('staff.cat.marcedit.remove_row.label'),
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,46,0);' +
-			'current_focus.inputField.dispatchEvent(e);',
+			'current_focus.inputField.dispatchEvent(e);'
 		}
 	)
 );
@@ -1293,33 +1293,33 @@ tag_menu.appendChild( createComplexXULElement( 'separator' ) );
 
 tag_menu.appendChild(
 	createMenuitem(
-		{ label : 'Add/Replace 006',
+		{ label : $('catStrings').getString('staff.cat.marcedit.replace_006.label'),
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,64,0);' +
-			'current_focus.inputField.dispatchEvent(e);',
+			'current_focus.inputField.dispatchEvent(e);'
 		 }
 	)
 );
 
 tag_menu.appendChild(
 	createMenuitem(
-		{ label : 'Add/Replace 007',
+		{ label : $('catStrings').getString('staff.cat.marcedit.replace_007.label'),
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,65,0);' +
-			'current_focus.inputField.dispatchEvent(e);',
+			'current_focus.inputField.dispatchEvent(e);'
 		}
 	)
 );
 
 tag_menu.appendChild(
 	createMenuitem(
-		{ label : 'Add/Replace 008',
+		{ label : $('catStrings').getString('staff.cat.marcedit.replace_008.label'),
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,66,0);' +
-			'current_focus.inputField.dispatchEvent(e);',
+			'current_focus.inputField.dispatchEvent(e);'
 		}
 	)
 );
@@ -1480,7 +1480,7 @@ var authority_tag_map = {
 	600 : ['[100,400,480,481,482,485,500,580,581,582,585,700,780,781,782,785]',100],
 	650 : ['[150,450,480,481,482,485,550,580,581,582,585,750,780,781,782,785]',150],
 	651 : ['[151,451,480,481,482,485,551,580,581,582,585,751,780,781,782,785]',151],
-	655 : ['[155,455,480,481,482,485,555,580,581,582,585,755,780,781,782,785]',155],
+	655 : ['[155,455,480,481,482,485,555,580,581,582,585,755,780,781,782,785]',155]
 };
 
 function getAuthorityContextMenu (target, sf) {
@@ -1493,7 +1493,7 @@ function getAuthorityContextMenu (target, sf) {
 	context_menus.appendChild( sf_popup );
 
 	if (!authority_tag_map[sf.parent().@tag]) {
-		sf_popup.appendChild(createLabel( { value : "Not a controlled subfield" } ) );
+		sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
 		target.setAttribute('context', menu_id);
 		return false;
 	}
@@ -1573,7 +1573,7 @@ function getAuthorityContextMenu (target, sf) {
 
 		popup.appendChild(
 			createMenuitem(
-				{ label : 'Apply Selected',
+				{ label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
 				  command : function (event) {
 						applyAuthority(event.target.previousSibling, target, sf);
 						return true;
@@ -1586,7 +1586,7 @@ function getAuthorityContextMenu (target, sf) {
 	}
 
 	if (sf_popup.childNodes.length == 0)
-		sf_popup.appendChild(createLabel( { value : "No matching authority records found" } ) );
+		sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.no_authority_match.label') } ) );
 
 	target.setAttribute('context', menu_id);
 	return true;
@@ -1635,72 +1635,72 @@ function applyAuthority ( target, ui_sf, e4x_sf ) {
 var control_map = {
 	100 : {
 		'a' : { 100 : 'a' },
-		'd' : { 100 : 'd' },
+		'd' : { 100 : 'd' }
 	},
 	110 : {
 		'a' : { 110 : 'a' },
-		'd' : { 110 : 'd' },
+		'd' : { 110 : 'd' }
 	},
 	111 : {
 		'a' : { 111 : 'a' },
-		'd' : { 111 : 'd' },
+		'd' : { 111 : 'd' }
 	},
 	130 : {
 		'a' : { 130 : 'a' },
-		'd' : { 130 : 'd' },
+		'd' : { 130 : 'd' }
 	},
 	240 : {
 		'a' : { 130 : 'a' },
-		'd' : { 130 : 'd' },
+		'd' : { 130 : 'd' }
 	},
 	400 : {
 		'a' : { 100 : 'a' },
-		'd' : { 100 : 'd' },
+		'd' : { 100 : 'd' }
 	},
 	410 : {
 		'a' : { 110 : 'a' },
-		'd' : { 110 : 'd' },
+		'd' : { 110 : 'd' }
 	},
 	411 : {
 		'a' : { 111 : 'a' },
-		'd' : { 111 : 'd' },
+		'd' : { 111 : 'd' }
 	},
 	440 : {
 		'a' : { 130 : 'a' },
 		'n' : { 130 : 'n' },
-		'p' : { 130 : 'p' },
+		'p' : { 130 : 'p' }
 	},
 	700 : {
 		'a' : { 100 : 'a' },
-		'd' : { 100 : 'd' },
+		'd' : { 100 : 'd' }
 	},
 	710 : {
 		'a' : { 110 : 'a' },
-		'd' : { 110 : 'd' },
+		'd' : { 110 : 'd' }
 	},
 	711 : {
 		'a' : { 111 : 'a' },
-		'd' : { 111 : 'd' },
+		'd' : { 111 : 'd' }
 	},
 	730 : {
 		'a' : { 130 : 'a' },
-		'd' : { 130 : 'd' },
+		'd' : { 130 : 'd' }
 	},
 	800 : {
 		'a' : { 100 : 'a' },
-		'd' : { 100 : 'd' },
+		'd' : { 100 : 'd' }
 	},
 	810 : {
 		'a' : { 110 : 'a' },
-		'd' : { 110 : 'd' },
+		'd' : { 110 : 'd' }
 	},
 	811 : {
 		'a' : { 111 : 'a' },
-		'd' : { 111 : 'd' },
+		'd' : { 111 : 'd' }
 	},
 	830 : {
 		'a' : { 130 : 'a' },
-		'd' : { 130 : 'd' },
+		'd' : { 130 : 'd' }
 	},
 	600 : {
 		'a' : { 100 : 'a' },
@@ -1710,26 +1710,26 @@ var control_map = {
 			100 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			100 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			100 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			100 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
-		},
+			185 : 'z'
+		}
 	},
 	610 : {
 		'a' : { 110 : 'a' },
@@ -1739,26 +1739,26 @@ var control_map = {
 			110 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			110 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			110 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			110 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
-		},
+			185 : 'z'
+		}
 	},
 	611 : {
 		'a' : { 111 : 'a' },
@@ -1768,30 +1768,30 @@ var control_map = {
 			111 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			111 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			111 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			111 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
+			185 : 'z'
 		},
 	},
 	630 : {
 		'a' : { 130 : 'a' },
-		'd' : { 130 : 'd' },
+		'd' : { 130 : 'd' }
 	},
 	650 : {
 		'a' : { 150 : 'a' },
@@ -1800,26 +1800,26 @@ var control_map = {
 			150 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			150 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			150 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			150 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
-		},
+			185 : 'z'
+		}
 	},
 	651 : {
 		'a' : { 151 : 'a' },
@@ -1827,26 +1827,26 @@ var control_map = {
 			151 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			151 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			151 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			151 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
-		},
+			185 : 'z'
+		}
 	},
 	655 : {
 		'a' : { 155 : 'a' },
@@ -1854,27 +1854,27 @@ var control_map = {
 			155 : 'v',
 			181 : 'v',
 			182 : 'v',
-			185 : 'v',
+			185 : 'v'
 		},
 		'x' : { 180 : 'x',
 			155 : 'x',
 			181 : 'x',
 			182 : 'x',
-			185 : 'x',
+			185 : 'x'
 		},
 		'y' : { 180 : 'y',
 			155 : 'y',
 			181 : 'y',
 			182 : 'y',
-			185 : 'y',
+			185 : 'y'
 		},
 		'z' : { 180 : 'z',
 			155 : 'z',
 			181 : 'z',
 			182 : 'z',
-			185 : 'z',
-		},
-	},
+			185 : 'z'
+		}
+	}
 };
 
 function validateAuthority (button) {
