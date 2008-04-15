@@ -19,6 +19,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo._hasResource["openils.User"] = true;
     dojo.provide("openils.User");
     dojo.require('openils.Event');
+    dojo.require('OpenSRF');
 
     dojo.declare('openils.User', null, {});
 
