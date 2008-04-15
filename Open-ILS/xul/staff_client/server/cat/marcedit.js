@@ -14,6 +14,10 @@ var bib_data;
 
 var xml_record;
 
+var context_menus;
+var tag_menu;
+var p;
+
 function $(id) { return document.getElementById(id); }
 
 function mangle_005() {
@@ -134,6 +138,74 @@ function my_init() {
 		// then fall back to the default locale if preferred locale is not necessary
 		req.open('GET','/xul/server/locale/' + locale + '/marcedit-tooltips.xml',true);
 
+		context_menus = createComplexXULElement('popupset');
+		document.documentElement.appendChild( context_menus );
+
+		tag_menu = createPopup({position : 'after_start', id : 'tags_popup'});
+		context_menus.appendChild( tag_menu );
+
+		tag_menu.appendChild(
+			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.add_row.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,0,0,13,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				 }
+			)
+		);
+
+		tag_menu.appendChild(
+			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.remove_row.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,0,0,46,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				}
+			)
+		);
+
+		tag_menu.appendChild( createComplexXULElement( 'separator' ) );
+
+		tag_menu.appendChild(
+			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.replace_006.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,0,0,64,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				 }
+			)
+		);
+
+		tag_menu.appendChild(
+			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.replace_007.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,0,0,65,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				}
+			)
+		);
+
+		tag_menu.appendChild(
+			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.replace_008.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,0,0,66,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				}
+			)
+		);
+
+		tag_menu.appendChild( createComplexXULElement( 'separator' ) );
+
+		p = createComplexXULElement('popupset');
+		document.documentElement.appendChild( p );
+
 		req.onreadystatechange = function () {
 			if (req.readyState == 4) {
 				bib_data = new XML( req.responseText.replace(xmlDeclaration, '') );
@@ -143,6 +215,8 @@ function my_init() {
 		req.send(null);
 
 		loadRecord(xml_record);
+
+
 	} catch(E) {
 		alert('FIXME, MARC Editor, my_init: ' + E);
 	}
@@ -1261,72 +1335,6 @@ function loadRecord(rec) {
 	}
 }
 
-var context_menus = createComplexXULElement('popupset');
-document.documentElement.appendChild( context_menus );
-
-var tag_menu = createPopup({position : 'after_start', id : 'tags_popup'});
-context_menus.appendChild( tag_menu );
-
-tag_menu.appendChild(
-	createMenuitem(
-		{ label : $('catStrings').getString('staff.cat.marcedit.add_row.label'),
-		  oncommand : 
-			'var e = document.createEvent("KeyEvents");' +
-			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,13,0);' +
-			'current_focus.inputField.dispatchEvent(e);'
-		 }
-	)
-);
-
-tag_menu.appendChild(
-	createMenuitem(
-		{ label : $('catStrings').getString('staff.cat.marcedit.remove_row.label'),
-		  oncommand : 
-			'var e = document.createEvent("KeyEvents");' +
-			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,46,0);' +
-			'current_focus.inputField.dispatchEvent(e);'
-		}
-	)
-);
-
-tag_menu.appendChild( createComplexXULElement( 'separator' ) );
-
-tag_menu.appendChild(
-	createMenuitem(
-		{ label : $('catStrings').getString('staff.cat.marcedit.replace_006.label'),
-		  oncommand : 
-			'var e = document.createEvent("KeyEvents");' +
-			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,64,0);' +
-			'current_focus.inputField.dispatchEvent(e);'
-		 }
-	)
-);
-
-tag_menu.appendChild(
-	createMenuitem(
-		{ label : $('catStrings').getString('staff.cat.marcedit.replace_007.label'),
-		  oncommand : 
-			'var e = document.createEvent("KeyEvents");' +
-			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,65,0);' +
-			'current_focus.inputField.dispatchEvent(e);'
-		}
-	)
-);
-
-tag_menu.appendChild(
-	createMenuitem(
-		{ label : $('catStrings').getString('staff.cat.marcedit.replace_008.label'),
-		  oncommand : 
-			'var e = document.createEvent("KeyEvents");' +
-			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,66,0);' +
-			'current_focus.inputField.dispatchEvent(e);'
-		}
-	)
-);
-
-tag_menu.appendChild( createComplexXULElement( 'separator' ) );
-
-
 
 function genToolTips () {
 	for (var i in bib_data.field) {
@@ -1407,9 +1415,6 @@ function genToolTips () {
 		}
 	}
 }
-
-var p = createComplexXULElement('popupset');
-document.documentElement.appendChild( p );
 
 function getTooltip (target, type) {
 
