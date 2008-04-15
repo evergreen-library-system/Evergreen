@@ -62,9 +62,10 @@ sub fielder_fetch {
     my $fields = $obj->{fields};
 
     my $obj_class = $self->{class_hint};
+    my $fm_class = $self->{class_name};
 
     if (!$fields) {
-        $fields = [ "Fieldmapper::$obj_class"->real_fields ];
+        $fields = [ $fm_class->real_fields ];
     }
 
     $log->debug( 'Field list: '. OpenSRF::Utils::JSON->perl2JSON( $fields ) );
@@ -96,12 +97,14 @@ sub generate_methods {
     try {
         for my $class_node ( $xpc->findnodes( '//idl:class[@oils_persist:field_safe="true"]', $idl->documentElement ) ) {
             my $hint = $class_node->getAttribute('id');
+            my $fm = $class_node->getAttributeNS('http://open-ils.org/spec/opensrf/IDL/objects/v1','fieldmapper');
             $log->debug("Fielder class_node $hint");
         
             __PACKAGE__->register_method(
                 method          => 'fielder_fetch',
                 api_name        => 'open-ils.fielder.' . $hint,
                 class_hint      => $hint,
+                class_name      => "Fieldmapper::$fm",
                 stream          => 1,
                 argc            => 1
             );
