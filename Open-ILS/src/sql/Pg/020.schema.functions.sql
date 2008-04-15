@@ -97,7 +97,7 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	$txt =~ s/^\s+//o;
 	$txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o;
 	$txt =~ s/\s+$//o;
-	if (/(\d{3}(?:\.\d+)?)/o) {
+	if ($txt =~ /(\d{3}(?:\.\d+)?)/o) {
 		return $1;
 	} else {
 		return (split /\s+/, $txt)[0];
