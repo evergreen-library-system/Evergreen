@@ -2819,7 +2819,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="i18n" controller="open-ils.cstore" oils_obj:fieldmapper="config::i18n_core" oils_persist:tablename="config.i18n_core">
+	<class id="i18n" controller="open-ils.cstore" oils_obj:fieldmapper="config::i18n_core" oils_persist:tablename="config.i18n_core" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_core_id_se">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2831,6 +2831,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="string" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_TRANSLATION" global_required="true"/>
+                <retrieve permission="CREATE_TRANSLATION|UPDATE_TRANSLATION|DELETE_TRANSLATION" global_required="true"/>
+                <update permission="UPDATE_TRANSLATION" global_required="true"/>
+                <delete permission="DELETE_TRANSLATION" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.output_folder_id_seq">

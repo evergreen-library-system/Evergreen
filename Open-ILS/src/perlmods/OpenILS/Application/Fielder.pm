@@ -61,6 +61,10 @@ sub fielder_fetch {
     my $query = $obj->{query};
     my $fields = $obj->{fields};
 
+    if (!$fields) {
+        $fields = [ $obj->real_fields ];
+    }
+
     $log->debug( 'Field list: '. OpenSRF::Utils::JSON->perl2JSON( $fields ) );
     $log->debug( 'Query: '. OpenSRF::Utils::JSON->perl2JSON( $query ) );
 
