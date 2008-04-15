@@ -1893,3 +1893,6 @@
 <!ENTITY staff.cat.marcedit.help.accesskey "H">
 <!ENTITY staff.cat.marcedit.caption.label "MARC Record">
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
+<!ENTITY staff.cat.marc_new.load.label "Load">
+<!ENTITY staff.cat.marc_new.load.accesskey "L">
+<!ENTITY staff.cat.marc_view.title "MARC View">
