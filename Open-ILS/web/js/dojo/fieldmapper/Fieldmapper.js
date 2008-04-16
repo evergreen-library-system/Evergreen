@@ -26,7 +26,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 	dojo._hasResource["fieldmapper.Fieldmapper"] = true;
 	dojo.provide("fieldmapper.Fieldmapper");
-	dojo.require("OpenSRF");
+	dojo.require("DojoSRF");
 
 	dojo.declare( "fieldmapper.Fieldmapper", null, {
 

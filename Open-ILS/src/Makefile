@@ -75,7 +75,7 @@ webcore-install:
 	cp $(OPENSRF_LIBS)/javascript/* $(WEBDIR)/opac/common/js/
 	# dojo-ified opensrf libs
 	cp $(OPENSRF_LIBS)/javascript/opensrf*js $(WEBDIR)/js/opensrf/
-	cp $(OPENSRF_LIBS)/javascript/OpenSRF.js $(WEBDIR)/js/dojo/
+	cp $(OPENSRF_LIBS)/javascript/DojoSRF.js $(WEBDIR)/js/dojo/
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
