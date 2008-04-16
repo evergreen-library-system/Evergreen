@@ -99,7 +99,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         if (!args.async && !args.timeout) args.timeout = 10;
 
 		if (!args.onerror) {
-			args.error = function (r) {
+			args.onerror = function (r) {
 				throw 'Error encountered! ' + r;
 			}
 		}
