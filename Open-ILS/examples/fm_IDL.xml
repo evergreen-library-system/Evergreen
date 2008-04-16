@@ -2820,7 +2820,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 	<class id="i18n" controller="open-ils.cstore" oils_obj:fieldmapper="config::i18n_core" oils_persist:tablename="config.i18n_core" oils_persist:field_safe="true">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_core_id_se">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_core_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
