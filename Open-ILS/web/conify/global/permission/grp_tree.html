@@ -64,7 +64,8 @@
 		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="../admin.js"></script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
 		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="grp_tree.js"></script>
@@ -190,6 +191,7 @@
 						right_pane_toggler.show();
 
 						current_group = item;
+						window.current_fm_group = new pgt().fromStoreItem(item);
 
 						perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
 						perm_map_model.refresh();
@@ -267,17 +269,21 @@
 											}
 										</script>
 									</span>
+									<span dojoType="openils.I18N.translationWidget" targetObject="current_fm_group" field="name"></span>
 								</td>
 							</tr>
 							<tr>
 								<th>Description</th>
 								<td>
-									<textarea
-									  id="editor_pane_description"
-									  dojoType="dijit.form.Textarea"
-									  jsId="editor_pane_description"
-									  onChange="if (current_group) group_store.setValue( current_group, "description", this.getValue() );"
-									></textarea>
+									<span>
+										<textarea
+										  id="editor_pane_description"
+										  dojoType="dijit.form.Textarea"
+										  jsId="editor_pane_description"
+										  onChange="if (current_group) group_store.setValue( current_group, "description", this.getValue() );"
+										></textarea>
+									</span>
+									<span dojoType="openils.I18N.translationWidget" targetObject="current_fm_group" field="description"></span>
 								</td>
 							</tr>
 							<tr>
