@@ -24,6 +24,11 @@ if(!dojo._hasResource["openils.I18N"]) {
 	dojo.require("dojo.data.ItemFileWriteStore");
 	dojo.require("dijit._Widget");
 	dojo.require("dijit._Templated");
+	dojo.require("dijit.layout.ContentPane");
+	dojo.require("dijit.Dialog");
+	dojo.require("dijit.form.Button");
+	dojo.require("dijit.form.TextBox");
+	dojo.require("dijit.form.ComboBox");
 
 
     dojo.declare('openils.I18N', null, {});

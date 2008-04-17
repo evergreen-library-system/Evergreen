@@ -16,6 +16,7 @@
 */
 
 dojo.require('fieldmapper.dojoData');
+dojo.require('openils.I18N');
 dojo.require('dojo.parser');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.stamp');
@@ -40,6 +41,7 @@ var ses = cookieManager.read('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
 var current_type;
+var current_fm_type;
 var virgin_out_id = -1;
 
 var highlighter = {};

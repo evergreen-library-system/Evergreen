@@ -120,6 +120,7 @@
 
 						right_pane_toggler.show();
 						current_type = item;
+						current_fm_type = new aout().fromStoreItem(item);
 
 						highlighter.editor_pane.green.play();
 						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
@@ -191,6 +192,7 @@
 											}
 										</script>
 									</span>
+									<span dojoType="openils.I18N.translationWidget" targetObject="current_fm_type" field="name"></span>
 								</td>
 							</tr>
 							<tr>
@@ -203,6 +205,7 @@
 											}
 										</script>
 									</span>
+									<span dojoType="openils.I18N.translationWidget" targetObject="current_fm_type" field="opac_label"></span>
 								</td>
 							</tr>
 							<tr>
