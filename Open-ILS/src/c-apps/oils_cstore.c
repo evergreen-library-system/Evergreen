@@ -1868,7 +1868,7 @@ static char* SELECT (
         	            char* pkey = osrfHashGet(idlClass, "primarykey");
         	            char* tname = osrfHashGet(idlClass, "tablename");
 
-                        buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, __column, pkey, cname, pkey, locale, __column);
+                        buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, __column, pkey, cname, pkey, locale, __column);
                     } else {
 				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
                     }
@@ -1912,7 +1912,7 @@ static char* SELECT (
         	                char* pkey = osrfHashGet(idlClass, "primarykey");
         	                char* tname = osrfHashGet(idlClass, "tablename");
 
-                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, __alias);
+                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, __alias);
                         } else {
 					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
                         }
@@ -2285,7 +2285,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
         	        char* tname = osrfHashGet(idlClass, "tablename");
 
-                    buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, fname);
+                    buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, fname);
                 } else {
 			        buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
                 }
