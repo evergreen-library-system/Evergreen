@@ -51,7 +51,16 @@
 		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript">
+			var djConfig = { parseOnLoad : true };
+
+			var _url_locale = location.href.replace(/^.*conify\/(.+)\/global.*$/, "$1").toLowerCase().replace(/-/,'_');
+			if (_url_locale) djConfig.locale = _url_locale;
+			else djConfig.locale = '<!--#echo var="locale"-->';
+
+		</script>
+
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"</script>
 		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="org_unit_type.js"></script>
