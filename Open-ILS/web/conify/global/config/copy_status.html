@@ -50,11 +50,9 @@
 		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
 		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
 
-		<!-- Fieldmapper objects -->
-		<script language='javascript' src='/opac/common/js/fmall.js' type='text/javascript'></script>
-
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="../admin.js"></script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
 		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="copy_status.js"></script>
@@ -179,6 +177,28 @@
 										  field : "name",
 										  width : "auto",
 										  editor : dojox.grid.editors.Dijit
+										},
+										{ name : "Translation",
+										  width : "10em",
+										  height : "2em",
+										  get : function (row) {
+											if (!window.status_rows) window.status_rows = [];
+											var r = window.status_data_model.getRow(row);
+											if (r) {
+												window.status_rows[row] = new ccs().fromHash(window.status_data_model.getRow(row));
+												setTimeout(
+													'dojo.query(".status_grid_trans_cell_' + row + '").'+
+														'instantiate(openils.I18N.translationWidget,{field:"name",'+
+														'targetObject:"window.status_rows['+row+']",unique:"' + row + '"});'+
+														'status_grid.rowHeightChanged('+row+')',
+													0
+												);
+												var oldnode = dojo.byId('name_translation_' + row);
+												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+												return '<span class="status_grid_trans_cell_'+row+'"></span>';
+											}
+											return '';
+										  }
 										},
 										{ name : "Holdable",
 										  field : "holdable",
