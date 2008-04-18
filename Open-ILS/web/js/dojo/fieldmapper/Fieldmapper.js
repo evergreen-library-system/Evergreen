@@ -145,26 +145,26 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 	}
 
-	fieldmmapper.ppl.Identifier = 'code';
-	fieldmmapper.ccm.Identifier = 'code';
-	fieldmmapper.cvrfm.Identifier = 'code';
-	fieldmmapper.clm.Identifier = 'code';
-	fieldmmapper.cam.Identifier = 'code';
-	fieldmmapper.cifm.Identifier = 'code';
-	fieldmmapper.citm.Identifier = 'code';
-	fieldmmapper.cblvl.Identifier = 'code';
-	fieldmmapper.clfm.Identifier = 'code';
-	fieldmmapper.mous.Identifier = 'usr';
-	fieldmmapper.moucs.Identifier = 'usr';
-	fieldmmapper.mucs.Identifier = 'usr';
-	fieldmmapper.mus.Identifier = 'usr';
-	fieldmmapper.rxbt.Identifier = 'xact';
-	fieldmmapper.rxpt.Identifier = 'xact';
-	fieldmmapper.cxt.Identifier = 'name';
-	fieldmmapper.amtr.Identifier = 'matchpoint';
-	fieldmmapper.chmt.Identifier = 'matchpoint';
-	fieldmmapper.ccmt.Identifier = 'matchpoint';
-	fieldmmapper.ccmrs.Identifier = 'matchpoint';
+	fieldmapper.ppl.Identifier = 'code';
+	fieldmapper.ccm.Identifier = 'code';
+	fieldmapper.cvrfm.Identifier = 'code';
+	fieldmapper.clm.Identifier = 'code';
+	fieldmapper.cam.Identifier = 'code';
+	fieldmapper.cifm.Identifier = 'code';
+	fieldmapper.citm.Identifier = 'code';
+	fieldmapper.cblvl.Identifier = 'code';
+	fieldmapper.clfm.Identifier = 'code';
+	fieldmapper.mous.Identifier = 'usr';
+	fieldmapper.moucs.Identifier = 'usr';
+	fieldmapper.mucs.Identifier = 'usr';
+	fieldmapper.mus.Identifier = 'usr';
+	fieldmapper.rxbt.Identifier = 'xact';
+	fieldmapper.rxpt.Identifier = 'xact';
+	fieldmapper.cxt.Identifier = 'name';
+	fieldmapper.amtr.Identifier = 'matchpoint';
+	fieldmapper.chmt.Identifier = 'matchpoint';
+	fieldmapper.ccmt.Identifier = 'matchpoint';
+	fieldmapper.ccmrs.Identifier = 'matchpoint';
 
 	fieldmapper.OpenSRF = {};
 
