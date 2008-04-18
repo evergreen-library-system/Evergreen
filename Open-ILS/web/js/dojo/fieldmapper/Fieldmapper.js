@@ -132,6 +132,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			constructor : function () {
 				if (!this.a) this.a = [];
 				this.classname = this.declaredClass;
+				this.Identifier = 'id';
 				this._fields = fmclasses[this.classname];
 				for( var pos = 0; pos <  this._fields.length; pos++ ) {
 					var p = parseInt(pos) + 3;
@@ -143,6 +144,27 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		fieldmapper[cl] = window[cl]; // alias into place
 
 	}
+
+	fieldmmapper.ppl.Identifier = 'code';
+	fieldmmapper.ccm.Identifier = 'code';
+	fieldmmapper.cvrfm.Identifier = 'code';
+	fieldmmapper.clm.Identifier = 'code';
+	fieldmmapper.cam.Identifier = 'code';
+	fieldmmapper.cifm.Identifier = 'code';
+	fieldmmapper.citm.Identifier = 'code';
+	fieldmmapper.cblvl.Identifier = 'code';
+	fieldmmapper.clfm.Identifier = 'code';
+	fieldmmapper.mous.Identifier = 'usr';
+	fieldmmapper.moucs.Identifier = 'usr';
+	fieldmmapper.mucs.Identifier = 'usr';
+	fieldmmapper.mus.Identifier = 'usr';
+	fieldmmapper.rxbt.Identifier = 'xact';
+	fieldmmapper.rxpt.Identifier = 'xact';
+	fieldmmapper.cxt.Identifier = 'name';
+	fieldmmapper.amtr.Identifier = 'matchpoint';
+	fieldmmapper.chmt.Identifier = 'matchpoint';
+	fieldmmapper.ccmt.Identifier = 'matchpoint';
+	fieldmmapper.ccmrs.Identifier = 'matchpoint';
 
 	fieldmapper.OpenSRF = {};
 
