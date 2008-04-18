@@ -75,6 +75,7 @@ SLIMPACDIR="/openils/var/web/opac/extras/slimpac/";
 
 echo "Updating fieldmapper";
 perl fieldmapper.pl "$CONFIG"	> "$JSDIR/fmall.js";
+cp "$JSDIR/fmall.js" "$FMDOJODIR/"
 
 echo "Updating web_fieldmapper";
 perl fieldmapper.pl "$CONFIG" "web_core"	> "$JSDIR/fmcore.js";
