@@ -73,16 +73,17 @@ if(!dojo._hasResource["openils.I18N"]) {
 		[dijit._Widget, dijit._Templated],
 		{
 
-			templateString : "<span dojoAttachPoint='node'><div dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation' dojoType='dijit.TooltipDialog' onOpen='openils.I18N.translationWidget.renderTranslationPopup(${targetObject}, \"${field}\")' ><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visiblity:hidden;'><tr><th>Locale</th><td class='locale'><div class='locale_combobox'></div></td><th>Translation</th><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visiblity:hidden;'>Create</button><button class='update_button' style='display:none; visiblity:hidden;'>Update</button><button class='delete_button' style='display:none; visiblity:hidden;'>Remove</button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
+			templateString : "<span dojoAttachPoint='node'><div dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation_${unique}' dojoType='dijit.TooltipDialog' onOpen='openils.I18N.translationWidget.renderTranslationPopup(${targetObject}, \"${field}\", \"${unique}\")' ><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visiblity:hidden;'><tr><th>Locale</th><td class='locale'><div class='locale_combobox'></div></td><th>Translation</th><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visiblity:hidden;'>Create</button><button class='update_button' style='display:none; visiblity:hidden;'>Update</button><button class='delete_button' style='display:none; visiblity:hidden;'>Remove</button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
 
 			widgetsInTemplate: true,
 			field : "",
-			targetObject : ""
+			targetObject : "",
+			unique : ""
 		}
 	);
 
-	openils.I18N.translationWidget.renderTranslationPopup = function (obj, field) {
-		var node = dojo.byId(field + '_translation');
+	openils.I18N.translationWidget.renderTranslationPopup = function (obj, field, num) {
+		var node = dojo.byId(field + '_translation_' + num);
 
 		var trans_list = openils.I18N.getTranslations( obj, field );
 
@@ -132,7 +133,7 @@ if(!dojo._hasResource["openils.I18N"]) {
 				dijit.form.Button,
 				{ onClick :
 					(function (trans_id, obj, field) {
-						return function () { openils.I18N.translationWidget.updateTranslation(trans_id, obj, field) }
+						return function () { openils.I18N.translationWidget.updateTranslation(trans_id, obj, field, num) }
 					})(trans_id, obj, field) 
 				}
 			);
@@ -141,7 +142,7 @@ if(!dojo._hasResource["openils.I18N"]) {
 				dijit.form.Button,
 				{ onClick :
 					(function (trans_id, obj, field) {
-						return function () { openils.I18N.translationWidget.removeTranslation(trans_id, obj, field) }
+						return function () { openils.I18N.translationWidget.removeTranslation(trans_id, obj, field, num) }
 					})(trans_id, obj, field) 
 				}
 			);
@@ -149,10 +150,10 @@ if(!dojo._hasResource["openils.I18N"]) {
 			trans_tbody.appendChild( trans_row );
 		}
 
-		old_dijit = dijit.byId('i18n_new_locale_' + obj.classname + '.' + field);
+		old_dijit = dijit.byId('i18n_new_locale_' + obj.classname + '.' + field + num);
 		if (old_dijit) old_dijit.destroy();
 
-		old_dijit = dijit.byId('i18n_new_translation_' + obj.classname + '.' + field);
+		old_dijit = dijit.byId('i18n_new_translation_' + obj.classname + '.' + field + num);
 		if (old_dijit) old_dijit.destroy();
 
 		trans_row = dojo.query('tr',trans_template)[0].cloneNode(true);
@@ -161,7 +162,7 @@ if(!dojo._hasResource["openils.I18N"]) {
 			dijit.form.ComboBox,
 			{ store:openils.I18N.localeStore,
 			  searchAttr:'locale',
-			  id:'i18n_new_locale_' + obj.classname + '.' + field,
+			  id:'i18n_new_locale_' + obj.classname + '.' + field + num,
 			  lowercase:true,
 			  required:true,
 			  invalidMessage:'Specify locale as {languageCode}_{countryCode}, like en_us',
@@ -172,27 +173,27 @@ if(!dojo._hasResource["openils.I18N"]) {
 		dojo.query('.translation_textbox',trans_row).addClass('new_translation').instantiate(
 			dijit.form.TextBox,
 			{ required : true,
-			  id:'i18n_new_translation_' + obj.classname + '.' + field
+			  id:'i18n_new_translation_' + obj.classname + '.' + field + num
 			}
 		);
 
 		dojo.query('.create_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 			dijit.form.Button,
-			{ onClick : function () { openils.I18N.translationWidget.createTranslation( obj, field) } }
+			{ onClick : function () { openils.I18N.translationWidget.createTranslation( obj, field, num) } }
 		);
 
 		trans_tbody.appendChild( trans_row );
 	}
 
-	openils.I18N.translationWidget.updateTranslation = function (trans_id, obj, field) {
-		return openils.I18N.translationWidget.changeTranslation('update', trans_id, obj, field);
+	openils.I18N.translationWidget.updateTranslation = function (trans_id, obj, field, num) {
+		return openils.I18N.translationWidget.changeTranslation('update', trans_id, obj, field, num);
 	}
 	
-	openils.I18N.translationWidget.removeTranslation = function (trans_id, obj, field) {
-		return openils.I18N.translationWidget.changeTranslation('delete', trans_id, obj, field);
+	openils.I18N.translationWidget.removeTranslation = function (trans_id, obj, field, num) {
+		return openils.I18N.translationWidget.changeTranslation('delete', trans_id, obj, field, num);
 	}
 	
-	openils.I18N.translationWidget.changeTranslation = function (method, trans_id, obj, field) {
+	openils.I18N.translationWidget.changeTranslation = function (method, trans_id, obj, field, num) {
 	
 		var trans_obj = new i18n().fromHash({
 			ischanged : method == 'update' ? 1 : 0,
@@ -204,24 +205,24 @@ if(!dojo._hasResource["openils.I18N"]) {
 			string : dijit.byId('translation_' + trans_id).getValue()
 		});
 	
-		openils.I18N.translationWidget.writeTranslation(method, trans_obj, obj, field);
+		openils.I18N.translationWidget.writeTranslation(method, trans_obj, obj, field, num);
 	}
 	
-	openils.I18N.translationWidget.createTranslation = function (obj, field) {
-		var node = dojo.byId(field + '_translation');
+	openils.I18N.translationWidget.createTranslation = function (obj, field, num) {
+		var node = dojo.byId(field + '_translation_' + num);
 	
 		var trans_obj = new i18n().fromHash({
 			isnew : 1,
 			fq_field : obj.classname + '.' + field,
 			identity_value : obj.id(),
-			translation : dijit.byId('i18n_new_locale_' + obj.classname + '.' + field).getValue(),
-			string : dijit.byId('i18n_new_translation_' + obj.classname + '.' + field).getValue()
+			translation : dijit.byId('i18n_new_locale_' + obj.classname + '.' + field + num).getValue(),
+			string : dijit.byId('i18n_new_translation_' + obj.classname + '.' + field + num).getValue()
 		});
 	
-		openils.I18N.translationWidget.writeTranslation('create', trans_obj, obj, field);
+		openils.I18N.translationWidget.writeTranslation('create', trans_obj, obj, field, num);
 	}
 	
-	openils.I18N.translationWidget.writeTranslation = function (method, trans_obj, obj, field) {
+	openils.I18N.translationWidget.writeTranslation = function (method, trans_obj, obj, field, num) {
 	
 		OpenSRF.CachedClientSession('open-ils.permacrud').request({
 			method : 'open-ils.permacrud.' + method + '.i18n',
@@ -240,10 +241,10 @@ if(!dojo._hasResource["openils.I18N"]) {
 					if (method == 'delete') {
 						dojo.NodeList(dojo.byId('translation_row_' + trans_obj.id())).orphan();
 					} else if (method == 'create') {
-						var node = dojo.byId(field + '_translation');
-						dijit.byId('i18n_new_locale_' + obj.classname + '.' + field).setValue(null);
-						dijit.byId('i18n_new_translation_' + obj.classname + '.' + field).setValue(null);
-						openils.I18N.translationWidget.renderTranslationPopup(obj, field);
+						var node = dojo.byId(field + '_translation_' + num);
+						dijit.byId('i18n_new_locale_' + obj.classname + '.' + field + num).setValue(null);
+						dijit.byId('i18n_new_translation_' + obj.classname + '.' + field + num).setValue(null);
+						openils.I18N.translationWidget.renderTranslationPopup(obj, field, num);
 					}
 	
 				} else {
