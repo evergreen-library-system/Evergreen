@@ -6,26 +6,46 @@
 <%namespace file='../../common/widgets.html' name='widget' />
 <%namespace file='picklist_summary.html' name='picklist' />
 
+<%def name="block_js()">
+    ${parent.block_js()}
+
+    <script type="text/javascript">
+        dojo.require("dijit.layout.SplitContainer")
+    </script>
+</%def>
 <%def name="page_title()">${_('Picklist')}</%def>
 
 <%def name="block_content()">
-
-${picklist.summary(c.oils.acq.picklist.value)}
-
-<div id="oils-acq-picklist-grid"> </div>
-<script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/util/Dojo.js"></script>
-<script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/openils/acq/Picklist.js"></script>
-<script type="text/javascript">
-    dojo.require('openils.acq.Picklist');
-
-    var cols = [
-    {name: "${_('ID')}", field: 'id'},
-    {name: "${_('Title')}", field: 'title'},
-    {name: "${_('Price')}", field: 'price'},
-    {name: "${_('Vendor')}", field: 'provider'},
-    {name: "${_('# of Copies')}", field: 'copies'}
-    ];
-    
-    dojo.addOnLoad(function(){openils.acq.Picklist.loadGrid('oils-acq-picklist-grid', cols, ${c.oils.acq.picklist.value.id()})});
-</script>
+<div dojoType="dijit.layout.LayoutContainer" style="height:100%">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+	${picklist.summary(c.oils.acq.picklist.value)}
+    </div>
+    <div dojoType="dijit.layout.SplitContainer"
+	 orientation="vertical" sizerWidth="5"
+	 activeSizing="0" layoutAlign="client">
+	<div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
+	    <div id="oils-acq-picklist-grid"> </div>
+	    <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/util/Dojo.js"></script>
+	    <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/openils/acq/Picklist.js"></script>
+	    <script type="text/javascript">
+		dojo.require('openils.acq.Picklist');
+		
+		var cols = [
+		{name: "${_('ID')}", field: 'id'},
+		{name: "${_('Title')}", width: "50%", field: 'title'},
+		{name: "${_('Price')}", field: 'price'},
+		{name: "${_('Vendor')}", field: 'provider'},
+		{name: "${_('# of Copies')}", field: 'copies'}
+		];
+		
+		dojo.addOnLoad(function(){openils.acq.Picklist.loadGrid('oils-acq-picklist-grid', cols, ${c.oils.acq.picklist.value.id()})});
+	    </script>
+	</div>
+	<div dojoType="dijit.layout.ContentPane" sizeMin="20"
+	     sizeShare="80">
+	    <p>Hi!</p>
+	    <div id="oils-acq-picklist-details-grid"> </div>
+	</div>
+    </div>
+</div>
 </%def>
