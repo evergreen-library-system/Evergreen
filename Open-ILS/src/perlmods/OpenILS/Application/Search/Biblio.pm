@@ -1,5 +1,5 @@
 package OpenILS::Application::Search::Biblio;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 
@@ -273,7 +273,7 @@ sub fleshed_by_barcode {
 	my $copyid = $e->search_asset_copy(
 		{barcode => $barcode, deleted => 'f'}, {idlist=>1})->[0]
 		or return $e->event;
-	return $self->fleshed_copy_retrieve2($conn, $copyid);
+	return fleshed_copy_retrieve2( $self, $conn, $copyid);
 }
 
 
@@ -431,7 +431,7 @@ __PACKAGE__->register_method(
                 subclasses, specified with a "|". For example, "title|proper:gone with the wind" 
                 For more, see config.metabib_field
 
-        @param nocache @see open-ils.search.biblio.multiclass
+        @param docache @see open-ils.search.biblio.multiclass
     #
 );
 __PACKAGE__->register_method(
@@ -451,8 +451,8 @@ sub multiclass_query {
     my($self, $conn, $arghash, $query, $docache) = @_;
 
     $logger->debug("initial search query => $query");
+    my $orig_query = $query;
 
-    $query = decode_utf8($query);
     $query =~ s/\+/ /go;
     $query =~ s/'//go;
     $query =~ s/^\s+//go;
@@ -496,6 +496,10 @@ sub multiclass_query {
             $arghash->{language} = [] unless $arghash->{language};
             push(@{$arghash->{language}}, $value);
 
+        } elsif($type =~ /^sort/o) {
+            # sort and sort_dir modifiers
+            $arghash->{$type} = $value;
+
         } else {
             # append the search term to the term under construction
             $search->{$type} =  {} unless $search->{$type};
@@ -516,12 +520,21 @@ sub multiclass_query {
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
 
+	my $sclient = OpenSRF::Utils::SettingsClient->new;
+
     (my $method = $self->api_name) =~ s/\.query//o;
+
+    $method =~ s/multiclass/multiclass.staged/
+        if $sclient->config_value(apps => 'open-ils.search',
+            app_settings => 'use_staged_search') =~ /true/i;
+
+
 	$method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
 
     $arghash->{limit} = $ol if $ol;
     $data->{compiled_search} = $arghash;
+    $data->{query} = $orig_query;
 
     $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
 
@@ -532,7 +545,8 @@ __PACKAGE__->register_method(
 	method		=> 'cat_search_z_style_wrapper',
 	api_name	=> 'open-ils.search.biblio.zstyle',
 	stream		=> 1,
-);
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+
 sub cat_search_z_style_wrapper {
 	my $self = shift;
 	my $client = shift;
@@ -561,7 +575,7 @@ sub cat_search_z_style_wrapper {
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate} if $$args{search}{pubdate};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
-    my ($list) = $self->method_lookup('open-ils.search.biblio.multiclass.staff')->run( $searchhash );
+	my $list = the_quest_for_knowledge( $self, $client, $searchhash );
 
 	if ($list->{count} > 0) {
 		$result->{count} = $list->{count};
@@ -714,6 +728,147 @@ sub the_quest_for_knowledge {
 }
 
 
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.biblio.multiclass.staged');
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.biblio.multiclass.staged.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.metabib.multiclass.staged',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+__PACKAGE__->register_method(
+	method		=> 'staged_search',
+	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
+	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+
+my $PAGE_SIZE = 1000;
+my $SEARCH_PAGES = 25;
+sub staged_search {
+	my($self, $conn, $search_hash, $docache) = @_;
+
+    my $method = ($self->api_name =~ /metabib/) ?
+        'open-ils.storage.metabib.multiclass.staged.search_fts':
+        'open-ils.storage.biblio.multiclass.staged.search_fts';
+
+    $method .= '.staff' if $self->api_name =~ /staff$/;
+    $method .= '.atomic';
+
+    my $user_offset = $search_hash->{offset} || 0; # user-specified offset
+    my $user_limit = $search_hash->{limit} || 10;
+
+    # we're grabbing results on a per-superpage basis, which means the 
+    # limit and offset should coincide with superpage boundaries
+    $search_hash->{offset} = 0;
+    $search_hash->{limit} = $PAGE_SIZE;
+    $search_hash->{check_limit} = $PAGE_SIZE; # force a well-known check_limit
+
+    # pull any existing results from the cache
+    my $key = search_cache_key($method, $search_hash);
+    my $cache_data = $cache->get_cache($key) || {};
+
+    # keep retrieving results until we find enough to 
+    # fulfill the user-specified limit and offset
+    my $all_results = [];
+    my $page; # current superpage
+    my $est_hit_count;
+
+    for($page = 0; $page < $SEARCH_PAGES; $page++) {
+
+        my $data = $cache_data->{$page};
+        my $results;
+        my $summary;
+
+        $logger->debug("staged search: analyzing superpage $page");
+
+        if($data) {
+            # this window of results is already cached
+            $logger->debug("staged search: found cached results");
+            $summary = $data->{summary};
+            $results = $data->{results};
+
+        } else {
+            # retrieve the window of results from the database
+            $logger->debug("staged search: fetching results from the database");
+            $search_hash->{skip_check} = $page * $PAGE_SIZE;
+            my $start = time;
+            $results = $U->storagereq($method, %$search_hash);
+            $logger->info("staged search: DB call took ".(time - $start)." seconds");
+            $summary = shift(@$results);
+
+            # Create backwards-compatible result structures
+            if($self->api_name =~ /biblio/) {
+                $results = [map {[$_->{id}]} @$results];
+            } else {
+                $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
+            }
+
+            $results = [grep {defined $_->[0]} @$results];
+            cache_staged_search_page($key, $page, $summary, $results) if $docache;
+        }
+
+        # add the new set of results to the set under construction
+        push(@$all_results, @$results);
+
+        my $current_count = scalar(@$all_results);
+
+        $est_hit_count = $summary->{estimated_hit_count} || $summary->{visible}
+            if $page == 0;
+
+        $logger->debug("staged search: located $current_count, with estimated hits=".
+            $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
+
+        # we've found all the possible hits
+        last if $current_count == $summary->{visible}
+            and not defined $summary->{estimated_hit_count};
+
+        # we've found enough results to satisfy the requested limit/offset
+        last if $current_count >= ($user_limit + $user_offset);
+
+        # we've scanned all possible hits
+        last if $summary->{checked} < $PAGE_SIZE;
+    }
+
+    my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
+
+    return {
+        count => $est_hit_count,
+        ids => \@results
+    };
+}
+
+# creates a unique token to represent the query in the cache
+sub search_cache_key {
+    my $method = shift;
+    my $search_hash = shift;
+	my @sorted;
+    for my $key (sort keys %$search_hash) {
+	    push(@sorted, ($key => $$search_hash{$key})) 
+            unless $key eq 'limit' or 
+                $key eq 'offset' or 
+                $key eq 'skip_check';
+    }
+	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
+	return $pfx . md5_hex($method . $s);
+}
+
+sub cache_staged_search_page {
+    # puts this set of results into the cache
+    my($key, $page, $summary, $results) = @_;
+    my $data = $cache->get_cache($key);
+    $data ||= {};
+    $data->{$page} = {
+        summary => $summary,
+        results => $results
+    };
+
+    $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
+        $summary->{estimated_hit_count}.", visible=".$summary->{visible});
+
+    $cache->put_cache($key, $data);
+}
 
 sub search_cache {
 
@@ -734,7 +889,6 @@ sub search_cache {
 	$data = $data->[1];
 
 	return undef unless $offset < $count;
-
 
 	my @result;
 	for( my $i = $offset; $i <= $end; $i++ ) {
@@ -803,8 +957,8 @@ sub biblio_mrid_to_modsbatch {
 	my ($mr, $evt) = _grab_metarecord($mrid);
 	return $evt unless $mr;
 
-	my $mvr = $self->biblio_mrid_check_mvr($client, $mr);
-	$mvr = $self->biblio_mrid_make_modsbatch( $client, $mr ) unless $mvr;
+	my $mvr = biblio_mrid_check_mvr($self, $client, $mr);
+	$mvr = biblio_mrid_make_modsbatch( $self, $client, $mr ) unless $mvr;
 
 	return $mvr unless ref($args);	
 
@@ -1389,6 +1543,9 @@ __PACKAGE__->register_method (
 	api_name => 'open-ils.search.biblio.item_type_map.retrieve.all');
 __PACKAGE__->register_method (
 	method => 'bib_extras',
+	api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all');
+__PACKAGE__->register_method (
+	method => 'bib_extras',
 	api_name => 'open-ils.search.biblio.audience_map.retrieve.all');
 
 sub bib_extras {
@@ -1404,6 +1561,9 @@ sub bib_extras {
 
 	return $e->retrieve_all_config_item_type_map()
 		if( $self->api_name =~ /item_type_map/ );
+
+	return $e->retrieve_all_config_bib_level_map()
+		if( $self->api_name =~ /bib_level_map/ );
 
 	return $e->retrieve_all_config_audience_map()
 		if( $self->api_name =~ /audience_map/ );

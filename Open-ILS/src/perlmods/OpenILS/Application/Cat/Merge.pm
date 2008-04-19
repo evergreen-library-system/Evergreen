@@ -1,6 +1,6 @@
 use strict; use warnings;
 package OpenILS::Application::Cat::Merge;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use OpenSRF::Application;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::Utils;
@@ -114,16 +114,15 @@ sub merge_records {
 			$vol->edit_date('now');
 			$vol->record( $master );
 			$editor->update_asset_call_number($vol)
-				or return $editor->event;
+				or return $editor->die_event;
 		}
 	}
 
 	# cycle through and delete the non-master records
 	for my $rec (@recs) {
 
-		my ($record, $evt) = 
-			$editor->retrieve_biblio_record_entry($rec);
-		return $evt if $evt;
+		my $record = $editor->retrieve_biblio_record_entry($rec)
+            or return $editor->die_event;
 
 		$logger->debug("merge: seeing if record $rec needs to be deleted or un-deleted");
 
@@ -135,7 +134,7 @@ sub merge_records {
 				$record->editor($reqr->id);
 				$record->edit_date('now');
 				$editor->update_biblio_record_entry($record, {checkperm => 1})
-					or return $editor->event;
+					or return $editor->die_event;
 			}
 
 		} else {
@@ -144,7 +143,7 @@ sub merge_records {
 			$record->editor($reqr->id);
 			$record->edit_date('now');
 			$editor->update_biblio_record_entry($record, {checkperm => 1})
-				or return $editor->event;
+				or return $editor->die_event;
 		}
 	}
 
@@ -207,7 +206,7 @@ sub merge_volumes {
 			$copy->call_number($bigcn);
 			$copy->editor($editor->requestor->id);
 			$copy->edit_date('now');
-			$editor->update_asset_copy($copy) or return (undef, $editor->event);
+			$editor->update_asset_copy($copy) or return (undef, $editor->die_event);
 		}
 	}
 
@@ -217,13 +216,40 @@ sub merge_volumes {
 		$_->deleted('t');
 		$_->editor($editor->requestor->id);
 		$_->edit_date('now');
-		return (undef,$editor->event) unless $editor->allowed('UPDATE_VOLUME', $_->owning_lib);
-		$editor->update_asset_call_number($_) or return (undef, $editor->event);
+		return (undef,$editor->die_event) unless $editor->allowed('UPDATE_VOLUME', $_->owning_lib);
+		$editor->update_asset_call_number($_) or return (undef, $editor->die_event);
+        merge_volume_holds($editor, $bigcn, $_->id);
 	}
 
 	my ($mvol) = grep { $_->id == $bigcn } @$volumes;
 	$logger->debug("merge: returning master volume ".$mvol->id);
 	return ($mvol);
+}
+
+sub merge_volume_holds {
+    my($e, $master_id, $vol_id) = @_;
+
+    my $holds = $e->search_action_hold_request(
+        {   cancel_time => undef, 
+            fulfillment_time => undef,
+            hold_type => 'V',
+            target => $vol_id
+        }
+    );
+
+    for my $hold (@$holds) {
+
+        $logger->info("Changing hold ".$hold->id.
+            " target from ".$hold->target." to $master_id in volume merge");
+
+        $hold->target($master_id);
+        unless($e->update_action_hold_request($hold)) {
+            my $evt = $e->event;
+            $logger->error("Error updating hold ". $evt->textcode .":". $evt->desc .":". $evt->stacktrace); 
+        }
+    }
+
+    return undef;
 }
 
 

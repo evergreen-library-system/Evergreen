@@ -128,7 +128,7 @@ patron.summary.prototype = {
 							return function() { 
 								e.setAttribute('value','...');
 								obj.network.simple_request(
-									'FM_MOUS_RETRIEVE',
+									'FM_MOUS_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										JSAN.use('util.money');
@@ -138,7 +138,7 @@ patron.summary.prototype = {
 								);
 								/*
 								obj.network.simple_request(
-									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
+									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										JSAN.use('util.money');
@@ -149,7 +149,7 @@ patron.summary.prototype = {
 										}
 										var sum = 0;
 										for (var i = 0; i < list.length; i++) {
-											var robj = typeof list[i] == 'object' ? list[i] : obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),list[i]]);
+											var robj = typeof list[i] == 'object' ? list[i] : obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),list[i]]);
 											sum += util.money.dollars_float_to_cents_integer( robj.balance_owed() );
 										} 
 										if (sum > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
@@ -172,7 +172,7 @@ patron.summary.prototype = {
 								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
 								var e6 = document.getElementById( 'patron_noncat' ); if (e6) e6.setAttribute('value','...');
 								obj.network.simple_request(
-									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
+									'FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										try {
@@ -188,7 +188,7 @@ patron.summary.prototype = {
 									}
 								);
 								obj.network.simple_request(
-									'FM_ANCC_RETRIEVE_VIA_USER',
+									'FM_ANCC_RETRIEVE_VIA_USER.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										var robj = req.getResultObject();
@@ -214,7 +214,7 @@ patron.summary.prototype = {
 								var e2 = document.getElementById('patron_holds_available');
 								if (e2) e2.setAttribute('value','...');
 								obj.network.simple_request(
-									'FM_AHR_COUNT_RETRIEVE',
+									'FM_AHR_COUNT_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										e.setAttribute('value',
@@ -572,7 +572,7 @@ patron.summary.prototype = {
 						var robj;
 						if (obj.barcode && obj.barcode != 'null') {
 							robj = obj.network.simple_request(
-								'FM_AU_RETRIEVE_VIA_BARCODE',
+								'FM_AU_RETRIEVE_VIA_BARCODE.authoritative',
 								[ ses(), obj.barcode ]
 							);
 						} else if (obj.id && obj.id != 'null') {

@@ -1,5 +1,5 @@
 package OpenILS::Application::Actor::Container;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use OpenILS::Perm;

@@ -818,7 +818,7 @@ sub new_hold_copy_targeter {
 			$log->info("Processing hold ".$hold->id."...\n");
 
 			#first, re-fetch the hold, to make sure it's not captured already
-            $hold->remove_from_object_index();
+			$hold->remove_from_object_index();
 			$hold = action::hold_request->retrieve( $hold->id );
 			die "OK\n" if (!$hold or $hold->capture_time);
 
@@ -838,7 +838,11 @@ sub new_hold_copy_targeter {
 						{$_->record}
 						metabib::record_descriptor
 							->search(
-								record => [ map { $_->id } metabib::metarecord->retrieve($hold->target)->source_records ],
+								record => [
+									map {
+										isTrue($_->deleted) ?  () : ($_->id)
+									} metabib::metarecord->retrieve($hold->target)->source_records
+								],
 								( $types   ? (item_type => [split '', $types])   : () ),
 								( $formats ? (item_form => [split '', $formats]) : () ),
 								( $lang    ? (item_lang => $lang)                : () ),
@@ -947,11 +951,7 @@ sub new_hold_copy_targeter {
 	
 			if (!scalar(@good_copies)) {
 				$log->info("\tNo (non-current) copies eligible to fill the hold.");
-				if (
-				  $old_best &&
-				  grep { $old_best eq $_ } @$all_copies &&
-				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef, cancel_time => undef })
-				) {
+				if ( $old_best && grep { ''.$old_best->id eq ''.$_->id } @$all_copies ) {
 					# the old copy is still available
 					$log->debug("\tPushing current_copy back onto the targeting list");
 					push @good_copies, $old_best;

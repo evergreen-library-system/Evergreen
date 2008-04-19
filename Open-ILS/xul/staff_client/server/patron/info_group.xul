@@ -67,7 +67,6 @@
 				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
 
 				JSAN.use('util.list'); g.list = new util.list('patron_list');
-				function getString(s) { return g.OpenILS.data.entities[s]; }
 
 				JSAN.use('patron.util');
 				var columns = patron.util.columns(
@@ -148,7 +147,7 @@
 				var p = patron.util.retrieve_au_via_id(ses(),g.patron_id);
 				if ((p == null) || (typeof p.ilsevent != 'undefined') ) throw(p);
 				var robj = g.network.simple_request(
-					'FM_AU_LIST_RETRIEVE_VIA_GROUP',
+					'FM_AU_LIST_RETRIEVE_VIA_GROUP.authoritative',
 					[ ses(), p.usrgroup() ]
 				);
 				if ((robj == null) || (typeof robj.ilsevent != 'undefined') ) throw(robj);
@@ -414,6 +413,8 @@
 			<menuitem command="retrieve_p" />
 		</popup>
 	</popupset>
+
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 
 	<vbox flex="1" class="my_overflow" id="group_panel">
 		<groupbox flex="1">

@@ -49,12 +49,14 @@
 	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
 
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/main.js"/>
 	<script>
-		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
+		dump("lang.version = &lang.version;" + '\n');
 	</script>
+
+	<messagecatalog id="authStrings" src="chrome://open_ils_staff_client/locale/auth.properties"/>
+	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
 	<commandset id="auth_cmds">
 		<command id="cmd_login" />

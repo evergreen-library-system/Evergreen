@@ -2,8 +2,11 @@
 var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
+var isbnList = '';
+var googleBooks = true;
 
 var resultFetchAllRecords = false;
+var resultCompiledSearch = null;
 
 /* set up the event handlers */
 if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
@@ -11,7 +14,9 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
-      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))});
+      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
+	  fetchGoogleBooks);
+
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
 	attachEvt( "common", "locationUpdated", resultSBSubmit );
@@ -58,7 +63,11 @@ function resultCollectSearchIds( type, method, handler ) {
 			limit = getHitCount() - getOffset();
 	}
 
-	args.org_unit = getLocation();
+	var lasso = getLasso();
+
+	if (lasso) args.org_unit = -lasso;
+	else args.org_unit = getLocation();
+
 	args.depth    = getDepth();
 	args.limit    = limit;
 	args.offset   = getOffset();
@@ -75,6 +84,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
+	if(getBibLevel()) args.bib_level	= getBibLevel().split(/,/);
 
 	_debug('Search args: ' + js2JSON(args));
 	_debug('Raw query: ' + getTerm());
@@ -92,19 +102,21 @@ function resultCollectSearchIds( type, method, handler ) {
 	displaying, links to the next/prev pages, etc. */
 function resultSetHitInfo() { 
 
-
-	/* tell the user where the results are coming from */
-	var baseorg = findOrgUnit(getLocation());
-	var depth = getDepth();
-	var mydepth = findOrgDepth(baseorg);
-	if( findOrgDepth(baseorg) != depth ) {
-		var tmporg = baseorg;
-		while( mydepth > depth ) {
-			mydepth--;
-			tmporg = findOrgUnit(tmporg.parent_ou());
+	var lasso = getLasso();
+	if (!lasso) {
+		/* tell the user where the results are coming from */
+		var baseorg = findOrgUnit(getLocation());
+		var depth = getDepth();
+		var mydepth = findOrgDepth(baseorg);
+		if( findOrgDepth(baseorg) != depth ) {
+			var tmporg = baseorg;
+			while( mydepth > depth ) {
+				mydepth--;
+				tmporg = findOrgUnit(tmporg.parent_ou());
+			}
+			unHideMe($('including_results_for'));
+			$('including_results_location').appendChild(text(tmporg.name()));
 		}
-		unHideMe($('including_results_for'));
-		$('including_results_location').appendChild(text(tmporg.name()));
 	}
 
 
@@ -171,16 +183,16 @@ function resultLowHits() {
 	if(getHitCount() > 0)
 		unHideMe($('result_low_hits_msg'));
 
-	var sreq = new Request(CHECK_SPELL, getTerm());
+    var words = [];
+    for(var key in resultCompiledSearch.searches) 
+        words.push(resultCompiledSearch.searches[key].term);
+
+	var sreq = new Request(CHECK_SPELL, words.join(' '));
 	sreq.callback(resultSuggestSpelling);
 	sreq.send();
 
-    /* XXX patch to use the search results */
-
-	var words = getTerm().split(' ');
-	var word;
-	while( word = words.shift() ) {
-		var areq = new Request(FETCH_CROSSREF, getStype(), getTerm() );
+    for(var key in resultCompiledSearch.searches) {
+		var areq = new Request(FETCH_CROSSREF, key, resultCompiledSearch.searches[key].term);
 		areq.callback(resultLowHitXRef);
 		areq.send();
 	}
@@ -339,11 +351,13 @@ function resultPaginate() {
 		if( getHitCount() % getDisplayCount() == 0 ) 
 			args[PARAM_OFFSET] -= getDisplayCount();
 
+        /*
 		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
 
 		$('end_link2').setAttribute("href", buildOPACLink(args)); 
 		addCSSClass($('end_link2'), config.css.result.nav_active);
+        */
 	}
 
 	if( o > 0 ) {
@@ -391,6 +405,21 @@ function buildunAPISpan (span, type, id) {
 	);
 }
 
+function unhideGoogleBooks (data) {
+    for ( var i in data ) {
+        //if (data[i].preview == 'noview') continue;
+
+        var gbspan = $n(document.documentElement, 'googleBooks-' + i);
+        var gba = $n(gbspan, "googleBooks-link");
+
+        gba.setAttribute(
+            'href',
+            data[i].info_url
+        );
+        removeCSSClass( gbspan, 'hide_me' );
+    }
+}
+
 /* display the record info in the record display table 'pos' is the 
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
@@ -400,8 +429,22 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	recordsCache.push(rec);
 
 	var r = table.rows[pos + 1];
+    var currentISBN = cleanISBN(rec.isbn());
 
-	
+    if (googleBooks) {
+	    var gbspan = $n(r, "googleBooks");
+        if (currentISBN) {
+            gbspan.setAttribute(
+                'name',
+                gbspan.getAttribute('name') + '-' + currentISBN
+            );
+
+            if (isbnList) isbnList += ', ';
+            isbnList += currentISBN;
+        }
+    }
+
+/*
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
 		rank		= parseInt( rank * 100 );
@@ -409,9 +452,10 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		relspan.appendChild(text(rank));
 		unHideMe(relspan.parentNode);
 	} catch(e){ }
+*/
 
 	var pic = $n(r, config.names.result.item_jacket);
-	pic.setAttribute("src", buildISBNSrc(cleanISBN(rec.isbn())));
+	pic.setAttribute("src", buildISBNSrc(currentISBN));
 
 	var title_link = $n(r, config.names.result.item_title);
 	var author_link = $n(r, config.names.result.item_author);
@@ -545,8 +589,21 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 	}
 }
 
+function fetchGoogleBooks () {
+    if (isbnList && googleBooks) {
+        var scriptElement = document.createElement("script");
+        scriptElement.setAttribute("id", "jsonScript");
+        scriptElement.setAttribute("src",
+            "http://books.google.com/books?bibkeys=" + 
+            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooks");
+        scriptElement.setAttribute("type", "text/javascript");
+        // make the request to Google Book Search
+        document.documentElement.firstChild.appendChild(scriptElement);
+    }
+}
 
 function resultPageIsDone(pos) {
+
 	return (recordsHandled == getDisplayCount() 
 		|| recordsHandled + getOffset() == getHitCount());
 }
@@ -576,7 +633,7 @@ function resultAddCopyCounts(rec, pagePosition) {
 
 	var cchead = null;
 	var ccheadcell = null;
-	if(!resultCCHeaderApplied) {
+	if(!resultCCHeaderApplied && !getLasso()) {
 		ccrow = $('result_thead_row');
 		ccheadcell =  ccrow.removeChild($n(ccrow, "result_thead_ccell"));
 		var t = ccheadcell.cloneNode(true);
@@ -622,7 +679,12 @@ function resultAddCopyCounts(rec, pagePosition) {
 /* collect copy counts for a record using method 'methodName' */
 function resultCollectCopyCounts(rec, pagePosition, methodName) {
 	if(rec == null || rec.doc_id() == null) return;
-	var req = new Request(methodName, getLocation(), rec.doc_id(), getForm() );
+
+	var loc = getLasso();
+	if (loc) loc = -loc;
+	else loc= getLocation();
+
+	var req = new Request(methodName, loc, rec.doc_id(), getForm() );
 	req.request.userdata = [ rec, pagePosition ];
 	req.callback(resultHandleCopyCounts);
 	req.send();
@@ -633,9 +695,31 @@ function resultHandleCopyCounts(r) {
 }
 
 
+/* XXX Needs to understand Lasso copy counts... */
 /* display the collected copy counts */
 function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	if(copy_counts == null || rec == null) return;
+
+	if (getLasso()) {
+		var copy_counts_lasso = {
+			transcendant : null,
+			count : 0,
+			unshadow : 0,
+			available : 0,
+			depth : -1,
+			org_unit : getLasso()
+		};
+
+		for (var i in copy_counts) {
+			copy_counts_lasso.transcendant = copy_counts[i].transcendant;
+			copy_counts_lasso.count += parseInt(copy_counts[i].count);
+			copy_counts_lasso.unshadow += parseInt(copy_counts[i].unshadow);
+			copy_counts_lasso.available += parseInt(copy_counts[i].available);
+		}
+
+		copy_counts = [ copy_counts_lasso ];
+	}
+
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = $("copy_count_cell_" + i +"_" + pagePosition);

@@ -3,6 +3,7 @@ BEGIN;
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_billining_address_fkey FOREIGN KEY (billing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_home_ou_fkey FOREIGN KEY (home_ou) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_profile_fkey FOREIGN KEY (profile) REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED;
         
 ALTER TABLE actor.stat_cat ADD CONSTRAINT actor_stat_cat_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 

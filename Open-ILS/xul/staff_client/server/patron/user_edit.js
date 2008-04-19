@@ -286,6 +286,8 @@ function grep ( code, list ) {
 
 function trim_ou_tree (tree, list) {
 	for (var i in tree) {
+		if (!tree[i]) continue;
+
 		var type = grep( function(x) {return x.id() == tree[i].ou_type()}, ou_type_list )[0];
 		if ( type && type.can_have_users() == 't' )
 			list.push(tree[i]);

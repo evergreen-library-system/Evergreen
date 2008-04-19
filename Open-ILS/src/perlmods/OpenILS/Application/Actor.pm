@@ -78,38 +78,41 @@ sub set_user_settings {
 }
 
 
-
 __PACKAGE__->register_method(
 	method	=> "set_ou_settings",
 	api_name	=> "open-ils.actor.org_unit.settings.update",
 );
 sub set_ou_settings {
-	my( $self, $client, $user_session, $ouid, $settings ) = @_;
-	
-	my( $staff, $evt ) = $apputils->checkses( $user_session );
-	return $evt if $evt;
-	$evt = $apputils->check_perms( $staff->id, $ouid, 'UPDATE_ORG_SETTING' );
-	return $evt if $evt;
+	my( $self, $client, $auth, $org_id, $settings ) = @_;
 
-	my @params;
-	for my $set (keys %$settings) {
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_ORG_SETTING', $org_id);
 
-		my $json = OpenSRF::Utils::JSON->perl2JSON($$settings{$set});
-		$logger->activity("updating org_unit.setting: $ouid : $set : $json");
+	for my $name (keys %$settings) {
+        my $val = $$settings{$name};
+        my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
 
-		push( @params, 
-			{ org_unit => $ouid, name => $set }, 
-			{ value => $json } );
-	}
+        if(defined $val) {
+            $val = OpenSRF::Utils::JSON->perl2JSON($val);
+            if($set) {
+                $set->value($val);
+                $e->update_actor_org_unit_setting($set) or return $e->die_event;
+            } else {
+                $set = Fieldmapper::actor::org_unit_setting->new;
+                $set->org_unit($org_id);
+                $set->name($name);
+                $set->value($val);
+                $e->create_actor_org_unit_setting($set) or return $e->die_event;
+            }
+        } elsif($set) {
+            $e->delete_actor_org_unit_setting($set) or return $e->die_event;
+        }
+    }
 
-	my $ses = $U->start_db_session();
-	my $stat = $ses->request(
-		'open-ils.storage.direct.actor.org_unit_setting.merge', @params )->gather(1);
-	$U->commit_db_session($ses);
-
-	return $stat;
+    $e->commit;
+    return 1;
 }
-
 
 my $fetch_user_settings;
 my $fetch_ou_settings;
@@ -119,21 +122,21 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
-	my( $self, $client, $user_session, $uid, $setting ) = @_;
-	
-	my( $staff, $user, $evt ) = 
-		$apputils->checkses_requestor( $user_session, $uid, 'VIEW_USER' );
-	return $evt if $evt;
+	my( $self, $client, $auth, $user_id, $setting ) = @_;
 
-	$logger->debug("User " . $staff->id . " fetching user $uid\n");
-	my $s = $apputils->simplereq(
-		'open-ils.cstore',
-		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
+    my $patron = $e->retrieve_actor_user($user_id) or return $e->event;
+    if($e->requestor->id != $user_id) {
+        return $e->event unless $e->allowed('VIEW_USER', $patron->home_ou);
+    }
+
+    my $s = $e->search_actor_user_setting({usr => $user_id});
 	my $settings =  { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
 
-   return $$settings{$setting} if $setting;
-   return $settings;
+    return $$settings{$setting} if $setting;
+    return $settings;
 }
 
 
@@ -852,7 +855,7 @@ sub set_user_perms {
 			$map->clear_id;
 		}
 
-		next if (!$all || !grep { $_->perm eq $map->perm and $_->grantable == 1 and $_->depth <= $map->depth } @$perms);
+		next if (!$all || !grep { $_->perm eq $map->perm and $U->is_true($_->grantable) and $_->depth <= $map->depth } @$perms);
 
 		#warn( "Updating permissions with method $method and session $ses and map $map" );
 		$logger->info( "Updating permissions with method $method and map $map" );
@@ -3039,10 +3042,6 @@ sub create_user_opt_in_at_org {
 
     return $opt_in->id;
 }
-
-
-
-
 
 
 1;

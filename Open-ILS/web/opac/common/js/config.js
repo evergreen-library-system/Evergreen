@@ -9,6 +9,7 @@ var DO_AUTHORITY_LOOKUPS = true;
 var PARAM_TERM			= "t";			/* search term */
 var PARAM_STYPE		= "tp";			/* search type */
 var PARAM_LOCATION	= "l";			/* current location */
+var PARAM_LASSO	= "sg";			/* current location */
 var PARAM_DEPTH		= "d";			/* search depth */
 var PARAM_FORM			= "f";			/* search format */
 var PARAM_OFFSET		= "o";			/* search offset */
@@ -29,6 +30,7 @@ var PARAM_CN			= "cn";
 var PARAM_LITFORM		= 'lf';
 var PARAM_ITEMFORM	= 'if';
 var PARAM_ITEMTYPE	= 'it';
+var PARAM_BIBLEVEL	= 'bl';
 var PARAM_AUDIENCE	= 'a';
 var PARAM_SEARCHES	= 'ss';
 var PARAM_LANGUAGE	= 'la';
@@ -41,6 +43,7 @@ var PARAM_AVAIL     = 'av'; /* limit search results to available items */
 var TERM;  
 var STYPE;  
 var LOCATION;  
+var LASSO;  
 var DEPTH;  
 var FORM; 
 var OFFSET;
@@ -63,6 +66,7 @@ var CALLNUM;
 var LITFORM;
 var ITEMFORM;
 var ITEMTYPE;
+var BIBLEVEL;
 var AUDIENCE;
 var SEARCHES;
 var LANGUAGE;
@@ -338,6 +342,7 @@ var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.
 var FETCH_LIT_FORMS				= 'open-ils.search:open-ils.search.biblio.lit_form_map.retrieve.all';
 var FETCH_ITEM_FORMS				= 'open-ils.search:open-ils.search.biblio.item_form_map.retrieve.all';
 var FETCH_ITEM_TYPES				= 'open-ils.search:open-ils.search.biblio.item_type_map.retrieve.all';
+var FETCH_BIB_LEVELS				= 'open-ils.search:open-ils.search.biblio.bib_level_map.retrieve.all';
 var FETCH_AUDIENCES				= 'open-ils.search:open-ils.search.biblio.audience_map.retrieve.all';
 var FETCH_HOLD_STATUS			= 'open-ils.circ:open-ils.circ.hold.status.retrieve';
 var FETCH_NON_CAT_CIRCS			= 'open-ils.circ:open-ils.circ.open_non_cataloged_circulation.user';

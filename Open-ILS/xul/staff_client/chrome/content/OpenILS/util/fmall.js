@@ -1,5 +1,7 @@
 try {
-	if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+	if (typeof JSAN == 'undefined') { 
+		throw(document.getElementById('offlineStrings').getString('common.jsan.missing'));
+	}
 	JSAN.errorLevel = "die"; // none, warn, or die
 	JSAN.addRepository('..');
 	JSAN.use('OpenILS.data');

@@ -34,7 +34,7 @@ admin.transit_list.prototype = {
 				false
 			);
 		} else {
-			throw('Missing library list.\n');
+			throw(document.getElementById('adminStrings').getString('staff.admin.transit_list.missing_list') + '\n');
 		}
 
 		file = new util.file('transit_list_prefs.'+obj.data.server_unadorned);
@@ -76,7 +76,7 @@ admin.transit_list.prototype = {
 				if (util.date.check('YYYY-MM-DD',_string[1]+'-'+_string[2]+'-'+_string[3])) {
 					_date = util.date.buildDate( _string[1], _string[2], _string[3], 0, 0, 0);
 				} else {
-					alert('Invalid Date (' + _string + '), setting to Today'); 
+					alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.invalid_date', [_string])); 
 					_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 				}
 			}
@@ -89,7 +89,7 @@ admin.transit_list.prototype = {
 			}
 
 			if (! util.date.check('YYYY-MM-DD',util.date.formatted_date(_date,"%F")) ) { 
-				alert('Invalid Date (' + _date + ',' + util.date.formatted_date(_date,"%F") + '), setting to Today'); 
+				alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.invalid_date', [_date, util.date.formatted_date(_date,"%F")])); 
 				_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 			}
 				
@@ -99,7 +99,7 @@ admin.transit_list.prototype = {
 
 			return util.date.formatted_date(_date,'%{iso8601}');
 		} catch(E) {
-			try { obj.error.standard_unexpected_error_alert('processing date',E); } catch(F) { alert(E); }
+			try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.date_processing.error'),E); } catch(F) { alert(E); }
 			_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 			return util.date.formatted_date(_date,'%{iso8601}');
 		}
@@ -151,16 +151,16 @@ admin.transit_list.prototype = {
 						if (rows.length > 0) {
 							exec.chain( rows );
 						} else {
-							alert('No matching transits.');
+							alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.no_match'));
 						}
 
 					} catch(E) {
-						try { obj.error.standard_unexpected_error_alert('retrieving transits',E); } catch(F) { alert(E); }
+						try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.retrieving_transit.error'),E); } catch(F) { alert(E); }
 					}
 				}
 			);
 		} catch(E) {
-			try { obj.error.standard_unexpected_error_alert('pre-retrieving transits',E); } catch(F) { alert(E); }
+			try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.preretrieving_transit.error'),E); } catch(F) { alert(E); }
 		}
 	},
 
@@ -227,7 +227,7 @@ admin.transit_list.prototype = {
 							function(transit,hold) { return obj.get_rest_of_row_given_transit_and_hold(params,transit,hold); }
 						);
 					} catch(E) {
-						try { obj.error.standard_unexpected_error_alert('retrieving row',E); } catch(F) { alert(E); }
+						try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.retrieving_row.error'),E); } catch(F) { alert(E); }
 					}
 				},
 				'on_select' : function(ev) {
@@ -281,7 +281,7 @@ admin.transit_list.prototype = {
 									var r_ahr = req3.getResultObject();
 									if (typeof r_ahr.ilsevent != 'undefined') throw(r_ahr);
 									if (r_ahr.length == 0) {
-										try { obj.error.standard_unexpected_error_alert('Empty array returned by hold retrieve.  retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
+										try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.empty_array.error') + document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.empty_array.error', [r_atc.hold(), transit_id]),E); } catch(F) { alert(E); }
 										do_this(r_atc,null);
 									} else {
 										if (instanceOf(r_ahr[0],ahr)) {
@@ -291,7 +291,7 @@ admin.transit_list.prototype = {
 										}
 									}
 								} catch(E) {
-									try { obj.error.standard_unexpected_error_alert('retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
+									try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.empty_array.error', [r_atc.hold(), transit_id]),E); } catch(F) { alert(E); }
 									do_this(r_atc,null);
 								}
 							}
@@ -301,7 +301,7 @@ admin.transit_list.prototype = {
 					}
 
 				} catch(E) {
-					try { obj.error.standard_unexpected_error_alert('retrieving transit id = ' + transit_id,E); } catch(F) { alert(E); }
+					try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.transit_id.error', [transit_id]),E); } catch(F) { alert(E); }
 				}
 			}
 		);
@@ -324,7 +324,7 @@ admin.transit_list.prototype = {
 					row.my.acp = r_acp;
 
 					obj.network.simple_request(
-						'FM_ACN_RETRIEVE',
+						'FM_ACN_RETRIEVE.authoritative',
 						[ r_acp.call_number() ],
 						function(req2) {
 							try {
@@ -334,7 +334,7 @@ admin.transit_list.prototype = {
 
 								if (row.my.acn.record() > 0) {
 									obj.network.simple_request(
-										'MODS_SLIM_RECORD_RETRIEVE',
+										'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 										[ r_acn.record() ],
 										function(req3) {
 											try {
@@ -433,11 +433,9 @@ admin.transit_list.prototype = {
 	
 	'spawn_copy_editor' : function(which_list) {
 
-		/* FIXME -  a lot of redundant calls here */
-
 		var obj = this;
 
-		JSAN.use('util.widgets'); JSAN.use('util.functional');
+		JSAN.use('util.functional');
 
 		var list = which_list == 0 ? obj.selection_list : obj.selection_list2;
 
@@ -448,35 +446,7 @@ admin.transit_list.prototype = {
 			}
 		);
 
-		var copies = util.functional.map_list(
-			list,
-			function (acp_id) {
-				return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-			}
-		);
-
-		var edit = 0;
-		try {
-			edit = obj.network.request(
-				api.PERM_MULTI_ORG_CHECK.app,
-				api.PERM_MULTI_ORG_CHECK.method,
-				[ 
-					ses(), 
-					obj.data.list.au[0].id(), 
-					util.functional.map_list(
-						copies,
-						function (o) {
-							return o.call_number() == -1 ? o.circ_lib() : obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
-						}
-					),
-					copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-				]
-			).length == 0 ? 1 : 0;
-		} catch(E) {
-			obj.error.sdump('D_ERROR','batch permission check: ' + E);
-		}
-
-		JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+		JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
 	},
 

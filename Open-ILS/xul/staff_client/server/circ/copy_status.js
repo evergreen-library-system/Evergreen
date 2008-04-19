@@ -1,6 +1,7 @@
 dump('entering circ.copy_status.js\n');
+// vim:noet:sw=4:ts=4:
 
-if (typeof circ == 'undefined') circ = {};
+if (typeof circ == 'undefined') { circ = {}; }
 circ.copy_status = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
@@ -9,7 +10,7 @@ circ.copy_status = function (params) {
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	JSAN.use('util.sound'); this.sound = new util.sound();
-}
+};
 
 circ.copy_status.prototype = {
 	'selection_list' : [],
@@ -28,12 +29,12 @@ circ.copy_status.prototype = {
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
 				'alert_message' : { 'hidden' : false },
-				'due_date' : { 'hidden' : false },
+				'due_date' : { 'hidden' : false }
 			},
 			{
 				'except_these' : [
-					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish',
-				],
+					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish'
+				]
 			}
 		);
 
@@ -101,7 +102,7 @@ circ.copy_status.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
+				}
 			}
 		);
 		
@@ -126,9 +127,9 @@ circ.copy_status.prototype = {
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert('Action complete.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.sel_checkin.error'),E);
 							}
 						}
 					],
@@ -144,13 +145,13 @@ circ.copy_status.prototype = {
 										var new_bc = cat.util.replace_barcode( barcode );
 										funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(new_bc) );
 									} catch(E) {
-										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
+										obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.cmd_replace_barcode.error', [barcode]), E);
 									}
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert('Action complete.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Barcode replacements did not likely happen.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.cmd_replace_barcodes.error'), E);
 							}
 						}
 					],
@@ -166,7 +167,7 @@ circ.copy_status.prototype = {
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('with copy editor',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.sel_edit.error'), E);
 							}
 						}
 					],
@@ -195,7 +196,7 @@ circ.copy_status.prototype = {
 								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert('Action complete.');
+							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 					'sel_patron' : [
@@ -226,11 +227,11 @@ circ.copy_status.prototype = {
 									circ.util.renew_via_barcode( barcode );
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								} else {
-									alert('Item with barcode ' + barcode + ' is not circulating.');
+									alert(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.sel_renew.not_circulating', [barcode]));
 								}
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert('Action complete.');
+							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 
@@ -277,7 +278,7 @@ circ.copy_status.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert(document.getElementById('circStrings').getString('staff.circ.unimplemented')); }
 					],
 					'cmd_copy_status_submit_barcode' : [
 						['command'],
@@ -291,8 +292,8 @@ circ.copy_status.prototype = {
 							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 							JSAN.use('util.file');
 							var f = new util.file('');
-                            var content = f.import_file( { 'title' : 'Import Barcode File', 'not_json' : true } );
-                            if (!content) return;
+                            var content = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.title'), 'not_json' : true } );
+                            if (!content) { return; }
 							var barcodes = content.split(/\s+/);
                 			if (barcodes.length > 0) {
 			                    JSAN.use('util.exec'); var exec = new util.exec();
@@ -302,14 +303,14 @@ circ.copy_status.prototype = {
 			                            function(b){
 			                                return function() {
 			                                    obj.copy_status(b);
-			                                }
+			                                };
 			                            }(barcodes[i])
 			                        );
 			                    }
-								funcs.push( function() { alert('File uploaded.'); } );
+								funcs.push( function() { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.complete')); } );
 			                    exec.chain( funcs );
 			                } else {
-								alert('No barcodes found in file.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.no_barcodes'));
 							}
 
 						}
@@ -352,7 +353,7 @@ circ.copy_status.prototype = {
 										} catch(E) {
 											obj.error.standard_unexpected_error_alert('export',E); 
 										}
-									}
+									};
 								obj.list.full_retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('export',E); 
@@ -367,21 +368,27 @@ circ.copy_status.prototype = {
 
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var copy_shortcut = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) { 
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 									var record_id = map_acn[ volume_id ].record();
 									var ou_id = map_acn[ volume_id ].owning_lib();
 									var label = map_acn[ volume_id ].label();
-									if (!copy_shortcut[record_id]) copy_shortcut[record_id] = {};
-									if (!copy_shortcut[record_id][ou_id]) copy_shortcut[record_id][ou_id] = {};
+									if (!copy_shortcut[record_id]) {
+										copy_shortcut[record_id] = {};
+									}
+									if (!copy_shortcut[record_id][ou_id]) {
+										copy_shortcut[record_id][ou_id] = {};
+									}
 									copy_shortcut[record_id][ou_id][ label ] = volume_id;
 
 								}
@@ -407,9 +414,11 @@ circ.copy_status.prototype = {
 										obj.error.sdump('D_ERROR','batch permission check: ' + E);
 									}
 	
-									if (edit==0) return; // no read-only view for this interface
+									if (edit==0) { 
+										return; // no read-only view for this interface
+									}
 	
-									var title = 'Add Item for record #' + r;
+									var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_items.title', [r]);
 	
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -450,7 +459,9 @@ circ.copy_status.prototype = {
                                     copies[i].isdeleted(1);
                                 }
 
-								if (! window.confirm('Are you sure sure you want to delete these items? ' + util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")) ) return;
+								if (! window.confirm(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.del_items.confirm', [util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")]))) {
+									return;
+								}
 
                                 var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								var robj = obj.network.simple_request(
@@ -458,24 +469,24 @@ circ.copy_status.prototype = {
 									[ ses(), copies, true ], 
 									null,
 									{
-										'title' : 'Override Delete Failure?',
+										'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.title'),
 										'overridable_events' : [
 											1208 /* TITLE_LAST_COPY */,
-											1227 /* COPY_DELETE_WARNING */,
+											1227 /* COPY_DELETE_WARNING */
 										]
 									}
 								);
 	
                                 if (typeof robj.ilsevent != 'undefined') {
-									switch(robj.ilsevent) {
+									switch(Number(robj.ilsevent)) {
 										case 1208 /* TITLE_LAST_COPY */:
 										case 1227 /* COPY_DELETE_WARNING */:
 										break;
 										default:
-											obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+											obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.success.error'), robj);
 										break;
 									}
-								} else { alert('Items Deleted'); }
+								} else { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.success')); }
 
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> delete items',E);
@@ -488,7 +499,7 @@ circ.copy_status.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_volume) {
-										alert('Please mark a volume as the destination and then try this again.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_items.mark_destination'));
 										return;
 									}
 									
@@ -496,17 +507,17 @@ circ.copy_status.prototype = {
 
 									var list = util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } );
 
-									var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+									var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
 									JSAN.use('cat.util'); cat.util.transfer_copies( { 
 										'copy_ids' : list, 
 										'docid' : volume.record(),
 										'volume_label' : volume.label(),
-										'owning_lib' : volume.owning_lib(),
+										'owning_lib' : volume.owning_lib()
 									} );
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('All copies not likely transferred.',E);
+									obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_items.problem'), E);
 								}
 							}
 
@@ -517,15 +528,17 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var aou_hash = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 									var record_id = map_acn[ volume_id ].record();
 									var ou_id = map_acn[ volume_id ].owning_lib();
@@ -556,11 +569,11 @@ circ.copy_status.prototype = {
 									}
 
 									if (edit==0) {
-										alert("You don't have permission to add volumes to that library.");
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.add_volumes.perm_failure'));
 										return; // no read-only view for this interface
 									}
 
-									var title = 'Add Volume/Item for Record # ' + r;
+									var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [r]);
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -586,25 +599,32 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var volume_hash = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 										map_acn[ volume_id ].copies( [] );
 									}
 									var record_id = map_acn[ volume_id ].record();
-									if (!volume_hash[record_id]) volume_hash[record_id] = {};
+									if (!volume_hash[record_id]) {
+										volume_hash[record_id] = {};
+									}
 									volume_hash[record_id][volume_id] = 1;
 								}
 
 								for (var rec in volume_hash) {
 
-									list = []; for (var v in volume_hash[rec]) list.push( map_acn[v] );
+									list = [];
+									for (var v in volume_hash[rec]) {
+										list.push( map_acn[v] );
+									}
 
 									var edit = 0;
 									try {
@@ -628,11 +648,16 @@ circ.copy_status.prototype = {
 									}
 
 									if (edit==0) {
-										alert("You don't have permission to edit this volume.");
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.perm_failure'));
 										return; // no read-only view for this interface
 									}
 
-									var title = (list.length == 1 ? 'Volume' : 'Volumes') + ' for record # ' + rec;
+									var title;
+									if (list.length == 1) {
+										title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volume.title', [rec]);
+									} else {
+										title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volumes.title', [rec]);
+									}
 
 									JSAN.use('util.window'); var win = new util.window();
 									//obj.data.volumes_temp = js2JSON( list );
@@ -648,7 +673,7 @@ circ.copy_status.prototype = {
 									//obj.data.stash_retrieve();
 									//var volumes = JSON2js( obj.data.volumes_temp );
 									var volumes = my_xulG.volumes;
-									if (!volumes) return;
+									if (!volumes) { return; }
 								
 									volumes = util.functional.filter_list(
 										volumes,
@@ -665,7 +690,7 @@ circ.copy_status.prototype = {
 										}
 									);
 
-									if (volumes.length == 0) return;
+									if (volumes.length == 0) { return; }
 
 									try {
 										var r = obj.network.request(
@@ -674,14 +699,14 @@ circ.copy_status.prototype = {
 											[ ses(), volumes, false ]
 										);
                                         if (typeof r.ilsevent != 'undefined') {
-                                            switch(r.ilsevent) {
+                                            switch(Number(r.ilsevent)) {
                                                 case 1705 /* VOLUME_LABEL_EXISTS */ :
-                                                    alert("Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead.");
+                                                    alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.duplicate'));
                                                     break;
                                                 default: throw(r);
                                             }
                                         } else {
-    										alert('Volumes modified.');
+    										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.success'));
                                         }
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('volume update error: ',E);
@@ -700,21 +725,40 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
-										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 									}
 								}
 
-								list = []; for (var v in map_acn) list.push( map_acn[v] );
+								list = [];
+								for (var v in map_acn) {
+									list.push( map_acn[v] );
+								}
 
-								var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' volumes' : 'this one volume') + '?', 'Delete Volumes?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+								var confirm_prompt;
+								if (list.length == 1) {
+									confirm_prompt = document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.singular');
+								} else {
+									confirm_prompt = document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.plural');
+								}	
+
+								var r = obj.error.yns_alert(
+									confirm_prompt,
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.title'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.delete'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.cancel'),
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm')
+								);
 
 								if (r == 0) {
 									for (var i = 0; i < list.length; i++) {
@@ -725,7 +769,7 @@ circ.copy_status.prototype = {
 										[ ses(), list, true ],
 										null,
 										{
-											'title' : 'Override Delete Failure?',
+											'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.override'),
 											'overridable_events' : [
 											]
 										}
@@ -733,12 +777,12 @@ circ.copy_status.prototype = {
 									if (robj == null) throw(robj);
 									if (typeof robj.ilsevent != 'undefined') {
 										if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
-											alert('You must delete all the copies on the volume before you may delete the volume itself.');
+											alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.delete_copies'));
 											return;
 										}
-										if (robj.ilsevent != 0) throw(robj);
+										if (robj.ilsevent != 0) { throw(robj); }
 									}
-									alert('Volumes deleted.');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.success'));
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> delete volumes',E);
@@ -757,9 +801,16 @@ circ.copy_status.prototype = {
 								if (list.length == 1) {
 									obj.data.marked_volume = list[0];
 									obj.data.stash('marked_volume');
-									alert('Volume marked as Item Transfer Destination');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.status'));
 								} else {
-									obj.error.yns_alert('Choose just one Volume to mark as Item Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									obj.error.yns_alert(
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.prompt'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.title'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+										null,
+										null,
+										document.getElementById('circStrings').getString('staff.circ.confirm')
+									);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> mark volume',E);
@@ -774,14 +825,24 @@ circ.copy_status.prototype = {
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
 
 								if (list.length == 1) {
-									var v = obj.network.simple_request('FM_ACN_RETRIEVE',[list[0]]);
-									var owning_lib = v.owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
+									var v = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[list[0]]);
+									var owning_lib = v.owning_lib();
+									if (typeof owning_lib == 'object') {
+										owning_lib = owning_lib.id();
+									}
 
 									obj.data.marked_library = { 'lib' : owning_lib, 'docid' : v.record() };
 									obj.data.stash('marked_library');
-									alert('Library + Record marked as Volume Transfer Destination');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library'));
 								} else {
-									obj.error.yns_alert('Choose just one Library to mark as Volume Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									obj.error.yns_alert(
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library.limit_one'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library.limit_one.title'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+										null,
+										null,
+										document.getElementById('circStrings').getString('staff.circ.confirm')
+									);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> mark library',E);
@@ -794,42 +855,55 @@ circ.copy_status.prototype = {
 							try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_library) {
-										alert('Please mark a library as the destination from within holdings maintenance and then try this again.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.none'));
 										return;
 									}
 									
 									JSAN.use('util.functional');
 
 									var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-									if (list.length == 0) return;
+									if (list.length == 0) { return; }
 
 									var map_acn = {};
 
 									for (var i = 0; i < list.length; i++) {
 										var volume_id = list[i];
-										if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+										if (volume_id == -1) {
+											continue; /* ignore magic pre-cat volume */
+										}
 										if (! map_acn[volume_id]) {
-											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
 										}
 									}
 
-									list = []; for (v in map_acn) list.push(map_acn[v]);
+									list = [];
+									for (v in map_acn) {
+										list.push(map_acn[v]);
+									}
 
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
-									xml += '<description>Transfer volumes ';
+									xml += '<description>';
 
-									xml += util.functional.map_list(
-										list,
+									var vols = util.functional.map_list(list,
 										function (o) {
 											return o.label();
 										}
 									).join(", ");
 
-									xml += ' to library ' + obj.data.hash.aou[ obj.data.marked_library.lib ].shortname();
-									xml += ' on the following record?</description>';
-									xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
-									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+									var volume_list = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.transfer_volume.confirm', 
+										[vols, obj.data.hash.aou[ obj.data.marked_library.lib ].shortname()]);
+
+									xml += volume_list;
+									xml += '</description>';
+									xml += '<hbox><button label="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.transfer.label');
+									xml += '" name="fancy_submit"/>';
+									xml += '<button label="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cancel.label');
+									xml += '" accesskey="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cancel.accesskey');
+									xml += '" name="fancy_cancel"/></hbox>';
 									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
 									xml += '</vbox>';
 									JSAN.use('OpenILS.data');
@@ -841,40 +915,43 @@ circ.copy_status.prototype = {
 										//+ '?xml_in_stash=temp_transfer'
 										//+ '&title=' + window.escape('Volume Transfer'),
 										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
-										{ 'xml' : xml, 'title' : 'Volume Transfer' }
+										{ 'xml' : xml, 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.title') }
 									);
 								
-									if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
+									if (fancy_prompt_data.fancy_status == 'incomplete') { 
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.aborted'));
+										return;
+									}
 
 									var robj = obj.network.simple_request(
 										'FM_ACN_TRANSFER', 
 										[ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : util.functional.map_list( list, function(o) { return o.id(); }) } ],
 										null,
 										{
-											'title' : 'Override Volume Transfer Failure?',
+											'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.override_failure'),
 											'overridable_events' : [
 												1208 /* TITLE_LAST_COPY */,
-												1219 /* COPY_REMOTE_CIRC_LIB */,
-											],
+												1219 /* COPY_REMOTE_CIRC_LIB */
+											]
 										}
 									);
 
 									if (typeof robj.ilsevent != 'undefined') {
 										if (robj.ilsevent == 1221 /* ORG_CANNOT_HAVE_VOLS */) {
-											alert('That destination cannot have volumes.');
+											alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cannot_have_vols'));
 										} else {
 											throw(robj);
 										}
 									} else {
-										alert('Volumes transferred.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.success'));
 									}
 
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('All volumes not likely transferred.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.error'),E);
 							}
 						}
 
-					],
+					]
 				}
 			}
 		);
@@ -887,17 +964,17 @@ circ.copy_status.prototype = {
 		var obj = this;
 		var good = util.barcode.check(bc);
 		var x = document.getElementById('strict_barcode');
-		if (x && x.checked != true) return true;
+		if (x && x.checked != true) { return true; }
 		if (good) {
 			return true;
 		} else {
 			if ( 1 == obj.error.yns_alert(
-						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
-						'Bad Barcode',
-						'Cancel',
-						'Accept Barcode',
+						document.getElementById('circStrings').getFormattedString('staff.circ.check_digit.bad', [bc]),
+						document.getElementById('circStrings').getString('staff.circ.barcode.bad'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.barcode.accept'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
 			) ) {
 				return true;
@@ -911,8 +988,10 @@ circ.copy_status.prototype = {
 		var obj = this;
 		try {
 			try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
-			if (!barcode) barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
-			if (!barcode) return;
+			if (!barcode) {
+				barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
+			}
+			if (!barcode) { return; }
 			if (barcode) {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
@@ -921,9 +1000,9 @@ circ.copy_status.prototype = {
 				try {
 					var details = req.getResultObject();
 					if (details == null) {
-						throw('Something weird happened.  null result');
+						throw(document.getElementById('circStrings').getString('staff.circ.copy_status.status.null_result'));
 					} else if (details.ilsevent) {
-						switch(details.ilsevent) {
+						switch(Number(details.ilsevent)) {
 							case -1: 
 								obj.error.standard_network_error_alert(); 
 								obj.controller.view.copy_status_barcode_entry_textbox.select();
@@ -931,8 +1010,15 @@ circ.copy_status.prototype = {
 								return;
 							break;
 							case 1502 /* ASSET_COPY_NOT_FOUND */ :
-								try { document.getElementById('last_scanned').setAttribute('value',barcode + ' was either mis-scanned or is not cataloged.'); } catch(E) {}
-								obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
+								try { document.getElementById('last_scanned').setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [barcode])); } catch(E) {}
+								obj.error.yns_alert(
+									document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [barcode]),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.status.not_cataloged'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+									null,
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 								obj.controller.view.copy_status_barcode_entry_textbox.select();
 								obj.controller.view.copy_status_barcode_entry_textbox.focus();
 								return;
@@ -943,10 +1029,18 @@ circ.copy_status.prototype = {
 						}
 					}
 					var msg = details.copy.barcode() + ' -- ';
-					if (details.copy.call_number() == -1) msg += 'Item is a Pre-Cat.  ';
-					if (details.hold) msg += 'Item is captured for a Hold.  ';
-					if (details.transit) msg += 'Item is in Transit.  ';
-					if (details.circ && ! details.circ.checkin_time()) msg += 'Item is circulating.  ';
+					if (details.copy.call_number() == -1) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.pre_cat') + '  ';
+					}
+					if (details.hold) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.hold') + '  ';
+					}
+					if (details.transit) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.transit') + '  ';
+					}
+					if (details.circ && ! details.circ.checkin_time()) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.circ') + '  ';
+					}
 					try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
 					if (document.getElementById('trim_list')) {
 						var x = document.getElementById('trim_list');
@@ -969,10 +1063,10 @@ circ.copy_status.prototype = {
 								'acn' : details.volume,
 								'atc' : details.transit,
 								'circ' : details.circ,
-								'ahr' : details.hold,
+								'ahr' : details.hold
 							}
 						},
-						'to_top' : true,
+						'to_top' : true
 					};
 					if (!refresh) {
 						var nparams = obj.list.append(params);
@@ -1002,7 +1096,7 @@ circ.copy_status.prototype = {
 					obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
 				}
 			}
-			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ]);
+			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), barcode ]);
 			handle_req({'getResultObject':function(){return result;}}); // used to be async
 			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
@@ -1017,11 +1111,9 @@ circ.copy_status.prototype = {
 	
 	'spawn_copy_editor' : function() {
 
-		/* FIXME -  a lot of redundant calls here */
-
 		var obj = this;
 
-		JSAN.use('util.widgets'); JSAN.use('util.functional');
+		JSAN.use('util.functional');
 
 		var list = obj.selection_list;
 
@@ -1032,35 +1124,7 @@ circ.copy_status.prototype = {
 			}
 		);
 
-		var copies = util.functional.map_list(
-			list,
-			function (acp_id) {
-				return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-			}
-		);
-
-		var edit = 0;
-		try {
-			edit = obj.network.request(
-				api.PERM_MULTI_ORG_CHECK.app,
-				api.PERM_MULTI_ORG_CHECK.method,
-				[ 
-					ses(), 
-					obj.data.list.au[0].id(), 
-					util.functional.map_list(
-						copies,
-						function (o) {
-							return o.call_number() == -1 ? o.circ_lib() : obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
-						}
-					),
-					copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-				]
-			).length == 0 ? 1 : 0;
-		} catch(E) {
-			obj.error.sdump('D_ERROR','batch permission check: ' + E);
-		}
-
-		JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+		JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
 	},
 

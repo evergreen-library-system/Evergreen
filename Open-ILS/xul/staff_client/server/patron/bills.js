@@ -21,7 +21,7 @@ patron.bills.prototype = {
 
 	'current_payments' : [],
 
-	'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
+	'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative',
 	//'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_STILL_OPEN',
 	//'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE',
 	/*'SHOW_ME_THE_BILLS' : 'FM_MOBTS_OPEN',*/
@@ -29,6 +29,10 @@ patron.bills.prototype = {
 	'refresh' : function(dont_show_me_the_money) {
 		var obj = this;
 		try {
+                if (document.getElementById('circulating_hint')) {
+                    document.getElementById('circulating_hint').hidden = true;
+                }
+
 				obj.bills = obj.network.simple_request(
 					obj.SHOW_ME_THE_BILLS,
 					[ ses(), obj.patron_id ]
@@ -41,7 +45,7 @@ patron.bills.prototype = {
 					} else if (instanceOf(obj.bills[i],mbts)) {
 						obj.bills[i] = { 'transaction' : obj.bills[i] }
 					} else {
-						var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
+						var robj = obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),obj.bills[i]]);
 						//alert('refresh robj = ' + js2JSON(robj));
 						obj.bills[i] = { 'transaction' : robj }
 					}
@@ -123,18 +127,17 @@ patron.bills.prototype = {
 
 				JSAN.use('util.list'); obj.list = new util.list('bill_list');
 
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				obj.list.init(
 					{
 						'columns' : [
 						/*
 								{
-									'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
+									'id' : 'xact_dates', 'label' : document.getElementById('commonStrings').getString('staff.bills_xact_dates_label'), 'flex' : 1,
 									'primary' : false, 'hidden' : false, 'render' : 'obj.xact_dates_box(my.mobts)'
 								},
 						*/
 								{
-									'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 2,
+									'id' : 'notes', 'label' : document.getElementById('commonStrings').getString('staff.bills_information'), 'flex' : 2,
 									'primary' : false, 'hidden' : false, 'render' : 'obj.info_box(my)'
 								},
 								{
@@ -142,7 +145,7 @@ patron.bills.prototype = {
 									'primary' : false, 'hidden' : false, 'render' : 'obj.money_box(my.mobts)'
 								},
 								{
-									'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
+									'id' : 'current_pay', 'label' : document.getElementById('commonStrings').getString('staff.bills_current_payment_label'), 'flex' : 0, 
 									'render' : 'obj.payment_box()'
 								}
 						],
@@ -506,6 +509,10 @@ patron.bills.prototype = {
 						);
 					}
 				}
+                if ( payment_blob.payments.length == 0 && payment_blob.patron_credit == '0.00' ) {
+                    alert('No payments or patron credit applied.');
+                    return;
+                }
 				if ( obj.pay( payment_blob ) ) {
 
 					obj.data.voided_billings = []; obj.data.stash('voided_billings');
@@ -576,7 +583,7 @@ patron.bills.prototype = {
 			);
 			if (robj == 1) { return true; } 
 			if (typeof robj.ilsevent != 'undefined') {
-				switch(robj.ilsevent) {
+				switch(Number(robj.ilsevent)) {
 					case 0 /* SUCCESS */ : return true; break;
 					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc + '\n\nAnother way to "zero" this transaction is to use Add Billing and add a misc bill to counter the negative balance.'); return false; break;
 					default: throw(robj); break;
@@ -665,7 +672,7 @@ patron.bills.prototype = {
 						} else if (instanceOf(obj.bills[i],mbts)) {
 							obj.bills[i] = { 'transaction' : obj.bills[i] }
 						} else {
-							var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
+							var robj = obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),obj.bills[i]]);
 							//alert('robj = ' + js2JSON(robj));
 							obj.bills[i] = { 'transaction' : robj }
 						}
@@ -717,7 +724,6 @@ patron.bills.prototype = {
 	'xact_dates_box' : function ( mobts ) {
 		var obj = this;
 		try {
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var grid = document.createElement('grid');
 					var cols = document.createElement('columns');
 					grid.appendChild( cols );
@@ -734,7 +740,7 @@ patron.bills.prototype = {
 							row0.appendChild( hb_r0_1 );
 								var label_r0_1 = document.createElement('label');
 								hb_r0_1.appendChild( label_r0_1 );
-								label_r0_1.setAttribute('value',getString('staff.mbts_id_label'));
+								label_r0_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_id_label'));
 								var label_r0_2 = document.createElement('label');
 								hb_r0_1.appendChild( label_r0_2 );
 								label_r0_2.setAttribute('value',mobts.id());
@@ -742,7 +748,7 @@ patron.bills.prototype = {
 						rows.appendChild( row1 );
 							var label_r1_1 = document.createElement('label');
 							row1.appendChild( label_r1_1 );
-							label_r1_1.setAttribute('value',getString('staff.mbts_xact_start_label'));
+							label_r1_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_start_label'));
 							var label_r1_2 = document.createElement('label');
 							row1.appendChild( label_r1_2 );
 							label_r1_2.setAttribute('value',mobts.xact_start().toString().substr(0,10));
@@ -750,7 +756,7 @@ patron.bills.prototype = {
 						rows.appendChild( row2 );
 							var label_r2_1 = document.createElement('label');
 							row2.appendChild( label_r2_1 );
-							label_r2_1.setAttribute('value',getString('staff.mbts_xact_finish_label'));
+							label_r2_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_finish_label'));
 							var label_r2_2 = document.createElement('label');
 							row2.appendChild( label_r2_2 );
 							try { label_r2_2.setAttribute('value',mobts.xact_finish().toString().substr(0,10));
@@ -766,7 +772,6 @@ patron.bills.prototype = {
 		var obj = this;
 		try {
 				JSAN.use('util.money');
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var grid = document.createElement('grid');
 					var cols = document.createElement('columns');
 					grid.appendChild( cols );
@@ -778,7 +783,7 @@ patron.bills.prototype = {
 						rows.appendChild( row1 );
 							var label_r1_1 = document.createElement('label');
 							row1.appendChild( label_r1_1 );
-							label_r1_1.setAttribute('value',getString('staff.mbts_total_owed_label'));
+							label_r1_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_total_owed_label'));
 							var label_r1_2 = document.createElement('label');
 							row1.appendChild( label_r1_2 );
 							label_r1_2.setAttribute('value','$' + util.money.sanitize(mobts.total_owed() || '0') );
@@ -786,7 +791,7 @@ patron.bills.prototype = {
 						rows.appendChild( row2 );
 							var label_r2_1 = document.createElement('label');
 							row2.appendChild( label_r2_1 );
-							label_r2_1.setAttribute('value',getString('staff.mbts_total_paid_label'));
+							label_r2_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_total_paid_label'));
 							var label_r2_2 = document.createElement('label');
 							row2.appendChild( label_r2_2 );
 							label_r2_2.setAttribute('value','$' + util.money.sanitize(mobts.total_paid() || '0') );
@@ -794,7 +799,7 @@ patron.bills.prototype = {
 						rows.appendChild( row3 );
 							var label_r3_1 = document.createElement('label');
 							row3.appendChild( label_r3_1 );
-							label_r3_1.setAttribute('value',getString('staff.mbts_balance_owed_label'));
+							label_r3_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_balance_owed_label'));
 							label_r3_1.setAttribute('style','font-weight: bold');
 							var label_r3_2 = document.createElement('label');
 							row3.appendChild( label_r3_2 );
@@ -810,7 +815,6 @@ patron.bills.prototype = {
 	'info_box' : function ( my ) {
 		var obj = this;
 		try {
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var vbox = document.createElement('vbox');
 
 					var hbox = document.createElement('hbox');
@@ -882,7 +886,7 @@ patron.bills.prototype = {
 											}
 										}
 										obj.network.simple_request(
-											'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+											'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 											[ r_circ.target_copy() ],
 											function (rreq) {
 												var r_mvr = rreq.getResultObject();
@@ -1040,7 +1044,7 @@ patron.bills.prototype = {
 			var obj = this;
 			JSAN.use('util.functional');
 			
-			var mb_list = obj.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), mobts_id ] );
+			var mb_list = obj.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), mobts_id ] );
 			if (typeof mb_list.ilsevent != 'undefined') throw(mb_list);
 
 			mb_list = util.functional.filter_list( mb_list, function(o) { return ! get_bool( o.voided() ) });
@@ -1056,7 +1060,7 @@ patron.bills.prototype = {
 			if (r == 0) {
 				var robj = obj.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
 				if (robj.ilsevent) {
-					switch(robj.ilsevent) {
+					switch(Number(robj.ilsevent)) {
 						default: 
 							obj.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
 							obj.refresh(); return; 

@@ -1,17 +1,24 @@
+POTSRC=po/en-US
 POOUTDIR=po
 POINDIR=po
 PROJECT=locale
 LOCALE=fr-CA
 DTDDIR=../../Open-ILS/web/opac/locale
-PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
+CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
+SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
 FMIDLENT=fm_IDL.xml
 FMIDLENTITY=fm_IDL.xml.ent
 FMIDLPO=fm_IDL.po
+EVTSRC=../../Open-ILS/src/extras/ils_events.xml
+EVTOUT=ils_events.xml.pot
+EVTPO=ils_events.xml.po
+EVTXML=ils_events.xml
 SQLSRC=../../Open-ILS/src/sql/Pg/950.data.seed-values.sql
-SQLOUT=db.seed.pot
+SQLPOT=db.seed.pot
 SQLPO=db.seed.po
+SQLOUT=950.data.seed-values.sql
 PROGRESS=--progress none
 
 # This Makefile can be used to generate and update PO files for Evergreen,
@@ -30,47 +37,61 @@ PROGRESS=--progress none
 #   make LOCALE=ll-LL updatepo
 #
 # To create a new set of project files (DTDs, JavaScript message catalogs):
-#   make LOCALE=ll-LL updatepo
+#   make LOCALE=ll-LL newproject
 
 # Generate PO files from all POT files in POOUTDIR for locale LOCALE
 newpo: 
-	@pot2po $(PROGRESS) -i $(POOUTDIR) -o $(POOUTDIR)/$(LOCALE) 
+	@pot2po $(PROGRESS) -i $(POTSRC) -o $(POOUTDIR)/$(LOCALE) 
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent props2pot sql2pot
+newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-newproject: po2dtds po2props po2sql fmidlpo2entity
+newproject: po2dtds po2props po2sql fmidlpo2entity po2ils
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
 updatepo: 
-	@pot2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(POOUTDIR) -t $(POOUTDIR)/$(LOCALE) 2>&1
+	pot2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(POTSRC) -t $(POOUTDIR)/$(LOCALE) 2>&1
 	@echo "Updated PO files for locale $(LOCALE)"
+
+# Update PO files with new and changed strings from POT files
+updateopac: 
+	@msgmerge -U $(POOUTDIR)/$(LOCALE)/opac.dtd.po $(POTSRC)/opac.dtd.pot 2>&1
+	@echo "Updated PO file opac.dtd.po for locale $(LOCALE)"
 
 dtds2po:
 	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(DTDDIR)/en-US/ 2>&1
 
 props2po:
-	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(PROPSDIR)/en-US/ 2>&1
+	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(CHROME_PROPSDIR)/en-US/ 2>&1
+	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(SERVER_PROPSDIR)/en-US/ 2>&1
 
 dtds2pot:
-	@moz2po -P $(PROGRESS) -o $(POOUTDIR) -i $(DTDDIR)/en-US/ 2>&1
+	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(DTDDIR)/en-US/ 2>&1
+
+ils2pot:
+	@scripts/ils_events.py --pot $(EVTSRC) --output $(POTSRC)/$(EVTOUT)
+
+po2ils:
+	@scripts/ils_events.py --create $(POINDIR)/$(LOCALE)/$(EVTPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(EVTXML) 
 
 props2pot:
-	@moz2po -P $(PROGRESS) -o $(POOUTDIR) -i $(PROPSDIR)/en-US/ 2>&1
+	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(CHROME_PROPSDIR)/en-US/ 2>&1
+	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(SERVER_PROPSDIR)/en-US/ 2>&1
 
 po2dtds:
 	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 po2props:
-	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(CHROME_PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(SERVER_PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 sql2pot:
-	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POOUTDIR)/$(SQLOUT)
+	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POTSRC)/$(SQLPOT)
 
 po2sql:
 	scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT)
@@ -81,8 +102,8 @@ fmidl2fmidlent:
 
 # Generate a POT file for translating the entity values
 fmidl2pot:
-	@scripts/fieldmapper.py --pot $(FMIDLSRC) --output $(POOUTDIR)/$(FMIDLOUT)
+	@scripts/fieldmapper.py --pot $(FMIDLSRC) --output $(POTSRC)/$(FMIDLOUT)
 
 # Generate a set of entity declarations from a PO file
 fmidlpo2entity:
-	@scripts/fieldmapper.py --entity $(POINDIR)/$(FMIDLOUT) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
+	@scripts/fieldmapper.py --entity $(POINDIR)/$(LOCALE)/$(FMIDLPO) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)

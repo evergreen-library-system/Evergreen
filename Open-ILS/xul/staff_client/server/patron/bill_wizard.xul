@@ -38,7 +38,7 @@
 		function $(id) { return document.getElementById(id); }
 
 		function retrieve_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
+			g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -73,7 +73,7 @@
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
 
 						g.network.simple_request(
-							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+							'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 							[ r_circ.target_copy() ],
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();

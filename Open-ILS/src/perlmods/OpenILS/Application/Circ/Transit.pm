@@ -1,5 +1,5 @@
 package OpenILS::Application::Circ::Transit;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;
@@ -44,7 +44,7 @@ sub copy_transit_receive {
 	($copy, $evt) = $U->fetch_copy_by_barcode($params{barcode}) unless $copy;
 	return $evt if $evt;
 	my $session = $U->start_db_session();
-	$evt = $self->transit_receive( $copy, $requestor, $session );
+	$evt = transit_receive( $self, $copy, $requestor, $session );
 	$U->commit_db_session($session) if $U->event_equals($evt,'SUCCESS');
 	return $evt;
 }

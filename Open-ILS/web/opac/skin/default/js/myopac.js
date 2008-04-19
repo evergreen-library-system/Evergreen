@@ -19,6 +19,11 @@ function clearNodes( node, keepArray ) {
 function myOPACInit() {
 	if(!(G.user && G.user.session)) initLogin();
 	else myOPACChangePage( "summary" );
+
+    $('myopac_holds_thaw_date_input').onkeyup = 
+        function(){holdsVerifyThawDateUI('myopac_holds_thaw_date_input'); }
+    $('myopac_holds_thaw_date_input').onchange = 
+        function(){holdsVerifyThawDateUI('myopac_holds_thaw_date_input'); }
 }
 
 function myopacReload() {
@@ -859,7 +864,14 @@ function myOPACUpdateUsername() {
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);
 	var res = req.result();
-	if( res && res != G.user.id() ) {
+	/* If the username does not already exist, res will be null;
+	 * we can move on to updating the username.
+	 * 
+	 * If the username does exist, then res will be the user ID.
+	 * G.user.id() gives us the currently authenticated user ID.
+	 * If res == G.user.id(), we try to update the username anyways.
+	 */
+	if( res !== null && res != G.user.id() ) {
 		alertId('myopac_username_dup');
 		return;
 	}
@@ -973,7 +985,7 @@ function myOPACShowBookbags(force) {
 			unHideMe(link);
 
 			link = $n(row, 'myopac_bb_published_atom');
-			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/atom-full/'+cont.id(), false));  
+			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/rss2-full/'+cont.id(), false));  
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
@@ -1333,7 +1345,7 @@ function myopacSelectedHoldsRows() {
 }
 
 var myopacProcessedHolds = 0;
-var myopacTotalHoldsToProcess = 0;
+var myopacHoldsToProcess = 0;
 function myopacDoHoldAction() {
 
     var selectedRows = myopacSelectedHoldsRows();
@@ -1344,7 +1356,6 @@ function myopacDoHoldAction() {
     myopacProcessedHolds = 0;
 
     if(!confirmId('myopac.holds.'+action+'.confirm')) return;
-
     myopacSelectNoneHolds(); /* clear the selection */
 
 
@@ -1369,17 +1380,23 @@ function myopacDoHoldAction() {
                 break;
         }
     }
-    myopacTotalHoldsToProcess = holds.length;
-    if(myopacTotalHoldsToProcess == 0) return;
+    myopacHoldsToProcess = holds;
+    if(myopacHoldsToProcess.length == 0) return;
+
+    if(action == 'thaw_date' || action == 'freeze') 
+        myopacDrawHoldThawDateForm();
+    else
+    myopacProcessHolds(action);
+}
+
+
+function myopacProcessHolds(action, thawDate) {
+
     myopacShowHoldProcessing();
-
-    var thawDate = null;
-    var thawDateSet = false;
-
     /* now we process them */
-    for(var i = 0; i < holds.length; i++) {
+    for(var i = 0; i < myopacHoldsToProcess.length; i++) {
 
-        hold = holds[i];
+        hold = myopacHoldsToProcess[i];
         
         var req;
         switch(action) { 
@@ -1395,23 +1412,12 @@ function myopacDoHoldAction() {
                 break;
 
             case 'thaw_date':
-                if(!thawDateSet)
-                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML) || null;
-                thawDateSet = true;
-                hold.thaw_date(thawDate);
-                req = new Request(UPDATE_HOLD, G.user.session, hold);
-                break;
-
-
             case 'freeze':
-                if(!thawDateSet)
-                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
-                thawDateSet = true;
                 hold.frozen('t');
-                if(thawDate) 
-                    hold.thaw_date(thawDate); 
+                hold.thaw_date(thawDate); 
                 req = new Request(UPDATE_HOLD, G.user.session, hold);
                 break;
+                //thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
 
         }
 
@@ -1419,6 +1425,30 @@ function myopacDoHoldAction() {
         req.send();
         req = null;
     }
+}
+
+function myopacDrawHoldThawDateForm() {
+    hideMe($('myopac_holds_main_table'));
+    unHideMe($('myopac_holds_thaw_date_form'));
+    $('myopac_holds_thaw_date_input').focus();
+    Calendar.setup({
+        inputField  : "myopac_holds_thaw_date_input",
+        ifFormat    : "%Y-%m-%d",
+        button      : "myopac_holds_thaw_date_img",
+        align       : "Tl",
+        singleClick : true
+    });
+}
+
+function myopacApplyThawDate() {
+    var dateString = $('myopac_holds_thaw_date_input').value;
+    if(dateString) {
+        dateString = holdsVerifyThawDate(dateString);
+        if(!dateString) return;
+    } else {
+        dateString = null;
+    }
+    myopacProcessHolds('freeze', dateString);
 }
 
 function myopacHoldIDFromRow(row) {
@@ -1433,11 +1463,13 @@ function myopacShowHoldProcessing() {
 function myopacHideHoldProcessing() {
     hideMe($('myopac_holds_processing'));
     unHideMe($('myopac_holds_main_table'));
+    hideMe($('myopac_holds_thaw_date_form'));
 }
 
 function myopacBatchHoldCallback(r) {
-    r.getResultObject();
-    if(++myopacProcessedHolds >= myopacTotalHoldsToProcess) {
+    if(r) /* force load any exceptions */
+        r.getResultObject();
+    if(++myopacProcessedHolds >= myopacHoldsToProcess.length) {
         myopacHideHoldProcessing();
         holdCache = {};
         holdStatusCache = {};

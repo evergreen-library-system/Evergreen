@@ -14,10 +14,13 @@ class TestPOFramework(unittest.TestCase):
     po_sources = ('../../Open-ILS/web/opac/locale/en-US/*.dtd',
         '../../Open-ILS/xul/staff_client/chrome/locale/en-US/*.properties',
         '../../Open-ILS/examples/fm_IDL.xml',
+        '../../Open-ILS/src/extras/ils_events.xml',
         '../../Open-ILS/src/sql/Pg/950.data.seed-values.sql')
 
-    po_tmp_files = ('tests/tmp/po/test.properties.pot', 'tests/tmp/po/ll-LL/temp.properties.po')
-    pot_dir = 'tests/tmp/po'
+    po_tmp_files = ('tests/tmp/po/en-US/test.properties.pot', 'tests/tmp/po/ll-LL/temp.properties.po')
+    pot_dir = 'tests/tmp/po/en-US'
+    po_in_dir = 'POINDIR=tests/tmp/po'
+    po_out_dir = 'POOUTDIR=tests/tmp/po'
     locale = 'll-LL'
     locale_dir = 'tests/tmp/po/ll-LL'
     project_dir = 'tests/tmp/locale'
@@ -25,19 +28,20 @@ class TestPOFramework(unittest.TestCase):
     newdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
     def setUp(self):
-        print os.getcwd()
         os.chdir(self.newdir)
         self.tearDown()
         devnull = open('/dev/null', 'w')
         os.mkdir('tests/tmp')
         os.mkdir(self.project_dir)
         subprocess.Popen(('cp', '-r', 'po', 'tests/tmp'), 0, None, None, devnull, devnull).wait()
-        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpot'), 0, None, None, devnull, devnull).wait()
-        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpo'), 0, None, None, devnull, devnull).wait()
-        subprocess.Popen(('make', 'LOCALE=ll-LL', 'PROJECT=tests/tmp/locale', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newproject'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POTSRC=tests/tmp/po/en-US', self.po_in_dir, self.po_out_dir, 'newpot'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POTSRC=tests/tmp/po/en-US', self.po_in_dir, self.po_out_dir, 'newpo'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'PROJECT=tests/tmp/locale', self.po_in_dir, 'newproject'), 0, None, None, devnull, devnull).wait()
         devnull.close()
 
     def tearDown(self):
+        devnull = open('/dev/null', 'w')
+        subprocess.Popen(('cp', '-r', 'tests/tmp', 'done'), 0, None, None, devnull, devnull).wait()
         for root, dirs, files in os.walk(os.path.join(self.newdir, 'tests/tmp'), topdown=False):
             for name in files:
                 os.remove(os.path.join(root, name))
@@ -101,7 +105,7 @@ class TestPOFramework(unittest.TestCase):
 
         # Regenerate the project files to get the translated strings in place
         devnull = open('/dev/null', 'w')
-        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updateproject'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', self.po_in_dir, self.po_out_dir, 'updateproject'), 0, None, None, devnull, devnull).wait()
 
         self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
 
@@ -136,7 +140,7 @@ class TestPOFramework(unittest.TestCase):
 
         # Update the PO files to get the translated strings in place
         devnull = open('/dev/null', 'w')
-        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updatepo'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', self.po_in_dir, self.po_out_dir, 'updatepo'), 0, None, None, devnull, devnull).wait()
 
         commonprops = os.path.join(self.locale_dir, 'common.properties.po')
         tempprops = os.path.join(self.locale_dir, 'temp.properties.po')

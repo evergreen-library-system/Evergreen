@@ -1,8 +1,7 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 # vim:ts=4:noet:
 
 use strict;
-use diagnostics;
 use DBI;
 use FileHandle;
 use XML::LibXML;

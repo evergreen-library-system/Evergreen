@@ -22,8 +22,8 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
-	('', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
+	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
 	('Pg','localhost','evergreen','postgres','postgres');
@@ -32,6 +32,7 @@ GetOptions(
 	'marctype=s'	=> \$marctype,
 	'startid=i'	=> \$recid,
 	'idfield=s'	=> \$id_field,
+	'idsubfield=s'	=> \$id_subfield,
 	'user=s'	=> \$user,
 	'encoding=s'	=> \$enc,
 	'hard_encoding'	=> \$force_enc,
@@ -143,11 +144,12 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 			if ($field->is_control_field) {
 				$id = $field->data;
 			} else {
-				$id = $field->subfield('a');
+				$id = $field->subfield($id_subfield);
 			}
 
 			$id =~ s/\D+//gso;
 		}
+		$id = '' if (exists $dontuse_id{$id});
 	}
 
 	if (!$id) {
@@ -157,7 +159,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	if ($keyfile) {
 		if (my $tcn = $keymap{$id}) {
 			$rec->delete_field( $_ ) for ($rec->field($id_field));
-			$rec->append_fields( MARC::Field->new( $id_field, '', '', 'a', $tcn ) );
+			$rec->append_fields( MARC::Field->new( $id_field, '', '', $id_subfield, $tcn ) );
 		} else {
 			$count++;
 			next;
@@ -165,9 +167,9 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	}
 
 	my $tcn;
-	($rec, $tcn) = preprocess($rec);
+	($rec, $tcn) = preprocess($rec, $id);
 
-    $tcn->add_subfields(c => $id);
+	$tcn->add_subfields(c => $id);
 
 	$rec->delete_field( $_ ) for ($rec->field($id_field));
 	$rec->append_fields( $tcn );
@@ -211,13 +213,16 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 sub preprocess {
 	my $rec = shift;
+	my $id = shift;
 
-	my ($id, $source, $value) = ('','','');
+	my ($source, $value) = ('','');
+
+	$id = '' if (exists $dontuse_id{$id});
 
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
-        $id = '' if (exists $dontuse_id{$id});
+		$id = '' if (exists $dontuse_id{$id});
 	}
 
 	if (!$id || exists $dontuse_id{$source.$id}) {
@@ -261,7 +266,7 @@ sub preprocess {
 	}
 
 	if ($id && exists $dontuse_id{$id}) {
-		warn "\n!!! ID $id is already in use\n";
+		warn "\n!!! TCN $id is already in use.  Using the record ID ($recid) as a system-generated TCN.\n";
 		$id = '';
 	}
 

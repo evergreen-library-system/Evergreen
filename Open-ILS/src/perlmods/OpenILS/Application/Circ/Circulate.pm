@@ -1,6 +1,6 @@
 package OpenILS::Application::Circ::Circulate;
 use strict; use warnings;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);

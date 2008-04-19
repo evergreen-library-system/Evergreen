@@ -1,6 +1,6 @@
 package OpenILS::Application::Search::Z3950;
 use strict; use warnings;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 
 use OpenILS::Utils::ZClient;
 use MARC::Record;
@@ -15,10 +15,9 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Editor q/:funcs/;
 
 my $output	= "USMARC"; 
-my $U = 'OpenILS::Application::AppUtils';
 
 my $sclient;
 my %services;
@@ -85,35 +84,7 @@ sub query_services {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
-
-    my $sources = $e->search_config_z3950_source(
-        [ { name => { '!=' => undef } },
-        { flesh => 1, flesh_fields => { czs => ['attrs'] } }] 
-    );
-
-	my %hash = ();
-	for my $s ( @$sources ) {
-		$hash{ $s->name } = {
-			name => $s->name,
-			label => $s->label,
-			host => $s->host,
-			port => $s->port,
-			db => $s->db,
-			auth => $s->auth,
-		};
-
-		for my $a ( @{ $s->attrs } ) {
-			$hash{ $a->source }{attrs}{ $a->name } = {
-				name => $a->name,
-				label => $a->label,
-				code => $a->code,
-				format => $a->format,
-				source => $a->source,
-			};
-		}
-	}
-	
-	return \%hash;
+	return $sclient->config_value('z3950', 'services');
 }
 
 
@@ -149,9 +120,7 @@ sub do_class_search {
 
 	my @connections;
 	my @results;
-	my @services;
 	for (my $i = 0; $i < @{$$args{service}}; $i++) {
-			
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
 		$tmp_args{username} = $$args{username}[$i];
@@ -159,46 +128,30 @@ sub do_class_search {
 
 		$logger->debug("z3950: service: $tmp_args{service}, async: $tmp_args{async}");
 
-		if ($tmp_args{service} eq 'native-evergreen-catalog') {
-			my $method = $self->method_lookup('open-ils.search.biblio.zstyle');
-			$conn->respond(
-				$self->method_lookup(
-					'open-ils.search.biblio.zstyle'
-				)->run($auth, \%tmp_args)
-			);
-		} else {
+		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
-		    $tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
+		my $res = do_service_search( $self, $conn, $auth, \%tmp_args );
 
-		    my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
+		push @results, $res->{result};
+		push @connections, $res->{connection};
 
-            if ($U->event_code($res)) {
-                $conn->respond($res) if $U->event_code($res);
-            } else {
-
-                push @services, $tmp_args{service};
-	    	    push @results, $res->{result};
-		        push @connections, $res->{connection};
-            }
-        }
+		$logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
 	}
 
 	$logger->debug("z3950: Connections created");
 
-    return undef unless (@connections);
+	my @records;
 	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
 		my $ev = $connections[$index - 1]->last_event();
 		$logger->debug("z3950: Received event $ev");
 		if ($ev == OpenILS::Utils::ZClient::EVENT_END()) {
-			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset} );
-			$$munged{service} = $services[$index - 1];
+			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset}, $$args{service}[$index -1] );
+			$$munged{service} = $$args{service}[$index - 1];
 			$conn->respond($munged);
 		}
 	}
 
 	$logger->debug("z3950: Search Complete");
-
-    return undef;
 }
 
 
@@ -214,11 +167,11 @@ sub do_service_search {
 	
 	my $info = $services{$$args{service}};
 
-	$$args{host}	= $$info{host},
-	$$args{port}	= $$info{port},
-	$$args{db}		= $$info{db},
+	$$args{host}	= $$info{host};
+	$$args{port}	= $$info{port};
+	$$args{db}		= $$info{db};
 
-	return $self->do_search( $conn, $auth, $args );
+	return do_search( $self, $conn, $auth, $args );
 }
 
 
@@ -285,7 +238,7 @@ sub do_search {
 
 	return {result => $results, connection => $connection} if ($async);
 
-	my $munged = process_results($results, $limit, $offset);
+	my $munged = process_results($results, $limit, $offset, $$args{service});
 	$munged->{query} = $query;
 
 	return $munged;
@@ -300,8 +253,11 @@ sub process_results {
 	my $results	= shift;
 	my $limit	= shift || 10;
 	my $offset	= shift || 0;
+    my $service = shift;
 
-	$results->option(elementSetName => "FI"); # full records with no holdings
+    my $rformat = $services{$service}->{record_format} || 'FI';
+	$results->option(elementSetName => $rformat);
+    $logger->info("z3950: using record format '$rformat'");
 
 	my @records;
 	my $res = {};

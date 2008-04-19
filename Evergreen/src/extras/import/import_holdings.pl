@@ -1,6 +1,9 @@
 #!/usr/bin/perl -w
 use strict;
-use XML::LibXML;
+use UNIVERSAL::require;
+use MARC::Charset;
+use MARC::Batch;
+use MARC::File::XML;
 use Time::HiRes qw/time/;
 use Getopt::Long;
 use Data::Dumper;
@@ -36,16 +39,17 @@ my %status_map = (
 
 $|=1;
 
-my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$lib_map_field,$id_tag, $marc_file) =
-	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','shortname','./controlfield[@tag="001"]');
+my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$lib_map_field,$id_tag,$id_field,$id_subfield, $marc_file) =
+	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','shortname','001');
 
-my ($holding_tag,$bc,$lbl,$own,$pr,$cpn,$avail) =
-	('./datafield[@tag="999"]','i','a','m','p','c','k');
+my ($skip,$enc,$marctype,$holding_tag,$bc,$lbl,$own,$pr,$cpn,$avail) =
+	(0,'utf-8','XML','999','i','a','m','p','c','k');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
 	('Pg','localhost','evergreen','postgres','postgres');
 
 GetOptions (	
+	"encoding=s"		=> \$enc,
 	"copy_file=s"		=> \$cp_file,
 	"volume_file=s"		=> \$cn_file,
 	"userid=i"		=> \$userid,
@@ -57,17 +61,31 @@ GetOptions (
 	"db_user=s"		=> \$db_user,
 	"db_pw=s"		=> \$db_pw,
 	"lib_map_field=s"	=> \$lib_map_field,
-	"id_tag_xpath=s"	=> \$id_tag,
-	"holding_tag_xpath=s"	=> \$holding_tag,
+	"id_field=s"		=> \$id_field,
+	"id_subfield=s"		=> \$id_subfield,
+	"holding_field=s"	=> \$holding_tag,
 	"item_barcode=s"	=> \$bc,
 	"item_call_number=s"	=> \$lbl,
 	"item_owning_lib=s"	=> \$own,
 	"item_price=s"		=> \$pr,
 	"item_copy_number=s"	=> \$cpn,
 	"item_copy_status=s"	=> \$avail,
-	"marc_file=s"	=> \$marc_file,
+	"marc_file=s"		=> \$marc_file,
+	"marctype=s"		=> \$marctype,
+	"skip=i"		=> \$skip,
 
 );
+
+if ($marctype eq 'XML') {
+	'open'->use(':utf8');
+} else {
+        bytes->use();
+}
+
+if ($enc) {
+	MARC::Charset->ignore_errors(1);
+        MARC::Charset->assume_encoding($enc);
+}
 
 my $dsn = "dbi:$db_driver:host=$db_host;dbname=$db_name";
 my $dbh = DBI->connect($dsn,$db_user,$db_pw);
@@ -87,67 +105,44 @@ while (my $lib = $sth->fetchrow_arrayref) {
 my $tcn_sth = $dbh->prepare("SELECT id FROM biblio.record_entry WHERE tcn_value = ?");
 my $rec_id;
 
-open CP, ">$cp_file" or die "Can't open $cp_file!  $!\n";
-open CN, ">$cn_file" or die "Can't open $cn_file!  $!\n";
+open CP, ">>$cp_file" or die "Can't open $cp_file!  $!\n";
+open CN, ">>$cn_file" or die "Can't open $cn_file!  $!\n";
 
-
-print CP <<SQL;
+print CP <<SQL if (!$skip);
 SET CLIENT_ENCODING TO 'UNICODE';
 COPY asset.copy (id,circ_lib,editor,creator,barcode,call_number,copy_number,status,loan_duration,fine_level,circulate,deposit,deposit_amount,price,ref,opac_visible) FROM STDIN;
 SQL
 
-print CN <<SQL;
+print CN <<SQL if (!$skip);
 SET CLIENT_ENCODING TO 'UNICODE';
 COPY asset.call_number (id,editor,creator,record,label,owning_lib) FROM STDIN;
 SQL
 
 my $xact_id = time;
 
-my $parser = XML::LibXML->new();
+my $batch = MARC::Batch->new( $marctype => $marc_file );
+$batch->strict_off();
+$batch->warnings_off();
 
 my $cn_map;
-my $doc;
+my $count = 0;
+my $record;
+while ( try { $record = $batch->next } otherwise { $record = -1 } ) {
+	next if ($record == -1);
+	$count++;
+	next if ($count <= $skip);
 
-$doc = $parser->parse_file( $marc_file );
-my $xc = XML::LibXML::XPathContext->new($doc);
-my @records = $xc->findnodes('//record');
-foreach my $record (@records) {
+	$rec_id = $record->subfield( $id_field => $id_subfield );
 
-	my $tcn;
-	my $success = 0;
-	try {
-		$tcn = $xc->findvalue( $id_tag, $record );
-		$success = 1;
-	} catch Error with {
-		my $e = shift;
-		warn $e;
-	};	
-	next unless $success;
+	next unless ($rec_id);
 
-	$tcn =~ s/^\s*(\.+)\s*/$1/o;
-	$tcn =~ s/\s+/_/go;
-	
-	unless ($tcn) {
-		warn "\nNo TCN found in rec!!\n";
-		next;
-	}
-
-	$tcn_sth->execute($tcn);
-	$tcn_sth->bind_col(1, \$rec_id);
-	$tcn_sth->fetch;
-
-	unless ($rec_id) {
-		warn "\n !! TCN $tcn not in the map!\n";
-		next;
-	}
-
-	for my $node ($xc->findnodes($holding_tag, $record)) {
-		my $barcode = $xc->findvalue( "./*[\@code=\"$bc\"]", $node );
-		my $label = $xc->findvalue( "./*[\@code=\"$lbl\"]", $node );
-		my $owning_lib = $$lib_map{ $xc->findvalue( "./*[\@code=\"$own\"]", $node ) };
-		my $price = $xc->findvalue( "./*[\@code=\"$pr\"]", $node );
-		my $copy_number = $xc->findvalue( "./*[\@code=\"$cpn\"]", $node ) || 0;
-		my $available = $xc->findvalue( "./*[\@code=\"$avail\"]", $node ) || '';
+	for my $field ($record->field($holding_tag)) {
+		my $barcode = $field->subfield( $bc );
+		my $label = $field->subfield( $lbl );
+		my $owning_lib = $$lib_map{ $field->subfield( $own ) };
+		my $price = $field->subfield( $pr );
+		my $copy_number = $field->subfield( $cpn ) || '\N';
+		my $available = $field->subfield( $avail ) || '';
 
 		my $status = $status_map{$available} || 0;
 
@@ -157,8 +152,8 @@ foreach my $record (@records) {
 
 		$barcode =~ s/\\/\\\\/og;
 		$label =~ s/\\/\\\\/og;
-		$price =~ s/\$//og;
-		if ($price !~ /^\s*\d{1,6}\.\d{2}\s*$/o) {
+		$price =~ s/\$//og if($price);
+		if (!defined($price) || $price !~ /^\s*\d{1,6}\.\d{2}\s*$/o) {
 			$price = '0.00';
 		}
 

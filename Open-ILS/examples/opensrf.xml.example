@@ -2,12 +2,13 @@
 
 <!-- 
 Example opensrf config file for OpenILS
+vim:et:ts=4:sw=4:
 -->
 
-<opensrf version='0.0.2'>
+<opensrf version='0.0.3'>
 
     <default>
-	    
+
         <dirs>
             <log>/openils/var/log</log> <!-- unix::server log files -->
             <sock>/openils/var/sock</sock> <!-- unix::server sock files -->
@@ -17,34 +18,36 @@ Example opensrf config file for OpenILS
             <script_lib>/openils/var</script_lib>
         </dirs>
 
-	<!-- global data visibility settings -->
+        <!-- global data visibility settings -->
         <share>
-		<user>
-        		<!-- Set to "true" to require patron opt-in for foreign (non-home_ou) transactions -->
-			<opt_in>false</opt_in>
-		</user>
-	</share>
+            <user>
+                <!-- Set to "true" to require patron opt-in for foreign (non-home_ou) transactions -->
+                <opt_in>false</opt_in>
+            </user>
+        </share>
 
         <IDL>/openils/conf/fm_IDL.xml</IDL> <!-- top level IDL file -->
 
         <server_type>prefork</server_type> <!-- net::server type -->
 
         <ils_events>/openils/var/data/ils_events.xml</ils_events> <!-- ILS events description file -->
-        
+
         <email_notify>
             <!-- global email notification settings -->
             <template>/openils/var/data/hold_notification_template.example</template>
             <smtp_server>localhost</smtp_server>
 
-            <!-- in most cases, this is overridden by location 
-                specific config settings.  this is just the default -->
+            <!--
+            in most cases, this is overridden by location 
+            specific config settings.  this is just the default
+            -->
             <sender_address>evergreen@localhost</sender_address>
         </email_notify>
 
 
         <reporter>
             <!--
-                Settings for the reporter daemon process 
+            Settings for the reporter daemon process 
             -->
             <setup>
                 <base_uri>https://localhost/reporter/</base_uri>
@@ -93,6 +96,8 @@ Example opensrf config file for OpenILS
                     <host>z3950.loc.gov</host>
                     <port>7090</port>
                     <db>Voyager</db>
+                    <!-- fetch the full record with no holdings. FI is the default -->
+                    <record_format>FI</record_format> 
                     <attrs>
                         <tcn><code>12</code><format>1</format></tcn>
                         <isbn><code>7</code><format>6</format></isbn>
@@ -113,10 +118,10 @@ Example opensrf config file for OpenILS
                     <db>OLUCWorldCat</db>
                     <attrs>
                         <!--
-                            These are directly from the Bib-1 Attribute Set
-                            http://www.loc.gov/z3950/agency/defns/bib1.html
-                            <code> is the "use attribute", <format> is the "structure attribute"
-                            This just puts some friendly names on the data.
+                        These are directly from the Bib-1 Attribute Set
+                        http://www.loc.gov/z3950/agency/defns/bib1.html
+                        <code> is the "use attribute", <format> is the "structure attribute"
+                        This just puts some friendly names on the data.
                         -->
                         <tcn><code>12</code><format>1</format></tcn>
                         <isbn><code>7</code><format>6</format></isbn>
@@ -140,31 +145,39 @@ Example opensrf config file for OpenILS
 
             <!-- load the Amazon added content module -->
             <module>OpenILS::WWW::AddedContent::Amazon</module>
-            <!-- Base URL for Amazon added content fetching.  This URL may
-                need to be shortened when new (read: non-image) content 
-                fetching capabilities are added -->
+            <!--
+            Base URL for Amazon added content fetching.  This URL may
+            need to be shortened when new (read: non-image) content 
+            fetching capabilities are added
+            -->
             <base_url>http://images.amazon.com/images/P/</base_url>
 
-            <!-- Max number of seconds to wait for an added content request to 
-                return data.  Data not returned within the timeout is considered
-                a failure -->
+            <!--
+            Max number of seconds to wait for an added content request to 
+            return data.  Data not returned within the timeout is considered
+            a failure
+            -->
             <timeout>4</timeout>
 
-            <!-- After added content lookups have been disabled due to too many
-                lookup failures, this is the amount of time to wait before
-                we try again -->
+            <!--
+            After added content lookups have been disabled due to too many
+            lookup failures, this is the amount of time to wait before
+            we try again
+            -->
             <retry_timeout>600</retry_timeout>
 
-            <!-- maximum number of consecutive lookup errors a given process can 
-                have before added content lookups are disabled for everyone -->
+            <!--
+            maximum number of consecutive lookup errors a given process can 
+            have before added content lookups are disabled for everyone
+            -->
             <max_errors>4</max_errors>
 
             <!-- If a userid is required to access the added content.. -->
             <userid>MY_USER_ID</userid>
 
             <!--
-                You can add free-form settings here and they will be accessible
-                within the added content module
+            You can add free-form settings here and they will be accessible
+            within the added content module
             -->
 
         </added_content>
@@ -173,7 +186,7 @@ Example opensrf config file for OpenILS
 
         <!-- no apps are enabled globally by default -->
         <activeapps/> 
-        
+
         <cache>
             <!-- memcache servers -->
             <global>
@@ -204,16 +217,20 @@ Example opensrf config file for OpenILS
                 <max_requests>93</max_requests>
 
                 <unix_config>
-                    <!-- maximum number of top level requests coming to 
-                        this child before the child is recycled -->
+                    <!--
+                    maximum number of top level requests coming to 
+                    this child before the child is recycled
+                    -->
                     <max_requests>1000</max_requests>
                     <!-- min children to fork -->
                     <min_children>1</min_children>
                     <!-- max possible children to fork -->
                     <max_children>15</max_children>
 
-                    <!-- C forking implementation does not support 
-                        min/max idle children, but may in the future -->
+                    <!--
+                    C forking implementation does not support 
+                    min/max idle children, but may in the future
+                    -->
 
                     <!-- min idle children -->
                     <min_spare_children>1</min_spare_children>
@@ -256,6 +273,8 @@ Example opensrf config file for OpenILS
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+                    <!-- Default to using staged search -->
+                    <use_staged_search>true</use_staged_search>
                     <!-- zip code database file -->
                     <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
                 </app_settings>
@@ -500,8 +519,8 @@ Example opensrf config file for OpenILS
                     <script_path>/openils/var/catalog/</script_path>
                     <script_path>/openils/var/web/opac/common/js/</script_path>
                     <scripts>
-                    <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
-                    <biblio_descriptor>biblio_descriptor.js</biblio_descriptor>
+                        <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
+                        <biblio_descriptor>biblio_descriptor.js</biblio_descriptor>
                     </scripts>
                 </app_settings>
             </open-ils.ingest>
@@ -658,6 +677,41 @@ Example opensrf config file for OpenILS
                 </app_settings>
             </open-ils.reporter-store>
 
+            <open-ils.permacrud>
+               <keepalive>3</keepalive>
+               <stateless>1</stateless>
+               <language>perl</language>
+               <implementation>OpenILS::Application::PermaCrud</implementation>
+               <max_requests>17</max_requests>
+               <unix_config>
+                  <unix_sock>open-ils.permacrud_unix.sock</unix_sock>
+                  <unix_pid>open-ils.permacrud_unix.pid</unix_pid>
+                  <max_requests>1000</max_requests>
+                  <unix_log>open-ils.permacrud_unix.log</unix_log>
+                  <min_children>5</min_children>
+                  <max_children>15</max_children>
+                  <min_spare_children>3</min_spare_children>
+                  <max_spare_children>5</max_spare_children>
+               </unix_config>
+            </open-ils.permacrud>
+
+            <open-ils.fielder>
+               <keepalive>3</keepalive>
+               <stateless>1</stateless>
+               <language>perl</language>
+               <implementation>OpenILS::Application::Fielder</implementation>
+               <max_requests>17</max_requests>
+               <unix_config>
+                  <unix_sock>open-ils.fielder_unix.sock</unix_sock>
+                  <unix_pid>open-ils.fielder_unix.pid</unix_pid>
+                  <max_requests>1000</max_requests>
+                  <unix_log>open-ils.fielder_unix.log</unix_log>
+                  <min_children>5</min_children>
+                  <max_children>15</max_children>
+                  <min_spare_children>3</min_spare_children>
+                  <max_spare_children>5</max_spare_children>
+               </unix_config>
+            </open-ils.fielder>
 
         </apps>
     </default>
@@ -666,12 +720,12 @@ Example opensrf config file for OpenILS
 
         <localhost> 
             <!-- ^-=- 
-                Should match the fully qualified domain name of the host.
+            Should match the fully qualified domain name of the host.
 
-                On Linux, the output of the following command is authoritative:
-		  $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn();'
+            On Linux, the output of the following command is authoritative:
+            $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn();'
 
-                To use 'localhost' instead, run osrf_ctl.sh with the -l flag
+            To use 'localhost' instead, run osrf_ctl.sh with the -l flag
             -->
 
             <activeapps>
@@ -692,6 +746,8 @@ Example opensrf config file for OpenILS
                 <appname>open-ils.ingest</appname>  
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
+                <appname>open-ils.permacrud</appname>  
+                <appname>open-ils.fielder</appname>  
             </activeapps>
         </localhost>
     </hosts>

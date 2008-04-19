@@ -56,7 +56,7 @@
 		}
 
 		function retrieve_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
+			g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -120,7 +120,7 @@
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(
-							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+							'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
 							[ r_circ.target_copy() ],
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();
@@ -180,7 +180,7 @@
 		}
 
 		function retrieve_mb() {
-			g.mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ] );
+			g.mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ] );
 			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(g.mb_list) ));
 
 			var mb_funcs = [];
@@ -200,7 +200,7 @@
 		}
 
 		function retrieve_mp() {
-			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ]);
+			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ]);
 			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(mp_list) ));
 
 			var mp_funcs = [];
@@ -274,7 +274,7 @@
 				if (r == 0) {
 					var robj = g.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
 					if (robj.ilsevent) {
-						switch(robj.ilsevent) {
+						switch(Number(robj.ilsevent)) {
 							default: 
 								g.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
 								retrieve_mbts();
@@ -305,6 +305,8 @@
 
 	]]>
 	</script>
+
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 
 	<vbox flex="1" class="my_overflow">
 		<label id="patron_name" class="patronNameLarge"/>

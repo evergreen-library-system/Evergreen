@@ -40,13 +40,13 @@ $_$ LANGUAGE SQL;
 
 */
 
-CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keyclass TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
 DECLARE
     locale      TEXT := LOWER( REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'-', '_', 'g' ) );
     language    TEXT := REGEXP_REPLACE( locale, E'_.+$', '' );
     result      config.i18n_core%ROWTYPE;
     fallback    TEXT;
-    keyfield    TEXT := keytable || '.' || keycol;
+    keyfield    TEXT := keyclass || '.' || keycol;
 BEGIN
 
     -- Try the full locale
@@ -83,6 +83,10 @@ $func$ LANGUAGE PLPGSQL;
 -- Function for marking translatable strings in SQL statements
 CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT ) RETURNS TEXT AS $$
     SELECT $1;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
+        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
 $$ LANGUAGE SQL;
 
 COMMIT;

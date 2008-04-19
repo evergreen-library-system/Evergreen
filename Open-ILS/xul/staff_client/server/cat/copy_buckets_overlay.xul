@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="copy_buckets_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -15,14 +15,14 @@
 
 <vbox id="cmvb1" flex="1">
 	<groupbox flex="1">
-		<caption label="Pending Copies" />
+		<caption label="&staff.cat.copy_buckets_overlay.pending_copies;" />
 		<hbox id="pending_buckets_top_ui" />
 		<tree id="pending_copies_list" flex="1" enableColumnDrag="true"/>
 		<hbox id="pending_buckets_bottom_ui" />
 	</groupbox>
 	<splitter><grippy /></splitter>
 	<groupbox flex="2">
-		<caption label="Bucket View" />
+		<caption label="&staff.cat.copy_buckets_overlay.bucket_view;" />
 		<hbox id="copy_buckets_top_ui" />
 		<hbox id="info_box"/>
 		<tree id="copies_in_bucket_list" flex="1" enableColumnDrag="true"/>
@@ -31,49 +31,49 @@
 </vbox>
 
 <hbox id="pending_buckets_bottom_ui">
-	<button id="save_button1" command="save_columns1" label="Save Columns" />
-	<button id="clip_button1" command="sel_clip1" label="Copy to Clipboard" disabled="true" />
-	<button id="cmd_print_export_btn1" command="cmd_print_export1" label="Print Export" />
-	<button id="cmd_export_btn1" command="cmd_export1" label="Export" />
+	<button id="save_button1" command="save_columns1" label="&staff.cat.copy_buckets_overlay.pending_buckets.save_columns1;" />
+	<button id="clip_button1" command="sel_clip1" label="&staff.cat.copy_buckets_overlay.pending_buckets.sel_clip1;" disabled="true" />
+	<button id="cmd_print_export_btn1" command="cmd_print_export1" label="&staff.cat.copy_buckets_overlay.pending_buckets.cmd_print_export1;" />
+	<button id="cmd_export_btn1" command="cmd_export1" label="&staff.cat.copy_buckets_overlay.pending_buckets.cmd_export1;" />
 	<spacer flex="1"/>
-	<button label="Add All" command="copy_buckets_add" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
-	<button label="Add Selected" command="copy_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
+	<button label="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.label;" command="copy_buckets_add" accesskey="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.accesskey;" image="/xul/server/skin/media/images/down_arrow.gif"/>
+	<button label="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label;" command="copy_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
 </hbox>
 
 <hbox id="copy_buckets_top_ui">
 	<hbox id="copy_buckets_menulist_placeholder" />
-	<button command="copy_buckets_new_bucket" label="New Bucket"/>
-	<button command="copy_buckets_delete_bucket" label="Delete Bucket"/>
-	<button id="refresh" label="Refresh"/>
+	<button command="copy_buckets_new_bucket" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_new_bucket.label;"/>
+	<button command="copy_buckets_delete_bucket" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label;"/>
+	<button id="refresh" label="&staff.cat.copy_buckets_overlay.copy_buckets.refresh.label;"/>
 	<spacer flex="1"/>
-	<button id="save_button2" command="save_columns2" label="Save Columns" />
-	<button id="clip_button2" command="sel_clip2" label="Copy to Clipboard" disabled="true" />
-	<button command="copy_buckets_delete_item" label="Remove Selected From Bucket" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button command="copy_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
+	<button id="save_button2" command="save_columns2" label="&staff.cat.copy_buckets_overlay.copy_buckets.save_columns2.label;" />
+	<button id="clip_button2" command="sel_clip2" label="&staff.cat.copy_buckets_overlay.copy_buckets.sel_clip2.label;" disabled="true" />
+	<button command="copy_buckets_delete_item" label="&staff.cat.copy_buckets_overlay.copy_buckets.delete_item.label;" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
+	<button command="copy_buckets_export" label="&staff.cat.copy_buckets_overlay.copy_buckets.export.label;" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
 <hbox id="info_box" hidden="true" style="font-size: large;">
-	<label value="Bucket #"/>
+	<label value="&staff.cat.copy_buckets_overlay.info_box.bucket.label;"/>
 	<label id="bucket_number" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
 	<label id="bucket_name" style="color: blue;"/>
-	<label value="Owner:"/>
+	<label value="&staff.cat.copy_buckets_overlay.info_box.owner.label;"/>
 	<label id="bucket_owner" style="color: blue;"/>
 </hbox>
 
 <hbox id="copy_buckets_bottom_ui">
-	<button id="copy_buckets_print" label="Print" command="cmd_copy_buckets_print" accesskey="P"/>
-	<button id="cmd_print_export_btn2" command="cmd_print_export2" label="Print Export" />
+	<button id="copy_buckets_print" label="&staff.cat.copy_buckets_overlay.copy_buckets.print.label;" command="cmd_copy_buckets_print" accesskey="&staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey;"/>
+	<button id="cmd_print_export_btn2" command="cmd_print_export2" label="&staff.cat.copy_buckets_overlay.copy_buckets.print_export.label;" />
 	<button id="copy_buckets_export" 
-		label="Export"
+		label="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label;"
 		command="cmd_copy_buckets_export"
 		accesskey=""/>
 	<spacer flex="1"/>
 	<hbox style="background: grey">
-		<vbox><spacer flex="1"/><label value="Batch:" style="font-weight: bold"/><spacer flex="1"/></vbox>
-		<button label="Show Status" command="cmd_export_to_copy_status"/>
-		<button command="copy_buckets_transfer_to_volume" label="Transfer to Specific Volume"/>
-		<button command="copy_buckets_batch_copy_edit" label="Edit Item Attributes" image="/xul/server/skin/media/images/grinder.gif"/>
-		<button command="copy_buckets_batch_copy_delete" label="Delete All from Catalog" />
+		<vbox><spacer flex="1"/><label value="&staff.cat.copy_buckets_overlay.copy_buckets.batch.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
+		<button label="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label;" command="cmd_export_to_copy_status"/>
+		<button command="copy_buckets_transfer_to_volume" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label;"/>
+		<button command="copy_buckets_batch_copy_edit" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label;" image="/xul/server/skin/media/images/grinder.gif"/>
+		<button command="copy_buckets_batch_copy_delete" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label;" />
 	</hbox>
 </hbox>
 

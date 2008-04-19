@@ -44,6 +44,7 @@ util.error.prototype = {
 		'D_TRACE' :  { 'dump' : true }, 
 		'D_ALERT' : { 'alert' : true, 'dump' : true },
 		'D_WARN' : false, 
+		'D_COLUMN_RENDER_ERROR' : false, 
 		'D_XULRUNNER' : false, 
 		'D_DECK' : { 'dump' : true },
 		'D_TRACE_ENTER' :  false, 
@@ -254,16 +255,10 @@ util.error.prototype = {
 
 	's_alert' : function (s) { alert(s); },
 
-	'get_ilsevent' : function(status) {
-		JSAN.use('OpenILS.data'); 
-		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
-		return this.OpenILS.data.entities['ilsevent.'+status];
-	},
-
 	'standard_network_error_alert' : function(msg) {
 		var obj = this;
 		if (!msg) msg = '';
-		var alert_msg = 'We experienced a network/server communication failure.  Please check your internet connection and try this action again.  Repeated failures may require attention from your local IT staff or your friendly Evergreen developers.\n\n' + msg.substr(0,100);
+		var alert_msg = 'We experienced a network/server communication failure.  Please check your internet connection and try this action again.  Repeated failures may require attention from your local IT staff or your friendly Evergreen developers.\n\n' + msg;
 		obj.yns_alert(
 			alert_msg,	
 			'Communication Failure',

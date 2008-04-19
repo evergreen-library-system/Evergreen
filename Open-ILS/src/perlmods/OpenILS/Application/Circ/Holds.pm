@@ -15,7 +15,7 @@
 
 
 package OpenILS::Application::Circ::Holds;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
@@ -113,16 +113,16 @@ sub create_hold {
 		push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
 		if( $t eq OILS_HOLD_TYPE_METARECORD ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
 
 		if( $t eq OILS_HOLD_TYPE_TITLE ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
+			{ $pevt = $e->event unless $e->allowed('TITLE_HOLDS', $porg);  }
 
 		if( $t eq OILS_HOLD_TYPE_VOLUME ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('VOLUME_HOLDS', $porg); }
 
 		if( $t eq OILS_HOLD_TYPE_COPY ) 
-			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
+			{ $pevt = $e->event unless $e->allowed('COPY_HOLDS', $porg); }
 
 		return $pevt if $pevt;
 
@@ -140,7 +140,7 @@ sub create_hold {
 
 		$hold->requestor($e->requestor->id); 
 		$hold->request_lib($e->requestor->ws_ou);
-		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
+		$hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
 		$hold = $e->create_action_hold_request($hold) or return $e->event;
 	}
 
@@ -149,7 +149,7 @@ sub create_hold {
 	$conn->respond_complete(1);
 
     for(@holds) {
-        next if $_->frozen;
+        next if $U->is_true($_->frozen);
 	    $U->storagereq(
 		    'open-ils.storage.action.hold_request.copy_targeter', 
 		    undef, $_->id );
@@ -359,7 +359,7 @@ sub user_hold_count {
    my $patron = $e->retrieve_actor_user($userid)
       or return $e->event;
    return $e->event unless $e->allowed('VIEW_HOLD', $patron->home_ou);
-   return $self->__user_hold_count($e, $userid);
+   return __user_hold_count($self, $e, $userid);
 }
 
 sub __user_hold_count {
@@ -483,7 +483,7 @@ sub cancel_hold {
 	$e->update_action_hold_request($hold)
 		or return $e->event;
 
-	$self->delete_hold_copy_maps($e, $hold->id);
+	delete_hold_copy_maps($self, $e, $hold->id);
 
 	$e->commit;
 	return 1;
@@ -518,6 +518,12 @@ sub update_hold {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
+    my $orig_hold = $e->retrieve_action_hold_request($hold->id)
+        or return $e->die_event;
+
+    # don't allow the user to be changed
+    return OpenILS::Event->new('BAD_PARAMS') if $hold->usr != $orig_hold->usr;
+
     if($hold->usr ne $e->requestor->id) {
         # if the hold is for a different user, make sure the 
         # requestor has the appropriate permissions
@@ -526,12 +532,8 @@ sub update_hold {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
-    my $evt = $self->update_hold_if_frozen($e, $hold);
-    return $evt if $evt;
-
-    $e->update_action_hold_request($hold)
-        or return $e->die_event;
-
+    update_hold_if_frozen($self, $e, $hold, $orig_hold);
+    $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
     return $hold->id;
 }
@@ -539,17 +541,22 @@ sub update_hold {
 
 # if the hold is frozen, this method ensures that the hold is not "targeted", 
 # that is, it clears the current_copy and prev_check_time to essentiallly 
-# reset the hold
+# reset the hold.  If it is being activated, it runs the targeter in the background
 sub update_hold_if_frozen {
-    my($self, $e, $hold) = @_;
-    return undef if $hold->capture_time;
-    if($hold->frozen and ($hold->current_copy or $hold->prev_check_time)) {
-        $logger->info("clearing current_copy and check_time for frozen hold");
+    my($self, $e, $hold, $orig_hold) = @_;
+    return if $hold->capture_time;
+
+    if($U->is_true($hold->frozen)) {
+        $logger->info("clearing current_copy and check_time for frozen hold ".$hold->id);
         $hold->clear_current_copy;
         $hold->clear_prev_check_time;
-        $e->update_action_hold_request($hold) or return $e->die_event;
+
+    } else {
+        if($U->is_true($orig_hold->frozen)) {
+            $logger->info("Running targeter on activated hold ".$hold->id);
+	        $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+        }
     }
-    return undef;
 }
 
 
@@ -774,7 +781,7 @@ sub reset_hold {
 	return $evt if $evt;
 	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD'); # XXX stronger permission
 	return $evt if $evt;
-	$evt = $self->_reset_hold($reqr, $hold);
+	$evt = _reset_hold($self, $reqr, $hold);
 	return $evt if $evt;
 	return 1;
 }
@@ -967,7 +974,6 @@ sub fetch_captured_holds {
 	}
 }
 
-
 __PACKAGE__->register_method(
 	method	=> "check_title_hold",
 	api_name	=> "open-ils.circ.title_hold.is_possible",
@@ -989,10 +995,11 @@ sub check_title_hold {
 	my $titleid		= $params{titleid} ||"";
 	my $volid		= $params{volume_id};
 	my $copyid		= $params{copy_id};
-	my $mrid			= $params{mrid} ||"";
+	my $mrid		= $params{mrid} ||"";
 	my $depth		= $params{depth} || 0;
 	my $pickup_lib	= $params{pickup_lib};
 	my $hold_type	= $params{hold_type} || 'T';
+    my $selection_ou = $params{selection_ou} || $pickup_lib;
 
 	my $e = new_editor(authtoken=>$authtoken);
 	return $e->event unless $e->checkauth;
@@ -1006,12 +1013,60 @@ sub check_title_hold {
 
 	return OpenILS::Event->new('PATRON_BARRED') if $U->is_true($patron->barred);
 
-	my $rangelib	= $params{range_lib} || $patron->home_ou;
-
 	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
 		or return $e->event;
 
-	$logger->info("checking hold possibility with type $hold_type");
+    my $soft_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_SOFT_BOUNDARY);
+    my $hard_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_HARD_BOUNDARY);
+
+    if(defined $soft_boundary and $$params{depth} < $soft_boundary) {
+        # work up the tree and as soon as we find a potential copy, use that depth
+        # also, make sure we don't go past the hard boundary if it exists
+
+        # our min boundary is the greater of user-specified boundary or hard boundary
+        my $min_depth = (defined $hard_boundary and $hard_boundary > $$params{depth}) ?  
+            $hard_boundary : $$params{depth};
+
+        my $depth = $soft_boundary;
+        while($depth >= $min_depth) {
+            $logger->info("performing hold possibility check with soft boundary $depth");
+            return {success => 1, depth => $depth}
+                if do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            $depth--;
+        }
+        return {success => 0};
+
+    } elsif(defined $hard_boundary and $$params{depth} < $hard_boundary) {
+        # there is no soft boundary, enforce the hard boundary if it exists
+        $logger->info("performing hold possibility check with hard boundary $hard_boundary");
+        if(do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params)) {
+            return {success => 1, depth => $hard_boundary}
+        } else {
+            return {success => 0};
+        }
+
+    } else {
+        # no boundaries defined, fall back to user specifed boundary or no boundary
+        $logger->info("performing hold possibility check with no boundary");
+        if(do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params)) {
+            return {success => 1, depth => $hard_boundary};
+        } else {
+            return {success => 0};
+        }
+    }
+}
+
+sub do_possibility_checks {
+    my($e, $patron, $request_lib, $depth, %params) = @_;
+
+	my $titleid		= $params{titleid} ||"";
+	my $volid		= $params{volume_id};
+	my $copyid		= $params{copy_id};
+	my $mrid		= $params{mrid} ||"";
+	my $pickup_lib	= $params{pickup_lib};
+	my $hold_type	= $params{hold_type} || 'T';
+    my $selection_ou = $params{selection_ou} || $pickup_lib;
+
 
 	my $copy;
 	my $volume;
@@ -1035,12 +1090,12 @@ sub check_title_hold {
 			or return $e->event;
 
 		return _check_volume_hold_is_possible(
-			$volume, $title, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
@@ -1048,47 +1103,10 @@ sub check_title_hold {
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
 			return 1 if (_check_title_hold_is_possible(
-				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib));
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou));
 		}
 		return 0;	
 	}
-}
-
-
-
-sub ___check_title_hold_is_possible {
-	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
-
-	my $limit	= 10;
-	my $offset	= 0;
-	my $title;
-
-	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
-
-	while( $title = $U->storagereq(
-				'open-ils.storage.biblio.record_entry.ranged_tree', 
-				$titleid, $rangelib, $depth, $limit, $offset ) ) {
-
-		last unless 
-			ref($title) and 
-			ref($title->call_numbers) and 
-			@{$title->call_numbers};
-
-		for my $cn (@{$title->call_numbers}) {
-	
-			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
-	
-			for my $copy (@{$cn->copies}) {
-				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
-				return 1 if verify_copy_for_hold( 
-					$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
-				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
-			}
-		}
-
-		$offset += $limit;
-	}
-	return 0;
 }
 
 my %prox_cache;
@@ -1200,10 +1218,35 @@ sub _check_metarecord_hold_is_possible {
    return 0;
 }
 
+sub create_ranged_org_filter {
+    my($e, $selection_ou, $depth) = @_;
+
+    # find the orgs from which this hold may be fulfilled, 
+    # based on the selection_ou and depth
+
+    my $top_org = $e->search_actor_org_unit([
+        {parent_ou => undef}, 
+        {flesh=>1, flesh_fields=>{aou=>['ou_type']}}])->[0];
+    my %org_filter;
+
+    return () if $depth == $top_org->ou_type->depth;
+
+    my $org_list = $U->storagereq('open-ils.storage.actor.org_unit.descendants.atomic', $selection_ou, $depth);
+    %org_filter = (circ_lib => []);
+    push(@{$org_filter{circ_lib}}, $_->id) for @$org_list;
+
+    $logger->info("hold org filter at depth $depth and selection_ou ".
+        "$selection_ou created list of @{$org_filter{circ_lib}}");
+
+    return %org_filter;
+}
+
+
 sub _check_title_hold_is_possible {
-	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+	my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
    
-   my $e = new_editor();
+    my $e = new_editor();
+    my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
 
     # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
     my $copies = $e->json_query(
@@ -1227,7 +1270,7 @@ sub _check_title_hold_is_possible {
                 }
             }, 
             where => {
-                '+acp' => { circulate => 't', deleted => 'f', holdable => 't' }
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
             }
         }
     );
@@ -1313,8 +1356,9 @@ sub _check_title_hold_is_possible {
 
 
 sub _check_volume_hold_is_possible {
-	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
-	my $copies = new_editor->search_asset_copy({call_number => $vol->id});
+	my( $vol, $title, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
+	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
 	for my $copy ( @$copies ) {
 		return 1 if verify_copy_for_hold( 
@@ -1335,7 +1379,8 @@ sub verify_copy_for_hold {
 			title				=> $title, 
 			title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
 			pickup_lib			=> $pickup_lib,
-			request_lib			=> $request_lib 
+			request_lib			=> $request_lib,
+            new_hold            => 1
 		} 
 	);
 	return 0;
@@ -1366,7 +1411,7 @@ sub find_nearest_permitted_hold {
 	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
 
 
-    my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.hold_stalling.soft');
+    my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, OILS_SETTING_HOLD_SOFT_STALL);
 
 	$logger->info("circulator: searching for best hold at org ".$user->ws_ou.
         " and copy $bc with a hold stalling interval of ". ($hold_stall_interval || "(none)"));

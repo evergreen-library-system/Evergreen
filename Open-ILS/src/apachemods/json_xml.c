@@ -1,21 +1,20 @@
 #include "json_xml.h"
 #include "fieldmapper_lookup.h"
 
-void _rest_xml_output(growing_buffer*, jsonObject*, char*, int, int);
-char* _escape_xml (char*);
+static void _rest_xml_output(growing_buffer*, const jsonObject*, char*, int, int);
+static char* _escape_xml (const char*);
 
 char* json_string_to_xml(char* content) {
 	jsonObject * obj;
 	growing_buffer * res_xml;
-	char * output;
 	int i;
 
 	obj = json_parse_string( content );
-	res_xml = buffer_init(1024);
 
 	if (!obj)
 		return NULL;
 	
+	res_xml = buffer_init(1024);
 	buffer_add(res_xml, "<response>");
 
 	if(obj->type == JSON_ARRAY ) {
@@ -28,15 +27,11 @@ char* json_string_to_xml(char* content) {
 
 	buffer_add(res_xml, "</response>");
 
-	output = buffer_data(res_xml);
-	buffer_free(res_xml);
 	jsonObjectFree(obj);
-
-	return output;
+	return buffer_release(res_xml);
 }
 
-char* _escape_xml (char* text) {
-	char* out;
+char* _escape_xml (const char* text) {
 	growing_buffer* b = buffer_init(256);
 	int len = strlen(text);
 	int i;
@@ -50,12 +45,11 @@ char* _escape_xml (char* text) {
 		else
 			buffer_add_char(b,text[i]);
 	}
-	out = buffer_data(b);
-	buffer_free(b);
-	return out;
+	return buffer_release(b);
 }
 
-void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, int arr_index, int notag) {
+static void _rest_xml_output(growing_buffer* buf, const jsonObject* obj,
+		char * obj_class, int arr_index, int notag) {
 	char * tag;
 	int i;
 	
@@ -77,6 +71,7 @@ void _rest_xml_output(growing_buffer* buf, jsonObject* obj, char * obj_class, in
    if(obj->classname) {
      	if(obj->type == JSON_NULL) {
 			buffer_fadd(buf,"<%s><Object class_hint=\"%s\"/></%s>", tag, obj->classname, tag);
+			free(tag);
 			return;
 		} else {
 			buffer_fadd(buf,"<%s><Object class_hint=\"%s\">", tag, obj->classname);

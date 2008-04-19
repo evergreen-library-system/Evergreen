@@ -82,7 +82,7 @@
 				<scripts>
 					<path>/openils/var/</path>
 					<item_config>circ/circ_item_config.js</item_config>
-				<scripts>
+				</scripts>
 
 			</implementation_config>
 	

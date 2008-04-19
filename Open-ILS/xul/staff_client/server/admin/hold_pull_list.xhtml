@@ -1,8 +1,9 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
 ]>
 
@@ -10,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen Holds Pull List</title>
+		<title>&staff.server.admin.hold_pull.title;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script> 
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -38,29 +39,29 @@
 	<body onload='try{pullListInit();}catch(e){alert(js2JSON(e));}'>
 
 		<center>
-			<h2>Evergreen Holds Pull List : <span id='pl_org'/></h2>
+			<h2>&staff.server.admin.hold_pull.header;<span id='pl_org'/></h2>
 
 			<div style='position:absolute; top: 5px; right: 5px;'>
-				<span>Welcome </span><b><span id='pl_user'/></b>
+				<span>&staff.server.admin.hold_pull.greeting;</span><b><span id='pl_user'/></b>
 			</div>
 		
 			<hr/><br/>
 
-			<span>Note: Click on a column header to sort the column</span>
+			<span>&staff.server.admin.hold_pull.sort.note;</span>
 
 			<table width='100%' class='data_grid sortable' id='pl_table'>
 				<thead>
 					<tr>
-						<td>Title</td>
-						<td>Author</td>
-						<td>Copy Location</td>
-						<td id='pl_callnumber'>Call Number</td>
-						<td>Item Barcode</td>
-						<td>Copy Number</td>
-						<td>Format</td>
-						<td>Patron Barcode</td>
-						<td>Hold Placement Date</td>
-						<td>Hold Type</td>
+						<td>&staff.server.admin.hold_pull.title;</td>
+						<td>&staff.server.admin.hold_pull.author;</td>
+						<td>&staff.server.admin.hold_pull.copy_location;</td>
+						<td id='pl_callnumber'>&staff.server.admin.hold_pull.call_number;</td>
+						<td>&staff.server.admin.hold_pull.item_barcode;</td>
+						<td>&staff.server.admin.hold_pull.copy;</td>
+						<td>&staff.server.admin.hold_pull.format;</td>
+						<td>&staff.server.admin.hold_pull.patron_barcode;</td>
+						<td>&staff.server.admin.hold_pull.hold_date;</td>
+						<td>&staff.server.admin.hold_pull.hold_type;</td>
 					</tr>
 				</thead>
 				<tbody id='pull_list_tbody'>
@@ -72,20 +73,20 @@
 						<td name='barcode'/>
 						<td name='copy_number'/>
 						<td>
-							<span name='format_at'		class='hide_me'>Book</span>
-							<span name='format_at-d'	class='hide_me'>Large Print Book</span>
-							<span name='format_i'		class='hide_me'>Audiobook</span>
-							<span name='format_g'		class='hide_me'>Video Recording</span>
-							<span name='format_j'		class='hide_me'>Music</span>
-							<span name='format_m'		class='hide_me'>Electronic Resource</span>
+							<span name='format_at'		class='hide_me'>&staff.server.admin.hold_pull.book;</span>
+							<span name='format_at-d'	class='hide_me'>&staff.server.admin.hold_pull.large_book;</span>
+							<span name='format_i'		class='hide_me'>&staff.server.admin.hold_pull.audiobook;</span>
+							<span name='format_g'		class='hide_me'>&staff.server.admin.hold_pull.video;</span>
+							<span name='format_j'		class='hide_me'>&staff.server.admin.hold_pull.music;</span>
+							<span name='format_m'		class='hide_me'>&staff.server.admin.hold_pull.eresource;</span>
 						</td>
 						<td name='patron'/>
 						<td name='date'/>
 						<td>
-							<span name='copy_hold' class='hide_me'>Copy Hold</span>
-							<span name='volume_hold' class='hide_me'>Volume Hold</span>
-							<span name='title_hold' class='hide_me'>Title Hold</span>
-							<span name='mr_hold' class='hide_me'>Metarecord Hold</span>
+							<span name='copy_hold' class='hide_me'>&staff.server.admin.hold_pull.copy_hold;</span>
+							<span name='volume_hold' class='hide_me'>&staff.server.admin.hold_pull.volume_hold;</span>
+							<span name='title_hold' class='hide_me'>&staff.server.admin.hold_pull.title_hold;</span>
+							<span name='mr_hold' class='hide_me'>&staff.server.admin.hold_pull.metarecord_hold;</span>
 						</td>
 					</tr>
 				</tbody>

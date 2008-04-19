@@ -1,3 +1,4 @@
+// vim:noet:sw=4:ts=4:
 dump('entering cat.copy_buckets.js\n');
 
 if (typeof cat == 'undefined') cat = {};
@@ -19,12 +20,12 @@ cat.copy_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Action completed.");
+			alert($('catStrings').getString('staff.cat.copy_buckets.render_pending_copies.complete'));
 		}
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.copy_ids.length; i++) {
-			var item = obj.flesh_item_for_list( obj.copy_ids[i] );
+			var item = obj.prep_item_for_list( obj.copy_ids[i] );
 			if (item) obj.list1.append( item );
 		}
 	},
@@ -49,11 +50,39 @@ cat.copy_buckets.prototype = {
 
 		JSAN.use('util.list'); 
 
+        function retrieve_row(params) {
+            var row = params.row;
+            try {
+                obj.network.simple_request('FM_ACP_DETAILS', [ ses(), row.my.copy_id ],
+                    function(blob_req) {
+                        try {
+                            var blob = blob_req.getResultObject();
+                            if (typeof blob.ilsevent != 'undefined') throw(blob);
+                            row.my.acp = blob.copy;
+                            row.my.mvr = blob.mvr;
+                            row.my.acn = blob.volume;
+                            row.my.ahr = blob.hold;
+                            row.my.circ = blob.circ;
+                            params.row_node.setAttribute('retrieve_id', js2JSON( [ blob.copy.id(), blob.copy.barcode(), row.my.bucket_item_id ] ));
+                            if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_buckets.retrieve_row.error', [row.my.acp_id]), E);
+                        }
+                    }
+                );
+            } catch(E) {
+                obj.error.sdump('D_ERROR','retrieve_row: ' + E );
+            }
+            return row;
+        }
+
 		obj.list1 = new util.list('pending_copies_list');
 		obj.list1.init(
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -84,6 +113,7 @@ cat.copy_buckets.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -137,7 +167,10 @@ cat.copy_buckets.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
-								var items = [ ['Choose a bucket...',''], ['Retrieve shared bucket...',-1] ].concat(
+								var items = [
+									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.choose_bucket'),''],
+									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.retrieve_bucket'),-1]
+								].concat(
 									util.functional.map_list(
 										obj.network.simple_request(
 											'BUCKET_RETRIEVE_VIA_USER',
@@ -167,7 +200,7 @@ cat.copy_buckets.prototype = {
 								function change_bucket(ev) {
 									var bucket_id = ev.target.value;
 									if (bucket_id < 0 ) {
-										bucket_id = window.prompt('Enter bucket number:');
+										bucket_id = window.prompt($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.prompt'));
 										ev.target.value = bucket_id;
 										ev.target.setAttribute('value',bucket_id);
 									}
@@ -178,9 +211,9 @@ cat.copy_buckets.prototype = {
 									);
 									if (typeof bucket.ilsevent != 'undefined') {
 										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
-											alert('Could not find a bucket with ID = ' + bucket_id);
+											alert($('catStrings').getFormattedString('staff.cat.copy_buckets.menulist.change_bucket.undefined', [bucket_id]));
 										} else {
-											obj.error.standard_unexpected_error_alert('Error retrieving bucket.  Did you use a valid bucket id?',bucket);
+											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.error'),bucket);
 										}
 										return;
 									}
@@ -202,7 +235,7 @@ cat.copy_buckets.prototype = {
 									var items = bucket.items() || [];
 									obj.list2.clear();
 									for (var i = 0; i < items.length; i++) {
-										var item = obj.flesh_item_for_list( 
+										var item = obj.prep_item_for_list( 
 											items[i].target_copy(),
 											items[i].id()
 										);
@@ -239,12 +272,12 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( obj.copy_ids[i], robj );
+									var item = obj.prep_item_for_list( obj.copy_ids[i], robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Addition likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_add.error'), E);
 								}
 							}
 						}
@@ -255,7 +288,7 @@ cat.copy_buckets.prototype = {
 							var bucket_id = obj.controller.view.bucket_menulist.value;
 							if (!bucket_id) return;
 							for (var i = 0; i < obj.selection_list1.length; i++) {
-	                                                        var acp_id = obj.selection_list1[i][0];
+                                var acp_id = obj.selection_list1[i][0];
 								//var barcode = obj.selection_list1[i][1];
 								var bucket_item = new ccbi();
 								bucket_item.isnew('1');
@@ -267,12 +300,12 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
-									var item = obj.flesh_item_for_list( acp_id, robj );
+									var item = obj.prep_item_for_list( acp_id, robj );
 									if (!item) continue;
 
 									obj.list2.append( item );
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_sel_add.error'), E);
 								}
 							}
 
@@ -285,7 +318,7 @@ cat.copy_buckets.prototype = {
 								var acp_id = obj.selection_list2[i][0];
 								//var barcode = obj.selection_list1[i][1];
 								//var bucket_item_id = obj.selection_list1[i][2];
-								var item = obj.flesh_item_for_list( acp_id );
+								var item = obj.prep_item_for_list( acp_id );
 								if (item) {
 									obj.list1.append( item );
 									obj.copy_ids.push( acp_id );
@@ -306,10 +339,10 @@ cat.copy_buckets.prototype = {
 										[ ses(), 'copy', bucket_item_id ]);
 									if (typeof robj == 'object') throw robj;
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
+									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.error'), E);
 								}
-                                                        }
-							alert("Action completed.");
+							}
+							alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.complete'));
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -324,15 +357,15 @@ cat.copy_buckets.prototype = {
 							try {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
-								var conf = window.confirm('Delete the bucket named ' + name + '?');
+								var conf = window.confirm($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm', [name]));
 								if (!conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Action completed.");
+								alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.complete'));
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Bucket deletion likely failed.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.error'),E);
 							}
 						}
 					],
@@ -340,7 +373,11 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+								var name = prompt(
+									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.prompt'),
+									'',
+									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.title')
+								);
 
 								if (name) {
 									var bucket = new ccb();
@@ -352,13 +389,13 @@ cat.copy_buckets.prototype = {
 
 									if (typeof robj == 'object') {
 										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
-											alert('You already have a bucket with that name.');
+											alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists'));
 											return;
 										}
 										throw robj;
 									}
 
-									alert('Bucket "' + name + '" created.');
+									alert($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_new_bucket.success', [name]));
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;
@@ -370,7 +407,7 @@ cat.copy_buckets.prototype = {
 									);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Bucket creation failed.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.error'),E);
 							}
 						}
 					],
@@ -390,40 +427,11 @@ cat.copy_buckets.prototype = {
 									}
 								);
 
-								var copies = util.functional.map_list(
-									list,
-									function (acp_id) {
-										return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-									}
-								);
-
-								var edit = 0;
-								try {
-									edit = obj.network.request(
-										api.PERM_MULTI_ORG_CHECK.app,
-										api.PERM_MULTI_ORG_CHECK.method,
-										[ 
-											ses(), 
-											obj.data.list.au[0].id(), 
-											util.functional.map_list(
-												copies,
-												function (o) {
-													return o.call_number() == -1 ? o.circ_lib() : obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
-												}
-											),
-											copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-										]
-									).length == 0 ? 1 : 0;
-								} catch(E) {
-									obj.error.sdump('D_ERROR','batch permission check: ' + E);
-								}
-
-								JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+								JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
 									function() {
-										JSAN.use('util.widgets'); 
 										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
 									}, 0
 								);
@@ -462,7 +470,7 @@ cat.copy_buckets.prototype = {
 
 								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								if (typeof robj.ilsevent != 'undefined') {
-									switch(robj.ilsevent) {
+									switch(Number(robj.ilsevent)) {
 										case 1227 /* COPY_DELETE_WARNING */ : 
 											var copy;
 											for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
@@ -474,7 +482,8 @@ cat.copy_buckets.prototype = {
 											err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
 											alert(err);
 										break;
-										default: obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+										default:
+											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.batch.error'), robj);
 									}
 								}
 
@@ -499,7 +508,7 @@ cat.copy_buckets.prototype = {
 
 								obj.data.stash_retrieve();
 								if (!obj.data.marked_volume) {
-									alert('Please mark a volume as the destination from within the copy browser and then try this again.');
+									alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume'));
 									return;
 								}
 
@@ -510,13 +519,16 @@ cat.copy_buckets.prototype = {
 									}
 								)
 
-								var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
-								var msg = 'Transfer the items in bucket "';
-								msg += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';
-								msg += 'from their original volumes to ';
-								msg += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
-								msg += '"' + volume.label() + '" on the following record?';
+								var msg = $('catStrings').getFormattedString(
+									'staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm',
+									[
+										obj.controller.view.bucket_menulist.getAttribute('label'),
+										volume.label(),
+										obj.data.hash.aou[ volume.owning_lib() ].shortname()
+									]
+								);
 
 								JSAN.use('cat.util'); cat.util.transfer_copies( { 
 									'copy_ids' : copy_ids, 
@@ -535,13 +547,13 @@ cat.copy_buckets.prototype = {
 								);
 								
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Items not likely transferred.',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error'), E);
 							}
 						}
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($('commonStrings').getString('common.unimplemented')); }
 					],
 					'cmd_copy_buckets_print' : [
 						['command'],
@@ -647,19 +659,24 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								obj.list2.select_all();
-								JSAN.use('util.functional');
-								var barcodes = util.functional.map_list(
-									obj.list2.dump_retrieve_ids(),
-									function(o) { return JSON2js(o)[1]; }
-								);
-								var url = urls.XUL_COPY_STATUS; // + '?barcodes=' + window.escape( js2JSON(barcodes) );
-								//JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-								//data.temp_barcodes_for_copy_status = barcodes;
-								//data.stash('temp_barcodes_for_copy_status');
-								xulG.new_tab( url, {}, { 'barcodes' : barcodes });
+                                obj.list2.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            obj.list2.select_all();
+                                            JSAN.use('util.functional');
+                                            var barcodes = util.functional.map_list(
+                                                obj.list2.dump_retrieve_ids(),
+                                                function(o) { return JSON2js(o)[1]; }
+                                            );
+                                            var url = urls.XUL_COPY_STATUS;
+                                            xulG.new_tab( url, {}, { 'barcodes' : barcodes });
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('export to copy status',E);
+                                        }
+                                    }
+                                obj.list2.full_retrieve();
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
+								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.cmd_export_to_copy_status.error'), E);
 							}
 						}
 					],
@@ -678,26 +695,22 @@ cat.copy_buckets.prototype = {
 	
 	},
 
-	'flesh_item_for_list' : function(acp_id,bucket_item_id) {
+	'prep_item_for_list' : function(acp_id,bucket_item_id) {
 		var obj = this;
 		try {
-			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ acp_id ]);
-			if (copy == null || typeof copy.ilsevent != 'undefined') {
-				throw(copy);
-			} else {
-				var item = {
-					'retrieve_id' : js2JSON( [ copy.id(), copy.barcode(), bucket_item_id ] ),
-					'row' : {
-						'my' : {
-							'mvr' : obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]),
-							'acp' : copy,
-						}
-					}
-				};
-				return item;
-			}
+            var item = {
+                'retrieve_id' : js2JSON( [ acp_id, null, bucket_item_id ] ),
+                'row' : {
+                    'my' : {
+                        'acn' : -2,
+                        'copy_id' : acp_id,
+                        'bucket_item_id' : bucket_item_id
+                    }
+                }
+            };
+            return item;
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('List building failed.',E);
+			obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.prep_item_for_list.error'), E);
 			return null;
 		}
 

@@ -24,8 +24,12 @@ $cache->delete_cache('orgtree');
 
 # fetch the org_unit's and org_unit_type's
 my $e = OpenILS::Utils::CStoreEditor->new;
-my $tree = $e->retrieve_all_actor_org_unit;
 my $types = $e->retrieve_all_actor_org_unit_type;
+my $tree = $e->request(
+    'open-ils.cstore.direct.actor.org_unit.search.atomic',
+    {id => {"!=" => undef}},
+    {order_by => {aou => 'name'}}
+);
 
 
 sub val {

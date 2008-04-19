@@ -1,5 +1,5 @@
 package OpenILS::Application::Circ::CopyLocations;
-use base 'OpenSRF::Application';
+use base 'OpenILS::Application';
 use strict; use warnings;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;

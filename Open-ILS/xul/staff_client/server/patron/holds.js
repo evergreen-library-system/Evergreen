@@ -23,6 +23,11 @@ patron.holds.prototype = {
 
 	'holds_map' : {},
 
+    'flatten_copy' : function(hold) {
+        try { if ( hold.current_copy() && typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('FIXME: Error flattening hold before hold update: ' + E); }
+        return hold;
+    },
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -54,13 +59,14 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
-						obj.network.simple_request('FM_AHR_BLOB_RETRIEVE', [ ses(), row.my.hold_id ],
+						obj.network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative', [ ses(), row.my.hold_id ],
 							function(blob_req) {
 								try {
 									var blob = blob_req.getResultObject();
 									if (typeof blob.ilsevent != 'undefined') throw(blob);
 									row.my.ahr = blob.hold;
 									row.my.status = blob.status;
+                                    row.my.ahr.status( blob.status );
 									row.my.acp = blob.copy;
 									row.my.acn = blob.volume;
 									row.my.mvr = blob.mvr;
@@ -121,7 +127,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
-						obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_notifications.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
@@ -137,7 +144,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
-						obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
@@ -290,7 +298,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -307,6 +315,17 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+                                
+                                var deny_edit_because_of_transit = false;
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                    if (hold.status() > 2 /* Which means holds that are In-Transit or Ready for Pickup */) deny_edit_because_of_transit = true;
+                                }
+                                if (deny_edit_because_of_transit) {
+                                    alert(document.getElementById('circStrings').getString('staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit'));
+                                    return;
+                                }
+
 								var list = util.functional.map_list(
 									obj.data.list.aou,
 									function(o) { 
@@ -349,7 +368,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -392,7 +411,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.phone_notify(  phone ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -434,7 +453,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.email_notify(  email ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -445,53 +464,90 @@ patron.holds.prototype = {
 							}
 						}
 					],
-                    'cmd_holds_edit_freeze' : [
+                    'cmd_holds_suspend' : [
 						['command'],
 						function() {
 							try {
-								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Freeze or un-freeze these holds?</description>';
-								xml += '<hbox><button value="freeze" label="Freeze" accesskey="F" name="fancy_submit"/>';
-								xml += '<button value="unfreeze" label="Un-Freeze" accesskey="U" name="fancy_submit"/></hbox>';
-								xml += '</vbox>';
-								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								JSAN.use('util.window'); var win = new util.window();
-								var fancy_prompt_data = win.open(
-									urls.XUL_FANCY_PROMPT,
-									//+ '?xml_in_stash=temp_mid'
-									//+ '&bottom_xml_in_stash=temp_bot'
-									//+ '&title=' + window.escape('Set Email Notification for Holds'),
-									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Set Email Notification for Holds' }
-								);
-								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
-								var freeze = fancy_prompt_data.fancy_submit == 'freeze' ? get_db_true() : get_db_false();
-								var msg = 'Are you sure you would like to ' + ( get_bool( freeze ) ? 'freeze' : 'un-freeze' ) + ' hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+								var r = obj.error.yns_alert(
+                                    obj.retrieve_ids.length > 1 ?
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt.plural',[hold_list]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
+                                    null,
+                                    document.getElementById('commonStrings').getString('common.confirm')
+                                );
 								if (r == 0) {
+                                    var already_suspended = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
-										hold.frozen(  freeze ); 
-										if ( ! get_bool( freeze ) ) {
-											hold.thaw_date( null );
-										}
+                                        if ( get_bool( hold.frozen() ) ) {
+                                            already_suspended.push( hold.id() );
+                                            continue; 
+                                        }
+										hold.frozen('t'); 
+										hold.thaw_date(null);
 										hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
+                                    if (already_suspended.length == 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended',[already_suspended[0]]) );
+                                    } else if (already_suspended.length > 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended.plural',[already_suspended.join(', ')]) );
+                                    }
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_suspended'),E);
 							}
 						}
 					],
-
+                    'cmd_holds_activate' : [
+						['command'],
+						function() {
+							try {
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+								var r = obj.error.yns_alert(
+                                    obj.retrieve_ids.length > 1 ?
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt.plural',[hold_list]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
+                                    document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
+                                    null,
+                                    document.getElementById('commonStrings').getString('common.confirm')
+                                );
+								if (r == 0) {
+                                    var already_activated = [];
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        if ( ! get_bool( hold.frozen() ) ) {
+                                            already_activated.push( hold.id() );
+                                            continue; 
+                                        }
+										hold.frozen('f'); 
+										hold.thaw_date(null);
+										hold.ischanged('1');
+                                        hold = obj.flatten_copy(hold);
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+                                    if (already_activated.length == 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated',[already_activated[0]]) );
+                                    } else if (already_activated.length > 1) {
+                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated.plural',[already_activated.join(', ')]) );
+                                    }
+									obj.clear_and_retrieve(true);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_activated'),E);
+							}
+						}
+					],
                     'cmd_holds_edit_thaw_date' : [
 						['command'],
 						function() {
@@ -499,9 +555,9 @@ patron.holds.prototype = {
                                 JSAN.use('util.date');
                                 function check_date(value) {
                                     try {
-                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw('Invalid Date'); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) ) { 
-                                            throw('Thaw date for frozen holds needs to be after today.'); 
+                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.invalid_date')); }
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
+                                            throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.too_early.error'));
                                         }
                                         return true;
                                     } catch(E) {
@@ -510,9 +566,12 @@ patron.holds.prototype = {
                                     }
                                 }
 
-								var msg = 'Please enter a thaw date for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '\nOr set to blank to unset the thaw date for these holds.  Frozen holds without a thaw date will remain frozen until manually unfrozen, otherwise they unfreeze on the thaw date.';
+                                var hold_ids = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
+								var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
+                                var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
-                                var title = 'Modifying Holds';
+                                var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
 								var thaw_date; var invalid = true;
                                 while(invalid) {
                                     thaw_date = window.prompt(msg,value,title);
@@ -525,15 +584,16 @@ patron.holds.prototype = {
                                 if (thaw_date || thaw_date == '') {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        hold.frozen('t');
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
                                     }
 									obj.clear_and_retrieve(true);
                                 }
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
 							}
 						}
 					],
@@ -583,7 +643,7 @@ patron.holds.prototype = {
                                                 for (var i = 0; i < transits.length; i++) {
                                                     var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : transits[i] } ]);
                                                     if (typeof robj.ilsevent != 'undefined') {
-                                                        switch(robj.ilsevent) {
+                                                        switch(Number(robj.ilsevent)) {
                                                             case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
                                                                 alert(robj.desc);
                                                             break;
@@ -642,7 +702,7 @@ patron.holds.prototype = {
 											opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
 										break;
 										case 'V' :
-											var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ htarget ]);
+											var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
 										break;
 										case 'C' :
@@ -651,7 +711,7 @@ patron.holds.prototype = {
 											if (typeof my_acp.call_number() == 'object') {
 												my_acn = my.acp.call_number();
 											} else {
-												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', 
+												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', 
 													[ my_acp.call_number() ]);
 											}
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
@@ -681,7 +741,7 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             obj.pull_from_shelf_interface.current.offset += obj.pull_from_shelf_interface.current.limit;
-                            obj.retrieve();
+                            obj.retrieve(true);
                         }
                     ],
                     'lib_filter_checkbox' : [
@@ -733,14 +793,15 @@ patron.holds.prototype = {
                     if (obj.controller.view.lib_menu) obj.controller.view.lib_menu.disabled = true;
                 }
                 obj.controller.render();
-                obj.retrieve();
+                obj.retrieve(true);
 
                 obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
 				obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
-				obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
@@ -779,7 +840,7 @@ patron.holds.prototype = {
 			var method; var params = [ ses() ];
             switch(obj.hold_interface_type) {
                 case 'patron' :
-				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU'; 
+				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative'; 
     				params.push( obj.patron_id ); 
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
                 break;

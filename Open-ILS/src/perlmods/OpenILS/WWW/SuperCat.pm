@@ -9,6 +9,8 @@ use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use CGI;
 use Data::Dumper;
+use SRU::Request;
+use SRU::Response;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils qw/:datetime/;
@@ -26,6 +28,8 @@ use OpenSRF::Utils::Logger qw/$logger/;
 
 use MARC::Record;
 use MARC::File::XML;
+
+my $log = 'OpenSRF::Utils::Logger';
 
 # set the bootstrap config when this module is loaded
 my ($bootstrap, $cstore, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
@@ -742,8 +746,8 @@ sub bookbag_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2-full/$id" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom-full/$id" => 'application/atom+xml');
+	$feed->link(alternate => $base . "/rss2-full/$id" => 'application/rss+xml');
+	$feed->link(atom => $base . "/atom-full/$id" => 'application/atom+xml');
 	$feed->link(html => $base . "/html-full/$id" => 'text/html');
 	$feed->link(unapi => $unapi);
 
@@ -778,7 +782,7 @@ sub changes_feed {
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
-	my $base = (split 'freshmeat', $url)[0] . 'freshmeat';
+	my $base = (split 'freshmeat', $url)[0] . '/freshmeat';
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
 	my $path = $cgi->path_info;
@@ -811,8 +815,8 @@ sub changes_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
+	$feed->link(alternate => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
+	$feed->link(atom => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
 	$feed->link(html => $base . "/html-full/$rtype/$axis/$limit/$date" => 'text/html');
 	$feed->link(unapi => $unapi);
 
@@ -956,8 +960,12 @@ sub opensearch_feed {
 	$lang = '' if ($lang eq '*');
 
 	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
+	$sort ||= '';
 	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
-	$terms .= " " . $cgi->param('searchTerms') if $cgi->param('searchTerms');
+	$sortdir ||= '';
+
+	$terms .= " " if ($terms && $cgi->param('searchTerms'));
+	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
 	$class ||= '-';
@@ -975,11 +983,16 @@ sub opensearch_feed {
 	my $sut = $cgi->param('su');
 	my $set = $cgi->param('se');
 
-	$terms .= " keyword: $kwt" if ($kwt);
-	$terms .= " title: $tit" if ($tit);
-	$terms .= " author: $aut" if ($aut);
-	$terms .= " subject: $sut" if ($sut);
-	$terms .= " series: $set" if ($set);
+	$terms .= " " if ($terms && $kwt);
+	$terms .= "keyword: $kwt" if ($kwt);
+	$terms .= " " if ($terms && $tit);
+	$terms .= "title: $tit" if ($tit);
+	$terms .= " " if ($terms && $aut);
+	$terms .= "author: $aut" if ($aut);
+	$terms .= " " if ($terms && $sut);
+	$terms .= "subject: $sut" if ($sut);
+	$terms .= " " if ($terms && $set);
+	$terms .= "series: $set" if ($set);
 
 	if ($version eq '1.0') {
 		$type = 'rss2';
@@ -988,13 +1001,6 @@ sub opensearch_feed {
 	}
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
-	$terms = decode_utf8($terms);
-	$terms =~ s/\+/ /go;
-	$terms =~ s/'//go;
-	$terms =~ s/^\s+//go;
-	my $term_copy = $terms;
-
-	my $complex_terms = 0;
 	if ($terms eq 'help') {
 		print $cgi->header(-type => 'text/html');
 		print <<"		HTML";
@@ -1008,95 +1014,58 @@ sub opensearch_feed {
 			</html>
 		HTML
 		return Apache2::Const::OK;
-	}
-
-	my $cache_key = '';
-	my $searches = {};
-	while ($term_copy =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang):[^:]+)$//so) {
-		my ($c,$t) = split ':' => $1;
-		if ($c eq 'site') {
-			$org = $t;
-			$org =~ s/^\s*//o;
-			$org =~ s/\s*$//o;
-		} elsif ($c eq 'sort') {
-			($sort = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'dir') {
-			($sortdir = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} elsif ($c eq 'lang') {
-			($lang = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-		} else {
-			$$searches{$c}{term} .= ' '.$t;
-			$cache_key .= $c . $t;
-			$complex_terms = 1;
-		}
-	}
-
+    }
+	
+	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
 
-	if ($term_copy) {
-		no warnings;
-		$class = 'keyword' if ($class eq '-');
-		$$searches{$class}{term} .= " $term_copy";
-		$cache_key .= $class . $term_copy;
-	}
+	$log->debug("OpenSearch terms: $terms");
 
 	my $org_unit;
 	if ($org eq '-') {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => parent_ou => undef
 		)->gather(1);
-	} else {
+	} elsif ($org !~ /^\d+$/o) {
 	 	$org_unit = $actor->request(
 			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
 		)->gather(1);
-	}
-
-	{ no warnings; $cache_key .= $org.$sort.$sortdir.$lang; }
-
-	my $rs_name = $cgi->cookie('os_session');
-	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
-
-	my $recs;
-	if (!($recs = $$cached_res{os_results}{$cache_key})) {
-		$rs_name = $cgi->remote_host . '::' . rand(time);
-		$recs = $search->request(
-			'open-ils.search.biblio.multiclass' => {
-				searches	=> $searches,
-				org_unit	=> $org_unit->[0]->id,
-				offset		=> 0,
-				limit		=> 5000,
-				($sort ?    ( 'sort'     => $sort    ) : ()),
-				($sortdir ? ( 'sort_dir' => $sortdir ) : ($sort ? (sort_dir => 'asc') : (sort_dir => 'desc') )),
-				($lang ?    ( 'language' => $lang    ) : ()),
-			}
+	} else {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => id => $org
 		)->gather(1);
-		try {
-			$$cached_res{os_results}{$cache_key} = $recs;
-			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
-		} catch Error with {
-			warn "supercat unable to store IDs in memcache server\n";
-			$logger->error("supercat unable to store IDs in memcache server");
-		};
 	}
+
+    my $recs = $search->request(
+        'open-ils.search.biblio.multiclass.query' => {
+			org_unit	=> $org_unit->[0]->id,
+			offset		=> $offset - 1,
+			limit		=> $limit,
+			sort		=> $sort,
+			sort_dir	=> $sortdir,
+			($lang ?    ( 'language' => $lang    ) : ()),
+		} => $terms => 1
+	)->gather(1);
+
+	$log->debug("Hits for [$terms]: $recs->{count}");
 
 	my $feed = create_record_feed(
 		'record',
 		$type,
-		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
+		[ map { $_->[0] } @{$recs->{ids}} ],
 		$unapi,
 		$org,
 		$flesh_feed
 	);
+
+	$log->debug("Feed created...");
+
 	$feed->root($root);
 	$feed->lib($org);
 	$feed->search($terms);
 	$feed->class($class);
 
-	if ($complex_terms) {
-		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
-	} else {
-		$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
-	}
+	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
 
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
@@ -1122,6 +1091,8 @@ sub opensearch_feed {
 		$limit,
 	);
 
+	$log->debug("...basic feed data added...");
+
 	$feed->link(
 		next =>
 		$base . "/$version/$org/$type/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang&startIndex=" . int($offset + $limit + 1) . "&count=" . $limit =>
@@ -1141,13 +1112,13 @@ sub opensearch_feed {
 	);
 
 	$feed->link(
-		rss =>
+		alternate =>
 		$base .  "/$version/$org/rss2-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/rss+xml'
 	);
 
 	$feed->link(
-		alternate =>
+		atom =>
 		$base .  "/$version/$org/atom-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/atom+xml'
 	);
@@ -1166,6 +1137,8 @@ sub opensearch_feed {
 
 	$feed->link( 'unapi-server' => $unapi);
 
+	$log->debug("...feed links added...");
+
 #	$feed->link(
 #		opac =>
 #		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
@@ -1173,13 +1146,9 @@ sub opensearch_feed {
 #		'text/html'
 #	);
 
-	print $cgi->header(
-		-type		=> $feed->type,
-		-charset	=> 'UTF-8',
-		-cookie		=> $cgi->cookie( -name => 'os_session', -value => $rs_name, -expires => '+30m' ),
-	);
+	print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
 
-	print entityize($feed->toString) . "\n";
+	$log->debug("...and feed returned.");
 
 	return Apache2::Const::OK;
 }
@@ -1314,6 +1283,399 @@ sub string_browse {
 	my ($header,$content) = $browse_types{$axis}{$format}->($tree,$prev,$next);
 	print $header.$content;
 	return Apache2::Const::OK;
+}
+
+our %qualifier_map = (
+
+    # Som EG qualifiers
+    'eg.site'               => 'site',
+    'eg.sort'               => 'sort',
+    'eg.direction'          => 'dir',
+    'eg.available'          => 'available',
+
+    # Title class:
+    'eg.title'              => 'title',
+    'dc.title'              => 'title',
+    'bib.titleabbreviated'  => 'title|abbreviated',
+    'bib.titleuniform'      => 'title|uniform',
+    'bib.titletranslated'   => 'title|translated',
+    'bib.titlealternative'  => 'title',
+    'bib.titleseries'       => 'series',
+    'eg.series'             => 'title',
+
+    # Author/Name class:
+    'eg.author'             => 'title',
+    'eg.name'               => 'title',
+    'creator'               => 'author',
+    'dc.creator'            => 'author',
+    'dc.contributer'        => 'author',
+    'dc.publisher'          => 'keyword',
+    'bib.name'              => 'author',
+    'bib.namepersonal'      => 'author|personal',
+    'bib.namepersonalfamily'=> 'author|personal',
+    'bib.namepersonalgiven' => 'author|personal',
+    'bib.namecorporate'     => 'author|corporate',
+    'bib.nameconference'    => 'author|conference',
+
+    # Subject class:
+    'eg.subject'            => 'subject',
+    'dc.subject'            => 'subject',
+    'bib.subjectplace'      => 'subject|geographic',
+    'bib.subjecttitle'      => 'keyword',
+    'bib.subjectname'       => 'subject|name',
+    'bib.subjectoccupation' => 'keyword',
+
+    # Keyword class:
+    'eg.keyword'            => 'keyword',
+    'srw.serverchoice'      => 'keyword',
+
+    # Identifiers:
+    'dc.identifier'         => 'keyword',
+
+    # Dates:
+    'bib.dateissued'        => undef,
+    'bib.datecreated'       => undef,
+    'bib.datevalid'         => undef,
+    'bib.datemodified'      => undef,
+    'bib.datecopyright'     => undef,
+
+    # Resource Type:
+    'dc.type'               => undef,
+
+    # Format:
+    'dc.format'             => undef,
+
+    # Genre:
+    'bib.genre'             => 'keyword',
+
+    # Target Audience:
+    'bib.audience'          => undef,
+
+    # Place of Origin:
+    'bib.originplace'       => undef,
+
+    # Language
+    'dc.language'           => 'lang',
+
+    # Edition
+    'bib.edition'           => 'keyword',
+
+    # Part:
+    'bib.volume'            => 'keyword',
+    'bib.issue'             => 'keyword',
+    'bib.startpage'         => 'keyword',
+    'bib.endpage'           => 'keyword',
+
+    # Issuance:
+    'bib.issuance'          => 'keyword',
+);
+
+our %qualifier_ids = (
+		eg => 'http://open-ils.org/spec/SRU/context-set/evergreen/v1',
+		dc => 'info:srw/cql-context-set/1/dc-v1.1',
+		bib => 'info:srw/cql-context-set/1/bib-v1.0',
+		srw	=> ''
+);
+
+our %nested_qualifier_map = (
+		eg => {
+			site		=> ['site','Evergreen Site Code (shortname)'],
+			sort		=> ['sort','Sort on relevance, title, author, pubdate, create_date or edit_date'],
+			direction	=> ['dir','Sort direction (asc|desc)'],
+			available	=> ['available','Filter to availble (true|false)'],
+			title		=> ['title'],
+			author		=> ['author'],
+			name		=> ['author'],
+			subject		=> ['subject'],
+			keyword		=> ['keyword'],
+			series		=> ['series'],
+		},
+		dc => {
+			title		=> ['title'],
+			creator		=> ['author'],
+			contributor	=> ['author'],
+			publisher	=> ['keyword'],
+			subject		=> ['subject'],
+			identifier	=> ['keyword'],
+			type		=> [undef],
+			format		=> [undef],
+			language	=> ['lang'],
+		},
+		bib => {
+		# Title class:
+	        titleAbbreviated	=> ['title'],
+		    titleUniform		=> ['title'],
+			titleTranslated		=> ['title'],
+	        titleAlternative	=> ['title'],
+		    titleSeries			=> ['series'],
+
+    # Author/Name class:
+			name				=> ['author'],
+			namePersonal		=> ['author'],
+			namePersonalFamily	=> ['author'],
+			namePersonalGiven	=> ['author'],
+			nameCorporate		=> ['author'],
+			nameConference		=> ['author'],
+
+		# Subject class:
+			subjectPlace		=> ['subject'],
+			subjectTitle		=> ['keyword'],
+			subjectName			=> ['subject|name'],
+			subjectOccupation	=> ['keyword'],
+
+    # Keyword class:
+
+    # Dates:
+			dateIssued			=> [undef],
+			dateCreated			=> [undef],
+			dateValid			=> [undef],
+			dateModified		=> [undef],
+			dateCopyright		=> [undef],
+
+    # Genre:
+			genre				=> ['keyword'],
+
+    # Target Audience:
+			audience			=> [undef],
+
+    # Place of Origin:
+			originPlace			=> [undef],
+
+    # Edition
+			edition				=> ['keyword'],
+
+    # Part:
+			volume				=> ['keyword'],
+			issue				=> ['keyword'],
+			startPage			=> ['keyword'],
+			endPage				=> ['keyword'],
+
+    # Issuance:
+			issuance			=> ['keyword'],
+		},
+		srw	=> {
+			serverChoice		=> ['keyword'],
+		},
+);
+
+
+my $base_explain = <<XML;
+<explain
+		id="evergreen-sru-explain-full"
+		authoritative="true"
+		xmlns:z="http://explain.z3950.org/dtd/2.0/"
+		xmlns="http://explain.z3950.org/dtd/2.0/">
+	<serverInfo transport="http" protocol="SRU" version="1.1">
+		<host/>
+		<port/>
+		<database/>
+	</serverInfo>
+
+	<databaseInfo>
+		<title primary="true"/>
+		<description primary="true"/>
+	</databaseInfo>
+
+	<indexInfo>
+		<set identifier="info:srw/cql-context-set/1/cql-v1.2" name="cql"/>
+	</indexInfo>
+
+	<schemaInfo>
+		<schema
+				identifier="info:srw/schema/1/marcxml-v1.1"
+				location="http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"
+				sort="true"
+				retrieve="true"
+				name="marcxml">
+			<title>MARC21Slim (marcxml)</title>
+		</schema>
+	</schemaInfo>
+
+	<configInfo>
+		<default type="numberOfRecords">10</default>
+		<default type="contextSet">eg</default>
+		<default type="index">keyword</default>
+		<default type="relation">all</default>
+		<default type="sortSchema">marcxml</default>
+		<default type="retrieveSchema">marcxml</default>
+		<setting type="maximumRecords">10</setting>
+		<supports type="relationModifier">relevant</supports>
+		<supports type="relationModifier">stem</supports>
+		<supports type="relationModifier">fuzzy</supports>
+		<supports type="relationModifier">word</supports>
+	</configInfo>
+
+</explain>
+XML
+
+
+my $ex_doc;
+sub sru_search {
+    my $cgi = new CGI;
+
+    my $req = SRU::Request->newFromCGI( $cgi );
+    my $resp = SRU::Response->newFromRequest( $req );
+
+    if ( $resp->type eq 'searchRetrieve' ) {
+		my $cql_query = $req->query;
+		my $search_string = $req->cql->toEvergreen;
+
+        my $offset = $req->startRecord;
+        $offset-- if ($offset);
+        $offset ||= 0;
+
+        my $limit = $req->maximumRecords;
+        $limit ||= 10;
+
+        warn "SRU search string [$cql_query] converted to [$search_string]\n";
+
+ 		my $recs = $search->request(
+			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string => 1
+		)->gather(1);
+
+        my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
+
+        $resp->addRecord(
+            SRU::Response::Record->new(
+                recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
+                recordData => $_->marc
+            )
+        ) for @$bre;
+
+        $resp->numberOfRecords($recs->{count});
+
+    } elsif ( $resp->type eq 'explain' ) {
+		if (!$ex_doc) {
+			my $host = $cgi->virtual_host || $cgi->server_name;
+
+			my $add_path = 0;
+			if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+				my $rel_name = $cgi->url(-relative=>1);
+				$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+			}
+			my $base = $cgi->url(-base=>1);
+			my $url = $cgi->url(-path_info=>$add_path);
+			$url =~ s/^$base\///o;
+
+			my $doc = $parser->parse_string($base_explain);
+			my $e = $doc->documentElement;
+			$e->findnodes('/z:explain/z:serverInfo/z:host')->shift->appendText( $host );
+			$e->findnodes('/z:explain/z:serverInfo/z:port')->shift->appendText( $cgi->server_port );
+			$e->findnodes('/z:explain/z:serverInfo/z:database')->shift->appendText( $url );
+
+			for my $name ( keys %OpenILS::WWW::SuperCat::nested_qualifier_map ) {
+
+				my $identifier = $OpenILS::WWW::SuperCat::qualifier_ids{ $name };
+
+				next unless $identifier;
+
+				my $set_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'set' );
+				$set_node->setAttribute( identifier => $identifier );
+				$set_node->setAttribute( name => $name );
+
+				$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
+
+				for my $index ( keys %{ $OpenILS::WWW::SuperCat::nested_qualifier_map{$name} } ) {
+					my $desc = $OpenILS::WWW::SuperCat::nested_qualifier_map{$name}{$index}[1] || $index;
+
+					my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
+
+					my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
+					$map_node->appendChild( $name_node );
+
+					my $title_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'title' );
+
+					my $index_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'index' );
+					$index_node->appendChild( $title_node );
+					$index_node->appendChild( $map_node );
+
+					$index_node->setAttribute( id => $name . '.' . $index );
+					$title_node->appendText( $desc );
+					$name_node->setAttribute( set => $name );
+					$name_node->appendText($index );
+
+					$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
+				}
+			}
+
+			$ex_doc = $e->toString;
+		}
+
+		$resp->record(
+			SRU::Response::Record->new(
+				recordSchema	=> 'info:srw/cql-context-set/2/zeerex-1.1',
+				recordData		=> $ex_doc
+			)
+		);
+	}
+
+   	print $cgi->header( -type => 'application/xml' );
+   	print entityize($resp->asXML) . "\n";
+    return Apache2::Const::OK;
+}
+
+
+{
+    package CQL::BooleanNode;
+
+    sub toEvergreen {
+        my $self     = shift;
+        my $left     = $self->left();
+        my $right    = $self->right();
+        my $leftStr  = $left->toEvergreen;
+        my $rightStr = $right->toEvergreen();
+
+        my $op =  '||' if uc $self->op() eq 'OR';
+        $op ||=  '&&';
+
+        return  "$leftStr $rightStr";
+    }
+
+    package CQL::TermNode;
+
+    sub toEvergreen {
+        my $self      = shift;
+        my $qualifier = $self->getQualifier();
+        my $term      = $self->getTerm();
+        my $relation  = $self->getRelation();
+
+        my $query;
+        if ( $qualifier ) {
+			my ($qset, $qname) = split(/\./, $qualifier);
+
+			warn "!!! $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n";
+
+            if ( exists($OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}) ) {
+                $qualifier = $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0] || 'kw';
+			}
+
+            my @modifiers = $relation->getModifiers();
+
+            my $base = $relation->getBase();
+            if ( grep { $base eq $_ } qw/= scr exact all/ ) {
+
+                my $quote_it = 1;
+                foreach my $m ( @modifiers ) {
+                    if( grep { $m->[ 1 ] eq $_ } qw/cql.fuzzy cql.stem cql.relevant cql.word/ ) {
+                        $quote_it = 0;
+                        last;
+                    }
+                }
+
+                $quote_it = 0 if ( $base eq 'all' );
+                $term = maybeQuote($term) if $quote_it;
+
+            } else {
+                croak( "Evergreen doesn't support the $base relations" );
+            }
+
+
+        } else {
+            $qualifier = "kw";
+        }
+
+        return "$qualifier:$term";
+    }
 }
 
 1;

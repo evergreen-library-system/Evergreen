@@ -1,13 +1,11 @@
-var commonStrings;
-var circStrings;
+var offlineStrings;
 
 function my_init() {
 	try {
-		commonStrings = $('commonStrings');
-		circStrings = $('circStrings');
+		offlineStrings = $('offlineStrings');
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
+		if (typeof JSAN == 'undefined') { throw(offlineStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -16,7 +14,7 @@ function my_init() {
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-			try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
+			try { window.xulG.set_tab_name(offlineStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 		}
 
 		$('barcode').addEventListener('change',test_patron,false);
@@ -34,7 +32,7 @@ function my_init() {
 			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
 			ml.setAttribute('id','home_ou'); $('x_home_ou').appendChild(ml);
 		} else {
-			errors += circStrings.getString('circ.offline_register.missing.library.list') + "\n";
+			errors += offlineStrings.getString('circ.offline_register.missing.library.list') + "\n";
 		}
 
 		file = new util.file('offline_pgt_list');
@@ -43,7 +41,7 @@ function my_init() {
 			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
 			ml.setAttribute('id','profile'); $('x_profile').appendChild(ml);
 		} else {
-			errors += circStrings.getString('circ.offline_register.missing.profile.list') + "\n";
+			errors += offlineStrings.getString('circ.offline_register.missing.profile.list') + "\n";
 		}
 
 		file = new util.file('offline_cit_list'); 
@@ -52,7 +50,7 @@ function my_init() {
 			ml = util.widgets.make_menulist( list_data[0], list_data[1] );
 			ml.setAttribute('id','ident_type'); $('x_ident_type').appendChild(ml);
 		} else {
-			errors += circStrings.getString('circ.offline_register.missing.id.type.list') + "\n";
+			errors += offlineStrings.getString('circ.offline_register.missing.id.type.list') + "\n";
 		}
 
 		file = new util.file('offline_asv_list'); 
@@ -60,11 +58,11 @@ function my_init() {
 			list_data = file.get_object(); file.close();
 			render_surveys('x_surveys', list_data);
 		} else {
-			errors += circStrings.getString('circ.offline_register.missing.required.surveys');
+			errors += offlineStrings.getString('circ.offline_register.missing.required.surveys');
 		}
 
 		if (errors != '') {
-			alert(circStrings.getString('circ.offline_register.missing.files.error') + errors);
+			alert(offlineStrings.getString('circ.offline_register.missing.files.error') + errors);
 			location.href = 'about:blank';
 		}
 
@@ -77,7 +75,7 @@ function my_init() {
 		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
-		var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline_register.xul", E]);
+		var err_msg = offlineStrings.getFormattedString('common.exception', ["circ/offline_register.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}
@@ -90,7 +88,7 @@ function test_patron(ev) {
 		var barcode = ev.target.value;
 		JSAN.use('util.barcode');
 		if ( ! util.barcode.check(ev.target.value) ) {
-			var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
+			var r = g.error.yns_alert(offlineStrings.getString('circ.bad_checkdigit'),offlineStrings.getString('circ.barcode.warning'),offlineStrings.getString('common.ok'),offlineStrings.getString('common.clear'),null,offlineStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -104,15 +102,15 @@ function test_patron(ev) {
 		if (g.data.bad_patrons[barcode]) {
 			var code;
 			switch(g.data.bad_patrons[barcode]) {
-				case 'L' : code = commonStrings.getString('common.barcode.status.warning.lost'); break;
-				case 'E' : code = commonStrings.getString('common.barcode.status.warning.expired'); break;
-				case 'B' : code = commonStrings.getString('common.barcode.status.warning.barred'); break;
-				case 'D' : code = commonStrings.getString('common.barcode.status.warning.blocked'); break;
-				default : code = commonStrings.getFormattedString('common.barcode.status.warning.blocked', [g.data.bad_patrons[barcode]]); break;
+				case 'L' : code = offlineStrings.getString('common.barcode.status.warning.lost'); break;
+				case 'E' : code = offlineStrings.getString('common.barcode.status.warning.expired'); break;
+				case 'B' : code = offlineStrings.getString('common.barcode.status.warning.barred'); break;
+				case 'D' : code = offlineStrings.getString('common.barcode.status.warning.blocked'); break;
+				default : code = offlineStrings.getFormattedString('common.barcode.status.warning.blocked', [g.data.bad_patrons[barcode]]); break;
 			}
 
-			var msg = commonStrings.getFormattedString('common.barcode.status.warning', [g.data.bad_patrons_date.substr(0,15), barcode, code]);
-			var r = g.error.yns_alert(msg,circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
+			var msg = offlineStrings.getFormattedString('common.barcode.status.warning', [g.data.bad_patrons_date.substr(0,15), barcode, code]);
+			var r = g.error.yns_alert(msg,offlineStrings.getString('circ.barcode.warning'),offlineStrings.getString('common.ok'),offlineStrings.getString('common.clear'),null,offlineStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -134,9 +132,9 @@ function handle_check_date(ev) {
 function check_date(value) {
 	JSAN.use('util.date');
 	try {
-		if (! util.date.check('YYYY-MM-DD',value) ) { throw(commonStrings.getString('common.date.invalid')); }
-		if (! util.date.check_past('YYYY-MM-DD',value) ) { throw(circStrings.getString('circ.offline_register.future.birth.date')); }
-		if ( util.date.formatted_date(new Date(),'%F') == value) { throw(circStrings.getString('circ.offline_register.invalid.birth.date')); }
+		if (! util.date.check('YYYY-MM-DD',value) ) { throw(offlineStrings.getString('common.date.invalid')); }
+		if (! util.date.check_past('YYYY-MM-DD',value) ) { throw(offlineStrings.getString('circ.offline_register.future.birth.date')); }
+		if ( util.date.formatted_date(new Date(),'%F') == value) { throw(offlineStrings.getString('circ.offline_register.invalid.birth.date')); }
 	} catch(E) {
 		alert(E);
 		value = '';
@@ -164,7 +162,7 @@ function render_surveys(node,obj) {
 			x_gb.appendChild(x_hb);
 			var x_spacer = document.createElement('spacer'); x_spacer.setAttribute('flex','1');
 			x_hb.appendChild(x_spacer);
-			var x_ml = util.widgets.make_menulist( [ [circStrings.getString('circ.offline_register.survey.prompt'),''] ].concat(question.answers) );
+			var x_ml = util.widgets.make_menulist( [ [offlineStrings.getString('circ.offline_register.survey.prompt'),''] ].concat(question.answers) );
 			x_ml.setAttribute('name','survey'); x_hb.appendChild(x_ml);
 		}
 	}
@@ -181,91 +179,91 @@ function handle_keypress(ev) {
 function check_patron(obj) {
 	var errors = '';
 	if (! obj.user.billing_address.post_code ) {
-		errors += circStrings.getString('circ.offline_register.missing.post_code') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.post_code') + "\n";
 		$('post_code').focus();
 		$('post_code').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('post_code').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.billing_address.state ) {
-		errors += circStrings.getString('circ.offline_register.missing.state') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.state') + "\n";
 		$('state').focus();
 		$('state').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('state').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.billing_address.city ) {
-		errors += circStrings.getString('circ.offline_register.missing.city') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.city') + "\n";
 		$('city').focus();
 		$('city').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('city').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.billing_address.street1 ) {
-		errors += circStrings.getString('circ.offline_register.missing.street1') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.street1') + "\n";
 		$('street1').focus();
 		$('street1').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('street1').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.ident_value ) {
-		errors += circStrings.getString('circ.offline_register.missing.ident_value') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.ident_value') + "\n";
 		$('ident_value').focus();
 		$('ident_value').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('ident_value').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.ident_type ) {
-		errors += circStrings.getString('circ.offline_register.missing.ident_type') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.ident_type') + "\n";
 		$('ident_type').focus();
 		$('ident_type').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('ident_type').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.dob ) {
-		errors += circStrings.getString('circ.offline_register.missing.dob') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.dob') + "\n";
 		$('dob').focus();
 		$('dob').parentNode.parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('dob').parentNode.parentNode.setAttribute('style','');
 	}
 	if (! obj.user.first_given_name ) {
-		errors += circStrings.getString('circ.offline_register.missing.first_given_name') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.first_given_name') + "\n";
 		$('first_given_name').focus();
 		$('first_given_name').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('first_given_name').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.family_name ) {
-		errors += circStrings.getString('circ.offline_register.missing.family_name') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.family_name') + "\n";
 		$('family_name').focus();
 		$('family_name').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('family_name').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.passwd ) {
-		errors += circStrings.getString('circ.offline_register.missing.passwd') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.passwd') + "\n";
 		$('passwd').focus();
 		$('passwd').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('passwd').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.card.barcode ) {
-		errors += circStrings.getString('circ.offline_register.missing.barcode') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.barcode') + "\n";
 		$('barcode').focus();
 		$('barcode').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('barcode').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.profile ) {
-		errors += circStrings.getString('circ.offline_register.missing.profile') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.profile') + "\n";
 		$('profile').focus();
 		$('profile').parentNode.setAttribute('style','background-color: red');
 	} else {
 		$('profile').parentNode.setAttribute('style','');
 	}
 	if (! obj.user.home_ou ) {
-		errors += circStrings.getString('circ.offline_register.missing.home_ou') + "\n";
+		errors += offlineStrings.getString('circ.offline_register.missing.home_ou') + "\n";
 		$('home_ou').focus();
 		$('home_ou').parentNode.setAttribute('style','background-color: red');
 	} else {
@@ -309,7 +307,7 @@ function next_patron() {
 		try {
 			check_patron(obj);
 		} catch(E) {
-			alert(circStrings.getString('circ.offline_register.missing.alert') + "\n" + E);
+			alert(offlineStrings.getString('circ.offline_register.missing.alert') + "\n" + E);
 			return;
 		}
 
@@ -318,7 +316,7 @@ function next_patron() {
 		file.append_object(obj);
 		file.close();
 
-		alert(circStrings.getString('circ.offline_register.patron.saved'));
+		alert(offlineStrings.getString('circ.offline_register.patron.saved'));
 
 		$('passwd').value = parseInt(Math.random()*8999+1000);
 		$('barcode').value = ''; $('ident_value').value = ''; $('first_given_name').value = '';

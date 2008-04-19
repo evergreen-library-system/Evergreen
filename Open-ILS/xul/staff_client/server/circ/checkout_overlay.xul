@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="checkout_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -31,7 +31,7 @@
 		control="checkout_barcode_entry_textbox"/>
 -->
 	<hbox id="checkout_menu_placeholder" flex="0"/>
-	<label accesskey="C" control="checkout_barcode_entry_textbox"/>
+	<label accesskey="&staff.circ.checkout_overlay.barcode.accesskey;" control="checkout_barcode_entry_textbox"/>
 	<textbox id="checkout_barcode_entry_textbox"/>
 	<button id="checkout_submit_barcode_button" 
 		label="&staff.patron_display.checkout.submit_label;" 
@@ -39,14 +39,14 @@
 		accesskey="&staff.patron_display.checkout.submit_label.accesskey;"/>
 	<spacer flex="1"/>
 	<hbox id="duedate_hbox">
-		<label value="Due Date" accesskey="u" control="checkout_duedate_menu"/>
+		<label value="&staff.circ.checkout_overlay.duedate_menu.label;" accesskey="&staff.circ.checkout_overlay.duedate_menu.accesskey;" control="checkout_duedate_menu"/>
 		<menulist id="checkout_duedate_menu" editable="true">
 			<menupopup>
-				<menuitem label="Normal" selected="true"/>
-				<menuitem label="Today + 3 days" />
-				<menuitem label="Today + 7 days" />
-				<menuitem label="Today + 14 days" />
-				<menuitem label="Today + 30 days" />
+				<menuitem label="&common.date_helper.normal;" selected="true"/>
+				<menuitem label="&common.date_helper.3_days;" />
+				<menuitem label="&common.date_helper.7_days;" />
+				<menuitem label="&common.date_helper.14_days;" />
+				<menuitem label="&common.date_helper.30_days;" />
 			</menupopup>
 		</menulist>
 	</hbox>
@@ -58,12 +58,12 @@
 		command="cmd_checkout_print"
 		accesskey="&staff.patron_display.checkout.print_receipt_label.accesskey;"/>
 	<button id="checkout_export" 
-		label="Export"
+		label="&staff.circ.checkout_overlay.export.label;"
 		command="cmd_checkout_export"
-		accesskey=""/>
-	<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
-	<button id="save_col_btn" command="save_columns" label="Save Columns" />
-	<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
+		accesskey="&staff.circ.checkout_overlay.export.accesskey;"/>
+	<button id="clip_button" disabled="true" command="sel_clip" label="&staff.circ.checkout_overlay.sel_clip.label;" />
+	<button id="save_col_btn" command="save_columns" label="&staff.circ.checkout_overlay.save_columns.label;" />
+	<checkbox id="strict_barcode" label="&staff.circ.checkout_overlay.strict_barcode.label;" checked="false" persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkout_auto" persist="checked"
 		label="&staff.patron_display.checkout.auto_print_label;" 

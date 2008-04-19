@@ -298,7 +298,7 @@ if (my $action = $cgi->param('action')) {
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
 			print	"</table><span style='color:red;'>*</span>".
-				"You must hide every OU you want hidden, not just an anscestor!</form>";
+				"You must hide every OU you want hidden, not just an ancestor!</form>";
 
 			#-------------------------------------------------------------------------
 			# Hours of operation form
@@ -349,7 +349,7 @@ if (my $action = $cgi->param('action')) {
 			# Address edit form
 			#-------------------------------------------------------------------------
 
-			print "<hr/><h2>Adresses for ".$node->name."</h2>";
+			print "<hr/><h2>Addresses for ".$node->name."</h2>";
 			print	"<table cellspacing='20'><tr>";
 			my %addrs = (	ill_address	=> 'ILL Address',
 					holds_address	=> 'Consortial Holds Address',

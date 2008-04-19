@@ -261,6 +261,7 @@ function cleanMe {
 	loadConfig;
 	make "TMP=$TMP" -s -C "$OPENILSDIR"  clean;
 	make "TMP=$TMP" -s -C "$EVERGREENDIR" clean;
+	make "TMP=$TMP" -s -C "$OPENILSDIR/../xul/staff_client"  clean;
 }
 
 function usage {

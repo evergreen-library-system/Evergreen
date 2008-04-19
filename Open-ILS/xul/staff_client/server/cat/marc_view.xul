@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: MARC View -->
+<!--
+vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -11,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -35,7 +38,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { 
+					throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -68,8 +73,7 @@
 				);
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/marc_view.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/marc_view.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -79,7 +83,7 @@
 	</script>
 
 	<groupbox flex="1">
-		<caption label="MARC View"/>
+		<caption label="&staff.cat.marc_view.title;"/>
 		<iframe id="marc_frame" flex="1"/>
 	</groupbox>
 

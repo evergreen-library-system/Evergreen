@@ -29,8 +29,7 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_checkin.js"/>
 
-	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
+	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
 	<groupbox flex="1">
 		<caption label="&staff.circ.offline_checkin.main.label;"/>

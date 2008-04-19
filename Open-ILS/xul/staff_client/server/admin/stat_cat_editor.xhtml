@@ -1,8 +1,15 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Statistical Category Editor</title>
+		<title>&staff.server.admin.stat_cat.title;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script> 
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -26,11 +33,11 @@
 
 
 		<div style='position:absolute; top: 5px; right: 5px;'>
-			<span>Welcome </span><b><span id='sc_user'/></b>
+			<span>&staff.server.admin.stat_cat.greeting;</span><b><span id='sc_user'/></b>
 		</div>
 
 		<center>
-			<div style='font-weight: bold; font-size: 12pt;'> Statistical Category Editor</div>
+			<div style='font-weight: bold; font-size: 12pt;'>&staff.server.admin.stat_cat.heading;</div>
 		</center>
 
 		<hr/> 
@@ -41,41 +48,41 @@
 			<table class='data_grid data_grid_center' width='80%'>
 				<thead>
 					<tr>
-						<td colspan='4'>Create a new statistical category</td>
+						<td colspan='4'>&staff.server.admin.stat_cat.create;</td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>Enter the name: </td>
+						<td>&staff.server.admin.stat_cat.name;</td>
 						<td>
 							<input type='text' id='sc_new_name'> </input>
 							<script>$('sc_new_name').focus();</script>
 						</td>
-						<td>Owning Library: </td>
+						<td>&staff.server.admin.stat_cat.owning_library;</td>
 						<td>
 							<select id='sc_owning_lib_selector' style='width:auto;'>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td>Opac Visibility: </td>
+						<td>&staff.server.admin.stat_cat.opac_visibility;</td>
 						<td>	
-							<span>On</span>
+							<span>&staff.server.admin.stat_cat.on;</span>
 							<input type='radio' name='opac_visibility' id='sc_make_opac_visible'> </input>
-							<span>Off</span>
+							<span>&staff.server.admin.stat_cat.off;</span>
 							<input type='radio' name='opac_visibility' checked='checked'> </input>
 						</td>
-						<td>Type: </td>
+						<td>&staff.server.admin.stat_cat.type;</td>
 						<td>
 							<select id='sc_type_selector'>
-								<option value='actor'>Patron</option>
-								<option value='asset'>Copy</option>
+								<option value='actor'>&staff.server.admin.stat_cat.patron;</option>
+								<option value='asset'>&staff.server.admin.stat_cat.copy;</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td colspan='4'>
-							<input type='submit' value='Create new stat cat' onclick='scNew();' id='sc_new'/>
+							<input type='submit' value='&staff.server.admin.stat_cat.create.submit;' onclick='scNew();' id='sc_new'/>
 						</td>
 					</tr>
 				</tbody>
@@ -85,16 +92,16 @@
 			<hr/>
 			<br/>
 
-			<div id='loading' class='has_color'><h2>Loading permissions and stat cats...</h2></div>
+			<div id='loading' class='has_color'><h2>&staff.server.admin.stat_cat.loading_status;</h2></div>
 
 			<table width='98%'>
 				<tbody>
 					<tr>
 						<td width='20%'> </td>
 						<td id='sc_show_copy' width='30%' class='has_color'
-							align='center'><a href='javascript:scShow("asset");'>Copy Stat Cats</a></td>
+							align='center'><a href='javascript:scShow("asset");'>&staff.server.admin.stat_cat.copy_stat_cats;</a></td>
 						<td id='sc_show_actor' width='30%' 
-							align='center'><a href='javascript:scShow("actor");'>Patron Stat Cats</a></td>
+							align='center'><a href='javascript:scShow("actor");'>&staff.server.admin.stat_cat.patron_stat_cats;</a></td>
 						<td width='20%'> </td>
 					</tr>
 				</tbody>
@@ -103,10 +110,10 @@
 
 
 			<br/>
-			<div>* To edit or view information about an entry, click on the entry in the drop-down menu</div>
+			<div>&staff.server.admin.stat_cat.info_prompt;</div>
 			<br/>
 
-			<div style='padding: 20px;' id='sc_none' class='hide_me'><b>No stat cats are defined</b></div>
+			<div style='padding: 20px;' id='sc_none' class='hide_me'><b>&staff.server.admin.stat_cat.none_defined;</b></div>
 
 			<!--
 			<div style='overflow: auto; max-height: 200px;'>
@@ -114,12 +121,12 @@
 				<table width='95%' class='hide_me data_grid data_grid_center' id='sc_table'>
 					<thead>
 						<tr>
-							<td>Stat Cat Name</td>
-							<td>Owning Library</td>
-							<td>OPAC Visiblity</td>
-							<td>Entries</td>
-							<td>Add Entry</td>
-							<td>Edit</td>
+							<td>&staff.server.admin.stat_cat.name.label;</td>
+							<td>&staff.server.admin.stat_cat.owning_library.label;</td>
+							<td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
+							<td>&staff.server.admin.stat_cat.entries.label;</td>
+							<td>&staff.server.admin.stat_cat.add_entry;</td>
+							<td>&staff.server.admin.stat_cat.edit;</td>
 						</tr>
 					</thead>
 	
@@ -129,13 +136,13 @@
 							<td name='sc_owning_lib'> </td>
 	
 							<td>
-								<span class='hide_me' name='sc_opac_visible'>On</span> 
-								<span class='hide_me' name='sc_opac_invisible'>Off</span> 
+								<span class='hide_me' name='sc_opac_visible'>&staff.server.admin.stat_cat.on;</span> 
+								<span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
 							</td>
 	
-							<td><select class='selector' name='sc_entries_selector'><option>(none)</option></select></td>
-							<td><a href='javascript:void(0);' name='sc_new_entry'>Add</a></td>
-							<td><a href='javascript:void(0);' name='sc_edit'>Edit</a></td>
+							<td><select class='selector' name='sc_entries_selector'><option>&staff.server.admin.stat_cat.none;</option></select></td>
+							<td><a href='javascript:void(0);' name='sc_new_entry'>&staff.server.admin.stat_cat.add.label;</a></td>
+							<td><a href='javascript:void(0);' name='sc_edit'>&staff.server.admin.stat_cat.edit;</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -150,15 +157,14 @@
 
 
 		<!-- Text spans  / template +++++++++++++++++++++++++++++++++++++  -->
-		<span class='hide_me' id='sc_new_entry_text'>Enter the value for the new stat cat entry</span>
+		<span class='hide_me' id='sc_new_entry_text'>&staff.server.admin.stat_cat.add.prompt;</span>
 
 		<span class='hide_me' id='sc_delete_confirm'>
-			This will delete the selected stat cat and all attached entries
-			Are you sure you wish to continue?
+			&staff.server.admin.stat_cat.delete.confirm;
 		</span>
 
 		<span class='hide_me' id='sc_entry_delete_confirm'>
-			Are you sure you wish to remove this stat cat entry?
+			&staff.server.admin.stat_cat.entry_delete.confirm;
 		</span>
 
 		<table class='hide_me'>
@@ -170,49 +176,49 @@
 				</td>
 
 				<td>
-					<span>On</span>
+					<span>&staff.server.admin.stat_cat.on;</span>
 					<span name='sc_edit_opac_vis'>
 						<input type='radio' name='sc_edit_opac_visibility'> </input>
 					</span>
-					<span>Off</span>
+					<span>&staff.server.admin.stat_cat.off;</span>
 					<span name='sc_edit_opac_invis'>
 						<input type='radio' name='sc_edit_opac_visibility'> </input>
 					</span>
 				</td>
 				<td colspan='4'>
 					<span class='padded'>
-						<input  type='submit' value='Update Stat Cat' name='sc_edit_submit'/>
+						<input  type='submit' value='&staff.server.admin.stat_cat.edit_submit;' name='sc_edit_submit'/>
 					</span>
 					<span class='padded'>
-						<input  type='submit' value='Delete Stat Cat' name='sc_edit_delete'/>
+						<input  type='submit' value='&staff.server.admin.stat_cat.edit_delete;' name='sc_edit_delete'/>
 					</span>
-					<input type='submit' name='sc_edit_cancel' value='Cancel'/>
+					<input type='submit' name='sc_edit_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
 				</td>
 			</tr>
 
 			<tr class='insert_row' id='sc_edit_entry_row'>
 				<td colspan='7'>
 					<span class='padded'>
-						<span>Owned By </span><b name='sc_edit_entry_owner'/>
+						<span>&staff.server.admin.stat_cat.edit_entry_owner;</span><b name='sc_edit_entry_owner'/>
 					</span>
 					<span class='padded'>
 						<input type='text' name='sc_edit_entry_name' class='padded'/>
 					</span>
 					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_name_submit' value='Update Entry Value' class='padded'/>
+						<input type='submit' name='sc_edit_entry_name_submit' value='&staff.server.admin.stat_cat.edit_entry_name_submit;' class='padded'/>
 					</span>
 					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_delete' value='Delete Entry' class='padded'/>
+						<input type='submit' name='sc_edit_entry_delete' value='&staff.server.admin.stat_cat.edit_entry_delete;' class='padded'/>
 					</span>
 					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_cancel' value='Cancel'/>
+						<input type='submit' name='sc_edit_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
 					</span>
 				</td>
 			</tr>
 
 			<tr class='insert_row' id='sc_new_entry_row'>
 				<td colspan='7'> 
-					<span>Enter the value of the new entry: </span>
+					<span>&staff.server.admin.stat_cat.new_entry_name;</span>
 					<span class='padded'>
 						<input type='text' name='sc_new_entry_name'/>
 					</span>
@@ -220,10 +226,10 @@
 						<select name='sc_new_entry_lib' class='select_big'> </select>
 					</span>
 					<span class='padded'>
-						<input type='submit' name='sc_new_entry_create' value='Create new entry'/>
+						<input type='submit' name='sc_new_entry_create' value='&staff.server.admin.stat_cat.new_entry_create;'/>
 					</span>
 					<span class='padded'>
-						<input type='submit' name='sc_new_entry_cancel' value='Cancel'/>
+						<input type='submit' name='sc_new_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
 					</span>
 				</td>
 			</tr>
@@ -232,7 +238,7 @@
 	</body>
 
 	<span class='hide_me' id='sc_update_success'>
-		Update succeeded
+		&staff.server.admin.stat_cat.update_success;
 	</span>
 
 </html>

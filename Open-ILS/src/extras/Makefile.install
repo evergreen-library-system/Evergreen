@@ -3,11 +3,13 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch) and Gentoo.  Installs Perl prereqs, 
+# Currently supports Debian (etch), Ubuntu (gutsy) and Gentoo.  Installs Perl prereqs, 
 # libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
 # 	make -f Makefile.install debian
+# 	- or -
+# 	make -f Makefile.install ubuntu
 # 	- or -
 # 	make -f Makefile.install gentoo
 #
@@ -38,9 +40,9 @@ JS_INSTALL_PREFIX=/usr/
 
 # The libdbi sources can be fetched from sourceforge.net.  They are stored on
 # the open-ils.org site now for ease of direct linking
-LIBDBI=libdbi-0.8.2
-LIBDBI_DRIVERS=libdbi-drivers-0.8.2-1
-LIBDBI_HOST=http://open-ils.org/~erickson/evergreen
+LIBDBI=libdbi-0.8.3
+LIBDBI_DRIVERS=libdbi-drivers-0.8.3
+LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 YAZ=yaz-2.1.56
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
@@ -51,8 +53,8 @@ DEBS =  \
 	syslog-ng\
 	psmisc\
 	ntpdate\
+	less\
     memcached\
-    postgresql-client\
     libxml2-dev\
     libmodule-build-perl\
     libexpat1-dev\
@@ -96,8 +98,27 @@ DEBS =  \
 	libtext-csv-perl\
 	libspreadsheet-writeexcel-perl\
 	libtie-ixhash-perl\
-	python-setuptools 
+	python-dev\
+	python-setuptools\
+	libfreezethaw-perl\
+	libbusiness-creditcard-perl\
+	libbusiness-onlinepayment-perl\
+	libbusiness-onlinepayment-authorizenet-perl
 
+
+PGSQL_DEBIAN = \
+	postgresql-8.1\
+	postgresql-client-8.1\
+	postgresql-contrib-8.1\
+	postgresql-plperl-8.1\
+	postgresql-server-dev-8.1
+
+PGSQL_UBUNTU = \
+	postgresql-8.2\
+	postgresql-client-8.2\
+	postgresql-contrib-8.2\
+	postgresql-plperl-8.2\
+	postgresql-server-dev-8.2
 
 GENTOOS = \
     vim\
@@ -132,9 +153,10 @@ GENTOOS = \
     dev-perl/libwww-perl\
     dev-perl/Template-Toolkit\
     dev-perl/Error\
-	dev-perl/Text-CSV_XS\
-	dev-perl/Spreadsheet-WriteExcel\
-	dev-perl/Tie-IxHash
+    dev-perl/Text-CSV_XS\
+    dev-perl/Spreadsheet-WriteExcel\
+    dev-perl/Tie-IxHash\
+	dev-perl/FreezeThaw
 
 GENTOO_RC = \
     ejabberd\
@@ -146,7 +168,7 @@ GENTOO_PERL = \
     Class::DBI::AbstractSearch\
     MARC::Record \
     Net::Z3950::ZOOM \
-	Text::CSV
+    Text::CSV
 
 DEB_APACHE_MODS = \
     expires\
@@ -163,7 +185,10 @@ CPAN_MODULES = \
     TMTM/Class-DBI-0.96.tar.gz \
     RHANDOM/Net-Server-0.90.tar.gz \
     MARC::Charset MARC::File::XML\
-	Net::Z3950::ZOOM
+    JSON::XS\
+    SRU \
+    Net::Z3950::ZOOM \
+	Business::CreditCard::Object
 
 
 # ----------------------------------------------------------------------------
@@ -175,9 +200,11 @@ all:
 # these should be the same for any distro
 install: install_yaz install_cpan install_js_sm install_libdbi 
 
-debian: install_debs install debian_sys_config
+debian: install_pgsql_debian install_debs install debian_sys_config
 
 gentoo: install_gentoos install_gentoo_rc install_gentoo_perl install
+
+ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
 
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -242,7 +269,11 @@ debian_sys_config:
 install_debs:
 	apt-get install $(DEBS)
 
+install_pgsql_debian:
+	apt-get install $(PGSQL_DEBIAN)
 
+install_pgsql_ubuntu:
+	apt-get install $(PGSQL_UBUNTU)
 
 # ------------------------------------------------------------------
 # - GENTOO ---------------------------------------------------------
@@ -258,5 +289,4 @@ install_gentoo_perl:
 
 # ------------------------------------------------------------------
     
-
 

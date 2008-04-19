@@ -1,7 +1,7 @@
 # vim:noet:ts=4
 
 export LDFLAGS			+= -L . -L$(TMP) -L $(OPENSRF_LIBS)
-export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
+export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I../../include -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
 				-D_LARGEFILE64_SOURCE -I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS)
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
@@ -69,9 +69,13 @@ webcore-install:
 	mkdir -p $(ADMINDIR)
 	cp -r ../admin/* $(ADMINDIR)
 	mkdir -p $(WEBDIR)
+	mkdir -p $(WEBDIR)/js/opensrf/
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	cp -r ../web/* $(WEBDIR)
 	cp $(OPENSRF_LIBS)/javascript/* $(WEBDIR)/opac/common/js/
+	# dojo-ified opensrf libs
+	cp $(OPENSRF_LIBS)/javascript/opensrf*js $(WEBDIR)/js/opensrf/
+	cp $(OPENSRF_LIBS)/javascript/DojoSRF.js $(WEBDIR)/js/dojo/
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
@@ -105,7 +109,9 @@ autojs-install:
 	@echo $@
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
+	cp extras/org_lasso_js.pl $(BINDIR)
 	cp extras/org_tree_html_options.pl $(BINDIR)
+	cp extras/org_tree_proximity.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
 	cp support-scripts/offline-blocked-list.pl $(BINDIR) # this should probably be somewhere else
 # -----------------------------------------------------------------------------------

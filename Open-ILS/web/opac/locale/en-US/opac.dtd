@@ -42,7 +42,7 @@
 <!ENTITY common.user_not_found "User not found">
 <!ENTITY opac.advanced.wizard.title "Advanced Search">
 <!ENTITY common.nowSearching "Now searching ">
-<!ENTITY common.ofAtLeast " of at least ">
+<!ENTITY common.ofAtLeast " of about ">
 <!ENTITY common.relevancy "Match Score: ">
 <!ENTITY common.tips "Tips:">
 <!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
@@ -69,15 +69,14 @@
 <!ENTITY opac.style.reddish "Reddish">
 
 <!ENTITY holds.where_am_i
-	"PINES is a statewide system with both patrons and items
-	associated with over 250 libraries, holds lists are not as simple as
-	'first come, first served' in PINES.  A complex matrix combining
+	"Holds lists are not as simple as
+	'first come, first served.'  A complex matrix combining
 	consideration of item ownership, patron home library, and item purchase
 	date determines  priorities for holds; the list is dynamic, changing
 	with every hold placed.  Therefore, any indication of a place in the
-	holds list would be inaccurate.  The PINES holds system is designed to
+	holds list would be inaccurate.  The holds system is designed to
 	obtain a requested item in the fastest and most efficient way possible.
-	Your PINES library will contact you when you hold items become
+	Your library will contact you when you hold items become
 	available.">
 
 <!ENTITY holds.advanced_options 
@@ -146,7 +145,7 @@ To see the public view of a shared Bookbag, click the "View" link in the
 "Shared" column of the Bookbag list at the top of this page.'>
 <!ENTITY myopac.item.confirm "Are you sure you wish to remove this bookbag item?">
 <!ENTITY myopac.publish.confirm "Sharing this bookbag will allow the contents 
-of the bookback to be seen by others.  Are you sure you wish to share this bookbag?">
+of the bookbag to be seen by others.  Are you sure you wish to share this bookbag?">
 <!ENTITY myopac.unpublish.confirm "Are you sure you wish to hide this bookbag?">
 <!ENTITY myopac.update.success "The Bookbag was successfully updated.">
 <!ENTITY myopac.updated.success "Bookbag successfully updated">
@@ -174,7 +173,7 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.checked.renew.success "item(s) successfully renewed">
 <!ENTITY myopac.checked.renew.confirm "Are you sure you wish to renew the selected item(s)?">
 <!ENTITY myopac.checked.renew.fail "The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.">
-<!ENTITY myopac.checked.renew.fail2 "PINES policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
+<!ENTITY myopac.checked.renew.fail2 "Library policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
 
 <!--	================================================================= 
 	MyOPAC Fines Page 
@@ -209,23 +208,22 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
-<!ENTITY myopac.holds.freeze_selected "Freeze">
-<!ENTITY myopac.holds.thaw_selected "Un-freeze">
-<!ENTITY myopac.holds.thaw_date_selected "Set Un-freeze date">
+<!ENTITY myopac.holds.freeze_selected "Suspend">
+<!ENTITY myopac.holds.thaw_selected "Activate">
+<!ENTITY myopac.holds.thaw_date_selected "Set Active Date">
 <!ENTITY myopac.holds.cancel_selected "Cancel">
 <!ENTITY myopac.holds.processing "Processing holds... This may take a moment.">
 <!ENTITY myopac.holds.actions 'Actions for selected holds'>
 <!ENTITY myopac.holds.cancel.confirm 'Are you sure you wish to cancel the selected holds?'>
-<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to freeze the selected holds?
-Note that if an item has already been selected to fulfill the hold, it will not be frozen'>
-<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to un-freeze the selected holds?'>
-<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the un-freeze date for the selected holds?'>
-<!ENTITY myopac.holds.freeze.select_thaw "Select an 'Un-Freeze' date.  This is the date at which the holds will become active again.
-If no date is chosen, the holds will remain frozen until they are manually un-frozen.">
+<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to suspend the selected holds?
+If an item has already been selected to fulfill the hold, it will not be suspended'>
+<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to activate the selected holds?'>
+<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the activate date for the selected holds?'>
+<!ENTITY myopac.holds.freeze.select_thaw "Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated.">
 
-<!ENTITY opac.holds.freeze "Freeze this hold">
-<!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">
-<!ENTITY opac.holds.freeze.thaw_date "Automatically un-freeze hold on:">
+<!ENTITY opac.holds.freeze "Suspend this hold">
+<!ENTITY opac.holds.freeze.help "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.">
+<!ENTITY opac.holds.freeze.thaw_date "Automatically activate hold on:">
 <!ENTITY opac.holds.freeze.thaw_date.format "YYYY-MM-DD">
 
 <!--	================================================================= 
@@ -249,8 +247,8 @@ If no date is chosen, the holds will remain frozen until they are manually un-fr
 <!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
 By default, holds will use the notification style you choose here.  
 However, you will still have the option to change individual holds regardless of this setting.">
-<!ENTITY myopac.holds.unfrozen "Un-Frozen">
-<!ENTITY myopac.holds.frozen.until "Frozen Until">
+<!ENTITY myopac.holds.unfrozen "Active">
+<!ENTITY myopac.holds.frozen.until "Activate on...">
 
 <!--	================================================================= 
 	 MyOPAC Summary page
@@ -380,7 +378,7 @@ Please see a librarian to renew your account.">
 <!ENTITY footer.library.about "About PINES">
 <!ENTITY footer.union.url "http://www.galileo.usg.edu/">
 <!ENTITY footer.union "GALILEO">
-<!ENTITY footer.copyright "Copyright &#xA9; 2006 Georgia Public Library Service">
+<!ENTITY footer.copyright "Copyright &#xA9; 2006-2008 Georgia Public Library Service">
 <!ENTITY footer.logo "Powered by"> <!-- Introduces the logo for the project -->
 
 <!--	================================================================= 
@@ -556,12 +554,13 @@ We recommend that you remove this title from any bookbags it may have been added
 
 <!ENTITY result.table.keyword "View titles for this record">
 <!ENTITY result.table.author "Perform an Author Search">
+<!ENTITY result.googleBooks.browse "Browse in Google Books Search">
 
 <!ENTITY common.call.number.label "Call Number:">
 <!ENTITY common.isbn.label "ISBN:">
 <!ENTITY common.issn.label "ISSN:">
 <!ENTITY common.copy.barcode.label "Copy Barcode:">
-<!ENTITY common.hold.place "Place hold for me">
+<!ENTITY common.hold.place "Place hold for my account">
 <!ENTITY common.hold.check "Checking for possibility of hold fulfillment...">
 <!ENTITY common.hold.create "Create / Edit a Hold">
 <!ENTITY common.hold.update "Update Hold">

@@ -6,7 +6,7 @@ function fetchOrgSettingDefault(orgId, name) {
     var req = new Request(FETCH_ORG_SETTING, orgId, name);
     req.send(true);
     var res = req.result();
-    return res.value;
+    return (res) ? res.value : null;
 }
 
 
@@ -45,6 +45,14 @@ function findOrgType(type_id) {
 	then the object is assumed to be an org unit and is returned */
 function findOrgUnit(org_id) {
 	return (typeof org_id == 'object') ? org_id : orgArraySearcher[org_id];
+}
+
+function findOrgLasso(lasso_id) {
+	if (typeof lasso_id == 'object') return lasso_id;
+    for (var i in _lasso) {
+        if (_lasso[i].id() == lasso_id) return _lasso[i];
+    }
+    return null;
 }
 
 var orgArraySearcherSN = {};

@@ -27,7 +27,8 @@
 			removeCSSClass(document.documentElement,'ALL_FONTS_XX_LARGE');
 			addCSSClass(document.documentElement,data.global_font_adjust);
 		} catch(E) {
-			alert("Error with adjusting the font size: " + E);
+            var Strings = $('offlineStrings') || $('commonStrings');
+			alert(Strings.getFormattedString('openils.global_util.font_size.error', [E]));
 		}
 	}
 
@@ -42,16 +43,20 @@
             netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             if (frame && frame.contentWindow) {
                 try {
-                    if (typeof frame.contentWindow.wrappedJSObject != 'undefined') return frame.contentWindow.wrappedJSObject;
+                    if (typeof frame.contentWindow.wrappedJSObject != 'undefined') {
+									 return frame.contentWindow.wrappedJSObject;
+						  }
                 } catch(E) {
-                    alert("Error with get_contentWindow("+frame+") and wrappedJSObject:" + E);
+                    var Strings = $('offlineStrings') || $('commonStrings');
+                    alert(Strings.getFormattedString('openils.global_util.content_window_jsobject.error', [frame, E]));
                 }
                 return frame.contentWindow;
             } else {
                 return null;
             }
         } catch(E) {
-            alert("Error with get_contentWindow("+frame+"): " + E);
+            var Strings = $('offlineStrings') || $('commonStrings');
+            alert(Strings.getFormattedString('openils.global_util.content_window.error', [frame, E]));
         }
 	}
 
@@ -190,9 +195,11 @@
 			const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
 				.getService(Components.interfaces.nsIClipboardHelper);
 			gClipboardHelper.copyString(text);
-			alert('Copied "'+text+'" to clipboard.');
+            var Strings = $('offlineStrings') || $('commonStrings');
+			alert(Strings.getFormattedString('openils.global_util.clipboard', [text]));
 		} catch(E) {
-			alert('Clipboard action failed: ' + E);	
+            var Strings = $('offlineStrings') || $('commonStrings');
+			alert(Strings.getFormattedString('openils.global_util.clipboard.error', [E]));	
 		}
 	}
 
@@ -204,7 +211,8 @@
 			cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
 			cacheService.evictEntries(Components.interfaces.nsICache.STORE_IN_MEMORY);
 		} catch(E) {
-			alert('Problem clearing the cache: ' + E);
+            var Strings = $('offlineStrings') || $('commonStrings');
+			alert(Strings.getFormattedString('openils.global_util.clear_cache.error', [E]));
 		}
 	}
 
@@ -213,4 +221,10 @@
 		window.open(uri, "_blank", winopts);
 	}
 
+	function url_prefix(url) {
+		if (url.match(/^\//)) url = urls.remote + url;
+		if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+		dump('url_prefix = ' + url + '\n');
+		return url;
+	}
 

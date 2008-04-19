@@ -65,6 +65,8 @@
 	]]>
 	</script>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+
 	<commandset id="items_cmds">
 		<command id="save_columns" />
 		<command id="sel_bucket" disabled="true"/>

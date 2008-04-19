@@ -1,7 +1,14 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Local System Administration</title>
+		<title>&staff.server.admin.index.title;</title>
 		<script>
 			function _l(l,p) { 
                 var url = l + location.search;
@@ -21,7 +28,7 @@
 	<body>
 		<center>
 			<div style='height: 40px; margin-top: 20px; font-weight: bold; font-size: 14pt;'>
-				Local System Administration
+				&staff.server.admin.index.title;
 			</div>
 			<img src='../skin/media/images/tools.png'/>
 			<style>
@@ -31,51 +38,51 @@
 			<table width='100%'>
 				<thead>
 					<tr>
-						<th width='30%'>Workstation Configuration</th>
-						<th width='30%'>Library Configuration</th>
-						<th width='30%'>Maintenance Reports</th>
+						<th width='30%'>&staff.server.admin.index.workstation_configuration;</th>
+						<th width='30%'>&staff.server.admin.index.library_configuration;</th>
+						<th width='30%'>&staff.server.admin.index.maintenance_reports;</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr valign="top">
 						<td>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("font_settings.xul");'>Global Font and Sound Settings</a>
+								<a href='javascript:_l("font_settings.xul");'>&staff.server.admin.index.fonts_and_sounds;</a>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("printer_settings.html");'>Printer Settings Editor</a>
-							</div>
-						</td><td>
-							<div style='padding: 8px;'>
-								<a href='javascript:_l("closed_dates.xhtml");'>Closed Dates Editor</a>
-							</div>
-							<div style='padding: 8px;'>
-								<a href='javascript:_l("copy_locations.xhtml");'>Copy Locations Editor</a>
-							</div>
-							<div style='padding: 8px;'>
-								<a href='javascript:_l("org_settings.xhtml");'>Library Settings Editor</a>
-							</div>
-							<div style='padding: 8px;'>
-								<a href='javascript:_l("non_cat_types.xhtml");'>Non Cataloged Types Editor</a>
-							</div>
-							<div style='padding: 8px;'>
-								<a href='javascript:_l("stat_cat_editor.xhtml");'>Statistical Categories Editor</a>
+								<a href='javascript:_l("printer_settings.html");'>&staff.server.admin.index.printer;</a>
 							</div>
 						</td><td>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("hold_pull_list.xul");'>Pull List for Hold Requests</a> <span style="color: red">(Testing)</span>
+								<a href='javascript:_l("closed_dates.xhtml");'>&staff.server.admin.index.closed_dates;</a>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("hold_pull_list_classic.xhtml");'>Pull List for Hold Requests (Classic)</a> <span style="color: red">(Testing)</span>
+								<a href='javascript:_l("copy_locations.xhtml");'>&staff.server.admin.index.copy_locations;</a>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l( "/reports/oils_rpt.xhtml","build_id=" + getBuildId() );'>Reports</a>
+								<a href='javascript:_l("org_settings.xhtml");'>&staff.server.admin.index.library_settings;</a>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("cash_reports.xhtml");'>Cash Reports</a>
+								<a href='javascript:_l("non_cat_types.xhtml");'>&staff.server.admin.index.non_cataloged_types;</a>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:window.xulG.new_tab("/xul/server/admin/transit_list.xul",{"tab_name":"Transits"},{});'>Transit List</a>
+								<a href='javascript:_l("stat_cat_editor.xhtml");'>&staff.server.admin.index.statistical_categories;</a>
+							</div>
+						</td><td>
+							<div style='padding: 8px;'>
+								<a href='javascript:_l("hold_pull_list.xul");'>&staff.server.admin.index.hold_pull_list;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+							</div>
+							<div style='padding: 8px;'>
+								<a href='javascript:_l("hold_pull_list_classic.xhtml");'>&staff.server.admin.index.hold_pull_list_classic;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+							</div>
+							<div style='padding: 8px;'>
+								<a href='javascript:_l( "/reports/oils_rpt.xhtml","build_id=" + getBuildId() );'>&staff.server.admin.index.reports;</a>
+							</div>
+							<div style='padding: 8px;'>
+								<a href='javascript:_l("cash_reports.xhtml");'>&staff.server.admin.index.cash_reports;</a>
+							</div>
+							<div style='padding: 8px;'>
+								<a href='javascript:window.xulG.new_tab("/xul/server/admin/transit_list.xul",{"tab_name":"&staff.server.admin.index.transits;"},{});'>&staff.server.admin.index.transit_list;</a>
 							</div>
 						</td>
 					</tr>

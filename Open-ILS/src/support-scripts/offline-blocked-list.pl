@@ -16,11 +16,13 @@ if(1) { # XXX command line param
 
     use OpenSRF::Utils::JSON;
     use IPC::Open2 qw/open2/;
+    use Net::Domain qw/hostfqdn/;
 
     sub runmethod {
         my $method = shift;
         my $flag = shift;
-        my $command = "echo \"open-ils.storage $method\" | $oils_reqr -f $config -c $context";
+        my $hostname = hostfqdn();
+        my $command = "echo \"open-ils.storage $method\" | $oils_reqr -f $config -c $context -h $hostname";
         warn "-> $command\n";
 
         my ($child_stdout, $child_stdin);

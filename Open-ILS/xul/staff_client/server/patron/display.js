@@ -392,7 +392,7 @@ patron.display.prototype = {
 						}
 
 						obj.network.simple_request(
-							'FM_AHR_COUNT_RETRIEVE',
+							'FM_AHR_COUNT_RETRIEVE.authoritative',
 							[ ses(), patron.id() ],
 							function(req) {
 								try {

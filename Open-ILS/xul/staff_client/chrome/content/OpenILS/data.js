@@ -172,7 +172,7 @@ OpenILS.data.prototype = {
 			if (obj.hash[key] && obj.hash[key][value]) return obj.hash[key][value];
 			switch(key) {
 				case 'acpl': 
-					found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID',[ value ]);
+					found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID.authoritative',[ value ]);
 				break;
 				default: return undefined; break;
 			}
@@ -700,6 +700,28 @@ OpenILS.data.prototype = {
 				}
 			}
 		);
+
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
+					'my_cnct',
+					[
+						api.FM_CNCT_RETRIEVE.app,
+						api.FM_CNCT_RETRIEVE.method,
+						[ obj.list.au[0].ws_ou() ], 
+						false
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
+
 
 		this.chain.push(
 			function() {

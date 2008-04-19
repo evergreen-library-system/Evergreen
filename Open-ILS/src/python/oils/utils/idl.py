@@ -182,14 +182,6 @@ class IDLClass(object):
         else:
             self.virtual = False
 
-    def __getitem__(self, member):
-        """
-        Returns the requested member using dictionary syntax.
-        """
-        if hasattr(self, member):
-            exec("result = self.%s" % member)
-            return result
-
     def get_field(self, field_name):
         try:
             return [f for f in self.fields if f.name == field_name][0]
@@ -217,13 +209,6 @@ class IDLField(object):
         else:
             self.virtual = False
 
-    def __getitem__(self, member):
-        """
-        Returns the requested member using dictionary syntax.
-        """
-        if hasattr(self, member):
-            exec("result = self.%s" % member)
-            return result
 
 class IDLLink(object):
     def __init__(self, field, **kwargs):

@@ -112,9 +112,8 @@
 									);
 								break;
 								default:
-									row.my.mvr = g.network.request(
-										api.MODS_SLIM_RECORD_RETRIEVE.app,
-										api.MODS_SLIM_RECORD_RETRIEVE.method,
+									row.my.mvr = g.network.simple_request(
+										'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 										[ row.my.ahr.target() ]
 									);
 									if (row.my.ahr.current_copy()) {
@@ -220,6 +219,8 @@
 
 	]]>
 	</script>
+
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
 
 	<stack hidden="true" id="notification_template" flex="1">
 		<groupbox flex="1" style="background-color: black;"/>

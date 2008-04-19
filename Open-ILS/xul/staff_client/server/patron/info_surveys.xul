@@ -43,7 +43,7 @@
 
 				JSAN.use('util.error'); g.error = new util.error();
 				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('patron.util'); JSAN.use('util.functional');
+				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('util.functional');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
 				g.error.sdump('D_TRACE','my_init() for patron_info_surveys.xul');

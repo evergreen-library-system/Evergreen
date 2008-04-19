@@ -141,7 +141,7 @@ function ncSetRowCallbacks( type, owner, tbody, row ) {
 
 function ncEditType( tbody, row, type ) {
 	cleanTbody(row.parentNode, 'edit');
-	var row = $('nc_edit_row_temaplate').cloneNode(true);
+	var row = $('nc_edit_row_template').cloneNode(true);
 
 	var name = $n(row, 'nc_edit_name');
 	name.value = type.name();

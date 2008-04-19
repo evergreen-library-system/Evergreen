@@ -48,7 +48,7 @@ function searchBarInit() {
     }
 }
 
-function searchBarSubmit() {
+function searchBarSubmit(isFilterSort) {
 
 	var text = G.ui.searchbar.text.value;
 
@@ -60,7 +60,7 @@ function searchBarSubmit() {
 
 	var args = {};
 
-	if(SHOW_MR_DEFAULT) {
+	if(SHOW_MR_DEFAULT || (isFilterSort && findCurrentPage() == MRESULT)) {
 		args.page				= MRESULT;
 	} else {
 		args.page				= RRESULT;

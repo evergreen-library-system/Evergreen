@@ -18,7 +18,19 @@ function holdsHandleStaff() {
 		{if(userPressedEnter(evt)) { _holdsHandleStaff(); } };
 	$('xul_recipient_barcode_submit').onclick = _holdsHandleStaff;
 	$('xul_recipient_me').onclick = _holdsHandleStaffMe;
+
+	$('xul_recipient_barcode').onkeyup = function(evt) {
+        if($('xul_recipient_barcode').value == '') 
+            $('xul_recipient_me').disabled = false;
+        else
+            $('xul_recipient_me').disabled = true;
+    };
 }
+
+$('holds_frozen_thaw_input').onchange = 
+        function(){holdsVerifyThawDateUI('holds_frozen_thaw_input');}
+$('holds_frozen_thaw_input').onkeyup = 
+        function(){holdsVerifyThawDateUI('holds_frozen_thaw_input');}
 
 function _holdsHandleStaffMe() {
 	holdArgs.recipient = G.user;
@@ -457,6 +469,10 @@ function __holdsDrawWindow() {
 	if(holdArgs.type == 'M') hideMe($('hold_physical_desc_row'));
 
 	holdsSetFormatSelector();
+
+    $('holds_frozen_chkbox').checked = false;
+    hideMe($('hold_frozen_thaw_row'));
+
 }
 
 function holdsParseMRFormats(str) {
@@ -700,10 +716,18 @@ function holdsBuildHoldFromWindow() {
         hold.frozen('t');
         unHideMe($('hold_frozen_thaw_row'));
         thawDate = $('holds_frozen_thaw_input').value;
-        if(thawDate) 
-            hold.thaw_date(thawDate);
-        else
+        if(thawDate) {
+            thawDate = holdsVerifyThawDate(thawDate); 
+            if(thawDate) 
+                hold.thaw_date(thawDate);
+            else
+                return;
+        } else {
             hold.thaw_date(null);
+        }
+    } else {
+        hold.frozen('f');
+        hold.thaw_date(null);
     }
 
 	//check for alternate hold formats 
@@ -727,8 +751,8 @@ function holdHandleCreateResponse(r, recurse) {
 
 	if(!recurse) {
 		var res = r.getResultObject();
-		if(!res || checkILSEvent(res) ) {
-			if(!res) {
+		if(checkILSEvent(res) || res.success != 1) {
+			if(res.success != 1) {
 				alert($('hold_not_allowed').innerHTML);
 			} else {
 				if( res.textcode == 'PATRON_BARRED' ) {
@@ -740,6 +764,7 @@ function holdHandleCreateResponse(r, recurse) {
 			swapCanvas($('holds_box'));
 			return;
 		}
+        r._hold.selection_depth(res.depth);
 	}	
 
 	holdCreateHold(r._recurse, r._hold);
@@ -806,4 +831,35 @@ function holdsUpdate(hold, user) {
 	runEvt('common', 'holdUpdated');
 }
 
+
+/* verify that the thaw date is valid and after today */
+function holdsVerifyThawDate(dateString) {
+    thawDate = Date.parseIso8601(dateString);
+    if(thawDate && holdGreaterThanToday(dateString)) 
+        return thawDate.iso8601Format('YMD', false, false, true);
+    return null;
+}
+
+function holdGreaterThanToday(dateString) {
+    thawDate = Date.parseIso8601(dateString);
+    var today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    return thawDate > today;
+}
+
+
+function holdsVerifyThawDateUI(element) {
+    value = $(element).value;
+
+    if(!value) {
+        removeCSSClass($(element), 'invalid_field');
+        return;
+    }
+
+    if(!holdsVerifyThawDate(value)) {
+        addCSSClass($(element), 'invalid_field');
+    } else {
+        removeCSSClass($(element), 'invalid_field');
+    }
+}
 

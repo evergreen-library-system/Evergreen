@@ -94,3 +94,4 @@ grid#leaderGrid[type="COM"] *[set~="COM"], grid#leaderGrid[type="COM"] *[set~="C
 	visibility: visible;
 }
 
+grid[name="-none-"] * label { color: black; }

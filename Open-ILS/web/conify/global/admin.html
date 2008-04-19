@@ -1,0 +1,77 @@
+<!--
+# Copyright (C) 2008  Georgia Public Library Service / Equinox Software, Inc
+# Mike Rylander <miker@esilibrary.com>
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Conify :: Global :: Admin</title>
+
+        <style type="text/css">
+            @import url("/js/dojo/dojo/resources/dojo.css");
+            @import url("/js/dojo/dijit/themes/tundra/tundra.css");
+            @import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+        </style>
+
+        <style>
+            html, body
+            {
+                height: 100%;
+                width: 100%;
+                margin: 0px 0px 0px 0px;
+                padding: 0px 0px 0px 0px;
+                overflow: hidden;
+            }
+        </style>
+
+        <!-- Dojo goodness -->
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+        <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+
+        <script type="text/javascript">
+            dojo.require('dojo.parser');
+            dojo.require('dijit.form.Button');
+            dojo.require('dijit.layout.ContentPane');
+            dojo.require('dijit.layout.LayoutContainer');
+
+            function status_update (markup) {
+                dojo.byId('status_text').innerHTML = markup;
+            }
+
+        </script>
+
+	</head>
+	<body class="tundra" id='pagebody'>
+		<div dojoType="dijit.layout.LayoutContainer" style="height: 100%; width: 100%; margin: 0; padding: 0; border: 0;">
+			<div id="top_pane" jsId="top_pane" dojoType="dijit.layout.ContentPane" layoutAlign="top" orientation="horizontal" style="margin: 4px; width: 100%; text-align: middle;" title="Controls">
+				<img src="/opac/images/small_logo.jpg"/>
+				<span style="font-size: large; padding-left: 20px;"> Configure your ILS </span>
+			</div>
+			<div id="left_pane" jsId="left_pane" dojoType="dijit.layout.ContentPane" layoutAlign="left" orientation="vertical" style="height: 90%; margin: 4px;" label="Controls">
+				<ul style="margin-left: -10px;">
+					<li><a href="" onclick="dojo.byId('action_iframe').src = 'actor/org_unit_type.html'; return false;">Organization Types</a></li>
+					<li><a href="" onclick="dojo.byId('action_iframe').src = 'actor/org_unit.html'; return false;">Organizational Units</a></li>
+					<li><a href="" onclick="dojo.byId('action_iframe').src = 'permission/grp_tree.html'; return false;">Permission Groups</a></li>
+					<li><a href="" onclick="dojo.byId('action_iframe').src = 'permission/perm_list.html'; return false;">Permissions</a></li>
+					<li><a href="" onclick="dojo.byId('action_iframe').src = 'config/copy_status.html'; return false;">Copy Statuses</a></li>
+				</ul>
+			</div>
+			<div id="content_pane" jsId="content_pane" dojoType="dijit.layout.ContentPane" layoutAlign="client" style="margin: 2px; border-top: 2px solid grey; border-bottom: 2px solid grey; border-left: 2px solid grey;">
+				<iframe id="action_iframe" marginwidth="0" marginheight="0" style="border:0; height: 100%; width: 100%;"></iframe>
+			</div>
+			<div id="bottom_pane" jsId="bottom_pane" dojoType="dijit.layout.ContentPane" layoutAlign="bottom" orientation="horizontal" style="margin: 4px; height: 5%; width: 100%" title="Controls">
+				<span id="status_text"/>
+			</div>
+		</div>
+	</body>
+</html>
+

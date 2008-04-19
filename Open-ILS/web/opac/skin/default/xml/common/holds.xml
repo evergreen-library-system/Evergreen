@@ -3,6 +3,7 @@
 <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
 <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
 <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
 
 <div>
 	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
@@ -12,13 +13,10 @@
 					<tr>
 						<td>&opac.holds.xulRecipient;:</td>
 						<td><input type='text' id='xul_recipient_barcode' /></td>
-						<td><input type='submit' value='&common.submit;' 
-							id='xul_recipient_barcode_submit' /></td>
-						<td><input type='submit' value='&common.hold.place;' 
-							id='xul_recipient_me' /></td>
+						<td><input type='submit' value='&common.submit;' id='xul_recipient_barcode_submit' /></td>
 						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();' /></td>
+						<td><input type='submit' value='&common.hold.place;' id='xul_recipient_me' /></td>
 					</tr>
-
 				</tbody>
 			</table>
 		</center>
@@ -130,7 +128,7 @@
                 <tr>
                     <td class='holds_cell'>
                         &opac.holds.freeze;
-                        (<a class='classic_link' href='javascript:alert("&opac.holds.freeze.help;");'>&common.help;</a>)
+                        <a class='classic_link' href='javascript:alert("&opac.holds.freeze.help;");'>&common.help;</a>
                         </td>
                     <td class='holds_cell'>
                         <input type='checkbox' id='holds_frozen_chkbox' 

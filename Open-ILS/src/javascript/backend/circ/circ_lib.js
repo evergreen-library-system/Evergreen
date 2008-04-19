@@ -43,6 +43,7 @@ var currentLocation	= environment.location;
 var holdRequestLib	= environment.requestLib;
 var holdPickupLib       = environment.pickupLib; /* hold pickup lib */
 var requestor = environment.requestor || patron;
+var newHold = environment.newHold;
 
 
 
@@ -204,7 +205,12 @@ function hasCommonAncestor( org1, org2, depth ) {
 	return false;
 }
 
-
+/* returns a dictionary of circmod : count for checked out items */
+function checkoutsByCircModifier(userid) {
+    var key = scratchKey();
+    __OILS_FUNC_userCircsByCircmod(scratchPad(key), userid);
+    return getScratch(key);
+}
 
 /* useful for testing */
 function die(msg) {

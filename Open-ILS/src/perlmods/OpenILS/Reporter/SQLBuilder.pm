@@ -949,12 +949,14 @@ sub toSQL {
 		$sql .= " NOT BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
 	} elsif (lc($op) eq 'like') {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val = $val->toSQL;
 		$val =~ s/^'(.*)'$/$1/o;
 		$val =~ s/%/\\\\%/o;
 		$val =~ s/_/\\\\_/o;
 		$sql .= " LIKE '\%$val\%'";
 	} elsif (lc($op) eq 'ilike') {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val = $val->toSQL;
 		$val =~ s/^'(.*)'$/$1/o;
 		$val =~ s/%/\\\\%/o;
 		$val =~ s/_/\\\\_/o;

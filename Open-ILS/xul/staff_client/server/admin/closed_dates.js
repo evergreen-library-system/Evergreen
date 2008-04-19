@@ -128,7 +128,7 @@ function cdInitCals() {
 }
 
 function cdDrawRange( start, end, alertSuccess ) {
-	start = (start) ? start : new Date().getYear() + 1900 + '-01-01';
+	start = (start) ? start : new Date().getYear() + 1899 + '-01-01'; /* include last year's closed info for comparison */
 	end = (end) ? end : '3001-01-01';
 
     if(alertSuccess) alertId('cd_update_success');

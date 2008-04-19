@@ -140,7 +140,7 @@ patron.items.prototype = {
 	'show_noncats' : function() {
 		var obj = this; var checkout = {};
 		try {
-			var robj = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_USER',[ ses(), obj.patron_id ]);
+			var robj = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_USER.authoritative',[ ses(), obj.patron_id ]);
 			if (typeof robj.ilsevent != 'undefined') throw(robj);
 
 			for (var ii = 0; ii < robj.length; ii++) {
@@ -375,8 +375,16 @@ patron.items.prototype = {
 				var barcode = retrieve_ids[i].barcode;
 				dump('Mark barcode lost = ' + barcode);
 				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
-				if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
-				obj.refresh(retrieve_ids[i].circ_id);
+				if (typeof robj.ilsevent != 'undefined') { 
+                    switch(Number(robj.ilsevent)) {
+                        case 7018 /* COPY_MARKED_LOST */ :
+                            alert( 'Item Barcode ' + barcode + '\n' + robj.desc );
+                        break;
+                        default: throw(robj);
+                    }
+                } else {
+    				obj.refresh(retrieve_ids[i].circ_id,true);
+                }
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
@@ -433,7 +441,7 @@ patron.items.prototype = {
 					if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 				}
 			}
-			for (var i = 0; i < retrieve_ids.length; i++) obj.refresh(retrieve_ids[i].circ_id);
+			for (var i = 0; i < retrieve_ids.length; i++) obj.refresh(retrieve_ids[i].circ_id,true);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
 		}
@@ -456,8 +464,8 @@ patron.items.prototype = {
 					ses(), { 'copy_id' : copy_id }
 				);
 				/* circ.util.checkin_via_barcode handles errors currently */
-				obj.refresh(retrieve_ids[i].circ_id);
 			}
+			obj.retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
 		}
@@ -552,7 +560,7 @@ patron.items.prototype = {
     
     			if (!row.my.circ) {
     				obj.network.simple_request(
-    					'FM_CIRC_DETAILS',
+    					'FM_CIRC_DETAILS.authoritative',
     					[ row.my.circ_id ],
     					function(req) {
     						try { 
@@ -582,7 +590,7 @@ patron.items.prototype = {
     								params.on_retrieve(row);
     							}
     						} catch(E) {
-    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
+    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js',E);
     						}
     					}
     				);
@@ -660,19 +668,25 @@ patron.items.prototype = {
 		);
 	},
 
-	'refresh' : function(circ_id) {
+	'refresh' : function(circ_id,move_to_bottom_list) {
 		var obj = this;
 		try {
 			var nparams = obj.list_circ_map[circ_id];
-			var which_list = nparams.which_list;
-			switch(which_list) {
-				case 1: case '1':
-					setTimeout(function(){try{obj.list2.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
-					break;
-				default:
-					setTimeout(function(){try{obj.list.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
-					break;
-			}
+            if (move_to_bottom_list) { 
+                obj.list_circ_map[circ_id].my_node.setAttribute('hidden','true');
+				var nparams2 = obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true, 'which_list' : 1 } );
+				obj.list_circ_map[circ_id] = nparams2; 
+            } else {
+    			var which_list = nparams.which_list;
+                switch(which_list) {
+                    case 1: case '1':
+                        setTimeout(function(){try{obj.list2.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+                        break;
+                    default:
+                        setTimeout(function(){try{obj.list.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+                        break;
+                }
+            }
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);
 		}
@@ -686,7 +700,7 @@ patron.items.prototype = {
 			obj.checkouts = [];
 			obj.checkouts2 = [];
 			var robj = obj.network.simple_request(
-				'FM_CIRC_RETRIEVE_VIA_USER',
+				'FM_CIRC_RETRIEVE_VIA_USER.authoritative',
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {
@@ -699,7 +713,7 @@ patron.items.prototype = {
 				obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
 			}
 			var robj = obj.network.simple_request(
-				'FM_CIRC_IN_WITH_FINES_VIA_USER',
+				'FM_CIRC_IN_WITH_FINES_VIA_USER.authoritative',
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {

@@ -109,11 +109,22 @@ function initParams() {
 	/* handle the location var */
 	var org;
 	var loc = cgi.param(PARAM_LOCATION);
-	if( loc ) {
+	var lasso = cgi.param(PARAM_LASSO);
+
+    if ( lasso ) {
+		lasso = findOrgLasso( lasso );
+		LASSO = lasso ? lasso.id() : null;
+	}
+
+    if (loc) {
 		org = findOrgUnit(loc);
-		if(!org) org = findOrgUnitSN(loc);
-	} 
-	LOCATION	= (org) ? org.id() : null;
+		LOCATION = org ? org.id() : null;
+
+		if ( !LOCATION ){
+			org = findOrgUnit(loc);
+			LOCATION = org ? org.id() : null;
+		}
+    }
 
 	org = null;
 	loc = cgi.param(PARAM_ORIGLOC);
@@ -148,6 +159,7 @@ function initParams() {
 	LITFORM	= cgi.param(PARAM_LITFORM);
 	ITEMFORM	= cgi.param(PARAM_ITEMFORM);
 	ITEMTYPE	= cgi.param(PARAM_ITEMTYPE);
+	BIBLEVEL	= cgi.param(PARAM_BIBLEVEL);
 	AUDIENCE	= cgi.param(PARAM_AUDIENCE);
 	SEARCHES = cgi.param(PARAM_SEARCHES);
 	LANGUAGE	= cgi.param(PARAM_LANGUAGE);
@@ -187,6 +199,7 @@ function clearSearchParams() {
 	LITFORM	    = null;
 	ITEMFORM    = null;
 	ITEMTYPE    = null;
+	BIBLEVEL    = null;
 	AUDIENCE    = null;
 	SEARCHES    = null;
 	LANGUAGE    = null;
@@ -211,6 +224,7 @@ function initCookies() {
 function getTerm(){return TERM;}
 function getStype(){return STYPE;}
 function getLocation(){return LOCATION;}
+function getLasso(){return LASSO;}
 function getDepth(){return DEPTH;}
 function getForm(){return FORM;}
 function getTform(){return TFORM;}
@@ -234,6 +248,7 @@ function getCallnumber() { return CALLNUM; }
 function getLitForm() { return LITFORM; }
 function getItemForm() { return ITEMFORM; }
 function getItemType() { return ITEMTYPE; }
+function getBibLevel() { return BIBLEVEL; }
 function getAudience() { return AUDIENCE; }
 function getSearches() { return SEARCHES; }
 function getLanguage() { return LANGUAGE; }
@@ -343,6 +358,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
 	if(getLocation() != 1) 
 		string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
+	if(getLasso() != null) 
+		string += _appendParam(LASSO, PARAM_LASSO, args, getLasso, string);
 	if(getDepth() != null) 
 		string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
 	if(getForm() && (getForm() != 'all') ) 
@@ -371,6 +388,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(ITEMFORM,	PARAM_ITEMFORM, args, getItemForm, string);
 	if(getItemType())
 		string += _appendParam(ITEMTYPE,	PARAM_ITEMTYPE, args, getItemType, string);
+	if(getBibLevel())
+		string += _appendParam(BIBLEVEL,	PARAM_BIBLEVEL, args, getBibLevel, string);
 	if(getLitForm())
 		string += _appendParam(LITFORM,	PARAM_LITFORM, args, getLitForm, string);
 	if(getAudience())
@@ -695,7 +714,7 @@ function doLogin(suppressEvents) {
 	return u;
 }
 
-function doLogout(noredirect) {
+function doLogout() {
 
 	/* cancel everything else */
 	abortAllRequests();
@@ -771,8 +790,12 @@ function orgSelect(id) {
 	showCanvas();
 	runEvt("common", "locationChanged", id, findOrgDepth(id) );
 
+
+	var loc = findOrgLasso(getLasso());
+	if (!loc) loc = findOrgUnit(id);
+
 	removeChildren(G.ui.common.now_searching);
-	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
+	G.ui.common.now_searching.appendChild(text(loc.name()));
 }
 
 function setFontSize(size) {

@@ -36,17 +36,22 @@ function init() {
 			var org = G.user.prefs[PREF_DEF_LOCATION];
 			var depth = G.user.prefs[PREF_DEF_DEPTH];
 
-			if(!org) org = G.user.ws_ou();
-			if(!depth) depth = findOrgDepth(org);
+			if(org == null) org = G.user.ws_ou();
+			if(depth == null) depth = findOrgDepth(org);
 
 			LOCATION = org;
-			DEPTH = DEPTH;
+			DEPTH = depth;
 		}
 	}
 
 	runEvt("common", "run");
 	//checkUserSkin();
-	G.ui.common.now_searching.appendChild(text(findOrgUnit(getLocation()).name()));
+
+	var loc = findOrgLasso(getLasso());
+	if (!loc) loc = findOrgUnit(getLocation());
+
+	if (getLasso()) G.ui.common.now_searching.appendChild(text('Search group: '));
+	G.ui.common.now_searching.appendChild(text(loc.name()));
 }
 
 function windowUnload() { runEvt("common", "unload"); }

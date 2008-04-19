@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Example Template for remote xul -->
+<!--
+	vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -11,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -38,7 +41,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { 
+					throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -82,15 +87,15 @@
 							var params = {
 								'record' : { 'marc' : marc },
 								'save' : {
-									'label' : 'Create Record',
+									'label' : $('catStrings').getString('staff.cat.marc_new.create_record.label'),
 									'func' : function(new_marcxml) {
 										try {
 											var robj = g.network.simple_request(
 												'MARC_XML_RECORD_IMPORT',
-												[ ses(), new_marcxml, 'System Local', 1 ]
+												[ ses(), new_marcxml, $('catStrings').getString('staff.cat.marc_new.system_local.label'), 1 ]
 											);
 											if (typeof robj.ilsevent != 'undefined') throw(robj);
-											alert('Record created.');
+											alert($('catStrings').getString('staff.cat.marc_new.record_created.label'));
 
 											/* Replace tab with OPAC-view of record */
 
@@ -102,13 +107,13 @@
 											};
 											xulG.set_tab(
 												xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
-												{'tab_name':'Retrieving title...'},
+												{'tab_name': $('catStrings').getString('staff.cat.marc_new.retrieving.label')},
 												content_params
 											);
 
 										} catch(E) {
 											g.error.standard_unexpected_error_alert(
-												'Error creating MARC record.', E
+												$('catStrings').getString('staff.cat.marc_new.creating_record.error'), E
 											);
 										}
 									}
@@ -125,8 +130,7 @@
 
 						} catch(E) {
 							g.error.standard_unexpected_error_alert(
-								'Error loading MARC template: ' + template_name,
-								E
+								$('catStrings').getFormattedString('staff.cat.marc_new.loading_template.error', [template_name]), E
 							);
 						}
 
@@ -142,10 +146,14 @@
 	]]>
 	</script>
 
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
+
 	<vbox flex="1">
 		<hbox id="actions">
 			<hbox id="menu_placeholder" />
-			<button id="load" label="Load" accesskey="L"/>
+			<button id="load" label="&staff.cat.marc_new.load.label;" accesskey="&staff.cat.marc_new.load.accesskey;"/>
 		</hbox>
 		<iframe id="marc_editor" flex="1"/>
 	</vbox>

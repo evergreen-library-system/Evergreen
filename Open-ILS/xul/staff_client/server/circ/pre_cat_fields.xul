@@ -1,6 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Patron Display -->
+<!--
+ vim:noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -11,14 +14,14 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="pre_cat_fields" title="Pre-Cat Fields"
+<window id="pre_cat_fields" title="&staff.circ.pre_cat.window.title;"
 	orient="vertical" style="overflow: auto"
 	onload="try{my_init();font_helper(); }catch(E){alert(E);}"
 	onunload="try{my_finish();}catch(E){alert(E);}"
@@ -36,7 +39,9 @@
 
 		function my_init() {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+			if (typeof JSAN == 'undefined') {
+				throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+			}
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 			JSAN.use('util.error'); g.error = new util.error();
@@ -56,26 +61,27 @@
 	]]>
 	</script>
 
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
 	<groupbox>
-		<caption label="Pre-Catalog Field Entry"/>
+		<caption label="&staff.circ.pre_cat.caption.label;"/>
 		<grid>
 			<columns><column /><column flex="1"/></columns>
 			<rows>
 				<row>
-					<label value="Title" control="dummy_title"/>
+					<label value="&staff.circ.pre_cat.dummy_title.value;" control="dummy_title"/>
 					<textbox id="dummy_title" onchange="g.data.dummy_title = event.target.value;"/>
 				</row>
 				<row>
-					<label value="Author" control="dummy_author"/>
+					<label value="&staff.circ.pre_cat.dummy_author.value;" control="dummy_author"/>
 					<textbox id="dummy_author" onchange="g.data.dummy_author = event.target.value;"/>
 				</row>
 			</rows>
 		</grid>
 		<hbox>
 			<spacer flex="1"/>
-			<button label="Cancel" oncommand="g.data.dummy_title = ''; window.close()" accesskey="C"/>
-			<button label="Checkout" oncommand="window.close();" accesskey="o"/>
+			<button label="&staff.circ.pre_cat.cancel.label;" oncommand="g.data.dummy_title = ''; window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
+			<button label="&staff.circ.pre_cat.checkout.label;" oncommand="window.close();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
 		</hbox>
 	</groupbox>
 

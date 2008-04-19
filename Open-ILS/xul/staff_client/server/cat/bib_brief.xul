@@ -1,6 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Brief Bib Display -->
+<!--
+vim: noet:sw=4:ts=4:
+-->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
@@ -11,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +42,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -60,15 +63,14 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 
-				document.getElementById('caption').setAttribute('tooltiptext','Record ID = ' + docid);
+				document.getElementById('caption').setAttribute('tooltiptext',document.getElementById('catStrings').getFormattedString('staff.cat.bib_brief.record_id', [docid]));
 
 				if (docid > -1) {
 
 					data.last_record = docid; data.stash('last_record');
 
-					g.network.request(
-						api.MODS_SLIM_RECORD_RETRIEVE.app,
-						api.MODS_SLIM_RECORD_RETRIEVE.method,
+					g.network.simple_request(
+						'MODS_SLIM_RECORD_RETRIEVE.authoritative',
 						[ docid ],
 						function (req) {
 							var mods = req.getResultObject();
@@ -97,9 +99,8 @@
 								}
 							}
 	
-							g.network.request(
-								api.FM_BRE_RETRIEVE_VIA_ID.app,
-								api.FM_BRE_RETRIEVE_VIA_ID.method,
+							g.network.simple_request(
+								'FM_BRE_RETRIEVE_VIA_ID.authoritative',
 								[ ses(), [ docid ] ],
 								function (req) {
 									try {
@@ -140,11 +141,11 @@
 										);
 										var t = document.getElementById('caption').getAttribute('label');
 										if (get_bool( meta.deleted() )) { 
-											t += ' (Deleted) '; 
+											t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.deleted') + ' '; 
 											document.getElementById('caption').setAttribute('style','background: red; color: white;');
 										}
 										if ( ! get_bool( meta.active() ) ) { 
-											t += ' (Inactive) '; 
+											t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.inactive') + ' '; 
 											document.getElementById('caption').setAttribute('style','background: red; color: white;');
 										}
 										document.getElementById('caption').setAttribute('label',t);
@@ -158,14 +159,13 @@
 
 				} else {
 					var t = document.getElementById('caption').getAttribute('label');
-					t += ' (Not Cataloged) '; 
+					t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.noncat') + ' '; 
 					document.getElementById('caption').setAttribute('style','background: red; color: white;');
 					document.getElementById('caption').setAttribute('label',t);
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/bib_brief.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/bib_brief.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -175,7 +175,7 @@
 			try {
 				JSAN.use('util.window'); var win = new util.window();
 				if (docid < 0) {
-					alert('Item not cataloged.');
+					alert(document.getElementById("catStrings").getString('staff.cat.bib_brief.noncat.alert'));
 				} else {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					//win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
@@ -203,42 +203,45 @@
 	]]>
 	</script>
 
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
+
 	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
-		<caption label="Record Summary" id="caption"/>
+		<caption label="&staff.cat.bib_brief.record_summary;" id="caption"/>
 			<html:table width="90%">
 				<html:tr valign="top">
 					<html:td colspan="3">
-						<html:span style="font-weight: bold;">Title: </html:span><html:span id="title" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.title; </html:span><html:span id="title" />
 					</html:td>
 					<html:td>
-						(<html:a href="javascript:view_marc();" style="text-decoration: underline; color: blue;">View MARC</html:a>)
+						(<html:a href="javascript:view_marc();" style="text-decoration: underline; color: blue;">&staff.cat.bib_brief.view_marc;</html:a>)
 					</html:td>
 				</html:tr>
 				<html:tr valign="top">
 					<html:td colspan="2">
-						<html:span style="font-weight: bold;">Author: </html:span><html:span id="author" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.author; </html:span><html:span id="author" />
 					</html:td>
 					<html:td>
-						<html:span style="font-weight: bold;">Edition: </html:span><html:span id="edition" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.edition; </html:span><html:span id="edition" />
 					</html:td>
 					<html:td>
-						<html:span style="font-weight: bold;">Pub Date: </html:span><html:span id="pubdate" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.pub_date; </html:span><html:span id="pubdate" />
 					</html:td>
 				</html:tr>
 				<html:tr valign="top">
 					<html:td>
-						<html:span style="font-weight: bold;">TCN: (</html:span><html:span id="tcn_source"/><html:span style="font-weight: bold;">) </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.title_control_number; (</html:span><html:span id="tcn_source"/><html:span style="font-weight: bold;">) </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
 					</html:td>
 					<html:td>
-						<html:span style="font-weight: bold;">Created By: </html:span><html:span id="creator" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.created_by; </html:span><html:span id="creator" />
 						<html:span id="creator_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
 					</html:td>
 					<html:td>
-						<html:span style="font-weight: bold;">Last Edited By: </html:span><html:span id="editor" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.last_edited_by; </html:span><html:span id="editor" />
 						<html:span id="editor_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
 					</html:td>
 					<html:td>
-						<html:span style="font-weight: bold;">Last Edited On: </html:span><html:span id="edit_date" />
+						<html:span style="font-weight: bold;">&staff.cat.bib_brief.last_edited_on; </html:span><html:span id="edit_date" />
 					</html:td>
 				</html:tr>
 			</html:table>

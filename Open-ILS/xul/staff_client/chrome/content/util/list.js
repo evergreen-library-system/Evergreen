@@ -354,10 +354,10 @@ util.list.prototype = {
 					setTimeout(function() {
 						dump('auto-selecting\n');
 						var idx = Number(obj.node.view.rowCount)-1;
-						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -371,10 +371,10 @@ util.list.prototype = {
 				if (!obj.auto_select_pending) {
 					obj.auto_select_pending = true;
 					setTimeout(function() {
-						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(0).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(0).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -514,10 +514,10 @@ util.list.prototype = {
 					setTimeout(function() {
 						dump('auto-selecting\n');
 						var idx = Number(obj.node.view.rowCount)-1;
-						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -1073,10 +1073,47 @@ util.list.prototype = {
 
     'dump_csv_to_clipboard' : function(params) {
         var obj = this;
-        if (params && params.no_full_retrieve) {
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
             copy_to_clipboard( obj.dump_csv( params ) );
         } else {
             obj.wrap_in_full_retrieve( function() { copy_to_clipboard( obj.dump_csv( params ) ); } );
+        }
+    },
+
+    'dump_csv_to_printer' : function(params) {
+        var obj = this;
+        JSAN.use('util.print'); var print = new util.print();
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
+            print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
+        } else {
+            obj.wrap_in_full_retrieve( 
+                function() { 
+                    print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
+                }
+            );
+        }
+    },
+
+    'dump_csv_to_file' : function(params) {
+        var obj = this;
+        JSAN.use('util.file'); var f = new util.file();
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
+            params.data = obj.dump_csv( params );
+            params.not_json = true;
+            if (!params.title) params.title = 'Save List CSV As';
+            f.export_file( params );
+        } else {
+            obj.wrap_in_full_retrieve( 
+                function() { 
+                    params.data = obj.dump_csv( params );
+                    params.not_json = true;
+                    if (!params.title) params.title = 'Save List CSV As';
+                    f.export_file( params );
+                }
+            );
         }
     },
 
@@ -1157,6 +1194,7 @@ util.list.prototype = {
 			data.list_clipboard = dump; data.stash('list_clipboard');
 			JSAN.use('util.window'); var win = new util.window();
 			win.open(urls.XUL_LIST_CLIPBOARD,'list_clipboard','chrome,resizable,modal');
+            window.focus(); // sometimes the main window will lower after a clipboard action
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('clipboard',E);
 		}

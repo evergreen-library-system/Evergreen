@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Multiclass Search Help</title></head>
+<body onload="window.focus()">
+    <h1>Multiclass Search Help</h1>
+<p>
+Recognized search keys include:
+</p>
+<table border='1'>
+<thead>
+    <tr><th>Search key</th><th>Definition</th></tr>
+</thead>
+<tfoot>
+    <tr><td colspan="2">
+            <strong>keyword</strong>, <strong>title</strong>,
+            <strong>author</strong>, <strong>subject</strong>, and
+            <strong>series</strong> support additional search subclasses,
+            specified with a <kbd>|</kbd>. For example:
+            <kbd>title|proper:gone with the wind</kbd>
+        </td>
+    </tr>
+</tfoot>
+<tbody>
+    <tr><td>keyword/kw</td><td>search keyword(s)</td></tr>
+    <tr><td>author/au/name</td><td>search author(s)</td></tr>
+    <tr><td>title/ti</td><td>search title</td></tr>
+    <tr><td>subject/su</td><td>search subject</td></tr>
+    <tr><td>series/se</td><td>search series</td></tr>
+    <tr><td>lang</td><td>limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)</td></tr>
+    <tr><td>site</td><td>search at specified org unit, corresponds to actor.org_unit.shortname</td></tr>
+    <tr><td>sort</td><td>sort type (title, author, pubdate)</td></tr>
+    <tr><td>dir</td><td>sort direction (asc, desc)</td></tr>
+    <tr><td>available</td><td>if set to anything other than "false" or "0", limits to available items</td></tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -15,7 +15,7 @@
 
 
 package OpenILS::Application::Circ::Money;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
@@ -86,7 +86,7 @@ sub make_payments {
 
 		$total_paid += $amount;
 
-		$trans = $self->fetch_mbts($client, $login, $transid);
+		$trans = fetch_mbts($self, $client, $login, $transid);
 		return $trans if $U->event_code($trans);
 
 		$logger->info("payment: processing transaction [$transid] with balance_owed = ". 
@@ -315,6 +315,11 @@ sub create_grocery_bill {
 	$logger->debug("Created new grocery transaction $transid");
 	
 	$apputils->commit_db_session($session);
+
+    my $e = new_editor(xact=>1);
+    $evt = _check_open_xact($e, $transid);
+    return $evt if $evt;
+    $e->commit;
 
 	return $transid;
 }

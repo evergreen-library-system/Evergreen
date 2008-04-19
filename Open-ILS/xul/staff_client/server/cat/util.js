@@ -113,7 +113,7 @@ cat.util.transfer_copies = function(params) {
 
 		JSAN.use('util.functional');
 
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ params.copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ params.copy_ids ]);
 
 		for (var i = 0; i < copies.length; i++) {
 			copies[i].call_number( data.marked_volume );
@@ -217,39 +217,36 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 	);
 }
 
-cat.util.spawn_copy_editor = function(list,edit) {
+cat.util.spawn_copy_editor = function(params) {
 	try {
+        if (!params.copy_ids && !params.copies) return;
+		if (params.copy_ids && params.copy_ids.length == 0) return;
+		if (params.copies && params.copies.length == 0) return;
+        if (params.copy_ids) params.copy_ids = js2JSON(params.copy_ids); // legacy
+        if (!params.caller_handles_update) params.handle_update = 1; // legacy
+
 		var obj = {};
 		JSAN.use('util.network'); obj.network = new util.network();
 		JSAN.use('util.error'); obj.error = new util.error();
 	
-		if (list.length == 0) return;
-	
-		var title = list.length == 1 ? '' : 'Batch '; 
-		title += edit == 1 ? 'Edit' : 'View';
+		var title = '';
+		if ((params.copy_ids && params.copy_ids.length > 1) || (params.copies && params.copies.length > 1 )) title += 'Batch ';
+		title += params.edit == 1 ? 'Edit' : 'View';
 		title += ' Copy Attributes';
 	
 		JSAN.use('util.window'); var win = new util.window();
-		//JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-		//obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
-		//obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
-		//obj.data.temp_copy_ids = js2JSON(list); obj.data.stash('temp_copy_ids');
 		var my_xulG = win.open(
-			//window.xulG.url_prefix(urls.XUL_COPY_EDITOR),
 			(urls.XUL_COPY_EDITOR),
-			//	+'?handle_update=1&edit='+edit,
 			title,
 			'chrome,modal,resizable',
-			{
-				'handle_update' : 1,
-				'edit' : edit,
-				'copy_ids' : js2JSON(list),
-			}
+            params
 		);
-		//obj.data.stash_retrieve();
-		if (!my_xulG.copies) alert('Copies not modified.');
-		//if (!obj.data.temp_copies) alert('Copies not modified.');
-		//obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+		if (!my_xulG.copies && params.edit) {
+            alert(typeof params.no_copies_modified_msg != 'undefined' ? params.no_copies_modified_msg : 'Copies not modified.');
+        } else {
+            return my_xulG.copies;
+        }
+        return [];
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert('error in cat.util.spawn_copy_editor',E);
@@ -262,7 +259,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
 		JSAN.use('util.error'); error = new util.error();
 		JSAN.use('util.functional');
 		JSAN.use('util.network'); var network = new util.network();
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
 		if (typeof copies.ilsevent != 'undefined') throw(copies);
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {
@@ -304,7 +301,7 @@ cat.util.mark_item_missing = function(copy_ids) {
 		JSAN.use('util.error'); error = new util.error();
 		JSAN.use('util.functional');
 		JSAN.use('util.network'); var network = new util.network();
-		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
 		if (typeof copies.ilsevent != 'undefined') throw(copies);
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {

@@ -5,7 +5,10 @@ use OpenSRF::EX qw(:try);
 use XML::LibXML;
 use XML::LibXSLT;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Logger qw/$logger/;
 use CGI;
+
+my $log = 'OpenSRF::Utils::Logger';
 
 sub exists {
 	my $class = shift;
@@ -212,6 +215,7 @@ sub composeDoc {
 sub toString {
 	my $self = shift;
 	$self->composeDoc;
+	$log->debug("Document composed");
 	return $self->{doc}->toString(1);
 }
 
@@ -230,7 +234,8 @@ sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
-	$self->{type} = 'application/xml';
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
+	$self->{type} = 'application/atom+xml';
 	$self->{item_xpath} = '/atom:feed';
 	return $self;
 }
@@ -290,10 +295,11 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{item_xpath} = '/atom:entry';
 	$self->{holdings_xpath} = '/atom:entry';
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/atom+xml';
 	return $self;
 }
 
@@ -306,7 +312,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 sub new {
 	my $class = shift;
 	my $self = $class->SUPER::build('<rss version="2.0"><channel/></rss>');
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/rss+xml';
 	$self->{item_xpath} = '/rss/channel';
 	return $self;
 }
@@ -355,7 +361,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
-	$self->{type} = 'application/xml';
+	$self->{type} = 'application/rss+xml';
 	$self->{item_xpath} = '/item';
 	$self->{holdings_xpath} = '/item';
 	return $self;
@@ -389,6 +395,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
@@ -441,6 +448,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', 'mods');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
@@ -509,6 +517,7 @@ sub new {
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
 	return undef unless $self;
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/marc:record';
