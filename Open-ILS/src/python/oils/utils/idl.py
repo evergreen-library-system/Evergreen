@@ -79,7 +79,7 @@ class IDLParser(object):
         """Parses the IDL file and builds class, field, and link objects"""
 
         doc = xml.dom.minidom.parse(self.idlFile)
-        root = doc.childNodes[0]
+        root = doc.documentElement
 
         for child in root.childNodes:
         
