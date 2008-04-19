@@ -49,6 +49,8 @@ CREATE TABLE permission.usr_object_perm_map (
 		CONSTRAINT perm_usr_obj_once UNIQUE (usr,perm,object_type,object_id)
 );
 
+CREATE INDEX uopm_usr_idx ON permission.usr_object_perm_map (usr);
+
 CREATE TABLE permission.usr_grp_map (
 	id	SERIAL	PRIMARY KEY,
 	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
