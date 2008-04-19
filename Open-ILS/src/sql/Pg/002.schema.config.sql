@@ -100,7 +100,7 @@ $$;
 
 CREATE TABLE config.xml_transform (
 	name		TEXT	PRIMARY KEY,
-	namespace_uri	TEXT	NOT NULL UNIQUE,
+	namespace_uri	TEXT	NOT NULL,
 	prefix		TEXT	NOT NULL,
 	xslt		TEXT	NOT NULL
 );
@@ -427,6 +427,11 @@ CREATE TABLE config.item_form_map (
 CREATE TABLE config.item_type_map (
 	code	TEXT	PRIMARY KEY,
 	value	TEXT	NOT NULL
+);
+
+CREATE TABLE config.bib_level_map (
+    code    TEXT    PRIMARY KEY,
+    value   TEXT    NOT NULL
 );
 
 CREATE TABLE config.z3950_source (
