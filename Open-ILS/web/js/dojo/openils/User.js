@@ -138,7 +138,7 @@ if(!dojo._hasResource["openils.User"]) {
         fieldmapper.standardRequest(
             ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
             {
-                params: [openils.User.authtoken, 'ADMIN_FUNDING_SOURCE'],
+                params: [openils.User.authtoken, perm],
                 oncomplete: buildTreePicker,
                 async: true
             }
