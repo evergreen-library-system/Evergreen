@@ -1259,6 +1259,10 @@ INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3'
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp) VALUES (1,1);
 INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,11,1,1);
 
+
+-- hold matrix - 110.hold_matrix.sql:
+INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
+
 -- Staged Search (for default matchpoints)
 INSERT INTO search.relevance_adjustment (field, bump_type, multiplier) VALUES(1, 'first_word', 1.5);
 INSERT INTO search.relevance_adjustment (field, bump_type, multiplier) VALUES(1, 'full_match', 20);

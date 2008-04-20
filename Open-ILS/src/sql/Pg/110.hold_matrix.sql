@@ -34,8 +34,6 @@ CREATE TABLE config.hold_matrix_matchpoint (
 	CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format)
 );
 
-INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
-
 -- Tests to determine if hold against a specific copy is possible for a user at (and from) a location
 CREATE TABLE config.hold_matrix_test (
 	matchpoint		        INT	PRIMARY KEY REFERENCES config.hold_matrix_matchpoint (id),
