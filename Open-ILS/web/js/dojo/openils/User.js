@@ -19,7 +19,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo._hasResource["openils.User"] = true;
     dojo.provide("openils.User");
     dojo.require('openils.Event');
-    dojo.require('DojoSRF');
+    dojo.require('fieldmapper.Fieldmapper');
 
     dojo.declare('openils.User', null, {});
 
@@ -108,6 +108,41 @@ if(!dojo._hasResource["openils.User"]) {
         }
 
         req.send();
+    }
+
+    /**
+     * Builds a dijit.Tree using the orgs where the user has the requested permission
+     * @param perm The permission to check
+     * @param domId The DOM node where the tree widget should live
+     * @param onClick If defined, this will be connected to the tree widget for
+     * onClick events
+     */
+    openils.User.buildPermOrgTreePicker = function(perm, domId, onClick) {
+
+        function buildTreePicker(r) {
+            var orgList = r.recv().content();
+            var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+            var model = new dijit.tree.ForestStoreModel({
+                store: store,
+                query: {_top:'true'},
+                childrenAttrs: ["children"],
+                rootLabel : "Location" /* XXX i18n */
+            });
+
+            var tree = new dijit.Tree({model : model}, dojo.byId(domId));
+            if(onClick)
+                dojo.connect(tree, 'onClick', onClick);
+            tree.startup()
+        }
+
+        fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+            {
+                params: [openils.User.authtoken, 'ADMIN_FUNDING_SOURCE'],
+                oncomplete: buildTreePicker,
+                async: true
+            }
+        )
     }
 }
 
