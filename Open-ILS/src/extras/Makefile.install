@@ -188,7 +188,8 @@ CPAN_MODULES = \
     JSON::XS\
     SRU \
     Net::Z3950::ZOOM \
-	Business::CreditCard::Object
+	Business::CreditCard::Object \
+	XML::LibXML::XPathContext
 
 
 # ----------------------------------------------------------------------------
