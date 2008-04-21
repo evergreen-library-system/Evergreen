@@ -24,7 +24,7 @@
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.actions;</td>
-				<td  nowrap='nowarp' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
+				<td  nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
 					<div name='rdetail_status_cell'> </div>
 				</td>
 			</tr>
