@@ -18,6 +18,8 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
 
     dojo._hasResource["openils.acq.CurrencyType"] = true;
     dojo.provide("openils.acq.CurrencyType");
+    dojo.require('openils.User');
+
     dojo.declare('openils.acq.CurrencyType', null, {
     });
 
@@ -38,6 +40,16 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
             onComplete(types);
         }
         req.send();
+    }
+
+    openils.acq.CurrencyType.loadSelectWidget = function(selector) {
+        openils.acq.CurrencyType.fetchAll(
+            function(ctypes) {
+                selector.store = new dojo.data.ItemFileReadStore(
+                    {data:acqct.toStoreData(ctypes, 'code', {identifier:'code'})});
+                selector.setValue(ctypes[0].code()); /* XXX get from setting */
+            }
+        );
     }
 }
 
