@@ -12,6 +12,7 @@
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.CurrencyTextBox");
     dojo.require('openils.acq.FundingSource');
+    dojo.require('openils.Event');
     
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var fundingSourceID = ${c.oils.acq.funding_source_id};
@@ -39,6 +40,11 @@
         req.oncomplete = function(r) {
             var msg = req.recv();
             fundingSource = msg.content();
+            var evt = openils.Event.parse(fundingSource);
+            if(evt) {
+                alert(evt);
+                return;
+            }
             loadFSGrid();
         }
         req.send();
