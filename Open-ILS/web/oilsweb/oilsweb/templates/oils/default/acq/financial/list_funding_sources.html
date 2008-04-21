@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('Funding Sources')}</%def>
 <%def name="block_content()">
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
 </div>
-
-<script src='list_funding_sources.js'> </script>
 
 <script type="text/javascript">
     dojo.require("dijit.Dialog");
@@ -113,16 +110,16 @@
         var gridStructure = [{
             cells : [[
                 {name: '${_("ID")}', field: 'id'},
-                {name: '${_("Name")}', field: "name", width:'auto', get:getName}, 
-                {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
+                {name: '${_("Name")}', width:'auto', get:getName}, 
+                {name: '${_("Owner")}', width:'auto', get:getOrgInfo}, 
                 {name: '${_("Currency Type")}', field: "currency_type"},
-                {name: '${_("Balance")}', field: "balance", get:getBalanceInfo}
+                {name: '${_("Balance")}', get:getBalanceInfo}
             ]]
         }];
 
         openils.acq.FundingSource.createStore(
             function(storeData) {
-                var store = new dojo.data.ItemFileWriteStore({data:storeData});
+                var store = new dojo.data.ItemFileReadStore({data:storeData});
                 var model = new dojox.grid.data.DojoData(null, store, 
                     {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
                 fundingSourceListGrid.setStructure(gridStructure);

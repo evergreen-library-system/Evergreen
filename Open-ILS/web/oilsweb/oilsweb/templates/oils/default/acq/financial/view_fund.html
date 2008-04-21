@@ -1,80 +1,96 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('View Fund')}</%def>
 <%def name="block_content()">
 
-<% fund = c.oils.acq.fund.value %>
+<script>
+    dojo.require("dijit.Dialog");
+    dojo.require('dijit.layout.TabContainer');
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('openils.acq.Fund');
+    dojo.require('openils.Event');
+    dojo.require('fieldmapper.Fieldmapper');
+    dojo.require('openils.User');
 
+    function getSummaryInfo(rowIndex) {
+        switch(this.index) {
+            case 4: return new String(fund.summary().combined_balance);
+            case 5: return new String(fund.summary().allocation_total);
+            case 6: return new String(fund.summary().spent_balance);
+            case 7: return new String(fund.summary().debit_total);
+            case 8: return new String(fund.summary().spent_total);
+            case 9: return new String(fund.summary().encumberance_total);
+        }
+    }
+
+    function getOrgInfo(rowIndex) {
+        data = fundGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return fieldmapper.aou.findOrgUnit(data.org).shortname();
+    }
+
+    var fundID = ${c.oils.acq.fund_id};
+    var fund = null;
+
+    function loadFundGrid() {
+        var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData([fund])});
+        var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        fundGrid.setModel(model);
+        fundGrid.update();
+    }
+
+    function fetchFund() {
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.fund.retrieve'],
+            {   async: true,
+                params: [openils.User.authtoken, fundID, {flesh_summary:1}],
+                oncomplete: function(r) {
+                    fund = r.recv().content();
+                    loadFundGrid(fund);
+                }
+            }
+        );
+    }
+
+    dojo.addOnLoad(fetchFund);
+</script>
+    
 <div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>${fund.name()}</div>
-    <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/fund/allocate?${c.oils.acq.fund_id.cgi_name}=${fund.id()}'>${_('Allocate Money')}</a>
-    </div>
+    <div id='oils-acq-list-header-label'>${_('Fund Details')}</div>
 </div>
 
-<table class='oils-admin-table'>
-    <tbody>
-        <tr>
-            <td class='oils-admin-label'>${_('Owner')}</td>
-            <td>${fund.org().name()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Currency')}</td>
-            <td>${fund.currency_type()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Year')}</td>
-            <td>${fund.year()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Amount Allocated to this Fund')}</td>
-            <td>${fund.summary()['allocation_total']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Balance (Total - (Spent + Encumberances))')}</td>
-            <td>${fund.summary()['combined_balance']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Spent Balance (Total - Spent)')}</td>
-            <td>${fund.summary()['spent_balance']}</td> 
-       </tr>
-       <tr>
-            <td class='oils-admin-label'>${_('Total Debits (Spent + Encumbered)')}</td>
-            <td>${fund.summary()['debit_total']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Total Spent')}</td>
-            <td>${fund.summary()['spent_total']}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Total Encumbered')}</td>
-            <td>${fund.summary()['encumberance_total']}</td> 
-        </tr>
-    </tbody>
-</table>
+<style>
+    .oils-acq-detail-content-pane {height:500px;width:100%}
+</style>
 
-<h3>${_('Fund Allocations')}</h3>
-<table class='oils-admin-table'>
-    <thead>
-        <tr>
-            <td>${_('Funding Source')}</td>
-            <td>${_('Amount/Percent')}</td>
-        </tr>
-    </thead>
-    <tbody>
-        % for alloc in fund.allocations():
-        <tr>
-            <td>${alloc.funding_source().name()}</td> 
-            % if alloc.amount() != 0 and alloc.amount() is not None:
-                <td>${alloc.amount()}</td> 
-            % else:
-                <% percent = _('%(p)s%%') % {'p':alloc.percent()} %>
-                <td>${percent}</td> 
-            % endif
-        </tr>
-        % endfor
-    </tbody>
-</table>
-
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true'>
+            <script>
+                /** Define the columns for the fund grid ----- */
+                var fundGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Name")}', field: "name", width:'auto'}, 
+                        {name: '${_("Currency Type")}', field: "currency_type"},
+                        {name: '${_("Owner")}', get:getOrgInfo}, 
+                        /*
+                        {name: '${_("Balance (Total - (Spent + Encumberances))")}', get:getSummaryInfo},
+                        {name: '${_("Amount Allocated to this Fund")}', get:getSummaryInfo},
+                        {name: '${_("Spent Balance (Total - Spent)")}', get:getSummaryInfo},
+                        {name: '${_("Total Debits (Spent + Encumbered)")}', get:getSummaryInfo},
+                        */
+                        {name: '${_("Balance")}', get:getSummaryInfo},
+                        {name: '${_("Total Allocated")}', get:getSummaryInfo},
+                        {name: '${_("Spent Balance")}', get:getSummaryInfo},
+                        {name: '${_("Total Debits")}', get:getSummaryInfo},
+                        {name: '${_("Total Spent")}', get:getSummaryInfo},
+                        {name: '${_("Total Encumbered")}', get:getSummaryInfo}
+                    ]]
+                }];
+            </script>
+            <div jsId='fundGrid' dojoType="dojox.Grid" structure='fundGridLayout'> </div>
+        </div>
+    </div>
+</div>
 </%def>

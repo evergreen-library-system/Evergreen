@@ -1,31 +1,140 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('Funds')}</%def>
 <%def name="block_content()">
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Funds')}</div>
-    <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/fund/create'>${_('New Fund')}</a>
-    </div>
 </div>
 
-<div id='oils-acq-fund-grid'> </div>
-<script>
+<script type="text/javascript">
+    dojo.require("dijit.Dialog");
+    dojo.require("dijit.form.FilteringSelect");
     dojo.require('openils.acq.Fund');
+    dojo.require('openils.Event');
+    dojo.require('openils.acq.CurrencyType');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
 
-    /* define the layout columns */
-    var cols = [
-        {name: '${_("ID")}', field: 'id'},
-        {name: '${_("Name")}', field: "name"}, 
-        {name: '${_("Owner")}', field: "org"}, 
-        {name: '${_("Year")}', field: "year"},
-        {name: '${_("Currency Type")}', field: "currency_type"},
-        {name: '${_("Balance")}', field: "combined_balance"}
-    ];
-
-    /* build the fund grid on page load */
-    dojo.addOnLoad(function(){openils.acq.Fund.loadGrid('oils-acq-fund-grid', cols)});
+    function createFund(fields) {
+        /** Creates a new fund source */
+        openils.acq.Fund.create(
+            fields, 
+            function(fundId) {
+                var evt = openils.Event.parse(fundId);
+                if(evt) {
+                    alert(evt); /* XXX */
+                    return;
+                } else {
+                    location.href =  /* go to the details page for this fund */
+                        '${c.oils.acq.prefix.value}/fund/view/'+fundId;
+                }
+            }
+        );
+    }
 </script>
+
+<div class='oils-acq-actions-div'>
+    <div dojoType="dijit.form.DropDownButton">
+        <span>${('New Fund')}</span>
+
+        <div dojoType="dijit.TooltipDialog" execute="createFund(arguments[0]);">
+            <script type='dojo/connect' event='onOpen'>
+                openils.acq.CurrencyType.loadSelectWidget(fundCurrencySelector);
+                openils.User.buildPermOrgSelector('ADMIN_FUND', fundOwnerSelect);
+            </script>
+
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">${_('Name:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="year">${_('Year:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="year"></td>
+                </tr>
+                <tr>
+                    <td><label for="currency_type">${_('Currency Type:')}</label></td>
+                    <td>
+                        <input jsId='fundCurrencySelector' name="currency_type" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign='top'><label for="org">${_('Owning Location:')}</label></td>
+                    <td>
+                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='fundOwnerSelect'
+                            searchAttr="shortname" name="org" autocomplete="true" labelAttr='shortname'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+
+    <button dojoType="dijit.form.Button" 
+            onclick="openils.acq.Fund.deleteFromGrid(
+                fundListGrid, function(){location.href = location.href})">
+        ${_('Delete Selected')}
+    </button>
+</div>
+
+<!-- The main grid lives here -->
+<div jsId='fundListGrid' dojoType="dojox.Grid"></div>
+
+<script>
+
+    function loadFundGrid() {
+        openils.User.getBySession();
+
+        /** define how the primary grid is rendered */
+
+        function getOrgInfo(rowIndex) {
+            data = fundListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return fieldmapper.aou.findOrgUnit(data.org).shortname();
+        }
+
+        function getBalanceInfo(rowIndex) {
+            data = fundListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return new String(openils.acq.Fund.cache[data.id].summary().combined_balance);
+        }
+
+        function getName(rowIndex) {
+            data = fundListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return '<a href="${c.oils.acq.prefix.value}/fund/view/'+data.id+'">'+data.name+'</a>';
+        }
+    
+        var gridStructure = [{
+            cells : [[
+                {name: '${_("ID")}', field: 'id'},
+                {name: '${_("Name")}', width:'auto', get:getName}, 
+                {name: '${_("Year")}', field: "year"}, 
+                {name: '${_("Location")}', get:getOrgInfo}, 
+                {name: '${_("Currency Type")}', field: "currency_type"},
+                {name: '${_("Combined Balance")}', get:getBalanceInfo}
+            ]]
+        }];
+
+        openils.acq.Fund.createStore(
+            function(storeData) {
+                var store = new dojo.data.ItemFileReadStore({data:storeData});
+                var model = new dojox.grid.data.DojoData(null, store, 
+                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+                fundListGrid.setStructure(gridStructure);
+                fundListGrid.setModel(model);
+                fundListGrid.update();
+            }
+        );
+    }
+
+    dojo.addOnLoad(loadFundGrid);
+</script>
+
 </%def>

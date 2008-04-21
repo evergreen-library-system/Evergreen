@@ -83,7 +83,6 @@
     function loadFSGrid() {
         var store = new dojo.data.ItemFileReadStore({data:acqfs.toStoreData([fundingSource])});
         var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-        model.query = {id:'*'};
         fundingSourceGrid.setModel(model);
         fundingSourceGrid.update();
     }
@@ -128,7 +127,7 @@
                 <tr>
                     <td><label for="amount">${_('Amount:')} </label></td>
                     <td>
-                        <!-- XXX get currency from from funding source ... -->
+                        <!-- XXX get currency from funding source ... -->
                         <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
                     </td>
                 </tr>

@@ -22,19 +22,7 @@ class FundController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()
-        r.ctx.core.org_tree.value = OrgUtil.fetch_org_tree()
-        fund_id = kwargs['id']
-        ses = ClientSession(oils.const.OILS_APP_ACQ)
-
-        fund = ses.request('open-ils.acq.fund.retrieve', 
-            r.ctx.core.authtoken.value, fund_id, 
-            {"flesh_summary":1, 'flesh_allocations':1, 'flesh_allocation_sources':1}).recv().content()
-        Event.parse_and_raise(fund)
-
-        org_unit = OrgUtil.get_org_unit(fund.org())
-        fund.org(org_unit)
-
-        r.ctx.acq.fund.value = fund
+        r.ctx.acq.fund_id = kwargs['id']
         return r.render('acq/financial/view_fund.html')
 
     def list(self):
