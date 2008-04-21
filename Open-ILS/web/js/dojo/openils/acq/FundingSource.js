@@ -17,7 +17,6 @@
 if(!dojo._hasResource['openils.acq.FundingSource']) {
 dojo._hasResource['openils.acq.FundingSource'] = true;
 dojo.provide('openils.acq.FundingSource');
-dojo.require('util.Dojo');
 
 /** Declare the FundingSource class with dojo */
 dojo.declare('openils.acq.FundingSource', null, {
