@@ -69,7 +69,7 @@ webcore-install:
 	mkdir -p $(ADMINDIR)
 	cp -r ../admin/* $(ADMINDIR)
 	mkdir -p $(WEBDIR)
-	mkdir -p $(WEBDIR)/js/opensrf/
+	mkdir -p $(WEBDIR)/js/dojo/opensrf/
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	cp -r ../web/* $(WEBDIR)
 	cp $(OPENSRF_LIBS)/javascript/* $(WEBDIR)/opac/common/js/
