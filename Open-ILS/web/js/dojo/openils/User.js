@@ -137,8 +137,32 @@ if(!dojo._hasResource["openils.User"]) {
 
         fieldmapper.standardRequest(
             ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
-            {
-                params: [openils.User.authtoken, perm],
+            {   params: [openils.User.authtoken, perm],
+                oncomplete: buildTreePicker,
+                async: true
+            }
+        )
+    }
+
+    /**
+     * Sets the store for an existing openils.widget.OrgUnitFilteringSelect 
+     * using the orgs where the user has the requested permission.
+     * @param perm The permission to check
+     * @param selector The pre-created dijit.form.FilteringSelect object.  
+     */
+    openils.User.buildPermOrgSelector = function(perm, selector) {
+
+        function buildTreePicker(r) {
+            var orgList = r.recv().content();
+            var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+            selector.store = store;
+            selector.startup();
+            selector.setValue(openils.User.user.ws_ou());
+        }
+
+        fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+            {   params: [openils.User.authtoken, perm],
                 oncomplete: buildTreePicker,
                 async: true
             }
