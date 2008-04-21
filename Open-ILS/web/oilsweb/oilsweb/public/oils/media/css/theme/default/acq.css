@@ -41,7 +41,10 @@
 .oils-acq-po-li-delete-link { font-size: 85%; }
 #oils-acq-po-header-subtable tr { border: none; }
 
+/*
 #oils-acq-list-header {border-bottom: 1px solid #6BA160;}
+*/
+#oils-acq-list-header {border-bottom: 2px solid #d9e8f9;}
 #oils-acq-list-header-label { font-weight: bold; font-size: 110%; }
 #oils-acq-list-header-actions { font-weight: bold; }
 

@@ -5,7 +5,12 @@
 body { font-size: 80%; }
 
 #oils-base-body-block {}
+/*
 #oils-base-navigate-block {border: 2px solid #85C777; background: #6BA160;}
+#oils-base-navigate-block {border: 2px solid #f8f7f1; background: #fffdf1;}
+*/
+#oils-base-navigate-block {background: #d9e8f9;}
+
 #oils-base-navigate-block a { color: #000000; }
 #oils-base-content-block {}
 #oils-base-sidebar-block {}
@@ -13,7 +18,7 @@ body { font-size: 80%; }
 /*
 #oils-base-header-block {border-bottom: 1px solid #5E5E5E; border: 2px solid #85C777; background: #6BA160;}
 */
-#oils-base-header-block {border-bottom: 1px solid #6BA160;}
+#oils-base-header-block {border-bottom: 1px solid #d9e8f9;}
 
 
 #oils-base-navigate-list { width: 100%; }
@@ -30,5 +35,8 @@ body { font-size: 80%; }
 
 .label { font-weight: bold; }
 
+/*
 .oils-admin-table td { border-bottom: 1px solid #5E5E5E; }
+*/
+.oils-admin-table td { border-bottom: 1px solid #d9e8f9; }
 .oils-admin-label { font-weight: bold; }
