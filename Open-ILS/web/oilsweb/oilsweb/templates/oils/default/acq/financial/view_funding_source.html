@@ -12,12 +12,12 @@
     dojo.require("dijit.form.Textarea");
     dojo.require("dijit.form.CurrencyTextBox");
     dojo.require('openils.acq.FundingSource');
+    dojo.require('openils.acq.Fund');
     dojo.require('openils.Event');
     
     var ses = new OpenSRF.ClientSession('open-ils.acq');
     var fundingSourceID = ${c.oils.acq.funding_source_id};
     var fundingSource = null;
-    var fundCache = {};
 
     /** creates a new funding_source_credit from the dialog ----- */
     function applyFSCredit(fields) {
@@ -33,7 +33,8 @@
     /** fetch the fleshed funding source ----- */
     function loadFS() {
         var req = ses.request(
-            'open-ils.acq.funding_source.retrieve', openils.User.authtoken, fundingSourceID, 
+            'open-ils.acq.funding_source.retrieve', 
+            openils.User.authtoken, fundingSourceID, 
             {flesh_summary:1, flesh_credits:1,flesh_allocations:1}
         );
 
@@ -66,18 +67,11 @@
     }
     
     function getFund(rowIndex) {
-        /** synchronous version ... XXX need to refactor this to be async */
         data = fsAllocationGrid.model.getRow(rowIndex);
-        if(!data) return;
-        var fundId = data.fund;
-        if(!fundCache[fundId]) {
-            req = ses.request('open-ils.acq.fund.retrieve', openils.User.authtoken, fundId);
-            req.timeout = 10;
-            req.send();
-            fundCache[fundId] = req.recv().content();
+        if(data) {
+            var fund = openils.acq.Fund.retrieve(data.fund);
+            return '<a href="${c.oils.acq.prefix.value}/fund/view/'+fund.id()+'">'+fund.name()+'</a>';
         }
-        var name = fundCache[fundId].name();
-        return '<a href="${c.oils.acq.prefix.value}/fund/view/'+fundId+'">'+name+'</a>';
     }
 
     /** builds the credits grid ----- */

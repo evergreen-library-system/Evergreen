@@ -26,7 +26,7 @@ dojo.declare('openils.acq.Fund', null, {
 
 openils.acq.Fund.cache = {};
 
-openils.acq.Fund.createStore = function(onComplete) {
+openils.acq.Fund.createStore = function(onComplete, limitPerm) {
     /** Fetches the list of funding_sources and builds a grid from them */
 
     function mkStore(r) {
@@ -38,14 +38,13 @@ openils.acq.Fund.createStore = function(onComplete) {
             items.push(src);
             console.log('loaded fund: ' + src.name());
         }
-        console.log(js2JSON(acqf.toStoreData(items)));
         onComplete(acqf.toStoreData(items));
     }
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
         {   async: true,
-            params: [openils.User.authtoken, null, {flesh_summary:1}],
+            params: [openils.User.authtoken, null, {flesh_summary:1, limit_perm:limitPerm}],
             oncomplete: mkStore
         }
     );
@@ -74,6 +73,21 @@ openils.acq.Fund.create = function(fields, onCreateComplete) {
         }
     );
 };
+
+
+/**
+ * Synchronous fund retrievel method 
+ */
+openils.acq.Fund.retrieve = function(id) {
+    if(openils.acq.Fund.cache[id])
+        return openils.acq.Fund.cache[id];
+    openils.acq.Fund.cache[id] = fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.retrieve'],
+        [openils.User.authtoken, id]
+    );
+    return openils.acq.Fund.cache[id];
+};
+
 
 openils.acq.Fund.deleteFromGrid = function(grid, onComplete) {
     var list = []

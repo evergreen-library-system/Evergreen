@@ -17,6 +17,7 @@
 if(!dojo._hasResource['openils.acq.FundingSource']) {
 dojo._hasResource['openils.acq.FundingSource'] = true;
 dojo.provide('openils.acq.FundingSource');
+dojo.require('fieldmapper.Fieldmapper');
 
 /** Declare the FundingSource class with dojo */
 dojo.declare('openils.acq.FundingSource', null, {
@@ -69,6 +70,19 @@ openils.acq.FundingSource.create = function(fields, onCreateComplete) {
             onCreateComplete(id);
     };
     req.send();
+};
+
+/**
+ * Synchronous funding_source retrievel method 
+ */
+openils.acq.FundingSource.retrieve = function(id) {
+    if(openils.acq.FundingSource.cache[id])
+        return openils.acq.FundingSource.cache[id];
+    openils.acq.FundingSource.cache[id] = fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.funding_source.retrieve'],
+        [openils.User.authtoken, id]
+    );
+    return openils.acq.FundingSource.cache[id];
 };
 
 

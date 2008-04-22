@@ -8,8 +8,8 @@
     dojo.require('dijit.layout.TabContainer');
     dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.acq.Fund');
+    dojo.require('openils.acq.FundingSource');
     dojo.require('openils.Event');
-    dojo.require('fieldmapper.Fieldmapper');
     dojo.require('openils.User');
 
     var fundID = ${c.oils.acq.fund_id};
@@ -32,19 +32,12 @@
         return fieldmapper.aou.findOrgUnit(data.org).shortname();
     }
 
-    var fsCache = {};
     function getFundingSource(rowIndex) {
         data = fundAllocationGrid.model.getRow(rowIndex);
-        if(!data) return;
-        var fsId = data.funding_source;
-        if(!fsCache[fsId]) {
-            fsCache[fsId] = fieldmapper.standardRequest(
-                ['open-ils.acq', 'open-ils.acq.funding_source.retrieve'],
-                [openils.User.authtoken, fsId]
-            );
+        if(data) {
+            var fs = openils.acq.FundingSource.retrieve(data.funding_source);
+            return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
         }
-        var name = fsCache[fsId].name();
-        return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+fsId+'">'+name+'</a>';
     }
 
     function loadFundGrid() {
