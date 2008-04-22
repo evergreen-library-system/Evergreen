@@ -773,7 +773,7 @@ sub staged_search {
     # fulfill the user-specified limit and offset
     my $all_results = [];
     my $page; # current superpage
-    my $est_hit_count;
+    my $est_hit_count = 0;
 
     for($page = 0; $page < $SEARCH_PAGES; $page++) {
 
