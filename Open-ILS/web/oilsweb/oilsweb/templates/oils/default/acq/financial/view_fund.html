@@ -12,6 +12,9 @@
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('openils.User');
 
+    var fundID = ${c.oils.acq.fund_id};
+    var fund = null;
+
     function getSummaryInfo(rowIndex) {
         switch(this.index) {
             case 4: return new String(fund.summary().combined_balance);
@@ -29,21 +32,58 @@
         return fieldmapper.aou.findOrgUnit(data.org).shortname();
     }
 
-    var fundID = ${c.oils.acq.fund_id};
-    var fund = null;
+    var fsCache = {};
+    function getFundingSource(rowIndex) {
+        data = fundAllocationGrid.model.getRow(rowIndex);
+        if(!data) return;
+        var fsId = data.funding_source;
+        if(!fsCache[fsId]) {
+            fsCache[fsId] = fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.funding_source.retrieve'],
+                [openils.User.authtoken, fsId]
+            );
+        }
+        var name = fsCache[fsId].name();
+        return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+fsId+'">'+name+'</a>';
+    }
 
     function loadFundGrid() {
         var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData([fund])});
-        var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        var model = new dojox.grid.data.DojoData(
+            null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
         fundGrid.setModel(model);
         fundGrid.update();
+    }
+
+    function loadAllocationGrid() {
+        if(fundAllocationGrid.isLoaded) return;
+        var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fund.allocations())});
+        var model = new dojox.grid.data.DojoData(
+            null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        fundAllocationGrid.setModel(model);
+        fundAllocationGrid.update();
+        fundAllocationGrid.isLoaded = true;
+    }
+
+    function loadDebitGrid() {
+        if(fundDebitGrid.isLoaded) return;
+        var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fund.debits())});
+        var model = new dojox.grid.data.DojoData(
+            null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        fundDebitGrid.setModel(model);
+        fundDebitGrid.update();
+        fundDebitGrid.isLoaded = true;
     }
 
     function fetchFund() {
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.fund.retrieve'],
             {   async: true,
-                params: [openils.User.authtoken, fundID, {flesh_summary:1}],
+                params: [
+                    openils.User.authtoken, fundID, 
+                    {flesh_summary:1, flesh_allocations:1, flesh_debits:1} 
+                    /* TODO grab allocations and debits only on as-needed basis */
+                ],
                 oncomplete: function(r) {
                     fund = r.recv().content();
                     loadFundGrid(fund);
@@ -65,7 +105,8 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
-        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true'>
+        <div dojoType="dijit.layout.ContentPane" 
+                class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true'>
             <script>
                 /** Define the columns for the fund grid ----- */
                 var fundGridLayout = [{
@@ -90,6 +131,41 @@
                 }];
             </script>
             <div jsId='fundGrid' dojoType="dojox.Grid" structure='fundGridLayout'> </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Allocations')}">
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
+            <script>
+                /** Define the columns for the funding source allocations grid ----- */
+                var fundAllocationGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Funding Source")}', field: "fund", get:getFundingSource}, 
+                        {name: '${_("Amount")}', field: "amount"}, 
+                        {name: '${_("Percent")}', field: "percent"}, 
+                        {name: '${_("Allocated By")}', field: "allocator"}, 
+                        {name: '${_("Note")}', field: "note", width:'auto'}, 
+                    ]]
+                }];
+            </script>
+            <div jsId='fundAllocationGrid' dojoType="dojox.Grid" structure='fundAllocationGridLayout'> </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Debits')}">
+            <script type='dojo/connect' event='onShow'>loadDebitGrid();</script>
+            <script>
+                /** Define the columns for the funding source credits grid ----- */
+                var fundDebitGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Origin Amount")}', field: "origin_amount"}, 
+                        {name: '${_("Origin Currency Type")}', field: "origin_currency_type"}, 
+                        {name: '${_("Amount")}', field: "amount"}, 
+                        {name: '${_("Encumberance")}', field: "encumberance"}, 
+                        {name: '${_("Debit Type")}', field: "debit_type"}, 
+                        {name: '${_("Transfer Destination")}', field: "xfer_destination"}, 
+                    ]]
+                }];
+            </script>
+            <div jsId='fundDebitGrid' dojoType="dojox.Grid" structure='fundDebitGridLayout'> </div>
         </div>
     </div>
 </div>
