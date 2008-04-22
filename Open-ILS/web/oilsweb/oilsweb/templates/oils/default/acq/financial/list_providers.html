@@ -1,28 +1,64 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('Providers')}</%def>
 <%def name="block_content()">
 
+<script type="text/javascript">
+    dojo.require("dijit.Dialog");
+    dojo.require("dijit.form.FilteringSelect");
+    dojo.require('openils.acq.Provider');
+    dojo.require('openils.Event');
+    dojo.require('openils.acq.CurrencyType');
+</script>
+
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Providers')}</div>
-    <div id='oils-acq-list-header-actions'>
-        <a href='${c.oils.acq.prefix.value}/provider/create'>${_('New Provider')}</a>
-    </div>
 </div>
-<div id='oils-acq-provider-grid'> </div>
+
+<!-- The main grid lives here -->
+<div jsId='providerListGrid' dojoType="dojox.Grid"></div>
+
 <script>
-    dojo.require('openils.acq.Provider');
 
-    /* define the layout columns */
-    var cols = [
-        {name: '${_("ID")}', field: 'id'},
-        {name: '${_("Name")}', field: "name"}, 
-        {name: '${_("Owner")}', field: "owner"}, 
-        {name: '${_("Currency Type")}', field: "currency_type"}
-    ];
+    function loadProviderGrid() {
+        openils.User.getBySession();
 
-    /* build the provider grid on page load */
-    dojo.addOnLoad(function(){openils.acq.Provider.loadGrid('oils-acq-provider-grid', cols)});
+        /** define how the primary grid is rendered */
+
+        function getOrgInfo(rowIndex) {
+            data = providerListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return fieldmapper.aou.findOrgUnit(data.owner).shortname();
+        }
+
+        function getName(rowIndex) {
+            data = providerListGrid.model.getRow(rowIndex);
+            if(!data) return;
+            return '<a href="${c.oils.acq.prefix.value}/provider/view/'+data.id+'">'+data.name+'</a>';
+        }
+    
+        var gridStructure = [{
+            cells : [[
+                {name: '${_("ID")}', field: 'id'},
+                {name: '${_("Name")}', get:getName, width:'auto'}, 
+                {name: '${_("Owner")}', get:getOrgInfo}, 
+                {name: '${_("Currency Type")}', field: "currency_type"}
+            ]]
+        }];
+
+        openils.acq.Provider.createStore(
+            function(storeData) {
+                var store = new dojo.data.ItemFileReadStore({data:storeData});
+                var model = new dojox.grid.data.DojoData(null, store, 
+                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+                providerListGrid.setStructure(gridStructure);
+                providerListGrid.setModel(model);
+                providerListGrid.update();
+            }
+        );
+    }
+
+    dojo.addOnLoad(loadProviderGrid);
 </script>
+
 </%def>

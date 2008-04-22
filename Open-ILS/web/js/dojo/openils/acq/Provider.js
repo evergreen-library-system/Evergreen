@@ -17,39 +17,55 @@
 if(!dojo._hasResource['openils.acq.Provider']) {
 dojo._hasResource['openils.acq.Provider'] = true;
 dojo.provide('openils.acq.Provider');
-dojo.require('util.Dojo');
+dojo.require('fieldmapper.Fieldmapper');
 
 /** Declare the Provider class with dojo */
 dojo.declare('openils.acq.Provider', null, {
     /* add instance methods here if necessary */
 });
 
+openils.acq.Provider.cache = {};
+
 /* define some static provider methods ------- */
 
-openils.acq.Provider.loadGrid = function(domId, columns) {
-    /** Fetches the list of providers and builds a grid from them */
+openils.acq.Provider.createStore = function(onComplete, limitPerm) {
+    /** Fetches the list of funding_sources and builds a grid from them */
 
-    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
-    var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.provider.org.retrieve', openils.User.authtoken);
-
-    req.oncomplete = function(r) {
-        var msg
-        gridRefs.grid.setModel(gridRefs.model);
+    function mkStore(r) {
+        var msg;
+        var items = [];
         while(msg = r.recv()) {
-            var prov = msg.content();
-            gridRefs.store.newItem({
-                id:prov.id(),
-                name:prov.name(), 
-                owner: findOrgUnit(prov.owner()).name(),
-                currency_type:prov.currency_type()
-            });
+            var provider = msg.content();
+            openils.acq.Provider.cache[provider.id()] = provider;
+            items.push(provider);
         }
-        gridRefs.grid.update();
-    };
+        onComplete(acqpro.toStoreData(items));
+    }
 
-    req.send();
-    return gridRefs.grid;
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.provider.org.retrieve'],
+        {   async: true,
+            params: [openils.User.authtoken],
+            oncomplete: mkStore
+        }
+    );
 };
+
+
+/**
+ * Synchronous provider retrievel method 
+ */
+openils.acq.Provider.retrieve = function(id) {
+    if(openils.acq.Provider.cache[id])
+        return openils.acq.Provider.cache[id];
+
+    openils.acq.Provider.cache[id] = 
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.provider.retrieve'],
+            [openils.User.authtoken, id]
+        );
+    return openils.acq.Provider.cache[id];
+};
+
 }
 
