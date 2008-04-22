@@ -36,7 +36,6 @@ openils.acq.Fund.createStore = function(onComplete, limitPerm) {
             var src = msg.content();
             openils.acq.Fund.cache[src.id()] = src;
             items.push(src);
-            console.log('loaded fund: ' + src.name());
         }
         onComplete(acqf.toStoreData(items));
     }
