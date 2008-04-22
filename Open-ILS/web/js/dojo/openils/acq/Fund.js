@@ -17,41 +17,63 @@
 if(!dojo._hasResource['openils.acq.Fund']) {
 dojo._hasResource['openils.acq.Fund'] = true;
 dojo.provide('openils.acq.Fund');
-dojo.require('util.Dojo');
+dojo.require('fieldmapper.Fieldmapper');
 
 /** Declare the Fund class with dojo */
 dojo.declare('openils.acq.Fund', null, {
     /* add instance methods here if necessary */
 });
 
+openils.acq.Fund.cache = {};
 
-openils.acq.Fund.loadGrid = function(domId, columns) {
-    /** Fetches the list of funds and builds a grid from them */
+openils.acq.Fund.createStore = function(onComplete) {
+    /** Fetches the list of funding_sources and builds a grid from them */
 
-    var gridRefs = util.Dojo.buildSimpleGrid(domId, columns, [], 'id', true);
-    var ses = new OpenSRF.ClientSession('open-ils.acq');
-    var req = ses.request('open-ils.acq.fund.org.retrieve', 
-        openils.User.authtoken, null, {flesh_summary:1});
-
-    req.oncomplete = function(r) {
-        var msg
-        gridRefs.grid.setModel(gridRefs.model);
+    function mkStore(r) {
+        var msg;
+        var items = [];
         while(msg = r.recv()) {
-            var fund = msg.content();
-            gridRefs.store.newItem({
-                id:fund.id(),
-                name:fund.name(), 
-                org: findOrgUnit(fund.org()).name(),
-                currency_type:fund.currency_type(),
-                year:fund.year(),
-                combined_balance:fund.summary()['combined_balance']
-            });
+            var src = msg.content();
+            openils.acq.Fund.cache[src.id()] = src;
+            items.push(src);
+            console.log('loaded fund: ' + src.name());
         }
-        gridRefs.grid.update();
-    };
+        console.log(js2JSON(acqf.toStoreData(items)));
+        onComplete(acqf.toStoreData(items));
+    }
 
-    req.send();
-    return gridRefs.grid;
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
+        {   async: true,
+            params: [openils.User.authtoken, null, {flesh_summary:1}],
+            oncomplete: mkStore
+        }
+    );
 };
+
+/**
+ * Create a new fund
+ * @param fields Key/value pairs used to create the new fund
+ */
+openils.acq.Fund.create = function(fields, onCreateComplete) {
+
+    var fund = new acqf()
+    for(var field in fields) 
+        fund[field](fields[field]);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.create'],
+        {   async: true,
+            params: [openils.User.authtoken, fund],
+            oncomplete: function(r) {
+                var msg = r.recv();
+                var id = msg.content();
+                if(onCreateComplete)
+                    onCreateComplete(id);
+            }
+        }
+    );
+};
+
 }
 
