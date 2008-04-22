@@ -76,7 +76,8 @@
             req.send();
             fundCache[fundId] = req.recv().content();
         }
-        return fundCache[fundId].name()
+        var name = fundCache[fundId].name();
+        return '<a href="${c.oils.acq.prefix.value}/fund/view/'+fundId+'">'+name+'</a>';
     }
 
     /** builds the credits grid ----- */
@@ -98,7 +99,7 @@
         fsCreditGrid.isLoaded = true;
     }
 
-    /** builds the credits grid ----- */
+    /** builds the allocations grid ----- */
     function loadAllocationGrid() {
         if(fsAllocationGrid.isLoaded) return;
         var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fundingSource.allocations())});
