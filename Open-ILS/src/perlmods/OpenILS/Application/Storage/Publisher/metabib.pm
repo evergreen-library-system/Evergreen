@@ -2369,7 +2369,7 @@ sub staged_fts {
 		@forms = split '', $f;
 	}
 
-    my %stored_proc_search_args;
+	my %stored_proc_search_args;
 	for my $search_group (sort keys %{$args{searches}}) {
 		(my $search_group_name = $search_group) =~ s/\|/_/gso;
 		my ($search_class,$search_field) = split /\|/, $search_group;
@@ -2390,10 +2390,10 @@ sub staged_fts {
 
 		
 		my $fts = OpenILS::Application::Storage::FTS->compile(
-            $search_class => $args{searches}{$search_group}{term},
-            $search_group_name.'.value',
-            "$search_group_name.$index_col"
-        );
+			$search_class => $args{searches}{$search_group}{term},
+			$search_group_name.'.value',
+			"$search_group_name.$index_col"
+		);
 		$fts->sql_where_clause; # this builds the ranks for us
 
 		my @fts_ranks = $fts->fts_rank;
@@ -2401,36 +2401,36 @@ sub staged_fts {
 		my @phrases = map { lc($_) } $fts->phrases;
 		my @words = map { lc($_) } $fts->words;
 
-        $stored_proc_search_args{$search_group} = {
-            fts_rank    => \@fts_ranks,
-            fts_query   => \@fts_queries,
-            phrase      => \@phrases,
-            word        => \@words,
-        };
+		$stored_proc_search_args{$search_group} = {
+			fts_rank    => \@fts_ranks,
+			fts_query   => \@fts_queries,
+			phrase      => \@phrases,
+			word        => \@words,
+		};
 
 	}
 
 	my $param_search_ou = $ou;
 	my $param_depth = $args{depth}; $param_depth = 'NULL' unless (defined($param_depth) and length($param_depth) > 0 );
-    my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
-    my $param_statuses = '$${' . join(',', map { s/\$//go; $_ } @statuses) . '}$$';
-    my $param_audience = '$${' . join(',', map { s/\$//go; $_ } @aud) . '}$$';
-    my $param_language = '$${' . join(',', map { s/\$//go; $_ } @lang) . '}$$';
-    my $param_lit_form = '$${' . join(',', map { s/\$//go; $_ } @lit_form) . '}$$';
-    my $param_types = '$${' . join(',', map { s/\$//go; $_ } @types) . '}$$';
-    my $param_forms = '$${' . join(',', map { s/\$//go; $_ } @forms) . '}$$';
-    my $param_vformats = '$${' . join(',', map { s/\$//go; $_ } @vformats) . '}$$';
+	my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
+	my $param_statuses = '$${' . join(',', map { s/\$//go; $_ } @statuses) . '}$$';
+	my $param_audience = '$${' . join(',', map { s/\$//go; $_ } @aud) . '}$$';
+	my $param_language = '$${' . join(',', map { s/\$//go; $_ } @lang) . '}$$';
+	my $param_lit_form = '$${' . join(',', map { s/\$//go; $_ } @lit_form) . '}$$';
+	my $param_types = '$${' . join(',', map { s/\$//go; $_ } @types) . '}$$';
+	my $param_forms = '$${' . join(',', map { s/\$//go; $_ } @forms) . '}$$';
+	my $param_vformats = '$${' . join(',', map { s/\$//go; $_ } @vformats) . '}$$';
 	my $param_pref_lang = $args{preferred_language}; $param_pref_lang =~ s/\$//go; $param_pref_lang = '$$'.$param_pref_lang.'$$';
 	my $param_pref_lang_multiplier = $args{preferred_language_weight}; $param_pref_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
 	my $param_sort_desc = defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'";
 	my $metarecord = $self->api_name =~ /metabib/o ? "'t'" : "'f'";
 	my $staff = $self->api_name =~ /staff/o ? "'t'" : "'f'";
-    my $param_rel_limit = $args{core_limit}; $param_rel_limit ||= 'NULL';
-    my $param_chk_limit = $args{check_limit}; $param_chk_limit ||= 'NULL';
-    my $param_skip_chk = $args{skip_check}; $param_skip_chk ||= 'NULL';
+	my $param_rel_limit = $args{core_limit}; $param_rel_limit ||= 'NULL';
+	my $param_chk_limit = $args{check_limit}; $param_chk_limit ||= 'NULL';
+	my $param_skip_chk = $args{skip_check}; $param_skip_chk ||= 'NULL';
 
-	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
+	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"	SQL");
         SELECT  *
           FROM  search.staged_fts(
                     $param_search_ou,
@@ -2453,46 +2453,47 @@ sub staged_fts {
                     $param_chk_limit,
                     $param_skip_chk
                 );
-    SQL
+	SQL
 
-    $sth->execute;
+	$sth->execute;
 
-    my $recs = $sth->fetchall_arrayref({});
-    my $summary_row = pop @$recs;
+	my $recs = $sth->fetchall_arrayref({});
+	my $summary_row = pop @$recs;
 
-    my $total = $$summary_row{total};
-    my $checked = $$summary_row{checked};
-    my $visible = $$summary_row{visible};
-    my $deleted = $$summary_row{deleted};
-    my $excluded = $$summary_row{excluded};
+	my $total = $$summary_row{total};
+	my $checked = $$summary_row{checked};
+	my $visible = $$summary_row{visible};
+	my $deleted = $$summary_row{deleted};
+	my $excluded = $$summary_row{excluded};
 
-    my $estimate = $visible;
-    if ( $total > $checked && $checked ) {
-        my $deleted_ratio = $deleted / $checked;
-        my $exclution_ratio = $excluded / $checked;
-        my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
+	my $estimate = $visible;
+	if ( $total > $checked && $checked ) {
+		my $deleted_ratio = $deleted / $checked;
+		my $exclution_ratio = $excluded / $checked;
+        	my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
 
-        $estimate = $$summary_row{estimated_hit_count} = int($delete_adjusted_total - ( $delete_adjusted_total * $exclution_ratio ));
-    }
+        	$estimate = $$summary_row{estimated_hit_count} = int($delete_adjusted_total - ( $delete_adjusted_total * $exclution_ratio ));
+	}
 
-    delete $$summary_row{id};
-    delete $$summary_row{rel};
-    delete $$summary_row{record};
+	delete $$summary_row{id};
+	delete $$summary_row{rel};
+	delete $$summary_row{record};
 
-    $client->respond( $summary_row );
+	$client->respond( $summary_row );
 
 	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
 
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
-        delete $$rec{checked};
-        delete $$rec{visible};
-        delete $$rec{excluded};
-        delete $$rec{deleted};
-        delete $$rec{total};
-        $$rec{rel} = sprintf('%0.3f',$$rec{rel});
+		delete $$rec{checked};
+		delete $$rec{visible};
+		delete $$rec{excluded};
+		delete $$rec{deleted};
+		delete $$rec{total};
+		$$rec{rel} = sprintf('%0.3f',$$rec{rel});
 
 		$client->respond( $rec );
 	}
+
 	return undef;
 }
 __PACKAGE__->register_method(
