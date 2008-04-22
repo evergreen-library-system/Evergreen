@@ -75,5 +75,36 @@ openils.acq.Fund.create = function(fields, onCreateComplete) {
     );
 };
 
+openils.acq.Fund.deleteFromGrid = function(grid, onComplete) {
+    var list = []
+    var selected = grid.selection.getSelected();
+    for(var rowIdx in selected) 
+        list.push(grid.model.getDatum(selected[rowIdx], 0));
+    openils.acq.Fund.deleteList(list, onComplete);
+};
+
+openils.acq.Fund.deleteList = function(list, onComplete) {
+    openils.acq.Fund._deleteList(list, 0, onComplete);
+}
+
+openils.acq.Fund._deleteList = function(list, idx, onComplete) {
+    if(idx >= list.length)    
+        return onComplete();
+
+    var fundId = list[idx];
+    delete openils.acq.Fund.cache[list[idx]];
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.delete'],
+        {   async: true,
+            params: [openils.User.authtoken, fundId],
+            oncomplete: function(r) {
+                stat = r.recv().content();
+                /* XXX CHECH FOR EVENT */
+                openils.acq.Fund._deleteList(list, ++idx, onComplete);
+            }
+        }
+    );
+};
 }
 
