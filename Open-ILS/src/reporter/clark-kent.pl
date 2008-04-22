@@ -14,7 +14,7 @@ use Spreadsheet::WriteExcel::Big;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenSRF::Utils::JSON;
-#use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
@@ -133,9 +133,13 @@ while (my $r = $sth->fetchrow_hashref) {
 	$r->{report} = $s3;
 
 	my $b = OpenILS::Reporter::SQLBuilder->new;
-	$b->register_params( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) );
+	my $report_data = OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} );
+	$b->register_params( $report_data );
 
 	$r->{resultset} = $b->parse_report( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) );
+	$r->{resultset}->set_pivot_data($report_data->{__pivot_data}) if $report_data->{__pivot_data};
+	$r->{resultset}->set_pivot_label($report_data->{__pivot_label}) if $report_data->{__pivot_label};
+	$r->{resultset}->set_pivot_default($report_data->{__pivot_default}) if $report_data->{__pivot_default};
 	$r->{resultset}->relative_time($r->{run_time});
 	push @reports, $r;
 }
@@ -161,6 +165,7 @@ for my $r ( @reports ) {
 			  WHERE	id = ?;
 		SQL
 
+	    $logger->debug('Report SQL: ' . $r->{resultset}->toSQL);
 		$sth = $dbh->prepare($r->{resultset}->toSQL);
 
 		$sth->execute;
