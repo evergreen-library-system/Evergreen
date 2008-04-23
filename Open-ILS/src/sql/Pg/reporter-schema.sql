@@ -213,5 +213,29 @@ SELECT  *
         AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED') OR stop_fines IS NULL)
         AND due_date < now();
 
+CREATE OR REPLACE VIEW reporter.overdue_reports AS
+ SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
+   FROM reporter.schedule s
+   JOIN reporter.report r ON r.id = s.report
+   JOIN actor.usr u ON s.runner = u.id
+   JOIN actor.card c ON c.id = u.card
+  WHERE s.start_time IS NULL AND s.run_time < now();
+
+CREATE OR REPLACE VIEW reporter.pending_reports AS
+ SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
+   FROM reporter.schedule s
+   JOIN reporter.report r ON r.id = s.report
+   JOIN actor.usr u ON s.runner = u.id
+   JOIN actor.card c ON c.id = u.card
+  WHERE s.start_time IS NULL;
+
+CREATE OR REPLACE VIEW reporter.currently_running AS
+ SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
+   FROM reporter.schedule s
+   JOIN reporter.report r ON r.id = s.report
+   JOIN actor.usr u ON s.runner = u.id
+   JOIN actor.card c ON c.id = u.card
+  WHERE s.start_time IS NOT NULL AND s.complete_time IS NULL;
+
 COMMIT;
 
