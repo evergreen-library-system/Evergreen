@@ -21,6 +21,43 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 		}
 	);
 
+/*
+oils_rpt_editor_pivot_label
+oils_rpt_editor_pivot_data
+*/
+
+    var hasAgg = false;
+    iterate(rptObject.def.select, 
+        function(i) {
+            if(OILS_RPT_TRANSFORMS[i.column.transform].aggregate) 
+                hasAgg = true; 
+        }
+    );
+
+    while(DOM.oils_rpt_editor_pivot_label.getElementsByTagName('option').length > 1)
+        DOM.oils_rpt_editor_pivot_label.removeChild(DOM.oils_rpt_editor_pivot_label.lastChild);
+
+    while(DOM.oils_rpt_editor_pivot_data.lastChild)
+        DOM.oils_rpt_editor_pivot_data.removeChild(DOM.oils_rpt_editor_pivot_data.lastChild);
+
+    if(hasAgg) {
+        unHideMe(DOM.oils_rpt_editor_pivot_label_row);
+        unHideMe(DOM.oils_rpt_editor_pivot_data_row);
+
+        for(var i in rptObject.def.select) {
+            var col = rptObject.def.select[i];
+            if(OILS_RPT_TRANSFORMS[col.column.transform].aggregate) 
+               insertSelectorVal(DOM.oils_rpt_editor_pivot_data, -1, col.alias, parseInt(i)+1);
+            else
+               insertSelectorVal(DOM.oils_rpt_editor_pivot_label, -1, col.alias, parseInt(i)+1);
+        }
+
+    } else {
+        hideMe(DOM.oils_rpt_editor_pivot_label_row);
+        hideMe(DOM.oils_rpt_editor_pivot_data_row);
+    }
+ 
+
 	if( rpt ) {
 		DOM.oils_rpt_report_editor_name.value = rpt.name();
 		DOM.oils_rpt_report_editor_description.value = rpt.description();
@@ -101,6 +138,12 @@ oilsRptReportEditor.prototype.save = function() {
 
 		data[par.key] = val;
 	}
+
+    if(getSelectorVal(DOM.oils_rpt_editor_pivot_data)) {
+        data.__pivot_label = getSelectorVal(DOM.oils_rpt_editor_pivot_label);
+        data.__pivot_data = getSelectorVal(DOM.oils_rpt_editor_pivot_data);
+    }
+
 
 	data = js2JSON(data);
 	_debug("complete report data = "+data);
