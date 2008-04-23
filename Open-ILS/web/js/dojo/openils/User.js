@@ -18,156 +18,187 @@ if(!dojo._hasResource["openils.User"]) {
 
     dojo._hasResource["openils.User"] = true;
     dojo.provide("openils.User");
+    dojo.require("DojoSRF");
     dojo.require('openils.Event');
     dojo.require('fieldmapper.Fieldmapper');
 
-    dojo.declare('openils.User', null, {});
+    dojo.declare('openils.User', null, {
 
-    openils.User.user = null;
-    openils.User.authtoken = null;
-    openils.User.authtime = null;
+        user : null,
+        username : null,
+        passwd : null,
+        login_type : 'opac',
+        location : null,
+        authtoken : null,
+        authtime : null,
+    
+        constructor : function ( kwargs ) {
+            this.id = kwargs.id;
+            this.user = kwargs.user;
+            this.authtoken = kwargs.authtoken;
+            this.authtime = kwargs.authtime;
+            this.login_type = kwargs.login_type;
+            this.location = kwargs.location;
 
-    var ses = new OpenSRF.ClientSession('open-ils.auth');
+            if (this.id && this.authtoken) this.getById();
+            else if (this.authtoken) this.getBySession();
+            else if (kwargs.login) this.login();
 
-    openils.User.getBySession = function(onComplete) {
-        var req = ses.request('open-ils.auth.session.retrieve', openils.User.authtoken);
-        if(onComplete) {
-            req.oncomplete = function(r) {
-                var user = r.recv().content();
-                openils.User.user = user;
-                if(onComplete)
+        },
+
+        getBySession : function(onComplete) {
+            var _u = this;
+            var req = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.session.retrieve', _u.authtoken);
+            if(onComplete) {
+                req.oncomplete = function(r) {
+                    var user = r.recv().content();
+                    _u.user = user;
+                    if(onComplete)
+                        onComplete(user);
+                }
+                req.send();
+            } else {
+                req.timeout = 10;
+                req.send();
+                return _u.user = req.recv().content();
+            }
+        },
+    
+        getById : function(id, onComplete) {
+            var req = OpenSRF.CachedClientSession('open-ils.actor').request('open-ils.actor.user.retrieve', this.authtoken, id);
+            if(onComplete) {
+                req.oncomplete = function(r) {
+                    var user = r.recv().content();
                     onComplete(user);
+                }
+                req.send();
+            } else {
+                req.timeout = 10;
+                req.send();
+                return req.recv().content();
             }
-            req.send();
-        } else {
-            req.timeout = 10;
-            req.send();
-            return openils.User.user = req.recv().content();
-        }
-    }
+        },
+    
+    
+        /**
+         * Logs in, sets the authtoken/authtime vars, and fetches the logged in user
+         */
+        login : function(args, onComplete) {
+            var _u = this;
 
-    openils.User.getById = function(id, onComplete) {
-        var ases = new OpenSRF.ClientSession('open-ils.actor');
-        var req = ases.request('open-ils.actor.user.retrieve', openils.User.authtoken, id);
-        if(onComplete) {
+            if (!args) args = {};
+            if (!args.username) args.username = _u.username;
+            if (!args.passwd) args.passwd = _u.passwd;
+            if (!args.type) args.type = _u.login_type;
+            if (!args.location) args.location = _u.location;
+
+            var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.username);
+    
+            initReq.oncomplete = function(r) {
+                var seed = r.recv().content(); 
+                alert(seed);
+                var loginInfo = {
+                    password : hex_md5(seed + hex_md5(args.passwd)), 
+                    type : args.type,
+                    org : args.location,
+                };
+    
+                var authReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.complete', loginInfo);
+                authReq.oncomplete = function(rr) {
+                    var data = rr.recv().content();
+                    _u.authtoken = data.payload.authtoken;
+                    _u.authtime = data.payload.authtime;
+                    _u.getBySession(onComplete);
+                }
+                authReq.send();
+            }
+    
+            initReq.send();
+        },
+    
+        /**
+         * Returns a list of the "highest" org units where the user
+         * has the given permission.
+         */
+        getPermOrgList : function(perm, onload) {
+    
+            var req = OpenSRF.CachedClientSession('open-ils.actor').request(
+                'open-ils.actor.user.work_perm.highest_org_set',
+                this.authtoken, perm);
+    
             req.oncomplete = function(r) {
-                var user = r.recv().content();
-                onComplete(user);
+                org_list = r.recv().content();
+                onload(org_list);
             }
+    
             req.send();
-        } else {
-            req.timeout = 10;
-            req.send();
-            return req.recv().content();
-        }
-    }
+        },
+    
+        /**
+         * Builds a dijit.Tree using the orgs where the user has the requested permission
+         * @param perm The permission to check
+         * @param domId The DOM node where the tree widget should live
+         * @param onClick If defined, this will be connected to the tree widget for
+         * onClick events
+         */
+        buildPermOrgTreePicker : function(perm, domId, onClick) {
 
-
-    /**
-     * Logs in, sets the authtoken/authtime vars, and fetches the logged in user
-     */
-    openils.User.login = function(args, onComplete) {
-        var initReq = ses.request('open-ils.auth.authenticate.init', args.username);
-
-        initReq.oncomplete = function(r) {
-            var seed = r.recv().content(); 
-            alert(seed);
-            var loginInfo = {
-                password : hex_md5(seed + hex_md5(args.passwd)), 
-                type : args.type || 'opac',
-                org : args.location,
-            };
-
-            var authReq = ses.request('open-ils.auth.authenticate.complete', loginInfo);
-            authReq.oncomplete = function(rr) {
-                var data = rr.recv().content();
-                openils.User.authtoken = data.payload.authtoken;
-                openils.User.authtime = data.payload.authtime;
-                openils.User.getBySession(onComplete);
+            dojo.require('dojo.data.ItemFileReadStore');
+            dojo.require('dijit.Tree');
+            function buildTreePicker(r) {
+                var orgList = r.recv().content();
+                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+                var model = new dijit.tree.ForestStoreModel({
+                    store: store,
+                    query: {_top:'true'},
+                    childrenAttrs: ["children"],
+                    rootLabel : "Location" /* XXX i18n */
+                });
+    
+                var tree = new dijit.Tree({model : model}, dojo.byId(domId));
+                if(onClick)
+                    dojo.connect(tree, 'onClick', onClick);
+                tree.startup()
             }
-            authReq.send();
-        }
+    
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+                {   params: [this.authtoken, perm],
+                    oncomplete: buildTreePicker,
+                    async: true
+                }
+            )
+        },
+    
+        /**
+         * Sets the store for an existing openils.widget.OrgUnitFilteringSelect 
+         * using the orgs where the user has the requested permission.
+         * @param perm The permission to check
+         * @param selector The pre-created dijit.form.FilteringSelect object.  
+         */
+        buildPermOrgSelector : function(perm, selector) {
+            var _u = this;
+    
+            dojo.require('dojo.data.ItemFileReadStore');
 
-        initReq.send();
-    }
-
-    /**
-     * Returns a list of the "highest" org units where the user
-     * has the given permission.
-     */
-    openils.User.getPermOrgList = function(perm, onload) {
-
-        var ases = new OpenSRF.ClientSession('open-ils.actor');
-        var req = ases.request(
-            'open-ils.actor.user.work_perm.highest_org_set',
-            openils.User.authtoken, perm);
-
-        req.oncomplete = function(r) {
-            org_list = r.recv().content();
-            onload(org_list);
-        }
-
-        req.send();
-    }
-
-    /**
-     * Builds a dijit.Tree using the orgs where the user has the requested permission
-     * @param perm The permission to check
-     * @param domId The DOM node where the tree widget should live
-     * @param onClick If defined, this will be connected to the tree widget for
-     * onClick events
-     */
-    openils.User.buildPermOrgTreePicker = function(perm, domId, onClick) {
-
-        function buildTreePicker(r) {
-            var orgList = r.recv().content();
-            var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
-            var model = new dijit.tree.ForestStoreModel({
-                store: store,
-                query: {_top:'true'},
-                childrenAttrs: ["children"],
-                rootLabel : "Location" /* XXX i18n */
-            });
-
-            var tree = new dijit.Tree({model : model}, dojo.byId(domId));
-            if(onClick)
-                dojo.connect(tree, 'onClick', onClick);
-            tree.startup()
-        }
-
-        fieldmapper.standardRequest(
-            ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
-            {   params: [openils.User.authtoken, perm],
-                oncomplete: buildTreePicker,
-                async: true
+            function buildTreePicker(r) {
+                var orgList = r.recv().content();
+                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+                selector.store = store;
+                selector.startup();
+                selector.setValue(_u.user.ws_ou());
             }
-        )
-    }
-
-    /**
-     * Sets the store for an existing openils.widget.OrgUnitFilteringSelect 
-     * using the orgs where the user has the requested permission.
-     * @param perm The permission to check
-     * @param selector The pre-created dijit.form.FilteringSelect object.  
-     */
-    openils.User.buildPermOrgSelector = function(perm, selector) {
-
-        function buildTreePicker(r) {
-            var orgList = r.recv().content();
-            var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
-            selector.store = store;
-            selector.startup();
-            selector.setValue(openils.User.user.ws_ou());
+    
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+                {   params: [this.authtoken, perm],
+                    oncomplete: buildTreePicker,
+                    async: true
+                }
+            )
         }
 
-        fieldmapper.standardRequest(
-            ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
-            {   params: [openils.User.authtoken, perm],
-                oncomplete: buildTreePicker,
-                async: true
-            }
-        )
-    }
+    });
 }
 
 
