@@ -88,8 +88,32 @@
 						window.perm_grid_layout = [
 							{	cells : [
 									[
-										{ name : "Code",        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit },
-										{ name : "Description", field : "description", width : "auto",  editor : dojox.grid.editors.Editor }
+										{ name : "Code",        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+										{ name : "Description", field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+									],
+									[
+										{ name : "Translation",
+										  width : "10em",
+										  height : "2em",
+										  get : function (row) {
+											if (!window.perm_rows) window.perm_rows = [];
+											var r = window.perm_data_model.getRow(row);
+											if (r) {
+												window.perm_rows[row] = new ccs().fromHash(window.perm_data_model.getRow(row));
+												setTimeout(
+													'dojo.query(".perm_grid_trans_desc_' + row + '").'+
+														'instantiate(openils.I18N.translationWidget,{field:"description",'+
+														'targetObject:"window.perm_rows['+row+']",unique:"' + row + '"});'+
+														'perm_grid.rowHeightChanged('+row+')',
+													0
+												);
+												var oldnode = dojo.byId('description_translation_' + row);
+												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+												return '<span class="perm_grid_trans_desc_'+row+'"></span>';
+											}
+											return '';
+										  }
+										}
 									]
 								]
 							}
