@@ -188,7 +188,7 @@
 												window.status_rows[row] = new ccs().fromHash(window.status_data_model.getRow(row));
 												setTimeout(
 													'dojo.query(".status_grid_trans_cell_' + row + '").'+
-														'instantiate(openils.I18N.translationWidget,{field:"name",'+
+														'instantiate(openils.widget.TranslatorPopup,{field:"name",'+
 														'targetObject:"window.status_rows['+row+']",unique:"' + row + '"});'+
 														'status_grid.rowHeightChanged('+row+')',
 													0
