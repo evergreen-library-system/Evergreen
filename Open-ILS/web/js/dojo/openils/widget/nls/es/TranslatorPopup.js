@@ -1,7 +1,7 @@
 ({
 	locale : 'Escena',
 	translation : 'Traduccion',
-	translation : 'Traducir',
+	translate : 'Traducir',
 	create : 'Crear',
 	update : 'Actualizacion',
 	remove : 'Quitar'

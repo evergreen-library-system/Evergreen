@@ -49,7 +49,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 				var nls = dojo.i18n.getLocalization("openils.widget", "TranslatorPopup");
 				this.localeLabelNode.textContent = nls.locale;
 				this.translationLabelNode.textContent = nls.translation;
-				this.translateLabelNode.setLabel(nls.translation);
+				this.translateLabelNode.setLabel(nls.translate);
 				this.createButtonNode.textContent = nls.create;
 				this.updateButtonNode.textContent = nls.update;
 				this.removeButtonNode.textContent = nls.remove;
