@@ -36,14 +36,6 @@ mod_xmlent:
 	@echo $@
 	make -C apachemods mod_xmlent.so
 
-oils_cgi:
-	@echo $@
-	make -C apachemods oils_cgi.so
-
-oils_cgi-install:
-	@echo $@
-	make -C apachemods oils_cgi-install
-
 mod_xmlent-install:
 	@echo $@
 	make -C apachemods mod_xmlent-install
@@ -90,12 +82,6 @@ webcore-install:
 	cp ../xul/staff_client/server/admin/adminlib.js $(WEBDIR)/reports/
 	mkdir -p $(WEBDIR)/opac/extras/slimpac/
 	
-
-libfieldmapper:	
-	make -C apachemods libfieldmapper.so
-
-libfieldmapper-install:	
-	make -C apachemods libfieldmapper-install
 
 c_apps:
 	@echo $@

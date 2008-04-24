@@ -33,6 +33,7 @@ if(!dojo._hasResource["openils.User"]) {
         authtime : null,
     
         constructor : function ( kwargs ) {
+            kwargs = kwargs || {};
             this.id = kwargs.id;
             this.user = kwargs.user;
             this.passwd = kwargs.passwd;
@@ -54,7 +55,7 @@ if(!dojo._hasResource["openils.User"]) {
                 req.oncomplete = function(r) {
                     var user = r.recv().content();
                     _u.user = user;
-					if (!openils.User.user) !openils.User.user = _u.user;
+					if (!openils.User.user) openils.User.user = _u.user;
                     if(onComplete)
                         onComplete(user);
                 }
@@ -109,9 +110,9 @@ if(!dojo._hasResource["openils.User"]) {
                 authReq.oncomplete = function(rr) {
                     var data = rr.recv().content();
                     _u.authtoken = data.payload.authtoken;
-					if (!openils.User.authtoken) !openils.User.authtoken = _u.authtoken;
+					if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
                     _u.authtime = data.payload.authtime;
-					if (!openils.User.authtime) !openils.User.authtime = _u.authtime;
+					if (!openils.User.authtime) openils.User.authtime = _u.authtime;
                     _u.getBySession(onComplete);
                 }
                 authReq.send();
