@@ -176,7 +176,8 @@ CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
 	code		TEXT		NOT NULL,
 	description	TEXT		NOT NULL,
-	xpath		TEXT		NOT NULL
+	xpath		TEXT		NOT NULL,
+	remove		TEXT		NOT NULL DEFAULT ''
 );
 
 CREATE TABLE acq.lineitem_marc_attr_definition (
@@ -205,8 +206,8 @@ INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUE
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('author','Author of work','//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('language','Lanuage of work','//*[@tag="240"]/*[@code="l"][1]');
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('pagination','Pagination','//*[@tag="300"]/*[@code="a"][1]');
-INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]');
-INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]');
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath, remove ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]', $r$(?:-|\s.+$)$r$);
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath, remove ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]', $r$(?:-|\s.+$)$r$);
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('identifier','Identifier','//*[@tag="001"]');
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
@@ -217,14 +218,11 @@ INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUE
 -- Functions
 
 
-CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT array_to_string( array_accum( output ),' ' ) FROM xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
+CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT, TEXT) RETURNS TEXT AS $$
+	SELECT public.extract_marc_field('acq.lineitem', $1, $2, $3);
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('acq.lineitem', $1, $2);
-$$ LANGUAGE SQL;
-
+/*
 CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
 	SELECT public.extract_marc_field('biblio.record_entry', $1, $2);
 $$ LANGUAGE SQL;
@@ -232,7 +230,7 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION public.extract_authority_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
 	SELECT public.extract_marc_field('authority.record_entry', $1, $2);
 $$ LANGUAGE SQL;
-
+*/
 -- For example:
 -- INSERT INTO acq.lineitem_provider_attr_definition ( provider, code, description, xpath ) VALUES (1,'price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
 
@@ -260,7 +258,7 @@ BEGIN
 			CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
 		END IF;
 
-		SELECT extract_acq_marc_field(id, adef.xpath) INTO value FROM acq.lineitem WHERE id = NEW.id;
+		SELECT extract_acq_marc_field(id, adef.xpath, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
 		IF (value IS NOT NULL AND value <> '') THEN
 			INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
 		END IF;
