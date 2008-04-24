@@ -30,6 +30,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 	dojo.require("dijit.form.Button");
 	dojo.require("dijit.form.TextBox");
 	dojo.require("dijit.form.ComboBox");
+	dojo.requireLocalization("openils.widget", "TranslatorPopup");
 
 
     dojo.declare(
@@ -37,16 +38,26 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 		[dijit._Widget, dijit._Templated],
 		{
 
-			templateString : "<span dojoAttachPoint='node'><div dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation_${unique}' dojoType='dijit.TooltipDialog' onOpen='openils.widget.TranslatorPopup.renderTranslationPopup(${targetObject}, \"${field}\", \"${unique}\")' ><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visiblity:hidden;'><tr><th>Locale</th><td class='locale'><div class='locale_combobox'></div></td><th>Translation</th><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visiblity:hidden;'>Create</button><button class='update_button' style='display:none; visiblity:hidden;'>Update</button><button class='delete_button' style='display:none; visiblity:hidden;'>Remove</button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
+			templateString : "<span dojoAttachPoint='node'><div dojoAttachPoint='translateLabelNode' dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation_${unique}' dojoType='dijit.TooltipDialog' onOpen='openils.widget.TranslatorPopup.renderTranslatorPopup(${targetObject}, \"${field}\", \"${unique}\")' ><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visiblity:hidden;'><tr><th dojoAttachPoint='localeLabelNode'/><td class='locale'><div class='locale_combobox'></div></td><th dojoAttachPoint='translationLabelNode'/><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visiblity:hidden;'><span dojoAttachPoint='createButtonNode'/></button><button class='update_button' style='display:none; visiblity:hidden;'><span dojoAttachPoint='updateButtonNode'/></button><button class='delete_button' style='display:none; visiblity:hidden;'><span dojoAttachPoint='removeButtonNode'/></button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
 
 			widgetsInTemplate: true,
 			field : "",
 			targetObject : "",
-			unique : ""
+			unique : "",
+
+			postCreate : function () {
+				var nls = dojo.i18n.getLocalization("openils.widget", "TranslatorPopup");
+				this.localeLabelNode.textContent = nls.locale;
+				this.translationLabelNode.textContent = nls.translation;
+				this.translateLabelNode.setLabel(nls.translation);
+				this.createButtonNode.textContent = nls.create;
+				this.updateButtonNode.textContent = nls.update;
+				this.removeButtonNode.textContent = nls.remove;
+			}
 		}
 	);
 
-	openils.widget.TranslatorPopup.renderTranslationPopup = function (obj, field, num) {
+	openils.widget.TranslatorPopup.renderTranslatorPopup = function (obj, field, num) {
 		var node = dojo.byId(field + '_translation_' + num);
 
 		var trans_list = openils.I18N.getTranslations( obj, field );
@@ -208,7 +219,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 						var node = dojo.byId(field + '_translation_' + num);
 						dijit.byId('i18n_new_locale_' + obj.classname + '.' + field + num).setValue(null);
 						dijit.byId('i18n_new_translation_' + obj.classname + '.' + field + num).setValue(null);
-						openils.widget.TranslatorPopup.renderTranslationPopup(obj, field, num);
+						openils.widget.TranslatorPopup.renderTranslatorPopup(obj, field, num);
 					}
 	
 				} else {
