@@ -40,6 +40,14 @@ $_$ LANGUAGE SQL;
 
 */
 
+CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace(array_to_string( array_accum( output ),' ' ),$4,'','g') FROM xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
+	SELECT public.extract_marc_field($1,$2,$3,'');
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keyclass TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
 DECLARE
     locale      TEXT := LOWER( REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'-', '_', 'g' ) );
