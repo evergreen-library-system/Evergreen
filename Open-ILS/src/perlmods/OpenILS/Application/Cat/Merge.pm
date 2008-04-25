@@ -38,6 +38,10 @@ sub rgrep {
 sub merge_records {
 	my( $editor, $master, $records ) = @_;
 
+    # bib records are global objects, so no org context required.
+    return (undef, $editor->die_event) 
+        unless $editor->allowed('MERGE_BIB_RECORDS');
+
 	my $vol;
 	my $evt;
 
@@ -133,7 +137,7 @@ sub merge_records {
 				$record->deleted('f');
 				$record->editor($reqr->id);
 				$record->edit_date('now');
-				$editor->update_biblio_record_entry($record, {checkperm => 1})
+				$editor->update_biblio_record_entry($record)
 					or return $editor->die_event;
 			}
 
@@ -142,7 +146,7 @@ sub merge_records {
 			$record->deleted('t');
 			$record->editor($reqr->id);
 			$record->edit_date('now');
-			$editor->update_biblio_record_entry($record, {checkperm => 1})
+			$editor->update_biblio_record_entry($record)
 				or return $editor->die_event;
 		}
 	}
@@ -216,7 +220,6 @@ sub merge_volumes {
 		$_->deleted('t');
 		$_->editor($editor->requestor->id);
 		$_->edit_date('now');
-		return (undef,$editor->die_event) unless $editor->allowed('UPDATE_VOLUME', $_->owning_lib);
 		$editor->update_asset_call_number($_) or return (undef, $editor->die_event);
         merge_volume_holds($editor, $bigcn, $_->id);
 	}
