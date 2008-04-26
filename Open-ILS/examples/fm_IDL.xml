@@ -1080,7 +1080,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
-			<link field="simple_record" reltype="might_have" key="id" map="" class="rssr"/>
+			<link field="simple_record" reltype="might_have" key="id" map="" class="rmsr"/>
 			<link field="metarecord" reltype="might_have" key="source" map="metarecord" class="mmrsm"/>
 			<link field="call_numbers" reltype="has_many" key="record" map="" class="acn"/>
 			<link field="keyword_field_entries" reltype="has_many" key="source" map="" class="mkfe"/>
@@ -3229,6 +3229,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="runner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="report" reltype="has_a" key="id" map="" class="rr"/>
 			<link field="folder" reltype="has_a" key="id" map="" class="rof"/>
+		</links>
+	</class>
+	<class id="rmsr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::materialized_simple_record" oils_persist:tablename="reporter.materialized_simple_record" reporter:label="Fast Simple Record Extracts">
+		<fields oils_persist:primary="id">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Record ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fingerprint" name="fingerprint" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Overall Record Quality" name="quality" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="TCN Source" name="tcn_source" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="TCN Value" name="tcn_value" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Title Proper (normalized)" name="title" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Author (normalized)" name="author" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Publisher (normalized)" name="publisher" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Publication Year (normalized)" name="pubdate" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="ISBN" name="isbn" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="ISSN" name="issn" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Full Bibliographic record" name="biblio_record" oils_obj:array_position="14" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="biblio_record" reltype="might_have" key="id" map="" class="bre"/>
 		</links>
 	</class>
 	<class id="rssr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::super_simple_record" oils_persist:tablename="reporter.super_simple_record" reporter:label="Simple Record Extracts">

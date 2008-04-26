@@ -132,7 +132,7 @@ SELECT	r.id,
   WHERE	r.deleted IS FALSE
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
-CREATE OR REPLACE VIEW reporter.super_simple_record AS
+CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
 SELECT	r.id,
 	r.fingerprint,
 	r.quality,
@@ -154,8 +154,9 @@ SELECT	r.id,
   WHERE	r.deleted IS FALSE
   GROUP BY 1,2,3,4,5,6,8,9;
 
-CREATE TABLE reporter.materialized_simple_record AS SELECT * FROM reporter.simple_record WHERE 1=0;
+CREATE TABLE reporter.materialized_simple_record AS SELECT * FROM reporter.old_super_simple_record WHERE 1=0;
 ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
+CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
 BEGIN
@@ -164,7 +165,7 @@ BEGIN
     END IF;
 
     IF TG_OP IN ('INSERT','UPDATE') AND NOT NEW.deleted THEN
-        INSERT INTO reporter.materialized_simple_record SELECT * FROM reporter.simple_record WHERE id = NEW.record;
+        INSERT INTO reporter.materialized_simple_record SELECT * FROM reporter.old_super_simple_record WHERE id = NEW.record;
     END IF;
 
 END;
