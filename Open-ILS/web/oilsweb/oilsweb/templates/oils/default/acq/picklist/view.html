@@ -11,6 +11,19 @@
 
     <script type="text/javascript">
         dojo.require("dijit.layout.SplitContainer")
+	dojo.require('openils.acq.Picklist');
+    </script>
+    <script type='text/javascript'>
+	function getJUBTitle(rowIndex) {
+	    data = pickListGrid.model.getRow(rowIndex);
+	    if (!data) return '';
+	    return openils.acq.Picklist.find_attr(data.id, "title", "lineitem_marc_attr_definition")
+	}
+	function getJUBPrice(rowIndex) {
+	    data = pickListGrid.model.getRow(rowIndex);
+	    if (!data) return;
+	    return openils.acq.Picklist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
+	}
     </script>
 </%def>
 <%def name="page_title()">${_('Picklist')}</%def>
@@ -22,29 +35,51 @@
     </div>
     <div dojoType="dijit.layout.SplitContainer"
 	 orientation="vertical" sizerWidth="5"
-	 activeSizing="0" layoutAlign="client">
-	<div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
-	    <div id="oils-acq-picklist-grid"> </div>
-	    <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/util/Dojo.js"></script>
-	    <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/openils/acq/Picklist.js"></script>
+	 activeSizing="1" layoutAlign="client">
+	<div id="oils-acq.picklist-container"
+	     dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
+	    <div jsid='pickListGrid' dojoType='dojox.Grid'
+		 id="oils-acq-picklist-grid"> </div>
 	    <script type="text/javascript">
-		dojo.require('openils.acq.Picklist');
-		
-		var cols = [
-		{name: "${_('ID')}", field: 'id'},
-		{name: "${_('Title')}", width: "50%", field: 'title'},
-		{name: "${_('Price')}", field: 'price'},
-		{name: "${_('Vendor')}", field: 'provider'},
-		{name: "${_('# of Copies')}", field: 'copies'}
-		];
-		
-		dojo.addOnLoad(function(){openils.acq.Picklist.loadGrid('oils-acq-picklist-grid', cols, ${c.oils.acq.picklist.value.id()})});
+                dojo.require("openils.acq.Picklist");
+		dojo.require('dojo.data.ItemFileWriteStore');
+		var layout = [{
+		    cells: [[
+			{name: "ID", field: 'id'},
+			{name: "Title", width: "50%", get:getJUBTitle},
+			{name: "Price", get:getJUBPrice},
+			{name: "Vendor", field: 'provider'},
+			{name: "# of Copies", field: 'item_count'}
+		    ]]
+		}];
+
+		openils.acq.Picklist.createStore(${c.oils.acq.picklist.value.id()},
+		    function(storeData) {
+		        var store = new dojo.data.ItemFileReadStore({data:storeData});
+		        var model = new dojox.grid.data.DojoData(null, store,
+		                         {rowsPerPage:20, clientSort:true,
+                                          query:{id:'*'}});
+		        pickListGrid.setStructure(layout);
+		        pickListGrid.setModel(model);
+		        pickListGrid.update();
+                    });
 	    </script>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" sizeMin="20"
 	     sizeShare="80">
-	    <p>Hi!</p>
-	    <div id="oils-acq-picklist-details-grid"> </div>
+	    <script type="text/javascript">
+		dojo.require("openils.acq.Lineitems");
+
+		var li_cols = [
+		{name: ('Fund'), field: 'fund'},
+		{name: ('Location'), field: 'location'}
+		];
+
+		dojo.addOnLoad(function(){openils.acq.Lineitems.initGrid('oils-acq-picklist-details-grid', li_cols);});
+	    </script>
+	    <div id="oils-acq-picklist-details-grid">
+		<p>Copy order details go here...</p>
+	    </div>
 	</div>
     </div>
 </div>
