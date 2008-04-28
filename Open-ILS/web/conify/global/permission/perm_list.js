@@ -16,7 +16,7 @@
 */
 
 dojo.require('fieldmapper.dojoData');
-dojo.require('openils.I18N');
+dojo.require('openils.widget.TranslatorPopup');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
