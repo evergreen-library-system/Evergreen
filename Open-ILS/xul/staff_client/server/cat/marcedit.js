@@ -1090,7 +1090,7 @@ function updateFixedFields (element) {
 		ldr : _record.leader,
 		_6 : _record.controlfield.(@tag=='006'),
 		_7 : _record.controlfield.(@tag=='007'),
-		_8 : _record.controlfield.(@tag=='008'),
+		_8 : _record.controlfield.(@tag=='008')
 	};
 
 	var name = element.getAttribute('name');
@@ -1305,7 +1305,7 @@ function marcSubfield (sf) {
 			  onmouseover : 'getTooltip(this, "subfield");',
 			  contextmenu : function (event) { getAuthorityContextMenu(event.target, sf) },
 			  size : new String(sf.text()).length + 2,
-			  oninput : "this.setAttribute('size', this.value.length + 2);",
+			  oninput : "this.setAttribute('size', this.value.length + 2);"
 			} )
 	);
 }
