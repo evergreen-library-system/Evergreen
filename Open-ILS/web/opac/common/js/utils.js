@@ -111,7 +111,7 @@ function instanceOf(object, constructorFunction) {
 
 /* ------------------------------------------------------------------------------------------- */
 /* detect my browser */
-var isMac, NS, NS4, NS6, IE, IE4, IE4mac, IE4plus, IE5, IE5plus, IE6, IEMajor, ver4;
+var isMac, NS, NS4, NS6, IE, IE4, IEmac, IE4plus, IE5, IE5plus, IE6, IEMajor, ver4;
 function detect_browser() {       
 
    isMac = (navigator.appVersion.indexOf("Mac")!=-1) ? true : false;
