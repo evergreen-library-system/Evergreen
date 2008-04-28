@@ -542,7 +542,7 @@ var ff_pos = {
 		},
 		_6 : {
 			VIS : {start : 16, len : 1, def : ' ' }
-		},
+		}
 	},
 	Time : {
 		_8 : {
@@ -586,7 +586,7 @@ var ff_pos = {
 		},
 		_6 : {
 			MAP : {start : 16, len : 2, def : ' ' }
-		},
+		}
 	},
 	Relf : {
 		_8 : {
