@@ -1312,7 +1312,7 @@ function marcSubfield (sf) {
 
 function loadRecord(rec) {
 	try {
-			_record = rec;
+			var _record = rec;
 			var grid_rows = document.getElementById('recGrid').lastChild;
 
 			while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
@@ -1408,7 +1408,7 @@ function genToolTips () {
 						'var e = document.createEvent("MutationEvents");' +
 						'e.initMutationEvent("change",1,1,null,0,0,0,0);' +
 						'current_focus.inputField.dispatchEvent(e);',
-					  tooltiptext : sf.description,
+					  tooltiptext : sf.description
 					}
 				)
 			);
@@ -1582,7 +1582,7 @@ function getAuthorityContextMenu (target, sf) {
 				  command : function (event) {
 						applyAuthority(event.target.previousSibling, target, sf);
 						return true;
-				  },
+				  }
 				}
 			)
 		);
@@ -1792,7 +1792,7 @@ var control_map = {
 			181 : 'z',
 			182 : 'z',
 			185 : 'z'
-		},
+		}
 	},
 	630 : {
 		'a' : { 130 : 'a' },
