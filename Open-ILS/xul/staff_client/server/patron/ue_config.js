@@ -303,7 +303,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_day_phone',
 				type		: 'input',
-				regex		:  phoneRegex,
+				regex		:  phoneRegex
 			}
 		},
 		{
@@ -314,7 +314,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_night_phone',
 				type		: 'input',
-				regex		:  phoneRegex,
+				regex		:  phoneRegex
 			}
 		},
 		{
@@ -325,7 +325,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_other_phone',
 				type		: 'input',
-				regex		:  phoneRegex,
+				regex		:  phoneRegex
 			}
 		},
 		{
@@ -335,7 +335,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_org_selector',
 				type		: 'select',
-				regex		:  numRegex,
+				regex		:  numRegex
 			}
 		},
 		{
@@ -346,7 +346,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_expire',
 				type		: 'input',
-				regex		:  dateRegex,
+				regex		:  dateRegex
 			}
 		},
 		{
@@ -355,7 +355,7 @@ function uEditDefineData(patron) {
 			key		: 'active',
 			widget	: {
 				id			: 'ue_active',
-				type		: 'checkbox',
+				type		: 'checkbox'
 			}
 		},
 		{
@@ -659,7 +659,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_label',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -671,7 +671,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street1',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -683,7 +683,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street2',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -695,7 +695,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_city',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -706,7 +706,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_county',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -718,7 +718,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_state',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -730,7 +730,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_country',
 				type	: 'input',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -780,7 +780,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_inc_yes',
 				type	: 'checkbox',
-				disabled : disabled,
+				disabled : disabled
 			}
 		},
 		{ 
@@ -791,7 +791,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_valid_yes',
 				type	: 'checkbox',
-				disabled : disabled,
+				disabled : disabled
 			}
 		}
 	];
