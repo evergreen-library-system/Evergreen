@@ -33,13 +33,24 @@ SELECT  r.id,
   GROUP BY 1,2,3,4,5,6,8,9;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
+DECLARE
+    r_id        BIGINT;
+    new_data    RECORD;
 BEGIN
-    IF TG_OP IN ('UPDATE','DELETE') THEN
-        DELETE FROM reporter.materialized_simple_record WHERE id = OLD.record;
+    IF TG_OP IN ('DELETE') THEN
+        r_id := OLD.record;
+    ELSE
+        r_id := NEW.record;
     END IF;
 
-    IF TG_OP IN ('INSERT','UPDATE') AND NOT NEW.deleted THEN
-        INSERT INTO reporter.materialized_simple_record SELECT * FROM reporter.old_super_simple_record WHERE id = NEW.record;
+    SELECT * INTO new_data FROM reporter.materialized_simple_record WHERE id = r_id FOR UPDATE;
+    DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
+
+    IF TG_OP IN ('DELETE') THEN
+        RETURN OLD;
+    ELSE
+        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = NEW.record;
+        RETURN NEW;
     END IF;
 
 END;
