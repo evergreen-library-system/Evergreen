@@ -251,7 +251,7 @@ util.network.prototype = {
 			{
 				'login_type' : 'staff',
 				'desc_brief' : text ? 'Session Expired' : 'Operator Change',
-				'desc_full' : text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.',
+				'desc_full' : text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'
 				//'simple_auth' : (new Date()).toString(),
 			}
 		);
@@ -315,7 +315,7 @@ util.network.prototype = {
 						{
 							'login_type' : 'temp',
 							'desc_brief' : 'Permission Denied: ' + robj.ilsperm,
-							'desc_full' : 'Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: ' + name,
+							'desc_full' : 'Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: ' + name
 							//'simple_auth' : (new Date()).toString(),
 						}
 					);
@@ -399,9 +399,7 @@ util.network.prototype = {
 		} catch(E) {
 			throw(E);
 		}
-	},
-
-
+	}
 }
 
 /*

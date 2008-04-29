@@ -72,7 +72,7 @@ util.browser.prototype = {
 									obj.error.sdump('D_ERROR',err);
 								}
 							}
-						],
+						]
 					}
 				}
 			);
@@ -258,7 +258,7 @@ util.browser.prototype = {
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.buildProgressListener: ' + E + '\n');
 		}
-	},
+	}
 }
 
 dump('exiting util.browser.js\n');

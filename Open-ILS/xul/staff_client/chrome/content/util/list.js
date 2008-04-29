@@ -1294,7 +1294,7 @@ util.list.prototype = {
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('pre sorting', E);
 		}
-	},
+	}
 
 }
 dump('exiting util.list.js\n');

@@ -164,7 +164,7 @@ util.deck.prototype = {
 					'push_xulG' : true,
 					'alt_print' : false,
 					'browser_id' : 'frame_'+obj.id_incr,
-					'passthru_content_params' : content_params,
+					'passthru_content_params' : content_params
 				}
 			);
 		return browser;
@@ -180,7 +180,7 @@ util.deck.prototype = {
 		}
 	},
 
-	'id_incr' : 0,
+	'id_incr' : 0
 }	
 
 dump('exiting util/deck.js\n');

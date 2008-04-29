@@ -429,7 +429,7 @@ function uEditDefineData(patron) {
 			key		: 'master_account',
 			widget	: {
 				id			: 'ue_group_lead',
-				type		: 'checkbox',
+				type		: 'checkbox'
 			}
 		},
 		{
@@ -439,7 +439,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_claims_returned',
 				type		: 'input',
-				regex		: numRegex,
+				regex		: numRegex
 			}
 		},
 		{
@@ -448,7 +448,7 @@ function uEditDefineData(patron) {
 			key		: 'alert_message',
 			widget	: {
 				id			: 'ue_alert_message',
-				type		: 'input',
+				type		: 'input'
 			}
 		}
 	];
