@@ -90,6 +90,7 @@ BEGIN;
 /* convenience views for report management                       */
 -------------------------------------------------------------------
 
+DROP VIEW reporter.overdue_reports;
 CREATE OR REPLACE VIEW reporter.overdue_reports AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
@@ -98,6 +99,7 @@ CREATE OR REPLACE VIEW reporter.overdue_reports AS
    JOIN actor.card c ON c.id = u.card
   WHERE s.start_time IS NULL AND s.run_time < now();
 
+DROP VIEW reporter.pending_reports;
 CREATE OR REPLACE VIEW reporter.pending_reports AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
@@ -106,6 +108,7 @@ CREATE OR REPLACE VIEW reporter.pending_reports AS
    JOIN actor.card c ON c.id = u.card
   WHERE s.start_time IS NULL;
 
+DROP VIEW reporter.currently_running;
 CREATE OR REPLACE VIEW reporter.currently_running AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
