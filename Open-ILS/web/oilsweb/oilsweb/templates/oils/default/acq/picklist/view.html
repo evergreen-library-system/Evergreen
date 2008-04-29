@@ -40,10 +40,13 @@
 	     dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="20">
 	    <div jsid='pickListGrid' dojoType='dojox.Grid'
 		 id="oils-acq-picklist-grid"> </div>
+	    <script type="text/javascript" src="/js/dojo/openils/acq/Lineitems.js"></script>
 	    <script type="text/javascript">
                 dojo.require("openils.acq.Picklist");
-		dojo.require('dojo.data.ItemFileWriteStore');
-		var layout = [{
+// 		dojo.require("openils.acq.Lineitems");
+		dojo.require('dojo.data.ItemFileReadStore');
+
+		var picklistLayout = [{
 		    cells: [[
 			{name: "ID", field: 'id'},
 			{name: "Title", width: "50%", get:getJUBTitle},
@@ -53,32 +56,34 @@
 		    ]]
 		}];
 
+		var lineitemLayout = [{ cells: [[
+		    {name:'ID', field:'id'},
+		    {name:'Fund', field:'fund'},
+		    {name:'Location', field:'location'} ]] }];
+
 		openils.acq.Picklist.createStore(${c.oils.acq.picklist.value.id()},
 		    function(storeData) {
 		        var store = new dojo.data.ItemFileReadStore({data:storeData});
 		        var model = new dojox.grid.data.DojoData(null, store,
 		                         {rowsPerPage:20, clientSort:true,
                                           query:{id:'*'}});
-		        pickListGrid.setStructure(layout);
+		        pickListGrid.setStructure(picklistLayout);
 		        pickListGrid.setModel(model);
+
+			pickListGrid.onRowClick = function(evt) {
+			    openils.acq.Lineitems.loadGrid(lineItemGrid,
+							   model.getRow(evt.rowIndex).id,
+							   lineitemLayout);
+			};
+
 		        pickListGrid.update();
                     });
 	    </script>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" sizeMin="20"
 	     sizeShare="80">
-	    <script type="text/javascript">
-		dojo.require("openils.acq.Lineitems");
-
-		var li_cols = [
-		{name: ('Fund'), field: 'fund'},
-		{name: ('Location'), field: 'location'}
-		];
-
-		dojo.addOnLoad(function(){openils.acq.Lineitems.initGrid('oils-acq-picklist-details-grid', li_cols);});
-	    </script>
-	    <div id="oils-acq-picklist-details-grid">
-		<p>Copy order details go here...</p>
+	    <div jsid="lineItemGrid" dojoType="dojox.Grid" id="oils-acq-picklist-details-grid">
+		<!-- Copy order details go here -->
 	    </div>
 	</div>
     </div>
