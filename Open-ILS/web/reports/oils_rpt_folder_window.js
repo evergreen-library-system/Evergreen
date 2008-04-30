@@ -604,7 +604,7 @@ oilsRptFolderWindow.prototype.setFolderEditActions = function() {
 	DOM.oils_rpt_folder_manager_name_input.value = folder.name();
 	DOM.oils_rpt_folder_manager_change_name_submit.onclick = function() {
 		var name = DOM.oils_rpt_folder_manager_name_input.value;
-		if(name) {
+		if(name != "") {
 			folder.name( name );
 			if(confirmId('oils_rpt_folder_manager_change_name_confirm')) {
 				oilsRptUpdateFolder(folder, obj.type,
