@@ -12,17 +12,28 @@
     <script type="text/javascript">
         dojo.require("dijit.layout.SplitContainer")
 	dojo.require('openils.acq.Picklist');
+	// For decoding fund IDs into names
+	dojo.require("openils.acq.Fund");
     </script>
     <script type='text/javascript'>
 	function getJUBTitle(rowIndex) {
-	    data = pickListGrid.model.getRow(rowIndex);
+	    var data = pickListGrid.model.getRow(rowIndex);
 	    if (!data) return '';
 	    return openils.acq.Picklist.find_attr(data.id, "title", "lineitem_marc_attr_definition")
 	}
 	function getJUBPrice(rowIndex) {
-	    data = pickListGrid.model.getRow(rowIndex);
+	    var data = pickListGrid.model.getRow(rowIndex);
 	    if (!data) return;
 	    return openils.acq.Picklist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
+	}
+	function getLIDFundName(rowIndex) {
+	    var data = lineItemGrid.model.getRow(rowIndex);
+	    if (!data) return;
+	    try {
+		return openils.acq.Fund.retrieve(data.fund).name();
+	    } catch (evt) {
+		return data.fund;
+	    }
 	}
     </script>
 </%def>
@@ -57,9 +68,9 @@
 		}];
 
 		var lineitemLayout = [{ cells: [[
-		    {name:'ID', field:'id'},
-		    {name:'Fund', field:'fund'},
-		    {name:'Location', field:'location'} ]] }];
+		    {name:"ID", field:"id"},
+		    {name:"Fund", get:getLIDFundName},
+		    {name:"Location", field:"location"} ]] }];
 
 		openils.acq.Picklist.createStore(${c.oils.acq.picklist.value.id()},
 		    function(storeData) {
