@@ -14,6 +14,8 @@
 	dojo.require('openils.acq.Picklist');
 	// For decoding fund IDs into names
 	dojo.require("openils.acq.Fund");
+	// For decoding Library IDs into names
+	dojo.require("fieldmapper.OrgUtils");
     </script>
     <script type='text/javascript'>
 	function getJUBTitle(rowIndex) {
@@ -28,11 +30,20 @@
 	}
 	function getLIDFundName(rowIndex) {
 	    var data = lineItemGrid.model.getRow(rowIndex);
-	    if (!data) return;
+	    if (!data || !data.fund) return;
 	    try {
 		return openils.acq.Fund.retrieve(data.fund).name();
 	    } catch (evt) {
 		return data.fund;
+	    }
+	}
+	function getLIDLibName(rowIndex) {
+	    var data = lineItemGrid.model.getRow(rowIndex);
+	    if (!data || !data.owning_lib) return;
+	    try {
+		return fieldmapper.aou.findOrgUnit(data.owning_lib, true).name();
+	    } catch (evt) {
+		return data.owning_lib;
 	    }
 	}
     </script>
@@ -70,7 +81,7 @@
 		var lineitemLayout = [{ cells: [[
 		    {name:"ID", field:"id"},
 		    {name:"Fund", get:getLIDFundName},
-		    {name:"Location", field:"location"} ]] }];
+		    {name:"Location", get:getLIDLibName} ]] }];
 
 		openils.acq.Picklist.createStore(${c.oils.acq.picklist.value.id()},
 		    function(storeData) {
