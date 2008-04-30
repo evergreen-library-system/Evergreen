@@ -224,6 +224,83 @@ SELECT  t.value as title,
     LEFT JOIN asset.stat_cat_entry_copy_map sc2 ON (sc2.owning_copy = cp.id AND sc2.stat_cat = 2)
     LEFT JOIN asset.stat_cat_entry sce2 ON (sce2.id = sc2.stat_cat_entry);
 
+
+CREATE OR REPLACE VIEW money.open_circ_balance_by_owning_lib AS
+	SELECT	circ.id,
+		cn.owning_lib,
+		bill.billing_type,
+		SUM(bill.amount) AS billed
+	  FROM	action.circulation circ
+		JOIN money.billing bill ON (circ.id = bill.xact) 
+		JOIN asset.copy cp ON (circ.target_copy = cp.id) 
+		JOIN asset.call_number cn ON (cn.id = cp.call_number) 
+	  WHERE	circ.xact_finish IS NULL
+		AND NOT bill.voided
+	  GROUP BY 1,2,3
+	  ORDER BY 1,2,3;
+
+CREATE OR REPLACE VIEW money.open_balance_by_owning_lib AS
+	SELECT	owning_lib,
+		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
+	  FROM	money.open_circ_balance_by_owning_lib x
+	  GROUP BY 1;
+
+
+
+
+
+CREATE OR REPLACE VIEW money.open_circ_balance_by_circ_and_owning_lib AS
+	SELECT	circ.id,
+		circ.circ_lib,
+		cn.owning_lib,
+		bill.billing_type,
+		SUM(bill.amount) AS billed
+	  FROM	action.circulation circ
+		JOIN money.billing bill ON (circ.id = bill.xact) 
+		JOIN asset.copy cp ON (circ.target_copy = cp.id) 
+		JOIN asset.call_number cn ON (cn.id = cp.call_number) 
+	  WHERE	circ.xact_finish IS NULL
+		AND NOT bill.voided
+	  GROUP BY 1,2,3,4
+	  ORDER BY 1,2,3,4;
+
+CREATE OR REPLACE VIEW money.open_balance_by_circ_and_owning_lib AS
+	SELECT	circ_lib,
+		owning_lib,
+		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
+	  FROM	money.open_circ_balance_by_circ_and_owning_lib x
+	  GROUP BY 1,2;
+
+
+
+
+
+CREATE OR REPLACE VIEW money.open_circ_balance_by_usr_home_and_owning_lib AS
+	SELECT	circ.id,
+		usr.home_ou,
+		cn.owning_lib,
+		bill.billing_type,
+		SUM(bill.amount) AS billed
+	  FROM	action.circulation circ
+		JOIN money.billing bill ON (circ.id = bill.xact) 
+		JOIN asset.copy cp ON (circ.target_copy = cp.id) 
+		JOIN asset.call_number cn ON (cn.id = cp.call_number) 
+		JOIN actor.usr usr ON (circ.usr = usr.id) 
+	  WHERE	circ.xact_finish IS NULL
+		AND NOT bill.voided
+	  GROUP BY 1,2,3,4
+	  ORDER BY 1,2,3,4;
+
+CREATE OR REPLACE VIEW money.open_balance_by_usr_home_and_owning_lib AS
+	SELECT	home_ou,
+		owning_lib,
+		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
+	  FROM	money.open_circ_balance_by_usr_home_and_owning_lib x
+	  GROUP BY 1,2;
+
 COMMIT;
 
 
