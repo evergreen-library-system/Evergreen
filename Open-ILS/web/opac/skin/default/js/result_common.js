@@ -209,6 +209,7 @@ function resultLowHits() {
 	if(getTerm()) resultExpandSearch(); /* advanced search */
 }
 
+var lowHitsXRefSet = {};
 var lowHitsXRefLink;
 var lowHitsXRefLinkParent;
 function resultLowHitXRef(r) {
@@ -224,6 +225,10 @@ function resultLowHitXRef(r) {
 		var word;
 		var c = 0;
 		while( word = arr.shift() ) {
+
+            if (lowHitsXRefSet[word] == 1) continue;
+            lowHitsXRefSet[word] = 1;
+
 			if(c++ > 20) break;
 			var a = {};
 			a[PARAM_TERM] = word;
