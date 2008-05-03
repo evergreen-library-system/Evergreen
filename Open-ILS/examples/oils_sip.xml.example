@@ -81,6 +81,7 @@
 
 				<scripts>
 					<path>/openils/var/</path>
+                    <path>/openils/var/catalog/</path>
 					<item_config>circ/circ_item_config.js</item_config>
 				</scripts>
 
