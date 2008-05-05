@@ -103,7 +103,7 @@
 											var content_params = {
 												'session' : ses(),
 												'authtime' : ses('authtime'),
-												'opac_url' : opac_url,
+												'opac_url' : opac_url
 											};
 											xulG.set_tab(
 												xulG.url_prefix(urls.XUL_OPAC_WRAPPER),

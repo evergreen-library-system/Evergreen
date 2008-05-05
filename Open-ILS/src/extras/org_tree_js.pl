@@ -59,7 +59,7 @@ $pile .= join ',', @array;
 $pile .= "]; /* Org Units */ \n";
 
 
-$pile .= 'globalOrgTypes = [';
+$pile .= 'var globalOrgTypes = [';
 for my $t (@$types) {
     my ($u,$v,$d,$i,$n,$o,$p) = (val($t->can_have_users),val($t->can_have_vols),$t->depth,$t->id,val($t->name),val($t->opac_label),$t->parent);
     $p ||= 'null';

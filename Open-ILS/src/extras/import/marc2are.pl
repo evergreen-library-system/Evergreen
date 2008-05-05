@@ -61,6 +61,9 @@ my $rec;
 while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
 	my $id = $count;
+	my $_001 = $rec->field('001');
+	my $arn = $count;
+	$arn = $_001->data if ($_001);
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -79,7 +82,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$bib->editor($user);
 	$bib->edit_date('now');
 	$bib->arn_source('LEGACY');
-	$bib->arn_value($count);
+	$bib->arn_value($arn);
 	$bib->last_xact_id('IMPORT-'.$starttime);
 
 	print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";

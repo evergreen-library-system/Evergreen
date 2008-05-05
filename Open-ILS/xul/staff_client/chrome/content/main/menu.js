@@ -323,7 +323,7 @@ main.menu.prototype = {
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
 						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(ses())
 					);
-					obj.set_tab( loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true, } );
+					obj.set_tab( loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true } );
 				}
 			],
 

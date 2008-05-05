@@ -63,5 +63,5 @@ for my $object (keys %$map) {
 
 }
 
-print "fmclasses = _c;\n";
+print "var fmclasses = _c;\n";
 

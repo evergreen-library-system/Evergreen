@@ -542,7 +542,7 @@ var ff_pos = {
 		},
 		_6 : {
 			VIS : {start : 16, len : 1, def : ' ' }
-		},
+		}
 	},
 	Time : {
 		_8 : {
@@ -586,7 +586,7 @@ var ff_pos = {
 		},
 		_6 : {
 			MAP : {start : 16, len : 2, def : ' ' }
-		},
+		}
 	},
 	Relf : {
 		_8 : {
@@ -1090,7 +1090,7 @@ function updateFixedFields (element) {
 		ldr : _record.leader,
 		_6 : _record.controlfield.(@tag=='006'),
 		_7 : _record.controlfield.(@tag=='007'),
-		_8 : _record.controlfield.(@tag=='008'),
+		_8 : _record.controlfield.(@tag=='008')
 	};
 
 	var name = element.getAttribute('name');
@@ -1305,14 +1305,14 @@ function marcSubfield (sf) {
 			  onmouseover : 'getTooltip(this, "subfield");',
 			  contextmenu : function (event) { getAuthorityContextMenu(event.target, sf) },
 			  size : new String(sf.text()).length + 2,
-			  oninput : "this.setAttribute('size', this.value.length + 2);",
+			  oninput : "this.setAttribute('size', this.value.length + 2);"
 			} )
 	);
 }
 
 function loadRecord(rec) {
 	try {
-			_record = rec;
+			var _record = rec;
 			var grid_rows = document.getElementById('recGrid').lastChild;
 
 			while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
@@ -1408,7 +1408,7 @@ function genToolTips () {
 						'var e = document.createEvent("MutationEvents");' +
 						'e.initMutationEvent("change",1,1,null,0,0,0,0);' +
 						'current_focus.inputField.dispatchEvent(e);',
-					  tooltiptext : sf.description,
+					  tooltiptext : sf.description
 					}
 				)
 			);
@@ -1582,7 +1582,7 @@ function getAuthorityContextMenu (target, sf) {
 				  command : function (event) {
 						applyAuthority(event.target.previousSibling, target, sf);
 						return true;
-				  },
+				  }
 				}
 			)
 		);
@@ -1792,7 +1792,7 @@ var control_map = {
 			181 : 'z',
 			182 : 'z',
 			185 : 'z'
-		},
+		}
 	},
 	630 : {
 		'a' : { 130 : 'a' },

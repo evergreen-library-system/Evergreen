@@ -131,7 +131,7 @@
 							obj.shortname(), 
 							obj.id(), 
 							( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
-							( g.aout_hash[ obj.ou_type() ].depth() ),
+							( g.aout_hash[ obj.ou_type() ].depth() )
 						]; 
 					}
 				),
@@ -150,8 +150,8 @@
 					{
 						'title' : document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.override'),
 						'overridable_events' : [ 
-							1703 /* WORKSTATION_NAME_EXISTS */, 
-						],
+							1703 /* WORKSTATION_NAME_EXISTS */
+						]
 					}
 				);
 
@@ -166,7 +166,7 @@
 					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
 						'name' : g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, 
 						'owning_lib' : g.ml.value,
-						'lib_shortname' : g.my_libs_shortname_hash[ g.ml.value ],
+						'lib_shortname' : g.my_libs_shortname_hash[ g.ml.value ]
 					};
 					xulG.file.get('ws_info');
 					xulG.file.set_object(g.data.ws_info);

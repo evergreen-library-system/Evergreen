@@ -129,10 +129,9 @@ SELECT	r.id,
 	LEFT JOIN metabib.full_rec series_title ON (r.id = series_title.record AND series_title.tag IN ('830','440') AND series_title.subfield = 'a')
 	LEFT JOIN metabib.full_rec series_statement ON (r.id = series_statement.record AND series_statement.tag = '490' AND series_statement.subfield = 'a')
 	LEFT JOIN metabib.full_rec summary ON (r.id = summary.record AND summary.tag = '520' AND summary.subfield = 'a')
-  WHERE	r.deleted IS FALSE
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
-CREATE OR REPLACE VIEW reporter.super_simple_record AS
+CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
 SELECT	r.id,
 	r.fingerprint,
 	r.quality,
@@ -151,8 +150,39 @@ SELECT	r.id,
 	LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
 	LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
 	LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
-  WHERE	r.deleted IS FALSE
   GROUP BY 1,2,3,4,5,6,8,9;
+
+CREATE TABLE reporter.materialized_simple_record AS SELECT * FROM reporter.old_super_simple_record WHERE 1=0;
+ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
+CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
+DECLARE
+    r_id        BIGINT;
+    new_data    RECORD;
+BEGIN
+    IF TG_OP IN ('DELETE') THEN
+        r_id := OLD.record;
+    ELSE
+        r_id := NEW.record;
+    END IF;
+
+    SELECT * INTO new_data FROM reporter.materialized_simple_record WHERE id = r_id FOR UPDATE;
+    DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
+
+    IF TG_OP IN ('DELETE') THEN
+        RETURN OLD;
+    ELSE
+        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = NEW.record;
+        RETURN NEW;
+    END IF;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER zzz_update_materialized_simple_record_tgr
+    AFTER INSERT OR UPDATE OR DELETE ON metabib.full_rec
+    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
 
 CREATE OR REPLACE VIEW reporter.demographic AS
 SELECT	u.id,

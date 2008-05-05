@@ -102,8 +102,8 @@
 												window.perm_rows[row] = new ccs().fromHash(window.perm_data_model.getRow(row));
 												setTimeout(
 													'dojo.query(".perm_grid_trans_desc_' + row + '").'+
-														'instantiate(openils.I18N.translationWidget,{field:"description",'+
-														'targetObject:"window.perm_rows['+row+']",unique:"' + row + '"});'+
+														'instantiate(openils.widget.TranslatorPopup,{field:"description",'+
+														'targetObject:"window.perm_rows['+row+']"});'+
 														'perm_grid.rowHeightChanged('+row+')',
 													0
 												);

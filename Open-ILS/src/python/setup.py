@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='Evergreen',
-    version='1.4',
+    version='1.4.0',
     install_requires='OpenSRF>=1.0',
     description='Evergreen Python Modules',
     author='Bill Erickson',

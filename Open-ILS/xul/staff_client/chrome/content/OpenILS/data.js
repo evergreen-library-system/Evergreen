@@ -213,7 +213,7 @@ OpenILS.data.prototype = {
 		'ccs' : [ api.FM_CCS_RETRIEVE.app, api.FM_CCS_RETRIEVE.method, [], true ],
 		'aou' : [ api.FM_AOU_RETRIEVE.app, api.FM_AOU_RETRIEVE.method, [], true ],
 		'aout' : [ api.FM_AOUT_RETRIEVE.app, api.FM_AOUT_RETRIEVE.method, [], true ],
-		'crahp' : [ api.FM_CRAHP_RETRIEVE.app, api.FM_CRAHP_RETRIEVE.method, [], true ],
+		'crahp' : [ api.FM_CRAHP_RETRIEVE.app, api.FM_CRAHP_RETRIEVE.method, [], true ]
 	},
 
 	'stash_retrieve' : function() {
@@ -255,92 +255,92 @@ OpenILS.data.prototype = {
 					'type' : 'items',
 					'header' : 'The following items have been examined:<hr/><ol>',
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				}, 
 				'transit_list' : {
 					'type' : 'transits',
 					'header' : 'Transits:<hr/><ol>',
 					'line_item' : '<li>From: %transit_source% To: %transit_dest_lib%<br/>\r\nWhen: %transit_source_send_time%<br />\r\nBarcode: %transit_item_barcode% Title: %transit_item_title%<br/>\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				}, 
 				'items_out' : {
 					'type' : 'items',
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou have the following items:<hr/><ol>',
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode% Due: %due_date%\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
 				}, 
 				'checkout' : {
 					'type' : 'items',
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou checked out the following items:<hr/><ol>',
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode% Due: %due_date%\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
 				}, 
 				'offline_checkout' : {
 					'type' : 'offline_checkout',
 					'header' : 'Patron %patron_barcode%<br/>\r\nYou checked out the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%<br/>\r\nDue: %due_date%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'checkin' : {
 					'type' : 'items',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				}, 
 				'bill_payment' : {
 					'type' : 'payment',
 					'header' : 'Welcome to %LIBRARY%!<br/>A receipt of your  transaction:<hr/> <table width="100%"> <tr> <td>Original Balance:</td> <td align="right">$%original_balance%</td> </tr> <tr> <td>Payment Method:</td> <td align="right">%payment_type%</td> </tr> <tr> <td>Payment Received:</td> <td align="right">$%payment_received%</td> </tr> <tr> <td>Payment Applied:</td> <td align="right">$%payment_applied%</td> </tr> <tr> <td>Billings Voided:</td> <td align="right">%voided_balance%</td> </tr> <tr> <td>Change Given:</td> <td align="right">$%change_given%</td> </tr> <tr> <td>New Balance:</td> <td align="right">$%new_balance%</td> </tr> </table> <p> Note: %note% </p> <p> Specific bills: <blockquote>',
 					'line_item' : 'Bill #%bill_id%  %last_billing_type% Received: $%payment%<br />%barcode% %title%<br /><br />',
-					'footer' : '</blockquote> </p> <hr />%SHORTNAME% %TODAY_TRIM%<br/> <br/> ',
+					'footer' : '</blockquote> </p> <hr />%SHORTNAME% %TODAY_TRIM%<br/> <br/> '
 				},
 				'bills_historical' : {
 					'type' : 'bills',
 					'header' : 'Welcome to %LIBRARY%!<br/>You had the following bills:<hr/><ol>',
 					'line_item' : '<dt><b>Bill #%id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				}, 
 				'bills_current' : {
 					'type' : 'bills',
 					'header' : 'Welcome to %LIBRARY%!<br/>You have the following bills:<hr/><ol>',
 					'line_item' : '<dt><b>Bill #%id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'bills_main_view' : {
 					'type' : 'bills',
 					'header' : 'Welcome to %LIBRARY%!<br/>You have the following bills:<hr/><ol>',
 					'line_item' : '<dt><b>Bill #%id%</b> %title%</dt> <dd> <table width="100%"> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'offline_checkin' : {
 					'type' : 'offline_checkin',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'offline_renew' : {
 					'type' : 'offline_renew',
 					'header' : 'You renewed the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'offline_inhouse_use' : {
 					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
-					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'in_house_use' : {
 					'type' : 'items',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\nUses: %uses%\r\n<br />%alert_message%',
-					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n'
 				},
 				'holds' : {
 					'type' : 'holds',
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou have the following titles on hold:<hr/><ol>',
 					'line_item' : '<li>%title%\r\n',
-					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n',
-				} 
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
+				}
 			}; 
 
 			obj.stash( 'print_list_templates', 'print_list_types' );

@@ -509,7 +509,7 @@ util.error.prototype = {
 			}
 		}
 		return r;
-	},
+	}
 }
 
 dump('exiting util/error.js\n');

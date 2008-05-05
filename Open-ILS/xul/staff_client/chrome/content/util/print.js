@@ -436,7 +436,7 @@ util.print.prototype = {
 		} catch(E) {
 			this.error.standard_unexpected_error_alert("save_settings()",E);
 		}
-	},
+	}
 }
 
 dump('exiting util/print.js\n');

@@ -12,6 +12,9 @@ pref("open-ils.repository.revision","$Revision$");
 pref("open-ils.repository.date","$Date$");
 pref("open-ils.repository.id","$Id$");
 
+// We'll set a default locale
+pref("general.useragent.locale", "en-US");
+
 // We need something like this to get window.open to work in some places (where it complains about
 // navigator.xul not being registered.  But is about:blank the best value to use here?
 pref("browser.chromeURL","about:blank");

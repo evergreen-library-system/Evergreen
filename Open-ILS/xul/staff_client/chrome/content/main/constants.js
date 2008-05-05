@@ -15,7 +15,7 @@ const my_constants = {
 		'1' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Checked out    | t */
 		'3' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Lost           | f */
 		'6' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | In transit     | t */
-		'8' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : false }, /* | On holds shelf | t */
+		'8' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : false } /* | On holds shelf | t */
 	}
 }
 
@@ -214,7 +214,7 @@ const api = {
 	'RECALCULATE_STANDING_PENALTIES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalties.update' },
     'USER_ORG_UNIT_OPT_IN_FEATURE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.enabled' },
     'USER_ORG_UNIT_OPT_IN_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.check' },
-    'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' },
+    'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' }
 }
 
 const urls = {
@@ -310,5 +310,5 @@ const urls = {
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
-	'TEST_XUL' : '/xul/server/main/test.xul',
+	'TEST_XUL' : '/xul/server/main/test.xul'
 }
