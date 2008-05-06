@@ -99,9 +99,21 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
         if (!args.async && !args.timeout) args.timeout = 10;
 
+        if(!args.onmethoderror) {
+            args.onmethoderror = function(r, stat, stat_text) {
+                throw new Error('Method error: ' + r.stat + ' : ' + stat_text);
+            }
+        }
+
+        if(!args.ontransporterror) {
+            args.ontransporterror = function(xreq) {
+                throw new Error('Transport error status=' + xreq.status);
+            }
+        }
+
 		if (!args.onerror) {
 			args.onerror = function (r) {
-				throw 'Error encountered! ' + r;
+				throw new Error('Request error encountered! ' + r);
 			}
 		}
 
