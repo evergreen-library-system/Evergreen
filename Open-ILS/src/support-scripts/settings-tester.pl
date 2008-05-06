@@ -70,7 +70,8 @@ my $conf = OpenSRF::Utils::Config->current;
 my $j_username    = $conf->bootstrap->username;
 my $j_password    = $conf->bootstrap->passwd;
 my $j_port    = $conf->bootstrap->port;
-my $j_domain    = $conf->bootstrap->domains->[0];
+# We should check for a domains element to catch likely upgrade errors
+my $j_domain    = $conf->bootstrap->domain;
 my $settings_config = $conf->bootstrap->settings_config;
 my $logfile    = $conf->bootstrap->logfile;
 (my $log_dir = $logfile) =~ s#(.*)/.*#$1#;
