@@ -92,7 +92,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			if (dojo.isObject(params)) {
 				args = params;
 			} else {
-				args.params = arguments.splice(1, arguments.length - 1);
+                args.params = [].splice.call(arguments, 1, arguments.length - 1);
 			}
 
 		}
