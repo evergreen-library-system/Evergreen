@@ -15,6 +15,8 @@
     dojo.require('openils.acq.CurrencyType');
     dojo.require('openils.widget.OrgUnitFilteringSelect');
 
+    var globalUser = new openils.User();
+
     function createFS(fields) {
         /** Creates a new funding source */
         openils.acq.FundingSource.create(
@@ -40,7 +42,7 @@
         <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 openils.acq.CurrencyType.loadSelectWidget(fsCurrencySelector);
-                openils.User.buildPermOrgSelector('ADMIN_FUNDING_SOURCE', fsOwnerSelect);
+                globalUser.buildPermOrgSelector('ADMIN_FUNDING_SOURCE', fundOwnerSelect);
             </script>
 
             <table class='dijitTooltipTable'>
@@ -85,7 +87,7 @@
 <script>
 
     function loadFSGrid() {
-        new openils.User().getBySession();
+        globalUser.getBySession();
 
         /** define how the primary grid is rendered */
 
