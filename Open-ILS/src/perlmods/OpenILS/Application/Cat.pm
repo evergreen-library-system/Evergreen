@@ -217,7 +217,7 @@ sub biblio_record_replace_marc  {
 
 	    return $evt if $evt;
 
-		$rec->tcn_value($tcn);
+		$rec->tcn_value($tcn) if ($tcn);
 		$rec->tcn_source($tsource);
 
     } else {
