@@ -86,14 +86,14 @@ sub handler {
     child_init() unless $handler;
 
     return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $key;
-    return $res if defined($res = $AC->serve_from_cache($type, $format, $key));
-    return Apache2::Const::NOT_FOUND unless $AC->lookups_enabled;
 
     my $err;
     my $data;
     my $method = "${type}_${format}";
 
     return Apache2::Const::NOT_FOUND unless $handler->can($method);
+    return $res if defined($res = $AC->serve_from_cache($type, $format, $key));
+    return Apache2::Const::NOT_FOUND unless $AC->lookups_enabled;
 
     try {
         $data = $handler->$method($key);
