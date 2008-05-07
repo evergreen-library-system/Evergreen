@@ -1,0 +1,68 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%def name="page_title()">${_('Title Search')}</%def>
+
+
+<%def name="block_content()">
+
+    <script>
+        dojo.require('dijit.form.MultiSelect');
+        dojo.require('fieldmapper.Fieldmapper');
+        dojo.require('dojo.data.ItemFileReadStore');
+        dojo.require('openils.Event');
+
+        var user = new openils.User();
+        function drawForm() {
+
+            var sources = fieldmapper.standardRequest(
+                ['open-ils.search', 'open-ils.search.z3950.retrieve_services'], 
+                [user.authtoken]
+            );
+
+            openils.Event.parse_and_raise(sources);
+
+            fields = {};
+
+            for(var name in sources) {
+                source = sources[name];
+                o = document.createElement('option');
+                o.value = name;
+                o.appendChild(document.createTextNode(name+' : '+source.host));
+                bibSourceSelect.domNode.appendChild(o);
+                for(var attr in source.attrs) 
+                    if(!attr.match(/^#/))
+                        fields[attr] = 1;
+            }
+
+            for(var field in fields) {
+                input = new dijit.form.TextBox({name:field, label:field});
+                dojo.byId('oils-acq-search-fields').appendChild(document.createTextNode(field));
+                dojo.byId('oils-acq-search-fields').appendChild(input.domNode);
+                dojo.byId('oils-acq-search-fields').appendChild(document.createElement('br'));
+            }
+        }
+        dojo.addOnLoad(drawForm);
+
+        function doSearch() {
+            alert(bibSourceSelect.getValue());
+        }
+    </script>
+
+    <div id='oils-acq-search-block' class='container'>
+        <div id='oils-acq-search-sources-block'>
+            <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
+            <select jsId="bibSourceSelect" dojoType="dijit.form.MultiSelect" value="evergreen"> 
+                <option value='evergreen'>${_('Evergreen Catalog')}</option>
+            </select>
+        </div>
+        <div id='oils-acq-search-form-block'>
+            <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
+            <div id='oils-acq-search-fields'>
+            </div>
+            <div id='oils-acq-search-fields-submit-block'>
+                <div dojoType='dijit.form.Button' onclick='doSearch();'>${_("Submit")}</div>
+            </div>
+        </div>
+    </div>
+</%def>
+
