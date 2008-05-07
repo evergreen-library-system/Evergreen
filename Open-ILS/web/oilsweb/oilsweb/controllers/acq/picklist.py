@@ -119,6 +119,10 @@ class PicklistController(BaseController):
         r.ctx.acq.search_classes_sorted.value = keys
         
         return r.render('acq/picklist/search.html')
+
+    def bib_search(self):
+        r = RequestMgr()
+        return r.render('acq/picklist/bib_search.html')
     
     def do_search(self):
         r = RequestMgr()

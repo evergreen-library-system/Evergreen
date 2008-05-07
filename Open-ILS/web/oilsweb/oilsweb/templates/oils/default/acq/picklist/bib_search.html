@@ -5,11 +5,18 @@
 
 <%def name="block_content()">
 
+    <style>
+        @import url(${c.oils.core.media_prefix.value}/js/dojo/dojox/form/resources/CheckedMultiSelect.css);
+    </style>
+
     <script>
-        dojo.require('dijit.form.MultiSelect');
+        //dojo.require('dijit.form.MultiSelect');
+        dojo.require('dojox.form.CheckedMultiSelect');
         dojo.require('fieldmapper.Fieldmapper');
         dojo.require('dojo.data.ItemFileReadStore');
         dojo.require('openils.Event');
+
+        var searchFields = [];
 
         var user = new openils.User();
         function drawForm() {
@@ -21,22 +28,30 @@
 
             openils.Event.parse_and_raise(sources);
 
-            fields = {};
-
             for(var name in sources) {
                 source = sources[name];
-                o = document.createElement('option');
-                o.value = name;
-                o.appendChild(document.createTextNode(name+' : '+source.host));
-                bibSourceSelect.domNode.appendChild(o);
+                bibSourceSelect.addOption(name, name+':'+source.host);
                 for(var attr in source.attrs) 
-                    if(!attr.match(/^#/))
-                        fields[attr] = 1;
+                    if(!attr.match(/^#/)) // xml comment nodes
+                        searchFields.push(source.attrs[attr]);
             }
 
-            for(var field in fields) {
-                input = new dijit.form.TextBox({name:field, label:field});
-                dojo.byId('oils-acq-search-fields').appendChild(document.createTextNode(field));
+            searchFields = searchFields.sort(
+                function(a,b) {
+                    if(a.label < b.label) 
+                        return -1;
+                    if(a.label > b.label) 
+                        return 1;
+                    return 0;
+                }
+            );
+
+            for(var f in searchFields) {
+                var field = searchFields[f];
+                if(dijit.byId('text_input_'+field.name))
+                    continue;
+                input = new dijit.form.TextBox({name:field.name, label:field.label, id:'text_input_'+field.name});
+                dojo.byId('oils-acq-search-fields').appendChild(document.createTextNode(field.label));
                 dojo.byId('oils-acq-search-fields').appendChild(input.domNode);
                 dojo.byId('oils-acq-search-fields').appendChild(document.createElement('br'));
             }
@@ -44,15 +59,103 @@
         dojo.addOnLoad(drawForm);
 
         function doSearch() {
-            alert(bibSourceSelect.getValue());
+
+            search = {
+                service : [],
+                username : [],
+                password : [],
+                search : {},
+                limit : ${c.oils.acq.limit.value},
+                offset : ${c.oils.acq.offset.value}
+            }
+
+            var selected = bibSourceSelect.getValue();
+            for(var i = 0; i < selected.length; i++) {
+                search.service.push(selected[i]);
+                search.username.push('');
+                search.password.push('');
+            }
+
+            for(var f in searchFields) {
+                var field = searchFields[f];
+                var input = dijit.byId('text_input_'+field.name);
+                if(input.getValue())
+                    search.search[field.name] = input.getValue();
+            }
+
+            alert(js2JSON(search));
+            fieldmapper.standardRequest(
+                ['open-ils.search', 'open-ils.search.z3950.search_class'],
+                {   async: true,
+                    params: [user.authtoken, search],
+                    onresponse: handleResult,
+                    oncomplete: viewPicklist
+                }
+            );
         }
+        
+        function viewPicklist() {
+            location.href = '${c.oils.acq.prefix.value}/picklist/view/' + resultPicklist.id();
+        }
+
+        var resultPicklist;
+        function handleResult(r) {
+            var result = r.recv().content();
+            if(!resultPicklist)
+                createResultPicklist();
+
+            for(var idx in result.records) {
+                var rec = result.records[idx];
+                var lineitem =  new jub()
+
+                lineitem.picklist(resultPicklist.id());
+                lineitem.source_label(result.service)
+                lineitem.marc(rec.marcxml)
+                lineitem.eg_bib_id(rec.bibid)
+
+                var id = fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.lineitem.create'],
+                    [user.authtoken, lineitem]
+                );
+                alert('created id ' + id);
+            }
+        }
+
+        function createResultPicklist() {
+            resultPicklist = new acqpl();
+            resultPicklist.name('');
+            resultPicklist.owner(user.user.id());
+
+            alert(js2JSON(resultPicklist));
+
+            /* delete the old picklist with name = '' */
+            var pl = fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.picklist.name.retrieve'],
+                [user.authtoken, '']
+            );
+
+            if(pl) {
+                fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.picklist.delete'],
+                    [user.authtoken, pl.id()]
+                );
+            }
+
+            resultPicklist.id(
+                fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.picklist.create'],
+                    [user.authtoken, resultPicklist]
+                )
+            );
+        }
+
     </script>
 
     <div id='oils-acq-search-block' class='container'>
         <div id='oils-acq-search-sources-block'>
             <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
-            <select jsId="bibSourceSelect" dojoType="dijit.form.MultiSelect" value="evergreen"> 
-                <option value='evergreen'>${_('Evergreen Catalog')}</option>
+            <select multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
+                <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
             </select>
         </div>
         <div id='oils-acq-search-form-block'>
