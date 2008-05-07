@@ -47,65 +47,6 @@ sub jacket_large {
 
 # --------------------------------------------------------------------------
 
-sub toc_html {
-    my( $self, $key ) = @_;
-}
-
-sub toc_xml {
-    my( $self, $key ) = @_;
-}
-
-sub toc_json {
-    my( $self, $key ) = @_;
-}
-
-# --------------------------------------------------------------------------
-
-sub anotes_html {
-    my( $self, $key ) = @_;
-}
-
-sub anotes_xml {
-    my( $self, $key ) = @_;
-}
-
-sub anotes_json {
-    my( $self, $key ) = @_;
-}
-
-
-# --------------------------------------------------------------------------
-
-sub excerpt_html {
-    my( $self, $key ) = @_;
-}
-
-sub excerpt_xml {
-    my( $self, $key ) = @_;
-}
-
-sub excerpt_json {
-    my( $self, $key ) = @_;
-}
-
-# --------------------------------------------------------------------------
-
-sub reviews_html {
-    my( $self, $key ) = @_;
-}
-
-# we have to aggregate the reviews
-sub reviews_xml {
-    my( $self, $key ) = @_;
-}
-
-
-sub reviews_json {
-    my( $self, $key ) = @_;
-}
-
-# --------------------------------------------------------------------------
-
 sub send_img {
     my($self, $response) = @_;
     return { 
