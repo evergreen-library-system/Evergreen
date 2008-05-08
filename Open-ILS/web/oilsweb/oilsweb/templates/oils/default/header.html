@@ -11,9 +11,12 @@
         <span id='oils-base-header-auto-login'>${_('Auto-login is enabled')}</span>|
         <script src='/opac/common/js//Cookies.js'> </script>
         <script>
+            dojo.require('dojo.cookie');
             dojo.require('openils.User');
             dojo.require('openils.Event');
-            var authtoken = '${c.oils.core.authtoken.value}';
+            dojo.require('openils.CGI');
+
+            var authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
             var username = '${pylons.config.get("oils_demo_user")}';
             var password = '${pylons.config.get("oils_demo_password")}';
             var user;
@@ -28,8 +31,7 @@
                     login:true
                 });
                 user.getBySession();
-                dojo.require('dojo.cookie');
-                dojo.cookie('ses', user.authtoken, {expires:1});
+                dojo.cookie('ses', user.authtoken);
             }
 
             if(authtoken) {
@@ -37,6 +39,8 @@
                 var res = user.getBySession();
                 if(openils.Event.parse(res)) 
                     dologin();
+                else /* in case we got the ses from the URL */
+                    dojo.cookie('ses', user.authtoken);
             } else {
                 dologin();
             }
