@@ -41,6 +41,7 @@ if(!dojo._hasResource["openils.User"]) {
             this.authtime = kwargs.authtime || openils.User.authtime;
             this.login_type = kwargs.login_type;
             this.location = kwargs.location;
+            this.authcookie = kwargs.authcookie || openils.User.authcookie;
 
             if (this.authtoken) this.getBySession();
             else if (this.id && this.authtoken) this.user = this.getById( this.id );
@@ -115,6 +116,10 @@ if(!dojo._hasResource["openils.User"]) {
                     _u.authtime = data.payload.authtime;
 					if (!openils.User.authtime) openils.User.authtime = _u.authtime;
                     _u.getBySession(onComplete);
+                    if(_u.authcookie) {
+                        dojo.require('dojo.cookie');
+                        dojo.cookie(_u.authcookie, _u.authtoken);
+                    }
                 }
                 authReq.send();
             }
@@ -151,6 +156,11 @@ if(!dojo._hasResource["openils.User"]) {
             if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
             _u.authtime = data.payload.authtime;
             if (!openils.User.authtime) openils.User.authtime = _u.authtime;
+
+            if(_u.authcookie) {
+                dojo.require('dojo.cookie');
+                dojo.cookie(_u.authcookie, _u.authtoken);
+            }
         },
 
     
@@ -241,7 +251,7 @@ if(!dojo._hasResource["openils.User"]) {
 	openils.User.user = null;
 	openils.User.authtoken = null;
 	openils.User.authtime = null;
-
+    openils.User.authcookie = null;
 }
 
 
