@@ -82,7 +82,9 @@ CREATE TRIGGER zzz_update_materialized_simple_record_tgr
 COMMIT;
 
 
-DROP SCHEMA search CASCADE;
+DROP VIEW reporter.overdue_reports;
+DROP VIEW reporter.pending_reports;
+DROP VIEW reporter.currently_running;
 
 BEGIN;
 
@@ -90,7 +92,6 @@ BEGIN;
 /* convenience views for report management                       */
 -------------------------------------------------------------------
 
-DROP VIEW reporter.overdue_reports;
 CREATE OR REPLACE VIEW reporter.overdue_reports AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
@@ -99,7 +100,6 @@ CREATE OR REPLACE VIEW reporter.overdue_reports AS
    JOIN actor.card c ON c.id = u.card
   WHERE s.start_time IS NULL AND s.run_time < now();
 
-DROP VIEW reporter.pending_reports;
 CREATE OR REPLACE VIEW reporter.pending_reports AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
@@ -108,7 +108,6 @@ CREATE OR REPLACE VIEW reporter.pending_reports AS
    JOIN actor.card c ON c.id = u.card
   WHERE s.start_time IS NULL;
 
-DROP VIEW reporter.currently_running;
 CREATE OR REPLACE VIEW reporter.currently_running AS
  SELECT s.id, c.barcode AS runner_barcode, r.name, s.run_time, s.run_time - now() AS scheduled_wait_time
    FROM reporter.schedule s
@@ -148,7 +147,7 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
         my $txt = shift;
         $txt =~ s/^\s+//o;
-        $txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o;
+        $txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o; #' To help vim in SQL mode
         $txt =~ s/\s+$//o;
         if ($txt =~ /(\d{3}(?:\.\d+)?)/o) {
                 return $1;
@@ -157,6 +156,10 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
         }
 $$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
+COMMIT;
+
+DROP SCHEMA search CASCADE;
+BEGIN;
 
 -------------------------------------------------------------------
 /* staged search -- also applied by 300.schema.staged_search.sql */
