@@ -23,6 +23,7 @@
 #oils-acq-search-sources-label { margin-bottom: 10px; }
 #oils-acq-search-fields-label { margin-bottom: 10px; }
 #oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
+#oils-acq-search-progress {width: 100%, text-align: center;}
 
 /* list of picklists */
 #oils-acq-picklist-list-table {width: 100%;}

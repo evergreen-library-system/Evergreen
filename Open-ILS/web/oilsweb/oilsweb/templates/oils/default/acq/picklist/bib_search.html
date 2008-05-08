@@ -10,15 +10,20 @@
     </style>
 
     <script>
-        //dojo.require('dijit.form.MultiSelect');
         dojo.require('dojox.form.CheckedMultiSelect');
         dojo.require('fieldmapper.Fieldmapper');
         dojo.require('dojo.data.ItemFileReadStore');
+        dojo.require('dijit.ProgressBar');
         dojo.require('openils.Event');
 
+        var searchLimit = ${c.oils.acq.limit.value} || 10;
+        var searchOffset = ${c.oils.acq.offset.value} || 0;
         var searchFields = [];
-
+        var resultPicklist;
+        var recvCount = 0;
+        var sourceCount = 0; // how many sources are we searching
         var user = new openils.User();
+
         function drawForm() {
 
             var sources = fieldmapper.standardRequest(
@@ -46,27 +51,33 @@
                 }
             );
 
+            //alert(dojo.query('[name=label]', 'oils-acq-search-fields-template'));
+            var tbody = dojo.byId('oils-acq-search-fields-tbody');
+            var tmpl = tbody.removeChild(dojo.byId('oils-acq-search-fields-template'));
+
             for(var f in searchFields) {
                 var field = searchFields[f];
-                if(dijit.byId('text_input_'+field.name))
-                    continue;
+                if(dijit.byId('text_input_'+field.name)) continue;
+                var row = tmpl.cloneNode(true);
+                tbody.appendChild(row);
+                var labelCell = dojo.query('[name=label]', row)[0];
+                var inputCell = dojo.query('[name=input]', row)[0];
+                labelCell.appendChild(document.createTextNode(field.label));
                 input = new dijit.form.TextBox({name:field.name, label:field.label, id:'text_input_'+field.name});
-                dojo.byId('oils-acq-search-fields').appendChild(document.createTextNode(field.label));
-                dojo.byId('oils-acq-search-fields').appendChild(input.domNode);
-                dojo.byId('oils-acq-search-fields').appendChild(document.createElement('br'));
+                inputCell.appendChild(input.domNode);
             }
         }
-        dojo.addOnLoad(drawForm);
 
-        function doSearch() {
+        function doSearch(values) {
+            dojo.style('searchProgress', 'visibility', 'visible');
 
             search = {
                 service : [],
                 username : [],
                 password : [],
                 search : {},
-                limit : ${c.oils.acq.limit.value},
-                offset : ${c.oils.acq.offset.value}
+                limit : searchLimit,
+                offset : searchOffset
             }
 
             var selected = bibSourceSelect.getValue();
@@ -74,16 +85,16 @@
                 search.service.push(selected[i]);
                 search.username.push('');
                 search.password.push('');
+                sourceCount++;
             }
 
-            for(var f in searchFields) {
-                var field = searchFields[f];
-                var input = dijit.byId('text_input_'+field.name);
-                if(input.getValue())
-                    search.search[field.name] = input.getValue();
+            for(var v in values) {
+                if(values[v]) {
+                    var input = dijit.byId('text_input_'+v);
+                    search.search[v] = values[v];
+                }
             }
 
-            alert(js2JSON(search));
             fieldmapper.standardRequest(
                 ['open-ils.search', 'open-ils.search.z3950.search_class'],
                 {   async: true,
@@ -98,13 +109,15 @@
             location.href = '${c.oils.acq.prefix.value}/picklist/view/' + resultPicklist.id();
         }
 
-        var resultPicklist;
         function handleResult(r) {
             var result = r.recv().content();
             if(!resultPicklist)
                 createResultPicklist();
 
+            searchProgress.update({maximum: sourceCount*searchLimit+1, progress: ++recvCount});
+
             for(var idx in result.records) {
+                searchProgress.update({progress: ++recvCount});
                 var rec = result.records[idx];
                 var lineitem =  new jub()
 
@@ -117,7 +130,6 @@
                     ['open-ils.acq', 'open-ils.acq.lineitem.create'],
                     [user.authtoken, lineitem]
                 );
-                alert('created id ' + id);
             }
         }
 
@@ -125,8 +137,6 @@
             resultPicklist = new acqpl();
             resultPicklist.name('');
             resultPicklist.owner(user.user.id());
-
-            alert(js2JSON(resultPicklist));
 
             /* delete the old picklist with name = '' */
             var pl = fieldmapper.standardRequest(
@@ -149,23 +159,44 @@
             );
         }
 
+        dojo.addOnLoad(drawForm);
+
     </script>
 
     <div id='oils-acq-search-block' class='container'>
-        <div id='oils-acq-search-sources-block'>
-            <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
-            <select multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
-                <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
-            </select>
-        </div>
-        <div id='oils-acq-search-form-block'>
-            <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
-            <div id='oils-acq-search-fields'>
+        <form dojoType='dijit.form.Form' action='' method=''>
+            <script type="dojo/method" event="onSubmit">
+                doSearch(this.getValues());
+                return false; /* don't redirect */
+            </script>
+            <div id='oils-acq-search-sources-block'>
+                <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
+                <select multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
+                    <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
+                </select>
             </div>
-            <div id='oils-acq-search-fields-submit-block'>
-                <div dojoType='dijit.form.Button' onclick='doSearch();'>${_("Submit")}</div>
+            <div id='oils-acq-search-form-block'>
+                <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
+                <div id='oils-acq-search-fields'>
+                </div>
+                <table>
+                    <tbody id='oils-acq-search-fields-tbody'>
+                        <tr id='oils-acq-search-fields-template'>
+                            <td name='label'> </td>
+                            <td name='input'> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id='oils-acq-search-fields-submit-block'>
+                    <div dojoType='dijit.form.Button' type='submit'>${_("Submit")}</div>
+                </div>
             </div>
         </div>
+    </form>
+    <div id='oils-acq-search-progress'>
+        <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
     </div>
+    <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
 </%def>
+
 
