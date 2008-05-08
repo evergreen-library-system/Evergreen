@@ -9,8 +9,42 @@
     %>
     % if auto_login:
         <span id='oils-base-header-auto-login'>${_('Auto-login is enabled')}</span>|
+        <script src='/opac/common/js//Cookies.js'> </script>
+        <script>
+            dojo.require('openils.User');
+            dojo.require('openils.Event');
+            var authtoken = '${c.oils.core.authtoken.value}';
+            var username = '${pylons.config.get("oils_demo_user")}';
+            var password = '${pylons.config.get("oils_demo_password")}';
+            var user;
+
+            function dologin() {
+                openils.User.authtoken = null;
+                user = new openils.User();
+                user.login({
+                    login_type:'staff', 
+                    username:username, 
+                    passwd:password, 
+                    login:true
+                });
+                user.getBySession();
+                dojo.require('dojo.cookie');
+                dojo.cookie('ses', user.authtoken, {expires:1});
+            }
+
+            if(authtoken) {
+                user = new openils.User({authtoken:authtoken});
+                var res = user.getBySession();
+                if(openils.Event.parse(res)) 
+                    dologin();
+            } else {
+                dologin();
+            }
+        </script>
+        <span id='oils-base-header-user-info'> </span>
+        <script>
+            dojo.byId('oils-base-header-user-info').appendChild(
+                document.createTextNode(user.user.usrname()));
+        </script>
     % endif
-    <span id='oils-base-header-user-info'>
-        ${c.oils.core.user.value.usrname()} / ${c.oils.core.workstation.value.name()}
-    </span>
 </div>
