@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -331,19 +331,19 @@
 		<deck id="top_pane"/>
 		<splitter><grippy/></splitter>
 		<menubar id="nav" hidden="true">
-			<menu label="Actions for this Record" accesskey="A">
+			<menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
 			<menupopup>
-			<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
-			<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
-			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
-			<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
-			<menuitem label="View Holds" accesskey="s" id="view_holds" oncommand="set_hold_browser();"/>
+			<menuitem label="&staff.cat.opac.menuitem.opacview.label;" accesskey="&staff.cat.opac.menuitem.opacview.accesskey;" id="opac_view" oncommand="set_opac();"/>
+			<menuitem label="&staff.cat.opac.menuitem.marcview.label;" accesskey="&staff.cat.opac.menuitem.marcview.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
+			<menuitem label="&staff.cat.opac.menuitem.marcedit.label;" accesskey="&staff.cat.opac.menuitem.marcedit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
+			<menuitem label="&staff.cat.opac.menuitem.holding.label;" accesskey="&staff.cat.opac.menuitem.holding.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuitem label="&staff.cat.opac.menuitem.viewholds.label;" accesskey="&staff.cat.opac.menuitem.viewholds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
 			<menuseparator/>
-			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
+			<menuitem label="&staff.cat.opac.menuitem.addtobucket.label;" accesskey="&staff.cat.opac.menuitem.addtobucket.accesskey;" id="add_bucket" oncommand="add_to_bucket();"/>
 			<menuseparator/>
-			<menuitem label="Refresh All Interfaces" id="refresh" oncommand="refresh();"/>
-			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
-			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+			<menuitem label="&staff.cat.opac.menuitem.refreshinterfaces.label;" id="refresh" oncommand="refresh();"/>
+			<menuitem label="&staff.cat.opac.menuitem.dupnewtab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+			<menuitem label="&staff.cat.opac.menuitem.removeframe.label;" id="remove_me" oncommand="remove_me();"/>
 			</menupopup>
 			</menu>
 		</menubar>
