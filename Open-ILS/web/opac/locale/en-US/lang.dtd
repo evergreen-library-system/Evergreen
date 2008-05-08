@@ -1896,3 +1896,20 @@
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
 <!ENTITY staff.cat.marc_view.title "MARC View">
+<!ENTITY staff.cat.opac.menu.label "Actions for this Record">
+<!ENTITY staff.cat.opac.menu.accesskey "A">
+<!ENTITY staff.cat.opac.menuitem.opacview.label "OPAC View">
+<!ENTITY staff.cat.opac.menuitem.opacview.accesskey "O">
+<!ENTITY staff.cat.opac.menuitem.marcview.label "MARC View">
+<!ENTITY staff.cat.opac.menuitem.marcview.accesskey "V">
+<!ENTITY staff.cat.opac.menuitem.marcedit.label "MARC Edit">
+<!ENTITY staff.cat.opac.menuitem.marcedit.accesskey "E">
+<!ENTITY staff.cat.opac.menuitem.holding.label "Holdings Maintenance">
+<!ENTITY staff.cat.opac.menuitem.holding.accesskey "H">
+<!ENTITY staff.cat.opac.menuitem.viewholds.label "View Holds">
+<!ENTITY staff.cat.opac.menuitem.viewholds.accesskey "s">
+<!ENTITY staff.cat.opac.menuitem.addtobucket.label "Add to Bucket">
+<!ENTITY staff.cat.opac.menuitem.addtobucket.accesskey "B">
+<!ENTITY staff.cat.opac.menuitem.refreshinterfaces.label "Refresh All Interfaces">
+<!ENTITY staff.cat.opac.menuitem.dupnewtab.label "Duplicate in New Tab">
+<!ENTITY staff.cat.opac.menuitem.removeframe.label "Remove this Frame">
