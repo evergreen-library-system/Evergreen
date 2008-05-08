@@ -86,7 +86,7 @@ if(!dojo._hasResource["openils.User"]) {
         /**
          * Logs in, sets the authtoken/authtime vars, and fetches the logged in user
          */
-        login : function(args, onComplete) {
+        login_async : function(args, onComplete) {
             var _u = this;
 
             if (!args) args = {};
@@ -101,6 +101,7 @@ if(!dojo._hasResource["openils.User"]) {
                 var seed = r.recv().content(); 
                 alert(seed);
                 var loginInfo = {
+                    username : args.username,
                     password : hex_md5(seed + hex_md5(args.passwd)), 
                     type : args.type,
                     org : args.location,
@@ -120,6 +121,38 @@ if(!dojo._hasResource["openils.User"]) {
     
             initReq.send();
         },
+
+        login : function(args) {
+            var _u = this;
+            if (!args) args = {};
+            if (!args.username) args.username = _u.username;
+            if (!args.passwd) args.passwd = _u.passwd;
+            if (!args.type) args.type = _u.login_type;
+            if (!args.location) args.location = _u.location;
+
+            var seed = fieldmapper.standardRequest(
+                ['open-ils.auth', 'open-ils.auth.authenticate.init'],
+                [args.username]
+            );
+
+            var loginInfo = {
+                username : args.username,
+                password : hex_md5(seed + hex_md5(args.passwd)), 
+                type : args.type,
+                org : args.location,
+            };
+
+            var data = fieldmapper.standardRequest(
+                ['open-ils.auth', 'open-ils.auth.authenticate.complete'],
+                [loginInfo]
+            );
+
+            _u.authtoken = data.payload.authtoken;
+            if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
+            _u.authtime = data.payload.authtime;
+            if (!openils.User.authtime) openils.User.authtime = _u.authtime;
+        },
+
     
         /**
          * Returns a list of the "highest" org units where the user
