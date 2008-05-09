@@ -51,7 +51,7 @@ CREATE TABLE reporter.template (
 	name		TEXT				NOT NULL,
 	description	TEXT				NOT NULL,
 	data		TEXT				NOT NULL,
-	folder		INT				NOT NULL REFERENCES reporter.template_folder (id)
+	folder		INT				NOT NULL REFERENCES reporter.template_folder (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX rpt_tmpl_owner_idx ON reporter.template (owner);
 CREATE INDEX rpt_tmpl_fldr_idx ON reporter.template (folder);
@@ -65,7 +65,7 @@ CREATE TABLE reporter.report (
 	description	TEXT				NOT NULL DEFAULT '',
 	template	INT				NOT NULL REFERENCES reporter.template (id) DEFERRABLE INITIALLY DEFERRED,
 	data		TEXT				NOT NULL,
-	folder		INT				NOT NULL REFERENCES reporter.report_folder (id),
+	folder		INT				NOT NULL REFERENCES reporter.report_folder (id) DEFERRABLE INITIALLY DEFERRED,
 	recur		BOOL				NOT NULL DEFAULT FALSE,
 	recurance	INTERVAL
 );
@@ -76,7 +76,7 @@ CREATE UNIQUE INDEX rtp_report_folder_once_idx ON reporter.report (name,folder);
 CREATE TABLE reporter.schedule (
 	id		SERIAL				PRIMARY KEY,
 	report		INT				NOT NULL REFERENCES reporter.report (id) DEFERRABLE INITIALLY DEFERRED,
-	folder		INT				NOT NULL REFERENCES reporter.output_folder (id),
+	folder		INT				NOT NULL REFERENCES reporter.output_folder (id) DEFERRABLE INITIALLY DEFERRED,
 	runner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	run_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	start_time	TIMESTAMP WITH TIME ZONE,
