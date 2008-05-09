@@ -170,7 +170,7 @@ CREATE SCHEMA search;
 CREATE TABLE search.relevance_adjustment (
     id          SERIAL  PRIMARY KEY,
     active      BOOL    NOT NULL DEFAULT TRUE,
-    field       INT     NOT NULL REFERENCES config.metabib_field (id),
+    field       INT     NOT NULL REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED,
     bump_type   TEXT    NOT NULL CHECK (bump_type IN ('word_order','first_word','full_match')),
     multiplier  NUMERIC NOT NULL DEFAULT 1.0
 );

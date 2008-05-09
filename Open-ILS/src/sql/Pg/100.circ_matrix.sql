@@ -93,12 +93,12 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
 CREATE TABLE config.circ_matrix_matchpoint (
 	id	    		SERIAL	PRIMARY KEY,
 	active			BOOL	NOT NULL DEFAULT TRUE,
-	org_unit		INT	NOT NULL REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	grp		    	INT	NOT NULL REFERENCES permission.grp_tree (id),	-- Set to the top applicable group from the group tree; will need decendents and prox functions for filtering
-	circ_modifier	TEXT	REFERENCES config.circ_modifier (code),
-	marc_type		TEXT	REFERENCES config.item_type_map (code),
-	marc_form		TEXT	REFERENCES config.item_form_map (code),
-	marc_vr_format	TEXT	REFERENCES config.videorecording_format_map (code),
+	org_unit		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	grp		    	INT	NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
+	circ_modifier	TEXT	REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_type		TEXT	REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_form		TEXT	REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_vr_format	TEXT	REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
 	ref_flag		BOOL,
 	usr_age_lower_bound	INTERVAL,
 	usr_age_upper_bound	INTERVAL,
@@ -108,7 +108,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
 
 -- Tests to determine if circ can occur for this item at this location for this patron
 CREATE TABLE config.circ_matrix_test (
-	matchpoint		        INT     PRIMARY KEY NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE,
+	matchpoint		        INT     PRIMARY KEY NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	circulate		        BOOL    NOT NULL DEFAULT TRUE,	-- Hard "can't circ" flag requiring an override
 	max_items_out	        INT,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
 	max_overdue		        INT,               				-- Total overdue active circulations must be less than this, NULL means skip (always pass)
@@ -119,18 +119,18 @@ CREATE TABLE config.circ_matrix_test (
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
 	id          SERIAL     PRIMARY KEY,
-	matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE,
+	matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	items_out   INT     NOT NULL,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
-	circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE -- circ_modifier type that the max out applies to
+	circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE  DEFERRABLE INITIALLY DEFERRED-- circ_modifier type that the max out applies to
 );
 
 
 -- How to circ, assuming tests pass
 CREATE TABLE config.circ_matrix_ruleset (
-	matchpoint		INT	PRIMARY KEY REFERENCES config.circ_matrix_matchpoint (id),
-	duration_rule		INT	NOT NULL REFERENCES config.rule_circ_duration (id),
-	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id),
-	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id)
+	matchpoint		INT	PRIMARY KEY REFERENCES config.circ_matrix_matchpoint (id) DEFERRABLE INITIALLY DEFERRED,
+	duration_rule		INT	NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
+	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
+	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT ) RETURNS INT AS $func$
