@@ -43,8 +43,8 @@ if(!dojo._hasResource["openils.User"]) {
             this.location = kwargs.location;
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
 
-            if (this.authtoken) this.getBySession();
-            else if (this.id && this.authtoken) this.user = this.getById( this.id );
+            if (this.id && this.authtoken) this.user = this.getById( this.id );
+            else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
 
         },
