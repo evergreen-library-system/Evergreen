@@ -23,7 +23,7 @@ CREATE UNIQUE INDEX authority_record_unique_tcn ON authority.record_entry (arn_s
 
 CREATE TABLE authority.record_note (
 	id		BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES authority.record_entry (id),
+	record		BIGINT		NOT NULL REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
 	value		TEXT		NOT NULL,
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
