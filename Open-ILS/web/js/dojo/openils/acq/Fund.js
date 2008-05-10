@@ -18,6 +18,7 @@ if(!dojo._hasResource['openils.acq.Fund']) {
 dojo._hasResource['openils.acq.Fund'] = true;
 dojo.provide('openils.acq.Fund');
 dojo.require('fieldmapper.Fieldmapper');
+dojo.require('fieldmapper.dojoData');
 
 /** Declare the Fund class with dojo */
 dojo.declare('openils.acq.Fund', null, {

@@ -38,25 +38,17 @@
 
     <script type="text/javascript">
         dojo.require("dojo.parser");
-        dojo.require("dijit.layout.LayoutContainer")
-        dojo.require("dijit.layout.ContentPane")
-        dojo.require("dijit.form.Form")
-        dojo.require("dijit.form.Button");
-        dojo.require("dijit.form.TextBox");
-        dojo.require("dijit.form.NumberTextBox");
-        dojo.require("dijit.form.NumberSpinner");
-        dojo.require("dijit.form.FilteringSelect");
-        dojo.require("dojo.data.ItemFileWriteStore");
-        dojo.require("dojox.grid.Grid");
-        dojo.require("dojox.grid._data.model");
-        dojo.require("fieldmapper.dojoData");
-        dojo.require("fieldmapper.OrgUtils");
-        dojo.require("openils.User");
+        /* import ILS object definitions */
+        dojo.require("fieldmapper.Fieldmapper");
     </script>
 
-    <!-- set up some global JS variables -->
     <script type='text/javascript'>
-        openils.User.authtoken = '${c.oils.core.authtoken.value}';
+        /* first thing, let's make sure we're logged in */
+        dojo.require('dojo.cookie');
+        dojo.require('openils.CGI');
+        dojo.require("openils.User");
+        openils.User.authcookie = 'ses';
+        openils.User.authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
     </script>
 </%def>
 

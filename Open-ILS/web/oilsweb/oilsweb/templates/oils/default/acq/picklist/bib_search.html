@@ -12,8 +12,9 @@
     <script>
         dojo.require('dojox.form.CheckedMultiSelect');
         dojo.require('fieldmapper.Fieldmapper');
-        dojo.require('dojo.data.ItemFileReadStore');
         dojo.require('dijit.ProgressBar');
+        dojo.require('dijit.form.Form');
+        dojo.require('dijit.form.TextBox');
         dojo.require('openils.Event');
 
         var searchLimit = ${c.oils.acq.limit.value} || 10;
@@ -171,7 +172,8 @@
             </script>
             <div id='oils-acq-search-sources-block'>
                 <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
-                <select multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
+                <select style='overflow-y:auto;' id='oils-acq-search-source-select' 
+                        multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
                     <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
                 </select>
             </div>

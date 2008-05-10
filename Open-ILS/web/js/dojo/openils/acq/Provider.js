@@ -18,6 +18,7 @@ if(!dojo._hasResource['openils.acq.Provider']) {
 dojo._hasResource['openils.acq.Provider'] = true;
 dojo.provide('openils.acq.Provider');
 dojo.require('fieldmapper.Fieldmapper');
+dojo.require('fieldmapper.dojoData');
 
 /** Declare the Provider class with dojo */
 dojo.declare('openils.acq.Provider', null, {
