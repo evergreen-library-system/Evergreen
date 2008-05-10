@@ -6,9 +6,9 @@ CREATE SCHEMA money;
 
 CREATE TABLE money.collections_tracker (
 	id		BIGSERIAL			PRIMARY KEY,
-	usr		INT				NOT NULL REFERENCES actor.usr (id), -- actor.usr.id
-	collector	INT				NOT NULL REFERENCES actor.usr (id),
-	location	INT				NOT NULL REFERENCES actor.org_unit (id),
+	usr		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED, -- actor.usr.id
+	collector	INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	location	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	enter_time	TIMESTAMP WITH TIME ZONE
 );
 CREATE UNIQUE INDEX m_c_t_usr_collector_location_once_idx ON money.collections_tracker (usr, collector, location);
@@ -324,7 +324,7 @@ CREATE INDEX money_goods_payment_payment_ts_idx ON money.goods_payment (payment_
 CREATE INDEX money_goods_payment_accepting_usr_idx ON money.goods_payment (accepting_usr);
 
 CREATE TABLE money.bnm_desk_payment (
-	cash_drawer	INT	REFERENCES actor.workstation (id)
+	cash_drawer	INT	REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (money.bnm_payment);
 ALTER TABLE money.bnm_desk_payment ADD PRIMARY KEY (id);
 

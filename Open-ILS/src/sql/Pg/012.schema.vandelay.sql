@@ -6,7 +6,7 @@ CREATE SCHEMA vandelay;
 
 CREATE TABLE vandelay.queue (
 	id				BIGSERIAL	PRIMARY KEY,
-	owner			INT			NOT NULL REFERENCES actor.usr (id),
+	owner			INT			NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	name			TEXT		NOT NULL,
 	complete		BOOL		NOT NULL DEFAULT FALSE,
 	queue_type		TEXT		NOT NULL DEFAULT 'bib' CHECK (queue_type IN ('bib','authority')),
@@ -57,25 +57,25 @@ CREATE TABLE vandelay.bib_queue (
 ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_bib_record (
-	queue		INT	NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE,
-	bib_source	INT	REFERENCES config.bib_source (id),
-	imported_as	INT	REFERENCES biblio.record_entry (id)
+	queue		INT	NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	bib_source	INT	REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
+	imported_as	INT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_bib_record_attr (
 	id			BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id),
-	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id),
+	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id) DEFERRABLE INITIALLY DEFERRED,
+	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
 	attr_value	TEXT		NOT NULL
 );
 
 CREATE TABLE vandelay.bib_match (
 	id				BIGSERIAL	PRIMARY KEY,
 	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
-	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE,
-	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
-	eg_record		BIGINT		REFERENCES biblio.record_entry (id)
+	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	eg_record		BIGINT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_bib_marc ( ) RETURNS TRIGGER AS $$
@@ -186,23 +186,23 @@ CREATE TABLE vandelay.authority_queue (
 ALTER TABLE vandelay.authority_queue ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_authority_record (
-	queue		INT	NOT NULL REFERENCES vandelay.authority_queue (id) ON DELETE CASCADE,
-	imported_as	INT	REFERENCES authority.record_entry (id)
+	queue		INT	NOT NULL REFERENCES vandelay.authority_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_authority_record ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_authority_record_attr (
 	id			BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES vandelay.queued_authority_record (id),
-	field		INT			NOT NULL REFERENCES vandelay.authority_attr_definition (id),
+	record		BIGINT		NOT NULL REFERENCES vandelay.queued_authority_record (id) DEFERRABLE INITIALLY DEFERRED,
+	field		INT			NOT NULL REFERENCES vandelay.authority_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
 	attr_value	TEXT		NOT NULL
 );
 
 CREATE TABLE vandelay.authority_match (
 	id				BIGSERIAL	PRIMARY KEY,
-	matched_attr	INT			REFERENCES vandelay.queued_authority_record_attr (id) ON DELETE CASCADE,
-	queued_record	BIGINT		REFERENCES vandelay.queued_authority_record (id) ON DELETE CASCADE,
-	eg_record		BIGINT		REFERENCES authority.record_entry (id)
+	matched_attr	INT			REFERENCES vandelay.queued_authority_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	queued_record	BIGINT		REFERENCES vandelay.queued_authority_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_authority_marc ( ) RETURNS TRIGGER AS $$

@@ -32,12 +32,12 @@ CREATE TABLE actor.usr (
 	usrname			TEXT				NOT NULL UNIQUE,
 	email			TEXT,
 	passwd			TEXT				NOT NULL,
-	standing		INT				NOT NULL DEFAULT 1 REFERENCES config.standing (id),
-	ident_type		INT				NOT NULL REFERENCES config.identification_type (id),
+	standing		INT				NOT NULL DEFAULT 1 REFERENCES config.standing (id) DEFERRABLE INITIALLY DEFERRED,
+	ident_type		INT				NOT NULL REFERENCES config.identification_type (id) DEFERRABLE INITIALLY DEFERRED,
 	ident_value		TEXT,
-	ident_type2		INT				REFERENCES config.identification_type (id),
+	ident_type2		INT				REFERENCES config.identification_type (id) DEFERRABLE INITIALLY DEFERRED,
 	ident_value2		TEXT,
-	net_access_level	INT				NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id),
+	net_access_level	INT				NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id) DEFERRABLE INITIALLY DEFERRED,
 	photo_url		TEXT,
 	prefix			TEXT,
 	first_given_name	TEXT				NOT NULL,
@@ -134,8 +134,8 @@ CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE acto
 
 CREATE TABLE actor.usr_note (
 	id		BIGSERIAL			PRIMARY KEY,
-	usr		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
-	creator		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	usr		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	creator		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	pub		BOOL				NOT NULL DEFAULT FALSE,
 	title		TEXT				NOT NULL,
@@ -145,7 +145,7 @@ CREATE INDEX actor_usr_note_usr_idx ON actor.usr_note (usr);
 
 CREATE TABLE actor.usr_standing_penalty (
 	id		SERIAL	PRIMARY KEY,
-	usr		INT	NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	usr		INT	NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	penalty_type	TEXT	NOT NULL
 );
 COMMENT ON TABLE actor.usr_standing_penalty IS $$
@@ -173,7 +173,7 @@ CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (u
 
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
-	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE,
+	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	name	TEXT		NOT NULL,
 	value	TEXT		NOT NULL,
 	CONSTRAINT usr_once_per_key UNIQUE (usr,name)
@@ -306,7 +306,7 @@ CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (targe
 
 CREATE TABLE actor.card (
 	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id),
+	usr	INT	NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	barcode	TEXT	NOT NULL UNIQUE,
 	active	BOOL	NOT NULL DEFAULT TRUE
 );
@@ -344,7 +344,7 @@ CREATE TABLE actor.org_unit_type (
 	name		TEXT	NOT NULL,
 	opac_label	TEXT	NOT NULL,
 	depth		INT	NOT NULL,
-	parent		INT	REFERENCES actor.org_unit_type (id),
+	parent		INT	REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,
 	can_have_vols	BOOL	NOT NULL DEFAULT TRUE,
 	can_have_users	BOOL	NOT NULL DEFAULT TRUE
 );
@@ -352,8 +352,8 @@ CREATE INDEX actor_org_unit_type_parent_idx ON actor.org_unit_type (parent);
 
 CREATE TABLE actor.org_unit (
 	id		SERIAL	PRIMARY KEY,
-	parent_ou	INT	REFERENCES actor.org_unit (id),
-	ou_type		INT	NOT NULL REFERENCES actor.org_unit_type (id),
+	parent_ou	INT	REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	ou_type		INT	NOT NULL REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,
 	ill_address	INT,
 	holds_address	INT,
 	mailing_address	INT,
@@ -378,8 +378,8 @@ CREATE TABLE actor.org_lasso (
 
 CREATE TABLE actor.org_lasso_map (
     id          SERIAL  PRIMARY KEY,
-    lasso       INT     NOT NULL REFERENCES actor.org_lasso (id) ON DELETE CASCADE,
-    org_unit    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE
+    lasso       INT     NOT NULL REFERENCES actor.org_lasso (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    org_unit    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 CREATE UNIQUE INDEX ou_lasso_lasso_ou_idx ON actor.org_lasso_map (lasso, org_unit);
 CREATE INDEX ou_lasso_org_unit_idx ON actor.org_lasso_map (org_unit);
@@ -393,7 +393,7 @@ CREATE TABLE actor.org_unit_proximity (
 CREATE INDEX from_prox_idx ON actor.org_unit_proximity (from_org);
 
 CREATE TABLE actor.hours_of_operation (
-	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	dow_0_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_0_close	TIME	NOT NULL DEFAULT '17:00',
 	dow_1_open	TIME	NOT NULL DEFAULT '09:00',
@@ -412,7 +412,7 @@ CREATE TABLE actor.hours_of_operation (
 
 CREATE TABLE actor.org_unit_closed (
 	id		SERIAL				PRIMARY KEY,
-	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	close_start	TIMESTAMP WITH TIME ZONE	NOT NULL,
 	close_end	TIMESTAMP WITH TIME ZONE	NOT NULL,
 	reason		TEXT
@@ -422,22 +422,22 @@ CREATE TABLE actor.org_unit_closed (
 CREATE TABLE actor.workstation (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE,
-	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id)
+	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE actor.usr_org_unit_opt_in (
 	id		SERIAL				PRIMARY KEY,
-	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
-	usr		INT				NOT NULL REFERENCES actor.usr (id),
-	staff		INT				NOT NULL REFERENCES actor.usr (id),
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	usr		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	opt_in_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	opt_in_ws	INT				NOT NULL REFERENCES actor.workstation (id),
+	opt_in_ws	INT				NOT NULL REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT usr_opt_in_once_per_org_unit UNIQUE (usr,org_unit)
 );
 
 CREATE TABLE actor.org_unit_setting (
 	id		BIGSERIAL	PRIMARY KEY,
-	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE,
+	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	name		TEXT		NOT NULL,
 	value		TEXT		NOT NULL,
 	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name)
@@ -474,7 +474,7 @@ CREATE TABLE actor.usr_address (
 	valid			BOOL	NOT NULL DEFAULT TRUE,
 	within_city_limits	BOOL	NOT NULL DEFAULT TRUE,
 	address_type		TEXT	NOT NULL DEFAULT 'MAILING',
-	usr			INT	NOT NULL REFERENCES actor.usr (id),
+	usr			INT	NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	street1			TEXT	NOT NULL,
 	street2			TEXT,
 	city			TEXT	NOT NULL,
@@ -498,7 +498,7 @@ CREATE TABLE actor.org_address (
 	id		SERIAL	PRIMARY KEY,
 	valid		BOOL	NOT NULL DEFAULT TRUE,
 	address_type	TEXT	NOT NULL DEFAULT 'MAILING',
-	org_unit	INT	NOT NULL REFERENCES actor.org_unit (id),
+	org_unit	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	street1		TEXT	NOT NULL,
 	street2		TEXT,
 	city		TEXT	NOT NULL,

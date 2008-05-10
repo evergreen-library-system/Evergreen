@@ -13,7 +13,7 @@ CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 CREATE TABLE permission.grp_tree (
 	id			SERIAL	PRIMARY KEY,
 	name			TEXT	NOT NULL UNIQUE,
-	parent			INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT,
+	parent			INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
 	usergroup		BOOL	NOT NULL DEFAULT TRUE,
 	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
 	description		TEXT,
@@ -23,8 +23,8 @@ CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
 CREATE TABLE permission.grp_perm_map (
 	id		SERIAL	PRIMARY KEY,
-	grp		INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
+	grp		INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	depth		INT	NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
@@ -32,8 +32,8 @@ CREATE TABLE permission.grp_perm_map (
 
 CREATE TABLE permission.usr_perm_map (
 	id		SERIAL	PRIMARY KEY,
-	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
+	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	depth		INT	NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_usr_once UNIQUE (usr,perm)
@@ -41,8 +41,8 @@ CREATE TABLE permission.usr_perm_map (
 
 CREATE TABLE permission.usr_object_perm_map (
 	id		SERIAL	PRIMARY KEY,
-	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE,
+	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     object_type TEXT NOT NULL,
     object_id   TEXT NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,
@@ -53,8 +53,8 @@ CREATE INDEX uopm_usr_idx ON permission.usr_object_perm_map (usr);
 
 CREATE TABLE permission.usr_grp_map (
 	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	grp     INT     NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE,
+	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	grp     INT     NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 		CONSTRAINT usr_grp_once UNIQUE (usr,grp)
 );
 
@@ -93,8 +93,8 @@ $$ LANGUAGE SQL STABLE;
 
 CREATE TABLE permission.usr_work_ou_map (
 	id	SERIAL	PRIMARY KEY,
-	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
-	work_ou INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	work_ou INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 		CONSTRAINT usr_work_ou_once UNIQUE (usr,work_ou)
 );
 

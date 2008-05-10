@@ -6,32 +6,32 @@ CREATE SCHEMA action;
 
 CREATE TABLE action.in_house_use (
 	id		SERIAL				PRIMARY KEY,
-	item		BIGINT				NOT NULL REFERENCES asset.copy (id),
-	staff		INT				NOT NULL REFERENCES actor.usr (id),
-	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	item		BIGINT				NOT NULL REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
+	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE action.non_cataloged_circulation (
 	id		SERIAL				PRIMARY KEY,
-	patron		INT				NOT NULL REFERENCES actor.usr (id),
-	staff		INT				NOT NULL REFERENCES actor.usr (id),
-	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id),
-	item_type	INT				NOT NULL REFERENCES config.non_cataloged_type (id),
+	patron		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	item_type	INT				NOT NULL REFERENCES config.non_cataloged_type (id) DEFERRABLE INITIALLY DEFERRED,
 	circ_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE action.non_cat_in_house_use (
 	id		SERIAL				PRIMARY KEY,
-	item_type	BIGINT				NOT NULL REFERENCES config.non_cataloged_type(id),
-	staff		INT				NOT NULL REFERENCES actor.usr (id),
-	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	item_type	BIGINT				NOT NULL REFERENCES config.non_cataloged_type(id) DEFERRABLE INITIALLY DEFERRED,
+	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE action.survey (
 	id		SERIAL				PRIMARY KEY,
-	owner		INT				NOT NULL REFERENCES actor.org_unit (id),
+	owner		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	start_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	end_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
 	usr_summary	BOOL				NOT NULL DEFAULT FALSE,
@@ -45,13 +45,13 @@ CREATE UNIQUE INDEX asv_once_per_owner_idx ON action.survey (owner,name);
 
 CREATE TABLE action.survey_question (
 	id		SERIAL	PRIMARY KEY,
-	survey		INT	NOT NULL REFERENCES action.survey,
+	survey		INT	NOT NULL REFERENCES action.survey DEFERRABLE INITIALLY DEFERRED,
 	question	TEXT	NOT NULL
 );
 
 CREATE TABLE action.survey_answer (
 	id		SERIAL	PRIMARY KEY,
-	question	INT	NOT NULL REFERENCES action.survey_question,
+	question	INT	NOT NULL REFERENCES action.survey_question DEFERRABLE INITIALLY DEFERRED,
 	answer		TEXT	NOT NULL
 );
 
@@ -61,9 +61,9 @@ CREATE TABLE action.survey_response (
 	id			BIGSERIAL			PRIMARY KEY,
 	response_group_id	INT,
 	usr			INT, -- REFERENCES actor.usr
-	survey			INT				NOT NULL REFERENCES action.survey,
-	question		INT				NOT NULL REFERENCES action.survey_question,
-	answer			INT				NOT NULL REFERENCES action.survey_answer,
+	survey			INT				NOT NULL REFERENCES action.survey DEFERRABLE INITIALLY DEFERRED,
+	question		INT				NOT NULL REFERENCES action.survey_question DEFERRABLE INITIALLY DEFERRED,
+	answer			INT				NOT NULL REFERENCES action.survey_answer DEFERRABLE INITIALLY DEFERRED,
 	answer_date		TIMESTAMP WITH TIME ZONE,
 	effective_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
@@ -167,15 +167,15 @@ CREATE TABLE action.hold_request (
 	expire_time		TIMESTAMP WITH TIME ZONE,
 	cancel_time		TIMESTAMP WITH TIME ZONE,
 	target			BIGINT				NOT NULL, -- see hold_type
-	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL,
-	fulfillment_staff	INT				REFERENCES actor.usr (id),
-	fulfillment_lib		INT				REFERENCES actor.org_unit (id),
-	request_lib		INT				NOT NULL REFERENCES actor.org_unit (id),
-	requestor		INT				NOT NULL REFERENCES actor.usr (id),
-	usr			INT				NOT NULL REFERENCES actor.usr (id),
+	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	fulfillment_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	fulfillment_lib		INT				REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	request_lib		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	requestor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	usr			INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	selection_ou		INT				NOT NULL,
 	selection_depth		INT				NOT NULL DEFAULT 0,
-	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit,
+	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED,
 	hold_type		TEXT				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
@@ -193,8 +193,8 @@ CREATE INDEX hold_request_prev_check_time_idx ON action.hold_request (prev_check
 
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
-	hold		INT				NOT NULL REFERENCES action.hold_request (id),
-	notify_staff	INT				REFERENCES actor.usr (id),
+	hold		INT				NOT NULL REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
+	notify_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	notify_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	method		TEXT				NOT NULL, -- email address or phone number
 	note		TEXT
@@ -203,8 +203,8 @@ CREATE INDEX ahn_hold_idx ON action.hold_notification (hold);
 
 CREATE TABLE action.hold_copy_map (
 	id		SERIAL	PRIMARY KEY,
-	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE,
-	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
+	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
 -- CREATE INDEX acm_hold_idx ON action.hold_copy_map (hold);
@@ -214,11 +214,11 @@ CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
 	source_send_time	TIMESTAMP WITH TIME ZONE,
 	dest_recv_time		TIMESTAMP WITH TIME ZONE,
-	target_copy		BIGINT				NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE,
-	source			INT				NOT NULL REFERENCES actor.org_unit (id),
-	dest			INT				NOT NULL REFERENCES actor.org_unit (id),
-	prev_hop		INT				REFERENCES action.transit_copy (id),
-	copy_status		INT				NOT NULL REFERENCES config.copy_status (id),
+	target_copy		BIGINT				NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	source			INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	dest			INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	prev_hop		INT				REFERENCES action.transit_copy (id) DEFERRABLE INITIALLY DEFERRED,
+	copy_status		INT				NOT NULL REFERENCES config.copy_status (id) DEFERRABLE INITIALLY DEFERRED,
 	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE
 );
 CREATE INDEX active_transit_dest_idx ON "action".transit_copy (dest); 
@@ -230,7 +230,7 @@ CREATE TABLE action.hold_transit_copy (
 	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
 ALTER TABLE action.hold_transit_copy ADD PRIMARY KEY (id);
-ALTER TABLE action.hold_transit_copy ADD CONSTRAINT ahtc_tc_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE CASCADE;
+ALTER TABLE action.hold_transit_copy ADD CONSTRAINT ahtc_tc_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX active_hold_transit_dest_idx ON "action".hold_transit_copy (dest);
 CREATE INDEX active_hold_transit_source_idx ON "action".hold_transit_copy (source);
 CREATE INDEX active_hold_transit_cp_idx ON "action".hold_transit_copy (target_copy);

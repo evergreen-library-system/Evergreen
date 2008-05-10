@@ -19,30 +19,30 @@ BEGIN;
 CREATE TABLE config.hold_matrix_matchpoint (
 	id			SERIAL	    PRIMARY KEY,
 	active			BOOL	NOT NULL DEFAULT TRUE,
-	user_home_ou	INT	    REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	request_ou		INT	    REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	pickup_ou		INT	    REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	item_owning_ou	INT	    REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	item_circ_ou	INT	    REFERENCES actor.org_unit (id),	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	usr_grp			INT	    REFERENCES permission.grp_tree (id),	-- Set to the top applicable group from the group tree; will need decendents and prox functions for filtering
-	requestor_grp	INT	    NOT NULL REFERENCES permission.grp_tree (id),	-- Set to the top applicable group from the group tree; will need decendents and prox functions for filtering
-	circ_modifier	TEXT	REFERENCES config.circ_modifier (code),
-	marc_type		TEXT	REFERENCES config.item_type_map (code),
-	marc_form		TEXT	REFERENCES config.item_form_map (code),
-	marc_vr_format	TEXT	REFERENCES config.videorecording_format_map (code),
+	user_home_ou	INT	    REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	request_ou		INT	    REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	pickup_ou		INT	    REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	item_owning_ou	INT	    REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	item_circ_ou	INT	    REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	usr_grp			INT	    REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
+	requestor_grp	INT	    NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
+	circ_modifier	TEXT	REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_type		TEXT	REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_form		TEXT	REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_vr_format	TEXT	REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
 	ref_flag		BOOL,
 	CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format)
 );
 
 -- Tests to determine if hold against a specific copy is possible for a user at (and from) a location
 CREATE TABLE config.hold_matrix_test (
-	matchpoint		        INT	PRIMARY KEY REFERENCES config.hold_matrix_matchpoint (id),
+	matchpoint		        INT	PRIMARY KEY REFERENCES config.hold_matrix_matchpoint (id) DEFERRABLE INITIALLY DEFERRED,
 	holdable		        BOOL	NOT NULL DEFAULT TRUE,				-- Hard "can't hold" flag requiring an override
 	distance_is_from_owner	BOOL	NOT NULL DEFAULT FALSE,				-- How to calculate transit_range.  True means owning lib, false means copy circ lib
-	transit_range		    INT	REFERENCES actor.org_unit_type (id),		-- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
+	transit_range		    INT	REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,		-- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
 	max_holds		        INT,							-- Total hold requests must be less than this, NULL means skip (always pass)
 	include_frozen_holds	BOOL	NOT NULL DEFAULT TRUE,				-- Include frozen hold requests in the count for max_holds test
-	age_hold_protect_rule	INT	REFERENCES config.rule_age_hold_protect (id)	-- still not sure we want to move this off the copy
+	age_hold_protect_rule	INT	REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED	-- still not sure we want to move this off the copy
 );
 
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
