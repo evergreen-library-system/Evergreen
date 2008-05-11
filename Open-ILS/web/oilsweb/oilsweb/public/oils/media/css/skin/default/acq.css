@@ -6,6 +6,8 @@
 .oils-sub-navigate-block span { padding: 3px; }
 */
 
+.oils-acq-detail-content-pane {height:600px;width:100%}
+
 /* bib search */
 #oils-acq-search-container { width:100%; }
 #oils-acq-search-sources-block { width:32%; vertical-align: top; float: left; margin-right: 10px;}

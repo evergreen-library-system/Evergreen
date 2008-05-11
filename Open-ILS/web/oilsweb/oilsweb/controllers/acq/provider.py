@@ -13,11 +13,8 @@ class ProviderController(BaseController):
 
     def view(self, **kwargs):
         r = RequestMgr()
-        provider = provider_mgr.retrieve(r, kwargs['id'])
-        provider.owner(OrgUtil.get_org_unit(provider.owner()))
-        r.ctx.acq.provider.value = provider
+        r.ctx.acq.provider_id = kwargs['id']
         return r.render('acq/financial/view_provider.html')
-
 
     def create(self):
         r = RequestMgr()

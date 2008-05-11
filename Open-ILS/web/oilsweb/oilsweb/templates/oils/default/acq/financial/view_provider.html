@@ -1,25 +1,70 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('View Provider')}</%def>
 <%def name="block_content()">
 
-<% provider = c.oils.acq.provider.value %>
+<script>
+    dojo.require("dijit.Dialog");
+    dojo.require('dijit.layout.TabContainer');
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('dojox.grid.Grid');
+    dojo.require("fieldmapper.OrgUtils");
+    dojo.require('openils.acq.Provider');
+    dojo.require('openils.Event');
+    dojo.require('openils.User');
 
-<div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>${provider.name()}</div>
+    var providerId = ${c.oils.acq.provider_id};
+    var provider = null;
+
+    function getOrgInfo(rowIndex) {
+        data = providerGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return fieldmapper.aou.findOrgUnit(data.owner).shortname();
+    }
+
+    function loadProviderGrid() {
+        var store = new dojo.data.ItemFileReadStore({data:acqpro.toStoreData([provider])});
+        var model = new dojox.grid.data.DojoData(
+            null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        providerGrid.setModel(model);
+        providerGrid.update();
+    }
+
+    function fetchProvider() {
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.provider.retrieve'],
+            {   async: true,
+                params: [ openils.User.authtoken, providerId ],
+                oncomplete: function(r) {
+                    provider = r.recv().content();
+                    loadProviderGrid(provider);
+                }
+            }
+        );
+    }
+
+    dojo.addOnLoad(fetchProvider);
+</script>
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+        <div dojoType="dijit.layout.ContentPane" 
+                class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true' style='height:400px;'>
+            <script>
+                var providerGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Name")}', field: "name", width:'auto'}, 
+                        {name: '${_("Owner")}', get:getOrgInfo}, 
+                        {name: '${_("Currency Type")}', field: "currency_type"},
+                    ]]
+                }];
+            </script>
+            <div jsId='providerGrid' dojoType="dojox.Grid" structure='providerGridLayout'> </div>
+        </div>
+    </div>
 </div>
 
-<table class='oils-admin-table'>
-    <tbody>
-        <tr>
-            <td class='oils-admin-label'>${_('Owner')}</td>
-            <td>${provider.owner().name()}</td> 
-        </tr>
-        <tr>
-            <td class='oils-admin-label'>${_('Currency')}</td>
-            <td>${provider.currency_type()}</td> 
-        </tr>
-    </tbody>
-</table>
 </%def>
+
