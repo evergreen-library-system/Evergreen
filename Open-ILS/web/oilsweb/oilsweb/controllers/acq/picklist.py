@@ -1,7 +1,7 @@
 from oilsweb.lib.base import *
 import logging, pylons
 import oilsweb.lib.context, oilsweb.lib.util
-import oilsweb.lib.bib, oilsweb.lib.acq.search
+import oilsweb.lib.bib
 import oils.const, oils.utils.utils
 import osrf.net_obj
 
