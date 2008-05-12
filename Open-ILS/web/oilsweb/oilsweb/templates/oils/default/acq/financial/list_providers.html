@@ -3,66 +3,31 @@
 <%def name="page_title()">${_('Providers')}</%def>
 <%def name="block_content()">
 
-<script type="text/javascript">
-    dojo.require("dijit.Dialog");
-    dojo.require("dijit.form.FilteringSelect");
-    dojo.require('dijit.form.Button');
-    dojo.require('dojox.grid.Grid');
 
-    dojo.require('openils.acq.CurrencyType');
-    dojo.require('openils.Event');
-    dojo.require('openils.acq.Provider');
-    dojo.require("fieldmapper.OrgUtils");
-</script>
+<!-- load the page-specific JS -->
+<script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/financial/list_providers.js'> </script>
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>${_('Providers')}</div>
 </div>
 
 <!-- The main grid lives here -->
-<div jsId='providerListGrid' dojoType="dojox.Grid"></div>
-
 <script>
-
-    function loadProviderGrid() {
-        new openils.User().getBySession();
-
-        /** define how the primary grid is rendered */
-
-        function getOrgInfo(rowIndex) {
-            data = providerListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return fieldmapper.aou.findOrgUnit(data.owner).shortname();
-        }
-
-        function getName(rowIndex) {
-            data = providerListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return '<a href="${c.oils.acq.prefix.value}/provider/view/'+data.id+'">'+data.name+'</a>';
-        }
-    
-        var gridStructure = [{
-            cells : [[
-                {name: '${_("ID")}', field: 'id'},
-                {name: '${_("Name")}', get:getName, width:'auto'}, 
-                {name: '${_("Owner")}', get:getOrgInfo}, 
-                {name: '${_("Currency Type")}', field: "currency_type"}
-            ]]
-        }];
-
-        openils.acq.Provider.createStore(
-            function(storeData) {
-                var store = new dojo.data.ItemFileReadStore({data:storeData});
-                var model = new dojox.grid.data.DojoData(null, store, 
-                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-                providerListGrid.setStructure(gridStructure);
-                providerListGrid.setModel(model);
-                providerListGrid.update();
-            }
-        );
+    function getName(rowIndex) {
+        data = providerListGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="${c.oils.acq.prefix.value}/provider/view/'+data.id+'">'+data.name+'</a>';
     }
 
-    dojo.addOnLoad(loadProviderGrid);
+    var providerGridStructure = [{
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', get:getName, width:'auto'}, 
+            {name: '${_("Owner")}', get:getOrgInfo}, 
+            {name: '${_("Currency Type")}', field: "currency_type"}
+        ]]
+    }];
 </script>
+<div jsId='providerListGrid' dojoType="dojox.Grid" structure='providerGridStructure'></div>
 
 </%def>
