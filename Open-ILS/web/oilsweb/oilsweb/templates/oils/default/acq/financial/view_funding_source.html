@@ -22,15 +22,24 @@
     var fundingSourceID = ${c.oils.acq.funding_source_id};
     var fundingSource = null;
 
+    function resetPage() {
+        fundingSource = null;
+        fsCreditGrid.isLoaded = false;
+        fsAllocationGrid.isLoaded = false;
+        loadFS();
+    }
+
     /** creates a new funding_source_credit from the dialog ----- */
     function applyFSCredit(fields) {
         fields.funding_source = fundingSourceID;
-        openils.acq.FundingSource.createCredit(
-            fields, 
-            function(fscId) {
-                location.href = location.href;
-            }
-        );
+        openils.acq.FundingSource.createCredit(fields, resetPage);
+    }
+
+    function applyFSAllocation(fields) {
+        fields.funding_source = fundingSourceID;
+        if(isNaN(fields.percent)) fields.percent = null;
+        if(isNaN(fields.amount)) fields.amount = null;
+        openils.acq.Fund.createAllocation(fields, resetPage);
     }
 
     /** fetch the fleshed funding source ----- */
@@ -79,6 +88,7 @@
 
     /** builds the credits grid ----- */
     function loadFSGrid() {
+        if(!fundingSource) return;
         var store = new dojo.data.ItemFileReadStore({data:acqfs.toStoreData([fundingSource])});
         var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
         fundingSourceGrid.setModel(model);
@@ -156,8 +166,7 @@
                         fundingSourceFundSelector.store = 
                             new dojo.data.ItemFileReadStore({data:store});
                         fundingSourceFundSelector.setValue(store.items[0].id);
-                    },
-                    'ADMIN_FUND' /* need to check MANAGE_FUND as well... */
+                    }, 'MANAGE_FUND'
                 );
             </script>
             <table class='dijitTooltipTable'>
@@ -210,6 +219,7 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true'>
+            <script type='dojo/connect' event='onShow'>loadFSGrid();</script>
             <script>
                 /** Define the columns for the funding source grid ----- */
                 var fundingSourceGridLayout = [{
