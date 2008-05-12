@@ -5,7 +5,7 @@
 },
 {   
     label : "${_('Search Titles')}",
-    dest : 'acq/picklist/search',
+    dest : 'acq/picklist/bib_search',
     id : 'acq-picklist-search'
 }
 

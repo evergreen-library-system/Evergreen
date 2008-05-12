@@ -92,7 +92,6 @@ class PicklistController(BaseController):
                                  'items': items
                                  })
     
-    
     def list(self):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
@@ -105,30 +104,9 @@ class PicklistController(BaseController):
         r.ctx.acq.picklist_list.value = pl_manager.retrieve_list(all=True)
         return r.render('acq/picklist/view_listall.html')
     
-    def search(self):
-        r = RequestMgr()
-        r.ctx.acq.z39_sources.value = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
-        
-        sc = {}
-        for data in r.ctx.acq.z39_sources.value.values():
-            for key, val in data['attrs'].iteritems():
-                sc[key] = val.get('label') or key
-        r.ctx.acq.search_classes.value = sc
-        keys = sc.keys()
-        keys.sort()
-        r.ctx.acq.search_classes_sorted.value = keys
-        
-        return r.render('acq/picklist/search.html')
-
     def bib_search(self):
         r = RequestMgr()
         return r.render('acq/picklist/bib_search.html')
-    
-    def do_search(self):
-        r = RequestMgr()
-        picklist_id = oilsweb.lib.acq.search.multi_search(
-            r, oilsweb.lib.acq.search.compile_multi_search(r))
-        return redirect_to(controller='acq/picklist', action='view', id=picklist_id)
     
     def delete(self, **kwargs):
         r = RequestMgr()
