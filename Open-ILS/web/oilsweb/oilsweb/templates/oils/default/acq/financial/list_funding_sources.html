@@ -7,21 +7,10 @@
     <div id='oils-acq-list-header-label'>${_('Funding Sources')}</div>
 </div>
 
-<script src='/oils/media/js/dojo/fieldmapper/OrgUtils.js'> </script>
-<script src='/oils/media/js/dojo/openils/widget/OrgUnitFilteringSelect.js'> </script>
+<!-- load the page-specific JS -->
+<script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/financial/list_funding_sources.js'> </script>
 
 <script type="text/javascript">
-    dojo.require("dijit.Dialog");
-    dojo.require("dijit.form.FilteringSelect");
-    dojo.require('openils.acq.FundingSource');
-    dojo.require('openils.acq.CurrencyType');
-    dojo.require('openils.widget.OrgUnitFilteringSelect');
-    dojo.require('dijit.form.Button');
-    dojo.require('dojox.grid.Grid');
-    dojo.require('openils.Event');
-
-    var globalUser = new openils.User();
-
     function createFS(fields) {
         /** Creates a new funding source */
         openils.acq.FundingSource.create(
@@ -87,56 +76,22 @@
 </div>
 
 <!-- The main grid lives here -->
-<div id="oils-acq-funding-source-list-grid" jsId='fundingSourceListGrid' dojoType="dojox.Grid"></div>
-
 <script>
-
-    function loadFSGrid() {
-        globalUser.getBySession();
-
-        /** define how the primary grid is rendered */
-
-        function getOrgInfo(rowIndex) {
-            data = fundingSourceListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return fieldmapper.aou.findOrgUnit(data.owner).shortname();
-        }
-
-        function getBalanceInfo(rowIndex) {
-            data = fundingSourceListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return new String(openils.acq.FundingSource.cache[data.id].summary().balance);
-        }
-
-        function getName(rowIndex) {
-            data = fundingSourceListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+data.id+'">'+data.name+'</a>';
-        }
-    
-        var gridStructure = [{
-            cells : [[
-                {name: '${_("ID")}', field: 'id'},
-                {name: '${_("Name")}', width:'auto', get:getName}, 
-                {name: '${_("Owner")}', width:'auto', get:getOrgInfo}, 
-                {name: '${_("Currency Type")}', field: "currency_type"},
-                {name: '${_("Balance")}', get:getBalanceInfo}
-            ]]
-        }];
-
-        openils.acq.FundingSource.createStore(
-            function(storeData) {
-                var store = new dojo.data.ItemFileReadStore({data:storeData});
-                var model = new dojox.grid.data.DojoData(null, store, 
-                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-                fundingSourceListGrid.setStructure(gridStructure);
-                fundingSourceListGrid.setModel(model);
-                fundingSourceListGrid.update();
-            }
-        );
+    function getName(rowIndex) {
+        data = fundingSourceListGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="${c.oils.acq.prefix.value}/funding_source/view/'+data.id+'">'+data.name+'</a>';
     }
 
-    dojo.addOnLoad(loadFSGrid);
+    var fsGridStructure = [{
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', width:'auto', get:getName}, 
+            {name: '${_("Owner")}', width:'auto', get:getOrgInfo}, 
+            {name: '${_("Currency Type")}', field: "currency_type"},
+            {name: '${_("Balance")}', get:getBalanceInfo}
+        ]]
+    }];
 </script>
-
+<div id="oils-acq-funding-source-list-grid" jsId='fundingSourceListGrid' dojoType="dojox.Grid" structure='fsGridStructure'></div>
 </%def>

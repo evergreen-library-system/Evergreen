@@ -7,19 +7,10 @@
     <div id='oils-acq-list-header-label'>${_('Funds')}</div>
 </div>
 
+<!-- load the page-specific JS -->
+<script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/financial/list_funds.js'> </script>
+
 <script type="text/javascript">
-    dojo.require("dijit.Dialog");
-    dojo.require("dijit.form.FilteringSelect");
-    dojo.require('dijit.form.Button');
-    dojo.require('dojox.grid.Grid');
-
-    dojo.require('openils.widget.OrgUnitFilteringSelect');
-    dojo.require('openils.acq.CurrencyType');
-    dojo.require('openils.Event');
-    dojo.require('openils.acq.Fund');
-
-    var globalUser = new openils.User();
-
     function createFund(fields) {
         /** Creates a new fund source */
         openils.acq.Fund.create(
@@ -90,57 +81,24 @@
 </div>
 
 <!-- The main grid lives here -->
-<div jsId='fundListGrid' dojoType="dojox.Grid"></div>
-
 <script>
-
-    function loadFundGrid() {
-        globalUser.getBySession();
-
-        /** define how the primary grid is rendered */
-
-        function getOrgInfo(rowIndex) {
-            data = fundListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return fieldmapper.aou.findOrgUnit(data.org).shortname();
-        }
-
-        function getBalanceInfo(rowIndex) {
-            data = fundListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return new String(openils.acq.Fund.cache[data.id].summary().combined_balance);
-        }
-
-        function getName(rowIndex) {
-            data = fundListGrid.model.getRow(rowIndex);
-            if(!data) return;
-            return '<a href="${c.oils.acq.prefix.value}/fund/view/'+data.id+'">'+data.name+'</a>';
-        }
-    
-        var gridStructure = [{
-            cells : [[
-                {name: '${_("ID")}', field: 'id'},
-                {name: '${_("Name")}', width:'auto', get:getName}, 
-                {name: '${_("Year")}', field: "year"}, 
-                {name: '${_("Location")}', get:getOrgInfo}, 
-                {name: '${_("Currency Type")}', field: "currency_type"},
-                {name: '${_("Combined Balance")}', get:getBalanceInfo}
-            ]]
-        }];
-
-        openils.acq.Fund.createStore(
-            function(storeData) {
-                var store = new dojo.data.ItemFileReadStore({data:storeData});
-                var model = new dojox.grid.data.DojoData(null, store, 
-                    {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-                fundListGrid.setStructure(gridStructure);
-                fundListGrid.setModel(model);
-                fundListGrid.update();
-            }
-        );
+    function getName(rowIndex) {
+        data = fundListGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="${c.oils.acq.prefix.value}/fund/view/'+data.id+'">'+data.name+'</a>';
     }
 
-    dojo.addOnLoad(loadFundGrid);
+    var fundListGridStructure = [{
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Name")}', width:'auto', get:getName}, 
+            {name: '${_("Year")}', field: "year"}, 
+            {name: '${_("Location")}', get:getOrgInfo}, 
+            {name: '${_("Currency Type")}', field: "currency_type"},
+            {name: '${_("Combined Balance")}', get:getBalanceInfo}
+        ]]
+    }];
 </script>
+<div jsId='fundListGrid' dojoType="dojox.Grid" structure='fundListGridStructure'></div>
 
 </%def>
