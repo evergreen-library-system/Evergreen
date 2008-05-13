@@ -40,28 +40,40 @@ function getDateTimeField(rowIndex) {
     return dojo.date.locale.format(date, {formatLength:'medium'});
 }
 
+function getLi(id) {
+    for(var i in lineitems) {
+        var li = lineitems[i];
+        if(li.id() == id) 
+            return openils.acq.Picklist.cache[id] = li;
+    }
+}
+
 function getJUBTitle(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return '';
-    for(var i in lineitems) {
-        var li = lineitems[i];
-        if(li.id() == data.id) {
-            openils.acq.Picklist.cache[data.id] = li;
-            return openils.acq.Picklist.find_attr(data.id, 'title', 'lineitem_marc_attr_definition')
-        }
-    }
+    getLi(data.id);
+    return openils.acq.Picklist.find_attr(data.id, 'title', 'lineitem_marc_attr_definition')
+}
+
+function getJUBIsbn(rowIndex) {
+    var data = liGrid.model.getRow(rowIndex);
+    if(!data) return '';
+    getLi(data.id);
+    return openils.acq.Picklist.find_attr(data.id, 'isbn', 'lineitem_marc_attr_definition')
+}
+
+function getJUBPubdate(rowIndex) {
+    var data = liGrid.model.getRow(rowIndex);
+    if(!data) return '';
+    getLi(data.id);
+    return openils.acq.Picklist.find_attr(data.id, 'pubdate', 'lineitem_marc_attr_definition')
 }
 
 function getJUBPrice(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return;
-    for(var i in lineitems) {
-        var li = lineitems[i];
-        if(li.id() == data.id) {
-            openils.acq.Picklist.cache[data.id] = li;
-            return openils.acq.Picklist.find_attr(data.id, 'price', 'lineitem_marc_attr_definition')
-        }
-    }
+    getLi(data.id);
+    return openils.acq.Picklist.find_attr(data.id, 'price', 'lineitem_marc_attr_definition')
 }
 
 function loadPOGrid() {

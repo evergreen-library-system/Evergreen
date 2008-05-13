@@ -41,6 +41,8 @@
                     cells: [[
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Title")}', width: 'auto', get:getJUBTitle},
+                        {name: '${_("ISBN")}', get:getJUBIsbn},
+                        {name: '${_("Pubdate")}', get:getJUBPubdate},
                         {name: '${_("Price")}', get:getJUBPrice},
                         {name: '${_("Vendor")}', get:getProvider},
                         {name: '${_("# of Copies")}', field: 'item_count'},
