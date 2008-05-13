@@ -18,7 +18,7 @@ function getProvider(rowIndex) {
     return openils.acq.Provider.retrieve(data.provider).name();
 }
 
-function getOwner(rowIndex) {
+function getPOOwner(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
     if(!data) return;
     return new openils.User({id:data.owner}).user.usrname();
