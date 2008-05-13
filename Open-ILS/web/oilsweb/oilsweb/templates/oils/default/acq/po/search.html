@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%def name="page_title()">${_('PO Search')}</%def>
+<%def name="block_content()">
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>${_('PO Search')}</div>
+</div>
+
+<!-- load the page-specific JS -->
+<script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/po/search.js'> </script>
+
+
+<form dojoType='dijit.form.Form' action='' method=''>
+    <script type="dojo/method" event="onSubmit">
+        fields = this.getValues();
+        if(fields.provider == '')
+            delete fields.provider;
+        if(isNaN(fields.id))
+            delete fields.id;
+        doSearch(fields);
+        return false; /* don't redirect */
+    </script>
+    <label for='id'>${_('ID')}</label>
+    <input dojoType='dijit.form.NumberTextBox' name='id'> </input>
+    <label for='provider'>${_('Provider')}</label>
+    <select name='provider' style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select>
+    <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
+</form>
+
+<script>
+    var poGridStructure = [{
+        cells : [[
+            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("Owner")}', field:'owner'},
+            {name: '${_("Ordering Agency")}', field: "ordering_agency"}, 
+            {name: '${_("Create Time")}', field:'create_time'},
+            {name: '${_("Edit Time")}', field: "edit_time"},
+            {name: '${_("Provider")}', field:'provider'},
+            {name: '${_("State")}', field:'state'}
+        ]]
+    }];
+</script>
+<div jsId='poGrid' id='po-grid' dojoType="dojox.Grid" structure='poGridStructure'></div>
+<script>dojo.style('po-grid', 'visibility', 'hidden');</script>
+
+</%def>
+
+
