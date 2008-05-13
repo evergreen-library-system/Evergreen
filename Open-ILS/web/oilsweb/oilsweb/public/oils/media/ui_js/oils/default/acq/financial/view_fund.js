@@ -1,4 +1,5 @@
 dojo.require("dijit.Dialog");
+dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.layout.TabContainer');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dojox.grid.Grid');
@@ -20,6 +21,15 @@ function getSummaryInfo(rowIndex) {
         case 8: return new String(fund.summary().spent_total);
         case 9: return new String(fund.summary().encumberance_total);
     }
+}
+
+function createAllocation(fields) {
+    fields.fund = fundID;
+    if(isNaN(fields.percent)) fields.percent = null;
+    if(isNaN(fields.amount)) fields.amount = null;
+    //openils.acq.Fund.createAllocation(fields, resetPage);
+    openils.acq.Fund.createAllocation(fields, 
+        function(r){location.href = location.href;});
 }
 
 function getOrgInfo(rowIndex) {
