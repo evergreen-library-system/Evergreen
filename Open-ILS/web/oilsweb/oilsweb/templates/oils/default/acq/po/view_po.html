@@ -13,7 +13,6 @@
     <div id='oils-acq-list-header-label'>${_('PO Details')}</div>
 </div>
 
-
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
 
@@ -25,9 +24,9 @@
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Owner")}', get:getPOOwner},
                         {name: '${_("Ordering Agency")}', get:getOrgInfo},
-                        {name: '${_("Create Time")}', field:'create_time'},
-                        {name: '${_("Edit Time")}', field: "edit_time"},
-                        {name: '${_("Provider")}', get:getProvider},
+                        {name: '${_("Create Time")}', field:'create_time', width:'auto', get:getDateTimeField},
+                        {name: '${_("Edit Time")}', field: "edit_time", width:'auto', get:getDateTimeField},
+                        {name: '${_("Provider")}', get:getProvider, width:'auto'},
                         {name: '${_("State")}', field:'state'}
                     ]]
                 }];
@@ -43,7 +42,7 @@
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Title")}', width: 'auto', get:getJUBTitle},
                         {name: '${_("Price")}', get:getJUBPrice},
-                        {name: '${_("Vendor")}', field: 'provider'},
+                        {name: '${_("Vendor")}', get:getProvider},
                         {name: '${_("# of Copies")}', field: 'item_count'},
                         {name: '${_("State")}', field: 'state'}
                     ]]

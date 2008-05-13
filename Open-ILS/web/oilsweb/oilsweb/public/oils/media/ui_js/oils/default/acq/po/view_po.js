@@ -9,6 +9,8 @@ dojo.require('openils.User');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.acq.Provider');
 dojo.require('openils.acq.Picklist');
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
 
 var PO = null;
 var lineitems = [];
@@ -29,6 +31,13 @@ function getPOOwner(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
     if(!data) return;
     return new openils.User({id:data.owner}).user.usrname();
+}
+
+function getDateTimeField(rowIndex) {
+    data = poGrid.model.getRow(rowIndex);
+    if(!data) return;
+    var date = dojo.date.stamp.fromISOString(data[this.field]);
+    return dojo.date.locale.format(date, {formatLength:'medium'});
 }
 
 function getJUBTitle(rowIndex) {
@@ -54,7 +63,6 @@ function getJUBPrice(rowIndex) {
         }
     }
 }
-
 
 function loadPOGrid() {
     if(!PO) return;
