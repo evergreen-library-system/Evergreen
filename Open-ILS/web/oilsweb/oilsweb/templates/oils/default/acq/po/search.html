@@ -32,11 +32,11 @@
     var poGridStructure = [{
         cells : [[
             {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Owner")}', field:'owner'},
-            {name: '${_("Ordering Agency")}', field: "ordering_agency"}, 
+            {name: '${_("Owner")}', get:getOwner},
+            {name: '${_("Ordering Agency")}', get:getOrgInfo},
             {name: '${_("Create Time")}', field:'create_time'},
             {name: '${_("Edit Time")}', field: "edit_time"},
-            {name: '${_("Provider")}', field:'provider'},
+            {name: '${_("Provider")}', get:getProvider},
             {name: '${_("State")}', field:'state'}
         ]]
     }];

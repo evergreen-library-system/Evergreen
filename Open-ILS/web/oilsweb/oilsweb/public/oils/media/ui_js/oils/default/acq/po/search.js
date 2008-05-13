@@ -4,6 +4,25 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.NumberTextBox');
 dojo.require('dojox.grid.Grid');
 dojo.require('openils.acq.Provider');
+dojo.require('fieldmapper.OrgUtils');
+
+function getOrgInfo(rowIndex) {
+    data = poGrid.model.getRow(rowIndex);
+    if(!data) return;
+    return fieldmapper.aou.findOrgUnit(data.owner).shortname();
+}
+
+function getProvider(rowIndex) {
+    data = poGrid.model.getRow(rowIndex);
+    if(!data) return;
+    return openils.acq.Provider.retrieve(data.provider).name();
+}
+
+function getOwner(rowIndex) {
+    data = poGrid.model.getRow(rowIndex);
+    if(!data) return;
+    return new openils.User({id:data.owner}).user.usrname();
+}
 
 function doSearch(fields) {
     var itemList = [];

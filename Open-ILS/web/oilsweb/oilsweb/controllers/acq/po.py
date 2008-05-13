@@ -106,3 +106,8 @@ class PoController(BaseController):
                                      'open-ils.acq.purchase_order.delete',
                                      r.ctx.core.authtoken.value, kwargs['id'])
         return r.render('acq/po/list')
+
+    def search(self):
+        r = RequestMgr()
+        return r.render('acq/po/search.html')
+
