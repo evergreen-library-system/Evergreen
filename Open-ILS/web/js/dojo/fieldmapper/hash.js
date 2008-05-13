@@ -37,6 +37,7 @@ if(!dojo._hasResource['fieldmapper.hash']){
                     _hash[this._fields[i]] = null;
                 else
 				    _hash[this._fields[i]] = '' + this[this._fields[i]]();
+            }
 		}
 		return _hash;
 	}
