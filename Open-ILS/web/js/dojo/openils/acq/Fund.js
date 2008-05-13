@@ -75,6 +75,26 @@ openils.acq.Fund.create = function(fields, onCreateComplete) {
 };
 
 
+openils.acq.Fund.createAllocation = function(fields, onCreateComplete) {
+    var alloc = new acqfa()
+    for(var field in fields) 
+        alloc[field](fields[field]);
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund_allocation.create'],
+        {
+            async: true,
+            params: [openils.User.authtoken, alloc],
+            oncomplete: function(r) {
+                var msg = r.recv();
+                var id = msg.content();
+                if(onCreateComplete)
+                    onCreateComplete(id);
+            }
+        }
+    );
+};
+
+
 /**
  * Synchronous fund retrievel method 
  */
