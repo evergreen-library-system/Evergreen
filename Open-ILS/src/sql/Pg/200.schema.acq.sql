@@ -34,6 +34,7 @@ CREATE TABLE acq.provider (
 	name		TEXT	NOT NULL,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
 	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	code		TEXT	UNIQUE,
 	CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
 );
 
@@ -42,6 +43,7 @@ CREATE TABLE acq.funding_source (
 	name		TEXT	NOT NULL,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
 	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	code		TEXT	UNIQUE,
 	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
 
@@ -58,6 +60,7 @@ CREATE TABLE acq.fund (
     name            TEXT    NOT NULL,
     year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
     currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    code            TEXT    UNIQUE,
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
 );
 
