@@ -296,14 +296,16 @@ sub create_lineitem {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST');
 
-    my $picklist = $e->retrieve_acq_picklist($li->picklist)
-        or return $e->die_event;
-    return OpenILS::Event->new('BAD_PARAMS') 
-        unless $picklist->owner == $e->requestor->id;
-
-    # indicate the picklist was updated
-    $picklist->edit_time('now');
-    $e->update_acq_picklist($picklist) or return $e->die_event;
+    if($li->picklist) {
+        my $picklist = $e->retrieve_acq_picklist($li->picklist)
+            or return $e->die_event;
+        return OpenILS::Event->new('BAD_PARAMS') 
+            unless $picklist->owner == $e->requestor->id;
+    
+        # indicate the picklist was updated
+        $picklist->edit_time('now');
+        $e->update_acq_picklist($picklist) or return $e->die_event;
+    }
 
     $li->selector($e->requestor->id);
     $e->create_acq_lineitem($li) or return $e->die_event;
