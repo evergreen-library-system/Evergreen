@@ -10,6 +10,14 @@
 <!-- load the page-specific JS -->
 <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/po/search.js'> </script>
 
+<script>
+    function getId(rowIndex) {
+        data = poGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="${c.oils.acq.prefix.value}/po/view/' + data.id + '">'+data.id;
+    }
+</script>
+
 
 <form dojoType='dijit.form.Form' action='' method=''>
     <script type="dojo/method" event="onSubmit">
@@ -31,12 +39,12 @@
 <script>
     var poGridStructure = [{
         cells : [[
-            {name: '${_("ID")}', field: 'id'},
+            {name: '${_("ID")}', field: 'id', get:getId},
             {name: '${_("Owner")}', get:getPOOwner},
             {name: '${_("Ordering Agency")}', get:getOrgInfo},
-            {name: '${_("Create Time")}', field:'create_time'},
-            {name: '${_("Edit Time")}', field: "edit_time"},
-            {name: '${_("Provider")}', get:getProvider},
+            {name: '${_("Create Time")}', field:'create_time', get:getDateTimeField, width:'auto'},
+            {name: '${_("Edit Time")}', field: "edit_time", get:getDateTimeField, width:'auto'},
+            {name: '${_("Provider")}', get:getProvider, width:'auto'},
             {name: '${_("State")}', field:'state'}
         ]]
     }];

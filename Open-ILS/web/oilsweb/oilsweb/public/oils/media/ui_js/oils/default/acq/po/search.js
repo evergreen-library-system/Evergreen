@@ -5,6 +5,8 @@ dojo.require('dijit.form.NumberTextBox');
 dojo.require('dojox.grid.Grid');
 dojo.require('openils.acq.Provider');
 dojo.require('fieldmapper.OrgUtils');
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
 
 function getOrgInfo(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
@@ -22,6 +24,13 @@ function getPOOwner(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
     if(!data) return;
     return new openils.User({id:data.owner}).user.usrname();
+}
+
+function getDateTimeField(rowIndex) {
+    data = poGrid.model.getRow(rowIndex);
+    if(!data) return;
+    var date = dojo.date.stamp.fromISOString(data[this.field]);
+    return dojo.date.locale.format(date, {formatLength:'medium'});
 }
 
 function doSearch(fields) {
