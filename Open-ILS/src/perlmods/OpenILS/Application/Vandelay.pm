@@ -2,6 +2,25 @@ package OpenILS::Application::Vandelay;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
+use Unicode::Normalize;
+use OpenSRF::EX qw/:try/;
+
+use OpenSRF::AppSession;
+use OpenSRF::Utils::SettingsClient;
+
+use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
+
+use MARC::Record;
+use MARC::File::XML;
+
+use OpenILS::Utils::Fieldmapper;
+
+use Time::HiRes qw(time);
+
+use OpenSRF::Utils::Logger qw/:level/;
+my $log = 'OpenSRF::Utils::Logger';
+
 sub initialize {}
 sub child_init {}
 
@@ -23,1015 +42,137 @@ sub entityize {
 # --------------------------------------------------------------------------------
 # Biblio ingest
 
-package OpenILS::Application::Vandelay::Biblio;
-use base qw/OpenILS::Application::Vandelay/;
-
-use Unicode::Normalize;
-use OpenSRF::EX qw/:try/;
-
-use OpenSRF::AppSession;
-use OpenSRF::Utils::SettingsClient;
-
-use OpenILS::Utils::Fieldmapper;
-use OpenSRF::Utils::JSON;
-use MARC::Record;
-use MARC::File::XML;
-
-use OpenILS::Utils::Fieldmapper;
-
-use Time::HiRes qw(time);
-
-use OpenSRF::Utils::Logger qw/:level/;
-our $log = 'OpenSRF::Utils::Logger';
-
 sub create_bib_queue {
 	my $self = shift;
 	my $client = shift;
-	my $bib = shift;
+	my $auth = shift;
+	my $name = shift;
+	my $owner = shift;
+	my $type = shift;
+	my $purpose = shift;
+
+	my $e = new_editor(authtoken => $auth, xact => 1);
+
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE', $owner);
+
+	my $queue = new Fieldmapper::vandelay::bib_queue();
+	$queue->name( $name );
+	$queue->owner( $owner );
+	$queue->queue_type( $type ) if ($type);
+	$queue->queue_purpose( $purpose ) if ($purpose);
+
+	my $new_id = $e->create_vandelay_bib_queue( $queue );
+	$e->die_event unless ($new_id);
+
+	$queue->id($new_id);
+	return $queue;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.create",
+	method		=> "create_bib_queue",
+	api_level	=> 1,
+	argc		=> 3,
+);                      
 
 
-sub rw_biblio_ingest_single_object {
+sub create_auth_queue {
 	my $self = shift;
 	my $client = shift;
-	my $bib = shift;
+	my $auth = shift;
+	my $name = shift;
+	my $owner = shift;
+	my $type = shift;
+	my $purpose = shift;
 
-	my ($blob) = $self->method_lookup("open-ils.ingest.full.biblio.object.readonly")->run($bib);
-	return undef unless ($blob);
+	my $e = new_editor(authtoken => $auth, xact => 1);
 
-	$bib->fingerprint( $blob->{fingerprint}->{fingerprint} );
-	$bib->quality( $blob->{fingerprint}->{quality} );
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $owner);
 
-	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+	my $queue = new Fieldmapper::vandelay::authority_queue();
+	$queue->name( $name );
+	$queue->owner( $owner );
+	$queue->queue_type( $type ) if ($type);
+	$queue->queue_purpose( $purpose ) if ($purpose);
 
-	my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+	my $new_id = $e->create_vandelay_authority_queue( $queue );
+	$e->die_event unless ($new_id);
 
-	# update full_rec stuff ...
-	my $tmp = $cstore->request(
-		'open-ils.cstore.direct.metabib.full_rec.id_list.atomic',
-		{ record => $bib->id }
-	)->gather(1);
-
-	$cstore->request( 'open-ils.cstore.direct.metabib.full_rec.delete' => $_ )->gather(1) for (@$tmp);
-	$cstore->request( 'open-ils.cstore.direct.metabib.full_rec.create' => $_ )->gather(1) for (@{ $blob->{full_rec} });
-
-	# update rec_descriptor stuff ...
-	$tmp = $cstore->request(
-		'open-ils.cstore.direct.metabib.record_descriptor.id_list.atomic',
-		{ record => $bib->id }
-	)->gather(1);
-
-	$cstore->request( 'open-ils.cstore.direct.metabib.record_descriptor.delete' => $_ )->gather(1) for (@$tmp);
-	$cstore->request( 'open-ils.cstore.direct.metabib.record_descriptor.create' => $blob->{descriptor} )->gather(1);
-
-	# deal with classed fields...
-	for my $class ( qw/title author subject keyword series/ ) {
-		$tmp = $cstore->request(
-			"open-ils.cstore.direct.metabib.${class}_field_entry.id_list.atomic",
-			{ source => $bib->id }
-		)->gather(1);
-
-		$cstore->request( "open-ils.cstore.direct.metabib.${class}_field_entry.delete" => $_ )->gather(1) for (@$tmp);
-	}
-	for my $obj ( @{ $blob->{field_entries} } ) {
-		my $class = $obj->class_name;
-		$class =~ s/^Fieldmapper:://o;
-		$class =~ s/::/./go;
-		$cstore->request( "open-ils.cstore.direct.$class.create" => $obj )->gather(1);
-	}
-
-	# update MR map ...
-
-	$tmp = $cstore->request(
-		'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
-		{ source => $bib->id }
-	)->gather(1);
-
-	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.delete' => $_->id )->gather(1) for (@$tmp);
-
-	# get the old MRs
-	my $old_mrs = $cstore->request(
-		'open-ils.cstore.direct.metabib.metarecord.search.atomic' => { id => [map { $_->metarecord } @$tmp] }
-	)->gather(1) if (@$tmp);
-
-	$old_mrs = [] if (!ref($old_mrs));
-
-	my $mr;
-	for my $m (@$old_mrs) {
-		if ($m->fingerprint eq $bib->fingerprint) {
-			$mr = $m;
-		} else {
-			my $others = $cstore->request(
-				'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic' => { metarecord => $m->id }
-			)->gather(1);
-
-			if (!@$others) {
-				$cstore->request(
-					'open-ils.cstore.direct.metabib.metarecord.delete' => $m->id
-				)->gather(1);
-			}
-
-			$m->isdeleted(1);
-		}
-	}
-
-	my $holds;
-	if (!$mr) {
-		# Get the matchin MR, if any.
-		$mr = $cstore->request(
-			'open-ils.cstore.direct.metabib.metarecord.search',
-			{ fingerprint => $bib->fingerprint }
-		)->gather(1);
-
-		$holds = $cstore->request(
-			'open-ils.cstore.direct.action.hold_request.search.atomic',
-			{ hold_type => 'M', target => [ map { $_->id } grep { $_->isdeleted } @$old_mrs ] }
-		)->gather(1) if (@$old_mrs);
-
-		if ($mr) {
-			for my $h (@$holds) {
-				$h->target($mr);
-				$cstore->request( 'open-ils.cstore.direct.action.hold_request.update' => $h )->gather(1);
-				$h->ischanged(1);
-			}
-		}
-	}
-
-	if (!$mr) {
-		$mr = new Fieldmapper::metabib::metarecord;
-		$mr->fingerprint( $bib->fingerprint );
-		$mr->master_record( $bib->id );
-		$mr->id(
-			$cstore->request(
-				"open-ils.cstore.direct.metabib.metarecord.create",
-				$mr => { quiet => 'true' }
-			)->gather(1)
-		);
-
-		for my $h (grep { !$_->ischanged } @$holds) {
-			$h->target($mr);
-			$cstore->request( 'open-ils.cstore.direct.action.hold_request.update' => $h )->gather(1);
-		}
-	} else {
-		my $mrm = $cstore->request(
-			'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
-			{ metarecord => $mr->id }
-		)->gather(1);
-
-		if (@$mrm) {
-			my $best = $cstore->request(
-				"open-ils.cstore.direct.biblio.record_entry.search",
-				{ id => [ map { $_->source } @$mrm ] },
-				{ 'select'	=> { bre => [ qw/id quality/ ] },
-			  	order_by	=> { bre => "quality desc" },
-			  	limit		=> 1,
-				}
-			)->gather(1);
-
-			if ($best->quality > $bib->quality) {
-				$mr->master_record($best->id);
-			} else {
-				$mr->master_record($bib->id);
-			}
-		} else {
-			$mr->master_record($bib->id);
-		}
-
-		$mr->clear_mods;
-
-		$cstore->request( 'open-ils.cstore.direct.metabib.metarecord.update' => $mr )->gather(1);
-	}
-
-	my $mrm = new Fieldmapper::metabib::metarecord_source_map;
-	$mrm->source($bib->id);
-	$mrm->metarecord($mr->id);
-
-	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.create' => $mrm )->gather(1);
-	$cstore->request( 'open-ils.cstore.direct.biblio.record_entry.update' => $bib )->gather(1);
-
-	$cstore->request( 'open-ils.cstore.transaction.commit' )->gather(1) || return undef;;
-
-	return $bib->id;
+	$queue->id($new_id);
+	return $queue;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.object",
-	method		=> "rw_biblio_ingest_single_object",
+	api_name	=> "open-ils.vandelay.authority_queue.create",
+	method		=> "create_auth_queue",
 	api_level	=> 1,
-	argc		=> 1,
+	argc		=> 3,
 );                      
 
-sub rw_biblio_ingest_single_record {
+sub add_record_to_bib_queue {
 	my $self = shift;
 	my $client = shift;
-	my $rec = shift;
+	my $auth = shift;
+	my $queue = shift;
+	my $marc = shift;
 
-	OpenILS::Application::Ingest->post_init();
-	my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
-	$cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+	my $e = new_editor(authtoken => $auth, xact => 1);
 
-	my $r = $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )->gather(1);
+	$queue = $e->retrieve_vandelay_bib_queue($queue)
 
-	$cstore->request('open-ils.cstore.transaction.rollback')->gather(1);
-	$cstore->disconnect;
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless
+		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
+		 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
 
-	return undef unless ($r and @$r);
+	my $rec = new Fieldmapper::vandelay::queued_bib_record();
+	$rec->marc( $marc );
+	$rec->queue( $queue->id );
 
-	return ($self->method_lookup("open-ils.ingest.full.biblio.object")->run($r))[0];
+	my $new_id = $e->create_vandelay_queued_bib_record( $rec );
+	$e->die_event unless ($new_id);
+
+	$rec->id($new_id);
+	return $rec;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.record",
-	method		=> "rw_biblio_ingest_single_record",
+	api_name	=> "open-ils.vandelay.queued_bib_record.create",
+	method		=> "add_record_to_bib_queue",
 	api_level	=> 1,
-	argc		=> 1,
+	argc		=> 3,
 );                      
 
-sub rw_biblio_ingest_record_list {
+sub add_record_to_authority_queue {
 	my $self = shift;
 	my $client = shift;
-	my @rec = ref($_[0]) ? @{ $_[0] } : @_ ;
+	my $auth = shift;
+	my $queue = shift;
+	my $marc = shift;
 
-	OpenILS::Application::Ingest->post_init();
-	my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
-	$cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+	my $e = new_editor(authtoken => $auth, xact => 1);
 
-	my $r = $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.search.atomic' => { id => $rec } )->gather(1);
+	$queue = $e->retrieve_vandelay_authority_queue($queue)
 
-	$cstore->request('open-ils.cstore.transaction.rollback')->gather(1);
-	$cstore->disconnect;
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless
+		($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
+		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
 
-	return undef unless ($r and @$r);
+	my $rec = new Fieldmapper::vandelay::queued_authority_record();
+	$rec->marc( $marc );
+	$rec->queue( $queue->id );
 
-	my $count = 0;
-	$count += ($self->method_lookup("open-ils.ingest.full.biblio.object")->run($_))[0] for (@$r);
+	my $new_id = $e->create_vandelay_queued_authority_record( $rec );
+	$e->die_event unless ($new_id);
 
-	return $count;
+	$rec->id($new_id);
+	return $rec;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.record_list",
-	method		=> "rw_biblio_ingest_record_list",
+	api_name	=> "open-ils.vandelay.queued_authority_record.create",
+	method		=> "add_record_to_authority_queue",
 	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_biblio_ingest_single_object {
-	my $self = shift;
-	my $client = shift;
-	my $bib = shift;
-	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
-
-	my $document = $parser->parse_string($xml);
-
-	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
-	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
-	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
-	my ($rd) = $self->method_lookup("open-ils.ingest.descriptor.xml")->run($xml);
-
-	$_->source($bib->id) for (@mXfe);
-	$_->record($bib->id) for (@mfr);
-	$rd->record($bib->id) if ($rd);
-
-	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.object.readonly",
-	method		=> "ro_biblio_ingest_single_object",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_biblio_ingest_single_xml {
-	my $self = shift;
-	my $client = shift;
-	my $xml = OpenILS::Application::Ingest::entityize(shift);
-
-	my $document = $parser->parse_string($xml);
-
-	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
-	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
-	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
-	my ($rd) = $self->method_lookup("open-ils.ingest.descriptor.xml")->run($xml);
-
-	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.xml.readonly",
-	method		=> "ro_biblio_ingest_single_xml",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_biblio_ingest_single_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-
-	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
-			->gather(1);
-
-	return undef unless ($r and @$r);
-
-	my ($res) = $self->method_lookup("open-ils.ingest.full.biblio.xml.readonly")->run($r->marc);
-
-	$_->source($rec) for (@{$res->{field_entries}});
-	$_->record($rec) for (@{$res->{full_rec}});
-	$res->{descriptor}->record($rec);
-
-	return $res;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.record.readonly",
-	method		=> "ro_biblio_ingest_single_record",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_biblio_ingest_stream_record {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $rec = $resp->content;
-		last unless (defined $rec);
-
-		$log->debug("Running open-ils.ingest.full.biblio.record.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.biblio.record.readonly")->run($rec);
-
-		$_->source($rec) for (@{$res->{field_entries}});
-		$_->record($rec) for (@{$res->{full_rec}});
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.record_stream.readonly",
-	method		=> "ro_biblio_ingest_stream_record",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-sub ro_biblio_ingest_stream_xml {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $xml = $resp->content;
-		last unless (defined $xml);
-
-		$log->debug("Running open-ils.ingest.full.biblio.xml.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.biblio.xml.readonly")->run($xml);
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.xml_stream.readonly",
-	method		=> "ro_biblio_ingest_stream_xml",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-sub rw_biblio_ingest_stream_import {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $bib = $resp->content;
-		last unless (defined $bib);
-
-		$log->debug("Running open-ils.ingest.full.biblio.xml.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.biblio.xml.readonly")->run($bib->marc);
-
-		$_->source($bib->id) for (@{$res->{field_entries}});
-		$_->record($bib->id) for (@{$res->{full_rec}});
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.biblio.bib_stream.import",
-	method		=> "rw_biblio_ingest_stream_import",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-
-# --------------------------------------------------------------------------------
-# Authority ingest
-
-package OpenILS::Application::Ingest::Authority;
-use base qw/OpenILS::Application::Ingest/;
-use Unicode::Normalize;
-
-sub ro_authority_ingest_single_object {
-	my $self = shift;
-	my $client = shift;
-	my $bib = shift;
-	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
-
-	my $document = $parser->parse_string($xml);
-
-	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.authority.xml")->run($document);
-
-	$_->record($bib->id) for (@mfr);
-
-	return { full_rec => \@mfr };
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.object.readonly",
-	method		=> "ro_authority_ingest_single_object",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_authority_ingest_single_xml {
-	my $self = shift;
-	my $client = shift;
-	my $xml = OpenILS::Application::Ingest::entityize(shift);
-
-	my $document = $parser->parse_string($xml);
-
-	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.authority.xml")->run($document);
-
-	return { full_rec => \@mfr };
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.xml.readonly",
-	method		=> "ro_authority_ingest_single_xml",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_authority_ingest_single_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-
-	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rec )
-			->gather(1);
-
-	return undef unless ($r and @$r);
-
-	my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($r->marc);
-
-	$_->record($rec) for (@{$res->{full_rec}});
-	$res->{descriptor}->record($rec);
-
-	return $res;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.record.readonly",
-	method		=> "ro_authority_ingest_single_record",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-sub ro_authority_ingest_stream_record {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $rec = $resp->content;
-		last unless (defined $rec);
-
-		$log->debug("Running open-ils.ingest.full.authority.record.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.record.readonly")->run($rec);
-
-		$_->record($rec) for (@{$res->{full_rec}});
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.record_stream.readonly",
-	method		=> "ro_authority_ingest_stream_record",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-sub ro_authority_ingest_stream_xml {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $xml = $resp->content;
-		last unless (defined $xml);
-
-		$log->debug("Running open-ils.ingest.full.authority.xml.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($xml);
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.xml_stream.readonly",
-	method		=> "ro_authority_ingest_stream_xml",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-sub rw_authority_ingest_stream_import {
-	my $self = shift;
-	my $client = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-
-	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
-	
-		my $bib = $resp->content;
-		last unless (defined $bib);
-
-		$log->debug("Running open-ils.ingest.full.authority.xml.readonly ...");
-		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($bib->marc);
-
-		$_->record($bib->id) for (@{$res->{full_rec}});
-
-		$client->respond( $res );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.full.authority.bib_stream.import",
-	method		=> "rw_authority_ingest_stream_import",
-	api_level	=> 1,
-	stream		=> 1,
-);                      
-
-
-# --------------------------------------------------------------------------------
-# MARC index extraction
-
-package OpenILS::Application::Ingest::XPATH;
-use base qw/OpenILS::Application::Ingest/;
-use Unicode::Normalize;
-
-# give this an XML documentElement and an XPATH expression
-sub xpath_to_string {
-	my $xml = shift;
-	my $xpath = shift;
-	my $ns_uri = shift;
-	my $ns_prefix = shift;
-	my $unique = shift;
-
-	$xml->setNamespace( $ns_uri, $ns_prefix, 1 ) if ($ns_uri && $ns_prefix);
-
-	my $string = "";
-
-	# grab the set of matching nodes
-	my @nodes = $xml->findnodes( $xpath );
-	for my $value (@nodes) {
-
-		# grab all children of the node
-		my @children = $value->childNodes();
-		for my $child (@children) {
-
-			# add the childs content to the growing buffer
-			my $content = quotemeta($child->textContent);
-			next if ($unique && $string =~ /$content/);  # uniquify the values
-			$string .= $child->textContent . " ";
-		}
-		if( ! @children ) {
-			$string .= $value->textContent . " ";
-		}
-	}
-	return NFD($string);
-}
-
-sub class_index_string_xml {
-	my $self = shift;
-	my $client = shift;
-	my $xml = shift;
-	my @classes = @_;
-
-	OpenILS::Application::Ingest->post_init();
-	$xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
-
-	my %transform_cache;
-	
-	for my $class (@classes) {
-		my $class_constructor = "Fieldmapper::metabib::${class}_field_entry";
-		for my $type ( keys %{ $xpathset->{$class} } ) {
-
-			my $def = $xpathset->{$class}->{$type};
-			my $sf = $OpenILS::Application::Ingest::supported_formats{$def->{format}};
-
-			my $document = $xml;
-
-			if ($sf->{xslt}) {
-				$document = $transform_cache{$def->{format}} || $sf->{xslt}->transform($xml);
-				$transform_cache{$def->{format}} = $document;
-			}
-
-			my $value =  xpath_to_string(
-					$document->documentElement	=> $def->{xpath},
-					$sf->{ns}			=> $def->{format},
-					1
-			);
-
-			next unless $value;
-
-			$value = NFD($value);
-			$value =~ s/\pM+//sgo;
-			$value =~ s/\pC+//sgo;
-			$value =~ s/\W+$//sgo;
-
-			$value =~ s/\b\.+\b//sgo;
-			$value = lc($value);
-
-			my $fm = $class_constructor->new;
-			$fm->value( $value );
-			$fm->field( $xpathset->{$class}->{$type}->{id} );
-			$client->respond($fm);
-		}
-	}
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.field_entry.class.xml",
-	method		=> "class_index_string_xml",
-	api_level	=> 1,
-	argc		=> 2,
-	stream		=> 1,
-);                      
-
-sub class_index_string_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-	my @classes = shift;
-
-	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rec )
-			->gather(1);
-
-	return undef unless ($r and @$r);
-
-	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($r->marc, @classes)) {
-		$fm->source($rec);
-		$client->respond($fm);
-	}
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.field_entry.class.record",
-	method		=> "class_index_string_record",
-	api_level	=> 1,
-	argc		=> 2,
-	stream		=> 1,
-);                      
-
-sub all_index_string_xml {
-	my $self = shift;
-	my $client = shift;
-	my $xml = shift;
-
-	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($xml, keys(%$xpathset))) {
-		$client->respond($fm);
-	}
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.extract.field_entry.all.xml",
-	method		=> "all_index_string_xml",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-
-sub all_index_string_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-
-	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
-			->gather(1);
-
-	return undef unless ($r and @$r);
-
-	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($r->marc, keys(%$xpathset))) {
-		$fm->source($rec);
-		$client->respond($fm);
-	}
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.extract.field_entry.all.record",
-	method		=> "all_index_string_record",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-
-# --------------------------------------------------------------------------------
-# Flat MARC
-
-package OpenILS::Application::Ingest::FlatMARC;
-use base qw/OpenILS::Application::Ingest/;
-use Unicode::Normalize;
-
-
-sub _marcxml_to_full_rows {
-
-	my $marcxml = shift;
-	my $xmltype = shift || 'metabib';
-
-	my $type = "Fieldmapper::${xmltype}::full_rec";
-
-	my @ns_list;
-	
-	my ($root) = $marcxml->findnodes('//*[local-name()="record"]');
-
-	for my $tagline ( @{$root->getChildrenByTagName("leader")} ) {
-		next unless $tagline;
-
-		my $ns = $type->new;
-
-		$ns->tag( 'LDR' );
-		my $val = $tagline->textContent;
-		$val = NFD($val);
-		$val =~ s/\pM+//sgo;
-		$val =~ s/\pC+//sgo;
-		$val =~ s/\W+$//sgo;
-		$ns->value( $val );
-
-		push @ns_list, $ns;
-	}
-
-	for my $tagline ( @{$root->getChildrenByTagName("controlfield")} ) {
-		next unless $tagline;
-
-		my $ns = $type->new;
-
-		$ns->tag( $tagline->getAttribute( "tag" ) );
-		my $val = $tagline->textContent;
-		$val = NFD($val);
-		$val =~ s/\pM+//sgo;
-		$val =~ s/\pC+//sgo;
-		$val =~ s/\W+$//sgo;
-		$ns->value( $val );
-
-		push @ns_list, $ns;
-	}
-
-	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
-		next unless $tagline;
-
-		my $tag = $tagline->getAttribute( "tag" );
-		my $ind1 = $tagline->getAttribute( "ind1" );
-		my $ind2 = $tagline->getAttribute( "ind2" );
-
-		for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
-			next unless $data;
-
-			my $ns = $type->new;
-
-			$ns->tag( $tag );
-			$ns->ind1( $ind1 );
-			$ns->ind2( $ind2 );
-			$ns->subfield( $data->getAttribute( "code" ) );
-			my $val = $data->textContent;
-			$val = NFD($val);
-			$val =~ s/\pM+//sgo;
-			$val =~ s/\pC+//sgo;
-			$val =~ s/\W+$//sgo;
-			$ns->value( lc($val) );
-
-			push @ns_list, $ns;
-		}
-	}
-
-	$log->debug("Returning ".scalar(@ns_list)." Fieldmapper nodes from $xmltype xml");
-	return @ns_list;
-}
-
-sub flat_marc_xml {
-	my $self = shift;
-	my $client = shift;
-	my $xml = shift;
-
-	$log->debug("processing [$xml]");
-
-	$xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
-
-	my $type = 'metabib';
-	$type = 'authority' if ($self->api_name =~ /authority/o);
-
-	OpenILS::Application::Ingest->post_init();
-
-	$client->respond($_) for (_marcxml_to_full_rows($xml, $type));
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.flat_marc.authority.xml",
-	method		=> "flat_marc_xml",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.flat_marc.biblio.xml",
-	method		=> "flat_marc_xml",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-
-sub flat_marc_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-
-	my $type = 'biblio';
-	$type = 'authority' if ($self->api_name =~ /authority/o);
-
-	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( "open-ils.cstore.direct.${type}.record_entry.retrieve" => $rec )
-			->gather(1);
-
-
-	return undef unless ($r and $r->marc);
-
-	my @rows = $self->method_lookup("open-ils.ingest.flat_marc.$type.xml")->run($r->marc);
-	for my $row (@rows) {
-		$client->respond($row);
-		$log->debug(OpenSRF::Utils::JSON->perl2JSON($row), DEBUG);
-	}
-	return undef;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.flat_marc.biblio.record_entry",
-	method		=> "flat_marc_record",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.flat_marc.authority.record_entry",
-	method		=> "flat_marc_record",
-	api_level	=> 1,
-	argc		=> 1,
-	stream		=> 1,
-);                      
-
-# --------------------------------------------------------------------------------
-# Fingerprinting
-
-package OpenILS::Application::Ingest::Biblio::Fingerprint;
-use base qw/OpenILS::Application::Ingest/;
-use Unicode::Normalize;
-use OpenSRF::EX qw/:try/;
-
-sub biblio_fingerprint_record {
-	my $self = shift;
-	my $client = shift;
-	my $rec = shift;
-
-	OpenILS::Application::Ingest->post_init();
-
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
-			->gather(1);
-
-	return undef unless ($r and $r->marc);
-
-	my ($fp) = $self->method_lookup('open-ils.ingest.fingerprint.xml')->run($r->marc);
-	$log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
-	$fp->{quality} = int($fp->{quality});
-	return $fp;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.fingerprint.record",
-	method		=> "biblio_fingerprint_record",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-our $fp_script;
-sub biblio_fingerprint {
-	my $self = shift;
-	my $client = shift;
-	my $xml = OpenILS::Application::Ingest::entityize(shift);
-
-	$log->internal("Got MARC [$xml]");
-
-	if(!$fp_script) {
-		my @pfx = ( "apps", "open-ils.ingest","app_settings" );
-		my $conf = OpenSRF::Utils::SettingsClient->new;
-
-		my $libs        = $conf->config_value(@pfx, 'script_path');
-		my $script_file = $conf->config_value(@pfx, 'scripts', 'biblio_fingerprint');
-		my $script_libs = (ref($libs)) ? $libs : [$libs];
-
-		$log->debug("Loading script $script_file for biblio fingerprinting...");
-		
-		$fp_script = new OpenILS::Utils::ScriptRunner
-			( file		=> $script_file,
-			  paths		=> $script_libs,
-			  reset_count	=> 100 );
-	}
-
-	$fp_script->insert('environment' => {marc => $xml} => 1);
-
-	my $res = $fp_script->run || ($log->error( "Fingerprint script died!  $@" ) && return undef);
-	$log->debug("Script for biblio fingerprinting completed successfully...");
-
-	return $res;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.fingerprint.xml",
-	method		=> "biblio_fingerprint",
-	api_level	=> 1,
-	argc		=> 1,
-);                      
-
-our $rd_script;
-sub biblio_descriptor {
-	my $self = shift;
-	my $client = shift;
-	my $xml = OpenILS::Application::Ingest::entityize(shift);
-
-	$log->internal("Got MARC [$xml]");
-
-	if(!$rd_script) {
-		my @pfx = ( "apps", "open-ils.ingest","app_settings" );
-		my $conf = OpenSRF::Utils::SettingsClient->new;
-
-		my $libs        = $conf->config_value(@pfx, 'script_path');
-		my $script_file = $conf->config_value(@pfx, 'scripts', 'biblio_descriptor');
-		my $script_libs = (ref($libs)) ? $libs : [$libs];
-
-		$log->debug("Loading script $script_file for biblio descriptor extraction...");
-		
-		$rd_script = new OpenILS::Utils::ScriptRunner
-			( file		=> $script_file,
-			  paths		=> $script_libs,
-			  reset_count	=> 100 );
-	}
-
-	$log->debug("Setting up environment for descriptor extraction script...");
-	$rd_script->insert('environment.marc' => $xml => 1);
-	$log->debug("Environment building complete...");
-
-	my $res = $rd_script->run || ($log->error( "Descriptor script died!  $@" ) && return undef);
-	$log->debug("Script for biblio descriptor extraction completed successfully");
-
-	return $res;
-}
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.ingest.descriptor.xml",
-	method		=> "biblio_descriptor",
-	api_level	=> 1,
-	argc		=> 1,
+	argc		=> 3,
 );                      
 
 
