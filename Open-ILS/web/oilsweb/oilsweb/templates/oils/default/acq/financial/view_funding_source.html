@@ -10,7 +10,7 @@
         data = fsAllocationGrid.model.getRow(rowIndex);
         if(data) {
             var fund = openils.acq.Fund.retrieve(data.fund);
-            return '<a href="${c.oils.acq.prefix.value}/fund/view/'+fund.id()+'">'+fund.name()+'</a>';
+            return '<a href="${c.oils.acq.prefix.value}/fund/view/'+fund.id()+'">'+fund.code()+'</a>';
         }
     }
 </script>
@@ -62,7 +62,7 @@
                     function(store) {
                         fundingSourceFundSelector.store = 
                             new dojo.data.ItemFileReadStore({data:store});
-                        fundingSourceFundSelector.setValue(store.items[0].id);
+                        fundingSourceFundSelector.setValue(store.items[0].code);
                     }, 'MANAGE_FUND'
                 );
             </script>
@@ -71,7 +71,7 @@
                     <td><label for="amount">${_('Fund:')} </label></td>
                     <td>
                         <input jsId='fundingSourceFundSelector' name="fund" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='name' labelAttr='name'>
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
                         </input>
                     </td>
                 </tr>
@@ -119,6 +119,7 @@
                     cells : [[
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Name")}', field: "name", width:'auto'}, 
+                        {name: '${_("Code")}', field: "code"},
                         {name: '${_("Balance")}', get:getSummaryInfo},
                         {name: '${_("Total Credits")}', get:getSummaryInfo},
                         {name: '${_("Total Debits")}', get:getSummaryInfo},

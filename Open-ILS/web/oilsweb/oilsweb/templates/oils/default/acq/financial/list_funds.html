@@ -17,7 +17,6 @@
             fields, 
             function(fundId) {
                 var evt = openils.Event.parse(fundId);
-                alert(evt);
                 if(evt) {
                     alert(evt); /* XXX */
                     return;
@@ -44,6 +43,10 @@
                 <tr>
                     <td><label for="name">${_('Name:')} </label></td>
                     <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="name">${_('Code:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="code"></td>
                 </tr>
                 <tr>
                     <td><label for="year">${_('Year:')} </label></td>
@@ -92,6 +95,7 @@
         cells : [[
             {name: '${_("ID")}', field: 'id'},
             {name: '${_("Name")}', width:'auto', get:getName}, 
+            {name: '${_("Code")}', field:'code'},
             {name: '${_("Year")}', field: "year"}, 
             {name: '${_("Location")}', get:getOrgInfo}, 
             {name: '${_("Currency Type")}', field: "currency_type"},

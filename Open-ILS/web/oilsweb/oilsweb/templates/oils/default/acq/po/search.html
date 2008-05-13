@@ -32,7 +32,8 @@
     <label for='id'>${_('ID')}</label>
     <input dojoType='dijit.form.NumberTextBox' name='id'> </input>
     <label for='provider'>${_('Provider')}</label>
-    <select name='provider' style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select>
+    <select labelAttr='code' searchAttr='code' name='provider' 
+        style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select>
     <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
 </form>
 

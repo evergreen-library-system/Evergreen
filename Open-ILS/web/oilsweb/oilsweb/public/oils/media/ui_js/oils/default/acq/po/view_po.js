@@ -24,7 +24,7 @@ function getOrgInfo(rowIndex) {
 function getProvider(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
     if(!data) return;
-    return openils.acq.Provider.retrieve(data.provider).name();
+    return openils.acq.Provider.retrieve(data.provider).code();
 }
 
 function getPOOwner(rowIndex) {

@@ -45,6 +45,10 @@
                     <td><input dojoType="dijit.form.TextBox" name="name"></td>
                 </tr>
                 <tr>
+                    <td><label for="name">${_('Code:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="code"></td>
+                </tr>
+                <tr>
                     <td><label for="currency_type">${_('Currency Type:')}</label></td>
                     <td>
                         <input jsId='fsCurrencySelector' name="currency_type" 
@@ -87,6 +91,7 @@
         cells : [[
             {name: '${_("ID")}', field: 'id'},
             {name: '${_("Name")}', width:'auto', get:getName}, 
+            {name: '${_("Code")}', field:'code'},
             {name: '${_("Owner")}', width:'auto', get:getOrgInfo}, 
             {name: '${_("Currency Type")}', field: "currency_type"},
             {name: '${_("Balance")}', get:getBalanceInfo}
