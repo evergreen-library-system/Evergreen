@@ -108,3 +108,54 @@ class PoController(BaseController):
         r = RequestMgr()
         return r.render('acq/po/search.html')
 
+    def marc_upload(self):
+        '''
+        Requires pymarc-1.5, elementree
+        $ easy_install elementtree
+        $ easy_install http://pypi.python.org/packages/source/p/pymarc/pymarc-1.5.tar.gz
+
+        Takes a MARC file, converts it to marcxml, and creates a new PO 
+        and lineitems from the data.
+        '''
+
+        import pymarc
+        import pymarc.reader
+        import pymarc.marcxml
+        import pylons
+        import oils.system
+
+        r = RequestMgr()
+
+        oils.system.System.connect(
+            config_file = pylons.config['osrf_config'],
+            config_context = pylons.config['osrf_config_ctxt'])
+
+        if 'marc_file' in r.request.params:
+
+            provider = r.request.params['provider']
+            authtoken = r.request.params['authtoken']
+
+            # first, create the PO
+            po = osrf.net_obj.NetworkObject.acqpo()
+            po.provider(provider)
+            po_id = ClientSession.atomic_request('open-ils.acq', 
+                'open-ils.acq.purchase_order.create', authtoken, po)
+            oils.event.Event.parse_and_raise(po_id)
+
+            # now, parse the MARC and create a lineitem per record
+            marc_reader = pymarc.reader.MARCReader(r.request.params['marc_file'].file)
+            for record in marc_reader:
+
+                lineitem = osrf.net_obj.NetworkObject.jub()
+                lineitem.marc(pymarc.marcxml.record_to_xml(record))
+                lineitem.provider(provider)
+                lineitem.purchase_order(po_id)
+
+                stat = ClientSession.atomic_request('open-ils.acq', 
+                    'open-ils.acq.lineitem.create', authtoken, lineitem)
+                oils.event.Event.parse_and_raise(stat)
+                return redirect_to(controller='acq/po', action='view', id=po_id)
+                
+        return r.render('acq/po/marc_upload.html')
+
+
