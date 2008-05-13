@@ -30,10 +30,7 @@ class PoController(BaseController):
     # Render display of individual PO: list of line items
     def view(self, **kwargs):
         r = RequestMgr()
-        po_mgr = oilsweb.lib.acq.po_manager.PO_Manager(r, poid=kwargs['id'])
-        po_mgr.retrieve()
-        r.ctx.acq.po.value = po_mgr.po
-        r.ctx.acq.provider.value = provider_mgr.retrieve(r, po_mgr.po.provider())
+        r.ctx.acq.po_id.value = kwargs['id']
         return r.render('acq/po/view_po.html')
 
     # Create PO from contents of picklist
