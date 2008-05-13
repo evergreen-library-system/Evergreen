@@ -175,6 +175,29 @@ __PACKAGE__->register_method(
 	argc		=> 3,
 );                      
 
+sub process_marc {
+    my $r = shift;
+    my $cgi = new CGI;
+
+    my $auth = $cgi->param('ses') || $cgi->cookie('ses');
+
+    return Apache2::Const::FORBIDDEN unless verify_login($auth);
+
+    my $fingerprint = $cgi->param('fingerprint')
+    my $type = $cgi->param('type')
+    my $queue = $cgi->param('queue')
+
+    my $cache = new OpenSRF::Utils::Cache();
+
+    my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
+    $data = decode_base64($data);
+
+    print "Content-type: text/plain; charset=utf-8\n\n$data_fingerprint";
+
+    return Apache2::Const::OK;
+
+}
+
 
 1;
 
