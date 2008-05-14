@@ -17,7 +17,7 @@ CREATE TABLE vandelay.queued_record (
     id			BIGSERIAL                   PRIMARY KEY,
     create_time	TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     import_time	TIMESTAMP WITH TIME ZONE,
-	purpose		TEXT						NOT NULL DEFAULT 'import' CHECK (queue_purpose IN ('import','overlay')),
+	purpose		TEXT						NOT NULL DEFAULT 'import' CHECK (purpose IN ('import','overlay')),
     marc		TEXT                        NOT NULL
 );
 
