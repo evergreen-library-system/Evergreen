@@ -144,6 +144,7 @@ sub retrieve_picklist_name {
 __PACKAGE__->register_method(
 	method => 'retrieve_user_picklist',
 	api_name	=> 'open-ils.acq.picklist.user.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves a  user\'s picklists',
         params => [
@@ -163,18 +164,21 @@ sub retrieve_user_picklist {
     # don't grab the PL with name == "", because that is the designated temporary picklist
     my $list = $e->search_acq_picklist(
         {owner=>$e->requestor->id, name=>{'!='=>''}},
-        {idlist=>$$options{idlist}}
+        {idlist=>1}
     );
 
-    if($$options{flesh_lineitem_count}) {
-        $_->entry_count(retrieve_lineitem_count($e, $_->id)) for @$list;
-    };
-
-    if($$options{flesh_username}) {
-        $_->owner($e->retrieve_actor_user($_->owner)->usrname) for @$list;
+    for my $id (@$list) {
+        if($$options{idlist}) {
+            $conn->respond($id);
+        } else {
+            my $pl = $e->retrieve_acq_picklist($id);
+            $pl->entry_count(retrieve_lineitem_count($e, $id)) if $$options{flesh_lineitem_count};
+            $pl->owner($e->retrieve_actor_user($pl->owner)->usrname) if $$options{flesh_username};
+            $conn->respond($pl);
+        }
     }
 
-    return $list;
+    return undef;
 }
 
 
