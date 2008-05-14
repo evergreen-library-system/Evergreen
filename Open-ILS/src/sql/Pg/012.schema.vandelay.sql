@@ -10,15 +10,15 @@ CREATE TABLE vandelay.queue (
 	name			TEXT		NOT NULL,
 	complete		BOOL		NOT NULL DEFAULT FALSE,
 	queue_type		TEXT		NOT NULL DEFAULT 'bib' CHECK (queue_type IN ('bib','authority')),
-	queue_purpose	TEXT		NOT NULL DEFAULT 'import' CHECK (queue_purpose IN ('import','overlay')),
 	CONSTRAINT vand_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 );
 
 CREATE TABLE vandelay.queued_record (
-    id                  BIGSERIAL                   PRIMARY KEY,
-    create_time         TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
-    import_time         TIMESTAMP WITH TIME ZONE,
-    marc                TEXT                        NOT NULL
+    id			BIGSERIAL                   PRIMARY KEY,
+    create_time	TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
+    import_time	TIMESTAMP WITH TIME ZONE,
+	purpose		TEXT						NOT NULL DEFAULT 'import' CHECK (queue_purpose IN ('import','overlay')),
+    marc		TEXT                        NOT NULL
 );
 
 
@@ -57,9 +57,9 @@ CREATE TABLE vandelay.bib_queue (
 ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_bib_record (
-	queue		INT	NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	bib_source	INT	REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
+	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
 
