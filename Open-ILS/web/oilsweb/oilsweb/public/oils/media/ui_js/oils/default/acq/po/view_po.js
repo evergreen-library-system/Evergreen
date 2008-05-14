@@ -8,7 +8,7 @@ dojo.require('openils.Event');
 dojo.require('openils.User');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.acq.Provider');
-dojo.require('openils.acq.Picklist');
+dojo.require('openils.acq.Lineitems');
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
 
@@ -44,36 +44,36 @@ function getLi(id) {
     for(var i in lineitems) {
         var li = lineitems[i];
         if(li.id() == id) 
-            return openils.acq.Picklist.cache[id] = li;
+            return li;
     }
 }
 
 function getJUBTitle(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return '';
-    getLi(data.id);
-    return openils.acq.Picklist.find_attr(data.id, 'title', 'lineitem_marc_attr_definition')
+    return new openils.acq.Lineitems(
+        {lineitem:getLi(data.id)}).findAttr('title', 'lineitem_marc_attr_definition')
 }
 
 function getJUBIsbn(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return '';
-    getLi(data.id);
-    return openils.acq.Picklist.find_attr(data.id, 'isbn', 'lineitem_marc_attr_definition')
+    return new openils.acq.Lineitems(
+        {lineitem:getLi(data.id)}).findAttr('isbn', 'lineitem_marc_attr_definition')
 }
 
 function getJUBPubdate(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return '';
-    getLi(data.id);
-    return openils.acq.Picklist.find_attr(data.id, 'pubdate', 'lineitem_marc_attr_definition')
+    return new openils.acq.Lineitems(
+        {lineitem:getLi(data.id)}).findAttr('pubdate', 'lineitem_marc_attr_definition')
 }
 
 function getJUBPrice(rowIndex) {
     var data = liGrid.model.getRow(rowIndex);
     if(!data) return;
-    getLi(data.id);
-    return openils.acq.Picklist.find_attr(data.id, 'price', 'lineitem_marc_attr_definition')
+    return new openils.acq.Lineitems(
+        {lineitem:getLi(data.id)}).findAttr('price', 'lineitem_marc_attr_definition')
 }
 
 function loadPOGrid() {

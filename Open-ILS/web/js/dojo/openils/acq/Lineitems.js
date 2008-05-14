@@ -26,6 +26,20 @@ dojo.require('fieldmapper.dojoData');
 /** Declare the Lineitems class with dojo */
 dojo.declare('openils.acq.Lineitems', null, {
     /* add instance methods here if necessary */
+
+    constructor: function(args) {
+        this.lineitem = args.lineitem;
+    },
+
+    findAttr: function(name, type) {
+        var attrs = this.lineitem.attributes();
+        if(!attrs) return null;
+        for(var i = 0; i < attrs.length; i++) {
+            var attr = attrs[i];
+            if (attr.attr_type() == type && attr.attr_name() == name) 
+                return attr.attr_value();
+        }
+    }
 });
 
 openils.acq.Lineitems.ModelCache = {};
@@ -111,5 +125,6 @@ openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
 	domNode.update();
     }
 };
+
 
 }
