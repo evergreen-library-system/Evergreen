@@ -61,8 +61,8 @@ function createPL(fields) {
 function deleteFromGrid() {
     var list = []
     var selected = plListGrid.selection.getSelected();
-    alert('selected = ' + selected);
-    for(var rowIdx in selected) {
+    for(var idx = 0; idx < selected.length; idx++) {
+        var rowIdx = selected[idx];
         var id = plListGrid.model.getRow(rowIdx).id;
         for(var i = 0; i < plList.length; i++) {
             var pl = plList[i];
@@ -72,12 +72,6 @@ function deleteFromGrid() {
             }
         }
     }
-    alert('deleting: ' + list);
-    var names = [];
-    for(var i = 0; i < plList.length; i++) 
-        names.push(plList[i].name());
-    alert('keeping ' + names);
-    return;
     openils.acq.Picklist.deleteList(list, function() { makeGridFromList(); });
 }
 
