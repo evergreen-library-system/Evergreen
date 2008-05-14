@@ -51,7 +51,6 @@ sub create_bib_queue {
 	my $name = shift;
 	my $owner = shift;
 	my $type = shift;
-	my $purpose = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -86,7 +85,6 @@ sub create_auth_queue {
 	my $name = shift;
 	my $owner = shift;
 	my $type = shift;
-	my $purpose = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -119,6 +117,7 @@ sub add_record_to_bib_queue {
 	my $auth = shift;
 	my $queue = shift;
 	my $marc = shift;
+	my $purpose = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -129,7 +128,7 @@ sub add_record_to_bib_queue {
 		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
 
-	my $new_id = _add_auth_rec($e, $marc, $queue->id);
+	my $new_id = _add_auth_rec($e, $marc, $queue->id, $purpose);
 
 	$e->die_event unless ($new_id);
 	$e->commit;
@@ -148,10 +147,12 @@ sub _add_bib_rec {
 	my $e = shift;
 	my $marc = shift;
 	my $queue = shift;
+	my $purpose = shift;
 
 	my $rec = new Fieldmapper::vandelay::queued_bib_record();
 	$rec->marc( $marc );
 	$rec->queue( $queue );
+	$rec->purpose( $purpose ) if ($purpose);
 
 	return $e->create_vandelay_queued_bib_record( $rec );
 }
@@ -162,6 +163,7 @@ sub add_record_to_authority_queue {
 	my $auth = shift;
 	my $queue = shift;
 	my $marc = shift;
+	my $purpose = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -172,7 +174,7 @@ sub add_record_to_authority_queue {
 		($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
 
-	my $new_id = _add_auth_rec($e, $marc, $queue->id);
+	my $new_id = _add_auth_rec($e, $marc, $queue->id, $purpose);
 
 	$e->die_event unless ($new_id);
 	$e->commit;
@@ -195,6 +197,7 @@ sub _add_auth_rec {
 	my $rec = new Fieldmapper::vandelay::queued_authority_record();
 	$rec->marc( $marc );
 	$rec->queue( $queue );
+	$rec->purpose( $purpose ) if ($purpose);
 
 	return $e->create_vandelay_queued_authority_record( $rec );
 }
@@ -226,7 +229,8 @@ sub process_spool {
     my $cache = new OpenSRF::Utils::Cache();
 
     my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
-    $data = decode_base64($data);
+	my $purpose = $data->{purpose};
+    $data = decode_base64($data->{marc});
 
 	my $fh = new IO::Scalar \$data;
 
@@ -244,9 +248,9 @@ sub process_spool {
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($self->{record_type} eq 'bib') {
-				_add_bib_rec( $e, $xml, $queue );
+				_add_bib_rec( $e, $xml, $queue, $purpose );
 			} else {
-				_add_auth_rec( $e, $xml, $queue );
+				_add_auth_rec( $e, $xml, $queue, $purpose );
 			}
 			$count++;
 			
