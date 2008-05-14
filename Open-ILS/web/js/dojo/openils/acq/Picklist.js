@@ -96,5 +96,48 @@ dojo.declare('openils.acq.Picklist', null, {
     },
 });
 
+/** Creates a new picklist. fields.name is required */ 
+openils.acq.Picklist.create = function(fields, oncomplete) {
+    var picklist = new acqpl();
+    picklist.owner(fields.owner || new openils.User().user.id());
+    picklist.name(fields.name);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.create'],
+        {   async: true,
+            params: [openils.User.authtoken, picklist],
+            oncomplete: function(r) { 
+                // XXX event/error handling
+                oncomplete(r.recv().content());
+            }
+        }
+    );
+}
+
+/** Deletes a list of picklists
+ * @param list Array of picklist IDs
+ */
+openils.acq.Picklist.deleteList = function(list, onComplete) {
+    openils.acq.Picklist._deleteList(list, 0, onComplete);
+}
+
+/* iterate through the list of IDs deleting asynchronously as we go... */
+openils.acq.Picklist._deleteList = function(list, idx, onComplete) {
+    if(idx >= list.length)
+        return onComplete();
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.delete'],
+        {   async: true,
+            params: [openils.User.authtoken, list[idx]],
+            oncomplete: function(r) {
+                msg = r.recv()
+                stat = msg.content();
+                /* XXX CHECH FOR EVENT */
+                openils.acq.Picklist._deleteList(list, ++idx, onComplete);
+            }
+        }
+    );
+}
+
 }
 

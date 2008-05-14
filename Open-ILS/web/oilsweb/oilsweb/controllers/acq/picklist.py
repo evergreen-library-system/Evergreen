@@ -86,15 +86,11 @@ class PicklistController(BaseController):
     
     def list(self):
         r = RequestMgr()
-        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
         return r.render('acq/picklist/view_list.html')
     
     def listall(self):
         r = RequestMgr()
-        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
-        r.ctx.acq.picklist_list.value = pl_manager.retrieve_list(all=True)
-        return r.render('acq/picklist/view_listall.html')
+        return r.render('acq/picklist/view_list.html')
     
     def bib_search(self):
         r = RequestMgr()
