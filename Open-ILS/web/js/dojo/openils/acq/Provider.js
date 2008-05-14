@@ -68,5 +68,30 @@ openils.acq.Provider.retrieve = function(id) {
     return openils.acq.Provider.cache[id];
 };
 
+
+openils.acq.Provider.retrieveLineitemAttrDefs = function(providerId, oncomplete) {
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_provider_attr_definition.provider.retrieve.atomic'],
+        {   async: true,
+            params: [openils.User.authtoken, providerId],
+            oncomplete: function(r) {oncomplete(r.recv().content());}
+        }
+    );
 }
 
+openils.acq.Provider.createLineitemAttrDef = function(fields, oncomplete) {
+    var attr = new acqlipad();
+    for(var field in fields) 
+        attr[field](fields[field]);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_provider_attr_definition.create'],
+        {   async: true,
+            params: [openils.User.authtoken, attr],
+            oncomplete: function(r) {oncomplete(r.recv().content());}
+        }
+    );
+}
+
+
+}

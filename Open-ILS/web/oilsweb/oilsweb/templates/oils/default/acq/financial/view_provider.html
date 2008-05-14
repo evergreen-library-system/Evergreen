@@ -25,6 +25,53 @@
             </script>
             <div jsId='providerGrid' dojoType="dojox.Grid" structure='providerGridLayout'> </div>
         </div>
+        <div dojoType="dijit.layout.ContentPane" 
+                class='oils-acq-detail-content-pane' title="${_('Order Record Format')}" style='height:400px;'>
+
+            <div class='oils-acq-actions-div' style='margin:8px;'>
+                <!-- Dropdown menu for creating a new funding source credit -->
+                <div dojoType="dijit.form.DropDownButton">
+                    <span>${('Create Order Record Field')}</span>
+                    <div dojoType="dijit.TooltipDialog" execute="createOrderRecordField(arguments[0]);">
+                        <table class='dijitTooltipTable'>
+                            <tr>
+                                <td><label for="code">${_('Code:')} </label></td>
+                                <td><input dojoType='dijit.form.TextBox' name='code'></input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="description">${_('Description:')} </label></td>
+                                <td>
+                                    <!-- XXX get currency from funding source ... -->
+                                    <input dojoType="dijit.form.TextBox" name="description"> </input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">${_('XPath:')} </label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
+                            </tr>
+                            <tr>
+                                <td colspan='2' align='center'>
+                                    <button dojoType=dijit.form.Button type="submit">${_('Apply')}</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+
+            <script type='dojo/connect' event='onShow'>loadPADGrid();</script>
+            <script>
+                var padGridLayout = [{
+                    cells : [[
+                        {name: '${_("ID")}', field: 'id'},
+                        {name: '${_("Code")}', field:'code'},
+                        {name: '${_("Description")}', field: "description", width:'auto'}, 
+                        {name: '${_("XPath")}', field:'xpath', width:'auto'}
+                    ]]
+                }];
+            </script>
+            <div jsId='padGrid' dojoType="dojox.Grid" structure='padGridLayout'> </div>
+        </div>
     </div>
 </div>
 

@@ -22,6 +22,17 @@ function loadProviderGrid() {
     providerGrid.setModel(model);
     providerGrid.update();
 }
+function loadPADGrid() {
+    openils.acq.Provider.retrieveLineitemAttrDefs(providerId, 
+        function(attrs) {
+            var store = new dojo.data.ItemFileReadStore({data:acqlipad.toStoreData(attrs)});
+            var model = new dojox.grid.data.DojoData(
+                null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+            padGrid.setModel(model);
+            padGrid.update();
+        }
+    );
+}
 
 function fetchProvider() {
     fieldmapper.standardRequest(
@@ -36,5 +47,15 @@ function fetchProvider() {
     );
 }
 
+function createOrderRecordField(fields) {
+    fields.provider = providerId;
+    openils.acq.Provider.createLineitemAttrDef(fields, 
+        function(id) {
+            loadPADGrid();
+        }
+    );
+}
+
 dojo.addOnLoad(fetchProvider);
+
 
