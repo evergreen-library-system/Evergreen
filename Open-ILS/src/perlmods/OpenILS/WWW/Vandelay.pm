@@ -16,15 +16,11 @@ use Data::Dumper;
 use Text::CSV;
 
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use XML::LibXML;
-use XML::LibXSLT;
 
-use Encode;
-use Unicode::Normalize;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/$logger/;
 
