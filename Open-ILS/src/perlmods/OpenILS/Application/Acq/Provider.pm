@@ -98,5 +98,58 @@ sub retrieve_org_providers {
     return undef;
 }
 
+__PACKAGE__->register_method(
+	method => 'retrieve_provider_attr_def',
+	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.provider.retrieve',
+    stream => 1,
+	signature => {
+        desc => 'Retrieves all of the lineitem_provider_attr_definition for a given provider',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Provider ID', type => 'number'}
+        ],
+        return => {desc => 'Streams a of lineitem_provider_attr_definition objects'}
+    }
+);
+
+sub retrieve_provider_attr_def {
+    my($self, $conn, $auth, $prov_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $provider = $e->retrieve_acq_provider($prov_id)
+        or return $e->event;
+    return $e->event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
+    for my $id (@{$e->search_acq_lineitem_provider_attr_definition({provider=>$prov_id},{idlist=>1})}) {
+        $conn->respond($e->retrieve_acq_lineitem_provider_attr_definition($id));
+    }
+
+    return undef;
+}
+
+__PACKAGE__->register_method(
+	method => 'create_provider_attr_def',
+	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.create',
+	signature => {
+        desc => 'Retrieves all of the lineitem_provider_attr_definition for a given provider',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Provider ID', type => 'number'}
+        ],
+        return => {desc => 'Streams a of lineitem_provider_attr_definition objects'}
+    }
+);
+
+sub create_provider_attr_def {
+    my($self, $conn, $auth, $attr_def) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    my $provider = $e->retrieve_acq_provider($attr_def->provider)
+        or return $e->die_event;
+    return $e->event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
+    $e->create_acq_lineitem_provider_attr_definition($attr_def)
+        or return $e->die_event;
+    $e->commit;
+    return $attr_def->id;
+}
 
 1;

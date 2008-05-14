@@ -610,7 +610,9 @@
 	<event code='1671' textcode='PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission.usr_object_perm_map was not found</desc>
 	</event>
-
+	<event code='1672' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_provider_attr_definition was not found</desc>
+	</event>
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
