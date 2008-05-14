@@ -18,12 +18,18 @@ if(!dojo._hasResource['openils.acq.Lineitems']) {
 dojo._hasResource['openils.acq.Lineitems'] = true;
 dojo.provide('openils.acq.Lineitems');
 
+dojo.require('dojo.data.ItemFileWriteStore');
+dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid._data.model');
+dojo.require('fieldmapper.dojoData');
+
 /** Declare the Lineitems class with dojo */
 dojo.declare('openils.acq.Lineitems', null, {
     /* add instance methods here if necessary */
 });
 
-openils.acq.Lineitems.cache = {};
+openils.acq.Lineitems.ModelCache = {};
+openils.acq.Lineitems.acqlidCache = {};
 
 openils.acq.Lineitems.createStore = function(li_id, onComplete) {
     // Fetches the details of a lineitem and builds a grid
@@ -33,12 +39,12 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	var items = [];
 	while (msg = r.recv()) {
 	    var data = msg.content();
-	    alert(js2JSON(data));
 	    for (i in data.lineitem_details()) {
-		items.push(data.lineitem_details()[i]);
+		var lid = data.lineitem_details()[i];
+		items.push(lid);
+		openils.acq.Lineitems.acqlidCache[lid.id()] = lid;
 	    }
 	}
-	openils.acq.Lineitems.cache[li_id] = items;
 
 	onComplete(acqlid.toStoreData(items));
     }
@@ -52,74 +58,58 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	});
 };
 
+openils.acq.Lineitems.obj2Str = function(obj) {
+    var str = "";
+    for (var prop in item) {
+	str += prop + " = " + item[prop] + "\n";
+    }
+    return(str);
+}
+
+openils.acq.Lineitems.alertOnSet = function(griditem, attr, oldVal, newVal) {
+    var item;
+    var updateDone = function(r) {
+	var stat = r.recv().content();
+	// XXX Check for Event
+// 	alert("updateDone");
+    }
+    if (oldVal == newVal) {
+// 	alert("value edited, but not changed. skipping");
+	return;
+    }
+
+    console.dir(griditem);
+    item = openils.acq.Lineitems.acqlidCache[griditem.id];
+    
+//     console.log("alertOnSet: newVal = "+newVal);
+//     console.dir(item) 
+    item.fund(newVal);
+    fieldmapper.standardRequest(
+	["open-ils.acq", "open-ils.acq.lineitem_detail.update"],
+	{ params: [openils.User.authtoken, item],
+	  oncomplete: updateDone
+	});
+};
+
 openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
-    if (!openils.acq.Lineitems.cache[id]) {
+    if (!openils.acq.Lineitems.ModelCache[id]) {
 	openils.acq.Lineitems.createStore(id,
 		function(storeData) {
-		    var store = new dojo.data.ItemFileReadStore({data:storeData});
+		    var store = new dojo.data.ItemFileWriteStore({data:storeData});
 		    var model = new dojox.grid.data.DojoData(null, store,
 			{rowsPerPage: 20, clientSort:true, query:{id:'*'}});
-		    openils.acq.Lineitems.cache[id] = model;
+
+		    dojo.connect(store, "onSet", openils.acq.Lineitems.alertOnSet);
+		    openils.acq.Lineitems.ModelCache[id] = model;
 
 		    domNode.setStructure(layout);
 		    domNode.setModel(model);
 		    domNode.update();
-		    alert('ouch! update');
 		});
     } else {
-	domNode.setModel(openils.acq.Lineitems.cache[id]);
+	domNode.setModel(openils.acq.Lineitems.ModelCache[id]);
 	domNode.update();
     }
-}
-
-// openils.acq.Lineitems.initGrid = function(domId, columns) {
-//     var store = new dojo.data.ItemFileWriteStore({data:{identify:'id'}});
-//     var model = new dojox.grid.data.DojoData(null, store,
-// 	{rowsPerPage: 20, clientSort: true});
-    
-//     var domNode = dojo.byId(domId);
-//     var columns = layout.cells;
-//     var colWidth = (dojo.coords(domNode.parentNode).w / columns.length) - 30;
-//     for(var i in columns) {
-//         if(columns[i].width == undefined)
-//             columns[i].width = colWidth + 'px';
-//     }
-
-
-//     var grid = new dojox.Grid({structure: layout}, domId);
-
-//     openils.acq.Lineitems.loadGrid = function(domId, li_id) {
-// 	var ses = new OpenSRF.ClientSession('open-ils.acq');
-// 	var req = ses.request('open-ils.acq.lineitem.retrieve',
-// 	    openils.User.authtoken, li_id, {flesh_attrs:1,flesh_li_details:1});
-
-// 	req.oncomplete = function(r) {
-// 	    var msg;
-// 	    grid.setModel(gridRefs.model);
-// 	    model.query = {id:'*'};
-
-// 	    while (msg = r.recv()) {
-// 		var li = msg.content();
-		
-// 		for (i in li.lineitem_details()) {
-// 		    lid = li.lineitem_details()[i]
-
-// 		    alert(js2JSON(lid));
-
-// 		    store.newItem({
-// 			id:lid.id(),
-// 			fund:lid.fund(),
-// 			location:lid.location(),
-// 		    });
-// 		}
-// 	    }
-// 	    grid.update();
-// 	};
-
-// 	req.send();
-//     };
-
-//     return grid;
-// };
+};
 
 }

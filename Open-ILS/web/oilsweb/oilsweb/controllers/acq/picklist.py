@@ -20,15 +20,7 @@ class PicklistController(BaseController):
     
     def view(self, **kwargs):
         r = RequestMgr()
-        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
-        pl_manager.retrieve()
-        pl_manager.retrieve_lineitems(flesh_provider=True,
-                                      sort_attr="author",
-                                      sort_dir="asc",
-                                      offset=r.ctx.acq.offset.value,
-                                      limit=r.ctx.acq.limit.value)
-        r.ctx.acq.picklist.value = pl_manager.picklist
-        r.ctx.acq.picklist_list.value = pl_manager.retrieve_list()
+        r.ctx.acq.picklist.value = kwargs['id']
         return r.render('acq/picklist/view.html')
     
     def create(self, **kwargs):
