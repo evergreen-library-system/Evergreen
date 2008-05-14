@@ -18,54 +18,83 @@ if(!dojo._hasResource['openils.acq.Picklist']) {
 dojo._hasResource['openils.acq.Picklist'] = true;
 dojo.provide('openils.acq.Picklist');
 
+dojo.require('dojo.data.ItemFileWriteStore');
+dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid._data.model');
 dojo.require('fieldmapper.Fieldmapper');
+dojo.require('fieldmapper.dojoData');
 
 /** Declare the Picklist class with dojo */
 dojo.declare('openils.acq.Picklist', null, {
-    /* add instance methods here if necessary */
+    constructor: function (pl_id, onComplete) {
+	var pl_this = this;		// 'this' doesn't exist inside callbacks
+	var mkStore = function (r) {
+	    var storeData;
+	    var msg;
+	    var items = [];
+
+	    while (msg = r.recv()) {
+		var data = msg.content();
+		pl_this._data[data.id()] = data;
+		items.push(data);
+	    }
+
+	    storeData = jub.toStoreData(items);
+	    pl_this._store = new dojo.data.ItemFileWriteStore({data:storeData});
+	    pl_this._model = new dojox.grid.data.DojoData(null, pl_this._store,
+						       {rowsPerPage:20, clientSort:true,
+							query:{id:'*'}});
+	    onComplete(pl_this._model);
+	};
+
+	this._id = pl_id;
+	this._data = {};
+	this._plist = null;
+	// Fetch the picklist information
+	fieldmapper.standardRequest(
+	    ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+	    { async: false,
+	      params: [openils.User.authtoken, pl_id, {flesh_lineitem_count:1}],
+	      oncomplete: function(r) {
+		  var msg = r.recv();
+		  pl_this._plist = msg.content();
+	      }
+	    });
+
+	// Fetch the title list for the picklist, asynchronously
+	fieldmapper.standardRequest(
+	    ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
+	    { async: true,
+	      params: [openils.User.authtoken, pl_id, {flesh_attrs:1}],
+	      oncomplete: mkStore
+	    });
+    },
+    id: function () {
+	return this._id;
+    },
+    name: function() {
+	return this._plist.name();
+    },
+    owner: function() {
+	return this._plist.owner();
+    },
+    create_time: function() {
+	return this._plist.create_time();
+    },
+    edit_time: function() {
+	return this._plist.edit_time();
+    },
+    find_attr: function(id, at_name, at_type) {
+	attr_list = this._data[id].attributes();
+	for (var i in attr_list) {
+	    var attr = attr_list[i];
+	    if (attr.attr_type() == at_type && attr.attr_name() == at_name) {
+		return attr.attr_value();
+	    }
+	}
+	return '';
+    },
 });
 
-openils.acq.Picklist.cache = {};
-
-openils.acq.Picklist.createStore = function(pl_id, onComplete) {
-    // Fetches the list of titles in a picklist and builds a grid
-
-    function mkStore(r) {
-	var msg;
-	var items = [];
-	while (msg = r.recv()) {
-	    var data = msg.content();
-	    openils.acq.Picklist.cache[data.id()] = data;
-
-	    items.push(data);
-	}
-	onComplete(jub.toStoreData(items));
-    }
-
-    fieldmapper.standardRequest(
-	['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
-	{ async: true,
-	  params: [openils.User.authtoken, pl_id, {flesh_attrs:1}],
-	  oncomplete: mkStore
-	});
-};
-
-openils.acq.Picklist.find_attr = function(id, at_name, at_type) {
-    var li = openils.acq.Picklist.cache[id];
-    for (var i in li.attributes()) {
-	var attr = li.attributes()[i];
-	if (attr.attr_type() == at_type && attr.attr_name() == at_name) {
-	    return attr.attr_value();
-	}
-    }
-    return '';
-};
-
-openils.acq.Picklist.onRowClick = function(evt) {
-    var gridRefs = openils.acq.Picklist._gridRefs;
-    var row = gridRefs.grid.model.getRow(evt.rowIndex);
-
-    openils.acq.Lineitems.loadGrid('oils-acq-picklist-details-grid', row.id);
-};
 }
 
