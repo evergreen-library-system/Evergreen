@@ -228,7 +228,7 @@ DECLARE
 	items_overdue		INT;
 	current_fines		NUMERIC(8,2) := 0.0;
 	tmp_fines		NUMERIC(8,2);
-	tmp_xact		BIGINT;
+	tmp_xact		RECORD;
 	done			BOOL := FALSE;
 BEGIN
 	result.success := TRUE;
@@ -352,10 +352,10 @@ BEGIN
 
 	-- Fail if the user has a high fine balance
 	IF circ_test.max_fines IS NOT NULL THEN
-		FOR tmp_xact IN SELECT id FROM money.billable_xact WHERE usr = match_usr AND xact_finish IS NULL LOOP
-			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_xact AND NOT voided;
+		FOR tmp_xact IN SELECT * FROM money.billable_xact WHERE usr = match_usr AND xact_finish IS NULL LOOP
+			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_xact.id AND NOT voided;
 			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_xact AND NOT voided;
+			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_xact.id AND NOT voided;
 			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
 		END LOOP;
 
