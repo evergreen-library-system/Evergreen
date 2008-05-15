@@ -72,8 +72,8 @@
                         {name: '${_("Code")}', field:'code'},
                         {name: '${_("Description")}', field: "description", width:'auto'}, 
                         {name: '${_("XPath")}', field:'xpath', width:'auto'},
-                        {name: '${_("Tag")}', value:'test'},
-                        {name: '${_("Subfield")}', value:'test'}
+                        {name: '${_("Tag")}', get:getTag},
+                        {name: '${_("Subfield")}', get:getSubfield}
                     ]]
                 }];
             </script>

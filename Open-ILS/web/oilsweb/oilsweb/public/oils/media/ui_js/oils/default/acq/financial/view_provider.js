@@ -8,12 +8,26 @@ dojo.require('openils.Event');
 dojo.require('openils.User');
 
 var provider = null;
+var marcRegex = /\/\/\*\[@tag="(\d+)"]\/\*\[@code="(\w)"]/;
 
 function getOrgInfo(rowIndex) {
     data = providerGrid.model.getRow(rowIndex);
     if(!data) return;
     return fieldmapper.aou.findOrgUnit(data.owner).shortname();
 }
+
+function getTag(rowIdx) {
+    data = padGrid.model.getRow(rowIdx);
+    if(!data) return;
+    return data.xpath.replace(marcRegex, '$1');
+}
+
+function getSubfield(rowIdx) {
+    data = padGrid.model.getRow(rowIdx);
+    if(!data) return;
+    return data.xpath.replace(marcRegex, '$2');
+}
+
 
 function loadProviderGrid() {
     var store = new dojo.data.ItemFileReadStore({data:acqpro.toStoreData([provider])});
@@ -22,6 +36,7 @@ function loadProviderGrid() {
     providerGrid.setModel(model);
     providerGrid.update();
 }
+
 function loadPADGrid() {
     openils.acq.Provider.retrieveLineitemAttrDefs(providerId, 
         function(attrs) {
@@ -33,6 +48,7 @@ function loadPADGrid() {
         }
     );
 }
+
 
 function fetchProvider() {
     fieldmapper.standardRequest(
