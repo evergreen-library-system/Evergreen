@@ -81,7 +81,7 @@ class Context(object):
         c = _context = Context()
         c._req = req
         c._resp = resp
-        childInit()
+        #childInit()
 
         for app, ctx in _subContexts.iteritems():
             ctx = ctx()

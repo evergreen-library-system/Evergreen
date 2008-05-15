@@ -33,8 +33,8 @@ class CoreContext(SubContext):
         self.ac_prefix.value = pylons.config['oils_added_content_prefix']
         self.skin.value = 'default' # XXX
         self.theme.value = 'default' # XXX
-        usermgr = oilsweb.lib.user.User(self)
-        usermgr.fetch_user()
+        #usermgr = oilsweb.lib.user.User(self)
+        #usermgr.fetch_user()
         #self.work_orgs = usermgr.fetch_work_orgs()
 
 Context.apply_sub_context('core', CoreContext)
