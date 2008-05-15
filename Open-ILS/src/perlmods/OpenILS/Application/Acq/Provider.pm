@@ -145,11 +145,39 @@ sub create_provider_attr_def {
     return $e->die_event unless $e->checkauth;
     my $provider = $e->retrieve_acq_provider($attr_def->provider)
         or return $e->die_event;
-    return $e->event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
+    return $e->die_event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
     $e->create_acq_lineitem_provider_attr_definition($attr_def)
         or return $e->die_event;
     $e->commit;
     return $attr_def->id;
+}
+
+__PACKAGE__->register_method(
+	method => 'delete_provider_attr_def',
+	api_name	=> 'open-ils.acq.lineitem_provider_attr_definition.delete',
+	signature => {
+        desc => 'Deletes a lineitem_provider_attr_definition',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, event on failure'}
+    }
+);
+
+sub delete_provider_attr_def {
+    my($self, $conn, $auth, $id) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    my $attr_def = $e->retrieve_acq_lineitem_provider_attr_definition($id)
+        or return $e->die_event;
+    my $provider = $e->retrieve_acq_provider($attr_def->provider)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('ADMIN_PROVIDER', $provider->owner);
+    $e->delete_acq_lineitem_provider_attr_definition($attr_def)
+        or return $e->die_event;
+    $e->commit;
+    return 1;
 }
 
 1;
