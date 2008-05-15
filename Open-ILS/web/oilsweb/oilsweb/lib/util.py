@@ -9,7 +9,7 @@ def childInit():
     '''
 
     import oils.system
-    oils.system.System.connect(
+    oils.system.System.remote_connect(
         config_file = pylons.config['osrf_config'],
         config_context = pylons.config['osrf_config_ctxt'],
         connect_cache = True)

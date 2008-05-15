@@ -126,21 +126,27 @@ class PoController(BaseController):
 
         r = RequestMgr()
 
-        oils.system.System.connect(
+        oils.system.System.remote_connect(
             config_file = pylons.config['osrf_config'],
             config_context = pylons.config['osrf_config_ctxt'])
 
         if 'marc_file' in r.request.params:
 
-            provider = r.request.params['provider']
+            provider_id = r.request.params['provider']
             authtoken = r.request.params['authtoken']
 
             # first, create the PO
             po = osrf.net_obj.NetworkObject.acqpo()
-            po.provider(provider)
-            po_id = ClientSession.atomic_request('open-ils.acq', 
+            po.provider(provider_id)
+            po_id = ClientSession.atomic_request(
+                'open-ils.acq', 
                 'open-ils.acq.purchase_order.create', authtoken, po)
             oils.event.Event.parse_and_raise(po_id)
+
+            provider = ClientSession.atomic_request(
+                'open-ils.acq', 
+                'open-ils.acq.provider.retrieve', authtoken, provider_id)
+            oils.event.Event.parse_and_raise(provider)
 
             # now, parse the MARC and create a lineitem per record
             marc_reader = pymarc.reader.MARCReader(r.request.params['marc_file'].file)
@@ -148,13 +154,15 @@ class PoController(BaseController):
 
                 lineitem = osrf.net_obj.NetworkObject.jub()
                 lineitem.marc(pymarc.marcxml.record_to_xml(record))
-                lineitem.provider(provider)
+                lineitem.provider(provider_id)
                 lineitem.purchase_order(po_id)
+                lineitem.source_label(provider.code()) # XXX where should this really come from?
 
-                stat = ClientSession.atomic_request('open-ils.acq', 
+                stat = ClientSession.atomic_request(
+                    'open-ils.acq', 
                     'open-ils.acq.lineitem.create', authtoken, lineitem)
                 oils.event.Event.parse_and_raise(stat)
-                return redirect_to(controller='acq/po', action='view', id=po_id)
+            return redirect_to(controller='acq/po', action='view', id=po_id)
                 
         return r.render('acq/po/marc_upload.html')
 
