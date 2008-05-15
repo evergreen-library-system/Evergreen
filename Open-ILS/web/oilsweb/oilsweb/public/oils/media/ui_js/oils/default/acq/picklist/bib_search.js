@@ -38,7 +38,6 @@ function drawForm() {
         }
     );
 
-    //alert(dojo.query('[name=label]', 'oils-acq-search-fields-template'));
     var tbody = dojo.byId('oils-acq-search-fields-tbody');
     var tmpl = tbody.removeChild(dojo.byId('oils-acq-search-fields-template'));
 
@@ -83,63 +82,19 @@ function doSearch(values) {
     }
 
     fieldmapper.standardRequest(
-        ['open-ils.search', 'open-ils.search.z3950.search_class'],
+        ['open-ils.acq', 'open-ils.acq.picklist.search.z3950'],
         {   async: true,
             params: [user.authtoken, search],
             onresponse: handleResult,
-            oncomplete: viewPicklist
         }
     );
 }
 
 function handleResult(r) {
     var result = r.recv().content();
-    if(!resultPicklist)
-        createResultPicklist();
-
-    searchProgress.update({maximum: sourceCount*searchLimit+1, progress: ++recvCount});
-
-    for(var idx in result.records) {
-        searchProgress.update({progress: ++recvCount});
-        var rec = result.records[idx];
-        var lineitem =  new jub()
-
-        lineitem.picklist(resultPicklist.id());
-        lineitem.source_label(result.service)
-        lineitem.marc(rec.marcxml)
-        lineitem.eg_bib_id(rec.bibid)
-
-        var id = fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem.create'],
-            [user.authtoken, lineitem]
-        );
-    }
-}
-
-function createResultPicklist() {
-    resultPicklist = new acqpl();
-    resultPicklist.name('');
-    resultPicklist.owner(user.user.id());
-
-    /* delete the old picklist with name = '' */
-    var pl = fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.picklist.name.retrieve'],
-        [user.authtoken, '']
-    );
-
-    if(pl) {
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.delete'],
-            [user.authtoken, pl.id()]
-        );
-    }
-
-    resultPicklist.id(
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.create'],
-            [user.authtoken, resultPicklist]
-        )
-    );
+    if(result.complete)
+        return viewPicklist(result.picklist_id);
+    searchProgress.update({maximum: result.total, progress: result.progress});
 }
 
 dojo.addOnLoad(drawForm);

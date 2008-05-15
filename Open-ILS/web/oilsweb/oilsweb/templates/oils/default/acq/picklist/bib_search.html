@@ -12,8 +12,8 @@
     <script>
         var searchLimit = ${c.oils.acq.limit.value} || 10;
         var searchOffset = ${c.oils.acq.offset.value} || 0;
-        function viewPicklist() {
-            location.href = '${c.oils.acq.prefix.value}/picklist/view/' + resultPicklist.id();
+        function viewPicklist(id) {
+            location.href = '${c.oils.acq.prefix.value}/picklist/view/' + id;
         }
     </script>
 
