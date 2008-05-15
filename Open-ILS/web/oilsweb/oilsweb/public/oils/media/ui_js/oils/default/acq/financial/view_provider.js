@@ -39,7 +39,7 @@ function loadProviderGrid() {
 }
 
 function loadPADGrid() {
-    openils.acq.Provider.retrieveLineitemAttrDefs(providerId, 
+    openils.acq.Provider.retrieveLineitemProviderAttrDefs(providerId, 
         function(attrs) {
             var store = new dojo.data.ItemFileReadStore({data:acqlipad.toStoreData(attrs)});
             var model = new dojox.grid.data.DojoData(
@@ -70,7 +70,7 @@ function createOrderRecordField(fields) {
         fields.xpath = '//*[@tag="'+fields.tag+'"]/*[@code="'+fields.subfield+'"]';
     delete fields.tag;
     delete fields.subfield;
-    openils.acq.Provider.createLineitemAttrDef(fields, 
+    openils.acq.Provider.createLineitemProviderAttrDef(fields, 
         function(id) {
             loadPADGrid();
         }
@@ -81,6 +81,15 @@ function setORDesc() {
     var code = dijit.byId('oils-acq-provider-or-code');
     var desc = dijit.byId('oils-acq-provider-or-desc');
     desc.setValue(code.getDisplayedValue());
+}
+
+function deleteORDataFields() {
+    var list = []
+    var selected = padGrid.selection.getSelected();
+    for(var idx = 0; idx < selected.length; idx++) 
+        list.push(padGrid.model.getRow(selected[idx]).id);
+    openils.acq.Provider.lineitemProviderAttrDefDeleteList(
+        list, function(){loadPADGrid();});
 }
 
 

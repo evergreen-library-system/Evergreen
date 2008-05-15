@@ -10,6 +10,9 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
+        <!--
+            Provider Summary 
+        -->
         <div dojoType="dijit.layout.ContentPane" 
                 class='oils-acq-detail-content-pane' title="${_('Summary')}" selected='true' style='height:400px;'>
             <script>
@@ -25,11 +28,18 @@
             </script>
             <div jsId='providerGrid' dojoType="dojox.Grid" structure='providerGridLayout'> </div>
         </div>
+
+        <!--
+            Provider order record data types
+        -->
         <div dojoType="dijit.layout.ContentPane" 
                 class='oils-acq-detail-content-pane' title="${_('Order Record Format')}" style='height:400px;'>
 
             <div class='oils-acq-actions-div' style='margin:8px;'>
-                <!-- Dropdown menu for creating a new funding source credit -->
+
+                <!-- 
+                    Dropdown menu for creating a new order record data type
+                -->
                 <div dojoType="dijit.form.DropDownButton">
                     <span>${('Create Order Record Field')}</span>
                     <div dojoType="dijit.TooltipDialog" execute="createOrderRecordField(arguments[0]);">
@@ -38,9 +48,6 @@
                             <tr>
                                 <td><label for="code">${_('Code:')} </label></td>
                                 <td>
-                                    <!--
-                                    <select id='oils-acq-provider-or-code' name="code" dojoType="dijit.form.FilteringSelect">
-                                    -->
                                     <select id='oils-acq-provider-or-code' name="code" dojoType="dijit.form.ComboBox">
                                         <script type='dojo/connect' event='onChange'>setORDesc();</script>
                                         <option value='fund_code'>Fund Code</option>
@@ -79,6 +86,13 @@
                         </table>
                     </div>
                 </div> 
+
+                <!--
+                    Delete order record data types button
+                -->
+                <button dojoType="dijit.form.Button" onclick='deleteORDataFields();'>
+                    ${_('Delete Selected')}
+                </button>
             </div>
 
             <script type='dojo/connect' event='onShow'>loadPADGrid();</script>
