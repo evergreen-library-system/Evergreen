@@ -69,7 +69,7 @@ openils.acq.Provider.retrieve = function(id) {
 };
 
 
-openils.acq.Provider.retrieveLineitemAttrDefs = function(providerId, oncomplete) {
+openils.acq.Provider.retrieveLineitemProviderAttrDefs = function(providerId, oncomplete) {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem_provider_attr_definition.provider.retrieve.atomic'],
         {   async: true,
@@ -79,7 +79,7 @@ openils.acq.Provider.retrieveLineitemAttrDefs = function(providerId, oncomplete)
     );
 }
 
-openils.acq.Provider.createLineitemAttrDef = function(fields, oncomplete) {
+openils.acq.Provider.createLineitemProviderAttrDef = function(fields, oncomplete) {
     var attr = new acqlipad();
     for(var field in fields) 
         attr[field](fields[field]);
@@ -93,5 +93,26 @@ openils.acq.Provider.createLineitemAttrDef = function(fields, oncomplete) {
     );
 }
 
+
+openils.acq.Provider.lineitemProviderAttrDefDeleteList = function(list, oncomplete) {
+    openils.acq.Provider._lineitemProviderAttrDefDeleteList(list, 0, oncomplete);
+}
+
+openils.acq.Provider._lineitemProviderAttrDefDeleteList = function(list, idx, oncomplete) {
+    if(idx >= list.length)
+        return oncomplete();
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_provider_attr_definition.delete'],
+        {   async: true,
+            params: [openils.User.authtoken, list[idx]],
+            oncomplete: function(r) {
+                msg = r.recv()
+                stat = msg.content();
+                /* XXX CHECH FOR EVENT */
+                openils.acq.Provider._lineitemProviderAttrDefDeleteList(list, ++idx, oncomplete);
+            }
+        }
+    );
+}
 
 }
