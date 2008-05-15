@@ -40,14 +40,19 @@
                             </tr>
                             <tr>
                                 <td><label for="description">${_('Description:')} </label></td>
-                                <td>
-                                    <!-- XXX get currency from funding source ... -->
-                                    <input dojoType="dijit.form.TextBox" name="description"> </input>
-                                </td>
+                                <td><input dojoType="dijit.form.TextBox" name="description"> </input></td>
                             </tr>
                             <tr>
                                 <td><label for="amount">${_('XPath:')} </label></td>
                                 <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">${_('Tag:')} </label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="tag"></input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">${_('Subfifle:')} </label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="subfield"></input></td>
                             </tr>
                             <tr>
                                 <td colspan='2' align='center'>
@@ -66,7 +71,9 @@
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Code")}', field:'code'},
                         {name: '${_("Description")}', field: "description", width:'auto'}, 
-                        {name: '${_("XPath")}', field:'xpath', width:'auto'}
+                        {name: '${_("XPath")}', field:'xpath', width:'auto'},
+                        {name: '${_("Tag")}', value:'test'},
+                        {name: '${_("Subfield")}', value:'test'}
                     ]]
                 }];
             </script>

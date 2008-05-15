@@ -49,6 +49,10 @@ function fetchProvider() {
 
 function createOrderRecordField(fields) {
     fields.provider = providerId;
+    if(!fields.xpath) 
+        fields.xpath = '//*[@tag="'+fields.tag+'"]/*[@code="'+fields.subfield+'"]';
+    delete fields.tag;
+    delete fields.subfield;
     openils.acq.Provider.createLineitemAttrDef(fields, 
         function(id) {
             loadPADGrid();
