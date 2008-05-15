@@ -33,14 +33,31 @@
                 <div dojoType="dijit.form.DropDownButton">
                     <span>${('Create Order Record Field')}</span>
                     <div dojoType="dijit.TooltipDialog" execute="createOrderRecordField(arguments[0]);">
+                        <script type='dojo/connect' event='onOpen'>setORDesc();</script>
                         <table class='dijitTooltipTable'>
                             <tr>
                                 <td><label for="code">${_('Code:')} </label></td>
-                                <td><input dojoType='dijit.form.TextBox' name='code'></input></td>
+                                <td>
+                                    <!--
+                                    <select id='oils-acq-provider-or-code' name="code" dojoType="dijit.form.FilteringSelect">
+                                    -->
+                                    <select id='oils-acq-provider-or-code' name="code" dojoType="dijit.form.ComboBox">
+                                        <script type='dojo/connect' event='onChange'>setORDesc();</script>
+                                        <option value='fund_code'>Fund Code</option>
+                                        <option value='shelving_location'>Shelving Location</option>
+                                        <option value='quantity'>Quantity</option>
+                                        <option value='order_date'>Order Date</option>
+                                        <option value='volume_count'>Volume Count </option>
+                                        <option value='currency_type'>Currency Type</option>
+                                        <option value='internal_notes'>Internal Notes </option>
+                                        <option value='vendor_notes'>Vendor Notes</option>
+                                        <option value='estimated_price'>Estimated Price</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label for="description">${_('Description:')} </label></td>
-                                <td><input dojoType="dijit.form.TextBox" name="description"> </input></td>
+                                <td><input id='oils-acq-provider-or-desc' dojoType="dijit.form.TextBox" name="description"> </input></td>
                             </tr>
                             <tr>
                                 <td><label for="amount">${_('XPath:')} </label></td>

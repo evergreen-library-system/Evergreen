@@ -1,6 +1,7 @@
 dojo.require("dijit.Dialog");
 dojo.require('dijit.layout.TabContainer');
 dojo.require('dijit.layout.ContentPane');
+dojo.require('dijit.form.FilteringSelect');
 dojo.require('dojox.grid.Grid');
 dojo.require("fieldmapper.OrgUtils");
 dojo.require('openils.acq.Provider');
@@ -75,6 +76,13 @@ function createOrderRecordField(fields) {
         }
     );
 }
+
+function setORDesc() {
+    var code = dijit.byId('oils-acq-provider-or-code');
+    var desc = dijit.byId('oils-acq-provider-or-desc');
+    desc.setValue(code.getDisplayedValue());
+}
+
 
 dojo.addOnLoad(fetchProvider);
 
