@@ -9,7 +9,7 @@ dojo.require('openils.Event');
 dojo.require('openils.User');
 
 var provider = null;
-var marcRegex = /\/\/\*\[@tag="(\d+)"]\/\*\[@code="(\w)"]/;
+var marcRegex = /^\/\/\*\[@tag="(\d+)"]\/\*\[@code="(\w)"]$/;
 
 function getOrgInfo(rowIndex) {
     data = providerGrid.model.getRow(rowIndex);

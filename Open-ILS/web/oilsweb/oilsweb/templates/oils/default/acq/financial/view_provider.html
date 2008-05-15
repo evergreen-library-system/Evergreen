@@ -67,16 +67,16 @@
                                 <td><input id='oils-acq-provider-or-desc' dojoType="dijit.form.TextBox" name="description"> </input></td>
                             </tr>
                             <tr>
-                                <td><label for="amount">${_('XPath:')} </label></td>
-                                <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
-                            </tr>
-                            <tr>
                                 <td><label for="amount">${_('Tag:')} </label></td>
                                 <td><input dojoType="dijit.form.TextBox" name="tag"></input></td>
                             </tr>
                             <tr>
                                 <td><label for="amount">${_('Subfifle:')} </label></td>
                                 <td><input dojoType="dijit.form.TextBox" name="subfield"></input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">${_('XPath:')} </label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
                             </tr>
                             <tr>
                                 <td colspan='2' align='center'>
@@ -102,9 +102,9 @@
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Code")}', field:'code'},
                         {name: '${_("Description")}', field: "description", width:'auto'}, 
-                        {name: '${_("XPath")}', field:'xpath', width:'auto'},
                         {name: '${_("Tag")}', get:getTag},
-                        {name: '${_("Subfield")}', get:getSubfield}
+                        {name: '${_("Subfield")}', get:getSubfield},
+                        {name: '${_("XPath")}', field:'xpath', width:'auto'}
                     ]]
                 }];
             </script>
