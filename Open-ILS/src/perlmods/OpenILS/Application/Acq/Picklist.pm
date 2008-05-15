@@ -497,7 +497,7 @@ my $PL_ENTRY_JSON_QUERY = {
 sub retrieve_pl_lineitem {
     my($self, $conn, $auth, $picklist_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
+    return $e->event unless $e->checkauth;
 
     # collect the retrieval options
     my $sort_attr = $$options{sort_attr} || 'title';
@@ -539,6 +539,71 @@ sub retrieve_pl_lineitem {
 =head comment
 request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"jub":[{"transform":"count", "attregate":1, "column":"id","alias":"count"}]}, "from":"jub","where":{"picklist":1}}
 =cut
+
+__PACKAGE__->register_method(
+	method => 'zsearch',
+	api_name => 'open-ils.acq.picklist.search.z3950',
+    stream => 1,
+	signature => {
+        desc => 'Performs a z3950 federated search and creates a picklist and associated lineitems',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Search definition', type => 'object'},
+            {desc => 'Picklist name, optional', type => 'string'},
+        ]
+    }
+);
+
+sub zsearch {
+    my($self, $conn, $auth, $search, $name) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_PICKLIST');
+
+    $search->{limit} ||= 10;
+
+    $name ||= '';
+    my $picklist = $e->search_acq_picklist({owner=>$e->requestor->id, name=>$name})->[0];
+    if($name eq '' and $picklist) {
+        delete_picklist($self, $conn, $auth, $picklist->id);
+        $picklist = undef;
+    }
+
+    unless($picklist) {
+        $picklist = Fieldmapper::acq::picklist->new;
+        $picklist->owner($e->requestor->id);
+        $picklist->name($name);
+        $e->create_acq_picklist($picklist) or return $e->die_event;
+    }
+
+    my $ses = OpenSRF::AppSession->create('open-ils.search');
+    my $req = $ses->request('open-ils.search.z3950.search_class', $auth, $search);
+
+    while(my $resp = $req->recv(timeout=>60)) {
+
+        my $result = $resp->content;
+        use Data::Dumper;
+        $logger->info("results = ".Dumper($resp));
+        my $count = $result->{count};
+        my $total = (($count < $search->{limit}) ? $count : $search->{limit})+1;
+        my $ctr = 0;
+        $conn->respond({total=>$total, progress=>++$ctr});
+
+        for my $rec (@{$result->{records}}) {
+            my $li = Fieldmapper::acq::lineitem->new;
+            $li->picklist($picklist->id);
+            $li->source_label($result->{service});
+            $li->selector($e->requestor->id);
+            $li->marc($rec->{marcxml});
+            $li->eg_bib_id($rec->{bibid}) if $rec->{bibid};
+            $e->create_acq_lineitem($li) or return $e->die_event;
+            $conn->respond({total=>$total, progress=>++$ctr});
+        }
+    }
+
+    return {complete=>1, picklist_id=>$picklist->id};
+}
+
 
 
 
