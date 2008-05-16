@@ -111,7 +111,7 @@ static int do_request( char* request ) {
 			buffer_free(buffer);
 		}
 		
-		osrfAppSession* session = osrf_app_client_session_init(service);
+		osrfAppSession* session = osrfAppSessionClientInit(service);
 		int req_id = osrfAppSessionMakeRequest( session, params, method, 1, NULL );
 		osrfMessage* omsg;
 
