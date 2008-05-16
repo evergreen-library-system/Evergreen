@@ -329,9 +329,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'The lineitem id', type => 'number'},
-            {desc => q/Options hash.  This contains an object that can be mapped into
-                a set of volume and copy objects.  {"volumes":[{"label":"vol1", "owning_lib":4,"copies":[{"barcode":"123"},...]}, ...]}
-                /}
+            {desc => q/Options hash./}
         ],
         return => {desc => 'ID of newly created bib record, Event on error'}
     }
@@ -342,55 +340,85 @@ sub create_lineitem_assets {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
-    my $li = $e->retrieve_acq_lineitem([$li_id, 
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id,
         {   flesh => 1,
             flesh_fields => {jub => ['purchase_order']}
         }
-    ]);
+    ]) or return $e->die_event;
 
     return OpenILS::Event->new('BAD_PARAMS') # make this perm-based, not owner-based
         unless $li->purchase_order->owner == $e->requestor->id;
 
-    my $record = $U->simplereq(
-        'open-ils.cat', 
-        'open-ils.cat.biblio.record.xml.import',
-        $auth, $li->marc, $li->source_label);
+    # -----------------------------------------------------------------
+    # first, create the bib record if necessary
+    # -----------------------------------------------------------------
+    unless($li->eg_bib_id) {
+        my $record = $U->simplereq(
+            'open-ils.cat', 
+            'open-ils.cat.biblio.record.xml.import',
+            $auth, $li->marc, $li->source_label);
 
-    return $record and $e->rollback if $U->event_code($record);
-    $logger->info("acq created new lineitem bib record ".$record->id);
-
-    return $record->id unless $$options{volumes};
-
-    for my $vol (@{$$options{volumes}}) {
-        my $volume = Fieldmapper::asset::call_number->new;
-        $volume->isnew(1);
-        $volume->record($record->id);
-        $volume->$_($vol->{$_}) for keys %$vol;
-        $volume->copies([]);
-
-        if($vol->{copies}) {
-            for my $cp (@{$vol->{copies}}) {
-                my $copy = Fieldmapper::asset::copy->new;
-                $copy->isnew(1);
-                $copy->$_($cp->{$_}) for keys %$cp;
-                $copy->loan_duration(2) unless $copy->loan_duration;
-                $copy->fine_level(2) unless $copy->fine_level;
-                $copy->status(OILS_COPY_STATUS_ON_ORDER) unless $copy->status;
-                push(@{$volume->copies}, $copy);
-            }
+        if($U->event_code($record)) {
+            $e->rollback;
+            return $record;
         }
+
+        $li->eg_bib_id($record->id);
+        $e->update_acq_lineitem($li) or return $e->die_event;
+    }
+
+    my $li_details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
+
+    # -----------------------------------------------------------------
+    # for each lineitem_detail, create the volume if necessary, create 
+    # a copy, and link them all together.
+    # -----------------------------------------------------------------
+    my %volcache;
+    for my $li_detail_id (@{$li_details}) {
+
+        my $li_detail = $e->retrieve_acq_lineitem_detail($li_detail_id)
+            or return $e->die_event;
+
+        my $volume = $volcache{$li_detail->cn_label};
+        unless($volume and $volume->owning_lib == $li_detail->owning_lib) {
+            $volume = $U->simplereq(
+                'open-ils.cat',
+                'open-ils.cat.call_number.find_or_create',
+                $auth, $li_detail->cn_label, $li->eg_bib_id, $li_detail->owning_lib);
+        }
+
+        if($U->event_code($volume)) {
+            $e->rollback;
+            return $volume;
+        }
+
+        my $copy = Fieldmapper::asset::copy->new;
+        $copy->isnew(1);
+        $copy->loan_duration(2);
+        $copy->fine_level(2);
+        $copy->status(OILS_COPY_STATUS_ON_ORDER);
+        $copy->barcode($li_detail->barcode);
+        $copy->location($li_detail->location);
 
         my $stat = $U->simplereq(
             'open-ils.cat',
-            'open-ils.cat.asset.volume.fleshed.batch.update', $auth, [$volume]);
-        return $stat and $e->rollback if $U->event_code($stat);
-        $logger->info("acq created new lineitem volume ".$volume->label);
+            'open-ils.cat.asset.copy.fleshed.batch.update', $auth, [$copy]);
+
+        if($U->event_code($stat)) {
+            $e->rollback;
+            return $stat;
+        }
+
+        my $new_copy = $e->retrieve_asset_copy({deleted=>'f', barcode=>$copy->barcode})
+            or return $e->die_event;
+
+        $li_detail->eg_copy_id($new_copy->id);
+        $e->update_acq_lineitem_detail($li_detail) 
+            or return $e->die_event;
     }
 
-    $li->eg_bib_id($record->id);
-    $e->update_acq_lineitem($li) or return $e->die_event;
     $e->commit;
-
     return 1;
 }
 
