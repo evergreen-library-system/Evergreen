@@ -93,7 +93,7 @@ int main (int argc, char **argv) {
 	free(idl_filename);
 
 	// Connect to open-ils.cstore
-	session = osrf_app_client_session_init(CSTORE);
+	session = osrfAppSessionClientInit(CSTORE);
 	osrfAppSessionConnect(session);
 
 	// Start a transaction
@@ -162,7 +162,7 @@ static int commitTransaction () {
 	int ret = 1;
 	const jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.commit", 1, NULL );
-	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
+	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
 			ret = 0;
@@ -179,7 +179,7 @@ static int rollbackTransaction () {
 	int ret = 1;
 	const jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.rollback", 1, NULL );
-	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
+	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
 			ret = 0;
@@ -196,7 +196,7 @@ static int startTransaction () {
 	int ret = 1;
 	jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.begin", 1, NULL );
-	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
+	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectToSimpleString(data))) {
 			ret = 0;
@@ -232,7 +232,7 @@ static int sendCommand ( const char* json ) {
 	int req_id = osrfAppSessionMakeRequest( session, params, method_name, 1, NULL );
 	jsonObjectFree(params);
 
-	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
+	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 
 	if (res) {
 		if ( !(data = osrfMessageGetResult(res)) ) {
