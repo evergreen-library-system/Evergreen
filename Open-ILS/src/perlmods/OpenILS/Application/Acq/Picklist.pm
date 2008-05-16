@@ -8,6 +8,8 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
+use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 
 __PACKAGE__->register_method(
@@ -320,6 +322,81 @@ sub create_lineitem {
 
 
 __PACKAGE__->register_method(
+	method => 'create_lineitem_assets',
+	api_name	=> 'open-ils.acq.lineitem.assets.create',
+	signature => {
+        desc => q/Creates the bibliographic data, volume, and copies associated with a lineitem./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The lineitem id', type => 'number'},
+            {desc => q/Options hash.  This contains an object that can be mapped into
+                a set of volume and copy objects.  {"volumes":[{"label":"vol1", "owning_lib":4,"copies":[{"barcode":"123"},...]}, ...]}
+                /}
+        ],
+        return => {desc => 'ID of newly created bib record, Event on error'}
+    }
+);
+
+sub create_lineitem_assets {
+    my($self, $conn, $auth, $li_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $li = $e->retrieve_acq_lineitem([$li_id, 
+        {   flesh => 1,
+            flesh_fields => {jub => ['purchase_order']}
+        }
+    ]);
+
+    return OpenILS::Event->new('BAD_PARAMS') # make this perm-based, not owner-based
+        unless $li->purchase_order->owner == $e->requestor->id;
+
+    my $record = $U->simplereq(
+        'open-ils.cat', 
+        'open-ils.cat.biblio.record.xml.import',
+        $auth, $li->marc, $li->source_label);
+
+    return $record and $e->rollback if $U->event_code($record);
+    $logger->info("acq created new lineitem bib record ".$record->id);
+
+    return $record->id unless $$options{volumes};
+
+    for my $vol (@{$$options{volumes}}) {
+        my $volume = Fieldmapper::asset::call_number->new;
+        $volume->isnew(1);
+        $volume->record($record->id);
+        $volume->$_($vol->{$_}) for keys %$vol;
+        $volume->copies([]);
+
+        if($vol->{copies}) {
+            for my $cp (@{$vol->{copies}}) {
+                my $copy = Fieldmapper::asset::copy->new;
+                $copy->isnew(1);
+                $copy->$_($cp->{$_}) for keys %$cp;
+                $copy->loan_duration(2) unless $copy->loan_duration;
+                $copy->fine_level(2) unless $copy->fine_level;
+                $copy->status(OILS_COPY_STATUS_ON_ORDER) unless $copy->status;
+                push(@{$volume->copies}, $copy);
+            }
+        }
+
+        my $stat = $U->simplereq(
+            'open-ils.cat',
+            'open-ils.cat.asset.volume.fleshed.batch.update', $auth, [$volume]);
+        return $stat and $e->rollback if $U->event_code($stat);
+        $logger->info("acq created new lineitem volume ".$volume->label);
+    }
+
+    $li->eg_bib_id($record->id);
+    $e->update_acq_lineitem($li) or return $e->die_event;
+    $e->commit;
+
+    return 1;
+}
+
+
+
+__PACKAGE__->register_method(
 	method => 'retrieve_lineitem',
 	api_name	=> 'open-ils.acq.lineitem.retrieve',
 	signature => {
@@ -334,6 +411,7 @@ __PACKAGE__->register_method(
         return => {desc => 'lineitem object on success, Event on error'}
     }
 );
+
 
 sub retrieve_lineitem {
     my($self, $conn, $auth, $li_id, $options) = @_;
