@@ -320,6 +320,7 @@ sub __make_marc_doc {
 	my $marcxml = XML::LibXML->new->parse_string( $xml );
 	$marcxml->documentElement->setNamespace( 
 		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim");
 	return $marcxml;
 }
 
