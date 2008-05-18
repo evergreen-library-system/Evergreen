@@ -382,10 +382,12 @@ sub create_lineitem_assets {
 
         my $volume = $volcache{$li_detail->cn_label};
         unless($volume and $volume->owning_lib == $li_detail->owning_lib) {
-            $volume = $U->simplereq(
+            my $vol_id = $U->simplereq(
                 'open-ils.cat',
                 'open-ils.cat.call_number.find_or_create',
                 $auth, $li_detail->cn_label, $li->eg_bib_id, $li_detail->owning_lib);
+            $volume = $e->retrieve_asset_call_number($vol_id) or return $e->die_event;
+            $volcache{$vol_id} = $volume;
         }
 
         if($U->event_code($volume)) {
@@ -400,6 +402,8 @@ sub create_lineitem_assets {
         $copy->status(OILS_COPY_STATUS_ON_ORDER);
         $copy->barcode($li_detail->barcode);
         $copy->location($li_detail->location);
+        $copy->call_number($volume->id);
+        $copy->circ_lib($volume->owning_lib);
 
         my $stat = $U->simplereq(
             'open-ils.cat',
@@ -410,12 +414,11 @@ sub create_lineitem_assets {
             return $stat;
         }
 
-        my $new_copy = $e->retrieve_asset_copy({deleted=>'f', barcode=>$copy->barcode})
+        my $new_copy = $e->search_asset_copy({deleted=>'f', barcode=>$copy->barcode})->[0]
             or return $e->die_event;
 
         $li_detail->eg_copy_id($new_copy->id);
-        $e->update_acq_lineitem_detail($li_detail) 
-            or return $e->die_event;
+        $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
     }
 
     $e->commit;
