@@ -194,7 +194,7 @@ sub biblio_record_replace_marc  {
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_MARC');
+	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
 	my $rec = $e->retrieve_biblio_record_entry($recid)
 		or return $e->die_event;
@@ -273,7 +273,7 @@ sub biblio_record_xml_import {
 	my $override = 1 if $self->api_name =~ /override/;
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('IMPORT_MARC');
+    return $e->die_event unless $e->allowed('IMPORT_MARC', $e->requestor->ws_ou);
 
 	my( $evt, $tcn, $tcn_source, $marcdoc );
 
@@ -1013,9 +1013,12 @@ sub update_fleshed_copies {
 
 sub fix_copy_price {
 	my $copy = shift;
-	my $p = $copy->price || 0;
-	$p =~ s/\$//og;
-	$copy->price($p);
+
+    if(defined $copy->price) {
+	    my $p = $copy->price || 0;
+	    $p =~ s/\$//og;
+	    $copy->price($p);
+    }
 
 	my $d = $copy->deposit_amount || 0;
 	$d =~ s/\$//og;
@@ -1083,7 +1086,7 @@ sub delete_bib_record {
     my($self, $conn, $auth, $rec_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('DELETE_RECORD');
+    return $e->die_event unless $e->allowed('DELETE_RECORD', $e->requestor->ws_ou);
     my $vols = $e->search_asset_call_number({record=>$rec_id, deleted=>'f'});
     return OpenILS::Event->new('RECORD_NOT_EMPTY', payload=>$rec_id) if @$vols;
     my $evt = delete_rec($e, $rec_id);
