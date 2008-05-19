@@ -1128,6 +1128,8 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_VOLUME_NOTE');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_VR_FORMAT');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_XML_TRANSFORM');
 INSERT INTO permission.perm_list (code) VALUES ('MERGE_BIB_RECORDS');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_CURRENCY_TYPE', 
+    oils_i18n_gettext('Allow a user to create/view/update/delete a currency_type'));
 
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
