@@ -32,6 +32,8 @@ body { font-size: 80%; }
 .oils-base-sub-navigate-block a { color: #000000; }
 */
 
+#oils-base-header-user-info { font-weight: bold; margin-right: 8px;}
+
 
 .label { font-weight: bold; }
 
@@ -40,3 +42,17 @@ body { font-size: 80%; }
 */
 .oils-admin-table td { border-bottom: 1px solid #d9e8f9; }
 .oils-admin-label { font-weight: bold; }
+
+.oils-acq-nav-link {
+    padding:0px 3px 3px 3px;
+    border-top:1px solid #F8F7F1;
+    border-bottom:1px solid #F8F7F1;
+    font-size: 105%;
+}
+.oils-acq-nav-link a { text-decoration:none; }
+.oils-acq-nav-link-active {
+    background:#FFFDF3;
+    border-top:1px solid #ACA899;
+    border-bottom:1px solid #ACA899;
+}
+

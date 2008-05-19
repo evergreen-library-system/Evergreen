@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
-<%inherit file='../base.html'/>
-<%def name="page_title()">${_('Evergreen My Picklists')}</%def>
+<%inherit file='base.html'/>
+<%def name="page_title()">${_('My Picklists')}</%def>
 <%def name="block_content()">
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-picklist-my-list-header'>
         <div id='oils-acq-list-header-label'>${_('My Picklists')}</div>
+        <!--
         <div id='oils-acq-list-header-actions'>
             <a id='oils-acq-picklist-view-all' href="${c.oils.acq.prefix.value}/picklist/listall">${_('View All Picklists')}</a>
         </div>
+        -->
     </div>
     <div id='oils-acq-picklist-all-list-header'>
         <div id='oils-acq-list-header-label'>${_('All Picklists')}</div>
+        <!--
         <div id='oils-acq-list-header-actions'>
             <a id='oils-acq-picklist-view-mine' href="${c.oils.acq.prefix.value}/picklist/list">${_('View My Picklists')}</a>
         </div>
+        -->
     </div>
 </div>
 

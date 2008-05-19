@@ -1,0 +1,44 @@
+<div>
+    <script>
+        dojo.require('dijit.Toolbar');
+        dojo.require('dijit.Menu');
+    </script>
+
+    <div dojoType="dijit.Toolbar" class='menuBar'>
+
+        <div dojoType="dijit.form.DropDownButton">
+            <span>${('Acquisitions')}</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/picklist/list';">Picklists</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/po/search';">Purchase Orders</div>
+            </div>
+        </div>
+
+        <div dojoType="dijit.form.DropDownButton">
+            <span>${('Serials')}</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" onClick="alert('not yet...');">Test</div>
+            </div>
+        </div>
+
+
+        <div dojoType="dijit.form.DropDownButton">
+            <span>${('Admin')}</span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/fund/list';">Funds</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/funding_source/list';">Funding Sources</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/provider/list';">Providers</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" onclick='alert("not yet...");'
+                        onClick="return false;location.href = '${c.oils.core.prefix.value}/acq/fund/list';">Distribution Patterns</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '${c.oils.core.prefix.value}/acq/currency_type/list';">Currency Types</div>
+            </div>
+        </div>
+    </div>
+</div>
+

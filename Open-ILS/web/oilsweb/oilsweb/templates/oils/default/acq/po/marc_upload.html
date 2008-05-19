@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file='../base.html'/>
+<%inherit file='base.html'/>
 <%def name="page_title()">${_('MARC File Upload')}</%def>
 <%def name="block_content()">
 
@@ -13,6 +13,7 @@
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.acq.Provider');
     dojo.require('dojox.widget.FileInput');
+    dojo.require('dojo.data.ItemFileReadStore');
     function load() {
         openils.acq.Provider.createStore(
             function(store) {

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file='../base.html'/>
+<%inherit file='base.html'/>
 <%def name="page_title()">${_('View Provider')}</%def>
 <%def name="block_content()">
 
@@ -100,7 +100,7 @@
                 var padGridLayout = [{
                     cells : [[
                         {name: '${_("ID")}', field: 'id'},
-                        {name: '${_("Code")}', field:'code'},
+                        {name: '${_("Code")}', field:'code', width:'auto'},
                         {name: '${_("Description")}', field: "description", width:'auto'}, 
                         {name: '${_("Tag")}', get:getTag},
                         {name: '${_("Subfield")}', get:getSubfield},
