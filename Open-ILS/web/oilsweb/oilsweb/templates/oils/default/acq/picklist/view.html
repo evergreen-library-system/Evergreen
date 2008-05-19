@@ -95,23 +95,30 @@
 			 get:getLIDLibName}
 		    ]]
 		}];
-		var plist = new openils.acq.Picklist(${c.oils.acq.picklist.value},
-		    function(model) {
-			pickListGrid.setStructure(picklistLayout);
-		        pickListGrid.setModel(model);
 
-			dojo.connect(pickListGrid, "onRowClick", function(evt) {
-			    openils.acq.Lineitems.loadGrid(lineItemGrid,
-							   model.getRow(evt.rowIndex).id,
-							   lineitemLayout);
-			});
+        var plist = null;
+        function loadPL() {
+            plist = new openils.acq.Picklist(${c.oils.acq.picklist.value},
+                function(model) {
+                    pickListGrid.setStructure(picklistLayout);
+                    pickListGrid.setModel(model);
 
-			dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
-			dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
-			dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
-			dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
-		        pickListGrid.update();
-                    });
+                    dojo.connect(pickListGrid, "onRowClick", 
+                        function(evt) {
+                            openils.acq.Lineitems.loadGrid(
+                                lineItemGrid, model.getRow(evt.rowIndex).id, lineitemLayout);
+                        }
+                    );
+
+                    dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
+                    dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
+                    dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
+                    dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
+                    pickListGrid.update();
+                }
+            );
+        }
+        dojo.addOnLoad(loadPL);
 	    </script>
 	</div>
 	<div dojoType="dijit.layout.ContentPane" sizeMin="20"
