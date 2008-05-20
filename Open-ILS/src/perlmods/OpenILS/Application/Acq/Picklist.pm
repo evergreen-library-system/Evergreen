@@ -713,6 +713,35 @@ sub zsearch {
     return {complete=>1, picklist_id=>$picklist->id};
 }
 
+__PACKAGE__->register_method(
+	method => 'lineitem_search',
+	api_name => 'open-ils.acq.lineitem.search',
+    stream => 1,
+	signature => {
+        desc => 'Searches lineitems',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Search definition', type => 'object'},
+            {desc => 'Optoins hash.  idlist=true', type => 'object'},
+            {desc => 'List of lineitems', type => 'object/number'},
+        ]
+    }
+);
+
+sub lineitem_search {
+    my($self, $conn, $auth, $search, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('CREATE_PICKLIST');
+    # XXX needs serious permissions consideration!
+    my $pls = $e->search_acq_lineitem($search, {idlist=>$$options{idlist}});
+    for my $pl (@$pls) {
+        $pl->clear_marc if $$options{clear_marc};
+        $conn->respond($_) for $pl;
+    }
+    return undef;
+}
+
 
 
 
