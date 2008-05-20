@@ -26,9 +26,10 @@ dojo.declare('openils.acq.Fund', null, {
 });
 
 openils.acq.Fund.cache = {};
+openils.acq.Fund._cachecomplete = false;
 
 openils.acq.Fund.createStore = function(onComplete, limitPerm) {
-    /** Fetches the list of funding_sources and builds a grid from them */
+    /** Fetches the list of funds and builds a grid from them */
 
     function mkStore(r) {
         var msg;
@@ -38,6 +39,7 @@ openils.acq.Fund.createStore = function(onComplete, limitPerm) {
             openils.acq.Fund.cache[src.id()] = src;
             items.push(src);
         }
+	openils.acq.Fund._cachecomplete = true;
         onComplete(acqf.toStoreData(items));
     }
 
@@ -140,5 +142,22 @@ openils.acq.Fund._deleteList = function(list, idx, onComplete) {
         }
     );
 };
-}
 
+openils.acq.Fund.nameMapping = function(oncomplete) {
+    var ids = [];
+    var names = [];
+    var buildMap = function() {
+	for (var i in openils.acq.Fund.cache) {
+	    ids.push(i.id());
+	    names.push(i.name());
+	    oncomplete(ids, names);
+	}
+    };
+
+    if (openils.acq.Fund._cachecomplete) {
+	buildMap(oncomplete);
+    } else {
+	openils.acq.Fund.createStore(buildMap);
+    }
+};
+}

@@ -4,6 +4,7 @@ if(!dojo._hasResource["openils.widget.FundSelector"]){
 
     dojo.require("dojox.grid.editors");
 
+    dojo.require('openils.acq.Fund');
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.dojoData');
 
@@ -25,21 +26,10 @@ if(!dojo._hasResource["openils.widget.FundSelector"]){
 
     dojo.addOnLoad(
 	function() {
-	    fieldmapper.standardRequest(
-		['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
-		{
-		    async: true,
-		    params: [openils.User.authtoken, null, {flesh_summary:1}],
-		    oncomplete: function (r) {
-			var msg;
-			
-			while (msg = r.recv()) {
-			    var f = msg.content();
-			    console.dir(f)
-			    openils.widget.FundSelector.fundNames.push(f.name());
-			    openils.widget.FundSelector.fundCodes.push(f.id());
-			}
-		    }
+	    openils.acq.Fund.nameMapping(
+		function(ids, names) {
+		    openils.widget.FundSelector.fundCodes = ids;
+		    openils.widget.FundSelector.fundNames = names;
 		});
 	});
 }
