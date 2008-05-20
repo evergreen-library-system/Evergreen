@@ -733,11 +733,15 @@ sub lineitem_search {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('CREATE_PICKLIST');
-    # XXX needs serious permissions consideration!
-    my $pls = $e->search_acq_lineitem($search, {idlist=>$$options{idlist}});
-    for my $pl (@$pls) {
-        $pl->clear_marc if $$options{clear_marc};
-        $conn->respond($_) for $pl;
+    # XXX needs permissions consideration
+    my $pls = $e->search_acq_lineitem($search, {idlist=>1});
+    for my $li_id (@$pls) {
+        if($$options{idlist}) {
+            $conn->respond($li_id);
+        } else {
+            my $res = retrieve_lineitem($self, $conn, $auth, $li_id, $options);
+            $conn->respond($res) unless $U->event_code($res);
+        }
     }
     return undef;
 }

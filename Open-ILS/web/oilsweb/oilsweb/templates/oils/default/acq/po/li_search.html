@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+<%inherit file='base.html'/>
+<%def name="page_title()">${_('Lineitem Search')}</%def>
+
+<%def name="block_content()">
+    <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/po/li_search.js'> </script>
+    <script>
+        var searchLimit = ${c.oils.acq.limit.value} || 10;
+        var searchOffset = ${c.oils.acq.offset.value} || 0;
+    </script>
+
+    <div id='oils-acq-li-search-block' class='container'>
+        <form dojoType='dijit.form.Form' action='' method=''>
+            <script type="dojo/method" event="onSubmit">
+                doSearch(this.getValues());
+                return false; /* don't redirect */
+            </script>
+            <select dojoType='dijit.form.FilteringSelect' name='state'>
+                <option value='new'>${_("New")}</option>
+            </select>
+            <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
+        </div>
+    </form>
+    <div id='oils-acq-li-search-progress'>
+        <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
+    </div>
+    <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
+
+    <script>
+        var liGridStructure = [{
+            cells: [[
+                {name: '${_("ID")}', field: 'id'},
+                {name: '${_("Title")}', width: 'auto', get:getJUBTitle},
+                {name: '${_("ISBN")}', get:getJUBIsbn},
+                {name: '${_("Pubdate")}', get:getJUBPubdate},
+                {name: '${_("Price")}', get:getJUBPrice},
+                {name: '${_("Vendor")}', get:getProvider},
+                {name: '${_("# of Copies")}', field: 'item_count'},
+                {name: '${_("State")}', field: 'state'}
+            ]]
+        }];
+    </script>
+    <div jsId='liGrid' dojoType="dojox.Grid" structure='liGridStructure'> </div>
+</%def>
+
+

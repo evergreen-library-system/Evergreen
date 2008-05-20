@@ -33,6 +33,10 @@ class PoController(BaseController):
         r.ctx.acq.po_id.value = kwargs['id']
         return r.render('acq/po/view_po.html')
 
+    def li_search(self):
+        r = RequestMgr()
+        return r.render('acq/po/li_search.html')
+
     # Create PO from contents of picklist
     def create(self, **kwargs):
         r = RequestMgr()
