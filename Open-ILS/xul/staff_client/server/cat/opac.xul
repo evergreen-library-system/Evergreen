@@ -32,6 +32,8 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+		function $w(id,text) { if ($(id)) util.widgets.set_text($(id),text); }
 
 		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; 
 		var browser_frame; var browser_obj; var browser_win;
@@ -44,7 +46,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+					if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -66,8 +68,7 @@
 				set_opac();
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/opac.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/opac.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -126,10 +127,10 @@
 									if (typeof r.ilsevent != 'undefined') {
 										throw(r);
 									} else {
-										alert('Record successfully saved.');
+										alert( $("catStrings").getString('staff.cat.opac.set_marc_edit.alert') );
 									}
 								} catch(E) {
-										g.error.standard_unexpected_error_alert('Record not likely updated.',E);
+										g.error.standard_unexpected_error_alert( $("catStrings").getString('staff.cat.opac.set_marc_edit.std_unexpected_error'), E );
 								}
 							}
 						},
@@ -320,10 +321,14 @@
 		}
 
 		function refresh() {
-			alert('Not yet implemented.  Work around: Choose Duplicate in New Tab option');
+			alert( $("catStrings").getString('staff.cat.opac.refresh.function_not_implemented.alert') );
 		}
 	]]>
 	</script>
+	
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset><command id="cmd_forward"/><command id="cmd_back"/></commandset>
 
