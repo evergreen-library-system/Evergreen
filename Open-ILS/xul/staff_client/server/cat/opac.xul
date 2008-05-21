@@ -68,7 +68,7 @@
 				set_opac();
 
 			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/opac.xul', E]);
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/opac.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -85,7 +85,7 @@
 						'docid' : docid,
 						'set_tab_name' : function(n) { 
 							if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-								try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+								try { window.xulG.set_tab_name($("catStrings").getFormattedString('staff.cat.opac.set_tab_name', [n])); } catch(E) { alert(E); }
 							} else {
 								dump('no set_tab_name\n');
 							}

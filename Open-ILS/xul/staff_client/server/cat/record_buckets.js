@@ -526,7 +526,7 @@ cat.record_buckets.prototype = {
 							try {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
-								var conf = window.confirm('Delete the bucket named ' + name + '?');
+								var conf = window.confirm($("catStrings").getFormattedString('staff.cat.record_buckets.delete_bucket_named', [name]));
 								if (!conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
