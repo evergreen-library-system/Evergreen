@@ -148,8 +148,9 @@ openils.acq.Fund.nameMapping = function(oncomplete) {
     var names = [];
     var buildMap = function() {
 	for (var i in openils.acq.Fund.cache) {
-	    ids.push(i.id());
-	    names.push(i.name());
+	    var item = openils.acq.Fund.cache[i];
+	    ids.push(item.id());
+	    names.push(item.name());
 	    oncomplete(ids, names);
 	}
     };
