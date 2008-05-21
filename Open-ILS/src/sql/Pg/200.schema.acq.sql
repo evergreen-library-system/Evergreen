@@ -90,6 +90,7 @@ CREATE TABLE acq.fund_allocation (
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id),
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
 	name		TEXT				NOT NULL,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
