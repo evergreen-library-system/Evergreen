@@ -92,7 +92,7 @@ openils.acq.Lineitems.alertOnSet = function(griditem, attr, oldVal, newVal) {
 	return;
     }
 
-    console.dir(griditem);
+//     console.dir(griditem);
     item = openils.acq.Lineitems.acqlidCache[griditem.id];
     
 //     console.log("alertOnSet: newVal = "+newVal);
