@@ -13,17 +13,29 @@ var user = new openils.User();
 var lineitems = [];
 
 function drawForm() {
-
+    openils.acq.Provider.createStore(
+        function(store) {
+            providerSelector.store = 
+                new dojo.data.ItemFileReadStore({data:store});
+        },
+        'MANAGE_PROVIDER'
+    );
 }
 
 var liReceived;
 function doSearch(values) {
-    search = {};
-    search = {state:'new'};
+    var search = {};
+    for(var v in values) {
+        var val = values[v];
+        if(val != null && val != '')
+            search[v] = val;
+    }
+
     search = [search, {limit:searchLimit, offset:searchOffset}];
     options = {clear_marc:1, flesh_attrs:1};
 
     liReceived = 0;
+    lineitems = [];
     dojo.style('searchProgress', 'visibility', 'visible');
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],

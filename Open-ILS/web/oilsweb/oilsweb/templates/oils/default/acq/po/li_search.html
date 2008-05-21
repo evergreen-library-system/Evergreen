@@ -15,8 +15,14 @@
                 doSearch(this.getValues());
                 return false; /* don't redirect */
             </script>
+            <label for='state'>${_('State')}</label>
             <select dojoType='dijit.form.FilteringSelect' name='state'>
                 <option value='new'>${_("New")}</option>
+                <option value='approved'>${_("Approved")}</option>
+            </select>
+            <label for='provider'>${_('Provider')}</label>
+            <select dojoType='dijit.form.FilteringSelect' name='provider' 
+                labalAttr='code' searchAttr='code' jsId='providerSelector'>
             </select>
             <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
         </div>
