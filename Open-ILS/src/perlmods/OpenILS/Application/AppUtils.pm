@@ -1368,8 +1368,9 @@ sub get_org_types {
 }
 
 sub get_org_tree {
+	my $cache_diff = shift || '';
 	my $cache = OpenSRF::Utils::Cache->new("global", 0);
-	my $tree = $cache->get_cache('orgtree');
+	my $tree = $cache->get_cache("orgtree.$cache_diff");
 	return $tree if $tree;
 
 	$tree = OpenILS::Utils::CStoreEditor->new->search_actor_org_unit( 
@@ -1383,7 +1384,7 @@ sub get_org_tree {
 		]
 	)->[0];
 
-	$cache->put_cache('orgtree', $tree);
+	$cache->put_cache("orgtree.$cache_diff", $tree);
 	return $tree;
 }
 
