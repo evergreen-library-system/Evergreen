@@ -1,5 +1,7 @@
 dump('entering cat.record_buckets.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof cat == 'undefined') cat = {};
 cat.record_buckets = function (params) {
 
@@ -18,7 +20,7 @@ cat.record_buckets.pick_file = function (defaultFileName) {
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
 
-	fp.init( window, "Save File As", nsIFilePicker.modeSave );
+	fp.init( window, $("catStrings").getString('staff.cat.record_buckets.save_file_as'), nsIFilePicker.modeSave );
 	if (defaultFileName)
 		fp.defaultString = defaultFileName;
 
@@ -60,11 +62,11 @@ cat.record_buckets.export_records = function(obj, output_type) {
 		if (file) {
 			persist.saveURI(uri,null,null,null,null,file);
 		} else {
-			alert("File not downloaded.");
+			alert( $("catStrings").getString('staff.cat.record_buckets.export_records.alert') );
 		}
 
 	} catch(E) {
-		obj.error.standard_unexpected_error_alert('Records could not be exported.',E);
+		obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.export_records.std_unexpected_error'), E);
 	}
 };
 
@@ -79,7 +81,7 @@ cat.record_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Action completed.");
+			alert( $("commonStrings").getString('common.action_complete'));
 		}
 		var obj = this;
 		obj.list1.clear();
@@ -104,7 +106,7 @@ cat.record_buckets.prototype = {
 				'publisher' : { 'hidden' : false },
 				'pubdate' : { 'hidden' : false },
 				'isbn' : { 'hidden' : false },
-				'tcn' : { 'hidden' : false },
+				'tcn' : { 'hidden' : false }
 			} 
 		);
 
@@ -122,7 +124,8 @@ cat.record_buckets.prototype = {
                             if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
 
                         } catch(E) {
-                            obj.error.standard_unexpected_error_alert('Error retrieving mvr for record with id =' + row.my.docid, E);
+                            obj.error.standard_unexpected_error_alert(
+                              $("catStrings").getFormattedString('staff.cat.record_buckets.retrieve_row.std_unexpected_error', [row.my.docid]), E);
                         }
                     }
                 );
@@ -156,7 +159,7 @@ cat.record_buckets.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
+				}
 
 			}
 		);
@@ -185,7 +188,7 @@ cat.record_buckets.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
+				}
 
 			}
 		);
@@ -218,7 +221,7 @@ cat.record_buckets.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
+				}
 			}
 		);
 		
@@ -273,10 +276,13 @@ cat.record_buckets.prototype = {
 									[ ses(), obj.data.list.au[0].id() ]
 								);
 								if (typeof buckets.ilsevent != 'undefined') {
-									obj.error.standard_unexpected_error_alert('Could not retrieve your buckets.',buckets);
+									obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.buckets.std_unexpected_error'), buckets);
 									return;
 								}
-								var items = [ ['Choose a bucket...',''], ['Retrieve shared bucket...',-1] ].concat(
+								var items = [
+									[$("catStrings").getString('staff.cat.record_buckets.menulist_placeholder.item1'),''],
+									[$("catStrings").getString('staff.cat.record_buckets.menulist_placeholder.item2'),-1]
+								].concat(
 									util.functional.map_list(
 										util.functional.filter_list(
 											buckets.biblio,
@@ -308,7 +314,7 @@ cat.record_buckets.prototype = {
 								function change_bucket(ev) {
 									var bucket_id = ev.target.value;
 									if (bucket_id < 0 ) {
-										bucket_id = window.prompt('Enter bucket number:');
+										bucket_id = window.prompt($("catStrings").getString('staff.cat.record_buckets.change_bucket.bucket_id'));
 										ev.target.value = bucket_id;
 										ev.target.setAttribute('value',bucket_id);
 									}
@@ -332,7 +338,7 @@ cat.record_buckets.prototype = {
 										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
 											alert('Could not find a bucket with ID = ' + bucket_id);
 										} else {
-											obj.error.standard_unexpected_error_alert('Error retrieving bucket.  Did you use a valid bucket id?',bucket);
+											obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.change_bucket.error'),bucket);
 										}
 										return;
 									}
@@ -505,7 +511,7 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							alert("Action completed.");
+							alert( $("commonStrings").getString('common.action_complete'));
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -525,7 +531,7 @@ cat.record_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Action completed.");
+								alert( $("commonStrings").getString('common.action_complete'));
 								var x = document.getElementById('info_box');
                                 x.setAttribute('hidden','true');
                                 obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
@@ -544,7 +550,7 @@ cat.record_buckets.prototype = {
 								);
 
 							} catch(E) {
-								alert('FIXME -- ' + E);
+								alert('FIXME: ' + E);
 							}
 						}
 					],
@@ -552,7 +558,11 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+								var name = prompt(
+									$("catStrings").getString('staff.cat.record_buckets.new_bucket.bucket_prompt'),
+									'',
+									$("catStrings").getString('staff.cat.record_buckets.new_bucket.bucket_prompt_title')
+								);
 
 								if (name) {
 									var bucket = new cbreb();
@@ -564,14 +574,13 @@ cat.record_buckets.prototype = {
 
 									if (typeof robj == 'object') {
 										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
-											alert('You already have a bucket with that name.');
+											alert($("catStrings").getString('staff.cat.record_buckets.new_bucket.same_name_alert'));
 											return;
 										}
 										throw robj;
 									}
 
-
-									alert('Bucket "' + name + '" created.');
+									alert($("catStrings").getFormattedString('staff.cat.record_buckets.new_bucket.bucket_created', [name]));
 
 									obj.controller.render('record_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;
@@ -635,16 +644,21 @@ cat.record_buckets.prototype = {
 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-								top_xml += '<description>Merge these records? (Select the "lead" record first)</description>';
-								top_xml += '<hbox><button id="lead" disabled="true" label="Merge" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+								top_xml += '<description>' + $("catStrings").getString('staff.cat.record_buckets.merge_records.merge_lead') + '</description>';
+								top_xml += '<hbox>';
+								top_xml += '<button id="lead" disabled="true" label="'
+										+ $("catStrings").getString('staff.cat.record_buckets.merge_records.button.label') + '" name="fancy_submit"/>';
+								top_xml += '<button label="' + $("catStrings").getString('staff.cat.record_buckets.merge_records.cancel_button.label') +'" accesskey="'
+										+ $("catStrings").getString('staff.cat.record_buckets.merge_records.cancel_button.accesskey') +'" name="fancy_cancel"/></hbox></vbox>';
 
 								var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
 								xml += '<table><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
-									xml += '<td><input value="Lead" id="record_' + record_ids[i] + '" type="radio" name="lead"';
-									xml += ' onclick="' + "try { var x = document.getElementById('lead'); x.setAttribute('value',";
+									xml += '<td><input value="' + $("catStrings").getString('staff.cat.record_buckets.merge_records.lead')
+										+ ' id="record_' + record_ids[i] + '" type="radio" name="lead"';
+									xml += ' onclick="' + "try { var x = $('lead'); x.setAttribute('value',";
 									xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
-									xml += '</input>Lead Record? #' + record_ids[i] + '</td>';
+									xml += '</input>' + $("catStrings").getFormattedString('staff.cat.record_buckets.merge_records.lead_record_number',[record_ids[i]]) + '</td>';
 								}
 								xml += '</tr><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
@@ -667,12 +681,15 @@ cat.record_buckets.prototype = {
 									//+ '&title=' + window.escape('Record Merging'),
 									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
 									{
-										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Merging'
+										'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt_title')
 									}
 								);
 								//obj.data.stash_retrieve();
 
-								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status == 'incomplete') { alert('Merge Aborted'); return; }
+								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status == 'incomplete') {
+									alert($("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt.alert'));
+									return;
+								}
 								var robj = obj.network.simple_request('MERGE_RECORDS', 
 									[ 
 										ses(), 
@@ -687,7 +704,7 @@ cat.record_buckets.prototype = {
 								if (typeof robj.ilsevent != 'undefined') {
 									throw(robj);
 								} else {
-									alert('Records were successfully merged.');
+									alert($("catStrings").getString('staff.cat.record_buckets.merge_records.success'));
 								}
 
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
@@ -698,7 +715,7 @@ cat.record_buckets.prototype = {
 									}, 0
 								);
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Records were not likely merged.',E);
+								obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.merge_records.catch.std_unex_error'),E);
 							}
 
 						}
@@ -721,13 +738,19 @@ cat.record_buckets.prototype = {
 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-								top_xml += '<description>Delete these records?</description>';
-								top_xml += '<hbox><button id="lead" disabled="false" label="Delete" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+								top_xml += '<description>' + $("catStrings").getString('staff.cat.record_buckets.delete_records.xml1') + '</description>';
+								top_xml += '<hbox>';
+								top_xml += '<button id="lead" disabled="false" label="'
+										+ $("catStrings").getString('staff.cat.record_buckets.delete_records.button.label')
+										+ '" name="fancy_submit"/>';
+								top_xml += '<button label="'
+										+ $("catStrings").getString('staff.cat.record_buckets.delete_records.cancel_button.label') +'" accesskey="'
+										+ $("catStrings").getString('staff.cat.record_buckets.delete_records.cancel_button.accesskey') +'" name="fancy_cancel"/></hbox></vbox>';
 
 								var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
 								xml += '<table><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
-									xml += '<td>Record #' + record_ids[i] + '</td>';
+									xml += '<td>' + $("catStrings").getFormattedString('staff.cat.record_buckets.delete_records.xml2', [record_ids[i]]) + '</td>';
 								}
 								xml += '</tr><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
@@ -750,20 +773,23 @@ cat.record_buckets.prototype = {
 									//+ '&title=' + window.escape('Record Purging'),
 									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
 									{
-										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Purging'
+										'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.record_buckets.delete_records.fancy_prompt_title')
 									}
 								);
 								//obj.data.stash_retrieve();
-								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status != 'complete') { alert('Delete Aborted'); return; }
+								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status != 'complete') {
+									alert($("catStrings").getString('staff.cat.record_buckets.delete_records.fancy_prompt.alert'));
+									return;
+								}
 								var s = '';
 								for (var i = 0; i < record_ids.length; i++) {
 									var robj = obj.network.simple_request('FM_BRE_DELETE',[ses(),record_ids[i]]);
 									if (typeof robj.ilsevent != 'undefined') {
-										if (!s) s = 'Error deleting these records:\n';
-										s += 'Record #' + record_ids[i] + ' : ' + robj.textcode + ' : ' + robj.desc + '\n';
+										if (!s) s = $("catStrings").getString('staff.cat.record_buckets.delete_records.s1');
+										s += $("catStrings").getFormattedString('staff.cat.record_buckets.delete_records.s2', [record_ids[i], robj.textcode, robj.desc]);
 									}
 								}
-								if (s) { alert(s); } else { alert('Records deleted.'); }
+								if (s) { alert(s); } else { alert($("catStrings").getString('staff.cat.record_buckets.delete_records.delete_success.alert')); }
 
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
 								setTimeout(
@@ -773,7 +799,7 @@ cat.record_buckets.prototype = {
 									}, 0
 								);
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Records were not likely deleted.',E);
+								obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.delete_records.catch.std_unex_err',E));
 							}
 
 						}
@@ -781,7 +807,7 @@ cat.record_buckets.prototype = {
 
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("catStrings").getString('staff.cat.record_buckets.cmd_broken.alert')); }
 					],
 					'cmd_sel_opac' : [
 						['command'],
@@ -803,16 +829,16 @@ cat.record_buckets.prototype = {
 									var content_params = { 
 										'session' : ses(),
 										'authtime' : ses('authtime'),
-										'opac_url' : opac_url,
+										'opac_url' : opac_url
 									};
 									xulG.new_tab(
 										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':'Retrieving title...'}, 
+										{'tab_name':$("catStrings").getString('staff.cat.record_buckets.cmd_sel_opac.tab_name')}, 
 										content_params
 									);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Showing in OPAC',E);
+								obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err'),E);
 							}
 						}
 					],
@@ -840,7 +866,7 @@ cat.record_buckets.prototype = {
             obj.list0.clear();
             var y = document.getElementById('query_status');
             x.disabled = true;
-            if (y) y.value = 'Searching...';
+            if (y) y.value = $("catStrings").getString('staff.cat.record_buckets.submit.query_status');
             obj.network.simple_request(
                 'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY',
                 [ {}, x.value, 1 ],
@@ -895,10 +921,10 @@ cat.record_buckets.prototype = {
             };
             return item;
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Could not retrieve this record: ' + docid,E);
+			obj.error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.record_buckets.prep_record_for_list.std_unex_err', [docid]),E);
 			return null;
 		}
-	},
+	}
 	
 };
 
