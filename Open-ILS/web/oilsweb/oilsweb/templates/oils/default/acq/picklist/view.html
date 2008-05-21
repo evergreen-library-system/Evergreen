@@ -3,51 +3,12 @@
  vim:ts=4:sw=4:et:ft=mako: 
 -->
 <%inherit file='base.html'/>
-
+<%namespace file='../../common/jubgrid.html' name='jubgrid'/>
 <%def name="block_js()">
     ${parent.block_js()}
-    <script type="text/javascript">
-	dojo.require('dojo.data.ItemFileReadStore');
-        dojo.require("dijit.layout.SplitContainer")
+    <script type='text/javascript'>
 	dojo.require('dijit.layout.LayoutContainer');
 	dojo.require('dijit.layout.ContentPane');
-	dojo.require('dijit.layout.SplitContainer');
-	dojo.require('dojox.grid.Grid');
-	dojo.require('openils.acq.Picklist');
-	dojo.require("openils.acq.Fund");
- 	dojo.require("openils.acq.Lineitems");
-	dojo.require("openils.widget.FundSelector");
-	dojo.require("fieldmapper.OrgUtils");
-
-	var globalUser = new openils.User();
-	function getJUBTitle(rowIndex) {
-	    var data = pickListGrid.model.getRow(rowIndex);
-	    if (!data) return '';
-	    return plist.find_attr(data.id, "title", "lineitem_marc_attr_definition")
-	}
-	function getJUBPrice(rowIndex) {
-	    var data = pickListGrid.model.getRow(rowIndex);
-	    if (!data) return;
-	    return plist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
-	}
-	function getLIDFundName(rowIndex) {
-	    var data = lineItemGrid.model.getRow(rowIndex);
-	    if (!data || !data.fund) return;
-	    try {
-		return openils.acq.Fund.retrieve(data.fund).name();
-	    } catch (evt) {
-		return data.fund;
-	    }
-	}
-	function getLIDLibName(rowIndex) {
-	    var data = lineItemGrid.model.getRow(rowIndex);
-	    if (!data || !data.owning_lib) return;
-	    try {
-		return fieldmapper.aou.findOrgUnit(data.owning_lib, true).name();
-	    } catch (evt) {
-		return data.owning_lib;
-	    }
-	}
     </script>
 </%def>
 <%def name="page_title()">${_('Picklist')}</%def>
@@ -66,68 +27,22 @@
 	    </div>
 	</div>
     </div>
-    <div dojoType="dijit.layout.SplitContainer"
-	 orientation="vertical" sizerWidth="5"
-	 activeSizing="1" layoutAlign="client">
-	<div id="oils-acq.picklist-container"
-	     dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
-	    <div jsid='pickListGrid' dojoType='dojox.Grid'
-		 id="oils-acq-picklist-grid"> </div>
-	    <script type="text/javascript">
-		var picklistLayout = [{
-		    cells: [[
-			{name: "ID", field: 'id'},
-			{name: "Title", width: "50%", get:getJUBTitle},
-			{name: "Price", get:getJUBPrice},
-			{name: "Vendor", field: 'provider'},
-			{name: "# of Copies", field: 'item_count'}
-		    ]]
-		}];
-
-		var lineitemLayout = [{
-		    cells: [[
-			{name:"ID", field:"id"},
-			{name:"Fund", field:"fund",
-			 get:getLIDFundName,
-			 editor: openils.widget.FundSelector,
-			},
-			{name:"Location", field:"location",
-			 get:getLIDLibName}
-		    ]]
-		}];
-
-        var plist = null;
-        function loadPL() {
-            plist = new openils.acq.Picklist(${c.oils.acq.picklist.value},
-                function(model) {
-                    pickListGrid.setStructure(picklistLayout);
-                    pickListGrid.setModel(model);
-
-                    dojo.connect(pickListGrid, "onRowClick", 
-                        function(evt) {
-                            openils.acq.Lineitems.loadGrid(
-                                lineItemGrid, model.getRow(evt.rowIndex).id, lineitemLayout);
-                        }
-                    );
-
-                    dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
-                    dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
-                    dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
-                    dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
-                    pickListGrid.update();
-                }
-            );
-        }
-        dojo.addOnLoad(loadPL);
-	    </script>
-	</div>
-	<div dojoType="dijit.layout.ContentPane" sizeMin="20"
-	     sizeShare="50">
-	    <div jsid="lineItemGrid" dojoType="dojox.Grid" id="oils-acq-picklist-details-grid">
-		<!-- Copy order details go here -->
-	    </div>
-	</div>
-    </div>
+    <script type='text/javascript'>
+            var plist = null;
+            function loadPL() {
+		plist = new openils.acq.Picklist(${c.oils.acq.picklist.value},
+				function(model) {
+				    dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
+				    dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
+				    dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
+				    dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
+	    
+	                            populateJUBGrid(pickListGrid, model);
+				});
+            }
+	    dojo.addOnLoad(loadPL);
+    </script>
+    ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid')}
 </div>
 </%def>
 <!-- Local Variables: -->

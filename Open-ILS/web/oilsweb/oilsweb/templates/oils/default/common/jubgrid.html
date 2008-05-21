@@ -1,0 +1,129 @@
+<%def name='jubgrid(domprefix, grid_jsid)'>
+<%doc>
+This template creates a split screen Dojo layout. The top frame
+of the screen holds a list of of JUBs, or titles. Clicking on a
+title in the top frame will load the purchase details for all the
+copies on order for that title into the bottom frame.
+
+To create a display for a set of JUBs, create a Dojo store and
+model for the set of JUBs, then place the following lines in your
+HTML where you want the display to appear:
+
+    <%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
+    ${jubgrid.jubgrid('dom_prefix', 'grid_js_id')}
+
+where 'dom_prefix' is a string that will be used as the prefix
+for the DOM notes that are created by this template, and
+'grid_js_id' is a valid JavaScript identifier that will name the
+DOM node to which the list of JUBs will be attached.  For example
+
+    ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid')}
+
+will create a Dojo grid with the DOM id of
+
+    'oils-acq-picklist-JUB-grid'
+
+and a jsid of
+
+    pickListGrid
+
+To fill the grid with data, call the javascript function
+
+    populateJUBGrid(grid_js_id, model)
+
+'grid_js_id' is the same javascript id that was used to
+instantiate the template, and model is a javascript variable
+pointing to the JUB model (and store) that you have created.
+
+</%doc>
+<div dojoType="dijit.layout.SplitContainer"
+     orientation="vertical" sizerWidth="5"
+     activeSizing="1" layoutAlign="client">
+    <script type="text/javascript">
+	dojo.require('dojo.data.ItemFileReadStore');
+	dojo.require('dijit.layout.SplitContainer');
+	dojo.require('dojox.grid.Grid');
+	dojo.require('openils.acq.Picklist');
+	dojo.require("openils.acq.Fund");
+ 	dojo.require("openils.acq.Lineitems");
+	dojo.require("openils.widget.FundSelector");
+	dojo.require("fieldmapper.OrgUtils");
+
+	var globalUser = new openils.User();
+	function getJUBTitle(rowIndex) {
+	    var data = ${grid_jsid}.model.getRow(rowIndex);
+	    if (!data) return '';
+	    return plist.find_attr(data.id, "title", "lineitem_marc_attr_definition")
+	}
+	function getJUBPrice(rowIndex) {
+	    var data = ${grid_jsid}.model.getRow(rowIndex);
+	    if (!data) return;
+	    return plist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
+	}
+	function getLIDFundName(rowIndex) {
+	    var data = lineItemGrid.model.getRow(rowIndex);
+	    if (!data || !data.fund) return;
+	    try {
+		return openils.acq.Fund.retrieve(data.fund).name();
+	    } catch (evt) {
+		return data.fund;
+	    }
+	}
+	function getLIDLibName(rowIndex) {
+	    var data = lineItemGrid.model.getRow(rowIndex);
+	    if (!data || !data.owning_lib) return;
+	    try {
+		return fieldmapper.aou.findOrgUnit(data.owning_lib, true).name();
+	    } catch (evt) {
+		return data.owning_lib;
+	    }
+	}
+    </script>
+    <div id=${domprefix + '-container'}
+	 dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+	<div jsid=${grid_jsid} dojoType='dojox.Grid'
+	     id=${domprefix + '-JUB-grid'}> </div>
+	<script type="text/javascript">
+	    var picklistLayout = [{
+		cells: [[
+		    {name: "ID", field: 'id'},
+		    {name: "Title", width: "50%", get:getJUBTitle},
+		    {name: "Price", get:getJUBPrice},
+		    {name: "Vendor", field: 'provider'},
+		    {name: "# of Copies", field: 'item_count'}
+		]]
+	    }];
+
+	    var lineitemLayout = [{
+		cells: [[
+		    {name:"ID", field:"id"},
+		    {name:"Fund", field:"fund",
+		     get:getLIDFundName,
+		     editor: openils.widget.FundSelector,
+		    },
+		    {name:"Location", field:"location",
+		     get:getLIDLibName}
+		]]
+	    }];
+	    function populateJUBGrid(gridDom, model) {
+	        pickListGrid.setStructure(picklistLayout);
+	        pickListGrid.setModel(model);
+				    
+		dojo.connect(gridDom, "onRowClick", 
+	                     function(evt) {
+	                         openils.acq.Lineitems.loadGrid(
+	                             lineItemGrid, model.getRow(evt.rowIndex).id, lineitemLayout);
+	                     });
+	        pickListGrid.update();
+	    }
+	</script>
+    </div>
+    <div dojoType="dijit.layout.ContentPane" sizeMin="20"
+	 sizeShare="50">
+	<div jsid="lineItemGrid" dojoType="dojox.Grid"
+	     id=${domprefix + "-details-grid"}>
+	    <!-- Copy order details go here -->
+	</div>
+    </div>
+</div>
+</%def>
