@@ -712,6 +712,7 @@ sub zsearch {
         }
     }
 
+    $e->commit;
     return {complete=>1, picklist_id=>$picklist->id};
 }
 
