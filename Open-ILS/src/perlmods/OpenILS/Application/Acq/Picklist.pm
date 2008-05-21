@@ -473,12 +473,14 @@ sub retrieve_lineitem {
         $li->lineitem_details($details);
     }
 
-    my $picklist = $e->retrieve_acq_picklist($li->picklist)
-        or return $e->event;
-
-    if($picklist->owner != $e->requestor->id) {
-        return $e->event unless 
-            $e->allowed('VIEW_PICKLIST', undef, $picklist);
+    if($li->picklist) {
+        my $picklist = $e->retrieve_acq_picklist($li->picklist)
+            or return $e->event;
+    
+        if($picklist->owner != $e->requestor->id) {
+            return $e->event unless 
+                $e->allowed('VIEW_PICKLIST', undef, $picklist);
+        }
     }
 
     $li->clear_marc if $$options{clear_marc};
@@ -734,8 +736,8 @@ sub lineitem_search {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('CREATE_PICKLIST');
     # XXX needs permissions consideration
-    my $pls = $e->search_acq_lineitem($search, {idlist=>1});
-    for my $li_id (@$pls) {
+    my $lis = $e->search_acq_lineitem($search, {idlist=>1});
+    for my $li_id (@$lis) {
         if($$options{idlist}) {
             $conn->respond($li_id);
         } else {
