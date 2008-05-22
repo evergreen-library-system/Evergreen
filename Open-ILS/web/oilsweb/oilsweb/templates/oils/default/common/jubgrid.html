@@ -36,102 +36,47 @@ instantiate the template, and model is a javascript variable
 pointing to the JUB model (and store) that you have created.
 
 </%doc>
-<div dojoType="dijit.layout.SplitContainer"
+
+<div dojoType="dijit.layout.SplitContainer" style='height:100%'
      orientation="vertical" sizerWidth="5"
      activeSizing="1" layoutAlign="client">
-    <script type="text/javascript">
-	dojo.require('dojo.data.ItemFileReadStore');
-	dojo.require('dijit.layout.SplitContainer');
-	dojo.require('dojox.grid.Grid');
-	dojo.require('openils.editors');
-	dojo.require('openils.acq.Picklist');
-	dojo.require("openils.acq.Fund");
-	dojo.require('openils.acq.Provider');
- 	dojo.require("openils.acq.Lineitems");
-	dojo.require("openils.widget.FundSelector");
-	dojo.require("fieldmapper.OrgUtils");
 
-	var globalUser = new openils.User();
-	function getJUBTitle(rowIndex) {
-	    var data = ${grid_jsid}.model.getRow(rowIndex);
-	    if (!data) return '';
-	    return plist.find_attr(data.id, "title", "lineitem_marc_attr_definition")
-	}
-	function getJUBPrice(rowIndex) {
-	    var data = ${grid_jsid}.model.getRow(rowIndex);
-	    if (!data) return;
-	    return plist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
-	}
-	function getJUBProvider(rowIndex) {
-	    var data = ${grid_jsid}.model.getRow(rowIndex);
-	    if (!data || !data.provider) return;
-	    return openils.acq.Provider.retrieve(data.provider).name();
-	}
-	function getLIDFundName(rowIndex) {
-	    var data = lineItemGrid.model.getRow(rowIndex);
-	    if (!data || !data.fund) return;
-	    try {
-		return openils.acq.Fund.retrieve(data.fund).name();
-	    } catch (evt) {
-		return data.fund;
-	    }
-	}
-	function getLIDLibName(rowIndex) {
-	    var data = lineItemGrid.model.getRow(rowIndex);
-	    if (!data || !data.owning_lib) return;
-	    try {
-		return fieldmapper.aou.findOrgUnit(data.owning_lib, true).name();
-	    } catch (evt) {
-		return data.owning_lib;
-	    }
-	}
+    <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/common/jubgrid.js'> </script>
+    <script>
+    JUBGrid.jubGridLayout = [{
+        cells: [[
+            {name: "ID", field: 'id'},
+            {name: "Title", width: "auto", get:JUBGrid.getJUBTitle},
+            {name: "ISBN", get:JUBGrid.getJUBIsbn},
+            {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate},
+            {name: "Price", get:JUBGrid.getJUBPrice},
+            {name: "Vendor", get:JUBGrid.getProvider},
+            {name: "# of Copies", field: 'item_count'},
+            {name: "State", field: 'state'}
+        ]]
+    }];
+
+    JUBGrid.jubDetailGridLayout = [{
+        cells: [[
+            {name:"ID", field:"id"},
+            {name:"Fund", field:"fund",
+             get:JUBGrid.getLIDFundName,
+             editor: openils.widget.FundSelector,
+            },
+            {name:"Location", field:"location", get:JUBGrid.getLIDLibName}
+        ]]
+    }];
     </script>
-    <div id=${domprefix + '-container'}
-	 dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
-	<div jsid=${grid_jsid} dojoType='dojox.Grid'
-	     id=${domprefix + '-JUB-grid'}> </div>
-	<script type="text/javascript">
-	    var picklistLayout = [{
-		cells: [[
-		    {name: "ID", field: 'id'},
-		    {name: "Title", width: "50%", get:getJUBTitle},
-		    {name: "Price", get:getJUBPrice},
-		    {name: "Vendor", field: 'provider',
-	             get:getJUBProvider},
-		    {name: "# of Copies", field: 'item_count'}
-		]]
-	    }];
 
-	    var lineitemLayout = [{
-		cells: [[
-		    {name:"ID", field:"id"},
-		    {name:"Fund", field:"fund",
-		     get:getLIDFundName,
-		     editor: openils.widget.FundSelector,
-		    },
-		    {name:"Location", field:"location",
-		     get:getLIDLibName}
-		]]
-	    }];
-	    function populateJUBGrid(gridDom, model) {
-	        ${grid_js_id}.setStructure(picklistLayout);
-	        ${grid_js_id}.setModel(model);
-				    
-		dojo.connect(gridDom, "onRowClick", 
-	                     function(evt) {
-	                         openils.acq.Lineitems.loadGrid(
-	                             lineItemGrid, model.getRow(evt.rowIndex).id, lineitemLayout);
-	                     });
-	        ${grid_js_id}.update();
-	    }
-	</script>
+    <div id="${domprefix + '-container'}"
+	 dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+	    <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
+            dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}"> </div>
     </div>
-    <div dojoType="dijit.layout.ContentPane" sizeMin="20"
-	 sizeShare="50">
-	<div jsid="lineItemGrid" dojoType="dojox.Grid"
-	     id=${domprefix + "-details-grid"}>
-	    <!-- Copy order details go here -->
-	</div>
+    <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+        <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
+            id='${domprefix + "-details-grid"}'>
+        </div>
     </div>
 </div>
 </%def>

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 <%inherit file='base.html'/>
 <%def name="page_title()">${_('Lineitem Search')}</%def>
+<%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
+
 
 <%def name="block_content()">
     <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/acq/po/li_search.js'> </script>
@@ -70,23 +72,7 @@
             </table>
         </div>
     </div> 
-
-
-    <script>
-        var liGridStructure = [{
-            cells: [[
-                {name: '${_("ID")}', field: 'id'},
-                {name: '${_("Title")}', width: 'auto', get:getJUBTitle},
-                {name: '${_("ISBN")}', get:getJUBIsbn},
-                {name: '${_("Pubdate")}', get:getJUBPubdate},
-                {name: '${_("Price")}', get:getJUBPrice},
-                {name: '${_("Vendor")}', get:getProvider},
-                {name: '${_("# of Copies")}', field: 'item_count'},
-                {name: '${_("State")}', field: 'state'}
-            ]]
-        }];
-    </script>
-    <div jsId='liGrid' dojoType="dojox.Grid" structure='liGridStructure'> </div>
+    ${jubgrid.jubgrid('oils-acq-lineitem', 'liGrid')}
 </%def>
 
 

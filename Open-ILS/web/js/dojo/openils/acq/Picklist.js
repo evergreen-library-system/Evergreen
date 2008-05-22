@@ -31,15 +31,15 @@ dojo.declare('openils.acq.Picklist', null, {
 	var mkStore = function (r) {
 	    var storeData;
 	    var msg;
-	    var items = [];
+	    pl_this._items = [];
 
 	    while (msg = r.recv()) {
 		var data = msg.content();
 		pl_this._data[data.id()] = data;
-		items.push(data);
+		pl_this._items.push(data);
 	    }
 
-	    storeData = jub.toStoreData(items);
+	    storeData = jub.toStoreData(pl_this._items);
 	    pl_this._store = new dojo.data.ItemFileWriteStore({data:storeData});
 	    pl_this._model = new dojox.grid.data.DojoData(null, pl_this._store,
 						       {rowsPerPage:20, clientSort:true,
@@ -65,7 +65,7 @@ dojo.declare('openils.acq.Picklist', null, {
 	fieldmapper.standardRequest(
 	    ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
 	    { async: true,
-	      params: [openils.User.authtoken, pl_id, {flesh_attrs:1}],
+	      params: [openils.User.authtoken, pl_id, {flesh_attrs:1, clear_marc:1}],
 	      oncomplete: mkStore
 	    });
     },

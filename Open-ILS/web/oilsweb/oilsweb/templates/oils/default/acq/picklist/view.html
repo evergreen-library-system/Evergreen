@@ -9,6 +9,7 @@
     <script type='text/javascript'>
 	dojo.require('dijit.layout.LayoutContainer');
 	dojo.require('dijit.layout.ContentPane');
+    dojo.require('openils.acq.Picklist');
     </script>
 </%def>
 <%def name="page_title()">${_('Picklist')}</%def>
@@ -36,8 +37,7 @@
 				    dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
 				    dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
 				    dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
-	    
-	                            populateJUBGrid(pickListGrid, model);
+                    JUBGrid.populate(pickListGrid, model, plist._items);
 				});
             }
 	    dojo.addOnLoad(loadPL);
