@@ -144,7 +144,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			constructor : function () {
 				if (!this.a) this.a = [];
 				this.classname = this.declaredClass;
-				this.Identifier = 'id';
 				this._fields = fmclasses[this.classname];
 				for( var pos = 0; pos <  this._fields.length; pos++ ) {
 					var p = parseInt(pos) + 3;
@@ -154,6 +153,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			}
 		});
 		fieldmapper[cl] = window[cl]; // alias into place
+		fieldmapper[cl].Identifier = 'id'; // alias into place
 
 	}
 
