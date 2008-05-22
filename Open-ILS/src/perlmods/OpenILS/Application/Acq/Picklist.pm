@@ -570,13 +570,13 @@ sub update_lineitem {
     my $orig_li = $e->retrieve_acq_lineitem([
         $li->id,
         {   flesh => 1, # grab the lineitem with picklist attached
-            flesh_fields => {jub => ['picklist']}
+            flesh_fields => {jub => ['picklist', 'purchase_order']}
         }
     ]) or return $e->die_event;
 
-    # don't let anyone update someone else's lineitem
-    return OpenILS::Event->new('BAD_PARAMS') 
-        if $orig_li->picklist->owner != $e->requestor->id;
+    # the marc may have been cleared on retrieval...
+    $li->marc($e->retrieve_acq_lineitem($li->id)->marc)
+        unless $li->marc;
 
     $e->update_acq_lineitem($li) or return $e->die_event;
     $e->commit;
