@@ -42,7 +42,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		if (!list) list = {};
 
 		// a sane default
-		if (!params.identifier) params.identifier = this.Identifier;
+		if (!params.identifier) params.identifier = fieldmapper[this.classname].Identifier;
 		if (!label) label = params.label;
 		if (!label) label = params.identifier;
 
