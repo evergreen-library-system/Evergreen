@@ -29,7 +29,7 @@ sub create_picklist {
     my($self, $conn, $auth, $picklist) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_PICKLIST');
+    return $e->die_event unless $e->allowed('CREATE_PICKLIST', $picklist->org_unit);
     return OpenILS::Event->new('BAD_PARAMS')
         unless $e->requestor->id == $picklist->owner;
     $e->create_acq_picklist($picklist) or return $e->die_event;
@@ -59,9 +59,11 @@ sub update_picklist {
     # don't let them change the owner
     my $o_picklist = $e->retrieve_acq_picklist($picklist->id)
         or return $e->die_event;
-    return OpenILS::Event->new('BAD_PARAMS') if (
-        $o_picklist->owner != $picklist->owner or
-        $picklist->owner != $e->requestor->id );
+    if($o_picklist->owner != $e->requestor->id) {
+        return $e->die_event unless 
+            $e->allowed('UPDATE_PICKLIST', $o_picklist->org_unit);
+    }
+    return OpenILS::Event->new('BAD_PARAMS') unless $o_picklist->org_unit == $picklist->org_unit;
 
     $e->update_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
@@ -95,7 +97,7 @@ sub retrieve_picklist {
 
     if($e->requestor->id != $picklist->owner) {
         return $e->event unless 
-            $e->allowed('VIEW_PICKLIST', undef, $picklist);
+            $e->allowed('VIEW_PICKLIST', $picklist->org_unit, $picklist);
     }
 
     $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname) 
@@ -137,8 +139,13 @@ sub retrieve_picklist_name {
     my($self, $conn, $auth, $name) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->search_acq_picklist(
+    my $picklist = $e->search_acq_picklist(
         {name => $name, owner => $e->requestor->id})->[0];
+    if($e->requestor->id != $picklist->owner) {
+        return $e->event unless 
+            $e->allowed('VIEW_PICKLIST', $picklist->org_unit, $picklist);
+    }
+    return $picklist;
 }
 
 
@@ -208,14 +215,20 @@ sub retrieve_all_user_picklist {
         {owner=>$e->requestor->id, name=>{'!='=>''}}, {idlist=>1});
 
     my $picklist_ids = $e->objects_allowed('VIEW_PICKLIST', 'acqpl');
+    my $p_orgs = $U->find_highest_work_orgs($e, 'VIEW_PICKLIST', {descendants =>1});
+    my $picklist_ids_2 = $e->search_acq_picklist(
+        {name=>{'!='=>''}, org_unit => $p_orgs}, {idlist=>1});
 
-    return undef unless @$my_list or @$picklist_ids;
+    return undef unless @$my_list or @$picklist_ids or @$picklist_ids_2;
 
-    if($$options{idlist}) {
-        return [@$my_list, @$picklist_ids];
-    }
+    my @list = (@$my_list, @$picklist_ids, @$picklist_ids_2);
+    my %dedup;
+    $dedup{$_} = 1 for @list;
+    @list = keys %dedup;
 
-    for my $pl (@$my_list, @$picklist_ids) {
+    return \@list if $$options{idlist};
+
+    for my $pl (@list) {
         my $picklist = $e->retrieve_acq_picklist($pl) or return $e->event;
         $picklist->entry_count(retrieve_lineitem_count($e, $picklist->id))
             if($$options{flesh_lineitem_count});
@@ -250,8 +263,10 @@ sub delete_picklist {
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->die_event;
     # don't let anyone delete someone else's picklist
-    return OpenILS::Event->new('BAD_PARAMS')
-        if $picklist->owner != $e->requestor->id;
+    if($picklist->owner != $e->requestor->id) {
+        return $e->die_event unless 
+            $e->allowed('DELETE_PICKLIST', $picklist->org_unit, $picklist);
+    }
 
     # delete all 'new' lineitems
     my $lis = $e->search_acq_lineitem({picklist => $picklist->id, state => 'new'});
@@ -300,17 +315,27 @@ sub create_lineitem {
     my($self, $conn, $auth, $li) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_PICKLIST');
+
 
     if($li->picklist) {
         my $picklist = $e->retrieve_acq_picklist($li->picklist)
             or return $e->die_event;
-        return OpenILS::Event->new('BAD_PARAMS') 
-            unless $picklist->owner == $e->requestor->id;
+
+        if($picklist->owner != $e->requestor->id) {
+            return $e->die_event unless 
+                $e->allowed('CREATE_PICKLIST', $picklist->org_unit, $picklist);
+        }
     
         # indicate the picklist was updated
         $picklist->edit_time('now');
         $e->update_acq_picklist($picklist) or return $e->die_event;
+    }
+
+    if($li->purchase_order) {
+        my $po = $e->retrieve_acq_purchase_order($li->purchase_order)
+            or return $e->die_event;
+        return $e->die_event unless 
+            $e->allowed('MANAGE_PROVIDER', $po->org_unit, $po);
     }
 
     $li->selector($e->requestor->id);
