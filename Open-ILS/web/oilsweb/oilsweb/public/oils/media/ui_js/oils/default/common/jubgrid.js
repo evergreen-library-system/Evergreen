@@ -65,7 +65,7 @@ var JUBGrid = {
             function(evt) {
              openils.acq.Lineitems.loadGrid(
                  JUBGrid.jubDetailGrid, 
-                    model.getRow(evt.rowIndex).id, JUBGrid.jubDetailGridLayout);
+                    JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, JUBGrid.jubDetailGridLayout);
             });
         gridWidget.update();
     }
