@@ -39,7 +39,7 @@ var JUBGrid = {
         return JUBGrid._getMARCAttr(rowIndex, 'pubdate');
     },
     getProvider : function(rowIndex) {
-        data = liGrid.model.getRow(rowIndex);
+        data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if(!data || !data.provider) return;
         return openils.acq.Provider.retrieve(data.provider).code();
     },
