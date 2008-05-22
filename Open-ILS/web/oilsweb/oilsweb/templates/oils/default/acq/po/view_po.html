@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file='base.html' />
+<%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
 
 <%def name='page_title()'>${_('View PO')}</%def>
 <%def name='block_content()'>
@@ -34,24 +35,9 @@
             </script>
             <div jsId='poGrid' dojoType="dojox.Grid" structure='poGridStructure'> </div>
         </div>
-
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="${_('Line Items')}">
             <script type='dojo/connect' event='onShow'>loadLIGrid();</script>
-            <script>
-                var liGridStructure = [{
-                    cells: [[
-                        {name: '${_("ID")}', field: 'id'},
-                        {name: '${_("Title")}', width: 'auto', get:getJUBTitle},
-                        {name: '${_("ISBN")}', get:getJUBIsbn},
-                        {name: '${_("Pubdate")}', get:getJUBPubdate},
-                        {name: '${_("Price")}', get:getJUBPrice},
-                        {name: '${_("Vendor")}', get:getProvider},
-                        {name: '${_("# of Copies")}', field: 'item_count'},
-                        {name: '${_("State")}', field: 'state'}
-                    ]]
-                }];
-            </script>
-            <div jsId='liGrid' dojoType="dojox.Grid" structure='liGridStructure'> </div>
+            ${jubgrid.jubgrid('oils-acq-lineitem', 'liGrid')}
         </div>
     </div>
 </div>

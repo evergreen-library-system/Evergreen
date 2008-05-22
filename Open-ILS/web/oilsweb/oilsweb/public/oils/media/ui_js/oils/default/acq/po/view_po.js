@@ -40,42 +40,6 @@ function getDateTimeField(rowIndex) {
     return dojo.date.locale.format(date, {formatLength:'medium'});
 }
 
-function getLi(id) {
-    for(var i in lineitems) {
-        var li = lineitems[i];
-        if(li.id() == id) 
-            return li;
-    }
-}
-
-function getJUBTitle(rowIndex) {
-    var data = liGrid.model.getRow(rowIndex);
-    if(!data) return '';
-    return new openils.acq.Lineitems(
-        {lineitem:getLi(data.id)}).findAttr('title', 'lineitem_marc_attr_definition')
-}
-
-function getJUBIsbn(rowIndex) {
-    var data = liGrid.model.getRow(rowIndex);
-    if(!data) return '';
-    return new openils.acq.Lineitems(
-        {lineitem:getLi(data.id)}).findAttr('isbn', 'lineitem_marc_attr_definition')
-}
-
-function getJUBPubdate(rowIndex) {
-    var data = liGrid.model.getRow(rowIndex);
-    if(!data) return '';
-    return new openils.acq.Lineitems(
-        {lineitem:getLi(data.id)}).findAttr('pubdate', 'lineitem_marc_attr_definition')
-}
-
-function getJUBPrice(rowIndex) {
-    var data = liGrid.model.getRow(rowIndex);
-    if(!data) return;
-    return new openils.acq.Lineitems(
-        {lineitem:getLi(data.id)}).findAttr('price', 'lineitem_marc_attr_definition')
-}
-
 function loadPOGrid() {
     if(!PO) return;
     var store = new dojo.data.ItemFileReadStore({data:acqpo.toStoreData([PO])});
@@ -94,8 +58,7 @@ function loadLIGrid() {
         var store = new dojo.data.ItemFileReadStore({data:jub.toStoreData(lineitems)});
         var model = new dojox.grid.data.DojoData(
             null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-        liGrid.setModel(model);
-        liGrid.update();
+        JUBGrid.populate(liGrid, model, lineitems)
     }
 
     fieldmapper.standardRequest(
