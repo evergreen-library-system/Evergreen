@@ -43,8 +43,10 @@ pointing to the JUB model (and store) that you have created.
 	dojo.require('dojo.data.ItemFileReadStore');
 	dojo.require('dijit.layout.SplitContainer');
 	dojo.require('dojox.grid.Grid');
+	dojo.require('openils.editors');
 	dojo.require('openils.acq.Picklist');
 	dojo.require("openils.acq.Fund");
+	dojo.require('openils.acq.Provider');
  	dojo.require("openils.acq.Lineitems");
 	dojo.require("openils.widget.FundSelector");
 	dojo.require("fieldmapper.OrgUtils");
@@ -59,6 +61,11 @@ pointing to the JUB model (and store) that you have created.
 	    var data = ${grid_jsid}.model.getRow(rowIndex);
 	    if (!data) return;
 	    return plist.find_attr(data.id, "price", "lineitem_marc_attr_definition")
+	}
+	function getJUBProvider(rowIndex) {
+	    var data = ${grid_jsid}.model.getRow(rowIndex);
+	    if (!data || !data.provider) return;
+	    return openils.acq.Provider.retrieve(data.provider).name();
 	}
 	function getLIDFundName(rowIndex) {
 	    var data = lineItemGrid.model.getRow(rowIndex);
@@ -89,7 +96,8 @@ pointing to the JUB model (and store) that you have created.
 		    {name: "ID", field: 'id'},
 		    {name: "Title", width: "50%", get:getJUBTitle},
 		    {name: "Price", get:getJUBPrice},
-		    {name: "Vendor", field: 'provider'},
+		    {name: "Vendor", field: 'provider',
+	             get:getJUBProvider},
 		    {name: "# of Copies", field: 'item_count'}
 		]]
 	    }];
@@ -106,15 +114,15 @@ pointing to the JUB model (and store) that you have created.
 		]]
 	    }];
 	    function populateJUBGrid(gridDom, model) {
-	        pickListGrid.setStructure(picklistLayout);
-	        pickListGrid.setModel(model);
+	        ${grid_js_id}.setStructure(picklistLayout);
+	        ${grid_js_id}.setModel(model);
 				    
 		dojo.connect(gridDom, "onRowClick", 
 	                     function(evt) {
 	                         openils.acq.Lineitems.loadGrid(
 	                             lineItemGrid, model.getRow(evt.rowIndex).id, lineitemLayout);
 	                     });
-	        pickListGrid.update();
+	        ${grid_js_id}.update();
 	    }
 	</script>
     </div>
@@ -127,3 +135,6 @@ pointing to the JUB model (and store) that you have created.
     </div>
 </div>
 </%def>
+<!-- Local Variables: -->
+<!-- mmm-classes: html-js -->
+<!-- End: -->
