@@ -25,12 +25,52 @@
                 labalAttr='code' searchAttr='code' jsId='providerSelector'>
             </select>
             <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
-        </div>
-    </form>
+        </form>
+    </div>
+
     <div id='oils-acq-li-search-progress'>
         <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
     </div>
     <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
+
+    <div dojoType="dijit.form.DropDownButton">
+        <span>${('Create PO')}</span>
+        <div dojoType="dijit.TooltipDialog" execute="createPOFromLineitems(arguments[0]);">
+            <script type='dojo/connect' event='onOpen'>
+                buildProviderSelect(newPOProviderSelector, 
+                    function() {
+                        newPOProviderSelector.setValue(providerSelector.getValue());
+                    }
+                );
+                new openils.User().buildPermOrgSelector('CREATE_PURCHASE_ORDER', orderingAgencySelect);
+            </script>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">${_('Provider:')} </label></td>
+                    <td>
+                        <input jsId='newPOProviderSelector' name="provider" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="name">${_('Ordering Agency:')}</label></td>
+                    <td>
+                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='orderingAgencySelect'
+                            searchAttr="shortname" name="ordering_agency" autocomplete="true" labelAttr='shortname'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>more creation options...</td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+
 
     <script>
         var liGridStructure = [{

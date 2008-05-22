@@ -3,9 +3,13 @@ dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.form.Button');
+dojo.require("dijit.Dialog");
 dojo.require('openils.Event');
 dojo.require('openils.acq.Lineitems');
 dojo.require('openils.acq.Provider');
+dojo.require('openils.acq.PO');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 var recvCount = 0;
 var user = new openils.User();
@@ -13,10 +17,15 @@ var user = new openils.User();
 var lineitems = [];
 
 function drawForm() {
+    buildProviderSelect(providerSelector);
+}
+
+function buildProviderSelect(sel, oncomplete) {
     openils.acq.Provider.createStore(
         function(store) {
-            providerSelector.store = 
-                new dojo.data.ItemFileReadStore({data:store});
+            sel.store = new dojo.data.ItemFileReadStore({data:store});
+            if(oncomplete)
+                oncomplete();
         },
         'MANAGE_PROVIDER'
     );
@@ -31,7 +40,8 @@ function doSearch(values) {
             search[v] = val;
     }
 
-    search = [search, {limit:searchLimit, offset:searchOffset}];
+    //search = [search, {limit:searchLimit, offset:searchOffset}];
+    search = [search, {}];
     options = {clear_marc:1, flesh_attrs:1};
 
     liReceived = 0;
@@ -105,5 +115,32 @@ function getJUBPrice(rowIndex) {
     return new openils.acq.Lineitems(
         {lineitem:getLi(data.id)}).findAttr('price', 'lineitem_marc_attr_definition')
 }
+
+function createPOFromLineitems() {
+    var po = new acqpo()
+    po.provider(newPOProviderSelector.getValue());
+    openils.acq.PO.create(po, 
+        function(poId) {
+            updateLiList(poId);
+        }
+    );
+}
+
+function updateLiList(poId) {
+    _updateLiList(poId, 0);
+}
+
+function _updateLiList(poId, idx) {
+    if(idx >= lineitems.length)
+        return location.href = 'view/' + poId;
+    var li = lineitems[idx];
+    li.purchase_order(poId);
+    new openils.acq.Lineitems({lineitem:li}).update(
+        function(stat) {
+            _updateLiList(poId, ++idx);
+        }
+    );
+}
+    
 
 dojo.addOnLoad(drawForm);

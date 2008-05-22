@@ -49,6 +49,24 @@ if(!dojo._hasResource['openils.acq.PO']) {
                 fieldmapper.standardRequest(req, par);
         }
     }
+
+    openils.acq.PO.create = function(po, oncomplete) {
+        var req = ['open-ils.acq', 'open-ils.acq.purchase_order.create'];
+        var par = [openils.User.authtoken, po];
+
+        fieldmapper.standardRequest(
+            req,
+            {   params: par,
+                async: true, 
+                oncomplete: function(r) {
+                    var po_id = r.recv().content();
+                    po.id(po_id);
+                    openils.acq.PO.cache[po_id] = po;
+                    oncomplete(po_id);
+                }
+            }
+        );
+    }
 };
         
 

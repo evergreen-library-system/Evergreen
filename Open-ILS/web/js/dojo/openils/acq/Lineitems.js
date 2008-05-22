@@ -22,6 +22,7 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojox.grid.Grid');
 dojo.require('dojox.grid._data.model');
 dojo.require('fieldmapper.dojoData');
+dojo.require('openils.User');
 
 /** Declare the Lineitems class with dojo */
 dojo.declare('openils.acq.Lineitems', null, {
@@ -39,6 +40,18 @@ dojo.declare('openils.acq.Lineitems', null, {
             if (attr.attr_type() == type && attr.attr_name() == name) 
                 return attr.attr_value();
         }
+    },
+
+    update: function(oncomplete) {
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.update'],
+            {   async: true,
+                params: [openils.User.authtoken, this.lineitem],
+                oncomplete: function(r) {
+                    oncomplete(r.recv().content())
+                }
+            }
+        );
     }
 });
 
