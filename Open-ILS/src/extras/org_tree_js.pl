@@ -50,9 +50,9 @@ my $pile = "var _l = [";
 
 my @array;
 for my $o (@$tree) {
-	my ($i,$t,$p,$n,$v) = ($o->id,$o->ou_type,$o->parent_ou,val($o->name),val($o->opac_visible));
+	my ($i,$t,$p,$n,$v,$s) = ($o->id,$o->ou_type,$o->parent_ou,val($o->name),val($o->opac_visible),val($o->shortname));
     $p ||= 'null';
-	push @array, "[$i,$t,$p,$n,$v]";
+	push @array, "[$i,$t,$p,$n,$v,$s]";
 }
 
 $pile .= join ',', @array;
