@@ -5,7 +5,6 @@ dojo.require("openils.acq.Fund");
 dojo.require("openils.acq.Lineitems");
 dojo.require("openils.widget.FundSelector");
 dojo.require("fieldmapper.OrgUtils");
-dojo.require('openils.editors');
 dojo.require('openils.acq.Provider');
 
 /* put all the accessors, etc. into a local object for namespacing */
