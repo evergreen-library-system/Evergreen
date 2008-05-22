@@ -65,7 +65,8 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 					ou_type : _l[i][1],
 					parent_ou : _l[i][2],
 					name : _l[i][3],
-					opac_visible : _l[i][4]
+					opac_visible : _l[i][4],
+					shortname : _l[i][5]
 				})
 			};
 
