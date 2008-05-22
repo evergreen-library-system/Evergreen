@@ -13,6 +13,8 @@ use OpenSRF::Utils::Cache;
 die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
+my $locale = $ARGV[1];
+
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
 # must be loaded after the IDL is parsed
@@ -20,15 +22,17 @@ require OpenILS::Utils::CStoreEditor;
 
 warn "removing OrgTree from the cache...\n";
 my $cache = OpenSRF::Utils::Cache->new;
-$cache->delete_cache('orgtree');
+$cache->delete_cache("orgtree.$locale");
 
 # fetch the org_unit's and org_unit_type's
 my $e = OpenILS::Utils::CStoreEditor->new;
+$e->session->session_locale($locale) if ($locale);
+
 my $types = $e->retrieve_all_actor_org_unit_type;
 my $tree = $e->request(
     'open-ils.cstore.direct.actor.org_unit.search.atomic',
     {id => {"!=" => undef}},
-    {order_by => {aou => 'name'}}
+    {order_by => {aou => 'name'}, no_i18n => $locale ? 0 : 1 }
 );
 
 
