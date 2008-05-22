@@ -35,7 +35,7 @@
     </div>
     <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
 
-    <div dojoType="dijit.form.DropDownButton">
+    <div dojoType="dijit.form.DropDownButton" id='oils-acq-li-search-po-create'>
         <span>${('Create PO')}</span>
         <div dojoType="dijit.TooltipDialog" execute="createPOFromLineitems(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
@@ -81,6 +81,7 @@
             </table>
         </div>
     </div> 
+    <script>dojo.style('oils-acq-li-search-po-create', 'visibility', 'hidden');</script>
     <div id='oils-acq-li-search-result-grid' style='height:100%'>
         ${jubgrid.jubgrid('oils-acq-li-search', 'liGrid')}
     </div>

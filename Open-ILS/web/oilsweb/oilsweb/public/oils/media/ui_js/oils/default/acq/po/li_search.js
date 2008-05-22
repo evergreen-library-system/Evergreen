@@ -40,6 +40,11 @@ function doSearch(values) {
             search[v] = val;
     }
 
+    if(values.state == 'approved')
+        dojo.style('oils-acq-li-search-po-create', 'visibility', 'visible');
+    else
+        dojo.style('oils-acq-li-search-po-create', 'visibility', 'hidden');
+
     //search = [search, {limit:searchLimit, offset:searchOffset}];
     search = [search, {}];
     options = {clear_marc:1, flesh_attrs:1};
