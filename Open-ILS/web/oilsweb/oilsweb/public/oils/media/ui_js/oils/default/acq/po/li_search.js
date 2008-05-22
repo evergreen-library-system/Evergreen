@@ -65,6 +65,7 @@ function handleResult(r) {
 
 function viewList() {
     dojo.style('searchProgress', 'visibility', 'hidden');
+    dojo.style('oils-acq-li-search-result-grid', 'visibility', 'visible');
     var store = new dojo.data.ItemFileReadStore({data:jub.toStoreData(lineitems)});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
