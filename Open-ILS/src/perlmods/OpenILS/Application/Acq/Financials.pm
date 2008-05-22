@@ -692,7 +692,6 @@ sub po_perm_failure {
     return undef;
 }
 
-
 sub retrieve_purchase_order_impl {
     my($e, $po_id, $options) = @_;
 
@@ -727,126 +726,6 @@ sub retrieve_purchase_order_impl {
 
     return $po;
 }
-
-
-__PACKAGE__->register_method(
-	method => 'create_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.create',
-	signature => {
-        desc => q/Creates a new purchase order line item detail.  
-            Additionally creates the associated fund_debit/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail to create', type => 'object'},
-            {desc => q/Options hash.  fund_id, the fund funding this line item
-                price, the price we are paying the vendor, in the vendor's currency/, type => 'hash'}
-        ],
-        return => {desc => 'The purchase order line item detail id, Event on failure'}
-    }
-);
-
-sub create_lineitem_detail {
-    my($self, $conn, $auth, $li_detail, $options) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    $options ||= {};
-
-    my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
-        or return $e->die_event;
-
-    # XXX check lineitem provider perms
-
-    if($li_detail->fund) {
-        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
-        return $e->die_event unless 
-            $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
-
-=head XXX move to new method
-    my $fct = $e->search_acq_currency_type({code => $fund->currency_type})->[0];
-    my $pct = $e->search_acq_currency_type({code => $provider->currency_type})->[0];
-    my $price = $$options{price};
-    # create the fund_debit for this line item detail
-    my $fdebit = Fieldmapper::acq::fund_debit->new;
-    $fdebit->fund($$options{fund_id});
-    $fdebit->origin_amount($price);
-    $fdebit->origin_currency_type($pct->code); # == vendor's currency
-    $fdebit->encumberance('t');
-    $fdebit->debit_type(OILS_ACQ_DEBIT_TYPE_PURCHASE);
-    $fdebit->amount(currency_conversion_impl($pct->code, $fct->code, $price));
-    $e->create_acq_fund_debit($fdebit) or return $e->die_event;
-
-    $li_detail->fund_debit($fdebit->id);
-=cut
-
-    $e->create_acq_lineitem_detail($li_detail) or return $e->die_event;
-    $e->commit;
-    return $li_detail->id;
-}
-
-__PACKAGE__->register_method(
-	method => 'update_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.update',
-	signature => {
-        desc => q/Updates a lineitem detail/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail to update', type => 'object'},
-        ],
-        return => {desc => '1 on success, Event on failure'}
-    }
-);
-
-sub update_lineitem_detail {
-    my($self, $conn, $auth, $li_detail) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-
-    if($li_detail->fund) {
-        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
-        return $e->die_event unless 
-            $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
-
-    # XXX check lineitem perms
-
-    $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
-    $e->commit;
-    return 1;
-}
-
-
-__PACKAGE__->register_method(
-	method => 'retrieve_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.retrieve',
-	signature => {
-        desc => q/Updates a lineitem detail/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'id of lineitem_detail to retrieve', type => 'number'},
-        ],
-        return => {desc => 'object on success, Event on failure'}
-    }
-);
-sub retrieve_lineitem_detail {
-    my($self, $conn, $auth, $li_detail_id) = @_;
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
-
-    my $li_detail = $e->retrieve_acq_lineitem_detail($li_detail_id)
-        or return $e->event;
-
-    if($li_detail->fund) {
-        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->event;
-        return $e->event unless 
-            $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
-
-    # XXX check lineitem perms
-    return $li_detail;
-}
-
-
 
 
 1;
