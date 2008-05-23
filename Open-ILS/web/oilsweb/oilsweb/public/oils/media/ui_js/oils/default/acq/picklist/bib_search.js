@@ -3,7 +3,9 @@ dojo.require('fieldmapper.Fieldmapper');
 dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.form.NumberSpinner');
 dojo.require('openils.Event');
+dojo.require('openils.acq.Picklist');
 
 var searchFields = [];
 var resultPicklist;
@@ -45,7 +47,8 @@ function drawForm() {
         var field = searchFields[f];
         if(dijit.byId('text_input_'+field.name)) continue;
         var row = tmpl.cloneNode(true);
-        tbody.appendChild(row);
+        //tbody.appendChild(row);
+        tbody.insertBefore(row, dojo.byId('oils-acq-seach-fields-count-row'));
         var labelCell = dojo.query('[name=label]', row)[0];
         var inputCell = dojo.query('[name=input]', row)[0];
         labelCell.appendChild(document.createTextNode(field.label));
@@ -56,15 +59,17 @@ function drawForm() {
 
 function doSearch(values) {
     dojo.style('searchProgress', 'visibility', 'visible');
+    searchProgress.update({progress: 0});
 
     search = {
         service : [],
         username : [],
         password : [],
         search : {},
-        limit : searchLimit,
+        limit : values.limit,
         offset : searchOffset
-    }
+    };
+    delete values.limit;
 
     var selected = bibSourceSelect.getValue();
     for(var i = 0; i < selected.length; i++) {
@@ -93,8 +98,21 @@ function doSearch(values) {
 function handleResult(r) {
     var result = r.recv().content();
     if(result.complete)
-        return viewPicklist(result.picklist_id);
+        return viewResults(result.picklist_id);
     searchProgress.update({maximum: result.total, progress: result.progress});
+}
+
+function viewResults(plId) {
+    var plist = new openils.acq.Picklist(plId,
+        function(model) {
+            dojo.style('oils-acq-pl-search-results', 'visibility', 'visible');
+            JUBGrid.populate(plResultGrid, model, plist._items);
+            dojo.style('oils-acq-lineitem-details-grid', 'visibility', 'hidden');
+        }
+    );
+}
+
+function saveAllAsPl() {
 }
 
 dojo.addOnLoad(drawForm);

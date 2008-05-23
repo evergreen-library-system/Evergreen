@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file='base.html'/>
+<%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
 <%def name="page_title()">${_('Title Search')}</%def>
 
 <%def name="block_content()">
@@ -10,11 +11,7 @@
     </style>
 
     <script>
-        var searchLimit = ${c.oils.acq.limit.value} || 10;
         var searchOffset = ${c.oils.acq.offset.value} || 0;
-        function viewPicklist(id) {
-            location.href = '${c.oils.acq.prefix.value}/picklist/view/' + id;
-        }
     </script>
 
     <div id='oils-acq-search-block' class='container'>
@@ -29,6 +26,10 @@
                         multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
                     <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
                 </select>
+                <div id='oils-acq-search-progress'>
+                    <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
+                </div>
+                <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
             </div>
             <div id='oils-acq-search-form-block'>
                 <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
@@ -40,6 +41,14 @@
                             <td name='label'> </td>
                             <td name='input'> </td>
                         </tr>
+                        <tr id='oils-acq-seach-fields-count-row'>
+                            <td name='label'>Hits Per Source</td>
+                            <td><input name='limit'
+                                dojoType='dijit.form.NumberSpinner'
+                                constraints='{min:5,max:50}'
+                                value='10'></input>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div id='oils-acq-search-fields-submit-block'>
@@ -48,10 +57,29 @@
             </div>
         </div>
     </form>
-    <div id='oils-acq-search-progress'>
-        <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
+    <div id='oils-acq-pl-search-results' style='height:100%'>
+        <script>
+            dojo.require('dijit.form.FilteringSelect');
+        </script>
+        <div dojoType="dijit.Toolbar" class='menuBar'>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>Actions</span>
+                <div dojoType="dijit.Menu">
+                    <div dojoType="dijit.MenuItem" 
+                        iconClass="dijitEditorIcon dijitEditorIconCopy"
+                        onClick='saveAllAsPl();'>Save All as Picklist</div>
+                    <div dojoType="dijit.MenuItem" 
+                        iconClass="dijitEditorIcon dijitEditorIconCopy">Save Selected as Picklist</div>
+                    <div dojoType="dijit.MenuItem" 
+                        iconClass="dijitEditorIcon dijitEditorIconCopy">Add All to Picklist</div>
+                    <div dojoType="dijit.MenuItem" 
+                        iconClass="dijitEditorIcon dijitEditorIconCopy">Add Selected to Picklist</div>
+                </div>
+            </div>
+        </div>
+        ${jubgrid.jubgrid('oils-acq-lineitem', 'plResultGrid')}
     </div>
-    <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
+    <script>dojo.style('oils-acq-pl-search-results', 'visibility', 'hidden');</script>
 </%def>
 
 
