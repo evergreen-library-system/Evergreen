@@ -114,6 +114,20 @@ openils.acq.Picklist.create = function(fields, oncomplete) {
     );
 }
 
+/** Creates a new picklist. fields.name is required */ 
+openils.acq.Picklist.update = function(picklist, oncomplete) {
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.update'],
+        {   async: true,
+            params: [openils.User.authtoken, picklist],
+            oncomplete: function(r) { 
+                // XXX event/error handling
+                oncomplete(r.recv().content());
+            }
+        }
+    );
+}
+
 /** Deletes a list of picklists
  * @param list Array of picklist IDs
  */

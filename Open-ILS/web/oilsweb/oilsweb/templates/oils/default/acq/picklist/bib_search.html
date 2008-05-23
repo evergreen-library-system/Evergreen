@@ -60,23 +60,26 @@
     <div id='oils-acq-pl-search-results' style='height:100%'>
         <script>
             dojo.require('dijit.form.FilteringSelect');
+            dojo.require('dijit.Dialog');
         </script>
-        <div dojoType="dijit.Toolbar" class='menuBar'>
-            <div dojoType="dijit.form.DropDownButton">
-                <span>Actions</span>
-                <div dojoType="dijit.Menu">
-                    <div dojoType="dijit.MenuItem" 
-                        iconClass="dijitEditorIcon dijitEditorIconCopy"
-                        onClick='saveAllAsPl();'>Save All as Picklist</div>
-                    <div dojoType="dijit.MenuItem" 
-                        iconClass="dijitEditorIcon dijitEditorIconCopy">Save Selected as Picklist</div>
-                    <div dojoType="dijit.MenuItem" 
-                        iconClass="dijitEditorIcon dijitEditorIconCopy">Add All to Picklist</div>
-                    <div dojoType="dijit.MenuItem" 
-                        iconClass="dijitEditorIcon dijitEditorIconCopy">Add Selected to Picklist</div>
-                </div>
+        <div dojoType="dijit.form.DropDownButton">
+            <span>${('Save Results')}</span>
+            <div dojoType="dijit.TooltipDialog" execute="saveResults(arguments[0]);">
+                <script type='dojo/connect' event='onOpen'>
+                </script>
+                <table class='dijitTooltipTable'>
+                    <tr>
+                        <td><label for="name">${_('Save as picklist:')} </label></td>
+                        <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2' align='center'>
+                            <button dojoType=dijit.form.Button type="submit">${_('Save')}</button>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </div>
+        </div> 
         ${jubgrid.jubgrid('oils-acq-lineitem', 'plResultGrid')}
     </div>
     <script>dojo.style('oils-acq-pl-search-results', 'visibility', 'hidden');</script>

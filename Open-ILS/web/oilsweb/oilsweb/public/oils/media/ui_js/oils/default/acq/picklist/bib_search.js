@@ -110,9 +110,17 @@ function viewResults(plId) {
             dojo.style('oils-acq-lineitem-details-grid', 'visibility', 'hidden');
         }
     );
+    resultPicklist = plist._plist;
 }
 
-function saveAllAsPl() {
+function saveResults(values) {
+    if(!values.name) return;
+    resultPicklist.name(values.name); 
+    openils.acq.Picklist.update(resultPicklist,
+        function(stat) {
+            location.href = 'view/' + resultPicklist.id(); 
+        }
+    );
 }
 
 dojo.addOnLoad(drawForm);
