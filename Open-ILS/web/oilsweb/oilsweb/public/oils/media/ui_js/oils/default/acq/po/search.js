@@ -7,6 +7,8 @@ dojo.require('openils.acq.Provider');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
+dojo.require('openils.User');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 function getOrgInfo(rowIndex) {
     data = poGrid.model.getRow(rowIndex);
@@ -67,6 +69,8 @@ function loadForm() {
         },
         'MANAGE_PROVIDER'
     );
+
+    new openils.User().buildPermOrgSelector('VIEW_PURCHASE_ORDER', poSearchOrderingAgencySelect);
 }
 
 dojo.addOnLoad(loadForm);
