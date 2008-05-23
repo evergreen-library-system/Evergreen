@@ -339,8 +339,6 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem_detail to create', type => 'object'},
-            {desc => q/Options hash.  fund_id, the fund funding this line item
-                price, the price we are paying the vendor, in the vendor's currency/, type => 'hash'}
         ],
         return => {desc => 'The purchase order line item detail id, Event on failure'}
     }
@@ -362,23 +360,6 @@ sub create_lineitem_detail {
         return $e->die_event unless 
             $e->allowed('MANAGE_FUND', $fund->org, $fund);
     }
-
-=head XXX move to new method
-    my $fct = $e->search_acq_currency_type({code => $fund->currency_type})->[0];
-    my $pct = $e->search_acq_currency_type({code => $provider->currency_type})->[0];
-    my $price = $$options{price};
-    # create the fund_debit for this line item detail
-    my $fdebit = Fieldmapper::acq::fund_debit->new;
-    $fdebit->fund($$options{fund_id});
-    $fdebit->origin_amount($price);
-    $fdebit->origin_currency_type($pct->code); # == vendor's currency
-    $fdebit->encumberance('t');
-    $fdebit->debit_type(OILS_ACQ_DEBIT_TYPE_PURCHASE);
-    $fdebit->amount(currency_conversion_impl($pct->code, $fct->code, $price));
-    $e->create_acq_fund_debit($fdebit) or return $e->die_event;
-
-    $li_detail->fund_debit($fdebit->id);
-=cut
 
     $e->create_acq_lineitem_detail($li_detail) or return $e->die_event;
     $e->commit;
