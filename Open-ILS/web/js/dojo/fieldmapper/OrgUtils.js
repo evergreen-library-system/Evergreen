@@ -24,6 +24,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 	dojo.require("fieldmapper.OrgTree", true);
 	dojo.require("fieldmapper.OrgLasso", true);
 
+	fieldmapper.aou.slim_ok = true;
 	fieldmapper.aou.globalOrgTree = {};
 	fieldmapper.aou.OrgCache = {};
 	fieldmapper.aou.OrgCacheSN = {};
@@ -45,12 +46,14 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 	}
 
 	fieldmapper.aou.LoadOrg = function (id, slim_ok) {
+		if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
 		var slim_o = fieldmapper.aou.OrgCache[id];
 
 		if (slim_o && (slim_ok || slim_o.loaded))
 			return fieldmapper.aou.OrgCache[id].org;
 
 		var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,id]);
+		o.children = fieldmapper.aou.OrgCache[o.id()].children;
 		fieldmapper.aou.OrgCache[o.id()] = { loaded : true, org : o };
 		return o;
 	}
@@ -126,21 +129,25 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 		return null;
 	}
 
-	fieldmapper.aou.findOrgUnitSN = function (sn) {
+	fieldmapper.aou.findOrgUnitSN = function (sn, slim_ok) {
+		if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
 		var org = fieldmapper.aou.OrgCacheSN[sn];
 		if (!org) {
 			for (var i in fieldmapper.aou.OrgCache) {
 				var o = fieldmapper.aou.OrgCache[i];
-				if (o.loaded && o.org.shortname() == sn) {
+				if (o.org.shortname() == sn) {
 					fieldmapper.aou.OrgCacheSN[o.org.shortname()] = o;
-					return o.org;
+					org = o;
 				}
 			}
 
-			org = fieldmapper.standardRequest(fieldmapper.OpenSRF.methods.FETCH_ORG_BY_SHORTNAME, sn);
+			if (!slim_ok && !fieldmapper.aou.OrgCache[org.id()].loaded) {
+				org = fieldmapper.standardRequest(fieldmapper.OpenSRF.methods.FETCH_ORG_BY_SHORTNAME, sn);
 
-			fieldmapper.aou.OrgCache[org.id()] = { loaded : true, org : org };
-			fieldmapper.aou.OrgCacheSN[org.shortname()] = { loaded : true, org : org };
+				org.children = fieldmapper.aou.OrgCache[org.id()].children;
+				fieldmapper.aou.OrgCache[org.id()] = { loaded : true, org : org };
+				fieldmapper.aou.OrgCacheSN[org.shortname()] = { loaded : true, org : org };
+			}
 
 		}
 

@@ -42,7 +42,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		if (!list) list = {};
 
 		// a sane default
-		if (!params.identifier) params.identifier = fieldmapper[this.classname].Identifier;
+		if (!params.identifier) params.identifier = this.Identifier;
 		if (!label) label = params.label;
 		if (!label) label = params.identifier;
 
@@ -96,17 +96,17 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 
 	fieldmapper.aou.toStoreData = function (list, label) {
 		if (!label) label = 'shortname';
-		return _toStoreData(list, label, { 'parent' : 'parent_ou', 'children' : 'children' });
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent_ou', 'children' : 'children' });
 	}
 
 	fieldmapper.aout.toStoreData = function (list, label) {
 		if (!label) label = 'name';
-		return _toStoreData(list, label, { 'parent' : 'parent', 'children' : 'children' });
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
 	}
 
 	fieldmapper.pgt.toStoreData = function (list, label) {
 		if (!label) label = 'name';
-		return _toStoreData(list, label, { 'parent' : 'parent', 'children' : 'children' });
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
 	}
 
 	/*
