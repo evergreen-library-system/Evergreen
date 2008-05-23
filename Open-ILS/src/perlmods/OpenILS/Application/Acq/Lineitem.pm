@@ -49,7 +49,7 @@ sub create_lineitem {
         my $po = $e->retrieve_acq_purchase_order($li->purchase_order)
             or return $e->die_event;
         return $e->die_event unless 
-            $e->allowed('MANAGE_PROVIDER', $po->org_unit, $po);
+            $e->allowed('MANAGE_PROVIDER', $po->ordering_agency, $po);
     }
 
     $li->selector($e->requestor->id);
@@ -442,7 +442,6 @@ sub delete_lineitem_detail {
     ]) or return $e->die_event;
 
     my $li = $li_detail->lineitem;
-    $li->item_count($li->item_count - 1);
     $e->update_acq_lineitem($li) or return $e->die_event;
 
     return OpenILS::Event->new('BAD_PARAMS') unless 
