@@ -10,11 +10,11 @@ model for the set of JUBs, then place the following lines in your
 HTML where you want the display to appear:
 
     <%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
-    ${jubgrid.jubgrid('dom_prefix', 'grid_js_id')}
+    ${jubgrid.jubgrid('dom_prefix', 'grid_jsid')}
 
 where 'dom_prefix' is a string that will be used as the prefix
 for the DOM notes that are created by this template, and
-'grid_js_id' is a valid JavaScript identifier that will name the
+'grid_jsid' is a valid JavaScript identifier that will name the
 DOM node to which the list of JUBs will be attached.  For example
 
     ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid')}
@@ -29,9 +29,9 @@ and a jsid of
 
 To fill the grid with data, call the javascript function
 
-    populateJUBGrid(grid_js_id, model)
+    populateJUBGrid(grid_jsid, model)
 
-'grid_js_id' is the same javascript id that was used to
+'grid_jsid' is the same javascript id that was used to
 instantiate the template, and model is a javascript variable
 pointing to the JUB model (and store) that you have created.
 
@@ -42,7 +42,7 @@ pointing to the JUB model (and store) that you have created.
      activeSizing="1" layoutAlign="client">
 
     <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/common/jubgrid.js'> </script>
-    <script>
+    <script type="text/javascript">
     JUBGrid.jubGridLayout = [{
         cells: [[
             {name: "ID", field: 'id'},
@@ -74,6 +74,16 @@ pointing to the JUB model (and store) that you have created.
             dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}"> </div>
     </div>
     <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+	<div jsid="lineItemButtonbar" dojoType="dijit.layout.ContentPane"
+	     id=${domprefix+"-details-buttonbar"}>
+	    <button dojoType='dijit.form.Button'
+		    onclick='JUBGrid.createLID'>
+		${_('Add Copy')}
+	    </button>
+	    <button dojotype='dijit.form.Button' onclick='JUBGrid.deleteLID'>
+		${_('Delete Selected Copy')}
+	    </button>
+	</div>
         <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
             id='${domprefix + "-details-grid"}'>
         </div>

@@ -47,9 +47,9 @@ var JUBGrid = {
         var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
         if (!data || !data.fund) return;
         try {
-        return openils.acq.Fund.retrieve(data.fund).name();
+            return openils.acq.Fund.retrieve(data.fund).name();
         } catch (evt) {
-        return data.fund;
+            return data.fund;
         }
     },
     getLIDLibName : function(rowIndex) {
@@ -63,10 +63,42 @@ var JUBGrid = {
         JUBGrid.jubGrid.setModel(model);
         dojo.connect(gridWidget, "onRowClick", 
             function(evt) {
-             openils.acq.Lineitems.loadGrid(
-                 JUBGrid.jubDetailGrid, 
+		JUBGrid.jubDetailGrid.lineitemID = model.getRow(evt.rowIndex).id;
+		openils.acq.Lineitems.loadGrid(
+                    JUBGrid.jubDetailGrid, 
                     JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, JUBGrid.jubDetailGridLayout);
             });
         gridWidget.update();
-    }
+    },
+    deleteLID: function(evt) {
+	var list =[];
+	var selected = JUBGrid.jubDetailGrid.selection.getSelected();
+	for (var idx = 0; idx < selected.length; idx++) {
+	    var rowIdx = selected[idx];
+	    var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
+	    var deleteFromStore = function () {
+		var deleteItem = function(item, rq) {
+		    JUBGrid.jubDetailGrid.model.store.deleteItem(item);
+		};
+		JUBGrid.jubDetailGrid.model.store.fetch({query:{id:lid.id},
+							 onItem: deleteItem});
+	    };
+
+	    openils.acq.Lineitems.deleteLID(lid.id, deleteFromStore);
+	    JUBGrid.jubDetailGrid.update();
+
+	    var updateCount = function(item) {
+		var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
+		JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
+		JubGrid.jubGrid.update();
+	    };
+
+	    JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
+					       onItem: updateCount});
+	}
+    },
+    createLID: function(evt) {
+	console.dir(evt);
+    },
 };
+

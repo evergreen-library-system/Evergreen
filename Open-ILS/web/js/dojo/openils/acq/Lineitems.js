@@ -85,37 +85,44 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	});
 };
 
-openils.acq.Lineitems.obj2Str = function(obj) {
-    var str = "";
-    for (var prop in item) {
-	str += prop + " = " + item[prop] + "\n";
-    }
-    return(str);
-}
-
 openils.acq.Lineitems.alertOnSet = function(griditem, attr, oldVal, newVal) {
     var item;
     var updateDone = function(r) {
 	var stat = r.recv().content();
 	// XXX Check for Event
-// 	alert("updateDone");
     }
+
     if (oldVal == newVal) {
-// 	alert("value edited, but not changed. skipping");
 	return;
     }
 
-//     console.dir(griditem);
     item = openils.acq.Lineitems.acqlidCache[griditem.id];
     
-//     console.log("alertOnSet: newVal = "+newVal);
-//     console.dir(item) 
-    item.fund(newVal);
+    if (attr == "fund") {
+	item.fund(newVal);
+    } else {
+	alert("Unexpected attr in Lineitems.alertOnSet: '"+attr+"'");
+	return;
+    }
+
     fieldmapper.standardRequest(
 	["open-ils.acq", "open-ils.acq.lineitem_detail.update"],
 	{ params: [openils.User.authtoken, item],
 	  oncomplete: updateDone
 	});
+};
+
+openils.acq.Lineitems.deleteLID = function(id, onComplete) {
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_detail.delete'],
+        {   async: true,
+            params: [openils.User.authtoken, id],
+            oncomplete: function(r) {
+                msg = r.recv()
+                stat = msg.content();
+		onComplete();
+            }
+    });
 };
 
 openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
@@ -126,7 +133,8 @@ openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
 		    var model = new dojox.grid.data.DojoData(null, store,
 			{rowsPerPage: 20, clientSort:true, query:{id:'*'}});
 
-		    dojo.connect(store, "onSet", openils.acq.Lineitems.alertOnSet);
+		    dojo.connect(store, "onSet",
+				 openils.acq.Lineitems.alertOnSet);
 		    openils.acq.Lineitems.ModelCache[id] = model;
 
 		    domNode.setStructure(layout);
@@ -138,6 +146,4 @@ openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
 	domNode.update();
     }
 };
-
-
 }
