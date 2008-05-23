@@ -142,6 +142,7 @@ class PoController(BaseController):
             # first, create the PO
             po = osrf.net_obj.NetworkObject.acqpo()
             po.provider(provider_id)
+            po.state('in-process')
             po_id = ClientSession.atomic_request(
                 'open-ils.acq', 
                 'open-ils.acq.purchase_order.create', authtoken, po)
@@ -161,6 +162,7 @@ class PoController(BaseController):
                 lineitem.provider(provider_id)
                 lineitem.purchase_order(po_id)
                 lineitem.source_label(provider.code()) # XXX where should this really come from?
+                lineitem.state('in-process')
 
                 stat = ClientSession.atomic_request(
                     'open-ils.acq', 
