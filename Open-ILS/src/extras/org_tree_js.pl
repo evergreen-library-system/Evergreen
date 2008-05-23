@@ -13,7 +13,7 @@ use OpenSRF::Utils::Cache;
 die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
-my $locale = $ARGV[1];
+my $locale = $ARGV[1] || '';
 
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
