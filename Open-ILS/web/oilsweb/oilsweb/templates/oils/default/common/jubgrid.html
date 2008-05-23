@@ -47,6 +47,7 @@ pointing to the JUB model (and store) that you have created.
         cells: [[
             {name: "ID", field: 'id'},
             {name: "Title", width: "auto", get:JUBGrid.getJUBTitle},
+            {name: "Author", get:JUBGrid.getJUBAuthor},
             {name: "ISBN", get:JUBGrid.getJUBIsbn},
             {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate},
             {name: "Price", get:JUBGrid.getJUBPrice},

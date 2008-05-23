@@ -29,6 +29,9 @@ var JUBGrid = {
     getJUBTitle : function(rowIndex) {
         return JUBGrid._getMARCAttr(rowIndex, 'title');
     },
+    getJUBAuthor : function(rowIndex) {
+        return JUBGrid._getMARCAttr(rowIndex, 'author');
+    },
     getJUBIsbn : function(rowIndex) {
         return JUBGrid._getMARCAttr(rowIndex, 'isbn');
     },
