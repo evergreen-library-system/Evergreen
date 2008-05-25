@@ -42,6 +42,8 @@ if(!dojo._hasResource["openils.User"]) {
             this.login_type = kwargs.login_type;
             this.location = kwargs.location;
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
+	    this.orgCache = {perm: null, store: null};
+	    this.fundStore = null;
 
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
@@ -229,21 +231,31 @@ if(!dojo._hasResource["openils.User"]) {
     
             dojo.require('dojo.data.ItemFileReadStore');
 
+	    function hookupStore(store) {
+		selector.store = store;
+                selector.startup();
+                selector.setValue(_u.user.ws_ou());
+	    }
+
             function buildTreePicker(r) {
                 var orgList = r.recv().content();
                 var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
-                selector.store = store;
-                selector.startup();
-                selector.setValue(_u.user.ws_ou());
+		hookupStore(store);
+		_u.orgCache.perm = perm;
+		_u.orgCache.orgStore = store;
             }
     
-            fieldmapper.standardRequest(
-                ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
-                {   params: [this.authtoken, perm],
-                    oncomplete: buildTreePicker,
-                    async: true
-                }
-            )
+	    if (this.orgCache.orgStore && (perm == this.orgCache.perm)) {
+		hookupStore(this.orgCache.orgStore);
+	    } else {
+		fieldmapper.standardRequest(
+                    ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+                    {   params: [this.authtoken, perm],
+			oncomplete: buildTreePicker,
+			async: true
+                    }
+		)
+	    }
         }
 
     });
