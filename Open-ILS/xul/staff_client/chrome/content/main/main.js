@@ -240,6 +240,25 @@ function main_init() {
 			}, 
 			false
 		);
+
+		var y = document.getElementById('new_window_btn');
+		y.setAttribute('label','Open New Window');
+		y.addEventListener(
+			'command',
+			function() {
+				if (G.data.session) {
+					try {
+						G.window.open('chrome://open_ils_staff_client/content/main/menu_frame.xul?server=' +
+							G.data.server,'main','chrome,resizable' );
+
+					} catch(E) { alert(E); }
+				} else {
+					alert ('Please login first!')
+				}
+			},
+			false
+		);
+
 		if ( found_ws_info_in_Achrome() ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
