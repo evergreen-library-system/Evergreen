@@ -655,7 +655,7 @@ cat.record_buckets.prototype = {
 								xml += '<table><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
 									xml += '<td><input value="' + $("catStrings").getString('staff.cat.record_buckets.merge_records.lead')
-										+ ' id="record_' + record_ids[i] + '" type="radio" name="lead"';
+									xml += '" id="record_' + record_ids[i] + '" type="radio" name="lead"';
 									xml += ' onclick="' + "try { var x = $('lead'); x.setAttribute('value',";
 									xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
 									xml += '</input>' + $("catStrings").getFormattedString('staff.cat.record_buckets.merge_records.lead_record_number',[record_ids[i]]) + '</td>';

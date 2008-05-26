@@ -85,6 +85,9 @@
 		<hbox>
 			<label id="version_label"/>
 			<button id="about_btn"/>
+
+			<label id="new_window_label"/>
+			<button id="new_window_btn"/>
 		</hbox>
 		<label value=" "/>
 

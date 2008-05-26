@@ -1,0 +1,250 @@
+<!--
+# Copyright (C) 2008  Georgia Public Library Service / Equinox Software, Inc
+# Mike Rylander <miker@esilibrary.com>
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Confiy :: Global :: Permission :: Permission List</title>
+
+		<style type="text/css">
+			@import url("/js/dojo/dojox/grid/_grid/tundraGrid.css");
+			@import url("/js/dojo/dojo/resources/dojo.css");
+			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
+			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+		</style>
+
+		<style>
+			html, body {
+				height: 100%;
+				width: 100%;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				overflow: hidden;
+			}
+
+			#perm_grid {
+				border: 0px;
+				width: 100%;
+				height: 100%;
+			}
+
+			.grid_container {
+				width: 100%;
+				height: 100%;
+				overflow: scroll;
+			}
+		</style>
+
+		<!-- The OpenSRF API writ JS -->
+		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+
+		<!-- Dojo goodness -->
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js.uncompressed.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/js/dojo/dijit/dijit.js.uncompressed.js"></script>
+
+		<script type="text/javascript" src="marc_code_maps.js"></script>
+
+		<script type="text/javascript">
+			var grid_row_object_cache = {};
+			var layouts = {};
+
+            layouts.cam = [
+                {   cells : [
+                        [
+                            { name : "Code", field : "code", width : "5em", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+                            { name : "Value", field : "value", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
+                            { name : "Description", field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+                        ],
+                        [
+                            { name : "Translation",
+                              width : "10em",
+                              height : "2em",
+                              get : function (row) {
+                                if (!grid_row_object_cache.cam) grid_row_object_cache.cam = [];
+                                var r = this.grid.model.getRow(row);
+                                if (r) {
+                                    grid_row_object_cache.cam[row] = new fieldmapper.cam().fromHash(this.grid.model.getRow(row));
+                                    setTimeout(
+                                        'dojo.query(".cam_value_' + row + '").'+
+                                            'instantiate('+
+												'openils.widget.TranslatorPopup,{field:"value",'+
+												'unique:"cam_'+row+'",'+
+                                            	'targetObject:"grid_row_object_cache.cam['+row+']"}'+
+											');'+
+                                        'cam_grid.rowHeightChanged('+row+');',
+                                        0
+                                    );
+                                    var oldnode = dojo.byId('value_translation_cam_' + row);
+                                    if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+                                    return '<span class="cam_value_'+row+'"></span>';
+                                }
+                                return '';
+                              }
+                            },
+                            { name : "Translation",
+                              width : "10em",
+                              height : "2em",
+                              get : function (row) {
+                                if (!grid_row_object_cache.cam) grid_row_object_cache.cam = [];
+                                var r = this.grid.model.getRow(row);
+                                if (r) {
+                                    grid_row_object_cache.cam[row] = new fieldmapper.cam().fromHash(this.grid.model.getRow(row));
+                                    setTimeout(
+                                        'dojo.query(".cam_description_' + row + '").'+
+                                            'instantiate('+
+												'openils.widget.TranslatorPopup,{field:"description",'+
+												'unique:"cam_'+row+'",'+
+                                            	'targetObject:"grid_row_object_cache.cam['+row+']"}'+
+											');'+
+                                        'cam_grid.rowHeightChanged('+row+');',
+                                        0
+                                    );
+                                    var oldnode = dojo.byId('description_translation_cam_' + row);
+                                    if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+                                    return '<span class="cam_description_'+row+'"></span>';
+                                }
+                                return '';
+                              }
+                            }
+                        ]
+                    ]
+                }
+            ];
+
+			var codelist = ['cam','cblvl','cifm','citm','clm','clfm','cvrfm'];
+			var hashes = {};
+			var objects = {};
+			var models = {};
+			for (var i in codelist) {
+				var classname = codelist[i];
+
+				hashes[classname] = fieldmapper.standardRequest(
+					[ 'open-ils.fielder', 'open-ils.fielder.' + classname + '.atomic'],
+					[ { query : { code : { '!=' : null } } } ]
+				);
+
+				if (!hashes[classname]) continue;
+
+				objects[classname] = dojo.map(
+					hashes[classname].concat(),
+					new Function('x', 'return new fieldmapper.' + classname + '().fromHash( x );')
+				);
+
+				stores[classname] =  new dojo.data.ItemFileWriteStore(
+					{ data : fieldmapper[classname].toStoreData( objects[classname], 'value' ) }
+				);
+
+				if (classname != 'cam') {
+					layouts[classname] = [
+                        {   cells : [
+                                [
+                                    { name : "Code",  field : "code",  width : "5em",  editor : dojox.grid.editors.Dijit,  rowSpan : "2" },
+                                    { name : "Value", field : "value", width : "auto", editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+                                ],
+                                [
+                                    { name : "Translation",
+                                      width : "10em",
+                                      height : "2em",
+                                      get : function (row) {
+                                        if (!grid_row_object_cache[classname]) grid_row_object_cache[classname] = [];
+                                        var r = this.grid.model.getRow(row);
+                                        if (r) {
+                                    		grid_row_object_cache[classname][row] = new fieldmapper[classname]().fromHash(this.grid.model.getRow(row));
+                                            setTimeout(
+                                                'dojo.query(".'+classname+'_value_' + row + '").'+
+                                                    'instantiate('+
+        												'openils.widget.TranslatorPopup,{field:"value",'+
+        												'unique:"'+classname+'_'+row+'",'+
+                                                    	'targetObject:"grid_row_object_cache.'+classname+'['+row+']"}'+
+        											');'+
+                                                classname+'_grid.rowHeightChanged('+row+');',
+                                                0
+                                            );
+                                            var oldnode = dojo.byId('value_translation_'+classname+'_' + row);
+                                            if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+                                            return '<span class="'+classname+'_value_'+row+'"></span>';
+                                        }
+                                        return '';
+                                      }
+                                    }
+                                ]
+                            ]
+                        }
+                    ];
+				}
+			}
+
+		</script>
+
+	</head>
+
+	<body class="tundra" id='pagebody'>
+
+		<div dojoType="dijit.layout.TabContainer" class="grid_container" orientation="vertical">
+
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" label="Audience Map">
+
+				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
+		
+					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top" onSubmit="create_marc_code">
+						<div>New Audience Map:</div>
+						<input type="hidden" name="classname" value="cam"/>
+						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
+						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
+						<label for="description">Description</label><input dojoType="dijit.form.TextBox" name="description" title="Description"/>
+						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
+					</div>
+		
+					<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
+						<div dojoType="dojox.grid.data.DojoData" jsId="cam_model"store="stores.cam" query="{ code : '*' }"></div>
+						<div dojoType="dojox.Grid" jsId="cam_grid" model="cam_model" structure="layouts.cam"></div>
+						<button jsId="delete_cam_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cam',cam_grid)"></button>
+					</div>
+		
+				</div>
+
+			</div>
+		
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical">
+
+				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
+
+					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top" onSubmit="create_marc_code">
+						<div>New Bib Level:</div>
+						<input type="hidden" name="classname" value="cblvl"/>
+						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
+						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
+						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
+					</div>
+		
+					<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
+						<div dojoType="dojox.grid.data.DojoData" jsId="cblvl_model"store="stores.cblvl" query="{ code : '*' }"></div>
+						<div dojoType="dojox.Grid" jsId="cblvl_grid" model="cblvl_model" structure="layouts.cblvl"></div>
+						<button jsId="delete_cblvl_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cblvl',cblvl_grid)"></button>
+					</div>
+	
+				</div>
+
+			</div>
+
+		</div>
+
+		<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
+			<button jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+		</div>
+		
+	</body>
+</html>

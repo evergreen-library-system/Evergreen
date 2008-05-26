@@ -315,7 +315,7 @@ sub show_template {
 				<option value="biblio">Bibliographic Records</option>
 				<option value="authority">Authority Records</option>
 			</select>
-			<br/> Record Fromat:
+			<br/> Record Format:
 			<select name="format">
 				<option value="USMARC">MARC21</option>
 				<option value="UNIMARC">UNIMARC</option>
