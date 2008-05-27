@@ -7,6 +7,7 @@
 */
 
 .oils-acq-detail-content-pane {height:600px;width:100%}
+.oils-acq-basic-form-table td {padding:4px;}
 
 /* bib search */
 #oils-acq-search-container { width:100%; }

@@ -17,18 +17,30 @@
                 doSearch(this.getValues());
                 return false; /* don't redirect */
             </script>
-            <label for='state'>${_('State')}</label>
-            <select dojoType='dijit.form.FilteringSelect' name='state'>
-                <option value='new'>${_("New")}</option>
-                <option value='approved'>${_("Approved")}</option>
-                <option value='in-process'>${_("In Process")}</option>
-                <option value='received'>${_("Received")}</option>
-            </select>
-            <label for='provider'>${_('Provider')}</label>
-            <select dojoType='dijit.form.FilteringSelect' name='provider' 
-                labalAttr='code' searchAttr='code' jsId='providerSelector'>
-            </select>
-            <div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div>
+            <table class='oils-acq-basic-form-table'>
+                <tr>
+                    <td><label for='state'>${_('State')}</label></td>
+                    <td>
+                        <select dojoType='dijit.form.FilteringSelect' name='state'>
+                            <option value='new'>${_("New")}</option>
+                            <option value='approved'>${_("Approved")}</option>
+                            <option value='in-process'>${_("In Process")}</option>
+                            <option value='received'>${_("Received")}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for='provider'>${_('Provider')}</label></td>
+                    <td>
+                        <select dojoType='dijit.form.FilteringSelect' name='provider' 
+                            labalAttr='code' searchAttr='code' jsId='providerSelector'>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'><div dojoType='dijit.form.Button' type='submit'>${_("Search")}</div></td>
+                </tr>
+            </table>
         </form>
     </div>
 
