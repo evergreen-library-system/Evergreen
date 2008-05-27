@@ -37,6 +37,10 @@ function getDateTimeField(rowIndex) {
 
 function doSearch(fields) {
     var itemList = [];
+    if(!isNaN(fields.id)) 
+        fields = {id:fields.id};
+    else
+        delete fields.id;
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.search'],
