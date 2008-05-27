@@ -1,11 +1,20 @@
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('dijit.layout.SplitContainer');
+dojo.require('dijit.Dialog');
+dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.Grid');
+
+dojo.require("openils.User");
 dojo.require("openils.acq.Fund");
 dojo.require("openils.acq.Lineitems");
-dojo.require("openils.widget.FundSelector");
-dojo.require("fieldmapper.OrgUtils");
 dojo.require('openils.acq.Provider');
+dojo.require("openils.widget.FundSelector");
+dojo.require('openils.editors');
+dojo.require("openils.widget.OrgUnitFilteringSelect");
+dojo.require("fieldmapper.OrgUtils");
+
+var globalUser = new openils.User();
 
 /* put all the accessors, etc. into a local object for namespacing */
 var JUBGrid = {

@@ -62,11 +62,18 @@ pointing to the JUB model (and store) that you have created.
             {name:"ID", field:"id"},
             {name:"Fund", field:"fund",
              get:JUBGrid.getLIDFundName,
-             editor: openils.widget.FundSelector,
+             editor: openils.editors.FundSelectEditor,
             },
             {name:"Location", field:"location", get:JUBGrid.getLIDLibName}
         ]]
     }];
+
+    function createLID(fields) {
+	fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
+	openils.acq.Lineitems.createLID(fields,
+			function (lidId) {
+			});
+    }
     </script>
 
     <div id="${domprefix + '-container'}"
@@ -77,10 +84,43 @@ pointing to the JUB model (and store) that you have created.
     <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
 	<div jsid="lineItemButtonbar" dojoType="dijit.layout.ContentPane"
 	     id=${domprefix+"-details-buttonbar"}>
-	    <button dojoType='dijit.form.Button'
-		    onclick='JUBGrid.createLID'>
-		${_('Add Copy')}
-	    </button>
+	    <div dojoType="dijit.form.DropDownButton">
+		<span>${_('New Copy')}</span>
+		<div dojoType="dijit.TooltipDialog"
+		     execute="createLID(arguments[0]);">
+		    <script type='dojo/connect' event='onOpen'>
+			globalUser.buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
+			globalUser.buildPermFundSelector('MANAGE_FUND', acqlidFund);
+		    </script>
+		    <table class="dijitTooltipTable">
+			<tr>
+			    <td><label for="fund">${_('Fund:')} </label></td>
+			    <td>
+				<input dojoType="openils.widget.FundSelector"
+				       jsId="acqlidFund"
+				       searchAttr="name" autocomplete="true"
+				       name="fund"></input>
+				</td>
+			    </tr>
+			<tr>
+			    <td><label for="owning_lib">${_('Location:')} </label></td>
+			    <td><input dojoType="openils.widget.OrgUnitFilteringSelect"
+				       jsId="copyOwnerSelect"
+				       searchAttr="shortname"
+				       name="owning_lib" autocomplete="true"
+				       labelAttr="shortname"></input>
+				</td>
+			    </tr>
+			<tr>
+			    <td colspan="2" align="center">
+				<button dojotype="dijit.form.Button" type="submit">
+				    ${_('Create')}
+				</button>
+			    </td>
+			</tr>
+		    </table>
+		</div>
+	    </div>
 	    <button dojotype='dijit.form.Button' onclick='JUBGrid.deleteLID'>
 		${_('Delete Selected Copy')}
 	    </button>

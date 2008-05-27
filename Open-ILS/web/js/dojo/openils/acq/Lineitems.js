@@ -125,6 +125,25 @@ openils.acq.Lineitems.deleteLID = function(id, onComplete) {
     });
 };
 
+openils.acq.Lineitems.createLID = function(fields, onCreateComplete) {
+    var lid = new acqlid()
+    for (var field in fields) {
+	lid[field](fields[field]);
+    }
+
+    fieldmapper.standardRequest(
+	['open-ils.acq', 'open-ils.acq.lineitem_detail.create'],
+	{ async: true,
+	  params: [openils.User.authtoken, lid],
+	  oncomplete: function(r) {
+	      var msg = r.recv();
+	      if (onCreateComplete) {
+		  onCreateComplete(lid);
+	      }
+	  }
+	});
+};
+
 openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
     if (!openils.acq.Lineitems.ModelCache[id]) {
 	openils.acq.Lineitems.createStore(id,
