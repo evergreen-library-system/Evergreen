@@ -43,7 +43,6 @@ if(!dojo._hasResource["openils.User"]) {
             this.location = kwargs.location;
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
 	    this.orgCache = {perm: null, store: null};
-	    this.fundCache = [];
 
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
@@ -257,50 +256,6 @@ if(!dojo._hasResource["openils.User"]) {
 		)
 	    }
         },
-
-        /**
-         * Sets the store for an existing openils.widget.FundFilteringSelect 
-         * using the funds where the user has the requested permission.
-         * @param perm The permission to check
-         * @param selector The pre-created dijit.form.FilteringSelect object.  
-         */
-	buildPermFundSelector : function(perm, selector) {
-	    var _u = this;
-
-	    dojo.require('dojo.data.ItemFileReadStore');
-
-	    function hookupStore(store) {
-		selector.store = store;
-                selector.startup();
-	    }
-
-	    function buildPicker(r) {
-		var msg;
-		var fundList = [];
-		while (msg = r.recv()) {
-		    var fund = msg.content();
-		    fundList.push(fund);
-		}
-
-		var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData(fundList)});
-
-		hookupStore(store);
-		_u.fundCache[perm] = store;
-	    }
-
-	    if (this.fundCache[perm]) {
-		hookupStore(this.fundCache[perm]);
-	    } else {
-		fieldmapper.standardRequest(
-		    ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
-                    {   params: [this.authtoken, null, {flesh_summary:1, limit_perm:perm}],
-			oncomplete: buildPicker,
-			async: true
-                    }
-		)
-	    }
-	}
-
 
     });
 

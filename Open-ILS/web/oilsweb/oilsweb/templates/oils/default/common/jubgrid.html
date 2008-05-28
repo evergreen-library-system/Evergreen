@@ -93,7 +93,7 @@ pointing to the JUB model (and store) that you have created.
 		     execute="createLID(arguments[0]);">
 		    <script type='dojo/connect' event='onOpen'>
 			globalUser.buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
-			globalUser.buildPermFundSelector('MANAGE_FUND', acqlidFund);
+			openils.acq.Fund.buildPermFundSelector('MANAGE_FUND', acqlidFund);
 		    </script>
 		    <table class="dijitTooltipTable">
 			<tr>

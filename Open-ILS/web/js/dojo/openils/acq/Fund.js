@@ -161,4 +161,50 @@ openils.acq.Fund.nameMapping = function(oncomplete) {
 	openils.acq.Fund.createStore(buildMap);
     }
 };
+
+/**
+  * Sets the store for an existing openils.widget.FundFilteringSelect 
+  * using the funds where the user has the requested permission.
+  * @param perm The permission to check
+  * @param selector The pre-created dijit.form.FilteringSelect object.  
+  */
+
+openils.acq.Fund.storeCache = [];
+
+openils.acq.Fund.buildPermFundSelector = function(perm, selector) {
+    dojo.require('dojo.data.ItemFileReadStore');
+
+    function hookupStore(store) {
+	selector.store = store;
+        selector.startup();
+    }
+
+    function buildPicker(r) {
+	var msg;
+	var fundList = [];
+	while (msg = r.recv()) {
+	    var fund = msg.content();
+	    fundList.push(fund);
+	}
+
+	var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData(fundList)});
+
+	hookupStore(store);
+	openils.acq.Fund.storeCache[perm] = store;
+    }
+
+    if (openils.acq.Fund.storeCache[perm]) {
+	hookupStore(openils.acq.Fund.storeCache[perm]);
+    } else {
+	fieldmapper.standardRequest(
+	    ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
+            {   params: [openils.User.authtoken, null,
+			 {flesh_summary:1, limit_perm:perm}],
+		oncomplete: buildPicker,
+		async: true
+            }
+	)
+    }
+}
+
 }
