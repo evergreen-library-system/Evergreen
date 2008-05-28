@@ -43,7 +43,7 @@ log_info("circ-modifier = "+mod);
 log_info("marc-type = "+marcItemType);
 
 
-if( mod == 'bestsellernh' )
+if(mod == 'bestsellernh' || mod == 'eventpass')
 	result.events.push('ITEM_NOT_HOLDABLE');
 
 

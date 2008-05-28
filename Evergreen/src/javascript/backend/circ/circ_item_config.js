@@ -360,7 +360,7 @@ var CIRC_MOD_MAP = {
 		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
+		recurringFinesRule	    : '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
@@ -377,10 +377,17 @@ var CIRC_MOD_MAP = {
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
+		recurringFinesRule	    : '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
+	'eventpass'	: {
+		SIPMediaType			: '001',
+		magneticMedia			: 'f',
+		durationRule			: '7_day_1_renew',
+		recurringFinesRule	    : '3_dollar_per_day',
+		maxFine					: 'overdue_mid'
+	},
 }
 
 
