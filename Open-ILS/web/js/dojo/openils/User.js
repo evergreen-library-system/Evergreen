@@ -231,14 +231,20 @@ if(!dojo._hasResource["openils.User"]) {
 
             function buildTreePicker(r) {
                 var orgList = r.recv().content();
-                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
+                var orgNodeList = [];
+
+                for(var i = 0; i < orgList.length; i++) 
+                    orgNodeList = orgNodeList.concat(
+                        fieldmapper.aou.descendantNodeList(orgList[i]));
+
+                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgNodeList)});
                 selector.store = store;
                 selector.startup();
                 selector.setValue(_u.user.ws_ou());
             }
     
             fieldmapper.standardRequest(
-                ['open-ils.actor', 'open-ils.actor.user.work_perm.org_unit_list'],
+                ['open-ils.actor', 'open-ils.actor.user.work_perm.highest_org_set'],
                 {   params: [this.authtoken, perm],
                     oncomplete: buildTreePicker,
                     async: true
