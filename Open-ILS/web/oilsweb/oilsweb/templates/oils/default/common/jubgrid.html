@@ -64,7 +64,10 @@ pointing to the JUB model (and store) that you have created.
              get:JUBGrid.getLIDFundName,
              editor: openils.editors.FundSelectEditor,
             },
-            {name:"Location", field:"location", get:JUBGrid.getLIDLibName}
+            {name:"Branch", field:"owning_lib",
+	     get:JUBGrid.getLIDLibName,
+	     editor: openils.editors.OrgUnitSelectEditor
+	    },
         ]]
     }];
 
