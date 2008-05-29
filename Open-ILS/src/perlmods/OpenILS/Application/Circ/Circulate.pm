@@ -5,6 +5,8 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Const qw/:const/;
+use OpenILS::Application::AppUtils;
+my $U = "OpenILS::Application::AppUtils";
 
 my %scripts;
 my $script_libs;
@@ -154,6 +156,9 @@ sub run_method {
     # --------------------------------------------------------------------------
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
+    $circulator->check_penalty_on_renew(1) if
+        $circulator->is_renewal and $U->ou_ancestor_setting_value(
+            $circulator->editor->requestor->ws_ou, 'circ.renew.check_penalty', $circulator->editor);
     $circulator->mk_script_runner;
     return circ_events($circulator) if $circulator->bail_out;
 
@@ -284,7 +289,6 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::Circ::ScriptBuilder;
 use OpenILS::Const qw/:const/;
 
-my $U               = "OpenILS::Application::AppUtils";
 my $holdcode    = "OpenILS::Application::Circ::Holds";
 my $transcode   = "OpenILS::Application::Circ::Transit";
 
@@ -309,6 +313,7 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
+    check_penalty_on_renew
     is_noncat
     is_precat
     is_checkin
@@ -548,7 +553,8 @@ sub do_permit {
     $self->run_patron_permit_scripts();
     $self->run_copy_permit_scripts() 
         unless $self->is_precat or $self->is_noncat;
-    $self->override_events() unless $self->is_renewal;
+    $self->override_events() unless 
+        $self->is_renewal and not $self->check_penalty_on_renew;
     return if $self->bail_out;
 
     if( $self->is_precat ) {
@@ -659,7 +665,9 @@ sub run_patron_permit_scripts {
     my $runner      = $self->script_runner;
     my $patronid    = $self->patron->id;
 
-    $self->send_penalty_request() unless $self->is_renewal;
+    $self->send_penalty_request() unless
+        $self->is_renewal and not $self->check_penalty_on_renew;
+
 
     # ---------------------------------------------------------------------
     # Now run the patron permit script 
@@ -671,13 +679,8 @@ sub run_patron_permit_scripts {
     my $patron_events = $result->{events};
     my @allevents; 
 
-
-    # ---------------------------------------------------------------------
-    # this is policy directly in the code, not a good idea in general, but
-    # the penalty server doesn't know anything about renewals, so we
-    # have to strip the event out here
-    my $penalties = ($self->is_renewal) ? [] : $self->gather_penalty_request();
-    # ---------------------------------------------------------------------
+    my $penalties = ($self->is_renewal and not $self->check_penalty_on_renew) ? 
+        [] : $self->gather_penalty_request();
 
     push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
 
