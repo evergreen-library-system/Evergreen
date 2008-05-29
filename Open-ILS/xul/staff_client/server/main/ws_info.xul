@@ -78,7 +78,7 @@
 				'PERM_RETRIEVE_HIGHEST_ORG',
 				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
 			);
-			if (highest_org_id == -1) {
+			if (highest_org_id == -1 || highest_org_id == '-1') {
 				alert('You do not have permission to register a workstation.');
 				xulG.auth.logoff();
 				return;
