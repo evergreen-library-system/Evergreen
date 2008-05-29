@@ -130,7 +130,7 @@ vim:noet:sw=4:ts=4:
 	</popupset>
 
 	<groupbox flex="1" class="my_overflow">
-		<caption label="staff.cat.copy_browser.holdings_maintenance.caption"/>
+		<caption label="&staff.cat.copy_browser.holdings_maintenance.caption;"/>
 		<hbox><label id="legend" style="font-size: large" class="has_copies" value="&staff.cat.copy_browser.holdings_maintenance.legend;" hidden="true"/></hbox>
 		<hbox>
 			<hbox id="x_lib_menu"/>

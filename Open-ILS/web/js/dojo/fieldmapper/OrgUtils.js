@@ -185,6 +185,23 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 		return false;
 	}
 
+    /** Given an org id, returns an array of org units including
+     * the org for the ID provided and all descendant orgs */
+    fieldmapper.aou.descendantNodeList = function(orgId) {
+        var list = [];
+        function addNode(node) {
+            if(!node) return;
+            list.push(node);
+            var children = node.children();
+            if(children) {
+                for(var i = 0; i < children.length; i++) 
+                    addNode(children[i]);
+            }
+        }
+        addNode(fieldmapper.aou.findOrgUnit(orgId));
+        return list;
+    }
+
 	dojo.addOnUnload( function () {
 		for (var i in fieldmapper.aou.OrgCache) {
 			x=fieldmapper.aou.OrgCache[i].treePtr;

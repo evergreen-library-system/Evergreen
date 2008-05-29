@@ -77,7 +77,7 @@
 				'PERM_RETRIEVE_HIGHEST_ORG',
 				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
 			);
-			if (highest_org_id == -1) {
+			if (highest_org_id == -1 || highest_org_id == '-1') {
 				alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.workstation_registration_denied'));
 				xulG.auth.logoff();
 				return;
