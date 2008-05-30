@@ -70,13 +70,6 @@ pointing to the JUB model (and store) that you have created.
 	    },
         ]]
     }];
-
-    function createLID(fields) {
-	fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
-	openils.acq.Lineitems.createLID(fields,
-			function (lidId) {
-			});
-    }
     </script>
 
     <div id="${domprefix + '-container'}"
@@ -90,7 +83,7 @@ pointing to the JUB model (and store) that you have created.
 	    <div dojoType="dijit.form.DropDownButton">
 		<span>${_('New Copy')}</span>
 		<div dojoType="dijit.TooltipDialog"
-		     execute="createLID(arguments[0]);">
+		     execute="JUBGrid.createLID(arguments[0]);">
 		    <script type='dojo/connect' event='onOpen'>
 			globalUser.buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
 			openils.acq.Fund.buildPermFundSelector('MANAGE_FUND', acqlidFund);

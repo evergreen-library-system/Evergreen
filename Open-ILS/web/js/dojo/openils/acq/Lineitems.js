@@ -139,8 +139,10 @@ openils.acq.Lineitems.createLID = function(fields, onCreateComplete) {
 	  params: [openils.User.authtoken, lid],
 	  oncomplete: function(r) {
 	      var msg = r.recv();
+
+	      fields.id = msg.content();
 	      if (onCreateComplete) {
-		  onCreateComplete(lid);
+		  onCreateComplete(fields);
 	      }
 	  }
 	});

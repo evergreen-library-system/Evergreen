@@ -102,15 +102,22 @@ var JUBGrid = {
 	    var updateCount = function(item) {
 		var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
 		JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
-		JubGrid.jubGrid.update();
+		JUBGrid.jubGrid.update();
 	    };
 
 	    JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
 					       onItem: updateCount});
 	}
     },
-    createLID: function(evt) {
-	console.dir(evt);
+
+    createLID: function(fields) {
+	fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
+	var addToStore = function () {
+	    JUBGrid.jubDetailGrid.model.store.newItem(fields);
+	    JUBGrid.jubGrid.update();
+	    JUBGrid.jubGrid.refresh();
+	}
+	openils.acq.Lineitems.createLID(fields, addToStore);
     },
 };
 
