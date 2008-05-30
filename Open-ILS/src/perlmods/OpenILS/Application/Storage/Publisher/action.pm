@@ -218,6 +218,7 @@ sub nearest_hold {
 		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
+            AND h.frozen IS FALSE
 		ORDER BY
 			p.prox,
 			h.selection_depth DESC,
