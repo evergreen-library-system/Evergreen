@@ -154,6 +154,7 @@ SELECT	r.id,
 
 CREATE TABLE reporter.materialized_simple_record AS SELECT * FROM reporter.old_super_simple_record WHERE 1=0;
 ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
+
 CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
