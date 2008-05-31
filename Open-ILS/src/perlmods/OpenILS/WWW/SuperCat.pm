@@ -993,7 +993,7 @@ sub opensearch_feed {
     my $recs = $search->request(
         'open-ils.search.biblio.multiclass.query' => {
 				org_unit	=> $org_unit->[0]->id,
-			offset		=> $offset - 1,
+			offset		=> $offset,
 			limit		=> $limit,
 			sort		=> $sort,
 			sort_dir	=> $sortdir,
