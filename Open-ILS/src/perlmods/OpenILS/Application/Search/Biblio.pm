@@ -493,6 +493,10 @@ sub multiclass_query {
             $arghash->{language} = [] unless $arghash->{language};
             push(@{$arghash->{language}}, $value);
 
+        } elsif($type =~ /^sort/o) {
+            # sort and sort_dir modifiers
+            $arghash->{$type} = $value;
+
         } else {
             # append the search term to the term under construction
             $search->{$type} =  {} unless $search->{$type};
