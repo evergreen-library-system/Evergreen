@@ -359,7 +359,7 @@ BEGIN
 			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
 		END LOOP;
 
-		IF current_fines >= circ_test.max_overdue THEN
+		IF current_fines >= circ_test.max_fines THEN
 			result.fail_part := 'config.circ_matrix_test.max_fines';
 			result.success := FALSE;
 			RETURN NEXT result;
