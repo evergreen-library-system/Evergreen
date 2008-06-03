@@ -842,7 +842,7 @@ sub set_user_perms {
 	my $perms = $session->request('open-ils.storage.permission.user_perms.atomic', $user_obj->id)->gather(1);
 
 	my $all = undef;
-	$all = 1 if ($user_obj->super_user());
+	$all = 1 if ($U->is_true($user_obj->super_user()));
     $all = 1 unless ($U->check_perms($user_obj->id, $user_obj->home_ou, 'EVERYTHING'));
 
 	for my $map (@$maps) {
@@ -855,8 +855,7 @@ sub set_user_perms {
 			$map->clear_id;
 		}
 
-		next if (!$all || !grep { $_->perm eq $map->perm and $U->is_true($_->grantable) and $_->depth <= $map->depth } @$perms);
-
+		next if (!$all and !grep { $_->perm eq $map->perm and $U->is_true($_->grantable) and $_->depth <= $map->depth } @$perms);
 		#warn( "Updating permissions with method $method and session $ses and map $map" );
 		$logger->info( "Updating permissions with method $method and map $map" );
 
