@@ -101,6 +101,7 @@ autojs-install:
 	cp extras/org_tree_html_options.pl $(BINDIR)
 	cp extras/org_tree_proximity.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
+	cp extras/openurl_map.pl $(BINDIR)
 	cp support-scripts/offline-blocked-list.pl $(BINDIR) # this should probably be somewhere else
 # -----------------------------------------------------------------------------------
 
