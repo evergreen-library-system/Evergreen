@@ -514,9 +514,8 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	return undef unless $self;
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', undef);
-	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
 	$self->{type} = 'application/xml';
-	$self->{holdings_xpath} = '/marc:record';
+	$self->{holdings_xpath} = '/*[local-name()="record"]';
 	return $self;
 }
 
@@ -527,7 +526,7 @@ sub link {
 
 	if ($type eq 'opac') {
 		$self->_create_node(
-			'marc:record',
+			'*[local-name()="record"]',
 			'http://www.w3.org/1999/xhtml',
 			'xhtml:link',
 			undef,
@@ -536,7 +535,7 @@ sub link {
 		$linkid++;
 	} elsif ($type eq 'unapi-id') {
 		$self->_create_node(
-			'marc:record',
+			'*[local-name()="record"]',
 			'http://www.w3.org/1999/xhtml',
 			'xhtml:abbr',
 			undef,
