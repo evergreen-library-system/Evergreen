@@ -61,7 +61,7 @@ vim:et:ts=4:sw=4:
                 </database>
                 <files>
                     <!-- successful report outputs go here -->
-                    <output_base>/openils/var/web/reporter/output</output_base>
+                    <output_base>/openils/var/web/reporter</output_base>
                     <success_template>/openils/var/data/report-success</success_template>
                     <fail_template>/openils/var/data/report-fail</fail_template>
                 </files>
