@@ -147,15 +147,8 @@ function main_init() {
 							'Check here to confirm this message'
 						);
 						if (r == 0) {
-							var count = 0;
-							var filename = 'pending_xacts_exported_' + new Date().getTime();
-							var t_file = new util.file(filename);
-							while (t_file._file.exists()) {
-								filename = 'pending_xacts_' + new Date().getTime() + '.exported';
-								t_file = new util.file(filename);
-								if (count++>100) throw('Error purging transactions:  Taking too long to find a unique filename for archival.');
-							}
-							file._file.moveTo(null,filename);
+                            file.close();
+                            rename_file();
 						} else {
 							alert('Please note that you now have two sets of identical transactions.  Unless the set you just exported is soley for archival purposes, we run the risk of duplicate transactions being processed on the server.');
 						}
@@ -330,5 +323,29 @@ function handle_migration() {
 		}
 	}
 }
+
+function rename_file() {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    try {
+
+        JSAN.use('util.file'); 
+        var pending = new util.file('pending_xacts');
+        if ( !pending._file.exists() ) { throw("Can't rename a non-existent file"); }
+        var transition_filename = 'pending_xacts_' + new Date().getTime();
+        var count = 0;
+        var file = new util.file(transition_filename);
+        while (file._file.exists()) {
+            transition_filename = 'pending_xacts_' + new Date().getTime();
+            file = new util.file(transition_filename);
+            if (count++>100) throw("Taking too long to find a unique filename.");
+        }
+        pending._file.moveTo(null,transition_filename);
+
+    } catch(E) {
+        alert('Error renaming xact file\n'+E);
+    }
+}
+
 
 dump('exiting main/main.js\n');
