@@ -550,6 +550,9 @@
 	<event code='1640' textcode='ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested actor_usr_org_unit_opt_in was not found</desc>
 	</event>
+	<event code='1641' textcode='ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_open_circ_count_by_circ_mod was not found</desc>
+	</event>
 
 
 
