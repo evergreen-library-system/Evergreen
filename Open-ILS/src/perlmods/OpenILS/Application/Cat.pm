@@ -1053,26 +1053,30 @@ sub update_copy {
 
 sub remove_empty_objects {
 	my( $editor, $override, $vol ) = @_; 
+
+    my $koe = $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
+    my $aoe =  $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.alert_on_empty', $editor);
+
 	if( title_is_empty($editor, $vol->record) ) {
 
-		# disable the TITLE_LAST_COPY event for now
-		# if( $override ) {
-		if( 1 ) {
+        # delete this volume if it's not already marked as deleted
+        unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
+            $vol->deleted('t');
+            $vol->editor($editor->requestor->id);
+            $vol->edit_date('now');
+            $editor->update_asset_call_number($vol) or return $editor->event;
+        }
 
-			# delete this volume if it's not already marked as deleted
-			unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
-				$vol->deleted('t');
-				$vol->editor($editor->requestor->id);
-				$vol->edit_date('now');
-				$editor->update_asset_call_number($vol) or return $editor->event;
-			}
+        unless($koe) {
+            # delete the bib record if the keep-on-empty setting is not set
+            my $evt = delete_rec($editor, $vol->record);
+            return $evt if $evt;
+        }
 
-         my $evt = delete_rec($editor, $vol->record);
-         return $evt if $evt;
-
-		} else {
-			return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record );
-		}
+        # return the empty alert if the alert-on-empty setting is set
+        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) if $aoe;
 	}
 
 	return undef;
