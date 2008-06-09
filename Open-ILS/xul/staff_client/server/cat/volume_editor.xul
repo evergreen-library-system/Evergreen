@@ -20,7 +20,7 @@
 
 <window id="cat_volume_editor_win" 
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	title="Volumes" height="400" width="300"
+	title="Volumes" height="400" width="300" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
