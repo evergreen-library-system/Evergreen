@@ -246,7 +246,60 @@ sub biblio_record_replace_marc  {
 	return undef;
 }
 
+__PACKAGE__->register_method(
+	method	=> "update_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.update",
+    signature => q/
+        Updates a biblio.record_entry
+        @param auth The authtoken
+        @param record The record with updated values
+        @return 1 on success, Event on error.
+    /
+);
 
+sub update_biblio_record_entry {
+    my($self, $conn, $auth, $record) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_RECORD');
+    $e->update_biblio_record_entry($record) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method	=> "undelete_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.undelete",
+    signature => q/
+        Un-deletes a record and sets active=true
+        @param auth The authtoken
+        @param record The record_id to ressurect
+        @return 1 on success, Event on error.
+    /
+);
+sub undelete_biblio_record_entry {
+    my($self, $conn, $auth, $record_id) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_RECORD');
+
+    my $record = $e->retrieve_biblio_record_entry($record_id)
+        or return $e->die_event;
+    $record->deleted('f');
+    $record->active('t');
+
+    # no 2 non-deleted records can have the same tcn_value
+    my $existing = $e->search_biblio_record_entry(
+        {   deleted => 'f', 
+            tcn_value => $record->tcn_value, 
+            id => {'!=' => $record_id}
+        }, {idlist => 1});
+    return OpenILS::Event->new('TCN_EXISTS') if @$existing;
+
+    $e->update_biblio_record_entry($record) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
 
 
 __PACKAGE__->register_method(
