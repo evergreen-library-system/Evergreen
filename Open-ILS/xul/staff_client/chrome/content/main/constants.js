@@ -137,6 +137,7 @@ const api = {
     'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.multiclass.query.staff' },
 	'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn', 'secure' : false },
 	'FM_BRE_DELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.delete', 'secure' : false },
+	'FM_BRE_UNDELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.undelete', 'secure' : false },
 	'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn', 'secure' : false },
 	'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all', 'secure' : false },
 	'FM_CIRC_DETAILS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve' },
