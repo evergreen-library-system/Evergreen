@@ -353,6 +353,9 @@ sub create_lineitem_detail {
     my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
         or return $e->die_event;
 
+    my $evt = update_li_edit_time($e, $li);
+    return $evt if $evt;
+
     # XXX check lineitem provider perms
 
     if($li_detail->fund) {
@@ -392,9 +395,23 @@ sub update_lineitem_detail {
 
     # XXX check lineitem perms
 
+    my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
+        or return $e->die_event;
+    my $evt = update_li_edit_time($e, $li);
+    return $evt if $evt;
+
     $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
     $e->commit;
     return 1;
+}
+
+sub update_li_edit_time {
+    my ($e, $li) = @_;
+    return OpenILS::Event->new('ACQ_LINEITEM_APPROVED', payload => $li->id)
+        if $li->state eq 'approved';
+    $li->edit_time('now');
+    $e->update_acq_lineitem($li) or return $e->die_event;
+    return undef;
 }
 
 
@@ -423,7 +440,9 @@ sub delete_lineitem_detail {
     ]) or return $e->die_event;
 
     my $li = $li_detail->lineitem;
-    $e->update_acq_lineitem($li) or return $e->die_event;
+
+    my $evt = update_li_edit_time($e, $li);
+    return $evt if $evt;
 
     return OpenILS::Event->new('BAD_PARAMS') unless 
         $li->state =~ /new|approved/;
