@@ -52,7 +52,12 @@ dojo.declare('openils.acq.Lineitems', null, {
                 }
             }
         );
-    }
+    },
+
+    setState: function(newState, oncomplete) {
+	this.lineitem.state(newState);
+	this.update(oncomplete);
+    },
 });
 
 openils.acq.Lineitems.ModelCache = {};

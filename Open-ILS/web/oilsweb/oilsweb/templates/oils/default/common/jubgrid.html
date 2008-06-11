@@ -70,15 +70,34 @@ pointing to the JUB model (and store) that you have created.
 	    },
         ]]
     }];
+
+    JUBGrid.jubDetailGridLayoutReadOnly = [{
+        cells: [[
+            {name:"ID", field:"id"},
+            {name:"Fund", field:"fund",
+             get:JUBGrid.getLIDFundName,
+            },
+            {name:"Branch", field:"owning_lib",
+	     get:JUBGrid.getLIDLibName,
+	    },
+        ]]
+    }];
     </script>
 
     <div id="${domprefix + '-container'}"
 	 dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+	<div dojoType="dijit.layout.ContentPane"
+	     id=${domprefix+"-jub-buttonbar"}>
+	    <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
+		${_('Approve Selected Titles')}
+	    </button>
+	</div>
 	    <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
-            dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}"> </div>
+		 dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
+	    </div>
     </div>
     <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
-	<div jsid="lineItemButtonbar" dojoType="dijit.layout.ContentPane"
+	<div dojoType="dijit.layout.ContentPane"
 	     id=${domprefix+"-details-buttonbar"}>
 	    <div dojoType="dijit.form.DropDownButton">
 		<span>${_('New Copy')}</span>
@@ -117,7 +136,7 @@ pointing to the JUB model (and store) that you have created.
 		    </table>
 		</div>
 	    </div>
-	    <button dojotype='dijit.form.Button' onclick='JUBGrid.deleteLID'>
+	    <button dojoType='dijit.form.Button' onclick='JUBGrid.deleteLID'>
 		${_('Delete Selected Copy')}
 	    </button>
 	</div>

@@ -70,18 +70,53 @@ var JUBGrid = {
         return fieldmapper.aou.findOrgUnit(data.owning_lib).shortname();
     },
     populate : function(gridWidget, model, lineitems) {
-        JUBGrid.lineitems = lineitems;
+	for (var i in lineitems) {
+	    JUBGrid.lineitems[lineitems[i].id()] = lineitems[i];
+	}
         JUBGrid.jubGrid = gridWidget;
         JUBGrid.jubGrid.setModel(model);
         dojo.connect(gridWidget, "onRowClick", 
             function(evt) {
-		JUBGrid.jubDetailGrid.lineitemID = model.getRow(evt.rowIndex).id;
+		var jub = model.getRow(evt.rowIndex);
+		var grid;
+
+		JUBGrid.jubDetailGrid.lineitemID = jub.id;
+
+		if (jub.state == "approved") {
+		    grid = JUBGrid.jubDetailGridLayoutReadOnly;
+		} else {
+		    grid = JUBGrid.jubDetailGridLayout;
+		}
 		openils.acq.Lineitems.loadGrid(
                     JUBGrid.jubDetailGrid, 
-                    JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, JUBGrid.jubDetailGridLayout);
+                    JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
             });
         gridWidget.update();
     },
+
+    approveJUB: function(evt) {
+	var list = [];
+	var selected = JUBGrid.jubGrid.selection.getSelected();
+
+	for (var idx = 0; idx < selected.length; idx++) {
+	    var rowIdx = selected[idx];
+	    var jub = JUBGrid.jubGrid.model.getRow(rowIdx);
+	    var li = new openils.acq.Lineitems({lineitem:JUBGrid.getLi(jub.id)});
+	    var approveStore = function() {
+		var approveACQLI = function(jub, rq) {
+		    JUBGrid.jubGrid.model.store.setValue(jub,
+							 "state", "approved");
+		};
+		JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id},
+						   onItem: approveACQLI});
+	    };
+
+	    li.setState("approved", approveStore);
+	}
+
+	JUBGrid.jubGrid.update();
+    },
+
     deleteLID: function(evt) {
 	var list =[];
 	var selected = JUBGrid.jubDetailGrid.selection.getSelected();
