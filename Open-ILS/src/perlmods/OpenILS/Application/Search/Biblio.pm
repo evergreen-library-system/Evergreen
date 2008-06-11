@@ -758,6 +758,9 @@ sub staged_search {
 
     my $user_offset = $search_hash->{offset} || 0; # user-specified offset
     my $user_limit = $search_hash->{limit} || 10;
+    $user_offset = ($user_offset >= 0) ? $user_offset : 0;
+    $user_limit = ($user_limit >= 0) ? $user_limit : 10;
+
 
     # we're grabbing results on a per-superpage basis, which means the 
     # limit and offset should coincide with superpage boundaries

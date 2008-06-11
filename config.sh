@@ -64,7 +64,7 @@ function buildConfig {
 	CATALOGSCRIPTDIR="$PREFIX/var/catalog";
 	PENALTYRULESDIR="$PREFIX/var/penalty";
 	XSLDIR="$PREFIX/var/xsl";
-	REPORTERDIR="$PREFIX/var/reporter";
+	REPORTERDIR="$PREFIX/var/web/reporter";
 	TMP="$(pwd)/.tmp";
 	ADMINDIR="$PREFIX/var/admin";
 

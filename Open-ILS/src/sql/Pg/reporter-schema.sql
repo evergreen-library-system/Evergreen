@@ -154,6 +154,7 @@ SELECT	r.id,
 
 CREATE TABLE reporter.materialized_simple_record AS SELECT * FROM reporter.old_super_simple_record WHERE 1=0;
 ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
+
 CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
@@ -183,6 +184,29 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER zzz_update_materialized_simple_record_tgr
     AFTER INSERT OR UPDATE OR DELETE ON metabib.full_rec
     FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
+
+CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
+    DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.full_rec;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
+
+    TRUNCATE TABLE reporter.materialized_simple_record;
+
+    INSERT INTO reporter.materialized_simple_record
+        (id,fingerprint,quality,tcn_source,tcn_value,title,author,publisher,pubdate,isbn,issn)
+        SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record;
+
+    CREATE TRIGGER zzz_update_materialized_simple_record_tgr
+        AFTER INSERT OR UPDATE OR DELETE ON metabib.full_rec
+        FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
+
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.refresh_materialized_simple_record () RETURNS VOID AS $$
+    SELECT reporter.disable_materialized_simple_record_trigger();
+    SELECT reporter.enable_materialized_simple_record_trigger();
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE VIEW reporter.demographic AS
 SELECT	u.id,

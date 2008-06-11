@@ -97,6 +97,7 @@ DEBS =  \
     libreadline5-dev\
 	libtext-csv-perl\
 	libspreadsheet-writeexcel-perl\
+	libole-storage-lite-perl\
 	libtie-ixhash-perl\
 	python-dev\
 	python-setuptools\

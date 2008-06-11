@@ -246,7 +246,60 @@ sub biblio_record_replace_marc  {
 	return undef;
 }
 
+__PACKAGE__->register_method(
+	method	=> "update_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.update",
+    signature => q/
+        Updates a biblio.record_entry
+        @param auth The authtoken
+        @param record The record with updated values
+        @return 1 on success, Event on error.
+    /
+);
 
+sub update_biblio_record_entry {
+    my($self, $conn, $auth, $record) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_RECORD');
+    $e->update_biblio_record_entry($record) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method	=> "undelete_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.undelete",
+    signature => q/
+        Un-deletes a record and sets active=true
+        @param auth The authtoken
+        @param record The record_id to ressurect
+        @return 1 on success, Event on error.
+    /
+);
+sub undelete_biblio_record_entry {
+    my($self, $conn, $auth, $record_id) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_RECORD');
+
+    my $record = $e->retrieve_biblio_record_entry($record_id)
+        or return $e->die_event;
+    $record->deleted('f');
+    $record->active('t');
+
+    # no 2 non-deleted records can have the same tcn_value
+    my $existing = $e->search_biblio_record_entry(
+        {   deleted => 'f', 
+            tcn_value => $record->tcn_value, 
+            id => {'!=' => $record_id}
+        }, {idlist => 1});
+    return OpenILS::Event->new('TCN_EXISTS') if @$existing;
+
+    $e->update_biblio_record_entry($record) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
 
 
 __PACKAGE__->register_method(
@@ -1053,26 +1106,30 @@ sub update_copy {
 
 sub remove_empty_objects {
 	my( $editor, $override, $vol ) = @_; 
+
+    my $koe = $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
+    my $aoe =  $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.alert_on_empty', $editor);
+
 	if( title_is_empty($editor, $vol->record) ) {
 
-		# disable the TITLE_LAST_COPY event for now
-		# if( $override ) {
-		if( 1 ) {
+        # delete this volume if it's not already marked as deleted
+        unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
+            $vol->deleted('t');
+            $vol->editor($editor->requestor->id);
+            $vol->edit_date('now');
+            $editor->update_asset_call_number($vol) or return $editor->event;
+        }
 
-			# delete this volume if it's not already marked as deleted
-			unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
-				$vol->deleted('t');
-				$vol->editor($editor->requestor->id);
-				$vol->edit_date('now');
-				$editor->update_asset_call_number($vol) or return $editor->event;
-			}
+        unless($koe) {
+            # delete the bib record if the keep-on-empty setting is not set
+            my $evt = delete_rec($editor, $vol->record);
+            return $evt if $evt;
+        }
 
-         my $evt = delete_rec($editor, $vol->record);
-         return $evt if $evt;
-
-		} else {
-			return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record );
-		}
+        # return the empty alert if the alert-on-empty setting is set
+        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) if $aoe;
 	}
 
 	return undef;

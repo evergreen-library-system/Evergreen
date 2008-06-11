@@ -79,14 +79,15 @@ static int max_flesh_depth = 100;
 void osrfAppChildExit() {
 	osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
 
-	if (writehandle) {
-		dbi_conn_query(writehandle, "ROLLBACK;");
-		dbi_conn_close(writehandle);
-		writehandle = NULL;
-	}
-
-	if (dbhandle)
-		dbi_conn_close(dbhandle);
+    int same = 0;
+    if (writehandle == dbhandle) same = 1;
+    if (writehandle) {
+        dbi_conn_query(writehandle, "ROLLBACK;");
+        dbi_conn_close(writehandle);
+        writehandle = NULL;
+    }
+    if (dbhandle && !same)
+        dbi_conn_close(dbhandle);
 
 	// XXX add cleanup of readHandles whenever that gets used
 

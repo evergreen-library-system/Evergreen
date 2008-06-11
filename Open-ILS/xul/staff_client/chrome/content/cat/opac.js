@@ -248,6 +248,25 @@ function delete_record() {
 	}
 }
 
+function undelete_record() {
+    if (g.error.yns_alert(
+		document.getElementById('offlineStrings').getFormattedString('cat.opac.undelete_record.confirm', [docid]),
+		document.getElementById('offlineStrings').getString('cat.opac.undelete_record'),
+		document.getElementById('offlineStrings').getString('cat.opac.undelete'),
+		document.getElementById('offlineStrings').getString('cat.opac.cancel'),
+		null,
+		document.getElementById('offlineStrings').getString('cat.opac.record_undeleted.confirm')) == 0) {
+
+        var robj = g.network.simple_request('FM_BRE_UNDELETE',[ses(),docid]);
+        if (typeof robj.ilsevent != 'undefined') {
+			alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_undeleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
+        } else {
+			alert(document.getElementById('offlineStrings').getString('cat.opac.record_undeleted'));
+			refresh_display(docid,true);
+        }
+    }
+}
+
 function refresh_display(id,reset) {
 	try { 
 		while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );

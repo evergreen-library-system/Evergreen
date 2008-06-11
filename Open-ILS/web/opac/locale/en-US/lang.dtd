@@ -236,6 +236,8 @@
 <!ENTITY staff.cat.opac.mark_for_overlay.label "Mark for Overlay">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
+<!ENTITY staff.cat.opac.undelete_record.accesskey "U">
+<!ENTITY staff.cat.opac.undelete_record.label "Undelete Record">
 <!ENTITY staff.cat.opac.menu.accesskey "A">
 <!ENTITY staff.cat.opac.menu.label "Actions for this Record">
 <!ENTITY staff.cat.opac.opac_view.accesskey "O">

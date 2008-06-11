@@ -209,7 +209,8 @@ function hasCommonAncestor( org1, org2, depth ) {
 function checkoutsByCircModifier(userid) {
     var key = scratchKey();
     __OILS_FUNC_userCircsByCircmod(scratchPad(key), userid);
-    return getScratch(key);
+    var val = getScratch(key);
+    return (val) ? val : {};
 }
 
 /* useful for testing */

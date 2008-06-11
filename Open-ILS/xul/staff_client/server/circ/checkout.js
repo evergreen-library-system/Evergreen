@@ -291,7 +291,9 @@ circ.checkout.prototype = {
 			obj.patron = obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
             var params = { 
                 'patron' : obj.patron, 
-                'header' : 'checkout',
+                'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+                'staff' : obj.data.list.au[0],
+                'template' : 'checkout',
                 'callback' : function() {
                     setTimeout(
                         function(){

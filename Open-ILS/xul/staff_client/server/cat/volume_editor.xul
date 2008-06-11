@@ -20,7 +20,7 @@
 
 <window id="cat_volume_editor_win" 
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	title="Volumes"
+	title="Volumes" height="400" width="300" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -100,6 +100,7 @@
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Volume Editor"/>
 		<hbox>
+			<button label="Cancel" oncommand="window.close();"/>
 			<spacer flex="1" />
 			<button label="Modify" oncommand="g.stash_and_close();"/>
 		</hbox>
