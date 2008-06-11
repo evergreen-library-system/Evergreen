@@ -2442,15 +2442,15 @@ sub staged_fts {
 
 	my $param_search_ou = $ou;
 	my $param_depth = $args{depth}; $param_depth = 'NULL' unless (defined($param_depth) and length($param_depth) > 0 );
-    my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
-    my $param_statuses = '$${' . join(',', map { s/\$//go; $_ } @statuses) . '}$$';
-    my $param_audience = '$${' . join(',', map { s/\$//go; $_ } @aud) . '}$$';
-    my $param_language = '$${' . join(',', map { s/\$//go; $_ } @lang) . '}$$';
-    my $param_lit_form = '$${' . join(',', map { s/\$//go; $_ } @lit_form) . '}$$';
-    my $param_types = '$${' . join(',', map { s/\$//go; $_ } @types) . '}$$';
-    my $param_forms = '$${' . join(',', map { s/\$//go; $_ } @forms) . '}$$';
-    my $param_vformats = '$${' . join(',', map { s/\$//go; $_ } @vformats) . '}$$';
-    my $param_bib_level = '$${' . join(',', map { s/\$//go; $_ } @bib_level) . '}$$';
+	my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
+	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
+	my $param_audience = '$${' . join(',', map { s/\$//go; "\"$_\"" } @aud) . '}$$';
+	my $param_language = '$${' . join(',', map { s/\$//go; "\"$_\""} @lang) . '}$$';
+	my $param_lit_form = '$${' . join(',', map { s/\$//go; "\"$_\"" } @lit_form) . '}$$';
+	my $param_types = '$${' . join(',', map { s/\$//go; "\"$_\""} @types) . '}$$';
+	my $param_forms = '$${' . join(',', map { s/\$//go; "\"$_\""} @forms) . '}$$';
+	my $param_vformats = '$${' . join(',', map { s/\$//go; "\"$_\"" } @vformats) . '}$$';
+    my $param_bib_level = '$${' . join(',', map { s/\$//go; "\"$_\"" } @bib_level) . '}$$';
 	my $param_pref_lang = $args{preferred_language}; $param_pref_lang =~ s/\$//go; $param_pref_lang = '$$'.$param_pref_lang.'$$';
 	my $param_pref_lang_multiplier = $args{preferred_language_weight}; $param_pref_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
