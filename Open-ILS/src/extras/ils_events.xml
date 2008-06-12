@@ -793,6 +793,10 @@
 		<desc xml:lang="en-US"> A report with the given name and folder already exists</desc>
 	</event>
 
+	<event code='10000' textcode='ACQ_LINEITEM_APPROVED'>
+		<desc xml:lang="en-US">The lineitem cannot be altered because it has already been approved</desc>
+	</event>
+
 
 
 	<!-- ================================================================ -->
