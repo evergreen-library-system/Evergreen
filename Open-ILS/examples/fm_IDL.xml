@@ -3475,9 +3475,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC" name="marc" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Source Label" name="source_label" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="State" name="state" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="State" name="state" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="15" oils_persist:virtual="true" reporter:datatype="int" />
 			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link" />

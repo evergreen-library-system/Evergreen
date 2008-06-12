@@ -210,6 +210,10 @@ sub retrieve_lineitem {
         push(@{$ops->{flesh_fields}->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
         my $details = $e->search_acq_lineitem_detail([{lineitem => $li_id}, $ops]);
         $li->lineitem_details($details);
+        $li->item_count(scalar(@$details));
+    } else {
+        my $details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
+        $li->item_count(scalar(@$details));
     }
 
     if($li->picklist) {

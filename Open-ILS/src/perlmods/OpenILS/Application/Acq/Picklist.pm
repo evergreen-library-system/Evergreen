@@ -375,6 +375,8 @@ sub retrieve_pl_lineitem {
             {flesh => 1, flesh_fields => {jub => ['attributes']}} : {};
 
         $entry = $e->retrieve_acq_lineitem([$id, $flesh]);
+        my $details = $e->search_acq_lineitem_detail({lineitem => $id}, {idlist=>1});
+        $entry->item_count(scalar(@$details));
         $entry->clear_marc if $$options{clear_marc};
         $conn->respond($entry);
     }
