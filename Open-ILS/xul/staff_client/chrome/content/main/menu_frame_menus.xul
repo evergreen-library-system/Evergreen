@@ -34,6 +34,7 @@
 	<command id="cmd_search_opac" key="search-opac-key" />
 	<command id="cmd_public_opac" />
 	<command id="cmd_search_tcn" />
+	<command id="cmd_search_bib_id" />
 	<command id="cmd_patron_register" key="patron-register-key" />
 	<command id="cmd_standalone" />
 	<command id="cmd_survey_wizard" />
@@ -150,6 +151,7 @@
 	<menupopup id="main.menu.cat.popup">
 		<menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.key;" key="search-opac-key" command="cmd_search_opac"/>
 		<menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
+		<menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
 		<menuitem label="&staff.main.menu.cat.copy_status.label;" accesskey="&staff.main.menu.cat.copy_status.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuseparator />
 		<!--
@@ -173,6 +175,7 @@
 		<menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" key="patron-search-key" command="cmd_patron_search" />
 		<menuitem label="&staff.main.menu.search.catalog.label;" accesskey="&staff.main.menu.search.catalog.accesskey;" key="search-opac-key" command="cmd_search_opac" />
 		<menuitem label="&staff.main.menu.search.record.label;" accesskey="&staff.main.menu.search.record.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
+		<menuitem label="&staff.main.menu.search.record_via_id.label;" accesskey="&staff.main.menu.search.record_via_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
 		<menuitem label="&staff.main.menu.search.copies.label;" accesskey="&staff.main.menu.search.copies.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
 	</menupopup>
