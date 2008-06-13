@@ -58,7 +58,7 @@
 	<vbox id="admin_offline_manage_xacts_main" flex="1">
 
 		<groupbox flex="1">
-			<caption label="&staff.server.admin.offline.xacts.sessions;"/>
+			<caption label="&staff.server.admin.offline.xacts.caption;"/>
 			<hbox>
 				<button id="refresh" label="&common.refresh;" accesskey="&staff.server.admin.offline.xacts.refresh.accesskey;"/>
 				<button id="create" label="&staff.server.admin.offline.xacts.create.label;" disabled="true"/>
