@@ -490,4 +490,51 @@ sub retrieve_lineitem_detail {
 }
 
 
+
+__PACKAGE__->register_method(
+	method => 'approve_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.approve',
+	signature => {
+        desc => 'Mark a lineitem as approved',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+sub approve_lineitem {
+    my($self, $conn, $auth, $li_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX perm checks for each lineitem detail
+
+    my $li = $e->retrieve_acq_lineitem($li_id)
+        or return $e->die_event;
+
+    return OpenILS::Event->new('ACQ_LINEITEM_APPROVED', payload => $li_id)
+        if $li->state eq 'approved';
+
+    my $details = $e->search_acq_lineitem_detail({lineitem => $li_id});
+    return OpenILS::Event->new('ACQ_LINEITEM_NO_COPIES', payload => $li_id)
+        unless scalar(@$details) > 0;
+
+    for my $detail (@$details) {
+        return OpenILS::Event->new('ACQ_LINEITEM_DETAIL_NO_FUND', payload => $detail->id)
+            unless $detail->fund;
+
+        return OpenILS::Event->new('ACQ_LINEITEM_DETAIL_NO_ORG', payload => $detail->id)
+            unless $detail->owning_lib;
+    }
+    
+    $li->state('approved');
+    $li->edit_time('now');
+    $e->update_acq_lineitem($li) or return $e->die_event;
+
+    $e->commit;
+    return 1;
+}
+
+
 1;
