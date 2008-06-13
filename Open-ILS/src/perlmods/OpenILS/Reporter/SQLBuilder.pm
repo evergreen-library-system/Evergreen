@@ -927,7 +927,7 @@ sub toSQL {
 
 	return $self->{_sql} if ($self->{_sql});
 
-	my $sql;
+	my $sql = '';
 
 	my $rel = $self->find_relation();
 	if ($rel && $rel->is_nullable) {
@@ -941,12 +941,22 @@ sub toSQL {
 
 	if (lc($op) eq 'in') {
 		$sql .= " IN (". join(",", map { $_->toSQL } @$val).")";
+
 	} elsif (lc($op) eq 'not in') {
 		$sql .= " NOT IN (". join(",", map { $_->toSQL } @$val).")";
+
+	} elsif (lc($op) eq 'is blank') {
+		$sql = '('. $self->SUPER::toSQL ." IS NULL OR ". $self->SUPER::toSQL ." = '')";
+
+	} elsif (lc($op) eq 'is not blank') {
+		$sql = '('. $self->SUPER::toSQL ." IS NOT NULL AND ". $self->SUPER::toSQL ." <> '')";
+
 	} elsif (lc($op) eq 'between') {
 		$sql .= " BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
+
 	} elsif (lc($op) eq 'not between') {
 		$sql .= " NOT BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
+
 	} elsif (lc($op) eq 'like') {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
 		$val = $val->toSQL;
@@ -954,6 +964,7 @@ sub toSQL {
 		$val =~ s/%/\\\\%/o;
 		$val =~ s/_/\\\\_/o;
 		$sql .= " LIKE '\%$val\%'";
+
 	} elsif (lc($op) eq 'ilike') {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
 		$val = $val->toSQL;
@@ -961,6 +972,7 @@ sub toSQL {
 		$val =~ s/%/\\\\%/o;
 		$val =~ s/_/\\\\_/o;
 		$sql .= " ILIKE '\%$val\%'";
+
 	} else {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
 		$sql .= " $op " . $val->toSQL;

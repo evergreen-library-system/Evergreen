@@ -55,6 +55,14 @@ var OILS_RPT_FILTERS = {
 
 	'is not' : {
 		label : 'Is not NULL'
+	},
+
+	'is blank' : {
+		label : 'Is NULL or Blank'
+	},
+
+	'is not blank' : {
+		label : 'Is not NULL or Blank'
 	}
 }
 
