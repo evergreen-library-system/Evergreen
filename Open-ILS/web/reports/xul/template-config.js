@@ -915,7 +915,7 @@ function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	if (tab_name.match(/filter/)) {
 		element.condition = {};
-		if (tab[field].op == 'is' || tab[field].op == 'is not') {
+		if (tab[field].op == 'is' || tab[field].op == 'is not' || tab[field].op == 'is blank' || tab[field].op == 'is not blank') {
 			element.condition[tab[field].op] = null;
 		} else {
 			element.condition[tab[field].op] =
