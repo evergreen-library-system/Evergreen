@@ -796,6 +796,15 @@
 	<event code='10000' textcode='ACQ_LINEITEM_APPROVED'>
 		<desc xml:lang="en-US">The lineitem cannot be altered because it has already been approved</desc>
 	</event>
+	<event code='10001' textcode='ACQ_LINEITEM_NO_COPIES'>
+		<desc xml:lang="en-US">The lineitem has no attachec copies</desc>
+	</event>
+	<event code='10002' textcode='ACQ_LINEITEM_DETAIL_NO_FUND'>
+		<desc xml:lang="en-US">The lineitem detail has no associated fund</desc>
+	</event>
+	<event code='10003' textcode='ACQ_LINEITEM_DETAIL_NO_ORG'>
+		<desc xml:lang="en-US">The lineitem detail has no owning_lib</desc>
+	</event>
 
 
 
