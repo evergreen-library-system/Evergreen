@@ -632,6 +632,8 @@
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
 <!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve record by TCN">
+<!ENTITY staff.main.menu.cat.search_bib_id.accesskey "D">
+<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve record by Record ID">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
 <!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
@@ -759,6 +761,8 @@
 <!ENTITY staff.main.menu.search.patrons_barcode.label "for patron by Barcode">
 <!ENTITY staff.main.menu.search.record.accesskey "T">
 <!ENTITY staff.main.menu.search.record.label "for record by TCN">
+<!ENTITY staff.main.menu.search.record_via_id.accesskey "D">
+<!ENTITY staff.main.menu.search.record_via_id.label "for record by Record ID">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">

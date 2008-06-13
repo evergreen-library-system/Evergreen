@@ -230,6 +230,25 @@ main.menu.prototype = {
 					}
 				}
 			],
+			'cmd_search_bib_id' : [
+				['oncommand'],
+				function() {
+					var bib_id = prompt(offlineStrings.getString('menu.cmd_search_bib_id.tab'),'',offlineStrings.getString('menu.cmd_search_bib_id.prompt'));
+                    if (!bib_id) return;
+
+					var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + bib_id;
+					var content_params = { 
+						'session' : ses(), 
+						'authtime' : ses('authtime'),
+						'opac_url' : opac_url,
+					};
+					obj.set_tab(
+						obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
+						{'tab_name':'#' + bib_id}, 
+						content_params
+					);
+				}
+			],
 			'cmd_copy_status' : [
 				['oncommand'],
 				function() {
