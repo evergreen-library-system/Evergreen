@@ -12,14 +12,14 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="record_buckets_win" title="Add to Bucket"
+<window id="record_buckets_win" title="&staff.cat.record_buckets_quick.add_to_bucket.title;"
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -37,11 +37,11 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for record_buckets.xul');
+				g.error.sdump('D_TRACE','my_init() for cat/record_buckets_quick.xul');
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
@@ -57,8 +57,8 @@
 
 				$('desc').appendChild( document.createTextNode( 
 					(g.record_ids.length == 1 ?
-						'Copy this 1 record into which bucket?' :
-						'Copy these ' + g.record_ids.length + ' items into which bucket?') 
+						$("catStrings").getString('staff.cat.record_buckets_quick.copy_one_record') :
+						$("catStrings").getFormattedString('staff.cat.record_buckets_quick.copy_multiple_records', [g.record_ids.length])) 
 				) );
 				var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
 				if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -75,7 +75,7 @@
 
 			} catch(E) {
 				try { 
-					g.error.standard_unexpected_error_alert('Trying to init record_buckets_quick.xul',E); 
+					g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets_quick.initing_record_buckets_quick_xul'), E);
 				} catch(F) { 
 					alert(E); 
 				}
@@ -84,7 +84,9 @@
 
 		g.new_bucket = function() {
 			try {
-				var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+				var name = prompt($("catStrings").getString('staff.cat.record_buckets_quick.name_of_bucket'),
+					'',
+					$("catStrings").getString('staff.cat.record_buckets_quick.name_of_bucket.title'));
 				if (name) {
 					var bucket = new cbreb();
 					bucket.btype('staff_client');
@@ -97,7 +99,7 @@
 					g.add_to_bucket(bucket_id);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('Bucket creation failed.',E);
+				g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets_quick.bucket_creation_failure'),E);
 			}
 		}
 
@@ -122,7 +124,7 @@
 					if (typeof robj == 'object') throw robj;
 
 				} catch(E) {
-					g.error.standard_unexpected_error_alert('Addition likely failed for bucket = ' + bucket_id + ' and record id = ' + g.record_ids[i],E);
+					g.error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.record_buckets_quick.add_to_bucket.addition_failed', [bucket_id, g.record_ids[i]]), E);
 				}
 			}
 			window.close();
@@ -137,21 +139,28 @@
 
 	]]>
 	</script>
+	
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<vbox flex="1" style="overflow: auto">
 	<groupbox flex="1">
-		<caption label="Record Buckets"/>
+		<caption label="&staff.cat.record_buckets_quick.groupbox.caption;"/>
 		<description id="desc"/>
 		<listbox id="bucket_list" rows="5" flex="1" style="overflow: auto"/>
 		<hbox>
-			<button label="Add to Selected Bucket" accesskey="A" oncommand="g.add_to_bucket()"/>
-			<button label="Add to New Bucket" accesskey="N" oncommand="g.new_bucket()"/>
+			<button label="&staff.cat.record_buckets_quick.add_to_bucket.label;"
+				accesskey="&staff.cat.record_buckets_quick.add_to_bucket.accesskey;" oncommand="g.add_to_bucket()"/>
+			<button label="&staff.cat.record_buckets_quick.new_bucket.label;"
+				accesskey="&staff.cat.record_buckets_quick.new_bucket.accesskey;" oncommand="g.new_bucket()"/>
 		</hbox>
 		<hbox>
 			<!--
 			<button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
 			-->
-			<button label="Cancel" accesskey="C" oncommand="window.close()"/>
+			<button label="&staff.cat.record_buckets_quick.cancel.label;"
+				accesskey="&staff.cat.record_buckets_quick.cancel.accesskey;" oncommand="window.close()"/>
 		</hbox>
 	</groupbox>
 	</vbox>

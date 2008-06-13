@@ -1915,3 +1915,131 @@
 <!ENTITY staff.cat.opac.menuitem.refreshinterfaces.label "Refresh All Interfaces">
 <!ENTITY staff.cat.opac.menuitem.dupnewtab.label "Duplicate in New Tab">
 <!ENTITY staff.cat.opac.menuitem.removeframe.label "Remove this Frame">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_tab.label "Record Query">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_tab.accesskey "Q">
+<!ENTITY staff.cat.record_buckets_overlay.pending_records_tab.label "Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.pending_records_tab.accesskey "P">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_tab.label "Bucket View">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_tab.accesskey "V">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_panel.label "Bucket Actions">
+<!ENTITY staff.cat.record_buckets_overlay.new_bucket.label "New Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.delete_bucket.label "Delete Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.refresh_bucket.label "Refresh">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_label.value "Query">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_label.accesskey "y">
+<!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.label "Submit">
+<!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey "S">
+<!ENTITY staff.cat.record_buckets_overlay.query_help.button.label "Help">
+<!ENTITY staff.cat.record_buckets_overlay.query_help.button.accesskey "H">
+<!ENTITY staff.cat.record_buckets_overlay.query_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip0.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns0.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_query_to_pending.label "Add All to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.add_sel_query_to_pending.label "Add Selected to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip1.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns1.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.label "Add All to current Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.accesskey "A">
+<!ENTITY staff.cat.record_buckets_overlay.add_sel_pending_to_record_bucket.label "Add Selected to current Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_del_item.label "Remove Selected from Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label "Add Selected to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.info_box.label "Bucket #">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_owner.label "Owner:">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip2.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns2.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
+<!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
+<!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
+<!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
+<!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_usmarc.label "MARC21">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_unimarc.label "UNIMARC">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_xml.label "XML">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label "Evergreen BRE">
+<!ENTITY staff.cat.record_buckets_quick.groupbox.caption "Record Buckets">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.title "Add to Bucket">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.label "Add to Selected Bucket">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.accesskey "A">
+<!ENTITY staff.cat.record_buckets_quick.new_bucket.label "Add to New Bucket">
+<!ENTITY staff.cat.record_buckets_quick.new_bucket.accesskey "N">
+<!ENTITY staff.cat.record_buckets_quick.cancel.label "Cancel">
+<!ENTITY staff.cat.record_buckets_quick.cancel.accesskey "C">
+<!ENTITY staff.cat.spine_labels.re-generate.label "Re-Generate">
+<!ENTITY staff.cat.spine_labels.re-generate.accesskey "G">
+<!ENTITY staff.cat.spine_labels.preview_and_print.label "Preview and Print">
+<!ENTITY staff.cat.spine_labels.preview_and_print.accesskey "P">
+<!ENTITY staff.cat.spine_labels.close_window.label "Close Window">
+<!ENTITY staff.cat.spine_labels.close_window.accesskey "C">
+<!ENTITY staff.cat.spine_labels.font_size_label.value "Font size (in pts):">
+<!ENTITY staff.cat.spine_labels.spine_label.value "Spine Label">
+<!ENTITY staff.cat.spine_labels.spine_label.left_margine.value "Left Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_width.value "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_length.value "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.pocket_label.value "Pocket Label">
+<!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.value "Middle Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_width.value "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_length.value "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.pocket_label.title.label "Include Title (wraps on word at label width)">
+<!ENTITY staff.cat.spine_labels.on_line.value "On line:">
+<!ENTITY staff.cat.spine_labels.pocket_label.include_title.label "Include Title (segment after wrapping)">
+<!ENTITY staff.cat.spine_labels.indent_title.label "Indent a space?">
+<!ENTITY staff.cat.spine_labels.inc_call_number.label "Include Call Number">
+<!ENTITY staff.cat.spine_labels.inc_owning_library_policy_code.label "Include Owning Library (policy code)">
+<!ENTITY staff.cat.spine_labels.inc_owning_library.label "Include Owning Library">
+<!ENTITY staff.cat.spine_labels.inc_shelving_location.label "Include Shelving Location">
+<!ENTITY staff.cat.spine_labels.inc_item_barcode.label "Include Item Barcode">
+<!ENTITY staff.cat.spine_labels.custom.label "Custom:">
+<!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
+<!ENTITY staff.cat.volume_copy_creator.label "Volume/Copy Creator">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
+<!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">
+<!ENTITY staff.cat.volume_copy_creator.print_labels.accesskey "P">
+<!ENTITY staff.cat.volume_copy_creator.create.label "Edit then Create">
+<!ENTITY staff.cat.volume_copy_creator.create.accesskey "C">
+<!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">
+<!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
+<!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
+<!ENTITY staff.cat.volume_editor.modify.label "Modify">
+<!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
+<!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">
+<!ENTITY staff.cat.z3950.service.label "Service">
+<!ENTITY staff.cat.z3950.username.label "Username">
+<!ENTITY staff.cat.z3950.password.label "Password">
+<!ENTITY staff.cat.z3950.catalog_service.label "Local Catalog">
+<!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
+<!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
+<!ENTITY staff.cat.z3950.save_creds.accesskey "D">
+<!ENTITY staff.cat.z3950.query.label "Query">
+<!ENTITY staff.cat.z3950.query.label "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
+<!ENTITY staff.cat.z3950.clear.label "Clear Form">
+<!ENTITY staff.cat.z3950.clear.accesskey "C">
+<!ENTITY staff.cat.z3950.search.label "Search">
+<!ENTITY staff.cat.z3950.search.accesskey "S">
+<!ENTITY staff.cat.z3950.results_page.label "Results Page">
+<!ENTITY staff.cat.z3950.results_page.accesskey "P">
+<!ENTITY staff.cat.z3950.results_caption.label "Results">
+<!ENTITY staff.cat.z3950.search_form.label "Search Form">
+<!ENTITY staff.cat.z3950.search_form.accesskey "F">
+<!ENTITY staff.cat.z3950.page_next.label "Fetch More Results">
+<!ENTITY staff.cat.z3950.page_next.accesskey "M">
+<!ENTITY staff.cat.z3950.export.label "CSV to Clipboard">
+<!ENTITY staff.cat.z3950.clip_button.label "Copy to Clipboard">
+<!ENTITY staff.cat.z3950.save_cols_btn.label "Save Columns">
+<!ENTITY staff.cat.z3950.marc_view.label "MARC View">
+<!ENTITY staff.cat.z3950.marc_view.accesskey "V">
+<!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">
+<!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
+<!ENTITY staff.cat.z3950.marc_import.label "MARC Editor for Import">
+<!ENTITY staff.cat.z3950.marc_import.accesskey "I">

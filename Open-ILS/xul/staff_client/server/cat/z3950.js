@@ -1,5 +1,7 @@
 dump('entering cat.z3950.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof cat == 'undefined') cat = {};
 cat.z3950 = function (params) {
 	try {
@@ -69,7 +71,7 @@ cat.z3950.prototype = {
 							obj.controller.view.marc_view.disabled = false;
 							obj.controller.view.marc_view.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
-							obj.error.standard_unexpected_error_alert('Failure during list construction.',E);
+							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_list_init.list_construction_error'),E);
 						}
 					},
 				}
@@ -121,7 +123,7 @@ cat.z3950.prototype = {
 									} else {
 										document.getElementById('deck').selectedIndex = 1;
 										n.setAttribute('toggle','1');
-										n.setAttribute('label','Results View');
+										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.obj_controller_init.deck_label'));
 										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 										var f = get_contentWindow(document.getElementById('marc_frame'));
                                         var retrieve_id = n.getAttribute('retrieve_id');
@@ -132,7 +134,7 @@ cat.z3950.prototype = {
 										f.document.body.firstChild.focus();
 									}
 								} catch(E) {
-			                        obj.error.standard_unexpected_error_alert('Failure during marc view.',E);
+			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_view_error'),E);
 								}
 							},
 						],
@@ -148,7 +150,7 @@ cat.z3950.prototype = {
                                         obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
                                     );
                                 } catch(E) {
-			                        obj.error.standard_unexpected_error_alert('Failure during marc import.',E);
+			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_error'),E);
                                 }
 							},
 						],
@@ -164,7 +166,7 @@ cat.z3950.prototype = {
                                         obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
                                     );
 								} catch(E) {
-			                        obj.error.standard_unexpected_error_alert('Failure during marc import overlay.',E);
+			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_overlay_error'),E);
 								}
 							},
 						],
@@ -275,7 +277,7 @@ cat.z3950.prototype = {
                                                     }
                                                 }
                                             } catch(E) {
-										        obj.error.standard_unexpected_error_alert('Error setting up search fields.',E);
+										        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.search_fields_error'),E);
                                             }
 										}
 
@@ -327,7 +329,7 @@ cat.z3950.prototype = {
 											},0
 										);
 									} catch(E) {
-										obj.error.standard_unexpected_error_alert('Z39.50 services not likely retrieved.',E);
+										obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.z39_service_error'),E);
 									}
 								}
 							}
@@ -376,10 +378,10 @@ cat.z3950.prototype = {
 			util.widgets.remove_children( obj.controller.view.result_message );
 			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
             if (obj.active_services.length < 1) {
-			    x.appendChild( document.createTextNode( 'No services selected to search.' ));
+			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
                 return;
             }
-			x.appendChild( document.createTextNode( 'Searching...' ));
+			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
 			obj.search_params = {}; obj.list.clear();
 			obj.controller.view.page_next.disabled = true;
 
@@ -409,7 +411,7 @@ cat.z3950.prototype = {
 				util.widgets.remove_children( obj.controller.view.result_message );
 			}
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during initial search.',E);
+			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
 		}
 	},
 
@@ -419,11 +421,11 @@ cat.z3950.prototype = {
 			JSAN.use('util.widgets');
 			util.widgets.remove_children( obj.controller.view.result_message );
 			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode( 'Retrieving more results...' ));
+			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.page_next.more_results')));
 			obj.search_params.offset += obj.search_params.limit;
 			obj.search();
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during subsequent search.',E);
+			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.page_next.subsequent_search_error'),E);
 		}
 	},
 
@@ -445,7 +447,7 @@ cat.z3950.prototype = {
 			);
 			document.getElementById('deck').selectedIndex = 0;
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during actual search.',E);
+			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.search.search_error'),E);
 		}
 	},
 
@@ -456,26 +458,27 @@ cat.z3950.prototype = {
 			util.widgets.remove_children( obj.controller.view.result_message ); var x;
 			if (results == null) {
 				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild( document.createTextNode( 'Server Error: request returned null' ));
+				x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.handle_results.null_server_error')));
 				return;
 			}
 			if (typeof results.ilsevent != 'undefined') {
 				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild( document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc ));
+				x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.server_error', [results.textcode, results.desc])));
 				return;
 			}
             if (typeof results.length == 'undefined') results = [ results ];
             for (var i = 0; i < results.length; i++) {
                 if (results[i].query) {
                     x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-                    x.appendChild( document.createTextNode( 'Raw query: ' + results[i].query ));
+                    x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.raw_query', [results[i].query])));
                 }
                 if (results[i].count) {
                     if (results[i].records) {
                         x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
                         var showing = obj.search_params.offset + results[i].records.length; 
                         x.appendChild(
-                            document.createTextNode( 'Showing ' + (showing > results[i].count ? results[i].count : showing) + ' of ' + results[i].count + ' for ' + results[i].service )
+                            document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results',
+								[(showing > results[i].count ? results[i].count : showing), results[i].count, results[i].service]))
                         );
                     }
                     if (obj.search_params.offset + obj.search_params.limit <= results[i].count) {
@@ -484,8 +487,7 @@ cat.z3950.prototype = {
                 } else {
                         x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
                         x.appendChild(
-                            document.createTextNode( (results[i].count ? results[i].count : 0) + ' records found')
-                        );
+                            document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.num_of_results', [(results[i].count ? results[i].count : 0)])));
                 }
                 if (results[i].records) {
                     obj.result_set[ ++obj.number_of_result_sets ] = results[i];
@@ -511,12 +513,12 @@ cat.z3950.prototype = {
                 } else {
                     x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
                     x.appendChild(
-                        document.createTextNode( 'Error retrieving results.')
+                        document.createTextNode($("catStrings").getString('staff.cat.z3950.handle_results.result_error'))
                     );
                 }
             }
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during search result handling.',E);
+			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.handle_results.search_result_error'),E);
 		}
 	},
 
@@ -529,7 +531,7 @@ cat.z3950.prototype = {
 		};
 		xulG.set_tab(
 			xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-			{'tab_name':'Retrieving title...'}, 
+			{'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
 			content_params
 		);
 	},
@@ -549,10 +551,10 @@ cat.z3950.prototype = {
 							if (typeof r.ilsevent != 'undefined') {
 								switch(Number(r.ilsevent)) {
 									case 1704 /* TCN_EXISTS */ :
-										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
-										var title = 'Import Collision';
-										var btn1 = 'Overlay';
-										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
+										var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.same_tcn', [r.payload.tcn]);
+										var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.title');
+										var btn1 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn1_overlay');
+										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.btn2_import', [r.payload.new_tcn]);
 										if (btn2) {
 											obj.data.init({'via':'stash'});
 											var robj = obj.network.simple_request(
@@ -564,12 +566,12 @@ cat.z3950.prototype = {
 												]
 											);
 											if (typeof robj.ilsevent != 'undefined') {
-												obj.error.standard_unexpected_error_alert('check permission',E);
+												obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.permission_error'),E);
 											}
 											if (robj.length != 0) btn2 = null;
 										}
-										var btn3 = 'Cancel Import';
-										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,'Check here to confirm this action');
+										var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
+										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confrim_action'));
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
 											case 0:
@@ -577,7 +579,7 @@ cat.z3950.prototype = {
 												if (typeof r3.ilsevent != 'undefined') {
 													throw(r3);
 												} else {
-													alert('Record successfully overlayed.');
+													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
 													obj.replace_tab_with_opac(r3.id());
 												}
 											break;
@@ -590,13 +592,13 @@ cat.z3950.prototype = {
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
 												} else {
-													alert('Record successfully imported with alternate TCN.');
+													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
 													obj.replace_tab_with_opac(r2.id());
 												}
 											break;
 											case 2:
 											default:
-												alert('Record import cancelled');
+												alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_cancelled'));
 											break;
 										}
 									break;
@@ -605,11 +607,11 @@ cat.z3950.prototype = {
 									break;
 								}
 							} else {
-								alert('Record successfully imported.');
+								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
 								obj.replace_tab_with_opac(r.id());
 							}
 						} catch(E) {
-							obj.error.standard_unexpected_error_alert('Record not likely imported.',E);
+							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
 						}
 					}
 				}
@@ -621,8 +623,11 @@ cat.z3950.prototype = {
 		var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 		var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-		top_xml += '<description>Overlay this record?</description>';
-		top_xml += '<hbox><button id="lead" disabled="false" label="Overlay" name="fancy_submit" accesskey="O"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+		top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confim_overlay.description')+'</description>';
+		top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.lead.label')+'" name="fancy_submit"';
+		top_xml += ' accesskey="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.lead.accesskey')+'"/>';
+		top_xml += ' <button label="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.cancel.label')+'" accesskey="'+
+						$("catStrings").getString('staff.cat.z3950.confim_overlay.cancel.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
 
 		var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
 		xml += '<table width="100%"><tr valign="top">';
@@ -645,10 +650,10 @@ cat.z3950.prototype = {
 			// + '&top_xml_in_stash=temp_merge_top'
 			// + '&title=' + window.escape('Record Overlay'),
 			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Overlay' }
+			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confim_overlay.title') }
 		);
 		//data.stash_retrieve();
-		if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Overlay Aborted'); return false; }
+		if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.z3950.confim_overlay.aborted')); return false; }
 		return true;
 	},
 
@@ -656,17 +661,17 @@ cat.z3950.prototype = {
 		var obj = this;
 		obj.data.init({'via':'stash'});
 		if (!obj.data.marked_record) {
-			alert('Please mark a record for overlay from within the catalog and try this again.');
+			alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.try_again'));
 			return;
 		}
 
 		xulG.new_tab(
 			xulG.url_prefix(urls.XUL_MARC_EDIT), 
-			{ 'tab_name' : 'MARC Editor' }, 
+			{ 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
 			{ 
 				'record' : { 'marc' : my_marcxml },
 				'save' : {
-					'label' : 'Overlay Record',
+					'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
 					'func' : function (new_marcxml) {
 						try {
 							if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
@@ -674,9 +679,9 @@ cat.z3950.prototype = {
 							if (typeof r.ilsevent != 'undefined') {
 								switch(Number(r.ilsevent)) {
 									case 1704 /* TCN_EXISTS */ :
-										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
-										var title = 'Import Collision';
-										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : 'Overlay with alternate TCN ' + r.payload.new_tcn;
+										var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn', [r.payload.tcn]);
+										var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision');
+										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay', [r.payload.new_tcn]);
 										if (btn1) {
 											var robj = obj.network.simple_request(
 												'PERM_CHECK',[
@@ -687,12 +692,12 @@ cat.z3950.prototype = {
 												]
 											);
 											if (typeof robj.ilsevent != 'undefined') {
-												obj.error.standard_unexpected_error_alert('check permission',E);
+												obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error'),E);
 											}
 											if (robj.length != 0) btn1 = null;
 										}
-										var btn2 = 'Cancel Import';
-										var p = obj.error.yns_alert(msg,title,btn1,btn2,null,'Check here to confirm this action');
+										var btn2 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel');
+										var p = obj.error.yns_alert(msg,title,btn1,btn2,null, $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action'));
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
 											case 0:
@@ -704,13 +709,13 @@ cat.z3950.prototype = {
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
 												} else {
-													alert('Record successfully overlayed with alternate TCN.');
+													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
 													obj.replace_tab_with_opac(r2.id());
 												}
 											break;
 											case 1:
 											default:
-												alert('Record overlay cancelled');
+												alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay'));
 											break;
 										}
 									break;
@@ -719,11 +724,11 @@ cat.z3950.prototype = {
 									break;
 								}
 							} else {
-								alert('Record successfully overlayed.');
+								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
 								obj.replace_tab_with_opac(r.id());
 							}
 						} catch(E) {
-							obj.error.standard_unexpected_error_alert('Record not likely overlayed.',E);
+							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);
 						}
 					}
 				}
@@ -788,7 +793,7 @@ cat.z3950.prototype = {
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error retrieving stored z39.50 credentials',E);
+			obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.load_creds.z3950_cred_error'),E);
 		}
 	},
 
@@ -815,7 +820,7 @@ cat.z3950.prototype = {
 			file.set_object(obj.creds);
 			file.close();
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Problem storing z39.50 credentials.',E);
+			obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.save_creds.z3950_cred_error'),E);
 		}
 	},
 

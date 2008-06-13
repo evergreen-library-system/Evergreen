@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +39,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -74,8 +74,7 @@
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/volume_editor.xul\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_editor.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 				alert(err_msg);
 			}
@@ -96,13 +95,17 @@
 
 	]]>
 	</script>
+	
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox flex="1" style="overflow: auto">
-		<caption id="caption" label="Volume Editor"/>
+		<caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
 		<hbox>
 			<button label="Cancel" oncommand="window.close();"/>
 			<spacer flex="1" />
-			<button label="Modify" oncommand="g.stash_and_close();"/>
+			<button label="&staff.cat.volume_editor.modify.label;" oncommand="g.stash_and_close();"/>
 		</hbox>
 		<grid flex="1">
 			<columns> <column /> <column /> <column flex="1"/> </columns>

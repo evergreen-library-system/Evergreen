@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -32,17 +32,19 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+	function $(id) { return document.getElementById(id); }
+	
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat/volume_buckets.xul');
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Volume Buckets'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name($("catStrings").getString('staff.cat.volume_buckets.window_tab_name')); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
@@ -53,6 +55,10 @@
 	]]>
 	</script>
 
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
+	
 	<label value="Just a stub, Not Yet Implemented"/>
 
 </window>
