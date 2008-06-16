@@ -244,18 +244,14 @@ cat.util.spawn_copy_editor = function(params) {
 	
 		var title = '';
 		if (params.copy_ids && params.copy_ids.length > 1 && params.edit == 1)
-			title += $("catStrings").getString('staff.cat.util.copy_editor.batch_edit');
+			title = $("catStrings").getString('staff.cat.util.copy_editor.batch_edit');
 		else if(params.copies && params.copies.length > 1 && params.edit == 1)
-			title += $("catStrings").getString('staff.cat.util.copy_editor.batch_view');
+			title = $("catStrings").getString('staff.cat.util.copy_editor.batch_view');
 		else if(params.copy_ids && params.copy_ids.length == 1)
-			title += $("catStrings").getString('staff.cat.util.copy_editor.edit');
+			title = $("catStrings").getString('staff.cat.util.copy_editor.edit');
 		else
-			title += $("catStrings").getString('staff.cat.util.copy_editor.view');
+			title = $("catStrings").getString('staff.cat.util.copy_editor.view');
 
-		//FIXME I18N This is a constructed string! No can do! if ((params.copy_ids && params.copy_ids.length > 1) || (params.copies && params.copies.length > 1 )) title += $("catStrings").getString('staff.cat.util.copy_editor.batch_in_title');
-		//title += params.edit == 1 ? $("catStrings").getString('staff.cat.util.copy_editor.edit_in_title') : $("catStrings").getString('staff.cat.util.copy_editor.view_in_title');
-		//title += $("catStrings").getString('staff.cat.util.copy_editor.copy_attributes_in_title');
-	
 		JSAN.use('util.window'); var win = new util.window();
 		var my_xulG = win.open(
 			(urls.XUL_COPY_EDITOR),
