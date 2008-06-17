@@ -1,5 +1,7 @@
 dump('entering patron/display.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.display = function (params) {
 
@@ -57,7 +59,7 @@ patron.display.prototype = {
 								{
 									'row' : {
 										'my' : {
-											'circ_id' : checkout.circ.id(),
+											'circ_id' : checkout.circ.id()
 										}
 									}
 								}
@@ -76,7 +78,7 @@ patron.display.prototype = {
 				control_map : {
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
 					'cmd_patron_retrieve' : [
 						['command'],
@@ -163,7 +165,7 @@ patron.display.prototype = {
 										obj.bill_window.g.bills.refresh(true);
 									},
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab,
+									'new_tab' : xulG.new_tab
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -176,7 +178,7 @@ patron.display.prototype = {
 								obj.reset_nav_styling('cmd_patron_edit');
 
 								function spawn_search(s) {
-									obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
+									obj.error.sdump('D_TRACE', $("commonStrings").getFormattedString('staff.patron.display.cmd_patron_edit.edit_search', [js2JSON(s)]) ); 
 									obj.data.stash_retrieve();
 									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
 									//loc += '?doit=1&query=' + window.escape(js2JSON(s));
@@ -197,13 +199,13 @@ patron.display.prototype = {
 										{ 
 											'url' : url,
 											'show_print_button' : true , 
-											'tab_name' : 'Editing Related Patron' ,
+											'tab_name' : $("patronStrings").getString('staff.patron.display.spawn_editor.editing_related_patron'),
 											'passthru_content_params' : {
 												'spawn_search' : spawn_search,
 												'spawn_editor' : spawn_editor,
 												'url_prefix' : xulG.url_prefix,
 												'new_tab' : xulG.new_tab,
-												'params' : p,
+												'params' : p
 											}
 										}
 									);
@@ -223,7 +225,7 @@ patron.display.prototype = {
 										'params' : {
 											'ses' : ses(),
 											'usr' : obj.patron.id(),
-										},
+										}
 										'on_save' : function(p) {
 											try {
 												if (obj.barcode) obj.barcode = p.card().barcode();
@@ -237,7 +239,7 @@ patron.display.prototype = {
 										'spawn_search' : spawn_search,
 										'spawn_editor' : spawn_editor,
 										'url_prefix' : xulG.url_prefix,
-										'new_tab' : xulG.new_tab,
+										'new_tab' : xulG.new_tab
 									}
 								}
 							);
@@ -253,7 +255,7 @@ patron.display.prototype = {
 								{
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab,
+									'new_tab' : xulG.new_tab
 								}
 							);
 						}
@@ -281,7 +283,7 @@ patron.display.prototype = {
 										obj.refresh_all();
 									},
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab,
+									'new_tab' : xulG.new_tab
 								}
 							);
 						}
@@ -330,7 +332,7 @@ patron.display.prototype = {
 						function(e) {
 							return function() {}
 						}
-					],
+					]
 				}
 			}
 		);
@@ -355,7 +357,7 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_bills.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_edit.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
-			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+			obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.init.retrieving'));
 			document.documentElement.setAttribute('class','');
 			var frame = obj.left_deck.set_iframe(
 				urls.XUL_PATRON_SUMMARY,
@@ -397,23 +399,24 @@ patron.display.prototype = {
 							function(req) {
 								try {
 									var msg = ''; obj.stop_checkouts = false;
-									if (patron.alert_message()) msg += 'Alert message: "' + patron.alert_message() + '"<br/><br/>\n';
+									if (patron.alert_message())
+										msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]);
 									//alert('obj.barcode = ' + obj.barcode);
 									if (obj.barcode) {
 										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
 											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
 											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
-												msg += 'Patron account retrieved with an INACTIVE card.<br/><br/>\n';
+												msg += $("patronStrings").getString('staff.patron.display.init.network_request.inactive_card');
 												obj.stop_checkouts = true;
 											}
 										}
 									}
 									if (get_bool(patron.barred())) {
-										msg += 'Patron account is BARRED.<br/><br/>\n';
+										msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_barred');
 										obj.stop_checkouts = true;
 									}
 									if (!get_bool(patron.active())) {
-										msg += 'Patron account is INACTIVE.<br/><br/>\n';
+										msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_inactive');
 										obj.stop_checkouts = true;
 									}
 									if (patron.expire_date()) {
@@ -428,7 +431,7 @@ patron.display.prototype = {
 										expire = expire.getTime()/1000
 
 										if (expire < now) {
-											msg += 'Patron account is EXPIRED.<br/><br/>\n';
+											msg += $("patronStrings").getString('staff.patron.display.init.network_request.accoutn_expired');
 										obj.stop_checkouts = true;
 										}
 									}
@@ -438,11 +441,13 @@ patron.display.prototype = {
 										if (msg != obj.old_msg) {
 											//obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
 											document.documentElement.firstChild.focus();
-											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>Alert</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>Press a navigation button above (e.g. Check Out) to clear this alert.</pre></blockquote>');
+											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>'
+												+ $("patronStrings").getString('staff.patron.display.init.network_request.window_title') + '</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>'
+												+ $("patronStrings").getString('staff.patron.display.init.network_request.window_message') + '</pre></blockquote>');
 											obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
 											obj.old_msg = msg;
 										} else {
-											obj.error.sdump('D_TRACE','Not re-displaying this alert message: ' + msg);
+											obj.error.sdump('D_TRACE',$("patronStrings").getFormattedString('staff.patron.display.init.network_request.dump_error_message', [msg]));
 										}
 									}
 									if (obj.stop_checkouts && obj.checkout_window) {
@@ -454,7 +459,7 @@ patron.display.prototype = {
 										}, 1000);
 									}
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Error showing patron alert and holds availability.',E);
+									obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.display.init.network_request.error_showing_alert'),E);
 								}
 							}
 						);
@@ -518,7 +523,7 @@ patron.display.prototype = {
 								obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
 								obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 								obj.retrieve_ids = list;
-								obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+								obj.controller.view.patron_name.setAttribute('value',$("patronStrings").getString('staff.patron.display.init.retrieving'));
 								document.documentElement.setAttribute('class','');
 								setTimeout(
 									function() {
@@ -589,9 +594,7 @@ patron.display.prototype = {
 	
 	'refresh_all' : function() {
 		var obj = this;
-		obj.controller.view.patron_name.setAttribute(
-			'value','Retrieving...'
-		);
+		obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.init.retrieving'));
 		document.documentElement.setAttribute('class','');
 		try { obj.summary_window.refresh(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
 		try { obj.refresh_deck(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }

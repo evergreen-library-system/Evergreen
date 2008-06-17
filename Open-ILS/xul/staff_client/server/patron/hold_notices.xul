@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -37,7 +37,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 
@@ -173,7 +173,7 @@
 				/* template */
 				var node = $('notification_template').cloneNode(true); np.appendChild(node); node.hidden = false;
 				util.widgets.apply(node,'name','notify_time',
-					function(n){n.setAttribute("tooltiptext","ID: " + g.notifications[i].id() + " Hold ID: " + g.notifications[i].hold() + " Notifying Staff ID: " + g.notifications[i].notify_staff());}
+					function(n){n.setAttribute("tooltiptext", $("patronStrings").getFormattedString('staff.patron.hold_notices.tooltiptext',[g.notifications[i].id(), g.notifications[i].hold(), g.notifications[i].notify_staff()]));
 				);
 				apply(node,'method',g.notifications[i].method ? g.notifications[i].method() : '');
 				apply(node,'note',g.notifications[i].note() ? g.notifications[i].note() : '');
@@ -186,11 +186,13 @@
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
-				xml += '<caption label="New Notification Record"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
-				xml += '<row><label value="Method"/><textbox id="method" name="fancy_data"/></row>';
-				xml += '<row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
-				xml += '<row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/>';
-				xml += '<button label="Add Notification Record" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				xml += '<caption label="' + $("patronStrings").getString('staff.patron.hold_notices.new_notification_record') + '"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
+				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.method') + '"/><textbox id="method" name="fancy_data"/></row>';
+				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.note') + '"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
+				xml += '<row><spacer/><hbox><button label="' + $("patronStrings").getString('staff.patron.hold_notices.cancel') + '" name="fancy_cancel"';
+				xml += 'accesskey="' + $("patronStrings").getString('staff.patron.hold_notices.cancel_accesskey') + '"/>';
+				xml += '<button label="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') + '";'
+				xml += 'accesskey="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record_accesskey') + '" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
 				//g.data.init({'via':'stash'});
 				//g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
 				JSAN.use('util.window'); var win = new util.window();
@@ -200,7 +202,7 @@
 					//+ '&focus=' + window.escape('method')
 					//+ '&title=' + window.escape('Add Notification Record'),
 					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-					{ 'xml' : xml, 'focus' : 'method', 'title' : 'Add Notification Record' }
+					{ 'xml' : xml, 'focus' : 'method', 'title' : $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') }
 				);
 				if (fancy_prompt_data.fancy_status == 'complete') {
 					var notification = new ahn();
@@ -212,7 +214,7 @@
 					setTimeout(function(){refresh();},0);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('The notification was not likely created.',E);
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.hold_notices.new_notification.not_created'),E);
 				setTimeout(function(){refresh();},0);
 			}
 		}
@@ -220,7 +222,9 @@
 	]]>
 	</script>
 
-    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />	
 
 	<stack hidden="true" id="notification_template" flex="1">
 		<groupbox flex="1" style="background-color: black;"/>
@@ -246,9 +250,9 @@
             <tree id="holds_list" flex="1" enableColumnDrag="true" style=""/>
         </vbox>
         <hbox>
-            <button label="Add Record of Notification" accesskey="A" oncommand="new_notification()"/>
+            <button label="&staff.patron.hold_notices.add_record_notification.label;" accesskey="&staff.patron.hold_notices.add_record_notification.accesskey;" oncommand="new_notification()"/>
             <spacer flex="1"/>
-            <button label="Close" accesskey="C" oncommand="window.close()"/>
+            <button label="&staff.patron.hold_notices.close_window.label;" accesskey="&staff.patron.hold_notices.close_window.accesskey;" oncommand="window.close()"/>
         </hbox>
 	</vbox>
 

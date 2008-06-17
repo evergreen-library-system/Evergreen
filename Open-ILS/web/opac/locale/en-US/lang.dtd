@@ -2047,3 +2047,129 @@
 <!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
 <!ENTITY staff.cat.z3950.marc_import.label "MARC Editor for Import">
 <!ENTITY staff.cat.z3950.marc_import.accesskey "I">
+<!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
+<!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">
+<!ENTITY staff.pat.barcode_entry.barcode.accesskey "B">
+<!ENTITY staff.pat.barcode_entry.submit_btn.label "Submit">
+<!ENTITY staff.pat.barcode_entry.submit_btn.accesskey "S">
+<!ENTITY staff.pat.barcode_entry.retrieving.label "Retrieving...">
+<!ENTITY staff.patron.bill_cc_info.visa.label "Visa">
+<!ENTITY staff.patron.bill_cc_info.mastercard.label "Mastercard">
+<!ENTITY staff.patron.bill_cc_info.american_express.label "American Express">
+<!ENTITY staff.patron.bill_cc_info.discover.label "Discover">
+<!ENTITY staff.patron.bill_cc_info.other.label "Other">
+<!ENTITY staff.patron.bill_cc_info.cc_number.value "CC Number">
+<!ENTITY staff.patron.bill_cc_info.month_expire.value "Expire Month">
+<!ENTITY staff.patron.bill_cc_info.year_expire.value "Expire Year">
+<!ENTITY staff.patron.bill_cc_info.approval_code.value "Approval Code">
+<!ENTITY staff.patron.bill_cc_info.note.value "Note">
+<!ENTITY staff.patron.bill_cc_info.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_cc_info.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_cc_info.submit.label "Submit this Info">
+<!ENTITY staff.patron.bill_cc_info.submit.accesskey "S">
+<!ENTITY staff.patron.bill_check_info.check_info.label "Check Info">
+<!ENTITY staff.patron.bill_check_info.check_number.value "Check Number">
+<!ENTITY staff.patron.bill_check_info.note.value "Note">
+<!ENTITY staff.patron.bill_check_info.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_check_info.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_check_info.submit.label "Submit this Info">
+<!ENTITY staff.patron.bill_check_info.submit.accesskey "S">
+<!ENTITY staff.patron.bill_details.bills.label "Bills">
+<!ENTITY staff.patron.bill_details.save_columns.label "Save Columns">
+<!ENTITY staff.patron.bill_details.copy_to_clipboard.label "Copy to Clipboard">
+<!ENTITY staff.patron.bill_details.print_export.label "Print Export">
+<!ENTITY staff.patron.bill_details.void_selection.label "Void selected billings">
+<!ENTITY staff.patron.bill_details.payments.label "Payments">
+<!ENTITY staff.patron.bill_details.show_in_catalog.label "Show in Catalog">
+<!ENTITY staff.patron.bill_details.show_in_catalog.accesskey "S">
+<!ENTITY staff.patron.bill_details.close_window.label "Close Window">
+<!ENTITY staff.patron.bill_details.close_window.accesskey "c">
+<!ENTITY staff.patron.bill_history.caption.label "Bill History">
+<!ENTITY staff.patron.bill_history.add_billing.label "Add Billing">
+<!ENTITY staff.patron.bill_history.full_details.label "Full Details">
+<!ENTITY staff.patron.bill_history.full_details.accesskey "D">
+<!ENTITY staff.patron.bill_history.show_in_catalog.label "Show in Catalog">
+<!ENTITY staff.patron.bill_history.show_in_catalog.accesskey "S">
+<!ENTITY staff.patron.bill_history.print.label "Print">
+<!ENTITY staff.patron.bill_history.print.accesskey "P">
+<!ENTITY staff.patron.bill_history.close_window.label "Close Window">
+<!ENTITY staff.patron.bill_history.close_window.accesskey "c">
+<!ENTITY staff.patron.bills_overlay.still_checked_out.label "Red Items are still Checked Out">
+<!ENTITY staff.patron.bills_overlay.uncheck_all.label "Uncheck All">
+<!ENTITY staff.patron.bills_overlay.check_all.label "Check All">
+<!ENTITY staff.patron.bills_overlay.print_bills.label "Print Bills" >
+<!ENTITY staff.patron.bills_overlay.alternate_view.label "Alternate View">
+<!ENTITY staff.patron.bills_overlay.alternate_view.accesskey "V">
+<!ENTITY staff.patron.bills_overlay.summary.label "Summary">
+<!ENTITY staff.patron.bills_overlay.net_balance.value "Net Balance">
+<!ENTITY staff.patron.bills_overlay.payment_applied.value "- Payment applied">
+<!ENTITY staff.patron.bills_overlay.new_balance.value "= New Balance">
+<!ENTITY staff.patron.bills_overlay.pay_bill.label "Pay Bill">
+<!ENTITY staff.patron.bills_overlay.payment_type.value "Payment Type">
+<!ENTITY staff.patron.bills_overlay.payment_type.accesskey "t">
+<!ENTITY staff.patron.bills_overlay.cash.label "Cash">
+<!ENTITY staff.patron.bills_overlay.check.label "Check">
+<!ENTITY staff.patron.bills_overlay.credit_card.label "Credit Card">
+<!ENTITY staff.patron.bills_overlay.word.label "Work">
+<!ENTITY staff.patron.bills_overlay.forgive.label "Forgive">
+<!ENTITY staff.patron.bills_overlay.goods.label "Goods">
+<!ENTITY staff.patron.bills_overlay.payment_received.value "Payment received">
+<!ENTITY staff.patron.bills_overlay.payment_received.accesskey "a">
+<!ENTITY staff.patron.bills_overlay.payment_applied.value "- Payment applied">
+<!ENTITY staff.patron.bills_overlay.change.value "= Change">
+<!ENTITY staff.patron.bills_overlay.patron_credit.value "or Patron Credit">
+<!ENTITY staff.patron.bills_overlay.bill_patron.label "Bill Patron">
+<!ENTITY staff.patron.bills_overlay.bill_patron.accesskey "B">
+<!ENTITY staff.patron.bills_overlay.history.label "History">
+<!ENTITY staff.patron.bills_overlay.history.accesskey "H">
+<!ENTITY staff.patron.bills_overlay.annotate_payment.label "Annotate Payment">
+<!ENTITY staff.patron.bills_overlay.convert_change_to_credit.label "Convert Change to Patron Credit">
+<!ENTITY staff.patron.bills_overlay.apply_payment.label "Apply Payment!">
+<!ENTITY staff.patron.bills_overlay.apply_payment.accesskey "P">
+<!ENTITY staff.patron.bill_summary_overlay.bill_number.value "Bill #">
+<!ENTITY staff.patron.bill_summary_overlay.total_billed.value "Total Billed">
+<!ENTITY staff.patron.bill_summary_overlay.title.value "Title">
+<!ENTITY staff.patron.bill_summary_overlay.type.value "Type">
+<!ENTITY staff.patron.bill_summary_overlay.total_paid.value "Total Paid">
+<!ENTITY staff.patron.bill_summary_overlay.checked_out.value "Checked Out">
+<!ENTITY staff.patron.bill_summary_overlay.start.value "Start">
+<!ENTITY staff.patron.bill_summary_overlay.balance_owed.value "Balance Owed">
+<!ENTITY staff.patron.bill_summary_overlay.due_date.value "Due Date">
+<!ENTITY staff.patron.bill_summary_overlay.finish.value "Finish">
+<!ENTITY staff.patron.bill_summary_overlay.renewal.value "Renewal?">
+<!ENTITY staff.patron.bill_summary_overlay.checked_in.value "Checked In">
+<!ENTITY staff.patron.bill_wizard.create_bill.label "Create Bill">
+<!ENTITY staff.patron.bill_wizard.location.value "Location">
+<!ENTITY staff.patron.bill_wizard.transaction_type.value "Transaction Type">
+<!ENTITY staff.patron.bill_wizard.grocery.label "Grocery">
+<!ENTITY staff.patron.bill_wizard.circulation.label "Circulation">
+<!ENTITY staff.patron.bill_wizard.billing_type.label "Billing Type">
+<!ENTITY staff.patron.bill_wizard.amount.value "Amount">
+<!ENTITY staff.patron.bill_wizard.note.value "Note">
+<!ENTITY staff.patron.bill_wizard.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_wizard.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_wizard.submit.label "Submit this Bill">
+<!ENTITY staff.patron.bill_wizard.submit.accesskey "S">
+<!ENTITY staff.patron.display_overlay.none_selected.value "No Patron Selected">
+<!ENTITY staff.patron.display_overlay.barred.value "(Barred)">
+<!ENTITY staff.patron.display_overlay.expired.value "(Expired)">
+<!ENTITY staff.patron.display_overlay.inactive.value "(In-Active)">
+<!ENTITY staff.patron.display_overlay.juvenile.value "(Juvenile)">
+<!ENTITY staff.patron.display_overlay.alert.value "(Alert)">
+<!ENTITY staff.patron.display_overlay.see_notes.value "(See Notes)">
+<!ENTITY staff.patron.display_overlay.max_bills.value "(Max Bills)">
+<!ENTITY staff.patron.display_overlay.max_overdues.value "(Max Overdues)">
+<!ENTITY staff.patron.display_overlay.has_bills.value "(Has Bills)">
+<!ENTITY staff.patron.display_overlay.has_overdues.value "(Has Overdues)">
+<!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid DOB)">
+<!ENTITY staff.patron.display_overlay.invalid_address.value "(Invalid Address)">
+<!ENTITY staff.patron.display_overlay.exit.label "Exit">
+<!ENTITY staff.patron.display_overlay.exit.accesskey "x">
+<!ENTITY staff.patron.display_overlay.search_form.label "Search Form">
+<!ENTITY staff.patron.display_overlay.search_form.accesskey "F">
+<!ENTITY staff.patron.display_overlay.retrieve_patron.label "Retrieve Patron">
+<!ENTITY staff.patron.display_overlay.retrieve_patron.accesskey "R">
+<!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
+<!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
+<!ENTITY staff.patron.hold_notices.close_window.label "Close">
+<!ENTITY staff.patron.hold_notices.close_window.accesskey "C">

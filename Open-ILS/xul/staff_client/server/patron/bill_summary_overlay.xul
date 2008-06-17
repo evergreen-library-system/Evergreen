@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="bills_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -21,35 +21,35 @@
 					</columns>
 					<rows>
 						<row>
-							<label class="header" value="Bill #"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.bill_number.value;"/>
 							<label id="mbts_id" />
-							<label class="header" value="Total Billed"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.total_billed.value;"/>
 							<label id="mbts_total_owed" />
-							<label class="header" id="title_label" value="Title" hidden="true"/>
+							<label class="header" id="title_label" value="&staff.patron.bill_summary_overlay.title.value;" hidden="true"/>
 							<description id="title"/>
 						</row>
 						<row>
-							<label class="header" value="Type"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.type.value;"/>
 							<label id="mbts_xact_type"/>
-							<label class="header" value="Total Paid"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.total_paid.value;"/>
 							<label id="mbts_total_paid" />
-							<label class="header" id="checked_out_label" value="Checked Out" hidden="true"/>
+							<label class="header" id="checked_out_label" value="&staff.patron.bill_summary_overlay.checked_out.value;" hidden="true"/>
 							<label id="checked_out"/>
 						</row>
 						<row>
-							<label class="header" value="Start"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.start.value;"/>
 							<label id="mbts_xact_start"/>
-							<label class="header" value="Balance Owed"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.balance_owed.value;"/>
 							<label id="mbts_balance_owed" />
-							<label class="header" id="due_label" value="Due Date" hidden="true"/>
+							<label class="header" id="due_label" value="&staff.patron.bill_summary_overlay.due_date.value;" hidden="true"/>
 							<label id="due"/>
 						</row>
 						<row>
-							<label class="header" value="Finish"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.finish.value;"/>
 							<label id="mbts_xact_finish"/>
-							<label class="header" value="Renewal?"/>
+							<label class="header" value="&staff.patron.bill_summary_overlay.renewal.value;"/>
 							<label id="renewal"/>
-							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
+							<label class="header" id="checked_in_label" value="&staff.patron.bill_summary_overlay.checked_in.value;" hidden="true"/>
 							<label id="checked_in"/>
 						</row>
 					</rows>

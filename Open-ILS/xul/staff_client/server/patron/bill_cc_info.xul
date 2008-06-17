@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -33,10 +33,11 @@
 
 	<script>
 	<![CDATA[
+		function $(id) { return document.getElementById(id); }
 
 		function info_init() {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+			if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 			JSAN.use('util.error'); g.error = new util.error();
@@ -60,6 +61,8 @@
 	]]>
 	</script>
 
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox>
 		<caption label="Credit Card Info"/>
@@ -70,40 +73,40 @@
 					<label value="CC Type"/>
 					<menulist id="cc_type" oncommand="g.payment_blob.cc_type = this.value;">
 						<menupopup>
-							<menuitem label="Visa" value="Visa"/>
-							<menuitem label="Mastercard" value="Mastercard"/>
-							<menuitem label="American Express" value="American Express"/>
-							<menuitem label="Discover" value="Discover"/>
-							<menuitem label="Other" value="Other"/>
+							<menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>
+							<menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="Mastercard"/>
+							<menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
+							<menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
+							<menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
 						</menupopup>
 					</menulist>
 				</row>
 				<row>
-					<label value="CC Number"/>
+					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
 					<textbox id="cc_number" onchange="g.payment_blob.cc_number = event.target.value"/>
 				</row>
 				<row>
-					<label value="Expire Month"/>
+					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
 					<textbox id="expire_month" onchange="g.payment_blob.expire_month = event.target.value"/>
 				</row>
 				<row>
-					<label value="Expire Year"/>
+					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
 					<textbox id="expire_year" onchange="g.payment_blob.expire_year = event.target.value"/>
 				</row>
 				<row>
-					<label value="Approval Code"/>
+					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
 					<textbox id="approval_code" onchange="g.payment_blob.approval_code = event.target.value"/>
 				</row>
 				<row>
-					<label value="Note"/>
+					<label value="&staff.patron.bill_cc_info.note.value;"/>
 					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true"/>
 				</row>
 			</rows>
 		</grid>
 		<hbox>
 			<spacer flex="1"/>
-			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
-			<button label="Submit this Info" oncommand="info_finish(); window.close();" accesskey="S"/>
+			<button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
+			<button label="&staff.patron.bill_cc_info.submit.label;" oncommand="info_finish(); window.close();" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
 		</hbox>
 	</groupbox>
 

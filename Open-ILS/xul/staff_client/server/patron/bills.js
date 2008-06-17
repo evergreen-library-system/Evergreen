@@ -1,5 +1,7 @@
 dump('entering patron.bills.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.bills = function (params) {
 
@@ -103,7 +105,7 @@ patron.bills.prototype = {
 					var bo = obj.bills[i].transaction.balance_owed();
 					total_owed += util.money.dollars_float_to_cents_integer( bo );
 					var id = obj.bills[i].transaction.id();
-					obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb, } );
+					obj.current_payments.push( { 'mobts_id' : id, 'balance_owed' : bo, 'checkbox' : cb, 'textbox' : tb } );
 				}
 				obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
 				obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
@@ -149,7 +151,7 @@ patron.bills.prototype = {
 									'render' : 'obj.payment_box()'
 								}
 						],
-						'map_row_to_column' : obj.gen_map_row_to_column(),
+						'map_row_to_column' : obj.gen_map_row_to_column()
 					}
 				);
 
@@ -159,7 +161,7 @@ patron.bills.prototype = {
 						'control_map' : {
 							'cmd_broken' : [
 								['command'],
-								function() { alert('Not Yet Implemented'); }
+								function() { alert($("commonStrings").getString('common.unimplemented')); }
 							],
 							'cmd_bill_wizard' : [
 								['command'],
@@ -219,7 +221,7 @@ patron.bills.prototype = {
 											{
 												'current' : 1,
 												'patron_id' : obj.patron_id,
-												'refresh' : function() { obj.refresh(); },
+												'refresh' : function() { obj.refresh(); }
 											}
 										);
 									} catch(E) {
@@ -313,7 +315,7 @@ patron.bills.prototype = {
 												var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
 												var available = util.money.dollars_float_to_cents_integer(au_obj.credit_forward_balance());
 												if (proposed > available) {
-													alert('Patron only has ' + au_obj.credit_forward_balance() + ' in credit.');
+													alert($("patronStrings").getFormattedString('staff.patron.bills.bill_payment_amount.credit_amount', [au_obj.credit_forward_balance()]));
 													ev.target.value = util.money.cents_as_dollars( available );
 													ev.target.setAttribute('value',ev.target.value);
 												}
@@ -341,7 +343,7 @@ patron.bills.prototype = {
 											obj.update_payment_applied();
 											var real_change = util.money.dollars_float_to_cents_integer( tb.value );
 											if ( proposed_change > real_change ) {
-												obj.error.sdump('D_ERROR','Someone wanted more money than they deserved\n');
+												obj.error.sdump('D_ERROR',$("patronStrings").getString('staff.patron.bills.bill_change_amount.greedy'));
 												proposed_change = real_change;
 											} else if ( real_change > proposed_change ) {
 												proposed_credit = real_change - proposed_change;
@@ -365,7 +367,7 @@ patron.bills.prototype = {
 							'bill_new_balance' : [
 								['render'],
 								function(e) { return function() {}; }
-							],
+							]
 						}
 					}
 				);
@@ -510,7 +512,7 @@ patron.bills.prototype = {
 					}
 				}
                 if ( payment_blob.payments.length == 0 && payment_blob.patron_credit == '0.00' ) {
-                    alert('No payments or patron credit applied.');
+                    alert($("patronStrings").getString('staff.patron.bills.apply_payment.nothing_applied'));
                     return;
                 }
 				if ( obj.pay( payment_blob ) ) {
@@ -539,11 +541,11 @@ patron.bills.prototype = {
 										'last_billing_type' : obj.bill_map[ o[0] ].transaction.last_billing_type(),
 										'last_billing_note' : obj.bill_map[ o[0] ].transaction.last_billing_note(),
 										'title' : typeof obj.bill_map[ o[0] ].title != 'undefined' ? obj.bill_map[ o[0] ].title : '', 
-										'barcode' : typeof obj.bill_map[ o[0] ].barcode != 'undefined' ? obj.bill_map[ o[0] ].barcode : '', 
+										'barcode' : typeof obj.bill_map[ o[0] ].barcode != 'undefined' ? obj.bill_map[ o[0] ].barcode : ''
 									};
 								}
 							),
-							'data' : obj.previous_summary,
+							'data' : obj.previous_summary
 						};
 						obj.error.sdump('D_DEBUG',js2JSON(params));
 						if (document.getElementById('auto_print').checked) params.no_prompt = true;
@@ -563,7 +565,7 @@ patron.bills.prototype = {
 		try {
             var x = document.getElementById('annotate_payment');
             if (x && x.checked && (! payment_blob.note)) {
-                payment_blob.note = window.prompt('Please annotate this payment:','','Annotate Payment');
+                payment_blob.note = window.prompt($("patronStrings").getString('staff.patron.bills.pay.annotate_payment'),'', $("patronStrings").getString('staff.patron.bills.pay.annotate_payment.title'));
             }
 			obj.previous_summary = {
 				original_balance : obj.controller.view.bill_total_owed.value,
@@ -574,7 +576,7 @@ patron.bills.prototype = {
 				credit_given : obj.controller.view.bill_credit_amount.value,
 				new_balance : obj.controller.view.bill_new_balance.value,
 				payment_type : obj.controller.view.payment_type.getAttribute('label'),
-				note : payment_blob.note,
+				note : payment_blob.note
 			}
 			var robj = obj.network.request(
 				api.BILL_PAY.app,	
@@ -585,12 +587,12 @@ patron.bills.prototype = {
 			if (typeof robj.ilsevent != 'undefined') {
 				switch(Number(robj.ilsevent)) {
 					case 0 /* SUCCESS */ : return true; break;
-					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc + '\n\nAnother way to "zero" this transaction is to use Add Billing and add a misc bill to counter the negative balance.'); return false; break;
+					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert($("patronStrings").getFormattedString('staff.patron.bills.pay.refund_exceeds_desk_payment', [robj.desc])); return false; break;
 					default: throw(robj); break;
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Bill payment likely failed',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
 			return false;
 		}
 	},
@@ -642,7 +644,7 @@ patron.bills.prototype = {
 				obj.update_payment_applied();
 				var real_change = util.money.dollars_float_to_cents_integer( tb.value );
 				if ( proposed_change > real_change ) {
-					obj.error.sdump('D_ERROR','Someone wanted more money than they deserved\n');
+					obj.error.sdump('D_ERROR',$("patronStrings").getString('staff.patron.bills.bill_change_amount.greedy'));
 					proposed_change = real_change;
 				} else if ( real_change > proposed_change ) {
 					proposed_credit = real_change - proposed_change;
@@ -703,7 +705,7 @@ patron.bills.prototype = {
                         var id = o.transaction.id();
                         var hash = {
                             'title' : typeof obj.bill_map[ id ].title != 'undefined' ? obj.bill_map[ id ].title : '', 
-                            'barcode' : typeof obj.bill_map[ id ].barcode != 'undefined' ? obj.bill_map[ id ].barcode : '', 
+                            'barcode' : typeof obj.bill_map[ id ].barcode != 'undefined' ? obj.bill_map[ id ].barcode : ''
                         };
                         for (var i = 0; i < columns.length; i++) {
                             var v = columns[i].render( { 'mbts' : o.transaction } );
@@ -913,7 +915,8 @@ patron.bills.prototype = {
 							);
 						break;
 						default:
-								xt_label.setAttribute( 'value', my.mvr ? 'Title' : 'Type' );
+								xt_label.setAttribute( 'value',
+									my.mvr ? $("patronStrings").getString('staff.patron.bills.info_box.label_value.title') : $("patronStrings").getString('staff.patron.bills.info_box.label_value.type') );
 								xt_value.appendChild( document.createTextNode( my.mvr ? my.mvr.title() : my.mobts.xact_type() ) );
 						break;
 					}
@@ -924,7 +927,7 @@ patron.bills.prototype = {
 
 						var lb_label = document.createElement('label');
 							last_billing.appendChild( lb_label );
-							lb_label.setAttribute( 'value', 'Last Billing:' );
+							lb_label.setAttribute( 'value', $("patronStrings").getString('staff.patron.bills.info_box.label_value.last_billing') );
 
 						var lb_value = document.createElement('label');
 							last_billing.appendChild( lb_value );
@@ -971,7 +974,7 @@ patron.bills.prototype = {
 								);
 							var btn2 = document.createElement('button');
 								btn_box.appendChild( btn2 );
-								btn2.setAttribute( 'label', 'Add Billing' );
+								btn2.setAttribute( 'label', $("patronStrings").getString('staff.patron.bills.info_box.label_value.add_billing') );
 								btn2.setAttribute( 'mobts_id', my.mobts.id() );	
 								btn2.addEventListener(
 									'command',
@@ -996,7 +999,7 @@ patron.bills.prototype = {
 				if (my.mobts.balance_owed() < 0) {
 					var btn3 = document.createElement('button');
 					btn_box.appendChild( btn3 );
-					btn3.setAttribute( 'label', 'Refund' );
+					btn3.setAttribute( 'label', $("patronStrings").getString('staff.patron.bills.info_box.label_value.refund') );
 					btn3.setAttribute( 'mobts_id', my.mobts.id() );	
 					btn3.addEventListener(
 						'command',
@@ -1011,7 +1014,7 @@ patron.bills.prototype = {
 
 				var btn4 = document.createElement('button');
 				btn_box.appendChild( btn4 );
-				btn4.setAttribute( 'label', 'Void All Billings' );
+				btn4.setAttribute( 'label', $("patronStrings").getString('staff.patron.bills.info_box.label_value.void_all_billings') );
 				btn4.setAttribute( 'mobts_id', my.mobts.id() );
 				btn4.addEventListener(
 					'command',
@@ -1049,20 +1052,24 @@ patron.bills.prototype = {
 
 			mb_list = util.functional.filter_list( mb_list, function(o) { return ! get_bool( o.voided() ) });
 
-			if (mb_list.length == 0) { alert('All billings already voided on this bill.'); return; }
+			if (mb_list.length == 0) { alert($("patronStrings").getString('staff.patron.bills.void_all_billings.all_voided')); return; }
 
 			var sum = 0;
 			for (var i = 0; i < mb_list.length; i++) sum += util.money.dollars_float_to_cents_integer( mb_list[i].amount() );
 			sum = util.money.cents_as_dollars( sum );
 
-			var msg = 'Are you sure you would like to void $' + sum + ' worth of line-item billings?';
-			var r = obj.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
+			var msg = $("patronStrings").getFormattedString('staff.patron.bills.void_all_billings.void.message', [sum]);
+			var r = obj.error.yns_alert(msg,
+				$("patronStrings").getString('staff.patron.bills.void_all_billings.void.title'),
+				$("patronStrings").getString('staff.patron.bills.void_all_billings.void.yes'),
+				$("patronStrings").getString('staff.patron.bills.void_all_billings.void.no'), null,
+				$("patronStrings").getString('staff.patron.bills.void_all_billings.void.confirm_message'));
 			if (r == 0) {
 				var robj = obj.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
 				if (robj.ilsevent) {
 					switch(Number(robj.ilsevent)) {
 						default: 
-							obj.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
+							obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.void_all_billings.error_voiding_bills'),robj); 
 							obj.refresh(); return; 
 						break;
 					}
@@ -1073,7 +1080,7 @@ patron.bills.prototype = {
 						obj.data.voided_billings.push( mb_list[i] );
 				}
 				obj.data.stash('voided_billings');
-				alert('Billings voided.');
+				alert($("patronStrings").getString('staff.patron.bills.void_all_billings.billings_voided'));
 				obj.refresh();
 			}
 		} catch(E) {

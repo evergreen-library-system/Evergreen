@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -33,10 +33,11 @@
 
 	<script>
 	<![CDATA[
+		function $(id) { return document.getElementById(id); }
 
 		function info_init() {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+			if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 			JSAN.use('util.error'); g.error = new util.error();
@@ -60,26 +61,28 @@
 	]]>
 	</script>
 
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox>
-		<caption label="Check Info"/>
+		<caption label="&staff.patron.bill_check_info.check_info.label;"/>
 		<grid>
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
 			<rows>
 				<row>
-					<label value="Check Number"/>
+					<label value="&staff.patron.bill_check_info.check_number.value;"/>
 					<textbox id="check_number" onchange="g.payment_blob.check_number = event.target.value"/>
 				</row>
 				<row>
-					<label value="Note"/>
+					<label value="&staff.patron.bill_check_info.note.value;"/>
 					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true"/>
 				</row>
 			</rows>
 		</grid>
 		<hbox>
 			<spacer flex="1"/>
-			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
-			<button label="Submit this Info" oncommand="info_finish(); window.close();" accesskey="S"/>
+			<button label="&staff.patron.bill_check_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_check_info.cancel.accesskey;"/>
+			<button label="&staff.patron.bill_check_info.submit.label;" oncommand="info_finish(); window.close();" accesskey="&staff.patron.bill_check_info.submit.accesskey;"/>
 		</hbox>
 	</groupbox>
 

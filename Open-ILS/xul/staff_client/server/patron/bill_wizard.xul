@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -123,7 +123,7 @@
 		function patron_bill_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -158,9 +158,7 @@
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" 
-					+ 'patron/bill_wizard.xul\n' + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_wizard.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -196,7 +194,7 @@
 						[ ses(), billing ]
 					);
 					if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
-					alert('Billing added.');
+					alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
 				} else {
 					throw(xact_id);
 				}
@@ -207,6 +205,9 @@
 
 	]]>
 	</script>
+	
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
 	<vbox flex="1">
 
@@ -215,31 +216,31 @@
 			<groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
 
 			<groupbox flex="1">
-				<caption label="Create Bill"/>
+				<caption label="&staff.patron.bill_wizard.create_bill.label;"/>
 				<grid>
 					<columns> <column flex="0" /> <column flex="0" /> </columns>
 					<rows id="page1_rows">
-						<row><label value="Location"/><textbox id="billing_location" disabled="true" /></row>
-						<row><label value="Transaction Type"/>
+						<row><label value="&staff.patron.bill_wizard.location.value;"/><textbox id="billing_location" disabled="true" /></row>
+						<row><label value="&staff.patron.bill_wizard.transaction_type.value;"/>
 							<menulist id="xact_type">
 								<menupopup>
-									<menuitem label="Grocery" value="grocery" selected="true"/>
-									<menuitem label="Circulation" value="circulation" disabled="true"/>
+									<menuitem label="&staff.patron.bill_wizard.grocery.label;" value="grocery" selected="true"/>
+									<menuitem label="&staff.patron.bill_wizard.circulation.label;" value="circulation" disabled="true"/>
 								</menupopup>
 							</menulist>
 						</row>
-						<row><label value="Billing Type"/>
+						<row><label value="&staff.patron.bill_wizard.billing_type.label;"/>
 							<hbox id="menu_placeholder"/>
 						</row>
-						<row><label value="Amount"/><textbox id="bill_amount" /></row>
-						<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
+						<row><label value="&staff.patron.bill_wizard.amount.value;"/><textbox id="bill_amount" /></row>
+						<row><label value="&staff.patron.bill_wizard.note.value;"/><textbox id="bill_note" multiline="true" rows="5" /></row>
 					</rows>
 				</grid>
 				<spacer flex="1"/>
 				<hbox>
 					<spacer flex="1"/>
-					<button label="Cancel" oncommand="window.close()" accesskey="C"/>
-					<button label="Submit this Bill" oncommand="patron_bill_finish(); window.close();" accesskey="S"/>
+					<button label="&staff.patron.bill_wizard.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_wizard.cancel.accesskey;"/>
+					<button label="&staff.patron.bill_wizard.submit.label;" oncommand="patron_bill_finish(); window.close();" accesskey="&staff.patron.bill_wizard.submit.accesskey;"/>
 				</hbox>
 			</groupbox>
 	</vbox>

@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -30,10 +30,12 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+		
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		    if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -59,9 +61,9 @@
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
                     if (xul_param('perm_editor')) {
-					    try { window.xulG.set_tab_name('User Permission Editor'); } catch(E) { alert(E); }
+					    try { window.xulG.set_tab_name($(patronStrings).getString('staff.patron.barcode_entry.user_permission_editor')); } catch(E) { alert(E); }
                     } else {
-    					try { window.xulG.set_tab_name('Check Out'); } catch(E) { alert(E); }
+    					try { window.xulG.set_tab_name($(patronStrings).getString('staff.patron.barcode_entry.check_out')); } catch(E) { alert(E); }
                     }
 				}
 
@@ -73,6 +75,7 @@
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/barcode_entry.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -87,7 +90,7 @@
 
 				barcode = String( barcode ).replace( /\s+/g, '' );
 
-				if (!barcode) { sound.bad(); add_msg('No barcode entered.'); tb.select(); tb.focus(); return; }
+				if (!barcode) { sound.bad(); add_msg($(patronStrings).getString('staff.patron.barcode_entry.no_barcode')); tb.select(); tb.focus(); return; }
 
 				JSAN.use('util.network'); var net = new util.network();
 
@@ -100,38 +103,41 @@
 						var robj = req.getResultObject();
 						if (typeof robj.ilsevent != 'undefined') {
 							sound.bad();
-							add_msg('Problem retrieving ' + barcode + '.  Please report this message: \n' + js2JSON(robj));
+							add_msg($(patronStrings).getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
 							return;
 						} else if (robj == 0) {
 							sound.bad(); 
-							add_msg('Barcode ' + barcode + ' not found.');
+							add_msg($(patronStrings).getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
 							return;
 						}
 
-                        if (g.data.user_org_unit_opt_in_enabled) {
-                            var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
-                            if (typeof r.ilsevent != 'undefined') {
-                                throw(r);
-                            } else {
+						if (g.data.user_org_unit_opt_in_enabled) {
+							var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
+							if (typeof r.ilsevent != 'undefined') {
+								throw(r);
+							} else {
+
+								if (r == 0) {
+
+									JSAN.use('patron.util');
+									var parts = patron.util.retrieve_name_via_id( ses(), robj );
     
-                                if (r == 0) {
-                                
-                                    JSAN.use('patron.util');
-                                    var parts = patron.util.retrieve_name_via_id( ses(), robj );
-    
-                                    if (0 != g.error.yns_alert(
-                                        'Does patron ' + parts[0] + ', ' + parts[1] + (parts[2] ? ' ' + parts[2] : '') + ' from ' + g.data.hash.aou[ parts[3] ].name() + ' (' + g.data.hash.aou[ parts[3] ].shortname() + ') consent to having their personal information shared with your library?',
-                                        'Patron/Library Opt-In Confirmation',
-                                        'Accept', 'Deny', null, 'Check here to confirm this message'
-                                        )
-                                    ) {
-                                        tb.select(); tb.focus();
-                                        return;
-                                    } else {
-                                        var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), robj ]);
-                                        if (typeof c.ilsevent != 'undefined') throw(r);
-                                    }
-                                }
+									if (0 != g.error.yns_alert(
+											$(patronStrings).getFormattedString('staff.patron.barcode_entry.consent_from_patron',
+												[parts[0], parts[1] + (parts[2] ? ' ' + parts[2] : ''), g.data.hash.aou[ parts[3] ].name(), g.data.hash.aou[ parts[3] ].shortname()]),
+											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_title'),
+											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_accept'),
+											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_deny'), null,
+											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_confirm')
+										)
+									) {
+										tb.select(); tb.focus();
+										return;
+									} else {
+										var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), robj ]);
+										if (typeof c.ilsevent != 'undefined') throw(r);
+									}
+								}
     
     						    sound.good();
     						    spawn(barcode);
@@ -169,7 +175,7 @@
 					location.href = loc + '?barcode=' + window.escape(barcode);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('spawning patron display',E);
+				g.error.standard_unexpected_error_alert($(patronStrings).getString('staff.patron.barcode_entry.patron_display_error'),E);
 			}
 		}
 
@@ -183,7 +189,7 @@
 					location.href = loc;
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('spawning user perm editor',E);
+				g.error.standard_unexpected_error_alert($(patronStrings).getString('staff.patron.barcode_entry.user_perm_display_error'),E);
 			}
 		}
 
@@ -191,16 +197,19 @@
 		function default_focus() { try { setTimeout( function() { document.getElementById('barcode_tb').focus(); }, 0); } catch(E) {} }
 	]]>
 	</script>
+	
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
-			<caption label="Retrieve Patron" />
+			<caption label="&staff.pat.barcode_entry.retrieve_patron.label;" />
 			<hbox>
-				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
+				<label value="&staff.pat.barcode_entry.barcode.label;" accesskey="&staff.pat.barcode_entry.barcode.accesskey;" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
-				<button label="Submit" accesskey="S" oncommand="submit();"/>
+				<button label="&staff.pat.barcode_entry.submit_btn.label;" accesskey="&staff.pat.barcode_entry.submit_btn.accesskey;" oncommand="submit();"/>
 			</hbox>
-			<label value="Retrieving..." style="color: green" id="progress" hidden="true"/>
+			<label value="&staff.pat.barcode_entry.retrieving.label;" style="color: green" id="progress" hidden="true"/>
 			<vbox id="status">
 			</vbox>
 		</groupbox>
