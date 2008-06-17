@@ -2593,7 +2593,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Copy Notes" name="notes" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Holds" name="holds" oils_obj:array_position="34" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Total Circulations" name="total_circ_count" oils_obj:array_position="34" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Holds" name="holds" oils_obj:array_position="35" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -2608,6 +2609,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
