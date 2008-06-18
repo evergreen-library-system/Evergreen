@@ -21,7 +21,7 @@ BEGIN;
 CREATE SCHEMA extend_reporter;
 
 CREATE TABLE extend_reporter.legcay_circ_count (
-    id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id)
+    id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id),
     circ_count  INT         NOT NULL DEFAULT 0
 );
 
@@ -29,7 +29,7 @@ CREATE VIEW extend_reporter.full_circ_count AS
  SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) AS circ_count
    FROM asset."copy" cp
    LEFT JOIN extend_reporter.legcay_circ_count c USING (id)
-   LEFT JOIN "action".circulation circ ON circ.target_copy = c.id
+   LEFT JOIN "action".all_circulation circ ON circ.target_copy = c.id
   GROUP BY cp.id;
 
 COMMIT;
