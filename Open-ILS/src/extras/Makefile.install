@@ -175,8 +175,8 @@ CENTOS_PERL_NOTEST = \
 	DateTime::Format::Strptime \
 	RPC::XML
 
-CENTOS_PERL_VERSION = \
 # This is a developer's version, but B:OP:AuthorizeNet depends on it
+CENTOS_PERL_VERSION = \
 	IVAN/Business-OnlinePayment-3.00_08.tar.gz
 
 CENTOS_PERL_LOCAL = \
