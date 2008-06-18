@@ -148,7 +148,7 @@ CREATE INDEX aged_circ_copy_owning_lib_idx ON "action".aged_circulation (copy_ow
 CREATE INDEX aged_circ_copy_location_idx ON "action".aged_circulation (copy_location);
 
 CREATE OR REPLACE VIEW action.all_circulation AS
-	SELECT	usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
+	SELECT	id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
 		copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
 		circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
 		stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
@@ -156,7 +156,7 @@ CREATE OR REPLACE VIEW action.all_circulation AS
 		max_fine_rule, stop_fines
 	  FROM	action.aged_circulation
 			UNION ALL
-	SELECT	COALESCE(a.post_code,b.post_code) AS usr_post_code, p.home_ou AS usr_home_ou, p.profile AS usr_profile, EXTRACT(YEAR FROM p.dob)::INT AS usr_birth_year,
+	SELECT	circ.id,COALESCE(a.post_code,b.post_code) AS usr_post_code, p.home_ou AS usr_home_ou, p.profile AS usr_profile, EXTRACT(YEAR FROM p.dob)::INT AS usr_birth_year,
 		cp.call_number AS copy_call_number, cp.location AS copy_location, cn.owning_lib AS copy_owning_lib, cp.circ_lib AS copy_circ_lib,
 		cn.record AS copy_bib_record, circ.xact_start, circ.xact_finish, circ.target_copy, circ.circ_lib, circ.circ_staff, circ.checkin_staff,
 		circ.checkin_lib, circ.renewal_remaining, circ.due_date, circ.stop_fines_time, circ.checkin_time, circ.create_time, circ.duration,
@@ -168,6 +168,34 @@ CREATE OR REPLACE VIEW action.all_circulation AS
 		JOIN actor.usr p ON (circ.usr = p.id)
 		LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
 		LEFT JOIN actor.usr_address b ON (p.billing_address = a.id);
+
+CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
+BEGIN
+	INSERT INTO action.aged_circulation
+		(id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
+		copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
+		circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
+		stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
+		max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
+		max_fine_rule, stop_fines)
+	  SELECT
+		id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
+		copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
+		circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
+		stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
+		max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
+		max_fine_rule, stop_fines
+	    FROM action.all_circulation WHERE id = OLD.id;
+
+	RETURN OLD;
+END;
+$$ LANGUAGE 'plpgsql';
+
+CREATE TRIGGER action_circulation_aging_tgr
+	BEFORE DELETE ON action.circulation
+	FOR EACH ROW
+	EXECUTE PROCEDURE action.age_circ_on_delete ();
+
 
 CREATE OR REPLACE VIEW action.open_circulation AS
 	SELECT	*
