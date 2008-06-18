@@ -1,0 +1,433 @@
+# ---------------------------------------------------------------------
+# Author: Bill Erickson <erickson@esilibrary.com>
+#
+# Makefile to install prerequisites for OpenSRF and Evergreen
+#
+# Currently supports Debian (etch), Ubuntu (gutsy), and Gentoo.
+# Working towards support of CentOS 5 / RHEL 5.
+# Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
+#
+# usage:
+# 	make -f Makefile.install debian
+# 	- or -
+# 	make -f Makefile.install ubuntu
+# 	- or -
+# 	make -f Makefile.install centos
+# 	- or -
+# 	make -f Makefile.install rhel
+# 	- or -
+# 	make -f Makefile.install gentoo
+#
+# Notes:
+#
+# 	This makefile has been tested much more with Debian than CentOS, Gentoo, or RHEL.
+#
+# 	Gentoo (especially amd64) requires a good bit of masked package
+# 	mangling for some packages.  These are not documented here because
+# 	they will continue to evolve
+#
+# ---------------------------------------------------------------------
+ 
+# XXX
+# Gentoo needs explicit versions on many of these packages
+# to simulate a "blessed" set of packages
+# Also, I (think) Gentoo has a javascript::spidermonkey package that does
+# not require fetching the sources externally ... needs testing/updating in here
+
+ 
+LIBJS=js-1.7.0
+LIBJS_PERL=JavaScript-SpiderMonkey-0.19
+LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
+LIBJS_PERL_URL=ftp://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
+# used for installing libjs lib and header files
+JS_INSTALL_PREFIX=/usr/
+
+
+# The libdbi sources can be fetched from sourceforge.net.  They are stored on
+# the open-ils.org site now for ease of direct linking
+LIBDBI=libdbi-0.8.3
+LIBDBI_DRIVERS=libdbi-drivers-0.8.3
+LIBDBI_HOST=http://open-ils.org/~denials/evergreen
+
+YAZ=yaz-2.1.56
+YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
+
+# ejabberd is not packaged on CentOS/RHEL, so we have to
+# download the installable package from the source
+EJABBERD_VER=2.0.1
+EJABBERD_PKG=ejabberd-2.0.1_2-linux-x86-installer.bin
+EJABBERD_HOST=http://www.process-one.net/downloads/ejabberd
+
+# Business::OnlinePayment is not packaged on CentOS/RHEL
+PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
+PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
+
+
+# XML::LibXSLT fails due to old libxslt
+XSLT=libxslt-1.1.22
+XSLT_HOST=ftp://ftp.gnome.org/pub/GNOME/sources/libxslt/1.1
+
+# libxslt depends on a newer version of libxml2:
+XML2=libxml2-2.6.30.tar.gz
+XML2_HOST=ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6
+
+APT_TOOL=aptitude
+
+# Debian dependencies
+DEBS =  \
+	build-essential\
+	syslog-ng\
+	psmisc\
+	ntpdate\
+	less\
+    memcached\
+    libxml2-dev\
+    libmodule-build-perl\
+    libexpat1-dev\
+    libmemcache-dev\
+    libperl-dev\
+    libcache-memcached-perl\
+	libtext-csv-perl\
+    libxml-libxml-perl\
+    libxslt1-dev\
+    libxml-libxslt-perl\
+    libwww-perl\
+    liberror-perl\
+    libclass-dbi-pg-perl\
+    libclass-dbi-abstractsearch-perl\
+    libtemplate-perl\
+    libtext-aspell-perl\
+    libdatetime-timezone-perl\
+    libdatetime-perl\
+    libunix-syslog-perl\
+    libgd-graph3d-perl\
+    libuniversal-require-perl\
+    libclass-dbi-sqlite-perl\
+    liblog-log4perl-perl\
+    libnet-jabber-perl\
+    libtest-pod-perl\
+    libfile-find-rule-perl\
+    libdatetime-format-builder-perl\
+    libmarc-record-perl\
+    librpc-xml-perl\
+    aspell\
+    aspell-en\
+    libxml-simple-perl\
+    libpq-dev\
+    libemail-send-perl\
+    ejabberd\
+    libtool\
+    apache2-mpm-prefork\
+    apache2-prefork-dev\
+    libapache2-mod-perl2\
+    libreadline5-dev\
+	libtext-csv-perl\
+	libspreadsheet-writeexcel-perl\
+	libole-storage-lite-perl\
+	libtie-ixhash-perl\
+	python-dev\
+	python-setuptools\
+	libfreezethaw-perl\
+	libbusiness-creditcard-perl\
+	libbusiness-onlinepayment-perl\
+	libbusiness-onlinepayment-authorizenet-perl
+
+CENTOS = \
+	apr-util-devel \
+	aspell \
+	aspell-devel \
+	aspell-en \
+	autoconf \
+	automake \
+	gcc \
+	gd-devel \
+	gdbm-devel \
+	httpd-devel \
+	less \
+	libtool \
+	libxml2-devel \
+	libxslt-devel \
+	make \
+	mod_perl \
+	mod_ssl \
+	ntp \
+	perl-DBD-Pg \
+	perl-DBI \
+	perl-XML-LibXML \
+	perl-XML-Simple \
+	perl-libwww-perl \
+	psmisc \
+	python-devel \
+	readline-devel \
+	wget
+
+PGSQL_CENTOS = \
+	postgresql \
+	postgresql-contrib \
+	postgresql-devel \
+	postgresql-pl \
+	postgresql-server
+
+# Some of these packages have stupid bugs in their test suites
+# that are simply too painful to workaround
+CENTOS_PERL_NOTEST = \
+	Business::OnlinePayment::AuthorizeNet \
+	DateTime::Format::Strptime \
+	RPC::XML
+
+# This is a developer's version, but B:OP:AuthorizeNet depends on it
+CENTOS_PERL_VERSION = \
+	IVAN/Business-OnlinePayment-3.00_08.tar.gz
+
+CENTOS_PERL_LOCAL = \
+	XML-LibXSLT
+
+CENTOS_PERL = \
+	Business::CreditCard \
+	Cache::Memcached \
+	Class::DBI::AbstractSearch \
+	Class::DBI::Pg \
+	Class::DBI::SQLite \
+	DateTime \
+	DateTime::TimeZone \
+	DateTime::Format::Builder \
+	Error \
+	File::Find::Rule \
+	FreezeThaw \
+	GD::Graph3d \
+	Log::Log4perl \
+	MARC::Record \
+	Net::Jabber \
+	Net::Z3950::ZOOM \
+	Spreadsheet::WriteExcel \
+	Template \
+	Test::Pod \
+	Text::Aspell \
+	Text::CSV \
+	Tie::IxHash \
+	Unix::Syslog \
+	UNIVERSAL::require \
+	XML::LibXSLT
+
+PGSQL_DEBIAN = \
+	postgresql-8.1\
+	postgresql-client-8.1\
+	postgresql-contrib-8.1\
+	postgresql-plperl-8.1\
+	postgresql-server-dev-8.1
+
+PGSQL_UBUNTU = \
+	postgresql-8.2\
+	postgresql-client-8.2\
+	postgresql-contrib-8.2\
+	postgresql-plperl-8.2\
+	postgresql-server-dev-8.2
+
+GENTOOS = \
+    vim\
+    ntp\
+    memcached\
+    libmemcache\
+    net-misc/telnet-bsd\
+    app-portage/gentoolkit\
+    gsasl\
+    ejabberd\
+    mod_perl\
+    yaz\
+    aspell-en\
+    net-fs/nfs-utils\
+    dev-libs/apr\
+    dev-db/libpq\
+    dev-db/postgresql\
+    dev-perl/Email-Send\
+    dev-perl/Cache-Memcached\
+    dev-perl/DateTime\
+    dev-perl/DateTime-TimeZone\
+    dev-perl/DBI\
+    dev-perl/DBD-Pg\
+    dev-perl/GD-Graph3d\
+    dev-perl/Log-Log4perl\
+    dev-perl/Text-Aspell\
+    dev-perl/Unix-Syslog\
+    dev-perl/XML-LibXML\
+    dev-perl/XML-LibXSLT\
+    dev-perl/XML-Simple\
+    dev-perl/Net-Jabber\
+    dev-perl/libwww-perl\
+    dev-perl/Template-Toolkit\
+    dev-perl/Error\
+    dev-perl/Text-CSV_XS\
+    dev-perl/Spreadsheet-WriteExcel\
+    dev-perl/Tie-IxHash\
+	dev-perl/FreezeThaw
+
+GENTOO_RC = \
+    ejabberd\
+    memcached\
+    portmap
+
+GENTOO_PERL = \
+    UNIVERSAL::require\
+    Class::DBI::AbstractSearch\
+    MARC::Record \
+    Net::Z3950::ZOOM \
+    Text::CSV
+
+DEB_APACHE_MODS = \
+    expires\
+    include\
+    proxy\
+    proxy_http\
+    rewrite\
+    ssl
+ 
+
+# generic CPAN modules
+CPAN_MODULES = \
+    DateTime::Format::ISO8601 \
+    TMTM/Class-DBI-0.96.tar.gz \
+    RHANDOM/Net-Server-0.90.tar.gz \
+    MARC::Charset MARC::File::XML \
+    JSON::XS \
+    SRU \
+    Net::Z3950::ZOOM \
+	Business::CreditCard::Object \
+	XML::LibXML::XPathContext
+
+
+# ----------------------------------------------------------------------------
+
+all: 
+	@echo "please specify an OS" && exit 0
+
+
+# these should be the same for any distro
+install: install_yaz install_cpan install_js_sm install_libdbi 
+
+centos: install_centos_pgsql install_centos_rpms install_ejabberd install install_libxml2 install_libxslt install_centos_perl 
+debian: install_pgsql_debian install_debs install debian_sys_config
+
+gentoo: install_gentoos install_gentoo_rc install_gentoo_perl install
+
+rhel: centos
+
+ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
+
+
+# - COMMON TARGETS ---------------------------------------------------------
+
+# Install the CPAN modules
+install_cpan: 
+	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+
+# Install ejabberd from official project installer binary
+install_ejabberd:    
+	if [ ! -f $(EJABBERD_PKG).gz ]; then wget $(EJABBERD_HOST)/$(EJABBERD_VER)/$(EJABBERD_PKG).gz; fi;
+	gunzip $(EJABBERD_PKG).gz
+	chmod u+x $(EJABBERD_PKG).gz
+	./$(EJABBERD_PKG) --mode unattended --prefix /opt/ejabberd --adminpw evergreen
+
+# Install a newer version of libxslt
+install_libxslt:    
+	if [ ! -d $(XSLT) ]; then wget $(XSLT_HOST)/$(XSLT).tar.gz; fi;
+	tar xzf $(XSLT).tar.gz
+	cd $(XSLT) && ./configure --with-libxml-prefix=/usr/local && make && make install
+
+# Install a newer version of libxml2
+install_libxml2:    
+	if [ ! -d $(XML2) ]; then wget $(XML2_HOST)/$(XML2).tar.gz; fi;
+	tar xzf $(XML2).tar.gz
+	cd $(XML2) && ./configure && make && make install
+
+# Install a known working version of YAZ
+install_yaz:    
+	if [ ! -d $(YAZ) ]; then wget $(YAZ_HOST)/$(YAZ).tar.gz; fi;
+	tar xzf $(YAZ).tar.gz
+	cd $(YAZ) && ./configure && make && make install
+
+# Install the custom spidermonkey libs and JavaScript-SpiderMonkey Perl modules
+install_js_sm: 
+	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
+	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi;
+	tar -zxf $(LIBJS).tar.gz
+	tar -zxf $(LIBJS_PERL).tar.gz
+	cd js/src/ && make -f Makefile.ref
+	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
+	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
+	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
+	cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/
+	cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/
+	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
+
+
+# Install libdbi and the postgres drivers
+install_libdbi:
+	if [ ! -d $(LIBDBI) ]; then wget $(LIBDBI_HOST)/$(LIBDBI).tar.gz; fi;
+	if [ ! -d $(LIBDBI_DRIVERS) ]; then wget $(LIBDBI_HOST)/$(LIBDBI_DRIVERS).tar.gz; fi;
+	tar -zxf $(LIBDBI).tar.gz
+	tar -zxf $(LIBDBI_DRIVERS).tar.gz
+	cd $(LIBDBI) && ./configure --disable-docs && make all install
+	cd $(LIBDBI_DRIVERS) && ./configure  \
+		--disable-docs --with-pgsql --enable-libdbi && make all install  
+
+
+clean:
+	make -C $(LIBDBI) clean
+	make -C $(LIBDBI_DRIVERS) clean
+	make -C $(LIBJS_PERL) clean
+	make -C $(XML2) clean
+	make -C $(XSLT) clean
+	make -f Makefile.ref -C js/src/ clean
+
+
+# ------------------------------------------------------------------
+# - DEBIAN ---------------------------------------------------------
+
+debian_sys_config: 
+	# link the apache modules in
+	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
+	
+	# adds a placeholder module so apxs will be happy
+	if [ ! "$$(grep mod_placeholder /etc/apache2/httpd.conf)" ]; then \
+		echo -e "#\n#LoadModule mod_placeholder /usr/lib/apache2/modules/mod_placeholder.so" \
+			>> /etc/apache2/httpd.conf; \
+	fi;
+
+# Install the debian-specific dependencies
+install_debs:
+	$(APT_TOOL) install $(DEBS)
+
+install_pgsql_debian:
+	$(APT_TOOL) install $(PGSQL_DEBIAN)
+
+install_pgsql_ubuntu:
+	$(APT_TOOL) install $(PGSQL_UBUNTU)
+
+# ------------------------------------------------------------------
+# - GENTOO ---------------------------------------------------------
+
+install_gentoos:
+	emerge -n $(GENTOOS)
+
+install_gentoo_rc:
+	for m in $(GENTOO_RC); do rc-update add $$m default; done;
+
+install_gentoo_perl:
+	for m in $(GENTOO_PERL); do perl -MCPAN -e "install \"$$m\";"; done
+
+# ------------------------------------------------------------------
+    
+
+# CENTOS
+install_centos_rpms:
+	yum -y install $(CENTOS)
+
+install_centos_pgsql:
+	yum -y install $(PGSQL_CENTOS)
+
+install_centos_perl:
+	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
+	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
+	for m in $(CENTOS_PERL_LOCAL); do LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib perl -MCPAN -e "install \"$$m\";"; done
+
