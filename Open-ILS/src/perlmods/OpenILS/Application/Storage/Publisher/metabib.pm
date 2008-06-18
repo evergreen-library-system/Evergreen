@@ -2346,10 +2346,15 @@ sub staged_fts {
 		die "No search arguments were passed to ".$self->api_name;
 	}
 
-	my (@statuses,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
+	my (@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
 
 	if ($args{available}) {
 		@statuses = (0,7);
+	}
+
+	if (my $s = $args{locations}) {
+		$s = [$s] if (!ref($s));
+		@locations = @$s;
 	}
 
 	if (my $s = $args{statuses}) {
@@ -2444,6 +2449,7 @@ sub staged_fts {
 	my $param_depth = $args{depth}; $param_depth = 'NULL' unless (defined($param_depth) and length($param_depth) > 0 );
 	my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
 	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
+	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @locations) . '}$$';
 	my $param_audience = '$${' . join(',', map { s/\$//go; "\"$_\"" } @aud) . '}$$';
 	my $param_language = '$${' . join(',', map { s/\$//go; "\"$_\""} @lang) . '}$$';
 	my $param_lit_form = '$${' . join(',', map { s/\$//go; "\"$_\"" } @lit_form) . '}$$';
@@ -2468,6 +2474,7 @@ sub staged_fts {
                     $param_depth,
                     $param_searches,
                     $param_statuses,
+                    $param_locations,
                     $param_audience,
                     $param_language,
                     $param_lit_form,
