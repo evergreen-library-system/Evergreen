@@ -50,7 +50,7 @@ var CIRC_MOD_MAP = {
 
 /* this will set defaults even if no one asked for them */
 log_debug("Calling getItemConfig() to force defaults..");
-getItemConfig();
+result.item_config = getItemConfig();
 
 
 function getItemConfig() {

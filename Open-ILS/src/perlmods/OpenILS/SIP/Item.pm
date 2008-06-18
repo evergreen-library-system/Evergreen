@@ -112,7 +112,7 @@ sub run_attr_script {
 sub magnetic {
     my $self = shift;
 	 return 0 unless $self->run_attr_script;
-	 my $mag = $self->{item_config_result}->{magneticMedia};
+	 my $mag = $self->{item_config_result}->{item_config}->{magneticMedia};
 	 syslog('LOG_DEBUG', "OILS: magnetic = $mag");
 	 return ($mag and $mag eq 't') ? 1 : 0;
 }
@@ -120,7 +120,7 @@ sub magnetic {
 sub sip_media_type {
     my $self = shift;
 	 return 0 unless $self->run_attr_script;
-	 my $media = $self->{item_config_result}->{SIPMediaType};
+	 my $media = $self->{item_config_result}->{item_config}->{SIPMediaType};
 	 syslog('LOG_DEBUG', "OILS: media type = $media");
 	 return ($media) ? $media : '001';
 }
