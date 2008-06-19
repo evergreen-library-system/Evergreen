@@ -135,7 +135,7 @@
 			g.view = 'copy_browser';
 			if (copy_browser_reset) {
 				bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
-                copy_browser.reset = false;
+                copy_browser_reset = false;
 			} else {
 				bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
 			}
