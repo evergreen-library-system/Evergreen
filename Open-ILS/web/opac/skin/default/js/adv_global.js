@@ -1,7 +1,9 @@
 
 attachEvt("common", "run", advgInit);
+attachEvt("common", "locationChanged", advSyncCopyLocLink );
 
 var COOKIE_NOGROUP_RECORDS = 'grpt';
+var advSelectedOrg = null;
 
 function advgInit() {
 
@@ -48,9 +50,26 @@ function advgInit() {
         $('opac.result.limit2avail').checked = true;
 
     initSearchBoxes();
+
+    advSyncCopyLocLink(getLocation());
 }
 
-function initSearchBoxes() {
+function advSyncCopyLocLink(org) {
+    // display the option to filter by copy location
+    advLocationsLoaded = false;
+    advSelectedOrg = org;
+    removeChildren($('adv_copy_location_filter_select'));
+
+    if(isTrue(findOrgType(findOrgUnit(org).ou_type()).can_have_vols())) {
+        unHideMe($('adv_copy_location_filter_row'));
+        advLoadCopyLocations(org); 
+    } else {
+        hideMe($('adv_copy_location_filter_row'));
+    }
+
+}
+
+function initSearchBoxes(clean) {
     /* loads the compiled search from the search cookie 
         and sets the widgets accordingly */
 
@@ -68,6 +87,15 @@ function initSearchBoxes() {
         advAddGblRow();
 
     var rows = $('adv_global_tbody').getElementsByTagName('tr');
+
+    if(clean) {
+        for(var t = 0; t < rows.length; t++) {
+            var input = $n(rows[t], 'term');
+            if(input) input.value = '';
+        }
+        return;
+    }
+
     for(var t = 0; t < types.length; t++) {
         var row = rows[t];
         setSelector($n(row, 'type'), types[t]);
@@ -141,6 +169,7 @@ function advSubmitGlobal() {
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
 	var biblevels = advGetVisSelectorVals('adv_global_bib_level');
+    var locations = advGetVisSelectorVals('adv_copy_location_filter_select');
 	var languages = getSelectedList($('adv_global_lang')) + '';	
     var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
@@ -157,6 +186,7 @@ function advSubmitGlobal() {
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
+	args[PARAM_COPYLOCS] = locations;
 	//args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
 	args[PARAM_DEPTH]		= depthSelGetDepth();
 	args[PARAM_LOCATION]	= depthSelGetNewLoc();
@@ -234,5 +264,23 @@ function advBuildSearchBlob() {
 }
 
 
+// retrieves the shelving locations
+var advLocationsLoaded = false;
+function advLoadCopyLocations(org) {
+    if(org == null) 
+        org = advSelectedOrg;
+    var req = new Request(FETCH_COPY_LOCATIONS, org);
+    req.callback(advShowCopyLocations);
+    req.send();
+    advLocationsLoaded = true;
+}
+
+// inserts the shelving locations into the multi-select
+function advShowCopyLocations(r) {
+    var locations = r.getResultObject();
+    var sel = $('adv_copy_location_filter_select');
+    for(var i = 0; i < locations.length; i++) 
+        insertSelectorVal(sel, -1, locations[i].name(), locations[i].id());
+}
 
 

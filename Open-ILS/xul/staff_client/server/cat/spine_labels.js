@@ -1,7 +1,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -83,7 +83,8 @@
 					var ds = document.createElement('description'); vb.appendChild(ds);
 					ds.appendChild( document.createTextNode( g.volumes[i].label() ) );
 					var ds2 = document.createElement('description'); vb.appendChild(ds2);
-					ds2.appendChild( document.createTextNode( g.volumes[i].copies().length + ( g.volumes[i].copies().length == 1 ? ' copy' : ' copies') ) );
+					ds2.appendChild( document.createTextNode( g.volumes[i].copies().length + (
+						g.volumes[i].copies().length == 1 ? $("catStrings").getString('staff.cat.spine_labels.copy') : $("catStrings").getString('staff.cat.spine_labels.copies')) ) );
 					ds2.setAttribute('style','color: green');
 					var hb = document.createElement('hbox'); vb.appendChild(hb);
 
@@ -201,7 +202,7 @@
 					idx++;
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('Generate',E);
+				g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.generate.std_unexpeceted_err'),E);
 			}
 		}
 
@@ -269,7 +270,7 @@
 						'show_print_button' : 1,
 						'alternate_print' : 1,
 						'no_xulG' : 1,
-						'title' : 'Spine Labels',
+						'title' : $("catStrings").('staff.cat.spine_labels.preview.title'),
 						'on_url_load' : function(b) { 
 							try { 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
@@ -281,10 +282,10 @@
 							} catch(E) {
 								alert(E);
 							}
-						},
+						}
 					};
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('Preview and Print',E);
+				g.error.standard_unexpected_error_alert($("catStrings").('staff.cat.spine_labels.preview.std_unexpected_err'),E);
 			}
 		}
 

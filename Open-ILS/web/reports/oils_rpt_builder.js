@@ -518,7 +518,7 @@ function oilsAddRptFilterItem(path, tform, filter) {
    //_debug('NEXT PARAM = ' + oilsRptID2);
    //_debug('NEXT PARAM = ' + oilsRptNextParam());
 
-	if( filter == 'is' || filter == 'is not' )
+	if( filter == 'is' || filter == 'is not' || filter == 'is blank' || filter == 'is not blank' )
 		where.condition[filter] = null;
 	else where.condition[filter] = oilsRptNextParam();
 
@@ -557,7 +557,7 @@ function oilsAddRptHavingItem(path, tform, filter) {
 		column:   { transform: tform, colname: oilsRptPathCol(path) },
 		condition : {}
 	};
-	if( filter == 'is' || filter == 'is not' )
+	if( filter == 'is' || filter == 'is not' || filter == 'is blank' || filter == 'is not blank' )
 		having.condition[filter] = null;
 	else having.condition[filter] = oilsRptNextParam();
 

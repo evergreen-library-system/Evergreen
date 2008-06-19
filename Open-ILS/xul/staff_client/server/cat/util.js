@@ -1,5 +1,7 @@
 dump('entering cat/util.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof cat == 'undefined') var cat = {};
 cat.util = {};
 
@@ -14,7 +16,9 @@ cat.util.replace_barcode = function(old_bc) {
 		JSAN.use('util.network');
 		var network = new util.network();
 
-		if (!old_bc) old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
+		if (!old_bc) old_bc = window.prompt($("catStrings").getString('staff.cat.util.replace_barcode.old_bc_window_prompt.prompt'),
+			'',
+			$("catStrings").getString('staff.cat.util.replace_barcode.old_bc_window_prompt.title'));
 		if (!old_bc) return;
 
 		var copy;
@@ -23,7 +27,7 @@ cat.util.replace_barcode = function(old_bc) {
 			if (typeof copy.ilsevent != 'undefined') throw(copy); 
 			if (!copy) throw(copy);
 		} catch(E) {
-			alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n');
+			alert($("catStrings").getFormattedString('staff.cat.util.replace_barcode.error_alert', [old_bc]) + '\n');
 			return old_bc;
 		}
 	
@@ -33,14 +37,21 @@ cat.util.replace_barcode = function(old_bc) {
 			if (typeof copy.ilsevent != 'undefined') throw(copy);
 			if (!copy) throw(copy);
 		} catch(E) {
-			try { alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc)); } catch(F) { alert(E + '\n' + F); }
+			try {
+				alert($("catStrings").getFormattedString('staff.cat.util.replace_barcode.error_alert', [old_bc]) +
+					 '\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc));
+			} catch(F) {
+				alert(E + '\n' + F);
+			}
 			return old_bc;
 		}
 	
-		var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
+		var new_bc = window.prompt($("catStrings").getString('staff.cat.util.replace_barcode.new_bc_window_prompt.prompt'),
+			'',
+			$("catStrings").getString('staff.cat.util.replace_barcode.new_bc_window_prompt.title'));
 		new_bc = String( new_bc ).replace(/\s/g,'');
 		if (!new_bc) {
-			alert('Rename aborted.  Blank for barcode not allowed.');
+			alert($("catStrings").getString('staff.cat.util.replace_barcode.new_bc.failed'));
 			return old_bc;
 		}
 	
@@ -50,7 +61,7 @@ cat.util.replace_barcode = function(old_bc) {
 			return old_bc;
 		} else {
 			if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
-				obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' + new_bc + '".',test);
+				obj.error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.replace_barcode.testing_error', [new_bc]), test);
 				return old_bc;
 			}	
 		}
@@ -60,10 +71,10 @@ cat.util.replace_barcode = function(old_bc) {
 		if (typeof r.ilsevent != 'undefined') { 
 			if (r.ilsevent != 0) {
 				if (r.ilsevent == 5000 /* PERM_FAILURE */) {
-					alert('Renamed aborted.  Insufficient permission.');
+					alert($("catStrings").getString('staff.cat.util.replace_barcode.insufficient_permission_for_rename'));
 					return old_bc;
 				} else {
-					obj.error.standard_unexpected_error_alert('Error renaming item.',r);
+					obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.replace_barcode.item_rename_error'),r);
 					return old_bc;
 				}
 			}
@@ -72,7 +83,7 @@ cat.util.replace_barcode = function(old_bc) {
 		return new_bc;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert('Rename did not likely occur.',E);
+		error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.replace_barcode.rename_error'),E);
 		return old_bc;
 	}
 }
@@ -84,20 +95,22 @@ cat.util.transfer_copies = function(params) {
 	try {
 		data.stash_retrieve();
 		if (!data.marked_volume) {
-			alert('Please mark a volume as the destination from within holdings maintenance and then try this again.');
+			alert($("catStrings").getString('staff.cat.util.transfer_copies.unmarked_volume_alert'));
 			return;
 		}
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
 		if (!params.message) {
-			params.message = 'Transfer items from their original volumes to ';
-			params.message += data.hash.aou[ params.owning_lib ].shortname() + "'s volume labelled ";
-			params.message += '"' + params.volume_label + '" on the following record (and change their circ libs to match)?';
+			params.message = $("catStrings").getFormattedString('staff.cat.util.transfer_copies.params_message', [data.hash.aou[ params.owning_lib ].shortname(), params.volume_label]);
+			//params.message = 'Transfer items from their original volumes to ';
+			//params.message += data.hash.aou[ params.owning_lib ].shortname() + "'s volume labelled ";
+			//params.message += '"' + params.volume_label + '" on the following record (and change their circ libs to match)?';
 		}
 
 		xml += '<description>' + params.message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</description>';
-		xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
-		xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+		xml += '<hbox><button label="' + $("catStrings").getString('staff.cat.util.transfer_copies.transfer.label')+ '" name="fancy_submit"/>';
+		xml += '<button label="' + $("catStrings").getString('staff.cat.util.transfer_copies.cancel.label');
+		xml += '" accesskey="'+ $("catStrings").getString('staff.cat.util.transfer_copies.cancel.accesskey') +'" name="fancy_cancel"/></hbox>';
 		xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + params.docid + '"/>';
 		xml += '</vbox>';
 		//data.temp_transfer = xml; data.stash('temp_transfer');
@@ -107,9 +120,9 @@ cat.util.transfer_copies = function(params) {
 			//+ '?xml_in_stash=temp_transfer'
 			//+ '&title=' + window.escape('Item Transfer'),
 			'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
-			{ 'xml' : xml, 'title' : 'Item Transfer' }
+			{ 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.util.transfer_copies.window_title') }
 		);
-		if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
+		if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.util.transfer_copies.aborted_transfer')); return; }
 
 		JSAN.use('util.functional');
 
@@ -126,7 +139,7 @@ cat.util.transfer_copies = function(params) {
 			[ ses(), copies, true ], 
 			null,
 			{
-				'title' : 'Override Transfer Failure?',
+				'title' : $("catStrings").getString('staff.cat.util.transfer_copies.override_transfer_failure'),
 				'overridable_events' : [
 					1208 /* TITLE_LAST_COPY */,
 					1227 /* COPY_DELETE_WARNING */,
@@ -137,11 +150,11 @@ cat.util.transfer_copies = function(params) {
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
 		} else {
-			alert('Items transferred.');
+			alert($("catStrings").getString('staff.cat.util.transfer_copies.successful_transfer'));
 		}
 
 	} catch(E) {
-		error.standard_unexpected_error_alert('All items not likely transferred.',E);
+		error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.transfer_copies.transfer_error'),E);
 	}
 }
 
@@ -154,11 +167,11 @@ cat.util.spawn_spine_editor = function(selection_list) {
 		data.stash('temp_barcodes_for_labels');
 		xulG.new_tab(
 			xulG.url_prefix( urls.XUL_SPINE_LABEL ),
-			{ 'tab_name' : 'Spine Labels' },
+			{ 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
 			{}
 		);
 	} catch(E) {
-		error.standard_unexpected_error_alert('Spine Labels',E);
+		error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.spine_editor.spine_editor_error'),E);
 	}
 }
 
@@ -169,7 +182,7 @@ cat.util.show_in_opac = function(selection_list) {
 		for (var i = 0; i < selection_list.length; i++) {
 			doc_id = selection_list[i].doc_id;
 			if (!doc_id) {
-				alert(selection_list[i].barcode + ' is not cataloged');
+				alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.unknown_barcode', [selection_list[i].barcode]));
 				continue;
 			}
 			if (typeof seen[doc_id] != 'undefined') {
@@ -189,7 +202,7 @@ cat.util.show_in_opac = function(selection_list) {
 			);
 		}
 	} catch(E) {
-		error.standard_unexpected_error_alert('Error opening catalog for document id = ' + doc_id,E);
+		error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.catalog_error_for_doc_id', [doc_id]),E);
 	}
 }
 
@@ -230,10 +243,15 @@ cat.util.spawn_copy_editor = function(params) {
 		JSAN.use('util.error'); obj.error = new util.error();
 	
 		var title = '';
-		if ((params.copy_ids && params.copy_ids.length > 1) || (params.copies && params.copies.length > 1 )) title += 'Batch ';
-		title += params.edit == 1 ? 'Edit' : 'View';
-		title += ' Copy Attributes';
-	
+		if (params.copy_ids && params.copy_ids.length > 1 && params.edit == 1)
+			title = $("catStrings").getString('staff.cat.util.copy_editor.batch_edit');
+		else if(params.copies && params.copies.length > 1 && params.edit == 1)
+			title = $("catStrings").getString('staff.cat.util.copy_editor.batch_view');
+		else if(params.copy_ids && params.copy_ids.length == 1)
+			title = $("catStrings").getString('staff.cat.util.copy_editor.edit');
+		else
+			title = $("catStrings").getString('staff.cat.util.copy_editor.view');
+
 		JSAN.use('util.window'); var win = new util.window();
 		var my_xulG = win.open(
 			(urls.XUL_COPY_EDITOR),
@@ -242,7 +260,7 @@ cat.util.spawn_copy_editor = function(params) {
             params
 		);
 		if (!my_xulG.copies && params.edit) {
-            alert(typeof params.no_copies_modified_msg != 'undefined' ? params.no_copies_modified_msg : 'Copies not modified.');
+            alert(typeof params.no_copies_modified_msg != 'undefined' ? params.no_copies_modified_msg : $("catStrings").getString('staff.cat.util.copy_editor.not_modified'));
         } else {
             return my_xulG.copies;
         }
@@ -269,11 +287,18 @@ cat.util.mark_item_damaged = function(copy_ids) {
 		}
 		if (magic_status) {
 		
-			error.yns_alert('Action failed.  One or more of these items is in a special status (Checked Out, In Transit, etc.) and cannot be changed to the Damaged status.','Action failed.','OK',null,null,'Check here to confirm this message');
+			error.yns_alert($("catStrings").getString('staff.cat.util.mark_item_damaged.af_message'),
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.af_title'),
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.af_ok_label'), null, null,
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.af_confirm_action'));
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.md_message', [util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", ")]),
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.md_title'),
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.md_ok_label'),
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.md_cancel_label'), null,
+				$("catStrings").getString('staff.cat.util.mark_item_damaged.md_confirm_action'));
 
 			if (r == 0) {
 				var count = 0;
@@ -283,10 +308,11 @@ cat.util.mark_item_damaged = function(copy_ids) {
 						if (typeof robj.ilsevent != 'undefined') throw(robj);
 						count++;
 					} catch(E) {
-						error.standard_unexpected_error_alert('Error marking item ' + copies[i].barcode() + ' damaged.',E);
+						error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.marking_error', [copies[i].barcode()]),E);
 					}
 				}
-				alert(count == 1 ? 'Item marked Damaged' : count + ' items marked Damaged.');
+				alert(count == 1 ? $("catStrings").getString('staff.cat.util.mark_item_damaged.one_item_damaged') :
+					$("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.multiple_item_damaged', [count]));
 			}
 		}
 
@@ -311,11 +337,18 @@ cat.util.mark_item_missing = function(copy_ids) {
 		}
 		if (magic_status) {
 		
-			error.yns_alert('Action failed.  One or more of these items is in a special status (Checked Out, In Transit, etc.) and cannot be changed to the Missing status.','Action failed.','OK',null,null,'Check here to confirm this message');
+			error.yns_alert($("catStrings").getString('staff.cat.util.mark_item_missing.af_message'),
+				$("catStrings").getString('staff.cat.util.mark_item_missing.af_title'),
+				$("catStrings").getString('staff.cat.util.mark_item_missing.af_ok_label'), null, null,
+				$("catStrings").getString('staff.cat.util.mark_item_missing.af_confirm_action'));
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Missing?  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_missing.ms_message', [util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", ")]),
+				$("catStrings").getString('staff.cat.util.mark_item_missing.ms_title'),
+				$("catStrings").getString('staff.cat.util.mark_item_missing.ms_ok_label'),
+				$("catStrings").getString('staff.cat.util.mark_item_missing.ms_cancel_label'), null,
+				$("catStrings").getString('staff.cat.util.mark_item_missing.ms_confirm_action'));
 
 			if (r == 0) {
 				var count = 0;
@@ -325,10 +358,11 @@ cat.util.mark_item_missing = function(copy_ids) {
 						if (typeof robj.ilsevent != 'undefined') throw(robj);
 						count++;
 					} catch(E) {
-						error.standard_unexpected_error_alert('Error marking item ' + copies[i].barcode() + ' missing.',E);
+						error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_missing.marking_error', [copies[i].barcode()]),E);
 					}
 				}
-				alert(count == 1 ? 'Item marked Missing' : count + ' items marked Missing.');
+				alert(count == 1 ? $("catStrings").getString('staff.cat.util.mark_item_missing.one_item_missing') :
+					$("catStrings").getFormattedString('staff.cat.util.mark_item_missing.multiple_item_missing', [count]));
 			}
 		}
 

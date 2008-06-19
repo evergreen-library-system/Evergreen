@@ -632,6 +632,8 @@
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
 <!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve record by TCN">
+<!ENTITY staff.main.menu.cat.search_bib_id.accesskey "D">
+<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve record by Record ID">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
 <!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
@@ -759,6 +761,8 @@
 <!ENTITY staff.main.menu.search.patrons_barcode.label "for patron by Barcode">
 <!ENTITY staff.main.menu.search.record.accesskey "T">
 <!ENTITY staff.main.menu.search.record.label "for record by TCN">
+<!ENTITY staff.main.menu.search.record_via_id.accesskey "D">
+<!ENTITY staff.main.menu.search.record_via_id.label "for record by Record ID">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">
@@ -1915,3 +1919,282 @@
 <!ENTITY staff.cat.opac.menuitem.refreshinterfaces.label "Refresh All Interfaces">
 <!ENTITY staff.cat.opac.menuitem.dupnewtab.label "Duplicate in New Tab">
 <!ENTITY staff.cat.opac.menuitem.removeframe.label "Remove this Frame">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_tab.label "Record Query">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_tab.accesskey "Q">
+<!ENTITY staff.cat.record_buckets_overlay.pending_records_tab.label "Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.pending_records_tab.accesskey "P">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_tab.label "Bucket View">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_tab.accesskey "V">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_view_panel.label "Bucket Actions">
+<!ENTITY staff.cat.record_buckets_overlay.new_bucket.label "New Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.delete_bucket.label "Delete Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.refresh_bucket.label "Refresh">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_label.value "Query">
+<!ENTITY staff.cat.record_buckets_overlay.record_query_label.accesskey "y">
+<!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.label "Submit">
+<!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey "S">
+<!ENTITY staff.cat.record_buckets_overlay.query_help.button.label "Help">
+<!ENTITY staff.cat.record_buckets_overlay.query_help.button.accesskey "H">
+<!ENTITY staff.cat.record_buckets_overlay.query_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip0.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns0.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_query_to_pending.label "Add All to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.add_sel_query_to_pending.label "Add Selected to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip1.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns1.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.label "Add All to current Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.accesskey "A">
+<!ENTITY staff.cat.record_buckets_overlay.add_sel_pending_to_record_bucket.label "Add Selected to current Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_del_item.label "Remove Selected from Bucket">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label "Add Selected to Pending Records">
+<!ENTITY staff.cat.record_buckets_overlay.info_box.label "Bucket #">
+<!ENTITY staff.cat.record_buckets_overlay.bucket_owner.label "Owner:">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip2.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns2.label "Save List Configuration">
+<!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
+<!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
+<!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
+<!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
+<!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_usmarc.label "MARC21">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_unimarc.label "UNIMARC">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_xml.label "XML">
+<!ENTITY staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label "Evergreen BRE">
+<!ENTITY staff.cat.record_buckets_quick.groupbox.caption "Record Buckets">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.title "Add to Bucket">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.label "Add to Selected Bucket">
+<!ENTITY staff.cat.record_buckets_quick.add_to_bucket.accesskey "A">
+<!ENTITY staff.cat.record_buckets_quick.new_bucket.label "Add to New Bucket">
+<!ENTITY staff.cat.record_buckets_quick.new_bucket.accesskey "N">
+<!ENTITY staff.cat.record_buckets_quick.cancel.label "Cancel">
+<!ENTITY staff.cat.record_buckets_quick.cancel.accesskey "C">
+<!ENTITY staff.cat.spine_labels.re-generate.label "Re-Generate">
+<!ENTITY staff.cat.spine_labels.re-generate.accesskey "G">
+<!ENTITY staff.cat.spine_labels.preview_and_print.label "Preview and Print">
+<!ENTITY staff.cat.spine_labels.preview_and_print.accesskey "P">
+<!ENTITY staff.cat.spine_labels.close_window.label "Close Window">
+<!ENTITY staff.cat.spine_labels.close_window.accesskey "C">
+<!ENTITY staff.cat.spine_labels.font_size_label.value "Font size (in pts):">
+<!ENTITY staff.cat.spine_labels.spine_label.value "Spine Label">
+<!ENTITY staff.cat.spine_labels.spine_label.left_margine.value "Left Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_width.value "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_length.value "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.pocket_label.value "Pocket Label">
+<!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.value "Middle Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_width.value "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_length.value "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.pocket_label.title.label "Include Title (wraps on word at label width)">
+<!ENTITY staff.cat.spine_labels.on_line.value "On line:">
+<!ENTITY staff.cat.spine_labels.pocket_label.include_title.label "Include Title (segment after wrapping)">
+<!ENTITY staff.cat.spine_labels.indent_title.label "Indent a space?">
+<!ENTITY staff.cat.spine_labels.inc_call_number.label "Include Call Number">
+<!ENTITY staff.cat.spine_labels.inc_owning_library_policy_code.label "Include Owning Library (policy code)">
+<!ENTITY staff.cat.spine_labels.inc_owning_library.label "Include Owning Library">
+<!ENTITY staff.cat.spine_labels.inc_shelving_location.label "Include Shelving Location">
+<!ENTITY staff.cat.spine_labels.inc_item_barcode.label "Include Item Barcode">
+<!ENTITY staff.cat.spine_labels.custom.label "Custom:">
+<!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
+<!ENTITY staff.cat.volume_copy_creator.label "Volume/Copy Creator">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
+<!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">
+<!ENTITY staff.cat.volume_copy_creator.print_labels.accesskey "P">
+<!ENTITY staff.cat.volume_copy_creator.create.label "Edit then Create">
+<!ENTITY staff.cat.volume_copy_creator.create.accesskey "C">
+<!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">
+<!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
+<!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
+<!ENTITY staff.cat.volume_editor.modify.label "Modify">
+<!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
+<!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">
+<!ENTITY staff.cat.z3950.service.label "Service">
+<!ENTITY staff.cat.z3950.username.label "Username">
+<!ENTITY staff.cat.z3950.password.label "Password">
+<!ENTITY staff.cat.z3950.catalog_service.label "Local Catalog">
+<!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
+<!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
+<!ENTITY staff.cat.z3950.save_creds.accesskey "D">
+<!ENTITY staff.cat.z3950.query.label "Query">
+<!ENTITY staff.cat.z3950.query.label "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
+<!ENTITY staff.cat.z3950.clear.label "Clear Form">
+<!ENTITY staff.cat.z3950.clear.accesskey "C">
+<!ENTITY staff.cat.z3950.search.label "Search">
+<!ENTITY staff.cat.z3950.search.accesskey "S">
+<!ENTITY staff.cat.z3950.results_page.label "Results Page">
+<!ENTITY staff.cat.z3950.results_page.accesskey "P">
+<!ENTITY staff.cat.z3950.results_caption.label "Results">
+<!ENTITY staff.cat.z3950.search_form.label "Search Form">
+<!ENTITY staff.cat.z3950.search_form.accesskey "F">
+<!ENTITY staff.cat.z3950.page_next.label "Fetch More Results">
+<!ENTITY staff.cat.z3950.page_next.accesskey "M">
+<!ENTITY staff.cat.z3950.export.label "CSV to Clipboard">
+<!ENTITY staff.cat.z3950.clip_button.label "Copy to Clipboard">
+<!ENTITY staff.cat.z3950.save_cols_btn.label "Save Columns">
+<!ENTITY staff.cat.z3950.marc_view.label "MARC View">
+<!ENTITY staff.cat.z3950.marc_view.accesskey "V">
+<!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">
+<!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
+<!ENTITY staff.cat.z3950.marc_import.label "MARC Editor for Import">
+<!ENTITY staff.cat.z3950.marc_import.accesskey "I">
+<!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
+<!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">
+<!ENTITY staff.pat.barcode_entry.barcode.accesskey "B">
+<!ENTITY staff.pat.barcode_entry.submit_btn.label "Submit">
+<!ENTITY staff.pat.barcode_entry.submit_btn.accesskey "S">
+<!ENTITY staff.pat.barcode_entry.retrieving.label "Retrieving...">
+<!ENTITY staff.patron.bill_cc_info.visa.label "Visa">
+<!ENTITY staff.patron.bill_cc_info.mastercard.label "Mastercard">
+<!ENTITY staff.patron.bill_cc_info.american_express.label "American Express">
+<!ENTITY staff.patron.bill_cc_info.discover.label "Discover">
+<!ENTITY staff.patron.bill_cc_info.other.label "Other">
+<!ENTITY staff.patron.bill_cc_info.cc_number.value "CC Number">
+<!ENTITY staff.patron.bill_cc_info.month_expire.value "Expire Month">
+<!ENTITY staff.patron.bill_cc_info.year_expire.value "Expire Year">
+<!ENTITY staff.patron.bill_cc_info.approval_code.value "Approval Code">
+<!ENTITY staff.patron.bill_cc_info.note.value "Note">
+<!ENTITY staff.patron.bill_cc_info.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_cc_info.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_cc_info.submit.label "Submit this Info">
+<!ENTITY staff.patron.bill_cc_info.submit.accesskey "S">
+<!ENTITY staff.patron.bill_check_info.check_info.label "Check Info">
+<!ENTITY staff.patron.bill_check_info.check_number.value "Check Number">
+<!ENTITY staff.patron.bill_check_info.note.value "Note">
+<!ENTITY staff.patron.bill_check_info.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_check_info.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_check_info.submit.label "Submit this Info">
+<!ENTITY staff.patron.bill_check_info.submit.accesskey "S">
+<!ENTITY staff.patron.bill_details.bills.label "Bills">
+<!ENTITY staff.patron.bill_details.save_columns.label "Save Columns">
+<!ENTITY staff.patron.bill_details.copy_to_clipboard.label "Copy to Clipboard">
+<!ENTITY staff.patron.bill_details.print_export.label "Print Export">
+<!ENTITY staff.patron.bill_details.void_selection.label "Void selected billings">
+<!ENTITY staff.patron.bill_details.payments.label "Payments">
+<!ENTITY staff.patron.bill_details.show_in_catalog.label "Show in Catalog">
+<!ENTITY staff.patron.bill_details.show_in_catalog.accesskey "S">
+<!ENTITY staff.patron.bill_details.close_window.label "Close Window">
+<!ENTITY staff.patron.bill_details.close_window.accesskey "c">
+<!ENTITY staff.patron.bill_history.caption.label "Bill History">
+<!ENTITY staff.patron.bill_history.add_billing.label "Add Billing">
+<!ENTITY staff.patron.bill_history.full_details.label "Full Details">
+<!ENTITY staff.patron.bill_history.full_details.accesskey "D">
+<!ENTITY staff.patron.bill_history.show_in_catalog.label "Show in Catalog">
+<!ENTITY staff.patron.bill_history.show_in_catalog.accesskey "S">
+<!ENTITY staff.patron.bill_history.print.label "Print">
+<!ENTITY staff.patron.bill_history.print.accesskey "P">
+<!ENTITY staff.patron.bill_history.close_window.label "Close Window">
+<!ENTITY staff.patron.bill_history.close_window.accesskey "c">
+<!ENTITY staff.patron.bills_overlay.still_checked_out.label "Red Items are still Checked Out">
+<!ENTITY staff.patron.bills_overlay.uncheck_all.label "Uncheck All">
+<!ENTITY staff.patron.bills_overlay.check_all.label "Check All">
+<!ENTITY staff.patron.bills_overlay.print_bills.label "Print Bills" >
+<!ENTITY staff.patron.bills_overlay.alternate_view.label "Alternate View">
+<!ENTITY staff.patron.bills_overlay.alternate_view.accesskey "V">
+<!ENTITY staff.patron.bills_overlay.summary.label "Summary">
+<!ENTITY staff.patron.bills_overlay.net_balance.value "Net Balance">
+<!ENTITY staff.patron.bills_overlay.payment_applied.value "- Payment applied">
+<!ENTITY staff.patron.bills_overlay.new_balance.value "= New Balance">
+<!ENTITY staff.patron.bills_overlay.pay_bill.label "Pay Bill">
+<!ENTITY staff.patron.bills_overlay.payment_type.value "Payment Type">
+<!ENTITY staff.patron.bills_overlay.payment_type.accesskey "t">
+<!ENTITY staff.patron.bills_overlay.cash.label "Cash">
+<!ENTITY staff.patron.bills_overlay.check.label "Check">
+<!ENTITY staff.patron.bills_overlay.credit_card.label "Credit Card">
+<!ENTITY staff.patron.bills_overlay.word.label "Work">
+<!ENTITY staff.patron.bills_overlay.forgive.label "Forgive">
+<!ENTITY staff.patron.bills_overlay.goods.label "Goods">
+<!ENTITY staff.patron.bills_overlay.payment_received.value "Payment received">
+<!ENTITY staff.patron.bills_overlay.payment_received.accesskey "a">
+<!ENTITY staff.patron.bills_overlay.payment_applied.value "- Payment applied">
+<!ENTITY staff.patron.bills_overlay.change.value "= Change">
+<!ENTITY staff.patron.bills_overlay.patron_credit.value "or Patron Credit">
+<!ENTITY staff.patron.bills_overlay.bill_patron.label "Bill Patron">
+<!ENTITY staff.patron.bills_overlay.bill_patron.accesskey "B">
+<!ENTITY staff.patron.bills_overlay.history.label "History">
+<!ENTITY staff.patron.bills_overlay.history.accesskey "H">
+<!ENTITY staff.patron.bills_overlay.annotate_payment.label "Annotate Payment">
+<!ENTITY staff.patron.bills_overlay.convert_change_to_credit.label "Convert Change to Patron Credit">
+<!ENTITY staff.patron.bills_overlay.apply_payment.label "Apply Payment!">
+<!ENTITY staff.patron.bills_overlay.apply_payment.accesskey "P">
+<!ENTITY staff.patron.bill_summary_overlay.bill_number.value "Bill #">
+<!ENTITY staff.patron.bill_summary_overlay.total_billed.value "Total Billed">
+<!ENTITY staff.patron.bill_summary_overlay.title.value "Title">
+<!ENTITY staff.patron.bill_summary_overlay.type.value "Type">
+<!ENTITY staff.patron.bill_summary_overlay.total_paid.value "Total Paid">
+<!ENTITY staff.patron.bill_summary_overlay.checked_out.value "Checked Out">
+<!ENTITY staff.patron.bill_summary_overlay.start.value "Start">
+<!ENTITY staff.patron.bill_summary_overlay.balance_owed.value "Balance Owed">
+<!ENTITY staff.patron.bill_summary_overlay.due_date.value "Due Date">
+<!ENTITY staff.patron.bill_summary_overlay.finish.value "Finish">
+<!ENTITY staff.patron.bill_summary_overlay.renewal.value "Renewal?">
+<!ENTITY staff.patron.bill_summary_overlay.checked_in.value "Checked In">
+<!ENTITY staff.patron.bill_wizard.create_bill.label "Create Bill">
+<!ENTITY staff.patron.bill_wizard.location.value "Location">
+<!ENTITY staff.patron.bill_wizard.transaction_type.value "Transaction Type">
+<!ENTITY staff.patron.bill_wizard.grocery.label "Grocery">
+<!ENTITY staff.patron.bill_wizard.circulation.label "Circulation">
+<!ENTITY staff.patron.bill_wizard.billing_type.label "Billing Type">
+<!ENTITY staff.patron.bill_wizard.amount.value "Amount">
+<!ENTITY staff.patron.bill_wizard.note.value "Note">
+<!ENTITY staff.patron.bill_wizard.cancel.label "Cancel">
+<!ENTITY staff.patron.bill_wizard.cancel.accesskey "C">
+<!ENTITY staff.patron.bill_wizard.submit.label "Submit this Bill">
+<!ENTITY staff.patron.bill_wizard.submit.accesskey "S">
+<!ENTITY staff.patron.display_overlay.none_selected.value "No Patron Selected">
+<!ENTITY staff.patron.display_overlay.barred.value "(Barred)">
+<!ENTITY staff.patron.display_overlay.expired.value "(Expired)">
+<!ENTITY staff.patron.display_overlay.inactive.value "(In-Active)">
+<!ENTITY staff.patron.display_overlay.juvenile.value "(Juvenile)">
+<!ENTITY staff.patron.display_overlay.alert.value "(Alert)">
+<!ENTITY staff.patron.display_overlay.see_notes.value "(See Notes)">
+<!ENTITY staff.patron.display_overlay.max_bills.value "(Max Bills)">
+<!ENTITY staff.patron.display_overlay.max_overdues.value "(Max Overdues)">
+<!ENTITY staff.patron.display_overlay.has_bills.value "(Has Bills)">
+<!ENTITY staff.patron.display_overlay.has_overdues.value "(Has Overdues)">
+<!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid DOB)">
+<!ENTITY staff.patron.display_overlay.invalid_address.value "(Invalid Address)">
+<!ENTITY staff.patron.display_overlay.exit.label "Exit">
+<!ENTITY staff.patron.display_overlay.exit.accesskey "x">
+<!ENTITY staff.patron.display_overlay.search_form.label "Search Form">
+<!ENTITY staff.patron.display_overlay.search_form.accesskey "F">
+<!ENTITY staff.patron.display_overlay.retrieve_patron.label "Retrieve Patron">
+<!ENTITY staff.patron.display_overlay.retrieve_patron.accesskey "R">
+<!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
+<!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
+<!ENTITY staff.patron.hold_notices.close_window.label "Close">
+<!ENTITY staff.patron.hold_notices.close_window.accesskey "C">
+<!ENTITY staff.patron.holds_overlay.pickup_lib.label "Pickup Library">
+<!ENTITY staff.patron.holds_overlay.request_lib.label "Requesting Library">
+<!ENTITY staff.patron.holds_overlay.fulfillment_lib.label "Fulfilling Library">
+<!ENTITY staff.patron.holds_overlay.circ_lib.label "Item Circulating Library">
+<!ENTITY staff.patron.holds_overlay.owning_lib.label "Volume Owning Library">
+<!ENTITY staff.patron.holds_overlay.home_lib.label "Patron Home Library foo">
+<!ENTITY staff.patron.holds_overlay.fetch_more.label "Fetch More Holds">
+<!ENTITY staff.patron.holds_overlay.fetch_more.accesskey "M">
+<!ENTITY staff.patron.holds_overlay.lib_filter_checkbox.label "Filter:">
+<!ENTITY staff.patron.holds_overlay.actions_for_holds.label "Actions for Selected Holds">
+<!ENTITY staff.patron.holds_overlay.actions_for_holds.accesskey "S">
+<!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
+<!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
+<!ENTITY staff.patron.info_group.clone.accesskey "N">
+<!ENTITY staff.patron.info_group.remove.accesskey "R">
+<!ENTITY staff.patron.info_group.remove.label "Remove Selected Patrons from the Group">
+<!ENTITY staff.patron.info_group.move.accesskey "M">
+<!ENTITY staff.patron.info_group.move.label "Move Selected Patrons to ANOTHER patron's group.">
+<!ENTITY staff.patron.info_group.add.accesskey "A">
+<!ENTITY staff.patron.info_group.add.label "Move ANOTHER patron to this patron group.">
+<!ENTITY staff.patron.info_group.retrieve_p.accesskey "P">
+<!ENTITY staff.patron.info_group.retrieve_p.label "Retrieve Selected Patrons">
+<!ENTITY staff.patron.info_group.group_member.label "Group Members">
+<!ENTITY staff.patron.info_group.choose_an_action.label "Choose an Action...">
+<!ENTITY staff.patron.info_group.choose_an_action.accesskey "A">

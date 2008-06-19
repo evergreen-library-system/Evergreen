@@ -194,6 +194,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			return new oilsRptSetWidget(widgetArgs);
         case 'is':
         case 'is not':
+        case 'is blank':
+        case 'is not blank':
             return new oilsRptNullWidget(widgetArgs);
 		case 'between':
 		case 'not between':

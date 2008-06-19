@@ -319,6 +319,7 @@ Please see a librarian to renew your account.">
 <!ENTITY opac.advanced.quick.tcn "TCN"> <!-- title control number -->
 <!ENTITY opac.advanced.quick.barcode "Item Barcode"> 
 <!ENTITY opac.advanced.quick.cn "Call Number"> 
+<!ENTITY opac.advanced.copy_loc_filter "Shelving Location">
 
 <!-- ==========================================================
      MARC expert search
@@ -442,6 +443,7 @@ Please see a librarian to renew your account.">
 <!ENTITY advanced.search.title "Search Input">
 <!ENTITY advanced.add.row "Add Search Row">
 <!ENTITY advanced.search.submit "Submit Search">
+<!ENTITY advanced.search.reset "Reset Form">
 <!ENTITY advanced.search.filters "Search Filters">
 <!ENTITY advanced.item.form "Item Form">
 <!ENTITY advanced.item.type "Item Type">

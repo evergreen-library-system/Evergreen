@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 
@@ -34,10 +34,12 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+		
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -57,8 +59,7 @@
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/z3950.xul\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/z3950.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -76,6 +77,8 @@
 	</script>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+     <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset id="cat_z3950_cmds">
 		<command id="cmd_broken" />
@@ -85,12 +88,12 @@
 	</commandset>
 
 	<groupbox flex="1">
-		<caption label="MARC Import via Z39.50"/>
+		<caption label="&staff.cat.z3950.marc_import.label;"/>
         <deck id="z3950_deck" flex="1">
             <hbox id="top_pane" persist="height" flex="1">
                 <vbox id="top_left_pane" persist="width" flex="1">
                     <groupbox id="first_pane" flex="1" class="my_overflow">
-                        <caption id="c2" label="Service and Credentials" class="shrinkable_groupbox"/>
+                        <caption id="c2" label="&staff.cat.z3950.service_credentials.label;" class="shrinkable_groupbox"/>
                         <grid flex="1">
                             <columns>
                                 <column/>
@@ -99,12 +102,13 @@
                             </columns>
                             <rows id="service_rows">
                                 <row>
-                                    <label value="Service"/>
-                                    <label value="Username"/>
-                                    <label value="Password"/>
+                                    <label value="&staff.cat.z3950.service.label;"/>
+                                    <label value="&staff.cat.z3950.username.label;"/>
+                                    <label value="&staff.cat.z3950.password.label;"/>
                                 </row>
                                 <row>
-                                    <checkbox id="native-evergreen-catalog_service" mytype="service_class" service="native-evergreen-catalog" label="Local Catalog" tooltiptext="Evergreen Native Catalog" /> 
+                                    <checkbox id="native-evergreen-catalog_service" mytype="service_class" service="native-evergreen-catalog"
+                                        label="&staff.cat.z3950.catalog_service.label;" tooltiptext="&staff.cat.z3950.catalog_service.tooltiptext;" /> 
                                     <textbox id="native-evergreen-catalog_username" hidden="true"/>
                                     <textbox id="native-evergreen-catalog_password" type="password" hidden="true"/>
                                 </row>
@@ -112,17 +116,17 @@
                         </grid>
                     </groupbox>
                     <hbox>
-                        <button id="save_creds" label="Save as Default" accesskey="D"/>
+                        <button id="save_creds" label="&staff.cat.z3950.save_creds.label;" accesskey="&staff.cat.z3950.save_creds.accesskey;"/>
                     </hbox>
                 </vbox>
                 <splitter collapse="before"><grippy/></splitter>
                 <vbox id="top_right_pane" persist="width" flex="1">
                     <groupbox id="second_pane" flex="1" class="my_overflow">
-                        <caption label="Query" class="shrinkable_groupbox"/>
+                        <caption label="&staff.cat.z3950.query.label;" class="shrinkable_groupbox"/>
                         <hbox>
                             <spacer flex="1"/>
                             <description>
-                                Tip: Click a search field label and then the "Save as Default" button to have that field focused by default.
+                                &staff.cat.z3950.query.description;
                             </description>
                             <spacer flex="1"/>
                         </hbox>
@@ -178,26 +182,26 @@
                         </grid>
                     </groupbox>
                     <hbox>
-                        <button id="clear" label="Clear Form" accesskey="C"/>
-                        <button id="search" label="Search" accesskey="S"/>
+                        <button id="clear" label="&staff.cat.z3950.clear.label;" accesskey="&staff.cat.z3950.clear.accesskey;"/>
+                        <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;"/>
                         <spacer flex="1"/>
-                        <button id="results_page" label="Results Page" accesskey="P"/>
+                        <button id="results_page" label="&staff.cat.z3950.results_page.label;" accesskey="&staff.cat.z3950.results_page.accesskey;"/>
                     </hbox>
                 </vbox>
             </hbox>
             <groupbox flex="1" id="third_pane" persist="height">
-                <caption label="Results" />
+                <caption label="&staff.cat.z3950.results_caption.label;"/>
                 <hbox id="result_message" />
                 <hbox>
-                    <button id="search_form" label="Search Form" accesskey="F" />
-                    <button id="page_next" label="Fetch More Results" accesskey="M" disabled="true"/>
-                    <button id="export" label="CSV to Clipboard" command="cmd_export" accesskey=""/>
-                    <button id="clip_button" command="sel_clip" label="Copy to Clipboard" disabled="true"/>
-                    <button id="save_cols_btn" command="save_columns" label="Save Columns" />
+                    <button id="search_form" label="&staff.cat.z3950.search_form.label;" accesskey="&staff.cat.z3950.search_form.accesskey;"/>
+                    <button id="page_next" label="&staff.cat.z3950.page_next.label;" accesskey="&staff.cat.z3950.page_next.accesskey;" disabled="true"/>
+                    <button id="export" label="&staff.cat.z3950.export.label;" command="cmd_export" accesskey=""/>
+                    <button id="clip_button" command="sel_clip" label="&staff.cat.z3950.clip_button.label;" disabled="true"/>
+                    <button id="save_cols_btn" command="save_columns" label="&staff.cat.z3950.save_cols_btn.label;"/>
                     <spacer flex="1"/>
-                    <button id="marc_view" label="MARC View" accesskey="V" disabled="true"/>
-                    <button id="marc_import_overlay" label="MARC Editor for Overlay" accesskey="O" disabled="true"/>
-                    <button id="marc_import" label="MARC Editor for Import" accesskey="I" disabled="true"/>
+                    <button id="marc_view" label="&staff.cat.z3950.marc_view.label;" accesskey="&staff.cat.z3950.marc_view.accesskey;" disabled="true"/>
+                    <button id="marc_import_overlay" label="&staff.cat.z3950.marc_import_overlay.label;" accesskey="&staff.cat.z3950.marc_import_overlay.accesskey;" disabled="true"/>
+                    <button id="marc_import" label="&staff.cat.z3950.marc_import.label;" accesskey="&staff.cat.z3950.marc_import.accesskey;" disabled="true"/>
                 </hbox>
                 <deck id="deck" flex="1">
                     <tree id="results" flex="1" enableColumnDrag="true" seltype="single"/>

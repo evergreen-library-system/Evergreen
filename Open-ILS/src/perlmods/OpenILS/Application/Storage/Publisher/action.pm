@@ -63,6 +63,7 @@ sub ou_hold_requests {
 		  WHERE	ou.id = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
+		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
 		  ORDER BY h.request_time
 	SQL
 
@@ -218,6 +219,7 @@ sub nearest_hold {
 		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
+		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
             AND h.frozen IS FALSE
 		ORDER BY
 			p.prox,
@@ -368,6 +370,7 @@ sub hold_pull_list {
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
+		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
 			$status_filter
 		  ORDER BY h.request_time ASC
 		  LIMIT $limit
@@ -724,7 +727,7 @@ sub generate_fines {
 			$client->respond( "Error processing overdue circulation [".$c->id."]:\n\n$e\n" );
 			$log->error("Error processing overdue circulation [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			throw $e ifif ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 		};
 	}
 }
@@ -821,13 +824,19 @@ sub new_hold_copy_targeter {
 			#first, re-fetch the hold, to make sure it's not captured already
 			$hold->remove_from_object_index();
 			$hold = action::hold_request->retrieve( $hold->id );
-			die "OK\n" if (!$hold or $hold->capture_time);
 
 			# remove old auto-targeting maps
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 			$_->delete for (@oldmaps);
 
-	
+			if ($hold->expire_time) {
+				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
+				$hold->update( { cancel_time => 'now' } ) if ( DateTime->compare($ex_time, DateTime->now) < 0 );
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+			}
+
+			die "OK\n" if (!$hold or $hold->capture_time or $hold->cancel_time);
+
 			my $all_copies = [];
 
 			# find filters for MR holds

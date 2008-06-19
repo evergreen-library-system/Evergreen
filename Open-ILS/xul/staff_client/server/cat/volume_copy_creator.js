@@ -8,7 +8,7 @@ function my_init() {
 		/* Initial setup */
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('/xul/server/');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -66,7 +66,7 @@ function my_init() {
 			ml.setAttribute('editable','true');
 			ml.setAttribute('width', '200');
 			var btn = document.createElement('button');
-			btn.setAttribute('label','Apply');
+			btn.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.label'));
 			btn.setAttribute('accesskey','A');
 			btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
 			hbox.appendChild(btn);
@@ -106,8 +106,7 @@ function my_init() {
 		g.load_prefs();
 
 	} catch(E) {
-		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-			"system administrator or software developer the following:\ncat/volume_copy_creator.xul\n" +E+ '\n';
+		var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_copy_creator.js', E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 		alert(err_msg);
 	}
@@ -130,8 +129,10 @@ g.render_volume_count_entry = function(row,ou_id) {
 		if (ev.target.disabled) return;
 		if (! isNaN( Number( ev.target.value) ) ) {
 			if ( Number( ev.target.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
-                g.error.yns_alert('You may not add more than ' + g_max_copies_that_can_be_added_at_a_time_per_volume + ' items at a time for a given volume in this interface.','Maximum items exceeded.','Ok',null,null,'');
-                return;
+				g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_volume_count_entry.message', [g_max_copies_that_can_be_added_at_a_time_per_volume]),
+					$("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.title'),
+					$("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.ok_label'),null,null,'');
+				return;
 			}
 			if (node) { row.removeChild(node); node = null; }
 			//ev.target.disabled = true;
@@ -172,9 +173,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 	var rows = grid.lastChild;
 	var r = document.createElement('row'); rows.appendChild( r );
 	var x = document.createElement('label'); r.appendChild(x);
-	x.setAttribute('value','Call Numbers'); x.setAttribute('style','font-weight: bold');
+	x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums')); x.setAttribute('style','font-weight: bold');
 	x = document.createElement('label'); r.appendChild(x);
-	x.setAttribute('value','# of Copies'); x.setAttribute('style','font-weight: bold');
+	x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies')); x.setAttribute('style','font-weight: bold');
 	x.setAttribute('size','3'); x.setAttribute('cols','3');
 
 
@@ -182,7 +183,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		if (tb1.value == '') return;
 		if (isNaN( Number( tb2.value ) )) return;
 		if ( Number( tb2.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
-            g.error.yns_alert('You may not add more than ' + g_max_copies_that_can_be_added_at_a_time_per_volume + ' items at a time for a given volume in this interface.','Maximum items exceeded.','Ok',null,null,'');
+			g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_volume_count_entry.message', [g_max_copies_that_can_be_added_at_a_time_per_volume]),
+				$("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.title'),
+				$("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.ok_label'),null,null,'');
             return;
 		}
 
@@ -290,7 +293,10 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 				var barcode = String( ev.target.value ).replace(/\s/g,'');
 				if (barcode != ev.target.value) ev.target.value = barcode;
 				if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
-					g.error.yns_alert( '"' + barcode + '" is an invalid barcode.','Invalid Barcode','OK',null,null,'Check here to confirm this message.');
+					g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_barcode_entry.alert_message', [barcode]),
+						$("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_title'),
+						$("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button'),null,null,
+						$("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm'));
 					setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
 				}
 			}, false);
@@ -347,7 +353,7 @@ g.stash_and_close = function() {
 				);
 
 				if (typeof acn_id.ilsevent != 'undefined') {
-					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',acn_id);
+					g.error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.stash_and_close.problem_with_volume', [cn]), acn_id);
 					continue;
 				}
 
@@ -395,7 +401,7 @@ g.stash_and_close = function() {
                     );
                 }
             } catch(E) {
-                g.error.standard_unexpected_error_alert('volume tree update 2',E);
+                g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err2'),E);
             }
 	}
 
@@ -404,7 +410,7 @@ g.stash_and_close = function() {
 		window.close();
 
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('volume tree update 3',E);
+		g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err3'),E);
 	}
 }
 
@@ -435,7 +441,8 @@ g.load_prefs = function() {
 
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error retrieving stored preferences',E);
+		g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs'),E);
+		
 	}
 }
 
@@ -451,7 +458,7 @@ g.save_prefs = function () {
 		);
 		file.close();
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error storing preferences',E);
+		g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.save_prefs.err_storing_prefs'),E);
 	}
 }
 

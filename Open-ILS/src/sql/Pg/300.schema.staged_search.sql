@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007-2008  Equinox Software, Inc.
+ * Mike Rylander <miker@esilibrary.com> 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
 
 DROP SCHEMA search CASCADE;
 
@@ -33,6 +49,7 @@ CREATE OR REPLACE FUNCTION search.staged_fts (
     param_depth     INT,
     param_searches  TEXT, -- JSON hash, to be turned into a resultset via search.parse_search_args
     param_statuses  INT[],
+    param_locations INT[],
     param_audience  TEXT[],
     param_language  TEXT[],
     param_lit_form  TEXT[],
@@ -413,6 +430,26 @@ BEGIN
 
         END IF;
 
+        IF param_locations IS NOT NULL AND array_upper(param_locations, 1) > 0 THEN
+
+            PERFORM 1
+              FROM  asset.call_number cn
+                    JOIN asset.copy cp ON (cp.call_number = cn.id)
+              WHERE NOT cn.deleted
+                    AND NOT cp.deleted
+                    AND cp.location IN ( SELECT * FROM search.explode_array( param_locations ) )
+                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+              LIMIT 1;
+
+            IF NOT FOUND THEN
+                -- RAISE NOTICE ' % were all copy_location-excluded ... ', core_result.records;
+                excluded_count := excluded_count + 1;
+                CONTINUE;
+            END IF;
+
+        END IF;
+
         IF staff IS NULL OR NOT staff THEN
 
             PERFORM 1
@@ -423,7 +460,7 @@ BEGIN
                     JOIN config.copy_status cs ON (cp.status = cs.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cs.holdable
+                    AND cs.opac_visible
                     AND cl.opac_visible
                     AND cp.opac_visible
                     AND a.opac_visible
@@ -444,7 +481,6 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
                     JOIN actor.org_unit a ON (cp.circ_lib = a.id)
                     JOIN asset.copy_location cl ON (cp.location = cl.id)
-                    JOIN config.copy_status cs ON (cp.status = cs.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
                     AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )

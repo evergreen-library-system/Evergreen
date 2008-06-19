@@ -59,7 +59,7 @@
 				<menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>
 				<menuseparator/>
 				<menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
-				<menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid,true);"/>
+				<menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
 				</menupopup>
 				</menu>
 			</menubar>

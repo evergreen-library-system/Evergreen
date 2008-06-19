@@ -1567,6 +1567,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="holdable" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="opac_visible" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -1716,6 +1717,140 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
 			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+		</links>
+	</class>
+	<class id="combcirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Check In Library" name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Check In Staff" name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Check In Date/Time" name="checkin_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Staff" name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Desk Renewal" name="desk_renewal" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Due Date/Time" name="due_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulation Duration" name="duration" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="interval"/>
+			<field reporter:label="Circ Duration Rule" name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Fine Interval" name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="interval"/>
+			<field reporter:label="Circ ID" name="id" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Max Fine Amount" name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="OPAC Renewal" name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Phone Renewal" name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Recurring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Recurring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Fine Stop Reason" name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Item" name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron ZIP" name="usr_post_code" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Check Out Date/Time" name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Record Creation Date/Time" name="create_time" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulation Type" name="circ_type" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Patron Home Library" name="usr_home_ou" oils_obj:array_position="34" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron Profile Group" name="usr_profile" oils_obj:array_position="35" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron Birth Year" name="usr_birth_year" oils_obj:array_position="36" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Call Number" name="copy_call_number" oils_obj:array_position="37" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location" name="copy_location" oils_obj:array_position="38" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Copy Owning Library" name="copy_owning_lib" oils_obj:array_position="39" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" oils_obj:array_position="40" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Bib Record" name="copy_bib_record" oils_obj:array_position="41" oils_persist:virtual="false" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
+			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
+			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
+			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+			<link field="copy_call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acl"/>
+			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="acirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::aged_circulation" oils_persist:tablename="action.aged_circulation" reporter:core="true" reporter:label="Aged (patronless) Circulation">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Check In Library" name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Check In Staff" name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Check In Date/Time" name="checkin_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Staff" name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Desk Renewal" name="desk_renewal" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Due Date/Time" name="due_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulation Duration" name="duration" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="interval"/>
+			<field reporter:label="Circ Duration Rule" name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Fine Interval" name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="interval"/>
+			<field reporter:label="Circ ID" name="id" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Max Fine Amount" name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="OPAC Renewal" name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Phone Renewal" name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Recurring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Recurring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Fine Stop Reason" name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Item" name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron ZIP" name="usr_post_code" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Check Out Date/Time" name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Record Creation Date/Time" name="create_time" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulation Type" name="circ_type" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Patron Home Library" name="usr_home_ou" oils_obj:array_position="34" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron Profile Group" name="usr_profile" oils_obj:array_position="35" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Patron Birth Year" name="usr_birth_year" oils_obj:array_position="36" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Call Number" name="copy_call_number" oils_obj:array_position="37" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location" name="copy_location" oils_obj:array_position="38" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Copy Owning Library" name="copy_owning_lib" oils_obj:array_position="39" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" oils_obj:array_position="40" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Bib Record" name="copy_bib_record" oils_obj:array_position="41" oils_persist:virtual="false" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
+			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
+			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
+			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+			<link field="copy_call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acl"/>
+			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
 	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
@@ -2628,7 +2763,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Copy Notes" name="notes" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Holds" name="holds" oils_obj:array_position="34" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Total Circulations" name="total_circ_count" oils_obj:array_position="34" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Holds" name="holds" oils_obj:array_position="35" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -2643,6 +2779,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3914,6 +4051,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
 		</links>
 	</class>
+
+    <class id="erfcc" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::full_circ_count" oils_persist:tablename="extend_reporter.full_circ_count" reporter:label="Total Circulation Count, Including Legacy">
+        <fields oils_persist:primary="id">
+            <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+            <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+            <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+            <field reporter:label="Copy ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
+            <field reporter:label="Total Circulation Count" name="circ_count" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+        </fields>
+        <links>
+            <link field="id" reltype="has_a" key="id" map="" class="acp"/>
+        </links>
+    </class>
 
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->

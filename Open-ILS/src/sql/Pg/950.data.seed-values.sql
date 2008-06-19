@@ -97,23 +97,23 @@ INSERT INTO config.rule_recuring_fine VALUES
 INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, oils_i18n_gettext('3month'), '3 months', 0);
 INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, oils_i18n_gettext('6month'), '6 months', 2);
 
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (0,oils_i18n_gettext('Available'),'t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (0,oils_i18n_gettext('Available'),'t','t');
 
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (1,oils_i18n_gettext('Checked out'),'t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (1,oils_i18n_gettext('Checked out'),'t','t');
 
 INSERT INTO config.copy_status (id,name)			VALUES (2,oils_i18n_gettext('Bindery'));
 INSERT INTO config.copy_status (id,name)			VALUES (3,oils_i18n_gettext('Lost'));
 INSERT INTO config.copy_status (id,name)			VALUES (4,oils_i18n_gettext('Missing'));
 
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (5,oils_i18n_gettext('In process'),'t');
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (6,oils_i18n_gettext('In transit'),'t');
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (7,oils_i18n_gettext('Reshelving'),'t');
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (8,oils_i18n_gettext('On holds shelf'),'t');
-INSERT INTO config.copy_status (id,name,holdable)		VALUES (9,oils_i18n_gettext('On order'),'t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (5,oils_i18n_gettext('In process'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (6,oils_i18n_gettext('In transit'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (7,oils_i18n_gettext('Reshelving'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (8,oils_i18n_gettext('On holds shelf'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible)		VALUES (9,oils_i18n_gettext('On order'),'t','t');
 
 INSERT INTO config.copy_status (id,name)			VALUES (10,oils_i18n_gettext('ILL'));
 INSERT INTO config.copy_status (id,name)			VALUES (11,oils_i18n_gettext('Cataloging'));
-INSERT INTO config.copy_status (id,name)			VALUES (12,oils_i18n_gettext('Reserves'));
+INSERT INTO config.copy_status (id,name,opac_visible)			VALUES (12,oils_i18n_gettext('Reserves'),'t');
 INSERT INTO config.copy_status (id,name)			VALUES (13,oils_i18n_gettext('Discard/Weed'));
 INSERT INTO config.copy_status (id,name)			VALUES (14,oils_i18n_gettext('Damaged'));
 

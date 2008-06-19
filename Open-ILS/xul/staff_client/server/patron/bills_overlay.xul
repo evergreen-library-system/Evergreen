@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="bills_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -16,37 +16,37 @@
 		<label style="font-weight: bold;" value="Un-Selected:"/><label id="unselected_balance"/>
 		<label style="font-weight: bold;" value="Voided:"/><label id="voided_balance"/>
 		<spacer flex="1"/>
-		<label id="circulating_hint" hidden="true" style="background: red; color: white" value="Red Items are still Checked Out"/>
+		<label id="circulating_hint" hidden="true" style="background: red; color: white" value="&staff.patron.bills_overlay.still_checked_out.label;"/>
 	</hbox>
 	<listbox id="bill_list" flex="1"/>
 	<hbox>
-		<button command="cmd_uncheck_all" label="Uncheck All"/>
-		<button command="cmd_check_all" label="Check All"/>
+		<button command="cmd_uncheck_all" label="&staff.patron.bills_overlay.uncheck_all.label;"/>
+		<button command="cmd_check_all" label="&staff.patron.bills_overlay.check_all.label;"/>
 		<spacer flex="1"/>
-		<button command="cmd_print_bills" label="Print Bills" />
-		<button command="cmd_alternate_view" label="Alternate View" accesskey="V"/>
+		<button command="cmd_print_bills" label="&staff.patron.bills_overlay.print_bills.label;"/>
+		<button command="cmd_alternate_view" label="&staff.patron.bills_overlay.alternate_view.label;" accesskey="&staff.patron.bills_overlay.alternate_view.accesskey;"/>
 	</hbox>
 </box>
 
 <vbox id="bills_top_ui">
 	<hbox>
 		<groupbox>
-			<caption label="Summary"/>
+			<caption label="&staff.patron.bills_overlay.summary.label;"/>
 			<grid>
 				<columns><column /><column /></columns>                                 
 				<rows>
 					<row>
-						<label value="Net Balance" />
+						<label value="&staff.patron.bills_overlay.net_balance.value;"/>
 	
 						<textbox id="bill_total_owed" value="" readonly="true" />
 					</row>
 					<row>
-						<label value="- Payment applied" />
+						<label value="&staff.patron.bills_overlay.payment_applied.value;"/>
 			
 						<textbox id="bill_payment_applied" readonly="true"/>
 					</row>
 					<row>
-						<label value="= New Balance" 
+						<label value="&staff.patron.bills_overlay.new_balance.value;" 
 							style="font-family: bold" />
 	
 						<textbox id="bill_new_balance" readonly="true"/>
@@ -56,47 +56,47 @@
 		</groupbox>
 		<spacer flex="2"/>
 		<groupbox>
-			<caption label="Pay Bill"/>
+			<caption label="&staff.patron.bills_overlay.pay_bill.label;"/>
 			<grid>
 				<columns><column /><column /></columns>                                 
 				<rows>
 					<row>
-						<label value="Payment Type" 
-							accesskey="t" control="payment_type" />
+						<label value="&staff.patron.bills_overlay.payment_type.value;" 
+							accesskey="&staff.patron.bills_overlay.payment_type.accesskey;" control="payment_type" />
 						<menulist id="payment_type">
 							<menupopup id="payment_type_menupopup">
-								<menuitem id="payment_type_menuitem1" label="Cash" value="cash_payment"/>
-								<menuitem id="payment_type_menuitem2" label="Check" value="check_payment"/>
-								<menuitem id="payment_type_menuitem3" label="Credit Card" value="credit_card_payment"/>
+								<menuitem id="payment_type_menuitem1" label="&staff.patron.bills_overlay.cash.label;" value="cash_payment"/>
+								<menuitem id="payment_type_menuitem2" label="&staff.patron.bills_overlay.check.label;" value="check_payment"/>
+								<menuitem id="payment_type_menuitem3" label="&staff.patron.bills_overlay.credit_card.label;" value="credit_card_payment"/>
 								<!--
 								<menuitem id="payment_type_menuitem4" label="Patron Credit" value="credit_payment" />
 								-->
-								<menuitem id="payment_type_menuitem5" label="Work" value="work_payment"/>
-								<menuitem id="payment_type_menuitem6" label="Forgive" value="forgive_payment"/>
-								<menuitem id="payment_type_menuitem7" label="Goods" value="goods_payment"/>
+								<menuitem id="payment_type_menuitem5" label="&staff.patron.bills_overlay.word.label;" value="work_payment"/>
+								<menuitem id="payment_type_menuitem6" label="&staff.patron.bills_overlay.forgive.label;" value="forgive_payment"/>
+								<menuitem id="payment_type_menuitem7" label="&staff.patron.bills_overlay.goods.label;" value="goods_payment"/>
 							</menupopup>
 						</menulist>
 					</row>
 					<row>
-						<label value="Payment received" style="font-weight: bold"
-							accesskey="a" control="bill_payment_amount" />
+						<label value="&staff.patron.bills_overlay.payment_received.value;" style="font-weight: bold"
+							accesskey="&staff.patron.bills_overlay.payment_received.accesskey;" control="bill_payment_amount" />
 			
 						<textbox id="bill_payment_amount" style="border: solid thick black"/>
 					</row>
 					<row>
-						<label value="- Payment applied" />
+						<label value="&staff.patron.bills_overlay.payment_applied.value;"/>
 			
 						<textbox id="bpato" observes="bill_payment_applied" />
 					</row>
 					<row>
-						<label value="= Change" control="bill_change_amount" style="font-weight: bold" />
+						<label value="&staff.patron.bills_overlay.change.value;" control="bill_change_amount" style="font-weight: bold" />
 	
 						<hbox>
 							<textbox id="bill_change_amount" readonly="true"/>
 						</hbox>
 					</row>
 					<row class="hide_patron_credit" hidden="true">
-						<label value="or Patron Credit" 
+						<label value="&staff.patron.bills_overlay.patron_credit.value;" 
 							style="font-family: bold" />
 	
 						<textbox id="bill_credit_amount" readonly="true"/>
@@ -106,13 +106,13 @@
 		</groupbox>
 	</hbox>
 	<hbox>
-		<button id="bill_wizard" label="Bill Patron" accesskey="B" command="cmd_bill_wizard"/>
-		<button id="bill_history" label="History" accesskey="H" command="cmd_bill_history"/>
+		<button id="bill_wizard" label="&staff.patron.bills_overlay.bill_patron.label;" accesskey="&staff.patron.bills_overlay.bill_patron.accesskey;" command="cmd_bill_wizard"/>
+		<button id="bill_history" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" command="cmd_bill_history"/>
 		<spacer flex="2"/>
-		<checkbox id="annotate_payment" label="Annotate Payment" persist="checked" checked="false" />
+		<checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" persist="checked" checked="false" />
 		<checkbox id="auto_print" label="Auto-Print" persist="checked" checked="true" />
-		<button class="hide_patron_credit" hidden="true" disabled="true" id="change_to_credit" label="Convert Change to Patron Credit" command="cmd_change_to_credit"/>
-		<button id="bill_apply_payment" label="Apply Payment!" accesskey="P" command="cmd_bill_apply_payment"/>
+		<button class="hide_patron_credit" hidden="true" disabled="true" id="change_to_credit" label="&staff.patron.bills_overlay.convert_change_to_credit.label;" command="cmd_change_to_credit"/>
+		<button id="bill_apply_payment" label="&staff.patron.bills_overlay.apply_payment.label;" accesskey="&staff.patron.bills_overlay.apply_payment.accesskey;" command="cmd_bill_apply_payment"/>
 	</hbox>
 	<label value=" "/>
 </vbox>

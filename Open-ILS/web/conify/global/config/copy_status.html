@@ -88,6 +88,9 @@
                             if (attr == 'holdable' && typeof n != 'string')
                                 this.setValue(item, 'holdable', n ? 't' : 'f');
 
+                            if (attr == 'opac_visible' && typeof n != 'string')
+                                this.setValue(item, 'opac_visible', n ? 't' : 'f');
+
                         };
 
                         dojo.addOnUnload( function (event) {
@@ -203,14 +206,26 @@
 										{ name : "Holdable",
 										  field : "holdable",
 										  editor : dojox.grid.editors.bool,
-                                          get : function (row) {
-	                                        var r = window.status_data_model.getRow(row);
+										  get : function (row) {
+											var r = window.status_data_model.getRow(row);
 											if (r) {
-		                                        var h = r.holdable;
-			                                    if (h == 't' || h === true) return true;
-				                                return false;
+												var h = r.holdable;
+												if (h == 't' || h === true) return true;
+												return false;
 											}
-                                          }
+										  }
+										},
+										{ name : "OPAC Visible",
+										  field : "opac_visible",
+										  editor : dojox.grid.editors.bool,
+										  get : function (row) {
+											var r = window.status_data_model.getRow(row);
+											if (r) {
+												var h = r.opac_visible;
+												if (h == 't' || h === true) return true;
+												return false;
+											}
+										  }
 										}
 									]
 								]

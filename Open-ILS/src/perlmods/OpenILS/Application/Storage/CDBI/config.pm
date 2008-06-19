@@ -73,7 +73,7 @@ package config::copy_status;
 use base qw/config/;
 __PACKAGE__->table('config_copy_status');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name holdable/);
+__PACKAGE__->columns(Essential => qw/name holdable opac_visible/);
 #-------------------------------------------------------------------------------
 
 package config::net_access_level;

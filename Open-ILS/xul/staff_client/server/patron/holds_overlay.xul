@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="holds_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -56,22 +56,22 @@
 </vbox>
 
 <hbox id="holds_top_ui" flex="1">
-    <checkbox id="lib_filter_checkbox" persist="checked" checked="true" hidden="true" label="Filter:"/>
+    <checkbox id="lib_filter_checkbox" persist="checked" checked="true" hidden="true" label="&staff.patron.holds_overlay.lib_filter_checkbox.label;"/>
     <menulist id="lib_type_menu" hidden="true" persist="value">
         <menupopup>
-            <menuitem id="pickup_lib" value="pickup_lib" label="Pickup Library"/>
-            <menuitem id="request_lib" value="request_lib" label="Requesting Library"/>
-            <menuitem id="fulfillment_lib" value="fulfillment_lib" label="Fulfilling Library"/>
-            <menuitem id="circ_lib" value="circ_lib" label="Item Circulating Library"/>
-            <menuitem id="owning_lib" value="owning_lib" label="Volume Owning Library"/>
-            <menuitem id="home_lib" value="home_lib" label="Patron Home Library foo"/>
+            <menuitem id="pickup_lib" value="pickup_lib" label="&staff.patron.holds_overlay.pickup_lib.label;"/>
+            <menuitem id="request_lib" value="request_lib" label="&staff.patron.holds_overlay.request_lib.label;"/>
+            <menuitem id="fulfillment_lib" value="fulfillment_lib" label="&staff.patron.holds_overlay.fulfillment_lib.label;"/>
+            <menuitem id="circ_lib" value="circ_lib" label="&staff.patron.holds_overlay.circ_lib.label;"/>
+            <menuitem id="owning_lib" value="owning_lib" label="&staff.patron.holds_overlay.owning_lib.label;"/>
+            <menuitem id="home_lib" value="home_lib" label="&staff.patron.holds_overlay.home_lib.label;"/>
         </menupopup>
     </menulist>
     <vbox id="lib_menu_placeholder" hidden="true"/>
-    <button id="fetch_more" label="Fetch More Holds" accesskey="M" hidden="true"/>
+    <button id="fetch_more" label="&staff.patron.holds_overlay.fetch_more.label;" accesskey="&staff.patron.holds_overlay.fetch_more.accesskey;" hidden="true"/>
 	<spacer flex="1"/>
     <menubar>
-        <menu label="Actions for Selected Holds" accesskey="S">
+        <menu label="&staff.patron.holds_overlay.actions_for_holds.label;" accesskey="&staff.patron.holds_overlay.actions_for_holds.accesskey;">
             <menupopup>
                 <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
                 <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
@@ -105,7 +105,7 @@
 	<spacer flex="1"/>
 	<button id="holds_print" label="Print" command="cmd_holds_print" accesskey="P" />
 	<button id="holds_export" 
-		label="Export"
+		label="&staff.patron.holds_overlay.holds_export.label;"
 		command="cmd_holds_export"
 		accesskey=""/>
 </hbox>

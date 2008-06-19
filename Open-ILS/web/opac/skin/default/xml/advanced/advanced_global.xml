@@ -33,6 +33,8 @@
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='center'>
+                            <button onclick='initSearchBoxes(1);'>&advanced.search.reset;</button>
+							<span style='padding-left: 10px;'> </span>
 							<button id='myopac_new_global_row' onclick='advAddGblRow();'>&advanced.add.row;</button>
 							<span style='padding-left: 10px;'> </span>
                             <button onclick='advSubmitGlobal();'>&advanced.search.submit;</button>
@@ -180,6 +182,14 @@
 						</td>
 					</tr>
 
+                    <!-- copy location selector -->
+                    <tr id='adv_copy_location_filter_row' class='hide_me'>
+                        <td align='right'>&opac.advanced.copy_loc_filter;</td>
+                        <td align='left' id='adv_copy_location_filter_td'>
+                            <select size='3' id='adv_copy_location_filter_select' multiple='multiple'>
+                            </select>
+                        </td>
+                    </tr>
 				</tbody>
 			</table>
 		</td>
