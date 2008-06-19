@@ -727,7 +727,7 @@ sub generate_fines {
 			$client->respond( "Error processing overdue circulation [".$c->id."]:\n\n$e\n" );
 			$log->error("Error processing overdue circulation [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			throw $e ifif ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 		};
 	}
 }
