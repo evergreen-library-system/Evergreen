@@ -108,7 +108,7 @@ function my_init() {
 
 		if (window.xulG.record.url) {
 			var req =  new XMLHttpRequest();
-			req.open('GET',window.xulG.record.url,false);
+			req.open('POST',window.xulG.record.url,false);
 			req.send(null);
 			window.xulG.record.marc = req.responseText.replace(xmlDeclaration, '');
 		}
