@@ -415,14 +415,30 @@ sub overdue_items {
 
 	my @o;
 	syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
+	
+	
+	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } @{$self->{config}->{implementation_config}->{options}->{option}};
+	
 	for my $circid (@overdues) {
 		next unless $circid;
-		push( @o, __circ_to_title($self->{editor}, $circid) );
+		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
+			push( @o, __circ_to_barcode($self->{editor}, $circid));
+		} else {
+			push( @o, __circ_to_title($self->{editor}, $circid));
+		}
 	}
 	@overdues = @o;
 
 	return (defined $start and defined $end) ? 
 		[ $overdues[($start-1)..($end-1)] ] : \@overdues;
+}
+
+sub __circ_to_barcode {
+	my ($e, $circ) = @_;
+	return unless $circ;
+	$circ = $e->retrieve_action_circulation($circ);
+	my $copy = $e->retrieve_asset_copy($circ->target_copy);
+	return $copy->barcode;
 }
 
 sub __circ_to_title {
@@ -447,10 +463,18 @@ sub charged_items {
 
 	my @c;
 	syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
+
+	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } @{$self->{config}->{implementation_config}->{options}->{option}};
+
 	for my $circid (@charges) {
 		next unless $circid;
-		push( @c, __circ_to_title($self->{editor}, $circid) );
+		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
+			push( @c, __circ_to_barcode($self->{editor}, $circid));
+		} else {
+			push( @c, __circ_to_title($self->{editor}, $circid));
+		}
 	}
+
 	@charges = @c;
 
 	return (defined $start and defined $end) ? 
