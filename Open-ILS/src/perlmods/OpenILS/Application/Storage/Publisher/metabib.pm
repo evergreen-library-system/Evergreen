@@ -335,7 +335,7 @@ sub metarecord_copy_count {
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
-				  	AND cp.status IN (0,7)
+				  	AND cp.status IN (0,7,12)
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
 					$copies_visible
@@ -1467,7 +1467,7 @@ sub postfilter_search_multi_class_fts {
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if ($args{available}) {
-		$avail_filter = ' AND cp.status IN (0,7)';
+		$avail_filter = ' AND cp.status IN (0,7,12)';
 	}
 
 	if (my $a = $args{audience}) {
@@ -1957,7 +1957,7 @@ sub biblio_search_multi_class_fts {
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if ($args{available}) {
-		$avail_filter = ' AND cp.status IN (0,7)';
+		$avail_filter = ' AND cp.status IN (0,7,12)';
 	}
 
 	if (my $a = $args{audience}) {
@@ -2349,7 +2349,7 @@ sub staged_fts {
 	my (@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
 
 	if ($args{available}) {
-		@statuses = (0,7);
+		@statuses = (0,7,12);
 	}
 
 	if (my $s = $args{locations}) {

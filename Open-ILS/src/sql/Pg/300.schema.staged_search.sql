@@ -460,7 +460,7 @@ BEGIN
                     JOIN config.copy_status cs ON (cp.status = cs.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cs.holdable
+                    AND cs.opac_visible
                     AND cl.opac_visible
                     AND cp.opac_visible
                     AND a.opac_visible
@@ -481,7 +481,6 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
                     JOIN actor.org_unit a ON (cp.circ_lib = a.id)
                     JOIN asset.copy_location cl ON (cp.location = cl.id)
-                    JOIN config.copy_status cs ON (cp.status = cs.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
                     AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
