@@ -78,7 +78,17 @@
 					<item name='renew' value='true'/>
 					<item name='renew all' value='false'/>
 				</supports>
-
+				<options>
+					<!-- msg64, the patron information request can be
+					  made to return item barcodes by setting
+					  the option 'msg64_summary_datatype' to 'barcode'
+					  as below. Any other value, or no value at all
+					  will cause OpenILS::SIP to return the title
+					  in response to a message 64 request, which was the
+					  default behaviour in previous versions of Evergreen.
+					-->
+					<option name='msg64_summary_datatype' value='barcode' />
+				</option>
 				<scripts>
 					<path>/openils/var/</path>
                     <path>/openils/var/catalog/</path>
