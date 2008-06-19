@@ -1,5 +1,10 @@
 var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var opac_url;
 
+var marc_view_reset = true;
+var marc_edit_reset = true;
+var copy_browser_reset = true;
+var hold_browser_reset = true;
+
 function $(id) { return document.getElementById(id); }
 
 function my_init() {
@@ -34,7 +39,7 @@ function my_init() {
 	}
 }
 
-function set_brief_view(reset) {
+function set_brief_view() {
 	var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
 	dump('spawning ' + url + '\n');
 	top_pane.set_iframe( 
@@ -52,16 +57,17 @@ function set_brief_view(reset) {
 	);
 }
 
-function set_marc_view(reset) {
+function set_marc_view() {
 	g.view = 'marc_view';
-	if (reset) {
+	if (marc_view_reset) {
 		bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+        marc_view_reset = false;
 	} else {
 		bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
 	}
 }
 
-function set_marc_edit(reset) {
+function set_marc_edit() {
 	g.view = 'marc_edit';
 	var a =	xulG.url_prefix( urls.XUL_MARC_EDIT );
 	var b =	{};
@@ -83,32 +89,35 @@ function set_marc_edit(reset) {
 				}
 			}
 		};
-	if (reset) {
+	if (marc_edit_reset) {
 		bottom_pane.reset_iframe( a,b,c );
+        marc_edit_reset = false;
 	} else {
 		bottom_pane.set_iframe( a,b,c );
 	}
 }
 
-function set_copy_browser(reset) {
+function set_copy_browser() {
 	g.view = 'copy_browser';
-	if (reset) {
+	if (copy_browser_reset) {
 		bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+        copy_browser_reset =false;
 	} else {
 		bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
 	}
 }
 
-function set_hold_browser(reset) {
+function set_hold_browser() {
 	g.view = 'hold_browser';
-	if (reset) {
+	if (hold_browser_reset) {
 		bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+        hold_browser_reset = false;
 	} else {
 		bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
 	}
 }
 
-function set_opac(reset) {
+function set_opac() {
 	g.view = 'opac';
 	try {
 		var content_params = { 
@@ -143,7 +152,7 @@ function set_opac(reset) {
 						try {
 							if (docid == id) return;
 							docid = id;
-							refresh_display(id,true);
+							refresh_display(id);
 						} catch(E) {
 							g.error.standard_unexpected_error_alert('rdetail -> recordRetrieved',E);
 						}
@@ -243,7 +252,7 @@ function delete_record() {
 			alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_deleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
 		} else {
 			alert(document.getElementById('offlineStrings').getString('cat.opac.record_deleted'));
-			refresh_display(docid,true);
+			refresh_display(docid);
 		}
 	}
 }
@@ -262,20 +271,24 @@ function undelete_record() {
 			alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_undeleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
         } else {
 			alert(document.getElementById('offlineStrings').getString('cat.opac.record_undeleted'));
-			refresh_display(docid,true);
+			refresh_display(docid);
         }
     }
 }
 
-function refresh_display(id,reset) {
+function refresh_display(id) {
 	try { 
+        marc_view_reset = true;
+        marc_edit_reset = true;
+        copy_browser_reset = true;
+        hold_browser_reset = true;
 		while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
 		var children = bottom_pane.node.childNodes;
 		for (var i = 0; i < children.length; i++) {
 			if (children[i] != browser_frame) bottom_pane.node.removeChild(children[i]);
 		}
 
-		set_brief_view(reset);
+		set_brief_view();
 		$('nav').setAttribute('hidden','false');
 		var settings = g.network.simple_request(
 			'FM_AUS_RETRIEVE',
@@ -287,12 +300,12 @@ function refresh_display(id,reset) {
 			g.view_override = null;
 		}
 		switch(view) {
-			case 'marc_view' : set_marc_view(reset); break;
-			case 'marc_edit' : set_marc_edit(reset); break;
-			case 'copy_browser' : set_copy_browser(reset); break;
-			case 'hold_browser' : set_hold_browser(reset); break;
+			case 'marc_view' : set_marc_view(); break;
+			case 'marc_edit' : set_marc_edit(); break;
+			case 'copy_browser' : set_copy_browser(); break;
+			case 'hold_browser' : set_hold_browser(); break;
 			case 'opac' :
-			default: set_opac(reset); break;
+			default: set_opac(); break;
 		}
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('in refresh_display',E);
