@@ -62,8 +62,7 @@ function advSyncCopyLocLink(org) {
 
     if(isTrue(findOrgType(findOrgUnit(org).ou_type()).can_have_vols())) {
         unHideMe($('adv_copy_location_filter_row'));
-        if(!$('adv_copy_location_filter_div').className.match(/hide_me/))
-            advLoadCopyLocations(org); 
+        advLoadCopyLocations(org); 
     } else {
         hideMe($('adv_copy_location_filter_row'));
     }
@@ -170,6 +169,7 @@ function advSubmitGlobal() {
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
 	var biblevels = advGetVisSelectorVals('adv_global_bib_level');
+    var locations = advGetVisSelectorVals('adv_copy_location_filter_select');
 	var languages = getSelectedList($('adv_global_lang')) + '';	
     var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
@@ -186,6 +186,7 @@ function advSubmitGlobal() {
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
+	args[PARAM_COPYLOCS] = locations;
 	//args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
 	args[PARAM_DEPTH]		= depthSelGetDepth();
 	args[PARAM_LOCATION]	= depthSelGetNewLoc();
@@ -266,19 +267,8 @@ function advBuildSearchBlob() {
 // retrieves the shelving locations
 var advLocationsLoaded = false;
 function advLoadCopyLocations(org) {
-    if(advLocationsLoaded) {
-        removeChildren($('adv_copy_location_filter_select'));
-        hideMe($('adv_copy_location_filter_div'));
-        advLocationsLoaded = false;
-        return;
-    }
-    if(org == null) {
-        if(advSelectedOrg == null)
-            org = getLocation();
-        else
-            org = advSelectedOrg;
-    }
-    unHideMe($('adv_copy_location_filter_div'));
+    if(org == null) 
+        org = advSelectedOrg;
     var req = new Request(FETCH_COPY_LOCATIONS, org);
     req.callback(advShowCopyLocations);
     req.send();
