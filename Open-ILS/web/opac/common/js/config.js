@@ -38,6 +38,7 @@ var PARAM_TFORM		= 'tf'; /* temporary format for title result pages */
 var PARAM_RDEPTH		= 'rd';
 var PARAM_REDIR		= 're'; /* true if we have been redirected by IP (we're at a real lib) */
 var PARAM_AVAIL     = 'av'; /* limit search results to available items */
+var PARAM_COPYLOCS  = 'cl'; // copy (shelving) locations
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -73,6 +74,7 @@ var LANGUAGE;
 var TFORM;
 var RDEPTH;
 var AVAIL;
+var COPYLOCS;
 
 /* cookie values */
 var SBEXTRAS; 
