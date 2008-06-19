@@ -260,6 +260,15 @@
 						</table>
 					</td>
 				</tr>
+                <tr id='adv_copy_location_filter_row' class='hide_me'>
+                    <td id='adv_copy_location_filter_td' colspan='2'>
+                        <a class='classic_link' href='javascript:advLoadCopyLocations();'>&opac.advanced.copy_loc_filter;</a>
+                        <div id='adv_copy_location_filter_div' class='hide_me'>
+                            <select id='adv_copy_location_filter_select' multiple='multiple'>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
 			</table>
 		</td>
 

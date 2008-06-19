@@ -1,7 +1,9 @@
 
 attachEvt("common", "run", advgInit);
+attachEvt("common", "locationChanged", advSyncCopyLocLink );
 
 var COOKIE_NOGROUP_RECORDS = 'grpt';
+var advSelectedOrg = null;
 
 function advgInit() {
 
@@ -48,6 +50,24 @@ function advgInit() {
         $('opac.result.limit2avail').checked = true;
 
     initSearchBoxes();
+
+    advSyncCopyLocLink(getLocation());
+}
+
+function advSyncCopyLocLink(org) {
+    // display the option to filter by copy location
+    advLocationsLoaded = false;
+    advSelectedOrg = org;
+    removeChildren($('adv_copy_location_filter_select'));
+
+    if(isTrue(findOrgType(findOrgUnit(org).ou_type()).can_have_vols())) {
+        unHideMe($('adv_copy_location_filter_row'));
+        if(!$('adv_copy_location_filter_div').className.match(/hide_me/))
+            advLoadCopyLocations(org); 
+    } else {
+        hideMe($('adv_copy_location_filter_row'));
+    }
+
 }
 
 function initSearchBoxes() {
@@ -234,5 +254,34 @@ function advBuildSearchBlob() {
 }
 
 
+// retrieves the shelving locations
+var advLocationsLoaded = false;
+function advLoadCopyLocations(org) {
+    if(advLocationsLoaded) {
+        removeChildren($('adv_copy_location_filter_select'));
+        hideMe($('adv_copy_location_filter_div'));
+        advLocationsLoaded = false;
+        return;
+    }
+    if(org == null) {
+        if(advSelectedOrg == null)
+            org = getLocation();
+        else
+            org = advSelectedOrg;
+    }
+    unHideMe($('adv_copy_location_filter_div'));
+    var req = new Request(FETCH_COPY_LOCATIONS, org);
+    req.callback(advShowCopyLocations);
+    req.send();
+    advLocationsLoaded = true;
+}
+
+// inserts the shelving locations into the multi-select
+function advShowCopyLocations(r) {
+    var locations = r.getResultObject();
+    var sel = $('adv_copy_location_filter_select');
+    for(var i = 0; i < locations.length; i++) 
+        insertSelectorVal(sel, -1, locations[i].name(), locations[i].id());
+}
 
 

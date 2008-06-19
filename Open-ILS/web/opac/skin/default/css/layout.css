@@ -248,3 +248,5 @@ table { border-collapse: collapse; }
 #myopac_holds_thaw_date_form {padding: 10px; text-align: center;}
 #myopac_holds_freeze_select_thaw {margin-right: 100px; margin-left: 100px; }
 
+#adv_copy_location_filter_td { text-align:center; }
+#adv_copy_location_filter_div { padding:5px; margin:5px; }
