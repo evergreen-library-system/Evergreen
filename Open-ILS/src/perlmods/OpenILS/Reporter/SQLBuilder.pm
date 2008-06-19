@@ -931,7 +931,7 @@ sub toSQL {
 
 	my $rel = $self->find_relation();
 	if ($rel && $rel->is_nullable) {
-		$sql = "(". $self->SUPER::toSQL ." IS NULL OR ";
+		$sql = "((". $self->SUPER::toSQL .") IS NULL OR ";
 	}
 
 	$sql .= $self->SUPER::toSQL;
