@@ -18,10 +18,12 @@ package OpenILS::Application::Circ::Holds;
 use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
+use DateTime;
 use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
+use OpenSRF::Utils;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
@@ -31,6 +33,7 @@ use OpenILS::Application::Circ::Transit;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
+
 
 
 
@@ -137,6 +140,13 @@ sub create_hold {
 				return \@events;
 			}
 		}
+
+        # set the configured expire time
+        my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
+        if($interval) {
+            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+            $hold->expire_time($U->epoch2ISO8601($date->epoch));
+        }
 
 		$hold->requestor($e->requestor->id); 
 		$hold->request_lib($e->requestor->ws_ou);
