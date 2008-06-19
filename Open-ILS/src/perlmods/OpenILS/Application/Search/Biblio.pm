@@ -1699,7 +1699,7 @@ sub copies_by_cn_label {
 	);
 
 	# ... and test for location and status visibility
-	return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->holdable)) ? ($_->id) : () } @$copies ];
+	return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->opac_visible)) ? ($_->id) : () } @$copies ];
 }
 
 

@@ -30,7 +30,7 @@ sub record_copy_count {
 	    $ancestors = "(select org_unit as id from actor.org_lasso_map where lasso = ?) u CROSS JOIN (SELECT -1 AS depth) t";
     }
 
-	my $visible = 'AND a.opac_visible = TRUE AND st.holdable = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
+	my $visible = 'AND a.opac_visible = TRUE AND st.opac_visible = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
 	if ($self->api_name =~ /staff/o) {
 		$visible = ''
 	}
@@ -70,7 +70,7 @@ sub record_copy_count {
 					JOIN $st_table st ON (cp.status = st.id)
 					JOIN $loc_table loc ON (cp.location = loc.id)
 				  WHERE cn.record = ?
-					AND st.holdable = TRUE
+					AND st.opac_visible = TRUE
 					AND loc.opac_visible = TRUE
 					AND cp.opac_visible = TRUE
 				  	AND cn.deleted IS FALSE
@@ -318,7 +318,7 @@ sub global_record_copy_count {
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 
-	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
 	my $sql = <<"	SQL";
@@ -400,7 +400,7 @@ sub record_copy_status_count {
 			AND cl.opac_visible IS TRUE
 			AND cp.opac_visible IS TRUE
 			AND cp.deleted IS FALSE
-			AND cs.holdable
+			AND cs.opac_visible IS TRUE
 		  GROUP BY 1,2,3;
 	SQL
 

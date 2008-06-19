@@ -38,7 +38,7 @@ sub ordered_records_from_metarecord {
 			"actor.org_unit_descendants($org)" ;
 
 
-	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
 	my $sm_table = metabib::metarecord_source_map->table;
@@ -279,7 +279,7 @@ sub metarecord_copy_count {
         $ancestors = "(select org_unit as id from actor.org_lasso_map where lasso = ?) u CROSS JOIN (SELECT -1 AS depth) t";
     }
 
-	my $copies_visible = 'AND a.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND a.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
 
 	my (@types,@forms,@blvl);
@@ -356,7 +356,7 @@ sub metarecord_copy_count {
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
 					AND cp.opac_visible IS TRUE
-					AND cs.holdable IS TRUE
+					AND cs.opac_visible IS TRUE
 					AND cl.opac_visible IS TRUE
 					$t_filter
 					$f_filter
@@ -476,7 +476,7 @@ sub biblio_multi_search_full_rec {
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 
 	if ($self->api_name =~ /staff/o) {
 		$copies_visible = '';
@@ -796,7 +796,7 @@ sub search_class_fts {
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 
 	my $visible_count = ', count(DISTINCT cp.id)';
 	my $visible_count_test = 'HAVING count(DISTINCT cp.id) > 0';
@@ -970,7 +970,7 @@ sub search_class_fts_count {
 
 	my $has_vols = 'AND cn.owning_lib = d.id';
 	my $has_copies = 'AND cp.call_number = cn.id';
-	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
+	my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 	if ($self->api_name =~ /staff/o) {
 		$copies_visible = '';
 		$has_vols = '' if ($ou_type == 0);
@@ -1267,7 +1267,7 @@ sub postfilter_search_class_fts {
 				AND cn.owning_lib = d.id
 				AND cp.call_number = cn.id
 				AND cp.opac_visible IS TRUE
-				AND cs.holdable IS TRUE
+				AND cs.opac_visible IS TRUE
 				AND cl.opac_visible IS TRUE
 				AND d.opac_visible IS TRUE
 				AND br.active IS TRUE
@@ -1304,7 +1304,7 @@ sub postfilter_search_class_fts {
 					AND cp.circ_lib = d.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
-					AND cs.holdable IS TRUE
+					AND cs.opac_visible IS TRUE
 					AND cl.opac_visible IS TRUE
 					AND d.opac_visible IS TRUE
 					AND br.active IS TRUE
@@ -1760,7 +1760,7 @@ sub postfilter_search_multi_class_fts {
 					AND cp.circ_lib = d.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
-					AND cs.holdable IS TRUE
+					AND cs.opac_visible IS TRUE
 					AND cl.opac_visible IS TRUE
 					AND d.opac_visible IS TRUE
 					AND br.active IS TRUE
@@ -2235,7 +2235,7 @@ sub biblio_search_multi_class_fts {
 					AND cp.location = cl.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
-					AND cs.holdable IS TRUE
+					AND cs.opac_visible IS TRUE
 					AND cl.opac_visible IS TRUE
 					AND d.opac_visible IS TRUE
 					AND cp.deleted IS FALSE
