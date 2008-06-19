@@ -70,7 +70,7 @@ function advSyncCopyLocLink(org) {
 
 }
 
-function initSearchBoxes() {
+function initSearchBoxes(clean) {
     /* loads the compiled search from the search cookie 
         and sets the widgets accordingly */
 
@@ -88,6 +88,15 @@ function initSearchBoxes() {
         advAddGblRow();
 
     var rows = $('adv_global_tbody').getElementsByTagName('tr');
+
+    if(clean) {
+        for(var t = 0; t < rows.length; t++) {
+            var input = $n(rows[t], 'term');
+            if(input) input.value = '';
+        }
+        return;
+    }
+
     for(var t = 0; t < types.length; t++) {
         var row = rows[t];
         setSelector($n(row, 'type'), types[t]);
