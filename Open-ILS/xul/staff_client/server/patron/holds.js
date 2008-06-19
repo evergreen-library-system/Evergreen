@@ -1,5 +1,7 @@
 dump('entering patron.holds.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.holds = function (params) {
 
@@ -47,7 +49,7 @@ patron.holds.prototype = {
 				'current_copy' : { 'hidden' : false },
 				'capture_time' : { 'hidden' : false },
 				'notify_time' : { 'hidden' : false },
-				'notify_count' : { 'hidden' : false },
+				'notify_count' : { 'hidden' : false }
 			} 
 		);
 
@@ -93,13 +95,13 @@ patron.holds.prototype = {
 											'id':row.my.ahr.id(),
 											'type':row.my.ahr.hold_type(),
 											'target':row.my.ahr.target(),
-											'usr':row.my.ahr.usr(),
+											'usr':row.my.ahr.usr()
 										})
 									);
 									if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Error retrieving details for hold #' + row.my.hold_id, E);
+									obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.init.hold_num_error', [row.my.hold_id]), E);
 								}
 							}
 						);
@@ -151,8 +153,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 					}
-				},
-
+				}
 			}
 		);
 		
@@ -167,7 +168,7 @@ patron.holds.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
 					'sel_patron' : [
 						['command'],
@@ -240,7 +241,7 @@ patron.holds.prototype = {
 									);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Error rendering/retrieving hold notifications.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.show_notifications.error_rendering_notifs'),E);
 							}
 						}
 					],
@@ -272,12 +273,14 @@ patron.holds.prototype = {
 								ml.setAttribute('id','selection');
 								ml.setAttribute('name','fancy_data');
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Please choose a Hold Range:</description>';
+								xml += '<description>' + $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.choose_hold_range') + '</description>';
 								xml += util.widgets.serialize_node(ml);
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
-								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								bot_xml += '<spacer flex="1"/><button label="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.done.label') +'"';
+								bot_xml += 'accesskey="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.done.accesskey') +'" name="fancy_submit"/>';
+								bot_xml += '<button label="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.cancel.label') +'"';
+								bot_xml += 'accesskey="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.cancel.accesskey') +'" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
 								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
@@ -288,12 +291,26 @@ patron.holds.prototype = {
 									//+ '&bottom_xml_in_stash=temp_bot'
 									//+ '&title=' + window.escape('Choose a Pick Up Library'),
 									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Pick Up Library' }
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.choose_library') }
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var selection = fancy_prompt_data.selection;
-								var msg = 'Are you sure you would like to change the Hold Range for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + obj.data.hash.aout[selection].opac_label() + '"?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+                
+								var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(obj.retrieve_ids.length > 1) {
+									msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural', [hold_list, obj.data.hash.aout[selection].opac_label()])
+								} else {
+									msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular', [hold_list, obj.data.hash.aout[selection].opac_label()])
+								}
+                    
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.modify_holds_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
@@ -305,7 +322,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
 							}
 						}
 					],
@@ -342,12 +359,14 @@ patron.holds.prototype = {
 								ml.setAttribute('id','lib');
 								ml.setAttribute('name','fancy_data');
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Please choose a new Pickup Library:</description>';
+								xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.new_pickup_lib.description')+'</description>';
 								xml += util.widgets.serialize_node(ml);
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
-								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								bot_xml += '<spacer flex="1"/><button label="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.done.label') +'"';
+								bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.done.accesskey')+'" name="fancy_submit"/>';
+								bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.cancel.label')+'"';
+								bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
 								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
@@ -358,12 +377,25 @@ patron.holds.prototype = {
 									//+ '&bottom_xml_in_stash=temp_bot'
 									//+ '&title=' + window.escape('Choose a Pick Up Library'),
 									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Pick Up Library' }
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.choose_lib') }
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var pickup_lib = fancy_prompt_data.lib;
-								var msg = 'Are you sure you would like to change the Pick Up Lib for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to ' + obj.data.hash.aou[pickup_lib].shortname() + '?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+                
+								var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(obj.retrieve_ids.length > 1) {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural',[hold_list, obj.data.hash.aou[pickup_lib].shortname()]);
+								} else {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular',[hold_list, obj.data.hash.aou[pickup_lib].shortname()]);
+								}
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
@@ -375,7 +407,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
 							}
 						}
 					],
@@ -384,12 +416,14 @@ patron.holds.prototype = {
 						function() {
 							try {
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Please enter a new phone number for hold notification (leave the field empty to disable phone notification):</description>';
+								xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.new_phone_number')+'</description>';
 								xml += '<textbox id="phone" name="fancy_data"/>';
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
-								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_done.label')+'"';
+								bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey')+'" name="fancy_submit"/>';
+								bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_cancel.label')+'"';
+								bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
 								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
@@ -401,12 +435,25 @@ patron.holds.prototype = {
 									//+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
 									//+ '&focus=phone',
 									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Hold Notification Phone Number', 'focus' : 'phone' }
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.choose_phone_number'), 'focus' : 'phone' }
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var phone = fancy_prompt_data.phone;
-								var msg = 'Are you sure you would like to change the Notification Phone Number for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + phone + '"?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+
+								var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(obj.retrieve_ids.length > 1) {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural',[hold_list, phone]);
+								} else {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular',[hold_list, phone]);
+								}
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.modifying_holds_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
@@ -418,7 +465,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
 							}
 						}
 					],
@@ -427,12 +474,15 @@ patron.holds.prototype = {
 						function() {
 							try {
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								xml += '<description>Send email notifications (when appropriate)?  The email address used is found in the hold recipient account.</description>';
-								xml += '<hbox><button value="email" label="Email" accesskey="E" name="fancy_submit"/>';
-								xml += '<button value="noemail" label="No Email" accesskey="N" name="fancy_submit"/></hbox>';
+								xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.description')+'</description>';
+								xml += '<hbox><button value="email" label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_email.label')+'"';
+								xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_email.accesskey')+'" name="fancy_submit"/>';
+								xml += '<button value="noemail" label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_no_email.label')+'"';
+								xml += '  accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey')+'" name="fancy_submit"/></hbox>';
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
-								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_cancel.label')+'"';
+								bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
 								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
@@ -443,12 +493,34 @@ patron.holds.prototype = {
 									//+ '&bottom_xml_in_stash=temp_bot'
 									//+ '&title=' + window.escape('Set Email Notification for Holds'),
 									'fancy_prompt', 'chrome,resizable,modal',
-									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Set Email Notification for Holds' }
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.set_notifs') }
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var email = fancy_prompt_data.fancy_submit == 'email' ? get_db_true() : get_db_false();
-								var msg = 'Are you sure you would like ' + ( get_bool( email ) ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
-								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+
+								var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(get_bool(email)) {
+									if(obj.retrieve_ids.length > 1) {
+										msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.plural', [hold_list]);
+									} else {
+										msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.singular', [hold_list]);
+									}
+								} else {
+									if(obj.retrieve_ids.length > 1) {
+										msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.plural', [hold_list]);
+									} else {
+										msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.singular', [hold_list]);
+									}
+								}
+										
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.mod_holds_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
@@ -460,7 +532,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
 							}
 						}
 					],
@@ -603,8 +675,21 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.functional');
-								var msg = 'Are you sure you would like to reset hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
-								var r = obj.error.yns_alert(msg,'Resetting Holds','Yes','No',null,'Check here to confirm this message');
+
+								var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(obj.retrieve_ids.length > 1) {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.plural',[hold_list]);
+								} else {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.singular',[hold_list]);
+								}
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_retarget.reset_hold_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var robj = obj.network.simple_request('FM_AHR_RESET',[ ses(), obj.retrieve_ids[i].id]);
@@ -613,7 +698,7 @@ patron.holds.prototype = {
 									obj.clear_and_retrieve();
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely reset.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_retarget.holds_not_reset'),E);
 							}
 
 						}
@@ -624,8 +709,21 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.functional');
-								var msg = 'Are you sure you would like to cancel hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
-								var r = obj.error.yns_alert(msg,'Cancelling Holds','Yes','No',null,'Check here to confirm this message');
+
+								var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg = '';
+								if(obj.retrieve_ids.length > 1 ) {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.plural', [hold_list]);
+								} else {
+									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.singular', [hold_list]);
+								}
+								var r = obj.error.yns_alert(msg,
+										$("patronStrings").getString('staff.patron.holds.holds_cancel.cancel_hold_title'),
+										$("commonStrings").getString('common.yes'),
+										$("commonStrings").getString('common.no'),
+										null,
+										$("commonStrings").getString('common.check_to_confirm')
+								);
 								if (r == 0) {
                                     var transits = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
@@ -636,8 +734,13 @@ patron.holds.prototype = {
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
                                     if (transits.length > 0) {
-                                        var msg2 = 'For barcodes ' + transits.join(', ') + ' cancel the transits as well?';
-                                        var r2 = obj.error.yns_alert(msg2,'Cancelling Transits','Yes','No',null,'Check here to confirm this message');
+                                        var msg2 = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_for_barcodes', [transits.join(', ')]);
+                                        var r2 = obj.error.yns_alert(msg2,
+                                            $("patronStrings").getString('staff.patron.holds.holds_cancel.cancel_for_barcodes.title'),
+                                            $("commonStrings").getString('common.yes'),
+                                            $("commonStrings").getString('common.no'),
+											null,
+                                            $("commonStrings").getString('common.check_to_confirm'));
                                         if (r2 == 0) {
                                             try {
                                                 for (var i = 0; i < transits.length; i++) {
@@ -656,14 +759,14 @@ patron.holds.prototype = {
 										            }
                                                 }
                                             } catch(E) {
-    								            obj.error.standard_unexpected_error_alert('Hold-transits not likely cancelled.',E);
+                                               obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_cancel.hold_transits_not_cancelled'),E);
                                             }
                                         }
                                     }
 									obj.clear_and_retrieve();
 								}
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Holds not likely cancelled.',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_cancel.hold_not_cancelled'),E);
 							}
 						}
 					],
@@ -717,18 +820,18 @@ patron.holds.prototype = {
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
 										break;
 										default:
-											obj.error.standard_unexpected_error_alert("I don't understand the hold type of " + htype + ", so I can't jump to the appropriate record in the catalog.", obj.retrieve_ids[i]);
+											obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.show_catalog.unknown_htype', [htype]), obj.retrieve_ids[i]);
 											continue;
 										break;
 									}
 									var content_params = { 
 										'session' : ses(),
 										'authtime' : ses('authtime'),
-										'opac_url' : opac_url,
+										'opac_url' : opac_url
 									};
 									xulG.new_tab(
 										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name': htype == 'M' ? 'Catalog' : 'Retrieving title...'}, 
+										{'tab_name': htype == 'M' ? 'Catalog' : $("patronStrings").getString('staff.patron.holds.show_catalog.retrieving_title') },
 										content_params
 									);
 								}
@@ -904,7 +1007,7 @@ patron.holds.prototype = {
 				{
 					'row' : {
 						'my' : {
-							'hold_id' : hold_id,
+							'hold_id' : hold_id
 						}
 					}
 				}
@@ -970,13 +1073,13 @@ patron.holds.prototype = {
     			);
     			obj.controller.view.lib_menu = ml;
 			} else {
-				throw('Missing library list.\n');
+				throw($("patronStrings").getString('staff.patron.holds.lib_menus.missing_library_list'));
 			}
 
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('rendering lib menu',E);
 		}
-	},
+	}
 }
 
 dump('exiting patron.holds.js\n');

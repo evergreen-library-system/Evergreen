@@ -431,7 +431,7 @@ patron.display.prototype = {
 										expire = expire.getTime()/1000
 
 										if (expire < now) {
-											msg += $("patronStrings").getString('staff.patron.display.init.network_request.accoutn_expired');
+											msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
 										obj.stop_checkouts = true;
 										}
 									}

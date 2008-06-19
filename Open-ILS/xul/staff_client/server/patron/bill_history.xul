@@ -267,10 +267,10 @@
 
 				if (xul_param('current')) {
 					$('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.current_bills'));
-					document.title = 'Current Bills';
+					document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
 				} else {
 					$('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.bill_history'));
-					document.title = 'Bill History';
+					document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
 				}
 
 			} catch(E) {

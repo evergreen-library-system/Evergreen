@@ -2173,3 +2173,28 @@
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
 <!ENTITY staff.patron.hold_notices.close_window.label "Close">
 <!ENTITY staff.patron.hold_notices.close_window.accesskey "C">
+<!ENTITY staff.patron.holds_overlay.pickup_lib.label "Pickup Library">
+<!ENTITY staff.patron.holds_overlay.request_lib.label "Requesting Library">
+<!ENTITY staff.patron.holds_overlay.fulfillment_lib.label "Fulfilling Library">
+<!ENTITY staff.patron.holds_overlay.circ_lib.label "Item Circulating Library">
+<!ENTITY staff.patron.holds_overlay.owning_lib.label "Volume Owning Library">
+<!ENTITY staff.patron.holds_overlay.home_lib.label "Patron Home Library foo">
+<!ENTITY staff.patron.holds_overlay.fetch_more.label "Fetch More Holds">
+<!ENTITY staff.patron.holds_overlay.fetch_more.accesskey "M">
+<!ENTITY staff.patron.holds_overlay.lib_filter_checkbox.label "Filter:">
+<!ENTITY staff.patron.holds_overlay.actions_for_holds.label "Actions for Selected Holds">
+<!ENTITY staff.patron.holds_overlay.actions_for_holds.accesskey "S">
+<!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
+<!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
+<!ENTITY staff.patron.info_group.clone.accesskey "N">
+<!ENTITY staff.patron.info_group.remove.accesskey "R">
+<!ENTITY staff.patron.info_group.remove.label "Remove Selected Patrons from the Group">
+<!ENTITY staff.patron.info_group.move.accesskey "M">
+<!ENTITY staff.patron.info_group.move.label "Move Selected Patrons to ANOTHER patron's group.">
+<!ENTITY staff.patron.info_group.add.accesskey "A">
+<!ENTITY staff.patron.info_group.add.label "Move ANOTHER patron to this patron group.">
+<!ENTITY staff.patron.info_group.retrieve_p.accesskey "P">
+<!ENTITY staff.patron.info_group.retrieve_p.label "Retrieve Selected Patrons">
+<!ENTITY staff.patron.info_group.group_member.label "Group Members">
+<!ENTITY staff.patron.info_group.choose_an_action.label "Choose an Action...">
+<!ENTITY staff.patron.info_group.choose_an_action.accesskey "A">
