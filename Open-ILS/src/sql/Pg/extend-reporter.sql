@@ -20,7 +20,7 @@ BEGIN;
 
 CREATE SCHEMA extend_reporter;
 
-CREATE TABLE extend_reporter.legcay_circ_count (
+CREATE TABLE extend_reporter.legacy_circ_count (
     id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id),
     circ_count  INT         NOT NULL DEFAULT 0
 );
