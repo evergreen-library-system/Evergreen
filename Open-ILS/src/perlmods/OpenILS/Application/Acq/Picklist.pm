@@ -29,6 +29,7 @@ sub create_picklist {
     my($self, $conn, $auth, $picklist) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $picklist->org_unit($e->requestor->ws_ou) unless $picklist->org_unit;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST', $picklist->org_unit);
     return OpenILS::Event->new('BAD_PARAMS')
         unless $e->requestor->id == $picklist->owner;
@@ -413,7 +414,8 @@ sub zsearch {
     $name ||= '';
     my $picklist = $e->search_acq_picklist({owner=>$e->requestor->id, name=>$name})->[0];
     if($name eq '' and $picklist) {
-        delete_picklist($self, $conn, $auth, $picklist->id);
+        my $evt = delete_picklist($self, $conn, $auth, $picklist->id);
+        return $evt unless $evt == 1;
         $picklist = undef;
     }
 
@@ -421,6 +423,7 @@ sub zsearch {
         $picklist = Fieldmapper::acq::picklist->new;
         $picklist->owner($e->requestor->id);
         $picklist->name($name);
+        $picklist->org_unit($e->requestor->ws_ou);
         $e->create_acq_picklist($picklist) or return $e->die_event;
     }
 
@@ -430,8 +433,8 @@ sub zsearch {
     while(my $resp = $req->recv(timeout=>60)) {
 
         my $result = $resp->content;
-        use Data::Dumper;
-        $logger->info("results = ".Dumper($resp));
+        #use Data::Dumper;
+        #$logger->info("results = ".Dumper($resp));
         my $count = $result->{count};
         my $total = (($count < $search->{limit}) ? $count : $search->{limit})+1;
         my $ctr = 0;
