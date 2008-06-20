@@ -707,7 +707,7 @@ function rdetailApplyStatuses( row, template, statuses ) {
 var _statusPositions = {};
 
 //Add one td (creating a new column) to the copy summary
-//table for each holdable copy status
+//table for each opac_visible copy status
 
 function rdetailBuildStatusColumns() {
 
@@ -719,7 +719,7 @@ function rdetailBuildStatusColumns() {
 	for( i = 0; i < cp_statuses.length; i++ ) {
 
 		var c = cp_statuses[i];
-		if( c && isTrue(c.holdable()) ) {
+		if( c && isTrue(c.opac_visible()) ) {
 			var name = c.name();
 			_statusPositions[i] = c;
 			var node = template.cloneNode(true);

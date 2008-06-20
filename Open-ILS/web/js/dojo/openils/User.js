@@ -119,7 +119,7 @@ if(!dojo._hasResource["openils.User"]) {
                     _u.getBySession(onComplete);
                     if(_u.authcookie) {
                         dojo.require('dojo.cookie');
-                        dojo.cookie(_u.authcookie, _u.authtoken);
+                        dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
                     }
                 }
                 authReq.send();

@@ -145,6 +145,8 @@ CREATE TABLE metabib.full_rec (
 	value		TEXT		NOT NULL,
 	index_vector	tsvector	NOT NULL
 );
+CREATE INDEX metabib_full_rec_tag_subfield_idx ON metabib.full_rec (tag,subfield);
+--CREATE INDEX metabib_full_rec_value_idx ON metabib.full_rec (value);
 CREATE INDEX metabib_full_rec_record_idx ON metabib.full_rec (record);
 CREATE TRIGGER metabib_full_rec_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.full_rec
