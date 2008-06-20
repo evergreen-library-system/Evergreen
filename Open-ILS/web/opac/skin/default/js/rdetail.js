@@ -719,7 +719,7 @@ function rdetailBuildStatusColumns() {
 	for( i = 0; i < cp_statuses.length; i++ ) {
 
 		var c = cp_statuses[i];
-		if( c && isTrue(c.opac_visisble()) ) {
+		if( c && isTrue(c.opac_visible()) ) {
 			var name = c.name();
 			_statusPositions[i] = c;
 			var node = template.cloneNode(true);
