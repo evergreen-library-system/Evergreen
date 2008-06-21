@@ -59,6 +59,48 @@ sub create_lineitem {
     return $li->id;
 }
 
+__PACKAGE__->register_method(
+	method => 'create_po_assets',
+	api_name	=> 'open-ils.acq.purchase_order.assets.create',
+	signature => {
+        desc => q/Creates assets for each lineitem in the purchase order/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The purchase order id', type => 'number'},
+            {desc => q/Options hash./}
+        ],
+        return => {desc => 'Streams a total versus completed counts object, event on error'}
+    }
+);
+
+sub create_po_assets {
+    my($self, $conn, $auth, $po_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order=>$po_id},{idlist=>1});
+    my $total = @$li_ids;
+    my $count = 0;
+
+    for my $li_id (@$li_ids) {
+        my $resp = create_lineitem_assets_impl($e, $auth, $li_id);
+        if($U->event_code($resp)) {
+            $e->rollback;
+            return $resp;
+        }
+        $conn->respond({total=>$count, progress=>++$count});
+    }
+
+    $po->edit_time('now');
+    $e->update_acq_purchase_order($po) or return $e->die_event;
+    $e->commit;
+
+    return {complete=>1};
+}
 
 __PACKAGE__->register_method(
 	method => 'create_lineitem_assets',
@@ -78,7 +120,17 @@ sub create_lineitem_assets {
     my($self, $conn, $auth, $li_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
+    my $resp = create_lineitem_assets_impl($e, $auth, $li_id, $options);
+    if($U->event_code($resp)) {
+        $e->rollback;
+        return $resp;
+    }
+    $e->commit;
+    return $resp;
+}
 
+sub create_lineitem_assets_impl {
+    my($e, $auth, $li_id, $options) = @_;
     my $li = $e->retrieve_acq_lineitem([
         $li_id,
         {   flesh => 1,
@@ -160,7 +212,6 @@ sub create_lineitem_assets {
         $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
     }
 
-    $e->commit;
     return 1;
 }
 
