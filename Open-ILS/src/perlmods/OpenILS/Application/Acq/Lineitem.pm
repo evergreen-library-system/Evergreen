@@ -588,4 +588,51 @@ sub approve_lineitem {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'receive_lineitem_detail',
+	api_name	=> 'open-ils.acq.lineitem_detail.receive',
+	signature => {
+        desc => 'Mark a lineitem_detail as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+sub receive_lineitem_detail {
+    my($self, $conn, $auth, $lid_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $resp = receive_lineitem_detail_impl($e, $lid_id);
+    if($resp) {$e->rollback; return $resp;}
+    $e->commit;
+    return 1;
+}
+
+sub receive_lineitem_detail_impl {
+    my($e, $lid_id) = @_;
+
+    my $lid = $e->retrieve_acq_lineitem_detail($lid_id)
+        or return $e->die_event;
+
+    return OpenILS::Event->new(
+        'ACQ_LINEITEM_DETAIL_RECEIVED') if $lid->recv_time;
+
+    $lid->recv_time('now');
+    $e->update_acq_lineitem_detail($lid) or return $e->die_event;
+
+    my $copy = $e->retrieve_asset_copy($lid->eg_copy_id)
+        or return $e->die_event;
+
+    $copy->status(OILS_COPY_STATUS_IN_PROCESS);
+    $copy->edit_date('now');
+    $copy->editor($e->requestor->id);
+    $e->update_asset_copy($copy) or return $e->die_event;
+
+    # XXX update the fund_debit to encumberance=false
+
+    return undef;
+}
+
 1;
