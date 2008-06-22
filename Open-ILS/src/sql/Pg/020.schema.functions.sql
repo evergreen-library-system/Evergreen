@@ -125,59 +125,7 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT, INT ) RETURNS TEXT AS
 	SELECT SUBSTRING(call_number_dewey($1) FROM 1 FOR $2);
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION public.first_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
-	SELECT CASE WHEN $1 IS NULL THEN $2 ELSE $1 END;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.first (
-	sfunc	 = public.first_agg,
-	basetype = anyelement,
-	stype	 = anyelement
-);
-
-CREATE OR REPLACE FUNCTION public.last_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
-	SELECT $2;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.last (
-	sfunc	 = public.last_agg,
-	basetype = anyelement,
-	stype	 = anyelement
-);
-
-CREATE OR REPLACE FUNCTION public.text_concat ( TEXT, TEXT ) RETURNS TEXT AS $$
-SELECT
-	CASE	WHEN $1 IS NULL
-			THEN $2
-		WHEN $2 IS NULL
-			THEN $1
-		ELSE $1 || ' ' || $2
-	END;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.agg_text (
-	sfunc	 = public.text_concat,
-	basetype = text,
-	stype	 = text
-);
-
-CREATE OR REPLACE FUNCTION public.tsvector_concat ( tsvector, tsvector ) RETURNS tsvector AS $$
-SELECT
-	CASE	WHEN $1 IS NULL
-			THEN $2
-		WHEN $2 IS NULL
-			THEN $1
-		ELSE $1 || ' ' || $2
-	END;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.agg_tsvector (
-	sfunc	 = public.tsvector_concat,
-	basetype = tsvector,
-	stype	 = tsvector
-);
-
-CREATE FUNCTION tableoid2name ( oid ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION tableoid2name ( oid ) RETURNS TEXT AS $$
 	BEGIN
 		RETURN $1::regclass;
 	END;
