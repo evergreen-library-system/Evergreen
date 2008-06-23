@@ -88,10 +88,13 @@ function createPOFromLineitems() {
         var rowIdx = selected[idx];
         var id = liGrid.model.getRow(rowIdx).id;
         for(var i = 0; i < lineitems.length; i++) {
-            if(lineitems[i].id() == id)
+            var li = lineitems[i];
+            if(li.id() == id && !li.purchase_order() && li.state == 'approved')
                 selList.push(lineitems[i]);
         }
     }
+
+    if(selList.length == 0) return;
 
     openils.acq.PO.create(po, 
         function(poId) {
@@ -108,8 +111,6 @@ function _updateLiList(poId, selList, idx) {
     if(idx >= selList.length)
         return location.href = 'view/' + poId;
     var li = selList[idx];
-    if(li.purchase_order())
-        return _updateLiList(poId, selList, ++idx);
     li.purchase_order(poId);
     new openils.acq.Lineitems({lineitem:li}).update(
         function(stat) {
