@@ -2470,27 +2470,27 @@ sub staged_fts {
 	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
         SELECT  *
           FROM  search.staged_fts(
-                    $param_search_ou,
-                    $param_depth,
-                    $param_searches,
-                    $param_statuses,
-                    $param_locations,
-                    $param_audience,
-                    $param_language,
-                    $param_lit_form,
-                    $param_types,
-                    $param_forms,
-                    $param_vformats,
-                    $param_bib_level,
-                    $param_pref_lang,
-                    $param_pref_lang_multiplier,
-                    $param_sort,
-                    $param_sort_desc,
-                    $metarecord,
-                    $staff,
-                    $param_rel_limit,
-                    $param_chk_limit,
-                    $param_skip_chk
+                    $param_search_ou\:\:INT,
+                    $param_depth\:\:INT,
+                    $param_searches\:\:TEXT,
+                    $param_statuses\:\:INT[],
+                    $param_locations\:\:INT[],
+                    $param_audience\:\:TEXT[],
+                    $param_language\:\:TEXT[],
+                    $param_lit_form\:\:TEXT[],
+                    $param_types\:\:TEXT[],
+                    $param_forms\:\:TEXT[],
+                    $param_vformats\:\:TEXT[],
+                    $param_bib_level\:\:TEXT[],
+                    $param_pref_lang\:\:TEXT,
+                    $param_pref_lang_multiplier\:\:REAL,
+                    $param_sort\:\:TEXT,
+                    $param_sort_desc\:\:BOOL,
+                    $metarecord\:\:BOOL,
+                    $staff\:\:BOOL,
+                    $param_rel_limit\:\:INT,
+                    $param_chk_limit\:\:INT,
+                    $param_skip_chk\:\:INT
                 );
     SQL
 
