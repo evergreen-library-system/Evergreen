@@ -2,6 +2,7 @@ dojo.require('fieldmapper.Fieldmapper');
 dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Button');
 dojo.require("dijit.Dialog");
@@ -13,6 +14,7 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 var recvCount = 0;
 var user = new openils.User();
+var createAssetsSelected = false;
 
 var lineitems = [];
 
@@ -77,9 +79,10 @@ function viewList() {
     JUBGrid.populate(liGrid, model, lineitems)
 }
 
-function createPOFromLineitems() {
+function createPOFromLineitems(fields) {
     var po = new acqpo()
     po.provider(newPOProviderSelector.getValue());
+    createAssetsSelected = fields.create_assets;
 
     // find the selected lineitems
     var selected = liGrid.selection.getSelected();
@@ -89,7 +92,7 @@ function createPOFromLineitems() {
         var id = liGrid.model.getRow(rowIdx).id;
         for(var i = 0; i < lineitems.length; i++) {
             var li = lineitems[i];
-            if(li.id() == id && !li.purchase_order() && li.state == 'approved')
+            if(li.id() == id && !li.purchase_order() && li.state() == 'approved')
                 selList.push(lineitems[i]);
         }
     }
@@ -98,6 +101,10 @@ function createPOFromLineitems() {
 
     openils.acq.PO.create(po, 
         function(poId) {
+            if(e = openils.Event.parse(poId)) {
+                alert(e);
+                return;
+            } 
             updateLiList(poId, selList);
         }
     );
@@ -107,17 +114,43 @@ function updateLiList(poId, selList) {
     _updateLiList(poId, selList, 0);
 }
 
+function viewPO(poId) {
+    location.href = 'view/' + poId;
+}
+
 function _updateLiList(poId, selList, idx) {
-    if(idx >= selList.length)
-        return location.href = 'view/' + poId;
+    if(idx >= selList.length) {
+        if(createAssetsSelected)
+            return createAssets(poId);
+        else
+            return viewPo(poId); 
+    }
     var li = selList[idx];
     li.purchase_order(poId);
+    li.state('in-process');
     new openils.acq.Lineitems({lineitem:li}).update(
         function(stat) {
             _updateLiList(poId, selList, ++idx);
         }
     );
 }
+
+function createAssets(poId) {
+    fieldmapper.standardRequest(
+        ['open-ils.acq','open-ils.acq.purchase_order.assets.create'],
+        {
+            async: true,
+            params: [user.authtoken, poId],
+            oncomplete : function(r) {
+                if(e = openils.Event.parse(r.recv().content()))
+                    alert(e);
+                else
+                    viewPO(poId);
+            }
+        }
+    );
+}
     
 
 dojo.addOnLoad(drawForm);
+
