@@ -633,7 +633,7 @@ sub receive_lineitem_detail_impl {
     # XXX update the fund_debit to encumberance=false
 
     my $non_recv = $e->search_acq_lineitem_detail(
-        {recv_time => undef, lineitem => $lid->lineitem});
+        {recv_time => undef, lineitem => $lid->lineitem}, {idlist=>1});
 
     unless(@$non_recv) {
         # if all of the lineitem details for this lineitem have 
