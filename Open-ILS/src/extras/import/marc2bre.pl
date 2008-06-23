@@ -50,6 +50,8 @@ GetOptions(
 	'quiet'		=> \$quiet
 );
 
+@trash_fields = split(/,/,join(',',@trash_fields));
+
 if ($enc) {
 	MARC::Charset->ignore_errors(1);
 	MARC::Charset->assume_encoding($enc);

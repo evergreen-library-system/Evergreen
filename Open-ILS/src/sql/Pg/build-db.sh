@@ -6,6 +6,7 @@
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 000.english.pg$6.fts-config.sql
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 001.schema.offline.sql
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 002.schema.config.sql
+PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 002.functions.aggregate.sql
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 002.functions.config.sql
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 005.schema.actors.sql
 PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 006.schema.permissions.sql
