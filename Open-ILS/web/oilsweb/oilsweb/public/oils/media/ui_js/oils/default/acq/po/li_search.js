@@ -80,25 +80,40 @@ function viewList() {
 function createPOFromLineitems() {
     var po = new acqpo()
     po.provider(newPOProviderSelector.getValue());
+
+    // find the selected lineitems
+    var selected = liGrid.selection.getSelected();
+    var selList = [];
+    for(var idx = 0; idx < selected.length; idx++) {
+        var rowIdx = selected[idx];
+        var id = liGrid.model.getRow(rowIdx).id;
+        for(var i = 0; i < lineitems.length; i++) {
+            if(lineitems[i].id() == id)
+                selList.push(lineitems[i]);
+        }
+    }
+
     openils.acq.PO.create(po, 
         function(poId) {
-            updateLiList(poId);
+            updateLiList(poId, selList);
         }
     );
 }
 
-function updateLiList(poId) {
-    _updateLiList(poId, 0);
+function updateLiList(poId, selList) {
+    _updateLiList(poId, selList, 0);
 }
 
-function _updateLiList(poId, idx) {
-    if(idx >= lineitems.length)
+function _updateLiList(poId, selList, idx) {
+    if(idx >= selList.length)
         return location.href = 'view/' + poId;
-    var li = lineitems[idx];
+    var li = selList[idx];
+    if(li.purchase_order())
+        return _updateLiList(poId, selList, ++idx);
     li.purchase_order(poId);
     new openils.acq.Lineitems({lineitem:li}).update(
         function(stat) {
-            _updateLiList(poId, ++idx);
+            _updateLiList(poId, selList, ++idx);
         }
     );
 }
