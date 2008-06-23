@@ -632,6 +632,18 @@ sub receive_lineitem_detail_impl {
 
     # XXX update the fund_debit to encumberance=false
 
+    my $non_recv = $e->search_acq_lineitem_detail(
+        {recv_time => undef, lineitem => $lid->lineitem});
+
+    unless(@$non_recv) {
+        # if all of the lineitem details for this lineitem have 
+        # been received, mark the lineitem as received
+        my $li = $e->retrieve_acq_lineitem($lid->lineitem);
+        $li->state('received');
+        $li->edit_time('now');
+        $e->update_acq_lineitem($li) or return $e->die_event;
+    }
+
     return undef;
 }
 
