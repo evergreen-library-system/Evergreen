@@ -310,7 +310,7 @@ all:
 # these should be the same for any distro
 install: install_yaz install_cpan install_js_sm install_libdbi 
 
-centos: install_centos_pgsql install_centos_rpms install_ejabberd install_libmemcache install install_libxml2 install_libxslt install_centos_perl 
+centos: install_centos_pgsql install_centos_rpms install_ejabberd install_libmemcache install install_libxml2 install_libxslt install_centos_perl create_ld_local
 
 debian: install_pgsql_debian install_debs install debian_sys_config
 
@@ -444,3 +444,10 @@ install_centos_perl:
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
 	for m in $(CENTOS_PERL_LOCAL); do LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib perl -MCPAN -e "install \"$$m\";"; done
 
+# We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
+# if it is not already there
+create_ld_local:
+	if [ "$$(ldconfig -v 2> /dev/null | grep '^/usr/local/lib' | wc -l)" -eq 0 ]; then \
+		echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf; \
+		ldconfig; \
+	fi;
