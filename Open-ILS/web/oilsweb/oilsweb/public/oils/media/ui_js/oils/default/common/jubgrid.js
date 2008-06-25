@@ -75,22 +75,24 @@ var JUBGrid = {
 	}
         JUBGrid.jubGrid = gridWidget;
         JUBGrid.jubGrid.setModel(model);
-        dojo.connect(gridWidget, "onRowClick", 
-            function(evt) {
-		var jub = model.getRow(evt.rowIndex);
-		var grid;
+        if(JUBGrid.showDetails) {
+            dojo.connect(gridWidget, "onRowClick", 
+                function(evt) {
+            var jub = model.getRow(evt.rowIndex);
+            var grid;
 
-		JUBGrid.jubDetailGrid.lineitemID = jub.id;
+            JUBGrid.jubDetailGrid.lineitemID = jub.id;
 
-		if (jub.state == "approved") {
-		    grid = JUBGrid.jubDetailGridLayoutReadOnly;
-		} else {
-		    grid = JUBGrid.jubDetailGridLayout;
-		}
-		openils.acq.Lineitems.loadGrid(
-                    JUBGrid.jubDetailGrid, 
-                    JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
-            });
+            if (jub.state == "approved") {
+                grid = JUBGrid.jubDetailGridLayoutReadOnly;
+            } else {
+                grid = JUBGrid.jubDetailGridLayout;
+            }
+            openils.acq.Lineitems.loadGrid(
+                        JUBGrid.jubDetailGrid, 
+                        JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
+                });
+        }
         gridWidget.update();
     },
 

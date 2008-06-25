@@ -1,4 +1,4 @@
-<%def name='jubgrid(domprefix, grid_jsid)'>
+<%def name='jubgrid(domprefix, grid_jsid, hide_details=False)'>
 <%doc>
 This template creates a split screen Dojo layout. The top frame
 of the screen holds a list of of JUBs, or titles. Clicking on a
@@ -17,7 +17,7 @@ for the DOM notes that are created by this template, and
 'grid_jsid' is a valid JavaScript identifier that will name the
 DOM node to which the list of JUBs will be attached.  For example
 
-    ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid')}
+    ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid', hideDetails)}
 
 will create a Dojo grid with the DOM id of
 
@@ -37,12 +37,19 @@ pointing to the JUB model (and store) that you have created.
 
 </%doc>
 
+% if not hide_details:
 <div dojoType="dijit.layout.SplitContainer" style='height:100%'
      orientation="vertical" sizerWidth="5"
      activeSizing="1" layoutAlign="client">
+% endif
 
     <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/common/jubgrid.js'> </script>
     <script type="text/javascript">
+    JUBGrid.getPO = function(rowIndex) {
+        var data = JUBGrid.jubGrid.model.getRow(rowIndex);
+        if (!(data && data.purchase_order)) return '';
+        return "<a href='${c.oils.core.prefix.value}/acq/po/view/" + data.purchase_order+"'>"+data.purchase_order+"</a>";
+    }
     JUBGrid.jubGridLayout = [{
         cells: [[
             {name: "ID", field: 'id'},
@@ -52,8 +59,9 @@ pointing to the JUB model (and store) that you have created.
             {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate},
             {name: "Price", get:JUBGrid.getJUBPrice},
             {name: "Vendor", get:JUBGrid.getProvider},
-            {name: "# of Copies", field: 'item_count'},
-            {name: "State", field: 'state'}
+            {name: "# Copies", field: 'item_count'},
+            {name: "State", field: 'state'},
+            {name: "PO", get:JUBGrid.getPO}
         ]]
     }];
 
@@ -84,17 +92,21 @@ pointing to the JUB model (and store) that you have created.
     }];
     </script>
 
+% if not hide_details:
+    <script>JUBGrid.showDetails = true;</script>
     <div id="${domprefix + '-container'}"
-	 dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
-	<div dojoType="dijit.layout.ContentPane"
-	     id=${domprefix+"-jub-buttonbar"}>
-	    <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
-		${_('Approve Selected Titles')}
-	    </button>
-	</div>
-	    <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
-		 dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
-	    </div>
+        dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
+% endif
+        <div dojoType="dijit.layout.ContentPane"
+             id=${domprefix+"-jub-buttonbar"}>
+            <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
+                ${_('Approve Selected Titles')}
+            </button>
+        </div>
+        <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
+            dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
+        </div>
+% if not hide_details:
     </div>
     <div dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
 	<div dojoType="dijit.layout.ContentPane"
@@ -145,6 +157,7 @@ pointing to the JUB model (and store) that you have created.
         </div>
     </div>
 </div>
+% endif
 </%def>
 <!-- Local Variables: -->
 <!-- mmm-classes: html-js -->
