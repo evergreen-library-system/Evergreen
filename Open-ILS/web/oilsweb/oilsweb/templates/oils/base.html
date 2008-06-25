@@ -31,10 +31,10 @@
     <link rel='stylesheet' type='text/css' 
         href='${c.oils.core.media_prefix.value}/css/theme/${c.oils.core.theme.value}.css'/>
 </%def>
-
 <%def name='block_js()'>
     <script type="text/javascript" src="${c.oils.core.media_prefix.value}/js/dojo/dojo/dojo.js"
         djConfig="parseOnLoad: true"></script>
+    <script src='${c.oils.core.media_prefix.value}/ui_js/oils/base.js'> </script>
 
     <script type="text/javascript">
         dojo.require("dojo.parser");
@@ -43,12 +43,14 @@
     </script>
 
     <script type='text/javascript'>
-        /* first thing, let's make sure we're logged in */
-        dojo.require('dojo.cookie');
-        dojo.require('openils.CGI');
-        dojo.require("openils.User");
-        openils.User.authcookie = 'ses';
-        openils.User.authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
+        <% import pylons %>
+        var username = null;
+        var password = null;
+        % if 'oils_demo_user' in pylons.config:
+            username = '${pylons.config.get("oils_demo_user")}';
+            password = '${pylons.config.get("oils_demo_password")}';
+        % endif
+        dojo.addOnLoad(function(){loadUser(username, password);});
     </script>
 </%def>
 

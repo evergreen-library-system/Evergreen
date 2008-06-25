@@ -1,45 +1,10 @@
 # -*- coding: utf-8 -*-
 <div id='oils-base-header-content-div'>
-    <% 
-        import pylons
-        if 'oils_demo_user' in pylons.config:
-            auto_login = True
-        else:
-            auto_login = False
-    %>
-    % if auto_login:
-        <script>
-            dojo.require('openils.User');
-            dojo.require('openils.Event');
-            var user;
-
-            function dologin() {
-                var username = '${pylons.config.get("oils_demo_user")}';
-                var password = '${pylons.config.get("oils_demo_password")}';
-                openils.User.authtoken = null;
-                user = new openils.User();
-                user.login({
-                    login_type:'staff', 
-                    username:username, 
-                    passwd:password, 
-                    login:true
-                });
-                user.getBySession();
-                openils.User.authtoken = user.authtoken;
-            }
-
-            if(openils.User.authtoken) {
-                user = new openils.User();
-                if(openils.Event.parse(user.user)) // session timed out
-                    dologin();
-            } else {
-                dologin();
-            }
-        </script>
-        <span id='oils-base-header-user-info'> </span>
-        <script>
+    <span id='oils-base-header-user-info'> </span>
+    <script>
+        dojo.addOnLoad(function(){
             dojo.byId('oils-base-header-user-info').appendChild(
-                document.createTextNode(user.user.usrname()));
-        </script>
-    % endif
+                document.createTextNode(openils.User.user.usrname()));
+        });
+    </script>
 </div>
