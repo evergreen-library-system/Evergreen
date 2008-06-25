@@ -679,6 +679,7 @@ sub bookbag_feed {
 	return Apache2::Const::NOT_FOUND unless($bucket);
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
+	$feed->id($bucket_tag);
 	if ($type eq 'opac') {
 		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
@@ -1163,7 +1164,7 @@ sub create_record_feed {
 			$node->add_holdings($xml);
 		}
 
-		$node->id($item_tag) if ($flesh);
+		$node->id($item_tag);
 		#$node->update_ts(clense_ISO8601($record->edit_date));
 		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh);
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh);
