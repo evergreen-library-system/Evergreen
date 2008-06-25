@@ -12,6 +12,7 @@ var resultPicklist;
 var recvCount = 0;
 var sourceCount = 0; // how many sources are we searching
 var user = new openils.User();
+var searchLimit = 10;
 
 function drawForm() {
 
@@ -47,7 +48,6 @@ function drawForm() {
         var field = searchFields[f];
         if(dijit.byId('text_input_'+field.name)) continue;
         var row = tmpl.cloneNode(true);
-        //tbody.appendChild(row);
         tbody.insertBefore(row, dojo.byId('oils-acq-seach-fields-count-row'));
         var labelCell = dojo.query('[name=label]', row)[0];
         var inputCell = dojo.query('[name=input]', row)[0];
@@ -69,6 +69,7 @@ function doSearch(values) {
         limit : values.limit,
         offset : searchOffset
     };
+    searchLimit = values.limit;
     delete values.limit;
 
     var selected = bibSourceSelect.getValue();
@@ -112,8 +113,8 @@ function viewResults(plId) {
         function(model) {
             dojo.style('oils-acq-pl-search-results', 'visibility', 'visible');
             JUBGrid.populate(plResultGrid, model, plist._items);
-            dojo.style('oils-acq-lineitem-details-grid', 'visibility', 'hidden');
-        }
+        },
+        {flesh_attrs:1, clear_marc:1, limit: searchLimit}
     );
     resultPicklist = plist._plist;
 }
