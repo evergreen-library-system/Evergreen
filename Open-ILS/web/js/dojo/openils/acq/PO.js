@@ -28,10 +28,10 @@ if(!dojo._hasResource['openils.acq.PO']) {
 
     openils.acq.PO.cache = {};
 
-    openils.acq.PO.retrieve = function(id, oncomplete) {
+    openils.acq.PO.retrieve = function(id, oncomplete, args) {
 
         var req = ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'];
-        var par = [openils.User.authtoken, id];
+        var par = [openils.User.authtoken, id, args];
 
         if(oncomplete) {
             fieldmapper.standardRequest(

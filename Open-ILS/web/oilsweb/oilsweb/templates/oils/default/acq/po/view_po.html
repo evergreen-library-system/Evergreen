@@ -28,7 +28,8 @@
                         {name: '${_("Ordering Agency")}', get:getOrgInfo},
                         {name: '${_("Create Time")}', field:'create_time', width:'auto', get:getDateTimeField},
                         {name: '${_("Edit Time")}', field: "edit_time", width:'auto', get:getDateTimeField},
-                        {name: '${_("Provider")}', get:getProvider, width:'auto'},
+                        {name: '${_("Provider")}', get:getProvider},
+                        {name: '${_("# Lineitems")}', field: 'lineitem_count'},
                         {name: '${_("State")}', field:'state'}
                     ]]
                 }];

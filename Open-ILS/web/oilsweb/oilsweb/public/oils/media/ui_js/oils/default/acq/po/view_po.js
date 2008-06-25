@@ -52,8 +52,7 @@ function loadPOGrid() {
 function loadLIGrid() {
     if(liGrid.isLoaded) return;
 
-    function load(r) {
-        var po = r.recv().content();
+    function load(po) {
         lineitems = po.lineitems();
         var store = new dojo.data.ItemFileReadStore({data:jub.toStoreData(lineitems)});
         var model = new dojox.grid.data.DojoData(
@@ -61,13 +60,7 @@ function loadLIGrid() {
         JUBGrid.populate(liGrid, model, lineitems)
     }
 
-    fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
-        {   async: true,
-            params: [openils.User.authtoken, poId, {flesh_lineitems:1, clear_marc:1}], /* XXX PAGING */
-            oncomplete : load
-        }
-    );
+    openils.acq.PO.retrieve(poId, load, {flesh_lineitems:1, clear_marc:1});
     liGrid.isLoaded = true;
 }
 
@@ -80,7 +73,8 @@ function fetchPO() {
         function(po) {
             PO = po;
             loadPOGrid();
-        }
+        },
+        {flesh_lineitem_count:1}
     );
 }
 
