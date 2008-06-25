@@ -281,7 +281,7 @@ sub id {
 	my $self = shift;
 	my $id = shift;
 
-	$self->_create_node( '/atom:feed', 'http://www.w3.org/2005/Atom', 'id', $id );
+	$self->_create_node( $self->{item_xpath}, 'http://www.w3.org/2005/Atom', 'id', $id );
 }
 
 package OpenILS::WWW::SuperCat::Feed::atom::item;
@@ -348,6 +348,13 @@ sub link {
 		  type => $mime,
 		}
 	);
+}
+
+sub id {
+	my $self = shift;
+	my $id = shift;
+
+	$self->_create_node($self->{item_xpath}, undef,'guid', $id);
 }
 
 package OpenILS::WWW::SuperCat::Feed::rss2::item;
