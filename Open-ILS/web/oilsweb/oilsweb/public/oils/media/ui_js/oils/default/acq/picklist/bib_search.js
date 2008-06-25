@@ -97,6 +97,11 @@ function doSearch(values) {
 
 function handleResult(r) {
     var result = r.recv().content();
+    if(openils.Event.parse(result)) {
+        alert(openils.Event.parse(result));
+        dojo.style('searchProgress', 'visibility', 'hidden');
+        return;
+    }
     if(result.complete)
         return viewResults(result.picklist_id);
     searchProgress.update({maximum: result.total, progress: result.progress});
