@@ -47,7 +47,6 @@ if(!dojo._hasResource["openils.User"]) {
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
-
         },
 
         getBySession : function(onComplete) {
@@ -65,7 +64,9 @@ if(!dojo._hasResource["openils.User"]) {
             } else {
                 req.timeout = 10;
                 req.send();
-                return _u.user = req.recv().content();
+                _u.user = req.recv().content();
+				if (!openils.User.user) openils.User.user = _u.user;
+                return _u.user;
             }
         },
     
@@ -101,7 +102,6 @@ if(!dojo._hasResource["openils.User"]) {
     
             initReq.oncomplete = function(r) {
                 var seed = r.recv().content(); 
-                alert(seed);
                 var loginInfo = {
                     username : args.username,
                     password : hex_md5(seed + hex_md5(args.passwd)), 
