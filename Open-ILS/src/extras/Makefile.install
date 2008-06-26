@@ -58,6 +58,10 @@ EJABBERD_VER=2.0.1
 EJABBERD_PKG=ejabberd-2.0.1_2-linux-x86-installer.bin
 EJABBERD_HOST=http://www.process-one.net/downloads/ejabberd
 
+# libmemcache is not packaged on CentOS/RHEL
+LIBMEMCACHE=libmemcache-1.4.0.rc2
+LIBMEMCACHE_HOST=http://people.freebsd.org/~seanc/libmemcache/
+
 # Business::OnlinePayment is not packaged on CentOS/RHEL
 PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
 PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
@@ -150,6 +154,8 @@ CENTOS = \
 	make \
 	mod_perl \
 	mod_ssl \
+	ncurses \
+	ncurses-devel \
 	ntp \
 	perl-DBD-Pg \
 	perl-DBI \
@@ -304,7 +310,8 @@ all:
 # these should be the same for any distro
 install: install_yaz install_cpan install_js_sm install_libdbi 
 
-centos: install_centos_pgsql install_centos_rpms install_ejabberd install install_libxml2 install_libxslt install_centos_perl 
+centos: install_centos_pgsql install_centos_rpms install_ejabberd install_libmemcache install install_libxml2 install_libxslt install_centos_perl create_ld_local
+
 debian: install_pgsql_debian install_debs install debian_sys_config
 
 gentoo: install_gentoos install_gentoo_rc install_gentoo_perl install
@@ -326,6 +333,12 @@ install_ejabberd:
 	gunzip $(EJABBERD_PKG).gz
 	chmod u+x $(EJABBERD_PKG).gz
 	./$(EJABBERD_PKG) --mode unattended --prefix /opt/ejabberd --adminpw evergreen
+
+# Install libmemcache from the official project source
+install_libmemcache:
+	if [ ! -d $(LIBMEMCACHE) ]; then wget $(LIBMEMCACHE_HOST)/$(LIBMEMCACHE).tar.bz2; fi;
+	tar xjf $(LIBMEMCACHE).tar.bz2
+	cd $(LIBMEMCACHE) && ./configure && make && make install
 
 # Install a newer version of libxslt
 install_libxslt:    
@@ -431,3 +444,10 @@ install_centos_perl:
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
 	for m in $(CENTOS_PERL_LOCAL); do LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib perl -MCPAN -e "install \"$$m\";"; done
 
+# We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
+# if it is not already there
+create_ld_local:
+	if [ "$$(ldconfig -v 2> /dev/null | grep '^/usr/local/lib' | wc -l)" -eq 0 ]; then \
+		echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf; \
+		ldconfig; \
+	fi;

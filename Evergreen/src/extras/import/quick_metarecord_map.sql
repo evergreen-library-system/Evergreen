@@ -18,7 +18,7 @@ INSERT INTO metabib.metarecord_source_map (metarecord,source)
 	  FROM	biblio.record_entry b
 	  	JOIN metabib.metarecord m ON (m.fingerprint = b.fingerprint);
 
-ALTER TABLE metabib.metarecord_source_map ADD CONSTRAINT metabib_metarecord_source_map_metarecord_fkey FOREIGN KEY (metarecord) REFERENCES metabib.metarecord (id);
+ALTER TABLE metabib.metarecord_source_map ADD CONSTRAINT metabib_metarecord_source_map_metarecord_fkey FOREIGN KEY (metarecord) REFERENCES metabib.metarecord (id) DEFERRABLE INITIALLY DEFERRED;
 
 COMMIT;
 
