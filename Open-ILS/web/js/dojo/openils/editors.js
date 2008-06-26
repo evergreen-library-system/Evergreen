@@ -44,8 +44,7 @@ dojo.declare('openils.editors.OrgUnitSelectEditor', dojox.grid.editors.Dijit, {
     editorClass: "openils.widget.OrgUnitFilteringSelect",
     createEditor: function(inNode, inDatum, inRowIndex) {
 	var editor = new this.editorClass(this.getEditorProps(inDatum), inNode);
-	globalUser.buildPermOrgSelector(this.cell.perm || this.perm,
-					editor);
+	new openils.User().buildPermOrgSelector(this.cell.perm || this.perm, editor);
 	editor.setValue(inDatum);
 	return editor;
     },
