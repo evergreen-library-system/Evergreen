@@ -24,7 +24,6 @@ function loadUser(username, password) {
         user.getBySession();
         openils.User.authtoken = user.authtoken;
         openils.User.user = user.user;
-        alert('user = ' + openils.User.user);
         //dojo.cookie('user', js2JSON(openils.User.user),{path:'/'});
     }
 
