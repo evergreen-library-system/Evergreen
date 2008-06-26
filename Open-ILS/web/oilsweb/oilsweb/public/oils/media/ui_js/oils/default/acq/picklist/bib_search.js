@@ -6,6 +6,7 @@ dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('openils.Event');
 dojo.require('openils.acq.Picklist');
+dojo.require('openils.User');
 
 var searchFields = [];
 var resultPicklist;
