@@ -107,6 +107,12 @@ openils.acq.Lineitems.alertOnSet = function(griditem, attr, oldVal, newVal) {
 	item.fund(newVal);
     } else if (attr ==  "owning_lib") {
 	item.owning_lib(newVal);
+    } else if (attr ==  "cn_label") {
+	item.cn_label(newVal);
+    } else if (attr ==  "barcode") {
+	item.barcode(newVal);
+    } else if (attr ==  "location") {
+	item.location(newVal);
     } else {
 	alert("Unexpected attr in Lineitems.alertOnSet: '"+attr+"'");
 	return;

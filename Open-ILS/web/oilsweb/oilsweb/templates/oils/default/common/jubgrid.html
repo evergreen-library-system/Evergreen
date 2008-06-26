@@ -69,13 +69,26 @@ pointing to the JUB model (and store) that you have created.
         cells: [[
             {name:"ID", field:"id"},
             {name:"Fund", field:"fund",
-             get:JUBGrid.getLIDFundName,
-             editor: openils.editors.FundSelectEditor,
+                get:JUBGrid.getLIDFundName,
+                editor: openils.editors.FundSelectEditor,
             },
             {name:"Branch", field:"owning_lib",
-	     get:JUBGrid.getLIDLibName,
-	     editor: openils.editors.OrgUnitSelectEditor
-	    },
+	            get:JUBGrid.getLIDLibName,
+	            editor: openils.editors.OrgUnitSelectEditor
+	        },
+            {name:"Barcode", field:"barcode", width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.TextBox" 
+	        },
+            {name:"Call Number", field:"cn_label", width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.TextBox" 
+	        },
+            {name:"Shelving Location", field:"location", width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.TextBox" 
+	        },
+
         ]]
     }];
 
@@ -116,7 +129,7 @@ pointing to the JUB model (and store) that you have created.
 		<div dojoType="dijit.TooltipDialog"
 		     execute="JUBGrid.createLID(arguments[0]);">
 		    <script type='dojo/connect' event='onOpen'>
-			globalUser.buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
+			new openils.User().buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
 			openils.acq.Fund.buildPermFundSelector('MANAGE_FUND', acqlidFund);
 		    </script>
 		    <table class="dijitTooltipTable">
