@@ -44,6 +44,7 @@ pointing to the JUB model (and store) that you have created.
 % endif
 
     <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/common/jubgrid.js'> </script>
+    <script src='${c.oils.core.media_prefix.value}/js/dojo/openils/CopyLocation.js'> </script>
     <script type="text/javascript">
     JUBGrid.getPO = function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
@@ -85,10 +86,13 @@ pointing to the JUB model (and store) that you have created.
                 editorClass: "dijit.form.TextBox" 
 	        },
             {name:"Shelving Location", field:"location", width:'auto',
+                editor:openils.editors.CopyLocationSelectEditor,
+                get:JUBGrid.getCopyLocation
+                /*
                 editor:dojox.grid.editors.Dijit, 
-                editorClass: "dijit.form.TextBox" 
+                editorClass: "dijit.form.FilteringSelect",
+                */
 	        },
-
         ]]
     }];
 

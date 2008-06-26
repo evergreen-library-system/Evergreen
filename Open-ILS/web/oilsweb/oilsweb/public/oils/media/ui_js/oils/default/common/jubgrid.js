@@ -55,6 +55,11 @@ var JUBGrid = {
         if(!data || !data.provider) return;
         return openils.acq.Provider.retrieve(data.provider).code();
     },
+    getCopyLocation : function(rowIndex) {
+        var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
+        if(!data || !data.location) return '';
+        return openils.CopyLocation.retrieve(data.location).name();
+    },
     getLIDFundName : function(rowIndex) {
         var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
         if (!data || !data.fund) return;
@@ -78,20 +83,21 @@ var JUBGrid = {
         if(JUBGrid.showDetails) {
             dojo.connect(gridWidget, "onRowClick", 
                 function(evt) {
-            var jub = model.getRow(evt.rowIndex);
-            var grid;
+                    var jub = model.getRow(evt.rowIndex);
+                    var grid;
 
-            JUBGrid.jubDetailGrid.lineitemID = jub.id;
+                    JUBGrid.jubDetailGrid.lineitemID = jub.id;
 
-            if (jub.state == "approved") {
-                grid = JUBGrid.jubDetailGridLayoutReadOnly;
-            } else {
-                grid = JUBGrid.jubDetailGridLayout;
-            }
-            openils.acq.Lineitems.loadGrid(
+                    if (jub.state == "approved") {
+                        grid = JUBGrid.jubDetailGridLayoutReadOnly;
+                    } else {
+                        grid = JUBGrid.jubDetailGridLayout;
+                    }
+                    openils.acq.Lineitems.loadGrid(
                         JUBGrid.jubDetailGrid, 
                         JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
-                });
+                }
+            );
         }
         gridWidget.update();
     },

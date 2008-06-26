@@ -50,4 +50,22 @@ dojo.declare('openils.editors.OrgUnitSelectEditor', dojox.grid.editors.Dijit, {
     },
 });
 
+dojo.declare('openils.editors.CopyLocationSelectEditor', dojox.grid.editors.Dijit, {
+    editorClass: "dijit.form.FilteringSelect",
+    createEditor: function(inNode, inDatum, inRowIndex) {
+        dojo.require('openils.CopyLocation');
+	    var editor = new this.editorClass(this.getEditorProps(inDatum), inNode);
+        openils.CopyLocation.createStore(1,  /* XXX how do we propagate arguments to the editor?? */
+            function(store) {
+                editor.store = new dojo.data.ItemFileReadStore({data:store});
+                editor.startup();
+                if(inDatum)
+                    editor.setValue(inDatum);
+            }
+        );
+	    return editor;
+    },
+});
+
 }
+
