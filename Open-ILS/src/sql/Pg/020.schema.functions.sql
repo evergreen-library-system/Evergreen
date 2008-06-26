@@ -112,7 +112,7 @@ $$ LANGUAGE PLPERLU;
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	my $txt = shift;
 	$txt =~ s/^\s+//o;
-	$txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//o;
+	$txt =~ s/[\[\]\{\}\(\)`'"#<>\*\?\-\+\$\\]+//og;
 	$txt =~ s/\s+$//o;
 	if ($txt =~ /(\d{3}(?:\.\d+)?)/o) {
 		return $1;
@@ -206,10 +206,4 @@ CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS 
 	) z;
 $$ LANGUAGE SQL STABLE;
 
-CREATE AGGREGATE array_accum (
-	sfunc = array_append,
-	basetype = anyelement,
-	stype = anyarray,
-	initcond = '{}'
-);
 
