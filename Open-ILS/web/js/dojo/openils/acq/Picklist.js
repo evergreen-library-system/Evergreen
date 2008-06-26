@@ -28,7 +28,7 @@ dojo.require('fieldmapper.dojoData');
 dojo.declare('openils.acq.Picklist', null, {
     constructor: function (pl_id, onComplete, args) {
 	var pl_this = this;		// 'this' doesn't exist inside callbacks
-    var liArgs = args.liArgs || {flesh_attrs:1, clear_marc:1};
+    var liArgs = (args && args.liArgs) ? args.liArgs : {flesh_attrs:1, clear_marc:1};
 	var mkStore = function (r) {
 	    var storeData;
 	    var msg;
