@@ -6,6 +6,9 @@ use XML::LibXML;
 use XML::LibXSLT;
 use OpenSRF::Utils::SettingsClient;
 use CGI;
+use DateTime;
+use DateTime::Format::Mail;
+
 
 sub exists {
 	my $class = shift;
@@ -225,6 +228,7 @@ sub creator {};
 
 package OpenILS::WWW::SuperCat::Feed::atom;
 use base 'OpenILS::WWW::SuperCat::Feed';
+use OpenSRF::Utils qw/:datetime/;
 
 sub new {
 	my $class = shift;
@@ -244,7 +248,8 @@ sub title {
 
 sub update_ts {
 	my $self = shift;
-	my $text = shift;
+	# ATOM demands RFC-3339 compliant datetime formats
+	my $text = shift || gmtime_ISO8601();
 	$self->_create_node($self->{item_xpath},'http://www.w3.org/2005/Atom','updated', $text);
 }
 
@@ -317,11 +322,15 @@ sub title {
 	my $self = shift;
 	my $text = shift;
 	$self->_create_node('/rss/channel',undef,'title', $text);
+	# RSS2 demands a /channel/description element; just dupe title until we give
+	# users the ability to provide a description for their bookbags
+	$self->_create_node('/rss/channel',undef,'description', $text);
 }
 
 sub update_ts {
 	my $self = shift;
-	my $text = shift;
+	# RSS2 demands RFC-822 compliant datetime formats
+	my $text = shift || DateTime::Format::Mail->format_datetime(DateTime->now());
 	$self->_create_node($self->{item_xpath},undef,'lastBuildDate', $text);
 }
 
@@ -337,17 +346,27 @@ sub link {
 	my $id = shift;
 	my $mime = shift || "application/x-$type+xml";
 
-	$type = 'self' if ($type eq 'rss2');
-
-	$self->_create_node(
-		$self->{item_xpath},
-		undef,
-		'link',
-		$id,
-		{ rel => $type,
-		  type => $mime,
-		}
-	);
+	if ($type eq 'rss2' or $type eq 'alternate') {
+		# Just link to ourself using standard RSS2 link element
+		$self->_create_node(
+			$self->{item_xpath},
+			undef,
+			'link',
+			$id,
+			undef
+		);
+	} else {
+		# Alternate link: use XHTML link element
+		$self->_create_node(
+			$self->{item_xpath},
+			'http://www.w3.org/1999/xhtml',
+			'xhtml:link',
+			$id,
+			{ rel => $type,
+			  type => $mime,
+			}
+		);
+	}
 }
 
 sub id {
@@ -372,11 +391,33 @@ sub new {
 
 sub update_ts {
 	my $self = shift;
+	# RSS2 demands RFC-822 compliant datetime formats
 	my $text = shift;
+	if (!$text) {
+		# No date passed in, default to now
+		$text = DateTime::Format::Mail->format_datetime(DateTime->now());
+	} elsif ($text =~ m/^\s*(\d{4})\.?\s*$/o) {
+		# Publication date is just a year, convert accordingly
+		my $year = DateTime->new(year=>$1);
+		$text = DateTime::Format::Mail->format_datetime($year);
+	}
 	$self->_create_node($self->{item_xpath},undef,'pubDate', $text);
 }
 
+sub id {
+	my $self = shift;
+	my $id = shift;
 
+	$self->_create_node(
+		$self->{item_xpath},
+		undef,
+		'guid',
+		$id,
+		{
+			isPermaLink=>"false"
+		}
+	);
+}
 
 #----------------------------------------------------------
 

@@ -24,6 +24,7 @@
 				</id>
 			</xsl:for-each>
 
+			<!-- Spec wants RFC 3339 format - fix it outside of XSL? -->
 			<xsl:for-each select="marc:controlfield[@tag=005]">
 				<updated>
 					<xsl:value-of select="."/>
@@ -77,17 +78,23 @@
 				</rights>
 			</xsl:for-each>
 
+			<!-- Spec wants RFC 3339 format - fix it outside of XSL? -->
 			<xsl:for-each select="marc:datafield[@tag=260]/marc:subfield[@code='c']">
 				<published>
 					<xsl:value-of select="."/>
 				</published>				
 			</xsl:for-each>
 
-			<xsl:for-each select="marc:datafield[500&lt;@tag][@tag&lt;=599][not(@tag=506 or @tag=530 or @tag=540 or @tag=546)]">
-				<summary>
-					<xsl:value-of select="marc:subfield[@code='a']"/>
-				</summary>
-			</xsl:for-each>
+			<!--
+			Spec wants zero or one summary elements per item; best option
+			would be to test for one of these elements and only create
+			if one exists, but for now we simply merge all candidates
+			-->
+			<summary>
+				<xsl:for-each select="marc:datafield[500&lt;@tag][@tag&lt;=599][not(@tag=506 or @tag=530 or @tag=540 or @tag=546)]">
+						<xsl:value-of select="marc:subfield[@code='a']"/>
+				</xsl:for-each>
+			</summary>
 
 			<xsl:for-each select="marc:datafield[@tag=600 or @tag=610 or @tag=611 or @tag=630 or @tag=650 or @tag=653]">
 				<category>
