@@ -520,7 +520,7 @@ cat.z3950.prototype = {
 												if (typeof r3.ilsevent != 'undefined') {
 													throw(r3);
 												} else {
-													alert('Record successfully overlayed.');
+													alert('Record successfully overlaid.');
 													obj.replace_tab_with_opac(r3.id());
 												}
 											break;
@@ -647,7 +647,7 @@ cat.z3950.prototype = {
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
 												} else {
-													alert('Record successfully overlayed with alternate TCN.');
+													alert('Record successfully overlaid with alternate TCN.');
 													obj.replace_tab_with_opac(r2.id());
 												}
 											break;
@@ -662,11 +662,11 @@ cat.z3950.prototype = {
 									break;
 								}
 							} else {
-								alert('Record successfully overlayed.');
+								alert('Record successfully overlaid.');
 								obj.replace_tab_with_opac(r.id());
 							}
 						} catch(E) {
-							obj.error.standard_unexpected_error_alert('Record not likely overlayed.',E);
+							obj.error.standard_unexpected_error_alert('Record not likely overlaid.',E);
 						}
 					}
 				}
