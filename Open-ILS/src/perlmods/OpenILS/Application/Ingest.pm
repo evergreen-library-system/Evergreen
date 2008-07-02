@@ -695,6 +695,9 @@ sub xpath_to_string {
 			$string .= $value->textContent . " ";
 		}
 	}
+
+    $string =~ s/(\d{4})-(\d{4})/$1 $2/sgo;
+
 	return NFD($string);
 }
 
@@ -900,6 +903,7 @@ sub _marcxml_to_full_rows {
 			$val =~ s/\pM+//sgo;
 			$val =~ s/\pC+//sgo;
 			$val =~ s/\W+$//sgo;
+			$val =~ s/(\d{4})-(\d{4})/$1 $2/sgo;
 			$ns->value( lc($val) );
 
 			push @ns_list, $ns;

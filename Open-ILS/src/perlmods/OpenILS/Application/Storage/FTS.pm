@@ -40,6 +40,7 @@ sub decompose {
 	$term =~ s/(^|\s+)-(\w+)/$1!$2/go;
 	$term =~ s/\b(\+)(\w+)/$2/go;
 	$term =~ s/^\s*\b(.+)\b\s*$/$1/o;
+	$term =~ s/(\d{4})-(\d{4})/$1 $2/go;
 	#$term =~ s/^(?:an?|the)\b(.*)/$1/o;
 
 	$log->debug("Stripped search term string is [$term]",DEBUG);
