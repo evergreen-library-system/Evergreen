@@ -535,8 +535,11 @@ sub generate_fines {
 	
 			my $due = $due_dt->epoch;
 			my $now = time;
-			my $fine_interval = interval_to_seconds( $c->fine_interval );
-	
+
+            my $fine_interval = $c->fine_interval;
+            $fine_interval =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
+            $fine_interval = interval_to_seconds( $fine_interval );
+
 			if ( interval_to_seconds( $c->fine_interval ) >= interval_to_seconds('1d') ) {	
 				my $tz_offset_s = 0;
 				if ($due_dt->strftime('%z') =~ /(-|\+)(\d{2}):?(\d{2})/) {
