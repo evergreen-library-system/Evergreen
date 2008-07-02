@@ -48,7 +48,7 @@
 	<spacer flex="1"/>
 	<button id="save_button2" command="save_columns2" label="Save Columns" />
 	<button id="clip_button2" command="sel_clip2" label="Copy to Clipboard" disabled="true" />
-	<button id="record_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
+	<button id="record_buckets_delete_item" label="Remove Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
 	<button id="record_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
