@@ -229,8 +229,10 @@
 					var mm = Number($('mm').value); if (mm == NaN) mm = 2; /* middle margin */
 					var lw = Number($('lw').value) || 8; var ll = Number($('ll').value) || 9; /* spine label width and length */
 					var plw = Number($('plw').value) || 28; var pll = Number($('pll').value) || 9; /* pocket label width and length */
-					var html = "<html><head><link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt;
-					html += "pt; page-break-after: always;}'></link><title>Spine Labels</title></head><body>\n";
+					var html = "<html><head>";
+                    html += "<link type='text/css' rel='stylesheet' href='/xul/server/skin/print.css'></link>"
+                    html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt + "pt;}'></link>";
+                    html += "<title>Spine Labels</title></head><body>\n";
 					var nl = document.getElementsByAttribute('name','template');
 					for (var i = 0; i < nl.length; i++) {
 						if (typeof idx == 'undefined' || idx == null) { } else {
@@ -240,7 +242,11 @@
 
 						for (var j = 0; j < volume.copies().length; j++) {
 							var copy = volume.copies()[j];
-							html += '<pre>\n';
+                            if (i == 0) {
+    							html += '<pre class="first_pre">\n';
+                            } else {
+    							html += '<pre class="not_first_pre">\n';
+                            }
 							var gb = nl[i].getElementsByTagName('groupbox')[0];
 							var nl2 = gb.getElementsByAttribute('name','spine');
 							for (var k = 0; k < nl2.length; k++) {
