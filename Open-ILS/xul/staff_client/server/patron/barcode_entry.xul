@@ -61,9 +61,9 @@
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
                     if (xul_param('perm_editor')) {
-					    try { window.xulG.set_tab_name($(patronStrings).getString('staff.patron.barcode_entry.user_permission_editor')); } catch(E) { alert(E); }
+					    try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.barcode_entry.user_permission_editor')); } catch(E) { alert(E); }
                     } else {
-    					try { window.xulG.set_tab_name($(patronStrings).getString('staff.patron.barcode_entry.check_out')); } catch(E) { alert(E); }
+    					try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.barcode_entry.check_out')); } catch(E) { alert(E); }
                     }
 				}
 
@@ -90,7 +90,7 @@
 
 				barcode = String( barcode ).replace( /\s+/g, '' );
 
-				if (!barcode) { sound.bad(); add_msg($(patronStrings).getString('staff.patron.barcode_entry.no_barcode')); tb.select(); tb.focus(); return; }
+				if (!barcode) { sound.bad(); add_msg($("patronStrings").getString('staff.patron.barcode_entry.no_barcode')); tb.select(); tb.focus(); return; }
 
 				JSAN.use('util.network'); var net = new util.network();
 
@@ -103,11 +103,11 @@
 						var robj = req.getResultObject();
 						if (typeof robj.ilsevent != 'undefined') {
 							sound.bad();
-							add_msg($(patronStrings).getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
+							add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
 							return;
 						} else if (robj == 0) {
 							sound.bad(); 
-							add_msg($(patronStrings).getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
+							add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
 							return;
 						}
 
@@ -123,12 +123,12 @@
 									var parts = patron.util.retrieve_name_via_id( ses(), robj );
     
 									if (0 != g.error.yns_alert(
-											$(patronStrings).getFormattedString('staff.patron.barcode_entry.consent_from_patron',
+											$("patronStrings").getFormattedString('staff.patron.barcode_entry.consent_from_patron',
 												[parts[0], parts[1] + (parts[2] ? ' ' + parts[2] : ''), g.data.hash.aou[ parts[3] ].name(), g.data.hash.aou[ parts[3] ].shortname()]),
-											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_title'),
-											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_accept'),
-											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_deny'), null,
-											$(patronStrings).getString('staff.patron.barcode_entry.patron_consent_confirm')
+											$("patronStrings").getString('staff.patron.barcode_entry.patron_consent_title'),
+											$("patronStrings").getString('staff.patron.barcode_entry.patron_consent_accept'),
+											$("patronStrings").getString('staff.patron.barcode_entry.patron_consent_deny'), null,
+											$("patronStrings").getString('staff.patron.barcode_entry.patron_consent_confirm')
 										)
 									) {
 										tb.select(); tb.focus();
@@ -175,7 +175,7 @@
 					location.href = loc + '?barcode=' + window.escape(barcode);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert($(patronStrings).getString('staff.patron.barcode_entry.patron_display_error'),E);
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.barcode_entry.patron_display_error'),E);
 			}
 		}
 
@@ -189,7 +189,7 @@
 					location.href = loc;
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert($(patronStrings).getString('staff.patron.barcode_entry.user_perm_display_error'),E);
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.barcode_entry.user_perm_display_error'),E);
 			}
 		}
 
