@@ -2005,6 +2005,7 @@
 <!ENTITY staff.cat.spine_labels.inc_item_barcode.label "Include Item Barcode">
 <!ENTITY staff.cat.spine_labels.custom.label "Custom:">
 <!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
+<!ENTITY staff.cat.volume_copy_creator.title "Volume/Copy Editor">
 <!ENTITY staff.cat.volume_copy_creator.label "Volume/Copy Creator">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
