@@ -408,7 +408,7 @@ sub unapi {
 
 		$feed->root($root);
 		$feed->creator($host);
-		$feed->update_ts(gmtime_ISO8601());
+		$feed->update_ts();
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
@@ -610,7 +610,9 @@ sub supercat {
 
 		$feed->root($root);
 		$feed->creator($host);
-		$feed->update_ts(gmtime_ISO8601());
+
+		$feed->update_ts();
+
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
@@ -679,7 +681,6 @@ sub bookbag_feed {
 	return Apache2::Const::NOT_FOUND unless($bucket);
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
-	$feed->id($bucket_tag);
 	if ($type eq 'opac') {
 		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
@@ -696,10 +697,11 @@ sub bookbag_feed {
 		$flesh_feed
 	);
 	$feed->root($root);
+	$feed->id($bucket_tag);
 
 	$feed->title("Items in Book Bag [".$bucket->name."]");
 	$feed->creator($host);
-	$feed->update_ts(gmtime_ISO8601());
+	$feed->update_ts();
 
 	$feed->link(alternate => $base . "/rss2-full/$id" => 'application/rss+xml');
 	$feed->link(atom => $base . "/atom-full/$id" => 'application/atom+xml');
@@ -708,7 +710,7 @@ sub bookbag_feed {
 
 	$feed->link(
 		OPAC =>
-		'/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+		$host . '/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
 		'text/html'
 	);
@@ -768,7 +770,7 @@ sub changes_feed {
 	}
 
 	$feed->creator($host);
-	$feed->update_ts(gmtime_ISO8601());
+	$feed->update_ts();
 
 	$feed->link(alternate => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
 	$feed->link(atom => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
@@ -777,7 +779,7 @@ sub changes_feed {
 
 	$feed->link(
 		OPAC =>
-		'/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+		$host . '/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
 			join('&', map { 'rl=' . $_} @$list ),
 		'text/html'
 	);
@@ -993,14 +995,14 @@ sub opensearch_feed {
 
     my $recs = $search->request(
         'open-ils.search.biblio.multiclass.query' => {
-				org_unit	=> $org_unit->[0]->id,
+			org_unit	=> $org_unit->[0]->id,
 			offset		=> $offset,
 			limit		=> $limit,
 			sort		=> $sort,
 			sort_dir	=> $sortdir,
-				($lang ?    ( 'language' => $lang    ) : ()),
+			($lang ?    ( 'language' => $lang    ) : ()),
 		} => $terms => 1
-		)->gather(1);
+	)->gather(1);
 
 	$log->debug("Hits for [$terms]: $recs->{count}");
 
@@ -1020,10 +1022,10 @@ sub opensearch_feed {
 	$feed->search($terms);
 	$feed->class($class);
 
-		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
+	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
 
 	$feed->creator($host);
-	$feed->update_ts(gmtime_ISO8601());
+	$feed->update_ts();
 
 	$feed->_create_node(
 		$feed->{item_xpath},

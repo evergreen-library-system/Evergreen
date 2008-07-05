@@ -78,6 +78,7 @@
 				</dc:publisher>
 			</xsl:for-each>
 
+			<!-- this is supposed to be RFC-822 compliant -->
 			<xsl:for-each select="marc:datafield[@tag=260]/marc:subfield[@code='c']">
 				<pubDate>
 					<xsl:value-of select="."/>
@@ -94,11 +95,12 @@
 				</dc:format>
 			</xsl:for-each>
 
-			<xsl:for-each select="marc:datafield[500&lt;@tag][@tag&lt;=599][not(@tag=506 or @tag=530 or @tag=540 or @tag=546)]">
-				<description>
-					<xsl:value-of select="marc:subfield[@code='a']"/>
-				</description>
-			</xsl:for-each>
+			<!-- specification only allows one description element per item -->
+			<description>
+				<xsl:for-each select="marc:datafield[500&lt;@tag][@tag&lt;=599][not(@tag=506 or @tag=530 or @tag=540 or @tag=546)]">
+						<xsl:value-of select="marc:subfield[@code='a']"/>
+				</xsl:for-each>
+			</description>
 
 			<xsl:for-each select="marc:datafield[@tag=600]">
 				<dc:subject>
