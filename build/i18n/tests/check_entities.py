@@ -62,6 +62,8 @@ def parse_entities():
     prefix = os.path.commonprefix(dtd_files)
 
     for d_file in dtd_files:
+		if DEBUG:
+			print "Checking %s\n" % (d_file)
 
         # Get the shortest unique address for this file
         short_df = d_file[len(prefix):]
@@ -79,7 +81,7 @@ def parse_entities():
             # Parse entity/value 
             unpack = re.search(r'<!ENTITY\s+(.+?)\s+([\'"])(.*?)\2\s*>', line)
             if DEBUG and unpack:
-                print unpack.groups()
+                print(unpack.groups())
 
             # Skip anything other than entity definitions
             # Note that this makes some massive assumptions:
@@ -96,7 +98,7 @@ def parse_entities():
 
             entity_key, quote, value = unpack.groups()
             if DEBUG:
-                print entity_key, value
+                print(entity_key, value)
 
             if not entities.has_key(entity_key):
                 entities[entity_key] = [{'value': value, 'file': short_df}]
@@ -139,23 +141,35 @@ def check_xul(root, filename, entities):
 
     # Typical entity usage:
     # &blah.blah.blah_bity.blah;
-    strings = re.compile(r'''&([a-zA-Z._]+);''')
+    strings = re.compile(r'''&([a-zA-Z:_][a-zA-Z0-9:_\-.]+);''')
 
     xul = open(os.path.join(root, filename), 'r')
     content = xul.read()
     xul.close()
 
     if DEBUG:
-        print "File: %s" % (os.path.normpath(os.path.join(root, filename)))
+        print("File: %s" % (os.path.normpath(os.path.join(root, filename))))
 
     for s_match in strings.finditer(content):
         num_strings += 1
         if not entities.has_key(s_match.group(1)):
-            print "File: %s" % (os.path.normpath(os.path.join(root, filename)))
-            print "\tEntity %s not found, expected in %s" % (s_match.group(1), 'lang.dtd')
+            print("File: %s" % (os.path.normpath(os.path.join(root, filename))))
+            print("\tEntity %s not found, expected in %s" % (s_match.group(1), 'lang.dtd'))
+
+	# Find bad entities
+	bad_strings = re.compile(r'''&([^a-zA-Z:_]?[a-zA-Z0-9:_]*[^a-zA-Z0-9:_\-.;][a-zA-Z0-9:_\-.]*);''')
+
+	# Match character entities (&#0129; etc), which are okay
+	char_entity = re.compile(r'''^((#([0-9])+)|(#x([0-9a-fA-F])+))$''')
+
+	for s_match in bad_strings.finditer(content):
+		# Rule out character entities and URL concatenation
+		if (not char_entity.search(s_match.group(1))) and s_match.group(1) != "'":
+			print("File: %s" % (os.path.normpath(os.path.join(root, filename))))
+			print("\tBad entity: %s" % (s_match.group(1)))
 
     if DEBUG:
-        print "\t%d entities found" % (num_strings)
+        print("\t%d entities found" % (num_strings))
 
 if __name__ == '__main__':
     entities = parse_entities() 

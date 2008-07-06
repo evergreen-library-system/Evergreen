@@ -2026,6 +2026,7 @@
 <!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
 <!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
 <!ENTITY staff.cat.z3950.save_creds.accesskey "D">
+<!ENTITY staff.cat.z3950.query.description "Description">
 <!ENTITY staff.cat.z3950.query.label "Query">
 <!ENTITY staff.cat.z3950.query.label "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
 <!ENTITY staff.cat.z3950.clear.label "Clear Form">
