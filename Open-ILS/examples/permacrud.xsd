@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 -->
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
- xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
+ xmlns:permacrud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
  targetNamespace="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
- elementFormDefault="unqualified"
+ elementFormDefault="qualified"
  attributeFormDefault="unqualified"
 >
 
@@ -34,66 +34,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="context" nillable="true">
  <xs:complexType>
   <xs:attribute name="link"/>
-  <xs:attribute name="field"/>
-  <xs:attribute name="global_requried"/>
+  <xs:attribute name="field" use="required"/>
+  <xs:attribute name="global_required"/>
  </xs:complexType>
 </xs:element>
 
 <xs:element name="create" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="global_required"/>
  </xs:complexType>
- <xs:attribute name="all_perms"/>
- <xs:attribute name="global_requried"/>
 </xs:element>
 
 <xs:element name="retrieve" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="2"/>
   </xs:sequence>
   <xs:attribute name="permission"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="global_required"/>
  </xs:complexType>
- <xs:attribute name="all_perms"/>
- <xs:attribute name="global_requried"/>
 </xs:element>
 
 <xs:element name="update" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="global_required"/>
  </xs:complexType>
- <xs:attribute name="all_perms"/>
- <xs:attribute name="global_requried"/>
 </xs:element>
 
 <xs:element name="delete" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="global_required"/>
  </xs:complexType>
- <xs:attribute name="all_perms"/>
- <xs:attribute name="global_requried"/>
 </xs:element>
 
 <xs:element name="actions">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="create" minOccurs="0" maxOccurs="1"/>
-   <xs:element ref="retrieve" minOccurs="0" maxOccurs="1"/>
-   <xs:element ref="update" minOccurs="0" maxOccurs="1"/>
-   <xs:element ref="delete" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:create" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:retrieve" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:update" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:delete" minOccurs="0" maxOccurs="1"/>
   </xs:sequence>
  </xs:complexType>
 </xs:element>
@@ -101,7 +97,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="permacrud">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="actions" minOccurs="1" maxOccurs="1"/>
+   <xs:element ref="permacrud:actions" minOccurs="1" maxOccurs="1"/>
   </xs:sequence>
  </xs:complexType>
 </xs:element>
