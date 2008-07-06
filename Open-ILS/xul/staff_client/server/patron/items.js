@@ -1,5 +1,7 @@
 dump('entering patron.items.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.items = function (params) {
 
@@ -104,7 +106,7 @@ patron.items.prototype = {
 					'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
 					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1);  /*obj.retrieve();*/ } ],
 					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2);  /*obj.retrieve();*/ } ],
-					'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ],
+					'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ]
 				}
 			}
 		);
@@ -172,7 +174,7 @@ patron.items.prototype = {
 						obj.data.stash('hash','list');
 						t = obj.data.hash.cnct[ nc_circ.item_type() ];
 					}
-					var cd = t.circ_duration() || "14 days";
+					var cd = t.circ_duration() || $("patronStrings").getString('staff.patron.items.show_noncats.14_days');
 					var i = util.date.interval_to_seconds( cd ) * 1000;
 					d.setTime( Date.parse(d) + i );
 					fake_circ.due_date( util.date.formatted_date(d,'%F') );
@@ -187,12 +189,12 @@ patron.items.prototype = {
 					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, 'to_bottom' : true, 'no_auto_select' : true } );
 
 				} catch(F) {
-					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii].id(),F);
+					obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.show_noncats.err_showing_noncat', [robj[ii].id()]),F);
 				}
 			}
 
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error showing NonCat circulations',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.show_noncats.err_showing_circulations'),E);
 		}
 	},
 
@@ -225,10 +227,10 @@ patron.items.prototype = {
 		try {
 			var obj = this; var list = obj.list;
 			if (list.on_all_fleshed != null) {
-				var r = window.confirm('This is list is busy retrieving/rendering rows for a prior action.  Abort the prior action and proceed?');
+				var r = window.confirm($("patronStrings").getString('staff.patron.items.items_renew_all.list_is_busy'));
 				if (!r) return;
 			}
-			var r = window.confirm('Renew all the items in this list?');
+			var r = window.confirm($("patronStrings").getString('staff.patron.items.items_renew_all.renew_items_in_list'));
 			if (!r) return;
 			function flesh_callback() {
 				try {
@@ -236,13 +238,13 @@ patron.items.prototype = {
 					obj.items_renew(1,true);	
 					setTimeout(function(){list.on_all_fleshed = null; /* obj.retrieve();*/ },0);
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
+					obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew_all.items_not_renewed', ['2']),E);
 				}
 			}
 			list.on_all_fleshed = flesh_callback;
 			list.full_retrieve();
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('All items were not likely renewed',E);
+			this.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew_all.items_not_renewed', ['1']),E);
 		}
 	},
 
@@ -254,7 +256,12 @@ patron.items.prototype = {
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
 			if (!skip_prompt) {
-				var msg = 'Are you sure you would like to renew item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
+				var msg = '';
+				if(retrieve_ids.length > 1) {
+					msg += $("patronStrings").getFormattedString('staff.patron.items.items_renew.renew_item_plural',[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+				} else {
+					msg += $("patronStrings").getFormattedString('staff.patron.items.items_renew.renew_item_singular', [util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+				}
 				var r = window.confirm(msg);
 				if (!r) { return; }
 			}
@@ -265,21 +272,21 @@ patron.items.prototype = {
 				var x = document.getElementById('renew_msgs');
 				if (x) {
 					var l = document.createElement('label');
-					l.setAttribute('value','Renewing ' + bc);
+					l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewing',[bc]));
 					x.appendChild(l);
 				}
 				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
 					function(r) {
                         try {
                             if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
-                                l.setAttribute('value', bc + ' renewed.');
+                                l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewed',[bc]));
                                 obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
                                 obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
                                 obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
                                 // A renewed circ is a new circ, and has a new circ_id.
                                 obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
                             } else {
-                                var msg = bc + ' not renewed.\n' + r[0].textcode + r[0].desc;
+                                var msg = $("patronStrings").getFormattedString('staff.patron.items.items_renew.not_renewed',[bc, r[0].textcode + r[0].desc]);
                                 l.setAttribute('value', msg);
                                 alert(msg);
                             }
@@ -290,7 +297,7 @@ patron.items.prototype = {
                             }
                             obj.refresh(circ_id);
                         } catch(E) {
-   					       obj.error.standard_unexpected_error_alert('Error in renew_via_barcode callback\nRenew probably did not happen for barcode ' + barcode,E);
+   					       obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.err_in_renew_via_barcode',[barcode]), E);
                         }
 					} 
 				);
@@ -303,11 +310,11 @@ patron.items.prototype = {
 					var circ_id = retrieve_ids[i].circ_id;
 					gen_renew(barcode,circ_id);
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('Renew probably did not happen for barcode ' + barcode,E);
+					obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.no_renew_for_barcode',[barcode]), E);
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_renew.no_renew'),E);
 		}
 	},
 
@@ -320,10 +327,10 @@ patron.items.prototype = {
 					JSAN.use('util.date');
 					try {
 						if (! util.date.check('YYYY-MM-DD',value) ) { 
-							throw('Invalid Date'); 
+							throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
 						}
 						if (util.date.check_past('YYYY-MM-DD',value) ) { 
-							throw('Due date needs to be after today.'); 
+							throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
 						}
 						/*
 						if ( util.date.formatted_date(new Date(),'%F') == value) { 
@@ -338,10 +345,14 @@ patron.items.prototype = {
 				}
 
 				JSAN.use('util.functional');
-				var title = 'Edit Due Date' + (retrieve_ids.length > 1 ? 's' : '');
+				var title = '';
+				if (retrieve_ids.length > 1) {
+					title += $("patronStrings").getString('staff.patron.items.items_edit.edit_due_date.plural');
+				} else {
+					title += $("patronStrings").getString('staff.patron.items.items_edit.edit_due_date.singular');
+				}
 				var value = 'YYYY-MM-DD';
-				var text = 'Enter a new due date for these items: ' + 
-					util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
+				var text = $("patronStrings").getFormattedString('staff.patron.items.items_edit.new_due_date', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
 				var due_date; var invalid = true;
 				while(invalid) {
 					due_date = window.prompt(text,value,title);
@@ -362,7 +373,7 @@ patron.items.prototype = {
 					obj.refresh(retrieve_ids[i].circ_id);
 				}
 			} catch(E) {
-				obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
+				obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_edit.dates_not_modified'),E);
 			}
 	},
 
@@ -373,12 +384,12 @@ patron.items.prototype = {
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var barcode = retrieve_ids[i].barcode;
-				dump('Mark barcode lost = ' + barcode);
+				dump($("patronStrings").getFormattedString('staff.patron.items.items_edit.mark_barcode_lost', [barcode]));
 				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
 				if (typeof robj.ilsevent != 'undefined') { 
                     switch(Number(robj.ilsevent)) {
                         case 7018 /* COPY_MARKED_LOST */ :
-                            alert( 'Item Barcode ' + barcode + '\n' + robj.desc );
+                            alert( $("patronStrings").getFormattedString('staff.patron.items.items_edit.item_barcode', [barcode, robj.desc]) );
                         break;
                         default: throw(robj);
                     }
@@ -387,7 +398,7 @@ patron.items.prototype = {
                 }
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_edit.items_not_marked_lost'),E);
 		}
 	},
 
@@ -400,13 +411,13 @@ patron.items.prototype = {
 			function check_date(value) {
 				try {
 					if (! util.date.check('YYYY-MM-DD',value) ) { 
-						throw('Invalid Date'); 
+						throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
 					}
 					if ( util.date.formatted_date(new Date(),'%F') == value) { 
 						return true;
 					}
 					if (! util.date.check_past('YYYY-MM-DD',value) ) { 
-						throw('Claims Returned Date cannot be in the future.'); 
+						throw($("patronStrings").getString('staff.patron.items.items_claimed_returned.date_cannot_be_in_future')); 
 					}
 					return true;
 				} catch(E) {
@@ -416,10 +427,10 @@ patron.items.prototype = {
 			}
 
 			JSAN.use('util.functional');
-			var title = 'Claimed Returned';
+			var title = $("patronStrings").getString('staff.patron.items.items_claimed_returned.claimed_returned');
 			var value = 'YYYY-MM-DD';
-			var text = 'Enter a claimed returned date for these items: ' + 
-				util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
+			var text = $("patronStrings").getFormattedString('staff.patron.items.items_claimed_returned.enter_returned_date',
+				[util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
 			var backdate; var invalid = true;
 			while(invalid) {
 				backdate = window.prompt(text,value,title);
@@ -443,7 +454,7 @@ patron.items.prototype = {
 			}
 			for (var i = 0; i < retrieve_ids.length; i++) obj.refresh(retrieve_ids[i].circ_id,true);
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),E);
 		}
 	},
 
@@ -453,7 +464,14 @@ patron.items.prototype = {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
-			var msg = 'Are you sure you would like to check in item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
+			var msg = '';
+			if (retrieve_ids.length > 1) {
+				msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.plural',
+					[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+			} else {
+				msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.singular'
+					[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+			}
 			var r = window.confirm(msg);
 			if (!r) { return; }
 			JSAN.use('circ.util');
@@ -467,7 +485,7 @@ patron.items.prototype = {
 			}
 			obj.retrieve();
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_checkin.no_checkin'),E);
 		}
 	},
 
@@ -479,18 +497,18 @@ patron.items.prototype = {
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var doc_id = retrieve_ids[i].doc_id;
 				if (!doc_id) {
-					alert(retrieve_ids[i].barcode + ' is not cataloged');
+					alert($("patronStrings").getFormattedString('staff.patron.items.show_catalog.barcode_not_cataloged', [retrieve_ids[i].barcode]));
 					continue;
 				}
 				var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
 				var content_params = { 
 					'session' : ses(),
 					'authtime' : ses('authtime'),
-					'opac_url' : opac_url,
+					'opac_url' : opac_url
 				};
 				xulG.new_tab(
 					xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-					{'tab_name':'Retrieving title...'}, 
+					{'tab_name': $("patronStrings").getString('staff.patron.items.show_catalog.retrieving_title')}, 
 					content_params
 				);
 			}
@@ -533,7 +551,7 @@ patron.items.prototype = {
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
 				'renewal_remaining' : { 'hidden' : false },
-				'stop_fines' : { 'hidden' : false },
+				'stop_fines' : { 'hidden' : false }
 			} 
 		);
 		var columns2 = circ.util.columns( 
@@ -543,7 +561,7 @@ patron.items.prototype = {
 				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'checkin_time' : { 'hidden' : false },
-				'stop_fines' : { 'hidden' : false },
+				'stop_fines' : { 'hidden' : false }
 			} 
 		);
 
@@ -590,7 +608,7 @@ patron.items.prototype = {
     								params.on_retrieve(row);
     							}
     						} catch(E) {
-    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js',E);
+    							obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve_row.callback_error'), E);
     						}
     					}
     				);
@@ -614,7 +632,7 @@ patron.items.prototype = {
     
     			return row;
             } catch(E) {
-                obj.error.standard_unexpected_error_alert('error in patron/items.js retrieve_row(): ',E);
+                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve_row.error_in_retrieve_row'),E);
                 return params.row;
             }
 		}
@@ -642,7 +660,7 @@ patron.items.prototype = {
 					} else {
 						obj.error.sdump('D_PATRON','patron.items: No external .on_select()\n');
 					}
-				},
+				}
 			}
 		);
 		
@@ -663,7 +681,7 @@ patron.items.prototype = {
 					if (typeof obj.on_select2 == 'function') {
 						obj.on_select2(list);
 					}
-				},
+				}
 			}
 		);
 	},
@@ -679,16 +697,19 @@ patron.items.prototype = {
             } else {
     			var which_list = nparams.which_list;
                 switch(which_list) {
-                    case 1: case '1':
-                        setTimeout(function(){try{obj.list2.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+                    case 1:
+					case '1':
+                        setTimeout(function(){try{obj.list2.refresh_row(nparams);}catch(E){
+													obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.refresh.error_refreshing_row2', [circ_id, nparams]),E);}},1000);
                         break;
                     default:
-                        setTimeout(function(){try{obj.list.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+                        setTimeout(function(){try{obj.list.refresh_row(nparams);}catch(E){
+													obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.refresh.error_refreshing_row2', [circ_id, nparams]),E);}},1000);
                         break;
                 }
             }
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);
+			obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.refresh.error_refreshing_row', [circ_id, nparams]),E);
 		}
 	},
 
@@ -704,7 +725,7 @@ patron.items.prototype = {
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {
-				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
+				obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve.err_retrieving_circulations'),E);
 			} else {
 				obj.checkouts = obj.checkouts.concat( robj.overdue );
 				obj.checkouts = obj.checkouts.concat( robj.out );
@@ -717,7 +738,7 @@ patron.items.prototype = {
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {
-				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
+				obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.retrieve.err_retrieving_circulations'),E);
 			} else {
 				obj.checkouts2 = obj.checkouts2.concat( robj.lost );
 				obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
@@ -743,7 +764,7 @@ patron.items.prototype = {
 						throw('typeof nparams = ' + typeof nparams);
 					}
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('patron/items.js: error in gen_list_append',E);
+					obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.gen_list_append.error'),E);
 				}
 			};
 		}
@@ -806,7 +827,7 @@ patron.items.prototype = {
 		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','false');
 
 		this.retrieve_ids2 = list;
-	},
+	}
 
 }
 

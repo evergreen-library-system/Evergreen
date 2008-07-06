@@ -224,8 +224,8 @@ patron.display.prototype = {
 									'passthru_content_params' : {
 										'params' : {
 											'ses' : ses(),
-											'usr' : obj.patron.id(),
-										}
+											'usr' : obj.patron.id()
+										},
 										'on_save' : function(p) {
 											try {
 												if (obj.barcode) obj.barcode = p.card().barcode();
@@ -339,7 +339,7 @@ patron.display.prototype = {
 
 		if (obj.barcode || obj.id) {
 			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-				try { window.xulG.set_tab_name('Retrieving Patron...'); } catch(E) { alert(E); }
+				try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.display.init.retrieving_patron')); } catch(E) { alert(E); }
 			}
 
 			obj.controller.view.PatronNavBar.selectedIndex = 1;
@@ -436,7 +436,9 @@ patron.display.prototype = {
 										}
 									}
 									var holds = req.getResultObject();
-									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
+									if (holds.ready && holds.ready > 0) {
+										msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
+									}
 									if (msg) {
 										if (msg != obj.old_msg) {
 											//obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
@@ -500,7 +502,7 @@ patron.display.prototype = {
 	'render_search_form' : function(params) {
 		var obj = this;
 			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-				try { window.xulG.set_tab_name('Patron Search'); } catch(E) { alert(E); }
+				try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.display.render_search_form.patron_search')); } catch(E) { alert(E); }
 			}
 
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
@@ -509,7 +511,12 @@ patron.display.prototype = {
 
 			var loc = urls.XUL_PATRON_SEARCH_FORM; 
 			var my_xulG = {
-				'clear_left_deck' : function() { setTimeout( function() { obj.left_deck.clear_all_except(loc); obj.render_search_form(params); }, 0); },
+				'clear_left_deck' : function() {
+					setTimeout( function() {
+						obj.left_deck.clear_all_except(loc);
+						obj.render_search_form(params);
+					}, 0);
+				},
 				'on_submit' : function(query) {
 					obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 					var list_frame = obj.right_deck.reset_iframe(

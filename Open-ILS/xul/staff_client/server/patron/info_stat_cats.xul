@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -37,7 +37,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 
@@ -53,8 +53,7 @@
 				refresh();
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\npatron_info_stat_cats.xul\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info_stat_cats', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -71,7 +70,7 @@
 				if (g.patron.ilsevent) throw(g.patron);
 
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('Failed to retrieve patron stat cats.',E);
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_stat_cats.retrieve_fleshed_patron.failed'),E);
 				g.patron = null;
 			}
 
@@ -104,9 +103,15 @@
 			for (var i = 0; i < my_actsc.length; i++) {
 
 				/* template */
-				var actsc_node = $('actsc_template').cloneNode(true); sp.appendChild(actsc_node); actsc_node.hidden = false;
+				var actsc_node = $('actsc_template').cloneNode(true);
+				sp.appendChild(actsc_node);
+				actsc_node.hidden = false;
 				apply(actsc_node,'name',my_actsc[i].name());
-				apply(actsc_node,'opac',my_actsc[i].opac_visible() ? 'OPAC Visible' : 'Not OPAC Visible');
+				if (my_actsc[i].opac_visible()) {
+					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
+				} else {
+					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));
+				}
 				apply(actsc_node,'owner',g.data.hash.aou[my_actsc[i].owner()].shortname());
 
 				var nl = actsc_node.getElementsByAttribute('name','entry');
@@ -136,9 +141,16 @@
 				sc = sc[0];
 
 				/* template */
-				var actsc_node = $('actsc_template').cloneNode(true); sp.appendChild(actsc_node); actsc_node.hidden = false;
+				var actsc_node = $('actsc_template').cloneNode(true);
+				sp.appendChild(actsc_node);
+				actsc_node.hidden = false;
+
 				apply(actsc_node,'name',sc.name());
-				apply(actsc_node,'opac',sc.opac_visible() ? 'OPAC Visible' : 'Not OPAC Visible');
+				if (sc.opac_visible()) {
+					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
+				} else {
+					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));
+				}
 				apply(actsc_node,'owner',g.data.hash.aou[sc.owner()].shortname());
 
 				var nl = actsc_node.getElementsByAttribute('name','entry');
@@ -148,20 +160,26 @@
 				if (entry_placeholder) {
 
 					/* template */
-					var actsce_node = $('actsce_template').cloneNode(true); entry_placeholder.appendChild(actsce_node); actsce_node.hidden = false;
+					var actsce_node = $('actsce_template').cloneNode(true);
+					entry_placeholder.appendChild(actsce_node);
+					actsce_node.hidden = false;
+
 					var scem = scem_hash[ i ];
 					apply(actsce_node,'value',scem.stat_cat_entry());
 
 				}
 
 				} catch(E) {
-					g.error.standard_unexpected_error_alert('rendering/retrieving stat cat',E);
+					g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.rendering_exception'),E);
 				}
 			}
 		}
 		
 	]]>
 	</script>
+	
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<stack hidden="true" id="actsc_template" flex="1">
 		<groupbox flex="1" style="background-color: black;"/>

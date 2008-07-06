@@ -61,16 +61,16 @@
 	]]>
 	</script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox>
-		<caption label="Credit Card Info"/>
+		<caption label="&staff.patron.bill_cc_info.info.label;/>
 		<grid>
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
 			<rows>
 				<row>
-					<label value="CC Type"/>
+					<label value="&staff.patron.bill_cc_info.type.label;"/>
 					<menulist id="cc_type" oncommand="g.payment_blob.cc_type = this.value;">
 						<menupopup>
 							<menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>

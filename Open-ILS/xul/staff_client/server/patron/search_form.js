@@ -23,7 +23,7 @@ patron.search_form.prototype = {
 				control_map : {
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
 					'cmd_patron_search_submit' : [
 						['command'],

@@ -303,9 +303,15 @@
 				if (direction == null) throw($("patronStrings").getString('staff.patron.info_group.link_patron.null_not_allowed'));
 				var first_msg; var second_msg;
 				switch(direction) {
-					case true: first_msg = "-->"; break;
-					case false: first_msg = "<--"; break;
-					default: throw($("patronStrings").getString('staff.patron.info_group.link_patron.invalid_parameter')); break;
+					case true:
+						first_msg = "-->";
+						break;
+					case false:
+						first_msg = "<--";
+						break;
+					default:
+						throw($("patronStrings").getString('staff.patron.info_group.link_patron.invalid_parameter'));
+						break;
 				}
 				var barcode = window.prompt($("patronStrings").getString('staff.patron.info_group.link_patron.scan_patron_barcode'),'',first_msg);
 				if (!barcode) return;
@@ -320,8 +326,8 @@
 					if (typeof patron_a.ilsevent != 'undefined') throw(patron_a);
 					switch(direction) {
 						case true:
-								second_msg = $("patronStrings").getFormattedString('staff.patron.info_group.link_patron.move_patron_to_new_usergroup',[patron_a.card().barcode(), patron_b.card().barcode()]);
-								break;
+							second_msg = $("patronStrings").getFormattedString('staff.patron.info_group.link_patron.move_patron_to_new_usergroup',[patron_a.card().barcode(), patron_b.card().barcode()]);
+							break;
 						case false:
 							second_msg = $("patronStrings").getFormattedString('staff.patron.info_group.link_patron.move_patron_to_new_usergroup',[patron_b.card().barcode(), patron_a.card().barcode()]);
 							break;
@@ -329,10 +335,10 @@
 
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 					var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><description>' + second_msg + '</description>';
-					top_xml += '<hbox><spacer flex="1"/><button label="'+$("patronStrings").getFormattedString('staff.patron.info_group.link_patron.move.label')+'"';
-					top_xml += ' accesskey="'+$("patronStrings").getFormattedString('staff.patron.info_group.link_patron.move.accesskey')+'" name="fancy_submit"/>';
-					top_xml += '<button label="'+$("patronStrings").getFormattedString('staff.patron.info_group.link_patron.done.label')+'"';
-					top_xml += ' accesskey="'+$("patronStrings").getFormattedString('staff.patron.info_group.link_patron.done.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
+					top_xml += '<hbox><spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.label')+'"';
+					top_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.accesskey')+'" name="fancy_submit"/>';
+					top_xml += '<button label="'+$("patronStrings").getString('staff.patron.info_group.link_patron.done.label')+'"';
+					top_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_group.link_patron.done.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
 					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical"><hbox flex="1">';
 					/************/
 					xml += '<vbox flex="1">';
@@ -406,6 +412,7 @@
 	]]>
 	</script>
 	
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
 	<commandset id="info_group_cmds">
@@ -425,8 +432,6 @@
 			<menuitem command="retrieve_p" />
 		</popup>
 	</popupset>
-
-    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 
 	<vbox flex="1" class="my_overflow" id="group_panel">
 		<groupbox flex="1">

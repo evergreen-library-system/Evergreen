@@ -12,6 +12,7 @@ var groupsCache				= {};
 var netLevelsCache			= {};
 var guardianNote				= null;	
 
+function $(id) { return document.getElementById(id); }
 
 /* fetch the necessary data to start off */
 function uEditInit() {
@@ -25,7 +26,7 @@ function uEditInit() {
 	clone		= cgi.param('clone'); 
 	if (xulG) if (xulG.clone) clone = xulG.clone;
 	if (xulG) if (xulG.params) if (xulG.params.clone) clone = xulG.params.clone;
-	if(!session) throw "User session is not defined";
+	if(!session) throw $("patronStrings").getString('staff.patron.ue.uEditInit.session_no_defined');
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
@@ -486,8 +487,7 @@ function uEditSaveUser(cloneme) {
 			req.send(true);
 			var resp = req.result();
 			if( checkILSEvent(resp) ) {
-				alertILSEvent(resp, 
-					"Error creating patron guardian/parent note");
+				alertILSEvent(resp, $("patronStrings").getString('staff.patron.ue.uEditSaveuser.error_creating_note'));
 				return;
 			}
 		}
@@ -607,9 +607,11 @@ function uEditHandleDupResults(ids, search_hash, type, container) {
 
 function uEditShowSearch(link,type) {
 	if(!type) type = link.getAttribute('type');
-	if(window.xulG)
+	if(window.xulG) {
 		window.xulG.spawn_search(uEditDupHashes[type]);	
-	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));
+	} else {
+		alert($("patronStrings").getFormattedString('staff.patron.ue.uEditShowSearch.search', [js2JSON(uEditDupHashes[type])]));
+	}
 }
 
 function uEditMarkCardLost() {

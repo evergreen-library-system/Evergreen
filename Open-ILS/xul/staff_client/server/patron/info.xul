@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +39,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 
@@ -74,8 +74,7 @@
 				}catch(E){alert(E);}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\npatron_info.xul\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -100,10 +99,10 @@
 	<vbox flex="1" class="my_overflow2">
 		<tabbox flex="1" orient="horizontal">
 			<tabs orient="vertical" class="tabs-left">
-				<tab accesskey="N" label="Notes" />
-				<tab accesskey="S" label="Stat Cats"/>
-				<tab accesskey="y" label="Surveys"/>
-				<tab accesskey="G" label="Group"/>
+				<tab accesskey="&staff.patron.info.notes.accesskey;" label="&staff.patron.info.notes.label;"/>
+				<tab accesskey="&staff.patron.info.stat_cats.accesskey;" label="&staff.patron.info.stat_cats.label;"/>
+				<tab accesskey="&staff.patron.info.surveys.accesskey;" label="&staff.patron.info.surveys.label;"/>
+				<tab accesskey="&staff.patron.info.group.accesskey;" label="&staff.patron.info.group.label;"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>

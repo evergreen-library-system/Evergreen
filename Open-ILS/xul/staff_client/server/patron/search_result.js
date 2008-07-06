@@ -1,5 +1,7 @@
 dump('entering patron/search_result.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.search_result = function (params) {
 
@@ -31,12 +33,12 @@ patron.search_result.prototype = {
 				'family_name' : { 'hidden' : 'false' },
 				'first_given_name' : { 'hidden' : 'false' },
 				'second_given_name' : { 'hidden' : 'false' },
-				'dob' : { 'hidden' : 'false' },
+				'dob' : { 'hidden' : 'false' }
 			},
 			{
 				'except_these' : [
 					'barcode',
-				],
+				]
 			}
 		);
 		obj.list.init(
@@ -54,7 +56,7 @@ patron.search_result.prototype = {
 								if (typeof params.on_retrieve == 'function') {
 									params.on_retrieve(row);
 								} else {
-									alert('typeof params.on_retrieve == ' + typeof params.on_retrieve);
+									alert($("patronStrings").getFormattedString('staff.patron.search_result.init.typeof_params', [typeof params.on_retrieve]));
 								}
 							} catch(E) {
 								alert('error: ' + E);
@@ -88,7 +90,7 @@ patron.search_result.prototype = {
 				control_map : {
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
 					'cmd_search_print' : [
 						['command'],
@@ -99,7 +101,7 @@ patron.search_result.prototype = {
 								};
 								obj.list.print( p );
                             } catch(E) {
-								obj.error.standard_unexpected_error_alert('patron search print',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.search_result.init.search_print'),E);
                             }
 						}
 					],
@@ -109,7 +111,7 @@ patron.search_result.prototype = {
 							try {
 								obj.list.clipboard();
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('patron search clipboard',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.search_result.init.search_clipboard'),E);
 							}
 						}
 					],
@@ -119,7 +121,7 @@ patron.search_result.prototype = {
 							try {
 								obj.list.save_columns();
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('patron search saving columns',E);
+								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.search_result.init.search_saving_columns'),E);
 							}
 						}
 					],
@@ -190,15 +192,15 @@ patron.search_result.prototype = {
 				results = this.network.simple_request( 'FM_AU_IDS_RETRIEVE_VIA_HASH', params );
 				if ( (results == null) || (typeof results.ilsevent != 'undefined') ) throw(results);
 				if (results.length == 0) {
-					alert('No patrons found matching search criteria.');
+					alert($("patronStrings").getString('staff.patron.search_result.search.no_patrons_found'));
 					return;
 				}
 				if (results.length == obj.result_cap+1) {
 					results.pop();
-					alert('Results capped at ' + obj.result_cap + ' patrons.');
+					alert($("patronStrings").getFormattedString('staff.patron.search_result.search.capped_results', [obj.result_cap]));
 				}
 			} else {
-				alert('Please enter some search terms.');
+				alert($("patronStrings").getString('staff.patron.search_result.search.enter_search_terms'));
 				return;
 			}
 

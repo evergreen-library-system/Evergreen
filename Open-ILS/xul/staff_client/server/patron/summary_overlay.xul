@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="patron_summary_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -16,11 +16,11 @@
 <vbox id="patron_info_sidebar" flex="1">
 	<label id="patron_name" hidden="true" class="patronNameLarge"/>
 	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true" class="alert">
-		<caption id="psagbc" label="Alert" class="shrinkable_groupbox"/>
+		<caption id="psagbc" label="&staff.patron.summary_overlay.psagbc.alert.label;" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>
 	</groupbox>
 	<groupbox id="PatronSummaryStanding_groupbox" flex="0" hidden="true" class="standing">
-		<caption id="pssgbc" label="Standing" class="shrinkable_groupbox"/>
+		<caption id="pssgbc" label="&staff.patron.summary_overlay.pssgbc.standing.label;" class="shrinkable_groupbox"/>
 		<vbox id="patron_standing_penalties"/>
 	</groupbox>
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0" class="status"/>
@@ -93,19 +93,19 @@
 			<label id="patron_overdue" class="items_overdue value" style="background: grey"/>
 		</row>
 		<row id="pdsgr5">
-			<label id="PatronSummaryStatus_long_overdue_label" value="Long Overdue:" class="text_right items_long_overdue label" style="background: grey"/>
+			<label id="PatronSummaryStatus_long_overdue_label" value="&staff.patron.summary_overlay.overdue.value;" class="text_right items_long_overdue label" style="background: grey"/>
 			<label id="patron_long_overdue" class="items_long_overdue value" style="background: grey"/>
 		</row>
 		<row id="pdsgr7">
-			<label id="PatronSummaryStatus_claimed_returned_label" value="Claimed Returned:" class="text_right items_long_overdue label" style="background: grey"/>
+			<label id="PatronSummaryStatus_claimed_returned_label" value="&staff.patron.summary_overlay.claimed_returned.value;" class="text_right items_long_overdue label" style="background: grey"/>
 			<label id="patron_claimed_returned" class="items_claimed_returned value" style="background: grey"/>
 		</row>
 		<row id="pdsgr6">
-			<label id="PatronSummaryStatus_lost_label" value="Lost:" class="text_left items_lost label"/>
+			<label id="PatronSummaryStatus_lost_label" value="&staff.patron.summary_overlay.lost_label.value;" class="text_left items_lost label"/>
 			<label id="patron_lost" class="items_lost value"/>
 		</row>
 		<row id="pdsgr6a">
-			<label id="PatronSummaryStatus_noncat_label" value="Non Cat:" class="text_left items_noncat label"/>
+			<label id="PatronSummaryStatus_noncat_label" value="&staff.patron.summary_overlay.noncat_label.value;" class="text_left items_noncat label"/>
 			<label id="patron_noncat" class="items_noncat value"/>
 		</row>
 	</rows>
@@ -115,7 +115,7 @@
 	<!--
 	<caption label="&staff.patron_display.contact.caption;"/>
 	-->
-	<caption id="PatronSummaryContact_caption" label="ID/Contact Info" class="shrinkable_groupbox" />
+	<caption id="PatronSummaryContact_caption" label="&staff.patron.summary_overlay.summary_contact.label;" class="shrinkable_groupbox" />
 	<hbox id="pdcgbhb1">
 		<grid id="PatronSummaryContact_grid" />
 		<spacer id="pdcgbhbs1" flex="1"/>
@@ -187,7 +187,7 @@
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
 		<row id="pdsgpr4a">
 			<label id="PatronSummaryContact_usrname_label" class="text_left usrname label"
-				value="OPAC Login:" />
+				value="&staff.patron.summary_overlay.opac_login.value;" />
 			<label id="patron_usrname" class="usrname value"/>
 		</row>
 		<row id="pdcgpr5">

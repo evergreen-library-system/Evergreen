@@ -61,7 +61,7 @@
 	]]>
 	</script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox>
