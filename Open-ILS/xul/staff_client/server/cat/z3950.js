@@ -571,7 +571,7 @@ cat.z3950.prototype = {
 											if (robj.length != 0) btn2 = null;
 										}
 										var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
-										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confrim_action'));
+										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confirm_action'));
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
 											case 0:
