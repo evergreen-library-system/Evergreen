@@ -623,11 +623,11 @@ cat.z3950.prototype = {
 		var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 		var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-		top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confim_overlay.description')+'</description>';
-		top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.lead.label')+'" name="fancy_submit"';
-		top_xml += ' accesskey="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.lead.accesskey')+'"/>';
-		top_xml += ' <button label="'+$("catStrings").getString('staff.cat.z3950.confim_overlay.cancel.label')+'" accesskey="'+
-						$("catStrings").getString('staff.cat.z3950.confim_overlay.cancel.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
+		top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.description')+'</description>';
+		top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.label')+'" name="fancy_submit"';
+		top_xml += ' accesskey="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.accesskey')+'"/>';
+		top_xml += ' <button label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.label')+'" accesskey="'+
+						$("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
 
 		var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
 		xml += '<table width="100%"><tr valign="top">';
@@ -650,10 +650,10 @@ cat.z3950.prototype = {
 			// + '&top_xml_in_stash=temp_merge_top'
 			// + '&title=' + window.escape('Record Overlay'),
 			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confim_overlay.title') }
+			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confirm_overlay.title') }
 		);
 		//data.stash_retrieve();
-		if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.z3950.confim_overlay.aborted')); return false; }
+		if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.z3950.confirm_overlay.aborted')); return false; }
 		return true;
 	},
 
