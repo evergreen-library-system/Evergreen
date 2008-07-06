@@ -80,7 +80,7 @@ patron.summary.prototype = {
 							return function() { 
 								e.setAttribute('value',
 									$("patronStrings").getString('staff.patron.summary.patron_net_access') + 
-									obj.OpenILS.data.hash.cnal[
+									' ' + obj.OpenILS.data.hash.cnal[
 										obj.patron.net_access_level()
 									].name()
 								);
@@ -303,7 +303,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									$("patronStrings").getString('staff.patron.summary.expires_on') + (
+									$("patronStrings").getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
 										'<Unset>'
