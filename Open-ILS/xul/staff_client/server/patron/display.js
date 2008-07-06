@@ -102,7 +102,7 @@ patron.display.prototype = {
 						function(ev) {
 							obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 							obj.left_deck.node.selectedIndex = 0;
-							obj.controller.view.patron_name.setAttribute('value','No Patron Selected');
+							obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.cmd_search_form.no_patron'));
 							removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 							removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
 							removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
@@ -380,7 +380,8 @@ patron.display.prototype = {
 						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 							try { 
 								window.xulG.set_tab_name(
-									'Patron: ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' 
+									$("patronStrings").getString('staff.patron.display.tab_name')
+										+ ' ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' 
 										+ (patron.second_given_name() ? patron.second_given_name() : '' ) 
 								); 
 							} catch(E) { 
