@@ -212,32 +212,76 @@ sub test_db_connect {
 
 	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
 	my $de = undef;
-	my ($dbh, $encoding);
+	my ($dbh, $encoding, $langs);
 	try {
 		$dbh = DBI->connect($dsn, $db_user, $db_pw);
 		unless($dbh) {
 			$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 			warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 		}
-		my $sth = $dbh->prepare("show server_encoding");
+
+		# Get server encoding
+		my $sth = $dbh->prepare("SHOW server_encoding");
 		$sth->execute;
 		$sth->bind_col(1, \$encoding);
 		$sth->fetch;
 		$sth->finish;
+
+		# Get list of server languages
+		$sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
+		$sth->execute;
+		$langs = $sth->fetchall_arrayref([0]);
+		$sth->finish;
+
 		$dbh->disconnect;
 	} catch Error with {
 		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 	};
 	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
+
+	# Check encoding
 	if ($encoding !~ m/(utf-?8|unicode)/i) {
 		$de .= "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
 		warn "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
 	} else {
 		print "  * Database has the expected server encoding $encoding.\n";
 	}
+
+	my $result = check_db_langs($langs);
+	if ($result) {
+		$de .= $result;
+		warn $result;
+	}
+
 	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn with encoding $encoding\n";
 
+}
+
+sub check_db_langs {
+	my $langs = shift;
+
+	my $errors;
+
+	# Ensure the following PostgreSQL languages have been enabled
+	my %languages = (
+		'plperl' => 0,
+		'plperlu' => 0,
+		'plpgsql' => 0,
+	);
+
+	foreach my $lang (@$langs) {
+		my $lower = lc($$lang[0]);
+		$languages{$lower} = 1;
+	}
+	
+	foreach my $lang (keys %languages) {
+		if (!$languages{$lang}) {
+			$errors .= "  * ERROR: Language '$lang' is not enabled in the target database\n";
+		}
+	}
+
+	return $errors;
 }
 
 sub check_libdbd {
