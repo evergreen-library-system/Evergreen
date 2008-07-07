@@ -53,7 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="retrieve" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="2"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
   <xs:attribute name="permission"/>
   <xs:attribute name="context_field"/>
