@@ -373,6 +373,7 @@ CGI
 DateTime::TimeZone
 DateTime
 DateTime::Format::ISO8601
+DateTime::Format::Mail
 Unix::Syslog
 GD::Graph3d
 JavaScript::SpiderMonkey
