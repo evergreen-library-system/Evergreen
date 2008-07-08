@@ -100,6 +100,7 @@ autojs-install:
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
 	cp extras/org_tree_html_options.pl $(BINDIR)
+	cp extras/org_tree_proximity.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
 	cp support-scripts/offline-blocked-list.pl $(BINDIR) # this should probably be somewhere else
 # -----------------------------------------------------------------------------------
