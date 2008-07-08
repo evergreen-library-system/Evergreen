@@ -24,7 +24,7 @@ CREATE SCHEMA asset;
 CREATE TABLE asset.copy_location (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
-	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id),
+	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	holdable	BOOL	NOT NULL DEFAULT TRUE,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	circulate	BOOL	NOT NULL DEFAULT TRUE
