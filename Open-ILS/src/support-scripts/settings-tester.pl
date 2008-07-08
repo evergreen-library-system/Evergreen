@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 # vim:noet:ts=4:
+use strict;
+use warnings;
 
 BEGIN {
 	eval "use OpenSRF::Utils::Config;";
@@ -17,6 +19,7 @@ BEGIN {
 
 my $output = '';
 my $perloutput = '';
+my $result;
 
 my ($gather, $hostname, $core_config, $tmpdir) =
 	(0, Net::Domain::hostfqdn(), '/openils/conf/opensrf_core.xml', '/tmp/');
@@ -34,8 +37,11 @@ while (my $mod = <DATA>) {
 
 	my $ok = 0;
 	for my $m (@list) {
-		$ok++ if ($m->use);
-		print "$m version ".${$m."::VERSION"}."\n" unless ($@);
+		if ($m->use) {
+			$ok++;
+			my $version = $m->VERSION;
+			print "$m version $version\n" if ($version);
+		}
 	}
 
 	unless ($ok) {
@@ -110,6 +116,12 @@ foreach my $database (@databases) {
 	my $db_port = $database->findvalue("./port");	
 	my $db_user = $database->findvalue("./user");	
 	my $db_pw = $database->findvalue("./pw");	
+    if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
+        $db_pw = $database->findvalue("./password");
+        warn "* WARNING: Deprecated <password> element used for the <reporter> entry.  ".
+            "Please use <pw> instead.\n" if ($db_pw);
+    }
+
 	my $osrf_xpath;
 	foreach my $node ($database->findnodes("ancestor::node()")) {
 		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
@@ -140,19 +152,21 @@ foreach my $driver_node (@drivers) {
 		next unless scalar(@lang_nodes > 0);
 		$language = $lang_nodes[0]->findvalue("child::text()");
 	}
-	my $result;
 	if ($driver eq "pgsql") {
-		if ($language eq "C") {
+		if ($driver_xpath =~ m#/reporter/#) {
+			$result = "* ERROR: reporter application must use driver 'Pg', but '$driver' is defined\n";
+			warn $result;
+		} elsif ($language eq "C") {
 			$result = "* OK: $driver language is $language in $lang_xpath\n";
 		} else {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
 		}
 	} elsif ($driver eq "Pg") {
-		if ($language eq "perl") {
-			$result = "* OK: $driver language is $language in $lang_xpath\n";
-		} elsif ($driver_xpath =~ /reporter/) {
+		if ($driver_xpath =~ m#/reporter/#) {
 			$result = "* OK: $driver language is undefined for reporter base configuration\n";
+		} elsif ($language eq "perl") {
+			$result = "* OK: $driver language is $language in $lang_xpath\n";
 		} else {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
@@ -197,38 +211,86 @@ sub test_db_connect {
 
 	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
 	my $de = undef;
-	my $dbh, $encoding;
+	my ($dbh, $encoding, $langs);
 	try {
 		$dbh = DBI->connect($dsn, $db_user, $db_pw);
 		unless($dbh) {
 			$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 			warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 		}
-		my $sth = $dbh->prepare("show server_encoding");
+
+		# Get server encoding
+		my $sth = $dbh->prepare("SHOW server_encoding");
 		$sth->execute;
 		$sth->bind_col(1, \$encoding);
 		$sth->fetch;
 		$sth->finish;
+
+		# Get list of server languages
+		$sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
+		$sth->execute;
+		$langs = $sth->fetchall_arrayref([0]);
+		$sth->finish;
+
 		$dbh->disconnect;
 	} catch Error with {
 		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 	};
 	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
+
+	# Check encoding
 	if ($encoding !~ m/(utf-?8|unicode)/i) {
 		$de .= "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
 		warn "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
 	} else {
 		print "  * Database has the expected server encoding $encoding.\n";
 	}
+
+	my $result = check_db_langs($langs);
+	if ($result) {
+		$de .= $result;
+		warn $result;
+	}
+
 	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn with encoding $encoding\n";
 
 }
 
+sub check_db_langs {
+	my $langs = shift;
+
+	my $errors;
+
+	# Ensure the following PostgreSQL languages have been enabled
+	my %languages = (
+		'plperl' => 0,
+		'plperlu' => 0,
+		'plpgsql' => 0,
+	);
+
+	foreach my $lang (@$langs) {
+		my $lower = lc($$lang[0]);
+		$languages{$lower} = 1;
+	}
+	
+	foreach my $lang (keys %languages) {
+		if (!$languages{$lang}) {
+			$errors .= "  * ERROR: Language '$lang' is not enabled in the target database\n";
+		}
+	}
+
+	return $errors;
+}
+
 sub check_libdbd {
-	my $results;
-	my $de = undef;
-	my @location = `locate libdbdpgsql.so |grep -v home`; # simple(ton) attempt to filter out build versions
+	my $results = '';
+	my @location = `locate libdbdpgsql.so | grep -v home | grep -v .libs`; # simple(ton) attempt to filter out build versions
+    unless(@location) {
+        my $res = "Libdbi postgres driver not found\n";
+        print $res;
+        return $res;
+    }
 	if (scalar(@location) > 1) {
 
 		my $res = "Found more than one location for libdbdpgsql.so.
@@ -293,6 +355,7 @@ sub get_debug_info {
 __DATA__
 LWP::UserAgent
 XML::LibXML
+XML::LibXML::XPathContext
 XML::LibXSLT
 Net::Server::PreFork
 Cache::Memcached
@@ -309,6 +372,7 @@ CGI
 DateTime::TimeZone
 DateTime
 DateTime::Format::ISO8601
+DateTime::Format::Mail
 Unix::Syslog
 GD::Graph3d
 JavaScript::SpiderMonkey
