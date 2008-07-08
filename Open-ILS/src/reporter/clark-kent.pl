@@ -55,7 +55,11 @@ if (!$db_name) {
     print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name; 
 }
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
-my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
+my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
+if (!$db_pw) {
+    $db_pw = $sc->config_value( reporter => setup => database => 'password' );
+    print STDERR "WARN: <database><password> is a deprecated setting for database password. For future compatibility, you should use <database><pw> instead." if $db_pw; 
+}
 
 die "I don't seem to be configured" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
 
