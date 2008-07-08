@@ -88,11 +88,14 @@ sub handler {
 	# still no records ...
 	my $container = $cgi->param('containerid');
 	if ($container) {
-		my $authid = $cgi->cookie('ses') || $cgi->param('ses');
-		my $auth = verify_login($authid);
-		if (!$auth) {
-			return 403;
-		}
+		my $bucket = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve', $container )->gather(1);
+        if ($bucket->pub !~ /t|1/oi) {
+    		my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+	    	my $auth = verify_login($authid);
+		    if (!$auth) {
+			    return 403;
+    		}
+        }
 		my $recs = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic', { bucket => $container } )->gather(1);
 		@records = map { ($_->target_biblio_record_entry) } @$recs;
 	}
@@ -151,6 +154,7 @@ sub handler {
 
 	my %orgs;
 	my %shelves;
+	my %statuses;
 
 	my $flesh = {};
 	if ($holdings) {
@@ -172,6 +176,16 @@ sub handler {
         		$s = $s->content;
         		last unless ($s);
 	    		$shelves{$s->id} = $s;
+    		}
+    		$req->finish;
+
+		$req = $ses->request( 'open-ils.cstore.direct.config.copy_status.search', { id => { '!=' => undef } } );
+
+    		while (my $s = $req->recv) {
+        		next if ($req->failed);
+        		$s = $s->content;
+        		last unless ($s);
+	    		$statuses{$s->id} = $s;
     		}
     		$req->finish;
 
@@ -243,6 +257,7 @@ sub handler {
 										($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
 										($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
 										($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+										z => $statuses{$cp->status}->name,
 									)
 								);
 
@@ -315,7 +330,7 @@ sub show_template {
 				<option value="biblio">Bibliographic Records</option>
 				<option value="authority">Authority Records</option>
 			</select>
-			<br/> Record Fromat:
+			<br/> Record Format:
 			<select name="format">
 				<option value="USMARC">MARC21</option>
 				<option value="UNIMARC">UNIMARC</option>
