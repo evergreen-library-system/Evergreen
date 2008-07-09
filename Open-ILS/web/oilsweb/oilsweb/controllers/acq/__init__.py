@@ -1,5 +1,4 @@
 from oilsweb.lib.context import Context, SubContext, ContextItem
-import oilsweb.lib.acq.picklist
 
 # ----------------------------------------------------------------
 # Define the CGI params for this application 
