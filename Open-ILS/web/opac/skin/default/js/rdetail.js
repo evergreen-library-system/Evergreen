@@ -209,10 +209,11 @@ function _rdetailDraw(r) {
 	var links = record.online_loc();
 	for( var i = 0; links && links.length > 0 && i < links.length; i = i + 2 ) {
 		var href = links[i];
-		if( href.match(/https?:|ftp:|mailto:/) ) {
+		// avoid matching "HTTP: The Complete Reference"
+		if( href.match(/https?:\/|ftps?:\/|mailto:/i) ) {
 			unHideMe($('rdetail_online_row'));
 			var name = '' + links[i+1];
-			if(!name || name.match(/http/)) name = href;
+			if(!name || name.match(/https?:\/|ftps?:\/|mailto:/i)) name = href;
 			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, name));
 			$('rdetail_online').appendChild(elem('br'));
 		}
