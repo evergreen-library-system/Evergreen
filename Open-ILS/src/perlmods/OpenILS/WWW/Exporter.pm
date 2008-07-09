@@ -154,6 +154,7 @@ sub handler {
 
 	my %orgs;
 	my %shelves;
+	my %statuses;
 
 	my $flesh = {};
 	if ($holdings) {
@@ -175,6 +176,16 @@ sub handler {
         		$s = $s->content;
         		last unless ($s);
 	    		$shelves{$s->id} = $s;
+    		}
+    		$req->finish;
+
+		$req = $ses->request( 'open-ils.cstore.direct.config.copy_status.search', { id => { '!=' => undef } } );
+
+    		while (my $s = $req->recv) {
+        		next if ($req->failed);
+        		$s = $s->content;
+        		last unless ($s);
+	    		$statuses{$s->id} = $s;
     		}
     		$req->finish;
 
@@ -246,6 +257,7 @@ sub handler {
 										($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
 										($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
 										($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+										z => $statuses{$cp->status}->name,
 									)
 								);
 

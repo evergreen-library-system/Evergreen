@@ -1,5 +1,7 @@
 dump('entering patron.summary.js\n');
 
+function $(id) { return document.getElementById(id); }
+
 if (typeof patron == 'undefined') patron = {};
 patron.summary = function (params) {
 
@@ -31,7 +33,7 @@ patron.summary.prototype = {
 				control_map : {
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
 					'patron_alert' : [
 						['render'],
@@ -77,8 +79,8 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									'Internet: ' + 
-									obj.OpenILS.data.hash.cnal[
+									$("patronStrings").getString('staff.patron.summary.patron_net_access') + 
+									' ' + obj.OpenILS.data.hash.cnal[
 										obj.patron.net_access_level()
 									].name()
 								);
@@ -133,7 +135,7 @@ patron.summary.prototype = {
 									function(req) {
 										JSAN.use('util.money');
 										var robj = req.getResultObject();
-										e.setAttribute('value', '$' + util.money.sanitize( robj.balance_owed() ));
+										e.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
 									}
 								);
 								/*
@@ -301,7 +303,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									'Expires on ' + (
+									$("patronStrings").getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
 										'<Unset>'
@@ -581,7 +583,7 @@ patron.summary.prototype = {
 								[ ses(), obj.id ]
 							);
 						} else {
-							throw('summary: No barcode or id');
+							throw($("patronStrings").getString('staff.patron.summary.retrieve.no_barcode'));
 						}
 						if (robj) {
 

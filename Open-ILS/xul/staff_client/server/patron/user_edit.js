@@ -10,6 +10,8 @@ var ou_type_list = [];
 var user_work_ous = [];
 var work_ou_list = [];
 
+function $(id) { return document.getElementById(id); }
+
 function set_work_ou(row) {
         var wid = findNodeByName(row,'a.id').getAttribute('workou_id');
         var wapply = findNodeByName(row,'a.id').checked;
@@ -103,7 +105,7 @@ function save_user () {
 						break;
 					}
 				}
-				throw "Depth is required on the " + p.code() + " permission.";
+				throw $("patronStrings").getFormattedString('staff.patron.user_edit.save_user.depth_required', [p.code()]);
 			}
 
 			save_perms.push( user_perms[i] );
@@ -128,9 +130,7 @@ function save_user () {
 		if (pok.ilsevent) throw pok;
 
 		if (pok || wok) {
-			alert(	'User ' + user.usrname() +
-				' [' + user.card().barcode() + '] ' +
-				' successfully modified.\n' + pok + ' permissions and ' + wok + ' work locations updated.');
+			alert($("patronStrings").getFormattedString('staff.patron.user_edit.save_user.user_modified_successfully', [user.usrname(), user.card().barcode(), pok, wok]));
 		}
 
 		init_editor();
@@ -373,7 +373,7 @@ function display_perm (root,perm_def,staff_perms, r) {
 		(up ? up.depth() : findOrgDepth(user.home_ou())),
 		{ label_field		: 'name',
 		  value_field		: 'depth',
-		  empty_label		: '-- Select One --',
+		  empty_label		: $("patronStrings").getString('staff.patron.user_edit.display_perm.select_one'),
 		  empty_value		: '',
 		  clear			: true }
 	);

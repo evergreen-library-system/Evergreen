@@ -19,7 +19,7 @@ BEGIN;
 CREATE SCHEMA extend_reporter;
 
 CREATE TABLE extend_reporter.legacy_circ_count (
-    id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id)
+    id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id),
     circ_count  INT         NOT NULL DEFAULT 0
 );
 
@@ -29,6 +29,30 @@ CREATE VIEW extend_reporter.full_circ_count AS
    LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
    LEFT JOIN "action".circulation circ ON circ.target_copy = c.id
   GROUP BY cp.id;
+
+UPDATE  metabib.title_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.author_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.keyword_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.subject_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.series_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.full_rec
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
 
 COMMIT;
 

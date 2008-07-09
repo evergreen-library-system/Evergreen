@@ -2005,6 +2005,7 @@
 <!ENTITY staff.cat.spine_labels.inc_item_barcode.label "Include Item Barcode">
 <!ENTITY staff.cat.spine_labels.custom.label "Custom:">
 <!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
+<!ENTITY staff.cat.volume_copy_creator.title "Volume/Copy Editor">
 <!ENTITY staff.cat.volume_copy_creator.label "Volume/Copy Creator">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
@@ -2025,6 +2026,7 @@
 <!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
 <!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
 <!ENTITY staff.cat.z3950.save_creds.accesskey "D">
+<!ENTITY staff.cat.z3950.query.description "Description">
 <!ENTITY staff.cat.z3950.query.label "Query">
 <!ENTITY staff.cat.z3950.query.label "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
 <!ENTITY staff.cat.z3950.clear.label "Clear Form">
@@ -2067,6 +2069,8 @@
 <!ENTITY staff.patron.bill_cc_info.cancel.accesskey "C">
 <!ENTITY staff.patron.bill_cc_info.submit.label "Submit this Info">
 <!ENTITY staff.patron.bill_cc_info.submit.accesskey "S">
+<!ENTITY staff.patron.bill_cc_info.info.label "Credit Card Info">
+<!ENTITY staff.patron.bill_cc_info.type.label "CC Type">
 <!ENTITY staff.patron.bill_check_info.check_info.label "Check Info">
 <!ENTITY staff.patron.bill_check_info.check_number.value "Check Number">
 <!ENTITY staff.patron.bill_check_info.note.value "Note">
@@ -2198,3 +2202,31 @@
 <!ENTITY staff.patron.info_group.group_member.label "Group Members">
 <!ENTITY staff.patron.info_group.choose_an_action.label "Choose an Action...">
 <!ENTITY staff.patron.info_group.choose_an_action.accesskey "A">
+<!ENTITY staff.patron.info_surveys.survey_number.value "Survey #">
+<!ENTITY staff.patron.info_surveys.last_answered.value "Last Answered on:">
+<!ENTITY staff.patron.info_surveys.answer.value "Answer:">
+<!ENTITY staff.patron.info.notes.label "Notes">
+<!ENTITY staff.patron.info.notes.accesskey "N">
+<!ENTITY staff.patron.info.stat_cats.label "Stat Cats">
+<!ENTITY staff.patron.info.stat_cats.accesskey "S">
+<!ENTITY staff.patron.info.surveys.label "Surveys">
+<!ENTITY staff.patron.info.surveys.accesskey "y">
+<!ENTITY staff.patron.info.group.label "Group">
+<!ENTITY staff.patron.info.group.accesskey "G">
+<!ENTITY staff.patron.search_form_overlay.inactive.value "Include inactive patrons?">
+<!ENTITY staff.patron.search_form_overlay.inactive.accesskey "I">
+<!ENTITY staff.patron.search_form_overlay.search_range_menu.value "Limit results to patrons in">
+<!ENTITY staff.patron.search_result_overlay.save_cols.label "Save Columns">
+<!ENTITY staff.patron.search_result_overlay.copy_to_clipboard.label "Copy to Clipboard">
+<!ENTITY staff.patron.search_result_overlay.print.label "Print">
+<!ENTITY staff.patron.summary_overlay.psagbc.alert.label "Alert">
+<!ENTITY staff.patron.summary_overlay.pssgbc.standing.label "Standing">
+<!ENTITY staff.patron.summary_overlay.overdue.value "Long Overdue:">
+<!ENTITY staff.patron.summary_overlay.claimed_returned.value "Claimed Returned:">
+<!ENTITY staff.patron.summary_overlay.lost_label.value "Lost:">
+<!ENTITY staff.patron.summary_overlay.noncat_label.value "Non Cat:">
+<!ENTITY staff.patron.summary_overlay.summary_contact.label "ID/Contact Info">
+<!ENTITY staff.patron.summary_overlay.opac_login.value "OPAC Login:">
+<!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
+<!ENTITY staff.patron.user_edit.user_name.label "User Name:">
+<!ENTITY staff.patron.user_edit.barcode.label "Barcode:">

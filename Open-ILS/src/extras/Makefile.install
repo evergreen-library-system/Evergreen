@@ -101,6 +101,7 @@ DEBS =  \
     libclass-dbi-abstractsearch-perl\
     libtemplate-perl\
     libtext-aspell-perl\
+    libdatetime-format-mail-perl\
     libdatetime-timezone-perl\
     libdatetime-perl\
     libunix-syslog-perl\

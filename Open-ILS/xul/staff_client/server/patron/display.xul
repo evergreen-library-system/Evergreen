@@ -26,10 +26,10 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">
+	<script type="text/javascript">
 		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 	</script>
-        <scripts id="openils_util_scripts"/>
+	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
@@ -50,7 +50,7 @@
 					'barcode' : xul_param('barcode'),
 					'id' : xul_param('id'),
 					'query' : xul_param('query'),
-					'doit' : xul_param('doit'),
+					'doit' : xul_param('doit')
 				} );
 
 			//document.documentElement.style.setProperty('font-size-adjust','1','important');

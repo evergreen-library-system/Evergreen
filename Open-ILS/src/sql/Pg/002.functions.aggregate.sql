@@ -15,9 +15,15 @@
  *
  */
 
-BEGIN;
+-- Allow these to fail gracelessly outside the transaction
+-- because PostgreSQL 8.1 does not support IF EXISTS
+DROP AGGREGATE array_accum(anyelement) CASCADE;
+DROP AGGREGATE public.first(anyelement) CASCADE;
+DROP AGGREGATE public.last(anyelement) CASCADE;
+DROP AGGREGATE public.agg_text(text) CASCADE;
+DROP AGGREGATE public.agg_tsvector(tsvector) CASCADE;
 
-DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
+BEGIN;
 
 CREATE AGGREGATE array_accum (
 	sfunc = array_append,
@@ -30,8 +36,6 @@ CREATE OR REPLACE FUNCTION public.first_agg ( anyelement, anyelement ) RETURNS a
 	SELECT CASE WHEN $1 IS NULL THEN $2 ELSE $1 END;
 $$ LANGUAGE SQL STABLE;
 
-DROP AGGREGATE IF EXISTS  public.first(anyelement) CASCADE;
-
 CREATE AGGREGATE public.first (
 	sfunc	 = public.first_agg,
 	basetype = anyelement,
@@ -41,8 +45,6 @@ CREATE AGGREGATE public.first (
 CREATE OR REPLACE FUNCTION public.last_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
 	SELECT $2;
 $$ LANGUAGE SQL STABLE;
-
-DROP AGGREGATE IF EXISTS  public.last(anyelement) CASCADE;
 
 CREATE AGGREGATE public.last (
 	sfunc	 = public.last_agg,
@@ -60,8 +62,6 @@ SELECT
 	END;
 $$ LANGUAGE SQL STABLE;
 
-DROP AGGREGATE IF EXISTS  public.agg_text(text) CASCADE;
-
 CREATE AGGREGATE public.agg_text (
 	sfunc	 = public.text_concat,
 	basetype = text,
@@ -77,8 +77,6 @@ SELECT
 		ELSE $1 || ' ' || $2
 	END;
 $$ LANGUAGE SQL STABLE;
-
-DROP AGGREGATE IF EXISTS  public.agg_tsvector(tsvector) CASCADE;
 
 CREATE AGGREGATE public.agg_tsvector (
 	sfunc	 = public.tsvector_concat,

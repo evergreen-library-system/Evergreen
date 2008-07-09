@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -25,8 +25,12 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-        <scripts id="openils_util_scripts"/>
+	<script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client';
+		var IAMXUL = true;
+		var g = {};
+	</script>
+	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
@@ -37,7 +41,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 
@@ -55,8 +59,7 @@
 				refresh();
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\npatron_info.xul\n" + E + '\n';
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/info_notes.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -91,11 +94,11 @@
 		function render_notes() {
 			JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
 			var np = $('notes_panel');
-				var hbox = document.createElement('hbox'); np.appendChild(hbox);
-					var btn = document.createElement('button'); hbox.appendChild(btn);
-						btn.setAttribute('label','Add New Note');
-						btn.setAttribute('accesskey','A');
-						btn.setAttribute('oncommand','new_note()');
+			var hbox = document.createElement('hbox'); np.appendChild(hbox);
+			var btn = document.createElement('button'); hbox.appendChild(btn);
+			btn.setAttribute('label', $("patronStrings").getString('staff.patron.info_notes.render_notes.add_new_note.label'));
+			btn.setAttribute('accesskey', $("patronStrings").getString('staff.patron.info_notes.render_notes.add_new_note.accesskey'));
+			btn.setAttribute('oncommand','new_note()');
 
 			for (var i = 0; i < g.notes.length; i++) {
 
@@ -103,66 +106,86 @@
 				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
 				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
 				util.widgets.apply(node,'name','create_date',
-					function(n){n.setAttribute("tooltiptext","Note ID: " + g.notes[i].id() + " Creator ID: " + g.notes[i].creator());}
+					function(n){n.setAttribute("tooltiptext", $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.tooltiptext', [g.notes[i].id(), g.notes[i].creator()]));}
 				);
 				apply(node,'title',g.notes[i].title());
-				apply(node,'pub',get_bool(g.notes[i].pub()) ? "Patron Visible" : "Staff Only");
+				if (get_bool(g.notes[i].pub())) {
+					apply(node, 'pub', $("patronStrings").getString('staff.patron.info_notes.render_notes.pub.patron_visible'));
+				} else {
+					apply(node, 'pub', $("patronStrings").getString('staff.patron.info_notes.render_notes.pub.staff_only') );
+				}
 				apply(node,'value',g.notes[i].value());
 				apply(node,'id',g.notes[i].id());
 				apply(node,'creator',g.notes[i].creator());
 
 				/* button bar */
-				var hb = document.createElement('hbox'); np.appendChild(hb);
-					var btn1 = document.createElement('button'); hb.appendChild(btn1);
-						btn1.setAttribute('label','Delete This Note');
-						btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+				var hb = document.createElement('hbox');
+				np.appendChild(hb);
+				var btn1 = document.createElement('button');
+				hb.appendChild(btn1);
+				btn1.setAttribute('label',$("patronStrings").getString('staff.patron.info_notes.render_notes.btn1.delete_note.label'));
+				btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
 
-						btn1.addEventListener(
-							'command',
-							function(id){ return function() { 
-								var r = g.error.yns_alert('Delete the note titled "' + g.notes[id].title() + '" created on ' + g.notes[id].create_date().toString().substr(0,10) + '?','Delete Note','Yes','No',null,'Check here to confirm this action'); 
-								if (r == 0) {
-									g.network.simple_request('FM_AUN_DELETE',[ses(),g.notes[id].id()]);
-									setTimeout(function(){ g.new_note = true; alert('Note deleted.'); refresh();},0);
-								}
-							} }(i),
-							false
-						);
-					var btn2 = document.createElement('button'); hb.appendChild(btn2);
-						btn2.setAttribute('label','Print');
-						btn2.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+				btn1.addEventListener(
+					'command',
+					function(id){ 
+						return function() { 
+							var r = g.error.yns_alert(
+								$("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.delete_note_message',[g.notes[id].title(), g.notes[id].create_date().toString().substr(0,10)]),
+								$("patronStrings").getString('staff.patron.info_notes.render_notes.delete_note_title'),
+								$("commonStrings").getString('common.yes'),
+								$("commonStrings").getString('common.no'),
+								null,
+								$("commonStrings").getString('common.check_to_confirm')
+							); 
+							if (r == 0) {
+								g.network.simple_request('FM_AUN_DELETE',[ses(),g.notes[id].id()]);
+								setTimeout(function(){ 
+									g.new_note = true;
+									alert($("patronStrings").getString('staff.patron.info_notes.render_notes.note_deleted'));
+									refresh();
+								},0);
+							}
+						}
+					 }
+					(i), false
+					);
+					var btn2 = document.createElement('button');
+					hb.appendChild(btn2);
+					btn2.setAttribute('label',$("patronStrings").getString('staff.patron.info_notes.render_notes.btn2.print_note.label'));
+					btn2.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
 
-						btn2.addEventListener(
-							'command',
-							function(id){ return function() { 
-								try {
-									JSAN.use('patron.util'); 
-									var patron_obj = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id);
-									var staff_obj = patron.util.retrieve_name_via_id( ses(), g.notes[id].creator() );
-									JSAN.use('util.print'); var p = new util.print();
-									p.simple(
-										'<hr/>'
-										+ '<p>Pertaining to ' + 
-											( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') + 
-											patron_obj.family_name() + ', ' + 
-											patron_obj.first_given_name() + ' ' +
-											( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
-											( patron_obj.suffix() ? patron_obj.suffix() : '')
-											+ ' : ' 
-										+ patron_obj.card().barcode() + '</p>'
-										+ '<p><b>"' 
-										+ g.notes[id].title() + '"</b> created on ' + g.notes[id].create_date().toString().substr(0,10) 
-										+ ' by ' + staff_obj[0] + ' @ ' + g.data.hash.aou[ staff_obj[3] ].shortname()
-										+ '</p><p>'
-										+ g.notes[id].value()
-										+ '</p><hr/>'
-									);
-								} catch(E) {
-									g.error.standard_unexpected_error_alert('printing note #' + g.notes[id].id(), E);
-								}
-							} }(i),
-							false
-						);
+					btn2.addEventListener(
+						'command',
+						function(id){ return function() { 
+							try {
+								JSAN.use('patron.util'); 
+								var patron_obj = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id);
+								var staff_obj = patron.util.retrieve_name_via_id( ses(), g.notes[id].creator() );
+								JSAN.use('util.print');
+								var p = new util.print();
+								p.simple(
+									'<hr/>'
+									+ '<p>'+ $("patronStrings").getString('staff.patron.info_notes.render_notes.pertaining_to') + ' ' + 
+										( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') + 
+										patron_obj.family_name() + ', ' + 
+										patron_obj.first_given_name() + ' ' +
+										( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
+										( patron_obj.suffix() ? patron_obj.suffix() : '')
+										+ ' : ' 
+									+ patron_obj.card().barcode() + '</p>'
+									+ '<p><b>"' + g.notes[id].title() + '"</b>'
+									+ $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.created_on', [g.notes[id].create_date().toString().substr(0,10), staff_obj[0], g.data.hash.aou[ staff_obj[3] ].shortname()]) 
+									+ '</p><p>'
+									+ g.notes[id].value()
+									+ '</p><hr/>'
+								);
+							} catch(E) {
+								g.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.printing_note_num', [g.notes[id].id()]), E);
+							}
+						}
+					}(i), false
+				);
 			}
 
 		}
@@ -170,7 +193,15 @@
 		function new_note() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
-				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Patron Visible?"/><checkbox id="pub" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
+				xml += '<caption label="'+$("patronStrings").getString('staff.patron.info_notes.new_note.label')+'"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row>';
+				xml += '<label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.patron_visible.value')+'"/><checkbox id="pub" name="fancy_data"/></row>';
+				xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.title.value')+'"/><textbox id="title" name="fancy_data"/></row>';
+				xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.note.value')+'"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
+				xml += '<row><spacer/><hbox><button label="'+$("patronStrings").getString('staff.patron.info_notes.new_note.cancel.label')+'" name="fancy_cancel"';
+				xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_notes.new_note.cancel.accesskey')+'"/>';
+				xml += '<button label="'+$("patronStrings").getString('staff.patron.info_notes.new_note.add.label')+'"';
+				xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_notes.new_note.add.accesskey')+'" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
 				//g.data.init({'via':'stash'});
 				//g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
 				JSAN.use('util.window'); var win = new util.window();
@@ -180,7 +211,7 @@
 					//+ '&focus=' + window.escape('title')
 					//+ '&title=' + window.escape('Add Note'),
 					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-					{ 'xml' : xml, 'focus' : 'title', 'title' : 'Add Note' }
+					{ 'xml' : xml, 'focus' : 'title', 'title' : $("patronStrings").getString('staff.patron.info_notes.new_note.add_note_title') }
 				);
 				if (fancy_prompt_data.fancy_status == 'complete') {
 					//alert(js2JSON(g.data.fancy_prompt_data));
@@ -192,15 +223,22 @@
 					note.usr( g.patron_id );
 					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
-					setTimeout(function(){ g.new_note = true; alert('Note added.'); refresh();},0);
+					setTimeout(function(){
+						g.new_note = true;
+						alert($("patronStrings").getString('staff.patron.info_notes.new_note.add_note_title'));
+						refresh();
+					},0);
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('The note was not likely created.',E);
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_notes.new_note.note_not_created'),E);
 			}
 		}
 
 	]]>
 	</script>
+	
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<stack hidden="true" id="note_template" flex="1">
 		<groupbox flex="1" style="background-color: black;"/>

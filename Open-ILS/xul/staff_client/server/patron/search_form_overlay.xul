@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE overlay PUBLIC "" ""[
-   <!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+   <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 
@@ -31,11 +31,11 @@
 	</columns>
 	<rows id="psr">
 		<row>
-			<label control="inactive" accesskey="I" value="Include inactive patrons?"/>
+			<label control="inactive" accesskey="&staff.patron.search_form_overlay.inactive.accesskey;" value="&staff.patron.search_form_overlay.inactive.value;"/>
 			<checkbox id="inactive" />
         </row>
         <row>
-			<label control="search_range_menu" value="Limit results to patrons in"/>
+			<label control="search_range_menu" value="&staff.patron.search_form_overlay.search_range_menu.value;"/>
             <hbox id="search_depth" />
 		</row>
 		<row id="psr1">
