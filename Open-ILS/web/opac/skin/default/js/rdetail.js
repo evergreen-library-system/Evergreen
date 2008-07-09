@@ -207,11 +207,11 @@ function _rdetailDraw(r) {
 
 	// see if the record has any external links 
 	var links = record.online_loc();
-	for( var i = 0; links && links.length > 0 && i < links.length; i++ ) {
+	for( var i = 0; links && links.length > 0 && i < links.length; i = i + 2 ) {
 		var href = links[i];
-		if( href.match(/http/) ) {
+		if( href.match(/https?:|ftp:|mailto:/) ) {
 			unHideMe($('rdetail_online_row'));
-			var name = links[i+1];
+			var name = '' + links[i+1];
 			if(!name || name.match(/http/)) name = href;
 			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, name));
 			$('rdetail_online').appendChild(elem('br'));
