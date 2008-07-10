@@ -105,16 +105,6 @@ autojs-install:
 	cp support-scripts/offline-blocked-list.pl $(BINDIR) # this should probably be somewhere else
 # -----------------------------------------------------------------------------------
 
-marcdumper:
-	@echo $@
-	make -C extras/marcdumper
-
-marcdumper-install:
-	@echo $@
-	make -C extras/marcdumper install
-
-# -----------------------------------------------------------------------------------
-
 perl-install:
 	@echo $@
 	@echo "Installing Perl modules to $(PERLDIR)"
