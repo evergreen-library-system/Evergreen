@@ -166,8 +166,9 @@ INSERT INTO permission.perm_list VALUES (149, 'VIEW_REPORT_OUTPUT', 'Allow user 
 INSERT INTO permission.perm_list VALUES (150, 'COPY_CIRC_NOT_ALLOWED.override', 'Allows a user to checkout an item that is marked as non-circ');
 INSERT INTO permission.perm_list VALUES (151, 'DELETE_CONTAINER_ITEM', 'Allows a user to delete an item out of another user''s container');
 INSERT INTO permission.perm_list VALUES (152, 'ASSIGN_WORK_ORG_UNIT', 'Allow a staff member to define where another staff member has their permissions');
+INSERT INTO permission.perm_list VALUES (153, 'DELETE_RECORD', 'Allow a staff member to directly remove a bibliographic record');
 
-SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 152, TRUE);
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
