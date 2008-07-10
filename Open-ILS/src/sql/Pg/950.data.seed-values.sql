@@ -1023,6 +1023,8 @@ INSERT INTO permission.perm_list VALUES
     (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext('Allows a user to delete an item out of another user''s container'));
 INSERT INTO permission.perm_list VALUES 
     (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext('Allow a staff member to define where another staff member has their permissions'));
+INSERT INTO permission.perm_list VALUES 
+    (153, 'DELETE_RECORD', oils_i18n_gettext('Allow a staff member to directly remove a bibliographic record'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
