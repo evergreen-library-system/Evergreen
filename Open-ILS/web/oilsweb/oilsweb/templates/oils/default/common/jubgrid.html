@@ -109,13 +109,13 @@ pointing to the JUB model (and store) that you have created.
     <script>JUBGrid.showDetails = true;</script>
     <div id="${domprefix + '-container'}"
         dojoType="dijit.layout.ContentPane" sizeMin="20" sizeShare="50">
-% endif
         <div dojoType="dijit.layout.ContentPane"
              id=${domprefix+"-jub-buttonbar"}>
             <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
                 ${_('Approve Selected Titles')}
             </button>
         </div>
+% endif
         <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
             dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
         </div>
