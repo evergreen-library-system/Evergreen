@@ -6,10 +6,13 @@ dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('openils.Event');
 dojo.require('openils.acq.Picklist');
+dojo.require('openils.acq.Lineitems');
 dojo.require('openils.User');
 
 var searchFields = [];
 var resultPicklist;
+var resultLIs;
+var selectedLIs;
 var recvCount = 0;
 var sourceCount = 0; // how many sources are we searching
 var user = new openils.User();
@@ -112,6 +115,7 @@ function handleResult(r) {
 function viewResults(plId) {
     var plist = new openils.acq.Picklist(plId,
         function(model) {
+            resultLIs = plist._items;
             dojo.style('oils-acq-pl-search-results', 'visibility', 'visible');
             JUBGrid.populate(plResultGrid, model, plist._items);
         },
@@ -120,12 +124,73 @@ function viewResults(plId) {
     resultPicklist = plist._plist;
 }
 
+function loadPLSelect() {
+    var plList = [];
+    function handleResponse(r) {
+        plList.push(r.recv().content());
+    }
+    var method = 'open-ils.acq.picklist.user.retrieve';
+    fieldmapper.standardRequest(
+        ['open-ils.acq', method],
+        {   async: true,
+            params: [openils.User.authtoken],
+            onresponse: handleResponse,
+            oncomplete: function() {
+                plAddExistingSelect.store = 
+                    new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(plList)});
+                plAddExistingSelect.setValue();
+            }
+        }
+    );
+}
+
+
 function saveResults(values) {
-    if(!values.name) return;
-    resultPicklist.name(values.name); 
-    openils.acq.Picklist.update(resultPicklist,
-        function(stat) {
-            location.href = 'view/' + resultPicklist.id(); 
+    selectedLIs = resultLIs;
+
+    if(values.which == 'selected') {
+        selectedLIs = [];
+        var selected = plResultGrid.selection.getSelected();
+        for(var idx = 0; idx < selected.length; idx++) {
+            var rowIdx = selected[idx];
+            var id = plResultGrid.model.getRow(rowIdx).id;
+            for(var i = 0; i < resultLIs.length; i++) {
+                var pl = resultLIs[i];
+                if(pl.id() == id) {
+                    selectedLIs.push(pl);
+                }
+            }
+        }
+    }
+        
+    if(values.new_name && values.new_name != '') {
+        // XXX create a new PL and copy LIs over
+        /*
+        if(values.which = 'selected') {
+            resultPicklist = new acqpl();
+            resultPicklist.owner(user.user.id())
+        } 
+        */
+        resultPicklist.name(values.new_name); 
+        openils.acq.Picklist.update(resultPicklist,
+            function(stat) {
+                location.href = 'view/' + resultPicklist.id(); 
+            }
+        );
+    } else if(values.existing_pl) {
+        updateLiList(values.existing_pl, selectedLIs, 0, 
+            function(){location.href = 'view/' + values.existing_pl});
+    }
+}
+
+function updateLiList(pl, list, idx, oncomplete) {
+    if(idx >= list.length)
+        return oncomplete();
+    var li = selectedLIs[idx];
+    li.picklist(pl);
+    new openils.acq.Lineitems({lineitem:li}).update(
+        function(r) {
+            updateLiList(pl, list, ++idx, oncomplete);
         }
     );
 }

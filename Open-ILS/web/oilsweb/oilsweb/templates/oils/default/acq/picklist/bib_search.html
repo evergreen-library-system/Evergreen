@@ -66,11 +66,28 @@
             <span>${('Save Results')}</span>
             <div dojoType="dijit.TooltipDialog" execute="saveResults(arguments[0]);">
                 <script type='dojo/connect' event='onOpen'>
+                    loadPLSelect(); 
                 </script>
                 <table class='dijitTooltipTable'>
                     <tr>
-                        <td><label for="name">${_('Save as picklist:')} </label></td>
-                        <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                        <td colspan='2'>
+                            <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                            <label for="name">${_('Save selected')}</label>
+                            <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                            <label for="name">${_('Save all')}</label>
+                        </td>
+                    </tr>
+                    <tr><td colspan='2'><hr/></td></tr>
+                    <tr>
+                        <td><label for="new_name">${_('Save as picklist:')} </label></td>
+                        <td><input dojoType="dijit.form.TextBox" name="new_name"/></td>
+                    </tr>
+                    <tr>
+                        <td><label for="existing_pl">${_('Add to picklist:')} </label></td>
+                        <td>
+                            <input jsId='plAddExistingSelect' dojoType="dijit.form.FilteringSelect" 
+                                name="existing_pl" searchAttr='name' displayAttr='name'/>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan='2' align='center'>
