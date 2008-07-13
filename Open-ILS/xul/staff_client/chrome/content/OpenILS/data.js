@@ -157,7 +157,7 @@ OpenILS.data.prototype = {
 			var data_cache=new OpenILS( );
 			for (var i = 0; i < arguments.length; i++) {
 				try {
-					if (arguments[i] != 'hash' && arguments[i] != 'list') this.error.sdump('D_DATA_STASH','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + (typeof this[arguments[i]] == 'object' ? ' = ' + js2JSON(this[arguments[i]]) : '') + '\n');
+					if (arguments[i] != 'hash' && arguments[i] != 'list') this.error.sdump('D_DATA_STASH','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + (typeof this[arguments[i]] == 'object' ? ' = ' + (this[arguments[i]]) : '') + '\n');
 				} catch(F) { alert(F); }
 				data_cache.wrappedJSObject.OpenILS.prototype.data[arguments[i]] = this[arguments[i]];
 			}
