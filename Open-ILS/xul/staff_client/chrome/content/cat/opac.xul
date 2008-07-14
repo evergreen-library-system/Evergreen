@@ -112,6 +112,9 @@
 						'func' : function (new_marcxml) {
 							try {
 								var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
+                                marc_view_reset = true;
+                                copy_browser_reset = true;
+                                hold_browser_reset = true;
 								if (typeof r.ilsevent != 'undefined') {
 									throw(r);
 								} else {
@@ -235,7 +238,7 @@
 					'url_prefix' : xulG.url_prefix,
 				};
 				if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
-				browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+    			browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
 			} catch(E) {
 				g.error.sdump('D_ERROR','set_opac: ' + E);
 			}
