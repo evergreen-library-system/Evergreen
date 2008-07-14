@@ -2229,10 +2229,11 @@
 <!ENTITY staff.patron.summary_overlay.overdue.value "Long Overdue:">
 <!ENTITY staff.patron.summary_overlay.claimed_returned.value "Claimed Returned:">
 <!ENTITY staff.patron.summary_overlay.lost_label.value "Lost:">
-<!ENTITY staff.patron.summary_overlay.noncat_label.value "Non Cat:">
+<!ENTITY staff.patron.summary_overlay.noncat_label.value "Non Cataloged:">
 <!ENTITY staff.patron.summary_overlay.summary_contact.label "ID and Contact Information">
 <!ENTITY staff.patron.summary_overlay.opac_login.value "OPAC Login:">
 <!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
+<!ENTITY staff.patron.user_edit.title "Evergreen User Editor">
 <!ENTITY staff.patron.user_edit.user_name.label "User Name:">
 <!ENTITY staff.patron.user_edit.barcode.label "Barcode:">
 <!ENTITY staff.patron.user_edit.firstname.label "First Name:">
