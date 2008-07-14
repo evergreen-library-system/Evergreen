@@ -78,6 +78,9 @@ function set_marc_edit() {
 				'func' : function (new_marcxml) {
 					try {
 						var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
+                        marc_view_reset = true;
+                        copy_browser_reset = true;
+                        hold_browser_reset = true;
 						if (typeof r.ilsevent != 'undefined') {
 							throw(r);
 						} else {

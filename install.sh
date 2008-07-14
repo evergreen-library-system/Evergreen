@@ -164,11 +164,6 @@ function runInstall {
 				fi;
 				;;
 
-			"openils_marcdumper" )
-				if building;	then $MAKE -C "$OPENILSDIR" "marcdumper"; fi;
-				if installing; then $MAKE -C "$OPENILSDIR" "marcdumper-install"; fi;
-				;;
-
 			"openils_db" )
 				if installing; then 
 					$MAKE -C "$OPENILSDIR" "storage-bootstrap"; 

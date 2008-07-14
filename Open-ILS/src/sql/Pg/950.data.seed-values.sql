@@ -1048,6 +1048,8 @@ INSERT INTO permission.perm_list VALUES
     (175, 'ADMIN_PROVIDER', oils_i18n_gettext('Allow a user to create/view/update/delete a provider')),
     (176, 'MANAGE_PROVIDER', oils_i18n_gettext('Allow a user to view and purchase from a provider')),
     (177, 'VIEW_PICKLIST', oils_i18n_gettext('Allow a user to view another users picklist'));
+INSERT INTO permission.perm_list VALUES 
+    (153, 'DELETE_RECORD', oils_i18n_gettext('Allow a staff member to directly remove a bibliographic record'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
