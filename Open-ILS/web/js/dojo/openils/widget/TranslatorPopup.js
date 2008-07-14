@@ -63,8 +63,12 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 
 			renderTranslatorPopup : function () {
-		
+
 				this._targetObject = dojox.jsonPath.query(window, '$.' + this.targetObject, {evalType:"RESULT"});
+
+				if (!this.unique && this._targetObject) {
+					this.unique = this._targetObject[this._targetObject.Identifier];
+				}
 
 				var node = dojo.byId(this.field + '_translation_' + this.unique);
 		
@@ -114,12 +118,12 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 		
 					dojo.query('.update_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 						dijit.form.Button,
-						{ onClick : dojo.hitch( this, 'updateTranslation') }
+						{ onClick : dojo.hitch( this, new Function('this.updateTranslation('+trans_id+')') ) }
 					);
 		
 					dojo.query('.delete_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 						dijit.form.Button,
-						{ onClick : dojo.hitch( this, 'removeTranslation') }
+						{ onClick : dojo.hitch( this, new Function('this.removeTranslation('+trans_id+')') ) }
 					);
 		
 					trans_tbody.appendChild( trans_row );
@@ -167,7 +171,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 			
 			removeTranslation : function (t) {
-				return changeTranslation('delete',t);
+				return this.changeTranslation('delete',t);
 			},
 			
 			changeTranslation : function (method, trans_id) {
@@ -201,32 +205,34 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 	
 			writeTranslation : function (method, trans_obj) {
 			
+				var _trans_widget = this;
+
 				OpenSRF.CachedClientSession('open-ils.permacrud').request({
 					method : 'open-ils.permacrud.' + method + '.i18n',
 					timeout: 10,
 					params : [ ses, trans_obj ],
 					onerror: function (r) {
 						//highlighter.editor_pane.red.play();
-						if (status_update) status_update( 'Problem saving translation for ' + this._targetObject[this.field]() );
+						if (status_update) status_update( 'Problem saving translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
 					},
 					oncomplete : function (r) {
 						var res = r.recv();
 						if ( res && res.content() ) {
 							//highlighter.editor_pane.green.play();
-							if (status_update) status_update( 'Saved changes to translation for ' + this._targetObject[this.field]() );
+							if (status_update) status_update( 'Saved changes to translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
 			
 							if (method == 'delete') {
 								dojo.NodeList(dojo.byId('translation_row_' + trans_obj.id())).orphan();
 							} else if (method == 'create') {
-								var node = dojo.byId(this.field + '_translation_' + this.unique);
-								dijit.byId('i18n_new_locale_' + this._targetObject.classname + '.' + this.field + this.unique).setValue(null);
-								dijit.byId('i18n_new_translation_' + this._targetObject.classname + '.' + this.field + this.unique).setValue(null);
-								this.renderTranslatorPopup();
+								var node = dojo.byId(_trans_widget.field + '_translation_' + _trans_widget.unique);
+								dijit.byId('i18n_new_locale_' + _trans_widget._targetObject.classname + '.' + _trans_widget.field + _trans_widget.unique).setValue(null);
+								dijit.byId('i18n_new_translation_' + _trans_widget._targetObject.classname + '.' + _trans_widget.field + _trans_widget.unique).setValue(null);
+								_trans_widget.renderTranslatorPopup();
 							}
 			
 						} else {
 							//highlighter.editor_pane.red.play();
-							if (status_update) status_update( 'Problem saving translation for ' + this._targetObject[this.field]() );
+							if (status_update) status_update( 'Problem saving translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
 						}
 					},
 				}).send();
