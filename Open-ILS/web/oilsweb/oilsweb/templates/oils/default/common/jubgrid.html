@@ -70,7 +70,7 @@ pointing to the JUB model (and store) that you have created.
         cells: [[
             {name:"ID", field:"id"},
             {name:"Fund", field:"fund",
-                get:JUBGrid.getLIDFundName,
+                get:JUBGrid.getLIDFundCode,
                 editor: openils.editors.FundSelectEditor,
             },
             {name:"Branch", field:"owning_lib",
@@ -96,11 +96,15 @@ pointing to the JUB model (and store) that you have created.
         cells: [[
             {name:"ID", field:"id"},
             {name:"Fund", field:"fund",
-             get:JUBGrid.getLIDFundName,
+             get:JUBGrid.getLIDFundCode,
             },
             {name:"Branch", field:"owning_lib",
-	     get:JUBGrid.getLIDLibName,
-	    },
+	            get:JUBGrid.getLIDLibName,
+	        },
+            {name:"Barcode", field:"barcode", width:'auto'},
+            {name:"Call Number", field:"cn_label", width:'auto'},
+            {name:"Shelving Location", field:"location", 
+                width:'auto', get:JUBGrid.getCopyLocation},
         ]]
     }];
     </script>

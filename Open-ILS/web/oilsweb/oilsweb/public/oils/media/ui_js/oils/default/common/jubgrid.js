@@ -69,6 +69,15 @@ var JUBGrid = {
             return data.fund;
         }
     },
+    getLIDFundCode : function(rowIndex) {
+        var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
+        if (!data || !data.fund) return;
+        try {
+            return openils.acq.Fund.retrieve(data.fund).code();
+        } catch (evt) {
+            return data.fund;
+        }
+    },
     getLIDLibName : function(rowIndex) {
         var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
         if (!data || !data.owning_lib) return;
