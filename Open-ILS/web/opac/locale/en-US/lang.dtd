@@ -143,7 +143,7 @@
 <!ENTITY staff.au_second_given_name_label "Second Given Name">
 <!ENTITY staff.au_settings_label "Settings">
 <!ENTITY staff.au_standing_label "Standing">
-<!ENTITY staff.au_stat_cat_entries_label "Stat Cat Entries">
+<!ENTITY staff.au_stat_cat_entries_label "Statistical Category Entries">
 <!ENTITY staff.au_suffix_label "Suffix">
 <!ENTITY staff.au_super_user_label "Super User">
 <!ENTITY staff.au_survey_responses_label "Survey Responses">
@@ -277,7 +277,7 @@
 <!ENTITY staff.cat.search_format "Format">
 <!ENTITY staff.cat.search_format.key "F">
 <!ENTITY staff.cat.search_id "System ID">
-<!ENTITY staff.cat.search_isbn "ISBN/ISSN">
+<!ENTITY staff.cat.search_isbn "ISBN or ISSN">
 <!ENTITY staff.cat.search_location "Location">
 <!ENTITY staff.cat.search_location.key "L">
 <!ENTITY staff.cat.search_order "Order">
@@ -507,14 +507,14 @@
 <!ENTITY staff.copy.transfer "Transfer Copy">
 <!ENTITY staff.copy.transfer.key "">
 <!ENTITY staff.copy.wizard.title "Batch Add Copies Wizard">
-<!ENTITY staff.copy_browser_interface_label "COPIES">
-<!ENTITY staff.copy_stat_cat_editor_interface_label "COPY STAT-CATS">
-<!ENTITY staff.display_patron_interface_label "DISPLAY PATRON">
+<!ENTITY staff.copy_browser_interface_label "Copies">
+<!ENTITY staff.copy_stat_cat_editor_interface_label "Copy statistical categories">
+<!ENTITY staff.display_patron_interface_label "Display patron">
 <!ENTITY staff.displaying.hits_per_page 'Results per page'>
 <!ENTITY staff.displaying.of 'of'>
 <!ENTITY staff.displaying.results 'Displaying results'>
-<!ENTITY staff.fieldmapper_label "FIELDMAPPER">
-<!ENTITY staff.filter_console_label "FCONSOLE">
+<!ENTITY staff.fieldmapper_label "Fieldmapper">
+<!ENTITY staff.filter_console_label "Filter Console">
 <!ENTITY staff.hold_capture.auto_print_label 'Auto-Print'>
 <!ENTITY staff.hold_capture.auto_print_label.accesskey 'A'>
 <!ENTITY staff.hold_capture.done_label 'Done'>
@@ -523,7 +523,7 @@
 <!ENTITY staff.hold_capture.print_receipt_label.accesskey ''>
 <!ENTITY staff.hold_capture.reprint_receipt_label 'Re-Print Last List'>
 <!ENTITY staff.hold_capture.reprint_receipt_label.accesskey 'L'>
-<!ENTITY staff.hold_capture_interface_label "HOLD CAPTURE">
+<!ENTITY staff.hold_capture_interface_label "Hold capture">
 <!ENTITY staff.hold_capture_patron.name.label 'Patron Name'>
 <!ENTITY staff.hold_capture_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.hold_capture_patron.retrieve.accesskey 'R'>
@@ -531,15 +531,15 @@
 <!ENTITY staff.holds_status_in_transit "In Transit">
 <!ENTITY staff.holds_status_waiting_for_capture "Copy found, waiting for capture">
 <!ENTITY staff.holds_status_waiting_for_copy "Waiting for available copy">
-<!ENTITY staff.items_out_interface_label "ITEMS OUT">
-<!ENTITY staff.javascript_console_label "CONSOLE">
-<!ENTITY staff.javascript_shell_label "JS SHELL">
+<!ENTITY staff.items_out_interface_label "Items out">
+<!ENTITY staff.javascript_console_label "Console">
+<!ENTITY staff.javascript_shell_label "JavaScript Shell">
 <!ENTITY staff.main.auth.caption "Authentication">
-<!ENTITY staff.main.auth.caption "Startup / Shutdown">
+<!ENTITY staff.main.auth.caption "Startup and Shutdown">
 <!ENTITY staff.main.auth.debug.caption "Debug Options">
 <!ENTITY staff.main.auth.debug.clear "Clear Cache">
 <!ENTITY staff.main.auth.debug.clear.accesskey "C">
-<!ENTITY staff.main.auth.debug.javascript "Javascript Console">
+<!ENTITY staff.main.auth.debug.javascript "JavaScript Console">
 <!ENTITY staff.main.auth.debug.javascript.accesskey "J">
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
@@ -563,9 +563,9 @@
 <!ENTITY staff.main.menu.admin.clear_cache.accesskey "3">
 <!ENTITY staff.main.menu.admin.clear_cache.label "Clear Cache">
 <!ENTITY staff.main.menu.admin.cmd_console.accesskey "J">
-<!ENTITY staff.main.menu.admin.cmd_console.label "Javascript Console">
+<!ENTITY staff.main.menu.admin.cmd_console.label "JavaScript Console">
 <!ENTITY staff.main.menu.admin.cmd_shell.accesskey "H">
-<!ENTITY staff.main.menu.admin.cmd_shell.label "Javascript Shell">
+<!ENTITY staff.main.menu.admin.cmd_shell.label "JavaScript Shell">
 <!ENTITY staff.main.menu.admin.cmd_test.label "Test Module">
 <!ENTITY staff.main.menu.admin.copy_location_edit.accesskey "L">
 <!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">
@@ -617,7 +617,7 @@
 <!ENTITY staff.main.menu.cat.create_marc.accesskey "N">
 <!ENTITY staff.main.menu.cat.create_marc.label "Create New Marc Record">
 <!ENTITY staff.main.menu.cat.dedup.key "M">
-<!ENTITY staff.main.menu.cat.dedup.label "Merge/Transfer Interface">
+<!ENTITY staff.main.menu.cat.dedup.label "Merge and Transfer Interface">
 <!ENTITY staff.main.menu.cat.edit_copy_buckets.accesskey "B">
 <!ENTITY staff.main.menu.cat.edit_copy_buckets.label "Manage Copy Buckets">
 <!ENTITY staff.main.menu.cat.edit_record_buckets.accesskey "R">
@@ -750,19 +750,19 @@
 <!ENTITY staff.main.menu.reports.key "">
 <!ENTITY staff.main.menu.reports.label "Reports">
 <!ENTITY staff.main.menu.search.catalog.accesskey "C">
-<!ENTITY staff.main.menu.search.catalog.label "the Catalog">
+<!ENTITY staff.main.menu.search.catalog.label "Search the Catalog">
 <!ENTITY staff.main.menu.search.copies.accesskey "B">
-<!ENTITY staff.main.menu.search.copies.label "for copies by Barcode">
+<!ENTITY staff.main.menu.search.copies.label "Search for copies by Barcode">
 <!ENTITY staff.main.menu.search.key "r">
 <!ENTITY staff.main.menu.search.label "Search">
 <!ENTITY staff.main.menu.search.patrons.accesskey "P">
-<!ENTITY staff.main.menu.search.patrons.label "for Patrons">
+<!ENTITY staff.main.menu.search.patrons.label "Search for Patrons">
 <!ENTITY staff.main.menu.search.patrons_barcode.accesskey "n">
-<!ENTITY staff.main.menu.search.patrons_barcode.label "for patron by Barcode">
+<!ENTITY staff.main.menu.search.patrons_barcode.label "Search for patron by Barcode">
 <!ENTITY staff.main.menu.search.record.accesskey "T">
-<!ENTITY staff.main.menu.search.record.label "for record by TCN">
+<!ENTITY staff.main.menu.search.record.label "Search for record by TCN">
 <!ENTITY staff.main.menu.search.record_via_id.accesskey "D">
-<!ENTITY staff.main.menu.search.record_via_id.label "for record by Record ID">
+<!ENTITY staff.main.menu.search.record_via_id.label "Search for record by Record ID">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">
@@ -1013,7 +1013,7 @@
 <!ENTITY staff.marc.LDR.type.short "Type"> 
 <!ENTITY staff.marc.close.editor.key "W">
 <!ENTITY staff.marc.display "Display">
-<!ENTITY staff.marc.display.control_fields "Toggle Control/Data Fields">
+<!ENTITY staff.marc.display.control_fields "Toggle Control and Data Fields">
 <!ENTITY staff.marc.display.control_fields.key "F">
 <!ENTITY staff.marc.display.cover_art "Toggle Cover Art">
 <!ENTITY staff.marc.display.cover_art.key "A">
@@ -1138,12 +1138,12 @@
 <!ENTITY staff.patron_navbar.info.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
 <!ENTITY staff.patron_navbar.items.accesskey 'I'>
-<!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost / Claimed Returned / Long Overdue / Has Unpaid Billings'>
+<!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost, Claimed Returned, Long Overdue, Has Unpaid Billings'>
 <!ENTITY staff.patron_navbar.refresh 'Refresh'>
 <!ENTITY staff.patron_navbar.refresh.accesskey 'R'>
 <!ENTITY staff.patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY staff.patron_navbar.retrieve.accesskey 'R'>
-<!ENTITY staff.patron_register_interface_label "NEW PATRON">
+<!ENTITY staff.patron_register_interface_label "New Patron">
 <!ENTITY staff.patron_search_form.caption 'Search for Patron'>
 <!ENTITY staff.patron_search_form.city.accesskey ''>
 <!ENTITY staff.patron_search_form.city.label 'City:'>
@@ -1171,11 +1171,11 @@
 <!ENTITY staff.patron_search_form.street1.label 'Address 1:'>
 <!ENTITY staff.patron_search_form.street2.accesskey ''>
 <!ENTITY staff.patron_search_form.street2.label 'Address 2:'>
-<!ENTITY staff.patron_search_interface_label "PATRON SEARCH">
-<!ENTITY staff.patron_stat_cat_editor_interface_label "PATRON STAT-CATS">
+<!ENTITY staff.patron_search_interface_label "Patron Search">
+<!ENTITY staff.patron_stat_cat_editor_interface_label "Patron Statistical Categories">
 <!ENTITY staff.previous.range 'Previous'>
 <!ENTITY staff.previous.range.key 'P'>
-<!ENTITY staff.receipt_template_editor_interface_label "RECEIPTS">
+<!ENTITY staff.receipt_template_editor_interface_label "Receipts">
 <!ENTITY staff.record_list.author "Author">
 <!ENTITY staff.record_list.copy_count "Copies&#740;">
 <!ENTITY staff.record_list.isbn "ISBN">
@@ -1189,21 +1189,21 @@
 <!ENTITY staff.survey.wizard.page1 "Initial Settings">
 <!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
 <!ENTITY staff.survey.wizard.title "Add a Survey Wizard">
-<!ENTITY staff.survey_admin_interface_label "SURVEY ADMIN">
+<!ENTITY staff.survey_admin_interface_label "Survey Administration">
 <!ENTITY staff.volume.attr.callnumber "Call Number">
 <!ENTITY staff.volume.attr.owning_lib "Owning Library">
 <!ENTITY staff.volume.wizard.page1 "Entering Volumes">
 <!ENTITY staff.volume.wizard.page2 "Entering Copies">
 <!ENTITY staff.volume.wizard.page3 "Entering Barcodes">
 <!ENTITY staff.volume.wizard.page4 "Entering Copy-Level Attribute Defaults">
-<!ENTITY staff.volume.wizard.title "Batch Add Volumes/Copies Wizard">
+<!ENTITY staff.volume.wizard.title "Batch Add Volumes or Copies Wizard">
 <!ENTITY staff.xuleditor_label "XUL TEST">
 <!ENTITY staff.z39_50.search_class.author "Author">
 <!ENTITY staff.z39_50.search_class.isbn "ISBN">
 <!ENTITY staff.z39_50.search_class.issn "ISSN">
 <!ENTITY staff.z39_50.search_class.item_type "Item Type">
 <!ENTITY staff.z39_50.search_class.item_type.all "All Formats"> 
-<!ENTITY staff.z39_50.search_class.item_type.art "Papers/Articles"> 
+<!ENTITY staff.z39_50.search_class.item_type.art "Papers or Articles"> 
 <!ENTITY staff.z39_50.search_class.item_type.bks "Books"> 
 <!ENTITY staff.z39_50.search_class.item_type.com "Computer files"> 
 <!ENTITY staff.z39_50.search_class.item_type.map "Maps"> 
@@ -1218,7 +1218,7 @@
 <!ENTITY staff.z39_50.search_class.publisher "Publisher">
 <!ENTITY staff.z39_50.search_class.tcn "Accession #">
 <!ENTITY staff.z39_50.search_class.title "Title">
-<!ENTITY staff.z39_50_import_interface_label "Z39.50 IMPORT">
+<!ENTITY staff.z39_50_import_interface_label "Z39.50 Import">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
@@ -1503,7 +1503,7 @@
 <!ENTITY staff.circ.checkin_overlay.sel_spine.label "Print Spine Label">
 <!ENTITY staff.circ.checkin_overlay.sel_spine.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.save_columns.label "Save Columns">
-<!ENTITY staff.circ.checkin_overlay.background_text "Check In / Process Item">
+<!ENTITY staff.circ.checkin_overlay.background_text "Check In or Process Item">
 <!ENTITY staff.circ.checkin_overlay.background_text.hold_capture "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.effective_date.label "Effective Date:">
 <!ENTITY staff.circ.checkin_overlay.actions.label "Actions for Selected Items">
@@ -1522,7 +1522,7 @@
 <!ENTITY staff.circ.checkout_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.checkout_overlay.save_columns.label "Save Columns">
 <!ENTITY staff.circ.checkout_overlay.strict_barcode.label "Strict Barcode">
-<!ENTITY staff.circ.circ_brief.patron_id.label "Circ ID: ">
+<!ENTITY staff.circ.circ_brief.patron_id.label "Circulation ID: ">
 <!ENTITY staff.circ.circ_brief.add_billing.label "Add Billing">
 <!ENTITY staff.circ.circ_brief.xact_start.label "Check Out Time">
 <!ENTITY staff.circ.circ_brief.due_date.label "Due Date">
@@ -2005,8 +2005,8 @@
 <!ENTITY staff.cat.spine_labels.inc_item_barcode.label "Include Item Barcode">
 <!ENTITY staff.cat.spine_labels.custom.label "Custom:">
 <!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
-<!ENTITY staff.cat.volume_copy_creator.title "Volume/Copy Editor">
-<!ENTITY staff.cat.volume_copy_creator.label "Volume/Copy Creator">
+<!ENTITY staff.cat.volume_copy_creator.title "Volume and Copy Editor">
+<!ENTITY staff.cat.volume_copy_creator.label "Volume and Copy Creator">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">
@@ -2173,10 +2173,15 @@
 <!ENTITY staff.patron.display_overlay.search_form.accesskey "F">
 <!ENTITY staff.patron.display_overlay.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.patron.display_overlay.retrieve_patron.accesskey "R">
+<!ENTITY staff.patron.bills_overlay.selected_balance.value "Selected Balance:">
+<!ENTITY staff.patron.bills_overlay.unselected.value "Un-Selected:">
+<!ENTITY staff.patron.bills_overlay.voided.value "Voided:">
+<!ENTITY staff.patron.bills_overlay.auto_print.label "Auto-Print">
 <!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
 <!ENTITY staff.patron.hold_notices.close_window.label "Close">
 <!ENTITY staff.patron.hold_notices.close_window.accesskey "C">
+<!ENTITY staff.patron.hold_notices.method.label "Method:">
 <!ENTITY staff.patron.holds_overlay.pickup_lib.label "Pickup Library">
 <!ENTITY staff.patron.holds_overlay.request_lib.label "Requesting Library">
 <!ENTITY staff.patron.holds_overlay.fulfillment_lib.label "Fulfilling Library">
@@ -2207,7 +2212,7 @@
 <!ENTITY staff.patron.info_surveys.answer.value "Answer:">
 <!ENTITY staff.patron.info.notes.label "Notes">
 <!ENTITY staff.patron.info.notes.accesskey "N">
-<!ENTITY staff.patron.info.stat_cats.label "Stat Cats">
+<!ENTITY staff.patron.info.stat_cats.label "Statistical Categories">
 <!ENTITY staff.patron.info.stat_cats.accesskey "S">
 <!ENTITY staff.patron.info.surveys.label "Surveys">
 <!ENTITY staff.patron.info.surveys.accesskey "y">
@@ -2225,8 +2230,262 @@
 <!ENTITY staff.patron.summary_overlay.claimed_returned.value "Claimed Returned:">
 <!ENTITY staff.patron.summary_overlay.lost_label.value "Lost:">
 <!ENTITY staff.patron.summary_overlay.noncat_label.value "Non Cat:">
-<!ENTITY staff.patron.summary_overlay.summary_contact.label "ID/Contact Info">
+<!ENTITY staff.patron.summary_overlay.summary_contact.label "ID and Contact Information">
 <!ENTITY staff.patron.summary_overlay.opac_login.value "OPAC Login:">
 <!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
 <!ENTITY staff.patron.user_edit.user_name.label "User Name:">
 <!ENTITY staff.patron.user_edit.barcode.label "Barcode:">
+<!ENTITY staff.patron.user_edit.firstname.label "First Name:">
+<!ENTITY staff.patron.user_edit.middlename.label "Middle Name:">
+<!ENTITY staff.patron.user_edit.lastname.label "Last Name:">
+<!ENTITY staff.patron.user_edit.working_location.label "Working Location">
+<!ENTITY staff.patron.user_edit.permission.label "Permission">
+<!ENTITY staff.patron.user_edit.applied.label "Applied">
+<!ENTITY staff.patron.user_edit.depth.label "Depth">
+<!ENTITY staff.patron.user_edit.grantable.label "Grantable">
+<!ENTITY staff.patron.user_edit.save.label "Save">
+<!ENTITY staff.patron.ue.ev_user_editor.label "Evergreen User Editor">
+<!ENTITY staff.patron.ue.user_greeting.label "Welcome ">
+<!ENTITY staff.patron.ue.interface_note.label "Note: required or invalid fields are <span style='border-bottom: 2px solid red;'>marked with color</span>">
+<!ENTITY staff.patron.ue.view_errors.label "View Errors">
+<!ENTITY staff.patron.ue.nav.user_id.label "1. User Identification">
+<!ENTITY staff.patron.ue.nav.contact_info.label "2. Contact Info">
+<!ENTITY staff.patron.ue.nav.addresses.label "3. Addresses">
+<!ENTITY staff.patron.ue.nav.groups_permissions.label "4. Groups and Permissions">
+<!ENTITY staff.patron.ue.nav.stat_categories.label "5. Statistical Categories">
+<!ENTITY staff.patron.ue.nav.surveys.label "6. Surveys">
+<!ENTITY staff.patron.ue.nav.finish.label "7. Finish">
+<!ENTITY staff.patron.ue.loading_data.label "Loading data...">
+<!ENTITY staff.patron.ue.found_duplicate_patron.label "Number of possible duplicate patron(s):">
+<!ENTITY staff.patron.ue.mark_lost.label "Mark Lost">
+<!ENTITY staff.patron.ue.username.label "Username">
+<!ENTITY staff.patron.ue.password.label "Password">
+<!ENTITY staff.patron.ue.reset.label "Reset">
+<!ENTITY staff.patron.ue.re_password.label "Password: ">
+<!ENTITY staff.patron.ue.verify_password.label "Verify Password">
+<!ENTITY staff.patron.ue.first_name.label "First Name">
+<!ENTITY staff.patron.ue.middle_name.label "Middle Name">
+<!ENTITY staff.patron.ue.last_name.label "Last Name">
+<!ENTITY staff.patron.ue.suffix.label "Suffix">
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
+<!ENTITY staff.patron.ue.choose.label "- Pick -">
+<!ENTITY staff.patron.ue.dob.label "Date of Birth">
+<!ENTITY staff.patron.ue.primary_id_type.label "Primary Identification Type">
+<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!ENTITY staff.patron.ue.required.label " -- Required -- ">
+<!ENTITY staff.patron.ue.primary_id.label "Primary Identification">
+<!ENTITY staff.patron.ue.secondary_id_type.label "Secondary Identification Type">
+<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!ENTITY staff.patron.ue.none_selected.label " -- None Selected -- ">
+<!ENTITY staff.patron.ue.secondary_id.label "Secondary Identification">
+<!ENTITY staff.patron.ue.parent_guardian.label "Parent or Guardian">
+<!ENTITY staff.patron.ue.email_address.label "Email Address">
+<!ENTITY staff.patron.ue.day_phone.label "Daytime Phone">
+<!ENTITY staff.patron.ue.evening_phone.label "Evening Phone">
+<!ENTITY staff.patron.ue.other_phone.label "Other/Cell Phone">
+<!ENTITY staff.patron.ue.home_library.label "Home Library">
+<!ENTITY staff.patron.ue.address.label "Address">
+<!ENTITY staff.patron.ue.in_city_limits.label "Within City Limits">
+<!ENTITY staff.patron.ue.valid.label "Valid">
+<!ENTITY staff.patron.ue.mailing_address.label "Mailing Address">
+<!ENTITY staff.patron.ue.physical_address.label "Physical Address">
+<!ENTITY staff.patron.ue.owned_address.label "Address is owned by">
+<!ENTITY staff.patron.ue.edit.label "Edit">
+<!ENTITY staff.patron.ue.label.label "Label">
+<!ENTITY staff.patron.ue.zip_code.label "Zip Code">
+<!ENTITY staff.patron.ue.street_1.label "Street 1">
+<!ENTITY staff.patron.ue.street_2.label "Street 2">
+<!ENTITY staff.patron.ue.city.label "City">
+<!ENTITY staff.patron.ue.county.label "County">
+<!ENTITY staff.patron.ue.state.label "State">
+<!ENTITY staff.patron.ue.country.label "Country">
+<!ENTITY staff.patron.ue.delete_this_address.label "Delete this Address">
+<!ENTITY staff.patron.ue.detach_this_address.label "Detach this Address">
+<!ENTITY staff.patron.ue.create_address.label "Create a New Address">
+<!ENTITY staff.patron.ue.profile_group.label "Profile Group">
+<!ENTITY staff.patron.ue.accoutn_expire_date.label "Account Expiration Date">
+<!ENTITY staff.patron.ue.internet_access_level.label "Internet Access Level">
+<!ENTITY staff.patron.ue.active.label "Active">
+<!ENTITY staff.patron.ue.barred.label "Barred">
+<!ENTITY staff.patron.ue.set_lead_account.label "Set as Family or Group Lead Account">
+<!ENTITY staff.patron.ue.claims_returned_count.label "Claims Returned Count">
+<!ENTITY staff.patron.ue.alert_message.label "Alert Message">
+<!ENTITY staff.patron.ue.stat_cat_name.label "Statistical Category Name">
+<!ENTITY staff.patron.ue.owner.label "Owner">
+<!ENTITY staff.patron.ue.value.label "Value">
+<!ENTITY staff.patron.ue.none_selected.label "None Selected">
+<!ENTITY staff.patron.ue.no_surveys_for_location.label "No surveys have been created for this location.">
+<!ENTITY staff.patron.ue.message1.label "You are now ready to save the user to the database.">
+<!ENTITY staff.patron.ue.message2.label "To view or print a summary of the changes, click on the 'View Summary' link.">
+<!ENTITY staff.patron.ue.message3.label "To save the user, click on the 'Save User' button.">
+<!ENTITY staff.patron.ue.view_summary.label "View Summary">
+<!ENTITY staff.patron.ue.back.label "Back">
+<!ENTITY staff.patron.ue.forward.label "Forward">
+<!ENTITY staff.patron.ue.user_summary.label "User Summary Information (Deleted items are marked in <span class='deleted'>color</span><span>)</span>">
+<!ENTITY staff.patron.ue.barcode.label "Barcode">
+<!ENTITY staff.patron.ue.addresses.label "Addresses">
+<!ENTITY staff.patron.ue.address_label.label "Address Label">
+<!ENTITY staff.patron.ue.billing_address.label "Billing Address">
+<!ENTITY staff.patron.ue.profile.label "Profile">
+<!ENTITY staff.patron.ue.active.label "Active">
+<!ENTITY staff.patron.ue.barred.label "Barred">
+<!ENTITY staff.patron.ue.expire_date.label "Expire Date">
+<!ENTITY staff.patron.ue.family_lead_account.label "Family Lead Account">
+<!ENTITY staff.patron.ue.stat_categories.label "Statistical Categories">
+<!ENTITY staff.patron.ue.survey.label "Survey">
+<!ENTITY staff.patron.ue.question.label "Question">
+<!ENTITY staff.patron.ue.answer.label "Answer">
+<!ENTITY staff.patron.ue.bad_dob.label "The date of birth field is not formatted correctly.  We are expecting YYYY-MM-DD">
+<!ENTITY staff.patron.ue.bad_username.label "Username is invalid">
+<!ENTITY staff.patron.ue.bad_passwords.label "Passwords do not match or are invalid">
+<!ENTITY staff.patron.ue.bad_firstname.label "First name is invalid">
+<!ENTITY staff.patron.ue.bad_middlename.label "Middle name is invalid">
+<!ENTITY staff.patron.ue.bad_lastname.label "Last name is invalid">
+<!ENTITY staff.patron.ue.bad_barcode.label "Barcode is invalid">
+<!ENTITY staff.patron.ue.duplicate_barcode.label "The selected barcode already exists in the database">
+<!ENTITY staff.patron.ue.new_barcode_warn.label "This will de-activate the existing barcode for this user!  If you wish to continue, enter the new barcode below.  Otherwise, click the Cancel button.">
+<!ENTITY staff.patron.ue.no_ident.label "You must select at least one type of identification">
+<!ENTITY staff.patron.ue.bad_ident_dl.label "Invalid drivers license. Should be STATE-NUMBER">
+<!ENTITY staff.patron.ue.bad_ident_ssn.label "Invalid social security number.  Format should be 111-22-3333">
+<!ENTITY staff.patron.ue.bad_email.label "The email addresses is not valid">
+<!ENTITY staff.patron.ue.bad_phone.label "An invalid phone number was entered">
+<!ENTITY staff.patron.ue.no_profile.label "A profile group must be selected">
+<!ENTITY staff.patron.ue.bad_expire.label "The user expiration date is invalid.  We are expecting YYYY-MM-DD">
+<!ENTITY staff.patron.ue.bad_claims_returned.label "The claims returned count is invalid">
+<!ENTITY staff.patron.ue.unknown_error.label "An unknown formatting error occurred">
+<!ENTITY staff.patron.ue.bad_addr_label.label "Address label is invalid">
+<!ENTITY staff.patron.ue.bad_addr_street.label "Address street is invalid">
+<!ENTITY staff.patron.ue.bad_addr_city.label "Address city is invalid">
+<!ENTITY staff.patron.ue.bad_addr_county.label "Address county is invalid">
+<!ENTITY staff.patron.ue.bad_addr_state.label "Address state is invalid">
+<!ENTITY staff.patron.ue.bad_addr_country.label "Address country is invalid">
+<!ENTITY staff.patron.ue.bad_addr_zip.label "Address zip is invalid">
+<!ENTITY staff.patron.ue.bad_survey.label "Required survey is unanswered">
+<!ENTITY staff.patron.ue.delete_addr_warn.label "This will remove this address from the user. Are you sure you wish to continue?">
+<!ENTITY staff.patron.ue.yes.label "Yes">
+<!ENTITY staff.patron.ue.no.label "No">
+<!ENTITY staff.patron.ue.summary_window.label "Patron Summary">
+<!ENTITY staff.patron.ue.success.label "User update succeeded">
+<!ENTITY staff.patron.ue.dup_ident1.label "A user already exists with the primary identification provided.  Do you wish to view the duplicate record now?">
+<!ENTITY staff.patron.ue.dup_username.label "The selected username is in use by another user. Please choose a different username.">
+<!ENTITY staff.patron.ue.dup_barcode.label "The selected barcode is in use by another user.  Please choose a different barcode.">
+<!ENTITY staff.patron.ue.cancel_confirm.label "Are you sure you wish to cancel this editing session? Canceling will destroy any unsaved changes you have made thus far to the user.">
+<!ENTITY staff.patron.ue.juv_guardian.label "This patron is under 18 years of age.  Please enter the name of the parent or guardian for this patron.">
+<!ENTITY staff.patron.ue.bad_date.label "The date provided is either in the future or invalid.  We are expecting YYYY-MM-DD">
+<!ENTITY staff.patron.ue.made_barred.label "Please add a note to the patron's alert message explaining why the patron is barred.">
+<!ENTITY staff.patron.items_overlay.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.patron.items_overlay.sel_clip.accesskey "C">
+<!ENTITY staff.patron.items_overlay.sel_bucket.label "Add to Item Bucket">
+<!ENTITY staff.patron.items_overlay.sel_bucket.accesskey "A">
+<!ENTITY staff.patron.items_overlay.show_catalog.label "Show in Catalog">
+<!ENTITY staff.patron.items_overlay.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.patron.items_overlay.sel_copy_details.accesskey "I">
+<!ENTITY staff.patron.items_overlay.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.patron.items_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.patron.items_overlay.items_edit.label "Edit Due Date">
+<!ENTITY staff.patron.items_overlay.items_mark_lost.label "Mark Lost (by Patron)">
+<!ENTITY staff.patron.items_overlay.items_claimed_returned.label "Mark Claimed Returned">
+<!ENTITY staff.patron.items_overlay.items_renew.label "Renew">
+<!ENTITY staff.patron.items_overlay.items_renew_all.label "Renew All">
+<!ENTITY staff.patron.items_overlay.items_checkin.label "Check In">
+<!ENTITY staff.patron.items_overlay.add_billing.label "Add Billing">
+<!ENTITY staff.patron.items_overlay.save_columns.label "Save Columns">
+<!ENTITY staff.patron.items_overlay.actions_for_selected_items.label "Actions for Selected Items">
+<!ENTITY staff.patron.items_overlay.actions_for_selected_items.accesskey "S">
+<!ENTITY staff.patron.items_overlay.show_noncats.label "Show Non-Cataloged Circulations in List Above">
+<!ENTITY staff.patron.items_overlay.show_noncats.accesskey "N">
+<!ENTITY staff.patron.items_overlay.items_export.label "Export">
+<!ENTITY ev.staff.patron.ue_xhtml.ev_user_editor.label "Evergreen User Editor">
+<!ENTITY ev.staff.patron.ue_xhtml.welcome.label "Welcome ">
+<!ENTITY ev.staff.patron.ue_xhtml.view_errors.label "View Errors">
+<!ENTITY ev.staff.patron.ue_xhtml.user_id.label "1. User Identification">
+<!ENTITY ev.staff.patron.ue_xhtml.contact_info.label "2. Contact Info">
+<!ENTITY ev.staff.patron.ue_xhtml.addresses.label "3. Addresses">
+<!ENTITY ev.staff.patron.ue_xhtml.groups_permissions.label "4. Groups and Permissions">
+<!ENTITY ev.staff.patron.ue_xhtml.statistical_categories.label "5. Statistical Categories">
+<!ENTITY ev.staff.patron.ue_xhtml.surveys.label "6. Surveys">
+<!ENTITY ev.staff.patron.ue_xhtml.finish.label "7. Finish">
+<!ENTITY ev.staff.patron.ue_xhtml.loading_data.label "Loading data...">
+<!ENTITY ev.staff.patron.ue_xhtml.found_duplicate_patron.label "Number of possible duplicate patron(s):">
+<!ENTITY ev.staff.patron.ue_xhtml.barcode.label "Barcode">
+<!ENTITY ev.staff.patron.ue_xhtml.mark_lost.label "Mark Lost">
+<!ENTITY ev.staff.patron.ue_xhtml.username.label "Username">
+<!ENTITY ev.staff.patron.ue_xhtml.password.label "Password">
+<!ENTITY ev.staff.patron.ue_xhtml.reset.label "Reset">
+<!ENTITY ev.staff.patron.ue_xhtml.re_password.label "Password: ">
+<!ENTITY ev.staff.patron.ue_xhtml.verify_password.label "Verify Password">
+<!ENTITY ev.staff.patron.ue_xhtml.first_name.label "First Name">
+<!ENTITY ev.staff.patron.ue_xhtml.middle_name.label "Middle Name">
+<!ENTITY ev.staff.patron.ue_xhtml.last_name.label "Last Name">
+<!ENTITY ev.staff.patron.ue_xhtml.suffix.label "Suffix">
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
+<!ENTITY ev.staff.patron.ue_xhtml.pick_suffix.label "- Pick -">
+<!ENTITY ev.staff.patron.ue_xhtml.dob.label "Date of Birth">
+<!ENTITY ev.staff.patron.ue_xhtml.primary_id_type.label "Primary Identification Type">
+<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
+<!ENTITY ev.staff.patron.ue_xhtml.primary_id.label "Primary Identification">
+<!ENTITY ev.staff.patron.ue_xhtml.parent_guardian.label "Parent or Guardian">
+<!ENTITY ev.staff.patron.ue_xhtml.email_address.label "Email Address">
+<!ENTITY ev.staff.patron.ue_xhtml.daytime_phone.label "Daytime Phone">
+<!ENTITY ev.staff.patron.ue_xhtml.evening_phone.label "Evening Phone">
+<!ENTITY ev.staff.patron.ue_xhtml.other_phone.label "Other (Cell Phone)">
+<!ENTITY ev.staff.patron.ue_xhtml.home_library.label "Home Library">
+<!ENTITY ev.staff.patron.ue_xhtml.address.label "Address">
+<!ENTITY ev.staff.patron.ue_xhtml.in_city_limits.label "Within City Limits">
+<!ENTITY ev.staff.patron.ue_xhtml.valid.label "Valid">
+<!ENTITY ev.staff.patron.ue_xhtml.mailing_address.label "Mailing Address">
+<!ENTITY ev.staff.patron.ue_xhtml.physical_address.label "Physical Address">
+<!ENTITY ev.staff.patron.ue_xhtml.address_owned_by.label "Address is owned by">
+<!ENTITY ev.staff.patron.ue_xhtml.label.label "Label">
+<!ENTITY ev.staff.patron.ue_xhtml.zip.label "Zip">
+<!ENTITY ev.staff.patron.ue_xhtml.street1.label "Street 1">
+<!ENTITY ev.staff.patron.ue_xhtml.street2.label "Street 2">
+<!ENTITY ev.staff.patron.ue_xhtml.city.label "City">
+<!ENTITY ev.staff.patron.ue_xhtml.conuty.label "County">
+<!ENTITY ev.staff.patron.ue_xhtml.state.label "State">
+<!ENTITY ev.staff.patron.ue_xhtml.country.label "Country">
+<!ENTITY ev.staff.patron.ue_xhtml.profile_group.label "Profile Group">
+<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
+<!ENTITY ev.staff.patron.ue_xhtml.account_expiration_date.label "Account Expiration Date">
+<!ENTITY ev.staff.patron.ue_xhtml.net_access_level.label "Internet Access Level">
+<!ENTITY ev.staff.patron.ue_xhtml.active.label "Active">
+<!ENTITY ev.staff.patron.ue_xhtml.barred.label "Barred">
+<!ENTITY ev.staff.patron.ue_xhtml.set_family_group_lead_account.label "Set as Family or Group Lead Account">
+<!ENTITY ev.staff.patron.ue_xhtml.claims_returned_count.label "Claims Returned Count">
+<!ENTITY ev.staff.patron.ue_xhtml.alert_message.label "Alert Message">
+<!ENTITY ev.staff.patron.ue_xhtml.stat_cat_name.label "Statistical Category Name">
+<!ENTITY ev.staff.patron.ue_xhtml.owner.label "Owner">
+<!ENTITY ev.staff.patron.ue_xhtml.value.label "Value">
+<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!ENTITY ev.staff.patron.ue_xhtml.none_selected.label " -- None Selected -- ">
+<!ENTITY ev.staff.patron.ue_xhtml.no_surveys_for_location.label "No surveys have been created for this location.">
+<!ENTITY ev.staff.patron.ue_xhtml.finishing_message.label "You are now ready to save the user to the database.<br/>To view or print a summary of the changes, click on the 'View Summary' link.<br/>To save the user, click on the 'Save User' button.">
+<!ENTITY ev.staff.patron.ue_xhtml.back.label "Back">
+<!ENTITY ev.staff.patron.ue_xhtml.forward.label "Forward">
+<!ENTITY ev.staff.patron.ue_xhtml.secondary_id_type.label "Secondary Identification Type">
+<!ENTITY ev.staff.patron.ue_xhtml.secondary_id.label "Secondary Identification">
+<!ENTITY ev.staff.patron.ue_xhtml.addresses.label "Addresses">
+<!ENTITY ev.staff.patron.ue_xhtml.address_label.label "Address Label">
+<!ENTITY ev.staff.patron.ue_xhtml.mailing.label "Mailing">
+<!ENTITY ev.staff.patron.ue_xhtml.billing.label "Billing">
+<!ENTITY ev.staff.patron.ue_xhtml.profile.label "Profile">
+<!ENTITY ev.staff.patron.ue_xhtml.expire_date.label "Expire Date">
+<!ENTITY ev.staff.patron.ue_xhtml.family_lead_account.label "Family Lead Account">
+<!ENTITY ev.staff.patron.ue_xhtml.alert_message.label "Alert Message">
+<!ENTITY ev.staff.patron.ue_xhtml.stat_categories.label "Statistical Categories">
+<!ENTITY ev.staff.patron.ue_xhtml.survey.label "Survey">
+<!ENTITY ev.staff.patron.ue_xhtml.question.label "Question">
+<!ENTITY ev.staff.patron.ue_xhtml.answer.label "Answer">
+<!ENTITY ev.staff.patron.ue_xhtml.claims_return_confirm.label "This will reset the claims returned count for this user. Are you sure you wish to perform this action?">
+<!ENTITY ev.staff.patron.ue_xhtml.unsaved_changes.label "You have unsaved changes.">
+<!ENTITY ev.staff.patron.ue_xhtml.xact_collision.label "It appears that someone else was also editing this user. Saving the user now will destroy their changes.  Click 'OK' to refresh the user and continue editing. Click 'Cancel' to do nothing. Note that you will not be able to save the user until this page has been refreshed.">
+<!ENTITY ev.staff.patron.ue_xhtml.no_profile.label "A profile group must be selected">
+<!ENTITY ev.staff.patron.ue_xhtml.print_page.label "Print Page">
+<!ENTITY ev.staff.patron.ue_xhtml.return_to_editor.label "Return to Editor">
+<!ENTITY ev.staff.patron.ue_xhtml.save_user.value "Save User">
+<!ENTITY ev.staff.patron.ue_xhtml.save_clone_user.value "Save and Clone User">
+<!ENTITY ev.staff.patron.ue_xhtml.cancel.value "Cancel">
+<!ENTITY ev.staff.patron.ue_xhtml.alert_message_reset.value "Clear">
+<!ENTITY ev.staff.patron.ue_xhtml.date_selector.label "Date selector">

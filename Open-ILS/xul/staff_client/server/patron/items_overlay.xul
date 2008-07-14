@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="items_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -11,37 +11,37 @@
 
 <popupset id="items_popupset">
 	<popup id="items_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
-		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
-		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_clip" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;"/>
+		<menuitem command="sel_bucket" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
+		<menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog" />
+		<menuitem command="sel_copy_details" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
+		<menuitem command="sel_patron" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
 		<menuseparator />
-		<menuitem label="Edit Due Date" command="cmd_items_edit" />
-		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
-		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
-		<menuitem label="Renew" command="cmd_items_renew" />
-		<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
-		<menuitem label="Check In" command="cmd_items_checkin" />
-		<menuitem label="Add Billing" command="cmd_add_billing" />
+		<menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit" />
+		<menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost" />
+		<menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
+		<menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew" />
+		<menuitem label="&staff.patron.items_overlay.items_renew_all.label;" command="cmd_items_renew_all" hidden="false"/>
+		<menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin" />
+		<menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing" />
 		<menuseparator />
-		<menuitem command="save_columns" label="Save Columns"/>
+		<menuitem command="save_columns" label="&staff.patron.items_overlay.save_columns.label;"/>
 	</popup>
 	<popup id="items_actions2" position="at_pointer"> 
-		<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
-		<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
-		<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
-		<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
-		<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_clip2" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;" />
+		<menuitem command="sel_bucket2" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
+		<menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog2" />
+		<menuitem command="sel_copy_details2" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
+		<menuitem command="sel_patron2" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
 		<menuseparator />
-		<menuitem label="Edit Due Date" command="cmd_items_edit2" />
-		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost2" />
-		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned2" />
-		<menuitem label="Renew" command="cmd_items_renew2" />
-		<menuitem label="Check In" command="cmd_items_checkin2" />
-		<menuitem label="Add Billing" command="cmd_add_billing2" />
+		<menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit2" />
+		<menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
+		<menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned2" />
+		<menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew2" />
+		<menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin2" />
+		<menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing2" />
 		<menuseparator />
-		<menuitem command="save_columns2" label="Save Columns"/>
+		<menuitem command="save_columns2" label="&staff.patron.items_overlay.save_columns.label;"/>
 	</popup>
 
 </popupset>
@@ -79,23 +79,23 @@
 <hbox id="items_top_ui" flex="1">
 	<spacer id="pcii3s" flex="1"/>
 	<menubar>
-		<menu label="Actions for Selected Items" accesskey="S">
+		<menu label="&staff.patron.items_overlay.actions_for_selected_items.label;" accesskey="&staff.patron.items_overlay.actions_for_selected_items.accesskey;">
 			<menupopup>
-				<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-				<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
-				<menuitem label="Show in Catalog" command="cmd_show_catalog" />
-				<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-				<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+				<menuitem command="sel_clip" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;"/>
+				<menuitem command="sel_bucket" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
+				<menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog" />
+				<menuitem command="sel_copy_details" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
+				<menuitem command="sel_patron" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
 				<menuseparator />
-				<menuitem label="Edit Due Date" command="cmd_items_edit" />
-				<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
-				<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
-				<menuitem label="Renew" command="cmd_items_renew" />
-				<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
-				<menuitem label="Check In" command="cmd_items_checkin" />
-				<menuitem label="Add Billing" command="cmd_add_billing" />
+				<menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit" />
+				<menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost" />
+				<menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
+				<menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew" />
+				<menuitem label="&staff.patron.items_overlay.items_renew_all.label;" command="cmd_items_renew_all" hidden="false"/>
+				<menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin" />
+				<menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing" />
 				<menuseparator />
-				<menuitem command="save_columns" label="Save Columns"/>
+				<menuitem command="save_columns" label="&staff.patron.items_overlay.save_columns.label;"/>
 			</menupopup>
 		</menu>
 	</menubar>
@@ -104,22 +104,22 @@
 <hbox id="items_top_ui2" flex="1">
 	<spacer id="pcii3s2" flex="1"/>
 	<menubar>
-		<menu label="Actions for Selected Items" old_accesskey="S">
+		<menu label="&staff.patron.items_overlay.actions_for_selected_items.label;" old_accesskey="&staff.patron.items_overlay.actions_for_selected_items.accesskey;">
 			<menupopup>
-				<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
-				<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
-				<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
-				<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
-				<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
+				<menuitem command="sel_clip2" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;" />
+				<menuitem command="sel_bucket2" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
+				<menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog2" />
+				<menuitem command="sel_copy_details2" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
+				<menuitem command="sel_patron2" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
 				<menuseparator />
-				<menuitem label="Edit Due Date" command="cmd_items_edit2" />
-				<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost2" />
-				<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned2" />
-				<menuitem label="Renew" command="cmd_items_renew2" />
-				<menuitem label="Check In" command="cmd_items_checkin2" />
-				<menuitem label="Add Billing" command="cmd_add_billing2" />
+				<menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit2" />
+				<menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
+				<menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned2" />
+				<menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew2" />
+				<menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin2" />
+				<menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing2" />
 				<menuseparator />
-				<menuitem command="save_columns2" label="Save Columns"/>
+				<menuitem command="save_columns2" label="&staff.patron.items_overlay.save_columns.label;"/>
 			</menupopup>
 		</menu>
 	</menubar>
@@ -127,22 +127,16 @@
 
 
 <hbox id="items_bottom_ui" flex="1">
-	<button id="noncat" label="Show Non-Cataloged Circulations in List Above" command="cmd_show_noncats" accesskey="N"/>
+	<button id="noncat" label="&staff.patron.items_overlay.show_noncats.label;" command="cmd_show_noncats" accesskey="&staff.patron.items_overlay.show_noncats.accesskey;"/>
 	<spacer flex="1"/>
 	<button id="items_print" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print" accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
-	<button id="items_export" 
-		label="Export"
-		command="cmd_items_export"
-		accesskey=""/>
+	<button id="items_export" label="&staff.patron.items_overlay.items_export.label;" command="cmd_items_export" accesskey=""/>
 </hbox>
 
 <hbox id="items_bottom_ui2" flex="1">
 	<spacer flex="1"/>
 	<button id="items_print2" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print2" old_accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
-	<button id="items_export2" 
-		label="Export"
-		command="cmd_items_export2"
-		accesskey=""/>
+	<button id="items_export2" label="&staff.patron.items_overlay.items_export.label;" command="cmd_items_export2" accesskey=""/>
 </hbox>
 
 </overlay>

@@ -12,9 +12,9 @@
 <box id="bills_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="bills_top_ui" />
 	<hbox>
-		<label style="font-weight: bold;" value="Selected Balance:"/><label id="selected_balance"/>
-		<label style="font-weight: bold;" value="Un-Selected:"/><label id="unselected_balance"/>
-		<label style="font-weight: bold;" value="Voided:"/><label id="voided_balance"/>
+		<label style="font-weight: bold;" value="&staff.patron.bills_overlay.selected_balance.value;"/><label id="selected_balance"/>
+		<label style="font-weight: bold;" value="&staff.patron.bills_overlay.unselected.value;"/><label id="unselected_balance"/>
+		<label style="font-weight: bold;" value="staff.patron.bills_overlay.voided.value;"/><label id="voided_balance"/>
 		<spacer flex="1"/>
 		<label id="circulating_hint" hidden="true" style="background: red; color: white" value="&staff.patron.bills_overlay.still_checked_out.label;"/>
 	</hbox>
@@ -110,7 +110,7 @@
 		<button id="bill_history" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" command="cmd_bill_history"/>
 		<spacer flex="2"/>
 		<checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" persist="checked" checked="false" />
-		<checkbox id="auto_print" label="Auto-Print" persist="checked" checked="true" />
+		<checkbox id="auto_print" label="&staff.patron.bills_overlay.auto_print.label;" persist="checked" checked="true" />
 		<button class="hide_patron_credit" hidden="true" disabled="true" id="change_to_credit" label="&staff.patron.bills_overlay.convert_change_to_credit.label;" command="cmd_change_to_credit"/>
 		<button id="bill_apply_payment" label="&staff.patron.bills_overlay.apply_payment.label;" accesskey="&staff.patron.bills_overlay.apply_payment.accesskey;" command="cmd_bill_apply_payment"/>
 	</hbox>

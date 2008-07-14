@@ -3,14 +3,14 @@
 <!DOCTYPE html PUBLIC 
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
 ]>
-
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: User Editor</title>
+		<title>&staff.patron.ue.ev_user_editor.label;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script> 
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -83,15 +83,17 @@
 
 		</style>
 	</head>
+	
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
 	<body onload='uEditInit();'>
 
 	<center>
 
-		<h2>Evergreen User Editor</h2>
+		<h2>&staff.patron.ue.ev_user_editor.label;</h2>
 
 		<div style='position:absolute; top: 5px; right: 5px;'>
-			<span>Welcome </span><b><span id='uedit_user'/></b>
+			<span>&staff.patron.ue.user_greeting.label;</span><b><span id='uedit_user'/></b>
 		</div>
 
 		<hr/><br/>
@@ -103,14 +105,13 @@
 				<tr>
 					<td align='left' width='80%'>
 						<b>
-							<span>Note: required or invalid fields are </span>
-							<span style='border-bottom: 2px solid red;'>marked with color</span>
+							<span>&staff.patron.ue.interface_note.label;</span>
 						</b>
 					</td>
 					<td align='right' width='20%'>
 						<a class='hide_me' id='ue_errors' href='javascript:void(0);' 
 							style='color: red; font-size: 12pt; font-weight: bold' onclick='uEditAlertErrors();'>
-							View Errors
+							&staff.patron.ue.view_errors.label;
 						</a>
 					</td>
 				</tr>
@@ -128,37 +129,37 @@
 							<tbody>
 								<tr>
 									<td id='uedit_userid_label' class='main_nav_link'>
-										<a href='javascript:uEditShowPage("uedit_userid");'>1. User Identification</a>
+										<a href='javascript:uEditShowPage("uedit_userid");'>&staff.patron.ue.nav.user_id.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_contact_info_label' class='main_nav_link'>	
-										<a href='javascript:uEditShowPage("uedit_contact_info");'>2. Contact Info</a>
+										<a href='javascript:uEditShowPage("uedit_contact_info");'>&staff.patron.ue.nav.contact_info.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_addresses_label' class='main_nav_link'>		
-										<a href='javascript:uEditShowPage("uedit_addresses");'>3. Addresses</a>
+										<a href='javascript:uEditShowPage("uedit_addresses");'>&staff.patron.ue.nav.addresses.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_groups_label' class='main_nav_link'>			
-										<a href='javascript:uEditShowPage("uedit_groups");'>4. Groups and Permissions</a>
+										<a href='javascript:uEditShowPage("uedit_groups");'>&staff.patron.ue.nav.groups_permissions.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_stat_cats_label' class='main_nav_link'>		
-										<a href='javascript:uEditShowPage("uedit_stat_cats");'>5. Statistical Categories</a>
+										<a href='javascript:uEditShowPage("uedit_stat_cats");'>&staff.patron.ue.nav.stat_categories.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_surveys_label' class='main_nav_link'>			
-										<a href='javascript:uEditShowPage("uedit_surveys");'>6. Surveys</a>
+										<a href='javascript:uEditShowPage("uedit_surveys");'>&staff.patron.ue.nav.surveys.label;</a>
 									</td>
 								</tr>
 								<tr>
 									<td id='uedit_finalize_label' class='main_nav_link'>			
-										<a href='javascript:uEditShowPage("uedit_finalize");'>7. Finish</a>
+										<a href='javascript:uEditShowPage("uedit_finalize");'>&staff.patron.ue.nav.finish.label;</a>
 									</td>
 								</tr>
 							</tbody>
@@ -168,7 +169,7 @@
 					<td width='85%' id='uedit_loading'>
 						<div class='main_div has_color' 
 							style='padding: 50px; vertical-align: middle;'>
-							<b>Loading data...</b>
+							<b>&staff.patron.ue.loading_data.label;</b>
 						</div>
 					</td>
 
@@ -179,7 +180,7 @@
 							<div id='dup_div' name='dup_div'>
 								<a name='link' class='dup_link hide_me'
 									href='javascript:void(0);' onclick='uEditShowSearch(this);'>
-									Found <b name='count'/> possible duplicate patron(s):
+									&staff.patron.ue.found_duplicate_patron.label;<b name='count'/>
 									<b name='data'/>
 								</a>
 							</div>
@@ -206,51 +207,51 @@
 														}'
 														/> -->
 														<button style='padding-left: 5px;' class='hide_me' id='ue_mark_card_lost'
-													onclick='uEditMarkCardLost();'>Mark Lost</button>
+													onclick='uEditMarkCardLost();'>&staff.patron.ue.mark_lost.label;</button>
 											</div>
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Username</div></td>
+										<td><div class='wide right'>&staff.patron.ue.username.label;</div></td>
 										<td><div class='wide left'><input type='text' id='ue_username'/></div></td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Password</div></td>
+										<td><div class='wide right'>&staff.patron.ue.password.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input type='password' id='ue_password1'/>
-												<button class='hide_me' onclick='uEditResetPw();' id='ue_reset_pw'>Reset</button>
+												<button class='hide_me' onclick='uEditResetPw();' id='ue_reset_pw'>&staff.patron.ue.reset.label;</button>
 												<span style='padding-left: 10px;' class='hide_me' id='ue_password_gen'>
-													Password: 
+													&staff.patron.ue.re_password.label;
 													<span style='text-decoration:underline;' id='ue_password_plain'/>
 												</span>
 											</div>
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Verify Password</div></td>
+										<td><div class='wide right'>&staff.patron.ue.verify_password.label;</div></td>
 										<td><div class='wide left'><input type='password' id='ue_password2'/></div></td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>First Name</div></td>
+										<td><div class='wide right'>&staff.patron.ue.first_name.label;</div></td>
 										<td><div class='wide left'><input type='text' id='ue_firstname'/></div></td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Middle Name</div></td>
+										<td><div class='wide right'>&staff.patron.ue.middle_name.label;</div></td>
 										<td><div class='wide left'><input type='text' id='ue_middlename'/></div></td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Last Name</div></td>
+										<td><div class='wide right'>&staff.patron.ue.last_name.label;</div></td>
 										<td><div class='wide left'><input type='text' id='ue_lastname'/></div></td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Suffix</div></td>
+										<td><div class='wide right'>&staff.patron.ue.suffix.label;</div></td>
 										<td><div class='wide left'>
 											<input type='text' id='ue_suffix'/>
 											<select id='ue_suffix_selector' style='width: 6em;'
 												onclick='$("ue_suffix").value = this.options[this.selectedIndex].value'
 												onchange='$("ue_suffix").value = this.options[this.selectedIndex].value'>
-												<option value=''>- Pick -</option>
+												<option value=''>&staff.patron.ue.choose.label;</option>
 												<option value='Jr'>Jr</option>
 												<option value='Sr'>Sr</option>
 												<option value='II'>II</option>
@@ -292,7 +293,7 @@
 										</div></td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Date of Birth</div></td>
+										<td><div class='wide right'>&staff.patron.ue.dob.label;</div></td>
 										<td>
 											<div class='wide left'>
 	
@@ -323,16 +324,16 @@
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Primary Identification Type</div></td>
+										<td><div class='wide right'>&staff.patron.ue.primary_id_type.label;</div></td>
 										<td><div class='wide left'>
 												<select id='ue_primary_ident_type'>
-													<option value=''> -- Required -- </option>
+													<option value=''>&staff.patron.ue.required.label;</option>
 												</select>
 											</div>
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Primary Identification</div></td>
+										<td><div class='wide right'>&staff.patron.ue.primary_id.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input type='text' id='ue_primary_ident'/>
@@ -348,16 +349,16 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Secondary Identification Type</div></td>
+										<td><div class='wide right'>&staff.patron.ue.secondary_id_type.label;</div></td>
 										<td><div class='wide left'>
 												<select id='ue_secondary_ident_type'>
-													<option value=''> -- None Selected -- </option>
+													<option value=''>&staff.patron.ue.none_selected.label;</option>
 												</select>
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Secondary Identification</div></td>
+										<td><div class='wide right'>&staff.patron.ue.secondary_id.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input type='text' id='ue_secondary_ident'/>
@@ -365,7 +366,7 @@
 										</td>
 									</tr>
 									<tr class='hide_me' id='ue_guardian_row'>
-										<td><div class='wide right'><b>Parent / Guardian</b></div></td>
+										<td><div class='wide right'><b>&staff.patron.ue.parent_guardian.label;</b></div></td>
 										<td>
 											<div class='wide left'>
 												<span id='ue_guardian_field'/>
@@ -384,11 +385,11 @@
 							<table class='uedit_table'>
 								<tbody>
 									<tr>
-										<td><div class='wide right'>Email Address</div></td>
+										<td><div class='wide right'>&staff.patron.ue.email_address.label;</div></td>
 										<td><div class='wide left'><input type='text' id='ue_email' size='32'/></div></td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Daytime Phone</div></td>
+										<td><div class='wide right'>&staff.patron.ue.day_phone.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input class='pad' type='text' id='ue_day_phone' size='18'/>
@@ -397,7 +398,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Evening Phone</div></td>
+										<td><div class='wide right'>&staff.patron.ue.evening_phone.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input class='pad' type='text' id='ue_night_phone' size='18'/>
@@ -405,7 +406,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Other/Cell Phone</div></td>
+										<td><div class='wide right'>&staff.patron.ue.other_phone.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input class='pad' type='text' id='ue_other_phone' size='18'/>
@@ -413,7 +414,7 @@
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Home Library</div></td>
+										<td><div class='wide right'>&staff.patron.ue.home_library.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<select style='width: 20em;' id='ue_org_selector'/>
@@ -431,11 +432,11 @@
 							<table class='uedit_table' style='width: 98%; padding: 1px;'>
 								<thead>
 									<tr>
-										<td>Address</td>
-										<td>Within City Limits</td>
-										<td>Valid</td>
-										<td>Mailing Address</td>
-										<td>Physical Address</td>
+										<td>&staff.patron.ue.address.label;</td>
+										<td>&staff.patron.ue.in_city_limits.label;</td>
+										<td>&staff.patron.ue.valid.label;</td>
+										<td>&staff.patron.ue.mailing_address.label;</td>
+										<td>&staff.patron.ue.physical_address.label;</td>
 									</tr>
 								</thead>
 								<tbody id='ue_address_tbody'>
@@ -447,22 +448,22 @@
 														<td colspan='6'>
 															<div style='padding: 8px;'>
 																<span style='color:red;'>*</span>
-																Address is owned by
+																&staff.patron.ue.owned_address.label;
 																<span name='addr_owner_name'/>
 																<span name='owner_link_div'>
-																	(<a name='addr_owner' href='javascript:void(0);'>Edit</a>)
+																	(<a name='addr_owner' href='javascript:void(0);'>&staff.patron.ue.edit.label;</a>)
 																</span>
 															</div>
 														</td>
 													</tr>
 													<tr>
-														<td><div class='wide right'>Label</div></td>
+														<td><div class='wide right'>&staff.patron.ue.label.label;</div></td>
 														<td colspan='3'>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_label' id='ue_addr_label'/>
 															</div>
 														</td>
-														<td><div class='wide right'>Zip</div></td>
+														<td><div class='wide right'>&staff.patron.ue.zip_code.label;</div></td>
 														<td>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_zip' size='10' maxlength='10'/>
@@ -470,7 +471,7 @@
 														</td>
 													</tr>
 													<tr>
-														<td><div class='wide right'>Street 1</div></td>
+														<td><div class='wide right'>&staff.patron.ue.street_1.label;</div></td>
 														<td colspan='5'>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_street1' size='42'/>
@@ -478,7 +479,7 @@
 														</td>
 													</tr>
 													<tr>
-														<td><div class='wide right'>Street 2</div></td>
+														<td><div class='wide right'>&staff.patron.ue.street_2.label;</div></td>
 														<td colspan='5'>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_street2' size='42'/>
@@ -486,13 +487,13 @@
 														</td>
 													</tr>
 													<tr>
-														<td><div class='wide right'>City</div></td>
+														<td><div class='wide right'>&staff.patron.ue.city.label;</div></td>
 														<td colspan='3'>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_city' size='17'/>
 															</div>
 														</td>
-														<td><div class='wide right'>County</div></td>
+														<td><div class='wide right'>&staff.patron.ue.county.label;</div></td>
 														<td>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_county' size='17'/>
@@ -500,7 +501,7 @@
 														</td>
 													</tr>
 													<tr>
-														<td><div class='wide right'>State</div></td>
+														<td><div class='wide right'>&staff.patron.ue.state.label;</div></td>
 														<td colspan='3'>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_state' size='2' maxlength='2'/>
@@ -514,7 +515,7 @@
 															</div>
 														</td>
 														-->
-														<td><div class='wide right'>Country</div></td>
+														<td><div class='wide right'>&staff.patron.ue.country.label;</div></td>
 														<td>
 															<div class='wide left'>
 																<input type='text' name='ue_addr_country' size='6'/>
@@ -525,10 +526,10 @@
 														<td colspan='6'>
 															<div class='button_row'>
 																<input type='submit' name='ue_addr_delete' 
-																	value='Delete this Address'/>
+																	value='&staff.patron.ue.delete_this_address.label;'/>
 																<span style='padding-left: 10px;'> </span>
 																<input type='submit' name='ue_addr_detach' 
-																	value='Detach this Address' class='hide_me'/>
+																	value='&staff.patron.ue.detach_this_address.label;' class='hide_me'/>
 															</div>
 														</td>
 													</tr>
@@ -559,7 +560,7 @@
 								<!--
 								<input type='submit' value='Create a New Address' id='ue_address_new'/>
 								-->
-								<input type='submit' value='Create a New Address' onclick='uEditCreateNewAddr();'/>
+								<input type='submit' value='&staff.patron.ue.create_address.label;' onclick='uEditCreateNewAddr();'/>
 							</div>
 						</div>
 	
@@ -570,17 +571,17 @@
 							<table class='uedit_table'>
 								<tbody>
 									<tr class='required_field'>
-										<td><div class='wide right'>Profile Group</div></td>
+										<td><div class='wide right'>&staff.patron.ue.profile_group.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<select id='ue_profile' class='select_big'>
-													<option value=''> -- Required -- </option>
+													<option value=''>&staff.patron.ue.required.label;</option>
 												</select>
 											</div>
 										</td>
 									</tr>
 									<tr class='required_field'>
-										<td><div class='wide right'>Account Expiration Date</div></td>
+										<td><div class='wide right'>&staff.patron.ue.accoutn_expire_date.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input type='text' id='ue_expire' size='10' maxlength='10'/>
@@ -588,7 +589,7 @@
 												<button style='padding: 0px;' id='ue_expire_trigger'>
 													<img src="/opac/common/js/jscalendar/img.gif" 
 														style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
-														title="Date selector"
+														title="&ev.staff.patron.ue_xhtml.date_selector.label;"
 														onmouseover="this.style.background='red';" 
 														onmouseout="this.style.background=''" />
 												</button>
@@ -607,17 +608,17 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Internet Access Level</div></td>
+										<td><div class='wide right'>&staff.patron.ue.internet_access_level.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<select id='ue_net_level'>
-													<option value=''> -- None Selected -- </option>
+													<option value=''>&staff.patron.ue.none_selected.label;</option>
 												</select>
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Active</div></td>
+										<td><div class='wide right'>&staff.patron.ue.active.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input id='ue_active' type='checkbox' checked='checked'/>
@@ -625,7 +626,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Barred</div></td>
+										<td><div class='wide right'>&staff.patron.ue.barred.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input id='ue_barred' type='checkbox'/>
@@ -633,7 +634,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Set as Family/Group Lead Account</div></td>
+										<td><div class='wide right'>&staff.patron.ue.set_lead_account.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input id='ue_group_lead' type='checkbox'/>
@@ -641,7 +642,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Claims Returned Count</div></td>
+										<td><div class='wide right'>&staff.patron.ue.claims_returned_count.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<input id='ue_claims_returned' type='text' disabled='disabled' size='6'/>
@@ -649,17 +650,17 @@
 													$('ue_claims_returned').value = 0;
 													$('ue_claims_returned').disabled = true;
 												</script>
-												<input class='pad' id='ue_claims_returned_reset' type='submit' value='Reset'/>
+												<input class='pad' id='ue_claims_returned_reset' type='submit' value='&ev.staff.patron.ue_xhtml.alert_message_reset.value;'/>
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<td><div class='wide right'>Alert Message</div></td>
+										<td><div class='wide right'>&staff.patron.ue.alert_message.label;</div></td>
 										<td>
 											<div class='wide left'>
 												<textarea wrap='soft' cols='30' rows='4' id='ue_alert_message'/>
 												<input class='pad' id='ue_alert_message_reset' 
-													type='submit' value='Clear' 
+													type='submit' value='&ev.staff.patron.ue_xhtml.alert_message_reset.value;' 
 														onclick='
 														var node = $("ue_alert_message");
 														node.value = "";
@@ -678,9 +679,9 @@
 							<table class='uedit_table' style='width: 98%'>
 								<thead>
 									<tr style='font-weight: bold;'>
-										<td>Stat Cat Name</td>
-										<td>Owner</td>
-										<td>Value</td>
+										<td>&staff.patron.ue.stat_cat_name.label;</td>
+										<td>&staff.patron.ue.owner.label;</td>
+										<td>&staff.patron.ue.value.label;</td>
 									</tr>
 								</thead>
 								<tbody id='ue_stat_cat_tbody'>
@@ -690,7 +691,7 @@
 										<td>
 											<div class='wide left'>
 												<select name='ue_stat_cat_selector'>
-													<option value=''> -- None Selected -- </option>
+													<option value=''>&staff.patron.ue.none_selected.label;</option>
 												</select>
 												<span class='pad'> or </span>
 												<input class='pad' type='text' name='ue_stat_cat_newval'/>
@@ -707,7 +708,7 @@
 						<!-- ************************************************************** -->
 						<div id='uedit_surveys' class='main_div hide_me'>
 							<div id='uedit_no_surveys' class='hide_me'>
-								<b>No surveys have been created for this location.</b>
+								<b>&staff.patron.ue.no_surveys_for_location.label;</b>
 							</div>
 							<table id='ue_survey_table' 
 								class='uedit_table data_grid' style='width: 95%; margin-top: 17px;'>
@@ -725,7 +726,7 @@
 											style='width: 60%; text-align: left; padding-left: 40px;'/>
 										<td>
 											<select name='ue_survey_answer'>
-												<option value=''> -- None Selected -- </option>
+												<option value=''>&staff.patron.ue.none_selected.label;</option>
 											</select>
 										</td>
 									</tr>
@@ -739,21 +740,21 @@
 						<div id='uedit_finalize' class='main_div hide_me'>
 							<div class='has_color' style='width: 95%; margin-top: 40px; text-align: center'>
 								<div style='padding: 5px;'>
-									You are now ready to save the user to the database.  <br/>
-									To view or print a summary of the changes, click on the "View Summary" link.  <br/>
-									To save the user, click on the 'Save User' button.
+									&staff.patron.ue.message1.label;<br/>
+									&staff.patron.ue.message2.label;<br/>
+									&staff.patron.ue.message3.label;
 								</div>
 								<br/>
 								<div style='margin-bottom: 15px;'>
 									<a style='margin-right: 30px;' id='ue_view_summary' 
-										href='javascript:uEditShowSummary();'>View Summary</a>
+										href='javascript:uEditShowSummary();'>&staff.patron.ue.view_summary.label;</a>
 								</div>
 								<input style='margin-left: 5px; margin-right: 5px;' id='ue_save'
-									type='submit' value='Save User' onclick='uEditSaveUser();'/>
+									type='submit' value='&ev.staff.patron.ue_xhtml.save_user.value;' onclick='uEditSaveUser();'/>
 								<input style='margin-left: 5px; margin-right: 5px;' id='ue_save_clone'
-									type='submit' value='Save and Clone User' onclick='uEditSaveUser(true);'/>
+									type='submit' value='&ev.staff.patron.ue_xhtml.save_clone_user.value;' onclick='uEditSaveUser(true);'/>
 								<button style='margin-left: 5px; margin-right: 5px;' 
-									onclick='if(confirm($("ue_cancel_confirm").innerHTML)) uEditCancel();'>Cancel</button>
+									onclick='if(confirm($("ue_cancel_confirm").innerHTML)) uEditCancel();'>&ev.staff.patron.ue_xhtml.cancel.value;</button>
 							</div>
 						</div>
 					</td>
@@ -770,11 +771,11 @@
 									<td width='10%'/>
 									<td width='40%'>
 										<a id='ue_back' class='nav_link hide_me' 
-											href='javascript:uEditPrev()'>&lt;&lt;Back</a>
+											href='javascript:uEditPrev()'>&lt;&lt; &staff.patron.ue.back.label;</a>
 									</td>
 									<td width='40%'>
 										<a id='ue_fwd' class='nav_link' 
-											href='javascript:uEditNext()'>Forward&gt;&gt;</a>
+											href='javascript:uEditNext()'>&staff.patron.ue.forward.label; &gt;&gt;</a>
 									</td>
 									<td width='10%'/>
 								</tr>
@@ -795,8 +796,7 @@
 			<thead>
 				<tr>
 					<td colspan='2'>
-						<span>User Summary Information (Deleted items are marked in</span>
-						<span class='deleted'>color</span><span>)</span>
+						<span>&staff.patron.ue.user_summary.label;</span>
 					</td>
 				</tr>
 			</thead>
@@ -805,34 +805,34 @@
 				<tr>
 
 					<td colspan='2' align='center'>
-						<input style='margin-right: 15px;' type='submit' value='Print Page' onclick='window.print();'/>
-						<input style='margin-left: 15px;' type='submit' value='Return to Editor' 
+						<input style='margin-right: 15px;' type='submit' value='&ev.staff.patron.ue_xhtml.print_page.label;' onclick='window.print();'/>
+						<input style='margin-left: 15px;' type='submit' value='&ev.staff.patron.ue_xhtml.return_to_editor.label;' 
 							onclick=' unHideMe($("main_div_container")); 
 								hideMe($("summary_div_container"));'/>
 					</td>
 				</tr>
 
-				<tr><td>Barcode</td><td id='ue_summary_barcode'/></tr>
-				<tr><td>Username</td><td id='ue_summary_usrname'/></tr>
-				<tr><td>First Name</td><td id='ue_summary_first_given_name'/></tr>
-				<tr><td>Middle Name</td><td id='ue_summary_second_given_name'/></tr>
-				<tr><td>Last Name</td><td id='ue_summary_family_name'/></tr>
-				<tr><td>Suffix</td><td id='ue_summary_suffix'/></tr>
-				<tr><td>Date of Birth</td><td id='ue_summary_dob'/></tr>
-				<tr><td>Primary Identification Type</td><td id='ue_summary_ident_type'/></tr>
-				<tr><td>Primary Identification</td><td id='ue_summary_ident_value'/></tr>
-				<tr><td>Secondary Identification Type</td><td id='ue_summary_ident_type2'/></tr>
-				<tr><td>Secondary Identification</td><td id='ue_summary_ident_value2'/></tr>
-				<tr><td>Email Address</td><td id='ue_summary_email'/></tr>
-				<tr><td>Day Phone</td><td id='ue_summary_day_phone'/></tr>
-				<tr><td>Evening Phone</td><td id='ue_summary_evening_phone'/></tr>
-				<tr><td>Other Phone</td><td id='ue_summary_other_phone'/></tr>
-				<tr><td>Home Library</td><td id='ue_summary_home_ou'/></tr>
+				<tr><td>&staff.patron.ue.barcode.label;</td><td id='ue_summary_barcode'/></tr>
+				<tr><td>&staff.patron.ue.username.label;</td><td id='ue_summary_usrname'/></tr>
+				<tr><td>&staff.patron.ue.first_name.label;</td><td id='ue_summary_first_given_name'/></tr>
+				<tr><td>&staff.patron.ue.middle_name.label;</td><td id='ue_summary_second_given_name'/></tr>
+				<tr><td>&staff.patron.ue.last_name.label;</td><td id='ue_summary_family_name'/></tr>
+				<tr><td>&staff.patron.ue.suffix.label;</td><td id='ue_summary_suffix'/></tr>
+				<tr><td>&staff.patron.ue.dob.label;</td><td id='ue_summary_dob'/></tr>
+				<tr><td>&staff.patron.ue.primary_id_type.label;</td><td id='ue_summary_ident_type'/></tr>
+				<tr><td>&staff.patron.ue.primary_id.label;</td><td id='ue_summary_ident_value'/></tr>
+				<tr><td>&staff.patron.ue.secondary_id_type.label;</td><td id='ue_summary_ident_type2'/></tr>
+				<tr><td>&staff.patron.ue.primary_id.label;</td><td id='ue_summary_ident_value2'/></tr>
+				<tr><td>&staff.patron.ue.email_address.label;</td><td id='ue_summary_email'/></tr>
+				<tr><td>&staff.patron.ue.day_phone.label;</td><td id='ue_summary_day_phone'/></tr>
+				<tr><td>&staff.patron.ue.evening_phone.label;</td><td id='ue_summary_evening_phone'/></tr>
+				<tr><td>&staff.patron.ue.other_phone.label;</td><td id='ue_summary_other_phone'/></tr>
+				<tr><td>&staff.patron.ue.home_library.label;</td><td id='ue_summary_home_ou'/></tr>
 
 				<tr>
 					<td colspan='2'>
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
-							<thead><tr><td>Addresses</td></tr></thead>
+							<thead><tr><td>&staff.patron.ue.addresses.label;</td></tr></thead>
 							<tbody name='ue_summary_addr_tbody'>
 								<tr name='ue_summary_addr_row'>
 									<td>
@@ -840,28 +840,28 @@
 											<thead><tr><td colspan='4'/><span> </span></tr></thead>
 											<tbody>
 												<tr>
-													<td><b>Address Label</b></td><td name='label'/>
-													<td><b>Zip Code</b></td><td name='zip'/>
+													<td><b>&staff.patron.ue.address_label.label;</b></td><td name='label'/>
+													<td><b>&staff.patron.ue.zip_code.label;</b></td><td name='zip'/>
 												</tr>
 												<tr>
-													<td><b>Street1</b></td><td name='street1'/>
-													<td><b>Country</b></td><td name='country'/>
+													<td><b>&staff.patron.ue.street1.label;</b></td><td name='street1'/>
+													<td><b>&staff.patron.ue.country.label;</b></td><td name='country'/>
 												</tr>
 												<tr>
-													<td><b>Street2</b></td><td name='street2'/>
-													<td><b>Mailing</b></td><td name='mailing'/>
+													<td><b>&staff.patron.ue.street2.label;</b></td><td name='street2'/>
+													<td><b>&staff.patron.ue.mailing_address.label;</b></td><td name='mailing'/>
 												</tr>
 												<tr>
-													<td><b>City</b></td><td name='city'/>
-													<td><b>Billing</b></td><td name='billing'/>
+													<td><b>&staff.patron.ue.city.label;</b></td><td name='city'/>
+													<td><b>&staff.patron.ue.billing_address.label;</b></td><td name='billing'/>
 												</tr>
 												<tr>
-													<td><b>County</b></td><td name='county'/>
-													<td><b>Valid</b></td><td name='valid'/>
+													<td><b>&staff.patron.ue.county.label;</b></td><td name='county'/>
+													<td><b>&staff.patron.ue.valid.label;</b></td><td name='valid'/>
 												</tr>
 												<tr>
-													<td><b>State</b></td><td name='state'/>
-													<td><b>Within City Limits</b></td><td name='incorporated'/>
+													<td><b>&staff.patron.ue.state.label;</b></td><td name='state'/>
+													<td><b>&staff.patron.ue.in_city_limits.label;</b></td><td name='incorporated'/>
 												</tr>
 											</tbody>
 										</table>
@@ -871,17 +871,17 @@
 						</table>
 					</td>
 				</tr>
-				<tr><td>Profile</td><td id='ue_summary_profile'/></tr>
-				<tr><td>Active</td><td id='ue_summary_active'/></tr>
-				<tr><td>Barred</td><td id='ue_summary_barred'/></tr>
-				<tr><td>Expire Date</td><td id='ue_summary_expire_date'/></tr>
-				<tr><td>Family Lead Account</td><td id='ue_summary_master_account'/></tr>
-				<tr><td>Claims Returned Count</td><td id='ue_summary_claims_returned_count'/></tr>
-				<tr><td>Alert Message</td><td id='ue_summary_alert_message'/></tr>
+				<tr><td>&staff.patron.ue.profile.label;</td><td id='ue_summary_profile'/></tr>
+				<tr><td>&staff.patron.ue.active.label;</td><td id='ue_summary_active'/></tr>
+				<tr><td>&staff.patron.ue.barred.label;</td><td id='ue_summary_barred'/></tr>
+				<tr><td>&staff.patron.ue.expire_date.label;</td><td id='ue_summary_expire_date'/></tr>
+				<tr><td>&staff.patron.ue.family_lead_account.label;</td><td id='ue_summary_master_account'/></tr>
+				<tr><td>&staff.patron.ue.claims_returned_count.label;</td><td id='ue_summary_claims_returned_count'/></tr>
+				<tr><td>&staff.patron.ue.alert_message.label;</td><td id='ue_summary_alert_message'/></tr>
 				<tr name='ue_summary_stat_cat_td'>
 					<td colspan='2' >
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
-							<thead><tr><td colspan='2'>Statistical Categories</td></tr></thead>
+							<thead><tr><td colspan='2'>&staff.patron.ue.stat_categories.label;</td></tr></thead>
 							<tbody name='ue_summary_stats_tbody'>
 								<tr name='ue_summary_stats_row'>
 									<td name='ue_summary_stat_name'/><td name='ue_summary_stat_value'/>
@@ -893,7 +893,11 @@
 				<tr name='ue_summary_survey_td'>
 					<td colspan='2'>
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
-							<thead><tr><td>Survey</td><td>Question</td><td>Answer</td></tr></thead>
+							<thead><tr>
+								<td>&staff.patron.ue.survey.label;</td>
+								<td>&staff.patron.ue.question.label;</td>
+								<td>&staff.patron.ue.answer.label;</td>
+							</tr></thead>
 							<tbody name='ue_summary_survey_tbody'>
 								<tr name='ue_summary_survey_row'>
 									<td name='ue_summary_survey_name'/>
@@ -906,8 +910,8 @@
 				</tr>
 				<tr>
 					<td colspan='2' align='center'>
-						<input style='margin-right: 15px;' type='submit' value='Print Page' onclick='window.print();'/>
-						<input style='margin-left: 15px;' type='submit' value='Return to Editor' 
+						<input style='margin-right: 15px;' type='submit' value='&ev.staff.patron.ue_xhtml.print_page.label;' onclick='window.print();'/>
+						<input style='margin-left: 15px;' type='submit' value='&ev.staff.patron.ue_xhtml.return_to_editor.label;' 
 							onclick=' unHideMe($("main_div_container")); 
 								hideMe($("summary_div_container"));'/>
 					</td>
@@ -922,69 +926,44 @@
 	<!-- This holds all of the strings we may have to alert to the user -->
 	<!-- ************************************************************** -->
 	<div class='hide_me'>
-		<span id='ue_bad_dob'>The date of birth field is not formatted correctly.  We're expecting YYYY-MM-DD</span>
-		<span id='ue_bad_username'>Username is invalid</span>
-		<span id='ue_bad_password'>Passwords do not match or are invalid</span>
-		<span id='ue_bad_firstname'>First name is invalid</span>
-		<span id='ue_bad_middlename'>Middle name is invalid</span>
-		<span id='ue_bad_lastname'>Last name is invalid</span>
-		<span id='ue_bad_barcode'>Barcode is invalid</span>
-		<span id='ue_duplicate_barcode'>The selected barcode already exists in the database</span>
-		<span id='ue_new_barcode_warn'>
-			This will de-activate the existing barcode for this user!  If you wish to continue, 
-			enter the new barcode below.  Otherwise, click the Cancel button.
-		</span>
-		<span id='ue_no_ident'>You must select at least one type of identification</span>
-		<span id='ue_bad_ident_dl'>Invalid drivers license. Should be STATE-NUMBER</span>
-		<span id='ue_bad_ident_ssn'>Invalid social security number.  Format should be 111-22-3333</span>
-		<span id='ue_bad_email'>The email addresses is not valid</span>
-		<span id='ue_bad_phone'>An invalid phone number was entered</span>
-		<span id='ue_no_profile'>A profile group must be selected</span>
-		<span id='ue_bad_expire'>The user expiration date is invalid.  We're expecting YYYY-MM-DD</span>
-		<span id='ue_bad_claims_returned'>The claims returned count is invalid</span>
-		<span id='ue_unknown_error'>An unknown formatting error occurred</span>
-		<span id='ue_bad_addr_label'>Address label is invalid</span>
-		<span id='ue_bad_addr_street'>Address street is invalid</span>
-		<span id='ue_bad_addr_city'>Address city is invalid</span>
-		<span id='ue_bad_addr_county'>Address county is invalid</span>
-		<span id='ue_bad_addr_state'>Address state is invalid</span>
-		<span id='ue_bad_addr_country'>Address country is invalid</span>
-		<span id='ue_bad_addr_zip'>Address zip is invalid</span>
-		<span id='ue_bad_survey'>Required survey is unanswered</span>
-		<span id='ue_delete_addr_warn'>
-			This will remove this address from the user.  
-			Are you sure you wish to continue?
-		</span>
-		<span id='yes'>Yes</span>
-		<span id='no'>No</span>
-		<span id='ue_summary_window'>Patron Summary</span>
-		<span id='ue_success'>User update succeeded</span>
-		<span id='ue_dup_ident1'>
-			A user already exists with the primary identification provided.  
-			Do you wish to view the duplicate record now?
-		</span>
-		<span id='ue_dup_username'>
-			The selected username is in use by another user.  
-			Please choose a different username.
-		</span>
-		<span id='ue_dup_barcode'>
-			The selected barcode is in use by another user.  
-			Please choose a different barcode.
-		</span>
-		<span class='hide_me' id='ue_cancel_confirm'>
-			Are you sure you wish to cancel this editing session?
-			Canceling will destroy any unsaved changes you have made thus far to the user.
-		</span>
-		<span class='hide_me' id='ue_juv_guardian'>
-			This patron is under 18 years of age.  Please enter the name 
-			of the parent or guardian for this patron.
-		</span>
-		<span class='hide_me' id='ue_bad_date'>
-			The date provided is either in the future or invalid.  We're expecting YYYY-MM-DD
-		</span>
-		<span class='hide_me' id='ue_made_barred'>
-			Please add a note to the patron's alert message explaining why the patron is barred.
-		</span>
+		<span id='ue_bad_dob'>&staff.patron.ue.bad_dob.label;</span>
+		<span id='ue_bad_username'>&staff.patron.ue.bad_username.label;</span>
+		<span id='ue_bad_password'>&staff.patron.ue.bad_passwords.label;</span>
+		<span id='ue_bad_firstname'>&staff.patron.ue.bad_firstname.label;</span>
+		<span id='ue_bad_middlename'>&staff.patron.ue.bad_middlename.label;</span>
+		<span id='ue_bad_lastname'>&staff.patron.ue.bad_lastname.label;</span>
+		<span id='ue_bad_barcode'>&staff.patron.ue.bad_barcode.label;</span>
+		<span id='ue_duplicate_barcode'>&staff.patron.ue.duplicate_barcode.label;</span>
+		<span id='ue_new_barcode_warn'>&staff.patron.ue.new_barcode_warn.label;</span>
+		<span id='ue_no_ident'>&staff.patron.ue.no_ident.label;</span>
+		<span id='ue_bad_ident_dl'>&staff.patron.ue.bad_ident_dl.label;</span>
+		<span id='ue_bad_ident_ssn'>&staff.patron.ue.bad_ident_ssn.label;</span>
+		<span id='ue_bad_email'>&staff.patron.ue.bad_email.label;</span>
+		<span id='ue_bad_phone'>&staff.patron.ue.bad_phone.label;</span>
+		<span id='ue_no_profile'>&staff.patron.ue.no_profile.label;</span>
+		<span id='ue_bad_expire'>&staff.patron.ue.bad_expire.label;</span>
+		<span id='ue_bad_claims_returned'>&staff.patron.ue.bad_claims_returned.label;</span>
+		<span id='ue_unknown_error'>&staff.patron.ue.unknown_error.label;</span>
+		<span id='ue_bad_addr_label'>&staff.patron.ue.bad_addr_label.label;</span>
+		<span id='ue_bad_addr_street'>&staff.patron.ue.bad_addr_street.label;</span>
+		<span id='ue_bad_addr_city'>&staff.patron.ue.bad_addr_city.label;</span>
+		<span id='ue_bad_addr_county'>&staff.patron.ue.bad_addr_county.label;</span>
+		<span id='ue_bad_addr_state'>&staff.patron.ue.bad_addr_state.label;</span>
+		<span id='ue_bad_addr_country'>&staff.patron.ue.bad_addr_country.label;</span>
+		<span id='ue_bad_addr_zip'>&staff.patron.ue.bad_addr_zip.label;</span>
+		<span id='ue_bad_survey'>&staff.patron.ue.bad_survey.label;</span>
+		<span id='ue_delete_addr_warn'>&staff.patron.ue.delete_addr_warn.label;</span>
+		<span id='yes'>&staff.patron.ue.yes.label;</span>
+		<span id='no'>&staff.patron.ue.no.label;</span>
+		<span id='ue_summary_window'>&staff.patron.ue.summary_window.label;</span>
+		<span id='ue_success'>&staff.patron.ue.success.label;</span>
+		<span id='ue_dup_ident1'>&staff.patron.ue.dup_ident1.label;</span>
+		<span id='ue_dup_username'>&staff.patron.ue.dup_username.label;</span>
+		<span id='ue_dup_barcode'>&staff.patron.ue.dup_barcode.label;</span>
+		<span class='hide_me' id='ue_cancel_confirm'>&staff.patron.ue.cancel_confirm.label;</span>
+		<span class='hide_me' id='ue_juv_guardian'>&staff.patron.ue.juv_guardian.label;</span>
+		<span class='hide_me' id='ue_bad_date'>&staff.patron.ue.bad_date.label;</span>
+		<span class='hide_me' id='ue_made_barred'>&staff.patron.ue.made_barred.label;</span>
 
 	</div>
 
