@@ -127,7 +127,7 @@ vim:et:ts=2:sw=2:
 
       </transport>
       <logfile>/openils/var/log/router.log</logfile>
-      <loglevel>3</loglevel>
+      <loglevel>2</loglevel>
     </router>
 
   </routers>
