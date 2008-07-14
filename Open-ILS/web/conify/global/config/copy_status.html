@@ -192,6 +192,7 @@
 												setTimeout(
 													'dojo.query(".status_grid_trans_cell_' + row + '").'+
 														'instantiate(openils.widget.TranslatorPopup,{field:"name",'+
+														'unique:window.status_rows['+row+'].id(),'+
 														'targetObject:"window.status_rows['+row+']"});'+
 														'status_grid.rowHeightChanged('+row+')',
 													0
