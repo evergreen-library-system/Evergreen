@@ -534,8 +534,8 @@
 <!ENTITY staff.items_out_interface_label "Items out">
 <!ENTITY staff.javascript_console_label "Console">
 <!ENTITY staff.javascript_shell_label "JavaScript Shell">
-<!ENTITY staff.main.auth.caption "Authentication">
 <!ENTITY staff.main.auth.caption "Startup and Shutdown">
+<!ENTITY staff.main.authentication.caption "Authentication">
 <!ENTITY staff.main.auth.debug.caption "Debug Options">
 <!ENTITY staff.main.auth.debug.clear "Clear Cache">
 <!ENTITY staff.main.auth.debug.clear.accesskey "C">
@@ -1263,7 +1263,6 @@
 <!ENTITY staff.server.admin.font.17pt "17pt">
 <!ENTITY staff.server.admin.font.18pt "18pt">
 <!ENTITY staff.server.admin.font.restore "Restore Default">
-<!ENTITY staff.server.admin.font.restore "Restore Default">
 <!ENTITY staff.server.admin.transit.filter.caption "Transit Filter">
 <!ENTITY staff.server.admin.transit.library.label "Transit Library">
 <!ENTITY staff.server.admin.transit.to.label "Transit to">
@@ -1341,7 +1340,6 @@
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible.label "OPAC Visible: ">
 <!ENTITY staff.server.admin.copy_locations.editor.circulate.label "Circulate: ">
 <!ENTITY staff.server.admin.copy_locations.editor.library.label "Owning Library:">
-<!ENTITY staff.server.admin.copy_locations.editor.name "Name">
 <!ENTITY staff.server.admin.copy_locations.editor.library "Owning Library">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable "Holdable">
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
@@ -1360,7 +1358,7 @@
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.hold_pull.greeting "Welcome ">
 <!ENTITY staff.server.admin.hold_pull.sort.note "Note: Click on a column header to sort the column">
-<!ENTITY staff.server.admin.hold_pull.title "Title">
+<!ENTITY staff.server.admin.hold_pull.title.label "Title">
 <!ENTITY staff.server.admin.hold_pull.author "Author">
 <!ENTITY staff.server.admin.hold_pull.copy_location "Copy Location">
 <!ENTITY staff.server.admin.hold_pull.call_number "Call Number">
@@ -1391,7 +1389,6 @@
 <!ENTITY staff.server.admin.non_cat_types.editor.weeks "Weeks">
 <!ENTITY staff.server.admin.non_cat_types.editor.months "Months">
 <!ENTITY staff.server.admin.non_cat_types.in_house_circ "Circulate In-House?">
-<!ENTITY staff.server.admin.non_cat_types.in_house_circ "Help">
 <!ENTITY staff.server.admin.non_cat_types.editor.create "Create">
 <!ENTITY staff.server.admin.non_cat_types.name "Name">
 <!ENTITY staff.server.admin.non_cat_types.owning_location "Owning Location">
@@ -1592,10 +1589,10 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_delete_items.accesskey "">
 <!ENTITY staff.circ.copy_status_overlay.cmd_delete_volumes.label "Delete Volumes">
 <!ENTITY staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey "">
-<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
-<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey "D">
-<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.label "Mark Item Missing">
-<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey "g">
+<!ENTITY staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label "Mark Item Missing">
+<!ENTITY staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey "g">
 <!ENTITY staff.circ.copy_status_overlay.item_status.label "Item Status">
 <!ENTITY staff.circ.copy_status_overlay.last_scanned.caption "Scan Item">
 <!ENTITY staff.circ.copy_status_overlay.copy_status_scan_barcode.label "Barcode:">
@@ -1902,8 +1899,6 @@
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
 <!ENTITY staff.cat.marc_view.title "MARC View">
-<!ENTITY staff.cat.opac.menu.label "Actions for this Record">
-<!ENTITY staff.cat.opac.menu.accesskey "A">
 <!ENTITY staff.cat.opac.menuitem.opacview.label "OPAC View">
 <!ENTITY staff.cat.opac.menuitem.opacview.accesskey "O">
 <!ENTITY staff.cat.opac.menuitem.marcview.label "MARC View">
@@ -2018,6 +2013,7 @@
 <!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
 <!ENTITY staff.cat.volume_editor.modify.label "Modify">
 <!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
+<!ENTITY staff.cat.z3950.marc_import.accesskey "I">
 <!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">
 <!ENTITY staff.cat.z3950.service.label "Service">
 <!ENTITY staff.cat.z3950.username.label "Username">
@@ -2026,9 +2022,8 @@
 <!ENTITY staff.cat.z3950.catalog_service.tooltiptext "Evergreen Native Catalog">
 <!ENTITY staff.cat.z3950.save_creds.label "Save as Default">
 <!ENTITY staff.cat.z3950.save_creds.accesskey "D">
-<!ENTITY staff.cat.z3950.query.description "Description">
 <!ENTITY staff.cat.z3950.query.label "Query">
-<!ENTITY staff.cat.z3950.query.label "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
+<!ENTITY staff.cat.z3950.query.description "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default.">
 <!ENTITY staff.cat.z3950.clear.label "Clear Form">
 <!ENTITY staff.cat.z3950.clear.accesskey "C">
 <!ENTITY staff.cat.z3950.search.label "Search">
@@ -2047,8 +2042,8 @@
 <!ENTITY staff.cat.z3950.marc_view.accesskey "V">
 <!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">
 <!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
-<!ENTITY staff.cat.z3950.marc_import.label "MARC Editor for Import">
-<!ENTITY staff.cat.z3950.marc_import.accesskey "I">
+<!ENTITY staff.cat.z3950.result_message.marc_import.label "MARC Editor for Import">
+<!ENTITY staff.cat.z3950.result_message.marc_import.accesskey "I">
 <!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">
 <!ENTITY staff.pat.barcode_entry.barcode.accesskey "B">
@@ -2106,7 +2101,6 @@
 <!ENTITY staff.patron.bills_overlay.alternate_view.accesskey "V">
 <!ENTITY staff.patron.bills_overlay.summary.label "Summary">
 <!ENTITY staff.patron.bills_overlay.net_balance.value "Net Balance">
-<!ENTITY staff.patron.bills_overlay.payment_applied.value "- Payment applied">
 <!ENTITY staff.patron.bills_overlay.new_balance.value "= New Balance">
 <!ENTITY staff.patron.bills_overlay.pay_bill.label "Pay Bill">
 <!ENTITY staff.patron.bills_overlay.payment_type.value "Payment Type">
@@ -2272,11 +2266,11 @@
 <!ENTITY staff.patron.ue.choose.label "- Pick -">
 <!ENTITY staff.patron.ue.dob.label "Date of Birth">
 <!ENTITY staff.patron.ue.primary_id_type.label "Primary Identification Type">
-<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
 <!ENTITY staff.patron.ue.required.label " -- Required -- ">
 <!ENTITY staff.patron.ue.primary_id.label "Primary Identification">
 <!ENTITY staff.patron.ue.secondary_id_type.label "Secondary Identification Type">
-<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
 <!ENTITY staff.patron.ue.none_selected.label " -- None Selected -- ">
 <!ENTITY staff.patron.ue.secondary_id.label "Secondary Identification">
 <!ENTITY staff.patron.ue.parent_guardian.label "Parent or Guardian">
@@ -2314,7 +2308,6 @@
 <!ENTITY staff.patron.ue.stat_cat_name.label "Statistical Category Name">
 <!ENTITY staff.patron.ue.owner.label "Owner">
 <!ENTITY staff.patron.ue.value.label "Value">
-<!ENTITY staff.patron.ue.none_selected.label "None Selected">
 <!ENTITY staff.patron.ue.no_surveys_for_location.label "No surveys have been created for this location.">
 <!ENTITY staff.patron.ue.message1.label "You are now ready to save the user to the database.">
 <!ENTITY staff.patron.ue.message2.label "To view or print a summary of the changes, click on the 'View Summary' link.">
@@ -2328,8 +2321,6 @@
 <!ENTITY staff.patron.ue.address_label.label "Address Label">
 <!ENTITY staff.patron.ue.billing_address.label "Billing Address">
 <!ENTITY staff.patron.ue.profile.label "Profile">
-<!ENTITY staff.patron.ue.active.label "Active">
-<!ENTITY staff.patron.ue.barred.label "Barred">
 <!ENTITY staff.patron.ue.expire_date.label "Expire Date">
 <!ENTITY staff.patron.ue.family_lead_account.label "Family Lead Account">
 <!ENTITY staff.patron.ue.stat_categories.label "Statistical Categories">
@@ -2423,8 +2414,6 @@
 <!ENTITY ev.staff.patron.ue_xhtml.pick_suffix.label "- Pick -">
 <!ENTITY ev.staff.patron.ue_xhtml.dob.label "Date of Birth">
 <!ENTITY ev.staff.patron.ue_xhtml.primary_id_type.label "Primary Identification Type">
-<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
-<!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
 <!ENTITY ev.staff.patron.ue_xhtml.primary_id.label "Primary Identification">
 <!ENTITY ev.staff.patron.ue_xhtml.parent_guardian.label "Parent or Guardian">
 <!ENTITY ev.staff.patron.ue_xhtml.email_address.label "Email Address">
@@ -2447,7 +2436,7 @@
 <!ENTITY ev.staff.patron.ue_xhtml.state.label "State">
 <!ENTITY ev.staff.patron.ue_xhtml.country.label "Country">
 <!ENTITY ev.staff.patron.ue_xhtml.profile_group.label "Profile Group">
-<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
 <!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
 <!ENTITY ev.staff.patron.ue_xhtml.account_expiration_date.label "Account Expiration Date">
 <!ENTITY ev.staff.patron.ue_xhtml.net_access_level.label "Internet Access Level">
@@ -2459,7 +2448,7 @@
 <!ENTITY ev.staff.patron.ue_xhtml.stat_cat_name.label "Statistical Category Name">
 <!ENTITY ev.staff.patron.ue_xhtml.owner.label "Owner">
 <!ENTITY ev.staff.patron.ue_xhtml.value.label "Value">
-<!-- Used in a selection list, the '--' at the start and end draws attention to the entry -->
+<!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
 <!ENTITY ev.staff.patron.ue_xhtml.none_selected.label " -- None Selected -- ">
 <!ENTITY ev.staff.patron.ue_xhtml.no_surveys_for_location.label "No surveys have been created for this location.">
 <!ENTITY ev.staff.patron.ue_xhtml.finishing_message.label "You are now ready to save the user to the database.<br/>To view or print a summary of the changes, click on the 'View Summary' link.<br/>To save the user, click on the 'Save User' button.">
@@ -2467,14 +2456,12 @@
 <!ENTITY ev.staff.patron.ue_xhtml.forward.label "Forward">
 <!ENTITY ev.staff.patron.ue_xhtml.secondary_id_type.label "Secondary Identification Type">
 <!ENTITY ev.staff.patron.ue_xhtml.secondary_id.label "Secondary Identification">
-<!ENTITY ev.staff.patron.ue_xhtml.addresses.label "Addresses">
 <!ENTITY ev.staff.patron.ue_xhtml.address_label.label "Address Label">
 <!ENTITY ev.staff.patron.ue_xhtml.mailing.label "Mailing">
 <!ENTITY ev.staff.patron.ue_xhtml.billing.label "Billing">
 <!ENTITY ev.staff.patron.ue_xhtml.profile.label "Profile">
 <!ENTITY ev.staff.patron.ue_xhtml.expire_date.label "Expire Date">
 <!ENTITY ev.staff.patron.ue_xhtml.family_lead_account.label "Family Lead Account">
-<!ENTITY ev.staff.patron.ue_xhtml.alert_message.label "Alert Message">
 <!ENTITY ev.staff.patron.ue_xhtml.stat_categories.label "Statistical Categories">
 <!ENTITY ev.staff.patron.ue_xhtml.survey.label "Survey">
 <!ENTITY ev.staff.patron.ue_xhtml.question.label "Question">
