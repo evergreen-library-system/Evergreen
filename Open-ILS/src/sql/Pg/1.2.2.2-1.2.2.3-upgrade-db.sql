@@ -1,0 +1,64 @@
+/*
+ * Copyright (C) 2008  Equinox Software, Inc.
+ * Mike Rylander <miker@esilibrary.com.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+
+-- It's OK if any of the following, before the transaction, fails ...
+
+CREATE SCHEMA extend_reporter;
+
+CREATE TABLE extend_reporter.legacy_circ_count (
+    id          BIGSERIAL   PRIMARY KEY REFERENCES asset.copy (id),
+    circ_count  INT         NOT NULL DEFAULT 0
+);
+
+INSERT INTO permission.perm_list (code, description) VALUES ('DELETE_RECORD', 'Allow a staff member to directly remove a bibliographic record');
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
+
+BEGIN;
+
+CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
+ SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) AS circ_count
+   FROM asset."copy" cp
+   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
+   LEFT JOIN "action".circulation circ ON circ.target_copy = c.id
+  GROUP BY cp.id;
+
+UPDATE  metabib.title_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.author_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.keyword_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.subject_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.series_field_entry
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+UPDATE  metabib.full_rec
+  SET   value = REGEXP_REPLACE(value, E'(\\d{4})-(\\d{4})', E'\\1 \\2','g')
+  WHERE value ~ E'(\\d{4})-(\\d{4})';
+
+COMMIT;
+
