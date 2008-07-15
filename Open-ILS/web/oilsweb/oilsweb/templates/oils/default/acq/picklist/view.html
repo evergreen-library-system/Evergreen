@@ -28,7 +28,7 @@
 	    </div>
 	</div>
     </div>
-    <script type='text/javascript'>
+    <script type="text/javascript">
             var plist = null;
             function loadPL() {
 		plist = new openils.acq.Picklist(${c.oils.acq.picklist.value},
@@ -37,7 +37,7 @@
 				    dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
 				    dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
 				    dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
-                    JUBGrid.populate(pickListGrid, model, plist._items);
+				    JUBGrid.populate(pickListGrid, model, plist._items);
 				});
             }
 	    dojo.addOnLoad(loadPL);
