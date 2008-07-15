@@ -7,6 +7,7 @@ dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.acq.Provider');
 dojo.require("fieldmapper.OrgUtils");
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 function getOrgInfo(rowIndex) {
     data = providerListGrid.model.getRow(rowIndex);
@@ -25,5 +26,9 @@ function loadProviderGrid() {
         }
     );
 }
+function createProvider(fields) {
+    openils.acq.Provider.create(fields, function(){loadProviderGrid()});
+}
+
 
 dojo.addOnLoad(loadProviderGrid);

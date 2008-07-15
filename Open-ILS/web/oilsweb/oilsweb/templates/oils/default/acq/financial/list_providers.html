@@ -11,6 +11,53 @@
     <div id='oils-acq-list-header-label'>${_('Providers')}</div>
 </div>
 
+<div class='oils-acq-actions-div'>
+    <div dojoType="dijit.form.DropDownButton">
+        <span>${('New Provider')}</span>
+
+        <div dojoType="dijit.TooltipDialog" execute="createProvider(arguments[0]);">
+            <script type='dojo/connect' event='onOpen'>
+                openils.acq.CurrencyType.loadSelectWidget(providerCurrencySelector);
+                new openils.User().buildPermOrgSelector('ADMIN_PROVIDER', providerOwnerSelect);
+            </script>
+
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">${_('Name:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="name">${_('Code:')} </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="code"></td>
+                </tr>
+                <tr>
+                    <td><label for="currency_type">${_('Currency Type:')}</label></td>
+                    <td>
+                        <input jsId='providerCurrencySelector' name="currency_type" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign='top'><label for="owner">${_('Owning Location:')}</label></td>
+                    <td>
+                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='providerOwnerSelect'
+                            searchAttr="shortname" name="owner" autocomplete="true" labelAttr='shortname'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">${_('Create')}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+</div>
+
+
+
+
 <!-- The main grid lives here -->
 <script>
     function getName(rowIndex) {
