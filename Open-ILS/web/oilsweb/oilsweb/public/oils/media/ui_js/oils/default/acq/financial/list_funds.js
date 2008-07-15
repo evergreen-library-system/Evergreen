@@ -8,8 +8,6 @@ dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.acq.Fund');
 
-var globalUser = new openils.User();
-
 function getOrgInfo(rowIndex) {
     data = fundListGrid.model.getRow(rowIndex);
     if(!data) return;
@@ -31,8 +29,33 @@ function loadFundGrid() {
                 {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
             fundListGrid.setModel(model);
             fundListGrid.update();
+
+            var yearStore = {identifier:'year', name:'year', items:[]};
+
+            var added = [];
+            for(var i = 0; i < storeData.items.length; i++) {
+                var year = storeData.items[i].year;
+                if(added.indexOf(year) == -1) {
+                    yearStore.items.push({year:year});
+                    added.push(year);
+                }
+            }
+            yearStore.items = yearStore.items.sort().reverse();
+            fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
+            var today = new Date().getFullYear().toString();
+            fundFilterYearSelect.setValue((added.indexOf(today != -1)) ? today : added[0]);
         }
     );
+}
+
+function filterGrid() {
+    var year = fundFilterYearSelect.getValue();
+    if(year) 
+        fundListGrid.model.query = {year:year};
+    else
+        fundListGrid.model.query = {id:'*'};
+    fundListGrid.model.refresh();
+    fundListGrid.update();
 }
 
 dojo.addOnLoad(loadFundGrid);

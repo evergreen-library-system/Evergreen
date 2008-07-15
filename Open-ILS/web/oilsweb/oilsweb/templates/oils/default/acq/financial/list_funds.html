@@ -36,7 +36,7 @@
         <div dojoType="dijit.TooltipDialog" execute="createFund(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 openils.acq.CurrencyType.loadSelectWidget(fundCurrencySelector);
-                globalUser.buildPermOrgSelector('ADMIN_FUND', fundOwnerSelect);
+                new openils.User().buildPermOrgSelector('ADMIN_FUND', fundOwnerSelect);
             </script>
 
             <table class='dijitTooltipTable'>
@@ -81,6 +81,10 @@
                 fundListGrid, function(){location.href = location.href})">
         ${_('Delete Selected')}
     </button>
+
+    <label>${_('Year')}</label>
+    <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();' style='width:100px;'
+        jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
 </div>
 
 <!-- The main grid lives here -->
