@@ -164,20 +164,26 @@ function saveResults(values) {
     }
         
     if(values.new_name && values.new_name != '') {
-        // XXX create a new PL and copy LIs over
-        /*
+        // save selected lineitems to a new picklist
         if(values.which = 'selected') {
-            resultPicklist = new acqpl();
-            resultPicklist.owner(user.user.id())
-        } 
-        */
-        resultPicklist.name(values.new_name); 
-        openils.acq.Picklist.update(resultPicklist,
-            function(stat) {
-                location.href = 'view/' + resultPicklist.id(); 
-            }
-        );
+            openils.acq.Picklist.create(
+                {name: values.new_name}, 
+                function(id) {
+                    updateLiList(id, selectedLIs, 0, 
+                        function(){location.href = 'view/' + id});
+                }
+            );
+        }  else {
+            // save all == change the name of the results picklist
+            resultPicklist.name(values.new_name); 
+            openils.acq.Picklist.update(resultPicklist,
+                function(stat) {
+                    location.href = 'view/' + resultPicklist.id(); 
+                }
+            );
+        }
     } else if(values.existing_pl) {
+        // update lineitems to use an existing picklist
         updateLiList(values.existing_pl, selectedLIs, 0, 
             function(){location.href = 'view/' + values.existing_pl});
     }
