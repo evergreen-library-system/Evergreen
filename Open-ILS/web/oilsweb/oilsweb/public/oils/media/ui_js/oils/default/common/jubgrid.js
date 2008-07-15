@@ -83,6 +83,7 @@ var JUBGrid = {
         if (!data || !data.owning_lib) return;
         return fieldmapper.aou.findOrgUnit(data.owning_lib).shortname();
     },
+
     populate : function(gridWidget, model, lineitems) {
 	for (var i in lineitems) {
 	    JUBGrid.lineitems[lineitems[i].id()] = lineitems[i];
@@ -119,19 +120,31 @@ var JUBGrid = {
 	    var rowIdx = selected[idx];
 	    var jub = JUBGrid.jubGrid.model.getRow(rowIdx);
 	    var li = new openils.acq.Lineitems({lineitem:JUBGrid.getLi(jub.id)});
-	    var approveStore = function() {
-		var approveACQLI = function(jub, rq) {
-		    JUBGrid.jubGrid.model.store.setValue(jub,
-							 "state", "approved");
-		};
-		JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id},
-						   onItem: approveACQLI});
+	    var approveStore = function(evt) {
+		if (evt) {
+		    // something bad happened
+		    console.log("jubgrid.js: approveJUB: error:");
+		    console.dir(evt);
+		    alert("Error: "+evt.desc);
+		} else {
+		    var approveACQLI = function(jub, rq) {
+			JUBGrid.jubGrid.model.store.setValue(jub,
+							     "state",
+							     "approved");
+			JUBGrid.jubGrid.update();
+			// Reload lineitem details, read-only
+			openils.acq.Lineitems.loadGrid(
+			    JUBGrid.jubDetailGrid, li.id(),
+			    JUBGrid.jubDetailGridLayoutReadOnly);
+		    };
+
+		    JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id},
+						       onItem: approveACQLI});
+		}
 	    };
 
-	    li.setState("approved", approveStore);
+	    li.approve(approveStore);
 	}
-
-	JUBGrid.jubGrid.update();
     },
 
     deleteLID: function(evt) {
@@ -140,25 +153,30 @@ var JUBGrid = {
 	for (var idx = 0; idx < selected.length; idx++) {
 	    var rowIdx = selected[idx];
 	    var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
-	    var deleteFromStore = function () {
-		var deleteItem = function(item, rq) {
-		    JUBGrid.jubDetailGrid.model.store.deleteItem(item);
-		};
-		JUBGrid.jubDetailGrid.model.store.fetch({query:{id:lid.id},
-							 onItem: deleteItem});
+	    var deleteFromStore = function (evt) {
+
+		if (evt) {
+		    // something bad happened
+		    alert("Error: "+evt.desc);
+		} else {
+		    var deleteItem = function(item, rq) {
+			JUBGrid.jubDetailGrid.model.store.deleteItem(item);
+		    };
+		    var updateCount = function(item) {
+			var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
+			JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
+			JUBGrid.jubGrid.update();
+		    };
+
+		    JUBGrid.jubDetailGrid.model.store.fetch({query:{id:lid.id},
+							     onItem: deleteItem});
+		    JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
+						       onItem: updateCount});
+		}
+		JUBGrid.jubDetailGrid.update(); 
 	    };
 
 	    openils.acq.Lineitems.deleteLID(lid.id, deleteFromStore);
-	    JUBGrid.jubDetailGrid.update();
-
-	    var updateCount = function(item) {
-		var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
-		JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
-		JUBGrid.jubGrid.update();
-	    };
-
-	    JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
-					       onItem: updateCount});
 	}
     },
 
@@ -166,6 +184,7 @@ var JUBGrid = {
 	fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
 	var addToStore = function () {
 	    JUBGrid.jubDetailGrid.model.store.newItem(fields);
+	    JUBGrid.jubDetailGrid.refresh();
 	    JUBGrid.jubGrid.update();
 	    JUBGrid.jubGrid.refresh();
 	}

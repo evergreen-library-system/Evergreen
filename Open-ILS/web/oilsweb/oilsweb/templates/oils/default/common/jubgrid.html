@@ -53,16 +53,16 @@ pointing to the JUB model (and store) that you have created.
     }
     JUBGrid.jubGridLayout = [{
         cells: [[
-            {name: "ID", field: 'id'},
-            {name: "Title", width: "auto", get:JUBGrid.getJUBTitle},
-            {name: "Author", get:JUBGrid.getJUBAuthor},
-            {name: "ISBN", get:JUBGrid.getJUBIsbn},
+            {name: '${_(ID)}', field: 'id'},
+            {name: '${_(Title)}', width: "auto", get:JUBGrid.getJUBTitle},
+            {name: '${_(Author)}', get:JUBGrid.getJUBAuthor},
+            {name: '${_(ISBN)}', get:JUBGrid.getJUBIsbn},
             {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate},
-            {name: "Price", get:JUBGrid.getJUBPrice},
-            {name: "Vendor", get:JUBGrid.getProvider},
-            {name: "# Copies", field: 'item_count'},
-            {name: "State", field: 'state'},
-            {name: "PO", get:JUBGrid.getPO}
+            {name: '${_("Price")}', get:JUBGrid.getJUBPrice},
+            {name: '${_(Vendor)}', get:JUBGrid.getProvider},
+            {name: '${_(# Copies)}', field: 'item_count'},
+            {name: '${_(State)}', field: 'state'},
+            {name: '${_(PO)}', get:JUBGrid.getPO}
         ]]
     }];
 
@@ -94,11 +94,11 @@ pointing to the JUB model (and store) that you have created.
 
     JUBGrid.jubDetailGridLayoutReadOnly = [{
         cells: [[
-            {name:"ID", field:"id"},
-            {name:"Fund", field:"fund",
+            {name:'${_(ID)}', field:"id"},
+            {name:'${_(Fund)}', field:"fund",
              get:JUBGrid.getLIDFundCode,
             },
-            {name:"Branch", field:"owning_lib",
+            {name:'${_(Branch)}', field:"owning_lib",
 	            get:JUBGrid.getLIDLibName,
 	        },
             {name:"Barcode", field:"barcode", width:'auto'},
