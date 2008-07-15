@@ -78,9 +78,9 @@ CREATE TABLE permission.usr_grp_map (
 
 CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permission.grp_tree AS $$
 	SELECT	a.*
-	FROM	connectby('permission.grp_tree','parent','id','name',$1,'100','.')
+	FROM	connectby('permission.grp_tree'::text,'parent'::text,'id'::text,'name'::text,$1::text,100,'.'::text)
 			AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN permission.grp_tree a ON a.id = t.keyid
+		JOIN permission.grp_tree a ON a.id::text = t.keyid::text
 	ORDER BY
 		CASE WHEN a.parent IS NULL
 			THEN 0

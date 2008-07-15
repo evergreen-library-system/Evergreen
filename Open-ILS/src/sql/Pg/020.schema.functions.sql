@@ -134,30 +134,30 @@ $$ language 'plpgsql';
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT ) RETURNS SETOF actor.org_unit AS $$
 	SELECT	a.*
-	  FROM	connectby('actor.org_unit','id','parent_ou','name',$1,'100','.')
+	  FROM	connectby('actor.org_unit'::text,'id'::text,'parent_ou'::text,'name'::text,$1::text,100,'.'::text)
 	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id = t.keyid
+		JOIN actor.org_unit a ON a.id::text = t.keyid::text
 	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestors ( INT ) RETURNS SETOF actor.org_unit AS $$
 	SELECT	a.*
-	  FROM	connectby('actor.org_unit','parent_ou','id','name',$1,'100','.')
+	  FROM	connectby('actor.org_unit'::text,'parent_ou'::text,'id'::text,'name'::text,$1::text,100,'.'::text)
 	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id = t.keyid
+		JOIN actor.org_unit a ON a.id::text = t.keyid::text
 	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT,INT ) RETURNS SETOF actor.org_unit AS $$
 	SELECT	a.*
-	  FROM	connectby('actor.org_unit','id','parent_ou','name',
+	  FROM	connectby('actor.org_unit'::text,'id'::text,'parent_ou'::text,'name'::text,
 	  			(SELECT	x.id
 				   FROM	actor.org_unit_ancestors($1) x
 				   	JOIN actor.org_unit_type y ON x.ou_type = y.id
-				  WHERE	y.depth = $2)
-		,'100','.')
+				  WHERE	y.depth = $2)::text
+		,100,'.'::text)
 	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id = t.keyid
+		JOIN actor.org_unit a ON a.id::text = t.keyid::text
 	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
 $$ LANGUAGE SQL STABLE;
 
