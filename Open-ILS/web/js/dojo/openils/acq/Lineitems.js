@@ -23,6 +23,7 @@ dojo.require('dojox.grid.Grid');
 dojo.require('dojox.grid._data.model');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
+dojo.require('openils.Event');
 
 /** Declare the Lineitems class with dojo */
 dojo.declare('openils.acq.Lineitems', null, {
@@ -48,15 +49,25 @@ dojo.declare('openils.acq.Lineitems', null, {
             {   async: true,
                 params: [openils.User.authtoken, this.lineitem],
                 oncomplete: function(r) {
-                    oncomplete(r.recv().content())
+		    oncomplete(openils.Event.parse(r.recv().content()));
                 }
             }
         );
     },
 
-    setState: function(newState, oncomplete) {
-	this.lineitem.state(newState);
-	this.update(oncomplete);
+    approve: function(oncomplete) {
+	fieldmapper.standardRequest(
+	    ['open-ils.acq', 'open-ils.acq.lineitem.approve'],
+	    {  async: true,
+	       params: [openils.User.authtoken, this.lineitem.id()],
+	       oncomplete: function(r) {
+		   oncomplete(openils.Event.parse(r.recv().content()));
+	       }
+	    });
+    },
+
+    id: function() {
+	return this.lineitem.id();
     },
 });
 
@@ -90,12 +101,24 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	});
 };
 
-openils.acq.Lineitems.alertOnSet = function(griditem, attr, oldVal, newVal) {
+openils.acq.Lineitems.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
     var item;
     var updateDone = function(r) {
 	var stat = r.recv().content();
-	// XXX Check for Event
-    }
+	var evt = openils.Event.parse(stat);
+
+	if (evt) {
+	    alert("Error: "+evt.desc);
+	    console.dir(evt);
+	    if (attr == "fund") {
+		item.fund(oldVal);
+		griditem.fund = oldVal;
+	    } else if (attr ==  "owning_lib") {
+		item.owning_lib(oldVal);
+		griditem.owning_lib = oldVal;
+	    }
+	}
+    };
 
     if (oldVal == newVal) {
 	return;
@@ -133,7 +156,7 @@ openils.acq.Lineitems.deleteLID = function(id, onComplete) {
             oncomplete: function(r) {
                 msg = r.recv()
                 stat = msg.content();
-		onComplete();
+		onComplete(openils.Event.parse(stat));
             }
     });
 };
@@ -168,7 +191,7 @@ openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
 			{rowsPerPage: 20, clientSort:true, query:{id:'*'}});
 
 		    dojo.connect(store, "onSet",
-				 openils.acq.Lineitems.alertOnSet);
+				 openils.acq.Lineitems.alertOnLIDSet);
 		    openils.acq.Lineitems.ModelCache[id] = model;
 
 		    domNode.setStructure(layout);
@@ -177,7 +200,9 @@ openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
 		});
     } else {
 	domNode.setModel(openils.acq.Lineitems.ModelCache[id]);
+	domNode.setStructure(layout);
 	domNode.update();
+	domNode.refresh();
     }
 };
 }
