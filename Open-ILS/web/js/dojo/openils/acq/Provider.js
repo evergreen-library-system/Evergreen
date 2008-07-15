@@ -68,6 +68,25 @@ openils.acq.Provider.retrieve = function(id) {
     return openils.acq.Provider.cache[id];
 };
 
+openils.acq.Provider.create = function(fields, oncomplete) {
+    var provider = new acqpro()
+    for(var field in fields) 
+        provider[field](fields[field]);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.provider.create'],
+        {   async: true,
+            params: [openils.User.authtoken, provider],
+            oncomplete: function(r) {
+                var msg = r.recv();
+                var id = msg.content();
+                if(oncomplete)
+                    oncomplete(id);
+            }
+        }
+    );
+};
+
 
 openils.acq.Provider.retrieveLineitemProviderAttrDefs = function(providerId, oncomplete) {
     fieldmapper.standardRequest(
