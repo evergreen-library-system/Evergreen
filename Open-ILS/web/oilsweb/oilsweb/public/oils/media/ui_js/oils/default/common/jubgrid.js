@@ -147,6 +147,51 @@ var JUBGrid = {
 	}
     },
 
+    removeSelectedJUBs: function(evt) {
+
+        function deleteList(list, idx, oncomplete) {
+            if(idx >= list.length) 
+                return oncomplete();
+            fieldmapper.standardRequest([
+                'open-ils.acq',
+                'open-ils.acq.lineitem.delete'], 
+                {   async: true,
+                    params: [openils.User.authtoken, list[idx].id()],
+                    oncomplete: function(e) {
+                        deleteList(list, ++idx, oncomplete);
+                    }
+                }
+            );
+        }
+
+        var lineitems = JUBGrid.lineitems;
+        var deleteMe = [];
+        var keepMe = [];
+        var selected = JUBGrid.jubGrid.selection.getSelected();
+
+        for(var id in lineitems) {
+            var deleted = false;
+            for(var i = 0; i < selected.length; i++) {
+                var rowIdx = selected[i];
+	            var jubid = JUBGrid.jubGrid.model.getRow(rowIdx).id;
+                if(jubid == id) {
+                    deleteMe.push(lineitems[id]);
+                    deleted = true;
+                }
+            }
+            if(!deleted) 
+                keepMe.push(lineitems[id]);
+        }
+
+        JUBGrid.lineitems = keepMe;
+        deleteList(deleteMe, 0, function(){
+            JUBGrid.jubGrid.model.store = 
+                new dojo.data.ItemFileReadStore({data:jub.toStoreData(keepMe)});
+            JUBGrid.jubGrid.model.refresh();
+            JUBGrid.jubGrid.update();
+        });
+    },
+
     deleteLID: function(evt) {
 	var list =[];
 	var selected = JUBGrid.jubDetailGrid.selection.getSelected();

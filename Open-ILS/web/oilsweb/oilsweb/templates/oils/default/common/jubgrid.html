@@ -118,6 +118,9 @@ pointing to the JUB model (and store) that you have created.
             <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
                 ${_('Approve Selected Titles')}
             </button>
+            <button dojoType="dijit.form.Button" onclick="JUBGrid.removeSelectedJUBs">
+                ${_('Remove Selected Titles')}
+            </button>
         </div>
 % endif
         <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
