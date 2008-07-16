@@ -11,6 +11,7 @@ dojo.require("openils.acq.Lineitems");
 dojo.require('openils.acq.Provider');
 dojo.require("openils.widget.FundSelector");
 dojo.require('openils.editors');
+dojo.require('openils.Event');
 dojo.require("openils.widget.OrgUnitFilteringSelect");
 dojo.require("fieldmapper.OrgUtils");
 
@@ -157,7 +158,10 @@ var JUBGrid = {
                 'open-ils.acq.lineitem.delete'], 
                 {   async: true,
                     params: [openils.User.authtoken, list[idx].id()],
-                    oncomplete: function(e) {
+                    oncomplete: function(r) {
+                        var res = r.recv().content();
+                        if(openils.Event.parse(res))
+                            alert(openils.Event.parse(res));
                         deleteList(list, ++idx, oncomplete);
                     }
                 }
@@ -180,7 +184,7 @@ var JUBGrid = {
                 }
             }
             if(!deleted) 
-                keepMe.push(lineitems[id]);
+                keepMe[id] = lineitems[id];
         }
 
         JUBGrid.lineitems = keepMe;
