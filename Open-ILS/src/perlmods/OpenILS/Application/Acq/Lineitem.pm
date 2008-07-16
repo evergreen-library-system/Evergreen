@@ -305,12 +305,26 @@ sub delete_lineitem {
     my $li = $e->retrieve_acq_lineitem($li_id)
         or return $e->die_event;
 
-    my $picklist = $e->retrieve_acq_picklist($li->picklist)
-        or return $e->die_event;
+    # XXX check state
 
-    # don't let anyone delete someone else's lineitem
-    return OpenILS::Event->new('BAD_PARAMS') 
-        if $picklist->owner != $e->requestor->id;
+    if($li->picklist) {
+        my $picklist = $e->retrieve_acq_picklist($li->picklist)
+            or return $e->die_event;
+        return OpenILS::Event->new('BAD_PARAMS') 
+            if $picklist->owner != $e->requestor->id;
+    } else {
+        # check PO perms
+    }
+
+    # delete the attached lineitem_details
+    my $lid_ids = $e->search_acq_lineitem_detail(
+        {lineitem => $li_id}, {idlist=>1});
+
+    for my $lid_id (@$lid_ids) {
+        $e->delete_acq_lineitem_detail(
+            $e->retrieve_acq_lineitem_detail($lid_id))
+            or return $e->die_event;
+    }
 
     $e->delete_acq_lineitem($li) or return $e->die_event;
     $e->commit;
