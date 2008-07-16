@@ -154,6 +154,8 @@ function initParams() {
 	TFORM		= cgi.param(PARAM_TFORM);
 	RDEPTH	= cgi.param(PARAM_RDEPTH);
     AVAIL   = cgi.param(PARAM_AVAIL);
+    COPYLOCS   = cgi.param(PARAM_COPYLOCS);
+    
 
 	/* set up some sane defaults */
 	//if(isNaN(DEPTH))	DEPTH		= 0;
@@ -192,6 +194,7 @@ function clearSearchParams() {
 	LANGUAGE    = null;
 	RDEPTH      = null;
     AVAIL       = null;
+    COPYLOCS    = null;
 }
 
 
@@ -239,6 +242,7 @@ function getSearches() { return SEARCHES; }
 function getLanguage() { return LANGUAGE; }
 function getRdepth() { return RDEPTH; }
 function getAvail() { return AVAIL; }
+function getCopyLocs() { return COPYLOCS; }
 
 
 function findBasePath() {
@@ -387,6 +391,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(SORT_DIR,	PARAM_SORT_DIR, args, getSortDir, string);
 	if(getAvail())
 		string += _appendParam(AVAIL, PARAM_AVAIL, args, getAvail, string);
+	if(getCopyLocs())
+		string += _appendParam(COPYLOCS, PARAM_COPYLOCS, args, getCopyLocs, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }

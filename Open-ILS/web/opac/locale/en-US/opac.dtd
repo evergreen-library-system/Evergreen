@@ -319,6 +319,7 @@ Please see a librarian to renew your account.">
 <!ENTITY opac.advanced.quick.tcn "TCN"> <!-- title control number -->
 <!ENTITY opac.advanced.quick.barcode "Item Barcode"> 
 <!ENTITY opac.advanced.quick.cn "Call Number"> 
+<!ENTITY opac.advanced.copy_loc_filter "Shelving Location">
 
 <!-- ==========================================================
      MARC expert search

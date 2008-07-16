@@ -169,6 +169,14 @@
 							</select>
 						</td>
 					</tr>
+                    <!-- copy location selector -->
+                    <tr id='adv_copy_location_filter_row' class='hide_me'>
+                        <td align='right'>&opac.advanced.copy_loc_filter;</td>
+                        <td align='left' id='adv_copy_location_filter_td'>
+                            <select size='3' id='adv_copy_location_filter_select' multiple='multiple'>
+                            </select>
+                        </td>
+                    </tr>
 				</tbody>
 			</table>
 		</td>
