@@ -312,7 +312,7 @@ __PACKAGE__->register_method(
 	method => 'retrieve_fund_summary',
 	api_name	=> 'open-ils.acq.fund.summary.retrieve',
 	signature => {
-        desc => 'Returns a summary of credits/debits/encumberances for a fund',
+        desc => 'Returns a summary of credits/debits/encumbrances for a fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'fund id', type => 'number' }
@@ -336,7 +336,7 @@ sub retrieve_fund_summary_impl {
 
     my $at = $e->search_acq_fund_allocation_total({fund => $fund->id})->[0];
     my $dt = $e->search_acq_fund_debit_total({fund => $fund->id})->[0];
-    my $et = $e->search_acq_fund_encumberance_total({fund => $fund->id})->[0];
+    my $et = $e->search_acq_fund_encumbrance_total({fund => $fund->id})->[0];
     my $st = $e->search_acq_fund_spent_total({fund => $fund->id})->[0];
     my $cb = $e->search_acq_fund_combined_balance({fund => $fund->id})->[0];
     my $sb = $e->search_acq_fund_spent_balance({fund => $fund->id})->[0];
@@ -344,7 +344,7 @@ sub retrieve_fund_summary_impl {
     return {
         allocation_total => ($at) ? $at->amount : 0,
         debit_total => ($dt) ? $dt->amount : 0,
-        encumberance_total => ($et) ? $et->amount : 0,
+        encumbrance_total => ($et) ? $et->amount : 0,
         spent_total => ($st) ? $st->amount : 0,
         combined_balance => ($cb) ? $cb->amount : 0,
         spent_balance => ($sb) ? $sb->amount : 0,

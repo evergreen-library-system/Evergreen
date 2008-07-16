@@ -70,7 +70,7 @@ CREATE TABLE acq.fund_debit (
 	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
 	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
 	amount			NUMERIC	NOT NULL,
-	encumberance		BOOL	NOT NULL DEFAULT TRUE,
+	encumbrance		BOOL	NOT NULL DEFAULT TRUE,
 	debit_type		TEXT	NOT NULL,
 	xfer_destination	INT	REFERENCES acq.fund (id)
 );
@@ -375,23 +375,23 @@ CREATE OR REPLACE VIEW acq.fund_allocation_total AS
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
     SELECT  id AS fund,
-            encumberance,
+            encumbrance,
             SUM(amount) AS amount
       FROM  acq.fund_debit 
       GROUP BY 1,2;
 
-CREATE OR REPLACE VIEW acq.fund_encumberance_total AS
+CREATE OR REPLACE VIEW acq.fund_encumbrance_total AS
     SELECT  fund,
             SUM(amount) AS amount
       FROM  acq.fund_debit_total
-      WHERE encumberance IS TRUE
+      WHERE encumbrance IS TRUE
       GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.fund_spent_total AS
     SELECT  fund,
             SUM(amount) AS amount
       FROM  acq.fund_debit_total
-      WHERE encumberance IS FALSE
+      WHERE encumbrance IS FALSE
       GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.fund_combined_balance AS

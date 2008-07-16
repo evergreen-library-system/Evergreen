@@ -644,7 +644,7 @@ sub receive_lineitem_detail_impl {
     $copy->editor($e->requestor->id);
     $e->update_asset_copy($copy) or return $e->die_event;
 
-    # XXX update the fund_debit to encumberance=false
+    # XXX update the fund_debit to encumbrance=false
 
     my $non_recv = $e->search_acq_lineitem_detail(
         {recv_time => undef, lineitem => $lid->lineitem}, {idlist=>1});

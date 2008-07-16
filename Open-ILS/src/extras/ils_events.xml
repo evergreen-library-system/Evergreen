@@ -577,8 +577,8 @@
 	<event code='1650' textcode='ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.fund_allocation_total was not found</desc>
 	</event>
-	<event code='1651' textcode='ACQ_FUND_ENCUMBERANCE_TOTAL_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested acq.fund_encumberance_total was not found</desc>
+	<event code='1651' textcode='ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_encumbrance_total was not found</desc>
 	</event>
 	<event code='1652' textcode='ACQ_FUND_SPENT_TOTAL_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.fund_spent_total was not found</desc>

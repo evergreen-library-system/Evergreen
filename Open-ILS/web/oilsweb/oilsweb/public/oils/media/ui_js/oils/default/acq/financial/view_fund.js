@@ -19,7 +19,7 @@ function getSummaryInfo(rowIndex) {
         case 6: return new String(fund.summary().spent_balance);
         case 7: return new String(fund.summary().debit_total);
         case 8: return new String(fund.summary().spent_total);
-        case 9: return new String(fund.summary().encumberance_total);
+        case 9: return new String(fund.summary().encumbrance_total);
     }
 }
 

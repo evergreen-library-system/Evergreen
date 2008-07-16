@@ -3363,7 +3363,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Origin Amount" name="origin_amount" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Origin Currency" name="origin_currency_type" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Amount" name="amount" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money" />
-			<field reporter:label="Encumberance" name="encumberance" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Encumbrance" name="encumbrance" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Debit Type" name="debit_type" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links>
@@ -3421,13 +3421,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqfet" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_encumberance_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_encumberance_total">
+	<class id="acqfet" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_encumbrance_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_encumbrance_total">
 		<fields oils_persist:primary="fund">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Total Encumberance Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Total Encumbrance Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
