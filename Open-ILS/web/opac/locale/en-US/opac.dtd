@@ -443,6 +443,7 @@ Please see a librarian to renew your account.">
 <!ENTITY advanced.search.title "Search Input">
 <!ENTITY advanced.add.row "Add Search Row">
 <!ENTITY advanced.search.submit "Submit Search">
+<!ENTITY advanced.search.reset "Reset Form">
 <!ENTITY advanced.search.filters "Search Filters">
 <!ENTITY advanced.item.form "Item Form">
 <!ENTITY advanced.item.type "Item Type">

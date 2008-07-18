@@ -66,6 +66,19 @@ function advSyncCopyLocLink(org) {
 
 }
 
+
+function clearSearchBoxes() {
+    var rows = $('adv_global_tbody').getElementsByTagName('tr');
+    for(var t = 0; t < rows.length; t++) {
+        if($n(rows[t], 'term')) {
+            $n(rows[t], 'term').value = '';
+            setSelector($n(rows[t], 'container'), 'contains');
+            setSelector($n(rows[t], 'type'), 'keyword');
+        }
+    }
+}
+
+
 function initSearchBoxes() {
     /* loads the compiled search from the search cookie 
         and sets the widgets accordingly */
