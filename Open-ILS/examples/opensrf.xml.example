@@ -256,8 +256,8 @@ Example opensrf config file for OpenILS
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
-                    <superpage_size>1000</superpage_size>
-                    <max_superpages>25</max_superpages>
+                    <superpage_size>500</superpage_size>
+                    <max_superpages>20</max_superpages>
                     <!-- zip code database file -->
                     <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
                 </app_settings>
