@@ -78,6 +78,7 @@ function clearSearchBoxes() {
             setSelector($n(rows[t], 'type'), 'keyword');
         }
     }
+    $n(rows[0], 'term').focus();
 }
 
 
