@@ -46,10 +46,10 @@ sub initialize {
 			"apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
 
 	$superpage_size = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "superpage_size" ) || 1000;
+			"apps", "open-ils.search", "app_settings", "superpage_size" ) || 500;
 
 	$max_superpages = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "max_superpages" ) || 25;
+			"apps", "open-ils.search", "app_settings", "max_superpages" ) || 20;
 
 	$logger->info("Search cache timeout is $cache_timeout, ".
         " superpage_size is $superpage_size, max_superpages is $max_superpages");
@@ -774,7 +774,11 @@ sub staged_search {
     # limit and offset should coincide with superpage boundaries
     $search_hash->{offset} = 0;
     $search_hash->{limit} = $superpage_size;
-    $search_hash->{check_limit} = $superpage_size; # force a well-known check_limit
+
+    # force a well-known check_limit
+    $search_hash->{check_limit} = $superpage_size; 
+    # restrict total tested to superpage size * number of superpages
+    $search_hash->{core_limit} = $superpage_size * $max_superpages;
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
@@ -785,6 +789,7 @@ sub staged_search {
     my $all_results = [];
     my $page; # current superpage
     my $est_hit_count = 0;
+    my $current_page_summary = {};
 
     for($page = 0; $page < $max_superpages; $page++) {
 
@@ -820,6 +825,8 @@ sub staged_search {
             cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
 
+        $current_page_summary = $summary;
+
         # add the new set of results to the set under construction
         push(@$all_results, @$results);
 
@@ -846,6 +853,9 @@ sub staged_search {
 
     return {
         count => $est_hit_count,
+        core_limit => $search_hash->{core_limit},
+        superpage_size => $search_hash->{check_limit},
+        superpage_summary => $current_page_summary,
         ids => \@results
     };
 }
