@@ -129,13 +129,13 @@
 <hbox id="items_bottom_ui" flex="1">
 	<button id="noncat" label="&staff.patron.items_overlay.show_noncats.label;" command="cmd_show_noncats" accesskey="&staff.patron.items_overlay.show_noncats.accesskey;"/>
 	<spacer flex="1"/>
-	<button id="items_print" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print" accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
+	<button id="items_print" label="&staff.patron_display.items.print_receipt.label;" command="cmd_items_print" accesskey="&staff.patron_display.items.print_receipt.accesskey;" />
 	<button id="items_export" label="&staff.patron.items_overlay.items_export.label;" command="cmd_items_export" accesskey=""/>
 </hbox>
 
 <hbox id="items_bottom_ui2" flex="1">
 	<spacer flex="1"/>
-	<button id="items_print2" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print2" old_accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
+	<button id="items_print2" label="&staff.patron_display.items.print_receipt.label;" command="cmd_items_print2" old_accesskey="&staff.patron_display.items.print_receipt.accesskey;" />
 	<button id="items_export2" label="&staff.patron.items_overlay.items_export.label;" command="cmd_items_export2" accesskey=""/>
 </hbox>
 

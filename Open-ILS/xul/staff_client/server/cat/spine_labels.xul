@@ -50,29 +50,29 @@
 			</hbox>
 
 			<hbox>
-				<label value="&staff.cat.spine_labels.font_size_label.value;" control="pt"/>
+				<label value="&staff.cat.spine_labels.font_size.label;" control="pt"/>
 				<textbox id="pt" value="10" onchange="this.setAttribute('value',this.value)" persist="value"/>
 			</hbox>
 			<grid><columns><column/><column/><column/><column/></columns><rows>
-				<row> <label class="header" value="&staff.cat.spine_labels.spine_label.value;"/><spacer/> </row>
-				<row> <label value="&staff.cat.spine_labels.spine_label.left_margine.value;" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <label value="&staff.cat.spine_labels.spine_label.label_width.value;" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <label value="&staff.cat.spine_labels.spine_label.label_length.value;" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <label class="header" value="&staff.cat.spine_labels.pocket_label.value;"/><checkbox id="pl" checked="false" persist="checked" label="Enabled"/> </row>
-				<row> <label value="&staff.cat.spine_labels.pocket_label.middle_margin.value;" control="mm"/><textbox id="mm" value="2" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <label value="&staff.cat.spine_labels.pocket_label.label_width.value;" control="plw"/><textbox id="plw" value="28" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <label value="&staff.cat.spine_labels.pocket_label.label_length.value;" control="pll"/><textbox id="pll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label class="header" value="&staff.cat.spine_labels.spine_label.label;"/><spacer/> </row>
+				<row> <label value="&staff.cat.spine_labels.spine_label.left_margin.label;" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="&staff.cat.spine_labels.spine_label.label_width.label;" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="&staff.cat.spine_labels.spine_label.label_length.label;" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label class="header" value="&staff.cat.spine_labels.pocket_label.label;"/><checkbox id="pl" checked="false" persist="checked" label="Enabled"/> </row>
+				<row> <label value="&staff.cat.spine_labels.pocket_label.middle_margin.label;" control="mm"/><textbox id="mm" value="2" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="&staff.cat.spine_labels.pocket_label.label_width.label;" control="plw"/><textbox id="plw" value="28" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="&staff.cat.spine_labels.pocket_label.label_length.label;" control="pll"/><textbox id="pll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
 				<row>
 					<checkbox id="title" checked="true" persist="checked" label="&staff.cat.spine_labels.pocket_label.title.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="title_line" value="4" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
 				<row>
 					<checkbox id="title_r" checked="true" persist="checked" label="&staff.cat.spine_labels.pocket_label.include_title.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="title_r_line" value="5" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
@@ -80,42 +80,42 @@
 				<row>
 					<checkbox id="author" checked="true" persist="checked" label="Include Author"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="author_line" value="3" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
 				<row>
 					<checkbox id="call_number" checked="true" persist="checked" label="&staff.cat.spine_labels.inc_call_number.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="call_number_line" value="2" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
 				<row>
 					<checkbox id="owning_lib_shortname" checked="false" persist="checked" label="&staff.cat.spine_labels.inc_owning_library_policy_code.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="owning_lib_shortname_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
 				<row>
 					<checkbox id="owning_lib" checked="false" persist="checked" label="&staff.cat.spine_labels.inc_owning_library.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="owning_lib_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
 				<row>
 					<checkbox id="shelving_location" checked="false" persist="checked" label="&staff.cat.spine_labels.inc_shelving_location.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="shelving_location_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 				</hbox>
 				</row>
 				<row>
 					<checkbox id="barcode" checked="true" persist="checked" label="&staff.cat.spine_labels.inc_item_barcode.label;"/>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="barcode_line" value="1" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
@@ -125,7 +125,7 @@
 						<textbox id="custom1_tb" value="%price%" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="custom1_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
@@ -135,7 +135,7 @@
 						<textbox id="custom2_tb" value="%deposit_amount%" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 					<hbox>
-							<label value="&staff.cat.spine_labels.on_line.value;"/>
+							<label value="&staff.cat.spine_labels.on_line.label;"/>
 							<textbox id="custom2_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
@@ -145,7 +145,7 @@
 						<textbox id="custom3_tb" value="%alert_message%" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="custom3_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>
@@ -155,7 +155,7 @@
 						<textbox id="custom4_tb" value="Don't sell me on eBay" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 					<hbox>
-						<label value="&staff.cat.spine_labels.on_line.value;"/>
+						<label value="&staff.cat.spine_labels.on_line.label;"/>
 						<textbox id="custom4_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/>
 					</hbox>
 				</row>

@@ -25,18 +25,18 @@
 
 <hbox id="checkout_top_ui">
 <!--
-	<label id="checkout_scan_barcode_label" 
-		value="&staff.patron_display.checkout.scan_label;" 
-		accesskey="&staff.patron_display.checkout.scan_label.accesskey;" 
+	<label id="checkout_scan_barcode.label" 
+		value="&staff.patron_display.checkout.scan.label;" 
+		accesskey="&staff.patron_display.checkout.scan.accesskey;" 
 		control="checkout_barcode_entry_textbox"/>
 -->
 	<hbox id="checkout_menu_placeholder" flex="0"/>
 	<label accesskey="&staff.circ.checkout_overlay.barcode.accesskey;" control="checkout_barcode_entry_textbox"/>
 	<textbox id="checkout_barcode_entry_textbox"/>
 	<button id="checkout_submit_barcode_button" 
-		label="&staff.patron_display.checkout.submit_label;" 
+		label="&staff.patron_display.checkout.submit.label;" 
 		command="cmd_checkout_submit"
-		accesskey="&staff.patron_display.checkout.submit_label.accesskey;"/>
+		accesskey="&staff.patron_display.checkout.submit.accesskey;"/>
 	<spacer flex="1"/>
 	<hbox id="duedate_hbox">
 		<label value="&staff.circ.checkout_overlay.duedate_menu.label;" accesskey="&staff.circ.checkout_overlay.duedate_menu.accesskey;" control="checkout_duedate_menu"/>
@@ -54,9 +54,9 @@
 
 <hbox id="checkout_bottom_ui">
 	<button id="checkout_print" 
-		label="&staff.patron_display.checkout.print_receipt_label;" 
+		label="&staff.patron_display.checkout.print_receipt.label;" 
 		command="cmd_checkout_print"
-		accesskey="&staff.patron_display.checkout.print_receipt_label.accesskey;"/>
+		accesskey="&staff.patron_display.checkout.print_receipt.accesskey;"/>
 	<button id="checkout_export" 
 		label="&staff.circ.checkout_overlay.export.label;"
 		command="cmd_checkout_export"
@@ -66,12 +66,12 @@
 	<checkbox id="strict_barcode" label="&staff.circ.checkout_overlay.strict_barcode.label;" checked="false" persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkout_auto" persist="checked"
-		label="&staff.patron_display.checkout.auto_print_label;" 
-		accesskey_old="&staff.patron_display.checkout.auto_print_label.accesskey;"/> 
+		label="&staff.patron_display.checkout.auto_print.label;" 
+		accesskey_old="&staff.patron_display.checkout.auto_print.accesskey;"/> 
 	<button id="checkout_done" 
-		label="&staff.patron_display.checkout.done_label;" 
+		label="&staff.patron_display.checkout.done.label;" 
 		command="cmd_checkout_done"
-		accesskey="&staff.patron_display.checkout.done_label.accesskey;"/>
+		accesskey="&staff.patron_display.checkout.done.accesskey;"/>
 </hbox>
 
 </overlay>

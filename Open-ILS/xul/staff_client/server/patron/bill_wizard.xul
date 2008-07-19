@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 <?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>
 
-<window id="patron_bill" title="Bill Patron Wizard"
+<window id="patron_bill" title="&staff.patron.bill_wizard.title;"
 	orient="vertical" style="overflow: auto"
 	onload="try { patron_bill_init(); font_helper(); } catch(E) { alert(E); }" width="700" height="550"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

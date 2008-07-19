@@ -55,8 +55,6 @@
 
 <!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
 
-
-
 <!ENTITY common.cancel.accesskey "C">
 <!ENTITY common.login.accesskey "L">
 <!ENTITY common.password.accesskey "P">
@@ -64,9 +62,9 @@
 <!ENTITY staff.about.title "About">
 <!ENTITY staff.acp_label_barcode "Barcode">
 <!ENTITY staff.acp_label_call_number "Call Number">
-<!ENTITY staff.acp_label_circ_as_type "Circ As Type">
-<!ENTITY staff.acp_label_circ_lib "Circ Lib">
-<!ENTITY staff.acp_label_circ_modifier "Circ Modifier">
+<!ENTITY staff.acp_label_circ_as_type "Circulate As Type">
+<!ENTITY staff.acp_label_circ_lib "Circulation Library">
+<!ENTITY staff.acp_label_circ_modifier "Circulation Modifier">
 <!ENTITY staff.acp_label_copy_number "Copy Number">
 <!ENTITY staff.acp_label_deposit "Deposit">
 <!ENTITY staff.acp_label_deposit_amount "Deposit Amount">
@@ -83,46 +81,47 @@
 <!ENTITY staff.ahr_fulfillment_time_label "Fulfillment Time">
 <!ENTITY staff.ahr_hold_type_label "Type">
 <!ENTITY staff.ahr_holdable_formats_label "Holdable Formats">
-<!ENTITY staff.ahr_id_label "Hold Id">
-<!ENTITY staff.ahr_ischanged_label "Ischanged">
-<!ENTITY staff.ahr_isdeleted_label "Isdeleted">
-<!ENTITY staff.ahr_isnew_label "Isnew">
+<!ENTITY staff.ahr_id_label "Hold ID">
+<!ENTITY staff.ahr_ischanged_label "Is changed">
+<!ENTITY staff.ahr_isdeleted_label "Is deleted">
+<!ENTITY staff.ahr_isnew_label "Is new">
 <!ENTITY staff.ahr_phone_notify_label "Phone Notify">
-<!ENTITY staff.ahr_pickup_lib_label "Pickup Lib">
-<!ENTITY staff.ahr_prev_check_time_label "Prev Check Time">
+<!ENTITY staff.ahr_pickup_lib_label "Pickup Library">
+<!ENTITY staff.ahr_prev_check_time_label "Previous Check Time">
 <!ENTITY staff.ahr_request_time_label "Request Time">
 <!ENTITY staff.ahr_requestor_label "Requestor">
 <!ENTITY staff.ahr_selection_depth_label "Selection Depth">
 <!ENTITY staff.ahr_status_label "Status">
 <!ENTITY staff.ahr_target_label "Target">
-<!ENTITY staff.ahr_usr_label "Usr">
+<!ENTITY staff.ahr_usr_label "User">
 <!ENTITY staff.au_active_label "Active">
 <!ENTITY staff.au_addresses_label "Addresses">
 <!ENTITY staff.au_alert_message_label "Alert Message">
 <!ENTITY staff.au_billing_address_label "Billing Address">
 <!ENTITY staff.au_card_label "Card">
 <!ENTITY staff.au_cards_label "Cards">
-<!ENTITY staff.au_checkouts_label "Checkouts">
+<!ENTITY staff.au_checkouts_label "Check Outs">
 <!ENTITY staff.au_claims_returned_count_label "Claims Returned Count">
 <!ENTITY staff.au_create_date_label "Create Date">
 <!ENTITY staff.au_credit_forward_balance_label "Credit Forward Balance">
 <!ENTITY staff.au_day_phone_label "Day Phone">
-<!ENTITY staff.au_dob_label "Dob">
+<!ENTITY staff.au_dob_label "Date of Birth">
 <!ENTITY staff.au_email_label "Email">
 <!ENTITY staff.au_evening_phone_label "Evening Phone">
 <!ENTITY staff.au_expire_date_label "Expire Date">
 <!ENTITY staff.au_family_name_label "Family Name">
 <!ENTITY staff.au_first_given_name_label "First Given Name">
 <!ENTITY staff.au_hold_requests_label "Hold Requests">
-<!ENTITY staff.au_home_ou_label "Home Ou">
-<!ENTITY staff.au_id_label "User Id">
-<!ENTITY staff.au_ident_type2_label "Ident Type2">
-<!ENTITY staff.au_ident_type_label "Ident Type">
-<!ENTITY staff.au_ident_value2_label "Ident Value2">
-<!ENTITY staff.au_ident_value_label "Ident Value">
-<!ENTITY staff.au_ischanged_label "Ischanged">
-<!ENTITY staff.au_isdeleted_label "Isdeleted">
-<!ENTITY staff.au_isnew_label "Isnew">
+<!-- "OU" is an organization unit - typically a library -->
+<!ENTITY staff.au_home_ou_label "Home OU">
+<!ENTITY staff.au_id_label "User ID">
+<!ENTITY staff.au_ident_type2_label "Identification Type2">
+<!ENTITY staff.au_ident_type_label "Identification Type">
+<!ENTITY staff.au_ident_value2_label "Identification Value2">
+<!ENTITY staff.au_ident_value_label "Identification Value">
+<!ENTITY staff.au_ischanged_label "Is changed">
+<!ENTITY staff.au_isdeleted_label "Is deleted">
+<!ENTITY staff.au_isnew_label "Is new">
 <!ENTITY staff.au_label_active "Active">
 <!ENTITY staff.au_label_family_name "Family Name">
 <!ENTITY staff.au_label_first_given_name "First Name">
@@ -130,14 +129,15 @@
 <!ENTITY staff.au_label_prefix "Prefix">
 <!ENTITY staff.au_label_second_given_name "Middle Name">
 <!ENTITY staff.au_label_suffix "Suffix">
-<!ENTITY staff.au_last_xact_id_label "Last Xact Id">
+<!-- "xact" is a transaction -->
+<!ENTITY staff.au_last_xact_id_label "Last Xact ID">
 <!ENTITY staff.au_mailing_address_label "Mailing Address">
 <!ENTITY staff.au_master_account_label "Master Account">
 <!ENTITY staff.au_net_access_level_label "Net Access Level">
 <!ENTITY staff.au_other_phone_label "Other Phone">
-<!ENTITY staff.au_passwd_label "Passwd">
+<!ENTITY staff.au_passwd_label "Password">
 <!ENTITY staff.au_password_label "Password">
-<!ENTITY staff.au_photo_url_label "Photo Url">
+<!ENTITY staff.au_photo_url_label "Photo URL">
 <!ENTITY staff.au_prefix_label "Prefix">
 <!ENTITY staff.au_profile_label "Profile">
 <!ENTITY staff.au_second_given_name_label "Second Given Name">
@@ -147,8 +147,8 @@
 <!ENTITY staff.au_suffix_label "Suffix">
 <!ENTITY staff.au_super_user_label "Super User">
 <!ENTITY staff.au_survey_responses_label "Survey Responses">
-<!ENTITY staff.au_usrgroup_label "Usrgroup">
-<!ENTITY staff.au_usrname_label "Usrname">
+<!ENTITY staff.au_usrgroup_label "User group">
+<!ENTITY staff.au_usrname_label "User name">
 <!ENTITY staff.admin.survey.available.label "Available to:">
 <!ENTITY staff.admin.survey.description.label "Description:">
 <!ENTITY staff.admin.survey.end.label "End:">
@@ -160,8 +160,8 @@
 <!ENTITY staff.admin.survey.save_question.label "Save this Question">
 <!ENTITY staff.admin.survey.staff_client.label "Staff Client:">
 <!ENTITY staff.admin.survey.start.label "Start:">
-<!ENTITY staff.auth.login_header "Login">
-<!ENTITY staff.auth.logoff_prompt "Log Off">
+<!ENTITY staff.auth.login_header "Log in">
+<!ENTITY staff.auth.logoff_prompt "Log off">
 <!ENTITY staff.auth.logoff_prompt.accesskey "f">
 <!ENTITY staff.auth.logoff_prompt.key "L">
 <!ENTITY staff.auth.name_prompt "Name:">
@@ -177,15 +177,15 @@
 <!ENTITY staff.auth.version "Evergreen 0.1.0 20051202">
 <!ENTITY staff.bills_current_payment_label "Current Payment">
 <!ENTITY staff.bills_information "Information">
-<!ENTITY staff.bills_interface_label "BILLS">
+<!ENTITY staff.bills_interface_label "Bills">
 <!ENTITY staff.bills_money_label "Money">
 <!ENTITY staff.bills_total_owed_label "Total Owed">
 <!ENTITY staff.bills_wizard_label "Bill Patron">
-<!ENTITY staff.bills_xact_dates_label "Record / Dates">
+<!ENTITY staff.bills_xact_dates_label "Record and Dates">
 <!ENTITY staff.browse_list.barcode "Barcode">
 <!ENTITY staff.browse_list.callnumber "Call Number">
 <!ENTITY staff.browse_list.circ_as_type "Circulate As">
-<!ENTITY staff.browse_list.circ_lib "Circulating Lib">
+<!ENTITY staff.browse_list.circ_lib "Circulating Library">
 <!ENTITY staff.browse_list.circ_modifier "Circ Modifier">
 <!ENTITY staff.browse_list.circulate "Circulate">
 <!ENTITY staff.browse_list.copy_number "Copy Number">
@@ -198,7 +198,7 @@
 <!ENTITY staff.browse_list.fine_level "Fine Level">
 <!ENTITY staff.browse_list.library "Owning Lib">
 <!ENTITY staff.browse_list.loan_duration "Loan Duration">
-<!ENTITY staff.browse_list.location "Location/Barcode">
+<!ENTITY staff.browse_list.location "Location and Barcode">
 <!ENTITY staff.browse_list.location2 "Location">
 <!ENTITY staff.browse_list.opac_visible "OPAC">
 <!ENTITY staff.browse_list.price "Price">
@@ -308,24 +308,24 @@
 <!ENTITY staff.cat.type_of_material.m "Computer File">
 <!ENTITY staff.cat.type_of_material.o "Kit">
 <!ENTITY staff.cat.type_of_material.p "Mixed Material">
-<!ENTITY staff.cat.type_of_material.r "Three-dimensional Artifact or Naturally Occuring Object">
+<!ENTITY staff.cat.type_of_material.r "Three-dimensional Artifact or Naturally Occurring Object">
 <!ENTITY staff.cat.type_of_material.t "Manuscript Language Material">
 <!ENTITY staff.checkin.auto_print_label 'Auto-Print'>
 <!ENTITY staff.checkin.auto_print_label.accesskey 'A'>
 <!ENTITY staff.checkin.done_label 'Done'>
 <!ENTITY staff.checkin.done_label.accesskey 'D'>
-<!ENTITY staff.checkin.print_receipt_label 'Print List'>
-<!ENTITY staff.checkin.print_receipt_label.accesskey ''>
+<!ENTITY staff.checkin.print_receipt.label 'Print List'>
+<!ENTITY staff.checkin.print_receipt.accesskey ''>
 <!ENTITY staff.checkin.reprint_receipt_label 'Re-Print Last List'>
 <!ENTITY staff.checkin.reprint_receipt_label.accesskey 'L'>
-<!ENTITY staff.checkin_interface_label "CHECK IN">
+<!ENTITY staff.checkin_interface_label "Check In">
 <!ENTITY staff.checkin_label_route_to "Route To">
 <!ENTITY staff.checkin_label_status "Status">
 <!ENTITY staff.checkin_label_text "Message">
 <!ENTITY staff.checkin_patron.name.label 'Patron Name'>
 <!ENTITY staff.checkin_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.checkin_patron.retrieve.accesskey 'R'>
-<!ENTITY staff.checkout_interface_label "CHECK OUT">
+<!ENTITY staff.checkout_interface_label "Check Out">
 <!ENTITY staff.circ.offline.main.label 'Evergreen Offline'>
 <!ENTITY staff.circ.offline.server_time.tooltiptext 'Estimated Server Time - Click to adjust'>
 <!ENTITY staff.circ.offline.cmd_checkout.accesskey 'C'>
@@ -362,7 +362,7 @@
 <!ENTITY staff.circ.offline_register.family_name.label 'Last Name:'>
 <!ENTITY staff.circ.offline_register.first_given_name.label 'First Name:'>
 <!ENTITY staff.circ.offline_register.dob.label 'Date of Birth:'>
-<!ENTITY staff.circ.offline_register.x_ident_type.label 'Ident Type:'>
+<!ENTITY staff.circ.offline_register.x_ident_type.label 'Identification Type:'>
 <!ENTITY staff.circ.offline_register.ident_value.label 'Ident Value:'>
 <!ENTITY staff.circ.offline_register.billing_address.label 'Billing Address'>
 <!ENTITY staff.circ.offline_register.street1.label 'Line 1'>
@@ -380,10 +380,10 @@
 <!ENTITY staff.circ.offline_renew.step5.label 'Repeat Steps 3 and 4 until done.'>
 
 <!ENTITY staff.circ.checkin.caption 'Check In'>
-<!ENTITY staff.circ.checkin.scan_label 'Enter Barcode:'>
-<!ENTITY staff.circ.checkin.scan_label.accesskey 'a'>
-<!ENTITY staff.circ.checkin.submit_label 'Submit'>
-<!ENTITY staff.circ.checkin.submit_label.accesskey 'S'>
+<!ENTITY staff.circ.checkin.scan.label 'Enter Barcode:'>
+<!ENTITY staff.circ.checkin.scan.accesskey 'a'>
+<!ENTITY staff.circ.checkin.submit.label 'Submit'>
+<!ENTITY staff.circ.checkin.submit.accesskey 'S'>
 <!ENTITY staff.circ.context_cancel_hold "Cancel Hold">
 <!ENTITY staff.circ.context_checkin "Check In">
 <!ENTITY staff.circ.context_edit "Edit Copy">
@@ -397,11 +397,11 @@
 <!ENTITY staff.circ.hold_capture.submit_label 'Submit'>
 <!ENTITY staff.circ.hold_capture.submit_label.accesskey 'S'>
 <!ENTITY staff.circ_label_due_date "Due Date">
-<!ENTITY staff.circ_label_id "Circ Id">
+<!ENTITY staff.circ_label_id "Circulation ID">
 <!ENTITY staff.circ_label_renewal_remaining "Remaining Renewals">
-<!ENTITY staff.circ_label_xact_finish "Checkin Date">
-<!ENTITY staff.circ_label_xact_start "Checkout Date">
-<!ENTITY staff.copies_editor_interface_label "COPIES EDIT">
+<!ENTITY staff.circ_label_xact_finish "Check in Date">
+<!ENTITY staff.circ_label_xact_start "Check out Date">
+<!ENTITY staff.copies_editor_interface_label "Copies Edit">
 <!ENTITY staff.copy.attr.barcode "Barcode">
 <!ENTITY staff.copy.attr.circulate "Circulate?">
 <!ENTITY staff.copy.attr.circulate.no "No">
@@ -515,12 +515,12 @@
 <!ENTITY staff.displaying.results 'Displaying results'>
 <!ENTITY staff.fieldmapper_label "Fieldmapper">
 <!ENTITY staff.filter_console_label "Filter Console">
-<!ENTITY staff.hold_capture.auto_print_label 'Auto-Print'>
-<!ENTITY staff.hold_capture.auto_print_label.accesskey 'A'>
-<!ENTITY staff.hold_capture.done_label 'Done'>
-<!ENTITY staff.hold_capture.done_label.accesskey 'D'>
-<!ENTITY staff.hold_capture.print_receipt_label 'Print List'>
-<!ENTITY staff.hold_capture.print_receipt_label.accesskey ''>
+<!ENTITY staff.hold_capture.auto_print.label 'Auto-Print'>
+<!ENTITY staff.hold_capture.auto_print.accesskey 'A'>
+<!ENTITY staff.hold_capture.done.label 'Done'>
+<!ENTITY staff.hold_capture.done.accesskey 'D'>
+<!ENTITY staff.hold_capture.print_receipt.label 'Print List'>
+<!ENTITY staff.hold_capture.print_receipt.accesskey ''>
 <!ENTITY staff.hold_capture.reprint_receipt_label 'Re-Print Last List'>
 <!ENTITY staff.hold_capture.reprint_receipt_label.accesskey 'L'>
 <!ENTITY staff.hold_capture_interface_label "Hold capture">
@@ -1038,7 +1038,7 @@
 <!ENTITY staff.marc.display.key "D">
 <!ENTITY staff.marc.display.legend "Legend">
 <!ENTITY staff.marc.display.legend.key "L">
-<!ENTITY staff.marc.display.meta_data "Toggle Meta Data">
+<!ENTITY staff.marc.display.meta_data "Toggle Metadata">
 <!ENTITY staff.marc.display.meta_data.key "E">
 <!ENTITY staff.marc.editor.keys.help "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;">
 <!ENTITY staff.marc.file "MARC">
@@ -1057,7 +1057,7 @@
 <!ENTITY staff.marc.groupbox.cover "Cover Art">
 <!ENTITY staff.marc.groupbox.data "Data Fields">
 <!ENTITY staff.marc.groupbox.fixed "Fixed Fields">
-<!ENTITY staff.marc.groupbox.meta "Meta Data (NOT YET IMPLEMENTED)">
+<!ENTITY staff.marc.groupbox.meta "Metadata (NOT YET IMPLEMENTED)">
 <!ENTITY staff.marc_editor_interface_label "MARC">
 <!ENTITY staff.mbts_balance_owed_label "Balance Owed">
 <!ENTITY staff.mbts_id_label "Bill # ">
@@ -1066,31 +1066,31 @@
 <!ENTITY staff.mbts_xact_finish_label "Finish">
 <!ENTITY staff.mbts_xact_start_label "Start">
 <!ENTITY staff.mvr_label_author "Author">
-<!ENTITY staff.mvr_label_doc_id "Doc Id">
+<!ENTITY staff.mvr_label_doc_id "Document ID">
 <!ENTITY staff.mvr_label_title "Title">
 <!ENTITY staff.next.range 'Next'>
 <!ENTITY staff.next.range.key 'N'>
-<!ENTITY staff.opac_navigator_interface_label "CATALOG NAVIGATOR">
+<!ENTITY staff.opac_navigator_interface_label "CAtalog Navigator">
 <!ENTITY staff.patron.context_display "Retrieve Patron">
-<!ENTITY staff.patron_barcode_entry_interface_label "PATRON">
+<!ENTITY staff.patron_barcode_entry_interface_label "Patron">
 <!ENTITY staff.patron_display.bills.label 'Bills:'>
-<!ENTITY staff.patron_display.checkout.auto_print_label 'Auto-Print'>
-<!ENTITY staff.patron_display.checkout.auto_print_label.accesskey 'A'>
-<!ENTITY staff.patron_display.checkout.done_label 'Done'>
-<!ENTITY staff.patron_display.checkout.done_label.accesskey 'D'>
-<!ENTITY staff.patron_display.checkout.print_receipt_label 'Print Receipt'>
-<!ENTITY staff.patron_display.checkout.print_receipt_label.accesskey ''>
+<!ENTITY staff.patron_display.checkout.auto_print.label 'Auto-Print'>
+<!ENTITY staff.patron_display.checkout.auto_print.accesskey 'A'>
+<!ENTITY staff.patron_display.checkout.done.label 'Done'>
+<!ENTITY staff.patron_display.checkout.done.accesskey 'D'>
+<!ENTITY staff.patron_display.checkout.print_receipt.label 'Print Receipt'>
+<!ENTITY staff.patron_display.checkout.print_receipt.accesskey ''>
 <!ENTITY staff.patron_display.checkout.reprint_receipt_label 'Re-Print Last Receipt'>
 <!ENTITY staff.patron_display.checkout.reprint_receipt_label.accesskey 'L'>
-<!ENTITY staff.patron_display.checkout.scan_label 'Enter Barcode:'>
-<!ENTITY staff.patron_display.checkout.scan_label.accesskey 'a'>
-<!ENTITY staff.patron_display.checkout.submit_label 'Submit'>
-<!ENTITY staff.patron_display.checkout.submit_label.accesskey 'S'>
+<!ENTITY staff.patron_display.checkout.scan.label 'Enter Barcode:'>
+<!ENTITY staff.patron_display.checkout.scan.accesskey 'a'>
+<!ENTITY staff.patron_display.checkout.submit.label 'Submit'>
+<!ENTITY staff.patron_display.checkout.submit.accesskey 'S'>
 <!ENTITY staff.patron_display.checkouts.label 'Check Outs:'>
 <!ENTITY staff.patron_display.checkouts_overdue.label 'Overdue:'>
 <!ENTITY staff.patron_display.contact.caption 'Identity &amp; Contact Info'>
 <!ENTITY staff.patron_display.credit.label 'Credit:'>
-<!ENTITY staff.patron_display.date_of_birth.label 'DOB:'>
+<!ENTITY staff.patron_display.date_of_birth.label 'Date of Birth:'>
 <!ENTITY staff.patron_display.day_phone.label 'Day Phone:'>
 <!ENTITY staff.patron_display.email.label 'Email:'>
 <!ENTITY staff.patron_display.evening_phone.label 'Evening Phone:'>
@@ -1101,8 +1101,8 @@
 <!ENTITY staff.patron_display.home_ou.label 'Home Library:'>
 <!ENTITY staff.patron_display.ident1.label 'ID 1:'>
 <!ENTITY staff.patron_display.ident2.label 'ID 2:'>
-<!ENTITY staff.patron_display.items.print_receipt_label 'Print Receipt'>
-<!ENTITY staff.patron_display.items.print_receipt_label.accesskey 'P'>
+<!ENTITY staff.patron_display.items.print_receipt.label 'Print Receipt'>
+<!ENTITY staff.patron_display.items.print_receipt.accesskey 'P'>
 <!ENTITY staff.patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
 <!ENTITY staff.patron_display.library_card.label 'Library Card:'>
 <!ENTITY staff.patron_display.mailing.city.label 'Mailing City:'>
@@ -1123,9 +1123,9 @@
 <!ENTITY staff.patron_display.second_given_name.label 'Middle Name:'>
 <!ENTITY staff.patron_display.standing.label 'Standing:'>
 <!ENTITY staff.patron_display.status.caption 'Status'>
-<!ENTITY staff.patron_display_interface_label "PATRON">
-<!ENTITY staff.patron_editor_interface_label "PATRON EDIT">
-<!ENTITY staff.patron_interface_label "PATRON ">
+<!ENTITY staff.patron_display_interface_label "Patron">
+<!ENTITY staff.patron_editor_interface_label "Patron Edit">
+<!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
 <!ENTITY staff.patron_navbar.bills.accesskey 'B'>
 <!ENTITY staff.patron_navbar.checkout 'Check Out'>
@@ -1248,19 +1248,33 @@
 <!ENTITY staff.server.admin.font.large "Large">
 <!ENTITY staff.server.admin.font.xlarge "X-Large">
 <!ENTITY staff.server.admin.font.xxlarge "XX-Large">
+<!-- "5pt" is an abbreviation for "5 point font size" -->
 <!ENTITY staff.server.admin.font.5pt "5pt">
+<!-- "6pt" is an abbreviation for "6 point font size" -->
 <!ENTITY staff.server.admin.font.6pt "6pt">
+<!-- "7pt" is an abbreviation for "7 point font size" -->
 <!ENTITY staff.server.admin.font.7pt "7pt">
+<!-- "8pt" is an abbreviation for "8 point font size" -->
 <!ENTITY staff.server.admin.font.8pt "8pt">
+<!-- "9pt" is an abbreviation for "9 point font size" -->
 <!ENTITY staff.server.admin.font.9pt "9pt">
+<!-- "10pt" is an abbreviation for "10 point font size" -->
 <!ENTITY staff.server.admin.font.10pt "10pt">
+<!-- "11pt" is an abbreviation for "11 point font size" -->
 <!ENTITY staff.server.admin.font.11pt "11pt">
+<!-- "12pt" is an abbreviation for "12 point font size" -->
 <!ENTITY staff.server.admin.font.12pt "12pt">
+<!-- "13pt" is an abbreviation for "13 point font size" -->
 <!ENTITY staff.server.admin.font.13pt "13pt">
+<!-- "14pt" is an abbreviation for "14 point font size" -->
 <!ENTITY staff.server.admin.font.14pt "14pt">
+<!-- "15pt" is an abbreviation for "15 point font size" -->
 <!ENTITY staff.server.admin.font.15pt "15pt">
+<!-- "16pt" is an abbreviation for "16 point font size" -->
 <!ENTITY staff.server.admin.font.16pt "16pt">
+<!-- "17pt" is an abbreviation for "17 point font size" -->
 <!ENTITY staff.server.admin.font.17pt "17pt">
+<!-- "18pt" is an abbreviation for "18 point font size" -->
 <!ENTITY staff.server.admin.font.18pt "18pt">
 <!ENTITY staff.server.admin.font.restore "Restore Default">
 <!ENTITY staff.server.admin.transit.filter.caption "Transit Filter">
@@ -1301,7 +1315,7 @@
 <!ENTITY staff.server.admin.cash.end_date "End Date:">
 <!ENTITY staff.server.admin.cash.date_format "(YYYY-MM-DD)">
 <!ENTITY staff.server.admin.cash.view "View reports for : ">
-<!ENTITY staff.server.admin.cash.submit "Go!">
+<!ENTITY staff.server.admin.cash.submit "Submit">
 <!ENTITY staff.server.admin.cash.desk "Desk Payments">
 <!ENTITY staff.server.admin.cash.user "User Payments">
 <!ENTITY staff.server.admin.closed_dates.title "Evergreen: Library Closed Dates Editor">
@@ -1631,8 +1645,8 @@
 <!ENTITY staff.chrome.menu_frame_overlay.tab9.accesskey "9">
 <!ENTITY staff.circ.in_house_use.main.label "Record In-House Use">
 <!ENTITY staff.circ.in_house_use.cmgb1.caption "In-House Use">
-<!ENTITY staff.circ.in_house_use.multiplier_label.value "# of uses:">
-<!ENTITY staff.circ.in_house_use.multiplier_label.accesskey "u">
+<!ENTITY staff.circ.in_house_use.multiplier.label "# of uses:">
+<!ENTITY staff.circ.in_house_use.multiplier.accesskey "u">
 <!ENTITY staff.circ.in_house_use.submit.label "Submit">
 <!ENTITY staff.circ.in_house_use.submit.accesskey "S">
 <!ENTITY staff.circ.in_house_use.print.label "Print List">
@@ -1647,7 +1661,7 @@
 <!ENTITY staff.circ.pre_cat.dummy_author.value "Author">
 <!ENTITY staff.circ.pre_cat.cancel.label "Cancel">
 <!ENTITY staff.circ.pre_cat.cancel.accesskey "C">
-<!ENTITY staff.circ.pre_cat.checkout.label "Checkout">
+<!ENTITY staff.circ.pre_cat.checkout.label "Check Out">
 <!ENTITY staff.circ.pre_cat.checkout.accesskey "o">
 <!ENTITY staff.circ.print_list.main.label "Templates">
 <!ENTITY staff.circ.print_list.top_ui.label "ID">
@@ -1682,6 +1696,7 @@
 <!ENTITY staff.cat.bib_brief.author "Author:">
 <!ENTITY staff.cat.bib_brief.edition "Edition:">
 <!ENTITY staff.cat.bib_brief.pub_date "Publication Date:">
+<!-- "TCN" is an abbreviation for "title control number" -->
 <!ENTITY staff.cat.bib_brief.title_control_number "TCN:">
 <!ENTITY staff.cat.bib_brief.created_by "Created By:">
 <!ENTITY staff.cat.bib_brief.last_edited_by "Last Edited By:">
@@ -1881,7 +1896,7 @@
 <!ENTITY staff.cat.copy_summary.created.label "Created:">
 <!ENTITY staff.cat.copy_summary.edited.label "Edited:">
 <!ENTITY staff.cat.copy_summary.age_protect.label "Age Protect:">
-<!ENTITY staff.cat.copy_summary.total_circs.label "Total Circs:">
+<!ENTITY staff.cat.copy_summary.total_circs.label "Total Circulations:">
 <!ENTITY staff.cat.copy_summary.alternate_view.label "Alternate View">
 <!ENTITY staff.cat.copy_summary.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_summary.sel_clip.label "Copy to Clipboard">
@@ -1924,8 +1939,8 @@
 <!ENTITY staff.cat.record_buckets_overlay.new_bucket.label "New Bucket">
 <!ENTITY staff.cat.record_buckets_overlay.delete_bucket.label "Delete Bucket">
 <!ENTITY staff.cat.record_buckets_overlay.refresh_bucket.label "Refresh">
-<!ENTITY staff.cat.record_buckets_overlay.record_query_label.value "Query">
-<!ENTITY staff.cat.record_buckets_overlay.record_query_label.accesskey "y">
+<!ENTITY staff.cat.record_buckets_overlay.record_query.label "Query">
+<!ENTITY staff.cat.record_buckets_overlay.record_query.accesskey "y">
 <!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.label "Submit">
 <!ENTITY staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey "S">
 <!ENTITY staff.cat.record_buckets_overlay.query_help.button.label "Help">
@@ -1980,17 +1995,17 @@
 <!ENTITY staff.cat.spine_labels.preview_and_print.accesskey "P">
 <!ENTITY staff.cat.spine_labels.close_window.label "Close Window">
 <!ENTITY staff.cat.spine_labels.close_window.accesskey "C">
-<!ENTITY staff.cat.spine_labels.font_size_label.value "Font size (in pts):">
-<!ENTITY staff.cat.spine_labels.spine_label.value "Spine Label">
-<!ENTITY staff.cat.spine_labels.spine_label.left_margine.value "Left Margin (in characters):">
-<!ENTITY staff.cat.spine_labels.spine_label.label_width.value "Label Width (in characters):">
-<!ENTITY staff.cat.spine_labels.spine_label.label_length.value "Label Length (in lines):">
-<!ENTITY staff.cat.spine_labels.pocket_label.value "Pocket Label">
-<!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.value "Middle Margin (in characters):">
-<!ENTITY staff.cat.spine_labels.pocket_label.label_width.value "Label Width (in characters):">
-<!ENTITY staff.cat.spine_labels.pocket_label.label_length.value "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.font_size.label "Font size (in points):">
+<!ENTITY staff.cat.spine_labels.spine_label.label "Spine Label">
+<!ENTITY staff.cat.spine_labels.spine_label.left_margin.label "Left Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_width.label "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.spine_label.label_length.label "Label Length (in lines):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label "Pocket Label">
+<!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.label "Middle Margin (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_width.label "Label Width (in characters):">
+<!ENTITY staff.cat.spine_labels.pocket_label.label_length.label "Label Length (in lines):">
 <!ENTITY staff.cat.spine_labels.pocket_label.title.label "Include Title (wraps on word at label width)">
-<!ENTITY staff.cat.spine_labels.on_line.value "On line:">
+<!ENTITY staff.cat.spine_labels.on_line.label "On line:">
 <!ENTITY staff.cat.spine_labels.pocket_label.include_title.label "Include Title (segment after wrapping)">
 <!ENTITY staff.cat.spine_labels.indent_title.label "Indent a space?">
 <!ENTITY staff.cat.spine_labels.inc_call_number.label "Include Call Number">
@@ -2055,7 +2070,7 @@
 <!ENTITY staff.patron.bill_cc_info.american_express.label "American Express">
 <!ENTITY staff.patron.bill_cc_info.discover.label "Discover">
 <!ENTITY staff.patron.bill_cc_info.other.label "Other">
-<!ENTITY staff.patron.bill_cc_info.cc_number.value "CC Number">
+<!ENTITY staff.patron.bill_cc_info.cc_number.value "Credit Card Number">
 <!ENTITY staff.patron.bill_cc_info.month_expire.value "Expire Month">
 <!ENTITY staff.patron.bill_cc_info.year_expire.value "Expire Year">
 <!ENTITY staff.patron.bill_cc_info.approval_code.value "Approval Code">
@@ -2065,13 +2080,15 @@
 <!ENTITY staff.patron.bill_cc_info.submit.label "Submit this Info">
 <!ENTITY staff.patron.bill_cc_info.submit.accesskey "S">
 <!ENTITY staff.patron.bill_cc_info.info.label "Credit Card Info">
-<!ENTITY staff.patron.bill_cc_info.type.label "CC Type">
-<!ENTITY staff.patron.bill_check_info.check_info.label "Check Info">
+<!ENTITY staff.patron.bill_cc_info.type.label "Credit Card Type">
+<!-- "Check" is used here to indicate a payment by check, not "Verify" -->
+<!ENTITY staff.patron.bill_check_info.check_info.label "Check Information">
+<!-- "Check" is used here to indicate a payment by check, not "Verify" -->
 <!ENTITY staff.patron.bill_check_info.check_number.value "Check Number">
 <!ENTITY staff.patron.bill_check_info.note.value "Note">
 <!ENTITY staff.patron.bill_check_info.cancel.label "Cancel">
 <!ENTITY staff.patron.bill_check_info.cancel.accesskey "C">
-<!ENTITY staff.patron.bill_check_info.submit.label "Submit this Info">
+<!ENTITY staff.patron.bill_check_info.submit.label "Submit this Information">
 <!ENTITY staff.patron.bill_check_info.submit.accesskey "S">
 <!ENTITY staff.patron.bill_details.bills.label "Bills">
 <!ENTITY staff.patron.bill_details.save_columns.label "Save Columns">
@@ -2136,6 +2153,7 @@
 <!ENTITY staff.patron.bill_summary_overlay.finish.value "Finish">
 <!ENTITY staff.patron.bill_summary_overlay.renewal.value "Renewal?">
 <!ENTITY staff.patron.bill_summary_overlay.checked_in.value "Checked In">
+<!ENTITY staff.patron.bill_wizard.title "Bill Patron Wizard">
 <!ENTITY staff.patron.bill_wizard.create_bill.label "Create Bill">
 <!ENTITY staff.patron.bill_wizard.location.value "Location">
 <!ENTITY staff.patron.bill_wizard.transaction_type.value "Transaction Type">
@@ -2155,11 +2173,11 @@
 <!ENTITY staff.patron.display_overlay.juvenile.value "(Juvenile)">
 <!ENTITY staff.patron.display_overlay.alert.value "(Alert)">
 <!ENTITY staff.patron.display_overlay.see_notes.value "(See Notes)">
-<!ENTITY staff.patron.display_overlay.max_bills.value "(Max Bills)">
-<!ENTITY staff.patron.display_overlay.max_overdues.value "(Max Overdues)">
+<!ENTITY staff.patron.display_overlay.max_bills.value "(Maximum Bills)">
+<!ENTITY staff.patron.display_overlay.max_overdues.value "(Maximum Overdues)">
 <!ENTITY staff.patron.display_overlay.has_bills.value "(Has Bills)">
 <!ENTITY staff.patron.display_overlay.has_overdues.value "(Has Overdues)">
-<!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid DOB)">
+<!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid Date of Birth)">
 <!ENTITY staff.patron.display_overlay.invalid_address.value "(Invalid Address)">
 <!ENTITY staff.patron.display_overlay.exit.label "Exit">
 <!ENTITY staff.patron.display_overlay.exit.accesskey "x">
@@ -2193,9 +2211,9 @@
 <!ENTITY staff.patron.info_group.remove.accesskey "R">
 <!ENTITY staff.patron.info_group.remove.label "Remove Selected Patrons from the Group">
 <!ENTITY staff.patron.info_group.move.accesskey "M">
-<!ENTITY staff.patron.info_group.move.label "Move Selected Patrons to ANOTHER patron's group.">
+<!ENTITY staff.patron.info_group.move.label "Move Selected Patrons to another patron's group.">
 <!ENTITY staff.patron.info_group.add.accesskey "A">
-<!ENTITY staff.patron.info_group.add.label "Move ANOTHER patron to this patron group.">
+<!ENTITY staff.patron.info_group.add.label "Move another patron to this patron group.">
 <!ENTITY staff.patron.info_group.retrieve_p.accesskey "P">
 <!ENTITY staff.patron.info_group.retrieve_p.label "Retrieve Selected Patrons">
 <!ENTITY staff.patron.info_group.group_member.label "Group Members">
@@ -2277,7 +2295,7 @@
 <!ENTITY staff.patron.ue.email_address.label "Email Address">
 <!ENTITY staff.patron.ue.day_phone.label "Daytime Phone">
 <!ENTITY staff.patron.ue.evening_phone.label "Evening Phone">
-<!ENTITY staff.patron.ue.other_phone.label "Other/Cell Phone">
+<!ENTITY staff.patron.ue.other_phone.label "Other Phone">
 <!ENTITY staff.patron.ue.home_library.label "Home Library">
 <!ENTITY staff.patron.ue.address.label "Address">
 <!ENTITY staff.patron.ue.in_city_limits.label "Within City Limits">
