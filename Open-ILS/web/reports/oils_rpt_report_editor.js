@@ -12,7 +12,8 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	appendClear(DOM.oils_rpt_report_editor_template_name, tmpl.name());
 	appendClear(DOM.oils_rpt_report_editor_template_creator, tmpl.owner().usrname());
 	appendClear(DOM.oils_rpt_report_editor_template_description, tmpl.description());
-
+    
+    appendClear(DOM.oils_rpt_report_editor_cols,'');
 	iterate(rptObject.def.select, 
 		function(i) {
 			if(i)
