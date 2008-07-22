@@ -42,8 +42,6 @@ var current_perm;
 var virgin_out_id = -1;
 
 var highlighter = {};
-var dirtyStore = [];
-
 
 function status_update (markup) {
 	if (parent !== window && parent.status_update) parent.status_update( markup );

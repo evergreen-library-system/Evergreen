@@ -62,8 +62,11 @@
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
 			<script type="dojo/method">
+				window.highlighter= {};
 				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
 				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+
+				window.dirtyStore = [];
 
                 pCRUD.request({
                     method : 'open-ils.permacrud.search.ppl.atomic',
@@ -96,11 +99,10 @@
 											if (!window.perm_rows) window.perm_rows = [];
 											var r = window.perm_data_model.getRow(row);
 											if (r) {
-												window.perm_rows[row] = new ppl().fromHash(window.perm_data_model.getRow(row));
+												window.perm_rows[row] = new ccs().fromHash(window.perm_data_model.getRow(row));
 												setTimeout(
 													'dojo.query(".perm_grid_trans_desc_' + row + '").'+
 														'instantiate(openils.widget.TranslatorPopup,{field:"description",'+
-														'unique:window.perm_rows['+row+'].code(),'+
 														'targetObject:"window.perm_rows['+row+']"});'+
 														'perm_grid.rowHeightChanged('+row+')',
 													0
