@@ -196,8 +196,6 @@
 														'status_grid.rowHeightChanged('+row+')',
 													0
 												);
-												var oldnode = dojo.byId('name_translation_' + row);
-												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
 												return '<span class="status_grid_trans_cell_'+row+'"></span>';
 											}
 											return '';
