@@ -39,16 +39,20 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 		[dijit._Widget, dijit._Templated],
 		{
 
-			templateString : "<span dojoAttachPoint='node'><div id='${field}_translation_button_${unique}' dojoAttachPoint='translateLabelNode' dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation_${unique}' dojoAttachPoint='tooltipDialog' dojoType='dijit.TooltipDialog'><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visibility:hidden;'><tr><th dojoAttachPoint='localeLabelNode'/><td class='locale'><div class='locale_combobox'></div></td><th dojoAttachPoint='translationLabelNode'/><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='createButtonNode'/></button><button class='update_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='updateButtonNode'/></button><button class='delete_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='removeButtonNode'/></button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
+			templateString : "<span id='${field}_translation_${unique}' dojoAttachPoint='containerNode'><div id='${field}_translation_button_${unique}' dojoAttachPoint='translateLabelNode' dojoType='dijit.form.DropDownButton'><span>Translate</span><div id='${field}_translation_tooltip_${unique}' dojoAttachPoint='tooltipDialog' dojoType='dijit.TooltipDialog'><div dojoType='dijit.layout.ContentPane'><table><tbody class='translation_tbody_template' style='display:none; visibility:hidden;'><tr><th dojoAttachPoint='localeLabelNode'/><td class='locale'><div class='locale_combobox'></div></td><th dojoAttachPoint='translationLabelNode'/><td class='translation'><div class='translation_textbox'></div></td><td><button class='create_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='createButtonNode'/></button><button class='update_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='updateButtonNode'/></button><button class='delete_button' style='display:none; visibility:hidden;'><span dojoAttachPoint='removeButtonNode'/></button></td></tr></tbody><tbody class='translation_tbody'></tbody></table></div></div></div></span>",
 
 			widgetsInTemplate: true,
 			field : "",
 			targetObject : "",
 			unique : "",
 
+			postMixInProperties : function () {
+				if (!this.unique) this.unique = openils.widget.TranslatorPopup._unique++;
+			},
+
 			postCreate : function () {
 
-				dojo.connect(this.tooltipDialog, 'onOpen', this, 'renderTranslatorPopup');
+				dojo.connect(this.tooltipDialog, 'onFocus', this, 'renderTranslatorPopup');
 
 				this.nls = dojo.i18n.getLocalization("openils.widget", "TranslatorPopup");
 
@@ -64,13 +68,11 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 
 			renderTranslatorPopup : function () {
 
+				var _trans_dijit = this;
+
 				this._targetObject = dojox.jsonPath.query(window, '$.' + this.targetObject, {evalType:"RESULT"});
 
-				if (!this.unique && this._targetObject) {
-					this.unique = this._targetObject[this._targetObject.Identifier];
-				}
-
-				var node = dojo.byId(this.field + '_translation_' + this.unique);
+				var node = dojo.byId(this.field + '_translation_tooltip_' + this.unique);
 		
 				var trans_list = openils.I18N.getTranslations( this._targetObject, this.field );
 		
@@ -118,12 +120,12 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 		
 					dojo.query('.update_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 						dijit.form.Button,
-						{ onClick : dojo.hitch( this, new Function('this.updateTranslation('+trans_id+')') ) }
+						{ onClick : dojo.hitch( _trans_dijit, 'updateTranslation', trans_id) }
 					);
 		
 					dojo.query('.delete_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 						dijit.form.Button,
-						{ onClick : dojo.hitch( this, new Function('this.removeTranslation('+trans_id+')') ) }
+						{ onClick : dojo.hitch( _trans_dijit, 'removeTranslation', trans_id) }
 					);
 		
 					trans_tbody.appendChild( trans_row );
@@ -159,7 +161,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 		
 				dojo.query('.create_button',trans_row).style({ visibility : 'visible', display : 'inline'}).instantiate(
 					dijit.form.Button,
-					{ onClick : dojo.hitch( this, 'createTranslation') }
+					{ onClick : dojo.hitch( _trans_dijit, 'createTranslation') }
 				);
 		
 				trans_tbody.appendChild( trans_row );
@@ -171,7 +173,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 			
 			removeTranslation : function (t) {
-				return this.changeTranslation('delete',t);
+				return changeTranslation('delete',t);
 			},
 			
 			changeTranslation : function (method, trans_id) {
@@ -190,7 +192,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 			
 			createTranslation : function () {
-				var node = dojo.byId(this.field + '_translation_' + this.unique);
+				var node = dojo.byId(this.field + '_translation_tooltip_' + this.unique);
 			
 				var trans_obj = new i18n().fromHash({
 					isnew : 1,
@@ -205,7 +207,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 	
 			writeTranslation : function (method, trans_obj) {
 			
-				var _trans_widget = this;
+				var _trans_dijit = this;
 
 				OpenSRF.CachedClientSession('open-ils.permacrud').request({
 					method : 'open-ils.permacrud.' + method + '.i18n',
@@ -213,26 +215,26 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 					params : [ ses, trans_obj ],
 					onerror: function (r) {
 						//highlighter.editor_pane.red.play();
-						if (status_update) status_update( 'Problem saving translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
+						if (status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 					},
 					oncomplete : function (r) {
 						var res = r.recv();
 						if ( res && res.content() ) {
 							//highlighter.editor_pane.green.play();
-							if (status_update) status_update( 'Saved changes to translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
+							if (status_update) status_update( 'Saved changes to translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 			
 							if (method == 'delete') {
 								dojo.NodeList(dojo.byId('translation_row_' + trans_obj.id())).orphan();
 							} else if (method == 'create') {
-								var node = dojo.byId(_trans_widget.field + '_translation_' + _trans_widget.unique);
-								dijit.byId('i18n_new_locale_' + _trans_widget._targetObject.classname + '.' + _trans_widget.field + _trans_widget.unique).setValue(null);
-								dijit.byId('i18n_new_translation_' + _trans_widget._targetObject.classname + '.' + _trans_widget.field + _trans_widget.unique).setValue(null);
-								_trans_widget.renderTranslatorPopup();
+								var node = dojo.byId(_trans_dijit.field + '_translation_tooltip_' + _trans_dijit.unique);
+								dijit.byId('i18n_new_locale_' + _trans_dijit._targetObject.classname + '.' + _trans_dijit.field + _trans_dijit.unique).setValue(null);
+								dijit.byId('i18n_new_translation_' + _trans_dijit._targetObject.classname + '.' + _trans_dijit.field + _trans_dijit.unique).setValue(null);
+								_trans_dijit.renderTranslatorPopup();
 							}
 			
 						} else {
 							//highlighter.editor_pane.red.play();
-							if (status_update) status_update( 'Problem saving translation for ' + _trans_widget._targetObject[_trans_widget.field]() );
+							if (status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 						}
 					},
 				}).send();
