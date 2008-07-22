@@ -34,23 +34,35 @@ dojo.require('dojox.grid.Grid');
 dojo.require('dojox.grid._data.model');
 dojo.require("dojox.grid.editors");
 
+
+console.log('loading marc_code_maps.js');
+
 // some handy globals
 var cgi = new CGI();
 var ses = dojo.cookie('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
+console.log('initialized pcrud session');
+
 var stores = {};
 var current_item = {};
+
+/*
 var highlighter = {
 	green : dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } ),
 	red : dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } )
 };
+
+console.log('highlighters set up');
+*/
 
 var dirtyStore = [];
 
 function status_update (markup) {
 	if (parent !== window && parent.status_update) parent.status_update( markup );
 }
+
+console.log('local status function built');
 
 function save_code (classname) {
 
@@ -68,17 +80,17 @@ function save_code (classname) {
 		timeout : 10,
 		params : [ ses, modified_ppl ],
 		onerror : function (r) {
-			highlighter.red.play();
+			//highlighter.red.play();
 			status_update( 'Problem saving data for ' + classname + ' ' + obj.code() );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				stores[classname].setValue( current_item, 'ischanged', 0 );
-				highlighter.green.play();
+				//highlighter.green.play();
 				status_update( 'Saved changes to ' + stores[classname].getValue( item, 'code' ) );
 			} else {
-				highlighter.red.play();
+				//highlighter.red.play();
 				status_update( 'Problem saving data for ' + classname + ' ' + stores[classname].getValue( item, 'code' ) );
 			}
 		},
@@ -147,7 +159,7 @@ function delete_grid_selection(classname, grid ) {
                 timeout : 10,
                 params : [ ses, obj ],
                 onerror : function (r) {
-                    highlighter.red.play();
+                    //highlighter.red.play();
                     status_update( 'Problem deleting ' + grid.model.store.getValue( item, 'value' ) );
                 },
                 oncomplete : function (r) {
@@ -161,10 +173,10 @@ function delete_grid_selection(classname, grid ) {
                             scope : grid.model.store
                         });
             
-                        highlighter.green.play();
+                        //highlighter.green.play();
                         status_update( old_name + ' deleted' );
                     } else {
-                        highlighter.red.play();
+                        //highlighter.red.play();
                         status_update( 'Problem deleting ' + old_name );
                     }
                 }
@@ -196,7 +208,7 @@ function create_marc_code (data) {
         timeout : 10,
         params : [ ses, new_fm_obj ],
         onerror : function (r) {
-            highlighter.red.play();
+            //highlighter.red.play();
             status_update( 'Problem calling method to create new ' + cl );
             err = true;
         },
@@ -206,9 +218,9 @@ function create_marc_code (data) {
                 var new_item_hash = res.content().toHash();
                 stores[cl].newItem( new_item_hash );
                 status_update( 'New ' + new_item_hash.code + ' ' + cl + ' created' );
-                highlighter.green.play();
+                //highlighter.green.play();
             } else {
-                highlighter.red.play();
+                //highlighter.red.play();
                 status_update( 'Problem creating new Permission' );
                 err = true;
             }
