@@ -43,6 +43,37 @@ dojo.declare('openils.acq.Lineitems', null, {
         }
     },
 
+    // returns the actual price if available, otherwise estimated price, otherwise null
+    // priority is given to local attrs, then provider attrs, then MARC attrs
+    getPrice: function() {
+        return this.getActualPrice() || this.getEstimatedPrice();
+    },
+
+    // returns the actual price, null if none
+    getActualPrice : function() {
+        return this._getPriceAttr('actual_price');
+    },
+
+    // returns the estimated price, null if none
+    getEstimatedPrice : function() {
+        return this._getPriceAttr('estimated_price');
+    },
+
+    _getPriceAttr : function(attr) {
+        var types = [
+            'lineitem_local_attr_definition', 
+            'lineitem_provider_attr_definition', 
+            'lineitem_marc_attr_definition'
+        ];
+
+        for(var t in types) {
+            if(price = this.findAttr(attr, types[t]))
+                return {price:price, source_type: attr, source_attr: types[t]};
+        }
+
+        return null;
+    },
+
     update: function(oncomplete) {
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.update'],
