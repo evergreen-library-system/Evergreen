@@ -112,7 +112,7 @@ dojo.declare('openils.acq.Picklist', null, {
 	}
 
 	item = this._data[griditem.id];
-	if (attr = "provider") {
+	if (attr == "provider") {
         if(newVal == '') 
             newVal = null;
 	    item.provider(newVal);
