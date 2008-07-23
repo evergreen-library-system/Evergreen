@@ -255,20 +255,32 @@ Suggested vendor fields:
 
 CREATE OR REPLACE FUNCTION public.ingest_acq_marc ( ) RETURNS TRIGGER AS $$
 DECLARE
-	value	TEXT;
-	atype	TEXT;
-	prov	INT;
-	adef	RECORD;
+	value		TEXT;
+	atype		TEXT;
+	prov		INT;
+	adef		RECORD;
+	xpath_string	TEXT;
 BEGIN
 	FOR adef IN SELECT *,tableoid FROM acq.lineitem_attr_definition LOOP
 
 		SELECT relname::TEXT INTO atype FROM pg_class WHERE oid = adef.tableoid;
-		IF (atype = 'lineitem_provider_attr_definition') THEN
-			SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
-			CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
-		ELSIF (atype NOT IN ('lineitem_usr_attr_definition','lineitem_local_attr_definition')) THEN
+
+		IF (atype NOT IN ('lineitem_usr_attr_definition','lineitem_local_attr_definition')) THEN
+			IF (atype = 'lineitem_provider_attr_definition') THEN
+				SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
+				CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
+			END IF;
 			
-			SELECT extract_acq_marc_field(id, adef.xpath, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+			IF (atype = 'lineitem_provider_attr_definition') THEN
+				SELECT xpath INTO xpath_string FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
+			ELSIF (atype = 'lineitem_marc_attr_definition') THEN
+				SELECT xpath INTO xpath_string FROM acq.lineitem_marc_attr_definition WHERE id = adef.id;
+			ELSIF (atype = 'lineitem_generated_attr_definition') THEN
+				SELECT xpath INTO xpath_string FROM acq.lineitem_generated_attr_definition WHERE id = adef.id;
+			END IF;
+
+			SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+
 			IF (value IS NOT NULL AND value <> '') THEN
 				INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
 			END IF;
@@ -284,10 +296,11 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION public.cleanup_acq_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
 	IF TG_OP = 'UPDATE' THEN
-	    DELETE FROM acq.lineitem_attr WHERE lineitem = OLD.id AND attr_type IN ('lineitem_provider_attr_definition', 'lineitem_marc_attr_definition');
+		DELETE FROM acq.lineitem_attr
+	    		WHERE lineitem = OLD.id AND attr_type IN ('lineitem_provider_attr_definition', 'lineitem_marc_attr_definition','lineitem_generated_attr_definition');
 		RETURN NEW;
 	ELSE
-	    DELETE FROM acq.lineitem_attr WHERE lineitem = OLD.id;
+		DELETE FROM acq.lineitem_attr WHERE lineitem = OLD.id;
 		RETURN OLD;
 	END IF;
 END;
