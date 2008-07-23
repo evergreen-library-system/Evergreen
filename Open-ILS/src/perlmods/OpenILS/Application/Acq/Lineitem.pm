@@ -663,7 +663,7 @@ sub receive_lineitem_detail_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'set_lineitem_usr_attr',
+	method => 'set_lineitem_attr',
 	api_name	=> 'open-ils.acq.lineitem_usr_attr.set',
 	signature => {
         desc => 'Sets a lineitem_usr_attr value',
@@ -677,16 +677,35 @@ __PACKAGE__->register_method(
     }
 );
 
-sub set_lineitem_usr_attr {
+__PACKAGE__->register_method(
+	method => 'set_lineitem_attr',
+	api_name	=> 'open-ils.acq.lineitem_local_attr.set',
+	signature => {
+        desc => 'Sets a lineitem_local_attr value',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Lineitem ID', type => 'number'},
+            {desc => 'Attr name', type => 'string'},
+            {desc => 'Attr value', type => 'string'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+
+sub set_lineitem_attr {
     my($self, $conn, $auth, $li_id, $attr_name, $attr_value) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
     # XXX perm
 
+    my $attr_type = $self->api_name =~ /local_attr/ ?
+        'lineitem_local_attr_definition' : 'lineitem_usr_attr_definition';
+
     my $attr = $e->search_acq_lineitem_attr({
         lineitem => $li_id, 
-        attr_type => 'lineitem_usr_attr_definition',
+        attr_type => $attr_type,
         attr_name => $attr_name})->[0];
 
     if($attr) {
@@ -695,7 +714,7 @@ sub set_lineitem_usr_attr {
     } else {
         $attr = Fieldmapper::acq::lineitem_attr->new;
         $attr->lineitem($li_id);
-        $attr->attr_type('lineitem_usr_attr_definition');
+        $attr->attr_type($attr_type);
         $attr->attr_name($attr_name);
         $attr->attr_value($attr_value);
         $e->create_acq_lineitem_attr($attr) or return $e->die_event;
