@@ -180,26 +180,32 @@ CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
 	code		TEXT		NOT NULL,
 	description	TEXT		NOT NULL,
-	xpath		TEXT		NOT NULL,
 	remove		TEXT		NOT NULL DEFAULT ''
 );
 
 CREATE TABLE acq.lineitem_marc_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
+	xpath		TEXT		NOT NULL
 ) INHERITS (acq.lineitem_attr_definition);
 
 CREATE TABLE acq.lineitem_provider_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
+	xpath		TEXT		NOT NULL,
 	provider	INT	NOT NULL REFERENCES acq.provider (id)
 ) INHERITS (acq.lineitem_attr_definition);
 
 CREATE TABLE acq.lineitem_generated_attr_definition (
-	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
+	xpath		TEXT		NOT NULL
 ) INHERITS (acq.lineitem_attr_definition);
 
 CREATE TABLE acq.lineitem_usr_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
 	usr		INT	NOT NULL REFERENCES actor.usr (id)
+) INHERITS (acq.lineitem_attr_definition);
+
+CREATE TABLE acq.lineitem_local_attr_definition (
+	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
 ) INHERITS (acq.lineitem_attr_definition);
 
 
@@ -260,12 +266,15 @@ BEGIN
 		IF (atype = 'lineitem_provider_attr_definition') THEN
 			SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
 			CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
+		ELSIF (atype NOT IN ('lineitem_usr_attr_definition','lineitem_local_attr_definition')) THEN
+			
+			SELECT extract_acq_marc_field(id, adef.xpath, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+			IF (value IS NOT NULL AND value <> '') THEN
+				INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
+			END IF;
+
 		END IF;
 
-		SELECT extract_acq_marc_field(id, adef.xpath, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
-		IF (value IS NOT NULL AND value <> '') THEN
-			INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
-		END IF;
 	END LOOP;
 
 	RETURN NULL;

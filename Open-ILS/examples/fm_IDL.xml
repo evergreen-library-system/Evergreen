@@ -3701,7 +3701,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
 			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links/>
 	</class>
@@ -3756,12 +3755,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
 			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="User" name="usr" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="User" name="usr" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+	</class>
+
+	<class id="acqlilad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_local_attr_definition" oils_persist:tablename="acq.lineitem_local_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links/>
 	</class>
 
 	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder">
