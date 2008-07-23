@@ -563,35 +563,34 @@ sub create_purchase_order {
 }
 
 
-# returns (price, type), where type=1 is usr, type=2 is provider, type=3 is marc
+# returns (price, type), where type=1 is local, type=2 is provider, type=3 is marc
 sub get_li_price {
     my $li = shift;
     my $attrs = $li->attributes;
-    my ($marc_price, $usr_estimated, $usr_actual, $prov_estimated, $prov_actual);
+    my ($marc_estimated, $local_estimated, $local_actual, $prov_estimated, $prov_actual);
 
     for my $attr (@$attrs) {
-        if($attr->attr_name eq 'price') { # marc attr
-            $marc_price = $attr->attr_value;
-
-        } elsif($attr->attr_name eq 'estimated_price') {
-            $usr_estimated = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_usr_attr_definition';
+        if($attr->attr_name eq 'estimated_price') {
+            $local_estimated = $attr->attr_value 
+                if $attr->attr_type eq 'lineitem_local_attr_definition';
             $prov_estimated = $attr->attr_value 
                 if $attr->attr_type eq 'lineitem_prov_attr_definition';
+            $marc_estimated = $attr->attr_value
+                if $attr->attr_type eq 'lineitem_marc_attr_definition';
 
         } elsif($attr->attr_name eq 'actual_price') {
-            $usr_actual = $attr->attr_value     
-                if $attr->attr_type eq 'lineitem_usr_attr_definition';
+            $local_actual = $attr->attr_value     
+                if $attr->attr_type eq 'lineitem_local_attr_definition';
             $prov_actual = $attr->attr_value 
                 if $attr->attr_type eq 'lineitem_prov_attr_definition';
         }
     }
 
-    return ($usr_actual, 1) if $usr_actual;
+    return ($local_actual, 1) if $local_actual;
     return ($prov_actual, 2) if $prov_actual;
-    return ($usr_estimated, 1) if $usr_estimated;
+    return ($local_estimated, 1) if $local_estimated;
     return ($prov_estimated, 2) if $prov_estimated;
-    return ($marc_price, 3);
+    return ($marc_estimated, 3);
 }
 
 
