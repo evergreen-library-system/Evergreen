@@ -48,7 +48,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 
 		var data = { label : label, identifier : params.identifier, items : [] };
 
-		for (var i in list) data.items.push( list[i].toHash(true) );
+		for (var i in list) data.items.push( list[i].toHash(true, params.virtualFields) );
 
 		if (params.children && params.parent) {
 			var _hash_list = data.items;

@@ -29,16 +29,24 @@ if(!dojo._hasResource['fieldmapper.hash']){
 		return this;
 	}
 
-	function _toHash (includeNulls) {
+	function _toHash (includeNulls, virtFields) {
 		var _hash = {};
 		for ( var i=0; i < this._fields.length; i++) {
 			if (includeNulls || this[this._fields[i]]() != null) {
 				if (this[this._fields[i]]() == null)
-                    _hash[this._fields[i]] = null;
-                else
-				    _hash[this._fields[i]] = '' + this[this._fields[i]]();
-            }
+					_hash[this._fields[i]] = null;
+				else
+					_hash[this._fields[i]] = '' + this[this._fields[i]]();
+			}
 		}
+
+		if (virtFields && virtFields.length > 0) {
+			for (var i in virtFields) {
+				if (!_hash[virtFields[i]])
+					_hash[virtFields[i]] = null;
+			}
+		}
+
 		return _hash;
 	}
 
