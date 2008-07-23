@@ -134,4 +134,41 @@ openils.acq.Provider._lineitemProviderAttrDefDeleteList = function(list, idx, on
     );
 }
 
+openils.acq.Provider.storeCache = [];
+
+openils.acq.Provider.buildPermProviderSelector = function(perm, selector) {
+    dojo.require('dojo.data.ItemFileReadStore');
+
+    function hookupStore(store) {
+	selector.store = store;
+	selector.startup();
+    }
+
+    function buildPicker(r) {
+	var msg;
+	var providerList = [];
+	while (msg = r.recv()) {
+	    var provider = msg.content();
+	    providerList.push(provider);
+	}
+
+	var store = new dojo.data.ItemFileReadStore({data:acqpro.toStoreData(providerList)});
+
+	hookupStore(store);
+	openils.acq.Provider.storeCache[perm] = store;
+    }
+
+    if (openils.acq.Provider.storeCache[perm]) {
+	hookupStore(openils.acq.Provider.storeCache[perm]);
+    } else {
+	fieldmapper.standardRequest(
+	    ['open-ils.acq', 'open-ils.acq.provider.org.retrieve'],
+            {   params: [openils.User.authtoken, null,
+			 {flesh_summary:1, limit_perm:perm}],
+		oncomplete: buildPicker,
+		async: true
+            }
+	)
+    }
+}
 }

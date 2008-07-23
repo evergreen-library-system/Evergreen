@@ -8,6 +8,7 @@ dojo.require("dijit.form.NumberSpinner");
 dojo.require('dijit.form.FilteringSelect');
 
 dojo.require("openils.widget.FundSelector");
+dojo.require("openils.widget.ProviderSelector");
 dojo.require("openils.widget.OrgUnitFilteringSelect");
 
 dojo.require("openils.acq.Fund");
@@ -36,6 +37,17 @@ dojo.declare('openils.editors.FundSelectEditor', dojox.grid.editors.Dijit, {
 	var editor = new this.editorClass(this.getEditorProps(inDatum), inNode);
 	openils.acq.Fund.buildPermFundSelector(this.cell.perm || this.perm,
 					 editor);
+	return editor;
+    },
+});
+
+dojo.declare('openils.editors.ProviderSelectEditor', dojox.grid.editors.Dijit, {
+    editorClass: "openils.widget.ProviderSelector",
+    createEditor: function(inNode, inDatum, inRowIndex) {
+	console.log("openils.widget.ProviderSelectEditor");
+	var editor = new this.editorClass(this.getEditorProps(inDatum), inNode);
+	openils.acq.Provider.buildPermProviderSelector(this.cell.perm || this.perm,
+						       editor);
 	return editor;
     },
 });

@@ -95,6 +95,36 @@ dojo.declare('openils.acq.Picklist', null, {
 	}
 	return '';
     },
+    onJUBSet: function (griditem, attr, oldVal,newVal) {
+	var item;
+	var updateDone = function(r) {
+	    var stat = r.recv().content();
+	    var evt = openils.Event.parse(stat);
+
+	    if (evt) {
+		alert("Error: "+evt.desc);
+		console.dir(evt);
+	    }
+	};
+
+	if (oldVal == newVal) {
+	    return;
+	}
+
+	item = this._data[griditem.id];
+	if (attr = "provider") {
+	    item.provider(newVal);
+	} else {
+	    alert("Unexpected attr in Picklist.onSet: '"+attr+"'");
+	    return;
+	}
+
+	fieldmapper.standardRequest(
+	    ["open-ils.acq", "open-ils.acq.lineitem.update"],
+	    {params: [openils.User.authtoken, item],
+	     oncomplete: updateDone
+	    });
+    },
 });
 
 /** Creates a new picklist. fields.name is required */ 
