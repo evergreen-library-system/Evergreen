@@ -173,6 +173,7 @@ INSERT INTO config.lit_form_map (code, value, description) VALUES
     ('u', oils_i18n_gettext('Unknown'), oils_i18n_gettext('The literary form of the item is unknown.'));
 
 -- TO-DO: Auto-generate these values from CLDR
+-- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
 INSERT INTO config.language_map (code, value) VALUES ('aar', oils_i18n_gettext('Afar'));
 INSERT INTO config.language_map (code, value) VALUES ('abk', oils_i18n_gettext('Abkhaz'));
 INSERT INTO config.language_map (code, value) VALUES ('ace', oils_i18n_gettext('Achinese'));
@@ -690,6 +691,20 @@ INSERT INTO config.bib_level_map (code, value) VALUES ('d', oils_i18n_gettext('S
 INSERT INTO config.bib_level_map (code, value) VALUES ('i', oils_i18n_gettext('Integrating resource'));
 INSERT INTO config.bib_level_map (code, value) VALUES ('m', oils_i18n_gettext('Monograph/Item'));
 INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('Serial'));
+
+
+-- available locales
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('en_us','eng',oils_i18n_gettext('American English'),oils_i18n_gettext('American English'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('en_ca','eng',oils_i18n_gettext('Canadian English'),oils_i18n_gettext('Canadian English'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('fr_ca','fre',oils_i18n_gettext('Canadian Fench'),oils_i18n_gettext('Canadian French'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('es_us','spa',oils_i18n_gettext('American Spanish'),oils_i18n_gettext('American Spanish'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('es_mx','spa',oils_i18n_gettext('Mexican Spanish'),oils_i18n_gettext('Mexican Spanish'));
+
 
 --005.schema.actors.sql:
 

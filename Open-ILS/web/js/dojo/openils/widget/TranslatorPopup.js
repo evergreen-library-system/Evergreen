@@ -67,7 +67,9 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 
 			renderTranslatorPopup : function () {
-		
+
+				var _trans_dijit = this;
+
 				var _trans_dijit = this;
 
 				this._targetObject = dojox.jsonPath.query(window, '$.' + this.targetObject, {evalType:"RESULT"});
@@ -183,7 +185,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 					isdeleted : method == 'delete' ? 1 : 0,
 					id : trans_id,
 					fq_field : this._targetObject.classname + '.' + this.field,
-					identity_value : this._targetObject.id(),
+					identity_value : this._targetObject[fieldmapper[this._targetObject.classname].Identifier](),
 					translation : dijit.byId('locale_' + trans_id).getValue(),
 					string : dijit.byId('translation_' + trans_id).getValue()
 				});
@@ -197,7 +199,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 				var trans_obj = new i18n().fromHash({
 					isnew : 1,
 					fq_field : this._targetObject.classname + '.' + this.field,
-					identity_value : this._targetObject.id(),
+					identity_value : this._targetObject[fieldmapper[this._targetObject.classname].Identifier](),
 					translation : dijit.byId('i18n_new_locale_' + this._targetObject.classname + '.' + this.field + this.unique).getValue(),
 					string : dijit.byId('i18n_new_translation_' + this._targetObject.classname + '.' + this.field + this.unique).getValue()
 				});

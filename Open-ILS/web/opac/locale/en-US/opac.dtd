@@ -132,7 +132,6 @@ Are you sure you wish to continue?">
 <!ENTITY myopac.view "(View)">
 <!ENTITY myopac.atom.feed "ATOM Feed">
 <!ENTITY myopac.bookbag.hide "Hide">
-<!ENTITY myopac.bookbag.share "Share">
 <!ENTITY myopac.delete "Delete">
 <!ENTITY myopac.bookbag.create "Create a new Bookbag">
 <!ENTITY myopac.bookbag.naming "Enter the name of the new Bookbag: ">
@@ -205,7 +204,6 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.status.waiting "Waiting for copy">
 <!ENTITY myopac.holds.status.intransit "In Transit">
 <!ENTITY myopac.holds.status.available "Ready for Pickup">
-<!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
 <!ENTITY myopac.holds.freeze_selected "Suspend">

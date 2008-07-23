@@ -57,8 +57,8 @@
 		<menuitem command="cmd_delete_items" label="&staff.circ.copy_status_overlay.cmd_delete_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_items.accesskey;"/>
 		<menuitem command="cmd_delete_volumes" label="&staff.circ.copy_status_overlay.cmd_delete_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
-		<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey;"/>
+		<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey;"/>
+		<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey;"/>
 		<menuseparator/>
 		<menuitem command="sel_spine" label="&staff.circ.copy_status_overlay.sel_spine.label;" accesskey="&staff.circ.copy_status_overlay.sel_spine.accesskey;"/>
 		<menuitem command="cmd_replace_barcode" label="&staff.circ.copy_status_overlay.cmd_replace_barcode.label;" accesskey="&staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey;"/>

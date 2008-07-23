@@ -57,14 +57,14 @@
 	<vbox>
 		<hbox>
 			<label id="checkin_scan_barcode_label" 
-				value="&staff.circ.checkin.scan_label;" 
-				accesskey="&staff.circ.checkin.scan_label.accesskey;" 
+				value="&staff.circ.checkin.scan.label;" 
+				accesskey="&staff.circ.checkin.scan.accesskey;" 
 				control="checkin_barcode_entry_textbox"/>
 			<textbox id="checkin_barcode_entry_textbox"/>
 			<button id="checkin_submit_barcode_button" 
-				label="&staff.circ.checkin.submit_label;" 
+				label="&staff.circ.checkin.submit.label;" 
 				command="cmd_checkin_submit_barcode"
-				oldaccesskey="&staff.circ.checkin.submit_label.accesskey;"/>
+				oldaccesskey="&staff.circ.checkin.submit.accesskey;"/>
 		</hbox>
 		<label id="no_change_label" value="" style="color: red" hidden="true"/>
 	</vbox>
@@ -103,9 +103,9 @@
 
 <hbox id="checkin_bottom_ui">
 	<button id="checkin_print" 
-		label="&staff.checkin.print_receipt_label;" 
+		label="&staff.checkin.print_receipt.label;" 
 		command="cmd_checkin_print"
-		accesskey="&staff.checkin.print_receipt_label.accesskey;"/>
+		accesskey="&staff.checkin.print_receipt.accesskey;"/>
 	<button id="checkin_export" 
 		label="&staff.circ.checkin_overlay.checkin_export.label;"
 		command="cmd_checkin_export"

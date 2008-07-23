@@ -46,16 +46,6 @@ COMMENT ON SCHEMA config IS $$
  */
 $$;
 
-CREATE TABLE config.i18n_core (
-    id              BIGSERIAL   PRIMARY KEY,
-    fq_field        TEXT        NOT NULL,
-    identity_value  TEXT        NOT NULL,
-    translation     TEXT        NOT NULL,
-    string          TEXT        NOT NULL
-);
-
-CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
-
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
 	quality		INT	CHECK ( quality BETWEEN 0 AND 100 ),
@@ -495,6 +485,23 @@ INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','pu
 INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','pubdate','Publication Date',31,1);
 INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','item_type','Item Type',1001,1);
 
+
+CREATE TABLE config.i18n_locale (
+    code        TEXT    PRIMARY KEY,
+    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code),
+    name        TEXT    UNIQUE NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE config.i18n_core (
+    id              BIGSERIAL   PRIMARY KEY,
+    fq_field        TEXT        NOT NULL,
+    identity_value  TEXT        NOT NULL,
+    translation     TEXT        NOT NULL    REFERENCES config.i18n_locale (code),
+    string          TEXT        NOT NULL
+);
+
+CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
 
 COMMIT;
 

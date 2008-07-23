@@ -143,7 +143,7 @@ patron.bills.prototype = {
 									'primary' : false, 'hidden' : false, 'render' : 'obj.info_box(my)'
 								},
 								{
-									'id' : 'money', 'label' : 'Money Summary', 'flex' : 1,
+									'id' : 'money', 'label' : $('patronStrings').getString('staff.patron.bills.init_controller.money_summary_label'), 'flex' : 1,
 									'primary' : false, 'hidden' : false, 'render' : 'obj.money_box(my.mobts)'
 								},
 								{
@@ -866,7 +866,7 @@ patron.bills.prototype = {
 					try {
 					switch(my.mobts.xact_type()) {
 						case 'circulation':
-							xt_label.setAttribute( 'value', 'Title:' );
+							xt_label.setAttribute( 'value', $("patronStrings").getString('staff.patron.bills.info_box.label_value.title') );
 							obj.network.simple_request(
 								'FM_CIRC_RETRIEVE_VIA_ID',
 								[ ses(), my.mobts.id() ],
@@ -950,7 +950,7 @@ patron.bills.prototype = {
 					vbox.appendChild( btn_box ); btn_box.flex = 1;
 							var btn = document.createElement('button');
 								btn_box.appendChild( btn );
-								btn.setAttribute( 'label', 'Full Details' );
+								btn.setAttribute( 'label', $("patronStrings").getString('staff.patron.bills.info_box.label_value.full_details') );
 								btn.setAttribute( 'name', 'full_details' );
 								btn.setAttribute( 'mobts_id', my.mobts.id() );	
 								btn.addEventListener(

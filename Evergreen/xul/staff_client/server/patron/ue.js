@@ -10,7 +10,9 @@ var surveyAnswersCache		= {};
 var userCache					= {};
 var groupsCache				= {};
 var netLevelsCache			= {};
-//var guardianNote				= null;	
+//var guardianNote				= null;
+
+function $(id) { return document.getElementById(id); }
 
 /* fetch the necessary data to start off */
 function uEditInit() {
@@ -24,7 +26,7 @@ function uEditInit() {
 	clone		= cgi.param('clone'); 
 	if (xulG) if (xulG.clone) clone = xulG.clone;
 	if (xulG) if (xulG.params) if (xulG.params.clone) clone = xulG.params.clone;
-	if(!session) throw "User session is not defined";
+	if(!session) throw $("patronStrings").getString('web.staff.patron.ue.session_no_defined');
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
@@ -710,7 +712,7 @@ function uEditShowSearch(link,type) {
 	if(!type) type = link.getAttribute('type');
 	if(window.xulG)
 		window.xulG.spawn_search(uEditDupHashes[type]);	
-	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));
+	else alert($("patronStrings").getString('web.staff.patron.ue.uedit_show_search.search_would_be', js2JSON(uEditDupHashes[type])));
 }
 
 function uEditMarkCardLost() {

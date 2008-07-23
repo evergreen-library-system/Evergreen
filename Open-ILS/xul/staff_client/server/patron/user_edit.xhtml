@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
         <head>
-                <title>Evergreen: User Editor</title>
+                <title>&staff.patron.user_edit.title;</title>
                 <script language='javascript' src='/opac/common/js/utils.js'> </script>
                 <script language='javascript' src='/opac/common/js//config.js'> </script>
                 <script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -78,11 +78,11 @@
 				<td class="value"><input type="text" name="user.card.barcode" id="user.card.barcode" disabled="true"/></td>
 			</tr>
 			<tr>
-				<td class="label">First Name:</td>
+				<td class="label">&staff.patron.user_edit.firstname.label;</td>
 				<td class="value"><input disabled="true" type="text" name="user.first_given_name" id="user.first_given_name"/></td>
-				<td class="label">Middle Name:</td>
+				<td class="label">&staff.patron.user_edit.middlename.label;</td>
 				<td class="value"><input disabled="true" type="text" name="user.second_given_name" id="user.second_given_name"/></td>
-				<td class="label">Last Name:</td>
+				<td class="label">&staff.patron.user_edit.lastname.label;</td>
 				<td class="value"><input disabled="true" type="text" name="user.family_name" id="user.family_name"/></td>
 			</tr>
 			<tr class='advanced hideme'>
@@ -91,7 +91,7 @@
 						<thead>
 							<tr>
 								<th></th>
-								<th>Working Location</th>
+								<th>&staff.patron.user_edit.working_location.label;</th>
 							</tr>
 						</thead>
 						<tbody id="work_ous" name="work_ous"/>
@@ -103,10 +103,10 @@
 					<table width="100%">
 						<thead>
 							<tr>
-								<th>Permission</th>
-								<th>Applied</th>
-								<th>Depth</th>
-								<th>Grantable</th>
+								<th>&staff.patron.user_edit.permission.label;</th>
+								<th>&staff.patron.user_edit.applied.label;</th>
+								<th>&staff.patron.user_edit.depth.label;</th>
+								<th>&staff.patron.user_edit.grantable.label;</th>
 							</tr>
 						</thead>
 						<tbody id="permissions" name="permissions"/>
@@ -116,7 +116,7 @@
 
 		</table>
 
-		<button onclick="save_user(); return false;">Save</button>
+		<button onclick="save_user(); return false;">&staff.patron.user_edit.save.label;</button>
 		</form>
 
 

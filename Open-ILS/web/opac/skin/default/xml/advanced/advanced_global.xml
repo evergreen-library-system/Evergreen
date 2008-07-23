@@ -33,8 +33,8 @@
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='center'>
-                            <button onclick='initSearchBoxes(1);'>&advanced.search.reset;</button>
-							<span style='padding-left: 10px;'> </span>
+                            <button onclick='clearSearchBoxes();'>&advanced.search.reset;</button>
+                            <span style='padding-left: 10px;'> </span>
 							<button id='myopac_new_global_row' onclick='advAddGblRow();'>&advanced.add.row;</button>
 							<span style='padding-left: 10px;'> </span>
                             <button onclick='advSubmitGlobal();'>&advanced.search.submit;</button>

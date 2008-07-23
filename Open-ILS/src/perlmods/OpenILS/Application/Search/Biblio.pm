@@ -36,13 +36,23 @@ my $pfx = "open-ils.search_";
 
 my $cache;
 my $cache_timeout;
+my $superpage_size;
+my $max_superpages;
 
 sub initialize {
 	$cache = OpenSRF::Utils::Cache->new('global');
 	my $sclient = OpenSRF::Utils::SettingsClient->new();
 	$cache_timeout = $sclient->config_value(
 			"apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
-	$logger->info("Search cache timeout is $cache_timeout");
+
+	$superpage_size = $sclient->config_value(
+			"apps", "open-ils.search", "app_settings", "superpage_size" ) || 500;
+
+	$max_superpages = $sclient->config_value(
+			"apps", "open-ils.search", "app_settings", "max_superpages" ) || 20;
+
+	$logger->info("Search cache timeout is $cache_timeout, ".
+        " superpage_size is $superpage_size, max_superpages is $max_superpages");
 }
 
 
@@ -744,8 +754,6 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
 	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
 
-my $PAGE_SIZE = 1000;
-my $SEARCH_PAGES = 25;
 sub staged_search {
 	my($self, $conn, $search_hash, $docache) = @_;
 
@@ -765,8 +773,12 @@ sub staged_search {
     # we're grabbing results on a per-superpage basis, which means the 
     # limit and offset should coincide with superpage boundaries
     $search_hash->{offset} = 0;
-    $search_hash->{limit} = $PAGE_SIZE;
-    $search_hash->{check_limit} = $PAGE_SIZE; # force a well-known check_limit
+    $search_hash->{limit} = $superpage_size;
+
+    # force a well-known check_limit
+    $search_hash->{check_limit} = $superpage_size; 
+    # restrict total tested to superpage size * number of superpages
+    $search_hash->{core_limit} = $superpage_size * $max_superpages;
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
@@ -777,8 +789,9 @@ sub staged_search {
     my $all_results = [];
     my $page; # current superpage
     my $est_hit_count = 0;
+    my $current_page_summary = {};
 
-    for($page = 0; $page < $SEARCH_PAGES; $page++) {
+    for($page = 0; $page < $max_superpages; $page++) {
 
         my $data = $cache_data->{$page};
         my $results;
@@ -795,7 +808,7 @@ sub staged_search {
         } else {
             # retrieve the window of results from the database
             $logger->debug("staged search: fetching results from the database");
-            $search_hash->{skip_check} = $page * $PAGE_SIZE;
+            $search_hash->{skip_check} = $page * $superpage_size;
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
             $logger->info("staged search: DB call took ".(time - $start)." seconds");
@@ -811,6 +824,8 @@ sub staged_search {
             $results = [grep {defined $_->[0]} @$results];
             cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
+
+        $current_page_summary = $summary;
 
         # add the new set of results to the set under construction
         push(@$all_results, @$results);
@@ -831,13 +846,16 @@ sub staged_search {
         last if $current_count >= ($user_limit + $user_offset);
 
         # we've scanned all possible hits
-        last if $summary->{checked} < $PAGE_SIZE;
+        last if $summary->{checked} < $superpage_size;
     }
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
     return {
         count => $est_hit_count,
+        core_limit => $search_hash->{core_limit},
+        superpage_size => $search_hash->{check_limit},
+        superpage_summary => $current_page_summary,
         ids => \@results
     };
 }

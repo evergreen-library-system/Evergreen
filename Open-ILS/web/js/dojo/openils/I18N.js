@@ -22,14 +22,6 @@ if(!dojo._hasResource["openils.I18N"]) {
     dojo.require("fieldmapper.dojoData");
     dojo.require("DojoSRF");
 	dojo.require("dojo.data.ItemFileWriteStore");
-	dojo.require("dijit._Widget");
-	dojo.require("dijit._Templated");
-	dojo.require("dijit.layout.ContentPane");
-	dojo.require("dijit.Dialog");
-	dojo.require("dijit.form.Button");
-	dojo.require("dijit.form.TextBox");
-	dojo.require("dijit.form.ComboBox");
-
 
     dojo.declare('openils.I18N', null, {});
 
@@ -53,7 +45,7 @@ if(!dojo._hasResource["openils.I18N"]) {
 		var classname = obj.classname;
 
 		// XXX need to derive identity field from IDL...
-		var ident_field = fieldmapper[classname].Identifier || 'id';
+		var ident_field = fieldmapper[classname].Identifier;
 		var ident_value = obj[ident_field]();
 
 		var fielder_args = { query : { fq_field : classname + '.' + field, identity_value : ident_value } };

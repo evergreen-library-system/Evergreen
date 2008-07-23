@@ -105,7 +105,7 @@ function save_them_all (event) {
 		store.fetch({
 			query : { ischanged : 1 },
 			onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-			scope : perm_store
+			scope : store
 		});
 
 		var confirmation = true;

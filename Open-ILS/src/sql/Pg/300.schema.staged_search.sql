@@ -191,8 +191,10 @@ BEGIN
                 END IF;
 
 
-                current_rank := current_rank || ' * ( CASE WHEN ' || tmp_text ||
-                    ' THEN ' || rank_adjust.multiplier || '::REAL ELSE 1.0 END )';
+                IF tmp_text IS NOT NULL THEN
+                    current_rank := current_rank || ' * ( CASE WHEN ' || tmp_text ||
+                        ' THEN ' || rank_adjust.multiplier || '::REAL ELSE 1.0 END )';
+                END IF;
 
                 used_ranks := array_append( used_ranks, rank_adjust.bump_type );
 

@@ -62,8 +62,6 @@ def parse_entities():
     prefix = os.path.commonprefix(dtd_files)
 
     for d_file in dtd_files:
-		if DEBUG:
-			print "Checking %s\n" % (d_file)
 
         # Get the shortest unique address for this file
         short_df = d_file[len(prefix):]
@@ -105,7 +103,7 @@ def parse_entities():
                 continue
 
             for entry in entities[entity_key]:
-                if ['file'] == short_df:
+                if entry['file'] == short_df:
                     print("%s:%d: Duplicate key '%s' in line [%s]" % (short_df, line_num, entity_key, line[0:-1]))
                     continue
 

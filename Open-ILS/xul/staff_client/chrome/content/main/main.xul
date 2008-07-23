@@ -128,7 +128,7 @@
 </row>
 <row flex="1">
 		<groupbox flex="1">
-			<caption label="&staff.main.auth.caption;"/>
+			<caption label="&staff.main.authentication.caption;"/>
 			<grid>
 				<columns> <column /> <column /> </columns>
 				<rows>
