@@ -117,7 +117,7 @@ dojo.declare('openils.acq.Picklist', null, {
             newVal = null;
 	    item.provider(newVal);
 	} else {
-	    alert("Unexpected attr in Picklist.onSet: '"+attr+"'");
+	    //alert("Unexpected attr in Picklist.onSet: '"+attr+"'");
 	    return;
 	}
 
