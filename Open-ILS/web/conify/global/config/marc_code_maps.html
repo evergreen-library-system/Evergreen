@@ -83,8 +83,7 @@
                                             'instantiate('+
 												'openils.widget.TranslatorPopup,{field:"value",'+
                                             	'targetObject:"grid_row_object_cache.cam['+row+']"}'+
-											');'+
-                                        'cam_grid.rowHeightChanged('+row+');',
+											');cam_grid.rowHeightChanged('+row+');',
                                         0
                                     );
                                     var oldnode = dojo.byId('value_translation_cam_' + row);
@@ -107,8 +106,7 @@
                                             'instantiate('+
 												'openils.widget.TranslatorPopup,{field:"description",'+
                                             	'targetObject:"grid_row_object_cache.cam['+row+']"}'+
-											');'+
-                                        'cam_grid.rowHeightChanged('+row+');',
+											');cam_grid.rowHeightChanged('+row+');',
                                         0
                                     );
                                     var oldnode = dojo.byId('description_translation_cam_' + row);
@@ -123,71 +121,75 @@
                 }
             ];
 
-			var codelist = ['cam','cblvl','cifm','citm','clm','clfm'];//,'cvrfm'];
+			var codelist = ['cam','cblvl','cifm','citm','clm','clfm','cvrfm'];
 			var hashes = {};
 			var objects = {};
-			var models = {};
+			var stores = {};
 
 			console.log('about to loop over codelist: ' + codelist);
 
 			for (var i in codelist) {
-				var classname = codelist[i];
 
-				hashes[classname] = fieldmapper.standardRequest(
-					[ 'open-ils.fielder', 'open-ils.fielder.' + classname + '.atomic'],
-					[ { query : { code : { '!=' : null } } } ]
-				);
+				(function (classname) {
 
-				console.log('created hashes for ' + classname);
+					hashes[classname] = fieldmapper.standardRequest(
+						[ 'open-ils.fielder', 'open-ils.fielder.' + classname + '.atomic'],
+						[ { query : { code : { '!=' : null } } } ]
+					);
 
-				if (!hashes[classname]) continue;
+					console.log('created hashes for ' + classname);
 
-				objects[classname] = dojo.map(
-					hashes[classname].concat(),
-					new Function('x', 'return new fieldmapper.' + classname + '().fromHash( x );')
-				);
+					if (!hashes[classname]) return;
 
-				console.log('created objects for ' + classname);
+					objects[classname] = dojo.map(
+						hashes[classname].concat(),
+						new Function('x', 'return new fieldmapper.' + classname + '().fromHash( x );')
+					);
 
-				stores[classname] =  new dojo.data.ItemFileWriteStore(
-					{ data : fieldmapper[classname].toStoreData( objects[classname], 'value' ) }
-				);
+					console.log('created objects for ' + classname);
 
-				console.log('create store for ' + classname);
+					stores[classname] =  new dojo.data.ItemFileWriteStore(
+						{ data : fieldmapper[classname].toStoreData( objects[classname], 'value' ) }
+					);
 
-				if (classname != 'cam') {
-					layouts[classname] = [
-                        {   cells : [
-                                [
-                                    { name : "Code",  field : "code",  width : "5em",  editor : dojox.grid.editors.Dijit,  rowSpan : "2" },
-                                    { name : "Value", field : "value", width : "auto", editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
-                                    { name : "Translation",
-                                      width : "10em",
-                                      height : "2em",
-                                      get : function (row) {
-                                        if (!grid_row_object_cache[classname]) grid_row_object_cache[classname] = [];
-                                        var r = this.grid.model.getRow(row);
-                                        if (r) {
-                                    		grid_row_object_cache[classname][row] = new fieldmapper[classname]().fromHash(this.grid.model.getRow(row));
-                                            setTimeout(
-                                                'dojo.query(".'+classname+'_value_' + row + '").'+
-                                                    'instantiate('+
-        												'openils.widget.TranslatorPopup,{field:"value",'+
-                                                    	'targetObject:"grid_row_object_cache.'+classname+'['+row+']"}'+
-        											');'+
-                                                classname+'_grid.rowHeightChanged('+row+');',
-                                                0
-                                            );
-                                            return '<span class="'+classname+'_value_'+row+'"></span>';
-                                        }
-                                        return '';
-                                      }
-                                    }
-                                ]
-                            ]
-                        }
-                    ];
-				}
+					console.log('create store for ' + classname);
+
+					if (classname != 'cam') {
+						layouts[classname] = [
+				            {   cells : [
+					                [
+						                { name : "Code",  field : "code",  width : "5em",  editor : dojox.grid.editors.Dijit },
+							            { name : "Value", field : "value", width : "auto", editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
+								        { name : "Translation",
+									      width : "10em",
+										  height : "2em",
+	                                      get : function (row) {
+		                                    if (!grid_row_object_cache[classname]) grid_row_object_cache[classname] = [];
+			                                var r = this.grid.model.getRow(row);
+				                            if (r) {
+					                    		grid_row_object_cache[classname][row] = new fieldmapper[classname]().fromHash(r);
+						                        setTimeout(
+							                        'dojo.query(".'+classname+'_value_' + row + '").'+
+								                        'instantiate('+
+															'openils.widget.TranslatorPopup,{field:"value",'+
+										                	'targetObject:"grid_row_object_cache.'+classname+'['+row+']"}'+
+														');'+classname+'_grid.rowHeightChanged('+row+');',
+	                                                0
+		                                        );
+												var oldnode = dojo.byId('value_translation_' + classname + '_' + row);
+												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+					                            return '<span class="'+classname+'_value_'+row+'"></span>';
+						                    }
+							                return '';
+								          }
+	                                    }
+		                            ]
+			                    ]
+				            }
+					    ];
+					}
+				})(codelist[i])
+
 			}
 
 		</script>
@@ -199,11 +201,6 @@
 		<div dojoType="dijit.layout.TabContainer" id="grid_container" class="grid_container" style="margin: 5px;" orientation="vertical" layoutAlign="top">
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Audience Map">
-				<script type="dojo/connect" event="onShow">
-					cam_model.refresh();
-					cam_grid.refresh();
-				</script>
-
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 		
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
@@ -218,18 +215,24 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="cam_model"store="stores.cam" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="cam_grid" model="cam_model" structure="layouts.cam"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="cam_model" store="stores.cam" query="{ code : '*' }"></div>
+						<div dojoType="dojox.Grid" jsId="cam_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.cam);
+								this.setModel(window.cam_model);
+							</script>
+						</div>
+
 					</div>
 		
 				</div>
 
 			</div>
 		
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Bib Level Map">
+			<div id="cblvl_pane" dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Bib Level Map">
 				<script type="dojo/connect" event="onShow">
-					cblvl_model.refresh();
-					cblvl_grid.refresh();
+					if (!window.cblvl_once) setTimeout("cblvl_grid.render()",0);
+					window.cblvl_once = 1;
 				</script>
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
@@ -245,7 +248,13 @@
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="cblvl_model"store="stores.cblvl" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="cblvl_grid" model="cblvl_model" structure="layouts.cblvl"></div>
+						<div dojoType="dojox.Grid"  jsId="cblvl_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.cblvl);
+								this.setModel(window.cblvl_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
@@ -254,10 +263,9 @@
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Item Form Map">
 				<script type="dojo/connect" event="onShow">
-					cifm_model.refresh();
-					cifm_grid.refresh();
+					if (!window.cifm_once) setTimeout("cifm_grid.render()",0);
+					window.cifm_once = 1;
 				</script>
-
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
@@ -272,7 +280,13 @@
 	
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="cifm_model"store="stores.cifm" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="cifm_grid" model="cifm_model" structure="layouts.cifm"></div>
+						<div dojoType="dojox.Grid"  jsId="cifm_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.cifm);
+								this.setModel(window.cifm_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
@@ -281,8 +295,8 @@
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Item Type Map">
 				<script type="dojo/connect" event="onShow">
-					citm_model.refresh();
-					citm_grid.refresh();
+					if (!window.citm_once) setTimeout("citm_grid.render()",0);
+					window.citm_once = 1;
 				</script>
 
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
@@ -299,7 +313,13 @@
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="citm_model"store="stores.citm" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="citm_grid" model="citm_model" structure="layouts.citm"></div>
+						<div dojoType="dojox.Grid"  jsId="citm_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.citm);
+								this.setModel(window.citm_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
@@ -308,8 +328,8 @@
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Language Map">
 				<script type="dojo/connect" event="onShow">
-					clm_model.refresh();
-					clm_grid.refresh();
+					if (!window.clm_once) setTimeout("clm_grid.render()",0);
+					window.clm_once = 1;
 				</script>
 
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
@@ -326,7 +346,13 @@
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="clm_model"store="stores.clm" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="clm_grid" model="clm_model" structure="layouts.clm"></div>
+						<div dojoType="dojox.Grid"  jsId="clm_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.clm);
+								this.setModel(window.clm_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
@@ -335,8 +361,8 @@
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Literary Form Map">
 				<script type="dojo/connect" event="onShow">
-					clfm_model.refresh();
-					clfm_grid.refresh();
+					if (!window.clfm_once) setTimeout("clfm_grid.render()",0);
+					window.clfm_once = 1;
 				</script>
 
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
@@ -353,7 +379,13 @@
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="clfm_model"store="stores.clfm" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="clfm_grid" model="clfm_model" structure="layouts.clfm"></div>
+						<div dojoType="dojox.Grid"  jsId="clfm_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.clfm);
+								this.setModel(window.clfm_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
@@ -362,8 +394,8 @@
 
 			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Vidoe Recording Format Map">
 				<script type="dojo/connect" event="onShow">
-					cvrfm_model.refresh();
-					cvrfm_grid.refresh();
+					if (!window.cvrfm_once) setTimeout("cvrfm_grid.render()",0);
+					window.cvrfm_once = 1;
 				</script>
 
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
@@ -380,7 +412,13 @@
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 						<div dojoType="dojox.grid.data.DojoData" jsId="cvrfm_model"store="stores.cvrfm" query="{ code : '*' }"></div>
-						<div dojoType="dojox.Grid" jsId="cvrfm_grid" model="cvrfm_model" structure="layouts.cvrfm"></div>
+						<div dojoType="dojox.Grid"  jsId="cvrfm_grid">
+							<script type="dojo/connect" event="startup">
+								this.setStructure(window.layouts.cvrfm);
+								this.setModel(window.cvrfm_model);
+							</script>
+						</div>
+
 					</div>
 	
 				</div>
