@@ -45,8 +45,21 @@ var JUBGrid = {
     getJUBIsbn : function(rowIndex) {
         return JUBGrid._getMARCAttr(rowIndex, 'isbn');
     },
-    getJUBPrice : function(rowIndex) {
-        return JUBGrid._getMARCAttr(rowIndex, 'price');
+    getJUBActualPrice : function(rowIndex) {
+        var data = JUBGrid.jubGrid.model.getRow(rowIndex);
+        if (!data) return '';
+        var price = new openils.acq.Lineitems(
+            {lineitem:JUBGrid.getLi(data.id)}).getActualPrice();
+        if(price) return price.price;
+        return ''
+    },
+    getJUBEstimatedPrice : function(rowIndex) {
+        var data = JUBGrid.jubGrid.model.getRow(rowIndex);
+        if (!data) return '';
+	    var price = new openils.acq.Lineitems(
+            {lineitem:JUBGrid.getLi(data.id)}).getEstimatedPrice();
+        if(price) return price.price;
+        return ''
     },
     getJUBPubdate : function(rowIndex) {
         return JUBGrid._getMARCAttr(rowIndex, 'pubdate');
@@ -85,10 +98,16 @@ var JUBGrid = {
         return fieldmapper.aou.findOrgUnit(data.owning_lib).shortname();
     },
 
+    gridDataChanged : function(newVal, rowIdx, cellIdx) {
+        // cellIdx == -1 if you are editing a column that
+        // is not represented in the data model. Khaaaaaaan!!! 
+    },
+
     populate : function(gridWidget, model, lineitems) {
-	for (var i in lineitems) {
-	    JUBGrid.lineitems[lineitems[i].id()] = lineitems[i];
-	}
+        for (var i in lineitems) {
+            JUBGrid.lineitems[lineitems[i].id()] = lineitems[i];
+        }
+        dojo.connect (gridWidget, "onApplyCellEdit", JUBGrid.gridDataChanged);
         JUBGrid.jubGrid = gridWidget;
         JUBGrid.jubGrid.setModel(model);
         if(JUBGrid.showDetails) {
