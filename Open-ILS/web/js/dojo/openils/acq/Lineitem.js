@@ -105,7 +105,7 @@ dojo.declare('openils.acq.Lineitem', null, {
 openils.acq.Lineitem.ModelCache = {};
 openils.acq.Lineitem.acqlidCache = {};
 
-openils.acq.Lineitem.createStore = function(li_id, onComplete) {
+openils.acq.Lineitem.createLIDStore = function(li_id, onComplete) {
     // Fetches the details of a lineitem and builds a grid
 
     function mkStore(r) {
@@ -215,7 +215,7 @@ openils.acq.Lineitem.createLID = function(fields, onCreateComplete) {
 
 openils.acq.Lineitem.loadGrid = function(domNode, id, layout) {
     if (!openils.acq.Lineitem.ModelCache[id]) {
-	openils.acq.Lineitem.createStore(id,
+	openils.acq.Lineitem.createLIDStore(id,
 		function(storeData) {
 		    var store = new dojo.data.ItemFileWriteStore({data:storeData});
 		    var model = new dojox.grid.data.DojoData(null, store,
