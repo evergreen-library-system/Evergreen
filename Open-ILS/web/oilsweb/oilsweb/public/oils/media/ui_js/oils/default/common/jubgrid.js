@@ -122,7 +122,7 @@ var JUBGrid = {
                     } else {
                         grid = JUBGrid.jubDetailGridLayout;
                     }
-                    openils.acq.Lineitem.loadGrid(
+                    openils.acq.Lineitem.loadLIDGrid(
                         JUBGrid.jubDetailGrid, 
                         JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
                 }
@@ -152,7 +152,7 @@ var JUBGrid = {
 							     "approved");
 			JUBGrid.jubGrid.update();
 			// Reload lineitem details, read-only
-			openils.acq.Lineitem.loadGrid(
+			openils.acq.Lineitem.loadLIDGrid(
 			    JUBGrid.jubDetailGrid, li.id(),
 			    JUBGrid.jubDetailGridLayoutReadOnly);
 		    };

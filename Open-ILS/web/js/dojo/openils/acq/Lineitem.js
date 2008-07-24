@@ -213,7 +213,7 @@ openils.acq.Lineitem.createLID = function(fields, onCreateComplete) {
 	});
 };
 
-openils.acq.Lineitem.loadGrid = function(domNode, id, layout) {
+openils.acq.Lineitem.loadLIDGrid = function(domNode, id, layout) {
     if (!openils.acq.Lineitem.ModelCache[id]) {
 	openils.acq.Lineitem.createLIDStore(id,
 		function(storeData) {
