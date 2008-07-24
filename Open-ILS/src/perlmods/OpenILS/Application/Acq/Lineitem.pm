@@ -476,8 +476,9 @@ sub update_lineitem_detail {
 
 sub update_li_edit_time {
     my ($e, $li) = @_;
-    return OpenILS::Event->new('ACQ_LINEITEM_APPROVED', payload => $li->id)
-        if $li->state eq 'approved';
+    # some lineitem edits are allowed after approval time...
+#    return OpenILS::Event->new('ACQ_LINEITEM_APPROVED', payload => $li->id)
+#        if $li->state eq 'approved';
     $li->edit_time('now');
     $e->update_acq_lineitem($li) or return $e->die_event;
     return undef;
@@ -627,8 +628,14 @@ sub receive_lineitem_detail {
 sub receive_lineitem_detail_impl {
     my($e, $lid_id) = @_;
 
-    my $lid = $e->retrieve_acq_lineitem_detail($lid_id)
-        or return $e->die_event;
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id,
+        {   flesh => 1,
+            flesh_fields => {
+                acqlid => ['fund_debit']
+            }
+        }
+    ]) or return $e->die_event;
 
     return OpenILS::Event->new(
         'ACQ_LINEITEM_DETAIL_RECEIVED') if $lid->recv_time;
@@ -644,19 +651,38 @@ sub receive_lineitem_detail_impl {
     $copy->editor($e->requestor->id);
     $e->update_asset_copy($copy) or return $e->die_event;
 
-    # XXX update the fund_debit to encumbrance=false
+    $lid->fund_debit->encumbrance('f');
+    $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
 
+    # -------------------------------------------------------------
+    # if all of the lineitem details for this lineitem have 
+    # been received, mark the lineitem as received
+    # -------------------------------------------------------------
     my $non_recv = $e->search_acq_lineitem_detail(
         {recv_time => undef, lineitem => $lid->lineitem}, {idlist=>1});
 
-    unless(@$non_recv) {
-        # if all of the lineitem details for this lineitem have 
-        # been received, mark the lineitem as received
-        my $li = $e->retrieve_acq_lineitem($lid->lineitem);
-        $li->state('received');
-        $li->edit_time('now');
-        $e->update_acq_lineitem($li) or return $e->die_event;
-    }
+    return undef if @$non_recv;
+
+    my $li = $e->retrieve_acq_lineitem($lid->lineitem);
+    $li->state('received');
+    $li->edit_time('now');
+    $e->update_acq_lineitem($li) or return $e->die_event;
+
+    # -------------------------------------------------------------
+    # if all of the lineitems for this PO are received,
+    # mark the PO as received
+    # -------------------------------------------------------------
+    my $non_recv_li = $e->search_acq_lineitem(
+        {   purchase_order => $li->purchase_order, 
+            state => {'!=' => 'received'}
+        }, {idlist=>1});
+
+    return undef if @$non_recv_li;
+
+    my $po = $e->retrieve_acq_purchase_order($li->purchase_order);
+    $po->state('received');
+    $po->edit_time('now');
+    $e->update_acq_purchase_order($po) or return $e->die_event;
 
     return undef;
 }
