@@ -40,7 +40,7 @@ dojo.declare('openils.acq.Picklist', null, {
 		pl_this._items.push(data);
 	    }
 
-	    storeData = jub.toStoreData(pl_this._items);
+	    storeData = jub.toStoreData(pl_this._items, null, {virtualFields:['estimated_price', 'actual_price']});
 	    pl_this._store = new dojo.data.ItemFileWriteStore({data:storeData});
 	    pl_this._model = new dojox.grid.data.DojoData(null, pl_this._store,
 						       {rowsPerPage:20, clientSort:true,
@@ -107,6 +107,33 @@ dojo.declare('openils.acq.Picklist', null, {
 	    }
 	};
 
+    var self = this;
+    // after an attribute has been updated
+    var attrUpdateDone = function(r, attr) {
+	    var res = r.recv().content();
+        if(e = openils.Event.parse(res))
+            return alert(e);
+        var oldVal = new openils.acq.Lineitems(
+            {lineitem:item}).findAttr(attr, 'lineitem_local_attr_definition');
+        if(oldVal) {
+            // if this attr already exists on the object, just update the value
+            for(var i = 0; i < item.attributes().length; i++) {
+                var attrobj = item.attributes()[i];
+                if(attrobj.attr_type() == 'lineitem_local_attr_definition' && attrobj.attr_name() == attr) {
+                    attrobj.attr_value(newVal);
+                }
+            }
+        } else {
+            // if this is a new attribute, create a new object to match reality
+            liad = new acqlia();
+            liad.attr_type('lineitem_local_attr_definition');
+            liad.attr_value(newVal);
+            liad.attr_name(attr);
+            liad.id(res);
+            item.attributes().push(liad);
+        }
+    }
+
 	if (oldVal == newVal) {
 	    return;
 	}
@@ -116,6 +143,14 @@ dojo.declare('openils.acq.Picklist', null, {
         if(newVal == '') 
             newVal = null;
 	    item.provider(newVal);
+    } else if(attr == 'estimated_price' || attr == 'actual_price') {
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem_local_attr.set'],
+            {   async: true,
+                params: [openils.User.authtoken, item.id(), attr, newVal],
+                oncomplete: function(r) {attrUpdateDone(r, attr); }
+            }
+        );
 	} else {
 	    //alert("Unexpected attr in Picklist.onSet: '"+attr+"'");
 	    return;

@@ -107,7 +107,6 @@ var JUBGrid = {
         for (var i in lineitems) {
             JUBGrid.lineitems[lineitems[i].id()] = lineitems[i];
         }
-        dojo.connect (gridWidget, "onApplyCellEdit", JUBGrid.gridDataChanged);
         JUBGrid.jubGrid = gridWidget;
         JUBGrid.jubGrid.setModel(model);
         if(JUBGrid.showDetails) {
