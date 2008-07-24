@@ -6,7 +6,7 @@ dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('openils.Event');
 dojo.require('openils.acq.Picklist');
-dojo.require('openils.acq.Lineitems');
+dojo.require('openils.acq.Lineitem');
 dojo.require('openils.User');
 
 var searchFields = [];
@@ -194,7 +194,7 @@ function updateLiList(pl, list, idx, oncomplete) {
         return oncomplete();
     var li = selectedLIs[idx];
     li.picklist(pl);
-    new openils.acq.Lineitems({lineitem:li}).update(
+    new openils.acq.Lineitem({lineitem:li}).update(
         function(r) {
             updateLiList(pl, list, ++idx, oncomplete);
         }

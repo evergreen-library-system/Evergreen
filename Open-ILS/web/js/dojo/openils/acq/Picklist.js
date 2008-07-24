@@ -113,7 +113,7 @@ dojo.declare('openils.acq.Picklist', null, {
 	    var res = r.recv().content();
         if(e = openils.Event.parse(res))
             return alert(e);
-        var oldVal = new openils.acq.Lineitems(
+        var oldVal = new openils.acq.Lineitem(
             {lineitem:item}).findAttr(attr, 'lineitem_local_attr_definition');
         if(oldVal) {
             // if this attr already exists on the object, just update the value

@@ -7,14 +7,14 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Button');
 dojo.require("dijit.Dialog");
 dojo.require('openils.Event');
-dojo.require('openils.acq.Lineitems');
+dojo.require('openils.acq.Lineitem');
 dojo.require('openils.acq.Provider');
 dojo.require('openils.acq.PO');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 var recvCount = 0;
-var user = new openils.User();
 var createAssetsSelected = false;
+var createDebitsSelected = false;
 
 var lineitems = [];
 
@@ -57,7 +57,7 @@ function doSearch(values) {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
-            params: [user.authtoken, search, options],
+            params: [openils.User.authtoken, search, options],
             onresponse: handleResult,
             oncomplete: viewList
         }
@@ -73,7 +73,9 @@ function handleResult(r) {
 function viewList() {
     dojo.style('searchProgress', 'visibility', 'hidden');
     dojo.style('oils-acq-li-search-result-grid', 'visibility', 'visible');
-    var store = new dojo.data.ItemFileReadStore({data:jub.toStoreData(lineitems)});
+    var store = new dojo.data.ItemFileReadStore(
+        {data:jub.toStoreData(lineitems, null, 
+            {virtualFields:['estimated_price', 'actual_price']})});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
     JUBGrid.populate(liGrid, model, lineitems)
@@ -83,6 +85,7 @@ function createPOFromLineitems(fields) {
     var po = new acqpo()
     po.provider(newPOProviderSelector.getValue());
     createAssetsSelected = fields.create_assets;
+    createDebitsSelected = fields.create_debits;
 
     // find the selected lineitems
     var selected = liGrid.selection.getSelected();
@@ -114,6 +117,23 @@ function updateLiList(poId, selList) {
     _updateLiList(poId, selList, 0);
 }
 
+function checkCreateDebits(poId) {
+    if(!createDebitsSelected)
+        return viewPO(poId);
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.purchase_order.debits.create'],
+        {   async: true,
+            params: [openils.User.authtoken, poId, {encumbrance:1}],
+            oncomplete : function(r) {
+                var total = r.recv().content();
+                if(e = openils.Event.parse(total))
+                    return alert(e);
+                viewPO(poId);
+            }
+        }
+    );
+}
+
 function viewPO(poId) {
     location.href = 'view/' + poId;
 }
@@ -128,7 +148,7 @@ function _updateLiList(poId, selList, idx) {
     var li = selList[idx];
     li.purchase_order(poId);
     li.state('in-process');
-    new openils.acq.Lineitems({lineitem:li}).update(
+    new openils.acq.Lineitem({lineitem:li}).update(
         function(stat) {
             _updateLiList(poId, selList, ++idx);
         }
@@ -140,7 +160,7 @@ function createAssets(poId) {
         ['open-ils.acq','open-ils.acq.purchase_order.assets.create'],
         {
             async: true,
-            params: [user.authtoken, poId],
+            params: [openils.User.authtoken, poId],
             oncomplete : function(r) {
                 if(e = openils.Event.parse(r.recv().content()))
                     alert(e);

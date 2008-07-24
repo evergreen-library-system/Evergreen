@@ -14,9 +14,9 @@
  * ---------------------------------------------------------------------------
  */
 
-if(!dojo._hasResource['openils.acq.Lineitems']) {
-dojo._hasResource['openils.acq.Lineitems'] = true;
-dojo.provide('openils.acq.Lineitems');
+if(!dojo._hasResource['openils.acq.Lineitem']) {
+dojo._hasResource['openils.acq.Lineitem'] = true;
+dojo.provide('openils.acq.Lineitem');
 
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojox.grid.Grid');
@@ -25,8 +25,8 @@ dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 
-/** Declare the Lineitems class with dojo */
-dojo.declare('openils.acq.Lineitems', null, {
+/** Declare the Lineitem class with dojo */
+dojo.declare('openils.acq.Lineitem', null, {
     /* add instance methods here if necessary */
 
     constructor: function(args) {
@@ -102,10 +102,10 @@ dojo.declare('openils.acq.Lineitems', null, {
     },
 });
 
-openils.acq.Lineitems.ModelCache = {};
-openils.acq.Lineitems.acqlidCache = {};
+openils.acq.Lineitem.ModelCache = {};
+openils.acq.Lineitem.acqlidCache = {};
 
-openils.acq.Lineitems.createStore = function(li_id, onComplete) {
+openils.acq.Lineitem.createStore = function(li_id, onComplete) {
     // Fetches the details of a lineitem and builds a grid
 
     function mkStore(r) {
@@ -116,7 +116,7 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	    for (i in data.lineitem_details()) {
 		var lid = data.lineitem_details()[i];
 		items.push(lid);
-		openils.acq.Lineitems.acqlidCache[lid.id()] = lid;
+		openils.acq.Lineitem.acqlidCache[lid.id()] = lid;
 	    }
 	}
 
@@ -132,7 +132,7 @@ openils.acq.Lineitems.createStore = function(li_id, onComplete) {
 	});
 };
 
-openils.acq.Lineitems.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
+openils.acq.Lineitem.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
     var item;
     var updateDone = function(r) {
 	var stat = r.recv().content();
@@ -155,7 +155,7 @@ openils.acq.Lineitems.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
 	return;
     }
 
-    item = openils.acq.Lineitems.acqlidCache[griditem.id];
+    item = openils.acq.Lineitem.acqlidCache[griditem.id];
     
     if (attr == "fund") {
 	item.fund(newVal);
@@ -168,7 +168,7 @@ openils.acq.Lineitems.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
     } else if (attr ==  "location") {
 	item.location(newVal);
     } else {
-	alert("Unexpected attr in Lineitems.alertOnSet: '"+attr+"'");
+	alert("Unexpected attr in Lineitem.alertOnSet: '"+attr+"'");
 	return;
     }
 
@@ -179,7 +179,7 @@ openils.acq.Lineitems.alertOnLIDSet = function(griditem, attr, oldVal, newVal) {
 	});
 };
 
-openils.acq.Lineitems.deleteLID = function(id, onComplete) {
+openils.acq.Lineitem.deleteLID = function(id, onComplete) {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem_detail.delete'],
         {   async: true,
@@ -192,7 +192,7 @@ openils.acq.Lineitems.deleteLID = function(id, onComplete) {
     });
 };
 
-openils.acq.Lineitems.createLID = function(fields, onCreateComplete) {
+openils.acq.Lineitem.createLID = function(fields, onCreateComplete) {
     var lid = new acqlid()
     for (var field in fields) {
 	lid[field](fields[field]);
@@ -213,24 +213,24 @@ openils.acq.Lineitems.createLID = function(fields, onCreateComplete) {
 	});
 };
 
-openils.acq.Lineitems.loadGrid = function(domNode, id, layout) {
-    if (!openils.acq.Lineitems.ModelCache[id]) {
-	openils.acq.Lineitems.createStore(id,
+openils.acq.Lineitem.loadGrid = function(domNode, id, layout) {
+    if (!openils.acq.Lineitem.ModelCache[id]) {
+	openils.acq.Lineitem.createStore(id,
 		function(storeData) {
 		    var store = new dojo.data.ItemFileWriteStore({data:storeData});
 		    var model = new dojox.grid.data.DojoData(null, store,
 			{rowsPerPage: 20, clientSort:true, query:{id:'*'}});
 
 		    dojo.connect(store, "onSet",
-				 openils.acq.Lineitems.alertOnLIDSet);
-		    openils.acq.Lineitems.ModelCache[id] = model;
+				 openils.acq.Lineitem.alertOnLIDSet);
+		    openils.acq.Lineitem.ModelCache[id] = model;
 
 		    domNode.setStructure(layout);
 		    domNode.setModel(model);
 		    domNode.update();
 		});
     } else {
-	domNode.setModel(openils.acq.Lineitems.ModelCache[id]);
+	domNode.setModel(openils.acq.Lineitem.ModelCache[id]);
 	domNode.setStructure(layout);
 	domNode.update();
 	domNode.refresh();

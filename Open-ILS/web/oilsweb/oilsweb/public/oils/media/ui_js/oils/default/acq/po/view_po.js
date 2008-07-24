@@ -8,7 +8,7 @@ dojo.require('openils.Event');
 dojo.require('openils.User');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.acq.Provider');
-dojo.require('openils.acq.Lineitems');
+dojo.require('openils.acq.Lineitem');
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
 

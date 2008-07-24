@@ -7,7 +7,7 @@ dojo.require('dojox.grid.Grid');
 
 dojo.require("openils.User");
 dojo.require("openils.acq.Fund");
-dojo.require("openils.acq.Lineitems");
+dojo.require("openils.acq.Lineitem");
 dojo.require('openils.acq.Provider');
 dojo.require("openils.widget.FundSelector");
 dojo.require('openils.editors');
@@ -33,7 +33,7 @@ var JUBGrid = {
     _getMARCAttr : function(rowIndex, attr) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if (!data) return '';
-        return new openils.acq.Lineitems(
+        return new openils.acq.Lineitem(
             {lineitem:JUBGrid.getLi(data.id)}).findAttr(attr, 'lineitem_marc_attr_definition')
     },
     getJUBTitle : function(rowIndex) {
@@ -48,7 +48,7 @@ var JUBGrid = {
     getJUBActualPrice : function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if (!data) return '';
-        var price = new openils.acq.Lineitems(
+        var price = new openils.acq.Lineitem(
             {lineitem:JUBGrid.getLi(data.id)}).getActualPrice();
         if(price) return price.price;
         return ''
@@ -56,7 +56,7 @@ var JUBGrid = {
     getJUBEstimatedPrice : function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if (!data) return '';
-	    var price = new openils.acq.Lineitems(
+	    var price = new openils.acq.Lineitem(
             {lineitem:JUBGrid.getLi(data.id)}).getEstimatedPrice();
         if(price) return price.price;
         return ''
@@ -122,7 +122,7 @@ var JUBGrid = {
                     } else {
                         grid = JUBGrid.jubDetailGridLayout;
                     }
-                    openils.acq.Lineitems.loadGrid(
+                    openils.acq.Lineitem.loadGrid(
                         JUBGrid.jubDetailGrid, 
                         JUBGrid.jubGrid.model.getRow(evt.rowIndex).id, grid);
                 }
@@ -138,7 +138,7 @@ var JUBGrid = {
 	for (var idx = 0; idx < selected.length; idx++) {
 	    var rowIdx = selected[idx];
 	    var jub = JUBGrid.jubGrid.model.getRow(rowIdx);
-	    var li = new openils.acq.Lineitems({lineitem:JUBGrid.getLi(jub.id)});
+	    var li = new openils.acq.Lineitem({lineitem:JUBGrid.getLi(jub.id)});
 	    var approveStore = function(evt) {
 		if (evt) {
 		    // something bad happened
@@ -152,7 +152,7 @@ var JUBGrid = {
 							     "approved");
 			JUBGrid.jubGrid.update();
 			// Reload lineitem details, read-only
-			openils.acq.Lineitems.loadGrid(
+			openils.acq.Lineitem.loadGrid(
 			    JUBGrid.jubDetailGrid, li.id(),
 			    JUBGrid.jubDetailGridLayoutReadOnly);
 		    };
@@ -243,7 +243,7 @@ var JUBGrid = {
 		JUBGrid.jubDetailGrid.update(); 
 	    };
 
-	    openils.acq.Lineitems.deleteLID(lid.id, deleteFromStore);
+	    openils.acq.Lineitem.deleteLID(lid.id, deleteFromStore);
 	}
     },
 
@@ -255,7 +255,7 @@ var JUBGrid = {
 	    JUBGrid.jubGrid.update();
 	    JUBGrid.jubGrid.refresh();
 	}
-	openils.acq.Lineitems.createLID(fields, addToStore);
+	openils.acq.Lineitem.createLID(fields, addToStore);
     },
 };
 
