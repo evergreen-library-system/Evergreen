@@ -50,7 +50,7 @@
     <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
 
     <div dojoType="dijit.form.DropDownButton" id='oils-acq-li-search-po-create'>
-        <span>${('Create PO From Selected Titles')}</span>
+        <span>${('Create PO')}</span>
         <div dojoType="dijit.TooltipDialog" execute="createPOFromLineitems(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 buildProviderSelect(newPOProviderSelector, 
@@ -62,6 +62,14 @@
                 //new openils.User().buildPermOrgTreePicker('CREATE_PURCHAE_ORDER', 'treee');
             </script>
             <table class='dijitTooltipTable'>
+                <tr>
+                    <td colspan='2'>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                        <label for="name">${_('For selected items')}</label>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                        <label for="name">${_('For all items')}</label>
+                    </td>
+                </tr>
                 <tr>
                     <td><label for="name">${_('Provider:')} </label></td>
                     <td>
