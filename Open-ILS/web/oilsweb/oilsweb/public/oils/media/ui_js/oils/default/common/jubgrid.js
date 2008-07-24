@@ -4,6 +4,9 @@ dojo.require('dijit.Dialog');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.Grid');
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
+
 
 dojo.require("openils.User");
 dojo.require("openils.acq.Fund");
@@ -68,6 +71,12 @@ var JUBGrid = {
         data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if(!data || !data.provider) return;
         return openils.acq.Provider.retrieve(data.provider).code();
+    },
+    getRecvTime : function(rowIndex) {
+        var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
+        if (!(data && data.recv_time)) return '';
+        var date = dojo.date.stamp.fromISOString(data.recv_time);
+        return dojo.date.locale.format(date, {formatLength:'medium'});
     },
     getCopyLocation : function(rowIndex) {
         var data = JUBGrid.jubDetailGrid.model.getRow(rowIndex);
