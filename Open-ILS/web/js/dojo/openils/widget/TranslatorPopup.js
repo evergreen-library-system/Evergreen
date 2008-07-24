@@ -29,7 +29,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 	dojo.require("dijit.Dialog");
 	dojo.require("dijit.form.Button");
 	dojo.require("dijit.form.TextBox");
-	dojo.require("dijit.form.ComboBox");
+	dojo.require("dijit.form.FilteringSelect");
 	dojo.require("dojox.jsonPath");
 	dojo.requireLocalization("openils.widget", "TranslatorPopup");
 
@@ -98,9 +98,10 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 					if (old_dijit) old_dijit.destroy();
 		
 					dojo.query('.locale_combobox',trans_row).instantiate(
-						dijit.form.ComboBox,
+						dijit.form.FilteringSelect,
 						{ store:openils.I18N.localeStore,
 						  searchAttr:'locale',
+						  labelAttr:'label',
 						  lowercase:true,
 						  required:true,
 						  id:'locale_' + trans_id,
@@ -141,9 +142,10 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 				trans_row = dojo.query('tr',trans_template)[0].cloneNode(true);
 		
 				dojo.query('.locale_combobox',trans_row).instantiate(
-					dijit.form.ComboBox,
+					dijit.form.FilteringSelect,
 					{ store:openils.I18N.localeStore,
 					  searchAttr:'locale',
+					  labelAttr:'label',
 					  id:'i18n_new_locale_' + this._targetObject.classname + '.' + this.field + this.unique,
 					  lowercase:true,
 					  required:true,
