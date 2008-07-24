@@ -73,41 +73,43 @@ function handleResult(r) {
 function viewList() {
     dojo.style('searchProgress', 'visibility', 'hidden');
     dojo.style('oils-acq-li-search-result-grid', 'visibility', 'visible');
-    var store = new dojo.data.ItemFileReadStore(
+    var store = new dojo.data.ItemFileWriteStore(
         {data:jub.toStoreData(lineitems, null, 
             {virtualFields:['estimated_price', 'actual_price']})});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    JUBGrid.populate(liGrid, model, lineitems)
+    JUBGrid.populate(liGrid, model, lineitems);
 }
 
 function createPOFromLineitems(fields) {
-    var po = new acqpo()
+    var po = new acqpo();
     po.provider(newPOProviderSelector.getValue());
     createAssetsSelected = fields.create_assets;
     createDebitsSelected = fields.create_debits;
 
-    // find the selected lineitems
-    var selected = liGrid.selection.getSelected();
-    var selList = [];
-    for(var idx = 0; idx < selected.length; idx++) {
-        var rowIdx = selected[idx];
-        var id = liGrid.model.getRow(rowIdx).id;
-        for(var i = 0; i < lineitems.length; i++) {
-            var li = lineitems[i];
-            if(li.id() == id && !li.purchase_order() && li.state() == 'approved')
-                selList.push(lineitems[i]);
+    if(fields.which == 'selected') {
+        // find the selected lineitems
+        var selected = liGrid.selection.getSelected();
+        var selList = [];
+        for(var idx = 0; idx < selected.length; idx++) {
+            var rowIdx = selected[idx];
+            var id = liGrid.model.getRow(rowIdx).id;
+            for(var i = 0; i < lineitems.length; i++) {
+                var li = lineitems[i];
+                if(li.id() == id && !li.purchase_order() && li.state() == 'approved')
+                    selList.push(lineitems[i]);
+            }
         }
+    } else {
+        selList = lineitems;
     }
 
     if(selList.length == 0) return;
 
     openils.acq.PO.create(po, 
         function(poId) {
-            if(e = openils.Event.parse(poId)) {
-                alert(e);
-                return;
-            } 
+            if(e = openils.Event.parse(poId)) 
+                return alert(e);
             updateLiList(poId, selList);
         }
     );
@@ -143,7 +145,7 @@ function _updateLiList(poId, selList, idx) {
         if(createAssetsSelected)
             return createAssets(poId);
         else
-            return viewPo(poId); 
+            return checkCreateDebits(poId);
     }
     var li = selList[idx];
     li.purchase_order(poId);
@@ -156,17 +158,27 @@ function _updateLiList(poId, selList, idx) {
 }
 
 function createAssets(poId) {
+    searchProgress.update({progress: 0});
+    dojo.style('searchProgress', 'visibility', 'visible');
+
+    function onresponse(r) {
+        var stat = r.recv().content();
+        if(e = openils.Event.parse(stat))
+            return alert(e);
+        searchProgress.update({maximum: stat.total, progress: stat.progress});
+    }
+
+    function oncomplete(r) {
+        dojo.style('searchProgress', 'visibility', 'hidden');
+        checkCreateDebits(poId);
+    }
+
     fieldmapper.standardRequest(
         ['open-ils.acq','open-ils.acq.purchase_order.assets.create'],
-        {
-            async: true,
+        {   async: true,
             params: [openils.User.authtoken, poId],
-            oncomplete : function(r) {
-                if(e = openils.Event.parse(r.recv().content()))
-                    alert(e);
-                else
-                    viewPO(poId);
-            }
+            onresponse : onresponse,
+            oncomplete : oncomplete
         }
     );
 }
