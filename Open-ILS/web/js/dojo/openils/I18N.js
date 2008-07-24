@@ -25,20 +25,11 @@ if(!dojo._hasResource["openils.I18N"]) {
 
     dojo.declare('openils.I18N', null, {});
 
-    openils.I18N.BaseLocales = {
-		"en" : "English",
-		"en_us" : "US English",
-		"en_ca" : "Canadian English",
-		"es" : "Spanish",
-		"es_us" : "US Spanish",
-		"fr" : "French",
-		"fr_ca" : "Canadian French"
-	};
-
+	openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { query : { code : { '!=' :  null }  } } ] );
 	openils.I18N.localeStore = new dojo.data.ItemFileWriteStore( { data : {identifier : 'locale', label : 'label', items : [] } } );
 
 	for (var i in openils.I18N.BaseLocales) {
-		openils.I18N.localeStore.newItem({ locale : i, label : openils.I18N.BaseLocales[i] });
+		openils.I18N.localeStore.newItem({ locale : openils.I18N.BaseLocales[i].code, label : openils.I18N.BaseLocales[i].name });
 	}
 
 	openils.I18N.getTranslations = function ( obj /* Fieldmapper object */,  field /* Field to translate */, locale /* optional locale */) {
