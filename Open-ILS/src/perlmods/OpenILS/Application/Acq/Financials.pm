@@ -644,7 +644,7 @@ sub create_purchase_order_debits {
                     flesh => 1, 
                     flesh_fields => {acqlid => ['fund']}}])->[0]) {
 
-            my $debit = Fieldmapper::acq::fund_debut->new;
+            my $debit = Fieldmapper::acq::fund_debit->new;
             $debit->fund($lid->fund->id);
             $debit->origin_amount($price);
             if($ptype == 2) { # price from vendor
@@ -655,9 +655,14 @@ sub create_purchase_order_debits {
                 $debit->origin_currency_type($lid->fund->currency_type);
                 $debit->amount($price);
             }
+
             $debit->encumbrance($args->{encumbrance});
             $debit->debit_type('purchase');
             $e->create_acq_fund_debit($debit) or return $e->die_event;
+
+            # point the lineitem detail at the fund debit object
+            $lid->fund_debit($debit->id);
+            $e->update_acq_lineitem_detail($lid) or return $e->die_event;
             $total += $debit->amount;
         }
     }
