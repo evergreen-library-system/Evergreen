@@ -688,7 +688,7 @@ __PACKAGE__->register_method(
             {desc => 'Attr name', type => 'string'},
             {desc => 'Attr value', type => 'string'}
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc => 'ID of the attr object on success, Event on error'}
     }
 );
 
@@ -721,7 +721,7 @@ sub set_lineitem_attr {
     }
 
     $e->commit;
-    return 1;
+    return $attr->id;
 }
 
 
