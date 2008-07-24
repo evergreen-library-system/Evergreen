@@ -95,6 +95,8 @@ dojo.declare('openils.acq.Picklist', null, {
 	}
 	return '';
     },
+
+    /* MOVED INTO jubgrid.js  .. safe to delete?
     onJUBSet: function (griditem, attr, oldVal,newVal) {
 	var item;
 	var updateDone = function(r) {
@@ -107,7 +109,6 @@ dojo.declare('openils.acq.Picklist', null, {
 	    }
 	};
 
-    var self = this;
     // after an attribute has been updated
     var attrUpdateDone = function(r, attr) {
 	    var res = r.recv().content();
@@ -162,6 +163,7 @@ dojo.declare('openils.acq.Picklist', null, {
 	     oncomplete: updateDone
 	    });
     },
+    */
 });
 
 /** Creates a new picklist. fields.name is required */ 

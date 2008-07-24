@@ -117,7 +117,8 @@ var JUBGrid = {
 
                     JUBGrid.jubDetailGrid.lineitemID = jub.id;
 
-                    if (jub.state == "approved") {
+                    //if (jub.state == "approved") {
+                    if (false) { // need finer grained control here
                         grid = JUBGrid.jubDetailGridLayoutReadOnly;
                     } else {
                         grid = JUBGrid.jubDetailGridLayout;
@@ -128,6 +129,8 @@ var JUBGrid = {
                 }
             );
         }
+        // capture changes to lineitems
+        dojo.connect(model.store, "onSet", JUBGrid.onJUBSet);
         gridWidget.update();
     },
 
@@ -154,7 +157,8 @@ var JUBGrid = {
 			// Reload lineitem details, read-only
 			openils.acq.Lineitem.loadLIDGrid(
 			    JUBGrid.jubDetailGrid, li.id(),
-			    JUBGrid.jubDetailGridLayoutReadOnly);
+			    JUBGrid.jubDetailGridLayout);
+			    //JUBGrid.jubDetailGridLayoutReadOnly);
 		    };
 
 		    JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id},
@@ -248,14 +252,83 @@ var JUBGrid = {
     },
 
     createLID: function(fields) {
-	fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
-	var addToStore = function () {
-	    JUBGrid.jubDetailGrid.model.store.newItem(fields);
-	    JUBGrid.jubDetailGrid.refresh();
-	    JUBGrid.jubGrid.update();
-	    JUBGrid.jubGrid.refresh();
-	}
-	openils.acq.Lineitem.createLID(fields, addToStore);
+        fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
+        var addToStore = function () {
+            JUBGrid.jubDetailGrid.model.store.newItem(fields);
+            JUBGrid.jubDetailGrid.refresh();
+            JUBGrid.jubGrid.update();
+            JUBGrid.jubGrid.refresh();
+        }
+        openils.acq.Lineitem.createLID(fields, addToStore);
+    },
+
+    // called when a lineitem is edited
+    onJUBSet: function (griditem, attr, oldVal,newVal) {
+        var item;
+
+        var updateDone = function(r) {
+            var stat = r.recv().content();
+            if(e = openils.Event.parse(stat)) 
+                console.dir(e);
+        };
+
+        // after an attribute has been updated
+        var attrUpdateDone = function(r, attr) {
+            var res = r.recv().content();
+            if(e = openils.Event.parse(res))
+                return alert(e);
+
+            var oldVal = new openils.acq.Lineitem(
+                {lineitem:item}).findAttr(attr, 'lineitem_local_attr_definition');
+
+            if(oldVal) {
+                // if this attr already exists on the object, just update the value
+                for(var i = 0; i < item.attributes().length; i++) {
+                    var attrobj = item.attributes()[i];
+                    if(attrobj.attr_type() == 'lineitem_local_attr_definition' && attrobj.attr_name() == attr) {
+                        attrobj.attr_value(newVal);
+                    }
+                }
+            } else {
+                // if this is a new attribute, create a new object to match reality
+                liad = new acqlia();
+                liad.attr_type('lineitem_local_attr_definition');
+                liad.attr_value(newVal);
+                liad.attr_name(attr);
+                liad.id(res);
+                item.attributes().push(liad);
+            }
+        }
+
+        if (oldVal == newVal) {
+            return;
+        }
+
+        item = JUBGrid.lineitems[griditem.id];
+        if (attr == "provider") {
+            if(newVal == '') 
+                newVal = null;
+            item.provider(newVal);
+
+        } else if(attr == 'estimated_price' || attr == 'actual_price') {
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.lineitem_local_attr.set'],
+                {   async: true,
+                    params: [openils.User.authtoken, item.id(), attr, newVal],
+                    oncomplete: function(r) {attrUpdateDone(r, attr); }
+                }
+            );
+        } else {
+            //alert("Unexpected attr in Picklist.onSet: '"+attr+"'");
+            return;
+        }
+
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.lineitem.update"],
+            {params: [openils.User.authtoken, item],
+             oncomplete: updateDone
+            }
+        );
     },
 };
 
