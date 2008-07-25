@@ -62,9 +62,6 @@ while ( my $rec = <> ) {
 			  pkey => $class->Identity,
 			  fields => \@cols,
 			};
-
-        #XXX it burnnnsssessss
-        $fieldcache{$hint}{table} =~ s/\.full_rec/.real_full_rec/o if ($hint eq 'mfr');
 	}
 
 	push @{ $lineset{$hint} }, [map { $row->$_ } @{ $fieldcache{$hint}{fields} }];
