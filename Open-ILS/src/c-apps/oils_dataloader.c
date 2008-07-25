@@ -64,7 +64,7 @@ int main (int argc, char **argv) {
 	osrfStringArray* classes = osrfHashKeys(idl);
 	int c_index = 0;
 	char* classname;
-	char* st_tmp;
+	char* st_tmp = NULL;
 
 	while ((classname = osrfStringArrayGetString(classes, c_index++))) {
 		osrfHash* idlClass = oilsIDLFindPath("/%s", classname);

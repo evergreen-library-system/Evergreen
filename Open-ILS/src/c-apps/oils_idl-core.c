@@ -79,7 +79,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				osrfLogDebug(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
 
 				if (strlen( controller_list ) > 0) {
-					char* st_tmp;
+					char* st_tmp = NULL;
 					char* _controller_class = strtok_r(controller_list, " ", &st_tmp);
 					osrfStringArrayAdd(controller, strdup(_controller_class));
 
@@ -238,7 +238,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfLogDebug(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
 
 							if (strlen( map_list ) > 0) {
-								char* st_tmp;
+								char* st_tmp = NULL;
 								char* _map_class = strtok_r(map_list, " ", &st_tmp);
 								osrfStringArrayAdd(map, strdup(_map_class));
 						
