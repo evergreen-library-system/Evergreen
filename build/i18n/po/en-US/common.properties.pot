@@ -1,18 +1,17 @@
-# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-20 23:22-0400\n"
+"POT-Creation-Date: 2008-07-25 13:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.0.1\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -25,6 +24,10 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
+msgstr ""
+
+#: common.error
+msgid "Please inform your help desk or developers of this error:"
 msgstr ""
 
 #: common.ok
@@ -44,7 +47,7 @@ msgid "Please report that this happened."
 msgstr ""
 
 #: common.barcode.status.warning
-msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
 
 #: common.barcode.status.warning.lost
@@ -56,6 +59,7 @@ msgid "Expired"
 msgstr ""
 
 #: common.barcode.status.warning.barred
+msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
 msgstr ""
 
@@ -69,4 +73,620 @@ msgstr ""
 
 #: common.date.invalid
 msgid "Invalid Date"
+msgstr ""
+
+#: common.action_complete
+msgid "Action completed."
+msgstr ""
+
+#. # common.grouping_string = the string that should be inserted between elements of a grouped list
+#: common.grouping_string
+msgid ","
+msgstr ""
+
+#: common.unimplemented
+msgid "Not yet implemented"
+msgstr ""
+
+#: common.yes
+msgid "Yes"
+msgstr ""
+
+#: common.no
+msgid "No"
+msgstr ""
+
+#: common.check_to_confirm
+msgid "Check here to confirm this message"
+msgstr ""
+
+#: lang.version
+msgid "remote v1"
+msgstr ""
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr ""
+
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr ""
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr ""
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr ""
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr ""
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr ""
+
+#: staff.acp_label_barcode
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
+msgstr ""
+
+#: staff.acp_label_call_number
+msgid "Call Number"
+msgstr ""
+
+#: staff.acp_label_circ_as_type
+msgid "Circulate As Type"
+msgstr ""
+
+#: staff.acp_label_circ_lib
+msgid "Circulation Library"
+msgstr ""
+
+#: staff.acp_label_circ_modifier
+msgid "Circulation Modifier"
+msgstr ""
+
+#: staff.acp_label_copy_number
+msgid "Copy Number"
+msgstr ""
+
+#: staff.acp_label_deposit_amount
+msgid "Deposit Amount"
+msgstr ""
+
+#: staff.acp_label_fine_level
+msgid "Fine Level"
+msgstr ""
+
+#: staff.acp_label_id
+msgid "Copy ID"
+msgstr ""
+
+#: staff.acp_label_loan_duration
+msgid "Loan Duration"
+msgstr ""
+
+#: staff.acp_label_location
+msgid "Location"
+msgstr ""
+
+#: staff.acp_label_price
+msgid "Price"
+msgstr ""
+
+#: staff.acp_label_status
+msgctxt "staff.acp_label_status"
+msgid "Status"
+msgstr ""
+
+#: staff.ahr_current_copy_label
+msgid "Current Copy"
+msgstr ""
+
+#: staff.ahr_email_notify_label
+msgid "Email Notify"
+msgstr ""
+
+#: staff.ahr_expire_time_label
+msgid "Expire Time"
+msgstr ""
+
+#: staff.ahr_fulfillment_time_label
+msgid "Fulfillment Time"
+msgstr ""
+
+#: staff.ahr_hold_type_label
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
+msgstr ""
+
+#: staff.ahr_holdable_formats_label
+msgid "Holdable Formats"
+msgstr ""
+
+#: staff.ahr_id_label
+msgid "Hold ID"
+msgstr ""
+
+#: staff.ahr_phone_notify_label
+msgid "Phone Notify"
+msgstr ""
+
+#: staff.ahr_pickup_lib_label
+msgid "Pickup Library"
+msgstr ""
+
+#: staff.ahr_prev_check_time_label
+msgid "Previous Check Time"
+msgstr ""
+
+#: staff.ahr_requestor_label
+msgid "Requestor"
+msgstr ""
+
+#: staff.ahr_selection_depth_label
+msgid "Selection Depth"
+msgstr ""
+
+#: staff.ahr_status_label
+msgctxt "staff.ahr_status_label"
+msgid "Status"
+msgstr ""
+
+#: staff.ahr_target_label
+msgid "Target"
+msgstr ""
+
+#: staff.ahr_usr_label
+msgctxt "staff.ahr_usr_label"
+msgid "User"
+msgstr ""
+
+#: staff.circ_label_due_date
+msgid "Due Date"
+msgstr ""
+
+#: staff.circ_label_id
+msgid "Circulation ID"
+msgstr ""
+
+#: staff.circ_label_renewal_remaining
+msgid "Remaining Renewals"
+msgstr ""
+
+#: staff.mvr_label_author
+msgctxt "staff.mvr_label_author"
+msgid "Author"
+msgstr ""
+
+#: staff.mvr_label_doc_id
+msgid "Document ID"
+msgstr ""
+
+#: staff.mvr_label_title
+msgctxt "staff.mvr_label_title"
+msgid "Title"
+msgstr ""
+
+#: staff.bills_xact_dates_label
+msgid "Record / Dates"
+msgstr ""
+
+#: staff.bills_information
+msgid "Information"
+msgstr ""
+
+#: staff.bills_current_payment_label
+msgid "Current Payment"
+msgstr ""
+
+#: staff.mbts_id_label
+msgid "Bill #"
+msgstr ""
+
+#: staff.mbts_xact_start_label
+msgid "Start"
+msgstr ""
+
+#: staff.mbts_xact_finish_label
+msgid "Finish"
+msgstr ""
+
+#: staff.mbts_xact_type_label
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
+msgstr ""
+
+#: staff.mbts_total_owed_label
+msgid "Total Billed"
+msgstr ""
+
+#: staff.mbts_total_paid_label
+msgid "Total Paid"
+msgstr ""
+
+#: staff.mbts_balance_owed_label
+msgid "Balance Owed"
+msgstr ""
+
+#: staff.mbts_usr_label
+msgctxt "staff.mbts_usr_label"
+msgid "User"
+msgstr ""
+
+#: staff.mbts_last_billing_note_label
+msgid "Last Billing Note"
+msgstr ""
+
+#: staff.mbts_last_billing_type_label
+msgid "Last Billing Type"
+msgstr ""
+
+#: staff.mbts_last_billing_timestamp_label
+msgid "Last Billed"
+msgstr ""
+
+#: staff.mbts_last_payment_note_label
+msgid "Last Payment Note"
+msgstr ""
+
+#: staff.mbts_last_payment_type_label
+msgid "Last Payment Type"
+msgstr ""
+
+#: staff.mbts_last_payment_timestamp_label
+msgid "Last Payment"
+msgstr ""
+
+#: staff.mb_billing_type_label
+msgid "Billing Type"
+msgstr ""
+
+#: staff.mb_xact_label
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
+msgstr ""
+
+#: staff.mb_billing_ts_label
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
+msgstr ""
+
+#: staff.mb_void_time_label
+msgid "Void Time"
+msgstr ""
+
+#: staff.mb_note_label
+msgctxt "staff.mb_note_label"
+msgid "Note"
+msgstr ""
+
+#: staff.mb_amount_label
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
+msgstr ""
+
+#: staff.mb_voider_label
+msgid "Voider"
+msgstr ""
+
+#: staff.mb_voided_label
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
+msgstr ""
+
+#: staff.mb_id_label
+msgid "Billing ID"
+msgstr ""
+
+#: staff.mp_credit_card_payment_label
+msgid "Credit Card Payment"
+msgstr ""
+
+#: staff.mp_forgive_payment_label
+msgid "Forgive Payment"
+msgstr ""
+
+#: staff.mp_payment_timestamp_label
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
+msgstr ""
+
+#: staff.mp_payment_type_label
+msgid "Payment Type"
+msgstr ""
+
+#: staff.mp_voided_label
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
+msgstr ""
+
+#: staff.mp_id_label
+msgid "Payment ID"
+msgstr ""
+
+#: staff.mp_goods_payment_label
+msgid "Goods Payment"
+msgstr ""
+
+#: staff.mp_xact_label
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
+msgstr ""
+
+#: staff.mp_credit_payment_label
+msgid "Credit Payment"
+msgstr ""
+
+#: staff.mp_work_payment_label
+msgid "Work Payment"
+msgstr ""
+
+#: staff.mp_note_label
+msgctxt "staff.mp_note_label"
+msgid "Note"
+msgstr ""
+
+#: staff.mp_cash_payment_label
+msgid "Cash Payment"
+msgstr ""
+
+#: staff.mp_amount_label
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
+msgstr ""
+
+#: staff.mp_check_payment_label
+msgid "Check Payment"
+msgstr ""
+
+#: staff.mp_cash_drawer_label
+msgid "Workstation"
+msgstr ""
+
+#: staff.mp_accepting_usr_label
+msgid "Staff"
+msgstr ""
+
+#: staff.card_barcode_label
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
+msgstr ""
+
+#: staff.au_active_label
+msgid "Active"
+msgstr ""
+
+#: staff.au_usrname_label
+msgid "Login Name"
+msgstr ""
+
+#: staff.au_profile_label
+msgid "Profile"
+msgstr ""
+
+#: staff.au_barred_label
+msgctxt "staff.au_barred_label"
+msgid "Barred"
+msgstr ""
+
+#: staff.au_alert_message_label
+msgid "Alert"
+msgstr ""
+
+#: staff.au_claims_returned_count_label
+msgid "Returns Claimed"
+msgstr ""
+
+#: staff.au_create_date_label
+msgid "Created On"
+msgstr ""
+
+#: staff.au_expire_date_label
+msgid "Expires On"
+msgstr ""
+
+#: staff.au_home_library_label
+msgid "Home Library"
+msgstr ""
+
+#: staff.au_home_library_fullname_label
+msgid "Home Library (Full Name)"
+msgstr ""
+
+#: staff.au_credit_forward_balance_label
+msgid "Credit"
+msgstr ""
+
+#: staff.au_day_phone_label
+msgid "Day Phone"
+msgstr ""
+
+#: staff.au_evening_phone_label
+msgid "Evening Phone"
+msgstr ""
+
+#: staff.au_other_phone_label
+msgid "Other Phone"
+msgstr ""
+
+#: staff.au_email_label
+msgid "Email"
+msgstr ""
+
+#: staff.au_birth_date_label
+msgid "Birth Date"
+msgstr ""
+
+#: staff.au_ident_type_label
+msgid "Identification Type"
+msgstr ""
+
+#: staff.au_ident_value_label
+msgid "Identification Value"
+msgstr ""
+
+#: staff.au_ident_type2_label
+msgid "Identification Type 2"
+msgstr ""
+
+#: staff.au_ident_value2_label
+msgid "Identification Value 2"
+msgstr ""
+
+#: staff.au_net_access_level_label
+msgid "Internet Access"
+msgstr ""
+
+#: staff.au_master_account_label
+msgid "Group Lead"
+msgstr ""
+
+#: staff.au_group_id_label
+msgid "Group ID"
+msgstr ""
+
+#: staff.au_id_label
+msgid "User ID"
+msgstr ""
+
+#: staff.au_name_prefix_label
+msgid "Prefix"
+msgstr ""
+
+#: staff.au_family_name_label
+msgid "Family Name"
+msgstr ""
+
+#: staff.au_first_given_name_label
+msgid "First Name"
+msgstr ""
+
+#: staff.au_second_given_name_label
+msgid "Middle Name"
+msgstr ""
+
+#: staff.au_name_suffix_label
+msgid "Suffix"
+msgstr ""
+
+#: staff.z39_50.search_class.author
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
+msgstr ""
+
+#: staff.z39_50.search_class.isbn
+msgid "ISBN"
+msgstr ""
+
+#: staff.z39_50.search_class.issn
+msgid "ISSN"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type
+msgid "Item Type"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.map
+msgid "Maps"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.mix
+msgid "Mixed material"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.rec
+msgid "Sound recordings"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.sco
+msgid "Musical scores"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.ser
+msgid "Serials"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.url
+msgid "Internet Resources"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.vis
+msgid "Visual materials"
+msgstr ""
+
+#: staff.z39_50.search_class.lccn
+msgid "LCCN"
+msgstr ""
+
+#: staff.z39_50.search_class.pubdate
+msgid "Publication Date"
+msgstr ""
+
+#: staff.z39_50.search_class.publisher
+msgid "Publisher"
+msgstr ""
+
+#: staff.z39_50.search_class.tcn
+msgid "Accession #"
+msgstr ""
+
+#: staff.z39_50.search_class.title
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
+msgstr ""
+
+#: staff.z39_50_import_interface_label
+msgid "Z39.50 Import"
+msgstr ""
+
+#: staff.main.data.loaded
+msgid "Data loaded."
+msgstr ""
+
+#: staff.main.gen_offline_widgets.synced
+msgid "Offline interface synchronized with server."
+msgstr ""
+
+#: staff.main.gen_offline_widgets.noncat_sort.error
+msgid "error in noncat sorting:"
+msgstr ""
+
+#: staff.main.gen_offline_widgets.please_wait
+msgid "Please wait"
+msgstr ""
+
+#: staff.main.gen_offline_widgets.workstation_registration_denied
+msgid "You do not have permission to register a workstation."
+msgstr ""
+
+#: staff.main.gen_offline_widgets.registration.override
+msgid "Override Registration Failure?"
+msgstr ""
+
+#: staff.main.gen_offline_widgets.registration.error
+msgid "Workstation Registration error (%1$s)"
+msgstr ""
+
+#: staff.main.gen_offline_widgets.registration.success
+msgid "Registration successful"
 msgstr ""
