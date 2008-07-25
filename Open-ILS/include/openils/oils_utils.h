@@ -1,4 +1,4 @@
-#include "objson/object.h"
+#include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 
 // XXX replacing this with liboils_idl implementation
