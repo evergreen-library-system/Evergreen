@@ -133,4 +133,6 @@ INSERT INTO pg_ts_cfgmap VALUES ('series', 'lword', '{en_stem_nostop}');
 INSERT INTO pg_ts_cfgmap VALUES ('series', 'lpart_hword', '{en_stem_nostop}');
 INSERT INTO pg_ts_cfgmap VALUES ('series', 'lhword', '{en_stem_nostop}');
 
+SELECT set_curcfg('default');
+
 COMMIT;
