@@ -35,7 +35,7 @@
 
     <!-- enable Dojo date picker -->
     <script language='javascript' type="text/javascript">
-        var djConfig = {parseOnLoad: true, isDebug: true},
+        var djConfig = {parseOnLoad: true, isDebug: false},
             locale,
             lang,
             bidi;
