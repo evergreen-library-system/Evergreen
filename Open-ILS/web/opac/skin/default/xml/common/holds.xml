@@ -1,10 +1,4 @@
-<link rel="stylesheet" type="text/css"
-    href='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-brown.css' title="win2k-cold-1" />
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
 <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
-
 <div>
 	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
 		<center>
@@ -147,26 +141,7 @@
                         &opac.holds.freeze.thaw_date;
                     </td>
                     <td class='holds_cell'>
-                        <input size='10' maxlength='10' id='holds_frozen_thaw_input' />
-                        <button style='padding: 0px;' id='holds_frozen_thaw_date_button'>
-                            <img src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/img.gif'
-                                style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
-                                title="Date selector"
-                                onmouseover="this.style.background='red';"
-                                onmouseout="this.style.background=''" />
-                        </button>
-                        &nbsp;(&opac.holds.freeze.thaw_date.format;)
-
-                        <script language='javascript' type="text/javascript">
-                            Calendar.setup({
-                                inputField  : "holds_frozen_thaw_input",
-                                ifFormat    : "%Y-%m-%d",
-                                button      : "holds_frozen_thaw_date_button",
-                                align       : "Tl", 
-                                singleClick : true
-                            });
-                        </script>
-
+                        <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10' id='holds_frozen_thaw_input' />
                     </td>
                 </tr>
 
@@ -248,5 +223,3 @@
 	<span id='holds_invalid_recipient' class='hide_me'>&common.hold.patron.invalid;</span>
 
 </div>
-
-

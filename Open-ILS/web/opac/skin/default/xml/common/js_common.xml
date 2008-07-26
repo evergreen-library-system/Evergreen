@@ -32,3 +32,23 @@
 		<!--#endif -->
 
 	</script>
+
+    <!-- enable Dojo date picker -->
+    <script language='javascript' type="text/javascript">
+        var djConfig = {parseOnLoad: true, isDebug: true},
+            locale,
+            lang,
+            bidi;
+
+        djConfig.locale = '<!--#echo var="locale"-->';
+    </script>
+
+    <script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
+
+    <script language="javascript" type="text/javascript">
+        dojo.require("dijit._Calendar");
+        dojo.require("dijit.form.DateTextBox");
+        dojo.require("dojo.date.locale");
+        dojo.require("dojo.date.stamp");
+        dojo.require("dojo.parser");
+    </script>

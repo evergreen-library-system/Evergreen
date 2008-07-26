@@ -142,13 +142,13 @@ function _holdsUpdateEditHold() {
         frozenbox.checked = true;
         unHideMe($('hold_frozen_thaw_row'));
         if(hold.thaw_date()) {
-            $('holds_frozen_thaw_input').value = hold.thaw_date();
+            dijit.byId('holds_frozen_thaw_input').setValue(hold.thaw_date());
         } else {
-            $('holds_frozen_thaw_input').value = '';
+            dijit.byId('holds_frozen_thaw_input').setValue('');
         }
     } else {
         frozenbox.checked = false;
-        $('holds_frozen_thaw_input').value = '';
+        dijit.byId('holds_frozen_thaw_input').setValue('');
         hideMe($('hold_frozen_thaw_row'));
     }
 }
@@ -715,7 +715,7 @@ function holdsBuildHoldFromWindow() {
     if($('holds_frozen_chkbox').checked) {
         hold.frozen('t');
         unHideMe($('hold_frozen_thaw_row'));
-        thawDate = $('holds_frozen_thaw_input').value;
+        thawDate = dojo.date.stamp.toISOString(dijit.byId('holds_frozen_thaw_input').getValue());
         if(thawDate) {
             thawDate = holdsVerifyThawDate(thawDate); 
             if(thawDate) 
@@ -831,25 +831,16 @@ function holdsUpdate(hold, user) {
 	runEvt('common', 'holdUpdated');
 }
 
-
 /* verify that the thaw date is valid and after today */
 function holdsVerifyThawDate(dateString) {
-    thawDate = Date.parseIso8601(dateString);
-    if(thawDate && holdGreaterThanToday(dateString)) 
-        return thawDate.iso8601Format('YMD', false, false, true);
+    thawDate = dojo.date.stamp.fromISOString(dateString);
+    if(thawDate && (dojo.date.compare(thawDate) > 0))
+        return dojo.date.stamp.toISOString(thawDate);
     return null;
 }
 
-function holdGreaterThanToday(dateString) {
-    thawDate = Date.parseIso8601(dateString);
-    var today = new Date();
-    today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    return thawDate > today;
-}
-
-
 function holdsVerifyThawDateUI(element) {
-    value = $(element).value;
+    value = dojo.date.stamp.toISOString(dijit.byId(element).getValue());
 
     if(!value) {
         removeCSSClass($(element), 'invalid_field');
