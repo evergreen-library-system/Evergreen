@@ -107,7 +107,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
         if(!args.ontransporterror) {
             args.ontransporterror = function(xreq) {
-                throw new Error('Transport error status=' + xreq.status);
+                throw new Error('Transport error method='+args.method+', status=' + xreq.status);
             }
         }
 
