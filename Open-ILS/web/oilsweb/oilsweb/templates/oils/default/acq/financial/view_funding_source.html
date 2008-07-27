@@ -120,9 +120,9 @@
                         {name: '${_("ID")}', field: 'id'},
                         {name: '${_("Name")}', field: "name", width:'auto'}, 
                         {name: '${_("Code")}', field: "code"},
-                        {name: '${_("Balance")}', get:getSummaryInfo},
-                        {name: '${_("Total Credits")}', get:getSummaryInfo},
-                        {name: '${_("Total Debits")}', get:getSummaryInfo},
+                        {name: '${_("Balance")}', get:getSummaryInfo, field:'balance'},
+                        {name: '${_("Total Credits")}', get:getSummaryInfo, field:'credit_total'},
+                        {name: '${_("Total Debits")}', get:getSummaryInfo, field:'allocation_total'},
                         {name: '${_("Currency Type")}', field: "currency_type"},
                         {name: '${_("Owner")}', field: "owner", width:'auto', get:getOrgInfo}, 
                     ]]

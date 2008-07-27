@@ -98,12 +98,12 @@
                         {name: '${_("Spent Balance (Total - Spent)")}', get:getSummaryInfo},
                         {name: '${_("Total Debits (Spent + Encumbered)")}', get:getSummaryInfo},
                         */
-                        {name: '${_("Balance")}', get:getSummaryInfo},
-                        {name: '${_("Total Allocated")}', get:getSummaryInfo},
-                        {name: '${_("Spent Balance")}', get:getSummaryInfo},
-                        {name: '${_("Total Debits")}', get:getSummaryInfo},
-                        {name: '${_("Total Spent")}', get:getSummaryInfo},
-                        {name: '${_("Total Encumbered")}', get:getSummaryInfo}
+                        {name: '${_("Balance")}', get:getSummaryInfo, field:'combined_balance'},
+                        {name: '${_("Total Allocated")}', get:getSummaryInfo, field:'allocation_total'},
+                        {name: '${_("Spent Balance")}', get:getSummaryInfo, field:'spent_balance'},
+                        {name: '${_("Total Debits")}', get:getSummaryInfo, field:'debit_total'},
+                        {name: '${_("Total Spent")}', get:getSummaryInfo, field:'spent_total'},
+                        {name: '${_("Total Encumbered")}', get:getSummaryInfo, field:'encumbrance_total'}
                     ]]
                 }];
             </script>

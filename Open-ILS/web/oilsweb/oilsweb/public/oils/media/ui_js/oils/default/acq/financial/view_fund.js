@@ -13,14 +13,7 @@ dojo.require('openils.User');
 var fund = null;
 
 function getSummaryInfo(rowIndex) {
-    switch(this.index) {
-        case 4: return new String(fund.summary().combined_balance);
-        case 5: return new String(fund.summary().allocation_total);
-        case 6: return new String(fund.summary().spent_balance);
-        case 7: return new String(fund.summary().debit_total);
-        case 8: return new String(fund.summary().spent_total);
-        case 9: return new String(fund.summary().encumbrance_total);
-    }
+    return new String(fund.summary()[this.field]);
 }
 
 function createAllocation(fields) {

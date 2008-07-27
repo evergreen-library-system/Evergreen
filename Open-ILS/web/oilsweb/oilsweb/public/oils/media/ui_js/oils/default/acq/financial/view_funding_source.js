@@ -63,11 +63,7 @@ function getOrgInfo(rowIndex) {
 }
 
 function getSummaryInfo(rowIndex) {
-    switch(this.index) {
-        case 2: return new String(fundingSource.summary().balance);
-        case 3: return new String(fundingSource.summary().credit_total);
-        case 4: return new String(fundingSource.summary().allocation_total);
-    }
+    return new String(fundingSource.summary()[this.field]);
 }
 
 /** builds the credits grid ----- */
