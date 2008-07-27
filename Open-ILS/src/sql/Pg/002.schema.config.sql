@@ -446,7 +446,7 @@ CREATE TABLE config.bib_level_map (
 
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
-    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code),
+    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    UNIQUE NOT NULL,
     description TEXT
 );
@@ -455,7 +455,7 @@ CREATE TABLE config.i18n_core (
     id              BIGSERIAL   PRIMARY KEY,
     fq_field        TEXT        NOT NULL,
     identity_value  TEXT        NOT NULL,
-    translation     TEXT        NOT NULL    REFERENCES config.i18n_locale (code),
+    translation     TEXT        NOT NULL    REFERENCES config.i18n_locale (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     string          TEXT        NOT NULL
 );
 

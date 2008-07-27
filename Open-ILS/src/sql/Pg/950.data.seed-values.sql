@@ -695,15 +695,15 @@ INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('S
 
 -- available locales
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('en_us','eng',oils_i18n_gettext('American English'),oils_i18n_gettext('American English'));
+    VALUES ('en-US','eng',oils_i18n_gettext('American English'),oils_i18n_gettext('American English'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('en_ca','eng',oils_i18n_gettext('Canadian English'),oils_i18n_gettext('Canadian English'));
+    VALUES ('en-CA','eng',oils_i18n_gettext('Canadian English'),oils_i18n_gettext('Canadian English'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('fr_ca','fre',oils_i18n_gettext('Canadian Fench'),oils_i18n_gettext('Canadian French'));
+    VALUES ('fr-CA','fre',oils_i18n_gettext('Canadian Fench'),oils_i18n_gettext('Canadian French'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('es_us','spa',oils_i18n_gettext('American Spanish'),oils_i18n_gettext('American Spanish'));
+    VALUES ('es-US','spa',oils_i18n_gettext('American Spanish'),oils_i18n_gettext('American Spanish'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('es_mx','spa',oils_i18n_gettext('Mexican Spanish'),oils_i18n_gettext('Mexican Spanish'));
+    VALUES ('es-MX','spa',oils_i18n_gettext('Mexican Spanish'),oils_i18n_gettext('Mexican Spanish'));
 
 
 --005.schema.actors.sql:
