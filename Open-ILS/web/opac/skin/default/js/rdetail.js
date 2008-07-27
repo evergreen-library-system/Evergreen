@@ -520,6 +520,10 @@ function _rdetailRows(node) {
 		} 
 	}
 
+    if(!node && findOrgType(globalOrgTree.ou_type()).can_have_vols())
+        node = globalOrgTree;
+
+
     /* don't show hidden orgs */
 
 	if(node) {
