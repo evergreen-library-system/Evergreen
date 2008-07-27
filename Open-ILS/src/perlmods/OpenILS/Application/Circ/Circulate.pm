@@ -11,6 +11,14 @@ my $U = "OpenILS::Application::AppUtils";
 my %scripts;
 my $script_libs;
 
+sub isTrue {
+    my $v = shift;
+    return 1 if ($v == 1);
+    return 1 if ($v =~ /^t/io);
+    return 1 if ($v =~ /^y/io);
+    return 0;
+}
+
 sub initialize {
 
     my $self = shift;
@@ -1060,6 +1068,30 @@ sub build_checkout_circ_object {
         my $mname = $max->name;
         my $rname = $recurring->name;
     
+        my $max_amount = $max->amount;
+
+        # if is_percent is true then the max->amount is
+        # use as a percentage of the copy price
+        if (isTrue($max->is_percent)) {
+
+            my $cn = $self->editor->retrieve_asset_call_number($copy->call_number);
+
+            my $default_price = $U->ou_ancestor_setting_value(
+                $cn->owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+            my $charge_on_0 = $U->ou_ancestor_setting_value(
+                $cn->owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+
+            # Find the most appropriate "price" -- same definition as the
+            # LOST price.  See OpenILS::Circ::new_set_circ_lost
+            $max_amount = $copy->price;
+            $max_amount = $default_price unless defined $max_amount;
+            $max_amount = 0 if $max_amount < 0;
+            $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
+
+            $max_amount *= $max->amount / 100;
+
+        }
+
         $logger->debug("circulator: building circulation ".
             "with duration=$dname, maxfine=$mname, recurring=$rname");
     
@@ -1080,7 +1112,8 @@ sub build_checkout_circ_object {
         $circ->duration_rule( $duration->name );
         $circ->recuring_fine_rule( $recurring->name );
         $circ->max_fine_rule( $max->name );
-        $circ->max_fine( $max->amount );
+
+        $circ->max_fine( $max_amount );
 
         $circ->fine_interval($recurring->recurance_interval);
         $circ->renewal_remaining( $duration->max_renewals );

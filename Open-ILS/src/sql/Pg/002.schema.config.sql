@@ -294,9 +294,10 @@ INSERT INTO config.rule_circ_duration VALUES (DEFAULT, 'default', '21 days', '14
 
 
 CREATE TABLE config.rule_max_fine (
-	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
-	amount	NUMERIC(6,2)	NOT NULL
+    id          SERIAL          PRIMARY KEY,
+    name        TEXT            NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
+    amount      NUMERIC(6,2)    NOT NULL,
+    is_percent  BOOL            NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.rule_max_fine IS $$
 /*
