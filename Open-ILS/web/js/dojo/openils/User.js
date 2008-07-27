@@ -51,20 +51,25 @@ if(!dojo._hasResource["openils.User"]) {
 
         getBySession : function(onComplete) {
             var _u = this;
-            var req = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.session.retrieve', _u.authtoken);
+            var req = ['open-ils.auth', 'open-ils.auth.session.retrieve'];
+            var params = [_u.authtoken];
+
             if(onComplete) {
-                req.oncomplete = function(r) {
-                    var user = r.recv().content();
-                    _u.user = user;
-					if (!openils.User.user) openils.User.user = _u.user;
-                    if(onComplete)
-                        onComplete(user);
-                }
-                req.send();
+                fieldmapper.standardRequest(
+                    req, {   
+                        async: true,
+                        params: params,
+                        oncomplete : function(r) {
+                            var user = r.recv().content();
+                            _u.user = user;
+					        if (!openils.User.user) openils.User.user = _u.user;
+                            if(onComplete)
+                                onComplete(user);
+                        }
+                    }
+                );
             } else {
-                req.timeout = 10;
-                req.send();
-                _u.user = req.recv().content();
+                _u.user = fieldmapper.standardRequest(req, params);
 				if (!openils.User.user) openils.User.user = _u.user;
                 return _u.user;
             }
