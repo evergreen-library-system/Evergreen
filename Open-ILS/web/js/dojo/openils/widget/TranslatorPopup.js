@@ -104,11 +104,11 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 						{ store:openils.I18N.localeStore,
 						  searchAttr:'locale',
 						  labelAttr:'label',
-						  lowercase:true,
+						  lowercase:false,
 						  required:true,
 						  id:'locale_' + trans_id,
 						  value: trans_obj.translation(),
-						  invalidMessage:'Specify locale as {languageCode}_{countryCode}, like en_us',
+						  invalidMessage:'Specify locale as {languageCode}-{countryCode}, as in en-US',
 						  regExp:'[a-z_]+'
 						}
 					);
@@ -149,9 +149,9 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 					  searchAttr:'locale',
 					  labelAttr:'label',
 					  id:'i18n_new_locale_' + this._targetObject.classname + '.' + this.field + this.unique,
-					  lowercase:true,
+					  lowercase:false,
 					  required:true,
-					  invalidMessage:'Specify locale as {languageCode}_{countryCode}, like en_us',
+					  invalidMessage:'Specify locale as {languageCode}_{countryCode}, as in en-US',
 					  regExp:'[a-z_]+'
 					}
 				);

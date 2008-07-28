@@ -29,9 +29,7 @@
     <div id='myopac_holds_thaw_date_form' class='hide_me'>
         <div id='myopac_holds_freeze_select_thaw'>&myopac.holds.freeze.select_thaw;</div>
         <p>
-            <input type='text' id='myopac_holds_thaw_date_input'/> 
-            <img src="<!--#echo var='OILS_OPAC_JS_HOST'-->/common/js/jscalendar/img.gif"  id='myopac_holds_thaw_date_img' class='cal_img'/>
-            (&opac.holds.freeze.thaw_date.format;)
+            <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10' type='text' id='myopac_holds_thaw_date_input' /> 
         </p>
         <p>
             <button onclick='myopacApplyThawDate();'>&common.submit;</button>

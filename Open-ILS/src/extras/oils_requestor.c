@@ -95,7 +95,7 @@ static int do_request( char* request ) {
 
 	const char* service;
 	const char* method;
-	char* tmp;
+	char* tmp = NULL;
 	
 	service = strtok_r(request, " ", &tmp);
 	method = strtok_r(NULL, " ", &tmp);

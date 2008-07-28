@@ -243,9 +243,10 @@ COMMENT ON TABLE config.rule_circ_duration IS $$
 $$;
 
 CREATE TABLE config.rule_max_fine (
-	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
-	amount	NUMERIC(6,2)	NOT NULL
+    id          SERIAL          PRIMARY KEY,
+    name        TEXT            NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
+    amount      NUMERIC(6,2)    NOT NULL,
+    is_percent  BOOL            NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.rule_max_fine IS $$
 /*
@@ -488,7 +489,7 @@ INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','it
 
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
-    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code),
+    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    UNIQUE NOT NULL,
     description TEXT
 );
@@ -497,7 +498,7 @@ CREATE TABLE config.i18n_core (
     id              BIGSERIAL   PRIMARY KEY,
     fq_field        TEXT        NOT NULL,
     identity_value  TEXT        NOT NULL,
-    translation     TEXT        NOT NULL    REFERENCES config.i18n_locale (code),
+    translation     TEXT        NOT NULL    REFERENCES config.i18n_locale (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     string          TEXT        NOT NULL
 );
 

@@ -52,7 +52,7 @@ package config::rules::max_fine;
 use base qw/config/;
 __PACKAGE__->table('config_rule_max_fine');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name amount/);
+__PACKAGE__->columns(Essential => qw/name amount is_percent/);
 #-------------------------------------------------------------------------------
 
 package config::rules::recuring_fine;

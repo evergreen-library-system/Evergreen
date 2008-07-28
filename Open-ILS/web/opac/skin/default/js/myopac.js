@@ -348,8 +348,8 @@ function myOPACDrawHolds(r) {
             hideMe($n(row, 'myopac_hold_unfrozen_true'))
             unHideMe($n(row, 'myopac_hold_unfrozen_false'))
             if(h.thaw_date()) {
-                var d = Date.parseIso8601(h.thaw_date());
-                $n(row, 'myopac_holds_frozen_until').appendChild(text(d.iso8601Format('YMD')));
+                var d = dojo.date.stamp.fromISOString(h.thaw_date());
+                $n(row, 'myopac_holds_frozen_until').appendChild(text(dojo.date.locale.format(d, {.selector: 'date', fullYear: true})));
             }
         } else {
             unHideMe($n(row, 'myopac_hold_unfrozen_true'))
@@ -518,14 +518,14 @@ function _finesFormatNumber(num) {
 //function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
 function _trimTime(time) { 
 	if(!time) return ""; 
-    var d = Date.parseIso8601(time);
+    var d = dojo.date.stamp.fromISOString(time);
     if(!d) return ""; /* date parse failed */
     return d.iso8601Format('YMD');
 }
 
 function _trimSeconds(time) { 
     if(!time) return ""; 
-    var d = Date.parseIso8601(time);
+    var d = dojo.date.stamp.fromISOString(time);
     if(!d) return ""; /* date parse failed */
     return d.iso8601Format('YMDHM',null,true,true);
 }
@@ -761,7 +761,7 @@ function _myOPACSummaryShowUer(r) {
 	fleshedUser = user;
 	if(!user) return;
 
-    var expireDate = Date.parseIso8601(user.expire_date());
+    var expireDate = dojo.date.stamp.fromISOString(user.expire_date());
     if( expireDate < new Date() ) {
         appendClear($('myopac.expired.date'), expireDate.iso8601Format('YMD'));
         unHideMe($('myopac.expired.alert'));
@@ -1192,7 +1192,7 @@ function myOPACDrawNonCatCirc(r) {
 	duration = parseInt(duration + '000');
 
 	var dtf = circ.circ_time();
-    var start = Date.parseIso8601(circ.circ_time());
+    var start = dojo.date.stamp.fromISOString(circ.circ_time());
 	var due = new Date(  start.getTime() + duration );
 	appendClear($n(row, 'circ_time'), text(due.iso8601Format('YMDHM', null, true, true)));
 }
@@ -1431,17 +1431,10 @@ function myopacDrawHoldThawDateForm() {
     hideMe($('myopac_holds_main_table'));
     unHideMe($('myopac_holds_thaw_date_form'));
     $('myopac_holds_thaw_date_input').focus();
-    Calendar.setup({
-        inputField  : "myopac_holds_thaw_date_input",
-        ifFormat    : "%Y-%m-%d",
-        button      : "myopac_holds_thaw_date_img",
-        align       : "Tl",
-        singleClick : true
-    });
 }
 
 function myopacApplyThawDate() {
-    var dateString = $('myopac_holds_thaw_date_input').value;
+    var dateString = dojo.date.stamp.toISOString(dijit.byId('myopac_holds_thaw_date_input').getValue());
     if(dateString) {
         dateString = holdsVerifyThawDate(dateString);
         if(!dateString) return;

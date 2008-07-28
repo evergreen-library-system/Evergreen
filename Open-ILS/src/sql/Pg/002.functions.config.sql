@@ -68,8 +68,8 @@ $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keyclass TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
 DECLARE
-    locale      TEXT := LOWER( REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'-', '_', 'g' ) );
-    language    TEXT := REGEXP_REPLACE( locale, E'_.+$', '' );
+    locale      TEXT := REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'_', '-', 'g' );
+    language    TEXT := REGEXP_REPLACE( locale, E'-.+$', '' );
     result      config.i18n_core%ROWTYPE;
     fallback    TEXT;
     keyfield    TEXT := keyclass || '.' || keycol;

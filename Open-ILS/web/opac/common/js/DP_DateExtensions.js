@@ -21,6 +21,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 CHANGES: --------------------------------------------------------------------------------
 
+	2008-07-26 / dscott@laurentian.ca
+	 - Comment out Date.parseIso8601 as we move to Dojo
+
     2007-02-02 / billserickson@gmail.com
      - chopped out some utility methods to trim file size
      - changed some formatting for visual ease
@@ -29,7 +32,7 @@ CHANGES: -----------------------------------------------------------------------
         comes accross 123456ms and not 123ms + 456 microseconds
 */
 
-
+/*
 Date.parseIso8601 = function(CurDate) {
 
 		// Check the input parameters
@@ -90,6 +93,8 @@ Date.parseIso8601 = function(CurDate) {
 	return null;
 
 };
+
+*/
 
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

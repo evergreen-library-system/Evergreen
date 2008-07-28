@@ -120,6 +120,5 @@ DBHOST="127.0.0.1";
 DBPORT="5432";
 DBNAME="evergreen";
 DBUSER="postgres";
-DBVER="82";
 DBPW="postgres";
 

@@ -380,7 +380,13 @@ sub void_overdues {
         # one fine interval to the backdate to ensure that we are not 
         # voiding fines that were applicable before the backdate.
         # ------------------------------------------------------------------
-        my $interval = OpenSRF::Utils->interval_to_seconds($circ->fine_interval);
+
+        # if there is a raw time component (e.g. from postgres), 
+        # turn it into an interval that interval_to_seconds can parse
+        my $duration = $circ->fine_interval;
+        $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
+        my $interval = OpenSRF::Utils->interval_to_seconds($duration);
+
         my $date = DateTime::Format::ISO8601->parse_datetime($backdate);
         $backdate = $U->epoch2ISO8601($date->epoch + $interval);
         $logger->info("applying backdate $backdate in overdue voiding");
@@ -1103,7 +1109,7 @@ sub fleshed_circ_retrieve {
 	};
 }
 
-
+# {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
 
 
 1;
