@@ -99,6 +99,7 @@ ordered_file_list="
   800.fkeys.sql
   900.audit-functions.sql
   901.audit-tables.sql
+  950.data.seed-values.sql
 
   reporter-schema.sql
 "
