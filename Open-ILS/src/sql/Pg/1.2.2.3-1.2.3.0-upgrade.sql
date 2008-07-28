@@ -18,6 +18,8 @@
 
 BEGIN;
 
+ALTER TABLE config.rule_max_fine ADD COLUMN is_percent BOOL NOT NULL DEFAULT FALSE;
+
 CREATE OR REPLACE FUNCTION search.staged_fts (
 
     param_search_ou INT,
