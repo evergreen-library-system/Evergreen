@@ -180,7 +180,8 @@ CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
 	code		TEXT		NOT NULL,
 	description	TEXT		NOT NULL,
-	remove		TEXT		NOT NULL DEFAULT ''
+	remove		TEXT		NOT NULL DEFAULT '',
+	ident		BOOL		NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE acq.lineitem_marc_attr_definition (
