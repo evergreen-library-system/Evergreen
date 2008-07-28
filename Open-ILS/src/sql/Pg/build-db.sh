@@ -79,28 +79,40 @@ fi
 # ---------------------------------------------------------------------------
 ordered_file_list="
   $fts_config_file
+
   001.schema.offline.sql
+  002.functions.aggregate.sql
+  002.functions.config.sql
   002.schema.config.sql
   005.schema.actors.sql
   006.schema.permissions.sql
   010.schema.biblio.sql
   011.schema.authority.sql
+  012.schema.vandelay.sql
   020.schema.functions.sql
   030.schema.metabib.sql
   040.schema.asset.sql
   070.schema.container.sql
   080.schema.money.sql
   090.schema.action.sql
-
+  
+  100.circ_matrix.sql
+  110.hold_matrix.sql
+  
   300.schema.staged_search.sql
-
+  
   500.view.cross-schema.sql
-
+  
   800.fkeys.sql
+  
   900.audit-functions.sql
   901.audit-tables.sql
   950.data.seed-values.sql
-
+  951.data.MODS-xsl.sql
+  952.data.MODS3-xsl.sql
+  953.data.MODS32-xsl.sql
+  
+  extend-reporter.sql
   reporter-schema.sql
 "
 
