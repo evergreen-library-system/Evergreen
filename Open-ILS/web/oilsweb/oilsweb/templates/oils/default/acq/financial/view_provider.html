@@ -71,11 +71,20 @@
                                 <td><input dojoType="dijit.form.TextBox" name="tag"></input></td>
                             </tr>
                             <tr>
-                                <td><label for="amount">${_('Subfifle:')} </label></td>
+                                <td><label for="amount">${_('Subfield:')} </label></td>
                                 <td><input dojoType="dijit.form.TextBox" name="subfield"></input></td>
                             </tr>
                             <tr>
-                                <td><label for="amount">${_('XPath:')} </label></td>
+                                <td><label for="ident">${_('Identifer Field?:')} </label></td>
+                                <td>
+                                    <select dojoType="dijit.form.FilteringSelect" name="ident">
+                                        <option value='f' selected='selected'>${_('False')}</option>
+                                        <option value='t'>${_('True')}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">${_('XPath (advanced):')} </label></td>
                                 <td><input dojoType="dijit.form.TextBox" name="xpath"></input></td>
                             </tr>
                             <tr>
@@ -104,6 +113,7 @@
                         {name: '${_("Description")}', field: "description", width:'auto'}, 
                         {name: '${_("Tag")}', get:getTag},
                         {name: '${_("Subfield")}', get:getSubfield},
+                        {name: '${_("Identifier")}', field:'ident'},
                         {name: '${_("XPath")}', field:'xpath', width:'auto'}
                     ]]
                 }];
