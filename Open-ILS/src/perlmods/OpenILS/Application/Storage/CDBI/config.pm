@@ -118,6 +118,20 @@ __PACKAGE__->columns(Primary => 'code');
 __PACKAGE__->columns(Essential => qw/value/);
 #-------------------------------------------------------------------------------
 
+package config::i18n_locale;
+use base qw/config/;
+__PACKAGE__->table('config_i18n_locale');
+__PACKAGE__->columns(Primary => 'code');
+__PACKAGE__->columns(Essential => qw/marc_code name description/);
+#-------------------------------------------------------------------------------
+
+package config::i18n_core;
+use base qw/config/;
+__PACKAGE__->table('config_i18n_core');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/fq_field identity_value translation string/);
+#-------------------------------------------------------------------------------
+
 
 1;
 

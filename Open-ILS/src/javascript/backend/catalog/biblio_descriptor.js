@@ -22,6 +22,8 @@ environment.result.type_mat( extractFixedField( marcdoc, 'TMat' ) );
 environment.result.cat_form( extractFixedField( marcdoc, 'Desc' ) );
 environment.result.pub_status( extractFixedField( marcdoc, 'DtSt' ) );
 environment.result.item_lang( extractFixedField( marcdoc, 'Lang' ) );
+environment.result.date1( extractFixedField( marcdoc, 'Date1' ) );
+environment.result.date2( extractFixedField( marcdoc, 'Date2' ) );
 
 environment.result.vr_format( videorecordingFormatCode( marcdoc ) );
 

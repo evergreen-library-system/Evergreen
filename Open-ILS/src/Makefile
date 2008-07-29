@@ -81,6 +81,7 @@ webcore-install:
 	ln -sf $(ETCDIR)/fm_IDL.xml $(WEBDIR)/reports/
 	cp ../xul/staff_client/server/admin/adminlib.js $(WEBDIR)/reports/
 	mkdir -p $(WEBDIR)/opac/extras/slimpac/
+	mkdir -p $(WEBDIR)/standalone/
 	
 
 c_apps:
@@ -111,6 +112,7 @@ perl-install:
 	mkdir -p $(PERLDIR)
 	mkdir -p $(DATADIR)
 	mkdir -p $(BINDIR)
+	mkdir -p $(DATADIR)/overdue/
 	cp extras/ils_events.xml $(DATADIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/opensrf.xml.example $(ETCDIR)
