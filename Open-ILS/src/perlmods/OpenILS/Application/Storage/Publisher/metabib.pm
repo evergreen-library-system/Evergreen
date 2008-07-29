@@ -2384,8 +2384,9 @@ sub staged_fts {
 	my (@between,@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
 
     if (!defined($args{preferred_language})) {
+		my $ses_locale = $client->session ? $client->session->session_locale : $default_preferred_language;
         $args{preferred_language} =
-            $locale_map{ $client->session->session_locale || $default_preferred_language } || 'eng';
+            $locale_map{ $ses_locale } || 'eng';
     }
 
     if (!defined($args{preferred_language_weight})) {

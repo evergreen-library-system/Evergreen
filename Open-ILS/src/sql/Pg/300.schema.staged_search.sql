@@ -344,7 +344,7 @@ BEGIN
         where_clause = where_clause || $$ AND $$ || quote_literal(param_during) || $$ BETWEEN mrd.date1 AND mrd.date2 $$;
     END IF;
 
-    IF param_between IS NOT NULL AND array_upper(param_between, 1) > 0 THEN
+    IF param_between IS NOT NULL AND array_upper(param_between, 1) > 1 THEN
         where_clause = where_clause || $$ AND mrd.date1 BETWEEN $$ || array_to_string(param_bib_level, $$' AND '$$) || ' ';
     END IF;
 
