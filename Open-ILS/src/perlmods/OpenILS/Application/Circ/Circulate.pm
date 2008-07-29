@@ -1077,9 +1077,9 @@ sub build_checkout_circ_object {
             my $cn = $self->editor->retrieve_asset_call_number($copy->call_number);
 
             my $default_price = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+                $cn->owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
             my $charge_on_0 = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+                $cn->owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
 
             # Find the most appropriate "price" -- same definition as the
             # LOST price.  See OpenILS::Circ::new_set_circ_lost
