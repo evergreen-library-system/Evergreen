@@ -1088,6 +1088,14 @@ sub biblio_descriptor {
 	my $res = $rd_script->run || ($log->error( "Descriptor script died!  $@" ) && return undef);
 	$log->debug("Script for biblio descriptor extraction completed successfully");
 
+    if ($res->{date1} ne '    ') {
+        $res->{date1} =~ tr/ux/00/;
+    }
+
+    if ($res->{date2} ne '    ') {
+        $res->{date2} =~ tr/ux/99/;
+    }
+
 	return $res;
 }
 __PACKAGE__->register_method(  

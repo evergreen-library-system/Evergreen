@@ -2328,12 +2328,47 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+
+my %locale_map;
+my $default_preferred_language;
+my $default_preferred_language_weight;
+
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub staged_fts {
 	my $self = shift;
 	my $client = shift;
 	my %args = @_;
-	
+
+    if (!$locale_map{COMPLETE}) {
+
+        my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
+        for my $locale ( @locales ) {
+            $locale_map{$locale->code} = $locale->marc_code;
+        }
+        $locale_map{COMPLETE} = 1;
+
+    }
+
+    if (!$default_preferred_language) {
+
+        $default_preferred_language = OpenSRF::Utils::SettingsClient
+            ->new
+            ->config_value(
+                apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
+        );
+
+    }
+
+    if (!$default_preferred_language_weight) {
+
+        $default_preferred_language_weight = OpenSRF::Utils::SettingsClient
+            ->new
+            ->config_value(
+                apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
+        );
+
+    }
+
 	my $ou = $args{org_unit};
 	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
@@ -2346,7 +2381,16 @@ sub staged_fts {
 		die "No search arguments were passed to ".$self->api_name;
 	}
 
-	my (@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
+	my (@between,@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
+
+    if (!defined($args{preferred_language})) {
+        $args{preferred_language} =
+            $locale_map{ $self->session->session_locale || $default_preferred_language } || 'eng';
+    }
+
+    if (!defined($args{preferred_language_weight})) {
+        $args{preferred_language_weight} = $default_preferred_language_weight || 2;
+    }
 
 	if ($args{available}) {
 		@statuses = (0,7,12);
@@ -2355,6 +2399,12 @@ sub staged_fts {
 	if (my $s = $args{locations}) {
 		$s = [$s] if (!ref($s));
 		@locations = @$s;
+	}
+
+	if (my $b = $args{between}) {
+		if (ref($b) && @$b == 2) {
+		    @between = @$b;
+        }
 	}
 
 	if (my $s = $args{statuses}) {
@@ -2457,6 +2507,10 @@ sub staged_fts {
 	my $param_forms = '$${' . join(',', map { s/\$//go; "\"$_\""} @forms) . '}$$';
 	my $param_vformats = '$${' . join(',', map { s/\$//go; "\"$_\"" } @vformats) . '}$$';
     my $param_bib_level = '$${' . join(',', map { s/\$//go; "\"$_\"" } @bib_level) . '}$$';
+	my $param_before = $args{before}; $param_before = 'NULL' unless (defined($param_before) and length($param_before) > 0 );
+	my $param_after = $args{after}; $param_after = 'NULL' unless (defined($param_after) and length($param_after) > 0 );
+	my $param_during = $args{during}; $param_during = 'NULL' unless (defined($param_during) and length($param_during) > 0 );
+    my $param_between = '$${"' . join('","', map { int($_) } @between) . '"}$$';
 	my $param_pref_lang = $args{preferred_language}; $param_pref_lang =~ s/\$//go; $param_pref_lang = '$$'.$param_pref_lang.'$$';
 	my $param_pref_lang_multiplier = $args{preferred_language_weight}; $param_pref_lang_multiplier ||= 'NULL';
 	my $param_sort = $args{'sort'}; $param_sort =~ s/\$//go; $param_sort = '$$'.$param_sort.'$$';
@@ -2482,6 +2536,10 @@ sub staged_fts {
                     $param_forms\:\:TEXT[],
                     $param_vformats\:\:TEXT[],
                     $param_bib_level\:\:TEXT[],
+                    $param_before\:\:TEXT,
+                    $param_after\:\:TEXT,
+                    $param_during\:\:TEXT,
+                    $param_between\:\:TEXT[],
                     $param_pref_lang\:\:TEXT,
                     $param_pref_lang_multiplier\:\:REAL,
                     $param_sort\:\:TEXT,

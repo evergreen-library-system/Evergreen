@@ -57,6 +57,10 @@ CREATE OR REPLACE FUNCTION search.staged_fts (
     param_forms     TEXT[],
     param_vformats  TEXT[],
     param_bib_level TEXT[],
+    param_before    TEXT,
+    param_after     TEXT,
+    param_during    TEXT,
+    param_between   TEXT[],
     param_pref_lang TEXT,
     param_pref_lang_multiplier REAL,
     param_sort      TEXT,
@@ -241,7 +245,7 @@ BEGIN
         current_rank := ' CASE WHEN mrd.item_lang = ' || quote_literal( param_pref_lang ) ||
             ' THEN ' || param_pref_lang_multiplier || '::REAL ELSE 1.0 END ';
 
-        --ranks := array_append( ranks, current_rank );
+        -- ranks := array_append( ranks, current_rank );
     END IF;
 
     current_rank := ' AVG( ( (' || array_to_string( ranks, ') + (' ) || ') ) * ' || current_rank || ' ) ';
@@ -254,16 +258,7 @@ BEGIN
         tmp_text := '999999';
         IF param_sort_desc THEN tmp_text := '0'; END IF;
 
-        current_rank := $$
-            ( COALESCE( FIRST ((
-                SELECT  SUBSTRING(frp.value FROM E'\\d{4}')
-                  FROM  metabib.full_rec frp
-                  WHERE frp.record = m.source
-                    AND frp.tag = '260'
-                    AND frp.subfield = 'c'
-                  LIMIT 1
-            )), $$ || quote_literal(tmp_text) || $$ )::INT )
-        $$;
+        current_rank := $$ COALESCE( mrd.date1, $$ || quote_literal(tmp_text) || $$ )::INT ) $$;
 
     ELSIF param_sort = 'title' THEN
 
@@ -335,6 +330,22 @@ BEGIN
 
     IF param_bib_level IS NOT NULL AND array_upper(param_bib_level, 1) > 0 THEN
         where_clause = where_clause || $$ AND mrd.bib_level IN ('$$ || array_to_string(param_bib_level, $$','$$) || $$') $$;
+    END IF;
+
+    IF param_before IS NOT NULL AND param_before <> '' THEN
+        where_clause = where_clause || $$ AND mrd.date1 <= $$ || quote_literal(param_before) || ' ';
+    END IF;
+
+    IF param_after IS NOT NULL AND param_after <> '' THEN
+        where_clause = where_clause || $$ AND mrd.date1 >= $$ || quote_literal(param_after) || ' ';
+    END IF;
+
+    IF param_during IS NOT NULL AND param_during <> '' THEN
+        where_clause = where_clause || $$ AND $$ || quote_literal(param_during) || $$ BETWEEN mrd.date1 AND mrd.date2 $$;
+    END IF;
+
+    IF param_between IS NOT NULL AND array_upper(param_between, 1) > 0 THEN
+        where_clause = where_clause || $$ AND mrd.date1 BETWEEN $$ || array_to_string(param_bib_level, $$' AND '$$) || ' ';
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||
@@ -546,15 +557,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-/*
-    param_statuses  INT[],
-    param_audience  TEXT[], x
-    param_language  TEXT[], x
-    param_lit_form  TEXT[], x
-    param_types     TEXT[], x
-    param_forms     TEXT[], x
-    param_vformats  TEXT[], x
-*/
 
 CREATE OR REPLACE FUNCTION search.explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
     SELECT ($1)[s] FROM generate_series(1, array_upper($1, 1)) AS s;

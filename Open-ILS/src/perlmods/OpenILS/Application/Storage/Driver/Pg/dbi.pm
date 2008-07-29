@@ -672,6 +672,17 @@
 
 	#-------------------------------------------------------------------------------
 
+	package config::i18n_locale;
+	config::i18n_locale->table('config.i18n_locale');
+
+	#-------------------------------------------------------------------------------
+
+	package config::i18n_core;
+	config::i18n_core->sequence( 'config.i18n_core_id_seq' );
+	config::i18n_core->table('config.i18n_core');
+
+	#-------------------------------------------------------------------------------
+
 	package config::item_form_map;
 	config::item_form_map->table('config.item_form_map');
 
