@@ -1149,7 +1149,8 @@ sub opensearch_feed {
 #		'text/html'
 #	);
 
-	print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
+	#print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . entityize($feed->toString) . "\n";
+	print $cgi->header( -type => $feed->type, -charset => 'UTF-8') . $feed->toString . "\n";
 
 	$log->debug("...and feed returned.");
 
