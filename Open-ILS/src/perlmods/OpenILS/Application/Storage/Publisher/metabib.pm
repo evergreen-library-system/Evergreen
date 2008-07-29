@@ -2385,7 +2385,7 @@ sub staged_fts {
 
     if (!defined($args{preferred_language})) {
         $args{preferred_language} =
-            $locale_map{ $self->session->session_locale || $default_preferred_language } || 'eng';
+            $locale_map{ $client->session->session_locale || $default_preferred_language } || 'eng';
     }
 
     if (!defined($args{preferred_language_weight})) {
