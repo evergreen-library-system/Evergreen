@@ -271,6 +271,44 @@ var JUBGrid = {
         openils.acq.Lineitem.createLID(fields, addToStore);
     },
 
+    receiveLID: function(evt) {
+	    var list =[];
+	    var selected = JUBGrid.jubDetailGrid.selection.getSelected();
+    	for (var idx = 0; idx < selected.length; idx++) {
+    	    var rowIdx = selected[idx];
+    	    var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
+            list.push(lid.id);
+        }
+        if(lid != null) { // is at least one selected?
+            JUBGrid._receiveLIDList(list, 0, 
+                function() {
+                    delete openils.acq.Lineitem.ModelCache[lid.lineitem];
+                    openils.acq.Lineitem.loadLIDGrid(
+                        JUBGrid.jubDetailGrid, lid.lineitem, JUBGrid.jubDetailGridLayout);
+                }
+            );
+        }
+    },
+
+    // loop through the list of LIDs and mark them as received
+    _receiveLIDList: function(list, idx, callback) {
+        if(idx >= list.length)
+            return callback();
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem_detail.receive'],
+            {   asnync: true,
+                params: [openils.User.authtoken, list[idx++]],
+                oncomplete: function(r) {
+                    var res = r.recv().content();
+                    if(e = openils.Event.parse(res))
+                        return alert(e);
+                    JUBGrid._receiveLIDList(list, idx, callback);
+                }
+            }
+        );
+    },
+
+
     // called when a lineitem is edited
     onJUBSet: function (griditem, attr, oldVal,newVal) {
         var item;

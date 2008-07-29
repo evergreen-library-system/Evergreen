@@ -188,6 +188,9 @@ pointing to the JUB model (and store) that you have created.
 	    <button dojoType='dijit.form.Button' onclick='JUBGrid.deleteLID'>
 		${_('Delete Selected Copy')}
 	    </button>
+	    <button dojoType='dijit.form.Button' onclick='JUBGrid.receiveLID'>
+		${_('Mark Selected Copies Received')}
+	    </button>
 	</div>
         <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
             id='${domprefix + "-details-grid"}'>
