@@ -651,8 +651,10 @@ sub receive_lineitem_detail_impl {
     $copy->editor($e->requestor->id);
     $e->update_asset_copy($copy) or return $e->die_event;
 
-    $lid->fund_debit->encumbrance('f');
-    $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
+    if($lid->fund_debit) {
+        $lid->fund_debit->encumbrance('f');
+        $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
+    }
 
     # -------------------------------------------------------------
     # if all of the lineitem details for this lineitem have 
