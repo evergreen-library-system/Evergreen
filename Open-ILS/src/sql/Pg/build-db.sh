@@ -28,7 +28,6 @@ if [ -z "$DB_VERSION" ] || [ `echo $DB_VERSION | grep -c '[^0-9]'` != 0 ]; then
 EOM
   exit 1
 fi
-PGPASSWORD=$5 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 200.schema.acq.sql
 
 # ---------------------------------------------------------------------------
 # Validate fts-config file is available for specified DB_VERSION.
@@ -99,6 +98,9 @@ ordered_file_list="
   
   100.circ_matrix.sql
   110.hold_matrix.sql
+
+  200.schema.acq.sql
+  210.schema.serials.sql
   
   300.schema.staged_search.sql
   
