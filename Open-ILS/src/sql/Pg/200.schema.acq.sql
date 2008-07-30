@@ -166,16 +166,6 @@ CREATE TABLE acq.lineitem_detail (
 
 CREATE INDEX li_detail_li_idx ON acq.lineitem_detail (lineitem);
 
-CREATE TABLE acq.lineitem_attr (
-	id		BIGSERIAL	PRIMARY KEY,
-	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id),
-	attr_type	TEXT		NOT NULL,
-	attr_name	TEXT		NOT NULL,
-	attr_value	TEXT		NOT NULL
-);
-
-CREATE INDEX li_attr_li_idx ON acq.lineitem_attr (lineitem);
-
 CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
 	code		TEXT		NOT NULL,
@@ -208,6 +198,17 @@ CREATE TABLE acq.lineitem_usr_attr_definition (
 CREATE TABLE acq.lineitem_local_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')
 ) INHERITS (acq.lineitem_attr_definition);
+
+CREATE TABLE acq.lineitem_attr (
+	id		BIGSERIAL	PRIMARY KEY,
+	definition	BIGINT		NOT NULL,
+	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id),
+	attr_type	TEXT		NOT NULL,
+	attr_name	TEXT		NOT NULL,
+	attr_value	TEXT		NOT NULL
+);
+
+CREATE INDEX li_attr_li_idx ON acq.lineitem_attr (lineitem);
 
 
 -- Seed data
@@ -283,7 +284,8 @@ BEGIN
 			SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
 
 			IF (value IS NOT NULL AND value <> '') THEN
-				INSERT INTO acq.lineitem_attr (lineitem, attr_type, attr_name, attr_value) VALUES (NEW.id, atype, adef.code, value);
+				INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+					VALUES (NEW.id, adef.id, atype, adef.code, value);
 			END IF;
 
 		END IF;
