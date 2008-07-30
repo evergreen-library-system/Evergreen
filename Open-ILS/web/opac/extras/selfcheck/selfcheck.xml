@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***********************************************************************
+* Copyright (C) 2008  Equinox Software, Inc.
+* Bill Erickson <erickson@esilibrary.com>
+* 
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  
+* 02110-1301, USA
+************************************************************************ -->
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/opac.dtd" -->
+]>
+
+<!--#include virtual="../../skin/default/xml/setenv.xml"-->
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
+
+    <head>
+        <script>var config = {css:{}}</script>
+		<!--#include virtual="../../skin/default/xml/common/js_common.xml"-->
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/extras/selfcheck/selfcheck.js'></script>
+        <link type='text/css' rel='stylesheet' title='Regular'
+            href="<!--#echo var='OILS_OPAC_CSS_HOST'-->/extras/selfcheck/selfcheck.css"/>
+        <link type='text/css' rel='stylesheet' media='print'
+            href="<!--#echo var='OILS_OPAC_CSS_HOST'-->/extras/selfcheck/selfcheck_print.css"/>
+        <link type='text/css' rel='alternate stylesheet' title='Printable'
+            href="<!--#echo var='OILS_OPAC_CSS_HOST'-->/extras/selfcheck/selfcheck_print.css"/>
+    </head>
+
+    <body onload='selfckInit();'>
+
+        <div class='noprint'>
+
+            <!--***********************************************************************
+                Form for patron "login"
+                *********************************************************************** -->
+            <div id='selfck-patron-login-container' class='hide_me form_div'>
+                <span>&selfck.patron_barcode_label;</span>
+                <span><input type='text' id='selfck-patron-login-input'> </input></span>
+                <span><button onclick='selfckPatronLogin();'>&selfck.submit;</button></span>
+                <span id='selfck-patron-not-found' class='hide_me'>&selfck.event.patron_not_found;</span>
+            </div>
+
+            <!--***********************************************************************
+                Checkout form
+                *********************************************************************** -->
+            <div id='selfck-patron-checkout-container' class='hide_me'>
+
+                <!--***********************************************************************
+                    Header
+                    *********************************************************************** -->
+                <div id='selfck-logout-div' class='container'>
+                    <div id='selfck-patron-info-div'> 
+                        <!-- not really i18n friendly, but better than nothing -->
+                        &selfck.welcome; <span id='selfck-patron-name-span'></span>!
+                    </div>
+                    <div id='selfck-logout-link-div'>
+                        <span class='selfck-link-span'>
+                            <a href='javascript:void(0);' id='selfck-print-co-button' 
+                                onclick='selfckPrint();'>&selfck.print_checkouts;</a>
+                        </span>
+                        <span class='selfck-link-span'>
+                            <a href='javascript:void(0);' id='selfck-logout-button' 
+                                onclick='selfckLogoutPatron();'>&selfck.logout;</a>
+                        </span>
+                        <span class='selfck-link-span'>
+                            <a href='javascript:void(0);' id='selfck-logout-print-button' 
+                                onclick='selfckPrint(); selfckLogoutPatron();'>&selfck.print_logout;</a>
+                        </span>
+                    </div>
+                </div>
+
+                <!--***********************************************************************
+                    Display messages here
+                    *********************************************************************** -->
+                <div id='selfck-message-div' class='form_div'>
+                    <span class='' id='selfck-event-time'></span>
+                    <span class='biglabel' id='selfck-event-span'> </span>
+                    <span class='hide_me'>
+                        <span id='selfck-event-SUCCESS'>&selfck.event.co_success;</span>
+                        <span id='selfck-event-UNKNOWN'>&selfck.event.unknown;</span>
+                        <span id='selfck-event-ACTOR_USER_NOT_FOUND'>&selfck.event.patron_not_found;</span>
+                        <span id='selfck-event-COPY_CIRC_NOT_ALLOWED'>&selfck.event.item_nocirc;</span>
+                        <span id='selfck-event-ITEM_NOT_CATALOGED'>&selfck.event.item_noncat;</span>
+                        <span id='selfck-event-dupe-barcode'>&selfck.event.dupe_barcode;</span>
+                    </span>
+                </div>
+
+                <!--***********************************************************************
+                    This is where patrons scan in the item barcodes
+                    *********************************************************************** -->
+                <div id='selfck-item-barcode-form-div' class='form_div'>
+                    <div>
+                        <img src='../../../images/small_logo.jpg'/>
+                        <div class='biglabel'>&selfck.item_barcode_label;</div>
+                        <div id='selfck-item-barcode-form'>
+                            <span><input type='text' id='selfck-item-barcode-input'> </input></span>
+                            <span><button onclick='selfckCheckout();'>&selfck.submit;</button></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--***********************************************************************
+                    This is where patrons scan in the item barcodes
+                    *********************************************************************** -->
+                <table id='selfck-items-out-table' class='hide_me'>
+                    <thead>
+                        <tr>
+                            <td id='selfck-pic-cell'></td>
+                            <td>&selfck.barcode;</td>
+                            <td>&selfck.title;</td>
+                            <td>&selfck.author;</td>
+                            <td>&selfck.due_date;</td>
+                            <td>&selfck.remaining;</td>
+                            <td>&selfck.cotype;</td>
+                        </tr>
+                    </thead>
+                    <tbody id='selfck-items-out-tbody'>
+                        <tr id='selfck-items-out-row'>
+                            <td><img class='jacket' name='selfck.jacket'></img></td>
+                            <td name='selfck.barcode'></td>
+                            <td name='selfck.title'></td>
+                            <td name='selfck.author'></td>
+                            <td name='selfck.due_date'></td>
+                            <td name='selfck.remaining'></td>
+                            <td>
+                                <span name='selfck.cotype_co'>&selfck.cotype_co;</span>
+                                <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--***********************************************************************
+            Generate the printable version of the checked out list here
+            *********************************************************************** -->
+        <div class='print' id='selfck-print-div'>
+            <div>
+                <div id='selfck-print-date'/>
+                You checked out the following items:
+                <ol id='selfck-print-items-list'>
+                    <li name='selfck-print-items-template'>
+                        <div name='title'/>
+                        Barcode: <span name='barcode'/>
+                        Due Date: <span name='due_date'/>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </body>
+</html>
+
