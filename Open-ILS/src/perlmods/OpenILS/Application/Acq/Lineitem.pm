@@ -399,6 +399,96 @@ sub lineitem_search {
     return undef;
 }
 
+
+__PACKAGE__->register_method(
+	method => 'lineitem_search_ident',
+	api_name => 'open-ils.acq.lineitem.search.ident',
+    stream => 1,
+	signature => {
+        desc => 'Performs a search against lineitem_attrs where ident is true',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {   desc => q/Search definition. Options are:
+                   attr_values : list of attribute values (required)
+                   li_states : list of lineitem states
+                   po_agencies : list of purchase order ordering agencies (org) ids
+                /,
+                type => 'object',
+            },
+            {   desc => q/
+                    Options hash.  Options are:
+                        idlist : if set, only return lineitem IDs
+                /,
+                type => 'object',
+            }
+        ]
+    }
+);
+
+my $LI_ATTR_SEARCH = {
+    select => {acqlia => ['lineitem']},
+    from => {
+        acqlia => {
+            acqliad => {
+                field => 'id',
+                fkey => 'definition'
+            },
+            jub => {
+                field => 'id',
+                fkey => 'lineitem',
+                join => {
+                    acqpo => {
+                        field => 'id',
+                        fkey => 'purchase_order'
+                    }
+                }
+            }
+        }
+    }
+};
+
+sub lineitem_search_ident {
+    my($self, $conn, $auth, $search, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->event unless $e->checkauth;
+    # XXX needs permissions consideration
+
+    return [] unless $search;
+    my $attr_values = $search->{attr_values};
+    my $li_states = $search->{li_states};
+    my $po_agencies = $search->{po_agencies}; # XXX if none, base it on perms
+
+    my $where_clause = {
+        '-or' => [],
+        '+acqlia' => {
+            '+acqliad' => {ident => 't'},
+        }
+    };
+
+    push(@{$where_clause->{'-or'}}, {attr_value => {ilike => "%$_%"}}) for @$attr_values;
+
+    $where_clause->{'+jub'} = {state => {in => $li_states}}
+        if $li_states and @$li_states;
+
+    $where_clause->{'+acqpo'} = {ordering_agency => $po_agencies} 
+        if $po_agencies and @$po_agencies;
+
+    $LI_ATTR_SEARCH->{where} = $where_clause;
+
+    my $lis = $e->json_query($LI_ATTR_SEARCH);
+
+    for my $li_id_obj (@$lis) {
+        my $li_id = $li_id_obj->{lineitem};
+        if($$options{idlist}) {
+            $conn->respond($li_id);
+        } else {
+            $conn->respond($e->retrieve_acq_lineitem($li_id));
+        }
+    }
+    return undef;
+}
+
+
 __PACKAGE__->register_method(
 	method => 'create_lineitem_detail',
 	api_name	=> 'open-ils.acq.lineitem_detail.create',
