@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+<!-- 
+ vim:ts=4:sw=4:et:ft=mako: 
+-->
+<%inherit file='base.html'/>
+<%namespace file='../../common/jubgrid.html' name='jubgrid'/>
+
+<%def name="block_js()">
+    ${parent.block_js()}
+</%def>
+<%def name="page_title()">${_('Receiving')}</%def>
+
+<%def name="block_content()">
+
+<div dojoType="dijit.layout.LayoutContainer" style="height:100%">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+	<h1>Receiving Processing</h1>
+    </div>
+</div>
+</%def>
+<!-- Local Variables: -->
+<!-- mmm-classes: html-js -->
+<!-- End: -->
