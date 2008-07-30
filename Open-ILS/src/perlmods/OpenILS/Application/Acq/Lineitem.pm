@@ -736,6 +736,8 @@ sub set_lineitem_attr {
         attr_type => $attr_type,
         attr_name => $attr_name})->[0];
 
+    my $find = "search_acq_$attr_type";
+
     if($attr) {
         $attr->attr_value($attr_value);
         $e->update_acq_lineitem_attr($attr) or return $e->die_event;
@@ -745,6 +747,10 @@ sub set_lineitem_attr {
         $attr->attr_type($attr_type);
         $attr->attr_name($attr_name);
         $attr->attr_value($attr_value);
+
+        my $attr_def_id = $e->$find({code => $attr_name}, {idlist=>1})->[0] 
+            or return $e->die_event;
+        $attr->definition($attr_def_id);
         $e->create_acq_lineitem_attr($attr) or return $e->die_event;
     }
 
