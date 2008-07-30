@@ -11,14 +11,6 @@ my $U = "OpenILS::Application::AppUtils";
 my %scripts;
 my $script_libs;
 
-sub isTrue {
-    my $v = shift;
-    return 1 if ($v == 1);
-    return 1 if ($v =~ /^t/io);
-    return 1 if ($v =~ /^y/io);
-    return 0;
-}
-
 sub initialize {
 
     my $self = shift;
@@ -1072,7 +1064,7 @@ sub build_checkout_circ_object {
 
         # if is_percent is true then the max->amount is
         # use as a percentage of the copy price
-        if (isTrue($max->is_percent)) {
+        if ($U->is_true($max->is_percent)) {
 
             my $cn = $self->editor->retrieve_asset_call_number($copy->call_number);
 
