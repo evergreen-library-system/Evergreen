@@ -209,6 +209,8 @@ CREATE TABLE acq.lineitem_attr (
 );
 
 CREATE INDEX li_attr_li_idx ON acq.lineitem_attr (lineitem);
+CREATE INDEX li_attr_value_idx ON acq.lineitem_attr (value);
+CREATE INDEX li_attr_definition_idx ON acq.lineitem_attr (definition);
 
 
 -- Seed data
