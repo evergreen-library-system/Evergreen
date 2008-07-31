@@ -6,6 +6,7 @@
 <!ENTITY lang.author "PINES">
 <!ENTITY common.all "All">
 <!ENTITY common.currency "$">
+<!ENTITY common.language "Language: ">
 <!ENTITY common.name "Name">
 <!ENTITY common.none "None">
 <!ENTITY common.title "Title">

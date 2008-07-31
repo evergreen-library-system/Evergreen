@@ -74,7 +74,7 @@ table { border-collapse: collapse; }
 
 /* ---------------------------------------------------------------------- */
 
-#searchbar { margin-top: 18px; width: 100%; }
+#searchbar { margin-top: 22px; width: 100%; }
 #searchbar table tr td {font-weight: bold; font-size: 8pt; }
 #searchbar select, input { border-collapse: collapse; font-size: 9pt; }
 .searchbar_item { margin: 3px; font-size: 9pt; } 
