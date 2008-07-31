@@ -36,11 +36,9 @@
     <!-- enable Dojo date picker -->
     <script language='javascript' type="text/javascript">
 
-        var djConfig = {parseOnLoad: true, isDebug: false},
-            lang,
-            bidi;
+        var djConfig = {parseOnLoad: true, isDebug: false}, lang, bidi;
 
-        var locale = location.href.match( /opac\/([^\/]+)\/skin/ )[0];
+        var locale = location.href.replace( /.+opac\/([^\/]+)\/skin.+/, '$1' );
         if (!locale) locale = '<!--#echo var="locale"-->';
 
         djConfig.locale = locale;
