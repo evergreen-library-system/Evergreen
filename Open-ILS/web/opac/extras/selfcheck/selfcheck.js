@@ -19,6 +19,7 @@
 ----------------------------------------------------------------- */
 
 var STAFF_SES_PARAM = 'ses';
+var PATRON_BARCODE_COOKIE = 'pbcc';
 var patron = null
 var itemBarcode = null;
 var itemsOutTemplate = null;
@@ -31,6 +32,7 @@ var printTemplate;
 var successfulItems = {};
 var scanTimeout = 800;
 var scanTimeoutId;
+var patronBarcodeRegex;
 
 
 function selfckInit() {
@@ -42,6 +44,9 @@ function selfckInit() {
     var t = fetchOrgSettingDefault(1, 'circ.selfcheck.patron_login_timeout');
     patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
     */
+
+    var reg = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    if(reg) patronBarcodeRegex = new RegExp(reg);
 
     if(!staff) {
         // should not happen when behind the proxy
@@ -69,7 +74,18 @@ function selfckInit() {
     printTemplate = printWrapper.removeChild($n(printWrapper, 'selfck-print-items-template'));
     itemsOutTemplate = $('selfck-items-out-tbody').removeChild($('selfck-items-out-row'));
 
+    selfckTryPatronCookie();
+
 //    selfckMkDummyCirc(); // testing only
+}
+
+function selfckTryPatronCookie() {
+    var pb = cookieManager.read(PATRON_BARCODE_COOKIE);
+    if(pb) {
+        cookieManager.write(PATRON_BARCODE_COOKIE, '');
+        $('selfck-patron-login-input').value = pb;
+        selfckPatronLogin();
+    }
 }
 
 
@@ -165,6 +181,21 @@ function selfckPatronLogin(barcode) {
 }
 
 /**
+  * If a user barcode was scanned into the item barcode
+  * input, log out the current user and log in the new user
+  */
+function selfckCheckPatronBarcode(itemBc) {
+    if(patronBarcodeRegex) {
+        if(itemBc.match(patronBarcodeRegex)) {
+            cookieManager.write(PATRON_BARCODE_COOKIE, itemBc, -1);
+            selfckLogoutPatron();
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
   * Sends the checkout request
   */
 function selfckCheckout() {
@@ -178,6 +209,9 @@ function selfckCheckout() {
 
     itemBarcode = $('selfck-item-barcode-input').value;
     if(!itemBarcode) return;
+
+    if(selfckCheckPatronBarcode(itemBarcode))
+        return;
 
     if (itemBarcode in successfulItems) {
         selfckShowMsgNode({textcode:'dupe-barcode'});
