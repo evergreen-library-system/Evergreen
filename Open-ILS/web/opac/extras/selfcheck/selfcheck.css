@@ -81,6 +81,15 @@ body { font-size: 12pt; }
     display: block;
     visibility: visible;
 }
+#selfck-items-out-done-div {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
 
+.selfck-done-link {
+    font-size: 12pt;
+    font-weight: bold;
+}
 
 
