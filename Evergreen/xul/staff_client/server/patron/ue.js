@@ -229,6 +229,7 @@ function uEditNewPatron() {
 	card.isnew(1);
 	patron.card(card);
 	patron.cards([card]);
+    patron.net_access_level(defaultNetLevel);
 	patron.stat_cat_entries([]);
 	patron.survey_responses([]);
 	patron.addresses([]);
