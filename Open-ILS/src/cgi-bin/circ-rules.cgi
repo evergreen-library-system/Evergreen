@@ -98,9 +98,10 @@ my @age_display_order = ( qw/name age prox/ );
 my %max_fine_cols = (
 	name	=> "Name",
 	amount	=> "Amount",
+	is_percent	=> "Amount is percent of price (t/f)",
 );
 
-my @max_fine_display_order = ( qw/name amount/ );
+my @max_fine_display_order = ( qw/name amount is_percent/ );
 
 
 #-------------------------------------------------------------------------------
