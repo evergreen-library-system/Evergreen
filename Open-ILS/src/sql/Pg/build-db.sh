@@ -2,13 +2,14 @@
 
 # ---------------------------------------------------------------------------
 # Store command line args for later use
-# args: {db-host} {db-port} {db-name} {db-user} {db-password}
+# args: {db-host} {db-port} {db-name} {db-user} {db-password} {verbose}
 # ---------------------------------------------------------------------------
 PGHOST=$1
 PGPORT=$2
 PGDATABASE=$3
 PGUSER=$4
 PGPASSWORD=$5
+VERBOSE=$6
 export PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
 
 # ---------------------------------------------------------------------------
@@ -131,7 +132,12 @@ for sql_file in $ordered_file_list; do
   # export ON_ERROR_STOP=1
 
   export PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
-  psql -f $sql_file
+  # Hide most of the harmless messages that obscure real problems
+  if [ -z "$VERBOSE" ]; then
+    psql -f $sql_file 2>&1 | grep -v NOTICE | grep -v "^INSERT"
+  else
+    psql -f $sql_file
+  fi
   if [ $? != 0 ]; then
     cat <<EOM
 ********************************************************************************

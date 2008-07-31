@@ -1,0 +1,15 @@
+.noprint {
+    display: none;
+    visibility: hidden;
+}
+.print {
+    display: block;
+    visibility: visible;
+    width: 100%;
+    font-size: 10pt;
+    color: black;
+    font-family: Arial;
+    background-color: white;
+}
+
+

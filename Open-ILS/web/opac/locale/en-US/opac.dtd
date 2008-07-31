@@ -6,6 +6,7 @@
 <!ENTITY lang.author "PINES">
 <!ENTITY common.all "All">
 <!ENTITY common.currency "$">
+<!ENTITY common.language "Language: ">
 <!ENTITY common.name "Name">
 <!ENTITY common.none "None">
 <!ENTITY common.title "Title">
@@ -634,3 +635,36 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY opac.image_provided "Image provided by">
 <!ENTITY vendor.name "Amazon">
 <!ENTITY vendor.base_link "http://amazon.com/dp/">
+
+
+
+<!--	================================================================= 
+	Selfcheck
+	================================================================= -->
+<!ENTITY selfck.staff_login_label "Staff login">
+<!ENTITY selfck.staff_login "Library barcode or username">
+<!ENTITY selfck.staff_pw "Password">
+<!ENTITY selfck.submit "Submit">
+<!ENTITY selfck.patron_barcode_label "Please scan your library barcode">
+<!ENTITY selfck.item_barcode_label "Please scan an item to checkout or renew:">
+<!ENTITY selfck.barcode "Barcode">
+<!ENTITY selfck.title "Title">
+<!ENTITY selfck.author "Author">
+<!ENTITY selfck.due_date "Due Date">
+<!ENTITY selfck.remaining "Renewals Remaining">
+<!ENTITY selfck.cotype "Type">
+<!ENTITY selfck.cotype_co "Checkout">
+<!ENTITY selfck.cotype_rn "Renewal">
+<!ENTITY selfck.logout "Logout">
+<!ENTITY selfck.print_logout "Print &amp; Logout">
+<!ENTITY selfck.welcome "Welcome">
+
+<!-- event messages -->
+<!ENTITY selfck.event.co_success "Check out succeeded">
+<!ENTITY selfck.event.co_unknown "An unknown event has occurred">
+<!ENTITY selfck.event.dupe_barcode "This item has already been checked out during this session">
+<!ENTITY selfck.event.patron_not_found "The patron barcode was not found">
+<!ENTITY selfck.event.item_noncat "The requested item is not in the catalog">
+<!ENTITY selfck.event.item_nocirc "The requested item is not allowed to circulate">
+<!ENTITY selfck.print_checkouts "Print Receipt">
+

@@ -766,7 +766,7 @@ sub json_query {
         return undef;
     }
 
-    $self->log(I, "json_query : returned ".scalar(@$obj). " result(s)");
+    $self->log(I, "json_query : returned ".scalar(@$obj). " result(s)") if (ref($obj));
     return $obj;
 }
 

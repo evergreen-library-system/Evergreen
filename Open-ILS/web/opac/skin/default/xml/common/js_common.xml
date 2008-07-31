@@ -35,12 +35,14 @@
 
     <!-- enable Dojo date picker -->
     <script language='javascript' type="text/javascript">
-        var djConfig = {parseOnLoad: true, isDebug: false},
-            locale,
-            lang,
-            bidi;
 
-        djConfig.locale = '<!--#echo var="locale"-->';
+        var djConfig = {parseOnLoad: true, isDebug: false}, lang, bidi;
+
+        var locale = location.href.replace( /.+opac\/([^\/]+)\/skin.+/, '$1' );
+        if (!locale) locale = '<!--#echo var="locale"-->';
+
+        djConfig.locale = locale;
+
     </script>
 
     <script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
@@ -51,4 +53,6 @@
         dojo.require("dojo.date.locale");
         dojo.require("dojo.date.stamp");
         dojo.require("dojo.parser");
+        dojo.require("openils.I18N");
+        dojo.require("dijit.form.FilteringSelect");
     </script>
