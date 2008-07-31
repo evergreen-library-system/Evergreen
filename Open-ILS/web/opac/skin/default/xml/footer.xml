@@ -31,4 +31,12 @@
         <div id='footer_logo'>&footer.logo;
             <a href='http://open-ils.org'><img style='border:none;' src='../../../../images/eg_tiny_logo.jpg'/></a>
         </div>
+
+        <div id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" searchAttr="locale" displayAttr="label">
+            <script type="dojo/connect" event="onChange">
+                if (this.getValue()) {
+                    location.href.replace( /opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+                }
+            </script>
+        </div>
 </div>
