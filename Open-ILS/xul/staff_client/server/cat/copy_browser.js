@@ -1159,8 +1159,7 @@ cat.copy_browser.prototype = {
 	'on_select_org' : function(org_id,twisty) {
 		var obj = this;
 		var org = obj.data.hash.aou[ org_id ];
-		if (obj.data.hash.aout[ org.ou_type() ].depth() == 0) return; 
-		/* otherwise, we'd show every system in the consortia */
+       if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
 		var funcs = [];
 		funcs.push( function() { 
 			document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
@@ -1279,7 +1278,7 @@ cat.copy_browser.prototype = {
 			}
 
 			if (document.getElementById('show_acns').checked) {
-				if ( obj.data.hash.aout[ org.ou_type() ].depth() != 0 ) {
+                if (! ( obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) )) {
 					node.setAttribute('open','true');
 					setTimeout( function() { obj.on_select_org( org.id() ); }, 0 );
 				}
