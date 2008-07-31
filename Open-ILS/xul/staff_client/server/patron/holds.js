@@ -975,7 +975,7 @@ patron.holds.prototype = {
 						util.functional.filter_list(
 							util.fm_utils.find_ou(
 								obj.data.tree.aou,
-								obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou()
+								obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() ?  obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou() : obj.data.list.au[0].ws_ou()
 							).children(),
 							function(o) {
 								return o.id() != obj.data.list.au[0].ws_ou();
