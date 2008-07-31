@@ -39,6 +39,8 @@ function selfckInit() {
     var cgi = new CGI();
     var staff = grabUser(cookieManager.read(STAFF_SES_PARAM) || cgi.param(STAFF_SES_PARAM));
 
+    selfckSetupPrinter();
+
     /*
     XXX we need org information (from the proxy?)
     var t = fetchOrgSettingDefault(1, 'circ.selfcheck.patron_login_timeout');
@@ -77,6 +79,21 @@ function selfckInit() {
     selfckTryPatronCookie();
 
 //    selfckMkDummyCirc(); // testing only
+    
+}
+
+function selfckSetupPrinter() {
+    try { // Mozilla only
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesRead');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesWrite');
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        if (pref)
+            pref.setBoolPref('print.always_print_silent', true);
+    } catch(E) {
+        
+    }
 }
 
 function selfckTryPatronCookie() {
