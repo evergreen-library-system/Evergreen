@@ -1,6 +1,8 @@
 package OpenILS::Utils::ZClient;
 use UNIVERSAL::require;
 
+sub DESTROY {};
+
 use overload 'bool' => sub { return $_[0]->{connection} ? 1 : 0 };
 
 our $conn_class = 'ZOOM::Connection';
@@ -59,6 +61,7 @@ sub AUTOLOAD {
 #-------------------------------------------------------------------------------
 package OpenILS::Utils::ZClient::ResultSet;
 
+sub DESTROY {};
 our $AUTOLOAD;
 
 sub new {
@@ -96,6 +99,7 @@ sub AUTOLOAD {
 #-------------------------------------------------------------------------------
 package OpenILS::Utils::ZClient::Record;
 
+sub DESTROY {};
 our $AUTOLOAD;
 
 sub new {
