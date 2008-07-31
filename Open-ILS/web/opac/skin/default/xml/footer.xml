@@ -32,10 +32,15 @@
             <a href='http://open-ils.org'><img style='border:none;' src='../../../../images/eg_tiny_logo.jpg'/></a>
         </div>
 
-        <div id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" searchAttr="locale" displayAttr="label">
-            <script type="dojo/connect" event="onChange">
+        <div
+			id='translation_switch'
+			dojoType="dijit.form.FilteringSelect"
+			store="openils.I18N.localeStore"
+			searchAttr="label"
+		>
+            <script type="dojo/label" event="onChange">
                 if (this.getValue()) {
-                    location.href.replace( /opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+                    location.href = location.href.replace( /opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
                 }
             </script>
         </div>
