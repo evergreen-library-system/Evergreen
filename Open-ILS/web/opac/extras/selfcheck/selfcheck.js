@@ -24,11 +24,13 @@ var itemBarcode = null;
 var itemsOutTemplate = null;
 var isRenewal = false;
 var pendingXact = false;
-var patronTimeout = 120000;
+var patronTimeout = 600000; /* 10 minutes */
 var timerId = null;
 var printWrapper;
 var printTemplate;
 var successfulItems = {};
+var scanTimeout = 800;
+var scanTimeoutId;
 
 
 function selfckInit() {
@@ -54,10 +56,7 @@ function selfckInit() {
             selfckPatronLogin();
     };
 
-    $('selfck-item-barcode-input').onkeypress = function(evt) {
-        if(userPressedEnter(evt)) 
-            selfckCheckout();
-    };
+    $('selfck-item-barcode-input').onkeypress = selfckItemBarcodeKeypress;
 
     // for debugging, allow passing the user barcode via param
     var urlbc = new CGI().param('patron');
@@ -71,6 +70,28 @@ function selfckInit() {
     itemsOutTemplate = $('selfck-items-out-tbody').removeChild($('selfck-items-out-row'));
 
 //    selfckMkDummyCirc(); // testing only
+}
+
+
+function selfckItemBarcodeKeypress(evt) {
+    if(userPressedEnter(evt)) {
+        clearTimeout(scanTimeoutId);
+        selfckCheckout();
+    } else {
+        /*  If scanTimeout milliseconds have passed and there is
+            still data in the input box, it's a likely indication
+            of a partial scan. Select the text so the next scan
+            will replace the value */
+        clearTimeout(scanTimeoutId);
+        scanTimeoutId = setTimeout(
+            function() {
+                if($('selfck-item-barcode-input').value) {
+                    $('selfck-item-barcode-input').select();
+                }
+            },
+            scanTimeout
+        );
+    }
 }
 
 /*
@@ -100,8 +121,13 @@ function selfckResetTimer() {
 function selfckLogoutPatron() {
     $('selfck-item-barcode-input').value = ''; // prevent browser caching
     $('selfck-patron-login-input').value = '';
-    if(patron) // page reload resets everything
-        location.href = location.href;
+    if(patron) {
+        selfckPrint();
+        setTimeout(
+            function() { location.href = location.href; },
+            800
+        );
+    }
 }
 
 /*
@@ -210,7 +236,7 @@ function selfckShowMsgNode(evt) {
   * Renders a row in the checkouts table for the current circulation
   */
 function selfckDislplayCheckout(evt) {
-    unHideMe($('selfck-items-out-table'));
+    unHideMe($('selfck-items-out-table-wrapper'));
 
     var template = itemsOutTemplate.cloneNode(true);
     var copy = evt.payload.copy;
@@ -279,8 +305,11 @@ function selfckRenew() {
   * Sets the print date and prints the page
   */
 function selfckPrint() {
-    appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
-    window.print();
+    for(var x in successfulItems) { // make sure we've checked out at least one item
+        appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
+        window.print();
+        return;
+    }
 }
 
 

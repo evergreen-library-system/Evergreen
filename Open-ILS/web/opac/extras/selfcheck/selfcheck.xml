@@ -73,16 +73,8 @@
                     </div>
                     <div id='selfck-logout-link-div'>
                         <span class='selfck-link-span'>
-                            <a href='javascript:void(0);' id='selfck-print-co-button' 
-                                onclick='selfckPrint();'>&selfck.print_checkouts;</a>
-                        </span>
-                        <span class='selfck-link-span'>
-                            <a href='javascript:void(0);' id='selfck-logout-button' 
-                                onclick='selfckLogoutPatron();'>&selfck.logout;</a>
-                        </span>
-                        <span class='selfck-link-span'>
-                            <a href='javascript:void(0);' id='selfck-logout-print-button' 
-                                onclick='selfckPrint(); selfckLogoutPatron();'>&selfck.print_logout;</a>
+                            <a href='javascript:void(0);' class='selfck-done-link' 
+                                onclick='selfckLogoutPatron();'>&selfck.done;</a>
                         </span>
                     </div>
                 </div>
@@ -113,6 +105,7 @@
                         <div id='selfck-item-barcode-form'>
                             <span><input type='text' id='selfck-item-barcode-input'> </input></span>
                             <span><button onclick='selfckCheckout();'>&selfck.submit;</button></span>
+                            <span><button onclick='$("selfck-item-barcode-input").value = "";'>&selfck.clear;</button></span>
                         </div>
                     </div>
                 </div>
@@ -120,33 +113,39 @@
                 <!--***********************************************************************
                     This is where patrons scan in the item barcodes
                     *********************************************************************** -->
-                <table id='selfck-items-out-table' class='hide_me'>
-                    <thead>
-                        <tr>
-                            <td id='selfck-pic-cell'></td>
-                            <td>&selfck.barcode;</td>
-                            <td>&selfck.title;</td>
-                            <td>&selfck.author;</td>
-                            <td>&selfck.due_date;</td>
-                            <td>&selfck.remaining;</td>
-                            <td>&selfck.cotype;</td>
-                        </tr>
-                    </thead>
-                    <tbody id='selfck-items-out-tbody'>
-                        <tr id='selfck-items-out-row'>
-                            <td><img class='jacket' name='selfck.jacket'></img></td>
-                            <td name='selfck.barcode'></td>
-                            <td name='selfck.title'></td>
-                            <td name='selfck.author'></td>
-                            <td name='selfck.due_date'></td>
-                            <td name='selfck.remaining'></td>
-                            <td>
-                                <span name='selfck.cotype_co'>&selfck.cotype_co;</span>
-                                <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div id='selfck-items-out-table-wrapper' class='hide_me'>
+                    <table id='selfck-items-out-table'>
+                        <thead>
+                            <tr>
+                                <td id='selfck-pic-cell'></td>
+                                <td>&selfck.barcode;</td>
+                                <td>&selfck.title;</td>
+                                <td>&selfck.author;</td>
+                                <td>&selfck.due_date;</td>
+                                <td>&selfck.remaining;</td>
+                                <td>&selfck.cotype;</td>
+                            </tr>
+                        </thead>
+                        <tbody id='selfck-items-out-tbody'>
+                            <tr id='selfck-items-out-row'>
+                                <td><img class='jacket' name='selfck.jacket'></img></td>
+                                <td name='selfck.barcode'></td>
+                                <td name='selfck.title'></td>
+                                <td name='selfck.author'></td>
+                                <td name='selfck.due_date'></td>
+                                <td name='selfck.remaining'></td>
+                                <td>
+                                    <span name='selfck.cotype_co'>&selfck.cotype_co;</span>
+                                    <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id='selfck-items-out-done-div'>
+                        <a href='javascript:void(0);' id='selfck-print-co-button' 
+                            class='selfck-done-link' onclick='selfckLogoutPatron();'>&selfck.done;</a>
+                    </div>
+                </div>
             </div>
         </div>
 

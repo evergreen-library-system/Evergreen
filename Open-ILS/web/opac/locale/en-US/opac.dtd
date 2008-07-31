@@ -646,6 +646,7 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.staff_login "Library barcode or username">
 <!ENTITY selfck.staff_pw "Password">
 <!ENTITY selfck.submit "Submit">
+<!ENTITY selfck.clear "Clear">
 <!ENTITY selfck.patron_barcode_label "Please scan your library barcode">
 <!ENTITY selfck.item_barcode_label "Please scan an item to checkout or renew:">
 <!ENTITY selfck.barcode "Barcode">
@@ -656,8 +657,7 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.cotype "Type">
 <!ENTITY selfck.cotype_co "Checkout">
 <!ENTITY selfck.cotype_rn "Renewal">
-<!ENTITY selfck.logout "Logout">
-<!ENTITY selfck.print_logout "Print &amp; Logout">
+<!ENTITY selfck.done "Done">
 <!ENTITY selfck.welcome "Welcome">
 
 <!-- event messages -->
@@ -667,5 +667,4 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.event.patron_not_found "The patron barcode was not found">
 <!ENTITY selfck.event.item_noncat "The requested item is not in the catalog">
 <!ENTITY selfck.event.item_nocirc "The requested item is not allowed to circulate">
-<!ENTITY selfck.print_checkouts "Print Receipt">
 
