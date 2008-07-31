@@ -81,9 +81,11 @@ ordered_file_list="
   $fts_config_file
 
   001.schema.offline.sql
+
+  002.schema.config.sql
   002.functions.aggregate.sql
   002.functions.config.sql
-  002.schema.config.sql
+
   005.schema.actors.sql
   006.schema.permissions.sql
   010.schema.biblio.sql
@@ -98,7 +100,7 @@ ordered_file_list="
   
   100.circ_matrix.sql
   110.hold_matrix.sql
-  
+
   300.schema.staged_search.sql
   
   500.view.cross-schema.sql
@@ -112,8 +114,8 @@ ordered_file_list="
   952.data.MODS3-xsl.sql
   953.data.MODS32-xsl.sql
   
-  extend-reporter.sql
   reporter-schema.sql
+  extend-reporter.sql
 "
 
 # ---------------------------------------------------------------------------
