@@ -1088,12 +1088,16 @@ sub biblio_descriptor {
 	my $res = $rd_script->run || ($log->error( "Descriptor script died!  $@" ) && return undef);
 	$log->debug("Script for biblio descriptor extraction completed successfully");
 
-    if ($res->{date1} ne '    ') {
-        $res->{date1} =~ tr/ux/00/;
+    my $d1 = $res->date1;
+    if ($d1 && $d1 ne '    ') {
+        $d1 =~ tr/ux/00/;
+        $res->date1( $d1 );
     }
 
-    if ($res->{date2} ne '    ') {
-        $res->{date2} =~ tr/ux/99/;
+    my $d2 = $res->date2;
+    if ($d2 && $d2 ne '    ') {
+        $d2 =~ tr/ux/99/;
+        $res->date2( $d2 );
     }
 
 	return $res;
