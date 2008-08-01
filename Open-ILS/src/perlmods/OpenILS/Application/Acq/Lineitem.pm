@@ -419,6 +419,7 @@ __PACKAGE__->register_method(
                     Options hash.  Options are:
                         idlist : if set, only return lineitem IDs
                         clear_marc : if set, strip the MARC xml from the lineitem before delivery
+                        flesh_attrs : flesh lineitem attributes; 
                 /,
                 type => 'object',
             }
@@ -483,7 +484,13 @@ sub lineitem_search_ident {
         if($$options{idlist}) {
             $conn->respond($li_id);
         } else {
-            my $li = $e->retrieve_acq_lineitem($li_id);
+            my $li;
+            if($$options{flesh_attrs}) {
+                $li = $e->retrieve_acq_lineitem([
+                    $li_id, {flesh => 1, flesh_fields => {jub => ['attributes']}}])
+            } else {
+                $li = $e->retrieve_acq_lineitem($li_id);
+            }
             $li->clear_marc if $$options{clear_marc};
             $conn->respond($li);
         }
