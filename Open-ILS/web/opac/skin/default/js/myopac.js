@@ -349,7 +349,7 @@ function myOPACDrawHolds(r) {
             unHideMe($n(row, 'myopac_hold_unfrozen_false'))
             if(h.thaw_date()) {
                 var d = dojo.date.stamp.fromISOString(h.thaw_date());
-                $n(row, 'myopac_holds_frozen_until').appendChild(text(dojo.date.locale.format(d, {.selector: 'date', fullYear: true})));
+                $n(row, 'myopac_holds_frozen_until').appendChild(text(dojo.date.locale.format(d, {selector: 'date', fullYear: true})));
             }
         } else {
             unHideMe($n(row, 'myopac_hold_unfrozen_true'))
