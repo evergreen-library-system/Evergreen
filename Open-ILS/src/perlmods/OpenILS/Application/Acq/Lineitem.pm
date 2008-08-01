@@ -418,6 +418,7 @@ __PACKAGE__->register_method(
             {   desc => q/
                     Options hash.  Options are:
                         idlist : if set, only return lineitem IDs
+                        clear_marc : if set, strip the MARC xml from the lineitem before delivery
                 /,
                 type => 'object',
             }
@@ -482,7 +483,9 @@ sub lineitem_search_ident {
         if($$options{idlist}) {
             $conn->respond($li_id);
         } else {
-            $conn->respond($e->retrieve_acq_lineitem($li_id));
+            my $li = $e->retrieve_acq_lineitem($li_id);
+            $li->clear_marc if $$options{clear_marc};
+            $conn->respond($li);
         }
     }
     return undef;
