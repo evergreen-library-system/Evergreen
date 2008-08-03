@@ -24,6 +24,10 @@ html, body, #oils-base-body-block {
     padding:0;
 }
 
+.invisible { visibility: none; }
+.hidden { display: none; visibility: hidden; }
+.display { display: block; visibility: visible; }
+
 /* main layout blocks */
 #oils-base-main-block { width: 100%; margin-top: 0px; padding-top: 0px;}
 #oils-base-navigate-block { width: 12%; vertical-align: top; float:left;}
