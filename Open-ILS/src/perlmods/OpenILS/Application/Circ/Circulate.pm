@@ -857,12 +857,52 @@ sub run_indb_circ_test {
 sub do_inspect {
     my $self = shift;
     $self->run_indb_circ_test;
-    return {
+
+    my $results = {
         circ_test_success => $self->circ_test_success,
-        matrix_test_result => $self->matrix_test_result,
-        circ_matrix_test => $self->circ_matrix_test,
-        circ_matrix_ruleset => $self->circ_matrix_ruleset
+        failure_events => [],
+        failure_codes => [],
     };
+
+    unless($self->circ_test_success) {
+        push(@{$results->{failure_codes}}, 
+            $_->{fail_part}) for @{$self->matrix_test_result};
+        push(@{$results->{failure_events}}, 
+            $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) 
+                for @{$self->matrix_test_result};
+        return $results;
+    }
+
+    # XXX lot of duplicated code here. extract this out to a 
+    # shared routine
+
+    my $duration_rule = $self->circ_matrix_ruleset->duration_rule;
+    my $recurring_fine_rule = $self->circ_matrix_ruleset->recurring_fine_rule;
+    my $max_fine_rule = $self->circ_matrix_ruleset->max_fine_rule;
+
+    $results->{duration_rule} = $duration_rule->name;
+    $results->{recurring_fine_rule} = $recurring_fine_rule->name;
+    $results->{max_fine_rule} =$max_fine_rule->name;
+    $results->{max_fine} = $max_fine_rule->amount; # XXX support for price percents
+    $results->{fine_interval} = $recurring_fine_rule->recurance_interval;
+    $results->{renewal_remaining} = $duration_rule->max_renewals;
+
+    $results->{duration} = $duration_rule->shrt
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_SHORT;
+    $results->{duration} = $duration_rule->normal
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
+    $results->{duration} = $duration_rule->extended
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
+
+    $results->{recurring_fine} = $recurring_fine_rule->low
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
+    $results->{recurring_fine} = $recurring_fine_rule->normal
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
+    $results->{recurring_fine} = $recurring_fine_rule->high
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
+
+
+    return $results;
 }
 
 
