@@ -814,7 +814,7 @@ sub run_indb_circ_test {
     return $self->matrix_test_result if $self->matrix_test_result;
 
     my $dbfunc = ($self->is_renewal) ? 
-        'action.item_renew_circ_test' : 'action.item_user_circ_test';
+        'action.item_user_renew_test' : 'action.item_user_circ_test';
 
     my $results = ($self->matrix_test_result) ? 
         $self->matrix_test_result : 
