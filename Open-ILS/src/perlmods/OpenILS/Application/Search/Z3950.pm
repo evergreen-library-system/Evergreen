@@ -159,6 +159,8 @@ sub do_search {
 	my $username = $$args{username} || "";
 	my $password = $$args{password} || "";
 
+    my $tformat = $services{$service}->{transmission_format} || $output;
+
 	my $editor = new_editor(authtoken => $auth);
 	return $editor->event unless $editor->checkauth;
 	return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
@@ -168,7 +170,7 @@ sub do_search {
 		databaseName				=> $db, 
 		user							=> $username,
 		password						=> $password,
-		preferredRecordSyntax	=> $output, 
+		preferredRecordSyntax	=> $tformat, 
 	);
 
 	if( ! $connection ) {
@@ -212,6 +214,7 @@ sub process_results {
 	my $offset	= shift;
     my $service = shift;
 
+    my $tformat = $services{$service}->{transmission_format} || $output;
     my $rformat = $services{$service}->{record_format} || 'FI';
 	$results->option(elementSetName => $rformat);
     $logger->info("z3950: using record format '$rformat'");
@@ -239,7 +242,15 @@ sub process_results {
 		try {
 
 			my $rec	= $results->record($_);
-			$marc		= MARC::Record->new_from_usmarc($rec->raw());
+
+            if ($tformat eq 'usmarc') {
+    			$marc		= MARC::Record->new_from_usmarc($rec->raw());
+            } else if ($tformat eq 'xml') {
+    			$marc		= MARC::Record->new_from_xml($rec->raw());
+            } else {
+                die "Unsupported record transmission format $tformat"
+            }
+
 			$marcs	= entityize($marc->as_xml_record);
 			my $doc	= XML::LibXML->new->parse_string($marcs);
 			$marcxml = entityize( $doc->documentElement->toString );
@@ -287,9 +298,11 @@ sub compile_query {
  		next unless ( exists $services{$service}->{attrs}->{$_} );
         $str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
 			' @attr 4=' . $services{$service}->{attrs}->{$_}->{format}; # add the structure attribute
+
 		if (exists $services{$service}->{attrs}->{$_}->{truncation}){
 			$str .= ' @attr 5=' . $services{$service}->{attrs}->{$_}->{truncation};
 		}
+
 		$str .= " \"" . $$hash{$_} . "\" "; # add the search term
 	}
 	return $str;
