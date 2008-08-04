@@ -17,7 +17,7 @@ my ($config, $org_id, $user_id, $copy_id, $copy_barcode) =
     ('/openils/conf/opensrf_core.xml', 326, 3, 301313, undef);
 
 GetOptions(
-    'org=o' => \$org_id,
+    'org=i' => \$org_id,
     'user=i' => \$user_id,
     'copy=i' => \$copy_id,
     'barcode=s' => \$copy_barcode,
@@ -32,6 +32,7 @@ my $CIRC_TEST = {
             column => 'id',
             params => [$copy_id, $user_id],
             result_field => 'matchpoint',
+            alias => 'matchpoint'
         }]
     },
     from => 'aou',
@@ -40,41 +41,45 @@ my $CIRC_TEST = {
 
 my $e = new_editor();
 
-my $mp_id = $e->json_query($CIRC_TEST)->[0]->{id};
-my $mp = $e->retrieve_config_circ_matrix_ruleset([
-    $mp_id,
+my $start = time;
+my $mp_id = $e->json_query($CIRC_TEST)->[0]->{matchpoint};
+
+my $rule_set = $e->search_config_circ_matrix_ruleset([
+    {matchpoint => $mp_id},
     {   flesh => 1,
         flesh_fields => {
             'ccmrs' => ['duration_rule', 'recurring_fine_rule', 'max_fine_rule']
         }
     }
-]);
+])->[0];
+
+my $rundur = time - $start;
 
 my $cp = $e->retrieve_asset_copy($copy_id);
 my ($dur, $recf);
 
 # get the actual duration
 if($cp->loan_duration == 1) {
-    $dur = $mp->duration_rule->shrt;
+    $dur = $rule_set->duration_rule->shrt;
 } elsif($cp->loan_duration == 2) {
-    $dur = $mp->duration_rule->normal;
+    $dur = $rule_set->duration_rule->normal;
 } else {
-    $dur = $mp->duration_rule->extended;
+    $dur = $rule_set->duration_rule->extended;
 }
 
 # get the recurring fine level
 if($cp->fine_level == 1) {
-    $recf = $mp->recurring_fine_rule->low;
+    $recf = $rule_set->recurring_fine_rule->low;
 } elsif($cp->fine_level == 2) {
-    $recf = $mp->recurring_fine_rule->normal;
+    $recf = $rule_set->recurring_fine_rule->normal;
 } else {
-    $recf = $mp->recurring_fine_rule->high;
+    $recf = $rule_set->recurring_fine_rule->high;
 }
 
-
-print "Duration [".$mp->duration_rule->name."] = $dur\n";
-print "Recurring fines [".$mp->recurring_fine_rule->name."; interval='".
-    $mp->recurring_fine_rule->recurance_interval."'] = \$$recf\n";
-print "Max fine [".$mp->max_fine_rule->name."] = \$".$mp->max_fine_rule->amount."\n";
+print "Duration [".$rule_set->duration_rule->name."] = $dur\n";
+print "Recurring fines [".$rule_set->recurring_fine_rule->name."; interval='".
+    $rule_set->recurring_fine_rule->recurance_interval."'] = \$$recf\n";
+print "Max fine [".$rule_set->max_fine_rule->name."] = \$".$rule_set->max_fine_rule->amount."\n";
+print "took: $rundur\n";
 
 

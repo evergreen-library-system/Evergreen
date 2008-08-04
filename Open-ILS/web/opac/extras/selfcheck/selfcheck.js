@@ -19,27 +19,36 @@
 ----------------------------------------------------------------- */
 
 var STAFF_SES_PARAM = 'ses';
+var PATRON_BARCODE_COOKIE = 'pbcc';
 var patron = null
 var itemBarcode = null;
 var itemsOutTemplate = null;
 var isRenewal = false;
 var pendingXact = false;
-var patronTimeout = 120000;
+var patronTimeout = 600000; /* 10 minutes */
 var timerId = null;
 var printWrapper;
 var printTemplate;
 var successfulItems = {};
+var scanTimeout = 800;
+var scanTimeoutId;
+var patronBarcodeRegex;
 
 
 function selfckInit() {
     var cgi = new CGI();
     var staff = grabUser(cookieManager.read(STAFF_SES_PARAM) || cgi.param(STAFF_SES_PARAM));
 
+    selfckSetupPrinter();
+
     /*
     XXX we need org information (from the proxy?)
     var t = fetchOrgSettingDefault(1, 'circ.selfcheck.patron_login_timeout');
     patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
     */
+
+    var reg = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    if(reg) patronBarcodeRegex = new RegExp(reg);
 
     if(!staff) {
         // should not happen when behind the proxy
@@ -54,10 +63,7 @@ function selfckInit() {
             selfckPatronLogin();
     };
 
-    $('selfck-item-barcode-input').onkeypress = function(evt) {
-        if(userPressedEnter(evt)) 
-            selfckCheckout();
-    };
+    $('selfck-item-barcode-input').onkeypress = selfckItemBarcodeKeypress;
 
     // for debugging, allow passing the user barcode via param
     var urlbc = new CGI().param('patron');
@@ -70,7 +76,55 @@ function selfckInit() {
     printTemplate = printWrapper.removeChild($n(printWrapper, 'selfck-print-items-template'));
     itemsOutTemplate = $('selfck-items-out-tbody').removeChild($('selfck-items-out-row'));
 
+    selfckTryPatronCookie();
+
 //    selfckMkDummyCirc(); // testing only
+    
+}
+
+function selfckSetupPrinter() {
+    try { // Mozilla only
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesRead');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesWrite');
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        if (pref)
+            pref.setBoolPref('print.always_print_silent', true);
+    } catch(E) {
+        
+    }
+}
+
+function selfckTryPatronCookie() {
+    var pb = cookieManager.read(PATRON_BARCODE_COOKIE);
+    if(pb) {
+        cookieManager.write(PATRON_BARCODE_COOKIE, '');
+        $('selfck-patron-login-input').value = pb;
+        selfckPatronLogin();
+    }
+}
+
+
+function selfckItemBarcodeKeypress(evt) {
+    if(userPressedEnter(evt)) {
+        clearTimeout(scanTimeoutId);
+        selfckCheckout();
+    } else {
+        /*  If scanTimeout milliseconds have passed and there is
+            still data in the input box, it's a likely indication
+            of a partial scan. Select the text so the next scan
+            will replace the value */
+        clearTimeout(scanTimeoutId);
+        scanTimeoutId = setTimeout(
+            function() {
+                if($('selfck-item-barcode-input').value) {
+                    $('selfck-item-barcode-input').select();
+                }
+            },
+            scanTimeout
+        );
+    }
 }
 
 /*
@@ -100,8 +154,13 @@ function selfckResetTimer() {
 function selfckLogoutPatron() {
     $('selfck-item-barcode-input').value = ''; // prevent browser caching
     $('selfck-patron-login-input').value = '';
-    if(patron) // page reload resets everything
-        location.href = location.href;
+    if(patron) {
+        selfckPrint();
+        setTimeout(
+            function() { location.href = location.href; },
+            800
+        );
+    }
 }
 
 /*
@@ -139,6 +198,21 @@ function selfckPatronLogin(barcode) {
 }
 
 /**
+  * If a user barcode was scanned into the item barcode
+  * input, log out the current user and log in the new user
+  */
+function selfckCheckPatronBarcode(itemBc) {
+    if(patronBarcodeRegex) {
+        if(itemBc.match(patronBarcodeRegex)) {
+            cookieManager.write(PATRON_BARCODE_COOKIE, itemBc, -1);
+            selfckLogoutPatron();
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
   * Sends the checkout request
   */
 function selfckCheckout() {
@@ -152,6 +226,9 @@ function selfckCheckout() {
 
     itemBarcode = $('selfck-item-barcode-input').value;
     if(!itemBarcode) return;
+
+    if(selfckCheckPatronBarcode(itemBarcode))
+        return;
 
     if (itemBarcode in successfulItems) {
         selfckShowMsgNode({textcode:'dupe-barcode'});
@@ -210,7 +287,7 @@ function selfckShowMsgNode(evt) {
   * Renders a row in the checkouts table for the current circulation
   */
 function selfckDislplayCheckout(evt) {
-    unHideMe($('selfck-items-out-table'));
+    unHideMe($('selfck-items-out-table-wrapper'));
 
     var template = itemsOutTemplate.cloneNode(true);
     var copy = evt.payload.copy;
@@ -279,8 +356,11 @@ function selfckRenew() {
   * Sets the print date and prints the page
   */
 function selfckPrint() {
-    appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
-    window.print();
+    for(var x in successfulItems) { // make sure we've checked out at least one item
+        appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
+        window.print();
+        return;
+    }
 }
 
 

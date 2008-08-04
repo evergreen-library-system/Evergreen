@@ -289,7 +289,7 @@ sub request {
 	my $err;
 	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
-	$self->log(I, "request $method : $argstr");
+	$self->log(I, "request $method $argstr");
 
 	if( ($self->{xact} or $always_xact) and 
 			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {

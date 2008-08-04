@@ -82,9 +82,9 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 				continue;
 			}
 
-			var parent = fieldmapper.aou.findOrgUnit(x.parent_ou(),true);
-			if (!parent.children()) parent.children([]);
-			parent.children().push(x);
+			var par = fieldmapper.aou.findOrgUnit(x.parent_ou(),true);
+			if (!par.children()) par.children([]);
+			par.children().push(x);
 			fieldmapper.aou.OrgCache[x.id()].treePtr = x;
 		}
 

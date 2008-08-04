@@ -1,6 +1,8 @@
 package OpenILS::Utils::ZClient;
 use UNIVERSAL::require;
 
+sub DESTROY {};
+
 use overload 'bool' => sub { return $_[0]->{connection} ? 1 : 0 };
 
 sub EVENT_NONE { 0 }
@@ -85,6 +87,7 @@ sub AUTOLOAD {
 #-------------------------------------------------------------------------------
 package OpenILS::Utils::ZClient::ResultSet;
 
+sub DESTROY {};
 our $AUTOLOAD;
 
 sub new {
@@ -128,6 +131,7 @@ sub AUTOLOAD {
 #-------------------------------------------------------------------------------
 package OpenILS::Utils::ZClient::Record;
 
+sub DESTROY {};
 our $AUTOLOAD;
 
 sub new {
