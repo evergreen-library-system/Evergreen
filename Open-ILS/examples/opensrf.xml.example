@@ -98,6 +98,11 @@ vim:et:ts=4:sw=4:
                     <db>Voyager</db>
                     <!-- fetch the full record with no holdings. FI is the default -->
                     <record_format>FI</record_format> 
+
+                    <!-- Record transmission format from the server.  Supported -->
+                    <!-- formats include usmarc and xml (for marcxml).         -->
+                    <transmission_format>usmarc</transmission_format> 
+
                     <attrs>
                         <tcn><code>12</code><format>1</format></tcn>
                         <isbn><code>7</code><format>6</format></isbn>
@@ -429,6 +434,7 @@ vim:et:ts=4:sw=4:
                     <script_path>/openils/lib/javascript</script_path>
                     <script_path>/openils/var</script_path>
                     <script_path>/openils/var/catalog</script_path>
+                    <legacy_script_support>false</legacy_script_support>
                     <scripts> 
                         <circ_permit_patron>circ/circ_permit_patron.js</circ_permit_patron>
                         <circ_permit_copy>circ/circ_permit_copy.js</circ_permit_copy>

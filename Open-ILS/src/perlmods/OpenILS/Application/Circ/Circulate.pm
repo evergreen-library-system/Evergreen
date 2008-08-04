@@ -10,6 +10,7 @@ my $U = "OpenILS::Application::AppUtils";
 
 my %scripts;
 my $script_libs;
+my $legacy_script_support = 0;
 
 sub initialize {
 
@@ -25,6 +26,9 @@ sub initialize {
     my $m       = $conf->config_value(  @pfx, 'circ_max_fines' );
     my $pr  = $conf->config_value(  @pfx, 'circ_permit_renew' );
     my $lb  = $conf->config_value(  @pfx2, 'script_path' );
+
+    $legacy_script_support = $conf->config_value(@pfx2, 'legacy_script_support');
+    $legacy_script_support = ($legacy_script_support and $legacy_script_support =~ /true/i);
 
     $logger->error( "Missing circ script(s)" ) 
         unless( $p and $c and $d and $f and $m and $pr );
@@ -47,7 +51,9 @@ sub initialize {
         "circ recurring fines = $f, " .
         "circ max fines = $m, ".
         "circ renew permit = $pr.  ".
-        "lib paths = @$lb");
+        "lib paths = @$lb. ".
+        "legacy script support = ". ($legacy_script_support) ? 'yes' : 'no'
+        );
 }
 
 
@@ -138,6 +144,14 @@ __PACKAGE__->register_method(
     method  => "run_method",
     api_name    => "open-ils.circ.checkout.full.override");
 
+__PACKAGE__->register_method(
+    method  => "run_method",
+    api_name    => "open-ils.circ.checkout.inspect",
+    desc => q/
+        Returns the circ matrix test result and, on success, the rule set and matrix test object
+    /
+);
+
 
 
 sub run_method {
@@ -159,13 +173,19 @@ sub run_method {
     $circulator->check_penalty_on_renew(1) if
         $circulator->is_renewal and $U->ou_ancestor_setting_value(
             $circulator->editor->requestor->ws_ou, 'circ.renew.check_penalty', $circulator->editor);
-    $circulator->mk_script_runner;
+
+    if($legacy_script_support and not $circulator->is_checkin) {
+        $circulator->mk_script_runner();
+        $circulator->legacy_script_support(1);
+        $circulator->circ_permit_patron($scripts{circ_permit_patron});
+        $circulator->circ_permit_copy($scripts{circ_permit_copy});      
+        $circulator->circ_duration($scripts{circ_duration});             
+        $circulator->circ_permit_renew($scripts{circ_permit_renew});
+    } else {
+        $circulator->mk_env();
+    }
     return circ_events($circulator) if $circulator->bail_out;
 
-    $circulator->circ_permit_patron($scripts{circ_permit_patron});
-    $circulator->circ_permit_copy($scripts{circ_permit_copy});      
-    $circulator->circ_duration($scripts{circ_duration});             
-    $circulator->circ_permit_renew($scripts{circ_permit_renew});
     
     $circulator->override(1) if $api =~ /override/o;
 
@@ -179,6 +199,11 @@ sub run_method {
             $circulator->events([]);
             $circulator->do_checkout();
         }
+
+    } elsif( $api =~ /inspect/ ) {
+        my $data = $circulator->do_inspect();
+        $circulator->editor->rollback;
+        return $data;
 
     } elsif( $api =~ /checkout/ ) {
         $circulator->do_checkout();
@@ -209,7 +234,7 @@ sub run_method {
         $circulator->editor->commit;
     }
 
-    $circulator->script_runner->cleanup;
+    $circulator->script_runner->cleanup if $circulator->script_runner;
     
     $conn->respond_complete(circ_events($circulator));
 
@@ -227,7 +252,6 @@ sub circ_events {
     @e = grep { $_->{textcode} ne 'SUCCESS' } @e if @e > 1;
     return (@e == 1) ? $e[0] : \@e;
 }
-
 
 
 sub translate_legacy_args {
@@ -357,6 +381,11 @@ my @AUTOLOAD_FIELDS = qw/
     phone_renewal
     desk_renewal
     retarget
+    circ_test_success
+    matrix_test_result
+    circ_matrix_test
+    circ_matrix_ruleset
+    legacy_script_support
 /;
 
 
@@ -454,6 +483,77 @@ sub check_permit_key {
     return ($one) ? 1 : 0;
 }
 
+sub mk_env {
+    my $self = shift;
+    my $e = $self->editor;
+
+    # --------------------------------------------------------------------------
+    # Grab the fleshed copy
+    # --------------------------------------------------------------------------
+    unless($self->is_noncat) {
+        my $copy;
+	    my $flesh = { 
+		    flesh => 2, 
+		    flesh_fields => {acp => ['call_number'], acn => ['record']} 
+	    };
+	    if($self->copy_id) {
+		    $copy = $e->retrieve_asset_copy(
+			    [$self->copy_id, $flesh ]) or return $e->event;
+    
+	    } elsif( $self->copy_barcode ) {
+    
+		    $copy = $e->search_asset_copy(
+			    [{barcode => $self->copy_barcode, deleted => 'f'}, $flesh ])->[0]
+			    or return $e->event;
+	    }
+    
+        if($copy) {
+            $self->copy($copy);
+            $self->volume($copy->call_number);
+            $self->title($self->volume->record);
+            $self->copy->call_number($self->volume->id);
+            $self->volume->record($self->title->id);
+            $self->is_precat(1) if $self->volume->id == OILS_PRECAT_CALL_NUMBER;
+        } else {
+            # We can't renew if there is no copy
+            return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))
+                if $self->is_renewal;
+            $self->is_precat(1);
+        }
+    }
+
+
+    # --------------------------------------------------------------------------
+    # Grab the patron
+    # --------------------------------------------------------------------------
+    my $patron;
+    my $p_evt;
+	if( $self->patron_id ) {
+		$patron = $e->retrieve_actor_user($self->patron_id) or $p_evt = $e->event;
+
+	} elsif( $self->patron_barcode ) {
+
+		my $card = $e->search_actor_card( 
+			{barcode => $self->patron_barcode})->[0] or return $e->event;
+
+		$patron = $e->search_actor_user( 
+			{card => $card->id})->[0] or return $e->event;
+
+	} else {
+		if( my $copy = $self->copy ) {
+			my $circs = $e->search_action_circulation(
+				{target_copy => $copy->id, checkin_time => undef});
+
+			if( my $circ = $circs->[0] ) {
+				$patron = $e->retrieve_actor_user($circ->usr)
+					or return $e->event;
+			}
+		}
+	}
+
+    return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'))
+        unless $self->patron($patron);
+}
 
 # --------------------------------------------------------------------------
 # This builds the script runner environment and fetches most of the
@@ -529,9 +629,6 @@ sub mk_script_runner {
 
     return 1;
 }
-
-
-
 
 # --------------------------------------------------------------------------
 # Does the circ permit work
@@ -655,6 +752,19 @@ sub gather_penalty_request {
     return [];
 }
 
+my $LEGACY_CIRC_EVENT_MAP = {
+    'actor.usr.barred' => 'PATRON_BARRED',
+    'asset.copy.circulate' =>  'COPY_CIRC_NOT_ALLOWED',
+    'asset.copy.status' => 'COPY_NOT_AVAILABLE',
+    'asset.copy_location.circulate' => 'COPY_CIRC_NOT_ALLOWED',
+    'config.circ_matrix_test.circulate' => 'COPY_CIRC_NOT_ALLOWED',
+    'config.circ_matrix_test.max_items_out' =>  'PATRON_EXCEEDS_CHECKOUT_COUNT',
+    'config.circ_matrix_test.max_overdue' =>  'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'config.circ_matrix_test.max_fines' => 'PATRON_EXCEEDS_FINES',
+    'config.circ_matrix_circ_mod_test' => 'PATRON_EXCEEDS_CHECKOUT_COUNT',
+};
+
+
 # ---------------------------------------------------------------------
 # This pushes any patron-related events into the list but does not
 # set bail_out for any events
@@ -664,49 +774,209 @@ sub run_patron_permit_scripts {
     my $runner      = $self->script_runner;
     my $patronid    = $self->patron->id;
 
-    $self->send_penalty_request() unless
-        $self->is_renewal and not $self->check_penalty_on_renew;
-
-
-    # ---------------------------------------------------------------------
-    # Now run the patron permit script 
-    # ---------------------------------------------------------------------
-    $runner->load($self->circ_permit_patron);
-    my $result = $runner->run or 
-        throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
-
-    my $patron_events = $result->{events};
     my @allevents; 
 
-    my $penalties = ($self->is_renewal and not $self->check_penalty_on_renew) ? 
-        [] : $self->gather_penalty_request();
+    if(!$self->legacy_script_support) {
 
-    push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
+        my $results = $self->run_indb_circ_test;
+        unless($self->circ_test_success) {
+            push(@allevents, OpenILS::Event->new(
+                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}})) for @$results;
+        }
+
+    } else {
+
+        $self->send_penalty_request() unless
+            $self->is_renewal and not $self->check_penalty_on_renew;
+
+
+        # --------------------------------------------------------------------- # Now run the patron permit script 
+        # ---------------------------------------------------------------------
+        $runner->load($self->circ_permit_patron);
+        my $result = $runner->run or 
+            throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
+
+        my $patron_events = $result->{events};
+
+        my $penalties = ($self->is_renewal and not $self->check_penalty_on_renew) ? 
+            [] : $self->gather_penalty_request();
+
+        push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
+    }
 
     $logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
 
     $self->push_events(@allevents);
 }
 
+sub run_indb_circ_test {
+    my $self = shift;
+    return $self->matrix_test_result if $self->matrix_test_result;
+
+    my $dbfunc = ($self->is_renewal) ? 
+        'action.item_user_renew_test' : 'action.item_user_circ_test';
+
+    my $results = ($self->matrix_test_result) ? 
+        $self->matrix_test_result : 
+            $self->editor->json_query(
+                {   from => [
+                        $dbfunc,
+                        $self->editor->requestor->ws_ou,
+                        $self->copy->id, 
+                        $self->patron->id,
+                    ]
+                }
+            );
+
+    $self->circ_test_success($U->is_true($results->[0]->{success}));
+    if($self->circ_test_success) {
+        $self->circ_matrix_test(
+            $self->editor->retrieve_config_circ_matrix_test(
+                $results->[0]->{matchpoint}
+            )
+        );
+    }
+
+    if($self->circ_test_success) {
+        $self->circ_matrix_ruleset(
+            $self->editor->retrieve_config_circ_matrix_ruleset([
+                $results->[0]->{matchpoint},
+                {   flesh => 1,
+                    flesh_fields => {
+                        'ccmrs' => ['duration_rule', 'recurring_fine_rule', 'max_fine_rule']
+                    }
+                }
+                ]
+            )
+        );
+    }
+
+    return $self->matrix_test_result($results);
+}
+
+sub do_inspect {
+    my $self = shift;
+    $self->run_indb_circ_test;
+
+    my $results = {
+        circ_test_success => $self->circ_test_success,
+        failure_events => [],
+        failure_codes => [],
+    };
+
+    unless($self->circ_test_success) {
+        push(@{$results->{failure_codes}}, 
+            $_->{fail_part}) for @{$self->matrix_test_result};
+        push(@{$results->{failure_events}}, 
+            $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) 
+                for @{$self->matrix_test_result};
+        return $results;
+    }
+
+    my $duration_rule = $self->circ_matrix_ruleset->duration_rule;
+    my $recurring_fine_rule = $self->circ_matrix_ruleset->recurring_fine_rule;
+    my $max_fine_rule = $self->circ_matrix_ruleset->max_fine_rule;
+
+    my $policy = $self->get_circ_policy(
+        $duration_rule, $recurring_fine_rule, $max_fine_rule);
+
+    $$results{$_} = $$policy{$_} for keys %$policy;
+    return $results;
+}
+
+# ---------------------------------------------------------------------
+# Loads the circ policy info for duration, recurring fine, and max
+# fine based on the current copy
+# ---------------------------------------------------------------------
+sub get_circ_policy {
+    my($self, $duration_rule, $recurring_fine_rule, $max_fine_rule) = @_;
+
+    my $policy = {
+        duration_rule => $duration_rule->name,
+        recurring_fine_rule => $recurring_fine_rule->name,
+        max_fine_rule => $max_fine_rule->name,
+        max_fine => $self->get_max_fine_amount($max_fine_rule),
+        fine_interval => $recurring_fine_rule->recurance_interval,
+        renewal_remaining => $duration_rule->max_renewals
+    };
+
+    $policy->{duration} = $duration_rule->shrt
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_SHORT;
+    $policy->{duration} = $duration_rule->normal
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
+    $policy->{duration} = $duration_rule->extended
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
+
+    $policy->{recurring_fine} = $recurring_fine_rule->low
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
+    $policy->{recurring_fine} = $recurring_fine_rule->normal
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
+    $policy->{recurring_fine} = $recurring_fine_rule->high
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
+
+    return $policy;
+}
+
+sub get_max_fine_amount {
+    my $self = shift;
+    my $max_fine_rule = shift;
+    my $max_amount = $max_fine_rule->amount;
+
+    # if is_percent is true then the max->amount is
+    # use as a percentage of the copy price
+    if ($U->is_true($max_fine_rule->is_percent)) {
+
+        my $ol = ($self->is_precat) ? 
+            $self->editor->requestor->ws_ou : $self->volume->owning_lib;
+
+        my $default_price = $U->ou_ancestor_setting_value(
+            $ol, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
+        my $charge_on_0 = $U->ou_ancestor_setting_value(
+            $ol, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
+
+        # Find the most appropriate "price" -- same definition as the
+        # LOST price.  See OpenILS::Circ::new_set_circ_lost
+        $max_amount = $self->copy->price;
+        $max_amount = $default_price unless defined $max_amount;
+        $max_amount = 0 if $max_amount < 0;
+        $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
+
+        $max_amount *= $max_fine_rule->amount / 100;
+    }  
+
+    return $max_amount;
+}
+
+
 
 sub run_copy_permit_scripts {
     my $self = shift;
     my $copy = $self->copy || return;
     my $runner = $self->script_runner;
-    
-   # ---------------------------------------------------------------------
-   # Capture all of the copy permit events
-   # ---------------------------------------------------------------------
-   $runner->load($self->circ_permit_copy);
-   my $result = $runner->run or 
-        throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
-   my $copy_events = $result->{events};
 
-   # ---------------------------------------------------------------------
-   # Now collect all of the events together
-   # ---------------------------------------------------------------------
     my @allevents;
-   push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
+
+    if(!$self->legacy_script_support) {
+        my $results = $self->run_indb_circ_test;
+        unless($self->circ_test_success) {
+            push(@allevents, OpenILS::Event->new(
+                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}})) for @$results;
+        }
+    } else {
+    
+       # ---------------------------------------------------------------------
+       # Capture all of the copy permit events
+       # ---------------------------------------------------------------------
+       $runner->load($self->circ_permit_copy);
+       my $result = $runner->run or 
+            throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+       my $copy_events = $result->{events};
+
+       # ---------------------------------------------------------------------
+       # Now collect all of the events together
+       # ---------------------------------------------------------------------
+       push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
+    }
 
     # See if this copy has an alert message
     my $ae = $self->check_copy_alert();
@@ -843,7 +1113,7 @@ sub do_checkout {
     }
 
     if( $self->is_precat ) {
-        $self->script_runner->insert("environment.isPrecat", 1, 1);
+        #$self->script_runner->insert("environment.isPrecat", 1, 1)
         $self->make_precat_copy;
         return if $self->bail_out;
 
@@ -1009,26 +1279,46 @@ sub run_checkout_scripts {
     my $self = shift;
 
     my $evt;
-   my $runner = $self->script_runner;
-   $runner->load($self->circ_duration);
+    my $runner = $self->script_runner;
 
-   my $result = $runner->run or 
-        throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+    my $duration;
+    my $recurring;
+    my $max_fine;
+    my $duration_name;
+    my $recurring_name;
+    my $max_fine_name;
 
-   my $duration   = $result->{durationRule};
-   my $recurring  = $result->{recurringFinesRule};
-   my $max_fine   = $result->{maxFine};
+    if(!$self->legacy_script_support) {
+        $self->run_indb_circ_test();
+        $duration = $self->circ_matrix_ruleset->duration_rule;
+        $recurring = $self->circ_matrix_ruleset->recurring_fine_rule;
+        $max_fine = $self->circ_matrix_ruleset->max_fine_rule;
 
-    if( $duration ne OILS_UNLIMITED_CIRC_DURATION ) {
+    } else {
 
-        ($duration, $evt) = $U->fetch_circ_duration_by_name($duration);
-        return $self->bail_on_events($evt) if $evt;
-    
-        ($recurring, $evt) = $U->fetch_recurring_fine_by_name($recurring);
-        return $self->bail_on_events($evt) if $evt;
-    
-        ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine);
-        return $self->bail_on_events($evt) if $evt;
+       $runner->load($self->circ_duration);
+
+       my $result = $runner->run or 
+            throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+
+       $duration_name   = $result->{durationRule};
+       $recurring_name  = $result->{recurringFinesRule};
+       $max_fine_name   = $result->{maxFine};
+    }
+
+    $duration_name = $duration->name if $duration;
+    if( $duration_name ne OILS_UNLIMITED_CIRC_DURATION ) {
+
+        unless($duration) {
+            ($duration, $evt) = $U->fetch_circ_duration_by_name($duration_name);
+            return $self->bail_on_events($evt) if $evt;
+        
+            ($recurring, $evt) = $U->fetch_recurring_fine_by_name($recurring_name);
+            return $self->bail_on_events($evt) if $evt;
+        
+            ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine_name);
+            return $self->bail_on_events($evt) if $evt;
+        }
 
     } else {
 
@@ -1056,59 +1346,23 @@ sub build_checkout_circ_object {
 
     if( $duration ) {
 
+        my $policy = $self->get_circ_policy($duration, $recurring, $max);
+
         my $dname = $duration->name;
         my $mname = $max->name;
         my $rname = $recurring->name;
-    
-        my $max_amount = $max->amount;
-
-        # if is_percent is true then the max->amount is
-        # use as a percentage of the copy price
-        if ($U->is_true($max->is_percent)) {
-
-            my $cn = $self->editor->retrieve_asset_call_number($copy->call_number);
-
-            my $default_price = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
-            my $charge_on_0 = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
-
-            # Find the most appropriate "price" -- same definition as the
-            # LOST price.  See OpenILS::Circ::new_set_circ_lost
-            $max_amount = $copy->price;
-            $max_amount = $default_price unless defined $max_amount;
-            $max_amount = 0 if $max_amount < 0;
-            $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
-
-            $max_amount *= $max->amount / 100;
-
-        }
 
         $logger->debug("circulator: building circulation ".
             "with duration=$dname, maxfine=$mname, recurring=$rname");
     
-        $circ->duration( $duration->shrt ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_SHORT;
-        $circ->duration( $duration->normal ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
-        $circ->duration( $duration->extended ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
-    
-        $circ->recuring_fine( $recurring->low ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
-        $circ->recuring_fine( $recurring->normal ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
-        $circ->recuring_fine( $recurring->high ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
-
-        $circ->duration_rule( $duration->name );
-        $circ->recuring_fine_rule( $recurring->name );
-        $circ->max_fine_rule( $max->name );
-
-        $circ->max_fine( $max_amount );
-
+        $circ->duration($policy->{duration});
+        $circ->recuring_fine($policy->{recurring_fine});
+        $circ->duration_rule($duration->name);
+        $circ->recuring_fine_rule($recurring->name);
+        $circ->max_fine_rule($max->name);
+        $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurance_interval);
-        $circ->renewal_remaining( $duration->max_renewals );
+        $circ->renewal_remaining($duration->max_renewals);
 
     } else {
 
@@ -1244,7 +1498,7 @@ sub make_precat_copy {
 
     # this is a little bit of a hack, but we need to 
     # get the copy into the script runner
-    $self->script_runner->insert("environment.copy", $copy, 1);
+    $self->script_runner->insert("environment.copy", $copy, 1) if $self->script_runner;
 }
 
 
@@ -2043,20 +2297,32 @@ sub have_event {
 
 sub run_renew_permit {
     my $self = shift;
-   my $runner = $self->script_runner;
 
-   $runner->load($self->circ_permit_renew);
-   my $result = $runner->run or 
-        throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
-   my $events = $result->{events};
+    my $events = [];
 
-   $logger->activity("ciculator: circ_permit_renew for user ".
+    if(!$self->legacy_script_support) {
+        my $results = $self->run_indb_circ_test;
+        unless($self->circ_test_success) {
+            push(@$events, $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) for @$results;
+        }
+
+    } else {
+
+        my $runner = $self->script_runner;
+
+        $runner->load($self->circ_permit_renew);
+        my $result = $runner->run or 
+            throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
+        my $events = $result->{events};
+    }
+
+    $logger->activity("ciculator: circ_permit_renew for user ".
       $self->patron->id." returned events: @$events") if @$events;
 
     $self->push_events(OpenILS::Event->new($_)) for @$events;
-    
+
     $logger->debug("circulator: re-creating script runner to be safe");
-    $self->mk_script_runner;
+    #$self->mk_script_runner;
 }
 
 
