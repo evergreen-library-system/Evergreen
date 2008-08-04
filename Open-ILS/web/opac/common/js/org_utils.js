@@ -102,9 +102,9 @@ for (var i in orgArraySearcher) {
 		continue;
 	} 
 
-	var parent = findOrgUnit(x.parent_ou());
-	if (!parent.children()) parent.children(new Array());
-	parent.children().push(x);
+	var par = findOrgUnit(x.parent_ou());
+	if (!par.children()) par.children(new Array());
+	par.children().push(x);
 }
 
 function _tree_killer () {
