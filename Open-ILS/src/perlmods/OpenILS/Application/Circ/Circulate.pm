@@ -873,37 +873,80 @@ sub do_inspect {
         return $results;
     }
 
-    # XXX lot of duplicated code here. extract this out to a 
-    # shared routine
-
     my $duration_rule = $self->circ_matrix_ruleset->duration_rule;
     my $recurring_fine_rule = $self->circ_matrix_ruleset->recurring_fine_rule;
     my $max_fine_rule = $self->circ_matrix_ruleset->max_fine_rule;
 
-    $results->{duration_rule} = $duration_rule->name;
-    $results->{recurring_fine_rule} = $recurring_fine_rule->name;
-    $results->{max_fine_rule} =$max_fine_rule->name;
-    $results->{max_fine} = $max_fine_rule->amount; # XXX support for price percents
-    $results->{fine_interval} = $recurring_fine_rule->recurance_interval;
-    $results->{renewal_remaining} = $duration_rule->max_renewals;
+    my $policy = $self->get_circ_policy(
+        $duration_rule, $recurring_fine_rule, $max_fine_rule);
 
-    $results->{duration} = $duration_rule->shrt
-        if $self->copy->loan_duration == OILS_CIRC_DURATION_SHORT;
-    $results->{duration} = $duration_rule->normal
-        if $self->copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
-    $results->{duration} = $duration_rule->extended
-        if $self->copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
-
-    $results->{recurring_fine} = $recurring_fine_rule->low
-        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
-    $results->{recurring_fine} = $recurring_fine_rule->normal
-        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
-    $results->{recurring_fine} = $recurring_fine_rule->high
-        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
-
-
+    $$results{$_} = $$policy{$_} for keys %$policy;
     return $results;
 }
+
+# ---------------------------------------------------------------------
+# Loads the circ policy info for duration, recurring fine, and max
+# fine based on the current copy
+# ---------------------------------------------------------------------
+sub get_circ_policy {
+    my($self, $duration_rule, $recurring_fine_rule, $max_fine_rule) = @_;
+
+    my $policy = {
+        duration_rule => $duration_rule->name,
+        recurring_fine_rule => $recurring_fine_rule->name,
+        max_fine_rule => $max_fine_rule->name,
+        max_fine => $self->get_max_fine_amount($max_fine_rule),
+        fine_interval => $recurring_fine_rule->recurance_interval,
+        renewal_remaining => $duration_rule->max_renewals
+    };
+
+    $policy->{duration} = $duration_rule->shrt
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_SHORT;
+    $policy->{duration} = $duration_rule->normal
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
+    $policy->{duration} = $duration_rule->extended
+        if $self->copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
+
+    $policy->{recurring_fine} = $recurring_fine_rule->low
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
+    $policy->{recurring_fine} = $recurring_fine_rule->normal
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
+    $policy->{recurring_fine} = $recurring_fine_rule->high
+        if $self->copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
+
+    return $policy;
+}
+
+sub get_max_fine_amount {
+    my $self = shift;
+    my $max_fine_rule = shift;
+    my $max_amount = $max_fine_rule->amount;
+
+    # if is_percent is true then the max->amount is
+    # use as a percentage of the copy price
+    if ($U->is_true($max_fine_rule->is_percent)) {
+
+        my $ol = ($self->is_precat) ? 
+            $self->editor->requestor->ws_ou : $self->volume->owning_lib;
+
+        my $default_price = $U->ou_ancestor_setting_value(
+            $ol, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
+        my $charge_on_0 = $U->ou_ancestor_setting_value(
+            $ol, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
+
+        # Find the most appropriate "price" -- same definition as the
+        # LOST price.  See OpenILS::Circ::new_set_circ_lost
+        $max_amount = $self->copy->price;
+        $max_amount = $default_price unless defined $max_amount;
+        $max_amount = 0 if $max_amount < 0;
+        $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
+
+        $max_amount *= $max_fine_rule->amount / 100;
+    }  
+
+    return $max_amount;
+}
+
 
 
 sub run_copy_permit_scripts {
@@ -1303,59 +1346,23 @@ sub build_checkout_circ_object {
 
     if( $duration ) {
 
+        my $policy = $self->get_circ_policy($duration, $recurring, $max);
+
         my $dname = $duration->name;
         my $mname = $max->name;
         my $rname = $recurring->name;
-    
-        my $max_amount = $max->amount;
-
-        # if is_percent is true then the max->amount is
-        # use as a percentage of the copy price
-        if ($U->is_true($max->is_percent)) {
-
-            my $cn = $self->editor->retrieve_asset_call_number($copy->call_number);
-
-            my $default_price = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
-            my $charge_on_0 = $U->ou_ancestor_setting_value(
-                $cn->owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
-
-            # Find the most appropriate "price" -- same definition as the
-            # LOST price.  See OpenILS::Circ::new_set_circ_lost
-            $max_amount = $copy->price;
-            $max_amount = $default_price unless defined $max_amount;
-            $max_amount = 0 if $max_amount < 0;
-            $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
-
-            $max_amount *= $max->amount / 100;
-
-        }
 
         $logger->debug("circulator: building circulation ".
             "with duration=$dname, maxfine=$mname, recurring=$rname");
     
-        $circ->duration( $duration->shrt ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_SHORT;
-        $circ->duration( $duration->normal ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
-        $circ->duration( $duration->extended ) 
-            if $copy->loan_duration == OILS_CIRC_DURATION_EXTENDED;
-    
-        $circ->recuring_fine( $recurring->low ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
-        $circ->recuring_fine( $recurring->normal ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
-        $circ->recuring_fine( $recurring->high ) 
-            if $copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
-
-        $circ->duration_rule( $duration->name );
-        $circ->recuring_fine_rule( $recurring->name );
-        $circ->max_fine_rule( $max->name );
-
-        $circ->max_fine( $max_amount );
-
+        $circ->duration($policy->{duration});
+        $circ->recuring_fine($policy->{recurring_fine});
+        $circ->duration_rule($duration->name);
+        $circ->recuring_fine_rule($recurring->name);
+        $circ->max_fine_rule($max->name);
+        $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurance_interval);
-        $circ->renewal_remaining( $duration->max_renewals );
+        $circ->renewal_remaining($duration->max_renewals);
 
     } else {
 
