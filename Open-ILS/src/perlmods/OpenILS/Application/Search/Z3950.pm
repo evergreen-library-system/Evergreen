@@ -200,6 +200,8 @@ sub do_search {
 	my $username = $$args{username} || "";
 	my $password = $$args{password} || "";
 
+    my $tformat = $services{$service}->{transmission_format} || $output;
+
 	my $editor = new_editor(authtoken => $auth);
 	return $editor->event unless $editor->checkauth;
 	return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
@@ -210,7 +212,7 @@ sub do_search {
 		user							=> $username,
 		password						=> $password,
 		async							=> $async,
-		preferredRecordSyntax	=> $output, 
+		preferredRecordSyntax	=> $tformat, 
 	);
 
 	if( ! $connection ) {
@@ -256,6 +258,7 @@ sub process_results {
 	my $offset	= shift || 0;
     my $service = shift;
 
+    my $tformat = $services{$service}->{transmission_format} || $output;
     my $rformat = $services{$service}->{record_format} || 'FI';
 	$results->option(elementSetName => $rformat);
     $logger->info("z3950: using record format '$rformat'");
@@ -283,7 +286,15 @@ sub process_results {
 		try {
 
 			my $rec	= $results->record($_);
-			$marc		= MARC::Record->new_from_usmarc($rec->raw());
+
+            if ($tformat eq 'usmarc') {
+    			$marc		= MARC::Record->new_from_usmarc($rec->raw());
+            } else if ($tformat eq 'xml') {
+    			$marc		= MARC::Record->new_from_xml($rec->raw());
+            } else {
+                die "Unsupported record transmission format $tformat"
+            }
+
 			$marcs	= entityize($marc->as_xml_record);
 			my $doc	= XML::LibXML->new->parse_string($marcs);
 			$marcxml = entityize( $doc->documentElement->toString );
