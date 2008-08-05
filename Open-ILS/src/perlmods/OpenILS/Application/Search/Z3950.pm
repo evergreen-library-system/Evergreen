@@ -248,7 +248,7 @@ sub do_search {
 	my $username = $$args{username} || "";
 	my $password = $$args{password} || "";
 
-    my $tformat = $services{$service}->{transmission_format} || $output;
+    my $tformat = $services{$args->{service}}->{transmission_format} || $output;
 
 	my $editor = new_editor(authtoken => $auth);
 	return $editor->event unless $editor->checkauth;
@@ -339,7 +339,7 @@ sub process_results {
 
             if ($tformat eq 'usmarc') {
     			$marc		= MARC::Record->new_from_usmarc($rec->raw());
-            } else if ($tformat eq 'xml') {
+            } elsif ($tformat eq 'xml') {
     			$marc		= MARC::Record->new_from_xml($rec->raw());
             } else {
                 die "Unsupported record transmission format $tformat"
