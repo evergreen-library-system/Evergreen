@@ -503,8 +503,7 @@ sub mk_env {
 	    } elsif( $self->copy_barcode ) {
     
 		    $copy = $e->search_asset_copy(
-			    [{barcode => $self->copy_barcode, deleted => 'f'}, $flesh ])->[0]
-			    or return $e->event;
+			    [{barcode => $self->copy_barcode, deleted => 'f'}, $flesh ])->[0];
 	    }
     
         if($copy) {
@@ -822,7 +821,7 @@ sub run_indb_circ_test {
                 {   from => [
                         $dbfunc,
                         $self->editor->requestor->ws_ou,
-                        $self->copy->id, 
+                        ($self->is_precat) ? undef : $self->copy->id, 
                         $self->patron->id,
                     ]
                 }
