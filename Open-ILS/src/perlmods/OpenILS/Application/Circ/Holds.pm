@@ -1179,10 +1179,11 @@ sub _check_title_hold_is_possible {
    my $home_org = $patron->home_ou;
    my $req_org = $request_lib->id;
 
-   my $home_prox = 
-      ($prox_cache{$home_org}) ? 
-         $prox_cache{$home_org} :
-         $prox_cache{$home_org} = $e->search_actor_org_unit_proximity({from_org => $home_org});
+    $prox_cache{$home_org} = 
+        $e->search_actor_org_unit_proximity({from_org => $home_org})
+        unless $prox_cache{$home_org};
+    my $home_prox = $prox_cache{$home_org};
+
 
    my %buckets;
    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
@@ -1197,10 +1198,11 @@ sub _check_title_hold_is_possible {
       # directly before the farthest away copies.  That way, they are not 
       # given priority, but they are checked before the farthest copies.
       # -----------------------------------------------------------------------
-      my $req_prox = 
-         ($prox_cache{$req_org}) ? 
-            $prox_cache{$req_org} :
-            $prox_cache{$req_org} = $e->search_actor_org_unit_proximity({from_org => $req_org});
+        $prox_cache{$req_org} = 
+            $e->search_actor_org_unit_proximity({from_org => $req_org})
+            unless $prox_cache{$req_org};
+        my $req_prox = $prox_cache{$req_org};
+
 
       my %buckets2;
       my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
