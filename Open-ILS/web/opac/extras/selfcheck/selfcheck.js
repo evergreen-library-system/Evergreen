@@ -251,7 +251,16 @@ function selfckCheckout() {
   * attempts renewal.  Any other events will display a message
   */
 function selfckHandleCoResult(r) {
-    var evt = r.getResultObject();
+    var evt;
+
+    try {
+        evt = r.getResultObject();
+    } catch(E) {
+        pendingXact = false;
+        selfckShowMsgNode({textcode:'UNKNOWN'});
+        appendClear($('selfck-errors'), text(E.toString()));
+        return;
+    }
 
     if(evt.textcode == 'SUCCESS') {
         selfckDislplayCheckout(evt);
