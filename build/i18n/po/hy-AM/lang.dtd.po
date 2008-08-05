@@ -1,4 +1,5 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/lang.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/lang.dtd
 #, fuzzy
 msgid ""
 msgstr ""
