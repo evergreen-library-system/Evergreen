@@ -9,10 +9,12 @@ use DateTime::Format::ISO8601;
 use OpenILS::Application::Circ::ScriptBuilder;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Event;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U	= "OpenILS::Application::AppUtils";
 
 my $script;			# - the permit script
 my $script_libs;	# - extra script libs
+my $legacy_script_support;
 
 # mental note:  open-ils.storage.biblio.record_entry.ranged_tree
 
@@ -22,6 +24,16 @@ my $script_libs;	# - extra script libs
 sub permit_copy_hold {
 	my $params	= shift;
 	my @allevents;
+
+    unless(defined $legacy_script_support) {
+        my $conf = OpenSRF::Utils::SettingsClient->new;
+        $legacy_script_support = $conf->config_value(
+            apps => 'open-ils.circ' => app_settings => 'legacy_script_support');
+        $legacy_script_support = ($legacy_script_support and 
+            $legacy_script_support =~ /true/i) ? 1 : 0;
+    }
+
+    return indb_hold_permit($params) unless $legacy_script_support;
 
 	my $ctx = {
 		patron_id	=> $$params{patron_id},
@@ -180,5 +192,51 @@ sub check_age_protect {
 		
 	return undef;
 }
+
+my $LEGACY_HOLD_EVENT_MAP = {
+    'config.hold_matrix_test.holdable' => 'ITEM_NOT_HOLDABLE',
+    'transit_range' => 'ITEM_NOT_HOLDABLE',
+    'no_matchpoint' => 'NO_POLICY_MATCHPOINT',
+    'config.hold_matrix_test.max_holds' => 'MAX_HOLDS',
+    'config.rule_age_hold_protect.prox' => 'ITEM_AGE_PROTECTED'
+};
+
+sub indb_hold_permit {
+    my $params = shift;
+
+    my $patron_id = 
+        ref($$params{patron}) ? $$params{patron}->id : $$params{patron_id};
+    my $request_lib = 
+        ref($$params{request_lib}) ? $$params{request_lib}->id : $$params{request_lib};
+
+    my $HOLD_TEST = {
+        from => [
+            'action.hold_request_permit_test',
+            $$params{pickup_lib}, 
+            $request_lib,
+            $$params{copy}->id, 
+            $patron_id,
+            $$params{requestor}->id 
+        ]
+    };
+
+    my $e = new_editor(xact=>1);
+    my $results = $e->json_query($HOLD_TEST);
+    $e->rollback;
+
+    unless($$params{show_event_list}) {
+        return 1 if $U->is_true($results->[0]->{success});
+        return 0;
+    }
+
+    return [OpenILS::Event->new('NO_POLICY_MATCHPOINT')] unless @$results;
+    return [] if $U->is_true($results->[0]->{success});
+
+    my @events;
+    push(@events, OpenILS::Event->new(
+        $LEGACY_HOLD_EVENT_MAP->{$_->{fail_part}})) for @$results;
+    return \@events;
+}
+
 
 23;
