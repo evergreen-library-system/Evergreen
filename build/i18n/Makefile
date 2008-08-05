@@ -36,8 +36,11 @@ PROGRESS=--progress none
 # To update a set of translated PO files with new or changed en-US strings:
 #   make LOCALE=ll-LL updatepo
 #
-# To create a new set of project files (DTDs, JavaScript message catalogs):
-#   make LOCALE=ll-LL newproject
+# To create a set of translated project files (DTDs, JavaScript message catalogs):
+#   make LOCALE=ll-LL project
+#
+# To install a set of translated project files:
+#   make LOCALE=ll-LL install
 
 # Generate PO files from all POT files in POOUTDIR for locale LOCALE
 newpo: 
@@ -50,7 +53,7 @@ newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-newproject: po2dtds po2props po2sql fmidlpo2entity po2ils
+project: po2dtds po2props po2sql fmidlpo2entity po2ils
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
@@ -107,3 +110,20 @@ fmidl2pot:
 # Generate a set of entity declarations from a PO file
 fmidlpo2entity:
 	@scripts/fieldmapper.py --entity $(POINDIR)/$(LOCALE)/$(FMIDLPO) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
+
+# Install updated project files to their corresponding location in the source tree
+install: updatepo project 
+	mkdir $(CHROME_PROPSDIR)/$(LOCALE)
+	cp $(PROJECT)/$(LOCALE)/auth.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/offline.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
+	mkdir $(SERVER_PROPSDIR)/$(LOCALE)
+	cp $(PROJECT)/$(LOCALE)/admin.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/cat.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/circ.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/common.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/multiclass_search_help.html $(SERVER_PROPSDIR)/$(LOCALE)/.
+	cp $(PROJECT)/$(LOCALE)/patron.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	mkdir $(DTDDIR)/$(LOCALE)
+	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
+	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
+
