@@ -385,3 +385,4 @@ Spreadsheet::WriteExcel::Big
 Tie::IxHash
 Parse::RecDescent
 SRU
+JSON::XS
