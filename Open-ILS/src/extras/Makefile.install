@@ -28,13 +28,15 @@
 #
 # ---------------------------------------------------------------------
  
+# Make any assumptions about the shell being used explicit
+SHELL=/bin/bash 
+
 # XXX
 # Gentoo needs explicit versions on many of these packages
 # to simulate a "blessed" set of packages
 # Also, I (think) Gentoo has a javascript::spidermonkey package that does
 # not require fetching the sources externally ... needs testing/updating in here
 
- 
 LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.19
 LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
@@ -79,6 +81,8 @@ APT_TOOL=aptitude
 
 # Debian dependencies
 DEBS =  \
+	autoconf\
+	automake\
 	build-essential\
 	syslog-ng\
 	psmisc\
@@ -452,3 +456,5 @@ create_ld_local:
 		echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf; \
 		ldconfig; \
 	fi;
+
+# vim:noet:sw=4:ts=4:
