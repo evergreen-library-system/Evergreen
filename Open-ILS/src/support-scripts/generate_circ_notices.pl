@@ -119,12 +119,8 @@ sub generate_notice_set {
         $QUERY->{where}->{'+circ'}->{duration} = {between => [$durs->{from}, $durs->{to}]};
     }
 
-    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-    my $req = $ses->request('open-ils.cstore.json_query', $QUERY);
-    my @circs;
-    my $resp;
-    push(@circs, $resp->content->{id}) while ($resp = $req->recv(timeout=>1800));
-    process_circs($notice, @circs);
+    my $circs = $e->json_query($QUERY, {timeout => 18000, substream => 1});
+    process_circs($notice, $type, map {$_->{id}} @$circs);
 }
 
 
@@ -154,7 +150,7 @@ sub process_circs {
 			@current = ();
 		}
 
-		push( @current, $circ );
+		push(@current, $circ);
 		$x++;
 	}
 
@@ -162,26 +158,49 @@ sub process_circs {
 	generate_notice($notice, @current);
 }
 
+my %ORG_CACHE;
+
 sub generate_notice {
     my $notice = shift;
     my @circs = @_;
 
-	my $org = $circs[0]->circ_lib;
-	my $usr = $circs[0]->usr;
-	$logger->debug("notice: printing user:$usr org:$org");
+	my $circ_lib_id = $circs[0]->circ_lib;
+	my $usr_id = $circs[0]->usr;
+	$logger->debug("notice: printing user:$usr_id circ_lib:$circ_lib_id");
 
-    my $circ_objs = $e->batch_retrieve_action_circulation([
-        \@circs,
-        {   flesh => 3,
+    my $usr = $e->retrieve_actor_user([
+        $usr_id,
+        {   flesh => 1,
             flesh_fields => {
-                circ => [q/target_copy circ_lib usr/],
-                acp => ['call_number'],
-                acn => ['record'],
-                aou => [qw/billing_address mailing_address/],
                 au => [qw/card billing_address mailing_address/] 
             }
         }
     ]);
+
+    my $circ_lib = $ORG_CACHE{$circ_lib_id} ||
+        $e->retrieve_actor_org_unit([
+            $circ_lib_id,
+            {   flesh => 1,
+                flesh_fields => {
+                    aou => [qw/billing_address mailing_address/],
+                }
+            }
+        ]);
+    $ORG_CACHE{$circ_lib_id} = $circ_lib;
+
+    my $circ_objs = $e->search_action_circulation([
+        {id => [map {$_->id} @circs]},
+        {   flesh => 2,
+            flesh_fields => {
+                circ => [q/target_copy/],
+                acp => ['call_number'],
+                acn => ['record'],
+            }
+        }
+    ]);
+
+    $_->circ_lib($circ_lib) for @$circ_objs;
+    $_->usr($usr) for @$circ_objs;
 
     print $_->circ_lib->shortname . ' : ' . $_->usr->usrname . 
         ' : ' .  $_->target_copy->barcode . "\n" for @$circ_objs;
