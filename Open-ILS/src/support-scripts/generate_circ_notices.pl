@@ -17,6 +17,7 @@ use strict; use warnings;
 require 'oils_header.pl';
 use vars qw/$logger/;
 use DateTime;
+use Template;
 use Data::Dumper;
 use Email::Send;
 use Getopt::Long;
@@ -82,13 +83,13 @@ sub main {
         OpenSRF::Utils->interval_to_seconds($a->{notify_interval}) <=> 
         OpenSRF::Utils->interval_to_seconds($b->{notify_interval}) } @$predue_notices;
 
-    generate_notice_set($_, $od_sender_addr, 'overdue') for @overdues;
-    generate_notice_set($_, $pd_sender_addr, 'predue') for @predues;
+    generate_notice_set($_, 'overdue') for @overdues;
+    generate_notice_set($_, 'predue') for @predues;
 }
 
 
 sub generate_notice_set {
-    my($notice, $smtp_sender, $type) = @_;
+    my($notice, $type) = @_;
 
     my $notify_interval = OpenSRF::Utils->interval_to_seconds($notice->{notify_interval});
     $notify_interval = -$notify_interval if $type eq 'overdue';
@@ -146,7 +147,7 @@ sub process_circs {
 				$circ->circ_lib != $org  or $circ->usr ne $patron ) {
 			$org = $circ->circ_lib;
 			$patron = $circ->usr;
-			generate_notice($notice, @current) if @current;
+			generate_notice($notice, $type, @current) if @current;
 			@current = ();
 		}
 
@@ -155,13 +156,44 @@ sub process_circs {
 	}
 
 	$logger->info("notice: processed $x circs");
-	generate_notice($notice, @current);
+	generate_notice($notice, $type, @current);
 }
 
 my %ORG_CACHE;
 
 sub generate_notice {
     my $notice = shift;
+    my $type = shift;
+    my @circs = @_;
+    my $circ_list = fetch_circ_data(@circs);
+    my $tt = Template->new({
+        ABSOLUTE => 1,
+        PRE_CHOMP => 1,
+        POST_CHOMP => 1
+    });
+
+    my $sender = $settings->config_value(
+        notifications => $type => 'sender_address') || 
+        $settings->config_value(notifications => 'sender_address');
+
+    $tt->process(
+        $notice->{template}, 
+        {   circ_list => $circ_list,
+            smtp_sender => $sender,
+            smtp_repley => $sender # XXX
+        },
+        \&handle_template_output
+    ) or $logger->error('notice: Template error '.$tt->error);
+}
+
+sub handle_template_output {
+    my $str = shift;
+    print "$str\n";
+}
+
+
+
+sub fetch_circ_data {
     my @circs = @_;
 
 	my $circ_lib_id = $circs[0]->circ_lib;
@@ -202,8 +234,7 @@ sub generate_notice {
     $_->circ_lib($circ_lib) for @$circ_objs;
     $_->usr($usr) for @$circ_objs;
 
-    print $_->circ_lib->shortname . ' : ' . $_->usr->usrname . 
-        ' : ' .  $_->target_copy->barcode . "\n" for @$circ_objs;
+    return $circ_objs
 }
 
 =head
