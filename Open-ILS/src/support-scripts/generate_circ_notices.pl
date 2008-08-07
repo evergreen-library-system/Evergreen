@@ -165,6 +165,7 @@ sub generate_notice {
     my $notice = shift;
     my $type = shift;
     my @circs = @_;
+    return unless @circs;
     my $circ_list = fetch_circ_data(@circs);
     my $tt = Template->new({
         ABSOLUTE => 1,
@@ -177,12 +178,46 @@ sub generate_notice {
     $tt->process(
         $notice->{template}, 
         {   circ_list => $circ_list,
+            get_bib_attr => \&get_bib_attr,
+            parse_due_date => \&parse_due_date, # let the templates decide date format
             smtp_sender => $sender,
             smtp_repley => $sender # XXX
         },
         \&handle_template_output
     ) or $logger->error('notice: Template error '.$tt->error);
 }
+
+sub get_bib_attr {
+    my $circ = shift;
+    my $attr = shift;
+    my $copy = $circ->target_copy;
+    if($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) {
+        return $copy->dummy_title || '' if $attr eq 'title';
+        return $copy->dummy_author || '' if $attr eq 'author';
+    } else {
+        my $mvr = $U->record_to_mvr($copy->call_number->record);
+        return $mvr->title || '' if $attr eq 'title';
+        return $mvr->author || '' if $attr eq 'author';
+    }
+}
+
+sub parse_due_date {
+    my $circ = shift;
+    my $due = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
+    my $info = {
+        year => $due->year, 
+        month => sprintf("%0.2d",$due->month), 
+        day => sprintf("%0.2d", $due->day)
+    };
+
+    # for day-based circulations, hour and minute are not relevant
+    return $info if (OpenSRF::Utils->interval_to_seconds($circ->duration) % 86400) == 0;
+
+    $info->{hour} = sprintf("%0.2d",$due->hour);  
+    $info->{minute} = sprintf("%0.2d",$due->minute);  
+    return $info;
+}
+
 
 sub handle_template_output {
     my $str = shift;
@@ -220,7 +255,7 @@ sub fetch_circ_data {
 
     my $circ_objs = $e->search_action_circulation([
         {id => [map {$_->id} @circs]},
-        {   flesh => 2,
+        {   flesh => 3,
             flesh_fields => {
                 circ => [q/target_copy/],
                 acp => ['call_number'],
@@ -235,16 +270,6 @@ sub fetch_circ_data {
     return $circ_objs
 }
 
-=head
-	if( $circ->copy->call_number->id == OILS_PRECAT_CALL_NUMBER ) {
-		$data->{title} = $copy->dummy_title || '';
-		$data->{author} = $copy->dummy_author || '';
-    } else {
-        $data->{mvr} = $U->record_to_mvr($copy->call_number->record);
-		$data->{title} = $data->{mvr}->title || '';
-		$data->{author} = $data->{mvr}->author || '';
-    }
-=cut
 
 sub make_date_range {
 	my $offset = shift;
