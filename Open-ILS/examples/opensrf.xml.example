@@ -32,7 +32,7 @@ vim:et:ts=4:sw=4:
 
         <ils_events>/openils/var/data/ils_events.xml</ils_events> <!-- ILS events description file -->
 
-        <email_notify>
+        <email_notify> <!-- this will eventually move into the notifications section below... -->
             <!-- global email notification settings -->
             <template>/openils/var/data/hold_notification_template.example</template>
             <smtp_server>localhost</smtp_server>
@@ -44,6 +44,51 @@ vim:et:ts=4:sw=4:
             <sender_address>evergreen@localhost</sender_address>
         </email_notify>
 
+
+      <notifications>
+        <!-- global mail server settings -->
+        <smtp_server>localhost</smtp_server>
+        <sender_address>evergreen@localhost</sender_address>
+
+        <!-- Overdue notices -->
+        <overdue>
+
+            <!-- optionally, you can define a sender address per notice type -->
+            <sender_address>overdue@localhost</sender_address>
+
+            <!-- The system can generate an XML file of overdue notices.  This is the
+                directory where they are stored.  Files are named overdue.YYYY-MM-DD.xml -->
+            <notice_dir>/openils/var/data/overdue</notice_dir>
+
+            <notice>
+                <!-- Notify at 7 days overdue -->
+                <notify_interval>7 days</notify_interval>
+                <!-- Options include always, noemail, and never.  'noemail' means a notice
+                     will be appended to the notice file only if the patron has no valid email address.  -->
+                <file_append>noemail</file_append>
+                <!-- do we attempt email notification? -->
+                <email_notify>true</email_notify>
+                <!-- notice template file -->
+                <template>/openils/var/data/templates/overdue_7day.example</template>
+            </notice>
+        </overdue>
+
+        <!-- Courtesy notices -->
+        <predue>
+            <notice>
+                <!-- All circulations that circulate between 5 and 13 days -->
+                <circ_duration_range>
+                    <from>5 days</from>
+                    <to>13 days</to>
+                </circ_duration_range>
+                <!-- notify at 1 day before the due date -->
+                <notify_interval>1 day</notify_interval>
+                <file_append>false</file_append>
+                <email_notify>true</email_notify>
+                <template>/openils/var/data/templates/predue_1day.example</template>
+            </notice>
+        </predue>
+      </notifications>
 
         <reporter>
             <!--
