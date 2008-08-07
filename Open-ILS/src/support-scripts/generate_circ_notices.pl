@@ -37,13 +37,14 @@ my $e = OpenILS::Utils::CStoreEditor->new;
 
 my @global_overdue_circs; # all circ collections stored here go into the final global XML file
 
-my ($osrf_config, $send_email, $gen_day_intervals, $days_back) = 
-    ('/openils/conf/opensrf_core.xml', 0, 0, 0); 
+my ($osrf_config, $send_email, $gen_day_intervals, $days_back, $gen_global_templates) = 
+    ('/openils/conf/opensrf_core.xml', 0, 0, 0, 0); 
 
 GetOptions(
     'osrf_osrf_config=s' => \$osrf_config,
-    'send-emails' => \$send_email,
+    'send-email' => \$send_email,
     'generate-day-intervals' => \$gen_day_intervals,
+    'generate-global-templates' => \$gen_global_templates,
     'days-back=s' => \$days_back,
 );
 
@@ -67,7 +68,6 @@ sub main {
     osrf_connect($osrf_config);
     $settings = OpenSRF::Utils::SettingsClient->new;
 
-    my $smtp_server = $settings->config_value(notifications => 'smtp_server');
     my $sender_address = $settings->config_value(notifications => 'sender_address');
     my $od_sender_addr = $settings->config_value(notifications => overdue => 'sender_address') || $sender_address;
     my $pd_sender_addr = $settings->config_value(notifications => predue => 'sender_address') || $sender_address;
@@ -88,7 +88,7 @@ sub main {
     generate_notice_set($_, 'overdue') for @overdues;
     generate_notice_set($_, 'predue') for @predues;
 
-    generate_global_overdue_file();
+    generate_global_overdue_file() if $gen_global_templates;
 }
 
 sub generate_global_overdue_file {
@@ -110,7 +110,7 @@ sub generate_global_overdue_file {
 }
 
 sub global_overdue_output {
-    print shift() . "\n";
+    print shift();
 }
 
 
@@ -193,9 +193,7 @@ sub generate_notice {
     my @circs = @_;
     return unless @circs;
     my $circ_list = fetch_circ_data(@circs);
-    my $tt = Template->new({
-        ABSOLUTE => 1,
-    });
+    my $tt = Template->new({ABSOLUTE => 1});
 
     my $sender = $settings->config_value(
         notifications => $type => 'sender_address') || 
@@ -213,10 +211,15 @@ sub generate_notice {
     push(@global_overdue_circs, $context) if 
         $type eq 'overdue' and $notice->{file_append} =~ /always/i;
 
-    if($send_email and $circ_list->[0]->usr->email) {
+    if($send_email and $notice->{email_notify} and 
+            my $email = $circ_list->[0]->usr->email) {
+
         if(my $tmpl = $notice->{email_template}) {
-            $tt->process($tmpl, $context, \&email_template_output)
-                or $logger->error('notice: Template error '.$tt->error);
+            $tt->process($tmpl, $context, 
+                sub { 
+                    email_template_output($notice, $type, $context, $email, @_); 
+                }
+            ) or $logger->error('notice: Template error '.$tt->error);
         } 
     } else {
         push(@global_overdue_circs, $context) 
@@ -243,7 +246,7 @@ sub parse_due_date {
     my $circ = shift;
     my $due = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
     return sprintf(
-        "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.2d",
+        "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
         $due->hour,
         $due->minute,
         $due->second,
@@ -263,8 +266,26 @@ sub escape_xml {
 
 
 sub email_template_output {
-    my $str = shift;
-    print "$str\n";
+    my $notice = shift;
+    my $type = shift;
+    my $context = shift;
+    my $email = shift;
+    my $msg = shift;
+
+	my $sender = Email::Send->new({mailer => 'SMTP'});
+    my $smtp_server = $settings->config_value(notifications => 'smtp_server');
+    $logger->debug("notice: smtp server is $smtp_server");
+	$sender->mailer_args([Host => $smtp_server]);
+	my $stat = $sender->send($msg);
+
+	if( $stat and $stat->type eq 'success' ) {
+		$logger->info("notice: successfully sent $type email to $email");
+	} else {
+		$logger->warn("notice: unable to send $type email to $email: ".Dumper($stat));
+        # if we were unable to send the email, add this notice set to the global notify set
+        push(@global_overdue_circs, $context) 
+            if $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
+	}
 }
 
 sub fetch_circ_data {
