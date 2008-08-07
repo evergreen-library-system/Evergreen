@@ -888,7 +888,7 @@ patron.holds.prototype = {
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else if (obj.pull) {                 /*************************************************** PULL ******************************/
 				method = 'FM_AHR_ID_LIST_PULL_LIST'; 
-				params.push( 50 ); params.push( 0 );
+				params.push( 100 ); params.push( 0 );
 			} else if (obj.shelf) {
 				method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';                  /*************************************************** HOLD SHELF ******************************/
 				params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
@@ -897,7 +897,7 @@ patron.holds.prototype = {
 			} else {
 				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				method = 'FM_AHR_ID_LIST_PULL_LIST';                  /*************************************************** PULL ******************************/
-				params.push( 50 ); params.push( 0 );
+				params.push( 100 ); params.push( 0 );
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
 			var robj = obj.network.simple_request( method, params );
