@@ -112,11 +112,13 @@ sub handler {
 				)
 			);
 			return Apache2::Const::REDIRECT;
-		}
+		} else {
+            return back_to_login($cgi);
+        }
 	}
 
 	my $user = verify_login($auth_ses);
-	return Apache2::Const::FORBIDDEN unless ($user);
+    return back_to_login($cgi) unless $user;
 
 	$ws_ou ||= $user->home_ou;
 
@@ -127,10 +129,23 @@ sub handler {
 		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, $perms)
 		->gather(1);
 
-	return Apache2::Const::FORBIDDEN if (@$failures > 0);
+	return back_to_login($cgi) if (@$failures > 0);
 
 	# they're good, let 'em through
 	return Apache2::Const::DECLINED;
+}
+
+sub back_to_login {
+    my $cgi = shift;
+    print $cgi->redirect(
+        -uri=>$cgi->url,
+        -cookie=>$cgi->cookie(
+            -name=>'ses',
+            -value=>'',
+            -path=>'/',-expires=>'-1h'
+        )
+    );
+    return Apache2::Const::REDIRECT;
 }
 
 # returns the user object if the session is valid, 0 otherwise
