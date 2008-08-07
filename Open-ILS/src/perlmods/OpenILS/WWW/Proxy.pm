@@ -77,8 +77,9 @@ sub handler {
 
 	# push everyone to the secure site
 	if (!$ssl_off && $url =~ /^http:/o) {
-		$url =~ s/^http:/https:/o;
-		print "Location: $url\n\n";
+        my $base = $cgi->url(-base=>1);
+		$base =~ s/^http:/https:/o;
+		print "Location: $base".$apache->unparsed_uri."\n\n";
 		return Apache2::Const::OK;
 	}
 
@@ -104,7 +105,7 @@ sub handler {
 		$auth_ses = oils_login($u, $p, $ltype);
 		if ($auth_ses) {
 			print $cgi->redirect(
-				-uri=>$url,
+				-uri=> $apache->unparsed_uri,
 				-cookie=>$cgi->cookie(
 					-name=>'ses',
 					-value=>$auth_ses,
@@ -113,12 +114,12 @@ sub handler {
 			);
 			return Apache2::Const::REDIRECT;
 		} else {
-            return back_to_login($cgi);
+            return back_to_login($apache, $cgi);
         }
 	}
 
 	my $user = verify_login($auth_ses);
-    return back_to_login($cgi) unless $user;
+    return back_to_login($apache, $cgi) unless $user;
 
 	$ws_ou ||= $user->home_ou;
 
@@ -129,16 +130,17 @@ sub handler {
 		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, $perms)
 		->gather(1);
 
-	return back_to_login($cgi) if (@$failures > 0);
+	return back_to_login($apache, $cgi) if (@$failures > 0);
 
 	# they're good, let 'em through
 	return Apache2::Const::DECLINED;
 }
 
 sub back_to_login {
+    my $apache = shift;
     my $cgi = shift;
     print $cgi->redirect(
-        -uri=>$cgi->url,
+        -uri=>$apache->unparsed_uri,
         -cookie=>$cgi->cookie(
             -name=>'ses',
             -value=>'',
