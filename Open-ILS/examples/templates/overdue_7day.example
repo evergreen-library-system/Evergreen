@@ -1,5 +1,5 @@
-[% SET user = circ_list.0.usr %]
-[% SET lib = circ_list.0.circ_lib %]
+[%- SET user = circ_list.0.usr -%]
+[%- SET lib = circ_list.0.circ_lib -%]
 To: [% user.email %]
 From: [% smtp_sender %] 
 Reply-To: [% smtp_reply %] 

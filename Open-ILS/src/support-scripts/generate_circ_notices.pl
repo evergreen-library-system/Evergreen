@@ -168,8 +168,6 @@ sub generate_notice {
     my $circ_list = fetch_circ_data(@circs);
     my $tt = Template->new({
         ABSOLUTE => 1,
-        PRE_CHOMP => 1,
-        POST_CHOMP => 1
     });
 
     my $sender = $settings->config_value(
