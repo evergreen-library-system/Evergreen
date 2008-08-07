@@ -1,0 +1,28 @@
+[% SET user = circ_list.0.usr %]
+[% SET lib = circ_list.0.circ_lib %]
+To: [% user.email %]
+From: [% smtp_sender %] 
+Reply-To: [% smtp_reply %] 
+Subject: Courtesy Notice
+
+Dear [% user.first_given_name %] [% user.family_name %]
+
+Our records indicate these items are due tomorrow:
+
+[% FOREACH circ = circ_list %]
+Due Date: [% circ.due_date %]
+Barcode: [% circ.target_copy.barcode %]
+[% END %]
+
+
+Please return the above items by tomorrow to avoid additional fines.  Please do not
+respond to this email.  
+
+Contact your library for more information:
+
+[% lib.name %]
+[% lib.mailing_address.street1 %]
+[% lib.mailing_address.street2 %]
+[% lib.mailing_address.city %], [% lib.mailing_address.state %]
+[% lib.mailing_address.post_code %]
+[% lib.phone %]
