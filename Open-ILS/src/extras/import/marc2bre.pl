@@ -22,7 +22,7 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $quiet) =
 	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
@@ -39,6 +39,7 @@ GetOptions(
 	'keyfile=s'	=> \$keyfile,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
+	'required_field=s'	=> \@req_fields,
 	'trash=s'	=> \@trash_fields,
 	'xml_idl=s'	=> \$idlfile,
 	'dontuse=s'	=> \$dontuse_file,
@@ -130,8 +131,13 @@ my %used_ids;
 my $starttime = time;
 my $rec;
 my $count = 0;
-while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
+PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
+
+	# Skip records that don't contain a required field (like '245', for example)
+	foreach my $req_field(@req_fields) {
+		next PROCESS if !$rec->field("$req_field");
+	}
 	my $id;
 
 	$recid++;
