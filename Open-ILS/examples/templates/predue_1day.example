@@ -1,3 +1,4 @@
+[%- USE date -%]
 [%- SET user = circ_list.0.usr -%]
 [%- SET lib = circ_list.0.circ_lib -%]
 To: [% user.email %]
@@ -12,9 +13,8 @@ Our records indicate these items are due tomorrow:
 [% FOREACH circ = circ_list %]
     [% get_bib_attr(circ, 'title') %], by [% get_bib_attr(circ, 'author') %] 
     Call Number: [% circ.target_copy.call_number.label %]
-    [%- SET date = parse_due_date(circ) %]
-    Due Date: [% date.year %]-[% date.month %]-[% date.day -%]
-    [%- IF date.hour -%] [% date.hour %]:[% date.minute %] [%- END %]
+    [%- SET due_date = parse_due_date(circ) %]
+    Due Date: [% date.format(due_date, '%Y-%m-%d') %]
     Barcode: [% circ.target_copy.barcode %]
 [% END %]
 

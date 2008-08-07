@@ -59,6 +59,7 @@ vim:et:ts=4:sw=4:
             <!-- The system can generate an XML file of overdue notices.  This is the
                 directory where they are stored.  Files are named overdue.YYYY-MM-DD.xml -->
             <notice_dir>/openils/var/data/overdue</notice_dir>
+            <combined_template>/openils/var/data/templates/overdue_combined_xml.example</combined_template>
 
             <notice>
                 <!-- Notify at 7 days overdue -->
@@ -69,7 +70,7 @@ vim:et:ts=4:sw=4:
                 <!-- do we attempt email notification? -->
                 <email_notify>true</email_notify>
                 <!-- notice template file -->
-                <template>/openils/var/data/templates/overdue_7day.example</template>
+                <email_template>/openils/var/data/templates/overdue_7day.example</email_template>
             </notice>
         </overdue>
 
@@ -85,7 +86,7 @@ vim:et:ts=4:sw=4:
                 <notify_interval>1 day</notify_interval>
                 <file_append>false</file_append>
                 <email_notify>true</email_notify>
-                <template>/openils/var/data/templates/predue_1day.example</template>
+                <email_template>/openils/var/data/templates/predue_1day.example</email_template>
             </notice>
         </predue>
       </notifications>

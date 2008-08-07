@@ -35,8 +35,10 @@ my $U = 'OpenILS::Application::AppUtils';
 my $settings = undef;
 my $e = OpenILS::Utils::CStoreEditor->new;
 
+my @global_overdue_circs; # all circ collections stored here go into the final global XML file
+
 my ($osrf_config, $send_email, $gen_day_intervals, $days_back) = 
-    ('/openils/conf/opensrf_core.xml', 1, 0, 0); 
+    ('/openils/conf/opensrf_core.xml', 0, 0, 0); 
 
 GetOptions(
     'osrf_osrf_config=s' => \$osrf_config,
@@ -85,6 +87,30 @@ sub main {
 
     generate_notice_set($_, 'overdue') for @overdues;
     generate_notice_set($_, 'predue') for @predues;
+
+    generate_global_overdue_file();
+}
+
+sub generate_global_overdue_file {
+    $logger->info("notice: processing ".scalar(@global_overdue_circs)." for global template");
+    return unless @global_overdue_circs;
+
+    my $tt = Template->new({ABSOLUTE => 1});
+
+    $tt->process(
+        $settings->config_value(notifications => overdue => 'combined_template'),
+        {
+            overdues => \@global_overdue_circs,
+            get_bib_attr => \&get_bib_attr,
+            parse_due_date => \&parse_due_date, # let the templates decide date format
+            escape_xml => \&escape_xml,
+        }, 
+        \&global_overdue_output
+    ) or $logger->error('notice: Template error '.$tt->error);
+}
+
+sub global_overdue_output {
+    print shift() . "\n";
 }
 
 
@@ -116,7 +142,7 @@ sub generate_notice_set {
     };
 
     # if a circ duration is defined for this type of notice
-    if(my $durs = $settings->{circ_duration_range}) {
+    if(my $durs = $notice->{circ_duration_range}) {
         $QUERY->{where}->{'+circ'}->{duration} = {between => [$durs->{from}, $durs->{to}]};
     }
 
@@ -175,16 +201,27 @@ sub generate_notice {
         notifications => $type => 'sender_address') || 
         $settings->config_value(notifications => 'sender_address');
 
-    $tt->process(
-        $notice->{template}, 
-        {   circ_list => $circ_list,
-            get_bib_attr => \&get_bib_attr,
-            parse_due_date => \&parse_due_date, # let the templates decide date format
-            smtp_sender => $sender,
-            smtp_repley => $sender # XXX
-        },
-        \&handle_template_output
-    ) or $logger->error('notice: Template error '.$tt->error);
+    my $context = {   
+        circ_list => $circ_list,
+        get_bib_attr => \&get_bib_attr,
+        parse_due_date => \&parse_due_date, # let the templates decide date format
+        smtp_sender => $sender,
+        smtp_repley => $sender, # XXX
+        notice => $notice,
+    };
+
+    push(@global_overdue_circs, $context) if 
+        $type eq 'overdue' and $notice->{file_append} =~ /always/i;
+
+    if($send_email and $circ_list->[0]->usr->email) {
+        if(my $tmpl = $notice->{email_template}) {
+            $tt->process($tmpl, $context, \&email_template_output)
+                or $logger->error('notice: Template error '.$tt->error);
+        } 
+    } else {
+        push(@global_overdue_circs, $context) 
+            if $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
+    }
 }
 
 sub get_bib_attr {
@@ -201,30 +238,34 @@ sub get_bib_attr {
     }
 }
 
+# provides a date that Template::Plugin::Date can parse
 sub parse_due_date {
     my $circ = shift;
     my $due = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
-    my $info = {
-        year => $due->year, 
-        month => sprintf("%0.2d",$due->month), 
-        day => sprintf("%0.2d", $due->day)
-    };
+    return sprintf(
+        "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.2d",
+        $due->hour,
+        $due->minute,
+        $due->second,
+        $due->day,
+        $due->month,
+        $due->year
+    );
+}
 
-    # for day-based circulations, hour and minute are not relevant
-    return $info if (OpenSRF::Utils->interval_to_seconds($circ->duration) % 86400) == 0;
-
-    $info->{hour} = sprintf("%0.2d",$due->hour);  
-    $info->{minute} = sprintf("%0.2d",$due->minute);  
-    return $info;
+sub escape_xml {
+    my $str = shift;
+    $str =~ s/&/&amp;/sog;
+    $str =~ s/</&lt;/sog;
+    $str =~ s/>/&gt;/sog;
+    return $str;
 }
 
 
-sub handle_template_output {
+sub email_template_output {
     my $str = shift;
     print "$str\n";
 }
-
-
 
 sub fetch_circ_data {
     my @circs = @_;
