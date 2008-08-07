@@ -10,8 +10,12 @@ Dear [% user.first_given_name %] [% user.family_name %]
 Our records indicate these items are 7 days overdue:
 
 [% FOREACH circ = circ_list %]
-Due Date: [% circ.due_date %]
-Barcode: [% circ.target_copy.barcode %]
+    [% get_bib_attr(circ, 'title') %], by [% get_bib_attr(circ, 'author') %] 
+    Call Number: [% circ.target_copy.call_number.label %]
+    [%- SET date = parse_due_date(circ) %]
+    Due Date: [% date.year %]-[% date.month %]-[% date.day -%]
+    [%- IF date.hour -%] [% date.hour %]:[% date.minute %] [%- END %]
+    Barcode: [% circ.target_copy.barcode %]
 [% END %]
 
 
@@ -21,8 +25,9 @@ respond to this email.
 Contact your library for more information:
 
 [% lib.name %]
-[% lib.mailing_address.street1 %]
-[% lib.mailing_address.street2 %]
+[%- SET addr = lib.mailing_address -%]
+[%- IF !addr -%] [%- SET addr = lib.billing_address -%] [%- END %]
+[% lib.mailing_address.street1 %] [% lib.mailing_address.street2 %]
 [% lib.mailing_address.city %], [% lib.mailing_address.state %]
 [% lib.mailing_address.post_code %]
 [% lib.phone %]
