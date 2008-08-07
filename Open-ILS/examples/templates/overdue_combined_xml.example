@@ -1,4 +1,4 @@
-[% USE date %]
+[% USE date -%]
 <?xml version='1.0' encoding='UTF-8'?>
 <file type="notice" date="[% date.format(date.now,'%Y-%m-%d') %]" time="[% date.format(date.now, '%H:%M:%S') %]">
     [%- FOREACH circ_set = overdues %]
@@ -50,4 +50,3 @@
     </notice>
     [%- END %]
 </file>
-

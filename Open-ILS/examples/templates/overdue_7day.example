@@ -6,6 +6,7 @@ From: [% smtp_sender %]
 Reply-To: [% smtp_reply %] 
 Subject: Overdue Notification
 
+
 Dear [% user.first_given_name %] [% user.family_name %]
 
 Our records indicate these items are 7 days overdue:
@@ -25,8 +26,7 @@ respond to this email.
 Contact your library for more information:
 
 [% lib.name %]
-[% lib.mailing_address.street1 %]
-[% lib.mailing_address.street2 %]
+[% lib.mailing_address.street1 %] [% lib.mailing_address.street2 %]
 [% lib.mailing_address.city %], [% lib.mailing_address.state %]
 [% lib.mailing_address.post_code %]
 [% lib.phone %]
