@@ -24,7 +24,7 @@ html, body, #oils-base-body-block {
     padding:0;
 }
 
-.invisible { visibility: none; }
+.invisible { visibility: hidden; }
 .hidden { display: none; visibility: hidden; }
 .display { display: block; visibility: visible; }
 

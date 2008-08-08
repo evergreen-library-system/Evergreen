@@ -13,13 +13,16 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 var lineitems = [];
 
 function drawForm() {
+    new openils.User().buildPermOrgSelector('VIEW_PURCHASE_ORDER', orderingAgencySelector);
 }
+dojo.addOnLoad(drawForm);
 
 var liReceived;
 function doSearch(values) {
     var search = {
         attr_values : [values.identifier],
         po_agencies : (values.ordering_agency) ? [values.ordering_agency] : null,
+        li_states : ['in-process']
     };
 
     options = {clear_marc:1, flesh_attrs:1};

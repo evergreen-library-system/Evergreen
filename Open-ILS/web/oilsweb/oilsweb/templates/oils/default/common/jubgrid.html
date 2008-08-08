@@ -43,6 +43,10 @@ pointing to the JUB model (and store) that you have created.
      activeSizing="1" layoutAlign="client">
 % endif
 
+    <style type='text/css'>
+        .grid_container {width: 100%; height: 100%;}
+    </style>
+
     <script src='${c.oils.core.media_prefix.value}/ui_js/oils/default/common/jubgrid.js'> </script>
     <script src='${c.oils.core.media_prefix.value}/js/dojo/openils/CopyLocation.js'> </script>
     <script type="text/javascript">
@@ -140,8 +144,10 @@ pointing to the JUB model (and store) that you have created.
             </button>
         </div>
 % endif
-        <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
-            dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
+        <div dojoType="dijit.layout.ContentPane" class='grid_container'>
+            <div structure='JUBGrid.jubGridLayout' jsid='${grid_jsid}' 
+                dojoType='dojox.Grid' id="${domprefix + '-JUB-grid'}">
+            </div>
         </div>
 % if not hide_details:
     </div>
@@ -192,8 +198,10 @@ pointing to the JUB model (and store) that you have created.
 		${_('Mark Selected Copies Received')}
 	    </button>
 	</div>
-        <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
-            id='${domprefix + "-details-grid"}'>
+	    <div dojoType="dijit.layout.ContentPane" class='grid_container'>
+            <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
+                id='${domprefix + "-details-grid"}'>
+            </div>
         </div>
     </div>
 </div>

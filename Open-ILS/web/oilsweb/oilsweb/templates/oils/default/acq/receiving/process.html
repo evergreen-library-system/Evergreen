@@ -32,8 +32,8 @@
                         <td><label for='ordering_agency'>${_('Ordering Agency')}</label></td>
                         <td>
                             <!-- make it a multi-select ? -->
-                            <select dojoType='dijit.form.FilteringSelect' name='ordering_agency' 
-                                labalAttr='code' searchAttr='code' jsId='orderingAgencySelector'>
+                            <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='orderingAgencySelector'
+                                searchAttr="shortname" name="ordering_agency" autocomplete="true" labelAttr='shortname'> </select>
                             </select>
                         </td>
                     </tr>
