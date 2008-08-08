@@ -87,6 +87,7 @@
 				//g.error.sdump('D_CAT','in modal window, g.data.volumes_temp = \n' + g.data.volumes_temp + '\n');
 				//g.data.stash('volumes_temp');
 				xulG.volumes = g.volumes;
+                xulG.update_these_volumes = 1;
 				update_modal_xulG(xulG);
 				window.close();
 			} catch(E) {
