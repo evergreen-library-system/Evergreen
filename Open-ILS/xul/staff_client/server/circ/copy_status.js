@@ -666,12 +666,13 @@ circ.copy_status.prototype = {
 										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
 										title,
 										'chrome,modal,resizable',
-										{ 'volumes' : list }
+										{ 'volumes' : JSON2js(js2JSON(list)) }
 									);
 
 									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 									//obj.data.stash_retrieve();
 									//var volumes = JSON2js( obj.data.volumes_temp );
+                                    if (typeof my_xulG.update_these_volumes == 'undefined') { return; }
 									var volumes = my_xulG.volumes;
 									if (!volumes) { return; }
 								
