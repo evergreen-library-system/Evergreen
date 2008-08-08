@@ -13,12 +13,12 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 var lineitems = [];
 
 function drawForm() {
-    new openils.User().buildPermOrgSelector('VIEW_PURCHASE_ORDER', orderingAgencySelector);
+    new openils.User().buildPermOrgSelector('VIEW_PURCHASE_ORDER', orderingAgencySelect);
 }
-dojo.addOnLoad(drawForm);
 
 var liReceived;
 function doSearch(values) {
+
     var search = {
         attr_values : [values.identifier],
         po_agencies : (values.ordering_agency) ? [values.ordering_agency] : null,
@@ -48,8 +48,7 @@ function handleResult(r) {
 
 function viewList() {
     dojo.style('searchProgress', 'visibility', 'hidden');
-    dojo.style('oils-acq-li-recv-grid', 'visibility', 'visible');
-    dojo.style('oils-acq-li-recv-grid', 'display', 'block');
+    dojo.style('oils-acq-recv-grid', 'visibility', 'visible');
     var store = new dojo.data.ItemFileWriteStore(
         {data:jub.toStoreData(lineitems, null, 
             {virtualFields:['estimated_price', 'actual_price']})});
@@ -58,5 +57,5 @@ function viewList() {
     JUBGrid.populate(liGrid, model, lineitems);
 }
 
-
+dojo.addOnLoad(drawForm);
 
