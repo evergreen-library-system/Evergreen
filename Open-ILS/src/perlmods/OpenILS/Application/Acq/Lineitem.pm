@@ -858,6 +858,29 @@ sub set_lineitem_attr {
     return $attr->id;
 }
 
+__PACKAGE__->register_method(
+	method => 'get_lineitem_attr_defs',
+	api_name	=> 'open-ils.acq.lineitem_attr_definition.retrieve.all',
+	signature => {
+        desc => 'Retrieve lineitem attr definitions',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+        ],
+        return => {desc => 'List of attr definitions'}
+    }
+);
+
+sub get_lineitem_attr_defs {
+    my($self, $conn, $auth) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my %results;
+    for my $type (qw/generated marc local usr provider/) {
+        my $call = "retrieve_all_acq_lineitem_${type}_attr_definition";
+        $results{$type} = $e->$call;
+    }
+    return \%results;
+}
 
 
 1;
