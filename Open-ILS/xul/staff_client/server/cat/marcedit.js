@@ -1904,7 +1904,7 @@ function validateAuthority (button) {
 		for (var j = 0; j < subfields.length; j++) {
 			var sf = subfields[j];
             var sf_code = sf.childNodes[1].value;
-            var sf_value = sf.childNodes[1].value;
+            var sf_value = sf.childNodes[2].value;
 
 			if (!control_map[tag.value][sf_code]) continue;
 
@@ -1919,10 +1919,11 @@ function validateAuthority (button) {
         for (var val_tag in tags) {
         	var auth_data = validateBibField( [val_tag], tags[val_tag]);
 	        var res = new XML( auth_data.responseText );
-	        found = parseInt( res.gw::payload.gw::array.gw::string );
+	        found = parseInt(res.gw::payload.gw::string.toString());
             if (found) break;
         }
 
+		// XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
 		for (var j = 0; j < subfields.length; j++) {
 			var sf = subfields[j];
    			if (!found) {
