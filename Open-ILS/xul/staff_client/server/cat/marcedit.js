@@ -1893,35 +1893,44 @@ function validateAuthority (button) {
 		var tag = row.firstChild;
 
 		if (!control_map[tag.value]) continue
+		button.setAttribute('label', label + ' - ' + tag.value);
 
 		var ind1 = tag.nextSibling;
 		var ind2 = ind1.nextSibling;
 		var subfields = ind2.nextSibling.childNodes;
 
+        var tags = {};
+
 		for (var j = 0; j < subfields.length; j++) {
 			var sf = subfields[j];
+            var sf_code = sf.childNodes[1].value;
+            var sf_value = sf.childNodes[1].value;
 
-			if (!control_map[tag.value][sf.childNodes[1].value]) continue;
-
-			button.setAttribute('label', label + ' - ' + tag.value + sf.childNodes[1].value);
+			if (!control_map[tag.value][sf_code]) continue;
 
 			var found = 0;
-			for (var k in control_map[tag.value][sf.childNodes[1].value]) {
-				var x = searchAuthority(sf.childNodes[2].value, k, control_map[tag.value][sf.childNodes[1].value][k], 1);
-				var res = new XML( x.responseText );
-
-				if (res.gw::payload.gw::array.gw::string.length()) {
-					found = 1;
-					break;
-				}
+			for (var a_tag in control_map[tag.value][sf_code]) {
+                if (!tags[a_tag]) tags[a_tag] = [];
+                tags[a_tag].push({ term : sf_value, subfield : sf_code });
 			}
 
-			if (!found) {
+		}
+
+        for (var val_tag in tags) {
+        	var auth_data = validateBibField( [val_tag], tags[val_tag]);
+	        var res = new XML( auth_data.responseText );
+	        found = parseInt( res.gw::payload.gw::array.gw::string );
+            if (found) break;
+        }
+
+		for (var j = 0; j < subfields.length; j++) {
+			var sf = subfields[j];
+   			if (!found) {
 				sf.childNodes[2].inputField.style.color = 'red';
 			} else {
 				sf.childNodes[2].inputField.style.color = 'black';
 			}
-		}
+        }
 	}
 
 	button.setAttribute('label', label);
@@ -1930,6 +1939,19 @@ function validateAuthority (button) {
 }
 
 
+function validateBibField (tags, searches) {
+	var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.validate.tag";
+	url += '&param="tags"&param=' + js2JSON(tags);
+	url += '&param="searches"&param=' + js2JSON(searches);
+
+
+	var req = new XMLHttpRequest();
+	req.open('GET',url,false);
+	req.send(null);
+
+	return req;
+
+}
 function searchAuthority (term, tag, sf, limit) {
 	var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
 	url += '&param="term"&param="' + term + '"';
