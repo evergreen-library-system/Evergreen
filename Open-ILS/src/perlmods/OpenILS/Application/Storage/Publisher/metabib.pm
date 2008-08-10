@@ -2652,7 +2652,7 @@ sub FTS_paging_estimate {
 }
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.fts_paging_estimate",
-	method		=> 'staged_fts',
+	method		=> 'FTS_paging_estimate',
     argc        => 5,
     strict      => 1,
 	api_level	=> 1,

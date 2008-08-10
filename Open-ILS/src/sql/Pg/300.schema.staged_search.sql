@@ -258,7 +258,7 @@ BEGIN
         tmp_text := '999999';
         IF param_sort_desc THEN tmp_text := '0'; END IF;
 
-        current_rank := $$ COALESCE( mrd.date1, $$ || quote_literal(tmp_text) || $$ )::INT ) $$;
+        current_rank := $$ COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\D+', '9', 'g'),'')), $$ || quote_literal(tmp_text) || $$ )::INT $$;
 
     ELSIF param_sort = 'title' THEN
 
