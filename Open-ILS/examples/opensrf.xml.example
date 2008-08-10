@@ -324,10 +324,32 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
-                    <superpage_size>500</superpage_size>
-                    <max_superpages>20</max_superpages>
+
+                    <!--
+                        For staged search, we estimate hits based on inclusion or exclusion.
+
+                        Valid settings:
+                            inclusion - visible ratio on superpage
+                            exclusion - excluded ratio on superpage
+                            delete_adjusted_inclusion - included ratio on superpage, ratio adjusted by deleted count
+                            delete_adjusted_exclusion - excluded ratio on superpage, ratio adjusted by deleted count
+
+                        Under normal circumstances, inclusion is the best strategy, and both delete_adjusted variants
+                        will return the same value +/- 1.  The exclusion strategy is the original, and works well
+                        when there are few deleted or excluded records, in other words, when the superpage is not
+                        sparsely populated with visible records.
+                    -->
+                    <estimation_strategy>inclusion</estimation_strategy>
+
+                    <!-- Baseline number of records to check for hit estimation. -->
+                    <superpage_size>1000</superpage_size>
+
+                    <!-- How many superpages to consider for searching overall. -->
+                    <max_superpages>10</max_superpages>
+
                     <!-- zip code database file -->
                     <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
                 </app_settings>

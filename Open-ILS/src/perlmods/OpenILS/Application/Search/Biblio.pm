@@ -780,6 +780,13 @@ sub staged_search {
     # restrict total tested to superpage size * number of superpages
     $search_hash->{core_limit} = $superpage_size * $max_superpages;
 
+    # Set the configured estimation strategy, defaults to 'inclusion'.
+	$search_hash->{estimation_strategy} = OpenSRF::Utils::SettingsClient
+        ->new
+        ->config_value(
+            apps => 'open-ils.search', app_settings => 'estimation_strategy'
+        );
+
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
     my $cache_data = $cache->get_cache($key) || {};

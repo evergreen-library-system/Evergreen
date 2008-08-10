@@ -2369,6 +2369,9 @@ sub staged_fts {
 
     }
 
+    # inclusion, exclusion, delete_adjusted_inclusion, delete_adjusted_exclusion
+    my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
+
 	my $ou = $args{org_unit};
 	my $limit = $args{limit} || 10;
 	my $offset = $args{offset} || 0;
@@ -2566,11 +2569,10 @@ sub staged_fts {
 
     my $estimate = $visible;
     if ( $total > $checked && $checked ) {
-        my $deleted_ratio = $deleted / $checked;
-        my $exclution_ratio = $excluded / $checked;
-        my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
 
-        $estimate = $$summary_row{estimated_hit_count} = int($delete_adjusted_total - ( $delete_adjusted_total * $exclution_ratio ));
+        $$summary_row{hit_estimate} = FTS_paging_estimate($self, $client, $checked, $visible, $excluded, $deleted, $total);
+        $estimate = $$summary_row{estimated_hit_count} = $$summary_row{hit_estimate}{$estimation_strategy};
+
     }
 
     delete $$summary_row{id};
@@ -2620,6 +2622,78 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	stream		=> 1,
 	cachable	=> 1,
+);
+
+sub FTS_paging_estimate {
+	my $self = shift;
+	my $client = shift;
+
+    my $checked = shift;
+    my $visible = shift;
+    my $excluded = shift;
+    my $deleted = shift;
+    my $total = shift;
+
+    my $deleted_ratio = $deleted / $checked;
+    my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
+
+    my $exclusion_ratio = $excluded / $checked;
+    my $delete_adjusted_exclusion_ratio = $excluded / ($checked - $deleted);
+
+    my $inclusion_ratio = $visible / $checked;
+    my $delete_adjusted_inclusion_ratio = $visible / ($checked - $deleted);
+
+    return {
+        exclusion                   => int($delete_adjusted_total - ( $delete_adjusted_total * $exclusion_ratio )),
+        inclusion                   => int($delete_adjusted_total * $inclusion_ratio),
+        delete_adjusted_exclusion   => int($delete_adjusted_total - ( $delete_adjusted_total * $delete_adjusted_exclusion_ratio )),
+        delete_adjusted_inclusion   => int($delete_adjusted_total * $delete_adjusted_inclusion_ratio)
+    };
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.fts_paging_estimate",
+	method		=> 'staged_fts',
+    argc        => 5,
+    strict      => 1,
+	api_level	=> 1,
+    signature   => {
+        'return'=> q#
+            Hash of estimation values based on four variant estimation strategies:
+                exclusion -- Estimate based on the ratio of excluded records on the current superpage;
+                inclusion -- Estimate based on the ratio of visible records on the current superpage;
+                delete_adjusted_exclusion -- Same as exclusion strategy, but the ratio is adjusted by deleted count;
+                delete_adjusted_inclusion -- Same as inclusion strategy, but the ratio is adjusted by deleted count;
+        #,
+        desc    => q#
+            Helper method used to determin the approximate number of
+            hits for a search that spans multiple superpages.  For
+            sparse superpages, the inclusion estimate will likely be the
+            best estimate.  The exclusion strategy is the original, but
+            inclusion is the default.
+        #,
+        params  => [
+            {   name    => 'checked',
+                desc    => 'Number of records check -- nominally the size of a superpage, or a remaining amount from the last superpage.',
+                type    => 'number'
+            },
+            {   name    => 'visible',
+                desc    => 'Number of records visible to the search location on the current superpage.',
+                type    => 'number'
+            },
+            {   name    => 'excluded',
+                desc    => 'Number of records excluded from the search location on the current superpage.',
+                type    => 'number'
+            },
+            {   name    => 'deleted',
+                desc    => 'Number of deleted records on the current superpage.',
+                type    => 'number'
+            },
+            {   name    => 'total',
+                desc    => 'Total number of records up to check_limit (superpage_size * max_superpages).',
+                type    => 'number'
+            }
+        ]
+    }
 );
 
 
