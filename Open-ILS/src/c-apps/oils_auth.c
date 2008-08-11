@@ -320,7 +320,10 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 		const osrfMethodContext* ctx, jsonObject* userObj, const char* ws ) {
 	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %s", ws);
 	jsonObject* workstation = oilsUtilsFetchWorkstationByName(ws);
-	if(!workstation) return oilsNewEvent(OSRF_LOG_MARK, "WORKSTATION_NOT_FOUND");
+	if(!workstation || workstation->type == JSON_NULL) {
+        jsonObjectFree(workstation);
+        return oilsNewEvent(OSRF_LOG_MARK, "WORKSTATION_NOT_FOUND");
+    }
 	long wsid = oilsFMGetObjectId(workstation);
 	LONG_TO_STRING(wsid);
 	char* orgid = oilsFMGetString(workstation, "owning_lib");
