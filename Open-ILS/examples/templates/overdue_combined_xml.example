@@ -1,0 +1,52 @@
+[% USE date -%]
+<?xml version='1.0' encoding='UTF-8'?>
+<file type="notice" date="[% date.format(date.now,'%Y-%m-%d') %]" time="[% date.format(date.now, '%H:%M:%S') %]">
+    [%- FOREACH circ_set = overdues %]
+    <notice type='overdue' notify_interval='[% circ_set.notice.notify_interval %]'>
+        [%- SET user = circ_set.circ_list.0.usr -%]
+        [%- SET lib = circ_set.circ_list.0.circ_lib -%]
+        [%- SET user_addr = user.mailing_address -%]
+        [%- IF !user_addr -%]
+                [%- SET user_addr = user.billing_address -%]
+        [%- END %]
+        [%- SET lib_addr = lib.mailing_address -%]
+        [%- IF !lib_addr -%]
+                [%- SET lib_addr = lib.billing_address -%]
+        [%- END %]
+        <patron>
+            <barcode>[% user.card.barcode %]</barcode>
+            <first_given_name>[% user.first_given_name %]</first_given_name>
+            <family_name>[% user.family_name %]</family_name>
+            <addr_street1>[% escape_xml(user_addr.street1) %]</addr_street1>
+            <addr_street2>[% escape_xml(user_addr.street2) %]</addr_street2>
+            <addr_city>[% escape_xml(user_addr.city) %]</addr_city>
+            <addr_state>[% user_addr.state %]</addr_state>
+            <addr_post_code>[% user_addr.post_code %]</addr_post_code>
+            <email>[% user.email %]</email>
+            <sys_id>[% user.id %]</sys_id>
+        </patron>
+        <location>
+            <name>[% escape_xml(lib.name) %]</name>
+            <phone>[% lib.phone %]</phone>
+            <addr_street1>[% escape_xml(lib_addr.street1) %]</addr_street1>
+            <addr_street2>[% escape_xml(lib_addr.street2) %]</addr_street2>
+            <addr_city>[% escape_xml(lib_addr.city) %]</addr_city>
+            <addr_state>[% lib_addr.state %]</addr_state>
+            <addr_post_code>[% lib_addr.post_code %]</addr_post_code>
+            <email>[% lib.email %]</email>
+            <sys_id>[% lib.id %]</sys_id>
+        </location>
+        [%- FOREACH circ = circ_set.circ_list %]
+            [%- SET due_date = parse_due_date(circ) %]
+        <item>
+            <title>[% escape_xml(get_bib_attr(circ, 'title')) %]</title>
+            <author>[% escape_xml(get_bib_attr(circ, 'author')) %]</author>
+            <due_date>[% date.format(due_date, '%Y-%m-%d') %]</due_date>
+            <call_number>[% escape_xml(circ.target_copy.call_number.label) %]</call_number>
+            <barcode>[% escape_xml(circ.target_copy.barcode) %]</barcode>
+            <circ_id>[% circ.id %]</circ_id>
+        </item>
+        [%- END %]
+    </notice>
+    [%- END %]
+</file>

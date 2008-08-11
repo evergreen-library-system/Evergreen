@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-25 13:19-0400\n"
-"PO-Revision-Date: 2007-12-14 12:40-0800\n"
-"Last-Translator: Tigran <tigran@flib.sci.am>\n"
+"PO-Revision-Date: 2008-08-01 12:46+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -195,7 +195,7 @@ msgstr "Հիմա որոնում է"
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr ""
+msgstr "մասին"
 
 #: common.relevancy
 msgid "Match Score: "
@@ -302,7 +302,6 @@ msgid "Reddish"
 msgstr "Կարմրավուն"
 
 #: holds.where_am_i
-#, fuzzy
 msgid ""
 "Holds lists are not as simple as \n"
 "'first come, first served.'  A complex matrix combining \n"
@@ -314,16 +313,15 @@ msgid ""
 "Your library will contact you when you hold items become \n"
 "available."
 msgstr ""
-"PINES դա նահանգային համակարգ է, ընթերցողներով և նյութերով \tփոխկապակցված "
-"ավելի քան 250 գրադարաններում, պահումների ցուցակները PINES-ում այդքան էլ պարզ "
-"չեն ինչպես\t'առաջին մուտք առաջին սպասարկված'։  Բարդ մատրիցան որը "
-"կոմբինացնում է \tնյութի պատկանելիության, ընթերցողի հիմնական գրադարանի, և "
-"նյութի պատվերի դիտարկումները \tորքան ամսաթիվը սահմանում է առաջնայնությունները "
-"պահումների համար. ցուցակը դինամիկ է, փոփոխվաղ \tյուրաքանչյուր տեղադրված "
-"պահման հետ։  Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում "
-"կլինի ոչ ճիշտ։  PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը "
-"հնարավորինս արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը "
-"կկապվի ձեր հետ երբ պահվող նյութերը կդառնան \tհասանելի։ "
+"Պահումների ցուցակները PINES-ում այդքան էլ պարզ չեն ինչպես\t'առաջին մուտք "
+"առաջին սպասարկված'։  Բարդ մատրիցան որը կոմբինացնում է \tնյութի "
+"պատկանելիության, ընթերցողի հիմնական գրադարանի, և նյութի պատվերի "
+"դիտարկումները \tորքան ամսաթիվը սահմանում է առաջնայնությունները պահումների "
+"համար. ցուցակը դինամիկ է, փոփոխվաղ \tյուրաքանչյուր տեղադրված պահման հետ։  "
+"Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ ճիշտ։ "
+" PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը հնարավորինս "
+"արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը կկապվի ձեր "
+"հետ երբ պահվող նյութերը կդառնան \tհասանելի։ "
 
 #: holds.advanced_options
 #, fuzzy
@@ -771,15 +769,15 @@ msgstr ""
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
-msgstr ""
+msgstr "Կասեցնել"
 
 #: myopac.holds.thaw_selected
 msgid "Activate"
-msgstr ""
+msgstr "Ակտիվացնել"
 
 #: myopac.holds.thaw_date_selected
 msgid "Set Active Date"
-msgstr ""
+msgstr "Դնել ակտիվ ամսաթիվը"
 
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
@@ -825,19 +823,19 @@ msgid ""
 "Select an automatic activation date.  If no date is chosen, the holds will "
 "remain suspended until they are manually activated."
 msgstr ""
+"Ընտրեք ակտիվացման ավտոմատ ամսաթիվը: Եթե ամսաթիվ ընտրված չէ, պահումները կմնան "
+"կասեցված քանի դէռ ձեռքով չեն ակտիվացված:"
 
 #: opac.holds.freeze
 msgid "Suspend this hold"
-msgstr ""
+msgstr "Կասեցնել այս պահումը:"
 
 #: opac.holds.freeze.help
-#, fuzzy
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
 msgstr ""
-"'Սառեցվածը' կպահպանի իր տեղը հերթում, բայց չի կատարվի քանի դեռ չի "
-"ապասառեցվել։"
+"Կասեցվածը կպահպանի իր տեղը հերթում, բայց չի կատարվի քանի դեռ չի ապասառեցվել։"
 
 #: opac.holds.freeze.thaw_date
 #, fuzzy
@@ -929,11 +927,11 @@ msgstr ""
 
 #: myopac.holds.unfrozen
 msgid "Active"
-msgstr ""
+msgstr "Ակտիվ:"
 
 #: myopac.holds.frozen.until
 msgid "Activate on..."
-msgstr ""
+msgstr "Ակտիվացնել ..."
 
 # =================================================================
 # MyOPAC Summary page
@@ -1208,7 +1206,7 @@ msgstr "Դասիչ"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr ""
+msgstr "Դարակի տեղը"
 
 # ==========================================================
 # MARC expert search
@@ -1595,7 +1593,7 @@ msgstr "Սկսիր փնտրումը"
 
 #: advanced.search.reset
 msgid "Reset Form"
-msgstr ""
+msgstr "Վերագրի ձևը"
 
 #: advanced.search.filters
 msgid "Search Filters"
@@ -2031,7 +2029,7 @@ msgstr "Իրականացրու որոնում ըստ Հեղինակի"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
-msgstr ""
+msgstr "Դիտիր Google-ի Գրքի փնտրման մեջ"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2051,7 +2049,7 @@ msgstr "Պատճենահանիր շտրիխ կոդը։"
 
 #: common.hold.place
 msgid "Place hold for my account"
-msgstr ""
+msgstr "Տեղադրի պահումը իմ հաշվում:"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
@@ -2340,42 +2338,3 @@ msgstr "http://amazon.com/dp/"
 
 #~ msgid " of at least "
 #~ msgstr "ամենաքիչը"
-
-#~ msgid "Share"
-#~ msgstr "Համատեղ"
-
-#~ msgid "Freeze"
-#~ msgstr "Սառեցրու"
-
-#~ msgid "Un-freeze"
-#~ msgstr "Ապասառեցրու"
-
-#~ msgid "Set Un-freeze date"
-#~ msgstr "Դիր ապասառեցման ամսաթիվը"
-
-#~ msgid "Are you sure you wish to un-freeze the selected holds?"
-#~ msgstr "Վստա՞հ ես որ ուզում ես ապասառեցնել ընտրված պահումները։"
-
-#~ msgid ""
-#~ "Select an 'Un-Freeze' date.  This is the date at which the holds will become "
-#~ "active again. If no date is chosen, the holds will remain frozen until they "
-#~ "are manually un-frozen."
-#~ msgstr ""
-#~ "Ընտրիր Ապասառեցման ամսաթիվը։ Սա այն ամսաթիվն է, որից հետո պահումները նորից "
-#~ "ակտիվ կդառնան։ Եթե ամսաթիվ ընտրված չէ, պահումները կմնան սառեցված քանի դեռ "
-#~ "ձեռքով չեն ապասառեցվել։"
-
-#~ msgid "Freeze this hold"
-#~ msgstr "Սառեցրու այս պահումը"
-
-#~ msgid "Un-Frozen"
-#~ msgstr "Ապասառեցված է։"
-
-#~ msgid "Frozen Until"
-#~ msgstr "Սառեցված է մինչ"
-
-#~ msgid "Place hold for me"
-#~ msgstr "Իմ համար իրականացրու պահում"
-
-#~ msgid "Edit/Cancel"
-#~ msgstr "Խմբագրիր/Անտեսիր"

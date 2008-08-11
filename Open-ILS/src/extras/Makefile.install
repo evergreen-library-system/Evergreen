@@ -28,13 +28,15 @@
 #
 # ---------------------------------------------------------------------
  
+# Make any assumptions about the shell being used explicit
+SHELL=/bin/bash 
+
 # XXX
 # Gentoo needs explicit versions on many of these packages
 # to simulate a "blessed" set of packages
 # Also, I (think) Gentoo has a javascript::spidermonkey package that does
 # not require fetching the sources externally ... needs testing/updating in here
 
- 
 LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.19
 LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
@@ -79,63 +81,65 @@ APT_TOOL=aptitude
 
 # Debian dependencies
 DEBS =  \
+	apache2-mpm-prefork\
+	apache2-prefork-dev\
+	aspell\
+	aspell-en\
+	autoconf\
+	automake\
 	build-essential\
-	syslog-ng\
-	psmisc\
-	ntpdate\
+	ejabberd\
 	less\
-    memcached\
-    libxml2-dev\
-    libmodule-build-perl\
-    libexpat1-dev\
-    libmemcache-dev\
-    libperl-dev\
-    libcache-memcached-perl\
-	libtext-csv-perl\
-    libxml-libxml-perl\
-    libxslt1-dev\
-    libxml-libxslt-perl\
-    libwww-perl\
-    liberror-perl\
-    libclass-dbi-pg-perl\
-    libclass-dbi-abstractsearch-perl\
-    libtemplate-perl\
-    libtext-aspell-perl\
-    libdatetime-format-mail-perl\
-    libdatetime-timezone-perl\
-    libdatetime-perl\
-    libunix-syslog-perl\
-    libgd-graph3d-perl\
-    libuniversal-require-perl\
-    libclass-dbi-sqlite-perl\
-    liblog-log4perl-perl\
-    libnet-jabber-perl\
-    libtest-pod-perl\
-    libfile-find-rule-perl\
-    libdatetime-format-builder-perl\
-    libmarc-record-perl\
-    librpc-xml-perl\
-    aspell\
-    aspell-en\
-    libxml-simple-perl\
-    libpq-dev\
-    libemail-send-perl\
-    ejabberd\
-    libtool\
-    apache2-mpm-prefork\
-    apache2-prefork-dev\
-    libapache2-mod-perl2\
-    libreadline5-dev\
-	libtext-csv-perl\
-	libspreadsheet-writeexcel-perl\
+	libapache2-mod-perl2\
+	libbusiness-creditcard-perl\
+	libbusiness-onlinepayment-authorizenet-perl\
+	libbusiness-onlinepayment-perl\
+	libcache-memcached-perl\
+	libclass-dbi-abstractsearch-perl\
+	libclass-dbi-pg-perl\
+	libclass-dbi-sqlite-perl\
+	libdatetime-format-builder-perl\
+	libdatetime-format-mail-perl\
+	libdatetime-perl\
+	libdatetime-timezone-perl\
+	libemail-send-perl\
+	liberror-perl\
+	libexpat1-dev\
+	libfile-find-rule-perl\
+	libfreezethaw-perl\
+	libgd-graph3d-perl\
+	liblog-log4perl-perl\
+	libmarc-record-perl\
+	libmemcache-dev\
+	libmodule-build-perl\
+	libnet-jabber-perl\
 	libole-storage-lite-perl\
+	libperl-dev\
+	libpq-dev\
+	libreadline5-dev\
+	librpc-xml-perl\
+	libspreadsheet-writeexcel-perl\
+	libtemplate-perl\
+	libtest-pod-perl\
+	libtext-aspell-perl\
+	libtext-csv-perl\
+	libtext-csv-perl\
 	libtie-ixhash-perl\
+	libtool\
+	libuniversal-require-perl\
+	libunix-syslog-perl\
+	libwww-perl\
+	libxml2-dev\
+	libxml-libxml-perl\
+	libxml-libxslt-perl\
+	libxml-simple-perl\
+	libxslt1-dev\
+	memcached\
+	ntpdate\
+	psmisc\
 	python-dev\
 	python-setuptools\
-	libfreezethaw-perl\
-	libbusiness-creditcard-perl\
-	libbusiness-onlinepayment-perl\
-	libbusiness-onlinepayment-authorizenet-perl
+	syslog-ng
 
 CENTOS = \
 	apr-util-devel \
@@ -452,3 +456,5 @@ create_ld_local:
 		echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf; \
 		ldconfig; \
 	fi;
+
+# vim:noet:sw=4:ts=4:

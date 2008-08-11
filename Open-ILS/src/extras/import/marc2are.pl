@@ -69,7 +69,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
-	$xml = entityize($xml);
+	$xml = entityize($xml,'D');
 	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::authority::record_entry;

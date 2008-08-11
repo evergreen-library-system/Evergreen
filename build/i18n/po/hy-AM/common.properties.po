@@ -1,12 +1,12 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
-#, fuzzy
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-25 13:19-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2008-08-01 18:03+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,533 +21,536 @@ msgid ""
 "%1$s\n"
 "%2$s\n"
 msgstr ""
+"!! Այս ծրագրում կան սխալնէր: Տեղէկացրու ծրագրի նախագծողին հետևյալը՝\n"
+"%1$s\n"
+"%2$s\n"
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "JSAN գրադարանը բացակա է:"
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
-msgstr ""
+msgstr "Տեղեկացրու նախագծողին սխալի մասին:"
 
 #: common.ok
 msgid "Ok"
-msgstr ""
+msgstr "Լավ"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "Մաքրել"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "Այս հաղորդումը հաստատելու համար ստուգիր այստեղ  "
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr ""
+msgstr "Զեկուցիր որ սա պատահել է:"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
-msgstr ""
+msgstr "Զգուշացում: Առ %1$s, այս շտրիխ կոդը (%2$s) նշվել է %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "Կորած"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "Ժամկետանց"
 
 #: common.barcode.status.warning.barred
 msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
-msgstr ""
+msgstr "Կասեցված"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Բլոկ արված"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
-msgstr ""
+msgstr "անհայտ կոդով: %1$s"
 
 #: common.date.invalid
 msgid "Invalid Date"
-msgstr ""
+msgstr "Սխալ ամսաթիվ"
 
 #: common.action_complete
 msgid "Action completed."
-msgstr ""
+msgstr "Գործողությունը ավարտված է:"
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
 msgid ","
-msgstr ""
+msgstr ","
 
 #: common.unimplemented
 msgid "Not yet implemented"
-msgstr ""
+msgstr "Դեռ իրականացված չէ"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Այւ"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Այս հաղորդումը հաստատելու համար ստուգիր այստեղ"
 
 #: lang.version
 msgid "remote v1"
-msgstr ""
+msgstr "հեռացրու v1"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr ""
+msgstr "Պրոբլեմ Քեշը մաքրելուց: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr ""
+msgstr "Քլիփբորդի գործողությունը ձախողվեց: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "Արտագրված է \"%1$s\" քլիփբորդում:"
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
-msgstr ""
+msgstr "Սխալի առկայություն get_contentWindow(%1$s) և wrappedJSObject: %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
+msgstr "Error with get_contentWindow(%1$s): %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
+msgstr "Սխալ ֆոնտի չափը հավասարեցնելիս: %1$s"
 
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
 msgid "Barcode"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
 #: staff.acp_label_call_number
 msgid "Call Number"
-msgstr ""
+msgstr "Դասիչ"
 
 #: staff.acp_label_circ_as_type
 msgid "Circulate As Type"
-msgstr ""
+msgstr "Սպասարկիր որպես տեսակ"
 
 #: staff.acp_label_circ_lib
 msgid "Circulation Library"
-msgstr ""
+msgstr "Սպասարկող գրադարան"
 
 #: staff.acp_label_circ_modifier
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "Սպասարկման փոխարկիչ"
 
 #: staff.acp_label_copy_number
 msgid "Copy Number"
-msgstr ""
+msgstr "Պատճեի համար"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Դեպոզիտ գումար"
 
 #: staff.acp_label_fine_level
 msgid "Fine Level"
-msgstr ""
+msgstr "Տուքանքի մակարդակ"
 
 #: staff.acp_label_id
 msgid "Copy ID"
-msgstr ""
+msgstr "Պատճեի ID"
 
 #: staff.acp_label_loan_duration
 msgid "Loan Duration"
-msgstr ""
+msgstr "Տրման տևողություն"
 
 #: staff.acp_label_location
 msgid "Location"
-msgstr ""
+msgstr "Գտնվելու վայր"
 
 #: staff.acp_label_price
 msgid "Price"
-msgstr ""
+msgstr "Գին"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
 msgid "Status"
-msgstr ""
+msgstr "Վիճակ"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
-msgstr ""
+msgstr "Ընթացիկ պատճե"
 
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
-msgstr ""
+msgstr "Էլ փոստ տեղեկացում"
 
 #: staff.ahr_expire_time_label
 msgid "Expire Time"
-msgstr ""
+msgstr "Լրանալու ժամկետ"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
-msgstr ""
+msgstr "Կատարման ժամկետ"
 
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
-msgstr ""
+msgstr "Պաման ձևաչափեր"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
-msgstr ""
+msgstr "Պահման ID"
 
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
-msgstr ""
+msgstr "Հտռախոսով տեղեկացում"
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
-msgstr ""
+msgstr "Վերցնելու գրադարան"
 
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"
-msgstr ""
+msgstr "Նախորդ երկարացման ժամ"
 
 #: staff.ahr_requestor_label
 msgid "Requestor"
-msgstr ""
+msgstr "Առաջարկող"
 
 #: staff.ahr_selection_depth_label
 msgid "Selection Depth"
-msgstr ""
+msgstr "Ընտրանքի խորություն"
 
 #: staff.ahr_status_label
 msgctxt "staff.ahr_status_label"
 msgid "Status"
-msgstr ""
+msgstr "Վիճակ"
 
 #: staff.ahr_target_label
 msgid "Target"
-msgstr ""
+msgstr "Թիրախ"
 
 #: staff.ahr_usr_label
 msgctxt "staff.ahr_usr_label"
 msgid "User"
-msgstr ""
+msgstr "Օքտվող"
 
 #: staff.circ_label_due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Վերադարձի ամսաթիվ"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
-msgstr ""
+msgstr "Սպասարկման ID"
 
 #: staff.circ_label_renewal_remaining
 msgid "Remaining Renewals"
-msgstr ""
+msgstr "Մնացող թարմացումներ"
 
 #: staff.mvr_label_author
 msgctxt "staff.mvr_label_author"
 msgid "Author"
-msgstr ""
+msgstr "Հեղինակ"
 
 #: staff.mvr_label_doc_id
 msgid "Document ID"
-msgstr ""
+msgstr "Փաստաթղթի ID"
 
 #: staff.mvr_label_title
 msgctxt "staff.mvr_label_title"
 msgid "Title"
-msgstr ""
+msgstr "Վերնագիր"
 
 #: staff.bills_xact_dates_label
 msgid "Record / Dates"
-msgstr ""
+msgstr "Գրառում / Ամսաթվեր"
 
 #: staff.bills_information
 msgid "Information"
-msgstr ""
+msgstr "Տեղեկություն"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
-msgstr ""
+msgstr "Ընթացիկ վճարում"
 
 #: staff.mbts_id_label
 msgid "Bill #"
-msgstr ""
+msgstr "Հաշիվ #"
 
 #: staff.mbts_xact_start_label
 msgid "Start"
-msgstr ""
+msgstr "Սկիզբ"
 
 #: staff.mbts_xact_finish_label
 msgid "Finish"
-msgstr ""
+msgstr "Ավարտ"
 
 #: staff.mbts_xact_type_label
 msgctxt "staff.mbts_xact_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
 #: staff.mbts_total_owed_label
 msgid "Total Billed"
-msgstr ""
+msgstr "Ընդամենը հաշվարկված"
 
 #: staff.mbts_total_paid_label
 msgid "Total Paid"
-msgstr ""
+msgstr "Ընդամենը վճարված"
 
 #: staff.mbts_balance_owed_label
 msgid "Balance Owed"
-msgstr ""
+msgstr "Բալանս"
 
 #: staff.mbts_usr_label
 msgctxt "staff.mbts_usr_label"
 msgid "User"
-msgstr ""
+msgstr "Օգտվող"
 
 #: staff.mbts_last_billing_note_label
 msgid "Last Billing Note"
-msgstr ""
+msgstr "Վերջին հաշվի նշում"
 
 #: staff.mbts_last_billing_type_label
 msgid "Last Billing Type"
-msgstr ""
+msgstr "Վերջին հաշվի տեսակ"
 
 #: staff.mbts_last_billing_timestamp_label
 msgid "Last Billed"
-msgstr ""
+msgstr "Վերջին հաշիվ"
 
 #: staff.mbts_last_payment_note_label
 msgid "Last Payment Note"
-msgstr ""
+msgstr "Վերջին վճարման նշում"
 
 #: staff.mbts_last_payment_type_label
 msgid "Last Payment Type"
-msgstr ""
+msgstr "Վերջին վճարման տեսակ"
 
 #: staff.mbts_last_payment_timestamp_label
 msgid "Last Payment"
-msgstr ""
+msgstr "Վերջին վճարում"
 
 #: staff.mb_billing_type_label
 msgid "Billing Type"
-msgstr ""
+msgstr "Վճարման տեսակ"
 
 #: staff.mb_xact_label
 msgctxt "staff.mb_xact_label"
 msgid "Transaction ID"
-msgstr ""
+msgstr "Տրանզակցիաճի ID"
 
 #: staff.mb_billing_ts_label
 msgctxt "staff.mb_billing_ts_label"
 msgid "When"
-msgstr ""
+msgstr "Երբ"
 
 #: staff.mb_void_time_label
 msgid "Void Time"
-msgstr ""
+msgstr "Void ժամ"
 
 #: staff.mb_note_label
 msgctxt "staff.mb_note_label"
 msgid "Note"
-msgstr ""
+msgstr "Նշում"
 
 #: staff.mb_amount_label
 msgctxt "staff.mb_amount_label"
 msgid "Amount"
-msgstr ""
+msgstr "Գումար"
 
 #: staff.mb_voider_label
 msgid "Voider"
-msgstr ""
+msgstr "Voider"
 
 #: staff.mb_voided_label
 msgctxt "staff.mb_voided_label"
 msgid "Voided"
-msgstr ""
+msgstr "Voided"
 
 #: staff.mb_id_label
 msgid "Billing ID"
-msgstr ""
+msgstr "Հաշվի ID"
 
 #: staff.mp_credit_card_payment_label
 msgid "Credit Card Payment"
-msgstr ""
+msgstr "Վճարում կրեդիտ քարտով"
 
 #: staff.mp_forgive_payment_label
 msgid "Forgive Payment"
-msgstr ""
+msgstr "Ներված վճարում"
 
 #: staff.mp_payment_timestamp_label
 msgctxt "staff.mp_payment_timestamp_label"
 msgid "When"
-msgstr ""
+msgstr "Երբ"
 
 #: staff.mp_payment_type_label
 msgid "Payment Type"
-msgstr ""
+msgstr "Վճարման տեսակ"
 
 #: staff.mp_voided_label
 msgctxt "staff.mp_voided_label"
 msgid "Voided"
-msgstr ""
+msgstr "Voided"
 
 #: staff.mp_id_label
 msgid "Payment ID"
-msgstr ""
+msgstr "Վճարման ID"
 
 #: staff.mp_goods_payment_label
 msgid "Goods Payment"
-msgstr ""
+msgstr "Ապրանքների վճարում"
 
 #: staff.mp_xact_label
 msgctxt "staff.mp_xact_label"
 msgid "Transaction ID"
-msgstr ""
+msgstr "Տրանզակցիաճի ID"
 
 #: staff.mp_credit_payment_label
 msgid "Credit Payment"
-msgstr ""
+msgstr "Կրեդիտ վճարում"
 
 #: staff.mp_work_payment_label
 msgid "Work Payment"
-msgstr ""
+msgstr "Աշխատանքային վճարում"
 
 #: staff.mp_note_label
 msgctxt "staff.mp_note_label"
 msgid "Note"
-msgstr ""
+msgstr "Նշում"
 
 #: staff.mp_cash_payment_label
 msgid "Cash Payment"
-msgstr ""
+msgstr "Կանխիկ վճարում"
 
 #: staff.mp_amount_label
 msgctxt "staff.mp_amount_label"
 msgid "Amount"
-msgstr ""
+msgstr "Գումար"
 
 #: staff.mp_check_payment_label
 msgid "Check Payment"
-msgstr ""
+msgstr "Չեկով վճարում"
 
 #: staff.mp_cash_drawer_label
 msgid "Workstation"
-msgstr ""
+msgstr "Աշխատանքային կայան"
 
 #: staff.mp_accepting_usr_label
 msgid "Staff"
-msgstr ""
+msgstr "Աշխատակազմ"
 
 #: staff.card_barcode_label
 msgctxt "staff.card_barcode_label"
 msgid "Barcode"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
 #: staff.au_active_label
 msgid "Active"
-msgstr ""
+msgstr "Ակտիվ"
 
 #: staff.au_usrname_label
 msgid "Login Name"
-msgstr ""
+msgstr "Գրանգման անուն"
 
 #: staff.au_profile_label
 msgid "Profile"
-msgstr ""
+msgstr "Պրւֆիլ"
 
 #: staff.au_barred_label
 msgctxt "staff.au_barred_label"
 msgid "Barred"
-msgstr ""
+msgstr "Կասեցված"
 
 #: staff.au_alert_message_label
 msgid "Alert"
-msgstr ""
+msgstr "Ահազանգ"
 
 #: staff.au_claims_returned_count_label
 msgid "Returns Claimed"
-msgstr ""
+msgstr "Վերադարձերը նշվել են"
 
 #: staff.au_create_date_label
 msgid "Created On"
-msgstr ""
+msgstr "Ստեղծվել է"
 
 #: staff.au_expire_date_label
 msgid "Expires On"
-msgstr ""
+msgstr "Լրանում է"
 
 #: staff.au_home_library_label
 msgid "Home Library"
-msgstr ""
+msgstr "Տնային գրադարան"
 
 #: staff.au_home_library_fullname_label
 msgid "Home Library (Full Name)"
-msgstr ""
+msgstr "Տնային գրադարան (լրիվ անվանում)"
 
 #: staff.au_credit_forward_balance_label
 msgid "Credit"
-msgstr ""
+msgstr "Կրեդիտ"
 
 #: staff.au_day_phone_label
 msgid "Day Phone"
-msgstr ""
+msgstr "Ցերեկային հեռախոս"
 
 #: staff.au_evening_phone_label
 msgid "Evening Phone"
-msgstr ""
+msgstr "Երեկոյան հեռախոս"
 
 #: staff.au_other_phone_label
 msgid "Other Phone"
-msgstr ""
+msgstr "Այլ հեռախոս"
 
 #: staff.au_email_label
 msgid "Email"
-msgstr ""
+msgstr "էլ փոստ"
 
 #: staff.au_birth_date_label
 msgid "Birth Date"
-msgstr ""
+msgstr "Ծննդյան տարեթիվ"
 
 #: staff.au_ident_type_label
 msgid "Identification Type"
-msgstr ""
+msgstr "Փոխճանաչման տեսակ"
 
 #: staff.au_ident_value_label
 msgid "Identification Value"
-msgstr ""
+msgstr "Փոխճանաչման արժեք"
 
 #: staff.au_ident_type2_label
 msgid "Identification Type 2"
-msgstr ""
+msgstr "Փոխճանաչման տեսակ 2"
 
 #: staff.au_ident_value2_label
 msgid "Identification Value 2"
-msgstr ""
+msgstr "Փոխճանաչման արժեք 2"
 
 #: staff.au_net_access_level_label
 msgid "Internet Access"
-msgstr ""
+msgstr "Ինտերնետ հասանելիություն"
 
 #: staff.au_master_account_label
 msgid "Group Lead"
-msgstr ""
+msgstr "Խմբի առաջնորդ"
 
 #: staff.au_group_id_label
 msgid "Group ID"
-msgstr ""
+msgstr "Խմբի ID"
 
 #: staff.au_id_label
 msgid "User ID"
@@ -555,138 +558,138 @@ msgstr ""
 
 #: staff.au_name_prefix_label
 msgid "Prefix"
-msgstr ""
+msgstr "Նախածանց"
 
 #: staff.au_family_name_label
 msgid "Family Name"
-msgstr ""
+msgstr "Ազգանուն"
 
 #: staff.au_first_given_name_label
 msgid "First Name"
-msgstr ""
+msgstr "Անուն"
 
 #: staff.au_second_given_name_label
 msgid "Middle Name"
-msgstr ""
+msgstr "Հայրանուն"
 
 #: staff.au_name_suffix_label
 msgid "Suffix"
-msgstr ""
+msgstr "Վերջածանց"
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
 msgid "Author"
-msgstr ""
+msgstr "Հեղինակ"
 
 #: staff.z39_50.search_class.isbn
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: staff.z39_50.search_class.issn
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: staff.z39_50.search_class.item_type
 msgid "Item Type"
-msgstr ""
+msgstr "Նյութի տեսակ"
 
 #: staff.z39_50.search_class.item_type.all
 msgid "All Formats"
-msgstr ""
+msgstr "Բոլոր ձևաչափեր"
 
 #: staff.z39_50.search_class.item_type.art
 msgid "Papers/Articles"
-msgstr ""
+msgstr "Թղթեր/Հոդվածներ"
 
 #: staff.z39_50.search_class.item_type.bks
 msgid "Books"
-msgstr ""
+msgstr "Գրքեր"
 
 #: staff.z39_50.search_class.item_type.com
 msgid "Computer files"
-msgstr ""
+msgstr "Համակարգչային ֆայլեր"
 
 #: staff.z39_50.search_class.item_type.map
 msgid "Maps"
-msgstr ""
+msgstr "Քարտեզներ"
 
 #: staff.z39_50.search_class.item_type.mix
 msgid "Mixed material"
-msgstr ""
+msgstr "Խառը նյութեր"
 
 #: staff.z39_50.search_class.item_type.rec
 msgid "Sound recordings"
-msgstr ""
+msgstr "Ձայներիզներ"
 
 #: staff.z39_50.search_class.item_type.sco
 msgid "Musical scores"
-msgstr ""
+msgstr "Նոտաներ"
 
 #: staff.z39_50.search_class.item_type.ser
 msgid "Serials"
-msgstr ""
+msgstr "Պարբերականներ"
 
 #: staff.z39_50.search_class.item_type.url
 msgid "Internet Resources"
-msgstr ""
+msgstr "ինտերնետ պաշարներ"
 
 #: staff.z39_50.search_class.item_type.vis
 msgid "Visual materials"
-msgstr ""
+msgstr "Տեսողական նյութեր"
 
 #: staff.z39_50.search_class.lccn
 msgid "LCCN"
-msgstr ""
+msgstr "LCCN"
 
 #: staff.z39_50.search_class.pubdate
 msgid "Publication Date"
-msgstr ""
+msgstr "Հրատարակման տարի"
 
 #: staff.z39_50.search_class.publisher
 msgid "Publisher"
-msgstr ""
+msgstr "Հրատարակիչ"
 
 #: staff.z39_50.search_class.tcn
 msgid "Accession #"
-msgstr ""
+msgstr "Մատչելիության #"
 
 #: staff.z39_50.search_class.title
 msgctxt "staff.z39_50.search_class.title"
 msgid "Title"
-msgstr ""
+msgstr "Վերնագիր"
 
 #: staff.z39_50_import_interface_label
 msgid "Z39.50 Import"
-msgstr ""
+msgstr "Z39.50 ներմուծում"
 
 #: staff.main.data.loaded
 msgid "Data loaded."
-msgstr ""
+msgstr "Տվյալները բեռնավորված են:"
 
 #: staff.main.gen_offline_widgets.synced
 msgid "Offline interface synchronized with server."
-msgstr ""
+msgstr "Օֆլայն միջերեսը սինխրոն է կայանի հետ:"
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
 msgid "error in noncat sorting:"
-msgstr ""
+msgstr "սխալ noncat տեսակավորումում"
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"
-msgstr ""
+msgstr "Խնդրում ենք սպասել"
 
 #: staff.main.gen_offline_widgets.workstation_registration_denied
 msgid "You do not have permission to register a workstation."
-msgstr ""
+msgstr "Չունես իրավունք աշխատանքային կայանի գրանցման համար"
 
 #: staff.main.gen_offline_widgets.registration.override
 msgid "Override Registration Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ գրանցման ձախողումը"
 
 #: staff.main.gen_offline_widgets.registration.error
 msgid "Workstation Registration error (%1$s)"
-msgstr ""
+msgstr "աշխատանքային կայանի գրանցման սխալ (%1$s)"
 
 #: staff.main.gen_offline_widgets.registration.success
 msgid "Registration successful"
-msgstr ""
+msgstr "Գրանցումը հաջող է"

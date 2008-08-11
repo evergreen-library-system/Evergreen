@@ -1,3 +1,15 @@
+/*
+
+-- If, for some reason, you need to reload this chunk of the schema
+-- just use the following two statements to remove the tables before
+-- running the rest of the file.  See 950.data.seed-values.sql for
+-- the one default entry to add back to config.hold_matrix_matchpoint.
+
+DROP TABLE config.hold_matrix_matchpoint CASCADE;
+DROP TABLE config.hold_matrix_test CASCADE;
+
+*/
+
 BEGIN;
 
 
@@ -42,6 +54,7 @@ CREATE TABLE config.hold_matrix_test (
 	transit_range		    INT	REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,		-- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
 	max_holds		        INT,							-- Total hold requests must be less than this, NULL means skip (always pass)
 	include_frozen_holds	BOOL	NOT NULL DEFAULT TRUE,				-- Include frozen hold requests in the count for max_holds test
+	stop_blocked_user   	BOOL	NOT NULL DEFAULT FALSE,				-- Stop users who cannot check out items from placing holds
 	age_hold_protect_rule	INT	REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED	-- still not sure we want to move this off the copy
 );
 
@@ -164,6 +177,7 @@ DECLARE
 	hold_count		INT;
 	hold_transit_prox	INT;
 	frozen_hold_count	INT;
+	patron_penalties	INT;
 	done			BOOL := FALSE;
 BEGIN
 	SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
@@ -171,6 +185,15 @@ BEGIN
 	-- Fail if we couldn't find a user
 	IF user_object.id IS NULL THEN
 		result.fail_part := 'no_user';
+		result.success := FALSE;
+		done := TRUE;
+		RETURN NEXT result;
+		RETURN;
+	END IF;
+
+	-- Fail if user is barred
+	IF user_object.barred IS TRUE THEN
+		result.fail_part := 'actor.usr.barred';
 		result.success := FALSE;
 		done := TRUE;
 		RETURN NEXT result;
@@ -223,6 +246,19 @@ BEGIN
 
 		IF NOT FOUND THEN
 			result.fail_part := 'transit_range';
+			result.success := FALSE;
+			done := TRUE;
+			RETURN NEXT result;
+		END IF;
+	END IF;
+
+	IF hold_test.stop_blocked_user IS TRUE THEN
+		SELECT	INTO patron_penalties COUNT(*)
+		  FROM	actor.usr_standing_penalty
+		  WHERE	usr = match_user;
+
+		IF items_out > 0 THEN
+			result.fail_part := 'config.hold_matrix_test.stop_blocked_user';
 			result.success := FALSE;
 			done := TRUE;
 			RETURN NEXT result;

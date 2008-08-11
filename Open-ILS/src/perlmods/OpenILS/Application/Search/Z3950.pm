@@ -17,7 +17,7 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 
-my $output	= "USMARC"; 
+my $output	= "usmarc"; 
 my $U = 'OpenILS::Application::AppUtils'; 
 
 my $sclient;

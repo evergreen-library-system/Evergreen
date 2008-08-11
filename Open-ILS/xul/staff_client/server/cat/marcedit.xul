@@ -13,6 +13,7 @@
 
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
+<script src="/opac/common/js/JSON_v1.js" type="application/x-javascript; e4x=1"/>
 
 <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />

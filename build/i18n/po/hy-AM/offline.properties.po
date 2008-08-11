@@ -1,4 +1,5 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 #, fuzzy
 msgid ""
 msgstr ""

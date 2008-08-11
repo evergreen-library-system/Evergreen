@@ -1,4 +1,5 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 #, fuzzy
 msgid ""
 msgstr ""

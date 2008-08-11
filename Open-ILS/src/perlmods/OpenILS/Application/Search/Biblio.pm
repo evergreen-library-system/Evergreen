@@ -780,6 +780,14 @@ sub staged_search {
     # restrict total tested to superpage size * number of superpages
     $search_hash->{core_limit} = $superpage_size * $max_superpages;
 
+    # Set the configured estimation strategy, defaults to 'inclusion'.
+	my $estimation_strategy = OpenSRF::Utils::SettingsClient
+        ->new
+        ->config_value(
+            apps => 'open-ils.search', app_settings => 'estimation_strategy'
+        ) || 'inclusion';
+	$search_hash->{estimation_strategy} = $estimation_strategy;
+
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
     my $cache_data = $cache->get_cache($key) || {};
@@ -790,6 +798,7 @@ sub staged_search {
     my $page; # current superpage
     my $est_hit_count = 0;
     my $current_page_summary = {};
+    my $global_summary = {checked => 0, visible => 0, excluded => 0, deleted => 0, total => 0};
 
     for($page = 0; $page < $max_superpages; $page++) {
 
@@ -838,6 +847,14 @@ sub staged_search {
         $logger->debug("staged search: located $current_count, with estimated hits=".
             $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
 
+		if (defined($summary->{estimated_hit_count})) {
+			$global_summary->{checked} += $summary->{checked};
+			$global_summary->{visible} += $summary->{visible};
+			$global_summary->{excluded} += $summary->{excluded};
+			$global_summary->{deleted} += $summary->{deleted};
+			$global_summary->{total} = $summary->{total};
+		}
+
         # we've found all the possible hits
         last if $current_count == $summary->{visible}
             and not defined $summary->{estimated_hit_count};
@@ -850,6 +867,23 @@ sub staged_search {
     }
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
+
+	# refine the estimate if we have more than one superpage
+	if ($page > 0) {
+		if ($global_summary->{checked} >= $global_summary->{total}) {
+			$est_hit_count = $global_summary->{visible};
+		} else {
+			my $updated_hit_count = $U->storagereq(
+				'open-ils.storage.fts_paging_estimate',
+				$global_summary->{checked},
+				$global_summary->{visible},
+				$global_summary->{excluded},
+				$global_summary->{deleted},
+				$global_summary->{total}
+			);
+			$est_hit_count = $updated_hit_count->{$estimation_strategy};
+		}
+	}
 
     return {
         count => $est_hit_count,

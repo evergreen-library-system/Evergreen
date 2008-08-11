@@ -89,6 +89,10 @@ for my $h (@order) {
 
 	my $fields = join(',', @{ $fieldcache{$h}{fields} });
 	$output->print( "DELETE FROM $fieldcache{$h}{table};\n" ) if (grep {$_ eq $h } @wipe);
+	# Speed up loading of bib records
+	if ($h eq 'mfr') {
+		$output->print("\nSELECT reporter.disable_materialized_simple_record_trigger();\n");
+	}
 	$output->print( "COPY $fieldcache{$h}{table} ($fields) FROM STDIN;\n" );
 
 	for my $line (@{ $lineset{$h} }) {
@@ -115,6 +119,10 @@ for my $h (@order) {
 
 	$output->print('\.'."\n\n");
 	
+	if ($h eq 'mfr') {
+		$output->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
+	}
+
 	$output->print("SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n\n")
 		if (!grep { $_ eq $h} @auto);
 }

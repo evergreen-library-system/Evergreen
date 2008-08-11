@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use strict;
+use warnings;
 
 use lib '/openils/lib/perl5/';
 
@@ -42,7 +43,6 @@ $main_out->print("SET CLIENT_ENCODING TO 'UNICODE';\n\n");
 $main_out->print("BEGIN;\n\n");
 
 my %out_files;
-my %out_headers;
 for my $h (@order) {
 	$out_files{$h} = FileHandle->new(">$output.$h.sql");
 	binmode($out_files{$h},'utf8');
@@ -82,6 +82,10 @@ while ( my $rec = <> ) {
 
 		my $fields = join(',', @{ $fieldcache{$hint}{fields} });
 		$main_out->print( "DELETE FROM $fieldcache{$hint}{table};\n" ) if (grep {$_ eq $hint } @wipe);
+		# Speed up loading of bib records
+		if ($hint eq 'mfr') {
+			$main_out->print("\nSELECT reporter.disable_materialized_simple_record_trigger();\n");
+		}
 		$main_out->print( "COPY $fieldcache{$hint}{table} ($fields) FROM '$pwd/$output.$hint.sql';\n" );
 
 	}
@@ -114,5 +118,8 @@ while ( my $rec = <> ) {
 	$count++;
 }
 
+if (grep /^mfr$/, %out_files) {
+	$main_out->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
+}
 $main_out->print("-- COMMIT;\n\n");
 $main_out->close; 

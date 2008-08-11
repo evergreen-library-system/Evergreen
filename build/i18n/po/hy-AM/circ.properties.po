@@ -1,4 +1,5 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 #, fuzzy
 msgid ""
 msgstr ""

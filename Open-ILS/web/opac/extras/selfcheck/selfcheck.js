@@ -33,6 +33,7 @@ var successfulItems = {};
 var scanTimeout = 800;
 var scanTimeoutId;
 var patronBarcodeRegex;
+var orgUnit;
 
 
 function selfckInit() {
@@ -41,13 +42,12 @@ function selfckInit() {
 
     selfckSetupPrinter();
 
-    /*
-    XXX we need org information (from the proxy?)
-    var t = fetchOrgSettingDefault(1, 'circ.selfcheck.patron_login_timeout');
-    patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
-    */
+    orgUnit = findOrgUnitSN(cgi.param('l')) || globalOrgTree;
 
-    var reg = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    var t = fetchOrgSettingDefault(orgUnit.id(), 'circ.selfcheck.patron_login_timeout');
+    patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
+
+    var reg = fetchOrgSettingDefault(orgUnit.id(), 'opac.barcode_regex');
     if(reg) patronBarcodeRegex = new RegExp(reg);
 
     if(!staff) {
@@ -251,7 +251,16 @@ function selfckCheckout() {
   * attempts renewal.  Any other events will display a message
   */
 function selfckHandleCoResult(r) {
-    var evt = r.getResultObject();
+    var evt;
+
+    try {
+        evt = r.getResultObject();
+    } catch(E) {
+        pendingXact = false;
+        selfckShowMsgNode({textcode:'UNKNOWN'});
+        appendClear($('selfck-errors'), text(E.toString()));
+        return;
+    }
 
     if(evt.textcode == 'SUCCESS') {
         selfckDislplayCheckout(evt);

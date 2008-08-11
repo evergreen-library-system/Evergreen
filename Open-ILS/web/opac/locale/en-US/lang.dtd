@@ -2027,6 +2027,7 @@
 <!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
 <!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
 <!ENTITY staff.cat.volume_editor.modify.label "Modify">
+<!ENTITY staff.cat.volume_editor.cancel.label "Cancel">
 <!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
 <!ENTITY staff.cat.z3950.marc_import.accesskey "I">
 <!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">

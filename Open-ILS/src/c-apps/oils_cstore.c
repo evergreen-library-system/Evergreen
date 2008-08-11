@@ -1128,15 +1128,18 @@ static char* searchValueTransform( const jsonObject* array ) {
 		else
 			buffer_add(sql_buf, ", ");
 
-		if ( dbi_conn_quote_string(dbhandle, &val) ) {
+		if (func_item->type == JSON_NULL) {
+			buffer_add( sql_buf, "NULL" );
+		} else if ( dbi_conn_quote_string(dbhandle, &val) ) {
 			buffer_fadd( sql_buf, "%s", val );
-			free(val);
 		} else {
 			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 			free(val);
 			buffer_free(sql_buf);
 			return NULL;
 		}
+
+		free(val);
 	}
 
 	buffer_add(

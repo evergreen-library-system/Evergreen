@@ -32,7 +32,7 @@ vim:et:ts=4:sw=4:
 
         <ils_events>/openils/var/data/ils_events.xml</ils_events> <!-- ILS events description file -->
 
-        <email_notify>
+        <email_notify> <!-- this will eventually move into the notifications section below... -->
             <!-- global email notification settings -->
             <template>/openils/var/data/hold_notification_template.example</template>
             <smtp_server>localhost</smtp_server>
@@ -44,6 +44,52 @@ vim:et:ts=4:sw=4:
             <sender_address>evergreen@localhost</sender_address>
         </email_notify>
 
+
+      <notifications>
+        <!-- global mail server settings -->
+        <smtp_server>localhost</smtp_server>
+        <sender_address>evergreen@localhost</sender_address>
+
+        <!-- Overdue notices -->
+        <overdue>
+
+            <!-- optionally, you can define a sender address per notice type -->
+            <sender_address>overdue@localhost</sender_address>
+
+            <!-- The system can generate an XML file of overdue notices.  This is the
+                directory where they are stored.  Files are named overdue.YYYY-MM-DD.xml -->
+            <notice_dir>/openils/var/data/overdue</notice_dir>
+            <combined_template>/openils/var/data/templates/overdue_combined_xml.example</combined_template>
+
+            <notice>
+                <!-- Notify at 7 days overdue -->
+                <notify_interval>7 days</notify_interval>
+                <!-- Options include always, noemail, and never.  'noemail' means a notice
+                     will be appended to the notice file only if the patron has no valid email address.  -->
+                <file_append>noemail</file_append>
+                <!-- do we attempt email notification? -->
+                <email_notify>true</email_notify>
+                <!-- notice template file -->
+                <email_template>/openils/var/data/templates/overdue_7day.example</email_template>
+            </notice>
+        </overdue>
+
+        <!-- Courtesy notices -->
+        <predue>
+            <notice>
+                <!-- All circulations that circulate between 5 and 13 days -->
+                <circ_duration_range>
+                    <from>5 days</from>
+                    <to>13 days</to>
+                </circ_duration_range>
+                <!-- notify at 1 day before the due date -->
+                <notify_interval>1 day</notify_interval>
+                <file_append>false</file_append>
+                <email_notify>true</email_notify>
+                <email_template>/openils/var/data/templates/predue_1day.example</email_template>
+            </notice>
+        </predue>
+      </notifications>
 
         <reporter>
             <!--
@@ -278,10 +324,32 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
-                    <superpage_size>500</superpage_size>
-                    <max_superpages>20</max_superpages>
+
+                    <!--
+                        For staged search, we estimate hits based on inclusion or exclusion.
+
+                        Valid settings:
+                            inclusion - visible ratio on superpage
+                            exclusion - excluded ratio on superpage
+                            delete_adjusted_inclusion - included ratio on superpage, ratio adjusted by deleted count
+                            delete_adjusted_exclusion - excluded ratio on superpage, ratio adjusted by deleted count
+
+                        Under normal circumstances, inclusion is the best strategy, and both delete_adjusted variants
+                        will return the same value +/- 1.  The exclusion strategy is the original, and works well
+                        when there are few deleted or excluded records, in other words, when the superpage is not
+                        sparsely populated with visible records.
+                    -->
+                    <estimation_strategy>inclusion</estimation_strategy>
+
+                    <!-- Baseline number of records to check for hit estimation. -->
+                    <superpage_size>1000</superpage_size>
+
+                    <!-- How many superpages to consider for searching overall. -->
+                    <max_superpages>10</max_superpages>
+
                     <!-- zip code database file -->
                     <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
                 </app_settings>

@@ -6,7 +6,7 @@ var FETCH_USER					= 'open-ils.actor:open-ils.actor.user.fleshed.retrieve';
 var FETCH_VOLUME				= 'open-ils.search:open-ils.search.callnumber.retrieve';
 
 var myPerms				= [ 'VIEW_HOLD' ];
-var HOLD_LIST_LIMIT	= 50;
+var HOLD_LIST_LIMIT	= 100;
 var numHolds			= 0;
 
 var listOffset			= 0;

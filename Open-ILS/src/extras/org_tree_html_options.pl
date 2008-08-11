@@ -42,7 +42,7 @@ sub entityize {
         $stuff =~ s/\</&lt;/og;
         $stuff =~ s/\>/&gt;/og;
         $stuff =~ s/\&/&amp;/og;
-        $stuff = NFC($stuff);
+        $stuff = NFD($stuff);
         $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
         return $stuff;
 }

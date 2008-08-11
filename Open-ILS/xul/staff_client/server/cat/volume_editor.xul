@@ -86,6 +86,7 @@
 				//g.error.sdump('D_CAT','in modal window, g.data.volumes_temp = \n' + g.data.volumes_temp + '\n');
 				//g.data.stash('volumes_temp');
 				xulG.volumes = g.volumes;
+                xulG.update_these_volumes = 1;
 				update_modal_xulG(xulG);
 				window.close();
 			} catch(E) {
@@ -103,7 +104,7 @@
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
 		<hbox>
-			<button label="Cancel" oncommand="window.close();"/>
+			<button label="&staff.cat.volume_editor.cancel.label;" oncommand="window.close();"/>
 			<spacer flex="1" />
 			<button label="&staff.cat.volume_editor.modify.label;" oncommand="g.stash_and_close();"/>
 		</hbox>
