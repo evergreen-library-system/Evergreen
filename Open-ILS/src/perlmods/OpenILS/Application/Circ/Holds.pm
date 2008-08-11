@@ -142,10 +142,12 @@ sub create_hold {
 		}
 
         # set the configured expire time
-        my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
-        if($interval) {
-            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
-            $hold->expire_time($U->epoch2ISO8601($date->epoch));
+        unless($hold->expire_time) {
+            my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
+            if($interval) {
+                my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+                $hold->expire_time($U->epoch2ISO8601($date->epoch));
+            }
         }
 
 		$hold->requestor($e->requestor->id); 
