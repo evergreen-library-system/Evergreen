@@ -143,12 +143,14 @@ function _holdsUpdateEditHold() {
 		$('holds_enable_email').checked = false;
 	}
 
+    dijit.byId('holds_expire_time').setValue(dojo.date.stamp.fromISOString(hold.expire_time()));
+
     /* populate the hold freezing info */
     if(!frozenbox.disabled && isTrue(hold.frozen())) {
         frozenbox.checked = true;
         unHideMe($('hold_frozen_thaw_row'));
         if(hold.thaw_date()) {
-            dijit.byId('holds_frozen_thaw_input').setValue(hold.thaw_date());
+            dijit.byId('holds_frozen_thaw_input').setValue(dojo.date.stamp.fromISOString(hold.thaw_date()));
         } else {
             dijit.byId('holds_frozen_thaw_input').setValue('');
         }
@@ -451,7 +453,6 @@ function __holdsDrawWindow() {
 		}
 	}
 
-    //if(!G.user.email()) {
     if(!holdArgs.recipient.email()) {
 		$('holds_enable_email').checked = false;	
 		$('holds_enable_email').disabled = true;
@@ -479,6 +480,13 @@ function __holdsDrawWindow() {
     $('holds_frozen_chkbox').checked = false;
     hideMe($('hold_frozen_thaw_row'));
 
+    var interval = fetchOrgSettingDefault(holdArgs.recipient.home_ou(), 'circ.hold_expire_interval');
+    var secs = 0;
+    if(interval)
+        secs = interval_to_seconds(interval);
+    var expire = new Date();
+    expire.setTime(expire.getTime() + Number(secs + '000'));
+    dijit.byId('holds_expire_time').setValue(expire);
 }
 
 function holdsParseMRFormats(str) {
@@ -716,6 +724,13 @@ function holdsBuildHoldFromWindow() {
 	hold.usr(holdArgs.recipient.id());
 	hold.target(target);
 	hold.hold_type(holdArgs.type);
+
+    var expireDate = dojo.date.stamp.toISOString(dijit.byId('holds_expire_time').getValue())
+    expireDate = holdsVerifyThawDate(expireDate); 
+    if(expireDate)
+        hold.expire_time(expireDate);
+    else 
+        return;
 
     // see if this hold should be frozen and for how long
     if($('holds_frozen_chkbox').checked) {
