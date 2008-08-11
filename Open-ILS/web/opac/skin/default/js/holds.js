@@ -108,7 +108,7 @@ function _holdsUpdateEditHold() {
 	setSelector(orgsel, hold.pickup_lib());
 
 	if( hold.capture_time() || status > 2 ) {
-		orgsel.disabled = true;
+		//orgsel.disabled = true;
         frozenbox.disabled = true;
         $('holds_frozen_thaw_input').disabled = true;
 
