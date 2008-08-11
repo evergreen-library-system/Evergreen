@@ -67,9 +67,10 @@ __PACKAGE__->register_method(
 	method => 'fetch_circ_mods',
 	api_name => 'open-ils.circ.circ_modifier.retrieve.all');
 sub fetch_circ_mods {
-	my $conf = OpenSRF::Utils::SettingsClient->new;
-	return $conf->config_value(
-		'apps', 'open-ils.circ', 'app_settings', 'circ_modifiers', 'mod' );
+    my($self, $conn, $args) = @_;
+    my $mods = new_editor()->retrieve_all_config_circ_modifier;
+    return [ map {$_->code} @$mods ] unless $$args{full};
+    return $mods;
 }
 
 __PACKAGE__->register_method(
