@@ -108,10 +108,16 @@ function _holdsUpdateEditHold() {
 	setSelector(orgsel, hold.pickup_lib());
 
 	if( hold.capture_time() || status > 2 ) {
-		//orgsel.disabled = true;
         frozenbox.disabled = true;
         $('holds_frozen_thaw_input').disabled = true;
-
+        if(status == 3) {
+            // no pickup lib changes while in-transit
+		    orgsel.disabled = true;
+        } else {
+            var orgs = fetchPermOrgs('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF');
+            if(orgs[0] == -1)
+		        orgsel.disabled = true;
+        }
     } else {
 		orgsel.disabled = false;
         frozenbox.disabled = false;
