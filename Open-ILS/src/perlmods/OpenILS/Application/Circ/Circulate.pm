@@ -521,14 +521,14 @@ sub mk_env {
         }
     }
 
+    return undef if $self->is_checkin;
 
     # --------------------------------------------------------------------------
     # Grab the patron
     # --------------------------------------------------------------------------
     my $patron;
-    my $p_evt;
 	if( $self->patron_id ) {
-		$patron = $e->retrieve_actor_user($self->patron_id) or $p_evt = $e->event;
+		$patron = $e->retrieve_actor_user($self->patron_id) or return $e->event;
 
 	} elsif( $self->patron_barcode ) {
 
