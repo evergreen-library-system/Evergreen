@@ -96,3 +96,6 @@ a:focus { background: #E0F0E0; color: #000000;}
 #myopac_holds_thaw_date_form { border: 1px solid #E0E0E0; } 
 
 .invalid_field { border: 3px solid red; }
+
+.hold_expire_warning { color:red; }
+
