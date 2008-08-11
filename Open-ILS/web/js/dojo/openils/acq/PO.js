@@ -37,6 +37,7 @@ if(!dojo._hasResource['openils.acq.PO']) {
             fieldmapper.standardRequest(
                 req, 
                 {   params:par, 
+                    async: true,
                     oncomplete:function(r) {
                         var po = r.recv().content();
                         openils.acq.PO.cache[po.id()] = po;
