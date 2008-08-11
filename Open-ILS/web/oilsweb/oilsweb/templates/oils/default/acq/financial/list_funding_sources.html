@@ -36,7 +36,7 @@
         <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 openils.acq.CurrencyType.loadSelectWidget(fsCurrencySelector);
-                globalUser.buildPermOrgSelector('ADMIN_FUNDING_SOURCE', fsOwnerSelect);
+                new openils.User().buildPermOrgSelector('ADMIN_FUNDING_SOURCE', fsOwnerSelect);
             </script>
 
             <table class='dijitTooltipTable'>

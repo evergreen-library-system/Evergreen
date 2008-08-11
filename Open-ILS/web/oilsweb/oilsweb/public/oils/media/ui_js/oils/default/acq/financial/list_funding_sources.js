@@ -7,8 +7,6 @@ dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.Grid');
 dojo.require('openils.Event');
 
-var globalUser = new openils.User();
-
 function getOrgInfo(rowIndex) {
     data = fundingSourceListGrid.model.getRow(rowIndex);
     if(!data) return;
