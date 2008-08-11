@@ -1,3 +1,15 @@
+/*
+
+-- If, for some reason, you need to reload this chunk of the schema
+-- just use the following two statements to remove the tables before
+-- running the rest of the file.  See 950.data.seed-values.sql for
+-- the one default entry to add back to config.hold_matrix_matchpoint.
+
+DROP TABLE config.hold_matrix_matchpoint CASCADE;
+DROP TABLE config.hold_matrix_test CASCADE;
+
+*/
+
 BEGIN;
 
 
