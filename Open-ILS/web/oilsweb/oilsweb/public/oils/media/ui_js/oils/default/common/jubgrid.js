@@ -210,8 +210,13 @@ var JUBGrid = {
                 var rowIdx = selected[i];
 	            var jubid = JUBGrid.jubGrid.model.getRow(rowIdx).id;
                 if(jubid == id) {
-                    deleteMe.push(lineitems[id]);
-                    deleted = true;
+		    if (lineitems[id].state() == 'new') {
+			deleteMe.push(lineitems[id]);
+			deleted = true;
+		    } else {
+			alert("Can not delete line item "+id+
+			      ": item is "+lineitems[id].state());
+		    }
                 }
             }
             if(!deleted) 
