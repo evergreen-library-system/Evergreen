@@ -215,9 +215,11 @@ sub process_results {
     my $service = shift;
 
     my $tformat = $services{$service}->{transmission_format} || $output;
-    my $rformat = $services{$service}->{record_format} || 'FI';
-	$results->option(elementSetName => $rformat);
-    $logger->info("z3950: using record format '$rformat'");
+    my $rformat = $services{$service}->{record_format};
+
+    $results->option(elementSetName => $rformat);
+    $results->option(preferredRecordSyntax => $tformat);
+    $logger->info("z3950: using record format '$rformat' and transmission format '$tformat'");
 
 	my @records;
 	my $res = {};
@@ -243,10 +245,10 @@ sub process_results {
 
 			my $rec	= $results->record($_);
 
-            if ($tformat eq 'usmarc') {
-    			$marc		= MARC::Record->new_from_usmarc($rec->raw());
-            } elsif ($tformat eq 'xml') {
-    			$marc		= MARC::Record->new_from_xml($rec->raw());
+            if (lc($tformat) eq 'usmarc') {
+    			$marc = MARC::Record->new_from_usmarc($rec->raw());
+            } elsif (lc($tformat) eq 'xml') {
+    			$marc = MARC::Record->new_from_xml($rec->raw());
             } else {
                 die "Unsupported record transmission format $tformat"
             }
