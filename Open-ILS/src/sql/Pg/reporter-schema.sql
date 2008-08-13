@@ -199,11 +199,11 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER zzz_update_materialized_simple_record_tgr
-    AFTER INSERT OR UPDATE OR DELETE ON metabib.full_rec
+    AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
     FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.full_rec;
+    DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
@@ -215,7 +215,7 @@ CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger ()
         SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record;
 
     CREATE TRIGGER zzz_update_materialized_simple_record_tgr
-        AFTER INSERT OR UPDATE OR DELETE ON metabib.full_rec
+        AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
         FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
 
 $$ LANGUAGE SQL;

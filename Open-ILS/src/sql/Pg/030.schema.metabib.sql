@@ -136,9 +136,11 @@ CREATE INDEX metabib_rec_descriptor_vr_format_idx ON metabib.rec_descriptor (vr_
 
 */
 
+-- Use a sequence that matches previous version, for easier upgrading.
+CREATE SEQUENCE metabib.full_rec_id_seq;
 
-CREATE TABLE metabib.full_rec (
-	id		BIGSERIAL	PRIMARY KEY,
+CREATE TABLE metabib.real_full_rec (
+	id		    BIGINT	NOT NULL DEFAULT NEXTVAL('metabib.full_rec_id_seq'::REGCLASS),
 	record		BIGINT		NOT NULL,
 	tag		CHAR(3)		NOT NULL,
 	ind1		TEXT,
@@ -147,15 +149,60 @@ CREATE TABLE metabib.full_rec (
 	value		TEXT		NOT NULL,
 	index_vector	tsvector	NOT NULL
 );
-CREATE INDEX metabib_full_rec_tag_subfield_idx ON metabib.full_rec (tag,subfield);
---CREATE INDEX metabib_full_rec_value_idx ON metabib.full_rec (value);
-CREATE INDEX metabib_full_rec_record_idx ON metabib.full_rec (record);
+ALTER TABLE metabib.real_full_rec ADD PRIMARY KEY (id);
+
+CREATE INDEX metabib_full_rec_tag_subfield_idx ON metabib.real_full_rec (tag,subfield);
+CREATE INDEX metabib_full_rec_value_idx ON metabib.real_full_rec (substring(value,1,1024));
+CREATE INDEX metabib_full_rec_record_idx ON metabib.real_full_rec (record);
+CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.real_full_rec USING GIST (index_vector);
+
 CREATE TRIGGER metabib_full_rec_fti_trigger
-	BEFORE UPDATE OR INSERT ON metabib.full_rec
+	BEFORE UPDATE OR INSERT ON metabib.real_full_rec
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('default');
 
-CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.full_rec USING GIST (index_vector);
+CREATE OR REPLACE VIEW metabib.full_rec AS
+    SELECT  id,
+            record,
+            tag,
+            ind1,
+            ind2,
+            subfield,
+            SUBSTRING(value,1,1024) AS value,
+            index_vector
+      FROM  metabib.real_full_rec;
 
+CREATE OR REPLACE RULE metabib_full_rec_insert_rule
+    AS ON INSERT TO metabib.full_rec
+    DO INSTEAD
+    INSERT INTO metabib.real_full_rec VALUES (
+        COALESCE(NEW.id, NEXTVAL('metabib.full_rec_id_seq'::REGCLASS)),
+        NEW.record,
+        NEW.tag,
+        NEW.ind1,
+        NEW.ind2,
+        NEW.subfield,
+        NEW.value,
+        NEW.index_vector
+    );
+
+CREATE OR REPLACE RULE metabib_full_rec_update_rule
+    AS ON UPDATE TO metabib.full_rec
+    DO INSTEAD
+    UPDATE  metabib.real_full_rec SET
+        id = NEW.id,
+        record = NEW.record,
+        tag = NEW.tag,
+        ind1 = NEW.ind1,
+        ind2 = NEW.ind2,
+        subfield = NEW.subfield,
+        value = NEW.value,
+        index_vector = NEW.index_vector
+      WHERE id = OLD.id;
+
+CREATE OR REPLACE RULE metabib_full_rec_delete_rule
+    AS ON DELETE TO metabib.full_rec
+    DO INSTEAD
+    DELETE FROM metabib.real_full_rec WHERE id = OLD.id;
 
 CREATE TABLE metabib.metarecord_source_map (
 	id		BIGSERIAL	PRIMARY KEY,

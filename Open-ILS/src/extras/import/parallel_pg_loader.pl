@@ -80,6 +80,9 @@ while ( my $rec = <> ) {
 			  fields => \@cols,
 			};
 
+        #XXX it burnnnsssessss
+        $fieldcache{$hint}{table} =~ s/\.full_rec/.real_full_rec/o if ($hint eq 'mfr');
+
 		my $fields = join(',', @{ $fieldcache{$hint}{fields} });
 		$main_out->print( "DELETE FROM $fieldcache{$hint}{table};\n" ) if (grep {$_ eq $hint } @wipe);
 		# Speed up loading of bib records
