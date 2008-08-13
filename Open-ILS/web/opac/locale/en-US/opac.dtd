@@ -223,6 +223,7 @@ If an item has already been selected to fulfill the hold, it will not be suspend
 <!ENTITY opac.holds.freeze "Suspend this hold">
 <!ENTITY opac.holds.freeze.help "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.">
 <!ENTITY opac.holds.freeze.thaw_date "Automatically activate hold on:">
+<!ENTITY opac.holds.expire_time "Expiration date">
 
 <!--	================================================================= 
 	MyOPAC Preferences Page 

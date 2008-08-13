@@ -47,6 +47,7 @@
 				<td>&common.status;</td>
 				<td>&myopac.holds.unfrozen;</td>
 				<td>&myopac.holds.frozen.until;</td>
+				<td>&opac.holds.expire_time;</td>
                 <td width='15%'>&common.select;
                     (<a id='myopac_select_all_holds' onclick='myopacSelectAllHolds();' 
                         class='classic_link' href='javascript:void(0);'>&common.all;</a>/<a id='myopac_select_none_holds' 
@@ -96,7 +97,9 @@
                     <span name='myopac_hold_unfrozen_true' class='hide_me check_mark'>&common.yes;</span>
                 </td>
 
+
                 <td name='myopac_holds_frozen_until'></td>
+                <td name='myopac_hold_expire_time'></td>
                 <td><input type='checkbox' name='myopac_holds_selected_chkbx'/></td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>

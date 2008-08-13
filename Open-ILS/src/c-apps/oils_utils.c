@@ -231,11 +231,12 @@ jsonObject* oilsUtilsFetchWorkstation( long id ) {
 }
 
 jsonObject* oilsUtilsFetchWorkstationByName( const char* name ) {
-	jsonObject* p = jsonParseStringFmt("[\"%s\"]", name);
-	jsonObject* r = oilsUtilsStorageReq(
-		"open-ils.storage.direct.actor.workstation.search.name", p );
+	jsonObject* p = jsonParseStringFmt("{\"name\":\"%s\"}", name);
+    jsonObject* r = oilsUtilsCStoreReq(
+        "open-ils.cstore.direct.actor.workstation.search", p);
 	jsonObjectFree(p);
-	return r;
+    return r;
 }
+
 
 

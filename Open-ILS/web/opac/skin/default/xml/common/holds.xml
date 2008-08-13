@@ -119,6 +119,13 @@
 					</td>
 				</tr>
 
+				<tr>
+					<td class='holds_cell'>&opac.holds.expire_time;</td>
+					<td class='holds_cell'>
+                        <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10' id='holds_expire_time' />
+					</td>
+				</tr>
+
                 <tr>
                     <td class='holds_cell'>
                         &opac.holds.freeze;

@@ -13,6 +13,8 @@ use Digest::MD5 qw/md5_hex/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenILS::Utils::OfflineStore;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils;
+use DateTime;
 
 use DBI;
 $DBI::trace = 1;
@@ -21,6 +23,7 @@ my $U = "OpenILS::Application::AppUtils";
 my $DB = "OpenILS::Utils::OfflineStore";
 my $SES = "${DB}::Session";
 my $SCRIPT = "OpenILS::Utils::OfflineStore::Script";
+my $user_groups;
 
 # --------------------------------------------------------------------
 # Load the config
@@ -92,6 +95,9 @@ sub ol_runtime_init {
 		$org = $requestor->ws_ou unless $org;
 		ol_handle_result(OpenILS::Event->new('OFFLINE_NO_ORG')) unless $org;
 	}
+
+    $user_groups = $U->simplereq(
+        'open-ils.actor', 'open-ils.actor.groups.retrieve');
 }
 
 
@@ -769,6 +775,15 @@ sub ol_handle_register {
 	
 	# pull all of the rest of the data from the command blob
 	$actor->$_( $command->{user}->{$_} ) for keys %{$command->{user}};
+
+    # calculate the expire date for the patron based on the profile group
+    my ($grp) = grep {$_->id == $actor->profile} @$user_groups;
+    if($grp) {
+        my $seconds = OpenSRF::Utils->interval_to_seconds($grp->perm_interval);
+        my $expire_date = DateTime->from_epoch(epoch => DateTime->now->epoch + $seconds);
+		$logger->debug("offline: setting expire date to $expire_date");
+        $actor->expire_date($U->epoch2ISO8601($expire_date));
+    }
 
 	$logger->debug("offline: creating user object...");
 	$actor = $U->simplereq(

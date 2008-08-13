@@ -60,7 +60,7 @@ ALTER TABLE metabib.keyword_field_entry ADD CONSTRAINT metabib_keyword_field_ent
 
 ALTER TABLE metabib.rec_descriptor ADD CONSTRAINT metabib_rec_descriptor_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE metabib.full_rec ADD CONSTRAINT metabib_full_rec_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.real_full_rec ADD CONSTRAINT metabib_full_rec_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE metabib.metarecord_source_map ADD CONSTRAINT metabib_metarecord_source_map_source_fkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE metabib.metarecord_source_map ADD CONSTRAINT metabib_metarecord_source_map_metarecord_fkey FOREIGN KEY (metarecord) REFERENCES metabib.metarecord (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;

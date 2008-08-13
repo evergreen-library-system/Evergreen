@@ -142,10 +142,12 @@ sub create_hold {
 		}
 
         # set the configured expire time
-        my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
-        if($interval) {
-            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
-            $hold->expire_time($U->epoch2ISO8601($date->epoch));
+        unless($hold->expire_time) {
+            my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
+            if($interval) {
+                my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+                $hold->expire_time($U->epoch2ISO8601($date->epoch));
+            }
         }
 
 		$hold->requestor($e->requestor->id); 
@@ -542,12 +544,46 @@ sub update_hold {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
+    # --------------------------------------------------------------
+    # if the hold is on the holds shelf and the pickup lib changes, 
+    # we need to create a new transit
+    # --------------------------------------------------------------
+    if( ($orig_hold->pickup_lib ne $hold->pickup_lib) and (_hold_status($e, $hold) == 4)) {
+        return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
+        return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
+        my $evt = transit_hold($e, $orig_hold, $hold, 
+            $e->retrieve_asset_copy($hold->current_copy));
+        return $evt if $evt;
+    }
+
     update_hold_if_frozen($self, $e, $hold, $orig_hold);
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
     return $hold->id;
 }
 
+sub transit_hold {
+    my($e, $orig_hold, $hold, $copy) = @_;
+    my $src = $orig_hold->pickup_lib;
+    my $dest = $hold->pickup_lib;
+
+    $logger->info("putting hold into transit on pickup_lib update");
+
+    my $transit = Fieldmapper::action::transit_copy->new;
+    $transit->source($src);
+    $transit->dest($dest);
+    $transit->target_copy($copy->id);
+    $transit->source_send_time('now');
+    $transit->copy_status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
+
+    $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
+    $copy->editor($e->requestor->id);
+    $copy->edit_date('now');
+
+    $e->create_action_transit_copy($transit) or return $e->die_event;
+    $e->update_asset_copy($copy) or return $e->die_event;
+    return undef;
+}
 
 # if the hold is frozen, this method ensures that the hold is not "targeted", 
 # that is, it clears the current_copy and prev_check_time to essentiallly 
