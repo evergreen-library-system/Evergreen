@@ -57,30 +57,30 @@ pointing to the JUB model (and store) that you have created.
     }
     JUBGrid.jubGridLayout = [{
         cells: [[
-            {name: '${_("ID")}', field: 'id'},
-            {name: '${_("Title")}', width: "auto", get:JUBGrid.getJUBTitle},
-            {name: '${_("Author")}', get:JUBGrid.getJUBAuthor},
-            {name: '${_("ISBN")}', get:JUBGrid.getJUBIsbn},
-            {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate},
+            {name: '${_("ID")}', field: 'id', width:'auto'},
+            {name: '${_("Title")}', width: "180px", get:JUBGrid.getJUBTitle},
+            {name: '${_("Author")}', get:JUBGrid.getJUBAuthor, width:'auto'},
+            {name: '${_("ISBN")}', get:JUBGrid.getJUBIsbn, width:'auto'},
+            {name: '${_("Pubdate")}', get:JUBGrid.getJUBPubdate, width:'auto'},
             {name: '${_("Actual Price")}', 
                 field:'actual_price',
                 get:JUBGrid.getJUBActualPrice,
-                editor:dojox.grid.editors.Dijit, 
+                editor:dojox.grid.editors.Dijit, width:'auto', 
                 editorClass: "dijit.form.CurrencyTextBox" 
             },
             {name: '${_("Estimated Price")}', 
                 field:'estimated_price',
-                get:JUBGrid.getJUBEstimatedPrice,
+                get:JUBGrid.getJUBEstimatedPrice, width:'auto',
                 editor:dojox.grid.editors.Dijit, 
                 editorClass: "dijit.form.CurrencyTextBox" 
             },
-            {name: '${_("Vendor")}',
+            {name: '${_("Vendor")}', width:'auto',
 	     field: 'provider', get:JUBGrid.getProvider,
 	     editor:openils.editors.ProviderSelectEditor,
 	    },
-            {name: '${_("No. Copies")}', field: 'item_count'},
-            {name: '${_("State")}', field: 'state'},
-            {name: '${_("PO")}', get:JUBGrid.getPO}
+            {name: '${_("No. Copies")}', field: 'item_count', width:'auto'},
+            {name: '${_("State")}', field: 'state', width:'auto'},
+            {name: '${_("PO")}', get:JUBGrid.getPO, width:'auto'}
         ]]
     }];
 
