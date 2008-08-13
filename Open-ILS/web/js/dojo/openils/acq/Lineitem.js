@@ -201,13 +201,13 @@ openils.acq.Lineitem.createLID = function(fields, onCreateComplete) {
     fieldmapper.standardRequest(
 	['open-ils.acq', 'open-ils.acq.lineitem_detail.create'],
 	{ async: true,
-	  params: [openils.User.authtoken, lid],
+	  params: [openils.User.authtoken, lid, {return_obj:1}],
 	  oncomplete: function(r) {
 	      var msg = r.recv();
-
-	      fields.id = msg.content();
+          var obj = msg.content();
+          openils.Event.parse_and_raise(obj);
 	      if (onCreateComplete) {
-		  onCreateComplete(fields);
+		    onCreateComplete(obj);
 	      }
 	  }
 	});

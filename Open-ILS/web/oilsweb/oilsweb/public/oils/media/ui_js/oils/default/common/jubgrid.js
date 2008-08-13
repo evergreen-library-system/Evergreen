@@ -267,8 +267,9 @@ var JUBGrid = {
 
     createLID: function(fields) {
         fields['lineitem'] = JUBGrid.jubDetailGrid.lineitemID;
-        var addToStore = function () {
-            JUBGrid.jubDetailGrid.model.store.newItem(fields);
+        var addToStore = function (lid) {
+            //JUBGrid.jubDetailGrid.model.store.newItem(fields);
+            JUBGrid.jubDetailGrid.model.store.newItem(acqlid.toStoreData([lid]).items[0]);
             JUBGrid.jubDetailGrid.refresh();
             JUBGrid.jubGrid.update();
             JUBGrid.jubGrid.refresh();
