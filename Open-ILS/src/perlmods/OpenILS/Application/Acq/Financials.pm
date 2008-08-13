@@ -662,6 +662,7 @@ sub create_purchase_order_debits {
 
             # point the lineitem detail at the fund debit object
             $lid->fund_debit($debit->id);
+            $lid->fund($lid->fund->id);
             $e->update_acq_lineitem_detail($lid) or return $e->die_event;
             $total += $debit->amount;
         }
