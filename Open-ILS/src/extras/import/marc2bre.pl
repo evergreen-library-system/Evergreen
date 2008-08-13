@@ -28,28 +28,28 @@ my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfi
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
 	('Pg','localhost','evergreen','postgres','postgres');
 
-GetOptions(
-	'marctype=s'	=> \$marctype,
-	'startid=i'	=> \$recid,
-	'idfield=s'	=> \$id_field,
-	'idsubfield=s'	=> \$id_subfield,
-	'user=s'	=> \$user,
-	'encoding=s'	=> \$enc,
-	'hard_encoding'	=> \$force_enc,
-	'keyfile=s'	=> \$keyfile,
-	'config=s'	=> \$config,
-	'file=s'	=> \@files,
-	'required_field=s'	=> \@req_fields,
-	'trash=s'	=> \@trash_fields,
-	'xml_idl=s'	=> \$idlfile,
-	'dontuse=s'	=> \$dontuse_file,
-	"db_driver=s"		=> \$db_driver,
-	"db_host=s"		=> \$db_host,
-	"db_name=s"		=> \$db_name,
-	"db_user=s"		=> \$db_user,
-	"db_pw=s"		=> \$db_pw,
-	'quiet'		=> \$quiet
-);
+GetOptions( 'marctype=s'       => \$marctype,
+            'startid=i'        => \$recid,
+            'idfield=s'        => \$id_field,
+            'idsubfield=s'     => \$id_subfield,
+            'user=s'           => \$user,
+            'encoding=s'       => \$enc,
+            'hard_encoding'    => \$force_enc,
+            'keyfile=s'        => \$keyfile,
+            'config=s'         => \$config,
+            'file=s'           => \@files,
+            'required_field=s' => \@req_fields,
+            'trash=s'          => \@trash_fields,
+            'xml_idl=s'	       => \$idlfile,
+            'dontuse=s'        => \$dontuse_file,
+            "db_driver=s"      => \$db_driver,
+            "db_host=s"	       => \$db_host,
+            "db_name=s"	       => \$db_name,
+            "db_user=s"	       => \$db_user,
+            "db_pw=s"	       => \$db_pw,
+            "use901"           => \$use901
+            'quiet'            => \$quiet,
+          );
 
 @trash_fields = split(/,/,join(',',@trash_fields));
 
@@ -87,13 +87,13 @@ if (!$recid) {
 	$dbh->disconnect;
 }
 
-my %source_map = (      
+my %source_map = (
 	o  => 'OCLC',
-	i  => 'ISxN',    
+	i  => 'ISxN',
 	l  => 'LCCN',
-	s  => 'System',  
-	g  => 'Gutenberg',  
-);                              
+	s  => 'System',
+	g  => 'Gutenberg',
+);
 
 Fieldmapper->import(IDL => $idlfile);
 
@@ -175,16 +175,17 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	}
 
 	my $tcn;
-	($rec, $tcn) = preprocess($rec, $id);
+        if ($use901) {
+            $id = $rec->subfield('901' => 'c')
+        } else {
+            ($rec, $tcn) = preprocess($rec, $id);
+            $tcn->add_subfields(c => $id);
 
-	$tcn->add_subfields(c => $id);
+            $rec->delete_field( $_ ) for ($rec->field($id_field));
+            $rec->append_fields( $tcn );
 
-	$rec->delete_field( $_ ) for ($rec->field($id_field));
-	$rec->append_fields( $tcn );
-
-	if (!$rec) {
-		next;
-	}
+            next unless $rec;
+        }
 
 	my $tcn_value = $rec->subfield('901' => 'a') || "SYS$id";
 	my $tcn_source = $rec->subfield('901' => 'b') || 'System';
