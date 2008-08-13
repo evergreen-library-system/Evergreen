@@ -31,6 +31,11 @@ function getOrgInfo(rowIndex) {
     return fieldmapper.aou.findOrgUnit(data.org).shortname();
 }
 
+function getXferDest(rowIndex) {
+    data = this.grid.model.getRow(rowIndex);
+    if(!(data && data.xfer_destination)) return '';
+    return data.xfer_destination;
+}
 
 function loadFundGrid() {
     var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData([fund])});
