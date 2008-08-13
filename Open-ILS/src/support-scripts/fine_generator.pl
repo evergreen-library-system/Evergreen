@@ -12,8 +12,10 @@ use OpenSRF::System;
 
 my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/generate_fines-LOCK";
-my $grace = int(shift()) || 1;
+my $grace = shift;
 
+$grace = '' if (!defined($grace) or $grace == 0);
+ 
 if (-e $lockfile) {
         open(F,$lockfile);
         my $pid = <F>;
