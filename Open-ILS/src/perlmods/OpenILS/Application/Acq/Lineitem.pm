@@ -534,8 +534,25 @@ sub create_lineitem_detail {
     }
 
     $e->create_acq_lineitem_detail($li_detail) or return $e->die_event;
+
+    unless($li_detail->barcode) {
+        my $pfx = $U->ou_ancestor_setting_value($li_detail->owning_lib, 'acq.tmp_barcode_prefix') || 'ACQ';
+        $li_detail->barcode($pfx.$li_detail->id);
+    }
+    unless($li_detail->cn_label) {
+        my $pfx = $U->ou_ancestor_setting_value($li_detail->owning_lib, 'acq.tmp_callnumber_prefix') || 'ACQ';
+        $li_detail->cn_label($pfx.$li_detail->id);
+    }
+
+    if(my $loc = $U->ou_ancestor_setting_value($li_detail->owning_lib, 'acq.default_copy_location')) {
+        $li_detail->location($loc);
+    }
+
+    $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
+
     $e->commit;
-    return $li_detail->id;
+    return $li_detail if $$options{return_obj};
+    return $li_detail->id
 }
 
 __PACKAGE__->register_method(
