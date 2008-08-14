@@ -142,7 +142,7 @@ vim:et:ts=4:sw=4:
                     <host>z3950.loc.gov</host>
                     <port>7090</port>
                     <db>Voyager</db>
-                    <!-- fetch the full record with no holdings. FI is the default -->
+                    <!-- fetch the full record with no holdings. FI is the most common choice -->
                     <record_format>FI</record_format> 
 
                     <!-- Record transmission format from the server.  Supported -->
