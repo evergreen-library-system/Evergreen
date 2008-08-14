@@ -161,6 +161,7 @@ function isGroupDescendantId( parentName, childId ) {
   * @param child The node of the child group
   */
 function __isGroupDescendant( parent, child ) {
+    if(!(parent && child)) return false;
 	if (parent.id == child.id) return true;
 	var node = child;
 	while( (node = groupIDList[node.parent]) ) {
