@@ -22,7 +22,7 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $quiet) =
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $use901, $quiet) =
 	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
