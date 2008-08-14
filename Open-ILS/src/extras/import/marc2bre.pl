@@ -47,7 +47,7 @@ GetOptions( 'marctype=s'       => \$marctype,
             "db_name=s"	       => \$db_name,
             "db_user=s"	       => \$db_user,
             "db_pw=s"	       => \$db_pw,
-            "use901"           => \$use901
+            "use901"           => \$use901,
             'quiet'            => \$quiet,
           );
 
