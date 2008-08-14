@@ -294,7 +294,7 @@ circ.copy_status.prototype = {
 							var f = new util.file('');
                             var content = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.title'), 'not_json' : true } );
                             if (!content) { return; }
-							var barcodes = content.split(/\s+/);
+							var barcodes = content.split(/[,\s]+/);
                 			if (barcodes.length > 0) {
 			                    JSAN.use('util.exec'); var exec = new util.exec();
 			                    var funcs = [];
