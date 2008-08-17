@@ -113,17 +113,17 @@ fmidlpo2entity:
 
 # Install updated project files to their corresponding location in the source tree
 install: updatepo project 
-	mkdir $(CHROME_PROPSDIR)/$(LOCALE)
+	mkdir -p $(CHROME_PROPSDIR)/$(LOCALE)
 	cp $(PROJECT)/$(LOCALE)/auth.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/offline.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
-	mkdir $(SERVER_PROPSDIR)/$(LOCALE)
+	mkdir -p $(SERVER_PROPSDIR)/$(LOCALE)
 	cp $(PROJECT)/$(LOCALE)/admin.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/cat.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/circ.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/common.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/multiclass_search_help.html $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/patron.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	mkdir $(DTDDIR)/$(LOCALE)
+	mkdir -p $(DTDDIR)/$(LOCALE)
 	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
 
