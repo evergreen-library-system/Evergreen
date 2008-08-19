@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
+"POT-Creation-Date: 2008-08-19 09:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,10 @@ msgstr ""
 msgid "$"
 msgstr ""
 
+#: common.language
+msgid "Language: "
+msgstr ""
+
 #: common.name
 msgid "Name"
 msgstr ""
@@ -46,10 +50,12 @@ msgid "None"
 msgstr ""
 
 #: common.title
+msgctxt "common.title"
 msgid "Title"
 msgstr ""
 
 #: common.author
+msgctxt "common.author"
 msgid "Author"
 msgstr ""
 
@@ -161,10 +167,12 @@ msgid "Username"
 msgstr ""
 
 #: common.password
+msgctxt "common.password"
 msgid "Password"
 msgstr ""
 
 #: common.submit
+msgctxt "common.submit"
 msgid "Submit"
 msgstr ""
 
@@ -534,6 +542,7 @@ msgid "Renewing..."
 msgstr ""
 
 #: myopac.checked.renew.remaining
+msgctxt "myopac.checked.renew.remaining"
 msgid "Renewals Remaining"
 msgstr ""
 
@@ -753,8 +762,8 @@ msgstr ""
 msgid "Automatically activate hold on:"
 msgstr ""
 
-#: opac.holds.freeze.thaw_date.format
-msgid "YYYY-MM-DD"
+#: opac.holds.expire_time
+msgid "Expiration date"
 msgstr ""
 
 #. =================================================================
@@ -1485,7 +1494,7 @@ msgid "Basic"
 msgstr ""
 
 #: advanced.literary.form
-msgid "Literary&nbsp;Form"
+msgid "Literary Form"
 msgstr ""
 
 #: advanced.non.fiction
@@ -1556,6 +1565,7 @@ msgid "print these details"
 msgstr ""
 
 #: rdetail.cn.barcode
+msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
 msgstr ""
 
@@ -2168,4 +2178,107 @@ msgstr ""
 
 #: vendor.base_link
 msgid "http://amazon.com/dp/"
+msgstr ""
+
+#. =================================================================
+#. Selfcheck
+#. =================================================================
+#: selfck.staff_login_label
+msgid "Staff login"
+msgstr ""
+
+#: selfck.staff_login
+msgid "Library barcode or username"
+msgstr ""
+
+#: selfck.staff_pw
+msgctxt "selfck.staff_pw"
+msgid "Password"
+msgstr ""
+
+#: selfck.submit
+msgctxt "selfck.submit"
+msgid "Submit"
+msgstr ""
+
+#: selfck.clear
+msgid "Clear"
+msgstr ""
+
+#: selfck.patron_barcode_label
+msgid "Please scan your library barcode"
+msgstr ""
+
+#: selfck.item_barcode_label
+msgid "Please scan an item to checkout or renew:"
+msgstr ""
+
+#: selfck.barcode
+msgctxt "selfck.barcode"
+msgid "Barcode"
+msgstr ""
+
+#: selfck.title
+msgctxt "selfck.title"
+msgid "Title"
+msgstr ""
+
+#: selfck.author
+msgctxt "selfck.author"
+msgid "Author"
+msgstr ""
+
+#: selfck.due_date
+msgctxt "selfck.due_date"
+msgid "Due Date"
+msgstr ""
+
+#: selfck.remaining
+msgctxt "selfck.remaining"
+msgid "Renewals Remaining"
+msgstr ""
+
+#: selfck.cotype
+msgid "Type"
+msgstr ""
+
+#: selfck.cotype_co
+msgid "Checkout"
+msgstr ""
+
+#: selfck.cotype_rn
+msgid "Renewal"
+msgstr ""
+
+#: selfck.done
+msgid "Done"
+msgstr ""
+
+#: selfck.welcome
+msgid "Welcome"
+msgstr ""
+
+#. event messages
+#: selfck.event.co_success
+msgid "Check out succeeded"
+msgstr ""
+
+#: selfck.event.co_unknown
+msgid "An unknown event has occurred"
+msgstr ""
+
+#: selfck.event.dupe_barcode
+msgid "This item has already been checked out during this session"
+msgstr ""
+
+#: selfck.event.patron_not_found
+msgid "The patron barcode was not found"
+msgstr ""
+
+#: selfck.event.item_noncat
+msgid "The requested item is not in the catalog"
+msgstr ""
+
+#: selfck.event.item_nocirc
+msgid "The requested item is not allowed to circulate"
 msgstr ""
