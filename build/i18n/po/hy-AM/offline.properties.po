@@ -1,13 +1,12 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 #. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2008-08-19 09:34-0400\n"
+"PO-Revision-Date: 2008-08-04 14:52+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,551 +21,561 @@ msgid ""
 "%1$s\n"
 "%2$s\n"
 msgstr ""
+"!! Սխալ ծրագրում: Տեղեկացրու ադմինիստրատորին հետևյալի մասին:\n"
+"%1$s\n"
+"%2$s\n"
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "JSAN գրադարանը բացակա է:"
 
 #: common.ok
 msgid "Ok"
-msgstr ""
+msgstr "Լավ"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "Մաքրել"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "Հաղորդումը հաստատելու համար ընտրիր սա"
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr ""
+msgstr "Տեղեկացրու որ սա պատահել է:"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
-msgstr ""
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է %3:"
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "Կորած"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "Ժամկետանց"
 
 #: common.barcode.status.warning.barred
 msgid "Barred"
-msgstr ""
+msgstr "Կասեցված"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Արգելափակված"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
-msgstr ""
+msgstr "անհայտ կոդով: %1$s"
 
 #: common.date.invalid
 msgid "Invalid Date"
-msgstr ""
+msgstr "Սխալ ամսաթիվ"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Այո"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "Դեռ չի ներդրված"
 
 #: cat.bib_record
 msgid "Bib Record: %1$s"
-msgstr ""
+msgstr "Մատ գրաժում: %1$s"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում էս ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
-msgstr ""
+msgstr "Ջնջել գրառումը"
 
 #: cat.opac.delete
 msgid "Delete"
-msgstr ""
+msgstr "Ջնջել "
 
 #: cat.opac.undelete_record.confirm
 msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
-msgstr ""
+msgstr "Հետ ջնջել գրառումը"
 
 #: cat.opac.undelete
 msgid "Undelete"
-msgstr ""
+msgstr "Հետ ջնջել"
 
 #: cat.opac.cancel
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
-msgstr ""
+msgstr "Գրառումը ջնջված է:"
 
 #: cat.opac.record_deleted.confirm
 msgctxt "cat.opac.record_deleted.confirm"
 msgid "Check here to confirm this action."
-msgstr ""
+msgstr "Գործողությպւնը հաստատելու համար ընտրիր սա"
 
 #: cat.opac.record_undeleted
 msgid "Record undeleted."
-msgstr ""
+msgstr "Գրառումը վերականգնված է:"
 
 #: cat.opac.record_undeleted.confirm
 msgctxt "cat.opac.record_undeleted.confirm"
 msgid "Check here to confirm this action."
-msgstr ""
+msgstr "Գործողությպւնը հաստատելու համար ընտրիր սա:"
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_delete.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
-msgstr ""
+msgstr "Սխալ՝ գրառումը ջնջելիս #%1$s : %2$s : %3$s"
 
 #: cat.save_record
 msgid "Save Record"
-msgstr ""
+msgstr "Հիշել գրառումը"
 
 #: cat.save.success
 msgid "Record successfully saved."
-msgstr ""
+msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #: cat.save.failure
 msgid "Record not likely updated."
-msgstr ""
+msgstr "Գրառումը կարծես չի թարմացվել"
 
 #: cat.record.counter
 msgid "Record %1$s of %2$s"
-msgstr ""
+msgstr "Գրառում %1$s ընդ. %2$s"
 
 #: cat.preference.error
 msgid "Preference not likely updated."
-msgstr ""
+msgstr "Նախապատվությունը կարծես չի թարմացվել"
 
 #: staff.admin.survey.save_response.label
 msgid "Save this response"
-msgstr ""
+msgstr "Հիշիր այս արձագանքը"
 
 #: staff.admin.survey.save_response.accesskey
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: circ.bad_checkdigit
 msgid "This barcode has a bad check digit."
-msgstr ""
+msgstr "Այս շտրիխ կոդը ունի վատ ստուգիչ նիշ"
 
 #: circ.barcode.enter
 msgid "Please enter a patron barcode first."
-msgstr ""
+msgstr "Սկզբից մուտք արա ընթերցողի շտրիխ կոդը"
 
 #: circ.barcode.warning
 msgid "Barcode Warning"
-msgstr ""
+msgstr "Շտրիխ կոդի զգուշացում"
 
 #: circ.standalone
 msgid "Standalone"
-msgstr ""
+msgstr "Միայնակ"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
-msgstr ""
+msgstr "Այս շտրիխ կոդը արդեն կարդացվել է:"
 
 #: circ.duplicate_scan.field
 msgid "Duplicate Scan"
-msgstr ""
+msgstr "Կրկնվող սկան"
 
 #: circ.offline_checkout.nonbarcoded
 msgid "or choose a non-barcoded option..."
-msgstr ""
+msgstr "կամ ընտրիր առանց շտրիխ կոդի հնարավորությունը..."
 
 #: circ.offline_checkout.items
 msgid "Enter the number of items:"
-msgstr ""
+msgstr "Մուտք արա նյութերի քանակը"
 
 #: circ.offline_checkout.download.warning
 msgid ""
 "WARNING: The non-barcode types have not been downloaded from the server.  "
 "You should log in to retrieve these."
 msgstr ""
+"Զգուշացում: Առանց շտրիխ կոդի տեսակները կայանից չեն բեռնաթափվել: Պետք է մուտք "
+"լինես սա ստուգելու համար:"
 
 #: circ.offline_checkout.barcode.flagged.lost
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
-msgstr ""
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է կորած:"
 
 #: circ.offline_checkout.barcode.flagged.expired
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
-msgstr ""
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է ժամկետանց:"
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
-msgstr ""
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է կասեցված:"
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr ""
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
 "Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
 "%3$s."
 msgstr ""
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: "
+"%3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
-msgstr ""
+msgstr "Վերադարձի ամսաթիվը պետք է լինի այսօրվանից հետո:"
 
 #: circ.offline_checkout.required_field
 msgid "Required Field"
-msgstr ""
+msgstr "Պահանջվող դաշտ:"
 
 #: circ.offline_checkout.valid_count
 msgid "Please try again and enter a valid count."
-msgstr ""
+msgstr "Փորձիր նորից, և մուտք արա թույլատրելի հաշիվ:"
 
 #: circ.offline_checkout.required_value
 msgid "Required Value"
-msgstr ""
+msgstr "Պահանջվող արժեք"
 
 #: circ.offline_register.future.birth.date
 msgid "Patron needs to be born yesterday."
-msgstr ""
+msgstr "Ընթերցողը պետք է որ ծնված լինի երեկ:"
 
 #: circ.offline_register.invalid.birth.date
 msgid "Happy birthday!  You need to be more than 0 days old."
-msgstr ""
+msgstr "Ծնունդտ շնորհավոր: Դու պետք է 0 օրական լինես:"
 
 #: circ.offline_register.survey.prompt
 msgid "Choose a response..."
-msgstr ""
+msgstr "Ընտրիր արձագանքը..."
 
 #: circ.offline_register.missing.post_code
 msgid "Missing Address : Postal Code"
-msgstr ""
+msgstr "Բացակա հասցե: փոստային կոդ"
 
 #: circ.offline_register.missing.state
 msgid "Missing Address : State"
-msgstr ""
+msgstr "Բացակա հասցե: նահանգ"
 
 #: circ.offline_register.missing.city
 msgid "Missing Address : City"
-msgstr ""
+msgstr "Բացակա հասցե: քաղաք"
 
 #: circ.offline_register.missing.street1
 msgid "Missing Address : Line 1"
-msgstr ""
+msgstr "Բացակա հասցե: տող 1"
 
 #: circ.offline_register.missing.ident_value
 msgid "Missing Identification Value"
-msgstr ""
+msgstr "Բացակա բնութագրիչի արժեք"
 
 #: circ.offline_register.missing.ident_type
 msgid "Missing Identification Type"
-msgstr ""
+msgstr "Բացակա բնութագրիչի տեսակ"
 
 #: circ.offline_register.missing.dob
 msgid "Missing Date of Birth"
-msgstr ""
+msgstr "Բացակա ծննդյան ամսաթիվ"
 
 #: circ.offline_register.missing.first_given_name
 msgid "Missing First Name"
-msgstr ""
+msgstr "Բացակա անուն"
 
 #: circ.offline_register.missing.family_name
 msgid "Missing Last Name"
-msgstr ""
+msgstr "Բացակա ազգանուն"
 
 #: circ.offline_register.missing.passwd
 msgid "Missing Password"
-msgstr ""
+msgstr "Բացակա գաղտնաբառ"
 
 #: circ.offline_register.missing.barcode
 msgid "Missing Barcode"
-msgstr ""
+msgstr "Բացակա շտրիխ կոդ"
 
 #: circ.offline_register.missing.profile
 msgid "Missing Profile"
-msgstr ""
+msgstr "Բացակա պրոֆայլ"
 
 #: circ.offline_register.missing.home_ou
 msgid "Missing Home Library"
-msgstr ""
+msgstr "Բացակա տան գրադարան"
 
 #: circ.offline_register.missing.alert
 msgid "Please fix the following:"
-msgstr ""
+msgstr "Շտկիր սա:"
 
 #: circ.offline_register.patron.saved
 msgid "Patron Registration Saved"
-msgstr ""
+msgstr "Ընթերցողի գրանցումը հիշված է:"
 
 #: circ.offline_register.missing.library.list
 msgid "Missing library list."
-msgstr ""
+msgstr "Բացակա գրադարանի ցուցակ"
 
 #: circ.offline_register.missing.profile.list
 msgid "Missing profile list."
-msgstr ""
+msgstr "Բացակա պրոֆայլի ցուցակ"
 
 #: circ.offline_register.missing.id.type.list
 msgid "Missing identification type list."
-msgstr ""
+msgstr "Բացակա բնութագրիչի տեսակի ցուցակ"
 
 #: circ.offline_register.missing.required.surveys
 msgid "Missing required surveys."
-msgstr ""
+msgstr "Բացակա պահանջվող հարցախույզներ"
 
 #: circ.offline_register.missing.files.error
 msgid ""
 "ERROR: Offline patron registration requires some server-generated files.  "
 "Please login periodically to retrieve these files."
 msgstr ""
+"ՍԽԱԼ: Ընթերցողի օֆլայն գրանցումը պահանջում է կայանի հետ կապված ֆայլերի "
+"գեներացում: Հաճախակի միացիր այս ֆայլերը կանչելու համար:"
 
 #: jsan.file_not_found.error
 msgid "File not found: %1$s"
-msgstr ""
+msgstr "Ֆայլը չի գտնված: %1$s"
 
 #: jsan.namespace.creation.error
 msgid "Could not create namespace[%1$s]: %2$s"
-msgstr ""
+msgstr "Չի կարող ստեղծել անվան տարածք[%1$s]: %2$s"
 
 #: menu.cmd_edit_copy_buckets.tab
 msgid "Copy Buckets"
-msgstr ""
+msgstr "Պատճենիր փնջերը"
 
 #: menu.cmd_edit_volume_buckets.tab
 msgid "Volume Buckets"
-msgstr ""
+msgstr "Հատորակալիր փնջերը"
 
 #: menu.cmd_edit_record_buckets.tab
 msgid "Record Buckets"
-msgstr ""
+msgstr "Գրանցիր փնջերը"
 
 #: menu.cmd_edit_user_buckets.tab
 msgid "User Buckets"
-msgstr ""
+msgstr "Օգտվողի փնջեր"
 
 #: menu.cmd_replace_barcode.prompt
 msgid "Enter original barcode for the item:"
-msgstr ""
+msgstr "Նյութի համար իսկական շտրիխ կոդի մուտք"
 
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Փոխարինիր շտրիխ կոդը"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr ""
+msgstr "Անկարող ենք կանչել նյութը այս շտրիխ կոդով \"%1$s\":"
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
-msgstr ""
+msgstr "Մուտք արա նյութի փոխարինման շտրիխ կոդը:"
 
 #: menu.cmd_replace_barcode.replacement.label
 msgctxt "menu.cmd_replace_barcode.replacement.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "Փոխարինիր շտրիխ կոդը"
 
 #: menu.cmd_replace_barcode.blank.error
 msgid "Rename aborted.  Blank for barcode not allowed."
-msgstr ""
+msgstr "Անվանափոխումը չկայացավ: Շտրիխ կոդը չի կարող դատարկ լինել:"
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr ""
+msgstr "Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
-msgstr ""
+msgstr "Սխալ՝ փոխարինման շտրիխ կոդը փորձարկելիս \"%1$s\":"
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
-msgstr ""
+msgstr "Անվանափոխումը չկայացավ: Անբավարար իրավասություններ:"
 
 #: menu.cmd_replace_barcode.renaming.error
 msgid "Error renaming item."
-msgstr ""
+msgstr "Սխալ՝ նյութը անվանափոխելիս:"
 
 #: menu.cmd_replace_barcode.renaming.failure
 msgid "The rename operation probably failed."
-msgstr ""
+msgstr "Հավանաբար անվանափոխման գործողությունը ձախողվեց:"
 
 #: menu.cmd_search_opac.tab
 msgid "Catalog"
-msgstr ""
+msgstr "Քարտարան"
 
 #: menu.cmd_search_bib_id.tab
 msgid "What is the internal ID for the bibliographic record?"
-msgstr ""
+msgstr "Ո՞րն է մատենագիտական գրառման ներքին ID:"
 
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
-msgstr ""
+msgstr "Մատ ID դիտում"
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
-msgstr ""
+msgstr "Ո՞րն է գրառման TCN կամ հասանելիության ID:"
 
 #: menu.cmd_search_tcn.prompt
 msgid "TCN Lookup"
-msgstr ""
+msgstr "TCN դիտում"
 
 #: menu.cmd_search_tcn.not_found.error
 msgid "\"%1$s\" not found"
-msgstr ""
+msgstr "\"%1$s\" չի գտնվել"
 
 #: menu.cmd_search_tcn.deleted.error
 msgid "\"%1$s\" is deleted.  Show the deleted record anyway?"
-msgstr ""
+msgstr "\"%1$s\" ջնջված է: Ցույշ տա՞լ ջնջված գրառումը:"
 
 #: menu.cmd_patron_register.related.tab
 msgid "Editing Related Patron"
-msgstr ""
+msgstr "Կապված ենթերցողի խմբագրում"
 
 #: menu.cmd_patron_register.tab
 msgid "Register Patron"
-msgstr ""
+msgstr "Գրանցիր ընթերցողին"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
-msgstr ""
+msgstr "Կասեցրու դիտակը"
 
 #: menu.cmd_browse_holds_shelf.tab
 msgid "Holds Shelf"
-msgstr ""
+msgstr "Պահումների դարակ"
 
 #: menu.cmd_browse_hold_pull_list.tab
 msgid "On Shelf Pull List"
-msgstr ""
+msgstr "Դարակի վրայի ցուցակ"
 
 #: menu.cmd_local_admin.tab
 msgid "Local Administration"
-msgstr ""
+msgstr "Տէղային կառավարում"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
-msgstr ""
+msgstr "Ոչ մի ընթերցող դեռ չի այցէլէլ այս միացումը"
 
 #: menu.cmd_retrieve_last_record.session.error
 msgid "No record visited yet this session."
-msgstr ""
+msgstr "Ոչ մի գրառում դեռ չի այցէլէլ այս միացումը"
 
 #: menu.cmd_retrieve_last_record.status
 msgid "Retrieving title..."
-msgstr ""
+msgstr "Կանչվում է վերնագիրը..."
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
-msgstr ""
+msgstr "Փոխիր գրանցումը"
 
 #: menu.cmd_chg_session.operator.label
 msgid "Change Operator: %1$s"
-msgstr ""
+msgstr "Փոխիր օպերատորը: %1$s"
 
 #: menu.cmd_manage_offline_xacts.tab
 msgid "Offline Transactions"
-msgstr ""
+msgstr "Օֆլայն տրանզակցիաներ"
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
-msgstr ""
+msgstr "Բեռնաթափումը ավարտված է"
 
 #: menu.cmd_download_patrons.error
 msgid ""
 "There was a problem with the download.  The server returned a status %1$s : "
 "%2$s"
 msgstr ""
+"Կա խոչնդոտ բեռնաթափման հետ կապված: կայանը վերադարձրել է վիճակը %1$s : %2$s"
 
 #: menu.cmd_stat_cat_edit.tab
 msgid "Statistical Category Editor"
-msgstr ""
+msgstr "Վիճակագրական դասի խմբագիր"
 
 #: menu.cmd_non_cat_type_edit.tab
 msgid "Non-Cataloged Type Editor"
-msgstr ""
+msgstr "Չմուտքագրված տեսակի խմբագիր"
 
 #: menu.cmd_copy_location_edit.tab
 msgid "Copy Location Editor"
-msgstr ""
+msgstr "Օրինակի տեղաբաշխման խմբագիր"
 
 #: menu.cmd_console.tab
 msgid "JavaScript Console"
-msgstr ""
+msgstr "JavaScript Console"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
-msgstr ""
+msgstr "JavaScript Shell"
 
 #: menu.cmd_xuleditor.tab
 msgid "XUL Editor"
-msgstr ""
+msgstr "XUL Editor"
 
 #: menu.cmd_fieldmapper.tab
 msgid "Fieldmapper"
-msgstr ""
+msgstr "Դաշտի քարտեզ"
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
-msgstr ""
+msgstr "ՀՈԱՔ"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
-msgstr ""
+msgstr "Ընդլայնման կառավարիչ"
 
 #: menu.cmd_theme_manager.tab
 msgid "Theme Manager"
-msgstr ""
+msgstr "Թեմատիկ կառավարիչ"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
-msgstr ""
+msgstr "Լքե՞լ Evergreen-ը ամբողջովին"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
-msgstr ""
+msgstr "Խմբագրիչը կցանկանա օրոնել: %1$s"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
-msgstr ""
+msgstr "Սխալ բոլոր տագերը փակելիս"
 
 #: menu.new_tab.tab
 msgid "Tab"
-msgstr ""
+msgstr "Տաբ"
 
 #: menu.set_tab.error
 msgid "pause for error"
-msgstr ""
+msgstr "կանգ առ սխալի համար"
 
 #: main.testing
 msgid "Testing"
-msgstr ""
+msgstr "Թեստավորում"
 
 #: main.transaction_export.title
 msgid "Save Transaction File As"
-msgstr ""
+msgstr "Հիշիր տրանզակցիայի ֆայլը որպես"
 
 #: main.transaction_export.prompt
 msgid "Would you like to overwrite the existing file %1$s?"
-msgstr ""
+msgstr "Ցանկանու՞մ ես վերագրել առկա ֆայլը %1$s"
 
 #: main.transaction_export.prompt.title
 msgid "Transaction Export Warning"
-msgstr ""
+msgstr "Տրանզակցիայի արտահանման զգուշացում"
 
 #: main.transaction_export.success.prompt
 msgid ""
@@ -574,16 +583,20 @@ msgid ""
 "recommend that you now purge the transactions from this staff client.  Would "
 "you like for us to do this?"
 msgstr ""
+"Քո տրանզակցիաները հաջողությամբ արտահանվել են ֆայլի %1$s մեջ: Խորհուրդ ենք "
+"տալիս հեռացնել տրանզակցիաները: Ուզու՞մ եք որ մենք անենք:"
 
 #: main.transaction_export.success.title
 msgid "Transaction Export Successful"
-msgstr ""
+msgstr "Տրանզակցիայի արտահանումը հաջող է:"
 
 #: main.transaction_export.filename.error
 msgid ""
 "Error purging transactions:  Taking too long to find a unique filename for "
 "archival."
 msgstr ""
+"Սխալ՝ տրանզակցիայի մաքրման ժամանակ: Արխիվատորը եզակի ֆայլի անվանում գտնելու "
+"համար չափից երկար ժամանակ է ծախսում:"
 
 #: main.transaction_export.duplicate.warning
 msgid ""
@@ -591,26 +604,30 @@ msgid ""
 "the set you just exported is solely for archival purposes, we run the risk "
 "of duplicate transactions being processed on the server."
 msgstr ""
+"Նկատի ունեցիր որ հիմա ունես երկու նմանատիպ տրանզակցիաների բազմություններ: "
+"Վտանգ կա կայանի վրա աշխատացնելու կրկնվող տրանզակցիաներ:"
 
 #: main.transaction_export.no_filename.error
 msgid ""
 "Either you did not choose a filename, or you tried to overwrite an existing "
 "file."
 msgstr ""
+"Կամ չես ընտրել ֆայլի անունը և կամ փորձում ես վերագրել գոյություն ունեցող "
+"ֆայլը:"
 
 #: main.transaction_export.no_transactions.error
 msgid "There are no outstanding transactions to export."
-msgstr ""
+msgstr "Արտահանման համար չկա երկար սպասող տրանզակցիաներ:"
 
 #: main.transaction_import.outstanding.error
 msgid ""
 "There are already outstanding transactions on this staff client.  Upload "
 "these first."
-msgstr ""
+msgstr "Կան երկար սպասող տրանզակցիաներ: Բեռնավորիր այս ֆայլերը:"
 
 #: main.transaction_import.title
 msgid "Import Transaction File"
-msgstr ""
+msgstr "Ներմուծիր տրանզակցիայի ֆայլը"
 
 #: main.transaction_import.delete.prompt
 msgid ""
@@ -619,30 +636,33 @@ msgid ""
 "We recommend that you delete the external copy.  Would you like for us to "
 "delete %1$s?"
 msgstr ""
+"Քո տրանզակցիաները հաջողությամբ տեղափոխվել են կլիենտի մաս:\n"
+"\n"
+"Խորհուրդ ենք տալիս ջնջել ավելորդ պատճեն: Կցանկանա՞ք որ մենք ջնջենք: %1$s?"
 
 #: main.transaction_import.success
 msgid "Transaction Import Successful"
-msgstr ""
+msgstr "Տրանզակցիայի հաջող ներմուծում:"
 
 #: main.on_debug.clear_cache
 msgid "cache cleared"
-msgstr ""
+msgstr "Քեշը մաքրված է"
 
 #: main.on_debug.debug
 msgid "debug the debug :D"
-msgstr ""
+msgstr "debug the debug :D"
 
 #: main.about_btn.label
 msgid "About this client..."
-msgstr ""
+msgstr "Այս հաճախորդի մասին..."
 
 #: main.new_window_btn.label
 msgid "Open New Window"
-msgstr ""
+msgstr "Բացիր նոր պատուհան"
 
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
-msgstr ""
+msgstr "Մուտք եղիր սկզբից"
 
 #: main.settings.migrate
 msgid ""
@@ -650,6 +670,9 @@ msgid ""
 "location than your previous installation.  Should we attempt to migrate "
 "these settings?"
 msgstr ""
+"Աշխատակազմի հաճախորդի այս տարբերակը հիշում է տեղային պարամերերը այլ վայրում "
+"քան նախորդ կարգաբերումներում էր: Կարի՞ք կա որ մենք միգրացիա անենք այս "
+"պարամետրերը:"
 
 #: main.settings.migrate.failed
 msgid ""
@@ -662,6 +685,14 @@ msgid ""
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
+"ԶԳՈՒՇԱՑՈՒՄ: Օրինական պարամետրերը չի կարող տեղափոխել: Պարամետրերը և ձևավորման "
+"ֆայլերը գտնվում են տարբեր վայրերում: \n"
+"Այս պրոբլեմը ձեռքով լուծելու համար, նկատի ունեցիր:\n"
+"\t%1$s\n"
+"գրադարանում է, որտեղ ցանկանում ենք հիշել ընթացիկ օպերացիոն համակարգի հաշիվը, "
+"և:\n"
+"\t%2$s\n"
+"որում որպես կանոն մենք հիշում ենք այդպիսի ինֆորմացիան:\n"
 
 #: main.settings.migrate.confirm
 msgid ""
@@ -670,31 +701,35 @@ msgid ""
 "to\n"
 "%2$s?"
 msgstr ""
+"Տեղափոխիր ձևավորման ֆայլերը աճստեղից\n"
+"%1$s\n"
+"դեպի\n"
+"%2$s?"
 
 #: main.settings.migrate.error
 msgid "Error trying to move %1$s to directory %2$s"
-msgstr ""
+msgstr "Սխալ՝ երբ փորձում եք տեղափոխէլ %1$s դեպի գրադարան %2$s"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr ""
+msgstr "Պրոբլեմ քեշը մաքրելիս: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr ""
+msgstr "Կլիպբորդի գործողությունը տապալվեց: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "Արտագրված \"%1$s\" կլիպբոարդ"
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
-msgstr ""
+msgstr "Սխալ՝ կապված get_contentWindow(%1$s) և wrappedJSObject: %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
+msgstr "Սխալ՝ get_contentWindow(%1$s): %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
+msgstr "Սխալ՝ տառատեսակի չափը հավասարեցնելիս: %1$s"

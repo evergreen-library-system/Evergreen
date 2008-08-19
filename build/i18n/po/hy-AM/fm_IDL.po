@@ -1,11 +1,10 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-07-25 13:19:28-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2008-08-19 09:34:11-0400\n"
+"PO-Revision-Date: 2008-08-14 22:47+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,2793 +13,2805 @@ msgstr ""
 
 #: field.aihu.org_unit.label:705 field.ancihu.org_unit.label:722
 msgid "Using Library"
-msgstr ""
+msgstr "Օգտագործվում է գրադարան"
 
-#: field.rxbt.voided.label:3519
+#: field.rxbt.voided.label:3522
 msgid "Voided Billing Amount"
-msgstr ""
+msgstr "Հաշվի մեծություն"
 
 #: field.bre.source.label:1067
 msgid "Record Source"
-msgstr ""
+msgstr "Գրառման աղբյուր"
 
 #: field.bre.marc.label:1065
 msgid "MARC21Slim"
-msgstr ""
+msgstr "MARC21Slim"
 
-#: field.rocit.title.label:3779
+#: field.rocit.title.label:3782
 msgid "Title"
-msgstr ""
+msgstr "Վերնագիր"
 
 #: field.mbts.xact_start.label:644
 msgid "Transaction Start Time"
-msgstr ""
+msgstr "Տրանզակցիայի սկսման ժամ"
 
 #: field.mrd.vr_format.label:1515
 msgid "Video Recording Format"
-msgstr ""
+msgstr "Տեսա գրանցման ձևաչափ"
 
 #: field.vqbr.bib_source.label:173
 msgid "Bib Source"
-msgstr ""
+msgstr "Մատեն աղբյուր"
 
-#: field.aua.within_city_limits.label:1576
+#: field.aua.within_city_limits.label:1578
 msgid "Within City Limits?"
-msgstr ""
+msgstr "Քազաքի սահմանների շրջանակու՞մ:"
 
-#: field.rhrr.hold_type.label:3504
+#: field.rhrr.hold_type.label:3507
 msgid "Hold Request Type"
-msgstr ""
+msgstr "Պահման հարցման տեսակ:"
 
 #: field.au.demographic.label:1272
 msgid "Demographic Info"
-msgstr ""
+msgstr "Ժողովրդագրական տեղեություններ"
 
-#: class.mwp.label:2562
+#: class.mwp.label:2564
 msgid "Work Payment"
-msgstr ""
+msgstr "Աշխատանքի վճար"
 
 #: field.au.ident_value2.label:1253
 msgid "Secondary Identification"
-msgstr ""
+msgstr "Երկրորդային բնութագրում"
 
-#: class.acirc.label:1754
+#: class.acirc.label:1756
 msgid "Aged (patronless) Circulation"
-msgstr ""
+msgstr "Տարիքային (առանց ընթերցողի) սպասարկում"
 
 #: field.mbts.last_payment_note.label:637
-#: field.rccbs.last_payment_note.label:3661
+#: field.rccbs.last_payment_note.label:3664
 msgid "Last Payment Note"
-msgstr ""
+msgstr "Վերջին վճարման նշում"
 
 #: field.au.expire_date.label:1245
 msgid "Privilege Expiration Date"
-msgstr ""
+msgstr "Արտոնության լրանալու ամսաթիվ"
 
-#: field.ac.id.label:2262
+#: field.ac.id.label:2264
 msgid "Card ID"
-msgstr ""
+msgstr "Քարտի ID"
 
-#: field.mp.credit_card_payment.label:3011
-#: field.mbp.credit_card_payment.label:3042
+#: field.mp.credit_card_payment.label:3014
+#: field.mbp.credit_card_payment.label:3045
 msgid "Credit Card Payment Detail"
-msgstr ""
+msgstr "Կրեդիտ քարտի վճարման մանրամասներ"
 
-#: class.rssr.label:3416
+#: class.rssr.label:3419
 msgid "Simple Record Extracts"
-msgstr ""
+msgstr "Պարզ գրառման բացում"
 
-#: field.au.id.label:1249 field.rud.id.label:3477
+#: field.au.id.label:1249 field.rud.id.label:3480
 msgid "User ID"
-msgstr ""
+msgstr "Օգտվողի ID"
 
-#: field.asc.entries.label:2244 field.actsc.entries.label:2274
+#: field.asc.entries.label:2246 field.actsc.entries.label:2276
 msgid "Entries"
-msgstr ""
+msgstr "Մուտքեր"
 
-#: field.acp.dummy_title.label:2716
+#: field.acp.dummy_title.label:2718
 msgid "Precat Dummy Title"
-msgstr ""
+msgstr "Նախն քարտագր դատարկ վերնագիր"
 
 #: field.acpn.create_date.label:1324
 msgid "Note Creation Date/Time"
-msgstr ""
+msgstr "Ստեղծման օր/ժամ նշում"
 
-#: field.aua.street2.label:1573
+#: field.aua.street2.label:1575
 msgid "Street (2)"
-msgstr ""
+msgstr "Փողոց (2)"
 
 #: field.au.barred.label:1235
 msgid "Barred"
-msgstr ""
+msgstr "Արգելափակված"
 
-#: field.mcrp.id.label:2326
+#: field.mcrp.id.label:2328
 msgid "Pyament ID"
-msgstr ""
+msgstr "Վճարման ID"
 
 #: field.au.claims_returned_count.label:1238
 msgid "Claims-returned Count"
-msgstr ""
+msgstr "Խարանված վերադարձների հաշվիչ"
 
 #: field.bre.series_field_entries.label:1077
 msgid "Indexed Series Field Entries"
-msgstr ""
+msgstr "Ինդեքսավորված պարբերական դաշտի մուտքեր"
 
-#: field.rccbs.demographic_general_division.label:3668
+#: field.rccbs.demographic_general_division.label:3671
 msgid "User Age Demographic"
-msgstr ""
+msgstr "Օգտվողի տարիքային ժողովրդագրություն"
 
-#: field.rccc.dewey.label:3579
+#: field.rccc.dewey.label:3582
 msgid "Call Number Dewey/Prefix"
-msgstr ""
+msgstr "Դյուի դասիչ/Նախածանց"
 
-#: field.crahp.name.label:2771 field.crmf.name.label:2783
+#: field.crahp.name.label:2773 field.crmf.name.label:2785
 msgid "Rule Name"
-msgstr ""
+msgstr "Օրենքի անուն"
 
-#: field.clfm.code.label:2548
+#: field.clfm.code.label:2550
 msgid "LitF Code"
-msgstr ""
+msgstr "LitF կոդ"
 
 #: field.mrd.type_mat.label:1514
 msgid "TMat"
-msgstr ""
+msgstr "TMat"
 
-#: field.mb.billing_type.label:3183 field.rmocbbol.billing_type.label:3830
-#: field.rmocbbcol.billing_type.label:3861
-#: field.rmocbbhol.billing_type.label:3895
+#: field.mb.billing_type.label:3186 field.rmocbbol.billing_type.label:3833
+#: field.rmocbbcol.billing_type.label:3864
+#: field.rmocbbhol.billing_type.label:3898
 msgid "Billing Type"
-msgstr ""
+msgstr "Վճարի տեսակ"
 
-#: class.mckp.label:2671 field.mdp.check_payment.label:3099
+#: class.mckp.label:2673 field.mdp.check_payment.label:3102
 msgid "Check Payment"
-msgstr ""
+msgstr "Ստուգիր վճարումը"
 
-#: field.rccc.stat_cat_1.label:3586
+#: field.rccc.stat_cat_1.label:3589
 msgid "Legacy CAT1 Link"
-msgstr ""
+msgstr "Օրինական CAT1 կապ"
 
 #: field.mfr.tag.label:1363
 msgid "Tag"
-msgstr ""
+msgstr "Ցուցիչ"
 
-#: field.aout.org_units.label:2384
+#: field.aout.org_units.label:2386
 msgid "Org Units"
-msgstr ""
+msgstr "Կազմ միավորներ"
 
-#: field.rccbs.profile_group.label:3674
+#: field.rccbs.profile_group.label:3677
 msgid "User Profile Group"
-msgstr ""
+msgstr "Օգտվողի պրոֆիլի խումբ"
 
 #: field.vbm.field.label:246 field.vam.field.label:371
 msgid "Matched Attribute"
-msgstr ""
+msgstr "Համընկեցված բաղկացուցիչ"
 
-#: field.ahn.method.label:1875
+#: field.ahn.method.label:1877
 msgid "Notification Method"
-msgstr ""
+msgstr "Հուշման մեթոդ"
 
 #: field.vqbrad.xpath.label:200 field.vqarad.xpath.label:325
 msgid "XPath"
+msgstr "XPath"
+
+#: field.mrd.date2.label:1517
+msgid "Date2"
 msgstr ""
 
 #: field.au.groups.label:1269
 msgid "Additional Permission Groups"
-msgstr ""
+msgstr "Հավելյալ իրավասությունների խմբեր"
 
 #: field.ccm.magnetic_media.label:433
 msgid "Magnetic Media"
-msgstr ""
+msgstr "Մագնիսական միջավայր"
 
-#: field.ahr.request_lib.label:2136
+#: field.ahr.request_lib.label:2138
 msgid "Requesting Library"
-msgstr ""
+msgstr "Հարցվում է գրադարան"
 
-#: field.ahtc.source.label:3152
+#: field.ahtc.source.label:3155
 msgid "Sending Library"
-msgstr ""
+msgstr "Առաքող գրադարան"
 
-#: field.rccc.call_number.label:3577
+#: field.rccc.call_number.label:3580
 msgid "Call Number Link"
-msgstr ""
+msgstr "Դասիչի կապ"
 
-#: field.ahr.target.label:2141
+#: field.ahr.target.label:2143
 msgid "Target Object ID"
-msgstr ""
+msgstr "Թիրախ պատկերի ID"
 
-#: field.circ.checkin_lib.label:1637 field.combcirc.checkin_lib.label:1692
-#: field.acirc.checkin_lib.label:1759 field.rodcirc.checkin_lib.label:3724
+#: field.circ.checkin_lib.label:1639 field.combcirc.checkin_lib.label:1694
+#: field.acirc.checkin_lib.label:1761 field.rodcirc.checkin_lib.label:3727
 msgid "Check In Library"
-msgstr ""
+msgstr "Հետ ընդունող գրադարան"
 
-#: field.aua.state.label:1571
+#: field.aua.state.label:1573
 msgid "State"
-msgstr ""
+msgstr "Նահանգ"
 
-#: field.mp.voided.label:3009 field.mbp.voided.label:3040
-#: field.mndp.voided.label:3071 field.mdp.voided.label:3096
-#: field.mb.voided.label:3187
+#: field.mp.voided.label:3012 field.mbp.voided.label:3043
+#: field.mndp.voided.label:3074 field.mdp.voided.label:3099
+#: field.mb.voided.label:3190
 msgid "Voided?"
-msgstr ""
+msgstr "Voided?"
 
-#: class.citm.label:1925
+#: class.citm.label:1927
 msgid "Item Type Map"
-msgstr ""
+msgstr "Նյութի տեսակի քարտեզ"
 
-#: field.rccbs.billing_location_shortname.label:3642
+#: field.rccbs.billing_location_shortname.label:3645
 msgid "Billing Location Short (Policy) Name"
-msgstr ""
+msgstr "Վճարը պահանջող վայրի (կարճ) անվանում"
 
-#: field.rud.general_division.label:3479
+#: field.rud.general_division.label:3482
 msgid "General Demographic Division"
-msgstr ""
+msgstr "Ընդհանուր ժողովրդագրական բաժանմունք"
 
-#: field.asvq.responses.label:616 field.asv.responses.label:2061
+#: field.asvq.responses.label:616 field.asv.responses.label:2063
 msgid "Responses"
-msgstr ""
+msgstr "Արձագանքներ"
 
 #: field.mrd.item_form.label:1508
 msgid "Form"
-msgstr ""
+msgstr "Ձև"
 
-#: field.ssr.deleted.label:2050 field.rocit.deleted.label:3806
+#: field.ssr.deleted.label:2052 field.rocit.deleted.label:3809
 msgid "Deleted"
-msgstr ""
+msgstr "Ջնջված"
 
-#: field.aou.ou_type.label:2179 class.aout.label:2371
+#: field.aou.ou_type.label:2181 class.aout.label:2373
 msgid "Organizational Unit Type"
-msgstr ""
+msgstr "Կազմակերպչական միավորի տեսակ"
 
-#: field.mcrp.payment_ts.label:2328 field.mwp.payment_ts.label:2572
-#: field.mgp.payment_ts.label:2593 field.mckp.payment_ts.label:2683
+#: field.mcrp.payment_ts.label:2330 field.mwp.payment_ts.label:2574
+#: field.mgp.payment_ts.label:2595 field.mckp.payment_ts.label:2685
 msgid "Payment Timestamp"
-msgstr ""
+msgstr "Վճարման ժամանակային կնիք"
 
 #: field.mfr.ind1.label:1359
 msgid "Indicator 1"
-msgstr ""
+msgstr "Ցուցիչ 1"
 
 #: field.mfr.ind2.label:1360
 msgid "Indicator 2"
-msgstr ""
+msgstr "Ցուցիչ 2"
 
-#: field.au.checkins.label:1274 field.aou.checkins.label:2190
+#: field.au.checkins.label:1274 field.aou.checkins.label:2192
 msgid "Checkins"
-msgstr ""
+msgstr "Հետ ընդունումներ"
 
-#: field.cblvl.code.label:1948
+#: field.cblvl.code.label:1950
 msgid "Bib Level Code"
-msgstr ""
+msgstr "Մատեն մակարդակի կոդ"
 
 #: field.bre.call_numbers.label:1054
 msgid "Call Numbers"
-msgstr ""
+msgstr "Դասիչներ"
 
-#: field.mp.payment_ts.label:3006 field.mbp.payment_ts.label:3037
-#: field.mndp.payment_ts.label:3068 field.mdp.payment_ts.label:3091
+#: field.mp.payment_ts.label:3009 field.mbp.payment_ts.label:3040
+#: field.mndp.payment_ts.label:3071 field.mdp.payment_ts.label:3094
 msgid "Payment Date/Time"
-msgstr ""
+msgstr "Վճարման օր/ժամ"
 
 #: field.clm.value.label:847
 msgid "Language"
-msgstr ""
+msgstr "Լեզու"
 
 #: None:1300
 msgid "Check-ins Performed as Staff"
-msgstr ""
+msgstr "Հետ ընդունումներ իրականացված որպես աշխատակազմ"
 
 #: field.au.other_phone.label:1258
 msgid "Other Phone"
-msgstr ""
+msgstr "Այլ հեռախոս"
 
 #: field.bre.simple_record.label:1079
 msgid "Simple Record Extracts "
-msgstr ""
+msgstr "Պարզ գրառման ընդլայնում"
 
-#: class.actsce.label:2499
+#: class.actsce.label:2501
 msgid "User Stat Cat Entry"
-msgstr ""
+msgstr "Օգտվողի Վիճակագր մուտքագր մուտք"
 
-#: field.rccc.stat_cat_2_value.label:3593
+#: field.rccc.stat_cat_2_value.label:3596
 msgid "Legacy CAT2 Value"
-msgstr ""
+msgstr "Օրինական CAT2 արժեք"
 
-#: class.acn.label:969 field.acp.call_number.label:2704
+#: class.acn.label:969 field.acp.call_number.label:2706
 msgid "Call Number/Volume"
-msgstr ""
+msgstr "Դասիչ/Հատոր"
 
 #: field.mrd.control_type.label:1505
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #: field.au.family_name.label:1246
 msgid "Last Name"
-msgstr ""
+msgstr "Ազգանուն"
 
-#: field.rccc.stat_cat_2.label:3587
+#: field.rccc.stat_cat_2.label:3590
 msgid "Legacy CAT2 Link"
-msgstr ""
+msgstr "Օրինական CAT2 Կապ"
 
 #: field.au.stat_cat_entries.label:1229
 msgid "Statistical Category Entries"
-msgstr ""
+msgstr "Վիճակագրական դասի մուտքեր"
 
 #: field.vbq.owner.label:145 field.vaq.owner.label:271
 msgid "Owner"
-msgstr ""
+msgstr "Սեփականատեր"
 
 #: class.ancihu.label:715
 msgid "Non-cataloged In House Use"
-msgstr ""
+msgstr "Չմուտքագրված ներքին օգտագործման"
 
-#: field.ahr.holdable_formats.label:2131
+#: field.ahr.holdable_formats.label:2133
 msgid "Holdable Formats (for M-type hold)"
-msgstr ""
+msgstr "Պահվող ձևաչափեր (M-տեսակի պահումների համար)"
 
-#: field.acp.notes.label:2728
+#: field.acp.notes.label:2730
 msgid "Copy Notes"
-msgstr ""
+msgstr "Օրինակի նշումներ"
 
 #: field.vbm.eg_record.label:247 field.vam.eg_record.label:372
 msgid "Evergreen Record"
-msgstr ""
+msgstr "Evergreen գրառում"
 
 #: field.vbm.id.label:244 field.vam.id.label:369
 msgid "Match ID"
-msgstr ""
+msgstr "Համընկացրու ID"
 
 #: field.mbts.total_owed.label:640
 msgid "Total Owed"
-msgstr ""
+msgstr "Ընդամենը պարտք"
 
-#: field.pgt.application_perm.label:2798
+#: field.pgt.application_perm.label:2801
 msgid "Required Permission"
-msgstr ""
+msgstr "Պահանջվող իրավասություն:"
 
 #: field.au.ident_type2.label:1251
 msgid "Secondary Identification Type"
-msgstr ""
+msgstr "Երկրորդային բնութագրման տեսակ"
 
-#: field.actscecm.stat_cat.label:2900
+#: field.actscecm.stat_cat.label:2903
 msgid "Statistical Category"
-msgstr ""
+msgstr "Վիճակագրական կատեգորիա"
 
 #: field.mbts.last_payment_ts.label:638
 msgid "Last Payment Timestamp"
-msgstr ""
+msgstr "Վերջին վճարման ժամանակի կնիք"
 
-#: class.rmobbcol.label:3871
+#: class.rmobbcol.label:3874
 msgid "Open Circulation Balance by Circulating Library and Owning Library"
-msgstr ""
+msgstr "Բաց տացքի հաշվեկշիռ սպասարկող գրադարանի և տնօրինող գրադարանի կողմից:"
 
-#: field.ahr.usr.label:2142
+#: field.ahr.usr.label:2144
 msgid "Hold User"
-msgstr ""
+msgstr "Պահվող օգտվող"
 
-#: class.mdp.label:3083
+#: class.mdp.label:3086
 msgid "Payments: Desk"
-msgstr ""
+msgstr "Վճարումներ: Սեղան"
 
 #: field.asvr.answer.label:769
 msgid "Answer"
-msgstr ""
+msgstr "Պատասխան"
 
-#: field.rocit.status.label:3808
+#: field.rocit.status.label:3811
 msgid "Status"
-msgstr ""
+msgstr "Վիճակ"
 
 #: field.aun.pub.label:659 field.acpn.pub.label:1328
-#: field.acpl.opac_visible.label:1894
+#: field.acpl.opac_visible.label:1896
 msgid "Is OPAC Visible?"
-msgstr ""
+msgstr "ՀՕԱՔ-ը տեսանելի՞ է:"
 
-#: field.ahr.notifications.label:2146
+#: field.ahr.notifications.label:2148
 msgid "Notifications"
-msgstr ""
+msgstr "Նշումներ"
 
-#: field.aou.shortname.label:2181
+#: field.aou.shortname.label:2183
 msgid "Short (Policy) Name"
-msgstr ""
+msgstr "Կարճ անվանում"
 
 #: field.asvr.answer_date.label:770
 msgid "Answer Date/Time"
-msgstr ""
+msgstr "Պատասխանի օր/ժամ"
 
-#: field.rccc.dewey_block_hundreds.label:3591
+#: field.rccc.dewey_block_hundreds.label:3594
 msgid "Dewey Block -- Hundreds"
-msgstr ""
+msgstr "Dewey Block -- Hundreds"
 
 #: field.acn.deleted.label:977 field.au.deleted.label:1270
-#: field.acp.deleted.label:2712
+#: field.acp.deleted.label:2714
 msgid "Is Deleted"
-msgstr ""
+msgstr "Ջնջված է"
 
-#: field.acn.edit_date.label:978 field.acp.edit_date.label:2717
+#: field.acn.edit_date.label:978 field.acp.edit_date.label:2719
 msgid "Last Edit Date/Time"
-msgstr ""
+msgstr "Վերջին խմբագրման օր/ժամ"
 
-#: field.mbts.xact_type.label:645 field.rccbs.xact_type.label:3655
+#: field.mbts.xact_type.label:645 field.rccbs.xact_type.label:3658
 msgid "Transaction Type"
-msgstr ""
+msgstr "Տրանզակցիայի տեսակ"
 
-#: field.mbt.xact_start.label:2481 field.rccbs.xact_start.label:3653
+#: field.mbt.xact_start.label:2483 field.rccbs.xact_start.label:3656
 msgid "Transaction Start Date/Time"
-msgstr ""
+msgstr "Տրանզակցիայի սկզբի օր/ժամ"
 
 #: class.mbts.label:627
 msgid "Billable Transaction Summary"
-msgstr ""
+msgstr "Վճարման ենթակա տրանզակցիայի ընդհանրացում"
 
-#: field.mb.billing_ts.label:3182
+#: field.mb.billing_ts.label:3185
 msgid "Billing Timestamp"
-msgstr ""
+msgstr "Վճարման ժամանակի կնիք"
 
 #: field.au.billing_address.label:1236
 msgid "Physical Address"
-msgstr ""
+msgstr "Ֆիզիկական հասցե"
 
 #: field.mrd.item_lang.label:1509
 msgid "Lang"
-msgstr ""
+msgstr "Լեզու"
 
-#: field.cblvl.value.label:1949
+#: field.cblvl.value.label:1951
 msgid "Bib Level"
-msgstr ""
+msgstr "Մատեն մակարդակ"
 
-#: field.actsce.stat_cat.label:2506 field.asce.stat_cat.label:3132
+#: field.actsce.stat_cat.label:2508 field.asce.stat_cat.label:3135
 msgid "Stat Cat"
-msgstr ""
+msgstr "Stat Cat"
 
 #: field.mrd.id.label:1507
 msgid "Descriptor ID"
-msgstr ""
+msgstr "Նկարագրիչի ID"
 
 #: field.cit.name.label:605
 msgid "Identification Name"
-msgstr ""
+msgstr "Փոխճանաչման անուն"
 
-#: field.rccc.dewey_range_tens.label:3588
+#: field.rccc.dewey_range_tens.label:3591
 msgid "Dewey Range -- Tens"
-msgstr ""
+msgstr "Դյուի տիրույթ -- Տասնյակներ"
 
-#: field.rocit.dewey_block_hundreds.label:3787
+#: field.rocit.dewey_block_hundreds.label:3790
 msgid "Dewy Hundreds"
-msgstr ""
+msgstr "Դյուի հարյուրյակներ"
 
-#: class.rocit.label:3774
+#: class.rocit.label:3777
 msgid "Classic Item List"
-msgstr ""
+msgstr "Դասական նյութի ցուցակ"
 
-#: field.mdp.accepting_usr.label:3094
+#: field.mdp.accepting_usr.label:3097
 msgid "Accepting User"
-msgstr ""
+msgstr "Օգտվողը ընդունվում է"
 
 #: class.vqbrad.label:192
 msgid "Queued Bib Record Attribute Definition"
-msgstr ""
+msgstr "Մատեն գրառման մասերի սահմանման հերթ"
 
-#: field.rmsr.biblio_record.label:3410 field.rssr.biblio_record.label:3432
-#: field.rsr.biblio_record.label:3465
+#: field.rmsr.biblio_record.label:3413 field.rssr.biblio_record.label:3435
+#: field.rsr.biblio_record.label:3468
 msgid "Full Bibliographic record"
-msgstr ""
+msgstr "Լրիվ մատենագիտական գրառում"
 
 #: field.vqbr.marc.label:171 field.vqar.marc.label:298
 msgid "MARC"
-msgstr ""
+msgstr "MARC"
 
-#: class.iatc.label:3685
+#: class.iatc.label:3688
 msgid "Inter-system Copy Transit"
-msgstr ""
+msgstr "Ներհամակարգային օրինակի տրանզիտ"
 
 #: class.aihu.label:698
 msgid "In House Use"
-msgstr ""
+msgstr "Ներքին օգտագործման"
 
-#: field.circ.circ_type.label:1665 field.combcirc.circ_type.label:1720
-#: field.acirc.circ_type.label:1787 class.rcirct.label:3485
-#: field.rcirct.type.label:3491 field.rccc.circ_type.label:3566
-#: field.rodcirc.circ_type.label:3751
+#: field.circ.circ_type.label:1667 field.combcirc.circ_type.label:1722
+#: field.acirc.circ_type.label:1789 class.rcirct.label:3488
+#: field.rcirct.type.label:3494 field.rccc.circ_type.label:3569
+#: field.rodcirc.circ_type.label:3754
 msgid "Circulation Type"
-msgstr ""
+msgstr "Սպասարկման տեսակ"
 
-#: field.ahtc.hold.label:3148
+#: field.ahtc.hold.label:3151
 msgid "Hold requiring Transit"
-msgstr ""
+msgstr "Պահումը պահանջում է տրանզիտ"
 
 #: field.bre.notes.label:1072
 msgid "Non-MARC Record Notes"
-msgstr ""
+msgstr "Ոչ MARC գրառման նշում"
 
-#: field.aou.ill_address.label:2176
+#: field.aou.ill_address.label:2178
 msgid "ILL Receiving Address"
-msgstr ""
+msgstr "ՄԳԲ ստացման հասցե"
 
-#: field.aout.name.label:2381
+#: field.aout.name.label:2383
 msgid "Type Name"
-msgstr ""
+msgstr "Տեսակի անուն"
 
-#: field.rmsr.author.label:3405 field.rssr.author.label:3427
-#: field.rsr.author.label:3451
+#: field.rmsr.author.label:3408 field.rssr.author.label:3430
+#: field.rsr.author.label:3454
 msgid "Author (normalized)"
-msgstr ""
+msgstr "Հեղինակ (նորմալացված)"
 
-#: field.ssr.excluded.label:2051
+#: field.ssr.excluded.label:2053
 msgid "Excluded"
-msgstr ""
+msgstr "Արտամղված"
 
-#: field.circ.stop_fines_time.label:1656
-#: field.combcirc.stop_fines_time.label:1711
-#: field.acirc.stop_fines_time.label:1778
-#: field.rodcirc.stop_fines_time.label:3743
+#: field.circ.stop_fines_time.label:1658
+#: field.combcirc.stop_fines_time.label:1713
+#: field.acirc.stop_fines_time.label:1780
+#: field.rodcirc.stop_fines_time.label:3746
 msgid "Fine Stop Date/Time"
-msgstr ""
+msgstr "Տուգանքի կասէցման օր/ժամ"
 
 #: field.au.settings.label:1227
 msgid "All User Settings"
-msgstr ""
+msgstr "Բոլոր օգտվողների կարգաբերումներ"
 
 #: field.acn.copies.label:974
 msgid "Copies"
-msgstr ""
+msgstr "Օրինակներ"
 
-#: field.ahr.cancel_time.label:2143
+#: field.ahr.cancel_time.label:2145
 msgid "Hold Cancel Date/Time"
-msgstr ""
+msgstr "պահումը չեղարկելու օր/ժամ"
 
-#: field.pgt.perm_interval.label:2797
+#: field.pgt.perm_interval.label:2800
 msgid "User Expiration Interval"
-msgstr ""
+msgstr "Օգտվողի լրանալու տիրույթ"
 
-#: field.circ.fine_interval.label:1646 field.combcirc.fine_interval.label:1701
-#: field.acirc.fine_interval.label:1768 field.rodcirc.fine_interval.label:3733
+#: field.circ.fine_interval.label:1648 field.combcirc.fine_interval.label:1703
+#: field.acirc.fine_interval.label:1770 field.rodcirc.fine_interval.label:3736
 msgid "Fine Interval"
-msgstr ""
+msgstr "Տուգանքի տիրույթ"
 
 #: class.mrd.label:1496
 msgid "Basic Record Descriptor"
-msgstr ""
+msgstr "Հիմնական գրառման նկարագրիչ"
 
-#: field.circ.billing_total.label:1666 field.combcirc.billing_total.label:1721
-#: field.acirc.billing_total.label:1788 field.mg.billing_total.label:2448
-#: field.mbt.billing_total.label:2486 field.rodcirc.billing_total.label:3752
+#: field.circ.billing_total.label:1668 field.combcirc.billing_total.label:1723
+#: field.acirc.billing_total.label:1790 field.mg.billing_total.label:2450
+#: field.mbt.billing_total.label:2488 field.rodcirc.billing_total.label:3755
 msgid "Billing Totals"
-msgstr ""
+msgstr "Հաշիվների ընդհանուր"
 
 #: field.chmt.transit_range.label:537
 msgid "Transit Range"
-msgstr ""
+msgstr "Տրանզիտի տիրույթ"
 
-#: class.aua.label:1560
+#: class.aua.label:1562
 msgid "User Address"
-msgstr ""
+msgstr "Օգտվողի հասցէ"
 
-#: class.aou.label:2167
+#: class.aou.label:2169
 msgid "Organizational Unit"
-msgstr ""
+msgstr "Կազմակերպչական միավոր"
 
-#: field.ancc.circ_time.label:2835 field.rccc.xact_start.label:3565
+#: field.ancc.circ_time.label:2838 field.rccc.xact_start.label:3568
 msgid "Circulation Date/Time"
-msgstr ""
+msgstr "Սպասարկման օր/ժամ"
 
 #: field.cvrfm.value.label:452
 msgid "Format"
-msgstr ""
+msgstr "Ձևաչափ"
 
-#: field.rmsr.issn.label:3409 field.rssr.issn.label:3431
-#: field.rsr.issn.label:3458
+#: field.rmsr.issn.label:3412 field.rssr.issn.label:3434
+#: field.rsr.issn.label:3461
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: class.cifm.label:951
 msgid "Item Form Map"
-msgstr ""
+msgstr "Նյութի ձևաչափի քարտեզ"
 
-#: field.rmsr.title.label:3404 field.rssr.title.label:3426
-#: field.rsr.title.label:3449
+#: field.rmsr.title.label:3407 field.rssr.title.label:3429
+#: field.rsr.title.label:3452
 msgid "Title Proper (normalized)"
-msgstr ""
+msgstr "Վերնագիրը ուղիղ (նորմալացված)"
 
-#: field.ahr.selection_depth.label:2139
+#: field.ahr.selection_depth.label:2141
 msgid "Item Selection Depth"
-msgstr ""
+msgstr "Նյութի ընտրության խորություն"
 
-#: field.circ.circ_lib.label:1640 field.combcirc.circ_lib.label:1695
-#: field.acirc.circ_lib.label:1762 field.acp.circ_lib.label:2706
-#: field.ancc.circ_lib.label:2834 field.rodcirc.circ_lib.label:3727
-#: field.rmocbbcol.circ_lib.label:3859 field.rmobbcol.circ_lib.label:3876
+#: field.circ.circ_lib.label:1642 field.combcirc.circ_lib.label:1697
+#: field.acirc.circ_lib.label:1764 field.acp.circ_lib.label:2708
+#: field.ancc.circ_lib.label:2837 field.rodcirc.circ_lib.label:3730
+#: field.rmocbbcol.circ_lib.label:3862 field.rmobbcol.circ_lib.label:3879
 msgid "Circulating Library"
-msgstr ""
+msgstr "Սպասարկող գրադարան"
 
-#: field.rxpt.unvoided.label:3532
+#: field.rxpt.unvoided.label:3535
 msgid "Unvoided Paid Amount"
-msgstr ""
+msgstr "Unvoided Paid Amount"
 
-#: field.aou.opac_visible.label:2184 field.asc.opac_visible.label:2247
-#: field.actsc.opac_visible.label:2277 field.acp.opac_visible.label:2724
-#: field.rocit.opac_visible.label:3803
+#: field.aou.opac_visible.label:2186 field.asc.opac_visible.label:2249
+#: field.actsc.opac_visible.label:2279 field.acp.opac_visible.label:2726
+#: field.rocit.opac_visible.label:3806
 msgid "OPAC Visible"
-msgstr ""
+msgstr "Տեսանելի ՀՕԱՔ"
 
-#: field.asc.id.label:2245 field.actsc.id.label:2275
+#: field.asc.id.label:2247 field.actsc.id.label:2277
 msgid "Stat Cat ID"
-msgstr ""
+msgstr "Stat Cat ID"
 
 #: field.cam.code.label:937
 msgid "Audience Code"
-msgstr ""
+msgstr "Լսարանի կոդ"
 
-#: field.rsr.genre.label:3461
+#: field.rsr.genre.label:3464
 msgid "Genres (normalized)"
-msgstr ""
+msgstr "Ժանրեր (նորմալացված)"
 
-#: field.rmsr.publisher.label:3406 field.rssr.publisher.label:3428
-#: field.rsr.publisher.label:3452
+#: field.rmsr.publisher.label:3409 field.rssr.publisher.label:3431
+#: field.rsr.publisher.label:3455
 msgid "Publisher (normalized)"
-msgstr ""
+msgstr "Հրաատարակիչ (նորմալացված)"
 
 #: field.mbts.usr.label:642
 msgid "Billed User"
-msgstr ""
+msgstr "Հաշիվ ներկայացված օգտվող"
 
-#: field.ccmrs.max_fine_rule.label:589 field.circ.max_fine_rule.label:1649
-#: field.combcirc.max_fine_rule.label:1704
-#: field.acirc.max_fine_rule.label:1771 class.crmf.label:2776
-#: field.rodcirc.max_fine_rule.label:3736
+#: field.ccmrs.max_fine_rule.label:589 field.circ.max_fine_rule.label:1651
+#: field.combcirc.max_fine_rule.label:1706
+#: field.acirc.max_fine_rule.label:1773 class.crmf.label:2778
+#: field.rodcirc.max_fine_rule.label:3739
 msgid "Max Fine Rule"
-msgstr ""
+msgstr "Ամենամեծ տուգանքի օրենքներ"
 
-#: field.ssr.total.label:2047
+#: field.ssr.total.label:2049
 msgid "Total Results"
-msgstr ""
+msgstr "Ընդհանուր արդյունքներ"
 
-#: field.rccc.circ_lib_id.label:3564
+#: field.rccc.circ_lib_id.label:3567
 msgid "Library Circulation Location Link"
-msgstr ""
+msgstr "Տացքի գրադարանի վայրի կապ"
 
-#: field.au.alert_message.label:1234 field.acp.alert_message.label:2702
+#: field.au.alert_message.label:1234 field.acp.alert_message.label:2704
 msgid "Alert Message"
-msgstr ""
+msgstr "Զգուշացնող հաղորդում"
 
-#: field.rccbs.last_payment_ts.label:3660
+#: field.rccbs.last_payment_ts.label:3663
 msgid "Last Payment Date/Time"
-msgstr ""
+msgstr "Վերջին վճարման օր/ժամ"
 
-#: field.mbts.id.label:633 field.mg.id.label:2440 field.mbt.id.label:2478
-#: field.mwp.xact.label:2573 field.mgp.xact.label:2594
-#: field.rxbt.xact.label:3517 field.rxpt.xact.label:3531
-#: field.rccbs.id.label:3640
+#: field.mbts.id.label:633 field.mg.id.label:2442 field.mbt.id.label:2480
+#: field.mwp.xact.label:2575 field.mgp.xact.label:2596
+#: field.rxbt.xact.label:3520 field.rxpt.xact.label:3534
+#: field.rccbs.id.label:3643
 msgid "Transaction ID"
-msgstr ""
+msgstr "Տրանզակցիայի ID"
 
-#: field.mwp.id.label:2570 field.mgp.id.label:2591 field.mckp.id.label:2681
-#: field.mp.id.label:3004 field.mbp.id.label:3035 field.mndp.id.label:3066
-#: field.mdp.id.label:3089
+#: field.mwp.id.label:2572 field.mgp.id.label:2593 field.mckp.id.label:2683
+#: field.mp.id.label:3007 field.mbp.id.label:3038 field.mndp.id.label:3069
+#: field.mdp.id.label:3092
 msgid "Payment ID"
-msgstr ""
+msgstr "Վճարի ID"
 
-#: field.mcrp.amount.label:2324 field.mwp.amount.label:2568
-#: field.mgp.amount.label:2589 field.mckp.amount.label:2677
-#: field.mp.amount.label:3003 field.mbp.amount.label:3034
-#: field.mndp.amount.label:3065 field.mdp.amount.label:3088
-#: field.mb.amount.label:3181
+#: field.mcrp.amount.label:2326 field.mwp.amount.label:2570
+#: field.mgp.amount.label:2591 field.mckp.amount.label:2679
+#: field.mp.amount.label:3006 field.mbp.amount.label:3037
+#: field.mndp.amount.label:3068 field.mdp.amount.label:3091
+#: field.mb.amount.label:3184
 msgid "Amount"
-msgstr ""
+msgstr "Գումար"
 
-#: field.ahn.notify_time.label:1878
+#: field.ahn.notify_time.label:1880
 msgid "Notification Date/Time"
-msgstr ""
+msgstr "Նշումի օր/ժամ"
 
 #: class.chmt.label:529
 msgid "Hold Matrix Test Set"
-msgstr ""
+msgstr "Պահման մատրիցայի տեստի բազմություն"
 
 #: class.chmm.label:465
 msgid "Hold Matrix Matchpoint"
+msgstr "Պահման մատրիցայի համընկնելու կետ"
+
+#: field.mrd.date1.label:1516
+msgid "Date1"
 msgstr ""
 
 #: field.bre.subject_field_entries.label:1074
 msgid "Indexed Subject Field Entries"
-msgstr ""
+msgstr "Ինդեքսավորված խորագրի դաշտի մուտք"
 
 #: field.ccmrs.duration_rule.label:587
 msgid "Duration Rule"
-msgstr ""
+msgstr "Տևողության օրենք"
 
-#: class.acpl.label:1885
+#: class.acpl.label:1887
 msgid "Copy/Shelving Location"
-msgstr ""
+msgstr "Օրինակի/դարակի վրա տեղ"
 
 #: field.auoi.org_unit.label:399
 msgid "Allowed Org Unit"
-msgstr ""
+msgstr "Թույլատրված կազմ միավոր"
 
-#: class.clfm.label:2543 field.rccc.lit_form.label:3571
+#: class.clfm.label:2545 field.rccc.lit_form.label:3574
 msgid "Literary Form"
-msgstr ""
+msgstr "Գրական ձև"
 
-#: field.ahr.prev_check_time.label:2135
+#: field.ahr.prev_check_time.label:2137
 msgid "Last Targeting Date/Time"
-msgstr ""
+msgstr "Վերջին նշավորման օր/ժամ"
 
 #: field.asvr.response_group_id.label:774
 msgid "Response Group ID"
-msgstr ""
+msgstr "Արձագանքի խմբի ID"
 
 #: field.chmm.active.label:471 field.ccmm.active.label:507
 msgid "Active?"
-msgstr ""
+msgstr "Ակտի՞վ"
 
 #: field.au.usrname.label:1268
 msgid "OPAC/Staff Client User Name"
-msgstr ""
+msgstr "ՀՕԱՔ/Աշխատակազմի կլիենտ օգտվողի անուն"
 
-#: field.ssr.rel.label:2045
+#: field.ssr.rel.label:2047
 msgid "Relevance"
-msgstr ""
+msgstr "Relevance"
 
 #: class.aus.label:669
 msgid "User Setting"
-msgstr ""
+msgstr "Օգտվողի կարգաբերումներ"
 
-#: field.circ.duration.label:1644 field.combcirc.duration.label:1699
-#: field.acirc.duration.label:1766 field.cnct.circ_duration.label:2361
-#: field.rodcirc.duration.label:3731
+#: field.circ.duration.label:1646 field.combcirc.duration.label:1701
+#: field.acirc.duration.label:1768 field.cnct.circ_duration.label:2363
+#: field.rodcirc.duration.label:3734
 msgid "Circulation Duration"
-msgstr ""
+msgstr "Սպասարկման տևողությունը"
 
-#: field.rccc.language.label:3570
+#: field.rccc.language.label:3573
 msgid "Item Language"
-msgstr ""
+msgstr "Նյութի լեզուն"
 
-#: class.mbp.label:3029
+#: class.mbp.label:3032
 msgid "Payments: Brick-and-mortar"
-msgstr ""
+msgstr "Վճարումներ: Brick-and-mortar"
 
-#: class.actscecm.label:2894
+#: class.actscecm.label:2897
 msgid "User Statistical Category Entry"
-msgstr ""
+msgstr "Օգտվողի վիճակագրական դասի մուտք"
 
 #: class.vqarad.label:317
 msgid "Queued Authority Record Attribute Definition"
-msgstr ""
+msgstr "Հարցված Հեղինակավոր գրառման բաղադրիչի սահմանում"
 
-#: field.ahn.note.label:1876
+#: field.ahn.note.label:1878
 msgid "Notification Note"
-msgstr ""
+msgstr "Հիշեցնող նշում"
 
 #: field.ccmrs.recurring_fine_rule.label:588
-#: field.circ.recuring_fine_rule.label:1653
-#: field.combcirc.recuring_fine_rule.label:1708
-#: field.acirc.recuring_fine_rule.label:1775
-#: field.rodcirc.recuring_fine_rule.label:3740
+#: field.circ.recuring_fine_rule.label:1655
+#: field.combcirc.recuring_fine_rule.label:1710
+#: field.acirc.recuring_fine_rule.label:1777
+#: field.rodcirc.recuring_fine_rule.label:3743
 msgid "Recurring Fine Rule"
-msgstr ""
+msgstr "Տուգանքի օրենքի կատարում"
 
-#: field.circ.duration_rule.label:1645 field.combcirc.duration_rule.label:1700
-#: field.acirc.duration_rule.label:1767 field.rodcirc.duration_rule.label:3732
+#: field.circ.duration_rule.label:1647 field.combcirc.duration_rule.label:1702
+#: field.acirc.duration_rule.label:1769 field.rodcirc.duration_rule.label:3735
 msgid "Circ Duration Rule"
-msgstr ""
+msgstr "Տացքի տևողության օրենք"
 
 #: field.ccmt.max_overdue.label:556
 msgid "Max Overdue"
-msgstr ""
+msgstr "Մաքս ժամկետանց"
 
 #: field.ccmt.max_items_out.label:555
 msgid "Max Items Out"
-msgstr ""
+msgstr "Մաքս դուրս տրված նյութեր"
 
-#: class.asc.label:2239
+#: class.asc.label:2241
 msgid "Asset Statistical Category"
-msgstr ""
+msgstr "Վիճակագրական դասի "
 
-#: field.asv.required.label:2069
+#: field.asv.required.label:2071
 msgid "Is Required?"
-msgstr ""
+msgstr "Պահանջվա՞ծ է"
 
 #: field.au.survey_responses.label:1230
 msgid "Survey Responses"
-msgstr ""
+msgstr "Հարցախույզի արձագանքներ"
 
-#: field.atc.id.label:740 field.ahtc.id.label:3149 field.iatc.id.label:3702
+#: field.atc.id.label:740 field.ahtc.id.label:3152 field.iatc.id.label:3705
 msgid "Transit ID"
-msgstr ""
+msgstr "Տրանզիտ ID"
 
-#: field.acp.total_circ_count.label:2731
+#: field.acp.total_circ_count.label:2733
 msgid "Total Circulations"
-msgstr ""
+msgstr "Գումարային տացքեր"
 
-#: field.rccbs.usr_home_ou_name.label:3647
+#: field.rccbs.usr_home_ou_name.label:3650
 msgid "User Home Library Name"
-msgstr ""
+msgstr "Օգտվողի տան գրադարանի անունը"
 
 #: field.au.credit_forward_balance.label:1240
 msgid "User Credit Balance"
-msgstr ""
+msgstr "Օգտվողի կրեդիտի հաշվեկշիռ"
 
 #: class.vqbra.label:215
 msgid "Queued Bib Record Attribute"
-msgstr ""
+msgstr "Հերթի մատեն գրառման բաղադրիչը"
 
-#: field.aun.create_date.label:656 field.acp.create_date.label:2710
+#: field.aun.create_date.label:656 field.acp.create_date.label:2712
 msgid "Creation Date/Time"
-msgstr ""
+msgstr "Ստեղծման օր/ժամ"
 
-#: field.rocit.due_date.label:3810
+#: field.rocit.due_date.label:3813
 msgid "Due Date"
-msgstr ""
+msgstr "Վերադարձի ամսաթիվ"
 
-#: field.aout.id.label:2380
+#: field.aout.id.label:2382
 msgid "Type ID"
-msgstr ""
+msgstr "Տեսակի ID"
 
-#: field.circ.payments.label:1663 field.combcirc.payments.label:1718
-#: field.acirc.payments.label:1785 field.rodcirc.payments.label:3749
+#: field.circ.payments.label:1665 field.combcirc.payments.label:1720
+#: field.acirc.payments.label:1787 field.rodcirc.payments.label:3752
 msgid "Transaction Payments"
-msgstr ""
+msgstr "Տրանզակցիայի վճարումներ"
 
 #: class.bre.label:1049
 msgid "Bibliographic Record"
-msgstr ""
+msgstr "Մատենագիտական գրառում"
 
-#: field.ahr.eligible_copies.label:2148
+#: field.ahr.eligible_copies.label:2150
 msgid "Eligible Copies"
-msgstr ""
+msgstr "Թույլատրված օրինակներ"
 
-#: field.mp.cash_payment.label:3010 field.mbp.cash_payment.label:3041
+#: field.mp.cash_payment.label:3013 field.mbp.cash_payment.label:3044
 msgid "Cash Payment Detail"
-msgstr ""
+msgstr "Կանխիկի վճարման մանրամասներ"
 
 #: field.mfr.id.label:1358
 msgid "Field ID"
-msgstr ""
+msgstr "Դաշտի ID"
 
-#: field.rocit.ref.label:3804
+#: field.rocit.ref.label:3807
 msgid "Reference"
-msgstr ""
+msgstr "Տեղեկատու"
 
-#: field.ancc.item_type.label:2837
+#: field.ancc.item_type.label:2840
 msgid "Non-cat Item Type"
-msgstr ""
+msgstr "Չքարտագրվող նյութի տէսակ"
 
-#: field.chmm.user_home_ou.label:472 field.rmocbbhol.home_ou.label:3893
-#: field.rmobbhol.home_ou.label:3910
+#: field.chmm.user_home_ou.label:472 field.rmocbbhol.home_ou.label:3896
+#: field.rmobbhol.home_ou.label:3913
 msgid "User Home Library"
-msgstr ""
+msgstr "Օգտվողի տան գրադարան"
 
 #: class.vam.label:364
 msgid "Queued Authority Record Match"
-msgstr ""
+msgstr "Հարցված հեղինակավոր գրառումը համընկավ"
 
-#: field.rccbs.total_owed.label:3658 field.rmocbbol.billed.label:3831
-#: field.rmocbbcol.billed.label:3862 field.rmocbbhol.billed.label:3896
+#: field.rccbs.total_owed.label:3661 field.rmocbbol.billed.label:3834
+#: field.rmocbbcol.billed.label:3865 field.rmocbbhol.billed.label:3899
 msgid "Total Billed"
-msgstr ""
+msgstr "Ընդամենը հաշիվ ներկայացված"
 
 #: class.aun.label:651
 msgid "User Note"
-msgstr ""
+msgstr "Ընթերցողի նշում"
 
-#: class.actsc.label:2269
+#: class.actsc.label:2271
 msgid "User Statistical Category"
-msgstr ""
+msgstr "Օգտվողի վիճակագրական դաս"
 
-#: field.ccmm.grp.label:509 class.pgt.label:2787
+#: field.ccmm.grp.label:509 class.pgt.label:2790
 msgid "Permission Group"
-msgstr ""
+msgstr "Իրավասությունների խումբ"
 
-#: field.mp.forgive_payment.label:3015 field.mbp.forgive_payment.label:3046
-#: field.mndp.forgive_payment.label:3073
+#: field.mp.forgive_payment.label:3018 field.mbp.forgive_payment.label:3049
+#: field.mndp.forgive_payment.label:3076
 msgid "Forgive Payment Detail"
-msgstr ""
+msgstr "Ներիր վճարման մանրամասն"
 
-#: field.rhrr.target.label:3503
+#: field.rhrr.target.label:3506
 msgid "Hold Target"
-msgstr ""
+msgstr "Պահիր թիրախը"
 
 #: field.au.suffix.label:1265
 msgid "Suffix/Title"
-msgstr ""
+msgstr "Վերջածանց/Վերնագիր"
 
 #: field.asvr.effective_date.label:771
 msgid "Effective Answer Date/Time"
-msgstr ""
+msgstr "Արդյունավետ պատասխանի օր/ժամ"
 
-#: field.acp.deposit.label:2713
+#: field.acp.deposit.label:2715
 msgid "Is Deposit Required"
-msgstr ""
+msgstr "Պահանջվում է դեպոզիտ"
 
-#: field.ahr.capture_time.label:2123
+#: field.ahr.capture_time.label:2125
 msgid "Capture Date/Time"
-msgstr ""
+msgstr "Որսալու օր/ժամ"
 
-#: field.mbts.balance_owed.label:632 field.rccbs.balance_owed.label:3673
+#: field.mbts.balance_owed.label:632 field.rccbs.balance_owed.label:3676
 msgid "Balance Owed"
-msgstr ""
+msgstr "Առկա հաշվեկշիռ"
 
 #: field.chmt.max_holds.label:538
 msgid "Max Holds"
-msgstr ""
+msgstr "Մաքս պահումներ"
 
-#: field.rhrr.bib_record.label:3505
+#: field.rhrr.bib_record.label:3508
 msgid "Target Bib Record"
-msgstr ""
+msgstr "Թիրախ մատեն գրառում"
 
-#: class.ac.label:2255
+#: class.ac.label:2257
 msgid "Library Card"
-msgstr ""
+msgstr "Գրադարանի քարտ"
 
 #: field.au.second_given_name.label:1263
 msgid "Middle Name"
-msgstr ""
+msgstr "Միջին անուն"
 
 #: field.aihu.staff.label:706 field.ancihu.staff.label:723
 msgid "Recording Staff"
-msgstr ""
+msgstr "Գրանցող կազմ"
 
-#: field.aou.billing_address.label:2173
+#: field.aou.billing_address.label:2175
 msgid "Billing Address"
-msgstr ""
+msgstr "Հաշվի ներկայացման հասցե"
 
-#: field.acp.stat_cat_entries.label:2700
+#: field.acp.stat_cat_entries.label:2702
 msgid "Statistical Catagory Entries"
-msgstr ""
+msgstr "Վիճակագրական դասի մուտքեր"
 
-#: field.crahp.id.label:2770 field.crmf.id.label:2782
+#: field.crahp.id.label:2772 field.crmf.id.label:2784
 msgid "Rule ID"
-msgstr ""
+msgstr "Օրենքի ID"
 
-#: field.acp.loan_duration.label:2722
+#: field.acp.loan_duration.label:2724
 msgid "Loan Duration"
-msgstr ""
+msgstr "Տրման տևողություն"
 
 #: field.vbq.queue_type.label:148 field.vaq.queue_type.label:274
-#: field.mrd.item_type.label:1510 field.aua.address_type.label:1565
+#: field.mrd.item_type.label:1510 field.aua.address_type.label:1567
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
-#: field.ahr.expire_time.label:2126
+#: field.ahr.expire_time.label:2128
 msgid "Hold Expire Date/Time"
-msgstr ""
+msgstr "Պահման ժամկետի լրանալու օր/ժամ"
 
 #: field.bre.full_record_entries.label:1078
 msgid "Flattened MARC Fields "
-msgstr ""
+msgstr "Հարթեցված MARC դաշտեր"
 
-#: field.rmsr.quality.label:3401 field.rssr.quality.label:3423
-#: field.rsr.quality.label:3446
+#: field.rmsr.quality.label:3404 field.rssr.quality.label:3426
+#: field.rsr.quality.label:3449
 msgid "Overall Record Quality"
-msgstr ""
+msgstr "Ողջ գրառման որակը"
 
-#: class.mg.label:2434
+#: class.mg.label:2436
 msgid "Grocery Transaction"
-msgstr ""
+msgstr "Grocery Transaction"
 
-#: field.rocit.age_protect.label:3802
+#: field.rocit.age_protect.label:3805
 msgid "Age Protection"
-msgstr ""
+msgstr "Տարիքի պաշտպանություն"
 
-#: field.acn.record.label:983 field.combcirc.copy_bib_record.label:1730
-#: field.acirc.copy_bib_record.label:1797
+#: field.acn.record.label:983 field.combcirc.copy_bib_record.label:1732
+#: field.acirc.copy_bib_record.label:1799
 msgid "Bib Record"
-msgstr ""
+msgstr "Մատեն գրառում"
 
-#: field.rccbs.patron_city.label:3670
+#: field.rccbs.patron_city.label:3673
 msgid "User City"
-msgstr ""
+msgstr "Օգտվողի քաղաքը"
 
-#: field.ahn.hold.label:1873 field.aufh.hold.label:2870
+#: field.ahn.hold.label:1875 field.aufh.hold.label:2873
 msgid "Hold"
-msgstr ""
+msgstr "Պահում"
 
 #: field.cifm.value.label:957
 msgid "Item Form"
-msgstr ""
+msgstr "Նյութի ձև"
 
 #: class.cit.label:599
 msgid "Identification Type"
-msgstr ""
+msgstr "Փոխճանաչման տեսակ"
 
-#: field.ahr.requestor.label:2138
+#: field.ahr.requestor.label:2140
 msgid "Requesting User"
-msgstr ""
+msgstr "Հարցվում է օգտվող"
 
 #: field.auoi.opt_in_ws.label:396 class.aws.label:410
 msgid "Workstation"
-msgstr ""
+msgstr "Աշխատանքային կայան"
 
-#: field.mcrp.xact.label:2329 field.mb.xact.label:3189
+#: field.mcrp.xact.label:2331 field.mb.xact.label:3192
 msgid "Transaction"
-msgstr ""
+msgstr "Տրանզակցիա"
 
-#: field.rocit.owning_lib_name.label:3797
+#: field.rocit.owning_lib_name.label:3800
 msgid "Owning Lib Name"
-msgstr ""
+msgstr "Գրադարանի անուն"
 
-#: field.rccc.circ_lib.label:3563
+#: field.rccc.circ_lib.label:3566
 msgid "Library Circulation Location Short (Policy) Name"
-msgstr ""
+msgstr "Գրադարանի տացքի տեղաբաշխման կարճ անուն"
 
-#: field.acp.fine_level.label:2719
+#: field.acp.fine_level.label:2721
 msgid "Fine Level"
-msgstr ""
+msgstr "Տուգանքի մակարդակ"
 
 #: field.vqbra.record.label:221 field.vqara.record.label:346
-#: field.ssr.record.label:2046
+#: field.ssr.record.label:2048
 msgid "Record"
-msgstr ""
+msgstr "Գրառում"
 
 #: field.aun.id.label:658 field.acpn.id.label:1326
 msgid "Note ID"
-msgstr ""
+msgstr "Նշումի ID"
 
-#: field.ahr.bib_rec.label:2147
+#: field.ahr.bib_rec.label:2149
 msgid "Bib Record link"
-msgstr ""
+msgstr "Մատեն գրառման կապ"
 
-#: field.rsr.uniform_title.label:3450
+#: field.rsr.uniform_title.label:3453
 msgid "Uniform Title (normalized)"
-msgstr ""
+msgstr "Համընդհանուր վերնագիր (նորմալացված)"
 
-#: field.mg.xact_finish.label:2443
+#: field.mg.xact_finish.label:2445
 msgid "Transaction Finish Timestamp"
-msgstr ""
+msgstr "Տրանզակցիայի ավարտի ժամանակի կնիք"
 
-#: class.ahr.label:2116
+#: class.ahr.label:2118
 msgid "Hold Request"
-msgstr ""
+msgstr "Պահման հարցում"
 
-#: field.aihu.item.label:704 class.acp.label:2695
+#: field.aihu.item.label:704 class.acp.label:2697
 msgid "Item"
-msgstr ""
+msgstr "Նյութ"
 
 #: field.chmm.marc_form.label:481 field.ccmm.marc_form.label:512
-#: field.rccc.item_form.label:3572
+#: field.rccc.item_form.label:3575
 msgid "MARC Form"
-msgstr ""
+msgstr "MARC ձևաչափ"
 
 #: class.ccmt.label:548
 msgid "Circulation Matrix Test Set"
-msgstr ""
+msgstr "Տացքի մատրիցայի տեստի բազմություն"
 
 #: field.chmm.usr_grp.label:477
 msgid "User Permission Group"
-msgstr ""
+msgstr "Օգտվողի իրավասությունների բազմություն"
 
-#: field.ancihu.item_type.label:721 field.citm.value.label:1931
+#: field.ancihu.item_type.label:721 field.citm.value.label:1933
 msgid "Item Type"
-msgstr ""
+msgstr "Նյութի տէսակ"
 
-#: field.ssr.visible.label:2049
+#: field.ssr.visible.label:2051
 msgid "Visible"
-msgstr ""
+msgstr "Տեսանելի"
 
-#: class.rmocbbol.label:3823
+#: class.rmocbbol.label:3826
 msgid "Open Circulation Billing by Owning Library"
-msgstr ""
+msgstr "Բաց տացքի հաշվի ներկայացում տնօրինող գրադարանի կողմից"
 
-#: field.ahr.phone_notify.label:2133
+#: field.ahr.phone_notify.label:2135
 msgid "Notifications Phone Number"
-msgstr ""
+msgstr "Հիշեցումների հէռախոսահամարներ"
 
-#: field.mg.billable_transaction.label:2447
+#: field.mg.billable_transaction.label:2449
 msgid "Billable Transaction link"
-msgstr ""
+msgstr "Վճարվող տրանզակցիայի կապ"
 
-#: field.circ.id.label:1647 field.combcirc.id.label:1702
-#: field.acirc.id.label:1769 field.rodcirc.id.label:3734
+#: field.circ.id.label:1649 field.combcirc.id.label:1704
+#: field.acirc.id.label:1771 field.rodcirc.id.label:3737
 msgid "Circ ID"
-msgstr ""
+msgstr "Տացքի ID"
 
 #: field.bre.deleted.label:1059
 msgid "Is Deleted?"
-msgstr ""
+msgstr "Ջնջվա՞ծ է"
 
 #: class.vaq.label:265
 msgid "Import/Overlay Authority Queue"
-msgstr ""
+msgstr "Ներմուծիր/վերակապիր Հեղինակավոր հարցումը"
 
-#: field.mbt.billings.label:2484
+#: field.mbt.billings.label:2486
 msgid "Billing Line Items"
-msgstr ""
+msgstr "Վճարվող տողի նյութեր"
 
-#: field.acp.circulate.label:2708
+#: field.acp.circulate.label:2710
 msgid "Can Circulate"
-msgstr ""
+msgstr "Կարող է սպասարկել"
 
-#: field.rocit.call_number_label.label:3785
+#: field.rocit.call_number_label.label:3788
 msgid "Callnumber Label"
-msgstr ""
+msgstr "Դասիչի պիտակ"
 
-#: field.aou.parent_ou.label:2180
+#: field.aou.parent_ou.label:2182
 msgid "Parent Organizational Unit"
-msgstr ""
+msgstr "Ծնող կազմակերպչական միավոր"
 
-#: class.erfcc.label:3541
+#: class.erfcc.label:3544
 msgid "Total Circulation Count, Including Legacy"
-msgstr ""
+msgstr "Ընդհանուր տացքի հաշվիչ, "
 
 #: field.bre.last_xact_id.label:1064
 msgid "Last Transaction ID"
-msgstr ""
+msgstr "Վերջին տրանզակցիայի ID"
 
-#: field.mp.check_payment.label:3013 field.mbp.check_payment.label:3044
+#: field.mp.check_payment.label:3016 field.mbp.check_payment.label:3047
 msgid "Check Payment Detail"
-msgstr ""
+msgstr "Ստուգիր վճարի մանրամասները"
 
-#: field.ahr.id.label:2132 field.rhrr.id.label:3502
+#: field.ahr.id.label:2134 field.rhrr.id.label:3505
 msgid "Hold ID"
-msgstr ""
+msgstr "Պահման ID"
 
 #: field.mbts.last_billing_ts.label:635
 msgid "Last Billing Timestamp"
-msgstr ""
+msgstr "Վերջին հաշվի ժամանակի կնիք"
 
-#: field.rocit.dewey_block_tens.label:3786
+#: field.rocit.dewey_block_tens.label:3789
 msgid "Dewy Tens"
-msgstr ""
+msgstr "Դյուի տասնական"
 
-#: field.rocit.stat_cat_1_value.label:3793
+#: field.rocit.stat_cat_1_value.label:3796
 msgid "Legacy Stat Cat 1 Value"
-msgstr ""
+msgstr "Օրենսդրական Վիճ Քարտագր 1 արժեք"
 
-#: field.pgt.usergroup.label:2799
+#: field.pgt.usergroup.label:2802
 msgid "Is User Group"
-msgstr ""
+msgstr "Օգտվողի խումբ է"
 
-#: field.rccbs.usr.label:3651
+#: field.rccbs.usr.label:3654
 msgid "User Link"
-msgstr ""
+msgstr "Օգտվողի կապ"
 
-#: field.acpl.circulate.label:1890
+#: field.acpl.circulate.label:1892
 msgid "Can Circulate?"
-msgstr ""
+msgstr "Կարելի՞ է սպասարկել"
 
-#: field.acp.stat_cat_entry_copy_maps.label:2729
+#: field.acp.stat_cat_entry_copy_maps.label:2731
 msgid "Stat-Cat entry maps"
-msgstr ""
+msgstr "Stat-Cat մուտքի քարտեզներ"
 
-#: field.aout.children.label:2376
+#: field.aout.children.label:2378
 msgid "Subordinate Types"
-msgstr ""
+msgstr "Ենթակա տեսակներ"
 
 #: field.bre.fixed_fields.label:1055
 msgid "Fixed Field Entry"
-msgstr ""
+msgstr "Սևեռված դաշտի մուտք"
 
-#: field.bre.fingerprint.label:1062 field.rmsr.fingerprint.label:3400
-#: field.rssr.fingerprint.label:3422 field.rsr.fingerprint.label:3445
+#: field.bre.fingerprint.label:1062 field.rmsr.fingerprint.label:3403
+#: field.rssr.fingerprint.label:3425 field.rsr.fingerprint.label:3448
 msgid "Fingerprint"
-msgstr ""
+msgstr "Մատի տակ"
 
 #: field.chmm.ref_flag.label:483 field.ccmm.ref_flag.label:514
 msgid "Reference?"
-msgstr ""
+msgstr "Տեղեկատու՞"
 
-#: field.pgt.children.label:2792
+#: field.pgt.children.label:2795
 msgid "Child Groups"
-msgstr ""
+msgstr "Երեխա խմբեր"
 
-#: field.rccc.dewey_block_tens.label:3590
+#: field.rccc.dewey_block_tens.label:3593
 msgid "Dewey Block -- Tens"
-msgstr ""
+msgstr "Դյուի բլոկ -- տասնականներ"
 
 #: field.aws.owning_lib.label:417 field.chmm.item_owning_ou.label:475
-#: field.acn.owning_lib.label:982 field.asv.owner.label:2067
-#: field.asc.owner.label:2248 field.actsc.owner.label:2278
-#: field.cnct.owning_lib.label:2365 field.rmocbbol.owning_lib.label:3829
-#: field.rmobbol.owning_lib.label:3844 field.rmocbbcol.owning_lib.label:3860
-#: field.rmobbcol.owning_lib.label:3877 field.rmocbbhol.owning_lib.label:3894
-#: field.rmobbhol.owning_lib.label:3911
+#: field.acn.owning_lib.label:982 field.asv.owner.label:2069
+#: field.asc.owner.label:2250 field.actsc.owner.label:2280
+#: field.cnct.owning_lib.label:2367 field.rmocbbol.owning_lib.label:3832
+#: field.rmobbol.owning_lib.label:3847 field.rmocbbcol.owning_lib.label:3863
+#: field.rmobbcol.owning_lib.label:3880 field.rmocbbhol.owning_lib.label:3897
+#: field.rmobbhol.owning_lib.label:3914
 msgid "Owning Library"
-msgstr ""
+msgstr "Տնօրինող գրադարան"
 
-#: field.rocit.circ_lib_name.label:3798
+#: field.rocit.circ_lib_name.label:3801
 msgid "Circ Lib Name"
-msgstr ""
+msgstr "Տացք գրադ անուն"
 
 #: field.vqbr.create_time.label:169 field.vqar.create_time.label:296
 msgid "Create Time"
-msgstr ""
+msgstr "Ստեղծիր ժամ"
 
 #: field.amtr.success.label:129
 msgid "Success"
-msgstr ""
+msgstr "Հաջողություն"
 
-#: field.circ.circ_staff.label:1641 field.combcirc.circ_staff.label:1696
-#: field.acirc.circ_staff.label:1763 field.ancc.staff.label:2839
-#: field.rodcirc.circ_staff.label:3728
+#: field.circ.circ_staff.label:1643 field.combcirc.circ_staff.label:1698
+#: field.acirc.circ_staff.label:1765 field.ancc.staff.label:2842
+#: field.rodcirc.circ_staff.label:3731
 msgid "Circulating Staff"
-msgstr ""
+msgstr "Տացքի աշխատակազմ"
 
-#: class.asce.label:3125
+#: class.asce.label:3128
 msgid "Item Stat Cat Entry"
-msgstr ""
+msgstr "Նյութի Stat Cat մուտքEntry"
 
-#: field.combcirc.usr_birth_year.label:1725
-#: field.acirc.usr_birth_year.label:1792
+#: field.combcirc.usr_birth_year.label:1727
+#: field.acirc.usr_birth_year.label:1794
 msgid "Patron Birth Year"
-msgstr ""
+msgstr "Հաճախորդի ծննդյան տարի"
 
-#: field.atc.hold_transit_copy.label:746 class.ahtc.label:3140
-#: field.iatc.hold_transit_copy.label:3708
+#: field.atc.hold_transit_copy.label:746 class.ahtc.label:3143
+#: field.iatc.hold_transit_copy.label:3711
 msgid "Hold Transit"
-msgstr ""
+msgstr "Պահված տրանզիտ"
 
-#: field.asv.opac.label:2066
+#: field.asv.opac.label:2068
 msgid "OPAC Surevey?"
-msgstr ""
+msgstr "ՀՕԱՔ հարցախու՞յզ"
 
 #: field.vqbra.id.label:220 field.vqara.id.label:345
 msgid "Attribute ID"
-msgstr ""
+msgstr "Բաղկացուցիչի ID"
 
 #: field.aun.creator.label:657
 msgid "Creating Staff"
-msgstr ""
+msgstr "Ստեղծվում է աշխատակազմ"
 
 #: class.ccmrs.label:581
 msgid "Circulation Matrix Rule Set"
-msgstr ""
+msgstr "Տացքի մատրիցայի օրենքի բազմություն"
 
 #: field.ccm.sip2_media_type.label:432
 msgid "SIP2 Media Type"
-msgstr ""
+msgstr "SIP2 մեդիա տեսակ"
 
 #: field.vqbrad.code.label:198 field.vqarad.code.label:323
 #: field.ccm.code.label:429 field.cvrfm.code.label:451
 msgid "Code"
-msgstr ""
+msgstr "Կոդ"
 
-#: field.rocit.patron_name.label:3812
+#: field.rocit.patron_name.label:3815
 msgid "Patron Name"
-msgstr ""
+msgstr "Ընթերցողի անուն"
 
 #: class.cvrfm.label:446 field.chmm.marc_vr_format.label:482
 #: field.ccmm.marc_vr_format.label:513
 msgid "Videorecording Format"
-msgstr ""
+msgstr "Տեսակոնֆերանսի ձևաչափ"
 
-#: field.circ.due_date.label:1643 field.combcirc.due_date.label:1698
-#: field.acirc.due_date.label:1765 field.rodcirc.due_date.label:3730
+#: field.circ.due_date.label:1645 field.combcirc.due_date.label:1700
+#: field.acirc.due_date.label:1767 field.rodcirc.due_date.label:3733
 msgid "Due Date/Time"
-msgstr ""
+msgstr "Վերադարձի օր/ժամ"
 
 #: field.asvq.id.label:617
 msgid "Question ID"
-msgstr ""
+msgstr "Հարցի ID"
 
-#: class.mb.label:3176
+#: class.mb.label:3179
 msgid "Billing Line Item"
-msgstr ""
+msgstr "հաշվի ներկայացման նյութ"
 
-#: field.rsr.external_uri.label:3464
+#: field.rsr.external_uri.label:3467
 msgid "External URI List (normalized)"
-msgstr ""
+msgstr "Արտաքին URI ցուցակ (նորմալացված)"
 
-#: field.actsce.id.label:2504 field.actscecm.id.label:2899
-#: field.asce.id.label:3130 field.rsce1.id.label:3612
-#: field.rsce2.id.label:3626
+#: field.actsce.id.label:2506 field.actscecm.id.label:2902
+#: field.asce.id.label:3133 field.rsce1.id.label:3615
+#: field.rsce2.id.label:3629
 msgid "Entry ID"
-msgstr ""
+msgstr "Մուտքի ID"
 
-#: field.acp.age_protect.label:2701
+#: field.acp.age_protect.label:2703
 msgid "Age Hold Protection"
-msgstr ""
+msgstr "Տարիքի պահման պաշտպանություն"
 
 #: field.amtr.fail_part.label:130
 msgid "Failure Part"
-msgstr ""
+msgstr "Ձախողված մաս "
 
-#: field.acp.copy_number.label:2709
+#: field.acp.copy_number.label:2711
 msgid "Copy Number on Volume"
-msgstr ""
+msgstr "Հատորի օրինակի համար"
 
 #: field.mbts.last_payment_type.label:639
-#: field.rccbs.last_payment_type.label:3662
+#: field.rccbs.last_payment_type.label:3665
 msgid "Last Payment Type"
-msgstr ""
+msgstr "Վերջին վճարման տեսակ"
 
-#: class.mgp.label:2583
+#: class.mgp.label:2585
 msgid "Goods Payment"
-msgstr ""
+msgstr "Ապրանքների վճարում"
 
-#: field.rmsr.isbn.label:3408 field.rssr.isbn.label:3430
-#: field.rsr.isbn.label:3457
+#: field.rmsr.isbn.label:3411 field.rssr.isbn.label:3433
+#: field.rsr.isbn.label:3460
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
-#: field.circ.checkin_staff.label:1638 field.combcirc.checkin_staff.label:1693
-#: field.acirc.checkin_staff.label:1760 field.rodcirc.checkin_staff.label:3725
+#: field.circ.checkin_staff.label:1640 field.combcirc.checkin_staff.label:1695
+#: field.acirc.checkin_staff.label:1762 field.rodcirc.checkin_staff.label:3728
 msgid "Check In Staff"
-msgstr ""
+msgstr "Հետ ընդունող կազմ"
 
 #: field.ccmt.script_test.label:558
 msgid "Test Script"
-msgstr ""
+msgstr "տեստ սկրիպտ"
 
-#: field.mdp.cash_drawer.label:3095
+#: field.mdp.cash_drawer.label:3098
 msgid "Cash Drawer"
-msgstr ""
+msgstr "Կանխիկ տրամադրող "
 
 #: class.asvr.label:764
 msgid "Survey Response"
-msgstr ""
+msgstr "Հարցախույզի արձագանք"
 
-#: class.crahp.label:2764
+#: class.crahp.label:2766
 msgid "Age Hold Protection Rule"
-msgstr ""
+msgstr "Տարիքի պահման պաշտպանության օրենք"
 
 #: field.au.first_given_name.label:1247
 msgid "First Name"
-msgstr ""
+msgstr "Անուն"
 
-#: field.acpl.owning_lib.label:1895
+#: field.acpl.owning_lib.label:1897
 msgid "Owning Org Unit"
-msgstr ""
+msgstr "Տնօրինող կազմ միավոր"
 
 #: field.au.permissions.label:1226
 msgid "All Permissions"
-msgstr ""
+msgstr "Բոլոր իրավասությունները"
 
 #: field.mbts.xact_finish.label:643
 msgid "Transaction Finish Time"
-msgstr ""
+msgstr "Տրանզակցիայի ավարտի ժամ"
 
 #: field.cit.id.label:604
 msgid "Identification ID"
-msgstr ""
+msgstr "Փոխճանաչման ID"
 
-#: field.atc.source_send_time.label:744 field.ahtc.source_send_time.label:3153
-#: field.iatc.source_send_time.label:3706
+#: field.atc.source_send_time.label:744 field.ahtc.source_send_time.label:3156
+#: field.iatc.source_send_time.label:3709
 msgid "Send Date/Time"
-msgstr ""
+msgstr "Աօաքման օր/ժամ"
 
-#: class.circ.label:1632 field.rccc.id.label:3562
+#: class.circ.label:1634 field.rccc.id.label:3565
 msgid "Circulation"
-msgstr ""
+msgstr "Տացք"
 
-#: field.acp.price.label:2725 field.rocit.price.label:3783
+#: field.acp.price.label:2727 field.rocit.price.label:3786
 msgid "Price"
-msgstr ""
+msgstr "Գին"
 
-#: field.ac.barcode.label:2261 field.acp.barcode.label:2703
-#: field.rocit.barcode.label:3784
+#: field.ac.barcode.label:2263 field.acp.barcode.label:2705
+#: field.rocit.barcode.label:3787
 msgid "Barcode"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
-#: field.pgt.id.label:2794
+#: field.pgt.id.label:2797
 msgid "Group ID"
-msgstr ""
+msgstr "Խմբի ID"
 
 #: field.mrd.pub_status.label:1512
 msgid "Pub Status"
-msgstr ""
+msgstr "Pub վիճակ"
 
-#: field.rocit.create_date.label:3796
+#: field.rocit.create_date.label:3799
 msgid "Create Date"
-msgstr ""
+msgstr "Ստեղծման ամսաթիվ"
 
-#: field.acp.deposit_amount.label:2714 field.rocit.deposit_amount.label:3805
+#: field.acp.deposit_amount.label:2716 field.rocit.deposit_amount.label:3808
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Դեպոզիտ գումար"
 
-#: field.rxbt.total.label:3520
+#: field.rxbt.total.label:3523
 msgid "Total Billing Amount"
-msgstr ""
+msgstr "Ընդհանուր հաշվի մեծություն"
 
-#: field.circ.xact_finish.label:1659 field.combcirc.xact_finish.label:1714
-#: field.acirc.xact_finish.label:1781 field.mbt.xact_finish.label:2480
-#: field.rodcirc.xact_finish.label:3746
+#: field.circ.xact_finish.label:1661 field.combcirc.xact_finish.label:1716
+#: field.acirc.xact_finish.label:1783 field.mbt.xact_finish.label:2482
+#: field.rodcirc.xact_finish.label:3749
 msgid "Transaction Finish Date/Time"
-msgstr ""
+msgstr "Տրանզակցիայի ավարտի օր/ժամ"
 
-#: field.acp.ref.label:2726
+#: field.acp.ref.label:2728
 msgid "Is Reference"
-msgstr ""
+msgstr "Տեղեկատու է"
 
 #: field.vbq.name.label:146 field.vaq.name.label:272 field.ccm.name.label:430
 #: field.aus.name.label:675 field.cxt.name.label:893
-#: field.acpl.name.label:1893 field.asv.name.label:2065
-#: field.aou.name.label:2178 field.asc.name.label:2246
-#: field.actsc.name.label:2276 field.cnct.name.label:2364
+#: field.acpl.name.label:1895 field.asv.name.label:2067
+#: field.aou.name.label:2180 field.asc.name.label:2248
+#: field.actsc.name.label:2278 field.cnct.name.label:2366
 msgid "Name"
-msgstr ""
+msgstr "Անուն"
 
-#: field.mckp.cash_drawer.label:2679
+#: field.mckp.cash_drawer.label:2681
 msgid "Workstation link"
-msgstr ""
+msgstr "Աշխատանքային կայանի կապ"
 
 #: field.chmm.marc_type.label:480 field.ccmm.marc_type.label:511
-#: field.rccc.item_type.label:3573
+#: field.rccc.item_type.label:3576
 msgid "MARC Type"
-msgstr ""
+msgstr "MARC տեսակ"
 
 #: field.bre.edit_date.label:1060
 msgid "Last Edit Data/Time"
-msgstr ""
+msgstr "Վերջին խմբագրման օր/ժամ"
 
 #: field.clm.code.label:846 field.bre.language.label:1071
 msgid "Language Code"
-msgstr ""
+msgstr "Լեզվի կոդ"
 
-#: field.pgt.parent.label:2796
+#: field.pgt.parent.label:2799
 msgid "Parent Group"
-msgstr ""
+msgstr "Ծնող խումբ"
 
-#: field.combcirc.usr_post_code.label:1713
-#: field.acirc.usr_post_code.label:1780
+#: field.combcirc.usr_post_code.label:1715
+#: field.acirc.usr_post_code.label:1782
 msgid "Patron ZIP"
-msgstr ""
+msgstr "Հաճախորդի զիպ"
 
-#: field.circ.xact_start.label:1660 field.combcirc.xact_start.label:1715
-#: field.acirc.xact_start.label:1782 field.rodcirc.xact_start.label:3747
+#: field.circ.xact_start.label:1662 field.combcirc.xact_start.label:1717
+#: field.acirc.xact_start.label:1784 field.rodcirc.xact_start.label:3750
 msgid "Check Out Date/Time"
-msgstr ""
+msgstr "Դուրս տրման օր/ժամ"
 
-#: field.rxbt.unvoided.label:3518
+#: field.rxbt.unvoided.label:3521
 msgid "Unvoided Billing Amount"
-msgstr ""
+msgstr "Unvoided Billing Amount"
 
-#: field.rxpt.total.label:3534
+#: field.rxpt.total.label:3537
 msgid "Total Paid Amount"
-msgstr ""
+msgstr "Ընդհանուր վճարված գումար"
 
-#: field.circ.billable_transaction.label:1664
-#: field.combcirc.billable_transaction.label:1719
-#: field.acirc.billable_transaction.label:1786
-#: field.rodcirc.billable_transaction.label:3750
+#: field.circ.billable_transaction.label:1666
+#: field.combcirc.billable_transaction.label:1721
+#: field.acirc.billable_transaction.label:1788
+#: field.rodcirc.billable_transaction.label:3753
 msgid "Base Transaction"
-msgstr ""
+msgstr "Հիմնական տրանզակցիա"
 
-#: field.rccc.patron_home_lib_shortname.label:3582
+#: field.rccc.patron_home_lib_shortname.label:3585
 msgid "Patron Home Library Short (Policy) Name"
-msgstr ""
+msgstr "Ընթերցողի տան գրադարանի կարճ անուն"
 
-#: field.ac.active.label:2260
+#: field.ac.active.label:2262
 msgid "IsActive?"
-msgstr ""
+msgstr "Ակտի՞վ է"
 
-#: field.cnct.in_house.label:2363
+#: field.cnct.in_house.label:2365
 msgid "In House?"
-msgstr ""
+msgstr "Տա՞նն է"
 
-#: field.rsr.geographic_subject.label:3460
+#: field.rsr.geographic_subject.label:3463
 msgid "Geographic Subjects (normalized)"
-msgstr ""
+msgstr "Աշխարհագրական խորագիր (նորմալացված)"
 
-#: field.combcirc.copy_call_number.label:1726
-#: field.acirc.copy_call_number.label:1793
+#: field.combcirc.copy_call_number.label:1728
+#: field.acirc.copy_call_number.label:1795
 msgid "Call Number"
-msgstr ""
+msgstr "Դասիչ"
 
 #: field.au.card.label:1237
 msgid "Current Library Card"
-msgstr ""
+msgstr "Ընթացիկ գրադարանի տոմս"
 
-#: field.atc.target_copy.label:745 field.ahtc.target_copy.label:3154
-#: field.iatc.target_copy.label:3707
+#: field.atc.target_copy.label:745 field.ahtc.target_copy.label:3157
+#: field.iatc.target_copy.label:3710
 msgid "Transited Copy"
-msgstr ""
+msgstr "Տրանզիտ օրինակ"
 
-#: field.actsce.value.label:2507 field.rsce1.value.label:3614
-#: field.rsce2.value.label:3628
+#: field.actsce.value.label:2509 field.rsce1.value.label:3617
+#: field.rsce2.value.label:3631
 msgid "Entry Value"
-msgstr ""
+msgstr "Մուտքի արժեք"
 
 #: field.acpn.creator.label:1325
 msgid "Note Creator"
-msgstr ""
+msgstr "Նշման ստեղծող"
 
-#: field.combcirc.copy_circ_lib.label:1729
-#: field.acirc.copy_circ_lib.label:1796
+#: field.combcirc.copy_circ_lib.label:1731
+#: field.acirc.copy_circ_lib.label:1798
 msgid "Copy Circulating Library"
-msgstr ""
+msgstr "Օրինակի տացքի գրադարան"
 
 #: class.vbm.label:239
 msgid "Queued Bib Record Match"
-msgstr ""
+msgstr "Հարցվող մատեն գրառումը համընկնում է"
 
-#: field.ssr.checked.label:2048
+#: field.ssr.checked.label:2050
 msgid "Checked"
-msgstr ""
+msgstr "Ստուգված"
 
 #: field.mfr.record.label:1361 field.mrd.record.label:1513
 msgid "Bib Record Entry"
-msgstr ""
+msgstr "Մատեն գրառման մուտք"
 
-#: field.rccbs.usr_home_ou.label:3648
+#: field.rccbs.usr_home_ou.label:3651
 msgid "User Home Library Link"
-msgstr ""
+msgstr "Օգտվողի տնային գրադարանի կապ"
 
 #: field.ccmm.usr_age_lower_bound.label:515
 msgid "User Age: Lower Bound"
-msgstr ""
+msgstr "Օգտվողի տարիք: ներքին սահման"
 
-#: field.acp.id.label:2721 field.erfcc.id.label:3546 field.rocit.id.label:3782
+#: field.acp.id.label:2723 field.erfcc.id.label:3549 field.rocit.id.label:3785
 msgid "Copy ID"
-msgstr ""
+msgstr "Օրինակի ID"
 
 #: field.au.day_phone.label:1241
 msgid "Daytime Phone"
-msgstr ""
+msgstr "Ցերեկային հեռախոս"
 
-#: field.circ.target_copy.label:1657 field.combcirc.target_copy.label:1712
-#: field.acirc.target_copy.label:1779 field.rodcirc.target_copy.label:3744
+#: field.circ.target_copy.label:1659 field.combcirc.target_copy.label:1714
+#: field.acirc.target_copy.label:1781 field.rodcirc.target_copy.label:3747
 msgid "Circulating Item"
-msgstr ""
+msgstr "Նյութի սպասարկւոմ"
 
-#: field.rocit.author.label:3780
+#: field.rocit.author.label:3783
 msgid "Author"
-msgstr ""
+msgstr "Հեղինակ"
 
-#: field.ahr.email_notify.label:2125
+#: field.ahr.email_notify.label:2127
 msgid "Notify by Email?"
-msgstr ""
+msgstr "Տեղեկացնե՞լ էլ փոստով"
 
-#: field.circ.payment_total.label:1667 field.combcirc.payment_total.label:1722
-#: field.acirc.payment_total.label:1789 field.mg.payment_total.label:2449
-#: field.mbt.payment_total.label:2487 field.rodcirc.payment_total.label:3753
+#: field.circ.payment_total.label:1669 field.combcirc.payment_total.label:1724
+#: field.acirc.payment_total.label:1791 field.mg.payment_total.label:2451
+#: field.mbt.payment_total.label:2489 field.rodcirc.payment_total.label:3756
 msgid "Payment Totals"
-msgstr ""
+msgstr "Ընդհանուր վճարումներ"
 
-#: field.rccc.patron_id.label:3580
+#: field.rccc.patron_id.label:3583
 msgid "Patron Link"
-msgstr ""
+msgstr "Ընթերցողի կապ"
 
 #: field.ccmcmt.id.label:570
 msgid "Test ID"
-msgstr ""
+msgstr "Տեստի ID"
 
-#: field.mp.goods_payment.label:3016 field.mbp.goods_payment.label:3047
-#: field.mndp.goods_payment.label:3074
+#: field.mp.goods_payment.label:3019 field.mbp.goods_payment.label:3050
+#: field.mndp.goods_payment.label:3077
 msgid "Goods Payment Detail"
-msgstr ""
+msgstr "Ապրանքների վճարման մանրամասներ"
 
 #: field.au.notes.label:1271
 msgid "User Notes"
-msgstr ""
+msgstr "Օգտվողի նշումներ"
 
 #: field.acn.notes.label:984
 msgid "Notes"
-msgstr ""
+msgstr "Նշումներ"
 
-#: class.rmsr.label:3394
+#: class.rmsr.label:3397
 msgid "Fast Simple Record Extracts"
-msgstr ""
+msgstr "Պարզ գրառման արագ ընդլայնում"
 
 #: field.vqbra.attr_value.label:223 field.vqara.attr_value.label:348
-#: field.aus.value.label:677 field.asce.value.label:3133
+#: field.aus.value.label:677 field.asce.value.label:3136
 msgid "Value"
-msgstr ""
+msgstr "Արժեք"
 
-#: field.bre.tcn_source.label:1068 field.rmsr.tcn_source.label:3402
-#: field.rssr.tcn_source.label:3424 field.rsr.tcn_source.label:3447
+#: field.bre.tcn_source.label:1068 field.rmsr.tcn_source.label:3405
+#: field.rssr.tcn_source.label:3427 field.rsr.tcn_source.label:3450
 msgid "TCN Source"
-msgstr ""
+msgstr "TCN աղբյուր"
 
-#: class.rsce1.label:3607
+#: class.rsce1.label:3610
 msgid "CAT1 Entry"
-msgstr ""
+msgstr "CAT1 մուտք"
 
 #: field.mrd.enc_level.label:1506
 msgid "ELvl"
-msgstr ""
+msgstr "ELvl"
 
-#: field.ahtc.dest.label:3146
+#: field.ahtc.dest.label:3149
 msgid "Destination Library"
-msgstr ""
+msgstr "Նպատակակետ գրադարան"
 
-#: class.aufh.label:2862
+#: class.aufh.label:2865
 msgid "Unfulfilled Hold Targets"
-msgstr ""
+msgstr "Համընդհանուր պահման թիրախ"
 
-#: field.rocit.creator.label:3801
+#: field.rocit.creator.label:3804
 msgid "Creator"
-msgstr ""
+msgstr "Ստեղծող"
 
-#: field.rccc.dewey_range_hundreds.label:3589
+#: field.rccc.dewey_range_hundreds.label:3592
 msgid "Dewey Range -- Hundreds"
-msgstr ""
+msgstr "Դյուի տիրույթ -- հարյուրյակներ"
 
-#: field.rccc.copy_id.label:3567
+#: field.rccc.copy_id.label:3570
 msgid "Copy Link"
-msgstr ""
+msgstr "Օրինակի կապ"
 
-#: field.ahr.selection_ou.label:2140
+#: field.ahr.selection_ou.label:2142
 msgid "Selection Locus"
-msgstr ""
+msgstr "Selection Locus"
 
-#: field.rsr.series_statement.label:3455
+#: field.rsr.series_statement.label:3458
 msgid "Series Statement (normalized)"
-msgstr ""
+msgstr "Մատենաշարի վիճակ (նորմալացված)"
 
-#: class.rccbs.label:3635
+#: class.rccbs.label:3638
 msgid "Classic Open Transaction Summary"
-msgstr ""
+msgstr "Բաց տրանզակցիայի դասական համառոտում"
 
-#: class.cnct.label:2356
+#: class.cnct.label:2358
 msgid "Non-cataloged Type"
-msgstr ""
+msgstr "Չքարտագրվող տեսակ"
 
 #: field.asvq.question.label:618 field.asvr.question.label:773
-#: field.asva.question.label:2822
+#: field.asva.question.label:2825
 msgid "Question"
-msgstr ""
+msgstr "Հարց"
 
-#: field.ahtc.prev_hop.label:3151
+#: field.ahtc.prev_hop.label:3154
 msgid "Previous Stop"
-msgstr ""
+msgstr "Նախորդ կանգ"
 
-#: field.bre.tcn_value.label:1069 field.rmsr.tcn_value.label:3403
-#: field.rssr.tcn_value.label:3425 field.rsr.tcn_value.label:3448
+#: field.bre.tcn_value.label:1069 field.rmsr.tcn_value.label:3406
+#: field.rssr.tcn_value.label:3428 field.rsr.tcn_value.label:3451
 msgid "TCN Value"
-msgstr ""
+msgstr "TCN արժեք"
 
-#: class.ahn.label:1868
+#: class.ahn.label:1870
 msgid "Hold Notification"
-msgstr ""
+msgstr "Պահման նշում"
 
-#: field.rcirct.id.label:3490 field.rmocbbol.id.label:3828
-#: field.rmocbbcol.id.label:3858 field.rmocbbhol.id.label:3892
+#: field.rcirct.id.label:3493 field.rmocbbol.id.label:3831
+#: field.rmocbbcol.id.label:3861 field.rmocbbhol.id.label:3895
 msgid "Circulation ID"
-msgstr ""
+msgstr "Տացքի ID"
 
-#: field.circ.opac_renewal.label:1650 field.combcirc.opac_renewal.label:1705
-#: field.acirc.opac_renewal.label:1772 field.rodcirc.opac_renewal.label:3737
+#: field.circ.opac_renewal.label:1652 field.combcirc.opac_renewal.label:1707
+#: field.acirc.opac_renewal.label:1774 field.rodcirc.opac_renewal.label:3740
 msgid "OPAC Renewal"
-msgstr ""
+msgstr "ՀՕԱՔ-ի թարմացում"
 
-#: field.rsr.topic_subject.label:3459
+#: field.rsr.topic_subject.label:3462
 msgid "Topic Subjects (normalized)"
-msgstr ""
+msgstr "Առարկայական խորագիր (նորմալացված)"
 
-#: field.rccbs.barcode.label:3650
+#: field.rccbs.barcode.label:3653
 msgid "User Barcode"
-msgstr ""
+msgstr "Օգտվողի շտրիխ կոդ"
 
 #: field.au.profile.label:1262
 msgid "Main (Profile) Permission Group"
-msgstr ""
+msgstr "Հիմնական թույլատրող խումբ"
 
 #: field.mfr.subfield.label:1362
 msgid "Subfield"
-msgstr ""
+msgstr "Ենթադաշտ"
 
-#: field.acn.creator.label:976 field.acp.creator.label:2711
+#: field.acn.creator.label:976 field.acp.creator.label:2713
 msgid "Creating User"
-msgstr ""
+msgstr "Ստեղծում է օգտվող"
 
-#: field.acp.holdable.label:2720
+#: field.acp.holdable.label:2722
 msgid "Is Holdable"
-msgstr ""
+msgstr "Պահվող է"
 
-#: field.rocit.tcn_value.label:3807
+#: field.rocit.tcn_value.label:3810
 msgid "TCN"
-msgstr ""
+msgstr "TCN"
 
 #: field.acn.editor.label:979 field.bre.editor.label:1061
-#: field.acp.editor.label:2718
+#: field.acp.editor.label:2720
 msgid "Last Editing User"
-msgstr ""
+msgstr "Վերջին խմբագրվող օգտվող"
 
-#: field.circ.max_fine.label:1648 field.combcirc.max_fine.label:1703
-#: field.acirc.max_fine.label:1770 field.crmf.amount.label:2781
-#: field.rodcirc.max_fine.label:3735
+#: field.circ.max_fine.label:1650 field.combcirc.max_fine.label:1705
+#: field.acirc.max_fine.label:1772 field.crmf.amount.label:2783
+#: field.rodcirc.max_fine.label:3738
 msgid "Max Fine Amount"
-msgstr ""
+msgstr "Ամենամեծ տուգանքի չափ"
 
-#: field.ahtc.copy_status.label:3145
+#: field.ahtc.copy_status.label:3148
 msgid "Copy Status at Transit"
-msgstr ""
+msgstr "Տրանզիտի օրինակի վիճակ"
 
-#: field.aou.settings.label:2188
+#: field.aou.settings.label:2190
 msgid "Settings"
-msgstr ""
+msgstr "Կարգաբերումներ"
 
-#: field.ahr.hold_type.label:2130
+#: field.ahr.hold_type.label:2132
 msgid "Hold Type"
-msgstr ""
+msgstr "պահման տեսակ"
 
 #: field.vqbr.queue.label:172 field.vqar.queue.label:299
 msgid "Queue"
-msgstr ""
+msgstr "Հարցում"
 
-#: field.mp.credit_payment.label:3012 field.mbp.credit_payment.label:3043
+#: field.mp.credit_payment.label:3015 field.mbp.credit_payment.label:3046
 msgid "Credit Payment Detail"
-msgstr ""
+msgstr "Կրէդիտի վճարման մանրամասն"
 
-#: field.ahr.request_time.label:2137
+#: field.ahr.request_time.label:2139
 msgid "Request Date/Time"
-msgstr ""
+msgstr "Պահանջի օր/ժամ"
 
 #: field.vbm.queued_record.label:245 field.vam.queued_record.label:370
 msgid "Queued Record"
-msgstr ""
+msgstr "Հարցված գրառում"
 
-#: field.rccbs.xact_finish.label:3654
+#: field.rccbs.xact_finish.label:3657
 msgid "Transaction End Date/Time"
-msgstr ""
+msgstr "Տրանզակցիայի ավարտի օր/ժամ"
 
 #: field.mrd.bib_level.label:1502
 msgid "BLvl"
-msgstr ""
+msgstr "BLvl"
 
-#: field.aou.workstations.label:2191
+#: field.aou.workstations.label:2193
 msgid "Workstations"
-msgstr ""
+msgstr "Աշխատանքային կայաններ"
 
 #: field.au.hold_requests.label:1225
 msgid "All Hold Requests"
-msgstr ""
+msgstr "Բոլոր պահված պահանջներ"
 
 #: field.au.master_account.label:1256
 msgid "Is Group Lead Account"
-msgstr ""
+msgstr "Խմբի առաջատարի հաշիվն է"
 
 #: class.ccmm.label:501
 msgid "Circulation Matrix Matchpoint"
-msgstr ""
+msgstr "Տացքի մատրիցայի համընկնման կետ"
 
 #: field.aihu.use_time.label:707 field.ancihu.use_time.label:724
 msgid "Use Date/Time"
-msgstr ""
+msgstr "Օգտագործիր օր/ժամ"
 
 #: field.mfr.value.label:1364
 msgid "Normalized Value"
-msgstr ""
+msgstr "Նորմալացված արժեք"
 
 #: field.ccmt.circulate.label:554
 msgid "Circulate?"
-msgstr ""
+msgstr "Սպասարկե՞լ"
 
 #: class.cxt.label:887
 msgid "XML/XSLT Transform Definition"
-msgstr ""
+msgstr "XML/XSLT տեղափոխման սահմանում"
 
-#: field.mcrp.accepting_usr.label:2323 field.mwp.accepting_usr.label:2567
-#: field.mgp.accepting_usr.label:2588 field.mckp.accepting_usr.label:2676
+#: field.mcrp.accepting_usr.label:2325 field.mwp.accepting_usr.label:2569
+#: field.mgp.accepting_usr.label:2590 field.mckp.accepting_usr.label:2678
 msgid "Accepting Staff Member"
-msgstr ""
+msgstr "Համալրում աշխատակազմում"
 
-#: field.rccc.demographic_general_division.label:3576
+#: field.rccc.demographic_general_division.label:3579
 msgid "Patron Age Demographic"
-msgstr ""
+msgstr "Ընթերցողի տարիքային դեմոգրաֆիա"
 
 #: class.ccmcmt.label:565
 msgid "Circulation Matrix Circulation Modifier Subtest"
-msgstr ""
+msgstr "Սպասարկման մատրիցայի տացքի ձևափոխիչի ենթաբազմություն"
 
-#: field.rsr.corporate_subject.label:3463
+#: field.rsr.corporate_subject.label:3466
 msgid "Corporate Name Subjects (normalized)"
-msgstr ""
+msgstr "Համատեղ անվան խորագիր (նորմալացված)"
 
-#: field.acp.dummy_author.label:2715
+#: field.acp.dummy_author.label:2717
 msgid "Precat Dummy Author"
-msgstr ""
+msgstr "Նախն քարտագրման դատարկ հեղինակ"
 
-#: class.rodcirc.label:3719
+#: class.rodcirc.label:3722
 msgid "Overdue Circulation"
-msgstr ""
+msgstr "Ժամկետանց սպասարկում"
 
 #: field.bre.active.label:1056
 msgid "Is Active?"
-msgstr ""
+msgstr "Ակտի՞վ է"
 
 #: field.ccmm.org_unit.label:508
 msgid "Org Unit"
-msgstr ""
+msgstr "կազմ միավոր"
 
-#: field.crahp.prox.label:2772
+#: field.crahp.prox.label:2774
 msgid "Allowed Proximity"
-msgstr ""
+msgstr "Թույլատրված մոտարկում"
 
-#: field.ahr.fulfillment_time.label:2129
+#: field.ahr.fulfillment_time.label:2131
 msgid "Fulfillment Date/Time"
-msgstr ""
+msgstr "Իրականացման օր/ժամ"
 
-#: field.mg.note.label:2441 field.mwp.note.label:2571
-#: field.mgp.note.label:2592 field.mckp.note.label:2682
-#: field.mp.note.label:3005 field.mbp.note.label:3036
-#: field.mndp.note.label:3067 field.mdp.note.label:3090
-#: field.mb.note.label:3185
+#: field.mg.note.label:2443 field.mwp.note.label:2573
+#: field.mgp.note.label:2594 field.mckp.note.label:2684
+#: field.mp.note.label:3008 field.mbp.note.label:3039
+#: field.mndp.note.label:3070 field.mdp.note.label:3093
+#: field.mb.note.label:3188
 msgid "Note"
-msgstr ""
+msgstr "Նշում"
 
 #: class.vqbr.label:163
 msgid "Queued Bib Record"
-msgstr ""
+msgstr "Հարցված մատեն գրառում"
 
-#: field.rocit.stat_cat_1.label:3791
+#: field.rocit.stat_cat_1.label:3794
 msgid "Legacy Stat Cat 1"
-msgstr ""
+msgstr "Legacy Stat Cat 1"
 
-#: field.rocit.stat_cat_2.label:3792
+#: field.rocit.stat_cat_2.label:3795
 msgid "Legacy Stat Cat 2"
-msgstr ""
+msgstr "Legacy Stat Cat 2"
 
-#: field.aua.id.label:1569
+#: field.aua.id.label:1571
 msgid "Address ID"
-msgstr ""
+msgstr "Հասցեի ID"
 
-#: field.rccbs.patron_county.label:3669
+#: field.rccbs.patron_county.label:3672
 msgid "User County"
-msgstr ""
+msgstr "Օգտվողի համայնք"
 
-#: field.rocit.circ_lib.label:3800
+#: field.rocit.circ_lib.label:3803
 msgid "Circ Lib"
-msgstr ""
+msgstr "Circ Lib"
 
 #: field.chmt.include_frozen_holds.label:539
 msgid "Max includes Frozen"
-msgstr ""
+msgstr "Max includes Frozen"
 
 #: field.acn.id.label:980
 msgid "Call Number/Volume ID"
-msgstr ""
+msgstr "Դասիչ/հատորի ID"
 
-#: field.aout.opac_label.label:2382
+#: field.aout.opac_label.label:2384
 msgid "OPAC Label"
-msgstr ""
+msgstr "ՀՕԱՔ-ի պիտակ"
 
 #: class.vqar.label:290
 msgid "Queued Authority Record"
-msgstr ""
+msgstr "Հարցված Հեղինակավոր գրառում"
 
 #: class.au.label:1217
 msgid "ILS User"
-msgstr ""
+msgstr "ԻԳՀ օգտվող"
 
 #: class.asvq.label:610
 msgid "User Survey Question"
-msgstr ""
+msgstr "Օգտվողի հարցախույզի հարց"
 
-#: field.circ.phone_renewal.label:1651 field.combcirc.phone_renewal.label:1706
-#: field.acirc.phone_renewal.label:1773 field.rodcirc.phone_renewal.label:3738
+#: field.circ.phone_renewal.label:1653 field.combcirc.phone_renewal.label:1708
+#: field.acirc.phone_renewal.label:1775 field.rodcirc.phone_renewal.label:3741
 msgid "Phone Renewal"
-msgstr ""
+msgstr "Հեռախոսի թարմացում"
 
-#: field.combcirc.usr_home_ou.label:1723 field.acirc.usr_home_ou.label:1790
+#: field.combcirc.usr_home_ou.label:1725 field.acirc.usr_home_ou.label:1792
 msgid "Patron Home Library"
-msgstr ""
+msgstr "Ընթերցողի տնային գրադարան"
 
 #: field.chmm.requestor_grp.label:478
 msgid "Requestor Permission Group"
-msgstr ""
+msgstr "Հարցնողի թույլատրված խումբ"
 
 #: field.bre.quality.label:1066
 msgid "Overall Quality"
-msgstr ""
+msgstr "Ընդհանուր որակ"
 
-#: field.au.active.label:1233 field.sra.active.label:1967
+#: field.au.active.label:1233 field.sra.active.label:1969
 msgid "Active"
-msgstr ""
+msgstr "Ակտիվ"
 
-#: field.mdp.cash_payment.label:3097
+#: field.mdp.cash_payment.label:3100
 msgid "Cash Payment"
-msgstr ""
+msgstr "կանխիկ վճարում"
 
-#: class.cblvl.label:1943
+#: class.cblvl.label:1945
 msgid "Bib Level Map"
-msgstr ""
+msgstr "Մատեն մակարդակի գրառում"
 
 #: field.cxt.xslt.label:896
 msgid "XSLT"
-msgstr ""
+msgstr "XSLT"
 
 #: field.au.addresses.label:1222
 msgid "All Addresses"
-msgstr ""
+msgstr "Բոլոր հասցեները"
 
-#: class.sra.label:1961
+#: class.sra.label:1963
 msgid "Relevance Adjustment"
-msgstr ""
+msgstr "Relevance Adjustment"
 
 #: field.ccmm.usr_age_upper_bound.label:516
 msgid "User Age: Upper Bound"
-msgstr ""
+msgstr "Օգտվողի տարք՝ վերին սահման"
 
-#: field.ahr.fulfillment_lib.label:2127
+#: field.ahr.fulfillment_lib.label:2129
 msgid "Fulfilling Library"
-msgstr ""
+msgstr "Իրականացնող գրադարան"
 
-#: field.aua.post_code.label:1570
+#: field.aua.post_code.label:1572
 msgid "Postal Code"
-msgstr ""
+msgstr "Փոստային հասցէ"
 
-#: field.rocit.shelving_location.label:3790
+#: field.rocit.shelving_location.label:3793
 msgid "Shelving Location Name"
-msgstr ""
+msgstr "Դարակի վրա գտնվելու անուն"
 
-#: field.mb.voider.label:3188
+#: field.mb.voider.label:3191
 msgid "Voiding Staff Member"
-msgstr ""
+msgstr "Voiding Staff Member"
 
-#: field.mcrp.note.label:2327
+#: field.mcrp.note.label:2329
 msgid "Payment Note"
-msgstr ""
+msgstr "Վճարման նշում"
 
 #: field.amtr.matchpoint.label:128 field.chmm.id.label:470
 #: field.ccmm.id.label:506 field.chmt.matchpoint.label:534
 #: field.ccmt.matchpoint.label:553 field.ccmcmt.matchpoint.label:571
 #: field.ccmrs.matchpoint.label:586
 msgid "Matchpoint ID"
-msgstr ""
+msgstr "Համընկնման կետի ID"
 
-#: field.mbts.total_paid.label:641 field.rccbs.total_paid.label:3657
+#: field.mbts.total_paid.label:641 field.rccbs.total_paid.label:3660
 msgid "Total Paid"
-msgstr ""
+msgstr "Ընդհանուր վճարված"
 
 #: field.vqbra.field.label:222 field.vqara.field.label:347
 msgid "Field"
-msgstr ""
+msgstr "Դաշտ"
 
-#: field.ahtc.transit_copy.label:3155
+#: field.ahtc.transit_copy.label:3158
 msgid "Base Transit"
-msgstr ""
+msgstr "Հիմնական տրանզիտ"
 
 #: field.ccmt.max_fines.label:557
 msgid "Max Fines"
-msgstr ""
+msgstr "Մաքսիմում տուգանքներ"
 
-#: field.aufh.fail_time.label:2869
+#: field.aufh.fail_time.label:2872
 msgid "Retargeting Date/Time"
-msgstr ""
+msgstr "Վերաթիրախավորում օր/ժամ"
 
 #: field.au.performed_circulations.label:1275 None:1302
 msgid "Circulations Performed as Staff"
-msgstr ""
+msgstr "Տացքը կատարվել է որպես աշխատակազմ"
 
-#: field.asvr.id.label:772 field.asva.id.label:2821
+#: field.asvr.id.label:772 field.asva.id.label:2824
 msgid "Answer ID"
-msgstr ""
+msgstr "Պատասխանի ID"
 
-#: field.mcrp.payment.label:2331 field.mwp.payment.label:2574
-#: field.mgp.payment.label:2595 field.mckp.payment.label:2685
+#: field.mcrp.payment.label:2333 field.mwp.payment.label:2576
+#: field.mgp.payment.label:2597 field.mckp.payment.label:2687
 msgid "Payment link"
-msgstr ""
+msgstr "Վճարման կապ"
 
-#: field.rmobbol.billing_types.label:3845
-#: field.rmobbcol.billing_types.label:3878
-#: field.rmobbhol.billing_types.label:3912
+#: field.rmobbol.billing_types.label:3848
+#: field.rmobbcol.billing_types.label:3881
+#: field.rmobbhol.billing_types.label:3915
 msgid "Billing Types"
-msgstr ""
+msgstr "Հաշիվների տԵսակներ"
 
-#: field.aua.city.label:1566
+#: field.aua.city.label:1568
 msgid "City"
-msgstr ""
+msgstr "Քաղաք"
 
-#: field.acpl.holdable.label:1891
+#: field.acpl.holdable.label:1893
 msgid "Is Holdable?"
-msgstr ""
+msgstr "Պահվո՞ղ է"
 
 #: field.bre.create_date.label:1057 field.au.create_date.label:1239
-#: field.circ.create_time.label:1661 field.combcirc.create_time.label:1716
-#: field.acirc.create_time.label:1783
+#: field.circ.create_time.label:1663 field.combcirc.create_time.label:1718
+#: field.acirc.create_time.label:1785
 msgid "Record Creation Date/Time"
-msgstr ""
+msgstr "Գրառման ստեղծման օր/ժամ"
 
-#: field.acp.holds.label:2732
+#: field.acp.holds.label:2734
 msgid "Holds"
-msgstr ""
+msgstr "Պահումներ"
 
 #: field.chmm.request_ou.label:473
 msgid "Request Library"
-msgstr ""
+msgstr "Հարցրու գրադարան"
 
-#: field.rccc.patron_city.label:3584
+#: field.rccc.patron_city.label:3587
 msgid "Patron City"
-msgstr ""
+msgstr "Ընթերցողի գրադարան"
 
-#: field.aou.children.label:2172
+#: field.aou.children.label:2174
 msgid "Subordinate Organizational Units"
-msgstr ""
+msgstr "Ենթակա կազմակերպչական միավոր"
 
-#: field.asva.responses.label:2819
+#: field.asva.responses.label:2822
 msgid "Responses using this Answer"
-msgstr ""
+msgstr "Արձագանքներ օգտագործելով այս պատասխանը"
 
-#: field.ahr.thaw_date.label:2150
+#: field.ahr.thaw_date.label:2152
 msgid "Thaw Date (if frozen)"
-msgstr ""
+msgstr "Thaw Date (if frozen)"
 
 #: field.asvr.usr.label:776
 msgid "Responding User"
-msgstr ""
+msgstr "Արձագանքող օգտվող"
 
-#: class.rccc.label:3557
+#: class.rccc.label:3560
 msgid "Classic Circulation View"
-msgstr ""
+msgstr "Տացքի դասական տեսք"
 
-#: field.ahr.frozen.label:2149
+#: field.ahr.frozen.label:2151
 msgid "Currently Frozen"
-msgstr ""
+msgstr "Այս պահին սառեցված"
 
 #: field.aihu.id.label:703 field.ancihu.id.label:720
 msgid "Use ID"
-msgstr ""
+msgstr "Օգտվողի ID"
 
 #: field.vbq.complete.label:147 field.vaq.complete.label:273
 msgid "Complete"
-msgstr ""
+msgstr "Լրացված"
 
-#: field.atc.dest_recv_time.label:739 field.ahtc.dest_recv_time.label:3147
-#: field.iatc.dest_recv_time.label:3701
+#: field.atc.dest_recv_time.label:739 field.ahtc.dest_recv_time.label:3150
+#: field.iatc.dest_recv_time.label:3704
 msgid "Receive Date/Time"
-msgstr ""
+msgstr "Ստացման օր/ժամ"
 
-#: field.asv.poll.label:2068
+#: field.asv.poll.label:2070
 msgid "Poll Style?"
-msgstr ""
+msgstr "Poll Style?"
 
-#: field.rmsr.pubdate.label:3407 field.rssr.pubdate.label:3429
-#: field.rsr.pubdate.label:3453
+#: field.rmsr.pubdate.label:3410 field.rssr.pubdate.label:3432
+#: field.rsr.pubdate.label:3456
 msgid "Publication Year (normalized)"
-msgstr ""
+msgstr "Հրատարակման տարի (նորմալացված)"
 
-#: field.cnct.id.label:2362
+#: field.cnct.id.label:2364
 msgid "Non-cat Type ID"
-msgstr ""
+msgstr "Չքարտագրվող տէսակի ID"
 
-#: field.asva.answer.label:2820
+#: field.asva.answer.label:2823
 msgid "Answer Text"
-msgstr ""
+msgstr "Պատասխանի տեքստ"
 
-#: field.aou.holds_address.label:2174
+#: field.aou.holds_address.label:2176
 msgid "Holds Receiving Address"
-msgstr ""
+msgstr "Պահւոմների ստացման հասցէ"
 
 #: field.acpn.owning_copy.label:1327
 msgid "Copy"
-msgstr ""
+msgstr "Օրինակ"
 
-#: field.aout.can_have_vols.label:2378
+#: field.aout.can_have_vols.label:2380
 msgid "Can Have Volumes?"
-msgstr ""
+msgstr "Կարո՞ղ է ունէնալ հատորներ"
 
 #: field.vqbr.id.label:168 field.vqar.id.label:295 field.bre.id.label:1063
-#: field.aufh.id.label:2871 field.rmsr.id.label:3399 field.rssr.id.label:3421
-#: field.rsr.id.label:3443
+#: field.aufh.id.label:2874 field.rmsr.id.label:3402 field.rssr.id.label:3424
+#: field.rsr.id.label:3446
 msgid "Record ID"
-msgstr ""
+msgstr "Գրառման ID"
 
 #: class.cam.label:932
 msgid "Audience Map"
-msgstr ""
+msgstr "Լսարանի քարտեզ"
 
-#: field.rocit.stop_fines.label:3809
+#: field.rocit.stop_fines.label:3812
 msgid "Stop Fines Reason"
-msgstr ""
+msgstr "Կանգնեցրու տուգանքների պատճառը"
 
-#: field.au.email.label:1243 field.aou.email.label:2182
+#: field.au.email.label:1243 field.aou.email.label:2184
 msgid "Email Address"
-msgstr ""
+msgstr "Էլ փոստ հասցե"
 
-#: field.clfm.description.label:2549
+#: field.clfm.description.label:2551
 msgid "LitF Description"
-msgstr ""
+msgstr "LitF նկարագրություն"
 
 #: field.au.passwd.label:1259
 msgid "Password (obfuscated)"
-msgstr ""
+msgstr "Գաղտնաբառ (obfuscated)"
 
 #: field.mrd.audience.label:1501
 msgid "Audn"
-msgstr ""
+msgstr "Audn"
 
 #: field.cam.value.label:939
 msgid "Audience"
-msgstr ""
+msgstr "Լսարան"
 
-#: field.aout.parent.label:2383
+#: field.aout.parent.label:2385
 msgid "Parent Type"
-msgstr ""
+msgstr "Ծնողի տեսակ"
 
-#: class.rud.label:3472
+#: class.rud.label:3475
 msgid "User Demographics"
-msgstr ""
+msgstr "Օգտվողների դեմոգրաֆիա"
 
-#: field.atc.prev_hop.label:742 field.iatc.prev_hop.label:3704
+#: field.atc.prev_hop.label:742 field.iatc.prev_hop.label:3707
 msgid "Previous Hop (unused)"
-msgstr ""
+msgstr "Նախորդ հույս (չօգտագործված)"
 
-#: field.vqbrad.id.label:197 field.vqarad.id.label:322 field.sra.id.label:1966
-#: field.ssr.id.label:2044
+#: field.vqbrad.id.label:197 field.vqarad.id.label:322 field.sra.id.label:1968
+#: field.ssr.id.label:2046
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#: field.aou.users.label:2185
+#: field.aou.users.label:2187
 msgid "Users"
-msgstr ""
+msgstr "Օգտվողներ"
 
-#: field.circ.usr.label:1658 field.ancc.patron.label:2838
-#: field.rodcirc.usr.label:3745
+#: field.circ.usr.label:1660 field.ancc.patron.label:2841
+#: field.rodcirc.usr.label:3748
 msgid "Patron"
-msgstr ""
+msgstr "Ընթերցող"
 
-#: class.mcrp.label:2318
+#: class.mcrp.label:2320
 msgid "House Credit Payment"
-msgstr ""
+msgstr "Տան կրեդիտի վճար"
 
-#: field.atc.source.label:743 field.iatc.source.label:3705
+#: field.atc.source.label:743 field.iatc.source.label:3708
 msgid "Source"
-msgstr ""
+msgstr "Աղբյուր"
 
 #: field.chmt.age_hold_protect_rule.label:540
 msgid "Copy Age Hold Protection Rule"
-msgstr ""
+msgstr "Օրինակի տարիքի պահպանման օրենք"
 
 #: field.cxt.prefix.label:895
 msgid "Namespace Prefix"
-msgstr ""
+msgstr "Անվան տարածքի նախածանց"
 
 #: field.au.cards.label:1223
 msgid "All Library Cards"
-msgstr ""
+msgstr "Գրադարանի բոլոր քարտերը"
 
-#: field.rxpt.voided.label:3533
+#: field.rxpt.voided.label:3536
 msgid "Voided (Returned) Paid Amount"
-msgstr ""
+msgstr "Voided (Returned) Paid Amount"
 
-#: class.rmocbbhol.label:3887
+#: class.rmocbbhol.label:3890
 msgid "Open Circulation Billing by User Home Library and Owning Library"
-msgstr ""
+msgstr "Տացքի բաց հաշիվ օգտվողի տն գրադարանից և տնօրինող գրադարանից"
 
 #: field.mbts.last_billing_note.label:634
-#: field.rccbs.last_billing_note.label:3665
+#: field.rccbs.last_billing_note.label:3668
 msgid "Last Billing Note"
-msgstr ""
+msgstr "Վերջին հաշվի նշում"
 
-#: field.rccbs.billing_location.label:3644
+#: field.rccbs.billing_location.label:3647
 msgid "Billing Location Link"
-msgstr ""
+msgstr "հաշվի տէղաբաշխման կապ"
 
 #: field.mrd.cat_form.label:1503
 msgid "Cat Form"
-msgstr ""
+msgstr "Քարտգր ձև"
 
-#: class.combcirc.label:1687
+#: class.combcirc.label:1689
 msgid "Combined Aged and Active Circulations"
-msgstr ""
+msgstr "Կոմբինացված տարիք և ակտիվ սպասարկում"
 
-#: field.atc.dest.label:738 field.iatc.dest.label:3700
+#: field.atc.dest.label:738 field.iatc.dest.label:3703
 msgid "Destination"
-msgstr ""
+msgstr "Նպատակակետ"
 
 #: field.au.evening_phone.label:1244
 msgid "Evening Phone"
-msgstr ""
+msgstr "Երեկոյան հեռախոս"
 
 #: field.au.ident_type.label:1250
 msgid "Primary Identification Type"
-msgstr ""
+msgstr "Նախնական բնութագրման տէսակ"
 
-#: class.rmobbol.label:3839
+#: class.rmobbol.label:3842
 msgid "Open Circulation Balance by Owning Library"
-msgstr ""
+msgstr "Սպասարկման բաց հաշվեկշիռ տնօրինող գրադարանից"
 
-#: field.mg.billing_location.label:2439
+#: field.mg.billing_location.label:2441
 msgid "Billing Location"
-msgstr ""
+msgstr "Հաշվի տեղաբաշխում"
 
 #: field.vqbr.imported_as.label:174 field.vqar.imported_as.label:300
 msgid "Final Target Record"
-msgstr ""
+msgstr "Վերջնական թիրախ գրառում"
 
-#: class.mndp.label:3060
+#: class.mndp.label:3063
 msgid "Payments: Non-drawer Staff"
-msgstr ""
+msgstr "Վշարումներ: աշխատակազմ"
 
-#: field.pgt.name.label:2795
+#: field.pgt.name.label:2798
 msgid "Group Name"
-msgstr ""
+msgstr "Խմբի անուն"
 
-#: field.aout.can_have_users.label:2377
+#: field.aout.can_have_users.label:2379
 msgid "Can Have Users?"
-msgstr ""
+msgstr "Կարո՞ղ է ոգտվողներ ունենալ"
 
-#: field.rocit.stat_cat_2_value.label:3794
+#: field.rocit.stat_cat_2_value.label:3797
 msgid "Legacy Stat Cat 2 Value"
-msgstr ""
+msgstr "Legacy Stat Cat 2 Value"
 
 #: field.chmt.distance_is_from_owner.label:536
 msgid "Range is from Owning Lib?"
-msgstr ""
+msgstr "Տիրույթը տնօրինող գրադարանի՞ց է"
 
-#: field.rocit.use_count.label:3788
+#: field.rocit.use_count.label:3791
 msgid "Use Count"
-msgstr ""
+msgstr "Use Count"
 
 #: field.chmm.item_circ_ou.label:476
 msgid "Item Circ Library"
-msgstr ""
+msgstr "Նյութի տացքի գրադարան"
 
-#: field.mckp.xact.label:2684
+#: field.mckp.xact.label:2686
 msgid "Transaction link"
-msgstr ""
+msgstr "Տրանզակցիայի կապ"
 
-#: field.mbt.circulation.label:2483
+#: field.mbt.circulation.label:2485
 msgid "Circulation Billing link"
-msgstr ""
+msgstr "Տացքի հաշվի կապ"
 
 #: class.vqara.label:340
 msgid "Queued Authority Record Attribute"
-msgstr ""
+msgstr "Հարցված հէղինակվոր գրառման մանրամասն"
 
 #: field.vqbr.purpose.label:175 field.vaq.queue_purpose.label:275
 #: field.vqar.purpose.label:301
 msgid "Purpose"
-msgstr ""
+msgstr "Պատճառ"
 
 #: field.bre.author_field_entries.label:1076
 msgid "Indexed Author Field Entries"
-msgstr ""
+msgstr "Ինդեքսավորված հեղինակի դաշտի մուտքեր"
 
 #: field.vqbrad.remove.label:201 field.vqarad.remove.label:326
 msgid "Remove RegExp"
-msgstr ""
+msgstr "Հեռացրու RegExp"
 
-#: field.aou.phone.label:2183
+#: field.aou.phone.label:2185
 msgid "Phone Number"
-msgstr ""
+msgstr "Հեռախոսի համար"
 
 #: field.acn.create_date.label:975
 msgid "Create Date/Time"
-msgstr ""
+msgstr "Ստեղծիր օր/ժամ"
 
 #: class.atc.label:732
 msgid "Copy Transit"
-msgstr ""
+msgstr "Օրինակի տրանզիտ"
 
 #: field.au.super_user.label:1266
 msgid "Is Super User"
-msgstr ""
+msgstr "Գեր օգտվող է"
 
 #: class.mfr.label:1353
 msgid "Flattened MARC Fields"
-msgstr ""
+msgstr "Հարթեցված MARC դաշտեր"
 
 #: class.acpn.label:1319
 msgid "Copy Note"
-msgstr ""
+msgstr "Օրինակի նշում"
 
 #: field.chmt.holdable.label:535
 msgid "Holdable?"
-msgstr ""
+msgstr "Պահվո՞ղ"
 
-#: field.acp.circ_as_type.label:2705
+#: field.acp.circ_as_type.label:2707
 msgid "Circulation Type (MARC)"
-msgstr ""
+msgstr "Տացքի տեսակ (MARC)"
 
 #: field.auoi.staff.label:397
 msgid "Staff Member"
-msgstr ""
+msgstr "Աշխատակազմի անդամ"
 
 #: field.aws.id.label:415
 msgid "Workstation ID"
-msgstr ""
+msgstr "Աշխատանքային կայանի ID"
 
 #: class.vbq.label:139
 msgid "Import/Overlay Bib Queue"
-msgstr ""
+msgstr "Ներմուծում/վերադրվում մատենագիտ հարցման"
 
 #: field.atc.persistant_transfer.label:741
-#: field.iatc.persistant_transfer.label:3703
+#: field.iatc.persistant_transfer.label:3706
 msgid "Is Persistent? (unused)"
-msgstr ""
+msgstr "Is Persistent? (unused)"
 
-#: field.rccc.patron_zip.label:3585
+#: field.rccc.patron_zip.label:3588
 msgid "Patron ZIP Code"
-msgstr ""
+msgstr "Ընթերցողի ZIP կոդ"
 
-#: field.ahtc.persistant_transfer.label:3150
+#: field.ahtc.persistant_transfer.label:3153
 msgid "Is Persistent?"
-msgstr ""
+msgstr "Is Persistent?"
 
 #: field.au.net_access_level.label:1257
 msgid "Internet Access Level"
-msgstr ""
+msgstr "Ինտերնետ մատչելիության մակարդակ"
 
-#: class.rmocbbcol.label:3853
+#: class.rmocbbcol.label:3856
 msgid "Open Circulation Billing by Circulating Library and Owning Library"
-msgstr ""
+msgstr "Բաց տացքի հաշիվ սպասարկող գրադարանի և տնօրինող գրադարանի կողմից "
 
-#: field.rccbs.patron_zip.label:3671
+#: field.rccbs.patron_zip.label:3674
 msgid "User ZIP Code"
-msgstr ""
+msgstr "Օգտվողի ZIP կոդ"
 
-#: field.mcrp.payment_type.label:2330 field.mwp.payment_type.label:2575
-#: field.mgp.payment_type.label:2596 field.mckp.payment_type.label:2686
-#: field.mp.payment_type.label:3007 field.mbp.payment_type.label:3038
-#: field.mndp.payment_type.label:3069 field.mdp.payment_type.label:3092
+#: field.mcrp.payment_type.label:2332 field.mwp.payment_type.label:2577
+#: field.mgp.payment_type.label:2598 field.mckp.payment_type.label:2688
+#: field.mp.payment_type.label:3010 field.mbp.payment_type.label:3041
+#: field.mndp.payment_type.label:3072 field.mdp.payment_type.label:3095
 msgid "Payment Type"
-msgstr ""
+msgstr "Վճարման տէսակ"
 
-#: field.mdp.credit_card_payment.label:3098
+#: field.mdp.credit_card_payment.label:3101
 msgid "Credit Card Payment"
-msgstr ""
+msgstr "Կրեդիտ քարտի տեսակ"
 
 #: field.au.usrgroup.label:1267
 msgid "Family Linkage or other Group"
-msgstr ""
+msgstr "Ընտանիքի հղում կամ այլ խումբ"
 
-#: field.ahn.id.label:1874
+#: field.ahn.id.label:1876
 msgid "Notification ID"
-msgstr ""
+msgstr "Հիշեցման ID"
 
-#: field.rccbs.last_billing_ts.label:3664
+#: field.rccbs.last_billing_ts.label:3667
 msgid "Last Billing Date/Time"
-msgstr ""
+msgstr "Վերջին հաշվի օր/ժամ"
 
-#: field.mcrp.amount_collected.label:2325
-#: field.mwp.amount_collected.label:2569 field.mgp.amount_collected.label:2590
-#: field.mckp.amount_collected.label:2678
+#: field.mcrp.amount_collected.label:2327
+#: field.mwp.amount_collected.label:2571 field.mgp.amount_collected.label:2592
+#: field.mckp.amount_collected.label:2680
 msgid "Amount Collected"
-msgstr ""
+msgstr "Հավաքված գումար"
 
-#: field.ahr.current_copy.label:2124
+#: field.ahr.current_copy.label:2126
 msgid "Currently Targeted Copy"
-msgstr ""
+msgstr "Ընթացիկ թիրախ օրինակ"
 
-#: field.aout.depth.label:2379
+#: field.aout.depth.label:2381
 msgid "Type Depth"
-msgstr ""
+msgstr "Տեսակի խորություն"
 
-#: field.rccc.stat_cat_1_value.label:3592
+#: field.rccc.stat_cat_1_value.label:3595
 msgid "Legacy CAT1 Value"
-msgstr ""
+msgstr "Օրինական CAT1 արժեք"
 
 #: class.auoi.label:390
 msgid "User Sharing Opt-in"
-msgstr ""
+msgstr "Օգտվողը համատեղում է Opt-in"
 
-#: field.combcirc.usr_profile.label:1724 field.acirc.usr_profile.label:1791
-#: field.rccc.profile_group.label:3575
+#: field.combcirc.usr_profile.label:1726 field.acirc.usr_profile.label:1793
+#: field.rccc.profile_group.label:3578
 msgid "Patron Profile Group"
-msgstr ""
+msgstr "Ընթերցողի պրոֆայլի խումբ"
 
-#: field.rccbs.usr_home_ou_shortname.label:3646
+#: field.rccbs.usr_home_ou_shortname.label:3649
 msgid "User Home Library Short (Policy) Name"
-msgstr ""
+msgstr "Ընթերցողի տնային գրադարանի կարճ անուն"
 
-#: field.au.dob.label:1242 field.rud.dob.label:3478
+#: field.au.dob.label:1242 field.rud.dob.label:3481
 msgid "Date of Birth"
-msgstr ""
+msgstr "Ծննդյան տարեթիվ"
 
 #: field.aun.title.label:660 field.acpn.title.label:1329
 msgid "Note Title"
-msgstr ""
+msgstr "Նշման վերնագիր"
 
 #: field.auoi.id.label:395
 msgid "Opt-in ID"
-msgstr ""
+msgstr "Opt-in ID"
 
 #: field.asvq.answers.label:615
 msgid "Answers"
-msgstr ""
+msgstr "Պատասխան"
 
-#: field.combcirc.copy_owning_lib.label:1728
-#: field.acirc.copy_owning_lib.label:1795
+#: field.combcirc.copy_owning_lib.label:1730
+#: field.acirc.copy_owning_lib.label:1797
 msgid "Copy Owning Library"
-msgstr ""
+msgstr "Պատճենահանիր տնօրինող գրադարանը"
 
 #: field.ccmcmt.items_out.label:572
 msgid "Items Out"
-msgstr ""
+msgstr "Նյութեր դրսում"
 
 #: field.bre.creator.label:1058
 msgid "Record Creator"
-msgstr ""
+msgstr "Գրառման ստեղծող"
 
 #: field.vbm.field_type.label:248
 msgid "Field Type"
-msgstr ""
+msgstr "Դաշտի տեսակ"
 
-#: field.acpl.id.label:1892
+#: field.acpl.id.label:1894
 msgid "Location ID"
-msgstr ""
+msgstr "Տեղաբաշխման ID"
 
-#: field.rocit.patron_barcode.label:3811
+#: field.rocit.patron_barcode.label:3814
 msgid "Patron Barcode"
-msgstr ""
+msgstr "Ընթերցողի շտրիխ կոդ"
 
-#: field.rccc.owning_lib_name.label:3569
+#: field.rccc.owning_lib_name.label:3572
 msgid "Owning Library Short (Policy) Name"
-msgstr ""
+msgstr "Տնօրինող գրադարանի կարճ անուն"
 
-#: class.ancc.label:2829
+#: class.ancc.label:2832
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Չմուտքագրված տացք"
 
-#: class.asva.label:2814
+#: class.asva.label:2817
 msgid "Survey Answer"
-msgstr ""
+msgstr "Հարցախույզի պատասխան"
 
-#: class.mbt.label:2473 field.mp.xact.label:3008 field.mbp.xact.label:3039
-#: field.mndp.xact.label:3070 field.mdp.xact.label:3093
+#: class.mbt.label:2475 field.mp.xact.label:3011 field.mbp.xact.label:3042
+#: field.mndp.xact.label:3073 field.mdp.xact.label:3096
 msgid "Billable Transaction"
-msgstr ""
+msgstr "Վճարման ենթակա տրանզակցիա"
 
-#: field.rccc.patron_home_lib.label:3581
+#: field.rccc.patron_home_lib.label:3584
 msgid "Patron Home Library Link"
-msgstr ""
+msgstr "Ընթերցողի տնային գրադարանի կապ"
 
-#: field.ahr.transit.label:2122
+#: field.ahr.transit.label:2124
 msgid "Transit"
-msgstr ""
+msgstr "Տրանզիտ"
 
-#: field.circ.billings.label:1662 field.combcirc.billings.label:1717
-#: field.acirc.billings.label:1784 field.rodcirc.billings.label:3748
+#: field.circ.billings.label:1664 field.combcirc.billings.label:1719
+#: field.acirc.billings.label:1786 field.rodcirc.billings.label:3751
 msgid "Transaction Billings"
-msgstr ""
+msgstr "Տրանցակցիայի վճարներ"
 
 #: field.au.photo_url.label:1260
 msgid "Photo URL"
-msgstr ""
+msgstr "Նկարի URL"
 
-#: class.mp.label:2998
+#: class.mp.label:3001
 msgid "Payments: All"
-msgstr ""
+msgstr "Վճարումներ՝ բոլորը"
 
-#: field.asv.questions.label:2060
+#: field.asv.questions.label:2062
 msgid "Questions"
+msgstr "Հարցեր"
+
+#: field.crmf.is_percent.label:2786
+msgid "Is Percent"
 msgstr ""
 
 #: field.cifm.code.label:956
 msgid "Item Form Code"
-msgstr ""
+msgstr "Նյութի ձևի կոդ"
 
-#: field.clfm.value.label:2550
+#: field.clfm.value.label:2552
 msgid "LitF Name"
-msgstr ""
+msgstr "LitF անուն"
 
 #: field.aun.value.label:662 field.acpn.value.label:1330
 msgid "Note Content"
-msgstr ""
+msgstr "Նշումի բովանդակություն"
 
-#: field.asv.start_date.label:2070
+#: field.asv.start_date.label:2072
 msgid "Survey Start Date/Time"
-msgstr ""
+msgstr "Հարցախույզի սկզբի օր/ժամ"
 
 #: field.au.checkouts.label:1224
 msgid "All Circulations"
-msgstr ""
+msgstr "Բոլոր սպասարկումները"
 
 #: field.aws.name.label:416
 msgid "Workstation Name"
-msgstr ""
+msgstr "Աշխատանքաճին կայանի անունը"
 
-#: field.mckp.check_number.label:2680
+#: field.mckp.check_number.label:2682
 msgid "Check Number"
-msgstr ""
+msgstr "Ստուգիչ թիվ"
 
-#: field.rsr.summary.label:3456
+#: field.rsr.summary.label:3459
 msgid "Summary (normalized)"
-msgstr ""
+msgstr "Ընդհանրացում  (նորմալացված)"
 
 #: field.vbq.id.label:144 field.vaq.id.label:270
 msgid "Queue ID"
-msgstr ""
+msgstr "Հերթի ID"
 
 #: field.au.ident_value.label:1252
 msgid "Primary Identification"
-msgstr ""
+msgstr "Նախնական բնութագրում"
 
-#: field.sra.bump.label:1969
+#: field.sra.bump.label:1971
 msgid "Bump Type"
-msgstr ""
+msgstr "Bump տեսակ"
 
-#: field.ahr.fulfillment_staff.label:2128
+#: field.ahr.fulfillment_staff.label:2130
 msgid "Fulfilling Staff"
-msgstr ""
+msgstr "Իրականացնող կազմ"
 
 #: field.mrd.char_encoding.label:1504
 msgid "Character Encoding"
-msgstr ""
+msgstr "Նիշերի կոդավորում"
 
-#: field.mp.work_payment.label:3014 field.mbp.work_payment.label:3045
-#: field.mndp.work_payment.label:3072
+#: field.mp.work_payment.label:3017 field.mbp.work_payment.label:3048
+#: field.mndp.work_payment.label:3075
 msgid "Work Payment Detail"
-msgstr ""
+msgstr "Աշխատանքի վճարման մանրամասներ"
 
-#: field.erfcc.circ_count.label:3547
+#: field.erfcc.circ_count.label:3550
 msgid "Total Circulation Count"
-msgstr ""
+msgstr "Տացքի ընդհանուր հաշվիչ"
 
-#: field.ancc.id.label:2836
+#: field.ancc.id.label:2839
 msgid "Non-cat Circulation ID"
-msgstr ""
+msgstr "Ոչ-քարտ տացքի ID"
 
 #: field.auoi.usr.label:398 field.aun.usr.label:661 field.aus.usr.label:676
-#: field.aua.usr.label:1574 field.ac.usr.label:2263 field.mg.usr.label:2442
-#: field.mbt.usr.label:2479 field.actscecm.target_usr.label:2902
+#: field.aua.usr.label:1576 field.ac.usr.label:2265 field.mg.usr.label:2444
+#: field.mbt.usr.label:2481 field.actscecm.target_usr.label:2905
 msgid "User"
-msgstr ""
+msgstr "Օգտվող"
 
-#: field.aua.street1.label:1572
+#: field.aua.street1.label:1574
 msgid "Street (1)"
-msgstr ""
+msgstr "Փողոց (1)"
 
-#: field.mg.billings.label:2445
+#: field.mg.billings.label:2447
 msgid "Billings"
-msgstr ""
+msgstr "Վճարման հաշիվներ"
 
 #: field.mrd.lit_form.label:1511
 msgid "LitF"
-msgstr ""
+msgstr "LitF"
 
-#: field.rccbs.billing_location_name.label:3643
+#: field.rccbs.billing_location_name.label:3646
 msgid "Billing Location Name"
-msgstr ""
+msgstr "Վճարի հաշիվների տեղային անուն"
 
-#: field.circ.stop_fines.label:1655 field.combcirc.stop_fines.label:1710
-#: field.acirc.stop_fines.label:1777 field.rodcirc.stop_fines.label:3742
+#: field.circ.stop_fines.label:1657 field.combcirc.stop_fines.label:1712
+#: field.acirc.stop_fines.label:1779 field.rodcirc.stop_fines.label:3745
 msgid "Fine Stop Reason"
-msgstr ""
+msgstr "Տուգանքի կասեցման պատճառ"
 
-#: field.mbt.payments.label:2485
+#: field.mbt.payments.label:2487
 msgid "Payment Line Items"
-msgstr ""
+msgstr "Վճարման գծի նյութեր"
 
 #: field.cxt.namespace_uri.label:894
 msgid "Namespace URI"
-msgstr ""
+msgstr "Անվան տարածքի URI"
 
-#: field.sra.multiplier.label:1970
+#: field.sra.multiplier.label:1972
 msgid "Multiplier"
-msgstr ""
+msgstr "Բազմապատկիչ"
 
-#: class.rmobbhol.label:3905
+#: class.rmobbhol.label:3908
 msgid "Open Circulation Balance by User Home Library and Owning Library"
-msgstr ""
+msgstr "Բաց տացքի հաշվեկշիռ օգտվողի տան գրադարանի և տնօրինող գրադարանի կողմից"
 
-#: field.aua.valid.label:1575
+#: field.aua.valid.label:1577
 msgid "Valid Address?"
-msgstr ""
+msgstr "Հասցեն Ճի՞շտ է"
 
-#: field.acp.status.label:2727
+#: field.acp.status.label:2729
 msgid "Copy Status"
-msgstr ""
+msgstr "Պատճեի կարգավիճակ"
 
-#: field.sra.field.label:1968
+#: field.sra.field.label:1970
 msgid "Index Field"
-msgstr ""
+msgstr "Ինդեքսավորման դաշտ"
 
 #: field.asvq.survey.label:619 field.asvr.survey.label:775
-#: class.asv.label:2055
+#: class.asv.label:2057
 msgid "Survey"
-msgstr ""
+msgstr "Հարցախույզ"
 
-#: field.mb.id.label:3184
+#: field.mb.id.label:3187
 msgid "Billing ID"
-msgstr ""
+msgstr "Վճարման հաշվի ID"
 
-#: field.aou.circulations.label:2187 field.acp.circulations.label:2730
+#: field.aou.circulations.label:2189 field.acp.circulations.label:2732
 msgid "Circulations"
-msgstr ""
+msgstr "Տացքեր"
 
 #: field.aus.id.label:674
 msgid "Setting ID"
-msgstr ""
+msgstr "ID կարգաբերում"
 
-#: field.rmobbol.balance.label:3846 field.rmobbcol.balance.label:3879
-#: field.rmobbhol.balance.label:3913
+#: field.rmobbol.balance.label:3849 field.rmobbcol.balance.label:3882
+#: field.rmobbhol.balance.label:3916
 msgid "Balance"
-msgstr ""
+msgstr "Հաշվեկշիռ"
 
-#: field.au.mailing_address.label:1255 field.aou.mailing_address.label:2177
+#: field.au.mailing_address.label:1255 field.aou.mailing_address.label:2179
 msgid "Mailing Address"
-msgstr ""
+msgstr "Փոստային հասցե"
 
-#: field.rocit.pubdate.label:3781
+#: field.rocit.pubdate.label:3784
 msgid "Pubdate"
-msgstr ""
+msgstr "Հրատ տարի"
 
-#: field.acn.label.label:981 field.rccc.call_number_label.label:3578
+#: field.acn.label.label:981 field.rccc.call_number_label.label:3581
 msgid "Call Number Label"
-msgstr ""
+msgstr "Դասիչի պիտակ"
 
 #: field.au.standing_penalties.label:1228
 msgid "Standing Penalties"
-msgstr ""
+msgstr "Առկա տուգանքներ"
 
-#: field.asv.id.label:2064
+#: field.asv.id.label:2066
 msgid "Survey ID"
-msgstr ""
+msgstr "Հարցախույզի ID"
 
-#: field.bre.metarecord.label:1070 field.rsr.metarecord.label:3444
+#: field.bre.metarecord.label:1070 field.rsr.metarecord.label:3447
 msgid "Metarecord"
-msgstr ""
+msgstr "Մետագրառում"
 
-#: field.aua.county.label:1568
+#: field.aua.county.label:1570
 msgid "County"
-msgstr ""
+msgstr "Համայնք"
 
 #: field.au.prefix.label:1261
 msgid "Prefix"
-msgstr ""
+msgstr "Նախածանց"
 
-#: field.rccc.patron_county.label:3583
+#: field.rccc.patron_county.label:3586
 msgid "Patron County"
-msgstr ""
+msgstr "Ընթերցողի համայնք"
 
-#: field.actsce.owner.label:2505 field.asce.owner.label:3131
-#: field.rsce1.owner.label:3613 field.rsce2.owner.label:3627
+#: field.actsce.owner.label:2507 field.asce.owner.label:3134
+#: field.rsce1.owner.label:3616 field.rsce2.owner.label:3630
 msgid "Entry Owner"
-msgstr ""
+msgstr "Մուտքը տնօրինող"
 
-#: field.rccc.circ_modifier.label:3568 field.rocit.circ_modifier.label:3789
+#: field.rccc.circ_modifier.label:3571 field.rocit.circ_modifier.label:3792
 msgid "Circ Modifier"
-msgstr ""
+msgstr "Տացքի ձևափոխիչ"
 
-#: field.rsr.series_title.label:3454
+#: field.rsr.series_title.label:3457
 msgid "Series Title (normalized)"
-msgstr ""
+msgstr "Մատենաշարի վերնագիր (նորմալացված)"
 
-#: field.mbt.grocery.label:2482
+#: field.mbt.grocery.label:2484
 msgid "Grocery Billing link"
-msgstr ""
+msgstr "Վճարման կապ"
 
-#: field.actscecm.stat_cat_entry.label:2901
+#: field.actscecm.stat_cat_entry.label:2904
 msgid "Entry Text"
-msgstr ""
+msgstr "Մուտքի տեքստ"
 
-#: field.aufh.current_copy.label:2868
+#: field.aufh.current_copy.label:2871
 msgid "Non-fulfilling Copy"
-msgstr ""
+msgstr "Չբավարարող օրինակ"
 
-#: field.combcirc.copy_location.label:1727
-#: field.acirc.copy_location.label:1794 field.acp.location.label:2723
-#: field.rccc.shelving_location.label:3574
+#: field.combcirc.copy_location.label:1729
+#: field.acirc.copy_location.label:1796 field.acp.location.label:2725
+#: field.rccc.shelving_location.label:3577
 msgid "Shelving Location"
-msgstr ""
+msgstr "Դարակի վրա գտնվելու տեղ"
 
-#: field.aou.id.label:2175
+#: field.aou.id.label:2177
 msgid "Organizational Unit ID"
-msgstr ""
+msgstr "Կազմ միավոր ID"
 
-#: field.chmm.pickup_ou.label:474 field.ahr.pickup_lib.label:2134
+#: field.chmm.pickup_ou.label:474 field.ahr.pickup_lib.label:2136
 msgid "Pickup Library"
-msgstr ""
+msgstr "Վերցնելու գրադարան"
 
 #: field.vqbrad.description.label:199 field.vqarad.description.label:324
 #: field.ccm.description.label:431 field.cam.description.label:938
-#: field.asv.description.label:2062 field.pgt.description.label:2793
+#: field.asv.description.label:2064 field.pgt.description.label:2796
 msgid "Description"
-msgstr ""
+msgstr "Նկարագրություն"
 
 #: field.bre.keyword_field_entries.label:1073
 msgid "Indexed Keyword Field Entries"
-msgstr ""
+msgstr "Ինդեքսավորված վճռորոշ դաշտի մուտքեր"
 
 #: field.vqbr.import_time.label:170 field.vqar.import_time.label:297
 msgid "Import Time"
-msgstr ""
+msgstr "Ներմուծման ժամ"
 
-#: field.aufh.circ_lib.label:2867
+#: field.aufh.circ_lib.label:2870
 msgid "Non-fulfilling Library"
-msgstr ""
+msgstr "Չբավարարող գրադարան"
 
 #: field.au.home_ou.label:1248
 msgid "Home Library"
-msgstr ""
+msgstr "Տան գրադարան"
 
-#: field.rocit.edit_date.label:3795
+#: field.rocit.edit_date.label:3798
 msgid "Edit Date"
-msgstr ""
+msgstr "Խմբագրիր տվյալը"
 
 #: class.clm.label:841
 msgid "Language Map"
-msgstr ""
+msgstr "Լեզվի քարտեզ"
 
-#: field.atc.copy_status.label:737 field.iatc.copy_status.label:3699
+#: field.atc.copy_status.label:737 field.iatc.copy_status.label:3702
 msgid "Pretransit Copy Status"
-msgstr ""
+msgstr "Նախնական տրանզիտի պատճեի վիճակ"
 
-#: field.crahp.age.label:2769
+#: field.crahp.age.label:2771
 msgid "Item Age"
-msgstr ""
+msgstr "Նյութի տարիք"
 
 #: field.au.standing.label:1264
 msgid "Standing (unused)"
-msgstr ""
+msgstr "Առկա  (չօգտագործված)"
 
-#: field.rsr.name_subject.label:3462
+#: field.rsr.name_subject.label:3465
 msgid "Personal Name Subjects (normalized)"
-msgstr ""
+msgstr "Անվանումների խորագրեր  (նորմալացված)"
 
-#: field.asv.usr_summary.label:2071
+#: field.asv.usr_summary.label:2073
 msgid "Display in User Summary"
-msgstr ""
+msgstr "Արտածիր օգտվողի համառոտագրությունւոմ"
 
-#: field.ahn.notify_staff.label:1877
+#: field.ahn.notify_staff.label:1879
 msgid "Notifying Staff"
-msgstr ""
+msgstr "Աշխատակազմի տեղեկացում"
 
-#: field.aua.country.label:1567
+#: field.aua.country.label:1569
 msgid "Country"
-msgstr ""
+msgstr "Երկիր"
 
-#: field.circ.checkin_time.label:1639 field.combcirc.checkin_time.label:1694
-#: field.acirc.checkin_time.label:1761 field.rodcirc.checkin_time.label:3726
+#: field.circ.checkin_time.label:1641 field.combcirc.checkin_time.label:1696
+#: field.acirc.checkin_time.label:1763 field.rodcirc.checkin_time.label:3729
 msgid "Check In Date/Time"
-msgstr ""
+msgstr "Ընդունման օր/ժամ"
 
-#: field.mg.payments.label:2446
+#: field.mg.payments.label:2448
 msgid "Payments"
-msgstr ""
+msgstr "Վճարումներ"
 
-#: field.rocit.owning_lib.label:3799
+#: field.rocit.owning_lib.label:3802
 msgid "Owning Lib"
-msgstr ""
+msgstr "Տնօրինող գրադ"
 
-#: class.rsce2.label:3621
+#: class.rsce2.label:3624
 msgid "CAT2 Entry"
-msgstr ""
+msgstr "CAT2 մուտք"
 
 #: field.mbts.last_billing_type.label:636
-#: field.rccbs.last_billing_type.label:3666
+#: field.rccbs.last_billing_type.label:3669
 msgid "Last Billing Type"
-msgstr ""
+msgstr "Վերջին հաշվի տեսակ"
 
-#: field.circ.recuring_fine.label:1652 field.combcirc.recuring_fine.label:1707
-#: field.acirc.recuring_fine.label:1774 field.rodcirc.recuring_fine.label:3739
+#: field.circ.recuring_fine.label:1654 field.combcirc.recuring_fine.label:1709
+#: field.acirc.recuring_fine.label:1776 field.rodcirc.recuring_fine.label:3742
 msgid "Recurring Fine Amount"
-msgstr ""
+msgstr "Recurring տուգանքի գումարը"
 
-#: field.asv.end_date.label:2063
+#: field.asv.end_date.label:2065
 msgid "Survey End Date/Time"
-msgstr ""
+msgstr "Հարցախույզի ավարտի օր/ժամ"
 
-#: field.mg.xact_start.label:2444
+#: field.mg.xact_start.label:2446
 msgid "Transaction Start Timestamp"
-msgstr ""
+msgstr "Տրանզակցիայի սկզբի ժամանակի կնիք"
 
 #: field.bre.title_field_entries.label:1075
 msgid "Indexed Title Field Entries"
-msgstr ""
+msgstr "Ինդեքսավորված վերնագրային դաշտի մուտքեր"
 
-#: field.aou.closed_dates.label:2186
+#: field.aou.closed_dates.label:2188
 msgid "Closed Dates"
-msgstr ""
+msgstr "Փակ ամսաթվեր"
 
 #: class.ccm.label:424 field.chmm.circ_modifier.label:479
 #: field.ccmm.circ_modifier.label:510 field.ccmcmt.circ_mod.label:573
-#: field.acp.circ_modifier.label:2707
+#: field.acp.circ_modifier.label:2709
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "Տացքի ձևափոխիչ"
 
-#: field.aou.addresses.label:2189
+#: field.aou.addresses.label:2191
 msgid "Addresses"
-msgstr ""
+msgstr "Հասցեներ"
 
 #: field.vqbrad.ident.label:202 field.vqarad.ident.label:327
 msgid "Is Identifier?"
-msgstr ""
+msgstr "Նկարագրի՞չ է"
 
 #: field.auoi.opt_in_ts.label:400
 msgid "Opt-in Date/Time"
-msgstr ""
+msgstr "Opt-in օր/ժամ"
 
-#: field.circ.desk_renewal.label:1642 field.combcirc.desk_renewal.label:1697
-#: field.acirc.desk_renewal.label:1764 field.rodcirc.desk_renewal.label:3729
+#: field.circ.desk_renewal.label:1644 field.combcirc.desk_renewal.label:1699
+#: field.acirc.desk_renewal.label:1766 field.rodcirc.desk_renewal.label:3732
 msgid "Desk Renewal"
-msgstr ""
+msgstr "Սեղանի թարմացումներ"
 
-#: field.citm.code.label:1930
+#: field.citm.code.label:1932
 msgid "Item Type Code"
-msgstr ""
+msgstr "Նյութի տեսակի կոդ"
 
-#: field.circ.renewal_remaining.label:1654
-#: field.combcirc.renewal_remaining.label:1709
-#: field.acirc.renewal_remaining.label:1776
-#: field.rodcirc.renewal_remaining.label:3741
+#: field.circ.renewal_remaining.label:1656
+#: field.combcirc.renewal_remaining.label:1711
+#: field.acirc.renewal_remaining.label:1778
+#: field.rodcirc.renewal_remaining.label:3744
 msgid "Remaining Renewals"
-msgstr ""
+msgstr "Մնացող թարմացումներ"
 
-#: field.mb.void_time.label:3186
+#: field.mb.void_time.label:3189
 msgid "Void Timestamp"
-msgstr ""
+msgstr "Ժամանակի կնիք"
 
 #: field.au.billable_transactions.label:1273 None:1295
 msgid "Billable Transactions"
-msgstr ""
+msgstr "Վճարման ենթակա տրանզակցիաներ"

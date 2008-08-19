@@ -1,13 +1,12 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 #. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2008-08-19 09:34-0400\n"
+"PO-Revision-Date: 2008-08-08 22:08+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,37 +16,37 @@ msgstr ""
 
 #: staff.circ.alert
 msgid "Alert"
-msgstr ""
+msgstr "Զգուշացում"
 
 #: staff.circ.item_no_circs
 msgid "Item %1$s has never circulated."
-msgstr ""
+msgstr "%1$s նյութը երբեք չի սպասարկվել:"
 
 #: staff.circ.invalid_date
 msgctxt "staff.circ.invalid_date"
 msgid "Invalid Date"
-msgstr ""
+msgstr "Սխալ ամսաթիվ"
 
 #: staff.circ.future_date
 msgid "Future Date"
-msgstr ""
+msgstr "Ապագա ամսաթիվ"
 
 #: staff.circ.process_item
 msgid "Check In / Process Item"
-msgstr ""
+msgstr "Հետ ընդունում / Նյութի ակտիվացում"
 
 #: staff.circ.backdated_checkin
 msgid "Backdated %1$s Check In"
-msgstr ""
+msgstr "Հետին թվով %1$s ընդունված"
 
 #: staff.circ.backdate.exception
 msgid "Problem setting backdate: %1$s"
-msgstr ""
+msgstr "Պրոբլեմ հետին թվով ամսաթիվ դնելիս: %1$s"
 
 #: staff.circ.unimplemented
 msgctxt "staff.circ.unimplemented"
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "Դեռ ներդրված չէ"
 
 #: staff.circ.check_digit.bad
 msgctxt "staff.circ.check_digit.bad"
@@ -55,221 +54,224 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
+"Վատ ստուգիչ նիշ, հավանաբար վատ սկանի արդյունք: Օգտագործե՞լ այս շտրիխ կոդե "
+"(\"%1$s\")"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
-msgstr ""
+msgstr "Վատ շտրիխ կոդ"
 
 #: staff.circ.cancel
 msgctxt "staff.circ.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: staff.circ.barcode.accept
 msgid "Accept Barcode"
-msgstr ""
+msgstr "Ընդունիր շտրիխ կոդը"
 
 #: staff.circ.confirm
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "Ընտրիր այստէղ գործողությունը հաստատելու համար"
 
 #: staff.circ.confirm.msg
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "Ընտրիր այստէղ հաղորդումը հաստատելու համար"
 
 #. # If we know the name of the object, we could parameterize that as well
 #: staff.circ.checkin.exception
 msgid "Something went wrong in circ.util.checkin: %1$s"
-msgstr ""
+msgstr "Ինչ որ բան գնաց սխալ circ.util.checkin: %1$s"
 
 #: staff.circ.checkin2.exception
 msgid "Something went wrong in circ.util.checkin2: %1$s"
-msgstr ""
+msgstr "Ինչ որ բան գնաց սխալ circ.util.checkin2: %1$s"
 
 #: staff.circ.checkin.exception.external
 msgctxt "staff.circ.checkin.exception.external"
 msgid "circ.checkin: Calling external .on_checkin()"
-msgstr ""
+msgstr "circ.checkin: կանչվում է արտաքին .on_checkin()"
 
 #: staff.circ.checkin2.exception.external
 msgid "circ.checkin2: Calling external .on_checkin()"
-msgstr ""
+msgstr "circ.checkin2: Calling external .on_checkin()"
 
 #: staff.circ.checkin.exception.no_external
 msgctxt "staff.circ.checkin.exception.no_external"
 msgid "circ.checkin: Calling external .on_checkin()"
-msgstr ""
+msgstr "circ.checkin: կանչվում է արտաքին .on_checkin()"
 
 #: staff.circ.checkin2.exception.no_external
 msgid "circ.util.checkin2: No external .on_failure()"
-msgstr ""
+msgstr "circ.util.checkin2: ոչ արտաքին .on_failure()"
 
 #: staff.circ.util.checkin.exception.external
 msgctxt "staff.circ.util.checkin.exception.external"
 msgid "circ.util.checkin: Calling external .on_checkin()"
-msgstr ""
+msgstr "circ.util.checkin: կանչվում է արտաքին .on_checkin()"
 
 #: staff.circ.util.checkin.exception.no_external
 msgctxt "staff.circ.util.checkin.exception.no_external"
 msgid "circ.util.checkin: Calling external .on_checkin()"
-msgstr ""
+msgstr "circ.util.checkin: կանչվում է արտաքին .on_checkin()"
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
-msgstr ""
+msgstr "սխալ՝ չքարտագրվող նյութերի տեսակավորման ժամանակ: %1$s"
 
 #: staff.circ.checkout.date.exception
 msgid "Use this format: YYYY-MM-DD"
-msgstr ""
+msgstr "Օգտագործիր այս ձևաչափը: ՏՏՏՏ-ԱԱ-ՕՕ"
 
 #: staff.circ.checkout.unimplemented
 msgctxt "staff.circ.checkout.unimplemented"
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "Դեռ ներդրված չէ"
 
 #: staff.circ.checkout.cmd_checkout_submit.msg
 msgid "Enter the number of %1$s circulating:"
-msgstr ""
+msgstr "Մուտք արա սպասարկումների %1$s քանակը:"
 
 #: staff.circ.checkout.cmd_checkout_submit.title
 msgid "Non-cataloged Items"
-msgstr ""
+msgstr "Չմուտքագրված նյութետ'ր"
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.msg
 msgid "You tried to circulate %1$d %2$s.  The maximum is 99 per action."
-msgstr ""
+msgstr "Փորձել ես սպասարկել %1$d %2$s.  Ամենաշատը 99 գործողության ընթացքում:"
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Չմուտքագրված սպասարկում"
 
 #: staff.circ.checkout.ok.btn
 msgctxt "staff.circ.checkout.ok.btn"
 msgid "OK"
-msgstr ""
+msgstr "Լավ"
 
 #: staff.circ.checkout.cmd_checkout_submit.confirm.msg
 msgid "Are you sure you want to circulate %1$d %2$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ուզում ես սպասակել %1$d %2$s"
 
 #: staff.circ.checkout.cmd_checkout_submit.confirm.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.confirm.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Չմուտքագրված սպասարկում"
 
 #: staff.circ.checkout.yes.btn
 msgctxt "staff.circ.checkout.yes.btn"
 msgid "Yes"
-msgstr ""
+msgstr "Այո"
 
 #: staff.circ.checkout.no.btn
 msgctxt "staff.circ.checkout.no.btn"
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
-msgstr ""
+msgstr "Սխալ՝ չսպասարկվող դուրս տրման հետ: %1$s իրավասու համար չէ:"
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Չմուտքագրված սպասարկում"
 
 #: staff.circ.checkout.disable.error
 msgid "Error determining whether to disable checkout."
-msgstr ""
+msgstr "Սխալ՝ որոշելիս երբ արգելել սպասարկումը"
 
 #: staff.circ.checkout.date.too_early.error
 msgid "Due date needs to be after today."
-msgstr ""
+msgstr "Հետ ընդունման ամսաթիվը պետք է լինի այսօրվանից հետո:"
 
 #: staff.circ.checkout.barcode.failed
 msgid "%1$s failed."
-msgstr ""
+msgstr "%1$s ձախողվեց"
 
 #: staff.circ.checkout.non_cataloged.pending
 msgid "Non-cataloged checkout pending..."
-msgstr ""
+msgstr "Չմուտքագրված տրումը սպասում է:"
 
 #: staff.circ.checkout.barcode.pending
 msgid "%1$s checkout pending..."
-msgstr ""
+msgstr "%1$s տրումը սպասում է..."
 
 #: staff.circ.checkout.barcode.failed.alert
 msgid "Check Out Failed %1$s"
-msgstr ""
+msgstr "Տրումը ձախողվեց %1$s"
 
 #: staff.circ.checkout.override.confirm
 msgid "Override Checkout Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ տրման ձախողումը"
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-msgstr ""
+msgstr "Սխալ սկան կամ չմուտքագրված նյութ: Սպասարկե՞լ որպես քարտագրված նյութ:"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
-msgstr ""
+msgstr "Նախնական քարտագրված"
 
 #: staff.circ.non_cataloged
 msgid "Non-cataloged"
-msgstr ""
+msgstr "Չմուտքագրված"
 
 #: staff.circ.checkout.cancelled
 msgid "Checkout cancelled"
-msgstr ""
+msgstr "Դուրս տրումը չեղյալ արվեց"
 
 #: staff.circ.checkout.card.inactive
 msgid ""
 "The card used to retrieve this account is inactive and may not be used to "
 "circulate items."
 msgstr ""
+"Այս հաշվից աշխատելու տոմսը ակտիվ չէ, և չի կարող օգտագործվել սպասարկման համար"
 
 #: staff.circ.checkout.barcode.check_out_failed
 msgid "Check Out Failed"
-msgstr ""
+msgstr "Դուրս տրումը ձախողվեց"
 
 #: staff.circ.checkout.account.inactive
 msgid "This account is inactive and may not circulate items."
-msgstr ""
+msgstr "Այս հաշիվը պասիվ է և չի կարող նյութ սպասարկել"
 
 #: staff.circ.checkout.account.expired
 msgid "This account has expired and may not circulate items."
-msgstr ""
+msgstr "Այս հաշիվը ժամկետանց է և չի կարող նյութ սպասարկել"
 
 #: staff.circ.checkout.item_due
 msgid "This item was due on %1$s."
-msgstr ""
+msgstr "Նյութը պետք է վերդարձվիn %1$s"
 
 #: staff.circ.checkout.normal_checkin_then_checkout
 msgid "Normal Checkin then Checkout"
-msgstr ""
+msgstr "Սկզբից ընդունիր ապա դուրս տուր"
 
 #: staff.circ.checkout.forgiving_checkin_then_checkout
 msgid "Forgiving Checkin then Checkout"
-msgstr ""
+msgstr "Մարվում ե հանձնումը ապա դուրս տրում"
 
 #: staff.circ.checkout.abort_transit_then_checkout
 msgid "Abort Transit then Checkout"
-msgstr ""
+msgstr "Վիժեցրու տրանզիտը ապա դուրս տուր"
 
 #: staff.circ.checkout.network_failure
 msgid "There was a network failure."
-msgstr ""
+msgstr "Աօկա էր ցանցի սխալ"
 
 #: staff.circ.checkout.copy_status
 msgid "Copy status = %1$s"
-msgstr ""
+msgstr "Պատճեի կարգավիճակ = %1$s"
 
 #: staff.circ.checkout.alert_message
 msgid "Alert Message = %1$s"
-msgstr ""
+msgstr "Զգուշացնող հաղորդում = %1$s"
 
 #: staff.circ.checkout.permission_denied
 msgid "Permission Denied = %1$s"
-msgstr ""
+msgstr "Իրավունքը արգելված է = %1$s"
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
@@ -278,155 +280,159 @@ msgid ""
 "Check Out Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Դուրս տրումը ձախողվեց: Եթե ցանկանում ես օգտագործըլ ոֆլայն միջերեսը, մէնյուի "
+"վերին մսում ընտրիր Սպասարկում -> Օֆլայն միջերես"
 
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
 #: staff.circ.circ_brief.staff_out_id
 msgid "Check Out Staff ID = %1$s"
-msgstr ""
+msgstr "Դուրս տրման աշխատակազմի ID = %1$s"
 
 #: staff.circ.circ_brief.staff_in_id
 msgid "Check In Staff ID = %1$s"
-msgstr ""
+msgstr "Հետ ընդունման աշխատակազմի ID = %1$s"
 
 #: staff.circ.circ_brief.failure
 msgid "Failure rendering circulation."
-msgstr ""
+msgstr "Ձախողում սպասարկում կատարելիս"
 
 #: staff.circ.copy_details.hold
 msgid "Hold ID = %1$s"
-msgstr ""
+msgstr "պահման ID = %1$s"
 
 #: staff.circ.copy_details.transit
 msgid "Transit ID = %1$s"
-msgstr ""
+msgstr "Տրանզիտի ID = %1$s"
 
 #: staff.circ.copy_details.circ
 msgid "Circulation ID = %1$s"
-msgstr ""
+msgstr "Սպասարկման ID = %1$s"
 
 #: staff.circ.copy_details.last_circ
 msgid "Last Circulation"
-msgstr ""
+msgstr "Վերջին սպասարկում"
 
 #: staff.circ.copy_details.current_circ
 msgid "Current Circulation"
-msgstr ""
+msgstr "Ընթացիկ սպասարկում"
 
 #: staff.circ.copy_details.no_circ
 msgid "This item has yet to circulate."
-msgstr ""
+msgstr "Այս նյութը դեռ պետք է սպասարկվի"
 
 #: staff.circ.copy_details.not_transit
 msgid "This item is not in transit."
-msgstr ""
+msgstr "Այս նյութը տրանզիտում չէ"
 
 #. # Displays user info: "Family name, First name : Barcode"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
-msgstr ""
+msgstr "%1$s, %2$s : %3$s"
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
 "This item is not captured for a hold, however its status is incorrectly set "
 "to \"On Holds Shelf\".  Please check this item in to correct the status."
 msgstr ""
+"Այս նյութը նախնական պահելու համար չէ, ինչևէ դրա կարգավիճակը սխալմամբ դրվել է "
+"\"Պահումների դարակ\":  Հետ ընդունիր նյութը վիճակը շտկելու համար:"
 
 #: staff.circ.copy_details.no_hold
 msgid "This item is not captured for a hold."
-msgstr ""
+msgstr "Այս նյութը նախնական պահելու համար չէ:"
 
 #: staff.circ.copy_status.tab_name
 msgid "Item Status"
-msgstr ""
+msgstr "Նյութի վիճակ"
 
 #: staff.circ.copy_status.action.complete
 msgid "Action complete."
-msgstr ""
+msgstr "Գործողությունը ավարտված է:"
 
 #: staff.circ.copy_status.sel_checkin.error
 msgid "Checkin did not likely happen."
-msgstr ""
+msgstr "Հետ ընդունումը չի կայացել:"
 
 #: staff.circ.copy_status.cmd_replace_barcode.error
 msgid "Barcode %1$s was not likely replaced."
-msgstr ""
+msgstr "Շտրիխ կոդ %1$s չի փոխարինվել:"
 
 #: staff.circ.copy_status.cmd_replace_barcodes.error
 msgid "Barcode replacements did not likely happen."
-msgstr ""
+msgstr "Շտրիխ կոդերի փոխարինումները չեն կայացել:"
 
 #: staff.circ.copy_status.sel_edit.error
 msgid "with copy editor"
-msgstr ""
+msgstr "օրինակի խմբագրի հետ"
 
 #: staff.circ.copy_status.sel_renew.not_circulating
 msgid "Item with barcode %1$s is not circulating."
-msgstr ""
+msgstr "Նյութը այս շտրիխ կոդով %1$s չի սպասսարկվում:"
 
 #: staff.circ.copy_status.upload_file.title
 msgid "Import Barcode File"
-msgstr ""
+msgstr "Ներմուծիր ծտրիխ կոդի ֆայլը"
 
 #: staff.circ.copy_status.upload_file.complete
 msgid "File uploaded."
-msgstr ""
+msgstr "Ֆայլը բեռնավորվել է:"
 
 #: staff.circ.copy_status.upload_file.no_barcodes
 msgid "No barcodes found in file."
-msgstr ""
+msgstr "Ֆայլում շտրիխ կոդեր չեն հայտնաբերվել"
 
 #: staff.circ.copy_status.add_items.title
 msgid "Add Item for record # %1$s"
-msgstr ""
+msgstr "Ավելացրու նյութը # %1$s գրառման համար"
 
 #: staff.circ.copy_status.del_items.confirm
 msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս նյութերը %1$s"
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "Վերագրել ջնջելու ձախողումը"
 
 #: staff.circ.copy_status.del_items.success
 msgid "Items Deleted"
-msgstr ""
+msgstr "Նյութեր ջնջված"
 
 #: staff.circ.copy_status.del_items.success.error
 msgid "Batch Item Deletion"
-msgstr ""
+msgstr "Փաթեթով նյութի ջնջում"
 
 #: staff.circ.copy_status.transfer_items.mark_destination
 msgid "Please mark a volume as the destination and then try this again."
-msgstr ""
+msgstr "Նշիր հատորը որպես նպատակակետ և փորձիր նորից"
 
 #: staff.circ.copy_status.transfer_items.problem
 msgid "All copies not likely transferred."
-msgstr ""
+msgstr "Ոչ բոլոր պատճեներն են տեղափոխվել"
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to that library."
-msgstr ""
+msgstr "Դու չունես իրավասություն ավելացնելու հատորներ այդ գրադարանում"
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr ""
+msgstr "Ավելացնել հատոր/նյութ գրառման համար # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.perm_failure
 msgid "You do not have permission to edit this volume."
-msgstr ""
+msgstr "Դու չունես իրավասություն խմբագրելու այս հատորը"
 
 #: staff.circ.copy_status.edit_volume.title
 msgid "Volume for record # %1$s"
-msgstr ""
+msgstr "Հատոր # %1$s գրառման համար"
 
 #: staff.circ.copy_status.edit_volumes.title
 msgid "Volumes for record # %1$s"
-msgstr ""
+msgstr "Հատորներ # %1$s գրառման համար"
 
 #: staff.circ.copy_status.edit_volumes.duplicate
 msgid ""
@@ -434,124 +440,129 @@ msgid ""
 "already in use for the given library.  You should transfer the items to the "
 "desired callnumber instead."
 msgstr ""
+"Խմբագրումը ձախողվեց: Դու փորձեցիր փոխել հատորի դասիչը մեկ ուրիշով, որն արդեն "
+"օգտագործվում է այդ գրադարանում: Դասիչը փոխելու փոխարեն պետք է տեղափոխես այդ "
+"նյութերը:"
 
 #: staff.circ.copy_status.edit_volumes.success
 msgid "Volumes modified."
-msgstr ""
+msgstr "Հատորները ձևափոխված են"
 
 #: staff.circ.copy_status.delete_volumes.singular
 msgid "Are you sure you would like to delete this volume?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս հատորը"
 
 #: staff.circ.copy_status.delete_volumes.plural
 msgid "Are you sure you would like to delete these volumes?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս հատորները"
 
 #: staff.circ.copy_status.delete_volumes.title
 msgid "Delete Volumes?"
-msgstr ""
+msgstr "Ջնջե՞լ հատորները"
 
 #: staff.circ.copy_status.delete_volumes.delete
 msgid "Delete"
-msgstr ""
+msgstr "Ջնչել"
 
 #: staff.circ.copy_status.delete_volumes.cancel
 msgctxt "staff.circ.copy_status.delete_volumes.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ ջնջելու ձախողումը"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
 "You must delete all the copies on the volume before you may delete the "
 "volume itself."
-msgstr ""
+msgstr "Պետք է ջնջես հատորի բոլոր օրինակները, մինչ հատորը ջնջելը:"
 
 #: staff.circ.copy_status.delete_volumes.success
 msgid "Volumes deleted."
-msgstr ""
+msgstr "Հատորները ջնջվել են"
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
-msgstr ""
+msgstr "Հատորը նշված է որպես Item Transfer Destination"
 
 #: staff.circ.copy_status.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr ""
+msgstr "Ընտրիր պարզապես մեկ հատոր որպեսզի նշես որպես Item Transfer Destination"
 
 #: staff.circ.copy_status.mark_volume.title
 msgctxt "staff.circ.copy_status.mark_volume.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "Սահմանափակիր ընտրությունը"
 
 #: staff.circ.copy_status.ok
 msgctxt "staff.circ.copy_status.ok"
 msgid "OK"
-msgstr ""
+msgstr "Լավ"
 
 #: staff.circ.copy_status.mark_library
 msgid "Library and Record marked as Volume Transfer Destination"
-msgstr ""
+msgstr "Գրադարանը և գրառումը նշված են որպես Volume Transfer Destination"
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
 msgstr ""
+"Ընտրիր պարզապես մեկ գրադարան որպեսզի նշես որպես Volume Transfer Destination"
 
 #: staff.circ.copy_status.mark_library.limit_one.title
 msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "Սահմանափակիր ընտրությունը"
 
 #: staff.circ.copy_status.transfer_volume.none
 msgid ""
 "Please mark a library as the destination from within holdings maintenance "
 "and then try this again."
 msgstr ""
+"Պահումների կառավարման ճյուղից նշիր գրադարանը որպես նպատակակետ և փորձիր նորից"
 
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr ""
+msgstr "Տեղափոխե՞լ հատորները %1$s դեպի գրադարան %2$s այս գրառման համար"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
-msgstr ""
+msgstr "Տեղափոխում"
 
 #: staff.circ.copy_status.transfer_volume.cancel.label
 msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: staff.circ.copy_status.transfer_volume.cancel.accesskey
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.circ.copy_status.transfer_volume.title
 msgid "Volume Transfer"
-msgstr ""
+msgstr "Հատորի տեղափոխում"
 
 #: staff.circ.copy_status.transfer_volume.aborted
 msgid "Transfer Aborted"
-msgstr ""
+msgstr "Տեղափոխումը կասեցված է"
 
 #: staff.circ.copy_status.transfer_volume.override_failure
 msgid "Override Volume Transfer Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ հատորի տեղափոխման ձախողումը"
 
 #: staff.circ.copy_status.transfer_volume.cannot_have_vols
 msgid "That destination cannot have volumes."
-msgstr ""
+msgstr "Այդ նպատակակետը չի կարող ունենալ հատորներ"
 
 #: staff.circ.copy_status.transfer_volume.success
 msgid "Volumes transferred."
-msgstr ""
+msgstr "Հատորները տեղափոխված են"
 
 #: staff.circ.copy_status.transfer_volume.error
 msgid "All volumes not likely transferred."
-msgstr ""
+msgstr "Ոչ բոլոր հատորներն են տեղափոխվել"
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
@@ -559,120 +570,122 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
+"Վատ ստուգիչ նիշ, հավանաբար վատ սկանի պատճառով: Օգտագործե՞լ այս շտրիխ կոդը՝ "
+"(\"%1$s\"):"
 
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
-msgstr ""
+msgstr "Պատահել է սխալ: Դատարկ արդյունք:"
 
 #: staff.circ.copy_status.status.copy_not_found
 msgid "%1$s was either mis-scanned or is not cataloged."
-msgstr ""
+msgstr "%1$s կամ սխալ սկանավորված է և կամ չի քարտագրված:"
 
 #: staff.circ.copy_status.status.not_cataloged
 msgctxt "staff.circ.copy_status.status.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "Չի քարտագրված:"
 
 #: staff.circ.copy_status.status.pre_cat
 msgid "Item is a pre-cataloged item."
-msgstr ""
+msgstr "Նյութը նախնական քարտագրված նյութ է:"
 
 #: staff.circ.copy_status.status.hold
 msgid "Item is captured for a Hold."
-msgstr ""
+msgstr "Նյութը պահման համար է:"
 
 #: staff.circ.copy_status.status.transit
 msgid "Item is in Transit."
-msgstr ""
+msgstr "Նյութը տրանզիտում է:"
 
 #: staff.circ.copy_status.status.circ
 msgid "Item is circulating."
-msgstr ""
+msgstr "Նյութը սպասարկվւոմ է:"
 
 #: staff.circ.hold_capture.print.to_printer
 msgid "To Printer"
-msgstr ""
+msgstr "Դեպի Տպիչ"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.barcode
 msgctxt "staff.circ.hold_capture.print.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Շտրիխ կոդ:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.title
 msgid "Title:"
-msgstr ""
+msgstr "Վերնագիր:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.author
 msgid "Author:"
-msgstr ""
+msgstr "Հեղինակ:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.route_to
 msgid "Route to:"
-msgstr ""
+msgstr "Ուղարկիր դեպի:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.patron
 msgid "Patron:"
-msgstr ""
+msgstr "Ընթերցող:"
 
 #: staff.circ.hold_capture.calling_external
 msgid "circ.hold_capture: Calling external .on_hold_capture()"
-msgstr ""
+msgstr "circ.hold_capture: կանչում է արտաքին .on_hold_capture()"
 
 #: staff.circ.hold_capture.no_external
 msgid "circ.hold_capture: No external .on_hold_capture()"
-msgstr ""
+msgstr "circ.hold_capture: Չկա արտաքին .on_hold_capture()"
 
 #: staff.circ.hold_capture.capture_failed
 msgid "Could not capture hold."
-msgstr ""
+msgstr "Չի կարող որսալ պահումը"
 
 #: staff.circ.hold_capture.error
 msgid "FIXME: need special alert and error handling"
-msgstr ""
+msgstr "FIXME: կարիք ունի հատուկ զգուշացման և սխալի որսման"
 
 #: staff.circ.in_house_use.tab_name
 msgid "In-House Use"
-msgstr ""
+msgstr "Ներքին օգտագործման համար"
 
 #: staff.circ.in_house_use.barcode
 msgctxt "staff.circ.in_house_use.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Շտրիխ կոդ:"
 
 #: staff.circ.in_house_use.noncat_sort_error
 msgid "error in noncat sorting:"
-msgstr ""
+msgstr "սխալ ոչ քարտ տեսակավորման ընթացքում"
 
 #: staff.circ.in_house_use.noncataloged
 msgid "Non-Cataloged"
-msgstr ""
+msgstr "Չքարտագրված"
 
 #: staff.circ.in_house_use.items_dump
 msgid "items ="
-msgstr ""
+msgstr "նյութեր ="
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
-msgstr ""
+msgstr "Վստա՞հ ես ցանկանում ես նշել %1$s որպես օգտագործված %2$s անգամ:"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
-msgstr ""
+msgstr "Ներքին օգտագործման ստուգում"
 
 #: staff.circ.in_house_use.yes
 msgctxt "staff.circ.in_house_use.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Այո"
 
 #: staff.circ.in_house_use.no
 msgctxt "staff.circ.in_house_use.no"
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
@@ -680,581 +693,585 @@ msgid ""
 "In House Use Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Ներքին օգտագործումը ձախողվեց: Եթե ցանկանում ես օգտագործել օֆլայն միջերեսը, "
+"վերին ընտրացանկից ընտրիր Սպասարկում -> Օֆլայն միջերես"
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
-msgstr ""
+msgstr "Ներքին օգտագործումը ձախողվեց: "
 
 #: staff.circ.in_house_use.ok
 msgctxt "staff.circ.in_house_use.ok"
 msgid "OK"
-msgstr ""
+msgstr "Լավ"
 
 #: staff.circ.in_house_use.external
 msgid "circ.in_house_use: Calling external .on_in_house_use()"
-msgstr ""
+msgstr "circ.in_house_use: կանչում է արտաքին .on_in_house_use()"
 
 #: staff.circ.in_house_use.no_external
 msgid "circ.in_house_use: No external .on_in_house_use()"
-msgstr ""
+msgstr "circ.in_house_use: Չկա արտաքին.on_in_house_use()"
 
 #: staff.circ.in_house_use.on_failure.external
 msgid "circ.in_house_use: Calling external .on_failure()"
-msgstr ""
+msgstr "circ.in_house_use: կանչում է արտաքին .on_failure()"
 
 #: staff.circ.in_house_use.on_failure.no_external
 msgid "circ.in_house_use: No external .on_failure()"
-msgstr ""
+msgstr "circ.in_house_use: Չկա արտաքին .on_failure()"
 
 #: staff.circ.print_list_template.window.title
 msgid "Template Macros"
-msgstr ""
+msgstr "Ձևանմուշի մակրոս"
 
 #: staff.circ.print_list_template.window.heading
 msgid "General:"
-msgstr ""
+msgstr "Ընդհանուր:"
 
 #: staff.circ.print_list_template.window.template_type
 msgid "For type: %1$s"
-msgstr ""
+msgstr "%1$s տէսակի համար"
 
 #: staff.circ.print_list_template.window.close
 msgid "Close Window"
-msgstr ""
+msgstr "Փակիր պատուհանը"
 
 #: staff.circ.print_list_template.preview
 msgid "preview:"
-msgstr ""
+msgstr "նախնական դիտում:"
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
-msgstr ""
+msgstr "Ձևանմուշը հիշված է"
 
 #: staff.circ.print_list_template.save_as
 msgid "Save Templates File As"
-msgstr ""
+msgstr "Հիշիր ձևանմուշների ֆայլը որպես"
 
 #: staff.circ.print_list_template.export.error
 msgctxt "staff.circ.print_list_template.export.error"
 msgid "Error exporting templates"
-msgstr ""
+msgstr "Սխալ ձևանմուշները արտահանելիս"
 
 #: staff.circ.print_list_template.import
 msgid "Import Templates File"
-msgstr ""
+msgstr "Ներմուծիր ձևանմուշների ֆայլը"
 
 #: staff.circ.print_list_template.import_results
 msgid "Imported these templates: %1$s"
-msgstr ""
+msgstr "Ներմուծված ձևանմուշներ: %1$"
 
 #: staff.circ.print_list_template.reload
 msgid "Please reload this interface."
-msgstr ""
+msgstr "Վերաբեռնավորիր այս միջերեսը"
 
 #: staff.circ.print_list_template.import.error
 msgctxt "staff.circ.print_list_template.import.error"
 msgid "Error exporting templates"
-msgstr ""
+msgstr "Սխալ ձևանմուշները արտահանելիս"
 
 #: staff.circ.print_list_template.tab_name
 msgid "Receipt Template Editor"
-msgstr ""
+msgstr "Ձևանմուշի խմբագրիչի ստացական"
 
 #: staff.circ.utils.abort_transits.confirm
 msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ կցանկանաիր վիժեցնել այս օրինակների տեղափոխումը"
 
 #: staff.circ.utils.abort_transits.title
 msgid "Aborting Transits"
-msgstr ""
+msgstr "Տեղափոխումների վիժեցում"
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Այո"
 
 #: staff.circ.utils.no
 msgctxt "staff.circ.utils.no"
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #: staff.circ.utils.abort_transits.not_allowed
 msgid "Copy ID = %1$s"
-msgstr ""
+msgstr "Օրինակի ID = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
 "This item was no longer in transit at the time of the abort.  Perhaps this "
 "happened from a stale display?"
 msgstr ""
+"Վիժեցման ժամանակ այս նյութը արդեն տեղափոխման մեջ չեր: Հավանաբար սա պատահել է "
+"սառեցված արտածման արդյունքում:"
 
 #: staff.circ.utils.abort_transits.unexpected_error
 msgid "Transit not likely aborted."
-msgstr ""
+msgstr "Ցանկալի չէ դադարեցնել տեխափոխումը"
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
-msgstr ""
+msgstr "Պրոբլեմ ընթերցողի կանչման ժամանակ"
 
 #: staff.circ.utils.retrieve_copy.failure
 msgid "Problem retrieving copy details."
-msgstr ""
+msgstr "Պրոբլեմ օրինակի մանրամասների կանչման ժամանակ"
 
 #: staff.circ.utils.retrieve_circs.failure
 msgid "Problem retrieving circulations."
-msgstr ""
+msgstr "Պրոբլեմ սպասարկման կանչման ժամանակ"
 
 #: staff.circ.utils.offline.timestamp
 msgid "Timestamp"
-msgstr ""
+msgstr "Ժամանակի կնիք"
 
 #: staff.circ.utils.offline.checkout_time
 msgid "Check Out Time"
-msgstr ""
+msgstr "Դուրս տրման ժամ"
 
 #: staff.circ.utils.offline.type
 msgid "Transaction Type"
-msgstr ""
+msgstr "Տրանզակցիայի տեսակ"
 
 #: staff.circ.utils.offline.noncat
 msgid "Non-Cataloged?"
-msgstr ""
+msgstr "Չքարտագրվո՞ղ"
 
 #: staff.circ.utils.offline.noncat_type
 msgid "Non-Cataloged Type ID"
-msgstr ""
+msgstr "Չքարտագրվող տեսակի ID"
 
 #: staff.circ.utils.offline.count
 msgid "Count"
-msgstr ""
+msgstr "Հաշիվ"
 
 #: staff.circ.utils.offline.patron_barcode
 msgid "Patron Barcode"
-msgstr ""
+msgstr "Ընթերցողի շտրիխ կոդ"
 
 #: staff.circ.utils.offline.item_barcode
 msgid "Item Barcode"
-msgstr ""
+msgstr "Նյութի շտրիխ կոդ"
 
 #: staff.circ.utils.offline.due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Սպասվող Վերադարձի ամսաթիվ"
 
 #: staff.circ.utils.offline.backdate
 msgid "Back Date"
-msgstr ""
+msgstr "Վերադարձի ամսաթիվ"
 
 #: staff.circ.utils.offline.use_time
 msgid "Use Time"
-msgstr ""
+msgstr "Օգտագործման ժամ"
 
 #: staff.circ.utils.not_cataloged
 msgctxt "staff.circ.utils.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "Չի քարտագրված"
 
 #: staff.circ.utils.retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Կանչվում է..."
 
 #: staff.circ.utils.owning_lib
 msgid "Owning Library"
-msgstr ""
+msgstr "Սէփականատեր գրադարան"
 
 #: staff.circ.utils.loan_duration.short
 msgid "Short"
-msgstr ""
+msgstr "Կարճ"
 
 #: staff.circ.utils.loan_duration.normal
 msgctxt "staff.circ.utils.loan_duration.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Նորմալ"
 
 #: staff.circ.utils.loan_duration.long
 msgid "Long"
-msgstr ""
+msgstr "Երկար"
 
 #: staff.circ.utils.fine_level.low
 msgid "Low"
-msgstr ""
+msgstr "Ցածր"
 
 #: staff.circ.utils.fine_level.normal
 msgctxt "staff.circ.utils.fine_level.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Նորմալ"
 
 #: staff.circ.utils.fine_level.high
 msgid "High"
-msgstr ""
+msgstr "Բարձր"
 
 #: staff.circ.utils.circulate
 msgid "Circulate?"
-msgstr ""
+msgstr "Սպասարկե՞լ"
 
 #: staff.circ.utils.deleted
 msgid "Deleted?"
-msgstr ""
+msgstr "Ջնջվա՞ծ"
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
-msgstr ""
+msgstr "Պահվո՞խ"
 
 #: staff.circ.utils.opac_visible
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "ՀՈԱՔ-ը տեսանելի է"
 
 #: staff.circ.utils.reference
 msgid "Reference?"
-msgstr ""
+msgstr "Տեղեկատու՞"
 
 #: staff.circ.utils.deposit
 msgid "Deposit?"
-msgstr ""
+msgstr "Դեպոզի՞տ"
 
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.circ.utils.unset
 msgid "<Unset>"
-msgstr ""
+msgstr "<Unset>"
 
 #: staff.circ.utils.checkout_lib
 msgid "Checkout Library"
-msgstr ""
+msgstr "Դուրս տրման գրադարան"
 
 #: staff.circ.utils.checkout_timestamp
 msgid "Checkout Timestamp"
-msgstr ""
+msgstr "Դուրս տրման ժամանակի կնիք"
 
 #: staff.circ.utils.checkin_timestamp
 msgid "Checkin Timestamp"
-msgstr ""
+msgstr "Հետ ընդունման ժամանակի կնիք"
 
 #: staff.circ.utils.xact_start
 msgid "Checkout Date"
-msgstr ""
+msgstr "Դուրս տրման ամսաթիվ"
 
 #: staff.circ.utils.checkin_time
 msgid "Checkin Date"
-msgstr ""
+msgstr "Հետ ընդունման ամսաթիվ"
 
 #: staff.circ.utils.xact_finish
 msgid "Transaction Finished"
-msgstr ""
+msgstr "Տրանզակցիան ավարտվեց"
 
 #: staff.circ.utils.create_date
 msgid "Date Created"
-msgstr ""
+msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited"
-msgstr ""
+msgstr "Վերջին խմբագրման ամսաթիվ"
 
 #: staff.circ.utils.edition
 msgid "Edition"
-msgstr ""
+msgstr "Հրատարակում"
 
 #: staff.circ.utils.isbn
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: staff.circ.utils.pubdate
 msgid "Publication Date"
-msgstr ""
+msgstr "Հրատարալման ամսաթիվ"
 
 #: staff.circ.utils.publisher
 msgid "Publisher"
-msgstr ""
+msgstr "Հրատարակիչ"
 
 #. # TCN is an acronym for Title Control Number
 #: staff.circ.utils.tcn
 msgid "TCN"
-msgstr ""
+msgstr "TCN"
 
 #: staff.circ.utils.stop_fines
 msgid "Fines Stopped"
-msgstr ""
+msgstr "Տուգանքները կանգնեցված են"
 
 #: staff.circ.utils.stop_fines_time
 msgid "Fines Stopped Time"
-msgstr ""
+msgstr "Տուգանքների կանգնեցման ժամ"
 
 #: staff.circ.utils.route_to
 msgid "Route To"
-msgstr ""
+msgstr "Ուղարկիր դեպի"
 
 #: staff.circ.utils.message
 msgid "Message"
-msgstr ""
+msgstr "Հաղորդում"
 
 #: staff.circ.utils.uses
 msgid "# of Uses"
-msgstr ""
+msgstr "Օգտվողների քանակ# "
 
 #: staff.circ.utils.alert_message
 msgid "Alert Message"
-msgstr ""
+msgstr "Զգուշացնող հաղորդում"
 
 #: staff.circ.utils.barcode
 msgid "Barcode"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
 #: staff.circ.utils.title
 msgid "Title"
-msgstr ""
+msgstr "Վերնագիր"
 
 #: staff.circ.utils.author
 msgid "Author"
-msgstr ""
+msgstr "Հեղինակ"
 
 #: staff.circ.utils.callnumber
 msgid "Call Number"
-msgstr ""
+msgstr "Դասիչ"
 
 #: staff.circ.utils.transit_id
 msgid "Transit ID"
-msgstr ""
+msgstr "Տրանզիտի ID"
 
 #: staff.circ.utils.transit_source
 msgid "Transit Source"
-msgstr ""
+msgstr "Տրանզիտի աղբյուր"
 
 #: staff.circ.utils.transit_source_send_time
 msgid "Transit Send Time"
-msgstr ""
+msgstr "Տրանզիտի առախման ժամ"
 
 #: staff.circ.utils.transit_dest
 msgid "Transit Destination"
-msgstr ""
+msgstr "Տրանզիտի նպատակակետ"
 
 #: staff.circ.utils.transit_dest_recv_time
 msgid "Transit Completion Time"
-msgstr ""
+msgstr "Տրանզիտի ավարտի ժամ"
 
 #: staff.circ.utils.transit_target_copy
 msgid "Transit Copy ID"
-msgstr ""
+msgstr "Տրանզիտի օրինակի ID"
 
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
-msgstr ""
+msgstr "Հարցրու գրադարան (լրիվ անուն)"
 
 #: staff.circ.utils.request_lib_shortname
 msgid "Request Library"
-msgstr ""
+msgstr "Հարցրու գրադարան"
 
 #: staff.circ.utils.request_timestamp
 msgid "Request Timestamp"
-msgstr ""
+msgstr "Հարցրու ժամանակի կնիք"
 
 #: staff.circ.utils.request_time
 msgid "Request Date"
-msgstr ""
+msgstr "Հարցրու ամսաթիվ"
 
 #. # Time the hold became available
 #: staff.circ.utils.available_timestamp
 msgid "Available On (Timestamp)"
-msgstr ""
+msgstr "Մատչելի է (ժամանակի կնիք)"
 
 #. # Date the hold became available
 #: staff.circ.utils.available_time
 msgid "Available On"
-msgstr ""
+msgstr "Մատչելի է"
 
 #. # Time the hold was captured
 #: staff.circ.utils.capture_timestamp
 msgid "Capture Timestamp"
-msgstr ""
+msgstr "Որսալու ժամանակի կնիք"
 
 #. # Date the hold was captured
 #: staff.circ.utils.capture_time
 msgid "Capture Date"
-msgstr ""
+msgstr "Որսալու ամսաթիվ"
 
 #: staff.circ.utils.hold_status.1
 msgid "Waiting for copy"
-msgstr ""
+msgstr "Սպասում է օրինակին"
 
 #: staff.circ.utils.hold_status.2
 msgid "Waiting for capture"
-msgstr ""
+msgstr "Սպասում է որսվելուն"
 
 #: staff.circ.utils.hold_status.3
 msgid "In-Transit"
-msgstr ""
+msgstr "Տեղափոխման մեջ"
 
 #: staff.circ.utils.hold_status.4
 msgid "Ready for pickup"
-msgstr ""
+msgstr "Պատրաստ վերցվելու համար"
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
-msgstr ""
+msgstr "Սառեցվա՞ծ"
 
 #: staff.circ.utils.active
 msgid "Active?"
-msgstr ""
+msgstr "Ակտի՞վ"
 
 #: staff.circ.utils.thaw_date
 msgid "Activation Date"
-msgstr ""
+msgstr "Ակտիվացման ամսաթիվ"
 
 #: staff.circ.utils.thaw_date.none
 msgid "No Date"
-msgstr ""
+msgstr "Ամսաթիվ շկա"
 
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
-msgstr ""
+msgstr "Ստանալու գրադարան (Լրիվ անուն)"
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
-msgstr ""
+msgstr "Օրինակ չկա"
 
 #: staff.circ.utils.title.none
 msgid "No Title?"
-msgstr ""
+msgstr "Անվերնագի՞ր"
 
 #: staff.circ.utils.author.none
 msgid "No Author?"
-msgstr ""
+msgstr "Անհեղճնա՞կ"
 
 #: staff.circ.utils.notify_time
 msgid "Last Notify Time"
-msgstr ""
+msgstr "Վերջին նշումի ժամանակ"
 
 #: staff.circ.utils.notify_count
 msgid "Notices"
-msgstr ""
+msgstr "Նշումներ"
 
 #: staff.circ.utils.patron_family_name
 msgid "Patron Last Name"
-msgstr ""
+msgstr "Ընթերցողի ազգանուն"
 
 #: staff.circ.utils.patron_first_given_name
 msgid "Patron First Name"
-msgstr ""
+msgstr "Ընթերցողի անուն"
 
 #: staff.circ.utils.checkin.override
 msgid "Override Checkin Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ հետ ընդունելու ձախողումը"
 
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
-msgstr ""
+msgstr "Տեղափոխում համար %1$s գանձվող $%2$s"
 
 #: staff.circ.utils.transit_hold_cancelled
 msgid "Original hold for transit cancelled."
-msgstr ""
+msgstr "Տեղափոխման համար իսկական պահումը չեղյալ ե արված"
 
 #: staff.circ.utils.item_checked_in
 msgid "%1$s was already checked in."
-msgstr ""
+msgstr "%1$s արդեն ընդունված է:"
 
 #: staff.circ.utils.item_not_cataloged
 msgid "ITEM_NOT_CATALOGED event but copy status is %1$s"
-msgstr ""
+msgstr "ITEM_NOT_CATALOGED իրադարձություն, սակայն վիճակն է %1$s"
 
 #: staff.circ.utils.route_to.msg
 msgid "This item needs to be routed to %1$s"
-msgstr ""
+msgstr "Այս նյութը հարկ է ուղղորդել դեպի %1$s"
 
 #: staff.circ.utils.route_item_error
 msgid "We should have received a ROUTE_ITEM"
-msgstr ""
+msgstr "Մենք պետք է ստացած լինենք ROUTE_ITEM"
 
 #: staff.circ.utils.route_item_status_error
 msgid "status of Holds Shelf, but no actual hold found."
-msgstr ""
+msgstr "Վիճակն է Պահում Դարակի վրա, բայց իրական պահում չի գտնված"
 
 #: staff.circ.utils.payload.hold.barcode
 msgctxt "staff.circ.utils.payload.hold.barcode"
 msgid "Barcode: %1$s"
-msgstr ""
+msgstr "Շտրիխ կոդ: %1$s"
 
 #: staff.circ.utils.payload.hold.title
 msgid "Title: %1$s"
-msgstr ""
+msgstr "Վերնագիր: %1$s"
 
 #. # Hold for patron familyName, firstName secondName
 #: staff.circ.utils.payload.hold.patron
 msgid "Hold for patron %1$s, %2$s %3$s"
-msgstr ""
+msgstr "Պահում ընթերցողի համար %1$s, %2$s %3$s"
 
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
-msgstr ""
+msgstr "Հիշեցում հեռախոսով: %1$s"
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
-msgstr ""
+msgstr "Հիշեցում էլ փոստով: %1$s"
 
 #: staff.circ.utils.payload.hold.request_date
 msgid "Request Date: %1$s"
-msgstr ""
+msgstr "Հարցման ամսաթիվ: %1$s"
 
 #: staff.circ.utils.payload.hold.slip_date
 msgid "Slip Date: %1$s"
-msgstr ""
+msgstr "Կտրոնի ամսաթիվ: %1$s"
 
 #: staff.circ.utils.hold_slip
 msgid "Hold Slip"
-msgstr ""
+msgstr "Պահիր կտրոնը"
 
 #: staff.circ.utils.hold_slip.print.yes
 msgid "Print"
-msgstr ""
+msgstr "Տպիր"
 
 #: staff.circ.utils.hold_slip.print.no
 msgid "Do Not Print"
-msgstr ""
+msgstr "Մի տպիր"
 
 #: staff.circ.utils.capture
 msgid "%1$s has been captured for a hold."
-msgstr ""
+msgstr "%1$s որսված է պահման համար:"
 
 #: staff.circ.utils.needs_cataloging
 msgid "%1$s needs to be cataloged."
-msgstr ""
+msgstr "%1$s հարկավոր է մուտքագրել:"
 
 #: staff.circ.utils.copy_status.error
 msgid "FIXME -- this case \"%1$s\" is unhandled."
-msgstr ""
+msgstr "FIXME -- այս դեպքե \"%1$s\" չի ուսումնասիրվում"
 
 #: staff.circ.utils.msg.ok
 msgctxt "staff.circ.utils.msg.ok"
 msgid "OK"
-msgstr ""
+msgstr "Լավ"
 
 #: staff.circ.utils.route_to.destination
 msgid "Destination: %1$s."
-msgstr ""
+msgstr "Նպատակակետ: %1$s."
 
 #: staff.circ.utils.route_to.no_address
 msgid "We do not have a holds address for this library."
-msgstr ""
+msgstr "Այս գրադարանի համար չունենք պահման հասցէ"
 
 #: staff.circ.utils.route_to.no_address.error
 msgid "Unable to retrieve mailing address."
-msgstr ""
+msgstr "Չի կարողանում կանչել փոստային հասցեն"
 
 #: staff.circ.utils.payload.author
 msgid "Author: %1$s"
-msgstr ""
+msgstr "Հեղինակ: %1$s"
 
 #: staff.circ.utils.payload.in_transit
 msgid "%1$s is in transit."
-msgstr ""
+msgstr "%1$s տեղափոխման մեջ է:"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"
-msgstr ""
+msgstr "Պահումը որսվում է"
 
 #: staff.circ.checkin.check_in.tab
 msgid "Item Check In"
-msgstr ""
+msgstr "Նյութի հետ ընդունում"
 
 #: staff.circ.checkin.error
 msgid "Check In Failed (in circ.util.checkin) (%1$s):"
-msgstr ""
+msgstr "Հետ ընդունւոմը ձախողվեց (circ.util.checkin) (%1$s):"
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
@@ -1263,110 +1280,119 @@ msgid ""
 "Check In Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Հետ ընդունւոմը ձախողվեց: Եթե ցանկանում ես օգտագործել օֆլայն միջերեսը, վերին "
+"ընտրացանկից ընտրիր Սպասարկում -> Օֆլայն միջերես"
 
 #: staff.circ.checkin.renew_failed.error
 msgid "Renew Failed for %1$s"
-msgstr ""
+msgstr "Թարմացումը ձախողվեց %1$s"
 
 #: staff.circ.checkin.renew_failed.override
 msgid "Override Renew Failure?"
-msgstr ""
+msgstr "Վերագրե՞լ թարմացման ձախողումը"
 
 #: staff.circ.renew.barcode
 msgctxt "staff.circ.renew.barcode"
 msgid "Barcode: %1$s"
-msgstr ""
+msgstr "Շտրիխ կոդ: %1$s"
 
 #: staff.circ.renew.barcode.status
 msgid "Barcode: %1$s Status: %2$s"
-msgstr ""
+msgstr "Շտրիխ կոդ: %1$s Վիճակ: %2$s"
 
 #: staff.circ.renew.barcode.msg
 msgid "Barcode: %1$s Message: %2$s"
-msgstr ""
+msgstr "Շտրիխ կոդ: %1$s Հաղորդում: %2$s"
 
 #: staff.circ.holds.activate.prompt
 msgid "Are you sure you would like to activate hold %1$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես ակտիվացնել պահումը %1$s"
 
 #: staff.circ.holds.activate.prompt.plural
 msgid "Are you sure you would like to activate holds %1$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես ակտիվացնել պահումները %1$s"
 
 #: staff.circ.holds.suspend.prompt
 msgid "Are you sure you would like to suspend hold %1$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես կասեցնել պահումը %1$s"
 
 #: staff.circ.holds.suspend.prompt.plural
 msgid "Are you sure you would like to suspend holds %1$s?"
-msgstr ""
+msgstr "Վստա՞հ ես որ ցանկանում ես կասեցնել պահումները %1$s"
 
 #: staff.circ.holds.activation_date.prompt
 msgid ""
 "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
 "This will also Suspend the hold."
 msgstr ""
+"Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահման համար %1$s: Սա նաև "
+"կկասեցնի պահումը:"
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
 "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
 "This will also Suspend the holds."
 msgstr ""
+"Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահումների համար %1$s: Սա նաև "
+"կկասեցնի պահումները:"
 
 #: staff.circ.holds.activation_date.too_early.error
 msgid ""
 "Activation Date needs to be either unset or set to fall on a future date."
 msgstr ""
+"Ակտիվացման ամսաթիվը կամ պետք է լինի չուղարկված կամ պատկանի ապագա ամսաթվի:"
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
 msgid "Invalid Date"
-msgstr ""
+msgstr "Սխալ ամսաթիվ"
 
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
-msgstr ""
+msgstr "Պահումների ձևափոխում"
 
 #: staff.circ.holds.modifying_holds.yes
 msgctxt "staff.circ.holds.modifying_holds.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Այո"
 
 #: staff.circ.holds.modifying_holds.no
 msgctxt "staff.circ.holds.modifying_holds.no"
 msgid "No"
-msgstr ""
+msgstr "Ոչ"
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."
-msgstr ""
+msgstr "Պահումը %1$s արդեն ակտիվացված է:"
 
 #: staff.circ.holds.already_activated.plural
 msgid "Holds %1$s were already activated."
-msgstr ""
+msgstr "Պահումները %1$s արդեն ակտիվացված են:"
 
 #: staff.circ.holds.already_suspended
 msgid "Hold %1$s was already suspended."
-msgstr ""
+msgstr "Պահումը %1$s արդեն կասեցված է:"
 
 #: staff.circ.holds.already_suspended.plural
 msgid "Holds %1$s were already suspended."
-msgstr ""
+msgstr "Պահումները %1$s արդեն կասեցված են:"
 
 #: staff.circ.holds.unexpected_error.not_likely_modified
 msgid "Holds not likely modified."
-msgstr ""
+msgstr "Պահումները ձևափոխված չեն:"
 
 #: staff.circ.holds.unexpected_error.not_likely_activated
 msgid "Holds not likely activated."
-msgstr ""
+msgstr "Պահումները ցանկալի չէ ակտիվացնել:"
 
 #: staff.circ.holds.unexpected_error.not_likely_suspended
 msgid "Holds not likely suspended."
-msgstr ""
+msgstr "Պահումները ցանկալի չէ կասեցնել:"
 
 #: staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit
 msgid ""
 "You may not edit the pickup library for holds that are in-transit or ready "
 "for pickup."
 msgstr ""
+"Այն պահումները որոնք գտնվում են տեղափոխման կամ պատրաստ են տրման դրանց "
+"գրադարանը չեք կարող խմբագրել:"
