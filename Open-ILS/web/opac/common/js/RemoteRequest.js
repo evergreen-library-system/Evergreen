@@ -61,6 +61,7 @@ function RemoteRequest( service, method ) {
 
 
 	this.service	= service;
+	this.locale		= dojo.config.locale;
 	this.method		= method;
 	this.xmlhttp	= false;
 	this.name		= null;
@@ -84,7 +85,7 @@ function RemoteRequest( service, method ) {
 	}
 
 	if(!this.params) { this.params = ""; }
-	this.param_string = "service=" + service + "&method=" + method + this.params;
+	this.param_string = "service=" + service + "&locale=" + locale + "&method=" + method + this.params;
 	if( this.buildXMLRequest() == null ) alert("Browser is not supported!");
 
 }
