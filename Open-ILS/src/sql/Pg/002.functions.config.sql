@@ -78,7 +78,7 @@ BEGIN
     -- Try the full locale
     SELECT  * INTO result
       FROM  config.i18n_core
-      WHERE fq_field = keyfield
+      WHERE (fq_field = keyfield OR fq_field = keytable)
             AND identity_value = keyvalue
             AND translation = locale;
 
@@ -86,7 +86,7 @@ BEGIN
     IF NOT FOUND THEN
         SELECT  * INTO result
           FROM  config.i18n_core
-          WHERE fq_field = keyfield
+          WHERE (fq_field = keyfield OR fq_field = keytable)
                 AND identity_value = keyvalue
                 AND translation = language;
     END IF;
