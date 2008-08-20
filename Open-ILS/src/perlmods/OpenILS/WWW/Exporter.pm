@@ -253,10 +253,10 @@ sub handler {
 										p => $cp->barcode,
 										($cp->price ? ( y => $cp->price ) : ()),
 										($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-										($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-										($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-										($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-										($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+										($cp->ref eq 't' ? ( x => 'reference' ) : ( x => 'nonreference' )),
+										($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ( x => 'holdable' )),
+										($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ( x => 'circulating' )),
+										($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ( x => 'visible' )),
 										z => $statuses{$cp->status}->name,
 									)
 								);
