@@ -308,10 +308,12 @@ sub process_results {
 	my $offset	= shift || 0;
     my $service = shift;
 
+    my $rformat = $services{$service}->{record_format};
     my $tformat = $services{$service}->{transmission_format} || $output;
-    my $rformat = $services{$service}->{record_format} || 'FI';
-	$results->option(elementSetName => $rformat);
-    $logger->info("z3950: using record format '$rformat'");
+
+    $results->option(elementSetName => $rformat);
+    $results->option(preferredRecordSyntax => $tformat);
+    $logger->info("z3950: using record format '$rformat' and transmission format '$tformat'");
 
 	my @records;
 	my $res = {};

@@ -288,8 +288,9 @@ sub request {
     my $val;
 	my $err;
 	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
+	my $locale = $self->session->session_locale;
 
-	$self->log(I, "request $method $argstr");
+	$self->log(I, "request $method $locale $argstr");
 
 	if( ($self->{xact} or $always_xact) and 
 			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
@@ -333,7 +334,7 @@ sub substream {
 
 
 # -----------------------------------------------------------------------------
-# Sets / Returns the requstor object.  This is set when checkauth succeeds.
+# Sets / Returns the requestor object.  This is set when checkauth succeeds.
 # -----------------------------------------------------------------------------
 sub requestor {
 	my($self, $requestor) = @_;

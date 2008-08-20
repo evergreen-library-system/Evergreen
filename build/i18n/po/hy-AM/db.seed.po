@@ -1,11 +1,10 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-07-25 13:19:45-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2008-08-19 09:34:29-0400\n"
+"PO-Revision-Date: 2008-08-09 17:28+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,2884 +13,2914 @@ msgstr ""
 
 #: config.bib_source:3
 msgid "oclc"
-msgstr ""
+msgstr "oclc"
 
 #: config.bib_source:5
 msgid "System Local"
-msgstr ""
+msgstr "System Local"
 
 #: config.bib_source:7
 msgid "Project Gutenberg"
-msgstr ""
+msgstr "Գուտենբերգ նախագիծ"
 
 #: config.standing:9
 msgid "Good"
-msgstr ""
+msgstr "Լավ"
 
 #: config.standing:10
 msgid "Barred"
-msgstr ""
+msgstr "Կասէցված"
 
-#: config.non_cataloged_type:43
+#: config.non_cataloged_type:45
 msgid "Paperback Book"
-msgstr ""
-
-#: config.identification_type:46
-msgid "Drivers License"
-msgstr ""
+msgstr "Փափուկ կազմով գիրք"
 
 #: config.identification_type:48
-msgid "SSN"
-msgstr ""
+msgid "Drivers License"
+msgstr "Վարորդական իրավունք"
 
 #: config.identification_type:50
-msgid "Other"
-msgstr ""
+msgid "SSN"
+msgstr "SSN"
 
-#: config.rule_circ_duration:53
-msgid "7_days_0_renew"
-msgstr ""
+#: config.identification_type:52
+msgid "Other"
+msgstr "Այլ"
 
 #: config.rule_circ_duration:55
-msgid "28_days_2_renew"
-msgstr ""
+msgid "7_days_0_renew"
+msgstr "7_days_0_renew"
 
 #: config.rule_circ_duration:57
-msgid "3_months_0_renew"
-msgstr ""
+msgid "28_days_2_renew"
+msgstr "28_days_2_renew"
 
 #: config.rule_circ_duration:59
-msgid "3_days_1_renew"
-msgstr ""
+msgid "3_months_0_renew"
+msgstr "3_months_0_renew"
 
 #: config.rule_circ_duration:61
-msgid "2_months_2_renew"
-msgstr ""
+msgid "3_days_1_renew"
+msgstr "3_days_1_renew"
 
 #: config.rule_circ_duration:63
-msgid "35_days_1_renew"
-msgstr ""
+msgid "2_months_2_renew"
+msgstr "2_months_2_renew"
 
 #: config.rule_circ_duration:65
-msgid "7_days_2_renew"
-msgstr ""
+msgid "35_days_1_renew"
+msgstr "35_days_1_renew"
 
 #: config.rule_circ_duration:67
-msgid "1_hour_2_renew"
-msgstr ""
+msgid "7_days_2_renew"
+msgstr "7_days_2_renew"
 
 #: config.rule_circ_duration:69
-msgid "28_days_0_renew"
-msgstr ""
+msgid "1_hour_2_renew"
+msgstr "1_hour_2_renew"
 
 #: config.rule_circ_duration:71
-msgid "14_days_2_renew"
-msgstr ""
+msgid "28_days_0_renew"
+msgstr "28_days_0_renew"
 
 #: config.rule_circ_duration:73
-msgid "default"
-msgstr ""
+msgid "14_days_2_renew"
+msgstr "14_days_2_renew"
 
-#: config.rule_max_fine:76
+#: config.rule_circ_duration:75
 msgid "default"
-msgstr ""
+msgstr "լռակյաց"
 
 #: config.rule_max_fine:78
-msgid "overdue_min"
-msgstr ""
+msgid "default"
+msgstr "լռակյաց"
 
 #: config.rule_max_fine:80
-msgid "overdue_mid"
-msgstr ""
+msgid "overdue_min"
+msgstr "overdue_min"
 
 #: config.rule_max_fine:82
-msgid "overdue_max"
-msgstr ""
+msgid "overdue_mid"
+msgstr "overdue_mid"
 
 #: config.rule_max_fine:84
-msgid "overdue_equip_min"
-msgstr ""
+msgid "overdue_max"
+msgstr "overdue_max"
 
 #: config.rule_max_fine:86
-msgid "overdue_equip_mid"
-msgstr ""
+msgid "overdue_equip_min"
+msgstr "overdue_equip_min"
 
 #: config.rule_max_fine:88
-msgid "overdue_equip_max"
-msgstr ""
+msgid "overdue_equip_mid"
+msgstr "overdue_equip_mid"
 
-#: config.rule_recuring_fine:91
-msgid "default"
-msgstr ""
+#: config.rule_max_fine:90
+msgid "overdue_equip_max"
+msgstr "overdue_equip_max"
 
 #: config.rule_recuring_fine:93
-msgid "10_cent_per_day"
-msgstr ""
+msgid "default"
+msgstr "լռակյաց"
 
 #: config.rule_recuring_fine:95
+msgid "10_cent_per_day"
+msgstr "10_cent_per_day"
+
+#: config.rule_recuring_fine:97
 msgid "50_cent_per_day"
-msgstr ""
+msgstr "50_cent_per_day"
 
-#: config.rule_age_hold_protect:97
+#: config.rule_age_hold_protect:99
 msgid "3month"
-msgstr ""
+msgstr "3ամիս"
 
-#: config.rule_age_hold_protect:98
+#: config.rule_age_hold_protect:100
 msgid "6month"
-msgstr ""
-
-#: config.copy_status:100
-msgid "Available"
-msgstr ""
+msgstr "6ամիս"
 
 #: config.copy_status:102
-msgid "Checked out"
-msgstr ""
+msgid "Available"
+msgstr "Մատչելի"
 
 #: config.copy_status:104
-msgid "Bindery"
-msgstr ""
-
-#: config.copy_status:105
-msgid "Lost"
-msgstr ""
+msgid "Checked out"
+msgstr "Սպասարկված է"
 
 #: config.copy_status:106
-msgid "Missing"
-msgstr ""
+msgid "Bindery"
+msgstr "Կազմատուն"
+
+#: config.copy_status:107
+msgid "Lost"
+msgstr "Կորած"
 
 #: config.copy_status:108
-msgid "In process"
-msgstr ""
-
-#: config.copy_status:109
-msgid "In transit"
-msgstr ""
+msgid "Missing"
+msgstr "Բացակա"
 
 #: config.copy_status:110
-msgid "Reshelving"
-msgstr ""
+msgid "In process"
+msgstr "Գործողության մեջ"
 
 #: config.copy_status:111
-msgid "On holds shelf"
-msgstr ""
+msgid "In transit"
+msgstr "Տեղափոխման մեջ"
 
 #: config.copy_status:112
-msgid "On order"
-msgstr ""
+msgid "Reshelving"
+msgstr "Վերադասավորում"
+
+#: config.copy_status:113
+msgid "On holds shelf"
+msgstr "Պահված դարակի վրա"
 
 #: config.copy_status:114
-msgid "ILL"
-msgstr ""
-
-#: config.copy_status:115
-msgid "Cataloging"
-msgstr ""
+msgid "On order"
+msgstr "Պատվիրված"
 
 #: config.copy_status:116
-msgid "Reserves"
-msgstr ""
+msgid "ILL"
+msgstr "ՄԳԲ"
 
 #: config.copy_status:117
-msgid "Discard/Weed"
-msgstr ""
+msgid "Cataloging"
+msgstr "Քարտագրում"
 
 #: config.copy_status:118
-msgid "Damaged"
-msgstr ""
+msgid "Reserves"
+msgstr "Պահեստային"
 
-#: config.net_access_level:123
-msgid "Filtered"
-msgstr ""
+#: config.copy_status:119
+msgid "Discard/Weed"
+msgstr "Discard/Weed"
+
+#: config.copy_status:120
+msgid "Damaged"
+msgstr "Վնասված"
 
 #: config.net_access_level:125
-msgid "Unfiltered"
-msgstr ""
+msgid "Filtered"
+msgstr "Զտված"
 
 #: config.net_access_level:127
-msgid "No Access"
-msgstr ""
+msgid "Unfiltered"
+msgstr "Չզտված"
 
-#: config.audience_map:130
-msgid "Unknown or unspecified"
-msgstr ""
+#: config.net_access_level:129
+msgid "No Access"
+msgstr "Ոչ մատչելի"
 
 #: config.audience_map:132
-msgid "Preschool"
-msgstr ""
+msgid "Unknown or unspecified"
+msgstr "Չիմացված կամ չբնութագրված"
 
 #: config.audience_map:134
-msgid "Primary"
-msgstr ""
+msgid "Preschool"
+msgstr "Նախադպրոցական"
 
 #: config.audience_map:136
-msgid "Pre-adolescent"
-msgstr ""
+msgid "Primary"
+msgstr "Նախնական"
 
 #: config.audience_map:138
-msgid "Adolescent"
-msgstr ""
+msgid "Pre-adolescent"
+msgstr "Pre-adolescent"
 
 #: config.audience_map:140
-msgid "Adult"
-msgstr ""
+msgid "Adolescent"
+msgstr "Adolescent"
 
 #: config.audience_map:142
-msgid "Specialized"
-msgstr ""
+msgid "Adult"
+msgstr "Մեծահասակ"
 
 #: config.audience_map:144
-msgid "General"
-msgstr ""
+msgid "Specialized"
+msgstr "Մասնագիտացված"
 
 #: config.audience_map:146
-msgid "Juvenile"
-msgstr ""
+msgid "General"
+msgstr "Ընդհանուր"
 
-#: config.lit_form_map:149
-msgid "Not fiction (not further specified)"
-msgstr ""
+#: config.audience_map:148
+msgid "Juvenile"
+msgstr "Պատանեկան"
 
 #: config.lit_form_map:151
-msgid "Fiction (not further specified)"
-msgstr ""
+msgid "Not fiction (not further specified)"
+msgstr "Ոչ գեղարվեստական (սահմանված չէ)"
 
 #: config.lit_form_map:153
-msgid "Comic strips"
-msgstr ""
+msgid "Fiction (not further specified)"
+msgstr "Գեղարվեստական (սահմանված չէ)"
 
 #: config.lit_form_map:155
-msgid "Dramas"
-msgstr ""
+msgid "Comic strips"
+msgstr "Շարժեր"
 
 #: config.lit_form_map:157
-msgid "Essays"
-msgstr ""
+msgid "Dramas"
+msgstr "Դրամա"
 
 #: config.lit_form_map:159
-msgid "Novels"
-msgstr ""
+msgid "Essays"
+msgstr "Էսսէներ"
 
 #: config.lit_form_map:161
-msgid "Humor, satires, etc."
-msgstr ""
+msgid "Novels"
+msgstr "Նովելներ"
 
 #: config.lit_form_map:163
-msgid "Letters"
-msgstr ""
+msgid "Humor, satires, etc."
+msgstr "Հումոր, սատիրա, այլ"
 
 #: config.lit_form_map:165
-msgid "Short stories"
-msgstr ""
+msgid "Letters"
+msgstr "Նամակներ"
 
 #: config.lit_form_map:167
-msgid "Mixed forms"
-msgstr ""
+msgid "Short stories"
+msgstr "Կարճ պատմվածքներ"
 
 #: config.lit_form_map:169
-msgid "Poetry"
-msgstr ""
+msgid "Mixed forms"
+msgstr "Խառը ձևաչափեր"
 
 #: config.lit_form_map:171
-msgid "Speeches"
-msgstr ""
+msgid "Poetry"
+msgstr "Պոէզիա"
 
 #: config.lit_form_map:173
+msgid "Speeches"
+msgstr "Ելույթներ"
+
+#: config.lit_form_map:175
 msgid "Unknown"
-msgstr ""
-
-#: config.language_map:177
-msgid "Afar"
-msgstr ""
-
-#: config.language_map:178
-msgid "Abkhaz"
-msgstr ""
+msgstr "Չճանաչված"
 
 #: config.language_map:179
-msgid "Achinese"
-msgstr ""
+msgid "Afar"
+msgstr "Afar"
 
 #: config.language_map:180
-msgid "Acoli"
-msgstr ""
+msgid "Abkhaz"
+msgstr "Աբխազ"
 
 #: config.language_map:181
-msgid "Adangme"
-msgstr ""
+msgid "Achinese"
+msgstr "Աշկենազի"
 
 #: config.language_map:182
-msgid "Adygei"
-msgstr ""
+msgid "Acoli"
+msgstr "Acoli"
 
 #: config.language_map:183
-msgid "Afroasiatic (Other)"
-msgstr ""
+msgid "Adangme"
+msgstr "Adangme"
 
 #: config.language_map:184
-msgid "Afrihili (Artificial language)"
-msgstr ""
+msgid "Adygei"
+msgstr "Ադիգեյ"
 
 #: config.language_map:185
-msgid "Afrikaans"
-msgstr ""
+msgid "Afroasiatic (Other)"
+msgstr "Աֆրոասիական (այլ)"
 
 #: config.language_map:186
-msgid "Aljamía"
-msgstr ""
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (Աֆրիյան լեզու)"
 
 #: config.language_map:187
-msgid "Akan"
-msgstr ""
+msgid "Afrikaans"
+msgstr "Afrikaans"
 
 #: config.language_map:188
-msgid "Akkadian"
-msgstr ""
+msgid "Aljamía"
+msgstr "Aljamía"
 
 #: config.language_map:189
-msgid "Albanian"
-msgstr ""
+msgid "Akan"
+msgstr "Akan"
 
 #: config.language_map:190
-msgid "Aleut"
-msgstr ""
+msgid "Akkadian"
+msgstr "Akkadian"
 
 #: config.language_map:191
-msgid "Algonquian (Other)"
-msgstr ""
+msgid "Albanian"
+msgstr "Ալբաներեն"
 
 #: config.language_map:192
-msgid "Amharic"
-msgstr ""
+msgid "Aleut"
+msgstr "Ալեուտ"
 
 #: config.language_map:193
-msgid "English, Old (ca. 450-1100)"
-msgstr ""
+msgid "Algonquian (Other)"
+msgstr "Algonquian (այլ)"
 
 #: config.language_map:194
-msgid "Apache languages"
-msgstr ""
+msgid "Amharic"
+msgstr "Ամհարիկ"
 
 #: config.language_map:195
-msgid "Arabic"
-msgstr ""
+msgid "English, Old (ca. 450-1100)"
+msgstr "Անգլերեն, հին (մոտ. 450-1100)"
 
 #: config.language_map:196
-msgid "Aramaic"
-msgstr ""
+msgid "Apache languages"
+msgstr "Ապաչի լեզուներ"
 
 #: config.language_map:197
-msgid "Aragonese Spanish"
-msgstr ""
+msgid "Arabic"
+msgstr "Արաբերեն"
 
 #: config.language_map:198
-msgid "Armenian"
-msgstr ""
+msgid "Aramaic"
+msgstr "Aramaic"
 
 #: config.language_map:199
-msgid "Mapuche"
-msgstr ""
+msgid "Aragonese Spanish"
+msgstr "Aragonese Spanish"
 
 #: config.language_map:200
-msgid "Arapaho"
-msgstr ""
+msgid "Armenian"
+msgstr "Հայերեն"
 
 #: config.language_map:201
-msgid "Artificial (Other)"
-msgstr ""
+msgid "Mapuche"
+msgstr "Mapuche"
 
 #: config.language_map:202
-msgid "Arawak"
-msgstr ""
+msgid "Arapaho"
+msgstr "Arapaho"
 
 #: config.language_map:203
-msgid "Assamese"
-msgstr ""
+msgid "Artificial (Other)"
+msgstr "Արհեստական (այլ)"
 
 #: config.language_map:204
-msgid "Bable"
-msgstr ""
+msgid "Arawak"
+msgstr "Arawak"
 
 #: config.language_map:205
-msgid "Athapascan (Other)"
-msgstr ""
+msgid "Assamese"
+msgstr "Assamese"
 
 #: config.language_map:206
-msgid "Australian languages"
-msgstr ""
+msgid "Bable"
+msgstr "Բաբելոնյան"
 
 #: config.language_map:207
-msgid "Avaric"
-msgstr ""
+msgid "Athapascan (Other)"
+msgstr "Athapascan (այլ)"
 
 #: config.language_map:208
-msgid "Avestan"
-msgstr ""
+msgid "Australian languages"
+msgstr "Ավստրալիական լեզուներ"
 
 #: config.language_map:209
-msgid "Awadhi"
-msgstr ""
+msgid "Avaric"
+msgstr "Avaric"
 
 #: config.language_map:210
-msgid "Aymara"
-msgstr ""
+msgid "Avestan"
+msgstr "Avestan"
 
 #: config.language_map:211
-msgid "Azerbaijani"
-msgstr ""
+msgid "Awadhi"
+msgstr "Awadhi"
 
 #: config.language_map:212
-msgid "Banda"
-msgstr ""
+msgid "Aymara"
+msgstr "Aymara"
 
 #: config.language_map:213
-msgid "Bamileke languages"
-msgstr ""
+msgid "Azerbaijani"
+msgstr "Ադրբեջաներեն"
 
 #: config.language_map:214
-msgid "Bashkir"
-msgstr ""
+msgid "Banda"
+msgstr "Banda"
 
 #: config.language_map:215
-msgid "Baluchi"
-msgstr ""
+msgid "Bamileke languages"
+msgstr "Bamileke languages"
 
 #: config.language_map:216
-msgid "Bambara"
-msgstr ""
+msgid "Bashkir"
+msgstr "Բաշկիրերեն"
 
 #: config.language_map:217
-msgid "Balinese"
-msgstr ""
+msgid "Baluchi"
+msgstr "Baluchi"
 
 #: config.language_map:218
-msgid "Basque"
-msgstr ""
+msgid "Bambara"
+msgstr "Bambara"
 
 #: config.language_map:219
-msgid "Basa"
-msgstr ""
+msgid "Balinese"
+msgstr "Balinese"
 
 #: config.language_map:220
-msgid "Baltic (Other)"
-msgstr ""
+msgid "Basque"
+msgstr "Բասկերեն"
 
 #: config.language_map:221
-msgid "Beja"
-msgstr ""
+msgid "Basa"
+msgstr "Basa"
 
 #: config.language_map:222
-msgid "Belarusian"
-msgstr ""
+msgid "Baltic (Other)"
+msgstr "Baltic (այլ)"
 
 #: config.language_map:223
-msgid "Bemba"
-msgstr ""
+msgid "Beja"
+msgstr "Beja"
 
 #: config.language_map:224
-msgid "Bengali"
-msgstr ""
+msgid "Belarusian"
+msgstr "Բելառուսերեն"
 
 #: config.language_map:225
-msgid "Berber (Other)"
-msgstr ""
+msgid "Bemba"
+msgstr "Bemba"
 
 #: config.language_map:226
-msgid "Bhojpuri"
-msgstr ""
+msgid "Bengali"
+msgstr "Բենգալերեն"
 
 #: config.language_map:227
-msgid "Bihari"
-msgstr ""
+msgid "Berber (Other)"
+msgstr "Berber (այլ)"
 
 #: config.language_map:228
-msgid "Bikol"
-msgstr ""
+msgid "Bhojpuri"
+msgstr "Bhojpuri"
 
 #: config.language_map:229
-msgid "Edo"
-msgstr ""
+msgid "Bihari"
+msgstr "Bihari"
 
 #: config.language_map:230
-msgid "Bislama"
-msgstr ""
+msgid "Bikol"
+msgstr "Bikol"
 
 #: config.language_map:231
-msgid "Siksika"
-msgstr ""
+msgid "Edo"
+msgstr "Edo"
 
 #: config.language_map:232
-msgid "Bantu (Other)"
-msgstr ""
+msgid "Bislama"
+msgstr "Bislama"
 
 #: config.language_map:233
-msgid "Bosnian"
-msgstr ""
+msgid "Siksika"
+msgstr "Siksika"
 
 #: config.language_map:234
-msgid "Braj"
-msgstr ""
+msgid "Bantu (Other)"
+msgstr "Bantu (այլ)"
 
 #: config.language_map:235
-msgid "Breton"
-msgstr ""
+msgid "Bosnian"
+msgstr "Բոսներեն"
 
 #: config.language_map:236
-msgid "Batak"
-msgstr ""
+msgid "Braj"
+msgstr "Braj"
 
 #: config.language_map:237
-msgid "Buriat"
-msgstr ""
+msgid "Breton"
+msgstr "Բրետոներեն"
 
 #: config.language_map:238
-msgid "Bugis"
-msgstr ""
+msgid "Batak"
+msgstr "Batak"
 
 #: config.language_map:239
-msgid "Bulgarian"
-msgstr ""
+msgid "Buriat"
+msgstr "Բուրյաթերեն"
 
 #: config.language_map:240
-msgid "Burmese"
-msgstr ""
+msgid "Bugis"
+msgstr "Bugis"
 
 #: config.language_map:241
-msgid "Caddo"
-msgstr ""
+msgid "Bulgarian"
+msgstr "Բուլղարերեն"
 
 #: config.language_map:242
-msgid "Central American Indian (Other)"
-msgstr ""
+msgid "Burmese"
+msgstr "Burmese"
 
 #: config.language_map:243
-msgid "Khmer"
-msgstr ""
+msgid "Caddo"
+msgstr "Caddo"
 
 #: config.language_map:244
-msgid "Carib"
-msgstr ""
+msgid "Central American Indian (Other)"
+msgstr "Central American Indian (այլ)"
 
 #: config.language_map:245
-msgid "Catalan"
-msgstr ""
+msgid "Khmer"
+msgstr "Կխմեր"
 
 #: config.language_map:246
-msgid "Caucasian (Other)"
-msgstr ""
+msgid "Carib"
+msgstr "Carib"
 
 #: config.language_map:247
-msgid "Cebuano"
-msgstr ""
+msgid "Catalan"
+msgstr "Կատալոներեն"
 
 #: config.language_map:248
-msgid "Celtic (Other)"
-msgstr ""
+msgid "Caucasian (Other)"
+msgstr "Caucasian (այլ)"
 
 #: config.language_map:249
-msgid "Chamorro"
-msgstr ""
+msgid "Cebuano"
+msgstr "Cebuano"
 
 #: config.language_map:250
-msgid "Chibcha"
-msgstr ""
+msgid "Celtic (Other)"
+msgstr "Կելտերեն (այլ)"
 
 #: config.language_map:251
-msgid "Chechen"
-msgstr ""
+msgid "Chamorro"
+msgstr "Chamorro"
 
 #: config.language_map:252
-msgid "Chagatai"
-msgstr ""
+msgid "Chibcha"
+msgstr "Chibcha"
 
 #: config.language_map:253
-msgid "Chinese"
-msgstr ""
+msgid "Chechen"
+msgstr "Չեչեներեն"
 
 #: config.language_map:254
-msgid "Truk"
-msgstr ""
+msgid "Chagatai"
+msgstr "Chagatai"
 
 #: config.language_map:255
-msgid "Mari"
-msgstr ""
+msgid "Chinese"
+msgstr "Չիներեն"
 
 #: config.language_map:256
-msgid "Chinook jargon"
-msgstr ""
+msgid "Truk"
+msgstr "Truk"
 
 #: config.language_map:257
-msgid "Choctaw"
-msgstr ""
+msgid "Mari"
+msgstr "Mari"
 
 #: config.language_map:258
-msgid "Chipewyan"
-msgstr ""
+msgid "Chinook jargon"
+msgstr "Chinook jargon"
 
 #: config.language_map:259
-msgid "Cherokee"
-msgstr ""
+msgid "Choctaw"
+msgstr "Choctaw"
 
 #: config.language_map:260
-msgid "Church Slavic"
-msgstr ""
+msgid "Chipewyan"
+msgstr "Chipewyan"
 
 #: config.language_map:261
-msgid "Chuvash"
-msgstr ""
+msgid "Cherokee"
+msgstr "Cherokee"
 
 #: config.language_map:262
-msgid "Cheyenne"
-msgstr ""
+msgid "Church Slavic"
+msgstr "Church Slavic"
 
 #: config.language_map:263
-msgid "Chamic languages"
-msgstr ""
+msgid "Chuvash"
+msgstr "Չուվաշերեն"
 
 #: config.language_map:264
-msgid "Coptic"
-msgstr ""
+msgid "Cheyenne"
+msgstr "Cheyenne"
 
 #: config.language_map:265
-msgid "Cornish"
-msgstr ""
+msgid "Chamic languages"
+msgstr "Chamic languages"
 
 #: config.language_map:266
-msgid "Corsican"
-msgstr ""
+msgid "Coptic"
+msgstr "Ղպտերեն"
 
 #: config.language_map:267
-msgid "Creoles and Pidgins, English-based (Other)"
-msgstr ""
+msgid "Cornish"
+msgstr "Cornish"
 
 #: config.language_map:268
-msgid "Creoles and Pidgins, French-based (Other)"
-msgstr ""
+msgid "Corsican"
+msgstr "Կորսիկերեն"
 
 #: config.language_map:269
-msgid "Creoles and Pidgins, Portuguese-based (Other)"
-msgstr ""
+msgid "Creoles and Pidgins, English-based (Other)"
+msgstr "Creoles and Pidgins, English-based (այլ)"
 
 #: config.language_map:270
-msgid "Cree"
-msgstr ""
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Creoles and Pidgins, French-based (այլ)"
 
 #: config.language_map:271
-msgid "Crimean Tatar"
-msgstr ""
+msgid "Creoles and Pidgins, Portuguese-based (Other)"
+msgstr "Creoles and Pidgins, Portuguese-based (այլ)"
 
 #: config.language_map:272
-msgid "Creoles and Pidgins (Other)"
-msgstr ""
+msgid "Cree"
+msgstr "Cree"
 
 #: config.language_map:273
-msgid "Cushitic (Other)"
-msgstr ""
+msgid "Crimean Tatar"
+msgstr "Crimean Tatar"
 
 #: config.language_map:274
-msgid "Czech"
-msgstr ""
+msgid "Creoles and Pidgins (Other)"
+msgstr "Creoles and Pidgins (այլ)"
 
 #: config.language_map:275
-msgid "Dakota"
-msgstr ""
+msgid "Cushitic (Other)"
+msgstr "Cushitic (այլ)"
 
 #: config.language_map:276
-msgid "Danish"
-msgstr ""
+msgid "Czech"
+msgstr "Չեխերեն"
 
 #: config.language_map:277
-msgid "Dargwa"
-msgstr ""
+msgid "Dakota"
+msgstr "Dakota"
 
 #: config.language_map:278
-msgid "Dayak"
-msgstr ""
+msgid "Danish"
+msgstr "Դանիերեն"
 
 #: config.language_map:279
-msgid "Delaware"
-msgstr ""
+msgid "Dargwa"
+msgstr "Dargwa"
 
 #: config.language_map:280
-msgid "Slave"
-msgstr ""
+msgid "Dayak"
+msgstr "Dayak"
 
 #: config.language_map:281
-msgid "Dogrib"
-msgstr ""
+msgid "Delaware"
+msgstr "Delaware"
 
 #: config.language_map:282
-msgid "Dinka"
-msgstr ""
+msgid "Slave"
+msgstr "Slave"
 
 #: config.language_map:283
-msgid "Divehi"
-msgstr ""
+msgid "Dogrib"
+msgstr "Dogrib"
 
 #: config.language_map:284
-msgid "Dogri"
-msgstr ""
+msgid "Dinka"
+msgstr "Dinka"
 
 #: config.language_map:285
-msgid "Dravidian (Other)"
-msgstr ""
+msgid "Divehi"
+msgstr "Divehi"
 
 #: config.language_map:286
-msgid "Duala"
-msgstr ""
+msgid "Dogri"
+msgstr "Dogri"
 
 #: config.language_map:287
-msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr ""
+msgid "Dravidian (Other)"
+msgstr "Dravidian (այլ)"
 
 #: config.language_map:288
-msgid "Dutch"
-msgstr ""
+msgid "Duala"
+msgstr "Duala"
 
 #: config.language_map:289
-msgid "Dyula"
-msgstr ""
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Հոլանդերեն, Միջին (մոտ. 1050-1350)"
 
 #: config.language_map:290
-msgid "Dzongkha"
-msgstr ""
+msgid "Dutch"
+msgstr "Հոլանդերեն"
 
 #: config.language_map:291
-msgid "Efik"
-msgstr ""
+msgid "Dyula"
+msgstr "Dyula"
 
 #: config.language_map:292
-msgid "Egyptian"
-msgstr ""
+msgid "Dzongkha"
+msgstr "Dzongkha"
 
 #: config.language_map:293
-msgid "Ekajuk"
-msgstr ""
+msgid "Efik"
+msgstr "Efik"
 
 #: config.language_map:294
-msgid "Elamite"
-msgstr ""
+msgid "Egyptian"
+msgstr "Եգիպտերեն"
 
 #: config.language_map:295
-msgid "English"
-msgstr ""
+msgid "Ekajuk"
+msgstr "Ekajuk"
 
 #: config.language_map:296
-msgid "English, Middle (1100-1500)"
-msgstr ""
+msgid "Elamite"
+msgstr "Elamite"
 
 #: config.language_map:297
-msgid "Esperanto"
-msgstr ""
+msgid "English"
+msgstr "Անգլերեն"
 
 #: config.language_map:298
-msgid "Eskimo languages"
-msgstr ""
+msgid "English, Middle (1100-1500)"
+msgstr "Անգլերեն, Միջին (1100-1500)"
 
 #: config.language_map:299
 msgid "Esperanto"
-msgstr ""
+msgstr "Էսպերանտո"
 
 #: config.language_map:300
-msgid "Estonian"
-msgstr ""
+msgid "Eskimo languages"
+msgstr "Eskimo languages"
 
 #: config.language_map:301
-msgid "Ethiopic"
-msgstr ""
+msgid "Esperanto"
+msgstr "Էսպերանտո"
 
 #: config.language_map:302
-msgid "Ewe"
-msgstr ""
+msgid "Estonian"
+msgstr "Էստոներեն"
 
 #: config.language_map:303
-msgid "Ewondo"
-msgstr ""
+msgid "Ethiopic"
+msgstr "Եթովպերեն"
 
 #: config.language_map:304
-msgid "Fang"
-msgstr ""
+msgid "Ewe"
+msgstr "Ewe"
 
 #: config.language_map:305
-msgid "Faroese"
-msgstr ""
+msgid "Ewondo"
+msgstr "Ewondo"
 
 #: config.language_map:306
-msgid "Faroese"
-msgstr ""
+msgid "Fang"
+msgstr "Fang"
 
 #: config.language_map:307
-msgid "Fanti"
-msgstr ""
+msgid "Faroese"
+msgstr "Faroese"
 
 #: config.language_map:308
-msgid "Fijian"
-msgstr ""
+msgid "Faroese"
+msgstr "Faroese"
 
 #: config.language_map:309
-msgid "Finnish"
-msgstr ""
+msgid "Fanti"
+msgstr "Fanti"
 
 #: config.language_map:310
-msgid "Finno-Ugrian (Other)"
-msgstr ""
+msgid "Fijian"
+msgstr "Fijian"
 
 #: config.language_map:311
-msgid "Fon"
-msgstr ""
+msgid "Finnish"
+msgstr "Ֆիներեն"
 
 #: config.language_map:312
-msgid "French"
-msgstr ""
+msgid "Finno-Ugrian (Other)"
+msgstr "Finno-Ugrian (այլ)"
 
 #: config.language_map:313
-msgid "Frisian"
-msgstr ""
+msgid "Fon"
+msgstr "Fon"
 
 #: config.language_map:314
-msgid "French, Middle (ca. 1400-1600)"
-msgstr ""
+msgid "French"
+msgstr "Ֆրանսերեն"
 
 #: config.language_map:315
-msgid "French, Old (ca. 842-1400)"
-msgstr ""
+msgid "Frisian"
+msgstr "Frisian"
 
 #: config.language_map:316
-msgid "Frisian"
-msgstr ""
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "Ֆրանսերեն, Միջին (մոտ. 1400-1600)"
 
 #: config.language_map:317
-msgid "Fula"
-msgstr ""
+msgid "French, Old (ca. 842-1400)"
+msgstr "Ֆրանսերեն, Հին (մոտ. 842-1400)"
 
 #: config.language_map:318
-msgid "Friulian"
-msgstr ""
+msgid "Frisian"
+msgstr "Frisian"
 
 #: config.language_map:319
-msgid "Gã"
-msgstr ""
+msgid "Fula"
+msgstr "Fula"
 
 #: config.language_map:320
-msgid "Scottish Gaelic"
-msgstr ""
+msgid "Friulian"
+msgstr "Friulian"
 
 #: config.language_map:321
-msgid "Galician"
-msgstr ""
+msgid "Gã"
+msgstr "Gã"
 
 #: config.language_map:322
-msgid "Oromo"
-msgstr ""
+msgid "Scottish Gaelic"
+msgstr "Scottish Gaelic"
 
 #: config.language_map:323
-msgid "Gayo"
-msgstr ""
+msgid "Galician"
+msgstr "Գալիցերեն"
 
 #: config.language_map:324
-msgid "Gbaya"
-msgstr ""
+msgid "Oromo"
+msgstr "Oromo"
 
 #: config.language_map:325
-msgid "Germanic (Other)"
-msgstr ""
+msgid "Gayo"
+msgstr "Gayo"
 
 #: config.language_map:326
-msgid "Georgian"
-msgstr ""
+msgid "Gbaya"
+msgstr "Gbaya"
 
 #: config.language_map:327
-msgid "German"
-msgstr ""
+msgid "Germanic (Other)"
+msgstr "Գերմանական (այլ)"
 
 #: config.language_map:328
-msgid "Ethiopic"
-msgstr ""
+msgid "Georgian"
+msgstr "Վրացերեն"
 
 #: config.language_map:329
-msgid "Gilbertese"
-msgstr ""
+msgid "German"
+msgstr "Գերմաներեն"
 
 #: config.language_map:330
-msgid "Scottish Gaelic"
-msgstr ""
+msgid "Ethiopic"
+msgstr "Եթովպերեն"
 
 #: config.language_map:331
-msgid "Irish"
-msgstr ""
+msgid "Gilbertese"
+msgstr "Gilbertese"
 
 #: config.language_map:332
-msgid "Galician"
-msgstr ""
+msgid "Scottish Gaelic"
+msgstr "Scottish Gaelic"
 
 #: config.language_map:333
-msgid "Manx"
-msgstr ""
+msgid "Irish"
+msgstr "Իռլանդերեն"
 
 #: config.language_map:334
-msgid "German, Middle High (ca. 1050-1500)"
-msgstr ""
+msgid "Galician"
+msgstr "Գալիցերեն"
 
 #: config.language_map:335
-msgid "German, Old High (ca. 750-1050)"
-msgstr ""
+msgid "Manx"
+msgstr "Manx"
 
 #: config.language_map:336
-msgid "Gondi"
-msgstr ""
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "German, Middle High (ca. 1050-1500)"
 
 #: config.language_map:337
-msgid "Gorontalo"
-msgstr ""
+msgid "German, Old High (ca. 750-1050)"
+msgstr "German, Old High (ca. 750-1050)"
 
 #: config.language_map:338
-msgid "Gothic"
-msgstr ""
+msgid "Gondi"
+msgstr "Gondi"
 
 #: config.language_map:339
-msgid "Grebo"
-msgstr ""
+msgid "Gorontalo"
+msgstr "Gorontalo"
 
 #: config.language_map:340
-msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgid "Gothic"
+msgstr "Գոթերեն"
 
 #: config.language_map:341
-msgid "Greek, Modern (1453- )"
-msgstr ""
+msgid "Grebo"
+msgstr "Grebo"
 
 #: config.language_map:342
-msgid "Guarani"
-msgstr ""
+msgid "Greek, Ancient (to 1453)"
+msgstr "Greek, Ancient (to 1453)"
 
 #: config.language_map:343
-msgid "Guarani"
-msgstr ""
+msgid "Greek, Modern (1453- )"
+msgstr "Greek, Modern (1453- )"
 
 #: config.language_map:344
-msgid "Gujarati"
-msgstr ""
+msgid "Guarani"
+msgstr "Guarani"
 
 #: config.language_map:345
-msgid "Gwich'in"
-msgstr ""
+msgid "Guarani"
+msgstr "Guarani"
 
 #: config.language_map:346
-msgid "Haida"
-msgstr ""
+msgid "Gujarati"
+msgstr "Gujarati"
 
 #: config.language_map:347
-msgid "Haitian French Creole"
-msgstr ""
+msgid "Gwich'in"
+msgstr "Gwich'in"
 
 #: config.language_map:348
-msgid "Hausa"
-msgstr ""
+msgid "Haida"
+msgstr "Haida"
 
 #: config.language_map:349
-msgid "Hawaiian"
-msgstr ""
+msgid "Haitian French Creole"
+msgstr "Haitian French Creole"
 
 #: config.language_map:350
-msgid "Hebrew"
-msgstr ""
+msgid "Hausa"
+msgstr "Hausa"
 
 #: config.language_map:351
-msgid "Herero"
-msgstr ""
+msgid "Hawaiian"
+msgstr "Hawaiian"
 
 #: config.language_map:352
-msgid "Hiligaynon"
-msgstr ""
+msgid "Hebrew"
+msgstr "Hebrew"
 
 #: config.language_map:353
-msgid "Himachali"
-msgstr ""
+msgid "Herero"
+msgstr "Herero"
 
 #: config.language_map:354
-msgid "Hindi"
-msgstr ""
+msgid "Hiligaynon"
+msgstr "Hiligaynon"
 
 #: config.language_map:355
-msgid "Hittite"
-msgstr ""
+msgid "Himachali"
+msgstr "Himachali"
 
 #: config.language_map:356
-msgid "Hmong"
-msgstr ""
+msgid "Hindi"
+msgstr "Հինդու"
 
 #: config.language_map:357
-msgid "Hiri Motu"
-msgstr ""
+msgid "Hittite"
+msgstr "Հեթիթերեն"
 
 #: config.language_map:358
-msgid "Hungarian"
-msgstr ""
+msgid "Hmong"
+msgstr "Hmong"
 
 #: config.language_map:359
-msgid "Hupa"
-msgstr ""
+msgid "Hiri Motu"
+msgstr "Hiri Motu"
 
 #: config.language_map:360
-msgid "Iban"
-msgstr ""
+msgid "Hungarian"
+msgstr "Հունգարերեն"
 
 #: config.language_map:361
-msgid "Igbo"
-msgstr ""
+msgid "Hupa"
+msgstr "Hupa"
 
 #: config.language_map:362
-msgid "Icelandic"
-msgstr ""
+msgid "Iban"
+msgstr "Iban"
 
 #: config.language_map:363
-msgid "Ido"
-msgstr ""
+msgid "Igbo"
+msgstr "Igbo"
 
 #: config.language_map:364
-msgid "Sichuan Yi"
-msgstr ""
+msgid "Icelandic"
+msgstr "Իսլանդերեն"
 
 #: config.language_map:365
-msgid "Ijo"
-msgstr ""
+msgid "Ido"
+msgstr "Ido"
 
 #: config.language_map:366
-msgid "Inuktitut"
-msgstr ""
+msgid "Sichuan Yi"
+msgstr "Sichuan Yi"
 
 #: config.language_map:367
-msgid "Interlingue"
-msgstr ""
+msgid "Ijo"
+msgstr "Ijo"
 
 #: config.language_map:368
-msgid "Iloko"
-msgstr ""
+msgid "Inuktitut"
+msgstr "Inuktitut"
 
 #: config.language_map:369
-msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgid "Interlingue"
+msgstr "Interlingue"
 
 #: config.language_map:370
-msgid "Indic (Other)"
-msgstr ""
+msgid "Iloko"
+msgstr "Iloko"
 
 #: config.language_map:371
-msgid "Indonesian"
-msgstr ""
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (International Auxiliary Language Association)"
 
 #: config.language_map:372
-msgid "Indo-European (Other)"
-msgstr ""
+msgid "Indic (Other)"
+msgstr "Indic (Other)"
 
 #: config.language_map:373
-msgid "Ingush"
-msgstr ""
+msgid "Indonesian"
+msgstr "Ինդոնեզերեն"
 
 #: config.language_map:374
-msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgid "Indo-European (Other)"
+msgstr "Հնդ-եվրոպական (այլ)"
 
 #: config.language_map:375
-msgid "Inupiaq"
-msgstr ""
+msgid "Ingush"
+msgstr "Ingush"
 
 #: config.language_map:376
-msgid "Iranian (Other)"
-msgstr ""
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (International Auxiliary Language Association)"
 
 #: config.language_map:377
-msgid "Irish"
-msgstr ""
+msgid "Inupiaq"
+msgstr "Inupiaq"
 
 #: config.language_map:378
-msgid "Iroquoian (Other)"
-msgstr ""
+msgid "Iranian (Other)"
+msgstr "Իրանական (այլ)"
 
 #: config.language_map:379
-msgid "Italian"
-msgstr ""
+msgid "Irish"
+msgstr "Իռլանդերեն"
 
 #: config.language_map:380
-msgid "Javanese"
-msgstr ""
+msgid "Iroquoian (Other)"
+msgstr "Iroquoian (այլ)"
 
 #: config.language_map:381
-msgid "Japanese"
-msgstr ""
+msgid "Italian"
+msgstr "Իտալերեն"
 
 #: config.language_map:382
-msgid "Judeo-Persian"
-msgstr ""
+msgid "Javanese"
+msgstr "Javanese"
 
 #: config.language_map:383
-msgid "Judeo-Arabic"
-msgstr ""
+msgid "Japanese"
+msgstr "Ճապոներեն"
 
 #: config.language_map:384
-msgid "Kara-Kalpak"
-msgstr ""
+msgid "Judeo-Persian"
+msgstr "Judeo-Persian"
 
 #: config.language_map:385
-msgid "Kabyle"
-msgstr ""
+msgid "Judeo-Arabic"
+msgstr "Judeo-Arabic"
 
 #: config.language_map:386
-msgid "Kachin"
-msgstr ""
+msgid "Kara-Kalpak"
+msgstr "Կարա-կալպակերեն"
 
 #: config.language_map:387
-msgid "Kalâtdlisut"
-msgstr ""
+msgid "Kabyle"
+msgstr "Kabyle"
 
 #: config.language_map:388
-msgid "Kamba"
-msgstr ""
+msgid "Kachin"
+msgstr "Kachin"
 
 #: config.language_map:389
-msgid "Kannada"
-msgstr ""
+msgid "Kalâtdlisut"
+msgstr "Kalâtdlisut"
 
 #: config.language_map:390
-msgid "Karen"
-msgstr ""
+msgid "Kamba"
+msgstr "Kamba"
 
 #: config.language_map:391
-msgid "Kashmiri"
-msgstr ""
+msgid "Kannada"
+msgstr "Kannada"
 
 #: config.language_map:392
-msgid "Kanuri"
-msgstr ""
+msgid "Karen"
+msgstr "Karen"
 
 #: config.language_map:393
-msgid "Kawi"
-msgstr ""
+msgid "Kashmiri"
+msgstr "Kashmiri"
 
 #: config.language_map:394
-msgid "Kazakh"
-msgstr ""
+msgid "Kanuri"
+msgstr "Kanuri"
 
 #: config.language_map:395
-msgid "Kabardian"
-msgstr ""
+msgid "Kawi"
+msgstr "Kawi"
 
 #: config.language_map:396
-msgid "Khasi"
-msgstr ""
+msgid "Kazakh"
+msgstr "Ղազախերեն"
 
 #: config.language_map:397
-msgid "Khoisan (Other)"
-msgstr ""
+msgid "Kabardian"
+msgstr "Կաբարդիներեն"
 
 #: config.language_map:398
-msgid "Khmer"
-msgstr ""
+msgid "Khasi"
+msgstr "Khasi"
 
 #: config.language_map:399
-msgid "Khotanese"
-msgstr ""
+msgid "Khoisan (Other)"
+msgstr "Khoisan (այլ)"
 
 #: config.language_map:400
-msgid "Kikuyu"
-msgstr ""
+msgid "Khmer"
+msgstr "Կխմեր"
 
 #: config.language_map:401
-msgid "Kinyarwanda"
-msgstr ""
+msgid "Khotanese"
+msgstr "Khotanese"
 
 #: config.language_map:402
-msgid "Kyrgyz"
-msgstr ""
+msgid "Kikuyu"
+msgstr "Kikuyu"
 
 #: config.language_map:403
-msgid "Kimbundu"
-msgstr ""
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
 
 #: config.language_map:404
-msgid "Konkani"
-msgstr ""
+msgid "Kyrgyz"
+msgstr "Կիրգիզերեն"
 
 #: config.language_map:405
-msgid "Komi"
-msgstr ""
+msgid "Kimbundu"
+msgstr "Kimbundu"
 
 #: config.language_map:406
-msgid "Kongo"
-msgstr ""
+msgid "Konkani"
+msgstr "Konkani"
 
 #: config.language_map:407
-msgid "Korean"
-msgstr ""
+msgid "Komi"
+msgstr "Komi"
 
 #: config.language_map:408
-msgid "Kusaie"
-msgstr ""
+msgid "Kongo"
+msgstr "Kongo"
 
 #: config.language_map:409
-msgid "Kpelle"
-msgstr ""
+msgid "Korean"
+msgstr "Կորեերեն"
 
 #: config.language_map:410
-msgid "Kru"
-msgstr ""
+msgid "Kusaie"
+msgstr "Kusaie"
 
 #: config.language_map:411
-msgid "Kurukh"
-msgstr ""
+msgid "Kpelle"
+msgstr "Kpelle"
 
 #: config.language_map:412
-msgid "Kuanyama"
-msgstr ""
+msgid "Kru"
+msgstr "Kru"
 
 #: config.language_map:413
-msgid "Kumyk"
-msgstr ""
+msgid "Kurukh"
+msgstr "Kurukh"
 
 #: config.language_map:414
-msgid "Kurdish"
-msgstr ""
+msgid "Kuanyama"
+msgstr "Kuanyama"
 
 #: config.language_map:415
-msgid "Kusaie"
-msgstr ""
+msgid "Kumyk"
+msgstr "Kumyk"
 
 #: config.language_map:416
-msgid "Kutenai"
-msgstr ""
+msgid "Kurdish"
+msgstr "Քրդերեն"
 
 #: config.language_map:417
-msgid "Ladino"
-msgstr ""
+msgid "Kusaie"
+msgstr "Kusaie"
 
 #: config.language_map:418
-msgid "Lahnda"
-msgstr ""
+msgid "Kutenai"
+msgstr "Kutenai"
 
 #: config.language_map:419
-msgid "Lamba"
-msgstr ""
+msgid "Ladino"
+msgstr "Ladino"
 
 #: config.language_map:420
-msgid "Occitan (post-1500)"
-msgstr ""
+msgid "Lahnda"
+msgstr "Lahnda"
 
 #: config.language_map:421
-msgid "Lao"
-msgstr ""
+msgid "Lamba"
+msgstr "Lamba"
 
 #: config.language_map:422
-msgid "Sami"
-msgstr ""
+msgid "Occitan (post-1500)"
+msgstr "Occitan (post-1500)"
 
 #: config.language_map:423
-msgid "Latin"
-msgstr ""
+msgid "Lao"
+msgstr "Lao"
 
 #: config.language_map:424
-msgid "Latvian"
-msgstr ""
+msgid "Sami"
+msgstr "Sami"
 
 #: config.language_map:425
-msgid "Lezgian"
-msgstr ""
+msgid "Latin"
+msgstr "Լատիներեն"
 
 #: config.language_map:426
-msgid "Limburgish"
-msgstr ""
+msgid "Latvian"
+msgstr "Լատվիերեն"
 
 #: config.language_map:427
-msgid "Lingala"
-msgstr ""
+msgid "Lezgian"
+msgstr "Լեզգիերեն"
 
 #: config.language_map:428
-msgid "Lithuanian"
-msgstr ""
+msgid "Limburgish"
+msgstr "Limburgish"
 
 #: config.language_map:429
-msgid "Mongo-Nkundu"
-msgstr ""
+msgid "Lingala"
+msgstr "Lingala"
 
 #: config.language_map:430
-msgid "Lozi"
-msgstr ""
+msgid "Lithuanian"
+msgstr "Լիտվերեն"
 
 #: config.language_map:431
-msgid "Letzeburgesch"
-msgstr ""
+msgid "Mongo-Nkundu"
+msgstr "Mongo-Nkundu"
 
 #: config.language_map:432
-msgid "Luba-Lulua"
-msgstr ""
+msgid "Lozi"
+msgstr "Lozi"
 
 #: config.language_map:433
-msgid "Luba-Katanga"
-msgstr ""
+msgid "Letzeburgesch"
+msgstr "Letzeburgesch"
 
 #: config.language_map:434
-msgid "Ganda"
-msgstr ""
+msgid "Luba-Lulua"
+msgstr "Luba-Lulua"
 
 #: config.language_map:435
-msgid "Luiseño"
-msgstr ""
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
 
 #: config.language_map:436
-msgid "Lunda"
-msgstr ""
+msgid "Ganda"
+msgstr "Ganda"
 
 #: config.language_map:437
-msgid "Luo (Kenya and Tanzania)"
-msgstr ""
+msgid "Luiseño"
+msgstr "Luiseño"
 
 #: config.language_map:438
-msgid "Lushai"
-msgstr ""
+msgid "Lunda"
+msgstr "Lunda"
 
 #: config.language_map:439
-msgid "Macedonian"
-msgstr ""
+msgid "Luo (Kenya and Tanzania)"
+msgstr "Luo (Kenya and Tanzania)"
 
 #: config.language_map:440
-msgid "Madurese"
-msgstr ""
+msgid "Lushai"
+msgstr "Lushai"
 
 #: config.language_map:441
-msgid "Magahi"
-msgstr ""
+msgid "Macedonian"
+msgstr "Մակեդոներեն"
 
 #: config.language_map:442
-msgid "Marshallese"
-msgstr ""
+msgid "Madurese"
+msgstr "Madurese"
 
 #: config.language_map:443
-msgid "Maithili"
-msgstr ""
+msgid "Magahi"
+msgstr "Magahi"
 
 #: config.language_map:444
-msgid "Makasar"
-msgstr ""
+msgid "Marshallese"
+msgstr "Marshallese"
 
 #: config.language_map:445
-msgid "Malayalam"
-msgstr ""
+msgid "Maithili"
+msgstr "Maithili"
 
 #: config.language_map:446
-msgid "Mandingo"
-msgstr ""
+msgid "Makasar"
+msgstr "Makasar"
 
 #: config.language_map:447
-msgid "Maori"
-msgstr ""
+msgid "Malayalam"
+msgstr "Malayalam"
 
 #: config.language_map:448
-msgid "Austronesian (Other)"
-msgstr ""
+msgid "Mandingo"
+msgstr "Mandingo"
 
 #: config.language_map:449
-msgid "Marathi"
-msgstr ""
+msgid "Maori"
+msgstr "Մաորի"
 
 #: config.language_map:450
-msgid "Masai"
-msgstr ""
+msgid "Austronesian (Other)"
+msgstr "Austronesian (այլ)"
 
 #: config.language_map:451
-msgid "Manx"
-msgstr ""
+msgid "Marathi"
+msgstr "Marathi"
 
 #: config.language_map:452
-msgid "Malay"
-msgstr ""
+msgid "Masai"
+msgstr "Masai"
 
 #: config.language_map:453
-msgid "Mandar"
-msgstr ""
+msgid "Manx"
+msgstr "Manx"
 
 #: config.language_map:454
-msgid "Mende"
-msgstr ""
+msgid "Malay"
+msgstr "Malay"
 
 #: config.language_map:455
-msgid "Irish, Middle (ca. 1100-1550)"
-msgstr ""
+msgid "Mandar"
+msgstr "Mandar"
 
 #: config.language_map:456
-msgid "Micmac"
-msgstr ""
+msgid "Mende"
+msgstr "Mende"
 
 #: config.language_map:457
-msgid "Minangkabau"
-msgstr ""
+msgid "Irish, Middle (ca. 1100-1550)"
+msgstr "Irish, Middle (ca. 1100-1550)"
 
 #: config.language_map:458
-msgid "Miscellaneous languages"
-msgstr ""
+msgid "Micmac"
+msgstr "Micmac"
 
 #: config.language_map:459
-msgid "Mon-Khmer (Other)"
-msgstr ""
+msgid "Minangkabau"
+msgstr "Minangkabau"
 
 #: config.language_map:460
-msgid "Malagasy"
-msgstr ""
+msgid "Miscellaneous languages"
+msgstr "Miscellaneous languages"
 
 #: config.language_map:461
-msgid "Malagasy"
-msgstr ""
+msgid "Mon-Khmer (Other)"
+msgstr "Mon-Khmer (այլ)"
 
 #: config.language_map:462
-msgid "Maltese"
-msgstr ""
+msgid "Malagasy"
+msgstr "Malagasy"
 
 #: config.language_map:463
-msgid "Manchu"
-msgstr ""
+msgid "Malagasy"
+msgstr "Malagasy"
 
 #: config.language_map:464
-msgid "Manipuri"
-msgstr ""
+msgid "Maltese"
+msgstr "Maltese"
 
 #: config.language_map:465
-msgid "Manobo languages"
-msgstr ""
+msgid "Manchu"
+msgstr "Manchu"
 
 #: config.language_map:466
-msgid "Mohawk"
-msgstr ""
+msgid "Manipuri"
+msgstr "Manipuri"
 
 #: config.language_map:467
-msgid "Moldavian"
-msgstr ""
+msgid "Manobo languages"
+msgstr "Manobo լեզուներ"
 
 #: config.language_map:468
-msgid "Mongolian"
-msgstr ""
+msgid "Mohawk"
+msgstr "Mohawk"
 
 #: config.language_map:469
-msgid "Mooré"
-msgstr ""
+msgid "Moldavian"
+msgstr "Մոլդավերեն"
 
 #: config.language_map:470
-msgid "Multiple languages"
-msgstr ""
+msgid "Mongolian"
+msgstr "Մոնղոլերեն"
 
 #: config.language_map:471
-msgid "Munda (Other)"
-msgstr ""
+msgid "Mooré"
+msgstr "Mooré"
 
 #: config.language_map:472
-msgid "Creek"
-msgstr ""
+msgid "Multiple languages"
+msgstr "Բազմաթիվ լեզուներ"
 
 #: config.language_map:473
-msgid "Marwari"
-msgstr ""
+msgid "Munda (Other)"
+msgstr "Munda(այլ)"
 
 #: config.language_map:474
-msgid "Mayan languages"
-msgstr ""
+msgid "Creek"
+msgstr "Creek"
 
 #: config.language_map:475
-msgid "Nahuatl"
-msgstr ""
+msgid "Marwari"
+msgstr "Marwari"
 
 #: config.language_map:476
-msgid "North American Indian (Other)"
-msgstr ""
+msgid "Mayan languages"
+msgstr "Mayan լեզուներ"
 
 #: config.language_map:477
-msgid "Neapolitan Italian"
-msgstr ""
+msgid "Nahuatl"
+msgstr "Nahuatl"
 
 #: config.language_map:478
-msgid "Nauru"
-msgstr ""
+msgid "North American Indian (Other)"
+msgstr "North American Indian (այլ)"
 
 #: config.language_map:479
-msgid "Navajo"
-msgstr ""
+msgid "Neapolitan Italian"
+msgstr "Neapolitan Italian"
 
 #: config.language_map:480
-msgid "Ndebele (South Africa)"
-msgstr ""
+msgid "Nauru"
+msgstr "Nauru"
 
 #: config.language_map:481
-msgid "Ndebele (Zimbabwe)  "
-msgstr ""
+msgid "Navajo"
+msgstr "Նավախո"
 
 #: config.language_map:482
-msgid "Ndonga"
-msgstr ""
+msgid "Ndebele (South Africa)"
+msgstr "Ndebele (Հարաֆային Աֆրիկա)"
 
 #: config.language_map:483
-msgid "Low German"
-msgstr ""
+msgid "Ndebele (Zimbabwe)  "
+msgstr "Ndebele (Zimbabwe)  "
 
 #: config.language_map:484
-msgid "Nepali"
-msgstr ""
+msgid "Ndonga"
+msgstr "Ndonga"
 
 #: config.language_map:485
-msgid "Newari"
-msgstr ""
+msgid "Low German"
+msgstr "Low German"
 
 #: config.language_map:486
-msgid "Nias"
-msgstr ""
+msgid "Nepali"
+msgstr "Նեպալերեն"
 
 #: config.language_map:487
-msgid "Niger-Kordofanian (Other)"
-msgstr ""
+msgid "Newari"
+msgstr "Newari"
 
 #: config.language_map:488
-msgid "Niuean"
-msgstr ""
+msgid "Nias"
+msgstr "Nias"
 
 #: config.language_map:489
-msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgid "Niger-Kordofanian (Other)"
+msgstr "Niger-Kordofanian (այլ)"
 
 #: config.language_map:490
-msgid "Norwegian (Bokmål)"
-msgstr ""
+msgid "Niuean"
+msgstr "Niuean"
 
 #: config.language_map:491
-msgid "Nogai"
-msgstr ""
+msgid "Norwegian (Nynorsk)"
+msgstr "Norwegian (Nynorsk)"
 
 #: config.language_map:492
-msgid "Old Norse"
-msgstr ""
+msgid "Norwegian (Bokmål)"
+msgstr "Norwegian (Bokmål)"
 
 #: config.language_map:493
-msgid "Norwegian"
-msgstr ""
+msgid "Nogai"
+msgstr "Nogai"
 
 #: config.language_map:494
-msgid "Northern Sotho"
-msgstr ""
+msgid "Old Norse"
+msgstr "Old Norse"
 
 #: config.language_map:495
-msgid "Nubian languages"
-msgstr ""
+msgid "Norwegian"
+msgstr "Նորվեգերեն"
 
 #: config.language_map:496
-msgid "Nyanja"
-msgstr ""
+msgid "Northern Sotho"
+msgstr "Northern Sotho"
 
 #: config.language_map:497
-msgid "Nyamwezi"
-msgstr ""
+msgid "Nubian languages"
+msgstr "Նուբիական լեզուներ"
 
 #: config.language_map:498
-msgid "Nyankole"
-msgstr ""
+msgid "Nyanja"
+msgstr "Nyanja"
 
 #: config.language_map:499
-msgid "Nyoro"
-msgstr ""
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
 
 #: config.language_map:500
-msgid "Nzima"
-msgstr ""
+msgid "Nyankole"
+msgstr "Nyankole"
 
 #: config.language_map:501
-msgid "Occitan (post-1500)"
-msgstr ""
+msgid "Nyoro"
+msgstr "Nyoro"
 
 #: config.language_map:502
-msgid "Ojibwa"
-msgstr ""
+msgid "Nzima"
+msgstr "Nzima"
 
 #: config.language_map:503
-msgid "Oriya"
-msgstr ""
+msgid "Occitan (post-1500)"
+msgstr "Occitan (post-1500)"
 
 #: config.language_map:504
-msgid "Oromo"
-msgstr ""
+msgid "Ojibwa"
+msgstr "Ojibwa"
 
 #: config.language_map:505
-msgid "Osage"
-msgstr ""
+msgid "Oriya"
+msgstr "Oriya"
 
 #: config.language_map:506
-msgid "Ossetic"
-msgstr ""
+msgid "Oromo"
+msgstr "Oromo"
 
 #: config.language_map:507
-msgid "Turkish, Ottoman"
-msgstr ""
+msgid "Osage"
+msgstr "Osage"
 
 #: config.language_map:508
-msgid "Otomian languages"
-msgstr ""
+msgid "Ossetic"
+msgstr "Ossetic"
 
 #: config.language_map:509
-msgid "Papuan (Other)"
-msgstr ""
+msgid "Turkish, Ottoman"
+msgstr "Թուրքերեն, Օտոման"
 
 #: config.language_map:510
-msgid "Pangasinan"
-msgstr ""
+msgid "Otomian languages"
+msgstr "Օտոմանական լեզուներ"
 
 #: config.language_map:511
-msgid "Pahlavi"
-msgstr ""
+msgid "Papuan (Other)"
+msgstr "Papuan (այլ)"
 
 #: config.language_map:512
-msgid "Pampanga"
-msgstr ""
+msgid "Pangasinan"
+msgstr "Pangasinan"
 
 #: config.language_map:513
-msgid "Panjabi"
-msgstr ""
+msgid "Pahlavi"
+msgstr "Պահլավերեն"
 
 #: config.language_map:514
-msgid "Papiamento"
-msgstr ""
+msgid "Pampanga"
+msgstr "Pampanga"
 
 #: config.language_map:515
-msgid "Palauan"
-msgstr ""
+msgid "Panjabi"
+msgstr "Panjabi"
 
 #: config.language_map:516
-msgid "Old Persian (ca. 600-400 B.C.)"
-msgstr ""
+msgid "Papiamento"
+msgstr "Papiamento"
 
 #: config.language_map:517
-msgid "Persian"
-msgstr ""
+msgid "Palauan"
+msgstr "Palauan"
 
 #: config.language_map:518
-msgid "Philippine (Other)"
-msgstr ""
+msgid "Old Persian (ca. 600-400 B.C.)"
+msgstr "Հին պարսկերեն (մոտ. 600-400 B.C.)"
 
 #: config.language_map:519
-msgid "Phoenician"
-msgstr ""
+msgid "Persian"
+msgstr "Ֆարսի"
 
 #: config.language_map:520
-msgid "Pali"
-msgstr ""
+msgid "Philippine (Other)"
+msgstr "Philippine (այլ)"
 
 #: config.language_map:521
-msgid "Polish"
-msgstr ""
+msgid "Phoenician"
+msgstr "Phoenician"
 
 #: config.language_map:522
-msgid "Ponape"
-msgstr ""
+msgid "Pali"
+msgstr "Pali"
 
 #: config.language_map:523
-msgid "Portuguese"
-msgstr ""
+msgid "Polish"
+msgstr "Լեհերեն"
 
 #: config.language_map:524
-msgid "Prakrit languages"
-msgstr ""
+msgid "Ponape"
+msgstr "Ponape"
 
 #: config.language_map:525
-msgid "Provençal (to 1500)"
-msgstr ""
+msgid "Portuguese"
+msgstr "Պորտուգալերեն"
 
 #: config.language_map:526
-msgid "Pushto"
-msgstr ""
+msgid "Prakrit languages"
+msgstr "Prakrit languages"
 
 #: config.language_map:527
-msgid "Quechua"
-msgstr ""
+msgid "Provençal (to 1500)"
+msgstr "Provençal (to 1500)"
 
 #: config.language_map:528
-msgid "Rajasthani"
-msgstr ""
+msgid "Pushto"
+msgstr "Pushto"
 
 #: config.language_map:529
-msgid "Rapanui"
-msgstr ""
+msgid "Quechua"
+msgstr "Quechua"
 
 #: config.language_map:530
-msgid "Rarotongan"
-msgstr ""
+msgid "Rajasthani"
+msgstr "Rajasthani"
 
 #: config.language_map:531
-msgid "Romance (Other)"
-msgstr ""
+msgid "Rapanui"
+msgstr "Rapanui"
 
 #: config.language_map:532
-msgid "Raeto-Romance"
-msgstr ""
+msgid "Rarotongan"
+msgstr "Rarotongan"
 
 #: config.language_map:533
-msgid "Romani"
-msgstr ""
+msgid "Romance (Other)"
+msgstr "Ռոմաներեն (այլ)"
 
 #: config.language_map:534
-msgid "Romanian"
-msgstr ""
+msgid "Raeto-Romance"
+msgstr "Raeto-Romance"
 
 #: config.language_map:535
-msgid "Rundi"
-msgstr ""
+msgid "Romani"
+msgstr "Romani"
 
 #: config.language_map:536
-msgid "Russian"
-msgstr ""
+msgid "Romanian"
+msgstr "Ռումիներեն"
 
 #: config.language_map:537
-msgid "Sandawe"
-msgstr ""
+msgid "Rundi"
+msgstr "Rundi"
 
 #: config.language_map:538
-msgid "Sango (Ubangi Creole)"
-msgstr ""
+msgid "Russian"
+msgstr "Ռուսերեն"
 
 #: config.language_map:539
-msgid "Yakut"
-msgstr ""
+msgid "Sandawe"
+msgstr "Sandawe"
 
 #: config.language_map:540
-msgid "South American Indian (Other)"
-msgstr ""
+msgid "Sango (Ubangi Creole)"
+msgstr "Sango (Ubangi Creole)"
 
 #: config.language_map:541
-msgid "Salishan languages"
-msgstr ""
+msgid "Yakut"
+msgstr "Յակուտերեն"
 
 #: config.language_map:542
-msgid "Samaritan Aramaic"
-msgstr ""
+msgid "South American Indian (Other)"
+msgstr "South American Indian(այլ)"
 
 #: config.language_map:543
-msgid "Sanskrit"
-msgstr ""
+msgid "Salishan languages"
+msgstr "Salishan languages"
 
 #: config.language_map:544
-msgid "Samoan"
-msgstr ""
+msgid "Samaritan Aramaic"
+msgstr "Samaritan Aramaic"
 
 #: config.language_map:545
-msgid "Sasak"
-msgstr ""
+msgid "Sanskrit"
+msgstr "Սանսկրիտ"
 
 #: config.language_map:546
-msgid "Santali"
-msgstr ""
+msgid "Samoan"
+msgstr "Samoan"
 
 #: config.language_map:547
-msgid "Serbian"
-msgstr ""
+msgid "Sasak"
+msgstr "Sasak"
 
 #: config.language_map:548
-msgid "Scots"
-msgstr ""
+msgid "Santali"
+msgstr "Santali"
 
 #: config.language_map:549
-msgid "Croatian"
-msgstr ""
+msgid "Serbian"
+msgstr "Սերբերեն"
 
 #: config.language_map:550
-msgid "Selkup"
-msgstr ""
+msgid "Scots"
+msgstr "Scots"
 
 #: config.language_map:551
-msgid "Semitic (Other)"
-msgstr ""
+msgid "Croatian"
+msgstr "Խորվաթերեն"
 
 #: config.language_map:552
-msgid "Irish, Old (to 1100)"
-msgstr ""
+msgid "Selkup"
+msgstr "Selkup"
 
 #: config.language_map:553
-msgid "Sign languages"
-msgstr ""
+msgid "Semitic (Other)"
+msgstr "Semitic (այլ)"
 
 #: config.language_map:554
-msgid "Shan"
-msgstr ""
+msgid "Irish, Old (to 1100)"
+msgstr "Irish, Old (to 1100)"
 
 #: config.language_map:555
-msgid "Shona"
-msgstr ""
+msgid "Sign languages"
+msgstr "Sign languages"
 
 #: config.language_map:556
-msgid "Sidamo"
-msgstr ""
+msgid "Shan"
+msgstr "Shan"
 
 #: config.language_map:557
-msgid "Sinhalese"
-msgstr ""
+msgid "Shona"
+msgstr "Shona"
 
 #: config.language_map:558
-msgid "Siouan (Other)"
-msgstr ""
+msgid "Sidamo"
+msgstr "Sidamo"
 
 #: config.language_map:559
-msgid "Sino-Tibetan (Other)"
-msgstr ""
+msgid "Sinhalese"
+msgstr "Sinhalese"
 
 #: config.language_map:560
-msgid "Slavic (Other)"
-msgstr ""
+msgid "Siouan (Other)"
+msgstr "Siouan (այլ)"
 
 #: config.language_map:561
-msgid "Slovak"
-msgstr ""
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-Tibetan (Other)"
 
 #: config.language_map:562
-msgid "Slovenian"
-msgstr ""
+msgid "Slavic (Other)"
+msgstr "Սլավոներեն (այլ)"
 
 #: config.language_map:563
-msgid "Southern Sami"
-msgstr ""
+msgid "Slovak"
+msgstr "Սլովակերեն"
 
 #: config.language_map:564
-msgid "Northern Sami"
-msgstr ""
+msgid "Slovenian"
+msgstr "Սլովեներեն"
 
 #: config.language_map:565
-msgid "Sami"
-msgstr ""
+msgid "Southern Sami"
+msgstr "Southern Sami"
 
 #: config.language_map:566
-msgid "Lule Sami"
-msgstr ""
+msgid "Northern Sami"
+msgstr "Northern Sami"
 
 #: config.language_map:567
-msgid "Inari Sami"
-msgstr ""
+msgid "Sami"
+msgstr "Sami"
 
 #: config.language_map:568
-msgid "Samoan"
-msgstr ""
+msgid "Lule Sami"
+msgstr "Lule Sami"
 
 #: config.language_map:569
-msgid "Skolt Sami"
-msgstr ""
+msgid "Inari Sami"
+msgstr "Inari Sami"
 
 #: config.language_map:570
-msgid "Shona"
-msgstr ""
+msgid "Samoan"
+msgstr "Samoan"
 
 #: config.language_map:571
-msgid "Sindhi"
-msgstr ""
+msgid "Skolt Sami"
+msgstr "Skolt Sami"
 
 #: config.language_map:572
-msgid "Sinhalese"
-msgstr ""
+msgid "Shona"
+msgstr "Shona"
 
 #: config.language_map:573
-msgid "Soninke"
-msgstr ""
+msgid "Sindhi"
+msgstr "Sindhi"
 
 #: config.language_map:574
-msgid "Sogdian"
-msgstr ""
+msgid "Sinhalese"
+msgstr "Sinhalese"
 
 #: config.language_map:575
-msgid "Somali"
-msgstr ""
+msgid "Soninke"
+msgstr "Soninke"
 
 #: config.language_map:576
-msgid "Songhai"
-msgstr ""
+msgid "Sogdian"
+msgstr "Sogdian"
 
 #: config.language_map:577
-msgid "Sotho"
-msgstr ""
+msgid "Somali"
+msgstr "Somali"
 
 #: config.language_map:578
-msgid "Spanish"
-msgstr ""
+msgid "Songhai"
+msgstr "Songhai"
 
 #: config.language_map:579
-msgid "Sardinian"
-msgstr ""
+msgid "Sotho"
+msgstr "Sotho"
 
 #: config.language_map:580
-msgid "Serer"
-msgstr ""
+msgid "Spanish"
+msgstr "Իսպաներեն"
 
 #: config.language_map:581
-msgid "Nilo-Saharan (Other)"
-msgstr ""
+msgid "Sardinian"
+msgstr "Սարդիներեն"
 
 #: config.language_map:582
-msgid "Sotho"
-msgstr ""
+msgid "Serer"
+msgstr "Serer"
 
 #: config.language_map:583
-msgid "Swazi"
-msgstr ""
+msgid "Nilo-Saharan (Other)"
+msgstr "Nilo-Saharan (այլ)"
 
 #: config.language_map:584
-msgid "Sukuma"
-msgstr ""
+msgid "Sotho"
+msgstr "Sotho"
 
 #: config.language_map:585
-msgid "Sundanese"
-msgstr ""
+msgid "Swazi"
+msgstr "Swazi"
 
 #: config.language_map:586
-msgid "Susu"
-msgstr ""
+msgid "Sukuma"
+msgstr "Sukuma"
 
 #: config.language_map:587
-msgid "Sumerian"
-msgstr ""
+msgid "Sundanese"
+msgstr "Sundanese"
 
 #: config.language_map:588
-msgid "Swahili"
-msgstr ""
+msgid "Susu"
+msgstr "Susu"
 
 #: config.language_map:589
-msgid "Swedish"
-msgstr ""
+msgid "Sumerian"
+msgstr "Sumerian"
 
 #: config.language_map:590
-msgid "Swazi"
-msgstr ""
+msgid "Swahili"
+msgstr "Swahili"
 
 #: config.language_map:591
-msgid "Syriac"
-msgstr ""
+msgid "Swedish"
+msgstr "Շվեդերեն"
 
 #: config.language_map:592
-msgid "Tagalog"
-msgstr ""
+msgid "Swazi"
+msgstr "Swazi"
 
 #: config.language_map:593
-msgid "Tahitian"
-msgstr ""
+msgid "Syriac"
+msgstr "Syriac"
 
 #: config.language_map:594
-msgid "Tai (Other)"
-msgstr ""
+msgid "Tagalog"
+msgstr "Tagalog"
 
 #: config.language_map:595
-msgid "Tajik"
-msgstr ""
+msgid "Tahitian"
+msgstr "Tahitian"
 
 #: config.language_map:596
-msgid "Tamil"
-msgstr ""
+msgid "Tai (Other)"
+msgstr "Թաի (այլ)"
 
 #: config.language_map:597
-msgid "Tatar"
-msgstr ""
+msgid "Tajik"
+msgstr "Տաջիկերեն"
 
 #: config.language_map:598
-msgid "Tatar"
-msgstr ""
+msgid "Tamil"
+msgstr "Tamil"
 
 #: config.language_map:599
-msgid "Telugu"
-msgstr ""
+msgid "Tatar"
+msgstr "Թաթարերեն"
 
 #: config.language_map:600
-msgid "Temne"
-msgstr ""
+msgid "Tatar"
+msgstr "Թաթարերեն"
 
 #: config.language_map:601
-msgid "Terena"
-msgstr ""
+msgid "Telugu"
+msgstr "Telugu"
 
 #: config.language_map:602
-msgid "Tetum"
-msgstr ""
+msgid "Temne"
+msgstr "Temne"
 
 #: config.language_map:603
-msgid "Tajik"
-msgstr ""
+msgid "Terena"
+msgstr "Terena"
 
 #: config.language_map:604
-msgid "Tagalog"
-msgstr ""
+msgid "Tetum"
+msgstr "Tetum"
 
 #: config.language_map:605
-msgid "Thai"
-msgstr ""
+msgid "Tajik"
+msgstr "Տաջիկերեն"
 
 #: config.language_map:606
-msgid "Tibetan"
-msgstr ""
+msgid "Tagalog"
+msgstr "Tagalog"
 
 #: config.language_map:607
-msgid "Tigré"
-msgstr ""
+msgid "Thai"
+msgstr "Thai"
 
 #: config.language_map:608
-msgid "Tigrinya"
-msgstr ""
+msgid "Tibetan"
+msgstr "Տիբեթերեն"
 
 #: config.language_map:609
-msgid "Tiv"
-msgstr ""
+msgid "Tigré"
+msgstr "Tigré"
 
 #: config.language_map:610
-msgid "Tokelauan"
-msgstr ""
+msgid "Tigrinya"
+msgstr "Tigrinya"
 
 #: config.language_map:611
-msgid "Tlingit"
-msgstr ""
+msgid "Tiv"
+msgstr "Tiv"
 
 #: config.language_map:612
-msgid "Tamashek"
-msgstr ""
+msgid "Tokelauan"
+msgstr "Tokelauan"
 
 #: config.language_map:613
-msgid "Tonga (Nyasa)"
-msgstr ""
+msgid "Tlingit"
+msgstr "Tlingit"
 
 #: config.language_map:614
-msgid "Tongan"
-msgstr ""
+msgid "Tamashek"
+msgstr "Tamashek"
 
 #: config.language_map:615
-msgid "Tok Pisin"
-msgstr ""
+msgid "Tonga (Nyasa)"
+msgstr "Tonga (Nyasa)"
 
 #: config.language_map:616
-msgid "Truk"
-msgstr ""
+msgid "Tongan"
+msgstr "Tongan"
 
 #: config.language_map:617
-msgid "Tsimshian"
-msgstr ""
+msgid "Tok Pisin"
+msgstr "Tok Pisin"
 
 #: config.language_map:618
-msgid "Tswana"
-msgstr ""
+msgid "Truk"
+msgstr "Truk"
 
 #: config.language_map:619
-msgid "Tsonga"
-msgstr ""
+msgid "Tsimshian"
+msgstr "Tsimshian"
 
 #: config.language_map:620
 msgid "Tswana"
-msgstr ""
+msgstr "Tswana"
 
 #: config.language_map:621
-msgid "Turkmen"
-msgstr ""
+msgid "Tsonga"
+msgstr "Tsonga"
 
 #: config.language_map:622
-msgid "Tumbuka"
-msgstr ""
+msgid "Tswana"
+msgstr "Tswana"
 
 #: config.language_map:623
-msgid "Tupi languages"
-msgstr ""
+msgid "Turkmen"
+msgstr "Թուրքմեներեն"
 
 #: config.language_map:624
-msgid "Turkish"
-msgstr ""
+msgid "Tumbuka"
+msgstr "Tumbuka"
 
 #: config.language_map:625
-msgid "Altaic (Other)"
-msgstr ""
+msgid "Tupi languages"
+msgstr "Tupi languages"
 
 #: config.language_map:626
-msgid "Tuvaluan"
-msgstr ""
+msgid "Turkish"
+msgstr "Թուրքերեն"
 
 #: config.language_map:627
-msgid "Twi"
-msgstr ""
+msgid "Altaic (Other)"
+msgstr "Altaic (այլ)"
 
 #: config.language_map:628
-msgid "Tuvinian"
-msgstr ""
+msgid "Tuvaluan"
+msgstr "Tuvaluan"
 
 #: config.language_map:629
-msgid "Udmurt"
-msgstr ""
+msgid "Twi"
+msgstr "Twi"
 
 #: config.language_map:630
-msgid "Ugaritic"
-msgstr ""
+msgid "Tuvinian"
+msgstr "Tuvinian"
 
 #: config.language_map:631
-msgid "Uighur"
-msgstr ""
+msgid "Udmurt"
+msgstr "Ուդմուրտերեն"
 
 #: config.language_map:632
-msgid "Ukrainian"
-msgstr ""
+msgid "Ugaritic"
+msgstr "Ugaritic"
 
 #: config.language_map:633
-msgid "Umbundu"
-msgstr ""
+msgid "Uighur"
+msgstr "Uighur"
 
 #: config.language_map:634
-msgid "Undetermined"
-msgstr ""
+msgid "Ukrainian"
+msgstr "Ուկրաիներեն"
 
 #: config.language_map:635
-msgid "Urdu"
-msgstr ""
+msgid "Umbundu"
+msgstr "Umbundu"
 
 #: config.language_map:636
-msgid "Uzbek"
-msgstr ""
+msgid "Undetermined"
+msgstr "Undetermined"
 
 #: config.language_map:637
-msgid "Vai"
-msgstr ""
+msgid "Urdu"
+msgstr "Ուրդու"
 
 #: config.language_map:638
-msgid "Venda"
-msgstr ""
+msgid "Uzbek"
+msgstr "Ուզբեկերեն"
 
 #: config.language_map:639
-msgid "Vietnamese"
-msgstr ""
+msgid "Vai"
+msgstr "Vai"
 
 #: config.language_map:640
-msgid "Volapük"
-msgstr ""
+msgid "Venda"
+msgstr "Venda"
 
 #: config.language_map:641
-msgid "Votic"
-msgstr ""
+msgid "Vietnamese"
+msgstr "Վիետնամերեն"
 
 #: config.language_map:642
-msgid "Wakashan languages"
-msgstr ""
+msgid "Volapük"
+msgstr "Volapük"
 
 #: config.language_map:643
-msgid "Walamo"
-msgstr ""
+msgid "Votic"
+msgstr "Votic"
 
 #: config.language_map:644
-msgid "Waray"
-msgstr ""
+msgid "Wakashan languages"
+msgstr "Wakashan languages"
 
 #: config.language_map:645
-msgid "Washo"
-msgstr ""
+msgid "Walamo"
+msgstr "Walamo"
 
 #: config.language_map:646
-msgid "Welsh"
-msgstr ""
+msgid "Waray"
+msgstr "Waray"
 
 #: config.language_map:647
-msgid "Sorbian languages"
-msgstr ""
+msgid "Washo"
+msgstr "Washo"
 
 #: config.language_map:648
-msgid "Walloon"
-msgstr ""
+msgid "Welsh"
+msgstr "Welsh"
 
 #: config.language_map:649
-msgid "Wolof"
-msgstr ""
+msgid "Sorbian languages"
+msgstr "Sorbian languages"
 
 #: config.language_map:650
-msgid "Kalmyk"
-msgstr ""
+msgid "Walloon"
+msgstr "Walloon"
 
 #: config.language_map:651
-msgid "Xhosa"
-msgstr ""
+msgid "Wolof"
+msgstr "Wolof"
 
 #: config.language_map:652
-msgid "Yao (Africa)"
-msgstr ""
+msgid "Kalmyk"
+msgstr "Kalmyk"
 
 #: config.language_map:653
-msgid "Yapese"
-msgstr ""
+msgid "Xhosa"
+msgstr "Xhosa"
 
 #: config.language_map:654
-msgid "Yiddish"
-msgstr ""
+msgid "Yao (Africa)"
+msgstr "Yao (Africa)"
 
 #: config.language_map:655
-msgid "Yoruba"
-msgstr ""
+msgid "Yapese"
+msgstr "Yapese"
 
 #: config.language_map:656
-msgid "Yupik languages"
-msgstr ""
+msgid "Yiddish"
+msgstr "Yiddish"
 
 #: config.language_map:657
-msgid "Zapotec"
-msgstr ""
+msgid "Yoruba"
+msgstr "Yoruba"
 
 #: config.language_map:658
-msgid "Zenaga"
-msgstr ""
+msgid "Yupik languages"
+msgstr "Yupik languages"
 
 #: config.language_map:659
-msgid "Zhuang"
-msgstr ""
+msgid "Zapotec"
+msgstr "Zapotec"
 
 #: config.language_map:660
-msgid "Zande"
-msgstr ""
+msgid "Zenaga"
+msgstr "Zenaga"
 
 #: config.language_map:661
-msgid "Zulu"
-msgstr ""
+msgid "Zhuang"
+msgstr "Zhuang"
 
 #: config.language_map:662
+msgid "Zande"
+msgstr "Zande"
+
+#: config.language_map:663
+msgid "Zulu"
+msgstr "Zulu"
+
+#: config.language_map:664
 msgid "Zuni"
-msgstr ""
-
-#: config.item_form_map:664
-msgid "Microfilm"
-msgstr ""
-
-#: config.item_form_map:665
-msgid "Microfiche"
-msgstr ""
+msgstr "Zuni"
 
 #: config.item_form_map:666
-msgid "Microopaque"
-msgstr ""
+msgid "Microfilm"
+msgstr "Միկրոֆիլմ"
 
 #: config.item_form_map:667
-msgid "Large print"
-msgstr ""
+msgid "Microfiche"
+msgstr "Միկրոֆիշ"
 
 #: config.item_form_map:668
-msgid "Braille"
-msgstr ""
+msgid "Microopaque"
+msgstr "Microopaque"
 
 #: config.item_form_map:669
-msgid "Regular print reproduction"
-msgstr ""
+msgid "Large print"
+msgstr "Լայն տպագրություն"
 
 #: config.item_form_map:670
+msgid "Braille"
+msgstr "Բրայլ"
+
+#: config.item_form_map:671
+msgid "Regular print reproduction"
+msgstr "Սովորական տպագիր ռեպրոդուկցիաներ"
+
+#: config.item_form_map:672
 msgid "Electronic"
-msgstr ""
-
-#: config.item_type_map:672
-msgid "Language material"
-msgstr ""
-
-#: config.item_type_map:673
-msgid "Manuscript language material"
-msgstr ""
+msgstr "Էլեկտրոնային"
 
 #: config.item_type_map:674
-msgid "Projected medium"
-msgstr ""
+msgid "Language material"
+msgstr "Լեզվական նյութեր"
 
 #: config.item_type_map:675
-msgid "Two-dimensional nonprojectable graphic"
-msgstr ""
+msgid "Manuscript language material"
+msgstr "Manuscript language material"
 
 #: config.item_type_map:676
-msgid "Three-dimensional artifact or naturally occurring object"
-msgstr ""
+msgid "Projected medium"
+msgstr "Պրոյեկտված"
 
 #: config.item_type_map:677
-msgid "Kit"
-msgstr ""
+msgid "Two-dimensional nonprojectable graphic"
+msgstr "Երկչափանի չպրոեկտվող գրաֆիկա"
 
 #: config.item_type_map:678
-msgid "Mixed materials"
-msgstr ""
+msgid "Three-dimensional artifact or naturally occurring object"
+msgstr "Three-dimensional artifact or naturally occurring object"
 
 #: config.item_type_map:679
-msgid "Cartographic material"
-msgstr ""
+msgid "Kit"
+msgstr "Kit"
 
 #: config.item_type_map:680
-msgid "Manuscript cartographic material"
-msgstr ""
+msgid "Mixed materials"
+msgstr "Խառը նյութեր"
 
 #: config.item_type_map:681
-msgid "Notated music"
-msgstr ""
+msgid "Cartographic material"
+msgstr "Քարտեզներ"
 
 #: config.item_type_map:682
-msgid "Manuscript notated music"
-msgstr ""
+msgid "Manuscript cartographic material"
+msgstr "Ձեռագիր քարտեզներ"
 
 #: config.item_type_map:683
-msgid "Nonmusical sound recording"
-msgstr ""
+msgid "Notated music"
+msgstr "Նոտաներ"
 
 #: config.item_type_map:684
-msgid "Musical sound recording"
-msgstr ""
+msgid "Manuscript notated music"
+msgstr "Ձեռագիր նոտաներ"
 
 #: config.item_type_map:685
+msgid "Nonmusical sound recording"
+msgstr "Ոչ երաժշտական ձայներիզներ"
+
+#: config.item_type_map:686
+msgid "Musical sound recording"
+msgstr "Երաժշտական ձայներիզներ"
+
+#: config.item_type_map:687
 msgid "Computer file"
-msgstr ""
-
-#: config.bib_level_map:687
-msgid "Monographic component part"
-msgstr ""
-
-#: config.bib_level_map:688
-msgid "Serial component part"
-msgstr ""
+msgstr "Համակարգչային ֆայլ"
 
 #: config.bib_level_map:689
-msgid "Collection"
-msgstr ""
+msgid "Monographic component part"
+msgstr "Մենագրության մաս"
 
 #: config.bib_level_map:690
-msgid "Subunit"
-msgstr ""
+msgid "Serial component part"
+msgstr "Պարբերականի մաս"
 
 #: config.bib_level_map:691
-msgid "Integrating resource"
-msgstr ""
+msgid "Collection"
+msgstr "Հավաքածու"
 
 #: config.bib_level_map:692
-msgid "Monograph/Item"
-msgstr ""
+msgid "Subunit"
+msgstr "Ենթամիավոր"
 
 #: config.bib_level_map:693
-msgid "Serial"
-msgstr ""
+msgid "Integrating resource"
+msgstr "Միավորող պաշար"
 
-#: config.i18n_locale:698
-msgid "American English"
-msgstr ""
+#: config.bib_level_map:694
+msgid "Monograph/Item"
+msgstr "Մենագրություն/Նյութ"
+
+#: config.bib_level_map:695
+msgid "Serial"
+msgstr "Պարբերական"
 
 #: config.i18n_locale:700
-msgid "Canadian English"
-msgstr ""
+msgid "American English"
+msgstr "Ամերիկական անգլերեն"
 
 #: config.i18n_locale:702
-msgid "Canadian Fench"
-msgstr ""
+msgid "Canadian English"
+msgstr "Կանադական անգլերեն"
 
 #: config.i18n_locale:704
-msgid "American Spanish"
-msgstr ""
+msgid "Canadian Fench"
+msgstr "Կանադական ֆրանսերեն"
 
 #: config.i18n_locale:706
-msgid "Mexican Spanish"
-msgstr ""
+msgid "American Spanish"
+msgstr "Ամերիկական իսպաներեն"
 
-#: actor.org_unit_type:713
-msgid "Consortium"
-msgstr ""
+#: config.i18n_locale:708
+msgid "Mexican Spanish"
+msgstr "Մեքսիկական իսպաներեն"
 
 #: actor.org_unit_type:715
-msgid "System"
-msgstr ""
+msgid "Consortium"
+msgstr "Միավորում"
 
 #: actor.org_unit_type:717
-msgid "Branch"
-msgstr ""
+msgid "System"
+msgstr "Համակարգ"
 
 #: actor.org_unit_type:719
-msgid "Sub-lib"
-msgstr ""
+msgid "Branch"
+msgstr "Մասնաճյուղ"
 
 #: actor.org_unit_type:721
-msgid "Bookmobile"
-msgstr ""
+msgid "Sub-lib"
+msgstr "Sub-lib"
 
-#: actor.org_unit:724
-msgid "Example Consortium"
-msgstr ""
+#: actor.org_unit_type:723
+msgid "Bookmobile"
+msgstr "Ավտոգրադարան"
 
 #: actor.org_unit:726
-msgid "Example System 1"
-msgstr ""
+msgid "Example Consortium"
+msgstr "Միավորման օրինակ"
 
 #: actor.org_unit:728
-msgid "Example System 2"
-msgstr ""
+msgid "Example System 1"
+msgstr "Օրինակ համակարգ 1"
 
 #: actor.org_unit:730
-msgid "Example Branch 1"
-msgstr ""
+msgid "Example System 2"
+msgstr "Օրինակ համակարգ 2"
 
 #: actor.org_unit:732
-msgid "Example Branch 2"
-msgstr ""
+msgid "Example Branch 1"
+msgstr "Օրինակ մասնաճյուղ 1"
 
 #: actor.org_unit:734
-msgid "Example Branch 3"
-msgstr ""
+msgid "Example Branch 2"
+msgstr "Օրինակ մասնաճյուղ 2"
 
 #: actor.org_unit:736
-msgid "Example Branch 4"
-msgstr ""
+msgid "Example Branch 3"
+msgstr "Օրինակ մասնաճյուղ 3"
 
 #: actor.org_unit:738
-msgid "Example Sub-lib 1"
-msgstr ""
+msgid "Example Branch 4"
+msgstr "Օրինակ մասնաճյուղ 4"
 
 #: actor.org_unit:740
+msgid "Example Sub-lib 1"
+msgstr "Example Sub-lib 1"
+
+#: actor.org_unit:742
 msgid "Example Bookmobile 1"
-msgstr ""
+msgstr "Example Bookmobile 1"
 
-#: actor.org_address:742
+#: actor.org_address:744
 msgid "123 Main St."
-msgstr ""
+msgstr "123 Main St."
 
-#: permission.perm_list:760
+#: permission.perm_list:762
 msgid "User is allowed to place a hold on a specific copy"
-msgstr ""
+msgstr "Օգտվողը կարող է որոշակի օրինակի համար տեղադրել պահում"
 
-#: permission.perm_list:766
+#: permission.perm_list:768
 msgid "Allows a user to view another user's holds"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
 
-#: permission.perm_list:770
+#: permission.perm_list:772
 msgid "Allows a user to update another user's hold"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին թարմացնելու այլ օգտվողի պահումները"
 
-#: permission.perm_list:780
+#: permission.perm_list:782
 msgid "User is allowed to create new MARC records"
-msgstr ""
-
-#: permission.perm_list:820
-msgid "User may create new billable transactions"
-msgstr ""
+msgstr "Օգտվողը իրավունք ունի ստեղծելու նոր MARC գրառումներ"
 
 #: permission.perm_list:822
-msgid "Allows a user to create a new bill on a transaction"
-msgstr ""
+msgid "User may create new billable transactions"
+msgstr "Օգտվողը կարող է ստեղծել նոր վճարովի տրանզակցիաներ"
 
 #: permission.perm_list:824
-msgid "Allows a user to view another user's containers (buckets)"
-msgstr ""
+msgid "Allows a user to create a new bill on a transaction"
+msgstr "Թույլ է տալիս օգտվողին տրանզակցիայի համար ստեղծել նոր հաշիվ"
 
 #: permission.perm_list:826
-msgid "Allows a user to create a new container for another user"
-msgstr ""
+msgid "Allows a user to view another user's containers (buckets)"
+msgstr "Թույլ է տալիս օգտվողին դիտել այլ օգտվողի կոնտեյները (փնջերը)"
 
 #: permission.perm_list:828
-msgid "User is allowed to create a new copy object"
-msgstr ""
+msgid "Allows a user to create a new container for another user"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի համար ստեղծել նոր կոնտեյներ"
 
 #: permission.perm_list:830
-msgid "Allows a user to change org unit settings"
-msgstr ""
+msgid "User is allowed to create a new copy object"
+msgstr "Օգտվողը կարող է ստեղծել նոր պատճե"
 
 #: permission.perm_list:832
-msgid "Allows a user to see what another use has checked out"
-msgstr ""
+msgid "Allows a user to change org unit settings"
+msgstr "Թույլ է տալիս օգտվողին փոխել կազմ միավորի կարգաբերումները"
 
 #: permission.perm_list:834
-msgid "User may view another user's transactions"
-msgstr ""
+msgid "Allows a user to see what another use has checked out"
+msgstr "Թույլ է տալիս օգտվողին տեսնել ինչ է մյուս օգտվոչը վերցրել"
 
 #: permission.perm_list:836
-msgid "Allows a user to delete another user container"
-msgstr ""
+msgid "User may view another user's transactions"
+msgstr "Օգտվողը կարող է դիտել այլ օգտվողի տրանզակցիաները"
 
 #: permission.perm_list:838
-msgid "Create a container item for another user"
-msgstr ""
+msgid "Allows a user to delete another user container"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
 
 #: permission.perm_list:840
-msgid "User can add other users to permission groups"
-msgstr ""
+msgid "Create a container item for another user"
+msgstr "Ստեղծում է կոնտեյների նյութ այլ օգտվողի համար"
 
 #: permission.perm_list:842
-msgid "User can remove other users from permission groups"
-msgstr ""
+msgid "User can add other users to permission groups"
+msgstr "Օգտվողը կարող է իրավասությունների խմբերին ավելացնել այլ օգտվողների "
 
 #: permission.perm_list:844
-msgid "Allow user to view others' permission groups"
-msgstr ""
+msgid "User can remove other users from permission groups"
+msgstr "Օգտվողը կարող է իրավասությունների խմբերին հեռացնել այլ օգտվողների "
 
 #: permission.perm_list:846
-msgid "Allows a user to determine of another user can checkout an item"
-msgstr ""
+msgid "Allow user to view others' permission groups"
+msgstr "Թույլ է տալիս օգտվողին դիտել ուրիշների իրավասությունների խմբերը"
 
 #: permission.perm_list:848
-msgid "Allows a user to edit copies in batch"
-msgstr ""
+msgid "Allows a user to determine of another user can checkout an item"
+msgstr "Թույլ է տալիս օգտվողին սահմանել որ մեկ այլ օգտվող կարող է ստանալ նյութ"
 
 #: permission.perm_list:850
-msgid "User may create a new patron statistical category"
-msgstr ""
+msgid "Allows a user to edit copies in batch"
+msgstr "Թույլ է տալիս օգտվողին փաթեթով խմբագրել օրինակները"
 
 #: permission.perm_list:852
-msgid "User may create a copy stat cat"
-msgstr ""
+msgid "User may create a new patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 #: permission.perm_list:854
-msgid "User may create a new patron stat cat entry"
-msgstr ""
+msgid "User may create a copy stat cat"
+msgstr "Օգտվողը կարող է ստեղծել վիճ քարտ պատճե"
 
 #: permission.perm_list:856
-msgid "User may create a new copy stat cat entry"
-msgstr ""
+msgid "User may create a new patron stat cat entry"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողի վիճ քարտ մուտք"
 
 #: permission.perm_list:858
-msgid "User may update a patron stat cat"
-msgstr ""
+msgid "User may create a new copy stat cat entry"
+msgstr "Օգտվողը կարող է ստեղծել նոր պատճե վիճ քարտ մուտքի"
 
 #: permission.perm_list:860
-msgid "User may update a copy stat cat"
-msgstr ""
+msgid "User may update a patron stat cat"
+msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտը"
 
 #: permission.perm_list:862
-msgid "User may update a patron stat cat entry"
-msgstr ""
+msgid "User may update a copy stat cat"
+msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ"
 
 #: permission.perm_list:864
-msgid "User may update a copy stat cat entry"
-msgstr ""
+msgid "User may update a patron stat cat entry"
+msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտի մուտքը"
 
 #: permission.perm_list:866
-msgid "User may link a copy to a stat cat entry"
-msgstr ""
+msgid "User may update a copy stat cat entry"
+msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ մուտքը"
 
 #: permission.perm_list:868
-msgid "User may link another user to a stat cat entry"
-msgstr ""
+msgid "User may link a copy to a stat cat entry"
+msgstr "Օգտվողը կարող է կապել պատճեի վիճ քարտ մուտքը"
 
 #: permission.perm_list:870
-msgid "User may delete a patron stat cat"
-msgstr ""
+msgid "User may link another user to a stat cat entry"
+msgstr "Օգտվողը կարող է կապել մեկ այլ օգտվողի վիճ քարտ մուտքի"
 
 #: permission.perm_list:872
-msgid "User may delete a copy stat cat"
-msgstr ""
+msgid "User may delete a patron stat cat"
+msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտը"
 
 #: permission.perm_list:874
-msgid "User may delete a patron stat cat entry"
-msgstr ""
+msgid "User may delete a copy stat cat"
+msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտը"
 
 #: permission.perm_list:876
-msgid "User may delete a copy stat cat entry"
-msgstr ""
+msgid "User may delete a patron stat cat entry"
+msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտի մուտքը"
 
 #: permission.perm_list:878
-msgid "User may delete a patron stat cat entry map"
-msgstr ""
+msgid "User may delete a copy stat cat entry"
+msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտ մուտքը"
 
 #: permission.perm_list:880
-msgid "User may delete a copy stat cat entry map"
-msgstr ""
+msgid "User may delete a patron stat cat entry map"
+msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտ մուտքի քարտեզը"
 
 #: permission.perm_list:882
-msgid "Allows a user to create a new non-cataloged item type"
-msgstr ""
+msgid "User may delete a copy stat cat entry map"
+msgstr "Թույլ է տալիս օգտվողին ջնջել վիճ քարտ մուտքի քարտեզը"
 
 #: permission.perm_list:884
-msgid "Allows a user to update a non cataloged type"
-msgstr ""
+msgid "Allows a user to create a new non-cataloged item type"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր չմուտքագրված նյութի տէսակ"
 
 #: permission.perm_list:886
-msgid "Allows a user to create a new in-house-use "
-msgstr ""
+msgid "Allows a user to update a non cataloged type"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել չմուտքագրված նյութի տէսակը"
 
 #: permission.perm_list:888
-msgid "Allows a user to check out a copy"
-msgstr ""
+msgid "Allows a user to create a new in-house-use "
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր տնային օգտագործում"
 
 #: permission.perm_list:890
-msgid "Allows a user to create a new copy location"
-msgstr ""
+msgid "Allows a user to check out a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
 
 #: permission.perm_list:892
-msgid "Allows a user to update a copy location"
-msgstr ""
+msgid "Allows a user to create a new copy location"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պատճեի տեղաբաշխում"
 
 #: permission.perm_list:894
-msgid "Allows a user to delete a copy location"
-msgstr ""
+msgid "Allows a user to update a copy location"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել պատճեի տէղաբաշխումը"
 
 #: permission.perm_list:896
-msgid "Allows a user to create a transit_copy object for transiting a copy"
-msgstr ""
+msgid "Allows a user to delete a copy location"
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
 
 #: permission.perm_list:898
-msgid "Allows a user to close out a transit on a copy"
+msgid "Allows a user to create a transit_copy object for transiting a copy"
 msgstr ""
+"Թույլ է տալիս օգտվողին ստեղծել transit_copy պատկեր պատճեի տրանզիտի համար"
 
 #: permission.perm_list:900
-msgid "Allows a user to see if another user has permission to place a hold on a given copy"
-msgstr ""
+msgid "Allows a user to close out a transit on a copy"
+msgstr "Թույլ է տալիս օգտվողին փակել պատճեի տրանզիտը"
 
 #: permission.perm_list:902
-msgid "Allows a user to view which users have checked out a given copy"
+msgid "Allows a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
+"Թույլ է տալիս օգտվողին տեսնել արդյոք այլ օգտվող ունի իրավասություն տրված "
+"օրինակի համար պահում կատարել"
 
 #: permission.perm_list:904
-msgid "Allows a user to perform z3950 queries against remote servers"
-msgstr ""
+msgid "Allows a user to view which users have checked out a given copy"
+msgstr "Թույլ է տալիս օգտվողին տեսնել թե որ օգտվողներն են վերցրել տրված օրինակը"
 
 #: permission.perm_list:906
-msgid "Allows a user to register a new workstation"
-msgstr ""
+msgid "Allows a user to perform z3950 queries against remote servers"
+msgstr "Թույլ է տալիս օգտվողին ձևավորել z3950 հարցումներ "
 
 #: permission.perm_list:908
-msgid "Allows a user to view all notes attached to a copy"
-msgstr ""
+msgid "Allows a user to register a new workstation"
+msgstr "Թույլ է տալիս օգտվողին գրանցել նոր աշխատանքային կայան"
 
 #: permission.perm_list:910
-msgid "Allows a user to view all notes attached to a volume"
-msgstr ""
+msgid "Allows a user to view all notes attached to a copy"
+msgstr "Թույլ է տալիս օգտվողին դիտել պատճեին կցված բոլոր նշումները"
 
 #: permission.perm_list:912
-msgid "Allows a user to view all notes attached to a title"
-msgstr ""
+msgid "Allows a user to view all notes attached to a volume"
+msgstr "Թույլ է տալիս օգտվողին դիտել հատորին կցված բոլոր նշումները"
 
 #: permission.perm_list:914
-msgid "Allows a user to create a new volume note"
-msgstr ""
+msgid "Allows a user to view all notes attached to a title"
+msgstr "Թույլ է տալիս օգտվողին դիտել վերնագրին կցված բոլոր նշումները"
 
 #: permission.perm_list:916
-msgid "Allows a user to create a new copy note"
-msgstr ""
+msgid "Allows a user to create a new volume note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
 
 #: permission.perm_list:918
-msgid "Allows a user to create a new title note"
-msgstr ""
+msgid "Allows a user to create a new copy note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 #: permission.perm_list:920
-msgid "Allows a user to delete someone elses copy notes"
-msgstr ""
+msgid "Allows a user to create a new title note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր վերնագրի նշում"
 
 #: permission.perm_list:922
-msgid "Allows a user to delete someone elses volume note"
-msgstr ""
+msgid "Allows a user to delete someone elses copy notes"
+msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի օրինակի նշումները"
 
 #: permission.perm_list:924
-msgid "Allows a user to delete someone elses title note"
-msgstr ""
+msgid "Allows a user to delete someone elses volume note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի հատորի նշումները"
 
 #: permission.perm_list:926
-msgid "Allows a user to update another users container"
-msgstr ""
+msgid "Allows a user to delete someone elses title note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի վերնագրի նշումները"
 
 #: permission.perm_list:928
-msgid "Allows a user to create a container for themselves"
-msgstr ""
+msgid "Allows a user to update another users container"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել մեկ ուրիշ օգտվողի կոնտեյները"
 
 #: permission.perm_list:930
-msgid "Allows a user to view notifications attached to a hold"
-msgstr ""
+msgid "Allows a user to create a container for themselves"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել իր համար կոնտեյներ"
 
 #: permission.perm_list:932
-msgid "Allows a user to create new hold notifications"
-msgstr ""
+msgid "Allows a user to view notifications attached to a hold"
+msgstr "Թույլ է տալիս օգտվողին դիտել պահմանը կցված հիշեցումները"
 
 #: permission.perm_list:934
-msgid "Allows a user to update an org unit setting"
-msgstr ""
+msgid "Allows a user to create new hold notifications"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պահման նշում"
 
 #: permission.perm_list:936
-msgid "Allows a user to upload an offline script"
-msgstr ""
+msgid "Allows a user to update an org unit setting"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել կազմ միավորի կարգաբերումները"
 
 #: permission.perm_list:938
-msgid "Allows a user to view uploaded offline script information"
-msgstr ""
+msgid "Allows a user to upload an offline script"
+msgstr "Թույլ է տալիս օգտվողին բեռնավորել օֆլայն սկրիպտը"
 
 #: permission.perm_list:940
-msgid "Allows a user to execute an offline script batch"
-msgstr ""
+msgid "Allows a user to view uploaded offline script information"
+msgstr "Թույլ է տալիս օգտվողին դիտել բեռնավորված օֆլայն սկրիպտի ինֆորմացիան"
 
 #: permission.perm_list:942
-msgid "Allows a user to change set the due date on an item to any date"
-msgstr ""
+msgid "Allows a user to execute an offline script batch"
+msgstr "Թույլ է տալիս օգտվողին կատարել օֆլայն սկրիպտի փաթեթը"
 
 #: permission.perm_list:944
-msgid "Allows a user to bypass the circ permit call for checkout"
-msgstr ""
+msgid "Allows a user to change set the due date on an item to any date"
+msgstr "Թույլ է տալիս օգտվողին փոխել նյութի վերադարձի ամսաթիվը այլով: "
 
 #: permission.perm_list:946
-msgid "Allows a user to override the copy_is_reference event"
+msgid "Allows a user to bypass the circ permit call for checkout"
 msgstr ""
+"Թույլ է տալիս օգտվողին դուրս տրման համար շրջանցել տացքի թույլտվության կանչը "
 
 #: permission.perm_list:948
-msgid "Allows a user to void a bill"
-msgstr ""
+msgid "Allows a user to override the copy_is_reference event"
+msgstr "Թույլ է տալիս օգտվողին վերագրել copy_is_reference իրադարձությունը"
 
 #: permission.perm_list:950
-msgid "Allows a person to check in/out an item that is claims returned"
-msgstr ""
+msgid "Allows a user to void a bill"
+msgstr "Թույլ է տալիս օգտվողին արգելափակել հաշիվը"
 
 #: permission.perm_list:952
-msgid "Allows a user to check out an item in a non-circulatable status"
-msgstr ""
+msgid "Allows a person to check in/out an item that is claims returned"
+msgstr "Թույլ է տալիս մարդուն սպասարկել նյութը որը խարանված վերադարձ է:"
 
 #: permission.perm_list:954
-msgid "Allows a user to check in/out an item that has an alert message"
-msgstr ""
+msgid "Allows a user to check out an item in a non-circulatable status"
+msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութ որը ունի չսպասարկվող վիճակ"
 
 #: permission.perm_list:956
-msgid "Allows a user to remove the lost status from a copy"
-msgstr ""
+msgid "Allows a user to check in/out an item that has an alert message"
+msgstr "Թույլ է տալիս օգտվողին սպասարկել զգուշացնող հաղորդումով նյութը"
 
 #: permission.perm_list:958
-msgid "Allows a user to change the missing status on a copy"
-msgstr ""
+msgid "Allows a user to remove the lost status from a copy"
+msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի կորածի վիճակը"
 
 #: permission.perm_list:960
-msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
-msgstr ""
+msgid "Allows a user to change the missing status on a copy"
+msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի բացակաի վիճակը"
 
 #: permission.perm_list:962
-msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
+msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
+"Թույլ է տալիս օգտվողին վիժեցնելու օրինակի տրանզիտը, եթե օգտվողը տրանզիտ "
+"կետում է:"
 
 #: permission.perm_list:964
-msgid "Allowsa user to query the zip code data method"
+msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
+"Թույլ է տալիս օգտվողին վիժեցնել օրինակի տրանզիտը, եթե օգտվողը չի գտնվում "
+"տրանզիտի սկզբնաղբյուրում"
 
-#: permission.perm_list:968
-msgid "Allows a user to create duplicate holds (e.g. two holds on the same title)"
-msgstr ""
+#: permission.perm_list:966
+msgid "Allowsa user to query the zip code data method"
+msgstr "Թույլ է տալիս օգտվողին հարցնել զիպ կոդի տվյալի մեթոդը"
 
 #: permission.perm_list:970
-msgid "Allows a user to update a closed date interval for a given location"
+msgid "Allows a user to create duplicate holds (e.g. two holds on the same title)"
 msgstr ""
+"Թույլ է տալիս օգտվողին ստեղծել կրկնակի պահումներ (այսինքն՝ նույն վերնագրի "
+"համար երկու պահում):"
 
 #: permission.perm_list:972
-msgid "Allows a user to remove a closed date interval for a given location"
+msgid "Allows a user to update a closed date interval for a given location"
 msgstr ""
+"Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար թարմացնել փակ ամսաթվի "
+"տիրույթը:"
 
 #: permission.perm_list:974
-msgid "Allows a user to create a new closed date for a location"
+msgid "Allows a user to remove a closed date interval for a given location"
 msgstr ""
+"Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար հեռացնել փակ ամսաթվի "
+"տիրույթը:"
 
 #: permission.perm_list:976
-msgid "Allows a user to delete a non cataloged type"
-msgstr ""
+msgid "Allows a user to create a new closed date for a location"
+msgstr "Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար ստեղծել նոր փակ ամսաթիվ:"
 
 #: permission.perm_list:978
-msgid "Allows a user to put someone into collections"
-msgstr ""
+msgid "Allows a user to delete a non cataloged type"
+msgstr "Թույլ է տալիս օգտվողին ջնջել չմուտքագրվող տեսակը:"
 
 #: permission.perm_list:980
-msgid "Allows a user to remove someone from collections"
-msgstr ""
+msgid "Allows a user to put someone into collections"
+msgstr "Թույլ է տալիս օգտվողին մտցնել ինչ որ մեկին հավաքածուի մեջ:"
 
 #: permission.perm_list:982
-msgid "Allows a user to bar a patron"
-msgstr ""
+msgid "Allows a user to remove someone from collections"
+msgstr "Թույլ է տալիս օգտվողին հեռացնել ինչ որ մեկին հավաքածուից: "
 
 #: permission.perm_list:984
-msgid "Allows a user to un-bar a patron"
-msgstr ""
+msgid "Allows a user to bar a patron"
+msgstr "Թույլ է տալիս օգտվողին արգելափակել ընթերցողին:"
 
 #: permission.perm_list:986
-msgid "Allows a user to remove an existing workstation so a new one can replace it"
-msgstr ""
+msgid "Allows a user to un-bar a patron"
+msgstr "Թույլ է տալիս օգտվողին բացել ընթերցողին:"
 
 #: permission.perm_list:988
-msgid "Allows a user to add/remove users to/from the \"User\" group"
+msgid "Allows a user to remove an existing workstation so a new one can replace it"
 msgstr ""
+"Թույլ է տալիս օգտվողին հեռացնել առկա աշխատանքային կայանը, այսպիսով նորը "
+"կարող է փոխարինել դրան:"
 
 #: permission.perm_list:990
-msgid "Allows a user to add/remove users to/from the \"Patron\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"User\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Օգտվող\" խմբից"
 
 #: permission.perm_list:992
-msgid "Allows a user to add/remove users to/from the \"Staff\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"Patron\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Հաճախորդ\" խմբից:"
 
 #: permission.perm_list:994
-msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
+msgid "Allows a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Աշխատակազմ\" խմբից"
 
 #: permission.perm_list:996
-msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Տացքավար\" խմբից"
 
 #: permission.perm_list:998
-msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Քարտագրող\" խմբից"
 
 #: permission.perm_list:1000
-msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
+msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳլոբալԱդմին\" խմբից"
 
 #: permission.perm_list:1002
-msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
+msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԼոկալԱդմին\" խմբից"
 
 #: permission.perm_list:1004
-msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
+msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳրադարանիԿառավարիչ\" "
+"խմբից"
 
 #: permission.perm_list:1006
-msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Cat1\" խմբից"
 
 #: permission.perm_list:1008
-msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
-msgstr ""
+msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Supercat\" խմբից"
 
 #: permission.perm_list:1010
-msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
+msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"SIP-Client\" խմբից"
 
 #: permission.perm_list:1012
-msgid "Allows a user to place a hold on an age-protected item"
+msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Մատակարար\" խմբից:"
 
 #: permission.perm_list:1014
-msgid "Allows a user to renew an item past the maximun renewal count"
-msgstr ""
+msgid "Allows a user to place a hold on an age-protected item"
+msgstr "Թույլ է տալիս օգտվողին դնել պահում երկարաժամկետ պահպանման նյութի վրա:"
 
 #: permission.perm_list:1016
-msgid "Allow staff to override checkout count failure"
+msgid "Allows a user to renew an item past the maximun renewal count"
 msgstr ""
+"Թույլ է տալիս օգտվողին թարմացնել նյութը, որը գերազանցել է ամենաշատ "
+"թարմացումների քանակը:  "
 
 #: permission.perm_list:1018
-msgid "Allow staff to override overdue count failure"
-msgstr ""
+msgid "Allow staff to override checkout count failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել դուրս տրումների հաշվիչի ձախողումը:"
 
 #: permission.perm_list:1020
-msgid "Allow staff to override fine amount checkout failure"
-msgstr ""
+msgid "Allow staff to override overdue count failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել ժամկետանցների հաշվիչի ձախողումը:"
 
-#: permission.perm_list:1026
-msgid "Allow staff to force checkout of Missing/Lost type items"
-msgstr ""
+#: permission.perm_list:1022
+msgid "Allow staff to override fine amount checkout failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել տուգանքների հաշվիչի ձախողումը:"
 
 #: permission.perm_list:1028
-msgid "allows users to place multiple holds on a single title"
+msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
+"Թույլ է տալիս աշխատակազմին իրականացնել դուրս տրում Բացակա/Կորած նյութերի "
+"համար:"
 
 #: permission.perm_list:1030
-msgid "Allows a users to run reports"
-msgstr ""
+msgid "allows users to place multiple holds on a single title"
+msgstr "Թույլ է տալիս օգտվողներին դնել բազմակի պահումներ մեկ վերնագրի համար"
 
 #: permission.perm_list:1032
-msgid "Allows a user to share report his own folders"
-msgstr ""
+msgid "Allows a users to run reports"
+msgstr "Թույլ է տալիս օգտվողներին հաշվետվություններ ակտիվացնել  "
 
 #: permission.perm_list:1034
-msgid "Allow user to view report output"
-msgstr ""
+msgid "Allows a user to share report his own folders"
+msgstr "Թույլ է տալիս օգտվողին համատեղ օգտագործել հաշվետվությունը"
 
 #: permission.perm_list:1036
-msgid "Allows a user to checkout an item that is marked as non-circ"
-msgstr ""
+msgid "Allow user to view report output"
+msgstr "Թույլ է տալիս օգտվողին դիտել հաշվետվությունը"
 
 #: permission.perm_list:1038
-msgid "Allows a user to delete an item out of another user's container"
-msgstr ""
+msgid "Allows a user to checkout an item that is marked as non-circ"
+msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութը որը նշված է որպես չսպասարկ"
 
 #: permission.perm_list:1040
-msgid "Allow a staff member to define where another staff member has their permissions"
-msgstr ""
+msgid "Allows a user to delete an item out of another user's container"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի կոնտեյներից ջնջել նյութը:"
 
 #: permission.perm_list:1042
+msgid "Allow a staff member to define where another staff member has their permissions"
+msgstr ""
+"Թույլ է տալիս աշխատակազմի անդամին սահմանել այլ անդամի իրավասությունները:"
+
+#: permission.perm_list:1044
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
+"Թույլ է տալիս աշխատակազմի անդամին ուղղակիորեն հեռացնել մատենագիտական "
+"գրառումը:"
 
-#: actor.usr:1254
+#: actor.usr:1257
 msgid "Administrator"
-msgstr ""
+msgstr "Կառավարիչ"
 
-#: asset.copy_location:1267
+#: asset.copy_location:1270
 msgid "Stacks"
-msgstr ""
+msgstr "Պահոցներ"

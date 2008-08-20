@@ -83,7 +83,7 @@ class IDLParser(object):
 
         for child in root.childNodes:
         
-            if child.nodeType == child.ELEMENT_NODE:
+            if child.nodeType == child.ELEMENT_NODE and child.nodeName == 'class':
         
                 # -----------------------------------------------------------------------
                 # 'child' is the main class node for a fieldmapper class.
