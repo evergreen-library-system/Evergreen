@@ -1452,5 +1452,26 @@ sub get_org_full_path {
 	return \@orgs;
 }
 
+# returns the user's configured locale as a string.  Defaults to en-US if none is configured.
+sub get_user_locale {
+	my($self, $user_id, $e) = @_;
+	$e ||=OpenILS::Utils::CStoreEditor->new;
+
+	# first, see if the user has an explicit locale set
+	my $setting = $e->search_actor_user_setting(
+		{usr => $user_id, name => 'global.locale'})->[0];
+	return OpenSRF::Utils::JSON->JSON2perl($setting->value) if $setting;
+
+	my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+
+	# next see if their home org specifies a default locale
+	$setting = $e->search_actor_org_unit_setting(
+		{org_unit => $user->home_ou, name => 'global.default_locale'})->[0];
+	return OpenSRF::Utils::JSON->JSON2perl($setting->value) if $setting;
+
+	# if nothing else, fallback to locale=cowboy
+	return 'en-US';
+}
+
 1;
 
