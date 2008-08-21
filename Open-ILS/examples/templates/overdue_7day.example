@@ -2,15 +2,14 @@
 [%- SET user = circ_list.0.usr -%]
 [%- SET lib = circ_list.0.circ_lib -%]
 To: [% user.email %]
-From: [% smtp_sender %] 
-Reply-To: [% smtp_reply %] 
+From: [% smtp_sender %]
+Reply-To: [% smtp_reply %]
 Subject: Overdue Notification
 
 
-Dear [% user.first_given_name %] [% user.family_name %]
+Dear [% user.first_given_name %] [% user.family_name %],
 
 Our records indicate these items are 7 days overdue:
-
 [% FOREACH circ = circ_list %]
     [% get_bib_attr(circ, 'title') %], by [% get_bib_attr(circ, 'author') %] 
     Call Number: [% circ.target_copy.call_number.label %]
