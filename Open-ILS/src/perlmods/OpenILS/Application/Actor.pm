@@ -3051,5 +3051,24 @@ sub create_user_opt_in_at_org {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'retrieve_org_hours',
+	api_name	=> 'open-ils.actor.org_unit.hours_of_operation.retrieve',
+	signature	=> q/
+        Returns the hours of operation for a specified org unit
+		@param authtoken The login session key
+		@param org_id The org_unit ID
+	/
+);
+
+sub retrieve_org_hours {
+    my($self, $conn, $auth, $org_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
+    $org_id ||= $e->requestor->ws_ou;
+    return $e->retrieve_actor_org_unit_hours_of_operation($org_id);
+}
+
+
 1;
 
