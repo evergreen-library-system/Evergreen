@@ -835,7 +835,6 @@ sub staged_search {
             if($hc == 0) {
                 $logger->info("search returned 0 results: duration=$search_duration: params=".
                     OpenSRF::Utils::JSON->perl2JSON($search_hash));
-                return {count => 0};
             }
 
             # Create backwards-compatible result structures
