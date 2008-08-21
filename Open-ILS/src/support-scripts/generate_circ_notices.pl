@@ -174,7 +174,7 @@ sub generate_notice_set {
             '+circ' => {
                 checkin_time => undef, 
                 '-or' => [
-                    {stop_fines => ["LOST","LONGOVERDUE","CLAIMSRETURNED"]},
+                    {stop_fines => {'not in' => ["LOST","LONGOVERDUE","CLAIMSRETURNED"]}},
                     {stop_fines => undef}
                 ],
 				due_date => {between => [$start_date, $end_date]},
