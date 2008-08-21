@@ -154,11 +154,10 @@ sub new_crossref_authority_batch {
 		my $class = $req->[0];
 		my $term = $req->[1];
 		next unless $class and $term;
-		warn "Sending authority request for $class : $term\n";
+		$logger->info("Sending authority request for $class : $term");
 		my $fr = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10)->gather(1);
 		my $al = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10)->gather(1);
 
-		warn "Flattening $class : $term\n";
 		$response->{$class} = {} unless exists $response->{$class};
 		$response->{$class}->{$term} = _auth_flatten( $term, $fr, $al, 1 );
 
@@ -180,7 +179,7 @@ sub crossref_authority_batch {
 		my $class = $req->[0];
 		my $term = $req->[1];
 		next unless $class and $term;
-		warn "Sending authority request for $class : $term\n";
+		$logger->info("Sending authority request for $class : $term");
 		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
 		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
 
@@ -189,7 +188,6 @@ sub crossref_authority_batch {
 			my $trm = $lastr->[1];
 			my $fr	= $lastr->[2];
 			my $al	= $lastr->[3];
-			warn "Flattening $class : $term\n";
 			$response->{$cls} = {} unless exists $response->{$cls};
 			$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al, 1 );
 		}
@@ -205,7 +203,6 @@ sub crossref_authority_batch {
 		my $trm = $lastr->[1];
 		my $fr	= $lastr->[2];
 		my $al	= $lastr->[3];
-		warn "Flattening $cls : $trm\n";
 		$response->{$cls} = {} unless exists $response->{$cls};
 		$response->{$cls}->{$trm} = _auth_flatten( $trm, $fr, $al, 1);
 	}
@@ -244,7 +241,7 @@ sub crossref_authority_batch2 {
 
 		$logger->debug("authority data not found in cache.. fetching from storage");
 
-		warn "Sending authority request for $class : $term\n";
+		$logger->info("Sending authority request for $class : $term");
 		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
 		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
 		my $fr = $freq->gather(1);	

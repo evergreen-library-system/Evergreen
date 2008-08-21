@@ -703,6 +703,7 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
 
+    my $search_duration;
     my $user_offset = $search_hash->{offset} || 0; # user-specified offset
     my $user_limit = $search_hash->{limit} || 10;
     $user_offset = ($user_offset >= 0) ? $user_offset : 0;
@@ -750,8 +751,22 @@ sub staged_search {
             $search_hash->{skip_check} = $page * $superpage_size;
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
-            $logger->info("staged search: DB call took ".(time - $start)." seconds");
+            $search_duration = time - $start;
+            $logger->info("staged search: DB call took $search_duration seconds");
             $summary = shift(@$results);
+
+            unless($summary) {
+                $logger->info("search timed out: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+                return {count => 0};
+            }
+
+            my $hc = $summary->{estimated_hit_count} || $summary->{visible};
+            if($hc == 0) {
+                $logger->info("search returned 0 results: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+                return {count => 0};
+            }
 
             # Create backwards-compatible result structures
             if($self->api_name =~ /biblio/) {
@@ -827,7 +842,7 @@ sub cache_staged_search_page {
     $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
         $summary->{estimated_hit_count}.", visible=".$summary->{visible});
 
-    $cache->put_cache($key, $data);
+    $cache->put_cache($key, $data, $cache_timeout);
 }
 
 sub search_cache {
