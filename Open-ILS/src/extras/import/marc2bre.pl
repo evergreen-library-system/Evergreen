@@ -223,7 +223,7 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 if ($tcnfile) {
     open TCNFILE, '>', $tcnfile;
-    print "$_\n" for (keys %dontuse_id);
+    print TCNFILE "$_\n" for (keys %dontuse_id);
 }
 
 
