@@ -3,7 +3,8 @@
 [%- SET lib = circ_list.0.circ_lib -%]
 To: [% user.email %]
 From: [% smtp_sender %]
-Reply-To: [% smtp_reply %]
+Reply-To: [% smtp_sender %]
+Errors-To: [% smtp_sender %]
 Subject: Overdue Notification
 
 
