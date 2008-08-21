@@ -37,35 +37,61 @@ my $e = OpenILS::Utils::CStoreEditor->new;
 
 my @global_overdue_circs; # all circ collections stored here go into the final global XML file
 
-my ($osrf_config, $send_email, $gen_day_intervals, $days_back, $gen_global_templates) = 
-    ('/openils/conf/opensrf_core.xml', 0, 0, 0, 0); 
+# - set up default values
+my $opt_osrf_config = '/openils/conf/opensrf_core.xml';
+my $opt_send_email = 0;
+my $opt_gen_day_intervals = 0;
+my $opt_days_back = '';
+my $opt_gen_global_templates = 0;
+my $opt_show_help = 0;
+my $opt_append_global_email_fail;
 
 GetOptions(
-    'osrf_osrf_config=s' => \$osrf_config,
-    'send-email' => \$send_email,
-    'generate-day-intervals' => \$gen_day_intervals,
-    'generate-global-templates' => \$gen_global_templates,
-    'days-back=s' => \$days_back,
+    'osrf_opt_osrf_config=s' => \$opt_osrf_config,
+    'send-email' => \$opt_send_email,
+    'generate-day-intervals' => \$opt_gen_day_intervals,
+    'generate-global-templates' => \$opt_gen_global_templates,
+    'days-back=s' => \$opt_days_back,
+    'append-global-email-fail' => \$opt_append_global_email_fail,
+    'help' => \$opt_show_help,
 );
+
+help() and exit if $opt_show_help;
 
 sub help {
     print <<HELP;
-        --config <config_file>
-        
-        --send-emails If set, generate email notices
 
-        --generate-day-intervals If set, notices which have a notify_interval of >= 1 day will be processed.
+Evergreen Circulation Notice Generator
 
-        --days-back <days_back_comma_separted>  This is used to set the effective run date of the script.
-            This is useful if you don't want to generate notices on certain days.  For example, if you don't 
-            generate notices on the weekend, you would run this script on weekdays and set --days-back to 
-            0,1,2 when it's run on Monday to capture any notices from Saturday and Sunday. 
+    --config <config_file>
+    
+    --send-emails 
+        If set, generate email notices
+
+    --generate-day-intervals
+        If set, notices which have a notify_interval of >= 1 day will be processed.
+
+    --generate-global-templates
+        Collect all non-emailed notices into a global set and generate templates based on that set.
+
+    --append-global-email-fail
+        If an attempt was made to send an email notice but it failed, the notice is appended
+        to the global notice file set.  This will only have any bearing if --generate-global-templates
+        is enabled.
+
+    --days-back <days_back_comma_separted>  This is used to set the effective run date of the script.
+        This is useful if you don't want to generate notices on certain days.  For example, if you don't 
+        generate notices on the weekend, you would run this script on weekdays and set --days-back to 
+        0,1,2 when it's run on Monday to capture any notices from Saturday and Sunday. 
+
+    --help 
+        Print this help message
 HELP
 }
 
 
 sub main {
-    osrf_connect($osrf_config);
+    osrf_connect($opt_osrf_config);
     $settings = OpenSRF::Utils::SettingsClient->new;
 
     my $sender_address = $settings->config_value(notifications => 'sender_address');
@@ -85,10 +111,12 @@ sub main {
         OpenSRF::Utils->interval_to_seconds($a->{notify_interval}) <=> 
         OpenSRF::Utils->interval_to_seconds($b->{notify_interval}) } @$predue_notices;
 
-    generate_notice_set($_, 'overdue') for @overdues;
-    generate_notice_set($_, 'predue') for @predues;
+    for my $db (($opt_days_back) ? split(',', $opt_days_back) : 0) {
+        generate_notice_set($_, 'overdue', $db) for @overdues;
+        generate_notice_set($_, 'predue', $db) for @predues;
+    }
 
-    generate_global_overdue_file() if $gen_global_templates;
+    generate_global_overdue_file() if $opt_gen_global_templates;
 }
 
 sub generate_global_overdue_file {
@@ -115,12 +143,12 @@ sub global_overdue_output {
 
 
 sub generate_notice_set {
-    my($notice, $type) = @_;
+    my($notice, $type, $days_back) = @_;
 
     my $notify_interval = OpenSRF::Utils->interval_to_seconds($notice->{notify_interval});
     $notify_interval = -$notify_interval if $type eq 'overdue';
 
-    my ($start_date, $end_date) = make_date_range(-$days_back + $notify_interval);
+    my ($start_date, $end_date) = make_date_range($notify_interval - $days_back * 86400);
 
     $logger->info("notice: retrieving circs with due date in range $start_date -> $end_date");
 
@@ -211,7 +239,7 @@ sub generate_notice {
     push(@global_overdue_circs, $context) if 
         $type eq 'overdue' and $notice->{file_append} =~ /always/i;
 
-    if($send_email and $notice->{email_notify} and 
+    if($opt_send_email and $notice->{email_notify} and 
             my $email = $circ_list->[0]->usr->email) {
 
         if(my $tmpl = $notice->{email_template}) {
@@ -284,7 +312,8 @@ sub email_template_output {
 		$logger->warn("notice: unable to send $type email to $email: ".Dumper($stat));
         # if we were unable to send the email, add this notice set to the global notify set
         push(@global_overdue_circs, $context) 
-            if $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
+            if $opt_append_global_email_fail and 
+                $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
 	}
 }
 
