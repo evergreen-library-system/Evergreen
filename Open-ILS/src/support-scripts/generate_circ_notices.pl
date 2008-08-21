@@ -45,6 +45,7 @@ my $opt_days_back = '';
 my $opt_gen_global_templates = 0;
 my $opt_show_help = 0;
 my $opt_append_global_email_fail;
+my $opt_notice_types = '';
 
 GetOptions(
     'osrf_opt_osrf_config=s' => \$opt_osrf_config,
@@ -53,6 +54,7 @@ GetOptions(
     'generate-global-templates' => \$opt_gen_global_templates,
     'days-back=s' => \$opt_days_back,
     'append-global-email-fail' => \$opt_append_global_email_fail,
+    'notice-types=s' => \$opt_notice_types,
     'help' => \$opt_show_help,
 );
 
@@ -65,7 +67,7 @@ Evergreen Circulation Notice Generator
 
     --config <config_file>
     
-    --send-emails 
+    --send-email
         If set, generate email notices
 
     --generate-day-intervals
@@ -79,10 +81,14 @@ Evergreen Circulation Notice Generator
         to the global notice file set.  This will only have any bearing if --generate-global-templates
         is enabled.
 
-    --days-back <days_back_comma_separted>  This is used to set the effective run date of the script.
+    --days-back <days_back_comma_separted>  
+        This is used to set the effective run date of the script.
         This is useful if you don't want to generate notices on certain days.  For example, if you don't 
         generate notices on the weekend, you would run this script on weekdays and set --days-back to 
         0,1,2 when it's run on Monday to capture any notices from Saturday and Sunday. 
+
+    --notice-types <overdue,predue,...>
+        Comma-separated list of notice types to generate for this run of the script
 
     --help 
         Print this help message
@@ -93,6 +99,9 @@ HELP
 sub main {
     osrf_connect($opt_osrf_config);
     $settings = OpenSRF::Utils::SettingsClient->new;
+
+    die "Please specify at least 1 type of notice to generate with --notice-types\n"
+        unless $opt_notice_types;
 
     my $sender_address = $settings->config_value(notifications => 'sender_address');
     my $od_sender_addr = $settings->config_value(notifications => overdue => 'sender_address') || $sender_address;
@@ -112,8 +121,12 @@ sub main {
         OpenSRF::Utils->interval_to_seconds($b->{notify_interval}) } @$predue_notices;
 
     for my $db (($opt_days_back) ? split(',', $opt_days_back) : 0) {
-        generate_notice_set($_, 'overdue', $db) for @overdues;
-        generate_notice_set($_, 'predue', $db) for @predues;
+        if($opt_notice_types =~ /overdue/) {
+            generate_notice_set($_, 'overdue', $db) for @overdues;
+        }
+        if($opt_notice_types =~ /predue/) {
+            generate_notice_set($_, 'predue', $db) for @predues;
+        }
     }
 
     generate_global_overdue_file() if $opt_gen_global_templates;
