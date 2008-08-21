@@ -59,9 +59,14 @@ function destroyRequest(r) {
 var rrId = 0;
 function RemoteRequest( service, method ) {
 
-
+	/* dojo is currently only available in the OPAC */
+	try {
+		this.locale	= dojo.config.locale;
+	}
+	catch (e) {
+		this.locale = null;
+	}
 	this.service	= service;
-	this.locale		= dojo.config.locale;
 	this.method		= method;
 	this.xmlhttp	= false;
 	this.name		= null;
@@ -85,7 +90,11 @@ function RemoteRequest( service, method ) {
 	}
 
 	if(!this.params) { this.params = ""; }
-	this.param_string = "service=" + service + "&locale=" + locale + "&method=" + method + this.params;
+
+	this.param_string = "service=" + service + "&method=" + method + this.params;
+	if (this.locale != null) {
+		this.param_string = this.param_string + "&locale=" + this.locale;
+	}
 	if( this.buildXMLRequest() == null ) alert("Browser is not supported!");
 
 }
