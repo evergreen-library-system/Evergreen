@@ -185,6 +185,10 @@ function selfckPatronLogin(barcode) {
                 $('selfck-patron-login-input').select();
                 return;
             }
+
+            if(patron.textcode == 'NO_SESSION') 
+                return selfckLogoutStaff();
+
             return alert(patron.textcode);
         }
         $('selfck-patron-login-input').value = ''; // reset the input
@@ -195,6 +199,11 @@ function selfckPatronLogin(barcode) {
     });
 
     bcReq.send();
+}
+
+function selfckLogoutStaff() {
+    cookieManager.remove(STAFF_SES_PARAM);
+    location.reload(true);
 }
 
 /**
@@ -269,6 +278,10 @@ function selfckHandleCoResult(r) {
 
     } else if(evt.textcode == 'OPEN_CIRCULATION_EXISTS') {
         selfckRenew();
+
+    } else if(evt.textcode == 'NO_SESSION') {
+        
+        return selfckLogoutStaff();
 
     } else {
         pendingXact = false;
@@ -366,6 +379,7 @@ function selfckRenew() {
   */
 function selfckPrint() {
     for(var x in successfulItems) { // make sure we've checked out at least one item
+        appendClear($('selfck-print-lib-name'), text(orgUnit.name()));
         appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
         window.print();
         return;
