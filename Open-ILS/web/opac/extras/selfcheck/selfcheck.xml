@@ -164,15 +164,31 @@
                     <span id='selfck-print-lib-addr-state'/> 
                     <span id='selfck-print-lib-addr-post-code'/>
                 </div>
-                <div><span id='selfck-print-lname'/> <span id='selfck-print-fname'/></div>
-                You checked out the following items:
+                <br/>
+                <div><span id='selfck-print-lname'/>, <span id='selfck-print-fname'/></div>
+                &selfck.items_out;
                 <ol id='selfck-print-items-list'>
                     <li name='selfck-print-items-template'>
                         <div name='title'/>
-                        Barcode: <span name='barcode'/>
-                        Due Date: <span name='due_date'/>
+                        &selfck.barcode;: <span name='barcode'/>
+                        &selfck.due_date;: <span name='due_date'/>
                     </li>
                 </ol>
+                <br/>
+                <div>&selfck.org_phone; <span id='selfck-print-lib-phone'/></div>
+                <br/>
+                <div>
+                    <div>&selfck.org_hours;</div>
+                    <table>
+                        <tr><td>&selfck.day0;</td><td id='selfck-print-dow_0_open'/><td id='selfck-print-dow_0_close'/></tr>
+                        <tr><td>&selfck.day1;</td><td id='selfck-print-dow_1_open'/><td id='selfck-print-dow_1_close'/></tr>
+                        <tr><td>&selfck.day2;</td><td id='selfck-print-dow_2_open'/><td id='selfck-print-dow_2_close'/></tr>
+                        <tr><td>&selfck.day3;</td><td id='selfck-print-dow_3_open'/><td id='selfck-print-dow_3_close'/></tr>
+                        <tr><td>&selfck.day4;</td><td id='selfck-print-dow_4_open'/><td id='selfck-print-dow_4_close'/></tr>
+                        <tr><td>&selfck.day5;</td><td id='selfck-print-dow_5_open'/><td id='selfck-print-dow_5_close'/></tr>
+                        <tr><td>&selfck.day6;</td><td id='selfck-print-dow_6_open'/><td id='selfck-print-dow_6_close'/></tr>
+                    </table>
+                </div>
             </div>
         </div>
     </body>
