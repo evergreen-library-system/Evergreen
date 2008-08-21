@@ -22,7 +22,7 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $use901, $quiet) =
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $tcnfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $use901, $quiet) =
 	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
@@ -36,6 +36,7 @@ GetOptions( 'marctype=s'       => \$marctype,
             'encoding=s'       => \$enc,
             'hard_encoding'    => \$force_enc,
             'keyfile=s'        => \$keyfile,
+            'tcnfile=s'        => \$tcnfile,
             'config=s'         => \$config,
             'file=s'           => \@files,
             'required_field=s' => \@req_fields,
@@ -219,6 +220,13 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 }
+
+if ($tcnfile) {
+    open TCNFILE, '>', $tcnfile;
+    print "$_\n" for (keys %dontuse_id);
+}
+
+
 
 sub preprocess {
 	my $rec = shift;
