@@ -34,6 +34,8 @@ var scanTimeout = 800;
 var scanTimeoutId;
 var patronBarcodeRegex;
 var orgUnit;
+var orgUnitAddress;
+var orgUnitHours;
 
 
 function selfckInit() {
@@ -43,6 +45,7 @@ function selfckInit() {
     selfckSetupPrinter();
 
     orgUnit = findOrgUnitSN(cgi.param('l')) || globalOrgTree;
+    selfckFetchOrgDetails();
 
     var t = fetchOrgSettingDefault(orgUnit.id(), 'circ.selfcheck.patron_login_timeout');
     patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
@@ -80,6 +83,16 @@ function selfckInit() {
 
 //    selfckMkDummyCirc(); // testing only
     
+}
+
+function selfckFetchOrgDetails() {
+    var hreq = new Request('open-ils.actor:open-ils.actor.org_unit.hours_of_operation.retrieve', G.user.session, orgUnit.id());
+    hreq.callback(function(r) { orgUnitHours = r.getResultObject(); });
+    hreq.send();
+
+    var areq = new Request('open-ils.actor:open-ils.actor.org_unit.address.retrieve', orgUnit.mailing_address());
+    areq.callback(function(r) { orgUnitAddress = r.getResultObject(); });
+    areq.send();
 }
 
 function selfckSetupPrinter() {
@@ -379,8 +392,23 @@ function selfckRenew() {
   */
 function selfckPrint() {
     for(var x in successfulItems) { // make sure we've checked out at least one item
-        appendClear($('selfck-print-lib-name'), text(orgUnit.name()));
         appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
+        appendClear($('selfck-print-lib-name'), text(orgUnit.name()));
+        if(orgUnitAddress) {
+            appendClear($('selfck-print-lib-addr-street'), text(orgUnitAddress.street1()+' '+orgUnitAddress.street2()));
+            appendClear($('selfck-print-lib-addr-city'), text(orgUnitAddress.city()));
+            appendClear($('selfck-print-lib-addr-state'), text(orgUnitAddress.state()));
+            appendClear($('selfck-print-lib-addr-post-code'), text(orgUnitAddress.post_code()));
+        }
+        appendClear($('selfck-print-lname'), text(patron.family_name()));
+        appendClear($('selfck-print-fname'), text(patron.first_given_name()));
+        appendClear($('selfck-print-lib-phone'), text(orgUnit.phone()));
+        if(orgUnitHours) {
+            for(var i in [0, 1, 2, 3, 4, 5, 6]) {
+                appendClear($('selfck-print-dow_'+i+'_open'), text(orgUnitHours['dow_'+i+'_open']()));
+                appendClear($('selfck-print-dow_'+i+'_close'), text(orgUnitHours['dow_'+i+'_close']()));
+            }
+        }
         window.print();
         return;
     }
