@@ -157,6 +157,14 @@
         <div class='print' id='selfck-print-div'>
             <div>
                 <div id='selfck-print-date'/>
+                <div id='selfck-print-lib-name'/>
+                <div id='selfck-print-lib-addr-street'/>
+                <div>
+                    <span id='selfck-print-lib-addr-city'/>
+                    <span id='selfck-print-lib-addr-state'/> 
+                    <span id='selfck-print-lib-addr-post-code'/>
+                </div>
+                <div><span id='selfck-print-lname'/> <span id='selfck-print-fname'/></div>
                 You checked out the following items:
                 <ol id='selfck-print-items-list'>
                     <li name='selfck-print-items-template'>
