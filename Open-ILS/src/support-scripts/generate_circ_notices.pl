@@ -240,12 +240,20 @@ sub generate_notice {
         notifications => $type => 'sender_address') || 
         $settings->config_value(notifications => 'sender_address');
 
+    # see if there is a configured bounce address for this org unit.
+    # if so, use that as the sender
+	if(my $set = $e->search_actor_org_unit_setting( 
+			{name => 'org.bounced_emails', org_unit => $circ_list->[0]->circ_lib->id} )->[0]) {
+		my $bemail = OpenSRF::Utils::JSON->JSON2perl($set->value);
+		$sender = $bemail if $bemail;
+	}
+
+
     my $context = {   
         circ_list => $circ_list,
         get_bib_attr => \&get_bib_attr,
         parse_due_date => \&parse_due_date, # let the templates decide date format
         smtp_sender => $sender,
-        smtp_repley => $sender, # XXX
         notice => $notice,
     };
 
