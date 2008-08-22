@@ -48,7 +48,7 @@ my $opt_append_global_email_fail;
 my $opt_notice_types = '';
 
 GetOptions(
-    'osrf_opt_osrf_config=s' => \$opt_osrf_config,
+    'osrf_config=s' => \$opt_osrf_config,
     'send-email' => \$opt_send_email,
     'generate-day-intervals' => \$opt_gen_day_intervals,
     'generate-global-templates' => \$opt_gen_global_templates,
@@ -65,7 +65,7 @@ sub help {
 
 Evergreen Circulation Notice Generator
 
-    --config <config_file>
+    ---osrf_config <config_file>
     
     --send-email
         If set, generate email notices
