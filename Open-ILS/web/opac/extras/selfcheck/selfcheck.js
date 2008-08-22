@@ -380,6 +380,9 @@ function selfckRenew() {
                 rnReq.request.alertEvent = false;
                 rnReq.callback(selfckHandleCoResult);
                 rnReq.send();
+            } else {
+                pendingXact = false;
+                selfckShowMsgNode({textcode:'already-out'});
             }
         }
     );
