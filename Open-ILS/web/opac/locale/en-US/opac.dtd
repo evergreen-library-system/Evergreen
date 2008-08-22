@@ -667,6 +667,7 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.event.patron_not_found "The patron barcode was not found">
 <!ENTITY selfck.event.item_noncat "The requested item is not in the catalog">
 <!ENTITY selfck.event.item_nocirc "The requested item is not allowed to circulate">
+<!ENTITY selfck.event.already_out "The requested item is already checked out to another patron">
 <!ENTITY selfck.items_out "You checked out the following items">
 <!ENTITY selfck.org_hours "Hours of Operation">
 <!ENTITY selfck.org_phone "Library Phone Number">
