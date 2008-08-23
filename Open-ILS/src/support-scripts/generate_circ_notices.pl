@@ -262,7 +262,6 @@ sub generate_notice {
 		$sender = $bemail if $bemail;
 	}
 
-
     my $context = {   
         circ_list => $circ_list,
         get_bib_attr => \&get_bib_attr,
@@ -274,38 +273,21 @@ sub generate_notice {
     push(@global_overdue_circs, $context) if 
         $type eq 'overdue' and $notice->{file_append} =~ /always/i;
 
-    if( ($opt_send_email or $opt_use_email_outfile) and $notice->{email_notify} and 
+    if( ($opt_send_email or $opt_use_email_outfile) and 
+            $notice->{email_notify} and 
             my $email = $circ_list->[0]->usr->email) {
 
         if(my $tmpl = $notice->{email_template}) {
-
-            if($opt_use_email_outfile) { # append emails to output file
-                $tt->process($tmpl, $context, \&append_use_email_file)
-                    or $logger->error('notice: Template error '.$tt->error);
-
-            } else {
-                $tt->process($tmpl, $context, 
-                    sub { 
-                        email_template_output($notice, $type, $context, $email, @_); 
-                    }
-                ) or $logger->error('notice: Template error '.$tt->error);
-            }
+            $tt->process($tmpl, $context, 
+                sub { 
+                    handle_email_template_output($notice, $type, $context, $email, @_); 
+                }
+            ) or $logger->error('notice: Template error '.$tt->error);
         } 
     } else {
         push(@global_overdue_circs, $context) 
             if $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
     }
-}
-
-sub append_use_email_file {
-    my $output = shift;
-    unless(open(F, ">>$opt_use_email_outfile")) {
-        $logger->error("notice: unable to open --use-email-outfile $opt_use_email_outfile for writing: $@");
-        return;
-    }
-    $logger->debug("notice: appending emails to outfile $opt_use_email_outfile");
-    print F $output;
-    close $opt_use_email_outfile;
 }
 
 my $last_mvr;
@@ -348,28 +330,41 @@ sub escape_xml {
 }
 
 
-sub email_template_output {
+sub handle_email_template_output {
     my $notice = shift;
     my $type = shift;
     my $context = shift;
     my $email = shift;
     my $msg = shift;
 
-	my $sender = Email::Send->new({mailer => 'SMTP'});
-    my $smtp_server = $settings->config_value(notifications => 'smtp_server');
-    $logger->debug("notice: smtp server is $smtp_server");
-	$sender->mailer_args([Host => $smtp_server]);
-	my $stat = $sender->send($msg);
+    if($opt_use_email_outfile) {
+        if(open(F, ">>$opt_use_email_outfile")) {
+            $logger->debug("notice: appending emails to outfile $opt_use_email_outfile");
+            print F $msg;
+            close F;
+        } else {
+            $logger->error("notice: unable to open --use-email-outfile $opt_use_email_outfile for writing: $@");
+        }
+    }
 
-	if( $stat and $stat->type eq 'success' ) {
-		$logger->info("notice: successfully sent $type email to $email");
-	} else {
-		$logger->warn("notice: unable to send $type email to $email: ".Dumper($stat));
-        # if we were unable to send the email, add this notice set to the global notify set
-        push(@global_overdue_circs, $context) 
-            if $opt_append_global_email_fail and 
-                $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
-	}
+
+    if($opt_send_email) {
+	    my $sender = Email::Send->new({mailer => 'SMTP'});
+        my $smtp_server = $settings->config_value(notifications => 'smtp_server');
+        $logger->debug("notice: smtp server is $smtp_server");
+	    $sender->mailer_args([Host => $smtp_server]);
+	    my $stat = $sender->send($msg);
+    
+	    if( $stat and $stat->type eq 'success' ) {
+		    $logger->info("notice: successfully sent $type email to $email");
+	    } else {
+		    $logger->warn("notice: unable to send $type email to $email: ".Dumper($stat));
+            # if we were unable to send the email, add this notice set to the global notify set
+            push(@global_overdue_circs, $context) 
+                if $opt_append_global_email_fail and 
+                    $type eq 'overdue' and $notice->{file_append} =~ /noemail/i;
+	    }
+    }
 }
 
 sub fetch_circ_data {
