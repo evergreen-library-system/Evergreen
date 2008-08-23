@@ -46,6 +46,8 @@ my $opt_gen_global_templates = 0;
 my $opt_show_help = 0;
 my $opt_append_global_email_fail;
 my $opt_notice_types = '';
+my $opt_use_email_outfile;
+my $opt_use_email_recipient;
 
 GetOptions(
     'osrf_config=s' => \$opt_osrf_config,
@@ -55,6 +57,8 @@ GetOptions(
     'days-back=s' => \$opt_days_back,
     'append-global-email-fail' => \$opt_append_global_email_fail,
     'notice-types=s' => \$opt_notice_types,
+    'use-email-outfile=s' => \$opt_use_email_outfile,
+    'use-email-recipient=s' => \$opt_use_email_recipient,
     'help' => \$opt_show_help,
 );
 
@@ -69,6 +73,14 @@ Evergreen Circulation Notice Generator
     
     --send-email
         If set, generate email notices
+
+    --use-email-outfile <file>
+        Instead of sending emails, append each email (complete with headers) to this file
+
+    --use-email-recipient <user\@example.com>
+        Send all email notices to this user instead of the patron.  This updates the 
+        email address on the user object attached to the circulations, so no 
+        change to the email templates is required.
 
     --generate-day-intervals
         If set, notices which have a notify_interval of >= 1 day will be processed.
@@ -102,6 +114,8 @@ sub main {
 
     die "Please specify at least 1 type of notice to generate with --notice-types\n"
         unless $opt_notice_types;
+
+    unlink $opt_use_email_outfile if $opt_use_email_outfile;
 
     my $sender_address = $settings->config_value(notifications => 'sender_address');
     my $od_sender_addr = $settings->config_value(notifications => overdue => 'sender_address') || $sender_address;
@@ -260,15 +274,22 @@ sub generate_notice {
     push(@global_overdue_circs, $context) if 
         $type eq 'overdue' and $notice->{file_append} =~ /always/i;
 
-    if($opt_send_email and $notice->{email_notify} and 
+    if( ($opt_send_email or $opt_use_email_outfile) and $notice->{email_notify} and 
             my $email = $circ_list->[0]->usr->email) {
 
         if(my $tmpl = $notice->{email_template}) {
-            $tt->process($tmpl, $context, 
-                sub { 
-                    email_template_output($notice, $type, $context, $email, @_); 
-                }
-            ) or $logger->error('notice: Template error '.$tt->error);
+
+            if($opt_use_email_outfile) { # append emails to output file
+                $tt->process($tmpl, $context, \&append_use_email_file)
+                    or $logger->error('notice: Template error '.$tt->error);
+
+            } else {
+                $tt->process($tmpl, $context, 
+                    sub { 
+                        email_template_output($notice, $type, $context, $email, @_); 
+                    }
+                ) or $logger->error('notice: Template error '.$tt->error);
+            }
         } 
     } else {
         push(@global_overdue_circs, $context) 
@@ -276,6 +297,18 @@ sub generate_notice {
     }
 }
 
+sub append_use_email_file {
+    my $output = shift;
+    unless(open(F, ">>$opt_use_email_outfile")) {
+        $logger->error("notice: unable to open --use-email-outfile $opt_use_email_outfile for writing: $@");
+        return;
+    }
+    $logger->debug("notice: appending emails to outfile $opt_use_email_outfile");
+    print F $output;
+    close $opt_use_email_outfile;
+}
+
+my $last_mvr;
 sub get_bib_attr {
     my $circ = shift;
     my $attr = shift;
@@ -284,9 +317,10 @@ sub get_bib_attr {
         return $copy->dummy_title || '' if $attr eq 'title';
         return $copy->dummy_author || '' if $attr eq 'author';
     } else {
-        my $mvr = $U->record_to_mvr($copy->call_number->record);
-        return $mvr->title || '' if $attr eq 'title';
-        return $mvr->author || '' if $attr eq 'author';
+        $last_mvr = $U->record_to_mvr($copy->call_number->record)
+            unless $last_mvr and $last_mvr->doc_id == $copy->call_number->record->id;
+        return $last_mvr->title || '' if $attr eq 'title';
+        return $last_mvr->author || '' if $attr eq 'author';
     }
 }
 
@@ -353,6 +387,10 @@ sub fetch_circ_data {
             }
         }
     ]);
+
+    # if the caller has defined a test email recipient, override 
+    # the user's email if they have one.
+    $usr->email($opt_use_email_recipient) if $usr->email and $opt_use_email_recipient;
 
     my $circ_lib = $ORG_CACHE{$circ_lib_id} ||
         $e->retrieve_actor_org_unit([
