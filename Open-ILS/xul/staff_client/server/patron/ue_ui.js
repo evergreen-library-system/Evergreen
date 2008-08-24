@@ -116,7 +116,7 @@ function uEditBuildLibSelector( node, depth, selector ) {
 
 
 /* group tree selector */
-function uEditDrawGroups(tree, depth, selector) {
+function uEditDrawGroups(tree, depth, selector, drawme) {
 	if(!selector) {
 		selector = $('ue_profile');
 		depth = 0;
@@ -127,13 +127,15 @@ function uEditDrawGroups(tree, depth, selector) {
 		remove it from the tree and don't add it's children */
 	var perm = uEditFindGroupPerm(tree);
 	var org = PERMS[perm];
-	if( org == -1 ) return;
+	if( org == -1 ) drawme = false;
 
-	var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
-	if(!isTrue(tree.usergroup())) opt.disabled = true;
+	if( drawme ) {
+		var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
+		if(!isTrue(tree.usergroup())) opt.disabled = true;
+	}
 
 	for( var c in tree.children() ) 
-		uEditDrawGroups( tree.children()[c], depth, selector );
+		uEditDrawGroups( tree.children()[c], depth, selector, drawme );
 }
 
 
@@ -148,14 +150,15 @@ function uEditFindGroupPerm(group) {
 /* user identification types */
 function uEditDrawIDTypes(types) {
 	var pri_sel = $('ue_primary_ident_type');
-	var sec_sel = $('ue_secondary_ident_type');
+	//var sec_sel = $('ue_secondary_ident_type');
 	var idx = 1;
 	for( var t in types ) {
 		var type = types[t];
 		if(!type.name()) continue;
 		identTypesCache[type.id()] = type;
 		setSelectorVal( pri_sel, idx, type.name(), type.id() );
-		setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+		//setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+		idx++;
 	}
 }
 
@@ -455,6 +458,7 @@ function uEditDrawNetLevels(netLevels) {
 			insertSelectorVal( sel, -1, i.name(), i.id() );
 		}
 	);
+	setSelector(sel, defaultNetLevel);
 }
 
 
