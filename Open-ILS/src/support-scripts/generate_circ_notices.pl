@@ -165,7 +165,7 @@ sub generate_global_overdue_file {
 }
 
 sub global_overdue_output {
-    binmode F, ":utf8";
+    binmode STDOUT, ":utf8";
     print shift();
 }
 
