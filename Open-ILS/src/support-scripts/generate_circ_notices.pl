@@ -359,6 +359,7 @@ sub handle_email_template_output {
 
     if($opt_use_email_outfile) {
         if(open(F, ">>$opt_use_email_outfile")) {
+            binmode F, ":utf8";
             $logger->debug("notice: appending emails to outfile $opt_use_email_outfile");
             print F $msg;
             close F;
