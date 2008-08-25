@@ -994,6 +994,16 @@ function buildOrgSel(selector, org, offset) {
 		buildOrgSel( selector, org.children()[c], offset);
 }
 
+function buildMergedOrgSel(selector, org_list, offset) {
+    for(var i = 0; i < org_list.length; i++) {
+        var org = findOrgUnit(org_list[i]);
+    	insertSelectorVal( selector, -1, 
+		    org.name(), org.id(), null, findOrgDepth(org) - offset );
+	    for( var c in org.children() )
+		    buildOrgSel( selector, org.children()[c], offset);
+    }
+}
+
 
 function parseForm(form) {
 	if(!form) return {};
