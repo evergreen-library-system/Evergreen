@@ -1486,6 +1486,17 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal',
+			'id' : 'current_copy_location', 
+			'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_location_label'),
+            'flex' : 1,
+			'primary' : false, 
+            'hidden' : true, 
+            'render' : function(my) { 
+                if (!my.acp) { return ""; } else { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); } 
+            }
+		},
+		{
+			'persist' : 'hidden width ordinal',
 			'id' : 'email_notify',
 			'label' : document.getElementById('commonStrings').getString('staff.ahr_email_notify_label'),
 			'flex' : 1,
