@@ -6,6 +6,8 @@ var DELETE_CL = 'open-ils.circ:open-ils.circ.copy_location.delete';
 
 var YES;
 var NO;
+var locationSet;
+var focusOrg;
 
 var myPerms = [
 	'CREATE_COPY_LOCATION',
@@ -21,10 +23,11 @@ function clEditorInit() {
 	$('user').appendChild(text(USER.usrname()));
 	YES = $('yes').innerHTML;
 	NO = $('no').innerHTML;
+    locationSet = [];
 
 	setTimeout( 
 		function() { 
-			fetchHighestPermOrgs( SESSION, USER.id(), myPerms ); 
+			fetchHighestWorkPermOrgs( SESSION, USER.id(), myPerms ); 
 			$('cl_new_name').focus();
 			clBuildNew();
 			clGo(); 
@@ -37,19 +40,62 @@ function clHoldMsg() {
 }
 
 function clGo() {	
-	var req = new Request(RETRIEVE_CL, USER.ws_ou());
-	req.callback(clDraw);
-	setTimeout( function(){req.send()}, 500 );
+    setTimeout(function(){clGo2();}, 500);
+}
+
+function clGo2() {	
+    locationSet = {};
+    var req = new Request(RETRIEVE_CL, focusOrg);
+    req.request._last = true;
+    req.callback(clAppendLocation);
+    req.send();
+
+    /*  if we need to add view-all ability, can use this... 
+    var org_list = OILS_WORK_PERMS['CREATE_COPY_LOCATION'];
+    for(var i = 0; i < org_list.length; i++) {
+	    var req = new Request(RETRIEVE_CL, org_list[i]);
+	    req.callback(clAppendLocation);
+        if(i == org_list.length - 1) 
+            req.request._last = true;
+        req.send();
+    }
+    */
+}
+
+function clAppendLocation(r) {
+    var cls = r.getResultObject();
+	if(checkILSEvent(cls)) throw cls;
+    for(var i = 0; i < cls.length; i++) 
+        locationSet[cls[i].id()] = cls[i];
+    if(r._last) 
+        clDraw();
 }
 
 function clBuildNew() {
-	org = PERMS['CREATE_COPY_LOCATION'];
-	if(org == -1) return;
+	org_list = OILS_WORK_PERMS['CREATE_COPY_LOCATION'];
+    var org;
+    if(org_list.length == 0)
+        return;
 	var selector = $('cl_new_owner');
-	org = findOrgUnit(org);
-	buildOrgSel(selector, org, findOrgDepth(org));
-	if(org.children() && org.children()[0]) 
+	var fselector = $('cl_org_filter');
+	buildMergedOrgSel(selector, org_list, 0);
+	buildMergedOrgSel(fselector, org_list, 0);
+    var org = findOrgUnit(org_list[0]);
+    if(org_list.length > 1 || (org.children() &&  org.children()[0])) {
 		selector.disabled = false;
+        fselector.disabled = false;
+    }
+
+    fselector.onchange = function() {
+        focusOrg = getSelectorVal(fselector);
+        clGo();
+    }
+    
+    focusOrg = USER.ws_ou();
+    if(!orgIsMineFromSet(org_list, USER.ws_ou())) 
+        focusOrg = org_list[0];
+    setSelector(fselector, focusOrg);
+
 
 	var sub = $('sc_new_submit');
 	sub.disabled = false;
@@ -73,10 +119,11 @@ function clCreateNew() {
 }
 
 var rowTemplate;
-function clDraw(r) {
+function clDraw() {
 
-	var cls = r.getResultObject();
-	if(checkILSEvent(cls)) throw cls;
+    var cls = [];
+    for(var x in locationSet)
+        cls.push(locationSet[x]);
 
 	var tbody = $('cl_tbody');
 	if(!rowTemplate)
@@ -109,11 +156,11 @@ function clBuildRow( tbody, row, cl ) {
 
 	var edit = $n( row, 'cl_edit');
 	edit.onclick = function() { clEdit( cl, tbody, row ); };
-	checkDisabled( edit, cl.owning_lib(), 'UPDATE_COPY_LOCATION');
+    checkPermOrgDisabled(edit, cl.owning_lib(), 'UPDATE_COPY_LOCATION');
 
 	var del = $n( row, 'cl_delete' );
 	del.onclick = function() { clDelete( cl, tbody, row ); };
-	checkDisabled( del, cl.owning_lib(), 'DELETE_COPY_LOCATION');
+	checkPermOrgDisabled(del, cl.owning_lib(), 'DELETE_COPY_LOCATION');
 }
 
 function clEdit( cl, tbody, row ) {
