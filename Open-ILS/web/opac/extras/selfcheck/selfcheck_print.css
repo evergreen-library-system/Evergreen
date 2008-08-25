@@ -10,6 +10,7 @@
     color: black;
     font-family: Arial;
     background-color: white;
+    page-break-after: always;
 }
 #selfck-print-patron-info { font-size: 8pt; }
 
