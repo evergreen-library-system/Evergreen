@@ -782,6 +782,11 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.acp ? my.acp.barcode() : "No Copy"; },
 		},
 		{
+			'id' : 'current_copy_location', 'label' : 'Current Copy Location', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { if (!my.acp) { return ""; } else { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); } },
+			'persist' : 'hidden width ordinal',
+		},
+		{
 			'persist' : 'hidden width ordinal', 'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return get_bool(my.ahr.email_notify()) ? "Yes" : "No"; },
 		},
