@@ -92,7 +92,14 @@ function orgIsMine(me, org) {
 	return false;
 }
 
-
+function orgIsMineFromSet(meList, org) {
+    org = findOrgUnit(org);
+    for(var i = 0; i < meList.length; i++) {
+        if(orgIsMine(findOrgUnit(meList[i]), org))
+            return true;
+    }
+    return false;
+}
 
 var orgArraySearcher = {};
 var globalOrgTree;
