@@ -2,6 +2,7 @@ var USER;
 var SESSION;
 var PERMS = {};
 var ORG_CACHE = {};
+var OILS_WORK_PERMS = {};
 
 var XML_ELEMENT_NODE = 1;
 var XML_TEXT_NODE = 3;
@@ -57,6 +58,19 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 		//PERMS[ perms[i] ] = ( orgs[i] != null ) ? orgs[i] : -1 ;
 	return orgs;
 }
+
+function fetchHighestWorkPermOrgs(session, userId, perms) {
+    for(var i = 0; i < perms.length; i++) {
+        var perm = perms[i];
+        var req = new RemoteRequest(
+            'open-ils.actor',
+            'open-ils.actor.user.work_perm.highest_org_set',
+            session, perm);
+        req.send(true);
+        OILS_WORK_PERMS[perm] = req.getResultObject();
+    }
+}
+
 
 /* offset is the depth of the highest org 
 	in the tree we're building 
