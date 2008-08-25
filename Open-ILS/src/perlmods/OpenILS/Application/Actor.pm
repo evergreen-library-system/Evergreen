@@ -3066,7 +3066,10 @@ sub retrieve_org_hours {
     my $e = new_editor(authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
     $org_id ||= $e->requestor->ws_ou;
-    return $e->retrieve_actor_org_unit_hours_of_operation($org_id);
+    # use storage for <1.4 to avoid timezone issues with cstore
+    return $U->storagereq(
+        'open-ils.storage.direct.actor.org_unit.hours_of_operation.retrieve', $org_id);
+    #return $e->retrieve_actor_org_unit_hours_of_operation($org_id);
 }
 
 
