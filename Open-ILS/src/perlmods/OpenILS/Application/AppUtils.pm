@@ -1291,6 +1291,7 @@ sub find_highest_work_orgs {
     my($self, $e, $perm, $options) = @_;
     my $work_orgs = $self->get_user_work_ou_ids($e, $e->requestor->id);
     $logger->debug("found work orgs @$work_orgs");
+	$options ||= {};
 
     my @allowed_orgs;
 	my $org_tree = $self->get_org_tree();
