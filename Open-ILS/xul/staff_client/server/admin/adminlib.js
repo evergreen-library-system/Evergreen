@@ -118,6 +118,22 @@ function checkDisabled( node, itemOrg, perm ) {
 	if( mydepth != -1 && mydepth <= itemDepth ) node.disabled = false;
 }
 
+/**
+  * If the item-related org unit (owner, etc.) is one of or
+  * or a child of any of the perm-orgs related to the
+  * provided permission, enable the requested node
+  */
+function checkPermOrgDisabled(node, itemOrg, perm) {
+    var org_list = OILS_WORK_PERMS[perm];
+    if(org_list.length > 0) {
+        for(var i = 0; i < org_list.length; i++) {
+            var highPermOrg = findOrgUnit(org_list[i]);
+            if(orgIsMine(highPermOrg, findOrgUnit(itemOrg))) 
+                node.disabled = false;
+        }
+    }
+}
+
 
 function fetchOrgUnit(id, callback) {
 
