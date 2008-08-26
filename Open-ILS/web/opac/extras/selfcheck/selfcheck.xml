@@ -140,6 +140,7 @@
                                     <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
                                 </td>
                             </tr>
+                            <tr class='hide_me'> </tr>
                         </tbody>
                     </table>
                     <div id='selfck-items-out-done-div'>
@@ -175,6 +176,7 @@
                             &selfck.barcode;: <span name='barcode'/>
                             &selfck.due_date;: <span name='due_date'/>
                         </li>
+                        <li class='hide_me'> </li>
                     </ol>
                 </div>
                 <br/>
