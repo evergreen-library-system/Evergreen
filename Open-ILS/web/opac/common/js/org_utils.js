@@ -110,6 +110,7 @@ for (var i in _l) {
 	x.parent_ou(_l[i][2]);
 	x.name(_l[i][3]);
     x.opac_visible(_l[i][4]);
+    x.shortname(_l[i][5]);
 	orgArraySearcher[x.id()] = x;
 }
 for (var i in orgArraySearcher) {
