@@ -987,20 +987,22 @@ function goHome() {
 }
 
 
-function buildOrgSel(selector, org, offset) {
+function buildOrgSel(selector, org, offset, namecol) {
+    if(!namecol) namecol = 'name';
 	insertSelectorVal( selector, -1, 
-		org.name(), org.id(), null, findOrgDepth(org) - offset );
+		org[namecol](), org.id(), null, findOrgDepth(org) - offset );
 	for( var c in org.children() )
-		buildOrgSel( selector, org.children()[c], offset);
+		buildOrgSel( selector, org.children()[c], offset, namecol);
 }
 
-function buildMergedOrgSel(selector, org_list, offset) {
+function buildMergedOrgSel(selector, org_list, offset, namecol) {
+    if(!namecol) namecol = 'name';
     for(var i = 0; i < org_list.length; i++) {
         var org = findOrgUnit(org_list[i]);
     	insertSelectorVal( selector, -1, 
-		    org.name(), org.id(), null, findOrgDepth(org) - offset );
+		    org[namecol](), org.id(), null, findOrgDepth(org) - offset );
 	    for( var c in org.children() )
-		    buildOrgSel( selector, org.children()[c], offset);
+		    buildOrgSel( selector, org.children()[c], offset, namecol);
     }
 }
 
