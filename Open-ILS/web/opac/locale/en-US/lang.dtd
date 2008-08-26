@@ -1355,7 +1355,7 @@
 <!ENTITY staff.server.admin.copy_locations.editor.circulate.label "Circulate: ">
 <!ENTITY staff.server.admin.copy_locations.editor.library.label "Owning Library:">
 <!ENTITY staff.server.admin.copy_locations.editor.library "Owning Library">
-<!ENTITY staff.server.admin.copy_locations.editor.library.filter "Filter by library:">
+<!ENTITY staff.server.admin.copy_locations.editor.library.filter "Focus Location:">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable "Holdable">
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
