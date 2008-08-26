@@ -1353,10 +1353,46 @@ __PACKAGE__->register_method(
     /
 );
 
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.highest_org_set.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_tree_list.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_unit_list.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_id_list.batch',
+    authoritative => 1,
+);
+
+
 sub check_user_work_perms {
     my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    return check_user_work_perms_impl($self, $conn, $e, $perm, $options);
+}
+
+sub check_user_work_perms_batch {
+    my($self, $conn, $auth, $perm_list, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $map = {};
+    $map->{$_} = check_user_work_perms_impl($self, $conn, $e, $_, $options) for @$perm_list;
+    return $map;
+}
+
+sub check_user_work_perms_impl {
+    my($self, $conn, $e, $perm, $options) = @_;
     my $orglist = $U->find_highest_work_orgs($e, $perm, $options);
 
     return $orglist if $self->api_name =~ /highest_org_set/;
