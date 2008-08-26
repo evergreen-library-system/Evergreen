@@ -59,15 +59,19 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 	return orgs;
 }
 
-function fetchHighestWorkPermOrgs(session, userId, perms) {
-    for(var i = 0; i < perms.length; i++) {
-        var perm = perms[i];
-        var req = new RemoteRequest(
-            'open-ils.actor',
-            'open-ils.actor.user.work_perm.highest_org_set',
-            session, perm);
+function fetchHighestWorkPermOrgs(session, userId, perms, onload) {
+    var req = new RemoteRequest(
+        'open-ils.actor',
+        'open-ils.actor.user.work_perm.highest_org_set.batch',
+        session, perms);
+    if(onload) {
+        req.setCompleteCallback(function(r){
+            onload(OILS_WORK_PERMS = r.getResultObject());
+        });
+        req.send()
+    } else {
         req.send(true);
-        OILS_WORK_PERMS[perm] = req.getResultObject();
+        return OILS_WORK_PERMS = req.getResultObject();
     }
 }
 
