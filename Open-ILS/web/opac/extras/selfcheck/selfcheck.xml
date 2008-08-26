@@ -140,6 +140,7 @@
                                     <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
                                 </td>
                             </tr>
+                            <tr class='hide_me'> </tr>
                         </tbody>
                     </table>
                     <div id='selfck-items-out-done-div'>
@@ -166,21 +167,24 @@
                     <span id='selfck-print-lib-addr-post-code'/>
                 </div>
                 <br/>
-                <div><span id='selfck-print-lname'/>, <span id='selfck-print-fname'/></div>
-                &selfck.items_out;
-                <ol id='selfck-print-items-list'>
-                    <li name='selfck-print-items-template'>
-                        <div name='title'/>
-                        &selfck.barcode;: <span name='barcode'/>
-                        &selfck.due_date;: <span name='due_date'/>
-                    </li>
-                </ol>
+                <div id='selfck-print-patron-info'>
+                    <div><span id='selfck-print-lname'/>, <span id='selfck-print-fname'/></div>
+                    &selfck.items_out;
+                    <ol id='selfck-print-items-list'>
+                        <li name='selfck-print-items-template'>
+                            <div name='title'/>
+                            &selfck.barcode;: <span name='barcode'/>
+                            &selfck.due_date;: <span name='due_date'/>
+                        </li>
+                        <li class='hide_me'> </li>
+                    </ol>
+                </div>
                 <br/>
                 <div>&selfck.org_phone; <span id='selfck-print-lib-phone'/></div>
                 <br/>
                 <div>
                     <div>&selfck.org_hours;</div>
-                    <table>
+                    <table id='selfck-print-hours'>
                         <tr><td>&selfck.day0;</td><td id='selfck-print-dow_0_open'/><td id='selfck-print-dow_0_close'/></tr>
                         <tr><td>&selfck.day1;</td><td id='selfck-print-dow_1_open'/><td id='selfck-print-dow_1_close'/></tr>
                         <tr><td>&selfck.day2;</td><td id='selfck-print-dow_2_open'/><td id='selfck-print-dow_2_close'/></tr>
