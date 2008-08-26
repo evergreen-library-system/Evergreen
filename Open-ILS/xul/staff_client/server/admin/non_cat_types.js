@@ -7,29 +7,53 @@ var myPerms = [
 	'UPDATE_NON_CAT_TYPE',
 	'DELETE_NON_CAT_TYPE' ];
 
+var focusOrg;
+
 function ncEditorInit() {
 	fetchUser();
 	$('nc_user').appendChild(text(USER.usrname()));
-	setTimeout( function() { 
-		fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
-		ncBuildNew();
-		ncFetchTypes(); }, 20 );
+	setTimeout( 
+        function() { 
+            fetchHighestWorkPermOrgs(SESSION, USER.id(), myPerms,
+                function() {
+                    ncSetupFocus();
+		            ncBuildNew();
+		            ncFetchTypes();
+                }
+            ); 
+        }, 20 );
 }
 
+function ncSetupFocus() {
+	var fselector = $('nc_org_filter');
+    var org_list = OILS_WORK_PERMS.UPDATE_NON_CAT_TYPE;
+    if(org_list.length == 0) 
+        return;
+	fselector.disabled = false;
+	buildMergedOrgSel(fselector, org_list, 0, 'shortname');
+    fselector.onchange = function() {
+        focusOrg = getSelectorVal(fselector);
+        ncBuildNew();
+        ncFetchTypes();
+    }
+    
+    focusOrg = USER.ws_ou();
+    if(!orgIsMineFromSet(org_list, USER.ws_ou())) 
+        focusOrg = org_list[0];
+    setSelector(fselector, focusOrg);
+}
 
 function ncBuildNew() {
 
 	var name = $('nc_new_name');
 	name.focus();
 
-	var org = findOrgUnit(PERMS['CREATE_NON_CAT_TYPE']);
-	var mydepth = findOrgDepth(org);
-	if( mydepth == -1 ) return;
+    var org_list = OILS_WORK_PERMS.CREATE_NON_CAT_TYPE;
+    if(org_list.length == 0) return;
 
 	var selector = $('nc_new_owner');
-	buildOrgSel(selector, org, mydepth );
-	if(org.children() && org.children()[0]) 
-		selector.disabled = false;
+	buildMergedOrgSel(selector, org_list, 0, 'shortname');
+	selector.disabled = false;
 
 	$('nc_new_submit').disabled = false;
 	$('nc_new_submit').onclick = ncCreateNew;
@@ -37,7 +61,7 @@ function ncBuildNew() {
 
 
 function ncFetchTypes() {
-	var req = new Request( FETCH_NON_CAT_TYPES, USER.home_ou() );	
+	var req = new Request( FETCH_NON_CAT_TYPES, focusOrg );	
 	req.callback(ncDisplayTypes);
 	setTimeout(function(){req.send();}, 500);
 }
@@ -128,9 +152,9 @@ function _splitInterval( interval ) {
 
 function ncSetRowCallbacks( type, owner, tbody, row ) {
 
-	checkDisabled( $n(row, 'nc_edit'), owner, 'UPDATE_NON_CAT_TYPE');
+	checkPermOrgDisabled($n(row, 'nc_edit'), owner, 'UPDATE_NON_CAT_TYPE');
 
-	checkDisabled( $n(row, 'nc_delete'), owner, 'DELETE_NON_CAT_TYPE' );
+	checkPermOrgDisabled($n(row, 'nc_delete'), owner, 'DELETE_NON_CAT_TYPE');
 
 	$n(row, 'nc_edit').onclick = 
 		function() { ncEditType( tbody, row, type ); };
