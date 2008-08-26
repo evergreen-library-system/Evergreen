@@ -343,7 +343,8 @@ function selfckDislplayCheckout(evt) {
         unHideMe($n(template, 'selfck.cotype_rn'));
     }
 
-    $('selfck-items-out-tbody').appendChild(template);
+    var tbody = $('selfck-items-out-tbody');
+    tbody.insertBefore(template, tbody.getElementsByTagName('tr')[0]);
     $('selfck-item-barcode-input').value = '';
 
 
@@ -352,7 +353,7 @@ function selfckDislplayCheckout(evt) {
     $n(ptemplate, 'title').appendChild(text(record.title()));
     $n(ptemplate, 'barcode').appendChild(text(copy.barcode()));
     $n(ptemplate, 'due_date').appendChild(text(circ.due_date().replace(/T.*/,'')));
-    printWrapper.appendChild(ptemplate);
+    printWrapper.insertBefore(ptemplate, printWrapper.getElementsByTagName('li')[0]);
 
     pendingXact = false;
 }
