@@ -75,6 +75,29 @@ function fetchHighestWorkPermOrgs(session, userId, perms, onload) {
     }
 }
 
+/*
+ takes org IDs 
+ Finds the lowest relevent org unit between a context org unit and a set of
+ permission orgs.  This defines the sphere of influence for a given action
+ on a specific set of data.  if the context org shares no common nodes with
+ the set of permission orgs, null is returned.
+ returns the orgUnit object
+ */
+function findReleventRootOrg(permOrgList, contextOrgId) {
+    var contextOrgNode = findOrgUnit(contextOrgId);
+    for(var i = 0; i < permOrgList.length; i++) {
+        var permOrg = findOrgUnit(permOrgList[i]);
+        if(orgIsMine(permOrg, contextOrgNode)) {
+            // perm org is equal to or a parent of the context org, so the context org is the highest
+            return contextOrgNode;
+        } else if(orgIsMine(contextOrgNode, permOrg)) {
+            // perm org is a child if the context org, so permOrg is the highest org
+            return permOrg;
+        }
+    }
+    return null;
+}
+
 
 /* offset is the depth of the highest org 
 	in the tree we're building 
