@@ -144,40 +144,39 @@ var JUBGrid = {
     },
 
     approveJUB: function(evt) {
-	var list = [];
-	var selected = JUBGrid.jubGrid.selection.getSelected();
-
-	for (var idx = 0; idx < selected.length; idx++) {
-	    var rowIdx = selected[idx];
-	    var jub = JUBGrid.jubGrid.model.getRow(rowIdx);
-	    var li = new openils.acq.Lineitem({lineitem:JUBGrid.getLi(jub.id)});
-	    var approveStore = function(evt) {
-		if (evt) {
-		    // something bad happened
-		    console.log("jubgrid.js: approveJUB: error:");
-		    console.dir(evt);
-		    alert("Error: "+evt.desc);
-		} else {
-		    var approveACQLI = function(jub, rq) {
-			JUBGrid.jubGrid.model.store.setValue(jub,
-							     "state",
-							     "approved");
-			JUBGrid.jubGrid.update();
-			// Reload lineitem details, read-only
-			openils.acq.Lineitem.loadLIDGrid(
-			    JUBGrid.jubDetailGrid, li.id(),
-			    JUBGrid.jubDetailGridLayout);
-			    //JUBGrid.jubDetailGridLayoutReadOnly);
-		    };
-
-		    JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id},
-						       onItem: approveACQLI});
-		}
-	    };
-
-	    li.approve(approveStore);
-	}
+        var list = [];
+        var selected = JUBGrid.jubGrid.selection.getSelected();
+        for (var idx = 0; idx < selected.length; idx++) {
+            var rowIdx = selected[idx];
+            JUBGrid.approveSingleJUB(JUBGrid.jubGrid.model.getRow(rowIdx));
+        }
     },
+
+    approveSingleJUB: function(jub) {
+        var li = new openils.acq.Lineitem({lineitem:JUBGrid.getLi(jub.id)});
+        var approveStore = function(evt) {
+            if (evt) {
+                // something bad happened
+                console.log("jubgrid.js: approveJUB: error:");
+                console.dir(evt);
+                alert("Error: "+evt.desc);
+            } else {
+                var approveACQLI = function(jub, rq) {
+                    alert('setting jub to approved ' + jub.id);
+                    JUBGrid.jubGrid.model.store.setValue(jub, "state", "approved");
+                    JUBGrid.jubGrid.model.refresh();
+                    JUBGrid.jubGrid.update();
+                    // Reload lineitem details, read-only
+                    //openils.acq.Lineitem.loadLIDGrid(JUBGrid.jubDetailGrid, li.id(), JUBGrid.jubDetailGridLayout);
+                        //JUBGrid.jubDetailGridLayoutReadOnly);
+                };
+                JUBGrid.jubGrid.model.store.fetch({query:{id:jub.id}, onItem: approveACQLI});
+            }
+        };
+
+        li.approve(approveStore);
+    },
+
 
     removeSelectedJUBs: function(evt) {
 
