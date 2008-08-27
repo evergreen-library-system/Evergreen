@@ -617,13 +617,18 @@ sub create_purchase_order_debits {
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
     # XXX which perms?
 
-    my $o = 0;
-    while(my $li = $e->search_acq_lineitem([
-        {   purchase_order => $po_id}, 
-        {   offset => $o++, 
-            limit => 1,
-            flesh => 1,
-            flesh_fields => {jub => ['attributes']}}])->[0]) {
+    my $li_ids = $e->search_acq_lineitem(
+        {purchase_order => $po_id},
+        {idlist => 1}
+    );
+
+    for my $li_id (@$li_ids) {
+        my $li = $e->retrieve_acq_lineitem([
+            $li_id,
+            {   flesh => 1,
+                flesh_fields => {jub => ['attributes']},
+            }
+        ]);
 
         my ($price, $ptype) = get_li_price($li);
         unless($price) {
@@ -636,17 +641,23 @@ sub create_purchase_order_debits {
             return OpenILS::Event->new('ACQ_LINEITEM_NO_PROVIDER', payload => $li->id);
         }
 
-        my $oo = 0;
-        while(my $lid = $e->search_acq_lineitem_detail([
-                {  lineitem => $li->id}, 
-                {   offset => $oo++, 
-                    limit => 1,
-                    flesh => 1, 
-                    flesh_fields => {acqlid => ['fund']}}])->[0]) {
+        my $lid_ids = $e->search_acq_lineitem_detail(
+            {lineitem => $li->id}, 
+            {idlist=>1}
+        );
+
+        for my $lid_id (@$lid_ids) {
+            my $lid = $e->retrieve_acq_lineitem_detail([
+                $lid_id,
+                {   flesh => 1, 
+                    flesh_fields => {acqlid => ['fund']}
+                }
+            ]);
 
             my $debit = Fieldmapper::acq::fund_debit->new;
             $debit->fund($lid->fund->id);
             $debit->origin_amount($price);
+
             if($ptype == 2) { # price from vendor
                 $debit->origin_currency_type($li->provider->currency_type);
                 $debit->amount(currency_conversion_impl(
