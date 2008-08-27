@@ -32,7 +32,6 @@ examples = @top_srcdir@/Open-ILS/examples
 jsbackend = @srcdir@/javascript/backend
 supportscr = @srcdir@/support-scripts
 webdir = $(WEBDIR)
-admindir = $(ADMINDIR)
 opacjsdir = $(DESTDIR)$(WEBDIR)/opac/common/js
 jsdojodir = $(DESTDIR)$(WEBDIR)/js/dojo
 jsdojoosrfdir = $(DESTDIR)$(WEBDIR)/js/dojo/opensrf
@@ -193,7 +192,6 @@ uninstall-hook:
 	rm -R $(TEMPLATEDIR)
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
-	rm -R $(admindir) 
 	rm -R $(webdir)
 	rm -R $(opacextrasdir)
 
@@ -233,7 +231,6 @@ webcore-install:
 	mkdir -p $(WEBDIR)/standalone/
 	mkdir -p $(opacextrasdir)
 	mkdir -p $(XSLDIR)
-	cp -r @top_srcdir@/Open-ILS/admin/ @localstatedir@
 	cp -r @top_srcdir@/Open-ILS/web/ @localstatedir@
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(opacextrasdir)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(XSLDIR)
@@ -244,7 +241,6 @@ webcore-install:
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
 	ln -sf $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
-	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@localstatedir@/admin/ils_admin/settings.py.example'
 
 
 offline-install:

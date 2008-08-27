@@ -22,7 +22,6 @@ export catalogscriptdir=@localstatedir@/catalog
 export penaltyrulesdir=@localstatedir@/penalty
 export XSLDIR=@localstatedir@/xsl
 export REPORTERDIR=@localstatedir@/reporter
-export ADMINDIR=@localstatedir@/admin
 export SOCK=@localstatedir@/lock
 export PID=@localstatedir@/run
 export LOG=@localstatedir@/log
