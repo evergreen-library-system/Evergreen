@@ -477,7 +477,7 @@ sub new {
 
 sub find_relation {
 	my $self = shift;
-	return $self->{_rels}->{$self->{_relation}};
+	return $self->builder->{_rels}->{$self->{_relation}};
 }
 
 sub name {
