@@ -4,7 +4,7 @@ use strict; use warnings;
 my $config = shift || die "Please specify a config file\n";
 my $context = shift || 'opensrf';
 
-my $oils_reqr = '/openils/bin/oils_requestor'; # XXX command line param
+my $oils_reqr = 'BINDIR/oils_requestor'; # XXX command line param
 
 if(1) { # XXX command line param
 

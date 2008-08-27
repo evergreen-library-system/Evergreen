@@ -10,7 +10,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Reporter::SQLBuilder;
 use File::Find;
 
-my ($config, $du, $live, %seen) = ('/openils/conf/bootstrap.conf', 0, 0);
+my ($config, $du, $live, %seen) = ('SYSCONFDIR/bootstrap.conf', 0, 0);
 
 GetOptions(
 	"boostrap=s"	=> \$config,

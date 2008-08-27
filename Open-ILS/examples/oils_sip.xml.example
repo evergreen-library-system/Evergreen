@@ -54,7 +54,7 @@
 	
 			<!-- implementation specific config options go here -->
 			<implementation_config>
-				<bootstrap>/openils/conf/opensrf_core.xml</bootstrap>
+				<bootstrap>SYSCONFDIR/opensrf_core.xml</bootstrap>
 				<currency>USD</currency>
 
 				<!-- These defines what this SIP code has the ability to support -->
@@ -90,8 +90,8 @@
 					<option name='msg64_summary_datatype' value='barcode' />
 				</option>
 				<scripts>
-					<path>/openils/var/</path>
-                    <path>/openils/var/catalog/</path>
+					<path>LOCALSTATEDIR/</path>
+                    <path>LOCALSTATEDIR/catalog/</path>
 					<item_config>circ/circ_item_config.js</item_config>
 				</scripts>
 

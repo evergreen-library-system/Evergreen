@@ -1,0 +1,140 @@
+# Copyright (C) 2008 Equinox Software, Inc.
+# Kevin Beswick <kevinbeswick00@gmail.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+
+# Shows configuration options of Evergreen
+
+prefix=@prefix@
+exec_prefix=@prefix@
+datarootdir=@datarootdir@
+
+function showInstalled {
+	if test "@BUILDILSCORE_TRUE@" = ""; then
+		echo "EG_CORE"
+	fi
+	if test "@BUILDILSWEB_TRUE@" = ""; then
+		echo "EG_WEB"
+	fi
+	if test "@BUILDILSREPORTER_TRUE@" = ""; then
+		echo "EG_REPORTER"
+	fi
+	if test "@BUILDILSCLIENT_TRUE@" = ""; then
+		echo "EG_CLIENT"
+	fi
+	if test "@BUILDEGJAVA_TRUE@" = ""; then
+		echo "EG_JAVA"
+	fi
+	if test "@BUILDEGPYTHON_TRUE@" = ""; then
+		echo "EG_PYTHON"
+	fi
+
+
+}
+
+function showAll {
+	 echo @PACKAGE_STRING@	
+	 echo PREFIX=@prefix@
+	 echo BINDIR=@bindir@
+	 echo LIBDIR=@libdir@
+	 echo TMP=@TMP@
+	 echo INCLUDEDIR=@includedir@
+	 echo SYSCONFDIR=@sysconfdir@
+	 echo APXS2=@APXS2@
+	 echo APACHE2_HEADERS=@APACHE2_HEADERS@
+	 echo APR_HEADERS=@APR_HEADERS@
+	 echo LIBXML2_HEADERS=@LIBXML2_HEADERS@
+	 echo 
+	 echo "Installed modules:"
+	 showInstalled;
+}
+
+
+function showHelp {
+	 echo 
+	 echo "------------------------------------------------------------"
+	 echo " eg_config                                                  "
+	 echo " Shows configuration of evergreen                           "
+	 echo "------------------------------------------------------------"
+	 echo
+	 echo "Usage: eg_config [--option]"
+	 echo 
+	 echo "Options: "
+	 echo
+	 echo "--help                  displays help"
+	 echo "--version               displays version number of evergreen"
+	 echo "--installed             displays options that were installed"
+	 echo "--prefix                displays prefix"
+	 echo "--bindir                displays bindir"
+	 echo "--libdir                displays libdir"
+	 echo "--tmp                   displays tmp"
+	 echo "--includedir            displays includedir"
+	 echo "--sysconfdir            displays sysconfdir"
+	 echo "--apxs                  displays location of apxs"
+	 echo "--apache                displays location of apache2 headers"
+	 echo "--apr                   displays location of apr headers"
+	 echo "--libxml                displays location of libxml2 headers" 
+	 echo
+}
+
+case "$1" in
+     --installed)
+		showInstalled;
+		;;
+     --cconfig) cconfig;
+      		;;
+     --libxml)
+		echo @LIBXML2_HEADERS@;
+		;;
+     --apr)
+		echo @APR_HEADERS@;
+		;;
+     --apache)
+		echo @APACHE2_HEADERS@;
+		;;
+     --prefix)
+		echo @prefix@
+		;;
+     --version) 
+		echo @PACKAGE_STRING@;
+		;;
+     --bindir)
+		echo @bindir@
+		;;
+     --libdir)
+		echo @libdir@;
+		;;
+     --sysconfdir)
+		echo @sysconfdir@;
+		;;
+     --localstatedir)
+		echo @localstatedir@;
+		;;
+     --tmpdir)
+		echo @TMP@;
+		;;
+     --apxs)
+		echo @APXS2@;
+		;;
+     --includedir)
+		echo @includedir@;
+		;;
+     --docdir)
+		echo @docdir@;
+		;;
+     --help)
+		showHelp;
+		;;
+     *)
+		showAll;
+		;;
+esac

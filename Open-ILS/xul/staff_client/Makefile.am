@@ -1,16 +1,14 @@
-# ILS/Open-ILS/xul/staff_client/Makefile
+#---------------------------------------------------------
+# Makefile.am for xul/staff_client
+## Process this file with automake to generate Makefile.in
+#---------------------------------------------------------
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
-ifeq ($(origin $(OPENSRF_LIBS)), undefined)
-	# Reasonable default when making the client outside of the root dir
-	OPENSRF_JSLIBS := "/openils/lib/javascript"
-else
-	OPENSRF_JSLIBS := "$(OPENSRF_LIBS)/javascript"
-endif
+OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
 
-all: build 
+install-exec-local: build
 
-build: build_dir generated open-ils custom stamp 
+build: build_dir generated open-ils stamp
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
@@ -29,9 +27,10 @@ build_dir:
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
+	for i in `cd @top_srcdir@/Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn|cut -f2- -d/`; do cp @top_srcdir@/Evergreen/xul/staff_client/server/$$i build/server/$$i; done
 	external/prune_dirs.sh build/
 
-stamp: 
+stamp:
 	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo ${STAFF_CLIENT_BUILD_ID} > build/BUILD_ID ) ; fi
 	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ; echo "none" > build/BUILD_ID ) ; fi
@@ -45,19 +44,12 @@ stamp:
 
 generated:
 	@echo ' * Grabbing lang.dtd from the OPAC code '
-	cp ../../../Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
+	cp @top_srcdir@/Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
 
 open-ils:
 	@echo ' * Grabbing more OPAC code and legacy code and custom code'
-	#cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
-	cp ../../../Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
+	cp @top_srcdir@/Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
 	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
 	external/prune_dirs.sh build/
 
-custom:
-	@echo ' * Placeholder for debugging tweaks '
-	#(cd chrome/content/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
 
-clean: 
-	@echo ' * Removing build/ '
-	rm -rf build/
