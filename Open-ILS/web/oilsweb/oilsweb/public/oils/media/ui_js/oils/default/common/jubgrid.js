@@ -162,7 +162,6 @@ var JUBGrid = {
                 alert("Error: "+evt.desc);
             } else {
                 var approveACQLI = function(jub, rq) {
-                    alert('setting jub to approved ' + jub.id);
                     JUBGrid.jubGrid.model.store.setValue(jub, "state", "approved");
                     JUBGrid.jubGrid.model.refresh();
                     JUBGrid.jubGrid.update();
