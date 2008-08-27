@@ -745,37 +745,37 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
 INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES 
     ( 1, oils_i18n_gettext(1, 'Consortium', 'aout', 'name'),
 	oils_i18n_gettext(1, 'Everywhere', 'aout', 'opac_label'), 0, NULL, FALSE, FALSE );
-INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES 
+INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES 
     ( 2, oils_i18n_gettext(2, 'System', 'aout', 'name'),
 	oils_i18n_gettext(2, 'Local Library System', 'aout', 'opac_label'), 1, 1, FALSE, FALSE );
-INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES 
+INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent) VALUES 
     ( 3, oils_i18n_gettext(3, 'Branch', 'aout', 'name'),
 	oils_i18n_gettext(3, 'This Branch', 'aout', 'opac_label'), 2, 2 );
-INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES 
+INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent) VALUES 
     ( 4, oils_i18n_gettext(4, 'Sub-library', 'aout', 'name'),
 	oils_i18n_gettext(4, 'This Specialized Library', 'aout', 'opac_label'), 3, 3 );
-INSERT INTO actor.org_unit_type (name, opac_label, depth, parent) VALUES 
+INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent) VALUES 
     ( 5, oils_i18n_gettext(5, 'Bookmobile', 'aout', 'name'),
 	oils_i18n_gettext(5, 'Your Bookmobile', 'aout', 'opac_label'), 3, 3 );
 SELECT SETVAL('actor.org_unit_type_id_seq'::TEXT, 100);
 
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (1, NULL, 1, 'CONS', oils_i18n_gettext(1, 'Example Consortium', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (2, 1, 2, 'SYS1', oils_i18n_gettext(2, 'Example System 1', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (3, 1, 2, 'SYS2', oils_i18n_gettext(3, 'Example System 2', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (4, 2, 3, 'BR1', oils_i18n_gettext(4, 'Example Branch 1', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (5, 2, 3, 'BR2', oils_i18n_gettext(5, 'Example Branch 2', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (6, 3, 3, 'BR3', oils_i18n_gettext(6, 'Example Branch 3', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (7, 3, 3, 'BR4', oils_i18n_gettext(7, 'Example Branch 4', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (8, 4, 4, 'SL1', oils_i18n_gettext(8, 'Example Sub-library 1', 'aou', 'name'));
-INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES 
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
 SELECT SETVAL('actor.org_unit_id_seq'::TEXT, 100);
 
