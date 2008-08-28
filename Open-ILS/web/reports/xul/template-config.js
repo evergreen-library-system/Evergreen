@@ -849,9 +849,9 @@ function fleshFromPath ( template, rel ) {
 					current_link.getAttribute('reltype') != 'has_a' ||
 					prev_type == 'left' ||
 					rel.reltype != 'has_a'
-				) && (
-					getKeys(rel.fields.filter_tab).length == 0 &&
-					getKeys(rel.fields.aggfitler_tab).length == 0
+//				) && (
+//					getKeys(rel.fields.filter_tab).length == 0 &&
+//					getKeys(rel.fields.aggfitler_tab).length == 0
 				)
 			) current_obj.type = 'left';
 
