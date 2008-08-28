@@ -876,19 +876,24 @@ sub merge_holds {
 
 
 # ---------------------------------------------------------------------------
+# returns true if the given title (id) has no un-deleted volumes or 
+# copies attached.  If a context volume is defined, a record
+# is considered empty only if the context volume is the only
+# remaining volume on the record.  
 # ---------------------------------------------------------------------------
-
-# returns true if the given title (id) has no un-deleted
-# copies attached
 sub title_is_empty {
-	my( $editor, $rid ) = @_;
+	my( $editor, $rid, $vol_id ) = @_;
 
 	return 0 if $rid == OILS_PRECAT_RECORD;
 
 	my $cnlist = $editor->search_asset_call_number(
 		{ record => $rid, deleted => 'f' }, { idlist => 1 } );
-	return 1 unless @$cnlist;
 
+	return 1 unless @$cnlist; # no attached volumes
+    return 0 if @$cnlist > 1; # multiple attached volumes
+    return 0 unless $$cnlist[0] == $vol_id; # attached volume is not the context vol.
+
+    # see if the sole remaining context volume has any attached copies
 	for my $cn (@$cnlist) {
 		my $copylist = $editor->search_asset_copy(
 			[
@@ -1105,7 +1110,7 @@ sub remove_empty_objects {
     my $aoe =  $U->ou_ancestor_setting_value(
         $editor->requestor->ws_ou, 'cat.bib.alert_on_empty', $editor);
 
-	if( title_is_empty($editor, $vol->record) ) {
+	if( title_is_empty($editor, $vol->record, $vol->id) ) {
 
         # delete this volume if it's not already marked as deleted
         unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
