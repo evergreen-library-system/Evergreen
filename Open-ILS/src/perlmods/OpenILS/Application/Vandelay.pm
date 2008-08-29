@@ -128,7 +128,7 @@ sub add_record_to_bib_queue {
 		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
 
-	my $new_id = _add_auth_rec($e, $marc, $queue->id, $purpose);
+	my $new_id = _add_bib_rec($e, $marc, $queue->id, $purpose);
 
 	$e->die_event unless ($new_id);
 	$e->commit;
