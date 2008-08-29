@@ -21,8 +21,8 @@ use OpenILS::Utils::Fieldmapper;
 
 use Time::HiRes qw(time);
 
-use OpenSRF::Utils::Logger qw/:level/;
-my $log = 'OpenSRF::Utils::Logger';
+use OpenSRF::Utils::Logger qw/$logger/;
+use MIME::Base64;
 
 sub initialize {}
 sub child_init {}
@@ -57,6 +57,7 @@ sub create_bib_queue {
 
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE', $owner);
+    $owner ||= $e->requestor->id;
 
 	my $queue = new Fieldmapper::vandelay::bib_queue();
 	$queue->name( $name );
@@ -89,6 +90,7 @@ sub create_auth_queue {
 
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $owner);
+    $owner ||= $e->requestor->id;
 
 	my $queue = new Fieldmapper::vandelay::authority_queue();
 	$queue->name( $name );
@@ -228,13 +230,18 @@ sub process_spool {
 	my $purpose = $data->{purpose};
     $data = decode_base64($data->{marc});
 
-	my $fh = new IO::Scalar \$data;
+    $logger->info("vandelay loaded $fingerprint purpose=$purpose and ".length($data)." bytes of data");
 
-	my $batch = new MARC::Batch ( $type, $fh );
+    my $fh;
+    open $fh, '<', \$data;
+
+    my $marctype = 'USMARC'; # ?
+	my $batch = new MARC::Batch ( $marctype, $fh );
 	$batch->strict_off;
 
 	my $count = 0;
 	while (my $r = $batch->next) {
+        $logger->info("processing record $count");
 		try {
 			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
 			$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -253,7 +260,7 @@ sub process_spool {
 			$client->respond( $count );
 		} catch Error with {
 			my $error = shift;
-			$log->warn("Encountered a bad record at Vandelay ingest: ".$error);
+			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
 		}
 	}
 
