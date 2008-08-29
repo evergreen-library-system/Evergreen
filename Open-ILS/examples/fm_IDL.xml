@@ -173,11 +173,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Bib Source" name="bib_source" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Purpose" name="purpose" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Attributes" name="attributes" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="queue" reltype="has_a" key="id" map="" class="vbq"/>
 			<link field="bib_source" reltype="has_a" key="id" map="" class="cbs"/>
 			<link field="imported_as" reltype="has_a" key="id" map="" class="bre"/>
+            <link field="attributes" reltype="has_many" key="record" map="" class="vqbra"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -299,10 +301,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Queue" name="queue" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Purpose" name="purpose" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Attributes" name="attributes" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="queue" reltype="has_a" key="id" map="" class="vaq"/>
 			<link field="imported_as" reltype="has_a" key="id" map="" class="are"/>
+            <link field="attributes" reltype="has_many" key="record" map="" class="vqara"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
