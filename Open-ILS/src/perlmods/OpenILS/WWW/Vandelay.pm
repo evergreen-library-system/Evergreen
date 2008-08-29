@@ -4,7 +4,7 @@ use warnings;
 use bytes;
 
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
+use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND FORBIDDEN :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use APR::Table;
 
@@ -66,7 +66,7 @@ sub spool_marc {
 
 	my $data_fingerprint = md5_hex($data);
 
-	OpenSRF::Utils::Cache()->new->put_cache(
+	OpenSRF::Utils::Cache->new->put_cache(
 		'vandelay_import_spool_' . $data_fingerprint,
 		{ purpose => $purpose, marc => $data }
 	);
