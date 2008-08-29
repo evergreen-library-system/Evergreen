@@ -28,7 +28,6 @@ sub initialize {}
 sub child_init {}
 
 sub entityize {
-	my $self = shift;
 	my $stuff = shift;
 	my $form = shift;
 
@@ -247,7 +246,7 @@ sub process_spool {
 			$xml =~ s/^<\?xml.+\?\s*>//go;
 			$xml =~ s/>\s+</></go;
 			$xml =~ s/\p{Cc}//go;
-			$xml = $self->entityize($xml);
+			$xml = entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($self->{record_type} eq 'bib') {
