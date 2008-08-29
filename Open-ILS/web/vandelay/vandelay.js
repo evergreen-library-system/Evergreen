@@ -76,11 +76,11 @@ function createQueue(queueName, type, onload) {
   * Tells vendelay to pull a batch of records from the cache and explode them
   * out into the vandelay tables
   */
-function processSpool(key, queueId, type, onload) {
+function processSpool(key, queue, type, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'.process_spool'],
         {   async: true,
-            params: [authtoken, key, queueId],
+            params: [authtoken, key, queue.id()],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -98,18 +98,18 @@ function batchUpload() {
     var queueName = dijit.byId('vl-queue-name').getValue();
     var recordType = dijit.byId('vl-record-type').getValue();
 
-    var currentQueueId = null;
+    var currentQueue = null;
 
     var handleProcessSpool = function() {
         alert('records uploaded and spooled');
     }
 
     var handleUploadMARC = function(key) {
-        processSpool(key, currentQueueId, recordType, handleProcessSpool);
+        processSpool(key, currentQueue, recordType, handleProcessSpool);
     };
 
-    var handleCreateQueue = function(queueId) {
-        currentQueueId = queueId;
+    var handleCreateQueue = function(queue) {
+        currentQueue = queue;
         uploadMARC(handleUploadMARC);
     };
 
