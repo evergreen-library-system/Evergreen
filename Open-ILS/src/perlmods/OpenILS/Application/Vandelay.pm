@@ -1,4 +1,5 @@
 package OpenILS::Application::Vandelay;
+use strict; use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
@@ -61,14 +62,12 @@ sub create_bib_queue {
 	$queue->name( $name );
 	$queue->owner( $owner );
 	$queue->queue_type( $type ) if ($type);
-	$queue->queue_purpose( $purpose ) if ($purpose);
 
-	my $new_id = $e->create_vandelay_bib_queue( $queue );
-	$e->die_event unless ($new_id);
+	my $new_q = $e->create_vandelay_bib_queue( $queue );
+	return $e->die_event unless ($new_q);
 	$e->commit;
 
-	$queue->id($new_id);
-	return $queue;
+    return $new_q;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_queue.create",
@@ -95,14 +94,12 @@ sub create_auth_queue {
 	$queue->name( $name );
 	$queue->owner( $owner );
 	$queue->queue_type( $type ) if ($type);
-	$queue->queue_purpose( $purpose ) if ($purpose);
 
-	my $new_id = $e->create_vandelay_authority_queue( $queue );
-	$e->die_event unless ($new_id);
+	my $new_q = $e->create_vandelay_authority_queue( $queue );
+	$e->die_event unless ($new_q);
 	$e->commit;
 
-	$queue->id($new_id);
-	return $queue;
+    return $new_q;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.authority_queue.create",
@@ -128,13 +125,11 @@ sub add_record_to_bib_queue {
 		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
 
-	my $new_id = _add_bib_rec($e, $marc, $queue->id, $purpose);
+	my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose);
 
-	$e->die_event unless ($new_id);
+	return $e->die_event unless ($new_rec);
 	$e->commit;
-
-	$rec->id($new_id);
-	return $rec;
+    return $new_rec;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.queued_bib_record.create",
@@ -174,13 +169,11 @@ sub add_record_to_authority_queue {
 		($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
 
-	my $new_id = _add_auth_rec($e, $marc, $queue->id, $purpose);
+	my $new_rec = _add_auth_rec($e, $marc, $queue->id, $purpose);
 
-	$e->die_event unless ($new_id);
+	return $e->die_event unless ($new_rec);
 	$e->commit;
-
-	$rec->id($new_id);
-	return $rec;
+    return $new_rec;
 }
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.vandelay.queued_authority_record.create",
@@ -193,6 +186,7 @@ sub _add_auth_rec {
 	my $e = shift;
 	my $marc = shift;
 	my $queue = shift;
+    my $purpose = shift;
 
 	my $rec = new Fieldmapper::vandelay::queued_authority_record();
 	$rec->marc( $marc );
@@ -211,7 +205,9 @@ sub process_spool {
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
-	if ($self->{record_type} eq 'bib') {
+    my $type = ($self->api_name =~ /auth/) ? 'auth' : 'bib';
+
+	if ($type eq 'bib') {
 		return $e->die_event unless $e->checkauth;
 		return $e->die_event unless
 			($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
@@ -223,7 +219,7 @@ sub process_spool {
 			 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
 	}
 
-	my $method = 'open-ils.vandelay.queued_'.$self->{record_type}.'_record.create';
+	my $method = "open-ils.vandelay.queued_${type}_record.create";
 	$method = $self->method_lookup( $method );
 
     my $cache = new OpenSRF::Utils::Cache();
@@ -240,7 +236,7 @@ sub process_spool {
 	my $count = 0;
 	while (my $r = $batch->next) {
 		try {
-			(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
+			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
 			$xml =~ s/^<\?xml.+\?\s*>//go;
 			$xml =~ s/>\s+</></go;
 			$xml =~ s/\p{Cc}//go;
@@ -248,9 +244,9 @@ sub process_spool {
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($self->{record_type} eq 'bib') {
-				_add_bib_rec( $e, $xml, $queue, $purpose );
+				_add_bib_rec( $e, $xml, $queue, $purpose ) or return $e->die_event;
 			} else {
-				_add_auth_rec( $e, $xml, $queue, $purpose );
+				_add_auth_rec( $e, $xml, $queue, $purpose ) or return $e->die_event;
 			}
 			$count++;
 			
