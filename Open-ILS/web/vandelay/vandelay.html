@@ -1,0 +1,83 @@
+<!--
+# Copyright (C) 2008  Georgia Public Library Service
+# Bill Erickson <erickson@esilibrary.com>
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+<html>
+    <head>
+        <title>Vandelay</title>
+        <style type="text/css">
+            @import "/js/dojo/dojo/resources/dojo.css";
+            @import "/js/dojo/dijit/themes/tundra/tundra.css";
+            @import "/js/dojo/dijit/tests/css/dijitTests.css"; 
+            td { padding: 6px; }
+        </style>
+        <script type="text/javascript" djConfig="parseOnLoad: true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" src='vandelay.js'></script>
+    </head>
+    <body class="tundra">
+        <!-- MARC upload form -->
+        <div id='vl-marc-upload-div'>
+            <h1>Evergreen MARC File Upload</h1>
+            <form id="vl-marc-upload-form" enctype="multipart/form-data">
+                <input type='hidden' name='ses' id='vl-ses-input'/>
+                <br>
+                <table>
+                    <tr>
+                        <td>Queue Name</td>
+                        <td>
+                            <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Record Type</td>
+                        <td>
+                            <select id='vl-record-type' dojoType='dijit.form.FilteringSelect'>
+                                <option value='bib'>Bibliographic Records</option>
+                                <option value='auth'>Authority Records</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Purpose</td>
+                        <td>
+                            <select name='purpose' dojoType='dijit.form.FilteringSelect'>
+                                <option value='import'>Import</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="vl-file-label">File to Upload:</span><br>
+                            <span id="vl-file-uploading" style='display:none;'>Uploading...</span><br>
+                        </td>
+                        <td id='vl-input-td'>
+                            <input size='48' type="file" name="marc_upload">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <span id="vl-upload-progress-span" style="display:none;">
+                                <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='2' align='center'>
+                            <button dojoType="dijit.form.Button" onclick="batchUpload()">Upload</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>
