@@ -55,7 +55,7 @@ sub create_bib_queue {
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
 	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE', $owner);
+	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
 	my $queue = new Fieldmapper::vandelay::bib_queue();
@@ -88,7 +88,7 @@ sub create_auth_queue {
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
 	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $owner);
+	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
 	my $queue = new Fieldmapper::vandelay::authority_queue();
@@ -124,7 +124,7 @@ sub add_record_to_bib_queue {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless
 		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
-		 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
+		 $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
 
 	my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose);
 
@@ -168,7 +168,7 @@ sub add_record_to_authority_queue {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless
 		($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
-		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
+		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
 
 	my $new_rec = _add_auth_rec($e, $marc, $queue->id, $purpose);
 
@@ -202,23 +202,15 @@ sub process_spool {
 	my $client = shift;
 	my $auth = shift;
 	my $fingerprint = shift;
-	my $queue = shift;
+	my $queue_id = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $queue = $e->retrieve_vandelay_queue($queue_id) or return $e->die_event;
 
     my $type = ($self->api_name =~ /auth/) ? 'auth' : 'bib';
-
-	if ($type eq 'bib') {
-		return $e->die_event unless $e->checkauth;
-		return $e->die_event unless
-			($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
-			 $e->allowed('CREATE_BIB_IMPORT_QUEUE', $queue->owner));
-	} else {
-		return $e->die_event unless $e->checkauth;
-		return $e->die_event unless
-			($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
-			 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', $queue->owner));
-	}
+    my $evt = check_queue_perms($e, $type, $queue);
+    return $evt if $evt;
 
 	my $method = "open-ils.vandelay.queued_${type}_record.create";
 	$method = $self->method_lookup( $method );
@@ -250,9 +242,9 @@ sub process_spool {
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($self->{record_type} eq 'bib') {
-				_add_bib_rec( $e, $xml, $queue, $purpose ) or return $e->die_event;
+				_add_bib_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			} else {
-				_add_auth_rec( $e, $xml, $queue, $purpose ) or return $e->die_event;
+				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			}
 			$count++;
 			
@@ -281,6 +273,78 @@ __PACKAGE__->register_method(
 	record_type	=> 'auth'
 );                      
 
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.records.retrieve",
+	method		=> 'retrieve_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.records.retrieve",
+	method		=> 'retrieve_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub retrieve_queue {
+    my($self, $conn, $auth, $queue_id, $options) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->event;
+    my $type = $self->{record_type};
+    my $evt = check_queue_perms($e, $type, $queue);
+    return $evt if $evt;
+
+    if($type eq 'bib') {
+        my $record_ids = $e->search_vandelay_queued_bib_record({queue => $queue_id}, {idlist => 1});
+        for my $rec_id (@$record_ids) {
+            my $rec = $e->retrieve_vandelay_queued_bib_record([
+                $rec_id,
+                {   flesh => 1,
+                    flesh_fields => {vqbr => ['attributes']}
+                }
+            ]);
+            $rec->clear_marc if $$options{clear_marc};
+            $conn->respond($rec);
+        }
+    } else {
+        my $record_ids = $e->search_vandelay_queued_authority_record({queue => $queue_id}, {idlist => 1});
+        for my $rec_id (@$record_ids) {
+            for my $rec_id (@$record_ids) {
+                my $rec = $e->retrieve_vandelay_queued_bib_record([
+                    $rec_id,
+                    {   flesh => 1,
+                        flesh_fields => {vqar => ['attributes']}
+                    }
+                ]);
+                $rec->clear_marc if $$options{clear_marc};
+                $conn->respond($rec);
+            }
+        }
+    }
+    return undef;
+}
+
+sub check_queue_perms {
+    my($e, $type, $queue) = @_;
+	if ($type eq 'bib') {
+		return $e->die_event unless
+			($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
+			 $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
+	} else {
+		return $e->die_event unless
+			($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
+			 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
+	}
+
+    return undef;
+}
 
 
 1;
