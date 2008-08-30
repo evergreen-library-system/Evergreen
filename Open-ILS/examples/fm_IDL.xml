@@ -207,7 +207,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_FIELD_DEF" global_required="true"/>
+                <retrieve/>
+                <!--
 				<retrieve permission="CREATE_BIB_IMPORT_IMPORT_FIELD_DEF|UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF|DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
+                -->
 				<update permission="UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 			</actions>
@@ -334,7 +337,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
+                <retrieve/>
+                <!--
 				<retrieve permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF|UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF|DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
+                -->
 				<update permission="UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 			</actions>
