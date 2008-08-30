@@ -26,16 +26,25 @@ dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 
-var authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
+var authtoken;
 var VANDELAY_URL = '/vandelay';
 var bibAttrDefs = [];
 var authAttrDefs = [];
 var queuedRecords = [];
+var queuedRecordsMap = {};
+var bibAttrsFetched = false;
+var authAttrsFetched = false;
+var attrMap = {};
+var currentType;
+var cgi = new openils.CGI();
 
 /**
   * Grab initial data
   */
 function vlInit() {
+    authtoken = dojo.cookie('ses') || cgi.param('ses');
+    bibAttrsFetched = false;
+    authAttrsFetched = false;
 
     // Fetch the bib and authority attribute definitions
     fieldmapper.standardRequest(
@@ -48,6 +57,11 @@ function vlInit() {
                     return alert(def);
                 bibAttrDefs.push(def);
             },
+            oncomplete: function() {
+                bibAttrsFetched = true;
+                if(authAttrsFetched) 
+                    runStartupCommands();
+            }
         }
     );
 
@@ -60,9 +74,29 @@ function vlInit() {
                 if(openils.Event.parse(def)) 
                     return alert(def);
                 authAttrDefs.push(def);
+            },
+            oncomplete: function() {
+                authAttrsFetched = true;
+                if(bibAttrsFetched) 
+                    runStartupCommands();
             }
         }
     );
+}
+
+function displayGlobalDiv(id) {
+    dojo.style(dojo.byId('vl-generic-progress'),"display","none");
+    dojo.style(dojo.byId('vl-marc-upload-div'),"display","none");
+    dojo.style(dojo.byId('vl-queue-div'),"display","none");
+    dojo.style(dojo.byId(id),"display","block");
+}
+
+function runStartupCommands() {
+    var queueParam = cgi.param('qid');
+    currentType = cgi.param('qtype');
+    if(queueParam) 
+        return retrieveQueuedRecords(currentType, queueParam, handleRetrieveRecords);
+    displayGlobalDiv('vl-marc-upload-div');
 }
 
 /**
@@ -140,25 +174,49 @@ function retrieveQueuedRecords(type, queueId, onload) {
                 if(e = openils.Event.parse(rec))
                     return alert(e);
                 queuedRecords.push(rec);
+                queuedRecordsMap[rec.id()] = rec;
             },
             oncomplete: function(){onload();}
         }
     );
 }
 
+function getAttrValue(rowIdx) {
+    var data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    var attrName = this.field.split('.')[1];
+    var defId = attrMap[attrName];
+    var rec = queuedRecordsMap[data.id];
+    var attrs = rec.attributes();
+    for(var i = 0; i < attrs.length; i++) {
+        var attr = attrs[i];
+        if(attr.field() == defId) 
+            return attr.attr_value();
+    }
+    return '';
+}
+
 function buildRecordGrid(type) {
-    dojo.style(dojo.byId('vl-marc-upload-div'),"display","none");
-    dojo.style(dojo.byId('vl-queue-div'),"display","block");
+    displayGlobalDiv('vl-queue-div');
 
     /* test structure... */
     var structure = [{
+        noscroll : true,
         cells : [[
             {name: 'ID', field: 'id'},
-            {name: 'Create Time', field: 'create_time'},
-            {name: 'Import Time', field: 'import_time'},
-            {name: 'Purpose', field: 'purpose'},
         ]]
     }];
+
+    var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
+    for(var i = 0; i < defs.length; i++) {
+        var attr = defs[i]
+        attrMap[attr.code()] = attr.id();
+        structure[0].cells[0].push({
+            name:attr.description(), 
+            field:'attr.' + attr.code(),
+            get: getAttrValue
+        });
+    }
 
     vlQueueGrid.setStructure(structure);
 
@@ -170,9 +228,13 @@ function buildRecordGrid(type) {
 
     var store = new dojo.data.ItemFileReadStore({data:storeData});
     var model = new dojox.grid.data.DojoData(
-        null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
+        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
     vlQueueGrid.setModel(model);
     vlQueueGrid.update();
+}
+
+var handleRetrieveRecords = function() {
+    buildRecordGrid(currentType);
 }
 
 /**
@@ -180,30 +242,24 @@ function buildRecordGrid(type) {
   */
 function batchUpload() {
     var queueName = dijit.byId('vl-queue-name').getValue();
-    var recordType = dijit.byId('vl-record-type').getValue();
-
+    currentType = dijit.byId('vl-record-type').getValue();
     var currentQueue = null;
 
-    var handleRetrieveRecords = function() {
-        alert("building record grid");
-        buildRecordGrid(recordType);
-    }
-
     var handleProcessSpool = function() {
-        alert('records uploaded and spooled');
-        retrieveQueuedRecords(recordType, currentQueue.id(), handleRetrieveRecords);
+        console.log('records uploaded and spooled');
+        retrieveQueuedRecords(currentType, currentQueue.id(), handleRetrieveRecords);
     }
 
     var handleUploadMARC = function(key) {
-        alert('marc uploaded');
-        processSpool(key, currentQueue, recordType, handleProcessSpool);
+        console.log('marc uploaded');
+        processSpool(key, currentQueue, currentType, handleProcessSpool);
     };
 
     var handleCreateQueue = function(queue) {
-        alert('queue created ' + queue.name());
+        console.log('queue created ' + queue.name());
         currentQueue = queue;
         uploadMARC(handleUploadMARC);
     };
 
-    createQueue(queueName, recordType, handleCreateQueue);
+    createQueue(queueName, currentType, handleCreateQueue);
 }

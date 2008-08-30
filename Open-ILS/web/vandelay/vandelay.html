@@ -22,12 +22,16 @@
             @import "/js/dojo/dojox/grid/_grid/Grid.css";
             td { padding: 6px; }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
     <body class="tundra" onload='vlInit();'>
+        <div id="vl-generic-progress" style='width:100%;text-align:center'>
+            <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
+        </div>
+
         <!-- MARC upload form -->
-        <div id='vl-marc-upload-div'>
+        <div id='vl-marc-upload-div' style='display:none;'>
             <h1>Evergreen MARC File Upload</h1>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
@@ -81,7 +85,7 @@
             </form>
         </div>
         <div id='vl-queue-div' style='display:none;height:100%;'>
-            <h1>Record Queue</h1>
+            <h1>Record Queue</h1><br/>
             <div style='height:100%;'>
                 <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
             </div>
