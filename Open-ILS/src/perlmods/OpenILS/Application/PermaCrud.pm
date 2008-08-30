@@ -19,6 +19,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use XML::LibXSLT;
+use OpenILS::Event;
 
 our %namespace_map = (
     oils_persist=> {ns => 'http://open-ils.org/spec/opensrf/IDL/persistence/v1'},
@@ -174,9 +175,10 @@ sub CRUD_action_object_permcheck {
         }
 
         if ((lc($all_perms) eq 'true' && @perms != $pok) or !$pok) {
-            throw OpenSRF::DomainObject::oilsException->new(
-                statusCode => 403,
-                status => "Perm failure -- action: $self->{action}, object type: $self->{json_hint}",
+	        return OpenILS::Event->new('PERM_FAILURE', 
+                ilsperm => "", # XXX add logic to report which perm failed
+                ilspermloc => "",
+                payload => "Perm failure -- action: $self->{action}, object type: $self->{json_hint}",
             );
         }
     }
