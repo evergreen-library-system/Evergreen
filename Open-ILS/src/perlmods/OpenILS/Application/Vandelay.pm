@@ -206,9 +206,16 @@ sub process_spool {
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-    my $queue = $e->retrieve_vandelay_queue($queue_id) or return $e->die_event;
 
-    my $type = ($self->api_name =~ /auth/) ? 'auth' : 'bib';
+    my $queue;
+    my $type = $self->{record_type};
+
+    if($type eq 'bib') {
+        $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->die_event;
+    } else {
+        $queue = $e->retrieve_vandelay_authority_queue($queue_id) or return $e->die_event;
+    }
+
     my $evt = check_queue_perms($e, $type, $queue);
     return $evt if $evt;
 
@@ -241,7 +248,7 @@ sub process_spool {
 			$xml = entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
 
-			if ($self->{record_type} eq 'bib') {
+			if ($type eq 'bib') {
 				_add_bib_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			} else {
 				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
@@ -296,8 +303,13 @@ sub retrieve_queue {
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
 
-    my $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->event;
     my $type = $self->{record_type};
+    my $queue;
+    if($type eq 'bib') {
+        $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->die_event;
+    } else {
+        $queue = $e->retrieve_vandelay_authority_queue($queue_id) or return $e->die_event;
+    }
     my $evt = check_queue_perms($e, $type, $queue);
     return $evt if $evt;
 
@@ -348,4 +360,3 @@ sub check_queue_perms {
 
 
 1;
-
