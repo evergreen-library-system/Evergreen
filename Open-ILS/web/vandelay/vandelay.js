@@ -25,6 +25,41 @@ dojo.require('openils.Event');
 
 var authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
 var VANDELAY_URL = '/vandelay';
+var bibAttrDefs = [];
+var authAttrDefs = [];
+
+/**
+  * Grab initial data
+  */
+function vlInit() {
+
+    // Fetch the bib and authority attribute definitions
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.search.vqbrad'],
+        {   async: true,
+            params: [authtoken, {id:{'!=':null}}],
+            onresponse: function(r) {
+                var def = r.recv().content(); 
+                if(openils.Event.parse(def)) 
+                    return alert(def);
+                bibAttrDefs.push(def);
+            },
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.search.vqarad'],
+        {   async: true,
+            params: [authtoken, {id:{'!=':null}}],
+            onresponse: function(r) {
+                var def = r.recv().content(); 
+                if(openils.Event.parse(def)) 
+                    return alert(def);
+                authAttrDefs.push(def);
+            }
+        }
+    );
+}
 
 /**
   * asynchronously upload a file of MARC records
@@ -66,7 +101,7 @@ function createQueue(queueName, type, onload) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
                     return alert(e);
-                onload(queue.id());
+                onload(queue);
             }
         }
     );
@@ -105,10 +140,12 @@ function batchUpload() {
     }
 
     var handleUploadMARC = function(key) {
+        alert('marc uploaded');
         processSpool(key, currentQueue, recordType, handleProcessSpool);
     };
 
     var handleCreateQueue = function(queue) {
+        alert('queue created ' + queue.name());
         currentQueue = queue;
         uploadMARC(handleUploadMARC);
     };
