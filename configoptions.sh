@@ -33,7 +33,7 @@ echo "Install Open-ILS REPORTER? (y/n) "
 read X;
 if [ $X == "y" ] ; then
 TARGS=${TARGS}" --enable-openils-reporter"
-elseif [ $X == "n" ] ; then
+elif [ $X == "n" ] ; then
 TARGS=${TARGS}" --disable-openils-reporter"
 fi
 echo "Install Open-ILS XUL CLIENT? (y/n) "
@@ -45,7 +45,7 @@ echo "Install Open-ILS XUL SERVER? (y/n) "
 read X;
 if [ $X == "y" ] ; then
 TARGS=${TARGS}" --enable-openils-server-xul"
-elseif [ $X == "n" ] ; then
+elif [ $X == "n" ] ; then
 TARGS=${TARGS}" --disable-openils-server-xul"
 fi
 echo "Install EVERGREEN CORE? (y/n) "
