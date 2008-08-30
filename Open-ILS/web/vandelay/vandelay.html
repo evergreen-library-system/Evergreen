@@ -19,6 +19,7 @@
             @import "/js/dojo/dojo/resources/dojo.css";
             @import "/js/dojo/dijit/themes/tundra/tundra.css";
             @import "/js/dojo/dijit/tests/css/dijitTests.css"; 
+            @import "/js/dojo/dojox/grid/_grid/Grid.css";
             td { padding: 6px; }
         </style>
         <script type="text/javascript" djConfig="parseOnLoad: true" src="/js/dojo/dojo/dojo.js"></script>
@@ -78,6 +79,12 @@
                     </tr>
                 </table>
             </form>
+        </div>
+        <div id='vl-queue-div' style='display:none;height:100%;'>
+            <h1>Record Queue</h1>
+            <div style='height:100%;'>
+                <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
+            </div>
         </div>
     </body>
 </html>
