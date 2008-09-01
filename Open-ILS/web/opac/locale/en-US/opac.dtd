@@ -671,8 +671,6 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.items_out "You checked out the following items">
 <!ENTITY selfck.org_hours "Hours of Operation">
 <!ENTITY selfck.org_phone "Library Phone Number">
-<!ENTITY selfck.due_date "Due Date">
-<!ENTITY selfck.barcode "Barcode">
 <!ENTITY selfck.day0 "Monday">
 <!ENTITY selfck.day1 "Tuesday">
 <!ENTITY selfck.day2 "Wednesday">
