@@ -553,6 +553,10 @@
 	<event code='1641' textcode='ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested action_open_circ_count_by_circ_mod was not found</desc>
 	</event>
+	<event code='1642' textcode='CONFIG_CIRC_MODIFIER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_modifier was not found</desc>
+	</event>
+
 
 
 
