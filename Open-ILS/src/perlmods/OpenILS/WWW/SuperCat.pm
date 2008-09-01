@@ -1291,7 +1291,7 @@ sub string_browse {
 
 our %qualifier_map = (
 
-    # Som EG qualifiers
+    # Some EG qualifiers
     'eg.site'               => 'site',
     'eg.sort'               => 'sort',
     'eg.direction'          => 'dir',
@@ -1308,8 +1308,8 @@ our %qualifier_map = (
     'eg.series'             => 'title',
 
     # Author/Name class:
-    'eg.author'             => 'title',
-    'eg.name'               => 'title',
+    'eg.author'             => 'author',
+    'eg.name'               => 'author',
     'creator'               => 'author',
     'dc.creator'            => 'author',
     'dc.contributer'        => 'author',
@@ -1386,7 +1386,7 @@ our %nested_qualifier_map = (
 			site		=> ['site','Evergreen Site Code (shortname)'],
 			sort		=> ['sort','Sort on relevance, title, author, pubdate, create_date or edit_date'],
 			direction	=> ['dir','Sort direction (asc|desc)'],
-			available	=> ['available','Filter to availble (true|false)'],
+			available	=> ['available','Filter to available (true|false)'],
 			title		=> ['title'],
 			author		=> ['author'],
 			name		=> ['author'],
@@ -1531,7 +1531,7 @@ sub sru_search {
         my $limit = $req->maximumRecords;
         $limit ||= 10;
 
-        warn "SRU search string [$cql_query] converted to [$search_string]\n";
+        $log->info("SRU search string [$cql_query] converted to [$search_string]\n");
 
  		my $recs = $search->request(
 			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string => 1
@@ -1647,7 +1647,7 @@ sub sru_search {
         if ( $qualifier ) {
 			my ($qset, $qname) = split(/\./, $qualifier);
 
-			warn "!!! $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n";
+			$log->debug("SRU toEvergreen: $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n");
 
             if ( exists($OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}) ) {
                 $qualifier = $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0] || 'kw';
