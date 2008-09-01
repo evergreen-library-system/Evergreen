@@ -14,7 +14,7 @@
 	<hbox>
 		<label style="font-weight: bold;" value="&staff.patron.bills_overlay.selected_balance.value;"/><label id="selected_balance"/>
 		<label style="font-weight: bold;" value="&staff.patron.bills_overlay.unselected.value;"/><label id="unselected_balance"/>
-		<label style="font-weight: bold;" value="staff.patron.bills_overlay.voided.value;"/><label id="voided_balance"/>
+		<label style="font-weight: bold;" value="&staff.patron.bills_overlay.voided.value;"/><label id="voided_balance"/>
 		<spacer flex="1"/>
 		<label id="circulating_hint" hidden="true" style="background: red; color: white" value="&staff.patron.bills_overlay.still_checked_out.label;"/>
 	</hbox>
