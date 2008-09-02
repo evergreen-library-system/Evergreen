@@ -169,6 +169,7 @@ CENTOS = \
 	perl-libwww-perl \
 	psmisc \
 	python-devel \
+	python-setuptools\
 	readline-devel \
 	wget
 
