@@ -494,6 +494,69 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION vandelay.ingest_bib_items ( ) RETURNS TRIGGER AS $func$
+DECLARE
+    queue_rec   RECORD;
+    item_rule   RECORD;
+    item_data   vandelay.ingest_items%ROWTYPE;
+BEGIN
+
+    SELECT * INTO queue_rec FROM vandelay.bib_queue WHERE id = NEW.queue;
+
+    FOR item_rule IN SELECT r.* FROM actor.org_unit_anscestors( queue_rec.owner ) o JOIN vandelay.import_item_attr_definition r ON ( r.owner = o.id ) LOOP
+        FOR item_data IN SELECT * FROM vandelay.ingest_items( NEW.id, item_rule.id ) LOOP
+            INSERT INTO vandelay.import_item (
+		record,
+                definition,
+                owning_lib,
+                circ_lib,
+                call_number,
+                copy_number,
+                status,
+                location,
+                circulate,
+                deposit,
+                deposit_amount,
+                ref,
+                holdable,
+                price,
+                barcode,
+                circ_modifier,
+                circ_as_type,
+                alert_message,
+                pub_note,
+                priv_note,
+                opac_visible
+            ) VALUES (
+		NEW.id,
+                item_data.definition,
+                item_data.owning_lib,
+                item_data.circ_lib,
+                item_data.call_number,
+                item_data.copy_number,
+                item_data.status,
+                item_data.location,
+                item_data.circulate,
+                item_data.deposit,
+                item_data.deposit_amount,
+                item_data.ref,
+                item_data.holdable,
+                item_data.price,
+                item_data.barcode,
+                item_data.circ_modifier,
+                item_data.circ_as_type,
+                item_data.alert_message,
+                item_data.pub_note,
+                item_data.priv_note,
+                item_data.opac_visible
+            );
+        END LOOP;
+    END LOOP;
+
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL
+
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
 DECLARE
     attr    RECORD;
@@ -544,6 +607,8 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.cleanup_bib_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
     DELETE FROM vandelay.queued_bib_record_attr WHERE record = OLD.id;
+    DELETE FROM vandelay.import_item WHERE record = OLD.id;
+
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
     END IF;
@@ -558,6 +623,10 @@ CREATE TRIGGER cleanup_bib_trigger
 CREATE TRIGGER ingest_bib_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_marc();
+
+CREATE TRIGGER ingest_item_trigger
+    AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
+    FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_items();
 
 CREATE TRIGGER zz_match_bibs_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
@@ -623,7 +692,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_authority_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM vandelay.queued_authority_record_attr WHERE lineitem = OLD.id;
+    DELETE FROM vandelay.queued_authority_record_attr WHERE record = OLD.id;
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
     END IF;
