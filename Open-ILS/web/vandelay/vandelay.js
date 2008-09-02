@@ -166,9 +166,10 @@ function processSpool(key, queue, type, onload) {
 
 function retrieveQueuedRecords(type, queueId, onload) {
     fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.records.retrieve'],
+        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic'],
         {   async: true,
             params: [authtoken, queueId, {clear_marc:1}],
+            /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
             onresponse: function(r) {
                 var rec = r.recv().content();
                 if(e = openils.Event.parse(rec))
@@ -176,7 +177,18 @@ function retrieveQueuedRecords(type, queueId, onload) {
                 queuedRecords.push(rec);
                 queuedRecordsMap[rec.id()] = rec;
             },
-            oncomplete: function(){onload();}
+            */
+            oncomplete: function(r){
+                var recs = r.recv().content();
+                if(e = openils.Event.parse(recs))
+                    return alert(e);
+                for(var i = 0; i < recs.length; i++) {
+                    var rec = recs[i];
+                    queuedRecords.push(rec);
+                    queuedRecordsMap[rec.id()] = rec;
+                }
+                onload();
+            }
         }
     );
 }
@@ -201,9 +213,9 @@ function buildRecordGrid(type) {
 
     /* test structure... */
     var structure = [{
-        noscroll : true,
+        //noscroll : true,
         cells : [[
-            {name: 'ID', field: 'id'},
+            //{name: 'ID', field: 'id'},
         ]]
     }];
 
@@ -211,11 +223,13 @@ function buildRecordGrid(type) {
     for(var i = 0; i < defs.length; i++) {
         var attr = defs[i]
         attrMap[attr.code()] = attr.id();
-        structure[0].cells[0].push({
+        var col = {
             name:attr.description(), 
             field:'attr.' + attr.code(),
             get: getAttrValue
-        });
+        };
+        if(attr.code().match(/title/i)) col.width = 'auto'; // this is hack.
+        structure[0].cells[0].push(col);
     }
 
     vlQueueGrid.setStructure(structure);
@@ -263,3 +277,5 @@ function batchUpload() {
 
     createQueue(queueName, currentType, handleCreateQueue);
 }
+
+dojo.addOnLoad(vlInit);
