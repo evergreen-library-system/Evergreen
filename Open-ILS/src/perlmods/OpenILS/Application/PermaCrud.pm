@@ -184,7 +184,7 @@ sub CRUD_action_object_permcheck {
     }
 
     if ($self->{action} eq 'retrieve') {
-        $e->commit;
+        $e->rollback;
         return $obj;
     }
 
