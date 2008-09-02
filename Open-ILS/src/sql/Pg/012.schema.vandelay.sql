@@ -44,41 +44,12 @@ INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident, remo
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Accession Number','//*[@tag="001"]', TRUE);
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('eg_tcn','TCN Value','//*[@tag="901"]/*[@code="a"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('eg_tcn_source','TCN Source','//*[@tag="901"]/*[@code="b"]', TRUE);
+INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('eg_tcn_source','TCN Source','//*[@tag="901"]/*[@code="b"]', TRUE);
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('eg_identifier','Internal ID','//*[@tag="901"]/*[@code="c"]', TRUE);
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, remove ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
 INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
 
-
-CREATE TABLE vandelay.bib_queue (
-	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
-	item_attr_def	TEXT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
-) INHERITS (vandelay.queue);
-ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
-
-CREATE TABLE vandelay.queued_bib_record (
-	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
-) INHERITS (vandelay.queued_record);
-ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
-
-CREATE TABLE vandelay.queued_bib_record_attr (
-	id			BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id) DEFERRABLE INITIALLY DEFERRED,
-	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
-	attr_value	TEXT		NOT NULL
-);
-
-CREATE TABLE vandelay.bib_match (
-	id				BIGSERIAL	PRIMARY KEY,
-	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
-	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-);
 
 -- Each TEXT field (other than 'name') should hold an XPath predicate for pulling the data needed
 -- DROP TABLE vandelay.import_item_attr_definition CASCADE;
@@ -159,10 +130,40 @@ INSERT INTO vandelay.import_item_attr_definition (
     'k'
 );
 
+CREATE TABLE vandelay.bib_queue (
+	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
+	item_attr_def	TEXT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
+) INHERITS (vandelay.queue);
+ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
+
+CREATE TABLE vandelay.queued_bib_record (
+	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
+	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+) INHERITS (vandelay.queued_record);
+ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
+
+CREATE TABLE vandelay.queued_bib_record_attr (
+	id			BIGSERIAL	PRIMARY KEY,
+	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id) DEFERRABLE INITIALLY DEFERRED,
+	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
+	attr_value	TEXT		NOT NULL
+);
+
+CREATE TABLE vandelay.bib_match (
+	id				BIGSERIAL	PRIMARY KEY,
+	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
+	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+);
+
 -- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
-    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id),
+    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
+    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
@@ -198,8 +199,6 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 
     my $xml = shift;
     my $field_spec = shift;
-
-    my @fields 
 
     my $r = MARC::Record->new_from_xml( $xml );
     $r->delete_field( $_ ) for ( $r->field( $field_spec ) );
@@ -498,13 +497,13 @@ CREATE OR REPLACE FUNCTION vandelay.ingest_bib_items ( ) RETURNS TRIGGER AS $fun
 DECLARE
     queue_rec   RECORD;
     item_rule   RECORD;
-    item_data   vandelay.ingest_items%ROWTYPE;
+    item_data   vandelay.import_item%ROWTYPE;
 BEGIN
 
     SELECT * INTO queue_rec FROM vandelay.bib_queue WHERE id = NEW.queue;
 
-    FOR item_rule IN SELECT r.* FROM actor.org_unit_anscestors( queue_rec.owner ) o JOIN vandelay.import_item_attr_definition r ON ( r.owner = o.id ) LOOP
-        FOR item_data IN SELECT * FROM vandelay.ingest_items( NEW.id, item_rule.id ) LOOP
+    FOR item_rule IN SELECT r.* FROM actor.org_unit_ancestors( queue_rec.owner ) o JOIN vandelay.import_item_attr_definition r ON ( r.owner = o.id ) LOOP
+        FOR item_data IN SELECT * FROM vandelay.ingest_items( NEW.id::BIGINT, item_rule.id::BIGINT ) LOOP
             INSERT INTO vandelay.import_item (
 		record,
                 definition,
@@ -555,7 +554,7 @@ BEGIN
 
     RETURN NULL;
 END;
-$func$ LANGUAGE PLPGSQL
+$func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
 DECLARE
