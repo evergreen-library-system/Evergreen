@@ -180,6 +180,10 @@ PGSQL_CENTOS = \
 	postgresql-pl \
 	postgresql-server
 
+# Avoids a weak reference error that otherwise sinks DateTime:Format:ISO8601
+CENTOS_PERL_FORCE = \
+	Scalar::Util
+
 # Some of these packages have stupid bugs in their test suites
 # that are simply too painful to workaround
 CENTOS_PERL_NOTEST = \
@@ -445,6 +449,7 @@ install_centos_pgsql:
 	yum -y install $(PGSQL_CENTOS)
 
 install_centos_perl:
+	for m in $(CENTOS_PERL_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw/install $$m);"; done
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
 	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
