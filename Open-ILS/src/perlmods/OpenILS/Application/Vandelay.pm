@@ -381,7 +381,7 @@ __PACKAGE__->register_method(
 sub import_record_list {
     my($self, $conn, $auth, $rec_ids) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
     my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids);
     return $err if $err;
     $e->commit;
