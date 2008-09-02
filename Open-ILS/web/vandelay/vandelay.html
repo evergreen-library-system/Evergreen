@@ -29,6 +29,9 @@
         <div id="vl-generic-progress" style='width:100%;text-align:center'>
             <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
         </div>
+        <div id="vl-generic-progress-with-total" style='width:100%;text-align:center;display:none;'>
+            <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:200px"></div>
+        </div>
 
         <!-- MARC upload form -->
         <div id='vl-marc-upload-div' style='display:none;'>
@@ -87,13 +90,15 @@
         <div id='vl-queue-div' style='display:none;height:100%;'>
             <h1>Record Queue</h1><br/>
             <script>
-                var vlQueueGridLayout = [{
-                    cells : [[
-                        {   name: 'Selected',
-                            get: vlQueueGridDrawSelectBox,
-                        }
-                    ]]
-                }];
+                var vlQueueGridLayout;
+                function resetVlQueueGridLayout() {
+                    vlQueueGridLayout = [{
+                        cells : [[
+                            {name: 'Selected', get: vlQueueGridDrawSelectBox },
+                            {name: 'Import Time', field:'import_time'}
+                        ]]
+                    }];
+                }
             </script>
             <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords'>Select All</button>
             <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords'>Select None</button>

@@ -26,6 +26,13 @@ dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 
+var globalDivs = [
+    'vl-generic-progress',
+    'vl-generic-progress-with-total',
+    'vl-marc-upload-div',
+    'vl-queue-div'
+];
+
 var authtoken;
 var VANDELAY_URL = '/vandelay';
 var bibAttrDefs = [];
@@ -37,6 +44,7 @@ var authAttrsFetched = false;
 var attrMap = {};
 var currentType;
 var cgi = new openils.CGI();
+var currentQueueId = null;
 
 /**
   * Grab initial data
@@ -85,17 +93,16 @@ function vlInit() {
 }
 
 function displayGlobalDiv(id) {
-    dojo.style(dojo.byId('vl-generic-progress'),"display","none");
-    dojo.style(dojo.byId('vl-marc-upload-div'),"display","none");
-    dojo.style(dojo.byId('vl-queue-div'),"display","none");
-    dojo.style(dojo.byId(id),"display","block");
+    for(var i = 0; i < globalDivs.length; i++) 
+        dojo.style(dojo.byId(globalDivs[i]), 'display', 'none');
+    dojo.style(dojo.byId(id),'display','block');
 }
 
 function runStartupCommands() {
-    var queueParam = cgi.param('qid');
+    currentQueueId = cgi.param('qid');
     currentType = cgi.param('qtype');
-    if(queueParam) 
-        return retrieveQueuedRecords(currentType, queueParam, handleRetrieveRecords);
+    if(currentQueueId)
+        return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
     displayGlobalDiv('vl-marc-upload-div');
 }
 
@@ -149,14 +156,14 @@ function createQueue(queueName, type, onload) {
   * Tells vendelay to pull a batch of records from the cache and explode them
   * out into the vandelay tables
   */
-function processSpool(key, queue, type, onload) {
+function processSpool(key, queueId, type, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'.process_spool'],
         {   async: true,
-            params: [authtoken, key, queue.id()],
+            params: [authtoken, key, queueId],
             oncomplete : function(r) {
-                var queue = r.recv().content();
-                if(e = openils.Event.parse(queue)) 
+                var resp = r.recv().content();
+                if(e = openils.Event.parse(resp)) 
                     return alert(e);
                 onload();
             }
@@ -165,6 +172,9 @@ function processSpool(key, queue, type, onload) {
 }
 
 function retrieveQueuedRecords(type, queueId, onload) {
+    queuedRecords = [];
+    queuedRecordsMap = {};
+    resetVlQueueGridLayout();
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic'],
         {   async: true,
@@ -180,7 +190,7 @@ function retrieveQueuedRecords(type, queueId, onload) {
             */
             oncomplete: function(r){
                 var recs = r.recv().content();
-                if(e = openils.Event.parse(recs))
+                if(e = openils.Event.parse(recs[0]))
                     return alert(e);
                 for(var i = 0; i < recs.length; i++) {
                     var rec = recs[i];
@@ -220,7 +230,7 @@ function buildRecordGrid(type) {
             field:'attr.' + attr.code(),
             get: getAttrValue
         };
-        if(attr.code().match(/title/i)) col.width = 'auto'; // this is hack.
+        //if(attr.code().match(/title/i)) col.width = 'auto'; // this is hack.
         vlQueueGridLayout[0].cells[0].push(col);
     }
 
@@ -258,18 +268,34 @@ function vlSelectNoGridRecords() {
         dojo.byId(id).checked = false;
 }
 
-function vlImportSelectedRecords() {
-    for(var id in selectableGridRecords) {
-        if(dojo.byId(id).checked) {
-            var recId = selectableGridRecords[id];
-            alert(recId);
-        }
-    }
-}
-
 var handleRetrieveRecords = function() {
     buildRecordGrid(currentType);
 }
+
+function vlImportSelectedRecords() {
+    displayGlobalDiv('vl-generic-progress-with-total');
+    var records = [];
+    for(var id in selectableGridRecords) {
+        if(dojo.byId(id).checked) 
+            records.push(selectableGridRecords[id]);
+    }
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
+        {   async: true,
+            params: [authtoken, records],
+            onresponse: function(r) {
+                var resp = r.recv().content();
+                if(e = openils.Event.parse(resp))
+                    return alert(e);
+                vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
+            },
+            oncomplete: function() {
+                return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+            }
+        }
+    );
+}
+
 
 /**
   * Create queue, upload MARC, process spool, load the newly created queue 
@@ -277,21 +303,20 @@ var handleRetrieveRecords = function() {
 function batchUpload() {
     var queueName = dijit.byId('vl-queue-name').getValue();
     currentType = dijit.byId('vl-record-type').getValue();
-    var currentQueue = null;
 
     var handleProcessSpool = function() {
         console.log('records uploaded and spooled');
-        retrieveQueuedRecords(currentType, currentQueue.id(), handleRetrieveRecords);
+        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
     }
 
     var handleUploadMARC = function(key) {
         console.log('marc uploaded');
-        processSpool(key, currentQueue, currentType, handleProcessSpool);
+        processSpool(key, currentQueueId, currentType, handleProcessSpool);
     };
 
     var handleCreateQueue = function(queue) {
         console.log('queue created ' + queue.name());
-        currentQueue = queue;
+        currentQueueId = queue.id();
         uploadMARC(handleUploadMARC);
     };
 
