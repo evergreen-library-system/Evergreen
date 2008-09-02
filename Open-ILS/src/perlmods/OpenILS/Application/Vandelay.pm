@@ -23,6 +23,8 @@ use Time::HiRes qw(time);
 
 use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
+use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 sub initialize {}
 sub child_init {}
@@ -357,6 +359,70 @@ sub check_queue_perms {
 
     return undef;
 }
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_record.list.import",
+	method		=> 'import_record_list',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_record.list.import",
+	method		=> 'import_record_list',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub import_record_list {
+    my($self, $conn, $auth, $rec_ids) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids);
+    return $err if $err;
+    $e->commit;
+    return {complete => 1};
+}
+
+sub import_record_list_impl {
+    my($self, $conn, $auth, $e, $rec_ids) = @_;
+
+    my $type = $self->{record_type};
+    my $total = @$rec_ids;
+    my $count = 0;
+
+    for my $rec_id (@$rec_ids) {
+        if($type eq 'bib') {
+
+            my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) 
+                or return $e->die_event;
+
+            my $record = $U->simplereq(
+                'open-ils.cat',
+                'open-ils.cat.biblio.record.xml.import',
+                $auth, $rec->marc ); #$rec->bib_source);
+
+            if($U->event_code($record)) {
+                $e->rollback;
+                return $record;
+            }
+
+            $rec->imported_as($record->id);
+            $rec->import_time('now');
+            $e->update_vandelay_queued_bib_record($rec) or return $e->die_event;
+        }
+
+        $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
+    }
+
+    return undef;
+}
+
+
 
 
 1;
