@@ -211,14 +211,6 @@ function getAttrValue(rowIdx) {
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
-    /* test structure... */
-    var structure = [{
-        //noscroll : true,
-        cells : [[
-            //{name: 'ID', field: 'id'},
-        ]]
-    }];
-
     var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
     for(var i = 0; i < defs.length; i++) {
         var attr = defs[i]
@@ -229,10 +221,10 @@ function buildRecordGrid(type) {
             get: getAttrValue
         };
         if(attr.code().match(/title/i)) col.width = 'auto'; // this is hack.
-        structure[0].cells[0].push(col);
+        vlQueueGridLayout[0].cells[0].push(col);
     }
 
-    vlQueueGrid.setStructure(structure);
+    vlQueueGrid.setStructure(vlQueueGridLayout);
 
     var storeData;
     if(type == 'bib')
@@ -243,8 +235,36 @@ function buildRecordGrid(type) {
     var store = new dojo.data.ItemFileReadStore({data:storeData});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
+
     vlQueueGrid.setModel(model);
     vlQueueGrid.update();
+}
+
+var selectableGridRecords = {};
+function vlQueueGridDrawSelectBox(rowIdx) {
+    var data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    var domId = 'vl-record-list-selected-' +data.id;
+    selectableGridRecords[domId] = data.id;
+    return "<input type='checkbox' id='"+domId+"'/>";
+}
+
+function vlSelectAllGridRecords() {
+    for(var id in selectableGridRecords) 
+        dojo.byId(id).checked = true;
+}
+function vlSelectNoGridRecords() {
+    for(var id in selectableGridRecords) 
+        dojo.byId(id).checked = false;
+}
+
+function vlImportSelectedRecords() {
+    for(var id in selectableGridRecords) {
+        if(dojo.byId(id).checked) {
+            var recId = selectableGridRecords[id];
+            alert(recId);
+        }
+    }
 }
 
 var handleRetrieveRecords = function() {
