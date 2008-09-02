@@ -543,7 +543,7 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_bib_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM vandelay.queued_bib_record_attr WHERE lineitem = OLD.id;
+    DELETE FROM vandelay.queued_bib_record_attr WHERE record = OLD.id;
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
     END IF;
