@@ -93,6 +93,7 @@
                 var vlQueueGridLayout;
                 function resetVlQueueGridLayout() {
                     vlQueueGridLayout = [{
+                        defaultCell: {styles: 'text-align: center;'},
                         cells : [[
                             {name: 'Selected', get: vlQueueGridDrawSelectBox },
                             {name: 'Import Time', field:'import_time', get:getDateTimeField}

@@ -219,17 +219,44 @@ function retrieveQueuedRecords(type, queueId, onload) {
     );
 }
 
+
+/**
+  * Given a record, an attribute definition code, and a matching record attribute,
+  * this will determine if there are any import matches and build the UI to
+  * represent those matches.  If no matches exist, simply returns the attribute value
+  */
+function buildAttrColumnUI(rec, attrCode, attr) {
+    var matches = [];
+    for(var j = 0; j < rec.matches().length; j++) {
+        var match = rec.matches()[j];
+        if(match.field_type() == attrCode)
+            matches.push(match);
+    }
+
+    if(matches.length > 0) { // found some matches
+        var str = '<div>';
+        for(var k = 0; k < matches.length; k++) {
+            var match = matches[k];
+            str += '<div><a href="javascript:void(0);" onclick="alert('+match.eg_record()+');">' + match.eg_record()+'</a></div>';
+        }
+        str += '</div>';
+        return str;
+    }
+
+    return attr.attr_value();
+}
+
 function getAttrValue(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
-    var attrName = this.field.split('.')[1];
-    var defId = attrMap[attrName];
+    var attrCode = this.field.split('.')[1];
+    var defId = attrMap[attrCode];
     var rec = queuedRecordsMap[data.id];
     var attrs = rec.attributes();
     for(var i = 0; i < attrs.length; i++) {
         var attr = attrs[i];
         if(attr.field() == defId) 
-            return attr.attr_value();
+            return buildAttrColumnUI(rec, attrCode, attr);
     }
     return '';
 }
@@ -299,8 +326,12 @@ function vlImportSelectedRecords() {
     displayGlobalDiv('vl-generic-progress-with-total');
     var records = [];
     for(var id in selectableGridRecords) {
-        if(dojo.byId(id).checked) 
-            records.push(selectableGridRecords[id]);
+        if(dojo.byId(id).checked) {
+            var recId = selectableGridRecords[id];
+            var rec = queuedRecordsMap[recId];
+            if(!rec.import_time()) 
+                records.push(recId);
+        }
     }
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
