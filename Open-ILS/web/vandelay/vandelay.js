@@ -61,12 +61,19 @@ function vlInit() {
             params: [authtoken, {id:{'!=':null}}],
             onresponse: function(r) {
                 var def = r.recv().content(); 
-                if(openils.Event.parse(def)) 
-                    return alert(def);
+                if(e = openils.Event.parse(def[0])) 
+                    return alert(e);
                 bibAttrDefs.push(def);
             },
             oncomplete: function() {
                 bibAttrsFetched = true;
+                bibAttrDefs = bibAttrDefs.sort(
+                    function(a, b) {
+                        if(a.description() > b.description()) return 1;
+                        if(a.description() < b.description()) return -1;
+                        return 0;
+                    }
+                );
                 if(authAttrsFetched) 
                     runStartupCommands();
             }
@@ -79,12 +86,19 @@ function vlInit() {
             params: [authtoken, {id:{'!=':null}}],
             onresponse: function(r) {
                 var def = r.recv().content(); 
-                if(openils.Event.parse(def)) 
-                    return alert(def);
+                if(e = openils.Event.parse(def[0])) 
+                    return alert(e);
                 authAttrDefs.push(def);
             },
             oncomplete: function() {
                 authAttrsFetched = true;
+                authAttrDefs = authAttrDefs.sort(
+                    function(a, b) {
+                        if(a.description() > b.description()) return 1;
+                        if(a.description() < b.description()) return -1;
+                        return 0;
+                    }
+                );
                 if(bibAttrsFetched) 
                     runStartupCommands();
             }
