@@ -20,6 +20,8 @@ dojo.require("dijit.form.FilteringSelect");
 dojo.require("dojo.cookie");
 dojo.require("dojox.grid.Grid");
 dojo.require("dojo.data.ItemFileReadStore");
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
 dojo.require("fieldmapper.Fieldmapper");
 dojo.require("fieldmapper.dojoData");
 dojo.require('openils.CGI');
@@ -230,6 +232,13 @@ function getAttrValue(rowIdx) {
             return attr.attr_value();
     }
     return '';
+}
+
+function getDateTimeField(rowIdx) {
+    data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    var date = dojo.date.stamp.fromISOString(data[this.field]);
+    return dojo.date.locale.format(date, {formatLength:'medium'});
 }
 
 function buildRecordGrid(type) {
