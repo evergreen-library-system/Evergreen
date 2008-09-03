@@ -224,15 +224,11 @@ sub biblio_record_replace_marc  {
     }
 
 
-
 	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
 	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
-
-	$logger->activity("user ".$e->requestor->id." replacing MARC for record $recid");
-
-	$e->update_biblio_record_entry($rec) or return $e->event;
+	$e->update_biblio_record_entry($rec) or return $e->die_event;
 	$e->commit;
 
 	$conn->respond_complete($rec);
