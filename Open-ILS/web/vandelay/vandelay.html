@@ -1,7 +1,6 @@
 <!--
 # Copyright (C) 2008  Georgia Public Library Service
 # Bill Erickson <erickson@esilibrary.com>
-# 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -33,21 +32,23 @@
                 color: red;
                 font-weight:bold;
             }
+            .tall { height:100%; }
+            .hidden { display: none; }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
-    <body class="tundra" style='height:100%;'>
+    <body class="tundra" class='tall'>
         <div id="vl-generic-progress" style='width:100%;text-align:center'>
             <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
         </div>
-        <div id="vl-generic-progress-with-total" style='width:100%;text-align:center;display:none;'>
+        <div id="vl-generic-progress-with-total" class='hidden' style='width:100%;text-align:center;'>
             <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:200px"></div>
         </div>
 
         <!-- MARC upload form -->
-        <div id='vl-marc-upload-div' style='display:none;'>
-            <h1>Evergreen MARC File Upload</h1>
+        <div id='vl-marc-upload-div' class='hidden'>
+            <h1>Evergreen MARC File Upload</h1><br/>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
                 <br>
@@ -78,7 +79,7 @@
                     <tr>
                         <td>
                             <span id="vl-file-label">File to Upload:</span><br>
-                            <span id="vl-file-uploading" style='display:none;'>Uploading...</span><br>
+                            <span id="vl-file-uploading" class='hidden'>Uploading...</span><br>
                         </td>
                         <td id='vl-input-td'>
                             <input size='48' type="file" name="marc_upload">
@@ -86,7 +87,7 @@
                     </tr>
                     <tr>
                         <td colspan='2'>
-                            <span id="vl-upload-progress-span" style="display:none;">
+                            <span id="vl-upload-progress-span" class='hidden'>
                                 <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
                             </span>
                         </td>
@@ -99,7 +100,7 @@
                 </table>
             </form>
         </div>
-        <div id='vl-queue-div' style='display:none;height:100%;'>
+        <div id='vl-queue-div' class='tall hidden'>
             <h1>Record Queue</h1><br/>
             <script>
                 var vlQueueGridLayout;
@@ -108,17 +109,63 @@
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
                             {name: 'Selected', get: vlQueueGridDrawSelectBox },
-                            {name: 'Import Time', field:'import_time', get:getDateTimeField}
+                            {name: 'Import Time', field:'import_time', get:vlGetDateTimeField}
                         ]]
                     }];
                 }
             </script>
-            <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords'>Select All</button>
-            <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords'>Select None</button>
-            <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords'>Import Selected</button>
-            <div style='height:100%;'>
+            <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords();'>Select All</button>
+            <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords();'>Select None</button>
+            <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
+            <div class='tall'>
                 <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
             </div>
         </div>
+
+        <!-- Grid of record matches -->
+        <div id='vl-match-div' class='tall hidden'>
+            <script>
+                var vlMatchGridLayout;
+                function resetVlMatchGridLayout() {
+                    vlMatchGridLayout = [{
+                        defaultCell: {styles: 'text-align: center;'},
+                        cells : [[
+                            {name: 'ID', field:'id'},
+                            {   name: 'View MARC', 
+                                get: vlGetViewMARC, 
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID);">View MARC</a>'
+                            },
+                            {name: 'Creator', get: vlGetCreator},
+                            {name: 'Create Date', field:'create_date', get: vlGetDateTimeField},
+                            {name: 'Last Edit Date', field:'edit_date', get: vlGetDateTimeField},
+                            {name: 'Source', field:'source'},
+                            {name: 'TCN Source', field:'tcn_source'},
+                            {name: 'TCN Value', field:'tcn_value'}
+                        ]]
+                    }];
+                }
+            </script>
+            <h1>Import Matches</h1></br>
+            <div>
+                <button dojoType='dijit.form.Button' onclick='displayGlobalDiv("vl-queue-div");'>Back To Import Queue...</button>
+            </div>
+            <div class='tall'>
+                <div dojoType='dojox.Grid' jsId='vlMatchGrid'> </div>
+            </div>
+        </div>
+
+
+        <!-- MARC as HTML for matched records -->
+        <div id='vl-match-html-div' class='tall hidden'>
+            <h1>MARC Record</h1><br/>
+            <div>
+                <button dojoType='dijit.form.Button' onclick='displayGlobalDiv("vl-match-div");'>Back To Matches...</button>
+            </div>
+            <div>
+                <style>#vl-match-record-html td {padding:0px;}</style>
+                <div id='vl-match-record-html'/>
+            </div>
+        </div>
+
     </body>
 </html>

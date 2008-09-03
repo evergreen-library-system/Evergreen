@@ -17,6 +17,8 @@ dojo.require("dojo.io.iframe");
 dojo.require("dijit.ProgressBar"); 
 dojo.require("dijit.form.Button"); 
 dojo.require("dijit.form.FilteringSelect"); 
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.layout.TabContainer");
 dojo.require("dojo.cookie");
 dojo.require("dojox.grid.Grid");
 dojo.require("dojo.data.ItemFileReadStore");
@@ -32,7 +34,9 @@ var globalDivs = [
     'vl-generic-progress',
     'vl-generic-progress-with-total',
     'vl-marc-upload-div',
-    'vl-queue-div'
+    'vl-queue-div',
+    'vl-match-div',
+    'vl-match-html-div'
 ];
 
 var authtoken;
@@ -47,6 +51,7 @@ var attrMap = {};
 var currentType;
 var cgi = new openils.CGI();
 var currentQueueId = null;
+var userCache = {};
 
 /**
   * Grab initial data
@@ -220,7 +225,45 @@ function retrieveQueuedRecords(type, queueId, onload) {
 }
 
 function vlLoadMatchUI(recId, attrCode) {
-    alert(recId + ' : ' + attrCode);
+    displayGlobalDiv('vl-generic-progress');
+    var matches = getRecMatchesFromAttrCode(queuedRecordsMap[recId], attrCode);
+    var records = [];
+    for(var i = 0; i < matches.length; i++)
+        records.push(matches[i].eg_record());
+    fieldmapper.standardRequest(
+        ['open-ils.search', 'open-ils.search.biblio.record_entry.slim.retrieve'],
+        {   async: true,
+            params:[records],
+            oncomplete: function(r) {
+                var recs = r.recv().content();
+                if(e = openils.Event.parse(recs))
+                    return alert(e);
+                displayGlobalDiv('vl-match-div');
+                resetVlMatchGridLayout();
+                vlMatchGrid.setStructure(vlMatchGridLayout);
+                var store = new dojo.data.ItemFileReadStore({data:bre.toStoreData(recs)});
+                var model = new dojox.grid.data.DojoData(
+                    null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
+                vlMatchGrid.setModel(model);
+                vlMatchGrid.update();
+            }
+        }
+    );
+}
+
+function vlLoadMARCHtml(recId) {
+    displayGlobalDiv('vl-generic-progress');
+    fieldmapper.standardRequest(
+        ['open-ils.search', 'open-ils.search.biblio.record.html'],
+        {   async: true,
+            params: [recId, 1],
+            oncomplete: function(r) {
+            displayGlobalDiv('vl-match-html-div');
+                var html = r.recv().content();
+                dojo.byId('vl-match-record-html').innerHTML = html;
+            }
+        }
+    );
 }
 
 
@@ -230,43 +273,75 @@ function vlLoadMatchUI(recId, attrCode) {
   * represent those matches.  If no matches exist, simply returns the attribute value
   */
 function buildAttrColumnUI(rec, attrCode, attr) {
+    var matches = getRecMatchesFromAttrCode(rec, attrCode);
+    if(matches.length > 0) { // found some matches
+        return '<div class="match_div">' +
+            '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
+            rec.id()+',\''+matches[0].field_type()+'\');">'+ 
+            attr.attr_value() + ' ('+matches.length+')</a></div>';
+    }
+
+    return attr.attr_value();
+}
+
+function getRecMatchesFromAttrCode(rec, attrCode) {
     var matches = [];
     for(var j = 0; j < rec.matches().length; j++) {
         var match = rec.matches()[j];
         if(match.field_type() == attrCode)
             matches.push(match);
     }
+    return matches;
+}
 
-    if(matches.length > 0) { // found some matches
-        return '<div class="match_div">' +
-            '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
-            rec.id()+',\''+match.field_type()+'\');">'+ 
-            attr.attr_value() + '&nbsp;('+matches.length+')</a></div>';
+function getRecAttrFromCode(rec, attrCode) {
+    var defId = attrMap[attrCode];
+    var attrs = rec.attributes();
+    for(var i = 0; i < attrs.length; i++) {
+        var attr = attrs[i];
+        if(attr.field() == defId) 
+            return attr;
     }
-
-    return attr.attr_value();
+    return null;
 }
 
 function getAttrValue(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
     var attrCode = this.field.split('.')[1];
-    var defId = attrMap[attrCode];
     var rec = queuedRecordsMap[data.id];
-    var attrs = rec.attributes();
-    for(var i = 0; i < attrs.length; i++) {
-        var attr = attrs[i];
-        if(attr.field() == defId) 
-            return buildAttrColumnUI(rec, attrCode, attr);
-    }
+    var attr = getRecAttrFromCode(rec, attrCode);
+    console.log('attr = ' + attr);
+    if(attr)
+        return buildAttrColumnUI(rec, attrCode, attr);
     return '';
 }
 
-function getDateTimeField(rowIdx) {
+function vlGetDateTimeField(rowIdx) {
     data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
+    if(!data[this.field]) return '';
     var date = dojo.date.stamp.fromISOString(data[this.field]);
-    return dojo.date.locale.format(date, {formatLength:'medium'});
+    return dojo.date.locale.format(date, {selector:'date'});
+}
+
+function vlGetCreator(rowIdx) {
+    data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    var id = data.creator;
+    if(userCache[id])
+        return userCache[id].usrname();
+    var user = fieldmapper.standardRequest(['open-ils.actor', 'open-ils.actor.user.retrieve'], [authtoken, id]);
+    if(e = openils.Event.parse(user))
+        return alert(e);
+    userCache[id] = user;
+    return user.usrname();
+}
+
+function vlGetViewMARC(rowIdx) {
+    data = this.grid.model.getRow(rowIdx);
+    if(data) 
+        return this.value.replace('RECID', data.id);
 }
 
 function buildRecordGrid(type) {
