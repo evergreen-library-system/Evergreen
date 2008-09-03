@@ -219,6 +219,10 @@ function retrieveQueuedRecords(type, queueId, onload) {
     );
 }
 
+function vlLoadMatchUI(recId, attrCode) {
+    alert(recId + ' : ' + attrCode);
+}
+
 
 /**
   * Given a record, an attribute definition code, and a matching record attribute,
@@ -234,13 +238,10 @@ function buildAttrColumnUI(rec, attrCode, attr) {
     }
 
     if(matches.length > 0) { // found some matches
-        var str = '<div>';
-        for(var k = 0; k < matches.length; k++) {
-            var match = matches[k];
-            str += '<div><a href="javascript:void(0);" onclick="alert('+match.eg_record()+');">' + match.eg_record()+'</a></div>';
-        }
-        str += '</div>';
-        return str;
+        return '<div class="match_div">' +
+            '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
+            rec.id()+',\''+match.field_type()+'\');">'+ 
+            attr.attr_value() + '&nbsp;('+matches.length+')</a></div>';
     }
 
     return attr.attr_value();
