@@ -315,32 +315,20 @@ sub retrieve_queue {
     my $evt = check_queue_perms($e, $type, $queue);
     return $evt if $evt;
 
-    if($type eq 'bib') {
-        my $record_ids = $e->search_vandelay_queued_bib_record({queue => $queue_id}, {idlist => 1});
-        for my $rec_id (@$record_ids) {
-            my $rec = $e->retrieve_vandelay_queued_bib_record([
-                $rec_id,
-                {   flesh => 1,
-                    flesh_fields => {vqbr => ['attributes']}
-                }
-            ]);
-            $rec->clear_marc if $$options{clear_marc};
-            $conn->respond($rec);
-        }
-    } else {
-        my $record_ids = $e->search_vandelay_queued_authority_record({queue => $queue_id}, {idlist => 1});
-        for my $rec_id (@$record_ids) {
-            for my $rec_id (@$record_ids) {
-                my $rec = $e->retrieve_vandelay_queued_bib_record([
-                    $rec_id,
-                    {   flesh => 1,
-                        flesh_fields => {vqar => ['attributes']}
-                    }
-                ]);
-                $rec->clear_marc if $$options{clear_marc};
-                $conn->respond($rec);
+    my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
+    my $search = ($type eq 'bib') ? 'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
+    my $retrieve = ($type eq 'bib') ? 'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
+    my $record_ids = $e->$search({queue => $queue_id}, {idlist => 1});
+
+    for my $rec_id (@$record_ids) {
+        my $rec = $e->$retrieve([
+            $rec_id,
+            {   flesh => 1,
+                flesh_fields => {$class => ['attributes', 'matches']}
             }
-        }
+        ]);
+        $rec->clear_marc if $$options{clear_marc};
+        $conn->respond($rec);
     }
     return undef;
 }
