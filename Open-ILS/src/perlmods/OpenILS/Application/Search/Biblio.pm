@@ -1208,20 +1208,37 @@ __PACKAGE__->register_method(
 my $parser		= XML::LibXML->new();
 my $xslt			= XML::LibXSLT->new();
 my $marc_sheet;
+my $slim_marc_sheet;
 
 my $settings_client = OpenSRF::Utils::SettingsClient->new();
 sub biblio_record_to_marc_html {
-	my( $self, $client, $recordid ) = @_;
+	my( $self, $client, $recordid, $slim ) = @_;
 
-	if( !$marc_sheet ) {
-		my $dir = $settings_client->config_value( "dirs", "xsl" );
-		my $xsl = $settings_client->config_value(
-			"apps", "open-ils.search", "app_settings", "marc_html_xsl" );
+    my $sheet;
+	my $dir = $settings_client->config_value( "dirs", "xsl" );
 
-		$xsl = $parser->parse_file("$dir/$xsl");
-		$marc_sheet = $xslt->parse_stylesheet( $xsl );
-	}
+    if($slim) {
+        unless($slim_marc_sheet) {
+		    my $xsl = $settings_client->config_value(
+			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl_slim');
+            if($xsl) {
+		        $xsl = $parser->parse_file("$dir/$xsl");
+		        $slim_marc_sheet = $xslt->parse_stylesheet( $xsl );
+            }
+        }
+        $sheet = $slim_marc_sheet;
+    }
 
+    unless($sheet) {
+        unless($marc_sheet) {
+            my $xsl_key = ($slim) ? 'marc_html_xsl_slim' : 'marc_html_xsl';
+		    my $xsl = $settings_client->config_value(
+			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl' );
+		    $xsl = $parser->parse_file("$dir/$xsl");
+		    $marc_sheet = $xslt->parse_stylesheet( $xsl );
+        }
+        $sheet = $marc_sheet;
+    }
 
 	my $record = $apputils->simple_scalar_request(
 		"open-ils.cstore", 
@@ -1229,10 +1246,9 @@ sub biblio_record_to_marc_html {
 		$recordid );
 
 	my $xmldoc = $parser->parse_string($record->marc);
-	my $html = $marc_sheet->transform($xmldoc);
-	$html = $html->toString();
+	my $html = $sheet->transform($xmldoc);
+	$html = $html->documentElement->toString();
 	return $html;
-
 }
 
 

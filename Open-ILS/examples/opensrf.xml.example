@@ -324,6 +324,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+					<marc_html_xsl_slim>oilsMARC21slim2HTMLslim.xsl</marc_html_xsl_slim>
 
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
