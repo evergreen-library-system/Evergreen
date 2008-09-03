@@ -789,6 +789,24 @@ vim:et:ts=4:sw=4:
                </unix_config>
             </open-ils.fielder>
 
+            <open-ils.vandelay>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+				<implementation>OpenILS::Application::Vandelay</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>vandelay_unix.sock</unix_sock>
+                    <unix_pid>vandelay_unix.pid</unix_pid>
+                    <unix_log>vandelay_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+            </open-ils.vandelay>
+
         </apps>
     </default>
 
@@ -824,6 +842,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter-store</appname>  
                 <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.fielder</appname>  
+                <appname>open-ils.vandelay</appname>  
             </activeapps>
         </localhost>
     </hosts>
