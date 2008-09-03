@@ -190,8 +190,6 @@ __PACKAGE__->register_method(
 sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
 
-	warn "Updating MARC with xml\n$newxml\n";
-
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
@@ -652,26 +650,18 @@ sub _update_record_metadata {
 		my $user_obj = $doc->{user};
 		my $docid = $doc->{docid};
 
-		warn "Updating metata for doc $docid\n";
-
 		my $request = $session->request( 
 			"open-ils.storage.direct.biblio.record_entry.retrieve", $docid );
 		my $record = $request->gather(1);
 
-		warn "retrieved record\n";
 		my ($id) = _get_id_by_userid($user_obj->usrname);
 
-		warn "got $id from _get_id_by_userid\n";
 		$record->editor($id);
 		
-		warn "Grabbed the record, updating and moving on\n";
-
 		$request = $session->request( 
 			"open-ils.storage.direct.biblio.record_entry.update", $record );
 		$request->gather(1);
 	}
-
-	warn "committing metarecord update\n";
 
 	return 1;
 }
@@ -715,8 +705,6 @@ sub retrieve_copies {
 
 	$docid = "$docid";
 
-	warn " $$ retrieving copy tree for orgs @org_ids and doc $docid at " . time() . "\n";
-
 	# grabbing copy trees should be available for everyone..
 	if(!@org_ids and $user_session) {
 		my $user_obj = 
@@ -725,7 +713,6 @@ sub retrieve_copies {
 	}
 
 	if( $self->api_name =~ /global/ ) {
-		warn "performing global copy_tree search for $docid\n";
 		return _build_volume_list( { record => $docid, deleted => 'f' } );
 
 	} else {
@@ -734,11 +721,9 @@ sub retrieve_copies {
 		for my $orgid (@org_ids) {
 			my $vols = _build_volume_list( 
 					{ record => $docid, owning_lib => $orgid, deleted => 'f' } );
-			warn "Volumes built for org $orgid\n";
 			push( @all_vols, @$vols );
 		}
 		
-		warn " $$ Finished copy_tree at " . time() . "\n";
 		return \@all_vols;
 	}
 
