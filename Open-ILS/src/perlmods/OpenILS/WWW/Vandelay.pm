@@ -56,25 +56,26 @@ sub spool_marc {
 
 	return Apache2::Const::FORBIDDEN unless verify_login($auth);
 
-
+    my $data_fingerprint = '';
 	my $purpose = $cgi->param('purpose');
 	my $file = $cgi->param('marc_upload');
-	my $filename = "$file";
 
-	my $data = join '', (<$file>);
-	$data = encode_base64($data);
+    if($file and -e $file) {
 
-	my $data_fingerprint = md5_hex($data);
+	    my $data = join '', (<$file>);
+	    $data = encode_base64($data);
+    
+	    $data_fingerprint = md5_hex($data);
+    
+	    OpenSRF::Utils::Cache->new->put_cache(
+		    'vandelay_import_spool_' . $data_fingerprint,
+		    { purpose => $purpose, marc => $data }
+	    );
+    }
 
-	OpenSRF::Utils::Cache->new->put_cache(
-		'vandelay_import_spool_' . $data_fingerprint,
-		{ purpose => $purpose, marc => $data }
-	);
-
-	print "Content-type: text/plain; charset=utf-8\n\n$data_fingerprint";
-
+    $r->content_type('text/plain; charset=utf-8');
+	print "$data_fingerprint";
 	return Apache2::Const::OK;
-
 }
 
 sub verify_login {
