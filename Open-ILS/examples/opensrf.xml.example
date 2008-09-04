@@ -609,9 +609,9 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Storage</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.storage_unix.log</unix_log>
-                    <unix_sock>openils.storage_unix.sock</unix_sock>
-                    <unix_pid>openils.storage_unix.pid</unix_pid>
+                    <unix_log>open-ils.storage_unix.log</unix_log>
+                    <unix_sock>open-ils.storage_unix.sock</unix_sock>
+                    <unix_pid>open-ils.storage_unix.pid</unix_pid>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -696,10 +696,10 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Collections</implementation>
                 <max_requests>17</max_requests>
                 <unix_config>
-                    <unix_sock>openils.collections_unix.sock</unix_sock>
-                    <unix_pid>openils.collections_unix.pid</unix_pid>
+                    <unix_sock>open-ils.collections_unix.sock</unix_sock>
+                    <unix_pid>open-ils.collections_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.collections_unix.log</unix_log>
+                    <unix_log>open-ils.collections_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -714,10 +714,10 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Reporter</implementation>
                 <max_requests>99</max_requests>
                 <unix_config>
-                    <unix_sock>openils.reporter_unix.sock</unix_sock>
-                    <unix_pid>openils.reporter_unix.pid</unix_pid>
+                    <unix_sock>open-ils.reporter_unix.sock</unix_sock>
+                    <unix_pid>open-ils.reporter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.reporter_unix.log</unix_log>
+                    <unix_log>open-ils.reporter_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
