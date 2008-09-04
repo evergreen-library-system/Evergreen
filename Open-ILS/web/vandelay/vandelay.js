@@ -76,8 +76,8 @@ function vlInit() {
                 bibAttrsFetched = true;
                 bibAttrDefs = bibAttrDefs.sort(
                     function(a, b) {
-                        if(a.description() > b.description()) return 1;
-                        if(a.description() < b.description()) return -1;
+                        if(a.id() > b.id()) return 1;
+                        if(a.id() < b.id()) return -1;
                         return 0;
                     }
                 );
@@ -101,8 +101,8 @@ function vlInit() {
                 authAttrsFetched = true;
                 authAttrDefs = authAttrDefs.sort(
                     function(a, b) {
-                        if(a.description() > b.description()) return 1;
-                        if(a.description() < b.description()) return -1;
+                        if(a.id() > b.id()) return 1;
+                        if(a.id() < b.id()) return -1;
                         return 0;
                     }
                 );
@@ -145,12 +145,11 @@ function uploadMARC(onload){
         form: dojo.byId('vl-marc-upload-form'),
         handle: function(data,ioArgs){
             var content = data.documentElement.textContent;
-            var key = content.split(/\n/)[2]; /* XXX have to strip the headers.. (why?) */
             dojo.style(dojo.byId('vl-input-td'),"display","inline");
             dojo.style(dojo.byId('vl-upload-progress-span'),"display","none");
             dojo.style(dojo.byId('vl-file-label'), 'display', 'inline');
             dojo.style(dojo.byId('vl-file-uploading'), 'display', 'none');
-            onload(key);
+            onload(content);
         }
     });
 }	
@@ -278,7 +277,7 @@ function buildAttrColumnUI(rec, attrCode, attr) {
         return '<div class="match_div">' +
             '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
             rec.id()+',\''+matches[0].field_type()+'\');">'+ 
-            attr.attr_value() + ' ('+matches.length+')</a></div>';
+            attr.attr_value() + '&nbsp;('+matches.length+')</a></div>';
     }
 
     return attr.attr_value();
@@ -375,6 +374,20 @@ function buildRecordGrid(type) {
     vlQueueGrid.setModel(model);
     vlQueueGrid.update();
 }
+
+/*
+function test() {
+    alert(vlQueueGridLayout.picker);
+    vlQueueGridLayout.oils = {};
+    vlQueueGridLayout[0].cells[0].pop();
+    vlQueueGridLayout[0].cells[0].pop();
+    vlQueueGridLayout[0].cells[0].pop();
+    vlQueueGridLayout[0].cells[0].pop();
+    vlQueueGridLayout[0].cells[0].pop();
+    vlQueueGrid.setStructure(vlQueueGridLayout);
+    vlQueueGrid.update();
+}
+*/
 
 var selectableGridRecords = {};
 function vlQueueGridDrawSelectBox(rowIdx) {
