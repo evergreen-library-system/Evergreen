@@ -35,7 +35,7 @@
             .tall { height:100%; }
             .hidden { display: none; }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
     <body class="tundra" class='tall'>
@@ -132,6 +132,12 @@
                     vlMatchGridLayout = [{
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
+                            {
+                                name: 'Overlay Target', 
+                                get: vlGetOverlayTargetSelector,
+                                value: '<input type="radio" name="overlay_target" onclick="vlHandleOverlayTargetSelected" id="vl-overlay-target-ID"/>'
+                            },
+                            {name:'Match Point', field:'field_type'},
                             {name: 'ID', field:'id'},
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
@@ -151,6 +157,10 @@
             <div>
                 <button dojoType='dijit.form.Button' 
                     onclick='displayGlobalDiv("vl-queue-div");'>Back To Import Queue...</button>
+                <span style='padding-left:20px;'>
+                    <input dojoType='dijit.form.CheckBox' jsId='vlOverlayTargetEnable' onclick='vlHandleOverlayTargetSelected'/> 
+                    Overlay selected record with imported record
+                </span>
             </div>
             <div class='tall'>
                 <div dojoType='dojox.Grid' jsId='vlMatchGrid'> </div>

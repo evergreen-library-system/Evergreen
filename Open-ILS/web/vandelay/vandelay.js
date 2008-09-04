@@ -47,11 +47,14 @@ var queuedRecords = [];
 var queuedRecordsMap = {};
 var bibAttrsFetched = false;
 var authAttrsFetched = false;
-var attrMap = {};
+var attrDefMap = {}; // maps attr def code names to attr def ids
 var currentType;
 var cgi = new openils.CGI();
 var currentQueueId = null;
 var userCache = {};
+var currentMatchedRecords; // set of loaded matched bib records
+var currentOverlayRecordsMap; // map of import record to overlay record
+var currentImportRecId; // when analyzing matches, this is the current import record
 
 /**
   * Grab initial data
@@ -227,6 +230,7 @@ function vlLoadMatchUI(recId, attrCode) {
     displayGlobalDiv('vl-generic-progress');
     var matches = getRecMatchesFromAttrCode(queuedRecordsMap[recId], attrCode);
     var records = [];
+    currentImportRecId = recId;
     for(var i = 0; i < matches.length; i++)
         records.push(matches[i].eg_record());
     fieldmapper.standardRequest(
@@ -239,8 +243,18 @@ function vlLoadMatchUI(recId, attrCode) {
                     return alert(e);
                 displayGlobalDiv('vl-match-div');
                 resetVlMatchGridLayout();
+                currentMatchedRecords = recs;
                 vlMatchGrid.setStructure(vlMatchGridLayout);
-                var store = new dojo.data.ItemFileReadStore({data:bre.toStoreData(recs)});
+                var dataStore = bre.toStoreData(recs, null, {virtualFields:['field_type']});
+                for(var i = 0; i < dataStore.items.length; i++) {
+                    var item = dataStore.items[i];
+                    for(var j = 0; j < matches.length; j++) {
+                        var match = matches[j];
+                        if(match.eg_record() == item.id)
+                            item.field_type = match.field_type();
+                    }
+                }
+                var store = new dojo.data.ItemFileReadStore({data:dataStore});
                 var model = new dojox.grid.data.DojoData(
                     null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
                 vlMatchGrid.setModel(model);
@@ -249,6 +263,7 @@ function vlLoadMatchUI(recId, attrCode) {
         }
     );
 }
+
 
 function vlLoadMARCHtml(recId) {
     displayGlobalDiv('vl-generic-progress');
@@ -276,7 +291,7 @@ function buildAttrColumnUI(rec, attrCode, attr) {
     if(matches.length > 0) { // found some matches
         return '<div class="match_div">' +
             '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
-            rec.id()+',\''+matches[0].field_type()+'\');">'+ 
+            rec.id()+',\''+attrCode+'\');">'+ 
             attr.attr_value() + '&nbsp;('+matches.length+')</a></div>';
     }
 
@@ -285,16 +300,17 @@ function buildAttrColumnUI(rec, attrCode, attr) {
 
 function getRecMatchesFromAttrCode(rec, attrCode) {
     var matches = [];
+    var attr = getRecAttrFromCode(rec, attrCode);
     for(var j = 0; j < rec.matches().length; j++) {
         var match = rec.matches()[j];
-        if(match.field_type() == attrCode)
+        if(match.matched_attr() == attr.id()) 
             matches.push(match);
     }
     return matches;
 }
 
 function getRecAttrFromCode(rec, attrCode) {
-    var defId = attrMap[attrCode];
+    var defId = attrDefMap[attrCode];
     var attrs = rec.attributes();
     for(var i = 0; i < attrs.length; i++) {
         var attr = attrs[i];
@@ -310,7 +326,6 @@ function getAttrValue(rowIdx) {
     var attrCode = this.field.split('.')[1];
     var rec = queuedRecordsMap[data.id];
     var attr = getRecAttrFromCode(rec, attrCode);
-    console.log('attr = ' + attr);
     if(attr)
         return buildAttrColumnUI(rec, attrCode, attr);
     return '';
@@ -343,19 +358,43 @@ function vlGetViewMARC(rowIdx) {
         return this.value.replace('RECID', data.id);
 }
 
+function vlGetOverlayTargetSelector(rowIdx) {
+    data = this.grid.model.getRow(rowIdx);
+    if(data) 
+        return this.value.replace('ID', data.id);
+}
+
+function vlHandleOverlayTargetSelected() {
+    //alert(1);
+    console.log("checking target select..");
+    if(!vlOverlayTargetEnable.checked) return;
+    console.log("overlay enabled for for record "+matchRecId);
+    for(var i = 0; i < currentMatchedRecords.length; i++) {
+        var matchRecId = currentMatchedRecords[i].id();
+        console.log("checking id vl-overlay-target-"+matchRecId);
+        if(dojo.byId('vl-overlay-target-'+matchRecId).selected) {
+            console.log("CHECKED");
+            currentOverlayRecordsMap[currentImportRecId] = matchRecId;
+            return;
+        }
+    }
+}
+
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
+    currentOverlayRecordsMap = {};
+
     var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
     for(var i = 0; i < defs.length; i++) {
-        var attr = defs[i]
-        attrMap[attr.code()] = attr.id();
+        var def = defs[i]
+        attrDefMap[def.code()] = def.id();
         var col = {
-            name:attr.description(), 
-            field:'attr.' + attr.code(),
+            name:def.description(), 
+            field:'attr.' + def.code(),
             get: getAttrValue
         };
-        //if(attr.code().match(/title/i)) col.width = 'auto'; // this is hack.
+        //if(def.code().match(/title/i)) col.width = 'auto'; // this is hack.
         vlQueueGridLayout[0].cells[0].push(col);
     }
 
