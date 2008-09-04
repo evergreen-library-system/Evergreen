@@ -250,6 +250,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Match ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Queued Record" name="queued_record" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Matched Attribute" name="matched_attr" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Evergreen Record" name="eg_record" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Field Type" name="field_type" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
@@ -381,6 +382,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Match ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Queued Record" name="queued_record" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Matched Attribute" name="matched_attr" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Evergreen Record" name="eg_record" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
