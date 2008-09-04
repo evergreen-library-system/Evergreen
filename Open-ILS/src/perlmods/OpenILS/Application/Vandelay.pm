@@ -31,7 +31,7 @@ sub child_init {}
 
 sub entityize {
 	my $stuff = shift;
-	my $form = shift;
+	my $form = shift || '';
 
 	if ($form eq 'D') {
 		$stuff = NFD($stuff);
