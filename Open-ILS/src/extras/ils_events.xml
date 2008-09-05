@@ -565,6 +565,12 @@
 	<event code='1645' textcode='CONFIG_CIRC_MATRIX_TEST_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_circ_matrix_test was not found</desc>
 	</event>
+	<event code='1646' textcode='VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_bib_record was not found</desc>
+	</event>
+	<event code='1647' textcode='VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_authority_record was not found</desc>
+	</event>
 
 
 
