@@ -50,7 +50,6 @@ var bibAttrsFetched = false;
 var authAttrsFetched = false;
 var attrDefMap = {}; // maps attr def code names to attr def ids
 var currentType;
-var cgi = new openils.CGI();
 var currentQueueId = null;
 var userCache = {};
 var currentMatchedRecords; // set of loaded matched bib records
@@ -59,6 +58,7 @@ var currentImportRecId; // when analyzing matches, this is the current import re
 var userBibQueues;
 var userAuthQueues;
 var selectableGridRecords;
+var cgi = new openils.CGI();
 
 /**
   * Grab initial data
@@ -166,7 +166,7 @@ function runStartupCommands() {
     currentType = cgi.param('qtype');
     if(currentQueueId)
         return retrievenueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-    displayGlobalDiv('vl-marc-upload-div');
+    vlShowUploadForm();
 }
 
 /**
@@ -234,6 +234,7 @@ function processSpool(key, queueId, type, onload) {
 }
 
 function retrieveQueuedRecords(type, queueId, onload) {
+    displayGlobalDiv('vl-generic-progress');
     queuedRecords = [];
     queuedRecordsMap = {};
     currentOverlayRecordsMap = {};
@@ -424,6 +425,7 @@ function vlHandleOverlayTargetSelected() {
                 console.log("found overlay target " + matchRecId);
                 currentOverlayRecordsMap[currentImportRecId] = matchRecId;
                 dojo.byId('vl-record-list-selected-' + currentImportRecId).checked = true;
+                dojo.byId('vl-record-list-selected-' + currentImportRecId).parentNode.className = 'overlay_selected';
                 return;
             }
         }
@@ -494,7 +496,7 @@ function vlQueueGridDrawSelectBox(rowIdx) {
     if(!data) return '';
     var domId = 'vl-record-list-selected-' +data.id;
     selectableGridRecords[domId] = data.id;
-    return "<input type='checkbox' id='"+domId+"'/>";
+    return "<div><input type='checkbox' id='"+domId+"'/></div>";
 }
 
 function vlSelectAllGridRecords() {
@@ -563,21 +565,34 @@ function batchUpload() {
         currentQueueId = queue.id();
         uploadMARC(handleUploadMARC);
     };
-
-    createQueue(queueName, currentType, handleCreateQueue);
+    
+    if(vlUploadQueueSelector.getValue() && !queueName) {
+        currentQueueId = vlUploadQueueSelector.getValue();
+        console.log('adding records to existing queue ' + currentQueueId);
+        uploadMARC(handleUploadMARC);
+    } else {
+        createQueue(queueName, currentType, handleCreateQueue);
+    }
 }
 
 
 function vlFleshQueueSelect(selector, type) {
     var data = (type == 'bib') ? vbq.toStoreData(userBibQueues) : vaq.toStoreData(userAuthQueues);
     selector.store = new dojo.data.ItemFileReadStore({data:data});
+    selector.setValue(null);
+    selector.setDisplayedValue('');
     if(data[0])
         selector.setValue(data[0].id());
 }
 
+function vlShowUploadForm() {
+    displayGlobalDiv('vl-marc-upload-div');
+    vlFleshQueueSelect(vlUploadQueueSelector, vlUploadRecordType.getValue());
+}
+
 function vlShowQueueSelect() {
     displayGlobalDiv('vl-queue-select-div');
-    vlFleshQueueSelect(vlQueueSelectQueueList, 'bib');
+    vlFleshQueueSelect(vlQueueSelectQueueList, vlQueueSelectType.getValue());
 }
 
 function vlFetchQueueFromForm() {
@@ -585,6 +600,5 @@ function vlFetchQueueFromForm() {
     currentQueueId = vlQueueSelectQueueList.getValue();
     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
 }
-    
 
 dojo.addOnLoad(vlInit);

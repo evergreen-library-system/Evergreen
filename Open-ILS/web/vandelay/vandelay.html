@@ -41,12 +41,16 @@
                 text-align:center;
                 margin: 20px;
             }
+            .overlay_selected { 
+                padding: 2px; 
+                background: #d9e8f9;
+                border: 1px solid red; 
+            }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
     <body class="tundra tall">
-
         <div dojoType="dijit.Toolbar" id='toolbar'>
             <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                 onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
@@ -55,10 +59,10 @@
         </div>
 
         <div id="vl-generic-progress" class='progress'>
-            <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
+            <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
         </div>
         <div id="vl-generic-progress-with-total" class='hidden progress'>
-            <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:200px"></div>
+            <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:300px"></div>
         </div>
 
         <!-- MARC upload form -->
@@ -69,23 +73,29 @@
                 <br/>
                 <table>
                     <tr>
-                        <td>Queue Name</td>
-                        <td>
-                            <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Record Type</td>
-                        <td>
-                            <select id='vl-record-type' dojoType='dijit.form.FilteringSelect'>
-                                <option value='bib'>Bibliographic Records</option>
+                        <td colspan='4'>
+                            <select id='vl-record-type' dojoType='dijit.form.FilteringSelect' 
+                                    jsId='vlUploadRecordType' onchange='vlShowUploadForm();'>
+                                <option value='bib' selected='selected'>Bibliographic Records</option>
                                 <option value='auth'>Authority Records</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>Purpose</td>
+                        <td>Create a Upload New Queue</td>
                         <td>
+                            <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
+                        </td>
+                        <td>or Add to an Existing Queue</td>
+                        <td>
+                            <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect'>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Purpose</td>
+                        <td colspan='4'>
                             <select name='purpose' dojoType='dijit.form.FilteringSelect'>
                                 <option value='import'>Import</option>
                                 <option value='overlay'>Overlay</option>
@@ -97,19 +107,19 @@
                             <span id="vl-file-label">File to Upload:</span>
                             <span id="vl-file-uploading" class='hidden'>Uploading...</span>
                         </td>
-                        <td id='vl-input-td'>
+                        <td id='vl-input-td' colspan='4'>
                             <input size='48' type="file" name="marc_upload"/>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan='2'>
+                        <td colspan='4'>
                             <span id="vl-upload-progress-span" class='hidden'>
                                 <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
                             </span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan='2' align='center'>
+                        <td align='center' colspan='4'>
                             <button dojoType="dijit.form.Button" onclick="batchUpload()">Upload</button>
                         </td>
                     </tr>
@@ -206,7 +216,7 @@
                 <tr>
                     <td>Queue Type</td>
                     <td>
-                        <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='alert(1);'>
+                        <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
                             <option value='bib' selected='selected'>Bibliographic Records</option>
                             <option value='auth'>Authority Records</option>
                         </select>
