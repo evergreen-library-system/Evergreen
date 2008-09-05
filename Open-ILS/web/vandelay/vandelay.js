@@ -37,7 +37,8 @@ var globalDivs = [
     'vl-queue-div',
     'vl-match-div',
     'vl-match-html-div',
-    'vl-queue-select-div'
+    'vl-queue-select-div',
+    'vl-marc-upload-status-div'
 ];
 
 var authtoken;
@@ -174,12 +175,7 @@ function runStartupCommands() {
   */
 function uploadMARC(onload){
     dojo.byId('vl-ses-input').value = authtoken;
-    dojo.style(dojo.byId('vl-input-td'),"display","none");
-    dojo.style(dojo.byId('vl-upload-progress-span'),"display","inline"); 
-
-    dojo.style(dojo.byId('vl-file-label'), 'display', 'none');
-    dojo.style(dojo.byId('vl-file-uploading'), 'display', 'inline');
-
+    displayGlobalDiv('vl-marc-upload-status-div');
     dojo.io.iframe.send({
         url: VANDELAY_URL,
         method: "post",
@@ -187,10 +183,6 @@ function uploadMARC(onload){
         form: dojo.byId('vl-marc-upload-form'),
         handle: function(data,ioArgs){
             var content = data.documentElement.textContent;
-            dojo.style(dojo.byId('vl-input-td'),"display","inline");
-            dojo.style(dojo.byId('vl-upload-progress-span'),"display","none");
-            dojo.style(dojo.byId('vl-file-label'), 'display', 'inline');
-            dojo.style(dojo.byId('vl-file-uploading'), 'display', 'none');
             onload(content);
         }
     });
@@ -557,6 +549,7 @@ function batchUpload() {
 
     var handleUploadMARC = function(key) {
         console.log('marc uploaded');
+        dojo.style(dojo.byId('vl-upload-status-processing'), 'display', 'block');
         processSpool(key, currentQueueId, currentType, handleProcessSpool);
     };
 

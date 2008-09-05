@@ -65,6 +65,12 @@
             <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:300px"></div>
         </div>
 
+        <div id='vl-marc-upload-status-div' class='hidden'>
+            <h1>Upload Status</h1><br/>
+            <div id='vl-upload-status-uploading'><h3>Uploading...</h3></div>
+            <div id='vl-upload-status-processing' class='hidden'><h3>Processing...</h3></div>
+        </div>
+
         <!-- MARC upload form -->
         <div id='vl-marc-upload-div' class='hidden'>
             <h1>Evergreen MARC File Upload</h1><br/>
@@ -105,17 +111,9 @@
                     <tr>
                         <td>
                             <span id="vl-file-label">File to Upload:</span>
-                            <span id="vl-file-uploading" class='hidden'>Uploading...</span>
                         </td>
                         <td id='vl-input-td' colspan='4'>
                             <input size='48' type="file" name="marc_upload"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan='4'>
-                            <span id="vl-upload-progress-span" class='hidden'>
-                                <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
-                            </span>
                         </td>
                     </tr>
                     <tr>
