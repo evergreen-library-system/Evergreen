@@ -384,12 +384,15 @@ sub import_record_list_impl {
     my $type = $self->{record_type};
     my $total = @$rec_ids;
     my $count = 0;
+    my %queues;
 
     for my $rec_id (@$rec_ids) {
         if($type eq 'bib') {
 
             my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) 
                 or return $e->die_event;
+
+            $queues{$rec->queue} = 1;
 
             my $record;
             if(defined $overlay_map->{$rec_id}) {
@@ -419,9 +422,59 @@ sub import_record_list_impl {
         $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
     }
 
+    # see if we need to mark any queues as complete
+    for my $q_id (keys %queues) {
+        if($type eq 'bib') {
+            my $remaining = $e->search_vandelay_queued_bib_record(
+                {queue => $q_id, import_time => undef}, {idlist => 1});
+            unless(@$remaining) {
+                my $queue = $e->retrieve_vandelay_bib_queue($q_id);
+                unless($U->is_true($queue->complete)) {
+                    $queue->complete('t');
+                    $e->update_vandelay_bib_queue($queue) or return $e->die_event;
+                }
+            }
+        }
+    }
+
+    $e->commit;
     return undef;
 }
 
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.owner.retrieve",
+	method		=> 'owner_queue_retrieve',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.authority_queue.owner.retrieve",
+	method		=> 'owner_queue_retrieve',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub owner_queue_retrieve {
+    my($self, $conn, $auth, $owner_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    $owner_id = $e->requestor->id; # XXX add support for viewing other's queues
+    my $queues;
+    if($self->{record_type} eq 'bib') {
+        $queues = $e->search_vandelay_bib_queue(
+            {complete => 'f', owner => $owner_id});
+    } else {
+        $queues = $e->search_vandelay_authority_queue(
+            {complete => 'f', owner => $owner_id});
+    }
+    $conn->respond($_) for @$queues;
+    return undef;
+}
 
 
 
