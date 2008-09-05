@@ -197,7 +197,9 @@ function processSpool(key, queueId, type, onload) {
 function retrieveQueuedRecords(type, queueId, onload) {
     queuedRecords = [];
     queuedRecordsMap = {};
+    currentOverlayRecordsMap = {};
     resetVlQueueGridLayout();
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic'],
         {   async: true,
@@ -364,19 +366,22 @@ function vlGetOverlayTargetSelector(rowIdx) {
         return this.value.replace('ID', data.id);
 }
 
+/**
+  * see if the user has enabled overlays for the current match set and, 
+  * if so, map the current import record to the overlay target.
+  */
 function vlHandleOverlayTargetSelected() {
-    //alert(1);
-    console.log("checking target select..");
-    if(!vlOverlayTargetEnable.checked) return;
-    console.log("overlay enabled for for record "+matchRecId);
-    for(var i = 0; i < currentMatchedRecords.length; i++) {
-        var matchRecId = currentMatchedRecords[i].id();
-        console.log("checking id vl-overlay-target-"+matchRecId);
-        if(dojo.byId('vl-overlay-target-'+matchRecId).selected) {
-            console.log("CHECKED");
-            currentOverlayRecordsMap[currentImportRecId] = matchRecId;
-            return;
+    if(vlOverlayTargetEnable.checked) {
+        for(var i = 0; i < currentMatchedRecords.length; i++) {
+            var matchRecId = currentMatchedRecords[i].id();
+            if(dojo.byId('vl-overlay-target-'+matchRecId).checked) {
+                console.log("found overlay target " + matchRecId);
+                currentOverlayRecordsMap[currentImportRecId] = matchRecId;
+                return;
+            }
         }
+    } else {
+        delete currentOverlayRecordsMap[currentImportRecId];
     }
 }
 
@@ -453,6 +458,7 @@ var handleRetrieveRecords = function() {
 function vlImportSelectedRecords() {
     displayGlobalDiv('vl-generic-progress-with-total');
     var records = [];
+
     for(var id in selectableGridRecords) {
         if(dojo.byId(id).checked) {
             var recId = selectableGridRecords[id];
@@ -461,10 +467,11 @@ function vlImportSelectedRecords() {
                 records.push(recId);
         }
     }
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
         {   async: true,
-            params: [authtoken, records],
+            params: [authtoken, records, {overlay_map:currentOverlayRecordsMap}],
             onresponse: function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
