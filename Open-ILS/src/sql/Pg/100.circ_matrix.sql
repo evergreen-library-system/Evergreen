@@ -288,6 +288,8 @@ BEGIN
 	SELECT INTO matchpoint_id action.find_circ_matrix_matchpoint(circ_ou, match_item, match_user, renewal);
 	result.matchpoint := matchpoint_id;
 
+	SELECT INTO circ_test * from config.circ_matrix_test WHERE matchpoint = result.matchpoint;
+
 	-- Fail if we couldn't find a set of tests
 	IF result.matchpoint IS NULL THEN
 		result.fail_part := 'no_matchpoint';
