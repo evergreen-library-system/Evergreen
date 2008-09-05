@@ -570,6 +570,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Max Overdue" name="max_overdue" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field reporter:label="Max Fines" name="max_fines" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money"/>
 			<field reporter:label="Test Script" name="script_test" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Test Context Location" name="org_unit" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>

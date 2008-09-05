@@ -1,6 +1,11 @@
 
 BEGIN;
 
+CREATE OR REPLACE FUNCTION explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
+    SELECT ($1)[s] FROM generate_series(1, array_upper($1, 1)) AS s;
+$BODY$
+LANGUAGE 'sql' IMMUTABLE;
+
 -- NOTE: current config.item_type should get sip2_media_type and magnetic_media columns
 
 -- New table needed to handle circ modifiers inside the DB.  Will still require
@@ -114,6 +119,7 @@ CREATE TABLE config.circ_matrix_test (
 	max_items_out   INT,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
 	max_overdue	    INT,               				-- Total overdue active circulations must be less than this, NULL means skip (always pass)
 	max_fines       NUMERIC(8,2),              		-- Total fines owed must be less than this, NULL means skip (always pass)
+	org_unit		INT     REFERENCES actor.org_unit (id),	-- Set to the top OU for the max-out applicability range
 	script_test     TEXT		                   	-- filename or javascript source ??
 );
 
@@ -228,9 +234,11 @@ DECLARE
 	out_by_circ_mod		config.circ_matrix_circ_mod_test%ROWTYPE;
 	items_out		INT;
 	items_overdue		INT;
+	overdue_orgs		INT[];
 	current_fines		NUMERIC(8,2) := 0.0;
 	tmp_fines		NUMERIC(8,2);
-	tmp_xact		RECORD;
+	tmp_groc		RECORD;
+	tmp_circ		RECORD;
 	done			BOOL := FALSE;
 BEGIN
 	result.success := TRUE;
@@ -290,6 +298,12 @@ BEGIN
 
 	SELECT INTO circ_test * from config.circ_matrix_test WHERE matchpoint = result.matchpoint;
 
+    IF circ_test.org_unit IS NOT NULL THEN
+        SELECT INTO overdue_orgs ARRAY_ACCUM(id) FROM actor.org_unit_descendants( circ_test.org_unit );
+    ELSE
+        SELECT INTO overdue_orgs ARRAY_ACCUM(id) FROM actor.org_unit;
+    END IF; 
+
 	-- Fail if we couldn't find a set of tests
 	IF result.matchpoint IS NULL THEN
 		result.fail_part := 'no_matchpoint';
@@ -311,6 +325,7 @@ BEGIN
     	SELECT  INTO items_out COUNT(*)
           FROM  action.circulation
           WHERE usr = match_user
+                AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )
                 AND checkin_time IS NULL
                 AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
 	   	IF items_out >= circ_test.max_items_out THEN
@@ -327,6 +342,7 @@ BEGIN
 		  FROM  action.circulation circ
 			JOIN asset.copy cp ON (cp.id = circ.target_copy)
 		  WHERE circ.usr = match_user
+            AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )
 			AND circ.checkin_time IS NULL
 			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL)
 			AND cp.circ_modifier = out_by_circ_mod.circ_mod;
@@ -343,6 +359,7 @@ BEGIN
 		SELECT  INTO items_overdue COUNT(*)
 		  FROM  action.circulation
 		  WHERE usr = match_user
+            AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )
 			AND checkin_time IS NULL
 			AND due_date < NOW()
 			AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
@@ -356,10 +373,17 @@ BEGIN
 
 	-- Fail if the user has a high fine balance
 	IF circ_test.max_fines IS NOT NULL THEN
-		FOR tmp_xact IN SELECT * FROM money.billable_xact WHERE usr = match_usr AND xact_finish IS NULL LOOP
-			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_xact.id AND NOT voided;
+		FOR tmp_groc IN SELECT * FROM money.grocery WHERE usr = match_usr AND xact_finish IS NULL AND billing_location IN ( SELECT * FROM explode_array(overdue_orgs) ) LOOP
+			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_groc.id AND NOT voided;
 			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_xact.id AND NOT voided;
+			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_groc.id AND NOT voided;
+			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
+		END LOOP;
+
+		FOR tmp_circ IN SELECT * FROM action.circulation WHERE usr = match_usr AND xact_finish IS NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) ) LOOP
+			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_circ.id AND NOT voided;
+			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
+			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_circ.id AND NOT voided;
 			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
 		END LOOP;
 
