@@ -437,7 +437,6 @@ sub import_record_list_impl {
         }
     }
 
-    $e->commit;
     return undef;
 }
 
