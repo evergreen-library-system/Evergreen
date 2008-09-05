@@ -362,8 +362,13 @@ function vlGetViewMARC(rowIdx) {
 
 function vlGetOverlayTargetSelector(rowIdx) {
     data = this.grid.model.getRow(rowIdx);
-    if(data) 
-        return this.value.replace('ID', data.id);
+    if(data) {
+        var value = this.value.replace('ID', data.id);
+        var overlay = currentOverlayRecordsMap[currentImportRecId];
+        if(overlay && overlay == data.id) 
+            value = value.replace('/>', 'checked="checked"/>');
+        return value;
+    }
 }
 
 /**
@@ -377,11 +382,13 @@ function vlHandleOverlayTargetSelected() {
             if(dojo.byId('vl-overlay-target-'+matchRecId).checked) {
                 console.log("found overlay target " + matchRecId);
                 currentOverlayRecordsMap[currentImportRecId] = matchRecId;
+                dojo.byId('vl-record-list-selected-' + currentImportRecId).checked = true;
                 return;
             }
         }
     } else {
         delete currentOverlayRecordsMap[currentImportRecId];
+        dojo.byId('vl-record-list-selected-' + currentImportRecId).checked = false;
     }
 }
 
