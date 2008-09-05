@@ -366,25 +366,6 @@ __PACKAGE__->register_method(
 	record_type	=> 'auth'
 );
 
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_record.list.overlay",
-	method		=> 'import_record_list',
-	api_level	=> 1,
-	argc		=> 2,
-    stream      => 1,
-	record_type	=> 'bib'
-);
-
-__PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_record.list.overlay",
-	method		=> 'import_record_list',
-	api_level	=> 1,
-	argc		=> 2,
-    stream      => 1,
-	record_type	=> 'auth'
-);
-
-
 sub import_record_list {
     my($self, $conn, $auth, $rec_ids, $args) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
@@ -396,12 +377,10 @@ sub import_record_list {
     return {complete => 1};
 }
 
-#open-ils.cat.biblio.record.xml.update
-
 sub import_record_list_impl {
     my($self, $conn, $auth, $e, $rec_ids, $args) = @_;
 
-    my $overlay_map = $args->{overlay_map};
+    my $overlay_map = $args->{overlay_map} || {};
     my $type = $self->{record_type};
     my $total = @$rec_ids;
     my $count = 0;
@@ -413,12 +392,14 @@ sub import_record_list_impl {
                 or return $e->die_event;
 
             my $record;
-            if($self->api_name =~ /overlay/) {
+            if(defined $overlay_map->{$rec_id}) {
+                $logger->info("vl: overlaying record $rec_id");
                 $record = $U->simplereq(
                     'open-ils.cat',
                     'open-ils.cat.biblio.record.xml.update',
                     $auth, $overlay_map->{$rec_id}, $rec->marc); #$rec->bib_source);
             } else {
+                $logger->info("vl: importing new record");
                 $record = $U->simplereq(
                     'open-ils.cat',
                     'open-ils.cat.biblio.record.xml.import',
