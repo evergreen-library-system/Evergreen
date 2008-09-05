@@ -36,7 +36,8 @@ var globalDivs = [
     'vl-marc-upload-div',
     'vl-queue-div',
     'vl-match-div',
-    'vl-match-html-div'
+    'vl-match-html-div',
+    'vl-queue-select-div'
 ];
 
 var authtoken;
@@ -55,14 +56,23 @@ var userCache = {};
 var currentMatchedRecords; // set of loaded matched bib records
 var currentOverlayRecordsMap; // map of import record to overlay record
 var currentImportRecId; // when analyzing matches, this is the current import record
+var userBibQueues;
+var userAuthQueues;
+var selectableGridRecords;
 
 /**
   * Grab initial data
   */
 function vlInit() {
     authtoken = dojo.cookie('ses') || cgi.param('ses');
-    bibAttrsFetched = false;
-    authAttrsFetched = false;
+    var initNeeded = 4; // how many async responses do we need before we're init'd 
+    var initCount = 0; // how many async reponses we've received
+
+    function checkInitDone() {
+        initCount++;
+        if(initCount == initNeeded)
+            runStartupCommands();
+    }
 
     // Fetch the bib and authority attribute definitions
     fieldmapper.standardRequest(
@@ -76,7 +86,6 @@ function vlInit() {
                 bibAttrDefs.push(def);
             },
             oncomplete: function() {
-                bibAttrsFetched = true;
                 bibAttrDefs = bibAttrDefs.sort(
                     function(a, b) {
                         if(a.id() > b.id()) return 1;
@@ -84,8 +93,7 @@ function vlInit() {
                         return 0;
                     }
                 );
-                if(authAttrsFetched) 
-                    runStartupCommands();
+                checkInitDone();
             }
         }
     );
@@ -101,7 +109,6 @@ function vlInit() {
                 authAttrDefs.push(def);
             },
             oncomplete: function() {
-                authAttrsFetched = true;
                 authAttrDefs = authAttrDefs.sort(
                     function(a, b) {
                         if(a.id() > b.id()) return 1;
@@ -109,16 +116,48 @@ function vlInit() {
                         return 0;
                     }
                 );
-                if(bibAttrsFetched) 
-                    runStartupCommands();
+                checkInitDone();
+            }
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.bib_queue.owner.retrieve.atomic'],
+        {   async: true,
+            params: [authtoken],
+            oncomplete: function(r) {
+                var list = r.recv().content();
+                if(e = openils.Event.parse(list[0]))
+                    return alert(e);
+                userBibQueues = list;
+                checkInitDone();
+            }
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.authority_queue.owner.retrieve.atomic'],
+        {   async: true,
+            params: [authtoken],
+            oncomplete: function(r) {
+                var list = r.recv().content();
+                if(e = openils.Event.parse(list[0]))
+                    return alert(e);
+                userAuthQueues = list;
+                checkInitDone();
             }
         }
     );
 }
 
 function displayGlobalDiv(id) {
-    for(var i = 0; i < globalDivs.length; i++) 
-        dojo.style(dojo.byId(globalDivs[i]), 'display', 'none');
+    for(var i = 0; i < globalDivs.length; i++) {
+        try {
+            dojo.style(dojo.byId(globalDivs[i]), 'display', 'none');
+        } catch(e) {
+            alert('please define ' + globalDivs[i]);
+        }
+    }
     dojo.style(dojo.byId(id),'display','block');
 }
 
@@ -126,7 +165,7 @@ function runStartupCommands() {
     currentQueueId = cgi.param('qid');
     currentType = cgi.param('qtype');
     if(currentQueueId)
-        return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        return retrievenueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
     displayGlobalDiv('vl-marc-upload-div');
 }
 
@@ -198,6 +237,7 @@ function retrieveQueuedRecords(type, queueId, onload) {
     queuedRecords = [];
     queuedRecordsMap = {};
     currentOverlayRecordsMap = {};
+    selectableGridRecords = {};
     resetVlQueueGridLayout();
 
     fieldmapper.standardRequest(
@@ -326,6 +366,7 @@ function getAttrValue(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
     var attrCode = this.field.split('.')[1];
+    console.log(attrCode + " : " + data.id + ' : ' + queuedRecordsMap[data.id] + " : count = " + queuedRecords.length);
     var rec = queuedRecordsMap[data.id];
     var attr = getRecAttrFromCode(rec, attrCode);
     if(attr)
@@ -397,6 +438,15 @@ function buildRecordGrid(type) {
 
     currentOverlayRecordsMap = {};
 
+    if(queuedRecords.length == 0) {
+        dojo.style(dojo.byId('vl-queue-no-records'), 'display', 'block');
+        dojo.style(dojo.byId('vl-queue-div-grid'), 'display', 'none');
+        return;
+    } else {
+        dojo.style(dojo.byId('vl-queue-no-records'), 'display', 'none');
+        dojo.style(dojo.byId('vl-queue-div-grid'), 'display', 'block');
+    }
+
     var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
     for(var i = 0; i < defs.length; i++) {
         var def = defs[i]
@@ -410,8 +460,6 @@ function buildRecordGrid(type) {
         vlQueueGridLayout[0].cells[0].push(col);
     }
 
-    vlQueueGrid.setStructure(vlQueueGridLayout);
-
     var storeData;
     if(type == 'bib')
         storeData = vqbr.toStoreData(queuedRecords);
@@ -423,6 +471,7 @@ function buildRecordGrid(type) {
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
 
     vlQueueGrid.setModel(model);
+    vlQueueGrid.setStructure(vlQueueGridLayout);
     vlQueueGrid.update();
 }
 
@@ -440,7 +489,6 @@ function test() {
 }
 */
 
-var selectableGridRecords = {};
 function vlQueueGridDrawSelectBox(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
@@ -518,5 +566,25 @@ function batchUpload() {
 
     createQueue(queueName, currentType, handleCreateQueue);
 }
+
+
+function vlFleshQueueSelect(selector, type) {
+    var data = (type == 'bib') ? vbq.toStoreData(userBibQueues) : vaq.toStoreData(userAuthQueues);
+    selector.store = new dojo.data.ItemFileReadStore({data:data});
+    if(data[0])
+        selector.setValue(data[0].id());
+}
+
+function vlShowQueueSelect() {
+    displayGlobalDiv('vl-queue-select-div');
+    vlFleshQueueSelect(vlQueueSelectQueueList, 'bib');
+}
+
+function vlFetchQueueFromForm() {
+    currentType = vlQueueSelectType.getValue();
+    currentQueueId = vlQueueSelectQueueList.getValue();
+    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+}
+    
 
 dojo.addOnLoad(vlInit);

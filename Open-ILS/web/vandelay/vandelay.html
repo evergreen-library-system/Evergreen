@@ -34,15 +34,30 @@
             }
             .tall { height:100%; }
             .hidden { display: none; }
+            #toolbar { margin-top: 0px; }
+            body { width:100%; height:100%; border:0; margin:0; padding:0; }
+            .progress { 
+                width:100%;
+                text-align:center;
+                margin: 20px;
+            }
         </style>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
-    <body class="tundra" class='tall'>
-        <div id="vl-generic-progress" style='width:100%;text-align:center'>
+    <body class="tundra tall">
+
+        <div dojoType="dijit.Toolbar" id='toolbar'>
+            <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
+            <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                onclick='vlShowQueueSelect();' showLabel="true">Inspect Queue</div>
+        </div>
+
+        <div id="vl-generic-progress" class='progress'>
             <div dojoType="dijit.ProgressBar" style="width:200px" indeterminate="true"></div>
         </div>
-        <div id="vl-generic-progress-with-total" class='hidden' style='width:100%;text-align:center;'>
+        <div id="vl-generic-progress-with-total" class='hidden progress'>
             <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:200px"></div>
         </div>
 
@@ -51,7 +66,7 @@
             <h1>Evergreen MARC File Upload</h1><br/>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
-                <br>
+                <br/>
                 <table>
                     <tr>
                         <td>Queue Name</td>
@@ -79,11 +94,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <span id="vl-file-label">File to Upload:</span><br>
-                            <span id="vl-file-uploading" class='hidden'>Uploading...</span><br>
+                            <span id="vl-file-label">File to Upload:</span>
+                            <span id="vl-file-uploading" class='hidden'>Uploading...</span>
                         </td>
                         <td id='vl-input-td'>
-                            <input size='48' type="file" name="marc_upload">
+                            <input size='48' type="file" name="marc_upload"/>
                         </td>
                     </tr>
                     <tr>
@@ -105,6 +120,7 @@
         <!-- record queue grid -->
         <div id='vl-queue-div' class='tall hidden'>
             <h1>Record Queue</h1><br/>
+            <div id='vl-queue-no-records' class='hidden'><h2>There are no records in the selected queue</h2></div>
             <script>
                 var vlQueueGridLayout;
                 function resetVlQueueGridLayout() {
@@ -117,11 +133,13 @@
                     }];
                 }
             </script>
-            <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords();'>Select All</button>
-            <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords();'>Select None</button>
-            <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
-            <div class='tall'>
-                <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
+            <div id='vl-queue-div-grid' class='tall'>
+                <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords();'>Select All</button>
+                <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords();'>Select None</button>
+                <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
+                <div class='tall'>
+                    <div dojoType='dojox.Grid' jsId='vlQueueGrid' class='tall'> </div>
+                </div>
             </div>
         </div>
 
@@ -154,7 +172,7 @@
                     }];
                 }
             </script>
-            <h1>Import Matches</h1></br>
+            <h1>Import Matches</h1><br/>
             <div>
                 <button dojoType='dijit.form.Button' 
                     onclick='displayGlobalDiv("vl-queue-div");'>Back To Import Queue...</button>
@@ -168,7 +186,6 @@
             </div>
         </div>
 
-
         <!-- MARC as HTML for matched records -->
         <div id='vl-match-html-div' class='tall hidden'>
             <h1>MARC Record</h1><br/>
@@ -178,9 +195,36 @@
             </div>
             <div>
                 <style>#vl-match-record-html td {padding:0px;}</style>
-                <div id='vl-match-record-html'/>
+                <div id='vl-match-record-html'> </div>
             </div>
         </div>
 
+        <!-- Form for choosing which queue to view -->
+        <div id='vl-queue-select-div' class='tall hidden'>
+            <h1>Select a Queue to Inspect</h1><br/>
+            <table>
+                <tr>
+                    <td>Queue Type</td>
+                    <td>
+                        <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='alert(1);'>
+                            <option value='bib' selected='selected'>Bibliographic Records</option>
+                            <option value='auth'>Authority Records</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Queue</td>
+                    <td>
+                        <select jsId='vlQueueSelectQueueList' dojoType='dijit.form.FilteringSelect'>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>Retrieve Queue</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
