@@ -562,6 +562,9 @@
 	<event code='1644' textcode='VANDELAY_AUTHORITY_QUEUE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested vandelay_authority_queue was not found</desc>
 	</event>
+	<event code='1645' textcode='CONFIG_CIRC_MATRIX_TEST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_matrix_test was not found</desc>
+	</event>
 
 
 
