@@ -666,11 +666,11 @@ sub hold_pull_list {
 
 	if( $self->api_name =~ /id_list/ ) {
 		return $U->storagereq(
-			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.atomic',
+			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
 			$org, $limit, $offset ); 
 	} else {
 		return $U->storagereq(
-			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
+			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.status_filtered.atomic',
 			$org, $limit, $offset ); 
 	}
 }
