@@ -94,7 +94,11 @@ sub overdue_circs {
 
 	my $c_t = action::circulation->table;
 
-	$grace = " - ($grace * (fine_interval))" if ($grace);
+	if ($grace) {
+		$grace = " - ($grace * (fine_interval))" if ($grace);
+	} else {
+		$grace = '';
+	}
 
 	my $sql = <<"	SQL";
 		SELECT	*
