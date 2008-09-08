@@ -94,11 +94,11 @@ sub overdue_circs {
 
 	my $c_t = action::circulation->table;
 
-    if ($grace) {
-        $grace = " - ($grace * (fine_interval))" if ($grace);
-    } else {
-        $grace = '';
-    }
+	if ($grace) {
+		$grace = " - ($grace * (fine_interval))" if ($grace);
+	} else {
+		$grace = '';
+	}
 
 	my $sql = <<"	SQL";
 		SELECT	*
@@ -362,6 +362,9 @@ sub hold_pull_list {
 
 	my $idlist = 1 if ($self->api_name =~/id_list/o);
 
+        my $status_filter = '';
+        $status_filter = 'AND a.status IN (0,7)' if ($self->api_name =~/status_filtered/o);
+
 	my $select = <<"	SQL";
 		SELECT	h.*
 		  FROM	$h_table h
@@ -369,6 +372,8 @@ sub hold_pull_list {
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
+			AND (h.expire_time IS NULL OR h.expire_time > NOW())
+			$status_filter
 		  ORDER BY h.request_time ASC
 		  LIMIT $limit
 		  OFFSET $offset
@@ -412,6 +417,34 @@ __PACKAGE__->register_method(
 		['A list of holds for the stated library to pull for', 'array']
 	],
 	method          => 'hold_pull_list',
+);
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered',
+        api_level       => 1,
+        stream          => 1,
+        signature       => [
+                "Returns the hold ids for a specific library's pull list that are definitely in that library, based on status.",
+                [ [org_unit => "The library's org id", "number"],
+                  [limit => 'An optional page size, defaults to 10', 'number'],
+                  [offset => 'Offset for paging, defaults to 0, 0 based', 'number'],
+                ],
+                ['A list of holds for the stated library to pull for', 'array']
+        ],
+        method          => 'hold_pull_list',
+);
+__PACKAGE__->register_method(
+        api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.status_filtered',
+        api_level       => 1,
+        stream          => 1,
+        signature       => [
+                "Returns the holds for a specific library's pull list that are definitely in that library, based on status.",
+                [ [org_unit => "The library's org id", "number"],
+                  [limit => 'An optional page size, defaults to 10', 'number'],
+                  [offset => 'Offset for paging, defaults to 0, 0 based', 'number'],
+                ],
+                ['A list of holds for the stated library to pull for', 'array']
+        ],
+        method          => 'hold_pull_list',
 );
 
 sub find_optional_surveys {
