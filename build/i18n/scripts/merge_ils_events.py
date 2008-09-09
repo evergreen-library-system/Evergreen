@@ -19,8 +19,15 @@ def merge_events(master, localization):
 
     events = master_xml.getElementsByTagName('event')
     for event in events:
+        merged.documentElement.appendChild(merged.createTextNode("\n"))
+        l10n_node = get_l10n_event_desc(l10n_xml, event.getAttribute('code'))
+        for child in event.childNodes:
+            if child.nodeName == 'desc':
+                if child.getAttribute('xml:lang') == l10n_node.getAttribute('xml:lang'):
+                    event.removeChild(child)
+        event.appendChild(l10n_node)
         merged.documentElement.appendChild(event)
-        event.appendChild(get_l10n_event_desc(l10n_xml, event.getAttribute('code')))
+        merged.documentElement.appendChild(merged.createTextNode("\n"))
 
     return merged
 
@@ -53,6 +60,8 @@ def main():
         metavar='FILE')
     opts.add_option('-o', '--output', dest='outfile', \
         help='Write output to FILE (defaults to STDOUT)', metavar='FILE')
+    opts.add_option('-p', '--pretty', action='store', \
+        help='Write pretty XML output')
     (options, args) = opts.parse_args()
 
     if not options.master:
@@ -64,9 +73,15 @@ def main():
 
     if options.outfile:
         outfile = open(options.outfile, 'w')
-        outfile.write(merged.toprettyxml(encoding='utf-8'))
+        if options.pretty:
+            outfile.write(merged.toprettyxml(encoding='utf-8'))
+        else:
+            outfile.write(merged.toxml(encoding='utf-8'))
     else:
-        print merged.toprettyxml(encoding='utf-8')
+        if options.pretty:
+            print merged.toprettyxml(encoding='utf-8')
+        else:
+            print merged.toxml(encoding='utf-8')
 
 if __name__ == '__main__':
     main()
