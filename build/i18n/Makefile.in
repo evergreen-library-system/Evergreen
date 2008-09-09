@@ -15,10 +15,11 @@ EVTSRC=../../Open-ILS/src/extras/ils_events.xml
 EVTOUT=ils_events.xml.pot
 EVTPO=ils_events.xml.po
 EVTXML=ils_events.xml
-SQLSRC=../../Open-ILS/src/sql/Pg/950.data.seed-values.sql
+SQLSRCDIR=../../Open-ILS/src/sql/Pg/
+SQLSRCFILE=950.data.seed-values.sql
 SQLPOT=db.seed.pot
 SQLPO=db.seed.po
-SQLOUT=950.data.seed-values.sql
+SQLOUT=950.data.seed-values
 PROGRESS=--progress none
 
 # This Makefile can be used to generate and update PO files for Evergreen,
@@ -94,10 +95,10 @@ po2props:
 	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(SERVER_PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 sql2pot:
-	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POTSRC)/$(SQLPOT)
+	@scripts/db-seed-i18n.py --pot $(SQLSRCDIR)/$(SQLSRCFILE) --output $(POTSRC)/$(SQLPOT)
 
 po2sql:
-	scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT)
+	scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT).sql
 
 # Generate a fieldmapper IDL file that uses entities instead of hard-coded strings
 fmidl2fmidlent:
@@ -128,3 +129,4 @@ install: updatepo project
 	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
+	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
