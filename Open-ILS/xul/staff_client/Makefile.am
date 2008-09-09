@@ -27,7 +27,6 @@ build_dir:
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
-	for i in `cd @top_srcdir@/Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn|cut -f2- -d/`; do cp @top_srcdir@/Evergreen/xul/staff_client/server/$$i build/server/$$i; done
 	external/prune_dirs.sh build/
 
 stamp:
