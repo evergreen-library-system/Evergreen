@@ -1,20 +1,22 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
 #. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > common.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2008-09-08 11:13-0400\n"
+"PO-Revision-Date: 2008-09-08 09:34-0500\n"
+"Last-Translator: Warren Layton\n"
+"Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: Canada\n"
 
 #: common.exception
 msgid ""
@@ -23,672 +25,685 @@ msgid ""
 "%1$s\n"
 "%2$s\n"
 msgstr ""
+"!! Une erreur s’est produite dans ce logiciel. Veuillez aviser votre "
+"administrateur de système ou développeur de logiciel de ce qui suit :\n"
+"%1$s\n"
+"%2$s\n"
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "L’objet JSAN est absent de la bibliothèque."
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
 msgstr ""
+"Veuillez aviser votre technicien de soutien ou vos développeurs de cette "
+"erreur :"
 
 #: common.ok
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "Effacer"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "Cochez ici pour confirmer ce message."
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr ""
+msgstr "Veuillez signaler cet incident."
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "Perdu"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "Expiré"
 
 #: common.barcode.status.warning.barred
 msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
-msgstr ""
+msgstr "Barré"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Bloqué"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
-msgstr ""
+msgstr "avec un code inconnu : %1$s"
 
 #: common.date.invalid
 msgid "Invalid Date"
-msgstr ""
+msgstr "Date invalide"
 
 #: common.action_complete
 msgid "Action completed."
-msgstr ""
+msgstr "Action terminée."
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
 msgid ","
-msgstr ""
+msgstr ","
 
 #: common.unimplemented
 msgid "Not yet implemented"
-msgstr ""
+msgstr "Pas encore mis en oeuvre"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Cochez ici pour confirmer ce message"
 
 #: lang.version
 msgid "remote v1"
-msgstr ""
+msgstr "remote v1"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr ""
+msgstr "Difficulté à vider le cache : %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr ""
+msgstr "Échec du presse papiers : %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "\"%1$s\" copié dans le presse-papiers."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
 msgstr ""
+"Erreur dans la méthode get_contentWindow(%1$s) et wrappedJSObject : %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
+msgstr "Erreur dans la méthode get_contentWindow(%1$s) : %2$s "
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
+msgstr "Erreur de modification de la taille de la police : %1$s"
 
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
 msgid "Barcode"
-msgstr ""
+msgstr "Code à barres"
 
 #: staff.acp_label_call_number
 msgid "Call Number"
-msgstr ""
+msgstr "Cote"
 
 #: staff.acp_label_circ_as_type
 msgid "Circulate As Type"
-msgstr ""
+msgstr "Prêter en tant que type"
 
 #: staff.acp_label_circ_lib
 msgid "Circulation Library"
-msgstr ""
+msgstr "Bibliothèque de prêt"
 
 #: staff.acp_label_circ_modifier
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "Modificateur de prêt"
 
 #: staff.acp_label_copy_number
 msgid "Copy Number"
-msgstr ""
+msgstr "Numéro d’exemplaire"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Montant du dépôt"
 
 #: staff.acp_label_fine_level
 msgid "Fine Level"
-msgstr ""
+msgstr "Niveau des amendes"
 
 #: staff.acp_label_id
 msgid "Copy ID"
-msgstr ""
+msgstr "ID de l’exemplaire"
 
 #: staff.acp_label_loan_duration
 msgid "Loan Duration"
-msgstr ""
+msgstr "Durée du prêt"
 
 #: staff.acp_label_location
 msgid "Location"
-msgstr ""
+msgstr "Emplacement"
 
 #: staff.acp_label_price
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
+msgstr "Exemplaire actuel"
+
+#: staff.ahr_current_copy_location_label
+msgid "Current Copy Location"
 msgstr ""
 
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
-msgstr ""
+msgstr "Avis par courriel"
 
 #: staff.ahr_expire_time_label
 msgid "Expire Time"
-msgstr ""
+msgstr "Heure d’expiration"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
-msgstr ""
+msgstr "Heure de réponse"
 
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
-msgstr ""
+msgstr "Formats de la mise en réserve"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
-msgstr ""
+msgstr "ID de la mise en réserve"
 
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
-msgstr ""
+msgstr "Avis téléphonique"
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
-msgstr ""
+msgstr "Bibliothèque d’emprunt"
 
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"
-msgstr ""
+msgstr "Heure de vérification précédente"
 
 #: staff.ahr_requestor_label
 msgid "Requestor"
-msgstr ""
+msgstr "Demandeur"
 
 #: staff.ahr_selection_depth_label
 msgid "Selection Depth"
-msgstr ""
+msgstr "Ampleur de la sélection"
 
 #: staff.ahr_status_label
 msgctxt "staff.ahr_status_label"
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: staff.ahr_target_label
 msgid "Target"
-msgstr ""
+msgstr "Cible"
 
 #: staff.ahr_usr_label
 msgctxt "staff.ahr_usr_label"
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: staff.circ_label_due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Date d’échéance"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
-msgstr ""
+msgstr "ID du prêt"
 
 #: staff.circ_label_renewal_remaining
 msgid "Remaining Renewals"
-msgstr ""
+msgstr "Renouvellements restants"
 
 #: staff.mvr_label_author
 msgctxt "staff.mvr_label_author"
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: staff.mvr_label_doc_id
 msgid "Document ID"
-msgstr ""
+msgstr "ID du document"
 
 #: staff.mvr_label_title
 msgctxt "staff.mvr_label_title"
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: staff.bills_xact_dates_label
 msgid "Record / Dates"
-msgstr ""
+msgstr "Enregistrement et dates"
 
 #: staff.bills_information
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
-msgstr ""
+msgstr "Paiment actuel"
 
 #: staff.mbts_id_label
 msgid "Bill #"
-msgstr ""
+msgstr "No de facture"
 
 #: staff.mbts_xact_start_label
 msgid "Start"
-msgstr ""
+msgstr "Démarrer"
 
 #: staff.mbts_xact_finish_label
 msgid "Finish"
-msgstr ""
+msgstr "Terminer"
 
 #: staff.mbts_xact_type_label
 msgctxt "staff.mbts_xact_type_label"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: staff.mbts_total_owed_label
 msgid "Total Billed"
-msgstr ""
+msgstr "Total facturé"
 
 #: staff.mbts_total_paid_label
 msgid "Total Paid"
-msgstr ""
+msgstr "Total payé"
 
 #: staff.mbts_balance_owed_label
 msgid "Balance Owed"
-msgstr ""
+msgstr "Solde dû"
 
 #: staff.mbts_usr_label
 msgctxt "staff.mbts_usr_label"
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: staff.mbts_last_billing_note_label
 msgid "Last Billing Note"
-msgstr ""
+msgstr "Dernier avis de facturation"
 
 #: staff.mbts_last_billing_type_label
 msgid "Last Billing Type"
-msgstr ""
+msgstr "Dernier type de facturation"
 
 #: staff.mbts_last_billing_timestamp_label
 msgid "Last Billed"
-msgstr ""
+msgstr "Facturé la dernière fois"
 
 #: staff.mbts_last_payment_note_label
 msgid "Last Payment Note"
-msgstr ""
+msgstr "Dernier avis de paiement"
 
 #: staff.mbts_last_payment_type_label
 msgid "Last Payment Type"
-msgstr ""
+msgstr "Dernier type de paiement"
 
 #: staff.mbts_last_payment_timestamp_label
 msgid "Last Payment"
-msgstr ""
+msgstr "Dernier paiement"
 
 #: staff.mb_billing_type_label
 msgid "Billing Type"
-msgstr ""
+msgstr "Type de facturation"
 
 #: staff.mb_xact_label
 msgctxt "staff.mb_xact_label"
 msgid "Transaction ID"
-msgstr ""
+msgstr "ID de transaction"
 
 #: staff.mb_billing_ts_label
 msgctxt "staff.mb_billing_ts_label"
 msgid "When"
-msgstr ""
+msgstr "Quand"
 
 #: staff.mb_void_time_label
 msgid "Void Time"
-msgstr ""
+msgstr "Heure de l’annulation"
 
 #: staff.mb_note_label
 msgctxt "staff.mb_note_label"
 msgid "Note"
-msgstr ""
+msgstr "Note"
 
 #: staff.mb_amount_label
 msgctxt "staff.mb_amount_label"
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #: staff.mb_voider_label
 msgid "Voider"
-msgstr ""
+msgstr "Annuleur"
 
 #: staff.mb_voided_label
 msgctxt "staff.mb_voided_label"
 msgid "Voided"
-msgstr ""
+msgstr "Annulé"
 
 #: staff.mb_id_label
 msgid "Billing ID"
-msgstr ""
+msgstr "ID de facturation"
 
 #: staff.mp_credit_card_payment_label
 msgid "Credit Card Payment"
-msgstr ""
+msgstr "Paiement par carte de crédit"
 
 #: staff.mp_forgive_payment_label
 msgid "Forgive Payment"
-msgstr ""
+msgstr "Pardonner le paiement"
 
 #: staff.mp_payment_timestamp_label
 msgctxt "staff.mp_payment_timestamp_label"
 msgid "When"
-msgstr ""
+msgstr "Quand"
 
 #: staff.mp_payment_type_label
 msgid "Payment Type"
-msgstr ""
+msgstr "Type de paiement"
 
 #: staff.mp_voided_label
 msgctxt "staff.mp_voided_label"
 msgid "Voided"
-msgstr ""
+msgstr "Annulé"
 
 #: staff.mp_id_label
 msgid "Payment ID"
-msgstr ""
+msgstr "ID de paiement"
 
 #: staff.mp_goods_payment_label
 msgid "Goods Payment"
-msgstr ""
+msgstr "Paiement de produits"
 
 #: staff.mp_xact_label
 msgctxt "staff.mp_xact_label"
 msgid "Transaction ID"
-msgstr ""
+msgstr "ID de transaction"
 
 #: staff.mp_credit_payment_label
 msgid "Credit Payment"
-msgstr ""
+msgstr "Paiement de crédit"
 
 #: staff.mp_work_payment_label
 msgid "Work Payment"
-msgstr ""
+msgstr "Paiement de travail"
 
 #: staff.mp_note_label
 msgctxt "staff.mp_note_label"
 msgid "Note"
-msgstr ""
+msgstr "Note"
 
 #: staff.mp_cash_payment_label
 msgid "Cash Payment"
-msgstr ""
+msgstr "Paiement en argent"
 
 #: staff.mp_amount_label
 msgctxt "staff.mp_amount_label"
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #: staff.mp_check_payment_label
 msgid "Check Payment"
-msgstr ""
+msgstr "Paiement par chèque"
 
 #: staff.mp_cash_drawer_label
 msgid "Workstation"
-msgstr ""
+msgstr "Poste de travail"
 
 #: staff.mp_accepting_usr_label
 msgid "Staff"
-msgstr ""
+msgstr "Personnel"
 
 #: staff.card_barcode_label
 msgctxt "staff.card_barcode_label"
 msgid "Barcode"
-msgstr ""
+msgstr "Code à barres"
 
 #: staff.au_active_label
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 #: staff.au_usrname_label
 msgid "Login Name"
-msgstr ""
+msgstr "Nom d’utilisateur"
 
 #: staff.au_profile_label
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: staff.au_barred_label
 msgctxt "staff.au_barred_label"
 msgid "Barred"
-msgstr ""
+msgstr "Barré"
 
 #: staff.au_alert_message_label
 msgid "Alert"
-msgstr ""
+msgstr "Alerte"
 
 #: staff.au_claims_returned_count_label
 msgid "Returns Claimed"
-msgstr ""
+msgstr "Retours demandés"
 
 #: staff.au_create_date_label
 msgid "Created On"
-msgstr ""
+msgstr "Créé le :"
 
 #: staff.au_expire_date_label
 msgid "Expires On"
-msgstr ""
+msgstr "Expire le :"
 
 #: staff.au_home_library_label
 msgid "Home Library"
-msgstr ""
+msgstr "Bibliothèque d’origine"
 
 #: staff.au_home_library_fullname_label
 msgid "Home Library (Full Name)"
-msgstr ""
+msgstr "Bibliothèque d’origine (nom complet)"
 
 #: staff.au_credit_forward_balance_label
 msgid "Credit"
-msgstr ""
+msgstr "Crédit"
 
 #: staff.au_day_phone_label
 msgid "Day Phone"
-msgstr ""
+msgstr "Numéro de téléphone le jour"
 
 #: staff.au_evening_phone_label
 msgid "Evening Phone"
-msgstr ""
+msgstr "Numéro de téléphone le soir"
 
 #: staff.au_other_phone_label
 msgid "Other Phone"
-msgstr ""
+msgstr "Autre numéro de téléphone"
 
 #: staff.au_email_label
 msgid "Email"
-msgstr ""
+msgstr "Courriel"
 
 #: staff.au_birth_date_label
 msgid "Birth Date"
-msgstr ""
+msgstr "Date de naissance"
 
 #: staff.au_ident_type_label
 msgid "Identification Type"
-msgstr ""
+msgstr "Type d’identification"
 
 #: staff.au_ident_value_label
 msgid "Identification Value"
-msgstr ""
+msgstr "Valeur d’identification"
 
 #: staff.au_ident_type2_label
 msgid "Identification Type 2"
-msgstr ""
+msgstr "Type d’identification 2"
 
 #: staff.au_ident_value2_label
 msgid "Identification Value 2"
-msgstr ""
+msgstr "Valeur d’identification 2"
 
 #: staff.au_net_access_level_label
 msgid "Internet Access"
-msgstr ""
+msgstr "Accès à Internet"
 
 #: staff.au_master_account_label
 msgid "Group Lead"
-msgstr ""
+msgstr "Chef du groupe"
 
 #: staff.au_group_id_label
 msgid "Group ID"
-msgstr ""
+msgstr "ID du groupe"
 
 #: staff.au_id_label
 msgid "User ID"
-msgstr ""
+msgstr "Code d’utilisateur"
 
 #: staff.au_name_prefix_label
 msgid "Prefix"
-msgstr ""
+msgstr "Préfixe"
 
 #: staff.au_family_name_label
 msgid "Family Name"
-msgstr ""
+msgstr "Nom de famille"
 
 #: staff.au_first_given_name_label
 msgid "First Name"
-msgstr ""
+msgstr "Prénom"
 
 #: staff.au_second_given_name_label
 msgid "Middle Name"
-msgstr ""
+msgstr "Second prénom"
 
 #: staff.au_name_suffix_label
 msgid "Suffix"
-msgstr ""
+msgstr "Suffixe"
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: staff.z39_50.search_class.isbn
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: staff.z39_50.search_class.issn
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: staff.z39_50.search_class.item_type
 msgid "Item Type"
-msgstr ""
+msgstr "Type d’élément"
 
 #: staff.z39_50.search_class.item_type.all
 msgid "All Formats"
-msgstr ""
+msgstr "Tous les formats"
 
 #: staff.z39_50.search_class.item_type.art
 msgid "Papers/Articles"
-msgstr ""
+msgstr "Documents/articles"
 
 #: staff.z39_50.search_class.item_type.bks
 msgid "Books"
-msgstr ""
+msgstr "Livres"
 
 #: staff.z39_50.search_class.item_type.com
 msgid "Computer files"
-msgstr ""
+msgstr "Fichiers informatiques"
 
 #: staff.z39_50.search_class.item_type.map
 msgid "Maps"
-msgstr ""
+msgstr "Cartes"
 
 #: staff.z39_50.search_class.item_type.mix
 msgid "Mixed material"
-msgstr ""
+msgstr "Documents divers"
 
 #: staff.z39_50.search_class.item_type.rec
 msgid "Sound recordings"
-msgstr ""
+msgstr "Enregistrements sonores"
 
 #: staff.z39_50.search_class.item_type.sco
 msgid "Musical scores"
-msgstr ""
+msgstr "Enregistrements musicaux"
 
 #: staff.z39_50.search_class.item_type.ser
 msgid "Serials"
-msgstr ""
+msgstr "Collections"
 
 #: staff.z39_50.search_class.item_type.url
 msgid "Internet Resources"
-msgstr ""
+msgstr "Ressources sur Internet"
 
 #: staff.z39_50.search_class.item_type.vis
 msgid "Visual materials"
-msgstr ""
+msgstr "Documents visuels"
 
 #: staff.z39_50.search_class.lccn
 msgid "LCCN"
-msgstr ""
+msgstr "LCCN"
 
 #: staff.z39_50.search_class.pubdate
 msgid "Publication Date"
-msgstr ""
+msgstr "Date de publication"
 
 #: staff.z39_50.search_class.publisher
 msgid "Publisher"
-msgstr ""
+msgstr "Éditeur"
 
 #: staff.z39_50.search_class.tcn
 msgid "Accession #"
-msgstr ""
+msgstr "No de versement"
 
 #: staff.z39_50.search_class.title
 msgctxt "staff.z39_50.search_class.title"
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: staff.z39_50_import_interface_label
 msgid "Z39.50 Import"
-msgstr ""
+msgstr "Importation Z39.50"
 
 #: staff.main.data.loaded
 msgid "Data loaded."
-msgstr ""
+msgstr "Données chargées."
 
 #: staff.main.gen_offline_widgets.synced
 msgid "Offline interface synchronized with server."
-msgstr ""
+msgstr "Interface hors ligne synchronisée avec le serveur."
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
 msgid "error in noncat sorting:"
-msgstr ""
+msgstr "erreur de triage des articles non catalogués :"
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"
-msgstr ""
+msgstr "Veuillez patienter"
 
 #: staff.main.gen_offline_widgets.workstation_registration_denied
 msgid "You do not have permission to register a workstation."
-msgstr ""
+msgstr "Vous n’avez pas le droit de vous inscrire à un poste de travail."
 
 #: staff.main.gen_offline_widgets.registration.override
 msgid "Override Registration Failure?"
-msgstr ""
+msgstr "Échec de la dérogation à l’inscription?"
 
 #: staff.main.gen_offline_widgets.registration.error
 msgid "Workstation Registration error (%1$s)"
-msgstr ""
+msgstr "Erreur d’inscription au poste de travail (%1$s)"
 
 #: staff.main.gen_offline_widgets.registration.success
 msgid "Registration successful"
-msgstr ""
+msgstr "Inscription terminée"
