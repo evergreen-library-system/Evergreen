@@ -9,12 +9,13 @@ SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
 FMIDLENT=fm_IDL.xml
-FMIDLENTITY=fm_IDL.xml.ent
+FMIDLENTITY=fm_IDL.dtd
 FMIDLPO=fm_IDL.po
 EVTSRC=../../Open-ILS/src/extras/ils_events.xml
 EVTOUT=ils_events.xml.pot
 EVTPO=ils_events.xml.po
 EVTXML=ils_events.xml
+REPORTDIR=../../Open-ILS/web/reports/
 SQLSRCDIR=../../Open-ILS/src/sql/Pg/
 SQLSRCFILE=950.data.seed-values.sql
 SQLPOT=db.seed.pot
@@ -113,7 +114,7 @@ fmidlpo2entity:
 	@scripts/fieldmapper.py --entity $(POINDIR)/$(LOCALE)/$(FMIDLPO) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
 
 # Install updated project files to their corresponding location in the source tree
-install: updatepo project 
+install: updatepo project fmidl2fmidlent
 	mkdir -p $(CHROME_PROPSDIR)/$(LOCALE)
 	cp $(PROJECT)/$(LOCALE)/auth.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/offline.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
@@ -128,5 +129,7 @@ install: updatepo project
 	cp $(PROJECT)/$(LOCALE)/lang.dtd $(CHROME_PROPSDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
+	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
+	cp $(POOUTDIR)/$(FMIDLENT) $(REPORTDIR)/$(FMIDLENT)

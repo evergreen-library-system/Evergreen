@@ -240,7 +240,7 @@ webcore-install:
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
-	ln -sf $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
+	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
 
 
 offline-install:
