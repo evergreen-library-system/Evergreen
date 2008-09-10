@@ -137,7 +137,7 @@ class IDLHandler(xml.sax.handler.ContentHandler):
         """
         Shove character data into the entityized IDL file
         """
-        self.entityized = self.entityized + content
+        self.entityized = self.entityized + xml.sax.saxutils.escape(content)
 
     def endElement(self, name):
         """
