@@ -1205,17 +1205,21 @@ __PACKAGE__->register_method(
 	method	=> "biblio_record_to_marc_html",
 	api_name	=> "open-ils.search.biblio.record.html" );
 
-my $parser		= XML::LibXML->new();
-my $xslt			= XML::LibXSLT->new();
+__PACKAGE__->register_method(
+	method	=> "biblio_record_to_marc_html",
+	api_name	=> "open-ils.search.authority.to_html" );
+
+my $parser = XML::LibXML->new();
+my $xslt = XML::LibXSLT->new();
 my $marc_sheet;
 my $slim_marc_sheet;
-
 my $settings_client = OpenSRF::Utils::SettingsClient->new();
+
 sub biblio_record_to_marc_html {
-	my( $self, $client, $recordid, $slim ) = @_;
+	my($self, $client, $recordid, $slim) = @_;
 
     my $sheet;
-	my $dir = $settings_client->config_value( "dirs", "xsl" );
+	my $dir = $settings_client->config_value("dirs", "xsl");
 
     if($slim) {
         unless($slim_marc_sheet) {
@@ -1223,7 +1227,7 @@ sub biblio_record_to_marc_html {
 			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl_slim');
             if($xsl) {
 		        $xsl = $parser->parse_file("$dir/$xsl");
-		        $slim_marc_sheet = $xslt->parse_stylesheet( $xsl );
+		        $slim_marc_sheet = $xslt->parse_stylesheet($xsl);
             }
         }
         $sheet = $slim_marc_sheet;
@@ -1233,22 +1237,26 @@ sub biblio_record_to_marc_html {
         unless($marc_sheet) {
             my $xsl_key = ($slim) ? 'marc_html_xsl_slim' : 'marc_html_xsl';
 		    my $xsl = $settings_client->config_value(
-			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl' );
+			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl');
 		    $xsl = $parser->parse_file("$dir/$xsl");
-		    $marc_sheet = $xslt->parse_stylesheet( $xsl );
+		    $marc_sheet = $xslt->parse_stylesheet($xsl);
         }
         $sheet = $marc_sheet;
     }
 
-	my $record = $apputils->simple_scalar_request(
-		"open-ils.cstore", 
-		"open-ils.cstore.direct.biblio.record_entry.retrieve",
-		$recordid );
+    my $record;
+    my $e = new_editor();
+    if($self->api_name =~ /authority/) {
+        $record = $e->retrieve_authority_record_entry($recordid)
+            or return $e->event;
+    } else {
+        $record = $e->retrieve_biblio_record_entry($recordid)
+            or return $e->event;
+    }
 
 	my $xmldoc = $parser->parse_string($record->marc);
 	my $html = $sheet->transform($xmldoc);
-	$html = $html->documentElement->toString();
-	return $html;
+	return $html->documentElement->toString();
 }
 
 

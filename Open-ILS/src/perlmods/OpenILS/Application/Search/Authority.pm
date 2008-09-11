@@ -260,39 +260,4 @@ sub crossref_authority_batch2 {
 
 
 
-
-
-__PACKAGE__->register_method(
-	method	=> "authority_to_html",
-	api_name	=> "open-ils.search.authority.to_html" );
-
-my $parser		= XML::LibXML->new();
-my $xslt			= XML::LibXSLT->new();
-my $stylesheet;
-
-
-sub authority_to_html {
-	my( $self, $client, $id ) = @_;
-
-
-	if( !$stylesheet ) {
-		my $sclient = OpenSRF::Utils::SettingsClient->new();
-		my $dir = $sclient->config_value( "dirs", "xsl" );
-		my $xsl = $sclient->config_value(
-			"apps", "open-ils.search", "app_settings", "marc_html_xsl" );
-		$xsl = $parser->parse_file("$dir/$xsl");
-		$stylesheet = $xslt->parse_stylesheet( $xsl );
-	}
-
-	my $e = new_editor();
-	my $rec = $e->retrieve_authority_record_entry($id) or return $e->event;
-	my $xmldoc = $parser->parse_string($rec->marc);
-	my $html = $stylesheet->transform($xmldoc);
-
-	return $html->toString();
-}
-
-
-
-
 1;
