@@ -170,7 +170,7 @@ function advSubmitGlobal() {
 	var itemforms = advGetVisSelectorVals('adv_global_item_form');
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
-    var locations = getSelectedList($('adv_copy_location_filter_select'));
+    var locations = getSelectedList($('adv_copy_location_filter_select')) + '';
 	var languages = getSelectedList($('adv_global_lang')) + '';	
     var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
