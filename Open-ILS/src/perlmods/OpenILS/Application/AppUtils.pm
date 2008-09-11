@@ -11,6 +11,7 @@ use OpenILS::Event;
 use Data::Dumper;
 use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
+use Unicode::Normalize;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1473,6 +1474,23 @@ sub get_user_locale {
 	# if nothing else, fallback to locale=cowboy
 	return 'en-US';
 }
+
+
+# xml-escape non-ascii characters
+sub entityize { 
+    my($self, $string, $form) = @_;
+	$form ||= "";
+
+	if ($form eq 'D') {
+		$string = NFD($string);
+	} else {
+		$string = NFC($string);
+	}
+
+	$string =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+	return $string;
+}
+
 
 1;
 
