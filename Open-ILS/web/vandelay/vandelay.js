@@ -42,7 +42,7 @@ var globalDivs = [
 ];
 
 var authtoken;
-var VANDELAY_URL = '/vandelay';
+var VANDELAY_URL = '/vandelay-upload';
 var bibAttrDefs = [];
 var authAttrDefs = [];
 var queuedRecords = [];
@@ -156,7 +156,7 @@ function displayGlobalDiv(id) {
         try {
             dojo.style(dojo.byId(globalDivs[i]), 'display', 'none');
         } catch(e) {
-            alert('please define ' + globalDivs[i]);
+            alert('please define div ' + globalDivs[i]);
         }
     }
     dojo.style(dojo.byId(id),'display','block');
@@ -268,18 +268,30 @@ function vlLoadMatchUI(recId, attrCode) {
     currentImportRecId = recId;
     for(var i = 0; i < matches.length; i++)
         records.push(matches[i].eg_record());
+
+    var retrieve = ['open-ils.search', 'open-ils.search.biblio.record_entry.slim.retrieve'];
+    var params = [records];
+    if(currentType == 'auth') {
+        retrieve = ['open-ils.cat', 'open-ils.cat.authority.record.retrieve'];
+        parmas = [authtoken, records, {clear_marc:1}];
+    }
+
     fieldmapper.standardRequest(
-        ['open-ils.search', 'open-ils.search.biblio.record_entry.slim.retrieve'],
+        retrieve,
         {   async: true,
-            params:[records],
+            params:params,
             oncomplete: function(r) {
                 var recs = r.recv().content();
                 if(e = openils.Event.parse(recs))
                     return alert(e);
+
+                /* ui mangling */
                 displayGlobalDiv('vl-match-div');
                 resetVlMatchGridLayout();
                 currentMatchedRecords = recs;
                 vlMatchGrid.setStructure(vlMatchGridLayout);
+
+                // build the data store or records with match information
                 var dataStore = bre.toStoreData(recs, null, {virtualFields:['field_type']});
                 for(var i = 0; i < dataStore.items.length; i++) {
                     var item = dataStore.items[i];
@@ -289,21 +301,29 @@ function vlLoadMatchUI(recId, attrCode) {
                             item.field_type = match.field_type();
                     }
                 }
-                var store = new dojo.data.ItemFileReadStore({data:dataStore});
-                var model = new dojox.grid.data.DojoData(
-                    null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-                vlMatchGrid.setModel(model);
-                vlMatchGrid.update();
+                // now populate the grid
+                vlPopulateGrid(vlMatchGrid, dataStore);
             }
         }
     );
 }
 
+function vlPopulateGrid(grid, data) {
+    var store = new dojo.data.ItemFileReadStore({data:data});
+    var model = new dojox.grid.data.DojoData(
+        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
+    grid.setModel(model);
+    grid.update();
+}
+
 
 function vlLoadMARCHtml(recId) {
     displayGlobalDiv('vl-generic-progress');
+    var api = ['open-ils.search', 'open-ils.search.biblio.record.html'];
+    if(currentType == 'auth')
+        api = ['open-ils.search', 'open-ils.search.authority.to_html'];
     fieldmapper.standardRequest(
-        ['open-ils.search', 'open-ils.search.biblio.record.html'],
+        api, 
         {   async: true,
             params: [recId, 1],
             oncomplete: function(r) {
@@ -359,7 +379,6 @@ function getAttrValue(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
     var attrCode = this.field.split('.')[1];
-    console.log(attrCode + " : " + data.id + ' : ' + queuedRecordsMap[data.id] + " : count = " + queuedRecords.length);
     var rec = queuedRecordsMap[data.id];
     var attr = getRecAttrFromCode(rec, attrCode);
     if(attr)
@@ -381,7 +400,8 @@ function vlGetCreator(rowIdx) {
     var id = data.creator;
     if(userCache[id])
         return userCache[id].usrname();
-    var user = fieldmapper.standardRequest(['open-ils.actor', 'open-ils.actor.user.retrieve'], [authtoken, id]);
+    var user = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.retrieve'], [authtoken, id]);
     if(e = openils.Event.parse(user))
         return alert(e);
     userCache[id] = user;
