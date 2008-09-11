@@ -29,20 +29,6 @@ my $U = 'OpenILS::Application::AppUtils';
 sub initialize {}
 sub child_init {}
 
-sub entityize {
-	my $stuff = shift;
-	my $form = shift || '';
-
-	if ($form eq 'D') {
-		$stuff = NFD($stuff);
-	} else {
-		$stuff = NFC($stuff);
-	}
-
-	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-	return $stuff;
-}
-
 # --------------------------------------------------------------------------------
 # Biblio ingest
 
@@ -247,7 +233,7 @@ sub process_spool {
 			$xml =~ s/^<\?xml.+\?\s*>//go;
 			$xml =~ s/>\s+</></go;
 			$xml =~ s/\p{Cc}//go;
-			$xml = entityize($xml);
+			$xml = $U->entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($type eq 'bib') {
@@ -300,6 +286,30 @@ __PACKAGE__->register_method(
 	record_type	=> 'auth'
 );
 
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.records.matches.retrieve",
+	method		=> 'retrieve_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib',
+    signature   => {
+        desc => q/Only retrieve queued bib records that have matches against existing records/
+    }
+);
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.records.matches.retrieve",
+	method		=> 'retrieve_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth',
+    signature   => {
+        desc => q/Only retrieve queued authority records that have matches against existing records/
+    }
+
+);
+
 sub retrieve_queue {
     my($self, $conn, $auth, $queue_id, $options) = @_;
     my $e = new_editor(authtoken => $auth);
@@ -316,8 +326,10 @@ sub retrieve_queue {
     return $evt if $evt;
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
-    my $search = ($type eq 'bib') ? 'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
-    my $retrieve = ($type eq 'bib') ? 'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
+    my $retrieve = ($type eq 'bib') ? 
+        'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
     my $record_ids = $e->$search({queue => $queue_id}, {idlist => 1});
 
     for my $rec_id (@$record_ids) {
@@ -328,6 +340,7 @@ sub retrieve_queue {
             }
         ]);
         $rec->clear_marc if $$options{clear_marc};
+        next if $self->api_name =~ /matches/ and not @{$rec->matches};
         $conn->respond($rec);
     }
     return undef;
@@ -417,6 +430,37 @@ sub import_record_list_impl {
             $rec->imported_as($record->id);
             $rec->import_time('now');
             $e->update_vandelay_queued_bib_record($rec) or return $e->die_event;
+
+        } else { # authority
+
+            my $rec = $e->retrieve_vandelay_queued_authority_record($rec_id) 
+                or return $e->die_event;
+
+            $queues{$rec->queue} = 1;
+
+            my $record;
+            if(defined $overlay_map->{$rec_id}) {
+                $logger->info("vl: overlaying record $rec_id");
+                $record = $U->simplereq(
+                    'open-ils.cat',
+                    'open-ils.cat.authority.record.overlay',
+                    $auth, $overlay_map->{$rec_id}, $rec->marc); #$rec->bib_source);
+            } else {
+                $logger->info("vl: importing new record");
+                $record = $U->simplereq(
+                    'open-ils.cat',
+                    'open-ils.cat.authority.record.import',
+                    $auth, $rec->marc); #$rec->bib_source);
+            }
+
+            if($U->event_code($record)) {
+                $e->rollback;
+                return $record;
+            }
+
+            $rec->imported_as($record->id);
+            $rec->import_time('now');
+            $e->update_vandelay_queued_authority_record($rec) or return $e->die_event;
         }
 
         $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
@@ -432,6 +476,16 @@ sub import_record_list_impl {
                 unless($U->is_true($queue->complete)) {
                     $queue->complete('t');
                     $e->update_vandelay_bib_queue($queue) or return $e->die_event;
+                }
+            }
+        } else {
+            my $remaining = $e->search_vandelay_queued_authority_record(
+                {queue => $q_id, import_time => undef}, {idlist => 1});
+            unless(@$remaining) {
+                my $queue = $e->retrieve_vandelay_authority_queue($q_id);
+                unless($U->is_true($queue->complete)) {
+                    $queue->complete('t');
+                    $e->update_vandelay_authority_queue($queue) or return $e->die_event;
                 }
             }
         }
@@ -462,7 +516,7 @@ sub owner_queue_retrieve {
     my($self, $conn, $auth, $owner_id) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
-    $owner_id = $e->requestor->id; # XXX add support for viewing other's queues
+    $owner_id = $e->requestor->id; # XXX add support for viewing other's queues?
     my $queues;
     if($self->{record_type} eq 'bib') {
         $queues = $e->search_vandelay_bib_queue(
