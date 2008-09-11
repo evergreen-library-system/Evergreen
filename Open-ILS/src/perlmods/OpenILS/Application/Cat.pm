@@ -2,8 +2,8 @@ use strict; use warnings;
 package OpenILS::Application::Cat;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application;
-use OpenILS::Application::Cat::Utils;
 use OpenILS::Application::Cat::Merge;
+use OpenILS::Application::Cat::Authority;
 use base qw/OpenILS::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
@@ -22,28 +22,9 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenSRF::AppSession;
 
-my $apputils = "OpenILS::Application::AppUtils";
-
-my $utils = "OpenILS::Application::Cat::Utils";
 my $U = "OpenILS::Application::AppUtils";
-
 my $conf;
-
 my %marctemplates;
-
-sub entityize { 
-	my $stuff = shift;
-	my $form = shift || "";
-
-	if ($form eq 'D') {
-		$stuff = NFD($stuff);
-	} else {
-		$stuff = NFC($stuff);
-	}
-
-	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-	return $stuff;
-}
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_marc_template",
@@ -227,7 +208,7 @@ sub biblio_record_replace_marc  {
 	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
-	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
+	$rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
 	$e->update_biblio_record_entry($rec) or return $e->die_event;
 	$e->commit;
 
@@ -344,7 +325,7 @@ sub biblio_record_xml_import {
 	$record->editor($e->requestor->id);
 	$record->create_date('now');
 	$record->edit_date('now');
-	$record->marc( entityize( $marcdoc->documentElement->toString ) );
+	$record->marc( $U->entityize( $marcdoc->documentElement->toString ) );
 
     $record = $e->create_biblio_record_entry($record) or return $e->die_event;
 	$logger->info("marc create/import created new record ".$record->id);
@@ -673,7 +654,7 @@ __PACKAGE__->register_method(
 sub orgs_for_title {
 	my( $self, $client, $record_id ) = @_;
 
-	my $vols = $apputils->simple_scalar_request(
+	my $vols = $U->simple_scalar_request(
 		"open-ils.cstore",
 		"open-ils.cstore.direct.asset.call_number.search.atomic",
 		{ record => $record_id, deleted => 'f' });
