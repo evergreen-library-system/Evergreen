@@ -3,7 +3,6 @@ package OpenILS::Application::Cat::Merge;
 use base qw/OpenILS::Application/;
 use OpenSRF::Application;
 use OpenILS::Application::AppUtils;
-use OpenILS::Application::Cat::Utils;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;

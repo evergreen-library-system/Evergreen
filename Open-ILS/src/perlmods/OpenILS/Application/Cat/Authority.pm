@@ -1,5 +1,6 @@
 package OpenILS::Application::Cat::Authority;
 use strict; use warnings;
+use base qw/OpenILS::Application/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Application::AppUtils;
@@ -29,7 +30,7 @@ sub import_authority_record {
     my($self, $conn, $auth, $marc_xml, $source) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD')
+	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD');
     
     my $marc_doc = marc_xml_to_doc($marc_xml);
     my $rec = Fieldmapper::authority::record_entry->new;
@@ -55,7 +56,7 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.cat.authority.record.overlay',
 );
 
-sub import_authority_record {
+sub overlay_authority_record {
     my($self, $conn, $auth, $rec_id, $marc_xml, $source) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
@@ -98,7 +99,7 @@ sub retrieve_authority_record {
 }
 
 __PACKAGE__->register_method(
-	method	=> 'retrieve_batch_authority_record',
+	method	=> 'batch_retrieve_authority_record',
 	api_name	=> 'open-ils.cat.authority.record.batch.retrieve',
     stream => 1,
     signature => {
@@ -109,7 +110,7 @@ __PACKAGE__->register_method(
         ]
     }
 );
-sub retrieve_authority_record {
+sub batch_retrieve_authority_record {
     my($self, $conn, $auth, $rec_id_list, $options) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
@@ -121,3 +122,4 @@ sub retrieve_authority_record {
     return undef;
 }
 
+1;
