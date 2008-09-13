@@ -25,7 +25,7 @@ my $publisher_xpath	= "//mods:mods/mods:originInfo//mods:publisher[1]";
 my $edition_xpath		= "//mods:mods/mods:originInfo//mods:edition[1]";
 my $abstract_xpath	= "//mods:mods/mods:abstract";
 my $related_xpath		= "";
-my $online_loc_xpath = "(//mods:location/mods:url|//mods:location/mods:url/\@displayLabel)";
+my $online_loc_xpath = "(//mods:location/mods:url|//mods:location/mods:url/\@displayLabel|//mods:location/mods:url/\@note)";
 my $physical_desc		= "(//mods:physicalDescription/mods:form|//mods:physicalDescription/mods:extent|".
 	"//mods:physicalDescription/mods:reformattingQuality|//mods:physicalDescription/mods:internetMediaType|".
 	"//mods:physicalDescription/mods:digitalOrigin)";
@@ -321,7 +321,7 @@ sub start_mods_batch {
 
 	if(!$mods_sheet) {
 		 my $xslt_doc = $parser->parse_file(
-			OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS3.xsl");
+			OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS32.xsl");
 		$mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 	}
 
