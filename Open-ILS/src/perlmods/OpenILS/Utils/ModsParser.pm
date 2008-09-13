@@ -25,7 +25,7 @@ my $publisher_xpath	= "//mods:mods/mods:originInfo//mods:publisher[1]";
 my $edition_xpath		= "//mods:mods/mods:originInfo//mods:edition[1]";
 my $abstract_xpath	= "//mods:mods/mods:abstract";
 my $related_xpath		= "";
-my $online_loc_xpath = "(//mods:location/mods:url|//mods:location/mods:url/\@displayLabel|//mods:location/mods:url/\@note)";
+my $online_loc_xpath = "//mods:location/mods:url";
 my $physical_desc		= "(//mods:physicalDescription/mods:form|//mods:physicalDescription/mods:extent|".
 	"//mods:physicalDescription/mods:reformattingQuality|//mods:physicalDescription/mods:internetMediaType|".
 	"//mods:physicalDescription/mods:digitalOrigin)";
@@ -355,8 +355,11 @@ sub start_mods_batch {
 # ------------------------------
 	# holds an array of [ link, title, link, title, ... ]
 	$self->{master_doc}->{online_loc} = [];
-	push(@{$self->{master_doc}->{online_loc}},
-		$self->get_field_value( $mods, $online_loc_xpath ));
+	for my $url ($mods->findnodes($online_loc_xpath)) {
+		push(@{$self->{master_doc}->{online_loc}}, $url->textContent);
+		push(@{$self->{master_doc}->{online_loc}}, $url->getAttribute('displayLabel') || '');
+		push(@{$self->{master_doc}->{online_loc}}, $url->getAttribute('note') || '');
+	}
 
 	($self->{master_doc}->{synopsis}) = 
 		$self->get_field_value( $mods, $abstract_xpath );
