@@ -35,7 +35,7 @@ my $xpathset = {
 
 	title => {
 		abbreviated => 
-			"//mods:mods/mods:titleInfo[mods:title and (\@type='abreviated')]",
+			"//mods:mods/mods:titleInfo[mods:title and (\@type='abbreviated')]",
 		translated =>
 			"//mods:mods/mods:titleInfo[mods:title and (\@type='translated')]",
 		uniform =>
