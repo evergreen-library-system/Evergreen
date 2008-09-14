@@ -224,15 +224,15 @@ function _rdetailDraw(r) {
 			// (as $y was defined later in MARC21's life as the display label)
 			var displayLabel = '' + links[i+1];
 			var note = '' + links[i+2];
-			if(displayLabel == 'undefined' || displayLabel.match(/https?:\/|ftps?:\/|mailto:/i)) {
-				if(note == 'undefined' || note.match(/https?:\/|ftps?:\/|mailto:/i)) {
+			if(!displayLabel || displayLabel.match(/https?:\/|ftps?:\/|mailto:/i)) {
+				if(!note || note.match(/https?:\/|ftps?:\/|mailto:/i)) {
 					displayLabel = href;
 				} else {
 					displayLabel = note;
 				}
 			}
 			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, displayLabel));
-			if (note != 'undefined' && note != displayLabel) {
+			if (!note && note != displayLabel) {
 				$('rdetail_online').appendChild(elem('span', {'class':'url_note'}, ' - ' + note));
 			}
 			$('rdetail_online').appendChild(elem('br'));
