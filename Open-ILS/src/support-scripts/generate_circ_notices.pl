@@ -193,6 +193,7 @@ sub generate_notice_set {
                     {stop_fines => undef}
                 ],
 				due_date => {between => [$start_date, $end_date]},
+                order_by => {circ => ['usr', 'circ_lib']}
             }
         }
     };
