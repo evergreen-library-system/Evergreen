@@ -1466,10 +1466,8 @@ sub get_user_locale {
 
 	my $user = $e->retrieve_actor_user($user_id) or return $e->event;
 
-	# next see if their home org specifies a default locale
-	$setting = $e->search_actor_org_unit_setting(
-		{org_unit => $user->home_ou, name => 'global.default_locale'})->[0];
-	return OpenSRF::Utils::JSON->JSON2perl($setting->value) if $setting;
+    my $locale = $self->ou_ancestor_setting_value($user->home_ou, 'global.default_locale', $e);
+    return $locale if $locale;
 
 	# if nothing else, fallback to locale=cowboy
 	return 'en-US';
