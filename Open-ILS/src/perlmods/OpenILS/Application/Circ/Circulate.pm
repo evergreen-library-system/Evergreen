@@ -2096,48 +2096,6 @@ sub checkin_handle_backdate {
 
 
 
-=head
-# XXX Legacy version for Circ.pm support
-sub _checkin_handle_backdate {
-   my( $class, $backdate, $circ, $requestor, $session, $closecirc ) = @_;
-
-    my $bd = $backdate;
-    $bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-    $bd = "${bd}T23:59:59";
-
-   my $bills = $session->request(
-      "open-ils.storage.direct.money.billing.search_where.atomic",
-        billing_ts => { '>=' => $bd }, 
-        xact => $circ->id,
-        billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
-    )->gather(1);
-
-    $logger->debug("backdate found ".scalar(@$bills)." bills to void");
-
-   if($bills) {
-      for my $bill (@$bills) {
-            unless( $U->is_true($bill->voided) ) {
-                $logger->debug("voiding bill ".$bill->id);
-                $bill->voided('t');
-                $bill->void_time('now');
-                $bill->voider($requestor->id);
-                my $n = $bill->note || "";
-                $bill->note($n . "\nSystem: VOIDED FOR BACKDATE");
-                my $s = $session->request(
-                    "open-ils.storage.direct.money.billing.update", $bill)->gather(1);
-                return $U->DB_UPDATE_FAILED($bill) unless $s;
-            }
-        }
-   }
-
-    return 100;
-}
-=cut
-
-
-
-
-
 
 sub find_patron_from_copy {
     my $self = shift;

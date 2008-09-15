@@ -1876,70 +1876,9 @@ sub checked_out {
 
 sub _checked_out {
 	my( $iscount, $e, $userid ) = @_;
-
-
 	my $meth = 'open-ils.storage.actor.user.checked_out';
 	$meth = "$meth.count" if $iscount;
 	return $U->storagereq($meth, $userid);
-
-# XXX Old code - moved to storage
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-	my $circs = $e->search_action_circulation( 
-		{ usr => $userid, checkin_time => undef });
-
-	my $parser = DateTime::Format::ISO8601->new;
-
-	# split the circs up into overdue and not-overdue circs
-	my (@out,@overdue);
-	for my $c (@$circs) {
-		if( $c->due_date ) {
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
-			my $due = $due_dt->epoch;
-			if ($due < DateTime->today->epoch) {
-				push @overdue, $c;
-			} else {
-				push @out, $c;
-			}
-		} else {
-			push @out, $c;
-		}
-	}
-
-	my( @open, @od, @lost, @cr, @lo );
-
-	while (my $c = shift(@out)) {
-		push( @open, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
-		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
-		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
-		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
-	}
-
-	while (my $c = shift(@overdue)) {
-		push( @od, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
-		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
-		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
-		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
-	}
-
-	if( $iscount ) {
-		return {
-			total		=> @open + @od + @lost + @cr + @lo,
-			out		=> scalar(@open),
-			overdue	=> scalar(@od),
-			lost		=> scalar(@lost),
-			claims_returned	=> scalar(@cr),
-			long_overdue		=> scalar(@lo)
-		};
-	}
-
-	return {
-		out		=> \@open,
-		overdue	=> \@od,
-		lost		=> \@lost,
-		claims_returned	=> \@cr,
-		long_overdue		=> \@lo
-	};
 }
 
 
@@ -2111,91 +2050,6 @@ __PACKAGE__->register_method(
 	Returns a list of billable transaction ids for a user that has billings
 	NOTES
 
-
-
-=head old
-sub _user_transaction_history {
-	my( $self, $client, $login_session, $user_id, $type ) = @_;
-
-	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
-	return $evt if $evt;
-
-	my $api = $self->api_name();
-	my @xact;
-	my @charge;
-	my @balance;
-
-	@xact = (xact_type =>  $type) if(defined($type));
-	@balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
-	@charge  = (last_billing_ts => { "<>" => undef }) if $api =~ /have_charge/;
-
-	$logger->debug("searching for transaction history: @xact : @balance, @charge");
-
-	my $trans = $apputils->simple_scalar_request( 
-		"open-ils.cstore",
-		"open-ils.cstore.direct.money.billable_transaction_summary.search.atomic",
-		{ usr => $user_id, @xact, @charge, @balance }, { order_by => { mbts => 'xact_start DESC' } });
-
-	return [ map { $_->id } @$trans ];
-}
-=cut
-
-=head SEE APPUTILS.PM
-sub _make_mbts {
-	my @xacts = @_;
-
-	my @mbts;
-	for my $x (@xacts) {
-		my $s = new Fieldmapper::money::billable_transaction_summary;
-		$s->id( $x->id );
-		$s->usr( $x->usr );
-		$s->xact_start( $x->xact_start );
-		$s->xact_finish( $x->xact_finish );
-
-		my $to = 0;
-		my $lb = undef;
-		for my $b (@{ $x->billings }) {
-			next if ($U->is_true($b->voided));
-			$to += ($b->amount * 100);
-			$lb ||= $b->billing_ts;
-			if ($b->billing_ts ge $lb) {
-				$lb = $b->billing_ts;
-				$s->last_billing_note($b->note);
-				$s->last_billing_ts($b->billing_ts);
-				$s->last_billing_type($b->billing_type);
-			}
-		}
-
-		$s->total_owed( sprintf('%0.2f', $to / 100 ) );
-
-		my $tp = 0;
-		my $lp = undef;
-		for my $p (@{ $x->payments }) {
-			next if ($U->is_true($p->voided));
-			$tp += ($p->amount * 100);
-			$lp ||= $p->payment_ts;
-			if ($p->payment_ts ge $lp) {
-				$lp = $p->payment_ts;
-				$s->last_payment_note($p->note);
-				$s->last_payment_ts($p->payment_ts);
-				$s->last_payment_type($p->payment_type);
-			}
-		}
-		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
-
-		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
-
-		$s->xact_type( 'grocery' ) if ($x->grocery);
-		$s->xact_type( 'circulation' ) if ($x->circulation);
-
-		push @mbts, $s;
-	}
-
-	return @mbts;
-}
-=cut
-
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
 
@@ -2333,35 +2187,6 @@ sub retrieve_groups_tree {
 		]
 	)->[0];
 }
-
-
-# turns an org list into an org tree
-=head old code
-sub build_group_tree {
-
-	my( $self, $grplist) = @_;
-
-	return $grplist unless ( 
-			ref($grplist) and @$grplist > 1 );
-
-	my @list = sort { $a->name cmp $b->name } @$grplist;
-
-	my $root;
-	for my $grp (@list) {
-
-		if ($grp and !defined($grp->parent)) {
-			$root = $grp;
-			next;
-		}
-		my ($parent) = grep { $_->id == $grp->parent} @list;
-
-		$parent->children([]) unless defined($parent->children); 
-		push( @{$parent->children}, $grp );
-	}
-
-	return $root;
-}
-=cut
 
 
 __PACKAGE__->register_method(
