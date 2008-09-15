@@ -176,6 +176,17 @@ sub ou_ancestor_setting {
     return $U->ou_ancestor_setting($orgid, $name);
 }
 
+__PACKAGE__->register_method(
+    api_name => 'open-ils.actor.ou_setting.ancestor_default.batch',
+    method => 'ou_ancestor_setting_batch',
+);
+sub ou_ancestor_setting_batch {
+    my( $self, $client, $orgid, $name_list ) = @_;
+    my %values;
+    $values{$_} = $U->ou_ancestor_setting($orgid, $_) for @$name_list;
+    return \%values;
+}
+
 
 
 
@@ -1385,16 +1396,20 @@ __PACKAGE__->register_method(
 	/);
 
 sub check_user_perms3 {
-	my( $self, $client, $authtoken, $userid, $perm ) = @_;
-
-	my( $staff, $target, $org, $evt );
-
-	( $staff, $target, $evt ) = $apputils->checkses_requestor(
-		$authtoken, $userid, 'VIEW_PERMISSION' );
-	return $evt if $evt;
+	my($self, $client, $authtoken, $user_id, $perm) = @_;
+	my $e = new_editor(authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
 	my $tree = $self->get_org_tree();
-	return _find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
+
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id)
+            or return $e->event;
+        return $e->event unless $e->allowed('VIEW_PERMISSION', $user->home_ou);
+	    return _find_highest_perm_org($perm, $user_id, $user->home_ou, $tree );
+    }
+
+    return _find_highest_perm_org($perm, $user_id, $e->requestor->ws_ou, $tree);
 }
 
 
