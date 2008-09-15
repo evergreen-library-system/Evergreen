@@ -616,8 +616,9 @@ sub view_circs {
             $copy->circ_lib : $copy->call_number->owning_lib);
         
     my $max_history = $U->ou_ancestor_setting_value(
-        $user->home_ou, 'circ.item_checkout_history.max', $e);
-    $count = ($max_history and $max_history < $count) ? $max_history : $count;
+        $e->requestor->ws_ou, 'circ.item_checkout_history.max', $e);
+
+    $count = $max_history if $max_history and (!$count or $count > $max_history);
 
 	return [] unless $count;
 
