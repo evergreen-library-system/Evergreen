@@ -58,6 +58,11 @@
                 <span id='selfck-patron-not-found' class='hide_me'>&selfck.event.patron_not_found;</span>
             </div>
 
+            <div id='selfck-print-queuing' class='hide_me'>
+                <div><img src='../../../images/small_logo.jpg'/></div>
+                <div>Printing Receipt...</div>
+            </div>
+
             <!--***********************************************************************
                 Checkout form
                 *********************************************************************** -->

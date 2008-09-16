@@ -36,6 +36,10 @@ var patronBarcodeRegex;
 var orgUnit;
 var orgUnitAddress;
 var orgUnitHours;
+var alertOnCheckoutEvent = false;
+var SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
+var SET_BARCODE_REGEX = 'opac.barcode_regex';
+var SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 
 
 function selfckInit() {
@@ -47,11 +51,15 @@ function selfckInit() {
     orgUnit = findOrgUnitSN(cgi.param('l')) || globalOrgTree;
     selfckFetchOrgDetails();
 
-    var t = fetchOrgSettingDefault(orgUnit.id(), 'circ.selfcheck.patron_login_timeout');
-    patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
-
-    var reg = fetchOrgSettingDefault(orgUnit.id(), 'opac.barcode_regex');
-    if(reg) patronBarcodeRegex = new RegExp(reg);
+    // fetch the relevent org-unit setting
+    var settings = fetchBatchOrgSetting(orgUnit.id(), 
+        [SET_PATRON_TIMEOUT, SET_BARCODE_REGEX, SET_ALERT_ON_CHECKOUT_EVENT]);
+    if(settings[SET_PATRON_TIMEOUT])
+        patronTimeout = parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000;
+    if(settings[SET_BARCODE_REGEX])
+        patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
+    if(settings[SET_ALERT_ON_CHECKOUT_EVENT])
+        alertOnCheckoutEvent = (settings[SET_ALERT_ON_CHECKOUT_EVENT].value) ? true : false;
 
     if(!staff) {
         // should not happen when behind the proxy
@@ -167,11 +175,13 @@ function selfckResetTimer() {
 function selfckLogoutPatron() {
     $('selfck-item-barcode-input').value = ''; // prevent browser caching
     $('selfck-patron-login-input').value = '';
+    hideMe($('selfck-patron-checkout-container'));
+    unHideMe($('selfck-print-queuing'));
     if(patron) {
         selfckPrint();
         setTimeout(
             function() { location.href = location.href; },
-            800
+            3500 // give the browser time to send the page to the printer
         );
     }
 }
@@ -316,6 +326,9 @@ function selfckShowMsgNode(evt) {
 
     appendClear($('selfck-event-time'), text(new Date().toLocaleString()));
     appendClear($('selfck-event-span'), text($('selfck-event-' + code).innerHTML));
+
+    if(code != 'SUCCESS' && alertOnCheckoutEvent)
+        alert($('selfck-event-' + code).innerHTML);
 }
 
 /**
