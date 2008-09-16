@@ -268,12 +268,13 @@
 				</script>
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
-					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
+					<div jsId="new_form_form" dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top">
 						<div>New Item Form:</div>
 						<input type="hidden" name="classname" value="cifm"/>
 						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
 						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
+						<button dojoType="dijit.form.Button" label="Add" onclick="create_marc_code(new_form_form)"></button>
+
 						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cifm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cifm',cifm_grid)"></button>
 						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
 					</div>
