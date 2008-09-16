@@ -63,8 +63,8 @@ function save_group () {
 	modified_pgt.ischanged( 1 );
 
 	new_kid_button.disabled = false;
-	save_out_button.disabled = false;
-	delete_out_button.disabled = false;
+	save_group_button.disabled = false;
+	delete_group_button.disabled = false;
 
 	server.pCRUD.request({
 		method : 'open-ils.permacrud.update.pgt',
