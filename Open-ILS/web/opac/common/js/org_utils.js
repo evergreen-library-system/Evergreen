@@ -9,6 +9,18 @@ function fetchOrgSettingDefault(orgId, name) {
     return (res) ? res.value : null;
 }
 
+function fetchBatchOrgSetting(orgId, nameList, onload) {
+    var req = new Request(
+        'open-ils.actor:open-ils.actor.ou_setting.ancestor_default.batch', orgId, nameList);
+    if(onload) {
+        req.callback(function(r) { onload(r.getResultObject()); });
+        req.send();
+    } else {
+        req.send(true);
+        return req.result();
+    }
+}
+
 /* takes an org unit or id and return the numeric depth */
 function findOrgDepth(org_id_or_node) {
 	var org = findOrgUnit(org_id_or_node);
