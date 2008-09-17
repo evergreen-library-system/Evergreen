@@ -175,8 +175,6 @@ function selfckResetTimer() {
 function selfckLogoutPatron() {
     $('selfck-item-barcode-input').value = ''; // prevent browser caching
     $('selfck-patron-login-input').value = '';
-    hideMe($('selfck-patron-checkout-container'));
-    unHideMe($('selfck-print-queuing'));
     if(patron) {
         selfckPrint();
         setTimeout(
@@ -409,6 +407,8 @@ function selfckRenew() {
   */
 function selfckPrint() {
     for(var x in successfulItems) { // make sure we've checked out at least one item
+        hideMe($('selfck-patron-checkout-container'));
+        unHideMe($('selfck-print-queuing'));
         appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
         appendClear($('selfck-print-lib-name'), text(orgUnit.name()));
         if(orgUnitAddress) {
