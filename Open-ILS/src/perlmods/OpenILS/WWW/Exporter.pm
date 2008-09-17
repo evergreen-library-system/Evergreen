@@ -65,7 +65,6 @@ sub handler {
 			my $csv = new Text::CSV;
 
 			while (<$file>) {
-				chomp;
 				$csv->parse($_);
 				my @data = $csv->fields;
 				my $id = $data[$col];
@@ -207,7 +206,7 @@ sub handler {
 		next unless $bib;
 
     		if (uc($format) eq 'BRE') {
-        		$r->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
+        		$r->print( OpenSRF::Utils::JSON->perl2JSON($bib) . "\n" );
         		next;
     		}
 
