@@ -12,37 +12,37 @@ INSERT INTO config.standing (id, value) VALUES (2, oils_i18n_gettext(2, 'Barred'
 SELECT SETVAL('config.standing_id_seq'::TEXT, 100);
 
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'series', 'seriestitle', $$//mods:mods/mods:relatedItem[@type="series"]/mods:titleInfo$$ );
+    ( 'series', 'seriestitle', $$//mods32:mods/mods32:relatedItem[@type="series"]/mods32:titleInfo$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'title', 'abbreviated', $$//mods:mods/mods:titleInfo[mods:title and (@type='abbreviated')]$$ );
+    ( 'title', 'abbreviated', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='abbreviated')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'title', 'translated', $$//mods:mods/mods:titleInfo[mods:title and (@type='translated')]$$ );
+    ( 'title', 'translated', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='translated')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'title', 'alternative', $$//mods:mods/mods:titleInfo[mods:title and (@type='alternative')]$$ );
+    ( 'title', 'alternative', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='alternative')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'title', 'uniform', $$//mods:mods/mods:titleInfo[mods:title and (@type='uniform')]$$ );
+    ( 'title', 'uniform', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='uniform')]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'title', 'proper', $$//mods:mods/mods:titleInfo[mods:title and not (@type)]$$ );
+    ( 'title', 'proper', $$//mods32:mods/mods32:titleInfo[mods32:title and not (@type)]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'author', 'corporate', $$//mods:mods/mods:name[@type='corporate']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+    ( 'author', 'corporate', $$//mods32:mods/mods32:name[@type='corporate']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'author', 'personal', $$//mods:mods/mods:name[@type='personal']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+    ( 'author', 'personal', $$//mods32:mods/mods32:name[@type='personal']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'author', 'conference', $$//mods:mods/mods:name[@type='conference']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
+    ( 'author', 'conference', $$//mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'author', 'other', $$//mods:mods/mods:name[@type='personal']/mods:namePart[not(../mods:role)]$$ );
+    ( 'author', 'other', $$//mods32:mods/mods32:name[@type='personal']/mods32:namePart[not(../mods32:role)]$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'subject', 'geographic', $$//mods:mods/mods:subject/mods:geographic$$ );
+    ( 'subject', 'geographic', $$//mods32:mods/mods32:subject/mods32:geographic$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'subject', 'name', $$//mods:mods/mods:subject/mods:name$$ );
+    ( 'subject', 'name', $$//mods32:mods/mods32:subject/mods32:name$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'subject', 'temporal', $$//mods:mods/mods:subject/mods:temporal$$ );
+    ( 'subject', 'temporal', $$//mods32:mods/mods32:subject/mods32:temporal$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'subject', 'topic', $$//mods:mods/mods:subject/mods:topic$$ );
+    ( 'subject', 'topic', $$//mods32:mods/mods32:subject/mods32:topic$$ );
 --INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
---  ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
+--  ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods32:mods/mods32:genre$$ );
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES 
-    ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
+    ( 'keyword', 'keyword', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
 
 INSERT INTO config.non_cataloged_type ( id, owning_lib, name ) VALUES ( 1, 1, oils_i18n_gettext(1, 'Paperback Book', 'cnct', 'name') );
 SELECT SETVAL('config.non_cataloged_type_id_seq'::TEXT, 100);
