@@ -1374,6 +1374,7 @@ INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident )
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (12, 'publisher',oils_i18n_gettext(12, 'vqbrad', 'Publisher', 'description'),'//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (13, 'pubdate',oils_i18n_gettext(13, 'vqbrad', 'Publication Date', 'description'),'//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (14, 'edition',oils_i18n_gettext(14, 'vqbrad', 'Edition', 'description'),'//*[@tag="250"]/*[@code="a"][1]');
+SELECT SETVAL('vandelay.bib_attr_definition_id_seq'::TEXT, 100);
 
 INSERT INTO vandelay.import_item_attr_definition (
     owner, name, tag, owning_lib, circ_lib, location,
@@ -1422,6 +1423,7 @@ INSERT INTO vandelay.import_item_attr_definition (
     'k'
 );
 
-INSERT INTO vandelay.authority_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Identifier','//*[@tag="001"]', TRUE);
+INSERT INTO vandelay.authority_attr_definition (id, code, description, xpath, ident ) VALUES (1, 'rec_identifier',oils_i18n_gettext(1, 'vqarad', 'Identifier', 'description'),'//*[@tag="001"]', TRUE);
+SELECT SETVAL('vandelay.authority_attr_definition_id_seq'::TEXT, 100);
 
 
