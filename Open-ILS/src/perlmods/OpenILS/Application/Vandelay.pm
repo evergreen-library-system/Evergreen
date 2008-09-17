@@ -314,6 +314,9 @@ sub retrieve_queue {
     my($self, $conn, $auth, $queue_id, $options) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
+    $options ||= {};
+    my $limit = $$options{limit} || 20;
+    my $offset = $$options{offset} || 0;
 
     my $type = $self->{record_type};
     my $queue;
@@ -330,15 +333,20 @@ sub retrieve_queue {
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
-    my $record_ids = $e->$search({queue => $queue_id}, {idlist => 1});
+
+    my $record_ids = $e->$search([
+            {queue => $queue_id}, 
+            {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
+        ],
+        {idlist => 1}
+    );
 
     for my $rec_id (@$record_ids) {
-        my $rec = $e->$retrieve([
-            $rec_id,
-            {   flesh => 1,
-                flesh_fields => {$class => ['attributes', 'matches']}
-            }
-        ]);
+        my $params = {   
+            flesh => 1,
+            flesh_fields => {$class => ['attributes', 'matches']},
+        };
+        my $rec = $e->$retrieve([$rec_id, $params]);
         $rec->clear_marc if $$options{clear_marc};
         next if $self->api_name =~ /matches/ and not @{$rec->matches};
         $conn->respond($rec);
