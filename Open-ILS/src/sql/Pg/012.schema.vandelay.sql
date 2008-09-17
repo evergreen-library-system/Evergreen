@@ -99,7 +99,7 @@ INSERT INTO vandelay.import_item_attr_definition (
     'p',
     'y',
     't',
-    '[@code = "x" and text() = "ncirculating"]',
+    '[@code = "x" and text() = "circulating"]',
     '[@code = "x" and text() = "reference"]',
     '[@code = "x" and text() = "holdable"]',
     '[@code = "x" and text() = "visible"]',
