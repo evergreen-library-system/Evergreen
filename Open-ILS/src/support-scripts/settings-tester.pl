@@ -286,27 +286,25 @@ sub check_db_langs {
 
 sub check_libdbd {
 	my $results = '';
-	my @location = `locate libdbdpgsql.so | grep -v home | grep -v .libs`; # simple(ton) attempt to filter out build versions
+	my @location = `ldconfig --print | grep libdbdpgsql`; # simple(ton) attempt to filter out build versions
     unless(@location) {
-        my $res = "Libdbi postgres driver not found\n";
+		# This is pretty distro-specific, but let's worry about other distros and operating systems when we get there
+        my $res = "libdbi PostgreSQL driver not found in shared library path;
+  you may need to edit /etc/ld.so.conf or add an entry to /etc/ld.so.conf.d/
+  and run 'ldconfig' as root\n";
         print $res;
         return $res;
     }
-	if (scalar(@location) > 1) {
-
-		my $res = "Found more than one location for libdbdpgsql.so.
+	if ($location[0] !~ m#/usr/local/lib/dbd/#) {
+		my $res = "libdbdpgsql.so was not found in /usr/local/libdbi/dbd/
   We have found that system packages don't link against libdbi.so;
   therefore, we strongly recommend compiling libdbi and libdbi-drivers from source.\n";
 		$results .= $res;
 		print $res;
 	}
-	foreach my $loc (@location) {
-		my @linkage = `ldd $loc`;
-		if (!grep(/libdbi/, @linkage)) {
-			my $res = "$loc was not linked against libdbi - you probably need to compile libdbi-drivers from source with the --enable-libdbi configure switch.\n";
-			$results .= $res;
-			print $res;
-		}
+	if ($results eq '') {
+		$results = "  * OK - found locally installed libdbi.so and libdbdpgsql.so in shared library path\n";
+		print $results;
 	}
 	return $results;
 }
