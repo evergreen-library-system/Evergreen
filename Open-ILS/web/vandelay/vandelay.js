@@ -29,6 +29,7 @@ dojo.require("fieldmapper.dojoData");
 dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
+dojo.require('openils.MarcXPathParser');
 
 var globalDivs = [
     'vl-generic-progress',
@@ -166,7 +167,7 @@ function runStartupCommands() {
     currentQueueId = cgi.param('qid');
     currentType = cgi.param('qtype');
     if(currentQueueId)
-        return retrievenueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
     vlShowUploadForm();
 }
 
