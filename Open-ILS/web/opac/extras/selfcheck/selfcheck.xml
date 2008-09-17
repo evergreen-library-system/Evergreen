@@ -60,7 +60,7 @@
 
             <div id='selfck-print-queuing' class='hide_me'>
                 <div><img src='../../../images/small_logo.jpg'/></div>
-                <div>Printing Receipt...</div>
+                <div>&selfck.printing;</div>
             </div>
 
             <!--***********************************************************************
