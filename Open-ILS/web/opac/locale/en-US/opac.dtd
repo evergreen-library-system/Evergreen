@@ -659,6 +659,7 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.cotype_rn "Renewal">
 <!ENTITY selfck.done "Done">
 <!ENTITY selfck.welcome "Welcome">
+<!ENTITY selfck.printing "Printing Receipt...">
 
 <!-- event messages -->
 <!ENTITY selfck.event.co_success "Check out succeeded">
