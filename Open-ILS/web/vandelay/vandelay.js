@@ -238,10 +238,18 @@ function retrieveQueuedRecords(type, queueId, onload) {
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
 
+    var limit = parseInt(vlQueueDisplayLimit.getValue());
+    var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId, {clear_marc:1}],
+            params: [authtoken, queueId, 
+                {   clear_marc: 1, 
+                    offset: offset,
+                    limit: limit
+                }
+            ],
             /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
             onresponse: function(r) {
                 var rec = r.recv().content();
@@ -457,7 +465,7 @@ function buildRecordGrid(type) {
 
     currentOverlayRecordsMap = {};
 
-    if(queuedRecords.length == 0) {
+    if(queuedRecords.length == 0 && vlQueueDisplayPage.getValue() == 1) {
         dojo.style(dojo.byId('vl-queue-no-records'), 'display', 'block');
         dojo.style(dojo.byId('vl-queue-div-grid'), 'display', 'none');
         return;
