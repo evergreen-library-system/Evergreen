@@ -234,8 +234,12 @@ function retrieveQueuedRecords(type, queueId, onload) {
     selectableGridRecords = {};
     resetVlQueueGridLayout();
 
+    var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
+    if(vlQueueGridShowMatches.checked)
+        method = method.replace('records', 'records.matches');
+
     fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic'],
+        ['open-ils.vandelay', method],
         {   async: true,
             params: [authtoken, queueId, {clear_marc:1}],
             /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
