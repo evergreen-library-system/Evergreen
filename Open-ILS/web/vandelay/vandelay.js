@@ -19,6 +19,7 @@ dojo.require("dijit.form.Button");
 dojo.require("dijit.form.FilteringSelect"); 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
+dojo.require("dijit.Dialog");
 dojo.require("dojo.cookie");
 dojo.require("dojox.grid.Grid");
 dojo.require("dojo.data.ItemFileReadStore");
@@ -30,6 +31,7 @@ dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.MarcXPathParser');
+dojo.require('openils.GridColumnPicker');
 
 var globalDivs = [
     'vl-generic-progress',
@@ -61,6 +63,7 @@ var userBibQueues;
 var userAuthQueues;
 var selectableGridRecords;
 var cgi = new openils.CGI();
+var vlQueueGridColumePicker;
 
 /**
   * Grab initial data
@@ -481,7 +484,8 @@ function buildRecordGrid(type) {
         var col = {
             name:def.description(), 
             field:'attr.' + def.code(),
-            get: getAttrValue
+            get: getAttrValue,
+            selectableColumn:true
         };
         //if(def.code().match(/title/i)) col.width = 'auto'; // this is hack.
         vlQueueGridLayout[0].cells[0].push(col);
@@ -498,23 +502,18 @@ function buildRecordGrid(type) {
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
 
     vlQueueGrid.setModel(model);
-    vlQueueGrid.setStructure(vlQueueGridLayout);
+    if(vlQueueGridColumePicker) 
+        vlQueueGrid.setStructure(vlQueueGridColumePicker.structure);
+    else
+        vlQueueGrid.setStructure(vlQueueGridLayout);
     vlQueueGrid.update();
+
+    if(!vlQueueGridColumePicker) {
+        vlQueueGridColumePicker = 
+            new openils.GridColumnPicker(vlQueueGridColumePickerDialog, vlQueueGrid);
+    }
 }
 
-/*
-function test() {
-    alert(vlQueueGridLayout.picker);
-    vlQueueGridLayout.oils = {};
-    vlQueueGridLayout[0].cells[0].pop();
-    vlQueueGridLayout[0].cells[0].pop();
-    vlQueueGridLayout[0].cells[0].pop();
-    vlQueueGridLayout[0].cells[0].pop();
-    vlQueueGridLayout[0].cells[0].pop();
-    vlQueueGrid.setStructure(vlQueueGridLayout);
-    vlQueueGrid.update();
-}
-*/
 
 function vlQueueGridDrawSelectBox(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
@@ -524,13 +523,19 @@ function vlQueueGridDrawSelectBox(rowIdx) {
     return "<div><input type='checkbox' id='"+domId+"'/></div>";
 }
 
-function vlSelectAllGridRecords() {
+function vlSelectAllQueueGridRecords() {
     for(var id in selectableGridRecords) 
         dojo.byId(id).checked = true;
 }
-function vlSelectNoGridRecords() {
+function vlSelectNoQueueGridRecords() {
     for(var id in selectableGridRecords) 
         dojo.byId(id).checked = false;
+}
+function vlToggleQueueGridSelect() {
+    if(dojo.byId('vl-queue-grid-row-selector').checked)
+        vlSelectAllQueueGridRecords();
+    else
+        vlSelectNoQueueGridRecords();
 }
 
 var handleRetrieveRecords = function() {

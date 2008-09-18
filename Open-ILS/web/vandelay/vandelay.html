@@ -19,7 +19,9 @@
             @import "/js/dojo/dijit/themes/tundra/tundra.css";
             @import "/js/dojo/dijit/tests/css/dijitTests.css"; 
             @import "/js/dojo/dojox/grid/_grid/Grid.css";
-            td { padding: 6px; }
+            .container:after {content: ""; display: block; height: 0; clear: both; }
+            .form_table td { padding: 6px; }
+            table { border-collapse: collapse; }
             .match_div {
                 height: 95%;
                 width: 95%;
@@ -33,6 +35,7 @@
                 font-weight:bold;
             }
             .tall { height:100%; }
+            .wide { width:100%; }
             .hidden { display: none; }
             #toolbar { margin-top: 0px; }
             body { width:100%; height:100%; border:0; margin:0; padding:0; }
@@ -47,7 +50,7 @@
                 border: 1px solid red; 
             }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='/js/dojo/openils/MarcXPathParser.js'></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
@@ -78,7 +81,7 @@
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
                 <br/>
-                <table>
+                <table class='form_table'>
                     <tr>
                         <td>Record Type</td>
                         <td colspan='4'>
@@ -136,20 +139,64 @@
                     vlQueueGridLayout = [{
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
-                            {name: 'Selected', get: vlQueueGridDrawSelectBox },
-                            {name: 'Import Time', field:'import_time', get:vlGetDateTimeField}
+                            {name: '<input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
+                                get: vlQueueGridDrawSelectBox },
+                            {name: 'Import Time', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
                         ]]
                     }];
                 }
             </script>
             <div id='vl-queue-div-grid' class='tall'>
-                <table width='100%'>
-                    <tr><td align='left'>
-                            <button dojoType='dijit.form.Button' onclick='vlSelectAllGridRecords();'>Select All</button>
-                            <button dojoType='dijit.form.Button' onclick='vlSelectNoGridRecords();'>Select None</button>
+                <!-- column picker dialog -->
+                <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
+                    <table class='form_table'>
+                        <thead>
+                            <tr><th width='33%'>Column</th><th width='33%'>Dislapy</th><th width='33%'>Auto Width</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan='3' align='center'>
+                                    <button jsId='vlQueueGridColumnPickerButton' 
+                                        onclick='vlQueueGridColumePickerDialog.hide();vlQueueGridColumePicker.update();' 
+                                        dojoType='dijit.form.Button'>Done</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- queue grid navigation row -->
+                <table width='100%' style='margin-bottom:0px;'>
+                    <tr>
+                        <td align='left'>
                             <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
                         </td>
-                        <td align='right'>
+                        <td align='middle'>
+                            <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
+                            <table><tr>
+                                <td class='filter_td'>
+                                    Only show records with possible matches
+                                    <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
+                                </td>
+                                <td class='filter_td' style='padding-left:5px;'>
+                                    Results Per Page 
+                                    <select style='width:50px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                        <option value='10'>10</option>
+                                        <option value='20'>20</option>
+                                        <option value='50'>50</option>
+                                        <option value='100'>100</option>
+                                    </select>
+                                </td>
+                                <td class='filter_td' style='padding-left:5px;'>
+                                    Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                                </td style='padding-left:5px;'>
+                                <td style='padding-left:5px;'>
+                                    <button dojoType='dijit.form.Button' 
+                                        onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
+                                </td>
+                            </tr></table>
+                        </td>
+                        <td align='right' valign='bottom'>
                             <span style='padding-right:4px;'>
                                 <a href='javascript:void(0);' onclick='
                                     var page = parseInt(vlQueueDisplayPage.getValue());
@@ -157,19 +204,19 @@
                                     vlQueueDisplayPage.setValue(page - 1);
                                     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>&#171; Previous Page</a>
                             </span>
-                            <span style='padding-right:4px;'>
+                            <span style='padding-right:10px;'>
                                 <a href='javascript:void(0);' onclick='
                                     vlQueueDisplayPage.setValue(parseInt(vlQueueDisplayPage.getValue())+1);
                                     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>Next Page &#187;</a>
                             </span>
-                            Only show possible matches
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
-                            Page Size <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayLimit' value='10'/>
-                            Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
-                                <button dojoType='dijit.form.Button' 
-                                onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
-                    </td></tr>
+                            <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
+                                <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>Select Columns</a>
+                            </span>
+                        </td>
+                    </tr>
                 </table>
+
+                <!-- Queue Grid -->
                 <div class='tall'>
                     <div dojoType='dojox.Grid' jsId='vlQueueGrid' class='tall'> </div>
                 </div>
@@ -235,7 +282,7 @@
         <!-- Form for choosing which queue to view -->
         <div id='vl-queue-select-div' class='tall hidden'>
             <h1>Select a Queue to Inspect</h1><br/>
-            <table>
+            <table class='form_table'>
                 <tr>
                     <td>Queue Type</td>
                     <td>
