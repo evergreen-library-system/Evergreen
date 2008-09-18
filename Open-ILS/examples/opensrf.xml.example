@@ -818,7 +818,7 @@ vim:et:ts=4:sw=4:
             Should match the fully qualified domain name of the host.
 
             On Linux, the output of the following command is authoritative:
-            $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn();'
+            $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn() . "\n";'
 
             To use 'localhost' instead, run osrf_ctl.sh with the -l flag
             -->
