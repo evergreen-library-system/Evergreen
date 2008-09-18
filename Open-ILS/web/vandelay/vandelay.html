@@ -103,6 +103,7 @@
                             </select>
                         </td>
                     </tr>
+                    <!--
                     <tr>
                         <td>Purpose</td>
                         <td colspan='4'>
@@ -110,6 +111,13 @@
                                 <option value='import'>Import</option>
                                 <option value='overlay'>Overlay</option>
                             </select>
+                        </td>
+                    </tr>
+                    -->
+                    <tr>
+                        <td>Auto-Import Non-Colliding Records</td>
+                        <td colspan='4'>
+                            <input jsId='vlUploadQueueAutoImport' checked='checked' dojoType='dijit.form.CheckBox'/>
                         </td>
                     </tr>
                     <tr>
@@ -170,17 +178,22 @@
                     <tr>
                         <td align='left'>
                             <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
+                            <button dojoType='dijit.form.Button' onclick='
+                                if(confirm("Are you sure want to delete this queue?")) {
+                                    vlDeleteQueue(currentType, currentQueueId, 
+                                        function() { displayGlobalDiv("vl-marc-upload-div"); });
+                                }'>Delete Queue</button>
                         </td>
                         <td align='middle'>
                             <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
                             <table><tr>
                                 <td class='filter_td'>
-                                    Only show records with possible matches
+                                    Limit to Collision Matches
                                     <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
                                 </td>
                                 <td class='filter_td' style='padding-left:5px;'>
                                     Results Per Page 
-                                    <select style='width:50px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                    <select style='width:56px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
                                         <option value='10'>10</option>
                                         <option value='20'>20</option>
                                         <option value='50'>50</option>

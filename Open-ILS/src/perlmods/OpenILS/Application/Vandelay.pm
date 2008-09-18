@@ -398,6 +398,37 @@ sub import_record_list {
     return {complete => 1};
 }
 
+=head note done
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.import",
+	method		=> 'import_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.import",
+	method		=> 'import_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub import_record_list {
+    my($self, $conn, $auth, $rec_ids, $args) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    $args ||= {};
+    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids, $args);
+    return $err if $err;
+    $e->commit;
+    return {complete => 1};
+}
+=cut
+
 sub import_record_list_impl {
     my($self, $conn, $auth, $e, $rec_ids, $args) = @_;
 
@@ -537,6 +568,40 @@ sub owner_queue_retrieve {
     return undef;
 }
 
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.delete",
+	method		=> "delete_queue",
+	api_level	=> 1,
+	argc		=> 2,
+	record_type	=> 'bib'
+);            
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.delete",
+	method		=> "delete_queue",
+	api_level	=> 1,
+	argc		=> 2,
+	record_type	=> 'auth'
+);  
 
+sub delete_queue {
+    my($self, $conn, $auth, $q_id) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    if($self->{record_type} eq 'bib') {
+	    return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
+        my $queue = $e->retrieve_vandelay_bib_queue($q_id)
+            or return $e->die_event;
+        $e->delete_vandelay_bib_queue($queue)
+            or return $e->die_event;
+    } else {
+   	    return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
+        my $queue = $e->retrieve_vandelay_authority_queue($q_id)
+            or return $e->die_event;
+        $e->delete_vandelay_authority_queue($queue)
+            or return $e->die_event;
+    }
+    $e->commit;
+    return 1;
+}
 
 1;

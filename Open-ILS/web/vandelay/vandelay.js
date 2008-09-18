@@ -514,6 +514,21 @@ function buildRecordGrid(type) {
     }
 }
 
+function vlDeleteQueue(type, queueId, onload) {
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.delete'],
+        {   async: true,
+            params: [authtoken, queueId],
+            oncomplete: function(r) {
+                var resp = r.recv().content();
+                if(e = openils.Event.parse(resp))
+                    return alert(e);
+                onload();
+            }
+        }
+    );
+}
+
 
 function vlQueueGridDrawSelectBox(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
