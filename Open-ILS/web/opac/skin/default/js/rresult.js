@@ -188,7 +188,7 @@ function rresultCollectTCNIds() {
 }
 
 function rresultCollectISSNIds() {
-    var req = new Request(FETCH_ADV_ISSN_RIDS, (getAdvTerm()+'').replace(/-/g,' '));
+	var req = new Request(FETCH_ADV_ISSN_RIDS, getAdvTerm() );
 	req.callback(
 		function(r) {
 			var blob = r.getResultObject();

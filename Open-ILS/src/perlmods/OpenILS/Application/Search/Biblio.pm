@@ -1390,6 +1390,7 @@ sub biblio_search_issn {
 	my( $self, $client, $issn ) = @_;
 	$logger->debug("Searching ISSN $issn");
 	my $e = new_editor();
+	$issn =~ s/-/ /g;
 	my $recs = $U->storagereq(
 		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
 	return { ids => $recs, count => scalar(@$recs) };
