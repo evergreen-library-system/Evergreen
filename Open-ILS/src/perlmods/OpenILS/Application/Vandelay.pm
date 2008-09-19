@@ -18,6 +18,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::BibCommon;
+use OpenILS::Application::Cat::AuthCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub initialize {}
@@ -515,6 +516,9 @@ sub import_record_list_impl {
     my %queues;
 
     for my $rec_id (@$rec_ids) {
+
+        my $overlay_target = $overlay_map->{$rec_id};
+
         if($type eq 'bib') {
 
             my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) 
@@ -524,10 +528,10 @@ sub import_record_list_impl {
             $queues{$rec->queue} = 1;
 
             my $record;
-            if(defined $overlay_map->{$rec_id}) {
-                $logger->info("vl: overlaying record $rec_id");
+            if(defined $overlay_target) {
+                $logger->info("vl: overlaying record $overlay_target");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-                    $e, $rec_id, $rec->marc); #$rec->bib_source
+                    $e, $overlay_target, $rec->marc); #$rec->bib_source
             } else {
                 $logger->info("vl: importing new record");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
@@ -548,25 +552,17 @@ sub import_record_list_impl {
             $queues{$rec->queue} = 1;
 
             my $record;
-            if(defined $overlay_map->{$rec_id}) {
-                $logger->info("vl: overlaying record $rec_id");
-                $record = $U->simplereq(
-                    'open-ils.cat',
-                    'open-ils.cat.authority.record.overlay',
-                    $auth, $overlay_map->{$rec_id}, $rec->marc); #$rec->bib_source);
+            if(defined $overlay_target) {
+                $logger->info("vl: overlaying record $overlay_target");
+                $record = OpenILS::Utils::Cat::AuthCommon->overlay_authority_record(
+                    $overlay_target, $rec->marc); #$source);
             } else {
                 $logger->info("vl: importing new record");
-                $record = $U->simplereq(
-                    'open-ils.cat',
-                    'open-ils.cat.authority.record.import',
-                    $auth, $rec->marc); #$rec->bib_source);
+                $record = OpenILS::Utils::Cat::AuthCommon->import_authority_record(
+                    $rec->marc) #$source);
             }
 
-            if($U->event_code($record)) {
-                $e->rollback;
-                return $record;
-            }
-
+            return $record if $U->event_code($record);
             $rec->imported_as($record->id);
             $rec->import_time('now');
             $e->update_vandelay_queued_authority_record($rec) or return $e->die_event;
