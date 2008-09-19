@@ -2,28 +2,22 @@ package OpenILS::Application::Vandelay;
 use strict; use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
-
 use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;
-
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
-
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
-
 use MARC::Batch;
 use MARC::Record;
 use MARC::File::XML;
-
 use OpenILS::Utils::Fieldmapper;
-
 use Time::HiRes qw(time);
-
 use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Cat::BibCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub initialize {}
@@ -532,23 +526,15 @@ sub import_record_list_impl {
             my $record;
             if(defined $overlay_map->{$rec_id}) {
                 $logger->info("vl: overlaying record $rec_id");
-                $record = $U->simplereq(
-                    'open-ils.cat',
-                    'open-ils.cat.biblio.record.xml.update',
-                    $auth, $overlay_map->{$rec_id}, $rec->marc); #$rec->bib_source);
+                $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
+                    $e, $rec_id, $rec->marc); #$rec->bib_source
             } else {
                 $logger->info("vl: importing new record");
-                $record = $U->simplereq(
-                    'open-ils.cat',
-                    'open-ils.cat.biblio.record.xml.import',
-                    $auth, $rec->marc); #$rec->bib_source);
+                $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+                    $e, $rec->marc); #$rec->bib_source
             }
 
-            if($U->event_code($record)) {
-                $e->rollback;
-                return $record;
-            }
-
+            return $record if $U->event_code($record);
             $rec->imported_as($record->id);
             $rec->import_time('now');
             $e->update_vandelay_queued_bib_record($rec) or return $e->die_event;
