@@ -587,6 +587,29 @@ function vlImportSelectedRecords() {
     );
 }
 
+function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
+    displayGlobalDiv('vl-generic-progress-with-total');
+    var method = 'open-ils.vandelay.bib_queue.import';
+    if(noMatchOnly)
+        method = method.replace('import', 'nomatch.import');
+    if(type == 'auth')
+        method = method.replace('bib', 'auth');
+
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', method],
+        {   async: true,
+            params: [authtoken, queueId],
+            onresponse: function(r) {
+                var resp = r.recv().content();
+                if(e = openils.Event.parse(resp))
+                    return alert(e);
+                vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
+            },
+            oncomplete: function() {onload();}
+        }
+    );
+}
+
 
 /**
   * Create queue, upload MARC, process spool, load the newly created queue 
@@ -597,7 +620,15 @@ function batchUpload() {
 
     var handleProcessSpool = function() {
         console.log('records uploaded and spooled');
-        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        if(vlUploadQueueAutoImport.checked) {
+            vlImportRecordQueue(currentType, currentQueueId, true,  
+                function() {
+                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+                }
+            );
+        } else {
+            retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        }
     }
 
     var handleUploadMARC = function(key) {
