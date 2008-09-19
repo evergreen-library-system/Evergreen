@@ -178,6 +178,7 @@ function runStartupCommands() {
   * asynchronously upload a file of MARC records
   */
 function uploadMARC(onload){
+    dojo.byId('vl-upload-status-count').innerHTML = '0';
     dojo.byId('vl-ses-input').value = authtoken;
     displayGlobalDiv('vl-marc-upload-status-div');
     dojo.io.iframe.send({
@@ -215,7 +216,6 @@ function createQueue(queueName, type, onload) {
   * out into the vandelay tables
   */
 function processSpool(key, queueId, type, onload) {
-    dojo.byId('vl-upload-status-count').innerHTML = '0';
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'.process_spool'],
         {   async: true,
@@ -465,12 +465,13 @@ function vlHandleOverlayTargetSelected() {
     }
 }
 
+var vlQueueGridBuilt = false;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
     currentOverlayRecordsMap = {};
 
-    if(!vlQueueGrid.structure) {
+    if(!vlQueueGridBuilt) {
         var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
         for(var i = 0; i < defs.length; i++) {
             var def = defs[i]
@@ -483,6 +484,7 @@ function buildRecordGrid(type) {
             };
             vlQueueGridLayout[0].cells[0].push(col);
         }
+        vlQueueGridBuilt = true;
     }
 
     var storeData;
