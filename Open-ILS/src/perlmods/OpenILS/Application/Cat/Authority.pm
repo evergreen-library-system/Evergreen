@@ -2,6 +2,7 @@ package OpenILS::Application::Cat::Authority;
 use strict; use warnings;
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Cat::AuthCommon;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -31,23 +32,9 @@ sub import_authority_record {
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD');
-    
-    my $marc_doc = marc_xml_to_doc($marc_xml);
-    my $rec = Fieldmapper::authority::record_entry->new;
-	$rec->creator($e->requestor->id);
-	$rec->editor($e->requestor->id);
-	$rec->create_date('now');
-	$rec->edit_date('now');
-	$rec->marc($U->entityize($marc_doc->documentElement->toString));
-
-    $rec = $e->create_authority_record_entry($rec) or return $e->die_event;
-    $e->commit;
-
-    $conn->respond_complete($rec);
-
-    # XXX non-readonly ingest?
-	#$U->simplereq('open-ils.ingest', 'open-ils.ingest.full.authority.record', $rec->id);
-	return undef;
+    my $rec = OpenILS::Utils::Cat::AuthCommon->import_authority_record($marc_xml, $source);
+    $e->commit unless $U->event_code($rec);
+    return $rec;
 }
 
 
@@ -61,21 +48,10 @@ sub overlay_authority_record {
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('UPDATE_AUTHORITY_RECORD');
-    
-    my $marc_doc = marc_xml_to_doc($marc_xml);
-    my $rec = $e->retrieve_authority_record_entry($rec_id) or return $e->die_event;
-	$rec->editor($e->requestor->id);
-	$rec->edit_date('now');
-	$rec->marc($U->entityize($marc_doc->documentElement->toString));
+    my $rec = OpenILS::Utils::Cat::AuthCommon->overlay_authority_record($rec_id, $marc_xml, $source);
+    $e->commit unless $U->event_code($rec);
+    return $rec;
 
-    $rec = $e->update_authority_record_entry($rec) or return $e->die_event;
-    $e->commit;
-
-    $conn->respond_complete($rec);
-
-    # XXX non-readonly ingest?
-	#$U->simplereq('open-ils.ingest', 'open-ils.ingest.full.authority.record', $rec->id);
-	return undef;
 }
 
 __PACKAGE__->register_method(
