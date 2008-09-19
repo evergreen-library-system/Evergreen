@@ -2,7 +2,7 @@ package OpenILS::Application::Cat::Authority;
 use strict; use warnings;
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
-use OpenILS::Utils::Cat::AuthCommon;
+use OpenILS::Application::Cat::AuthCommon;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
