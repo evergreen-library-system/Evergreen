@@ -334,12 +334,20 @@ sub retrieve_queue {
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
 
-    my $record_ids = $e->$search([
-            {queue => $queue_id}, 
-            {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
-        ],
-        {idlist => 1}
-    );
+    my $record_ids;
+    if($self->api_name =~ /matches/) {
+        # fetch only matched records
+        $record_ids = queued_records_with_matches($e, $type, $queue_id, $limit, $offset);
+    } else {
+        # fetch all queue records
+        $record_ids = $e->$search([
+                {queue => $queue_id}, 
+                {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
+            ],
+            {idlist => 1}
+        );
+    }
+
 
     for my $rec_id (@$record_ids) {
         my $params = {   
@@ -348,7 +356,6 @@ sub retrieve_queue {
         };
         my $rec = $e->$retrieve([$rec_id, $params]);
         $rec->clear_marc if $$options{clear_marc};
-        next if $self->api_name =~ /matches/ and not @{$rec->matches};
         $conn->respond($rec);
     }
     return undef;
@@ -398,7 +405,7 @@ sub import_record_list {
     return {complete => 1};
 }
 
-=head note done
+
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_queue.import",
 	method		=> 'import_queue',
@@ -416,18 +423,93 @@ __PACKAGE__->register_method(
     stream      => 1,
 	record_type	=> 'auth'
 );
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.nomatch.import",
+	method		=> 'import_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+    signature   => {
+        desc => q/Only import records that have no collisions/
+    },
+	record_type	=> 'bib'
+);
 
-sub import_record_list {
-    my($self, $conn, $auth, $rec_ids, $args) = @_;
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.nomatch.import",
+	method		=> 'import_queue',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+    signature   => {
+        desc => q/Only import records that have no collisions/
+    },
+	record_type	=> 'auth'
+);
+sub import_queue {
+    my($self, $conn, $auth, $q_id, $options) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
-    $args ||= {};
-    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids, $args);
+    $options ||= {};
+    my $type = $self->{record_type};
+    my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
+
+    my $query = {queue => $q_id, import_time => undef};
+
+    if($self->api_name =~ /nomatch/) {
+        my $matched_recs = queued_records_with_matches($e, $type, $q_id, undef, undef, {import_time => undef});
+        $query->{id} = {'not in' => $matched_recs} if @$matched_recs;
+    }
+
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
+    my $rec_ids = $e->$search($query, {idlist => 1});
+    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids, $options);
     return $err if $err;
     $e->commit;
     return {complete => 1};
 }
-=cut
+
+
+# returns a list of queued record IDs for a given queue that 
+# have at least one entry in the match table
+sub queued_records_with_matches {
+    my($e, $type, $q_id, $limit, $offset, $filter) = @_;
+
+    my $match_class = 'vbm';
+    my $rec_class = 'vqbr';
+    if($type eq 'auth') {
+        $match_class = 'vam';
+         $rec_class = 'vqar';
+    }
+
+    $filter ||= {};
+    $filter->{queue} = $q_id;
+
+    my $query = {
+        distinct => 1, 
+        select => {$match_class => ['queued_record']}, 
+        from => {
+            $match_class => {
+                $rec_class => {
+                    field => 'id',
+                    fkey => 'queued_record',
+                    filter => $filter,
+                }
+            }
+        }
+    };        
+
+    if($limit or defined $offset) {
+        $limit ||= 20;
+        $offset ||= 0;
+        $query->{limit} = $limit;
+        $query->{offset} = $offset;
+    }
+
+    my $data = $e->json_query($query);
+    return [ map {$_->{queued_record}} @$data ];
+}
 
 sub import_record_list_impl {
     my($self, $conn, $auth, $e, $rec_ids, $args) = @_;
@@ -444,6 +526,7 @@ sub import_record_list_impl {
             my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) 
                 or return $e->die_event;
 
+            next if $rec->import_time;
             $queues{$rec->queue} = 1;
 
             my $record;
@@ -475,6 +558,7 @@ sub import_record_list_impl {
             my $rec = $e->retrieve_vandelay_queued_authority_record($rec_id) 
                 or return $e->die_event;
 
+            next if $rec->import_time;
             $queues{$rec->queue} = 1;
 
             my $record;
