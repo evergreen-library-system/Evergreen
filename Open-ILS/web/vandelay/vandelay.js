@@ -215,16 +215,18 @@ function createQueue(queueName, type, onload) {
   * out into the vandelay tables
   */
 function processSpool(key, queueId, type, onload) {
+    dojo.byId('vl-upload-status-count').innerHTML = '0';
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'.process_spool'],
         {   async: true,
             params: [authtoken, key, queueId],
-            oncomplete : function(r) {
+            onresponse : function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp)) 
                     return alert(e);
-                onload();
-            }
+                dojo.byId('vl-upload-status-count').innerHTML = resp;
+            },
+            oncomplete : function(r) {onload();}
         }
     );
 }
@@ -468,27 +470,19 @@ function buildRecordGrid(type) {
 
     currentOverlayRecordsMap = {};
 
-    if(queuedRecords.length == 0 && vlQueueDisplayPage.getValue() == 1) {
-        dojo.style(dojo.byId('vl-queue-no-records'), 'display', 'block');
-        dojo.style(dojo.byId('vl-queue-div-grid'), 'display', 'none');
-        return;
-    } else {
-        dojo.style(dojo.byId('vl-queue-no-records'), 'display', 'none');
-        dojo.style(dojo.byId('vl-queue-div-grid'), 'display', 'block');
-    }
-
-    var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
-    for(var i = 0; i < defs.length; i++) {
-        var def = defs[i]
-        attrDefMap[def.code()] = def.id();
-        var col = {
-            name:def.description(), 
-            field:'attr.' + def.code(),
-            get: getAttrValue,
-            selectableColumn:true
-        };
-        //if(def.code().match(/title/i)) col.width = 'auto'; // this is hack.
-        vlQueueGridLayout[0].cells[0].push(col);
+    if(!vlQueueGrid.structure) {
+        var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
+        for(var i = 0; i < defs.length; i++) {
+            var def = defs[i]
+            attrDefMap[def.code()] = def.id();
+            var col = {
+                name:def.description(), 
+                field:'attr.' + def.code(),
+                get: getAttrValue,
+                selectableColumn:true
+            };
+            vlQueueGridLayout[0].cells[0].push(col);
+        }
     }
 
     var storeData;

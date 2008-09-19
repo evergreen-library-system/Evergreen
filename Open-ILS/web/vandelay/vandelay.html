@@ -1,5 +1,4 @@
-<!--
-# Copyright (C) 2008  Georgia Public Library Service
+<!-- # Copyright (C) 2008  Georgia Public Library Service
 # Bill Erickson <erickson@esilibrary.com>
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -50,7 +49,7 @@
                 border: 1px solid red; 
             }
         </style>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='/js/dojo/openils/MarcXPathParser.js'></script>
         <script type="text/javascript" src='vandelay.js'></script>
     </head>
@@ -72,7 +71,9 @@
         <div id='vl-marc-upload-status-div' class='hidden'>
             <h1>Upload Status</h1><br/>
             <div id='vl-upload-status-uploading'><h3>Uploading...</h3></div>
-            <div id='vl-upload-status-processing' class='hidden'><h3>Processing...</h3></div>
+            <div id='vl-upload-status-processing' class='hidden'>
+                <h3>Processing... <span id='vl-upload-status-count'/></h3>
+            </div>
         </div>
 
         <!-- MARC upload form -->
@@ -103,21 +104,10 @@
                             </select>
                         </td>
                     </tr>
-                    <!--
-                    <tr>
-                        <td>Purpose</td>
-                        <td colspan='4'>
-                            <select name='purpose' dojoType='dijit.form.FilteringSelect'>
-                                <option value='import'>Import</option>
-                                <option value='overlay'>Overlay</option>
-                            </select>
-                        </td>
-                    </tr>
-                    -->
                     <tr>
                         <td>Auto-Import Non-Colliding Records</td>
                         <td colspan='4'>
-                            <input jsId='vlUploadQueueAutoImport' checked='checked' dojoType='dijit.form.CheckBox'/>
+                            <input jsId='vlUploadQueueAutoImport' dojoType='dijit.form.CheckBox'/>
                         </td>
                     </tr>
                     <tr>
@@ -140,7 +130,6 @@
         <!-- record queue grid -->
         <div id='vl-queue-div' class='tall hidden'>
             <h1>Record Queue</h1><br/>
-            <div id='vl-queue-no-records' class='hidden'><h2>There are no records in the selected queue</h2></div>
             <script>
                 var vlQueueGridLayout;
                 function resetVlQueueGridLayout() {
@@ -193,7 +182,7 @@
                                 </td>
                                 <td class='filter_td' style='padding-left:5px;'>
                                     Results Per Page 
-                                    <select style='width:56px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                    <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
                                         <option value='10'>10</option>
                                         <option value='20'>20</option>
                                         <option value='50'>50</option>
