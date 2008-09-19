@@ -1,5 +1,9 @@
 The following table lists the data sets we have collected for testing purposes.
 
-^ File name    ^ Format    ^ Encoding ^ Source system ^ Description            ^
-| FSL.marc     | MARC21    | UTF8     | Aleph         | Armenian and Cyrillic scripts, collected from the Fundamental Science Library in Yerevan, Armenia |
-| oss.marc     | MARC21    | MARC8    | Unicorn GL3.1 |   |
+^ File name         ^ Format    ^ Encoding ^ Source system ^ Description            ^
+| FSL.marc          | MARC21    | UTF8     | Aleph         | Armenian and Cyrillic scripts, collected from the Fundamental Science Library in Yerevan, Armenia |
+| oss.marc          | MARC21    | MARC8    | Unicorn GL3.1 |   |
+| lul_fre_100.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 100 records, French, pre-1923  |
+| lul_fre_500.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 500 records, French, pre-1923  |
+| jazz_1k.marc      | MARC21    | MARC8    | Unicorn GL3.1 | 1000 records  |
+| music_5k.marc     | MARC21    | MARC8    | Unicorn GL3.1 | 5000 records  |
