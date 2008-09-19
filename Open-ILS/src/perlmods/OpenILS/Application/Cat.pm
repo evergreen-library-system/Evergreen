@@ -4,6 +4,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application;
 use OpenILS::Application::Cat::Merge;
 use OpenILS::Application::Cat::Authority;
+use OpenILS::Application::Cat::BibCommon;
 use base qw/OpenILS::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
@@ -170,55 +171,17 @@ __PACKAGE__->register_method(
 
 sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
-
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
-	my $rec = $e->retrieve_biblio_record_entry($recid)
-		or return $e->die_event;
+    my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
+        $e, $recid, $newxml, $source, 
+        $self->api_name =~ /replace/o,
+        $self->api_name =~ /override/o);
 
-	my $fixtcn = 1 if $self->api_name =~ /replace/o;
-
-	# See if there is a different record in the database that has our TCN value
-	# If we're not updating the TCN, all we care about it the marcdoc
-	my $override = $self->api_name =~ /override/;
-
-   # XXX should .update even bother with the tcn_info if it's not going to replace it?
-   # there is the potential for returning a TCN_EXISTS event, even though no replacement happens
-
-	my( $tcn, $tsource, $marcdoc, $evt);
-
-    if($fixtcn or $override) {
-
-	    ($tcn, $tsource, $marcdoc, $evt) = 
-		    _find_tcn_info($e, $newxml, $override, $recid);
-
-	    return $evt if $evt;
-
-		$rec->tcn_value($tcn) if ($tcn);
-		$rec->tcn_source($tsource);
-
-    } else {
-
-        $marcdoc = __make_marc_doc($newxml);
-    }
-
-
-	$rec->source(bib_source_from_name($source)) if $source;
-	$rec->editor($e->requestor->id);
-	$rec->edit_date('now');
-	$rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
-	$e->update_biblio_record_entry($rec) or return $e->die_event;
-	$e->commit;
-
-	$conn->respond_complete($rec);
-
-	$U->simplereq(
-		'open-ils.ingest',
-		'open-ils.ingest.full.biblio.record', $recid );
-
-	return undef;
+    $e->commit unless $U->event_code($res);
+    return $res;
 }
 
 __PACKAGE__->register_method(
@@ -297,229 +260,16 @@ __PACKAGE__->register_method(
 
 sub biblio_record_xml_import {
 	my( $self, $client, $authtoken, $xml, $source, $auto_tcn) = @_;
-
-	my $override = 1 if $self->api_name =~ /override/;
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('IMPORT_MARC', $e->requestor->ws_ou);
 
-	my( $evt, $tcn, $tcn_source, $marcdoc );
+    my $res = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+        $e, $xml, $source, $auto_tcn, $self->api_name =~ /override/);
 
-	if( $auto_tcn ) {
-		# auto_tcn forces a blank TCN value so the DB will have to generate one for us
-		$marcdoc = __make_marc_doc($xml);
-	} else {
-		( $tcn, $tcn_source, $marcdoc, $evt ) = _find_tcn_info($e, $xml, $override);
-		return $evt if $evt;
-	}
-
-	$logger->info("user ".$e->requestor->id.
-		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
-
-	my $record = Fieldmapper::biblio::record_entry->new;
-
-	$record->source(bib_source_from_name($source)) if $source;
-	$record->tcn_source($tcn_source);
-	$record->tcn_value($tcn) if ($tcn);
-	$record->creator($e->requestor->id);
-	$record->editor($e->requestor->id);
-	$record->create_date('now');
-	$record->edit_date('now');
-	$record->marc( $U->entityize( $marcdoc->documentElement->toString ) );
-
-    $record = $e->create_biblio_record_entry($record) or return $e->die_event;
-	$logger->info("marc create/import created new record ".$record->id);
-
-    $e->commit;
-
-	$logger->debug("Sending record off to be ingested and indexed");
-
-	$client->respond_complete($record);
-
-	$U->simplereq(
-		'open-ils.ingest',
-		'open-ils.ingest.full.biblio.record', $record->id );
-
-	return undef;
+    $e->commit unless $U->event_code($res);
+    return $res;
 }
-
-sub __make_marc_doc {
-	my $xml = shift;
-	my $marcxml = XML::LibXML->new->parse_string( $xml );
-	$marcxml->documentElement->setNamespace( 
-		"http://www.loc.gov/MARC21/slim", "marc", 1 );
-	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim");
-	return $marcxml;
-}
-
-
-sub _find_tcn_info { 
-	my $editor		= shift;
-	my $xml			= shift;
-	my $override	= shift;
-	my $existing_rec	= shift || 0;
-
-	# parse the XML
-	my $marcxml = __make_marc_doc($xml);
-
-	my $xpath = '//marc:controlfield[@tag="001"]';
-	my $tcn = $marcxml->documentElement->findvalue($xpath);
-	$logger->info("biblio import located 001 (tcn) value of $tcn");
-
-	$xpath = '//marc:controlfield[@tag="003"]';
-	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
-
-	if(my $rec = _tcn_exists($editor, $tcn, $tcn_source, $existing_rec) ) {
-
-		my $origtcn = $tcn;
-		$tcn = find_free_tcn( $marcxml, $editor, $existing_rec );
-
-		# if we're overriding, try to find a different TCN to use
-		if( $override ) {
-
-         # XXX Create ALLOW_ALT_TCN permission check support 
-
-			$logger->info("tcn value $tcn already exists, attempting to override");
-
-			if(!$tcn) {
-				return ( 
-					undef, 
-					undef, 
-					undef,
-					OpenILS::Event->new(
-						'OPEN_TCN_NOT_FOUND', 
-							payload => $marcxml->toString())
-					);
-			}
-
-		} else {
-
-			$logger->warn("tcn value $origtcn already exists in import/create");
-
-			# otherwise, return event
-			return ( 
-				undef, 
-				undef, 
-				undef,
-				OpenILS::Event->new( 
-					'TCN_EXISTS', payload => { 
-						dup_record	=> $rec, 
-						tcn			=> $origtcn,
-						new_tcn		=> $tcn
-						}
-					)
-				);
-		}
-	}
-
-	return ($tcn, $tcn_source, $marcxml);
-}
-
-sub find_free_tcn {
-
-	my $marcxml = shift;
-	my $editor = shift;
-	my $existing_rec = shift;
-
-	my $add_039 = 0;
-
-	my $xpath = '//marc:datafield[@tag="039"]/subfield[@code="a"]';
-	my ($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-	$xpath = '//marc:datafield[@tag="039"]/subfield[@code="b"]';
-	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
-
-	if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {
-		$tcn = undef;
-	} else {
-		$add_039++;
-	}
-
-
-	if(!$tcn) {
-		$xpath = '//marc:datafield[@tag="020"]/subfield[@code="a"]';
-		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-		$tcn_source = "ISBN";
-		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
-	}
-
-	if(!$tcn) { 
-		$xpath = '//marc:datafield[@tag="022"]/subfield[@code="a"]';
-		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-		$tcn_source = "ISSN";
-		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
-	}
-
-	if(!$tcn) {
-		$xpath = '//marc:datafield[@tag="010"]';
-		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-		$tcn_source = "LCCN";
-		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
-	}
-
-	if(!$tcn) {
-		$xpath = '//marc:datafield[@tag="035"]/subfield[@code="a"]';
-		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-		$tcn_source = "System Legacy";
-		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
-
-		if($tcn) {
-			$marcxml->documentElement->removeChild(
-				$marcxml->documentElement->findnodes( '//datafield[@tag="035"]' )
-			);
-		}
-	}
-
-	return undef unless $tcn;
-
-	if ($add_039) {
-		my $df = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'datafield');
-		$df->setAttribute( tag => '039' );
-		$df->setAttribute( ind1 => ' ' );
-		$df->setAttribute( ind2 => ' ' );
-		$marcxml->documentElement->appendChild( $df );
-
-		my $sfa = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
-		$sfa->setAttribute( code => 'a' );
-		$sfa->appendChild( $marcxml->createTextNode( $tcn ) );
-		$df->appendChild( $sfa );
-
-		my $sfb = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
-		$sfb->setAttribute( code => 'b' );
-		$sfb->appendChild( $marcxml->createTextNode( $tcn_source ) );
-		$df->appendChild( $sfb );
-	}
-
-	return $tcn;
-}
-
-
-
-sub _tcn_exists {
-	my $editor = shift;
-	my $tcn = shift;
-	my $source = shift;
-	my $existing_rec = shift || 0;
-
-	if(!$tcn) {return 0;}
-
-	$logger->debug("tcn_exists search for tcn $tcn and source $source and id $existing_rec");
-
-	# XXX why does the source matter?
-#	my $req = $session->request(      
-#		{ tcn_value => $tcn, tcn_source => $source, deleted => 'f' } );
-
-    my $recs = $editor->search_biblio_record_entry(
-        {tcn_value => $tcn, deleted => 'f', id => {'!=' => $existing_rec}}, {idlist =>1});
-
-	if(@$recs) {
-		$logger->debug("_tcn_exists is true for tcn : $tcn ($source)");
-		return $recs->[0];
-	}
-
-	$logger->debug("_tcn_exists is false for tcn : $tcn ($source)");
-	return 0;
-}
-
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_record_metadata",
@@ -584,65 +334,6 @@ sub biblio_record_marc_cn {
 
 	return \@res
 }
-
-sub _get_id_by_userid {
-
-	my @users = @_;
-	my @ids;
-
-	my $session = OpenSRF::AppSession->create( "open-ils.cstore" );
-	my $request = $session->request( 
-		"open-ils.cstore.direct.actor.user.search.atomic", { usrname => \@users } );
-
-	$request->wait_complete;
-	my $response = $request->recv();
-	if(!$request->complete) { 
-		throw OpenSRF::EX::ERROR ("no response from cstore on user retrieve");
-	}
-
-	if(UNIVERSAL::isa( $response, "Error")){
-		throw $response ($response);
-	}
-
-	for my $u (@{$response->content}) {
-		next unless ref($u);
-		push @ids, $u->id();
-	}
-
-	$request->finish;
-	$session->disconnect;
-	$session->kill_me();
-
-	return @ids;
-}
-
-
-# commits metadata objects to the db
-sub _update_record_metadata {
-
-	my ($session, @docs ) = @_;
-
-	for my $doc (@docs) {
-
-		my $user_obj = $doc->{user};
-		my $docid = $doc->{docid};
-
-		my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.retrieve", $docid );
-		my $record = $request->gather(1);
-
-		my ($id) = _get_id_by_userid($user_obj->usrname);
-
-		$record->editor($id);
-		
-		$request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.update", $record );
-		$request->gather(1);
-	}
-
-	return 1;
-}
-
 
 
 __PACKAGE__->register_method(
