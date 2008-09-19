@@ -609,6 +609,12 @@
 	<event code='1710' textcode='CONTAINER_EXISTS'>
 		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
 	</event>
+	<event code='1711' textcode='BIB_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">A bib record queue with the same name already exists</desc>
+	</event>
+	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
