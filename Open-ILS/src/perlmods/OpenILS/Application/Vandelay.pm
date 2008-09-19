@@ -41,6 +41,10 @@ sub create_bib_queue {
 	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
+    return OpenILS::Event->new('BIB_QUEUE_EXISTS') 
+        if $e->search_vandelay_bib_queue(
+            {name => $name, owner => $owner, queue_type => $type})->[0];
+
 	my $queue = new Fieldmapper::vandelay::bib_queue();
 	$queue->name( $name );
 	$queue->owner( $owner );
@@ -73,6 +77,10 @@ sub create_auth_queue {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
+
+    return OpenILS::Event->new('AUTH_QUEUE_EXISTS') 
+        if $e->search_vandelay_bib_queue(
+            {name => $name, owner => $owner, queue_type => $type})->[0];
 
 	my $queue = new Fieldmapper::vandelay::authority_queue();
 	$queue->name( $name );
