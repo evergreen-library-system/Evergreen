@@ -5,6 +5,7 @@ use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
+use OpenSRF::AppSession;
 use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
 my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
