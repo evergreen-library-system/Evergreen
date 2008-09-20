@@ -1293,7 +1293,7 @@ sub check_user_perms3 {
 	my $e = new_editor(authtoken=>$authtoken);
 	return $e->event unless $e->checkauth;
 
-	my $tree = $self->get_org_tree();
+	my $tree = $U->get_org_tree();
 
     unless($e->requestor->id == $user_id) {
         my $user = $e->retrieve_actor_user($user_id)
