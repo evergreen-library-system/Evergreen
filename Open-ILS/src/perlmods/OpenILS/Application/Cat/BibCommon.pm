@@ -15,6 +15,25 @@ my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 # Shared bib mangling code.  Do not publish methods from here.
 # ---------------------------------------------------------------------------
 
+my $__bib_sources;
+sub bib_source_from_name {
+	my $name = shift;
+	$logger->debug("searching for bib source: $name");
+
+	fetch_bib_sources();
+
+	my ($s) = grep { lc($_->source) eq lc($name) } @$__bib_sources;
+
+	return $s->id if $s;
+	return undef;
+}
+
+sub fetch_bib_sources {
+	$__bib_sources = new_editor()->retrieve_all_config_bib_source()
+		unless $__bib_sources;
+	return $__bib_sources;
+}
+
 
 sub biblio_record_replace_marc  {
 	my($class, $e, $recid, $newxml, $source, $fixtcn, $override) = @_;
@@ -271,4 +290,4 @@ sub _tcn_exists {
 	return 0;
 }
 
-
+1;
