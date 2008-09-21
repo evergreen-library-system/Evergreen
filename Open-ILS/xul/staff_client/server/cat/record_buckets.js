@@ -25,6 +25,10 @@ cat.record_buckets = function (params) {
             false
         );
         x.selectedIndex = 2;
+        for (var i = 0; i < x.lastChild.childNodes.length; i++) {
+            var p = x.lastChild.childNodes[i].firstChild;
+            p.hidden = x.selectedIndex != i;
+        }
     }
 };
 
