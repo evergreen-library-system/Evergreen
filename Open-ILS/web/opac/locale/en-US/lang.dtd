@@ -1947,6 +1947,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.query_help.button.label "Help">
 <!ENTITY staff.cat.record_buckets_overlay.query_help.button.accesskey "H">
 <!ENTITY staff.cat.record_buckets_overlay.query_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.query_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip0.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label "Copy List CSV to Clipboard">
@@ -1955,6 +1956,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.add_all_query_to_pending.label "Add All to Pending Records">
 <!ENTITY staff.cat.record_buckets_overlay.add_sel_query_to_pending.label "Add Selected to Pending Records">
 <!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip1.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
@@ -1968,6 +1970,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.info_box.label "Bucket #">
 <!ENTITY staff.cat.record_buckets_overlay.bucket_owner.label "Owner:">
 <!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip2.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">

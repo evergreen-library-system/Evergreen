@@ -11,7 +11,21 @@ cat.record_buckets = function (params) {
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	this.first_pause = true;
     var x = document.getElementById("record_buckets_tabbox");
-    if (x) x.selectedIndex = 2;
+    if (x) {
+        x.addEventListener(
+            'select',
+            function(ev) {
+                if (ev.target.tagName == 'tabpanels') {
+                    for (var i = 0; i < ev.target.childNodes.length; i++) {
+                        var p = ev.target.childNodes[i].firstChild;
+                        p.hidden = x.selectedIndex != i;
+                    }
+                }
+            },
+            false
+        );
+        x.selectedIndex = 2;
+    }
 };
 
 cat.record_buckets.pick_file = function (defaultFileName) {

@@ -85,7 +85,10 @@
 </hbox>
 
 <hbox id="record_query_bottom_ui">
-	<button id="record_query_list_actions" label="&staff.cat.record_buckets_overlay.query_list_actions.label;" type="menu" allowevents="true">
+	<button id="record_query_list_actions" 
+        label="&staff.cat.record_buckets_overlay.query_list_actions.label;" 
+        accesskey="&staff.cat.record_buckets_overlay.query_list_actions.accesskey;" 
+        type="menu" allowevents="true">
         <menupopup id="record_query_list_actions_popup">
         	<menuitem command="sel_clip0" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip0.label;" disabled="true" />
     	    <menuitem command="cmd_record_query_csv_to_printer" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label;" />
@@ -104,8 +107,9 @@
 </hbox>
 
 <hbox id="pending_buckets_bottom_ui">
-	<button id="pending_buckets_list_actions"
+	<button id="pending_buckets_list_actions" 
       label="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.label;"
+      accesskey="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey;"
       type="menu" allowevents="true">
         <menupopup id="pending_buckets_list_actions_popup">
         	<menuitem command="sel_clip1" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip1.label;" disabled="true" />
@@ -143,8 +147,9 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-	<button id="record_buckets_list_actions"
+	<button id="record_buckets_list_actions" 
       label="&staff.cat.record_buckets_overlay.record_buckets_list_actions.label;"
+      accesskey="&staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey;"
       type="menu" allowevents="true" disabled="true">
         <menupopup id="record_buckets_list_actions_popup">
 	        <menuitem command="sel_clip2"
