@@ -121,33 +121,37 @@
 
 
 		<div class='hideme' id="permission-tmpl">
-			<tr name='prow'>
-				<td class="value" name='plabel'>
-					<span name="p.code"/>
-				</td>
-				<td class="value" name='papply'>
-					<input type="checkbox" name="p.id" onclick="set_perm(this.parentNode.parentNode);"/>
-				</td>
-				<td class="value" name='pdepth'>
-					<select onchange="set_perm(this.parentNode.parentNode);" name="p.depth"/>
-				</td>
-				<td class="value" name='pgrant'>
-					<input type="checkbox" name="p.grantable" onclick="set_perm(this.parentNode.parentNode);"/>
-				</td>
-			</tr>
+			<table>
+				<tr name='prow'>
+					<td class="value" name='plabel'>
+						<span name="p.code"/>
+					</td>
+					<td class="value" name='papply'>
+						<input type="checkbox" name="p.id" onclick="set_perm(this.parentNode.parentNode);"/>
+					</td>
+					<td class="value" name='pdepth'>
+						<select onchange="set_perm(this.parentNode.parentNode);" name="p.depth"/>
+					</td>
+					<td class="value" name='pgrant'>
+						<input type="checkbox" name="p.grantable" onclick="set_perm(this.parentNode.parentNode);"/>
+					</td>
+				</tr>
+			</table>
 		</div>
 
 
 		<div class='hideme' id="work_ou-tmpl">
-			<tr name='wrow'>
-				<td class="value" name='wapply'>
-					<input type="checkbox" name="a.id" onclick="set_work_ou(this.parentNode.parentNode);"/>
-				</td>
-				<td class="value" name='label'>
-					<span name="a.name"/>
-					(<span name="a.shortname"/>)
-				</td>
-			</tr>
+			<table>
+				<tr name='wrow'>
+					<td class="value" name='wapply'>
+						<input type="checkbox" name="a.id" onclick="set_work_ou(this.parentNode.parentNode);"/>
+					</td>
+					<td class="value" name='label'>
+						<span name="a.name"/>
+						(<span name="a.shortname"/>)
+					</td>
+				</tr>
+			</table>
 		</div>
 
 	</body>
