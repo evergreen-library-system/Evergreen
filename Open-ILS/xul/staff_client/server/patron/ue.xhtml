@@ -44,6 +44,7 @@
 
 
 		<style type='text/css'>
+			.messagecatalog { -moz-binding: url( /xul/server/main/bindings.xml#messagecatalog ) }
 			.main_table { width: 98%; border-collapse: collapse;}
 			.main_table td { border: 1px solid #E0F0E0; text-align: center; padding: 4px;}
 			#uedit_nav_bar { border: 2px solid #E0F0E0; padding: 6px;}
@@ -85,7 +86,7 @@
 		</style>
 	</head>
 	
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+	<div class="messagecatalog" id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
 	<body onload='uEditInit();'>
 
