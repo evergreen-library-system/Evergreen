@@ -68,8 +68,8 @@ cat.z3950.prototype = {
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
 							obj.controller.view.marc_import_overlay.disabled = false;
 							obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
-							obj.controller.view.marc_view.disabled = false;
-							obj.controller.view.marc_view.setAttribute('retrieve_id',list[0]);
+							obj.controller.view.marc_view_btn.disabled = false;
+							obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_list_init.list_construction_error'),E);
 						}
@@ -517,7 +517,7 @@ cat.z3950.prototype = {
                     obj.result_set[ ++obj.number_of_result_sets ] = results[i];
                     obj.controller.view.marc_import.disabled = true;
                     obj.controller.view.marc_import_overlay.disabled = true;
-                    var x = obj.controller.view.marc_view;
+                    var x = obj.controller.view.marc_view_btn;
                     if (x.getAttribute('toggle') == '0') x.disabled = true;
                     for (var j = 0; j < obj.result_set[ obj.number_of_result_sets ].records.length; j++) {
                         var f;
