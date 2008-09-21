@@ -2602,8 +2602,13 @@ sub barcode_exists {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
-    return undef unless @$card;
-    return $card->[0]->usr;
+	if (@$card) {
+		return 1;
+	} else {
+		return 0;
+	}
+	#return undef unless @$card;
+	#return $card->[0]->usr;
 }
 
 
