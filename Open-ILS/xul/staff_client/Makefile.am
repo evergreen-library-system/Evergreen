@@ -25,6 +25,7 @@ build_dir:
 	cp -R build/chrome/content/auth/ build/server/
 	cp build/chrome/content/main/constants.js build/server/main/constants.js
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
+	cp build/chrome/content/main/bindings.xml build/server/main/bindings.xml
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
 	external/prune_dirs.sh build/
