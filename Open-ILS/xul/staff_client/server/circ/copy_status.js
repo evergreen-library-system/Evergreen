@@ -328,38 +328,9 @@ circ.copy_status.prototype = {
 							}
 						}
 					],
-					'cmd_copy_status_export' : [
-						['command'],
-						function() {
-							try {
-								obj.list.dump_csv_to_clipboard();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('export',E); 
-							}
-						}
-					],
-					'cmd_copy_status_print_export' : [
-						['command'],
-						function() {
-							try {
-								obj.list.on_all_fleshed =
-									function() {
-										try {
-											dump( obj.list.dump_csv() + '\n' );
-											//copy_to_clipboard(obj.list.dump_csv());
-											JSAN.use('util.print'); var print = new util.print();
-											print.simple(obj.list.dump_csv(),{'content_type':'text/plain'});
-											setTimeout(function(){ obj.list.on_all_fleshed = null; },0);
-										} catch(E) {
-											obj.error.standard_unexpected_error_alert('export',E); 
-										}
-									};
-								obj.list.full_retrieve();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('export',E); 
-							}
-						}
-					],
+					'cmd_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+					'cmd_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ],
+					'cmd_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'item_status.txt' } ); } ],
 
 					'cmd_add_items' : [
 						['command'],

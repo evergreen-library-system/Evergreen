@@ -2410,6 +2410,18 @@
 <!ENTITY staff.patron.items_overlay.show_noncats.label "Show Non-Cataloged Circulations in List Above">
 <!ENTITY staff.patron.items_overlay.show_noncats.accesskey "N">
 <!ENTITY staff.patron.items_overlay.items_export.label "Export">
+<!ENTITY staff.generic.list_actions.label "List Actions">
+<!ENTITY staff.generic.list_actions.accesskey "L">
+<!ENTITY staff.generic.list_actions.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.generic.list_actions.sel_clip.accesskey "C">
+<!ENTITY staff.generic.list_actions.csv_to_printer.label "Print List CSV">
+<!ENTITY staff.generic.list_actions.csv_to_printer.accesskey "P">
+<!ENTITY staff.generic.list_actions.csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.generic.list_actions.csv_to_clipboard.accesskey "C">
+<!ENTITY staff.generic.list_actions.csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.generic.list_actions.csv_to_file.accesskey "F">
+<!ENTITY staff.generic.list_actions.save_columns.label "Save List Configuration">
+<!ENTITY staff.generic.list_actions.save_columns.accesskey "S">
 <!ENTITY ev.staff.patron.ue_xhtml.ev_user_editor.label "Evergreen User Editor">
 <!ENTITY ev.staff.patron.ue_xhtml.welcome.label "Welcome ">
 <!ENTITY ev.staff.patron.ue_xhtml.view_errors.label "View Errors">

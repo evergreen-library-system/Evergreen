@@ -166,10 +166,21 @@
 </hbox>
 
 <hbox id="copy_status_bottom_ui">
+    <button id="list_actions" oncommand="this.firstChild.showPopup();"
+        label="&staff.generic.list_actions.label;" 
+        accesskey="&staff.generic.list_actions.accesskey;" 
+        type="menu" allowevents="true">
+        <menupopup id="list_actions_popup">
+        	<menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
+    	    <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
+        	<menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
+        	<menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
+	        <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
+        </menupopup>
+    </button>
+
 	<button id="copy_status_print" label="&staff.circ.copy_status_overlay.copy_status_print.label;" command="cmd_copy_status_print" accesskey="&staff.circ.copy_status_overlay.copy_status_print.accesskey;"/>
-	<button id="copy_status_export" label="&staff.circ.copy_status_overlay.copy_status_export.label;" command="cmd_copy_status_export" accesskey="&staff.circ.copy_status_overlay.copy_status_export.accesskey;"/>
-	<button id="copy_status_print_export" label="&staff.circ.copy_status_overlay.copy_status_print_export.label;" command="cmd_copy_status_print_export" accesskey="&staff.circ.copy_status_overlay.copy_status_print_export.accesskey;"/>
-	<checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
+    <checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" />
 	<checkbox id="strict_barcode" label="&staff.circ.copy_status_overlay.strict_barcode.label;" checked="false" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
 	<spacer flex="1"/>
 </hbox>
