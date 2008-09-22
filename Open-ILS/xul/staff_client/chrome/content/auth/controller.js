@@ -84,6 +84,37 @@ auth.controller.prototype = {
 							obj.test_server( obj.controller.view.server_prompt.value );
 						}
 					],
+                    'ssl_exception' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                try {
+                                    obj.controller.view.cmd_ssl_exception.setAttribute('hidden','true');
+                                    var x = new XMLHttpRequest();
+                                    x.open("GET",'chrome://pippki/content/exceptionDialog.xul',false);
+                                    x.send(null);
+                                    obj.controller.view.cmd_ssl_exception.setAttribute('hidden','false');
+                                } catch(E) {
+                                    obj.controller.view.cmd_ssl_exception.setAttribute('hidden','true');
+                                }
+                            };
+                        }
+                    ],
+                    'cmd_ssl_exception' : [
+                        ['command'],
+                        function() {
+                            window.openDialog(
+                                'chrome://pippki/content/exceptionDialog.xul',
+                                '', 
+                                'chrome,centerscreen,modal', 
+                                { 
+                                    'location' : 'https://' + obj.controller.view.server_prompt.value, 
+                                    'prefetchCert' : true 
+                                } 
+                            );
+		                    obj.test_server( obj.controller.view.server_prompt.value );
+                        }
+                    ],
 					'server_prompt' : [
 						['keypress'],
 						handle_keypress

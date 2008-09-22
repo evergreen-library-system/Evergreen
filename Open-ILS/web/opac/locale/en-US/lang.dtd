@@ -550,6 +550,7 @@
 <!ENTITY staff.main.auth.offline.interface.accesskey "S">
 <!ENTITY staff.main.auth.retest "Re-Test Server">
 <!ENTITY staff.main.auth.retest.accesskey "R">
+<!ENTITY staff.main.auth.add_ssl_exception "Add SSL Exception">
 <!ENTITY staff.main.auth.server "Server">
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
