@@ -620,10 +620,10 @@ cat.record_buckets.prototype = {
 					'cmd_record_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list2.dump_csv_to_clipboard(); } ],
                     'cmd_record_query_csv_to_printer' : [ ['command'], function() { obj.list0.dump_csv_to_printer(); } ],
                     'cmd_pending_buckets_csv_to_printer' : [ ['command'], function() { obj.list1.dump_csv_to_printer(); } ],
-                    'cmd_record_buckets_csv_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
+                    'cmd_record_buckets_csv_to_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
                     'cmd_record_query_csv_to_file' : [ ['command'], function() { obj.list0.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
                     'cmd_pending_buckets_csv_to_file' : [ ['command'], function() { obj.list1.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
-                    'cmd_record_buckets_csv_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
+                    'cmd_record_buckets_csv_to_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
 
 					'cmd_export_records_usmarc' : [
 						['command'],
