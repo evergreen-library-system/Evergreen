@@ -254,7 +254,7 @@ auth.controller.prototype = {
 			return;
 		}
 		try {
-			if ( ! url.match(/^http:\/\//) ) url = 'http://' + url;
+			if ( ! url.match(/^https:\/\//) ) url = 'https://' + url;
 			var x = new XMLHttpRequest();
 			dump('server url = ' + url + '\n');
 			x.open("GET",url,true);
