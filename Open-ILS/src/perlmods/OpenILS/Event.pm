@@ -33,7 +33,7 @@ sub new {
 
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
-	my( $mmm, $fff, $lll ) = caller(1);
+	my( $mmm, $fff, $lll ) = caller(2);
 
 	$f  ||= "";
 	$l  ||= "";
