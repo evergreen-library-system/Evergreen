@@ -71,7 +71,7 @@
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset id="in_house_use_cmds">
-		<command id="sel_clip" />
+		<command id="sel_clip" disabled="true" />
 		<command id="cmd_csv_to_clipboard" />
 		<command id="cmd_csv_to_printer" />
 		<command id="cmd_csv_to_file" />
@@ -110,7 +110,7 @@
             accesskey="&staff.generic.list_actions.accesskey;" 
             type="menu" allowevents="true">
             <menupopup id="list_actions_popup">
-                <menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
+                <menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" />
                 <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
                 <menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
                 <menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />

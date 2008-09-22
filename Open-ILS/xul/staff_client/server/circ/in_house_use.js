@@ -36,7 +36,7 @@ circ.in_house_use.prototype = {
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'on_select' : function() {
 					var sel = obj.list.retrieve_selection();
-					document.getElementById('sel_clip').disabled = sel.length < 1;
+					obj.controller.view.sel_clip.setAttribute('disabled', sel.length < 1);
 				}
 			}
 		);
