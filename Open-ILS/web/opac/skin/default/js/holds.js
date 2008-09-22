@@ -482,11 +482,12 @@ function __holdsDrawWindow() {
 
     var interval = fetchOrgSettingDefault(holdArgs.recipient.home_ou(), 'circ.hold_expire_interval');
     var secs = 0;
-    if(interval)
+    if(interval) {
         secs = interval_to_seconds(interval);
-    var expire = new Date();
-    expire.setTime(expire.getTime() + Number(secs + '000'));
-    dijit.byId('holds_expire_time').setValue(expire);
+        var expire = new Date();
+        expire.setTime(expire.getTime() + Number(secs + '000'));
+        dijit.byId('holds_expire_time').setValue(expire);
+    }
 }
 
 function holdsParseMRFormats(str) {
