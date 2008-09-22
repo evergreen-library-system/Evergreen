@@ -278,7 +278,7 @@ circ.in_house_use.prototype = {
 					return; 
 				}
 	
-				var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',[ copy.id() ]);
+				var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',[ copy.id() ]);
 				var result = obj.network.simple_request('FM_AIHU_CREATE',
 					[ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
 				);

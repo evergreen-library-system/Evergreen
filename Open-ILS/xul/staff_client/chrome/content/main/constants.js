@@ -200,6 +200,7 @@ const api = {
 	'MODS_SLIM_RECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve', 'secure' : false },
 	'MODS_SLIM_RECORD_RETRIEVE.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve.authoritative', 'secure' : false },
 	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy', 'secure' : false },
+	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy', 'secure' : false },
 	'PERM_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check' },
 	'PERM_MULTI_ORG_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check.multi_org' },
 	'PERM_RETRIEVE_HIGHEST_ORG' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.highest_org' },
