@@ -1723,6 +1723,8 @@
 <!ENTITY staff.circ.holds.set_email_notification.accesskey "E">
 <!ENTITY staff.circ.holds.edit_activation_date "Edit Activation Date">
 <!ENTITY staff.circ.holds.edit_activation_date.accesskey "D">
+<!ENTITY staff.circ.holds.edit_expire_time "Edit Expiration Date">
+<!ENTITY staff.circ.holds.edit_expire_time.accesskey "E">
 <!ENTITY staff.circ.holds.activate_hold "Activate Hold">
 <!ENTITY staff.circ.holds.activate_hold.accesskey "A">
 <!ENTITY staff.circ.holds.suspend_hold "Suspend Hold">

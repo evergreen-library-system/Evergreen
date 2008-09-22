@@ -1521,6 +1521,15 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal',
+			'id' : 'expire_date',
+			'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_date_label'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.ahr.expire_time() ? my.ahr.expire_time().toString().substr(0,10) : ''; }
+		},
+		{
+			'persist' : 'hidden width ordinal',
 			'id' : 'fulfillment_time',
 			'label' : document.getElementById('commonStrings').getString('staff.ahr_fulfillment_time_label'),
 			'flex' : 1,

@@ -90,6 +90,7 @@
 		<command id="cmd_holds_edit_phone_notify" />
 		<command id="cmd_holds_edit_email_notify" />
 		<command id="cmd_holds_edit_thaw_date" />
+		<command id="cmd_holds_edit_expire_time" />
 		<command id="cmd_holds_activate" />
 		<command id="cmd_holds_suspend" />
 		<command id="cmd_holds_edit_selection_depth" />
