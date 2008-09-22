@@ -1188,8 +1188,8 @@ sub do_checkout {
                 circ              => $self->circ,
                 record            => $record,
                 holds_fulfilled   => $self->fulfilled_holds,
-                deposit_bill      => $self->deposit_billing,
-                rental_bill       => $self->rental_billing
+                deposit_billing      => $self->deposit_billing,
+                rental_billing       => $self->rental_billing
             }
         )
     );
