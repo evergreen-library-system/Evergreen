@@ -215,16 +215,9 @@ patron.holds.prototype = {
 							}
 						}
 					],
-					'cmd_holds_export' : [
-						['command'],
-						function() {
-							try {
-								obj.list.dump_csv_to_clipboard();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('export 1',E);
-							}
-						}
-					],
+                    'cmd_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+					'cmd_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ],
+					'cmd_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'holds.txt' } ); } ],
 
 					'cmd_show_notifications' : [
 						['command'],
