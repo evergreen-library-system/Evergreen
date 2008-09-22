@@ -85,7 +85,7 @@
 </hbox>
 
 <hbox id="record_query_bottom_ui">
-	<button id="record_query_list_actions" 
+	<button id="record_query_list_actions" oncommand="this.firstChild.showPopup();"
         label="&staff.cat.record_buckets_overlay.query_list_actions.label;" 
         accesskey="&staff.cat.record_buckets_overlay.query_list_actions.accesskey;" 
         type="menu" allowevents="true">
@@ -107,7 +107,7 @@
 </hbox>
 
 <hbox id="pending_buckets_bottom_ui">
-	<button id="pending_buckets_list_actions" 
+	<button id="pending_buckets_list_actions" oncommand="this.firstChild.showPopup();"
       label="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.label;"
       accesskey="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey;"
       type="menu" allowevents="true">
@@ -147,7 +147,7 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-	<button id="record_buckets_list_actions" 
+	<button id="record_buckets_list_actions" oncommand="this.firstChild.showPopup();"
       label="&staff.cat.record_buckets_overlay.record_buckets_list_actions.label;"
       accesskey="&staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey;"
       type="menu" allowevents="true" disabled="true">
