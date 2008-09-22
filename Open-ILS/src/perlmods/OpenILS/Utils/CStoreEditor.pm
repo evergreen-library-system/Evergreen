@@ -312,7 +312,12 @@ sub request {
 
         } else {
             my $resp = $req->recv(timeout => $self->timeout);
-            $val = $resp->content;
+            if($req->failed) {
+                $err = $resp;
+		        $self->log(E, "request error $method : $argstr : $err");
+            } else {
+                $val = $resp->content;
+            }
         }
 
         $req->finish;
