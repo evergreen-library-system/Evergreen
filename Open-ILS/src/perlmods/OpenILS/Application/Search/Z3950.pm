@@ -15,9 +15,10 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 my $output	= "usmarc"; 
+my $U = 'OpenILS::Application::AppUtils'; 
 
 my $sclient;
 my %services;
@@ -84,7 +85,41 @@ sub query_services {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
-	return $sclient->config_value('z3950', 'services');
+
+    if($e->can('search_config_z3950_source')) {
+
+        my $sources = $e->search_config_z3950_source( 
+            [ { name => { '!=' => undef } }, 
+            { flesh => 1, flesh_fields => { czs => ['attrs'] } }]  
+        ); 
+
+        my %hash = (); 
+        for my $s ( @$sources ) { 
+            $hash{ $s->name } = { 
+                name => $s->name, 
+                label => $s->label, 
+                host => $s->host, 
+                port => $s->port, 
+                db => $s->db, 
+                auth => $s->auth, 
+            }; 
+
+            for my $a ( @{ $s->attrs } ) { 
+                $hash{ $a->source }{attrs}{ $a->name } = { 
+                    name => $a->name, 
+                    label => $a->label, 
+                    code => $a->code, 
+                    format => $a->format, 
+                    source => $a->source, 
+                }; 
+            } 
+        } 
+
+        return \%hash; 
+
+    } else {
+        return $sclient->config_value('z3950', 'services');
+    }
 }
 
 
@@ -120,6 +155,7 @@ sub do_class_search {
 
 	my @connections;
 	my @results;
+    my @services; 
 	for (my $i = 0; $i < @{$$args{service}}; $i++) {
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
@@ -128,19 +164,36 @@ sub do_class_search {
 
 		$logger->debug("z3950: service: $tmp_args{service}, async: $tmp_args{async}");
 
-		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
+        if ($tmp_args{service} eq 'native-evergreen-catalog') { 
+            my $method = $self->method_lookup('open-ils.search.biblio.zstyle'); 
+            $conn->respond( 
+                $self->method_lookup('open-ils.search.biblio.zstyle')->run($auth, \%tmp_args) 
+            ); 
 
-		my $res = do_service_search( $self, $conn, $auth, \%tmp_args );
+        } else { 
 
-		push @results, $res->{result};
-		push @connections, $res->{connection};
+            $tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search}); 
+    
+            my $res = do_service_search( $self, $conn, $auth, \%tmp_args ); 
+    
+            if ($U->event_code($res)) { 
+                $conn->respond($res) if $U->event_code($res); 
+
+            } else { 
+                push @services, $tmp_args{service}; 
+                push @results, $res->{result}; 
+                push @connections, $res->{connection}; 
+            } 
+        }
 
 		$logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
 	}
 
 	$logger->debug("z3950: Connections created");
 
+    return undef unless (@connections);
 	my @records;
+
 	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
 		my $ev = $connections[$index - 1]->last_event();
 		$logger->debug("z3950: Received event $ev");
@@ -171,6 +224,7 @@ sub do_service_search {
 	$$args{host}	= $$info{host};
 	$$args{port}	= $$info{port};
 	$$args{db}		= $$info{db};
+    $logger->debug("z3950: do_search...");
 
 	return do_search( $self, $conn, $auth, $args );
 }
@@ -205,6 +259,8 @@ sub do_search {
 	my $editor = new_editor(authtoken => $auth);
 	return $editor->event unless $editor->checkauth;
 	return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
+
+    $logger->info("z3950: connecting to server $host:$port:$db as $username");
 
 	my $connection = OpenILS::Utils::ZClient->new(
 		$host, $port,
