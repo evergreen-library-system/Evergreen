@@ -153,6 +153,15 @@
 	<event code='1231' textcode='RECORD_NOT_EMPTY'>
 		<desc xml:lang="en-US">The selected bib record has volumes attached</desc>
 	</event>
+	<event code='1232' textcode='ITEM_DEPOSIT_REQUIRED'>
+		<desc xml:lang="en-US"></desc>
+	</event>
+	<event code='1233' textcode='ITEM_RENTAL_FEE_REQUIRED'>
+		<desc xml:lang="en-US"></desc>
+	</event>
+	<event code='1234' textcode='ITEM_DEPOSIT_PAID'>
+		<desc xml:lang="en-US"></desc>
+	</event>
 
 
 
