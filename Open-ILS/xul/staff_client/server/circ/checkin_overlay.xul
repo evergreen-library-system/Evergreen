@@ -102,14 +102,23 @@
 </hbox>
 
 <hbox id="checkin_bottom_ui">
+    <button id="list_actions" oncommand="this.firstChild.showPopup();"
+        label="&staff.generic.list_actions.label;" 
+        accesskey="&staff.generic.list_actions.accesskey;" 
+        type="menu" allowevents="true">
+        <menupopup id="list_actions_popup">
+        	<menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
+    	    <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
+        	<menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
+        	<menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
+	        <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
+        </menupopup>
+    </button>
+
 	<button id="checkin_print" 
 		label="&staff.checkin.print_receipt.label;" 
 		command="cmd_checkin_print"
 		accesskey="&staff.checkin.print_receipt.accesskey;"/>
-	<button id="checkin_export" 
-		label="&staff.circ.checkin_overlay.checkin_export.label;"
-		command="cmd_checkin_export"
-		accesskey=""/>
 	<checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" persist="checked"/> 
 	<checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" persist="checked"/> 
 	<checkbox id="do_not_alert_on_precat" label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" persist="checked"/> 
