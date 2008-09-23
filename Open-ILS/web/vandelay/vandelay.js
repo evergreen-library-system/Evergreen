@@ -17,6 +17,7 @@ dojo.require("dojo.io.iframe");
 dojo.require("dijit.ProgressBar"); 
 dojo.require("dijit.form.Button"); 
 dojo.require("dijit.form.FilteringSelect"); 
+dojo.require("dijit.layout.LayoutContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.Dialog");
