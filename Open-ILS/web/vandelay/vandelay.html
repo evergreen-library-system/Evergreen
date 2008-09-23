@@ -51,21 +51,26 @@
     </head>
     <body class="tundra tall">
       <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
-        <div dojoType="dijit.Toolbar" id='toolbar' layoutAlign="top">
-            <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
-            <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                onclick='vlShowQueueSelect();' showLabel="true">Inspect Queue</div>
+
+
+        <!-- navigation toolbar -->
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+            <div dojoType="dijit.Toolbar" id='toolbar'>
+                <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                    onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
+                <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                    onclick='vlShowQueueSelect();' showLabel="true">Inspect Queue</div>
+            </div>
         </div>
 
-        <div id="vl-generic-progress" class='progress'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id="vl-generic-progress" class='progress'>
             <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
         </div>
-        <div id="vl-generic-progress-with-total" class='hidden progress'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id="vl-generic-progress-with-total" class='hidden progress'>
             <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:300px"></div>
         </div>
 
-        <div id='vl-marc-upload-status-div' class='hidden'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-status-div' class='hidden'>
             <h1>Upload Status</h1><br/>
             <div id='vl-upload-status-uploading'><h3>Uploading...</h3></div>
             <div id='vl-upload-status-processing' class='hidden'>
@@ -74,7 +79,7 @@
         </div>
 
         <!-- MARC upload form -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" id='vl-marc-upload-div' class='hidden'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden'>
             <h1>Evergreen MARC File Upload</h1><br/>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
@@ -125,7 +130,7 @@
         </div>
 
         <!-- record queue grid -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" id='vl-queue-div' class='tall hidden'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-div' class='tall hidden'>
             <h1>Record Queue</h1><br/>
             <script>
                 var vlQueueGridLayout;
@@ -135,12 +140,17 @@
                         cells : [[
                             {name: '<input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
                                 get: vlQueueGridDrawSelectBox },
+                            {   name: 'View MARC', 
+                                get: vlGetViewMARC, 
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC</a>'
+                            },
                             {name: 'Import Time', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
                         ]]
                     }];
                 }
             </script>
-            <div id='vl-queue-div-grid' class='tall'>
+            <div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+
                 <!-- column picker dialog -->
                 <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
                     <table class='form_table'>
@@ -160,70 +170,72 @@
                 </div>
 
                 <!-- queue grid navigation row -->
-                <table width='100%' style='margin-bottom:0px;'>
-                    <tr>
-                        <td align='left'>
-                            <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
-                            <button dojoType='dijit.form.Button' onclick='
-                                if(confirm("Are you sure want to delete this queue?")) {
-                                    vlDeleteQueue(currentType, currentQueueId, 
-                                        function() { displayGlobalDiv("vl-marc-upload-div"); });
-                                }'>Delete Queue</button>
-                        </td>
-                        <td align='middle'>
-                            <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
-                            <table><tr>
-                                <td class='filter_td'>
-                                    Limit to Collision Matches
-                                    <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
-                                </td>
-                                <td class='filter_td' style='padding-left:5px;'>
-                                    Results Per Page 
-                                    <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
-                                        <option value='10'>10</option>
-                                        <option value='20'>20</option>
-                                        <option value='50'>50</option>
-                                        <option value='100'>100</option>
-                                    </select>
-                                </td>
-                                <td class='filter_td' style='padding-left:5px;'>
-                                    Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
-                                </td style='padding-left:5px;'>
-                                <td style='padding-left:5px;'>
-                                    <button dojoType='dijit.form.Button' 
-                                        onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
-                                </td>
-                            </tr></table>
-                        </td>
-                        <td align='right' valign='bottom'>
-                            <span style='padding-right:4px;'>
-                                <a href='javascript:void(0);' onclick='
-                                    var page = parseInt(vlQueueDisplayPage.getValue());
-                                    if(page < 2) return;
-                                    vlQueueDisplayPage.setValue(page - 1);
-                                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>&#171; Previous Page</a>
-                            </span>
-                            <span style='padding-right:10px;'>
-                                <a href='javascript:void(0);' onclick='
-                                    vlQueueDisplayPage.setValue(parseInt(vlQueueDisplayPage.getValue())+1);
-                                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>Next Page &#187;</a>
-                            </span>
-                            <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
-                                <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>Select Columns</a>
-                            </span>
-                        </td>
-                    </tr>
-                </table>
+                <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+                    <table width='100%' style='margin-bottom:0px;'>
+                        <tr>
+                            <td align='left'>
+                                <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
+                                <button dojoType='dijit.form.Button' onclick='
+                                    if(confirm("Are you sure want to delete this queue?")) {
+                                        vlDeleteQueue(currentType, currentQueueId, 
+                                            function() { displayGlobalDiv("vl-marc-upload-div"); });
+                                    }'>Delete Queue</button>
+                            </td>
+                            <td align='middle'>
+                                <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
+                                <table><tr>
+                                    <td class='filter_td'>
+                                        Limit to Collision Matches
+                                        <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
+                                    </td>
+                                    <td class='filter_td' style='padding-left:5px;'>
+                                        Results Per Page 
+                                        <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                            <option value='10'>10</option>
+                                            <option value='20'>20</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                        </select>
+                                    </td>
+                                    <td class='filter_td' style='padding-left:5px;'>
+                                        Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                                    </td style='padding-left:5px;'>
+                                    <td style='padding-left:5px;'>
+                                        <button dojoType='dijit.form.Button' 
+                                            onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
+                                    </td>
+                                </tr></table>
+                            </td>
+                            <td align='right' valign='bottom'>
+                                <span style='padding-right:4px;'>
+                                    <a href='javascript:void(0);' onclick='
+                                        var page = parseInt(vlQueueDisplayPage.getValue());
+                                        if(page < 2) return;
+                                        vlQueueDisplayPage.setValue(page - 1);
+                                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>&#171; Previous Page</a>
+                                </span>
+                                <span style='padding-right:10px;'>
+                                    <a href='javascript:void(0);' onclick='
+                                        vlQueueDisplayPage.setValue(parseInt(vlQueueDisplayPage.getValue())+1);
+                                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>Next Page &#187;</a>
+                                </span>
+                                <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>Select Columns</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
                 <!-- Queue Grid -->
-                <div class='tall'>
-                    <div dojoType='dojox.Grid' jsId='vlQueueGrid' class='tall'> </div>
+                <div class='' style='height:90%;' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+                    <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
                 </div>
             </div>
         </div>
 
         <!-- Grid of record matches -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" id='vl-match-div' class='tall hidden'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-match-div' class='tall hidden'>
             <script>
                 var vlMatchGridLayout;
                 function resetVlMatchGridLayout() {
@@ -239,7 +251,7 @@
                             {name: 'ID', field:'id'},
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID);">View MARC</a>'
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC</a>'
                             },
                             {name: 'Creator', get: vlGetCreator},
                             {name: 'Create Date', field:'create_date', get: vlGetDateTimeField},
@@ -265,21 +277,20 @@
             </div>
         </div>
 
-        <!-- MARC as HTML for matched records -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" id='vl-match-html-div' class='tall hidden'>
+        <!-- MARC as HTML -->
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-html-div' class='tall hidden'>
             <h1>MARC Record</h1><br/>
             <div>
-                <button dojoType='dijit.form.Button' 
-                    onclick='displayGlobalDiv("vl-match-div");'>Back To Matches...</button>
+                <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>Return...</button>
             </div>
             <div>
-                <style>#vl-match-record-html td {padding:0px;}</style>
-                <div id='vl-match-record-html'> </div>
+                <style>#vl-marc-record-html td {padding:0px;}</style>
+                <div id='vl-marc-record-html'> </div>
             </div>
         </div>
 
         <!-- Form for choosing which queue to view -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" id='vl-queue-select-div' class='tall hidden'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-select-div' class='tall hidden'>
             <h1>Select a Queue to Inspect</h1><br/>
             <table class='form_table'>
                 <tr>
@@ -305,6 +316,10 @@
                 </tr>
             </table>
         </div>
+        <div style='text-align:center;width:100%;' dojoType="dijit.layout.ContentPane" layoutAlign='bottom'>
+            I live at the bottom of the page and I'm powered by Evergreen!
+        </div>
+
       </div>
     </body>
 </html>

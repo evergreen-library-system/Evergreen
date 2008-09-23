@@ -40,7 +40,7 @@ var globalDivs = [
     'vl-marc-upload-div',
     'vl-queue-div',
     'vl-match-div',
-    'vl-match-html-div',
+    'vl-marc-html-div',
     'vl-queue-select-div',
     'vl-marc-upload-status-div'
 ];
@@ -60,8 +60,10 @@ var userCache = {};
 var currentMatchedRecords; // set of loaded matched bib records
 var currentOverlayRecordsMap; // map of import record to overlay record
 var currentImportRecId; // when analyzing matches, this is the current import record
-var userBibQueues;
-var userAuthQueues;
+var userBibQueues = []; // only non-complete queues
+var userAuthQueues = []; // only non-complete queues
+var allUserBibQueues;
+var allUserAuthQueues;
 var selectableGridRecords;
 var cgi = new openils.CGI();
 var vlQueueGridColumePicker;
@@ -127,30 +129,40 @@ function vlInit() {
         }
     );
 
-    fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.bib_queue.owner.retrieve.atomic'],
-        {   async: true,
-            params: [authtoken],
-            oncomplete: function(r) {
-                var list = r.recv().content();
-                if(e = openils.Event.parse(list[0]))
-                    return alert(e);
-                userBibQueues = list;
-                checkInitDone();
+    vlRetrieveQueueList('bib', null, 
+        function(list) {
+            allUserBibQueues = list;
+            for(var i = 0; i < allUserBibQueues.length; i++) {
+                if(allUserBibQueues[i].complete() == 'f')
+                    userBibQueues.push(allUserBibQueues[i]);
             }
+            checkInitDone();
         }
     );
 
+    vlRetrieveQueueList('auth', null, 
+        function(list) {
+            allUserAuthQueues = list;
+            for(var i = 0; i < allUserAuthQueues.length; i++) {
+                if(allUserAuthQueues[i].complete() == 'f')
+                    userAuthQueues.push(allUserAuthQueues[i]);
+            }
+            checkInitDone();
+        }
+    );
+}
+
+function vlRetrieveQueueList(type, filter, onload) {
+    type = (type == 'bib') ? type : 'authority';
     fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.authority_queue.owner.retrieve.atomic'],
+        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.owner.retrieve.atomic'],
         {   async: true,
-            params: [authtoken],
+            params: [authtoken, null, filter],
             oncomplete: function(r) {
                 var list = r.recv().content();
                 if(e = openils.Event.parse(list[0]))
                     return alert(e);
-                userAuthQueues = list;
-                checkInitDone();
+                onload(list);
             }
         }
     );
@@ -336,19 +348,29 @@ function vlPopulateGrid(grid, data) {
 }
 
 
-function vlLoadMARCHtml(recId) {
+function vlLoadMARCHtml(recId, inCat, oncomplete) {
+    dijit.byId('vl-marc-html-done-button').onClick = oncomplete;
     displayGlobalDiv('vl-generic-progress');
-    var api = ['open-ils.search', 'open-ils.search.biblio.record.html'];
-    if(currentType == 'auth')
-        api = ['open-ils.search', 'open-ils.search.authority.to_html'];
+    var api;
+    var params = [recId, 1];
+    if(inCat) {
+        api = ['open-ils.search', 'open-ils.search.biblio.record.html'];
+        if(currentType == 'auth')
+            api = ['open-ils.search', 'open-ils.search.authority.to_html'];
+    } else {
+        params = [authtoken, recId];
+        api = ['open-ils.vandelay', 'open-ils.vandelay.queued_bib_record.html'];
+        if(currentType == 'auth')
+            api = ['open-ils.vandelay', 'open-ils.vandelay.queued_authority_record.html'];
+    }
     fieldmapper.standardRequest(
         api, 
         {   async: true,
-            params: [recId, 1],
+            params: params,
             oncomplete: function(r) {
-            displayGlobalDiv('vl-match-html-div');
+            displayGlobalDiv('vl-marc-html-div');
                 var html = r.recv().content();
-                dojo.byId('vl-match-record-html').innerHTML = html;
+                dojo.byId('vl-marc-record-html').innerHTML = html;
             }
         }
     );
@@ -651,7 +673,7 @@ function batchUpload() {
 
 
 function vlFleshQueueSelect(selector, type) {
-    var data = (type == 'bib') ? vbq.toStoreData(userBibQueues) : vaq.toStoreData(userAuthQueues);
+    var data = (type == 'bib') ? vbq.toStoreData(allUserBibQueues) : vaq.toStoreData(allUserAuthQueues);
     selector.store = new dojo.data.ItemFileReadStore({data:data});
     selector.setValue(null);
     selector.setDisplayedValue('');
