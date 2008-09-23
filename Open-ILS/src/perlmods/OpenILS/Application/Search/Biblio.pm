@@ -1216,7 +1216,7 @@ my $slim_marc_sheet;
 my $settings_client = OpenSRF::Utils::SettingsClient->new();
 
 sub biblio_record_to_marc_html {
-	my($self, $client, $recordid, $slim) = @_;
+	my($self, $client, $recordid, $slim, $marcxml) = @_;
 
     my $sheet;
 	my $dir = $settings_client->config_value("dirs", "xsl");
@@ -1245,16 +1245,19 @@ sub biblio_record_to_marc_html {
     }
 
     my $record;
-    my $e = new_editor();
-    if($self->api_name =~ /authority/) {
-        $record = $e->retrieve_authority_record_entry($recordid)
-            or return $e->event;
-    } else {
-        $record = $e->retrieve_biblio_record_entry($recordid)
-            or return $e->event;
+    unless($marcxml) {
+        my $e = new_editor();
+        if($self->api_name =~ /authority/) {
+            $record = $e->retrieve_authority_record_entry($recordid)
+                or return $e->event;
+        } else {
+            $record = $e->retrieve_biblio_record_entry($recordid)
+                or return $e->event;
+        }
+        $marcxml = $record->marc;
     }
 
-	my $xmldoc = $parser->parse_string($record->marc);
+	my $xmldoc = $parser->parse_string($marcxml);
 	my $html = $sheet->transform($xmldoc);
 	return $html->documentElement->toString();
 }
