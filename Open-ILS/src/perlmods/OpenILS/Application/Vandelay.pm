@@ -631,17 +631,21 @@ __PACKAGE__->register_method(
 );
 
 sub owner_queue_retrieve {
-    my($self, $conn, $auth, $owner_id) = @_;
+    my($self, $conn, $auth, $owner_id, $filters) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     $owner_id = $e->requestor->id; # XXX add support for viewing other's queues?
     my $queues;
+    $filters ||= {};
+    my $search = {owner => $owner_id};
+    $search->{$_} = $filters->{$_} for keys %$filters;
+
     if($self->{record_type} eq 'bib') {
         $queues = $e->search_vandelay_bib_queue(
-            {complete => 'f', owner => $owner_id});
+            [$search, {order_by => {vbq => 'lower(name)'}}]);
     } else {
         $queues = $e->search_vandelay_authority_queue(
-            {complete => 'f', owner => $owner_id});
+            [$search, {order_by => {vaq => 'lower(name)'}}]);
     }
     $conn->respond($_) for @$queues;
     return undef;
@@ -682,5 +686,42 @@ sub delete_queue {
     $e->commit;
     return 1;
 }
+
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.queued_bib_record.html",
+	method		=> 'queued_record_html',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.queued_authority_record.html",
+	method		=> 'queued_record_html',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub queued_record_html {
+    my($self, $conn, $auth, $rec_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    my $rec;
+    if($self->{record_type} eq 'bib') {
+        $rec = $e->retrieve_vandelay_queued_bib_record($rec_id)
+            or return $e->event;
+    } else {
+        $rec = $e->retrieve_vandelay_queued_authority_record($rec_id)
+            or return $e->event;
+    }
+
+    return $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.html', undef, 1, $rec->marc);
+}
+
 
 1;
