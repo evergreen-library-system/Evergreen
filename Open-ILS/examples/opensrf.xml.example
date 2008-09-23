@@ -806,6 +806,15 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
+                <app_settings>
+                    <databases>
+                        <!-- temporary location for MARC import files.  
+                            Files will be deleted after records are spooled.
+                            *note:  in a multi-brick environment, this will need to
+                            be on a write-able NFS share.  -->
+                        <importer>/tmp</importer>
+                    </databases>
+                </app_settings>
             </open-ils.vandelay>
 
         </apps>

@@ -29,10 +29,13 @@ use MARC::File::XML;
 
 use MIME::Base64;
 use Digest::MD5 qw/md5_hex/;
+use OpenSRF::Utils::SettingsClient;
 
 use UNIVERSAL::require;
 
 our @formats = qw/USMARC UNIMARC XML BRE/;
+my $MAX_FILE_SIZE = 10737418240; #10G
+my $FILE_READ_SIZE = 4096;
 
 # set the bootstrap config and template include directory when
 # this module is loaded
@@ -58,18 +61,42 @@ sub spool_marc {
 
     my $data_fingerprint = '';
 	my $purpose = $cgi->param('purpose');
-	my $file = $cgi->param('marc_upload');
+	my $infile = $cgi->param('marc_upload');
 
-    if($file and -e $file) {
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	my $dir = $conf->config_value(
+        apps => 'open-ils.vandelay' => app_settings => databases => 'importer');
 
-	    my $data = join '', (<$file>);
-	    $data = encode_base64($data);
-    
-	    $data_fingerprint = md5_hex($data);
-    
+    unless(-w $dir) {
+        $logger->error("We need some place to store our MARC files");
+	    return Apache2::Const::FORBIDDEN;
+    }
+
+    if($infile and -e $infile) {
+        my ($total_bytes, $buf, $bytes) = (0);
+	    $data_fingerprint = md5_hex(time."$$".rand());
+        my $outfile = "$dir/$data_fingerprint.mrc";
+
+        unless(open(OUTFILE, ">$outfile")) {
+            $logger->error("unable to open MARC file for writing: $@");
+	        return Apache2::Const::FORBIDDEN;
+        }
+
+        while($bytes = sysread($infile, $buf, $FILE_READ_SIZE)) {
+            $total_bytes += $bytes;
+            if($total_bytes >= $MAX_FILE_SIZE) {
+                close(OUTFILE);
+                unlink $outfile;
+	            return Apache2::Const::FORBIDDEN;
+            }
+            print OUTFILE $buf;
+        }
+
+        close(OUTFILE);
+
 	    OpenSRF::Utils::Cache->new->put_cache(
 		    'vandelay_import_spool_' . $data_fingerprint,
-		    { purpose => $purpose, marc => $data }
+		    { purpose => $purpose, path => $outfile }
 	    );
     }
 

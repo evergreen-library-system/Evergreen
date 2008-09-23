@@ -217,15 +217,17 @@ sub process_spool {
 
     my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
 	my $purpose = $data->{purpose};
-    $data = decode_base64($data->{marc});
+    my $filename = $data->{path};
 
-    $logger->info("vandelay loaded $fingerprint purpose=$purpose and ".length($data)." bytes of data");
+    unless(-r $filename) {
+        $logger->error("unable to read MARC file");
+        return -1; # make this an event XXX
+    }
 
-    my $fh;
-    open $fh, '<', \$data;
+    $logger->info("vandelay spooling $fingerprint purpose=$purpose file=$filename");
 
     my $marctype = 'USMARC'; # ?
-	my $batch = new MARC::Batch ( $marctype, $fh );
+	my $batch = new MARC::Batch ($marctype, $filename);
 	$batch->strict_off;
 
 	my $count = 0;
@@ -254,8 +256,11 @@ sub process_spool {
 	}
 
 	$e->commit;
+    unlink($filename);
+    $cache->delete_cache('vandelay_import_spool_' . $fingerprint);
 	return undef;
 }
+
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib.process_spool",
 	method		=> "process_spool",
