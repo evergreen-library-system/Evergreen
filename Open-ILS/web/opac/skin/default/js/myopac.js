@@ -789,7 +789,7 @@ function _myOPACSummaryShowUer(r) {
 	appendClear($('myopac_summary_eveningphone'),text(user.evening_phone()));
 	appendClear($('myopac_summary_otherphone'),text(user.other_phone()));
 	appendClear($('myopac_summary_last'),text(user.family_name()));
-	if (user.suffix()) appendClear($('myopac_summary_suffix'),text(', ' + user.suffix()));
+	appendClear($('myopac_summary_suffix'),text(user.suffix()));
 	appendClear($('myopac_summary_username'),text(user.usrname()));
 	appendClear($('myopac_summary_email'),text(user.email()));
 	appendClear($('myopac_summary_barcode'),text(user.card().barcode()));
