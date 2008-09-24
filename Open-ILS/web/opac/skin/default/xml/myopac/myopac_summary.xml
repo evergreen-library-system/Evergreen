@@ -37,9 +37,11 @@
 			<tr>
 				<td width='30%' class='color_4 light_border'>&common.name;</td>
 				<td class='light_border'>
+					<span id='myopac_summary_prefix' style='padding-right: 5px;'> </span> 
 					<span id='myopac_summary_first' style='padding-right: 5px;'> </span> 
 					<span id='myopac_summary_middle' style='padding-right: 5px;'> </span> 
-					<span id='myopac_summary_last'> </span> 
+					<span id='myopac_summary_last' style='padding-right: 5px;'> </span> 
+					<span id='myopac_summary_suffix'> </span> 
 				</td>
 			</tr>
 
