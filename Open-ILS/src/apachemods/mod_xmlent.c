@@ -228,7 +228,7 @@ static void XMLCALL startElement(void *userData, const char *name, const char **
 			filter->r->per_dir_config, &xmlent_module );
 	_fwrite(filter, "<%s", name );
 	printAttr( filter, atts );
-	if (!strcmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT)
+	if (!strncmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT, 9)
 		&& isEmptyElement(name)) {
 		_fwrite(filter, " />", name );
 	} else {
@@ -272,7 +272,7 @@ static void XMLCALL endElement(void *userData, const char *name) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
 	xmlEntConfig* config = ap_get_module_config( 
 			filter->r->per_dir_config, &xmlent_module );
-	if (!strcmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT)
+	if (!strncmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT, 9)
 			&& isEmptyElement(name)) { 
 		return;
 	}
