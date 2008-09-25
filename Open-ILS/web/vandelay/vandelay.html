@@ -1,4 +1,5 @@
-<!-- # Copyright (C) 2008  Georgia Public Library Service
+<!-- 
+# Copyright (C) 2008  Georgia Public Library Service
 # Bill Erickson <erickson@esilibrary.com>
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -10,45 +11,20 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
-<html>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
         <title>Vandelay</title>
-        <style type="text/css">
-            @import "/js/dojo/dojo/resources/dojo.css";
-            @import "/js/dojo/dijit/themes/tundra/tundra.css";
-            @import "/js/dojo/dijit/tests/css/dijitTests.css"; 
-            @import "/js/dojo/dojox/grid/_grid/Grid.css";
-            .container:after {content: ""; display: block; height: 0; clear: both; }
-            .form_table td { padding: 6px; }
-            table { border-collapse: collapse; }
-	    table.dijitTooltipTable { border-collapse: separate; } // else the tooltip-table is ugly
-            .match_div {
-                height: 95%;
-                width: 95%;
-            }
-            .match_div a {
-                color: red;
-                font-weight:bold;
-            }
-            .match_div a:visited {
-                color: red;
-                font-weight:bold;
-            }
-            .tall { height:100%; }
-            .wide { width:100%; }
-            .hidden { display: none; }
-            #toolbar { margin-top: 0px; }
-            body { width:100%; height:100%; border:0; margin:0; padding:0; }
-            .progress {margin: 20px;}
-            .overlay_selected { 
-                padding: 2px; 
-                background: #d9e8f9;
-                border: 1px solid red; 
-            }
-        </style>
+        <link type='text/css' rel='stylesheet' href="/vandelay/vandelay.css"/>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='/js/dojo/openils/MarcXPathParser.js'></script>
-        <script type="text/javascript" src='vandelay.js'></script>
+        <script type="text/javascript" src='/vandelay/vandelay.js'></script>
     </head>
     <body class="tundra tall">
       <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
@@ -58,9 +34,9 @@
         <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
             <div dojoType="dijit.Toolbar" id='toolbar'>
                 <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                    onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
+                    onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">Import Records</div>
                 <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                    onclick='vlShowQueueSelect();' showLabel="true">Inspect Queue</div>
+                    onclick="vlShowQueueSelect();" showLabel="true">Inspect Queue</div>
 
 		<div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
 		     onclick="vlShowBibAttrDefs();" showLabel="true">Bib Attr Definitions</div>
@@ -87,7 +63,6 @@
             <h1>Evergreen MARC File Upload</h1><br/>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
-                <br/>
                 <table class='form_table'>
                     <tr>
                         <td>Record Type</td>
@@ -142,16 +117,16 @@
                     vlQueueGridLayout = [{
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
-                            {name: '<input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
+                            {name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
                                 get: vlQueueGridDrawSelectBox },
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
-                                    'function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC</a>'
+                                value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
+                                    'function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC&lt;/a>'
                             },
                             {   name: 'Matches', 
                                 get: vlGetViewMatches,
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">Matches</a>'
+                                value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">Matches&lt;/a>'
                             },
                             {name: 'Import Time', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
                         ]]
@@ -184,11 +159,11 @@
                         <tr>
                             <td align='left'>
                                 <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
-                                <button dojoType='dijit.form.Button' onclick='
-                                    if(confirm("Are you sure want to delete this queue?")) {
+                                <button dojoType='dijit.form.Button' onclick="
+                                    if(confirm('Are you sure want to delete this queue?')) {
                                         vlDeleteQueue(currentType, currentQueueId, 
-                                            function() { displayGlobalDiv("vl-marc-upload-div"); });
-                                    }'>Delete Queue</button>
+                                            function() { displayGlobalDiv('vl-marc-upload-div'); });
+                                    }">Delete Queue</button>
                             </td>
                             <td align='middle'>
                                 <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
@@ -208,7 +183,7 @@
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
                                         Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
-                                    </td style='padding-left:5px;'>
+                                    </td>
                                     <td style='padding-left:5px;'>
                                         <button dojoType='dijit.form.Button' 
                                             onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
@@ -217,16 +192,10 @@
                             </td>
                             <td align='right' valign='bottom'>
                                 <span style='padding-right:4px;'>
-                                    <a href='javascript:void(0);' onclick='
-                                        var page = parseInt(vlQueueDisplayPage.getValue());
-                                        if(page < 2) return;
-                                        vlQueueDisplayPage.setValue(page - 1);
-                                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>&#171; Previous Page</a>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&#171; Previous Page</a>
                                 </span>
                                 <span style='padding-right:10px;'>
-                                    <a href='javascript:void(0);' onclick='
-                                        vlQueueDisplayPage.setValue(parseInt(vlQueueDisplayPage.getValue())+1);
-                                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);'>Next Page &#187;</a>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>Next Page &#187;</a>
                                 </span>
                                 <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
                                     <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>Select Columns</a>
@@ -254,7 +223,7 @@
                             {
                                 name: 'Overlay Target', 
                                 get: vlGetOverlayTargetSelector,
-                                value: '<input type="radio" name="overlay_target" '+
+                                value: '&lt;input type="radio" name="overlay_target" '+
                                     'onclick="vlHandleOverlayTargetSelected();" id="vl-overlay-target-ID"/>'
                             },
                             {name:'Source Match Point', field:'src_matchpoint'},
@@ -262,8 +231,8 @@
                             {name: 'ID', field:'id'},
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, '+
-                                    'true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC</a>'
+                                value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, '+
+                                    'true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC&lt;/a>'
                             },
                             {name: 'Creator', get: vlGetCreator},
                             {name: 'Create Date', field:'create_date', get: vlGetDateTimeField},
@@ -278,7 +247,7 @@
             <h1>Import Matches</h1><br/>
             <div>
                 <button dojoType='dijit.form.Button' 
-                    onclick='displayGlobalDiv("vl-queue-div");'>&#x2196; Back To Import Queue</button>
+                    onclick="displayGlobalDiv('vl-queue-div');">&#x2196; Back To Import Queue</button>
                 <span style='padding-left:20px;'>
                     <input dojoType='dijit.form.CheckBox' jsId='vlOverlayTargetEnable' onclick='vlHandleOverlayTargetSelected'/> 
                     Overlay selected record with imported record

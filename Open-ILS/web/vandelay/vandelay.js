@@ -565,6 +565,18 @@ function buildRecordGrid(type) {
     }
 }
 
+function vlQueueGridPrevPage() {
+    var page = parseInt(vlQueueDisplayPage.getValue());
+    if(page < 2) return;
+    vlQueueDisplayPage.setValue(page - 1);
+    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+}
+
+function vlQueueGridNextPage() {
+    vlQueueDisplayPage.setValue(parseInt(vlQueueDisplayPage.getValue())+1);
+    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+}
+
 function vlDeleteQueue(type, queueId, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.delete'],
