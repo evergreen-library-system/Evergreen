@@ -142,7 +142,12 @@
                                 get: vlQueueGridDrawSelectBox },
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC</a>'
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
+                                    'function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC</a>'
+                            },
+                            {   name: 'Matches', 
+                                get: vlGetViewMatches,
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">Matches</a>'
                             },
                             {name: 'Import Time', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
                         ]]
@@ -245,13 +250,16 @@
                             {
                                 name: 'Overlay Target', 
                                 get: vlGetOverlayTargetSelector,
-                                value: '<input type="radio" name="overlay_target" onclick="vlHandleOverlayTargetSelected();" id="vl-overlay-target-ID"/>'
+                                value: '<input type="radio" name="overlay_target" '+
+                                    'onclick="vlHandleOverlayTargetSelected();" id="vl-overlay-target-ID"/>'
                             },
-                            {name:'Match Point', field:'field_type'},
+                            {name:'Source Match Point', field:'src_matchpoint'},
+                            {name:'Destination Match Point', field:'dest_matchpoint'},
                             {name: 'ID', field:'id'},
                             {   name: 'View MARC', 
                                 get: vlGetViewMARC, 
-                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC</a>'
+                                value:'<a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, '+
+                                    'true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC</a>'
                             },
                             {name: 'Creator', get: vlGetCreator},
                             {name: 'Create Date', field:'create_date', get: vlGetDateTimeField},
@@ -316,10 +324,11 @@
                 </tr>
             </table>
         </div>
+        <!--
         <div style='text-align:center;width:100%;' dojoType="dijit.layout.ContentPane" layoutAlign='bottom'>
-            I live at the bottom of the page and I'm powered by Evergreen!
+            Powered by Evergreen!
         </div>
-
+        -->
       </div>
     </body>
 </html>

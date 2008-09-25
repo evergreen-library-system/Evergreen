@@ -292,9 +292,11 @@ function retrieveQueuedRecords(type, queueId, onload) {
     );
 }
 
-function vlLoadMatchUI(recId, attrCode) {
+//function vlLoadMatchUI(recId, attrCode) {
+function vlLoadMatchUI(recId) {
     displayGlobalDiv('vl-generic-progress');
-    var matches = getRecMatchesFromAttrCode(queuedRecordsMap[recId], attrCode);
+    //var matches = getRecMatchesFromAttrCode(queuedRecordsMap[recId], attrCode);
+    var matches = queuedRecordsMap[recId].matches();
     var records = [];
     currentImportRecId = recId;
     for(var i = 0; i < matches.length; i++)
@@ -322,16 +324,26 @@ function vlLoadMatchUI(recId, attrCode) {
                 currentMatchedRecords = recs;
                 vlMatchGrid.setStructure(vlMatchGridLayout);
 
-                // build the data store or records with match information
-                var dataStore = bre.toStoreData(recs, null, {virtualFields:['field_type']});
+                // build the data store of records with match information
+                var dataStore = bre.toStoreData(recs, null, 
+                    {virtualFields:['dest_matchpoint', 'src_matchpoint', '_id']});
+                dataStore.identifier = '_id';
+
+
                 for(var i = 0; i < dataStore.items.length; i++) {
                     var item = dataStore.items[i];
+                    item._id = i; // just need something unique
                     for(var j = 0; j < matches.length; j++) {
                         var match = matches[j];
-                        if(match.eg_record() == item.id)
-                            item.field_type = match.field_type();
+                        if(match.eg_record() == item.id) {
+                            item.dest_matchpoint = match.field_type();
+                            var attr = getRecAttrFromMatch(queuedRecordsMap[recId], match);
+                            //item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).description();
+                            item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).code();
+                        }
                     }
                 }
+
                 // now populate the grid
                 vlPopulateGrid(vlMatchGrid, dataStore);
             }
@@ -377,23 +389,7 @@ function vlLoadMARCHtml(recId, inCat, oncomplete) {
 }
 
 
-/**
-  * Given a record, an attribute definition code, and a matching record attribute,
-  * this will determine if there are any import matches and build the UI to
-  * represent those matches.  If no matches exist, simply returns the attribute value
-  */
-function buildAttrColumnUI(rec, attrCode, attr) {
-    var matches = getRecMatchesFromAttrCode(rec, attrCode);
-    if(matches.length > 0) { // found some matches
-        return '<div class="match_div">' +
-            '<a href="javascript:void(0);" onclick="vlLoadMatchUI('+
-            rec.id()+',\''+attrCode+'\');">'+ 
-            attr.attr_value() + '&nbsp;('+matches.length+')</a></div>';
-    }
-
-    return attr.attr_value();
-}
-
+/*
 function getRecMatchesFromAttrCode(rec, attrCode) {
     var matches = [];
     var attr = getRecAttrFromCode(rec, attrCode);
@@ -403,6 +399,24 @@ function getRecMatchesFromAttrCode(rec, attrCode) {
             matches.push(match);
     }
     return matches;
+}
+*/
+
+function getRecAttrFromMatch(rec, match) {
+    for(var i = 0; i < rec.attributes().length; i++) {
+        var attr = rec.attributes()[i];
+        if(attr.id() == match.matched_attr())
+            return attr;
+    }
+}
+
+function getRecAttrDefFromAttr(attr, type) {
+    var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
+    for(var i = 0; i < defs.length; i++) {
+        var def = defs[i];
+        if(def.id() == attr.field())
+            return def;
+    }
 }
 
 function getRecAttrFromCode(rec, attrCode) {
@@ -416,15 +430,22 @@ function getRecAttrFromCode(rec, attrCode) {
     return null;
 }
 
+function vlGetViewMatches(rowIdx) {
+    var data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    var rec = queuedRecordsMap[data.id];
+    if(rec.matches().length > 0)
+        return this.value.replace('RECID', data.id);
+    return '';
+}
+
 function getAttrValue(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
     var attrCode = this.field.split('.')[1];
     var rec = queuedRecordsMap[data.id];
     var attr = getRecAttrFromCode(rec, attrCode);
-    if(attr)
-        return buildAttrColumnUI(rec, attrCode, attr);
-    return '';
+    return (attr) ? attr.attr_value() : '';
 }
 
 function vlGetDateTimeField(rowIdx) {
