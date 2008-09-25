@@ -51,7 +51,7 @@ LIBDBI=libdbi-0.8.3
 LIBDBI_DRIVERS=libdbi-drivers-0.8.3
 LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
-YAZ=yaz-2.1.56
+YAZ=yaz-3.0.34
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 # ejabberd is not packaged on CentOS/RHEL, so we have to
