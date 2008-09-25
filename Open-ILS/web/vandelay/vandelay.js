@@ -20,6 +20,11 @@ dojo.require("dijit.form.FilteringSelect");
 dojo.require("dijit.layout.LayoutContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
+dojo.require("dijit.layout.LayoutContainer");
+dojo.require('dijit.form.Button');
+dojo.require('dijit.Toolbar');
+dojo.require('dijit.Tooltip');
+dojo.require('dijit.Menu');
 dojo.require("dijit.Dialog");
 dojo.require("dojo.cookie");
 dojo.require("dojox.grid.Grid");
@@ -34,6 +39,7 @@ dojo.require('openils.Event');
 dojo.require('openils.MarcXPathParser');
 dojo.require('openils.GridColumnPicker');
 
+
 var globalDivs = [
     'vl-generic-progress',
     'vl-generic-progress-with-total',
@@ -42,7 +48,8 @@ var globalDivs = [
     'vl-match-div',
     'vl-marc-html-div',
     'vl-queue-select-div',
-    'vl-marc-upload-status-div'
+    'vl-marc-upload-status-div',
+    'vl-bib-attr-defs-div',
 ];
 
 var authtoken;
@@ -150,6 +157,8 @@ function vlInit() {
             checkInitDone();
         }
     );
+
+    bibAttrInit();
 }
 
 function vlRetrieveQueueList(type, filter, onload) {
@@ -166,6 +175,7 @@ function vlRetrieveQueueList(type, filter, onload) {
             }
         }
     );
+
 }
 
 function displayGlobalDiv(id) {
@@ -185,6 +195,7 @@ function runStartupCommands() {
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
     vlShowUploadForm();
+
 }
 
 /**
@@ -719,3 +730,105 @@ function vlFetchQueueFromForm() {
 }
 
 dojo.addOnLoad(vlInit);
+
+
+//------------------------------------------------------------
+// bib-attr, auth-attr 
+
+function bibAttrInit() {
+    // set up tooltips on attr_record forms
+    connectTooltip('bib-attr-tag'); 
+    connectTooltip('bib-attr-subfield'); 
+}
+
+function vlShowBibAttrDefs() {
+    displayGlobalDiv('vl-bib-attr-defs-div');
+    loadBibAttrGrid();
+}
+
+function idStyle(obid, k, v) { document.getElementById(obid).style[k] = v; }
+function show(obid) { idStyle(obid, 'display', 'block'); }
+function hide(obid) { idStyle(obid, 'display' , 'none'); }
+function textOf(obid) { return document.getElementById(obid).innerHTML; }
+
+function saveNewBibAttrRecord(arg) {
+    // pretend to save...
+    hide('vl-bib-attr-defs-div');
+    show('vl-generic-progress');
+    // not really saving anything yet. For now, just remove the
+    // progress bar after a moment and return to the table.
+    setTimeout("show('vl-bib-attr-defs-div');hide('vl-generic-progress');", 1000);
+}
+
+function onAttrEditorOpen() {
+}
+
+function onAttrEditorClose() {
+    // reset the form to a "create" form. (We may have borrowed it for "editing".)
+    var dialog = dojo.byId('bib-attr-dialog');
+    var create_bar = dialog.getElementsByClassName('create_bar')[0];
+    var update_bar = dialog.getElementsByClassName('update_bar')[0];
+    create_bar.style.display='table-row';
+    update_bar.style.display='none';
+    idStyle('vl-create-bib-attr-button', 'visibility', 'visible');
+    dijit.byId('bib-attr-dialog').reset();
+}
+
+function loadBibAttrGrid() {
+    var store = new dojo.data.ItemFileReadStore({data:vqbrad.toStoreData(bibAttrDefs)});
+    var model = new dojox.grid.data.DojoData(
+        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
+    bibAttrGrid.setModel(model);
+    bibAttrGrid.setStructure(bibAttrGridLayout);
+    bibAttrGrid.onRowClick = onBibAttrClick;
+    bibAttrGrid.update();
+}
+
+var xpathParser = new openils.MarcXPathParser();
+
+function getTag(n) {
+    // grid helper: return the tags from the row's xpath column.
+    var xp = this.grid.model.getRow(n);
+    return xp && xpathParser.parse(xp.xpath).tags;
+}
+
+function getSubfield(n) {
+    // grid helper: return the subfields from the row's xpath column.
+    var xp = this.grid.model.getRow(n);
+    return xp && xpathParser.parse(xp.xpath).subfields;
+}
+
+function connectTooltip(fieldId) {
+    // Given an element id, look up a tooltip element in the doc (same
+    // id with a '-tip' suffix) and associate the two. Maybe dojo has
+    // a better way to do this?
+    var fld = dojo.byId(fieldId);
+    var tip = dojo.byId(fieldId + '-tip');
+    dojo.connect(fld, 'onfocus', function(evt) {
+		     dijit.showTooltip(tip.innerHTML, fld, ['below', 'after']); });
+    dojo.connect(fld, 'onblur', function(evt) { dijit.hideTooltip(fld); });
+}
+
+
+function onBibAttrClick(evt) {
+    var row = bibAttrGrid.model.getRow(evt.rowIndex);
+    // populate the popup editor.
+    dojo.byId('oils-bib-attr-code').value = row.code;
+    dojo.byId('bib-attr-description').value = row.description;
+    var _xpath = row.xpath;
+    var xpath = xpathParser.parse(_xpath);
+    dojo.byId('bib-attr-tag').value = xpath.tags;
+    dojo.byId('bib-attr-subfield').value = xpath.subfields;
+    dojo.byId('bib-attr-ident-selector').value = (row.ident ? 'True':'False');
+    dojo.byId('bib-attr-xpath').value = _xpath;
+    dojo.byId('bib-attr-remove').value = row.remove;
+
+    // set up UI for editing
+    var dialog = dojo.byId('bib-attr-dialog');
+    var create_bar = dialog.getElementsByClassName('create_bar')[0];
+    var update_bar = dialog.getElementsByClassName('update_bar')[0];
+    create_bar.style.display='none';
+    update_bar.style.display='table-row';
+    idStyle('vl-create-bib-attr-button', 'visibility', 'hidden');
+    dojo.byId('vl-create-bib-attr-button').click();
+}

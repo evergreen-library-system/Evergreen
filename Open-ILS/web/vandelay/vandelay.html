@@ -21,6 +21,7 @@
             .container:after {content: ""; display: block; height: 0; clear: both; }
             .form_table td { padding: 6px; }
             table { border-collapse: collapse; }
+	    table.dijitTooltipTable { border-collapse: separate; } // else the tooltip-table is ugly
             .match_div {
                 height: 95%;
                 width: 95%;
@@ -60,6 +61,9 @@
                     onclick='displayGlobalDiv("vl-marc-upload-div");' showLabel="true">Import Records</div>
                 <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                     onclick='vlShowQueueSelect();' showLabel="true">Inspect Queue</div>
+
+		<div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+		     onclick="vlShowBibAttrDefs();" showLabel="true">Bib Attr Definitions</div>
             </div>
         </div>
 
@@ -324,11 +328,115 @@
                 </tr>
             </table>
         </div>
-        <!--
+
+	<!-- bib attribute definitions  -->
+        <div dojoType="dijit.layout.ContentPane"  id="vl-bib-attr-defs-div"
+                class='hidden bib-attr-detail-content-pane' title="Bib Attr Definition" style='height:400px;' layoutAlign="client">
+
+            <div class='vl-bib-attr-defs-actions-div' style='margin:8px;'>
+
+                <div dojoType="dijit.form.DropDownButton" id="vl-create-bib-attr-button">
+                    <span name="create">Create Attribute Definition</span>
+		    <span name="update" class="hidden">Update Attribute Definition</span>
+
+                    <div dojoType="dijit.TooltipDialog" execute="saveNewBibAttrRecord(arguments[0]);" id="bib-attr-dialog">
+                        <script type='dojo/connect' event='onOpen'>onAttrEditorOpen();</script>
+                        <script type='dojo/connect' event='onClose'>onAttrEditorClose();</script>
+                        <table class='dijitTooltipTable'>
+                            <tr>
+                                <td><label for="code">Code: </label></td>
+                                <td><input id='oils-bib-attr-code' name="code" dojoType="dijit.form.TextBox"/></td>
+                            </tr>
+                            <tr>
+                                <td><label for="description">Description: </label></td>
+                                <td><input id='bib-attr-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">Tag(s): </label></td>
+                                <td><input id="bib-attr-tag" dojoType="dijit.form.TextBox" name="tag"></input>
+				<div class="hidden" id="bib-attr-tag-tip">
+				<p>You can enter multiple tags, separated by spaces and/or commas.</p>
+				<p>Example: <code>120, 220, 300</code> or <code>120 220 330</code></p></div>
+				</td>
+                            </tr>
+
+                            <tr>
+                                <td><label for="amount">Subfield(s): </label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="subfield" id="bib-attr-subfield"></input></td>
+				<div class="hidden" id="bib-attr-subfield-tip">
+				<p>You can enter multiple subfields, separated by spaces and/or commas.</p>
+				<p>Example: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
+
+                            </tr>
+                            <tr>
+                                <td><label for="ident">Identifer Field?: </label></td>
+                                <td>
+                                    <select dojoType="dijit.form.FilteringSelect" name="ident" id="bib-attr-ident-selector">
+                                        <option value='f' selected='selected'>False</option>
+                                        <option value='t'>True</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">XPath (advanced): </label></td>
+
+                                <td><input dojoType="dijit.form.TextBox" id="bib-attr-xpath" name="xpath"></input></td>
+                            </tr>
+                            <tr>
+                                <td><label for="amount">Remove (advanced): </label></td>
+
+                                <td><input dojoType="dijit.form.TextBox" id="bib-attr-remove" name="remove"></input></td>
+                            </tr>
+                            <tr class="create_bar">
+                                <td colspan='2' align='center'>
+                                    <button dojoType="dijit.form.Button" type="submit" 
+					    id="bib-attr-create-button">Create</button>
+				    <button type="button" dojoType="dijit.form.Button"
+					    onclick="dijit.byId('bib-attr-dialog').onCancel();">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr class="update_bar">
+                                <td colspan='2' align='center'>
+                                    <button dojoType="dijit.form.Button" type="submit" 
+					    id="bib-attr-update-button">Update</button>
+				    <button type="button" dojoType="dijit.form.Button"
+					    onclick="dijit.byId('bib-attr-dialog').onCancel();">Cancel</button>
+                                    <button dojoType="dijit.form.Button" 
+					    type="button" 
+					    id="bib-attr-delete-button"
+					    style="padding-left: 2em;">Delete record</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+	    </div>
+	    <script>
+		var bibAttrGridLayout = [{
+		cells : [[
+		{name: 'ID', field: 'id'},
+		{name: 'Code', field:'code', width:'auto'},
+		{name: 'Description', field: "description", width:'auto'}, 
+		{name: 'Tag', get:getTag},
+		{name: 'Subfield', get: getSubfield},
+		{name: 'Identifier', field:'ident'},
+		{name: 'XPath', field:'xpath', width:'auto'},
+		{name: 'Remove', field:'remove', width:'auto'}
+		]]
+		}];
+	      </script>
+
+	      <div class='tall'>
+		<div dojoType='dojox.Grid' jsId='bibAttrGrid'> </div>
+	      </div>
+
+	</div>
+
         <div style='text-align:center;width:100%;' dojoType="dijit.layout.ContentPane" layoutAlign='bottom'>
             Powered by Evergreen!
         </div>
-        -->
       </div>
     </body>
 </html>
