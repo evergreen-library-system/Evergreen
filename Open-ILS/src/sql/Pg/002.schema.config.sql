@@ -445,12 +445,14 @@ CREATE TABLE config.bib_level_map (
 );
 
 CREATE TABLE config.z3950_source (
-	name	TEXT	PRIMARY KEY,
-	label	TEXT	NOT NULL UNIQUE,
-	host	TEXT	NOT NULL,
-	port	INT	NOT NULL,
-	db	TEXT	NOT NULL,
-	auth	BOOL	NOT NULL DEFAULT TRUE
+	name			TEXT	PRIMARY KEY,
+	label			TEXT	NOT NULL UNIQUE,
+	host			TEXT	NOT NULL,
+	port			INT	NOT NULL,
+	db			TEXT	NOT NULL,
+	record_format		TEXT	NOT NULL DEFAULT 'FI',
+	transmission_format	TEXT	NOT NULL DEFAULT 'usmarc',
+	auth			BOOL	NOT NULL DEFAULT TRUE
 );
 
 INSERT INTO config.z3950_source (name,label,host,port,db,auth) VALUES ('loc','Library of Congress','z3950.loc.gov',7090,'Voyager',FALSE);
