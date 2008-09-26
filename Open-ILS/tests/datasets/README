@@ -7,3 +7,4 @@ The following table lists the data sets we have collected for testing purposes.
 | lul_fre_500.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 500 records, French, pre-1923  |
 | jazz_1k.marc      | MARC21    | MARC8    | Unicorn GL3.1 | 1000 records  |
 | music_5k.marc     | MARC21    | MARC8    | Unicorn GL3.1 | 5000 records  |
+| hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
