@@ -173,6 +173,10 @@
                                         <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
+                                        Limit to Non-Imported Records 
+                                        <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/>
+                                    </td>
+                                    <td class='filter_td' style='padding-left:5px;'>
                                         Results Per Page 
                                         <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
                                             <option value='10'>10</option>
@@ -403,9 +407,11 @@
 
 	</div>
 
+        <!--
         <div style='text-align:center;width:100%;' dojoType="dijit.layout.ContentPane" layoutAlign='bottom'>
             Powered by Evergreen!
         </div>
+        -->
       </div>
     </body>
 </html>

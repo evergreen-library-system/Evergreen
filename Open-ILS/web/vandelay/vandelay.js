@@ -266,6 +266,11 @@ function retrieveQueuedRecords(type, queueId, onload) {
     var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
+    var params = [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
+
+    if(vlQueueGridShowNonImport.checked)
+        params[2].non_imported = 1;
+        
 
     var limit = parseInt(vlQueueDisplayLimit.getValue());
     var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
@@ -273,12 +278,8 @@ function retrieveQueuedRecords(type, queueId, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId, 
-                {   clear_marc: 1, 
-                    offset: offset,
-                    limit: limit
-                }
-            ],
+            params: params,
+
             /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
             onresponse: function(r) {
                 var rec = r.recv().content();

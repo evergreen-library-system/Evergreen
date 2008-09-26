@@ -342,14 +342,16 @@ sub retrieve_queue {
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
 
+    my $filter = ($$options{non_imported}) ? {import_time => undef} : {};
+
     my $record_ids;
     if($self->api_name =~ /matches/) {
         # fetch only matched records
-        $record_ids = queued_records_with_matches($e, $type, $queue_id, $limit, $offset);
+        $record_ids = queued_records_with_matches($e, $type, $queue_id, $limit, $offset, $filter);
     } else {
         # fetch all queue records
         $record_ids = $e->$search([
-                {queue => $queue_id}, 
+                {queue => $queue_id, %$filter}, 
                 {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
             ],
             {idlist => 1}
