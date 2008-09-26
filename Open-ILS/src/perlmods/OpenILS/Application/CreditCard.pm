@@ -31,6 +31,7 @@ use OpenSRF::Utils::SettingsClient;
 use Business::CreditCard;
 use Business::CreditCard::Object;
 use Business::OnlinePayment;
+my $U = "OpenILS::Application::AppUtils";
 
 
 __PACKAGE__->register_method(
@@ -229,7 +230,7 @@ __PACKAGE__->register_method(
     method    => 'retrieve_payable_balance',
     api_name  => 'open-ils.credit.payable_balance.retrieve',
     signature => {
-        desc   => '',
+        desc   => q/Returns the total amount of the patron can pay via credit card/,
         params => [
             { desc => 'Authentication token',      type => 'string' },
             { desc => 'Authentication token', type => 'string' },
@@ -241,24 +242,27 @@ __PACKAGE__->register_method(
 
 sub retrieve_payable_balance {
     my ( $self, $conn, $auth, $user_id ) = @_;
-    my $e = new_editor( authtoken => $auth );
+    my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
 
-    if ( $e->requestor->id != $user_id ) {
-        # XXX check perm
+    my $user = $e->retrieve_actor_user($user_id) 
+        or return $e->event;
+
+    if($e->requestor->id != $user_id) {
+        return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou)
     }
 
     my $circ_orgs = $e->json_query({
-        "select" => { "circ" => ["circ_lib"] },
+        "select" => {circ => ["circ_lib"]},
         from     => "circ",
-        "where"  => { "usr" => $user_id, xact_finish => undef },
+        "where"  => {usr => $user_id, xact_finish => undef},
         distinct => 1
     });
 
     my $groc_orgs = $e->json_query({
-        "select" => { "mg" => ["billing_location"] },
+        "select" => {mg => ["billing_location"]},
         from     => "mg",
-        "where"  => { "usr" => $user_id, xact_finish => undef },
+        "where"  => {usr => $user_id, xact_finish => undef},
         distinct => 1
     });
 
@@ -268,18 +272,15 @@ sub retrieve_payable_balance {
         my $o = $org->{billing_location};
         $o = $org->{circ_lib} unless $o;
         next if $hash{$org};
-        $hash{$o} =
-          OpenILS::Application::AppUtils->simplereq( 'open-ils.actor',
-            'open-ils.actor.ou_setting.ancestor_default',
-            $o, 'credit.allow' );
+        $hash{$o} = $U->ou_ancestor_setting_value($o, 'global.credit.allow', $e);
     }
 
     my @credit_orgs = map { $hash{$_} ? ($_) : () } keys %hash;
+    $logger->debug("credit: relevent orgs that allow credit payments => @credit_orgs");
 
     my $xact_summaries =
-      OpenILS::Application::AppUtils->simplereq( 'open-ils.actor',
-        'open-ils.actor.user.transactions.have_charge',
-        $auth, $user_id );
+      OpenILS::Application::AppUtils->simplereq('open-ils.actor',
+        'open-ils.actor.user.transactions.have_charge', $auth, $user_id);
 
     my $sum = 0.0;
 
@@ -287,15 +288,14 @@ sub retrieve_payable_balance {
 
         # make two lists and grab them in batch XXX
         if ( $xact->xact_type eq 'circulation' ) {
-            my $circ =
-              $e->search_action_circulation( { id => $xact->id } )->[0];
+            my $circ = $e->retrieve_action_circulation($xact->id) or return $e->event;
             next unless grep { $_ == $circ->circ_lib } @credit_orgs;
-        }
-        else {
-            my $bill = $e->search_money_grocery( { id => $xact } )->[0];
+
+        } else {
+            my $bill = $e->retrieve_money_grocery($xact->id) or return $e->event;
             next unless grep { $_ == $bill->billing_location } @credit_orgs;
         }
-        $sum += $xact->ballance_owed();
+        $sum += $xact->balance_owed();
     }
 
     return $sum;
