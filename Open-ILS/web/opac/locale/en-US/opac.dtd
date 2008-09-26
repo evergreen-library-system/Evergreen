@@ -464,6 +464,12 @@ Please see a librarian to renew your account.">
 <!ENTITY advanced.sort.desc "Descending / Z to A">
 <!ENTITY advanced.frbrize "Group Formats and Editions">
 <!ENTITY advanced.go "Go">
+<!ENTITY advanced.biblevel "Bib Level">
+<!ENTITY advanced.filter.pubyear "Publication Year">
+<!ENTITY advanced.filter.pubyear.equals "Is">
+<!ENTITY advanced.filter.pubyear.before "Before">
+<!ENTITY advanced.filter.pubyear.after "After">
+<!ENTITY advanced.filter.pubyear.between "Between">
 
 <!--	================================================================= 
 	Rdetail

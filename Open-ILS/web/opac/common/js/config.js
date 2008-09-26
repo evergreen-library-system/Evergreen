@@ -39,6 +39,10 @@ var PARAM_RDEPTH		= 'rd';
 var PARAM_REDIR		= 're'; /* true if we have been redirected by IP (we're at a real lib) */
 var PARAM_AVAIL     = 'av'; /* limit search results to available items */
 var PARAM_COPYLOCS  = 'cl'; // copy (shelving) locations
+var PARAM_PUBD_BEFORE = 'pdb';
+var PARAM_PUBD_AFTER = 'pda';
+var PARAM_PUBD_BETWEEN = 'pdt';
+var PARAM_PUBD_DURING = 'pdd';
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -75,6 +79,10 @@ var TFORM;
 var RDEPTH;
 var AVAIL;
 var COPYLOCS;
+var PUBD_BEFORE;
+var PUBD_AFTER;
+var PUBD_BETWEEN;
+var PUBD_DURING;
 
 /* cookie values */
 var SBEXTRAS; 

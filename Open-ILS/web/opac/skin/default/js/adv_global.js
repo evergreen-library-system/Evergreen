@@ -49,9 +49,34 @@ function advgInit() {
     if(getAvail())
         $('opac.result.limit2avail').checked = true;
 
-    initSearchBoxes();
+    // not sure we want to propogate the pubdate filter, 
+    // since other filters are not propogated
+    //advInitPubFilter();
 
+    initSearchBoxes();
     advSyncCopyLocLink(getLocation());
+}
+
+function advInitPubFilter() {
+    var i1 = $('adv_global_pub_date_1');
+    var i2 = $('adv_global_pub_date_2');
+    var sel = $('adv_global_pub_date_type');
+    if(getPubdBefore()) {
+        i1.value = getPubdBefore();
+        setSelector(sel, 'before');
+    } else if(getPubdAfter()) {
+        i1.value = getPubdAfter();
+        setSelector(sel, 'after');
+    } else if(getPubdBetween()) {
+        var values = getPubdBetween().split(','); 
+        i1.value = values[0]
+        if(values[0] == values[1]) {
+            setSelector(sel, 'equals');
+        } else {
+            setSelector(sel, 'between');
+            i2.value = values[1];
+        }
+    }
 }
 
 function advSyncCopyLocLink(org) {
@@ -201,6 +226,27 @@ function advSubmitGlobal() {
 	args[PARAM_STYPE]		= "";
 	args[PARAM_TERM]		= searches;
 	args[PARAM_AVAIL]		= limit2avail;
+
+    // publicate year filtering
+    var pub1;
+    if( (pub1 = $('adv_global_pub_date_1').value) && (''+pub1).match(/\d{4}/)) {
+        switch(getSelectorVal($('adv_global_pub_date_type'))) {
+            case 'equals':
+	            args[PARAM_PUBD_BETWEEN] = pub1+','+pub1;
+                break;
+            case 'before':
+	            args[PARAM_PUBD_BEFORE] = pub1;
+                break;
+            case 'after':
+	            args[PARAM_PUBD_AFTER] = pub1;
+                break;
+            case 'between':
+                var pub2 = $('adv_global_pub_date_2').value;
+                if((''+pub2).match(/\d{4}/))
+	                args[PARAM_PUBD_BETWEEN] = pub1+','+pub2;
+                break;
+        }
+    }
 
 	/* pubdate sorting causes a record (not metarecord) search */
 	if( sortby == SORT_TYPE_PUBDATE || !$('adv_group_titles').checked ) {
