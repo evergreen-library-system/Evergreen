@@ -239,6 +239,16 @@ function _rdetailDraw(r) {
 		}
 	}
 
+	// Fill in our unAPI ID, if anyone cares
+	var abbrs = document.getElementsByTagName('abbr');
+	var span;
+	for (var i = 0; i < abbrs.length; i = i + 1) {
+		if (abbrs[i].getAttribute('name') == 'unapi') {
+			span = abbrs[i];
+			break;
+		}
+	}
+	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
 	$('rdetail_place_hold').setAttribute(
 		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
