@@ -86,43 +86,42 @@ sub query_services {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
 
+    my $hash = $sclient->config_value('z3950', 'services');
+
+    # overlay config file values with in-db values
     if($e->can('search_config_z3950_source')) {
 
-        my $sources = $e->search_config_z3950_source( 
-            [ { name => { '!=' => undef } }, 
-            { flesh => 1, flesh_fields => { czs => ['attrs'] } }]  
-        ); 
+        my $sources = $e->search_config_z3950_source(
+            [ { name => { '!=' => undef } },
+              { flesh => 1, flesh_fields => { czs => ['attrs'] } } ]
+        );
 
-        my %hash = (); 
-        for my $s ( @$sources ) { 
-            $hash{ $s->name } = { 
-                name => $s->name, 
-                label => $s->label, 
-                host => $s->host, 
-                port => $s->port, 
-                db => $s->db, 
-                record_format => $s->record_format, 
-                transmission_format => $s->transmission_format, 
-                auth => $s->auth, 
-            }; 
+        for my $s ( @$sources ) {
+            $$hash{ $s->name } = {
+                name => $s->name,
+                label => $s->label,
+                host => $s->host,
+                port => $s->port,
+                db => $s->db,
+                record_format => $s->record_format,
+                transmission_format => $s->transmission_format,
+                auth => $s->auth,
+            };
 
-            for my $a ( @{ $s->attrs } ) { 
-                $hash{ $a->source }{attrs}{ $a->name } = { 
-                    name => $a->name, 
-                    label => $a->label, 
-                    code => $a->code, 
-                    format => $a->format, 
-                    source => $a->source, 
-                    truncation => $a->truncation, 
-                }; 
-            } 
-        } 
-
-        return \%hash; 
-
-    } else {
-        return $sclient->config_value('z3950', 'services');
+            for my $a ( @{ $s->attrs } ) {
+                $$hash{ $a->source }{attrs}{ $a->name } = {
+                    name => $a->name,
+                    label => $a->label,
+                    code => $a->code,
+                    format => $a->format,
+                    source => $a->source,
+                    truncation => $a->truncation,
+                };
+            }
+        }
     }
+
+    return $hash;
 }
 
 
