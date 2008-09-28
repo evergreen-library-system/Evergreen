@@ -420,6 +420,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+    <class id="czs" controller="open-ils.cstore" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
+        <fields oils_persist:primary="name">
+            <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+            <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+            <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+            <field reporter:label="Z39.50 Source" name="name" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+            <field reporter:label="Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Host" name="host" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text"/>
+            <field reporter:label="Port" name="port" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="int"/>
+            <field reporter:label="DB" name="db" oils_obj:array_position="7" oils_persist:virtual="false"  reporter:datatype="text"/>
+            <field reporter:label="Record Format" name="record_format" oils_obj:array_position="8" oils_persist:virtual="false"  reporter:datatype="text"/>
+            <field reporter:label="Transmission Format" name="transmission_format" oils_obj:array_position="9" oils_persist:virtual="false"  reporter:datatype="text"/>
+            <field reporter:label="Auth" name="auth" oils_obj:array_position="10" oils_persist:virtual="false"  reporter:datatype="bool"/>
+            <field reporter:label="Attrs" name="attrs" oils_obj:array_position="11" oils_persist:virtual="true"  reporter:datatype="link"/>
+        </fields>
+        <links>
+            <link field="attrs" reltype="has_many" key="source" map="" class="cza"/>
+        </links>
+    </class>
+
+    <class id="cza" controller="open-ils.cstore" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.z3950_attr_id_seq">
+            <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+            <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+            <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+            <field reporter:label="Z39.50 Attr ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+            <field reporter:label="Z39.50 Source" name="source" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+            <field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+            <field reporter:label="Label" name="label" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Code" name="code" oils_obj:array_position="7" oils_persist:virtual="false"  reporter:datatype="int"/>
+            <field reporter:label="Format" name="format" oils_obj:array_position="8" oils_persist:virtual="false"  reporter:datatype="int"/>
+            <field reporter:label="Truncation" name="truncation" oils_obj:array_position="9" oils_persist:virtual="false"  reporter:datatype="int"/>
+        </fields>
+        <links>
+            <link field="source" reltype="has_a" key="name" map="" class="czs"/>
+        </links>
+    </class>
+
 	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

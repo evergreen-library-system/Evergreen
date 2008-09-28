@@ -444,6 +444,51 @@ CREATE TABLE config.bib_level_map (
 	value	TEXT	NOT NULL
 );
 
+CREATE TABLE config.z3950_source (
+    name                TEXT    PRIMARY KEY,
+    label               TEXT    NOT NULL UNIQUE,
+    host                TEXT    NOT NULL,
+    port                INT     NOT NULL,
+    db                  TEXT    NOT NULL,
+    record_format       TEXT    NOT NULL DEFAULT 'FI',
+    transmission_format TEXT    NOT NULL DEFAULT 'usmarc',
+    auth                BOOL    NOT NULL DEFAULT TRUE
+);
+
+INSERT INTO config.z3950_source (name,label,host,port,db,auth) VALUES ('loc','Library of Congress','z3950.loc.gov',7090,'Voyager',FALSE);
+INSERT INTO config.z3950_source (name,label,host,port,db) VALUES ('oclc','OCLC','zcat.oclc.org',210,'OLUCWorldCat');
+
+CREATE TABLE config.z3950_attr (
+    id          SERIAL  PRIMARY KEY,
+    source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+    name        TEXT    NOT NULL,
+    label       TEXT    NOT NULL,
+    code        INT     NOT NULL,
+    format      INT     NOT NULL,
+    truncation  INT     NOT NULL DEFAULT 0,
+    CONSTRAINT z_code_format_once_per_source UNIQUE (code,format,source)
+);
+
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','tcn','Title Control Number',12,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','isbn','ISBN',7,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','lccn','LCCN',9,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','author','Author',1003,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','title','Title',4,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','issn','ISSN',8,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','publisher','Publisher',1018,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','pubdate','Publication Date',31,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('loc','item_type','Item Type',1001,1);
+
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','tcn','Title Control Number',12,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','isbn','ISBN',7,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','lccn','LCCN',9,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','author','Author',1003,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','title','Title',4,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','issn','ISSN',8,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','publisher','Publisher',1018,6);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','pubdate','Publication Date',31,1);
+INSERT INTO config.z3950_attr (source,name,label,code,format) VALUES ('oclc','item_type','Item Type',1001,1);
+
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
     marc_code   TEXT    NOT NULL REFERENCES config.language_map (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
