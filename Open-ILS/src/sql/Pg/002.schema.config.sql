@@ -459,12 +459,13 @@ INSERT INTO config.z3950_source (name,label,host,port,db,auth) VALUES ('loc','Li
 INSERT INTO config.z3950_source (name,label,host,port,db) VALUES ('oclc','OCLC','zcat.oclc.org',210,'OLUCWorldCat');
 
 CREATE TABLE config.z3950_attr (
-	id	SERIAL	PRIMARY KEY,
-	source	TEXT	NOT NULL REFERENCES config.z3950_source (name),
-	name	TEXT	NOT NULL,
-	label	TEXT	NOT NULL,
-	code	INT	NOT NULL,
-	format	INT	NOT NULL,
+	id          SERIAL  PRIMARY KEY,
+	source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+	name        TEXT    NOT NULL,
+	label       TEXT    NOT NULL,
+	code        INT     NOT NULL,
+	format      INT     NOT NULL,
+	truncation  INT     NOT NULL DEFAULT 0,
 	CONSTRAINT z_code_format_once_per_source UNIQUE (code,format,source)
 );
 

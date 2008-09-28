@@ -99,6 +99,8 @@ sub query_services {
             host => $s->host, 
             port => $s->port, 
             db => $s->db, 
+            record_format => $s->record_format,
+            transmission_format => $s->transmission_format,
             auth => $s->auth, 
         }; 
 
@@ -109,6 +111,7 @@ sub query_services {
                 code => $a->code, 
                 format => $a->format, 
                 source => $a->source, 
+                truncation => $a->truncation, 
             }; 
         } 
     } 

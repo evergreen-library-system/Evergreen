@@ -345,7 +345,7 @@ BEGIN
     END IF;
 
     IF param_between IS NOT NULL AND array_upper(param_between, 1) > 1 THEN
-        where_clause = where_clause || $$ AND mrd.date1 BETWEEN $$ || array_to_string(param_bib_level, $$' AND '$$) || ' ';
+        where_clause = where_clause || $$ AND mrd.date1 BETWEEN '$$ || array_to_string(param_between, $$' AND '$$) || $$' $$;
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||
