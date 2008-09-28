@@ -787,271 +787,271 @@ UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 
 INSERT INTO permission.perm_list VALUES 
     (-1, 'EVERYTHING', NULL);
 INSERT INTO permission.perm_list VALUES 
-    (2, 'OPAC_LOGIN', NULL);
+    (2, 'OPAC_LOGIN', oils_i18n_gettext(2, 'Allow a user to log in to the OPAC', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (4, 'STAFF_LOGIN', NULL);
+    (4, 'STAFF_LOGIN', oils_i18n_gettext(4, 'Allow a user to log in to the staff client', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (5, 'MR_HOLDS', NULL);
+    (5, 'MR_HOLDS', oils_i18n_gettext(5, 'Allow a user to create a metarecord holds', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (6, 'TITLE_HOLDS', NULL);
+    (6, 'TITLE_HOLDS', oils_i18n_gettext(6, 'Allow a user to place a hold at the title level', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (7, 'VOLUME_HOLDS', NULL);
+    (7, 'VOLUME_HOLDS', oils_i18n_gettext(7, 'Allow a user to place a volume level hold', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (8, 'COPY_HOLDS', oils_i18n_gettext(8, 'User is allowed to place a hold on a specific copy', 'ppl', 'description'));
+    (8, 'COPY_HOLDS', oils_i18n_gettext(8, 'Allow a user to place a hold on a specific copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (9, 'REQUEST_HOLDS', NULL);
+    (9, 'REQUEST_HOLDS', oils_i18n_gettext(9, 'Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (10, 'REQUEST_HOLDS_OVERRIDE', NULL);
+    (10, 'REQUEST_HOLDS_OVERRIDE', oils_i18n_gettext(10, '* no longer applicable', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (11, 'VIEW_HOLD', oils_i18n_gettext(11, 'Allows a user to view another user''s holds', 'ppl', 'description'));
+    (11, 'VIEW_HOLD', oils_i18n_gettext(11, 'Allow a user to view another user''s holds', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (13, 'DELETE_HOLDS', NULL);
+    (13, 'DELETE_HOLDS', oils_i18n_gettext(13, '* no longer applicable', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (14, 'UPDATE_HOLD', oils_i18n_gettext(14, 'Allows a user to update another user''s hold', 'ppl', 'description'));
+    (14, 'UPDATE_HOLD', oils_i18n_gettext(14, 'Allow a user to update another user''s hold', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (15, 'RENEW_CIRC', NULL);
+    (15, 'RENEW_CIRC', oils_i18n_gettext(15, 'Allow a user to renew items', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (16, 'VIEW_USER_FINES_SUMMARY', NULL);
+    (16, 'VIEW_USER_FINES_SUMMARY', oils_i18n_gettext(16, 'Allow a user to view bill details', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (17, 'VIEW_USER_TRANSACTIONS', NULL);
+    (17, 'VIEW_USER_TRANSACTIONS', oils_i18n_gettext(17, 'Allow a user to see another user''s grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (18, 'UPDATE_MARC', NULL);
+    (18, 'UPDATE_MARC', oils_i18n_gettext(18, 'Allow a user to edit a MARC record', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (19, 'CREATE_MARC', oils_i18n_gettext(19, 'User is allowed to create new MARC records', 'ppl', 'description'));
+    (19, 'CREATE_MARC', oils_i18n_gettext(19, 'Allow a user to create new MARC records', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (20, 'IMPORT_MARC', NULL);
+    (20, 'IMPORT_MARC', oils_i18n_gettext(20, 'Allow a user to import a MARC record via the Z39.50 interface', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (21, 'CREATE_VOLUME', NULL);
+    (21, 'CREATE_VOLUME', oils_i18n_gettext(21, 'Allow a user to create a volume', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (22, 'UPDATE_VOLUME', NULL);
+    (22, 'UPDATE_VOLUME', oils_i18n_gettext(22, 'Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records.', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (23, 'DELETE_VOLUME', NULL);
+    (23, 'DELETE_VOLUME', oils_i18n_gettext(23, 'Allow a user to delete a volume', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (25, 'UPDATE_COPY', NULL);
+    (25, 'UPDATE_COPY', oils_i18n_gettext(25, 'Allow a user to edit a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (26, 'DELETE_COPY', NULL);
+    (26, 'DELETE_COPY', oils_i18n_gettext(26, 'Allow a user to delete a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (27, 'RENEW_HOLD_OVERRIDE', NULL);
+    (27, 'RENEW_HOLD_OVERRIDE', oils_i18n_gettext(27, 'Allow a user to continue to renew an item even if it is required for a hold', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (28, 'CREATE_USER', NULL);
+    (28, 'CREATE_USER', oils_i18n_gettext(28, 'Allow a user to create another user', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (29, 'UPDATE_USER', NULL);
+    (29, 'UPDATE_USER', oils_i18n_gettext(29, 'Allow a user to edit a user''s record', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (30, 'DELETE_USER', NULL);
+    (30, 'DELETE_USER', oils_i18n_gettext(30, 'Allow a user to mark a user as deleted', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (31, 'VIEW_USER', NULL);
+    (31, 'VIEW_USER', oils_i18n_gettext(31, 'Allow a user to view another user''s Patron Record', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (32, 'COPY_CHECKIN', NULL);
+    (32, 'COPY_CHECKIN', oils_i18n_gettext(32, 'Allow a user to check in a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (33, 'CREATE_TRANSIT', NULL);
+    (33, 'CREATE_TRANSIT', oils_i18n_gettext(33, 'Allow a user to place an item in transit', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (34, 'VIEW_PERMISSION', NULL);
+    (34, 'VIEW_PERMISSION', oils_i18n_gettext(34, 'Allow a user to view user permissions within the user permissions editor', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (35, 'CHECKIN_BYPASS_HOLD_FULFILL', NULL);
+    (35, 'CHECKIN_BYPASS_HOLD_FULFILL', oils_i18n_gettext(35, '* no longer applicable', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (36, 'CREATE_PAYMENT', NULL);
+    (36, 'CREATE_PAYMENT', oils_i18n_gettext(36, 'Allow a user to record payments in the Billing Interface', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (37, 'SET_CIRC_LOST', NULL);
+    (37, 'SET_CIRC_LOST', oils_i18n_gettext(37, 'Allow a user to mark an item as ''lost''', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (38, 'SET_CIRC_MISSING', NULL);
+    (38, 'SET_CIRC_MISSING', oils_i18n_gettext(38, 'Allow a user to mark an item as ''missing''', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (39, 'SET_CIRC_CLAIMS_RETURNED', NULL);
+    (39, 'SET_CIRC_CLAIMS_RETURNED', oils_i18n_gettext(39, 'Allow a user to mark an item as ''claims returned''', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (41, 'CREATE_TRANSACTION', oils_i18n_gettext(41, 'User may create new billable transactions', 'ppl', 'description'));
+    (41, 'CREATE_TRANSACTION', oils_i18n_gettext(41, 'Allow a user to create a new billable transaction', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (43, 'CREATE_BILL', oils_i18n_gettext(43, 'Allows a user to create a new bill on a transaction', 'ppl', 'description'));
+    (43, 'CREATE_BILL', oils_i18n_gettext(43, 'Allow a user to create a new bill on a transaction', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (44, 'VIEW_CONTAINER', oils_i18n_gettext(44, 'Allows a user to view another user''s containers (buckets)', 'ppl', 'description'));
+    (44, 'VIEW_CONTAINER', oils_i18n_gettext(44, 'Allow a user to view another user''s containers (buckets)', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (45, 'CREATE_CONTAINER', oils_i18n_gettext(45, 'Allows a user to create a new container for another user', 'ppl', 'description'));
+    (45, 'CREATE_CONTAINER', oils_i18n_gettext(45, 'Allow a user to create a new container for another user', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (24, 'CREATE_COPY', oils_i18n_gettext(24, 'User is allowed to create a new copy object', 'ppl', 'description'));
+    (24, 'CREATE_COPY', oils_i18n_gettext(24, 'Allow a user to create a new copy object', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (47, 'UPDATE_ORG_UNIT', oils_i18n_gettext(47, 'Allows a user to change org unit settings', 'ppl', 'description'));
+    (47, 'UPDATE_ORG_UNIT', oils_i18n_gettext(47, 'Allow a user to change the settings for an organization unit', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (48, 'VIEW_CIRCULATIONS', oils_i18n_gettext(48, 'Allows a user to see what another use has checked out', 'ppl', 'description'));
+    (48, 'VIEW_CIRCULATIONS', oils_i18n_gettext(48, 'Allow a user to see what another use has checked out', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'User may view another user''s transactions', 'ppl', 'description'));
+    (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'Allow a user may view another user''s transactions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (49, 'DELETE_CONTAINER', oils_i18n_gettext(49, 'Allows a user to delete another user container', 'ppl', 'description'));
+    (49, 'DELETE_CONTAINER', oils_i18n_gettext(49, 'Allow a user to delete another user container', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (50, 'CREATE_CONTAINER_ITEM', oils_i18n_gettext(50, 'Create a container item for another user', 'ppl', 'description'));
+    (50, 'CREATE_CONTAINER_ITEM', oils_i18n_gettext(50, 'Allow a user to create a container item for another user', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (51, 'CREATE_USER_GROUP_LINK', oils_i18n_gettext(51, 'User can add other users to permission groups', 'ppl', 'description'));
+    (51, 'CREATE_USER_GROUP_LINK', oils_i18n_gettext(51, 'Allow a user to add other users to permission groups', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (52, 'REMOVE_USER_GROUP_LINK', oils_i18n_gettext(52, 'User can remove other users from permission groups', 'ppl', 'description'));
+    (52, 'REMOVE_USER_GROUP_LINK', oils_i18n_gettext(52, 'Allow a user to remove other users from permission groups', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (53, 'VIEW_PERM_GROUPS', oils_i18n_gettext(53, 'Allow user to view others'' permission groups', 'ppl', 'description'));
+    (53, 'VIEW_PERM_GROUPS', oils_i18n_gettext(53, 'Allow a user to view other users'' permission groups', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (54, 'VIEW_PERMIT_CHECKOUT', oils_i18n_gettext(54, 'Allows a user to determine of another user can checkout an item', 'ppl', 'description'));
+    (54, 'VIEW_PERMIT_CHECKOUT', oils_i18n_gettext(54, 'Allow a user to determine whether another user can check out an item', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (55, 'UPDATE_BATCH_COPY', oils_i18n_gettext(55, 'Allows a user to edit copies in batch', 'ppl', 'description'));
+    (55, 'UPDATE_BATCH_COPY', oils_i18n_gettext(55, 'Allow a user to edit copies in batch', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (56, 'CREATE_PATRON_STAT_CAT', oils_i18n_gettext(56, 'User may create a new patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (57, 'CREATE_COPY_STAT_CAT', oils_i18n_gettext(57, 'User may create a copy stat cat', 'ppl', 'description'));
+    (57, 'CREATE_COPY_STAT_CAT', oils_i18n_gettext(57, 'User may create a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (58, 'CREATE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(58, 'User may create a new patron stat cat entry', 'ppl', 'description'));
+    (58, 'CREATE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(58, 'User may create an entry in a patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (59, 'CREATE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(59, 'User may create a new copy stat cat entry', 'ppl', 'description'));
+    (59, 'CREATE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(59, 'User may create an entry in a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (60, 'UPDATE_PATRON_STAT_CAT', oils_i18n_gettext(60, 'User may update a patron stat cat', 'ppl', 'description'));
+    (60, 'UPDATE_PATRON_STAT_CAT', oils_i18n_gettext(60, 'User may update a patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (61, 'UPDATE_COPY_STAT_CAT', oils_i18n_gettext(61, 'User may update a copy stat cat', 'ppl', 'description'));
+    (61, 'UPDATE_COPY_STAT_CAT', oils_i18n_gettext(61, 'User may update a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (62, 'UPDATE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(62, 'User may update a patron stat cat entry', 'ppl', 'description'));
+    (62, 'UPDATE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(62, 'User may update an entry in a patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (63, 'UPDATE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(63, 'User may update a copy stat cat entry', 'ppl', 'description'));
+    (63, 'UPDATE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(63, 'User may update an entry in a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (65, 'CREATE_COPY_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(65, 'User may link a copy to a stat cat entry', 'ppl', 'description'));
+    (65, 'CREATE_COPY_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(65, 'User may link a copy to an entry in a statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (64, 'CREATE_PATRON_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(64, 'User may link another user to a stat cat entry', 'ppl', 'description'));
+    (64, 'CREATE_PATRON_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(64, 'User may link another user to an entry in a statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (66, 'DELETE_PATRON_STAT_CAT', oils_i18n_gettext(66, 'User may delete a patron stat cat', 'ppl', 'description'));
+    (66, 'DELETE_PATRON_STAT_CAT', oils_i18n_gettext(66, 'User may delete a patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (67, 'DELETE_COPY_STAT_CAT', oils_i18n_gettext(67, 'User may delete a copy stat cat', 'ppl', 'description'));
+    (67, 'DELETE_COPY_STAT_CAT', oils_i18n_gettext(67, 'User may delete a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (68, 'DELETE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(68, 'User may delete a patron stat cat entry', 'ppl', 'description'));
+    (68, 'DELETE_PATRON_STAT_CAT_ENTRY', oils_i18n_gettext(68, 'User may delete an entry from a patron statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (69, 'DELETE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(69, 'User may delete a copy stat cat entry', 'ppl', 'description'));
+    (69, 'DELETE_COPY_STAT_CAT_ENTRY', oils_i18n_gettext(69, 'User may delete an entry from a copy statistical category', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (70, 'DELETE_PATRON_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(70, 'User may delete a patron stat cat entry map', 'ppl', 'description'));
+    (70, 'DELETE_PATRON_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(70, 'User may delete a patron statistical category entry map', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (71, 'DELETE_COPY_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(71, 'User may delete a copy stat cat entry map', 'ppl', 'description'));
+    (71, 'DELETE_COPY_STAT_CAT_ENTRY_MAP', oils_i18n_gettext(71, 'User may delete a copy statistical category entry map', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (72, 'CREATE_NON_CAT_TYPE', oils_i18n_gettext(72, 'Allows a user to create a new non-cataloged item type', 'ppl', 'description'));
+    (72, 'CREATE_NON_CAT_TYPE', oils_i18n_gettext(72, 'Allow a user to create a new non-cataloged item type', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (73, 'UPDATE_NON_CAT_TYPE', oils_i18n_gettext(73, 'Allows a user to update a non cataloged type', 'ppl', 'description'));
+    (73, 'UPDATE_NON_CAT_TYPE', oils_i18n_gettext(73, 'Allow a user to update a non-cataloged item type', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (74, 'CREATE_IN_HOUSE_USE', oils_i18n_gettext(74, 'Allows a user to create a new in-house-use ', 'ppl', 'description'));
+    (74, 'CREATE_IN_HOUSE_USE', oils_i18n_gettext(74, 'Allow a user to create a new in-house-use ', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (75, 'COPY_CHECKOUT', oils_i18n_gettext(75, 'Allows a user to check out a copy', 'ppl', 'description'));
+    (75, 'COPY_CHECKOUT', oils_i18n_gettext(75, 'Allow a user to check out a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (76, 'CREATE_COPY_LOCATION', oils_i18n_gettext(76, 'Allows a user to create a new copy location', 'ppl', 'description'));
+    (76, 'CREATE_COPY_LOCATION', oils_i18n_gettext(76, 'Allow a user to create a new copy location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (77, 'UPDATE_COPY_LOCATION', oils_i18n_gettext(77, 'Allows a user to update a copy location', 'ppl', 'description'));
+    (77, 'UPDATE_COPY_LOCATION', oils_i18n_gettext(77, 'Allow a user to update a copy location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (78, 'DELETE_COPY_LOCATION', oils_i18n_gettext(78, 'Allows a user to delete a copy location', 'ppl', 'description'));
+    (78, 'DELETE_COPY_LOCATION', oils_i18n_gettext(78, 'Allow a user to delete a copy location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (79, 'CREATE_COPY_TRANSIT', oils_i18n_gettext(79, 'Allows a user to create a transit_copy object for transiting a copy', 'ppl', 'description'));
+    (79, 'CREATE_COPY_TRANSIT', oils_i18n_gettext(79, 'Allow a user to create a transit_copy object for transiting a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (80, 'COPY_TRANSIT_RECEIVE', oils_i18n_gettext(80, 'Allows a user to close out a transit on a copy', 'ppl', 'description'));
+    (80, 'COPY_TRANSIT_RECEIVE', oils_i18n_gettext(80, 'Allow a user to close out a transit on a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (81, 'VIEW_HOLD_PERMIT', oils_i18n_gettext(81, 'Allows a user to see if another user has permission to place a hold on a given copy', 'ppl', 'description'));
+    (81, 'VIEW_HOLD_PERMIT', oils_i18n_gettext(81, 'Allow a user to see if another user has permission to place a hold on a given copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (82, 'VIEW_COPY_CHECKOUT_HISTORY', oils_i18n_gettext(82, 'Allows a user to view which users have checked out a given copy', 'ppl', 'description'));
+    (82, 'VIEW_COPY_CHECKOUT_HISTORY', oils_i18n_gettext(82, 'Allow a user to view which users have checked out a given copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (83, 'REMOTE_Z3950_QUERY', oils_i18n_gettext(83, 'Allows a user to perform z3950 queries against remote servers', 'ppl', 'description'));
+    (83, 'REMOTE_Z3950_QUERY', oils_i18n_gettext(83, 'Allow a user to perform Z39.50 queries against remote servers', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (84, 'REGISTER_WORKSTATION', oils_i18n_gettext(84, 'Allows a user to register a new workstation', 'ppl', 'description'));
+    (84, 'REGISTER_WORKSTATION', oils_i18n_gettext(84, 'Allow a user to register a new workstation', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (85, 'VIEW_COPY_NOTES', oils_i18n_gettext(85, 'Allows a user to view all notes attached to a copy', 'ppl', 'description'));
+    (85, 'VIEW_COPY_NOTES', oils_i18n_gettext(85, 'Allow a user to view all notes attached to a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (86, 'VIEW_VOLUME_NOTES', oils_i18n_gettext(86, 'Allows a user to view all notes attached to a volume', 'ppl', 'description'));
+    (86, 'VIEW_VOLUME_NOTES', oils_i18n_gettext(86, 'Allow a user to view all notes attached to a volume', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (87, 'VIEW_TITLE_NOTES', oils_i18n_gettext(87, 'Allows a user to view all notes attached to a title', 'ppl', 'description'));
+    (87, 'VIEW_TITLE_NOTES', oils_i18n_gettext(87, 'Allow a user to view all notes attached to a title', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (89, 'CREATE_VOLUME_NOTE', oils_i18n_gettext(89, 'Allows a user to create a new volume note', 'ppl', 'description'));
+    (89, 'CREATE_VOLUME_NOTE', oils_i18n_gettext(89, 'Allow a user to create a new volume note', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (88, 'CREATE_COPY_NOTE', oils_i18n_gettext(88, 'Allows a user to create a new copy note', 'ppl', 'description'));
+    (88, 'CREATE_COPY_NOTE', oils_i18n_gettext(88, 'Allow a user to create a new copy note', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (90, 'CREATE_TITLE_NOTE', oils_i18n_gettext(90, 'Allows a user to create a new title note', 'ppl', 'description'));
+    (90, 'CREATE_TITLE_NOTE', oils_i18n_gettext(90, 'Allow a user to create a new title note', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (91, 'DELETE_COPY_NOTE', oils_i18n_gettext(91, 'Allows a user to delete someone elses copy notes', 'ppl', 'description'));
+    (91, 'DELETE_COPY_NOTE', oils_i18n_gettext(91, 'Allow a user to delete another user''s copy notes', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (92, 'DELETE_VOLUME_NOTE', oils_i18n_gettext(92, 'Allows a user to delete someone elses volume note', 'ppl', 'description'));
+    (92, 'DELETE_VOLUME_NOTE', oils_i18n_gettext(92, 'Allow a user to delete another user''s volume note', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (93, 'DELETE_TITLE_NOTE', oils_i18n_gettext(93, 'Allows a user to delete someone elses title note', 'ppl', 'description'));
+    (93, 'DELETE_TITLE_NOTE', oils_i18n_gettext(93, 'Allow a user to delete another user''s title note', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (94, 'UPDATE_CONTAINER', oils_i18n_gettext(94, 'Allows a user to update another users container', 'ppl', 'description'));
+    (94, 'UPDATE_CONTAINER', oils_i18n_gettext(94, 'Allow a user to update another user''s container', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (95, 'CREATE_MY_CONTAINER', oils_i18n_gettext(95, 'Allows a user to create a container for themselves', 'ppl', 'description'));
+    (95, 'CREATE_MY_CONTAINER', oils_i18n_gettext(95, 'Allow a user to create a container for themselves', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (96, 'VIEW_HOLD_NOTIFICATION', oils_i18n_gettext(96, 'Allows a user to view notifications attached to a hold', 'ppl', 'description'));
+    (96, 'VIEW_HOLD_NOTIFICATION', oils_i18n_gettext(96, 'Allow a user to view notifications attached to a hold', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (97, 'CREATE_HOLD_NOTIFICATION', oils_i18n_gettext(97, 'Allows a user to create new hold notifications', 'ppl', 'description'));
+    (97, 'CREATE_HOLD_NOTIFICATION', oils_i18n_gettext(97, 'Allow a user to create new hold notifications', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (98, 'UPDATE_ORG_SETTING', oils_i18n_gettext(98, 'Allows a user to update an org unit setting', 'ppl', 'description'));
+    (98, 'UPDATE_ORG_SETTING', oils_i18n_gettext(98, 'Allow a user to update an organization unit setting', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (99, 'OFFLINE_UPLOAD', oils_i18n_gettext(99, 'Allows a user to upload an offline script', 'ppl', 'description'));
+    (99, 'OFFLINE_UPLOAD', oils_i18n_gettext(99, 'Allow a user to upload an offline script', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (100, 'OFFLINE_VIEW', oils_i18n_gettext(100, 'Allows a user to view uploaded offline script information', 'ppl', 'description'));
+    (100, 'OFFLINE_VIEW', oils_i18n_gettext(100, 'Allow a user to view uploaded offline script information', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (101, 'OFFLINE_EXECUTE', oils_i18n_gettext(101, 'Allows a user to execute an offline script batch', 'ppl', 'description'));
+    (101, 'OFFLINE_EXECUTE', oils_i18n_gettext(101, 'Allow a user to execute an offline script batch', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (102, 'CIRC_OVERRIDE_DUE_DATE', oils_i18n_gettext(102, 'Allows a user to change set the due date on an item to any date', 'ppl', 'description'));
+    (102, 'CIRC_OVERRIDE_DUE_DATE', oils_i18n_gettext(102, 'Allow a user to change the due date on an item to any date', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (103, 'CIRC_PERMIT_OVERRIDE', oils_i18n_gettext(103, 'Allows a user to bypass the circ permit call for checkout', 'ppl', 'description'));
+    (103, 'CIRC_PERMIT_OVERRIDE', oils_i18n_gettext(103, 'Allow a user to bypass the circulation permit call for check out', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (104, 'COPY_IS_REFERENCE.override', oils_i18n_gettext(104, 'Allows a user to override the copy_is_reference event', 'ppl', 'description'));
+    (104, 'COPY_IS_REFERENCE.override', oils_i18n_gettext(104, 'Allow a user to override the copy_is_reference event', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (105, 'VOID_BILLING', oils_i18n_gettext(105, 'Allows a user to void a bill', 'ppl', 'description'));
+    (105, 'VOID_BILLING', oils_i18n_gettext(105, 'Allow a user to void a bill', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (106, 'CIRC_CLAIMS_RETURNED.override', oils_i18n_gettext(106, 'Allows a person to check in/out an item that is claims returned', 'ppl', 'description'));
+    (106, 'CIRC_CLAIMS_RETURNED.override', oils_i18n_gettext(106, 'Allow a user to check in or check out an item that has a status of ''claims returned''', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (107, 'COPY_BAD_STATUS.override', oils_i18n_gettext(107, 'Allows a user to check out an item in a non-circulatable status', 'ppl', 'description'));
+    (107, 'COPY_BAD_STATUS.override', oils_i18n_gettext(107, 'Allow a user to check out an item in a non-circulatable status', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (108, 'COPY_ALERT_MESSAGE.override', oils_i18n_gettext(108, 'Allows a user to check in/out an item that has an alert message', 'ppl', 'description'));
+    (108, 'COPY_ALERT_MESSAGE.override', oils_i18n_gettext(108, 'Allow a user to check in/out an item that has an alert message', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (109, 'COPY_STATUS_LOST.override', oils_i18n_gettext(109, 'Allows a user to remove the lost status from a copy', 'ppl', 'description'));
+    (109, 'COPY_STATUS_LOST.override', oils_i18n_gettext(109, 'Allow a user to remove the lost status from a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (110, 'COPY_STATUS_MISSING.override', oils_i18n_gettext(110, 'Allows a user to change the missing status on a copy', 'ppl', 'description'));
+    (110, 'COPY_STATUS_MISSING.override', oils_i18n_gettext(110, 'Allow a user to change the missing status on a copy', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (111, 'ABORT_TRANSIT', oils_i18n_gettext(111, 'Allows a user to abort a copy transit if the user is at the transit destination or source', 'ppl', 'description'));
+    (111, 'ABORT_TRANSIT', oils_i18n_gettext(111, 'Allow a user to abort a copy transit if the user is at the transit destination or source', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (112, 'ABORT_REMOTE_TRANIST', oils_i18n_gettext(112, 'Allows a user to abort a copy transit if the user is not at the transit source or dest', 'ppl', 'description'));
+    (112, 'ABORT_REMOTE_TRANSIT', oils_i18n_gettext(112, 'Allow a user to abort a copy transit if the user is not at the transit source or dest', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (113, 'VIEW_ZIP_DATA', oils_i18n_gettext(113, 'Allows a user to query the ZIP code data method', 'ppl', 'description'));
+    (113, 'VIEW_ZIP_DATA', oils_i18n_gettext(113, 'Allow a user to query the ZIP code data method', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (114, 'CANCEL_HOLDS', oils_i18n_gettext(114, 'Allows a user to cancel holds', 'ppl', 'description'));
+    (114, 'CANCEL_HOLDS', oils_i18n_gettext(114, 'Allow a user to cancel holds', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (115, 'CREATE_DUPLICATE_HOLDS', oils_i18n_gettext(115, 'Allows a user to create duplicate holds (two or more holds on the same title)', 'ppl', 'description'));
+    (115, 'CREATE_DUPLICATE_HOLDS', oils_i18n_gettext(115, 'Allow a user to create duplicate holds (two or more holds on the same title)', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (117, 'actor.org_unit.closed_date.update', oils_i18n_gettext(117, 'Allows a user to update a closed date interval for a given location', 'ppl', 'description'));
+    (117, 'actor.org_unit.closed_date.update', oils_i18n_gettext(117, 'Allow a user to update a closed date interval for a given location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (116, 'actor.org_unit.closed_date.delete', oils_i18n_gettext(116, 'Allows a user to remove a closed date interval for a given location', 'ppl', 'description'));
+    (116, 'actor.org_unit.closed_date.delete', oils_i18n_gettext(116, 'Allow a user to remove a closed date interval for a given location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (118, 'actor.org_unit.closed_date.create', oils_i18n_gettext(118, 'Allows a user to create a new closed date for a location', 'ppl', 'description'));
+    (118, 'actor.org_unit.closed_date.create', oils_i18n_gettext(118, 'Allow a user to create a new closed date for a location', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (119, 'DELETE_NON_CAT_TYPE', oils_i18n_gettext(119, 'Allows a user to delete a non cataloged type', 'ppl', 'description'));
+    (119, 'DELETE_NON_CAT_TYPE', oils_i18n_gettext(119, 'Allow a user to delete a non cataloged type', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (120, 'money.collections_tracker.create', oils_i18n_gettext(120, 'Allows a user to put someone into collections', 'ppl', 'description'));
+    (120, 'money.collections_tracker.create', oils_i18n_gettext(120, 'Allow a user to put someone into collections', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (121, 'money.collections_tracker.delete', oils_i18n_gettext(121, 'Allows a user to remove someone from collections', 'ppl', 'description'));
+    (121, 'money.collections_tracker.delete', oils_i18n_gettext(121, 'Allow a user to remove someone from collections', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (122, 'BAR_PATRON', oils_i18n_gettext(122, 'Allows a user to bar a patron', 'ppl', 'description'));
+    (122, 'BAR_PATRON', oils_i18n_gettext(122, 'Allow a user to bar a patron', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (123, 'UNBAR_PATRON', oils_i18n_gettext(123, 'Allows a user to un-bar a patron', 'ppl', 'description'));
+    (123, 'UNBAR_PATRON', oils_i18n_gettext(123, 'Allow a user to un-bar a patron', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (124, 'DELETE_WORKSTATION', oils_i18n_gettext(124, 'Allows a user to remove an existing workstation so a new one can replace it', 'ppl', 'description'));
+    (124, 'DELETE_WORKSTATION', oils_i18n_gettext(124, 'Allow a user to remove an existing workstation so a new one can replace it', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (125, 'group_application.user', oils_i18n_gettext(125, 'Allows a user to add/remove users to/from the "User" group', 'ppl', 'description'));
+    (125, 'group_application.user', oils_i18n_gettext(125, 'Allow a user to add/remove users to/from the "User" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (126, 'group_application.user.patron', oils_i18n_gettext(126, 'Allows a user to add/remove users to/from the "Patron" group', 'ppl', 'description'));
+    (126, 'group_application.user.patron', oils_i18n_gettext(126, 'Allow a user to add/remove users to/from the "Patron" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (127, 'group_application.user.staff', oils_i18n_gettext(127, 'Allows a user to add/remove users to/from the "Staff" group', 'ppl', 'description'));
+    (127, 'group_application.user.staff', oils_i18n_gettext(127, 'Allow a user to add/remove users to/from the "Staff" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (128, 'group_application.user.staff.circ', oils_i18n_gettext(128, 'Allows a user to add/remove users to/from the "Circulator" group', 'ppl', 'description'));
+    (128, 'group_application.user.staff.circ', oils_i18n_gettext(128, 'Allow a user to add/remove users to/from the "Circulator" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (129, 'group_application.user.staff.cat', oils_i18n_gettext(129, 'Allows a user to add/remove users to/from the "Cataloger" group', 'ppl', 'description'));
+    (129, 'group_application.user.staff.cat', oils_i18n_gettext(129, 'Allow a user to add/remove users to/from the "Cataloger" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (130, 'group_application.user.staff.admin.global_admin', oils_i18n_gettext(130, 'Allows a user to add/remove users to/from the "GlobalAdmin" group', 'ppl', 'description'));
+    (130, 'group_application.user.staff.admin.global_admin', oils_i18n_gettext(130, 'Allow a user to add/remove users to/from the "GlobalAdmin" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (131, 'group_application.user.staff.admin.local_admin', oils_i18n_gettext(131, 'Allows a user to add/remove users to/from the "LocalAdmin" group', 'ppl', 'description'));
+    (131, 'group_application.user.staff.admin.local_admin', oils_i18n_gettext(131, 'Allow a user to add/remove users to/from the "LocalAdmin" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (132, 'group_application.user.staff.admin.lib_manager', oils_i18n_gettext(132, 'Allows a user to add/remove users to/from the "LibraryManager" group', 'ppl', 'description'));
+    (132, 'group_application.user.staff.admin.lib_manager', oils_i18n_gettext(132, 'Allow a user to add/remove users to/from the "LibraryManager" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (133, 'group_application.user.staff.cat.cat1', oils_i18n_gettext(133, 'Allows a user to add/remove users to/from the "Cat1" group', 'ppl', 'description'));
+    (133, 'group_application.user.staff.cat.cat1', oils_i18n_gettext(133, 'Allow a user to add/remove users to/from the "Cat1" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (134, 'group_application.user.staff.supercat', oils_i18n_gettext(134, 'Allows a user to add/remove users to/from the "Supercat" group', 'ppl', 'description'));
+    (134, 'group_application.user.staff.supercat', oils_i18n_gettext(134, 'Allow a user to add/remove users to/from the "Supercat" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (135, 'group_application.user.sip_client', oils_i18n_gettext(135, 'Allows a user to add/remove users to/from the "SIP-Client" group', 'ppl', 'description'));
+    (135, 'group_application.user.sip_client', oils_i18n_gettext(135, 'Allow a user to add/remove users to/from the "SIP-Client" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (136, 'group_application.user.vendor', oils_i18n_gettext(136, 'Allows a user to add/remove users to/from the "Vendor" group', 'ppl', 'description'));
+    (136, 'group_application.user.vendor', oils_i18n_gettext(136, 'Allow a user to add/remove users to/from the "Vendor" group', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (137, 'ITEM_AGE_PROTECTED.override', oils_i18n_gettext(137, 'Allows a user to place a hold on an age-protected item', 'ppl', 'description'));
+    (137, 'ITEM_AGE_PROTECTED.override', oils_i18n_gettext(137, 'Allow a user to place a hold on an age-protected item', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (138, 'MAX_RENEWALS_REACHED.override', oils_i18n_gettext(138, 'Allows a user to renew an item past the maximun renewal count', 'ppl', 'description'));
+    (138, 'MAX_RENEWALS_REACHED.override', oils_i18n_gettext(138, 'Allow a user to renew an item past the maximun renewal count', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (139, 'PATRON_EXCEEDS_CHECKOUT_COUNT.override', oils_i18n_gettext(139, 'Allow staff to override checkout count failure', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
@@ -1065,17 +1065,17 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (144, 'COPY_NOT_AVAILABLE.override', oils_i18n_gettext(144, 'Allow staff to force checkout of Missing/Lost type items', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (146, 'HOLD_EXISTS.override', oils_i18n_gettext(146, 'allows users to place multiple holds on a single title', 'ppl', 'description'));
+    (146, 'HOLD_EXISTS.override', oils_i18n_gettext(146, 'Allow a user to place multiple holds on a single title', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (147, 'RUN_REPORTS', oils_i18n_gettext(147, 'Allows a users to run reports', 'ppl', 'description'));
+    (147, 'RUN_REPORTS', oils_i18n_gettext(147, 'Allow a user to run reports', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (148, 'SHARE_REPORT_FOLDER', oils_i18n_gettext(148, 'Allows a user to share report his own folders', 'ppl', 'description'));
+    (148, 'SHARE_REPORT_FOLDER', oils_i18n_gettext(148, 'Allow a user to share report his own folders', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (149, 'VIEW_REPORT_OUTPUT', oils_i18n_gettext(149, 'Allow user to view report output', 'ppl', 'description'));
+    (149, 'VIEW_REPORT_OUTPUT', oils_i18n_gettext(149, 'Allow a user to view report output', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (150, 'COPY_CIRC_NOT_ALLOWED.override', oils_i18n_gettext(150, 'Allows a user to checkout an item that is marked as non-circ', 'ppl', 'description'));
+    (150, 'COPY_CIRC_NOT_ALLOWED.override', oils_i18n_gettext(150, 'Allow a user to checkout an item that is marked as non-circ', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext(151, 'Allows a user to delete an item out of another user''s container', 'ppl', 'description'));
+    (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext(151, 'Allow a user to delete an item out of another user''s container', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext(152, 'Allow a staff member to define where another staff member has their permissions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
