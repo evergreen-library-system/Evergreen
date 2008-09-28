@@ -739,6 +739,52 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('hy-AM', 'arm', oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'name'),
 	oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'description'));
 
+-- Z39.50 server attributes
+
+INSERT INTO config.z3950_source (name, label, host, port, db, auth)
+	VALUES ('loc', oils_i18n_gettext('loc', 'Library of Congress', 'czs', 'label'), 'z3950.loc.gov', 7090, 'Voyager', FALSE);
+INSERT INTO config.z3950_source (name, label, host, port, db, auth)
+	VALUES ('oclc', oils_i18n_gettext('loc', 'OCLC', 'czs', 'label'), 'zcat.oclc.org', 210, 'OLUCWorldCat', TRUE);
+
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (1, 'loc','tcn', oils_i18n_gettext(1, 'Title Control Number', 'cza', 'label'), 12, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (2, 'loc', 'isbn', oils_i18n_gettext(2, 'ISBN', 'cza', 'label'), 7, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (3, 'loc', 'lccn', oils_i18n_gettext(3, 'LCCN', 'cza', 'label'), 9, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (4, 'loc', 'author', oils_i18n_gettext(4, 'Author', 'cza', 'label'), 1003, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (5, 'loc', 'title', oils_i18n_gettext(5, 'Title', 'cza', 'label'), 4, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (6, 'loc', 'issn', oils_i18n_gettext(6, 'ISSN', 'cza', 'label'), 8, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (7, 'loc', 'publisher', oils_i18n_gettext(7, 'Publisher', 'cza', 'label'), 1018, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (8, 'loc', 'pubdate', oils_i18n_gettext(8, 'Publication Date', 'cza', 'label'), 31, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (9, 'loc', 'item_type', oils_i18n_gettext(9, 'Item Type', 'cza', 'label'), 1001, 1);
+
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (10, 'oclc', 'tcn', oils_i18n_gettext(10, 'Title Control Number', 'cza', 'label'), 12, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (11, 'oclc', 'isbn', oils_i18n_gettext(11, 'ISBN', 'cza', 'label'), 7, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (12, 'oclc', 'lccn', oils_i18n_gettext(12, 'LCCN', 'cza', 'label'), 9, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (13, 'oclc', 'author', oils_i18n_gettext(13, 'Author', 'cza', 'label'), 1003, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (14, 'oclc', 'title', oils_i18n_gettext(14, 'Title', 'cza', 'label'), 4, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (15, 'oclc', 'issn', oils_i18n_gettext(15, 'ISSN', 'cza', 'label'), 8, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (16, 'oclc', 'publisher', oils_i18n_gettext(16, 'Publisher', 'cza', 'label'), 1018, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (17, 'oclc', 'pubdate', oils_i18n_gettext(17, 'Publication Date', 'cza', 'label'), 31, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (18, 'oclc', 'item_type', oils_i18n_gettext(18, 'Item Type', 'cza', 'label'), 1001, 1);
+SELECT SETVAL('config.z3950_attr_id_seq'::TEXT, 100);
+
 --005.schema.actors.sql:
 
 -- The PINES levels
