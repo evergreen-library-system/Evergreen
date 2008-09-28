@@ -2503,12 +2503,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User" name="usr" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Transaction Start Date/Time" name="xact_start" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label="Grocery Billing link" name="grocery" oils_obj:array_position="7" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Circulation Billing link" name="circulation" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Billing Line Items" name="billings" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Payment Line Items" name="payments" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="money"/>
-			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Unrecovered Debt" name="unrecovered" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Grocery Billing link" name="grocery" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulation Billing link" name="circulation" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billing Line Items" name="billings" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Payment Line Items" name="payments" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="money"/>
 		</fields>
 		<links>
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>

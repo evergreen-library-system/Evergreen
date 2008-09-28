@@ -513,5 +513,19 @@ __PACKAGE__->register_method(
 	argc		=> 3,
 );
 
+sub mark_unrecovered {
+	my $self = shift;
+	my $xact = shift;
+
+    my $x = money::billable_xact->retrieve($xact);
+    $x->unrecovered( 't' );
+    return $x->update;
+}
+__PACKAGE__->register_method(
+	method		=> 'mark_unrecovered',
+	api_name	=> 'open-ils.storage.money.billable_xact.mark_unrecovered',
+	argc		=> 1,
+);
+
 
 1;

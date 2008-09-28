@@ -31,10 +31,11 @@ CREATE TABLE money.collections_tracker (
 CREATE UNIQUE INDEX m_c_t_usr_collector_location_once_idx ON money.collections_tracker (usr, collector, location);
 
 CREATE TABLE money.billable_xact (
-	id		BIGSERIAL			PRIMARY KEY,
-	usr		INT				NOT NULL, -- actor.usr.id
-	xact_start	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	xact_finish	TIMESTAMP WITH TIME ZONE
+	id          BIGSERIAL			PRIMARY KEY,
+	usr         INT				NOT NULL, -- actor.usr.id
+	xact_start  TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	xact_finish TIMESTAMP WITH TIME ZONE,
+    unrecovered BOOL
 );
 CREATE INDEX m_b_x_open_xacts_idx ON money.billable_xact (usr);
 
