@@ -131,6 +131,10 @@ function osGetGridData(rowIdx) {
     switch(this.field) {
         case 'context':
             return fieldmapper.aou.findOrgUnit(value).shortname();
+        case 'label':
+            if(setting.noInherit)
+                return '* ' + value;
+            return value;
         case 'value':
             if(setting.type == 'bool') {
                 if(value) 

@@ -26,6 +26,7 @@
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='org_unit_settings.js'></script>
         <script>
+            // Configure the different settings
             var osSettings = {
                 'circ.lost_materials_processing_fee' : {
                     label : '&staff.server.admin.org_settings.lost_fee;',
@@ -38,10 +39,12 @@
                 'auth.opac_timeout' : {
                     label : '&staff.server.admin.org_settings.opac_timeout;',
                     type : 'number',
+                    noInherit : true
                 },
                 'auth.staff_timeout' : {
                     label : '&staff.server.admin.org_settings.staff_timeout;',
                     type : 'number',
+                    noInherit : true
                 },
                 'org.bounced_emails' : {
                     label : '&staff.server.admin.org_settings.from_address;',
@@ -63,6 +66,35 @@
                 'global.default_locale' : {
                     label : '&staff.server.admin.org_settings.global.default_locale;',
                 },
+                'circ.void_overdue_on_lost' : {
+                    label : '&staff.server.admin.org_settings.circ.void_overdue_on_lost;',
+                    type : 'bool'
+                },
+                'circ.hold_stalling.soft' : {
+                    label : '&staff.server.admin.org_settings.circ.hold_stalling.soft;',
+                    desc : '&staff.server.admin.org_settings.circ.hold_stalling.soft.desc;',
+                },
+                'circ.hold_boundary.hard' : {
+                    label : '&staff.server.admin.org_settings.circ.hold_boundary.hard;',
+                    type : 'number'
+                },
+                'circ.hold_boundary.soft' : {
+                    label : '&staff.server.admin.org_settings.circ.hold_boundary.soft;',
+                    type : 'number'
+                },
+                'opac.barcode_regex' : {
+                    label : '&staff.server.admin.org_settings.opac.barcode_regex;',
+                    desc : '&staff.server.admin.org_settings.opac.barcode_regex.desc;'
+                },
+                'circ.item_checkout_history.max' : {
+                    label : '&staff.server.admin.org_settings.circ.item_checkout_history.max;',
+                    desc : '&staff.server.admin.org_settings.circ.item_checkout_history.max.desc;'
+                },
+                'circ.reshelving_complete.interval' : {
+                    label : '&staff.server.admin.org_settings.circ.reshelving_complete.interval;',
+                    desc : '&staff.server.admin.org_settings.circ.reshelving_complete.interval.desc;',
+                    noInherit : true
+                }
             };
         </script>
     </head>
@@ -70,10 +102,13 @@
         <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
             <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
                 <h1>Org Unit Settings</h1><br/>
-                Context Location 
-                <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
-                    searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
-                </select>
+                <span>Context Location</span>
+                <span>
+                    <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
+                        searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
+                    </select>
+                </span>
+                <span> * Indicates the setting is not inherited from the parent at run time</span>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='tall'>
                 <script>
@@ -97,7 +132,7 @@
             <table class='form_table'>
                 <thead>
                     <tr><td colspan='2' align='center'><div id='os-edit-name'/></td></tr>
-                    <tr><td colspan='2' align='center'><div id='os-edit-desc'/></td></tr>
+                    <tr><td colspan='2' align='center'><div id='os-edit-desc' style='max-width:600px;'/></td></tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -122,10 +157,10 @@
                     </tr>
                     <tr>
                         <td> 
-                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>Update Setting</button>
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>Delete Setting</button>
                         </td>
                         <td> 
-                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>Delete Setting</button>
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>Update Setting</button>
                         </td>
                     </tr>
                 </tbody>
