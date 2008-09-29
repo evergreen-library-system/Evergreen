@@ -1,0 +1,88 @@
+<!-- 
+# Copyright (C) 2008  Georgia Public Library Service
+# Bill Erickson <erickson@esilibrary.com>
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+-->
+
+<!--
+XXX load DTD
+-->
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <title>Org Unit Settings</title>
+        <link type='text/css' rel='stylesheet' href='admin.css'/>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" src='org_unit_settings.js'></script>
+        <script>
+            var osSettings = {
+                'circ.lost_materials_processing_fee' : {
+                    label : '&staff.server.admin.org_settings.lost_fee;',
+                    type : 'currency',
+                },
+                'cat.default_item_price' : {
+                    label : '&staff.server.admin.org_settings.default_price;',
+                    type : 'currency',
+                },
+                'auth.opac_timeout' : {
+                    label : '&staff.server.admin.org_settings.opac_timeout;',
+                    type : 'number',
+                },
+                'auth.staff_timeout' : {
+                    label : '&staff.server.admin.org_settings.staff_timeout;',
+                    type : 'number',
+                },
+                'org.bounced_emails' : {
+                    label : '&staff.server.admin.org_settings.from_address;',
+                },
+                'circ.hold_expire_alert_interval' : {
+                    label : 'Hold Expiration Alert Interval',
+                },
+                'circ.hold_expire_interval' : {
+                    label : 'Default Hold Expirate Interval',
+                },
+                'global.credit.allow' : {
+                    label : 'Allow Credit Card Payments',
+                    type : 'bool'
+                },
+                'global.default_locale' : {
+                    label : 'Default Locale',
+                },
+            };
+        </script>
+    </head>
+    <body class="tundra tall">
+        <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+                <h1>Org Unit Settings</h1><br/>
+                Context Location 
+                <select id='os-context-selector' onchange='osChangeContext();'> 
+                </select>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='tall'>
+                <script>
+                    var osGridLayout = [{
+                        defaultCell: {styles: 'text-align: center;'},
+                        cells : [[
+                            {name: 'Edit', get: osGetEditLink, 
+                                value: '<a href="javascript:void(0);" onclick="osLaunchEditor(\'SETTING\');">Edit</a>'},
+                            {name: 'Setting', get: osGetGridData, field:'label', width:'auto'},
+                            {name: 'Context', get: osGetGridData, field:'context', width:'auto'},
+                            {name: 'Value', get: osGetGridData, field:'value', width:'auto'},
+                        ]]
+                    }];
+                </script>
+                <div dojoType='dojox.Grid' jsId='osGrid'> </div>
+            </div>
+        </div>
+    </body>
+</html>
+
