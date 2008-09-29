@@ -854,10 +854,17 @@ function holdsUpdate(hold, user) {
 }
 
 /* verify that the thaw date is valid and after today */
-function holdsVerifyThawDate(dateString) {
+function holdsVerifyThawDate(dateString, isGreater) {
     thawDate = dojo.date.stamp.fromISOString(dateString);
-    if(thawDate && (dojo.date.compare(thawDate) > 0))
-        return dojo.date.stamp.toISOString(thawDate);
+    if(thawDate) {
+        if(isGreater) {
+            if(dojo.date.compare(thawDate) > 0) {
+                return dojo.date.stamp.toISOString(thawDate);
+            }
+        } else {
+            return dojo.date.stamp.toISOString(thawDate);
+        }
+    }
     return null;
 }
 
@@ -869,7 +876,7 @@ function holdsVerifyThawDateUI(element) {
         return;
     }
 
-    if(!holdsVerifyThawDate(value)) {
+    if(!holdsVerifyThawDate(value, true)) {
         addCSSClass($(element), 'invalid_field');
     } else {
         removeCSSClass($(element), 'invalid_field');
