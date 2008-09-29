@@ -286,7 +286,7 @@ sub check_db_langs {
 
 sub check_libdbd {
 	my $results = '';
-	my @location = `ldconfig --print | grep libdbdpgsql`; # simple(ton) attempt to filter out build versions
+	my @location = `/sbin/ldconfig --print | grep libdbdpgsql`; # simple(ton) attempt to filter out build versions
     unless(@location) {
 		# This is pretty distro-specific, but let's worry about other distros and operating systems when we get there
         my $res = "libdbi PostgreSQL driver not found in shared library path;
