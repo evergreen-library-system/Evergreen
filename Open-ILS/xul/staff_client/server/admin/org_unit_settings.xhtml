@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- 
 # Copyright (C) 2008  Georgia Public Library Service
 # Bill Erickson <erickson@esilibrary.com>
@@ -12,9 +13,11 @@
 # GNU General Public License for more details.
 -->
 
-<!--
-XXX load DTD
--->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
 
 <html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
@@ -64,7 +67,8 @@ XXX load DTD
             <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
                 <h1>Org Unit Settings</h1><br/>
                 Context Location 
-                <select id='os-context-selector' onchange='osChangeContext();'> 
+                <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
+                    searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
                 </select>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='tall'>
@@ -73,7 +77,7 @@ XXX load DTD
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
                             {name: 'Edit', get: osGetEditLink, 
-                                value: '<a href="javascript:void(0);" onclick="osLaunchEditor(\'SETTING\');">Edit</a>'},
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>Edit&lt;/a>'},
                             {name: 'Setting', get: osGetGridData, field:'label', width:'auto'},
                             {name: 'Context', get: osGetGridData, field:'context', width:'auto'},
                             {name: 'Value', get: osGetGridData, field:'value', width:'auto'},

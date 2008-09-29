@@ -9,18 +9,38 @@ dojo.require('dojo.cookie');
 dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 var authtoken;
 var contextOrg;
 var user;
-var contextSelector;
+var workOrgs;
 
 function osInit(data) {
     authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
     user = new openils.User({authtoken:authtoken}).user;
     contextOrg = user.ws_ou();
-    contextSelector = dojo.byId('os-context-selector');
 
+    fieldmapper.standardRequest(
+        [   'open-ils.actor',
+            'open-ils.actor.user.get_work_ous.ids'],
+        {   async: true,
+            params: [authtoken],
+            oncomplete: function(r) {
+                var list = r.recv().content();
+                if(e = openils.Event.parse(list))
+                    return alert(e);
+                workOrgs = list;
+                buildMergedOrgSelector(list);
+            }
+        }
+    );
+
+    osDraw();
+}
+dojo.addOnLoad(osInit);
+
+function osDraw() {
     var names = [];
     for(var key in osSettings)
         names.push(key);
@@ -38,21 +58,47 @@ function osInit(data) {
             }
         }
     );
-    buildMergedOrgSel(contextSelector, user.ws_ou(), 0);
-    // open-ils.actor.user.get_work_ous.ids
 }
-dojo.addOnLoad(osInit);
 
-function osChangeContect() {
-    contextOrg = getSelectorVal(contextSelector);
+function buildMergedOrgSelector(orgList) {
+    var orgNodeList = [];
+    for(var i = 0; i < orgList.length; i++) {
+        // add the work org parents
+        var parents = [];
+        var node = fieldmapper.aou.findOrgUnit(orgList[i]);
+        while(node.parent_ou() != null) {
+            node = fieldmapper.aou.findOrgUnit(node.parent_ou());
+            parents.push(node);
+        }
+        orgNodeList = orgNodeList.concat(parents.reverse());
+
+        // add the work org children
+        orgNodeList = orgNodeList.concat(
+            fieldmapper.aou.descendantNodeList(orgList[i]));
+    }
+
+    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgNodeList)});
+    osContextSelector.store = store;
+    osContextSelector.startup();
+    osContextSelector.setValue(user.ws_ou());
+}
+
+function osChangeContext() {
+    if(contextOrg == osContextSelector.getValue())
+        return;
+    contextOrg = osContextSelector.getValue();
+    osDraw();
 }
 
 function osLoadGrid(data) {
     var gridData = {items:[]}
     for(var key in data) {
+        var setting = osSettings[key];
+        setting.context = null;
+        setting.value = null;
         if(data[key]) {
-            osSettings[key].context = data[key].org;
-            osSettings[key].value = data[key].value;
+            setting.context = data[key].org;
+            setting.value = data[key].value;
         }
         gridData.items.push({name:key});
     }
