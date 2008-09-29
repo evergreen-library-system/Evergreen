@@ -23,7 +23,7 @@
     <head>
         <title>Org Unit Settings</title>
         <link type='text/css' rel='stylesheet' href='admin.css'/>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:true" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='org_unit_settings.js'></script>
         <script>
             var osSettings = {
@@ -45,19 +45,23 @@
                 },
                 'org.bounced_emails' : {
                     label : '&staff.server.admin.org_settings.from_address;',
+                    desc : '&staff.server.admin.org_settings.bounce_note;'
                 },
                 'circ.hold_expire_alert_interval' : {
-                    label : 'Hold Expiration Alert Interval',
+                    label : '&staff.server.admin.org_settings.circ.hold_expire_alert_interval;',
+                    desc : '&staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc;',
                 },
                 'circ.hold_expire_interval' : {
-                    label : 'Default Hold Expirate Interval',
+                    label : '&staff.server.admin.org_settings.circ.hold_expire_interval;',
+                    desc : '&staff.server.admin.org_settings.circ.hold_expire_interval.desc;',
                 },
                 'global.credit.allow' : {
-                    label : 'Allow Credit Card Payments',
+                    label : '&staff.server.admin.org_settings.global.credit.allow;',
+                    desc : '&staff.server.admin.org_settings.global.credit.allow.desc;',
                     type : 'bool'
                 },
                 'global.default_locale' : {
-                    label : 'Default Locale',
+                    label : '&staff.server.admin.org_settings.global.default_locale;',
                 },
             };
         </script>
@@ -87,6 +91,48 @@
                 <div dojoType='dojox.Grid' jsId='osGrid'> </div>
             </div>
         </div>
+
+        <!-- edit dialog -->
+        <div dojoType="dijit.Dialog" jsId='osEditDialog' title="Edit Setting">
+            <table class='form_table'>
+                <thead>
+                    <tr><td colspan='2' align='center'><div id='os-edit-name'/></td></tr>
+                    <tr><td colspan='2' align='center'><div id='os-edit-desc'/></td></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Context</td>
+                        <td> 
+                            <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osEditContextSelector'
+                                searchAttr="shortname" autocomplete="true" labelAttr='shortname'> 
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Value</td>
+                        <td>
+                            <input dojoType='dijit.form.TextBox' jsId='osEditTextBox'/>
+                            <input dojoType='dijit.form.CurrencyTextBox' jsId='osEditCurrencyTextBox'/>
+                            <input dojoType='dijit.form.NumberTextBox' jsId='osEditNumberTextBox'/>
+                            <select dojoType='dijit.form.FilteringSelect' jsId='osEditBoolSelect'>
+                                <option value='true'>&common.true;</option>
+                                <option value='false'>&common.false;</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>Update Setting</button>
+                        </td>
+                        <td> 
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>Delete Setting</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- edit dialog -->
+        <span id='os-true' class='hidden'>&common.true;</span>
+        <span id='os-false' class='hidden'>&common.false;</span>
     </body>
 </html>
 

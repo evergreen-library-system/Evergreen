@@ -48,6 +48,9 @@
 <!ENTITY common.save_transactions.accesskey 'S'>
 <!ENTITY common.save_transactions.label 'Save these transactions'>
 
+<!ENTITY common.true "True">
+<!ENTITY common.false "False">
+
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
 <!ENTITY ilsevent.1002 "User was not found in the database">
@@ -1436,6 +1439,8 @@
 <!ENTITY staff.server.admin.index.cash_reports "Cash Reports">
 <!ENTITY staff.server.admin.index.transits "Transits">
 <!ENTITY staff.server.admin.index.transit_list "Transit List">
+
+
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.org_settings.greeting "Welcome ">
@@ -1450,11 +1455,22 @@
 <!ENTITY staff.server.admin.org_settings.staff_timeout "Staff Login Inactivity Timeout (in seconds)">
 <!ENTITY staff.server.admin.org_settings.lost_fee "Lost Materials Processing Fee">
 <!ENTITY staff.server.admin.org_settings.default_price "Default Item Price">
-<!ENTITY staff.server.admin.org_settings.from_address '"FROM" email address for patron notices'>
-<!ENTITY staff.server.admin.org_settings.bounce_note "(note: delivery failures will be returned this address)">
+<!ENTITY staff.server.admin.org_settings.from_address 'Sending email address for patron notices'>
+<!ENTITY staff.server.admin.org_settings.bounce_note "Email delivery failures will be returned this address">
 <!ENTITY staff.server.admin.org_settings.apply_all.note 'I. "Apply to all Locations" will force the new setting to be applied to all locations in the location dropdown.'>
 <!ENTITY staff.server.admin.org_settings.update_success "Update succeeded.">
 <!ENTITY staff.server.admin.org_settings.apply_all.confirm "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?">
+
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "Hold Expiration Alert Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc "Amount of time before a hold expires at which point the patron should be alerted">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "Default Hold Expirate Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval.desc 'Amount of time after a hold is placed before the hold expires\nExample "100 days"'>
+<!ENTITY staff.server.admin.org_settings.global.credit.allow "Allow Credit Card Payments">
+<!ENTITY staff.server.admin.org_settings.global.credit.allow.desc "If enabled, patrons will be able to pay fines accrued at this location via credit card">
+<!ENTITY staff.server.admin.org_settings.global.default_locale "Default Locale">
+
+
+
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
 <!ENTITY staff.server.admin.stat_cat.heading " Statistical Category Editor">
