@@ -26,6 +26,7 @@ CREATE TABLE asset.copy_location (
 	name		TEXT	NOT NULL,
 	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	holdable	BOOL	NOT NULL DEFAULT TRUE,
+	hold_verify	BOOL	NOT NULL DEFAULT FALSE,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	circulate	BOOL	NOT NULL DEFAULT TRUE
 );
