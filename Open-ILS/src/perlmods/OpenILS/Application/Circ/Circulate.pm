@@ -284,7 +284,7 @@ sub translate_legacy_args {
     }
 
     if( $$args{precat} ) {
-        $$args{is_precat} = $$args{precat};
+        $$args{is_precat} = $$args{request_precat} = $$args{precat};
         delete $$args{precat};
     }
 }
@@ -339,6 +339,7 @@ my @AUTOLOAD_FIELDS = qw/
     check_penalty_on_renew
     is_noncat
     is_precat
+    request_precat
     is_checkin
     noncat_type
     editor
@@ -666,7 +667,7 @@ sub do_permit {
         $self->is_renewal and not $self->check_penalty_on_renew;
     return if $self->bail_out;
 
-    if( $self->is_precat ) {
+    if($self->is_precat and not $self->request_precat) {
         $self->push_events(
             OpenILS::Event->new(
                 'ITEM_NOT_CATALOGED', payload => $self->mk_permit_key));
