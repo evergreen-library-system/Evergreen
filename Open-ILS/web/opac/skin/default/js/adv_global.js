@@ -53,7 +53,8 @@ function advgInit() {
     // since other filters are not propogated
     //advInitPubFilter();
 
-    initSearchBoxes();
+    if(!new CGI().param(PARAM_NOPERSIST_SEARCH))
+        initSearchBoxes();
     advSyncCopyLocLink(getLocation());
 }
 

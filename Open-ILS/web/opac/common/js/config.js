@@ -43,6 +43,7 @@ var PARAM_PUBD_BEFORE = 'pdb';
 var PARAM_PUBD_AFTER = 'pda';
 var PARAM_PUBD_BETWEEN = 'pdt';
 var PARAM_PUBD_DURING = 'pdd';
+var PARAM_NOPERSIST_SEARCH = 'nps';
 
 /* URL param values (see comments above) */
 var TERM;  
