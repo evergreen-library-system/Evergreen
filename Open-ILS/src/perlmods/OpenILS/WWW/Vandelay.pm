@@ -57,7 +57,10 @@ sub spool_marc {
 
 	my $auth = $cgi->param('ses') || $cgi->cookie('ses');
 
-	return Apache2::Const::FORBIDDEN unless verify_login($auth);
+	unless(verify_login($auth)) {
+        $logger->error("authentication failed on vandelay record import");
+	    return Apache2::Const::FORBIDDEN;
+    }
 
     my $data_fingerprint = '';
 	my $purpose = $cgi->param('purpose');
@@ -87,6 +90,7 @@ sub spool_marc {
             if($total_bytes >= $MAX_FILE_SIZE) {
                 close(OUTFILE);
                 unlink $outfile;
+                $logger->error("import exceeded upload size: $MAX_FILE_SIZE");
 	            return Apache2::Const::FORBIDDEN;
             }
             print OUTFILE $buf;
@@ -100,6 +104,7 @@ sub spool_marc {
 	    );
     }
 
+    $logger->info("uploaded MARC batch with key $data_fingerprint");
     $r->content_type('text/plain; charset=utf-8');
 	print "$data_fingerprint";
 	return Apache2::Const::OK;
