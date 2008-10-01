@@ -170,7 +170,7 @@
                                 <table><tr>
                                     <td class='filter_td'>
                                         Limit to Collision Matches
-                                        <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' checked='checked'/>
+                                        <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/>
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
                                         Limit to Non-Imported Records 
