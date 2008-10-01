@@ -406,12 +406,11 @@ __PACKAGE__->register_method(
 
 sub import_record_list {
     my($self, $conn, $auth, $rec_ids, $args) = @_;
-    my $e = new_editor(xact => 1, authtoken => $auth);
-    return $e->die_event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
     $args ||= {};
-    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids, $args);
+    my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $args);
     return $err if $err;
-    $e->commit;
     return {complete => 1};
 }
 
@@ -458,8 +457,8 @@ __PACKAGE__->register_method(
 );
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
-    my $e = new_editor(xact => 1, authtoken => $auth);
-    return $e->die_event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
     $options ||= {};
     my $type = $self->{record_type};
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
@@ -474,9 +473,8 @@ sub import_queue {
     my $search = ($type eq 'bib') ? 
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $rec_ids = $e->$search($query, {idlist => 1});
-    my $err = import_record_list_impl($self, $conn, $auth, $e, $rec_ids, $options);
+    my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
     return $err if $err;
-    $e->commit;
     return {complete => 1};
 }
 
@@ -522,7 +520,7 @@ sub queued_records_with_matches {
 }
 
 sub import_record_list_impl {
-    my($self, $conn, $auth, $e, $rec_ids, $args) = @_;
+    my($self, $conn, $rec_ids, $requestor, $args) = @_;
 
     my $overlay_map = $args->{overlay_map} || {};
     my $type = $self->{record_type};
@@ -534,10 +532,16 @@ sub import_record_list_impl {
 
         my $overlay_target = $overlay_map->{$rec_id};
 
+        my $e = new_editor(xact => 1);
+        $e->requestor($requestor);
+
         if($type eq 'bib') {
 
-            my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) 
-                or return $e->die_event;
+            my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) ;
+            unless($rec) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                next;
+            }
 
             next if $rec->import_time;
             $queues{$rec->queue} = 1;
@@ -553,15 +557,25 @@ sub import_record_list_impl {
                     $e, $rec->marc); #$rec->bib_source
             }
 
-            return $record if $U->event_code($record);
+            if($U->event_code($record)) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $record});
+                next;
+            }
             $rec->imported_as($record->id);
             $rec->import_time('now');
-            $e->update_vandelay_queued_bib_record($rec) or return $e->die_event;
+
+            unless($e->update_vandelay_queued_bib_record($rec)) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                next;
+            }
 
         } else { # authority
 
-            my $rec = $e->retrieve_vandelay_queued_authority_record($rec_id) 
-                or return $e->die_event;
+            my $rec = $e->retrieve_vandelay_queued_authority_record($rec_id);
+            unless($rec) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                next;
+            }
 
             next if $rec->import_time;
             $queues{$rec->queue} = 1;
@@ -577,40 +591,54 @@ sub import_record_list_impl {
                     $rec->marc) #$source);
             }
 
-            return $record if $U->event_code($record);
+            if($U->event_code($record)) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $record});
+                next;
+            }
+
             $rec->imported_as($record->id);
             $rec->import_time('now');
-            $e->update_vandelay_queued_authority_record($rec) or return $e->die_event;
+            unless($e->update_vandelay_queued_authority_record($rec)) {
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                next;
+            }
         }
 
+        $e->commit;
         $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
     }
 
     # see if we need to mark any queues as complete
+    my $e = new_editor(xact => 1);
     for my $q_id (keys %queues) {
         if($type eq 'bib') {
             my $remaining = $e->search_vandelay_queued_bib_record(
-                {queue => $q_id, import_time => undef}, {idlist => 1});
+                [{queue => $q_id, import_time => undef}, {limit =>1}], {idlist => 1});
             unless(@$remaining) {
                 my $queue = $e->retrieve_vandelay_bib_queue($q_id);
                 unless($U->is_true($queue->complete)) {
                     $queue->complete('t');
                     $e->update_vandelay_bib_queue($queue) or return $e->die_event;
+                    $e->commit;
+                    return;
                 }
             }
         } else {
             my $remaining = $e->search_vandelay_queued_authority_record(
-                {queue => $q_id, import_time => undef}, {idlist => 1});
+                [{queue => $q_id, import_time => undef}, {limit =>1}], {idlist => 1});
             unless(@$remaining) {
                 my $queue = $e->retrieve_vandelay_authority_queue($q_id);
                 unless($U->is_true($queue->complete)) {
                     $queue->complete('t');
                     $e->update_vandelay_authority_queue($queue) or return $e->die_event;
+                    $e->commit;
+                    return;
                 }
             }
         }
     }
 
+    $e->rollback;
     return undef;
 }
 
