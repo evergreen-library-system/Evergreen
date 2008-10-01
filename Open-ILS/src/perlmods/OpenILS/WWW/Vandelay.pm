@@ -58,7 +58,7 @@ sub spool_marc {
 	my $auth = $cgi->param('ses') || $cgi->cookie('ses');
 
 	unless(verify_login($auth)) {
-        $logger->error("authentication failed on vandelay record import");
+        $logger->error("authentication failed on vandelay record import: $auth");
 	    return Apache2::Const::FORBIDDEN;
     }
 
@@ -81,7 +81,7 @@ sub spool_marc {
         my $outfile = "$dir/$data_fingerprint.mrc";
 
         unless(open(OUTFILE, ">$outfile")) {
-            $logger->error("unable to open MARC file for writing: $@");
+            $logger->error("unable to open MARC file [$outfile] for writing: $@");
 	        return Apache2::Const::FORBIDDEN;
         }
 
