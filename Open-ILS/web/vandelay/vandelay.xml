@@ -210,7 +210,7 @@
                 </div>
 
                 <!-- Queue Grid -->
-                <div class='' style='height:90%;' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+                <div class='' style='height:87%;' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                     <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
                 </div>
             </div>
