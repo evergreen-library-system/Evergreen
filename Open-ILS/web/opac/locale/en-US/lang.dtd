@@ -1439,6 +1439,7 @@
 <!ENTITY staff.server.admin.index.cash_reports "Cash Reports">
 <!ENTITY staff.server.admin.index.transits "Transits">
 <!ENTITY staff.server.admin.index.transit_list "Transit List">
+<!ENTITY staff.server.admin.index.conify "Server Settings">
 
 
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
