@@ -105,6 +105,19 @@
 				</td>
 			</tr>
 
+            <!-- locale picker -->
+            <tr><td align='center' valign='bottom' style='padding-top:10px;'>
+		        <span style='vertical-align: top;'>&common.language;</span>
+		        <span dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" 
+                    searchAttr="label" required="false" value='<!--#echo var="locale"-->'>
+			        <script type="dojo/label" event="onChange">
+				        if (this.getValue()) {
+					        location.href = location.href.replace( /opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+				        }
+			        </script>
+		        </span>
+            </td></tr>
+
 		</tbody>
 	</table>
 
