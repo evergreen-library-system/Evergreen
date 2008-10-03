@@ -20,6 +20,7 @@ dojo.require("dijit.form.FilteringSelect");
 dojo.require("dijit.layout.LayoutContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
+dojo.require("dijit.layout.LayoutContainer");
 dojo.require('dijit.form.Button');
 dojo.require('dijit.Toolbar');
 dojo.require('dijit.Tooltip');
@@ -48,7 +49,7 @@ var globalDivs = [
     'vl-marc-html-div',
     'vl-queue-select-div',
     'vl-marc-upload-status-div',
-    'vl-bib-attr-defs-div',
+    'vl-attr-editor-div',
 ];
 
 var authtoken;
@@ -88,52 +89,9 @@ function vlInit() {
             runStartupCommands();
     }
 
-    // Fetch the bib and authority attribute definitions
-    fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.vqbrad'],
-        {   async: true,
-            params: [authtoken, {id:{'!=':null}}],
-            onresponse: function(r) {
-                var def = r.recv().content(); 
-                if(e = openils.Event.parse(def[0])) 
-                    return alert(e);
-                bibAttrDefs.push(def);
-            },
-            oncomplete: function() {
-                bibAttrDefs = bibAttrDefs.sort(
-                    function(a, b) {
-                        if(a.id() > b.id()) return 1;
-                        if(a.id() < b.id()) return -1;
-                        return 0;
-                    }
-                );
-                checkInitDone();
-            }
-        }
-    );
-
-    fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.vqarad'],
-        {   async: true,
-            params: [authtoken, {id:{'!=':null}}],
-            onresponse: function(r) {
-                var def = r.recv().content(); 
-                if(e = openils.Event.parse(def[0])) 
-                    return alert(e);
-                authAttrDefs.push(def);
-            },
-            oncomplete: function() {
-                authAttrDefs = authAttrDefs.sort(
-                    function(a, b) {
-                        if(a.id() > b.id()) return 1;
-                        if(a.id() < b.id()) return -1;
-                        return 0;
-                    }
-                );
-                checkInitDone();
-            }
-        }
-    );
+    // Fetch the bib and authority attribute definitions 
+    vlFetchBibAttrDefs(function () { checkInitDone(); });
+    vlFetchAuthAttrDefs(function () { checkInitDone(); });
 
     vlRetrieveQueueList('bib', null, 
         function(list) {
@@ -157,7 +115,65 @@ function vlInit() {
         }
     );
 
-    bibAttrInit();
+    vlAttrEditorInit();
+}
+
+
+dojo.addOnLoad(vlInit);
+
+
+// fetch the bib and authority attribute definitions
+
+function vlFetchBibAttrDefs(postcomplete) {
+    bibAttrDefs = [];
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.search.vqbrad'],
+        {   async: true,
+            params: [authtoken, {id:{'!=':null}}],
+            onresponse: function(r) {
+                var def = r.recv().content(); 
+                if(e = openils.Event.parse(def[0])) 
+                    return alert(e);
+                bibAttrDefs.push(def);
+            },
+            oncomplete: function() {
+                bibAttrDefs = bibAttrDefs.sort(
+                    function(a, b) {
+                        if(a.id() > b.id()) return 1;
+                        if(a.id() < b.id()) return -1;
+                        return 0;
+                    }
+                );
+                postcomplete();
+            }
+        }
+    );
+}
+
+function vlFetchAuthAttrDefs(postcomplete) {
+    authAttrDefs = [];
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.search.vqarad'],
+        {   async: true,
+            params: [authtoken, {id:{'!=':null}}],
+            onresponse: function(r) {
+                var def = r.recv().content(); 
+                if(e = openils.Event.parse(def[0])) 
+                    return alert(e);
+                authAttrDefs.push(def);
+            },
+            oncomplete: function() {
+                authAttrDefs = authAttrDefs.sort(
+                    function(a, b) {
+                        if(a.id() > b.id()) return 1;
+                        if(a.id() < b.id()) return -1;
+                        return 0;
+                    }
+                );
+                postcomplete();
+            }
+        }
+    );
 }
 
 function vlRetrieveQueueList(type, filter, onload) {
@@ -193,8 +209,8 @@ function runStartupCommands() {
     currentType = cgi.param('qtype');
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+    dojo.style('vl-nav-bar', 'visibility', 'visible');
     vlShowUploadForm();
-
 }
 
 /**
@@ -235,7 +251,7 @@ function createQueue(queueName, type, onload) {
 }
 
 /**
-  * Tells vendelay to pull a batch of records from the cache and explode them
+  * Tells vandelay to pull a batch of records from the cache and explode them
   * out into the vandelay tables
   */
 function processSpool(key, queueId, type, onload) {
@@ -265,11 +281,6 @@ function retrieveQueuedRecords(type, queueId, onload) {
     var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
-    var params = [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
-
-    if(vlQueueGridShowNonImport.checked)
-        params[2].non_imported = 1;
-        
 
     var limit = parseInt(vlQueueDisplayLimit.getValue());
     var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
@@ -277,8 +288,12 @@ function retrieveQueuedRecords(type, queueId, onload) {
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: params,
-
+            params: [authtoken, queueId, 
+                {   clear_marc: 1, 
+                    offset: offset,
+                    limit: limit
+                }
+            ],
             /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
             onresponse: function(r) {
                 var rec = r.recv().content();
@@ -356,13 +371,13 @@ function vlLoadMatchUI(recId) {
                 }
 
                 // now populate the grid
-                vlPopulateGrid(vlMatchGrid, dataStore);
+                vlPopulateMatchGrid(vlMatchGrid, dataStore);
             }
         }
     );
 }
 
-function vlPopulateGrid(grid, data) {
+function vlPopulateMatchGrid(grid, data) {
     var store = new dojo.data.ItemFileReadStore({data:data});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
@@ -741,74 +756,181 @@ function vlFetchQueueFromForm() {
     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
 }
 
-dojo.addOnLoad(vlInit);
 
 
 //------------------------------------------------------------
-// bib-attr, auth-attr 
+// attribute editors
 
-function bibAttrInit() {
-    // set up tooltips on attr_record forms
-    connectTooltip('bib-attr-tag'); 
-    connectTooltip('bib-attr-subfield'); 
+// attribute-editor global variables
+
+var ATTR_EDITOR_IN_UPDATE_MODE = false;	// true on 'edit', false on 'create'
+var ATTR_EDIT_ID = null;		// id of current 'edit' attribute
+var ATTR_EDIT_GROUP = 'bib';		// bib-attrs or auth-attrs
+
+function vlAttrEditorInit() {
+    // set up tooltips on the edit form
+    connectTooltip('attr-editor-tags'); 
+    connectTooltip('attr-editor-subfields'); 
 }
 
-function vlShowBibAttrDefs() {
-    displayGlobalDiv('vl-bib-attr-defs-div');
-    loadBibAttrGrid();
+function vlShowAttrEditor() {
+    displayGlobalDiv('vl-attr-editor-div');
+    loadAttrEditorGrid();
+    idHide('vl-generic-progress');
 }
 
-function idStyle(obid, k, v) { document.getElementById(obid).style[k] = v; }
-function show(obid) { idStyle(obid, 'display', 'block'); }
-function hide(obid) { idStyle(obid, 'display' , 'none'); }
-function textOf(obid) { return document.getElementById(obid).innerHTML; }
-
-function saveNewBibAttrRecord(arg) {
-    // pretend to save...
-    hide('vl-bib-attr-defs-div');
-    show('vl-generic-progress');
-    // not really saving anything yet. For now, just remove the
-    // progress bar after a moment and return to the table.
-    setTimeout("show('vl-bib-attr-defs-div');hide('vl-generic-progress');", 1000);
+function setAttrEditorGroup(groupName) {
+    // put us into 'bib'-attr or 'auth'-attr mode.
+    if (ATTR_EDIT_GROUP != groupName) {
+	ATTR_EDIT_GROUP = groupName;
+	loadAttrEditorGrid();
+    }
 }
 
 function onAttrEditorOpen() {
+    // the "bars" have the create/update/cancel/etc. buttons.
+    var create_bar = document.getElementById('attr-editor-create-bar');
+    var update_bar = document.getElementById('attr-editor-update-bar');
+    if (ATTR_EDITOR_IN_UPDATE_MODE) {
+	update_bar.style.display='table-row';
+	create_bar.style.display='none';
+	// hide the dropdown-button
+	idStyle('vl-create-attr-editor-button', 'visibility', 'hidden');
+    } else {
+	dijit.byId('attr-editor-dialog').reset();
+	create_bar.style.display='table-row';
+	update_bar.style.display='none';
+    }
 }
 
 function onAttrEditorClose() {
-    // reset the form to a "create" form. (We may have borrowed it for "editing".)
-    var dialog = dojo.byId('bib-attr-dialog');
-    var create_bar = dialog.getElementsByClassName('create_bar')[0];
-    var update_bar = dialog.getElementsByClassName('update_bar')[0];
-    create_bar.style.display='table-row';
-    update_bar.style.display='none';
-    idStyle('vl-create-bib-attr-button', 'visibility', 'visible');
-    dijit.byId('bib-attr-dialog').reset();
+    // reset the form to a "create" form. (We may have borrowed it for editing.)
+    ATTR_EDITOR_IN_UPDATE_MODE = false;
+    // show the dropdown-button
+    idStyle('vl-create-attr-editor-button', 'visibility', 'visible');
 }
 
-function loadBibAttrGrid() {
-    var store = new dojo.data.ItemFileReadStore({data:vqbrad.toStoreData(bibAttrDefs)});
+function loadAttrEditorGrid() {
+    var _data = (ATTR_EDIT_GROUP == 'auth') ? 
+	vqarad.toStoreData(authAttrDefs) : vqbrad.toStoreData(bibAttrDefs) ;
+		 
+    var store = new dojo.data.ItemFileReadStore({data:_data});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-    bibAttrGrid.setModel(model);
-    bibAttrGrid.setStructure(bibAttrGridLayout);
-    bibAttrGrid.onRowClick = onBibAttrClick;
-    bibAttrGrid.update();
+    attrEditorGrid.setModel(model);
+    attrEditorGrid.setStructure(vlAttrGridLayout);
+    attrEditorGrid.onRowClick = onAttrEditorClick;
+    attrEditorGrid.update();
 }
 
-var xpathParser = new openils.MarcXPathParser();
-
-function getTag(n) {
+function attrGridGetTag(n) {
     // grid helper: return the tags from the row's xpath column.
     var xp = this.grid.model.getRow(n);
     return xp && xpathParser.parse(xp.xpath).tags;
 }
 
-function getSubfield(n) {
+function attrGridGetSubfield(n) {
     // grid helper: return the subfields from the row's xpath column.
     var xp = this.grid.model.getRow(n);
     return xp && xpathParser.parse(xp.xpath).subfields;
 }
+
+function onAttrEditorClick(evt) {
+    var row = attrEditorGrid.model.getRow(evt.rowIndex);
+    ATTR_EDIT_ID = row.id;
+    ATTR_EDITOR_IN_UPDATE_MODE = true;
+
+    // populate the popup editor.
+    dojo.byId('attr-editor-code').value = row.code;
+    dojo.byId('attr-editor-description').value = row.description;
+    var parsed_xpath = xpathParser.parse(row.xpath);
+    dojo.byId('attr-editor-tags').value = parsed_xpath.tags;
+    dojo.byId('attr-editor-subfields').value = parsed_xpath.subfields;
+    dojo.byId('attr-editor-identifier').value = (row.ident ? 'True':'False');
+    dojo.byId('attr-editor-xpath').value = row.xpath;
+    dojo.byId('attr-editor-remove').value = row.remove;
+
+    // set up UI for editing
+    dojo.byId('vl-create-attr-editor-button').click();
+}
+
+function vlSaveAttrDefinition(data) {
+    idHide('vl-attr-editor-div');
+    idShow('vl-generic-progress');
+
+    data.id = ATTR_EDIT_ID;
+
+    // this ought to honour custom xpaths, but overwrite xpaths
+    // derived from tags/subfields.
+    if (data.xpath == '' || looksLikeDerivedXpath(data.xpath)) {
+	var _xpath = tagAndSubFieldsToXpath(data.tag, data.subfield);
+	data.xpath = _xpath;
+    }
+
+    // build up our permacrud params. Key variables here are
+    // "create or update" and "bib or auth".
+
+    var isAuth   = (ATTR_EDIT_GROUP == 'auth');
+    var isCreate = (ATTR_EDIT_ID == null);
+    var rad      = isAuth ? new vqarad() : new vqbrad() ;
+    var method   = 'open-ils.permacrud' + (isCreate ? '.create.' : '.update.') 
+	+ (isAuth ? 'vqarad' : 'vqbrad');
+    var _data    = rad.fromStoreItem(data);
+
+    _data.ischanged(1);
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', method],
+        {   async: true,
+            params: [authtoken, _data ],
+	    onresponse: function(r) { },
+            oncomplete: function(r) {
+		attrEditorFetchAttrDefs(vlShowAttrEditor);
+		ATTR_EDIT_ID = null;
+	    },
+	    onerror: function(r) {
+		alert('vlSaveAttrDefinition comms error: ' + r);
+	    }
+        }
+    );
+}
+
+function attrEditorFetchAttrDefs(callback) {
+    var fn = (ATTR_EDIT_GROUP == 'auth') ? vlFetchAuthAttrDefs : vlFetchBibAttrDefs;
+    return fn(callback);
+}
+
+function vlAttrDelete() {
+    idHide('vl-attr-editor-div');
+    idShow('vl-generic-progress');
+
+    var isAuth = (ATTR_EDIT_GROUP == 'auth');
+    var method = 'open-ils.permacrud.delete.' + (isAuth ? 'vqarad' : 'vqbrad');
+    var rad    = isAuth ? new vqarad() : new vqbrad() ;
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', method],
+        {   async: true,
+	    params: [authtoken, rad.fromHash({ id : ATTR_EDIT_ID }), ],
+	    oncomplete: function() {
+		dijit.byId('attr-editor-dialog').onCancel(); // close the dialog
+		attrEditorFetchAttrDefs(vlShowAttrEditor);
+		ATTR_EDIT_ID = null;
+	    },
+	    onerror: function(r) {
+		alert('vlAttrDelete comms error: ' + r);
+	    }
+        }
+    );
+}
+
+// ------------------------------------------------------------
+// utilities for attribute editors
+
+// dom utilities (maybe dojo does these, and these should be replaced)
+
+function idStyle(obId, k, v)	{ document.getElementById(obId).style[k] = v;	}
+function idShow(obId)		{ idStyle(obId, 'display', 'block');		}
+function idHide(obId)		{ idStyle(obId, 'display' , 'none');		}
 
 function connectTooltip(fieldId) {
     // Given an element id, look up a tooltip element in the doc (same
@@ -821,26 +943,31 @@ function connectTooltip(fieldId) {
     dojo.connect(fld, 'onblur', function(evt) { dijit.hideTooltip(fld); });
 }
 
+// xpath utilities
 
-function onBibAttrClick(evt) {
-    var row = bibAttrGrid.model.getRow(evt.rowIndex);
-    // populate the popup editor.
-    dojo.byId('oils-bib-attr-code').value = row.code;
-    dojo.byId('bib-attr-description').value = row.description;
-    var _xpath = row.xpath;
-    var xpath = xpathParser.parse(_xpath);
-    dojo.byId('bib-attr-tag').value = xpath.tags;
-    dojo.byId('bib-attr-subfield').value = xpath.subfields;
-    dojo.byId('bib-attr-ident-selector').value = (row.ident ? 'True':'False');
-    dojo.byId('bib-attr-xpath').value = _xpath;
-    dojo.byId('bib-attr-remove').value = row.remove;
+var xpathParser = new openils.MarcXPathParser();
 
-    // set up UI for editing
-    var dialog = dojo.byId('bib-attr-dialog');
-    var create_bar = dialog.getElementsByClassName('create_bar')[0];
-    var update_bar = dialog.getElementsByClassName('update_bar')[0];
-    create_bar.style.display='none';
-    update_bar.style.display='table-row';
-    idStyle('vl-create-bib-attr-button', 'visibility', 'hidden');
-    dojo.byId('vl-create-bib-attr-button').click();
+function tagAndSubFieldsToXpath(tags, subfields) {
+    // given tags, and subfields, build up an XPath.
+    try {
+	var parts = {
+	    'tags':tags.match(/[\d]+/g), 
+	    'subfields':subfields.match(/[a-zA-z]/g) };
+	return xpathParser.compile(parts);
+    } catch (err) {
+	return {'parts':null, 'tags':null, 'error':err};
+    }
 }
+
+function looksLikeDerivedXpath(path) {
+    // Does this path look like it was derived from tags and subfields?
+    var parsed = xpathParser.parse(path);
+    if (parsed.tags == null) 
+	return false;
+    var compiled = xpathParser.compile(parsed);
+    return (path == compiled);
+}
+
+// amazing xpath-util unit-tests
+if (!looksLikeDerivedXpath('//*[@tag="901"]/*[@code="c"]'))	alert('vandelay xpath-utility error');
+if ( looksLikeDerivedXpath('ba-boo-ba-boo!'))			alert('vandelay xpath-utility error');

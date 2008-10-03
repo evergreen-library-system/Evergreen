@@ -1,0 +1,81 @@
+<!ENTITY vandelay.add.existing.queue "or Add to an Existing Queue">
+<!ENTITY vandelay.auth.attrs "Authority attributes">
+<!ENTITY vandelay.auth.records "Authority Records">
+<!ENTITY vandelay.auto.import.noncolliding "Auto-Import Non-Colliding Records">
+<!ENTITY vandelay.auto.width "Auto Width">
+<!ENTITY vandelay.back.to.import.queue "Back To Import Queue">
+<!ENTITY vandelay.bib.attrs "Bibliographic attributes">
+<!ENTITY vandelay.bib.records "Bibliographic Records">
+<!ENTITY vandelay.cancel "Cancel">
+<!ENTITY vandelay.code "Code">
+<!ENTITY vandelay.column "Column">
+<!ENTITY vandelay.create.attr.def "Create Attribute Definition">
+<!ENTITY vandelay.create "Create">
+<!ENTITY vandelay.create.date "Create Date">
+<!ENTITY vandelay.create.upload.queue "Create a New Upload Queue">
+<!ENTITY vandelay.creator "Creator">
+<!ENTITY vandelay.delete.queue "Delete Queue">
+<!ENTITY vandelay.delete.record "Delete record">
+<!ENTITY vandelay.descrip "Description">
+<!ENTITY vandelay.dest.match.point "Destination Match Point">
+<!ENTITY vandelay.display "Display">
+<!ENTITY vandelay.done "Done">
+<!ENTITY vandelay.edit.attributes "Edit Attributes">
+<!ENTITY vandelay.edit.attrs "Edit Attributes">
+<!ENTITY vandelay.false "False">
+<!ENTITY vandelay.file.to.upload "File to Upload:">
+<!ENTITY vandelay.for.example "Example">
+<!ENTITY vandelay.identifier "Identifier">
+<!ENTITY vandelay.id.field "Identifer Field?">
+<!ENTITY vandelay.id "ID">
+<!ENTITY vandelay.import.matches "Import Matches">
+<!ENTITY vandelay.import.records "Import Records">
+<!ENTITY vandelay.import.selected "Import Selected">
+<!ENTITY vandelay.import.time "Import Time">
+<!ENTITY vandelay.inspect.queue "Inspect Queue">
+<!ENTITY vandelay.last.edit.date "Last Edit Date">
+<!ENTITY vandelay.limit.to.collision.matches "Limit to Collision Matches">
+<!ENTITY vandelay.limit.to.non.imported "Limit to Non-Imported Records">
+<!ENTITY vandelay.marc.file.upload "Evergreen MARC File Upload">
+<!ENTITY vandelay.marc.record "MARC Record">
+<!ENTITY vandelay.matches "Matches">
+<!ENTITY vandelay.next.page "Next Page">
+<!ENTITY vandelay.overlay.selected.record "Overlay selected record with imported record">
+<!ENTITY vandelay.overlay.target "Overlay Target">
+<!ENTITY vandelay.page "Page">
+<!ENTITY vandelay.powered.by.evergreen "Powered by Evergreen!">
+<!ENTITY vandelay.prev.page "Previous Page">
+<!ENTITY vandelay.processing "Processing... ">
+<!ENTITY vandelay.queue "Queue">
+<!ENTITY vandelay.queue.type "Queue Type">
+<!ENTITY vandelay.record.queue "Record Queue">
+<!ENTITY vandelay.record.type "Record Type">
+<!ENTITY vandelay.refresh "Refresh">
+<!ENTITY vandelay.remove.advanced "Remove (advanced)">
+<!ENTITY vandelay.remove "Remove">
+<!ENTITY vandelay.results.per.page "Results Per Page">
+<!ENTITY vandelay.retrieve.queue "Retrieve Queue">
+<!ENTITY vandelay.return "Return">
+<!ENTITY vandelay.select.cols "Select Columns">
+<!ENTITY vandelay.select.queue "Select a Queue to Inspect">
+<!ENTITY vandelay.source.match.point "Source Match Point">
+<!ENTITY vandelay.source "Source">
+<!ENTITY vandelay.subfields "Subfield(s)">
+<!ENTITY vandelay.subfield "Subfield">
+<!ENTITY vandelay.sure.to.delete "Are you sure you want to delete this record?">
+<!ENTITY vandelay.sure.to.delete.queue "Are you sure you want to delete this queue?">
+<!ENTITY vandelay.tags "Tag(s)">
+<!ENTITY vandelay.tag "Tag">
+<!ENTITY vandelay.tcn.source "TCN Source">
+<!ENTITY vandelay.tcn.value "TCN Value">
+<!ENTITY vandelay.tooltip.subfields "You can enter multiple subfields, separated by spaces and/or commas.">
+<!ENTITY vandelay.tooltip.tags "You can enter multiple tags, separated by spaces and/or commas.">
+<!ENTITY vandelay.true "True">
+<!ENTITY vandelay.update "Update">
+<!ENTITY vandelay.uploading "Uploading...">
+<!ENTITY vandelay.upload.status "Upload Status">
+<!ENTITY vandelay.upload "Upload">
+<!ENTITY vandelay.vandelay "Vandelay">
+<!ENTITY vandelay.view.marc "View MARC">
+<!ENTITY vandelay.xpath.advanced "XPath (advanced)">
+<!ENTITY vandelay.xpath "XPath">

@@ -15,12 +15,12 @@
 <!DOCTYPE html PUBLIC 
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/vandelay.dtd"-->
 ]>
 
 <html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
-        <title>Vandelay</title>
+        <title>&vandelay.vandelay;</title>
         <link type='text/css' rel='stylesheet' href="/vandelay/vandelay.css"/>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='/js/dojo/openils/MarcXPathParser.js'></script>
@@ -31,15 +31,15 @@
 
 
         <!-- navigation toolbar -->
-        <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign='top' id="vl-nav-bar" style="visibility: hidden;">
             <div dojoType="dijit.Toolbar" id='toolbar'>
                 <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                    onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">Import Records</div>
+                    onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">&vandelay.import.records;</div>
                 <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                    onclick="vlShowQueueSelect();" showLabel="true">Inspect Queue</div>
+                    onclick="vlShowQueueSelect();" showLabel="true">&vandelay.inspect.queue;</div>
 
 		<div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-		     onclick="vlShowBibAttrDefs();" showLabel="true">Bib Attr Definitions</div>
+		     onclick="vlShowAttrEditor();" showLabel="true">&vandelay.edit.attributes;</div>
             </div>
         </div>
 
@@ -51,49 +51,49 @@
         </div>
 
         <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-status-div' class='hidden'>
-            <h1>Upload Status</h1><br/>
-            <div id='vl-upload-status-uploading'><h3>Uploading...</h3></div>
+            <h1>&vandelay.upload.status;</h1><br/>
+            <div id='vl-upload-status-uploading'><h3>&vandelay.uploading;</h3></div>
             <div id='vl-upload-status-processing' class='hidden'>
-                <h3>Processing... <span id='vl-upload-status-count'/></h3>
+                <h3>&vandelay.processing;<span id='vl-upload-status-count'/></h3>
             </div>
         </div>
 
         <!-- MARC upload form -->
         <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden'>
-            <h1>Evergreen MARC File Upload</h1><br/>
+            <h1>&vandelay.marc.file.upload;</h1><br/>
             <form id="vl-marc-upload-form" enctype="multipart/form-data">
                 <input type='hidden' name='ses' id='vl-ses-input'/>
                 <table class='form_table'>
                     <tr>
-                        <td>Record Type</td>
+                        <td>&vandelay.record.type;</td>
                         <td colspan='4'>
                             <select id='vl-record-type' dojoType='dijit.form.FilteringSelect' 
                                     jsId='vlUploadRecordType' onchange='vlShowUploadForm();'>
-                                <option value='bib' selected='selected'>Bibliographic Records</option>
-                                <option value='auth'>Authority Records</option>
+                                <option value='bib' selected='selected'>&vandelay.bib.records;</option>
+                                <option value='auth'>&vandelay.auth.records;</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>Create a New Upload Queue</td>
+                        <td>&vandelay.create.upload.queue;</td>
                         <td>
                             <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
                         </td>
-                        <td>or Add to an Existing Queue</td>
+                        <td>&vandelay.add.existing.queue;</td>
                         <td>
                             <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect'>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>Auto-Import Non-Colliding Records</td>
+                        <td>&vandelay.auto.import.noncolliding;</td>
                         <td colspan='4'>
                             <input jsId='vlUploadQueueAutoImport' dojoType='dijit.form.CheckBox'/>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span id="vl-file-label">File to Upload:</span>
+                            <span id="vl-file-label">&vandelay.file.to.upload;</span>
                         </td>
                         <td id='vl-input-td' colspan='4'>
                             <input size='48' type="file" name="marc_upload"/>
@@ -101,7 +101,7 @@
                     </tr>
                     <tr>
                         <td align='center' colspan='4'>
-                            <button dojoType="dijit.form.Button" onclick="batchUpload()">Upload</button>
+                            <button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button>
                         </td>
                     </tr>
                 </table>
@@ -110,7 +110,7 @@
 
         <!-- record queue grid -->
         <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-div' class='tall hidden'>
-            <h1>Record Queue</h1><br/>
+            <h1>&vandelay.record.queue;</h1><br/>
             <script>
                 var vlQueueGridLayout;
                 function resetVlQueueGridLayout() {
@@ -119,16 +119,16 @@
                         cells : [[
                             {name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
                                 get: vlQueueGridDrawSelectBox },
-                            {   name: 'View MARC', 
+                            {   name: '&vandelay.view.marc;', 
                                 get: vlGetViewMARC, 
                                 value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
-                                    'function(){displayGlobalDiv(\'vl-queue-div\');});">View MARC&lt;/a>'
+                                    'function(){displayGlobalDiv(\'vl-queue-div\');});">&vandelay.view.marc;&lt;/a>'
                             },
-                            {   name: 'Matches', 
+                            {   name: '&vandelay.matches;', 
                                 get: vlGetViewMatches,
-                                value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">Matches&lt;/a>'
+                                value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">&vandelay.matches;&lt;/a>'
                             },
-                            {name: 'Import Time', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
+                            {name: '&vandelay.import.time;', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
                         ]]
                     }];
                 }
@@ -139,14 +139,14 @@
                 <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
                     <table class='form_table'>
                         <thead>
-                            <tr><th width='33%'>Column</th><th width='33%'>Display</th><th width='33%'>Auto Width</th></tr>
+                            <tr><th width='33%'>&vandelay.column;</th><th width='33%'>&vandelay.display;</th><th width='33%'>&vandelay.auto.width;</th></tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td colspan='3' align='center'>
                                     <button jsId='vlQueueGridColumnPickerButton' 
                                         onclick='vlQueueGridColumePickerDialog.hide();vlQueueGridColumePicker.update();' 
-                                        dojoType='dijit.form.Button'>Done</button>
+                                        dojoType='dijit.form.Button'>&vandelay.done;</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -158,26 +158,26 @@
                     <table width='100%' style='margin-bottom:0px;'>
                         <tr>
                             <td align='left'>
-                                <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>Import Selected</button>
+                                <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>&vandelay.import.selected;</button>
                                 <button dojoType='dijit.form.Button' onclick="
-                                    if(confirm('Are you sure want to delete this queue?')) {
+                                    if(confirm('&vandelay.sure.to.delete.queue;')) {
                                         vlDeleteQueue(currentType, currentQueueId, 
                                             function() { displayGlobalDiv('vl-marc-upload-div'); });
-                                    }">Delete Queue</button>
+                                    }">&vandelay.delete.queue;</button>
                             </td>
                             <td align='middle'>
                                 <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
                                 <table><tr>
                                     <td class='filter_td'>
-                                        Limit to Collision Matches
+                                        &vandelay.limit.to.collision.matches;
                                         <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/>
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
-                                        Limit to Non-Imported Records 
+                                        &vandelay.limit.to.non.imported;
                                         <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/>
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
-                                        Results Per Page 
+                                        &vandelay.results.per.page; 
                                         <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
                                             <option value='10'>10</option>
                                             <option value='20'>20</option>
@@ -186,23 +186,23 @@
                                         </select>
                                     </td>
                                     <td class='filter_td' style='padding-left:5px;'>
-                                        Page <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                                        &vandelay.page; <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
                                     </td>
                                     <td style='padding-left:5px;'>
                                         <button dojoType='dijit.form.Button' 
-                                            onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>Refresh</button>
+                                            onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>&vandelay.refresh;</button>
                                     </td>
                                 </tr></table>
                             </td>
                             <td align='right' valign='bottom'>
                                 <span style='padding-right:4px;'>
-                                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&#171; Previous Page</a>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&#171; &vandelay.prev.page;</a>
                                 </span>
                                 <span style='padding-right:10px;'>
-                                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>Next Page &#187;</a>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page; &#187;</a>
                                 </span>
                                 <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
-                                    <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>Select Columns</a>
+                                    <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>&vandelay.select.cols;</a>
                                 </span>
                             </td>
                         </tr>
@@ -225,36 +225,36 @@
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
                             {
-                                name: 'Overlay Target', 
+                                name: '&vandelay.overlay.target;', 
                                 get: vlGetOverlayTargetSelector,
                                 value: '&lt;input type="radio" name="overlay_target" '+
                                     'onclick="vlHandleOverlayTargetSelected();" id="vl-overlay-target-ID"/>'
                             },
-                            {name:'Source Match Point', field:'src_matchpoint'},
-                            {name:'Destination Match Point', field:'dest_matchpoint'},
-                            {name: 'ID', field:'id'},
-                            {   name: 'View MARC', 
+                            {name:'&vandelay.source.match.point;', field:'src_matchpoint'},
+                            {name:'&vandelay.dest.match.point;', field:'dest_matchpoint'},
+                            {name: '&vandelay.id;', field:'id'},
+                            {   name: '&vandelay.view.marc;', 
                                 get: vlGetViewMARC, 
                                 value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, '+
-                                    'true, function(){displayGlobalDiv(\'vl-match-div\');});">View MARC&lt;/a>'
+                                    'true, function(){displayGlobalDiv(\'vl-match-div\');});">&vandelay.view.marc;&lt;/a>'
                             },
-                            {name: 'Creator', get: vlGetCreator},
-                            {name: 'Create Date', field:'create_date', get: vlGetDateTimeField},
-                            {name: 'Last Edit Date', field:'edit_date', get: vlGetDateTimeField},
-                            {name: 'Source', field:'source'},
-                            {name: 'TCN Source', field:'tcn_source'},
-                            {name: 'TCN Value', field:'tcn_value'}
+                            {name: '&vandelay.creator;', get: vlGetCreator},
+                            {name: '&vandelay.create.date;', field:'create_date', get: vlGetDateTimeField},
+                            {name: '&vandelay.last.edit.date;', field:'edit_date', get: vlGetDateTimeField},
+                            {name: '&vandelay.source;', field:'source'},
+                            {name: '&vandelay.tcn.source;', field:'tcn_source'},
+                            {name: '&vandelay.tcn.value;', field:'tcn_value'}
                         ]]
                     }];
                 }
             </script>
-            <h1>Import Matches</h1><br/>
+            <h1>&vandelay.import.matches;</h1><br/>
             <div>
                 <button dojoType='dijit.form.Button' 
-                    onclick="displayGlobalDiv('vl-queue-div');">&#x2196; Back To Import Queue</button>
+                    onclick="displayGlobalDiv('vl-queue-div');">&#x2196; &vandelay.back.to.import.queue;</button>
                 <span style='padding-left:20px;'>
                     <input dojoType='dijit.form.CheckBox' jsId='vlOverlayTargetEnable' onclick='vlHandleOverlayTargetSelected'/> 
-                    Overlay selected record with imported record
+                    &vandelay.overlay.selected.record;
                 </span>
             </div>
             <div class='tall'>
@@ -264,9 +264,9 @@
 
         <!-- MARC as HTML -->
         <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-html-div' class='tall hidden'>
-            <h1>MARC Record</h1><br/>
+            <h1>&vandelay.marc.record;</h1><br/>
             <div>
-                <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>&#x2196; Return</button>
+                <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>&#x2196; &vandelay.return;</button>
             </div>
             <div>
                 <style>#vl-marc-record-html td {padding:0px;}</style>
@@ -276,19 +276,19 @@
 
         <!-- Form for choosing which queue to view -->
         <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-select-div' class='tall hidden'>
-            <h1>Select a Queue to Inspect</h1><br/>
+            <h1>&vandelay.select.queue;</h1><br/>
             <table class='form_table'>
                 <tr>
-                    <td>Queue Type</td>
+                    <td>&vandelay.queue.type;</td>
                     <td>
                         <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
-                            <option value='bib' selected='selected'>Bibliographic Records</option>
-                            <option value='auth'>Authority Records</option>
+                            <option value='bib' selected='selected'>&vandelay.bib.records;</option>
+                            <option value='auth'>&vandelay.auth.records;</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td>Queue</td>
+                    <td>&vandelay.queue;</td>
                     <td>
                         <select jsId='vlQueueSelectQueueList' dojoType='dijit.form.FilteringSelect'>
                         </select>
@@ -296,88 +296,94 @@
                 </tr>
                 <tr>
                     <td colspan='2'>
-                        <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>Retrieve Queue</button>
+                        <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>&vandelay.retrieve.queue;</button>
                     </td>
                 </tr>
             </table>
         </div>
 
-	<!-- bib attribute definitions  -->
-        <div dojoType="dijit.layout.ContentPane"  id="vl-bib-attr-defs-div"
-                class='hidden bib-attr-detail-content-pane' title="Bib Attr Definition" style='height:400px;' layoutAlign="client">
+	<!-- attribute editor  -->
+        <div dojoType="dijit.layout.ContentPane"  id="vl-attr-editor-div"
+                class='hidden attr-editor-detail-content-pane' title='&vandelay.edit.attrs;' style='height:400px;' layoutAlign="client">
 
-            <div class='vl-bib-attr-defs-actions-div' style='margin:8px;'>
-
-                <div dojoType="dijit.form.DropDownButton" id="vl-create-bib-attr-button">
-                    <span name="create">Create Attribute Definition</span>
-		    <span name="update" class="hidden">Update Attribute Definition</span>
-
-                    <div dojoType="dijit.TooltipDialog" execute="saveNewBibAttrRecord(arguments[0]);" id="bib-attr-dialog">
+            <div style='margin:8px;'>	
+	      <div style='float: left; margin-top: 8px;'>
+		<input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="bib" 
+		       id="aegB" onclick="setAttrEditorGroup('bib');" checked="checked"/>
+		<label for="aegB" style="margin-right: 1em;">&vandelay.bib.attrs;</label>
+		<input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="auth" 
+		       id="aegA" onclick="setAttrEditorGroup('auth');"/>
+		<label for="aegA" style="margin-right: 1em;">&vandelay.auth.attrs;</label>
+	      </div>
+                <div dojoType="dijit.form.DropDownButton" id="vl-create-attr-editor-button">
+                    <span name="create">&vandelay.create.attr.def;</span>
+                    <div dojoType="dijit.TooltipDialog" execute="vlSaveAttrDefinition(arguments[0]);" id="attr-editor-dialog">
                         <script type='dojo/connect' event='onOpen'>onAttrEditorOpen();</script>
                         <script type='dojo/connect' event='onClose'>onAttrEditorClose();</script>
                         <table class='dijitTooltipTable'>
                             <tr>
-                                <td><label for="code">Code: </label></td>
-                                <td><input id='oils-bib-attr-code' name="code" dojoType="dijit.form.TextBox"/></td>
+                                <td><label for="code">&vandelay.code;:</label></td>
+                                <td><input id='attr-editor-code' name="code" dojoType="dijit.form.TextBox"/></td>
                             </tr>
                             <tr>
-                                <td><label for="description">Description: </label></td>
-                                <td><input id='bib-attr-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
+                                <td><label for="description">&vandelay.descrip;:</label></td>
+                                <td><input id='attr-editor-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
                             </tr>
                             <tr>
-                                <td><label for="amount">Tag(s): </label></td>
-                                <td><input id="bib-attr-tag" dojoType="dijit.form.TextBox" name="tag"></input>
-				<div class="hidden" id="bib-attr-tag-tip">
-				<p>You can enter multiple tags, separated by spaces and/or commas.</p>
-				<p>Example: <code>120, 220, 300</code> or <code>120 220 330</code></p></div>
+                                <td><label for="amount">&vandelay.tags;:</label></td>
+                                <td><input id="attr-editor-tags" dojoType="dijit.form.TextBox" name="tag"></input>
+				<div class="hidden" id="attr-editor-tags-tip">
+				<p>&vandelay.tooltip.tags;</p>
+				<p>&vandelay.for.example;:<code>120, 220, 300</code> or <code>120 220 330</code></p></div>
 				</td>
                             </tr>
 
                             <tr>
-                                <td><label for="amount">Subfield(s): </label></td>
-                                <td><input dojoType="dijit.form.TextBox" name="subfield" id="bib-attr-subfield"></input></td>
-				<div class="hidden" id="bib-attr-subfield-tip">
-				<p>You can enter multiple subfields, separated by spaces and/or commas.</p>
-				<p>Example: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
+                                <td><label for="amount">&vandelay.subfields;:</label></td>
+                                <td><input dojoType="dijit.form.TextBox" name="subfield" id="attr-editor-subfields"></input></td>
+				<div class="hidden" id="attr-editor-subfields-tip">
+				<p>&vandelay.tooltip.subfields;</p>
+				<p>&vandelay.for.example;: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
 
                             </tr>
                             <tr>
-                                <td><label for="ident">Identifer Field?: </label></td>
+                                <td><label for="ident">&vandelay.id.field;: </label></td>
                                 <td>
-                                    <select dojoType="dijit.form.FilteringSelect" name="ident" id="bib-attr-ident-selector">
-                                        <option value='f' selected='selected'>False</option>
-                                        <option value='t'>True</option>
+                                    <select dojoType="dijit.form.FilteringSelect" name="ident" id="attr-editor-identifier">
+                                        <option value='f' selected='selected'>&vandelay.false;</option>
+                                        <option value='t'>&vandelay.true;</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><label for="amount">XPath (advanced): </label></td>
+                                <td><label for="attr-editor-xpath">&vandelay.xpath.advanced;: </label></td>
 
-                                <td><input dojoType="dijit.form.TextBox" id="bib-attr-xpath" name="xpath"></input></td>
+                                <td><input dojoType="dijit.form.TextBox" id="attr-editor-xpath" name="xpath"></input></td>
                             </tr>
                             <tr>
-                                <td><label for="amount">Remove (advanced): </label></td>
+                                <td><label for="attr-editor-remove">&vandelay.remove.advanced;: </label></td>
 
-                                <td><input dojoType="dijit.form.TextBox" id="bib-attr-remove" name="remove"></input></td>
+                                <td><input dojoType="dijit.form.TextBox" id="attr-editor-remove" name="remove"></input></td>
                             </tr>
-                            <tr class="create_bar">
+                            <tr id="attr-editor-create-bar">
                                 <td colspan='2' align='center'>
                                     <button dojoType="dijit.form.Button" type="submit" 
-					    id="bib-attr-create-button">Create</button>
+					    id="attr-editor-create-button">&vandelay.create;</button>
 				    <button type="button" dojoType="dijit.form.Button"
-					    onclick="dijit.byId('bib-attr-dialog').onCancel();">Cancel</button>
+					    onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
                                 </td>
                             </tr>
-                            <tr class="update_bar">
+                            <tr id="attr-editor-update-bar">
                                 <td colspan='2' align='center'>
                                     <button dojoType="dijit.form.Button" type="submit" 
-					    id="bib-attr-update-button">Update</button>
+					    id="attr-editor-update-button">&vandelay.update;</button>
 				    <button type="button" dojoType="dijit.form.Button"
-					    onclick="dijit.byId('bib-attr-dialog').onCancel();">Cancel</button>
+					    onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
                                     <button dojoType="dijit.form.Button" 
 					    type="button" 
-					    id="bib-attr-delete-button"
-					    style="padding-left: 2em;">Delete record</button>
+					    id="attr-editor-delete-button"
+					    style="padding-left: 2em;"
+					    onclick="if(confirm('&vandelay.sure.to.delete;')) { vlAttrDelete(); }">&vandelay.delete.record;</button>
                                 </td>
                             </tr>
                         </table>
@@ -387,29 +393,29 @@
 
 	    </div>
 	    <script>
-		var bibAttrGridLayout = [{
+		var vlAttrGridLayout = [{
 		cells : [[
-		{name: 'ID', field: 'id'},
-		{name: 'Code', field:'code', width:'auto'},
-		{name: 'Description', field: "description", width:'auto'}, 
-		{name: 'Tag', get:getTag},
-		{name: 'Subfield', get: getSubfield},
-		{name: 'Identifier', field:'ident'},
-		{name: 'XPath', field:'xpath', width:'auto'},
-		{name: 'Remove', field:'remove', width:'auto'}
+		{name: '&vandelay.id;', field: 'id'},
+		{name: '&vandelay.code;', field:'code', width:'auto'},
+		{name: '&vandelay.descrip;', field: "description", width:'auto'}, 
+		{name: '&vandelay.tag;', get:attrGridGetTag},
+		{name: '&vandelay.subfield;', get: attrGridGetSubfield},
+		{name: '&vandelay.identifier;', field:'ident'},
+		{name: '&vandelay.xpath;', field:'xpath', width:'auto'},
+		{name: '&vandelay.remove;', field:'remove', width:'auto'}
 		]]
 		}];
 	      </script>
 
 	      <div class='tall'>
-		<div dojoType='dojox.Grid' jsId='bibAttrGrid'> </div>
+		<div dojoType='dojox.Grid' jsId='attrEditorGrid'> </div>
 	      </div>
 
 	</div>
 
         <!--
         <div style='text-align:center;width:100%;' dojoType="dijit.layout.ContentPane" layoutAlign='bottom'>
-            Powered by Evergreen!
+            &vandelay.powered.by.evergreen;
         </div>
         -->
       </div>
