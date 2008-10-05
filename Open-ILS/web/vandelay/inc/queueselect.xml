@@ -1,0 +1,25 @@
+<!-- Form for choosing which queue to view -->
+<h1>&vandelay.select.queue;</h1><br/>
+<table class='form_table'>
+    <tr>
+        <td>&vandelay.queue.type;</td>
+        <td>
+            <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
+                <option value='bib' selected='selected'>&vandelay.bib.records;</option>
+                <option value='auth'>&vandelay.auth.records;</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>&vandelay.queue;</td>
+        <td>
+            <select jsId='vlQueueSelectQueueList' dojoType='dijit.form.FilteringSelect'>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan='2'>
+            <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>&vandelay.retrieve.queue;</button>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,105 @@
+<h1>&vandelay.record.queue;</h1><br/>
+<script>
+    var vlQueueGridLayout;
+    function resetVlQueueGridLayout() {
+        vlQueueGridLayout = [{
+            defaultCell: {styles: 'text-align: center;'},
+            cells : [[
+                {name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
+                    get: vlQueueGridDrawSelectBox },
+                {   name: '&vandelay.view.marc;', 
+                    get: vlGetViewMARC, 
+                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
+                        'function(){displayGlobalDiv(\'vl-queue-div\');});">&vandelay.view.marc;&lt;/a>'
+                },
+                {   name: '&vandelay.matches;', 
+                    get: vlGetViewMatches,
+                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">&vandelay.matches;&lt;/a>'
+                },
+                {name: '&vandelay.import.time;', field:'import_time', get:vlGetDateTimeField, selectableColumn:true}
+            ]]
+        }];
+    }
+</script>
+<div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+
+    <!-- column picker dialog -->
+    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
+        <table class='form_table'>
+            <thead>
+                <tr><th width='33%'>&vandelay.column;</th><th width='33%'>&vandelay.display;</th><th width='33%'>&vandelay.auto.width;</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan='3' align='center'>
+                        <button jsId='vlQueueGridColumnPickerButton' 
+                            onclick='vlQueueGridColumePickerDialog.hide();vlQueueGridColumePicker.update();' 
+                            dojoType='dijit.form.Button'>&vandelay.done;</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- queue grid navigation row -->
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        <table width='100%' style='margin-bottom:0px;'>
+            <tr>
+                <td align='left'>
+                    <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>&vandelay.import.selected;</button>
+                    <button dojoType='dijit.form.Button' onclick="
+                        if(confirm('&vandelay.sure.to.delete.queue;')) {
+                            vlDeleteQueue(currentType, currentQueueId, 
+                                function() { displayGlobalDiv('vl-marc-upload-div'); });
+                        }">&vandelay.delete.queue;</button>
+                </td>
+                <td align='middle'>
+                    <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
+                    <table><tr>
+                        <td class='filter_td'>
+                            &vandelay.limit.to.collision.matches;
+                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/>
+                        </td>
+                        <td class='filter_td' style='padding-left:5px;'>
+                            &vandelay.limit.to.non.imported;
+                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/>
+                        </td>
+                        <td class='filter_td' style='padding-left:5px;'>
+                            &vandelay.results.per.page; 
+                            <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                <option value='10'>10</option>
+                                <option value='20'>20</option>
+                                <option value='50'>50</option>
+                                <option value='100'>100</option>
+                            </select>
+                        </td>
+                        <td class='filter_td' style='padding-left:5px;'>
+                            &vandelay.page; <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                        </td>
+                        <td style='padding-left:5px;'>
+                            <button dojoType='dijit.form.Button' 
+                                onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>&vandelay.refresh;</button>
+                        </td>
+                    </tr></table>
+                </td>
+                <td align='right' valign='bottom'>
+                    <span style='padding-right:4px;'>
+                        <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&#171; &vandelay.prev.page;</a>
+                    </span>
+                    <span style='padding-right:10px;'>
+                        <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page; &#187;</a>
+                    </span>
+                    <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
+                        <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>&vandelay.select.cols;</a>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Queue Grid -->
+    <div class='' style='height:87%;' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
+    </div>
+</div>
+
