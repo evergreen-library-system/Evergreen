@@ -1,9 +1,8 @@
 @import "/js/dojo/dojo/resources/dojo.css";
 @import "/js/dojo/dijit/themes/tundra/tundra.css";
-@import "/js/dojo/dijit/tests/css/dijitTests.css"; 
 @import "/js/dojo/dojox/grid/_grid/Grid.css";
 .container:after {content: ""; display: block; height: 0; clear: both; }
-body { width:100%; height:100%; border:0; margin:0; padding:0; }
+html,body { width:100%; height:100%; border:0; margin:0; padding:0; }
 table { border-collapse: collapse; }
 table.dijitTooltipTable { border-collapse: separate; }
 .form_table td { padding: 6px; }
