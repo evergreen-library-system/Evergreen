@@ -57,6 +57,8 @@ sub update_user_setting {
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
 
+    $user_id = $e->requestor->id unless defined $user_id;
+
     unless($e->requestor->id == $user_id) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
         return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
@@ -143,11 +145,13 @@ sub user_settings {
         return $e->event unless $e->allowed('VIEW_USER', $patron->home_ou);
     }
 
-    my $s = $e->search_actor_user_setting({usr => $user_id});
-	my $settings =  { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
-
-    return $$settings{$setting} if $setting;
-    return $settings;
+    if($setting) {
+        my $val = $e->search_actor_user_setting({usr => $user_id, name => $setting})->[0];
+        return OpenSRF::Utils::JSON->JSON2perl($val->value);
+    } else {
+        my $s = $e->search_actor_user_setting({usr => $user_id});
+	    return { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
+    }
 }
 
 
