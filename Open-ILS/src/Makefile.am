@@ -41,6 +41,7 @@ reportsdir = $(DESTDIR)$(WEBDIR)/reports/
 # Collect files to be used by multiple targets
 
 autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
+ 	 @srcdir@/extras/locale_html_options.pl \
  	 @srcdir@/extras/org_tree_js.pl \
 	 @srcdir@/extras/org_lasso_js.pl \
 	 @srcdir@/extras/org_tree_html_options.pl \
@@ -240,6 +241,7 @@ webcore-install:
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
+	rm  $(DESTDIR)$(WEBDIR)/reports/fm_IDL.xml
 	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
 
 

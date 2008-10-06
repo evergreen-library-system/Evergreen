@@ -628,6 +628,8 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!--	================================================================= 
 	Slimpac Simple Search
 	================================================================= -->
+<!ENTITY slimpac.language.select "Select language">
+
 <!ENTITY slimpac.start.title "Simple Search">
 <!ENTITY slimpac.start.nowSearching "Now searching: ">
 <!ENTITY slimpac.start.dynamic "Dynamic Catalog">
@@ -642,8 +644,6 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY opac.image_provided "Image provided by">
 <!ENTITY vendor.name "Amazon">
 <!ENTITY vendor.base_link "http://amazon.com/dp/">
-
-
 
 <!--	================================================================= 
 	Selfcheck
