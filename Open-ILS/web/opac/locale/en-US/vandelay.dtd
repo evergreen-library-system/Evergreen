@@ -7,6 +7,7 @@
 <!ENTITY vandelay.bib.attrs "Bibliographic attributes">
 <!ENTITY vandelay.bib.records "Bibliographic Records">
 <!ENTITY vandelay.cancel "Cancel">
+<!ENTITY vandelay.edit "Edit">
 <!ENTITY vandelay.code "Code">
 <!ENTITY vandelay.column "Column">
 <!ENTITY vandelay.create.attr.def "Create Attribute Definition">

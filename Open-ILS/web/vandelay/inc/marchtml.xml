@@ -2,6 +2,7 @@
 <h1>&vandelay.marc.record;</h1><br/>
 <div>
     <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>&#x2196; &vandelay.return;</button>
+    <button id='vl-marc-html-edit-button' dojoType='dijit.form.Button'>&vandelay.edit;</button>
 </div>
 <div>
     <style>#vl-marc-record-html td {padding:0px;}</style>

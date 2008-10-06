@@ -387,6 +387,7 @@ function vlPopulateMatchGrid(grid, data) {
 
 function vlLoadMARCHtml(recId, inCat, oncomplete) {
     dijit.byId('vl-marc-html-done-button').onClick = oncomplete;
+    dijit.byId('vl-marc-html-edit-button').onClick = function() {vlLoadMarcEditor(currentType, recId);};
     displayGlobalDiv('vl-generic-progress');
     var api;
     var params = [recId, 1];
@@ -751,6 +752,52 @@ function vlFetchQueueFromForm() {
     currentType = vlQueueSelectType.getValue();
     currentQueueId = vlQueueSelectQueueList.getValue();
     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+}
+
+function vlOpenMarcEditWindow(rec) {
+    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+    win.xulG = {
+        record : {marc : rec.marc()},
+        save : {
+            label: 'Save', // XXX
+            func: function(xmlString) {
+                var method = 'open-ils.permacrud.update.' + rec.classname;
+                rec.marc(xmlString);
+                fieldmapper.standardRequest(
+                    ['open-ils.permacrud', method],
+                    {   async: true,
+                        params: [authtoken, rec],
+                        oncomplete: function(r) {
+                            if(e = openils.Event.parse(rec))
+                                return alert(e);
+                            alert('Record Updated'); // XXX
+                            win.close();
+                            // XXX reload marc html view with updates
+                        }
+                    }
+                );
+            },
+        }
+    };
+}
+
+function vlLoadMarcEditor(type, recId) {
+    var method = 'open-ils.permacrud.search.vqbr';
+    if(currentType != 'bib')
+        method = method.replace(/vqbr/,'vqar');
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', method],
+        {   async: true, 
+            params: [authtoken, {id : recId}],
+            oncomplete: function(r) {
+                var rec = r.recv().content();
+                if(e = openils.Event.parse(rec))
+                    return alert(e);
+                vlOpenMarcEditWindow(rec);
+            }
+        }
+    );
 }
 
 
