@@ -1,3 +1,4 @@
+messagecatalog { -moz-binding: url('../main/bindings.xml#messagecatalog'); }
 input {
 	background-color: lightgrey;
 }
