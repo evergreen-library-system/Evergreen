@@ -44,37 +44,47 @@ my $U = $apputils;
 sub _d { warn "Patron:\n" . Dumper(shift()); }
 
 my $cache;
-
-
 my $set_user_settings;
 my $set_ou_settings;
 
+
 __PACKAGE__->register_method(
-	method	=> "set_user_settings",
+	method	=> "update_user_setting",
 	api_name	=> "open-ils.actor.patron.settings.update",
 );
-sub set_user_settings {
-	my( $self, $client, $user_session, $uid, $settings ) = @_;
-	
-	$logger->debug("Setting user settings: $user_session, $uid, " . Dumper($settings));
+sub update_user_setting {
+	my($self, $conn, $auth, $user_id, $settings) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
 
-	my( $staff, $user, $evt ) = 
-		$apputils->checkses_requestor( $user_session, $uid, 'UPDATE_USER' );	
-	return $evt if $evt;
-	
-	my @params = map { 
-		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
-		
-	$_->[1]->{value} = OpenSRF::Utils::JSON->perl2JSON($_->[1]->{value}) for @params;
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    }
 
-	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
+    for my $name (keys %$settings) {
+        my $val = $$settings{$name};
+        my $set = $e->search_actor_user_setting({usr => $user_id, name => $name})->[0];
 
-	my $ses = $U->start_db_session();
-	my $stat = $ses->request(
-		'open-ils.storage.direct.actor.user_setting.batch.merge', @params )->gather(1);
-	$U->commit_db_session($ses);
+        if(defined $val) {
+            $val = OpenSRF::Utils::JSON->perl2JSON($val);
+            if($set) {
+                $set->value($val);
+                $e->update_actor_user_setting($set) or return $e->die_event;
+            } else {
+                $set = Fieldmapper::actor::user_setting->new;
+                $set->usr($user_id);
+                $set->name($name);
+                $set->value($val);
+                $e->create_actor_user_setting($set) or return $e->die_event;
+            }
+        } elsif($set) {
+            $e->delete_actor_user_setting($set) or return $e->die_event;
+        }
+    }
 
-	return $stat;
+    $e->commit;
+    return 1;
 }
 
 
