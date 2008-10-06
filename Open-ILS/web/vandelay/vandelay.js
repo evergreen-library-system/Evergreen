@@ -206,9 +206,9 @@ function displayGlobalDiv(id) {
 function runStartupCommands() {
     currentQueueId = cgi.param('qid');
     currentType = cgi.param('qtype');
+    dojo.style('vl-nav-bar', 'visibility', 'visible');
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-    dojo.style('vl-nav-bar', 'visibility', 'visible');
     vlShowUploadForm();
 }
 
