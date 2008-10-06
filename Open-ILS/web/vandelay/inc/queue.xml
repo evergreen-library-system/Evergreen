@@ -27,13 +27,17 @@
     <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
         <table class='form_table'>
             <thead>
-                <tr><th width='33%'>&vandelay.column;</th><th width='33%'>&vandelay.display;</th><th width='33%'>&vandelay.auto.width;</th></tr>
+                <tr><th width='33%'>&vandelay.column;</th>
+                <th width='33%'>&vandelay.display;</th>
+                <th width='33%'>&vandelay.auto.width;</th></tr>
             </thead>
             <tbody>
                 <tr>
                     <td colspan='3' align='center'>
                         <button jsId='vlQueueGridColumnPickerButton' 
-                            onclick='vlQueueGridColumePickerDialog.hide();vlQueueGridColumePicker.update();' 
+                            onclick='
+                                vlQueueGridColumePickerDialog.hide();
+                                vlQueueGridColumePicker.update(true);'
                             dojoType='dijit.form.Button'>&vandelay.done;</button>
                     </td>
                 </tr>

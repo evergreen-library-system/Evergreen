@@ -565,17 +565,15 @@ function buildRecordGrid(type) {
     var store = new dojo.data.ItemFileReadStore({data:storeData});
     var model = new dojox.grid.data.DojoData(
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-
     vlQueueGrid.setModel(model);
-    if(vlQueueGridColumePicker) 
-        vlQueueGrid.setStructure(vlQueueGridColumePicker.structure);
-    else
-        vlQueueGrid.setStructure(vlQueueGridLayout);
-    vlQueueGrid.update();
 
-    if(!vlQueueGridColumePicker) {
+    if(vlQueueGridColumePicker) {
+        vlQueueGrid.update();
+    } else {
         vlQueueGridColumePicker = 
-            new openils.GridColumnPicker(vlQueueGridColumePickerDialog, vlQueueGrid);
+            new openils.GridColumnPicker(vlQueueGridColumePickerDialog, 
+                vlQueueGrid, vlQueueGridLayout, authtoken, 'vandelay.queue');
+        vlQueueGridColumePicker.load();
     }
 }
 

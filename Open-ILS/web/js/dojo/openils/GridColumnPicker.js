@@ -14,19 +14,29 @@
  * ---------------------------------------------------------------------------
  */
 
+dojo.require('openils.User');
+dojo.require('openils.Event');
+dojo.require('fieldmapper.Fieldmapper');
+
 if(!dojo._hasResource["openils.GridColumnPicker"]) {
     dojo._hasResource["openils.GridColumnPicker"] = true;
     dojo.provide('openils.GridColumnPicker');
     dojo.declare('openils.GridColumnPicker', null, {
 
-        constructor : function (dialog, grid) {
+        USER_PERSIST_SETTING : 'ui.grid_columns',
+
+        constructor : function (dialog, grid, structure, authtoken, persistId) {
             this.dialog = dialog;
             this.grid = grid;
-            this.structure = grid.structure;
+            this.structure = structure;
             this.dialogTable = dialog.domNode.getElementsByTagName('tbody')[0];
             this.baseCellList = this.structure[0].cells[0].slice();
             this.build();
             this.grid.model.fields.get(0).sort = false;
+            this.authtoken = authtoken;
+            this.savedColums = null;
+            this.persistId = persistId;
+            this.setting = null;
         },
 
         // builds the column-picker dialog table
@@ -47,6 +57,7 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
 
             for(var i = 0; i < cells.length; i++) {
                 // setting table.innerHTML breaks stuff, so do it the hard way
+                var cell = cells[i];
                 tr = document.createElement('tr');
                 tr.setAttribute('picker', 'picker');
                 td1 = document.createElement('td');
@@ -56,15 +67,25 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
                 ipt = document.createElement('input');
                 ipt.setAttribute('type', 'checkbox');
                 ipt.setAttribute('checked', 'checked');
-                ipt.setAttribute('ident', cells[i].field+''+cells[i].name);
+                ipt.setAttribute('ident', cell.field+''+cell.name);
                 ipt.setAttribute('name', 'selector');
 
                 ipt2 = document.createElement('input');
                 ipt2.setAttribute('type', 'checkbox');
-                ipt2.setAttribute('ident', cells[i].field+''+cells[i].name);
+                ipt2.setAttribute('ident', cell.field+''+cell.name);
                 ipt2.setAttribute('name', 'width');
 
-                td1.appendChild(document.createTextNode(cells[i].name));
+                if(this.setting) {
+                    // set the UI based on the loaded settings
+                    if(this._arrayHas(this.setting.columns, cell.field)) {
+                        if(this._arrayHas(this.setting.auto, cell.field))
+                            ipt2.setAttribute('checked', 'checked');
+                    } else {
+                        ipt.removeAttribute('checked');
+                    }
+                }
+
+                td1.appendChild(document.createTextNode(cell.name));
                 td2.appendChild(ipt);
                 td3.appendChild(ipt2);
                 tr.appendChild(td1);
@@ -78,7 +99,7 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
         },
 
         // update the grid based on the items selected in the picker dialog
-        update : function() {
+        update : function(persist) {
             var newCellList = [];
             var rows = dojo.query('[picker=picker]', this.dialogTable);
 
@@ -104,6 +125,8 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
             this.structure[0].cells[0] = newCellList;
             this.grid.setStructure(this.structure);
             this.grid.update();
+
+            if(persist) this.persist();
         },
 
         _selectableCellList : function() {
@@ -119,7 +142,79 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
 
         // save me as a user setting
         persist : function() {
-        }
+            var cells = this.structure[0].cells[0];
+            var list = [];
+            var autos = [];
+            for(var i = 0; i < cells.length; i++) {
+                var cell = cells[i];
+                if(cell.selectableColumn) {
+                    list.push(cell.field);
+                    if(cell.width == 'auto')
+                        autos.push(cell.field);
+                }
+            }
+            var setting = {};
+            setting[this.USER_PERSIST_SETTING+'.'+this.persistId] = {'columns':list, 'auto':autos};
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.patron.settings.update'],
+                {   async: true,
+                    params: [this.authtoken, null, setting],
+                    oncomplete: function(r) {
+                        var stat = r.recv().content();
+                        if(e = openils.Event.parse(stat))
+                            return alert(e);
+                    }
+                }
+            );
+        }, 
+
+        _arrayHas : function(arr, val) {
+            for(var i = 0; arr && i < arr.length; i++) {
+                if(arr[i] == val)
+                    return true;
+            }
+            return false;
+        },
+
+        _loadColsFromSetting : function(setting) {
+            this.setting = setting;
+            var newCellList = [];
+            for(var j = 0; j < this.baseCellList.length; j++) {
+                var cell = this.baseCellList[j];
+                if(cell.selectableColumn) {
+                    if(this._arrayHas(setting.columns, cell.field)) {
+                        newCellList.push(cell);
+                        if(this._arrayHas(setting.auto, cell.field))
+                            cell.width = 'auto';
+                        else delete cell.width;
+                    }
+                }  else { // if it's not selectable, always show it
+                    newCellList.push(cell); 
+                }
+            }
+
+            this.build();
+            this.structure[0].cells[0] = newCellList;
+            this.grid.setStructure(this.structure);
+            this.grid.update();
+        },
+
+        load : function() {
+            var picker = this;
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
+                {   async: true,
+                    params: [this.authtoken, null, this.USER_PERSIST_SETTING+'.'+this.persistId],
+                    oncomplete: function(r) {
+                        var set = r.recv().content();
+                        if(e = openils.Event.parse(set))
+                            return alert(e)
+                        if(set) 
+                            picker._loadColsFromSetting(set);
+                    }
+                }
+            );
+        },
     });
 }
 
