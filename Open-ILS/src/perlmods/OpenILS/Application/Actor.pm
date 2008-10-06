@@ -139,6 +139,7 @@ sub user_settings {
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
+    $user_id = $e->requestor->id unless defined $user_id;
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->event;
     if($e->requestor->id != $user_id) {
