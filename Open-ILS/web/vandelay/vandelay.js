@@ -65,6 +65,7 @@ var currentQueueId = null;
 var userCache = {};
 var currentMatchedRecords; // set of loaded matched bib records
 var currentOverlayRecordsMap; // map of import record to overlay record
+var currentOverlayRecordsMapGid; // map of import record to overlay record grid id
 var currentImportRecId; // when analyzing matches, this is the current import record
 var userBibQueues = []; // only non-complete queues
 var userAuthQueues = []; // only non-complete queues
@@ -274,6 +275,7 @@ function retrieveQueuedRecords(type, queueId, onload) {
     queuedRecords = [];
     queuedRecordsMap = {};
     currentOverlayRecordsMap = {};
+    currentOverlayRecordsMapGid = {};
     selectableGridRecords = {};
     resetVlQueueGridLayout();
 
@@ -317,10 +319,8 @@ function retrieveQueuedRecords(type, queueId, onload) {
     );
 }
 
-//function vlLoadMatchUI(recId, attrCode) {
 function vlLoadMatchUI(recId) {
     displayGlobalDiv('vl-generic-progress');
-    //var matches = getRecMatchesFromAttrCode(queuedRecordsMap[recId], attrCode);
     var matches = queuedRecordsMap[recId].matches();
     var records = [];
     currentImportRecId = recId;
@@ -347,24 +347,27 @@ function vlLoadMatchUI(recId) {
                 displayGlobalDiv('vl-match-div');
                 resetVlMatchGridLayout();
                 currentMatchedRecords = recs;
-                vlMatchGrid.setStructure(vlMatchGridLayout);
+                if(!vlMatchGrid.structure)
+                    vlMatchGrid.setStructure(vlMatchGridLayout);
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
                     {virtualFields:['dest_matchpoint', 'src_matchpoint', '_id']});
                 dataStore.identifier = '_id';
 
+                var matchSeenMap = {};
 
                 for(var i = 0; i < dataStore.items.length; i++) {
                     var item = dataStore.items[i];
                     item._id = i; // just need something unique
                     for(var j = 0; j < matches.length; j++) {
                         var match = matches[j];
-                        if(match.eg_record() == item.id) {
+                        if(match.eg_record() == item.id && !matchSeenMap[match.id()]) {
                             item.dest_matchpoint = match.field_type();
                             var attr = getRecAttrFromMatch(queuedRecordsMap[recId], match);
-                            //item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).description();
                             item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).code();
+                            matchSeenMap[match.id()] = 1;
+                            break;
                         }
                     }
                 }
@@ -517,10 +520,11 @@ function vlGetViewMARC(rowIdx) {
 function vlGetOverlayTargetSelector(rowIdx) {
     data = this.grid.model.getRow(rowIdx);
     if(data) {
-        var value = this.value.replace('ID', data.id);
-        var overlay = currentOverlayRecordsMap[currentImportRecId];
-        if(overlay && overlay == data.id) 
-            value = value.replace('/>', 'checked="checked"/>');
+        var value = this.value.replace(/GRIDID/g, data._id);
+        value = value.replace(/RECID/g, currentImportRecId);
+        value = value.replace(/ID/g, data.id);
+        if(data._id == currentOverlayRecordsMapGid[currentImportRecId])
+            return value.replace('/>', 'checked="checked"/>');
         return value;
     }
 }
@@ -529,21 +533,31 @@ function vlGetOverlayTargetSelector(rowIdx) {
   * see if the user has enabled overlays for the current match set and, 
   * if so, map the current import record to the overlay target.
   */
-function vlHandleOverlayTargetSelected() {
-    if(vlOverlayTargetEnable.checked) {
-        for(var i = 0; i < currentMatchedRecords.length; i++) {
-            var matchRecId = currentMatchedRecords[i].id();
-            if(dojo.byId('vl-overlay-target-'+matchRecId).checked) {
-                console.log("found overlay target " + matchRecId);
+function vlHandleOverlayTargetSelected(recId, gridId) {
+    var noneSelected = true;
+    var checkboxes = dojo.query('[name=vl-overlay-target-'+currentImportRecId+']');
+    for(var i = 0; i < checkboxes.length; i++) {
+        var checkbox = checkboxes[i];
+        var matchRecId = checkbox.getAttribute('match');
+        var gid = checkbox.getAttribute('gridid');
+        if(checkbox.checked) {
+            if(matchRecId == recId && gid == gridId) {
+                noneSelected = false;
                 currentOverlayRecordsMap[currentImportRecId] = matchRecId;
+                currentOverlayRecordsMapGid[currentImportRecId] = gid;
                 dojo.byId('vl-record-list-selected-' + currentImportRecId).checked = true;
                 dojo.byId('vl-record-list-selected-' + currentImportRecId).parentNode.className = 'overlay_selected';
-                return;
+            } else {
+                checkbox.checked = false;
             }
         }
-    } else {
+    }
+
+    if(noneSelected) {
         delete currentOverlayRecordsMap[currentImportRecId];
+        delete currentOverlayRecordsMapGid[currentImportRecId];
         dojo.byId('vl-record-list-selected-' + currentImportRecId).checked = false;
+        dojo.byId('vl-record-list-selected-' + currentImportRecId).parentNode.className = '';
     }
 }
 
