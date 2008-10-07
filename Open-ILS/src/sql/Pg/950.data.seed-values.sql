@@ -721,19 +721,19 @@ INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('s
 
 -- available locales
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'name'),
+    VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'English (American)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'name'),
+    VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'English (Canadian)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('fr-CA', 'fre', oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'name'),
+    VALUES ('fr-CA', 'fre', oils_i18n_gettext('fr-CA', 'French (Canadian)', 'i18n_l', 'name'),
 	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('es-US', 'spa', oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'name'),
+    VALUES ('es-US', 'spa', oils_i18n_gettext('es-US', 'Spanish (American)', 'i18n_l', 'name'),
 	oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
-    VALUES ('es-MX', 'spa', oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'name'),
+    VALUES ('es-MX', 'spa', oils_i18n_gettext('es-MX', 'Spanish (Mexican)', 'i18n_l', 'name'),
 	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('hy-AM', 'arm', oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'name'),
