@@ -138,7 +138,7 @@ AM_CONDITIONAL([BUILDEGJAVA], [test x$evergreen_java = xtrue])
 # build the evergreen python modules?
 
 AC_ARG_ENABLE([evergreen-python],
-[  --enable-evergreen-python    disables the installation of the evergreen python modules ],
+[  --enable-evergreen-python    enables the installation of the evergreen python modules ],
 [case "${enableval}" in
     yes) EG_PYTHON_INSTALL=true ;;
     no)  EG_PYTHON_INSTALL=false ;;
