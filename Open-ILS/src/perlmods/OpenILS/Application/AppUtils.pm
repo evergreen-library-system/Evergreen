@@ -1138,14 +1138,20 @@ sub __patron_money_owed {
 
 sub patron_money_owed {
 	my( $self, $userid ) = @_;
-	return $self->storagereq(
-		'open-ils.storage.actor.user.total_owed', $userid);
+	my $ses = $self->start_db_session();
+	my $val = $ses->request(
+		'open-ils.storage.actor.user.total_owed', $userid)->gather(1);
+	$self->rollback_db_session($ses);
+	return $val;
 }
 
 sub patron_total_items_out {
 	my( $self, $userid ) = @_;
-	return $self->storagereq(
-		'open-ils.storage.actor.user.total_out', $userid);
+	my $ses = $self->start_db_session();
+	my $val = $ses->request(
+		'open-ils.storage.actor.user.total_out', $userid)->gather(1);
+	$self->rollback_db_session($ses);
+	return $val;
 }
 
 
