@@ -409,7 +409,8 @@ function vlLoadMARCHtml(recId, inCat, oncomplete) {
             api = ['open-ils.search', 'open-ils.search.authority.to_html'];
     } else {
         showMe('vl-marc-html-edit-button'); // plug in the marc editor button
-        dijit.byId('vl-marc-html-edit-button').onClick = function() {vlLoadMarcEditor(currentType, recId);};
+        dijit.byId('vl-marc-html-edit-button').onClick = 
+            function() {vlLoadMarcEditor(currentType, recId, oncomplete);};
         params = [authtoken, recId];
         api = ['open-ils.vandelay', 'open-ils.vandelay.queued_bib_record.html'];
         if(currentType == 'auth')
@@ -780,17 +781,28 @@ function vlFetchQueueFromForm() {
     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
 }
 
-function vlOpenMarcEditWindow(rec) {
+function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {
     /*
         To run in Firefox directly, must set signed.applets.codebase_principal_support
         to true in about:config
     */
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+
+    function onsave(r) {
+        // after the record is saved, reload the HTML display
+        var stat = r.recv().content();
+        if(e = openils.Event.parse(stat))
+            return alert(e);
+        alert(dojo.byId('vl-marc-edit-complete-label').innerHTML);
+        win.close();
+        vlLoadMARCHtml(rec.id(), false, postReloadHTMLHandler);
+    }
+
     win.xulG = {
         record : {marc : rec.marc()},
         save : {
-            label: 'Save', // XXX
+            label: dojo.byId('vl-marc-edit-save-label').innerHTML,
             func: function(xmlString) {
                 var method = 'open-ils.permacrud.update.' + rec.classname;
                 rec.marc(xmlString);
@@ -798,13 +810,7 @@ function vlOpenMarcEditWindow(rec) {
                     ['open-ils.permacrud', method],
                     {   async: true,
                         params: [authtoken, rec],
-                        oncomplete: function(r) {
-                            if(e = openils.Event.parse(rec))
-                                return alert(e);
-                            alert('Record Updated'); // XXX
-                            win.close();
-                            // XXX reload marc html view with updates
-                        }
+                        oncomplete: onsave
                     }
                 );
             },
@@ -812,7 +818,7 @@ function vlOpenMarcEditWindow(rec) {
     };
 }
 
-function vlLoadMarcEditor(type, recId) {
+function vlLoadMarcEditor(type, recId, postReloadHTMLHandler) {
     var method = 'open-ils.permacrud.search.vqbr';
     if(currentType != 'bib')
         method = method.replace(/vqbr/,'vqar');
@@ -825,7 +831,7 @@ function vlLoadMarcEditor(type, recId) {
                 var rec = r.recv().content();
                 if(e = openils.Event.parse(rec))
                     return alert(e);
-                vlOpenMarcEditWindow(rec);
+                vlOpenMarcEditWindow(rec, postReloadHTMLHandler);
             }
         }
     );

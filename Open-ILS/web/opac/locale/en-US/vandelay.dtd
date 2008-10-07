@@ -80,3 +80,5 @@
 <!ENTITY vandelay.view.marc "View MARC">
 <!ENTITY vandelay.xpath.advanced "XPath (advanced)">
 <!ENTITY vandelay.xpath "XPath">
+<!ENTITY vandelay.save "Save Changes">
+<!ENTITY vandelay.record_saved "Record Saved">
