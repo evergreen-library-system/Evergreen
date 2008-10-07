@@ -188,7 +188,7 @@ sub biblio_search_tcn {
 
 	my( $self, $client, $tcn, $include_deleted ) = @_;
 
-	$tcn =~ s/.*?(\w+)\s*$/$1/o;
+    $tcn =~ s/^\s+|\s+$//og;
 
 	my $e = new_editor();
    my $search = {tcn_value => $tcn};
