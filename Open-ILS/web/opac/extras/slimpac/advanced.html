@@ -15,17 +15,24 @@
 				border: 3px solid #A7EA9D;
 				-moz-border-radius: 6px;
 				padding: 6px;
-				margin-top: 65px;'
+				margin-top: 65px;
 			}
 			
 			.greenrow {
 				border: 1px solid #D0D0D0;
 				background: #A7EA9D;
+				height: 20px;
 			}
 
 			.bluerow {
 				border: 1px solid #D0D0D0;
 				background: #E0F6E0;
+				height: 20px;
+			}
+
+			.search_field {
+				width: 100%;
+				text-align: center;
 			}
 
 			.rowpad {
@@ -80,12 +87,12 @@
 	<body>
 		<center>
 
-		<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
 
 		<table class="maintable">
 			<tbody>
 				<tr><td colspan="2" align="center"><b>&opac.navigate.advanced;</b></td></tr>
 				<tr class="rowpad"><td></td></tr>
+				<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
 				<tr class="bluerow">
 					<th>&slimpac.start.nowSearching;</th>
 					<td>
@@ -163,10 +170,21 @@
 				</tr>
 				-->
 				<tr class="rowpad"><td align="center" colspan="2"><input type="submit" value="&button.go;"/></td></tr>
+				</form>
+				<tr class="greenrow"><td colspan="2"></td></tr>
+				<form method="GET">
+				<tr class="bluerow">
+					<td colspan="2">
+						<div class='search_field'>
+								<!--#include file="locales.inc"-->
+								<input type="submit" value="&slimpac.language.select;"/>
+						</div>
+					</td>
+				</tr>
+				</form>
+
 			</tbody>
 		</table>
-
-		</form>
 
 		<div class="footer">
 			<center>
@@ -180,12 +198,6 @@
 
 				<span class='footer_link'>
 					<a class='classic_link' href='start.html'>&slimpac.start.title;</a>
-				</span> 
-
-				<span> | </span>
-
-				<span class='footer_link'>
-					<a class='classic_link' href='language.html'>&slimpac.language.select;</a>
 				</span> 
 
 				<span> | </span>

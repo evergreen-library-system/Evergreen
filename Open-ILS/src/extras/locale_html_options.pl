@@ -27,18 +27,10 @@ close FILE;
 
 sub print_option {
 	my $locales = shift;
-	my $count = 0;
-	my $class;
 	foreach my $locale (@$locales) {
 		my $code = OpenILS::Application::AppUtils->entityize($locale->code);
 		my $name = OpenILS::Application::AppUtils->entityize($locale->name);
-		if ($count % 2) {
-			$class = 'greenrow';
-		} else {
-			$class = 'bluerow';
-		}
-		print FILE "<p class='$class'><a href='/opac/$code/extras/slimpac/start.html'>$name</a></p>\n";
-		$count++;
+		print FILE "<option value='$code'>$name</option>\n";
 	}
 }
 
