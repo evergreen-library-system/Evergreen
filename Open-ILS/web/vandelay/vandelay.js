@@ -384,23 +384,35 @@ function vlPopulateMatchGrid(grid, data) {
     grid.update();
 }
 
+function showMe(id) {
+    dojo.style(dojo.byId(id), 'display', 'block');
+}
+function hideMe(id) {
+    dojo.style(dojo.byId(id), 'display', 'none');
+}
+
 
 function vlLoadMARCHtml(recId, inCat, oncomplete) {
     dijit.byId('vl-marc-html-done-button').onClick = oncomplete;
-    dijit.byId('vl-marc-html-edit-button').onClick = function() {vlLoadMarcEditor(currentType, recId);};
     displayGlobalDiv('vl-generic-progress');
     var api;
     var params = [recId, 1];
+
     if(inCat) {
+        hideMe('vl-marc-html-edit-button'); // don't show marc editor button
+        dijit.byId('vl-marc-html-edit-button').onClick = function(){}
         api = ['open-ils.search', 'open-ils.search.biblio.record.html'];
         if(currentType == 'auth')
             api = ['open-ils.search', 'open-ils.search.authority.to_html'];
     } else {
+        showMe('vl-marc-html-edit-button'); // plug in the marc editor button
+        dijit.byId('vl-marc-html-edit-button').onClick = function() {vlLoadMarcEditor(currentType, recId);};
         params = [authtoken, recId];
         api = ['open-ils.vandelay', 'open-ils.vandelay.queued_bib_record.html'];
         if(currentType == 'auth')
             api = ['open-ils.vandelay', 'open-ils.vandelay.queued_authority_record.html'];
     }
+
     fieldmapper.standardRequest(
         api, 
         {   async: true,
