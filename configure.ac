@@ -138,13 +138,13 @@ AM_CONDITIONAL([BUILDEGJAVA], [test x$evergreen_java = xtrue])
 # build the evergreen python modules?
 
 AC_ARG_ENABLE([evergreen-python],
-[  --disable-evergreen-python    disables the installation of the evergreen python modules ],
+[  --enable-evergreen-python    disables the installation of the evergreen python modules ],
 [case "${enableval}" in
     yes) EG_PYTHON_INSTALL=true ;;
     no)  EG_PYTHON_INSTALL=false ;;
-  *) AC_MSG_ERROR([please choose another value for --disable-python-install (supported values are yes or no)])
+  *) AC_MSG_ERROR([please choose another value for --enable-python-install (supported values are yes or no)])
 esac],
-[EG_PYTHON_INSTALL=true])
+[EG_PYTHON_INSTALL=false])
 
 AM_CONDITIONAL([BUILDEGPYTHON], [test x$EG_PYTHON_INSTALL = xtrue])
 
