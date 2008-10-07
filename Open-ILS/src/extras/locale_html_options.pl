@@ -27,10 +27,12 @@ close FILE;
 
 sub print_option {
 	my $locales = shift;
+	print FILE "<select name='locale'>\n";
 	foreach my $locale (@$locales) {
 		my $code = OpenILS::Application::AppUtils->entityize($locale->code);
 		my $name = OpenILS::Application::AppUtils->entityize($locale->name);
-		print FILE "<option value='$code'>$name</option>\n";
+		print FILE "  <option value='$code'>$name</option>\n";
 	}
+	print FILE "</select>\n";
 }
 
