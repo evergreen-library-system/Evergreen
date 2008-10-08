@@ -14,7 +14,7 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Confiy :: Global :: Actor :: Org Units</title>
+		<title>Conify :: Global :: Actor :: Org Units</title>
 
 		<style type="text/css">
 			@import url("/js/dojo/dojo/resources/dojo.css");
@@ -63,7 +63,7 @@
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
-
+<!--
 					var ou_list_data = { label : 'shortname', identifier : 'id' };
 					window.dirtyStore = [];
 		
@@ -138,6 +138,7 @@
 
 					highlighter.addresses_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'addresses_pane', duration : 500 } );
 					highlighter.addresses_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'addresses_pane', duration : 500 } );
+-->
 				</script>
 				<div
 				  id="ou_tree"
@@ -150,7 +151,7 @@
 				>
 
 					<script type="dojo/method" event="onClick" args="item,node">
-
+<!--
 						right_pane_toggler.show();
 
 						current_ou = item;
@@ -191,7 +192,7 @@
 
 						hoo_load();
 						addr_load();
-
+-->
 					</script>
 
 					<script type="dojo/method" event="getLabel" args="item,pI">
@@ -286,9 +287,11 @@
 									  required="true"
 									>
 										<script type="dojo/method" event="onChange">
+<!--
 											if (current_ou && this.getValue()) this.store.setValue( current_ou, "parent_ou", this.getValue() );
 											if ( this.store.getValue( current_ou, '_trueRoot' ) == 'true' ) this.required = false;
 											else this.required = true;
+-->
 										</script>
 									</div>
 								</td>
@@ -320,7 +323,7 @@
 									this.disabled = true;
 								</script>
 								<script type="dojo/connect" event="onClick">
-	
+<!--
 									var old_name = ou_list_store.getValue( current_ou, 'name' );
 
 									if (ou_list_store.getValue( current_ou, '_trueRoot' ) == 'true') {
@@ -392,7 +395,7 @@
 										}).send();
 	
 									}
-	
+-->
 								</script>
 							</button>
 	
@@ -403,7 +406,6 @@
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
-	
 								var new_fm_obj = new aou().fromHash({
 									isnew			: 1,
 									name			: 'New Branch',
@@ -413,6 +415,7 @@
 									ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
 								});
 	
+<!--
 								var new_obj;
 	
 								pCRUD.request({
@@ -440,7 +443,7 @@
 								highlighter.editor_pane.green.play();
 								highlighter.ou_tree.green.play();
 								status_update( 'New child Organizational Unit created for ' + ou_list_store.getValue( current_ou, 'name' ) );
-	
+-->
 							</script>
 						</button>
 	
@@ -488,7 +491,7 @@
 	
 						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="Save">
 							<script type="dojo/connect" event="onClick">
-	
+<!--
 								var method_name = 'open-ils.permacrud.update.aouhoo';
 								if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.permacrud.create.aouhoo';
 	
@@ -511,7 +514,7 @@
 										}
 									},
 								}).send();
-	
+-->
 							</script>
 						</button>
 	
@@ -567,7 +570,7 @@
 										this.disabled = true;
 									</script>
 									<script type="dojo/connect" event="onClick">
-	
+<!--
 										var method_name = 'open-ils.permacrud.update.aoa';
 										if (current_billing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
 	
@@ -595,7 +598,7 @@
 												}
 											},
 										}).send();
-	
+-->
 									</script>
 								</button>
 							</div>
@@ -636,7 +639,7 @@
 										this.disabled = true;
 									</script>
 									<script type="dojo/connect" event="onClick">
-	
+<!--
 										var method_name = 'open-ils.permacrud.update.aoa';
 										if (current_holds_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
 	
@@ -664,7 +667,7 @@
 												}
 											},
 										}).send();
-	
+-->
 									</script>
 								</button>
 							</div>
@@ -704,7 +707,7 @@
 										this.disabled = true;
 									</script>
 									<script type="dojo/connect" event="onClick">
-	
+<!--
 										var method_name = 'open-ils.permacrud.update.aoa';
 										if (current_mailing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
 	
@@ -732,7 +735,7 @@
 												}
 											},
 										}).send();
-	
+-->
 									</script>
 								</button>
 							</div>
@@ -772,7 +775,7 @@
 										this.disabled = true;
 									</script>
 									<script type="dojo/connect" event="onClick">
-	
+<!--
 										var method_name = 'open-ils.permacrud.update.aoa';
 										if (current_ill_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
 	
@@ -800,7 +803,7 @@
 												}
 											},
 										}).send();
-	
+-->
 									</script>
 								</button>
 							</div>
