@@ -50,7 +50,7 @@ CREATE TABLE asset.copy (
 	ref		BOOL				NOT NULL DEFAULT FALSE,
 	holdable	BOOL				NOT NULL DEFAULT TRUE,
 	deposit_amount	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
-	price		NUMERIC(8,2)			NOT NULL DEFAULT 0.00,
+	price		NUMERIC(8,2),
 	barcode		TEXT				NOT NULL,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
