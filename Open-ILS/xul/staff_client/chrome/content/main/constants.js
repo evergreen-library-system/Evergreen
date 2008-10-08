@@ -312,5 +312,7 @@ const urls = {
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
-	'TEST_XUL' : '/xul/server/main/test.xul'
+	'TEST_XUL' : '/xul/server/main/test.xul',
+    'VANDELAY' : '/vandelay/vandelay.xml', /* XXX how can we get the locale? */
+    'CONIFY' : '/conify/en-US/global/admin.html' /* XXX how can we get the locale? */
 }

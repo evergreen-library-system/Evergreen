@@ -377,6 +377,34 @@ main.menu.prototype = {
 				}
 			],
 
+			'cmd_open_vandelay' : [
+				['oncommand'],
+				function() { 
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
+                        window.escape(urls.VANDELAY+'?ses='+window.escape(ses()));
+					obj.set_tab( 
+						loc, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_open_vandelay.tab'), 'browser' : true }, 
+						{'no_xulG' : false, 'show_print_button' : false } 
+					);
+
+				}
+			],
+
+			'cmd_open_conify' : [
+				['oncommand'],
+				function() { 
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
+                        window.escape(urls.CONIFY+'?ses='+window.escape(ses()));
+					obj.set_tab( 
+						loc, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_open_conify.tab'), 'browser' : true }, 
+						{'no_xulG' : false, 'show_print_button' : false } 
+					);
+
+				}
+			],
+
 			'cmd_reprint' : [
 				['oncommand'],
 				function() {
