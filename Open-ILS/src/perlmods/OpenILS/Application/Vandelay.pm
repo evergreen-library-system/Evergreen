@@ -231,8 +231,15 @@ sub process_spool {
 	$batch->strict_off;
 
 	my $count = 0;
-	while (my $r = $batch->next) {
-        $logger->info("processing record $count");
+	my $r = -1;
+	while (try { $r = $batch->next } otherwise { $r = -1 }) {
+		if ($r == -1) {
+			$logger->warn("Proccessing of record $count in set $fingerprint failed.  Skipping this record");
+			$count++;
+		}
+
+		$logger->info("processing record $count");
+
 		try {
 			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
 			$xml =~ s/^<\?xml.+\?\s*>//go;
