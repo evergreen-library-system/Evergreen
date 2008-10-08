@@ -34,6 +34,9 @@
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <!--#include virtual="inc/progress.xml"-->
             </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-export-div' class='hidden'>
+                <!--#include virtual="inc/export.xml"-->
+            </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden'>
                 <!--#include virtual="inc/upload.xml"-->
             </div>

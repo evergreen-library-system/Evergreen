@@ -82,3 +82,19 @@
 <!ENTITY vandelay.xpath "XPath">
 <!ENTITY vandelay.save "Save Changes">
 <!ENTITY vandelay.record_saved "Record Saved">
+<!ENTITY vandelay.export.records "Export Records">
+<!ENTITY vandelay.export.use_field_no "Use Field Number">
+<!ENTITY vandelay.export.from_csv "From CSV File">
+<!ENTITY vandelay.export.record_id "Record ID">
+<!ENTITY vandelay.export.or "Or">
+<!ENTITY vandelay.export.format "Record Format">
+<!ENTITY vandelay.export.format.marc21 "MARC21">
+<!ENTITY vandelay.export.format.unimarc "UNIMARC">
+<!ENTITY vandelay.export.format.xml "MARC XML">
+<!ENTITY vandelay.export.format.bre "Evergreen Record Entry">
+<!ENTITY vandelay.export.encoding "Record Encoding">
+<!ENTITY vandelay.export.utf8 "UTF-8">
+<!ENTITY vandelay.export.marc8 "MARC8">
+<!ENTITY vandelay.export.holdings "Include holdings in Bibliographic Records">
+<!ENTITY vandelay.export.retrieve "Retrieve Records">
+<!ENTITY vandelay.export.field_no_hint "(starting from 0)">

@@ -1,0 +1,61 @@
+<x>
+<h1>&vandelay.export.records;</h1><br/>
+<form method="POST" enctype="multipart/form-data" action='/exporter'>
+    <table class='form_table'>
+        <tr>
+            <td>&vandelay.export.use_field_no;</td>
+            <td>
+                <input dojoType='dijit.form.TextBox' type="text" size="2" maxlength="2" name="idcolumn" value="0"/>
+                &vandelay.export.field_no_hint;
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.export.from_csv;</td>
+            <td><input type="file" name="idfile"/></td>
+        </tr>
+        <tr><td colspan='2'><b>&vandelay.export.or;</b></td></tr>
+        <tr>
+            <td>&vandelay.export.record_id;</td>
+            <td><input dojoType='dijit.form.TextBox' type="text" size="12" maxlength="12" name="id"/></td>
+        </tr>
+        <tr>
+            <td>&vandelay.record.type;</td>
+            <td>
+                <select name="rectype" dojoType='dijit.form.FilteringSelect'>
+                    <option value="biblio">&vandelay.bib.records;</option>
+                    <option value="authority">&vandelay.auth.records;</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.export.format;</td>
+            <td>
+                <select name="format" dojoType='dijit.form.FilteringSelect'>
+                    <option value="USMARC">&vandelay.export.format.marc21;</option>
+                    <option value="UNIMARC">&vandelay.export.format.unimarc;</option>
+                    <option value="XML">&vandelay.export.format.xml;</option>
+                    <option value="BRE">&vandelay.export.format.bre;</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.export.encoding;</td>
+            <td>
+                <select name="encoding" dojoType='dijit.form.FilteringSelect'>
+                    <option value="UTF-8">&vandelay.export.utf8;</option>
+                    <option value="MARC8">&vandelay.export.marc8;</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.export.holdings;</td>
+            <td><input dojoType='dijit.form.CheckBox' type="checkbox" name="holdings" value="1"/></td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                <button dojoType='dijit.form.Button' type="submit" value="Retrieve Records">&vandelay.export.retrieve;</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</x>
