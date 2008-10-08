@@ -249,7 +249,7 @@ sub new_set_circ_lost {
             or return $e->die_event;
 
     my $owning_lib = 
-        ($copy->call_number == OILS_PRECAT_CALL_NUMBER) ? 
+        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
             $copy->circ_lib : $copy->call_number->owning_lib;
 
     my $circ = $e->search_action_circulation(
@@ -263,17 +263,10 @@ sub new_set_circ_lost {
 
     # ---------------------------------------------------------------------
     # fetch the related org settings
-    my $default_price = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
     my $proc_fee = $U->ou_ancestor_setting_value(
         $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
-    my $charge_on_0 = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
     my $void_overdue = $U->ou_ancestor_setting_value(
         $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
-
-    $logger->info("org settings: default price = $default_price, ".
-        "processing fee = $proc_fee, charge on 0 = $charge_on_0, void overdues = $void_overdue");
 
     # ---------------------------------------------------------------------
     # move the copy into LOST status
@@ -282,12 +275,7 @@ sub new_set_circ_lost {
     $copy->edit_date('now');
     $e->update_asset_copy($copy) or return $e->die_event;
 
-    # ---------------------------------------------------------------------
-    # determine the appropriate item price to charge and create the billing
-    my $price = $copy->price;
-    $price = $default_price unless defined $price;
-    $price = 0 if $price < 0;
-    $price = $default_price if $price == 0 and $charge_on_0;
+    my $price = $U->get_copy_price($e, $copy, $copy->call_number);
 
     if( $price > 0 ) {
         my $evt = create_bill($e, $price, 'Lost Materials', $circ->id);

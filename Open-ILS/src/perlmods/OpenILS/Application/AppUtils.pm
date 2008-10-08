@@ -1496,5 +1496,41 @@ sub entityize {
 }
 
 
+sub get_copy_price {
+	my($self, $e, $copy, $volume) = @_;
+
+	$copy->price(0) if $copy->price < 0;
+
+	return $copy->price if $copy->price and $copy->price > 0;
+
+
+	my $owner;
+	if(ref $volume) {
+		if($volume->id == OILS_PRECAT_CALL_NUMBER) {
+			$owner = $copy->circ_lib;
+		} else {
+			$owner = $volume->owning_lib;
+		}
+	} else {
+		if($copy->call_number == OILS_PRECAT_CALL_NUMBER) {
+			$owner = $copy->circ_lib;
+		} else {
+			$owner = $e->retrieve_asset_call_number($copy->call_number)->owning_lib;
+		}
+	}
+
+	my $default_price = $self->ou_ancestor_setting_value(
+		$owner, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+
+	return $default_price unless defined $copy->price;
+
+	# price is 0.  Use the default?
+    my $charge_on_0 = $self->ou_ancestor_setting_value(
+        $owner, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+
+	return $default_price if $charge_on_0;
+	return 0;
+}
+
 1;
 

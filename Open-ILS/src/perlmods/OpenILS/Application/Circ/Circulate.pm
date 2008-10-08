@@ -944,23 +944,8 @@ sub get_max_fine_amount {
     # if is_percent is true then the max->amount is
     # use as a percentage of the copy price
     if ($U->is_true($max_fine_rule->is_percent)) {
-
-        my $ol = ($self->is_precat) ? 
-            $self->editor->requestor->ws_ou : $self->volume->owning_lib;
-
-        my $default_price = $U->ou_ancestor_setting_value(
-            $ol, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
-        my $charge_on_0 = $U->ou_ancestor_setting_value(
-            $ol, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
-
-        # Find the most appropriate "price" -- same definition as the
-        # LOST price.  See OpenILS::Circ::new_set_circ_lost
-        $max_amount = $self->copy->price;
-        $max_amount = $default_price unless defined $max_amount;
-        $max_amount = 0 if $max_amount < 0;
-        $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
-
-        $max_amount *= $max_fine_rule->amount / 100;
+        my $price = $U->get_copy_price($self->editor, $self->copy, $self->volume);
+        $max_amount = $price * $max_fine_rule->amount / 100;
     }  
 
     return $max_amount;
