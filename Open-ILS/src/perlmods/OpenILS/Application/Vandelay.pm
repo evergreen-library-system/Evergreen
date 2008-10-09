@@ -286,7 +286,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_queue.records.retrieve",
-	method		=> 'retrieve_queue',
+	method		=> 'retrieve_queued_records',
 	api_level	=> 1,
 	argc		=> 2,
     stream      => 1,
@@ -294,7 +294,7 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.auth_queue.records.retrieve",
-	method		=> 'retrieve_queue',
+	method		=> 'retrieve_queued_records',
 	api_level	=> 1,
 	argc		=> 2,
     stream      => 1,
@@ -303,7 +303,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_queue.records.matches.retrieve",
-	method		=> 'retrieve_queue',
+	method		=> 'retrieve_queued_records',
 	api_level	=> 1,
 	argc		=> 2,
     stream      => 1,
@@ -314,7 +314,7 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.auth_queue.records.matches.retrieve",
-	method		=> 'retrieve_queue',
+	method		=> 'retrieve_queued_records',
 	api_level	=> 1,
 	argc		=> 2,
     stream      => 1,
@@ -325,7 +325,7 @@ __PACKAGE__->register_method(
 
 );
 
-sub retrieve_queue {
+sub retrieve_queued_records {
     my($self, $conn, $auth, $queue_id, $options) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
@@ -758,6 +758,52 @@ sub queued_record_html {
     return $U->simplereq(
         'open-ils.search',
         'open-ils.search.biblio.record.html', undef, 1, $rec->marc);
+}
+
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_queue.summary.retrieve", 
+	method		=> 'retrieve_queue_summary',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth_queue.summary.retrieve",
+	method		=> 'retrieve_queue_summary',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'auth'
+);
+
+sub retrieve_queue_summary {
+    my($self, $conn, $auth, $queue_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $queue;
+    my $type = $self->{record_type};
+    if($type eq 'bib') {
+        $queue = $e->retrieve_vandelay_bib_queue($queue_id)
+            or return $e->event;
+    } else {
+        $queue = $e->retrieve_vandelay_authority_queue($queue_id)
+            or return $e->event;
+    }
+
+    my $evt = check_queue_perms($e, $type, $queue);
+    return $evt if $evt;
+
+    my $search = 'search_vandelay_queued_bib_record';
+    $search =~ s/bib/authority/ if $type ne 'bib';
+
+    return {
+        queue => $queue,
+        total => scalar(@{$e->$search({queue => $queue_id}, {idlist=>1})}),
+        imported => scalar(@{$e->$search({queue => $queue_id, import_time => {'!=' => undef}}, {idlist=>1})}),
+    };
 }
 
 
