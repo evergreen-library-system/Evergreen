@@ -1,4 +1,8 @@
 <h1>&vandelay.record.queue;</h1><br/>
+<div>
+    <span style='font-size:105%;' id='vl-queue-summary-name'/>
+    <span id='vl-queue-summary-import-count'/> / <span id='vl-queue-summary-total-count'/>
+</div>
 <script>
     var vlQueueGridLayout;
     function resetVlQueueGridLayout() {
@@ -37,7 +41,7 @@
                         <button jsId='vlQueueGridColumnPickerButton' 
                             onclick='
                                 vlQueueGridColumePickerDialog.hide();
-                                vlQueueGridColumePicker.update(true);'
+                                vlQueueGridColumePicker[currentType].update(true);'
                             dojoType='dijit.form.Button'>&vandelay.done;</button>
                     </td>
                 </tr>
@@ -49,36 +53,43 @@
     <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
         <table width='100%' style='margin-bottom:0px;'>
             <tr>
-                <td align='left'>
+                <td align='left' valign='bottom'>
                     <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>&vandelay.import.selected;</button>
+                    <button dojoType='dijit.form.Button' onclick='vlImportAllRecords();'>&vandelay.import.all;</button>
                     <button dojoType='dijit.form.Button' onclick="
                         if(confirm('&vandelay.sure.to.delete.queue;')) {
                             vlDeleteQueue(currentType, currentQueueId, 
                                 function() { displayGlobalDiv('vl-marc-upload-div'); });
                         }">&vandelay.delete.queue;</button>
                 </td>
-                <td align='middle'>
+                <td align='middle' valign='bottom'>
                     <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
                     <table><tr>
                         <td class='filter_td'>
-                            &vandelay.limit.to.collision.matches;
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/>
+                            <table class='small_form_table'><tr>
+                                    <td>&vandelay.limit.to.collision.matches;</td>
+                                    <td><input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/></td>
+                                </tr><tr>
+                                    <td>&vandelay.limit.to.non.imported;</td>
+                                    <td><input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/></td>
+                            </tr></table>
                         </td>
                         <td class='filter_td' style='padding-left:5px;'>
-                            &vandelay.limit.to.non.imported;
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/>
+                            <div class='nav_row_div'>&vandelay.results.per.page;</div>
+                            <div class='nav_row_div'>
+                                <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                                    <option value='10'>10</option>
+                                    <option value='20'>20</option>
+                                    <option value='50'>50</option>
+                                    <option value='100'>100</option>
+                                </select>
+                            </div>
                         </td>
                         <td class='filter_td' style='padding-left:5px;'>
-                            &vandelay.results.per.page; 
-                            <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
-                                <option value='10'>10</option>
-                                <option value='20'>20</option>
-                                <option value='50'>50</option>
-                                <option value='100'>100</option>
-                            </select>
-                        </td>
-                        <td class='filter_td' style='padding-left:5px;'>
-                            &vandelay.page; <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                            <div class='nav_row_div'>&vandelay.page;</div>
+                            <div class='nav_row_div'>
+                                <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                            </div>
                         </td>
                         <td style='padding-left:5px;'>
                             <button dojoType='dijit.form.Button' 

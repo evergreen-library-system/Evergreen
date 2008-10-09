@@ -74,7 +74,7 @@ var allUserBibQueues;
 var allUserAuthQueues;
 var selectableGridRecords;
 var cgi = new openils.CGI();
-var vlQueueGridColumePicker;
+var vlQueueGridColumePicker = {};
 
 /**
   * Grab initial data
@@ -289,20 +289,21 @@ function retrieveQueuedRecords(type, queueId, onload) {
     var limit = parseInt(vlQueueDisplayLimit.getValue());
     var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
 
+    var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
+    if(vlQueueGridShowNonImport.checked)
+        params[2].non_imported = 1;
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId, 
-                {   clear_marc: 1, 
-                    offset: offset,
-                    limit: limit
-                }
-            ],
-            /* intermittent bug in streaming, multipart requests prevents use of onreponse for now...
+            params: params,
+            /*
             onresponse: function(r) {
+                console.log("ONREPONSE");
                 var rec = r.recv().content();
                 if(e = openils.Event.parse(rec))
                     return alert(e);
+                console.log("got record " + rec.id());
                 queuedRecords.push(rec);
                 queuedRecordsMap[rec.id()] = rec;
             },
@@ -465,7 +466,7 @@ function getRecAttrDefFromAttr(attr, type) {
 }
 
 function getRecAttrFromCode(rec, attrCode) {
-    var defId = attrDefMap[attrCode];
+    var defId = attrDefMap[currentType][attrCode];
     var attrs = rec.attributes();
     for(var i = 0; i < attrs.length; i++) {
         var attr = attrs[i];
@@ -565,17 +566,18 @@ function vlHandleOverlayTargetSelected(recId, gridId) {
     }
 }
 
-var vlQueueGridBuilt = false;
+var valLastQueueType = null;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
-    currentOverlayRecordsMap = {};
-
-    if(!vlQueueGridBuilt) {
+    if(valLastQueueType != type) {
+        valLastQueueType = type;
+        resetVlQueueGridLayout();
         var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
+        attrDefMap[type] = {};
         for(var i = 0; i < defs.length; i++) {
             var def = defs[i]
-            attrDefMap[def.code()] = def.id();
+            attrDefMap[type][def.code()] = def.id();
             var col = {
                 name:def.description(), 
                 field:'attr.' + def.code(),
@@ -584,7 +586,6 @@ function buildRecordGrid(type) {
             };
             vlQueueGridLayout[0].cells[0].push(col);
         }
-        vlQueueGridBuilt = true;
     }
 
     var storeData;
@@ -598,13 +599,14 @@ function buildRecordGrid(type) {
         null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
     vlQueueGrid.setModel(model);
 
-    if(vlQueueGridColumePicker) {
+
+    if(vlQueueGridColumePicker[type]) {
         vlQueueGrid.update();
     } else {
-        vlQueueGridColumePicker = 
+        vlQueueGridColumePicker[type] = 
             new openils.GridColumnPicker(vlQueueGridColumePickerDialog, 
-                vlQueueGrid, vlQueueGridLayout, authtoken, 'vandelay.queue');
-        vlQueueGridColumePicker.load();
+                vlQueueGrid, vlQueueGridLayout, authtoken, 'vandelay.queue.'+type);
+        vlQueueGridColumePicker[type].load();
     }
 }
 
@@ -661,7 +663,30 @@ function vlToggleQueueGridSelect() {
 
 var handleRetrieveRecords = function() {
     buildRecordGrid(currentType);
+    vlFetchQueueSummary(currentQueueId, currentType, 
+        function(summary) {
+            dojo.byId('vl-queue-summary-name').innerHTML = summary.queue.name();
+            dojo.byId('vl-queue-summary-total-count').innerHTML = summary.total +'';
+            dojo.byId('vl-queue-summary-import-count').innerHTML = summary.imported + '';
+        }
+    );
 }
+
+function vlFetchQueueSummary(qId, type, onload) {
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.summary.retrieve'],
+        {   async: true,
+            params: [authtoken, qId],
+            oncomplete : function(r) {
+                var summary = r.recv().content();
+                if(e = openils.Event.parse(summary))
+                    return alert(e);
+                return onload(summary);
+            }
+        }
+    );
+}
+    
 
 function vlImportSelectedRecords() {
     displayGlobalDiv('vl-generic-progress-with-total');
@@ -684,13 +709,19 @@ function vlImportSelectedRecords() {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
                     return alert(e);
-                vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
-            },
-            oncomplete: function() {
-                return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-            }
+                if(resp.complete) {
+                    return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+                } else {
+                    vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
+                }
+            }, 
         }
     );
+}
+
+function vlImportAllRecords() {
+    vlImportRecordQueue(currentType, currentQueueId, false,
+        function(){displayGlobalDiv('vl-queue-div');});
 }
 
 function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {

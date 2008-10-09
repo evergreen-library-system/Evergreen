@@ -32,6 +32,7 @@
 <!ENTITY vandelay.import.matches "Import Matches">
 <!ENTITY vandelay.import.records "Import Records">
 <!ENTITY vandelay.import.selected "Import Selected">
+<!ENTITY vandelay.import.all "Import All">
 <!ENTITY vandelay.import.time "Import Time">
 <!ENTITY vandelay.inspect.queue "Inspect Queue">
 <!ENTITY vandelay.last.edit.date "Last Edit Date">
