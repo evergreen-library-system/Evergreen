@@ -237,8 +237,9 @@ function uploadMARC(onload){
   * Creates a new vandelay queue
   */
 function createQueue(queueName, type, onload) {
+    var method = 'open-ils.vandelay.'+ ((type=='bib') ? 'bib' : 'authority') +'_queue.create'
     fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.'+type+'_queue.create'],
+        ['open-ils.vandelay', method],
         {   async: true,
             params: [authtoken, queueName, null, type],
             oncomplete : function(r) {
