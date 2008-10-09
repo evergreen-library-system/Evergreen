@@ -49,6 +49,7 @@ var globalDivs = [
     'vl-queue-select-div',
     'vl-marc-upload-status-div',
     'vl-attr-editor-div',
+    'vl-marc-export-div'
 ];
 
 var authtoken;
