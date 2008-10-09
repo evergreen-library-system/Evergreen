@@ -56,11 +56,6 @@ function searchBarSubmit(isFilterSort) {
 
 	if(!text || text == "") return;
 
-    text = text.replace(/'/g,' ');
-    text = text.replace(/\\/g,' ');
-    text = text.replace(/^\s*/,'');
-    text = text.replace(/\s*$/,'');
-
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();
 	if(isNaN(d)) d = 0;
 
