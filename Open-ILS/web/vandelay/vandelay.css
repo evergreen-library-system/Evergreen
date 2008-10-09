@@ -28,3 +28,5 @@ table.dijitTooltipTable { border-collapse: separate; }
     background: #d9e8f9;
     border: 1px solid red; 
 }
+
+.export_tr_border td { border-top: 1px solid #808080; }

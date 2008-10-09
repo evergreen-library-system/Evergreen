@@ -1,8 +1,7 @@
-<x>
 <h1>&vandelay.export.records;</h1><br/>
 <form method="POST" enctype="multipart/form-data" action='/exporter'>
     <table class='form_table'>
-        <tr>
+        <tr class='export_tr_border'>
             <td>&vandelay.export.use_field_no;</td>
             <td>
                 <input dojoType='dijit.form.TextBox' type="text" size="2" maxlength="2" name="idcolumn" value="0"/>
@@ -14,11 +13,16 @@
             <td><input type="file" name="idfile"/></td>
         </tr>
         <tr><td colspan='2'><b>&vandelay.export.or;</b></td></tr>
-        <tr>
+        <tr class='export_tr_border'>
             <td>&vandelay.export.record_id;</td>
             <td><input dojoType='dijit.form.TextBox' type="text" size="12" maxlength="12" name="id"/></td>
         </tr>
-        <tr>
+        <tr><td colspan='2'><b>&vandelay.export.or;</b></td></tr>
+        <tr class='export_tr_border'>
+            <td>&vandelay.export.bucket;</td>
+            <td><input dojoType='dijit.form.TextBox' type='text' name='containerid'/></td>
+        </tr>
+        <tr class='export_tr_border'>
             <td>&vandelay.record.type;</td>
             <td>
                 <select name="rectype" dojoType='dijit.form.FilteringSelect'>
@@ -58,4 +62,3 @@
         </tr>
     </table>
 </form>
-</x>

@@ -98,3 +98,4 @@
 <!ENTITY vandelay.export.holdings "Include holdings in Bibliographic Records">
 <!ENTITY vandelay.export.retrieve "Retrieve Records">
 <!ENTITY vandelay.export.field_no_hint "(starting from 0)">
+<!ENTITY vandelay.export.bucket "Record Bucket ID">
