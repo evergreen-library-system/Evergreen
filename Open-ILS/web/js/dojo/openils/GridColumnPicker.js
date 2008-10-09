@@ -200,6 +200,8 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
         },
 
         load : function() {
+            if(this.setting)
+                return this._loadColsFromSetting(this.setting);
             var picker = this;
             fieldmapper.standardRequest(
                 ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
@@ -209,8 +211,13 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
                         var set = r.recv().content();
                         if(e = openils.Event.parse(set))
                             return alert(e)
-                        if(set) 
+                        if(set) {
                             picker._loadColsFromSetting(set);
+                        } else {
+                            picker.build();
+                            picker.grid.setStructure(picker.structure);
+                            picker.grid.update();
+                        }
                     }
                 }
             );
