@@ -547,10 +547,15 @@ sub import_record_list_impl {
             my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) ;
             unless($rec) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                $e->rollback;
                 next;
             }
 
-            next if $rec->import_time;
+            if($rec->import_time) {
+                $e->rollback;
+                next;
+            }
+
             $queues{$rec->queue} = 1;
 
             my $record;
@@ -566,6 +571,7 @@ sub import_record_list_impl {
 
             if($U->event_code($record)) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $record});
+                $e->rollback;
                 next;
             }
             $rec->imported_as($record->id);
@@ -573,6 +579,7 @@ sub import_record_list_impl {
 
             unless($e->update_vandelay_queued_bib_record($rec)) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                $e->rollback;
                 next;
             }
 
@@ -581,10 +588,15 @@ sub import_record_list_impl {
             my $rec = $e->retrieve_vandelay_queued_authority_record($rec_id);
             unless($rec) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                $e->rollback;
                 next;
             }
 
-            next if $rec->import_time;
+            if($rec->import_time) {
+                $e->rollback;
+                next;
+            }
+
             $queues{$rec->queue} = 1;
 
             my $record;
@@ -600,6 +612,7 @@ sub import_record_list_impl {
 
             if($U->event_code($record)) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $record});
+                $e->rollback;
                 next;
             }
 
@@ -607,6 +620,7 @@ sub import_record_list_impl {
             $rec->import_time('now');
             unless($e->update_vandelay_queued_authority_record($rec)) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+                $e->rollback;
                 next;
             }
         }
