@@ -148,6 +148,7 @@ sub user_settings {
 
     if($setting) {
         my $val = $e->search_actor_user_setting({usr => $user_id, name => $setting})->[0];
+        return '' unless $val;
         return OpenSRF::Utils::JSON->JSON2perl($val->value);
     } else {
         my $s = $e->search_actor_user_setting({usr => $user_id});
