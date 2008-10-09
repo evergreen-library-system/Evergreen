@@ -88,7 +88,7 @@
 					  default behaviour in previous versions of Evergreen.
 					-->
 					<option name='msg64_summary_datatype' value='barcode' />
-				</option>
+				</options>
 				<scripts>
 					<path>/openils/var/</path>
                     <path>/openils/var/catalog/</path>
