@@ -713,10 +713,11 @@
 		should be specified within the event with a 'location' key
 		</desc>
 	</event>
-
-
 	<event code='7018' textcode='COPY_MARKED_LOST'>
 		<desc xml:lang="en-US">The requested item is already marked as lost</desc>
+	</event>
+	<event code='7019' textcode='HOLD_CAPTURE_DELAYED'>
+		<desc xml:lang="en-US">Hold capture was delayed for this item</desc>
 	</event>
 
 
