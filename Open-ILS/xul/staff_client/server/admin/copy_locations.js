@@ -6,6 +6,8 @@ var DELETE_CL = 'open-ils.circ:open-ils.circ.copy_location.delete';
 
 var YES;
 var NO;
+var _TRUE;
+var _FALSE;
 var locationSet;
 var focusOrg;
 
@@ -23,6 +25,8 @@ function clEditorInit() {
 	$('user').appendChild(text(USER.usrname()));
 	YES = $('yes').innerHTML;
 	NO = $('no').innerHTML;
+    _TRUE = $('true');
+    _FALSE = $('false');
     locationSet = [];
 
 	setTimeout( 
@@ -78,8 +82,8 @@ function clBuildNew() {
         return;
 	var selector = $('cl_new_owner');
 	var fselector = $('cl_org_filter');
-	buildMergedOrgSel(selector, org_list, 0);
-	buildMergedOrgSel(fselector, org_list, 0);
+	buildMergedOrgSel(selector, org_list, 0, 'shortname');
+	buildMergedOrgSel(fselector, org_list, 0, 'shortname');
     var org = findOrgUnit(org_list[0]);
     if(org_list.length > 1 || (org.children() &&  org.children()[0])) {
 		selector.disabled = false;
@@ -107,6 +111,7 @@ function clCreateNew() {
 	cl.name( $('cl_new_name').value );
 	cl.owning_lib( getSelectorVal( $('cl_new_owner')));
 	cl.holdable( ($('cl_new_hold_yes').checked) ? 1 : 0 );
+	cl.hold_verify( ($('cl_new_hold_verify_yes').checked) ? 1 : 0 );
 	cl.opac_visible( ($('cl_new_vis_yes').checked) ? 1 : 0 );
 	cl.circulate( ($('cl_new_circulate_yes').checked) ? 1 : 0 );
 
@@ -149,10 +154,12 @@ function clDraw() {
 
 function clBuildRow( tbody, row, cl ) {
 	$n( row, 'cl_name').appendChild(text(cl.name()));
-	$n( row, 'cl_owner').appendChild(text(findOrgUnit(cl.owning_lib()).name()));
-	$n( row, 'cl_holdable').appendChild(text( (cl.holdable()) ? YES : NO ) );
-	$n( row, 'cl_visible').appendChild(text( (cl.opac_visible()) ? YES : NO ) );
-	$n( row, 'cl_circulate').appendChild(text( (cl.circulate()) ? YES : NO ) );
+	$n( row, 'cl_owner').appendChild(text(findOrgUnit(cl.owning_lib()).shortname()));
+
+	appendClear($n( row, 'cl_holdable'), (isTrue(cl.holdable())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
+	appendClear($n( row, 'cl_hold_verify'), (isTrue(cl.hold_verify())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
+	appendClear($n( row, 'cl_visible'), (isTrue(cl.opac_visible())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
+	appendClear($n( row, 'cl_circulate'), (isTrue(cl.circulate())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
 
 	var edit = $n( row, 'cl_edit');
 	edit.onclick = function() { clEdit( cl, tbody, row ); };
@@ -173,15 +180,17 @@ function clEdit( cl, tbody, row ) {
 	name.setAttribute('size', cl.name().length + 3);
 	name.value = cl.name();
 
-	$n(r, 'cl_edit_owner').appendChild(text(findOrgUnit(cl.owning_lib()).name()));
+	$n(r, 'cl_edit_owner').appendChild(text(findOrgUnit(cl.owning_lib()).shortname()));
 
 	var arr = _clOptions(r);
-	if(cl.holdable()) arr[0].checked = true;
+	if(isTrue(cl.holdable())) arr[0].checked = true;
 	else arr[1].checked = true;
-	if(cl.opac_visible()) arr[2].checked = true;
+	if(isTrue(cl.opac_visible())) arr[2].checked = true;
 	else arr[3].checked = true;
-	if(cl.circulate()) arr[4].checked = true;
+	if(isTrue(cl.circulate())) arr[4].checked = true;
 	else arr[5].checked = true;
+	if(isTrue(cl.hold_verify())) arr[6].checked = true;
+	else arr[7].checked = true;
 
 	$n(r, 'cl_edit_cancel').onclick = function(){cleanTbody(tbody,'edit');}
 	$n(r, 'cl_edit_commit').onclick = function(){clEditCommit( tbody, r, cl ); }
@@ -199,6 +208,8 @@ function _clOptions(r) {
 	arr[3] = $n( $n(r,'cl_edit_visible_no'), 'cl_edit_visible');
 	arr[4] = $n( $n(r,'cl_edit_circulate_yes'), 'cl_edit_circulate');
 	arr[5] = $n( $n(r,'cl_edit_circulate_no'), 'cl_edit_circulate');
+	arr[6] = $n( $n(r,'cl_edit_hold_verify_yes'), 'cl_edit_hold_verify');
+	arr[7] = $n( $n(r,'cl_edit_hold_verify_no'), 'cl_edit_hold_verify');
 	return arr;
 }
 
@@ -211,6 +222,8 @@ function clEditCommit( tbody, r, cl ) {
 	else cl.opac_visible(0);
 	if(arr[4].checked) cl.circulate(1);
 	else cl.circulate(0);
+	if(arr[6].checked) cl.hold_verify(1);
+	else cl.hold_verify(0);
 	cl.name($n(r, 'cl_edit_name').value);
 
 	var req = new Request( UPDATE_CL, SESSION, cl );

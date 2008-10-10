@@ -78,12 +78,22 @@
 						</td>
 					</tr>
 					<tr>
+						<td>&staff.server.admin.copy_locations.editor.hold_verify.label;</td>
+						<td>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
+							<input type='radio' name='cl_new_hold' id='cl_new_hold_verify_yes'/>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
+							<input type='radio' name='cl_new_hold_verify'  
+								id='cl_new_hold_verify_no' checked='checked'> </input>
+						</td>
 						<td>&staff.server.admin.copy_locations.editor.library;</td>
-						<td colspan='2' >
+						<td>
 							<select id='cl_new_owner' disabled='disabled' style='width:auto;'> </select>
 						</td>
-						<td><input id='sc_new_submit' type='submit' value='Create' disabled='disabled'/></td>
 					</tr>
+                    <tr>
+						<td colspan='4'><input id='sc_new_submit' type='submit' value='Create' disabled='disabled'/></td>
+                    </tr>
 				</tbody>
 			</table>
 
@@ -96,16 +106,14 @@
 			<table class='data_grid data_grid_center' style='width: 95%'>
 				<thead>
 					<tr>
-						<td width='15%'>&staff.server.admin.copy_locations.editor.name;</td>
-						<td width='20%'>&staff.server.admin.copy_locations.editor.library;</td>
-						<td width='15%'>
-							<span>&staff.server.admin.copy_locations.editor.holdable;</span>
-							<a class='context_help' href='javascript:clHoldMsg();'></a>
-						</td>
-						<td width='15%'>&staff.server.admin.copy_locations.editor.opac_visible;</td>
-						<td width='15%'>&staff.server.admin.copy_locations.editor.circulate;</td>
-						<td width='10%'>&staff.server.admin.copy_locations.editor.edit;</td>
-						<td width='10%'>&staff.server.admin.copy_locations.editor.delete;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.name;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.library;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.holdable;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.hold_verify;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.opac_visible;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.circulate;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.edit;</td>
+						<td width=''>&staff.server.admin.copy_locations.editor.delete;</td>
 					</tr>
 				</thead>
 				<tbody id='cl_tbody'>
@@ -113,6 +121,7 @@
 						<td name='cl_name'> </td>
 						<td name='cl_owner'> </td>
 						<td name='cl_holdable'> </td>
+						<td name='cl_hold_verify'> </td>
 						<td name='cl_visible'> </td>
 						<td name='cl_circulate'> </td>
 						<td><input type='submit' value='Edit' name='cl_edit' disabled='disabled'> </input></td>
@@ -123,6 +132,8 @@
 		 </center>
 
 		 <div class='hide_me'>
+            <span id='true' style='color:green;'>&#x2713;</span>
+            <span id='false' style='color:red;'>&#x2717;</span>
 			<span id='yes'>&staff.server.admin.copy_locations.editor.yes;</span>
 			<span id='no'>&staff.server.admin.copy_locations.editor.no;</span>
 			<span id='cl_hold_msg'>
@@ -144,6 +155,16 @@
 							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<span name='cl_edit_holdable_no'>
 								<input type='radio' name='cl_edit_holdable'/>
+							</span>
+						</td>
+						<td>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
+							<span name='cl_edit_hold_verify_yes'>
+								<input type='radio' name='cl_edit_hold_verify'/>
+							</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
+							<span name='cl_edit_hold_verify_no'>
+								<input type='radio' name='cl_edit_hold_verify'/>
 							</span>
 						</td>
 						<td>
