@@ -31,8 +31,9 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.require('dojox.grid._data.model');
-dojo.require("dojox.grid.editors");
+dojo.require('dojox.grid.compat._data.model');
+dojo.require("dojox.grid.compat._data.editors");
+
 
 
 console.log('loading marc_code_maps.js');
