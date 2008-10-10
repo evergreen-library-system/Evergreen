@@ -248,27 +248,16 @@ my %ORG_FROM_CACHE;
 sub get_from_addr {
     my $type = shift;
     my $org_id = shift;
-    my $sender;
 
-    if(defined $ORG_FROM_CACHE{$org_id}) {
-        # we have we already loaded the setting for this org unit
-		$sender = $ORG_FROM_CACHE{$org_id};
+    return $ORG_FROM_CACHE{$org_id} if $ORG_FROM_CACHE{$org_id};
 
-    } elsif(my $set = $e->search_actor_org_unit_setting( 
-			{name => 'org.bounced_emails', org_unit => $org_id} )->[0]) {
-		my $bemail = OpenSRF::Utils::JSON->JSON2perl($set->value);
-		$sender = $ORG_FROM_CACHE{$org_id} = $bemail if $bemail;
+    if(my $bemail = $U->ou_ancestor_setting_value($org_id, 'org.bounced_emails', $e)) {
+		return $ORG_FROM_CACHE{$org_id} = $bemail;
 	}
 
-    unless($sender) {
-        # there is no setting, use the configured sender
-        $sender = $settings->config_value(
-            notifications => $type => 'sender_address') || 
-            $settings->config_value(notifications => 'sender_address');
-        $ORG_FROM_CACHE{$org_id} = '';
-    }
-
-    return $sender;
+    return $ORG_FROM_CACHE{$org_id} = 
+        $settings->config_value(notifications => $type => 'sender_address') || 
+        $settings->config_value(notifications => 'sender_address');
 }
 
 sub generate_notice {
