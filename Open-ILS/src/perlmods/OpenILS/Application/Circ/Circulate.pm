@@ -172,7 +172,7 @@ sub run_method {
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->check_penalty_on_renew(1) if
         $circulator->is_renewal and $U->ou_ancestor_setting_value(
-            $circulator->editor->requestor->ws_ou, 'circ.renew.check_penalty', $circulator->editor);
+            $circulator->circ_lib, 'circ.renew.check_penalty', $circulator->editor);
 
     if($legacy_script_support and not $circulator->is_checkin) {
         $circulator->mk_script_runner();
@@ -427,8 +427,7 @@ sub new {
     my $self = bless( {}, $class );
 
     $self->events([]);
-    $self->editor( 
-        new_editor(xact => 1, authtoken => $auth) );
+    $self->editor(new_editor(xact => 1, authtoken => $auth));
 
     unless( $self->editor->checkauth ) {
         $self->bail_on_events($self->editor->event);
@@ -686,8 +685,32 @@ sub do_permit {
 
 sub check_item_deposit_events {
     my $self = shift;
-    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED')) if $self->is_deposit;
-    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED')) if $self->is_rental;
+    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED')) 
+        if $self->is_deposit and not $self->is_deposit_exempt;
+    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED')) 
+        if $self->is_rental and not $self->is_rental_exempt;
+}
+
+# returns true if the user is not required to pay deposits
+sub is_deposit_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.deposit.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
+}
+
+# returns true if the user is not required to pay rental fees
+sub is_rental_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.rental.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
 }
 
 sub check_captured_holds {
@@ -1188,7 +1211,9 @@ sub do_checkout {
 sub apply_deposit_fee {
     my $self = shift;
     my $copy = $self->copy;
-    return unless $self->is_deposit or $self->is_rental;
+    return unless 
+        ($self->is_deposit and not $self->is_deposit_exempt) or 
+        ($self->is_rental and not $self->is_rental_exempt);
 
 	my $bill = Fieldmapper::money::billing->new;
     my $amount = $copy->deposit_amount;
