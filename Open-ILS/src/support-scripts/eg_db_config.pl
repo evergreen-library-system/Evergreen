@@ -169,7 +169,7 @@ if ($uconfig) { update_config(\@services, \%settings); }
 # Get our settings from the config file
 get_settings(\%settings);
 
-if ($cschema) { create_schema(); }
+if ($cschema) { create_schema(\%settings); }
 if ($bootstrap) { create_db_bootstrap($bootstrap_file, \%settings); }
 
 if ((!$cschema && !$uconfig && !$bootstrap) || $help) {
