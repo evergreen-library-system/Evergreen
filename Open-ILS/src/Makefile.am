@@ -262,7 +262,6 @@ cgi-bootstrap:
 	for i in @srcdir@/cgi-bin/*cgi; do perl -pe "s{##CONFIG##}{@sysconfdir@}" < $$i > $(TMP)/$$i; done
 	cp $(TMP)/cgi-bin/*cgi $(CGIDIR)
 	cp -r @srcdir@/cgi-bin/support $(CGIDIR)
-	cp @srcdir@/cgi-bin/setup.pl @sysconfdir@/live-db-setup.pl
 	chmod 755 $(DESTDIR)$(CGIDIR)/*cgi
 
 server-xul:

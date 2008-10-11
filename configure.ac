@@ -47,7 +47,6 @@ AC_PROG_MAKE_SET
 #    yes) openils_all=true;
 #	 openils_core=true;
 #	 openils_web=true;
-#	 openils_db=true;
 #	 openils_reporter=true;
 #	 openils_client_xul=true;
 #	 openils_server_xul=true ;;
@@ -80,19 +79,6 @@ esac],
 [openils_web=true])
 
 AM_CONDITIONAL([BUILDILSWEB], [test x$openils_web = xtrue])
-
-# build evergreendb ?
-#
-#AC_ARG_ENABLE([openils-db],
-#[  --disable-openils-db    disables the installation of the openils db modules ],
-#[case "${enableval}" in
-#    yes) openils_db=true ;;
-#    no)  openils_db=false ;;
-#  *) AC_MSG_ERROR([please choose another value for --disable-openils-db (supported values are yes or no])
-#esac],
-#[openils_db=true])
-#
-#AM_CONDITIONAL([BUILDILSDB], [test x$openils_db = xtrue])
 
 # build evergreen-reporter ?
 
@@ -224,60 +210,6 @@ AC_ARG_WITH([opensrf-libs],
 [OPENSRF_LIBS=/openils/lib/])
 AC_SUBST([OPENSRF_LIBS])
 
-#-------------------------------------------------------------
-# Set DB Info
-#-------------------------------------------------------------
-
-AC_ARG_WITH([dbdrvr],
-[ --with-dbdrvr=name		name of the database driver to be used by open-ils (default is Pg)],
-[DBDRVR=${withval}],
-[DBDRVR=Pg])
-AC_SUBST([DBDRVR])
-
-if test $DBDRVR="Pg"; then
-	AC_CHECK_PROG([PGSQL],pg,yes,no)
-	if test $PGSQL = "no"; then
-        AC_MSG_ERROR([*** postgresql not found, aborting])
-	fi
-fi
-
-AC_ARG_WITH([dbhost],
-[ --with-dbhost=address            name of the database hostname to be used by open-ils (default is 127.0.0.1)],
-[DBHOST=${withval}],
-[DBHOST=127.0.0.1])
-AC_SUBST([DBHOST])
-
-AC_ARG_WITH([dbport],
-[ --with-dbport=number            name of the database port to be used by open-ils (default is 5432)],
-[DBPORT=${withval}],
-[DBPORT=5432])
-AC_SUBST([DBPORT])
-
-AC_ARG_WITH([dbname],
-[ --with-dbname=name            name of the database to be used by open-ils (default is evergreen)],
-[DBNAME=${withval}],
-[DBNAME=evergreen])
-AC_SUBST([DBNAME])
-
-AC_ARG_WITH([dbuser],
-[ --with-dbuser=name            name of the database username to be used by open-ils (default is postgres)],
-[DBUSER=${withval}],
-[DBUSER=postgres])
-AC_SUBST([DBUSER])
-
-AC_ARG_WITH([dbver],
-[ --with-dbver=number            version of the database to be used by open-ils, leaving out the periods in the version number (default is 82)],
-[DBVER=${withval}],
-[DBVER=82])
-AC_SUBST([DBVER])
-
-
-AC_ARG_WITH([dbpw],
-[ --with-dbpw=password            password of the database to be used by open-ils (default is postgres)],
-[DBPW=${withval}],
-[DBPW=postgres])
-AC_SUBST([DBPW])
-
 #------------------------------------
 # Checks for libraries. 
 #------------------------------------
@@ -342,32 +274,6 @@ AC_FUNC_STRFTIME
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([localtime_r memset nl_langinfo setlocale strcasecmp strchr strdup strerror strncasecmp])
 
-
-#------------------------------------
-# Generate some config files
-#------------------------------------
-# write out the DB bootstrapping config
-	CONFIG_FILE='Open-ILS/src/cgi-bin/setup.pl';
-	rm -f "$CONFIG_FILE";
-	echo "Writing bootstrapping config to $CONFIG_FILE...";
-
-	STR='$main::config{dsn} =';
-		STR="$STR 'dbi:${DBDRVR}:host=";
-		STR="${STR}${DBHOST};dbname=";
-		STR="${STR}${DBNAME};port=";
-		STR="${STR}${DBPORT}';";
-	echo "$STR" >> "$CONFIG_FILE";
-
-	STR='$main::config{usr} =';
-		STR="$STR '$DBUSER';";
-	echo "$STR" >> "$CONFIG_FILE";
-	
-	STR='$main::config{pw} =';
-		STR="$STR '$DBPW';";
-	echo "$STR" >> "$CONFIG_FILE";
-	
-	echo '$main::config{index} = "config.cgi";' >> "$CONFIG_FILE";
-
 #----------------------------
 # Create Makefiles/Output
 #----------------------------
@@ -385,7 +291,6 @@ AC_CONFIG_FILES([Makefile
 		 Open-ILS/src/extras/eg_config
                  build/i18n/Makefile],  [if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi])
 AC_OUTPUT
-
 
 #-------------------------------------------------
 # OUTPUT STUFF 
@@ -427,15 +332,6 @@ else
         AC_MSG_RESULT([Evergreen Java Components:	no])
 fi
 AC_MSG_RESULT([]) 
-AC_MSG_RESULT([-------- DB Info --------])
-AC_MSG_RESULT([Driver:		${DBDRVR}])
-AC_MSG_RESULT([Host: 		${DBHOST}])
-AC_MSG_RESULT([Port: 		${DBPORT}])
-AC_MSG_RESULT([DB Name: 	${DBNAME}])
-AC_MSG_RESULT([Username: 	${DBUSER}])
-AC_MSG_RESULT([Version: 	${DBVER}])
-AC_MSG_RESULT([Password: 	${DBPW}])
-AC_MSG_RESULT([])
 AC_MSG_RESULT([-------- Installation Directories --------])
 AC_MSG_RESULT(Installation dir prefix:                  ${prefix})
 AC_MSG_RESULT(Temporary dir location:                   ${TMP})

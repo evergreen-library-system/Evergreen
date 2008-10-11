@@ -27,6 +27,7 @@ use File::Basename;
 my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help);
 my $config_file = '';
 my $build_db_sh = '';
+my $bootstrap_file = '';
 my @services;
 
 # Get the directory for this script
@@ -70,8 +71,28 @@ sub update_config {
 		die "ERROR: Failed to update the configuration file '$config_file'\n";
 }
 
-sub create_schema() {
-# Extracts the info from opensrf.xml and builds the db by calling build-db.sh
+# write out the DB bootstrapping config
+sub create_db_bootstrap {
+	my ($setup, $settings) = @_;
+
+    open(FH, '>', $setup) or die "Could not write database setup to $setup\n";
+
+	print "Writing database bootstrapping configuration to $setup...\n";
+
+	printf FH "\$main::config{dsn} = 'dbi:Pg:host=%s;dbname=%s;port=%d';\n",
+		$settings->{host}, $settings->{db}, $settings->{port};
+
+	printf FH "\$main::config{usr} = '%s';\n", $settings->{user};
+	printf FH "\$main::config{pw} = '%s';\n", $settings->{pw};
+	
+	print FH "\$main::config{index} = 'config.cgi';\n";
+    close(FH);
+}
+
+# Extracts database settings from opensrf.xml
+sub get_settings {
+	my $settings = shift;
+
 	my $host = "/opensrf/default/apps/open-ils.storage/app_settings/databases/database/host/text()";
 	my $port = "/opensrf/default/apps/open-ils.storage/app_settings/databases/database/port/text()";
 	my $dbname = "/opensrf/default/apps/open-ils.storage/app_settings/databases/database/db/text()";
@@ -81,22 +102,34 @@ sub create_schema() {
 	my $parser = XML::LibXML->new();
 	my $opensrf_config = $parser->parse_file($config_file);
 
+	$settings->{host} = $opensrf_config->findnodes($host);
+	$settings->{port} = $opensrf_config->findnodes($port);
+	$settings->{db} = $opensrf_config->findnodes($dbname);
+	$settings->{user} = $opensrf_config->findnodes($user);
+	$settings->{pw} = $opensrf_config->findnodes($pw);
+}
+
+# Creates the database schema by calling build-db.sh
+sub create_schema {
+	my $settings = shift;
+
 	chdir(dirname($build_db_sh));
 	system(File::Spec->catfile('.', basename($build_db_sh)) . " " .
-		$opensrf_config->findnodes($host) ." ". 
-		$opensrf_config->findnodes($port) ." ". 
-		$opensrf_config->findnodes($dbname) ." ". 
-		$opensrf_config->findnodes($user) ." ".
-		$opensrf_config->findnodes($pw));
+		$settings->{host} ." ".  $settings->{port} ." ". 
+		$settings->{db} ." ".  $settings->{user} ." ". 
+		$settings->{pw});
 	chdir($script_dir);
 }
 
-my $cschema = '';
-my $uconfig = '';
-my %settings = ();
+my $bootstrap;
+my $cschema;
+my $uconfig;
+my %settings;
 
 GetOptions("create-schema" => \$cschema, 
+		"create-bootstrap" => \$bootstrap,
 		"update-config" => \$uconfig,
+		"bootstrap-file=s" => \$bootstrap_file,
 		"config-file=s" => \$config_file,
 		"build-db-file=s" => \$build_db_sh,
 		"service=s" => \@services,
@@ -113,20 +146,33 @@ if (grep(/^all$/, @services)) {
 }
 
 my $eg_config = File::Spec->catfile($script_dir, '../extras/eg_config');
-if ($config_file eq '') { 
+
+if (!$config_file) { 
 	my @temp = `$eg_config --sysconfdir`;
 	chomp $temp[0];
 	$config_file = File::Spec->catfile($temp[0], "opensrf.xml");
 }
-if ($build_db_sh eq '') {
+
+if (!$build_db_sh) {
 	$build_db_sh = File::Spec->catfile($script_dir, '../sql/Pg/build-db.sh');
 }
+
+if (!$bootstrap_file) {
+	$bootstrap_file = ('/openils/var/cgi-bin/live-db-setup.pl');
+}
+
 unless (-e $build_db_sh) { die "Error: $build_db_sh does not exist. \n"; }
 unless (-e $config_file) { die "Error: $config_file does not exist. \n"; }
-if ($uconfig) { update_config(\@services, \%settings); }
-if ($cschema) { create_schema(); }
 
-if ((!$cschema && !$uconfig) || $help) {
+if ($uconfig) { update_config(\@services, \%settings); }
+
+# Get our settings from the config file
+get_settings(\%settings);
+
+if ($cschema) { create_schema(); }
+if ($bootstrap) { create_db_bootstrap($bootstrap_file, \%settings); }
+
+if ((!$cschema && !$uconfig && !$bootstrap) || $help) {
 	print <<HERE;
 
 SYNOPSIS
@@ -142,18 +188,24 @@ OPTIONS
     --config-file
         specifies the opensrf.xml file. Defaults to /openils/conf/opensrf.xml
 
+    --bootstrap-file
+        specifies the database bootstrap file required by the CGI setup interface
+
     --build-db-file
         specifies the script that creates the database schema. Defaults to
         Open-ILS/src/sql/pg/build-db.sh
 
 COMMANDS
-    --create-schema
-        Create the Evergreen database schema according to the settings in
-        the file specified by --config-file.  
-
     --update-config
-        Configure Evergreen database settings in the file specified by
+        Configures Evergreen database settings in the file specified by
         --build-db-file.  
+
+    --create-bootstrap
+        Creates the database bootstrap file required by the CGI setup interface
+
+    --create-schema
+        Creates the Evergreen database schema according to the settings in
+        the file specified by --config-file.  
 
 SERVICE OPTIONS
     --service
@@ -164,14 +216,36 @@ SERVICE OPTIONS
             * open-ils.reporter-store
     
 DATABASE CONFIGURATION OPTIONS
-     --user            username for the database 
+    --user            username for the database 
 
-     --password        password for the user 
+    --password        password for the user 
 
-     --database        name of the database 
+    --database        name of the database 
 
-     --hostname        name or address of the database host 
+    --hostname        name or address of the database host 
 
-     --port            port number for database access
+    --port            port number for database access
+
+EXAMPLES
+   This script is normally used during the initial installation and
+   configuration process.
+
+   For a single server install, or an install with one web/application
+   server and one database server, you will typically want to invoke this
+   script with a complete set of commands:
+
+   perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+       --service all --create-schema --create-bootstrap \
+       --user evergreen --password evergreen --hostname localhost --port 5432 \
+       --database evergreen 
+
+   To update the configuration for a single service - for example, if you
+   replicated a database for reporting purposes - just issue the
+   --update-config command with the service identified and the changed
+   database parameters specified:
+
+   perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+       --service reporter --hostname foobar --password newpass
+
 HERE
 }
