@@ -44,37 +44,49 @@ my $U = $apputils;
 sub _d { warn "Patron:\n" . Dumper(shift()); }
 
 my $cache;
-
-
 my $set_user_settings;
 my $set_ou_settings;
 
+
 __PACKAGE__->register_method(
-	method	=> "set_user_settings",
+	method	=> "update_user_setting",
 	api_name	=> "open-ils.actor.patron.settings.update",
 );
-sub set_user_settings {
-	my( $self, $client, $user_session, $uid, $settings ) = @_;
-	
-	$logger->debug("Setting user settings: $user_session, $uid, " . Dumper($settings));
+sub update_user_setting {
+	my($self, $conn, $auth, $user_id, $settings) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
 
-	my( $staff, $user, $evt ) = 
-		$apputils->checkses_requestor( $user_session, $uid, 'UPDATE_USER' );	
-	return $evt if $evt;
-	
-	my @params = map { 
-		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
-		
-	$_->[1]->{value} = OpenSRF::Utils::JSON->perl2JSON($_->[1]->{value}) for @params;
+    $user_id = $e->requestor->id unless defined $user_id;
 
-	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    }
 
-	my $ses = $U->start_db_session();
-	my $stat = $ses->request(
-		'open-ils.storage.direct.actor.user_setting.batch.merge', @params )->gather(1);
-	$U->commit_db_session($ses);
+    for my $name (keys %$settings) {
+        my $val = $$settings{$name};
+        my $set = $e->search_actor_user_setting({usr => $user_id, name => $name})->[0];
 
-	return $stat;
+        if(defined $val) {
+            $val = OpenSRF::Utils::JSON->perl2JSON($val);
+            if($set) {
+                $set->value($val);
+                $e->update_actor_user_setting($set) or return $e->die_event;
+            } else {
+                $set = Fieldmapper::actor::user_setting->new;
+                $set->usr($user_id);
+                $set->name($name);
+                $set->value($val);
+                $e->create_actor_user_setting($set) or return $e->die_event;
+            }
+        } elsif($set) {
+            $e->delete_actor_user_setting($set) or return $e->die_event;
+        }
+    }
+
+    $e->commit;
+    return 1;
 }
 
 
@@ -87,11 +99,12 @@ sub set_ou_settings {
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('UPDATE_ORG_SETTING', $org_id);
 
 	for my $name (keys %$settings) {
         my $val = $$settings{$name};
         my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
+
+        return $e->die_event unless $e->allowed("UPDATE_ORG_UNIT_SETTING.$name", $org_id);
 
         if(defined $val) {
             $val = OpenSRF::Utils::JSON->perl2JSON($val);
@@ -126,17 +139,21 @@ sub user_settings {
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
+    $user_id = $e->requestor->id unless defined $user_id;
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->event;
     if($e->requestor->id != $user_id) {
         return $e->event unless $e->allowed('VIEW_USER', $patron->home_ou);
     }
 
-    my $s = $e->search_actor_user_setting({usr => $user_id});
-	my $settings =  { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
-
-    return $$settings{$setting} if $setting;
-    return $settings;
+    if($setting) {
+        my $val = $e->search_actor_user_setting({usr => $user_id, name => $setting})->[0];
+        return '' unless $val;
+        return OpenSRF::Utils::JSON->JSON2perl($val->value);
+    } else {
+        my $s = $e->search_actor_user_setting({usr => $user_id});
+	    return { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
+    }
 }
 
 
@@ -174,6 +191,17 @@ __PACKAGE__->register_method(
 sub ou_ancestor_setting {
     my( $self, $client, $orgid, $name ) = @_;
     return $U->ou_ancestor_setting($orgid, $name);
+}
+
+__PACKAGE__->register_method(
+    api_name => 'open-ils.actor.ou_setting.ancestor_default.batch',
+    method => 'ou_ancestor_setting_batch',
+);
+sub ou_ancestor_setting_batch {
+    my( $self, $client, $orgid, $name_list ) = @_;
+    my %values;
+    $values{$_} = $U->ou_ancestor_setting($orgid, $_) for @$name_list;
+    return \%values;
 }
 
 
@@ -1278,16 +1306,20 @@ __PACKAGE__->register_method(
 	/);
 
 sub check_user_perms3 {
-	my( $self, $client, $authtoken, $userid, $perm ) = @_;
-
-	my( $staff, $target, $org, $evt );
-
-	( $staff, $target, $evt ) = $apputils->checkses_requestor(
-		$authtoken, $userid, 'VIEW_PERMISSION' );
-	return $evt if $evt;
+	my($self, $client, $authtoken, $user_id, $perm) = @_;
+	my $e = new_editor(authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
 	my $tree = $U->get_org_tree();
-	return $U->find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
+
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id)
+            or return $e->event;
+        return $e->event unless $e->allowed('VIEW_PERMISSION', $user->home_ou);
+	    return $U->find_highest_perm_org($perm, $user_id, $user->home_ou, $tree );
+    }
+
+    return $U->find_highest_perm_org($perm, $user_id, $e->requestor->ws_ou, $tree);
 }
 
 
@@ -1353,10 +1385,46 @@ __PACKAGE__->register_method(
     /
 );
 
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.highest_org_set.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_tree_list.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_unit_list.batch',
+    authoritative => 1,
+);
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms_batch',
+	api_name	=> 'open-ils.actor.user.work_perm.org_id_list.batch',
+    authoritative => 1,
+);
+
+
 sub check_user_work_perms {
     my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    return check_user_work_perms_impl($self, $conn, $e, $perm, $options);
+}
+
+sub check_user_work_perms_batch {
+    my($self, $conn, $auth, $perm_list, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $map = {};
+    $map->{$_} = check_user_work_perms_impl($self, $conn, $e, $_, $options) for @$perm_list;
+    return $map;
+}
+
+sub check_user_work_perms_impl {
+    my($self, $conn, $e, $perm, $options) = @_;
     my $orglist = $U->find_highest_work_orgs($e, $perm, $options);
 
     return $orglist if $self->api_name =~ /highest_org_set/;
@@ -1840,70 +1908,9 @@ sub checked_out {
 
 sub _checked_out {
 	my( $iscount, $e, $userid ) = @_;
-
-
 	my $meth = 'open-ils.storage.actor.user.checked_out';
 	$meth = "$meth.count" if $iscount;
 	return $U->storagereq($meth, $userid);
-
-# XXX Old code - moved to storage
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-	my $circs = $e->search_action_circulation( 
-		{ usr => $userid, checkin_time => undef });
-
-	my $parser = DateTime::Format::ISO8601->new;
-
-	# split the circs up into overdue and not-overdue circs
-	my (@out,@overdue);
-	for my $c (@$circs) {
-		if( $c->due_date ) {
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
-			my $due = $due_dt->epoch;
-			if ($due < DateTime->today->epoch) {
-				push @overdue, $c;
-			} else {
-				push @out, $c;
-			}
-		} else {
-			push @out, $c;
-		}
-	}
-
-	my( @open, @od, @lost, @cr, @lo );
-
-	while (my $c = shift(@out)) {
-		push( @open, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
-		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
-		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
-		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
-	}
-
-	while (my $c = shift(@overdue)) {
-		push( @od, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
-		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
-		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
-		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
-	}
-
-	if( $iscount ) {
-		return {
-			total		=> @open + @od + @lost + @cr + @lo,
-			out		=> scalar(@open),
-			overdue	=> scalar(@od),
-			lost		=> scalar(@lost),
-			claims_returned	=> scalar(@cr),
-			long_overdue		=> scalar(@lo)
-		};
-	}
-
-	return {
-		out		=> \@open,
-		overdue	=> \@od,
-		lost		=> \@lost,
-		claims_returned	=> \@cr,
-		long_overdue		=> \@lo
-	};
 }
 
 
@@ -2075,91 +2082,6 @@ __PACKAGE__->register_method(
 	Returns a list of billable transaction ids for a user that has billings
 	NOTES
 
-
-
-=head old
-sub _user_transaction_history {
-	my( $self, $client, $login_session, $user_id, $type ) = @_;
-
-	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
-	return $evt if $evt;
-
-	my $api = $self->api_name();
-	my @xact;
-	my @charge;
-	my @balance;
-
-	@xact = (xact_type =>  $type) if(defined($type));
-	@balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
-	@charge  = (last_billing_ts => { "<>" => undef }) if $api =~ /have_charge/;
-
-	$logger->debug("searching for transaction history: @xact : @balance, @charge");
-
-	my $trans = $apputils->simple_scalar_request( 
-		"open-ils.cstore",
-		"open-ils.cstore.direct.money.billable_transaction_summary.search.atomic",
-		{ usr => $user_id, @xact, @charge, @balance }, { order_by => { mbts => 'xact_start DESC' } });
-
-	return [ map { $_->id } @$trans ];
-}
-=cut
-
-=head SEE APPUTILS.PM
-sub _make_mbts {
-	my @xacts = @_;
-
-	my @mbts;
-	for my $x (@xacts) {
-		my $s = new Fieldmapper::money::billable_transaction_summary;
-		$s->id( $x->id );
-		$s->usr( $x->usr );
-		$s->xact_start( $x->xact_start );
-		$s->xact_finish( $x->xact_finish );
-
-		my $to = 0;
-		my $lb = undef;
-		for my $b (@{ $x->billings }) {
-			next if ($U->is_true($b->voided));
-			$to += ($b->amount * 100);
-			$lb ||= $b->billing_ts;
-			if ($b->billing_ts ge $lb) {
-				$lb = $b->billing_ts;
-				$s->last_billing_note($b->note);
-				$s->last_billing_ts($b->billing_ts);
-				$s->last_billing_type($b->billing_type);
-			}
-		}
-
-		$s->total_owed( sprintf('%0.2f', $to / 100 ) );
-
-		my $tp = 0;
-		my $lp = undef;
-		for my $p (@{ $x->payments }) {
-			next if ($U->is_true($p->voided));
-			$tp += ($p->amount * 100);
-			$lp ||= $p->payment_ts;
-			if ($p->payment_ts ge $lp) {
-				$lp = $p->payment_ts;
-				$s->last_payment_note($p->note);
-				$s->last_payment_ts($p->payment_ts);
-				$s->last_payment_type($p->payment_type);
-			}
-		}
-		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
-
-		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
-
-		$s->xact_type( 'grocery' ) if ($x->grocery);
-		$s->xact_type( 'circulation' ) if ($x->circulation);
-
-		push @mbts, $s;
-	}
-
-	return @mbts;
-}
-=cut
-
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
 
@@ -2297,35 +2219,6 @@ sub retrieve_groups_tree {
 		]
 	)->[0];
 }
-
-
-# turns an org list into an org tree
-=head old code
-sub build_group_tree {
-
-	my( $self, $grplist) = @_;
-
-	return $grplist unless ( 
-			ref($grplist) and @$grplist > 1 );
-
-	my @list = sort { $a->name cmp $b->name } @$grplist;
-
-	my $root;
-	for my $grp (@list) {
-
-		if ($grp and !defined($grp->parent)) {
-			$root = $grp;
-			next;
-		}
-		my ($parent) = grep { $_->id == $grp->parent} @list;
-
-		$parent->children([]) unless defined($parent->children); 
-		push( @{$parent->children}, $grp );
-	}
-
-	return $root;
-}
-=cut
 
 
 __PACKAGE__->register_method(
@@ -2726,8 +2619,13 @@ sub barcode_exists {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
-    return undef unless @$card;
-    return $card->[0]->usr;
+	if (@$card) {
+		return 1;
+	} else {
+		return 0;
+	}
+	#return undef unless @$card;
+	#return $card->[0]->usr;
 }
 
 
@@ -3041,6 +2939,25 @@ sub create_user_opt_in_at_org {
     $e->commit;
 
     return $opt_in->id;
+}
+
+
+__PACKAGE__->register_method (
+	method		=> 'retrieve_org_hours',
+	api_name	=> 'open-ils.actor.org_unit.hours_of_operation.retrieve',
+	signature	=> q/
+        Returns the hours of operation for a specified org unit
+		@param authtoken The login session key
+		@param org_id The org_unit ID
+	/
+);
+
+sub retrieve_org_hours {
+    my($self, $conn, $auth, $org_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
+    $org_id ||= $e->requestor->ws_ou;
+    return $e->retrieve_actor_org_unit_hours_of_operation($org_id);
 }
 
 

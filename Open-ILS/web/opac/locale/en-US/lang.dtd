@@ -48,6 +48,9 @@
 <!ENTITY common.save_transactions.accesskey 'S'>
 <!ENTITY common.save_transactions.label 'Save these transactions'>
 
+<!ENTITY common.true "True">
+<!ENTITY common.false "False">
+
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
 <!ENTITY ilsevent.1002 "User was not found in the database">
@@ -550,6 +553,7 @@
 <!ENTITY staff.main.auth.offline.interface.accesskey "S">
 <!ENTITY staff.main.auth.retest "Re-Test Server">
 <!ENTITY staff.main.auth.retest.accesskey "R">
+<!ENTITY staff.main.auth.add_ssl_exception "Add SSL Exception">
 <!ENTITY staff.main.auth.server "Server">
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
@@ -1355,6 +1359,7 @@
 <!ENTITY staff.server.admin.copy_locations.editor.circulate.label "Circulate: ">
 <!ENTITY staff.server.admin.copy_locations.editor.library.label "Owning Library:">
 <!ENTITY staff.server.admin.copy_locations.editor.library "Owning Library">
+<!ENTITY staff.server.admin.copy_locations.editor.library.filter "Focus Location:">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable "Holdable">
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
@@ -1434,6 +1439,9 @@
 <!ENTITY staff.server.admin.index.cash_reports "Cash Reports">
 <!ENTITY staff.server.admin.index.transits "Transits">
 <!ENTITY staff.server.admin.index.transit_list "Transit List">
+<!ENTITY staff.server.admin.index.conify "Server Settings">
+
+
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
 <!-- This will be followed by the user's name -->
 <!ENTITY staff.server.admin.org_settings.greeting "Welcome ">
@@ -1448,11 +1456,37 @@
 <!ENTITY staff.server.admin.org_settings.staff_timeout "Staff Login Inactivity Timeout (in seconds)">
 <!ENTITY staff.server.admin.org_settings.lost_fee "Lost Materials Processing Fee">
 <!ENTITY staff.server.admin.org_settings.default_price "Default Item Price">
-<!ENTITY staff.server.admin.org_settings.from_address '"FROM" email address for patron notices'>
-<!ENTITY staff.server.admin.org_settings.bounce_note "(note: delivery failures will be returned this address)">
+<!ENTITY staff.server.admin.org_settings.from_address 'Sending email address for patron notices'>
+<!ENTITY staff.server.admin.org_settings.bounce_note "Email delivery failures will be returned this address">
 <!ENTITY staff.server.admin.org_settings.apply_all.note 'I. "Apply to all Locations" will force the new setting to be applied to all locations in the location dropdown.'>
 <!ENTITY staff.server.admin.org_settings.update_success "Update succeeded.">
 <!ENTITY staff.server.admin.org_settings.apply_all.confirm "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?">
+
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "Hold Expiration Alert Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc "Amount of time before a hold expires at which point the patron should be alerted">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "Default Hold Expirate Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval.desc 'Amount of time after a hold is placed before the hold expires.  Example "100 days"'>
+<!ENTITY staff.server.admin.org_settings.global.credit.allow "Allow Credit Card Payments">
+<!ENTITY staff.server.admin.org_settings.global.credit.allow.desc "If enabled, patrons will be able to pay fines accrued at this location via credit card">
+<!ENTITY staff.server.admin.org_settings.global.default_locale "Default Locale">
+<!ENTITY staff.server.admin.org_settings.circ.void_overdue_on_lost "Void overdue fines when items are marked lost">
+<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'Soft hold stalling interval'>
+<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft.desc 
+    'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"'>
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "Hard hold boundary">
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Soft hold boundary">
+<!ENTITY staff.server.admin.org_settings.opac.barcode_regex "Patron barcode format">
+<!ENTITY staff.server.admin.org_settings.opac.barcode_regex.desc 'Regular expression defining the patron barcode format'>
+<!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max "Maximum previous checkouts displayed">
+<!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc 
+    "This is maximum number of previous circulations the staff client will display when investigating item details">
+<!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
+<!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 
+    'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
+
+
+
+
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
 <!ENTITY staff.server.admin.stat_cat.heading " Statistical Category Editor">
@@ -1721,6 +1755,8 @@
 <!ENTITY staff.circ.holds.set_email_notification.accesskey "E">
 <!ENTITY staff.circ.holds.edit_activation_date "Edit Activation Date">
 <!ENTITY staff.circ.holds.edit_activation_date.accesskey "D">
+<!ENTITY staff.circ.holds.edit_expire_time "Edit Expiration Date">
+<!ENTITY staff.circ.holds.edit_expire_time.accesskey "E">
 <!ENTITY staff.circ.holds.activate_hold "Activate Hold">
 <!ENTITY staff.circ.holds.activate_hold.accesskey "A">
 <!ENTITY staff.circ.holds.suspend_hold "Suspend Hold">
@@ -1946,6 +1982,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.query_help.button.label "Help">
 <!ENTITY staff.cat.record_buckets_overlay.query_help.button.accesskey "H">
 <!ENTITY staff.cat.record_buckets_overlay.query_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.query_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip0.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label "Copy List CSV to Clipboard">
@@ -1954,6 +1991,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.add_all_query_to_pending.label "Add All to Pending Records">
 <!ENTITY staff.cat.record_buckets_overlay.add_sel_query_to_pending.label "Add Selected to Pending Records">
 <!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip1.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
@@ -1967,6 +2005,7 @@
 <!ENTITY staff.cat.record_buckets_overlay.info_box.label "Bucket #">
 <!ENTITY staff.cat.record_buckets_overlay.bucket_owner.label "Owner:">
 <!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.label "List Actions">
+<!ENTITY staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey "L">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.sel_clip2.label "Copy Field from selected row to Clipboard">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label "Print List CSV">
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label "Copy List CSV to Clipboard">
@@ -2406,6 +2445,18 @@
 <!ENTITY staff.patron.items_overlay.show_noncats.label "Show Non-Cataloged Circulations in List Above">
 <!ENTITY staff.patron.items_overlay.show_noncats.accesskey "N">
 <!ENTITY staff.patron.items_overlay.items_export.label "Export">
+<!ENTITY staff.generic.list_actions.label "List Actions">
+<!ENTITY staff.generic.list_actions.accesskey "L">
+<!ENTITY staff.generic.list_actions.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.generic.list_actions.sel_clip.accesskey "C">
+<!ENTITY staff.generic.list_actions.csv_to_printer.label "Print List CSV">
+<!ENTITY staff.generic.list_actions.csv_to_printer.accesskey "P">
+<!ENTITY staff.generic.list_actions.csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.generic.list_actions.csv_to_clipboard.accesskey "C">
+<!ENTITY staff.generic.list_actions.csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.generic.list_actions.csv_to_file.accesskey "F">
+<!ENTITY staff.generic.list_actions.save_columns.label "Save List Configuration">
+<!ENTITY staff.generic.list_actions.save_columns.accesskey "S">
 <!ENTITY ev.staff.patron.ue_xhtml.ev_user_editor.label "Evergreen User Editor">
 <!ENTITY ev.staff.patron.ue_xhtml.welcome.label "Welcome ">
 <!ENTITY ev.staff.patron.ue_xhtml.view_errors.label "View Errors">

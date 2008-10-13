@@ -37,8 +37,8 @@ dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.require('dojox.grid._data.model');
-dojo.require("dojox.grid.editors");
+dojo.require('dojox.grid.compat._data.model');
+dojo.require("dojox.grid.compat._data.editors");
 
 // some handy globals
 var cgi = new CGI();
@@ -63,8 +63,8 @@ function save_group () {
 	modified_pgt.ischanged( 1 );
 
 	new_kid_button.disabled = false;
-	save_out_button.disabled = false;
-	delete_out_button.disabled = false;
+	save_group_button.disabled = false;
+	delete_group_button.disabled = false;
 
 	server.pCRUD.request({
 		method : 'open-ils.permacrud.update.pgt',

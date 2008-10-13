@@ -59,8 +59,7 @@
 							</select>
 						</td>
 						<td>&staff.server.admin.non_cat_types.in_house_circ;
-							<a href='javascript:alert($("cd_in_house_exp").innerHTML);' style='color:red'>&staff.server.admin.non_cat_types.in_house.help;</a>
-							<input id='nc_new_inhouse' type='checkbox'/>
+						    <input id='nc_new_inhouse' type='checkbox'/>
 						</td>
 						<td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
 						<td><input id='nc_new_submit' type='submit' value='&staff.server.admin.non_cat_types.editor.create;' disabled='disabled'> </input></td>
@@ -69,6 +68,9 @@
 			</table>
 
 			<br/> <hr/> <br/>
+
+            &staff.server.admin.copy_locations.editor.library.filter; <select disabled='disabled' id='nc_org_filter'> </select>
+            <br/><br/>
 
 			<table id='nc_table' class='data_grid' width='85%'>
 				<thead>

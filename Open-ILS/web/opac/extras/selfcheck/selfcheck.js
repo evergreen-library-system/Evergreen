@@ -34,6 +34,12 @@ var scanTimeout = 800;
 var scanTimeoutId;
 var patronBarcodeRegex;
 var orgUnit;
+var orgUnitAddress;
+var orgUnitHours;
+var alertOnCheckoutEvent = false;
+var SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
+var SET_BARCODE_REGEX = 'opac.barcode_regex';
+var SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 
 
 function selfckInit() {
@@ -43,12 +49,17 @@ function selfckInit() {
     selfckSetupPrinter();
 
     orgUnit = findOrgUnitSN(cgi.param('l')) || globalOrgTree;
+    selfckFetchOrgDetails();
 
-    var t = fetchOrgSettingDefault(orgUnit.id(), 'circ.selfcheck.patron_login_timeout');
-    patronTimeout = (t) ? parseInt(t) * 1000 : patronTimeout;
-
-    var reg = fetchOrgSettingDefault(orgUnit.id(), 'opac.barcode_regex');
-    if(reg) patronBarcodeRegex = new RegExp(reg);
+    // fetch the relevent org-unit setting
+    var settings = fetchBatchOrgSetting(orgUnit.id(), 
+        [SET_PATRON_TIMEOUT, SET_BARCODE_REGEX, SET_ALERT_ON_CHECKOUT_EVENT]);
+    if(settings[SET_PATRON_TIMEOUT])
+        patronTimeout = parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000;
+    if(settings[SET_BARCODE_REGEX])
+        patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
+    if(settings[SET_ALERT_ON_CHECKOUT_EVENT])
+        alertOnCheckoutEvent = (settings[SET_ALERT_ON_CHECKOUT_EVENT].value) ? true : false;
 
     if(!staff) {
         // should not happen when behind the proxy
@@ -80,6 +91,16 @@ function selfckInit() {
 
 //    selfckMkDummyCirc(); // testing only
     
+}
+
+function selfckFetchOrgDetails() {
+    var hreq = new Request('open-ils.actor:open-ils.actor.org_unit.hours_of_operation.retrieve', G.user.session, orgUnit.id());
+    hreq.callback(function(r) { orgUnitHours = r.getResultObject(); });
+    hreq.send();
+
+    var areq = new Request('open-ils.actor:open-ils.actor.org_unit.address.retrieve', orgUnit.mailing_address());
+    areq.callback(function(r) { orgUnitAddress = r.getResultObject(); });
+    areq.send();
 }
 
 function selfckSetupPrinter() {
@@ -158,7 +179,7 @@ function selfckLogoutPatron() {
         selfckPrint();
         setTimeout(
             function() { location.href = location.href; },
-            800
+            3500 // give the browser time to send the page to the printer
         );
     }
 }
@@ -185,6 +206,10 @@ function selfckPatronLogin(barcode) {
                 $('selfck-patron-login-input').select();
                 return;
             }
+
+            if(patron.textcode == 'NO_SESSION') 
+                return selfckLogoutStaff();
+
             return alert(patron.textcode);
         }
         $('selfck-patron-login-input').value = ''; // reset the input
@@ -195,6 +220,11 @@ function selfckPatronLogin(barcode) {
     });
 
     bcReq.send();
+}
+
+function selfckLogoutStaff() {
+    cookieManager.remove(STAFF_SES_PARAM);
+    location.reload(true);
 }
 
 /**
@@ -270,6 +300,10 @@ function selfckHandleCoResult(r) {
     } else if(evt.textcode == 'OPEN_CIRCULATION_EXISTS') {
         selfckRenew();
 
+    } else if(evt.textcode == 'NO_SESSION') {
+        
+        return selfckLogoutStaff();
+
     } else {
         pendingXact = false;
         selfckShowMsgNode(evt);
@@ -290,6 +324,9 @@ function selfckShowMsgNode(evt) {
 
     appendClear($('selfck-event-time'), text(new Date().toLocaleString()));
     appendClear($('selfck-event-span'), text($('selfck-event-' + code).innerHTML));
+
+    if(code != 'SUCCESS' && alertOnCheckoutEvent)
+        alert($('selfck-event-' + code).innerHTML);
 }
 
 /**
@@ -317,7 +354,8 @@ function selfckDislplayCheckout(evt) {
         unHideMe($n(template, 'selfck.cotype_rn'));
     }
 
-    $('selfck-items-out-tbody').appendChild(template);
+    var tbody = $('selfck-items-out-tbody');
+    tbody.insertBefore(template, tbody.getElementsByTagName('tr')[0]);
     $('selfck-item-barcode-input').value = '';
 
 
@@ -326,7 +364,7 @@ function selfckDislplayCheckout(evt) {
     $n(ptemplate, 'title').appendChild(text(record.title()));
     $n(ptemplate, 'barcode').appendChild(text(copy.barcode()));
     $n(ptemplate, 'due_date').appendChild(text(circ.due_date().replace(/T.*/,'')));
-    printWrapper.appendChild(ptemplate);
+    printWrapper.insertBefore(ptemplate, printWrapper.getElementsByTagName('li')[0]);
 
     pendingXact = false;
 }
@@ -354,6 +392,9 @@ function selfckRenew() {
                 rnReq.request.alertEvent = false;
                 rnReq.callback(selfckHandleCoResult);
                 rnReq.send();
+            } else {
+                pendingXact = false;
+                selfckShowMsgNode({textcode:'already-out'});
             }
         }
     );
@@ -366,7 +407,25 @@ function selfckRenew() {
   */
 function selfckPrint() {
     for(var x in successfulItems) { // make sure we've checked out at least one item
+        hideMe($('selfck-patron-checkout-container'));
+        unHideMe($('selfck-print-queuing'));
         appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
+        appendClear($('selfck-print-lib-name'), text(orgUnit.name()));
+        if(orgUnitAddress) {
+            appendClear($('selfck-print-lib-addr-street'), text(orgUnitAddress.street1()+' '+orgUnitAddress.street2()));
+            appendClear($('selfck-print-lib-addr-city'), text(orgUnitAddress.city()));
+            appendClear($('selfck-print-lib-addr-state'), text(orgUnitAddress.state()));
+            appendClear($('selfck-print-lib-addr-post-code'), text(orgUnitAddress.post_code()));
+        }
+        appendClear($('selfck-print-lname'), text(patron.family_name()));
+        appendClear($('selfck-print-fname'), text(patron.first_given_name()));
+        appendClear($('selfck-print-lib-phone'), text(orgUnit.phone()));
+        if(orgUnitHours) {
+            for(var i in [0, 1, 2, 3, 4, 5, 6]) {
+                appendClear($('selfck-print-dow_'+i+'_open'), text(orgUnitHours['dow_'+i+'_open']()));
+                appendClear($('selfck-print-dow_'+i+'_close'), text(orgUnitHours['dow_'+i+'_close']()));
+            }
+        }
         window.print();
         return;
     }

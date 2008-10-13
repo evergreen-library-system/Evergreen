@@ -1,0 +1,102 @@
+<div style='float: left; margin-top: 8px;'>
+    <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="bib" 
+        id="aegB" onclick="setAttrEditorGroup('bib');" checked="checked"/>
+    <label for="aegB" style="margin-right: 1em;">&vandelay.bib.attrs;</label>
+    <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="auth" 
+        id="aegA" onclick="setAttrEditorGroup('auth');"/>
+    <label for="aegA" style="margin-right: 1em;">&vandelay.auth.attrs;</label>
+</div>
+<div dojoType="dijit.form.DropDownButton" id="vl-create-attr-editor-button">
+    <span name="create">&vandelay.create.attr.def;</span>
+    <div dojoType="dijit.TooltipDialog" execute="vlSaveAttrDefinition(arguments[0]);" id="attr-editor-dialog">
+        <script type='dojo/connect' event='onOpen'>onAttrEditorOpen();</script>
+        <script type='dojo/connect' event='onClose'>onAttrEditorClose();</script>
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td><label for="code">&vandelay.code;:</label></td>
+                <td><input id='attr-editor-code' name="code" dojoType="dijit.form.TextBox"/></td>
+            </tr>
+            <tr>
+                <td><label for="description">&vandelay.descrip;:</label></td>
+                <td><input id='attr-editor-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
+            </tr>
+            <tr>
+                <td><label for="amount">&vandelay.tags;:</label></td>
+                <td><input id="attr-editor-tags" dojoType="dijit.form.TextBox" name="tag"></input>
+                <div class="hidden" id="attr-editor-tags-tip">
+                <p>&vandelay.tooltip.tags;</p>
+                <p>&vandelay.for.example;:<code>120, 220, 300</code> or <code>120 220 330</code></p></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label for="amount">&vandelay.subfields;:</label></td>
+                <td><input dojoType="dijit.form.TextBox" name="subfield" id="attr-editor-subfields"></input>
+                    <div class="hidden" id="attr-editor-subfields-tip">
+                    <p>&vandelay.tooltip.subfields;</p>
+                    <p>&vandelay.for.example;: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="ident">&vandelay.id.field;: </label></td>
+                <td>
+                    <select dojoType="dijit.form.FilteringSelect" name="ident" id="attr-editor-identifier">
+                        <option value='f' selected='selected'>&vandelay.false;</option>
+                        <option value='t'>&vandelay.true;</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="attr-editor-xpath">&vandelay.xpath.advanced;: </label></td>
+
+                <td><input dojoType="dijit.form.TextBox" id="attr-editor-xpath" name="xpath"></input></td>
+            </tr>
+            <tr>
+                <td><label for="attr-editor-remove">&vandelay.remove.advanced;: </label></td>
+
+                <td><input dojoType="dijit.form.TextBox" id="attr-editor-remove" name="remove"></input></td>
+            </tr>
+            <tr id="attr-editor-create-bar">
+                <td colspan='2' align='center'>
+                    <button dojoType="dijit.form.Button" type="submit" 
+                        id="attr-editor-create-button">&vandelay.create;</button>
+                    <button type="button" dojoType="dijit.form.Button"
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
+                </td>
+            </tr>
+            <tr id="attr-editor-update-bar">
+                <td colspan='2' align='center'>
+                    <button dojoType="dijit.form.Button" type="submit" 
+                        id="attr-editor-update-button">&vandelay.update;</button>
+                    <button type="button" dojoType="dijit.form.Button"
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
+                    <button dojoType="dijit.form.Button" 
+                        type="button" 
+                        id="attr-editor-delete-button"
+                        style="padding-left: 2em;"
+                        onclick="if(confirm('&vandelay.sure.to.delete;')) { vlAttrDelete(); }">
+                            &vandelay.delete.record;</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    var vlAttrGridLayout = [{
+        cells : [[
+        {name: '&vandelay.id;', field: 'id'},
+        {name: '&vandelay.code;', field:'code', width:'auto'},
+        {name: '&vandelay.descrip;', field: "description", width:'auto'}, 
+        {name: '&vandelay.tag;', get:attrGridGetTag},
+        {name: '&vandelay.subfield;', get: attrGridGetSubfield},
+        {name: '&vandelay.identifier;', field:'ident'},
+        {name: '&vandelay.xpath;', field:'xpath', width:'auto'},
+        {name: '&vandelay.remove;', field:'remove', width:'auto'}
+        ]]
+    }];
+</script>
+<div class='tall'>
+    <div dojoType='dojox.Grid' jsId='attrEditorGrid'> </div>
+</div>
+
+

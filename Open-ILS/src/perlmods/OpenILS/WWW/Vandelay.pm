@@ -4,7 +4,7 @@ use warnings;
 use bytes;
 
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
+use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND FORBIDDEN :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use APR::Table;
 
@@ -29,10 +29,13 @@ use MARC::File::XML;
 
 use MIME::Base64;
 use Digest::MD5 qw/md5_hex/;
+use OpenSRF::Utils::SettingsClient;
 
 use UNIVERSAL::require;
 
 our @formats = qw/USMARC UNIMARC XML BRE/;
+my $MAX_FILE_SIZE = 10737418240; #10G
+my $FILE_READ_SIZE = 4096;
 
 # set the bootstrap config and template include directory when
 # this module is loaded
@@ -54,27 +57,57 @@ sub spool_marc {
 
 	my $auth = $cgi->param('ses') || $cgi->cookie('ses');
 
-	return Apache2::Const::FORBIDDEN unless verify_login($auth);
+	unless(verify_login($auth)) {
+        $logger->error("authentication failed on vandelay record import: $auth");
+	    return Apache2::Const::FORBIDDEN;
+    }
 
-
+    my $data_fingerprint = '';
 	my $purpose = $cgi->param('purpose');
-	my $file = $cgi->param('marc_upload');
-	my $filename = "$file";
+	my $infile = $cgi->param('marc_upload');
 
-	my $data = join '', (<$file>);
-	$data = encode_base64($data);
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	my $dir = $conf->config_value(
+        apps => 'open-ils.vandelay' => app_settings => databases => 'importer');
 
-	my $data_fingerprint = md5_hex($data);
+    unless(-w $dir) {
+        $logger->error("We need some place to store our MARC files");
+	    return Apache2::Const::FORBIDDEN;
+    }
 
-	OpenSRF::Utils::Cache()->new->put_cache(
-		'vandelay_import_spool_' . $data_fingerprint,
-		{ purpose => $purpose, marc => $data }
-	);
+    if($infile and -e $infile) {
+        my ($total_bytes, $buf, $bytes) = (0);
+	    $data_fingerprint = md5_hex(time."$$".rand());
+        my $outfile = "$dir/$data_fingerprint.mrc";
 
-	print "Content-type: text/plain; charset=utf-8\n\n$data_fingerprint";
+        unless(open(OUTFILE, ">$outfile")) {
+            $logger->error("unable to open MARC file [$outfile] for writing: $@");
+	        return Apache2::Const::FORBIDDEN;
+        }
 
+        while($bytes = sysread($infile, $buf, $FILE_READ_SIZE)) {
+            $total_bytes += $bytes;
+            if($total_bytes >= $MAX_FILE_SIZE) {
+                close(OUTFILE);
+                unlink $outfile;
+                $logger->error("import exceeded upload size: $MAX_FILE_SIZE");
+	            return Apache2::Const::FORBIDDEN;
+            }
+            print OUTFILE $buf;
+        }
+
+        close(OUTFILE);
+
+	    OpenSRF::Utils::Cache->new->put_cache(
+		    'vandelay_import_spool_' . $data_fingerprint,
+		    { purpose => $purpose, path => $outfile }
+	    );
+    }
+
+    $logger->info("uploaded MARC batch with key $data_fingerprint");
+    $r->content_type('text/plain; charset=utf-8');
+	print "$data_fingerprint";
 	return Apache2::Const::OK;
-
 }
 
 sub verify_login {

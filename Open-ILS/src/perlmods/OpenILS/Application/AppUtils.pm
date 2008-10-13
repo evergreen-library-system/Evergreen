@@ -11,6 +11,7 @@ use OpenILS::Event;
 use Data::Dumper;
 use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
+use Unicode::Normalize;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1137,14 +1138,20 @@ sub __patron_money_owed {
 
 sub patron_money_owed {
 	my( $self, $userid ) = @_;
-	return $self->storagereq(
-		'open-ils.storage.actor.user.total_owed', $userid);
+	my $ses = $self->start_db_session();
+	my $val = $ses->request(
+		'open-ils.storage.actor.user.total_owed', $userid)->gather(1);
+	$self->rollback_db_session($ses);
+	return $val;
 }
 
 sub patron_total_items_out {
 	my( $self, $userid ) = @_;
-	return $self->storagereq(
-		'open-ils.storage.actor.user.total_out', $userid);
+	my $ses = $self->start_db_session();
+	my $val = $ses->request(
+		'open-ils.storage.actor.user.total_out', $userid)->gather(1);
+	$self->rollback_db_session($ses);
+	return $val;
 }
 
 
@@ -1291,6 +1298,7 @@ sub find_highest_work_orgs {
     my($self, $e, $perm, $options) = @_;
     my $work_orgs = $self->get_user_work_ou_ids($e, $e->requestor->id);
     $logger->debug("found work orgs @$work_orgs");
+	$options ||= {};
 
     my @allowed_orgs;
 	my $org_tree = $self->get_org_tree();
@@ -1450,6 +1458,78 @@ sub get_org_full_path {
 	my @orgs;
 	push(@orgs, $_->{id}) for @$org_list;
 	return \@orgs;
+}
+
+# returns the user's configured locale as a string.  Defaults to en-US if none is configured.
+sub get_user_locale {
+	my($self, $user_id, $e) = @_;
+	$e ||=OpenILS::Utils::CStoreEditor->new;
+
+	# first, see if the user has an explicit locale set
+	my $setting = $e->search_actor_user_setting(
+		{usr => $user_id, name => 'global.locale'})->[0];
+	return OpenSRF::Utils::JSON->JSON2perl($setting->value) if $setting;
+
+	my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+
+    my $locale = $self->ou_ancestor_setting_value($user->home_ou, 'global.default_locale', $e);
+    return $locale if $locale;
+
+	# if nothing else, fallback to locale=cowboy
+	return 'en-US';
+}
+
+
+# xml-escape non-ascii characters
+sub entityize { 
+    my($self, $string, $form) = @_;
+	$form ||= "";
+
+	if ($form eq 'D') {
+		$string = NFD($string);
+	} else {
+		$string = NFC($string);
+	}
+
+	$string =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+	return $string;
+}
+
+
+sub get_copy_price {
+	my($self, $e, $copy, $volume) = @_;
+
+	$copy->price(0) if $copy->price < 0;
+
+	return $copy->price if $copy->price and $copy->price > 0;
+
+
+	my $owner;
+	if(ref $volume) {
+		if($volume->id == OILS_PRECAT_CALL_NUMBER) {
+			$owner = $copy->circ_lib;
+		} else {
+			$owner = $volume->owning_lib;
+		}
+	} else {
+		if($copy->call_number == OILS_PRECAT_CALL_NUMBER) {
+			$owner = $copy->circ_lib;
+		} else {
+			$owner = $e->retrieve_asset_call_number($copy->call_number)->owning_lib;
+		}
+	}
+
+	my $default_price = $self->ou_ancestor_setting_value(
+		$owner, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+
+	return $default_price unless defined $copy->price;
+
+	# price is 0.  Use the default?
+    my $charge_on_0 = $self->ou_ancestor_setting_value(
+        $owner, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+
+	return $default_price if $charge_on_0;
+	return 0;
 }
 
 1;

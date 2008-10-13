@@ -464,6 +464,12 @@ Please see a librarian to renew your account.">
 <!ENTITY advanced.sort.desc "Descending / Z to A">
 <!ENTITY advanced.frbrize "Group Formats and Editions">
 <!ENTITY advanced.go "Go">
+<!ENTITY advanced.biblevel "Bib Level">
+<!ENTITY advanced.filter.pubyear "Publication Year">
+<!ENTITY advanced.filter.pubyear.equals "Is">
+<!ENTITY advanced.filter.pubyear.before "Before">
+<!ENTITY advanced.filter.pubyear.after "After">
+<!ENTITY advanced.filter.pubyear.between "Between">
 
 <!--	================================================================= 
 	Rdetail
@@ -622,6 +628,8 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!--	================================================================= 
 	Slimpac Simple Search
 	================================================================= -->
+<!ENTITY slimpac.language.select "Select language">
+
 <!ENTITY slimpac.start.title "Simple Search">
 <!ENTITY slimpac.start.nowSearching "Now searching: ">
 <!ENTITY slimpac.start.dynamic "Dynamic Catalog">
@@ -636,8 +644,6 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY opac.image_provided "Image provided by">
 <!ENTITY vendor.name "Amazon">
 <!ENTITY vendor.base_link "http://amazon.com/dp/">
-
-
 
 <!--	================================================================= 
 	Selfcheck
@@ -659,6 +665,7 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.cotype_rn "Renewal">
 <!ENTITY selfck.done "Done">
 <!ENTITY selfck.welcome "Welcome">
+<!ENTITY selfck.printing "Printing Receipt...">
 
 <!-- event messages -->
 <!ENTITY selfck.event.co_success "Check out succeeded">
@@ -667,4 +674,15 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY selfck.event.patron_not_found "The patron barcode was not found">
 <!ENTITY selfck.event.item_noncat "The requested item is not in the catalog">
 <!ENTITY selfck.event.item_nocirc "The requested item is not allowed to circulate">
+<!ENTITY selfck.event.already_out "The requested item is already checked out to another patron">
+<!ENTITY selfck.items_out "You checked out the following items">
+<!ENTITY selfck.org_hours "Hours of Operation">
+<!ENTITY selfck.org_phone "Library Phone Number">
+<!ENTITY selfck.day0 "Monday">
+<!ENTITY selfck.day1 "Tuesday">
+<!ENTITY selfck.day2 "Wednesday">
+<!ENTITY selfck.day3 "Thursday">
+<!ENTITY selfck.day4 "Friday">
+<!ENTITY selfck.day5 "Saturday">
+<!ENTITY selfck.day6 "Sunday">
 

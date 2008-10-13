@@ -174,13 +174,38 @@
 
 					<tr>
 						<td align='right'>
-							<span>Bib Level</span>
+							<span>&advanced.biblevel;</span>
 						</td>
 						<td align='left'>
 							<select multiple='multiple' size='3' id='adv_global_bib_level'>
 							</select>	
 						</td>
 					</tr>
+
+					<tr>
+						<td align='right'>
+							<span>&advanced.filter.pubyear;</span>
+						</td>
+						<td align='left'>
+							<select id='adv_global_pub_date_type' onchange='
+                                if($("adv_global_pub_date_type").selectedIndex == 3)
+                                    unHideMe($("adv_global_pub_date_2_span"));
+                                else
+                                    hideMe($("adv_global_pub_date_2_span"));'>
+                                <option value='equals' selected='selected'>&advanced.filter.pubyear.equals;</option>
+                                <option value='before'>&advanced.filter.pubyear.before;</option>
+                                <option value='after'>&advanced.filter.pubyear.after;</option>
+                                <option value='between'>&advanced.filter.pubyear.between;</option>
+							</select>	
+                            <div style='margin-top:5px;'>
+                                <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
+                                <span id='adv_global_pub_date_2_span' class='hide_me'>
+                                   &common.and; <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                </span>
+                            </div>
+						</td>
+					</tr>
+
 
                     <!-- copy location selector -->
                     <tr id='adv_copy_location_filter_row' class='hide_me'>
@@ -196,7 +221,7 @@
 	</tr>
 
 	<tr style='border-top: none;'>
-		<td align='center' valign='bottom' style='border-top: none;'>
+		<td align='center' valign='top' style='border-top: none;'>
 
 			<table style='border: none; width: 100%;'>
 				<tr>

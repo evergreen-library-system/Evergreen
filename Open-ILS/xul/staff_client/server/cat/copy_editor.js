@@ -53,7 +53,9 @@ function my_init() {
 
 		/******************************************************************************************************/
 		/* Quick fix, this was defined inline in the global scope but now needs g.error and g.copies from my_init */
+		/* Quick fix, messagecatalog only usable during/after onload */
 
+        init_panes0();
         init_panes();
 
 		/******************************************************************************************************/
@@ -671,8 +673,9 @@ g.changed = {};
 /******************************************************************************************************/
 /* These need data from the middle layer to render */
 
-g.special_exception = {
-	'Owning Lib : Call Number' : function(label,value) {
+function init_panes0() {
+g.special_exception = {};
+g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.owning_library.label')] = function(label,value) {
 		JSAN.use('util.widgets');
 		if (value>0) { /* an existing call number */
 			g.network.simple_request(
@@ -693,8 +696,8 @@ g.special_exception = {
 				util.widgets.set_text(label,g.data.hash.aou[ g.callnumbers[value].owning_lib ].shortname() + ' : ' + g.callnumbers[value].label);
 			}
 		}
-	},
-	'Creator' : function(label,value) {
+	};
+g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.creator.label')] = function(label,value) {
 		if (value == null || value == '' || value == 'null') return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
@@ -712,8 +715,8 @@ g.special_exception = {
 				util.widgets.set_text(label,p);
 			}
 		);
-	},
-	'Last Editor' : function(label,value) {
+	};
+g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.last_editor.label')] = function(label,value) {
 		if (value == null || value == '' || value == 'null') return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
@@ -730,8 +733,7 @@ g.special_exception = {
 				util.widgets.set_text(label,p);
 			}
 		);
-	}
-
+	};
 }
 
 /******************************************************************************************************/
@@ -747,31 +749,31 @@ g.panes_and_field_names = {
 	'left_pane' :
 [
 	[
-		"Barcode",		 
+		$('catStrings').getString('staff.cat.copy_editor.field.barcode.label'),
 		{
 			render: 'fm.barcode();',
 		}
 	], 
 	[
-		"Creation Date",
+		$('catStrings').getString('staff.cat.copy_editor.field.creation_date.label'),
 		{ 
 			render: 'util.date.formatted_date( fm.create_date(), "%F");',
 		}
 	],
 	[
-		"Creator",
+		$('catStrings').getString('staff.cat.copy_editor.field.creator.label'),
 		{ 
 			render: 'fm.creator();',
 		}
 	],
 	[
-		"Last Edit Date",
+		$('catStrings').getString('staff.cat.copy_editor.field.last_edit_date.label'),
 		{ 
 			render: 'util.date.formatted_date( fm.edit_date(), "%F");',
 		}
 	],
 	[
-		"Last Editor",
+		$('catStrings').getString('staff.cat.copy_editor.field.last_editor.label'),
 		{
 			render: 'fm.editor();',
 		}
@@ -782,7 +784,7 @@ g.panes_and_field_names = {
 'right_pane' :
 [
 	[
-		"Shelving Location",
+		$('catStrings').getString('staff.cat.copy_editor.field.location.label'),
 		{ 
 			render: 'typeof fm.location() == "object" ? fm.location().name() : g.data.lookup("acpl",fm.location()).name()', 
 			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name(), obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -790,7 +792,7 @@ g.panes_and_field_names = {
 		}
 	],
 	[
-		"Circulation Library",		
+		$('catStrings').getString('staff.cat.copy_editor.field.circulation_library.label'),
 		{ 	
 			render: 'typeof fm.circ_lib() == "object" ? fm.circ_lib().shortname() : g.data.hash.aou[ fm.circ_lib() ].shortname()',
 			//input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -798,16 +800,16 @@ g.panes_and_field_names = {
 		} 
 	],
 	[
-		"Owning Lib : Call Number", 	
+		$('catStrings').getString('staff.cat.copy_editor.field.owning_library.label'),
 		{
 			render: 'fm.call_number();',
 			input: g.safe_to_change_owning_lib() ? 'c = function(v){ g.apply_owning_lib(v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.aou, function(obj) { var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ obj.name() ? sname + " " + obj.name() : obj.shortname(), obj.id(), ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_vols() ) ), ( g.data.hash.aout[ obj.ou_type() ].depth() * 2), ]; }), g.data.list.au[0].ws_ou()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
 		}
 	],
 	[
-		"Copy Number",
+		$('catStrings').getString('staff.cat.copy_editor.field.copy_number.label'),
 		{ 
-			render: 'fm.copy_number() == null ? "<Unset>" : fm.copy_number()',
+			render: 'fm.copy_number() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : fm.copy_number()',
 			input: 'c = function(v){ g.apply("copy_number",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
@@ -818,54 +820,54 @@ g.panes_and_field_names = {
 'right_pane2' :
 [
 	[
-		"Circulate?",
+		$('catStrings').getString('staff.cat.copy_editor.field.circulate.label'),
 		{ 	
-			render: 'fm.circulate() == null ? "<Unset>" : ( get_bool( fm.circulate() ) ? "Yes" : "No" )',
-			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", get_db_true() ], [ "No", get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.circulate() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.circulate() ) ? $("catStrings").getString("staff.cat.copy_editor.field.circulate.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.circulate.no_or_false") )',
+			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.circulate.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.circulate.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
-		"Holdable?",
+		$('catStrings').getString('staff.cat.copy_editor.field.holdable.label'),
 		{ 
-			render: 'fm.holdable() == null ? "<Unset>" : ( get_bool( fm.holdable() ) ? "Yes" : "No" )', 
-			input: 'c = function(v){ g.apply("holdable",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", get_db_true() ], [ "No", get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.holdable() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.holdable() ) ? $("catStrings").getString("staff.cat.copy_editor.field.holdable.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.holdable.no_or_false") )',
+			input: 'c = function(v){ g.apply("holdable",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.holdable.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.holdable.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
-		"Age Protection",
+		$('catStrings').getString('staff.cat.copy_editor.field.age_based_hold_protection.label'),
 		{
-			render: 'fm.age_protect() == null ? "<Unset>" : ( typeof fm.age_protect() == "object" ? fm.age_protect().name() : g.data.hash.crahp[ fm.age_protect() ].name() )', 
-			input: 'c = function(v){ g.apply("age_protect",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Protection>", "<HACK:KLUDGE:NULL>" ] ].concat( util.functional.map_list( g.data.list.crahp, function(obj) { return [ obj.name(), obj.id() ]; }).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.age_protect() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( typeof fm.age_protect() == "object" ? fm.age_protect().name() : g.data.hash.crahp[ fm.age_protect() ].name() )', 
+			input: 'c = function(v){ g.apply("age_protect",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.remove_age_based_hold_protection"), "<HACK:KLUDGE:NULL>" ] ].concat( util.functional.map_list( g.data.list.crahp, function(obj) { return [ obj.name(), obj.id() ]; }).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 
 	],
 	[
-		"Loan Duration",
+		$('catStrings').getString('staff.cat.copy_editor.field.loan_duration.label'),
 		{ 
-			render: 'switch(Number(fm.loan_duration())){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
-			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'switch(Number(fm.loan_duration())){ case 1: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.short"); break; case 2: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.normal"); break; case 3: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.extended"); break; }',
+			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.short"), "1" ], [ $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.normal"), "2" ], [ $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.extended"), "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
 	[
-		"Fine Level",
+		$('catStrings').getString('staff.cat.copy_editor.field.fine_level.label'),
 		{
-			render: 'switch(Number(fm.fine_level())){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
-			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'switch(Number(fm.fine_level())){ case 1: $("catStrings").getString("staff.cat.copy_editor.field.fine_level.low"); break; case 2: $("catStrings").getString("staff.cat.copy_editor.field.fine_level.normal"); break; case 3: $("catStrings").getString("staff.cat.copy_editor.field.fine_level.high"); break; }',
+			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.fine_level.low"), "1" ], [ $("catStrings").getString("staff.cat.copy_editor.field.fine_level.normal"), "2" ], [ $("catStrings").getString("staff.cat.copy_editor.field.fine_level.high"), "3" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 
 	 [
-		"Circulate as Type",	
+		$('catStrings').getString('staff.cat.copy_editor.field.circulate_as_type.label'),
 		{ 	
-			render: 'fm.circ_as_type() == null ? "<Unset>" : g.data.hash.citm[ fm.circ_as_type() ].value()',
+			render: 'fm.circ_as_type() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : g.data.hash.citm[ fm.circ_as_type() ].value()',
 			input: 'c = function(v){ g.apply("circ_as_type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.citm, function(n){return [ n.code() + " - " + n.value(), n.code()];} ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[
-		"Circulation Modifier",
+		$('catStrings').getString('staff.cat.copy_editor.field.circulation_modifier.label'),
 		{	
-			render: 'fm.circ_modifier() == null ? "<Unset>" : fm.circ_modifier()',
+			render: 'fm.circ_modifier() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : fm.circ_modifier()',
 			/*input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',*/
 			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() ); x.setAttribute("editable","true"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
@@ -874,47 +876,47 @@ g.panes_and_field_names = {
 
 'right_pane3' :
 [	[
-		"Alert Message",
+		$('catStrings').getString('staff.cat.copy_editor.field.alert_message.label'),
 		{
-			render: 'fm.alert_message() == null ? "<Unset>" : fm.alert_message()',
+			render: 'fm.alert_message() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : fm.alert_message()',
 			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); g.populate_alert_message_input(x); x.addEventListener("apply",function(f){ return function(ev) { f( ev.target.value ); } }(c), false);',
 		}
 	],
 
 	[
-		"Deposit?",
+		$('catStrings').getString('staff.cat.copy_editor.field.deposit.label'),
 		{ 
-			render: 'fm.deposit() == null ? "<Unset>" : ( get_bool( fm.deposit() ) ? "Yes" : "No" )',
-			input: 'c = function(v){ g.apply("deposit",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", get_db_true() ], [ "No", get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.deposit() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.deposit() ) ? $("catStrings").getString("staff.cat.copy_editor.field.deposit.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.deposit.no_or_false") )',
+			input: 'c = function(v){ g.apply("deposit",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.deposit.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.deposit.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
-		"Deposit Amount",
+		$('catStrings').getString('staff.cat.copy_editor.field.deposit_amount.label'),
 		{ 
-			render: 'if (fm.deposit_amount() == null) { "<Unset>"; } else { util.money.sanitize( fm.deposit_amount() ); }',
+			render: 'if (fm.deposit_amount() == null) { $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"); } else { util.money.sanitize( fm.deposit_amount() ); }',
 			input: 'c = function(v){ g.apply("deposit_amount",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
-		"Price",
+		$('catStrings').getString('staff.cat.copy_editor.field.price.label'),
 		{ 
-			render: 'if (fm.price() == null) { "<Unset>"; } else { util.money.sanitize( fm.price() ); }', 
+			render: 'if (fm.price() == null) { $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"); } else { util.money.sanitize( fm.price() ); }', 
 			input: 'c = function(v){ g.apply("price",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 
 	[
-		"OPAC Visible?",
+		$('catStrings').getString('staff.cat.copy_editor.field.opac_visible.label'),
 		{ 
-			render: 'fm.opac_visible() == null ? "<Unset>" : ( get_bool( fm.opac_visible() ) ? "Yes" : "No" )', 
-			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", get_db_true() ], [ "No", get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.opac_visible() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.opac_visible() ) ? $("catStrings").getString("staff.cat.copy_editor.field.opac_visible.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.opac_visible.no_or_false") )', 
+			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.opac_visible.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.opac_visible.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
-		"Reference?",
+		$('catStrings').getString('staff.cat.copy_editor.field.reference.label'),
 		{ 
-			render: 'fm.ref() == null ? "<Unset>" : ( get_bool( fm.ref() ) ? "Yes" : "No" )', 
-			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", get_db_true() ], [ "No", get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.ref() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.ref() ) ? $("catStrings").getString("staff.cat.copy_editor.field.reference.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.reference.no_or_false") )', 
+			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.reference.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.reference.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],
@@ -1251,7 +1253,7 @@ g.copy_notes = function() {
 	win.open(
 		urls.XUL_COPY_NOTES, 
 		//+ '?copy_id=' + window.escape(g.copies[0].id()),
-		'Copy Notes','chrome,resizable,modal',
+		$("catStrings").getString("staff.cat.copy_editor.copy_notes"),'chrome,resizable,modal',
 		{ 'copy_id' : g.copies[0].id() }
 	);
 }
@@ -1319,8 +1321,8 @@ g.add_stat_cat = function(sc) {
 			label_name,
 			{
 				render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
-					+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
-				input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+					+ sc.id() + '; } ); l ? l.value() : $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null");',
+				input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.remove_stat_cat_entry"), -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 					+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ) ).sort() ); '
 					+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
                 attr: {
@@ -1431,6 +1433,7 @@ g.populate_stat_cats = function() {
         g.panes_and_field_names.right_pane4.sort();
 
     } catch(E) {
+		alert(E);
         g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.populate_stat_cat.error'),E);
     }
 }

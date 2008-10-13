@@ -90,14 +90,6 @@ listitem { border-bottom: solid thin black; }
 .copy_editor_field_changed { background: lightgreen; }
 
 /*
- * oops, disable these until the native evergreen catalog z-source is in trunk/ 
- */
-
-checkbox[id="native-evergreen-catalog_service"] { display: none; }
-textbox[id="native-evergreen-catalog_username"] { display: none; }
-textbox[id="native-evergreen-catalog_password"] { display: none; }
-
-/*
  * disable Edit Hold Range and Edit Hold Focus by default; should probably be using perms/settings for this
  */
 .edit_hold_range { display: none; }

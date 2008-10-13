@@ -713,11 +713,11 @@ sub hold_pull_list {
 
 	if( $self->api_name =~ /id_list/ ) {
 		return $U->storagereq(
-			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.atomic',
+			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
 			$org, $limit, $offset ); 
 	} else {
 		return $U->storagereq(
-			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
+			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.status_filtered.atomic',
 			$org, $limit, $offset ); 
 	}
 }
@@ -762,30 +762,6 @@ __PACKAGE__->register_method (
 		@return ID of the new object on success, Event on error
 		/
 );
-=head old
-sub __create_hold_notify {
-	my( $self, $conn, $authtoken, $notification ) = @_;
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-	my ($hold, $patron);
-	($hold, $evt) = $U->fetch_hold($notification->hold);
-	return $evt if $evt;
-	($patron, $evt) = $U->fetch_user($hold->usr);
-	return $evt if $evt;
-
-	# XXX perm depth probably doesn't matter here -- should always be consortium level
-	$evt = $U->check_perms($requestor->id, $patron->home_ou, 'CREATE_HOLD_NOTIFICATION');
-	return $evt if $evt;
-
-	# Set the proper notifier 
-	$notification->notify_staff($requestor->id);
-	my $id = $U->storagereq(
-		'open-ils.storage.direct.action.hold_notification.create', $notification );
-	return $U->DB_UPDATE_FAILED($notification) unless $id;
-	$logger->info("User ".$requestor->id." successfully created new hold notification $id");
-	return $id;
-}
-=cut
 
 sub create_hold_notify {
    my( $self, $conn, $auth, $note ) = @_;

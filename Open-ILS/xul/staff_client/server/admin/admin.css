@@ -1,6 +1,14 @@
-body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white;}
+@import "/js/dojo/dojo/resources/dojo.css";
+@import "/js/dojo/dijit/themes/tundra/tundra.css";
+@import "/js/dojo/dijit/tests/css/dijitTests.css";
+@import "/js/dojo/dojox/grid/_grid/Grid.css";
+.container:after {content: ""; display: block; height: 0; clear: both; }
+body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white; margin: 0px; padding: 0px;}
 .welcome_box { position:absolute; top: 5px; right: 5px; }
 .title { font-weight: bold; font-size: 14pt; margin: 10px;}
+.hidden { display: none }
+.form_table td { padding: 6px; }
+.form_table thead td { border-bottom: 1px solid #808080; }
 .hide_me { visibility: hidden; display: none }
 .has_color { background: #E0F0E0; color: #000000; }
 .data_grid { font-weight: 500; border-collapse: collapse;}
@@ -18,6 +26,7 @@ body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white;}
 select { width: 12em; }
 select:disabled { color: #555555; }
 input[type="text"]:disabled { color: #555555; }
+.tall { height:100%; }
 
 button {
 	color:#050;

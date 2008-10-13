@@ -58,6 +58,11 @@
                 <span id='selfck-patron-not-found' class='hide_me'>&selfck.event.patron_not_found;</span>
             </div>
 
+            <div id='selfck-print-queuing' class='hide_me'>
+                <div><img src='../../../images/small_logo.jpg'/></div>
+                <div>&selfck.printing;</div>
+            </div>
+
             <!--***********************************************************************
                 Checkout form
                 *********************************************************************** -->
@@ -91,6 +96,7 @@
                         <span id='selfck-event-ACTOR_USER_NOT_FOUND'>&selfck.event.patron_not_found;</span>
                         <span id='selfck-event-COPY_CIRC_NOT_ALLOWED'>&selfck.event.item_nocirc;</span>
                         <span id='selfck-event-ITEM_NOT_CATALOGED'>&selfck.event.item_noncat;</span>
+                        <span id='selfck-event-already-out'>&selfck.event.already_out;</span>
                         <span id='selfck-event-dupe-barcode'>&selfck.event.dupe_barcode;</span>
                     </span>
                 </div>
@@ -139,6 +145,7 @@
                                     <span name='selfck.cotype_rn' class='hide_me'>&selfck.cotype_rn;</span>
                                 </td>
                             </tr>
+                            <tr class='hide_me'> </tr>
                         </tbody>
                     </table>
                     <div id='selfck-items-out-done-div'>
@@ -157,14 +164,41 @@
         <div class='print' id='selfck-print-div'>
             <div>
                 <div id='selfck-print-date'/>
-                You checked out the following items:
-                <ol id='selfck-print-items-list'>
-                    <li name='selfck-print-items-template'>
-                        <div name='title'/>
-                        Barcode: <span name='barcode'/>
-                        Due Date: <span name='due_date'/>
-                    </li>
-                </ol>
+                <div id='selfck-print-lib-name'/>
+                <div id='selfck-print-lib-addr-street'/>
+                <div>
+                    <span id='selfck-print-lib-addr-city'/>
+                    <span id='selfck-print-lib-addr-state'/> 
+                    <span id='selfck-print-lib-addr-post-code'/>
+                </div>
+                <br/>
+                <div id='selfck-print-patron-info'>
+                    <div><span id='selfck-print-lname'/>, <span id='selfck-print-fname'/></div>
+                    &selfck.items_out;
+                    <ol id='selfck-print-items-list'>
+                        <li name='selfck-print-items-template'>
+                            <div name='title'/>
+                            &selfck.barcode;: <span name='barcode'/>
+                            &selfck.due_date;: <span name='due_date'/>
+                        </li>
+                        <li class='hide_me'> </li>
+                    </ol>
+                </div>
+                <br/>
+                <div>&selfck.org_phone; <span id='selfck-print-lib-phone'/></div>
+                <br/>
+                <div>
+                    <div>&selfck.org_hours;</div>
+                    <table id='selfck-print-hours'>
+                        <tr><td>&selfck.day0;</td><td id='selfck-print-dow_0_open'/><td id='selfck-print-dow_0_close'/></tr>
+                        <tr><td>&selfck.day1;</td><td id='selfck-print-dow_1_open'/><td id='selfck-print-dow_1_close'/></tr>
+                        <tr><td>&selfck.day2;</td><td id='selfck-print-dow_2_open'/><td id='selfck-print-dow_2_close'/></tr>
+                        <tr><td>&selfck.day3;</td><td id='selfck-print-dow_3_open'/><td id='selfck-print-dow_3_close'/></tr>
+                        <tr><td>&selfck.day4;</td><td id='selfck-print-dow_4_open'/><td id='selfck-print-dow_4_close'/></tr>
+                        <tr><td>&selfck.day5;</td><td id='selfck-print-dow_5_open'/><td id='selfck-print-dow_5_close'/></tr>
+                        <tr><td>&selfck.day6;</td><td id='selfck-print-dow_6_open'/><td id='selfck-print-dow_6_close'/></tr>
+                    </table>
+                </div>
             </div>
         </div>
     </body>

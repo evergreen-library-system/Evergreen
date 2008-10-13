@@ -51,8 +51,9 @@ LIBDBI=libdbi-0.8.3
 LIBDBI_DRIVERS=libdbi-drivers-0.8.3
 LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
-YAZ=yaz-2.1.56
-YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
+# Some people are firewalled out of indexdata.dk
+YAZ=yaz-3.0.36
+YAZ_HOST=http://evergreen-ils.org/~denials/yaz
 
 # ejabberd is not packaged on CentOS/RHEL, so we have to
 # download the installable package from the source
@@ -169,6 +170,7 @@ CENTOS = \
 	perl-libwww-perl \
 	psmisc \
 	python-devel \
+	python-setuptools\
 	readline-devel \
 	wget
 
@@ -178,6 +180,10 @@ PGSQL_CENTOS = \
 	postgresql-devel \
 	postgresql-pl \
 	postgresql-server
+
+# Avoids a weak reference error that otherwise sinks DateTime:Format:ISO8601
+CENTOS_PERL_FORCE = \
+	Scalar::Util
 
 # Some of these packages have stupid bugs in their test suites
 # that are simply too painful to workaround
@@ -444,6 +450,7 @@ install_centos_pgsql:
 	yum -y install $(PGSQL_CENTOS)
 
 install_centos_perl:
+	for m in $(CENTOS_PERL_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw/install $$m);"; done
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
 	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done

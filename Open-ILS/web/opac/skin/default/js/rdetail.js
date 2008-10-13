@@ -207,18 +207,48 @@ function _rdetailDraw(r) {
 
 	// see if the record has any external links 
 	var links = record.online_loc();
-	for( var i = 0; links && links.length > 0 && i < links.length; i = i + 2 ) {
+	for( var i = 0; links && links.length > 0 && i < links.length; i = i + 3 ) {
 		var href = links[i];
 		// avoid matching "HTTP: The Complete Reference"
 		if( href.match(/https?:\/|ftps?:\/|mailto:/i) ) {
 			unHideMe($('rdetail_online_row'));
-			var name = '' + links[i+1];
-			if(!name || name.match(/https?:\/|ftps?:\/|mailto:/i)) name = href;
-			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, name));
+			// MODS can contain a display label (used for the text of the link)
+			// as well as a note about the URL; many legacy systems conflate the
+			// two and generate MARC records that expect the note to be used as
+			// the text of the link, with no display label; here's the canonical
+			// format:
+			//
+			// 856 40 $uhttp://localhost$yDisplay label$zPublic note
+			//
+			// Note that the MARC21slim2MODS XSL concatenates $3 and $y together
+			// (as $y was defined later in MARC21's life as the display label)
+			var displayLabel = '' + links[i+1];
+			var note = '' + links[i+2];
+			if(!displayLabel || displayLabel.match(/https?:\/|ftps?:\/|mailto:/i)) {
+				if(!note || note.match(/https?:\/|ftps?:\/|mailto:/i)) {
+					displayLabel = href;
+				} else {
+					displayLabel = note;
+				}
+			}
+			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, displayLabel));
+			if (!note && note != displayLabel) {
+				$('rdetail_online').appendChild(elem('span', {'class':'url_note'}, ' - ' + note));
+			}
 			$('rdetail_online').appendChild(elem('br'));
 		}
 	}
 
+	// Fill in our unAPI ID, if anyone cares
+	var abbrs = document.getElementsByTagName('abbr');
+	var span;
+	for (var i = 0; i < abbrs.length; i = i + 1) {
+		if (abbrs[i].getAttribute('name') == 'unapi') {
+			span = abbrs[i];
+			break;
+		}
+	}
+	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
 	$('rdetail_place_hold').setAttribute(
 		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');

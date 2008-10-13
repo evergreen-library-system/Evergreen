@@ -365,13 +365,15 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	$client->respond("<hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'>");
+	$client->respond("<holdings:volumes xmlns:holdings='http://open-ils.org/spec/holdings/v1'>");
 
 	for my $cn (@{$tree->call_numbers}) {
+        next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
 
 		my $found = 0;
 		for my $c (@{$cn->copies}) {
 			next unless grep {$c->circ_lib->id == $_} @ou_ids;
+            next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
 			$found = 1;
 			last;
 		}
@@ -385,11 +387,12 @@ sub new_record_holdings {
 
 		my $cn_label = $cn->label;
 
-		my $xml = "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><hold:copies>";
+		my $xml = "<holdings:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><holdings:copies>";
 		
 		for my $cp (@{$cn->copies}) {
 
 			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
+            next unless ( $cp->deleted eq 'f' || $cp->deleted == 0 );
 
 			(my $cp_class = $cp->class_name) =~ s/::/-/gso;
 			$cp_class =~ s/Fieldmapper-//gso;
@@ -400,34 +403,34 @@ sub new_record_holdings {
 			my $cp_lib = escape($cp->circ_lib->shortname);
 			my $cp_bc = escape($cp->barcode);
 
-			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status>".
-				"<hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:copy_notes>";
+			$xml .= "<holdings:copy id='$cp_tag' barcode='$cp_bc'><holdings:status>$cp_stat</holdings:status>".
+				"<holdings:location>$cp_loc</holdings:location><holdings:circlib>$cp_lib</holdings:circlib><holdings:copy_notes>";
 
 			if ($cp->notes) {
 				for my $note ( @{$cp->notes} ) {
 					next unless ( $note->pub eq 't' );
-					$xml .= sprintf('<hold:copy_note date="%s" title="%s">%s</hold:copy_note>',$note->create_date, escape($note->title), escape($note->value));
+					$xml .= sprintf('<holdings:copy_note date="%s" title="%s">%s</holdings:copy_note>',$note->create_date, escape($note->title), escape($note->value));
 				}
 			}
 
-			$xml .= "</hold:copy_notes><hold:statcats>";
+			$xml .= "</holdings:copy_notes><holdings:statcats>";
 
 			if ($cp->stat_cat_entries) {
 				for my $sce ( @{$cp->stat_cat_entries} ) {
 					next unless ( $sce->stat_cat->opac_visible eq 't' );
-					$xml .= sprintf('<hold:statcat name="%s">%s</hold:statcat>',escape($sce->stat_cat->name) ,escape($sce->value));
+					$xml .= sprintf('<holdings:statcat name="%s">%s</holdings:statcat>',escape($sce->stat_cat->name) ,escape($sce->value));
 				}
 			}
 
-			$xml .= "</hold:statcats></hold:copy>";
+			$xml .= "</holdings:statcats></holdings:copy>";
 		}
 		
-		$xml .= "</hold:copies></hold:volume>";
+		$xml .= "</holdings:copies></holdings:volume>";
 
 		$client->respond($xml)
 	}
 
-	return "</hold:volumes>";
+	return "</holdings:volumes>";
 }
 __PACKAGE__->register_method(
 	method    => 'new_record_holdings',

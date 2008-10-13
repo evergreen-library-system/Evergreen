@@ -86,6 +86,9 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
 	if(getBibLevel()) args.bib_level	= getBibLevel().split(/,/);
 	if(getCopyLocs()) args.locations	= getCopyLocs().split(/,/);
+    if(getPubdBefore()) args.before = getPubdBefore();
+    else if(getPubdAfter()) args.after = getPubdAfter();
+    else if(getPubdBetween()) args.between = getPubdBetween().split(/,/);
 
 	_debug('Search args: ' + js2JSON(args));
 	_debug('Raw query: ' + getTerm());

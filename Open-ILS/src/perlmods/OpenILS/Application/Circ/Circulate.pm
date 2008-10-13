@@ -172,7 +172,7 @@ sub run_method {
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->check_penalty_on_renew(1) if
         $circulator->is_renewal and $U->ou_ancestor_setting_value(
-            $circulator->editor->requestor->ws_ou, 'circ.renew.check_penalty', $circulator->editor);
+            $circulator->circ_lib, 'circ.renew.check_penalty', $circulator->editor);
 
     if($legacy_script_support and not $circulator->is_checkin) {
         $circulator->mk_script_runner();
@@ -284,7 +284,7 @@ sub translate_legacy_args {
     }
 
     if( $$args{precat} ) {
-        $$args{is_precat} = $$args{precat};
+        $$args{is_precat} = $$args{request_precat} = $$args{precat};
         delete $$args{precat};
     }
 }
@@ -339,6 +339,7 @@ my @AUTOLOAD_FIELDS = qw/
     check_penalty_on_renew
     is_noncat
     is_precat
+    request_precat
     is_checkin
     noncat_type
     editor
@@ -386,6 +387,12 @@ my @AUTOLOAD_FIELDS = qw/
     circ_matrix_test
     circ_matrix_ruleset
     legacy_script_support
+    is_deposit
+    is_rental
+    deposit_billing
+    rental_billing
+    capture
+    noop
 /;
 
 
@@ -420,8 +427,7 @@ sub new {
     my $self = bless( {}, $class );
 
     $self->events([]);
-    $self->editor( 
-        new_editor(xact => 1, authtoken => $auth) );
+    $self->editor(new_editor(xact => 1, authtoken => $auth));
 
     unless( $self->editor->checkauth ) {
         $self->bail_on_events($self->editor->event);
@@ -438,6 +444,8 @@ sub new {
     # if this is a renewal, default to desk_renewal
     $self->desk_renewal(1) unless 
         $self->opac_renewal or $self->phone_renewal;
+
+    $self->capture('') unless $self->capture;
 
     return $self;
 }
@@ -513,6 +521,10 @@ sub mk_env {
             $self->copy->call_number($self->volume->id);
             $self->volume->record($self->title->id);
             $self->is_precat(1) if $self->volume->id == OILS_PRECAT_CALL_NUMBER;
+            if($self->copy->deposit_amount and $self->copy->deposit_amount > 0) {
+                $self->is_deposit(1) if $U->is_true($self->copy->deposit);
+                $self->is_rental(1) unless $U->is_true($self->copy->deposit);
+            }
         } else {
             # We can't renew if there is no copy
             return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))
@@ -604,8 +616,13 @@ sub mk_script_runner {
         }
     }
 
-    $self->is_precat(1) if $self->copy 
-        and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
+    if($self->copy) {
+        $self->is_precat(1) if $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
+        if($self->copy->deposit_amount and $self->copy->deposit_amount > 0) {
+            $self->is_deposit(1) if $U->is_true($self->copy->deposit);
+            $self->is_rental(1) unless $U->is_true($self->copy->deposit);
+        }
+    }
 
     # We can't renew if there is no copy
     return $self->bail_on_events(@evts) if 
@@ -648,11 +665,12 @@ sub do_permit {
     $self->run_patron_permit_scripts();
     $self->run_copy_permit_scripts() 
         unless $self->is_precat or $self->is_noncat;
+    $self->check_item_deposit_events();
     $self->override_events() unless 
         $self->is_renewal and not $self->check_penalty_on_renew;
     return if $self->bail_out;
 
-    if( $self->is_precat ) {
+    if($self->is_precat and not $self->request_precat) {
         $self->push_events(
             OpenILS::Event->new(
                 'ITEM_NOT_CATALOGED', payload => $self->mk_permit_key));
@@ -665,6 +683,35 @@ sub do_permit {
             payload => $self->mk_permit_key));
 }
 
+sub check_item_deposit_events {
+    my $self = shift;
+    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED')) 
+        if $self->is_deposit and not $self->is_deposit_exempt;
+    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED')) 
+        if $self->is_rental and not $self->is_rental_exempt;
+}
+
+# returns true if the user is not required to pay deposits
+sub is_deposit_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.deposit.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
+}
+
+# returns true if the user is not required to pay rental fees
+sub is_rental_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.rental.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
+}
 
 sub check_captured_holds {
    my $self    = shift;
@@ -924,23 +971,8 @@ sub get_max_fine_amount {
     # if is_percent is true then the max->amount is
     # use as a percentage of the copy price
     if ($U->is_true($max_fine_rule->is_percent)) {
-
-        my $ol = ($self->is_precat) ? 
-            $self->editor->requestor->ws_ou : $self->volume->owning_lib;
-
-        my $default_price = $U->ou_ancestor_setting_value(
-            $ol, OILS_SETTING_DEF_ITEM_PRICE, $self->editor) || 0;
-        my $charge_on_0 = $U->ou_ancestor_setting_value(
-            $ol, OILS_SETTING_CHARGE_LOST_ON_ZERO, $self->editor) || 0;
-
-        # Find the most appropriate "price" -- same definition as the
-        # LOST price.  See OpenILS::Circ::new_set_circ_lost
-        $max_amount = $self->copy->price;
-        $max_amount = $default_price unless defined $max_amount;
-        $max_amount = 0 if $max_amount < 0;
-        $max_amount = $default_price if $max_amount == 0 and $charge_on_0;
-
-        $max_amount *= $max_fine_rule->amount / 100;
+        my $price = $U->get_copy_price($self->editor, $self->copy, $self->volume);
+        $max_amount = $price * $max_fine_rule->amount / 100;
     }  
 
     return $max_amount;
@@ -1142,6 +1174,9 @@ sub do_checkout {
     $self->update_copy;
     return if $self->bail_out;
 
+    $self->apply_deposit_fee();
+    return if $self->bail_out;
+
     $self->handle_checkout_holds();
     return if $self->bail_out;
 
@@ -1166,9 +1201,39 @@ sub do_checkout {
                 circ              => $self->circ,
                 record            => $record,
                 holds_fulfilled   => $self->fulfilled_holds,
+                deposit_billing      => $self->deposit_billing,
+                rental_billing       => $self->rental_billing
             }
         )
     );
+}
+
+sub apply_deposit_fee {
+    my $self = shift;
+    my $copy = $self->copy;
+    return unless 
+        ($self->is_deposit and not $self->is_deposit_exempt) or 
+        ($self->is_rental and not $self->is_rental_exempt);
+
+	my $bill = Fieldmapper::money::billing->new;
+    my $amount = $copy->deposit_amount;
+    my $billing_type;
+
+    if($self->is_deposit) {
+        $billing_type = OILS_BILLING_TYPE_DEPOSIT;
+        $self->deposit_billing($bill);
+    } else {
+        $billing_type = OILS_BILLING_TYPE_RENTAL;
+        $self->rental_billing($bill);
+    }
+
+	$bill->xact($self->circ->id);
+	$bill->amount($amount);
+	$bill->note(OILS_BILLING_NOTE_SYSTEM);
+	$bill->billing_type($billing_type);
+    $self->editor->create_money_billing($bill) or $self->bail_on_events($self->editor->event);
+
+	$logger->info("circulator: charged $amount on checkout with billing type $billing_type");
 }
 
 sub update_copy {
@@ -1573,6 +1638,8 @@ sub do_checkin {
         if ($self->circ and $self->circ->stop_fines 
                 and $self->circ->stop_fines eq OILS_STOP_FINES_CLAIMSRETURNED);
 
+    $self->check_circ_deposit();
+
     # handle the overridable events 
     $self->override_events unless $self->is_renewal;
     return if $self->bail_out;
@@ -1653,36 +1720,38 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-    if( !$self->remote_hold and $self->attempt_checkin_hold_capture() ) {
+    unless($self->noop) { # no-op checkins to not capture holds or put items into transit
+
+        my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
         return if $self->bail_out;
-
-   } else { # not needed for a hold
-
-        my $circ_lib = (ref $self->copy->circ_lib) ? 
-                $self->copy->circ_lib->id : $self->copy->circ_lib;
-
-        if( $self->remote_hold ) {
-            $circ_lib = $self->remote_hold->pickup_lib;
-            $logger->warn("circulator: Copy ".$self->copy->barcode.
-                " is on a remote hold's shelf, sending to $circ_lib");
+    
+        unless($needed_for_hold) {
+            my $circ_lib = (ref $self->copy->circ_lib) ? 
+                    $self->copy->circ_lib->id : $self->copy->circ_lib;
+    
+            if( $self->remote_hold ) {
+                $circ_lib = $self->remote_hold->pickup_lib;
+                $logger->warn("circulator: Copy ".$self->copy->barcode.
+                    " is on a remote hold's shelf, sending to $circ_lib");
+            }
+    
+            $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
+    
+            if( $circ_lib == $self->editor->requestor->ws_ou ) {
+    
+                $self->checkin_handle_precat();
+                return if $self->bail_out;
+    
+            } else {
+    
+                my $bc = $self->copy->barcode;
+                $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
+                $self->checkin_build_copy_transit($circ_lib);
+                return if $self->bail_out;
+                $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
+            }
         }
-
-        $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
-
-      if( $circ_lib == $self->editor->requestor->ws_ou ) {
-
-            $self->checkin_handle_precat();
-            return if $self->bail_out;
-
-      } else {
-
-            my $bc = $self->copy->barcode;
-            $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
-            $self->checkin_build_copy_transit($circ_lib);
-            return if $self->bail_out;
-            $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
-      }
-   }
+    }
 
     $self->reshelve_copy;
     return if $self->bail_out;
@@ -1713,6 +1782,20 @@ sub do_checkin {
 
     $self->checkin_flesh_events;
     return;
+}
+
+# if a deposit was payed for this item, push the event
+sub check_circ_deposit {
+    my $self = shift;
+    return unless $self->circ;
+    my $deposit = $self->editor->search_money_billing(
+        {   billing_type => OILS_BILLING_TYPE_DEPOSIT, 
+            xact => $self->circ->id, 
+            voided => 'f'
+        }, {idlist => 1})->[0];
+
+    $self->push_events(OpenILS::Event->new(
+        'ITEM_DEPOSIT_PAID', payload => $deposit)) if $deposit;
 }
 
 sub reshelve_copy {
@@ -1817,9 +1900,14 @@ sub checkin_build_copy_transit {
 }
 
 
+# returns true if the item was used (or may potentially be used 
+# in subsequent calls) to capture a hold.
 sub attempt_checkin_hold_capture {
     my $self = shift;
     my $copy = $self->copy;
+
+    # we've been explicitly told not to capture any holds
+    return 0 if $self->capture eq 'nocapture';
 
     # See if this copy can fulfill any holds
     my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold( 
@@ -1828,7 +1916,16 @@ sub attempt_checkin_hold_capture {
     if(!$hold) {
         $logger->debug("circulator: no potential permitted".
             "holds found for copy ".$copy->barcode);
-        return undef;
+        return 0;
+    }
+
+    if($self->capture ne 'capture') {
+        # see if this item is in a hold-capture-delay location
+        my $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
+        if($U->is_true($location->hold_verify)) {
+            $self->bail_on_events(OpenILS::Event->new('HOLD_CAPTURE_DELAYED'));
+            return 1;
+        }
     }
 
     $self->retarget($retarget);
@@ -1853,12 +1950,12 @@ sub attempt_checkin_hold_capture {
     $self->hold($hold);
     $self->checkin_changed(1);
 
-    return 1 if $self->bail_out;
+    return 0 if $self->bail_out;
 
     if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
 
         # This hold was captured in the correct location
-    $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
+        $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
         $self->push_events(OpenILS::Event->new('SUCCESS'));
 
         #$self->do_hold_notify($hold->id);
@@ -1869,10 +1966,9 @@ sub attempt_checkin_hold_capture {
         # Hold needs to be picked up elsewhere.  Build a hold
         # transit and route the item.
         $self->checkin_build_hold_transit();
-    $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
-        return 1 if $self->bail_out;
-        $self->push_events(
-            OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib));
+        $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
+        return 0 if $self->bail_out;
+        $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib));
     }
 
     # make sure we save the copy status
@@ -2093,48 +2189,6 @@ sub checkin_handle_backdate {
         }
     }
 }
-
-
-
-=head
-# XXX Legacy version for Circ.pm support
-sub _checkin_handle_backdate {
-   my( $class, $backdate, $circ, $requestor, $session, $closecirc ) = @_;
-
-    my $bd = $backdate;
-    $bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-    $bd = "${bd}T23:59:59";
-
-   my $bills = $session->request(
-      "open-ils.storage.direct.money.billing.search_where.atomic",
-        billing_ts => { '>=' => $bd }, 
-        xact => $circ->id,
-        billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
-    )->gather(1);
-
-    $logger->debug("backdate found ".scalar(@$bills)." bills to void");
-
-   if($bills) {
-      for my $bill (@$bills) {
-            unless( $U->is_true($bill->voided) ) {
-                $logger->debug("voiding bill ".$bill->id);
-                $bill->voided('t');
-                $bill->void_time('now');
-                $bill->voider($requestor->id);
-                my $n = $bill->note || "";
-                $bill->note($n . "\nSystem: VOIDED FOR BACKDATE");
-                my $s = $session->request(
-                    "open-ils.storage.direct.money.billing.update", $bill)->gather(1);
-                return $U->DB_UPDATE_FAILED($bill) unless $s;
-            }
-        }
-   }
-
-    return 100;
-}
-=cut
-
-
 
 
 

@@ -78,8 +78,11 @@
 		<command id="sel_copy_details" disabled="true"/>
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_clip" />
+        <command id="cmd_csv_to_clipboard" />
+		<command id="cmd_csv_to_printer" />
+		<command id="cmd_csv_to_file" />
+
 		<command id="cmd_holds_print" />
-		<command id="cmd_holds_export" />
 		<command id="cmd_show_catalog" />
 		<command id="cmd_retrieve_patron" />
 		<command id="cmd_show_notifications" />
@@ -87,6 +90,7 @@
 		<command id="cmd_holds_edit_phone_notify" />
 		<command id="cmd_holds_edit_email_notify" />
 		<command id="cmd_holds_edit_thaw_date" />
+		<command id="cmd_holds_edit_expire_time" />
 		<command id="cmd_holds_activate" />
 		<command id="cmd_holds_suspend" />
 		<command id="cmd_holds_edit_selection_depth" />

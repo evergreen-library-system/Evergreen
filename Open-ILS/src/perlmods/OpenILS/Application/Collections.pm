@@ -730,19 +730,6 @@ sub fetch_circ_xacts {
 	return \@data;
 }
 
-sub set_copy_price {
-	my( $e, $copy ) = @_;
-	return if $copy->price and $copy->price > 0;
-	my $vol = $e->retrieve_asset_call_number($copy->call_number);
-	my $org = ($vol and $vol->id != OILS_PRECAT_CALL_NUMBER) 
-		? $vol->owning_lib : $copy->circ_lib;
-	my $setting = $e->retrieve_actor_org_unit_setting(
-		{ org_unit => $org, name => OILS_SETTING_DEF_ITEM_PRICE } );
-	$copy->price($setting->value);
-}
-
-
-
 sub fetch_grocery_xacts {
 	my $e				= shift;
 	my $uid			= shift;

@@ -7,12 +7,18 @@
 		<span style='vertical-align: top;'><a href="javascript:void(0);" onclick="setFontSize('large');"> &common.textsize.large; </a></span>
 		<span style='vertical-align: top;'>&nbsp;<span style="font-weight:bold;">|</span>&nbsp;</span>
 		<span style='vertical-align: top;'>&common.language;</span>
-		<span id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" searchAttr="label" required="false">
-			<script type="dojo/label" event="onChange">
-				if (this.getValue()) {
-					location.href = location.href.replace( /opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
-				}
-			</script>
+		<span id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore"
+            searchAttr="label" required="false" jsId='opacLocaleSelector'>
+            <script>
+                dojo.addOnLoad(function() {
+                    opacLocaleSelector.setValue(locale);
+                    dojo.connect(opacLocaleSelector, 'onChange', 
+                        function () {
+                            location.href = location.href.replace(/opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+                        }
+                    );
+                });
+            </script>
 		</span>
 	</div>
 	

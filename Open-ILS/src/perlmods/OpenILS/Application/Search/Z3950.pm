@@ -86,37 +86,42 @@ sub query_services {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
 
-    my $sources = $e->search_config_z3950_source( 
-        [ { name => { '!=' => undef } }, 
-        { flesh => 1, flesh_fields => { czs => ['attrs'] } }]  
-    ); 
+    my $hash = $sclient->config_value('z3950', 'services');
 
-    my %hash = (); 
-    for my $s ( @$sources ) { 
-        $hash{ $s->name } = { 
-            name => $s->name, 
-            label => $s->label, 
-            host => $s->host, 
-            port => $s->port, 
-            db => $s->db, 
-            record_format => $s->record_format,
-            transmission_format => $s->transmission_format,
-            auth => $s->auth, 
-        }; 
+    # overlay config file values with in-db values
+    if($e->can('search_config_z3950_source')) {
 
-        for my $a ( @{ $s->attrs } ) { 
-            $hash{ $a->source }{attrs}{ $a->name } = { 
-                name => $a->name, 
-                label => $a->label, 
-                code => $a->code, 
-                format => $a->format, 
-                source => $a->source, 
-                truncation => $a->truncation, 
-            }; 
-        } 
-    } 
+        my $sources = $e->search_config_z3950_source(
+            [ { name => { '!=' => undef } },
+              { flesh => 1, flesh_fields => { czs => ['attrs'] } } ]
+        );
 
-    return \%hash; 
+        for my $s ( @$sources ) {
+            $$hash{ $s->name } = {
+                name => $s->name,
+                label => $s->label,
+                host => $s->host,
+                port => $s->port,
+                db => $s->db,
+                record_format => $s->record_format,
+                transmission_format => $s->transmission_format,
+                auth => $s->auth,
+            };
+
+            for my $a ( @{ $s->attrs } ) {
+                $$hash{ $a->source }{attrs}{ $a->name } = {
+                    name => $a->name,
+                    label => $a->label,
+                    code => $a->code,
+                    format => $a->format,
+                    source => $a->source,
+                    truncation => $a->truncation,
+                };
+            }
+        }
+    }
+
+    return $hash;
 }
 
 
@@ -190,6 +195,9 @@ sub do_class_search {
 
     return undef unless (@connections);
 	my @records;
+
+    # local catalog search is not processed with other z39 results;
+    $$args{service} = [grep {$_ ne 'native-evergreen-catalog'} @{$$args{service}}];
 
 	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
 		my $ev = $connections[$index - 1]->last_event();

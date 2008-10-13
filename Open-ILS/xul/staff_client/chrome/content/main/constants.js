@@ -200,6 +200,7 @@ const api = {
 	'MODS_SLIM_RECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve', 'secure' : false },
 	'MODS_SLIM_RECORD_RETRIEVE.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.mods_slim.retrieve.authoritative', 'secure' : false },
 	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy', 'secure' : false },
+	'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.mods_from_copy', 'secure' : false },
 	'PERM_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check' },
 	'PERM_MULTI_ORG_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check.multi_org' },
 	'PERM_RETRIEVE_HIGHEST_ORG' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.highest_org' },
@@ -311,5 +312,7 @@ const urls = {
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
-	'TEST_XUL' : '/xul/server/main/test.xul'
+	'TEST_XUL' : '/xul/server/main/test.xul',
+    'VANDELAY' : '/vandelay/vandelay.xml', /* XXX how can we get the locale? */
+    'CONIFY' : '/conify/en-US/global/admin.html' /* XXX how can we get the locale? */
 }

@@ -21,7 +21,7 @@ vim:et:ts=2:sw=2:
     <port>5222</port>
 
     <!-- log to a local file -->
-    <logfile>/openils/var/log/osrfsys.log</logfile>
+    <logfile>LOCALSTATEDIR/log/osrfsys.log</logfile>
 
     <!-- Log to syslog. You can use this same layout for 
     defining the logging of all services in this file -->
@@ -35,7 +35,7 @@ vim:et:ts=2:sw=2:
     <loglevel>3</loglevel>
 
     <!-- config file for the services -->
-    <settings_config>/openils/conf/opensrf.xml</settings_config>
+    <settings_config>SYSCONFDIR/opensrf.xml</settings_config>
 
   </opensrf>
 
@@ -51,7 +51,7 @@ vim:et:ts=2:sw=2:
     <secret>secret</secret>
     <listen_address>10.0.0.3</listen_address>
     <loglevel>3</loglevel>
-    <logfile>/openils/var/log/osrfsys.log</logfile>
+    <logfile>LOCALSTATEDIR/log/osrfsys.log</logfile>
   </chopchop>
 
   <!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
@@ -85,7 +85,7 @@ vim:et:ts=2:sw=2:
     <username>mylogin</username>
     <passwd>mypassword</passwd>
     <port>5222</port>
-    <logfile>/openils/var/log/gateway.log</logfile>
+    <logfile>LOCALSTATEDIR/log/gateway.log</logfile>
     <loglevel>3</loglevel>
 
   </gateway>
@@ -126,7 +126,7 @@ vim:et:ts=2:sw=2:
         <max_reconnect_attempts>5</max_reconnect_attempts>
 
       </transport>
-      <logfile>/openils/var/log/router.log</logfile>
+      <logfile>LOCALSTATEDIR/log/router.log</logfile>
       <loglevel>2</loglevel>
     </router>
 

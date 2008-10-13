@@ -128,6 +128,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_edit_expire_time.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
@@ -145,6 +146,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_edit_expire_time.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
@@ -215,16 +217,9 @@ patron.holds.prototype = {
 							}
 						}
 					],
-					'cmd_holds_export' : [
-						['command'],
-						function() {
-							try {
-								obj.list.dump_csv_to_clipboard();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('export 1',E);
-							}
-						}
-					],
+                    'cmd_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+					'cmd_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ],
+					'cmd_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'holds.txt' } ); } ],
 
 					'cmd_show_notifications' : [
 						['command'],
@@ -669,6 +664,56 @@ patron.holds.prototype = {
 							}
 						}
 					],
+                    'cmd_holds_edit_expire_time' : [
+						['command'],
+						function() {
+							try {
+                                JSAN.use('util.date');
+                                function check_date(value) {
+                                    try {
+                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.invalid_date')); }
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
+                                            throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.too_early.error'));
+                                        }
+                                        return true;
+                                    } catch(E) {
+                                        alert(E);
+                                        return false;
+                                    }
+                                }
+
+                                var hold_ids = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+								var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_ids]);
+								var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_ids]);
+                                var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
+                                var value = 'YYYY-MM-DD';
+                                var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
+								var expire_time; var invalid = true;
+                                while(invalid) {
+                                    expire_time = window.prompt(msg,value,title);
+                                    if (expire_time) {
+                                        invalid = ! check_date(expire_time);
+                                    } else { 
+                                        invalid = false;
+                                    }
+                                }
+                                if (expire_time || expire_time == '') {
+                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        hold.expire_time(  expire_time == '' ? null : util.date.formatted_date(expire_time + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
+                                        hold = obj.flatten_copy(hold);
+                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                    }
+									obj.clear_and_retrieve(true);
+                                }
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
+							}
+						}
+					],
+
+
 
 					'cmd_holds_retarget' : [
 						['command'],

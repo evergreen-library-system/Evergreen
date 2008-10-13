@@ -11,7 +11,25 @@ cat.record_buckets = function (params) {
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	this.first_pause = true;
     var x = document.getElementById("record_buckets_tabbox");
-    if (x) x.selectedIndex = 2;
+    if (x) {
+        x.addEventListener(
+            'select',
+            function(ev) {
+                if (ev.target.tagName == 'tabpanels') {
+                    for (var i = 0; i < ev.target.childNodes.length; i++) {
+                        var p = ev.target.childNodes[i].firstChild;
+                        p.hidden = x.selectedIndex != i;
+                    }
+                }
+            },
+            false
+        );
+        x.selectedIndex = 2;
+        for (var i = 0; i < x.lastChild.childNodes.length; i++) {
+            var p = x.lastChild.childNodes[i].firstChild;
+            p.hidden = x.selectedIndex != i;
+        }
+    }
 };
 
 cat.record_buckets.pick_file = function (defaultFileName) {
@@ -602,10 +620,10 @@ cat.record_buckets.prototype = {
 					'cmd_record_buckets_csv_to_clipboard' : [ ['command'], function() { obj.list2.dump_csv_to_clipboard(); } ],
                     'cmd_record_query_csv_to_printer' : [ ['command'], function() { obj.list0.dump_csv_to_printer(); } ],
                     'cmd_pending_buckets_csv_to_printer' : [ ['command'], function() { obj.list1.dump_csv_to_printer(); } ],
-                    'cmd_record_buckets_csv_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
+                    'cmd_record_buckets_csv_to_printer' : [ ['command'], function() { obj.list2.dump_csv_to_printer(); } ], 
                     'cmd_record_query_csv_to_file' : [ ['command'], function() { obj.list0.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
                     'cmd_pending_buckets_csv_to_file' : [ ['command'], function() { obj.list1.dump_csv_to_file( { 'defaultFileName' : 'pending_records.txt' } ); } ],
-                    'cmd_record_buckets_csv_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
+                    'cmd_record_buckets_csv_to_file' : [ ['command'], function() { obj.list2.dump_csv_to_file( { 'defaultFileName' : 'bucket_records.txt' } ); } ], 
 
 					'cmd_export_records_usmarc' : [
 						['command'],

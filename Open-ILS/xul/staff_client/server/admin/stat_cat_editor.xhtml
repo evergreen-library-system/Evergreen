@@ -42,8 +42,10 @@
 
 		<hr/> 
 
+
 		<center>
 			<br/>
+
 
 			<table class='data_grid data_grid_center' width='80%'>
 				<thead>
@@ -60,7 +62,7 @@
 						</td>
 						<td>&staff.server.admin.stat_cat.owning_library;</td>
 						<td>
-							<select id='sc_owning_lib_selector' style='width:auto;'>
+							<select id='sc_owning_lib_selector'>
 							</select>
 						</td>
 					</tr>
@@ -75,8 +77,8 @@
 						<td>&staff.server.admin.stat_cat.type;</td>
 						<td>
 							<select id='sc_type_selector'>
+								<option value='asset' selected='selected'>&staff.server.admin.stat_cat.copy;</option>
 								<option value='actor'>&staff.server.admin.stat_cat.patron;</option>
-								<option value='asset'>&staff.server.admin.stat_cat.copy;</option>
 							</select>
 						</td>
 					</tr>
@@ -91,6 +93,9 @@
 			<br/>
 			<hr/>
 			<br/>
+
+            &staff.server.admin.copy_locations.editor.library.filter; <select disabled='disabled' id='sc_org_filter'> </select>
+            <br/><br/>
 
 			<div id='loading' class='has_color'><h2>&staff.server.admin.stat_cat.loading_status;</h2></div>
 
@@ -140,7 +145,11 @@
 								<span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
 							</td>
 	
-							<td><select class='selector' name='sc_entries_selector'><option>&staff.server.admin.stat_cat.none;</option></select></td>
+							<td>
+                                <select class='selector' name='sc_entries_selector'>
+                                    <option>&staff.server.admin.stat_cat.none;</option>
+                                </select>
+                            </td>
 							<td><a href='javascript:void(0);' name='sc_new_entry'>&staff.server.admin.stat_cat.add.label;</a></td>
 							<td><a href='javascript:void(0);' name='sc_edit'>&staff.server.admin.stat_cat.edit;</a></td>
 						</tr>
@@ -172,7 +181,7 @@
 				<td><input name='sc_edit_name'> </input></td>
 				<td>
 					<span class='hide_me' name='sc_edit_show_owning_lib'> </span>
-					<select class='hide_me select_big' name='sc_edit_owning_lib'> </select>
+					<select class='hide_me' name='sc_edit_owning_lib'> </select>
 				</td>
 
 				<td>
@@ -223,7 +232,7 @@
 						<input type='text' name='sc_new_entry_name'/>
 					</span>
 					<span class='padded'>
-						<select name='sc_new_entry_lib' class='select_big'> </select>
+						<select name='sc_new_entry_lib'> </select>
 					</span>
 					<span class='padded'>
 						<input type='submit' name='sc_new_entry_create' value='&staff.server.admin.stat_cat.new_entry_create;'/>

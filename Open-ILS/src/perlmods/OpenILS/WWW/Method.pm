@@ -78,7 +78,7 @@ sub handler {
 
 sub child_init_handler {
 	OpenSRF::System->bootstrap_client( 
-		config_file => "/openils/conf/opensrf_core.xml" );
+		config_file => "SYSCONFDIR/opensrf_core.xml" );
 }
 
 

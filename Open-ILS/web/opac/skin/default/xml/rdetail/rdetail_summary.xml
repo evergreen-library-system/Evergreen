@@ -1,4 +1,5 @@
 
+<abbr class="unapi-id" title='tag:<!--#echo var="HTTP_HOST"-->,<!--#echo var="OILS_TIME_YEAR"-->:biblio-record_entry/<!--#echo var="OILS_OPAC_RID"-->'></abbr>
 <!-- This holds the record summary information -->
 <div>
 	<table id='rdetail_details_table'>

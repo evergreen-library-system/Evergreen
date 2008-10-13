@@ -165,19 +165,17 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 char* oilsUtilsFetchOrgSetting( int orgid, const char* setting ) {
 	if(!setting) return NULL;
 
-	jsonObject* params = jsonParseStringFmt(
-			"[{ \"org_unit\": %d, \"name\":\"%s\" }]", orgid, setting );
+	jsonObject* params = jsonParseStringFmt("[%d, \"%s\"]", orgid, setting );
 
 	jsonObject* set = oilsUtilsQuickReq(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.org_unit_setting.search_where", params );
+		"open-ils.actor",
+        "open-ils.actor.ou_setting.ancestor_default", params);
 
+    char* value = jsonObjectToSimpleString(jsonObjectGetKey(set, "value"));
 	jsonObjectFree(params);
-	char* value = oilsFMGetString( set, "value" );
 	jsonObjectFree(set);
 	osrfLogDebug(OSRF_LOG_MARK, "Fetched org [%d] setting: %s => %s", orgid, setting, value);
 	return value;
-
 }
 
 

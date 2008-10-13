@@ -1,0 +1,11 @@
+<div dojoType="dijit.Toolbar" id='toolbar'>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+        onclick="displayGlobalDiv('vl-marc-export-div');" showLabel="true">&vandelay.export.records;</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+        onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">&vandelay.import.records;</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+        onclick="vlShowQueueSelect();" showLabel="true">&vandelay.inspect.queue;</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+        onclick="vlShowAttrEditor();" showLabel="true">&vandelay.edit.attributes;</div>
+</div>
+

@@ -92,4 +92,11 @@ body { font-size: 12pt; }
     font-weight: bold;
 }
 
-
+#selfck-print-queuing {
+    font-size: 110%;
+    border: 2px solid #808080;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+}

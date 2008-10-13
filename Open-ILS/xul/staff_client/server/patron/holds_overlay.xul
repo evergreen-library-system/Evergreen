@@ -22,7 +22,8 @@
 		<menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
 		<menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
 		<menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
-		<menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date;"/>
+		<menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+		<menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
 		<menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
 		<menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
 		<menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
@@ -84,7 +85,8 @@
                 <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
                 <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
                 <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
-                <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date;"/>
+		        <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+                <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
                 <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
                 <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
                 <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
@@ -102,12 +104,21 @@
 </hbox>
 
 <hbox id="holds_bottom_ui" flex="1">
-	<spacer flex="1"/>
+    <button id="list_actions" oncommand="this.firstChild.showPopup();"
+        label="&staff.generic.list_actions.label;" 
+        accesskey="&staff.generic.list_actions.accesskey;" 
+        type="menu" allowevents="true">
+        <menupopup id="list_actions_popup">
+            <menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" />
+            <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
+            <menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
+            <menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
+            <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
+        </menupopup>
+    </button>
+
 	<button id="holds_print" label="Print" command="cmd_holds_print" accesskey="P" />
-	<button id="holds_export" 
-		label="&staff.patron.holds_overlay.holds_export.label;"
-		command="cmd_holds_export"
-		accesskey=""/>
+	<spacer flex="1"/>
 </hbox>
 
 </overlay>

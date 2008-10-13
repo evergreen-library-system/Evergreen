@@ -36,7 +36,7 @@ circ.in_house_use.prototype = {
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'on_select' : function() {
 					var sel = obj.list.retrieve_selection();
-					document.getElementById('clip_button').disabled = sel.length < 1;
+					obj.controller.view.sel_clip.setAttribute('disabled', sel.length < 1);
 				}
 			}
 		);
@@ -48,7 +48,10 @@ circ.in_house_use.prototype = {
 					'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
 					'sel_clip' : [
 						['command'],
-						function() { obj.list.clipboard(); }
+						function() { 
+							obj.list.clipboard(); 
+							obj.controller.view.in_house_use_barcode_entry_textbox.focus();
+						}
 					],
 					'in_house_use_menu_placeholder' : [
 						['render'],
@@ -162,23 +165,19 @@ circ.in_house_use.prototype = {
 							obj.list.print(p);
 						}
 					],
-					'cmd_in_house_use_export' : [
-						['command'],
-						function() {
-							obj.list.dump_csv_to_clipboard();
-						}
-					],
+					'cmd_csv_to_clipboard' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_clipboard(); 
+                        obj.controller.view.in_house_use_barcode_entry_textbox.focus();
+                    } ],
+					'cmd_csv_to_printer' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_printer(); 
+                        obj.controller.view.in_house_use_barcode_entry_textbox.focus();
+                    } ],
+					'cmd_csv_to_file' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_file( { 'defaultFileName' : 'checked_in.txt' } ); 
+                        obj.controller.view.in_house_use_barcode_entry_textbox.focus();
+                    } ]
 
-					'cmd_in_house_use_reprint' : [
-						['command'],
-						function() {
-						}
-					],
-					'cmd_in_house_use_done' : [
-						['command'],
-						function() {
-						}
-					]
 				}
 			}
 		);
@@ -279,7 +278,7 @@ circ.in_house_use.prototype = {
 					return; 
 				}
 	
-				var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',[ copy.id() ]);
+				var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',[ copy.id() ]);
 				var result = obj.network.simple_request('FM_AIHU_CREATE',
 					[ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
 				);

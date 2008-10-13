@@ -233,7 +233,7 @@ sub __abort_transit {
 
 	if( $transit->dest != $e->requestor->ws_ou 
 		and $transit->source != $e->requestor->ws_ou ) {
-		return $e->event unless $e->allowed('ABORT_REMOTE_TRANIST', $e->requestor->ws_ou);
+		return $e->event unless $e->allowed('ABORT_REMOTE_TRANSIT', $e->requestor->ws_ou);
 	}
 
 	# recover the copy status

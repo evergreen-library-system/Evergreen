@@ -76,6 +76,8 @@ CREATE TRIGGER authority_full_rec_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
 
 CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIST (index_vector);
+/* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
+CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
 
 CREATE OR REPLACE VIEW authority.tracing_links AS
 	SELECT	main.record AS record,

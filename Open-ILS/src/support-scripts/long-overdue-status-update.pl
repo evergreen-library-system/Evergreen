@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use lib '/openils/lib/perl5/';
+use lib 'LIBDIR/perl5/';
 
 use OpenSRF::System;
 use OpenSRF::Application;
@@ -16,7 +16,7 @@ use Digest::MD5 qw/md5_hex/;
 use Getopt::Long;
 
 my ($od_length, $user, $password, $config) =
-	('180 days', 'admin', 'open-ils', '/openils/conf/opensrf_core.xml');
+	('180 days', 'admin', 'open-ils', 'SYSCONFDIR/opensrf_core.xml');
 
 GetOptions(
 	'overdue=s'	=> \$od_length,

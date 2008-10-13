@@ -9,6 +9,17 @@ function fetchOrgSettingDefault(orgId, name) {
     return (res) ? res.value : null;
 }
 
+function fetchBatchOrgSetting(orgId, nameList, onload) {
+    var req = new Request(
+        'open-ils.actor:open-ils.actor.ou_setting.ancestor_default.batch', orgId, nameList);
+    if(onload) {
+        req.callback(function(r) { onload(r.getResultObject()); });
+        req.send();
+    } else {
+        req.send(true);
+        return req.result();
+    }
+}
 
 
 /* takes an org unit or id and return the numeric depth */
@@ -92,7 +103,14 @@ function orgIsMine(me, org) {
 	return false;
 }
 
-
+function orgIsMineFromSet(meList, org) {
+    org = findOrgUnit(org);
+    for(var i = 0; i < meList.length; i++) {
+        if(orgIsMine(findOrgUnit(meList[i]), org))
+            return true;
+    }
+    return false;
+}
 
 var orgArraySearcher = {};
 var globalOrgTree;
@@ -103,6 +121,7 @@ for (var i in _l) {
 	x.parent_ou(_l[i][2]);
 	x.name(_l[i][3]);
     x.opac_visible(_l[i][4]);
+    x.shortname(_l[i][5]);
 	orgArraySearcher[x.id()] = x;
 }
 for (var i in orgArraySearcher) {

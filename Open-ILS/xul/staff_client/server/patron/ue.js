@@ -10,7 +10,7 @@ var surveyAnswersCache		= {};
 var userCache					= {};
 var groupsCache				= {};
 var netLevelsCache			= {};
-var guardianNote				= null;	
+//var guardianNote				= null;
 
 function $(id) { return document.getElementById(id); }
 
@@ -26,7 +26,7 @@ function uEditInit() {
 	clone		= cgi.param('clone'); 
 	if (xulG) if (xulG.clone) clone = xulG.clone;
 	if (xulG) if (xulG.params) if (xulG.params.clone) clone = xulG.params.clone;
-	if(!session) throw $("patronStrings").getString('staff.patron.ue.uEditInit.session_no_defined');
+	if(!session) throw $("patronStrings").getString('web.staff.patron.ue.session_no_defined');
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
@@ -35,11 +35,30 @@ function uEditInit() {
 		uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
 }
 
+function uEditSetUnload() {
+   _debug('setting window unload event');
+   /*
+   window.onbeforeunload = function(evt) { 
+      return $('ue_unsaved_changes').innerHTML; 
+   };
+   */
+}
+
+function uEditClearUnload() {
+   _debug('clearing window unload event');
+   /*
+   window.onbeforeunload = null;
+   */
+}
+
 /* ------------------------------------------------------------------------------ */
 /* Fetch code
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIdentTypes() {
 	_debug("uEditFetchIdentTypes()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.cit != 'undefined') return s.list.cit;
 	var req = new Request(FETCH_ID_TYPES);
 	req.send(true);
 	return req.result();
@@ -47,6 +66,9 @@ function uEditFetchIdentTypes() {
 
 function uEditFetchStatCats() {
 	_debug("uEditFetchStatCats()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.my_actsc != 'undefined') return s.list.my_actsc;
 	var req = new Request(SC_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
@@ -54,6 +76,9 @@ function uEditFetchStatCats() {
 
 function uEditFetchSurveys() {
 	_debug("uEditFetchSurveys()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.asv != 'undefined') return s.list.asv;
 	var req = new Request(SV_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
@@ -61,6 +86,9 @@ function uEditFetchSurveys() {
 
 function uEditFetchGroups() {
 	_debug("uEditFetchGroups()");
+	var s = fetchXULStash(); 
+	if (typeof s.tree != 'undefined') 
+		if (typeof s.tree.pgt != 'undefined') return s.tree.pgt;
 	var req = new Request(FETCH_GROUPS);
 	req.send(true);
 	return req.result();
@@ -68,6 +96,9 @@ function uEditFetchGroups() {
 
 function uEditFetchNetLevels() {
 	_debug("uEditFetchNetLevels()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.cnal != 'undefined') return s.list.cnal;
 	var req = new Request(FETCH_NET_LEVELS, SESSION);
 	req.send(true);
 	return req.result();
@@ -76,9 +107,29 @@ function uEditFetchNetLevels() {
 /* ------------------------------------------------------------------------------ */
 
 
+/*  
+ * adds all of the group.application_perm's to the list 
+ * provided by descending through the group tree 
+ */
+function buildAppPermList(list, group) {
+	if(!group) return;
+	if(group.application_perm() ) 
+        list.push(group.application_perm());
+    for(i in group.children()) {
+        buildAppPermList(list, group.children()[i]);
+    }
+}
 
-/* fetches necessary and builds the UI */
+/* fetches necessary objects and builds the UI */
 function uEditBuild() {
+
+    myPerms = ['BAR_PATRON', 'UNBAR_PATRON'];
+
+    /*  grab the groups before we check perms so we know what
+        application_perms to check */
+    var groups = uEditFetchGroups();
+    buildAppPermList(myPerms, groups);
+
 	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	uEditBuildLibSelector();
@@ -87,11 +138,10 @@ function uEditBuild() {
 	if (xulG) if (xulG.params) if (xulG.params.usr) usr = xulG.params.usr;
 	patron = fetchFleshedUser(usr);
 	if(!patron) patron = uEditNewPatron(); 
-
-
+	
 	uEditDraw( 
 		uEditFetchIdentTypes(),
-		uEditFetchGroups(),
+        groups,
 		uEditFetchStatCats(),
 		uEditFetchSurveys(),
 		uEditFetchNetLevels()
@@ -103,14 +153,26 @@ function uEditBuild() {
 
 	} else {
 
+		/* do we need to display the parent / gurdian field? */
+		uEditCheckDOB(uEditFindFieldByKey('dob'));
+
 		$('ue_barcode').disabled = true;
 		unHideMe($('ue_mark_card_lost'));
 		unHideMe($('ue_reset_pw'));
 		uEditCheckEditPerm();
 	}
 
-	if(PERMS['BAR_PATRON'] == -1) 
-		$('ue_barred').disabled = true;
+    uEditCheckBarredPerm();
+}
+
+function uEditCheckBarredPerm() {
+	if(PERMS['BAR_PATRON'] != -1) 
+        return;
+
+    if(isTrue(patron.barred()) && PERMS['UNBAR_PATRON'] != -1) 
+        return;
+
+    $('ue_barred').disabled = true;
 }
 
 
@@ -120,8 +182,10 @@ function uEditBuild() {
 function uEditCheckEditPerm() {
 
 	var perm = uEditFindGroupPerm(groupsCache[patron.profile()]);	
+	/*
 	_debug("editing user with group app perm "+patron.profile()+' : '+
 		groupsCache[patron.profile()].name() +', and perm = ' + perm);
+		*/
 
 	if(PERMS[perm] != -1) return;
 
@@ -131,6 +195,8 @@ function uEditCheckEditPerm() {
 	
 		$('ue_save').disabled = true;
 		$('ue_save_clone').disabled = true;
+		$('ue_mark_card_lost').disabled = true;
+		$('ue_reset_pw').disabled = true;
 	
 		uEditIterateFields(
 			function(f) {
@@ -163,6 +229,7 @@ function uEditNewPatron() {
 	card.isnew(1);
 	patron.card(card);
 	patron.cards([card]);
+    patron.net_access_level(defaultNetLevel);
 	patron.stat_cat_entries([]);
 	patron.survey_responses([]);
 	patron.addresses([]);
@@ -185,6 +252,7 @@ function uEditResetPw() {
 	var pw = uEditMakeRandomPw(patron);	
 	$('ue_password1').value = pw;
 	$('ue_password2').value = pw;
+    $('ue_password1').onchange();
 }
 
 function uEditClone(clone) {
@@ -192,19 +260,27 @@ function uEditClone(clone) {
 	var cloneUser = fetchFleshedUser(clone);
 	patron.usrgroup(cloneUser.usrgroup());
 
-	if( cloneUser.day_phone() )
+	if( cloneUser.day_phone() ) {
 		$('ue_day_phone').value = cloneUser.day_phone();
-	if( cloneUser.evening_phone() )
+	    $('ue_day_phone').onchange();
+    }
+
+	if( cloneUser.evening_phone() ) {
 		$('ue_night_phone').value = cloneUser.evening_phone();
-	if( cloneUser.other_phone() )
+		$('ue_night_phone').onchange();
+    }
+
+	if( cloneUser.other_phone() ) {
 		$('ue_other_phone').value = cloneUser.other_phone();
+		$('ue_other_phone').onchange();
+    }
+
 	setSelector($('ue_org_selector'), cloneUser.home_ou());
-
-
 	setSelector($('ue_profile'), cloneUser.profile());
 
 	/* force the expire date to be set */
 	$('ue_profile').onchange();
+	$('ue_org_selector').onchange();
 
 	for( var a in cloneUser.addresses() ) {
 		var addr = cloneUser.addresses()[a];
@@ -257,7 +333,7 @@ function uEditDraw(identTypes, groups, statCats, surveys, netLevels ) {
 
 	dataFields = [];
 	uEditDrawIDTypes(identTypes);
-	uEditDrawGroups(groups);
+	uEditDrawGroups(groups, null, null, true);
 	uEditDrawStatCats(statCats);
 	uEditDrawSurveys(surveys);
 	uEditDrawNetLevels(netLevels);
@@ -339,9 +415,12 @@ function uEditOnChange(field) {
 	if(field.widget.onpostchange)
 		field.widget.onpostchange(field, newval);
 
+	//_debug(field.key+' = '+newval);
 
 	uEditIterateFields(function(f) { uEditCheckValid(f); });
 	uEditCheckErrors();
+
+   uEditSetUnload();
 }
 
 
@@ -369,6 +448,7 @@ function uEditCheckValid(field) {
 			removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 		}
 	}
+
 }
 
 /* find a field object by object key */
@@ -403,9 +483,11 @@ function uEditGetErrorStrings() {
 	uEditIterateFields(
 		function(field) { 
 			if(field.errkey) {
-				if( field.widget.node.className.indexOf(CSS_INVALID_DATA) != -1) {
-					var str = $(field.errkey).innerHTML;
-					if(str) errors.push(str);
+				if( !field.object.isdeleted() ) {
+					if( field.widget.node.className.indexOf(CSS_INVALID_DATA) != -1) {
+						var str = $(field.errkey).innerHTML;
+						if(str) errors.push(str);
+					}
 				}
 			}
 		}
@@ -461,39 +543,41 @@ function uEditSaveUser(cloneme) {
 
 	/* null is unique in the db, but '' is not */
 	if( ! patron.ident_value() ) patron.ident_value(null);
-	if( ! patron.ident_type2() ) patron.ident_type2(null);
+	//if( ! patron.ident_type2() ) patron.ident_type2(null);
 	if( ! patron.ident_value2() ) patron.ident_value2(null);
+	patron.ident_type2(null);
 
 	if(! patron.dob() ) patron.dob(null);
+
+	_debug("Saving patron with card: " + js2JSON(patron.card()));
+	_debug("Saving full patron: " + js2JSON(patron));
+
+	//for( var c in patron
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.alertEvent = false;
 	req.send(true);
 	var newuser = req.result();
 
+   uEditClearUnload();
+
 	var evt;
 	if( (evt = checkILSEvent(newuser)) || ! newuser ) {
-		if(evt) alert(js2JSON(newuser));
-		return;
-
-	} else {
-		
-		/* if it's a new user and a guardian note was created for this user,
-			create the note after we have the new user's id */
-		if( guardianNote ) {
-			guardianNote.usr( newuser.id() );
-			var req = new Request(CREATE_USER_NOTE, SESSION, guardianNote);
-			req.alertEvent = false;
-			req.send(true);
-			var resp = req.result();
-			if( checkILSEvent(resp) ) {
-				alertILSEvent(resp, $("patronStrings").getString('staff.patron.ue.uEditSaveuser.error_creating_note'));
-				return;
-			}
+		if(evt) {
+            evt = newuser;
+            if( evt.textcode == 'XACT_COLLISION' ) {
+                if( confirmId('ue_xact_collision') )
+                    location.href = location.href;
+                return;
+            }
+            var j = js2JSON(evt);
+			alert(j);
+			_debug("USER UPDATE FAILED:\n" + j);
 		}
+		return;
+	} 
 
-		alert($('ue_success').innerHTML);
-	}
+	alert($('ue_success').innerHTML);
 
 	if(cloneme) {
 		/* if the user we just created was a clone, and we want to clone it,
@@ -502,29 +586,49 @@ function uEditSaveUser(cloneme) {
 		else cloneme = newuser.id();
 	}
 
-	if (window.xulG && typeof window.xulG.on_save == 'function') {
-		_debug("xulG funcs defined...");
-		if( !patron.isnew() && cloneme ) {
-			_debug("calling spawn_editor to clone user...");
-			var ses = cgi.param('ses'); 
-			if (xulG.ses) ses = xulG.ses;
-			if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
-			window.xulG.spawn_editor({ses:ses,clone:cloneme});
+
+	if( cloneme ) {
+
+		if(window.xulG &&
+			typeof window.xulG.spawn_editor == 'function' && 
+
+			!patron.isnew() ) {
+				_debug("xulG clone spawning new interface...");
+				var ses = cgi.param('ses'); 
+				if (xulG) if (xulG.ses) ses = xulG.ses;
+				if (xulG) if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
+				window.xulG.spawn_editor({ses:ses,clone:cloneme});
+				uEditRefresh();
+
+		} else {
+
+			var href = location.href;
+			href = href.replace(/\&?usr=\d+/, '');
+			href = href.replace(/\&?clone=\d+/, '');
+			href += '&clone=' + cloneme;
+			location.href = href;
 		}
-		window.xulG.on_save(newuser, cloneme); 
 
 	} else {
 
-		_debug("xulG funcs not defined, refreshing page..");
-		var href = location.href;
-
-		href = href.replace(/\&?usr=\d+/, '');
-		href = href.replace(/\&?clone=\d+/, '');
-
-		if( cloneme ) href += '&clone=' + cloneme;
-		location.href = href;
+		uEditRefresh();
 	}
+
+	uEditRefreshXUL(newuser);
 }
+
+
+function uEditRefreshXUL(newuser) {
+	if (window.xulG && typeof window.xulG.on_save == 'function') 
+		window.xulG.on_save(newuser);
+}
+
+function uEditRefresh() {
+	var href = location.href;
+	href = href.replace(/\&?clone=\d+/, '');
+	location.href = href;
+}
+
 
 function uEditCancel() {
 	var href = location.href;
@@ -607,11 +711,9 @@ function uEditHandleDupResults(ids, search_hash, type, container) {
 
 function uEditShowSearch(link,type) {
 	if(!type) type = link.getAttribute('type');
-	if(window.xulG) {
+	if(window.xulG)
 		window.xulG.spawn_search(uEditDupHashes[type]);	
-	} else {
-		alert($("patronStrings").getFormattedString('staff.patron.ue.uEditShowSearch.search', [js2JSON(uEditDupHashes[type])]));
-	}
+	else alert($("patronStrings").getString('web.staff.patron.ue.uedit_show_search.search_would_be', js2JSON(uEditDupHashes[type])));
 }
 
 function uEditMarkCardLost() {
@@ -624,6 +726,16 @@ function uEditMarkCardLost() {
 			/* de-activite the current card */
 			card.ischanged(1);
 			card.active(0);
+
+			if( !card.barcode() ) {
+				/* a card exists in the array with no barcode */
+				ueRemoveCard(card.id());
+
+			} else if( card.isnew() && card.active() == 0 ) {
+				/* a new card was created, then never used, removing.. */
+				_debug("removing new inactive card "+card.barcode());
+				ueRemoveCard(card.id());
+			}
 
 			/* create a new card for the patron */
 			var newcard = new ac();
@@ -639,9 +751,21 @@ function uEditMarkCardLost() {
 			field.widget.node.value = "";
 			field.widget.node.onchange();
 			field.object = newcard;
+			_debug("uEditMarkCardLost(): created new card object for user");
 		}
 	}
 }
+
+
+function ueRemoveCard(id) {
+	_debug("removing card from cards() array: " + id);
+	var cds = grep( patron.cards(), function(c){return (c.id() != id)});
+	if(!cds) cds = [];
+	for( var j = 0; j < cds.length; j++ )
+		_debug("patron card array now has :  "+cds[j].id());
+	patron.cards(cds);
+}
+
 
 
 function compactArray(arr) {

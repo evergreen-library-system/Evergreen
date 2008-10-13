@@ -29,7 +29,7 @@ use Email::Send;
 use open ':utf8';
 
 
-my ($count, $config, $sleep_interval, $lockfile, $daemon) = (1, '/openils/conf/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
+my ($count, $config, $sleep_interval, $lockfile, $daemon) = (1, 'SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
 
 GetOptions(
 	"daemon"	=> \$daemon,

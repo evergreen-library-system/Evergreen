@@ -351,19 +351,31 @@ util.widgets.load_attributes = function (file) {
 			for (var element_id in blob) {
 				for (var attribute in blob[ element_id ]) {
 					var x = document.getElementById( element_id );
-                    if (x) {
-                        x.setAttribute(attribute, blob[ element_id ][ attribute ]);
-                    } else {
-                        dump('Error in util.widgets.load_attributes('+file._file.path+'):\n');
-                        dump('\telement_id = ' + element_id + '\n');
-                        dump('\tattribute = ' + attribute + '\n');
-                        dump('\tblob[id][attr] = ' + blob[element_id][attribute] + '\n');
-                    }
+					if (x) {
+						if (x.nodeName == 'menulist' && attribute == 'value') {
+							var popup = x.firstChild;
+							var children = popup.childNodes;
+							for (var i = 0; i < children.length; i++) {
+								if (children[i].getAttribute('value') == blob[ element_id ][ attribute ]) {
+									dump('setting ' + x.nodeName + ' ' + element_id + ' @value to ' + blob[ element_id ][ attribute ] + '\n' );
+									x.setAttribute(attribute, blob[ element_id ][ attribute ]);
+								}
+							}
+						} else {
+							dump('setting ' + x.nodeName + ' ' + element_id + ' @value to ' + blob[ element_id ][ attribute ] + '\n');
+							x.setAttribute(attribute, blob[ element_id ][ attribute ]);
+						}
+					} else {
+						dump('Error in util.widgets.load_attributes('+file._file.path+'):\n');
+						dump('\telement_id = ' + element_id + '\n');
+						dump('\tattribute = ' + attribute + '\n');
+						dump('\tblob[id][attr] = ' + blob[element_id][attribute] + '\n');
+					}
 				}
 			}
-            return blob;
+			return blob;
 		}
-        return {};
+		return {};
 	} catch(E) {
 		alert('Error loading preferences: ' + E);
 	}

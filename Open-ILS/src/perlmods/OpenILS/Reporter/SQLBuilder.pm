@@ -153,7 +153,7 @@ sub set_from {
 	my $self = shift;
 	my $f = shift;
 
-	$self->{_from} = OpenILS::Reporter::SQLBuilder::Relation->parse( $f, $self );
+	$self->{_from} = OpenILS::Reporter::SQLBuilder::Relation->parse( $f, $self->builder );
 
 	return $self;
 }
@@ -167,7 +167,7 @@ sub set_where {
 	return $self unless (@cols && defined($cols[0]));
 	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
 
-	push @{ $self->{_where} }, map { OpenILS::Reporter::SQLBuilder::Column::Where->new( $_, $self->{_from}->builder->{_rels} )->set_builder( $self->builder ) } @cols;
+	push @{ $self->{_where} }, map { OpenILS::Reporter::SQLBuilder::Column::Where->new( $_ )->set_builder( $self->builder ) } @cols;
 
 	return $self;
 }
@@ -455,8 +455,6 @@ sub new {
 
 	$self->{_aggregate} = $col_data->{aggregate};
 
-	$self->{_rels} = shift;
-
 	if (ref($self->{_column})) {
 		my $trans = $self->{_column}->{transform} || 'Bare';
 		my $pkg = "OpenILS::Reporter::SQLBuilder::Column::Transform::$trans";
@@ -477,7 +475,7 @@ sub new {
 
 sub find_relation {
 	my $self = shift;
-	return $self->{_rels}->{$self->{_relation}};
+	return $self->builder->{_rels}->{$self->{_relation}};
 }
 
 sub name {
@@ -1104,6 +1102,19 @@ sub build {
 
 	bless $self => "OpenILS::Reporter::SQLBuilder::Join::$self->{_join_type}";
 
+	if ( $self->{_join_type} eq 'inner' or !$self->{_join_type}) {
+		$self->{_join_type} eq 'i';
+	} else {
+		if ($self->{_join_type} eq 'left') {
+			$self->{_right_rel}->{_nullable} = 'l';
+		} elsif ($self->{_join_type} eq 'right') {
+			$self->{_left_rel}->{_nullable} = 'r';
+		} else {
+			$self->{_right_rel}->{_nullable} = 'f';
+			$self->{_left_rel}->{_nullable} = 'f';
+		}
+	}
+
 	return $self;
 }
 
@@ -1128,10 +1139,6 @@ sub toSQL {
 	my $self = shift;
 	my $dir = shift;
 	#return $self->{_sql} if ($self->{_sql});
-
-	my $_nullable_rel = $dir && $dir eq 'r' ? '_left_rel' : '_right_rel';
-	$self->{_right_rel}->{_nullable} = 'l';
-	$self->{$_nullable_rel}->{_nullable} = $dir;
 
 	my $j = $dir && $dir eq 'r' ? 'FULL OUTER' : 'LEFT OUTER';
 

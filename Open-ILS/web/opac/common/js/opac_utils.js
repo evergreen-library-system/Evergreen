@@ -167,8 +167,12 @@ function initParams() {
 	RDEPTH	= cgi.param(PARAM_RDEPTH);
     AVAIL   = cgi.param(PARAM_AVAIL);
     COPYLOCS   = cgi.param(PARAM_COPYLOCS);
-    
+    PUBD_BEFORE = cgi.param(PARAM_PUBD_BEFORE);
+    PUBD_AFTER = cgi.param(PARAM_PUBD_AFTER);
+    PUBD_BETWEEN = cgi.param(PARAM_PUBD_BETWEEN);
+    PUBD_DURING = cgi.param(PARAM_PUBD_DURING);
 
+    
 	/* set up some sane defaults */
 	//if(isNaN(DEPTH))	DEPTH		= 0;
 	if(isNaN(RDEPTH))	RDEPTH	= 0;
@@ -208,6 +212,10 @@ function clearSearchParams() {
 	RDEPTH      = null;
     AVAIL       = null;
     COPYLOCS    = null;
+    PUBD_BEFORE = null;
+    PUBD_AFTER  = null;
+    PUBD_BETWEEN = null;
+    PUBD_DURING = null;
 }
 
 
@@ -219,8 +227,6 @@ function initCookies() {
 	SKIN = cookieManager.read(COOKIE_SKIN);
     if(findCurrentPage() == HOME)
         cookieManager.remove(COOKIE_SEARCH);
-        
-
 }
 
 /* URL param accessors */
@@ -258,6 +264,10 @@ function getLanguage() { return LANGUAGE; }
 function getRdepth() { return RDEPTH; }
 function getAvail() { return AVAIL; }
 function getCopyLocs() { return COPYLOCS; }
+function getPubdBefore() { return PUBD_BEFORE; }
+function getPubdAfter() { return PUBD_AFTER; }
+function getPubdBetween() { return PUBD_BETWEEN; }
+function getPubdDuring() { return PUBD_DURING; }
 
 
 function findBasePath() {
@@ -412,6 +422,15 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(AVAIL, PARAM_AVAIL, args, getAvail, string);
 	if(getCopyLocs())
 		string += _appendParam(COPYLOCS, PARAM_COPYLOCS, args, getCopyLocs, string);
+    if(getPubdBefore())
+		string += _appendParam(PUBD_BEFORE, PARAM_PUBD_BEFORE, args, getPubdBefore, string);
+    if(getPubdAfter())
+		string += _appendParam(PUBD_AFTER, PARAM_PUBD_AFTER, args, getPubdAfter, string);
+    if(getPubdBetween())
+		string += _appendParam(PUBD_BETWEEN, PARAM_PUBD_BETWEEN, args, getPubdBetween, string);
+    if(getPubdDuring())
+		string += _appendParam(PUBD_DURING, PARAM_PUBD_DURING, args, getPubdDuring, string);
+
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -987,11 +1006,23 @@ function goHome() {
 }
 
 
-function buildOrgSel(selector, org, offset) {
+function buildOrgSel(selector, org, offset, namecol) {
+    if(!namecol) namecol = 'name';
 	insertSelectorVal( selector, -1, 
-		org.name(), org.id(), null, findOrgDepth(org) - offset );
+		org[namecol](), org.id(), null, findOrgDepth(org) - offset );
 	for( var c in org.children() )
-		buildOrgSel( selector, org.children()[c], offset);
+		buildOrgSel( selector, org.children()[c], offset, namecol);
+}
+
+function buildMergedOrgSel(selector, org_list, offset, namecol) {
+    if(!namecol) namecol = 'name';
+    for(var i = 0; i < org_list.length; i++) {
+        var org = findOrgUnit(org_list[i]);
+    	insertSelectorVal( selector, -1, 
+		    org[namecol](), org.id(), null, findOrgDepth(org) - offset );
+	    for( var c in org.children() )
+		    buildOrgSel( selector, org.children()[c], offset, namecol);
+    }
 }
 
 

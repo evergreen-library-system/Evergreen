@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-08-19 09:34:28-0400\n"
+"POT-Creation-Date: 2008-09-08 11:13:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,11 +43,15 @@ msgstr ""
 msgid "The patron is barred"
 msgstr ""
 
+#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:566
+msgid "The requested config_circ_matrix_test was not found"
+msgstr ""
+
 #: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:405
 msgid "The requested metabib_series_field_entry was not found"
 msgstr ""
 
-#: 8002.OFFLINE_FILE_ERROR:697
+#: 8002.OFFLINE_FILE_ERROR:716
 msgid " An offline file or directory could not be created or accessed "
 msgstr ""
 
@@ -71,7 +75,7 @@ msgstr ""
 msgid " "
 msgstr ""
 
-#: 7006.COPY_IS_REFERENCE:641
+#: 7006.COPY_IS_REFERENCE:660
 msgid " Copy is reference material "
 msgstr ""
 
@@ -83,7 +87,7 @@ msgstr ""
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr ""
 
-#: 2001.DATABASE_UPDATE_FAILED:599
+#: 2001.DATABASE_UPDATE_FAILED:618
 msgid "The attempt to write to the DB failed"
 msgstr ""
 
@@ -119,7 +123,7 @@ msgstr ""
 msgid "No TCN could be found that does not collide with existing records"
 msgstr ""
 
-#: 8000.OFFLINE_SESSION_ACTIVE:691
+#: 8000.OFFLINE_SESSION_ACTIVE:710
 msgid " An offline session for this location is currently processing "
 msgstr ""
 
@@ -139,7 +143,7 @@ msgstr ""
 msgid " Requested billing note does not exist "
 msgstr ""
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:694
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:713
 msgid " An offline file for this workstation exists within this session "
 msgstr ""
 
@@ -157,6 +161,10 @@ msgstr ""
 
 #: 1002.ACTOR_USER_NOT_FOUND:29
 msgid "Someone attempted to retrieve a user from the system and the user was not found"
+msgstr ""
+
+#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:560
+msgid "The requested vandelay_bib_queue was not found"
 msgstr ""
 
 #: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:539
@@ -183,7 +191,7 @@ msgstr ""
 msgid "The requested authority_record_descriptor was not found"
 msgstr ""
 
-#: 7011.COPY_STATUS_LOST:656
+#: 7011.COPY_STATUS_LOST:675
 msgid "Copy has is marked as lost"
 msgstr ""
 
@@ -205,11 +213,11 @@ msgstr ""
 msgid "The requested money_collections_tracker was not found"
 msgstr ""
 
-#: 5000.PERM_FAILURE:608
+#: 5000.PERM_FAILURE:627
 msgid "Permission Denied"
 msgstr ""
 
-#: 7015.NEGATIVE_PATRON_BALANCE:668
+#: 7015.NEGATIVE_PATRON_BALANCE:687
 msgid "This requested action would result in a negative patron balance"
 msgstr ""
 
@@ -221,7 +229,7 @@ msgstr ""
 msgid "The given username already exists in the database"
 msgstr ""
 
-#: 9000.REPORT_TEMPLATE_EXISTS:725
+#: 9000.REPORT_TEMPLATE_EXISTS:744
 msgid " A report template with the given name and folder already exists"
 msgstr ""
 
@@ -229,7 +237,7 @@ msgstr ""
 msgid "The requested actor_stat_cat_entry was not found"
 msgstr ""
 
-#: 1710.CONTAINER_EXISTS:591
+#: 1710.CONTAINER_EXISTS:610
 msgid "User has already created a bucket with the requested name"
 msgstr ""
 
@@ -237,11 +245,11 @@ msgstr ""
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr ""
 
-#: 1701.COPY_LOCATION_EXISTS:564
+#: 1701.COPY_LOCATION_EXISTS:583
 msgid " The copy location object already exists "
 msgstr ""
 
-#: 1703.WORKSTATION_NAME_EXISTS:570
+#: 1703.WORKSTATION_NAME_EXISTS:589
 msgid " A workstation with that name already exists "
 msgstr ""
 
@@ -249,7 +257,7 @@ msgstr ""
 msgid "The requested actor_stat_cat_entry_user_map was not found"
 msgstr ""
 
-#: 8007.OFFLINE_SESSION_EXISTS:712
+#: 8007.OFFLINE_SESSION_EXISTS:731
 msgid " A session with the given name already exists "
 msgstr ""
 
@@ -257,7 +265,7 @@ msgstr ""
 msgid "The requested asset_copy_note was not found"
 msgstr ""
 
-#: 7017.ROUTE_TO_COPY_LOCATION:677
+#: 7017.ROUTE_TO_COPY_LOCATION:696
 msgid ""
 " \n"
 "\t\tA copy needs to be routed to a copy location.  The location\n"
@@ -289,6 +297,10 @@ msgstr ""
 msgid "The given user barcode already exists"
 msgstr ""
 
+#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:569
+msgid "The requested vandelay_queued_bib_record was not found"
+msgstr ""
+
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:385
 msgid "The requested actor_org_address was not found"
 msgstr ""
@@ -305,7 +317,7 @@ msgstr ""
 msgid " Requested title note does not exist "
 msgstr ""
 
-#: 9001.REPORT_REPORT_EXISTS:729
+#: 9001.REPORT_REPORT_EXISTS:748
 msgid " A report with the given name and folder already exists"
 msgstr ""
 
@@ -313,11 +325,11 @@ msgstr ""
 msgid "The requested action_in_house_use was not found"
 msgstr ""
 
-#: 7016.ITEM_ON_HOLDS_SHELF:671
+#: 7016.ITEM_ON_HOLDS_SHELF:690
 msgid "This requested item is currently on the holds shelf"
 msgstr ""
 
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:638
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:657
 msgid " Location does not allow materials to circulate "
 msgstr ""
 
@@ -337,7 +349,7 @@ msgstr ""
 msgid "The requested actor_org_unit_setting was not found"
 msgstr ""
 
-#: 7009.CIRC_CLAIMS_RETURNED:650
+#: 7009.CIRC_CLAIMS_RETURNED:669
 msgid " Requested circulation is marked claims returned "
 msgstr ""
 
@@ -349,7 +361,7 @@ msgstr ""
 msgid "The requested money_work_payment was not found"
 msgstr ""
 
-#: 2000.BAD_PARAMS:596
+#: 2000.BAD_PARAMS:615
 msgid "Invalid parameters were encountered in a method"
 msgstr ""
 
@@ -361,7 +373,7 @@ msgstr ""
 msgid "The selected location cannot have volumes attached"
 msgstr ""
 
-#: 1704.TCN_EXISTS:573
+#: 1704.TCN_EXISTS:592
 msgid "A record already exists with the requested TCN value"
 msgstr ""
 
@@ -373,7 +385,7 @@ msgstr ""
 msgid "The requested biblio_record_node was not found"
 msgstr ""
 
-#: 8003.OFFLINE_PARAM_ERROR:700
+#: 8003.OFFLINE_PARAM_ERROR:719
 msgid " Missing params in offline upload "
 msgstr ""
 
@@ -389,7 +401,7 @@ msgstr ""
 msgid "The user does not have a valid email address assigned"
 msgstr ""
 
-#: 7001.PATRON_BAD_STANDING:625
+#: 7001.PATRON_BAD_STANDING:644
 msgid ""
 "\n"
 "\t\t\tThe patron in question is not able to check out materials because\n"
@@ -413,11 +425,11 @@ msgstr ""
 msgid "The requested metabib_record_descriptor was not found"
 msgstr ""
 
-#: 1702.OPEN_CIRCULATION_EXISTS:567
+#: 1702.OPEN_CIRCULATION_EXISTS:586
 msgid " There is an open circulation on the requested item "
 msgstr ""
 
-#: 8009.OFFLINE_NO_ORG:718 8010.OFFLINE_SESSION_COMPLETE:721
+#: 8009.OFFLINE_NO_ORG:737 8010.OFFLINE_SESSION_COMPLETE:740
 msgid " No org id was provided "
 msgstr ""
 
@@ -477,7 +489,7 @@ msgstr ""
 msgid "The requested money_billable_transaction was not found"
 msgstr ""
 
-#: 7004.COPY_NOT_AVAILABLE:635
+#: 7004.COPY_NOT_AVAILABLE:654
 msgid " Copy is not available "
 msgstr ""
 
@@ -517,7 +529,7 @@ msgstr ""
 msgid "The requested config_metabib_field was not found"
 msgstr ""
 
-#: 2002.DATABASE_QUERY_FAILED:602
+#: 2002.DATABASE_QUERY_FAILED:621
 msgid "The attempt to query to the DB failed"
 msgstr ""
 
@@ -549,7 +561,7 @@ msgstr ""
 msgid "Requested address was not found"
 msgstr ""
 
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:629
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:648
 msgid "The patron in question has the maximum number of items already checked out"
 msgstr ""
 
@@ -573,15 +585,15 @@ msgid ""
 "\t\t"
 msgstr ""
 
-#: 1709.MAX_HOLDS:588
+#: 1709.MAX_HOLDS:607
 msgid "User has reached the maximum number of holds"
 msgstr ""
 
-#: 1706.ITEM_BARCODE_EXISTS:579
+#: 1706.ITEM_BARCODE_EXISTS:598
 msgid "An item with the same barcode exists"
 msgstr ""
 
-#: 7014.COPY_IN_TRANSIT:665
+#: 7014.COPY_IN_TRANSIT:684
 msgid "Copy is in transit"
 msgstr ""
 
@@ -589,7 +601,7 @@ msgstr ""
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr ""
 
-#: 7000.ROUTE_ITEM:618
+#: 7000.ROUTE_ITEM:637
 msgid ""
 " \n"
 "\t\t\tA copy needs to be routed to a different location\t\n"
@@ -598,11 +610,11 @@ msgid ""
 "\t\t"
 msgstr ""
 
-#: 7007.COPY_NEEDED_FOR_HOLD:644
+#: 7007.COPY_NEEDED_FOR_HOLD:663
 msgid " Copy is needed to fulfil a hold "
 msgstr ""
 
-#: 7010.COPY_ALERT_MESSAGE:653
+#: 7010.COPY_ALERT_MESSAGE:672
 msgid " The requested copy has an alert message attached "
 msgstr ""
 
@@ -654,8 +666,8 @@ msgstr ""
 msgid "The requested ex was not found"
 msgstr ""
 
-#: 8004.OFFLINE_CONFIG_ERROR:703 8005.OFFLINE_CHECKSUM_FAILED:706
-#: 8006.OFFLINE_SESSION_NOT_FOUND:709
+#: 8004.OFFLINE_CONFIG_ERROR:722 8005.OFFLINE_CHECKSUM_FAILED:725
+#: 8006.OFFLINE_SESSION_NOT_FOUND:728
 msgid " Offline server is not configured properly "
 msgstr ""
 
@@ -671,11 +683,11 @@ msgstr ""
 msgid "The requested actor_stat_cat was not found"
 msgstr ""
 
-#: 7003.COPY_CIRC_NOT_ALLOWED:632
+#: 7003.COPY_CIRC_NOT_ALLOWED:651
 msgid " Target copy is not allowed to circulate "
 msgstr ""
 
-#: 7008.MAX_RENEWALS_REACHED:647
+#: 7008.MAX_RENEWALS_REACHED:666
 msgid " Circulation has no more renewals remaining "
 msgstr ""
 
@@ -693,6 +705,10 @@ msgid ""
 "\t\t\tSomeone attempted to retrieve a circulation object from the system and \n"
 "\t\t\tthe object was not found.\n"
 "\t\t"
+msgstr ""
+
+#: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:563
+msgid "The requested vandelay_authority_queue was not found"
 msgstr ""
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:135
@@ -723,7 +739,7 @@ msgstr ""
 msgid "The requested money_grocery was not found"
 msgstr ""
 
-#: 7012.COPY_STATUS_MISSING:659
+#: 7012.COPY_STATUS_MISSING:678
 msgid "Copy has is marked as missing"
 msgstr ""
 
@@ -731,12 +747,16 @@ msgstr ""
 msgid "The requested money_billable_transaction_summary was not found"
 msgstr ""
 
-#: 2003.INTERNAL_SERVER_ERROR:605
+#: 2003.INTERNAL_SERVER_ERROR:624
 msgid "There was an internal server error"
 msgstr ""
 
-#: 8008.OFFLINE_INVALID_SESSION:715
+#: 8008.OFFLINE_INVALID_SESSION:734
 msgid " The session name is invalid "
+msgstr ""
+
+#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:572
+msgid "The requested vandelay_queued_authority_record was not found"
 msgstr ""
 
 #: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:423
@@ -755,7 +775,7 @@ msgstr ""
 msgid "The requested metabib_metarecord was not found"
 msgstr ""
 
-#: 1707.HOLD_EXISTS:582
+#: 1707.HOLD_EXISTS:601
 msgid "User already has an open hold on the selected item"
 msgstr ""
 
@@ -775,11 +795,11 @@ msgstr ""
 msgid "The saved item has been edited by another user"
 msgstr ""
 
-#: 1700.NON_CAT_TYPE_EXISTS:561
+#: 1700.NON_CAT_TYPE_EXISTS:580
 msgid " The non-cataloged type object already exists "
 msgstr ""
 
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:585
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:604
 msgid "A duplicate money.collections_tracker object already exists in the database"
 msgstr ""
 
@@ -795,11 +815,15 @@ msgstr ""
 msgid "The requested bib record is marked as deleted"
 msgstr ""
 
-#: 7018.COPY_MARKED_LOST:682
+#: 7018.COPY_MARKED_LOST:701
 msgid "The requested item is already marked as lost"
 msgstr ""
 
-#: 1705.VOLUME_LABEL_EXISTS:576
+#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:557
+msgid "The requested config_circ_modifier was not found"
+msgstr ""
+
+#: 1705.VOLUME_LABEL_EXISTS:595
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
 
@@ -811,7 +835,7 @@ msgstr ""
 msgid "The patron's card is not active"
 msgstr ""
 
-#: 7013.PATRON_EXCEEDS_FINES:662
+#: 7013.PATRON_EXCEEDS_FINES:681
 msgid "The patron in question has reached the maximum fine amount"
 msgstr ""
 

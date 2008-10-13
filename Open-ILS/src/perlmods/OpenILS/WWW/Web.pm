@@ -17,7 +17,7 @@ use OpenSRF::System;
 my $main_ttk = "opac/logic/page_router.ttk";
 my $error_ttk = "opac/pages/error.ttk";
 my $init_ttk = "opac/logic/page_init.ttk";
-my $bootstrap = "/openils/conf/opensrf_core.xml";
+my $bootstrap = "SYSCONFDIR/opensrf_core.xml";
 my $child_init_ttk = "opac/logic/child_init.ttk";
 
 my $includes = [];  # [  '/pines/cvs/ILS/Open-ILS/src/templates' ];

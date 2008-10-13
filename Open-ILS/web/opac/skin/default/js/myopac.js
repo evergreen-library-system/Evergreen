@@ -782,12 +782,14 @@ function _myOPACSummaryShowUer(r) {
 	var iv1 = user.ident_value()+'';
 	if (iv1.length > 4) iv1 = iv1.replace(new RegExp(iv1.substring(0,iv1.length - 4)), '***********');
 
+	appendClear($('myopac_summary_prefix'),text(user.first_given_name()));
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
 	appendClear($('myopac_summary_middle'),text(user.second_given_name()));
 	appendClear($('myopac_summary_dayphone'),text(user.day_phone()));
 	appendClear($('myopac_summary_eveningphone'),text(user.evening_phone()));
 	appendClear($('myopac_summary_otherphone'),text(user.other_phone()));
 	appendClear($('myopac_summary_last'),text(user.family_name()));
+	appendClear($('myopac_summary_suffix'),text(user.suffix()));
 	appendClear($('myopac_summary_username'),text(user.usrname()));
 	appendClear($('myopac_summary_email'),text(user.email()));
 	appendClear($('myopac_summary_barcode'),text(user.card().barcode()));

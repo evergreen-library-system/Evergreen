@@ -87,7 +87,10 @@ circ.checkin.prototype = {
 					'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
 					'sel_clip' : [
 						['command'],
-						function() { obj.list.clipboard(); }
+						function() { 
+                            obj.list.clipboard(); 
+                            obj.controller.view.checkin_barcode_entry_textbox.focus();
+                        }
 					],
 					'sel_edit' : [
 						['command'],
@@ -241,25 +244,18 @@ circ.checkin.prototype = {
 							obj.list.print(p);
 						}
 					],
-					'cmd_checkin_export' : [
-						['command'],
-						function() {
-							obj.list.dump_csv_to_clipboard();
-						}
-					],
-
-					'cmd_checkin_reprint' : [
-						['command'],
-						function() {
-							JSAN.use('util.print'); var print = new util.print();
-							print.reprint_last();
-						}
-					],
-					'cmd_checkin_done' : [
-						['command'],
-						function() {
-						}
-					]
+					'cmd_csv_to_clipboard' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_clipboard(); 
+                        obj.controller.view.checkin_barcode_entry_textbox.focus();
+                    } ],
+					'cmd_csv_to_printer' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_printer(); 
+                        obj.controller.view.checkin_barcode_entry_textbox.focus();
+                    } ],
+					'cmd_csv_to_file' : [ ['command'], function() { 
+                        obj.list.dump_csv_to_file( { 'defaultFileName' : 'checked_in.txt' } ); 
+                        obj.controller.view.checkin_barcode_entry_textbox.focus();
+                    } ]
 				}
 			}
 		);

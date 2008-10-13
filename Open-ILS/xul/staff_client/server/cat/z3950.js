@@ -68,8 +68,8 @@ cat.z3950.prototype = {
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
 							obj.controller.view.marc_import_overlay.disabled = false;
 							obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
-							obj.controller.view.marc_view.disabled = false;
-							obj.controller.view.marc_view.setAttribute('retrieve_id',list[0]);
+							obj.controller.view.marc_view_btn.disabled = false;
+							obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_list_init.list_construction_error'),E);
 						}
@@ -110,20 +110,29 @@ cat.z3950.prototype = {
                                 setTimeout( function() { obj.focus(); }, 0 );
 							}
 						],
+                        'marc_view_btn' : [
+                            ['render'],
+                            function(e) {
+                                e.setAttribute('label', $("catStrings").getString('staff.cat.z3950.marc_view.label'));
+                                e.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.marc_view.accesskey'));
+                            }
+                        ],
 						'marc_view' : [
 							['command'],
 							function(ev) {
 								try {
-									var n = obj.controller.view.marc_view;
+									var n = obj.controller.view.marc_view_btn;
 									if (n.getAttribute('toggle') == '1') {
 										document.getElementById('deck').selectedIndex = 0;
 										n.setAttribute('toggle','0');
-										n.setAttribute('label','MARC View');
+										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.marc_view.label'));
+										n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.marc_view.accesskey'));
 										document.getElementById('results').focus();
 									} else {
 										document.getElementById('deck').selectedIndex = 1;
 										n.setAttribute('toggle','1');
-										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.obj_controller_init.deck_label'));
+										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.results_view.label'));
+										n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.results_view.accesskey'));
 										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 										var f = get_contentWindow(document.getElementById('marc_frame'));
                                         var retrieve_id = n.getAttribute('retrieve_id');
@@ -170,24 +179,10 @@ cat.z3950.prototype = {
 								}
 							},
 						],
-                        'z3950_deck' : [ ['render'], function(e) { return function() { e.selectedIndex = 0; }; } ],
 						'search' : [
 							['command'],
 							function() {
-                                obj.controller.view.z3950_deck.selectedIndex = 1;
 								obj.initial_search();
-							},
-						],
-						'search_form' : [
-							['command'],
-							function() {
-                                obj.controller.view.z3950_deck.selectedIndex = 0;
-							},
-						],
-						'results_page' : [
-							['command'],
-							function() {
-                                obj.controller.view.z3950_deck.selectedIndex = 1;
 							},
 						],
 						'page_next' : [
@@ -196,6 +191,31 @@ cat.z3950.prototype = {
 								obj.page_next();
 							},
 						],
+                        'toggle_form_btn' : [
+                            ['render'],
+                            function(e) {
+                                e.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+                                e.setAttribute('label',$("catStrings").getString('staff.cat.z3950.hide_top_pane.label'));
+                                e.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.hide_top_pane.accesskey'));
+                            }
+                        ],
+                        'toggle_form' : [
+                            ['command'],
+                            function() {
+                                var x = document.getElementById('top_pane');
+                                x.hidden = ! x.hidden;
+								var n = obj.controller.view.toggle_form_btn;
+                                if (x.hidden) {
+                                    n.setAttribute('image',"/xul/server/skin/media/images/down_arrow.gif");
+                                    n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.label'));
+                                    n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.accesskey'));
+                                } else {
+                                    n.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+                                    n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.hide_top_pane.label'));
+                                    n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.hide_top_pane.accesskey'));
+                                }
+                            },
+                        ],
 						'service_rows' : [
 							['render'],
 							function(e) {
@@ -290,28 +310,32 @@ cat.z3950.prototype = {
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 										obj.services = robj;
                                         var x = document.getElementById('service_rows');
-										for (var i in robj) {
-                                            var r = document.createElement('row'); x.appendChild(r);
-                                            var cb = document.createElement('checkbox'); 
-                                                if (robj[i].label) {
-                                                    cb.setAttribute('label',robj[i].label);
-                                                } else if (robj[i].name) {
-                                                    cb.setAttribute('label',robj[i].name);
-                                                } else {
-                                                    cb.setAttribute('label',i);
-                                                }
-                                                cb.setAttribute('tooltiptext',i + ' : ' + robj[i].db + '@' + robj[i].host + ':' + robj[i].port); 
-                                                cb.setAttribute('mytype','service_class'); cb.setAttribute('service',i);
-                                                cb.setAttribute('id',i+'_service'); r.appendChild(cb);
-                                                cb.addEventListener('command',handle_switch,false);
-                                            var username = document.createElement('textbox'); username.setAttribute('id',i+'_username'); 
-                                            if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) username.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].username);
-                                            r.appendChild(username);
-                                            if (typeof robj[i].auth != 'undefined') username.hidden = ! get_bool( robj[i].auth );
-                                            var password = document.createElement('textbox'); password.setAttribute('id',i+'_password'); 
-                                            if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) password.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].password);
-                                            password.setAttribute('type','password'); r.appendChild(password);
-                                            if (typeof robj[i].auth != 'undefined') password.hidden = ! get_bool( robj[i].auth );
+										for (var i in obj.services) {
+                                            try {
+                                                var r = document.createElement('row'); x.appendChild(r);
+                                                var cb = document.createElement('checkbox'); 
+                                                    if (obj.services[i].label) {
+                                                        cb.setAttribute('label',obj.services[i].label);
+                                                    } else if (obj.services[i].name) {
+                                                        cb.setAttribute('label',obj.services[i].name);
+                                                    } else {
+                                                        cb.setAttribute('label',i);
+                                                    }
+                                                    cb.setAttribute('tooltiptext',i + ' : ' + obj.services[i].db + '@' + obj.services[i].host + ':' + obj.services[i].port); 
+                                                    cb.setAttribute('mytype','service_class'); cb.setAttribute('service',i);
+                                                    cb.setAttribute('id',i+'_service'); r.appendChild(cb);
+                                                    cb.addEventListener('command',handle_switch,false);
+                                                var username = document.createElement('textbox'); username.setAttribute('id',i+'_username'); 
+                                                if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) username.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].username);
+                                                r.appendChild(username);
+                                                if (typeof obj.services[i].auth != 'undefined') username.hidden = ! get_bool( obj.services[i].auth );
+                                                var password = document.createElement('textbox'); password.setAttribute('id',i+'_password'); 
+                                                if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) password.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].password);
+                                                password.setAttribute('type','password'); r.appendChild(password);
+                                                if (typeof obj.services[i].auth != 'undefined') password.hidden = ! get_bool( obj.services[i].auth );
+                                            } catch(E) {
+                                                alert(E);
+                                            }
                                         }
                                         obj.services[ 'native-evergreen-catalog' ] = { 'attrs' : { 'author' : {}, 'title' : {} } };
                                         setTimeout(
@@ -493,7 +517,7 @@ cat.z3950.prototype = {
                     obj.result_set[ ++obj.number_of_result_sets ] = results[i];
                     obj.controller.view.marc_import.disabled = true;
                     obj.controller.view.marc_import_overlay.disabled = true;
-                    var x = obj.controller.view.marc_view;
+                    var x = obj.controller.view.marc_view_btn;
                     if (x.getAttribute('toggle') == '0') x.disabled = true;
                     for (var j = 0; j < obj.result_set[ obj.number_of_result_sets ].records.length; j++) {
                         var f;
@@ -827,7 +851,7 @@ cat.z3950.prototype = {
 	'handle_enter' : function(ev) {
 		var obj = this;
 		if (ev.target.tagName != 'textbox') return;
-		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.controller.view.z3950_deck.selectedIndex = 1; obj.initial_search(); }, 0);
+		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
 	},
 }
 

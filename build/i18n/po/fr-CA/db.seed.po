@@ -1,2897 +1,3955 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-07-25 13:19:45-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2008-09-08 11:13:02-0400\n"
+"PO-Revision-Date: 2008-08-28 09:21-0500\n"
+"Last-Translator: Warren Layton\n"
+"Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: config.bib_source:3
+# id::1
+#: cbs.source:3
 msgid "oclc"
-msgstr ""
+msgstr "oclc"
 
-#: config.bib_source:5
+# id::2
+#: cbs.source:5
 msgid "System Local"
-msgstr ""
+msgstr "Système local"
 
-#: config.bib_source:7
+# id::3
+#: cbs.source:7
 msgid "Project Gutenberg"
-msgstr ""
+msgstr "Project Gutenberg"
 
-#: config.standing:9
+# id::1
+#: cst.value:10
 msgid "Good"
-msgstr ""
+msgstr "Bien"
 
-#: config.standing:10
+# id::2
+#: cst.value:11
 msgid "Barred"
-msgstr ""
+msgstr "Barré"
 
-#: config.non_cataloged_type:43
+# id::1
+#: cnct.name:47
 msgid "Paperback Book"
-msgstr ""
+msgstr "Livre de poche"
 
-#: config.identification_type:46
+# id::1
+#: cit.name:51
 msgid "Drivers License"
-msgstr ""
+msgstr "Permis de conduire"
 
-#: config.identification_type:48
+# id::2
+#: cit.name:53
 msgid "SSN"
-msgstr ""
+msgstr "SSN"
 
-#: config.identification_type:50
+# id::3
+#: cit.name:55
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
-#: config.rule_circ_duration:53
+# id::1
+#: crcd.name:59
 msgid "7_days_0_renew"
-msgstr ""
+msgstr "7_jours_0_renouvellement"
 
-#: config.rule_circ_duration:55
+# id::2
+#: crcd.name:61
 msgid "28_days_2_renew"
-msgstr ""
+msgstr "28_jours_2_renouvellements"
 
-#: config.rule_circ_duration:57
+# id::3
+#: crcd.name:63
 msgid "3_months_0_renew"
-msgstr ""
+msgstr "3_mois_0_renouvellement"
 
-#: config.rule_circ_duration:59
+# id::4
+#: crcd.name:65
 msgid "3_days_1_renew"
-msgstr ""
+msgstr "3_jours_1_renouvellement"
 
-#: config.rule_circ_duration:61
+# id::5
+#: crcd.name:67
 msgid "2_months_2_renew"
-msgstr ""
+msgstr "2_mois_2_renouvellements"
 
-#: config.rule_circ_duration:63
+# id::6
+#: crcd.name:69
 msgid "35_days_1_renew"
-msgstr ""
+msgstr "35_jours_1_renouvellement"
 
-#: config.rule_circ_duration:65
+# id::7
+#: crcd.name:71
 msgid "7_days_2_renew"
-msgstr ""
+msgstr "7_jours_2_renouvellements"
 
-#: config.rule_circ_duration:67
+# id::8
+#: crcd.name:73
 msgid "1_hour_2_renew"
-msgstr ""
+msgstr "1_heure_2_renouvellements"
 
-#: config.rule_circ_duration:69
+# id::9
+#: crcd.name:75
 msgid "28_days_0_renew"
-msgstr ""
+msgstr "28_jours_0_renouvellement"
 
-#: config.rule_circ_duration:71
+# id::10
+#: crcd.name:77
 msgid "14_days_2_renew"
-msgstr ""
+msgstr "14_jours_2_renouvellements"
 
-#: config.rule_circ_duration:73
+# id::11
+#: crcd.name:79
 msgid "default"
-msgstr ""
+msgstr "par défaut"
 
-#: config.rule_max_fine:76
+# id::1
+#: crmf.name:83
 msgid "default"
-msgstr ""
+msgstr "par défaut"
 
-#: config.rule_max_fine:78
+# id::2
+#: crmf.name:85
 msgid "overdue_min"
-msgstr ""
+msgstr "retard_minimum"
 
-#: config.rule_max_fine:80
+# id::3
+#: crmf.name:87
 msgid "overdue_mid"
-msgstr ""
+msgstr "retard_moyen"
 
-#: config.rule_max_fine:82
+# id::4
+#: crmf.name:89
 msgid "overdue_max"
-msgstr ""
+msgstr "retard_maximum"
 
-#: config.rule_max_fine:84
+# id::5
+#: crmf.name:91
 msgid "overdue_equip_min"
-msgstr ""
+msgstr "retard_équipement_minimum"
 
-#: config.rule_max_fine:86
+# id::6
+#: crmf.name:93
 msgid "overdue_equip_mid"
-msgstr ""
+msgstr "retard_équipement_moyen"
 
-#: config.rule_max_fine:88
+# id::7
+#: crmf.name:95
 msgid "overdue_equip_max"
-msgstr ""
+msgstr "retard_équipement_maximum"
 
-#: config.rule_recuring_fine:91
+# id::1
+#: crrf.name:99
 msgid "default"
-msgstr ""
+msgstr "par défaut"
 
-#: config.rule_recuring_fine:93
+# id::2
+#: crrf.name:101
 msgid "10_cent_per_day"
-msgstr ""
+msgstr "10_cents_par_jour"
 
-#: config.rule_recuring_fine:95
+# id::3
+#: crrf.name:103
 msgid "50_cent_per_day"
-msgstr ""
+msgstr "50_cents_par_jour"
 
-#: config.rule_age_hold_protect:97
+# id::1
+#: crahp.name:107
 msgid "3month"
-msgstr ""
+msgstr "3 mois"
 
-#: config.rule_age_hold_protect:98
+# id::2
+#: crahp.name:109
 msgid "6month"
-msgstr ""
+msgstr "6 mois"
 
-#: config.copy_status:100
+# id::0
+#: ccs.name:112
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
-#: config.copy_status:102
+# id::1
+#: ccs.name:113
 msgid "Checked out"
-msgstr ""
+msgstr "Sortie"
 
-#: config.copy_status:104
+# id::2
+#: ccs.name:114
 msgid "Bindery"
-msgstr ""
+msgstr "Atelier de reliure"
 
-#: config.copy_status:105
+# id::3
+#: ccs.name:115
 msgid "Lost"
-msgstr ""
+msgstr "Perdu"
 
-#: config.copy_status:106
+# id::4
+#: ccs.name:116
 msgid "Missing"
-msgstr ""
+msgstr "Manquant"
 
-#: config.copy_status:108
+# id::5
+#: ccs.name:117
 msgid "In process"
-msgstr ""
+msgstr "En traitement"
 
-#: config.copy_status:109
+# id::6
+#: ccs.name:118
 msgid "In transit"
-msgstr ""
+msgstr "En transit"
 
-#: config.copy_status:110
+# id::7
+#: ccs.name:119
 msgid "Reshelving"
-msgstr ""
+msgstr "Remise des documents sur les rayons"
 
-#: config.copy_status:111
+# id::8
+#: ccs.name:120
 msgid "On holds shelf"
-msgstr ""
+msgstr "Étagère des articles mis en réserve"
 
-#: config.copy_status:112
+# id::9
+#: ccs.name:121
 msgid "On order"
-msgstr ""
+msgstr "Sur commande"
 
-#: config.copy_status:114
+# id::10
+#: ccs.name:122
 msgid "ILL"
-msgstr ""
+msgstr "Prêts entre bibliothèques"
 
-#: config.copy_status:115
+# id::11
+#: ccs.name:123
 msgid "Cataloging"
-msgstr ""
+msgstr "Catalogage"
 
-#: config.copy_status:116
+# id::12
+#: ccs.name:124
 msgid "Reserves"
-msgstr ""
+msgstr "Réserves"
 
-#: config.copy_status:117
+# id::13
+#: ccs.name:125
 msgid "Discard/Weed"
-msgstr ""
+msgstr "Retrait/Triage"
 
-#: config.copy_status:118
+# id::14
+#: ccs.name:126
 msgid "Damaged"
-msgstr ""
+msgstr "Endommagé"
 
-#: config.net_access_level:123
+# id::1
+#: cnal.name:131
 msgid "Filtered"
-msgstr ""
+msgstr "Filtré"
 
-#: config.net_access_level:125
+# id::2
+#: cnal.name:133
 msgid "Unfiltered"
-msgstr ""
+msgstr "Non filtré"
 
-#: config.net_access_level:127
+# id::3
+#: cnal.name:135
 msgid "No Access"
-msgstr ""
+msgstr "Aucun accès"
 
-#: config.audience_map:130
+# id::
+#: cam.value:139
 msgid "Unknown or unspecified"
+msgstr "Inconnu ou non spécifié"
+
+# id::
+#: cam.description:140
+msgid "The target audience for the item not known or not specified."
 msgstr ""
 
-#: config.audience_map:132
+# id::a
+#: cam.value:142
 msgid "Preschool"
+msgstr "Préscolaire"
+
+# id::a
+#: cam.description:143
+msgid "The item is intended for children, approximate ages 0-5 years."
 msgstr ""
 
-#: config.audience_map:134
+# id::b
+#: cam.value:145
 msgid "Primary"
+msgstr "Primaire"
+
+# id::b
+#: cam.description:146
+msgid "The item is intended for children, approximate ages 6-8 years."
 msgstr ""
 
-#: config.audience_map:136
+# id::c
+#: cam.value:148
 msgid "Pre-adolescent"
+msgstr "Pré-adolescent"
+
+# id::c
+#: cam.description:149
+msgid "The item is intended for young people, approximate ages 9-13 years."
 msgstr ""
 
-#: config.audience_map:138
+# id::d
+#: cam.value:151
 msgid "Adolescent"
+msgstr "Adolescent"
+
+# id::d
+#: cam.description:152
+msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
 
-#: config.audience_map:140
+# id::e
+#: cam.value:154
 msgid "Adult"
+msgstr "Adulte"
+
+# id::e
+#: cam.description:155
+msgid "The item is intended for adults."
 msgstr ""
 
-#: config.audience_map:142
+# id::f
+#: cam.value:157
 msgid "Specialized"
+msgstr "Spécialisé"
+
+# id::f
+#: cam.description:158
+msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
 msgstr ""
 
-#: config.audience_map:144
+# id::g
+#: cam.value:160
 msgid "General"
+msgstr "Généralités"
+
+# id::g
+#: cam.description:161
+msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
 msgstr ""
 
-#: config.audience_map:146
+# id::j
+#: cam.value:163
 msgid "Juvenile"
+msgstr "Jeunes"
+
+# id::j
+#: cam.description:164
+msgid "The item is intended for children and young people, approximate ages 0-15 years."
 msgstr ""
 
-#: config.lit_form_map:149
+# id::0
+#: clfm.value:167
 msgid "Not fiction (not further specified)"
+msgstr "néraux (aucune autre spécification)"
+
+# id::0
+#: clfm.description:168
+msgid "The item is not a work of fiction and no further identification of the literary form is desired"
 msgstr ""
 
-#: config.lit_form_map:151
+# id::1
+#: clfm.value:170
 msgid "Fiction (not further specified)"
+msgstr "Fiction (aucune autre spécification)"
+
+# id::1
+#: clfm.description:171
+msgid "The item is a work of fiction and no further identification of the literary form is desired"
 msgstr ""
 
-#: config.lit_form_map:153
+# id::c
+#: clfm.value:173
 msgid "Comic strips"
-msgstr ""
+msgstr "Bandes dessinées"
 
-#: config.lit_form_map:155
+# id::d
+#: clfm.value:175
 msgid "Dramas"
-msgstr ""
+msgstr "Drames"
 
-#: config.lit_form_map:157
+# id::e
+#: clfm.value:177
 msgid "Essays"
-msgstr ""
+msgstr "Essais"
 
-#: config.lit_form_map:159
+# id::f
+#: clfm.value:179
 msgid "Novels"
-msgstr ""
+msgstr "Romans"
 
-#: config.lit_form_map:161
+# id::h
+#: clfm.value:181
 msgid "Humor, satires, etc."
+msgstr "Humeur, satires, etc."
+
+# id::h
+#: clfm.description:182
+msgid "The item is a humorous work, satire or of similar literary form."
 msgstr ""
 
-#: config.lit_form_map:163
+# id::i
+#: clfm.value:184
 msgid "Letters"
+msgstr "Lettres"
+
+# id::i
+#: clfm.description:185
+msgid "The item is a single letter or collection of correspondence."
 msgstr ""
 
-#: config.lit_form_map:165
+# id::j
+#: clfm.value:187
 msgid "Short stories"
+msgstr "Nouvelles"
+
+# id::j
+#: clfm.description:188
+msgid "The item is a short story or collection of short stories."
 msgstr ""
 
-#: config.lit_form_map:167
+# id::m
+#: clfm.value:190
 msgid "Mixed forms"
+msgstr "Divers genres"
+
+# id::m
+#: clfm.description:191
+msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
 msgstr ""
 
-#: config.lit_form_map:169
+# id::p
+#: clfm.value:193
 msgid "Poetry"
+msgstr "Poésie"
+
+# id::p
+#: clfm.description:194
+msgid "The item is a poem or collection of poems."
 msgstr ""
 
-#: config.lit_form_map:171
+# id::s
+#: clfm.value:196
 msgid "Speeches"
+msgstr "Discours"
+
+# id::s
+#: clfm.description:197
+msgid "The item is a speech or collection of speeches."
 msgstr ""
 
-#: config.lit_form_map:173
+# id::u
+#: clfm.value:199
 msgid "Unknown"
+msgstr "Inconnu"
+
+# id::u
+#: clfm.description:200
+msgid "The literary form of the item is unknown."
 msgstr ""
 
-#: config.language_map:177
+# id::aar
+#: clm.value:204
 msgid "Afar"
-msgstr ""
+msgstr "Afar"
 
-#: config.language_map:178
+# id::abk
+#: clm.value:205
 msgid "Abkhaz"
-msgstr ""
+msgstr "Abkhaz"
 
-#: config.language_map:179
+# id::ace
+#: clm.value:206
 msgid "Achinese"
-msgstr ""
+msgstr "Aceh"
 
-#: config.language_map:180
+# id::ach
+#: clm.value:207
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli "
 
-#: config.language_map:181
+# id::ada
+#: clm.value:208
 msgid "Adangme"
-msgstr ""
+msgstr "Adangme"
 
-#: config.language_map:182
+# id::ady
+#: clm.value:209
 msgid "Adygei"
-msgstr ""
+msgstr "Adygué"
 
-#: config.language_map:183
+# id::afa
+#: clm.value:210
 msgid "Afroasiatic (Other)"
-msgstr ""
+msgstr "Afro-asiatique (Autre)"
 
-#: config.language_map:184
+# id::afh
+#: clm.value:211
 msgid "Afrihili (Artificial language)"
-msgstr ""
+msgstr "Afrihili (langage artificiel)"
 
-#: config.language_map:185
+# id::afr
+#: clm.value:212
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
-#: config.language_map:186
+# id::-ajm
+#: clm.value:213
 msgid "Aljamía"
-msgstr ""
+msgstr "Aljamía"
 
-#: config.language_map:187
+# id::aka
+#: clm.value:214
 msgid "Akan"
-msgstr ""
+msgstr "Akan"
 
-#: config.language_map:188
+# id::akk
+#: clm.value:215
 msgid "Akkadian"
-msgstr ""
+msgstr "Akkadien"
 
-#: config.language_map:189
+# id::alb
+#: clm.value:216
 msgid "Albanian"
-msgstr ""
+msgstr "Albanais"
 
-#: config.language_map:190
+# id::ale
+#: clm.value:217
 msgid "Aleut"
-msgstr ""
+msgstr "Aléoute"
 
-#: config.language_map:191
+# id::alg
+#: clm.value:218
 msgid "Algonquian (Other)"
-msgstr ""
+msgstr "Algonquins (Autre)"
 
-#: config.language_map:192
+# id::amh
+#: clm.value:219
 msgid "Amharic"
-msgstr ""
+msgstr "Amharic"
 
-#: config.language_map:193
+# id::ang
+#: clm.value:220
 msgid "English, Old (ca. 450-1100)"
-msgstr ""
+msgstr "Ancien anglais (aux environs de 450-1100)"
 
-#: config.language_map:194
+# id::apa
+#: clm.value:221
 msgid "Apache languages"
-msgstr ""
+msgstr "Langues apaches"
 
-#: config.language_map:195
+# id::ara
+#: clm.value:222
 msgid "Arabic"
-msgstr ""
+msgstr "Arabe"
 
-#: config.language_map:196
+# id::arc
+#: clm.value:223
 msgid "Aramaic"
-msgstr ""
+msgstr "Araméen"
 
-#: config.language_map:197
+# id::arg
+#: clm.value:224
 msgid "Aragonese Spanish"
-msgstr ""
+msgstr "Aragonais, espagnol"
 
-#: config.language_map:198
+# id::arm
+#: clm.value:225
 msgid "Armenian"
-msgstr ""
+msgstr "Arménien"
 
-#: config.language_map:199
+# id::arn
+#: clm.value:226
 msgid "Mapuche"
-msgstr ""
+msgstr "Mapuche"
 
-#: config.language_map:200
+# id::arp
+#: clm.value:227
 msgid "Arapaho"
-msgstr ""
+msgstr "Arapaho"
 
-#: config.language_map:201
+# id::art
+#: clm.value:228
 msgid "Artificial (Other)"
-msgstr ""
+msgstr "Artificiel (Autre)"
 
-#: config.language_map:202
+# id::arw
+#: clm.value:229
 msgid "Arawak"
-msgstr ""
+msgstr "Arawak"
 
-#: config.language_map:203
+# id::asm
+#: clm.value:230
 msgid "Assamese"
-msgstr ""
+msgstr "Assamais"
 
-#: config.language_map:204
+# id::ast
+#: clm.value:231
 msgid "Bable"
-msgstr ""
+msgstr "Bable"
 
-#: config.language_map:205
+# id::ath
+#: clm.value:232
 msgid "Athapascan (Other)"
-msgstr ""
+msgstr "Athapascan (Autre)"
 
-#: config.language_map:206
+# id::aus
+#: clm.value:233
 msgid "Australian languages"
-msgstr ""
+msgstr "Langues australiennes"
 
-#: config.language_map:207
+# id::ava
+#: clm.value:234
 msgid "Avaric"
-msgstr ""
+msgstr "Avaric"
 
-#: config.language_map:208
+# id::ave
+#: clm.value:235
 msgid "Avestan"
-msgstr ""
+msgstr "Avesta"
 
-#: config.language_map:209
+# id::awa
+#: clm.value:236
 msgid "Awadhi"
-msgstr ""
+msgstr "Awadhi"
 
-#: config.language_map:210
+# id::aym
+#: clm.value:237
 msgid "Aymara"
-msgstr ""
+msgstr "Aïmara"
 
-#: config.language_map:211
+# id::aze
+#: clm.value:238
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaïdjanais"
 
-#: config.language_map:212
+# id::bad
+#: clm.value:239
 msgid "Banda"
-msgstr ""
+msgstr "Banda"
 
-#: config.language_map:213
+# id::bai
+#: clm.value:240
 msgid "Bamileke languages"
-msgstr ""
+msgstr "Langues bamilekes"
 
-#: config.language_map:214
+# id::bak
+#: clm.value:241
 msgid "Bashkir"
-msgstr ""
+msgstr "Bashkir"
 
-#: config.language_map:215
+# id::bal
+#: clm.value:242
 msgid "Baluchi"
-msgstr ""
+msgstr "Baluchi"
 
-#: config.language_map:216
+# id::bam
+#: clm.value:243
 msgid "Bambara"
-msgstr ""
+msgstr "Bambara"
 
-#: config.language_map:217
+# id::ban
+#: clm.value:244
 msgid "Balinese"
-msgstr ""
+msgstr "Balinais"
 
-#: config.language_map:218
+# id::baq
+#: clm.value:245
 msgid "Basque"
-msgstr ""
+msgstr "Basque"
 
-#: config.language_map:219
+# id::bas
+#: clm.value:246
 msgid "Basa"
-msgstr ""
+msgstr "Baasa"
 
-#: config.language_map:220
+# id::bat
+#: clm.value:247
 msgid "Baltic (Other)"
-msgstr ""
+msgstr "Balti (Autre)"
 
-#: config.language_map:221
+# id::bej
+#: clm.value:248
 msgid "Beja"
-msgstr ""
+msgstr "Beja"
 
-#: config.language_map:222
+# id::bel
+#: clm.value:249
 msgid "Belarusian"
-msgstr ""
+msgstr "Bélarussien"
 
-#: config.language_map:223
+# id::bem
+#: clm.value:250
 msgid "Bemba"
-msgstr ""
+msgstr "Bemba"
 
-#: config.language_map:224
+# id::ben
+#: clm.value:251
 msgid "Bengali"
-msgstr ""
+msgstr "Bengali"
 
-#: config.language_map:225
+# id::ber
+#: clm.value:252
 msgid "Berber (Other)"
-msgstr ""
+msgstr "Berbère (Autre)"
 
-#: config.language_map:226
+# id::bho
+#: clm.value:253
 msgid "Bhojpuri"
-msgstr ""
+msgstr "Bhojpuri"
 
-#: config.language_map:227
+# id::bih
+#: clm.value:254
 msgid "Bihari"
-msgstr ""
+msgstr "Bihari"
 
-#: config.language_map:228
+# id::bik
+#: clm.value:255
 msgid "Bikol"
-msgstr ""
+msgstr "Bikol"
 
-#: config.language_map:229
+# id::bin
+#: clm.value:256
 msgid "Edo"
-msgstr ""
+msgstr "Edo"
 
-#: config.language_map:230
+# id::bis
+#: clm.value:257
 msgid "Bislama"
-msgstr ""
+msgstr "Bislama"
 
-#: config.language_map:231
+# id::bla
+#: clm.value:258
 msgid "Siksika"
-msgstr ""
+msgstr "Siksika"
 
-#: config.language_map:232
+# id::bnt
+#: clm.value:259
 msgid "Bantu (Other)"
-msgstr ""
+msgstr "Bantu (Autre)"
 
-#: config.language_map:233
+# id::bos
+#: clm.value:260
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosniaque"
 
-#: config.language_map:234
+# id::bra
+#: clm.value:261
 msgid "Braj"
-msgstr ""
+msgstr "Braj"
 
-#: config.language_map:235
+# id::bre
+#: clm.value:262
 msgid "Breton"
-msgstr ""
+msgstr "Breton"
 
-#: config.language_map:236
+# id::btk
+#: clm.value:263
 msgid "Batak"
-msgstr ""
+msgstr "Batak"
 
-#: config.language_map:237
+# id::bua
+#: clm.value:264
 msgid "Buriat"
-msgstr ""
+msgstr "Buriat"
 
-#: config.language_map:238
+# id::bug
+#: clm.value:265
 msgid "Bugis"
-msgstr ""
+msgstr "Bugis"
 
-#: config.language_map:239
+# id::bul
+#: clm.value:266
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgare"
 
-#: config.language_map:240
+# id::bur
+#: clm.value:267
 msgid "Burmese"
-msgstr ""
+msgstr "Birman"
 
-#: config.language_map:241
+# id::cad
+#: clm.value:268
 msgid "Caddo"
-msgstr ""
+msgstr "Caddo"
 
-#: config.language_map:242
+# id::cai
+#: clm.value:269
 msgid "Central American Indian (Other)"
-msgstr ""
+msgstr "Amérindien de l’Amérique centrale (Autre)"
 
-#: config.language_map:243
+# id::-cam
+#: clm.value:270
 msgid "Khmer"
-msgstr ""
+msgstr "Khmer"
 
-#: config.language_map:244
+# id::car
+#: clm.value:271
 msgid "Carib"
-msgstr ""
+msgstr "Caribe"
 
-#: config.language_map:245
+# id::cat
+#: clm.value:272
 msgid "Catalan"
-msgstr ""
+msgstr "Catalan"
 
-#: config.language_map:246
+# id::cau
+#: clm.value:273
 msgid "Caucasian (Other)"
-msgstr ""
+msgstr "Catalan (Autre)"
 
-#: config.language_map:247
+# id::ceb
+#: clm.value:274
 msgid "Cebuano"
-msgstr ""
+msgstr "Cebuano"
 
-#: config.language_map:248
+# id::cel
+#: clm.value:275
 msgid "Celtic (Other)"
-msgstr ""
+msgstr "Celtique (Autre) "
 
-#: config.language_map:249
+# id::cha
+#: clm.value:276
 msgid "Chamorro"
-msgstr ""
+msgstr "Chamorro"
 
-#: config.language_map:250
+# id::chb
+#: clm.value:277
 msgid "Chibcha"
-msgstr ""
+msgstr "Chibcha"
 
-#: config.language_map:251
+# id::che
+#: clm.value:278
 msgid "Chechen"
-msgstr ""
+msgstr "Tchétchène"
 
-#: config.language_map:252
+# id::chg
+#: clm.value:279
 msgid "Chagatai"
-msgstr ""
+msgstr "Djaghatai"
 
-#: config.language_map:253
+# id::chi
+#: clm.value:280
 msgid "Chinese"
-msgstr ""
+msgstr "Chinois"
 
-#: config.language_map:254
+# id::chk
+#: clm.value:281
 msgid "Truk"
-msgstr ""
+msgstr "Trukois"
 
-#: config.language_map:255
+# id::chm
+#: clm.value:282
 msgid "Mari"
-msgstr ""
+msgstr "Mari"
 
-#: config.language_map:256
+# id::chn
+#: clm.value:283
 msgid "Chinook jargon"
-msgstr ""
+msgstr "Chinook"
 
-#: config.language_map:257
+# id::cho
+#: clm.value:284
 msgid "Choctaw"
-msgstr ""
+msgstr "Choctaw"
 
-#: config.language_map:258
+# id::chp
+#: clm.value:285
 msgid "Chipewyan"
-msgstr ""
+msgstr "Chippewyan"
 
-#: config.language_map:259
+# id::chr
+#: clm.value:286
 msgid "Cherokee"
-msgstr ""
+msgstr "Cherokee"
 
-#: config.language_map:260
+# id::chu
+#: clm.value:287
 msgid "Church Slavic"
-msgstr ""
+msgstr "Slavon liturgique"
 
-#: config.language_map:261
+# id::chv
+#: clm.value:288
 msgid "Chuvash"
-msgstr ""
+msgstr "Tchouvache"
 
-#: config.language_map:262
+# id::chy
+#: clm.value:289
 msgid "Cheyenne"
-msgstr ""
+msgstr "Cheyenne"
 
-#: config.language_map:263
+# id::cmc
+#: clm.value:290
 msgid "Chamic languages"
-msgstr ""
+msgstr "Langues chamiques"
 
-#: config.language_map:264
+# id::cop
+#: clm.value:291
 msgid "Coptic"
-msgstr ""
+msgstr "Copte"
 
-#: config.language_map:265
+# id::cor
+#: clm.value:292
 msgid "Cornish"
-msgstr ""
+msgstr "Cornique"
 
-#: config.language_map:266
+# id::cos
+#: clm.value:293
 msgid "Corsican"
-msgstr ""
+msgstr "Corse"
 
-#: config.language_map:267
+# id::cpe
+#: clm.value:294
 msgid "Creoles and Pidgins, English-based (Other)"
-msgstr ""
+msgstr "Langues créoles et pidgin, anglais (Autre)"
 
-#: config.language_map:268
+# id::cpf
+#: clm.value:295
 msgid "Creoles and Pidgins, French-based (Other)"
-msgstr ""
+msgstr "Langues créoles et pidgin, français (Autre)"
 
-#: config.language_map:269
+# id::cpp
+#: clm.value:296
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
-msgstr ""
+msgstr "Langues créoles et pidgin, portuguais (Autre)"
 
-#: config.language_map:270
+# id::cre
+#: clm.value:297
 msgid "Cree"
-msgstr ""
+msgstr "Cri"
 
-#: config.language_map:271
+# id::crh
+#: clm.value:298
 msgid "Crimean Tatar"
-msgstr ""
+msgstr "Tatar de Crimée"
 
-#: config.language_map:272
+# id::crp
+#: clm.value:299
 msgid "Creoles and Pidgins (Other)"
-msgstr ""
+msgstr "Langues créoles et pidgin (Autre)"
 
-#: config.language_map:273
+# id::cus
+#: clm.value:300
 msgid "Cushitic (Other)"
-msgstr ""
+msgstr "Couchitique (Autre)"
 
-#: config.language_map:274
+# id::cze
+#: clm.value:301
 msgid "Czech"
-msgstr ""
+msgstr "Tchèque"
 
-#: config.language_map:275
+# id::dak
+#: clm.value:302
 msgid "Dakota"
-msgstr ""
+msgstr "Dakota"
 
-#: config.language_map:276
+# id::dan
+#: clm.value:303
 msgid "Danish"
-msgstr ""
+msgstr "Danois"
 
-#: config.language_map:277
+# id::dar
+#: clm.value:304
 msgid "Dargwa"
-msgstr ""
+msgstr "Dargwa"
 
-#: config.language_map:278
+# id::day
+#: clm.value:305
 msgid "Dayak"
-msgstr ""
+msgstr "Dayak"
 
-#: config.language_map:279
+# id::del
+#: clm.value:306
 msgid "Delaware"
-msgstr ""
+msgstr "Delaware"
 
-#: config.language_map:280
+# id::den
+#: clm.value:307
 msgid "Slave"
-msgstr ""
+msgstr "Slave"
 
-#: config.language_map:281
+# id::dgr
+#: clm.value:308
 msgid "Dogrib"
-msgstr ""
+msgstr "Dogrib"
 
-#: config.language_map:282
+# id::din
+#: clm.value:309
 msgid "Dinka"
-msgstr ""
+msgstr "Dinka"
 
-#: config.language_map:283
+# id::div
+#: clm.value:310
 msgid "Divehi"
-msgstr ""
+msgstr "Divehi"
 
-#: config.language_map:284
+# id::doi
+#: clm.value:311
 msgid "Dogri"
-msgstr ""
+msgstr "Dogra"
 
-#: config.language_map:285
+# id::dra
+#: clm.value:312
 msgid "Dravidian (Other)"
-msgstr ""
+msgstr "Dravidienne (Autre)"
 
-#: config.language_map:286
+# id::dua
+#: clm.value:313
 msgid "Duala"
-msgstr ""
+msgstr "Douala"
 
-#: config.language_map:287
+# id::dum
+#: clm.value:314
 msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr ""
+msgstr "Moyen néerlandais (aux environs de 1050-1350)"
 
-#: config.language_map:288
+# id::dut
+#: clm.value:315
 msgid "Dutch"
-msgstr ""
+msgstr "Hollandais"
 
-#: config.language_map:289
+# id::dyu
+#: clm.value:316
 msgid "Dyula"
-msgstr ""
+msgstr "Dyula"
 
-#: config.language_map:290
+# id::dzo
+#: clm.value:317
 msgid "Dzongkha"
-msgstr ""
+msgstr "Dzonga"
 
-#: config.language_map:291
+# id::efi
+#: clm.value:318
 msgid "Efik"
-msgstr ""
+msgstr "Efik"
 
-#: config.language_map:292
+# id::egy
+#: clm.value:319
 msgid "Egyptian"
-msgstr ""
+msgstr "Égyptien"
 
-#: config.language_map:293
+# id::eka
+#: clm.value:320
 msgid "Ekajuk"
-msgstr ""
+msgstr "Ekajuk"
 
-#: config.language_map:294
+# id::elx
+#: clm.value:321
 msgid "Elamite"
-msgstr ""
+msgstr "Élamite"
 
-#: config.language_map:295
+# id::eng
+#: clm.value:322
 msgid "English"
-msgstr ""
+msgstr "Anglais"
 
-#: config.language_map:296
+# id::enm
+#: clm.value:323
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "Moyen anglais (1100-1500)"
 
-#: config.language_map:297
+# id::epo
+#: clm.value:324
 msgid "Esperanto"
-msgstr ""
+msgstr "Espéranto"
 
-#: config.language_map:298
+# id::-esk
+#: clm.value:325
 msgid "Eskimo languages"
-msgstr ""
+msgstr "Langues inuites"
 
-#: config.language_map:299
+# id::-esp
+#: clm.value:326
 msgid "Esperanto"
-msgstr ""
+msgstr "Espéranto"
 
-#: config.language_map:300
+# id::est
+#: clm.value:327
 msgid "Estonian"
-msgstr ""
+msgstr "Estonien"
 
-#: config.language_map:301
+# id::-eth
+#: clm.value:328
 msgid "Ethiopic"
-msgstr ""
+msgstr "Éthiopien"
 
-#: config.language_map:302
+# id::ewe
+#: clm.value:329
 msgid "Ewe"
-msgstr ""
+msgstr "Éwé"
 
-#: config.language_map:303
+# id::ewo
+#: clm.value:330
 msgid "Ewondo"
-msgstr ""
+msgstr "Ewondo"
 
-#: config.language_map:304
+# id::fan
+#: clm.value:331
 msgid "Fang"
-msgstr ""
+msgstr "Fan"
 
-#: config.language_map:305
+# id::fao
+#: clm.value:332
 msgid "Faroese"
-msgstr ""
+msgstr "Féringien"
 
-#: config.language_map:306
+# id::-far
+#: clm.value:333
 msgid "Faroese"
-msgstr ""
+msgstr "Féringien"
 
-#: config.language_map:307
+# id::fat
+#: clm.value:334
 msgid "Fanti"
-msgstr ""
+msgstr "Fanti"
 
-#: config.language_map:308
+# id::fij
+#: clm.value:335
 msgid "Fijian"
-msgstr ""
+msgstr "Fidjien"
 
-#: config.language_map:309
+# id::fin
+#: clm.value:336
 msgid "Finnish"
-msgstr ""
+msgstr "Finnois"
 
-#: config.language_map:310
+# id::fiu
+#: clm.value:337
 msgid "Finno-Ugrian (Other)"
-msgstr ""
+msgstr "Finno-ougrienne (Autre)"
 
-#: config.language_map:311
+# id::fon
+#: clm.value:338
 msgid "Fon"
-msgstr ""
+msgstr "Fon"
 
-#: config.language_map:312
+# id::fre
+#: clm.value:339
 msgid "French"
-msgstr ""
+msgstr "Français"
 
-#: config.language_map:313
+# id::-fri
+#: clm.value:340
 msgid "Frisian"
-msgstr ""
+msgstr "Frison"
 
-#: config.language_map:314
+# id::frm
+#: clm.value:341
 msgid "French, Middle (ca. 1400-1600)"
-msgstr ""
+msgstr "Moyen français (aux environs de 1400-1600)"
 
-#: config.language_map:315
+# id::fro
+#: clm.value:342
 msgid "French, Old (ca. 842-1400)"
-msgstr ""
+msgstr "Ancien français (aux environs de 842-1400)"
 
-#: config.language_map:316
+# id::fry
+#: clm.value:343
 msgid "Frisian"
-msgstr ""
+msgstr "Frison"
 
-#: config.language_map:317
+# id::ful
+#: clm.value:344
 msgid "Fula"
-msgstr ""
+msgstr "Fulfude"
 
-#: config.language_map:318
+# id::fur
+#: clm.value:345
 msgid "Friulian"
-msgstr ""
+msgstr "Frioulan"
 
-#: config.language_map:319
+# id::gaa
+#: clm.value:346
 msgid "Gã"
-msgstr ""
+msgstr "Gã"
 
-#: config.language_map:320
+# id::-gae
+#: clm.value:347
 msgid "Scottish Gaelic"
-msgstr ""
+msgstr "Gaélique d'Écosse"
 
-#: config.language_map:321
+# id::-gag
+#: clm.value:348
 msgid "Galician"
-msgstr ""
+msgstr "Galicien"
 
-#: config.language_map:322
+# id::-gal
+#: clm.value:349
 msgid "Oromo"
-msgstr ""
+msgstr "Oromo"
 
-#: config.language_map:323
+# id::gay
+#: clm.value:350
 msgid "Gayo"
-msgstr ""
+msgstr "Gayo"
 
-#: config.language_map:324
+# id::gba
+#: clm.value:351
 msgid "Gbaya"
-msgstr ""
+msgstr "Gbaya"
 
-#: config.language_map:325
+# id::gem
+#: clm.value:352
 msgid "Germanic (Other)"
-msgstr ""
+msgstr "Germanique (Autre)"
 
-#: config.language_map:326
+# id::geo
+#: clm.value:353
 msgid "Georgian"
-msgstr ""
+msgstr "Géorgien"
 
-#: config.language_map:327
+# id::ger
+#: clm.value:354
 msgid "German"
-msgstr ""
+msgstr "Allemand"
 
-#: config.language_map:328
+# id::gez
+#: clm.value:355
 msgid "Ethiopic"
-msgstr ""
+msgstr "Éthiopien"
 
-#: config.language_map:329
+# id::gil
+#: clm.value:356
 msgid "Gilbertese"
-msgstr ""
+msgstr "Gilbertais"
 
-#: config.language_map:330
+# id::gla
+#: clm.value:357
 msgid "Scottish Gaelic"
-msgstr ""
+msgstr "Gaélique d'Écosse"
 
-#: config.language_map:331
+# id::gle
+#: clm.value:358
 msgid "Irish"
-msgstr ""
+msgstr "Irlandais"
 
-#: config.language_map:332
+# id::glg
+#: clm.value:359
 msgid "Galician"
-msgstr ""
+msgstr "Galicien"
 
-#: config.language_map:333
+# id::glv
+#: clm.value:360
 msgid "Manx"
-msgstr ""
+msgstr "Manx"
 
-#: config.language_map:334
+# id::gmh
+#: clm.value:361
 msgid "German, Middle High (ca. 1050-1500)"
-msgstr ""
+msgstr "Haut-allemand moyen (aux environs de 1050-1500)"
 
-#: config.language_map:335
+# id::goh
+#: clm.value:362
 msgid "German, Old High (ca. 750-1050)"
-msgstr ""
+msgstr "Vieux haut-allemand (aux environs de 750-1050)"
 
-#: config.language_map:336
+# id::gon
+#: clm.value:363
 msgid "Gondi"
-msgstr ""
+msgstr "Gondi"
 
-#: config.language_map:337
+# id::gor
+#: clm.value:364
 msgid "Gorontalo"
-msgstr ""
+msgstr "Gorontalo"
 
-#: config.language_map:338
+# id::got
+#: clm.value:365
 msgid "Gothic"
-msgstr ""
+msgstr "Gotique"
 
-#: config.language_map:339
+# id::grb
+#: clm.value:366
 msgid "Grebo"
-msgstr ""
+msgstr "Grebo"
 
-#: config.language_map:340
+# id::grc
+#: clm.value:367
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "Grec ancien (jusqu’à 1453)"
 
-#: config.language_map:341
+# id::gre
+#: clm.value:368
 msgid "Greek, Modern (1453- )"
-msgstr ""
+msgstr "Grec moderne (de 1453 à)"
 
-#: config.language_map:342
+# id::grn
+#: clm.value:369
 msgid "Guarani"
-msgstr ""
+msgstr "Guarani"
 
-#: config.language_map:343
+# id::-gua
+#: clm.value:370
 msgid "Guarani"
-msgstr ""
+msgstr "Guarani"
 
-#: config.language_map:344
+# id::guj
+#: clm.value:371
 msgid "Gujarati"
+msgstr "Gujarati"
+
+# id::gwi
+#: clm.value''in:372
+msgid "Gwich"
 msgstr ""
 
-#: config.language_map:345
-msgid "Gwich'in"
-msgstr ""
-
-#: config.language_map:346
+# id::hai
+#: clm.value:373
 msgid "Haida"
-msgstr ""
+msgstr "Skittagetan"
 
-#: config.language_map:347
+# id::hat
+#: clm.value:374
 msgid "Haitian French Creole"
-msgstr ""
+msgstr "Créole français de Haïti"
 
-#: config.language_map:348
+# id::hau
+#: clm.value:375
 msgid "Hausa"
-msgstr ""
+msgstr "Haoussa"
 
-#: config.language_map:349
+# id::haw
+#: clm.value:376
 msgid "Hawaiian"
-msgstr ""
+msgstr "Hawaïen"
 
-#: config.language_map:350
+# id::heb
+#: clm.value:377
 msgid "Hebrew"
-msgstr ""
+msgstr "Hébreu"
 
-#: config.language_map:351
+# id::her
+#: clm.value:378
 msgid "Herero"
-msgstr ""
+msgstr "Herero"
 
-#: config.language_map:352
+# id::hil
+#: clm.value:379
 msgid "Hiligaynon"
-msgstr ""
+msgstr "Hiligaynon"
 
-#: config.language_map:353
+# id::him
+#: clm.value:380
 msgid "Himachali"
-msgstr ""
+msgstr "Himachali"
 
-#: config.language_map:354
+# id::hin
+#: clm.value:381
 msgid "Hindi"
-msgstr ""
+msgstr "Hindi"
 
-#: config.language_map:355
+# id::hit
+#: clm.value:382
 msgid "Hittite"
-msgstr ""
+msgstr "Hittite"
 
-#: config.language_map:356
+# id::hmn
+#: clm.value:383
 msgid "Hmong"
-msgstr ""
+msgstr "Hmong"
 
-#: config.language_map:357
+# id::hmo
+#: clm.value:384
 msgid "Hiri Motu"
-msgstr ""
+msgstr "Hiri-motu "
 
-#: config.language_map:358
+# id::hun
+#: clm.value:385
 msgid "Hungarian"
-msgstr ""
+msgstr "Hongrois"
 
-#: config.language_map:359
+# id::hup
+#: clm.value:386
 msgid "Hupa"
-msgstr ""
+msgstr "Hupa"
 
-#: config.language_map:360
+# id::iba
+#: clm.value:387
 msgid "Iban"
-msgstr ""
+msgstr "Iban"
 
-#: config.language_map:361
+# id::ibo
+#: clm.value:388
 msgid "Igbo"
-msgstr ""
+msgstr "Igbo"
 
-#: config.language_map:362
+# id::ice
+#: clm.value:389
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandais"
 
-#: config.language_map:363
+# id::ido
+#: clm.value:390
 msgid "Ido"
-msgstr ""
+msgstr "Ido"
 
-#: config.language_map:364
+# id::iii
+#: clm.value:391
 msgid "Sichuan Yi"
-msgstr ""
+msgstr "Sichuan Yi "
 
-#: config.language_map:365
+# id::ijo
+#: clm.value:392
 msgid "Ijo"
-msgstr ""
+msgstr "Ijo"
 
-#: config.language_map:366
+# id::iku
+#: clm.value:393
 msgid "Inuktitut"
-msgstr ""
+msgstr "Inuktitut"
 
-#: config.language_map:367
+# id::ile
+#: clm.value:394
 msgid "Interlingue"
-msgstr ""
+msgstr "Interlingue"
 
-#: config.language_map:368
+# id::ilo
+#: clm.value:395
 msgid "Iloko"
-msgstr ""
+msgstr "Iloko"
 
-#: config.language_map:369
+# id::ina
+#: clm.value:396
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "Interlingua (Langue Auxiliaire Internationale)"
 
-#: config.language_map:370
+# id::inc
+#: clm.value:397
 msgid "Indic (Other)"
-msgstr ""
+msgstr "Langue indo-aryenne (Autre)"
 
-#: config.language_map:371
+# id::ind
+#: clm.value:398
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonésienne"
 
-#: config.language_map:372
+# id::ine
+#: clm.value:399
 msgid "Indo-European (Other)"
-msgstr ""
+msgstr "Indo-européenne (Autre)"
 
-#: config.language_map:373
+# id::inh
+#: clm.value:400
 msgid "Ingush"
-msgstr ""
+msgstr "Ingouche"
 
-#: config.language_map:374
+# id::-int
+#: clm.value:401
 msgid "Interlingua (International Auxiliary Language Association)"
-msgstr ""
+msgstr "Interlingua (Langue Auxiliaire Internationale)"
 
-#: config.language_map:375
+# id::ipk
+#: clm.value:402
 msgid "Inupiaq"
-msgstr ""
+msgstr "Inupiaq"
 
-#: config.language_map:376
+# id::ira
+#: clm.value:403
 msgid "Iranian (Other)"
-msgstr ""
+msgstr "Iranien (Autre) "
 
-#: config.language_map:377
+# id::-iri
+#: clm.value:404
 msgid "Irish"
-msgstr ""
+msgstr "Irlandais"
 
-#: config.language_map:378
+# id::iro
+#: clm.value:405
 msgid "Iroquoian (Other)"
-msgstr ""
+msgstr "Langue iroquoianne (Autre)"
 
-#: config.language_map:379
+# id::ita
+#: clm.value:406
 msgid "Italian"
-msgstr ""
+msgstr "Italien"
 
-#: config.language_map:380
+# id::jav
+#: clm.value:407
 msgid "Javanese"
-msgstr ""
+msgstr "Javanais"
 
-#: config.language_map:381
+# id::jpn
+#: clm.value:408
 msgid "Japanese"
-msgstr ""
+msgstr "Japonais"
 
-#: config.language_map:382
+# id::jpr
+#: clm.value:409
 msgid "Judeo-Persian"
-msgstr ""
+msgstr "Judéo-persan"
 
-#: config.language_map:383
+# id::jrb
+#: clm.value:410
 msgid "Judeo-Arabic"
-msgstr ""
+msgstr "Judéo-arabe"
 
-#: config.language_map:384
+# id::kaa
+#: clm.value:411
 msgid "Kara-Kalpak"
-msgstr ""
+msgstr "Kara-kalpak"
 
-#: config.language_map:385
+# id::kab
+#: clm.value:412
 msgid "Kabyle"
-msgstr ""
+msgstr "Kabyle"
 
-#: config.language_map:386
+# id::kac
+#: clm.value:413
 msgid "Kachin"
-msgstr ""
+msgstr "Kachin"
 
-#: config.language_map:387
+# id::kal
+#: clm.value:414
 msgid "Kalâtdlisut"
-msgstr ""
+msgstr "Kalâtdlisut"
 
-#: config.language_map:388
+# id::kam
+#: clm.value:415
 msgid "Kamba"
-msgstr ""
+msgstr "Kamba"
 
-#: config.language_map:389
+# id::kan
+#: clm.value:416
 msgid "Kannada"
-msgstr ""
+msgstr "Kannara"
 
-#: config.language_map:390
+# id::kar
+#: clm.value:417
 msgid "Karen"
-msgstr ""
+msgstr "Karen"
 
-#: config.language_map:391
+# id::kas
+#: clm.value:418
 msgid "Kashmiri"
-msgstr ""
+msgstr "Kachméré"
 
-#: config.language_map:392
+# id::kau
+#: clm.value:419
 msgid "Kanuri"
-msgstr ""
+msgstr "Kanuri"
 
-#: config.language_map:393
+# id::kaw
+#: clm.value:420
 msgid "Kawi"
-msgstr ""
+msgstr "Kawi"
 
-#: config.language_map:394
+# id::kaz
+#: clm.value:421
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
-#: config.language_map:395
+# id::kbd
+#: clm.value:422
 msgid "Kabardian"
-msgstr ""
+msgstr "Kabardine"
 
-#: config.language_map:396
+# id::kha
+#: clm.value:423
 msgid "Khasi"
-msgstr ""
+msgstr "Khasi"
 
-#: config.language_map:397
+# id::khi
+#: clm.value:424
 msgid "Khoisan (Other)"
-msgstr ""
+msgstr "Khoin (Autre)"
 
-#: config.language_map:398
+# id::khm
+#: clm.value:425
 msgid "Khmer"
-msgstr ""
+msgstr "Khmer"
 
-#: config.language_map:399
+# id::kho
+#: clm.value:426
 msgid "Khotanese"
-msgstr ""
+msgstr "Khotanais"
 
-#: config.language_map:400
+# id::kik
+#: clm.value:427
 msgid "Kikuyu"
-msgstr ""
+msgstr "Kikuyu"
 
-#: config.language_map:401
+# id::kin
+#: clm.value:428
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "Kinyarwanda"
 
-#: config.language_map:402
+# id::kir
+#: clm.value:429
 msgid "Kyrgyz"
-msgstr ""
+msgstr "Kirghize"
 
-#: config.language_map:403
+# id::kmb
+#: clm.value:430
 msgid "Kimbundu"
-msgstr ""
+msgstr "Kimboundou"
 
-#: config.language_map:404
+# id::kok
+#: clm.value:431
 msgid "Konkani"
-msgstr ""
+msgstr "Konkani"
 
-#: config.language_map:405
+# id::kom
+#: clm.value:432
 msgid "Komi"
-msgstr ""
+msgstr "Komi"
 
-#: config.language_map:406
+# id::kon
+#: clm.value:433
 msgid "Kongo"
-msgstr ""
+msgstr "Kongo"
 
-#: config.language_map:407
+# id::kor
+#: clm.value:434
 msgid "Korean"
-msgstr ""
+msgstr "Coréen"
 
-#: config.language_map:408
+# id::kos
+#: clm.value:435
 msgid "Kusaie"
-msgstr ""
+msgstr "Kusaie"
 
-#: config.language_map:409
+# id::kpe
+#: clm.value:436
 msgid "Kpelle"
-msgstr ""
+msgstr "Kpellé"
 
-#: config.language_map:410
+# id::kro
+#: clm.value:437
 msgid "Kru"
-msgstr ""
+msgstr "Kru"
 
-#: config.language_map:411
+# id::kru
+#: clm.value:438
 msgid "Kurukh"
-msgstr ""
+msgstr "Kurukh"
 
-#: config.language_map:412
+# id::kua
+#: clm.value:439
 msgid "Kuanyama"
-msgstr ""
+msgstr "Ovambo"
 
-#: config.language_map:413
+# id::kum
+#: clm.value:440
 msgid "Kumyk"
-msgstr ""
+msgstr "Kumyk"
 
-#: config.language_map:414
+# id::kur
+#: clm.value:441
 msgid "Kurdish"
-msgstr ""
+msgstr "Kurde"
 
-#: config.language_map:415
+# id::-kus
+#: clm.value:442
 msgid "Kusaie"
-msgstr ""
+msgstr "Kusaie"
 
-#: config.language_map:416
+# id::kut
+#: clm.value:443
 msgid "Kutenai"
-msgstr ""
+msgstr "Kutenai"
 
-#: config.language_map:417
+# id::lad
+#: clm.value:444
 msgid "Ladino"
-msgstr ""
+msgstr "Ladino"
 
-#: config.language_map:418
+# id::lah
+#: clm.value:445
 msgid "Lahnda"
-msgstr ""
+msgstr "Lahnda"
 
-#: config.language_map:419
+# id::lam
+#: clm.value:446
 msgid "Lamba"
-msgstr ""
+msgstr "Lamba"
 
-#: config.language_map:420
+# id::-lan
+#: clm.value:447
 msgid "Occitan (post-1500)"
-msgstr ""
+msgstr "Occitan (après 1500)"
 
-#: config.language_map:421
+# id::lao
+#: clm.value:448
 msgid "Lao"
-msgstr ""
+msgstr "Lao"
 
-#: config.language_map:422
+# id::-lap
+#: clm.value:449
 msgid "Sami"
-msgstr ""
+msgstr "Lapon"
 
-#: config.language_map:423
+# id::lat
+#: clm.value:450
 msgid "Latin"
-msgstr ""
+msgstr "Latin"
 
-#: config.language_map:424
+# id::lav
+#: clm.value:451
 msgid "Latvian"
-msgstr ""
+msgstr "Lette"
 
-#: config.language_map:425
+# id::lez
+#: clm.value:452
 msgid "Lezgian"
-msgstr ""
+msgstr "Lezgian"
 
-#: config.language_map:426
+# id::lim
+#: clm.value:453
 msgid "Limburgish"
-msgstr ""
+msgstr "Limburgish"
 
-#: config.language_map:427
+# id::lin
+#: clm.value:454
 msgid "Lingala"
-msgstr ""
+msgstr "Lingala"
 
-#: config.language_map:428
+# id::lit
+#: clm.value:455
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lituanien"
 
-#: config.language_map:429
+# id::lol
+#: clm.value:456
 msgid "Mongo-Nkundu"
-msgstr ""
+msgstr "Mongo-Nkundu"
 
-#: config.language_map:430
+# id::loz
+#: clm.value:457
 msgid "Lozi"
-msgstr ""
+msgstr "Lozi"
 
-#: config.language_map:431
+# id::ltz
+#: clm.value:458
 msgid "Letzeburgesch"
-msgstr ""
+msgstr "Letzeburgesch"
 
-#: config.language_map:432
+# id::lua
+#: clm.value:459
 msgid "Luba-Lulua"
-msgstr ""
+msgstr "Luba-Lulua"
 
-#: config.language_map:433
+# id::lub
+#: clm.value:460
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "Luba-Katanga"
 
-#: config.language_map:434
+# id::lug
+#: clm.value:461
 msgid "Ganda"
-msgstr ""
+msgstr "Ganda"
 
-#: config.language_map:435
+# id::lui
+#: clm.value:462
 msgid "Luiseño"
-msgstr ""
+msgstr "Luiseño"
 
-#: config.language_map:436
+# id::lun
+#: clm.value:463
 msgid "Lunda"
-msgstr ""
+msgstr "Lunda"
 
-#: config.language_map:437
+# id::luo
+#: clm.value:464
 msgid "Luo (Kenya and Tanzania)"
-msgstr ""
+msgstr "Luo (Kenya et Tanzanie)"
 
-#: config.language_map:438
+# id::lus
+#: clm.value:465
 msgid "Lushai"
-msgstr ""
+msgstr "Lushei"
 
-#: config.language_map:439
+# id::mac
+#: clm.value:466
 msgid "Macedonian"
-msgstr ""
+msgstr "Macédonien"
 
-#: config.language_map:440
+# id::mad
+#: clm.value:467
 msgid "Madurese"
-msgstr ""
+msgstr "Madurais"
 
-#: config.language_map:441
+# id::mag
+#: clm.value:468
 msgid "Magahi"
-msgstr ""
+msgstr "Magahi"
 
-#: config.language_map:442
+# id::mah
+#: clm.value:469
 msgid "Marshallese"
-msgstr ""
+msgstr "Marshallois"
 
-#: config.language_map:443
+# id::mai
+#: clm.value:470
 msgid "Maithili"
-msgstr ""
+msgstr "Maithili"
 
-#: config.language_map:444
+# id::mak
+#: clm.value:471
 msgid "Makasar"
-msgstr ""
+msgstr "Macassar"
 
-#: config.language_map:445
+# id::mal
+#: clm.value:472
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
-#: config.language_map:446
+# id::man
+#: clm.value:473
 msgid "Mandingo"
-msgstr ""
+msgstr "Meninka"
 
-#: config.language_map:447
+# id::mao
+#: clm.value:474
 msgid "Maori"
-msgstr ""
+msgstr "Maori"
 
-#: config.language_map:448
+# id::map
+#: clm.value:475
 msgid "Austronesian (Other)"
-msgstr ""
+msgstr "Austronesian (Autre)"
 
-#: config.language_map:449
+# id::mar
+#: clm.value:476
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
-#: config.language_map:450
+# id::mas
+#: clm.value:477
 msgid "Masai"
-msgstr ""
+msgstr "Masai"
 
-#: config.language_map:451
+# id::-max
+#: clm.value:478
 msgid "Manx"
-msgstr ""
+msgstr "Manx"
 
-#: config.language_map:452
+# id::may
+#: clm.value:479
 msgid "Malay"
-msgstr ""
+msgstr "Malais"
 
-#: config.language_map:453
+# id::mdr
+#: clm.value:480
 msgid "Mandar"
-msgstr ""
+msgstr "Mandar"
 
-#: config.language_map:454
+# id::men
+#: clm.value:481
 msgid "Mende"
-msgstr ""
+msgstr "Mendé"
 
-#: config.language_map:455
+# id::mga
+#: clm.value:482
 msgid "Irish, Middle (ca. 1100-1550)"
-msgstr ""
+msgstr "Moyen irlandais (aux environs de 1100-1550)"
 
-#: config.language_map:456
+# id::mic
+#: clm.value:483
 msgid "Micmac"
-msgstr ""
+msgstr "Micmac"
 
-#: config.language_map:457
+# id::min
+#: clm.value:484
 msgid "Minangkabau"
-msgstr ""
+msgstr "Minangkabau"
 
-#: config.language_map:458
+# id::mis
+#: clm.value:485
 msgid "Miscellaneous languages"
-msgstr ""
+msgstr "Diverses langues"
 
-#: config.language_map:459
+# id::mkh
+#: clm.value:486
 msgid "Mon-Khmer (Other)"
-msgstr ""
+msgstr "Mon-Khmer (Autre)"
 
-#: config.language_map:460
+# id::-mla
+#: clm.value:487
 msgid "Malagasy"
-msgstr ""
+msgstr "Malgache"
 
-#: config.language_map:461
+# id::mlg
+#: clm.value:488
 msgid "Malagasy"
-msgstr ""
+msgstr "Malgache"
 
-#: config.language_map:462
+# id::mlt
+#: clm.value:489
 msgid "Maltese"
-msgstr ""
+msgstr "Maltais"
 
-#: config.language_map:463
+# id::mnc
+#: clm.value:490
 msgid "Manchu"
-msgstr ""
+msgstr "Mandchou"
 
-#: config.language_map:464
+# id::mni
+#: clm.value:491
 msgid "Manipuri"
-msgstr ""
+msgstr "Meithei"
 
-#: config.language_map:465
+# id::mno
+#: clm.value:492
 msgid "Manobo languages"
-msgstr ""
+msgstr "Langues Manobo"
 
-#: config.language_map:466
+# id::moh
+#: clm.value:493
 msgid "Mohawk"
-msgstr ""
+msgstr "Mohawk"
 
-#: config.language_map:467
+# id::mol
+#: clm.value:494
 msgid "Moldavian"
-msgstr ""
+msgstr "Moldave"
 
-#: config.language_map:468
+# id::mon
+#: clm.value:495
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongol"
 
-#: config.language_map:469
+# id::mos
+#: clm.value:496
 msgid "Mooré"
-msgstr ""
+msgstr "Mooré"
 
-#: config.language_map:470
+# id::mul
+#: clm.value:497
 msgid "Multiple languages"
-msgstr ""
+msgstr "Langues multiples"
 
-#: config.language_map:471
+# id::mun
+#: clm.value:498
 msgid "Munda (Other)"
-msgstr ""
+msgstr "Mounda (Autre)"
 
-#: config.language_map:472
+# id::mus
+#: clm.value:499
 msgid "Creek"
-msgstr ""
+msgstr "Creek"
 
-#: config.language_map:473
+# id::mwr
+#: clm.value:500
 msgid "Marwari"
-msgstr ""
+msgstr "Marvari"
 
-#: config.language_map:474
+# id::myn
+#: clm.value:501
 msgid "Mayan languages"
-msgstr ""
+msgstr "Langues mayas"
 
-#: config.language_map:475
+# id::nah
+#: clm.value:502
 msgid "Nahuatl"
-msgstr ""
+msgstr "Nahuatl"
 
-#: config.language_map:476
+# id::nai
+#: clm.value:503
 msgid "North American Indian (Other)"
-msgstr ""
+msgstr "Indien de l'Amerique du Nort (Autre)"
 
-#: config.language_map:477
+# id::nap
+#: clm.value:504
 msgid "Neapolitan Italian"
-msgstr ""
+msgstr "Italien napolitain"
 
-#: config.language_map:478
+# id::nau
+#: clm.value:505
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
-#: config.language_map:479
+# id::nav
+#: clm.value:506
 msgid "Navajo"
-msgstr ""
+msgstr "Navaho"
 
-#: config.language_map:480
+# id::nbl
+#: clm.value:507
 msgid "Ndebele (South Africa)"
-msgstr ""
+msgstr "Ndébélé (Afrique du Sud)"
 
-#: config.language_map:481
+# id::nde
+#: clm.value:508
 msgid "Ndebele (Zimbabwe)  "
-msgstr ""
+msgstr "Ndébélé (Zimbabwe)"
 
-#: config.language_map:482
+# id::ndo
+#: clm.value:509
 msgid "Ndonga"
-msgstr ""
+msgstr "Ndonga"
 
-#: config.language_map:483
+# id::nds
+#: clm.value:510
 msgid "Low German"
-msgstr ""
+msgstr "Bas-allemand"
 
-#: config.language_map:484
+# id::nep
+#: clm.value:511
 msgid "Nepali"
-msgstr ""
+msgstr "Népalais"
 
-#: config.language_map:485
+# id::new
+#: clm.value:512
 msgid "Newari"
-msgstr ""
+msgstr "Newari"
 
-#: config.language_map:486
+# id::nia
+#: clm.value:513
 msgid "Nias"
-msgstr ""
+msgstr "Nias"
 
-#: config.language_map:487
+# id::nic
+#: clm.value:514
 msgid "Niger-Kordofanian (Other)"
-msgstr ""
+msgstr "Niger-Kordofanian (Autre)"
 
-#: config.language_map:488
+# id::niu
+#: clm.value:515
 msgid "Niuean"
-msgstr ""
+msgstr "Niue"
 
-#: config.language_map:489
+# id::nno
+#: clm.value:516
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norvégien (Nynorsk)"
 
-#: config.language_map:490
+# id::nob
+#: clm.value:517
 msgid "Norwegian (Bokmål)"
-msgstr ""
+msgstr "Norvégien (Bokmål)"
 
-#: config.language_map:491
+# id::nog
+#: clm.value:518
 msgid "Nogai"
-msgstr ""
+msgstr "Nogai"
 
-#: config.language_map:492
+# id::non
+#: clm.value:519
 msgid "Old Norse"
-msgstr ""
+msgstr "Vieil islandais"
 
-#: config.language_map:493
+# id::nor
+#: clm.value:520
 msgid "Norwegian"
-msgstr ""
+msgstr "Norvégien"
 
-#: config.language_map:494
+# id::nso
+#: clm.value:521
 msgid "Northern Sotho"
-msgstr ""
+msgstr "Sotho du Nord"
 
-#: config.language_map:495
+# id::nub
+#: clm.value:522
 msgid "Nubian languages"
-msgstr ""
+msgstr "Langues nubiennes"
 
-#: config.language_map:496
+# id::nya
+#: clm.value:523
 msgid "Nyanja"
-msgstr ""
+msgstr "Nyanga"
 
-#: config.language_map:497
+# id::nym
+#: clm.value:524
 msgid "Nyamwezi"
-msgstr ""
+msgstr "Nyamwezi"
 
-#: config.language_map:498
+# id::nyn
+#: clm.value:525
 msgid "Nyankole"
-msgstr ""
+msgstr "Nkole"
 
-#: config.language_map:499
+# id::nyo
+#: clm.value:526
 msgid "Nyoro"
-msgstr ""
+msgstr "Nyoro"
 
-#: config.language_map:500
+# id::nzi
+#: clm.value:527
 msgid "Nzima"
-msgstr ""
+msgstr "Nzima"
 
-#: config.language_map:501
+# id::oci
+#: clm.value:528
 msgid "Occitan (post-1500)"
-msgstr ""
+msgstr "Occitan (après 1500)"
 
-#: config.language_map:502
+# id::oji
+#: clm.value:529
 msgid "Ojibwa"
-msgstr ""
+msgstr "Ojibwa"
 
-#: config.language_map:503
+# id::ori
+#: clm.value:530
 msgid "Oriya"
-msgstr ""
+msgstr "Oriya"
 
-#: config.language_map:504
+# id::orm
+#: clm.value:531
 msgid "Oromo"
-msgstr ""
+msgstr "Oromo"
 
-#: config.language_map:505
+# id::osa
+#: clm.value:532
 msgid "Osage"
-msgstr ""
+msgstr "Osage"
 
-#: config.language_map:506
+# id::oss
+#: clm.value:533
 msgid "Ossetic"
-msgstr ""
+msgstr "Ossète"
 
-#: config.language_map:507
+# id::ota
+#: clm.value:534
 msgid "Turkish, Ottoman"
-msgstr ""
+msgstr "Turquie, Ottoman "
 
-#: config.language_map:508
+# id::oto
+#: clm.value:535
 msgid "Otomian languages"
-msgstr ""
+msgstr "Langues otomangues"
 
-#: config.language_map:509
+# id::paa
+#: clm.value:536
 msgid "Papuan (Other)"
-msgstr ""
+msgstr "Papou (Autre)"
 
-#: config.language_map:510
+# id::pag
+#: clm.value:537
 msgid "Pangasinan"
-msgstr ""
+msgstr "Pangasinan"
 
-#: config.language_map:511
+# id::pal
+#: clm.value:538
 msgid "Pahlavi"
-msgstr ""
+msgstr "Pahlavi"
 
-#: config.language_map:512
+# id::pam
+#: clm.value:539
 msgid "Pampanga"
-msgstr ""
+msgstr "Pampangan"
 
-#: config.language_map:513
+# id::pan
+#: clm.value:540
 msgid "Panjabi"
-msgstr ""
+msgstr "Panjabi"
 
-#: config.language_map:514
+# id::pap
+#: clm.value:541
 msgid "Papiamento"
-msgstr ""
+msgstr "Papiamento"
 
-#: config.language_map:515
+# id::pau
+#: clm.value:542
 msgid "Palauan"
-msgstr ""
+msgstr "Palauan"
 
-#: config.language_map:516
+# id::peo
+#: clm.value:543
 msgid "Old Persian (ca. 600-400 B.C.)"
-msgstr ""
+msgstr "Vieux perse (aux environs de 600 à 400 avant J.-C.)"
 
-#: config.language_map:517
+# id::per
+#: clm.value:544
 msgid "Persian"
-msgstr ""
+msgstr "Persan"
 
-#: config.language_map:518
+# id::phi
+#: clm.value:545
 msgid "Philippine (Other)"
-msgstr ""
+msgstr "Philippine (Autre)"
 
-#: config.language_map:519
+# id::phn
+#: clm.value:546
 msgid "Phoenician"
-msgstr ""
+msgstr "Phénicien"
 
-#: config.language_map:520
+# id::pli
+#: clm.value:547
 msgid "Pali"
-msgstr ""
+msgstr "Pali"
 
-#: config.language_map:521
+# id::pol
+#: clm.value:548
 msgid "Polish"
-msgstr ""
+msgstr "Polonais"
 
-#: config.language_map:522
+# id::pon
+#: clm.value:549
 msgid "Ponape"
-msgstr ""
+msgstr "Ponapé"
 
-#: config.language_map:523
+# id::por
+#: clm.value:550
 msgid "Portuguese"
-msgstr ""
+msgstr "Portuguais"
 
-#: config.language_map:524
+# id::pra
+#: clm.value:551
 msgid "Prakrit languages"
-msgstr ""
+msgstr "Langues prâkrit"
 
-#: config.language_map:525
+# id::pro
+#: clm.value:552
 msgid "Provençal (to 1500)"
-msgstr ""
+msgstr "Provençal (jusqu’à 1500)"
 
-#: config.language_map:526
+# id::pus
+#: clm.value:553
 msgid "Pushto"
-msgstr ""
+msgstr "Afghan"
 
-#: config.language_map:527
+# id::que
+#: clm.value:554
 msgid "Quechua"
-msgstr ""
+msgstr "Quechua"
 
-#: config.language_map:528
+# id::raj
+#: clm.value:555
 msgid "Rajasthani"
-msgstr ""
+msgstr "Rajasthani"
 
-#: config.language_map:529
+# id::rap
+#: clm.value:556
 msgid "Rapanui"
-msgstr ""
+msgstr "Rapanui"
 
-#: config.language_map:530
+# id::rar
+#: clm.value:557
 msgid "Rarotongan"
-msgstr ""
+msgstr "Rarotonga"
 
-#: config.language_map:531
+# id::roa
+#: clm.value:558
 msgid "Romance (Other)"
-msgstr ""
+msgstr "Sentimental (Autre)"
 
-#: config.language_map:532
+# id::roh
+#: clm.value:559
 msgid "Raeto-Romance"
-msgstr ""
+msgstr "Rhéto-roman"
 
-#: config.language_map:533
+# id::rom
+#: clm.value:560
 msgid "Romani"
-msgstr ""
+msgstr "Romani"
 
-#: config.language_map:534
+# id::rum
+#: clm.value:561
 msgid "Romanian"
-msgstr ""
+msgstr "Roumain"
 
-#: config.language_map:535
+# id::run
+#: clm.value:562
 msgid "Rundi"
-msgstr ""
+msgstr "Rundi"
 
-#: config.language_map:536
+# id::rus
+#: clm.value:563
 msgid "Russian"
-msgstr ""
+msgstr "Russie"
 
-#: config.language_map:537
+# id::sad
+#: clm.value:564
 msgid "Sandawe"
-msgstr ""
+msgstr "Wassandaui"
 
-#: config.language_map:538
+# id::sag
+#: clm.value:565
 msgid "Sango (Ubangi Creole)"
-msgstr ""
+msgstr "Sango (Ubangi Creole)"
 
-#: config.language_map:539
+# id::sah
+#: clm.value:566
 msgid "Yakut"
-msgstr ""
+msgstr "Yakoute"
 
-#: config.language_map:540
+# id::sai
+#: clm.value:567
 msgid "South American Indian (Other)"
-msgstr ""
+msgstr "Indien de l’Amérique du Sud (Autre)"
 
-#: config.language_map:541
+# id::sal
+#: clm.value:568
 msgid "Salishan languages"
-msgstr ""
+msgstr "Langues salish"
 
-#: config.language_map:542
+# id::sam
+#: clm.value:569
 msgid "Samaritan Aramaic"
-msgstr ""
+msgstr "Araméen samaritain"
 
-#: config.language_map:543
+# id::san
+#: clm.value:570
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sanskrit"
 
-#: config.language_map:544
+# id::-sao
+#: clm.value:571
 msgid "Samoan"
-msgstr ""
+msgstr "Samoan"
 
-#: config.language_map:545
+# id::sas
+#: clm.value:572
 msgid "Sasak"
-msgstr ""
+msgstr "Sasak"
 
-#: config.language_map:546
+# id::sat
+#: clm.value:573
 msgid "Santali"
-msgstr ""
+msgstr "Santali"
 
-#: config.language_map:547
+# id::scc
+#: clm.value:574
 msgid "Serbian"
-msgstr ""
+msgstr "Serbe"
 
-#: config.language_map:548
+# id::sco
+#: clm.value:575
 msgid "Scots"
-msgstr ""
+msgstr "Écossais"
 
-#: config.language_map:549
+# id::scr
+#: clm.value:576
 msgid "Croatian"
-msgstr ""
+msgstr "Croate"
 
-#: config.language_map:550
+# id::sel
+#: clm.value:577
 msgid "Selkup"
-msgstr ""
+msgstr "Selkoup"
 
-#: config.language_map:551
+# id::sem
+#: clm.value:578
 msgid "Semitic (Other)"
-msgstr ""
+msgstr "Sémitique (Autre)"
 
-#: config.language_map:552
+# id::sga
+#: clm.value:579
 msgid "Irish, Old (to 1100)"
-msgstr ""
+msgstr "Vieil irlandais (jusqu’à 1100)"
 
-#: config.language_map:553
+# id::sgn
+#: clm.value:580
 msgid "Sign languages"
-msgstr ""
+msgstr "Langages gestuels"
 
-#: config.language_map:554
+# id::shn
+#: clm.value:581
 msgid "Shan"
-msgstr ""
+msgstr "Shan"
 
-#: config.language_map:555
+# id::-sho
+#: clm.value:582
 msgid "Shona"
-msgstr ""
+msgstr "Shona"
 
-#: config.language_map:556
+# id::sid
+#: clm.value:583
 msgid "Sidamo"
-msgstr ""
+msgstr "Sidamo"
 
-#: config.language_map:557
+# id::sin
+#: clm.value:584
 msgid "Sinhalese"
-msgstr ""
+msgstr "Singhalais"
 
-#: config.language_map:558
+# id::sio
+#: clm.value:585
 msgid "Siouan (Other)"
-msgstr ""
+msgstr "Sioux (Autre)"
 
-#: config.language_map:559
+# id::sit
+#: clm.value:586
 msgid "Sino-Tibetan (Other)"
-msgstr ""
+msgstr "Sino-tibétain (Autre)"
 
-#: config.language_map:560
+# id::sla
+#: clm.value:587
 msgid "Slavic (Other)"
-msgstr ""
+msgstr "Slave (Autre)"
 
-#: config.language_map:561
+# id::slo
+#: clm.value:588
 msgid "Slovak"
-msgstr ""
+msgstr "Slovaque"
 
-#: config.language_map:562
+# id::slv
+#: clm.value:589
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovène"
 
-#: config.language_map:563
+# id::sma
+#: clm.value:590
 msgid "Southern Sami"
-msgstr ""
+msgstr "Lapon du Sud"
 
-#: config.language_map:564
+# id::sme
+#: clm.value:591
 msgid "Northern Sami"
-msgstr ""
+msgstr "Lapon du Nord"
 
-#: config.language_map:565
+# id::smi
+#: clm.value:592
 msgid "Sami"
-msgstr ""
+msgstr "Lapon"
 
-#: config.language_map:566
+# id::smj
+#: clm.value:593
 msgid "Lule Sami"
-msgstr ""
+msgstr "Lule Lapon"
 
-#: config.language_map:567
+# id::smn
+#: clm.value:594
 msgid "Inari Sami"
-msgstr ""
+msgstr "Inari Lapon"
 
-#: config.language_map:568
+# id::smo
+#: clm.value:595
 msgid "Samoan"
-msgstr ""
+msgstr "Samoan"
 
-#: config.language_map:569
+# id::sms
+#: clm.value:596
 msgid "Skolt Sami"
-msgstr ""
+msgstr "Skolt Lapon"
 
-#: config.language_map:570
+# id::sna
+#: clm.value:597
 msgid "Shona"
-msgstr ""
+msgstr "Shona"
 
-#: config.language_map:571
+# id::snd
+#: clm.value:598
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindhi"
 
-#: config.language_map:572
+# id::-snh
+#: clm.value:599
 msgid "Sinhalese"
-msgstr ""
+msgstr "Singhalais"
 
-#: config.language_map:573
+# id::snk
+#: clm.value:600
 msgid "Soninke"
-msgstr ""
+msgstr "Soninké"
 
-#: config.language_map:574
+# id::sog
+#: clm.value:601
 msgid "Sogdian"
-msgstr ""
+msgstr "Sogdien"
 
-#: config.language_map:575
+# id::som
+#: clm.value:602
 msgid "Somali"
-msgstr ""
+msgstr "Somali"
 
-#: config.language_map:576
+# id::son
+#: clm.value:603
 msgid "Songhai"
-msgstr ""
+msgstr "Songhaï"
 
-#: config.language_map:577
+# id::sot
+#: clm.value:604
 msgid "Sotho"
-msgstr ""
+msgstr "Sotho"
 
-#: config.language_map:578
+# id::spa
+#: clm.value:605
 msgid "Spanish"
-msgstr ""
+msgstr "Espagnol"
 
-#: config.language_map:579
+# id::srd
+#: clm.value:606
 msgid "Sardinian"
-msgstr ""
+msgstr "Sarde"
 
-#: config.language_map:580
+# id::srr
+#: clm.value:607
 msgid "Serer"
-msgstr ""
+msgstr "Sérère"
 
-#: config.language_map:581
+# id::ssa
+#: clm.value:608
 msgid "Nilo-Saharan (Other)"
-msgstr ""
+msgstr "Nilo-saharien (Autre)"
 
-#: config.language_map:582
+# id::-sso
+#: clm.value:609
 msgid "Sotho"
-msgstr ""
+msgstr "Sotho"
 
-#: config.language_map:583
+# id::ssw
+#: clm.value:610
 msgid "Swazi"
-msgstr ""
+msgstr "Swazi"
 
-#: config.language_map:584
+# id::suk
+#: clm.value:611
 msgid "Sukuma"
-msgstr ""
+msgstr "Sukuma"
 
-#: config.language_map:585
+# id::sun
+#: clm.value:612
 msgid "Sundanese"
-msgstr ""
+msgstr "Soudanais"
 
-#: config.language_map:586
+# id::sus
+#: clm.value:613
 msgid "Susu"
-msgstr ""
+msgstr "Soso"
 
-#: config.language_map:587
+# id::sux
+#: clm.value:614
 msgid "Sumerian"
-msgstr ""
+msgstr "Sumérien"
 
-#: config.language_map:588
+# id::swa
+#: clm.value:615
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
-#: config.language_map:589
+# id::swe
+#: clm.value:616
 msgid "Swedish"
-msgstr ""
+msgstr "Suédois"
 
-#: config.language_map:590
+# id::-swz
+#: clm.value:617
 msgid "Swazi"
-msgstr ""
+msgstr "Swazi"
 
-#: config.language_map:591
+# id::syr
+#: clm.value:618
 msgid "Syriac"
-msgstr ""
+msgstr "Syriaque"
 
-#: config.language_map:592
+# id::-tag
+#: clm.value:619
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagal"
 
-#: config.language_map:593
+# id::tah
+#: clm.value:620
 msgid "Tahitian"
-msgstr ""
+msgstr "Tahitien"
 
-#: config.language_map:594
+# id::tai
+#: clm.value:621
 msgid "Tai (Other)"
-msgstr ""
+msgstr "Tai (Autre)"
 
-#: config.language_map:595
+# id::-taj
+#: clm.value:622
 msgid "Tajik"
-msgstr ""
+msgstr "Tadjik"
 
-#: config.language_map:596
+# id::tam
+#: clm.value:623
 msgid "Tamil"
-msgstr ""
+msgstr "Tamoul"
 
-#: config.language_map:597
+# id::-tar
+#: clm.value:624
 msgid "Tatar"
-msgstr ""
+msgstr "Tatar"
 
-#: config.language_map:598
+# id::tat
+#: clm.value:625
 msgid "Tatar"
-msgstr ""
+msgstr "Tatar"
 
-#: config.language_map:599
+# id::tel
+#: clm.value:626
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
-#: config.language_map:600
+# id::tem
+#: clm.value:627
 msgid "Temne"
-msgstr ""
+msgstr "Temne"
 
-#: config.language_map:601
+# id::ter
+#: clm.value:628
 msgid "Terena"
-msgstr ""
+msgstr "Terena"
 
-#: config.language_map:602
+# id::tet
+#: clm.value:629
 msgid "Tetum"
-msgstr ""
+msgstr "Tetum"
 
-#: config.language_map:603
+# id::tgk
+#: clm.value:630
 msgid "Tajik"
-msgstr ""
+msgstr "Tadjik"
 
-#: config.language_map:604
+# id::tgl
+#: clm.value:631
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagal"
 
-#: config.language_map:605
+# id::tha
+#: clm.value:632
 msgid "Thai"
-msgstr ""
+msgstr "Thai"
 
-#: config.language_map:606
+# id::tib
+#: clm.value:633
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibétain"
 
-#: config.language_map:607
+# id::tig
+#: clm.value:634
 msgid "Tigré"
-msgstr ""
+msgstr "Tigré"
 
-#: config.language_map:608
+# id::tir
+#: clm.value:635
 msgid "Tigrinya"
-msgstr ""
+msgstr "Tigrina"
 
-#: config.language_map:609
+# id::tiv
+#: clm.value:636
 msgid "Tiv"
-msgstr ""
+msgstr "Tiv"
 
-#: config.language_map:610
+# id::tkl
+#: clm.value:637
 msgid "Tokelauan"
-msgstr ""
+msgstr "Tokelauan"
 
-#: config.language_map:611
+# id::tli
+#: clm.value:638
 msgid "Tlingit"
-msgstr ""
+msgstr "Tlingit"
 
-#: config.language_map:612
+# id::tmh
+#: clm.value:639
 msgid "Tamashek"
-msgstr ""
+msgstr "Tamacheq"
 
-#: config.language_map:613
+# id::tog
+#: clm.value:640
 msgid "Tonga (Nyasa)"
-msgstr ""
+msgstr "Tonga (Nyassa)"
 
-#: config.language_map:614
+# id::ton
+#: clm.value:641
 msgid "Tongan"
-msgstr ""
+msgstr "Tongan"
 
-#: config.language_map:615
+# id::tpi
+#: clm.value:642
 msgid "Tok Pisin"
-msgstr ""
+msgstr "Tok Pisin"
 
-#: config.language_map:616
+# id::-tru
+#: clm.value:643
 msgid "Truk"
-msgstr ""
+msgstr "Trukois"
 
-#: config.language_map:617
+# id::tsi
+#: clm.value:644
 msgid "Tsimshian"
-msgstr ""
+msgstr "Tsimshian"
 
-#: config.language_map:618
+# id::tsn
+#: clm.value:645
 msgid "Tswana"
-msgstr ""
+msgstr "Bechouana"
 
-#: config.language_map:619
+# id::tso
+#: clm.value:646
 msgid "Tsonga"
-msgstr ""
+msgstr "Balonga"
 
-#: config.language_map:620
+# id::-tsw
+#: clm.value:647
 msgid "Tswana"
-msgstr ""
+msgstr "Bechouana"
 
-#: config.language_map:621
+# id::tuk
+#: clm.value:648
 msgid "Turkmen"
-msgstr ""
+msgstr "Türkmène"
 
-#: config.language_map:622
+# id::tum
+#: clm.value:649
 msgid "Tumbuka"
-msgstr ""
+msgstr "Tamboka"
 
-#: config.language_map:623
+# id::tup
+#: clm.value:650
 msgid "Tupi languages"
-msgstr ""
+msgstr "Langues tupies"
 
-#: config.language_map:624
+# id::tur
+#: clm.value:651
 msgid "Turkish"
-msgstr ""
+msgstr "Turc"
 
-#: config.language_map:625
+# id::tut
+#: clm.value:652
 msgid "Altaic (Other)"
-msgstr ""
+msgstr "Altaïque (Autre)"
 
-#: config.language_map:626
+# id::tvl
+#: clm.value:653
 msgid "Tuvaluan"
-msgstr ""
+msgstr "Tuvaluan"
 
-#: config.language_map:627
+# id::twi
+#: clm.value:654
 msgid "Twi"
-msgstr ""
+msgstr "Twi"
 
-#: config.language_map:628
+# id::tyv
+#: clm.value:655
 msgid "Tuvinian"
-msgstr ""
+msgstr "Tuvinian"
 
-#: config.language_map:629
+# id::udm
+#: clm.value:656
 msgid "Udmurt"
-msgstr ""
+msgstr "Oudmourte"
 
-#: config.language_map:630
+# id::uga
+#: clm.value:657
 msgid "Ugaritic"
-msgstr ""
+msgstr "Ougaritique"
 
-#: config.language_map:631
+# id::uig
+#: clm.value:658
 msgid "Uighur"
-msgstr ""
+msgstr "Ouïgour"
 
-#: config.language_map:632
+# id::ukr
+#: clm.value:659
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainien"
 
-#: config.language_map:633
+# id::umb
+#: clm.value:660
 msgid "Umbundu"
-msgstr ""
+msgstr "Mbundu"
 
-#: config.language_map:634
+# id::und
+#: clm.value:661
 msgid "Undetermined"
-msgstr ""
+msgstr "Indéterminé"
 
-#: config.language_map:635
+# id::urd
+#: clm.value:662
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
-#: config.language_map:636
+# id::uzb
+#: clm.value:663
 msgid "Uzbek"
-msgstr ""
+msgstr "Ouzbek"
 
-#: config.language_map:637
+# id::vai
+#: clm.value:664
 msgid "Vai"
-msgstr ""
+msgstr "Vaï"
 
-#: config.language_map:638
+# id::ven
+#: clm.value:665
 msgid "Venda"
-msgstr ""
+msgstr "Venda"
 
-#: config.language_map:639
+# id::vie
+#: clm.value:666
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamien"
 
-#: config.language_map:640
+# id::vol
+#: clm.value:667
 msgid "Volapük"
-msgstr ""
+msgstr "Volapük"
 
-#: config.language_map:641
+# id::vot
+#: clm.value:668
 msgid "Votic"
-msgstr ""
+msgstr "Votic"
 
-#: config.language_map:642
+# id::wak
+#: clm.value:669
 msgid "Wakashan languages"
-msgstr ""
+msgstr "Langues wakashes"
 
-#: config.language_map:643
+# id::wal
+#: clm.value:670
 msgid "Walamo"
-msgstr ""
+msgstr "Walamo"
 
-#: config.language_map:644
+# id::war
+#: clm.value:671
 msgid "Waray"
-msgstr ""
+msgstr "Waray"
 
-#: config.language_map:645
+# id::was
+#: clm.value:672
 msgid "Washo"
-msgstr ""
+msgstr "Washo"
 
-#: config.language_map:646
+# id::wel
+#: clm.value:673
 msgid "Welsh"
-msgstr ""
+msgstr "Gallois"
 
-#: config.language_map:647
+# id::wen
+#: clm.value:674
 msgid "Sorbian languages"
-msgstr ""
+msgstr "Langues sorabes"
 
-#: config.language_map:648
+# id::wln
+#: clm.value:675
 msgid "Walloon"
-msgstr ""
+msgstr "Wallon"
 
-#: config.language_map:649
+# id::wol
+#: clm.value:676
 msgid "Wolof"
-msgstr ""
+msgstr "Wolof"
 
-#: config.language_map:650
+# id::xal
+#: clm.value:677
 msgid "Kalmyk"
-msgstr ""
+msgstr "Kalmouk"
 
-#: config.language_map:651
+# id::xho
+#: clm.value:678
 msgid "Xhosa"
-msgstr ""
+msgstr "Xhosa"
 
-#: config.language_map:652
+# id::yao
+#: clm.value:679
 msgid "Yao (Africa)"
-msgstr ""
+msgstr "Yao (Afrique)"
 
-#: config.language_map:653
+# id::yap
+#: clm.value:680
 msgid "Yapese"
-msgstr ""
+msgstr "Yapois"
 
-#: config.language_map:654
+# id::yid
+#: clm.value:681
 msgid "Yiddish"
-msgstr ""
+msgstr "Judéo-allemand"
 
-#: config.language_map:655
+# id::yor
+#: clm.value:682
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
-#: config.language_map:656
+# id::ypk
+#: clm.value:683
 msgid "Yupik languages"
-msgstr ""
+msgstr "Langues yupiks"
 
-#: config.language_map:657
+# id::zap
+#: clm.value:684
 msgid "Zapotec"
-msgstr ""
+msgstr "Zapoteco"
 
-#: config.language_map:658
+# id::zen
+#: clm.value:685
 msgid "Zenaga"
-msgstr ""
+msgstr "Zenaga"
 
-#: config.language_map:659
+# id::zha
+#: clm.value:686
 msgid "Zhuang"
-msgstr ""
+msgstr "Zhuang"
 
-#: config.language_map:660
+# id::znd
+#: clm.value:687
 msgid "Zande"
-msgstr ""
+msgstr "Azande"
 
-#: config.language_map:661
+# id::zul
+#: clm.value:688
 msgid "Zulu"
-msgstr ""
+msgstr "Zoulou"
 
-#: config.language_map:662
+# id::zun
+#: clm.value:689
 msgid "Zuni"
-msgstr ""
+msgstr "Zuni"
 
-#: config.item_form_map:664
+# id::a
+#: cifm.value:691
 msgid "Microfilm"
-msgstr ""
+msgstr "Microfilm"
 
-#: config.item_form_map:665
+# id::b
+#: cifm.value:692
 msgid "Microfiche"
-msgstr ""
+msgstr "Microfiche"
 
-#: config.item_form_map:666
+# id::c
+#: cifm.value:693
 msgid "Microopaque"
-msgstr ""
+msgstr "Microfiche opaque "
 
-#: config.item_form_map:667
+# id::d
+#: cifm.value:694
 msgid "Large print"
-msgstr ""
+msgstr "Gros caractères"
 
-#: config.item_form_map:668
+# id::f
+#: cifm.value:695
 msgid "Braille"
-msgstr ""
+msgstr "Braille"
 
-#: config.item_form_map:669
+# id::r
+#: cifm.value:696
 msgid "Regular print reproduction"
-msgstr ""
+msgstr "Reproduction d’imprimés réguliers"
 
-#: config.item_form_map:670
+# id::s
+#: cifm.value:697
 msgid "Electronic"
-msgstr ""
+msgstr "Électronique"
 
-#: config.item_type_map:672
+# id::a
+#: citm.value:699
 msgid "Language material"
-msgstr ""
+msgstr "Document linguistique"
 
-#: config.item_type_map:673
+# id::t
+#: citm.value:700
 msgid "Manuscript language material"
-msgstr ""
+msgstr "Texte manuscrit"
 
-#: config.item_type_map:674
+# id::g
+#: citm.value:701
 msgid "Projected medium"
-msgstr ""
+msgstr "Support média projeté"
 
-#: config.item_type_map:675
+# id::k
+#: citm.value:702
 msgid "Two-dimensional nonprojectable graphic"
-msgstr ""
+msgstr "Schéma non projetable à deux dimensions"
 
-#: config.item_type_map:676
+# id::r
+#: citm.value:703
 msgid "Three-dimensional artifact or naturally occurring object"
-msgstr ""
+msgstr "Artefact à trois dimensions ou objet d’origine naturelle"
 
-#: config.item_type_map:677
+# id::o
+#: citm.value:704
 msgid "Kit"
-msgstr ""
+msgstr "Trousse"
 
-#: config.item_type_map:678
+# id::p
+#: citm.value:705
 msgid "Mixed materials"
-msgstr ""
+msgstr "Documents divers"
 
-#: config.item_type_map:679
+# id::e
+#: citm.value:706
 msgid "Cartographic material"
-msgstr ""
+msgstr "Document cartographique"
 
-#: config.item_type_map:680
+# id::f
+#: citm.value:707
 msgid "Manuscript cartographic material"
-msgstr ""
+msgstr "Document cartographique manuscrit"
 
-#: config.item_type_map:681
+# id::c
+#: citm.value:708
 msgid "Notated music"
-msgstr ""
+msgstr "Musique annotée"
 
-#: config.item_type_map:682
+# id::d
+#: citm.value:709
 msgid "Manuscript notated music"
-msgstr ""
+msgstr "Manuscrit de musique annotée"
 
-#: config.item_type_map:683
+# id::i
+#: citm.value:710
 msgid "Nonmusical sound recording"
-msgstr ""
+msgstr "Enregistrement sonore non musical"
 
-#: config.item_type_map:684
+# id::j
+#: citm.value:711
 msgid "Musical sound recording"
-msgstr ""
+msgstr "Enregistrement sonore musical"
 
-#: config.item_type_map:685
+# id::m
+#: citm.value:712
 msgid "Computer file"
-msgstr ""
+msgstr "Fichier informatique"
 
-#: config.bib_level_map:687
+# id::a
+#: cblvl.value:714
 msgid "Monographic component part"
-msgstr ""
+msgstr "Partie composante monographique"
 
-#: config.bib_level_map:688
+# id::b
+#: cblvl.value:715
 msgid "Serial component part"
-msgstr ""
+msgstr "Élément de collections"
 
-#: config.bib_level_map:689
+# id::c
+#: cblvl.value:716
 msgid "Collection"
-msgstr ""
+msgstr "Collection"
 
-#: config.bib_level_map:690
+# id::d
+#: cblvl.value:717
 msgid "Subunit"
-msgstr ""
+msgstr "Sous-unité"
 
-#: config.bib_level_map:691
+# id::i
+#: cblvl.value:718
 msgid "Integrating resource"
-msgstr ""
+msgstr "Ressource intégrée"
 
-#: config.bib_level_map:692
+# id::m
+#: cblvl.value:719
 msgid "Monograph/Item"
-msgstr ""
+msgstr "Monographie ou article"
 
-#: config.bib_level_map:693
+# id::s
+#: cblvl.value:720
 msgid "Serial"
-msgstr ""
+msgstr "Collections"
 
-#: config.i18n_locale:698
+# id::en-US
+#: i18n_l.name:724
 msgid "American English"
-msgstr ""
+msgstr "Anglais américain"
 
-#: config.i18n_locale:700
+# id::en-US
+#: i18n_l.description:725
+msgid "American English"
+msgstr "Anglais américain"
+
+# id::en-CA
+#: i18n_l.name:727
 msgid "Canadian English"
-msgstr ""
+msgstr "Anglais canadien"
 
-#: config.i18n_locale:702
-msgid "Canadian Fench"
-msgstr ""
+# id::en-CA
+#: i18n_l.description:728
+msgid "Canadian English"
+msgstr "Anglais canadien"
 
-#: config.i18n_locale:704
+# id::fr-CA
+#: i18n_l.name:730
+#, fuzzy
+msgid "Canadian French"
+msgstr "Français canadien"
+
+# id::fr-CA
+#: i18n_l.description:731
+#, fuzzy
+msgid "Canadian French"
+msgstr "Français canadien"
+
+# id::es-US
+#: i18n_l.name:733
 msgid "American Spanish"
-msgstr ""
+msgstr "Espagnol américain"
 
-#: config.i18n_locale:706
+# id::es-US
+#: i18n_l.description:734
+msgid "American Spanish"
+msgstr "Espagnol américain"
+
+# id::es-MX
+#: i18n_l.name:736
 msgid "Mexican Spanish"
-msgstr ""
+msgstr "Espagnol mexicain"
 
-#: actor.org_unit_type:713
+# id::es-MX
+#: i18n_l.description:737
+msgid "Mexican Spanish"
+msgstr "Espagnol mexicain"
+
+# id::hy-AM
+#: i18n_l.name:739
+msgid "Armenian"
+msgstr "Arménien"
+
+# id::hy-AM
+#: i18n_l.description:740
+msgid "Armenian"
+msgstr "Arménien"
+
+# id::1
+#: aout.name:746
 msgid "Consortium"
+msgstr "Consortium"
+
+# id::1
+#: aout.opac_label:747
+msgid "Everywhere"
 msgstr ""
 
-#: actor.org_unit_type:715
+# id::2
+#: aout.name:749
 msgid "System"
+msgstr "Système"
+
+# id::2
+#: aout.opac_label:750
+msgid "Local Library System"
 msgstr ""
 
-#: actor.org_unit_type:717
+# id::3
+#: aout.name:752
 msgid "Branch"
+msgstr "Direction générale"
+
+# id::3
+#: aout.opac_label:753
+msgid "This Branch"
 msgstr ""
 
-#: actor.org_unit_type:719
-msgid "Sub-lib"
+# id::4
+#: aout.name:755
+msgid "Sub-library"
 msgstr ""
 
-#: actor.org_unit_type:721
+# id::4
+#: aout.opac_label:756
+msgid "This Specialized Library"
+msgstr ""
+
+# id::5
+#: aout.name:758
 msgid "Bookmobile"
+msgstr "Bibliobus"
+
+# id::5
+#: aout.opac_label:759
+msgid "Your Bookmobile"
 msgstr ""
 
-#: actor.org_unit:724
+# id::1
+#: aou.name:763
 msgid "Example Consortium"
-msgstr ""
+msgstr "Exemple de consortium"
 
-#: actor.org_unit:726
+# id::2
+#: aou.name:765
 msgid "Example System 1"
-msgstr ""
+msgstr "Exemple de système 1"
 
-#: actor.org_unit:728
+# id::3
+#: aou.name:767
 msgid "Example System 2"
-msgstr ""
+msgstr "Exemple de système 2"
 
-#: actor.org_unit:730
+# id::4
+#: aou.name:769
 msgid "Example Branch 1"
-msgstr ""
+msgstr "Exemple de Direction générale 1"
 
-#: actor.org_unit:732
+# id::5
+#: aou.name:771
 msgid "Example Branch 2"
-msgstr ""
+msgstr "Exemple de Direction générale 2"
 
-#: actor.org_unit:734
+# id::6
+#: aou.name:773
 msgid "Example Branch 3"
-msgstr ""
+msgstr "Exemple de Direction générale 3"
 
-#: actor.org_unit:736
+# id::7
+#: aou.name:775
 msgid "Example Branch 4"
-msgstr ""
+msgstr "Exemple de Direction générale 4"
 
-#: actor.org_unit:738
-msgid "Example Sub-lib 1"
-msgstr ""
+# id::8
+#: aou.name:777
+#, fuzzy
+msgid "Example Sub-library 1"
+msgstr "Exemple de sous-bibliothèque 1"
 
-#: actor.org_unit:740
+# id::9
+#: aou.name:779
 msgid "Example Bookmobile 1"
-msgstr ""
+msgstr "Exemple de bibliobus de 1"
 
-#: actor.org_address:742
-msgid "123 Main St."
-msgstr ""
-
-#: permission.perm_list:760
+# id::8
+#: ppl.description:800
 msgid "User is allowed to place a hold on a specific copy"
-msgstr ""
+msgstr "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
 
-#: permission.perm_list:766
+# id::11
+#: ppl.description:806
 msgid "Allows a user to view another user's holds"
 msgstr ""
+"Permet à un utilisateur de consulter les articles mis en réserve par un "
+"autre utilisateur"
 
-#: permission.perm_list:770
+# id::14
+#: ppl.description:810
 msgid "Allows a user to update another user's hold"
 msgstr ""
+"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
+"utilisateur"
 
-#: permission.perm_list:780
+# id::19
+#: ppl.description:820
 msgid "User is allowed to create new MARC records"
-msgstr ""
+msgstr "L’utilisateur peut créer de nouveaux comptes de MARC"
 
-#: permission.perm_list:820
+# id::41
+#: ppl.description:860
 msgid "User may create new billable transactions"
-msgstr ""
+msgstr "L’utilisateur peut créer de nouvelles transactions facturables"
 
-#: permission.perm_list:822
+# id::43
+#: ppl.description:862
 msgid "Allows a user to create a new bill on a transaction"
 msgstr ""
+"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
 
-#: permission.perm_list:824
+# id::44
+#: ppl.description:864
 msgid "Allows a user to view another user's containers (buckets)"
-msgstr ""
+msgstr "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
 
-#: permission.perm_list:826
+# id::45
+#: ppl.description:866
 msgid "Allows a user to create a new container for another user"
 msgstr ""
+"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
 
-#: permission.perm_list:828
+# id::24
+#: ppl.description:868
 msgid "User is allowed to create a new copy object"
-msgstr ""
+msgstr "L’utilisateur peut créer un nouvel objet d’exemplaire"
 
-#: permission.perm_list:830
+# id::47
+#: ppl.description:870
 msgid "Allows a user to change org unit settings"
 msgstr ""
+"Permet à un utilisateur de modifier les paramètres de l’unité "
+"organisationnelle"
 
-#: permission.perm_list:832
+# id::48
+#: ppl.description:872
 msgid "Allows a user to see what another use has checked out"
 msgstr ""
+"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
+"session"
 
-#: permission.perm_list:834
+# id::42
+#: ppl.description:874
 msgid "User may view another user's transactions"
-msgstr ""
+msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
 
-#: permission.perm_list:836
+# id::49
+#: ppl.description:876
 msgid "Allows a user to delete another user container"
-msgstr ""
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
-#: permission.perm_list:838
+# id::50
+#: ppl.description:878
 msgid "Create a container item for another user"
-msgstr ""
+msgstr "Créer un article de panier pour un autre utilisateur"
 
-#: permission.perm_list:840
+# id::51
+#: ppl.description:880
 msgid "User can add other users to permission groups"
 msgstr ""
+"L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
 
-#: permission.perm_list:842
+# id::52
+#: ppl.description:882
 msgid "User can remove other users from permission groups"
 msgstr ""
+"L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
 
-#: permission.perm_list:844
+# id::53
+#: ppl.description:884
 msgid "Allow user to view others' permission groups"
 msgstr ""
+"Permet à un utilisateur de consulter les groupes de permission des autres "
+"utilisateurs"
 
-#: permission.perm_list:846
+# id::54
+#: ppl.description:886
 msgid "Allows a user to determine of another user can checkout an item"
 msgstr ""
+"Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
+"article"
 
-#: permission.perm_list:848
+# id::55
+#: ppl.description:888
 msgid "Allows a user to edit copies in batch"
-msgstr ""
+msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
 
-#: permission.perm_list:850
+# id::56
+#: ppl.description:890
 msgid "User may create a new patron statistical category"
-msgstr ""
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
-#: permission.perm_list:852
+# id::57
+#: ppl.description:892
 msgid "User may create a copy stat cat"
-msgstr ""
+msgstr "L’utilisateur peut créer une catégorie statistique d’exemplaires"
 
-#: permission.perm_list:854
+# id::58
+#: ppl.description:894
 msgid "User may create a new patron stat cat entry"
 msgstr ""
+"L’utilisateur peut créer une nouvelle entrée de catégorie statistique de "
+"clients"
 
-#: permission.perm_list:856
+# id::59
+#: ppl.description:896
 msgid "User may create a new copy stat cat entry"
 msgstr ""
+"L’utilisateur peut créer une nouvelle entrée de catégorie statistique "
+"d’exemplaires"
 
-#: permission.perm_list:858
+# id::60
+#: ppl.description:898
 msgid "User may update a patron stat cat"
-msgstr ""
+msgstr "L’utilisateur peut mettre à jour une catégorie statistique de clients"
 
-#: permission.perm_list:860
+# id::61
+#: ppl.description:900
 msgid "User may update a copy stat cat"
 msgstr ""
+"L’utilisateur peut mettre à jour une catégorie statistique d’exemplaires"
 
-#: permission.perm_list:862
+# id::62
+#: ppl.description:902
 msgid "User may update a patron stat cat entry"
 msgstr ""
+"L’utilisateur peut mettre à jour une entrée de catégorie statistique de "
+"clients"
 
-#: permission.perm_list:864
+# id::63
+#: ppl.description:904
 msgid "User may update a copy stat cat entry"
 msgstr ""
+"L’utilisateur peut mettre à jour une entrée de catégorie statistique "
+"d’exemplaires"
 
-#: permission.perm_list:866
+# id::65
+#: ppl.description:906
 msgid "User may link a copy to a stat cat entry"
 msgstr ""
+"L’utilisateur peut associer un exemplaire à une entrée de catégorie "
+"statistique"
 
-#: permission.perm_list:868
+# id::64
+#: ppl.description:908
 msgid "User may link another user to a stat cat entry"
 msgstr ""
+"L’utilisateur peut associer un autre utilisateur à une entrée de catégorie "
+"statistique"
 
-#: permission.perm_list:870
+# id::66
+#: ppl.description:910
 msgid "User may delete a patron stat cat"
 msgstr ""
+"L’utilisateur peut supprimer une entrée de catégorie statistique de clients"
 
-#: permission.perm_list:872
+# id::67
+#: ppl.description:912
 msgid "User may delete a copy stat cat"
-msgstr ""
+msgstr "L’utilisateur peut supprimer une catégorie statistique d’exemplaires"
 
-#: permission.perm_list:874
+# id::68
+#: ppl.description:914
 msgid "User may delete a patron stat cat entry"
-msgstr ""
+msgstr "L’utilisateur peut supprimer une catégorie statistique de clients"
 
-#: permission.perm_list:876
+# id::69
+#: ppl.description:916
 msgid "User may delete a copy stat cat entry"
 msgstr ""
+"L’utilisateur peut supprimer une entrée de catégorie statistique "
+"d’exemplaires"
 
-#: permission.perm_list:878
+# id::70
+#: ppl.description:918
 msgid "User may delete a patron stat cat entry map"
 msgstr ""
+"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
+"clients"
 
-#: permission.perm_list:880
+# id::71
+#: ppl.description:920
 msgid "User may delete a copy stat cat entry map"
 msgstr ""
+"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
+"d’exemplaires"
 
-#: permission.perm_list:882
+# id::72
+#: ppl.description:922
 msgid "Allows a user to create a new non-cataloged item type"
 msgstr ""
+"Permet à un utilisateur de créer un nouveau type d’article non catalogué"
 
-#: permission.perm_list:884
+# id::73
+#: ppl.description:924
 msgid "Allows a user to update a non cataloged type"
-msgstr ""
+msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
 
-#: permission.perm_list:886
+# id::74
+#: ppl.description:926
 msgid "Allows a user to create a new in-house-use "
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle utilisation à l’interne"
 
-#: permission.perm_list:888
+# id::75
+#: ppl.description:928
 msgid "Allows a user to check out a copy"
-msgstr ""
+msgstr "Permet à un utilisateur de sortir un exemplaire"
 
-#: permission.perm_list:890
+# id::76
+#: ppl.description:930
 msgid "Allows a user to create a new copy location"
-msgstr ""
+msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
 
-#: permission.perm_list:892
+# id::77
+#: ppl.description:932
 msgid "Allows a user to update a copy location"
-msgstr ""
+msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
 
-#: permission.perm_list:894
+# id::78
+#: ppl.description:934
 msgid "Allows a user to delete a copy location"
-msgstr ""
+msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
 
-#: permission.perm_list:896
+# id::79
+#: ppl.description:936
 msgid "Allows a user to create a transit_copy object for transiting a copy"
 msgstr ""
+"Permet à un utilisateur de créer un objet de copie de transit pour procéder "
+"à la transition d’un exemplaire"
 
-#: permission.perm_list:898
+# id::80
+#: ppl.description:938
 msgid "Allows a user to close out a transit on a copy"
-msgstr ""
+msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
 
-#: permission.perm_list:900
+# id::81
+#: ppl.description:940
 msgid "Allows a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
+"Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
+"mettre en réserve un exemplaire en particulier"
 
-#: permission.perm_list:902
+# id::82
+#: ppl.description:942
 msgid "Allows a user to view which users have checked out a given copy"
 msgstr ""
+"Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
+"en particulier"
 
-#: permission.perm_list:904
+# id::83
+#: ppl.description:944
 msgid "Allows a user to perform z3950 queries against remote servers"
 msgstr ""
+"Permet à un utilisateur d’effectuer des requêtes z3950 auprès des serveurs à "
+"distance"
 
-#: permission.perm_list:906
+# id::84
+#: ppl.description:946
 msgid "Allows a user to register a new workstation"
-msgstr ""
+msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
 
-#: permission.perm_list:908
+# id::85
+#: ppl.description:948
 msgid "Allows a user to view all notes attached to a copy"
 msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un "
+"exemplaire"
 
-#: permission.perm_list:910
+# id::86
+#: ppl.description:950
 msgid "Allows a user to view all notes attached to a volume"
 msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un volume"
 
-#: permission.perm_list:912
+# id::87
+#: ppl.description:952
 msgid "Allows a user to view all notes attached to a title"
 msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un titre"
 
-#: permission.perm_list:914
+# id::89
+#: ppl.description:954
 msgid "Allows a user to create a new volume note"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
 
-#: permission.perm_list:916
+# id::88
+#: ppl.description:956
 msgid "Allows a user to create a new copy note"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-#: permission.perm_list:918
+# id::90
+#: ppl.description:958
 msgid "Allows a user to create a new title note"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
 
-#: permission.perm_list:920
+# id::91
+#: ppl.description:960
 msgid "Allows a user to delete someone elses copy notes"
 msgstr ""
+"Permet à un utilisateur de supprimer les notes sur l’exemplaire d’un autre "
+"utilisateur"
 
-#: permission.perm_list:922
+# id::92
+#: ppl.description:962
 msgid "Allows a user to delete someone elses volume note"
 msgstr ""
+"Permet à un utilisateur de supprimer la note sur le volume d’un autre "
+"utilisateur"
 
-#: permission.perm_list:924
+# id::93
+#: ppl.description:964
 msgid "Allows a user to delete someone elses title note"
 msgstr ""
+"Permet à un utilisateur de supprimer la note de titre d’un autre utilisateur"
 
-#: permission.perm_list:926
+# id::94
+#: ppl.description:966
 msgid "Allows a user to update another users container"
-msgstr ""
+msgstr "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
 
-#: permission.perm_list:928
+# id::95
+#: ppl.description:968
 msgid "Allows a user to create a container for themselves"
-msgstr ""
+msgstr "Permet à un utilisateur de créer son propre panier"
 
-#: permission.perm_list:930
+# id::96
+#: ppl.description:970
 msgid "Allows a user to view notifications attached to a hold"
 msgstr ""
+"Permet à un utilisateur d’afficher les notifications associées à un article "
+"mis en réserve"
 
-#: permission.perm_list:932
+# id::97
+#: ppl.description:972
 msgid "Allows a user to create new hold notifications"
 msgstr ""
+"Permet à un utilisateur de créer de nouvelles notifications relatives à des "
+"articles mis en réserve"
 
-#: permission.perm_list:934
+# id::98
+#: ppl.description:974
 msgid "Allows a user to update an org unit setting"
 msgstr ""
+"Permet à un utilisateur de mettre à jour un paramètre d’unité "
+"organisationnelle"
 
-#: permission.perm_list:936
+# id::99
+#: ppl.description:976
 msgid "Allows a user to upload an offline script"
-msgstr ""
+msgstr "Permet à un utilisateur de téléverser un script hors ligne"
 
-#: permission.perm_list:938
+# id::100
+#: ppl.description:978
 msgid "Allows a user to view uploaded offline script information"
 msgstr ""
+"Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
+"téléversé"
 
-#: permission.perm_list:940
+# id::101
+#: ppl.description:980
 msgid "Allows a user to execute an offline script batch"
-msgstr ""
+msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
 
-#: permission.perm_list:942
+# id::102
+#: ppl.description:982
 msgid "Allows a user to change set the due date on an item to any date"
 msgstr ""
+"Permet à un utilisateur de régler la date d’échéance relative à un article"
 
-#: permission.perm_list:944
+# id::103
+#: ppl.description:984
 msgid "Allows a user to bypass the circ permit call for checkout"
 msgstr ""
+"Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
+"sortir un article"
 
-#: permission.perm_list:946
+# id::104
+#: ppl.description:986
 msgid "Allows a user to override the copy_is_reference event"
-msgstr ""
+msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
 
-#: permission.perm_list:948
+# id::105
+#: ppl.description:988
 msgid "Allows a user to void a bill"
-msgstr ""
+msgstr "Permet à un utilisateur d’éviter une facture"
 
-#: permission.perm_list:950
+# id::106
+#: ppl.description:990
 msgid "Allows a person to check in/out an item that is claims returned"
 msgstr ""
+"Permet à un utilisateur d’entrer ou de sortir un article considéré comme "
+"retourné"
 
-#: permission.perm_list:952
+# id::107
+#: ppl.description:992
 msgid "Allows a user to check out an item in a non-circulatable status"
-msgstr ""
+msgstr "Permet à un utilisateur de sortir un article qui n’a pas été prêté"
 
-#: permission.perm_list:954
+# id::108
+#: ppl.description:994
 msgid "Allows a user to check in/out an item that has an alert message"
 msgstr ""
+"Permet à un utilisateur d’entrer ou de sortir un article associé à un "
+"message d’alerte"
 
-#: permission.perm_list:956
+# id::109
+#: ppl.description:996
 msgid "Allows a user to remove the lost status from a copy"
-msgstr ""
+msgstr "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
 
-#: permission.perm_list:958
+# id::110
+#: ppl.description:998
 msgid "Allows a user to change the missing status on a copy"
-msgstr ""
+msgstr "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
 
-#: permission.perm_list:960
+# id::111
+#: ppl.description:1000
 msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
+"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
+"se trouve à la source ou à la destination du transit"
 
-#: permission.perm_list:962
+# id::112
+#: ppl.description:1002
 msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
+"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
+"ne se trouve pas à la source ou à la destination du transit"
 
-#: permission.perm_list:964
-msgid "Allowsa user to query the zip code data method"
+# id::113
+#: ppl.description:1004
+#, fuzzy
+msgid "Allows a user to query the ZIP code data method"
+msgstr ""
+"Permet à un utilisateur d’interroger la méthode de données relatives aux "
+"codes postaux"
+
+# id::114
+#: ppl.description:1006
+msgid "Allows a user to cancel holds"
 msgstr ""
 
-#: permission.perm_list:968
-msgid "Allows a user to create duplicate holds (e.g. two holds on the same title)"
+# id::115
+#: ppl.description:1008
+#, fuzzy
+msgid "Allows a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
+"Permet à un utilisateur de créer des copies d’articles mis en réserve (p. "
+"ex. deux articles mis en réserve pour le même titre)"
 
-#: permission.perm_list:970
+# id::117
+#: ppl.description:1010
 msgid "Allows a user to update a closed date interval for a given location"
 msgstr ""
+"Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture "
+"pour un emplacement donné"
 
-#: permission.perm_list:972
+# id::116
+#: ppl.description:1012
 msgid "Allows a user to remove a closed date interval for a given location"
 msgstr ""
+"Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
+"pour un emplacement donné"
 
-#: permission.perm_list:974
+# id::118
+#: ppl.description:1014
 msgid "Allows a user to create a new closed date for a location"
 msgstr ""
+"Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
+"emplacement"
 
-#: permission.perm_list:976
+# id::119
+#: ppl.description:1016
 msgid "Allows a user to delete a non cataloged type"
-msgstr ""
+msgstr "Permet à un utilisateur de supprimer un type non catalogué"
 
-#: permission.perm_list:978
+# id::120
+#: ppl.description:1018
 msgid "Allows a user to put someone into collections"
-msgstr ""
+msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
 
-#: permission.perm_list:980
+# id::121
+#: ppl.description:1020
 msgid "Allows a user to remove someone from collections"
-msgstr ""
+msgstr "Permet à un utilisateur de retirer une personne des collections"
 
-#: permission.perm_list:982
+# id::122
+#: ppl.description:1022
 msgid "Allows a user to bar a patron"
-msgstr ""
+msgstr "Permet à un utilisateur d’exclure un client"
 
-#: permission.perm_list:984
+# id::123
+#: ppl.description:1024
 msgid "Allows a user to un-bar a patron"
-msgstr ""
+msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
 
-#: permission.perm_list:986
+# id::124
+#: ppl.description:1026
 msgid "Allows a user to remove an existing workstation so a new one can replace it"
 msgstr ""
+"Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
+"nouveau poste puisse le remplacer"
 
-#: permission.perm_list:988
+# id::125
+#: ppl.description:1028
 msgid "Allows a user to add/remove users to/from the \"User\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Utilisateur'\"."
 
-#: permission.perm_list:990
+# id::126
+#: ppl.description:1030
 msgid "Allows a user to add/remove users to/from the \"Patron\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Client\""
 
-#: permission.perm_list:992
+# id::127
+#: ppl.description:1032
 msgid "Allows a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Personnel\""
 
-#: permission.perm_list:994
+# id::128
+#: ppl.description:1034
 msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Circulator\""
 
-#: permission.perm_list:996
+# id::129
+#: ppl.description:1036
 msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Cataloger\""
 
-#: permission.perm_list:998
+# id::130
+#: ppl.description:1038
 msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"GlobalAdmin\""
 
-#: permission.perm_list:1000
+# id::131
+#: ppl.description:1040
 msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"LocalAdmin\""
 
-#: permission.perm_list:1002
+# id::132
+#: ppl.description:1042
 msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"LibraryManager\""
 
-#: permission.perm_list:1004
+# id::133
+#: ppl.description:1044
 msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Cat1\""
 
-#: permission.perm_list:1006
+# id::134
+#: ppl.description:1046
 msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Supercat\""
 
-#: permission.perm_list:1008
+# id::135
+#: ppl.description:1048
 msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"SIP-Client\""
 
-#: permission.perm_list:1010
+# id::136
+#: ppl.description:1050
 msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Vendor\""
 
-#: permission.perm_list:1012
+# id::137
+#: ppl.description:1052
 msgid "Allows a user to place a hold on an age-protected item"
 msgstr ""
+"Permet à un utilisateur de mettre en réserve un article protégé contre "
+"l’usure"
 
-#: permission.perm_list:1014
+# id::138
+#: ppl.description:1054
 msgid "Allows a user to renew an item past the maximun renewal count"
 msgstr ""
+"Permet à un utilisateur de renouveler un article après le nombre de "
+"renouvellement maximum"
 
-#: permission.perm_list:1016
+# id::139
+#: ppl.description:1056
 msgid "Allow staff to override checkout count failure"
 msgstr ""
+"Permet aux membres du personnel de contourner un échec du nombre de sorties"
 
-#: permission.perm_list:1018
+# id::140
+#: ppl.description:1058
 msgid "Allow staff to override overdue count failure"
 msgstr ""
+"Permet aux membres du personnel de contourner un échec du nombre de retards"
 
-#: permission.perm_list:1020
+# id::141
+#: ppl.description:1060
 msgid "Allow staff to override fine amount checkout failure"
 msgstr ""
+"Permet aux membres du personnel de contourner un échec de sortie relatif au "
+"montant d’une amende"
 
-#: permission.perm_list:1026
+# id::142
+#: ppl.description:1062
+msgid "Allow staff to override circulation copy range failure"
+msgstr ""
+
+# id::143
+#: ppl.description:1064
+msgid "Allow staff to override item on holds shelf failure"
+msgstr ""
+
+# id::144
+#: ppl.description:1066
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
+"Permet aux membres du personnel de forcer la sortie des types d’articles "
+"manquants ou perdus"
 
-#: permission.perm_list:1028
+# id::146
+#: ppl.description:1068
 msgid "allows users to place multiple holds on a single title"
 msgstr ""
+"Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
+"seul titre"
 
-#: permission.perm_list:1030
+# id::147
+#: ppl.description:1070
 msgid "Allows a users to run reports"
-msgstr ""
+msgstr "Permet à un utilisateur d’exécuter des rapports"
 
-#: permission.perm_list:1032
+# id::148
+#: ppl.description:1072
 msgid "Allows a user to share report his own folders"
 msgstr ""
+"Permet à un utilisateur de partager un rapport dans ses propres dossiers"
 
-#: permission.perm_list:1034
+# id::149
+#: ppl.description:1074
 msgid "Allow user to view report output"
-msgstr ""
+msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
 
-#: permission.perm_list:1036
+# id::150
+#: ppl.description:1076
 msgid "Allows a user to checkout an item that is marked as non-circ"
 msgstr ""
+"Permet à un utilisateur de sortir un article qui est désigné comme « non "
+"prêté »"
 
-#: permission.perm_list:1038
+# id::151
+#: ppl.description:1078
 msgid "Allows a user to delete an item out of another user's container"
 msgstr ""
+"Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
+"d’un autre utilisateur"
 
-#: permission.perm_list:1040
+# id::152
+#: ppl.description:1080
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
+"Permet aux membres du personnel de déterminer pour quelles actions un autre "
+"membre du personnel a obtenu leurs permissions"
 
-#: permission.perm_list:1042
+# id::153
+#: ppl.description:1082
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
+"Permet à un membre du personnel de supprimer directement une fiche "
+"bibliographique"
 
-#: actor.usr:1254
-msgid "Administrator"
+# id::1
+#: pgt.name:1167
+msgid "Users"
 msgstr ""
 
-#: asset.copy_location:1267
+# id::2
+#: pgt.name:1169
+msgid "Patrons"
+msgstr ""
+
+# id::3
+#: pgt.name:1171
+msgid "Staff"
+msgstr ""
+
+# id::4
+#: pgt.name:1173
+msgid "Catalogers"
+msgstr ""
+
+# id::5
+#: pgt.name:1175
+msgid "Circulators"
+msgstr ""
+
+# id::10
+#: pgt.name:1177
+msgid "Local System Administrator"
+msgstr ""
+
+# id::10
+#: pgt.description:1178
+msgid "System maintenance, configuration, etc."
+msgstr ""
+
+# id::1
+#: acpl.name:1309
 msgid "Stacks"
-msgstr ""
+msgstr "Piles"
+
+#~ msgid "Gwich'in"
+#~ msgstr "Gwich’in"
+
+#~ msgid "Sub-lib"
+#~ msgstr "Sous-bibliothèque"
+
+#~ msgid "123 Main St."
+#~ msgstr "123, rue principale"
+
+#~ msgid "Administrator"
+#~ msgstr "Administrateur"

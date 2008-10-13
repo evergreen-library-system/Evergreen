@@ -106,9 +106,14 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
--- Function for marking translatable strings in SQL statements
-CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT ) RETURNS TEXT AS $$
-    SELECT $1;
+-- Functions for marking translatable strings in SQL statements
+-- Parameters are: primary key, string, class hint, property
+CREATE OR REPLACE FUNCTION oils_i18n_gettext( INT, TEXT, TEXT, TEXT ) RETURNS TEXT AS $$
+    SELECT $2;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT, TEXT, TEXT, TEXT ) RETURNS TEXT AS $$
+    SELECT $2;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$

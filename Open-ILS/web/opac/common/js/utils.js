@@ -111,7 +111,7 @@ function instanceOf(object, constructorFunction) {
 
 /* ------------------------------------------------------------------------------------------- */
 /* detect my browser */
-var isMac, NS, NS4, NS6, IE, IE4, IEmac, IE4plus, IE5, IE5plus, IE6, IEMajor, ver4;
+var isMac, NS, NS4, NS6, IE, IE4, IEmac, IE4plus, IE5, IE5plus, IE6, IEMajor, ver4, Safari;
 function detect_browser() {       
 
    isMac = (navigator.appVersion.indexOf("Mac")!=-1) ? true : false;
@@ -125,6 +125,7 @@ function detect_browser() {
    IE6 = ((document.all)&&(navigator.appVersion.indexOf("MSIE 6.")!=-1)) ? true : false;
    ver4 = (NS4 || IE4plus) ? true : false;
    NS6 = (!document.layers) && (navigator.userAgent.indexOf('Netscape')!=-1)?true:false;
+   Safari = navigator.userAgent.match(/Safari/);
 
    IE5plus = IE5 || IE6;
    IEMajor = 0;
@@ -303,7 +304,7 @@ function ogrep( obj, func ) {
 }
 
 function doSelectorActions(sel) {
-	if(IE && sel) { 
+	if((IE || Safari) && sel) { 
 		sel.onchange = function() {
 			var o = sel.options[sel.selectedIndex];
 			if(o && o.onclick) o.onclick()

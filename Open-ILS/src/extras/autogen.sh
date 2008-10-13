@@ -35,11 +35,11 @@ function usage {
 	echo "Examples:";
 	echo "";
 	echo "  Update organization tree:";
-	echo "    $0 -c /openils/conf/opensrf_core.xml";
-	echo "    $0 /openils/conf/opensrf_core.xml";
+	echo "    $0 -c SYSCONFDIR/opensrf_core.xml";
+	echo "    $0 SYSCONFDIR/opensrf_core.xml";
 	echo "";
 	echo "  Update organization tree and refresh proximity:";
-	echo "    $0 -u -c /openils/conf/opensrf_core.xml";
+	echo "    $0 -u -c SYSCONFDIR/opensrf_core.xml";
 	echo "";
 	exit;
 }
@@ -69,9 +69,9 @@ done
 
 [ -z "$CONFIG" ] && usage;
 
-JSDIR="/openils/var/web/opac/common/js/";
-FMDOJODIR="/openils/var/web/js/dojo/fieldmapper/";
-SLIMPACDIR="/openils/var/web/opac/extras/slimpac/";
+JSDIR="LOCALSTATEDIR/web/opac/common/js/";
+FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper/";
+SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac/";
 
 echo "Updating fieldmapper";
 perl fieldmapper.pl "$CONFIG"	> "$JSDIR/fmall.js";
@@ -82,10 +82,13 @@ perl fieldmapper.pl "$CONFIG" "web_core"	> "$JSDIR/fmcore.js";
 
 echo "Updating OrgTree";
 perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";
+cp "$JSDIR/OrgTree.js" "$FMDOJODIR/"
 
 echo "Updating OrgTree HTML";
 perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
-cp "$JSDIR/OrgTree.js" "$FMDOJODIR/"
+
+echo "Updating locales selection HTML";
+perl locale_html_options.pl "$CONFIG" "$SLIMPACDIR/locales.inc";
 
 echo "Updating Search Groups";
 perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";

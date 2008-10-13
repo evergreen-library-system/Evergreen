@@ -20,6 +20,7 @@ use XML::LibXSLT;
 use Time::HiRes qw(time);
 
 our %supported_formats = (
+	mods32	=> {ns => 'http://www.loc.gov/mods/v3'},
 	mods3	=> {ns => 'http://www.loc.gov/mods/v3'},
 	mods	=> {ns => 'http://www.loc.gov/mods/'},
 	marcxml	=> {ns => 'http://www.loc.gov/MARC21/slim'},
@@ -67,6 +68,11 @@ sub post_init {
 			$supported_formats{mods3}{xslt} = $xslt->parse_stylesheet( $xslt_doc );
 		}
 
+		unless ($supported_formats{mods32}{xslt}) {
+			$log->debug("Loading MODS v32 XSLT", DEBUG);
+	 		my $xslt_doc = $parser->parse_file( $xsldir . "/MARC21slim2MODS32.xsl");
+			$supported_formats{mods32}{xslt} = $xslt->parse_stylesheet( $xslt_doc );
+		}
 
 		my $req = OpenSRF::AppSession
 				->create('open-ils.cstore')

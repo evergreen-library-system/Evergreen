@@ -21,11 +21,13 @@
 			.greenrow {
 				border: 1px solid #D0D0D0;
 				background: #A7EA9D;
+				height: 20px;
 			}
 
 			.bluerow {
 				border: 1px solid #D0D0D0;
 				background: #E0F6E0;
+				height: 20px;
 			}
 
 			.rowpad {
@@ -81,7 +83,6 @@
 	<body>
 		<center>
 
-		<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
 
 		<table class="maintable">
 			<tbody>
@@ -93,6 +94,7 @@
 					</td>
 				</tr>
 				<tr class="rowpad"><td></td></tr>
+				<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
 				<tr class="bluerow">
 					<td>
 						<div class='search_field'>
@@ -122,11 +124,22 @@
 						</div>
 					</td>
 				</tr>
+				</form>
+				<tr class="bluerow"><td></td></tr>
+				<form method="GET">
+				<tr class="greenrow">
+					<td>
+						<div class='search_field'>
+								<!--#include file="locales.inc"-->
+								<input type="submit" value="&slimpac.language.select;"/>
+						</div>
+					</td>
+				</tr>
+				</form>
 				<tr class="rowpad"><td></td></tr>
 			</tbody>
 		</table>
 
-		</form>
 
 		<div class="footer">
 			<center>

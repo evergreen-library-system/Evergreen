@@ -190,7 +190,7 @@ sub biblio_search_tcn {
 
 	my( $self, $client, $tcn, $include_deleted ) = @_;
 
-	$tcn =~ s/.*?(\w+)\s*$/$1/o;
+    $tcn =~ s/^\s+|\s+$//og;
 
 	my $e = new_editor();
    my $search = {tcn_value => $tcn};
@@ -464,7 +464,7 @@ sub multiclass_query {
     my $orig_query = $query;
 
     $query =~ s/\+/ /go;
-    $query =~ s/'//go;
+    $query =~ s/'/ /go;
     $query =~ s/^\s+//go;
 
     # convert convenience classes (e.g. kw for keyword) to the full class name
@@ -764,6 +764,7 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
 
+    my $search_duration;
     my $user_offset = $search_hash->{offset} || 0; # user-specified offset
     my $user_limit = $search_hash->{limit} || 10;
     $user_offset = ($user_offset >= 0) ? $user_offset : 0;
@@ -820,8 +821,21 @@ sub staged_search {
             $search_hash->{skip_check} = $page * $superpage_size;
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
-            $logger->info("staged search: DB call took ".(time - $start)." seconds");
+            $search_duration = time - $start;
+            $logger->info("staged search: DB call took $search_duration seconds");
             $summary = shift(@$results);
+
+            unless($summary) {
+                $logger->info("search timed out: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+                return {count => 0};
+            }
+
+            my $hc = $summary->{estimated_hit_count} || $summary->{visible};
+            if($hc == 0) {
+                $logger->info("search returned 0 results: duration=$search_duration: params=".
+                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
+            }
 
             # Create backwards-compatible result structures
             if($self->api_name =~ /biblio/) {
@@ -922,7 +936,7 @@ sub cache_staged_search_page {
     $logger->info("staged search: cached with key=$key, superpage=$page, estimated=".
         $summary->{estimated_hit_count}.", visible=".$summary->{visible});
 
-    $cache->put_cache($key, $data);
+    $cache->put_cache($key, $data, $cache_timeout);
 }
 
 sub search_cache {
@@ -1191,55 +1205,62 @@ __PACKAGE__->register_method(
 	method	=> "biblio_record_to_marc_html",
 	api_name	=> "open-ils.search.biblio.record.html" );
 
-my $parser		= XML::LibXML->new();
-my $xslt			= XML::LibXSLT->new();
-my $marc_sheet;
-
-my $settings_client = OpenSRF::Utils::SettingsClient->new();
-sub biblio_record_to_marc_html {
-	my( $self, $client, $recordid ) = @_;
-
-	if( !$marc_sheet ) {
-		my $dir = $settings_client->config_value( "dirs", "xsl" );
-		my $xsl = $settings_client->config_value(
-			"apps", "open-ils.search", "app_settings", "marc_html_xsl" );
-
-		$xsl = $parser->parse_file("$dir/$xsl");
-		$marc_sheet = $xslt->parse_stylesheet( $xsl );
-	}
-
-
-	my $record = $apputils->simple_scalar_request(
-		"open-ils.cstore", 
-		"open-ils.cstore.direct.biblio.record_entry.retrieve",
-		$recordid );
-
-	my $xmldoc = $parser->parse_string($record->marc);
-	my $html = $marc_sheet->transform($xmldoc);
-	$html = $html->toString();
-	return $html;
-
-}
-
-
-=head duplicate
 __PACKAGE__->register_method(
-	method	=> "retrieve_all_copy_locations",
-	api_name	=> "open-ils.search.config.copy_location.retrieve.all" );
+	method	=> "biblio_record_to_marc_html",
+	api_name	=> "open-ils.search.authority.to_html" );
 
-my $shelving_locations;
-sub retrieve_all_copy_locations {
-	my( $self, $client ) = @_;
-	if(!$shelving_locations) {
-		$shelving_locations = $apputils->simple_scalar_request(
-			"open-ils.cstore", 
-			"open-ils.cstore.direct.asset.copy_location.search.atomic",
-			{ id => { "!=" => undef } }
-		);
-	}
-	return $shelving_locations;
+my $parser = XML::LibXML->new();
+my $xslt = XML::LibXSLT->new();
+my $marc_sheet;
+my $slim_marc_sheet;
+my $settings_client = OpenSRF::Utils::SettingsClient->new();
+
+sub biblio_record_to_marc_html {
+	my($self, $client, $recordid, $slim, $marcxml) = @_;
+
+    my $sheet;
+	my $dir = $settings_client->config_value("dirs", "xsl");
+
+    if($slim) {
+        unless($slim_marc_sheet) {
+		    my $xsl = $settings_client->config_value(
+			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl_slim');
+            if($xsl) {
+		        $xsl = $parser->parse_file("$dir/$xsl");
+		        $slim_marc_sheet = $xslt->parse_stylesheet($xsl);
+            }
+        }
+        $sheet = $slim_marc_sheet;
+    }
+
+    unless($sheet) {
+        unless($marc_sheet) {
+            my $xsl_key = ($slim) ? 'marc_html_xsl_slim' : 'marc_html_xsl';
+		    my $xsl = $settings_client->config_value(
+			    "apps", "open-ils.search", "app_settings", 'marc_html_xsl');
+		    $xsl = $parser->parse_file("$dir/$xsl");
+		    $marc_sheet = $xslt->parse_stylesheet($xsl);
+        }
+        $sheet = $marc_sheet;
+    }
+
+    my $record;
+    unless($marcxml) {
+        my $e = new_editor();
+        if($self->api_name =~ /authority/) {
+            $record = $e->retrieve_authority_record_entry($recordid)
+                or return $e->event;
+        } else {
+            $record = $e->retrieve_biblio_record_entry($recordid)
+                or return $e->event;
+        }
+        $marcxml = $record->marc;
+    }
+
+	my $xmldoc = $parser->parse_string($marcxml);
+	my $html = $sheet->transform($xmldoc);
+	return $html->documentElement->toString();
 }
-=cut
 
 
 
@@ -1299,107 +1320,6 @@ sub copy_count_summary {
 
     return [ sort { $a->[1] cmp $b->[1] } @$data ];
 }
-
-
-
-=head
-__PACKAGE__->register_method(
-	method		=> "multiclass_search",
-	api_name	=> "open-ils.search.biblio.multiclass",
-	notes 		=> <<"	NOTES");
-		Performs a multiclass search
-		PARAMS( searchBlob, org_unit, format, limit ) 
-		where searchBlob is defined like this:
-			{ 
-				"title" : { "term" : "water" }, 
-				"author" : { "term" : "smith" }, 
-				... 
-			}
-	NOTES
-
-__PACKAGE__->register_method(
-	method		=> "multiclass_search",
-	api_name	=> "open-ils.search.biblio.multiclass.staff",
-	notes 		=> "see open-ils.search.biblio.multiclass" );
-
-sub multiclass_search {
-	my( $self, $client, $searchBlob, $orgid, $format, $limit ) = @_;
-
-	$logger->debug("Performing multiclass search with org => $orgid, " .
-		"format => $format, limit => $limit, and search blob " . Dumper($searchBlob));
-
-	my $meth = 'open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.atomic';
-	if($self->api_name =~ /staff/) { $meth =~ s/metarecord\.atomic/metarecord.staff.atomic/; }
-
-
-	my $records = $apputils->simplereq(
-		'open-ils.storage', $meth, 
-		 org_unit => $orgid, searches => $searchBlob, format => $format, limit => $limit );
-
-	my $count = 0;
-	my $recs = [];
-
-	if( ref($records) and $records->[0] and 
-		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
-
-	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
-
-	# records has the form: [ mrid, rank, singleRecord / 0, hitCount ];
-	return { ids => $recs, count => $count };
-}
-=cut
-
-
-=head comment-1
-__PACKAGE__->register_method(
-	method		=> "multiclass_search",
-	api_name		=> "open-ils.search.biblio.multiclass",
-	signature	=> q/
-		Performs a multiclass search
-		@param args A names hash of arguments:
-			org_unit : The org to focus the search on
-			depth		: The search depth
-			format	: Item format
-			limit		: Return limit
-			offset	: Search offset
-			searches : A named hash of searches which has the following format:
-				{ 
-					"title" : { "term" : "water" }, 
-					"author" : { "term" : "smith" }, 
-					... 
-				}
-		@return { ids : <array of ids>, count : hitcount }
-	/
-);
-
-__PACKAGE__->register_method(
-	method		=> "multiclass_search",
-	api_name		=> "open-ils.search.biblio.multiclass.staff",
-	notes 		=> q/@see open-ils.search.biblio.multiclass/ );
-
-sub multiclass_search {
-	my( $self, $client, $args ) = @_;
-
-	$logger->debug("Performing multiclass search with args:\n" . Dumper($args));
-	my $meth = 'open-ils.storage.metabib.post_filter.multiclass.search_fts.metarecord.atomic';
-	if($self->api_name =~ /staff/) { $meth =~ s/metarecord\.atomic/metarecord.staff.atomic/; }
-
-	my $records = $apputils->simplereq( 'open-ils.storage', $meth, %$args );
-
-	my $count = 0;
-	my $recs = [];
-
-	if( ref($records) and $records->[0] and 
-		defined($records->[0]->[3])) { $count = $records->[0]->[3];}
-
-	for my $r (@$records) { push( @$recs, $r ) if ($r and $r->[0]); }
-
-	return { ids => $recs, count => $count };
-}
-
-=cut
-
-
 
 __PACKAGE__->register_method(
 	method		=> "marc_search",
@@ -1473,6 +1393,7 @@ sub biblio_search_issn {
 	my( $self, $client, $issn ) = @_;
 	$logger->debug("Searching ISSN $issn");
 	my $e = new_editor();
+	$issn =~ s/-/ /g;
 	my $recs = $U->storagereq(
 		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
 	return { ids => $recs, count => scalar(@$recs) };

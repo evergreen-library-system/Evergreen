@@ -79,9 +79,9 @@
 	<commandset id="checkin_cmds">
 		<command id="cmd_checkin_submit_barcode" />
 		<command id="cmd_checkin_print" />
-		<command id="cmd_checkin_export" />
-		<command id="cmd_checkin_reprint" />
-		<command id="cmd_checkin_done" />
+		<command id="cmd_csv_to_clipboard" />
+		<command id="cmd_csv_to_printer" />
+		<command id="cmd_csv_to_file" />
 		<command id="save_columns" />
 		
 		<command id="sel_clip" disabled="true"/>

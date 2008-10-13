@@ -10,12 +10,12 @@ vim:et:ts=4:sw=4:
     <default>
 
         <dirs>
-            <log>/openils/var/log</log> <!-- unix::server log files -->
-            <sock>/openils/var/sock</sock> <!-- unix::server sock files -->
-            <pid>/openils/var/pid</pid>
-            <xsl>/openils/var/xsl</xsl>
-            <script>/openils/var</script>
-            <script_lib>/openils/var</script_lib>
+            <log>LOCALSTATEDIR/log</log> <!-- unix::server log files -->
+            <sock>LOCALSTATEDIR/lock</sock> <!-- unix::server sock files -->
+            <pid>LOCALSTATEDIR/run</pid>
+            <xsl>LOCALSTATEDIR/xsl</xsl>
+            <script>LOCALSTATEDIR</script>
+            <script_lib>LOCALSTATEDIR</script_lib>
         </dirs>
 
         <!-- global data visibility settings -->
@@ -26,15 +26,15 @@ vim:et:ts=4:sw=4:
             </user>
         </share>
 
-        <IDL>/openils/conf/fm_IDL.xml</IDL> <!-- top level IDL file -->
+        <IDL>SYSCONFDIR/fm_IDL.xml</IDL> <!-- top level IDL file -->
 
         <server_type>prefork</server_type> <!-- net::server type -->
 
-        <ils_events>/openils/var/data/ils_events.xml</ils_events> <!-- ILS events description file -->
+        <ils_events>LOCALSTATEDIR/data/ils_events.xml</ils_events> <!-- ILS events description file -->
 
         <email_notify> <!-- this will eventually move into the notifications section below... -->
             <!-- global email notification settings -->
-            <template>/openils/var/data/hold_notification_template.example</template>
+            <template>LOCALSTATEDIR/data/hold_notification_template.example</template>
             <smtp_server>localhost</smtp_server>
 
             <!--
@@ -58,8 +58,8 @@ vim:et:ts=4:sw=4:
 
             <!-- The system can generate an XML file of overdue notices.  This is the
                 directory where they are stored.  Files are named overdue.YYYY-MM-DD.xml -->
-            <notice_dir>/openils/var/data/overdue</notice_dir>
-            <combined_template>/openils/var/data/templates/overdue_combined_xml.example</combined_template>
+            <notice_dir>LOCALSTATEDIR/data/overdue</notice_dir>
+            <combined_template>LOCALSTATEDIR/data/templates/overdue_combined_xml.example</combined_template>
 
             <notice>
                 <!-- Notify at 7 days overdue -->
@@ -70,7 +70,7 @@ vim:et:ts=4:sw=4:
                 <!-- do we attempt email notification? -->
                 <email_notify>true</email_notify>
                 <!-- notice template file -->
-                <email_template>/openils/var/data/templates/overdue_7day.example</email_template>
+                <email_template>LOCALSTATEDIR/data/templates/overdue_7day.example</email_template>
             </notice>
         </overdue>
 
@@ -86,7 +86,7 @@ vim:et:ts=4:sw=4:
                 <notify_interval>1 day</notify_interval>
                 <file_append>false</file_append>
                 <email_notify>true</email_notify>
-                <email_template>/openils/var/data/templates/predue_1day.example</email_template>
+                <email_template>LOCALSTATEDIR/data/templates/predue_1day.example</email_template>
             </notice>
         </predue>
       </notifications>
@@ -107,9 +107,9 @@ vim:et:ts=4:sw=4:
                 </database>
                 <files>
                     <!-- successful report outputs go here -->
-                    <output_base>/openils/var/web/reporter</output_base>
-                    <success_template>/openils/var/data/report-success</success_template>
-                    <fail_template>/openils/var/data/report-fail</fail_template>
+                    <output_base>LOCALSTATEDIR/web/reporter</output_base>
+                    <success_template>LOCALSTATEDIR/data/report-success</success_template>
+                    <fail_template>LOCALSTATEDIR/data/report-fail</fail_template>
                 </files>
             </setup>
         </reporter>
@@ -324,6 +324,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
+					<marc_html_xsl_slim>oilsMARC21slim2HTMLslim.xsl</marc_html_xsl_slim>
 
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
@@ -351,7 +352,7 @@ vim:et:ts=4:sw=4:
                     <max_superpages>10</max_superpages>
 
                     <!-- zip code database file -->
-                    <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
+                    <!--<zips_file>LOCALSTATEDIR/data/zips.txt</zips_file>-->
                 </app_settings>
             </open-ils.search>
 
@@ -393,7 +394,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marctemplates>
-                        <K_book>/openils/var/templates/marc/k_book.xml</K_book>
+                        <K_book>LOCALSTATEDIR/templates/marc/k_book.xml</K_book>
                     </marctemplates>
                 </app_settings>
             </open-ils.cat>
@@ -471,9 +472,9 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <patron_penalty>penalty/patron_penalty.js</patron_penalty>
-                    <script_path>/openils/lib/javascript</script_path>
-                    <script_path>/openils/var</script_path>
-                    <script_path>/openils/var/catalog</script_path>
+                    <script_path>LIBDIR/javascript</script_path>
+                    <script_path>LOCALSTATEDIR</script_path>
+                    <script_path>LOCALSTATEDIR/catalog</script_path>
                 </app_settings>
             </open-ils.penalty>
 
@@ -499,9 +500,9 @@ vim:et:ts=4:sw=4:
                     </notify_hold>
 
                     <!-- circulation policy scripts -->
-                    <script_path>/openils/lib/javascript</script_path>
-                    <script_path>/openils/var</script_path>
-                    <script_path>/openils/var/catalog</script_path>
+                    <script_path>LIBDIR/javascript</script_path>
+                    <script_path>LOCALSTATEDIR</script_path>
+                    <script_path>LOCALSTATEDIR/catalog</script_path>
                     <legacy_script_support>false</legacy_script_support>
                     <scripts> 
                         <circ_permit_patron>circ/circ_permit_patron.js</circ_permit_patron>
@@ -591,9 +592,9 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <script_path>/openils/lib/javascript/</script_path>
-                    <script_path>/openils/var/catalog/</script_path>
-                    <script_path>/openils/var/web/opac/common/js/</script_path>
+                    <script_path>LIBDIR/javascript/</script_path>
+                    <script_path>LOCALSTATEDIR/catalog/</script_path>
+                    <script_path>LOCALSTATEDIR/web/opac/common/js/</script_path>
                     <scripts>
                         <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
                         <biblio_descriptor>biblio_descriptor.js</biblio_descriptor>
@@ -608,17 +609,17 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Storage</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.storage_unix.log</unix_log>
-                    <unix_sock>openils.storage_unix.sock</unix_sock>
-                    <unix_pid>openils.storage_unix.pid</unix_pid>
+                    <unix_log>open-ils.storage_unix.log</unix_log>
+                    <unix_sock>open-ils.storage_unix.sock</unix_sock>
+                    <unix_pid>open-ils.storage_unix.pid</unix_pid>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <script_path>/openils/lib/javascript/</script_path>
-                    <script_path>/openils/var/catalog/</script_path>
+                    <script_path>LIBDIR/javascript/</script_path>
+                    <script_path>LOCALSTATEDIR/catalog/</script_path>
                     <scripts>
                         <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
                     </scripts>
@@ -695,10 +696,10 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Collections</implementation>
                 <max_requests>17</max_requests>
                 <unix_config>
-                    <unix_sock>openils.collections_unix.sock</unix_sock>
-                    <unix_pid>openils.collections_unix.pid</unix_pid>
+                    <unix_sock>open-ils.collections_unix.sock</unix_sock>
+                    <unix_pid>open-ils.collections_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.collections_unix.log</unix_log>
+                    <unix_log>open-ils.collections_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -713,10 +714,10 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Reporter</implementation>
                 <max_requests>99</max_requests>
                 <unix_config>
-                    <unix_sock>openils.reporter_unix.sock</unix_sock>
-                    <unix_pid>openils.reporter_unix.pid</unix_pid>
+                    <unix_sock>open-ils.reporter_unix.sock</unix_sock>
+                    <unix_pid>open-ils.reporter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>openils.reporter_unix.log</unix_log>
+                    <unix_log>open-ils.reporter_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -789,6 +790,33 @@ vim:et:ts=4:sw=4:
                </unix_config>
             </open-ils.fielder>
 
+            <open-ils.vandelay>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+				<implementation>OpenILS::Application::Vandelay</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>vandelay_unix.sock</unix_sock>
+                    <unix_pid>vandelay_unix.pid</unix_pid>
+                    <unix_log>vandelay_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                    <databases>
+                        <!-- temporary location for MARC import files.  
+                            Files will be deleted after records are spooled.
+                            *note:  in a multi-brick environment, this will need to
+                            be on a write-able NFS share.  -->
+                        <importer>/tmp</importer>
+                    </databases>
+                </app_settings>
+            </open-ils.vandelay>
+
         </apps>
     </default>
 
@@ -799,7 +827,7 @@ vim:et:ts=4:sw=4:
             Should match the fully qualified domain name of the host.
 
             On Linux, the output of the following command is authoritative:
-            $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn();'
+            $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn() . "\n";'
 
             To use 'localhost' instead, run osrf_ctl.sh with the -l flag
             -->
@@ -824,6 +852,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter-store</appname>  
                 <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.fielder</appname>  
+                <appname>open-ils.vandelay</appname>  
             </activeapps>
         </localhost>
     </hosts>

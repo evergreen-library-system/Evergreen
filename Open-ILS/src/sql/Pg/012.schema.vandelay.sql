@@ -35,51 +35,6 @@ CREATE TABLE vandelay.bib_attr_definition (
 	ident		BOOL	NOT NULL DEFAULT FALSE
 );
 
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('title','Title of work','//*[@tag="245"]/*[contains("abcmnopr",@code)]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('author','Author of work','//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('language','Lanuage of work','//*[@tag="240"]/*[@code="l"][1]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('pagination','Pagination','//*[@tag="300"]/*[@code="a"][1]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident, remove ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident, remove ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Accession Number','//*[@tag="001"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('eg_tcn','TCN Value','//*[@tag="901"]/*[@code="a"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('eg_tcn_source','TCN Source','//*[@tag="901"]/*[@code="b"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, ident ) VALUES ('eg_identifier','Internal ID','//*[@tag="901"]/*[@code="c"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath, remove ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
-INSERT INTO vandelay.bib_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
-
-
-CREATE TABLE vandelay.bib_queue (
-	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
-	item_attr_def	TEXT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
-) INHERITS (vandelay.queue);
-ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
-
-CREATE TABLE vandelay.queued_bib_record (
-	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
-) INHERITS (vandelay.queued_record);
-ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
-
-CREATE TABLE vandelay.queued_bib_record_attr (
-	id			BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id) DEFERRABLE INITIALLY DEFERRED,
-	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
-	attr_value	TEXT		NOT NULL
-);
-
-CREATE TABLE vandelay.bib_match (
-	id				BIGSERIAL	PRIMARY KEY,
-	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
-	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-);
-
 -- Each TEXT field (other than 'name') should hold an XPath predicate for pulling the data needed
 -- DROP TABLE vandelay.import_item_attr_definition CASCADE;
 CREATE TABLE vandelay.import_item_attr_definition (
@@ -112,57 +67,40 @@ CREATE TABLE vandelay.import_item_attr_definition (
 	CONSTRAINT vand_import_item_attr_def_idx UNIQUE (owner,name)
 );
 
-INSERT INTO vandelay.import_item_attr_definition (
-    owner, name, tag, owning_lib, circ_lib, location,
-    call_number, circ_modifier, barcode, price, copy_number,
-    circulate, ref, holdable, opac_visible, status
-) VALUES (
-    1,
-    'Evergreen 852 export format',
-    '852',
-    '[@code = "b"][1]',
-    '[@code = "b"][2]',
-    'c',
-    'j',
-    'g',
-    'p',
-    'y',
-    't',
-    '[@code = "x" and text() = "ncirculating"]',
-    '[@code = "x" and text() = "reference"]',
-    '[@code = "x" and text() = "holdable"]',
-    '[@code = "x" and text() = "visible"]',
-    'z'
+CREATE TABLE vandelay.bib_queue (
+	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
+	item_attr_def	TEXT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
+) INHERITS (vandelay.queue);
+ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
+
+CREATE TABLE vandelay.queued_bib_record (
+	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
+	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+) INHERITS (vandelay.queued_record);
+ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
+
+CREATE TABLE vandelay.queued_bib_record_attr (
+	id			BIGSERIAL	PRIMARY KEY,
+	record		BIGINT		NOT NULL REFERENCES vandelay.queued_bib_record (id) DEFERRABLE INITIALLY DEFERRED,
+	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
+	attr_value	TEXT		NOT NULL
 );
 
-INSERT INTO vandelay.import_item_attr_definition (
-    owner,
-    name,
-    tag,
-    owning_lib,
-    location,
-    call_number,
-    circ_modifier,
-    barcode,
-    price,
-    status
-) VALUES (
-    1,
-    'Unicorn Import format -- 999',
-    '999',
-    'm',
-    'l',
-    'a',
-    't',
-    'i',
-    'p',
-    'k'
+CREATE TABLE vandelay.bib_match (
+	id				BIGSERIAL	PRIMARY KEY,
+	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
+	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 -- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
-    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id),
+    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
+    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
@@ -198,8 +136,6 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 
     my $xml = shift;
     my $field_spec = shift;
-
-    my @fields 
 
     my $r = MARC::Record->new_from_xml( $xml );
     $r->delete_field( $_ ) for ( $r->field( $field_spec ) );
@@ -494,6 +430,69 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION vandelay.ingest_bib_items ( ) RETURNS TRIGGER AS $func$
+DECLARE
+    queue_rec   RECORD;
+    item_rule   RECORD;
+    item_data   vandelay.import_item%ROWTYPE;
+BEGIN
+
+    SELECT * INTO queue_rec FROM vandelay.bib_queue WHERE id = NEW.queue;
+
+    FOR item_rule IN SELECT r.* FROM actor.org_unit_ancestors( queue_rec.owner ) o JOIN vandelay.import_item_attr_definition r ON ( r.owner = o.id ) LOOP
+        FOR item_data IN SELECT * FROM vandelay.ingest_items( NEW.id::BIGINT, item_rule.id::BIGINT ) LOOP
+            INSERT INTO vandelay.import_item (
+		record,
+                definition,
+                owning_lib,
+                circ_lib,
+                call_number,
+                copy_number,
+                status,
+                location,
+                circulate,
+                deposit,
+                deposit_amount,
+                ref,
+                holdable,
+                price,
+                barcode,
+                circ_modifier,
+                circ_as_type,
+                alert_message,
+                pub_note,
+                priv_note,
+                opac_visible
+            ) VALUES (
+		NEW.id,
+                item_data.definition,
+                item_data.owning_lib,
+                item_data.circ_lib,
+                item_data.call_number,
+                item_data.copy_number,
+                item_data.status,
+                item_data.location,
+                item_data.circulate,
+                item_data.deposit,
+                item_data.deposit_amount,
+                item_data.ref,
+                item_data.holdable,
+                item_data.price,
+                item_data.barcode,
+                item_data.circ_modifier,
+                item_data.circ_as_type,
+                item_data.alert_message,
+                item_data.pub_note,
+                item_data.priv_note,
+                item_data.opac_visible
+            );
+        END LOOP;
+    END LOOP;
+
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
 DECLARE
     attr    RECORD;
@@ -543,7 +542,9 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_bib_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM vandelay.queued_bib_record_attr WHERE lineitem = OLD.id;
+    DELETE FROM vandelay.queued_bib_record_attr WHERE record = OLD.id;
+    DELETE FROM vandelay.import_item WHERE record = OLD.id;
+
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
     END IF;
@@ -558,6 +559,10 @@ CREATE TRIGGER cleanup_bib_trigger
 CREATE TRIGGER ingest_bib_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_marc();
+
+CREATE TRIGGER ingest_item_trigger
+    AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
+    FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_items();
 
 CREATE TRIGGER zz_match_bibs_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
@@ -574,7 +579,6 @@ CREATE TABLE vandelay.authority_attr_definition (
 	remove		TEXT	NOT NULL DEFAULT '',
 	ident		BOOL	NOT NULL DEFAULT FALSE
 );
-INSERT INTO vandelay.authority_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Identifier','//*[@tag="001"]', TRUE);
 
 CREATE TABLE vandelay.authority_queue (
 	queue_type	TEXT		NOT NULL DEFAULT 'authority' CHECK (queue_type = 'authority'),
@@ -623,7 +627,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_authority_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM vandelay.queued_authority_record_attr WHERE lineitem = OLD.id;
+    DELETE FROM vandelay.queued_authority_record_attr WHERE record = OLD.id;
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
     END IF;
@@ -638,6 +642,71 @@ CREATE TRIGGER cleanup_authority_trigger
 CREATE TRIGGER ingest_authority_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_authority_record
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_authority_marc();
+
+-- Vandelay (for importing and exporting records) 012.schema.vandelay.sql 
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (1, 'title', oils_i18n_gettext(1, 'vqbrad', 'Title of work', 'description'),'//*[@tag="245"]/*[contains("abcmnopr",@code)]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(1, 'vqbrad', 'Author of work', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (3, 'language', oils_i18n_gettext(3, 'vqbrad', 'Language of work', 'description'),'//*[@tag="240"]/*[@code="l"][1]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (4, 'pagination', oils_i18n_gettext(4, 'vqbrad', 'Pagination', 'description'),'//*[@tag="300"]/*[@code="a"][1]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (5, 'isbn',oils_i18n_gettext(5, 'vqbrad', 'ISBN', 'description'),'//*[@tag="020"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (6, 'issn',oils_i18n_gettext(6, 'vqbrad', 'ISSN', 'description'),'//*[@tag="022"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (7, 'price',oils_i18n_gettext(7, 'vqbrad', 'Price', 'description'),'//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (8, 'rec_identifier',oils_i18n_gettext(8, 'vqbrad', 'Accession Number', 'description'),'//*[@tag="001"]', TRUE);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (9, 'eg_tcn',oils_i18n_gettext(9, 'vqbrad', 'TCN Value', 'description'),'//*[@tag="901"]/*[@code="a"]', TRUE);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (10, 'eg_tcn_source',oils_i18n_gettext(10, 'vqbrad', 'TCN Source', 'description'),'//*[@tag="901"]/*[@code="b"]', TRUE);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (11, 'eg_identifier',oils_i18n_gettext(11, 'vqbrad', 'Internal ID', 'description'),'//*[@tag="901"]/*[@code="c"]', TRUE);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (12, 'publisher',oils_i18n_gettext(12, 'vqbrad', 'Publisher', 'description'),'//*[@tag="260"]/*[@code="b"][1]');
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (13, 'pubdate',oils_i18n_gettext(13, 'vqbrad', 'Publication Date', 'description'),'//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
+--INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (14, 'edition',oils_i18n_gettext(14, 'vqbrad', 'Edition', 'description'),'//*[@tag="250"]/*[@code="a"][1]');
+--
+--INSERT INTO vandelay.import_item_attr_definition (
+--    owner, name, tag, owning_lib, circ_lib, location,
+--    call_number, circ_modifier, barcode, price, copy_number,
+--    circulate, ref, holdable, opac_visible, status
+--) VALUES (
+--    1,
+--    'Evergreen 852 export format',
+--    '852',
+--    '[@code = "b"][1]',
+--    '[@code = "b"][2]',
+--    'c',
+--    'j',
+--    'g',
+--    'p',
+--    'y',
+--    't',
+--    '[@code = "x" and text() = "circulating"]',
+--    '[@code = "x" and text() = "reference"]',
+--    '[@code = "x" and text() = "holdable"]',
+--    '[@code = "x" and text() = "visible"]',
+--    'z'
+--);
+--
+--INSERT INTO vandelay.import_item_attr_definition (
+--    owner,
+--    name,
+--    tag,
+--    owning_lib,
+--    location,
+--    call_number,
+--    circ_modifier,
+--    barcode,
+--    price,
+--    status
+--) VALUES (
+--    1,
+--    'Unicorn Import format -- 999',
+--    '999',
+--    'm',
+--    'l',
+--    'a',
+--    't',
+--    'i',
+--    'p',
+--    'k'
+--);
+--
+--INSERT INTO vandelay.authority_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Identifier','//*[@tag="001"]', TRUE);
 
 COMMIT;
 

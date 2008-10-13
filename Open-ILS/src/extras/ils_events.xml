@@ -153,6 +153,15 @@
 	<event code='1231' textcode='RECORD_NOT_EMPTY'>
 		<desc xml:lang="en-US">The selected bib record has volumes attached</desc>
 	</event>
+	<event code='1232' textcode='ITEM_DEPOSIT_REQUIRED'>
+		<desc xml:lang="en-US"></desc>
+	</event>
+	<event code='1233' textcode='ITEM_RENTAL_FEE_REQUIRED'>
+		<desc xml:lang="en-US"></desc>
+	</event>
+	<event code='1234' textcode='ITEM_DEPOSIT_PAID'>
+		<desc xml:lang="en-US"></desc>
+	</event>
 
 
 
@@ -634,6 +643,28 @@
 	<event code='1679' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
 	</event>
+	<event code='1680' textcode='CONFIG_CIRC_MODIFIER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_modifier was not found</desc>
+	</event>
+	<event code='1681' textcode='VANDELAY_BIB_QUEUE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_bib_queue was not found</desc>
+	</event>
+	<event code='1682' textcode='VANDELAY_AUTHORITY_QUEUE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_authority_queue was not found</desc>
+	</event>
+	<event code='1683' textcode='CONFIG_CIRC_MATRIX_TEST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_matrix_test was not found</desc>
+	</event>
+	<event code='1684' textcode='VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_bib_record was not found</desc>
+	</event>
+	<event code='1685' textcode='VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay_queued_authority_record was not found</desc>
+	</event>
+	<event code='1686' textcode='PERMISSION_USR_WORK_OU_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_work_ou_map was not found</desc>
+	</event>
+
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
@@ -668,6 +699,12 @@
 	</event>
 	<event code='1710' textcode='CONTAINER_EXISTS'>
 		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
+	</event>
+	<event code='1711' textcode='BIB_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">A bib record queue with the same name already exists</desc>
+	</event>
+	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
 	</event>
 
 
@@ -755,10 +792,11 @@
 		should be specified within the event with a 'location' key
 		</desc>
 	</event>
-
-
 	<event code='7018' textcode='COPY_MARKED_LOST'>
 		<desc xml:lang="en-US">The requested item is already marked as lost</desc>
+	</event>
+	<event code='7019' textcode='HOLD_CAPTURE_DELAYED'>
+		<desc xml:lang="en-US">Hold capture was delayed for this item</desc>
 	</event>
 
 

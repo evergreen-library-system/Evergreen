@@ -14,13 +14,13 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Confiy :: Global :: Permission :: Permission List</title>
+		<title>Conify :: Global :: Permission :: Permission List</title>
 
 		<style type="text/css">
-			@import url("/js/dojo/dojox/grid/_grid/tundraGrid.css");
-			@import url("/js/dojo/dojo/resources/dojo.css");
-			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
-			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
+			@import url('/js/dojo/dojo/resources/dojo.css');
+			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
 		</style>
 
 		<style>
@@ -62,6 +62,7 @@
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
 			<script type="dojo/method">
+<!--
 				window.highlighter= {};
 				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
 				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
@@ -144,7 +145,7 @@
                         });
                     }
                 }).send();
-
+-->
 			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
@@ -152,7 +153,7 @@
 				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="New Code"></div>
 				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="Add"> 
 					<script type="dojo/connect" event="onClick">
-
+<!--
 						var new_code = new_perm_code.getValue();
 						if (!new_code) return;
 
@@ -186,15 +187,15 @@
             	                }
                 	        }
                     	}).send();
-    
+--> 
 	                </script>
 				</button>
 			</div>
 
 			<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
-				<div dojoType="dojox.grid.data.DojoData" id="perm_data_model"jsId="perm_data_model" store="perm_store" query="{ code : '*' }"></div>
+				<div dojoType="dojox.grid.data.DojoData" id="perm_data_model" jsId="perm_data_model" store="perm_store" query="{ code : '*' }"></div>
 				<div id="perm_grid" dojoType="dojox.Grid" model="perm_data_model" structure="perm_grid_layout" jsId="perm_grid">
-					<!!--
+					<!--
 					<script type="dojo/connect" event="onSet" args="item,attr,oldVal,newVal">
 					</script>
 					-->
@@ -207,7 +208,7 @@
 		
 				<button jsId="delete_ppl_button" dojoType="dijit.form.Button" label="Delete Selected">
 					<script type="dojo/connect" event="onClick">
-
+<!--
 						var selected_rows = perm_grid.selection.getSelected();
 		
 						var selected_items = [];
@@ -262,7 +263,7 @@
 		
 							}
 						}
-	
+-->
 					</script>
 				</button>
 	

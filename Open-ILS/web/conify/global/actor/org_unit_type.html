@@ -14,12 +14,12 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Confiy :: Global :: Actor :: Org Unit Types</title>
+		<title>Conify :: Global :: Actor :: Org Unit Types</title>
 
 		<style type="text/css">
-			@import url("/js/dojo/dojo/resources/dojo.css");
-			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
-			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+			@import url('/js/dojo/dojo/resources/dojo.css');
+			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
 		</style>
 
 		<style>
@@ -49,7 +49,7 @@
 
 		<!-- Dojo goodness -->
 		<script type="text/javascript" src="../admin.js"></script>
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"</script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
 		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="org_unit_type.js"></script>
@@ -62,6 +62,7 @@
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
+<!--
 					window.dirtyStore = [];
 
                     pCRUD.request({
@@ -102,7 +103,7 @@
                             });
                         }
                     }).send();
-
+-->
 				</script>
 				<div
 				  id="type_tree"
@@ -115,7 +116,7 @@
 				>
 
 					<script type="dojo/method" event="onClick" args="item,node">
-
+<!--
 						right_pane_toggler.show();
 						current_type = item;
 						current_fm_type = new aout().fromStoreItem(item);
@@ -151,7 +152,7 @@
 
 						editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == 't' ? true : false );
 						editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == 't' ? true : false );
-
+-->
 					</script>
 
 					<script type="dojo/method" event="getLabel" args="item,pI">
@@ -218,7 +219,8 @@
 									  ignoreCase="true"
 									  required="true"
 									>
-										<script type="dojo/method" event="onChange" args=>
+										<script type="dojo/method" event="onChange">
+<!--
 											if (current_type && this.getValue()) {
 												if ( this.store.getValue( current_type, 'parent' ) == this.getValue() ) return;
 
@@ -231,6 +233,7 @@
 													scope : ou_type_store
 												});
 											}
+-->
 										</script>
 									</div>
 								</td>
@@ -274,6 +277,7 @@
 									this.disabled = true;
 								</script>
 								<script type="dojo/connect" event="onClick">
+<!--
 	
 									if (ou_type_store.getValue( current_type, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
@@ -349,7 +353,7 @@
 										}).send();
 	
 									}
-	
+-->
 								</script>
 							</button>
 	
@@ -360,7 +364,6 @@
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
-	
 								var new_fm_obj = new aout().fromHash({
 									isnew			: 1,
 									name			: 'New Type',
@@ -370,7 +373,7 @@
 									opac_label		: ou_type_store.getValue( current_type, 'opac_label' ) + ' child' + virgin_out_id--,
 									parent			: ou_type_store.getValue( current_type, 'id' )
 								});
-	
+<!--
 								var err = false;
 								pCRUD.request({
 									method : 'open-ils.permacrud.create.aout',
@@ -401,13 +404,12 @@
 									highlighter.type_tree.green.play();
 									status_update( 'New child Organization Type created for ' + ou_type_store.getValue( current_type, 'name' ) );
 								}
-	
+-->
 							</script>
 						</button>
 	
 					</div>
 				</div>
 			</div>
-		</div>
 	</body>
 </html>

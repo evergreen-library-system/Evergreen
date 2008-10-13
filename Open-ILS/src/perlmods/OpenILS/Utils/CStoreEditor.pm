@@ -290,7 +290,7 @@ sub request {
 	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 	my $locale = $self->session->session_locale;
 
-	$self->log(I, "request $method $locale $argstr");
+	$self->log(I, "request $locale $method $argstr");
 
 	if( ($self->{xact} or $always_xact) and 
 			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
@@ -312,7 +312,12 @@ sub request {
 
         } else {
             my $resp = $req->recv(timeout => $self->timeout);
-            $val = $resp->content;
+            if($req->failed) {
+                $err = $resp;
+		        $self->log(E, "request error $method : $argstr : $err");
+            } else {
+                $val = $resp->content;
+            }
         }
 
         $req->finish;

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+        <!--#include virtual="/opac/locale/${locale}/opac.dtd"-->
+]>
+
+<html>
+	<head>
+		<title>&slimpac.language.select;</title>
+		<style type="text/css">
+			.title {
+				text-align: center;
+				border: 3px solid #A7EA9D;
+				padding-bottom: 0px;
+				margin-bottom: 0px;
+				padding-right: 5em;
+				padding-left: 5em;
+				margin-right: 5em;
+				margin-left: 5em;
+				border-collapse: collapse;
+				border-collapse: collapse;
+			}
+			.switcher {
+				padding-top: 0px;
+				margin-top: 0px;
+				text-align: center;
+				padding-right: 5em;
+				padding-left: 5em;
+				margin-right: 5em;
+				margin-left: 5em;
+			}
+
+			.greenrow {
+				border: 1px solid #D0D0D0;
+				background: #A7EA9D;
+				margin-top: .5em;
+				margin-bottom: .5em;
+			}
+
+			.bluerow {
+				border: 1px solid #D0D0D0;
+				background: #E0F6E0;
+				margin-top: .5em;
+				margin-bottom: .5em;
+			}
+
+			.bluerow a {
+				background: white;
+			}
+
+			.greenrow a {
+				background: white;
+			}
+
+			.rowpad {
+				height: 20px;
+			}
+
+			.footer {
+				width: 100%;
+				text-align: center;
+				vertical-align: bottom;
+				margin: auto;
+				margin-top: 20px;
+			}
+
+			.footer_links {
+				width: 60%;
+				text-align: center;
+				padding: 10px;
+				font-size: 8pt;
+				margin: auto;
+			}
+
+			.footer_link {
+				margin-left: 10px; 
+				margin-right: 10px;
+			}
+
+			.copyright {
+				margin-top: 4px;
+				font-size: 7pt;
+			}
+
+		</style>
+	</head>
+	<body>
+
+		<h1 class="title">&slimpac.language.select;</h1>
+		<div class="switcher">
+		<!--#include virtual="locales.inc"-->
+		</div>
+
+		<div class="footer">
+			<div class="footer_links">
+
+				<span class='footer_link'>
+					<a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
+				</span> 
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a class='classic_link' href='advanced.html'>&opac.navigate.advanced;</a>
+				</span> 
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.find.url;'>&footer.find.library;</a>
+				</span> 
+
+				<span> | </span>
+				
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.help.url;'>&footer.help;</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.library.url;'>&footer.library.about;</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
+				</span>
+				<br/>
+				<div class="copyright">
+					<span>&footer.copyright;</span>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

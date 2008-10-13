@@ -1,0 +1,16 @@
+<div id="vl-generic-progress" class='progress'>
+    <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
+</div>
+<div id="vl-generic-progress-with-total" class='hidden progress'>
+    <div dojoType="dijit.ProgressBar" jsId='vlControlledProgressBar' style="width:300px"></div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-status-div' class='hidden'>
+    <h1>&vandelay.upload.status;</h1><br/>
+    <div id='vl-upload-status-uploading'>
+        <h3>&vandelay.uploading;</h3>
+    </div>
+    <div id='vl-upload-status-processing' class='hidden'>
+        <h3>&vandelay.processing;<span id='vl-upload-status-count'/></h3>
+    </div>
+</div>
+

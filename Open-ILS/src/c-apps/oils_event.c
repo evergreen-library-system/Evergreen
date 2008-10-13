@@ -154,7 +154,7 @@ static void _oilsEventParseEvents() {
 						if( !strcmp((char*) desc->name, "desc") ) {
 							xmlChar* lang = xmlGetProp( desc, BAD_CAST "lang");	
 							if(lang) {
-								osrfLogDebug(OSRF_LOG_MARK, "Loaded event lang: %s", (char*) lang);
+								osrfLogInternal(OSRF_LOG_MARK, "Loaded event lang: %s", (char*) lang);
 								osrfHash* langHash = osrfHashGet(
 									_oilsEventDescriptions, (char*) lang);
 								if(!langHash) {
@@ -163,7 +163,7 @@ static void _oilsEventParseEvents() {
 								}
 								char* content;
 								if( desc->children && (content = (char*) desc->children->content) ) {
-									osrfLogDebug(OSRF_LOG_MARK, "Loaded event desc: %s", content);
+									osrfLogInternal(OSRF_LOG_MARK, "Loaded event desc: %s", content);
 									osrfHashSet( langHash, content, (char*) code );
 								}
 							}

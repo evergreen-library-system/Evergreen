@@ -14,13 +14,13 @@
 -->
 <html xmlns="http://www.w2.org/1999/xhtml">
 	<head>
-		<title>Confiy :: Global :: Permission :: Group Tree</title>
+		<title>Conify :: Global :: Permission :: Group Tree</title>
 
 		<style type="text/css">
-			@import url("/js/dojo/dojox/grid/_grid/tundraGrid.css");
-			@import url("/js/dojo/dojo/resources/dojo.css");
-			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
-			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
+			@import url('/js/dojo/dojo/resources/dojo.css');
+			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
 		</style>
 
 		<style>
@@ -75,6 +75,7 @@
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
+				<!--
 					window.dirtyStore = [];
 
                     server.pCRUD.request({
@@ -163,7 +164,7 @@
 
 								this.setValue( item, 'ischanged', 1);
 
-								if (attr == 'grantable' && typeof n != 'string')
+								if (attr == 'grantable' && (typeof (n) != 'string'))
 									this.setValue(item, 'grantable', n ? 't' : 'f');
 							}
 
@@ -171,7 +172,7 @@
                         }
  
                     }).send();
-
+-->
 				</script>
 				<div
 				  id="group_tree"
@@ -184,7 +185,7 @@
 				>
 
 					<script type="dojo/method" event="onClick" args="item,node">
-
+<!--
 						right_pane_toggler.show();
 
 						current_group = item;
@@ -226,7 +227,7 @@
 						editor_pane_application_perm.setValue( this.store.getValue( current_group, 'application_perm' ) );
 
 						editor_pane_usergroup.setChecked( this.store.getValue( current_group, 'usergroup' ) == 't' ? true : false );
-
+-->
 					</script>
 
 					<script type="dojo/method" event="getLabel" args="item,pI">
@@ -277,7 +278,7 @@
 										  id="editor_pane_description"
 										  dojoType="dijit.form.Textarea"
 										  jsId="editor_pane_description"
-										  onChange="if (current_group) group_store.setValue( current_group, "description", this.getValue() );"
+										  onChange="if (current_group) group_store.setValue( current_group, 'description', this.getValue() );"
 										></textarea>
 									</span>
 									<span dojoType="openils.widget.TranslatorPopup" targetObject="current_fm_group" field="description"></span>
@@ -306,9 +307,11 @@
 									  jsId="editor_pane_application_perm"
 									>
 										<script type="dojo/connect" event="onChange">
+<!--
 											if (current_group && this.getValue()) {
 												group_store.setValue( current_group, "application_perm", this.getValue() );
 											}
+-->
 										</script>
 									</div>
 								</td>
@@ -326,9 +329,11 @@
 									  required="true"
 									>
 										<script type="dojo/connect" event="onChange">
+<!--
 											if (current_group && this.getValue()) {
 												this.store.setValue( current_group, "parent", this.getValue() );
 											}
+-->
 										</script>
 									</div>
 								</td>
@@ -360,6 +365,7 @@
 									this.disabled = true;
 								</script>
 								<script type="dojo/connect" event="onClick">
+<!--
 	
 									if (group_store.getValue( current_group, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
@@ -434,7 +440,7 @@
 										}).send();
 	
 									}
-	
+-->	
 								</script>
 							</button>
 	
@@ -445,6 +451,7 @@
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
+<!--
 	
 								var new_fm_obj = new pgt().fromHash({
 									isnew			: 1,
@@ -483,7 +490,7 @@
 									highlighter.group_tree.green.play();
 									status_update( 'New child Group created for ' + group_store.getValue( current_group, 'name' ) );
 								}
-	
+-->	
 							</script>
 						</button>
 	
@@ -497,11 +504,11 @@
 						</script>
 						<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="width:100%; height:100%;">
 							<div id="grid_container" dojoType="dijit.layout.ContentPane" sizeShare="1" layoutAlign="left">
-								<div dojoType="dojox.grid.data.DojoData" id="perm_map_model"jsId="perm_map_model" store="perm_map_store"></div>
+								<div dojoType="dojox.grid.data.DojoData" id="perm_map_model" jsId="perm_map_model" store="perm_map_store"></div>
 	
 								<div id="perm_grid" dojoType="dojox.Grid" model="perm_map_model" jsId="perm_grid">
 									<script type="dojo/connect" event="startup">
-	
+<!--	
 										function get_item_part(model_field, item_search_field, item_part, model, store, datum, row) {
 											var formatter = true;
 	
@@ -558,7 +565,7 @@
 			                            ];
 
 										perm_grid.setStructure(window.current_perm_grid_layout);
-	
+-->
 									</script>
 								</div>
 							</div>
@@ -610,8 +617,9 @@
 
 										<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
 						                    <script type="dojo/connect" event="onClick">
-						
+<!--
 						                        var new_perm = new_perm_select.getValue();
+												alert(new_perm);
 						                        if (!new_perm) return;
 		
 						                        var new_type_id = new_depth_select.getValue();
@@ -667,7 +675,7 @@
 						                        }).send();
 
 												new_popup._closeDropDown();
-		    
+-->    
 						                    </script>
 		
 										</button>
@@ -678,7 +686,7 @@
 
 				                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="Remove Selected">
 					                <script type="dojo/connect" event="onClick">
-					
+<!--
 				                        var selected_rows = perm_grid.selection.getSelected();
 				        
 				                        var selected_items = [];
@@ -728,7 +736,7 @@
 			                                }).send();
 				        
 				                        }
-				    
+-->
 					                </script>
 						        </button>
 	

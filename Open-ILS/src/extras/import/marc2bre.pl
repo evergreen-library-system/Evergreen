@@ -22,36 +22,45 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, @req_fields, $use901, $quiet) =
-	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $tcn_offset, $tcn_mapfile, $tcn_dumpfile, $used_id_file, $used_tcn_file, $enc, @files, @trash_fields, @req_fields, $use901, $quiet, $tcn_field, $tcn_subfield) =
+	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC', 0);
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
 	('Pg','localhost','evergreen','postgres','postgres');
 
-GetOptions( 'marctype=s'       => \$marctype,
-            'startid=i'        => \$recid,
-            'idfield=s'        => \$id_field,
-            'idsubfield=s'     => \$id_subfield,
-            'user=s'           => \$user,
-            'encoding=s'       => \$enc,
-            'hard_encoding'    => \$force_enc,
-            'keyfile=s'        => \$keyfile,
-            'config=s'         => \$config,
-            'file=s'           => \@files,
-            'required_field=s' => \@req_fields,
-            'trash=s'          => \@trash_fields,
-            'xml_idl=s'	       => \$idlfile,
-            'dontuse=s'        => \$dontuse_file,
-            "db_driver=s"      => \$db_driver,
-            "db_host=s"	       => \$db_host,
-            "db_name=s"	       => \$db_name,
-            "db_user=s"	       => \$db_user,
-            "db_pw=s"	       => \$db_pw,
-            "use901"           => \$use901,
-            'quiet'            => \$quiet,
-          );
+GetOptions(
+	'marctype=s'	=> \$marctype, # format of MARC files being processed defaults to USMARC, often set to XML
+	'startid=i'	=> \$recid, # id number to start with when auto-assigning id numbers, defaults to highest id in database + 1
+	'idfield=s'	=> \$id_field, # field containing the record's desired internal id, NOT tcn
+	'idsubfield=s'	=> \$id_subfield, # subfield of above record id field
+	'tcnfield=s'	=> \$tcn_field, # field containing the record's desired tcn, NOT the internal id
+	'tcnsubfield=s'	=> \$tcn_subfield, # subfield of above record tcn field
+	'tcnoffset=i'	=> \$tcn_offset, # optionally skip characters at beginning of supplied tcn (e.g. to remove '(Sirsi)')
+	'user=s'	=> \$user, # set creator/editor values for records in database
+	'encoding=s'	=> \$enc, # set assumed MARC encoding for MARC::Charset
+	'keyfile=s'	=> \$tcn_mapfile, # DEPRECATED, use tcn_mapfile instead
+	'tcn_mapfile=s'	=> \$tcn_mapfile, # external file which allows for matching specific record tcns to specific record ids, format = one id_number|tcn_number combo per line
+	'tcnfile=s'	=> \$tcn_dumpfile, # DEPRECATED, use tcn_dumpfile instead
+	'tcn_dumpfile=s'	=> \$tcn_dumpfile, # allows specification of a dumpfile for all used tcn values
+	'config=s'	=> \$config, # location of OpenSRF core config file, defaults to /openils/conf/opensrf_core.xml
+	'file=s'	=> \@files, # files to process (or you can simple list the files as unnamed arguments, i.e. @ARGV)
+	'required_fields=s'	=> \@req_fields, # skip any records missing these fields
+	'trash=s'	=> \@trash_fields, # fields to remove from all processed records
+	'xml_idl=s'	=> \$idlfile, # location of XML IDL file, defaults to /openils/conf/fm_IDL.xml
+	'dontuse=s'	=> \$used_id_file, # DEPRECATED, use used_id_file instead
+	'used_id_file=s'	=> \$used_id_file, # external file which prevents id collisions by specifying ids already in use in the database, format = one id number per line
+	'used_tcn_file=s'	=> \$used_tcn_file, # external file which prevents tcn collisions by specifying tcns already in use in the database, format = one tcn number per line
+	"db_driver=s"	=> \$db_driver, # database driver type, usually 'Pg'
+	"db_host=s"	=> \$db_host, # database hostname
+	"db_name=s"	=> \$db_name, # database name
+	"db_user=s"	=> \$db_user, # database username
+	"db_pw=s"	=> \$db_pw, # database password
+	'use901'	=> \$use901, # use values from previously created 901 fields and skip all other processing
+	'quiet'		=> \$quiet # do not output progress count
+);
 
 @trash_fields = split(/,/,join(',',@trash_fields));
+@req_fields = split(/,/,join(',',@req_fields));
 
 if ($enc) {
 	MARC::Charset->ignore_errors(1);
@@ -83,39 +92,52 @@ if (!$recid) {
 	$sth->bind_col(1, \$recid);
 	$sth->fetch;
 	$sth->finish;
-	$recid++;
 	$dbh->disconnect;
 }
 
-my %source_map = (
+my %tcn_source_map = (
+	a  => 'Sirsi_Auto',
 	o  => 'OCLC',
 	i  => 'ISxN',
 	l  => 'LCCN',
 	s  => 'System',
 	g  => 'Gutenberg',
+	z  => 'Unknown',
 );
 
 Fieldmapper->import(IDL => $idlfile);
 
-my %keymap;
-if ($keyfile) {
-	open F, $keyfile or die "Couldn't open key file $keyfile";
+my %tcn_map;
+if ($tcn_mapfile) {
+	open F, $tcn_mapfile or die "Couldn't open key file $tcn_mapfile";
 	while (<F>) {
 		if ( /^(\d+)\|(\S+)/o ) {
-			$keymap{$1} = $2;
+			$tcn_map{$1} = $2;
 		}
 	}
 	close(F);
 }
 
-my %dontuse_id;
-if ($dontuse_file) {
-	open F, $dontuse_file or die "Couldn't open used-id file $dontuse_file";
+my %used_recids;
+if ($used_id_file) {
+	open F, $used_id_file or die "Couldn't open used-id file $used_id_file";
 	while (<F>) {
 		chomp;
 		s/^\s*//;
 		s/\s*$//;
-		$dontuse_id{$_} = 1;
+		$used_recids{$_} = 1;
+	}
+	close(F);
+}
+
+my %used_tcns;
+if ($used_tcn_file) {
+	open F, $used_tcn_file or die "Couldn't open used-tcn file $used_tcn_file";
+	while (<F>) {
+		chomp;
+		s/^\s*//;
+		s/\s*$//;
+		$used_tcns{$_} = 1;
 	}
 	close(F);
 }
@@ -127,68 +149,105 @@ my $batch = new MARC::Batch ( $marctype, @files );
 $batch->strict_off();
 $batch->warnings_off();
 
-my %used_ids;
 my $starttime = time;
 my $rec;
 my $count = 0;
 PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
 
+	$count++;
+
 	# Skip records that don't contain a required field (like '245', for example)
-	foreach my $req_field(@req_fields) {
-		next PROCESS if !$rec->field("$req_field");
+	foreach my $req_field (@req_fields) {
+		if (!$rec->field("$req_field")) {
+			warn "\n!!! Record $count missing required field $req_field, skipping record.\n";
+			next PROCESS;
+		}
 	}
+
 	my $id;
-
-	$recid++;
-	while (exists $used_ids{$recid}) {
-		$recid++;
-	}
-	$used_ids{$recid} = 1;
-
-	if ($id_field) {
-		my $field = $rec->field($id_field);
-		if ($field) {
-			if ($field->is_control_field) {
-				$id = $field->data;
-			} else {
-				$id = $field->subfield($id_subfield);
+	my $tcn_value = '';
+	my $tcn_source = '';
+	# If $use901 is set, use it for the id, the tcn, and the tcn source without ANY further processing (i.e. no error checking)
+	if ($use901) {
+		$rec->delete_field($_) for ($rec->field(@trash_fields));
+		$tcn_value = $rec->subfield('901' => 'a');
+		$tcn_source = $rec->subfield('901' => 'b');
+		$id = $rec->subfield('901' => 'c');
+	} else {
+		# This section of code deals with the record's 'id', which is a system-level, numeric, internal identifier
+		# It is often convenient but not necessary to carry over the internal ids from your previous ILS, so here is where that happens
+		if ($id_field) {
+			my $field = $rec->field($id_field);
+			if ($field) {
+				if ($field->is_control_field) {
+					$id = $field->data;
+				} else {
+					$id = $field->subfield($id_subfield);
+				}
+				# ensure internal record ids are numeric only
+				$id =~ s/\D+//gso if $id;
 			}
 
-			$id =~ s/\D+//gso;
+			# catch problem ids
+			if (!$id) {
+				warn "\n!!! Record $count has missing or invalid id field $id_field, assinging new id.\n";
+				$id = '';
+			} elsif (exists $used_recids{$id}) {
+				warn "\n!!! Record $count has a duplicate id in field $id_field, assinging new id.\n";
+				$id = '';
+			} else {
+				$used_recids{$id} = 1;
+			}
 		}
-		$id = '' if (exists $dontuse_id{$id});
-	}
 
-	if (!$id) {
-		$id = $recid;
-	}
-
-	if ($keyfile) {
-		if (my $tcn = $keymap{$id}) {
-			$rec->delete_field( $_ ) for ($rec->field($id_field));
-			$rec->append_fields( MARC::Field->new( $id_field, '', '', $id_subfield, $tcn ) );
-		} else {
-			$count++;
-			next;
+		# id field not specified or found to be invalid, assign auto id
+		if (!$id) {
+			while (exists $used_recids{$recid}) {
+				$recid++;
+			}
+			$used_recids{$recid} = 1;
+			$id = $recid;
+			$recid++;
 		}
+
+		# This section of code deals with the record's 'tcn', or title control number, which is a record-level, possibly alpha-numeric, sometimes user-supplied value
+		if ($tcn_field) {
+			if ($tcn_mapfile) {
+				if (my $tcn = $tcn_map{$id}) {
+					$rec->delete_field( $_ ) for ($rec->field($tcn_field));
+					$rec->append_fields( MARC::Field->new( $tcn_field, '', '', $tcn_subfield, $tcn ) );
+				} else {
+					warn "\n!!! ID $id not found in tcn_mapfile, skipping record.\n";
+					$count++;
+					next;
+				}
+			}
+
+			my $field = $rec->field($tcn_field);
+			if ($field) {
+				if ($field->is_control_field) {
+					$tcn_value = $field->data;
+				} else {
+					$tcn_value = $field->subfield($tcn_subfield);
+				}
+				# $tcn_offset is another Sirsi influence, as it will allow you to remove '(Sirsi)'
+				# from exported tcns, but was added more generically to perhaps support other use cases
+				if ($tcn_value) { 
+					$tcn_value = substr($tcn_value, $tcn_offset);
+				} else {
+					$tcn_value = '';
+				}
+			}
+		}
+
+		# turn our id and tcn into a 901 field, and also create a tcn and/or figure out the tcn source
+		my $field901;
+		($field901, $tcn_value, $tcn_source) = preprocess($rec, $tcn_value, $id);
+		# delete the old identifier and trash fields
+		$rec->delete_field($_) for ($rec->field('901', $tcn_field, $id_field, @trash_fields));
+		$rec->append_fields($field901);
 	}
-
-	my $tcn;
-        if ($use901) {
-            $id = $rec->subfield('901' => 'c')
-        } else {
-            ($rec, $tcn) = preprocess($rec, $id);
-            $tcn->add_subfields(c => $id);
-
-            $rec->delete_field( $_ ) for ($rec->field($id_field));
-            $rec->append_fields( $tcn );
-
-            next unless $rec;
-        }
-
-	my $tcn_value = $rec->subfield('901' => 'a') || "SYS$id";
-	my $tcn_source = $rec->subfield('901' => 'b') || 'System';
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -211,86 +270,119 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$bib->last_xact_id('IMPORT-'.$starttime);
 
 	print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";
-	$dontuse_id{$tcn_value} = 1;
-
-	$count++;
+	$used_tcns{$tcn_value} = 1;
 
 	if (!$quiet && !($count % 50)) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 }
 
+if ($tcn_dumpfile) {
+    open TCN_DUMPFILE, '>', $tcn_dumpfile;
+    print TCN_DUMPFILE "$_\n" for (keys %used_tcns);
+}
+
+
 sub preprocess {
 	my $rec = shift;
+	my $tcn_value = shift;
 	my $id = shift;
 
-	my ($source, $value) = ('','');
+	my $tcn_source = '';
+	# in the following code, $tcn_number represents the portion of the tcn following the source code-letter
+	my $tcn_number = '';
+	my $warn = 0;
+	my $passed_tcn = '';
 
-	$id = '' if (exists $dontuse_id{$id});
+	# this preprocess subroutine is optimized for Sirsi-created tcns, that is, those with a single letter
+	# followed by some digits (and maybe 'x' in older systems).  If using user supplied tcns, try to identify
+	# the source here, otherwise set to 'z' ('Unknown')
+	if ($tcn_value =~ /([a-z])([0-9xX]+)/) {
+		$tcn_source = $1;
+		$tcn_number = $2;
+	} else {
+		$tcn_source = 'z';
+	}
+	
+	# save and warn if a passed in TCN is replaced	
+	if ($tcn_value && exists $used_tcns{$tcn_value}) {
+		$passed_tcn = $tcn_value;
+		$tcn_value = '';
+		$tcn_number = '';
+		$tcn_source = '';
+		$warn = 1;
+	} 
 
-	if (!$id) {
+	# we didn't have a user supplied tcn, or it was a duplicate, so let's derive one from commonly unique record fields
+	if (!$tcn_value) {
 		my $f = $rec->field('001');
-		$id = $f->data if ($f);
-		$id = '' if (exists $dontuse_id{$id});
+		$tcn_value = despace($f->data) if ($f);
 	}
 
-	if (!$id || exists $dontuse_id{$source.$id}) {
+	if (!$tcn_value || exists $used_tcns{$tcn_value}) {
 		my $f = $rec->field('000');
-		$id = $f->data if ($f);
-		$source = 'g' if ($f); # only PG seems to use this
-	}
-
-        if (!$id || exists $dontuse_id{$source.$id}) {
-                my $f = $rec->field('020');
-                $id = $f->subfield('a') if ($f);
-		$source = 'i' if ($f);
-        }
-
-        if (!$id || exists $dontuse_id{$source.$id}) {
-                my $f = $rec->field('022');
-                $id = $f->subfield('a') if ($f);
-		$source = 'i' if ($f);
-        }
-
-        if (!$id || exists $dontuse_id{$source.$id}) {
-                my $f = $rec->field('010');
-                $id = $f->subfield('a') if ($f);
-		$source = 'l' if ($f);
-        }
-
-	$rec->delete_field($_) for ($rec->field('901', $id_field, @trash_fields));
-
-	if ($id) {
-		$id =~ s/\s*$//o;
-		$id =~ s/^\s*//o;
-		$id =~ s/^(\S+).*$/$1/o;
-
-		$id = $source.$id if ($source);
-
-		($source, $value) = $id =~ /^(.)(.+)$/o;
-		if ($id =~ /^o(\d+)$/o) {
-			$id = "ocm$1";
-			$source = 'o';
+		if ($f) {
+			$tcn_number = despace($f->data);
+			$tcn_source = 'g'; # only Project Gutenberg seems to use this
+			$tcn_value = $tcn_source.$tcn_number;
 		}
 	}
 
-	if ($id && exists $dontuse_id{$id}) {
-		warn "\n!!! TCN $id is already in use.  Using the record ID ($recid) as a system-generated TCN.\n";
-		$id = '';
+    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
+        my $f = $rec->field('020');
+		if ($f) {	
+			$tcn_number = despace($f->subfield('a'));
+			$tcn_source = 'i';
+			$tcn_value = $tcn_source.$tcn_number;
+		}
+    }
+
+    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
+        my $f = $rec->field('022');
+		if ($f) {	
+			$tcn_number = despace($f->subfield('a'));
+			$tcn_source = 'i';
+			$tcn_value = $tcn_source.$tcn_number;
+		}
+    }
+
+    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
+        my $f = $rec->field('010');
+		if ($f) {	
+			$tcn_number = despace($f->subfield('a'));
+			$tcn_source = 'l';
+			$tcn_value = $tcn_source.$tcn_number;
+		}
+    }
+
+    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
+		$tcn_source = 's';
+		$tcn_number = $id;
+		$tcn_value = $tcn_source.$tcn_number;
+    }
+
+	# special case to catch possibly passed in full OCLC numbers and those derived from the 001 field
+	if ($tcn_value =~ /^oc(m|n)(\d+)$/o) {
+		$tcn_source = 'o';
+		$tcn_number = $2;
+		$tcn_value = $tcn_source.$tcn_number;
 	}
 
-	if (!$id) {
-		$source = 's';
-		$id = 's'.$recid;
+	# expand $tcn_source from code letter to full name
+	$tcn_source = do { $tcn_source_map{$tcn_source} || 'Unknown' };
+
+	if ($warn) {
+		warn "\n!!! TCN $passed_tcn is already in use, using TCN ($tcn_value) derived from $tcn_source ID.\n";
 	}
 
-	my $tcn = MARC::Field->new(
+	my $field901 = MARC::Field->new(
 		'901' => ('', ''),
-		a => $id,
-		b => do { $source_map{$source} || 'System' },
+		a => $tcn_value,
+		b => $tcn_source,
+		c => $id
 	);
 
-	return ($rec,$tcn);
+	return ($field901, $tcn_value, $tcn_source);
 }
 
 sub entityize {
@@ -307,3 +399,13 @@ sub entityize {
         return $stuff;
 }
 
+sub despace {
+	my $value = shift;
+
+	# remove all leading/trailing spaces and trucate at first internal space if present
+	$value =~ s/\s*$//o;
+	$value =~ s/^\s*//o;
+	$value =~ s/^(\S+).*$/$1/o;
+
+	return $value;
+}

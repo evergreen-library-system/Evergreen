@@ -1,0 +1,47 @@
+<h1>&vandelay.marc.file.upload;</h1><br/>
+<form id="vl-marc-upload-form" enctype="multipart/form-data">
+    <input type='hidden' name='ses' id='vl-ses-input'/>
+    <table class='form_table'>
+        <tr>
+            <td>&vandelay.record.type;</td>
+            <td colspan='4'>
+                <select id='vl-record-type' dojoType='dijit.form.FilteringSelect' 
+                        jsId='vlUploadRecordType' onchange='vlShowUploadForm();'>
+                    <option value='bib' selected='selected'>&vandelay.bib.records;</option>
+                    <option value='auth'>&vandelay.auth.records;</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.create.upload.queue;</td>
+            <td>
+                <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
+            </td>
+            <td>&vandelay.add.existing.queue;</td>
+            <td>
+                <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect'>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.auto.import.noncolliding;</td>
+            <td colspan='4'>
+                <input jsId='vlUploadQueueAutoImport' dojoType='dijit.form.CheckBox'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span id="vl-file-label">&vandelay.file.to.upload;</span>
+            </td>
+            <td id='vl-input-td' colspan='4'>
+                <input size='48' type="file" name="marc_upload"/>
+            </td>
+        </tr>
+        <tr>
+            <td align='center' colspan='4'>
+                <button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button>
+            </td>
+        </tr>
+    </table>
+</form>
+

@@ -26,6 +26,7 @@ CREATE TABLE asset.copy_location (
 	name		TEXT	NOT NULL,
 	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	holdable	BOOL	NOT NULL DEFAULT TRUE,
+	hold_verify	BOOL	NOT NULL DEFAULT FALSE,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	circulate	BOOL	NOT NULL DEFAULT TRUE
 );
@@ -49,7 +50,7 @@ CREATE TABLE asset.copy (
 	ref		BOOL				NOT NULL DEFAULT FALSE,
 	holdable	BOOL				NOT NULL DEFAULT TRUE,
 	deposit_amount	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
-	price		NUMERIC(8,2)			NOT NULL DEFAULT 0.00,
+	price		NUMERIC(8,2),
 	barcode		TEXT				NOT NULL,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,

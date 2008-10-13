@@ -4,7 +4,7 @@ use OpenILS::WWW::Exporter qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::SuperCat qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::AddedContent qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::Proxy ('/openils/conf/opensrf_core.xml');
-
+use OpenILS::WWW::Vandelay qw( /openils/conf/opensrf_core.xml );
 
 # - Uncoment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:

@@ -142,7 +142,7 @@ sub complete_reshelving {
                       WHERE circ.checkin_time IS NOT NULL
                             AND cp.status = 7
                       GROUP BY 1
-                      HAVING MAX(circ.checkin_time) < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
+                      HAVING MAX(circ.checkin_time) < NOW() - CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL)
                     ) AS foo
                                 UNION ALL
             SELECT  cp.id

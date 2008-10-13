@@ -249,7 +249,7 @@ sub new_set_circ_lost {
             or return $e->die_event;
 
     my $owning_lib = 
-        ($copy->call_number == OILS_PRECAT_CALL_NUMBER) ? 
+        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
             $copy->circ_lib : $copy->call_number->owning_lib;
 
     my $circ = $e->search_action_circulation(
@@ -263,17 +263,10 @@ sub new_set_circ_lost {
 
     # ---------------------------------------------------------------------
     # fetch the related org settings
-    my $default_price = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
     my $proc_fee = $U->ou_ancestor_setting_value(
         $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
-    my $charge_on_0 = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
     my $void_overdue = $U->ou_ancestor_setting_value(
         $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
-
-    $logger->info("org settings: default price = $default_price, ".
-        "processing fee = $proc_fee, charge on 0 = $charge_on_0, void overdues = $void_overdue");
 
     # ---------------------------------------------------------------------
     # move the copy into LOST status
@@ -282,12 +275,7 @@ sub new_set_circ_lost {
     $copy->edit_date('now');
     $e->update_asset_copy($copy) or return $e->die_event;
 
-    # ---------------------------------------------------------------------
-    # determine the appropriate item price to charge and create the billing
-    my $price = $copy->price;
-    $price = $default_price unless defined $price;
-    $price = 0 if $price < 0;
-    $price = $default_price if $price == 0 and $charge_on_0;
+    my $price = $U->get_copy_price($e, $copy, $copy->call_number);
 
     if( $price > 0 ) {
         my $evt = create_bill($e, $price, 'Lost Materials', $circ->id);
@@ -514,73 +502,6 @@ __PACKAGE__->register_method(
 	api_name		=> 'open-ils.circ.non_cat_in_house_use.create',
 );
 
-=head OLD CODE
-sub ___create_in_house_use {
-	my( $self, $client, $authtoken, $params ) = @_;
-
-	my( $staff, $evt, $copy );
-	my $org			= $params->{location};
-	my $copyid		= $params->{copyid};
-	my $count		= $params->{count} || 1;
-	my $nc_type		= $params->{non_cat_type};
-	my $use_time	= $params->{use_time} || 'now';
-
-	my $non_cat = 1 if $self->api_name =~ /non_cat/;
-
-	unless( $non_cat ) {
-		unless( $copyid ) {
-			my $barcode = $params->{barcode};
-			($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
-			return $evt if $evt;
-			$copyid = $copy->id;
-		}
-		($copy, $evt) = $U->fetch_copy($copyid) unless $copy;
-		return $evt if $evt;
-	}
-
-	($staff, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
-
-	$evt = $U->check_perms($staff->id, $org, 'CREATE_IN_HOUSE_USE');
-	return $evt if $evt;
-
-	if( $use_time ne 'now' ) {
-		$use_time = clense_ISO8601($use_time);
-		$logger->debug("in_house_use setting use time to $use_time");
-	}
-
-	my @ids;
-	for(1..$count) {
-
-		my $ihu;
-		my $method;
-
-		if($non_cat) {
-			$ihu = Fieldmapper::action::non_cat_in_house_use->new;
-			$ihu->noncat_type($nc_type);
-			$method = 'open-ils.storage.direct.action.non_cat_in_house_use.create';
-		} else {
-			$ihu = Fieldmapper::action::in_house_use->new;
-			$ihu->item($copyid);
-			$method = 'open-ils.storage.direct.action.in_house_use.create';
-		}
-
-		$ihu->staff($staff->id);
-		$ihu->org_unit($org);
-		$ihu->use_time($use_time);
-
-		my $id = $U->simplereq('open-ils.storage', $method, $ihu );
-
-		return $U->DB_UPDATE_FAILED($ihu) unless $id;
-		push @ids, $id;
-	}
-
-	return \@ids;
-}
-=cut
-
-
-
 
 sub create_in_house_use {
 	my( $self, $client, $auth, $params ) = @_;
@@ -660,29 +581,39 @@ __PACKAGE__->register_method(
 		@return An array of circ ids
 	/);
 
-
-
+# ----------------------------------------------------------------------
+# Returns $count most recent circs.  If count exceeds the configured 
+# max, use the configured max instead
+# ----------------------------------------------------------------------
 sub view_circs {
 	my( $self, $client, $authtoken, $copyid, $count ) = @_; 
 
-	my( $requestor, $evt ) = $U->checksesperm(
-			$authtoken, 'VIEW_COPY_CHECKOUT_HISTORY' );
-	return $evt if $evt;
+    my $e = new_editor(authtoken => $authtoken);
+    return $e->event unless $e->checkauth;
+    
+    my $copy = $e->retrieve_asset_copy([
+        $copyid,
+        {   flesh => 1,
+            flesh_fields => {acp => ['call_number']}
+        }
+    ]) or return $e->event;
+
+    return $e->event unless $e->allowed(
+        'VIEW_COPY_CHECKOUT_HISTORY', 
+        ($copy->call_number == OILS_PRECAT_CALL_NUMBER) ? 
+            $copy->circ_lib : $copy->call_number->owning_lib);
+        
+    my $max_history = $U->ou_ancestor_setting_value(
+        $e->requestor->ws_ou, 'circ.item_checkout_history.max', $e);
+
+    $count = $max_history if $max_history and (!$count or $count > $max_history);
 
 	return [] unless $count;
 
-	my $circs = $U->cstorereq(
-		'open-ils.cstore.direct.action.circulation.search.atomic',
-			{ 
-				target_copy => $copyid, 
-			}, 
-			{ 
-				limit => $count, 
-				order_by => { circ => "xact_start DESC" }
-			} 
-	);
-
-	return $circs;
+    return $e->search_action_circulation([
+        {target_copy => $copyid}, 
+        {limit => $count, order_by => { circ => "xact_start DESC" }} 
+    ]);
 }
 
 

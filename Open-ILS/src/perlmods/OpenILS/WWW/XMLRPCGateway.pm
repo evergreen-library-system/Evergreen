@@ -24,6 +24,8 @@ use RPC::XML::Function;
 use RPC::XML::Method;
 use RPC::XML::Procedure;
 
+$RPC::XML::ENCODING = 'utf-8';
+
 my $services; 						# allowed services
 my $CLASS_KEY = '__class__';	# object wrapper class key
 my $PAYLOAD_KEY = '__data__';	# object wrapper payload key

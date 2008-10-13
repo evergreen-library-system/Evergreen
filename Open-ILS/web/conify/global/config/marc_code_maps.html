@@ -14,13 +14,13 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Confiy :: Global :: Config :: MARC Code Maps</title>
+		<title>Conify :: Global :: Config :: MARC Code Maps</title>
 
 		<style type="text/css">
-			@import url("/js/dojo/dojox/grid/_grid/tundraGrid.css");
-			@import url("/js/dojo/dojo/resources/dojo.css");
-			@import url("/js/dojo/dijit/themes/tundra/tundra.css");
-			@import url("/js/dojo/dojox/widget/Toaster/Toaster.css");
+			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
+			@import url('/js/dojo/dojo/resources/dojo.css');
+			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
 		</style>
 
 		<style>
@@ -51,12 +51,13 @@
 		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
 
 		<!-- Dojo goodness -->
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js.uncompressed.js" djConfig="parseOnLoad: true"></script>
-		<script type="text/javascript" src="/js/dojo/dijit/dijit.js.uncompressed.js"></script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
 		<script type="text/javascript" src="marc_code_maps.js"></script>
 
 		<script type="text/javascript">
+<!--
 			var grid_row_object_cache = {};
 			var layouts = {};
 
@@ -191,7 +192,7 @@
 				})(codelist[i])
 
 			}
-
+-->
 		</script>
 
 	</head>
@@ -247,7 +248,7 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="cblvl_model"store="stores.cblvl" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="cblvl_model" store="stores.cblvl" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="cblvl_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.cblvl);
@@ -268,18 +269,19 @@
 				</script>
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
-					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
+					<div jsId="new_form_form" dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top">
 						<div>New Item Form:</div>
 						<input type="hidden" name="classname" value="cifm"/>
 						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
 						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
+						<button dojoType="dijit.form.Button" label="Add" onclick="create_marc_code(new_form_form)"></button>
+
 						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cifm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cifm',cifm_grid)"></button>
 						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
 					</div>
 	
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="cifm_model"store="stores.cifm" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="cifm_model" store="stores.cifm" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="cifm_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.cifm);
@@ -312,7 +314,7 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="citm_model"store="stores.citm" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="citm_model" store="stores.citm" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="citm_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.citm);
@@ -345,7 +347,7 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="clm_model"store="stores.clm" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="clm_model" store="stores.clm" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="clm_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.clm);
@@ -378,7 +380,7 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="clfm_model"store="stores.clfm" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="clfm_model" store="stores.clfm" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="clfm_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.clfm);
@@ -411,7 +413,7 @@
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-						<div dojoType="dojox.grid.data.DojoData" jsId="cvrfm_model"store="stores.cvrfm" query="{ code : '*' }"></div>
+						<div dojoType="dojox.grid.data.DojoData" jsId="cvrfm_model" store="stores.cvrfm" query="{ code : '*' }"></div>
 						<div dojoType="dojox.Grid"  jsId="cvrfm_grid">
 							<script type="dojo/connect" event="startup">
 								this.setStructure(window.layouts.cvrfm);

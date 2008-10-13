@@ -16,36 +16,21 @@ const CHECK_BARCODE		= 'open-ils.actor:open-ils.actor.barcode.exists';
 const defaultState		= 'GA';
 const defaultCountry		= 'USA';
 const defaultNetAccess	= 'None';
+const defaultNetLevel   = 1;
 const CSS_INVALID_DATA	= 'invalid_value';
 const ADULT_AGE			= 18;
-const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
-
-/* if they don't have these perms, they shouldn't be here */
-var myPerms = [ 
-	'BAR_PATRON',
-	'group_application.user',
- 	'group_application.user.patron',
- 	'group_application.user.staff',
- 	'group_application.user.staff.circ',
- 	'group_application.user.staff.cat',
- 	'group_application.user.staff.admin.global_admin',
- 	'group_application.user.staff.admin.local_admin',
- 	'group_application.user.staff.admin.lib_manager',
- 	'group_application.user.staff.cat.cat1',
- 	'group_application.user.staff.supercat',
- 	'group_application.user.sip_client',
- 	'group_application.user.vendor'
-	];
+//const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
 var dataFields;
 const numRegex		= /^\d+$/;
-const wordRegex	= /^\w+$/;
+const wordRegex	= /^[\w-]+$/;
+const unameRegex	= /^\w[\.\w\@-]*$/;
 const ssnRegex		= /^\d{3}-\d{2}-\d{4}$/;
 const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
-const phoneRegex	= /^\d{3}-\d{3}-\d{4}(| ex\d+)$/i;
+const phoneRegex	= /^\d{3}-\d{3}-\d{4}(| \S+.*)$/i;
 const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
-const zipRegex		= /^\d{5}(-\d{4}|$)/; /* 12345 or 12345-6789 */
+const zipRegex		= /^\d{5}(-\d{4}|-?$)/; /* 12345 or 12345-6789 */
 
 var barredAlerted = false;
 
@@ -77,6 +62,7 @@ function uEditUsrnameBlur(field) {
 function uEditBarcodeBlur(field) {
 	var barcode = uEditNodeVal(field);
 	if(!barcode) return;
+	_debug("blurring card with new value " + barcode);
 	var req = new Request(CHECK_BARCODE, SESSION, barcode);
 	req.callback( 
 		function(r) {
@@ -105,7 +91,7 @@ function uEditBarcodeBlur(field) {
 
 
 function uEditDefineData(patron) {
-	
+
 	var fields = [
 		{
 			required : true,
@@ -126,7 +112,7 @@ function uEditDefineData(patron) {
 			errkey	: 'ue_bad_username',
 			widget	: {
 				id		: 'ue_username',
-				regex	: wordRegex,
+				regex	: unameRegex,
 				type	: 'input',
 				onblur : uEditUsrnameBlur
 			}
@@ -159,6 +145,11 @@ function uEditDefineData(patron) {
 					var pw1f = uEditFindFieldByWId('ue_password1');
 					var pw1 = uEditNodeVal(pw1f);
 					field.widget.regex = new RegExp('^'+pw1+'$');
+					if( pw1 ) field.required = true;
+					else {
+						if(!patron.isnew())
+							field.required = false;
+					}
 				}
 			}
 		},
@@ -211,7 +202,10 @@ function uEditDefineData(patron) {
 				type		: 'input',
 				onload	: function(val) {
 					setSelector($('ue_suffix_selector'), val);
-				}
+					$('ue_suffix_selector').onchange = function() {
+						uEditFindFieldByKey('suffix').widget.node.onchange();
+					}
+				},
 			}
 		},
 		{
@@ -255,25 +249,10 @@ function uEditDefineData(patron) {
 		{
 			required : false,
 			object	: patron,
-			key		: 'ident_type2',
-			widget	: {
-				id		: 'ue_secondary_ident_type',
-				regex	: numRegex,
-				type	: 'select',
-				onpostchange : function(field, newval) 
-					{ _uEditIdentPostchange('secondary', field, newval); }
-			}
-		},
-		{
-			required : false,
-			object	: patron,
 			key		: 'ident_value2',
 			widget	: {
 				id			: 'ue_secondary_ident',
-				type		: 'input',
-				onblur : function(field) {
-					uEditCheckIdentDup(field);
-				}
+				type		: 'input'
 			}
 		},
 		{
@@ -303,7 +282,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_day_phone',
 				type		: 'input',
-				regex		:  phoneRegex
+				regex		:  phoneRegex,
 			}
 		},
 		{
@@ -314,7 +293,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_night_phone',
 				type		: 'input',
-				regex		:  phoneRegex
+				regex		:  phoneRegex,
 			}
 		},
 		{
@@ -325,7 +304,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_other_phone',
 				type		: 'input',
-				regex		:  phoneRegex
+				regex		:  phoneRegex,
 			}
 		},
 		{
@@ -335,7 +314,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_org_selector',
 				type		: 'select',
-				regex		:  numRegex
+				regex		:  numRegex,
 			}
 		},
 		{
@@ -346,7 +325,7 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_expire',
 				type		: 'input',
-				regex		:  dateRegex
+				regex		:  dateRegex,
 			}
 		},
 		{
@@ -355,7 +334,7 @@ function uEditDefineData(patron) {
 			key		: 'active',
 			widget	: {
 				id			: 'ue_active',
-				type		: 'checkbox'
+				type		: 'checkbox',
 			}
 		},
 		{
@@ -402,6 +381,8 @@ function uEditDefineData(patron) {
 					exptime			+= intsecs * 1000;
 					expdate.setTime(exptime);
 
+					_debug("profile change (interval= '"+interval+"', seconds="+intsecs+")\n\tgenerated a date of " + expdate);
+
 					var year			= expdate.getYear() + 1900;
 					var month		= (expdate.getMonth() + 1) + '';
 					var day			= (expdate.getDate()) + '';
@@ -409,8 +390,12 @@ function uEditDefineData(patron) {
 					if(!month.match(/\d{2}/)) month = '0' + month;
 					if(!day.match(/\d{2}/)) day = '0' + day;
 
+
 					var node = $('ue_expire');
 					node.value = year+'-'+month+'-'+day;
+
+					_debug("profile change formatted date to "+ node.value);
+					node.onchange();
 				}
 			}
 		},
@@ -429,7 +414,7 @@ function uEditDefineData(patron) {
 			key		: 'master_account',
 			widget	: {
 				id			: 'ue_group_lead',
-				type		: 'checkbox'
+				type		: 'checkbox',
 			}
 		},
 		{
@@ -439,7 +424,8 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_claims_returned',
 				type		: 'input',
-				regex		: numRegex
+				regex		: numRegex,
+				disabled : true
 			}
 		},
 		{
@@ -448,7 +434,7 @@ function uEditDefineData(patron) {
 			key		: 'alert_message',
 			widget	: {
 				id			: 'ue_alert_message',
-				type		: 'input'
+				type		: 'input',
 			}
 		}
 	];
@@ -634,7 +620,10 @@ function uEditBuildAddrFields(patron, address) {
 	uEditCheckSharedAddr(patron, address, tbody, row);
 
 	$n(row, 'ue_addr_delete').onclick = 
-		function() { uEditDeleteAddr(tbody, row, address); }
+		function() { 
+			uEditDeleteAddr(tbody, row, address); 
+			uEditCheckErrors();
+		};
 
 	if( patron.billing_address() &&
 			address.id() == patron.billing_address().id() ) 
@@ -659,7 +648,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_label',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -671,7 +660,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street1',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -683,7 +672,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street2',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -695,7 +684,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_city',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -706,7 +695,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_county',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -718,7 +707,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_state',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -730,7 +719,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_country',
 				type	: 'input',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -754,18 +743,12 @@ function uEditBuildAddrFields(patron, address) {
 							var state = $n(f.widget.base, 'ue_addr_state');
 							var county = $n(f.widget.base, 'ue_addr_county');
 							var city = $n(f.widget.base, 'ue_addr_city');
-							if(!state.value) {
-								state.value = info.state;
-								state.onchange();
-							}
-							if(!county.value) {
-								county.value = info.county;
-								county.onchange();
-							}
-							if(!city.value) {
-								city.value = info.city;
-								city.onchange();
-							}
+							state.value = info.state;
+							state.onchange();
+							county.value = info.county;
+							county.onchange();
+							city.value = info.city;
+							city.onchange();
 						}
 					);
 					req.send();
@@ -780,7 +763,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_inc_yes',
 				type	: 'checkbox',
-				disabled : disabled
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -791,7 +774,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_valid_yes',
 				type	: 'checkbox',
-				disabled : disabled
+				disabled : disabled,
 			}
 		}
 	];
@@ -891,6 +874,8 @@ function uEditBuildSCMField(statcat, row) {
 					/* map does not exist in the map array but now has data */
 					if(newval) { 
 						map.isnew(1);
+						if(!patron.stat_cat_entries())
+							patron.stat_cat_entries([]);
 						patron.stat_cat_entries().push(map);
 					}
 				}
@@ -996,14 +981,15 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 					hideMe($n(row, 'owner_link_div'));
 			
 				} else {
-		
+			
 					var ses = cgi.param('ses'); 
-					if (xulG.ses) ses = xulG.ses;
-					if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
+					if (xulG) if (xulG.ses) ses = xulG.ses;
+					if (xulG) if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
 					link.onclick = 
 						function() { window.xulG.spawn_editor({ses:ses,usr:id}) };
 				
 					if( userCache[id] ) {
+                        var usr = userCache[id];
 						nnode.appendChild(text(
 							usr.first_given_name() + ' ' +  usr.family_name()));
 				
@@ -1042,8 +1028,7 @@ function uEditCheckDOB(field) {
 	__lastdob = dob;
 
 	var parts = dob.split(/-/);
-	var d = new Date( parts[0], parts[1] - 1, parts[2] );
-
+	parts[2] = parts[2].replace(/[T ].*/,'');
 	dob = buildDate( parts[0], parts[1], parts[2] );
 
 	var today = new Date();
@@ -1057,27 +1042,19 @@ function uEditCheckDOB(field) {
 	var base = new Date();
 	base.setYear( today.getYear() + 1900 - ADULT_AGE );
 
-	/* patron already exists or is at least 18 */
-	if( !patron.isnew() || dob < base ) return; 
+	/* patron is at least 18 */
 
-	if( guardianNote ) return;
+	var f = uEditFindFieldByKey('ident_value2');
 
-	/* create a new note to represent the patron's guardian */
-	var note = new aun();
-	note.title(GUARDIAN_NOTE);
-	note.isnew(1);
-	note.creator(USER.id());	
-	note.isnew(1);
+	if( dob < base ) { /* patron is of age */
+		f.required = false;
+		hideMe(f.widget.node.parentNode.parentNode.parentNode);
+		return;
+	}
 
-	var txt; /* get the guardian info from the staff */
-	while(!txt || txt == "") 
-		txt = prompt($('ue_juv_guardian').innerHTML);
-
-	note.value(txt);
-	guardianNote = note;
-
-	unHideMe($('ue_guardian_row'));
-	$('ue_guardian_field').appendChild(text(guardianNote.value()));
+	unHideMe(f.widget.node.parentNode.parentNode.parentNode);
+	f.required = true;
+	uEditCheckErrors();
 }
 
 
