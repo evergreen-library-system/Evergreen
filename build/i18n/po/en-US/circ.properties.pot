@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-08 11:13-0400\n"
+"POT-Creation-Date: 2008-10-14 00:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1319,6 +1319,26 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
+msgid "Invalid Date"
+msgstr ""
+
+#: staff.circ.holds.expire_time.prompt
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.prompt.plural
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.too_early.error
+msgid ""
+"Expiration Date needs to be either unset or set to fall on a future date."
+msgstr ""
+
+#: staff.circ.holds.expire_time.invalid_date
+msgctxt "staff.circ.holds.expire_time.invalid_date"
 msgid "Invalid Date"
 msgstr ""
 

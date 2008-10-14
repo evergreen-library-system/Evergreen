@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-08 11:12-0400\n"
+"POT-Creation-Date: 2008-10-14 00:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1557,6 +1557,30 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr ""
+
+#: advanced.filter.pubyear
+msgid "Publication Year"
+msgstr ""
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr ""
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr ""
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr ""
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr ""
+
 #. =================================================================
 #. Rdetail
 #. =================================================================
@@ -2141,6 +2165,10 @@ msgstr ""
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr ""
+
 #: slimpac.start.title
 msgid "Simple Search"
 msgstr ""
@@ -2256,6 +2284,10 @@ msgstr ""
 
 #: selfck.welcome
 msgid "Welcome"
+msgstr ""
+
+#: selfck.printing
+msgid "Printing Receipt..."
 msgstr ""
 
 #. event messages

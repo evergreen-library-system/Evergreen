@@ -1,0 +1,104 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-10-14 00:33-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+
+#. Main configuration interface menu
+#: conify.admin.title
+msgid "Global :: Administration"
+msgstr ""
+
+#: conify.admin.top_pane.title
+msgctxt "conify.admin.top_pane.title"
+msgid "Controls"
+msgstr ""
+
+#: conify.admin.configure
+msgid "Configure your ILS"
+msgstr ""
+
+#: conify.admin.left_pane.controls
+msgctxt "conify.admin.left_pane.controls"
+msgid "Controls"
+msgstr ""
+
+#: conify.admin.org_unit_type.link
+msgid "Organization Types"
+msgstr ""
+
+#: conify.admin.org_unit.link
+msgid "Organizational Units"
+msgstr ""
+
+#: conify.admin.grp_tree.link
+msgid "Permission Groups"
+msgstr ""
+
+#: conify.admin.perm_list.link
+msgid "Permissions"
+msgstr ""
+
+#: conify.admin.copy_status.link
+msgid "Copy Statuses"
+msgstr ""
+
+#: conify.admin.marc_code_maps.link
+msgid "MARC Codes"
+msgstr ""
+
+#: conify.admin.bottom_pane.title
+msgctxt "conify.admin.bottom_pane.title"
+msgid "Controls"
+msgstr ""
+
+#. Organization unit type configuration interface
+#: conify.org_unit_type.title
+msgid "Global :: Actor :: Organization Unit Types"
+msgstr ""
+
+#: conify.org_unit_type.type_tree.label
+msgid "Organization Unit Types"
+msgstr ""
+
+#: conify.org_unit_type.type_name
+msgid "Type Name"
+msgstr ""
+
+#: conify.org_unit_type.opac_label
+msgid "OPAC Label"
+msgstr ""
+
+#: conify.org_unit_type.parent_type
+msgid "Parent Type"
+msgstr ""
+
+#: conify.org_unit_type.can_have_volumes
+msgid "Can Have Volumes and Copies"
+msgstr ""
+
+#: conify.org_unit_type.can_have_users
+msgid "Can Have Users"
+msgstr ""
+
+#: conify.org_unit_type.save_out_button.label
+msgid "Save"
+msgstr ""
+
+#: conify.org_unit_type.delete_out_button.label
+msgid "Delete"
+msgstr ""
+
+#: conify.org_unit_type.new_kid_button.label
+msgid "New Child"
+msgstr ""
