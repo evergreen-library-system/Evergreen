@@ -12,9 +12,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Actor :: Org Unit Types</title>
+		<title>&conify.org_unit_type.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojo/resources/dojo.css');
@@ -107,7 +114,7 @@
 				</script>
 				<div
 				  id="type_tree"
-				  label="Organization Types"
+				  label="&conify.org_unit_type.type_tree.label;"
 				  query="{'_top':'true'}"
 				  dojoType="dijit.Tree"
 				  store="ou_type_store"
@@ -182,7 +189,7 @@
 	
 						<table class="tundra" style="margin:10px;">
 							<tr>
-								<th>Type Name</th>
+								<th>&conify.org_unit_type.type_name;</th>
 								<td>
 									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -195,7 +202,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>OPAC Label</th>
+								<th>&conify.org_unit_type.opac_label;</th>
 								<td>
 									<span id="editor_pane_opac_label" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_opac_label" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -208,7 +215,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Parent Type</th>
+								<th>&conify.org_unit_type.parent_type;</th>
 								<td>
 									<div
 									  id="editor_pane_parent"
@@ -239,7 +246,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Can have Volumes/Copies</th>
+								<th>&conify.org_unit_type.can_have_volumes;</th>
 								<td>
 									<input
 									  id="editor_pane_can_have_vols"
@@ -251,7 +258,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Can have Users</th>
+								<th>&conify.org_unit_type.can_have_users;</th>
 								<td>
 									<input
 									  id="editor_pane_can_have_users"
@@ -266,13 +273,13 @@
 	
 						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
 	
-							<button jsId="save_out_button" dojoType="dijit.form.Button" label="Save" onClick="save_type()">
+							<button jsId="save_out_button" dojoType="dijit.form.Button" label="&conify.org_unit_type.save_out_button.label;" onClick="save_type()">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
 							</button>
 	
-							<button jsId="delete_out_button" dojoType="dijit.form.Button" label="Delete">
+							<button jsId="delete_out_button" dojoType="dijit.form.Button" label="&conify.org_unit_type.delete_out_button.label;">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
@@ -359,7 +366,7 @@
 	
 						</div>
 	
-						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="&conify.org_unit_type.new_kid_button.label;">
 							<script type="dojo/connect" event="startup">
 								this.disabled = true;
 							</script>

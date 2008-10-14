@@ -1,0 +1,23 @@
+<!-- Main configuration interface menu -->
+<!ENTITY conify.admin.title "Global :: Administration">
+<!ENTITY conify.admin.top_pane.title "Controls">
+<!ENTITY conify.admin.configure "Configure your ILS">
+<!ENTITY conify.admin.left_pane.controls "Controls">
+<!ENTITY conify.admin.org_unit_type.link "Organization Types">
+<!ENTITY conify.admin.org_unit.link "Organizational Units">
+<!ENTITY conify.admin.grp_tree.link "Permission Groups">
+<!ENTITY conify.admin.perm_list.link "Permissions">
+<!ENTITY conify.admin.copy_status.link "Copy Statuses">
+<!ENTITY conify.admin.marc_code_maps.link "MARC Codes">
+<!ENTITY conify.admin.bottom_pane.title "Controls">
+<!-- Organization unit type configuration interface -->
+<!ENTITY conify.org_unit_type.title "Global :: Actor :: Organization Unit Types">
+<!ENTITY conify.org_unit_type.type_tree.label "Organization Unit Types">
+<!ENTITY conify.org_unit_type.type_name "Type Name">
+<!ENTITY conify.org_unit_type.opac_label "OPAC Label">
+<!ENTITY conify.org_unit_type.parent_type "Parent Type">
+<!ENTITY conify.org_unit_type.can_have_volumes "Can Have Volumes and Copies">
+<!ENTITY conify.org_unit_type.can_have_users "Can Have Users">
+<!ENTITY conify.org_unit_type.save_out_button.label "Save">
+<!ENTITY conify.org_unit_type.delete_out_button.label "Delete">
+<!ENTITY conify.org_unit_type.new_kid_button.label "New Child">
