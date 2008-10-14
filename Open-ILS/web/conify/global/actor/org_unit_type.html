@@ -76,7 +76,7 @@
                         method : 'open-ils.permacrud.search.aout.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'name' } } ],
-                        onerror : function (r) { status_update('Problem fetching types') },
+                        onerror : function (r) { status_update( aout_strings.ERROR_FETCHING_TYPES ) },
                         oncomplete : function (r) {
                             ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( r.recv().content() ) });
                             ou_type_store.onSet = function (item, attr, o, n) {
@@ -95,8 +95,7 @@
 
                                 if (dirtyStore.length > 0) {
                                     var confirmation = confirm(
-                                        'There are unsaved modified Organization Types!  '+
-                                        'OK to save these changes, Cancel to abandon them.'
+										aout_strings.CONFIRM_UNSAVED_CHANGES
                                     );
 
                                     if (confirmation) {
@@ -129,7 +128,7 @@
 						current_fm_type = new aout().fromStoreItem(item);
 
 						highlighter.editor_pane.green.play();
-						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
+						status_update( dojo.string.substitute( aout_strings.STATUS_EDITING, [this.store.getValue( item, 'name' )] ) );
 
 						new_kid_button.disabled = false;
 						save_out_button.disabled = false;
@@ -288,7 +287,7 @@
 	
 									if (ou_type_store.getValue( current_type, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
-										status_update( 'Cannot delete' + ou_type_store.getValue( current_type, 'name' ) + ', you need at least one.' );
+										status_update( dojo.string.substitute( aout_strings.ERROR_DELETING_LAST, [ou_type_store.getValue( current_type, 'name' )] ) );
 										return false;
 									}
 
@@ -302,12 +301,12 @@
 										);
 										if ( existing_kids.length > 0) {
 											highlighter.editor_pane.red.play();
-											status_update( 'Cannot delete' + ou_type_store.getValue( current_type, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
+											status_update( dojo.string.substitute( aout_strings.ERROR_ORPHANS, [ou_type_store.getValue( current_type, 'name' ), existing_kids.length] ) );
 											return;
 										}
 									}
 	
-									if ( confirm('Are you sure you want to delete ' + current_type.name + '?')) {
+									if ( confirm( dojo.string.substitute ( aout_strings.CONFIRM_DELETE, [current_type.name] ))) {
 										ou_type_store.setValue( current_type, 'isdeleted', 1 );
 	
 										var modified_aout = new aout().fromStoreItem( current_type );
@@ -319,7 +318,7 @@
 											params : [ ses, modified_aout ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
-												status_update( 'Problem deleting ' + ou_type_store.getValue( current_type, 'name' ) );
+												status_update( dojo.string.substitute ( aout_strings.ERROR_DELETING, [ou_type_store.getValue( current_type, 'name' )] ) );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -351,10 +350,10 @@
 													window["editor_pane_can_have_users"].setChecked( false ); // unset the value
 			
 													highlighter.editor_pane.green.play();
-													status_update( old_name + ' deleted' );
+													status_update( dojo.string.substitute( aout_strings.STATUS_DELETED, [old_name] ) );
 												} else {
 													highlighter.editor_pane.red.play();
-													status_update( 'Problem deleting ' + old_name );
+													status_update( dojo.string.substitute( aout_strings.ERROR_DELETING, [old_name] ) );
 												}
 											}
 										}).send();
@@ -373,7 +372,7 @@
 							<script type="dojo/connect" event="onClick">
 								var new_fm_obj = new aout().fromHash({
 									isnew			: 1,
-									name			: 'New Type',
+									name			: aout_strings.LABEL_NEW_TYPE,
 									can_have_vols	: 'f',
 									can_have_users	: 'f',
 									depth			: 1 + parseInt(ou_type_store.getValue( current_type, 'depth' )),
@@ -388,7 +387,7 @@
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( 'Problem calling method to create child Org Type' );
+										status_update( aout_strings.ERROR_CREATING_CHILD_METHOD );
 										err = true;
 									},
 									oncomplete : function (r) {
@@ -400,7 +399,7 @@
 											);
 										} else {
 											highlighter.editor_pane.red.play();
-											status_update( 'Problem creating child Org Type' );
+											status_update( aout_strings.ERROR_CREATING_CHILD );
 											err = true;
 										}
 									},
@@ -409,7 +408,7 @@
 								if (!err) {
 									highlighter.editor_pane.green.play();
 									highlighter.type_tree.green.play();
-									status_update( 'New child Organization Type created for ' + ou_type_store.getValue( current_type, 'name' ) );
+									status_update( dojo.string.substitute( aout_strings.SUCCESS_CREATING_CHILD, [ou_type_store.getValue( current_type, 'name' )] ) );
 								}
 -->
 							</script>
