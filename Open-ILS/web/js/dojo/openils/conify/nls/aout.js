@@ -1,6 +1,6 @@
 {
 
-	CONFIRM_UNSAVED_CHANGES: "There are unsaved changes to your organization types. Click OK to save these changes, or Cancel to abandon them.",
+	CONFIRM_UNSAVED_CHANGES: "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them.",
 	CONFIRM_DELETE: "Are you sure you want to delete ${0}?",
 	ERROR_CREATING_CHILD: "Problem creating child Organization Type",
 	ERROR_CREATING_CHILD_METHOD: "Problem calling method to create child Organization Type",

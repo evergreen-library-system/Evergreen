@@ -12,9 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Actor :: Org Units</title>
+		<title>&conify.org_unit.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojo/resources/dojo.css');
@@ -71,7 +76,7 @@
 						method : 'open-ils.permacrud.search.aou.atomic',
 						timeout : 15,
 						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
-						onerror : function (r) { throw 'Problem fetching org units';},
+						onerror : function (r) { throw aou_strings.ERROR_FETCHING_ORGS; },
 						oncomplete : function (r) {
 							window._ou_list = r.recv().content();
 							window._ou_data = aou.toStoreData( window._ou_list );
@@ -93,10 +98,7 @@
 								});
 
 								if (dirtyStore.length > 0) {
-									var confirmation = confirm(
-										'There are unsaved modified Organizational Units!  '+
-										'OK to save these changes, Cancel to abandon them.'
-									);
+									var confirmation = confirm(aou_strings.CONFIRM_EXIT);
 
 									if (confirmation) {
 										for (var i in window.dirtyStore) {
@@ -114,7 +116,7 @@
                         method : 'open-ils.permacrud.search.aout.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
-                        onerror : function (r) { status_update('Problem fetching types') },
+                        onerror : function (r) { status_update(aou_strings.ERROR_FETCHING_TYPES) },
                         oncomplete : function (r) {
                             window._ou_type_list = r.recv().content();
                             window._ou_type_data = aout.toStoreData( window._ou_type_list );
@@ -142,7 +144,7 @@
 				</script>
 				<div
 				  id="ou_tree"
-				  label="Organizational Units"
+				  label="&conify.org_unit.ou_tree.label;"
 				  query="{'_top':'true'}"
 				  dojoType="dijit.Tree"
 				  store="ou_list_store"
@@ -158,7 +160,7 @@
 						window.current_fm_ou = new aou().fromStoreItem(item);
 
 						highlighter.editor_pane.green.play();
-						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
+						status_update( dojo.string.substitute( aou_strings.STATUS_EDITING, [this.store.getValue( item, 'name' )] ) );
 
 						new_kid_button.disabled = false;
 						save_ou_button.disabled = false;
@@ -212,11 +214,11 @@
 
 				<div id="right_tabpane" dojoType="dijit.layout.TabContainer">
 	
-					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Main Settings">
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.editor_pane.title;">
 
 						<table class="tundra" style="margin:10px;">
 							<tr>
-								<th>Org Unit Name</th>
+								<th>&conify.org_unit.editor_pane.org_unit_name;</th>
 								<td>
 									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -227,7 +229,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Org Unit Policy Code</th>
+								<th>&conify.org_unit.editor_pane.org_unit_code;</th>
 								<td>
 									<span id="editor_pane_shortname" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_shortname" uppercase="true" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -237,7 +239,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Main Email Address</th>
+								<th>&conify.org_unit.editor_pane.main_email;</th>
 								<td>
 									<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+\@\w+(?:\.\w+)+$">
 										<script type="dojo/connect" event="onChange">
@@ -247,7 +249,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Main Phone Number</th>
+								<th>&conify.org_unit.editor_pane.main_phone;</th>
 								<td>
 									<span id="editor_pane_phone" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_phone" regExp="^(?:(?:\d{1}[ -\.])?\(?\d{3}\)?[ -\.]{1})?\d{3}[ -\.]{1}\d{4}(| \S+.*)$">
 										<script type="dojo/connect" event="onChange">
@@ -257,7 +259,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Org Unit Type</th>
+								<th>&conify.org_unit.editor_pane.org_unit_type;</th>
 								<td>
 									<div
 									  id="editor_pane_ou_type"
@@ -275,7 +277,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Parent Org Unit</th>
+								<th>&conify.org_unit.editor_pane.parent;</th>
 								<td>
 									<div
 									  id="editor_pane_parent_ou"
@@ -297,7 +299,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>OPAC Visible</th>
+								<th>&conify.org_unit.editor_pane.opac_visible;</th>
 								<td>
 									<input
 									  id="editor_pane_opac_visible"
@@ -312,13 +314,13 @@
 	
 						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
 	
-							<button jsId="save_ou_button" dojoType="dijit.form.Button" label="Save" onClick="save_org()">
+							<button jsId="save_ou_button" dojoType="dijit.form.Button" label="&conify.save_button.label;" onClick="save_org()">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
 							</button>
 	
-							<button jsId="delete_ou_button" dojoType="dijit.form.Button" label="Delete">
+							<button jsId="delete_ou_button" dojoType="dijit.form.Button" label="&conify.delete_button.label;">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
@@ -328,7 +330,7 @@
 
 									if (ou_list_store.getValue( current_ou, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
-										status_update( 'Cannot delete' + ou_list_store.getValue( current_ou, 'name' ) + ', you need at least one.' );
+										status_update( dojo.string.substitute( aou_strings.ERROR_DELETING_LAST, [ou_list_store.getValue( current_ou, 'name' )] ) );
 										return false;
 									}
 
@@ -342,12 +344,12 @@
 										);
 										if ( existing_kids.length > 0) {
 											highlighter.editor_pane.red.play();
-											status_update( 'Cannot delete' + ou_list_store.getValue( current_ou, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
+											status_update( dojo.string.substitute( aou_strings.ERROR_ORPHANS, [ou_list_store.getValue( current_ou, 'name' ), existing_kids.length] ) );
 											return;
 										}
 									}
 	
-									if ( confirm('Are you sure you want to delete ' + current_ou.name + '?')) {
+									if (confirm(dojo.string.substitute(aou_strings.CONFIRM_DELETE, [current_ou.name]))) {
 										ou_list_store.setValue( current_ou, 'isdeleted', 1 );
 	
 										var modified_ou = new aou().fromStoreItem( current_ou );
@@ -359,7 +361,7 @@
 											params : [ ses, modified_ou ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
-												status_update( 'Problem deleting ' + old_name );
+												status_update(dojo.string.substitute(aou_strings.ERROR_DELETING, [old_name]));
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -386,10 +388,10 @@
 													}
 			
 													highlighter.editor_pane.green.play();
-													status_update( old_name + ' deleted' );
+													status_update(dojo.string.substitute(aou_strings.STATUS_DELETED, [old_name]));
 												} else {
 													highlighter.editor_pane.red.play();
-													status_update( 'Problem deleting ' + old_name );
+													status_update(dojo.string.substitute(aou_strings.ERROR_DELETING, [old_name]));
 												}
 											}
 										}).send();
@@ -401,14 +403,14 @@
 	
 						</div>
 	
-						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="&conify.new_kid_button.label;">
 							<script type="dojo/connect" event="startup">
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
 								var new_fm_obj = new aou().fromHash({
 									isnew			: 1,
-									name			: 'New Branch',
+									name			: aou_strings.LABEL_NEW_BRANCH,
 									opac_visible	: 'f',
 									shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
 									parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
@@ -424,7 +426,7 @@
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( 'Problem creating child Org Unit' );
+										status_update( aou_strings.ERROR_CREATING_CHILD );
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
@@ -435,61 +437,61 @@
 											);
 										} else {
 											highlighter.editor_pane.red.play();
-											status_update( 'Problem creating child Org Unit' );
+											status_update( aou_strings.ERROR_CREATING_CHILD );
 										}
 									},
 								}).send();
 	
 								highlighter.editor_pane.green.play();
 								highlighter.ou_tree.green.play();
-								status_update( 'New child Organizational Unit created for ' + ou_list_store.getValue( current_ou, 'name' ) );
+								status_update( dojo.string.substitute(aou_strings.SUCCESS_CREATING_CHILD, [ou_list_store.getValue( current_ou, 'name' )] ) );
 -->
 							</script>
 						</button>
 	
 					</div>
 
-					<div id="hoo_pane" dojoType="dijit.layout.ContentPane" title="Hours of Operation">
+					<div id="hoo_pane" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.hoo_pane.title;">
 						<table class="tundra" style="margin:10px;">
-							<tr><th/><th>Open time</th><th>Close time</th></tr>
-							<tr><th>Monday</th>
+							<tr><th/><th>&conify.org_unit.hoo_pane.open_time;</th><th>&conify.org_unit.hoo_pane.close_time;</th></tr>
+							<tr><th>&conify.org_unit.hoo_pane.monday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_0_open" onChange="current_ou_hoo.dow_0_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_0_close" onChange="current_ou_hoo.dow_0_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_0_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_0_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_0_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_0_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Tuesday</th>
+							<tr><th>&conify.org_unit.hoo_pane.tuesday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_1_open" onChange="current_ou_hoo.dow_1_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_1_close" onChange="current_ou_hoo.dow_1_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_1_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_1_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_1_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_1_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Wednesday</th>
+							<tr><th>&conify.org_unit.hoo_pane.wednesday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_2_open" onChange="current_ou_hoo.dow_2_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_2_close" onChange="current_ou_hoo.dow_2_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_2_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_2_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_2_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_2_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Thursday</th>
+							<tr><th>&conify.org_unit.hoo_pane.thursday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_3_open" onChange="current_ou_hoo.dow_3_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_3_close" onChange="current_ou_hoo.dow_3_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_3_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_3_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_3_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_3_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Friday</th>
+							<tr><th>&conify.org_unit.hoo_pane.friday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_4_open" onChange="current_ou_hoo.dow_4_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_4_close" onChange="current_ou_hoo.dow_4_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_4_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_4_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_4_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_4_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Saturday</th>
+							<tr><th>&conify.org_unit.hoo_pane.saturday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_5_open" onChange="current_ou_hoo.dow_5_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_5_close" onChange="current_ou_hoo.dow_5_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_5_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_5_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_5_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_5_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
-							<tr><th>Sunday</th>
+							<tr><th>&conify.org_unit.hoo_pane.sunday;</th>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_6_open" onChange="current_ou_hoo.dow_6_open( this.getDisplayedValue() );"/></td>
 								<td><span dojoType="dijit.form.TimeTextBox" style="width:8em;" jsId="dow_6_close" onChange="current_ou_hoo.dow_6_close( this.getDisplayedValue() );"/></td>
-								<td><span dojoType="dijit.form.Button" label="Closed" onClick="dow_6_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_6_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
+								<td><span dojoType="dijit.form.Button" label="&conify.org_unit.hoo_pane.closed;" onClick="dow_6_open.setValue( new Date('Tue Mar 25 2008 00:00:00') ); dow_6_close.setValue( new Date('Tue Mar 25 2008 00:00:00') );"/></td>
 							</tr>
 						</table>
 	
-						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="Save">
+						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 							<script type="dojo/connect" event="onClick">
 <!--
 								var method_name = 'open-ils.permacrud.update.aouhoo';
@@ -500,17 +502,17 @@
 									params : [ ses, current_ou_hoo ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' ));
+										status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
 										if ( res && res.content() ) {
 											current_ou_hoo.isnew(0);
 											highlighter.editor_pane.green.play();
-											status_update( 'Hours of Operation updated for ' + ou_list_store.getValue( current_ou, 'name' ) );
+											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
 										} else {
 											highlighter.editor_pane.red.play();
-											status_update( 'Problem saving Hours of Operation data for ' + ou_list_store.getValue( current_ou, 'name' ));
+											status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
 										}
 									},
 								}).send();
@@ -520,7 +522,7 @@
 	
 					</div>
 	
-					<div id="addresses_pane" dojoType="dijit.layout.ContentPane" title="Addresses">
+					<div id="addresses_pane" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.title;">
 						
 						<div id="billing_address_pane" dojoType="dijit.layout.TabContainer" style="margin-top:10px">
 	
@@ -531,14 +533,14 @@
 								window.current_ill_address = null;
 							</script>
 	
-							<div id="billing_address" dojoType="dijit.layout.ContentPane" title="Physical Address">
+							<div id="billing_address" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.physical.title;">
 								<table class="tundra" style="margin:10px;">
 									<tr>
-										<th>Type</th>
+										<th>&conify.org_unit.addresses_pane.type;</th>
 										<td colspan="3">
 											<span jsId="billing_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_billing_address.address_type( this.getValue() )"/>
 										</td>
-										<th>Valid</th><td>
+										<th>&conify.org_unit.addresses_pane.valid;</th><td>
 											<input
 											  type="checkbox"
 											  jsId="billing_addr_valid"
@@ -549,23 +551,23 @@
 										</td>
 									</tr>
 									<tr>
-										<th>Street 1</th><td colspan="5"><span jsId="billing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.street1( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.street1;</th><td colspan="5"><span jsId="billing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.street1( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Street 2</th><td colspan="5"><span jsId="billing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_billing_address.street2( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.street2;</th><td colspan="5"><span jsId="billing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_billing_address.street2( this.getValue() )"/></td>
 									</tr>
 									<tr>
-										<th>City</th><td><span jsId="billing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.city( this.getValue() )" required="true"/></td>
-										<th>State</th><td><span jsId="billing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_billing_address.state( this.getValue() )" required="true"/></td>
-										<th>Zip</th><td><span jsId="billing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_billing_address.post_code( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.city;</th><td><span jsId="billing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.city( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.state;</th><td><span jsId="billing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_billing_address.state( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.zip;</th><td><span jsId="billing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_billing_address.post_code( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Country</th><td colspan="2"><span jsId="billing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.country( this.getValue() )" required="true"/></td>
-										<th>County</th><td colspan="2"><span jsId="billing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.county( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.country;</th><td colspan="2"><span jsId="billing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.country( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.county;</th><td colspan="2"><span jsId="billing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_billing_address.county( this.getValue() )" required="true"/></td>
 									</tr>
 								</table>
 	
-								<button jsId="save_billing_address" dojoType="dijit.form.Button" label="Save">
+								<button jsId="save_billing_address" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 									<script type="dojo/connect" event="startup">
 										this.disabled = true;
 									</script>
@@ -579,7 +581,7 @@
 											params : [ ses, current_billing_address ],
 											onerror : function (r) {
 												highlighter.addresses_pane.red.play();
-												status_update( 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' ) );
+												status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -591,10 +593,10 @@
 													}
 													current_billing_address.isnew(0);
 													highlighter.addresses_pane.green.play();
-													status_update( 'Changes to the Physical Address of ' + ou_list_store.getValue( current_ou, 'name' ) + ' saved' );
+													status_update( dojo.string.subsitute( aou_strings.SUCCESS_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
 												} else {
 													highlighter.addresses_pane.red.play();
-													status_update( 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' ) );
+													status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
 												}
 											},
 										}).send();
@@ -603,11 +605,11 @@
 								</button>
 							</div>
 
-							<div id="holds_address" dojoType="dijit.layout.ContentPane" title="Holds Address">
+							<div id="holds_address" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.holds.title;">
 								<table class="tundra" style="margin:10px;">
 									<tr>
-										<th>Type</th><td colspan="3"><span jsId="holds_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.address_type( this.getValue() )"/></td>
-										<th>Valid</th><td>
+										<th>&conify.org_unit.addresses_pane.type;</th><td colspan="3"><span jsId="holds_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.address_type( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.valid;</th><td>
 											<input
 											  type="checkbox"
 											  jsId="holds_addr_valid"
@@ -618,23 +620,23 @@
 										</td>
 									</tr>
 									<tr>
-										<th>Street 1</th><td colspan="5"><span jsId="holds_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.street1( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.street1;</th><td colspan="5"><span jsId="holds_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.street1( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Street 2</th><td colspan="5"><span jsId="holds_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.street2( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.street2;</th><td colspan="5"><span jsId="holds_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_holds_address.street2( this.getValue() )"/></td>
 									</tr>
 									<tr>
-										<th>City</th><td><span jsId="holds_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.city( this.getValue() )" required="true"/></td>
-										<th>State</th><td><span jsId="holds_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_holds_address.state( this.getValue() )" required="true"/></td>
-										<th>Zip</th><td><span jsId="holds_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_holds_address.post_code( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.city;</th><td><span jsId="holds_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.city( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.state;</th><td><span jsId="holds_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_holds_address.state( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.zip;</th><td><span jsId="holds_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_holds_address.post_code( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Country</th><td colspan="2"><span jsId="holds_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.country( this.getValue() )" required="true"/></td>
-										<th>County</th><td colspan="2"><span jsId="holds_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.county( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.country;</th><td colspan="2"><span jsId="holds_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.country( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.county;</th><td colspan="2"><span jsId="holds_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_holds_address.county( this.getValue() )" required="true"/></td>
 									</tr>
 								</table>
 	
-								<button jsId="save_holds_address" dojoType="dijit.form.Button" label="Save">
+								<button jsId="save_holds_address" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 									<script type="dojo/connect" event="startup">
 										this.disabled = true;
 									</script>
@@ -648,7 +650,7 @@
 											params : [ ses, current_holds_address ],
 											onerror : function (r) {
 												highlighter.addresses_pane.red.play();
-												throw 'Problem saving Holds Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												throw dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -660,10 +662,10 @@
 													}
 													current_holds_address.isnew(0);
 													highlighter.addresses_pane.green.play();
-													status_update( 'Changes to the Holds Address of ' + ou_list_store.getValue( current_ou, 'name' ) + ' saved' );
+													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] ) );
 												} else {
 													highlighter.addresses_pane.red.play();
-													throw 'Problem saving Holds Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+													throw dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] );
 												}
 											},
 										}).send();
@@ -672,11 +674,11 @@
 								</button>
 							</div>
 
-							<div id="mailing_address" dojoType="dijit.layout.ContentPane" title="Mailing Address">
+							<div id="mailing_address" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.mailing.title;">
 								<table class="tundra" style="margin:10px;">
 									<tr>
-										<th>Type</th><td colspan="3"><span jsId="mailing_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.address_type( this.getValue() )"/></td>
-										<th>Valid</th><td>
+										<th>&conify.org_unit.addresses_pane.type;</th><td colspan="3"><span jsId="mailing_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.address_type( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.valid;</th><td>
 											<input
 											  type="checkbox"
 											  jsId="mailing_addr_valid"
@@ -686,23 +688,23 @@
 										</td>
 									</tr>
 									<tr>
-										<th>Street 1</th><td colspan="5"><span jsId="mailing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.street1( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.street1;</th><td colspan="5"><span jsId="mailing_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.street1( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Street 2</th><td colspan="5"><span jsId="mailing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.street2( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.street2;</th><td colspan="5"><span jsId="mailing_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_mailing_address.street2( this.getValue() )"/></td>
 									</tr>
 									<tr>
-										<th>City</th><td><span jsId="mailing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.city( this.getValue() )" required="true"/></td>
-										<th>State</th><td><span jsId="mailing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_mailing_address.state( this.getValue() )" required="true"/></td>
-										<th>Zip</th><td><span jsId="mailing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_mailing_address.post_code( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.city;</th><td><span jsId="mailing_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.city( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.state;</th><td><span jsId="mailing_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_mailing_address.state( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.zip;</th><td><span jsId="mailing_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_mailing_address.post_code( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Country</th><td colspan="2"><span jsId="mailing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.country( this.getValue() )" required="true"/></td>
-										<th>County</th><td colspan="2"><span jsId="mailing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.county( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.country;</th><td colspan="2"><span jsId="mailing_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.country( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.county;</th><td colspan="2"><span jsId="mailing_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_mailing_address.county( this.getValue() )" required="true"/></td>
 									</tr>
 								</table>
 	
-								<button jsId="save_mailing_address" dojoType="dijit.form.Button" label="Save">
+								<button jsId="save_mailing_address" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 									<script type="dojo/connect" event="startup">
 										this.disabled = true;
 									</script>
@@ -716,7 +718,7 @@
 											params : [ ses, current_mailing_address ],
 											onerror : function (r) {
 												highlighter.addresses_pane.red.play();
-												throw 'Problem saving Mailing Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												throw dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -728,10 +730,10 @@
 													}
 													current_mailing_address.isnew(0);
 													highlighter.addresses_pane.green.play();
-													status_update( 'Changes to the Mailing Address of ' + ou_list_store.getValue( current_ou, 'name' ) + ' saved' );
+													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] ) );
 												} else {
 													highlighter.addresses_pane.red.play();
-													throw 'Problem saving Mailing Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+													throw dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] );
 												}
 											},
 										}).send();
@@ -740,11 +742,11 @@
 								</button>
 							</div>
 
-							<div id="ill_address" dojoType="dijit.layout.ContentPane" title="ILL Address">
+							<div id="ill_address" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.ill.title;">
 								<table class="tundra" style="margin:10px;">
 									<tr>
-										<th>Type</th><td colspan="3"><span jsId="ill_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.address_type( this.getValue() )"/></td>
-										<th>Valid</th><td>
+										<th>&conify.org_unit.addresses_pane.type;</th><td colspan="3"><span jsId="ill_addr_type" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.address_type( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.valid;</th><td>
 											<input
 											  type="checkbox"
 											  jsId="ill_addr_valid"
@@ -754,23 +756,23 @@
 										</td>
 									</tr>
 									<tr>
-										<th>Street 1</th><td colspan="5"><span jsId="ill_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.street1( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.street1;</th><td colspan="5"><span jsId="ill_addr_street1" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.street1( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Street 2</th><td colspan="5"><span jsId="ill_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.street2( this.getValue() )"/></td>
+										<th>&conify.org_unit.addresses_pane.street2;</th><td colspan="5"><span jsId="ill_addr_street2" style="width:100%;" dojoType="dijit.form.TextBox" onChange="current_ill_address.street2( this.getValue() )"/></td>
 									</tr>
 									<tr>
-										<th>City</th><td><span jsId="ill_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.city( this.getValue() )" required="true"/></td>
-										<th>State</th><td><span jsId="ill_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_ill_address.state( this.getValue() )" required="true"/></td>
-										<th>Zip</th><td><span jsId="ill_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_ill_address.post_code( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.city;</th><td><span jsId="ill_addr_city" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.city( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.state;</th><td><span jsId="ill_addr_state" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="2" maxSize="2" uppercase="true" onChange="current_ill_address.state( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.zip;</th><td><span jsId="ill_addr_post_code" style="width:100%;" dojoType="dijit.form.ValidationTextBox" size="10" maxSize="10" regExp="^\d{5}(?:-\d{4})?$" uppercase="true" onChange="current_ill_address.post_code( this.getValue() )" required="true"/></td>
 									</tr>
 									<tr>
-										<th>Country</th><td colspan="2"><span jsId="ill_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.country( this.getValue() )" required="true"/></td>
-										<th>County</th><td colspan="2"><span jsId="ill_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.county( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.country;</th><td colspan="2"><span jsId="ill_addr_country" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.country( this.getValue() )" required="true"/></td>
+										<th>&conify.org_unit.addresses_pane.county;</th><td colspan="2"><span jsId="ill_addr_county" style="width:100%;" dojoType="dijit.form.ValidationTextBox" onChange="current_ill_address.county( this.getValue() )" required="true"/></td>
 									</tr>
 								</table>
 	
-								<button jsId="save_ill_address" dojoType="dijit.form.Button" label="Save">
+								<button jsId="save_ill_address" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 									<script type="dojo/connect" event="startup">
 										this.disabled = true;
 									</script>
@@ -784,7 +786,7 @@
 											params : [ ses, current_ill_address ],
 											onerror : function (r) {
 												highlighter.addresses_pane.red.play();
-												throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+												throw dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -796,10 +798,10 @@
 													}
 													current_ill_address.isnew(0);
 													highlighter.addresses_pane.green.play();
-													status_update( 'Changes to the ILL Address of ' + ou_list_store.getValue( current_ou, 'name' ) + ' saved' );
+													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] ) );
 												} else {
 													highlighter.addresses_pane.red.play();
-													throw 'Problem saving Physical Address data for ' + ou_list_store.getValue( current_ou, 'name' );
+													throw dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] );
 												}
 											},
 										}).send();
@@ -813,6 +815,6 @@
 			</div>
 		</div>
 
-		<div id="status_bar"><span style="font-weight: bold; margin: 5px; margin-right: 10px;">Now editing:</span><span id="current_ou_name"></span></div>
+		<div id="status_bar"><span style="font-weight: bold; margin: 5px; margin-right: 10px;">&conify.org_unit.status_bar;</span><span id="current_ou_name"></span></div>
 	</body>
 </html>
