@@ -32,6 +32,7 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
+dojo.requireLocalization("openils.conify", "aou");
 
 // some handy globals
 var cgi = new CGI();
@@ -41,6 +42,8 @@ var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
 var current_ou, current_ou_hoo;
 var virgin_ou_id = -1;
+
+var aou_strings = dojo.i18n.getLocalization('openils.conify', 'aou');
 
 //var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
 
@@ -64,17 +67,17 @@ function save_org () {
 		params : [ ses, modified_ou ],
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
-			status_update( 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' ) );
+			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				ou_list_store.setValue( current_ou, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
-				status_update( 'Saved changes to ' + ou_list_store.getValue( current_ou, 'name' ) );
+				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
 			} else {
 				highlighter.editor_pane.red.play();
-				status_update( 'Problem saving data for ' + ou_list_store.getValue( current_ou, 'name' ) );
+				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
 			}
 		},
 	}).send();
@@ -88,7 +91,9 @@ function hoo_load () {
 	pCRUD.request({
 		method : 'open-ils.permacrud.retrieve.aouhoo',
 		params : [ ses, ou_list_store.getValue( current_ou, 'id' ) ],
-		onerror : function (r) { throw 'Problem fetching hours of operation for ' + ou_list_store.getValue( current_ou, 'name' );},
+		onerror : function (r) { 
+			throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOURS, [ou_list_store.getValue( current_ou, 'name' )]);
+		},
 		oncomplete : function (r) {
 			current_ou_hoo = null;
 
@@ -133,7 +138,9 @@ function addr_load () {
 		pCRUD.request({
 			method : 'open-ils.permacrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'billing_address' ) ],
-			onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+			onerror : function (r) {
+				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )]);
+			},
 			oncomplete : function (r) {
 				current_billing_address = null;
 
@@ -161,7 +168,9 @@ function addr_load () {
 		pCRUD.request({
 			method : 'open-ils.permacrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'mailing_address' ) ],
-			onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+			onerror : function (r) {
+				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_MAILING, [ou_list_store.getValue( current_ou, 'name' )]);
+			},
 			oncomplete : function (r) {
 				current_mailing_address = null;
 
@@ -189,7 +198,9 @@ function addr_load () {
 		pCRUD.request({
 			method : 'open-ils.permacrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'holds_address' ) ],
-			onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+			onerror : function (r) {
+				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )]);
+			},
 			oncomplete : function (r) {
 				current_holds_address = null;
 
@@ -217,7 +228,9 @@ function addr_load () {
 		pCRUD.request({
 			method : 'open-ils.permacrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'ill_address' ) ],
-			onerror : function (r) { throw 'Problem fetching Physical Address for ' + ou_list_store.getValue( current_ou, 'name' );},
+			onerror : function (r) {
+				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_ILL, [ou_list_store.getValue( current_ou, 'name' )]);
+			},
 			oncomplete : function (r) {
 				current_ill_address = null;
 

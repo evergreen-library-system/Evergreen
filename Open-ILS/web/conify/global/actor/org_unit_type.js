@@ -33,6 +33,7 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
+dojo.requireLocalization("openils.conify", "aout");
 
 // some handy globals
 var cgi = new CGI();
@@ -45,6 +46,8 @@ var current_fm_type;
 var virgin_out_id = -1;
 
 var highlighter = {};
+
+var aout_strings = dojo.i18n.getLocalization('openils.conify', 'aout');
 
 function status_update (markup) {
 	if (parent !== window && parent.status_update) parent.status_update( markup );
@@ -65,17 +68,17 @@ function save_type () {
 		params : [ ses, modified_aout ],
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
-			status_update( 'Problem saving data for ' + ou_type_store.getValue( current_type, 'name' ) );
+			status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				ou_type_store.setValue( current_type, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
-				status_update( 'Saved changes to ' + ou_type_store.getValue( current_type, 'name' ) );
+				status_update( dojo.string.substitute(aout_strings.SUCCESS_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
 			} else {
 				highlighter.editor_pane.red.play();
-				status_update( 'Problem saving data for ' + ou_type_store.getValue( current_type, 'name' ) );
+				status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
 			}
 		},
 	}).send();

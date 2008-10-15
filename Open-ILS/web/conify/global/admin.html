@@ -12,9 +12,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Admin</title>
+		<title>&conify.admin.title;</title>
 
         <style type="text/css">
             @import url('/js/dojo/dojo/resources/dojo.css');
@@ -52,24 +59,24 @@
 	</head>
 	<body class="tundra" id='pagebody'>
 		<div dojoType="dijit.layout.LayoutContainer" style="height: 100%; width: 100%; margin: 0; padding: 0; border: 0;">
-			<div id="top_pane" jsId="top_pane" dojoType="dijit.layout.ContentPane" layoutAlign="top" orientation="horizontal" style="margin: 4px; width: 100%; text-align: middle;" title="Controls">
+			<div id="top_pane" jsId="top_pane" dojoType="dijit.layout.ContentPane" layoutAlign="top" orientation="horizontal" style="margin: 4px; width: 100%; text-align: middle;" title="&conify.admin.top_pane.controls;">
 				<img src="/opac/images/small_logo.jpg"/>
-				<span style="font-size: large; padding-left: 20px;"> Configure your ILS </span>
+				<span style="font-size: large; padding-left: 20px;"> &conify.admin.configure; </span>
 			</div>
-			<div id="left_pane" jsId="left_pane" dojoType="dijit.layout.ContentPane" layoutAlign="left" orientation="vertical" style="height: 90%; margin: 4px;" label="Controls">
+			<div id="left_pane" jsId="left_pane" dojoType="dijit.layout.ContentPane" layoutAlign="left" orientation="vertical" style="height: 90%; margin: 4px;" label="&conify.admin.left_pane.controls;">
 				<ul style="margin-left: -10px;">
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'actor/org_unit_type.html'; return false;">Organization Types</a></li>
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'actor/org_unit.html'; return false;">Organizational Units</a></li>
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'permission/grp_tree.html'; return false;">Permission Groups</a></li>
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'permission/perm_list.html'; return false;">Permissions</a></li>
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'config/copy_status.html'; return false;">Copy Statuses</a></li>
-					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'config/marc_code_maps.html'; return false;">MARC Codes</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'actor/org_unit_type.html'; return false;">&conify.admin.org_unit_type.link;</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'actor/org_unit.html'; return false;">&conify.admin.org_unit.link;</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'permission/grp_tree.html'; return false;">&conify.admin.grp_tree.link;</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'permission/perm_list.html'; return false;">&conify.admin.perm_list.link;</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'config/copy_status.html'; return false;">&conify.admin.copy_status.link;</a></li>
+					<li><a href="javascript:void(0);" onclick="dojo.byId('action_iframe').src = 'config/marc_code_maps.html'; return false;">&conify.admin.marc_code_maps.link;</a></li>
 				</ul>
 			</div>
 			<div id="content_pane" jsId="content_pane" dojoType="dijit.layout.ContentPane" layoutAlign="client" style="margin: 2px; border-top: 2px solid grey; border-bottom: 2px solid grey; border-left: 2px solid grey;">
 				<iframe id="action_iframe" marginwidth="0" marginheight="0" style="border:0; height: 100%; width: 100%;"></iframe>
 			</div>
-			<div id="bottom_pane" jsId="bottom_pane" dojoType="dijit.layout.ContentPane" layoutAlign="bottom" orientation="horizontal" style="margin: 4px; height: 5%; width: 100%" title="Controls">
+			<div id="bottom_pane" jsId="bottom_pane" dojoType="dijit.layout.ContentPane" layoutAlign="bottom" orientation="horizontal" style="margin: 4px; height: 5%; width: 100%" title="">
 				<span id="status_text"/>
 			</div>
 		</div>
