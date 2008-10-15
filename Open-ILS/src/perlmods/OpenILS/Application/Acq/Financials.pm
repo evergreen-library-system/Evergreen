@@ -296,7 +296,7 @@ sub retrieve_org_funds {
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
-    return [] unless @$org_ids;
+    return undef unless @$org_ids;
     my $funds = $e->search_acq_fund({org => $org_ids});
 
     for my $fund (@$funds) {
