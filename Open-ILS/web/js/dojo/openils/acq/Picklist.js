@@ -23,53 +23,60 @@ dojo.require('dojox.grid.Grid');
 dojo.require('dojox.grid._data.model');
 dojo.require('fieldmapper.Fieldmapper');
 dojo.require('fieldmapper.dojoData');
+dojo.require('openils.Event');
 
 /** Declare the Picklist class with dojo */
 dojo.declare('openils.acq.Picklist', null, {
+
     constructor: function (pl_id, onComplete, args) {
-	var pl_this = this;		// 'this' doesn't exist inside callbacks
-    var liArgs = (args && args.liArgs) ? args.liArgs : {flesh_attrs:1, clear_marc:1};
-	var mkStore = function (r) {
-	    var storeData;
-	    var msg;
-	    pl_this._items = [];
 
-	    while (msg = r.recv()) {
-		var data = msg.content();
-		pl_this._data[data.id()] = data;
-		pl_this._items.push(data);
-	    }
+        var pl_this = this;		// 'this' doesn't exist inside callbacks
+        var liArgs = (args && args.liArgs) ? args.liArgs : {flesh_attrs:1, clear_marc:1};
+        var mkStore = function (r) {
+            var storeData;
+            var msg;
+            pl_this._items = [];
 
-	    storeData = jub.toStoreData(pl_this._items, null, {virtualFields:['estimated_price', 'actual_price']});
-	    pl_this._store = new dojo.data.ItemFileWriteStore({data:storeData});
-	    pl_this._model = new dojox.grid.data.DojoData(null, pl_this._store,
-						       {rowsPerPage:20, clientSort:true,
-							query:{id:'*'}});
-	    onComplete(pl_this._model);
-	};
+            while (msg = r.recv()) {
+                var data = msg.content();
+                pl_this._data[data.id()] = data;
+                pl_this._items.push(data);
+            }
 
-	this._id = pl_id;
-	this._data = {};
-	this._plist = null;
-	// Fetch the picklist information
-	fieldmapper.standardRequest(
-	    ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
-	    { async: false,
-	      params: [openils.User.authtoken, pl_id, {flesh_lineitem_count:1}],
-	      oncomplete: function(r) {
-		  var msg = r.recv();
-		  pl_this._plist = msg.content();
-	      }
-	    });
+            storeData = jub.toStoreData(pl_this._items, null, {virtualFields:['estimated_price', 'actual_price']});
+            pl_this._store = new dojo.data.ItemFileWriteStore({data:storeData});
+            pl_this._model = new dojox.grid.data.DojoData(null, pl_this._store,
+                                   {rowsPerPage:20, clientSort:true,
+                                query:{id:'*'}});
+            onComplete(pl_this._model);
+        };
 
-	// Fetch the title list for the picklist, asynchronously
-	fieldmapper.standardRequest(
-	    ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
-	    { async: true,
-	      params: [openils.User.authtoken, pl_id, liArgs],
-	      oncomplete: mkStore
-	    });
+        this._id = pl_id;
+        this._data = {};
+        this._plist = null;
+        //
+        // Fetch the picklist information
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+            {   async: false,
+                params: [openils.User.authtoken, pl_id, {flesh_lineitem_count:1}],
+                oncomplete: function(r) {
+                    var pl = r.recv().content(); 
+                    if(e = openils.Event.parse(pl))
+                        return alert(pl);
+                    pl_this._plist = pl;
+                }
+            });
+
+        // Fetch the title list for the picklist, asynchronously
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
+            { async: true,
+              params: [openils.User.authtoken, pl_id, liArgs],
+              oncomplete: mkStore
+        });
     },
+
     id: function () {
 	return this._id;
     },
@@ -85,15 +92,16 @@ dojo.declare('openils.acq.Picklist', null, {
     edit_time: function() {
 	return this._plist.edit_time();
     },
+
     find_attr: function(id, at_name, at_type) {
-	attr_list = this._data[id].attributes();
-	for (var i in attr_list) {
-	    var attr = attr_list[i];
-	    if (attr.attr_type() == at_type && attr.attr_name() == at_name) {
-		return attr.attr_value();
-	    }
-	}
-	return '';
+        attr_list = this._data[id].attributes();
+        for (var i in attr_list) {
+            var attr = attr_list[i];
+            if (attr.attr_type() == at_type && attr.attr_name() == at_name) {
+            return attr.attr_value();
+            }
+        }
+        return '';
     },
 });
 
