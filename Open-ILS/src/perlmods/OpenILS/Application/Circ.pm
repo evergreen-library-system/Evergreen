@@ -606,9 +606,11 @@ sub view_circs {
     my $max_history = $U->ou_ancestor_setting_value(
         $e->requestor->ws_ou, 'circ.item_checkout_history.max', $e);
 
-    $count = $max_history if $max_history and (!$count or $count > $max_history);
-
-	return [] unless $count;
+    if(defined $max_history) {
+        $count = $max_history unless defined $count and $count < $max_history;
+    } else {
+        $count = 4 unless defined $count;
+    }
 
     return $e->search_action_circulation([
         {target_copy => $copyid}, 
