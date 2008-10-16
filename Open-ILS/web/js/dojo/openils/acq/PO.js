@@ -20,6 +20,7 @@ if(!dojo._hasResource['openils.acq.PO']) {
     dojo.provide('openils.acq.PO');
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.dojoData');
+    dojo.require('openils.Util');
 
     /** Declare the PO class with dojo */
     dojo.declare('openils.acq.PO', null, {
@@ -39,9 +40,11 @@ if(!dojo._hasResource['openils.acq.PO']) {
                 {   params:par, 
                     async: true,
                     oncomplete:function(r) {
-                        var po = r.recv().content();
-                        openils.acq.PO.cache[po.id()] = po;
-                        oncomplete(po);
+                        var po = openils.Util.extractResponse(r)
+                        if(po) {
+                            openils.acq.PO.cache[po.id()] = po;
+                            oncomplete(po);
+                        }
                     }
                 }
             );
