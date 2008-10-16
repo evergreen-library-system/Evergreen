@@ -6,6 +6,8 @@ LOCALE=fr-CA
 DTDDIR=../../Open-ILS/web/opac/locale
 CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
 SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
+DOJO_LOCALE := $(shell echo ${LOCALE} | tr '[:upper:]-' '[:lower:]/')
+DOJOSRC=../../Open-ILS/web/js/dojo/openils/conify/nls
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
 FMIDLENT=fm_IDL.xml
@@ -50,12 +52,12 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot
+newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-project: po2dtds po2props po2sql fmidlpo2entity po2ils
+project: po2dtds po2props po2sql fmidlpo2entity po2ils po2dojo
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
@@ -77,6 +79,14 @@ props2po:
 
 dtds2pot:
 	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(DTDDIR)/en-US/ 2>&1
+
+dojo2pot:
+	@scripts/dojo_resource.py --pot $(DOJOSRC)/aou.js --output $(POTSRC)/conify.aou.pot
+	@scripts/dojo_resource.py --pot $(DOJOSRC)/aout.js --output $(POTSRC)/conify.aout.pot
+
+po2dojo:
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.aou.po --output $(PROJECT)/$(LOCALE)/conify.aou.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.aout.po --output $(PROJECT)/$(LOCALE)/conify.aout.js
 
 ils2pot:
 	@scripts/ils_events.py --pot $(EVTSRC) --output $(POTSRC)/$(EVTOUT)
@@ -135,3 +145,6 @@ install: updatepo project fmidl2fmidlent
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
 	cp $(POOUTDIR)/$(FMIDLENT) $(REPORTDIR)/$(FMIDLENT)
+	mkdir -p $(DOJOSRC)/$(DOJO_LOCALE)
+	cp $(PROJECT)/$(LOCALE)/conify.aou.js $(DOJOSRC)/$(DOJO_LOCALE)/aou.js
+	cp $(PROJECT)/$(LOCALE)/conify.aout.js $(DOJOSRC)/$(DOJO_LOCALE)/aout.js

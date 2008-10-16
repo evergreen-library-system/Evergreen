@@ -221,11 +221,11 @@ const api = {
 
 const urls = {
 
-	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
+	'opac' : '/opac/en-US/skin/default/xml/advanced.xml?nps=1',
 	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
 	'opac_rresult' : '/opac/en-US/skin/default/xml/rresult.xml',
 	'org_tree' : '/opac/common/js/OrgTree.js',
-	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
+	'browser' : '/opac/en-US/skin/default/xml/advanced.xml?nps=1',
 	'fieldmapper' : '/opac/common/js/fmall.js',
 	'isodate_lib_remote' : '/opac/common/js/DP_DateExtensions.js',
 	'isodate_lib_local' : 'chrome://open_ils_staff_client/content/OpenILS/util/DP_DateExtensions.js',

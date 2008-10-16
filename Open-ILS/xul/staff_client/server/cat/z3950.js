@@ -312,6 +312,7 @@ cat.z3950.prototype = {
                                         var x = document.getElementById('service_rows');
 										for (var i in obj.services) {
                                             try {
+                                                if (i == 'native-evergreen-catalog') continue;
                                                 var r = document.createElement('row'); x.appendChild(r);
                                                 var cb = document.createElement('checkbox'); 
                                                     if (obj.services[i].label) {
@@ -337,7 +338,7 @@ cat.z3950.prototype = {
                                                 alert(E);
                                             }
                                         }
-                                        obj.services[ 'native-evergreen-catalog' ] = { 'attrs' : { 'author' : {}, 'title' : {} } };
+                                        //obj.services[ 'native-evergreen-catalog' ] = { 'attrs' : { 'author' : {}, 'title' : {} } };
                                         setTimeout(
 											function() { 
                                                 if (obj.creds.hosts[ obj.data.server_unadorned ]) {

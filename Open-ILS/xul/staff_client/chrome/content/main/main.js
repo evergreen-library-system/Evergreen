@@ -2,6 +2,7 @@ dump('entering main/main.js\n');
 // vim:noet:sw=4:ts=4:
 
 var offlineStrings;
+var authStrings;
 
 function grant_perms(url) {
 	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";
@@ -35,6 +36,7 @@ function main_init() {
 
 		// Now we can safely load the strings without the cache getting wiped
 		offlineStrings = document.getElementById('offlineStrings');
+		authStrings = document.getElementById('authStrings');
 
 		if (typeof JSAN == 'undefined') {
 			throw(
@@ -233,6 +235,7 @@ function main_init() {
 			version = 'versionless debug build';
 			document.getElementById('debug_gb').hidden = false;
 		}
+        window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);
 		//var x = document.getElementById('version_label');
 		//x.setAttribute('value','Build ID: ' + version);
 		var x = document.getElementById('about_btn');
@@ -265,7 +268,10 @@ function main_init() {
 			false
 		);
 
-		if ( found_ws_info_in_Achrome() ) {
+        var pref = Components.classes["@mozilla.org/preferences-service;1"]
+                .getService(Components.interfaces.nsIPrefBranch);
+
+		if ( found_ws_info_in_Achrome() && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
 			//b.addEventListener(

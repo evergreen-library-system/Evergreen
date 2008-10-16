@@ -121,6 +121,24 @@ sub query_services {
         }
     }
 
+    # Define the set of native catalog services
+    # XXX There are i18n problems here, but let's get the staff client working first
+    # XXX Move into the DB?
+    $hash->{'native-evergreen-catalog'} = {
+        attrs => {
+            title => {code => 'title', label => 'Title'},
+            author => {code => 'author', label => 'Author'},
+            subject => {code => 'subject', label => 'Subject'},
+            keyword => {code => 'keyword', label => 'Keyword'},
+            tcn => {code => 'tcn', label => 'TCN'},
+            isbn => {code => 'isbn', label => 'ISBN'},
+            issn => {code => 'issn', label => 'ISSN'},
+            publisher => {code => 'publisher', label => 'Publisher'},
+            pubdate => {code => 'pubdate', label => 'Pub Date'},
+            item_type => {code => 'item_type', label => 'Item Type'},
+        }
+    };
+
     return $hash;
 }
 

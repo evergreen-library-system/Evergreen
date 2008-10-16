@@ -640,6 +640,7 @@
 <!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve record by Record ID">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
+<!ENTITY staff.main.menu.cat.vandelay.label "MARC Batch Import/Export">
 <!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
 <!ENTITY staff.main.menu.cat.z39_50_import.label "Import Record from Z39.50">
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron "Retrieve Patron by Barcode">
@@ -1353,6 +1354,7 @@
 <!ENTITY staff.server.admin.copy_locations.editor.create "Create a new copy location">
 <!ENTITY staff.server.admin.copy_locations.editor.name "Name: ">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable.label "Holdable: ">
+<!ENTITY staff.server.admin.copy_locations.editor.hold_verify.label "Hold Verify: ">
 <!ENTITY staff.server.admin.copy_locations.editor.yes "Yes">
 <!ENTITY staff.server.admin.copy_locations.editor.no "No">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible.label "OPAC Visible: ">
@@ -1361,6 +1363,7 @@
 <!ENTITY staff.server.admin.copy_locations.editor.library "Owning Library">
 <!ENTITY staff.server.admin.copy_locations.editor.library.filter "Focus Location:">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable "Holdable">
+<!ENTITY staff.server.admin.copy_locations.editor.hold_verify "Hold Verify">
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
 <!ENTITY staff.server.admin.copy_locations.editor.circulate "Circulate">
