@@ -208,7 +208,7 @@ vim:et:ts=4:sw=4:
             return data.  Data not returned within the timeout is considered
             a failure
             -->
-            <timeout>4</timeout>
+            <timeout>1</timeout>
 
             <!--
             After added content lookups have been disabled due to too many
@@ -221,7 +221,7 @@ vim:et:ts=4:sw=4:
             maximum number of consecutive lookup errors a given process can 
             have before added content lookups are disabled for everyone
             -->
-            <max_errors>4</max_errors>
+            <max_errors>15</max_errors>
 
             <!-- If a userid is required to access the added content.. -->
             <userid>MY_USER_ID</userid>
