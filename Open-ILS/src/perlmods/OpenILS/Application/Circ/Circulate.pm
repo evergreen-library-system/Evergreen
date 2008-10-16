@@ -194,6 +194,9 @@ sub run_method {
 
     } elsif( $api =~ /checkout.full/ ) {
 
+        # requesting a precat checkout implies that any required
+        # overrides have been performed.  Go ahead and re-override.
+        $circulator->override(1) if $circulator->request_precat;
         $circulator->do_permit();
         unless( $circulator->bail_out ) {
             $circulator->events([]);
