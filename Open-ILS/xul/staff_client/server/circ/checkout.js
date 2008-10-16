@@ -351,7 +351,7 @@ circ.checkout.prototype = {
 
 	'_checkout_pending_hash' : {},
 
-	'_checkout' : function(params) {
+	'_checkout' : function(params,permit) {
 		var obj = this;
 		try {
 		
@@ -454,7 +454,7 @@ circ.checkout.prototype = {
 			}
 
 			/**********************************************************************************************************************/
-			/* This does the actual checkout/renewal */
+			/* This used to do the actual checkout/renewal */
 		
 			var x = document.createElement('label');
 			x.setAttribute('style','color: green');
@@ -465,6 +465,7 @@ circ.checkout.prototype = {
 			}
 			document.getElementById('msg_area').appendChild(x);
 
+            /*
 			obj.network.request(
 				api.CHECKOUT.app,
 				api.CHECKOUT.method,
@@ -473,8 +474,12 @@ circ.checkout.prototype = {
 					_checkout_callback(req,x);
 				}
 			);
+            */
 			
 			if (typeof params.noncat == 'undefined') { obj.items_out_count++; }
+           
+           /* new */
+            _checkout_callback({ 'getResultObject' : function() { return permit; } },x);
 
 		} catch(E) {
 			x.setAttribute('style','color: red');
@@ -540,14 +545,14 @@ circ.checkout.prototype = {
 
 
 		/**********************************************************************************************************************/
-		/* Permissibility test before checkout */
+		/* This used to be the Permissibility test before checkout */
 		try {
 
 			params.patron = obj.patron_id;
 
-			var permit = obj.network.request(
-				api.CHECKOUT_PERMIT.app,
-				api.CHECKOUT_PERMIT.method,
+			var permit = obj.network.simple_request(
+				//api.CHECKOUT_PERMIT.app,
+				'CHECKOUT_FULL',
 				[ ses(), params, obj.items_out_count ],
 				null,
 				{
@@ -603,7 +608,7 @@ circ.checkout.prototype = {
 
 				JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 				params.permit_key = permit.payload;
-				obj._checkout( params ); 
+				obj._checkout( params, permit ); 
 
 			/**********************************************************************************************************************/
 			/* Item not cataloged or barcode mis-scan.  Prompt for pre-cat option */
@@ -636,11 +641,14 @@ circ.checkout.prototype = {
 						params.precat = 1;
 
 						if (params.dummy_title !== '') { 
-							obj._checkout( params );
+							//obj._checkout( params ); No real request method here anymore
+							obj.checkout( params );
 						} else {
 							alert(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled'));
 						}
-					} 
+					}
+
+                    return;
 				}
 
 				var test_permit;
