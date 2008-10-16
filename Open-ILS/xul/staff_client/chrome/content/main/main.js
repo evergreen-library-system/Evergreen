@@ -268,7 +268,10 @@ function main_init() {
 			false
 		);
 
-		if ( found_ws_info_in_Achrome() ) {
+        var pref = Components.classes["@mozilla.org/preferences-service;1"]
+                .getService(Components.interfaces.nsIPrefBranch);
+
+		if ( found_ws_info_in_Achrome() && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
 			//b.addEventListener(
