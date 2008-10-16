@@ -86,20 +86,18 @@ circ.util.show_copy_details = function(copy_id) {
 };
 
 
-circ.util.show_last_few_circs = function(selection_list,count) {
+circ.util.show_last_few_circs = function(selection_list) {
 	var obj = {};
 	JSAN.use('util.error'); obj.error = new util.error();
 	JSAN.use('util.window'); obj.win = new util.window();
 	JSAN.use('util.network'); obj.network = new util.network();
 	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
-	if (!count) count = 4;
-
 	for (var i = 0; i < selection_list.length; i++) {
 		try {
 			if (typeof selection_list[i].copy_id == 'undefined' || selection_list[i].copy_id == null) continue;
 			var url = xulG.url_prefix( urls.XUL_CIRC_SUMMARY ); // + '?copy_id=' + selection_list[i].copy_id + '&count=' + count;
-			var my_xulG = obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal', { 'copy_id' : selection_list[i].copy_id, 'count' : count } );
+			var my_xulG = obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal', { 'copy_id' : selection_list[i].copy_id } );
 
 			if (typeof my_xulG.retrieve_these_patrons == 'undefined') continue;
 			var patrons = my_xulG.retrieve_these_patrons;
