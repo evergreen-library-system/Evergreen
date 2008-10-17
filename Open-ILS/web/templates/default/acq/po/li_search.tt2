@@ -1,0 +1,109 @@
+[% WRAPPER default/base.tt2 %]
+    <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/li_search.js'> </script>
+    <script>
+        var searchLimit = 20;
+        var searchOffset = 0;
+    </script>
+
+    <div id='oils-acq-li-search-block' class='container'>
+        <form dojoType='dijit.form.Form' action='' method=''>
+            <script type="dojo/method" event="onSubmit">
+                doSearch(this.getValues());
+                return false; /* don't redirect */
+            </script>
+            <table class='oils-acq-basic-form-table'>
+                <tr>
+                    <td><label for='state'>State</label></td>
+                    <td>
+                        <select dojoType='dijit.form.FilteringSelect' name='state'>
+                            <option value='new'>New</option>
+                            <option value='approved'>Approved</option>
+                            <option value='in-process'>In Process</option>
+                            <option value='received'>Received</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for='provider'>Provider</label></td>
+                    <td>
+                        <select dojoType='dijit.form.FilteringSelect' name='provider' 
+                            labalAttr='code' searchAttr='code' jsId='providerSelector'>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'><div dojoType='dijit.form.Button' type='submit'>Search</div></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id='oils-acq-li-search-progress'>
+        <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
+    </div>
+    <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
+
+    <div dojoType="dijit.form.DropDownButton" id='oils-acq-li-search-po-create'>
+        <span>reate PO</span>
+        <div dojoType="dijit.TooltipDialog" execute="createPOFromLineitems(arguments[0]);">
+            <script type='dojo/connect' event='onOpen'>
+                buildProviderSelect(newPOProviderSelector, 
+                    function() {
+                        newPOProviderSelector.setValue(providerSelector.getValue());
+                    }
+                );
+                new openils.User().buildPermOrgSelector('CREATE_PURCHASE_ORDER', orderingAgencySelect);
+                //new openils.User().buildPermOrgTreePicker('CREATE_PURCHAE_ORDER', 'treee');
+            </script>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td colspan='2'>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                        <label for="name">For selected items</label>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                        <label for="name">For all items</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="name">Provider: </label></td>
+                    <td>
+                        <input jsId='newPOProviderSelector' name="provider" 
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="name">Ordering Agency:</label></td>
+                    <td>
+                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='orderingAgencySelect'
+                            searchAttr="shortname" name="ordering_agency" autocomplete="true" labelAttr='shortname'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="create_assets">Generate Bib/Copy Data</label></td>
+                    <td>
+                        <input name='create_assets' dojoType='dijit.form.CheckBox' checked='checked'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="create_debits">Encumber funds</label></td>
+                    <td>
+                        <input name='create_debits' dojoType='dijit.form.CheckBox' checked='checked'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">Create</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+    <script>dojo.style('oils-acq-li-search-po-create', 'visibility', 'hidden');</script>
+    <div id='oils-acq-li-search-result-grid' style='height:100%'>
+        [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-li-search' %]
+        [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
+    </div>
+    <script>dojo.style('oils-acq-li-search-result-grid', 'visibility', 'hidden');</script>
+[% END %]
+
+

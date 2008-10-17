@@ -1,0 +1,41 @@
+[% WRAPPER 'default/base.tt2' %]
+<script type='text/javascript'>
+    dojo.require('dijit.layout.LayoutContainer');
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('openils.acq.Picklist');
+</script>
+
+<div dojoType="dijit.layout.LayoutContainer" style="height:100%">
+    <div class='container'>
+        <div id='oils-acq-picklist-header'>
+                Picklist
+            <span id='oils-acq-picklist-name'> </span>
+            <div class='oils-acq-picklist-attributes'>
+            <div>Create
+            date: <span id="oils-acq-picklist-attr-cdate"></span></div>
+            <div>Last updated: <span id="oils-acq-picklist-attr-edate"></span></div>
+            <div>Selector: <span id="oils-acq-picklist-attr-owner"></span></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+            dojo.require('openils.Util');
+            var plist = null;
+            function loadPL() {
+		        plist = new openils.acq.Picklist([% ctx.page_args.0 %],
+				    function(model) {
+				        dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
+				        dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
+				        dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
+				        dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
+				        JUBGrid.populate(pickListGrid, model, plist._items);
+				    }
+                );
+            }
+	        openils.Util.addOnLoad(loadPL);
+    </script>
+    [% grid_jsid = 'pickListGrid'; domprefix = 'oils-acq-picklist' %]
+    [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
+</div>
+[% END %]
+
