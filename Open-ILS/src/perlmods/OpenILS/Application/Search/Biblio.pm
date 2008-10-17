@@ -800,6 +800,7 @@ sub staged_search {
     my $est_hit_count = 0;
     my $current_page_summary = {};
     my $global_summary = {checked => 0, visible => 0, excluded => 0, deleted => 0, total => 0};
+    my $is_real_hit_count = 0;
 
     for($page = 0; $page < $max_superpages; $page++) {
 
@@ -879,6 +880,8 @@ sub staged_search {
         # we've scanned all possible hits
         if($summary->{checked} < $superpage_size) {
             $est_hit_count = scalar(@$all_results);
+            # we have all possible results in hand, so we know the final hit count
+            $is_real_hit_count = 1;
             last;
         }
     }
@@ -886,7 +889,7 @@ sub staged_search {
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
 	# refine the estimate if we have more than one superpage
-	if ($page > 0) {
+	if ($page > 0 and not $is_real_hit_count) {
 		if ($global_summary->{checked} >= $global_summary->{total}) {
 			$est_hit_count = $global_summary->{visible};
 		} else {
