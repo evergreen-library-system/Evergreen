@@ -1,1 +1,125 @@
-#README
+README for Evergreen 1.4 RC
+
+Installing prerequisites:
+========================
+Evergreen has a number of prerequisite packages that must be installed
+before you can successfully configure, compile, and install Evergreen.
+
+1. Begin by installing the most recent version of OpenSRF (1.0 or later).
+You can download OpenSRF 1.0.0 from
+http://evergreen-ils.org/downloads/OpenSRF-1.0.0.tar.gz
+
+2. On Debian and Ubuntu, the easiest way to install the rest of the
+prerequisites for Evergreen is to use the Makefile.install prerequisite
+installer.
+
+Issue the following commands as the root user to install prerequisites
+using the Makefile.install prerequisite installer, substituting "debian"
+or "ubuntu" for <osname> below:
+
+make -f Open-ILS/src/extras/Makefile.install <osname>
+
+Note: You may also be able to use "centos" to install the Evergreen 
+prerequisites for CentOS 5 and RHEL 5, or "gentoo" for Gentoo - but
+these are less tested distributions. Your patches and suggestions for
+improvement are welcome!
+
+Configuration and compilation instructions:
+==========================================
+
+For the time being, we are still installing everything in the /openils/
+directory (with the exception of the Perl modules, which are installed
+into system directories). Issue the following commands to configure and
+build Evergreen:
+
+./configure --prefix=/openils --sysconfdir=/openils/conf
+make
+
+Installation instructions:
+=========================
+
+Once you have configured and compiled Evergreen, issue the following
+command as the root user to install Evergreen:
+
+make STAFF_CLIENT_BUILD_ID=rel_1_4_0_0 install
+
+This will install Evergreen, including example configuration files in
+/openils/conf/ that you can use as templates for your own configuration files.
+The STAFF_CLIENT_BUILD_ID variable stamps the server-side and client-side files
+for the staff client to ensure that they match.
+
+Change ownership of the Evergreen files:
+=======================================
+
+All files in the /openils/ directory and subdirectories must be owned by the
+"opensrf" user. Issue the following command as the root user to change the
+ownership on the files:
+
+chown -R opensrf:opensrf /openils
+
+Configure the Apache Web server:
+===============================
+
+Use the example configuration files in Open-ILS/examples/apache/ to configure
+your Web server for the Evergreen catalog, staff client, Web services, and
+administration interfaces.
+
+Configure OpenSRF for the Evergreen application:
+===============================================
+
+There are a number of example OpenSRF configuration files in /openils/conf/ that
+you can use as a template for your Evergreen installation.
+
+cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+
+Note that eg_db_config.pl will set the database connection information in
+opensrf.xml for you.
+
+Creating the Evergreen database:
+===============================
+
+PostgreSQL 8.2 will be installed on your system by the Makefile.install
+prerequisite installer, but you will need to create the database and add the
+appropriate languages and extensions to support Evergreen. Issue the following
+commands as the "postgres" user to set up a database called "evergreen". Note
+that the location of the PostgreSQL "contrib" packages may vary depending on
+your distribution:
+
+createdb -E UNICODE evergreen
+createlang plperl evergreen
+createlang plperlu evergreen
+createlang plpgsql evergreen
+psql -f /usr/share/postgresql/8.2/contrib/tablefunc.sql
+psql -f /usr/share/postgresql/8.2/contrib/tsearch2.sql
+psql -f /usr/share/postgresql/8.2/contrib/pgxml.sql
+
+Once you have created the Evergreen database, you need to create a PostgreSQL
+user to access the database. Issue the following command as the "postgres"
+user to create a new PostgreSQL user named "evergreen". When prompted, enter
+the new user's password and answer "yes" to make the new role a superuser:
+
+createuser -P evergreen
+
+Once you have created the Evergreen database, you also need to create the
+database schema and configure your configuration files to point at the
+database server. Issue the following command as root from inside the Evergreen
+source directory, replacing <user>, <password>, <hostname>, <port>, and <dbname>
+with the appropriate values for your PostgreSQL database:
+
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+       --service all --create-schema --create-bootstrap --user <user> \
+       --password <password> --hostname <hostname> --port <port> \
+       --database <dbname>
+
+This will create the database schema and configure all of the services in
+your /openils/conf/opensrf.xml configuration file to point to that database.
+It also creates the configuration file required by the Evergreen cgi-bin
+administration scripts.
+
+Getting help:
+============
+
+Need help installing or using Evergreen? Join the mailing lists at
+http://evergreen-ils.org/listserv.php or contact us on the Freenode
+IRC network on the #evergreen channel.
