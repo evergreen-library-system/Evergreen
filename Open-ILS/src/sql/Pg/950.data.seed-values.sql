@@ -1123,9 +1123,36 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext(151, 'Allow a user to delete an item out of another user''s container', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
+    (153, 'CREATE_FUNDING_SOURCE', oils_i18n_gettext(153, 'Allow a user to create a new funding source', 'ppl', 'description')),
+    (154, 'DELETE_FUNDING_SOURCE', oils_i18n_gettext(154, 'Allow a user to delete a funding source', 'ppl', 'description')),
+    (155, 'VIEW_FUNDING_SOURCE', oils_i18n_gettext(155, 'Allow a user to view a funding source', 'ppl', 'description')),
+    (156, 'UPDATE_FUNDING_SOURCE', oils_i18n_gettext(156, 'Allow a user to update a funding source', 'ppl', 'description')),
+    (157, 'CREATE_FUND', oils_i18n_gettext(157, 'Allow a user to create a new fund', 'ppl', 'description')),
+    (158, 'DELETE_FUND', oils_i18n_gettext(158, 'Allow a user to delete a fund', 'ppl', 'description')),
+    (159, 'VIEW_FUND', oils_i18n_gettext(159, 'Allow a user to view a fund', 'ppl', 'description')),
+    (160, 'UPDATE_FUND', oils_i18n_gettext(160, 'Allow a user to update a fund', 'ppl', 'description')),
+    (161, 'CREATE_FUND_ALLOCATION', oils_i18n_gettext(161, 'Allow a user to create a new fund allocation', 'ppl', 'description')),
+    (162, 'DELETE_FUND_ALLOCATION', oils_i18n_gettext(162, 'Allow a user to delete a fund allocation', 'ppl', 'description')),
+    (163, 'VIEW_FUND_ALLOCATION', oils_i18n_gettext(163, 'Allow a user to view a fund allocation', 'ppl', 'description')),
+    (164, 'UPDATE_FUND_ALLOCATION', oils_i18n_gettext(164, 'Allow a user to update a fund allocation', 'ppl', 'description')),
+    (165, 'GENERAL_ACQ', oils_i18n_gettext(165, 'Lowest level permission required to access the ACQ interface', 'ppl', 'description')),
+    (166, 'CREATE_PROVIDER', oils_i18n_gettext(166, 'Allow a user to create a new provider', 'ppl', 'description')),
+    (167, 'DELETE_PROVIDER', oils_i18n_gettext(167, 'Allow a user to delate a provider', 'ppl', 'description')),
+    (168, 'VIEW_PROVIDER', oils_i18n_gettext(168, 'Allow a user to view a provider', 'ppl', 'description')),
+    (169, 'UPDATE_PROVIDER', oils_i18n_gettext(169, 'Allow a user to update a provider', 'ppl', 'description')),
+    (170, 'ADMIN_FUNDING_SOURCE', oils_i18n_gettext(170, 'Allow a user to create/view/update/delete a funding source', 'ppl', 'description')),
+    (171, 'ADMIN_FUND', oils_i18n_gettext(171, 'Allow a user to create/view/update/delete a fund', 'ppl', 'description')),
+    (172, 'MANAGE_FUNDING_SOURCE', oils_i18n_gettext(172, 'Allow a user to view/credit/debit a funding source', 'ppl', 'description')),
+    (173, 'MANAGE_FUND', oils_i18n_gettext(173, 'Allow a user to view/credit/debit a fund', 'ppl', 'description')),
+    (174, 'CREATE_PICKLIST', oils_i18n_gettext(174, 'Allows a user to create a picklist', 'ppl', 'description')),
+    (175, 'ADMIN_PROVIDER', oils_i18n_gettext(175, 'Allow a user to create/view/update/delete a provider', 'ppl', 'description')),
+    (176, 'MANAGE_PROVIDER', oils_i18n_gettext(176, 'Allow a user to view and purchase from a provider', 'ppl', 'description')),
+    (177, 'VIEW_PICKLIST', oils_i18n_gettext(177, 'Allow a user to view another users picklist', 'ppl', 'description')),
     (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext(152, 'Allow a staff member to define where another staff member has their permissions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (153, 'DELETE_RECORD', oils_i18n_gettext(153, 'Allow a staff member to directly remove a bibliographic record', 'ppl', 'description'));
+    (178, 'DELETE_RECORD', oils_i18n_gettext(178, 'Allow a staff member to directly remove a bibliographic record', 'ppl', 'description'));
+INSERT INTO permission.perm_list VALUES 
+    (179, 'ADMIN_CURRENCY_TYPE', oils_i18n_gettext(179, 'Allow a user to create/view/update/delete a currency_type', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 

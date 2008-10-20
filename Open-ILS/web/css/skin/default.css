@@ -1,0 +1,62 @@
+/* import the default css for the install applications */
+@import "default/acq.css";
+@import "default/admin.css";
+/* import the dojo CSS */
+@import "/js/dojo/dojo/resources/dojo.css";
+@import "/js/dojo/dijit/themes/tundra/tundra.css";
+@import "/js/dojo/dojox/grid/_grid/Grid.css";
+
+
+html, body, #oils-base-body-block {
+    width:100%;
+    height:100%;
+    border:0;
+    margin:0;
+    padding:0;
+}
+table { border-collapse: collapse; }
+/* use this for divs whose contents should be entirely contained within the div */
+.container:after {content: ""; display: block; height: 0; clear: both; }
+
+.invisible { visibility: hidden; }
+.hidden { display: none; visibility: hidden; }
+.display { display: block; visibility: visible; }
+.oils-login-dialog td { padding: 5px; }
+
+/* main layout blocks */
+#oils-base-main-block { width: 100%; margin-top: 0px; padding-top: 0px;}
+#oils-base-navigate-block { width: 12%; vertical-align: top; float:left;}
+#oils-base-content-block { width: 87%; vertical-align: top; float:right; padding-top: 0px;}
+#oils-base-sidebar-block { width: 12%; vertical-align: top; float:left;}
+
+#oils-base-header-auto-login { padding-right: 20px; }
+#oils-base-header-block { width: 100%; text-align: right; margin-top: 0px; padding-bottom: 0px;}
+#oils-base-header-menu-block { float:left; text-align: left; width: 50%; }
+#oils-base-header-auto-login-block { float:right; text-align: right; width: 47%;}
+
+#oils-base-footer-block { width: 100%; text-align: center; vertical-align: bottom;}
+
+#oils-base-navigate-list { width: 100%; }
+.oils-base-navigate-sub-list { padding-left: 4px; }
+.oils-base-navigate-item {}
+
+/* general purpose form table */
+.oils-admin-table { width: 100%; }
+.oils-admin-table td { padding: 4px; }
+.oils-admin-table textarea { width: 400px; height: 40px; overflow:auto;}
+.oils-admin-label { width: auto; }
+
+.label { margin: 1px; }
+
+
+/* local dojo style enhancements ----------------------------------- */
+/*
+.dojoxGrid {border: 1px solid #333; height: 90%;}
+*/
+/*
+.dojoxGrid {height: 90%;}
+.dojoxGrid-cell {padding: 8px;}
+*/
+.dijitTooltipTable td {padding: 3px;} /* custom class for handling dialog tables */
+/* ----------------------------------------------------------------- */
+

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!--
 
 Copyright (C) 2006-2008 Georgia Public Library Service
@@ -806,7 +805,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="TRANSIT_COPY"/>
+                <create permission="TRANSIT_COPY" context_field="owner">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
                 <retrieve/>
                 <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
                 <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
@@ -3315,6 +3316,525 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Currency Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Currency Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links/>
+	</class>
+
+	<class id="acqexr" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::exchange_rate" oils_persist:tablename="acq.exchange_rate">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.exchange_rate_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Exchange Rate ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="From Currency" name="from_currency" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="To Currency" name="to_currency" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Ratio" name="ratio" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="from_currency" reltype="has_a" key="code" map="" class="acqct"/>
+			<link field="to_currency" reltype="has_a" key="code" map="" class="acqct"/>
+		</links>
+	</class>
+
+	<class id="acqpro" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::provider" oils_persist:tablename="acq.provider">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Provider ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Provider Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" />
+			<field reporter:label="Currency" name="currency_type" oils_obj:array_position="6" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+
+	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Funding Source ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Funding Source Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" />
+			<field reporter:label="Currency" name="currency_type" oils_obj:array_position="6" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field name="summary" oils_obj:array_position="8" oils_persist:virtual="true"/>
+			<field reporter:label="Allocations" name="allocations" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Credits" name="credits" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="allocations" reltype="has_many" map="" key="funding_source" class="acqfa"/>
+            <link field="credits" reltype="has_many" key="funding_source" map="" class="acqfscred"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="CREATE_ACQ_FUNDING_SOURCE" context_field="owner"/>
+                <retrieve permission="VIEW_ACQ_FUNDING_SOURCE"   context_field="owner"/>
+                <update   permission="UPDATE_ACQ_FUNDING_SOURCE" context_field="owner"/>
+                <delete   permission="DELETE_ACQ_FUNDING_SOURCE" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqfscred" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_credit" oils_persist:tablename="acq.funding_source_credit">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_credit_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Credit ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Funding Source ID" name="funding_source" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+		</links>
+	</class>
+
+	<class id="acqfdeb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_debit" oils_persist:tablename="acq.fund_debit">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_debit_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Debit ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Origin Amount" name="origin_amount" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Origin Currency" name="origin_currency_type" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Encumbrance" name="encumbrance" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Debit Type" name="debit_type" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="origin_currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+		</links>
+	</class>
+
+	<class id="acqf" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Org Unit" name="org" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="org_unit" />
+			<field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Year" name="year" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Currency Type" name="currency_type" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+			<field name="summary" oils_obj:array_position="9" oils_persist:virtual="true"/>
+			<field reporter:label="Allocations" name="allocations" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Debits" name="debits" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+            <link field="allocations" reltype="has_many" key="fund" map="" class="acqfa"/>
+            <link field="debits" reltype="has_many" key="fund" map="" class="acqfdeb"/>
+		</links>
+	</class>
+
+	<class id="acqfat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_allocation_total">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Allocation Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfdt" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_debit_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_debit_total">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Debit Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfet" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_encumbrance_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_encumbrance_total">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Encumbrance Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfst" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_total">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Spent Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfcb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_combined_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_combined_balance">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Balance after Spent and Encumbered" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfsrcct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_credit_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_credit_total">
+		<fields oils_persist:primary="funding_source">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Funding Source" name="funding_source" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Credits to Funding Source" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+		</links>
+	</class>
+
+	<class id="acqfsrcat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_allocation_total">
+		<fields oils_persist:primary="funding_source">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Funding Source" name="funding_source" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Total Allocated from Funding Source" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+		</links>
+	</class>
+
+	<class id="acqfsrcb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_balance" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_balance">
+		<fields oils_persist:primary="funding_source">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Funding Source" name="funding_source" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Balance Remaining" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+		</links>
+	</class>
+
+	<class id="acqfsb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_balance">
+		<fields oils_persist:primary="fund">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Balance after Spent" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+	</class>
+
+	<class id="acqfa" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Allocation ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fund" name="fund" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Funding Source" name="funding_source" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Percent" name="percent" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="float" />
+			<field reporter:label="Allocating User" name="allocator" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="allocator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+		</links>
+	</class>
+
+	<class id="acqpl" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Picklist ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Org Unit" name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Name" name="name" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Entries" name="entries" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Entry Count" name="entry_count" oils_obj:array_position="10" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="entries" reltype="has_many" key="picklist" map="" class="jub"/>
+		</links>
+	</class>
+
+	<class id="acqpo" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::purchase_order" oils_persist:tablename="acq.purchase_order">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.purchase_order_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Purchase Order ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="State" name="state" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Ordering Agency" name="ordering_agency" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Count" name="lineitem_count" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="default_fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
+			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+
+	<class id="acqpon" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_note" oils_persist:tablename="acq.po_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="PO Note ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Purchase Order" name="purchase_order" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creator" name="creator" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Editor" name="editor" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Vote Value" name="value" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+		</links>
+	</class>
+
+	<class id="jub" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Lineitem ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Selecting Org Unit" name="selector" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Picklist" name="picklist" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Purchase Order" name="purchase_order" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="MARC" name="marc" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Source Label" name="source_label" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="State" name="state" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="15" oils_persist:virtual="true" reporter:datatype="int" />
+			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="selector" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl"/>
+			<link field="eg_bib_id" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="attributes" reltype="has_many" key="lineitem" map="" class="acqlia"/>
+			<link field="lineitem_details" reltype="has_many" key="lineitem" map="" class="acqlid"/>
+			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
+		</links>
+	</class>
+
+	<class id="acqlin" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_note" oils_persist:tablename="acq.lineitem_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="PO Line Item Note ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Line Item" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creator" name="creator" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Editor" name="editor" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Vote Value" name="value" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+		</links>
+	</class>
+
+	<class id="acqlia" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_attr" oils_persist:tablename="acq.lineitem_attr">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Attribute Value ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Lineitem" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Type" name="attr_type" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Name" name="attr_name" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Value" name="attr_value" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Definition" name="definition" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="definition" reltype="has_a" key="id" map="" class="acqliad"/>
+		</links>
+	</class>
+
+	<class id="acqlid" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_detail" oils_persist:tablename="acq.lineitem_detail">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_detail_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Item Detail ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="PO Line Item" name="lineitem" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Evergreen Copy ID" name="eg_copy_id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Barcode" name="barcode" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Call Number Label" name="cn_label" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Actual Receive Date" name="recv_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Fund" name="fund" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Fund Debit" name="fund_debit" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="eg_copy_id" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+		</links>
+	</class>
+
+	<class id="acqliad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_attr_definition" oils_persist:tablename="acq.lineitem_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="acqlimad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_marc_attr_definition" oils_persist:tablename="acq.lineitem_marc_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="acqligad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_generated_attr_definition" oils_persist:tablename="acq.lineitem_generated_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="acqlipad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_provider_attr_definition" oils_persist:tablename="acq.lineitem_provider_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+	</class>
+
+	<class id="acqliuad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_usr_attr_definition" oils_persist:tablename="acq.lineitem_usr_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="User" name="usr" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+
+	<class id="acqlilad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_local_attr_definition" oils_persist:tablename="acq.lineitem_local_attr_definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+
 	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.output_folder_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -3987,3 +4507,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<!-- ********************************************************************************************************************* -->
 
 </IDL>
+
+<!--
+    vim:noet:ts=4:sw=4:
+-->

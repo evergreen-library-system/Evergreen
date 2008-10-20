@@ -1,0 +1,11 @@
+<div id='oils-base-header-content-div'>
+    <span id='oils-base-header-user-info'> </span>
+    <script>
+        /*
+        dojo.addOnLoad(function(){
+            dojo.byId('oils-base-header-user-info').appendChild(
+                document.createTextNode(openils.User.user.usrname()));
+        });
+        */
+    </script>
+</div>

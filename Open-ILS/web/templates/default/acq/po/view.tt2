@@ -1,0 +1,40 @@
+[% WRAPPER default/base.tt2 %]
+<script>
+    var poId = [% ctx.page_args.0 %];
+</script>
+
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'> </script>
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>PO Details</div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Summary" selected='true'>
+            <script type='dojo/connect' event='onShow'>loadPOGrid();</script>
+            <script>
+                var poGridStructure = [{
+                    cells : [[
+                        {name: 'ID', field: 'id'},
+                        {name: 'Owner', get:getPOOwner},
+                        {name: 'Ordering Agency', get:getOrgInfo},
+                        {name: 'Create Time', field:'create_time', width:'auto', get:getDateTimeField},
+                        {name: 'Edit Time', field: "edit_time", width:'auto', get:getDateTimeField},
+                        {name: 'Provider', get:getProvider},
+                        {name: '# Lineitems', field: 'lineitem_count'},
+                        {name: 'State', field:'state'}
+                    ]]
+                }];
+            </script>
+            <div jsId='poGrid' dojoType="dojox.Grid" structure='poGridStructure'> </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Line Items">
+            <script type='dojo/connect' event='onShow'>loadLIGrid();</script>
+            [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-lineitem' %]
+            [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
+        </div>
+    </div>
+</div>
+[% END %]

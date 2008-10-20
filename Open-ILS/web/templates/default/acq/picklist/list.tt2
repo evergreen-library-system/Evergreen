@@ -1,0 +1,66 @@
+[% WRAPPER 'default/base.tt2' %]
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-picklist-my-list-header'>
+        <div id='oils-acq-list-header-label'>My Picklists</div>
+    </div>
+    <div id='oils-acq-picklist-all-list-header'>
+        <div id='oils-acq-list-header-label'>All Picklists</div>
+    </div>
+</div>
+
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view_list.js'> </script>
+
+<script>
+    if(location.href.match(/listall$/)) {
+        listAll = true;
+        dojo.style('oils-acq-picklist-my-list-header', 'visibility', 'hidden');
+        dojo.style('oils-acq-picklist-my-list-header', 'display', 'none');
+    } else {
+        dojo.style('oils-acq-picklist-all-list-header', 'visibility', 'hidden');
+        dojo.style('oils-acq-picklist-all-list-header', 'display', 'none');
+    }
+</script>
+
+<div class='oils-acq-actions-div'>
+    <div dojoType="dijit.form.DropDownButton">
+        <span>New Picklist</span>
+        <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">Name:</label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType=dijit.form.Button type="submit">Create</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">
+        Delete Selected
+    </button>
+</div>
+
+
+<script>
+    function getName(rowIndex) {
+        data = plListGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="[% ctx.base_uri %]/acq/picklist/view/'+data.id+'">'+data.name+'</a>';
+    }
+
+    var plListGridStructure = [{
+        cells : [[
+            {name: 'ID', field: 'id'},
+            {name: 'Name', width:'auto', get:getName}, 
+            {name: 'Selector', field:'owner'},
+            {name: 'Create Time', field: 'create_time'}, 
+            {name: 'Edit Time', field: 'edit_time'},
+            {name: 'Entry Count', field: 'entry_count'},
+        ]]
+    }];
+</script>
+<div jsId='plListGrid' dojoType="dojox.Grid" structure='plListGridStructure'></div>
+[% END %]

@@ -585,7 +585,87 @@
 	</event>
 
 
-
+	<event code='1841' textcode='ACQ_PICKLIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
+	</event>
+	<event code='1843' textcode='ACQ_LINEITEM_ATTR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_attr was not found</desc>
+	</event>
+	<event code='1844' textcode='ACQ_FUNDING_SOURCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source was not found</desc>
+	</event>
+	<event code='1845' textcode='ACQ_PROVIDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.provider was not found</desc>
+	</event>
+	<event code='1846' textcode='ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_credit was not found</desc>
+	</event>
+	<event code='1847' textcode='ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_dedit was not found</desc>
+	</event>
+	<event code='1848' textcode='ACQ_FUND_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund was not found</desc>
+	</event>
+	<event code='1849' textcode='ACQ_FUND_DEBIT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_debit_total was not found</desc>
+	</event>
+	<event code='1850' textcode='ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_allocation_total was not found</desc>
+	</event>
+	<event code='1851' textcode='ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_encumbrance_total was not found</desc>
+	</event>
+	<event code='1852' textcode='ACQ_FUND_SPENT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_spent_total was not found</desc>
+	</event>
+	<event code='1853' textcode='ACQ_FUND_COMBINED_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_combined_balance was not found</desc>
+	</event>
+	<event code='1854' textcode='ACQ_FUND_SPENT_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_spent_balance was not found</desc>
+	</event>
+	<event code='1855' textcode='ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_credit_total was not found</desc>
+	</event>
+	<event code='1856' textcode='ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_allocation_total was not found</desc>
+	</event>
+	<event code='1857' textcode='ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.funding_source_balance was not found</desc>
+	</event>
+	<event code='1858' textcode='ACQ_LINEITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.po_lineitem was not found</desc>
+	</event>
+	<event code='1859' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
+	</event>
+	<event code='1870' textcode='ACQ_LINEITEM_DETAIL_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_detail was not found</desc>
+	</event>
+	<event code='1871' textcode='PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission.usr_object_perm_map was not found</desc>
+	</event>
+	<event code='1872' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.lineitem_provider_attr_definition was not found</desc>
+	</event>
+	<event code='1873' textcode='ACQ_CURRENCY_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.currency_type was not found</desc>
+	</event>
+	<event code='1875' textcode='ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1876' textcode='ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1877' textcode='ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1878' textcode='ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
+	<event code='1879' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
+	</event>
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
@@ -766,6 +846,26 @@
 	<event code='9001' textcode='REPORT_REPORT_EXISTS'>
 		<desc xml:lang="en-US"> A report with the given name and folder already exists</desc>
 	</event>
+
+	<event code='10000' textcode='ACQ_LINEITEM_APPROVED'>
+		<desc xml:lang="en-US">The lineitem cannot be altered because it has already been approved</desc>
+	</event>
+	<event code='10001' textcode='ACQ_LINEITEM_NO_COPIES'>
+		<desc xml:lang="en-US">The lineitem has no attached copies</desc>
+	</event>
+	<event code='10002' textcode='ACQ_LINEITEM_DETAIL_NO_FUND'>
+		<desc xml:lang="en-US">The lineitem detail has no associated fund</desc>
+	</event>
+	<event code='10003' textcode='ACQ_LINEITEM_DETAIL_NO_ORG'>
+		<desc xml:lang="en-US">The lineitem detail has no owning_lib</desc>
+	</event>
+	<event code='10004' textcode='ACQ_LINEITEM_NO_PRICE'>
+		<desc xml:lang="en-US">The lineitem has no price</desc>
+	</event>
+	<event code='10005' textcode='ACQ_LINEITEM_NO_PROVIDER'>
+		<desc xml:lang="en-US">The lineitem has no price</desc>
+	</event>
+
 
 
 

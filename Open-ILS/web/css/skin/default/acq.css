@@ -1,0 +1,94 @@
+.spacer {clear: both}
+
+#oils-acq-index-block { font-weight:bold; }
+/*
+.oils-sub-navigate-block { width: 100%;  text-align: left; padding: 3px;}
+.oils-sub-navigate-block span { padding: 3px; }
+*/
+
+.oils-acq-detail-content-pane {height:600px;width:100%}
+.oils-acq-basic-form-table td {padding:4px;}
+
+/* bib search */
+#oils-acq-search-container { width:100%; }
+#oils-acq-search-sources-block { width:32%; vertical-align: top; float: left; margin-right: 10px;}
+#oils-acq-search-form-block { width:63%; vertical-align: top; float:right; }
+#oils-acq-search-sources-selector { padding: 2px; }
+#oils-acq-search-sources-selector option { margin-bottom: 2px; }
+.oils-acq-search-form-row { width: 100%; }
+.oils-acq-search-form-label {}
+.oils-acq-search-form-input {}
+#oils-acq-search-sources-list { padding: 1px; }
+#oils-acq-search-sources-list li { list-style-type: none; padding-left: 0px; }
+.oils-acq-search-sources-sublist { padding: 1px; list-style-type: none;}
+.oils-acq-search-sources-sublist li { margin-left: 10px; }
+.oils-acq-search-subsources-label { margin-top: 5px; }
+#oils-acq-search-sources-label { margin-bottom: 10px; }
+#oils-acq-search-fields-label { margin-bottom: 10px; }
+#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
+#oils-acq-search-progress {width: 100%; text-align: center;}
+#oils-acq-search-source-select option {padding: 5px;}
+#oils-acq-search-fields-tbody td {padding: 3px;}
+
+/* list of picklists */
+#oils-acq-picklist-list-table {width: 100%;}
+#oils-acq-picklist-list-table td {padding: 3px;}
+
+/* a single picklist */
+#oils-acq-picklist-table { width: 100%; }
+#oils-acq-picklist-header { padding: 4px; margin-bottom: 20px; }
+.oils-acq-picklist-records-jacket-td { width: 46px; height: 54px; }
+.oils-acq-picklist-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-picklist-records-title {vertical-align: top}
+.oils-acq-picklist-records-copies {text-align: right; width: 200px}
+#oils-acq-picklist-paging-block { width: 25%; float: left; position: relative; }
+#oils-acq-picklist-actions-block { width: 75%; text-align: right; float: right; position: relative; }
+#oils-acq-picklist-header-subtable { width: 100%; }
+#oils-acq-picklist-header-block { width: 100%; display: block }
+
+/* list of pos */
+#oils-acq-po-list-table {width: 100%;}
+#oils-acq-po-list-table td {padding: 3px;}
+
+/* a single po */
+#oils-acq-po-table { width: 100%; }
+#oils-acq-po-header { padding: 4px; margin-bottom: 20px; }
+.oils-acq-po-records-jacket-td { width: 46px; }
+.oils-acq-po-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-po-records-title-row {}
+.oils-acq-po-records-author-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row td { padding-left: 30px; }
+.oils-acq-po-records-phys_desc-row {}
+
+#oils-acq-po-paging-block { width: 50%; text-align: left;}
+#oils-acq-po-actions-block { width: 50%; text-align: right;}
+#oils-acq-po-header-subtable { width: 100%; }
+
+#oils-acq-list-header { margin: 10px; width: 98%;}
+#oils-acq-list-header-label { float: left; }
+#oils-acq-list-header-actions { float: right; }
+
+/* purchase order line item detail page */
+#oils-acq-po-li-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-po-li-summary {}
+#oils-acq-po-li-summary td {padding: 2px;}
+.oils-acq-po-li-attr {}
+.oils-acq-po-li-attr-type {}
+.oils-acq-po-li-attr-name {}
+.oils-acq-po-li-attr-value {}
+#oils-acq-po-li-marc-block { margin-top: 10px; padding: 6px; }
+#oils-acq-po-li-details-table { width: 100%; }
+.oils-acq-po-li-detail-row {}
+
+/* picklist entry page */
+#oils-acq-lineitem-header { padding: 4px; margin-bottom: 20px; }
+#oils-acq-lineitem-summary {}
+#oils-acq-lineitem-summary td {padding: 2px;}
+.oils-acq-lineitem-attr {}
+.oils-acq-lineitem-attr-type {}
+.oils-acq-lineitem-attr-name {}
+.oils-acq-lineitem-attr-value {}
+#oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
+
+
+

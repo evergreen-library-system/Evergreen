@@ -1,0 +1,209 @@
+[%#-
+This template creates a split screen Dojo layout. The top frame
+of the screen holds a list of of JUBs, or titles. Clicking on a
+title in the top frame will load the purchase details for all the
+copies on order for that title into the bottom frame.
+
+To create a display for a set of JUBs, create a Dojo store and
+model for the set of JUBs, then place the following lines in your
+HTML where you want the display to appear:
+
+    <%namespace file='/oils/default/common/jubgrid.html' name='jubgrid'/>
+    ${jubgrid.jubgrid('dom_prefix', 'grid_jsid')}
+
+where 'dom_prefix' is a string that will be used as the prefix
+for the DOM notes that are created by this template, and
+'grid_jsid' is a valid JavaScript identifier that will name the
+DOM node to which the list of JUBs will be attached.  For example
+
+    ${jubgrid.jubgrid('oils-acq-picklist', 'pickListGrid', hideDetails)}
+
+will create a Dojo grid with the DOM id of
+
+    'oils-acq-picklist-JUB-grid'
+
+and a jsid of
+
+    pickListGrid
+
+To fill the grid with data, call the javascript function
+
+    JUBGrid.populate(grid_jsid, model)
+
+'grid_jsid' is the same javascript id that was used to
+instantiate the template, and model is a javascript variable
+pointing to the JUB model (and store) that you have created.
+-#%]
+
+[% UNLESS hide_details %]
+<div dojoType='dijit.layout.ContentPane' style='height:100%;'>
+[% END %]
+
+    <style type='text/css'>
+        .grid_container {width: 100%; height: 100%;}
+    </style>
+
+    <script src='[% ctx.media_prefix %]/js/ui/default/acq/common/jubgrid.js'> </script>
+    <script src='[% ctx.media_prefix %]/js/dojo/openils/CopyLocation.js'> </script>
+    <script type="text/javascript">
+    JUBGrid.getPO = function(rowIndex) {
+        var data = JUBGrid.jubGrid.model.getRow(rowIndex);
+        if (!(data && data.purchase_order)) return '';
+        return "<a href='[% ctx.base_uri %]/acq/po/view/" + data.purchase_order+"'>"+data.purchase_order+"</a>";
+    }
+    JUBGrid.jubGridLayout = [{
+        //noscroll: true,
+        cells: [[
+            {name: 'ID', field: 'id', width:'auto'},
+            {name: 'Title', width: "180px", get:JUBGrid.getJUBTitle},
+            {name: 'Author', get:JUBGrid.getJUBAuthor, width:'auto'},
+            {name: 'ISBN', get:JUBGrid.getJUBIsbn, width:'auto'},
+            {name: 'Pubdate', get:JUBGrid.getJUBPubdate, width:'auto'},
+            {name: 'Actual Price', 
+                field:'actual_price',
+                get:JUBGrid.getJUBActualPrice,
+                editor:dojox.grid.editors.Dijit, width:'auto', 
+                editorClass: "dijit.form.CurrencyTextBox" 
+            },
+            {name: 'Estimated Price', 
+                field:'estimated_price',
+                get:JUBGrid.getJUBEstimatedPrice, width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.CurrencyTextBox" 
+            },
+            {name: 'Vendor', width:'auto',
+	     field: 'provider', get:JUBGrid.getProvider,
+	     editor:openils.editors.ProviderSelectEditor,
+	    },
+            {name: 'No. Copies', field: 'item_count', width:'auto'},
+            {name: 'State', field: 'state', width:'auto'},
+            {name: 'PO', get:JUBGrid.getPO, width:'auto'}
+        ]]
+    }];
+
+    JUBGrid.jubDetailGridLayout = [{
+        cells: [[
+            {name:"ID", field:"id"},
+            {name:"Fund", field:"fund",
+                get:JUBGrid.getLIDFundCode,
+                editor: openils.editors.FundSelectEditor,
+            },
+            {name:"Branch", field:"owning_lib",
+	            get:JUBGrid.getLIDLibName,
+	            editor: openils.editors.OrgUnitSelectEditor
+	        },
+            {name:"Barcode", field:"barcode", width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.TextBox" 
+	        },
+            {name:"Call Number", field:"cn_label", width:'auto',
+                editor:dojox.grid.editors.Dijit, 
+                editorClass: "dijit.form.TextBox" 
+	        },
+            {name:"Shelving Location", field:"location", width:'auto',
+                editor:openils.editors.CopyLocationSelectEditor,
+                get:JUBGrid.getCopyLocation
+	        },
+            {name:"Receive Time", width:'auto',
+                get:JUBGrid.getRecvTime
+	        },
+        ]]
+    }];
+
+    JUBGrid.jubDetailGridLayoutReadOnly = [{
+        cells: [[
+            {name:'ID', field:"id"},
+            {name:'Fund', field:"fund",
+             get:JUBGrid.getLIDFundCode,
+            },
+            {name:'Branch', field:"owning_lib",
+	            get:JUBGrid.getLIDLibName,
+	        },
+	    {name:'Barcode', field:"barcode", width:'auto'},
+            {name:'Call Number', field:"cn_label", width:'auto'},
+	    {name:'Shelving Location', field:"location", 
+                width:'auto', get:JUBGrid.getCopyLocation},
+        ]]
+    }];
+    </script>
+
+[% UNLESS hide_details %]
+    <!-- button bar for lineitems -->
+    <script>JUBGrid.showDetails = true;</script>
+    <div id="[% domprefix %]-container" class='container'
+        dojoType="dijit.layout.ContentPane" sizeMin="" sizeShare="">
+        <div dojoType="dijit.layout.ContentPane"
+             id='[% domprefix %]-jub-buttonbar'>
+            <button dojoType="dijit.form.Button" onclick="JUBGrid.approveJUB">
+                Approve Selected Titles
+            </button>
+            <button dojoType="dijit.form.Button" onclick="JUBGrid.removeSelectedJUBs">
+                Remove Selected Titles
+            </button>
+        </div>
+    </div>
+    <div style='height:40%;'>
+[% ELSE %]
+    <div style='height:100%;'>
+[% END %]
+        <div structure='JUBGrid.jubGridLayout' jsid='[% grid_jsid %]' class='grid_container'
+            dojoType='dojox.Grid' id="[% domprefix %]-JUB-grid">
+        </div>
+    </div>
+[% UNLESS hide_details %]
+    <!-- button bar for lineitem details -->
+    <div dojoType="dijit.layout.ContentPane" sizeMin="" sizeShare="" class='container'>
+        <div dojoType="dijit.layout.ContentPane" id='[% domprefix %]-details-buttonbar'>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>New Copy</span>
+                <div dojoType="dijit.TooltipDialog" execute="JUBGrid.createLID(arguments[0]);">
+                    <script type='dojo/connect' event='onOpen'>
+                        new openils.User().buildPermOrgSelector('MANAGE_FUND', copyOwnerSelect);
+                        openils.acq.Fund.buildPermFundSelector('MANAGE_FUND', acqlidFund);
+                    </script>
+                    <table class="dijitTooltipTable">
+                        <tr>
+                            <td><label for="fund">Fund: </label></td>
+                            <td>
+                                <input dojoType="openils.widget.FundSelector"
+                                jsId="acqlidFund" searchAttr="name" autocomplete="true" name="fund"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="owning_lib">Location: </label></td>
+                            <td><input dojoType="openils.widget.OrgUnitFilteringSelect"
+                                jsId="copyOwnerSelect"
+                                searchAttr="shortname"
+                                name="owning_lib" autocomplete="true"
+                                labelAttr="shortname"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button dojotype="dijit.form.Button" type="submit">
+                                Create
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <button dojoType='dijit.form.Button' onclick='JUBGrid.deleteLID'>
+                Delete Selected Copy
+            </button>
+            <button dojoType='dijit.form.Button' onclick='JUBGrid.receiveLID'>
+                Mark Selected Copies Received
+            </button>
+        </div>
+    </div>
+    <!-- end button bar -->
+
+    <div style='height:40%;'>
+	    <div class='grid_container'>
+            <div structure='JUBGrid.jubDetailGridLayout' jsid="JUBGrid.jubDetailGrid" dojoType="dojox.Grid"
+                id='[% domprefix %]-details-grid'>
+            </div>
+        </div>
+    </div>
+</div>
+[% END %]

@@ -1,0 +1,58 @@
+/* import the default css for the install applications */
+@import "default/acq.css";
+@import "default/admin.css";
+
+body { font-size: 80%; }
+
+#oils-base-body-block {}
+/*
+#oils-base-navigate-block {border: 2px solid #85C777; background: #6BA160;}
+#oils-base-navigate-block {border: 2px solid #f8f7f1; background: #fffdf1;}
+*/
+#oils-base-navigate-block {background: #d9e8f9;}
+
+#oils-base-navigate-block a { color: #000000; }
+#oils-base-content-block {}
+#oils-base-sidebar-block {}
+#oils-base-footer-block {padding: 3px; margin-top: 20px; border-top: 1px solid #5E5E5E;}
+/*
+#oils-base-header-block {border-bottom: 1px solid #5E5E5E; border: 2px solid #85C777; background: #6BA160;}
+*/
+#oils-base-header-block {border-bottom: 1px solid #d9e8f9;}
+
+
+#oils-base-navigate-list { width: 100%; }
+.oils-base-navigate-sub-list { margin-left: 14px; }
+/*.oils-base-navigate-item {border: 2px solid #85C777; background: #6BA160;}*/
+.oils-base-navigate-item:hover { background: #85C777; }
+
+/*
+#oils-base-navigate-table td:hover { background: #85C777; }
+.oils-base-sub-navigate-block { border: 2px solid #6BA160; background: #85C777;}
+.oils-base-sub-navigate-block a { color: #000000; }
+*/
+
+#oils-base-header-user-info { font-weight: bold; margin-right: 8px;}
+
+
+.label { font-weight: bold; }
+
+/*
+.oils-admin-table td { border-bottom: 1px solid #5E5E5E; }
+*/
+.oils-admin-table td { border-bottom: 1px solid #d9e8f9; }
+.oils-admin-label { font-weight: bold; }
+
+.oils-acq-nav-link {
+    padding:0px 3px 3px 3px;
+    border-top:1px solid #F8F7F1;
+    border-bottom:1px solid #F8F7F1;
+    font-size: 105%;
+}
+.oils-acq-nav-link a { text-decoration:none; }
+.oils-acq-nav-link-active {
+    background:#FFFDF3;
+    border-top:1px solid #ACA899;
+    border-bottom:1px solid #ACA899;
+}
+

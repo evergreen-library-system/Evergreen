@@ -1,0 +1,76 @@
+[% WRAPPER default/base.tt2 %]
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>PO Search</div>
+</div>
+
+<!-- load the page-specific JS -->
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
+
+<script>
+    function getId(rowIndex) {
+        data = poGrid.model.getRow(rowIndex);
+        if(!data) return;
+        return '<a href="[% ctx.base_uri %]/acq/po/view/' + data.id + '">'+data.id;
+    }
+</script>
+
+
+<form dojoType='dijit.form.Form' action='' method=''>
+    <script type="dojo/method" event="onSubmit">
+        fields = this.getValues();
+        if(fields.provider == '')
+            delete fields.provider;
+        if(isNaN(fields.id))
+            delete fields.id;
+        doSearch(fields);
+        return false; /* don't redirect */
+    </script>
+    <table class='oils-acq-basic-form-table'>
+        <tr>
+            <td><label for='id'>ID</label></td>
+            <td><input dojoType='dijit.form.NumberTextBox' name='id'> </input></td>
+        </tr>
+        <tr>
+            <td><label for='provider'>Provider</label></td>
+            <td><select labelAttr='code' searchAttr='code' name='provider' 
+                style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select></td>
+        </tr>
+        <tr>
+            <td><label for='state'>State</label></td>
+            <td>
+                <select dojoType='dijit.form.FilteringSelect' name='state' value=''>
+                    <option value='new'>New</option>
+                    <option value='in-process'>In Process</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for='ordering_agency'>Ordering Agency</label></td>
+            <td><select jsId='poSearchOrderingAgencySelect' labelAttr='shortname' searchAttr='shortname'
+                dojoType='openils.widget.OrgUnitFilteringSelect' name='ordering_agency'>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align:center;'><div dojoType='dijit.form.Button' type='submit'>Search</div></td>
+        </tr>
+    </table>
+</form>
+
+<script>
+    var poGridStructure = [{
+        cells : [[
+            {name: 'ID', field: 'id', get:getId},
+            {name: 'Owner', get:getPOOwner},
+            {name: 'Ordering Agency', get:getOrgInfo},
+            {name: 'Create Time', field:'create_time', get:getDateTimeField, width:'auto'},
+            {name: 'Edit Time', field: "edit_time", get:getDateTimeField, width:'auto'},
+            {name: 'Provider', get:getProvider, width:'auto'},
+            {name: 'State', field:'state'}
+        ]]
+    }];
+</script>
+<div jsId='poGrid' id='po-grid' dojoType="dojox.Grid" structure='poGridStructure'></div>
+<script>dojo.style('po-grid', 'visibility', 'hidden');</script>
+[% END %]
+

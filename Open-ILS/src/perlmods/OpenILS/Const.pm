@@ -97,6 +97,9 @@ econst OILS_BILLING_TYPE_DEPOSIT => 'System: Deposit';
 econst OILS_BILLING_TYPE_RENTAL => 'System: Rental';
 econst OILS_BILLING_NOTE_SYSTEM => 'SYSTEM GENERATED';
 
+econst OILS_ACQ_DEBIT_TYPE_PURCHASE => 'purchase';
+econst OILS_ACQ_DEBIT_TYPE_TRANSFER => 'xfer';
+
 
 
 # ---------------------------------------------------------------------

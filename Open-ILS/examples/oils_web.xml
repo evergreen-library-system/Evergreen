@@ -1,0 +1,35 @@
+<oils_web>
+    <!-- This should match the Apache Directory/Location[Match] configuration path -->
+    <base_uri>/eg</base_uri>
+
+    <!-- media_prefix can be a remote server.  
+         E.g. <media_prefix>http://static.example.com/media</media_prefix> -->
+    <media_prefix/>
+
+    <!-- Where templates can be found.  Paths will be checked in the order entered here.
+         It's possible to override individual or sets of templates by putting them into
+         a path in front of the default template path -->
+    <template_paths>
+        <!-- XXX we should really move these out of the default web root -->
+        <path>/openils/var/web/templates</path>
+    </template_paths>
+
+    <handlers>
+        <handler path='acq/picklist/list' template='acq/picklist/list.tt2'/>
+        <handler path='acq/picklist/view' template='acq/picklist/view.tt2'/>
+        <handler path='acq/picklist/bib_search' template='acq/picklist/bib_search.tt2'/>
+        <handler path='acq/fund/list' template='acq/financial/list_funds.tt2'/>
+        <handler path='acq/fund/view' template='acq/financial/view_fund.tt2'/>
+        <handler path='acq/funding_source/list' template='acq/financial/list_funding_sources.tt2'/>
+        <handler path='acq/funding_source/view' template='acq/financial/view_funding_source.tt2'/>
+        <handler path='acq/currency_type/list' template='acq/financial/list_currency_types.tt2'/>
+        <handler path='acq/currency_type/view' template='acq/financial/view_currency_type.tt2'/>
+        <handler path='acq/provider/list' template='acq/financial/list_providers.tt2'/>
+        <handler path='acq/provider/view' template='acq/financial/view_provider.tt2'/>
+        <handler path='acq/po/view' template='acq/po/view.tt2'/>
+        <handler path='acq/po/li_search' template='acq/po/li_search.tt2'/>
+        <handler path='acq/po/search' template='acq/po/search.tt2'/>
+        <handler path='acq/receiving/process' template='acq/receiving/process.tt2'/>
+        <handler path='acq/settings/li_attr' template='acq/settings/li_attr.tt2'/>
+    </handlers>
+</oils_web>

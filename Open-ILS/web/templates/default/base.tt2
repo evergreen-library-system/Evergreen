@@ -1,0 +1,28 @@
+[% WRAPPER 'base.tt2' %]
+<script type="text/javascript">
+ dojo.require("dijit.layout.LayoutContainer");
+ dojo.require("dijit.layout.ContentPane");
+</script>
+
+<!-- define the basic page structure -->
+<div id="oils-base-body-block" class="tundra" dojoType="dijit.layout.LayoutContainer"> 
+    <div id="oils-base-header-block" dojoType="dijit.layout.ContentPane" layoutAlign="top">
+        <div id='oils-base-header-menu-block'>
+            [% INCLUDE default/menu.tt2 %]
+        </div>
+        <div id='oils-base-header-auto-login-block'>
+            [% INCLUDE default/header.tt2 %]
+        </div>
+    </div>
+    <div id="oils-base-main-block" dojoType="dijit.layout.LayoutContainer" layoutAlign="client">
+        <div id="oils-base-navigate-block" dojoType="dijit.layout.ContentPane" layoutAlign="left">
+        </div>
+        <div id="oils-base-content-block" dojoType="dijit.layout.ContentPane" layoutAlign="client">
+            [% content %]
+        </div>
+    </div>
+    <div id="oils-base-footer-block" dojoType="dijit.layout.ContentPane" layoutAlign="bottom">
+        [% INCLUDE default/footer.tt2 %]
+    </div>
+</div>
+[% END %]
