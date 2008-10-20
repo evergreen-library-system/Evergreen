@@ -12,6 +12,7 @@ use Data::Dumper;
 use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
 use Unicode::Normalize;
+use OpenSRF::Utils::SettingsClient;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1463,7 +1464,7 @@ sub get_org_full_path {
 # returns the user's configured locale as a string.  Defaults to en-US if none is configured.
 sub get_user_locale {
 	my($self, $user_id, $e) = @_;
-	$e ||=OpenILS::Utils::CStoreEditor->new;
+	$e ||= OpenILS::Utils::CStoreEditor->new;
 
 	# first, see if the user has an explicit locale set
 	my $setting = $e->search_actor_user_setting(
@@ -1471,8 +1472,23 @@ sub get_user_locale {
 	return OpenSRF::Utils::JSON->JSON2perl($setting->value) if $setting;
 
 	my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+	return $self->get_org_locale($user->home_ou, $e);
+}
 
-    my $locale = $self->ou_ancestor_setting_value($user->home_ou, 'global.default_locale', $e);
+# returns org locale setting
+sub get_org_locale {
+	my($self, $org_id, $e) = @_;
+	$e ||= OpenILS::Utils::CStoreEditor->new;
+
+	my $locale;
+	if(defined $org_id) {
+		$locale = $self->ou_ancestor_setting_value($org_id, 'global.default_locale', $e);
+		return $locale if $locale;
+	}
+
+	# system-wide default
+	my $sclient = OpenSRF::Utils::SettingsClient->new;
+	$locale = $sclient->config_value('default_locale');
     return $locale if $locale;
 
 	# if nothing else, fallback to locale=cowboy
