@@ -9,6 +9,9 @@ vim:et:ts=4:sw=4:
 
     <default>
 
+        <!-- unless otherwise overidden, use this locale -->
+        <default_locale>en-US</default_locale>
+
         <dirs>
             <log>LOCALSTATEDIR/log</log> <!-- unix::server log files -->
             <sock>LOCALSTATEDIR/lock</sock> <!-- unix::server sock files -->

@@ -538,6 +538,8 @@ sub multiclass_query {
         if $sclient->config_value(apps => 'open-ils.search',
             app_settings => 'use_staged_search') =~ /true/i;
 
+    $arghash->{preferred_language} = $U->get_org_locale($arghash->{org_unit})
+        unless $arghash->{preferred_language};
 
 	$method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
