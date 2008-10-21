@@ -52,7 +52,7 @@ sub holdings {
     my $self = shift;
     my $capid = shift;
 
-    return sort {$a->{SEQNO} cmp $b->{SEQNO}} values %{$self->{HOLDINGS}->{$capid}};
+    return sort {$a->{SEQNO} <=> $b->{SEQNO}} values %{$self->{HOLDINGS}->{$capid}};
 }
 
 1;
