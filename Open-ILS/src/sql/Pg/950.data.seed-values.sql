@@ -1234,6 +1234,35 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_VR_FORMAT');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_XML_TRANSFORM');
 INSERT INTO permission.perm_list (code) VALUES ('MERGE_BIB_RECORDS');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_ACQ_FUNDING_SOURCE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_AUTHORITY_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_AUTHORITY_RECORD_NOTE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_BIB_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_BIB_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_LOCALE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_MARC_CODE');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_TRANSLATION');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_ACQ_FUNDING_SOURCE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_AUTHORITY_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_AUTHORITY_RECORD_NOTE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_BIB_IMPORT_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_BIB_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_LOCALE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_MARC_CODE');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_TRANSLATION');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ACQ_FUNDING_SOURCE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_AUTHORITY_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_AUTHORITY_RECORD_NOTE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_BIB_IMPORT_QUEUE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_LOCALE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_MARC_CODE');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_TRANSLATION');
+INSERT INTO permission.perm_list (code) VALUES ('VIEW_ACQ_FUNDING_SOURCE');
+INSERT INTO permission.perm_list (code) VALUES ('VIEW_AUTHORITY_RECORD_NOTES');
 
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
