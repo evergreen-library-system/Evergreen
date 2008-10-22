@@ -8,10 +8,11 @@ grep -A1 perm_list ../sql/Pg/950.data.seed-values.sql|grep "'"|cut -f2 -d"'"|sor
 echo "New permissions from permacrud:"
 echo
 
-diff -pu /tmp/oils_sql_perm_list /tmp/oils_permacrud_perm_list |grep '^+'|cut -f2 -d'+'|grep -v '^$'
+for i in `diff -pu /tmp/oils_sql_perm_list /tmp/oils_permacrud_perm_list |grep '^+'|cut -f2 -d'+'|grep -v '^$'`; do
+	echo "INSERT INTO permission.perm_list (code) VALUES ('$i');"
+done
 
 echo
 
 popd >/dev/null 2>/dev/null
-
 
