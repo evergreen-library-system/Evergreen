@@ -200,7 +200,7 @@ BEGIN
 		  FROM	asset.call_number
 		  WHERE	label = source_cn.label
 			AND owning_lib = source_cn.owning_lib
-			AND record = source_cn.record;
+			AND record = target_record;
 
 		IF FOUND THEN
 			UPDATE	asset.copy
