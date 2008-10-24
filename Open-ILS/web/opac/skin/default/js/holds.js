@@ -726,12 +726,15 @@ function holdsBuildHoldFromWindow() {
 	hold.target(target);
 	hold.hold_type(holdArgs.type);
 
-    var expireDate = dojo.date.stamp.toISOString(dijit.byId('holds_expire_time').getValue())
-    expireDate = holdsVerifyThawDate(expireDate); 
-    if(expireDate)
-        hold.expire_time(expireDate);
-    else 
-        return;
+    var expDate = dijit.byId('holds_expire_time').getValue();
+    if(expDate) {
+        var expireDate = dojo.date.stamp.toISOString(expDate);
+        expireDate = holdsVerifyThawDate(expireDate); 
+        if(expireDate)
+            hold.expire_time(expireDate);
+        else 
+            return;
+    }
 
     // see if this hold should be frozen and for how long
     if($('holds_frozen_chkbox').checked) {
