@@ -583,6 +583,9 @@
 	<event code='1648' textcode='PERMISSION_USR_WORK_OU_MAP_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission_usr_work_ou_map was not found</desc>
 	</event>
+	<event code='1649' textcode='VANDELAY_IMPORT_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested vandelay.import_item was not found</desc>
+	</event>
 
 
 
