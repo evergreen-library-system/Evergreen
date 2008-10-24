@@ -46,6 +46,11 @@ COMMENT ON SCHEMA config IS $$
  */
 $$;
 
+CREATE TABLE config.upgrade_log (
+    version         TEXT    PRIMARY KEY,
+    install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
 	quality		INT	CHECK ( quality BETWEEN 0 AND 100 ),
