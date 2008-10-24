@@ -5,6 +5,7 @@ use OpenILS::Application;
 use OpenILS::Application::Cat::Merge;
 use OpenILS::Application::Cat::Authority;
 use OpenILS::Application::Cat::BibCommon;
+use OpenILS::Application::Cat::AssetCommon;
 use base qw/OpenILS::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
@@ -442,7 +443,8 @@ sub fleshed_copy_update {
 	return $evt if $evt;
 	my $editor = new_editor(requestor => $reqr, xact => 1);
 	my $override = $self->api_name =~ /override/;
-	$evt = update_fleshed_copies($editor, $override, undef, $copies, $delete_stats);
+	$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
+        $editor, $override, undef, $copies, $delete_stats);
 	if( $evt ) { 
 		$logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
 		$editor->rollback; 
@@ -591,7 +593,7 @@ sub fleshed_volume_update {
 			
 		} elsif( $vol->isnew ) {
 			$logger->info("vol-update: creating volume");
-			$evt = create_volume( $override, $editor, $vol );
+			$evt = OpenILS::Application::Cat::AssetCommon->create_volume( $override, $editor, $vol );
 			return $evt if $evt;
 
 		} elsif( $vol->ischanged ) {
@@ -603,7 +605,8 @@ sub fleshed_volume_update {
 		# now update any attached copies
 		if( $copies and @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
-			$evt = update_fleshed_copies( $editor, $override, $vol, $copies, $delete_stats );
+			$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
+                $editor, $override, $vol, $copies, $delete_stats);
 			return $evt if $evt;
 		}
 	}
@@ -618,7 +621,7 @@ sub update_volume {
 	my $editor = shift;
 	my $evt;
 
-	return $evt if ( $evt = org_cannot_have_vols($editor, $vol->owning_lib) );
+	return $evt if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $vol->owning_lib) );
 
 	my $vols = $editor->search_asset_call_number( { 
 			owning_lib	=> $vol->owning_lib,
@@ -646,103 +649,6 @@ sub copy_perm_org {
 	}
 	$logger->debug("using copy perm org $org");
 	return $org;
-}
-
-
-# this does the actual work
-sub update_fleshed_copies {
-	my( $editor, $override, $vol, $copies, $delete_stats ) = @_;
-
-	my $evt;
-	my $fetchvol = ($vol) ? 0 : 1;
-
-	my %cache;
-	$cache{$vol->id} = $vol if $vol;
-
-	for my $copy (@$copies) {
-
-		my $copyid = $copy->id;
-		$logger->info("vol-update: inspecting copy $copyid");
-
-		if( !($vol = $cache{$copy->call_number}) ) {
-			$vol = $cache{$copy->call_number} = 
-				$editor->retrieve_asset_call_number($copy->call_number);
-			return $editor->event unless $vol;
-		}
-
-		return $editor->event unless 
-			$editor->allowed('UPDATE_COPY', copy_perm_org($vol, $copy));
-
-		$copy->editor($editor->requestor->id);
-		$copy->edit_date('now');
-
-		$copy->status( $copy->status->id ) if ref($copy->status);
-		$copy->location( $copy->location->id ) if ref($copy->location);
-		$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
-		
-		my $sc_entries = $copy->stat_cat_entries;
-		$copy->clear_stat_cat_entries;
-
-		if( $copy->isdeleted ) {
-			$evt = delete_copy($editor, $override, $vol, $copy);
-			return $evt if $evt;
-
-		} elsif( $copy->isnew ) {
-			$evt = create_copy( $editor, $vol, $copy );
-			return $evt if $evt;
-
-		} elsif( $copy->ischanged ) {
-
-			$evt = update_copy( $editor, $override, $vol, $copy );
-			return $evt if $evt;
-		}
-
-		$copy->stat_cat_entries( $sc_entries );
-		$evt = update_copy_stat_entries($editor, $copy, $delete_stats);
-		return $evt if $evt;
-	}
-
-	$logger->debug("vol-update: done updating copy batch");
-
-	return undef;
-}
-
-sub fix_copy_price {
-	my $copy = shift;
-
-    if(defined $copy->price) {
-	    my $p = $copy->price || 0;
-	    $p =~ s/\$//og;
-	    $copy->price($p);
-    }
-
-	my $d = $copy->deposit_amount || 0;
-	$d =~ s/\$//og;
-	$copy->deposit_amount($d);
-}
-
-
-sub update_copy {
-	my( $editor, $override, $vol, $copy ) = @_;
-
-	my $evt;
-	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-	return $evt if ( $evt = org_cannot_have_vols($editor, $org) );
-
-	$logger->info("vol-update: updating copy ".$copy->id);
-	my $orig_copy = $editor->retrieve_asset_copy($copy->id);
-	my $orig_vol  = $editor->retrieve_asset_call_number($copy->call_number);
-
-	$copy->editor($editor->requestor->id);
-	$copy->edit_date('now');
-
-	$copy->age_protect( $copy->age_protect->id )
-		if ref $copy->age_protect;
-
-	fix_copy_price($copy);
-
-	return $editor->event unless $editor->update_asset_copy($copy);
-	return remove_empty_objects($editor, $override, $orig_vol);
 }
 
 
@@ -851,147 +757,6 @@ sub delete_copy {
 }
 
 
-sub create_copy {
-	my( $editor, $vol, $copy ) = @_;
-
-	my $existing = $editor->search_asset_copy(
-		{ barcode => $copy->barcode, deleted => 'f' } );
-	
-	return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
-
-   # see if the volume this copy references is marked as deleted
-   my $evol = $editor->retrieve_asset_call_number($copy->call_number)
-      or return $editor->event;
-   return OpenILS::Event->new('VOLUME_DELETED', vol => $evol->id) 
-      if $U->is_true($evol->deleted);
-
-	my $evt;
-	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-	return $evt if ( $evt = org_cannot_have_vols($editor, $org) );
-
-	$copy->clear_id;
-	$copy->creator($editor->requestor->id);
-	$copy->create_date('now');
-	fix_copy_price($copy);
-
-	$editor->create_asset_copy($copy) or return $editor->event;
-	return undef;
-}
-
-# if 'delete_stats' is true, the copy->stat_cat_entries data is 
-# treated as the authoritative list for the copy. existing entries
-# that are not in said list will be deleted from the DB
-sub update_copy_stat_entries {
-	my( $editor, $copy, $delete_stats ) = @_;
-
-	return undef if $copy->isdeleted;
-	return undef unless $copy->ischanged or $copy->isnew;
-
-	my $evt;
-	my $entries = $copy->stat_cat_entries;
-
-	if( $delete_stats ) {
-		$entries = ($entries and @$entries) ? $entries : [];
-	} else {
-		return undef unless ($entries and @$entries);
-	}
-
-	my $maps = $editor->search_asset_stat_cat_entry_copy_map({owning_copy=>$copy->id});
-
-	if(!$copy->isnew) {
-		# if there is no stat cat entry on the copy who's id matches the
-		# current map's id, remove the map from the database
-		for my $map (@$maps) {
-			if(! grep { $_->id == $map->stat_cat_entry } @$entries ) {
-
-				$logger->info("copy update found stale ".
-					"stat cat entry map ".$map->id. " on copy ".$copy->id);
-
-				$editor->delete_asset_stat_cat_entry_copy_map($map)
-					or return $editor->event;
-			}
-		}
-	}
-
-	# go through the stat cat update/create process
-	for my $entry (@$entries) { 
-		next unless $entry;
-
-		# if this link already exists in the DB, don't attempt to re-create it
-		next if( grep{$_->stat_cat_entry == $entry->id} @$maps );
-	
-		my $new_map = Fieldmapper::asset::stat_cat_entry_copy_map->new();
-
-		my $sc = ref($entry->stat_cat) ? $entry->stat_cat->id : $entry->stat_cat;
-		
-		$new_map->stat_cat( $sc );
-		$new_map->stat_cat_entry( $entry->id );
-		$new_map->owning_copy( $copy->id );
-
-		$editor->create_asset_stat_cat_entry_copy_map($new_map)
-			or return $editor->event;
-
-		$logger->info("copy update created new stat cat entry map ".$editor->data);
-	}
-
-	return undef;
-}
-
-
-sub create_volume {
-	my( $override, $editor, $vol ) = @_;
-	my $evt;
-
-	return $evt if ( $evt = org_cannot_have_vols($editor, $vol->owning_lib) );
-
-   # see if the record this volume references is marked as deleted
-   my $rec = $editor->retrieve_biblio_record_entry($vol->record)
-      or return $editor->event;
-   return OpenILS::Event->new('BIB_RECORD_DELETED', rec => $rec->id) 
-      if $U->is_true($rec->deleted);
-
-	# first lets see if there are any collisions
-	my $vols = $editor->search_asset_call_number( { 
-			owning_lib	=> $vol->owning_lib,
-			record		=> $vol->record,
-			label			=> $vol->label,
-			deleted		=> 'f'
-		}
-	);
-
-	my $label = undef;
-	if(@$vols) {
-      # we've found an exising volume
-		if($override) { 
-			$label = $vol->label;
-		} else {
-			return OpenILS::Event->new(
-				'VOLUME_LABEL_EXISTS', payload => $vol->id);
-		}
-	}
-
-	# create a temp label so we can create the new volume, 
-   # then de-dup it with the existing volume
-	$vol->label( "__SYSTEM_TMP_$$".time) if $label;
-
-	$vol->creator($editor->requestor->id);
-	$vol->create_date('now');
-	$vol->editor($editor->requestor->id);
-	$vol->edit_date('now');
-	$vol->clear_id;
-
-	$editor->create_asset_call_number($vol) or return $editor->event;
-
-	if($label) {
-		# now restore the label and merge into the existing record
-		$vol->label($label);
-		(undef, $evt) = 
-			OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $$vols[0]);
-		return $evt if $evt;
-	}
-
-	return undef;
-}
 
 
 __PACKAGE__->register_method (
@@ -1027,7 +792,7 @@ sub batch_volume_transfer {
 	my $ou_type = $e->retrieve_actor_org_unit_type($dorg->ou_type)
 		or return $e->event;
 
-	return $evt if ( $evt = org_cannot_have_vols($e, $o_lib) );
+	return $evt if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($e, $o_lib) );
 
 	my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
 	my @seen;
@@ -1149,24 +914,6 @@ sub batch_volume_transfer {
 
 
 
-sub org_cannot_have_vols {
-	my $e = shift;
-	my $org_id = shift;
-
-	my $org = $e->retrieve_actor_org_unit($org_id)
-		or return $e->event;
-
-	my $ou_type = $e->retrieve_actor_org_unit_type($org->ou_type)
-		or return $e->event;
-
-	return OpenILS::Event->new('ORG_CANNOT_HAVE_VOLS')
-		unless $U->is_true($ou_type->can_have_vols);
-
-	return 0;
-}
-
-
-
 
 __PACKAGE__->register_method(
 	api_name => 'open-ils.cat.call_number.find_or_create',
@@ -1177,41 +924,12 @@ sub find_or_create_volume {
 	my( $self, $conn, $auth, $label, $record_id, $org_id ) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
-
-    my $vol;
-
-    if($record_id == OILS_PRECAT_RECORD) {
-
-        $vol = $e->retrieve_asset_call_number(OILS_PRECAT_CALL_NUMBER)
-            or return $e->die_event;
-
-    } else {
-	
-	    $vol = $e->search_asset_call_number(
-		    {label => $label, record => $record_id, owning_lib => $org_id, deleted => 'f'}, 
-		    {idlist=>1}
-	    )->[0];
-    }
-
-	# If the volume exists, return the ID
-	if( $vol ) { $e->rollback; return $vol; }
-
-	# -----------------------------------------------------------------
-	# Otherwise, create a new volume with the given attributes
-	# -----------------------------------------------------------------
-
-	return $e->die_event unless $e->allowed('UPDATE_VOLUME', $org_id);
-
-	$vol = Fieldmapper::asset::call_number->new;
-	$vol->owning_lib($org_id);
-	$vol->label($label);
-	$vol->record($record_id);
-
-   my $evt = create_volume( 0, $e, $vol );
-   return $evt if $evt;
-
-	$e->commit;
-	return $vol->id;
+    my ($vol, $evt, $exists) = 
+        OpenILS::Application::Cat::AssetCommon->find_or_create_volume($label, $e, $record_id, $org_id);
+    return $evt if $evt;
+    $e->rollback if $exists;
+    $e->commit if $vol;
+    return $vol->id;
 }
 
 

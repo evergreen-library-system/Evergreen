@@ -16,9 +16,11 @@ use OpenILS::Utils::Fieldmapper;
 use Time::HiRes qw(time);
 use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
+use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AuthCommon;
+use OpenILS::Application::Cat::AssetCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub initialize {}
@@ -253,9 +255,7 @@ sub process_spool {
 			} else {
 				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			}
-			$count++;
-			
-			$client->respond( $count );
+			$client->respond($count) if (++$count % 10) == 0;
 		} catch Error with {
 			my $error = shift;
 			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
@@ -626,7 +626,7 @@ sub import_record_list_impl {
         }
 
         $e->commit;
-        $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
+        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % 10) == 0;
     }
 
     # see if we need to mark any queues as complete
@@ -818,6 +818,137 @@ sub retrieve_queue_summary {
         total => scalar(@{$e->$search({queue => $queue_id}, {idlist=>1})}),
         imported => scalar(@{$e->$search({queue => $queue_id, import_time => {'!=' => undef}}, {idlist=>1})}),
     };
+}
+
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib_record.asset.list.import",
+	method		=> 'import_record_asset_list',
+	api_level	=> 1,
+	argc		=> 2,
+    stream      => 1,
+	record_type	=> 'bib'
+);
+
+sub import_record_asset_list {
+    my($self, $conn, $auth, $rec_ids) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    my $err = import_record_asset_list_impl($conn, $rec_ids, $e->requestor);
+    return $err if $err;
+    return {complete => 1};
+}
+
+# --------------------------------------------------------------------------------
+# Given a list of queued record IDs, imports all items attached to those records
+# --------------------------------------------------------------------------------
+sub import_record_asset_list_impl {
+    my($conn, $rec_ids, $requestor) = @_;
+
+    my $total = @$rec_ids;
+    my $try_count = 0;
+    my $in_count = 0;
+    my $roe = new_editor(requestor => $requestor);
+
+    for my $rec_id (@$rec_ids) {
+        my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
+        next unless $rec and $rec->import_time;
+        my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
+
+        for my $item_id (@$item_ids) {
+            my $e = new_editor(requestor => $requestor, xact => 1);
+            my $item = $e->retrieve_vandelay_import_item($item_id);
+            $try_count++;
+
+            # --------------------------------------------------------------------------------
+            # Find or create the volume
+            # --------------------------------------------------------------------------------
+            my ($vol, $evt) =
+                OpenILS::Application::Cat::AssetCommon->find_or_create_volume(
+                    $e, $item->call_number, $rec->imported_as, $item->owning_lib);
+
+            if($evt) {
+                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $e->rollback;
+                next;
+            }
+
+            # --------------------------------------------------------------------------------
+            # Create the new copy
+            # --------------------------------------------------------------------------------
+            my $copy = Fieldmapper::asset::copy->new;
+            $copy->loan_duration(2);
+            $copy->fine_level(2);
+            $copy->barcode($item->barcode);
+            $copy->location($item->location);
+            $copy->circ_lib($item->circ_lib || $item->owning_lib);
+            $copy->status($item->status || OILS_COPY_STATUS_IN_PROCESS);
+            $copy->circulate($item->circulate);
+            $copy->deposit($item->deposit);
+            $copy->deposit_amount($item->deposit_amount);
+            $copy->ref($item->ref);
+            $copy->holdable($item->holdable);
+            $copy->price($item->price);
+            $copy->circ_as_type($item->circ_as_type);
+            $copy->alert_message($item->alert_message);
+            $copy->opac_visible($item->opac_visible);
+            $copy->circ_modifier($item->circ_modifier);
+
+            # --------------------------------------------------------------------------------
+            # see if a valid circ_modifier was provided
+            # --------------------------------------------------------------------------------
+            #if($copy->circ_modifier and not $e->retrieve_config_circ_modifier($item->circ_modifier)) {
+            if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
+                respond_with_status($conn, $total, $try_count, $in_count, $e->die_event);
+                $e->rollback;
+                next;
+            }
+
+            if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
+                $e->rollback;
+                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                next;
+            }
+
+            # --------------------------------------------------------------------------------
+            # create copy notes
+            # --------------------------------------------------------------------------------
+            $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
+                $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
+
+            if($evt) {
+                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $e->rollback;
+                next;
+            }
+
+            $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
+                $e, $copy, '', $item->priv_note, 1) if $item->priv_note;
+
+            if($evt) {
+                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $e->rollback;
+                next;
+            }
+
+            # --------------------------------------------------------------------------------
+            # Item import succeeded
+            # --------------------------------------------------------------------------------
+            $e->commit;
+            respond_with_status($conn, $total, $try_count, ++$in_count, undef, imported_as => $copy->id);
+        }
+    }
+    return undef;
+}
+
+
+sub respond_with_status {
+    my($conn, $total, $try_count, $success_count, $err, %args) = @_;
+    $conn->respond({
+        total => $total, 
+        progress => $try_count, 
+        err_event => $err, 
+        success_count => $success_count, %args }) if $err or ($try_count % 5 == 0);
 }
 
 
