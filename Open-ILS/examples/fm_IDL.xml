@@ -135,6 +135,121 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 
 	<!-- Actually in the DB -->
+	<class id="vibtf" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_bib_trash_fields_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Field ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Field" name="field" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_TRASH_FIELD|UPDATE_IMPORT_TRASH_FIELD|DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="vii" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item Attribute Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Import Item ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Import Record" name="record" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Attribute Definition" name="definition" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Call Number" name="call_number" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Copy Number" name="copy_number" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Status" name="status" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Circulate" name="circulate" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Deposit" name="deposit" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Deposit Amount" name="deposit_amount" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="money"/>
+			<field reporter:label="Reference" name="ref" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Holdable" name="holdable" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Price" name="price" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="money"/>
+			<field reporter:label="Barcode" name="barcode" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulate As MARC Type" name="circ_as_type" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Alert Message" name="alert_message" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Public Note" name="pub_note" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Private Note" name="priv_note" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="vqbr"/>
+			<link field="definition" reltype="has_a" key="id" map="" class="viiad"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_ITEM">
+                    <context link="definition" field="owner"/>
+				</create>
+				<retrieve permission="CREATE_IMPORT_ITEM|UPDATE_IMPORT_ITEM|DELETE_IMPORT_ITEM">
+                    <context link="definition" field="owner"/>
+				</retrieve>
+				<update permission="UPDATE_IMPORT_ITEM">
+                    <context link="definition" field="owner"/>
+				</update>
+				<delete permission="DELETE_IMPORT_ITEM">
+                    <context link="definition" field="owner"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="viiad" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_item_attr_definition" oils_persist:tablename="vandelay.import_item_attr_definition" reporter:label="Import Item Attribute Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_attr_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Tag" name="tag" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Keep" name="keep" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Call Number" name="call_number" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Status" name="status" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulate" name="circulate" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Deposit" name="deposit" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Deposit Amount" name="deposit_amount" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Reference" name="ref" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Holdable" name="holdable" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Price" name="price" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Barcode" name="barcode" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulate As MARC Type" name="circ_as_type" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Alert Message" name="alert_message" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Public Note" name="pub_note" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Private Note" name="priv_note" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Copy Number" name="copy_number" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_ITEM_ATTR_DEF|UPDATE_IMPORT_ITEM_ATTR_DEF|DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="vbq" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::bib_queue" oils_persist:tablename="vandelay.bib_queue" reporter:label="Import/Overlay Bib Queue">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queue_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

@@ -1263,6 +1263,16 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_MARC_CODE');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_TRANSLATION');
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_ACQ_FUNDING_SOURCE');
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_AUTHORITY_RECORD_NOTES');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_IMPORT_ITEM');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_IMPORT_ITEM_ATTR_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('CREATE_IMPORT_TRASH_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_IMPORT_ITEM');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_IMPORT_ITEM_ATTR_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('DELETE_IMPORT_TRASH_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_ITEM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_ITEM_ATTR_DEF');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_TRASH_FIELD');
+
 
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
