@@ -275,6 +275,14 @@ CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( INT, TEXT, TEXT, TEX
     SELECT permission.usr_has_object_perm( $1, $2, $3, $4, -1 );
 $$ LANGUAGE SQL;
 
+INSERT INTO permission.usr_work_ou_map (usr, work_ou)
+ SELECT u.id,
+        u.home_ou
+  FROM  actor.usr u
+        LEFT JOIN permission.usr_work_ou_map m ON (u.id = m.usr AND u.home_ou = m.work_ou)
+  WHERE m.id IS NULL AND
+        permission.usr_has_perm(u.id,'STAFF_LOGIN',u.home_ou);
+
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
  
