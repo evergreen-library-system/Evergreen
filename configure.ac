@@ -245,7 +245,6 @@ AC_CHECK_LIB([expat], [main], [], AC_MSG_ERROR(*** OpenILS requires libexpat))
 AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
 AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
 AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
-AC_CHECK_LIB([yaz], [main], [], AC_MSG_ERROR(*** OpenILS requires libyaz))
 AC_CHECK_LIB([perl], [main], [], AC_MSG_ERROR(*** OpenILS requires libperl-dev))
 AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
 
