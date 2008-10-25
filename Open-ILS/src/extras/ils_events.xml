@@ -586,6 +586,9 @@
 	<event code='1649' textcode='VANDELAY_IMPORT_ITEM_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested vandelay.import_item was not found</desc>
 	</event>
+	<event code='1650' textcode='CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_circ_matrix_ruleset_not_found was not found</desc>
+	</event>
 
 
 	<event code='1841' textcode='ACQ_PICKLIST_NOT_FOUND'>
