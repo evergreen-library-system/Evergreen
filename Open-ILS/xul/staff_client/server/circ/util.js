@@ -2243,6 +2243,23 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				document.getElementById('no_change_label').setAttribute('hidden','false');
 			}
 
+		} else /* HOLD_CAPTURE_DELAYED */ if (check.ilsevent == 7019) {
+
+			var rv = 0;
+			msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
+			rv = error.yns_alert_formatted(
+				msg,
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.titlebar'),
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_nocapture'),
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_capture'),
+				null,
+				document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
+				'/xul/server/skin/media/images/stop_sign.png'
+			);
+			params.capture = rv == 0 ? 'nocapture' : 'capture';
+
+			return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false); 
+
 		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
 		} else {
