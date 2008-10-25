@@ -1896,7 +1896,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 					}
 				} catch(E) {
 					JSAN.use('util.error'); var error = new util.error();
-					error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedMessage('staff.circ.checkin.error', ['1']), E);
+					error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['1']), E);
 					if (typeof async == 'object') {
 						try { async.enable_textbox(); }
 						catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
@@ -1935,7 +1935,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedMessage('staff.circ.checkin.error', ['2']), E);
+		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['2']), E);
 		if (typeof async == 'object') {
 			try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
 		}
@@ -2268,7 +2268,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedMessage('staff.circ.checkin.error', ['3']), E);
+		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['3']), E);
 		return null;
 	}
 };
@@ -2313,7 +2313,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 				return renew;
 			} catch(E) {
 				JSAN.use('util.error'); var error = new util.error();
-				error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedMessage('staff.circ.checkin.renew_failed.error', [barcode]), E);
+				error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [barcode]), E);
 				return null;
 			}
 		}
