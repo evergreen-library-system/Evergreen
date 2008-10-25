@@ -15,7 +15,8 @@ export PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
 # ---------------------------------------------------------------------------
 # Lookup the database version from the PostgreSQL server.
 # ---------------------------------------------------------------------------
-DB_VERSION=`psql -qtc 'show server_version;' | xargs | cut -c1,3`
+#DB_VERSION=`psql -qtc 'show server_version;' | xargs | cut -c1,3`
+DB_VERSION=81
 if [ -z "$DB_VERSION" ] || [ `echo $DB_VERSION | grep -c '[^0-9]'` != 0 ]; then
   cat <<EOM
 ********************************************************************************
