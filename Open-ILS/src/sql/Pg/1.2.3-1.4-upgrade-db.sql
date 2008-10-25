@@ -275,13 +275,57 @@ CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( INT, TEXT, TEXT, TEX
     SELECT permission.usr_has_object_perm( $1, $2, $3, $4, -1 );
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION permission.grp_descendants ( INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  a.*
+      FROM  connectby('permission.grp_tree'::text,'id'::text,'parent'::text,'name'::text,$1::text,100,'.'::text)
+            AS t(keyid text, parent_keyid text, level int, branch text,pos int)
+        JOIN permission.grp_tree a ON a.id::text = t.keyid::text
+      ORDER BY  CASE WHEN a.parent IS NULL THEN 0 ELSE 1 END, a.name;
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_full_path ( INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            UNION
+    SELECT  *
+      FROM  permission.grp_descendants($1);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_combined_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            UNION
+    SELECT  *
+      FROM  permission.grp_ancestors($2);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_common_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            INTERSECT
+    SELECT  *
+      FROM  permission.grp_ancestors($2);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_proximity ( INT, INT ) RETURNS INT AS $$
+    SELECT COUNT(id)::INT FROM (
+        SELECT id FROM permission.grp_combined_ancestors($1, $2)
+            EXCEPT
+        SELECT id FROM permission.grp_common_ancestors($1, $2)
+    ) z;
+$$ LANGUAGE SQL STABLE;
+
 INSERT INTO permission.usr_work_ou_map (usr, work_ou)
- SELECT u.id,
-        u.home_ou
+ SELECT DISTINCT u.id, u.home_ou
   FROM  actor.usr u
+        JOIN permission.grp_tree g ON (u.profile = g.id)
         LEFT JOIN permission.usr_work_ou_map m ON (u.id = m.usr AND u.home_ou = m.work_ou)
-  WHERE m.id IS NULL AND
-        permission.usr_has_perm(u.id,'STAFF_LOGIN',u.home_ou);
+  WHERE m.id IS NULL
+        AND g.id IN (
+            SELECT DISTINCT (permission.grp_descendants(grp)).id
+              FROM permission.grp_perm_map gpm JOIN permission.perm_list pl ON (pl.id = gpm.perm)
+             WHERE pl.code = 'STAFF_LOGIN'
+        );
 
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);

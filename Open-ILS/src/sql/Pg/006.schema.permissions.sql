@@ -88,6 +88,46 @@ CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permis
 		END, a.name;
 $$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION permission.grp_descendants ( INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  a.*
+      FROM  connectby('permission.grp_tree'::text,'id'::text,'parent'::text,'name'::text,$1::text,100,'.'::text)
+            AS t(keyid text, parent_keyid text, level int, branch text,pos int)
+        JOIN permission.grp_tree a ON a.id::text = t.keyid::text
+      ORDER BY  CASE WHEN a.parent IS NULL THEN 0 ELSE 1 END, a.name;
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_full_path ( INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            UNION
+    SELECT  *
+      FROM  permission.grp_descendants($1);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_combined_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            UNION
+    SELECT  *
+      FROM  permission.grp_ancestors($2);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_common_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+    SELECT  *
+      FROM  permission.grp_ancestors($1)
+            INTERSECT
+    SELECT  *
+      FROM  permission.grp_ancestors($2);
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_proximity ( INT, INT ) RETURNS INT AS $$
+    SELECT COUNT(id)::INT FROM (
+        SELECT id FROM permission.grp_combined_ancestors($1, $2)
+            EXCEPT
+        SELECT id FROM permission.grp_common_ancestors($1, $2)
+    ) z;
+$$ LANGUAGE SQL STABLE;
+
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
 	SELECT	DISTINCT ON (usr,perm) *
 	  FROM	(
