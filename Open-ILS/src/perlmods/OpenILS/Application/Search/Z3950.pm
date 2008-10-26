@@ -368,9 +368,9 @@ sub process_results {
 
 			my $rec	= $results->record($_);
 
-            if ($tformat eq 'usmarc') {
+            if (lc($tformat) eq 'usmarc') {
     			$marc		= MARC::Record->new_from_usmarc($rec->raw());
-            } elsif ($tformat eq 'xml') {
+            } elsif (lc($tformat) eq 'xml') {
     			$marc		= MARC::Record->new_from_xml($rec->raw());
             } else {
                 die "Unsupported record transmission format $tformat"
