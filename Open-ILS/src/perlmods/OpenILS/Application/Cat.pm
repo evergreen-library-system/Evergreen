@@ -607,17 +607,6 @@ sub update_volume {
 
 
 
-sub copy_perm_org {
-	my( $vol, $copy ) = @_;
-	my $org = $vol->owning_lib;
-	if( $vol->id == OILS_PRECAT_CALL_NUMBER ) {
-		$org = ref($copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-	}
-	$logger->debug("using copy perm org $org");
-	return $org;
-}
-
-
 __PACKAGE__->register_method (
 	method => 'delete_bib_record',
 	api_name => 'open-ils.cat.biblio.record_entry.delete');
