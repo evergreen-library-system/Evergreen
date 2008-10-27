@@ -290,4 +290,53 @@ sub _tcn_exists {
 	return 0;
 }
 
+
+sub delete_rec {
+   my($class, $editor, $rec_id ) = @_;
+
+   my $rec = $editor->retrieve_biblio_record_entry($rec_id)
+      or return $editor->event;
+
+   return undef if $U->is_true($rec->deleted);
+   
+   $rec->deleted('t');
+   $rec->active('f');
+   $rec->editor( $editor->requestor->id );
+   $rec->edit_date('now');
+   $editor->update_biblio_record_entry($rec) or return $editor->event;
+
+   return undef;
+}
+
+
+# ---------------------------------------------------------------------------
+# returns true if the given title (id) has no un-deleted volumes or 
+# copies attached.  If a context volume is defined, a record
+# is considered empty only if the context volume is the only
+# remaining volume on the record.  
+# ---------------------------------------------------------------------------
+sub title_is_empty {
+	my($class, $editor, $rid, $vol_id) = @_;
+
+	return 0 if $rid == OILS_PRECAT_RECORD;
+
+	my $cnlist = $editor->search_asset_call_number(
+		{ record => $rid, deleted => 'f' }, { idlist => 1 } );
+
+	return 1 unless @$cnlist; # no attached volumes
+    return 0 if @$cnlist > 1; # multiple attached volumes
+    return 0 unless $$cnlist[0] == $vol_id; # attached volume is not the context vol.
+
+    # see if the sole remaining context volume has any attached copies
+	for my $cn (@$cnlist) {
+		my $copylist = $editor->search_asset_copy(
+			[
+				{ call_number => $cn, deleted => 'f' }, 
+				{ limit => 1 },
+			], { idlist => 1 });
+		return 0 if @$copylist; # false if we find any copies
+	}
+
+	return 1;
+}
 1;

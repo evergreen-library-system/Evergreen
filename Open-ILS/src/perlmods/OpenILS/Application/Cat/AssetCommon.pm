@@ -1,5 +1,6 @@
 package OpenILS::Application::Cat::AssetCommon;
 use strict; use warnings;
+use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Application::Cat::Merge;
@@ -152,7 +153,7 @@ sub update_copy {
 	$class->fix_copy_price($copy);
 
 	return $editor->event unless $editor->update_asset_copy($copy);
-	return remove_empty_objects($editor, $override, $orig_vol);
+	return $class->remove_empty_objects($editor, $override, $orig_vol);
 }
 
 
@@ -191,7 +192,7 @@ sub update_fleshed_copies {
 		$copy->clear_stat_cat_entries;
 
 		if( $copy->isdeleted ) {
-			$evt = delete_copy($editor, $override, $vol, $copy);
+			$evt = $class->delete_copy($editor, $override, $vol, $copy);
 			return $evt if $evt;
 
 		} elsif( $copy->isnew ) {
@@ -213,6 +214,44 @@ sub update_fleshed_copies {
 
 	return undef;
 }
+
+
+sub delete_copy {
+	my($class, $editor, $override, $vol, $copy ) = @_;
+
+   return $editor->event unless 
+      $editor->allowed('DELETE_COPY',copy_perm_org($vol, $copy));
+
+	my $stat = $U->copy_status($copy->status)->id;
+
+	unless($override) {
+		return OpenILS::Event->new('COPY_DELETE_WARNING', payload => $copy->id )
+			if $stat == OILS_COPY_STATUS_CHECKED_OUT or
+				$stat == OILS_COPY_STATUS_IN_TRANSIT or
+				$stat == OILS_COPY_STATUS_ON_HOLDS_SHELF or
+				$stat == OILS_COPY_STATUS_ILL;
+	}
+
+	$logger->info("vol-update: deleting copy ".$copy->id);
+	$copy->deleted('t');
+
+	$copy->editor($editor->requestor->id);
+	$copy->edit_date('now');
+	$editor->update_asset_copy($copy) or return $editor->event;
+
+	# Delete any open transits for this copy
+	my $transits = $editor->search_action_transit_copy(
+		{ target_copy=>$copy->id, dest_recv_time => undef } );
+
+	for my $t (@$transits) {
+		$editor->delete_action_transit_copy($t)
+			or return $editor->event;
+	}
+
+	return $class->remove_empty_objects($editor, $override, $vol);
+}
+
+
 
 sub create_volume {
 	my($class, $override, $editor, $vol) = @_;
@@ -319,6 +358,38 @@ sub create_copy_note {
     $note->title($title);
     $e->create_asset_copy_note($note) or return $e->die_event;
     return undef;
+}
+
+
+sub remove_empty_objects {
+	my($class, $editor, $override, $vol) = @_; 
+
+    my $koe = $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
+    my $aoe =  $U->ou_ancestor_setting_value(
+        $editor->requestor->ws_ou, 'cat.bib.alert_on_empty', $editor);
+
+	if( OpenILS::Application::Cat::BibCommon->title_is_empty($editor, $vol->record, $vol->id) ) {
+
+        # delete this volume if it's not already marked as deleted
+        unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
+            $vol->deleted('t');
+            $vol->editor($editor->requestor->id);
+            $vol->edit_date('now');
+            $editor->update_asset_call_number($vol) or return $editor->event;
+        }
+
+        unless($koe) {
+            # delete the bib record if the keep-on-empty setting is not set
+            my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($editor, $vol->record);
+            return $evt if $evt;
+        }
+
+        # return the empty alert if the alert-on-empty setting is set
+        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) if $aoe;
+	}
+
+	return undef;
 }
 
 
