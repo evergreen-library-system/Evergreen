@@ -286,9 +286,8 @@ AC_CONFIG_FILES([Makefile
                  Open-ILS/src/java/Makefile
                  Open-ILS/src/python/Makefile
                  Open-ILS/xul/staff_client/Makefile
-		 Open-ILS/src/offline/offline-config.pl
-		 Open-ILS/src/extras/eg_config
-                 build/i18n/Makefile],  [if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi])
+                 Open-ILS/src/offline/offline-config.pl
+                 Open-ILS/src/extras/eg_config],  [if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi])
 AC_OUTPUT
 
 #-------------------------------------------------
