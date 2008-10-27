@@ -179,7 +179,7 @@ sub update_fleshed_copies {
 		}
 
 		return $editor->event unless 
-			$editor->allowed('UPDATE_COPY', copy_perm_org($vol, $copy));
+			$editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
 
 		$copy->editor($editor->requestor->id);
 		$copy->edit_date('now');
@@ -220,7 +220,7 @@ sub delete_copy {
 	my($class, $editor, $override, $vol, $copy ) = @_;
 
    return $editor->event unless 
-      $editor->allowed('DELETE_COPY',copy_perm_org($vol, $copy));
+      $editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
 
 	my $stat = $U->copy_status($copy->status)->id;
 
@@ -393,4 +393,12 @@ sub remove_empty_objects {
 }
 
 
-
+sub copy_perm_org {
+	my($class, $vol, $copy) = @_;
+	my $org = $vol->owning_lib;
+	if( $vol->id == OILS_PRECAT_CALL_NUMBER ) {
+		$org = ref($copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
+	}
+	$logger->debug("using copy perm org $org");
+	return $org;
+}
