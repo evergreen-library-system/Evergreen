@@ -1926,7 +1926,8 @@ sub attempt_checkin_hold_capture {
         # see if this item is in a hold-capture-delay location
         my $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
         if($U->is_true($location->hold_verify)) {
-            $self->bail_on_events(OpenILS::Event->new('HOLD_CAPTURE_DELAYED'));
+            $self->bail_on_events(
+                OpenILS::Event->new('HOLD_CAPTURE_DELAYED', copy_location => $location));
             return 1;
         }
     }
