@@ -925,7 +925,7 @@ sub find_or_create_volume {
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
     my ($vol, $evt, $exists) = 
-        OpenILS::Application::Cat::AssetCommon->find_or_create_volume($label, $e, $record_id, $org_id);
+        OpenILS::Application::Cat::AssetCommon->find_or_create_volume($e, $label, $record_id, $org_id);
     return $evt if $evt;
     $e->rollback if $exists;
     $e->commit if $vol;
