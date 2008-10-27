@@ -516,40 +516,6 @@ sub merge_holds {
 }
 
 
-
-
-# ---------------------------------------------------------------------------
-# returns true if the given title (id) has no un-deleted volumes or 
-# copies attached.  If a context volume is defined, a record
-# is considered empty only if the context volume is the only
-# remaining volume on the record.  
-# ---------------------------------------------------------------------------
-sub title_is_empty {
-	my( $editor, $rid, $vol_id ) = @_;
-
-	return 0 if $rid == OILS_PRECAT_RECORD;
-
-	my $cnlist = $editor->search_asset_call_number(
-		{ record => $rid, deleted => 'f' }, { idlist => 1 } );
-
-	return 1 unless @$cnlist; # no attached volumes
-    return 0 if @$cnlist > 1; # multiple attached volumes
-    return 0 unless $$cnlist[0] == $vol_id; # attached volume is not the context vol.
-
-    # see if the sole remaining context volume has any attached copies
-	for my $cn (@$cnlist) {
-		my $copylist = $editor->search_asset_copy(
-			[
-				{ call_number => $cn, deleted => 'f' }, 
-				{ limit => 1 },
-			], { idlist => 1 });
-		return 0 if @$copylist; # false if we find any copies
-	}
-
-	return 1;
-}
-
-
 __PACKAGE__->register_method(
 	method	=> "fleshed_volume_update",
 	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update",);
@@ -652,38 +618,6 @@ sub copy_perm_org {
 }
 
 
-sub remove_empty_objects {
-	my( $editor, $override, $vol ) = @_; 
-
-    my $koe = $U->ou_ancestor_setting_value(
-        $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
-    my $aoe =  $U->ou_ancestor_setting_value(
-        $editor->requestor->ws_ou, 'cat.bib.alert_on_empty', $editor);
-
-	if( title_is_empty($editor, $vol->record, $vol->id) ) {
-
-        # delete this volume if it's not already marked as deleted
-        unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
-            $vol->deleted('t');
-            $vol->editor($editor->requestor->id);
-            $vol->edit_date('now');
-            $editor->update_asset_call_number($vol) or return $editor->event;
-        }
-
-        unless($koe) {
-            # delete the bib record if the keep-on-empty setting is not set
-            my $evt = delete_rec($editor, $vol->record);
-            return $evt if $evt;
-        }
-
-        # return the empty alert if the alert-on-empty setting is set
-        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) if $aoe;
-	}
-
-	return undef;
-}
-
-
 __PACKAGE__->register_method (
 	method => 'delete_bib_record',
 	api_name => 'open-ils.cat.biblio.record_entry.delete');
@@ -695,67 +629,11 @@ sub delete_bib_record {
     return $e->die_event unless $e->allowed('DELETE_RECORD', $e->requestor->ws_ou);
     my $vols = $e->search_asset_call_number({record=>$rec_id, deleted=>'f'});
     return OpenILS::Event->new('RECORD_NOT_EMPTY', payload=>$rec_id) if @$vols;
-    my $evt = delete_rec($e, $rec_id);
+    my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($e, $rec_id);
     if($evt) { $e->rollback; return $evt; }   
     $e->commit;
     return 1;
 }
-
-
-# marks a record as deleted
-sub delete_rec {
-   my( $editor, $rec_id ) = @_;
-
-   my $rec = $editor->retrieve_biblio_record_entry($rec_id)
-      or return $editor->event;
-
-   return undef if $U->is_true($rec->deleted);
-   
-   $rec->deleted('t');
-   $rec->active('f');
-   $rec->editor( $editor->requestor->id );
-   $rec->edit_date('now');
-   $editor->update_biblio_record_entry($rec) or return $editor->event;
-
-   return undef;
-}
-
-
-sub delete_copy {
-	my( $editor, $override, $vol, $copy ) = @_;
-
-   return $editor->event unless 
-      $editor->allowed('DELETE_COPY',copy_perm_org($vol, $copy));
-
-	my $stat = $U->copy_status($copy->status)->id;
-
-	unless($override) {
-		return OpenILS::Event->new('COPY_DELETE_WARNING', payload => $copy->id )
-			if $stat == OILS_COPY_STATUS_CHECKED_OUT or
-				$stat == OILS_COPY_STATUS_IN_TRANSIT or
-				$stat == OILS_COPY_STATUS_ON_HOLDS_SHELF or
-				$stat == OILS_COPY_STATUS_ILL;
-	}
-
-	$logger->info("vol-update: deleting copy ".$copy->id);
-	$copy->deleted('t');
-
-	$copy->editor($editor->requestor->id);
-	$copy->edit_date('now');
-	$editor->update_asset_copy($copy) or return $editor->event;
-
-	# Delete any open transits for this copy
-	my $transits = $editor->search_action_transit_copy(
-		{ target_copy=>$copy->id, dest_recv_time => undef } );
-
-	for my $t (@$transits) {
-		$editor->delete_action_transit_copy($t)
-			or return $editor->event;
-	}
-
-	return remove_empty_objects($editor, $override, $vol);
-}
-
 
 
 
@@ -801,8 +679,8 @@ sub batch_volume_transfer {
 
 	for my $vol (@$vols) {
 
-		# if we've already looked at this volume, go to the next
-		next if !$vol or grep { $vol->id == $_ } @seen;
+        # if we've already looked at this volume, go to the next
+        next if !$vol or grep { $vol->id == $_ } @seen;
 
 		# grab all of the volumes in the list that have 
 		# the same label so they can be merged
@@ -810,7 +688,7 @@ sub batch_volume_transfer {
 
 		# take note of the fact that we've looked at this set of volumes
 		push( @seen, $_->id ) for @all;
-      push( @rec_ids, $_->record ) for @all;
+        push( @rec_ids, $_->record ) for @all;
 
 		# for each volume, see if there are any copies that have a 
 		# remote circ_lib (circ_lib != vol->owning_lib and != $o_lib ).  
@@ -896,15 +774,12 @@ sub batch_volume_transfer {
 
 		# Now see if any empty records need to be deleted after all of this
 
-      for(@rec_ids) {
-         $logger->debug("merge: seeing if we should delete record $_...");
-         $evt = delete_rec($e, $_) if title_is_empty($e, $_);
-			return $evt if $evt;
-      }
-
-		#for(@all) {
-		#	$evt = remove_empty_objects($e, $override, $_);
-		#}
+        for(@rec_ids) {
+            $logger->debug("merge: seeing if we should delete record $_...");
+            $evt = OpenILS::Application::Cat::BibCommon->delete_rec($e, $_) 
+                if OpenILS::Application::Cat::BibCommon->title_is_empty($e, $_);
+            return $evt if $evt;
+        }
 	}
 
 	$logger->info("merge: transfer succeeded");
