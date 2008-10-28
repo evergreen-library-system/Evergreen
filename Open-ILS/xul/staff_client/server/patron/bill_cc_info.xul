@@ -65,7 +65,7 @@
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox>
-		<caption label="&staff.patron.bill_cc_info.info.label;/>
+		<caption label="&staff.patron.bill_cc_info.info.label;"/>
 		<grid>
 			<columns> <column flex="0" /> <column flex="0" /> </columns>
 			<rows>
