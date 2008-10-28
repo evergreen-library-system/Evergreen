@@ -888,7 +888,7 @@ patron.bills.prototype = {
 											}
 										}
 										obj.network.simple_request(
-											'MODS_SLIM_RECORD_RETRIEVE.authoritative_VIA_COPY',
+											'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
 											[ r_circ.target_copy() ],
 											function (rreq) {
 												var r_mvr = rreq.getResultObject();
