@@ -37,13 +37,6 @@ export LIBXML2_HEADERS = @LIBXML2_HEADERS@
 export DBI_LIBS = @DBI_LIBS@
 export OPENSRF_HEADERS = @OPENSRF_HEADERS@
 export OPENSRF_LIBS = @OPENSRF_LIBS@
-#export DBDRVR = @DBDRVR@
-#export DBHOST = @DBHOST@
-#export DBPORT = @DBPORT@
-#export DBNAME = @DBNAME@
-#export DBUSER = @DBUSER@
-#export DBPW = @DBPW@
-#export DBVER = @DBVER@
 
 SUBDIRS = Open-ILS/src
 

@@ -1,5 +1,0 @@
-$main::config{base_dir} = '@localstatedir@/data/offline/';
-$main::config{bootstrap} = '@sysconfdir@/opensrf_core.xml';
-$main::config{dsn} = 'dbi:@DBDRVR@:host=@DBHOST@;dbname=@DBNAME@;port=@DBPORT@';
-$main::config{usr} = '@DBUSER@';
-$main::config{pw} = '@DBPW@';
