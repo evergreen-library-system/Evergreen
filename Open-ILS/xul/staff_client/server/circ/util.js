@@ -1911,6 +1911,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 					1213 /* PATRON_BARRED */,
 					1217 /* PATRON_INACTIVE */,
 					1224 /* PATRON_ACCOUNT_EXPIRED */,
+					1234 /* ITEM_DEPOSIT_PAID */,
 					7009 /* CIRC_CLAIMS_RETURNED */,
 					7010 /* COPY_ALERT_MESSAGE */,
 					7011 /* COPY_STATUS_LOST */,
@@ -1919,8 +1920,10 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 				],
 				'text' : {
 					'1203' : function(r) {
-						//return data.hash.ccs[ r.payload.status() ].name();
 						return r.payload.status().name();
+					},
+					'1234' : function(r) {
+						return document.getElementById('circStrings').getString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
 					},
 					'7010' : function(r) {
 						return r.payload;
@@ -2269,6 +2272,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				case 1213 /* PATRON_BARRED */ :
 				case 1217 /* PATRON_INACTIVE */ :
 				case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
+				case 1234 /* ITEM_DEPOSIT_PAID */ :
 				case 7009 /* CIRC_CLAIMS_RETURNED */ :
 				case 7010 /* COPY_ALERT_MESSAGE */ :
 				case 7011 /* COPY_STATUS_LOST */ :
