@@ -459,6 +459,14 @@ UPDATE	metabib.rec_descriptor
   FROM	metabib.full_rec
   WHERE	metabib.full_rec.record = metabib.rec_descriptor.record AND metabib.full_rec.tag = '008';
 
+
+ALTER TABLE money.credit_card_payment ALTER cc_type DROP NOT NULL;
+ALTER TABLE money.credit_card_payment ALTER cc_number DROP NOT NULL;
+ALTER TABLE money.credit_card_payment ALTER expire_month DROP NOT NULL;
+ALTER TABLE money.credit_card_payment ALTER expire_year DROP NOT NULL;
+ALTER TABLE money.credit_card_payment ALTER approval_code DROP NOT NULL;
+
+
 ALTER TABLE asset.copy_location ADD COLUMN hold_verify BOOL NOT NULL DEFAULT FALSE;
 ALTER TABLE asset.copy ALTER price DROP NOT NULL;
 ALTER TABLE asset.copy ALTER price DROP DEFAULT;
