@@ -2340,7 +2340,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 			[ ses(), params ],
 			async ? renew_callback : null,
 			{
-				'title' : document.getElementById('circStrings').getMessage('staff.circ.checkin.renew_failed.override'),
+				'title' : document.getElementById('circStrings').getString('staff.circ.checkin.renew_failed.override'),
 				'overridable_events' : [
 					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 					1213 /* PATRON_BARRED */,
