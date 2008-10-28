@@ -56,12 +56,12 @@ AC_PROG_MAKE_SET
 #[openils_all=false])
 
 # install evergreen-core?
-AC_ARG_ENABLE([evergreen-core],
-[  --disable-evergreen-core    disables the installation of the evergreen core components ],
+AC_ARG_ENABLE([core],
+[  --disable-core    disables installation of the Evergreen core components ],
 [case "${enableval}" in
     yes) openils_core=true ;;
     no)  openils_core=false ;;
-  *) AC_MSG_ERROR([please choose another value for --disable-evergreen-core (supported values are yes or no])
+  *) AC_MSG_ERROR([please choose another value for --disable-core (supported values are yes or no])
 esac],
 [openils_core=true])
 
@@ -69,12 +69,12 @@ AM_CONDITIONAL([BUILDILSCORE], [test x$openils_core = xtrue])
 
 # install evergreen-web?
 
-AC_ARG_ENABLE([evergreen-web],
-[  --disable-evergreen-web    disables the installation of the openils web modules ],
+AC_ARG_ENABLE([web],
+[  --disable-web    disables installation of the Evergreen web modules ],
 [case "${enableval}" in
     yes) openils_web=true ;;
     no)  openils_web=false ;;
-  *) AC_MSG_ERROR([please choose another value for --disable-evergreen-web (supported values are yes or no])
+  *) AC_MSG_ERROR([please choose another value for --disable-web (supported values are yes or no])
 esac],
 [openils_web=true])
 
@@ -82,12 +82,12 @@ AM_CONDITIONAL([BUILDILSWEB], [test x$openils_web = xtrue])
 
 # build evergreen-reporter ?
 
-AC_ARG_ENABLE([evergreen-reporter],
-[  --disable-evergreen-reporter    disables the installation of the evergreen reporter module ],
+AC_ARG_ENABLE([reporter],
+[  --disable-reporter    disables installation of the Evergreen reporter module ],
 [case "${enableval}" in
     yes) openils_reporter=true ;;
     no)  openils_reporter=false ;;
-  *) AC_MSG_ERROR([please choose another value for --disable-evergreen-reporter (supported values are yes or no])
+  *) AC_MSG_ERROR([please choose another value for --disable-reporter (supported values are yes or no])
 esac],
 [openils_reporter=true])
 
@@ -95,12 +95,12 @@ AM_CONDITIONAL([BUILDILSREPORTER], [test x$openils_reporter = xtrue])
 
 # build evergreen-client ?
 
-AC_ARG_ENABLE([evergreen-client],
-[  --disable-evergreen-client    disables the installation of the evergreen staff client ],
+AC_ARG_ENABLE([client],
+[  --disable-client    disables installation of the Evergreen staff client ],
 [case "${enableval}" in
     yes) openils_client=true ;;
     no)  openils_client=false ;;
-  *) AC_MSG_ERROR([please choose another value for --disable-evergreen-client (supported values are yes or no])
+  *) AC_MSG_ERROR([please choose another value for --disable-client (supported values are yes or no])
 esac],
 [openils_client=true])
 
@@ -109,12 +109,12 @@ AM_CONDITIONAL([BUILDILSCLIENT], [test x$openils_client = xtrue])
 
 # build evergreen java ?
 
-AC_ARG_ENABLE([evergreen-java],
-[  --enable-evergreen-java    enables the installation of the evergreen java components ],
+AC_ARG_ENABLE([java],
+[  --enable-java    enables installation of the Evergreen Java components ],
 [case "${enableval}" in
     yes) evergreen_java=true ;;
     no)  evergreen_java=false ;;
-  *) AC_MSG_ERROR([please choose another value for --enable-evergreen-java (supported values are yes or no])
+  *) AC_MSG_ERROR([please choose another value for --enable-java (supported values are yes or no])
 esac],
 [evergreen_java=false])
 
@@ -123,12 +123,12 @@ AM_CONDITIONAL([BUILDEGJAVA], [test x$evergreen_java = xtrue])
 
 # build the evergreen python modules?
 
-AC_ARG_ENABLE([evergreen-python],
-[  --enable-evergreen-python    enables the installation of the evergreen python modules ],
+AC_ARG_ENABLE([python],
+[  --enable-python    enables installation of the Evergreen Python modules ],
 [case "${enableval}" in
     yes) EG_PYTHON_INSTALL=true ;;
     no)  EG_PYTHON_INSTALL=false ;;
-  *) AC_MSG_ERROR([please choose another value for --enable-python-install (supported values are yes or no)])
+  *) AC_MSG_ERROR([please choose another value for --enable-python (supported values are yes or no)])
 esac],
 [EG_PYTHON_INSTALL=false])
 
@@ -171,7 +171,7 @@ fi
 #-----------------------------------
 
 AC_ARG_WITH([tmp],
-[ --with-tmp=path		location for the tmp dir for OpenILS (default is /tmp) ],
+[  --with-tmp=path             location of the Evergreen temporary directory (default is /tmp) ],
 [TMP=${withval}],
 [TMP=/tmp])
 AC_SUBST([TMP])
@@ -186,26 +186,26 @@ AC_SUBST([APACHE2_HEADERS])
 APR_HEADERS=`apr-config --includedir`
 AC_SUBST([APR_HEADERS])
 
-AC_ARG_WITH([libxml],
-[  --with-libxml=path         location of the libxml headers (default is /usr/include/libxml2)],
+AC_ARG_WITH([libxml2],
+[  --with-libxml2=path         location of the libxml2 headers (default is /usr/include/libxml2)],
 [LIBXML2_HEADERS=${withval}],
 [LIBXML2_HEADERS=/usr/include/libxml2/])
 AC_SUBST([LIBXML2_HEADERS])
 
 AC_ARG_WITH([dbi],
-[  --with-dbi=path		location of the libdbi libraries (default is /usr/local/lib/dbd)],
+[  --with-dbi=path             location of the libdbi libraries (default is /usr/local/lib/dbd)],
 [DBI_LIBS=${withval}],
 [DBI_LIBS=/usr/local/lib/dbd/])
 AC_SUBST([DBI_LIBS])
 
 AC_ARG_WITH([opensrf-headers],
-[  --with-opensrf-headers=path		location of the opensrf header files (default is /openils/include/)],
+[  --with-opensrf-headers=path location of the OpenSRF header files (default is /openils/include/)],
 [OPENSRF_HEADERS=${withval}],
 [OPENSRF_HEADERS=/openils/include/])
 AC_SUBST([OPENSRF_HEADERS])
 
 AC_ARG_WITH([opensrf-libs],
-[  --with-opensrf-libs=path		location of the opensrf libraries (default is /openils/lib/)],
+[  --with-opensrf-libs=path    location of the OpenSRF libraries (default is /openils/lib/)],
 [OPENSRF_LIBS=${withval}],
 [OPENSRF_LIBS=/openils/lib/])
 AC_SUBST([OPENSRF_LIBS])
@@ -214,7 +214,7 @@ AC_SUBST([OPENSRF_LIBS])
 # Checks for libraries. 
 #------------------------------------
 
-# Check for the existance of libraries in non-standard locations
+# Check for the existence of libraries in non-standard locations
 
 AC_MSG_CHECKING(for -lopensrf)
 if test -e ${OPENSRF_LIBS}/libopensrf.so; then
@@ -286,7 +286,6 @@ AC_CONFIG_FILES([Makefile
                  Open-ILS/src/java/Makefile
                  Open-ILS/src/python/Makefile
                  Open-ILS/xul/staff_client/Makefile
-                 Open-ILS/src/offline/offline-config.pl
                  Open-ILS/src/extras/eg_config],  [if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi])
 AC_OUTPUT
 
@@ -331,15 +330,15 @@ else
 fi
 AC_MSG_RESULT([]) 
 AC_MSG_RESULT([-------- Installation Directories --------])
-AC_MSG_RESULT(Installation dir prefix:                  ${prefix})
-AC_MSG_RESULT(Temporary dir location:                   ${TMP})
-AC_MSG_RESULT(APXS2 dir location:                       ${APXS2})
+AC_MSG_RESULT(Installation directory prefix:            ${prefix})
+AC_MSG_RESULT(Temporary directory:                      ${TMP})
+AC_MSG_RESULT(APXS2 location:                           ${APXS2})
 AC_MSG_RESULT(Apache headers location:                  ${APACHE2_HEADERS})
 AC_MSG_RESULT(APR headers location:                     ${APR_HEADERS})
-AC_MSG_RESULT(libxml headers location:                  ${LIBXML2_HEADERS})
-AC_MSG_RESULT(libdbi dir location:                      ${DBI_LIBS})
-AC_MSG_RESULT(OpenSRF Headers location:                 ${OPENSRF_HEADERS})
-AC_MSG_RESULT(OpenSRF Libraries location:               ${OPENSRF_LIBS})
+AC_MSG_RESULT(libxml2 headers location:                 ${LIBXML2_HEADERS})
+AC_MSG_RESULT(libdbi location:                          ${DBI_LIBS})
+AC_MSG_RESULT(OpenSRF headers location:                 ${OPENSRF_HEADERS})
+AC_MSG_RESULT(OpenSRF libraries location:               ${OPENSRF_LIBS})
 
 AC_MSG_RESULT([----------------------------------------------------------------------])
 

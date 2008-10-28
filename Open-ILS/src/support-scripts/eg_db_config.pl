@@ -28,7 +28,12 @@ my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help);
 my $config_file = '';
 my $build_db_sh = '';
 my $bootstrap_file = '';
+my $offline_file = '';
+my $prefix = '';
+my $sysconfdir = '';
 my @services;
+
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
 # Get the directory for this script
 my $script_dir = dirname($0);
@@ -61,10 +66,12 @@ sub update_config {
 		}
 	}
 
-	if (copy($config_file, "$config_file.bak")) {
-		print "Backed up original configuration file to '$config_file.bak'\n";
+	my $timestamp = sprintf("%d.%d.%d.%d.%d.%d",
+		$year + 1900, $mon +1, $mday, $hour, $min, $sec);
+	if (copy($config_file, "$config_file.$timestamp")) {
+		print "Backed up original configuration file to '$config_file.$timestamp'\n";
 	} else {
-		print STDERR "Unable to write to '$config_file.bak'; bailed out.\n";
+		print STDERR "Unable to write to '$config_file.$timestamp'; bailed out.\n";
     }
 
 	$opensrf_config->toFile($config_file) or
@@ -77,7 +84,7 @@ sub create_db_bootstrap {
 
     open(FH, '>', $setup) or die "Could not write database setup to $setup\n";
 
-	print "Writing database bootstrapping configuration to $setup...\n";
+	print "Writing database bootstrapping configuration to $setup\n";
 
 	printf FH "\$main::config{dsn} = 'dbi:Pg:host=%s;dbname=%s;port=%d';\n",
 		$settings->{host}, $settings->{db}, $settings->{port};
@@ -89,6 +96,25 @@ sub create_db_bootstrap {
     close(FH);
 }
 
+# write out the offline config
+sub create_offline_config {
+	my ($setup, $settings) = @_;
+
+    open(FH, '>', $setup) or die "Could not write offline database setup to $setup\n";
+
+	print "Writing offline database configuration to $setup\n";
+
+	printf FH "\$main::config{base_dir} = '%s/var/data/offline/';\n", $prefix;
+	printf FH "\$main::config{bootstrap} = '%s/opensrf_core.xml';\n", $sysconfdir;
+
+	printf FH "\$main::config{dsn} = 'dbi:Pg:host=%s;dbname=%s;port=%d';\n",
+		$settings->{host}, $settings->{db}, $settings->{port};
+
+	printf FH "\$main::config{usr} = '%s';\n", $settings->{user};
+	printf FH "\$main::config{pw} = '%s';\n", $settings->{pw};
+
+    close(FH);
+}
 # Extracts database settings from opensrf.xml
 sub get_settings {
 	my $settings = shift;
@@ -122,12 +148,14 @@ sub create_schema {
 }
 
 my $bootstrap;
+my $offline;
 my $cschema;
 my $uconfig;
 my %settings;
 
 GetOptions("create-schema" => \$cschema, 
 		"create-bootstrap" => \$bootstrap,
+		"create-offline" => \$offline,
 		"update-config" => \$uconfig,
 		"bootstrap-file=s" => \$bootstrap_file,
 		"config-file=s" => \$config_file,
@@ -150,7 +178,14 @@ my $eg_config = File::Spec->catfile($script_dir, '../extras/eg_config');
 if (!$config_file) { 
 	my @temp = `$eg_config --sysconfdir`;
 	chomp $temp[0];
-	$config_file = File::Spec->catfile($temp[0], "opensrf.xml");
+	$sysconfdir = $temp[0];
+	$config_file = File::Spec->catfile($sysconfdir, "opensrf.xml");
+}
+
+if (!$prefix) {
+	my @temp = `$eg_config --prefix`;
+	chomp $temp[0];
+	$prefix = $temp[0];
 }
 
 if (!$build_db_sh) {
@@ -158,7 +193,11 @@ if (!$build_db_sh) {
 }
 
 if (!$bootstrap_file) {
-	$bootstrap_file = ('/openils/var/cgi-bin/live-db-setup.pl');
+	$bootstrap_file = File::Spec->catfile($sysconfdir, 'live-db-setup.pl');
+}
+
+if (!$offline_file) {
+	$offline_file = File::Spec->catfile($sysconfdir, 'offline-config.pl');
 }
 
 unless (-e $build_db_sh) { die "Error: $build_db_sh does not exist. \n"; }
@@ -171,8 +210,9 @@ get_settings(\%settings);
 
 if ($cschema) { create_schema(\%settings); }
 if ($bootstrap) { create_db_bootstrap($bootstrap_file, \%settings); }
+if ($offline) { create_offline_config($offline_file, \%settings); }
 
-if ((!$cschema && !$uconfig && !$bootstrap) || $help) {
+if ((!$cschema && !$uconfig && !$bootstrap && !$offline) || $help) {
 	print <<HERE;
 
 SYNOPSIS
@@ -189,11 +229,16 @@ OPTIONS
         specifies the opensrf.xml file. Defaults to /openils/conf/opensrf.xml
 
     --bootstrap-file
-        specifies the database bootstrap file required by the CGI setup interface
+        specifies the database bootstrap file required by the CGI setup
+        interface. Defaults to /openils/conf/live-db-setup.pl
 
     --build-db-file
         specifies the script that creates the database schema. Defaults to
         Open-ILS/src/sql/pg/build-db.sh
+
+    --offline-file
+        specifies the offline database settings file required by the offline
+        data uploader. Defaults to /openils/conf/offline-config.pl
 
 COMMANDS
     --update-config
@@ -202,6 +247,9 @@ COMMANDS
 
     --create-bootstrap
         Creates the database bootstrap file required by the CGI setup interface
+
+    --create-offline
+        Creates the database setting file required by the offline data uploader
 
     --create-schema
         Creates the Evergreen database schema according to the settings in
@@ -235,7 +283,7 @@ EXAMPLES
    script with a complete set of commands:
 
    perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
-       --service all --create-schema --create-bootstrap \
+       --service all --create-schema --create-bootstrap --create-offline \
        --user evergreen --password evergreen --hostname localhost --port 5432 \
        --database evergreen 
 
