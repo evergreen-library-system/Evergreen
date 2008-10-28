@@ -561,6 +561,8 @@ circ.checkout.prototype = {
 						1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 						1213 /* PATRON_BARRED */,
 						1215 /* CIRC_EXCEEDS_COPY_RANGE */,
+                        1232 /* ITEM_DEPOSIT_REQUIRED */,
+                        1233 /* ITEM_RENTAL_FEE_REQUIRED */,
 						7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 						7003 /* COPY_CIRC_NOT_ALLOWED */,
 						7004 /* COPY_NOT_AVAILABLE */, 
@@ -570,11 +572,14 @@ circ.checkout.prototype = {
 						7013 /* PATRON_EXCEEDS_FINES */
 					],
 					'text' : {
+                        '1232' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_deposit_required.warning');
+                        },
+                        '1233' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
+                        },
 						'7004' : function(r) {
-							//return obj.data.hash.ccs[ r.payload ].name();
 							return r.payload.status().name();
-							//return r.payload.name();
-							//return r.payload;
 						},
 						'7010' : function(r) {
 							return r.payload;
@@ -713,6 +718,8 @@ circ.checkout.prototype = {
 								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
 							);
 						break;
+						case 1232 /* ITEM_DEPOSIT_REQUIRED */ :
+						case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ :
 						case 7013 /* PATRON_EXCEEDS_FINES */ :
 							found_handled = true;
 						break;
