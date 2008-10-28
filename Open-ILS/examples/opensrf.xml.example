@@ -506,7 +506,7 @@ vim:et:ts=4:sw=4:
                     <script_path>LIBDIR/javascript</script_path>
                     <script_path>LOCALSTATEDIR</script_path>
                     <script_path>LOCALSTATEDIR/catalog</script_path>
-                    <legacy_script_support>false</legacy_script_support>
+                    <legacy_script_support>true</legacy_script_support>
                     <scripts> 
                         <circ_permit_patron>circ/circ_permit_patron.js</circ_permit_patron>
                         <circ_permit_copy>circ/circ_permit_copy.js</circ_permit_copy>
