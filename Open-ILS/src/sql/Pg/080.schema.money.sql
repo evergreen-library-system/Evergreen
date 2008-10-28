@@ -375,11 +375,11 @@ CREATE INDEX money_check_payment_accepting_usr_idx ON money.check_payment (accep
 CREATE INDEX money_check_payment_cash_drawer_idx ON money.check_payment (cash_drawer);
 
 CREATE TABLE money.credit_card_payment (
-	cc_type		TEXT	NOT NULL,
-	cc_number	TEXT	NOT NULL,
-	expire_month	INT	NOT NULL,
-	expire_year	INT	NOT NULL,
-	approval_code	TEXT	NOT NULL
+	cc_type		TEXT,
+	cc_number	TEXT,
+	expire_month	INT,
+	expire_year	INT,
+	approval_code	TEXT
 ) INHERITS (money.bnm_desk_payment);
 ALTER TABLE money.credit_card_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_credit_card_payment_xact_idx ON money.credit_card_payment (xact);
