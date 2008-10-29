@@ -12,9 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Config :: MARC Code Maps</title>
+		<title>&conify.marc_code_maps.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
@@ -66,12 +71,12 @@
             layouts.cam = [
                 {   cells : [
                         [
-                            { name : "Code", field : "code", width : "5em", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
-                            { name : "Value", field : "value", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
-                            { name : "Description", field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+                            { name : cam_strings.LABEL_CODE, field : "code", width : "5em", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+                            { name : cam_strings.LABEL_VALUE, field : "value", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
+                            { name : cam_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
                         ],
                         [
-                            { name : "Translation",
+                            { name : cam_strings.LABEL_TRANSLATION,
                               width : "10em",
                               height : "2em",
                               get : function (row) {
@@ -94,7 +99,7 @@
                                 return '';
                               }
                             },
-                            { name : "Translation",
+                            { name : cam_strings.LABEL_TRANSLATION,
                               width : "10em",
                               height : "2em",
                               get : function (row) {
@@ -159,9 +164,9 @@
 						layouts[classname] = [
 				            {   cells : [
 					                [
-						                { name : "Code",  field : "code",  width : "5em",  editor : dojox.grid.editors.Dijit },
-							            { name : "Value", field : "value", width : "auto", editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
-								        { name : "Translation",
+						                { name : cam_strings.LABEL_CODE,  field : "code",  width : "5em",  editor : dojox.grid.editors.Dijit },
+							            { name : cam_strings.LABEL_VALUE, field : "value", width : "auto", editor : dojox.grid.editors.Editor, style : "minHeight:1em;" },
+								        { name : cam_strings.LABEL_TRANSLATION,
 									      width : "10em",
 										  height : "2em",
 	                                      get : function (row) {
@@ -201,18 +206,18 @@
 
 		<div dojoType="dijit.layout.TabContainer" id="grid_container" class="grid_container" style="margin: 5px;" orientation="vertical" layoutAlign="top">
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Audience Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.audience_map.title;">
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 		
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Audience Map:</div>
+						<div>&conify.marc_code_maps.audience_map.new.label;</div>
 						<input type="hidden" name="classname" value="cam"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<label for="description">Description</label><input dojoType="dijit.form.TextBox" name="description" title="Description"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:10px" layoutAlign="bottom" jsId="delete_cam_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cam',cam_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<label for="description">&conify.marc_code_maps.audience_map.description;</label><input dojoType="dijit.form.TextBox" name="description" title="&conify.marc_code_maps.audience_map.description;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:10px" layoutAlign="bottom" jsId="delete_cam_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('cam',cam_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -230,7 +235,7 @@
 
 			</div>
 		
-			<div id="cblvl_pane" dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Bib Level Map">
+			<div id="cblvl_pane" dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.bib_level.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.cblvl_once) setTimeout("cblvl_grid.render()",0);
 					window.cblvl_once = 1;
@@ -238,13 +243,13 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Bib Level:</div>
+						<div>&conify.marc_code_maps.bib_level.new.label;</div>
 						<input type="hidden" name="classname" value="cblvl"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cblvl_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cblvl',cblvl_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cblvl_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('cblvl',cblvl_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -262,7 +267,7 @@
 
 			</div>
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Item Form Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.item_form.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.cifm_once) setTimeout("cifm_grid.render()",0);
 					window.cifm_once = 1;
@@ -270,14 +275,14 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div jsId="new_form_form" dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top">
-						<div>New Item Form:</div>
+						<div>&conify.marc_code_maps.item_form.new.label;</div>
 						<input type="hidden" name="classname" value="cifm"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button dojoType="dijit.form.Button" label="Add" onclick="create_marc_code(new_form_form)"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;" onclick="create_marc_code(new_form_form)"></button>
 
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cifm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cifm',cifm_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cifm_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('cifm',cifm_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 	
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -295,7 +300,7 @@
 
 			</div>
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Item Type Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.item_type.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.citm_once) setTimeout("citm_grid.render()",0);
 					window.citm_once = 1;
@@ -304,13 +309,13 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Item Type:</div>
+						<div>&conify.marc_code_maps.item_type.new.label;</div>
 						<input type="hidden" name="classname" value="citm"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_citm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('citm',citm_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_citm_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('citm',citm_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -328,7 +333,7 @@
 
 			</div>
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Language Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.language.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.clm_once) setTimeout("clm_grid.render()",0);
 					window.clm_once = 1;
@@ -337,13 +342,13 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Language:</div>
+						<div>&conify.marc_code_maps.language.new.label;</div>
 						<input type="hidden" name="classname" value="clm"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_clm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('clm',clm_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_clm_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('clm',clm_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -361,7 +366,7 @@
 
 			</div>
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Literary Form Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.literary_form.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.clfm_once) setTimeout("clfm_grid.render()",0);
 					window.clfm_once = 1;
@@ -370,13 +375,13 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Literary Form:</div>
+						<div>&conify.marc_code_maps.literary_form.new.label;</div>
 						<input type="hidden" name="classname" value="clfm"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_clfm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('clfm',clfm_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_clfm_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('clfm',clfm_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -394,7 +399,7 @@
 
 			</div>
 
-			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="Videorecording Format Map">
+			<div dojoType="dijit.layout.ContentPane" class="grid_container" orientation="vertical" title="&conify.marc_code_maps.video.title;">
 				<script type="dojo/connect" event="onShow">
 					if (!window.cvrfm_once) setTimeout("cvrfm_grid.render()",0);
 					window.cvrfm_once = 1;
@@ -403,13 +408,13 @@
 				<div dojoType="dijit.layout.LayoutContainer" class="grid_container" orientation="vertical">
 
 					<div dojoType="dijit.form.Form" orientation="horizontal" style="margin: 5px;" layoutAlign="top" onSubmit="create_marc_code">
-						<div>New Video Recording Format:</div>
+						<div>&conify.marc_code_maps.video.new.label;</div>
 						<input type="hidden" name="classname" value="cvrfm"/>
-						<label for="code">New Code</label><input dojoType="dijit.form.TextBox" name="code" title="New Code"/>
-						<label for="value">New Value</label><input dojoType="dijit.form.TextBox" name="value" title="New Value"/>
-						<button type="submit" dojoType="dijit.form.Button" label="Add"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cvrfm_button" dojoType="dijit.form.Button" label="Delete Selected" onclick="delete_grid_selection('cvrfm',cvrfm_grid)"></button>
-						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+						<label for="code">&conify.marc_code_maps.new_code;</label><input dojoType="dijit.form.TextBox" name="code" title="&conify.marc_code_maps.new_code;"/>
+						<label for="value">&conify.marc_code_maps.new_value;</label><input dojoType="dijit.form.TextBox" name="value" title="&conify.marc_code_maps.new_value;"/>
+						<button type="submit" dojoType="dijit.form.Button" label="&conify.marc_code_maps.add;"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="delete_cvrfm_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.delete_selected;" onclick="delete_grid_selection('cvrfm',cvrfm_grid)"></button>
+						<button style="margin-left:20px" layoutAlign="bottom" jsId="save_button" dojoType="dijit.form.Button" label="&conify.marc_code_maps.save_changes;" onClick="save_them_all()"></button>
 					</div>
 		
 					<div dojoType="dijit.layout.ContentPane" layoutAlign="client">

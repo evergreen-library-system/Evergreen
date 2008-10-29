@@ -69,3 +69,31 @@
 <!ENTITY conify.copy_status.new_status.save "Add">
 <!ENTITY conify.copy_status.save_changes "Save Changes">
 <!ENTITY conify.copy_status.delete_selected "Delete Selected">
+
+<!ENTITY conify.marc_code_maps.title "Global :: Configuration :: MARC Code Maps">
+<!ENTITY conify.marc_code_maps.audience_map.title "Audience Map">
+<!ENTITY conify.marc_code_maps.audience_map.new.label "New Audience Map:">
+<!ENTITY conify.marc_code_maps.new_code "New Code">
+<!ENTITY conify.marc_code_maps.new_value "New Value">
+<!ENTITY conify.marc_code_maps.audience_map.description "Description">
+<!ENTITY conify.marc_code_maps.delete_selected "Delete Selected">
+<!ENTITY conify.marc_code_maps.save_changes "Save Changes">
+
+<!ENTITY conify.marc_code_maps.bib_level.title "Bibliographic Level Map">
+<!ENTITY conify.marc_code_maps.bib_level.new.label "New Bibliographic Level:">
+<!ENTITY conify.marc_code_maps.add "Add">
+
+<!ENTITY conify.marc_code_maps.item_form.title "Item Form Map">
+<!ENTITY conify.marc_code_maps.item_form.new.label "New Item Form:">
+
+<!ENTITY conify.marc_code_maps.item_type.title "Item Type Map">
+<!ENTITY conify.marc_code_maps.item_type.new.label "New Item Type:">
+
+<!ENTITY conify.marc_code_maps.language.title "Language Map">
+<!ENTITY conify.marc_code_maps.language.new.label "New Language:">
+
+<!ENTITY conify.marc_code_maps.literary_form.title "Literary Form Map">
+<!ENTITY conify.marc_code_maps.literary_form.new.label "New Literary Form:">
+
+<!ENTITY conify.marc_code_maps.video.title "Videorecording Format Map">
+<!ENTITY conify.marc_code_maps.video.new.label "New Video Recording Format:">

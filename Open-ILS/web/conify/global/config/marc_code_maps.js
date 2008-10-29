@@ -31,8 +31,7 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-
-
+dojo.requireLocalization("openils.conify", "cam");
 
 console.log('loading marc_code_maps.js');
 
@@ -45,6 +44,8 @@ console.log('initialized pcrud session');
 
 var stores = {};
 var current_item = {};
+
+var cam_strings = dojo.i18n.getLocalization('openils.conify', 'cam');
 
 /*
 var highlighter = {
@@ -80,17 +81,17 @@ function save_code (classname) {
 		params : [ ses, modified_ppl ],
 		onerror : function (r) {
 			//highlighter.red.play();
-			status_update( 'Problem saving data for ' + classname + ' ' + obj.code() );
+			status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA, [classname, obj.code()]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				stores[classname].setValue( current_item, 'ischanged', 0 );
 				//highlighter.green.play();
-				status_update( 'Saved changes to ' + stores[classname].getValue( item, 'code' ) );
+				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )]) );
 			} else {
 				//highlighter.red.play();
-				status_update( 'Problem saving data for ' + classname + ' ' + stores[classname].getValue( item, 'code' ) );
+				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA, [classname, stores[classname].getValue( item, 'code' )] ) );
 			}
 		},
 	}).send();
@@ -110,10 +111,7 @@ function save_them_all (event) {
 		var confirmation = true;
 
 		if (event && dirtyStore.length > 0) {
-			confirmation = confirm(
-				'There are unsaved modified ' + classname + ' codes!  '+
-				'OK to save these changes, Cancel to abandon them.'
-			);
+			confirmation = confirm( cam_strings.CONFIRM_EXIT );
 			event = null;
 		}
 
@@ -146,7 +144,7 @@ function delete_grid_selection(classname, grid ) {
     for (var i in selected_items) {
         var item = selected_items[i];
 
-        if ( confirm('Are you sure you want to delete ' + grid.model.store.getValue( item, 'value' ) + '?')) {
+        if ( confirm( dojo.string.substitute( cam_strings.CONFIRM_DELETE, [grid.model.store.getValue( item, 'value' )] ) ) ) {
 
             grid.model.store.setValue( item, 'isdeleted', 1 );
             
@@ -159,7 +157,7 @@ function delete_grid_selection(classname, grid ) {
                 params : [ ses, obj ],
                 onerror : function (r) {
                     //highlighter.red.play();
-                    status_update( 'Problem deleting ' + grid.model.store.getValue( item, 'value' ) );
+                    status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [grid.model.store.getValue( item, 'value' )] ) );
                 },
                 oncomplete : function (r) {
                     var res = r.recv();
@@ -173,10 +171,10 @@ function delete_grid_selection(classname, grid ) {
                         });
             
                         //highlighter.green.play();
-                        status_update( old_name + ' deleted' );
+                        status_update( dojo.string.substitute( cam_strings.STATUS_DELETED, [old_name] ) );
                     } else {
                         //highlighter.red.play();
-                        status_update( 'Problem deleting ' + old_name );
+                        status_update( status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [old_name] ) );
                     }
                 }
             }).send();
@@ -208,7 +206,7 @@ function create_marc_code (data) {
         params : [ ses, new_fm_obj ],
         onerror : function (r) {
             //highlighter.red.play();
-            status_update( 'Problem calling method to create new ' + cl );
+            status_update( dojo.string.substitute( cam_strings.ERROR_CALLING_METHOD, [cl] ) );
             err = true;
         },
         oncomplete : function (r) {
@@ -216,11 +214,11 @@ function create_marc_code (data) {
             if ( res && res.content() ) {
                 var new_item_hash = res.content().toHash();
                 stores[cl].newItem( new_item_hash );
-                status_update( 'New ' + new_item_hash.code + ' ' + cl + ' created' );
+                status_update( dojo.string.substitute( cam_strings.SUCCESS_CREATING_CODE, [new_item_hash.code, cl] ) );
                 //highlighter.green.play();
             } else {
                 //highlighter.red.play();
-                status_update( 'Problem creating new Permission' );
+                status_update( cam_strings.ERROR_CREATING_PERMISSION );
                 err = true;
             }
         }
