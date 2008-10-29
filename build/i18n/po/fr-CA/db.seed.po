@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-09-08 11:13:02-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -3034,8 +3034,8 @@ msgstr "Collections"
 
 # id::en-US
 #: i18n_l.name:724
-msgid "American English"
-msgstr "Anglais américain"
+msgid "English (US)"
+msgstr ""
 
 # id::en-US
 #: i18n_l.description:725
@@ -3044,8 +3044,8 @@ msgstr "Anglais américain"
 
 # id::en-CA
 #: i18n_l.name:727
-msgid "Canadian English"
-msgstr "Anglais canadien"
+msgid "English (Canada)"
+msgstr ""
 
 # id::en-CA
 #: i18n_l.description:728
@@ -3054,9 +3054,8 @@ msgstr "Anglais canadien"
 
 # id::fr-CA
 #: i18n_l.name:730
-#, fuzzy
-msgid "Canadian French"
-msgstr "Français canadien"
+msgid "French (Canada)"
+msgstr ""
 
 # id::fr-CA
 #: i18n_l.description:731
@@ -3066,8 +3065,8 @@ msgstr "Français canadien"
 
 # id::es-US
 #: i18n_l.name:733
-msgid "American Spanish"
-msgstr "Espagnol américain"
+msgid "Spanish (US)"
+msgstr ""
 
 # id::es-US
 #: i18n_l.description:734
@@ -3076,8 +3075,8 @@ msgstr "Espagnol américain"
 
 # id::es-MX
 #: i18n_l.name:736
-msgid "Mexican Spanish"
-msgstr "Espagnol mexicain"
+msgid "Spanish (Mexico)"
+msgstr ""
 
 # id::es-MX
 #: i18n_l.description:737
@@ -3094,853 +3093,1587 @@ msgstr "Arménien"
 msgid "Armenian"
 msgstr "Arménien"
 
+# id::loc
+#: czs.label:745
+msgid "Library of Congress"
+msgstr ""
+
+# id::loc
+#: czs.label:747
+msgid "OCLC"
+msgstr ""
+
 # id::1
-#: aout.name:746
+#: cza.label:750
+msgid "Title Control Number"
+msgstr ""
+
+# id::2
+# id::6
+#: cza.label:752
+#, fuzzy
+msgid "ISBN"
+msgstr "SSN"
+
+# id::3
+#: cza.label:754
+msgid "LCCN"
+msgstr ""
+
+# id::4
+#: cza.label:756
+msgid "Author"
+msgstr ""
+
+# id::5
+#: cza.label:758
+msgid "Title"
+msgstr ""
+
+# id::6
+# id::2
+#: cza.label:760
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::7
+#: cza.label:762
+msgid "Publisher"
+msgstr ""
+
+# id::8
+#: cza.label:764
+msgid "Publication Date"
+msgstr ""
+
+# id::9
+#: cza.label:766
+msgid "Item Type"
+msgstr ""
+
+# id::10
+#: cza.label:769
+msgid "Title Control Number"
+msgstr ""
+
+# id::11
+# id::6
+# id::2
+#: cza.label:771
+#, fuzzy
+msgid "ISBN"
+msgstr "SSN"
+
+# id::12
+#: cza.label:773
+msgid "LCCN"
+msgstr ""
+
+# id::13
+#: cza.label:775
+msgid "Author"
+msgstr ""
+
+# id::14
+#: cza.label:777
+msgid "Title"
+msgstr ""
+
+# id::15
+# id::2
+#: cza.label:779
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::16
+#: cza.label:781
+msgid "Publisher"
+msgstr ""
+
+# id::17
+#: cza.label:783
+msgid "Publication Date"
+msgstr ""
+
+# id::18
+#: cza.label:785
+msgid "Item Type"
+msgstr ""
+
+# id::1
+#: aout.name:792
 msgid "Consortium"
 msgstr "Consortium"
 
 # id::1
-#: aout.opac_label:747
+#: aout.opac_label:793
 msgid "Everywhere"
 msgstr ""
 
 # id::2
-#: aout.name:749
+#: aout.name:795
 msgid "System"
 msgstr "Système"
 
 # id::2
-#: aout.opac_label:750
+#: aout.opac_label:796
 msgid "Local Library System"
 msgstr ""
 
 # id::3
-#: aout.name:752
+#: aout.name:798
 msgid "Branch"
 msgstr "Direction générale"
 
 # id::3
-#: aout.opac_label:753
+#: aout.opac_label:799
 msgid "This Branch"
 msgstr ""
 
 # id::4
-#: aout.name:755
+#: aout.name:801
 msgid "Sub-library"
 msgstr ""
 
 # id::4
-#: aout.opac_label:756
+#: aout.opac_label:802
 msgid "This Specialized Library"
 msgstr ""
 
 # id::5
-#: aout.name:758
+#: aout.name:804
 msgid "Bookmobile"
 msgstr "Bibliobus"
 
 # id::5
-#: aout.opac_label:759
+#: aout.opac_label:805
 msgid "Your Bookmobile"
 msgstr ""
 
 # id::1
-#: aou.name:763
+#: aou.name:809
 msgid "Example Consortium"
 msgstr "Exemple de consortium"
 
 # id::2
-#: aou.name:765
+#: aou.name:811
 msgid "Example System 1"
 msgstr "Exemple de système 1"
 
 # id::3
-#: aou.name:767
+#: aou.name:813
 msgid "Example System 2"
 msgstr "Exemple de système 2"
 
 # id::4
-#: aou.name:769
+#: aou.name:815
 msgid "Example Branch 1"
 msgstr "Exemple de Direction générale 1"
 
 # id::5
-#: aou.name:771
+#: aou.name:817
 msgid "Example Branch 2"
 msgstr "Exemple de Direction générale 2"
 
 # id::6
-#: aou.name:773
+#: aou.name:819
 msgid "Example Branch 3"
 msgstr "Exemple de Direction générale 3"
 
 # id::7
-#: aou.name:775
+#: aou.name:821
 msgid "Example Branch 4"
 msgstr "Exemple de Direction générale 4"
 
 # id::8
-#: aou.name:777
+#: aou.name:823
 #, fuzzy
 msgid "Example Sub-library 1"
 msgstr "Exemple de sous-bibliothèque 1"
 
 # id::9
-#: aou.name:779
+#: aou.name:825
 msgid "Example Bookmobile 1"
 msgstr "Exemple de bibliobus de 1"
 
+# id::2
+#: ppl.description:836
+msgid "Allow a user to log in to the OPAC"
+msgstr ""
+
+# id::4
+#: ppl.description:838
+msgid "Allow a user to log in to the staff client"
+msgstr ""
+
+# id::5
+#: ppl.description:840
+msgid "Allow a user to create a metarecord holds"
+msgstr ""
+
+# id::6
+#: ppl.description:842
+msgid "Allow a user to place a hold at the title level"
+msgstr ""
+
+# id::7
+#: ppl.description:844
+msgid "Allow a user to place a volume level hold"
+msgstr ""
+
 # id::8
-#: ppl.description:800
-msgid "User is allowed to place a hold on a specific copy"
+#: ppl.description:846
+#, fuzzy
+msgid "Allow a user to place a hold on a specific copy"
 msgstr "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
 
+# id::9
+#: ppl.description:848
+msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
+msgstr ""
+
+# id::10
+#: ppl.description:850
+msgid "* no longer applicable"
+msgstr ""
+
 # id::11
-#: ppl.description:806
-msgid "Allows a user to view another user's holds"
+#: ppl.description:852
+#, fuzzy
+msgid "Allow a user to view another user's holds"
 msgstr ""
 "Permet à un utilisateur de consulter les articles mis en réserve par un "
 "autre utilisateur"
 
+# id::13
+#: ppl.description:854
+msgid "* no longer applicable"
+msgstr ""
+
 # id::14
-#: ppl.description:810
-msgid "Allows a user to update another user's hold"
+#: ppl.description:856
+#, fuzzy
+msgid "Allow a user to update another user's hold"
 msgstr ""
 "Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
 "utilisateur"
 
+# id::15
+#: ppl.description:858
+msgid "Allow a user to renew items"
+msgstr ""
+
+# id::16
+#: ppl.description:860
+msgid "Allow a user to view bill details"
+msgstr ""
+
+# id::17
+#: ppl.description:862
+msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
+msgstr ""
+
+# id::18
+#: ppl.description:864
+msgid "Allow a user to edit a MARC record"
+msgstr ""
+
 # id::19
-#: ppl.description:820
-msgid "User is allowed to create new MARC records"
-msgstr "L’utilisateur peut créer de nouveaux comptes de MARC"
+#: ppl.description:866
+msgid "Allow a user to create new MARC records"
+msgstr ""
+
+# id::20
+#: ppl.description:868
+msgid "Allow a user to import a MARC record via the Z39.50 interface"
+msgstr ""
+
+# id::21
+# id::89
+#: ppl.description:870
+#, fuzzy
+msgid "Allow a user to create a volume"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::22
+#: ppl.description:872
+msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
+msgstr ""
+
+# id::23
+# id::21
+# id::89
+#: ppl.description:874
+#, fuzzy
+msgid "Allow a user to delete a volume"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::25
+# id::75
+#: ppl.description:876
+#, fuzzy
+msgid "Allow a user to edit a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::26
+# id::25
+# id::75
+#: ppl.description:878
+#, fuzzy
+msgid "Allow a user to delete a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::27
+#: ppl.description:880
+msgid "Allow a user to continue to renew an item even if it is required for a hold"
+msgstr ""
+
+# id::28
+# id::14
+#: ppl.description:882
+#, fuzzy
+msgid "Allow a user to create another user"
+msgstr ""
+"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
+"utilisateur"
+
+# id::29
+#: ppl.description:884
+msgid "Allow a user to edit a user's record"
+msgstr ""
+
+# id::30
+#: ppl.description:886
+msgid "Allow a user to mark a user as deleted"
+msgstr ""
+
+# id::31
+# id::11
+#: ppl.description:888
+#, fuzzy
+msgid "Allow a user to view another user's Patron Record"
+msgstr ""
+"Permet à un utilisateur de consulter les articles mis en réserve par un "
+"autre utilisateur"
+
+# id::32
+# id::75
+#: ppl.description:890
+#, fuzzy
+msgid "Allow a user to check in a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::33
+#: ppl.description:892
+msgid "Allow a user to place an item in transit"
+msgstr ""
+
+# id::34
+#: ppl.description:894
+msgid "Allow a user to view user permissions within the user permissions editor"
+msgstr ""
+
+# id::35
+#: ppl.description:896
+msgid "* no longer applicable"
+msgstr ""
+
+# id::36
+#: ppl.description:898
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::37
+#: ppl.description:900
+msgid "Allow a user to mark an item as 'lost'"
+msgstr ""
+
+# id::38
+#: ppl.description:902
+msgid "Allow a user to mark an item as 'missing'"
+msgstr ""
+
+# id::39
+#: ppl.description:904
+msgid "Allow a user to mark an item as 'claims returned'"
+msgstr ""
 
 # id::41
-#: ppl.description:860
-msgid "User may create new billable transactions"
-msgstr "L’utilisateur peut créer de nouvelles transactions facturables"
+# id::43
+#: ppl.description:906
+#, fuzzy
+msgid "Allow a user to create a new billable transaction"
+msgstr ""
+"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
 
 # id::43
-#: ppl.description:862
-msgid "Allows a user to create a new bill on a transaction"
+#: ppl.description:908
+#, fuzzy
+msgid "Allow a user to create a new bill on a transaction"
 msgstr ""
 "Permet à un utilisateur de créer une nouvelle facture pour une transaction"
 
 # id::44
-#: ppl.description:864
-msgid "Allows a user to view another user's containers (buckets)"
+#: ppl.description:910
+#, fuzzy
+msgid "Allow a user to view another user's containers (buckets)"
 msgstr "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
 
 # id::45
-#: ppl.description:866
-msgid "Allows a user to create a new container for another user"
+#: ppl.description:912
+#, fuzzy
+msgid "Allow a user to create a new container for another user"
 msgstr ""
 "Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
 
 # id::24
-#: ppl.description:868
-msgid "User is allowed to create a new copy object"
-msgstr "L’utilisateur peut créer un nouvel objet d’exemplaire"
+# id::88
+#: ppl.description:914
+#, fuzzy
+msgid "Allow a user to create a new copy object"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::47
-#: ppl.description:870
-msgid "Allows a user to change org unit settings"
+#: ppl.description:916
+msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
-"Permet à un utilisateur de modifier les paramètres de l’unité "
-"organisationnelle"
 
 # id::48
-#: ppl.description:872
-msgid "Allows a user to see what another use has checked out"
+#: ppl.description:918
+#, fuzzy
+msgid "Allow a user to see what another use has checked out"
 msgstr ""
 "Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
 "session"
 
 # id::42
-#: ppl.description:874
-msgid "User may view another user's transactions"
+#: ppl.description:920
+#, fuzzy
+msgid "Allow a user may view another user's transactions"
 msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
 
 # id::49
-#: ppl.description:876
-msgid "Allows a user to delete another user container"
+#: ppl.description:922
+#, fuzzy
+msgid "Allow a user to delete another user container"
 msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
 # id::50
-#: ppl.description:878
-msgid "Create a container item for another user"
-msgstr "Créer un article de panier pour un autre utilisateur"
+# id::45
+#: ppl.description:924
+#, fuzzy
+msgid "Allow a user to create a container item for another user"
+msgstr ""
+"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
 
 # id::51
-#: ppl.description:880
-msgid "User can add other users to permission groups"
+#: ppl.description:926
+#, fuzzy
+msgid "Allow a user to add other users to permission groups"
 msgstr ""
 "L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
 
 # id::52
-#: ppl.description:882
-msgid "User can remove other users from permission groups"
+#: ppl.description:928
+#, fuzzy
+msgid "Allow a user to remove other users from permission groups"
 msgstr ""
 "L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
 
 # id::53
-#: ppl.description:884
-msgid "Allow user to view others' permission groups"
+#: ppl.description:930
+#, fuzzy
+msgid "Allow a user to view other users' permission groups"
 msgstr ""
 "Permet à un utilisateur de consulter les groupes de permission des autres "
 "utilisateurs"
 
 # id::54
-#: ppl.description:886
-msgid "Allows a user to determine of another user can checkout an item"
+#: ppl.description:932
+#, fuzzy
+msgid "Allow a user to determine whether another user can check out an item"
 msgstr ""
 "Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
 "article"
 
 # id::55
-#: ppl.description:888
-msgid "Allows a user to edit copies in batch"
+#: ppl.description:934
+#, fuzzy
+msgid "Allow a user to edit copies in batch"
 msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
 
 # id::56
-#: ppl.description:890
+#: ppl.description:936
 msgid "User may create a new patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::57
-#: ppl.description:892
-msgid "User may create a copy stat cat"
-msgstr "L’utilisateur peut créer une catégorie statistique d’exemplaires"
+# id::56
+#: ppl.description:938
+#, fuzzy
+msgid "User may create a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::58
-#: ppl.description:894
-msgid "User may create a new patron stat cat entry"
-msgstr ""
-"L’utilisateur peut créer une nouvelle entrée de catégorie statistique de "
-"clients"
+# id::56
+#: ppl.description:940
+#, fuzzy
+msgid "User may create an entry in a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::59
-#: ppl.description:896
-msgid "User may create a new copy stat cat entry"
-msgstr ""
-"L’utilisateur peut créer une nouvelle entrée de catégorie statistique "
-"d’exemplaires"
+# id::56
+#: ppl.description:942
+#, fuzzy
+msgid "User may create an entry in a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::60
-#: ppl.description:898
-msgid "User may update a patron stat cat"
-msgstr "L’utilisateur peut mettre à jour une catégorie statistique de clients"
+# id::56
+#: ppl.description:944
+#, fuzzy
+msgid "User may update a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::61
-#: ppl.description:900
-msgid "User may update a copy stat cat"
-msgstr ""
-"L’utilisateur peut mettre à jour une catégorie statistique d’exemplaires"
-
-# id::62
-#: ppl.description:902
-msgid "User may update a patron stat cat entry"
-msgstr ""
-"L’utilisateur peut mettre à jour une entrée de catégorie statistique de "
-"clients"
-
 # id::63
-#: ppl.description:904
-msgid "User may update a copy stat cat entry"
+#: ppl.description:946
+#, fuzzy
+msgid "User may update a copy statistical category"
 msgstr ""
 "L’utilisateur peut mettre à jour une entrée de catégorie statistique "
 "d’exemplaires"
 
+# id::62
+# id::56
+#: ppl.description:948
+#, fuzzy
+msgid "User may update an entry in a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::63
+# id::59
+# id::56
+#: ppl.description:950
+#, fuzzy
+msgid "User may update an entry in a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
 # id::65
-#: ppl.description:906
-msgid "User may link a copy to a stat cat entry"
+#: ppl.description:952
+msgid "User may link a copy to an entry in a statistical category"
 msgstr ""
-"L’utilisateur peut associer un exemplaire à une entrée de catégorie "
-"statistique"
 
 # id::64
-#: ppl.description:908
-msgid "User may link another user to a stat cat entry"
+#: ppl.description:954
+msgid "User may link another user to an entry in a statistical category"
 msgstr ""
-"L’utilisateur peut associer un autre utilisateur à une entrée de catégorie "
-"statistique"
 
 # id::66
-#: ppl.description:910
-msgid "User may delete a patron stat cat"
-msgstr ""
-"L’utilisateur peut supprimer une entrée de catégorie statistique de clients"
+# id::56
+#: ppl.description:956
+#, fuzzy
+msgid "User may delete a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::67
-#: ppl.description:912
-msgid "User may delete a copy stat cat"
-msgstr "L’utilisateur peut supprimer une catégorie statistique d’exemplaires"
-
-# id::68
-#: ppl.description:914
-msgid "User may delete a patron stat cat entry"
-msgstr "L’utilisateur peut supprimer une catégorie statistique de clients"
-
 # id::69
-#: ppl.description:916
-msgid "User may delete a copy stat cat entry"
+#: ppl.description:958
+#, fuzzy
+msgid "User may delete a copy statistical category"
 msgstr ""
 "L’utilisateur peut supprimer une entrée de catégorie statistique "
 "d’exemplaires"
 
+# id::68
+# id::58
+# id::56
+#: ppl.description:960
+#, fuzzy
+msgid "User may delete an entry from a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::69
+# id::59
+# id::56
+#: ppl.description:962
+#, fuzzy
+msgid "User may delete an entry from a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
 # id::70
-#: ppl.description:918
-msgid "User may delete a patron stat cat entry map"
+#: ppl.description:964
+#, fuzzy
+msgid "User may delete a patron statistical category entry map"
 msgstr ""
 "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
 "clients"
 
 # id::71
-#: ppl.description:920
-msgid "User may delete a copy stat cat entry map"
+#: ppl.description:966
+#, fuzzy
+msgid "User may delete a copy statistical category entry map"
 msgstr ""
 "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
 "d’exemplaires"
 
 # id::72
-#: ppl.description:922
-msgid "Allows a user to create a new non-cataloged item type"
+#: ppl.description:968
+#, fuzzy
+msgid "Allow a user to create a new non-cataloged item type"
 msgstr ""
 "Permet à un utilisateur de créer un nouveau type d’article non catalogué"
 
 # id::73
-#: ppl.description:924
-msgid "Allows a user to update a non cataloged type"
+#: ppl.description:970
+#, fuzzy
+msgid "Allow a user to update a non-cataloged item type"
 msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
 
 # id::74
-#: ppl.description:926
-msgid "Allows a user to create a new in-house-use "
+#: ppl.description:972
+#, fuzzy
+msgid "Allow a user to create a new in-house-use "
 msgstr "Permet à un utilisateur de créer une nouvelle utilisation à l’interne"
 
 # id::75
-#: ppl.description:928
-msgid "Allows a user to check out a copy"
+#: ppl.description:974
+#, fuzzy
+msgid "Allow a user to check out a copy"
 msgstr "Permet à un utilisateur de sortir un exemplaire"
 
 # id::76
-#: ppl.description:930
-msgid "Allows a user to create a new copy location"
+#: ppl.description:976
+#, fuzzy
+msgid "Allow a user to create a new copy location"
 msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
 
 # id::77
-#: ppl.description:932
-msgid "Allows a user to update a copy location"
+#: ppl.description:978
+#, fuzzy
+msgid "Allow a user to update a copy location"
 msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
 
 # id::78
-#: ppl.description:934
-msgid "Allows a user to delete a copy location"
+#: ppl.description:980
+#, fuzzy
+msgid "Allow a user to delete a copy location"
 msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
 
 # id::79
-#: ppl.description:936
-msgid "Allows a user to create a transit_copy object for transiting a copy"
+#: ppl.description:982
+#, fuzzy
+msgid "Allow a user to create a transit_copy object for transiting a copy"
 msgstr ""
 "Permet à un utilisateur de créer un objet de copie de transit pour procéder "
 "à la transition d’un exemplaire"
 
 # id::80
-#: ppl.description:938
-msgid "Allows a user to close out a transit on a copy"
+#: ppl.description:984
+#, fuzzy
+msgid "Allow a user to close out a transit on a copy"
 msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
 
 # id::81
-#: ppl.description:940
-msgid "Allows a user to see if another user has permission to place a hold on a given copy"
+#: ppl.description:986
+#, fuzzy
+msgid "Allow a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 "Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
 "mettre en réserve un exemplaire en particulier"
 
 # id::82
-#: ppl.description:942
-msgid "Allows a user to view which users have checked out a given copy"
+#: ppl.description:988
+#, fuzzy
+msgid "Allow a user to view which users have checked out a given copy"
 msgstr ""
 "Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
 "en particulier"
 
 # id::83
-#: ppl.description:944
-msgid "Allows a user to perform z3950 queries against remote servers"
+#: ppl.description:990
+#, fuzzy
+msgid "Allow a user to perform Z39.50 queries against remote servers"
 msgstr ""
 "Permet à un utilisateur d’effectuer des requêtes z3950 auprès des serveurs à "
 "distance"
 
 # id::84
-#: ppl.description:946
-msgid "Allows a user to register a new workstation"
+#: ppl.description:992
+#, fuzzy
+msgid "Allow a user to register a new workstation"
 msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
 
 # id::85
-#: ppl.description:948
-msgid "Allows a user to view all notes attached to a copy"
+#: ppl.description:994
+#, fuzzy
+msgid "Allow a user to view all notes attached to a copy"
 msgstr ""
 "Permet à un utilisateur d’afficher toutes les notes associées à un "
 "exemplaire"
 
 # id::86
-#: ppl.description:950
-msgid "Allows a user to view all notes attached to a volume"
+#: ppl.description:996
+#, fuzzy
+msgid "Allow a user to view all notes attached to a volume"
 msgstr ""
 "Permet à un utilisateur d’afficher toutes les notes associées à un volume"
 
 # id::87
-#: ppl.description:952
-msgid "Allows a user to view all notes attached to a title"
+#: ppl.description:998
+#, fuzzy
+msgid "Allow a user to view all notes attached to a title"
 msgstr ""
 "Permet à un utilisateur d’afficher toutes les notes associées à un titre"
 
 # id::89
-#: ppl.description:954
-msgid "Allows a user to create a new volume note"
+#: ppl.description:1000
+#, fuzzy
+msgid "Allow a user to create a new volume note"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
 
 # id::88
-#: ppl.description:956
-msgid "Allows a user to create a new copy note"
+#: ppl.description:1002
+#, fuzzy
+msgid "Allow a user to create a new copy note"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::90
-#: ppl.description:958
-msgid "Allows a user to create a new title note"
+#: ppl.description:1004
+#, fuzzy
+msgid "Allow a user to create a new title note"
 msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
 
 # id::91
-#: ppl.description:960
-msgid "Allows a user to delete someone elses copy notes"
-msgstr ""
-"Permet à un utilisateur de supprimer les notes sur l’exemplaire d’un autre "
-"utilisateur"
+# id::49
+#: ppl.description:1006
+#, fuzzy
+msgid "Allow a user to delete another user's copy notes"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
 # id::92
-#: ppl.description:962
-msgid "Allows a user to delete someone elses volume note"
-msgstr ""
-"Permet à un utilisateur de supprimer la note sur le volume d’un autre "
-"utilisateur"
+# id::49
+#: ppl.description:1008
+#, fuzzy
+msgid "Allow a user to delete another user's volume note"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
 # id::93
-#: ppl.description:964
-msgid "Allows a user to delete someone elses title note"
-msgstr ""
-"Permet à un utilisateur de supprimer la note de titre d’un autre utilisateur"
+# id::49
+#: ppl.description:1010
+#, fuzzy
+msgid "Allow a user to delete another user's title note"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
 # id::94
-#: ppl.description:966
-msgid "Allows a user to update another users container"
+#: ppl.description:1012
+#, fuzzy
+msgid "Allow a user to update another user's container"
 msgstr "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
 
 # id::95
-#: ppl.description:968
-msgid "Allows a user to create a container for themselves"
+#: ppl.description:1014
+#, fuzzy
+msgid "Allow a user to create a container for themselves"
 msgstr "Permet à un utilisateur de créer son propre panier"
 
 # id::96
-#: ppl.description:970
-msgid "Allows a user to view notifications attached to a hold"
+#: ppl.description:1016
+#, fuzzy
+msgid "Allow a user to view notifications attached to a hold"
 msgstr ""
 "Permet à un utilisateur d’afficher les notifications associées à un article "
 "mis en réserve"
 
 # id::97
-#: ppl.description:972
-msgid "Allows a user to create new hold notifications"
+#: ppl.description:1018
+#, fuzzy
+msgid "Allow a user to create new hold notifications"
 msgstr ""
 "Permet à un utilisateur de créer de nouvelles notifications relatives à des "
 "articles mis en réserve"
 
 # id::98
-#: ppl.description:974
-msgid "Allows a user to update an org unit setting"
+#: ppl.description:1020
+#, fuzzy
+msgid "Allow a user to update an organization unit setting"
 msgstr ""
 "Permet à un utilisateur de mettre à jour un paramètre d’unité "
 "organisationnelle"
 
 # id::99
-#: ppl.description:976
-msgid "Allows a user to upload an offline script"
+#: ppl.description:1022
+#, fuzzy
+msgid "Allow a user to upload an offline script"
 msgstr "Permet à un utilisateur de téléverser un script hors ligne"
 
 # id::100
-#: ppl.description:978
-msgid "Allows a user to view uploaded offline script information"
+#: ppl.description:1024
+#, fuzzy
+msgid "Allow a user to view uploaded offline script information"
 msgstr ""
 "Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
 "téléversé"
 
 # id::101
-#: ppl.description:980
-msgid "Allows a user to execute an offline script batch"
+#: ppl.description:1026
+#, fuzzy
+msgid "Allow a user to execute an offline script batch"
 msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
 
 # id::102
-#: ppl.description:982
-msgid "Allows a user to change set the due date on an item to any date"
+#: ppl.description:1028
+#, fuzzy
+msgid "Allow a user to change the due date on an item to any date"
 msgstr ""
 "Permet à un utilisateur de régler la date d’échéance relative à un article"
 
 # id::103
-#: ppl.description:984
-msgid "Allows a user to bypass the circ permit call for checkout"
+#: ppl.description:1030
+#, fuzzy
+msgid "Allow a user to bypass the circulation permit call for check out"
 msgstr ""
 "Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
 "sortir un article"
 
 # id::104
-#: ppl.description:986
-msgid "Allows a user to override the copy_is_reference event"
+#: ppl.description:1032
+#, fuzzy
+msgid "Allow a user to override the copy_is_reference event"
 msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
 
 # id::105
-#: ppl.description:988
-msgid "Allows a user to void a bill"
+#: ppl.description:1034
+#, fuzzy
+msgid "Allow a user to void a bill"
 msgstr "Permet à un utilisateur d’éviter une facture"
 
 # id::106
-#: ppl.description:990
-msgid "Allows a person to check in/out an item that is claims returned"
+#: ppl.description:1036
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
 msgstr ""
-"Permet à un utilisateur d’entrer ou de sortir un article considéré comme "
-"retourné"
 
 # id::107
-#: ppl.description:992
-msgid "Allows a user to check out an item in a non-circulatable status"
+#: ppl.description:1038
+#, fuzzy
+msgid "Allow a user to check out an item in a non-circulatable status"
 msgstr "Permet à un utilisateur de sortir un article qui n’a pas été prêté"
 
 # id::108
-#: ppl.description:994
-msgid "Allows a user to check in/out an item that has an alert message"
+#: ppl.description:1040
+#, fuzzy
+msgid "Allow a user to check in/out an item that has an alert message"
 msgstr ""
 "Permet à un utilisateur d’entrer ou de sortir un article associé à un "
 "message d’alerte"
 
 # id::109
-#: ppl.description:996
-msgid "Allows a user to remove the lost status from a copy"
+#: ppl.description:1042
+#, fuzzy
+msgid "Allow a user to remove the lost status from a copy"
 msgstr "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
 
 # id::110
-#: ppl.description:998
-msgid "Allows a user to change the missing status on a copy"
+#: ppl.description:1044
+#, fuzzy
+msgid "Allow a user to change the missing status on a copy"
 msgstr "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
 
 # id::111
-#: ppl.description:1000
-msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
+#: ppl.description:1046
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
 "se trouve à la source ou à la destination du transit"
 
 # id::112
-#: ppl.description:1002
-msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
+#: ppl.description:1048
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
 "ne se trouve pas à la source ou à la destination du transit"
 
 # id::113
-#: ppl.description:1004
+#: ppl.description:1050
 #, fuzzy
-msgid "Allows a user to query the ZIP code data method"
+msgid "Allow a user to query the ZIP code data method"
 msgstr ""
 "Permet à un utilisateur d’interroger la méthode de données relatives aux "
 "codes postaux"
 
 # id::114
-#: ppl.description:1006
-msgid "Allows a user to cancel holds"
+#: ppl.description:1052
+msgid "Allow a user to cancel holds"
 msgstr ""
 
 # id::115
-#: ppl.description:1008
+#: ppl.description:1054
 #, fuzzy
-msgid "Allows a user to create duplicate holds (two or more holds on the same title)"
+msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 "Permet à un utilisateur de créer des copies d’articles mis en réserve (p. "
 "ex. deux articles mis en réserve pour le même titre)"
 
 # id::117
-#: ppl.description:1010
-msgid "Allows a user to update a closed date interval for a given location"
+#: ppl.description:1056
+#, fuzzy
+msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 "Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture "
 "pour un emplacement donné"
 
 # id::116
-#: ppl.description:1012
-msgid "Allows a user to remove a closed date interval for a given location"
+#: ppl.description:1058
+#, fuzzy
+msgid "Allow a user to remove a closed date interval for a given location"
 msgstr ""
 "Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
 "pour un emplacement donné"
 
 # id::118
-#: ppl.description:1014
-msgid "Allows a user to create a new closed date for a location"
+#: ppl.description:1060
+#, fuzzy
+msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 "Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
 "emplacement"
 
 # id::119
-#: ppl.description:1016
-msgid "Allows a user to delete a non cataloged type"
+#: ppl.description:1062
+#, fuzzy
+msgid "Allow a user to delete a non cataloged type"
 msgstr "Permet à un utilisateur de supprimer un type non catalogué"
 
 # id::120
-#: ppl.description:1018
-msgid "Allows a user to put someone into collections"
+#: ppl.description:1064
+#, fuzzy
+msgid "Allow a user to put someone into collections"
 msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
 
 # id::121
-#: ppl.description:1020
-msgid "Allows a user to remove someone from collections"
+#: ppl.description:1066
+#, fuzzy
+msgid "Allow a user to remove someone from collections"
 msgstr "Permet à un utilisateur de retirer une personne des collections"
 
 # id::122
-#: ppl.description:1022
-msgid "Allows a user to bar a patron"
+#: ppl.description:1068
+#, fuzzy
+msgid "Allow a user to bar a patron"
 msgstr "Permet à un utilisateur d’exclure un client"
 
 # id::123
-#: ppl.description:1024
-msgid "Allows a user to un-bar a patron"
+#: ppl.description:1070
+#, fuzzy
+msgid "Allow a user to un-bar a patron"
 msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
 
 # id::124
-#: ppl.description:1026
-msgid "Allows a user to remove an existing workstation so a new one can replace it"
+#: ppl.description:1072
+#, fuzzy
+msgid "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 "Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
 "nouveau poste puisse le remplacer"
 
 # id::125
-#: ppl.description:1028
-msgid "Allows a user to add/remove users to/from the \"User\" group"
+#: ppl.description:1074
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Utilisateur'\"."
 
 # id::126
-#: ppl.description:1030
-msgid "Allows a user to add/remove users to/from the \"Patron\" group"
+#: ppl.description:1076
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Patron\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Client\""
 
 # id::127
-#: ppl.description:1032
-msgid "Allows a user to add/remove users to/from the \"Staff\" group"
+#: ppl.description:1078
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Personnel\""
 
 # id::128
-#: ppl.description:1034
-msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
+#: ppl.description:1080
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Circulator\""
 
 # id::129
-#: ppl.description:1036
-msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
+#: ppl.description:1082
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Cataloger\""
 
 # id::130
-#: ppl.description:1038
-msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
+#: ppl.description:1084
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"GlobalAdmin\""
 
 # id::131
-#: ppl.description:1040
-msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
+#: ppl.description:1086
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"LocalAdmin\""
 
 # id::132
-#: ppl.description:1042
-msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
+#: ppl.description:1088
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"LibraryManager\""
 
 # id::133
-#: ppl.description:1044
-msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
+#: ppl.description:1090
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Cat1\""
 
 # id::134
-#: ppl.description:1046
-msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
+#: ppl.description:1092
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Supercat\""
 
 # id::135
-#: ppl.description:1048
-msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
+#: ppl.description:1094
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"SIP-Client\""
 
 # id::136
-#: ppl.description:1050
-msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
+#: ppl.description:1096
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Vendor\""
 
 # id::137
-#: ppl.description:1052
-msgid "Allows a user to place a hold on an age-protected item"
+#: ppl.description:1098
+#, fuzzy
+msgid "Allow a user to place a hold on an age-protected item"
 msgstr ""
 "Permet à un utilisateur de mettre en réserve un article protégé contre "
 "l’usure"
 
 # id::138
-#: ppl.description:1054
-msgid "Allows a user to renew an item past the maximun renewal count"
+#: ppl.description:1100
+#, fuzzy
+msgid "Allow a user to renew an item past the maximun renewal count"
 msgstr ""
 "Permet à un utilisateur de renouveler un article après le nombre de "
 "renouvellement maximum"
 
 # id::139
-#: ppl.description:1056
+#: ppl.description:1102
 msgid "Allow staff to override checkout count failure"
 msgstr ""
 "Permet aux membres du personnel de contourner un échec du nombre de sorties"
 
 # id::140
-#: ppl.description:1058
+#: ppl.description:1104
 msgid "Allow staff to override overdue count failure"
 msgstr ""
 "Permet aux membres du personnel de contourner un échec du nombre de retards"
 
 # id::141
-#: ppl.description:1060
+#: ppl.description:1106
 msgid "Allow staff to override fine amount checkout failure"
 msgstr ""
 "Permet aux membres du personnel de contourner un échec de sortie relatif au "
 "montant d’une amende"
 
 # id::142
-#: ppl.description:1062
+#: ppl.description:1108
 msgid "Allow staff to override circulation copy range failure"
 msgstr ""
 
 # id::143
-#: ppl.description:1064
+#: ppl.description:1110
 msgid "Allow staff to override item on holds shelf failure"
 msgstr ""
 
 # id::144
-#: ppl.description:1066
+#: ppl.description:1112
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 "Permet aux membres du personnel de forcer la sortie des types d’articles "
 "manquants ou perdus"
 
 # id::146
-#: ppl.description:1068
-msgid "allows users to place multiple holds on a single title"
+#: ppl.description:1114
+#, fuzzy
+msgid "Allow a user to place multiple holds on a single title"
 msgstr ""
 "Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
 "seul titre"
 
 # id::147
-#: ppl.description:1070
-msgid "Allows a users to run reports"
+#: ppl.description:1116
+#, fuzzy
+msgid "Allow a user to run reports"
 msgstr "Permet à un utilisateur d’exécuter des rapports"
 
 # id::148
-#: ppl.description:1072
-msgid "Allows a user to share report his own folders"
+#: ppl.description:1118
+#, fuzzy
+msgid "Allow a user to share report his own folders"
 msgstr ""
 "Permet à un utilisateur de partager un rapport dans ses propres dossiers"
 
 # id::149
-#: ppl.description:1074
-msgid "Allow user to view report output"
+#: ppl.description:1120
+#, fuzzy
+msgid "Allow a user to view report output"
 msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
 
 # id::150
-#: ppl.description:1076
-msgid "Allows a user to checkout an item that is marked as non-circ"
+#: ppl.description:1122
+#, fuzzy
+msgid "Allow a user to checkout an item that is marked as non-circ"
 msgstr ""
 "Permet à un utilisateur de sortir un article qui est désigné comme « non "
 "prêté »"
 
 # id::151
-#: ppl.description:1078
-msgid "Allows a user to delete an item out of another user's container"
+#: ppl.description:1124
+#, fuzzy
+msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
 "Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
 "d’un autre utilisateur"
 
+# id::153
+# id::157
+# id::88
+#: ppl.description:1126
+#, fuzzy
+msgid "Allow a user to create a new funding source"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::154
+#: ppl.description:1127
+msgid "Allow a user to delete a funding source"
+msgstr ""
+
+# id::155
+#: ppl.description:1128
+msgid "Allow a user to view a funding source"
+msgstr ""
+
+# id::156
+#: ppl.description:1129
+msgid "Allow a user to update a funding source"
+msgstr ""
+
+# id::157
+# id::88
+#: ppl.description:1130
+#, fuzzy
+msgid "Allow a user to create a new fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::158
+# id::157
+# id::88
+#: ppl.description:1131
+#, fuzzy
+msgid "Allow a user to delete a fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::159
+#: ppl.description:1132
+msgid "Allow a user to view a fund"
+msgstr ""
+
+# id::160
+# id::157
+# id::88
+#: ppl.description:1133
+#, fuzzy
+msgid "Allow a user to update a fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::161
+# id::76
+#: ppl.description:1134
+#, fuzzy
+msgid "Allow a user to create a new fund allocation"
+msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
+
+# id::162
+# id::78
+#: ppl.description:1135
+#, fuzzy
+msgid "Allow a user to delete a fund allocation"
+msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
+
+# id::163
+# id::162
+# id::78
+#: ppl.description:1136
+#, fuzzy
+msgid "Allow a user to view a fund allocation"
+msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
+
+# id::164
+# id::77
+#: ppl.description:1137
+#, fuzzy
+msgid "Allow a user to update a fund allocation"
+msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
+
+# id::165
+#: ppl.description:1138
+msgid "Lowest level permission required to access the ACQ interface"
+msgstr ""
+
+# id::166
+# id::88
+#: ppl.description:1139
+#, fuzzy
+msgid "Allow a user to create a new provider"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::167
+# id::166
+# id::88
+#: ppl.description:1140
+#, fuzzy
+msgid "Allow a user to delate a provider"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::168
+# id::166
+# id::88
+#: ppl.description:1141
+#, fuzzy
+msgid "Allow a user to view a provider"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::169
+# id::166
+# id::88
+#: ppl.description:1142
+#, fuzzy
+msgid "Allow a user to update a provider"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::170
+#: ppl.description:1143
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr ""
+
+# id::171
+#: ppl.description:1144
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::172
+#: ppl.description:1145
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::173
+#: ppl.description:1146
+msgid "Allow a user to view/credit/debit a fund"
+msgstr ""
+
+# id::174
+# id::21
+# id::89
+#: ppl.description:1147
+#, fuzzy
+msgid "Allows a user to create a picklist"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::175
+#: ppl.description:1148
+msgid "Allow a user to create/view/update/delete a provider"
+msgstr ""
+
+# id::176
+#: ppl.description:1149
+msgid "Allow a user to view and purchase from a provider"
+msgstr ""
+
+# id::177
+# id::11
+#: ppl.description:1150
+#, fuzzy
+msgid "Allow a user to view another users picklist"
+msgstr ""
+"Permet à un utilisateur de consulter les articles mis en réserve par un "
+"autre utilisateur"
+
 # id::152
-#: ppl.description:1080
+#: ppl.description:1151
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 "Permet aux membres du personnel de déterminer pour quelles actions un autre "
 "membre du personnel a obtenu leurs permissions"
 
+# id::178
 # id::153
-#: ppl.description:1082
+#: ppl.description:1153
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
 "Permet à un membre du personnel de supprimer directement une fiche "
 "bibliographique"
 
+# id::179
+#: ppl.description:1155
+msgid "Allow a user to create/view/update/delete a currency_type"
+msgstr ""
+
 # id::1
-#: pgt.name:1167
+#: pgt.name:1279
 msgid "Users"
 msgstr ""
 
 # id::2
-#: pgt.name:1169
+#: pgt.name:1281
 msgid "Patrons"
 msgstr ""
 
 # id::3
-#: pgt.name:1171
+#: pgt.name:1283
 msgid "Staff"
 msgstr ""
 
 # id::4
-#: pgt.name:1173
+#: pgt.name:1285
 msgid "Catalogers"
 msgstr ""
 
 # id::5
-#: pgt.name:1175
+#: pgt.name:1287
 msgid "Circulators"
 msgstr ""
 
 # id::10
-#: pgt.name:1177
+#: pgt.name:1289
 msgid "Local System Administrator"
 msgstr ""
 
 # id::10
-#: pgt.description:1178
+#: pgt.description:1290
 msgid "System maintenance, configuration, etc."
 msgstr ""
 
 # id::1
-#: acpl.name:1309
+#: acpl.name:1421
 msgid "Stacks"
 msgstr "Piles"
+
+# id::1
+#: vqbrad.description:1475
+msgid "Title of work"
+msgstr ""
+
+# id::1
+#: vqbrad.description:1476
+msgid "Author of work"
+msgstr ""
+
+# id::3
+#: vqbrad.description:1477
+msgid "Language of work"
+msgstr ""
+
+# id::4
+#: vqbrad.description:1478
+msgid "Pagination"
+msgstr ""
+
+# id::5
+# id::6
+# id::2
+#: vqbrad.description:1479
+#, fuzzy
+msgid "ISBN"
+msgstr "SSN"
+
+# id::6
+# id::2
+#: vqbrad.description:1480
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::7
+#: vqbrad.description:1481
+msgid "Price"
+msgstr ""
+
+# id::8
+#: vqbrad.description:1482
+msgid "Accession Number"
+msgstr ""
+
+# id::9
+#: vqbrad.description:1483
+msgid "TCN Value"
+msgstr ""
+
+# id::10
+#: vqbrad.description:1484
+msgid "TCN Source"
+msgstr ""
+
+# id::11
+#: vqbrad.description:1485
+msgid "Internal ID"
+msgstr ""
+
+# id::12
+#: vqbrad.description:1486
+msgid "Publisher"
+msgstr ""
+
+# id::13
+#: vqbrad.description:1487
+msgid "Publication Date"
+msgstr ""
+
+# id::14
+#: vqbrad.description:1488
+msgid "Edition"
+msgstr ""
+
+# id::1
+#: vqarad.description:1538
+msgid "Identifier"
+msgstr ""
+
+# id::19
+#~ msgid "User is allowed to create new MARC records"
+#~ msgstr "L’utilisateur peut créer de nouveaux comptes de MARC"
+
+# id::41
+#~ msgid "User may create new billable transactions"
+#~ msgstr "L’utilisateur peut créer de nouvelles transactions facturables"
+
+# id::24
+#~ msgid "User is allowed to create a new copy object"
+#~ msgstr "L’utilisateur peut créer un nouvel objet d’exemplaire"
+
+# id::47
+#~ msgid "Allows a user to change org unit settings"
+#~ msgstr ""
+#~ "Permet à un utilisateur de modifier les paramètres de l’unité "
+#~ "organisationnelle"
+
+# id::50
+#~ msgid "Create a container item for another user"
+#~ msgstr "Créer un article de panier pour un autre utilisateur"
+
+# id::57
+#~ msgid "User may create a copy stat cat"
+#~ msgstr "L’utilisateur peut créer une catégorie statistique d’exemplaires"
+
+# id::58
+#~ msgid "User may create a new patron stat cat entry"
+#~ msgstr ""
+#~ "L’utilisateur peut créer une nouvelle entrée de catégorie statistique de "
+#~ "clients"
+
+# id::59
+#~ msgid "User may create a new copy stat cat entry"
+#~ msgstr ""
+#~ "L’utilisateur peut créer une nouvelle entrée de catégorie statistique "
+#~ "d’exemplaires"
+
+# id::60
+#~ msgid "User may update a patron stat cat"
+#~ msgstr "L’utilisateur peut mettre à jour une catégorie statistique de clients"
+
+# id::61
+#~ msgid "User may update a copy stat cat"
+#~ msgstr ""
+#~ "L’utilisateur peut mettre à jour une catégorie statistique d’exemplaires"
+
+# id::62
+#~ msgid "User may update a patron stat cat entry"
+#~ msgstr ""
+#~ "L’utilisateur peut mettre à jour une entrée de catégorie statistique de "
+#~ "clients"
+
+# id::65
+#~ msgid "User may link a copy to a stat cat entry"
+#~ msgstr ""
+#~ "L’utilisateur peut associer un exemplaire à une entrée de catégorie "
+#~ "statistique"
+
+# id::64
+#~ msgid "User may link another user to a stat cat entry"
+#~ msgstr ""
+#~ "L’utilisateur peut associer un autre utilisateur à une entrée de catégorie "
+#~ "statistique"
+
+# id::66
+#~ msgid "User may delete a patron stat cat"
+#~ msgstr ""
+#~ "L’utilisateur peut supprimer une entrée de catégorie statistique de clients"
+
+# id::67
+#~ msgid "User may delete a copy stat cat"
+#~ msgstr "L’utilisateur peut supprimer une catégorie statistique d’exemplaires"
+
+# id::68
+#~ msgid "User may delete a patron stat cat entry"
+#~ msgstr "L’utilisateur peut supprimer une catégorie statistique de clients"
+
+# id::91
+#~ msgid "Allows a user to delete someone elses copy notes"
+#~ msgstr ""
+#~ "Permet à un utilisateur de supprimer les notes sur l’exemplaire d’un autre "
+#~ "utilisateur"
+
+# id::92
+#~ msgid "Allows a user to delete someone elses volume note"
+#~ msgstr ""
+#~ "Permet à un utilisateur de supprimer la note sur le volume d’un autre "
+#~ "utilisateur"
+
+# id::93
+#~ msgid "Allows a user to delete someone elses title note"
+#~ msgstr ""
+#~ "Permet à un utilisateur de supprimer la note de titre d’un autre utilisateur"
+
+# id::106
+#~ msgid "Allows a person to check in/out an item that is claims returned"
+#~ msgstr ""
+#~ "Permet à un utilisateur d’entrer ou de sortir un article considéré comme "
+#~ "retourné"
 
 #~ msgid "Gwich'in"
 #~ msgstr "Gwich’in"

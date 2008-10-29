@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 09:33-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: 2008-08-01 12:46+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1689,6 +1689,31 @@ msgstr "Խմբային ձևաչափեր և հրատարակություններ"
 msgid "Go"
 msgstr "Գնա"
 
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr ""
+
+#: advanced.filter.pubyear
+#, fuzzy
+msgid "Publication Year"
+msgstr "Հրատարակման ամսաթիվ"
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr ""
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr ""
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr ""
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr ""
+
 # =================================================================
 # Rdetail
 #. =================================================================
@@ -2301,11 +2326,15 @@ msgstr ""
 msgid "Go!"
 msgstr "Գնա"
 
-# =================================================================
-# Slimpac Simple Search
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr ""
+
+# =================================================================
+# Slimpac Simple Search
 #: slimpac.start.title
 msgid "Simple Search"
 msgstr "Հասարակ փնտրում"
@@ -2426,6 +2455,10 @@ msgstr "Ոչ մեկը"
 msgid "Welcome"
 msgstr ""
 
+#: selfck.printing
+msgid "Printing Receipt..."
+msgstr ""
+
 #. event messages
 #: selfck.event.co_success
 msgid "Check out succeeded"
@@ -2449,6 +2482,50 @@ msgstr ""
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
+msgstr ""
+
+#: selfck.event.already_out
+msgid "The requested item is already checked out to another patron"
+msgstr ""
+
+#: selfck.items_out
+msgid "You checked out the following items"
+msgstr ""
+
+#: selfck.org_hours
+msgid "Hours of Operation"
+msgstr ""
+
+#: selfck.org_phone
+msgid "Library Phone Number"
+msgstr ""
+
+#: selfck.day0
+msgid "Monday"
+msgstr ""
+
+#: selfck.day1
+msgid "Tuesday"
+msgstr ""
+
+#: selfck.day2
+msgid "Wednesday"
+msgstr ""
+
+#: selfck.day3
+msgid "Thursday"
+msgstr ""
+
+#: selfck.day4
+msgid "Friday"
+msgstr ""
+
+#: selfck.day5
+msgid "Saturday"
+msgstr ""
+
+#: selfck.day6
+msgid "Sunday"
 msgstr ""
 
 #~ msgid "YYYY-MM-DD"

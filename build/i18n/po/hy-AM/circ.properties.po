@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 09:34-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22-0400\n"
 "PO-Revision-Date: 2008-08-08 22:08+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,6 +205,18 @@ msgstr "Տրումը ձախողվեց %1$s"
 #: staff.circ.checkout.override.confirm
 msgid "Override Checkout Failure?"
 msgstr "Վերագրե՞լ տրման ձախողումը"
+
+#: staff.circ.checkout.override.item_deposit_required.warning
+msgid ""
+"A billing for an Item Deposit will be added to the patron's account if this "
+"action is overrided."
+msgstr ""
+
+#: staff.circ.checkout.override.item_rental_fee_required.warning
+msgid ""
+"A billing for an Item Rental Fee will be added to the patron's account if "
+"this action is overrided."
+msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -1154,6 +1166,10 @@ msgstr "Ընթերցողի անուն"
 msgid "Override Checkin Failure?"
 msgstr "Վերագրե՞լ հետ ընդունելու ձախողումը"
 
+#: staff.circ.utils.checkin.override.item_deposit_paid.warning
+msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgstr ""
+
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
 msgstr "Տեղափոխում համար %1$s գանձվող $%2$s"
@@ -1223,6 +1239,24 @@ msgstr "Տպիր"
 #: staff.circ.utils.hold_slip.print.no
 msgid "Do Not Print"
 msgstr "Մի տպիր"
+
+#: staff.circ.utils.hold_capture_delayed.description
+msgid ""
+"This item could fulfill a hold request but capture has been delayed by "
+"policy."
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.titlebar
+msgid "Hold Capture Delayed"
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
+msgid "Do Not Capture"
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.prompt_for_capture
+msgid "Capture"
+msgstr ""
 
 #: staff.circ.utils.capture
 msgid "%1$s has been captured for a hold."
@@ -1304,6 +1338,12 @@ msgstr "Շտրիխ կոդ: %1$s Վիճակ: %2$s"
 msgid "Barcode: %1$s Message: %2$s"
 msgstr "Շտրիխ կոդ: %1$s Հաղորդում: %2$s"
 
+#: staff.circ.circ.override.item_rental_fee_required.warning.barcode
+msgid ""
+"For item with barcode %1$s, a billing for an Item Rental Fee will be added "
+"to the patron's account if this action is overrided."
+msgstr ""
+
 #: staff.circ.holds.activate.prompt
 msgid "Are you sure you would like to activate hold %1$s?"
 msgstr "Վստա՞հ ես որ ցանկանում ես ակտիվացնել պահումը %1$s"
@@ -1344,6 +1384,28 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
+msgid "Invalid Date"
+msgstr "Սխալ ամսաթիվ"
+
+#: staff.circ.holds.expire_time.prompt
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.prompt.plural
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.too_early.error
+#, fuzzy
+msgid ""
+"Expiration Date needs to be either unset or set to fall on a future date."
+msgstr ""
+"Ակտիվացման ամսաթիվը կամ պետք է լինի չուղարկված կամ պատկանի ապագա ամսաթվի:"
+
+#: staff.circ.holds.expire_time.invalid_date
+msgctxt "staff.circ.holds.expire_time.invalid_date"
 msgid "Invalid Date"
 msgstr "Սխալ ամսաթիվ"
 

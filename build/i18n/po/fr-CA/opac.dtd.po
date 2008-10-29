@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: 2007-11-19 14:19-0500\n"
 "Last-Translator: Dan Scott <dscott@laurentian.ca>\n"
 "Language-Team: French - Canadian <en@li.org>\n"
@@ -42,6 +42,11 @@ msgstr ""
 msgid "$"
 msgstr "$"
 
+#: common.language
+#, fuzzy
+msgid "Language: "
+msgstr "Langue"
+
 #: common.name
 msgid "Name"
 msgstr "Nom"
@@ -51,10 +56,12 @@ msgid "None"
 msgstr ""
 
 #: common.title
+msgctxt "common.title"
 msgid "Title"
 msgstr "Titre"
 
 #: common.author
+msgctxt "common.author"
 msgid "Author"
 msgstr "Auteur"
 
@@ -167,10 +174,12 @@ msgid "Username"
 msgstr "Nom d'utilisateur"
 
 #: common.password
+msgctxt "common.password"
 msgid "Password"
 msgstr "Mot de passe"
 
 #: common.submit
+msgctxt "common.submit"
 msgid "Submit"
 msgstr "Envoyer"
 
@@ -610,6 +619,7 @@ msgid "Renewing..."
 msgstr ""
 
 #: myopac.checked.renew.remaining
+msgctxt "myopac.checked.renew.remaining"
 msgid "Renewals Remaining"
 msgstr ""
 
@@ -838,8 +848,8 @@ msgstr ""
 msgid "Automatically activate hold on:"
 msgstr ""
 
-#: opac.holds.freeze.thaw_date.format
-msgid "YYYY-MM-DD"
+#: opac.holds.expire_time
+msgid "Expiration date"
 msgstr ""
 
 # =================================================================
@@ -1615,8 +1625,8 @@ msgid "Basic"
 msgstr "De base"
 
 #: advanced.literary.form
-msgid "Literary&nbsp;Form"
-msgstr "Littéraire&nbsp;Formulaire"
+msgid "Literary Form"
+msgstr ""
 
 #: advanced.non.fiction
 msgid "Non Fiction"
@@ -1678,6 +1688,31 @@ msgstr "Formats et éditions du groupe"
 msgid "Go"
 msgstr "Aller"
 
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr ""
+
+#: advanced.filter.pubyear
+#, fuzzy
+msgid "Publication Year"
+msgstr "Date de publication"
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr ""
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr ""
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr ""
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr ""
+
 # =================================================================
 # Rdetail
 #. =================================================================
@@ -1688,6 +1723,7 @@ msgid "print these details"
 msgstr "Imprimer ces détails"
 
 #: rdetail.cn.barcode
+msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
 msgstr "Code à barres"
 
@@ -2306,6 +2342,10 @@ msgstr "Aller!"
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr ""
+
 #: slimpac.start.title
 msgid "Simple Search"
 msgstr ""
@@ -2347,6 +2387,161 @@ msgstr ""
 #: vendor.base_link
 msgid "http://amazon.com/dp/"
 msgstr ""
+
+#. =================================================================
+#. Selfcheck
+#. =================================================================
+#: selfck.staff_login_label
+msgid "Staff login"
+msgstr ""
+
+#: selfck.staff_login
+msgid "Library barcode or username"
+msgstr ""
+
+#: selfck.staff_pw
+msgctxt "selfck.staff_pw"
+msgid "Password"
+msgstr "Mot de passe"
+
+#: selfck.submit
+msgctxt "selfck.submit"
+msgid "Submit"
+msgstr "Envoyer"
+
+#: selfck.clear
+msgid "Clear"
+msgstr ""
+
+#: selfck.patron_barcode_label
+msgid "Please scan your library barcode"
+msgstr ""
+
+#: selfck.item_barcode_label
+msgid "Please scan an item to checkout or renew:"
+msgstr ""
+
+#: selfck.barcode
+msgctxt "selfck.barcode"
+msgid "Barcode"
+msgstr "Code à barres"
+
+#: selfck.title
+msgctxt "selfck.title"
+msgid "Title"
+msgstr "Titre"
+
+#: selfck.author
+msgctxt "selfck.author"
+msgid "Author"
+msgstr "Auteur"
+
+#: selfck.due_date
+#, fuzzy
+msgctxt "selfck.due_date"
+msgid "Due Date"
+msgstr "Échéance"
+
+#: selfck.remaining
+msgctxt "selfck.remaining"
+msgid "Renewals Remaining"
+msgstr ""
+
+#: selfck.cotype
+msgid "Type"
+msgstr ""
+
+#: selfck.cotype_co
+msgid "Checkout"
+msgstr ""
+
+#: selfck.cotype_rn
+msgid "Renewal"
+msgstr ""
+
+#: selfck.done
+msgid "Done"
+msgstr ""
+
+#: selfck.welcome
+msgid "Welcome"
+msgstr ""
+
+#: selfck.printing
+msgid "Printing Receipt..."
+msgstr ""
+
+#. event messages
+#: selfck.event.co_success
+msgid "Check out succeeded"
+msgstr ""
+
+#: selfck.event.co_unknown
+msgid "An unknown event has occurred"
+msgstr ""
+
+#: selfck.event.dupe_barcode
+msgid "This item has already been checked out during this session"
+msgstr ""
+
+#: selfck.event.patron_not_found
+msgid "The patron barcode was not found"
+msgstr ""
+
+#: selfck.event.item_noncat
+msgid "The requested item is not in the catalog"
+msgstr ""
+
+#: selfck.event.item_nocirc
+msgid "The requested item is not allowed to circulate"
+msgstr ""
+
+#: selfck.event.already_out
+msgid "The requested item is already checked out to another patron"
+msgstr ""
+
+#: selfck.items_out
+msgid "You checked out the following items"
+msgstr ""
+
+#: selfck.org_hours
+msgid "Hours of Operation"
+msgstr ""
+
+#: selfck.org_phone
+msgid "Library Phone Number"
+msgstr ""
+
+#: selfck.day0
+msgid "Monday"
+msgstr ""
+
+#: selfck.day1
+msgid "Tuesday"
+msgstr ""
+
+#: selfck.day2
+msgid "Wednesday"
+msgstr ""
+
+#: selfck.day3
+msgid "Thursday"
+msgstr ""
+
+#: selfck.day4
+msgid "Friday"
+msgstr ""
+
+#: selfck.day5
+msgid "Saturday"
+msgstr ""
+
+#: selfck.day6
+msgid "Sunday"
+msgstr ""
+
+#~ msgid "Literary&nbsp;Form"
+#~ msgstr "Littéraire&nbsp;Formulaire"
 
 #~ msgid " of at least "
 #~ msgstr " d'au moins "

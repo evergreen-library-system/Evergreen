@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-08-20 23:42:04-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
 "PO-Revision-Date: 2008-08-09 17:28+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3033,8 +3033,8 @@ msgstr "Պարբերական"
 
 # id::en-US
 #: i18n_l.name:724
-msgid "American English"
-msgstr "Ամերիկական անգլերեն"
+msgid "English (US)"
+msgstr ""
 
 # id::en-US
 #: i18n_l.description:725
@@ -3043,8 +3043,8 @@ msgstr "Ամերիկական անգլերեն"
 
 # id::en-CA
 #: i18n_l.name:727
-msgid "Canadian English"
-msgstr "Կանադական անգլերեն"
+msgid "English (Canada)"
+msgstr ""
 
 # id::en-CA
 #: i18n_l.description:728
@@ -3053,9 +3053,8 @@ msgstr "Կանադական անգլերեն"
 
 # id::fr-CA
 #: i18n_l.name:730
-#, fuzzy
-msgid "Canadian French"
-msgstr "Կանադական ֆրանսերեն"
+msgid "French (Canada)"
+msgstr ""
 
 # id::fr-CA
 #: i18n_l.description:731
@@ -3065,8 +3064,8 @@ msgstr "Կանադական ֆրանսերեն"
 
 # id::es-US
 #: i18n_l.name:733
-msgid "American Spanish"
-msgstr "Ամերիկական իսպաներեն"
+msgid "Spanish (US)"
+msgstr ""
 
 # id::es-US
 #: i18n_l.description:734
@@ -3075,8 +3074,8 @@ msgstr "Ամերիկական իսպաներեն"
 
 # id::es-MX
 #: i18n_l.name:736
-msgid "Mexican Spanish"
-msgstr "Մեքսիկական իսպաներեն"
+msgid "Spanish (Mexico)"
+msgstr ""
 
 # id::es-MX
 #: i18n_l.description:737
@@ -3093,753 +3092,1428 @@ msgstr "Հայերեն"
 msgid "Armenian"
 msgstr "Հայերեն"
 
+# id::loc
+#: czs.label:745
+msgid "Library of Congress"
+msgstr ""
+
+# id::loc
+#: czs.label:747
+msgid "OCLC"
+msgstr ""
+
 # id::1
-#: aout.name:746
+#: cza.label:750
+msgid "Title Control Number"
+msgstr ""
+
+# id::2
+#: cza.label:752
+msgid "ISBN"
+msgstr ""
+
+# id::3
+#: cza.label:754
+msgid "LCCN"
+msgstr ""
+
+# id::4
+#: cza.label:756
+msgid "Author"
+msgstr ""
+
+# id::5
+#: cza.label:758
+msgid "Title"
+msgstr ""
+
+# id::6
+# id::2
+#: cza.label:760
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::7
+#: cza.label:762
+msgid "Publisher"
+msgstr ""
+
+# id::8
+#: cza.label:764
+msgid "Publication Date"
+msgstr ""
+
+# id::9
+#: cza.label:766
+msgid "Item Type"
+msgstr ""
+
+# id::10
+#: cza.label:769
+msgid "Title Control Number"
+msgstr ""
+
+# id::11
+#: cza.label:771
+msgid "ISBN"
+msgstr ""
+
+# id::12
+#: cza.label:773
+msgid "LCCN"
+msgstr ""
+
+# id::13
+#: cza.label:775
+msgid "Author"
+msgstr ""
+
+# id::14
+#: cza.label:777
+msgid "Title"
+msgstr ""
+
+# id::15
+# id::2
+#: cza.label:779
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::16
+#: cza.label:781
+msgid "Publisher"
+msgstr ""
+
+# id::17
+#: cza.label:783
+msgid "Publication Date"
+msgstr ""
+
+# id::18
+#: cza.label:785
+msgid "Item Type"
+msgstr ""
+
+# id::1
+#: aout.name:792
 msgid "Consortium"
 msgstr "Միավորում"
 
 # id::1
-#: aout.opac_label:747
+#: aout.opac_label:793
 msgid "Everywhere"
 msgstr ""
 
 # id::2
-#: aout.name:749
+#: aout.name:795
 msgid "System"
 msgstr "Համակարգ"
 
 # id::2
-#: aout.opac_label:750
+#: aout.opac_label:796
 msgid "Local Library System"
 msgstr ""
 
 # id::3
-#: aout.name:752
+#: aout.name:798
 msgid "Branch"
 msgstr "Մասնաճյուղ"
 
 # id::3
-#: aout.opac_label:753
+#: aout.opac_label:799
 msgid "This Branch"
 msgstr ""
 
 # id::4
-#: aout.name:755
+#: aout.name:801
 msgid "Sub-library"
 msgstr ""
 
 # id::4
-#: aout.opac_label:756
+#: aout.opac_label:802
 msgid "This Specialized Library"
 msgstr ""
 
 # id::5
-#: aout.name:758
+#: aout.name:804
 msgid "Bookmobile"
 msgstr "Ավտոգրադարան"
 
 # id::5
-#: aout.opac_label:759
+#: aout.opac_label:805
 msgid "Your Bookmobile"
 msgstr ""
 
 # id::1
-#: aou.name:763
+#: aou.name:809
 msgid "Example Consortium"
 msgstr "Միավորման օրինակ"
 
 # id::2
-#: aou.name:765
+#: aou.name:811
 msgid "Example System 1"
 msgstr "Օրինակ համակարգ 1"
 
 # id::3
-#: aou.name:767
+#: aou.name:813
 msgid "Example System 2"
 msgstr "Օրինակ համակարգ 2"
 
 # id::4
-#: aou.name:769
+#: aou.name:815
 msgid "Example Branch 1"
 msgstr "Օրինակ մասնաճյուղ 1"
 
 # id::5
-#: aou.name:771
+#: aou.name:817
 msgid "Example Branch 2"
 msgstr "Օրինակ մասնաճյուղ 2"
 
 # id::6
-#: aou.name:773
+#: aou.name:819
 msgid "Example Branch 3"
 msgstr "Օրինակ մասնաճյուղ 3"
 
 # id::7
-#: aou.name:775
+#: aou.name:821
 msgid "Example Branch 4"
 msgstr "Օրինակ մասնաճյուղ 4"
 
 # id::8
-#: aou.name:777
+#: aou.name:823
 #, fuzzy
 msgid "Example Sub-library 1"
 msgstr "Example Sub-lib 1"
 
 # id::9
-#: aou.name:779
+#: aou.name:825
 msgid "Example Bookmobile 1"
 msgstr "Example Bookmobile 1"
 
+# id::2
+#: ppl.description:836
+msgid "Allow a user to log in to the OPAC"
+msgstr ""
+
+# id::4
+#: ppl.description:838
+msgid "Allow a user to log in to the staff client"
+msgstr ""
+
+# id::5
+#: ppl.description:840
+msgid "Allow a user to create a metarecord holds"
+msgstr ""
+
+# id::6
+#: ppl.description:842
+msgid "Allow a user to place a hold at the title level"
+msgstr ""
+
+# id::7
+#: ppl.description:844
+msgid "Allow a user to place a volume level hold"
+msgstr ""
+
 # id::8
-#: ppl.description:800
-msgid "User is allowed to place a hold on a specific copy"
+#: ppl.description:846
+#, fuzzy
+msgid "Allow a user to place a hold on a specific copy"
 msgstr "Օգտվողը կարող է որոշակի օրինակի համար տեղադրել պահում"
 
+# id::9
+#: ppl.description:848
+msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
+msgstr ""
+
+# id::10
+#: ppl.description:850
+msgid "* no longer applicable"
+msgstr ""
+
 # id::11
-#: ppl.description:806
-msgid "Allows a user to view another user's holds"
+#: ppl.description:852
+#, fuzzy
+msgid "Allow a user to view another user's holds"
 msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
 
+# id::13
+#: ppl.description:854
+msgid "* no longer applicable"
+msgstr ""
+
 # id::14
-#: ppl.description:810
-msgid "Allows a user to update another user's hold"
+#: ppl.description:856
+#, fuzzy
+msgid "Allow a user to update another user's hold"
 msgstr "Թույլ է տալիս օգտվողին թարմացնելու այլ օգտվողի պահումները"
 
+# id::15
+#: ppl.description:858
+msgid "Allow a user to renew items"
+msgstr ""
+
+# id::16
+#: ppl.description:860
+msgid "Allow a user to view bill details"
+msgstr ""
+
+# id::17
+#: ppl.description:862
+msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
+msgstr ""
+
+# id::18
+#: ppl.description:864
+msgid "Allow a user to edit a MARC record"
+msgstr ""
+
 # id::19
-#: ppl.description:820
-msgid "User is allowed to create new MARC records"
-msgstr "Օգտվողը իրավունք ունի ստեղծելու նոր MARC գրառումներ"
+#: ppl.description:866
+msgid "Allow a user to create new MARC records"
+msgstr ""
+
+# id::20
+#: ppl.description:868
+msgid "Allow a user to import a MARC record via the Z39.50 interface"
+msgstr ""
+
+# id::21
+# id::89
+#: ppl.description:870
+#, fuzzy
+msgid "Allow a user to create a volume"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
+
+# id::22
+#: ppl.description:872
+msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
+msgstr ""
+
+# id::23
+#: ppl.description:874
+msgid "Allow a user to delete a volume"
+msgstr ""
+
+# id::25
+# id::75
+#: ppl.description:876
+#, fuzzy
+msgid "Allow a user to edit a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::26
+#: ppl.description:878
+msgid "Allow a user to delete a copy"
+msgstr ""
+
+# id::27
+#: ppl.description:880
+msgid "Allow a user to continue to renew an item even if it is required for a hold"
+msgstr ""
+
+# id::28
+#: ppl.description:882
+msgid "Allow a user to create another user"
+msgstr ""
+
+# id::29
+#: ppl.description:884
+msgid "Allow a user to edit a user's record"
+msgstr ""
+
+# id::30
+#: ppl.description:886
+msgid "Allow a user to mark a user as deleted"
+msgstr ""
+
+# id::31
+#: ppl.description:888
+msgid "Allow a user to view another user's Patron Record"
+msgstr ""
+
+# id::32
+# id::75
+#: ppl.description:890
+#, fuzzy
+msgid "Allow a user to check in a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::33
+#: ppl.description:892
+msgid "Allow a user to place an item in transit"
+msgstr ""
+
+# id::34
+#: ppl.description:894
+msgid "Allow a user to view user permissions within the user permissions editor"
+msgstr ""
+
+# id::35
+#: ppl.description:896
+msgid "* no longer applicable"
+msgstr ""
+
+# id::36
+#: ppl.description:898
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::37
+#: ppl.description:900
+msgid "Allow a user to mark an item as 'lost'"
+msgstr ""
+
+# id::38
+#: ppl.description:902
+msgid "Allow a user to mark an item as 'missing'"
+msgstr ""
+
+# id::39
+#: ppl.description:904
+msgid "Allow a user to mark an item as 'claims returned'"
+msgstr ""
 
 # id::41
-#: ppl.description:860
-msgid "User may create new billable transactions"
-msgstr "Օգտվողը կարող է ստեղծել նոր վճարովի տրանզակցիաներ"
+# id::43
+#: ppl.description:906
+#, fuzzy
+msgid "Allow a user to create a new billable transaction"
+msgstr "Թույլ է տալիս օգտվողին տրանզակցիայի համար ստեղծել նոր հաշիվ"
 
 # id::43
-#: ppl.description:862
-msgid "Allows a user to create a new bill on a transaction"
+#: ppl.description:908
+#, fuzzy
+msgid "Allow a user to create a new bill on a transaction"
 msgstr "Թույլ է տալիս օգտվողին տրանզակցիայի համար ստեղծել նոր հաշիվ"
 
 # id::44
-#: ppl.description:864
-msgid "Allows a user to view another user's containers (buckets)"
+#: ppl.description:910
+#, fuzzy
+msgid "Allow a user to view another user's containers (buckets)"
 msgstr "Թույլ է տալիս օգտվողին դիտել այլ օգտվողի կոնտեյները (փնջերը)"
 
 # id::45
-#: ppl.description:866
-msgid "Allows a user to create a new container for another user"
+#: ppl.description:912
+#, fuzzy
+msgid "Allow a user to create a new container for another user"
 msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի համար ստեղծել նոր կոնտեյներ"
 
 # id::24
-#: ppl.description:868
-msgid "User is allowed to create a new copy object"
-msgstr "Օգտվողը կարող է ստեղծել նոր պատճե"
+# id::88
+#: ppl.description:914
+#, fuzzy
+msgid "Allow a user to create a new copy object"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::47
-#: ppl.description:870
-msgid "Allows a user to change org unit settings"
-msgstr "Թույլ է տալիս օգտվողին փոխել կազմ միավորի կարգաբերումները"
+#: ppl.description:916
+msgid "Allow a user to change the settings for an organization unit"
+msgstr ""
 
 # id::48
-#: ppl.description:872
-msgid "Allows a user to see what another use has checked out"
+#: ppl.description:918
+#, fuzzy
+msgid "Allow a user to see what another use has checked out"
 msgstr "Թույլ է տալիս օգտվողին տեսնել ինչ է մյուս օգտվոչը վերցրել"
 
 # id::42
-#: ppl.description:874
-msgid "User may view another user's transactions"
+#: ppl.description:920
+#, fuzzy
+msgid "Allow a user may view another user's transactions"
 msgstr "Օգտվողը կարող է դիտել այլ օգտվողի տրանզակցիաները"
 
 # id::49
-#: ppl.description:876
-msgid "Allows a user to delete another user container"
+#: ppl.description:922
+#, fuzzy
+msgid "Allow a user to delete another user container"
 msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
 
 # id::50
-#: ppl.description:878
-msgid "Create a container item for another user"
-msgstr "Ստեղծում է կոնտեյների նյութ այլ օգտվողի համար"
+# id::45
+#: ppl.description:924
+#, fuzzy
+msgid "Allow a user to create a container item for another user"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի համար ստեղծել նոր կոնտեյներ"
 
 # id::51
-#: ppl.description:880
-msgid "User can add other users to permission groups"
+#: ppl.description:926
+#, fuzzy
+msgid "Allow a user to add other users to permission groups"
 msgstr "Օգտվողը կարող է իրավասությունների խմբերին ավելացնել այլ օգտվողների "
 
 # id::52
-#: ppl.description:882
-msgid "User can remove other users from permission groups"
+#: ppl.description:928
+#, fuzzy
+msgid "Allow a user to remove other users from permission groups"
 msgstr "Օգտվողը կարող է իրավասությունների խմբերին հեռացնել այլ օգտվողների "
 
 # id::53
-#: ppl.description:884
-msgid "Allow user to view others' permission groups"
+#: ppl.description:930
+#, fuzzy
+msgid "Allow a user to view other users' permission groups"
 msgstr "Թույլ է տալիս օգտվողին դիտել ուրիշների իրավասությունների խմբերը"
 
 # id::54
-#: ppl.description:886
-msgid "Allows a user to determine of another user can checkout an item"
+#: ppl.description:932
+#, fuzzy
+msgid "Allow a user to determine whether another user can check out an item"
 msgstr "Թույլ է տալիս օգտվողին սահմանել որ մեկ այլ օգտվող կարող է ստանալ նյութ"
 
 # id::55
-#: ppl.description:888
-msgid "Allows a user to edit copies in batch"
+#: ppl.description:934
+#, fuzzy
+msgid "Allow a user to edit copies in batch"
 msgstr "Թույլ է տալիս օգտվողին փաթեթով խմբագրել օրինակները"
 
 # id::56
-#: ppl.description:890
+#: ppl.description:936
 msgid "User may create a new patron statistical category"
 msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::57
-#: ppl.description:892
-msgid "User may create a copy stat cat"
-msgstr "Օգտվողը կարող է ստեղծել վիճ քարտ պատճե"
+# id::56
+#: ppl.description:938
+#, fuzzy
+msgid "User may create a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::58
-#: ppl.description:894
-msgid "User may create a new patron stat cat entry"
-msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողի վիճ քարտ մուտք"
+# id::56
+#: ppl.description:940
+#, fuzzy
+msgid "User may create an entry in a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::59
-#: ppl.description:896
-msgid "User may create a new copy stat cat entry"
-msgstr "Օգտվողը կարող է ստեղծել նոր պատճե վիճ քարտ մուտքի"
+# id::56
+#: ppl.description:942
+#, fuzzy
+msgid "User may create an entry in a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::60
-#: ppl.description:898
-msgid "User may update a patron stat cat"
-msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտը"
+# id::56
+#: ppl.description:944
+#, fuzzy
+msgid "User may update a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::61
-#: ppl.description:900
-msgid "User may update a copy stat cat"
-msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ"
-
-# id::62
-#: ppl.description:902
-msgid "User may update a patron stat cat entry"
-msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտի մուտքը"
-
 # id::63
-#: ppl.description:904
-msgid "User may update a copy stat cat entry"
+#: ppl.description:946
+#, fuzzy
+msgid "User may update a copy statistical category"
 msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ մուտքը"
 
+# id::62
+# id::56
+#: ppl.description:948
+#, fuzzy
+msgid "User may update an entry in a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::63
+#: ppl.description:950
+msgid "User may update an entry in a copy statistical category"
+msgstr ""
+
 # id::65
-#: ppl.description:906
-msgid "User may link a copy to a stat cat entry"
-msgstr "Օգտվողը կարող է կապել պատճեի վիճ քարտ մուտքը"
+#: ppl.description:952
+msgid "User may link a copy to an entry in a statistical category"
+msgstr ""
 
 # id::64
-#: ppl.description:908
-msgid "User may link another user to a stat cat entry"
-msgstr "Օգտվողը կարող է կապել մեկ այլ օգտվողի վիճ քարտ մուտքի"
+#: ppl.description:954
+msgid "User may link another user to an entry in a statistical category"
+msgstr ""
 
 # id::66
-#: ppl.description:910
-msgid "User may delete a patron stat cat"
-msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտը"
+# id::56
+#: ppl.description:956
+#, fuzzy
+msgid "User may delete a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::67
-#: ppl.description:912
-msgid "User may delete a copy stat cat"
-msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտը"
-
-# id::68
-#: ppl.description:914
-msgid "User may delete a patron stat cat entry"
-msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտի մուտքը"
-
 # id::69
-#: ppl.description:916
-msgid "User may delete a copy stat cat entry"
+#: ppl.description:958
+#, fuzzy
+msgid "User may delete a copy statistical category"
 msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտ մուտքը"
 
+# id::68
+#: ppl.description:960
+msgid "User may delete an entry from a patron statistical category"
+msgstr ""
+
+# id::69
+#: ppl.description:962
+msgid "User may delete an entry from a copy statistical category"
+msgstr ""
+
 # id::70
-#: ppl.description:918
-msgid "User may delete a patron stat cat entry map"
+#: ppl.description:964
+#, fuzzy
+msgid "User may delete a patron statistical category entry map"
 msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտ մուտքի քարտեզը"
 
 # id::71
-#: ppl.description:920
-msgid "User may delete a copy stat cat entry map"
+#: ppl.description:966
+#, fuzzy
+msgid "User may delete a copy statistical category entry map"
 msgstr "Թույլ է տալիս օգտվողին ջնջել վիճ քարտ մուտքի քարտեզը"
 
 # id::72
-#: ppl.description:922
-msgid "Allows a user to create a new non-cataloged item type"
+#: ppl.description:968
+#, fuzzy
+msgid "Allow a user to create a new non-cataloged item type"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր չմուտքագրված նյութի տէսակ"
 
 # id::73
-#: ppl.description:924
-msgid "Allows a user to update a non cataloged type"
+#: ppl.description:970
+#, fuzzy
+msgid "Allow a user to update a non-cataloged item type"
 msgstr "Թույլ է տալիս օգտվողին թարմացնել չմուտքագրված նյութի տէսակը"
 
 # id::74
-#: ppl.description:926
-msgid "Allows a user to create a new in-house-use "
+#: ppl.description:972
+#, fuzzy
+msgid "Allow a user to create a new in-house-use "
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր տնային օգտագործում"
 
 # id::75
-#: ppl.description:928
-msgid "Allows a user to check out a copy"
+#: ppl.description:974
+#, fuzzy
+msgid "Allow a user to check out a copy"
 msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
 
 # id::76
-#: ppl.description:930
-msgid "Allows a user to create a new copy location"
+#: ppl.description:976
+#, fuzzy
+msgid "Allow a user to create a new copy location"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պատճեի տեղաբաշխում"
 
 # id::77
-#: ppl.description:932
-msgid "Allows a user to update a copy location"
+#: ppl.description:978
+#, fuzzy
+msgid "Allow a user to update a copy location"
 msgstr "Թույլ է տալիս օգտվողին թարմացնել պատճեի տէղաբաշխումը"
 
 # id::78
-#: ppl.description:934
-msgid "Allows a user to delete a copy location"
+#: ppl.description:980
+#, fuzzy
+msgid "Allow a user to delete a copy location"
 msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
 
 # id::79
-#: ppl.description:936
-msgid "Allows a user to create a transit_copy object for transiting a copy"
+#: ppl.description:982
+#, fuzzy
+msgid "Allow a user to create a transit_copy object for transiting a copy"
 msgstr ""
 "Թույլ է տալիս օգտվողին ստեղծել transit_copy պատկեր պատճեի տրանզիտի համար"
 
 # id::80
-#: ppl.description:938
-msgid "Allows a user to close out a transit on a copy"
+#: ppl.description:984
+#, fuzzy
+msgid "Allow a user to close out a transit on a copy"
 msgstr "Թույլ է տալիս օգտվողին փակել պատճեի տրանզիտը"
 
 # id::81
-#: ppl.description:940
-msgid "Allows a user to see if another user has permission to place a hold on a given copy"
+#: ppl.description:986
+#, fuzzy
+msgid "Allow a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 "Թույլ է տալիս օգտվողին տեսնել արդյոք այլ օգտվող ունի իրավասություն տրված "
 "օրինակի համար պահում կատարել"
 
 # id::82
-#: ppl.description:942
-msgid "Allows a user to view which users have checked out a given copy"
+#: ppl.description:988
+#, fuzzy
+msgid "Allow a user to view which users have checked out a given copy"
 msgstr "Թույլ է տալիս օգտվողին տեսնել թե որ օգտվողներն են վերցրել տրված օրինակը"
 
 # id::83
-#: ppl.description:944
-msgid "Allows a user to perform z3950 queries against remote servers"
+#: ppl.description:990
+#, fuzzy
+msgid "Allow a user to perform Z39.50 queries against remote servers"
 msgstr "Թույլ է տալիս օգտվողին ձևավորել z3950 հարցումներ "
 
 # id::84
-#: ppl.description:946
-msgid "Allows a user to register a new workstation"
+#: ppl.description:992
+#, fuzzy
+msgid "Allow a user to register a new workstation"
 msgstr "Թույլ է տալիս օգտվողին գրանցել նոր աշխատանքային կայան"
 
 # id::85
-#: ppl.description:948
-msgid "Allows a user to view all notes attached to a copy"
+#: ppl.description:994
+#, fuzzy
+msgid "Allow a user to view all notes attached to a copy"
 msgstr "Թույլ է տալիս օգտվողին դիտել պատճեին կցված բոլոր նշումները"
 
 # id::86
-#: ppl.description:950
-msgid "Allows a user to view all notes attached to a volume"
+#: ppl.description:996
+#, fuzzy
+msgid "Allow a user to view all notes attached to a volume"
 msgstr "Թույլ է տալիս օգտվողին դիտել հատորին կցված բոլոր նշումները"
 
 # id::87
-#: ppl.description:952
-msgid "Allows a user to view all notes attached to a title"
+#: ppl.description:998
+#, fuzzy
+msgid "Allow a user to view all notes attached to a title"
 msgstr "Թույլ է տալիս օգտվողին դիտել վերնագրին կցված բոլոր նշումները"
 
 # id::89
-#: ppl.description:954
-msgid "Allows a user to create a new volume note"
+#: ppl.description:1000
+#, fuzzy
+msgid "Allow a user to create a new volume note"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
 
 # id::88
-#: ppl.description:956
-msgid "Allows a user to create a new copy note"
+#: ppl.description:1002
+#, fuzzy
+msgid "Allow a user to create a new copy note"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::90
-#: ppl.description:958
-msgid "Allows a user to create a new title note"
+#: ppl.description:1004
+#, fuzzy
+msgid "Allow a user to create a new title note"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր վերնագրի նշում"
 
 # id::91
-#: ppl.description:960
-msgid "Allows a user to delete someone elses copy notes"
-msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի օրինակի նշումները"
+# id::49
+#: ppl.description:1006
+#, fuzzy
+msgid "Allow a user to delete another user's copy notes"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
 
 # id::92
-#: ppl.description:962
-msgid "Allows a user to delete someone elses volume note"
-msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի հատորի նշումները"
+# id::49
+#: ppl.description:1008
+#, fuzzy
+msgid "Allow a user to delete another user's volume note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
 
 # id::93
-#: ppl.description:964
-msgid "Allows a user to delete someone elses title note"
-msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի վերնագրի նշումները"
+# id::49
+#: ppl.description:1010
+#, fuzzy
+msgid "Allow a user to delete another user's title note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
 
 # id::94
-#: ppl.description:966
-msgid "Allows a user to update another users container"
+#: ppl.description:1012
+#, fuzzy
+msgid "Allow a user to update another user's container"
 msgstr "Թույլ է տալիս օգտվողին թարմացնել մեկ ուրիշ օգտվողի կոնտեյները"
 
 # id::95
-#: ppl.description:968
-msgid "Allows a user to create a container for themselves"
+#: ppl.description:1014
+#, fuzzy
+msgid "Allow a user to create a container for themselves"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել իր համար կոնտեյներ"
 
 # id::96
-#: ppl.description:970
-msgid "Allows a user to view notifications attached to a hold"
+#: ppl.description:1016
+#, fuzzy
+msgid "Allow a user to view notifications attached to a hold"
 msgstr "Թույլ է տալիս օգտվողին դիտել պահմանը կցված հիշեցումները"
 
 # id::97
-#: ppl.description:972
-msgid "Allows a user to create new hold notifications"
+#: ppl.description:1018
+#, fuzzy
+msgid "Allow a user to create new hold notifications"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պահման նշում"
 
 # id::98
-#: ppl.description:974
-msgid "Allows a user to update an org unit setting"
+#: ppl.description:1020
+#, fuzzy
+msgid "Allow a user to update an organization unit setting"
 msgstr "Թույլ է տալիս օգտվողին թարմացնել կազմ միավորի կարգաբերումները"
 
 # id::99
-#: ppl.description:976
-msgid "Allows a user to upload an offline script"
+#: ppl.description:1022
+#, fuzzy
+msgid "Allow a user to upload an offline script"
 msgstr "Թույլ է տալիս օգտվողին բեռնավորել օֆլայն սկրիպտը"
 
 # id::100
-#: ppl.description:978
-msgid "Allows a user to view uploaded offline script information"
+#: ppl.description:1024
+#, fuzzy
+msgid "Allow a user to view uploaded offline script information"
 msgstr "Թույլ է տալիս օգտվողին դիտել բեռնավորված օֆլայն սկրիպտի ինֆորմացիան"
 
 # id::101
-#: ppl.description:980
-msgid "Allows a user to execute an offline script batch"
+#: ppl.description:1026
+#, fuzzy
+msgid "Allow a user to execute an offline script batch"
 msgstr "Թույլ է տալիս օգտվողին կատարել օֆլայն սկրիպտի փաթեթը"
 
 # id::102
-#: ppl.description:982
-msgid "Allows a user to change set the due date on an item to any date"
+#: ppl.description:1028
+#, fuzzy
+msgid "Allow a user to change the due date on an item to any date"
 msgstr "Թույլ է տալիս օգտվողին փոխել նյութի վերադարձի ամսաթիվը այլով: "
 
 # id::103
-#: ppl.description:984
-msgid "Allows a user to bypass the circ permit call for checkout"
+#: ppl.description:1030
+#, fuzzy
+msgid "Allow a user to bypass the circulation permit call for check out"
 msgstr ""
 "Թույլ է տալիս օգտվողին դուրս տրման համար շրջանցել տացքի թույլտվության կանչը "
 
 # id::104
-#: ppl.description:986
-msgid "Allows a user to override the copy_is_reference event"
+#: ppl.description:1032
+#, fuzzy
+msgid "Allow a user to override the copy_is_reference event"
 msgstr "Թույլ է տալիս օգտվողին վերագրել copy_is_reference իրադարձությունը"
 
 # id::105
-#: ppl.description:988
-msgid "Allows a user to void a bill"
+#: ppl.description:1034
+#, fuzzy
+msgid "Allow a user to void a bill"
 msgstr "Թույլ է տալիս օգտվողին արգելափակել հաշիվը"
 
 # id::106
-#: ppl.description:990
-msgid "Allows a person to check in/out an item that is claims returned"
-msgstr "Թույլ է տալիս մարդուն սպասարկել նյութը որը խարանված վերադարձ է:"
+#: ppl.description:1036
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
+msgstr ""
 
 # id::107
-#: ppl.description:992
-msgid "Allows a user to check out an item in a non-circulatable status"
+#: ppl.description:1038
+#, fuzzy
+msgid "Allow a user to check out an item in a non-circulatable status"
 msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութ որը ունի չսպասարկվող վիճակ"
 
 # id::108
-#: ppl.description:994
-msgid "Allows a user to check in/out an item that has an alert message"
+#: ppl.description:1040
+#, fuzzy
+msgid "Allow a user to check in/out an item that has an alert message"
 msgstr "Թույլ է տալիս օգտվողին սպասարկել զգուշացնող հաղորդումով նյութը"
 
 # id::109
-#: ppl.description:996
-msgid "Allows a user to remove the lost status from a copy"
+#: ppl.description:1042
+#, fuzzy
+msgid "Allow a user to remove the lost status from a copy"
 msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի կորածի վիճակը"
 
 # id::110
-#: ppl.description:998
-msgid "Allows a user to change the missing status on a copy"
+#: ppl.description:1044
+#, fuzzy
+msgid "Allow a user to change the missing status on a copy"
 msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի բացակաի վիճակը"
 
 # id::111
-#: ppl.description:1000
-msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
+#: ppl.description:1046
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 "Թույլ է տալիս օգտվողին վիժեցնելու օրինակի տրանզիտը, եթե օգտվողը տրանզիտ "
 "կետում է:"
 
 # id::112
-#: ppl.description:1002
-msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
+#: ppl.description:1048
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 "Թույլ է տալիս օգտվողին վիժեցնել օրինակի տրանզիտը, եթե օգտվողը չի գտնվում "
 "տրանզիտի սկզբնաղբյուրում"
 
 # id::113
-#: ppl.description:1004
+#: ppl.description:1050
 #, fuzzy
-msgid "Allows a user to query the ZIP code data method"
+msgid "Allow a user to query the ZIP code data method"
 msgstr "Թույլ է տալիս օգտվողին հարցնել զիպ կոդի տվյալի մեթոդը"
 
 # id::114
-#: ppl.description:1006
-msgid "Allows a user to cancel holds"
+#: ppl.description:1052
+msgid "Allow a user to cancel holds"
 msgstr ""
 
 # id::115
-#: ppl.description:1008
+#: ppl.description:1054
 #, fuzzy
-msgid "Allows a user to create duplicate holds (two or more holds on the same title)"
+msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 "Թույլ է տալիս օգտվողին ստեղծել կրկնակի պահումներ (այսինքն՝ նույն վերնագրի "
 "համար երկու պահում):"
 
 # id::117
-#: ppl.description:1010
-msgid "Allows a user to update a closed date interval for a given location"
+#: ppl.description:1056
+#, fuzzy
+msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 "Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար թարմացնել փակ ամսաթվի "
 "տիրույթը:"
 
 # id::116
-#: ppl.description:1012
-msgid "Allows a user to remove a closed date interval for a given location"
+#: ppl.description:1058
+#, fuzzy
+msgid "Allow a user to remove a closed date interval for a given location"
 msgstr ""
 "Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար հեռացնել փակ ամսաթվի "
 "տիրույթը:"
 
 # id::118
-#: ppl.description:1014
-msgid "Allows a user to create a new closed date for a location"
+#: ppl.description:1060
+#, fuzzy
+msgid "Allow a user to create a new closed date for a location"
 msgstr "Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար ստեղծել նոր փակ ամսաթիվ:"
 
 # id::119
-#: ppl.description:1016
-msgid "Allows a user to delete a non cataloged type"
+#: ppl.description:1062
+#, fuzzy
+msgid "Allow a user to delete a non cataloged type"
 msgstr "Թույլ է տալիս օգտվողին ջնջել չմուտքագրվող տեսակը:"
 
 # id::120
-#: ppl.description:1018
-msgid "Allows a user to put someone into collections"
+#: ppl.description:1064
+#, fuzzy
+msgid "Allow a user to put someone into collections"
 msgstr "Թույլ է տալիս օգտվողին մտցնել ինչ որ մեկին հավաքածուի մեջ:"
 
 # id::121
-#: ppl.description:1020
-msgid "Allows a user to remove someone from collections"
+#: ppl.description:1066
+#, fuzzy
+msgid "Allow a user to remove someone from collections"
 msgstr "Թույլ է տալիս օգտվողին հեռացնել ինչ որ մեկին հավաքածուից: "
 
 # id::122
-#: ppl.description:1022
-msgid "Allows a user to bar a patron"
+#: ppl.description:1068
+#, fuzzy
+msgid "Allow a user to bar a patron"
 msgstr "Թույլ է տալիս օգտվողին արգելափակել ընթերցողին:"
 
 # id::123
-#: ppl.description:1024
-msgid "Allows a user to un-bar a patron"
+#: ppl.description:1070
+#, fuzzy
+msgid "Allow a user to un-bar a patron"
 msgstr "Թույլ է տալիս օգտվողին բացել ընթերցողին:"
 
 # id::124
-#: ppl.description:1026
-msgid "Allows a user to remove an existing workstation so a new one can replace it"
+#: ppl.description:1072
+#, fuzzy
+msgid "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 "Թույլ է տալիս օգտվողին հեռացնել առկա աշխատանքային կայանը, այսպիսով նորը "
 "կարող է փոխարինել դրան:"
 
 # id::125
-#: ppl.description:1028
-msgid "Allows a user to add/remove users to/from the \"User\" group"
+#: ppl.description:1074
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Օգտվող\" խմբից"
 
 # id::126
-#: ppl.description:1030
-msgid "Allows a user to add/remove users to/from the \"Patron\" group"
+#: ppl.description:1076
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Patron\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Հաճախորդ\" խմբից:"
 
 # id::127
-#: ppl.description:1032
-msgid "Allows a user to add/remove users to/from the \"Staff\" group"
+#: ppl.description:1078
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Աշխատակազմ\" խմբից"
 
 # id::128
-#: ppl.description:1034
-msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
+#: ppl.description:1080
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Տացքավար\" խմբից"
 
 # id::129
-#: ppl.description:1036
-msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
+#: ppl.description:1082
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Քարտագրող\" խմբից"
 
 # id::130
-#: ppl.description:1038
-msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
+#: ppl.description:1084
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳլոբալԱդմին\" խմբից"
 
 # id::131
-#: ppl.description:1040
-msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
+#: ppl.description:1086
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԼոկալԱդմին\" խմբից"
 
 # id::132
-#: ppl.description:1042
-msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
+#: ppl.description:1088
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳրադարանիԿառավարիչ\" "
 "խմբից"
 
 # id::133
-#: ppl.description:1044
-msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
+#: ppl.description:1090
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Cat1\" խմբից"
 
 # id::134
-#: ppl.description:1046
-msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
+#: ppl.description:1092
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Supercat\" խմբից"
 
 # id::135
-#: ppl.description:1048
-msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
+#: ppl.description:1094
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"SIP-Client\" խմբից"
 
 # id::136
-#: ppl.description:1050
-msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
+#: ppl.description:1096
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Մատակարար\" խմբից:"
 
 # id::137
-#: ppl.description:1052
-msgid "Allows a user to place a hold on an age-protected item"
+#: ppl.description:1098
+#, fuzzy
+msgid "Allow a user to place a hold on an age-protected item"
 msgstr "Թույլ է տալիս օգտվողին դնել պահում երկարաժամկետ պահպանման նյութի վրա:"
 
 # id::138
-#: ppl.description:1054
-msgid "Allows a user to renew an item past the maximun renewal count"
+#: ppl.description:1100
+#, fuzzy
+msgid "Allow a user to renew an item past the maximun renewal count"
 msgstr ""
 "Թույլ է տալիս օգտվողին թարմացնել նյութը, որը գերազանցել է ամենաշատ "
 "թարմացումների քանակը:  "
 
 # id::139
-#: ppl.description:1056
+#: ppl.description:1102
 msgid "Allow staff to override checkout count failure"
 msgstr "Թույլ է տալիս աշխատակազմին վերագրել դուրս տրումների հաշվիչի ձախողումը:"
 
 # id::140
-#: ppl.description:1058
+#: ppl.description:1104
 msgid "Allow staff to override overdue count failure"
 msgstr "Թույլ է տալիս աշխատակազմին վերագրել ժամկետանցների հաշվիչի ձախողումը:"
 
 # id::141
-#: ppl.description:1060
+#: ppl.description:1106
 msgid "Allow staff to override fine amount checkout failure"
 msgstr "Թույլ է տալիս աշխատակազմին վերագրել տուգանքների հաշվիչի ձախողումը:"
 
 # id::142
-#: ppl.description:1062
+#: ppl.description:1108
 msgid "Allow staff to override circulation copy range failure"
 msgstr ""
 
 # id::143
-#: ppl.description:1064
+#: ppl.description:1110
 msgid "Allow staff to override item on holds shelf failure"
 msgstr ""
 
 # id::144
-#: ppl.description:1066
+#: ppl.description:1112
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 "Թույլ է տալիս աշխատակազմին իրականացնել դուրս տրում Բացակա/Կորած նյութերի "
 "համար:"
 
 # id::146
-#: ppl.description:1068
-msgid "allows users to place multiple holds on a single title"
+#: ppl.description:1114
+#, fuzzy
+msgid "Allow a user to place multiple holds on a single title"
 msgstr "Թույլ է տալիս օգտվողներին դնել բազմակի պահումներ մեկ վերնագրի համար"
 
 # id::147
-#: ppl.description:1070
-msgid "Allows a users to run reports"
+#: ppl.description:1116
+#, fuzzy
+msgid "Allow a user to run reports"
 msgstr "Թույլ է տալիս օգտվողներին հաշվետվություններ ակտիվացնել  "
 
 # id::148
-#: ppl.description:1072
-msgid "Allows a user to share report his own folders"
+#: ppl.description:1118
+#, fuzzy
+msgid "Allow a user to share report his own folders"
 msgstr "Թույլ է տալիս օգտվողին համատեղ օգտագործել հաշվետվությունը"
 
 # id::149
-#: ppl.description:1074
-msgid "Allow user to view report output"
+#: ppl.description:1120
+#, fuzzy
+msgid "Allow a user to view report output"
 msgstr "Թույլ է տալիս օգտվողին դիտել հաշվետվությունը"
 
 # id::150
-#: ppl.description:1076
-msgid "Allows a user to checkout an item that is marked as non-circ"
+#: ppl.description:1122
+#, fuzzy
+msgid "Allow a user to checkout an item that is marked as non-circ"
 msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութը որը նշված է որպես չսպասարկ"
 
 # id::151
-#: ppl.description:1078
-msgid "Allows a user to delete an item out of another user's container"
+#: ppl.description:1124
+#, fuzzy
+msgid "Allow a user to delete an item out of another user's container"
 msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի կոնտեյներից ջնջել նյութը:"
 
+# id::153
+#: ppl.description:1126
+msgid "Allow a user to create a new funding source"
+msgstr ""
+
+# id::154
+#: ppl.description:1127
+msgid "Allow a user to delete a funding source"
+msgstr ""
+
+# id::155
+#: ppl.description:1128
+msgid "Allow a user to view a funding source"
+msgstr ""
+
+# id::156
+#: ppl.description:1129
+msgid "Allow a user to update a funding source"
+msgstr ""
+
+# id::157
+# id::88
+#: ppl.description:1130
+#, fuzzy
+msgid "Allow a user to create a new fund"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::158
+#: ppl.description:1131
+msgid "Allow a user to delete a fund"
+msgstr ""
+
+# id::159
+#: ppl.description:1132
+msgid "Allow a user to view a fund"
+msgstr ""
+
+# id::160
+#: ppl.description:1133
+msgid "Allow a user to update a fund"
+msgstr ""
+
+# id::161
+# id::76
+#: ppl.description:1134
+#, fuzzy
+msgid "Allow a user to create a new fund allocation"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պատճեի տեղաբաշխում"
+
+# id::162
+# id::78
+#: ppl.description:1135
+#, fuzzy
+msgid "Allow a user to delete a fund allocation"
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
+
+# id::163
+#: ppl.description:1136
+msgid "Allow a user to view a fund allocation"
+msgstr ""
+
+# id::164
+# id::77
+#: ppl.description:1137
+#, fuzzy
+msgid "Allow a user to update a fund allocation"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել պատճեի տէղաբաշխումը"
+
+# id::165
+#: ppl.description:1138
+msgid "Lowest level permission required to access the ACQ interface"
+msgstr ""
+
+# id::166
+# id::88
+#: ppl.description:1139
+#, fuzzy
+msgid "Allow a user to create a new provider"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::167
+#: ppl.description:1140
+msgid "Allow a user to delate a provider"
+msgstr ""
+
+# id::168
+#: ppl.description:1141
+msgid "Allow a user to view a provider"
+msgstr ""
+
+# id::169
+#: ppl.description:1142
+msgid "Allow a user to update a provider"
+msgstr ""
+
+# id::170
+#: ppl.description:1143
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr ""
+
+# id::171
+#: ppl.description:1144
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::172
+#: ppl.description:1145
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::173
+#: ppl.description:1146
+msgid "Allow a user to view/credit/debit a fund"
+msgstr ""
+
+# id::174
+#: ppl.description:1147
+msgid "Allows a user to create a picklist"
+msgstr ""
+
+# id::175
+#: ppl.description:1148
+msgid "Allow a user to create/view/update/delete a provider"
+msgstr ""
+
+# id::176
+#: ppl.description:1149
+msgid "Allow a user to view and purchase from a provider"
+msgstr ""
+
+# id::177
+# id::11
+#: ppl.description:1150
+#, fuzzy
+msgid "Allow a user to view another users picklist"
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
+
 # id::152
-#: ppl.description:1080
+#: ppl.description:1151
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 "Թույլ է տալիս աշխատակազմի անդամին սահմանել այլ անդամի իրավասությունները:"
 
+# id::178
 # id::153
-#: ppl.description:1082
+#: ppl.description:1153
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
 "Թույլ է տալիս աշխատակազմի անդամին ուղղակիորեն հեռացնել մատենագիտական "
 "գրառումը:"
 
+# id::179
+#: ppl.description:1155
+msgid "Allow a user to create/view/update/delete a currency_type"
+msgstr ""
+
 # id::1
-#: pgt.name:1167
+#: pgt.name:1279
 msgid "Users"
 msgstr ""
 
 # id::2
-#: pgt.name:1169
+#: pgt.name:1281
 msgid "Patrons"
 msgstr ""
 
 # id::3
-#: pgt.name:1171
+#: pgt.name:1283
 msgid "Staff"
 msgstr ""
 
 # id::4
-#: pgt.name:1173
+#: pgt.name:1285
 msgid "Catalogers"
 msgstr ""
 
 # id::5
-#: pgt.name:1175
+#: pgt.name:1287
 msgid "Circulators"
 msgstr ""
 
 # id::10
-#: pgt.name:1177
+#: pgt.name:1289
 msgid "Local System Administrator"
 msgstr ""
 
 # id::10
-#: pgt.description:1178
+#: pgt.description:1290
 msgid "System maintenance, configuration, etc."
 msgstr ""
 
 # id::1
-#: acpl.name:1309
+#: acpl.name:1421
 msgid "Stacks"
 msgstr "Պահոցներ"
+
+# id::1
+#: vqbrad.description:1475
+msgid "Title of work"
+msgstr ""
+
+# id::1
+#: vqbrad.description:1476
+msgid "Author of work"
+msgstr ""
+
+# id::3
+#: vqbrad.description:1477
+msgid "Language of work"
+msgstr ""
+
+# id::4
+#: vqbrad.description:1478
+msgid "Pagination"
+msgstr ""
+
+# id::5
+#: vqbrad.description:1479
+msgid "ISBN"
+msgstr ""
+
+# id::6
+# id::2
+#: vqbrad.description:1480
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::7
+#: vqbrad.description:1481
+msgid "Price"
+msgstr ""
+
+# id::8
+#: vqbrad.description:1482
+msgid "Accession Number"
+msgstr ""
+
+# id::9
+#: vqbrad.description:1483
+msgid "TCN Value"
+msgstr ""
+
+# id::10
+#: vqbrad.description:1484
+msgid "TCN Source"
+msgstr ""
+
+# id::11
+#: vqbrad.description:1485
+msgid "Internal ID"
+msgstr ""
+
+# id::12
+#: vqbrad.description:1486
+msgid "Publisher"
+msgstr ""
+
+# id::13
+#: vqbrad.description:1487
+msgid "Publication Date"
+msgstr ""
+
+# id::14
+#: vqbrad.description:1488
+msgid "Edition"
+msgstr ""
+
+# id::1
+#: vqarad.description:1538
+msgid "Identifier"
+msgstr ""
+
+# id::19
+#~ msgid "User is allowed to create new MARC records"
+#~ msgstr "Օգտվողը իրավունք ունի ստեղծելու նոր MARC գրառումներ"
+
+# id::41
+#~ msgid "User may create new billable transactions"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր վճարովի տրանզակցիաներ"
+
+# id::24
+#~ msgid "User is allowed to create a new copy object"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր պատճե"
+
+# id::47
+#~ msgid "Allows a user to change org unit settings"
+#~ msgstr "Թույլ է տալիս օգտվողին փոխել կազմ միավորի կարգաբերումները"
+
+# id::50
+#~ msgid "Create a container item for another user"
+#~ msgstr "Ստեղծում է կոնտեյների նյութ այլ օգտվողի համար"
+
+# id::57
+#~ msgid "User may create a copy stat cat"
+#~ msgstr "Օգտվողը կարող է ստեղծել վիճ քարտ պատճե"
+
+# id::58
+#~ msgid "User may create a new patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողի վիճ քարտ մուտք"
+
+# id::59
+#~ msgid "User may create a new copy stat cat entry"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր պատճե վիճ քարտ մուտքի"
+
+# id::60
+#~ msgid "User may update a patron stat cat"
+#~ msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտը"
+
+# id::61
+#~ msgid "User may update a copy stat cat"
+#~ msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ"
+
+# id::62
+#~ msgid "User may update a patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտի մուտքը"
+
+# id::65
+#~ msgid "User may link a copy to a stat cat entry"
+#~ msgstr "Օգտվողը կարող է կապել պատճեի վիճ քարտ մուտքը"
+
+# id::64
+#~ msgid "User may link another user to a stat cat entry"
+#~ msgstr "Օգտվողը կարող է կապել մեկ այլ օգտվողի վիճ քարտ մուտքի"
+
+# id::66
+#~ msgid "User may delete a patron stat cat"
+#~ msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտը"
+
+# id::67
+#~ msgid "User may delete a copy stat cat"
+#~ msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտը"
+
+# id::68
+#~ msgid "User may delete a patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտի մուտքը"
+
+# id::91
+#~ msgid "Allows a user to delete someone elses copy notes"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի օրինակի նշումները"
+
+# id::92
+#~ msgid "Allows a user to delete someone elses volume note"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի հատորի նշումները"
+
+# id::93
+#~ msgid "Allows a user to delete someone elses title note"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի վերնագրի նշումները"
+
+# id::106
+#~ msgid "Allows a person to check in/out an item that is claims returned"
+#~ msgstr "Թույլ է տալիս մարդուն սպասարկել նյութը որը խարանված վերադարձ է:"
 
 #~ msgid "Gwich'in"
 #~ msgstr "Gwich'in"

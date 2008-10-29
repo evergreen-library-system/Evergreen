@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-08 11:12-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -206,6 +206,14 @@ msgstr "Supprimer la transaction sélectionnée"
 #: common.save_transactions.accesskey
 msgid "&Save these transactions"
 msgstr "Enregi&strer ces transactions"
+
+#: common.true
+msgid "True"
+msgstr ""
+
+#: common.false
+msgid "False"
+msgstr ""
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -2323,6 +2331,10 @@ msgctxt "staff.main.auth.retest.accesskey"
 msgid "R"
 msgstr "R"
 
+#: staff.main.auth.add_ssl_exception
+msgid "Add SSL Exception"
+msgstr ""
+
 #: staff.main.auth.server
 msgid "Server"
 msgstr "Serveur"
@@ -2612,6 +2624,10 @@ msgstr "V"
 #: staff.main.menu.cat.volume_status.label
 msgid "Display Volume"
 msgstr "Afficher le volume"
+
+#: staff.main.menu.cat.vandelay.label
+msgid "MARC Batch Import/Export"
+msgstr ""
 
 #: staff.main.menu.cat.z39_50_import.label
 #: staff.main.menu.cat.z39_50_import.accesskey
@@ -5667,6 +5683,10 @@ msgstr "Nom :"
 msgid "Holdable: "
 msgstr "Mise en réserve possible :"
 
+#: staff.server.admin.copy_locations.editor.hold_verify.label
+msgid "Hold Verify: "
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
 msgid "Yes"
@@ -5701,6 +5721,10 @@ msgstr ""
 #: staff.server.admin.copy_locations.editor.holdable
 msgid "Holdable"
 msgstr "Mise en réserve possible"
+
+#: staff.server.admin.copy_locations.editor.hold_verify
+msgid "Hold Verify"
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
 msgctxt "staff.server.admin.copy_locations.editor.help"
@@ -6044,6 +6068,10 @@ msgstr "Transits"
 msgid "Transit List"
 msgstr "Liste des transits"
 
+#: staff.server.admin.index.conify
+msgid "Server Settings"
+msgstr ""
+
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
 msgstr "Evergreen : Éditeur des paramètres de bibliothèque"
@@ -6093,11 +6121,13 @@ msgid "Default Item Price"
 msgstr "Prix des articles par défaut"
 
 #: staff.server.admin.org_settings.from_address
-msgid "\"FROM\" email address for patron notices"
+#, fuzzy
+msgid "Sending email address for patron notices"
 msgstr "adresse électronique pour les avis aux clients"
 
 #: staff.server.admin.org_settings.bounce_note
-msgid "(note: delivery failures will be returned this address)"
+#, fuzzy
+msgid "Email delivery failures will be returned this address"
 msgstr ""
 "(remarque : les courriels non acheminés seront retournés à cette adresse)"
 
@@ -6121,6 +6151,90 @@ msgid ""
 msgstr ""
 "Le paramètre de tous les emplacements qui figurent dans la liste déroulante "
 "sera mis à jour. Êtes-vous certain de vouloir continuer?"
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval
+msgid "Hold Expiration Alert Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
+msgid ""
+"Amount of time before a hold expires at which point the patron should be "
+"alerted"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval
+msgid "Default Hold Expirate Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval.desc
+msgid ""
+"Amount of time after a hold is placed before the hold expires.  Example \"100 "
+"days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow
+msgid "Allow Credit Card Payments"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow.desc
+msgid ""
+"If enabled, patrons will be able to pay fines accrued at this location via "
+"credit card"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.default_locale
+msgid "Default Locale"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.void_overdue_on_lost
+msgid "Void overdue fines when items are marked lost"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft
+msgid "Soft hold stalling interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
+msgid ""
+"How long to wait before allowing remote items to be opportunisticaly "
+"captured for a hold.  Example \"5 days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.hard
+msgid "Hard hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.soft
+msgid "Soft hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex
+msgid "Patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex.desc
+msgid "Regular expression defining the patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max
+msgid "Maximum previous checkouts displayed"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
+msgid ""
+"This is maximum number of previous circulations the staff client will "
+"display when investigating item details"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval
+msgid "Change reshelving status interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval.desc
+msgid ""
+"Amount of time to wait before changing an item from \"reshelving\" status to "
+"\"available\".  Examples \"1 day\", \"6 hours\""
+msgstr ""
 
 #: staff.server.admin.stat_cat.title
 msgid "Evergreen: Statistical Category Editor"
@@ -7110,6 +7224,16 @@ msgctxt "staff.circ.holds.edit_activation_date.accesskey"
 msgid "D"
 msgstr "D"
 
+#: staff.circ.holds.edit_expire_time
+#, fuzzy
+msgid "Edit Expiration Date"
+msgstr "Modifier la date d’activation"
+
+#: staff.circ.holds.edit_expire_time.accesskey
+msgctxt "staff.circ.holds.edit_expire_time.accesskey"
+msgid "E"
+msgstr "E"
+
 #: staff.circ.holds.activate_hold
 msgid "Activate Hold"
 msgstr "Activer la mise en réserve"
@@ -7932,8 +8056,10 @@ msgid "&Help"
 msgstr "&Aide"
 
 #: staff.cat.record_buckets_overlay.query_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.query_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label staff.cat.record_buckets_overlay.query_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Actions relatives à la liste"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip0.label
@@ -7971,8 +8097,10 @@ msgid "Add Selected to Pending Records"
 msgstr "Ajouter les articles sélectionnés aux comptes en attente"
 
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Actions relatives à la liste"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip1.label
@@ -8029,8 +8157,10 @@ msgid "Owner:"
 msgstr "Propriétaire :"
 
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Actions relatives à la liste"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip2.label
@@ -9825,6 +9955,43 @@ msgctxt "staff.patron.items_overlay.items_export.label"
 msgid "Export"
 msgstr "Exporter"
 
+#: staff.generic.list_actions.label
+#: staff.generic.list_actions.accesskey
+#, fuzzy
+msgctxt "staff.generic.list_actions.label staff.generic.list_actions.accesskey"
+msgid "&List Actions"
+msgstr "Actions relatives à la liste"
+
+#: staff.generic.list_actions.sel_clip.label
+#: staff.generic.list_actions.sel_clip.accesskey
+msgctxt "staff.generic.list_actions.sel_clip.label staff.generic.list_actions.sel_clip.accesskey"
+msgid "&Copy to Clipboard"
+msgstr "&Copier dans le presse-papiers"
+
+#: staff.generic.list_actions.csv_to_printer.label
+#: staff.generic.list_actions.csv_to_printer.accesskey
+#, fuzzy
+msgid "&Print List CSV"
+msgstr "Imprimer la liste en format CSV"
+
+#: staff.generic.list_actions.csv_to_clipboard.label
+#: staff.generic.list_actions.csv_to_clipboard.accesskey
+#, fuzzy
+msgid "&Copy List CSV to Clipboard"
+msgstr "Copier la liste en format CSV dans le presse-papiers"
+
+#: staff.generic.list_actions.csv_to_file.label
+#: staff.generic.list_actions.csv_to_file.accesskey
+#, fuzzy
+msgid "Save List CSV to &File"
+msgstr "Enregistrer la liste en format CSV dans le fichier"
+
+#: staff.generic.list_actions.save_columns.label
+#: staff.generic.list_actions.save_columns.accesskey
+#, fuzzy
+msgid "&Save List Configuration"
+msgstr "Enregistrer la configuration de la liste"
+
 #: ev.staff.patron.ue_xhtml.ev_user_editor.label
 msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
 msgid "Evergreen User Editor"
@@ -10289,3 +10456,11 @@ msgstr ""
 "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
 "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
 "documents de procédures."
+
+#~ msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
+#~ msgid "List Actions"
+#~ msgstr "Actions relatives à la liste"
+
+#~ msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
+#~ msgid "List Actions"
+#~ msgstr "Actions relatives à la liste"
