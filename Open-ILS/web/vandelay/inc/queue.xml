@@ -54,46 +54,55 @@
         <table width='100%' style='margin-bottom:0px;'>
             <tr>
                 <td align='left' valign='bottom'>
-                    <button dojoType='dijit.form.Button' onclick='vlImportSelectedRecords();'>&vandelay.import.selected;</button>
-                    <button dojoType='dijit.form.Button' onclick='vlImportAllRecords();'>&vandelay.import.all;</button>
-                    <button dojoType='dijit.form.Button' onclick="
-                        if(confirm('&vandelay.sure.to.delete.queue;')) {
-                            vlDeleteQueue(currentType, currentQueueId, 
-                                function() { displayGlobalDiv('vl-marc-upload-div'); });
-                        }">&vandelay.delete.queue;</button>
+                    <select id='vl-queue-actions-selector'>
+                        <option selected='selected' disabled='disabled' value='select-actions'>&vandelay.select_actions;</option>
+                        <option value='import'>&vandelay.import.selected;</option>
+                        <option value='import_all'>&vandelay.import.all;</option>
+                        <option value='delete_queue'>&vandelay.delete.queue;</option>
+                    </select>
+                    <script>
+                        var sel = dojo.byId('vl-queue-actions-selector');
+                        sel.onchange = function(evt) {
+                            switch(openils.Util.selectorValue(evt.target)) {
+                                case 'import': vlImportSelectedRecords(); break;;
+                                case 'import_all': vlImportAllRecords(); break;;
+                                case 'delete_queue': 
+                                    if(confirm('&vandelay.sure.to.delete.queue;')) {
+                                        vlDeleteQueue(currentType, currentQueueId, 
+                                            function() { displayGlobalDiv('vl-marc-upload-div'); });
+                                    }
+                            }
+                            evt.target.selectedIndex = 0;
+                        }
+                    </script>
                 </td>
                 <td align='middle' valign='bottom'>
-                    <style>.filter_td { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
+                    <style>.filter_span { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
                     <table><tr>
-                        <td class='filter_td'>
-                            <table class='small_form_table'><tr>
-                                    <td>&vandelay.limit.to.collision.matches;</td>
-                                    <td><input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches'/></td>
-                                </tr><tr>
-                                    <td>&vandelay.limit.to.non.imported;</td>
-                                    <td><input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked'/></td>
-                            </tr></table>
-                        </td>
-                        <td class='filter_td' style='padding-left:5px;'>
-                            <div class='nav_row_div'>&vandelay.results.per.page;</div>
-                            <div class='nav_row_div'>
-                                <select style='width:68px;' jsId='vlQueueDisplayLimit' dojoType='dijit.form.FilteringSelect' value='10'>
+                        <td>
+                            <span>&vandelay.limit.to.collision.matches;</span>
+                            <span class='filter_span'>
+                                <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' onchange='retrieveQueuedRecords();'/>
+                            </span>
+
+                            <span>&vandelay.limit.to.non.imported;</span>
+                            <span class='filter_span'>
+                                <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked' onchange='retrieveQueuedRecords();'/>
+                            </span>
+
+                            <span>&vandelay.results.per.page;</span>
+                            <span class='filter_span'>
+                                <select jsId='vlQueueDisplayLimit' id='vl-queue-display-limit-selector'
+                                    value='10' onchange='retrieveQueuedRecords();'>
                                     <option value='10'>10</option>
                                     <option value='20'>20</option>
                                     <option value='50'>50</option>
                                     <option value='100'>100</option>
                                 </select>
-                            </div>
-                        </td>
-                        <td class='filter_td' style='padding-left:5px;'>
-                            <div class='nav_row_div'>&vandelay.page;</div>
-                            <div class='nav_row_div'>
-                                <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
-                            </div>
-                        </td>
-                        <td style='padding-left:5px;'>
-                            <button dojoType='dijit.form.Button' 
-                                onclick='retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords)'>&vandelay.refresh;</button>
+                            </span>
+
+                            <span style='padding-left:5px;'>&vandelay.page;</span>
+                            <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
                         </td>
                     </tr></table>
                 </td>
