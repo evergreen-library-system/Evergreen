@@ -12,9 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
 <html xmlns="http://www.w2.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Permission :: Group Tree</title>
+		<title>&conify.grp_tree.group_tree.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
@@ -82,7 +87,7 @@
                         method : 'open-ils.permacrud.search.pgt.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { pgt : 'name' } } ],
-                        onerror : function (r) { status_update('Problem fetching groups') },
+                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_GROUPS ) },
                         oncomplete : function (r) {
                             window._group_list = r.recv().content();
                             window._group_data = pgt.toStoreData( window._group_list );
@@ -102,10 +107,7 @@
                                 });
 
                                 if (dirtyStore.length > 0) {
-                                    var confirmation = confirm(
-                                        'There are unsaved modified Groups!  '+
-                                        'OK to save these changes, Cancel to abandon them.'
-                                    );
+                                    var confirmation = confirm( pgt_strings.CONFIRM_EXIT );
 
                                     if (confirmation) {
                                         for (var i in window.dirtyStore) {
@@ -122,7 +124,7 @@
                     server.actor.request({
                         method : 'open-ils.actor.org_types.retrieve',
                         timeout : 10,
-                        onerror : function (r) { status_update('Problem fetching types') },
+                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_TYPES ) },
                         oncomplete : function (r) {
                             window._ou_type_list = r.recv().content();
                             window._ou_type_data = aout.toStoreData( window._ou_type_list );
@@ -133,7 +135,7 @@
                     server.actor.request({
                         method : 'open-ils.actor.permissions.retrieve',
                         timeout : 10,
-                        onerror : function (r) { status_update('Problem fetching perms') },
+                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_PERMS ) },
                         oncomplete : function (r) {
     
                             window._perm_list = r.recv().content();
@@ -152,7 +154,7 @@
                         method : 'open-ils.permacrud.search.pgpm.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } } ],
-                        onerror : function (r) { status_update('Problem fetching perm maps') },
+                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_PERM_MAPS ) },
                         oncomplete : function (r) {
                             window._perm_map_list = r.recv().content();
                             window._perm_map_data = pgpm.toStoreData( window._perm_map_list, 'id' );
@@ -176,7 +178,7 @@
 				</script>
 				<div
 				  id="group_tree"
-				  label="Permission Groups"
+				  label="&conify.grp_tree.permission_groups.label;"
 				  query="{'_top':'true'}"
 				  dojoType="dijit.Tree"
 				  store="group_store"
@@ -196,7 +198,7 @@
 						perm_grid.refresh();
 
 						highlighter.editor_pane.green.play();
-						status_update( 'Now editing ' + this.store.getValue( item, 'name' ) );
+						status_update( dojo.string.substitute( pgt_strings.STATUS_EDITING, [this.store.getValue( item, 'name' )]) );
 
 						new_kid_button.disabled = false;
 						save_group_button.disabled = false;
@@ -246,7 +248,7 @@
 				</script>
 
 				<div dojoType="dijit.layout.TabContainer">
-					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="Group Configuration">
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane" title="&conify.grp_tree.group_config.label;">
 						<script type="dojo/method">
 							highlighter.group_tree = {};
 							highlighter.editor_pane = {};
@@ -258,7 +260,7 @@
 	
 						<table class="tundra" style="margin:10px;">
 							<tr>
-								<th>Group Name</th>
+								<th>&conify.grp_tree.group_name.label;</th>
 								<td>
 									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -271,7 +273,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Description</th>
+								<th>&conify.grp_tree.description.label;</th>
 								<td>
 									<span>
 										<textarea
@@ -285,7 +287,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Permission Interval</th>
+								<th>&conify.grp_tree.permission_interval.label;</th>
 								<td>
 									<span id="editor_pane_perm_interval" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_perm_interval" regExp="^\d+ (?:y.*|mo.*|d.*)$" required="true">
 										<script type="dojo/connect" event="onChange">
@@ -297,7 +299,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Editing Permission</th>
+								<th>&conify.grp_tree.editing_permission.label;</th>
 								<td>
 									<div
 									  id="editor_pane_application_perm"
@@ -317,7 +319,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Parent Group</th>
+								<th>&conify.grp_tree.parent_group.label;</th>
 								<td>
 									<div
 									  id="editor_pane_parent"
@@ -339,7 +341,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>User Group</th>
+								<th>&conify.grp_tree.user_group.label;</th>
 								<td>
 									<input
 									  id="editor_pane_usergroup"
@@ -354,13 +356,13 @@
 	
 						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
 	
-							<button jsId="save_group_button" dojoType="dijit.form.Button" label="Save" onClick="save_group()">
+							<button jsId="save_group_button" dojoType="dijit.form.Button" label="&conify.grp_tree.save_button.label;" onClick="save_group()">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
 							</button>
 	
-							<button jsId="delete_group_button" dojoType="dijit.form.Button" label="Delete">
+							<button jsId="delete_group_button" dojoType="dijit.form.Button" label="&conify.grp_tree.delete_button.label;">
 								<script type="dojo/connect" event="startup">
 									this.disabled = true;
 								</script>
@@ -369,7 +371,7 @@
 	
 									if (group_store.getValue( current_group, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
-										status_update( 'Cannot delete' + group_store.getValue( current_group, 'name' ) + ', you need at least one.' );
+										status_update( dojo.string.substitute( pgt_strings.STATUS_ERR_DELETING, [group_store.getValue( current_group, 'name' )])  );
 										return false;
 									}
 
@@ -383,12 +385,12 @@
 										);
 										if ( existing_kids.length > 0) {
 											highlighter.editor_pane.red.play();
-											status_update( 'Cannot delete' + group_store.getValue( current_group, 'name' ) + ', ' + existing_kids.length + ' subordinates still exist.' );
+											status_update( dojo.string.substitute( pgt_strings.STATUS_ERR_DELETING_DEPENDENCY, [group_store.getValue( current_group, 'name' ), existing_kids.length]) );
 											return;
 										}
 									}
 	
-									if ( confirm('Are you sure you want to delete ' + current_group.name + '?')) {
+									if ( confirm( dojo.string.substitute( pgt_strings.CONFIRM_DELETE, [current_group.name]) ) ) {
 										group_store.setValue( current_group, 'isdeleted', 1 );
 	
 										var modified_pgt = new pgt().fromStoreItem( current_group );
@@ -400,7 +402,7 @@
 											params : [ ses, modified_pgt ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
-												status_update( 'Problem deleting ' + group_store.getValue( current_group, 'name' ) );
+												status_update( dojo.string.substitute( pgt_strings.CONFIRM_DELETE, [group_store.getValue( current_group, 'name' )]) );
 											},
 											oncomplete : function (r) {
 												var res = r.recv();
@@ -431,10 +433,10 @@
 													window["editor_pane_usergroup"].setChecked( false ); // unset the value
 			
 													highlighter.editor_pane.green.play();
-													status_update( old_name + ' deleted' );
+													status_update( dojo.string.substitute( pgt_strings.STATUS_DELETED, [old_name]) );
 												} else {
 													highlighter.editor_pane.red.play();
-													status_update( 'Problem deleting ' + old_name );
+													status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING, [old_name]) );
 												}
 											}
 										}).send();
@@ -446,7 +448,7 @@
 	
 						</div>
 	
-						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="New Child">
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="&conify.grp_tree.new_child_button.label;">
 							<script type="dojo/connect" event="startup">
 								this.disabled = true;
 							</script>
@@ -455,7 +457,7 @@
 	
 								var new_fm_obj = new pgt().fromHash({
 									isnew			: 1,
-									name			: 'New Group',
+									name			: pgt_strings.LABEL_NEW_GROUP,
 									usergroup		: 'f',
 									parent			: group_store.getValue( current_group, 'id' )
 								});
@@ -467,7 +469,7 @@
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( 'Problem calling method to create child Group' );
+										status_update( pgt_strings.ERROR_CALLING_METHOD );
 										err = true;
 									},
 									oncomplete : function (r) {
@@ -479,7 +481,7 @@
 											);
 										} else {
 											highlighter.editor_pane.red.play();
-											status_update( 'Problem creating child Group' );
+											status_update( pgt_strings.ERROR_CREATING_CHILD_GROUP );
 											err = true;
 										}
 									},
@@ -488,7 +490,7 @@
 								if (!err) {
 									highlighter.editor_pane.green.play();
 									highlighter.group_tree.green.play();
-									status_update( 'New child Group created for ' + group_store.getValue( current_group, 'name' ) );
+									status_update( dojo.string.substitute( pgt_strings.SUCCESS_NEW_CHILD_GROUP, [group_store.getValue( current_group, 'name' )]) );
 								}
 -->	
 							</script>
@@ -496,7 +498,7 @@
 	
 					</div>
 
-					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="Group Permissions">
+					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="&conify.grp_tree.group_permissions.title;">
 						<script type="dojo/connect" event="onShow">
 							perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
 							perm_map_model.refresh();
@@ -538,19 +540,19 @@
 			                            window.current_perm_grid_layout = [
 			                                {   cells : [
 				                                    [
-					                                    {	name : "Code",
+					                                    {	name : pgt_strings.LABEL_CODE,
 															field: "perm",
 															formatter : dojo.partial(get_item_part, "perm", "id", "code", perm_map_model, perm_store),
 															width : "auto"
 														},
-										                {	name : "Depth",
+										                {	name : pgt_strings.LABEL_DEPTH,
 															field : "depth",
 															formatter : dojo.partial(get_item_part, "depth", "depth", "name", perm_map_model, ou_type_store),
 															editor : dojox.grid.editors.select,
 															options : dojo.map( _ou_type_list, function (x) { return x.name() } ),
 															values : dojo.map( _ou_type_list, function (x) { return x.depth() } )
 														}, 
-			                                            {	name : "Grantable",
+			                                            {	name : pgt_strings.LABEL_GRANTABLE,
 															field : "grantable",
 															editor : dojox.grid.editors.bool,
 															get : function (row) {
@@ -573,11 +575,11 @@
 							<div id="new_perm_container" dojoType="dijit.layout.ContentPane" sizeShare="1" layoutAlign="client">
 
 								<div dojoType="dijit.form.DropDownButton" id="new_popup" jsId="new_popup">
-									<span>New Mapping</span>
+									<span>&conify.grp_tree.new_mapping.label;</span>
 									<div  dojoType="dijit.TooltipDialog"> 
 										<table class="tundra">
 											<tr>
-												<td>Permission:</td>
+												<td>&conify.grp_tree.permission.label;</td>
 												<td>
 													<div
 													  dojoType="dijit.form.FilteringSelect"
@@ -590,7 +592,7 @@
 												</td>
 											</tr>
 											<tr>
-												<td>Depth:</td>
+												<td>&conify.grp_tree.depth.label;</td>
 												<td>
 													<div
 													  dojoType="dijit.form.FilteringSelect"
@@ -603,7 +605,7 @@
 												</td>
 											</tr>
 											<tr>
-												<td>Grantable:</td>
+												<td>&conify.grp_tree.grantable.label;</td>
 												<td>
 													<input
 													  type="checkbox"
@@ -615,7 +617,7 @@
 											</tr>
 										</table>
 
-										<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="Add Mapping">
+										<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="&conify.grp_tree.add_mapping_button.label;">
 						                    <script type="dojo/connect" event="onClick">
 <!--
 						                        var new_perm = new_perm_select.getValue();
@@ -649,7 +651,7 @@
 						                            params : [ ses, new_fm_obj ],
 						                            onerror : function (r) {
 						                                highlighter.group_tree.red.play();
-						                                status_update( 'Problem calling method to create new Permission Map' );
+						                                status_update( pgt_strings.ERROR_CALLING_METHOD_PERM_MAP );
 						                                err = true;
 						                            },
 						                            oncomplete : function (r) {
@@ -658,7 +660,7 @@
 						                                if ( res && res.content() ) {
 						                                    var new_item_hash = res.content().toHash();
 						                                    perm_map_store.newItem( new_item_hash );
-						                                    status_update( 'New permission map created' );
+						                                    status_update( pgt_strings.SUCCESS_NEW_PERM_MAP );
 						                                    highlighter.group_tree.green.play();
 		
 								                            perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
@@ -668,7 +670,7 @@
 		
 						                                } else {
 						                                    highlighter.group_tree.red.play();
-						                                    status_update( 'Problem creating new Permission Map' );
+						                                    status_update( pgt_strings.ERROR_CREATING_PERM_MAP );
 						                                    err = true;
 						                                }
 						                            }
@@ -682,9 +684,9 @@
 									</div>
 								</div>
 
-								<button jsId="save_pgpm_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button><br/>
+								<button jsId="save_pgpm_button" dojoType="dijit.form.Button" label="&conify.grp_tree.save_changes.label;" onClick="save_them_all()"></button><br/>
 
-				                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="Remove Selected">
+				                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="&conify.grp_tree.remove_selected.label;">
 					                <script type="dojo/connect" event="onClick">
 <!--
 				                        var selected_rows = perm_grid.selection.getSelected();
@@ -712,7 +714,7 @@
 				                                params : [ ses, modified_pgpm ],
 					                            onerror : function (r) {
 													highlighter.editor_pane.red.play();
-							                        status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ) );
+							                        status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING_PERM_MAPPING, [perm_map_store.getValue( window.current_perm_map, 'id' )] ) );
 								                },
 									            oncomplete : function (r) {
 										            var res = r.recv();
@@ -727,10 +729,10 @@
 												        window.current_perm_map = null;
 						
 														highlighter.editor_pane.green.play();
-								                        status_update( 'Permission mapping deleted' );
+								                        status_update( pgt_strings.SUCCESS_DELETED_PERM_MAP );
 									                } else {
 														highlighter.editor_pane.red.play();
-											            status_update( 'Problem deleting permission mapping ' + perm_map_store.getValue( window.current_perm_map, 'id' ));
+											            status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING_PERM_MAPPING, [perm_map_store.getValue( window.current_perm_map, 'id' )]) );
 												    }
 			                                    }
 			                                }).send();

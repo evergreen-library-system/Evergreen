@@ -37,6 +37,7 @@ dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
+dojo.requireLocalization("openils.conify", "pgt");
 
 // some handy globals
 var cgi = new CGI();
@@ -45,6 +46,8 @@ var ses = cookieManager.read('ses') || cgi.param('ses');
 var server = {};
 server.pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 server.actor = new OpenSRF.ClientSession('open-ils.actor');
+
+var pgt_strings = dojo.i18n.getLocalization('openils.conify', 'pgt');
 
 var current_group;
 var virgin_out_id = -1;
@@ -70,17 +73,17 @@ function save_group () {
 		params : [ ses, modified_pgt ],
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
-			status_update( 'Problem saving data for ' + group_store.getValue( current_group, 'name' ) );
+			status_update( dojo.string.substitute( pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				group_store.setValue( current_group, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
-				status_update( 'Saved changes to ' + group_store.getValue( current_group, 'name' ) );
+				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [group_store.getValue( current_group, 'name' )]) );
 			} else {
 				highlighter.editor_pane.red.play();
-				status_update( 'Problem saving data for ' + group_store.getValue( current_group, 'name' ) );
+				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
 			}
 		},
 	}).send();
@@ -97,17 +100,17 @@ function save_perm_map (storeItem) {
 		params : [ ses, modified_pgpm ],
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
-			status_update( 'Problem saving permission data for ' + group_store.getValue( current_group, 'name' ) );
+			status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				perm_map_store.setValue( storeItem, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
-				status_update( 'Saved permission changes to ' + group_store.getValue( current_group, 'name' ) );
+				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE_PERM, [group_store.getValue( current_group, 'name' )]) );
 			} else {
 				highlighter.editor_pane.red.play();
-				status_update( 'Problem saving permission data for ' + group_store.getValue( current_group, 'name' ) );
+				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
 			}
 		},
 	}).send();
@@ -127,10 +130,7 @@ function save_them_all (event) {
 
 
     if (event && dirtyMaps.length > 0) {
-        confirmation = confirm(
-            'There are unsaved modified Permission Maps!  '+
-            'OK to save these changes, Cancel to abandon them.'
-        );
+        confirmation = confirm( pgt_strings.CONFIRM_EXIT);
     }
 
     if (confirmation) {

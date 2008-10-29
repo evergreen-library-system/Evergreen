@@ -99,9 +99,31 @@
 <!ENTITY conify.marc_code_maps.video.new.label "New Video Recording Format:">
 
 <!-- perm_list.html Entities -->
-<!ENTITY conify.perm_list.permission_list.title "Conify :: Global :: Permission :: Permission List">
+<!ENTITY conify.perm_list.permission_list.title "Global :: Permission :: Permission List">
 <!ENTITY conify.perm_list.new_code.label "New Code">
 <!ENTITY conify.perm_list.add_button.label "Add">
 <!ENTITY conify.perm_list.save_changes.label "Save Changes">
 <!ENTITY conify.perm_list.delete_selected.label "Delete Selected">
 <!ENTITY conify.perm_list.new_permission.label "New Permission:">
+ 
+ <!-- grp_tree.html Entities -->
+ <!ENTITY conify.grp_tree.group_tree.title "Global :: Permission :: Group Tree">
+ <!ENTITY conify.grp_tree.permission_groups.label "Permission Groups">
+ <!ENTITY conify.grp_tree.group_config.label "Group Configuration">
+ <!ENTITY conify.grp_tree.group_name.label "Group Name">
+ <!ENTITY conify.grp_tree.description.label "Description">
+ <!ENTITY conify.grp_tree.permission_interval.label "Permission Interval">
+ <!ENTITY conify.grp_tree.editing_permission.label "Editing Permission">
+ <!ENTITY conify.grp_tree.parent_group.label "Parent Group">
+ <!ENTITY conify.grp_tree.user_group.label "User Group">
+ <!ENTITY conify.grp_tree.save_button.label "Save">
+ <!ENTITY conify.grp_tree.delete_button.label "Delete">
+ <!ENTITY conify.grp_tree.new_child_button.label "New Child">
+ <!ENTITY conify.grp_tree.group_permissions.title "Group Permissions">
+ <!ENTITY conify.grp_tree.new_mapping.label "New Mapping">
+ <!ENTITY conify.grp_tree.permission.label "Permission:">
+ <!ENTITY conify.grp_tree.depth.label "Depth:">
+ <!ENTITY conify.grp_tree.grantable.label "Grantable:">
+ <!ENTITY conify.grp_tree.add_mapping_button.label "Add Mapping">
+ <!ENTITY conify.grp_tree.save_changes.label "Save Changes">
+ <!ENTITY conify.grp_tree.remove_selected.label "Delete Selected">
