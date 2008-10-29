@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,6 +209,14 @@ msgstr "Delete selected transaction"
 #: common.save_transactions.accesskey
 msgid "&Save these transactions"
 msgstr "&Save these transactions"
+
+#: common.true
+msgid "True"
+msgstr ""
+
+#: common.false
+msgid "False"
+msgstr ""
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -2358,6 +2366,10 @@ msgctxt "staff.main.auth.retest.accesskey"
 msgid "R"
 msgstr "R"
 
+#: staff.main.auth.add_ssl_exception
+msgid "Add SSL Exception"
+msgstr ""
+
 #: staff.main.auth.server
 msgid "Server"
 msgstr "Server"
@@ -2648,6 +2660,10 @@ msgstr "V"
 #: staff.main.menu.cat.volume_status.label
 msgid "Display Volume"
 msgstr "Display Volume"
+
+#: staff.main.menu.cat.vandelay.label
+msgid "MARC Batch Import/Export"
+msgstr ""
 
 #: staff.main.menu.cat.z39_50_import.label
 #: staff.main.menu.cat.z39_50_import.accesskey
@@ -5505,9 +5521,10 @@ msgstr ""
 
 #: staff.server.admin.transit.list.add.label
 #: staff.server.admin.transit.list.add.accesskey
+#, fuzzy
 msgctxt "staff.server.admin.transit.list.add.label staff.server.admin.transit.list.add.accesskey"
 msgid "&Add to Item Bucket"
-msgstr ""
+msgstr "Add to &Bucket"
 
 #: staff.server.admin.transit.list.show.label
 #: staff.server.admin.transit.list.show.accesskey
@@ -5716,6 +5733,10 @@ msgstr "Name:"
 msgid "Holdable: "
 msgstr ""
 
+#: staff.server.admin.copy_locations.editor.hold_verify.label
+msgid "Hold Verify: "
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
 msgid "Yes"
@@ -5746,8 +5767,16 @@ msgctxt "staff.server.admin.copy_locations.editor.library"
 msgid "Owning Library"
 msgstr "Owning Library"
 
+#: staff.server.admin.copy_locations.editor.library.filter
+msgid "Focus Location:"
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.holdable
 msgid "Holdable"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.hold_verify
+msgid "Hold Verify"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
@@ -6091,6 +6120,10 @@ msgstr ""
 msgid "Transit List"
 msgstr ""
 
+#: staff.server.admin.index.conify
+msgid "Server Settings"
+msgstr ""
+
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
 msgstr ""
@@ -6140,11 +6173,11 @@ msgid "Default Item Price"
 msgstr ""
 
 #: staff.server.admin.org_settings.from_address
-msgid "\"FROM\" email address for patron notices"
+msgid "Sending email address for patron notices"
 msgstr ""
 
 #: staff.server.admin.org_settings.bounce_note
-msgid "(note: delivery failures will be returned this address)"
+msgid "Email delivery failures will be returned this address"
 msgstr ""
 
 #: staff.server.admin.org_settings.apply_all.note
@@ -6161,6 +6194,90 @@ msgstr ""
 msgid ""
 "This will update the setting for all of the locations listed in the dropdown "
 "menu. Are you sure you wish to continue?"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval
+msgid "Hold Expiration Alert Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
+msgid ""
+"Amount of time before a hold expires at which point the patron should be "
+"alerted"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval
+msgid "Default Hold Expirate Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval.desc
+msgid ""
+"Amount of time after a hold is placed before the hold expires.  Example \"100 "
+"days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow
+msgid "Allow Credit Card Payments"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow.desc
+msgid ""
+"If enabled, patrons will be able to pay fines accrued at this location via "
+"credit card"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.default_locale
+msgid "Default Locale"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.void_overdue_on_lost
+msgid "Void overdue fines when items are marked lost"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft
+msgid "Soft hold stalling interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
+msgid ""
+"How long to wait before allowing remote items to be opportunisticaly "
+"captured for a hold.  Example \"5 days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.hard
+msgid "Hard hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.soft
+msgid "Soft hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex
+msgid "Patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex.desc
+msgid "Regular expression defining the patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max
+msgid "Maximum previous checkouts displayed"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
+msgid ""
+"This is maximum number of previous circulations the staff client will "
+"display when investigating item details"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval
+msgid "Change reshelving status interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval.desc
+msgid ""
+"Amount of time to wait before changing an item from \"reshelving\" status to "
+"\"available\".  Examples \"1 day\", \"6 hours\""
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -6191,8 +6308,9 @@ msgid "Owning Library: "
 msgstr "Owning Library"
 
 #: staff.server.admin.stat_cat.opac_visibility
+#, fuzzy
 msgid "OPAC Visibility: "
-msgstr ""
+msgstr "OPAC Visible:"
 
 #: staff.server.admin.stat_cat.on
 msgid "On"
@@ -6351,9 +6469,10 @@ msgstr ""
 
 #: staff.circ.checkin_overlay.sel_bucket.label
 #: staff.circ.checkin_overlay.sel_bucket.accesskey
+#, fuzzy
 msgctxt "staff.circ.checkin_overlay.sel_bucket.label staff.circ.checkin_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
-msgstr ""
+msgstr "Add to &Bucket"
 
 #: staff.circ.checkin_overlay.sel_opac.label
 #: staff.circ.checkin_overlay.sel_opac.accesskey
@@ -6487,8 +6606,9 @@ msgid "Strict Barcode"
 msgstr ""
 
 #: staff.circ.circ_brief.patron_id.label
+#, fuzzy
 msgid "Circulation ID: "
-msgstr ""
+msgstr "Circulation"
 
 #: staff.circ.circ_brief.add_billing.label
 msgctxt "staff.circ.circ_brief.add_billing.label"
@@ -6590,9 +6710,10 @@ msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_bucket.label
 #: staff.circ.copy_status_overlay.sel_bucket.accesskey
+#, fuzzy
 msgctxt "staff.circ.copy_status_overlay.sel_bucket.label staff.circ.copy_status_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
-msgstr ""
+msgstr "Add to &Bucket"
 
 #: staff.circ.copy_status_overlay.sel_opac.label
 #: staff.circ.copy_status_overlay.sel_opac.accesskey
@@ -6626,8 +6747,9 @@ msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_mark_items_missing.label
 #: staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey
+#, fuzzy
 msgid "&Mark Item Missing"
-msgstr ""
+msgstr "Mark as Missing"
 
 #: staff.circ.copy_status_overlay.sel_transit_abort.label
 msgctxt "staff.circ.copy_status_overlay.sel_transit_abort.label"
@@ -6738,9 +6860,10 @@ msgstr ""
 
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey
+#, fuzzy
 msgctxt "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
-msgstr ""
+msgstr "Mark as Missing"
 
 #: staff.circ.copy_status_overlay.item_status.label
 msgid "Item Status"
@@ -6947,8 +7070,9 @@ msgstr ""
 
 #: staff.circ.print_list.top_ui.name.label
 #: staff.circ.print_list.top_ui.name.accesskey
+#, fuzzy
 msgid "&Name"
-msgstr ""
+msgstr "Name:"
 
 #: staff.circ.print_list.top_ui.type.label
 msgctxt "staff.circ.print_list.top_ui.type.label"
@@ -7163,6 +7287,15 @@ msgctxt "staff.circ.holds.edit_activation_date.accesskey"
 msgid "D"
 msgstr "D"
 
+#: staff.circ.holds.edit_expire_time
+msgid "Edit Expiration Date"
+msgstr ""
+
+#: staff.circ.holds.edit_expire_time.accesskey
+msgctxt "staff.circ.holds.edit_expire_time.accesskey"
+msgid "E"
+msgstr "E"
+
 #: staff.circ.holds.activate_hold
 msgid "Activate Hold"
 msgstr ""
@@ -7339,9 +7472,10 @@ msgstr ""
 
 #: staff.cat.copy_browser.actions.sel_mark_items_missing.label
 #: staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey
+#, fuzzy
 msgctxt "staff.cat.copy_browser.actions.sel_mark_items_missing.label staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
-msgstr ""
+msgstr "Mark as Missing"
 
 #: staff.cat.copy_browser.actions.cmd_print_spine_labels.label
 #: staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey
@@ -7498,9 +7632,10 @@ msgstr ""
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey
+#, fuzzy
 msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
-msgstr ""
+msgstr "Mark as Missing"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey
@@ -8004,8 +8139,9 @@ msgid "&Help"
 msgstr "Help"
 
 #: staff.cat.record_buckets_overlay.query_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.query_list_actions.accesskey
+msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label staff.cat.record_buckets_overlay.query_list_actions.accesskey"
+msgid "&List Actions"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip0.label
@@ -8043,8 +8179,9 @@ msgid "Add Selected to Pending Records"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey
+msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip1.label
@@ -8101,8 +8238,9 @@ msgid "Owner:"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey
+msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip2.label
@@ -8339,6 +8477,11 @@ msgstr ""
 #: staff.cat.volume_editor.modify.label
 msgid "Modify"
 msgstr ""
+
+#: staff.cat.volume_editor.cancel.label
+msgctxt "staff.cat.volume_editor.cancel.label"
+msgid "Cancel"
+msgstr "Cancel"
 
 #: staff.cat.z3950.marc_import.label
 #: staff.cat.z3950.marc_import.accesskey
@@ -9061,8 +9204,9 @@ msgstr ""
 
 #: staff.patron.info.stat_cats.label
 #: staff.patron.info.stat_cats.accesskey
+#, fuzzy
 msgid "&Statistical Categories"
-msgstr ""
+msgstr "Statistical &Category Editor"
 
 #: staff.patron.info.surveys.label
 #: staff.patron.info.surveys.accesskey
@@ -9144,8 +9288,9 @@ msgid "Evergreen User Editor"
 msgstr ""
 
 #: staff.patron.user_edit.user_name.label
+#, fuzzy
 msgid "User Name:"
-msgstr ""
+msgstr "Username"
 
 #: staff.patron.user_edit.barcode.label
 #, fuzzy
@@ -9604,9 +9749,10 @@ msgid "Family Lead Account"
 msgstr ""
 
 #: staff.patron.ue.stat_categories.label
+#, fuzzy
 msgctxt "staff.patron.ue.stat_categories.label"
 msgid "Statistical Categories"
-msgstr ""
+msgstr "Statistical &Category Editor"
 
 #: staff.patron.ue.survey.label
 msgctxt "staff.patron.ue.survey.label"
@@ -9806,9 +9952,10 @@ msgstr ""
 
 #: staff.patron.items_overlay.sel_bucket.label
 #: staff.patron.items_overlay.sel_bucket.accesskey
+#, fuzzy
 msgctxt "staff.patron.items_overlay.sel_bucket.label staff.patron.items_overlay.sel_bucket.accesskey"
 msgid "&Add to Item Bucket"
-msgstr ""
+msgstr "Add to &Bucket"
 
 #: staff.patron.items_overlay.show_catalog.label
 msgctxt "staff.patron.items_overlay.show_catalog.label"
@@ -9879,6 +10026,38 @@ msgstr ""
 msgctxt "staff.patron.items_overlay.items_export.label"
 msgid "Export"
 msgstr "Export"
+
+#: staff.generic.list_actions.label
+#: staff.generic.list_actions.accesskey
+msgctxt "staff.generic.list_actions.label staff.generic.list_actions.accesskey"
+msgid "&List Actions"
+msgstr ""
+
+#: staff.generic.list_actions.sel_clip.label
+#: staff.generic.list_actions.sel_clip.accesskey
+msgctxt "staff.generic.list_actions.sel_clip.label staff.generic.list_actions.sel_clip.accesskey"
+msgid "&Copy to Clipboard"
+msgstr ""
+
+#: staff.generic.list_actions.csv_to_printer.label
+#: staff.generic.list_actions.csv_to_printer.accesskey
+msgid "&Print List CSV"
+msgstr ""
+
+#: staff.generic.list_actions.csv_to_clipboard.label
+#: staff.generic.list_actions.csv_to_clipboard.accesskey
+msgid "&Copy List CSV to Clipboard"
+msgstr ""
+
+#: staff.generic.list_actions.csv_to_file.label
+#: staff.generic.list_actions.csv_to_file.accesskey
+msgid "Save List CSV to &File"
+msgstr ""
+
+#: staff.generic.list_actions.save_columns.label
+#: staff.generic.list_actions.save_columns.accesskey
+msgid "&Save List Configuration"
+msgstr ""
 
 #: ev.staff.patron.ue_xhtml.ev_user_editor.label
 msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
@@ -10249,9 +10428,10 @@ msgid "Family Lead Account"
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.stat_categories.label
+#, fuzzy
 msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
 msgid "Statistical Categories"
-msgstr ""
+msgstr "Statistical &Category Editor"
 
 #: ev.staff.patron.ue_xhtml.survey.label
 msgctxt "ev.staff.patron.ue_xhtml.survey.label"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 09:34-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22-0400\n"
 "PO-Revision-Date: 2008-08-03 15:16+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -480,6 +480,10 @@ msgstr "Պատճենահանման խմբագիր"
 msgid "Create Copies"
 msgstr "Ստեղծիր պատճեներ"
 
+#: staff.cat.copy_editor.copy_notes
+msgid "Copy Notes"
+msgstr ""
+
 #: staff.cat.copy_editor.status
 msgid "Status"
 msgstr "Վիճակ"
@@ -655,6 +659,183 @@ msgstr "Սխալ՝ Արտածման սահմանմանը վիճակագրակա�
 msgid "Error populating statistical categories for display"
 msgstr "Սխալ՝ արտածման վիճակագրական դասերը բազմացնելիս "
 
+#: staff.cat.copy_editor.remove_stat_cat_entry
+msgid "<Remove Stat Cat>"
+msgstr ""
+
+#: staff.cat.copy_editor.remove_age_based_hold_protection
+msgid "<Remove Protection>"
+msgstr ""
+
+#: staff.cat.copy_editor.field.unset_or_null
+msgctxt "staff.cat.copy_editor.field.unset_or_null"
+msgid "<Unset>"
+msgstr "<Unset>"
+
+#: staff.cat.copy_editor.field.owning_library.label
+msgid "Owning Lib : Call Number"
+msgstr ""
+
+#: staff.cat.copy_editor.field.creator.label
+msgid "Creator"
+msgstr ""
+
+#: staff.cat.copy_editor.field.last_editor.label
+msgid "Last Editor"
+msgstr ""
+
+#: staff.cat.copy_editor.field.barcode.label
+msgid "Barcode"
+msgstr ""
+
+#: staff.cat.copy_editor.field.creation_date.label
+msgid "Creation Date"
+msgstr ""
+
+#: staff.cat.copy_editor.field.last_edit_date.label
+msgid "Last Edit Date"
+msgstr ""
+
+#: staff.cat.copy_editor.field.location.label
+msgid "Location/Collection"
+msgstr ""
+
+#: staff.cat.copy_editor.field.circulation_library.label
+msgid "Circulation Library"
+msgstr ""
+
+#: staff.cat.copy_editor.field.copy_number.label
+msgid "Copy Number"
+msgstr ""
+
+#: staff.cat.copy_editor.field.circulate.label
+msgid "Circulate?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.circulate.yes_or_true
+msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.circulate.no_or_false
+msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.cat.copy_editor.field.holdable.label
+msgid "Holdable?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.holdable.yes_or_true
+msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.holdable.no_or_false
+msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.cat.copy_editor.field.age_based_hold_protection.label
+msgid "Age-based Hold Protection"
+msgstr ""
+
+#: staff.cat.copy_editor.field.loan_duration.label
+msgid "Loan Duration"
+msgstr ""
+
+#: staff.cat.copy_editor.field.loan_duration.short
+msgid "Short"
+msgstr ""
+
+#: staff.cat.copy_editor.field.loan_duration.normal
+msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+msgid "Normal"
+msgstr ""
+
+#: staff.cat.copy_editor.field.loan_duration.extended
+msgid "Long"
+msgstr ""
+
+#: staff.cat.copy_editor.field.fine_level.label
+msgid "Fine Level"
+msgstr ""
+
+#: staff.cat.copy_editor.field.fine_level.low
+msgid "Low"
+msgstr ""
+
+#: staff.cat.copy_editor.field.fine_level.normal
+msgctxt "staff.cat.copy_editor.field.fine_level.normal"
+msgid "Normal"
+msgstr ""
+
+#: staff.cat.copy_editor.field.fine_level.high
+msgid "High"
+msgstr ""
+
+#: staff.cat.copy_editor.field.circulate_as_type.label
+msgid "Circulate as Type"
+msgstr ""
+
+#: staff.cat.copy_editor.field.circulation_modifier.label
+msgid "Circulation Modifier"
+msgstr ""
+
+#: staff.cat.copy_editor.field.alert_message.label
+msgid "Alert Message"
+msgstr ""
+
+#: staff.cat.copy_editor.field.deposit.label
+msgid "Deposit?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.deposit.yes_or_true
+msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.deposit.no_or_false
+msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.cat.copy_editor.field.deposit_amount.label
+msgid "Deposit Amount"
+msgstr ""
+
+#: staff.cat.copy_editor.field.price.label
+msgid "Price"
+msgstr ""
+
+#: staff.cat.copy_editor.field.opac_visible.label
+msgid "OPAC Visible?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.opac_visible.yes_or_true
+msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.opac_visible.no_or_false
+msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.cat.copy_editor.field.reference.label
+msgid "Reference?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.reference.yes_or_true
+msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.reference.no_or_false
+msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
 msgstr "Ավելացրու նոր նշում"
@@ -772,6 +953,7 @@ msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_summary.unset
+msgctxt "staff.cat.copy_summary.unset"
 msgid "<Unset>"
 msgstr "<Unset>"
 
@@ -1470,13 +1652,49 @@ msgstr "Սխալ՝ երբ կանչվում էն հիշված նախապատվո�
 msgid "Error storing preferences"
 msgstr "Սխալ՝ երբ հիշվում են նախապատվությունները"
 
+#: staff.cat.z3950.native_catalog
+msgid "Native Catalog"
+msgstr ""
+
 #: staff.cat.z3950.obj_list_init.list_construction_error
 msgid "Failure during list construction."
 msgstr "Ձախողում ցուցակի ձևավորման ընթացքում:"
 
-#: staff.cat.z3950.obj_controller_init.deck_label
+#: staff.cat.z3950.results_view.label
 msgid "Results View"
 msgstr "Արդյունքների դիտում"
+
+#: staff.cat.z3950.results_view.accesskey
+msgctxt "staff.cat.z3950.results_view.accesskey"
+msgid "V"
+msgstr ""
+
+#: staff.cat.z3950.marc_view.label
+msgid "MARC View"
+msgstr ""
+
+#: staff.cat.z3950.marc_view.accesskey
+msgctxt "staff.cat.z3950.marc_view.accesskey"
+msgid "V"
+msgstr ""
+
+#: staff.cat.z3950.hide_top_pane.label
+msgid "Hide Top Pane"
+msgstr ""
+
+#: staff.cat.z3950.hide_top_pane.accesskey
+msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+msgid "T"
+msgstr ""
+
+#: staff.cat.z3950.unhide_top_pane.label
+msgid "Show Top Pane"
+msgstr ""
+
+#: staff.cat.z3950.unhide_top_pane.accesskey
+msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
+msgid "T"
+msgstr ""
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."

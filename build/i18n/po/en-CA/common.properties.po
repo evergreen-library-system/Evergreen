@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-25 13:19-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,12 +188,20 @@ msgstr ""
 msgid "Current Copy"
 msgstr ""
 
+#: staff.ahr_current_copy_location_label
+msgid "Current Copy Location"
+msgstr ""
+
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
 msgstr ""
 
 #: staff.ahr_expire_time_label
 msgid "Expire Time"
+msgstr ""
+
+#: staff.ahr_expire_date_label
+msgid "Expire Date"
 msgstr ""
 
 #: staff.ahr_fulfillment_time_label

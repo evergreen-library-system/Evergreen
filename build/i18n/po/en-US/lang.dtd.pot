@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-14 00:33-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2615,6 +2615,10 @@ msgstr ""
 
 #: staff.main.menu.cat.volume_status.label
 msgid "Display Volume"
+msgstr ""
+
+#: staff.main.menu.cat.vandelay.label
+msgid "MARC Batch Import/Export"
 msgstr ""
 
 #: staff.main.menu.cat.z39_50_import.label
@@ -5657,6 +5661,10 @@ msgstr ""
 msgid "Holdable: "
 msgstr ""
 
+#: staff.server.admin.copy_locations.editor.hold_verify.label
+msgid "Hold Verify: "
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
 msgid "Yes"
@@ -5690,6 +5698,10 @@ msgstr ""
 
 #: staff.server.admin.copy_locations.editor.holdable
 msgid "Holdable"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.hold_verify
+msgid "Hold Verify"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help

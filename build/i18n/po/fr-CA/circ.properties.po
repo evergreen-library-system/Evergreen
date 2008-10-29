@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-08 11:13-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22-0400\n"
 "PO-Revision-Date: 2008-08-27 11:39-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -210,6 +210,18 @@ msgstr "La sortie de %1$s a échoué"
 #: staff.circ.checkout.override.confirm
 msgid "Override Checkout Failure?"
 msgstr "Ne pas tenir compte de l’échec de la sortie?"
+
+#: staff.circ.checkout.override.item_deposit_required.warning
+msgid ""
+"A billing for an Item Deposit will be added to the patron's account if this "
+"action is overrided."
+msgstr ""
+
+#: staff.circ.checkout.override.item_rental_fee_required.warning
+msgid ""
+"A billing for an Item Rental Fee will be added to the patron's account if "
+"this action is overrided."
+msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
@@ -1178,6 +1190,10 @@ msgstr "Prénom du client"
 msgid "Override Checkin Failure?"
 msgstr "Ne pas tenir compte de l’échec d’entrée?"
 
+#: staff.circ.utils.checkin.override.item_deposit_paid.warning
+msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgstr ""
+
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
 msgstr "Transaction pour %1$s facturable $%2$s"
@@ -1251,6 +1267,24 @@ msgstr "Imprimer"
 #: staff.circ.utils.hold_slip.print.no
 msgid "Do Not Print"
 msgstr "Ne pas imprimer"
+
+#: staff.circ.utils.hold_capture_delayed.description
+msgid ""
+"This item could fulfill a hold request but capture has been delayed by "
+"policy."
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.titlebar
+msgid "Hold Capture Delayed"
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
+msgid "Do Not Capture"
+msgstr ""
+
+#: staff.circ.utils.hold_capture_delayed.prompt_for_capture
+msgid "Capture"
+msgstr ""
 
 #: staff.circ.utils.capture
 msgid "%1$s has been captured for a hold."
@@ -1334,6 +1368,12 @@ msgstr "État du code à barres : %1$s : %2$s"
 msgid "Barcode: %1$s Message: %2$s"
 msgstr "Code à barres : %1$s Message : %2$s"
 
+#: staff.circ.circ.override.item_rental_fee_required.warning.barcode
+msgid ""
+"For item with barcode %1$s, a billing for an Item Rental Fee will be added "
+"to the patron's account if this action is overrided."
+msgstr ""
+
 #: staff.circ.holds.activate.prompt
 msgid "Are you sure you would like to activate hold %1$s?"
 msgstr "Êtes-vous certain de vouloir activer l’article mis en réserve %1$s?"
@@ -1377,6 +1417,28 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
+msgid "Invalid Date"
+msgstr "Date invalide"
+
+#: staff.circ.holds.expire_time.prompt
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.prompt.plural
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgstr ""
+
+#: staff.circ.holds.expire_time.too_early.error
+#, fuzzy
+msgid ""
+"Expiration Date needs to be either unset or set to fall on a future date."
+msgstr ""
+"La date d’activation doit être rétablie ou réglée à une date ultérieure."
+
+#: staff.circ.holds.expire_time.invalid_date
+msgctxt "staff.circ.holds.expire_time.invalid_date"
 msgid "Invalid Date"
 msgstr "Date invalide"
 

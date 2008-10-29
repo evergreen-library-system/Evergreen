@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-14 00:34:05-0400\n"
+"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4011,127 +4011,257 @@ msgstr ""
 msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
 
-# id::152
+# id::153
 #: ppl.description:1126
+msgid "Allow a user to create a new funding source"
+msgstr ""
+
+# id::154
+#: ppl.description:1127
+msgid "Allow a user to delete a funding source"
+msgstr ""
+
+# id::155
+#: ppl.description:1128
+msgid "Allow a user to view a funding source"
+msgstr ""
+
+# id::156
+#: ppl.description:1129
+msgid "Allow a user to update a funding source"
+msgstr ""
+
+# id::157
+#: ppl.description:1130
+msgid "Allow a user to create a new fund"
+msgstr ""
+
+# id::158
+#: ppl.description:1131
+msgid "Allow a user to delete a fund"
+msgstr ""
+
+# id::159
+#: ppl.description:1132
+msgid "Allow a user to view a fund"
+msgstr ""
+
+# id::160
+#: ppl.description:1133
+msgid "Allow a user to update a fund"
+msgstr ""
+
+# id::161
+#: ppl.description:1134
+msgid "Allow a user to create a new fund allocation"
+msgstr ""
+
+# id::162
+#: ppl.description:1135
+msgid "Allow a user to delete a fund allocation"
+msgstr ""
+
+# id::163
+#: ppl.description:1136
+msgid "Allow a user to view a fund allocation"
+msgstr ""
+
+# id::164
+#: ppl.description:1137
+msgid "Allow a user to update a fund allocation"
+msgstr ""
+
+# id::165
+#: ppl.description:1138
+msgid "Lowest level permission required to access the ACQ interface"
+msgstr ""
+
+# id::166
+#: ppl.description:1139
+msgid "Allow a user to create a new provider"
+msgstr ""
+
+# id::167
+#: ppl.description:1140
+msgid "Allow a user to delate a provider"
+msgstr ""
+
+# id::168
+#: ppl.description:1141
+msgid "Allow a user to view a provider"
+msgstr ""
+
+# id::169
+#: ppl.description:1142
+msgid "Allow a user to update a provider"
+msgstr ""
+
+# id::170
+#: ppl.description:1143
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr ""
+
+# id::171
+#: ppl.description:1144
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::172
+#: ppl.description:1145
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::173
+#: ppl.description:1146
+msgid "Allow a user to view/credit/debit a fund"
+msgstr ""
+
+# id::174
+#: ppl.description:1147
+msgid "Allows a user to create a picklist"
+msgstr ""
+
+# id::175
+#: ppl.description:1148
+msgid "Allow a user to create/view/update/delete a provider"
+msgstr ""
+
+# id::176
+#: ppl.description:1149
+msgid "Allow a user to view and purchase from a provider"
+msgstr ""
+
+# id::177
+#: ppl.description:1150
+msgid "Allow a user to view another users picklist"
+msgstr ""
+
+# id::152
+#: ppl.description:1151
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 
-# id::153
-#: ppl.description:1128
+# id::178
+#: ppl.description:1153
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
 
+# id::179
+#: ppl.description:1155
+msgid "Allow a user to create/view/update/delete a currency_type"
+msgstr ""
+
 # id::1
-#: pgt.name:1213
+#: pgt.name:1279
 msgid "Users"
 msgstr ""
 
 # id::2
-#: pgt.name:1215
+#: pgt.name:1281
 msgid "Patrons"
 msgstr ""
 
 # id::3
-#: pgt.name:1217
+#: pgt.name:1283
 msgid "Staff"
 msgstr ""
 
 # id::4
-#: pgt.name:1219
+#: pgt.name:1285
 msgid "Catalogers"
 msgstr ""
 
 # id::5
-#: pgt.name:1221
+#: pgt.name:1287
 msgid "Circulators"
 msgstr ""
 
 # id::10
-#: pgt.name:1223
+#: pgt.name:1289
 msgid "Local System Administrator"
 msgstr ""
 
 # id::10
-#: pgt.description:1224
+#: pgt.description:1290
 msgid "System maintenance, configuration, etc."
 msgstr ""
 
 # id::1
-#: acpl.name:1355
+#: acpl.name:1421
 msgid "Stacks"
 msgstr ""
 
 # id::1
-#: vqbrad.description:1409
+#: vqbrad.description:1475
 msgid "Title of work"
 msgstr ""
 
 # id::1
-#: vqbrad.description:1410
+#: vqbrad.description:1476
 msgid "Author of work"
 msgstr ""
 
 # id::3
-#: vqbrad.description:1411
+#: vqbrad.description:1477
 msgid "Language of work"
 msgstr ""
 
 # id::4
-#: vqbrad.description:1412
+#: vqbrad.description:1478
 msgid "Pagination"
 msgstr ""
 
 # id::5
-#: vqbrad.description:1413
+#: vqbrad.description:1479
 msgid "ISBN"
 msgstr ""
 
 # id::6
-#: vqbrad.description:1414
+#: vqbrad.description:1480
 msgid "ISSN"
 msgstr ""
 
 # id::7
-#: vqbrad.description:1415
+#: vqbrad.description:1481
 msgid "Price"
 msgstr ""
 
 # id::8
-#: vqbrad.description:1416
+#: vqbrad.description:1482
 msgid "Accession Number"
 msgstr ""
 
 # id::9
-#: vqbrad.description:1417
+#: vqbrad.description:1483
 msgid "TCN Value"
 msgstr ""
 
 # id::10
-#: vqbrad.description:1418
+#: vqbrad.description:1484
 msgid "TCN Source"
 msgstr ""
 
 # id::11
-#: vqbrad.description:1419
+#: vqbrad.description:1485
 msgid "Internal ID"
 msgstr ""
 
 # id::12
-#: vqbrad.description:1420
+#: vqbrad.description:1486
 msgid "Publisher"
 msgstr ""
 
 # id::13
-#: vqbrad.description:1421
+#: vqbrad.description:1487
 msgid "Publication Date"
 msgstr ""
 
 # id::14
-#: vqbrad.description:1422
+#: vqbrad.description:1488
 msgid "Edition"
 msgstr ""
 
 # id::1
-#: vqarad.description:1472
+#: vqarad.description:1538
 msgid "Identifier"
 msgstr ""

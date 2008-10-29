@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 09:34-0400\n"
+"POT-Creation-Date: 2008-10-29 00:21-0400\n"
 "PO-Revision-Date: 2008-08-19 00:30+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,6 +206,14 @@ msgstr "Ջնջիր ընտրված տրանզակցիան"
 #: common.save_transactions.accesskey
 msgid "&Save these transactions"
 msgstr "&Հիշիր այս տրանզակցիան"
+
+#: common.true
+msgid "True"
+msgstr ""
+
+#: common.false
+msgid "False"
+msgstr ""
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -2318,6 +2326,10 @@ msgctxt "staff.main.auth.retest.accesskey"
 msgid "R"
 msgstr "R"
 
+#: staff.main.auth.add_ssl_exception
+msgid "Add SSL Exception"
+msgstr ""
+
 #: staff.main.auth.server
 msgid "Server"
 msgstr "Սպասարկող կայան"
@@ -2605,6 +2617,10 @@ msgstr "V"
 #: staff.main.menu.cat.volume_status.label
 msgid "Display Volume"
 msgstr "Արտածիր հատորը"
+
+#: staff.main.menu.cat.vandelay.label
+msgid "MARC Batch Import/Export"
+msgstr ""
 
 #: staff.main.menu.cat.z39_50_import.label
 #: staff.main.menu.cat.z39_50_import.accesskey
@@ -5655,6 +5671,10 @@ msgstr "Անուն"
 msgid "Holdable: "
 msgstr "Պահվող"
 
+#: staff.server.admin.copy_locations.editor.hold_verify.label
+msgid "Hold Verify: "
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
 msgid "Yes"
@@ -5682,9 +5702,17 @@ msgctxt "staff.server.admin.copy_locations.editor.library"
 msgid "Owning Library"
 msgstr "Տնօրինող գրադարան"
 
+#: staff.server.admin.copy_locations.editor.library.filter
+msgid "Focus Location:"
+msgstr ""
+
 #: staff.server.admin.copy_locations.editor.holdable
 msgid "Holdable"
 msgstr "Պահվող"
+
+#: staff.server.admin.copy_locations.editor.hold_verify
+msgid "Hold Verify"
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
 msgctxt "staff.server.admin.copy_locations.editor.help"
@@ -6028,6 +6056,10 @@ msgstr "Տրանզիտներ"
 msgid "Transit List"
 msgstr "Տրանզիտի ցուցակ"
 
+#: staff.server.admin.index.conify
+msgid "Server Settings"
+msgstr ""
+
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
 msgstr "Evergreen: Գրադարանի կարգաբերումների խմբագիր"
@@ -6077,11 +6109,13 @@ msgid "Default Item Price"
 msgstr "Լռակյաց նյութի գին"
 
 #: staff.server.admin.org_settings.from_address
-msgid "\"FROM\" email address for patron notices"
+#, fuzzy
+msgid "Sending email address for patron notices"
 msgstr "\"FROM\" էլ փոստի հասցե ընթերցողի նշումների համար"
 
 #: staff.server.admin.org_settings.bounce_note
-msgid "(note: delivery failures will be returned this address)"
+#, fuzzy
+msgid "Email delivery failures will be returned this address"
 msgstr "(նշում: առաքման ձախողումները կվերադարձվեն այս հասցեին)"
 
 #: staff.server.admin.org_settings.apply_all.note
@@ -6103,6 +6137,90 @@ msgid ""
 msgstr ""
 "Սա կթարմացնի բացվող ցուցակում նշված բոլոր տեղաբաշխումների պարամետրերը: "
 "Վստա՞հ ես որ ցանկանում էս շարունակել:"
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval
+msgid "Hold Expiration Alert Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
+msgid ""
+"Amount of time before a hold expires at which point the patron should be "
+"alerted"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval
+msgid "Default Hold Expirate Interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_expire_interval.desc
+msgid ""
+"Amount of time after a hold is placed before the hold expires.  Example \"100 "
+"days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow
+msgid "Allow Credit Card Payments"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.credit.allow.desc
+msgid ""
+"If enabled, patrons will be able to pay fines accrued at this location via "
+"credit card"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.default_locale
+msgid "Default Locale"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.void_overdue_on_lost
+msgid "Void overdue fines when items are marked lost"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft
+msgid "Soft hold stalling interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
+msgid ""
+"How long to wait before allowing remote items to be opportunisticaly "
+"captured for a hold.  Example \"5 days\""
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.hard
+msgid "Hard hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_boundary.soft
+msgid "Soft hold boundary"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex
+msgid "Patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.opac.barcode_regex.desc
+msgid "Regular expression defining the patron barcode format"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max
+msgid "Maximum previous checkouts displayed"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
+msgid ""
+"This is maximum number of previous circulations the staff client will "
+"display when investigating item details"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval
+msgid "Change reshelving status interval"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.reshelving_complete.interval.desc
+msgid ""
+"Amount of time to wait before changing an item from \"reshelving\" status to "
+"\"available\".  Examples \"1 day\", \"6 hours\""
+msgstr ""
 
 #: staff.server.admin.stat_cat.title
 msgid "Evergreen: Statistical Category Editor"
@@ -7087,6 +7205,16 @@ msgctxt "staff.circ.holds.edit_activation_date.accesskey"
 msgid "D"
 msgstr "D"
 
+#: staff.circ.holds.edit_expire_time
+#, fuzzy
+msgid "Edit Expiration Date"
+msgstr "Խմբագրիր ակտիվացման ամսաթիվը"
+
+#: staff.circ.holds.edit_expire_time.accesskey
+msgctxt "staff.circ.holds.edit_expire_time.accesskey"
+msgid "E"
+msgstr "E"
+
 #: staff.circ.holds.activate_hold
 msgid "Activate Hold"
 msgstr "Ակտիվացրու պահումը"
@@ -7909,8 +8037,10 @@ msgid "&Help"
 msgstr "&Օգնություն"
 
 #: staff.cat.record_buckets_overlay.query_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.query_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label staff.cat.record_buckets_overlay.query_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Թվարկիր գործողությունները"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip0.label
@@ -7948,8 +8078,10 @@ msgid "Add Selected to Pending Records"
 msgstr "Ավելացրու ընտրվածները սպասող գրառումներին"
 
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Թվարկիր գործողությունները"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip1.label
@@ -8006,8 +8138,10 @@ msgid "Owner:"
 msgstr "Տնօրինող:"
 
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.label
-msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label"
-msgid "List Actions"
+#: staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
+msgid "&List Actions"
 msgstr "Թվարկիր գործողությունները"
 
 #: staff.cat.record_buckets_overlay.menuitem.sel_clip2.label
@@ -9783,6 +9917,43 @@ msgctxt "staff.patron.items_overlay.items_export.label"
 msgid "Export"
 msgstr "Արտահանիր"
 
+#: staff.generic.list_actions.label
+#: staff.generic.list_actions.accesskey
+#, fuzzy
+msgctxt "staff.generic.list_actions.label staff.generic.list_actions.accesskey"
+msgid "&List Actions"
+msgstr "Թվարկիր գործողությունները"
+
+#: staff.generic.list_actions.sel_clip.label
+#: staff.generic.list_actions.sel_clip.accesskey
+msgctxt "staff.generic.list_actions.sel_clip.label staff.generic.list_actions.sel_clip.accesskey"
+msgid "&Copy to Clipboard"
+msgstr "&Արտագրիր կլիպբորդ"
+
+#: staff.generic.list_actions.csv_to_printer.label
+#: staff.generic.list_actions.csv_to_printer.accesskey
+#, fuzzy
+msgid "&Print List CSV"
+msgstr "Տպիր ցուցակի CSV"
+
+#: staff.generic.list_actions.csv_to_clipboard.label
+#: staff.generic.list_actions.csv_to_clipboard.accesskey
+#, fuzzy
+msgid "&Copy List CSV to Clipboard"
+msgstr "Արտագրիր ցուցակի CSV կլիպբորդ"
+
+#: staff.generic.list_actions.csv_to_file.label
+#: staff.generic.list_actions.csv_to_file.accesskey
+#, fuzzy
+msgid "Save List CSV to &File"
+msgstr "Հիշիր ցուցակի CSV ֆայլում"
+
+#: staff.generic.list_actions.save_columns.label
+#: staff.generic.list_actions.save_columns.accesskey
+#, fuzzy
+msgid "&Save List Configuration"
+msgstr "Հիշիր ցուցակի կարգաբերումը"
+
 #: ev.staff.patron.ue_xhtml.ev_user_editor.label
 msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
 msgid "Evergreen User Editor"
@@ -10240,3 +10411,11 @@ msgstr ""
 "Սա Evergreen-ի աշխատակազմի պորտալի էջն է: Կարող ես փոփոխել այն քո "
 "կազմակերպության պահանջներին համապատասխան: Օրինակ, կարող ես ավելացնել "
 "հղումներ գործողոթյուններ իրականացնող փաստաթղթերին:"
+
+#~ msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
+#~ msgid "List Actions"
+#~ msgstr "Թվարկիր գործողությունները"
+
+#~ msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label"
+#~ msgid "List Actions"
+#~ msgstr "Թվարկիր գործողությունները"
