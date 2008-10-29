@@ -94,11 +94,11 @@
 						window.perm_grid_layout = [
 							{	cells : [
 									[
-										{ name : "Code",        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
-										{ name : "Description", field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+										{ name : pgt_strings.LABEL_CODE,        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+										{ name : pgt_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
 									],
 									[
-										{ name : "Translation",
+										{ name : pgt_strings.LABEL_TRANSLATION,
 										  width : "10em",
 										  height : "2em",
 										  get : function (row) {
@@ -151,7 +151,7 @@
 			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
-				<span>New Permission:</span>
+				<span>&conify.perm_list.new_permission.label;</span>
 				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="&conify.perm_list.new_code.label;"></div>
 				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="&conify.perm_list.add.label;"> 
 					<script type="dojo/connect" event="onClick">

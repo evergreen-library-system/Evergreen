@@ -104,3 +104,4 @@
 <!ENTITY conify.perm_list.add_button.label "Add">
 <!ENTITY conify.perm_list.save_changes.label "Save Changes">
 <!ENTITY conify.perm_list.delete_selected.label "Delete Selected">
+<!ENTITY conify.perm_list.new_permission.label "New Permission:">

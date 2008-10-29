@@ -6,6 +6,9 @@
 	"ERROR_DELETING": "Problem deleting ${0}",
 	"ERROR_FETCHING_PERMS": "Problem fetching perms",
 	"ERROR_SAVING_DATA": "Problem saving data for ${0}",
+	"LABEL_CODE": "Code",
+	"LABEL_DESCRIPTION": "Description",
+	"LABEL_TRANSLATION": "Translation",
 	"STATUS_DELETED": "${0} deleted", 
 	"SUCCESS_CREATING_PERMISSION": "New ${0} permission created",
 	"SUCCESS_SAVE": "Saved changes to ${0}"
