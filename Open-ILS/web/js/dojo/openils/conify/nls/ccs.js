@@ -13,5 +13,5 @@
 	"STATUS_DELETED": "${0} deleted", 
 	"SUCCESS_CREATING_STATUS": "New ${0} status created",
 	"SUCCESS_SAVE": "Saved changes to ${0}",
-	"TRANSLATION": "Translation",
+	"TRANSLATION": "Translation"
 }
