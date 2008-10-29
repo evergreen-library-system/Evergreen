@@ -97,3 +97,11 @@
 
 <!ENTITY conify.marc_code_maps.video.title "Videorecording Format Map">
 <!ENTITY conify.marc_code_maps.video.new.label "New Video Recording Format:">
+
+<!-- perm_list.html Entities -->
+<!ENTITY conify.perm_list.permission_list.title "Conify :: Global :: Permission :: Permission List">
+<!ENTITY conify.perm_list.new_code.label "New Code">
+<!ENTITY conify.perm_list.add_button.label "Add">
+<!ENTITY conify.perm_list.save_changes.label "Save Changes">
+<!ENTITY conify.perm_list.delete_selected.label "Delete Selected">
+<!ENTITY conify.perm_list.new_permission.label "New Permission:">

@@ -29,12 +29,15 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
+dojo.requireLocalization("openils.config", "pgt");
 
 // some handy globals
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+
+var pgt_strings = dojo.i18n.getLocalization('openils.conify', 'pgt');
 
 var current_perm;
 var virgin_out_id = -1;
@@ -58,17 +61,17 @@ function save_perm () {
 		params : [ ses, modified_ppl ],
 		onerror : function (r) {
 			highlighter.red.play();
-			status_update( 'Problem saving data for ' + perm_store.getValue( current_perm, 'code' ) );
+			status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				perm_store.setValue( current_perm, 'ischanged', 0 );
 				highlighter.green.play();
-				status_update( 'Saved changes to ' + perm_store.getValue( current_perm, 'code' ) );
+				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [perm_store.getValue(current_perm, 'code')]) );
 			} else {
 				highlighter.red.play();
-				status_update( 'Problem saving data for ' + perm_store.getValue( current_perm, 'code' ) );
+				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
 			}
 		},
 	}).send();
@@ -86,10 +89,7 @@ function save_them_all (event) {
 
 
 	if (event && dirtyStore.length > 0) {
-		confirmation = confirm(
-			'There are unsaved modified Permissions!  '+
-			'OK to save these changes, Cancel to abandon them.'
-		);
+		confirmation = confirm( pgt_strings.CONFIRM_EXIT );
 	}
 
 	if (confirmation) {
