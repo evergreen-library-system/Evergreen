@@ -20,6 +20,7 @@ dojo.provide('openils.acq.Fund');
 dojo.require('fieldmapper.Fieldmapper');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.Event');
+dojo.require('openils.Util');
 
 /** Declare the Fund class with dojo */
 dojo.declare('openils.acq.Fund', null, {
@@ -35,10 +36,7 @@ openils.acq.Fund.createStore = function(onComplete, limitPerm) {
     function mkStore(r) {
         var msg;
         var items = [];
-        while(msg = r.recv()) {
-            var src = msg.content();
-            if(e = openils.Event.parse(src))
-                return alert(e);
+        while(msg = openils.Util.readResponse(r)) {
             openils.acq.Fund.cache[src.id()] = src;
             items.push(src);
         }

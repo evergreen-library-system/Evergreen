@@ -40,7 +40,7 @@ if(!dojo._hasResource['openils.acq.PO']) {
                 {   params:par, 
                     async: true,
                     oncomplete:function(r) {
-                        var po = openils.Util.extractResponse(r)
+                        var po = openils.Util.readResponse(r)
                         if(po) {
                             openils.acq.PO.cache[po.id()] = po;
                             oncomplete(po);
