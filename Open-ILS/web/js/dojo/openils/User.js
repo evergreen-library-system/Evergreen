@@ -14,6 +14,7 @@
  * ---------------------------------------------------------------------------
  */
 
+
 if(!dojo._hasResource["openils.User"]) {
 
     dojo._hasResource["openils.User"] = true;
@@ -31,6 +32,7 @@ if(!dojo._hasResource["openils.User"]) {
         location : null,
         authtoken : null,
         authtime : null,
+        workstation : null,
     
         constructor : function ( kwargs ) {
             kwargs = kwargs || {};
@@ -112,6 +114,7 @@ if(!dojo._hasResource["openils.User"]) {
                     password : hex_md5(seed + hex_md5(args.passwd)), 
                     type : args.type,
                     org : args.location,
+                    workstation : args.workstation
                 };
     
                 var authReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.complete', loginInfo);
@@ -151,6 +154,7 @@ if(!dojo._hasResource["openils.User"]) {
                 password : hex_md5(seed + hex_md5(args.passwd)), 
                 type : args.type,
                 org : args.location,
+                workstation : args.workstation,
             };
 
             var data = fieldmapper.standardRequest(
@@ -255,7 +259,7 @@ if(!dojo._hasResource["openils.User"]) {
 		        hookupStore(_u.permOrgStoreCache[perm]);
 	        else
                 _u.getPermOrgList(perm, buildTreePicker);
-        }
+        },
     });
 
 	openils.User.user = null;
