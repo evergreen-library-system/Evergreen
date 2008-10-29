@@ -101,3 +101,6 @@
 <!ENTITY vandelay.export.field_no_hint "(starting from 0)">
 <!ENTITY vandelay.export.bucket "Record Bucket ID">
 <!ENTITY vandelay.select_actions "-- Actions --">
+<!ENTITY vandelay.queue.total "Total:">
+<!ENTITY vandelay.queue.imported "Imported:">
+

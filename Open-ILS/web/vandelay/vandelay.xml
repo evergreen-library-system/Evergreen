@@ -34,26 +34,26 @@
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <!--#include virtual="inc/progress.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-export-div' class='hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-export-div' class='hidden content'>
                 <!--#include virtual="inc/export.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden content'>
                 <!--#include virtual="inc/upload.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-div' class='tall hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-div' class='tall hidden content'>
                 <!--#include virtual="inc/queue.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-match-div' class='tall hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-match-div' class='tall hidden content'>
                 <!--#include virtual="inc/matches.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-html-div' class='tall hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-html-div' class='tall hidden content'>
                 <!--#include virtual="inc/marchtml.xml"-->
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-select-div' class='tall hidden'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-select-div' class='tall hidden content'>
                 <!--#include virtual="inc/queueselect.xml"-->
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign="client"  id="vl-attr-editor-div" 
-                    class='hidden attr-editor-detail-content-pane' title='&vandelay.edit.attrs;'>
+                    class='hidden attr-editor-detail-content-pane content' title='&vandelay.edit.attrs;'>
                 <!--#include virtual="inc/attrs.xml"-->
             </div>
         </div>

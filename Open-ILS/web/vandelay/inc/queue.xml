@@ -1,8 +1,14 @@
-<h1>&vandelay.record.queue;</h1><br/>
-<div>
-    <span style='font-size:105%;' id='vl-queue-summary-name'/>
-    <span id='vl-queue-summary-import-count'/> / <span id='vl-queue-summary-total-count'/>
-</div>
+<table class='wide'>
+    <tr>
+        <td align='left'>
+            <h1>&vandelay.record.queue; <span style='font-style:italic;' id='vl-queue-summary-name'/></h1><br/>
+        </td>
+        <td align='right'>
+            &vandelay.queue.total; <span style='font-weight:bold;' id='vl-queue-summary-total-count'/>
+            &vandelay.queue.imported; <span style='font-weight:bold;' id='vl-queue-summary-import-count'/>
+        </td>
+    </tr>
+</table>
 <script>
     var vlQueueGridLayout;
     function resetVlQueueGridLayout() {
@@ -28,7 +34,7 @@
 <div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
 
     <!-- column picker dialog -->
-    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker" execute="alert(2);">
+    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker">
         <table class='form_table'>
             <thead>
                 <tr><th width='33%'>&vandelay.column;</th>
@@ -113,7 +119,7 @@
                     <span style='padding-right:10px;'>
                         <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page; &#187;</a>
                     </span>
-                    <span style='background:#e8e1cf;padding:3px 0px 0px 6px;-moz-border-radius:6px 0px 0px 0px;'>
+                    <span style='background:#e8e1cf;padding:3px 2px 2px 6px;-moz-border-radius:6px 0px 0px 0px;'>
                         <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>&vandelay.select.cols;</a>
                     </span>
                 </td>
