@@ -1042,7 +1042,7 @@ msgstr "&Précédent"
 #: staff.cat.opac.record_start.label
 #: staff.cat.opac.record_start.accesskey
 msgid "&Start"
-msgstr "&Démarrer"
+msgstr "&Début"
 
 #: staff.cat.opac.refresh_me.label
 msgid "Reset Display"
@@ -4518,7 +4518,7 @@ msgstr "Terminé"
 #: staff.mbts_xact_start_label
 msgctxt "staff.mbts_xact_start_label"
 msgid "Start"
-msgstr "Démarrer"
+msgstr "Début"
 
 #: staff.mvr_label_author
 msgctxt "staff.mvr_label_author"
@@ -8705,7 +8705,7 @@ msgstr "Sorti"
 #: staff.patron.bill_summary_overlay.start.value
 msgctxt "staff.patron.bill_summary_overlay.start.value"
 msgid "Start"
-msgstr "Démarrer"
+msgstr "Début"
 
 #: staff.patron.bill_summary_overlay.balance_owed.value
 msgctxt "staff.patron.bill_summary_overlay.balance_owed.value"

@@ -306,7 +306,7 @@ msgstr "No de facture"
 
 #: staff.mbts_xact_start_label
 msgid "Start"
-msgstr "Démarrer"
+msgstr "Début"
 
 #: staff.mbts_xact_finish_label
 msgid "Finish"
