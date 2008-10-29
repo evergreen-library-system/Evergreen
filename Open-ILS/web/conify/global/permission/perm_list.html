@@ -12,9 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Permission :: Permission List</title>
+		<title>&conify.perm_list.permission_list.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
@@ -73,7 +78,7 @@
                     method : 'open-ils.permacrud.search.ppl.atomic',
                     timeout : 10,
                     params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
-                    onerror : function (r) { status_update('Problem fetching perms') },
+                    onerror : function (r) { status_update(pgt_strings.ERROR_FETCHING_PERMS) },
                     oncomplete : function (r) {
 
                         window._perm_list = r.recv().content();
@@ -129,10 +134,7 @@
                             });
 
                             if (dirtyStore.length > 0) {
-                                var confirmation = confirm(
-                                    'There are unsaved modified Permissions!  '+
-                                    'OK to save these changes, Cancel to abandon them.'
-                                );
+                                var confirmation = confirm(pgt_strings.CONFIRM_EXIT);
 
                                 if (confirmation) {
                                     for (var i in window.dirtyStore) {
@@ -150,8 +152,8 @@
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
 				<span>New Permission:</span>
-				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="New Code"></div>
-				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="Add"> 
+				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="&conify.perm_list.new_code.label;"></div>
+				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="&conify.perm_list.add.label;"> 
 					<script type="dojo/connect" event="onClick">
 <!--
 						var new_code = new_perm_code.getValue();
@@ -169,7 +171,7 @@
                     	    params : [ ses, new_fm_obj ],
 	                        onerror : function (r) {
     	                        highlighter.red.play();
-        	                    status_update( 'Problem calling method to create new Permission' );
+        	                    status_update( pgt_strings.ERROR_CALLING_METHOD );
             	                err = true;
                 	        },
 	                        oncomplete : function (r) {
@@ -177,12 +179,12 @@
         	                    if ( res && res.content() ) {
             	                    var new_item_hash = res.content().toHash();
             	                    perm_store.newItem( new_item_hash );
-									status_update( 'New ' + new_item_hash.code + ' permission created' );
+									status_update( dojo.string.substitute(pgt_strings.SUCCESS_CREATING_PERMISSION, [new_item_hash.code]) );
 									perm_grid.model.sort(-1);
 									highlighter.green.play();
                             	} else {
 	                                highlighter.red.play();
-    	                            status_update( 'Problem creating new Permission' );
+    	                            status_update( pgt_strings.ERROR_CREATING_PERMISSION );
         	                        err = true;
             	                }
                 	        }
@@ -204,9 +206,9 @@
 
 			<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
 		
-				<button jsId="save_ppl_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+				<button jsId="save_ppl_button" dojoType="dijit.form.Button" label="&conify.perm_list.save_changes.label;" onClick="save_them_all()"></button>
 		
-				<button jsId="delete_ppl_button" dojoType="dijit.form.Button" label="Delete Selected">
+				<button jsId="delete_ppl_button" dojoType="dijit.form.Button" label="&conify.perm_list.delete_selected.label;">
 					<script type="dojo/connect" event="onClick">
 <!--
 						var selected_rows = perm_grid.selection.getSelected();
@@ -223,7 +225,7 @@
 						for (var i in selected_items) {
 							current_perm = selected_items[i];
 
-							if ( confirm('Are you sure you want to delete ' + perm_store.getValue( current_perm, 'code' ) + '?')) {
+							if ( confirm( dojo.string.substitute(pgt_strings.CONFIRM_DELETE, [perm_store.getValue(current_perm, 'code')]) ) ) {
 
 								perm_store.setValue( current_perm, 'isdeleted', 1 );
 			
@@ -236,7 +238,7 @@
 									params : [ ses, modified_ppl ],
 									onerror : function (r) {
 										highlighter.red.play();
-										status_update( 'Problem deleting ' + perm_store.getValue( current_perm, 'code' ) );
+										status_update( dojo.string.substitute(pgt_strings.ERROR_DELETING, [perm_store.getValue( current_perm, 'code' )]) );
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
@@ -253,10 +255,10 @@
 											current_perm = null;
 			
 											highlighter.green.play();
-											status_update( old_name + ' deleted' );
+											status_update( dojo.string.substitute(pgt_strings.STATUS_DELETED, [old_name]) );
 										} else {
 											highlighter.red.play();
-											status_update( 'Problem deleting ' + old_name );
+											status_update( dojo.string.substitute(pgt_strings.ERROR_DELETING, [old_name]) );
 										}
 									}
 								}).send();
