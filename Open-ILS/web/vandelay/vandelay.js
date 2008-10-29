@@ -35,6 +35,7 @@ dojo.require("fieldmapper.dojoData");
 dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
+dojo.require('openils.Util');
 dojo.require('openils.MarcXPathParser');
 dojo.require('openils.GridColumnPicker');
 
@@ -83,6 +84,9 @@ function vlInit() {
     authtoken = dojo.cookie('ses') || cgi.param('ses');
     var initNeeded = 4; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
+
+    openils.Util.registerEnterHandler(
+        vlQueueDisplayPage.domNode, function(){retrieveQueuedRecords();});
 
     function checkInitDone() {
         initCount++;
@@ -282,11 +286,17 @@ function retrieveQueuedRecords(type, queueId, onload) {
     selectableGridRecords = {};
     resetVlQueueGridLayout();
 
+    if(!type) type = currentType;
+    if(!queueId) queueId = currentQueueId;
+    if(!onload) onload = handleRetrieveRecords;
+
     var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
 
-    var limit = parseInt(vlQueueDisplayLimit.getValue());
+    //var limit = parseInt(vlQueueDisplayLimit.getValue());
+    var sel = dojo.byId('vl-queue-display-limit-selector');
+    var limit = parseInt(sel.options[sel.selectedIndex].value);
     var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
 
     var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];

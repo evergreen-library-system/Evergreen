@@ -54,6 +54,45 @@ if(!dojo._hasResource["openils.Util"]) {
     };
 
     /**
+     * Given a HTML select object, returns the currently selected value
+     */
+    openils.Util.selectorValue = function(sel) {
+        if(!sel) return null;
+        var idx = sel.selectedIndex;
+        if(idx < 0) return null;
+        var o = sel.options[idx];
+        var v = o.value; 
+        if(v == null) v = o.innerHTML;
+        return v;
+    }
+
+    /**
+     * Returns the character code of the provided (or current window) event
+     */
+    openils.Util.getCharCode = function(evt) {
+        evt = (evt) ? evt : ((window.event) ? event : null); 
+        if(evt) {
+            return (evt.charCode ? evt.charCode : 
+                ((evt.which) ? evt.which : evt.keyCode ));
+        } else { return -1; }
+    }
+
+
+    /**
+     * Registers a handler for when the Enter key is pressed while 
+     * the provided DOM node has focus.
+     */
+    openils.Util.registerEnterHandler = function(domNode, func) {
+	    if(!(domNode && func)) return;
+	    domNode.onkeydown = function(evt) {
+            var code = openils.Util.getCharCode(evt);
+            if(code == 13 || code == 3) 
+                func();
+        }
+	}
+
+
+    /**
      * Parses opensrf response objects to see if they contain 
      * data and/or an ILS event.  This only calls request.recv()
      * once, so in a streaming context, it's necessary to loop on
