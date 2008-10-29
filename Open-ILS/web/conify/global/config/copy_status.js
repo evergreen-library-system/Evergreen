@@ -29,6 +29,7 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
+dojo.requireLocalization("openils.conify", "ccs");
 
 // some handy globals
 var cgi = new CGI();
@@ -38,6 +39,8 @@ var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
 var current_status;
 var virgin_out_id = -1;
+
+var ccs_strings = dojo.i18n.getLocalization('openils.conify', 'ccs');
 
 var highlighter = {};
 
@@ -56,17 +59,17 @@ function save_status () {
 		params : [ ses, modified_ccs ],
 		onerror : function (r) {
 			highlighter.red.play();
-			status_update( 'Problem saving ' + status_store.getValue( current_status, 'name' ) );
+			status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
 				status_store.setValue( current_status, 'ischanged', 0 );
 				highlighter.green.play();
-				status_update( 'Saved changes to ' + status_store.getValue( current_status, 'name' ) );
+				status_update( dojo.string.substitute(ccs_strings.SUCCESS_SAVE, [status_store.getValue( current_status, 'name' )]) );
 			} else {
 				highlighter.red.play();
-				status_update( 'Problem saving ' + status_store.getValue( current_status, 'name' ) );
+				status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
 			}
 		},
 	}).send();
@@ -85,8 +88,7 @@ function save_them_all (event) {
 
 	if (event && dirtyStore.length > 0) {
 		confirmation = confirm(
-			'There are unsaved modified Statuses!  '+
-			'OK to save these changes, Cancel to abandon them.'
+			ccs_strings.CONFIRM_EXIT
 		);
 	}
 

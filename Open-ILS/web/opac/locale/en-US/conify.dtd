@@ -62,3 +62,10 @@
 <!ENTITY conify.org_unit.addresses_pane.county "County">
 <!-- This is a highlighted label that is followed by the name of the organizational unit -->
 <!ENTITY conify.org_unit.status_bar "Now editing:">
+
+<!ENTITY conify.copy_status.title "Global :: Configuration :: Copy Status">
+<!ENTITY conify.copy_status.new_status.label "New Status:">
+<!ENTITY conify.copy_status.new_status.name "New Status Name">
+<!ENTITY conify.copy_status.new_status.save "Add">
+<!ENTITY conify.copy_status.save_changes "Save Changes">
+<!ENTITY conify.copy_status.delete_selected "Delete Selected">
