@@ -688,9 +688,9 @@ sub do_permit {
 
 sub check_item_deposit_events {
     my $self = shift;
-    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED')) 
+    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED', payload => $self->copy)) 
         if $self->is_deposit and not $self->is_deposit_exempt;
-    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED')) 
+    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED', payload => $self->copy)) 
         if $self->is_rental and not $self->is_rental_exempt;
 }
 
