@@ -78,7 +78,7 @@
                     method : 'open-ils.permacrud.search.ppl.atomic',
                     timeout : 10,
                     params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
-                    onerror : function (r) { status_update(pgt_strings.ERROR_FETCHING_PERMS) },
+                    onerror : function (r) { status_update(ppl_strings.ERROR_FETCHING_PERMS) },
                     oncomplete : function (r) {
 
                         window._perm_list = r.recv().content();
@@ -94,11 +94,11 @@
 						window.perm_grid_layout = [
 							{	cells : [
 									[
-										{ name : pgt_strings.LABEL_CODE,        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
-										{ name : pgt_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+										{ name : ppl_strings.LABEL_CODE,        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+										{ name : ppl_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
 									],
 									[
-										{ name : pgt_strings.LABEL_TRANSLATION,
+										{ name : ppl_strings.LABEL_TRANSLATION,
 										  width : "10em",
 										  height : "2em",
 										  get : function (row) {
@@ -134,7 +134,7 @@
                             });
 
                             if (dirtyStore.length > 0) {
-                                var confirmation = confirm(pgt_strings.CONFIRM_EXIT);
+                                var confirmation = confirm(ppl_strings.CONFIRM_EXIT);
 
                                 if (confirmation) {
                                     for (var i in window.dirtyStore) {
@@ -153,7 +153,7 @@
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
 				<span>&conify.perm_list.new_permission.label;</span>
 				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="&conify.perm_list.new_code.label;"></div>
-				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="&conify.perm_list.add.label;"> 
+				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="&conify.perm_list.add_button.label;"> 
 					<script type="dojo/connect" event="onClick">
 <!--
 						var new_code = new_perm_code.getValue();
@@ -171,7 +171,7 @@
                     	    params : [ ses, new_fm_obj ],
 	                        onerror : function (r) {
     	                        highlighter.red.play();
-        	                    status_update( pgt_strings.ERROR_CALLING_METHOD );
+        	                    status_update( ppl_strings.ERROR_CALLING_METHOD );
             	                err = true;
                 	        },
 	                        oncomplete : function (r) {
@@ -179,12 +179,12 @@
         	                    if ( res && res.content() ) {
             	                    var new_item_hash = res.content().toHash();
             	                    perm_store.newItem( new_item_hash );
-									status_update( dojo.string.substitute(pgt_strings.SUCCESS_CREATING_PERMISSION, [new_item_hash.code]) );
+									status_update( dojo.string.substitute(ppl_strings.SUCCESS_CREATING_PERMISSION, [new_item_hash.code]) );
 									perm_grid.model.sort(-1);
 									highlighter.green.play();
                             	} else {
 	                                highlighter.red.play();
-    	                            status_update( pgt_strings.ERROR_CREATING_PERMISSION );
+    	                            status_update( ppl_strings.ERROR_CREATING_PERMISSION );
         	                        err = true;
             	                }
                 	        }
@@ -225,7 +225,7 @@
 						for (var i in selected_items) {
 							current_perm = selected_items[i];
 
-							if ( confirm( dojo.string.substitute(pgt_strings.CONFIRM_DELETE, [perm_store.getValue(current_perm, 'code')]) ) ) {
+							if ( confirm( dojo.string.substitute(ppl_strings.CONFIRM_DELETE, [perm_store.getValue(current_perm, 'code')]) ) ) {
 
 								perm_store.setValue( current_perm, 'isdeleted', 1 );
 			
@@ -238,7 +238,7 @@
 									params : [ ses, modified_ppl ],
 									onerror : function (r) {
 										highlighter.red.play();
-										status_update( dojo.string.substitute(pgt_strings.ERROR_DELETING, [perm_store.getValue( current_perm, 'code' )]) );
+										status_update( dojo.string.substitute(ppl_strings.ERROR_DELETING, [perm_store.getValue( current_perm, 'code' )]) );
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
@@ -255,10 +255,10 @@
 											current_perm = null;
 			
 											highlighter.green.play();
-											status_update( dojo.string.substitute(pgt_strings.STATUS_DELETED, [old_name]) );
+											status_update( dojo.string.substitute(ppl_strings.STATUS_DELETED, [old_name]) );
 										} else {
 											highlighter.red.play();
-											status_update( dojo.string.substitute(pgt_strings.ERROR_DELETING, [old_name]) );
+											status_update( dojo.string.substitute(ppl_strings.ERROR_DELETING, [old_name]) );
 										}
 									}
 								}).send();
