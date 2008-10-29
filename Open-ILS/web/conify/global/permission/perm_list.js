@@ -29,7 +29,7 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.requireLocalization("openils.config", "ppl");
+dojo.requireLocalization("openils.conify", "ppl");
 
 // some handy globals
 var cgi = new CGI();

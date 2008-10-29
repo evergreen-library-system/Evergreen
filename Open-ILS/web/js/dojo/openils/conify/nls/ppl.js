@@ -1,4 +1,4 @@
-({
+{
 	"CONFIRM_DELETE": "Are you sure you want to delete ${0}?",
 	"CONFIRM_EXIT": "There are unsaved modified Permissions! OK to save these changes, Cancel to abandon them.",
 	"ERROR_CALLING_METHOD": "Problem calling method to create new Permission",
@@ -12,4 +12,4 @@
 	"STATUS_DELETED": "${0} deleted", 
 	"SUCCESS_CREATING_PERMISSION": "New ${0} permission created",
 	"SUCCESS_SAVE": "Saved changes to ${0}"
-})
+}
