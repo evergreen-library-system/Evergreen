@@ -1,0 +1,69 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2008-10-29 00:22:43-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+
+#: aout.js:ERROR_FETCHING_TYPES
+msgid "Problem fetching organization types"
+msgstr "Problem fetching organization types"
+
+#: aout.js:SUCCESS_SAVING_DATA
+msgid "Saved changes to ${0}"
+msgstr "Saved changes to ${0}"
+
+#: aout.js:LABEL_NEW_TYPE
+msgid "New Type"
+msgstr "New Type"
+
+#: aout.js:STATUS_DELETED
+msgid "${0} deleted"
+msgstr "${0} deleted"
+
+#: aout.js:ERROR_DELETING
+msgid "Problem deleting ${0}"
+msgstr "Problem deleting ${0}"
+
+#: aout.js:STATUS_EDITING
+msgid "Now editing ${0}"
+msgstr "Now editing ${0}"
+
+#: aout.js:SUCCESS_CREATING_CHILD
+msgid "New child Organization Type created for ${0}"
+msgstr "New child Organization Type created for ${0}"
+
+#: aout.js:ERROR_CREATING_CHILD
+msgid "Problem creating child Organization Type"
+msgstr "Problem creating child Organization Type"
+
+#: aout.js:CONFIRM_DELETE
+msgid "Are you sure you want to delete ${0}?"
+msgstr "Are you sure you want to delete ${0}?"
+
+#: aout.js:CONFIRM_UNSAVED_CHANGES
+msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgstr "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+
+#: aout.js:ERROR_ORPHANS
+msgid "Cannot delete ${0}; ${1} subordinates still exist."
+msgstr "Cannot delete ${0}; ${1} subordinates still exist."
+
+#: aout.js:ERROR_SAVING_DATA
+msgid "Problem saving data for ${0}"
+msgstr "Problem saving data for ${0}"
+
+#: aout.js:ERROR_CREATING_CHILD_METHOD
+msgid "Problem calling method to create child Organization Type"
+msgstr "Problem calling method to create child Organization Type"
+
+#: aout.js:ERROR_DELETING_LAST
+msgid "Cannot delete ${0}. You need at least one organization type."
+msgstr "Cannot delete ${0}. You need at least one organization type."
