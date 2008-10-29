@@ -12,9 +12,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 -->
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+]>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Conify :: Global :: Config :: Copy Status</title>
+		<title>&conify.copy_status.title;</title>
 
 		<style type="text/css">
 			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
@@ -74,7 +79,7 @@
                     method : 'open-ils.permacrud.search.ccs.atomic',
                     timeout : 10,
                     params : [ ses, { id : { "!=" : null } }, { order_by : { ccs : 'name' } } ],
-                    onerror : function (r) { status_update('Problem fetching statuses') },
+                    onerror : function (r) { status_update(ccs_strings.ERROR_FETCHING_STATUSES) },
                     oncomplete : function (r) {
 
                         window._status_list = r.recv().content();
@@ -104,8 +109,7 @@
 
                             if (dirtyStore.length > 0) {
                                 var confirmation = confirm(
-                                    'There are unsaved modified Statuses!  '+
-                                    'OK to save these changes, Cancel to abandon them.'
+									ccs_strings.CONFIRM_EXIT
                                 );
 
                                 if (confirmation) {
@@ -123,9 +127,9 @@
 			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
-				<span>New Status:</span>
-				<div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="New Status Name"></div>
-				<button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="Add"> 
+				<span>&conify.copy_status.new_status.label;</span>
+				<div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="&conify.copy_status.new_status.name;"></div>
+				<button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="&conify.copy_status.new_status.save;"> 
 					<script type="dojo/connect" event="onClick">
 <!--
 						var new_name = new_status_name.getValue();
@@ -143,7 +147,7 @@
                     	    params : [ ses, new_fm_obj ],
 	                        onerror : function (r) {
     	                        highlighter.red.play();
-        	                    status_update( 'Problem calling method to create new Status' );
+        	                    status_update( ccs_strings.ERROR_CALLING_METHOD );
             	                err = true;
                 	        },
 	                        oncomplete : function (r) {
@@ -151,12 +155,12 @@
         	                    if ( res && res.content() ) {
             	                    var new_item_hash = res.content().toHash();
             	                    status_store.newItem( new_item_hash );
-									status_update( 'New ' + new_item_hash.name + ' status created' );
+									status_update( dojo.string.substitute(ccs_strings.SUCCESS_CREATING_STATUS, [new_item_hash.name]) );
 									status_grid.model.sort(-2);
 									highlighter.green.play();
                             	} else {
 	                                highlighter.red.play();
-    	                            status_update( 'Problem creating new Status' );
+    	                            status_update( ccs_strings.ERROR_CREATING_STATUS );
         	                        err = true;
             	                }
                 	        }
@@ -175,15 +179,15 @@
 						var status_grid_layout = [
 							{	cells : [
 									[
-										{ name : "ID",
+										{ name : ccs_strings.ID,
 										  field : "id",
 										},
-										{ name : "Name",
+										{ name : ccs_strings.NAME,
 										  field : "name",
 										  width : "auto",
 										  editor : dojox.grid.editors.Dijit
 										},
-										{ name : "Translation",
+										{ name : ccs_strings.TRANSLATION,
 										  width : "10em",
 										  height : "2em",
 										  get : function (row) {
@@ -203,7 +207,7 @@
 											return '';
 										  }
 										},
-										{ name : "Holdable",
+										{ name : ccs_strings.HOLDABLE,
 										  field : "holdable",
 										  editor : dojox.grid.editors.bool,
 										  get : function (row) {
@@ -215,7 +219,7 @@
 											}
 										  }
 										},
-										{ name : "OPAC Visible",
+										{ name : ccs_strings.OPAC_VISIBLE,
 										  field : "opac_visible",
 										  editor : dojox.grid.editors.bool,
 										  get : function (row) {
@@ -241,9 +245,9 @@
 
 			<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
 		
-				<button jsId="save_ccs_button" dojoType="dijit.form.Button" label="Save Changes" onClick="save_them_all()"></button>
+				<button jsId="save_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.save_changes;" onClick="save_them_all()"></button>
 		
-				<button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="Delete Selected">
+				<button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.delete_selected;">
 					<script type="dojo/connect" event="onClick">
 <!--
 						var selected_rows = status_grid.selection.getSelected();
@@ -260,7 +264,7 @@
 						for (var i in selected_items) {
 							current_status = selected_items[i];
 
-							if ( confirm('Are you sure you want to delete ' + status_store.getValue( current_status, 'name' ) + '?')) {
+							if ( confirm(dojo.string.substitue(ccs_strings.CONFIRM_DELETE, [status_store.getValue( current_status, 'name' )]))) {
 
 								status_store.setValue( current_status, 'isdeleted', 1 );
 			
@@ -273,7 +277,7 @@
 									params : [ ses, modified_ccs ],
 									onerror : function (r) {
 										highlighter.red.play();
-										status_update( 'Problem deleting ' + status_store.getValue( current_status, 'name' ) );
+										status_update( dojo.string.substitute( ccs_strings.ERROR_DELETING, [status_store.getValue( current_status, 'name' )] ) );
 									},
 									oncomplete : function (r) {
 										var res = r.recv();
@@ -290,10 +294,10 @@
 											current_status = null;
 			
 											highlighter.green.play();
-											status_update( old_name + ' deleted' );
+											status_update( dojo.string.substitute(ccs_strings.STATUS_DELETED, [old_name]) );
 										} else {
 											highlighter.red.play();
-											status_update( 'Problem deleting ' + old_name );
+											status_update( dojo.string.substitute(ccs_strings.ERROR_DELETING, [old_name]) );
 										}
 									}
 								}).send();
