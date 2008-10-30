@@ -780,7 +780,7 @@ sub ol_handle_register {
     my ($grp) = grep {$_->id == $actor->profile} @$user_groups;
     if($grp) {
         my $seconds = OpenSRF::Utils->interval_to_seconds($grp->perm_interval);
-        my $expire_date = DateTime->from_epoch(epoch => DateTime->now->epoch + $seconds);
+        my $expire_date = DateTime->from_epoch(epoch => DateTime->now->epoch + $seconds)->epoch;
 		$logger->debug("offline: setting expire date to $expire_date");
         $actor->expire_date($U->epoch2ISO8601($expire_date));
     }
