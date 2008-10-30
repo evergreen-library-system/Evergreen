@@ -174,7 +174,7 @@ function delete_grid_selection(classname, grid ) {
                         status_update( dojo.string.substitute( cam_strings.STATUS_DELETED, [old_name] ) );
                     } else {
                         //highlighter.red.play();
-                        status_update( status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [old_name] ) );
+                        status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [old_name] ) );
                     }
                 }
             }).send();
