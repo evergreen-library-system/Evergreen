@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
+"POT-Creation-Date: 2008-10-30 15:12:33-0400\n"
 "PO-Revision-Date: 2008-08-09 17:28+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3108,9 +3108,11 @@ msgid "Title Control Number"
 msgstr ""
 
 # id::2
+# id::6
 #: cza.label:752
+#, fuzzy
 msgid "ISBN"
-msgstr ""
+msgstr "SSN"
 
 # id::3
 #: cza.label:754
@@ -3155,9 +3157,12 @@ msgid "Title Control Number"
 msgstr ""
 
 # id::11
+# id::6
+# id::2
 #: cza.label:771
+#, fuzzy
 msgid "ISBN"
-msgstr ""
+msgstr "SSN"
 
 # id::12
 #: cza.label:773
@@ -3393,9 +3398,12 @@ msgid "Allow a user to edit volumes - needed for merging records. This is a dupl
 msgstr ""
 
 # id::23
+# id::21
+# id::89
 #: ppl.description:874
+#, fuzzy
 msgid "Allow a user to delete a volume"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
 
 # id::25
 # id::75
@@ -3405,9 +3413,12 @@ msgid "Allow a user to edit a copy"
 msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
 
 # id::26
+# id::25
+# id::75
 #: ppl.description:878
+#, fuzzy
 msgid "Allow a user to delete a copy"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
 
 # id::27
 #: ppl.description:880
@@ -3415,9 +3426,11 @@ msgid "Allow a user to continue to renew an item even if it is required for a ho
 msgstr ""
 
 # id::28
+# id::14
 #: ppl.description:882
+#, fuzzy
 msgid "Allow a user to create another user"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին թարմացնելու այլ օգտվողի պահումները"
 
 # id::29
 #: ppl.description:884
@@ -3430,9 +3443,11 @@ msgid "Allow a user to mark a user as deleted"
 msgstr ""
 
 # id::31
+# id::11
 #: ppl.description:888
+#, fuzzy
 msgid "Allow a user to view another user's Patron Record"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
 
 # id::32
 # id::75
@@ -3616,9 +3631,12 @@ msgid "User may update an entry in a patron statistical category"
 msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::63
+# id::59
+# id::56
 #: ppl.description:950
+#, fuzzy
 msgid "User may update an entry in a copy statistical category"
-msgstr ""
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::65
 #: ppl.description:952
@@ -3645,14 +3663,20 @@ msgid "User may delete a copy statistical category"
 msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտ մուտքը"
 
 # id::68
+# id::58
+# id::56
 #: ppl.description:960
+#, fuzzy
 msgid "User may delete an entry from a patron statistical category"
-msgstr ""
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::69
+# id::59
+# id::56
 #: ppl.description:962
+#, fuzzy
 msgid "User may delete an entry from a copy statistical category"
-msgstr ""
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
 
 # id::70
 #: ppl.description:964
@@ -4163,9 +4187,12 @@ msgid "Allow a user to delete an item out of another user's container"
 msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի կոնտեյներից ջնջել նյութը:"
 
 # id::153
+# id::157
+# id::88
 #: ppl.description:1126
+#, fuzzy
 msgid "Allow a user to create a new funding source"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::154
 #: ppl.description:1127
@@ -4190,9 +4217,12 @@ msgid "Allow a user to create a new fund"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::158
+# id::157
+# id::88
 #: ppl.description:1131
+#, fuzzy
 msgid "Allow a user to delete a fund"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::159
 #: ppl.description:1132
@@ -4200,9 +4230,12 @@ msgid "Allow a user to view a fund"
 msgstr ""
 
 # id::160
+# id::157
+# id::88
 #: ppl.description:1133
+#, fuzzy
 msgid "Allow a user to update a fund"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::161
 # id::76
@@ -4219,9 +4252,12 @@ msgid "Allow a user to delete a fund allocation"
 msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
 
 # id::163
+# id::162
+# id::78
 #: ppl.description:1136
+#, fuzzy
 msgid "Allow a user to view a fund allocation"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
 
 # id::164
 # id::77
@@ -4243,19 +4279,28 @@ msgid "Allow a user to create a new provider"
 msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::167
+# id::166
+# id::88
 #: ppl.description:1140
+#, fuzzy
 msgid "Allow a user to delate a provider"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::168
+# id::166
+# id::88
 #: ppl.description:1141
+#, fuzzy
 msgid "Allow a user to view a provider"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::169
+# id::166
+# id::88
 #: ppl.description:1142
+#, fuzzy
 msgid "Allow a user to update a provider"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
 
 # id::170
 #: ppl.description:1143
@@ -4278,9 +4323,12 @@ msgid "Allow a user to view/credit/debit a fund"
 msgstr ""
 
 # id::174
+# id::21
+# id::89
 #: ppl.description:1147
+#, fuzzy
 msgid "Allows a user to create a picklist"
-msgstr ""
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
 
 # id::175
 #: ppl.description:1148
@@ -4379,9 +4427,12 @@ msgid "Pagination"
 msgstr ""
 
 # id::5
+# id::6
+# id::2
 #: vqbrad.description:1479
+#, fuzzy
 msgid "ISBN"
-msgstr ""
+msgstr "SSN"
 
 # id::6
 # id::2
