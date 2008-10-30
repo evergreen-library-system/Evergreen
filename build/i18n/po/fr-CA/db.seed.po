@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
+"POT-Creation-Date: 2008-10-30 15:12:33-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -4280,19 +4280,31 @@ msgid "Allow a user to create a new funding source"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::154
+# id::153
+# id::157
+# id::88
 #: ppl.description:1127
+#, fuzzy
 msgid "Allow a user to delete a funding source"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::155
+# id::153
+# id::157
+# id::88
 #: ppl.description:1128
+#, fuzzy
 msgid "Allow a user to view a funding source"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::156
+# id::153
+# id::157
+# id::88
 #: ppl.description:1129
+#, fuzzy
 msgid "Allow a user to update a funding source"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::157
 # id::88
@@ -4310,9 +4322,13 @@ msgid "Allow a user to delete a fund"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::159
+# id::158
+# id::157
+# id::88
 #: ppl.description:1132
+#, fuzzy
 msgid "Allow a user to view a fund"
-msgstr ""
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 # id::160
 # id::157

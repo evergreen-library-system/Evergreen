@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-29 00:22:41-0400\n"
+"POT-Creation-Date: 2008-10-30 15:12:31-0400\n"
 "PO-Revision-Date: 2008-08-06 22:30+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,8 +60,9 @@ msgid " An offline file or directory could not be created or accessed "
 msgstr "Ոֆլայն ֆայլը կամ գրադարանը հնարվոր չ: ստեղծել կամ հասանելի դարձնել:"
 
 #: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:587
+#, fuzzy
 msgid "The requested vandelay.import_item was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1502.ASSET_COPY_NOT_FOUND:182
 msgid ""
@@ -80,8 +81,9 @@ msgid "The requested reporter_schedule was not found"
 msgstr "Հարցվող reporter_schedule չի գտնված"
 
 #: 1847.ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND:610
+#, fuzzy
 msgid "The requested acq.funding_source_dedit was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:563
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
@@ -112,8 +114,9 @@ msgstr ""
 #: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:667
 #: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:670
 #: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:673
+#, fuzzy
 msgid "The requested acq_lineitem_attr was not found"
-msgstr ""
+msgstr "Հարցվող actor_profile չի գտնված"
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:205
 msgid ""
@@ -198,12 +201,14 @@ msgid "The copy in question is not in an ideal status for deleting"
 msgstr "Ջնջելու համար պատճեն չի գտնվում նորմալ վիչակում"
 
 #: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:634
+#, fuzzy
 msgid "The requested acq.funding_source_credit_total was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:649
+#, fuzzy
 msgid "The requested acq.lineitem_detail was not found"
-msgstr ""
+msgstr "Հարցվող actor_profile չի գտնված"
 
 #: 1223.PATRON_NO_PHONE:122
 msgid "The user does not have a valid phone number assigned"
@@ -219,8 +224,9 @@ msgid "The requested vandelay_bib_queue was not found"
 msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1849.ACQ_FUND_DEBIT_TOTAL_NOT_FOUND:616
+#, fuzzy
 msgid "The requested acq.fund_debit_total was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:548
 msgid "The requested reporter_output_folder was not found"
@@ -339,8 +345,9 @@ msgid "The requested asset_copy_note was not found"
 msgstr "Հարցվող asset_copy_note չի գտնված"
 
 #: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:628
+#, fuzzy
 msgid "The requested acq.fund_combined_balance was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 7017.ROUTE_TO_COPY_LOCATION:800
 msgid ""
@@ -387,8 +394,9 @@ msgid "The given user barcode already exists"
 msgstr "Օգտվողի տրված շտրիխ կոդը գոյություն ունի"
 
 #: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:578
+#, fuzzy
 msgid "The requested vandelay_queued_bib_record was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:394
 msgid "The requested actor_org_address was not found"
@@ -399,8 +407,9 @@ msgid "The requested biblio_record_entry was not found"
 msgstr "Հարցվող biblio_record_entry չի գտնված"
 
 #: 1852.ACQ_FUND_SPENT_TOTAL_NOT_FOUND:625
+#, fuzzy
 msgid "The requested acq.fund_spent_total was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1613.PERMISSION_GRP_TREE_NOT_FOUND:479
 msgid "The requested permission_grp_tree was not found"
@@ -499,8 +508,9 @@ msgid "The user does not have a valid email address assigned"
 msgstr "Օգտվողը չունի հավաստի էլ փոստ հասցե"
 
 #: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:631
+#, fuzzy
 msgid "The requested acq.fund_spent_balance was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1215.CIRC_EXCEEDS_COPY_RANGE:94
 msgid ""
@@ -547,8 +557,9 @@ msgid "The requested money_credit_card_payment was not found"
 msgstr "Հարցվող money_credit_card_payment չի գտնված"
 
 #: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:640
+#, fuzzy
 msgid "The requested acq.funding_source_balance was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:482
 msgid "The requested action_survey_answer was not found"
@@ -662,8 +673,9 @@ msgid "The requested config_item_type_map was not found"
 msgstr "Հարցվող config_item_type_map չի գտնված"
 
 #: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:590
+#, fuzzy
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
-msgstr ""
+msgstr "Հարցվող config_copy_status չի գտնված"
 
 #: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:863
 msgid "The lineitem detail has no associated fund"
@@ -866,8 +878,9 @@ msgstr ""
 "\t\t"
 
 #: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:572
+#, fuzzy
 msgid "The requested vandelay_authority_queue was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1565.ACTOR_PROFILE_NOT_FOUND:339
 msgid "The requested actor_profile was not found"
@@ -882,8 +895,9 @@ msgid "The requested action_survey was not found"
 msgstr "Հարցվող action_survey չի գտնված"
 
 #: 1859.ACQ_PURCHASE_ORDER_NOT_FOUND:646
+#, fuzzy
 msgid "The requested acq.purchase_order was not found"
-msgstr ""
+msgstr "Հարցվող actor_profile չի գտնված"
 
 #: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:515
 msgid "The requested container_biblio_record_entry_bucket_item was not found"
@@ -935,8 +949,9 @@ msgid "The requested biblio_record_note was not found"
 msgstr "Հարցվող biblio_record_note չի գտնված"
 
 #: 1846.ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND:607
+#, fuzzy
 msgid "The requested acq.funding_source_credit was not found"
-msgstr ""
+msgstr "Հարցվող config_bib_sourceչի գտնված"
 
 #: 1588.ASSET_STAT_CAT_NOT_FOUND:405
 msgid "The requested asset_stat_cat was not found"
@@ -979,8 +994,9 @@ msgid " The non-cataloged type object already exists "
 msgstr "Չմուտքագրվող դասի պատկեր արդեն աօկա է"
 
 #: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:598
+#, fuzzy
 msgid "The requested acq.lineitem_attr was not found"
-msgstr ""
+msgstr "Հարցվող actor_profile չի գտնված"
 
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:702
 msgid "A duplicate money.collections_tracker object already exists in the database"
