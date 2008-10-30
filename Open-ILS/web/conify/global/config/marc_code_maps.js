@@ -88,7 +88,7 @@ function save_code (classname) {
 			if ( res && res.content() ) {
 				stores[classname].setValue( current_item, 'ischanged', 0 );
 				//highlighter.green.play();
-				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )]) );
+				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
 			} else {
 				//highlighter.red.play();
 				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA, [classname, stores[classname].getValue( item, 'code' )] ) );
