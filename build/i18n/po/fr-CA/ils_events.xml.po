@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-29 00:22:41-0400\n"
+"POT-Creation-Date: 2008-10-30 15:12:31-0400\n"
 "PO-Revision-Date: 2008-09-08 11:30-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -200,8 +200,9 @@ msgstr ""
 "Un fichier hors ligne existe pour ce poste de travail dans cette session"
 
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:622
+#, fuzzy
 msgid "The requested acq.fund_encumbrance_total was not found"
-msgstr ""
+msgstr "L’article demandé appelé config_bib_source n’a pas été trouvé"
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:236
 msgid "The requested actor_workstation was not found"
@@ -380,8 +381,9 @@ msgstr ""
 "\t\t"
 
 #: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:619
+#, fuzzy
 msgid "The requested acq.fund_allocation_total was not found"
-msgstr ""
+msgstr "L’article demandé appelé config_bib_source n’a pas été trouvé"
 
 #: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:191
 msgid ""
@@ -1088,8 +1090,9 @@ msgid "The requested actor_card was not found"
 msgstr "L’article demandé appelé actor_carte n’a pas été trouvé"
 
 #: 1856.ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND:637
+#, fuzzy
 msgid "The requested acq.funding_source_allocation_total was not found"
-msgstr ""
+msgstr "L’article demandé appelé config_bib_source n’a pas été trouvé"
 
 #: 1216.PATRON_CARD_INACTIVE:98
 msgid "The patron's card is not active"
