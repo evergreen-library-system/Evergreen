@@ -251,7 +251,6 @@ offline-install:
 	mkdir -p $(CGIDIR)/offline;
 	mkdir -p $(datadir)/offline;
 	perl -pe "s{##CONFIG##}{@sysconfdir@}" < @srcdir@/offline/offline.pl > $(TMP)/offline.pl;
-	cp @srcdir@/offline/offline-config.pl @sysconfdir@
 	cp $(TMP)/offline.pl $(DESTDIR)$(CGIDIR)/offline/
 	chmod +x $(DESTDIR)$(CGIDIR)/offline/offline.pl
 
