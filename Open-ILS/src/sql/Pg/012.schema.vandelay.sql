@@ -534,6 +534,17 @@ BEGIN
             INSERT INTO vandelay.bib_match (field_type, matched_attr, queued_record, eg_record) VALUES ('tcn_value', attr.id, NEW.id, eg_rec.id);
         END LOOP;
 
+		-- check for a direct item barcode match
+        FOR eg_rec IN
+                SELECT  DISTINCT b.*
+                  FROM  biblio.record_entry b
+                        JOIN asset.call_number cn ON (cn.record = b.id)
+                        JOIN asset.copy cp ON (cp.call_number = cn.id)
+                  WHERE cp.barcode = attr.attr_value AND cp.deleted IS FALSE
+        LOOP
+            INSERT INTO vandelay.bib_match (field_type, matched_attr, queued_record, eg_record) VALUES ('id', attr.id, NEW.id, eg_rec.id);
+        END LOOP;
+
     END LOOP;
 
     RETURN NULL;
