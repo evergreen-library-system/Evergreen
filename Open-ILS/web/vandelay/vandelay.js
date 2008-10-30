@@ -87,6 +87,7 @@ function vlInit() {
 
     openils.Util.registerEnterHandler(
         vlQueueDisplayPage.domNode, function(){retrieveQueuedRecords();});
+    openils.Util.addCSSClass(dojo.byId('vl-menu-marc-upload'), 'toolbar_selected');
 
     function checkInitDone() {
         initCount++;
@@ -207,6 +208,26 @@ function displayGlobalDiv(id) {
         }
     }
     dojo.style(dojo.byId(id),'display','block');
+
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-marc-export'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-marc-upload'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-queue-select'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
+
+    switch(id) {
+        case 'vl-marc-export-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-marc-export'), 'toolbar_selected');
+            break;
+        case 'vl-marc-upload-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-marc-upload'), 'toolbar_selected');
+            break;
+        case 'vl-queue-select-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-queue-select'), 'toolbar_selected');
+            break;
+        case 'vl-attr-editor-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
+            break;
+    }
 }
 
 function runStartupCommands() {

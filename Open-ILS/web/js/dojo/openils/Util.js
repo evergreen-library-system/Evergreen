@@ -118,4 +118,49 @@ if(!dojo._hasResource["openils.Util"]) {
         return val;
     };
 
+
+    /**
+     * Given a DOM node, adds the provided class to the node 
+     */
+    openils.Util.addCSSClass = function(node, cls) {
+        if(!(node && cls)) return; 
+        var className = node.className;
+
+        if(!className) {
+            node.className = cls;
+            return;
+        }
+
+        var classList = className.split(/\s+/);
+        var newName = '';
+            
+        for (var i = 0; i < classList.length; i++) {
+            if(classList[i] == cls) return;
+            if(classList[i] != null)
+                newName += classList[i] + " ";
+        }
+
+        newName += cls;
+        node.className = newName;
+    },
+
+    /**
+     * Given a DOM node, removes the provided class from the CSS class 
+     * name list.
+     */
+    openils.Util.removeCSSClass = function(node, cls) {
+        if(!(node && cls && node.className)) return;
+        var classList = node.className.split(/\s+/);
+        var className = '';
+        for(var i = 0; i < classList.length; i++) {
+            if (classList[i] != cls) {
+                if(i == 0)
+                    className = classList[i];
+                else 
+                    className += ' ' + classList[i];
+            }
+        }
+        node.className = className;
+    }
+
 }

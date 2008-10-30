@@ -33,3 +33,4 @@ table.dijitTooltipTable { border-collapse: separate; }
 
 .export_tr_border td { border-top: 1px solid #808080; }
 .nav_row_div {padding:1px; text-align:center; }
+.toolbar_selected { border: 2px dashed #808080; text-decoration:underline; font-weight:bold;}
