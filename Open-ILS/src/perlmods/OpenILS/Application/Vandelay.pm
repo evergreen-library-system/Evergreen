@@ -222,7 +222,7 @@ sub process_spool {
     my $filename = $data->{path};
 
     unless(-r $filename) {
-        $logger->error("unable to read MARC file");
+        $logger->error("unable to read MARC file $filename");
         return -1; # make this an event XXX
     }
 
