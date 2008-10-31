@@ -22,7 +22,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="copy_buckets_win" title="Add to Bucket"
+<window id="copy_buckets_win" title="&staff.cat.copy_buckets_quick.title;"
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

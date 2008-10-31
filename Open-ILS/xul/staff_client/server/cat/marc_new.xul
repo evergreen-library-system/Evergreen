@@ -35,14 +35,19 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		var catStrings;
 
 		function $(id) { return document.getElementById(id); }
 
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+				/* load translatable strings for cataloging interfaces */
+                catStrings = document.getElementById('catStrings');
+
 				if (typeof JSAN == 'undefined') { 
-					throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
+					throw( $('commonStrings').getString('common.jsan.missing') );
 				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
@@ -50,7 +55,7 @@
 				g.error.sdump('D_TRACE','my_init() for example_template.xul');
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('MARC Template'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(catStrings.getString('staff.cat.marc_new.tab_name')); } catch(E) { alert(E); }
 				}
 
 				JSAN.use('util.network'); g.network = new util.network();
@@ -87,15 +92,15 @@
 							var params = {
 								'record' : { 'marc' : marc },
 								'save' : {
-									'label' : $('catStrings').getString('staff.cat.marc_new.create_record.label'),
+									'label' : catStrings.getString('staff.cat.marc_new.create_record.label'),
 									'func' : function(new_marcxml) {
 										try {
 											var robj = g.network.simple_request(
 												'MARC_XML_RECORD_IMPORT',
-												[ ses(), new_marcxml, $('catStrings').getString('staff.cat.marc_new.system_local.label'), 1 ]
+												[ ses(), new_marcxml, catStrings.getString('staff.cat.marc_new.system_local.label'), 1 ]
 											);
 											if (typeof robj.ilsevent != 'undefined') throw(robj);
-											alert($('catStrings').getString('staff.cat.marc_new.record_created.label'));
+											alert(catStrings.getString('staff.cat.marc_new.record_created.label'));
 
 											/* Replace tab with OPAC-view of record */
 
@@ -107,13 +112,13 @@
 											};
 											xulG.set_tab(
 												xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
-												{'tab_name': $('catStrings').getString('staff.cat.marc_new.retrieving.label')},
+												{'tab_name': catStrings.getString('staff.cat.marc_new.retrieving.label')},
 												content_params
 											);
 
 										} catch(E) {
 											g.error.standard_unexpected_error_alert(
-												$('catStrings').getString('staff.cat.marc_new.creating_record.error'), E
+												catStrings.getString('staff.cat.marc_new.creating_record.error'), E
 											);
 										}
 									}
@@ -130,7 +135,7 @@
 
 						} catch(E) {
 							g.error.standard_unexpected_error_alert(
-								$('catStrings').getFormattedString('staff.cat.marc_new.loading_template.error', [template_name]), E
+								catStrings.getFormattedString('staff.cat.marc_new.loading_template.error', [template_name]), E
 							);
 						}
 

@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 <?xul-overlay href="/xul/server/cat/record_buckets_overlay.xul"?>
 
-<window id="record_buckets_win" title="Record Buckets"
+<window id="record_buckets_win" title="&staff.cat.record_buckets.title;"
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }" height="300" width="300" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -41,8 +41,11 @@
 				/* ugly hack so we don't have to upgrade the chrome for quick buckets */
 				if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
 
+				/* load translatable strings into easily referenced variables */
                 catStrings = document.getElementById('catStrings');
-                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                commonStrings = document.getElementById('commonStrings');
+
+                if (typeof JSAN == 'undefined') { throw( commonStrings.getString('common.jsan.missing') ); }
 
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
@@ -68,11 +71,11 @@
 				);
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Record Buckets'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(catStrings.getString('staff.cat.record_buckets.tab_name')); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/record_buckets.xul', E]);
+				var err_msg = commonStrings.getFormattedString('common.exception', ['cat/record_buckets.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
