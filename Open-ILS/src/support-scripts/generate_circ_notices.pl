@@ -266,6 +266,7 @@ sub generate_notice {
     my @circs = @_;
     return unless @circs;
     my $circ_list = fetch_circ_data(@circs);
+    return unless @$circ_list;
     my $tt = Template->new({ABSOLUTE => 1});
 
     # see if there is a configured bounce address for this org unit.
@@ -410,8 +411,10 @@ sub fetch_circ_data {
         ]);
     $ORG_CACHE{$circ_lib_id} = $circ_lib;
 
+    my $circ_ids = [map {$_->id} @circs];
+
     my $circ_objs = $e->search_action_circulation([
-        {id => [map {$_->id} @circs]},
+        {id => $circ_ids},
         {   flesh => 3,
             flesh_fields => {
                 circ => [q/target_copy/],
@@ -419,7 +422,9 @@ sub fetch_circ_data {
                 acn => ['record'],
             }
         }
-    ]);
+    ], {substream => 1});
+
+    $logger->error("notice: error retrieving circ objects @$circ_ids") unless @$circ_ids;
 
     $_->circ_lib($circ_lib) for @$circ_objs;
     $_->usr($usr) for @$circ_objs;
