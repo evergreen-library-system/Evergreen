@@ -1889,6 +1889,7 @@
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label "Transfer to Specific Volume">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label "Edit Item Attributes">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label "Delete All from Catalog">
+<!ENTITY staff.cat.copy_buckets_quick.title "Add to Bucket">
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.label "Item Buckets">
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label "Add to Selected Bucket">
 <!ENTITY staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey "A">
@@ -1968,6 +1969,7 @@
 <!ENTITY staff.cat.opac.menuitem.refreshinterfaces.label "Refresh All Interfaces">
 <!ENTITY staff.cat.opac.menuitem.dupnewtab.label "Duplicate in New Tab">
 <!ENTITY staff.cat.opac.menuitem.removeframe.label "Remove this Frame">
+<!ENTITY staff.cat.record_buckets.title "Record Buckets">
 <!ENTITY staff.cat.record_buckets_overlay.record_query_tab.label "Record Query">
 <!ENTITY staff.cat.record_buckets_overlay.record_query_tab.accesskey "Q">
 <!ENTITY staff.cat.record_buckets_overlay.pending_records_tab.label "Pending Records">
@@ -2067,6 +2069,7 @@
 <!ENTITY staff.cat.volume_copy_creator.create.accesskey "C">
 <!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">
 <!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
+<!ENTITY staff.cat.volume_editor.title "Volumes">
 <!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
 <!ENTITY staff.cat.volume_editor.modify.label "Modify">
 <!ENTITY staff.cat.volume_editor.cancel.label "Cancel">
@@ -2108,6 +2111,7 @@
 <!ENTITY staff.pat.barcode_entry.submit_btn.label "Submit">
 <!ENTITY staff.pat.barcode_entry.submit_btn.accesskey "S">
 <!ENTITY staff.pat.barcode_entry.retrieving.label "Retrieving...">
+<!ENTITY staff.patron.bill_cc_info.title "Credit Card Information">
 <!ENTITY staff.patron.bill_cc_info.visa.label "Visa">
 <!ENTITY staff.patron.bill_cc_info.mastercard.label "Mastercard">
 <!ENTITY staff.patron.bill_cc_info.american_express.label "American Express">
@@ -2124,6 +2128,8 @@
 <!ENTITY staff.patron.bill_cc_info.submit.accesskey "S">
 <!ENTITY staff.patron.bill_cc_info.info.label "Credit Card Info">
 <!ENTITY staff.patron.bill_cc_info.type.label "Credit Card Type">
+<!-- "Check" is used here to indicate a payment by check, not "Verify" -->
+<!ENTITY staff.patron.bill_check_info.title "Check Info">
 <!-- "Check" is used here to indicate a payment by check, not "Verify" -->
 <!ENTITY staff.patron.bill_check_info.check_info.label "Check Information">
 <!-- "Check" is used here to indicate a payment by check, not "Verify" -->
@@ -2232,6 +2238,7 @@
 <!ENTITY staff.patron.bills_overlay.unselected.value "Un-Selected:">
 <!ENTITY staff.patron.bills_overlay.voided.value "Voided:">
 <!ENTITY staff.patron.bills_overlay.auto_print.label "Auto-Print">
+<!ENTITY staff.patron.hold_notices.title "Hold Notices">
 <!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
 <!ENTITY staff.patron.hold_notices.close_window.label "Close">

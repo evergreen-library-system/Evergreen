@@ -32,11 +32,17 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		var patronStrings;
+
 		function $(id) { return document.getElementById(id); }
 		
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+				/* load translatable strings for patron interfaces */
+                patronStrings = document.getElementById('patronStrings');
+
 				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
@@ -44,7 +50,7 @@
 				g.error.sdump('D_TRACE','my_init() for patron/user_buckets.xul');
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('User Buckets'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(patronStrings.getString('staff.patron.user_buckets.tab_name')); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {

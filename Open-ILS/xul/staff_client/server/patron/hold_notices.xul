@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="hold_notices_win" width="700" height="550" persist="sizemode width height"
-	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }" title="Hold Notices"
+	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_notices.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
