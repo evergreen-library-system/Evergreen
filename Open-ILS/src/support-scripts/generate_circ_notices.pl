@@ -31,6 +31,7 @@ use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Const qw/:const/;
 my $U = 'OpenILS::Application::AppUtils';
+use open ':utf8';
 
 my $settings = undef;
 my $e = OpenILS::Utils::CStoreEditor->new;
@@ -362,6 +363,8 @@ sub handle_email_template_output {
 
 
     if($opt_send_email) {
+        use utf8;
+        utf8::encode($msg);
 	    my $sender = Email::Send->new({mailer => 'SMTP'});
         my $smtp_server = $settings->config_value(notifications => 'smtp_server');
         $logger->debug("notice: smtp server is $smtp_server");
