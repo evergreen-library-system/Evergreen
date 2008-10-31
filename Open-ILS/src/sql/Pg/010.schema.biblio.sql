@@ -42,7 +42,9 @@ CREATE TABLE biblio.record_entry (
 	last_xact_id	TEXT		NOT NULL
 );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
+CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
+CREATE INDEX biblio_record_entry_edit_date_idx ON biblio.record_entry ( edit_date );
 CREATE INDEX biblio_record_entry_fp_idx ON biblio.record_entry ( fingerprint );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_value) WHERE deleted IS FALSE;
 
