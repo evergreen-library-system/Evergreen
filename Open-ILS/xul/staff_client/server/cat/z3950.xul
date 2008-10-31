@@ -91,7 +91,7 @@
 
 	<groupbox flex="1">
 		<caption label="&staff.cat.z3950.marc_import.label;"/>
-            <hbox id="top_pane">
+            <hbox id="top_pane" flex="1">
                 <groupbox flex="1">
                     <caption label="&staff.cat.z3950.query.label;"/>
                     <hbox>
@@ -138,7 +138,7 @@
                         <column/>
                         <column/>
                         </columns>
-                        <rows id="service_rows">
+                        <rows id="service_rows" class="my_overflow">
                             <row>
                                 <label value="&staff.cat.z3950.service.label;"/>
                                 <label value="&staff.cat.z3950.username.label;"/>
