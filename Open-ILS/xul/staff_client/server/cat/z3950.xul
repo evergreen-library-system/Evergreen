@@ -101,9 +101,9 @@
                         </description>
                         <spacer flex="1"/>
                     </hbox>
-                    <grid>
+                    <grid flex="1">
                         <columns><column /><column flex="1" /></columns>
-                        <rows id="query_inputs">
+                        <rows id="query_inputs" class="my_overflow">
                             <row>
                                 <label id="item_type_label" value="&staff.z39_50.search_class.item_type;" control="item_type_input" onclick="g.z3950.default_attr = 'item_type'" style="-moz-user-focus: ignore"/>
                                 <menulist id="item_type_input" mytype="search_class" search_class="item_type">
@@ -130,6 +130,7 @@
                         <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;"/>
                     </hbox>
                 </groupbox>
+                <splitter id="x_splitter" persist="width"/>
                 <groupbox flex="1">
                     <caption label="&staff.cat.z3950.service_credentials.label;"/>
                     <grid flex="1">
