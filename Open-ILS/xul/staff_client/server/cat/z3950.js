@@ -58,7 +58,7 @@ cat.z3950.prototype = {
 						try {
 							JSAN.use('util.functional');
 							var sel = obj.list.retrieve_selection();
-							document.getElementById('clip_button').disabled = sel.length < 1;
+							document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
 							var list = util.functional.map_list(
 								sel,
 								function(o) { return o.getAttribute('retrieve_id'); }
@@ -82,16 +82,10 @@ cat.z3950.prototype = {
 				{
 					control_map : {
 						'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
-						'sel_clip' : [
-							['command'],
-							function() { obj.list.clipboard(); }
-						],
-						'cmd_export' : [
-							['command'],
-							function() {
-								obj.list.dump_csv_to_clipboard();
-							}
-						],
+						'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
+						'cmd_z3950_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+                        'cmd_z3950_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ], 
+                        'cmd_z3950_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'z3950_results.txt' } ); } ],
 						'cmd_broken' : [
 							['command'],
 							function() { alert('Not Yet Implemented'); }
@@ -409,6 +403,9 @@ cat.z3950.prototype = {
 			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
 			obj.search_params = {}; obj.list.clear();
 			obj.controller.view.page_next.disabled = true;
+			obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
 
 			obj.search_params.service = []; 
 			obj.search_params.username = [];
@@ -491,6 +488,9 @@ cat.z3950.prototype = {
 				x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.server_error', [results.textcode, results.desc])));
 				return;
 			}
+            obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','false');
+            obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','false');
+            obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','false');
             if (typeof results.length == 'undefined') results = [ results ];
             for (var i = 0; i < results.length; i++) {
                 if (results[i].query) {

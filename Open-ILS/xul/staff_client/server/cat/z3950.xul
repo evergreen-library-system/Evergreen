@@ -82,8 +82,10 @@
 
 	<commandset id="cat_z3950_cmds">
 		<command id="cmd_broken" />
-		<command id="cmd_export" />
-		<command id="sel_clip" />
+		<command id="sel_clip" disabled="true" />
+        <command id="cmd_z3950_csv_to_printer" disabled="true" />
+        <command id="cmd_z3950_csv_to_clipboard" disabled="true" />
+        <command id="cmd_z3950_csv_to_file" disabled="true" />
 		<command id="save_columns" />
 		<command id="toggle_form" />
 		<command id="marc_view" />
@@ -164,9 +166,18 @@
                 <hbox id="result_message" />
                 <hbox>
                     <button id="page_next" label="&staff.cat.z3950.page_next.label;" accesskey="&staff.cat.z3950.page_next.accesskey;" disabled="true"/>
-                    <button id="export" label="&staff.cat.z3950.export.label;" command="cmd_export" accesskey=""/>
-                    <button id="clip_button" command="sel_clip" label="&staff.cat.z3950.clip_button.label;" disabled="true"/>
-                    <button id="save_cols_btn" command="save_columns" label="&staff.cat.z3950.save_cols_btn.label;"/>
+                    <button id="z3950_list_actions" oncommand="this.firstChild.showPopup();"
+                        label="&staff.cat.z3950.list_actions.label;" 
+                        accesskey="&staff.cat.z3950.list_actions.accesskey;" 
+                        type="menu" allowevents="true">
+                        <menupopup id="z3950_list_actions_popup">
+                            <menuitem command="sel_clip" label="&staff.cat.z3950.menuitem.copy_to_clipboard.label;" disabled="true" />
+                            <menuitem command="cmd_z3950_csv_to_printer" label="&staff.cat.z3950.menuitem.csv_to_printer.label;" />
+                            <menuitem command="cmd_z3950_csv_to_clipboard" label="&staff.cat.z3950.menuitem.csv_to_clipboard.label;" />
+                            <menuitem command="cmd_z3950_csv_to_file" label="&staff.cat.z3950.menuitem.csv_to_file.label;" />
+                            <menuitem command="save_columns" label="&staff.cat.z3950.menuitem.save_columns.label;" />
+                        </menupopup>
+                    </button>
                     <spacer flex="1"/>
                     <button id="marc_view_btn" command="marc_view" disabled="true"/>
                     <button id="marc_import_overlay" label="&staff.cat.z3950.marc_import_overlay.label;" accesskey="&staff.cat.z3950.marc_import_overlay.accesskey;" disabled="true"/>
