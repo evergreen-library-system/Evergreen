@@ -91,8 +91,8 @@
 
 	<groupbox flex="1">
 		<caption label="&staff.cat.z3950.marc_import.label;"/>
-            <hbox id="top_pane" flex="1">
-                <groupbox flex="1">
+            <hbox id="top_pane" persist="height" flex="1">
+                <groupbox id="x_splitter1" persist="width" flex="1">
                     <caption label="&staff.cat.z3950.query.label;"/>
                     <hbox>
                         <spacer flex="1"/>
@@ -130,8 +130,8 @@
                         <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;"/>
                     </hbox>
                 </groupbox>
-                <splitter id="x_splitter" persist="width"/>
-                <groupbox flex="1">
+                <splitter id="x_splitter" collapse="after" persist="state hidden"><grippy/></splitter>
+                <groupbox id="x_splitter2" persist="width" flex="1">
                     <caption label="&staff.cat.z3950.service_credentials.label;"/>
                     <grid flex="1">
                         <columns>
@@ -158,8 +158,8 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter id="z_splitter" persist="height"/>
-            <groupbox flex="1">
+            <splitter id="z_splitter" collapse="before" persist="state hidden"/>
+            <groupbox id="z_splitter2" persist="height" flex="1">
                 <caption label="&staff.cat.z3950.results_caption.label;"/>
                 <hbox id="result_message" />
                 <hbox>
