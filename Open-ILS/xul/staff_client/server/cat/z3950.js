@@ -374,7 +374,7 @@ cat.z3950.prototype = {
 		        var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
                 if (x) { focus_me = x; break; }
             }
-            if (ob.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
+            if (obj.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
         }
         if (! focus_me) focus_me = or_focus_me;
 		var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
