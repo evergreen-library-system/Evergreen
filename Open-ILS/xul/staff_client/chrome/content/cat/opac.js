@@ -240,6 +240,19 @@ function add_to_bucket() {
 function mark_for_overlay() {
 	g.data.marked_record = docid;
 	g.data.stash('marked_record');
+	var robj = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative',[docid]);
+    if (typeof robj.ilsevent == 'undefined') {
+        g.data.marked_record_mvr = robj;
+    } else {
+        g.data.marked_record_mvr = null;
+		g.error.standard_unexpected_error_alert('in mark_for_overlay',robj);
+    }
+    g.data.stash('marked_record_mvr');
+    if (g.data.marked_record_mvr) {
+        alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.tcn.alert',[ g.data.marked_record_mvr.tcn() ]));
+    } else {
+        alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.record_id.alert',[ g.data.marked_record  ]));
+    }
 }
 
 function delete_record() {
