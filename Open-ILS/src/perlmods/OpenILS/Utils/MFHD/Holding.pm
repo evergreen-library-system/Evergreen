@@ -94,9 +94,68 @@ sub format {
     return $str;
 }
 
+# next: Given a holding statement, return a hash containing the 
+# enumeration values for the next issues, whether we hold it or not
+#
 sub next {
     my $self = shift;
     my $caption = $self->{CAPTION};
+    my $next = {};
+
+    foreach my $key ('a' .. 'f') {
+	last if !exists $self->{ENUMS}->{$key};
+	$next->{$key} = $self->{ENUMS}->{$key}->{HOLDINGS};
+    }
+    foreach my $key (reverse('a'.. 'f')) {
+	next if !exists $next->{$key};
+	if (!exists $caption->{ENUMS}->{$key}) {
+	    # Just assume that it increments continuously and give up
+	    warn "Holding data exists for $key, but no caption specified";
+	    $next->{$key} += 1;
+	    last;
+	}
+
+	my $cap = $caption->{ENUMS}->{$key};
+	if ($cap->{RESTART} && $cap->{COUNT}
+	    && ($next->{$key} eq $cap->{COUNT})) {
+	    $next->{$key} = 1;
+	    # I increment the next higher level of enumeration by continuing
+	    # the loop.
+	} else {
+	    # If I don't need to "carry" beyond here, then I just increment
+	    # this level of the enumeration and stop looping, since the
+	    # "next" hash has been initialized with the current values
+
+	    # NOTE: This DOES NOT take into account the incrementing
+	    # of enumerations based on the calendar. (eg: The Economist)
+	    $next->{$key} += 1;
+	    last;
+	}
+    }
+
+    return($next);
+}
+
+# match($pat): check to see if $self matches the enumeration passed
+# in as $pat. This is expected to be used in conjunction with the next()
+# function defined above.
+#
+#
+#
+sub match {
+    my $self = shift;
+    my $pat = shift;
+
+    foreach my $key ('a'..'f') {
+	# If a subfield exists in $self but not in $pat, or vice versa
+	# or if the field has different values, then fail
+	if (exists($self->{ENUMS}->{$key}) != exists($pat->{$key})
+	    || (exists $pat->{$key}
+		&& ($self->{ENUMS}->{$key}->{HOLDINGS} ne $pat->{$key}))) {
+	    return 0;
+	}
+    }
+    return 1;
 }
 
 1;
