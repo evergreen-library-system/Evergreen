@@ -66,8 +66,13 @@ cat.z3950.prototype = {
 							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
 							obj.controller.view.marc_import.disabled = false;
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
-							obj.controller.view.marc_import_overlay.disabled = false;
-							obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
+		                    obj.data.init({'via':'stash'});
+                    		if (obj.data.marked_record) {
+				    			obj.controller.view.marc_import_overlay.disabled = false;
+                            } else {
+				    			obj.controller.view.marc_import_overlay.disabled = true;
+                            }
+			    			obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
 							obj.controller.view.marc_view_btn.disabled = false;
 							obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
@@ -360,6 +365,24 @@ cat.z3950.prototype = {
 			obj.controller.render();
 
             setTimeout( function() { obj.focus(); }, 0 );
+
+            setInterval( 
+                function() {
+                    obj.data.init({'via':'stash'});
+                    if (obj.data.marked_record) {
+						var sel = obj.list.retrieve_selection();
+                        if (sel.length > 0) { obj.controller.view.marc_import_overlay.disabled = false; }
+                        if ($("overlay_tcn_indicator")) {
+                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.label',[obj.data.marked_record]));
+                        }
+                    } else {
+                        obj.controller.view.marc_import_overlay.disabled = true;
+                        if ($("overlay_tcn_indicator")) {
+                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label'));
+                        }
+                    }
+                }, 2000
+            );
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');

@@ -160,10 +160,14 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter id="z_splitter" collapse="before" persist="state hidden"/>
+            <splitter id="z_splitter" collapse="before" persist="state hidden"><grippy/></splitter>
             <groupbox id="z_splitter2" persist="height" flex="1">
                 <caption label="&staff.cat.z3950.results_caption.label;"/>
-                <hbox id="result_message" />
+                <hbox>
+                    <hbox id="result_message" />
+                    <spacer flex="1"/>
+                    <label id="overlay_tcn_indicator"/>
+                </hbox>
                 <hbox>
                     <button id="page_next" label="&staff.cat.z3950.page_next.label;" accesskey="&staff.cat.z3950.page_next.accesskey;" disabled="true"/>
                     <button id="z3950_list_actions" oncommand="this.firstChild.showPopup();"
