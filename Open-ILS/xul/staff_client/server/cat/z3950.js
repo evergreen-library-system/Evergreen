@@ -373,7 +373,11 @@ cat.z3950.prototype = {
 						var sel = obj.list.retrieve_selection();
                         if (sel.length > 0) { obj.controller.view.marc_import_overlay.disabled = false; }
                         if ($("overlay_tcn_indicator")) {
-                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.label',[obj.data.marked_record]));
+                            if (obj.data.marked_record_mvr) {
+                                $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',[obj.data.marked_record_mvr.tcn()]));
+                            } else {
+                                $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[obj.data.marked_record]));
+                            }
                         }
                     } else {
                         obj.controller.view.marc_import_overlay.disabled = true;
