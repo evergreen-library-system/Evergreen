@@ -35,10 +35,10 @@ sub new {
 	} elsif ($key =~ /[i-m]/) {
 	    $self->{CHRON}->{$key} = $val;
 	    if (!exists $caption->{CHRONS}->{$key}) {
-		carp "Holding specified enumeration level '$key' not included in caption $caption->{LINK}";
+		warn "Holding '$seqno' specified enumeration level '$key' not included in caption $caption->{LINK}";
 	    }
 	} elsif ($key eq 'o') {
-	    carp '$o specified prior to first enumeration'
+	    warn '$o specified prior to first enumeration'
 	      unless defined($last_enum);
 	    $self->{ENUMS}->{$last_enum}->{UNIT} = $val;
 	    $last_enum = undef;
@@ -77,6 +77,18 @@ sub format {
 	foreach my $key ('g', 'h') {
 	    $str .= ($key eq 'g' ? '' : ':') . $caption->enum($key) . $self->{ENUMS}->{$key}->{HOLDINGS};
 	}
+    }
+
+    # Public Note
+    $str .= ' '. $caption->{ENUMS}->{'z'} if (exists $caption->{ENUMS}->{'z'});
+
+    # Breaks in the sequence
+    if ($self->{BREAK} eq 'n') {
+	$str .= ' non-gap break';
+    } elsif ($self->{BREAK} eq 'g') {
+	$str .= ' gap';
+    } elsif ($self->{BREAK}) {
+	warn "unrecognized break indicator '$self->{BREAK}'";
     }
 
     return $str;
