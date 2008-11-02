@@ -8,8 +8,11 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!--
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+-->
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -33,7 +36,7 @@
 
 	<script type="text/javascript" src="/opac/common/js/OrgTree.js"/>
 	<script type="text/javascript" src="/opac/common/js/org_utils.js"/>
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 
@@ -180,6 +183,8 @@
 
 	]]>
 	</script>
+
+    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<vbox flex="1" style="background: #993333">
 		<description>

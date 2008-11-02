@@ -8,8 +8,11 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!--
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+-->
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -31,7 +34,7 @@
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 
@@ -88,7 +91,7 @@
 
 			save_object('print_list_templates',g.data.print_list_templates);
 
-			$('placeholder').setAttribute('value', $('commonStrings').getString('staff.main.gen_offline_widgets.synced'));
+			$('placeholder').setAttribute('value', document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.synced'));
 
 		}
 
@@ -191,7 +194,7 @@
 									[ b.owning_lib(), b.name() ]
 								);
 							} catch(E) {
-								alert($('commonStrings').getString('staff.main.gen_offline_widgets.noncat_sort.error') + E);
+								alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.noncat_sort.error') + E);
 								return 0;
 							}
 						}
