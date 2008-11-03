@@ -107,7 +107,7 @@ function clDraw(r) {
 
 function clBuildRow( tbody, row, cl ) {
 	$n( row, 'cl_name').appendChild(text(cl.name()));
-	$n( row, 'cl_owner').appendChild(text(findOrgUnit(cl.owning_lib()).shortname()));
+	$n( row, 'cl_owner').appendChild(text(findOrgUnit(cl.owning_lib()).name()));
 
 	appendClear($n( row, 'cl_holdable'), (isTrue(cl.holdable())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
 	appendClear($n( row, 'cl_hold_verify'), (isTrue(cl.hold_verify())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
@@ -133,7 +133,7 @@ function clEdit( cl, tbody, row ) {
 	name.setAttribute('size', cl.name().length + 3);
 	name.value = cl.name();
 
-	$n(r, 'cl_edit_owner').appendChild(text(findOrgUnit(cl.owning_lib()).shortname()));
+	$n(r, 'cl_edit_owner').appendChild(text(findOrgUnit(cl.owning_lib()).name()));
 
 	var arr = _clOptions(r);
 	if(isTrue(cl.holdable())) arr[0].checked = true;
