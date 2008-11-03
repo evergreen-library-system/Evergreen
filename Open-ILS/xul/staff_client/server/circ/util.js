@@ -1911,6 +1911,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 					1213 /* PATRON_BARRED */,
 					1217 /* PATRON_INACTIVE */,
 					1224 /* PATRON_ACCOUNT_EXPIRED */,
+					1234 /* ITEM_DEPOSIT_PAID */,
 					7009 /* CIRC_CLAIMS_RETURNED */,
 					7010 /* COPY_ALERT_MESSAGE */,
 					7011 /* COPY_STATUS_LOST */,
@@ -1919,8 +1920,10 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 				],
 				'text' : {
 					'1203' : function(r) {
-						//return data.hash.ccs[ r.payload.status() ].name();
 						return r.payload.status().name();
+					},
+					'1234' : function(r) {
+						return document.getElementById('circStrings').getString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
 					},
 					'7010' : function(r) {
 						return r.payload;
@@ -2243,6 +2246,23 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				document.getElementById('no_change_label').setAttribute('hidden','false');
 			}
 
+		} else /* HOLD_CAPTURE_DELAYED */ if (check.ilsevent == 7019) {
+
+			var rv = 0;
+			msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
+			rv = error.yns_alert_formatted(
+				msg,
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.titlebar'),
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_nocapture'),
+				document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_capture'),
+				null,
+				document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
+				'/xul/server/skin/media/images/stop_sign.png'
+			);
+			params.capture = rv == 0 ? 'nocapture' : 'capture';
+
+			return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false); 
+
 		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
 		} else {
@@ -2252,6 +2272,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				case 1213 /* PATRON_BARRED */ :
 				case 1217 /* PATRON_INACTIVE */ :
 				case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
+				case 1234 /* ITEM_DEPOSIT_PAID */ :
 				case 7009 /* CIRC_CLAIMS_RETURNED */ :
 				case 7010 /* COPY_ALERT_MESSAGE */ :
 				case 7011 /* COPY_STATUS_LOST */ :
@@ -2294,6 +2315,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 						case 1213 /* PATRON_BARRED */ : break;
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;
+                        case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : break;
 						case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
@@ -2328,6 +2350,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 					1213 /* PATRON_BARRED */,
 					1215 /* CIRC_EXCEEDS_COPY_RANGE */,
+                    1233 /* ITEM_RENTAL_FEE_REQUIRED */,
 					7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 					7003 /* COPY_CIRC_NOT_ALLOWED */,
 					7004 /* COPY_NOT_AVAILABLE */,
@@ -2342,6 +2365,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					'1212' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'1213' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'1215' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
+                    '1233' : function(r) {
+                        return document.getElementById('circStrings').getString('staff.circ.renew.override.item_rental_fee_required.warning.barcode', [barcode]);
+                    },
 					'7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7004' : function(r) {
