@@ -8,8 +8,10 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- xulrunner 1.9 doesn't like this mixing of chrome and remote
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+-->
 <!-- Load these just to cache them -->
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
@@ -40,7 +42,7 @@
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 
@@ -186,22 +188,27 @@
 			g.data.stash('session');
 			g.data.on_complete = function () {
 
-				g.data.stash('list','hash','tree','temp');
+                try {
 
-				g.data._debug_stash();
+                    g.data.stash('list','hash','tree','temp');
 
-				document.getElementById('iframe').setAttribute(
-					'src',
-					urls.XUL_OFFLINE_GENERATE_WIDGETS	
-				);
+                    g.data._debug_stash();
 
-				document.getElementById('caption').setAttribute('label', document.getElementById('commonStrings').getString('staff.main.data.loaded'));
+                    document.getElementById('iframe').setAttribute(
+                        'src',
+                        urls.XUL_OFFLINE_GENERATE_WIDGETS	
+                    );
 
-				xulG.window.open(urls.XUL_MENU_FRAME
-					+ '?server='+window.escape(xulG.url),
-					'main'+xulG.window.window_name_increment(),'chrome,resizable'
-				);
+                    document.getElementById('caption').setAttribute('label', document.getElementById('commonStrings').getString('staff.main.data.loaded'));
 
+                    xulG.window.open(urls.XUL_MENU_FRAME
+                        + '?server='+window.escape(xulG.url),
+                        'main'+xulG.window.window_name_increment(),'chrome,resizable'
+                    );
+
+                } catch(E) {
+                    alert(E);
+                }
 			}
 
 			g.data.init();
