@@ -2315,7 +2315,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 						case 1213 /* PATRON_BARRED */ : break;
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;
+                        case 1232 /* ITEM_DEPOSIT_REQUIRED */ : break;
                         case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : break;
+					    case 1234 /* ITEM_DEPOSIT_PAID */ : break;
 						case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
@@ -2350,7 +2352,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 					1213 /* PATRON_BARRED */,
 					1215 /* CIRC_EXCEEDS_COPY_RANGE */,
+                    1232 /* ITEM_DEPOSIT_REQUIRED */,
                     1233 /* ITEM_RENTAL_FEE_REQUIRED */,
+					1234 /* ITEM_DEPOSIT_PAID */,
 					7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 					7003 /* COPY_CIRC_NOT_ALLOWED */,
 					7004 /* COPY_NOT_AVAILABLE */,
@@ -2365,9 +2369,15 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					'1212' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'1213' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'1215' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-                    '1233' : function(r) {
-                        return document.getElementById('circStrings').getString('staff.circ.renew.override.item_rental_fee_required.warning.barcode', [barcode]);
+                    '1232' : function(r) {
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_deposit_required.warning.barcode', [barcode]);
                     },
+                    '1233' : function(r) {
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_rental_fee_required.warning.barcode', [barcode]);
+                    },
+					'1234' : function(r) {
+						return document.getElementById('circStrings').getFormattedString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
+					},
 					'7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7004' : function(r) {
