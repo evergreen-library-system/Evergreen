@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
+"POT-Creation-Date: 2008-11-03 12:17:44-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3062,1206 +3062,1081 @@ msgid "Canadian French"
 msgstr ""
 
 # id::es-US
-#: i18n_l.name:733
+#: i18n_l.name:734
 msgid "Spanish (US)"
 msgstr ""
 
 # id::es-US
-#: i18n_l.description:734
+#: i18n_l.description:735
 msgid "American Spanish"
 msgstr ""
 
 # id::es-MX
-#: i18n_l.name:736
+#: i18n_l.name:737
 msgid "Spanish (Mexico)"
 msgstr ""
 
 # id::es-MX
-#: i18n_l.description:737
+#: i18n_l.description:738
 msgid "Mexican Spanish"
 msgstr ""
 
 # id::hy-AM
-#: i18n_l.name:739
+#: i18n_l.name:742
 msgid "Armenian"
 msgstr ""
 
 # id::hy-AM
-#: i18n_l.description:740
+#: i18n_l.description:743
 msgid "Armenian"
 msgstr ""
 
 # id::loc
-#: czs.label:745
+#: czs.label:748
 msgid "Library of Congress"
 msgstr ""
 
 # id::loc
-#: czs.label:747
+#: czs.label:750
 msgid "OCLC"
 msgstr ""
 
 # id::1
-#: cza.label:750
+#: cza.label:753
 msgid "Title Control Number"
 msgstr ""
 
 # id::2
-#: cza.label:752
+#: cza.label:755
 msgid "ISBN"
 msgstr ""
 
 # id::3
-#: cza.label:754
+#: cza.label:757
 msgid "LCCN"
 msgstr ""
 
 # id::4
-#: cza.label:756
+#: cza.label:759
 msgid "Author"
 msgstr ""
 
 # id::5
-#: cza.label:758
+#: cza.label:761
 msgid "Title"
 msgstr ""
 
 # id::6
-#: cza.label:760
+#: cza.label:763
 msgid "ISSN"
 msgstr ""
 
 # id::7
-#: cza.label:762
+#: cza.label:765
 msgid "Publisher"
 msgstr ""
 
 # id::8
-#: cza.label:764
+#: cza.label:767
 msgid "Publication Date"
 msgstr ""
 
 # id::9
-#: cza.label:766
+#: cza.label:769
 msgid "Item Type"
 msgstr ""
 
 # id::10
-#: cza.label:769
+#: cza.label:772
 msgid "Title Control Number"
 msgstr ""
 
 # id::11
-#: cza.label:771
+#: cza.label:774
 msgid "ISBN"
 msgstr ""
 
 # id::12
-#: cza.label:773
+#: cza.label:776
 msgid "LCCN"
 msgstr ""
 
 # id::13
-#: cza.label:775
+#: cza.label:778
 msgid "Author"
 msgstr ""
 
 # id::14
-#: cza.label:777
+#: cza.label:780
 msgid "Title"
 msgstr ""
 
 # id::15
-#: cza.label:779
+#: cza.label:782
 msgid "ISSN"
 msgstr ""
 
 # id::16
-#: cza.label:781
+#: cza.label:784
 msgid "Publisher"
 msgstr ""
 
 # id::17
-#: cza.label:783
+#: cza.label:786
 msgid "Publication Date"
 msgstr ""
 
 # id::18
-#: cza.label:785
+#: cza.label:788
 msgid "Item Type"
 msgstr ""
 
 # id::1
-#: aout.name:792
+#: aout.name:795
 msgid "Consortium"
 msgstr ""
 
 # id::1
-#: aout.opac_label:793
+#: aout.opac_label:796
 msgid "Everywhere"
 msgstr ""
 
 # id::2
-#: aout.name:795
+#: aout.name:798
 msgid "System"
 msgstr ""
 
 # id::2
-#: aout.opac_label:796
+#: aout.opac_label:799
 msgid "Local Library System"
 msgstr ""
 
 # id::3
-#: aout.name:798
+#: aout.name:801
 msgid "Branch"
 msgstr ""
 
 # id::3
-#: aout.opac_label:799
+#: aout.opac_label:802
 msgid "This Branch"
 msgstr ""
 
 # id::4
-#: aout.name:801
+#: aout.name:804
 msgid "Sub-library"
 msgstr ""
 
 # id::4
-#: aout.opac_label:802
+#: aout.opac_label:805
 msgid "This Specialized Library"
 msgstr ""
 
 # id::5
-#: aout.name:804
+#: aout.name:807
 msgid "Bookmobile"
 msgstr ""
 
 # id::5
-#: aout.opac_label:805
+#: aout.opac_label:808
 msgid "Your Bookmobile"
 msgstr ""
 
 # id::1
-#: aou.name:809
+#: aou.name:812
 msgid "Example Consortium"
 msgstr ""
 
 # id::2
-#: aou.name:811
+#: aou.name:814
 msgid "Example System 1"
 msgstr ""
 
 # id::3
-#: aou.name:813
+#: aou.name:816
 msgid "Example System 2"
 msgstr ""
 
 # id::4
-#: aou.name:815
+#: aou.name:818
 msgid "Example Branch 1"
 msgstr ""
 
 # id::5
-#: aou.name:817
+#: aou.name:820
 msgid "Example Branch 2"
 msgstr ""
 
 # id::6
-#: aou.name:819
+#: aou.name:822
 msgid "Example Branch 3"
 msgstr ""
 
 # id::7
-#: aou.name:821
+#: aou.name:824
 msgid "Example Branch 4"
 msgstr ""
 
 # id::8
-#: aou.name:823
+#: aou.name:826
 msgid "Example Sub-library 1"
 msgstr ""
 
 # id::9
-#: aou.name:825
+#: aou.name:828
 msgid "Example Bookmobile 1"
 msgstr ""
 
 # id::2
-#: ppl.description:836
+#: ppl.description:839
 msgid "Allow a user to log in to the OPAC"
 msgstr ""
 
 # id::4
-#: ppl.description:838
+#: ppl.description:841
 msgid "Allow a user to log in to the staff client"
 msgstr ""
 
 # id::5
-#: ppl.description:840
+#: ppl.description:843
 msgid "Allow a user to create a metarecord holds"
 msgstr ""
 
 # id::6
-#: ppl.description:842
+#: ppl.description:845
 msgid "Allow a user to place a hold at the title level"
 msgstr ""
 
 # id::7
-#: ppl.description:844
+#: ppl.description:847
 msgid "Allow a user to place a volume level hold"
 msgstr ""
 
 # id::8
-#: ppl.description:846
+#: ppl.description:849
 msgid "Allow a user to place a hold on a specific copy"
 msgstr ""
 
 # id::9
-#: ppl.description:848
+#: ppl.description:851
 msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
 msgstr ""
 
 # id::10
-#: ppl.description:850
+#: ppl.description:853
 msgid "* no longer applicable"
 msgstr ""
 
 # id::11
-#: ppl.description:852
+#: ppl.description:855
 msgid "Allow a user to view another user's holds"
 msgstr ""
 
 # id::13
-#: ppl.description:854
+#: ppl.description:857
 msgid "* no longer applicable"
 msgstr ""
 
 # id::14
-#: ppl.description:856
+#: ppl.description:859
 msgid "Allow a user to update another user's hold"
 msgstr ""
 
 # id::15
-#: ppl.description:858
+#: ppl.description:861
 msgid "Allow a user to renew items"
 msgstr ""
 
 # id::16
-#: ppl.description:860
+#: ppl.description:863
 msgid "Allow a user to view bill details"
 msgstr ""
 
 # id::17
-#: ppl.description:862
+#: ppl.description:865
 msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
 msgstr ""
 
 # id::18
-#: ppl.description:864
+#: ppl.description:867
 msgid "Allow a user to edit a MARC record"
 msgstr ""
 
 # id::19
-#: ppl.description:866
+#: ppl.description:869
 msgid "Allow a user to create new MARC records"
 msgstr ""
 
 # id::20
-#: ppl.description:868
+#: ppl.description:871
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
 msgstr ""
 
 # id::21
-#: ppl.description:870
+#: ppl.description:873
 msgid "Allow a user to create a volume"
 msgstr ""
 
 # id::22
-#: ppl.description:872
+#: ppl.description:875
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
 msgstr ""
 
 # id::23
-#: ppl.description:874
+#: ppl.description:877
 msgid "Allow a user to delete a volume"
 msgstr ""
 
 # id::25
-#: ppl.description:876
+#: ppl.description:879
 msgid "Allow a user to edit a copy"
 msgstr ""
 
 # id::26
-#: ppl.description:878
+#: ppl.description:881
 msgid "Allow a user to delete a copy"
 msgstr ""
 
 # id::27
-#: ppl.description:880
+#: ppl.description:883
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
 
 # id::28
-#: ppl.description:882
+#: ppl.description:885
 msgid "Allow a user to create another user"
 msgstr ""
 
 # id::29
-#: ppl.description:884
+#: ppl.description:887
 msgid "Allow a user to edit a user's record"
 msgstr ""
 
 # id::30
-#: ppl.description:886
+#: ppl.description:889
 msgid "Allow a user to mark a user as deleted"
 msgstr ""
 
 # id::31
-#: ppl.description:888
+#: ppl.description:891
 msgid "Allow a user to view another user's Patron Record"
 msgstr ""
 
 # id::32
-#: ppl.description:890
+#: ppl.description:893
 msgid "Allow a user to check in a copy"
 msgstr ""
 
 # id::33
-#: ppl.description:892
+#: ppl.description:895
 msgid "Allow a user to place an item in transit"
 msgstr ""
 
 # id::34
-#: ppl.description:894
+#: ppl.description:897
 msgid "Allow a user to view user permissions within the user permissions editor"
 msgstr ""
 
 # id::35
-#: ppl.description:896
+#: ppl.description:899
 msgid "* no longer applicable"
 msgstr ""
 
 # id::36
-#: ppl.description:898
+#: ppl.description:901
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr ""
 
 # id::37
-#: ppl.description:900
+#: ppl.description:903
 msgid "Allow a user to mark an item as 'lost'"
 msgstr ""
 
 # id::38
-#: ppl.description:902
+#: ppl.description:905
 msgid "Allow a user to mark an item as 'missing'"
 msgstr ""
 
 # id::39
-#: ppl.description:904
+#: ppl.description:907
 msgid "Allow a user to mark an item as 'claims returned'"
 msgstr ""
 
 # id::41
-#: ppl.description:906
+#: ppl.description:909
 msgid "Allow a user to create a new billable transaction"
 msgstr ""
 
 # id::43
-#: ppl.description:908
+#: ppl.description:911
 msgid "Allow a user to create a new bill on a transaction"
 msgstr ""
 
 # id::44
-#: ppl.description:910
+#: ppl.description:913
 msgid "Allow a user to view another user's containers (buckets)"
 msgstr ""
 
 # id::45
-#: ppl.description:912
+#: ppl.description:915
 msgid "Allow a user to create a new container for another user"
 msgstr ""
 
 # id::24
-#: ppl.description:914
+#: ppl.description:917
 msgid "Allow a user to create a new copy object"
 msgstr ""
 
 # id::47
-#: ppl.description:916
+#: ppl.description:919
 msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
 
 # id::48
-#: ppl.description:918
+#: ppl.description:921
 msgid "Allow a user to see what another use has checked out"
 msgstr ""
 
 # id::42
-#: ppl.description:920
+#: ppl.description:923
 msgid "Allow a user may view another user's transactions"
 msgstr ""
 
 # id::49
-#: ppl.description:922
+#: ppl.description:925
 msgid "Allow a user to delete another user container"
 msgstr ""
 
 # id::50
-#: ppl.description:924
+#: ppl.description:927
 msgid "Allow a user to create a container item for another user"
 msgstr ""
 
 # id::51
-#: ppl.description:926
+#: ppl.description:929
 msgid "Allow a user to add other users to permission groups"
 msgstr ""
 
 # id::52
-#: ppl.description:928
+#: ppl.description:931
 msgid "Allow a user to remove other users from permission groups"
 msgstr ""
 
 # id::53
-#: ppl.description:930
+#: ppl.description:933
 msgid "Allow a user to view other users' permission groups"
 msgstr ""
 
 # id::54
-#: ppl.description:932
+#: ppl.description:935
 msgid "Allow a user to determine whether another user can check out an item"
 msgstr ""
 
 # id::55
-#: ppl.description:934
+#: ppl.description:937
 msgid "Allow a user to edit copies in batch"
 msgstr ""
 
 # id::56
-#: ppl.description:936
+#: ppl.description:939
 msgid "User may create a new patron statistical category"
 msgstr ""
 
 # id::57
-#: ppl.description:938
+#: ppl.description:941
 msgid "User may create a copy statistical category"
 msgstr ""
 
 # id::58
-#: ppl.description:940
+#: ppl.description:943
 msgid "User may create an entry in a patron statistical category"
 msgstr ""
 
 # id::59
-#: ppl.description:942
+#: ppl.description:945
 msgid "User may create an entry in a copy statistical category"
 msgstr ""
 
 # id::60
-#: ppl.description:944
+#: ppl.description:947
 msgid "User may update a patron statistical category"
 msgstr ""
 
 # id::61
-#: ppl.description:946
+#: ppl.description:949
 msgid "User may update a copy statistical category"
 msgstr ""
 
 # id::62
-#: ppl.description:948
+#: ppl.description:951
 msgid "User may update an entry in a patron statistical category"
 msgstr ""
 
 # id::63
-#: ppl.description:950
+#: ppl.description:953
 msgid "User may update an entry in a copy statistical category"
 msgstr ""
 
 # id::65
-#: ppl.description:952
+#: ppl.description:955
 msgid "User may link a copy to an entry in a statistical category"
 msgstr ""
 
 # id::64
-#: ppl.description:954
+#: ppl.description:957
 msgid "User may link another user to an entry in a statistical category"
 msgstr ""
 
 # id::66
-#: ppl.description:956
+#: ppl.description:959
 msgid "User may delete a patron statistical category"
 msgstr ""
 
 # id::67
-#: ppl.description:958
+#: ppl.description:961
 msgid "User may delete a copy statistical category"
 msgstr ""
 
 # id::68
-#: ppl.description:960
+#: ppl.description:963
 msgid "User may delete an entry from a patron statistical category"
 msgstr ""
 
 # id::69
-#: ppl.description:962
+#: ppl.description:965
 msgid "User may delete an entry from a copy statistical category"
 msgstr ""
 
 # id::70
-#: ppl.description:964
+#: ppl.description:967
 msgid "User may delete a patron statistical category entry map"
 msgstr ""
 
 # id::71
-#: ppl.description:966
+#: ppl.description:969
 msgid "User may delete a copy statistical category entry map"
 msgstr ""
 
 # id::72
-#: ppl.description:968
+#: ppl.description:971
 msgid "Allow a user to create a new non-cataloged item type"
 msgstr ""
 
 # id::73
-#: ppl.description:970
+#: ppl.description:973
 msgid "Allow a user to update a non-cataloged item type"
 msgstr ""
 
 # id::74
-#: ppl.description:972
+#: ppl.description:975
 msgid "Allow a user to create a new in-house-use "
 msgstr ""
 
 # id::75
-#: ppl.description:974
+#: ppl.description:977
 msgid "Allow a user to check out a copy"
 msgstr ""
 
 # id::76
-#: ppl.description:976
+#: ppl.description:979
 msgid "Allow a user to create a new copy location"
 msgstr ""
 
 # id::77
-#: ppl.description:978
+#: ppl.description:981
 msgid "Allow a user to update a copy location"
 msgstr ""
 
 # id::78
-#: ppl.description:980
+#: ppl.description:983
 msgid "Allow a user to delete a copy location"
 msgstr ""
 
 # id::79
-#: ppl.description:982
+#: ppl.description:985
 msgid "Allow a user to create a transit_copy object for transiting a copy"
 msgstr ""
 
 # id::80
-#: ppl.description:984
+#: ppl.description:987
 msgid "Allow a user to close out a transit on a copy"
 msgstr ""
 
 # id::81
-#: ppl.description:986
+#: ppl.description:989
 msgid "Allow a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 
 # id::82
-#: ppl.description:988
+#: ppl.description:991
 msgid "Allow a user to view which users have checked out a given copy"
 msgstr ""
 
 # id::83
-#: ppl.description:990
+#: ppl.description:993
 msgid "Allow a user to perform Z39.50 queries against remote servers"
 msgstr ""
 
 # id::84
-#: ppl.description:992
+#: ppl.description:995
 msgid "Allow a user to register a new workstation"
 msgstr ""
 
 # id::85
-#: ppl.description:994
+#: ppl.description:997
 msgid "Allow a user to view all notes attached to a copy"
 msgstr ""
 
 # id::86
-#: ppl.description:996
+#: ppl.description:999
 msgid "Allow a user to view all notes attached to a volume"
 msgstr ""
 
 # id::87
-#: ppl.description:998
+#: ppl.description:1001
 msgid "Allow a user to view all notes attached to a title"
 msgstr ""
 
 # id::89
-#: ppl.description:1000
+#: ppl.description:1003
 msgid "Allow a user to create a new volume note"
 msgstr ""
 
 # id::88
-#: ppl.description:1002
+#: ppl.description:1005
 msgid "Allow a user to create a new copy note"
 msgstr ""
 
 # id::90
-#: ppl.description:1004
+#: ppl.description:1007
 msgid "Allow a user to create a new title note"
 msgstr ""
 
 # id::91
-#: ppl.description:1006
+#: ppl.description:1009
 msgid "Allow a user to delete another user's copy notes"
 msgstr ""
 
 # id::92
-#: ppl.description:1008
+#: ppl.description:1011
 msgid "Allow a user to delete another user's volume note"
 msgstr ""
 
 # id::93
-#: ppl.description:1010
+#: ppl.description:1013
 msgid "Allow a user to delete another user's title note"
 msgstr ""
 
 # id::94
-#: ppl.description:1012
+#: ppl.description:1015
 msgid "Allow a user to update another user's container"
 msgstr ""
 
 # id::95
-#: ppl.description:1014
+#: ppl.description:1017
 msgid "Allow a user to create a container for themselves"
 msgstr ""
 
 # id::96
-#: ppl.description:1016
+#: ppl.description:1019
 msgid "Allow a user to view notifications attached to a hold"
 msgstr ""
 
 # id::97
-#: ppl.description:1018
+#: ppl.description:1021
 msgid "Allow a user to create new hold notifications"
 msgstr ""
 
 # id::98
-#: ppl.description:1020
+#: ppl.description:1023
 msgid "Allow a user to update an organization unit setting"
 msgstr ""
 
 # id::99
-#: ppl.description:1022
+#: ppl.description:1025
 msgid "Allow a user to upload an offline script"
 msgstr ""
 
 # id::100
-#: ppl.description:1024
+#: ppl.description:1027
 msgid "Allow a user to view uploaded offline script information"
 msgstr ""
 
 # id::101
-#: ppl.description:1026
+#: ppl.description:1029
 msgid "Allow a user to execute an offline script batch"
 msgstr ""
 
 # id::102
-#: ppl.description:1028
+#: ppl.description:1031
 msgid "Allow a user to change the due date on an item to any date"
 msgstr ""
 
 # id::103
-#: ppl.description:1030
+#: ppl.description:1033
 msgid "Allow a user to bypass the circulation permit call for check out"
 msgstr ""
 
 # id::104
-#: ppl.description:1032
+#: ppl.description:1035
 msgid "Allow a user to override the copy_is_reference event"
 msgstr ""
 
 # id::105
-#: ppl.description:1034
+#: ppl.description:1037
 msgid "Allow a user to void a bill"
 msgstr ""
 
 # id::106
-#: ppl.description:1036
+#: ppl.description:1039
 msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
 msgstr ""
 
 # id::107
-#: ppl.description:1038
+#: ppl.description:1041
 msgid "Allow a user to check out an item in a non-circulatable status"
 msgstr ""
 
 # id::108
-#: ppl.description:1040
+#: ppl.description:1043
 msgid "Allow a user to check in/out an item that has an alert message"
 msgstr ""
 
 # id::109
-#: ppl.description:1042
+#: ppl.description:1045
 msgid "Allow a user to remove the lost status from a copy"
 msgstr ""
 
 # id::110
-#: ppl.description:1044
+#: ppl.description:1047
 msgid "Allow a user to change the missing status on a copy"
 msgstr ""
 
 # id::111
-#: ppl.description:1046
+#: ppl.description:1049
 msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 
 # id::112
-#: ppl.description:1048
+#: ppl.description:1051
 msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 
 # id::113
-#: ppl.description:1050
+#: ppl.description:1053
 msgid "Allow a user to query the ZIP code data method"
 msgstr ""
 
 # id::114
-#: ppl.description:1052
+#: ppl.description:1055
 msgid "Allow a user to cancel holds"
 msgstr ""
 
 # id::115
-#: ppl.description:1054
+#: ppl.description:1057
 msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 
 # id::117
-#: ppl.description:1056
+#: ppl.description:1059
 msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 
 # id::116
-#: ppl.description:1058
+#: ppl.description:1061
 msgid "Allow a user to remove a closed date interval for a given location"
 msgstr ""
 
 # id::118
-#: ppl.description:1060
+#: ppl.description:1063
 msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 
 # id::119
-#: ppl.description:1062
+#: ppl.description:1065
 msgid "Allow a user to delete a non cataloged type"
 msgstr ""
 
 # id::120
-#: ppl.description:1064
+#: ppl.description:1067
 msgid "Allow a user to put someone into collections"
 msgstr ""
 
 # id::121
-#: ppl.description:1066
+#: ppl.description:1069
 msgid "Allow a user to remove someone from collections"
 msgstr ""
 
 # id::122
-#: ppl.description:1068
+#: ppl.description:1071
 msgid "Allow a user to bar a patron"
 msgstr ""
 
 # id::123
-#: ppl.description:1070
+#: ppl.description:1073
 msgid "Allow a user to un-bar a patron"
 msgstr ""
 
 # id::124
-#: ppl.description:1072
+#: ppl.description:1075
 msgid "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 
 # id::125
-#: ppl.description:1074
+#: ppl.description:1077
 msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr ""
 
 # id::126
-#: ppl.description:1076
+#: ppl.description:1079
 msgid "Allow a user to add/remove users to/from the \"Patron\" group"
 msgstr ""
 
 # id::127
-#: ppl.description:1078
+#: ppl.description:1081
 msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
 
 # id::128
-#: ppl.description:1080
+#: ppl.description:1083
 msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
 msgstr ""
 
 # id::129
-#: ppl.description:1082
+#: ppl.description:1085
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
 msgstr ""
 
 # id::130
-#: ppl.description:1084
+#: ppl.description:1087
 msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
 
 # id::131
-#: ppl.description:1086
+#: ppl.description:1089
 msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
 
 # id::132
-#: ppl.description:1088
+#: ppl.description:1091
 msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 
 # id::133
-#: ppl.description:1090
+#: ppl.description:1093
 msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
 msgstr ""
 
 # id::134
-#: ppl.description:1092
+#: ppl.description:1095
 msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
 
 # id::135
-#: ppl.description:1094
+#: ppl.description:1097
 msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
 
 # id::136
-#: ppl.description:1096
+#: ppl.description:1099
 msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
 
 # id::137
-#: ppl.description:1098
+#: ppl.description:1101
 msgid "Allow a user to place a hold on an age-protected item"
 msgstr ""
 
 # id::138
-#: ppl.description:1100
+#: ppl.description:1103
 msgid "Allow a user to renew an item past the maximun renewal count"
 msgstr ""
 
 # id::139
-#: ppl.description:1102
+#: ppl.description:1105
 msgid "Allow staff to override checkout count failure"
 msgstr ""
 
 # id::140
-#: ppl.description:1104
+#: ppl.description:1107
 msgid "Allow staff to override overdue count failure"
 msgstr ""
 
 # id::141
-#: ppl.description:1106
+#: ppl.description:1109
 msgid "Allow staff to override fine amount checkout failure"
 msgstr ""
 
 # id::142
-#: ppl.description:1108
+#: ppl.description:1111
 msgid "Allow staff to override circulation copy range failure"
 msgstr ""
 
 # id::143
-#: ppl.description:1110
+#: ppl.description:1113
 msgid "Allow staff to override item on holds shelf failure"
 msgstr ""
 
 # id::144
-#: ppl.description:1112
+#: ppl.description:1115
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 
 # id::146
-#: ppl.description:1114
+#: ppl.description:1117
 msgid "Allow a user to place multiple holds on a single title"
 msgstr ""
 
 # id::147
-#: ppl.description:1116
+#: ppl.description:1119
 msgid "Allow a user to run reports"
 msgstr ""
 
 # id::148
-#: ppl.description:1118
+#: ppl.description:1121
 msgid "Allow a user to share report his own folders"
 msgstr ""
 
 # id::149
-#: ppl.description:1120
+#: ppl.description:1123
 msgid "Allow a user to view report output"
 msgstr ""
 
 # id::150
-#: ppl.description:1122
+#: ppl.description:1125
 msgid "Allow a user to checkout an item that is marked as non-circ"
 msgstr ""
 
 # id::151
-#: ppl.description:1124
+#: ppl.description:1127
 msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
 
-# id::153
-#: ppl.description:1126
-msgid "Allow a user to create a new funding source"
-msgstr ""
-
-# id::154
-#: ppl.description:1127
-msgid "Allow a user to delete a funding source"
-msgstr ""
-
-# id::155
-#: ppl.description:1128
-msgid "Allow a user to view a funding source"
-msgstr ""
-
-# id::156
-#: ppl.description:1129
-msgid "Allow a user to update a funding source"
-msgstr ""
-
-# id::157
-#: ppl.description:1130
-msgid "Allow a user to create a new fund"
-msgstr ""
-
-# id::158
-#: ppl.description:1131
-msgid "Allow a user to delete a fund"
-msgstr ""
-
-# id::159
-#: ppl.description:1132
-msgid "Allow a user to view a fund"
-msgstr ""
-
-# id::160
-#: ppl.description:1133
-msgid "Allow a user to update a fund"
-msgstr ""
-
-# id::161
-#: ppl.description:1134
-msgid "Allow a user to create a new fund allocation"
-msgstr ""
-
-# id::162
-#: ppl.description:1135
-msgid "Allow a user to delete a fund allocation"
-msgstr ""
-
-# id::163
-#: ppl.description:1136
-msgid "Allow a user to view a fund allocation"
-msgstr ""
-
-# id::164
-#: ppl.description:1137
-msgid "Allow a user to update a fund allocation"
-msgstr ""
-
-# id::165
-#: ppl.description:1138
-msgid "Lowest level permission required to access the ACQ interface"
-msgstr ""
-
-# id::166
-#: ppl.description:1139
-msgid "Allow a user to create a new provider"
-msgstr ""
-
-# id::167
-#: ppl.description:1140
-msgid "Allow a user to delate a provider"
-msgstr ""
-
-# id::168
-#: ppl.description:1141
-msgid "Allow a user to view a provider"
-msgstr ""
-
-# id::169
-#: ppl.description:1142
-msgid "Allow a user to update a provider"
-msgstr ""
-
-# id::170
-#: ppl.description:1143
-msgid "Allow a user to create/view/update/delete a funding source"
-msgstr ""
-
-# id::171
-#: ppl.description:1144
-msgid "Allow a user to create/view/update/delete a fund"
-msgstr ""
-
-# id::172
-#: ppl.description:1145
-msgid "Allow a user to view/credit/debit a funding source"
-msgstr ""
-
-# id::173
-#: ppl.description:1146
-msgid "Allow a user to view/credit/debit a fund"
-msgstr ""
-
-# id::174
-#: ppl.description:1147
-msgid "Allows a user to create a picklist"
-msgstr ""
-
-# id::175
-#: ppl.description:1148
-msgid "Allow a user to create/view/update/delete a provider"
-msgstr ""
-
-# id::176
-#: ppl.description:1149
-msgid "Allow a user to view and purchase from a provider"
-msgstr ""
-
-# id::177
-#: ppl.description:1150
-msgid "Allow a user to view another users picklist"
-msgstr ""
-
 # id::152
-#: ppl.description:1151
+#: ppl.description:1129
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 
-# id::178
-#: ppl.description:1153
+# id::153
+#: ppl.description:1131
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
 
-# id::179
-#: ppl.description:1155
-msgid "Allow a user to create/view/update/delete a currency_type"
-msgstr ""
-
 # id::1
-#: pgt.name:1279
+#: pgt.name:1250
 msgid "Users"
 msgstr ""
 
 # id::2
-#: pgt.name:1281
+#: pgt.name:1252
 msgid "Patrons"
 msgstr ""
 
 # id::3
-#: pgt.name:1283
+#: pgt.name:1254
 msgid "Staff"
 msgstr ""
 
 # id::4
-#: pgt.name:1285
+#: pgt.name:1256
 msgid "Catalogers"
 msgstr ""
 
 # id::5
-#: pgt.name:1287
+#: pgt.name:1258
 msgid "Circulators"
 msgstr ""
 
 # id::10
-#: pgt.name:1289
+#: pgt.name:1260
 msgid "Local System Administrator"
 msgstr ""
 
 # id::10
-#: pgt.description:1290
+#: pgt.description:1261
 msgid "System maintenance, configuration, etc."
 msgstr ""
 
 # id::1
-#: acpl.name:1421
+#: acpl.name:1392
 msgid "Stacks"
 msgstr ""
 
 # id::1
-#: vqbrad.description:1475
+#: vqbrad.description:1446
 msgid "Title of work"
 msgstr ""
 
 # id::1
-#: vqbrad.description:1476
+#: vqbrad.description:1447
 msgid "Author of work"
 msgstr ""
 
 # id::3
-#: vqbrad.description:1477
+#: vqbrad.description:1448
 msgid "Language of work"
 msgstr ""
 
 # id::4
-#: vqbrad.description:1478
+#: vqbrad.description:1449
 msgid "Pagination"
 msgstr ""
 
 # id::5
-#: vqbrad.description:1479
+#: vqbrad.description:1450
 msgid "ISBN"
 msgstr ""
 
 # id::6
-#: vqbrad.description:1480
+#: vqbrad.description:1451
 msgid "ISSN"
 msgstr ""
 
 # id::7
-#: vqbrad.description:1481
+#: vqbrad.description:1452
 msgid "Price"
 msgstr ""
 
 # id::8
-#: vqbrad.description:1482
+#: vqbrad.description:1453
 msgid "Accession Number"
 msgstr ""
 
 # id::9
-#: vqbrad.description:1483
+#: vqbrad.description:1454
 msgid "TCN Value"
 msgstr ""
 
 # id::10
-#: vqbrad.description:1484
+#: vqbrad.description:1455
 msgid "TCN Source"
 msgstr ""
 
 # id::11
-#: vqbrad.description:1485
+#: vqbrad.description:1456
 msgid "Internal ID"
 msgstr ""
 
 # id::12
-#: vqbrad.description:1486
+#: vqbrad.description:1457
 msgid "Publisher"
 msgstr ""
 
 # id::13
-#: vqbrad.description:1487
+#: vqbrad.description:1458
 msgid "Publication Date"
 msgstr ""
 
 # id::14
-#: vqbrad.description:1488
+#: vqbrad.description:1459
 msgid "Edition"
 msgstr ""
 
+# id::15
+#: vqbrad.description:1460
+msgid "Item Barcode"
+msgstr ""
+
 # id::1
-#: vqarad.description:1538
+#: vqarad.description:1510
 msgid "Identifier"
 msgstr ""
