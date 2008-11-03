@@ -1377,7 +1377,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 						case 1213 /* PATRON_BARRED */ : break;
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;
+                        case 1232 /* ITEM_DEPOSIT_REQUIRED */ : break;
                         case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : break;
+					    case 1234 /* ITEM_DEPOSIT_PAID */ : break;
 						case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
@@ -1412,7 +1414,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 					1213 /* PATRON_BARRED */,
 					1215 /* CIRC_EXCEEDS_COPY_RANGE */,
+                    1232 /* ITEM_DEPOSIT_REQUIRED */,
                     1233 /* ITEM_RENTAL_FEE_REQUIRED */,
+					1234 /* ITEM_DEPOSIT_PAID */,
 					7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 					7003 /* COPY_CIRC_NOT_ALLOWED */,
 					7004 /* COPY_NOT_AVAILABLE */,
@@ -1427,8 +1431,14 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					'1212' : function(r) { return 'Barcode: ' + barcode; },
 					'1213' : function(r) { return 'Barcode: ' + barcode; },
 					'1215' : function(r) { return 'Barcode: ' + barcode; },
+                    '1232' : function(r) {
+                        return "For item with barcode " + barcode + ", a billing for an Item Deposit will be added to the patron's account if this action is overrided.";
+                    },
                     '1233' : function(r) {
                         return "For item with barcode " + barcode + ", a billing for an Item Rental Fee will be added to the patron's account if this action is overrided.";
+                    },
+                    '1234' : function(r) {
+                        return "A paid deposit will be owed to this patron if this action is overrided.";
                     },
 					'7002' : function(r) { return 'Barcode: ' + barcode; },
 					'7003' : function(r) { return 'Barcode: ' + barcode; },
