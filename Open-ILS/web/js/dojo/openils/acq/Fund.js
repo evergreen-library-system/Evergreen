@@ -34,9 +34,9 @@ openils.acq.Fund.createStore = function(onComplete, limitPerm) {
     /** Fetches the list of funds and builds a grid from them */
 
     function mkStore(r) {
-        var msg;
+        var src;
         var items = [];
-        while(msg = openils.Util.readResponse(r)) {
+        while(src = openils.Util.readResponse(r)) {
             openils.acq.Fund.cache[src.id()] = src;
             items.push(src);
         }
