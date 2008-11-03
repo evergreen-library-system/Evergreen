@@ -71,12 +71,22 @@
 						</td>
 					</tr>
 					<tr>
+						<td>Hold Verify</td>
+						<td>
+							<span>Yes</span>
+							<input type='radio' name='cl_new_hold' id='cl_new_hold_verify_yes'/>
+							<span>No</span>
+							<input type='radio' name='cl_new_hold_verify'  
+								id='cl_new_hold_verify_no' checked='checked'> </input>
+						</td>
 						<td>Owning Library:</td>
-						<td colspan='2' >
+						<td colspan='2'>
 							<select id='cl_new_owner' disabled='disabled' style='width:auto;'> </select>
 						</td>
-						<td><input id='sc_new_submit' type='submit' value='Create' disabled='disabled'/></td>
 					</tr>
+                    <tr>
+						<td colspan='4'><input id='sc_new_submit' type='submit' value='Create' disabled='disabled'/></td>
+                    </tr>
 				</tbody>
 			</table>
 
@@ -86,16 +96,17 @@
 			<table class='data_grid data_grid_center' style='width: 95%'>
 				<thead>
 					<tr>
-						<td width='15%'>Name</td>
-						<td width='20%'>Owning Library</td>
-						<td width='15%'>
+						<td width=''>Name</td>
+						<td width=''>Owning Library</td>
+						<td width=''>
 							<span>Holdable </span>
 							<a class='context_help' href='javascript:clHoldMsg();'> ??</a>
 						</td>
-						<td width='15%'>OPAC Visible</td>
-						<td width='15%'>Circulate</td>
-						<td width='10%'>Edit</td>
-						<td width='10%'>Delete</td>
+                        <td>Hold Verify</td>
+						<td width=''>OPAC Visible</td>
+						<td width=''>Circulate</td>
+						<td width=''>Edit</td>
+						<td width=''>Delete</td>
 					</tr>
 				</thead>
 				<tbody id='cl_tbody'>
@@ -103,6 +114,7 @@
 						<td name='cl_name'> </td>
 						<td name='cl_owner'> </td>
 						<td name='cl_holdable'> </td>
+						<td name='cl_hold_verify'> </td>
 						<td name='cl_visible'> </td>
 						<td name='cl_circulate'> </td>
 						<td><input type='submit' value='Edit' name='cl_edit' disabled='disabled'> </input></td>
@@ -115,6 +127,8 @@
 		 <div class='hide_me'>
 			<span id='yes'>Yes</span>
 			<span id='no'>No</span>
+            <span id='true' style='color:green;'>&#x2713;</span>
+            <span id='false' style='color:red;'>&#x2717;</span>
 			<span id='cl_hold_msg'>
 				If a copy location is "Holdable", copies in that location may have holds placed on them.
 			</span>
@@ -135,6 +149,16 @@
 							<span>No</span>
 							<span name='cl_edit_holdable_no'>
 								<input type='radio' name='cl_edit_holdable'/>
+							</span>
+						</td>
+						<td>
+							<span>Yes</span>
+							<span name='cl_edit_hold_verify_yes'>
+								<input type='radio' name='cl_edit_hold_verify'/>
+							</span>
+							<span>No</span>
+							<span name='cl_edit_hold_verify_no'>
+								<input type='radio' name='cl_edit_hold_verify'/>
 							</span>
 						</td>
 						<td>
