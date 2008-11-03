@@ -361,6 +361,8 @@ my @AUTOLOAD_FIELDS = qw/
     is_rental
     deposit_billing
     rental_billing
+    capture
+    noop
 /;
 
 
@@ -412,6 +414,8 @@ sub new {
     # if this is a renewal, default to desk_renewal
     $self->desk_renewal(1) unless 
         $self->opac_renewal or $self->phone_renewal;
+
+    $self->capture('') unless $self->capture;
 
     return $self;
 }
@@ -1473,36 +1477,38 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-    if( !$self->remote_hold and $self->attempt_checkin_hold_capture() ) {
+    unless($self->noop) { # no-op checkins to not capture holds or put items into transit
+
+        my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
         return if $self->bail_out;
-
-   } else { # not needed for a hold
-
-        my $circ_lib = (ref $self->copy->circ_lib) ? 
-                $self->copy->circ_lib->id : $self->copy->circ_lib;
-
-        if( $self->remote_hold ) {
-            $circ_lib = $self->remote_hold->pickup_lib;
-            $logger->warn("circulator: Copy ".$self->copy->barcode.
-                " is on a remote hold's shelf, sending to $circ_lib");
+    
+        unless($needed_for_hold) {
+            my $circ_lib = (ref $self->copy->circ_lib) ? 
+                    $self->copy->circ_lib->id : $self->copy->circ_lib;
+    
+            if( $self->remote_hold ) {
+                $circ_lib = $self->remote_hold->pickup_lib;
+                $logger->warn("circulator: Copy ".$self->copy->barcode.
+                    " is on a remote hold's shelf, sending to $circ_lib");
+            }
+    
+            $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
+    
+            if( $circ_lib == $self->editor->requestor->ws_ou ) {
+    
+                $self->checkin_handle_precat();
+                return if $self->bail_out;
+    
+            } else {
+    
+                my $bc = $self->copy->barcode;
+                $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
+                $self->checkin_build_copy_transit($circ_lib);
+                return if $self->bail_out;
+                $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
+            }
         }
-
-        $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
-
-      if( $circ_lib == $self->editor->requestor->ws_ou ) {
-
-            $self->checkin_handle_precat();
-            return if $self->bail_out;
-
-      } else {
-
-            my $bc = $self->copy->barcode;
-            $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
-            $self->checkin_build_copy_transit($circ_lib);
-            return if $self->bail_out;
-            $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
-      }
-   }
+    }
 
     $self->reshelve_copy;
     return if $self->bail_out;
@@ -1651,9 +1657,14 @@ sub checkin_build_copy_transit {
 }
 
 
+# returns true if the item was used (or may potentially be used 
+# in subsequent calls) to capture a hold.
 sub attempt_checkin_hold_capture {
     my $self = shift;
     my $copy = $self->copy;
+
+    # we've been explicitly told not to capture any holds
+    return 0 if $self->capture eq 'nocapture';
 
     # See if this copy can fulfill any holds
     my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold( 
@@ -1662,7 +1673,17 @@ sub attempt_checkin_hold_capture {
     if(!$hold) {
         $logger->debug("circulator: no potential permitted".
             "holds found for copy ".$copy->barcode);
-        return undef;
+        return 0;
+    }
+
+    if($self->capture ne 'capture') {
+        # see if this item is in a hold-capture-delay location
+        my $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
+        if($U->is_true($location->hold_verify)) {
+            $self->bail_on_events(
+                OpenILS::Event->new('HOLD_CAPTURE_DELAYED', copy_location => $location));
+            return 1;
+        }
     }
 
     $self->retarget($retarget);
@@ -1687,12 +1708,12 @@ sub attempt_checkin_hold_capture {
     $self->hold($hold);
     $self->checkin_changed(1);
 
-    return 1 if $self->bail_out;
+    return 0 if $self->bail_out;
 
     if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
 
         # This hold was captured in the correct location
-    $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
+        $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
         $self->push_events(OpenILS::Event->new('SUCCESS'));
 
         #$self->do_hold_notify($hold->id);
@@ -1703,10 +1724,9 @@ sub attempt_checkin_hold_capture {
         # Hold needs to be picked up elsewhere.  Build a hold
         # transit and route the item.
         $self->checkin_build_hold_transit();
-    $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
-        return 1 if $self->bail_out;
-        $self->push_events(
-            OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib));
+        $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
+        return 0 if $self->bail_out;
+        $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib));
     }
 
     # make sure we save the copy status
