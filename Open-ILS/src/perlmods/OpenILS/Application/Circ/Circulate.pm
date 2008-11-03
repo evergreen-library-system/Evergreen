@@ -158,7 +158,7 @@ sub run_method {
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->check_penalty_on_renew(1) if
         $circulator->is_renewal and $U->ou_ancestor_setting_value(
-            $circulator->editor->requestor->ws_ou, 'circ.renew.check_penalty', $circulator->editor);
+            $circulator->circ_lib, 'circ.renew.check_penalty', $circulator->editor);
     $circulator->mk_script_runner;
     return circ_events($circulator) if $circulator->bail_out;
 
@@ -357,6 +357,10 @@ my @AUTOLOAD_FIELDS = qw/
     phone_renewal
     desk_renewal
     retarget
+    is_deposit
+    is_rental
+    deposit_billing
+    rental_billing
 /;
 
 
@@ -391,8 +395,7 @@ sub new {
     my $self = bless( {}, $class );
 
     $self->events([]);
-    $self->editor( 
-        new_editor(xact => 1, authtoken => $auth) );
+    $self->editor(new_editor(xact => 1, authtoken => $auth));
 
     unless( $self->editor->checkauth ) {
         $self->bail_on_events($self->editor->event);
@@ -505,8 +508,13 @@ sub mk_script_runner {
         }
     }
 
-    $self->is_precat(1) if $self->copy 
-        and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
+    if($self->copy) {
+        $self->is_precat(1) if $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
+        if($self->copy->deposit_amount and $self->copy->deposit_amount > 0) {
+            $self->is_deposit(1) if $U->is_true($self->copy->deposit);
+            $self->is_rental(1) unless $U->is_true($self->copy->deposit);
+        }
+    }
 
     # We can't renew if there is no copy
     return $self->bail_on_events(@evts) if 
@@ -552,6 +560,7 @@ sub do_permit {
     $self->run_patron_permit_scripts();
     $self->run_copy_permit_scripts() 
         unless $self->is_precat or $self->is_noncat;
+    $self->check_item_deposit_events();
     $self->override_events() unless 
         $self->is_renewal and not $self->check_penalty_on_renew;
     return if $self->bail_out;
@@ -569,6 +578,35 @@ sub do_permit {
             payload => $self->mk_permit_key));
 }
 
+sub check_item_deposit_events {
+    my $self = shift;
+    $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_REQUIRED')) 
+        if $self->is_deposit and not $self->is_deposit_exempt;
+    $self->push_events(OpenILS::Event->new('ITEM_RENTAL_FEE_REQUIRED')) 
+        if $self->is_rental and not $self->is_rental_exempt;
+}
+
+# returns true if the user is not required to pay deposits
+sub is_deposit_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.deposit.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
+}
+
+# returns true if the user is not required to pay rental fees
+sub is_rental_exempt {
+    my $self = shift;
+    my $pid = (ref $self->patron->profile) ?
+        $self->patron->profile->id : $self->patron->profile;
+    my $groups = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.rental.exempt_groups', $self->editor);
+    return 1 if $groups and grep {$_ == $pid} @$groups;
+    return 0;
+}
 
 sub check_captured_holds {
    my $self    = shift;
@@ -873,6 +911,9 @@ sub do_checkout {
     $self->update_copy;
     return if $self->bail_out;
 
+    $self->apply_deposit_fee();
+    return if $self->bail_out;
+
     $self->handle_checkout_holds();
     return if $self->bail_out;
 
@@ -897,9 +938,39 @@ sub do_checkout {
                 circ              => $self->circ,
                 record            => $record,
                 holds_fulfilled   => $self->fulfilled_holds,
+                deposit_bill      => $self->deposit_billing,
+                rental_bill       => $self->rental_billing
             }
         )
     );
+}
+
+sub apply_deposit_fee {
+    my $self = shift;
+    my $copy = $self->copy;
+    return unless 
+        ($self->is_deposit and not $self->is_deposit_exempt) or 
+        ($self->is_rental and not $self->is_rental_exempt);
+
+	my $bill = Fieldmapper::money::billing->new;
+    my $amount = $copy->deposit_amount;
+    my $billing_type;
+
+    if($self->is_deposit) {
+        $billing_type = OILS_BILLING_TYPE_DEPOSIT;
+        $self->deposit_billing($bill);
+    } else {
+        $billing_type = OILS_BILLING_TYPE_RENTAL;
+        $self->rental_billing($bill);
+    }
+
+	$bill->xact($self->circ->id);
+	$bill->amount($amount);
+	$bill->note(OILS_BILLING_NOTE_SYSTEM);
+	$bill->billing_type($billing_type);
+    $self->editor->create_money_billing($bill) or $self->bail_on_events($self->editor->event);
+
+	$logger->info("circulator: charged $amount on checkout with billing type $billing_type");
 }
 
 sub update_copy {
@@ -1320,6 +1391,8 @@ sub do_checkin {
         if ($self->circ and $self->circ->stop_fines 
                 and $self->circ->stop_fines eq OILS_STOP_FINES_CLAIMSRETURNED);
 
+    $self->check_circ_deposit();
+
     # handle the overridable events 
     $self->override_events unless $self->is_renewal;
     return if $self->bail_out;
@@ -1460,6 +1533,20 @@ sub do_checkin {
 
     $self->checkin_flesh_events;
     return;
+}
+
+# if a deposit was payed for this item, push the event
+sub check_circ_deposit {
+    my $self = shift;
+    return unless $self->circ;
+    my $deposit = $self->editor->search_money_billing(
+        {   billing_type => OILS_BILLING_TYPE_DEPOSIT, 
+            xact => $self->circ->id, 
+            voided => 'f'
+        }, {idlist => 1})->[0];
+
+    $self->push_events(OpenILS::Event->new(
+        'ITEM_DEPOSIT_PAID', payload => $deposit)) if $deposit;
 }
 
 sub reshelve_copy {
