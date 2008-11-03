@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-11-03 12:17-0400\n"
 "PO-Revision-Date: 2008-08-19 00:30+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3001,6 +3001,7 @@ msgid ""
 msgstr ""
 
 #: staff.main.menu.entity.volume.label
+msgctxt "staff.main.menu.entity.volume.label"
 msgid "Volumes"
 msgstr "Հատորներ"
 
@@ -7696,6 +7697,11 @@ msgstr "Խմբագրի նյութի բաղկացուցիչները"
 msgid "Delete All from Catalog"
 msgstr "Ջնջիր բոլորը քարտարանից"
 
+#: staff.cat.copy_buckets_quick.title
+msgctxt "staff.cat.copy_buckets_quick.title"
+msgid "Add to Bucket"
+msgstr "Ավելացրու փնջին"
+
 #: staff.cat.copy_buckets_quick.item_buckets.label
 msgid "Item Buckets"
 msgstr "Նյութի փնջեր"
@@ -7984,6 +7990,11 @@ msgstr "Կրկնիր նոր տաբում"
 msgctxt "staff.cat.opac.menuitem.removeframe.label"
 msgid "Remove this Frame"
 msgstr "Հեռացրու այս ֆրեյմը"
+
+#: staff.cat.record_buckets.title
+msgctxt "staff.cat.record_buckets.title"
+msgid "Record Buckets"
+msgstr "Գրանցիր փնջերը"
 
 #: staff.cat.record_buckets_overlay.record_query_tab.label
 #: staff.cat.record_buckets_overlay.record_query_tab.accesskey
@@ -8366,6 +8377,11 @@ msgstr "Գրադարան"
 msgid "# of volumes"
 msgstr "# հատորներ"
 
+#: staff.cat.volume_editor.title
+msgctxt "staff.cat.volume_editor.title"
+msgid "Volumes"
+msgstr "Հատորներ"
+
 #: staff.cat.volume_editor.caption.label
 msgid "Volume Editor"
 msgstr "Հատորի խմբագրիչ"
@@ -8459,19 +8475,37 @@ msgstr "Որոնման &ձև"
 msgid "Fetch &More Results"
 msgstr "Fetch &More Results"
 
-#: staff.cat.z3950.export.label
-msgid "CSV to Clipboard"
-msgstr "CSV դեպի կլիպբորդ"
+#: staff.cat.z3950.list_actions.label
+#: staff.cat.z3950.list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
+msgid "&List Actions"
+msgstr "Թվարկիր գործողությունները"
 
-#: staff.cat.z3950.clip_button.label
-msgctxt "staff.cat.z3950.clip_button.label"
-msgid "Copy to Clipboard"
-msgstr "Արտագրիր կլիպբորդ"
+#: staff.cat.z3950.menuitem.csv_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_clipboard.label"
+msgid "Copy List CSV to Clipboard"
+msgstr "Արտագրիր ցուցակի CSV կլիպբորդ"
 
-#: staff.cat.z3950.save_cols_btn.label
-msgctxt "staff.cat.z3950.save_cols_btn.label"
-msgid "Save Columns"
-msgstr "Հիշիր սյունակները"
+#: staff.cat.z3950.menuitem.csv_to_file.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_file.label"
+msgid "Save List CSV to File"
+msgstr "Հիշիր ցուցակի CSV ֆայլում"
+
+#: staff.cat.z3950.menuitem.csv_to_printer.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_printer.label"
+msgid "Print List CSV"
+msgstr "Տպիր ցուցակի CSV"
+
+#: staff.cat.z3950.menuitem.copy_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.copy_to_clipboard.label"
+msgid "Copy Field from selected row to Clipboard"
+msgstr "Արտագրիր դաշտը ընտրված տողից կլիպբորդ"
+
+#: staff.cat.z3950.menuitem.save_columns.label
+msgctxt "staff.cat.z3950.menuitem.save_columns.label"
+msgid "Save List Configuration"
+msgstr "Հիշիր ցուցակի կարգաբերումը"
 
 #: staff.cat.z3950.marc_view.label
 #: staff.cat.z3950.marc_view.accesskey
@@ -8510,6 +8544,10 @@ msgstr "&Գրանցել"
 msgctxt "staff.pat.barcode_entry.retrieving.label"
 msgid "Retrieving..."
 msgstr "Կանչում է..."
+
+#: staff.patron.bill_cc_info.title
+msgid "Credit Card Information"
+msgstr ""
 
 #: staff.patron.bill_cc_info.visa.label
 msgid "Visa"
@@ -8570,6 +8608,12 @@ msgstr "Կրեդիտ քարտի ինֆո"
 #: staff.patron.bill_cc_info.type.label
 msgid "Credit Card Type"
 msgstr "Կրեդիտ քարտի տեսակ"
+
+#. "Check" is used here to indicate a payment by check, not "Verify"
+#: staff.patron.bill_check_info.title
+#, fuzzy
+msgid "Check Info"
+msgstr "Հետ ընդունում"
 
 #. "Check" is used here to indicate a payment by check, not "Verify"
 #: staff.patron.bill_check_info.check_info.label
@@ -8975,6 +9019,10 @@ msgstr "Ոչնչացված:"
 msgctxt "staff.patron.bills_overlay.auto_print.label"
 msgid "Auto-Print"
 msgstr "Ավտո տպել"
+
+#: staff.patron.hold_notices.title
+msgid "Hold Notices"
+msgstr ""
 
 #: staff.patron.hold_notices.add_record_notification.label
 #: staff.patron.hold_notices.add_record_notification.accesskey
@@ -10411,6 +10459,9 @@ msgstr ""
 "Սա Evergreen-ի աշխատակազմի պորտալի էջն է: Կարող ես փոփոխել այն քո "
 "կազմակերպության պահանջներին համապատասխան: Օրինակ, կարող ես ավելացնել "
 "հղումներ գործողոթյուններ իրականացնող փաստաթղթերին:"
+
+#~ msgid "CSV to Clipboard"
+#~ msgstr "CSV դեպի կլիպբորդ"
 
 #~ msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
 #~ msgid "List Actions"
