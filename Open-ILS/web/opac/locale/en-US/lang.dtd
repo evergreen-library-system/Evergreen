@@ -2096,9 +2096,13 @@
 <!ENTITY staff.cat.z3950.search_form.accesskey "F">
 <!ENTITY staff.cat.z3950.page_next.label "Fetch More Results">
 <!ENTITY staff.cat.z3950.page_next.accesskey "M">
-<!ENTITY staff.cat.z3950.export.label "CSV to Clipboard">
-<!ENTITY staff.cat.z3950.clip_button.label "Copy to Clipboard">
-<!ENTITY staff.cat.z3950.save_cols_btn.label "Save Columns">
+<!ENTITY staff.cat.z3950.list_actions.label "List Actions">
+<!ENTITY staff.cat.z3950.list_actions.accesskey "L">
+<!ENTITY staff.cat.z3950.menuitem.csv_to_clipboard.label "Copy List CSV to Clipboard">
+<!ENTITY staff.cat.z3950.menuitem.csv_to_file.label "Save List CSV to File">
+<!ENTITY staff.cat.z3950.menuitem.csv_to_printer.label "Print List CSV">
+<!ENTITY staff.cat.z3950.menuitem.copy_to_clipboard.label "Copy Field from selected row to Clipboard">
+<!ENTITY staff.cat.z3950.menuitem.save_columns.label "Save List Configuration">
 <!ENTITY staff.cat.z3950.marc_view.label "MARC View">
 <!ENTITY staff.cat.z3950.marc_view.accesskey "V">
 <!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">

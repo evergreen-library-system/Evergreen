@@ -82,8 +82,10 @@
 
 	<commandset id="cat_z3950_cmds">
 		<command id="cmd_broken" />
-		<command id="cmd_export" />
-		<command id="sel_clip" />
+		<command id="sel_clip" disabled="true" />
+        <command id="cmd_z3950_csv_to_printer" disabled="true" />
+        <command id="cmd_z3950_csv_to_clipboard" disabled="true" />
+        <command id="cmd_z3950_csv_to_file" disabled="true" />
 		<command id="save_columns" />
 		<command id="toggle_form" />
 		<command id="marc_view" />
@@ -91,8 +93,8 @@
 
 	<groupbox flex="1">
 		<caption label="&staff.cat.z3950.marc_import.label;"/>
-            <hbox id="top_pane" flex="1">
-                <groupbox flex="1">
+            <hbox id="top_pane" persist="height" flex="1">
+                <groupbox id="x_splitter1" persist="width" flex="1">
                     <caption label="&staff.cat.z3950.query.label;"/>
                     <hbox>
                         <spacer flex="1"/>
@@ -101,9 +103,9 @@
                         </description>
                         <spacer flex="1"/>
                     </hbox>
-                    <grid>
+                    <grid flex="1">
                         <columns><column /><column flex="1" /></columns>
-                        <rows id="query_inputs">
+                        <rows id="query_inputs" class="my_overflow">
                             <row>
                                 <label id="item_type_label" value="&staff.z39_50.search_class.item_type;" control="item_type_input" onclick="g.z3950.default_attr = 'item_type'" style="-moz-user-focus: ignore"/>
                                 <menulist id="item_type_input" mytype="search_class" search_class="item_type">
@@ -130,7 +132,8 @@
                         <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;"/>
                     </hbox>
                 </groupbox>
-                <groupbox flex="1">
+                <splitter id="x_splitter" collapse="after" persist="state hidden"><grippy/></splitter>
+                <groupbox id="x_splitter2" persist="width" flex="1">
                     <caption label="&staff.cat.z3950.service_credentials.label;"/>
                     <grid flex="1">
                         <columns>
@@ -157,15 +160,28 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter id="z_splitter" persist="height"/>
-            <groupbox flex="1">
+            <splitter id="z_splitter" collapse="before" persist="state hidden"><grippy/></splitter>
+            <groupbox id="z_splitter2" persist="height" flex="1">
                 <caption label="&staff.cat.z3950.results_caption.label;"/>
-                <hbox id="result_message" />
+                <hbox>
+                    <hbox id="result_message" />
+                    <spacer flex="1"/>
+                    <label id="overlay_tcn_indicator"/>
+                </hbox>
                 <hbox>
                     <button id="page_next" label="&staff.cat.z3950.page_next.label;" accesskey="&staff.cat.z3950.page_next.accesskey;" disabled="true"/>
-                    <button id="export" label="&staff.cat.z3950.export.label;" command="cmd_export" accesskey=""/>
-                    <button id="clip_button" command="sel_clip" label="&staff.cat.z3950.clip_button.label;" disabled="true"/>
-                    <button id="save_cols_btn" command="save_columns" label="&staff.cat.z3950.save_cols_btn.label;"/>
+                    <button id="z3950_list_actions" oncommand="this.firstChild.showPopup();"
+                        label="&staff.cat.z3950.list_actions.label;" 
+                        accesskey="&staff.cat.z3950.list_actions.accesskey;" 
+                        type="menu" allowevents="true">
+                        <menupopup id="z3950_list_actions_popup">
+                            <menuitem command="sel_clip" label="&staff.cat.z3950.menuitem.copy_to_clipboard.label;" disabled="true" />
+                            <menuitem command="cmd_z3950_csv_to_printer" label="&staff.cat.z3950.menuitem.csv_to_printer.label;" />
+                            <menuitem command="cmd_z3950_csv_to_clipboard" label="&staff.cat.z3950.menuitem.csv_to_clipboard.label;" />
+                            <menuitem command="cmd_z3950_csv_to_file" label="&staff.cat.z3950.menuitem.csv_to_file.label;" />
+                            <menuitem command="save_columns" label="&staff.cat.z3950.menuitem.save_columns.label;" />
+                        </menupopup>
+                    </button>
                     <spacer flex="1"/>
                     <button id="marc_view_btn" command="marc_view" disabled="true"/>
                     <button id="marc_import_overlay" label="&staff.cat.z3950.marc_import_overlay.label;" accesskey="&staff.cat.z3950.marc_import_overlay.accesskey;" disabled="true"/>

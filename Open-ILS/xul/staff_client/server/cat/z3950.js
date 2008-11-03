@@ -58,7 +58,7 @@ cat.z3950.prototype = {
 						try {
 							JSAN.use('util.functional');
 							var sel = obj.list.retrieve_selection();
-							document.getElementById('clip_button').disabled = sel.length < 1;
+							document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
 							var list = util.functional.map_list(
 								sel,
 								function(o) { return o.getAttribute('retrieve_id'); }
@@ -66,8 +66,13 @@ cat.z3950.prototype = {
 							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
 							obj.controller.view.marc_import.disabled = false;
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
-							obj.controller.view.marc_import_overlay.disabled = false;
-							obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
+		                    obj.data.init({'via':'stash'});
+                    		if (obj.data.marked_record) {
+				    			obj.controller.view.marc_import_overlay.disabled = false;
+                            } else {
+				    			obj.controller.view.marc_import_overlay.disabled = true;
+                            }
+			    			obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
 							obj.controller.view.marc_view_btn.disabled = false;
 							obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
@@ -82,16 +87,10 @@ cat.z3950.prototype = {
 				{
 					control_map : {
 						'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
-						'sel_clip' : [
-							['command'],
-							function() { obj.list.clipboard(); }
-						],
-						'cmd_export' : [
-							['command'],
-							function() {
-								obj.list.dump_csv_to_clipboard();
-							}
-						],
+						'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
+						'cmd_z3950_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+                        'cmd_z3950_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ], 
+                        'cmd_z3950_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'z3950_results.txt' } ); } ],
 						'cmd_broken' : [
 							['command'],
 							function() { alert('Not Yet Implemented'); }
@@ -367,6 +366,28 @@ cat.z3950.prototype = {
 
             setTimeout( function() { obj.focus(); }, 0 );
 
+            setInterval( 
+                function() {
+                    obj.data.init({'via':'stash'});
+                    if (obj.data.marked_record) {
+						var sel = obj.list.retrieve_selection();
+                        if (sel.length > 0) { obj.controller.view.marc_import_overlay.disabled = false; }
+                        if ($("overlay_tcn_indicator")) {
+                            if (obj.data.marked_record_mvr) {
+                                $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',[obj.data.marked_record_mvr.tcn()]));
+                            } else {
+                                $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[obj.data.marked_record]));
+                            }
+                        }
+                    } else {
+                        obj.controller.view.marc_import_overlay.disabled = true;
+                        if ($("overlay_tcn_indicator")) {
+                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label'));
+                        }
+                    }
+                }, 2000
+            );
+
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
 		}
@@ -380,7 +401,7 @@ cat.z3950.prototype = {
 		        var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
                 if (x) { focus_me = x; break; }
             }
-            if (ob.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
+            if (obj.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
         }
         if (! focus_me) focus_me = or_focus_me;
 		var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
@@ -409,6 +430,9 @@ cat.z3950.prototype = {
 			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
 			obj.search_params = {}; obj.list.clear();
 			obj.controller.view.page_next.disabled = true;
+			obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
 
 			obj.search_params.service = []; 
 			obj.search_params.username = [];
@@ -491,6 +515,9 @@ cat.z3950.prototype = {
 				x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.server_error', [results.textcode, results.desc])));
 				return;
 			}
+            obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','false');
+            obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','false');
+            obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','false');
             if (typeof results.length == 'undefined') results = [ results ];
             for (var i = 0; i < results.length; i++) {
                 if (results[i].query) {
