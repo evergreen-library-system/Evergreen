@@ -69,6 +69,7 @@ sysconf_DATA = $(examples)/opensrf.xml.example \
 	       $(examples)/opensrf_core.xml.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
+	       $(examples)/oils_web.xml.example \
 	       $(examples)/lib_ips.txt.example
 
 core_scripts =   $(examples)/oils_ctl.sh \
