@@ -190,10 +190,27 @@ CREATE VIEW stats.fleshed_call_number AS
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
-	moved_cns INT := 0;
-	source_cn asset.call_number%ROWTYPE;
-	target_cn asset.call_number%ROWTYPE;
+	moved_objects INT := 0;
+	source_cn     asset.call_number%ROWTYPE;
+	target_cn     asset.call_number%ROWTYPE;
+	metarec       metabib.metarecord%ROWTYPE;
+	hold          action.hold_request%ROWTYPE;
 BEGIN
+	-- Find and move metarecords to the target record
+	SELECT	INTO metarec *
+	  FROM	metabib.metarecord
+	  WHERE	master_record = source_record;
+
+	IF FOUND THEN
+		UPDATE	metabib.metarecord
+		  SET	master_record = target_record,
+			mods = NULL
+		  WHERE	id = metarec.id;
+
+		moved_objects := moved_objects + 1;
+	END IF;
+
+	-- Find call numbers attached to the source ...
 	FOR source_cn IN SELECT * FROM asset.call_number WHERE record = source_record LOOP
 
 		SELECT	INTO target_cn *
@@ -202,20 +219,48 @@ BEGIN
 			AND owning_lib = source_cn.owning_lib
 			AND record = target_record;
 
+		-- ... and if there's a conflicting one on the target ...
 		IF FOUND THEN
+
+			-- ... move the copies to that, and ...
 			UPDATE	asset.copy
 			  SET	call_number = target_cn.id
 			  WHERE	call_number = source_cn.id;
+
+			-- ... move V holds to the move-target call number
+			FOR hold IN SELECT * FROM action.hold_request WHERE target = source_cn.id AND hold_type = 'V' LOOP
+		
+				UPDATE	action.hold_request
+				  SET	target = target_cn.id
+				  WHERE	id = hold.id;
+		
+				moved_objects := moved_objects + 1;
+			END LOOP;
+
+		-- ... if not ...
 		ELSE
+			-- ... just move the call number to the target record
 			UPDATE	asset.call_number
 			  SET	record = target_record
 			  WHERE	id = source_cn.id;
 		END IF;
 
-		moved_cns := moved_cns + 1;
+		moved_objects := moved_objects + 1;
 	END LOOP;
 
-	RETURN moved_cns;
+	-- Find T holds targeting the source record ...
+	FOR hold IN SELECT * FROM action.hold_request WHERE target = source_record AND hold_type = 'T' LOOP
+
+		-- ... and move them to the target record
+		UPDATE	action.hold_request
+		  SET	target = target_record
+		  WHERE	id = hold.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- That's all, folks!
+	RETURN moved_objects;
 END;
 $func$ LANGUAGE plpgsql;
 
