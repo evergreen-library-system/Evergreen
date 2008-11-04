@@ -290,6 +290,7 @@ use OpenILS::Const qw/:const/;
 
 my $holdcode    = "OpenILS::Application::Circ::Holds";
 my $transcode   = "OpenILS::Application::Circ::Transit";
+my %user_groups;
 
 sub DESTROY { }
 
@@ -416,6 +417,11 @@ sub new {
         $self->opac_renewal or $self->phone_renewal;
 
     $self->capture('') unless $self->capture;
+
+    unless(%user_groups) {
+        my $gps = $self->editor->retrieve_all_permission_grp_tree;
+        %user_groups = map { $_->id => $_ } @$gps;
+    }
 
     return $self;
 }
@@ -597,7 +603,9 @@ sub is_deposit_exempt {
         $self->patron->profile->id : $self->patron->profile;
     my $groups = $U->ou_ancestor_setting_value(
         $self->circ_lib, 'circ.deposit.exempt_groups', $self->editor);
-    return 1 if $groups and grep {$_ == $pid} @$groups;
+    for my $grp (@$groups) {
+        return 1 if $self->is_group_descendant($grp, $pid);
+    }
     return 0;
 }
 
@@ -608,7 +616,21 @@ sub is_rental_exempt {
         $self->patron->profile->id : $self->patron->profile;
     my $groups = $U->ou_ancestor_setting_value(
         $self->circ_lib, 'circ.rental.exempt_groups', $self->editor);
-    return 1 if $groups and grep {$_ == $pid} @$groups;
+    for my $grp (@$groups) {
+        return 1 if $self->is_group_descendant($grp, $pid);
+    }
+    return 0;
+}
+
+sub is_group_descendant {
+    my($self, $p_id, $c_id) = @_;
+    return 0 unless defined $p_id and defined $c_id;
+    return 1 if $c_id == $p_id;
+    while(my $grp = $user_groups{$c_id}) {
+        $c_id = $grp->parent;
+        return 0 unless defined $c_id;
+        return 1 if $c_id == $p_id;
+    }
     return 0;
 }
 
