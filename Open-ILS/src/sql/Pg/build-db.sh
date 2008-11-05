@@ -117,6 +117,7 @@ ordered_file_list="
   951.data.MODS-xsl.sql
   952.data.MODS3-xsl.sql
   953.data.MODS32-xsl.sql
+  954.data.MODS33-xsl.sql
   
   reporter-schema.sql
   extend-reporter.sql
