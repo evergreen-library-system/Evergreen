@@ -1428,6 +1428,7 @@ INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/
 INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '');
 INSERT INTO config.xml_transform VALUES ( 'mods3', 'http://www.loc.gov/mods/v3', 'mods3', '');
 INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3', 'mods32', '');
+INSERT INTO config.xml_transform VALUES ( 'mods33', 'http://www.loc.gov/mods/v3', 'mods33', '');
 
 -- circ matrix
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp) VALUES (1,1);
