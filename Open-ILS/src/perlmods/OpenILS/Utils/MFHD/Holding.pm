@@ -102,9 +102,29 @@ sub next {
     my $caption = $self->{CAPTION};
     my $next = {};
 
-    foreach my $key ('a' .. 'f') {
-	last if !exists $self->{ENUMS}->{$key};
+    foreach my $key ('a' .. 'h') {
+	next if !exists $self->{ENUMS}->{$key};
 	$next->{$key} = $self->{ENUMS}->{$key}->{HOLDINGS};
+    }
+
+    # First handle any "alternative enumeration", since they're
+    # a lot simpler, and don't depend on the the calendar
+    foreach my $key ('h', 'g') {
+	next if !exists $next->{$key};
+	if (!exists $caption->{ENUMS}->{$key}) {
+	    warn "Holding data exists for $key, but no caption specified";
+	    $next->{$key} += 1;
+	    last;
+	}
+
+	my $cap = $caption->{ENUMS}->{$key};
+	if ($cap->{RESTART} && $cap->{COUNT}
+	    && ($next->{$key} == $cap->{COUNT})) {
+	    $next->{$key} = 1;
+	} else {
+	    $next->{$key} += 1;
+	    last;
+	}
     }
     foreach my $key (reverse('a'.. 'f')) {
 	next if !exists $next->{$key};
