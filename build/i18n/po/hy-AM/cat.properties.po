@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: 2008-08-03 15:16+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1033,6 +1033,10 @@ msgstr "Կիրառիր ընտրվածները"
 msgid "No matching authority records found"
 msgstr "Համընկնող հեղինակավոր գրառումնէր չեն գտնվել "
 
+#: staff.cat.marc_new.tab_name
+msgid "MARC Template"
+msgstr ""
+
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
 msgstr "Ստեղծիր գրառում"
@@ -1073,6 +1077,10 @@ msgstr "Դեռ չի ներդրված: Ընտրիր Պատճենել New Tab ըն
 #: staff.cat.opac.set_tab_name
 msgid "Record: %1$s"
 msgstr "Գրառում: %1$s"
+
+#: staff.cat.record_buckets.tab_name
+msgid "Record Buckets"
+msgstr ""
 
 #: staff.cat.record_buckets.save_file_as
 msgid "Save File As"
@@ -1694,6 +1702,18 @@ msgstr ""
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgid "Record with ID %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgid "Record with TCN %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
+msgid "No record marked for overlay."
 msgstr ""
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error

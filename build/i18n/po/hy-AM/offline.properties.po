@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: 2008-08-04 14:52+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,6 +139,14 @@ msgstr "Գործողությպւնը հաստատելու համար ընտրի�
 #: cat.opac.record_delete.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
 msgstr "Սխալ՝ գրառումը ջնջելիս #%1$s : %2$s : %3$s"
+
+#: cat.opac.record_marked_for_overlay.record_id.alert
+msgid "Record with ID %1$s marked for overlay."
+msgstr ""
+
+#: cat.opac.record_marked_for_overlay.tcn.alert
+msgid "Record with TCN %1$s marked for overlay."
+msgstr ""
 
 #: cat.save_record
 msgid "Save Record"

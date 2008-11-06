@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-30 15:12:03-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56:23-0400\n"
 "PO-Revision-Date: 2008-08-14 22:47+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -331,7 +331,7 @@ msgstr "Վճարման օր/ժամ"
 msgid "Language"
 msgstr "Լեզու"
 
-#: None:1468
+#: link.au.checkins.label:1468
 msgid "Check-ins Performed as Staff"
 msgstr "Հետ ընդունումներ իրականացված որպես աշխատակազմ"
 
@@ -2283,7 +2283,8 @@ msgstr "Վերաթիրախավորում օր/ժամ"
 msgid "Owning Org Unit"
 msgstr "Տնօրինող կազմ միավոր"
 
-#: field.au.performed_circulations.label:1443 None:1470
+#: field.au.performed_circulations.label:1443
+#: link.au.performed_circulations.label:1470
 msgid "Circulations Performed as Staff"
 msgstr "Տացքը կատարվել է որպես աշխատակազմ"
 
@@ -3280,6 +3281,7 @@ msgstr ""
 msgid "Void Timestamp"
 msgstr "Ժամանակի կնիք"
 
-#: field.au.billable_transactions.label:1441 None:1463
+#: field.au.billable_transactions.label:1441
+#: link.au.billable_transactions.label:1463
 msgid "Billable Transactions"
 msgstr "Վճարման ենթակա տրանզակցիաներ"
