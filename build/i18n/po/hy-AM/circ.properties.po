@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-05 23:00-0400\n"
 "PO-Revision-Date: 2008-08-08 22:08+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1338,7 +1338,13 @@ msgstr "Շտրիխ կոդ: %1$s Վիճակ: %2$s"
 msgid "Barcode: %1$s Message: %2$s"
 msgstr "Շտրիխ կոդ: %1$s Հաղորդում: %2$s"
 
-#: staff.circ.circ.override.item_rental_fee_required.warning.barcode
+#: staff.circ.renew.override.item_deposit_required.warning.barcode
+msgid ""
+"For item with barcode %1$s, a billing for an Item Deposit will be added to "
+"the patron's account if this action is overrided."
+msgstr ""
+
+#: staff.circ.renew.override.item_rental_fee_required.warning.barcode
 msgid ""
 "For item with barcode %1$s, a billing for an Item Rental Fee will be added "
 "to the patron's account if this action is overrided."

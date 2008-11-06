@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-03 12:17:22-0400\n"
+"POT-Creation-Date: 2008-11-05 22:59:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -297,7 +297,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: None:1467
+#: link.au.checkins.label:1467
 msgid "Check-ins Performed as Staff"
 msgstr ""
 
@@ -2055,7 +2055,8 @@ msgstr ""
 msgid "Owning Org Unit"
 msgstr ""
 
-#: field.au.performed_circulations.label:1442 None:1469
+#: field.au.performed_circulations.label:1442
+#: link.au.performed_circulations.label:1469
 msgid "Circulations Performed as Staff"
 msgstr ""
 
@@ -2951,6 +2952,7 @@ msgstr ""
 msgid "Void Timestamp"
 msgstr ""
 
-#: field.au.billable_transactions.label:1440 None:1462
+#: field.au.billable_transactions.label:1440
+#: link.au.billable_transactions.label:1462
 msgid "Billable Transactions"
 msgstr ""

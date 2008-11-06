@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > fm_IDL.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-03 12:17:22-0400\n"
+"POT-Creation-Date: 2008-11-05 22:59:56-0400\n"
 "PO-Revision-Date: 2008-09-08 10:44-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -302,7 +302,7 @@ msgstr "Date/heure du paiement"
 msgid "Language"
 msgstr "Langue"
 
-#: None:1467
+#: link.au.checkins.label:1467
 msgid "Check-ins Performed as Staff"
 msgstr "Entées effectuées par le personnel"
 
@@ -2068,7 +2068,8 @@ msgstr "Date/heure du rétablissement de la cible"
 msgid "Owning Org Unit"
 msgstr "Unité organisationnelle propriétaire"
 
-#: field.au.performed_circulations.label:1442 None:1469
+#: field.au.performed_circulations.label:1442
+#: link.au.performed_circulations.label:1469
 msgid "Circulations Performed as Staff"
 msgstr "Articles prêtés par le personnel"
 
@@ -2972,7 +2973,8 @@ msgstr ""
 msgid "Void Timestamp"
 msgstr "Annulation de l’horodateur"
 
-#: field.au.billable_transactions.label:1440 None:1462
+#: field.au.billable_transactions.label:1440
+#: link.au.billable_transactions.label:1462
 msgid "Billable Transactions"
 msgstr "Transactions facturables"
 
