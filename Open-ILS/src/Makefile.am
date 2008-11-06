@@ -231,8 +231,11 @@ webcore-install:
 	mkdir -p $(WEBDIR)/opac/extras/slimpac/
 	mkdir -p $(WEBDIR)/standalone/
 	mkdir -p $(opacextrasdir)
+	mkdir -p $(DESTDIR)$(reportsdir)
 	mkdir -p $(XSLDIR)
-	cp -r @top_srcdir@/Open-ILS/web/ @localstatedir@
+	rm -f $(DESTDIR)$(reportsdir)/fm_IDL.xml
+	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
+	cp -r @top_srcdir@/Open-ILS/web/. $(DESTDIR)$(WEBDIR)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(opacextrasdir)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(XSLDIR)
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/mresult.xml
@@ -241,8 +244,6 @@ webcore-install:
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
-	rm -f $(DESTDIR)$(WEBDIR)/reports/fm_IDL.xml
-	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
 
 
 offline-install:
