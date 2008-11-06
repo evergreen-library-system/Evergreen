@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3000,6 +3000,7 @@ msgid ""
 msgstr ""
 
 #: staff.main.menu.entity.volume.label
+msgctxt "staff.main.menu.entity.volume.label"
 msgid "Volumes"
 msgstr ""
 
@@ -7662,6 +7663,11 @@ msgstr ""
 msgid "Delete All from Catalog"
 msgstr ""
 
+#: staff.cat.copy_buckets_quick.title
+msgctxt "staff.cat.copy_buckets_quick.title"
+msgid "Add to Bucket"
+msgstr ""
+
 #: staff.cat.copy_buckets_quick.item_buckets.label
 msgid "Item Buckets"
 msgstr ""
@@ -7949,6 +7955,11 @@ msgstr ""
 #: staff.cat.opac.menuitem.removeframe.label
 msgctxt "staff.cat.opac.menuitem.removeframe.label"
 msgid "Remove this Frame"
+msgstr ""
+
+#: staff.cat.record_buckets.title
+msgctxt "staff.cat.record_buckets.title"
+msgid "Record Buckets"
 msgstr ""
 
 #: staff.cat.record_buckets_overlay.record_query_tab.label
@@ -8329,6 +8340,11 @@ msgstr ""
 msgid "# of volumes"
 msgstr ""
 
+#: staff.cat.volume_editor.title
+msgctxt "staff.cat.volume_editor.title"
+msgid "Volumes"
+msgstr ""
+
 #: staff.cat.volume_editor.caption.label
 msgid "Volume Editor"
 msgstr ""
@@ -8420,18 +8436,35 @@ msgstr ""
 msgid "Fetch &More Results"
 msgstr ""
 
-#: staff.cat.z3950.export.label
-msgid "CSV to Clipboard"
+#: staff.cat.z3950.list_actions.label
+#: staff.cat.z3950.list_actions.accesskey
+msgctxt "staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
+msgid "&List Actions"
 msgstr ""
 
-#: staff.cat.z3950.clip_button.label
-msgctxt "staff.cat.z3950.clip_button.label"
-msgid "Copy to Clipboard"
+#: staff.cat.z3950.menuitem.csv_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_clipboard.label"
+msgid "Copy List CSV to Clipboard"
 msgstr ""
 
-#: staff.cat.z3950.save_cols_btn.label
-msgctxt "staff.cat.z3950.save_cols_btn.label"
-msgid "Save Columns"
+#: staff.cat.z3950.menuitem.csv_to_file.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_file.label"
+msgid "Save List CSV to File"
+msgstr ""
+
+#: staff.cat.z3950.menuitem.csv_to_printer.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_printer.label"
+msgid "Print List CSV"
+msgstr ""
+
+#: staff.cat.z3950.menuitem.copy_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.copy_to_clipboard.label"
+msgid "Copy Field from selected row to Clipboard"
+msgstr ""
+
+#: staff.cat.z3950.menuitem.save_columns.label
+msgctxt "staff.cat.z3950.menuitem.save_columns.label"
+msgid "Save List Configuration"
 msgstr ""
 
 #: staff.cat.z3950.marc_view.label
@@ -8470,6 +8503,10 @@ msgstr ""
 #: staff.pat.barcode_entry.retrieving.label
 msgctxt "staff.pat.barcode_entry.retrieving.label"
 msgid "Retrieving..."
+msgstr ""
+
+#: staff.patron.bill_cc_info.title
+msgid "Credit Card Information"
 msgstr ""
 
 #: staff.patron.bill_cc_info.visa.label
@@ -8530,6 +8567,11 @@ msgstr ""
 
 #: staff.patron.bill_cc_info.type.label
 msgid "Credit Card Type"
+msgstr ""
+
+#. "Check" is used here to indicate a payment by check, not "Verify"
+#: staff.patron.bill_check_info.title
+msgid "Check Info"
 msgstr ""
 
 #. "Check" is used here to indicate a payment by check, not "Verify"
@@ -8935,6 +8977,10 @@ msgstr ""
 #: staff.patron.bills_overlay.auto_print.label
 msgctxt "staff.patron.bills_overlay.auto_print.label"
 msgid "Auto-Print"
+msgstr ""
+
+#: staff.patron.hold_notices.title
+msgid "Hold Notices"
 msgstr ""
 
 #: staff.patron.hold_notices.add_record_notification.label

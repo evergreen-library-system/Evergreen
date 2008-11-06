@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1022,6 +1022,10 @@ msgstr ""
 msgid "No matching authority records found"
 msgstr ""
 
+#: staff.cat.marc_new.tab_name
+msgid "MARC Template"
+msgstr ""
+
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
 msgstr ""
@@ -1061,6 +1065,10 @@ msgstr ""
 
 #: staff.cat.opac.set_tab_name
 msgid "Record: %1$s"
+msgstr ""
+
+#: staff.cat.record_buckets.tab_name
+msgid "Record Buckets"
 msgstr ""
 
 #: staff.cat.record_buckets.save_file_as
@@ -1670,6 +1678,18 @@ msgstr ""
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgid "Record with ID %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgid "Record with TCN %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
+msgid "No record marked for overlay."
 msgstr ""
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error

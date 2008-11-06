@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -925,7 +925,7 @@ msgstr ""
 
 #: staff.patron.items.items_renew.not_renewed
 msgid ""
-"%1%s not renewed.\n"
+"%1$s not renewed.\n"
 "%2$s"
 msgstr ""
 
@@ -1106,6 +1106,10 @@ msgctxt "staff.patron.ue.uEditShowSearch.search"
 msgid ""
 "Search would be:\n"
 "%1$s"
+msgstr ""
+
+#: staff.patron.user_buckets.tab_name
+msgid "User Buckets"
 msgstr ""
 
 #: staff.patron.user_edit.save_user.depth_required
