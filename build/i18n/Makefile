@@ -131,8 +131,13 @@ fmidl2pot:
 fmidlpo2entity:
 	@scripts/fieldmapper.py --entity $(POINDIR)/$(LOCALE)/$(FMIDLPO) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
 
+# Generate en-US DTD from a POT file; required if any other locale is installed
+fmidlpo2entity-en:
+	@scripts/fieldmapper.py --entity $(POINDIR)/en-US/$(FMIDLOUT) --output $(PROJECT)/en-US/$(FMIDLENTITY)
+	cp $(PROJECT)/en-US/$(FMIDLENTITY) $(DTDDIR)/en-US/
+
 # Install updated project files to their corresponding location in the source tree
-install: updatepo project fmidl2fmidlent
+install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	mkdir -p $(CHROME_PROPSDIR)/$(LOCALE)
 	cp $(PROJECT)/$(LOCALE)/auth.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/offline.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
