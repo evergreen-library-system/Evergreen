@@ -7,7 +7,8 @@ DTDDIR=../../Open-ILS/web/opac/locale
 CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
 SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 DOJO_LOCALE := $(shell echo ${LOCALE} | tr '[:upper:]-' '[:lower:]/')
-DOJOSRC=../../Open-ILS/web/js/dojo/openils/conify/nls
+DOJO_CON_SRC=../../Open-ILS/web/js/dojo/openils/conify/nls
+DOJO_RPT_SRC=../../Open-ILS/web/js/dojo/openils/reports/nls
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
 FMIDLENT=fm_IDL.xml
@@ -81,12 +82,13 @@ dtds2pot:
 	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(DTDDIR)/en-US/ 2>&1
 
 dojo2pot:
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/aou.js --output $(POTSRC)/conify.aou.pot
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/aout.js --output $(POTSRC)/conify.aout.pot
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/cam.js --output $(POTSRC)/conify.cam.pot
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/ccs.js --output $(POTSRC)/conify.ccs.pot
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/pgt.js --output $(POTSRC)/conify.pgt.pot
-	@scripts/dojo_resource.py --pot $(DOJOSRC)/ppl.js --output $(POTSRC)/conify.ppl.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/aou.js --output $(POTSRC)/conify.aou.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/aout.js --output $(POTSRC)/conify.aout.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/cam.js --output $(POTSRC)/conify.cam.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/ccs.js --output $(POTSRC)/conify.ccs.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/pgt.js --output $(POTSRC)/conify.pgt.pot
+	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/ppl.js --output $(POTSRC)/conify.ppl.pot
+	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(POTSRC)/dojo_reports.pot
 
 po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.aou.po --output $(PROJECT)/$(LOCALE)/conify.aou.js
@@ -95,6 +97,7 @@ po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.ccs.po --output $(PROJECT)/$(LOCALE)/conify.ccs.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.pgt.po --output $(PROJECT)/$(LOCALE)/conify.pgt.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.ppl.po --output $(PROJECT)/$(LOCALE)/conify.ppl.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/dojo_reports.po --output $(PROJECT)/$(LOCALE)/reports.js
 
 ils2pot:
 	@scripts/ils_events.py --pot $(EVTSRC) --output $(POTSRC)/$(EVTOUT)
@@ -159,10 +162,12 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
 	cp $(POOUTDIR)/$(FMIDLENT) $(REPORTDIR)/$(FMIDLENT)
-	mkdir -p $(DOJOSRC)/$(DOJO_LOCALE)
-	cp $(PROJECT)/$(LOCALE)/conify.aou.js $(DOJOSRC)/$(DOJO_LOCALE)/aou.js
-	cp $(PROJECT)/$(LOCALE)/conify.aout.js $(DOJOSRC)/$(DOJO_LOCALE)/aout.js
-	cp $(PROJECT)/$(LOCALE)/conify.cam.js $(DOJOSRC)/$(DOJO_LOCALE)/cam.js
-	cp $(PROJECT)/$(LOCALE)/conify.ccs.js $(DOJOSRC)/$(DOJO_LOCALE)/ccs.js
-	cp $(PROJECT)/$(LOCALE)/conify.pgt.js $(DOJOSRC)/$(DOJO_LOCALE)/pgt.js
-	cp $(PROJECT)/$(LOCALE)/conify.ppl.js $(DOJOSRC)/$(DOJO_LOCALE)/ppl.js
+	mkdir -p $(DOJO_CON_SRC)/$(DOJO_LOCALE)
+	cp $(PROJECT)/$(LOCALE)/conify.aou.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/aou.js
+	cp $(PROJECT)/$(LOCALE)/conify.aout.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/aout.js
+	cp $(PROJECT)/$(LOCALE)/conify.cam.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/cam.js
+	cp $(PROJECT)/$(LOCALE)/conify.ccs.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/ccs.js
+	cp $(PROJECT)/$(LOCALE)/conify.pgt.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/pgt.js
+	cp $(PROJECT)/$(LOCALE)/conify.ppl.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/ppl.js
+	mkdir -p $(DOJO_RPT_SRC)/$(DOJO_LOCALE)
+	cp $(PROJECT)/$(LOCALE)/reports.js $(DOJO_RPT_SRC)/$(DOJO_LOCALE)/reports.js
