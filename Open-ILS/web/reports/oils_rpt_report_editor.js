@@ -1,3 +1,7 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+
 oilsRptSetSubClass('oilsRptReportEditor', 'oilsRptObject');
 var oilsRptReportEditorFolderTree;
 
@@ -76,7 +80,7 @@ oils_rpt_editor_pivot_data
 		'report',
 		DOM.oils_rpt_report_editor_dest_folder,
 		'oilsRptReportEditorFolderTree',
-		'Report Folders',
+		rpt_strings.REPORT_EDITOR_REPORT_FOLDERS,
 		function(node) { 
 			appendClear(DOM.oils_rpt_report_editor_selected_folder, node.folder.name());
 			obj.selectedFolder = node; });
@@ -86,7 +90,7 @@ oils_rpt_editor_pivot_data
 		'output',
 		DOM.oils_rpt_output_dest_folder,
 		'oilsRptReportEditorOutputTree',
-		'Output Folders',
+		rpt_strings.REPORT_EDITOR_OUTPUT_FOLDERS,
 		function(node) { 
 			appendClear(DOM.oils_rpt_output_selected_folder, node.folder.name());
 			obj.selectedOutputFolder = node; });
@@ -105,10 +109,10 @@ oilsRptReportEditor.prototype.save = function() {
 	var report = new rr();
 
 	if(!this.selectedFolder) 
-		return alert('Please provide a report folder');
+		return alert(rpt_strings.REPORT_EDITOR_PROVIDE_FOLDER_ALERT);
 
 	if(!DOM.oils_rpt_report_editor_name.value)
-		return alert('Please enter a report name');
+		return alert(rpt_strings.REPORT_EDITOR_ENTER_NAME_ALERT);
 
 	report.owner( USER.id() );
 	report.template( this.template.id() );
@@ -163,7 +167,7 @@ oilsRptReportEditor.prototype.save = function() {
 		var dt = DOM.oils_rpt_param_editor_sched_start_date.value;
 		if(!dt || !dt.match(/^\d{4}-\d{2}-\d{2}$/) ) {
 			/* for now.. make this better in the future */
-			alert('invalid start date -  YYYY-MM-DD');
+			alert(rpt_strings.REPORT_EDITOR_INVALID_DATE_ALERT);
 			return;
 		}
 		var hour = getSelectorVal(DOM.oils_rpt_param_editor_sched_start_hour);
@@ -172,7 +176,7 @@ oilsRptReportEditor.prototype.save = function() {
 	}
 
 	if(!this.selectedOutputFolder) 
-		return alert('Please provide an output folder');
+		return alert(rpt_strings.REPORT_EDITOR_PROVIDE_OUTPUT_ALERT);
 
 	var schedule = new rs();
 	schedule.folder(this.selectedOutputFolder.folder.id());

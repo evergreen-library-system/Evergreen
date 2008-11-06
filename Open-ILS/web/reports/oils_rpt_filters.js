@@ -1,67 +1,71 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+
 var OILS_RPT_FILTERS = {
 	'=' : {
-		label : 'Equals',
+		label : rpt_strings.FILTERS_LABEL_EQUALS
 	},
 
 	'like' : {
-		label : 'Contains Matching substring',
+		label : rpt_strings.FILTERS_LABEL_LIKE
 	}, 
 
 	ilike : {
-		label : 'Contains Matching substring (ignore case)',
+		label : rpt_strings.FILTERS_LABEL_ILIKE
 	},
 
 	'>' : {
-		label : 'Greater than',
-		labels : { timestamp : 'After (Date/Time)' }
+		label : rpt_strings.FILTERS_LABEL_GREATER_THAN,
+		labels : { timestamp : rpt_strings.FILTERS_LABEL_GT_TIME }
 	},
 
 	'>=' : {
-		label : 'Greater than or equal to',
-		labels : { timestamp : 'On or After (Date/Time)' }
+		label : rpt_strings.FILTERS_LABEL_GT_EQUAL,
+		labels : { timestamp : rpt_strings.FILTERS_LABEL_GTE_TIME }
 	}, 
 
 
 	'<' : {
-		label : 'Less than',
-		labels : { timestamp : 'Before (Date/Time)' }
+		label : rpt_strings.FILTERS_LABEL_LESS_THAN,
+		labels : { timestamp : rpt_strings.FILTERS_LABEL_LT_TIME }
 	}, 
 
 	'<=' : {
-		label : 'Less than or equal to', 
-		labels : { timestamp : 'On or Before (Date/Time)' }
+		label : rpt_strings.FILTERS_LABEL_LT_EQUAL,
+		labels : { timestamp : rpt_strings.FILTERS_LABEL_LSE_TIME }
 	},
 
 	'in' : {
-		label : 'In list',
+		label : rpt_strings.FILTERS_LABEL_IN
 	},
 
 	'not in' : {
-		label : 'Not in list',
+		label : rpt_strings.FILTERS_LABEL_NOT_IN
 	},
 
 	'between' : {
-		label : 'Between',
+		label : rpt_strings.FILTERS_LABEL_BETWEEN
 	},
 
 	'not between' : {
-		label : 'Not between',
+		label : rpt_strings.FILTERS_LABEL_NOT_BETWEEN
 	},
 
 	'is' : {
-		label : 'Is NULL'
+		label : rpt_strings.FILTERS_LABEL_NULL
 	},
 
 	'is not' : {
-		label : 'Is not NULL'
+		label : rpt_strings.FILTERS_LABEL_NOT_NULL
     },
 
     'is blank' : {
-        label : 'Is NULL or Blank'
+        label : rpt_strings.FILTERS_LABEL_NULL_BLANK
     },
 
     'is not blank' : {
-        label : 'Is not NULL or Blank'
+        label : rpt_strings.FILTERS_LABEL_NOT_NULL_BLANK
 	}
 }
 

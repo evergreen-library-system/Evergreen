@@ -1,35 +1,39 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+
 
 var OILS_RPT_TRANSFORMS = {
 	Bare : {
-		label : 'Raw Data'
+		label : rpt_strings.TFORMS_LABEL_RAW_DATA
 	},
 
 	first : {
-		label : 'First Value'
+		label : rpt_strings.TFORMS_LABEL_FIRST
 	},
 
 	last : {
-		label : 'Last Value'
+		label : rpt_strings.TFORMS_LABEL_LAST
 	},
 
 	count : {
 		aggregate : true,
-		label :  'Count'
+		label :  rpt_strings.TFORMS_LABEL_COUNT
 	},
 
 	count_distinct : {
 		aggregate : true,
-		label : 'Count Distinct'
+		label : rpt_strings.TFORMS_LABEL_COUNT_DISTINCT
 	},
 
 	min : {
 		aggregate : true,
-		label : 'Min'
+		label : rpt_strings.TFORMS_LABEL_MIN
 	},
 
 	max : {
 		aggregate : true,
-		label : 'Max'
+		label : rpt_strings.TFORMS_LABEL_MAX
 	},
 
 	/* string transforms ------------------------- */
@@ -43,69 +47,69 @@ var OILS_RPT_TRANSFORMS = {
 
 	lower : {
 		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
-		label : 'Lower case'
+		label : rpt_strings.TFORMS_LABEL_LOWER
 	},
 
 	upper : {
 		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
-		label : 'Upper case'
+		label : rpt_strings.TFORMS_LABEL_UPPER
 	},
 
 	first5 : {
 		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
-		label : 'First 5 characters (for US ZIP code)'
+		label : rpt_strings.TFORMS_LABEL_FIRST5
 	},
 
 	first_word : {
 		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
-		label : 'First contiguous non-space string'
+		label : rpt_strings.TFORMS_LABEL_FIRST_WORD
 	},
 
 	/* timestamp transforms ----------------------- */
 	dow : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Day of Week',
+		label : rpt_strings.TFORMS_LABEL_DOW,
 		regex : /^[0-6]$/
 	},
 	dom : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Day of Month',
+		label : rpt_strings.TFORMS_LABEL_DOM,
 		regex : /^[0-9]{1,2}$/
 	},
 
 	doy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Day of Year',
+		label : rpt_strings.TFORMS_LABEL_DOY,
 		regex : /^[0-9]{1,3}$/
 	},
 
 	woy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Week of Year',
+		label : rpt_strings.TFORMS_LABEL_WOY,
 		regex : /^[0-9]{1,2}$/
 	},
 
 	moy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Month of Year',
+		label : rpt_strings.TFORMS_LABEL_MOY,
 		regex : /^\d{1,2}$/
 	},
 
 	qoy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Quarter of Year',
+		label : rpt_strings.TFORMS_LABEL_QOY,
 		regex : /^[1234]$/
 	}, 
 
 	hod : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Hour of day',
+		label : rpt_strings.TFORMS_LABEL_HOD,
 		regex : /^\d{1,2}$/
 	}, 
 
 	date : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Date',
+		label : rpt_strings.TFORMS_LABEL_DATE,
 		regex : /^\d{4}-\d{2}-\d{2}$/,
 		hint  : 'YYYY-MM-DD',
 		cal_format : '%Y-%m-%d',
@@ -114,7 +118,7 @@ var OILS_RPT_TRANSFORMS = {
 
 	month_trunc : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Year + Month',
+		label : rpt_strings.TFORMS_LABEL_MONTH_TRUNC,
 		regex : /^\d{4}-\d{2}$/,
 		hint  : 'YYYY-MM',
 		cal_format : '%Y-%m',
@@ -123,7 +127,7 @@ var OILS_RPT_TRANSFORMS = {
 
 	year_trunc : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Year',
+		label : rpt_strings.TFORMS_LABEL_YEAR_TRUNC,
 		regex : /^\d{4}$/,
 		hint  : 'YYYY',
 		cal_format : '%Y',
@@ -132,7 +136,7 @@ var OILS_RPT_TRANSFORMS = {
 
 	hour_trunc : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Hour',
+		label : rpt_strings.TFORMS_LABEL_HOUR_TRUNC,
 		regex : /^\d{2}$/,
 		hint  : 'HH',
 		cal_format : '%H',
@@ -141,49 +145,49 @@ var OILS_RPT_TRANSFORMS = {
 
 	day_name : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Day Name'
+		label : rpt_strings.TFORMS_LABEL_DAY_NAME
 	}, 
 
 	month_name : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Month Name'
+		label : rpt_strings.TFORMS_LABEL_MONTH_NAME
 	},
 	age : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Age'
+		label : rpt_strings.TFORMS_LABEL_AGE
 	},
 
 	months_ago : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Months ago'
+		label : rpt_strings.TFORMS_LABEL_MONTHS_AGO
 	},
 
 	quarters_ago : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Quarters ago'
+		label : rpt_strings.TFORMS_LABEL_QUARTERS_AGO
 	},
 
 	/* int  / float transforms ----------------------------------- */
 	sum : {
 		datatype : [ OILS_RPT_DTYPE_INT, OILS_RPT_DTYPE_FLOAT ],
-		label : 'Sum',
+		label : rpt_strings.TFORMS_LABEL_SUM,
 		aggregate : true
 	}, 
 
 	average : {
 		datatype : [ OILS_RPT_DTYPE_INT, OILS_RPT_DTYPE_FLOAT ],
-		label : 'Average',
+		label : rpt_strings.TFORMS_LABEL_AVERAGE,
 		aggregate : true
 	},
 
 	round : {
 		datatype : [ OILS_RPT_DTYPE_INT, OILS_RPT_DTYPE_FLOAT ],
-		label : 'Round',
+		label : rpt_strings.TFORMS_LABEL_ROUND,
 	},
 
 	'int' : {
 		datatype : OILS_RPT_DTYPE_FLOAT,
-		label : 'Drop trailing decimals'
+		label : rpt_strings.TFORMS_LABEL_INT
 	}
 }
 

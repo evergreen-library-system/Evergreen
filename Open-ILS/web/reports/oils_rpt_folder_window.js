@@ -1,3 +1,6 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 var OILS_TEMPLATE_INTERFACE = 'xul/template_builder.xul';
 var OILS_LEGACY_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
 
@@ -209,7 +212,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 		objs = objs.concat( this.fmTable2.getSelected() );
 
 	if( objs.length == 0 ) 
-		return alert('Please select an item from the list');
+		return alert(rpt_strings.FOLDER_WINDOW_SELECT_ITEM);
 	var action = getSelectorVal(DOM.oils_rpt_folder_contents_action_selector);
 
 	var obj = this;
@@ -326,7 +329,7 @@ oilsRptFolderWindow.prototype.drawFolderOptions = function(type, callback) {
 		type,
 		DOM.oils_rpt_move_folder_picker,
 		'tree9807897',
-		'Change Folders',
+		rpt_strings.FOLDER_WINDOW_CHANGE_FOLDERS,
 		function(node) { 
 			appendClear(DOM.oils_rpt_move_folder_selected, node.folder.name());
 			selectedFolder = node.folder.id();
@@ -368,7 +371,7 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 			_debug("launching report output view at URL: " + url);
 			if(isXUL()) 
 				xulG.new_tab('/xul/server/util/rbrowser.xul?url=' + url,  /* this comes from urls.XUL_REMOTE_BROWSER */
-					{tab_name:'Report Output: ' + r.name(), browser:true},
+					{tab_name: dojo.string.substitute( rpt_strings.FOLDER_WINDOW_REPORT_OUTPUT, [r.name] ), browser:true},
 					{no_xulG:false, show_nav_buttons:true, show_print_button:true});
 			else {
 				//goTo(url);
@@ -505,9 +508,9 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 						dest : obj.selector, 
 						obj : res,
 						selectCol : true,
-						selectColName : 'Select',
-						selectAllName : 'All',
-						selectNoneName : 'None'
+						selectColName : rpt_strings.FOLDER_WINDOW_COLNAME_SELECT,
+						selectAllName : rpt_strings.FOLDER_WINDOW_COLNAME_ALL,
+						selectNoneName : rpt_strings.FOLDER_WINDOW_COLNAME_NONE
 					}
 				);
 			}
@@ -570,9 +573,9 @@ oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, selector, isS
 								dest : selector, 
 								obj : [sched],
 								selectCol : true,
-								selectColName : 'Select',
-								selectAllName : 'All',
-								selectNoneName : 'None'
+								selectColName : rpt_strings.FOLDER_WINDOW_COLNAME_SELECT,
+								selectAllName : rpt_strings.FOLDER_WINDOW_COLNAME_ALL,
+								selectNoneName : rpt_strings.FOLDER_WINDOW_COLNAME_NONE
 							}
 						);
 

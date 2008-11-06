@@ -1,7 +1,9 @@
 /** initializes reports, some basid display settings, 
   * grabs and builds the IDL tree
   */
+dojo.requireLocalization("openils.reports", "reports");
 
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 var __dblclicks = {}; /* retain a cache of the selector value doubleclick event handlers */
 
 function oilsInitReportBuilder() {
@@ -105,7 +107,7 @@ function oilsReportBuilderSave() {
 	tmpl.folder(new CGI().param('folder'));
 	tmpl.data(js2JSON(oilsRpt.def));
 
-	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
+	if(!confirm(dojo.string.substitute( rpt_strings.RPT_BUILDER_CONFIRM_SAVE, [tmpl.name(), tmpl.description()] )) )
 		return;
 
 	debugFMObject(tmpl);
