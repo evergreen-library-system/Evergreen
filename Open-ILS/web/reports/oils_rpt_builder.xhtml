@@ -11,9 +11,16 @@
 	<head>
 		<title>Evergreen: Report Builder</title>
 		<!--#include virtual="oils_rpt_common.xhtml"-->
+		<script type="text/javascript">
+		<![CDATA[
+			dojo.addOnLoad(oilsInitReportBuilder);
+			dojo.addOnUnload(oilsCleanupReports);
+		]]>
+		</script>
+
 	</head>
 
-	<body onload='oilsInitReportBuilder();' onunload='oilsCleanupReports();'>
+	<body>
 
 		<div class='welcome_box'>
 			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
