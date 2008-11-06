@@ -133,6 +133,7 @@ fmidlpo2entity:
 
 # Generate en-US DTD from a POT file; required if any other locale is installed
 fmidlpo2entity-en:
+	mkdir -p $(PROJECT)/en-US
 	@scripts/fieldmapper.py --entity $(POINDIR)/en-US/$(FMIDLOUT) --output $(PROJECT)/en-US/$(FMIDLENTITY)
 	cp $(PROJECT)/en-US/$(FMIDLENTITY) $(DTDDIR)/en-US/
 
