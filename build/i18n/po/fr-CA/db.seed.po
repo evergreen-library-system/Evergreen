@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-10-30 15:12:33-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56:50-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -4511,82 +4511,87 @@ msgid "Stacks"
 msgstr "Piles"
 
 # id::1
-#: vqbrad.description:1475
+#: vqbrad.description:1476
 msgid "Title of work"
 msgstr ""
 
 # id::1
-#: vqbrad.description:1476
+#: vqbrad.description:1477
 msgid "Author of work"
 msgstr ""
 
 # id::3
-#: vqbrad.description:1477
+#: vqbrad.description:1478
 msgid "Language of work"
 msgstr ""
 
 # id::4
-#: vqbrad.description:1478
+#: vqbrad.description:1479
 msgid "Pagination"
 msgstr ""
 
 # id::5
-# id::6
 # id::2
-#: vqbrad.description:1479
+# id::6
+#: vqbrad.description:1480
 #, fuzzy
 msgid "ISBN"
 msgstr "SSN"
 
 # id::6
 # id::2
-#: vqbrad.description:1480
+#: vqbrad.description:1481
 #, fuzzy
 msgid "ISSN"
 msgstr "SSN"
 
 # id::7
-#: vqbrad.description:1481
+#: vqbrad.description:1482
 msgid "Price"
 msgstr ""
 
 # id::8
-#: vqbrad.description:1482
+#: vqbrad.description:1483
 msgid "Accession Number"
 msgstr ""
 
 # id::9
-#: vqbrad.description:1483
+#: vqbrad.description:1484
 msgid "TCN Value"
 msgstr ""
 
 # id::10
-#: vqbrad.description:1484
+#: vqbrad.description:1485
 msgid "TCN Source"
 msgstr ""
 
 # id::11
-#: vqbrad.description:1485
+#: vqbrad.description:1486
 msgid "Internal ID"
 msgstr ""
 
 # id::12
-#: vqbrad.description:1486
+#: vqbrad.description:1487
 msgid "Publisher"
 msgstr ""
 
 # id::13
-#: vqbrad.description:1487
+#: vqbrad.description:1488
 msgid "Publication Date"
 msgstr ""
 
 # id::14
-#: vqbrad.description:1488
+#: vqbrad.description:1489
 msgid "Edition"
 msgstr ""
 
+# id::15
+#: vqbrad.description:1490
+msgid "Item Barcode"
+msgstr ""
+
 # id::1
-#: vqarad.description:1538
+#: vqarad.description:1540
 msgid "Identifier"
 msgstr ""
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-11-05 21:56-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -3008,6 +3008,7 @@ msgid ""
 msgstr ""
 
 #: staff.main.menu.entity.volume.label
+msgctxt "staff.main.menu.entity.volume.label"
 msgid "Volumes"
 msgstr "Volumes"
 
@@ -7715,6 +7716,11 @@ msgstr "Modifier les attributs de l’article"
 msgid "Delete All from Catalog"
 msgstr "Supprimer tous les articles du catalogue"
 
+#: staff.cat.copy_buckets_quick.title
+msgctxt "staff.cat.copy_buckets_quick.title"
+msgid "Add to Bucket"
+msgstr "Ajouter dans la case"
+
 #: staff.cat.copy_buckets_quick.item_buckets.label
 msgid "Item Buckets"
 msgstr "Paniers d’article"
@@ -8003,6 +8009,11 @@ msgstr "Reproduire dans le nouvel onglet"
 msgctxt "staff.cat.opac.menuitem.removeframe.label"
 msgid "Remove this Frame"
 msgstr "Supprimer ce cadre"
+
+#: staff.cat.record_buckets.title
+msgctxt "staff.cat.record_buckets.title"
+msgid "Record Buckets"
+msgstr "Consigner les paniers"
 
 #: staff.cat.record_buckets_overlay.record_query_tab.label
 #: staff.cat.record_buckets_overlay.record_query_tab.accesskey
@@ -8386,6 +8397,11 @@ msgstr "Bibliothèque"
 msgid "# of volumes"
 msgstr "Nombre de volumes"
 
+#: staff.cat.volume_editor.title
+msgctxt "staff.cat.volume_editor.title"
+msgid "Volumes"
+msgstr "Volumes"
+
 #: staff.cat.volume_editor.caption.label
 msgid "Volume Editor"
 msgstr "Éditeur de volume"
@@ -8480,19 +8496,37 @@ msgstr "Rechercher le &formulaire"
 msgid "Fetch &More Results"
 msgstr "Extraire &un plus grand nombre de résultats"
 
-#: staff.cat.z3950.export.label
-msgid "CSV to Clipboard"
+#: staff.cat.z3950.list_actions.label
+#: staff.cat.z3950.list_actions.accesskey
+#, fuzzy
+msgctxt "staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
+msgid "&List Actions"
+msgstr "Actions relatives à la liste"
+
+#: staff.cat.z3950.menuitem.csv_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_clipboard.label"
+msgid "Copy List CSV to Clipboard"
 msgstr "Copier la liste en format CSV dans le presse-papiers"
 
-#: staff.cat.z3950.clip_button.label
-msgctxt "staff.cat.z3950.clip_button.label"
-msgid "Copy to Clipboard"
-msgstr "Copier dans le presse-papiers"
+#: staff.cat.z3950.menuitem.csv_to_file.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_file.label"
+msgid "Save List CSV to File"
+msgstr "Enregistrer la liste en format CSV dans le fichier"
 
-#: staff.cat.z3950.save_cols_btn.label
-msgctxt "staff.cat.z3950.save_cols_btn.label"
-msgid "Save Columns"
-msgstr "Enregistrer les colonnes"
+#: staff.cat.z3950.menuitem.csv_to_printer.label
+msgctxt "staff.cat.z3950.menuitem.csv_to_printer.label"
+msgid "Print List CSV"
+msgstr "Imprimer la liste en format CSV"
+
+#: staff.cat.z3950.menuitem.copy_to_clipboard.label
+msgctxt "staff.cat.z3950.menuitem.copy_to_clipboard.label"
+msgid "Copy Field from selected row to Clipboard"
+msgstr "Copier le champ de la rangée sélectionnée dans le presse papiers"
+
+#: staff.cat.z3950.menuitem.save_columns.label
+msgctxt "staff.cat.z3950.menuitem.save_columns.label"
+msgid "Save List Configuration"
+msgstr "Enregistrer la configuration de la liste"
 
 #: staff.cat.z3950.marc_view.label
 #: staff.cat.z3950.marc_view.accesskey
@@ -8531,6 +8565,10 @@ msgstr "&Transmettre"
 msgctxt "staff.pat.barcode_entry.retrieving.label"
 msgid "Retrieving..."
 msgstr "Récupération..."
+
+#: staff.patron.bill_cc_info.title
+msgid "Credit Card Information"
+msgstr ""
 
 #: staff.patron.bill_cc_info.visa.label
 msgid "Visa"
@@ -8591,6 +8629,12 @@ msgstr "Renseignements sur la carte de crédit"
 #: staff.patron.bill_cc_info.type.label
 msgid "Credit Card Type"
 msgstr "Type de carte de crédit"
+
+#. "Check" is used here to indicate a payment by check, not "Verify"
+#: staff.patron.bill_check_info.title
+#, fuzzy
+msgid "Check Info"
+msgstr "Entrée"
 
 #. "Check" is used here to indicate a payment by check, not "Verify"
 #: staff.patron.bill_check_info.check_info.label
@@ -8996,6 +9040,10 @@ msgstr "Annulé :"
 msgctxt "staff.patron.bills_overlay.auto_print.label"
 msgid "Auto-Print"
 msgstr "Impression automatique"
+
+#: staff.patron.hold_notices.title
+msgid "Hold Notices"
+msgstr ""
 
 #: staff.patron.hold_notices.add_record_notification.label
 #: staff.patron.hold_notices.add_record_notification.accesskey
@@ -10456,6 +10504,9 @@ msgstr ""
 "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
 "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
 "documents de procédures."
+
+#~ msgid "CSV to Clipboard"
+#~ msgstr "Copier la liste en format CSV dans le presse-papiers"
 
 #~ msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label"
 #~ msgid "List Actions"
