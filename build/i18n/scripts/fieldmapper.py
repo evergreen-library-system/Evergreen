@@ -99,7 +99,7 @@ class IDLHandler(xml.sax.handler.ContentHandler):
     def startElement(self, name, attributes):
         """
         Return the reporter:label or name attribute value for each class
-        or field element.
+        field, or link element.
         """
         entity = None
         lineno = self.locator.getLineNumber()
@@ -111,6 +111,9 @@ class IDLHandler(xml.sax.handler.ContentHandler):
             elif name == 'field':
                 entity = "%s.%s.%s.label" % (name, self.classid, \
                     attributes['name'])
+            elif name == 'link':
+                entity = "%s.%s.%s.label" % (name, self.classid, \
+                    attributes['field'])
             label = attributes['reporter:label']
             if not self.entities.has_key(label):
                 self.entities[label] = [(str(entity), lineno)]
