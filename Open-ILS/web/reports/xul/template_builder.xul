@@ -2,8 +2,25 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="reporter.css" type="text/css"?>
 <?xml-stylesheet href="/opac/common/js/jscalendar/calendar-brown.css" type="text/css" ?>
+<?xml-stylesheet href='/js/dojo/dojo/resources/dojo.css' type='text/css'?>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadIDL()">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+<!-- Load dojo -->
+<script type="text/javascript">
+<![CDATA[
+	var djConfig= {
+		isDebug: false,
+		parseOnLoad: true
+	}
+]]>
+</script>
+<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+<![CDATA[
+	dojo.require('dojo.parser');
+]]>
+</script>
 
 <script src='/opac/common/js/utils.js' type="application/x-javascript; e4x=1"/>
 <script src='/opac/common/js/config.js' type="application/x-javascript; e4x=1"/>
@@ -27,6 +44,12 @@
 <script src="template-config.js" type="application/x-javascript; e4x=1"/>
 <script src="transforms.js" type="application/x-javascript; e4x=1"/>
 <script src="operators.js" type="application/x-javascript; e4x=1"/>
+
+<script type="text/javascript">
+<![CDATA[
+	dojo.addOnLoad(loadIDL);
+]]>
+</script>
 
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar.js"/>
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/lang/calendar-en.js"/>

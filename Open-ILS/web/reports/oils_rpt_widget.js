@@ -309,9 +309,9 @@ oilsRptAgeWidget.prototype.draw = function() {
 		insertSelectorVal(this.count, -1, i, i);
 
 	//insertSelectorVal(this.type, -1, ' -- Select One -- ', '');
-	insertSelectorVal(this.type, -1, 'Day(s)', 'days');
-	insertSelectorVal(this.type, -1, 'Month(s)', 'months');
-	insertSelectorVal(this.type, -1, 'Year(s)', 'years');
+	insertSelectorVal(this.type, -1, rpt_strings.WIDGET_DAYS, 'days');
+	insertSelectorVal(this.type, -1, rpt_strings.WIDGET_MONTHS, 'months');
+	insertSelectorVal(this.type, -1, rpt_strings.WIDGET_YEARS, 'years');
 	this.node.appendChild(this.count);
 	this.node.appendChild(this.type);
 }
@@ -433,17 +433,17 @@ function oilsRptTruncPicker(args) {
 	args.node = this.node;
 
 	this.selector = elem('select');
-	insertSelectorVal(this.selector,-1,'Real Date',1);
-	insertSelectorVal(this.selector,-1,'Relative Date',2);
+	insertSelectorVal(this.selector,-1,rpt_strings.WIDGET_REAL_DATE,1);
+	insertSelectorVal(this.selector,-1,rpt_strings.WIDGET_RELATIVE_DATE,2);
 
 	this.numberPicker = 
 		new oilsRptNumberWidget({node:this.relSpan,size:90,start:1});
 
 	this.label = 'Day(s)';
-	if(this.type == 'month') this.label = 'Month(s)';
-	if(this.type == 'quarter') this.label = 'Quarter(s)';
-	if(this.type == 'year') this.label = 'Year(s)';
-	if(this.type == 'date') this.label = 'Day(s)';
+	if(this.type == 'month') this.label = rpt_strings.WIDGET_MONTHS;
+	if(this.type == 'quarter') this.label = rpt_strings.WIDGET_QUARTERS;
+	if(this.type == 'year') this.label = rpt_strings.WIDGET_YEARS;
+	if(this.type == 'date') this.label = rpt_strings.WIDGET_DAYS;
 }
 
 oilsRptTruncPicker.prototype.draw = function() {

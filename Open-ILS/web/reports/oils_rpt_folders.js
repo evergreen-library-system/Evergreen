@@ -1,3 +1,7 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+
 var oilsRptFolderNodeCache = {};
 oilsRptFolderNodeCache.template = {};
 oilsRptFolderNodeCache.report  = {};
@@ -46,12 +50,12 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			'oilsRptTemplateFolderTree');
 			//'images/template-page.gif');
 
-	oilsRptTemplateFolderTree.addNode(this.tId, -1, 'Templates',
+	oilsRptTemplateFolderTree.addNode(this.tId, -1, rpt_strings.FOLDERS_TEMPLATES,
 		function() {
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
 			unHideMe(DOM.oils_rpt_top_folder);
 			hideMe(DOM.oils_rpt_editor_div);
-			appendClear(DOM.oils_rpt_top_folder_type,text('Template'));
+			appendClear(DOM.oils_rpt_top_folder_type,text(rpt_strings.FOLDERS_TEMPLATE));
 			hideMe(DOM.oils_rpt_folder_table_right_td);
 			DOM.oils_rpt_top_folder_create.onclick = function() {
 				obj.createTopFolder('template', orgsel);
@@ -66,13 +70,13 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			//'images/report-page.gif');
 
 
-	oilsRptReportFolderTree.addNode(this.rId, -1, 'Reports',
+	oilsRptReportFolderTree.addNode(this.rId, -1, rpt_strings.FOLDERS_REPORTS,
 		function() {
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
 			unHideMe(DOM.oils_rpt_top_folder);
 			hideMe(DOM.oils_rpt_editor_div);
 			hideMe(DOM.oils_rpt_folder_table_right_td);
-			appendClear(DOM.oils_rpt_top_folder_type,text('Report'));
+			appendClear(DOM.oils_rpt_top_folder_type,text(rpt_strings.FOLDERS_REPORT));
 			DOM.oils_rpt_top_folder_create.onclick = function() {
 				obj.createTopFolder('report', orgsel);
 			}
@@ -87,13 +91,13 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			'oilsRptOutputFolderTree');
 			//'images/output-page.gif');
 
-	oilsRptOutputFolderTree.addNode(this.oId, -1, 'Output',
+	oilsRptOutputFolderTree.addNode(this.oId, -1, rpt_strings.FOLDERS_OUTPUT,
 		function() {
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
 			unHideMe(DOM.oils_rpt_top_folder);
 			hideMe(DOM.oils_rpt_editor_div);
 			hideMe(DOM.oils_rpt_folder_table_right_td);
-			appendClear(DOM.oils_rpt_top_folder_type,text('Output'));
+			appendClear(DOM.oils_rpt_top_folder_type,text(rpt_strings.FOLDERS_OUTPUT));
 			DOM.oils_rpt_top_folder_create.onclick = function() {
 				obj.createTopFolder('output', orgsel);
 			}
@@ -107,7 +111,7 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			'oilsRptSharedTemplateFolderTree');
 			//'images/template-page.gif');
 
-	oilsRptSharedTemplateFolderTree.addNode(this.stId, -1, 'Templates')
+	oilsRptSharedTemplateFolderTree.addNode(this.stId, -1, rpt_strings.FOLDERS_TEMPLATES)
 
 
 	oilsRptSharedReportFolderTree = 
@@ -116,7 +120,7 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			'oilsRptSharedReportFolderTree');
 			//'images/report-page.gif');
 
-	oilsRptSharedReportFolderTree.addNode(this.srId, -1, 'Reports')
+	oilsRptSharedReportFolderTree.addNode(this.srId, -1, rpt_strings.FOLDERS_REPORTS)
 
 	oilsRptSharedOutputFolderTree = 
 		new SlimTree(
@@ -124,7 +128,7 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 			'oilsRptSharedOutputFolderTree');
 			//'images/output-page.gif');
 
-	oilsRptSharedOutputFolderTree.addNode(this.soId, -1, 'Output')
+	oilsRptSharedOutputFolderTree.addNode(this.soId, -1, rpt_strings.FOLDERS_OUTPUT)
 
 	this.fetchFolders(auth);
 }

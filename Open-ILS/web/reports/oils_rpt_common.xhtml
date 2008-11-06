@@ -1,22 +1,43 @@
-<script language='javascript' src='/opac/common/js/utils.js'> </script>
-<script language='javascript' src='/opac/common/js//config.js'> </script> 
-<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
-<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-<script language='javascript' src='/opac/common/js/init.js'> </script>
-<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
-<script language='javascript' src='/opac/common/js/sorttable.js'> </script>
-<script language='javascript' src='/opac/common/js/fm_table.js'> </script>
-<script language='javascript' src='/opac/common/js/fm_table_conf.js'> </script>
-<script language='javascript' src='/opac/common/js/md5.js'> </script>
-<script>
+<!-- Load dojo -->
+<style type="text/css">
+	@import url('/js/dojo/dojo/resources/dojo.css');
+	@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+	@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+</style>
+<script type="text/javascript">
+	var djConfig= {
+		isDebug: false,
+		parseOnLoad: true
+	}
+</script>
+<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+	dojo.require('dojo.parser');
+
+	function status_update (markup) {
+		dojo.byId('status_text').innerHTML = markup;
+	}
+</script>
+
+<script type='text/javascript' src='/opac/common/js/utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js//config.js'> </script> 
+<script type='text/javascript' src='/opac/common/js/CGI.js'> </script>
+<script type='text/javascript' src='/opac/common/js/Cookie.js'> </script>
+<script type='text/javascript' src='/opac/common/js/JSON_v1.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fmall.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fmgen.js'> </script>
+<script type='text/javascript' src='/opac/common/js/Cookies.js'> </script>
+<script type='text/javascript' src='/opac/common/js/opac_utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js/OrgTree.js'> </script>
+<script type='text/javascript' src='/opac/common/js/org_utils.js'> </script>
+<script type='text/javascript' src='/opac/common/js/init.js'> </script>
+<script type='text/javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+<script type='text/javascript' src='/opac/common/js/slimtree.js'> </script>
+<script type='text/javascript' src='/opac/common/js/sorttable.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fm_table.js'> </script>
+<script type='text/javascript' src='/opac/common/js/fm_table_conf.js'> </script>
+<script type='text/javascript' src='/opac/common/js/md5.js'> </script>
+<script type="text/javascript">
 	stpicopen  = '../opac/images/slimtree/folder2.gif';
 	stpicclose = '../opac/images/slimtree/folderopen2.gif';
 	stpicblank = '../opac/images/slimtree/page.gif';
@@ -50,7 +71,7 @@
 <link type='text/css' rel='stylesheet' href="/opac/common/css/fm_table.css"/>
 <link rel="stylesheet" type="text/css" href="oils_rpt.css"> </link>
 
-<script>function _l(l) { location.href = l + location.search; }</script>
+<script type="text/javascript">function _l(l) { location.href = l + location.search; }</script>
 
 
 
