@@ -3,7 +3,7 @@ use OpenSRF::Application;
 use base qw/OpenSRF::Application/;
 
 sub ils_version {
-    return "1-2-4";
+    return "1-2-4-0";
 }
 
 __PACKAGE__->register_method(
