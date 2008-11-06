@@ -1,2 +1,0 @@
-#!/bin/sh
-/opt/pg814/bin/pgpool -f /opt/pg814/etc/pgpool.conf -n 2>&1 | logger -t pgpool -p local0.info &
