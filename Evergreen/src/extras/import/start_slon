@@ -1,2 +1,0 @@
-#!/bin/sh
-/opt/pg814/bin/slon prod_replica_set dbname=sparkle host=10.1.0.13 user=postgres 2>&1 | logger -t slon -p local3.info &
