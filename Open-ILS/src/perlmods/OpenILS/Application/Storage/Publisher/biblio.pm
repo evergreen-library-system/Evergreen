@@ -427,4 +427,66 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+
+sub record_copy_status_location_count {
+	my $self = shift;
+	my $client = shift;
+
+	my $rec = shift;
+	my $ou = shift || 1;
+	my $depth = shift || 0;
+
+
+	my $descendants = "actor.org_unit_descendants(?,?)";
+
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+	my $cl_table = asset::copy_location->table;
+	my $cs_table = config::copy_status->table;
+
+	my $sql = <<"	SQL";
+
+		SELECT	cp.circ_lib, cn.label, cl.name, cp.status, count(cp.id)
+		  FROM	$cp_table cp,
+		  	$cn_table cn,
+			$cl_table cl,
+			$cs_table cs,
+			$descendants d
+		  WHERE	cn.record = ?
+		  	AND cp.call_number = cn.id
+		  	AND cp.location = cl.id
+			AND cp.circ_lib = d.id
+		  	AND cp.status = cs.id
+			AND cl.opac_visible IS TRUE
+			AND cp.opac_visible IS TRUE
+			AND cp.deleted IS FALSE
+			AND cs.opac_visible IS TRUE
+		  GROUP BY 1,2,3,4;
+	SQL
+
+	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
+	$sth->execute($ou, $depth, "$rec" );
+
+	my %data = ();
+	for my $row (@{$sth->fetchall_arrayref}) {
+		$data{$$row[0]}{$$row[1]}{$$row[2]}{$$row[3]} += $$row[4];
+	}
+	
+	for my $ou (keys %data) {
+		for my $cn (keys %{$data{$ou}}) {
+		    for my $cl (keys %{$data{$ou}{$cn}}) {
+    			$client->respond( [$ou, $cn, $cl, $data{$ou}{$cn}{$cl}] );
+            }
+		}
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.status_copy_location_count',
+	method		=> 'record_copy_status_location_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 1;
