@@ -67,7 +67,7 @@
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
 			<script type="dojo/method">
-<!--
+<![CDATA[
 				window.highlighter= {};
 				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
 				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
@@ -134,7 +134,7 @@
                             });
 
                             if (dirtyStore.length > 0) {
-                                var confirmation = confirm(ppl_strings.CONFIRM_EXIT);
+                                var confirmation = confirm(ppl_strings.CONFIRM_EXIT_PPL);
 
                                 if (confirmation) {
                                     for (var i in window.dirtyStore) {
@@ -147,7 +147,7 @@
                         });
                     }
                 }).send();
--->
+]]>
 			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
@@ -155,7 +155,7 @@
 				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="&conify.perm_list.new_code.label;"></div>
 				<button dojoType="dijit.form.Button" id="save_new_perm_code" jsId="save_new_perm_code" label="&conify.perm_list.add_button.label;"> 
 					<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 						var new_code = new_perm_code.getValue();
 						if (!new_code) return;
 
@@ -171,7 +171,7 @@
                     	    params : [ ses, new_fm_obj ],
 	                        onerror : function (r) {
     	                        highlighter.red.play();
-        	                    status_update( ppl_strings.ERROR_CALLING_METHOD );
+        	                    status_update( ppl_strings.ERROR_CALLING_METHOD_PPL );
             	                err = true;
                 	        },
 	                        oncomplete : function (r) {
@@ -189,7 +189,7 @@
             	                }
                 	        }
                     	}).send();
---> 
+]]> 
 	                </script>
 				</button>
 			</div>
@@ -210,7 +210,7 @@
 		
 				<button jsId="delete_ppl_button" dojoType="dijit.form.Button" label="&conify.perm_list.delete_selected.label;">
 					<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 						var selected_rows = perm_grid.selection.getSelected();
 		
 						var selected_items = [];
@@ -265,7 +265,7 @@
 		
 							}
 						}
--->
+]]>
 					</script>
 				</button>
 	

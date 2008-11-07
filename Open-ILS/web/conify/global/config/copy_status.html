@@ -68,7 +68,7 @@
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
 			<script type="dojo/method">
-<!--
+<![CDATA[
 				window.highlighter= {};
 				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
 				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
@@ -109,7 +109,7 @@
 
                             if (dirtyStore.length > 0) {
                                 var confirmation = confirm(
-									ccs_strings.CONFIRM_EXIT
+									ccs_strings.CONFIRM_EXIT_CCS
                                 );
 
                                 if (confirmation) {
@@ -123,7 +123,7 @@
                         });
                     }
                 }).send();
--->
+]]>
 			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
@@ -131,7 +131,7 @@
 				<div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="&conify.copy_status.new_status.name;"></div>
 				<button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="&conify.copy_status.new_status.save;"> 
 					<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 						var new_name = new_status_name.getValue();
 						if (!new_name) return;
 
@@ -147,7 +147,7 @@
                     	    params : [ ses, new_fm_obj ],
 	                        onerror : function (r) {
     	                        highlighter.red.play();
-        	                    status_update( ccs_strings.ERROR_CALLING_METHOD );
+        	                    status_update( ccs_strings.ERROR_CALLING_METHOD_CCS );
             	                err = true;
                 	        },
 	                        oncomplete : function (r) {
@@ -165,7 +165,7 @@
             	                }
                 	        }
                     	}).send();
---> 
+]]> 
 	                </script>
 				</button>
 			</div>
@@ -174,7 +174,7 @@
 				<div dojoType="dojox.grid.data.DojoData" id="status_data_model" jsId="status_data_model" store="status_store" query="{ 'id' : '*' }"></div>
 				<div id="status_grid" dojoType="dojox.Grid" jsId="status_grid">
 					<script type="dojo/connect" event="startup">
-<!--
+<![CDATA[
 						var g = this;
 						var status_grid_layout = [
 							{	cells : [
@@ -238,7 +238,7 @@
 
 						this.setStructure(status_grid_layout);
 						this.setModel(window.status_data_model);
--->
+]]>
 					</script>
 				</div>
 			</div>
@@ -249,7 +249,7 @@
 		
 				<button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.delete_selected;">
 					<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 						var selected_rows = status_grid.selection.getSelected();
 		
 						var selected_items = [];
@@ -264,7 +264,7 @@
 						for (var i in selected_items) {
 							current_status = selected_items[i];
 
-							if ( confirm(dojo.string.substitue(ccs_strings.CONFIRM_DELETE, [status_store.getValue( current_status, 'name' )]))) {
+							if ( confirm(dojo.string.substitute(ccs_strings.CONFIRM_DELETE, [status_store.getValue( current_status, 'name' )]))) {
 
 								status_store.setValue( current_status, 'isdeleted', 1 );
 			
@@ -304,7 +304,7 @@
 		
 							}
 						}
--->
+]]>
 					</script>
 				</button>
 	

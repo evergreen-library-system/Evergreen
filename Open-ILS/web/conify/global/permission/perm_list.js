@@ -29,7 +29,7 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.requireLocalization("openils.conify", "ppl");
+dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
@@ -37,7 +37,7 @@ var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 
-var ppl_strings = dojo.i18n.getLocalization('openils.conify', 'ppl');
+var ppl_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 var current_perm;
 var virgin_out_id = -1;
@@ -89,7 +89,7 @@ function save_them_all (event) {
 
 
 	if (event && dirtyStore.length > 0) {
-		confirmation = confirm( ppl_strings.CONFIRM_EXIT );
+		confirmation = confirm( ppl_strings.CONFIRM_EXIT_PPL );
 	}
 
 	if (confirmation) {

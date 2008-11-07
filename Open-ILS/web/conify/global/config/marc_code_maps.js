@@ -31,7 +31,7 @@ dojo.require('dijit.layout.BorderContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.requireLocalization("openils.conify", "cam");
+dojo.requireLocalization("openils.conify", "conify");
 
 console.log('loading marc_code_maps.js');
 
@@ -45,7 +45,7 @@ console.log('initialized pcrud session');
 var stores = {};
 var current_item = {};
 
-var cam_strings = dojo.i18n.getLocalization('openils.conify', 'cam');
+var cam_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 /*
 var highlighter = {
@@ -81,7 +81,7 @@ function save_code (classname) {
 		params : [ ses, modified_ppl ],
 		onerror : function (r) {
 			//highlighter.red.play();
-			status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA, [classname, obj.code()]) );
+			status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA_CAM, [classname, obj.code()]) );
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
@@ -91,7 +91,7 @@ function save_code (classname) {
 				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
 			} else {
 				//highlighter.red.play();
-				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA, [classname, stores[classname].getValue( item, 'code' )] ) );
+				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA_CAM, [classname, stores[classname].getValue( item, 'code' )] ) );
 			}
 		},
 	}).send();
@@ -111,7 +111,7 @@ function save_them_all (event) {
 		var confirmation = true;
 
 		if (event && dirtyStore.length > 0) {
-			confirmation = confirm( cam_strings.CONFIRM_EXIT );
+			confirmation = confirm( cam_strings.CONFIRM_EXIT_CAM );
 			event = null;
 		}
 
@@ -206,7 +206,7 @@ function create_marc_code (data) {
         params : [ ses, new_fm_obj ],
         onerror : function (r) {
             //highlighter.red.play();
-            status_update( dojo.string.substitute( cam_strings.ERROR_CALLING_METHOD, [cl] ) );
+            status_update( dojo.string.substitute( cam_strings.ERROR_CALLING_METHOD_CAM, [cl] ) );
             err = true;
         },
         oncomplete : function (r) {

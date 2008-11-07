@@ -1,0 +1,311 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2008-11-07 15:35:55-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+
+#: reports.js:RPT_BUILDER_CONFIRM_SAVE
+msgid "Name : ${0}\n"
+"Description: ${1}\n"
+"Save Template?"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_DOY
+msgid "Day of Year"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
+msgid "Please enter a report name"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_BETWEEN
+msgid "Between"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_FIRST5
+msgid "First 5 characters (for US ZIP code)"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NULL_BLANK
+msgid "Is NULL or Blank"
+msgstr ""
+
+#: reports.js:FOLDERS_REPORT
+msgid "Report"
+msgstr ""
+
+#: reports.js:WIDGET_YEARS
+msgid "Year(s)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_DOW
+msgid "Day of Week"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_LT_EQUAL
+msgid "Less than or equal to"
+msgstr ""
+
+#: reports.js:WIDGET_MONTHS
+msgid "Month(s)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_COUNT
+msgid "Count"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
+msgid "invalid start date -  YYYY-MM-DD"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_LT_TIME
+msgid "Before (Date/Time)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_DOM
+msgid "Day of Month"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_COLNAME_NONE
+msgid "None"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MONTH_NAME
+msgid "Month Name'"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MAX
+msgid "Max"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NOT_IN
+msgid "Not in list"
+msgstr ""
+
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_LAST
+msgid "Last Value"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_GT_TIME
+msgid "After (Date/Time)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MONTHS_AGO
+msgid "Months ago"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_EQUALS
+msgid "Equals"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_FIRST_WORD
+msgid "First contiguous non-space string"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_COLNAME_ALL
+msgid "All"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_RAW_DATA
+msgid "Raw Data"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_COUNT_DISTINCT
+msgid "Count Distinct"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
+msgid "Report Output: ${0}"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_DATE
+msgid "Date"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_AVERAGE
+msgid "Average"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MIN
+msgid "Min"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_REPORT_FOLDERS
+msgid "Report Folders"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_LSE_TIME
+msgid "On or Before (Date/Time)"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_GTE_TIME
+msgid "On or After (Date/Time)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_FIRST
+msgid "First Value"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NULL
+msgid "Is NULL"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_YEAR_TRUNC
+msgid "Year"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_LIKE
+msgid "Contains Matching substring"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_ROUND
+msgid "Round"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_SUM
+msgid "Sum"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
+msgid "Please provide a report folder"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_ILIKE
+msgid "Contains Matching substring (ignore case)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_QUARTERS_AGO
+msgid "Quarters ago"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NOT_NULL
+msgid "Is not NULL"
+msgstr ""
+
+#: reports.js:WIDGET_QUARTERS
+msgid "Quarter(s)"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
+msgid "Please provide an output folder"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_GREATER_THAN
+msgid "Greater than"
+msgstr ""
+
+#: reports.js:FOLDERS_REPORTS
+msgid "Reports"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_UPPER
+msgid "Upper case"
+msgstr ""
+
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_GT_EQUAL
+msgid "Greater than or equal to"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_COLNAME_SELECT
+msgid "Select"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_SELECT_ITEM
+msgid "Please select an item from the list"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_HOD
+msgid "Hour of day"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NOT_NULL_BLANK
+msgid "Is not NULL or Blank"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_WOY
+msgid "Week of Year"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_LOWER
+msgid "Lower case"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_INT
+msgid "Drop trailing decimals"
+msgstr ""
+
+#: reports.js:FOLDERS_TEMPLATES
+msgid "Templates"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_IN
+msgid "In list"
+msgstr ""
+
+#: reports.js:WIDGET_RELATIVE_DATE
+msgid "Relative Date"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_LESS_THAN
+msgid "Less than"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_DAY_NAME
+msgid "Day Name"
+msgstr ""
+
+#: reports.js:FILTERS_LABEL_NOT_BETWEEN
+msgid "Not between"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MOY
+msgid "Month of Year"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_AGE
+msgid "Age"
+msgstr ""
+
+#: reports.js:WIDGET_REAL_DATE
+msgid "Real Date"
+msgstr ""
+
+#: reports.js:FOLDERS_TEMPLATE
+msgid "Template"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MONTH_TRUNC
+msgid "Year + Month"
+msgstr ""
+
+#: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
+msgid "Output Folders"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_QOY
+msgid "Quarter of Year"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_HOUR_TRUNC
+msgid "Hour"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
+msgid "Change Folders"
+msgstr ""

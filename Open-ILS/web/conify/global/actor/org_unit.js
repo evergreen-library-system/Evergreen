@@ -32,7 +32,7 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
-dojo.requireLocalization("openils.conify", "aou");
+dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
@@ -43,7 +43,7 @@ var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 var current_ou, current_ou_hoo;
 var virgin_ou_id = -1;
 
-var aou_strings = dojo.i18n.getLocalization('openils.conify', 'aou');
+var aou_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 //var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( globalOrgTypes ) });
 
