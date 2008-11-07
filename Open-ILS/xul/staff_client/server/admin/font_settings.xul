@@ -87,8 +87,7 @@
 				'ALL_FONTS_15PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_15PT'),
 				'ALL_FONTS_16PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_16PT'),
 				'ALL_FONTS_17PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_17PT'),
-				'ALL_FONTS_18PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_18PT'),
-				'ALL_FONTS_DEFAULT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT')
+				'ALL_FONTS_18PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_18PT')
 			};
 
 			try {

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-07 06:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,6 @@ msgid "Global Font Adjust set to Smaller than Default"
 msgstr ""
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
 msgid "Global Font Adjust set to Default"
 msgstr ""
 
@@ -125,11 +124,6 @@ msgstr ""
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
-msgstr ""
-
-#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
-msgid "Global Font Adjust set to Default"
 msgstr ""
 
 #: staff.admin.transit_list.missing_list
