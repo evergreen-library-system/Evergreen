@@ -306,7 +306,7 @@
 									  jsId="editor_pane_opac_visible"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  onChange='if (current_ou) ou_list_store.setValue( current_ou, "opac_visible", this.checked ? "t" : "f" );'
+									  onChange="if (current_ou) ou_list_store.setValue( current_ou, 'opac_visible', this.checked ? 't' : 'f' );"
 									/>
 								</td>
 							</tr>
@@ -546,7 +546,7 @@
 											  jsId="billing_addr_valid"
 											  dojoType="dijit.form.CheckBox"
 											  value='t'
-											  onChange='if (current_billing_address) current_billing_address.valid( this.checked ? "t" : "f" );'
+											  onChange="if (current_billing_address) current_billing_address.valid( this.checked ? 't' : 'f' );"
 											/>
 										</td>
 									</tr>
@@ -615,7 +615,7 @@
 											  jsId="holds_addr_valid"
 											  dojoType="dijit.form.CheckBox"
 											  value='t'
-											  onChange='if (current_holds_address) current_holds_address.valid( this.checked ? "t" : "f" );'
+											  onChange="if (current_holds_address) current_holds_address.valid( this.checked ? 't' : 'f' );"
 											/>
 										</td>
 									</tr>
@@ -683,7 +683,7 @@
 											  type="checkbox"
 											  jsId="mailing_addr_valid"
 											  dojoType="dijit.form.CheckBox"
-											  onChange='if (current_mailing_address) current_mailing_address.valid( this.checked ? "t" : "f" );'
+											  onChange="if (current_mailing_address) current_mailing_address.valid( this.checked ? 't' : 'f' );"
 											/>
 										</td>
 									</tr>
@@ -751,7 +751,7 @@
 											  type="checkbox"
 											  jsId="ill_addr_valid"
 											  dojoType="dijit.form.CheckBox"
-											  onChange='if (current_ill_address) current_ill_address.valid( this.checked ? "t" : "f" );'
+											  onChange="if (current_ill_address) current_ill_address.valid( this.checked ? 't' : 'f' );"
 											/>
 										</td>
 									</tr>
