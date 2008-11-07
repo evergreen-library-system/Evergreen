@@ -33,7 +33,7 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
-dojo.requireLocalization("openils.conify", "aout");
+dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
@@ -47,7 +47,7 @@ var virgin_out_id = -1;
 
 var highlighter = {};
 
-var aout_strings = dojo.i18n.getLocalization('openils.conify', 'aout');
+var aout_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 function status_update (markup) {
 	if (parent !== window && parent.status_update) parent.status_update( markup );

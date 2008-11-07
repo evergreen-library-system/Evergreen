@@ -80,7 +80,7 @@
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
-				<!--
+				<![CDATA[
 					window.dirtyStore = [];
 
                     server.pCRUD.request({
@@ -107,7 +107,7 @@
                                 });
 
                                 if (dirtyStore.length > 0) {
-                                    var confirmation = confirm( pgt_strings.CONFIRM_EXIT );
+                                    var confirmation = confirm( pgt_strings.CONFIRM_EXIT_PGT );
 
                                     if (confirmation) {
                                         for (var i in window.dirtyStore) {
@@ -124,7 +124,7 @@
                     server.actor.request({
                         method : 'open-ils.actor.org_types.retrieve',
                         timeout : 10,
-                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_TYPES ) },
+                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_TYPES_AOUT ) },
                         oncomplete : function (r) {
                             window._ou_type_list = r.recv().content();
                             window._ou_type_data = aout.toStoreData( window._ou_type_list );
@@ -174,7 +174,7 @@
                         }
  
                     }).send();
--->
+]]>
 				</script>
 				<div
 				  id="group_tree"
@@ -187,7 +187,7 @@
 				>
 
 					<script type="dojo/method" event="onClick" args="item,node">
-<!--
+<![CDATA[
 						right_pane_toggler.show();
 
 						current_group = item;
@@ -229,7 +229,7 @@
 						editor_pane_application_perm.setValue( this.store.getValue( current_group, 'application_perm' ) );
 
 						editor_pane_usergroup.setChecked( this.store.getValue( current_group, 'usergroup' ) == 't' ? true : false );
--->
+]]>
 					</script>
 
 					<script type="dojo/method" event="getLabel" args="item,pI">
@@ -309,11 +309,11 @@
 									  jsId="editor_pane_application_perm"
 									>
 										<script type="dojo/connect" event="onChange">
-<!--
+<![CDATA[
 											if (current_group && this.getValue()) {
 												group_store.setValue( current_group, "application_perm", this.getValue() );
 											}
--->
+]]>
 										</script>
 									</div>
 								</td>
@@ -331,11 +331,11 @@
 									  required="true"
 									>
 										<script type="dojo/connect" event="onChange">
-<!--
+<![CDATA[
 											if (current_group && this.getValue()) {
 												this.store.setValue( current_group, "parent", this.getValue() );
 											}
--->
+]]>
 										</script>
 									</div>
 								</td>
@@ -367,7 +367,7 @@
 									this.disabled = true;
 								</script>
 								<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 	
 									if (group_store.getValue( current_group, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
@@ -442,7 +442,7 @@
 										}).send();
 	
 									}
--->	
+]]>	
 								</script>
 							</button>
 	
@@ -453,7 +453,7 @@
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 	
 								var new_fm_obj = new pgt().fromHash({
 									isnew			: 1,
@@ -469,7 +469,7 @@
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( pgt_strings.ERROR_CALLING_METHOD );
+										status_update( pgt_strings.ERROR_CALLING_METHOD_PGT );
 										err = true;
 									},
 									oncomplete : function (r) {
@@ -492,7 +492,7 @@
 									highlighter.group_tree.green.play();
 									status_update( dojo.string.substitute( pgt_strings.SUCCESS_NEW_CHILD_GROUP, [group_store.getValue( current_group, 'name' )]) );
 								}
--->	
+]]>	
 							</script>
 						</button>
 	
@@ -510,7 +510,7 @@
 	
 								<div id="perm_grid" dojoType="dojox.Grid" model="perm_map_model" jsId="perm_grid">
 									<script type="dojo/connect" event="startup">
-<!--	
+<![CDATA[
 										function get_item_part(model_field, item_search_field, item_part, model, store, datum, row) {
 											var formatter = true;
 	
@@ -567,7 +567,7 @@
 			                            ];
 
 										perm_grid.setStructure(window.current_perm_grid_layout);
--->
+]]>
 									</script>
 								</div>
 							</div>
@@ -619,7 +619,7 @@
 
 										<button dojoType="dijit.form.Button" jsId="new_mapping_add" label="&conify.grp_tree.add_mapping_button.label;">
 						                    <script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 						                        var new_perm = new_perm_select.getValue();
 												alert(new_perm);
 						                        if (!new_perm) return;
@@ -677,7 +677,7 @@
 						                        }).send();
 
 												new_popup._closeDropDown();
--->    
+]]>    
 						                    </script>
 		
 										</button>
@@ -688,7 +688,7 @@
 
 				                <button jsId="delete_pgpm_button" dojoType="dijit.form.Button" label="&conify.grp_tree.remove_selected.label;">
 					                <script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 				                        var selected_rows = perm_grid.selection.getSelected();
 				        
 				                        var selected_items = [];
@@ -738,7 +738,7 @@
 			                                }).send();
 				        
 				                        }
--->
+]]>
 					                </script>
 						        </button>
 	

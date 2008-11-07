@@ -69,14 +69,14 @@
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
-<!--
+<![CDATA[
 					window.dirtyStore = [];
 
                     pCRUD.request({
                         method : 'open-ils.permacrud.search.aout.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'name' } } ],
-                        onerror : function (r) { status_update( aout_strings.ERROR_FETCHING_TYPES ) },
+                        onerror : function (r) { status_update( aout_strings.ERROR_FETCHING_TYPES_AOUT ) },
                         oncomplete : function (r) {
                             ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( r.recv().content() ) });
                             ou_type_store.onSet = function (item, attr, o, n) {
@@ -109,7 +109,7 @@
                             });
                         }
                     }).send();
--->
+]]>
 				</script>
 				<div
 				  id="type_tree"
@@ -122,7 +122,7 @@
 				>
 
 					<script type="dojo/method" event="onClick" args="item,node">
-<!--
+<![CDATA[
 						right_pane_toggler.show();
 						current_type = item;
 						current_fm_type = new aout().fromStoreItem(item);
@@ -158,7 +158,7 @@
 
 						editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == 't' ? true : false );
 						editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == 't' ? true : false );
--->
+]]>
 					</script>
 
 					<script type="dojo/method" event="getLabel" args="item,pI">
@@ -226,7 +226,7 @@
 									  required="true"
 									>
 										<script type="dojo/method" event="onChange">
-<!--
+<![CDATA[
 											if (current_type && this.getValue()) {
 												if ( this.store.getValue( current_type, 'parent' ) == this.getValue() ) return;
 
@@ -239,7 +239,7 @@
 													scope : ou_type_store
 												});
 											}
--->
+]]>
 										</script>
 									</div>
 								</td>
@@ -252,7 +252,7 @@
 									  jsId="editor_pane_can_have_vols"
 									  type="checkbox"
 									  dojoType="dijit.form.CheckBox"
-									  onChange='if (current_type) ou_type_store.setValue( current_type, "can_have_vols", this.checked ? "t" : "f" );'
+									  onChange="if (current_type) ou_type_store.setValue( current_type, 'can_have_vols', this.checked ? 't' : 'f' );"
 									/>
 								</td>
 							</tr>
@@ -283,11 +283,11 @@
 									this.disabled = true;
 								</script>
 								<script type="dojo/connect" event="onClick">
-<!--
+<![CDATA[
 	
 									if (ou_type_store.getValue( current_type, '_trueRoot' ) == 'true') {
 										highlighter.editor_pane.red.play();
-										status_update( dojo.string.substitute( aout_strings.ERROR_DELETING_LAST, [ou_type_store.getValue( current_type, 'name' )] ) );
+										status_update( dojo.string.substitute( aout_strings.ERROR_DELETING_LAST_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
 										return false;
 									}
 
@@ -359,7 +359,7 @@
 										}).send();
 	
 									}
--->
+]]>
 								</script>
 							</button>
 	
@@ -370,6 +370,7 @@
 								this.disabled = true;
 							</script>
 							<script type="dojo/connect" event="onClick">
+<![CDATA[
 								var new_fm_obj = new aout().fromHash({
 									isnew			: 1,
 									name			: aout_strings.LABEL_NEW_TYPE,
@@ -379,7 +380,6 @@
 									opac_label		: ou_type_store.getValue( current_type, 'opac_label' ) + ' child' + virgin_out_id--,
 									parent			: ou_type_store.getValue( current_type, 'id' )
 								});
-<!--
 								var err = false;
 								pCRUD.request({
 									method : 'open-ils.permacrud.create.aout',
@@ -387,7 +387,7 @@
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
-										status_update( aout_strings.ERROR_CREATING_CHILD_METHOD );
+										status_update( aout_strings.ERROR_CALLING_METHOD_AOUT );
 										err = true;
 									},
 									oncomplete : function (r) {
@@ -399,7 +399,7 @@
 											);
 										} else {
 											highlighter.editor_pane.red.play();
-											status_update( aout_strings.ERROR_CREATING_CHILD );
+											status_update( aout_strings.ERROR_CREATING_CHILD_AOUT );
 											err = true;
 										}
 									},
@@ -408,9 +408,9 @@
 								if (!err) {
 									highlighter.editor_pane.green.play();
 									highlighter.type_tree.green.play();
-									status_update( dojo.string.substitute( aout_strings.SUCCESS_CREATING_CHILD, [ou_type_store.getValue( current_type, 'name' )] ) );
+									status_update( dojo.string.substitute( aout_strings.SUCCESS_CREATING_CHILD_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
 								}
--->
+]]>
 							</script>
 						</button>
 	

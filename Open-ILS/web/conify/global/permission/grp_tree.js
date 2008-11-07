@@ -37,7 +37,7 @@ dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
-dojo.requireLocalization("openils.conify", "pgt");
+dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
@@ -47,7 +47,7 @@ var server = {};
 server.pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
 server.actor = new OpenSRF.ClientSession('open-ils.actor');
 
-var pgt_strings = dojo.i18n.getLocalization('openils.conify', 'pgt');
+var pgt_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 var current_group;
 var virgin_out_id = -1;
