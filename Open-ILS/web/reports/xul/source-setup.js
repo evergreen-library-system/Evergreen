@@ -1,4 +1,6 @@
+dojo.requireLocalization("openils.reports", "reports");
 
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 var idlNS	= "http://opensrf.org/spec/IDL/base/v1";
 var persistNS	= "http://open-ils.org/spec/opensrf/IDL/persistence/v1";
 var objNS	= "http://open-ils.org/spec/opensrf/IDL/objects/v1";
@@ -84,11 +86,7 @@ function getIDLLink (classNode,field) { return filterByAttribute( classNode.getE
 
 function resetUI (idlclass) {
 	if (getKeys(rpt_rel_cache).length > 0) {
-		if (!confirm(
-			"You have started building a template!\n" +
-			"Selecting a new starting source will destroy " +
-			"the current template and start over.  Is this OK?"
-		)) return false;
+		if (!confirm( rpt_strings.SOURCE_SETUP_CONFIRM_EXIT)) return false;
 	}
 
 	rpt_rel_cache = {};
@@ -109,7 +107,7 @@ function populateSourcesMenu (classList) {
 
 	menu.appendChild(
 		createMenuItem(
-			{ label : 'Core Sources',
+			{ label : rpt_strings.SOURCE_SETUP_CORE_SOURCES,
 			  disabled : 'true',
 			  style : 'color: black; text-decoration: underline;'
 			}
@@ -138,11 +136,11 @@ function populateSourcesMenu (classList) {
 	menu.appendChild( createMenuSeparator() );
 
 	var _m = createMenu(
-		{ label : 'All Available Sources' },
+		{ label : rpt_strings.SOURCE_SETUP_ALL_AVAIL_SOURCES },
 		createMenuPopup(
 			{},
 			createMenuItem(
-				{ label : 'All Available Sources',
+				{ label : rpt_strings.SOURCE_SETUP_ALL_AVAIL_SOURCES,
 				  disabled : 'true',
 				  style : 'color: black; '
 				}
@@ -221,7 +219,7 @@ function populateSourcesSubtree (tcNode, classList) {
 				  field : obj.field,
 				  link : obj.link,
 				  reltype : obj.reltype,
-				  fullpath : obj.fullpath,
+				  fullpath : obj.fullpath
 				},
 				createTreeRow(
 					{ },

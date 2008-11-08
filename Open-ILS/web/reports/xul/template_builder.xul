@@ -19,6 +19,7 @@
 <script type="text/javascript">
 <![CDATA[
 	dojo.require('dojo.parser');
+	dojo.require('dojo.string');
 ]]>
 </script>
 

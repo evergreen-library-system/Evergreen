@@ -1,3 +1,6 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 
 function sourceTreeHandlerDblClick (ev) { return sourceTreeHandler(ev,true) }
 
@@ -166,14 +169,14 @@ function detailTreeHandler (args) {
 				{ aggregate : t.aggregate,
 				  name : t.name,
 				  alias : t.label,
-				  params : t.params,
+				  params : t.params
 				},
 				createTreeRow(
 				  	{},
 					createTreeCell( { label : t.label } ),
 					createTreeCell( { label : t.params ? t.params : '0' } ),
 					createTreeCell( { label : t.datatype.length > 0 ?  t.datatype.join(', ') : 'all' } ),
-					createTreeCell( { label : t.aggregate ?  'Aggregate' : 'Non-Aggregate' } )
+					createTreeCell( { label : t.aggregate ?  rpt_strings.SOURCE_BROWSE_AGGREGATE : rpt_strings.SOURCE_BROWSE_NON_AGGREGATE } )
 				)
 			)
 		);
