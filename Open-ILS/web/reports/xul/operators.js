@@ -1,68 +1,71 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 
 var OILS_RPT_FILTERS = {
 	'=' : {
-		label : 'Equals',
+		label : rpt_strings.OPERATORS_EQUALS
 	},
 
 	'like' : {
-		label : 'Contains Matching substring',
+		label : rpt_strings.OPERATORS_LIKE
 	}, 
 
 	ilike : {
-		label : 'Contains Matching substring (ignore case)',
+		label : rpt_strings.OPERATORS_ILIKE
 	},
 
 	'>' : {
-		label : 'Greater than',
-		labels : { timestamp : 'After (Date/Time)' }
+		label : rpt_strings.OPERATORS_GREATER_THAN,
+		labels : { timestamp : rpt_strings.OPERATORS_GT_TIME }
 	},
 
 	'>=' : {
-		label : 'Greater than or equal to',
-		labels : { timestamp : 'On or After (Date/Time)' }
+		label : rpt_strings.OPERATORS_GT_EQUAL,
+		labels : { timestamp : rpt_strings.OPERATORS_GTE_TIME }
 	}, 
 
 
 	'<' : {
-		label : 'Less than',
-		labels : { timestamp : 'Before (Date/Time)' }
+		label : rpt_strings.OPERATORS_LESS_THAN,
+		labels : { timestamp : rpt_strings.OPERATORS_LT_TIME }
 	}, 
 
 	'<=' : {
-		label : 'Less than or equal to', 
-		labels : { timestamp : 'On or Before (Date/Time)' }
+		label : rpt_strings.OPERATORS_LT_EQUAL, 
+		labels : { timestamp : rpt_strings.OPERATORS_LTE_TIME }
 	},
 
 	'in' : {
-		label : 'In list',
+		label : rpt_strings.OPERATORS_IN_LIST
 	},
 
 	'not in' : {
-		label : 'Not in list',
+		label : rpt_strings.OPERATORS_NOT_IN_LIST
 	},
 
 	'between' : {
-		label : 'Between',
+		label : rpt_strings.OPERATORS_BETWEEN
 	},
 
 	'not between' : {
-		label : 'Not between',
+		label : rpt_strings.OPERATORS_NOT_BETWEEN
 	},
 
 	'is' : {
-		label : 'Is NULL'
+		label : rpt_strings.OPERATORS_IS_NULL
 	},
 
 	'is not' : {
-		label : 'Is not NULL'
+		label : rpt_strings.OPERATORS_IS_NOT_NULL
 	},
 
 	'is blank' : {
-		label : 'Is NULL or Blank'
+		label : rpt_strings.OPERATORS_NULL_BLANK
 	},
 
 	'is not blank' : {
-		label : 'Is not NULL or Blank'
+		label : rpt_strings.OPERATORS_NOT_NULL_BLANK
 	}
 }
 

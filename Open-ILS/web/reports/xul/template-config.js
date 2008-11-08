@@ -1,3 +1,7 @@
+dojo.requireLocalization("openils.reports", "reports");
+
+var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+
 function removeReportAtom (args) {
 	if (!args) args = {};
 
@@ -92,15 +96,15 @@ function addReportAtoms () {
 		if ( !rpt_rel_cache[relation_alias].fields[tabname][colname] ) {
 			rpt_rel_cache[relation_alias].fields[tabname][colname] =
 				{ colname   : colname,
-				  transform : (transform && transform.getAttribute('name')) || 'Bare',
+				  transform : (transform && transform.getAttribute('name')) || rpt_strings.TEMPLATE_CONF_BARE,
 				  aggregate : transform && transform.getAttribute('aggregate'),
 				  params    : transform && transform.getAttribute('params'),
-				  transform_label: (transform && transform.getAttribute('alias')) || 'Raw Data',
+				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
 				  datatype  : datatype,
 				  op        : '=',
-				  op_label  : 'Equals',
-				  op_value  : {},
+				  op_label  : rpt_strings.TEMPLATE_CONF_EQUALS,
+				  op_value  : {}
 				};
 
 			if (!rpt_rel_cache.order_by)
@@ -109,24 +113,18 @@ function addReportAtoms () {
 			if (tabname == 'dis_tab')
 				rpt_rel_cache.order_by.push( { relation : relation_alias, field : colname } );
 
-		} else if (
-			confirm(
-				'You have already added the [' + field_label +
-				'] field\nfrom the [' + class_label + '] source. Click OK if you\nwould like ' +
-				'to reset this field.'
-			)
-		) {
+		} else if (confirm(dojo.string.substitute( rpt_strings.TEMPLATE_CONF_CONFIRM_RESET, [field_label, class_label] )) ) {
 			rpt_rel_cache[relation_alias].fields[tabname][colname] =
 				{ colname   : colname,
-				  transform : (transform && transform.getAttribute('name')) || 'Bare',
+				  transform : (transform && transform.getAttribute('name')) || rpt_strings.TEMPLATE_CONF_BARE,
 				  aggregate : transform && transform.getAttribute('aggregate'),
 				  params    : transform && transform.getAttribute('params'),
-				  transform_label: (transform && transform.getAttribute('alias')) || 'Raw Data',
+				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
 				  datatype  : datatype,
 				  op        : '=',
-				  op_label  : 'Equals',
-				  op_value  : {},
+				  op_label  : rpt_strings.TEMPLATE_CONF_EQUALS,
+				  op_value  : {}
 				};
 		}
 	}
@@ -197,10 +195,7 @@ function alterColumnLabel () {
 	var field = item.firstChild.firstChild;
 	var colname = field.nextSibling.getAttribute('label');
 
-	var new_label =	prompt(
-		"Change the column header to:",
-		field.getAttribute("label")
-	);
+	var new_label =	prompt( dojo.string.substitute(rpt_strings.TEMPLATE_CONF_PROMPT_CHANGE, [field.getAttribute("label")]) );
 
 	if (new_label) {
 		rpt_rel_cache[relation_alias].fields[tabname][colname].alias = new_label;
@@ -396,23 +391,23 @@ function changeTemplateFilterValue () {
 						// particular button. The last two arguments are for an optional check box.
 						answer = promptService.select(
 							window,
-							"Boolean Value",
-							"Select the value, or cancel:",
-							2, ["True", "False"], state
+							rpt_strings.TEMPLATE_CONF_BOOLEAN_VALUE,
+							rpt_strings.TEMPLATE_CONF_SELECT_CANCEL,
+							2, [rpt_strings.TEMPLATE_CONF_TRUE, rpt_strings.TEMPLATE_CONF_FALSE], state
 						);
 					} catch (e) {
 						answer = true;
-						state = confirm("Click OK for TRUE and Cancel for FALSE.");
+						state = confirm(rpt_strings.TEMPLATE_CONF_CONFIRM_STATE);
 						state ? state = 0 : state = 1;
 					}
 
 					if (answer) {
 						if (state) {
 							obj.op_value.value = 'f';
-							obj.op_value.label = 'False';
+							obj.op_value.label = rpt_strings.TEMPLATE_CONF_FALSE;
 						} else {
 							obj.op_value.value = 't';
-							obj.op_value.label = 'True';
+							obj.op_value.label = rpt_strings.TEMPLATE_CONF_TRUE;
 						}
 					}
 
@@ -430,27 +425,27 @@ function changeTemplateFilterValue () {
 			default:
 
 
-				var promptstring = "Field does not match one of list (comma separated):";
+				var promptstring = rpt_strings.TEMPLATE_CONF_NO_MATCH;
 
 				switch (obj.op) {
 					case 'not between':
-						promptstring = "Field value is not between (comma separated):";
+						promptstring = rpt_strings.TEMPLATE_CONF_NOT_BETWEEN;
 						break;
 
 					case 'between':
-						promptstring = "Field value is between (comma separated):";
+						promptstring = rpt_strings.TEMPLATE_CONF_BETWEEN;
 						break;
 
 					case 'not in':
-						promptstring = "Field does not match one of list (comma separated):";
+						promptstring = rpt_strings.TEMPLATE_CONF_NOT_IN;
 						break;
 
 					case 'in':
-						promptstring = "Field matches one of list (comma separated):";
+						promptstring = rpt_strings.TEMPLATE_CONF_IN;
 						break;
 
 					default:
-						promptstring = "Value " + obj.op_label + ":";
+						promptstring = 	dojo.string.substitute( rpt_strings.TEMPLATE_CONF_DEFAULT, [obj.op_label]);
 						break;
 				}
 
@@ -650,7 +645,7 @@ function renderSources (selected) {
 					{ relation : rpt_rel_cache[relation_alias].alias,
 					  idlclass : rpt_rel_cache[relation_alias].idlclass,
 					  reltype  : rpt_rel_cache[relation_alias].reltype,
-					  path     : rpt_rel_cache[relation_alias].path,
+					  path     : rpt_rel_cache[relation_alias].path
 					},
 					createTreeRow(
 						{},
@@ -797,7 +792,7 @@ function save_template () {
 	tmpl.folder(cgi.param('folder'));
 	tmpl.data(js2JSON(template));
 
-	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
+	if(!confirm(dojo.string.substitute( rpt_strings.TEMPLATE_CONF_CONFIRM_SAVE, [tmpl.name(), tmpl.description()] )))
 		return;
 
 	var req = new Request('open-ils.reporter:open-ils.reporter.template.create', session, tmpl);
@@ -809,7 +804,7 @@ function save_template () {
 				alertILSEvent(res);
 			} else {
 				if( res && res != '0' ) {
-					confirm('Template ' + tmpl.name() + ' was successfully saved.');
+					confirm(dojo.string.substitute( rpt_strings.TEMPLATE_CONF_SUCCESS_SAVE, [tmpl.name()] ));
 					_l('../oils_rpt.xhtml');
 				}
 			}
