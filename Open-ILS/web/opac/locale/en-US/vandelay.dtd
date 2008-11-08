@@ -103,4 +103,4 @@
 <!ENTITY vandelay.select_actions "-- Actions --">
 <!ENTITY vandelay.queue.total "Total:">
 <!ENTITY vandelay.queue.imported "Imported:">
-
+<!ENTITY vandelay.queue.column_picker.title "Column Picker">

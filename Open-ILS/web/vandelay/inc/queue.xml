@@ -35,7 +35,7 @@
 <div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
 
     <!-- column picker dialog -->
-    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="Column Picker">
+    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="&vandelay.queue.column_picker.title;">
         <table class='form_table'>
             <thead>
                 <tr><th width='33%'>&vandelay.column;</th>
