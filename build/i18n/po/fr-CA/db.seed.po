@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-05 21:56:50-0400\n"
+"POT-Creation-Date: 2008-11-08 22:37:01-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -12,4588 +12,4257 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# id::1
-#: cbs.source:3
-msgid "oclc"
-msgstr "oclc"
-
-# id::2
-#: cbs.source:5
-msgid "System Local"
-msgstr "Système local"
-
-# id::3
-#: cbs.source:7
-msgid "Project Gutenberg"
-msgstr "Project Gutenberg"
-
-# id::1
-#: cst.value:10
-msgid "Good"
-msgstr "Bien"
-
-# id::2
-#: cst.value:11
-msgid "Barred"
-msgstr "Barré"
-
-# id::1
-#: cnct.name:47
-msgid "Paperback Book"
-msgstr "Livre de poche"
-
-# id::1
-#: cit.name:51
-msgid "Drivers License"
-msgstr "Permis de conduire"
-
-# id::2
-#: cit.name:53
-msgid "SSN"
-msgstr "SSN"
-
-# id::3
-#: cit.name:55
-msgid "Other"
-msgstr "Autre"
-
-# id::1
-#: crcd.name:59
-msgid "7_days_0_renew"
-msgstr "7_jours_0_renouvellement"
-
-# id::2
-#: crcd.name:61
-msgid "28_days_2_renew"
-msgstr "28_jours_2_renouvellements"
-
-# id::3
-#: crcd.name:63
-msgid "3_months_0_renew"
-msgstr "3_mois_0_renouvellement"
-
-# id::4
-#: crcd.name:65
-msgid "3_days_1_renew"
-msgstr "3_jours_1_renouvellement"
-
-# id::5
-#: crcd.name:67
-msgid "2_months_2_renew"
-msgstr "2_mois_2_renouvellements"
-
-# id::6
-#: crcd.name:69
-msgid "35_days_1_renew"
-msgstr "35_jours_1_renouvellement"
-
-# id::7
-#: crcd.name:71
-msgid "7_days_2_renew"
-msgstr "7_jours_2_renouvellements"
-
-# id::8
-#: crcd.name:73
-msgid "1_hour_2_renew"
-msgstr "1_heure_2_renouvellements"
-
-# id::9
-#: crcd.name:75
-msgid "28_days_0_renew"
-msgstr "28_jours_0_renouvellement"
-
-# id::10
-#: crcd.name:77
-msgid "14_days_2_renew"
-msgstr "14_jours_2_renouvellements"
-
-# id::11
-#: crcd.name:79
-msgid "default"
-msgstr "par défaut"
-
-# id::1
-#: crmf.name:83
-msgid "default"
-msgstr "par défaut"
-
-# id::2
-#: crmf.name:85
-msgid "overdue_min"
-msgstr "retard_minimum"
-
-# id::3
-#: crmf.name:87
-msgid "overdue_mid"
-msgstr "retard_moyen"
-
-# id::4
-#: crmf.name:89
-msgid "overdue_max"
-msgstr "retard_maximum"
-
-# id::5
-#: crmf.name:91
-msgid "overdue_equip_min"
-msgstr "retard_équipement_minimum"
-
-# id::6
-#: crmf.name:93
-msgid "overdue_equip_mid"
-msgstr "retard_équipement_moyen"
-
-# id::7
-#: crmf.name:95
-msgid "overdue_equip_max"
-msgstr "retard_équipement_maximum"
-
-# id::1
-#: crrf.name:99
-msgid "default"
-msgstr "par défaut"
-
-# id::2
-#: crrf.name:101
-msgid "10_cent_per_day"
-msgstr "10_cents_par_jour"
-
-# id::3
-#: crrf.name:103
-msgid "50_cent_per_day"
-msgstr "50_cents_par_jour"
-
-# id::1
-#: crahp.name:107
-msgid "3month"
-msgstr "3 mois"
-
-# id::2
-#: crahp.name:109
-msgid "6month"
-msgstr "6 mois"
-
-# id::0
-#: ccs.name:112
-msgid "Available"
-msgstr "Disponible"
-
-# id::1
-#: ccs.name:113
-msgid "Checked out"
-msgstr "Sortie"
-
-# id::2
-#: ccs.name:114
-msgid "Bindery"
-msgstr "Atelier de reliure"
-
-# id::3
-#: ccs.name:115
-msgid "Lost"
-msgstr "Perdu"
-
-# id::4
-#: ccs.name:116
-msgid "Missing"
-msgstr "Manquant"
-
-# id::5
-#: ccs.name:117
-msgid "In process"
-msgstr "En traitement"
-
-# id::6
-#: ccs.name:118
-msgid "In transit"
-msgstr "En transit"
-
-# id::7
-#: ccs.name:119
-msgid "Reshelving"
-msgstr "Remise des documents sur les rayons"
-
-# id::8
-#: ccs.name:120
-msgid "On holds shelf"
-msgstr "Étagère des articles mis en réserve"
-
-# id::9
-#: ccs.name:121
-msgid "On order"
-msgstr "Sur commande"
-
-# id::10
-#: ccs.name:122
-msgid "ILL"
-msgstr "Prêts entre bibliothèques"
-
-# id::11
-#: ccs.name:123
-msgid "Cataloging"
-msgstr "Catalogage"
-
-# id::12
-#: ccs.name:124
-msgid "Reserves"
-msgstr "Réserves"
-
-# id::13
-#: ccs.name:125
-msgid "Discard/Weed"
-msgstr "Retrait/Triage"
-
-# id::14
-#: ccs.name:126
-msgid "Damaged"
-msgstr "Endommagé"
-
-# id::1
-#: cnal.name:131
-msgid "Filtered"
-msgstr "Filtré"
-
-# id::2
-#: cnal.name:133
-msgid "Unfiltered"
-msgstr "Non filtré"
-
-# id::3
-#: cnal.name:135
-msgid "No Access"
-msgstr "Aucun accès"
-
-# id::
-#: cam.value:139
-msgid "Unknown or unspecified"
-msgstr "Inconnu ou non spécifié"
-
-# id::
-#: cam.description:140
-msgid "The target audience for the item not known or not specified."
+#: vqbrad.description:11
+msgid "Internal ID"
 msgstr ""
-
-# id::a
-#: cam.value:142
-msgid "Preschool"
-msgstr "Préscolaire"
-
-# id::a
-#: cam.description:143
-msgid "The item is intended for children, approximate ages 0-5 years."
-msgstr ""
-
-# id::b
-#: cam.value:145
-msgid "Primary"
-msgstr "Primaire"
-
-# id::b
-#: cam.description:146
-msgid "The item is intended for children, approximate ages 6-8 years."
-msgstr ""
-
-# id::c
-#: cam.value:148
-msgid "Pre-adolescent"
-msgstr "Pré-adolescent"
-
-# id::c
-#: cam.description:149
-msgid "The item is intended for young people, approximate ages 9-13 years."
-msgstr ""
-
-# id::d
-#: cam.value:151
-msgid "Adolescent"
-msgstr "Adolescent"
-
-# id::d
-#: cam.description:152
-msgid "The item is intended for young people, approximate ages 14-17 years."
-msgstr ""
-
-# id::e
-#: cam.value:154
-msgid "Adult"
-msgstr "Adulte"
-
-# id::e
-#: cam.description:155
-msgid "The item is intended for adults."
-msgstr ""
-
-# id::f
-#: cam.value:157
-msgid "Specialized"
-msgstr "Spécialisé"
-
-# id::f
-#: cam.description:158
-msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
-msgstr ""
-
-# id::g
-#: cam.value:160
-msgid "General"
-msgstr "Généralités"
-
-# id::g
-#: cam.description:161
-msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
-msgstr ""
-
-# id::j
-#: cam.value:163
-msgid "Juvenile"
-msgstr "Jeunes"
-
-# id::j
-#: cam.description:164
-msgid "The item is intended for children and young people, approximate ages 0-15 years."
-msgstr ""
-
-# id::0
-#: clfm.value:167
-msgid "Not fiction (not further specified)"
-msgstr "néraux (aucune autre spécification)"
-
-# id::0
-#: clfm.description:168
-msgid "The item is not a work of fiction and no further identification of the literary form is desired"
-msgstr ""
-
-# id::1
-#: clfm.value:170
-msgid "Fiction (not further specified)"
-msgstr "Fiction (aucune autre spécification)"
-
-# id::1
-#: clfm.description:171
-msgid "The item is a work of fiction and no further identification of the literary form is desired"
-msgstr ""
-
-# id::c
-#: clfm.value:173
-msgid "Comic strips"
-msgstr "Bandes dessinées"
-
-# id::d
-#: clfm.value:175
-msgid "Dramas"
-msgstr "Drames"
-
-# id::e
-#: clfm.value:177
-msgid "Essays"
-msgstr "Essais"
-
-# id::f
-#: clfm.value:179
-msgid "Novels"
-msgstr "Romans"
-
-# id::h
-#: clfm.value:181
-msgid "Humor, satires, etc."
-msgstr "Humeur, satires, etc."
-
-# id::h
-#: clfm.description:182
-msgid "The item is a humorous work, satire or of similar literary form."
-msgstr ""
-
-# id::i
-#: clfm.value:184
-msgid "Letters"
-msgstr "Lettres"
-
-# id::i
-#: clfm.description:185
-msgid "The item is a single letter or collection of correspondence."
-msgstr ""
-
-# id::j
-#: clfm.value:187
-msgid "Short stories"
-msgstr "Nouvelles"
-
-# id::j
-#: clfm.description:188
-msgid "The item is a short story or collection of short stories."
-msgstr ""
-
-# id::m
-#: clfm.value:190
-msgid "Mixed forms"
-msgstr "Divers genres"
-
-# id::m
-#: clfm.description:191
-msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
-msgstr ""
-
-# id::p
-#: clfm.value:193
-msgid "Poetry"
-msgstr "Poésie"
-
-# id::p
-#: clfm.description:194
-msgid "The item is a poem or collection of poems."
-msgstr ""
-
-# id::s
-#: clfm.value:196
-msgid "Speeches"
-msgstr "Discours"
-
-# id::s
-#: clfm.description:197
-msgid "The item is a speech or collection of speeches."
-msgstr ""
-
-# id::u
-#: clfm.value:199
-msgid "Unknown"
-msgstr "Inconnu"
-
-# id::u
-#: clfm.description:200
-msgid "The literary form of the item is unknown."
-msgstr ""
-
-# id::aar
-#: clm.value:204
-msgid "Afar"
-msgstr "Afar"
-
-# id::abk
-#: clm.value:205
-msgid "Abkhaz"
-msgstr "Abkhaz"
-
-# id::ace
-#: clm.value:206
-msgid "Achinese"
-msgstr "Aceh"
-
-# id::ach
-#: clm.value:207
-msgid "Acoli"
-msgstr "Acoli "
-
-# id::ada
-#: clm.value:208
-msgid "Adangme"
-msgstr "Adangme"
-
-# id::ady
-#: clm.value:209
-msgid "Adygei"
-msgstr "Adygué"
-
-# id::afa
-#: clm.value:210
-msgid "Afroasiatic (Other)"
-msgstr "Afro-asiatique (Autre)"
-
-# id::afh
-#: clm.value:211
-msgid "Afrihili (Artificial language)"
-msgstr "Afrihili (langage artificiel)"
-
-# id::afr
-#: clm.value:212
-msgid "Afrikaans"
-msgstr "Afrikaans"
-
-# id::-ajm
-#: clm.value:213
-msgid "Aljamía"
-msgstr "Aljamía"
-
-# id::aka
-#: clm.value:214
-msgid "Akan"
-msgstr "Akan"
-
-# id::akk
-#: clm.value:215
-msgid "Akkadian"
-msgstr "Akkadien"
-
-# id::alb
-#: clm.value:216
-msgid "Albanian"
-msgstr "Albanais"
-
-# id::ale
-#: clm.value:217
-msgid "Aleut"
-msgstr "Aléoute"
-
-# id::alg
-#: clm.value:218
-msgid "Algonquian (Other)"
-msgstr "Algonquins (Autre)"
-
-# id::amh
-#: clm.value:219
-msgid "Amharic"
-msgstr "Amharic"
-
-# id::ang
-#: clm.value:220
-msgid "English, Old (ca. 450-1100)"
-msgstr "Ancien anglais (aux environs de 450-1100)"
-
-# id::apa
-#: clm.value:221
-msgid "Apache languages"
-msgstr "Langues apaches"
-
-# id::ara
-#: clm.value:222
-msgid "Arabic"
-msgstr "Arabe"
-
-# id::arc
-#: clm.value:223
-msgid "Aramaic"
-msgstr "Araméen"
-
-# id::arg
-#: clm.value:224
-msgid "Aragonese Spanish"
-msgstr "Aragonais, espagnol"
-
-# id::arm
-#: clm.value:225
-msgid "Armenian"
-msgstr "Arménien"
-
-# id::arn
-#: clm.value:226
-msgid "Mapuche"
-msgstr "Mapuche"
-
-# id::arp
-#: clm.value:227
-msgid "Arapaho"
-msgstr "Arapaho"
-
-# id::art
-#: clm.value:228
-msgid "Artificial (Other)"
-msgstr "Artificiel (Autre)"
-
-# id::arw
-#: clm.value:229
-msgid "Arawak"
-msgstr "Arawak"
-
-# id::asm
-#: clm.value:230
-msgid "Assamese"
-msgstr "Assamais"
-
-# id::ast
-#: clm.value:231
-msgid "Bable"
-msgstr "Bable"
-
-# id::ath
-#: clm.value:232
-msgid "Athapascan (Other)"
-msgstr "Athapascan (Autre)"
-
-# id::aus
-#: clm.value:233
-msgid "Australian languages"
-msgstr "Langues australiennes"
-
-# id::ava
-#: clm.value:234
-msgid "Avaric"
-msgstr "Avaric"
-
-# id::ave
-#: clm.value:235
-msgid "Avestan"
-msgstr "Avesta"
-
-# id::awa
-#: clm.value:236
-msgid "Awadhi"
-msgstr "Awadhi"
-
-# id::aym
-#: clm.value:237
-msgid "Aymara"
-msgstr "Aïmara"
-
-# id::aze
-#: clm.value:238
-msgid "Azerbaijani"
-msgstr "Azerbaïdjanais"
-
-# id::bad
-#: clm.value:239
-msgid "Banda"
-msgstr "Banda"
-
-# id::bai
-#: clm.value:240
-msgid "Bamileke languages"
-msgstr "Langues bamilekes"
-
-# id::bak
-#: clm.value:241
-msgid "Bashkir"
-msgstr "Bashkir"
-
-# id::bal
-#: clm.value:242
-msgid "Baluchi"
-msgstr "Baluchi"
-
-# id::bam
-#: clm.value:243
-msgid "Bambara"
-msgstr "Bambara"
-
-# id::ban
-#: clm.value:244
-msgid "Balinese"
-msgstr "Balinais"
-
-# id::baq
-#: clm.value:245
-msgid "Basque"
-msgstr "Basque"
-
-# id::bas
-#: clm.value:246
-msgid "Basa"
-msgstr "Baasa"
-
-# id::bat
-#: clm.value:247
-msgid "Baltic (Other)"
-msgstr "Balti (Autre)"
-
-# id::bej
-#: clm.value:248
-msgid "Beja"
-msgstr "Beja"
-
-# id::bel
-#: clm.value:249
-msgid "Belarusian"
-msgstr "Bélarussien"
-
-# id::bem
-#: clm.value:250
-msgid "Bemba"
-msgstr "Bemba"
-
-# id::ben
-#: clm.value:251
-msgid "Bengali"
-msgstr "Bengali"
-
-# id::ber
-#: clm.value:252
-msgid "Berber (Other)"
-msgstr "Berbère (Autre)"
-
-# id::bho
-#: clm.value:253
-msgid "Bhojpuri"
-msgstr "Bhojpuri"
-
-# id::bih
-#: clm.value:254
-msgid "Bihari"
-msgstr "Bihari"
-
-# id::bik
-#: clm.value:255
-msgid "Bikol"
-msgstr "Bikol"
-
-# id::bin
-#: clm.value:256
-msgid "Edo"
-msgstr "Edo"
-
-# id::bis
-#: clm.value:257
-msgid "Bislama"
-msgstr "Bislama"
-
-# id::bla
-#: clm.value:258
-msgid "Siksika"
-msgstr "Siksika"
-
-# id::bnt
-#: clm.value:259
-msgid "Bantu (Other)"
-msgstr "Bantu (Autre)"
-
-# id::bos
-#: clm.value:260
-msgid "Bosnian"
-msgstr "Bosniaque"
-
-# id::bra
-#: clm.value:261
-msgid "Braj"
-msgstr "Braj"
-
-# id::bre
-#: clm.value:262
-msgid "Breton"
-msgstr "Breton"
-
-# id::btk
-#: clm.value:263
-msgid "Batak"
-msgstr "Batak"
-
-# id::bua
-#: clm.value:264
-msgid "Buriat"
-msgstr "Buriat"
-
-# id::bug
-#: clm.value:265
-msgid "Bugis"
-msgstr "Bugis"
-
-# id::bul
-#: clm.value:266
-msgid "Bulgarian"
-msgstr "Bulgare"
-
-# id::bur
-#: clm.value:267
-msgid "Burmese"
-msgstr "Birman"
-
-# id::cad
-#: clm.value:268
-msgid "Caddo"
-msgstr "Caddo"
-
-# id::cai
-#: clm.value:269
-msgid "Central American Indian (Other)"
-msgstr "Amérindien de l’Amérique centrale (Autre)"
-
-# id::-cam
-#: clm.value:270
-msgid "Khmer"
-msgstr "Khmer"
-
-# id::car
-#: clm.value:271
-msgid "Carib"
-msgstr "Caribe"
-
-# id::cat
-#: clm.value:272
-msgid "Catalan"
-msgstr "Catalan"
-
-# id::cau
-#: clm.value:273
-msgid "Caucasian (Other)"
-msgstr "Catalan (Autre)"
-
-# id::ceb
-#: clm.value:274
-msgid "Cebuano"
-msgstr "Cebuano"
-
-# id::cel
-#: clm.value:275
-msgid "Celtic (Other)"
-msgstr "Celtique (Autre) "
-
-# id::cha
-#: clm.value:276
-msgid "Chamorro"
-msgstr "Chamorro"
-
-# id::chb
-#: clm.value:277
-msgid "Chibcha"
-msgstr "Chibcha"
-
-# id::che
-#: clm.value:278
-msgid "Chechen"
-msgstr "Tchétchène"
-
-# id::chg
-#: clm.value:279
-msgid "Chagatai"
-msgstr "Djaghatai"
-
-# id::chi
-#: clm.value:280
-msgid "Chinese"
-msgstr "Chinois"
-
-# id::chk
-#: clm.value:281
-msgid "Truk"
-msgstr "Trukois"
-
-# id::chm
-#: clm.value:282
-msgid "Mari"
-msgstr "Mari"
-
-# id::chn
-#: clm.value:283
-msgid "Chinook jargon"
-msgstr "Chinook"
-
-# id::cho
-#: clm.value:284
-msgid "Choctaw"
-msgstr "Choctaw"
-
-# id::chp
-#: clm.value:285
-msgid "Chipewyan"
-msgstr "Chippewyan"
-
-# id::chr
-#: clm.value:286
-msgid "Cherokee"
-msgstr "Cherokee"
-
-# id::chu
-#: clm.value:287
-msgid "Church Slavic"
-msgstr "Slavon liturgique"
-
-# id::chv
-#: clm.value:288
-msgid "Chuvash"
-msgstr "Tchouvache"
-
-# id::chy
-#: clm.value:289
-msgid "Cheyenne"
-msgstr "Cheyenne"
-
-# id::cmc
-#: clm.value:290
-msgid "Chamic languages"
-msgstr "Langues chamiques"
-
-# id::cop
-#: clm.value:291
-msgid "Coptic"
-msgstr "Copte"
-
-# id::cor
-#: clm.value:292
-msgid "Cornish"
-msgstr "Cornique"
-
-# id::cos
-#: clm.value:293
-msgid "Corsican"
-msgstr "Corse"
-
-# id::cpe
-#: clm.value:294
-msgid "Creoles and Pidgins, English-based (Other)"
-msgstr "Langues créoles et pidgin, anglais (Autre)"
-
-# id::cpf
-#: clm.value:295
-msgid "Creoles and Pidgins, French-based (Other)"
-msgstr "Langues créoles et pidgin, français (Autre)"
-
-# id::cpp
-#: clm.value:296
-msgid "Creoles and Pidgins, Portuguese-based (Other)"
-msgstr "Langues créoles et pidgin, portuguais (Autre)"
-
-# id::cre
-#: clm.value:297
-msgid "Cree"
-msgstr "Cri"
-
-# id::crh
-#: clm.value:298
-msgid "Crimean Tatar"
-msgstr "Tatar de Crimée"
-
-# id::crp
-#: clm.value:299
-msgid "Creoles and Pidgins (Other)"
-msgstr "Langues créoles et pidgin (Autre)"
-
-# id::cus
-#: clm.value:300
-msgid "Cushitic (Other)"
-msgstr "Couchitique (Autre)"
-
-# id::cze
-#: clm.value:301
-msgid "Czech"
-msgstr "Tchèque"
-
-# id::dak
-#: clm.value:302
-msgid "Dakota"
-msgstr "Dakota"
-
-# id::dan
-#: clm.value:303
-msgid "Danish"
-msgstr "Danois"
-
-# id::dar
-#: clm.value:304
-msgid "Dargwa"
-msgstr "Dargwa"
-
-# id::day
-#: clm.value:305
-msgid "Dayak"
-msgstr "Dayak"
-
-# id::del
-#: clm.value:306
-msgid "Delaware"
-msgstr "Delaware"
-
-# id::den
-#: clm.value:307
-msgid "Slave"
-msgstr "Slave"
-
-# id::dgr
-#: clm.value:308
-msgid "Dogrib"
-msgstr "Dogrib"
-
-# id::din
-#: clm.value:309
-msgid "Dinka"
-msgstr "Dinka"
-
-# id::div
-#: clm.value:310
-msgid "Divehi"
-msgstr "Divehi"
-
-# id::doi
-#: clm.value:311
-msgid "Dogri"
-msgstr "Dogra"
-
-# id::dra
-#: clm.value:312
-msgid "Dravidian (Other)"
-msgstr "Dravidienne (Autre)"
-
-# id::dua
-#: clm.value:313
-msgid "Duala"
-msgstr "Douala"
-
-# id::dum
-#: clm.value:314
-msgid "Dutch, Middle (ca. 1050-1350)"
-msgstr "Moyen néerlandais (aux environs de 1050-1350)"
-
-# id::dut
-#: clm.value:315
-msgid "Dutch"
-msgstr "Hollandais"
-
-# id::dyu
-#: clm.value:316
-msgid "Dyula"
-msgstr "Dyula"
-
-# id::dzo
-#: clm.value:317
-msgid "Dzongkha"
-msgstr "Dzonga"
-
-# id::efi
-#: clm.value:318
-msgid "Efik"
-msgstr "Efik"
-
-# id::egy
-#: clm.value:319
-msgid "Egyptian"
-msgstr "Égyptien"
-
-# id::eka
-#: clm.value:320
-msgid "Ekajuk"
-msgstr "Ekajuk"
-
-# id::elx
-#: clm.value:321
-msgid "Elamite"
-msgstr "Élamite"
-
-# id::eng
-#: clm.value:322
-msgid "English"
-msgstr "Anglais"
-
-# id::enm
-#: clm.value:323
-msgid "English, Middle (1100-1500)"
-msgstr "Moyen anglais (1100-1500)"
-
-# id::epo
-#: clm.value:324
-msgid "Esperanto"
-msgstr "Espéranto"
-
-# id::-esk
-#: clm.value:325
-msgid "Eskimo languages"
-msgstr "Langues inuites"
-
-# id::-esp
-#: clm.value:326
-msgid "Esperanto"
-msgstr "Espéranto"
-
-# id::est
-#: clm.value:327
-msgid "Estonian"
-msgstr "Estonien"
-
-# id::-eth
-#: clm.value:328
-msgid "Ethiopic"
-msgstr "Éthiopien"
-
-# id::ewe
-#: clm.value:329
-msgid "Ewe"
-msgstr "Éwé"
-
-# id::ewo
-#: clm.value:330
-msgid "Ewondo"
-msgstr "Ewondo"
-
-# id::fan
-#: clm.value:331
-msgid "Fang"
-msgstr "Fan"
-
-# id::fao
-#: clm.value:332
-msgid "Faroese"
-msgstr "Féringien"
-
-# id::-far
-#: clm.value:333
-msgid "Faroese"
-msgstr "Féringien"
-
-# id::fat
-#: clm.value:334
-msgid "Fanti"
-msgstr "Fanti"
-
-# id::fij
-#: clm.value:335
-msgid "Fijian"
-msgstr "Fidjien"
-
-# id::fin
-#: clm.value:336
-msgid "Finnish"
-msgstr "Finnois"
-
-# id::fiu
-#: clm.value:337
-msgid "Finno-Ugrian (Other)"
-msgstr "Finno-ougrienne (Autre)"
-
-# id::fon
-#: clm.value:338
-msgid "Fon"
-msgstr "Fon"
-
-# id::fre
-#: clm.value:339
-msgid "French"
-msgstr "Français"
-
-# id::-fri
-#: clm.value:340
-msgid "Frisian"
-msgstr "Frison"
-
-# id::frm
-#: clm.value:341
-msgid "French, Middle (ca. 1400-1600)"
-msgstr "Moyen français (aux environs de 1400-1600)"
-
-# id::fro
-#: clm.value:342
-msgid "French, Old (ca. 842-1400)"
-msgstr "Ancien français (aux environs de 842-1400)"
-
-# id::fry
-#: clm.value:343
-msgid "Frisian"
-msgstr "Frison"
-
-# id::ful
-#: clm.value:344
-msgid "Fula"
-msgstr "Fulfude"
-
-# id::fur
-#: clm.value:345
-msgid "Friulian"
-msgstr "Frioulan"
-
-# id::gaa
-#: clm.value:346
-msgid "Gã"
-msgstr "Gã"
-
-# id::-gae
-#: clm.value:347
-msgid "Scottish Gaelic"
-msgstr "Gaélique d'Écosse"
-
-# id::-gag
-#: clm.value:348
-msgid "Galician"
-msgstr "Galicien"
-
-# id::-gal
-#: clm.value:349
-msgid "Oromo"
-msgstr "Oromo"
-
-# id::gay
-#: clm.value:350
-msgid "Gayo"
-msgstr "Gayo"
-
-# id::gba
-#: clm.value:351
-msgid "Gbaya"
-msgstr "Gbaya"
-
-# id::gem
-#: clm.value:352
-msgid "Germanic (Other)"
-msgstr "Germanique (Autre)"
-
-# id::geo
-#: clm.value:353
-msgid "Georgian"
-msgstr "Géorgien"
-
-# id::ger
-#: clm.value:354
-msgid "German"
-msgstr "Allemand"
-
-# id::gez
-#: clm.value:355
-msgid "Ethiopic"
-msgstr "Éthiopien"
-
-# id::gil
-#: clm.value:356
-msgid "Gilbertese"
-msgstr "Gilbertais"
-
-# id::gla
-#: clm.value:357
-msgid "Scottish Gaelic"
-msgstr "Gaélique d'Écosse"
-
-# id::gle
-#: clm.value:358
-msgid "Irish"
-msgstr "Irlandais"
-
-# id::glg
-#: clm.value:359
-msgid "Galician"
-msgstr "Galicien"
-
-# id::glv
-#: clm.value:360
-msgid "Manx"
-msgstr "Manx"
-
-# id::gmh
-#: clm.value:361
-msgid "German, Middle High (ca. 1050-1500)"
-msgstr "Haut-allemand moyen (aux environs de 1050-1500)"
-
-# id::goh
-#: clm.value:362
-msgid "German, Old High (ca. 750-1050)"
-msgstr "Vieux haut-allemand (aux environs de 750-1050)"
-
-# id::gon
-#: clm.value:363
-msgid "Gondi"
-msgstr "Gondi"
-
-# id::gor
-#: clm.value:364
-msgid "Gorontalo"
-msgstr "Gorontalo"
-
-# id::got
-#: clm.value:365
-msgid "Gothic"
-msgstr "Gotique"
-
-# id::grb
-#: clm.value:366
-msgid "Grebo"
-msgstr "Grebo"
-
-# id::grc
-#: clm.value:367
-msgid "Greek, Ancient (to 1453)"
-msgstr "Grec ancien (jusqu’à 1453)"
-
-# id::gre
-#: clm.value:368
-msgid "Greek, Modern (1453- )"
-msgstr "Grec moderne (de 1453 à)"
-
-# id::grn
-#: clm.value:369
-msgid "Guarani"
-msgstr "Guarani"
-
-# id::-gua
-#: clm.value:370
-msgid "Guarani"
-msgstr "Guarani"
-
-# id::guj
-#: clm.value:371
-msgid "Gujarati"
-msgstr "Gujarati"
-
-# id::gwi
-#: clm.value''in:372
-msgid "Gwich"
-msgstr ""
-
-# id::hai
-#: clm.value:373
-msgid "Haida"
-msgstr "Skittagetan"
-
-# id::hat
-#: clm.value:374
-msgid "Haitian French Creole"
-msgstr "Créole français de Haïti"
-
-# id::hau
-#: clm.value:375
-msgid "Hausa"
-msgstr "Haoussa"
-
-# id::haw
-#: clm.value:376
-msgid "Hawaiian"
-msgstr "Hawaïen"
-
-# id::heb
-#: clm.value:377
-msgid "Hebrew"
-msgstr "Hébreu"
-
-# id::her
-#: clm.value:378
-msgid "Herero"
-msgstr "Herero"
-
-# id::hil
-#: clm.value:379
-msgid "Hiligaynon"
-msgstr "Hiligaynon"
-
-# id::him
-#: clm.value:380
-msgid "Himachali"
-msgstr "Himachali"
-
-# id::hin
-#: clm.value:381
-msgid "Hindi"
-msgstr "Hindi"
-
-# id::hit
-#: clm.value:382
-msgid "Hittite"
-msgstr "Hittite"
-
-# id::hmn
-#: clm.value:383
-msgid "Hmong"
-msgstr "Hmong"
-
-# id::hmo
-#: clm.value:384
-msgid "Hiri Motu"
-msgstr "Hiri-motu "
-
-# id::hun
-#: clm.value:385
-msgid "Hungarian"
-msgstr "Hongrois"
-
-# id::hup
-#: clm.value:386
-msgid "Hupa"
-msgstr "Hupa"
-
-# id::iba
-#: clm.value:387
-msgid "Iban"
-msgstr "Iban"
-
-# id::ibo
-#: clm.value:388
-msgid "Igbo"
-msgstr "Igbo"
-
-# id::ice
-#: clm.value:389
-msgid "Icelandic"
-msgstr "Islandais"
-
-# id::ido
-#: clm.value:390
-msgid "Ido"
-msgstr "Ido"
-
-# id::iii
-#: clm.value:391
-msgid "Sichuan Yi"
-msgstr "Sichuan Yi "
-
-# id::ijo
-#: clm.value:392
-msgid "Ijo"
-msgstr "Ijo"
-
-# id::iku
-#: clm.value:393
-msgid "Inuktitut"
-msgstr "Inuktitut"
-
-# id::ile
-#: clm.value:394
-msgid "Interlingue"
-msgstr "Interlingue"
-
-# id::ilo
-#: clm.value:395
-msgid "Iloko"
-msgstr "Iloko"
-
-# id::ina
-#: clm.value:396
-msgid "Interlingua (International Auxiliary Language Association)"
-msgstr "Interlingua (Langue Auxiliaire Internationale)"
-
-# id::inc
-#: clm.value:397
-msgid "Indic (Other)"
-msgstr "Langue indo-aryenne (Autre)"
-
-# id::ind
-#: clm.value:398
-msgid "Indonesian"
-msgstr "Indonésienne"
-
-# id::ine
-#: clm.value:399
-msgid "Indo-European (Other)"
-msgstr "Indo-européenne (Autre)"
-
-# id::inh
-#: clm.value:400
-msgid "Ingush"
-msgstr "Ingouche"
-
-# id::-int
-#: clm.value:401
-msgid "Interlingua (International Auxiliary Language Association)"
-msgstr "Interlingua (Langue Auxiliaire Internationale)"
-
-# id::ipk
-#: clm.value:402
-msgid "Inupiaq"
-msgstr "Inupiaq"
-
-# id::ira
-#: clm.value:403
-msgid "Iranian (Other)"
-msgstr "Iranien (Autre) "
-
-# id::-iri
-#: clm.value:404
-msgid "Irish"
-msgstr "Irlandais"
-
-# id::iro
-#: clm.value:405
-msgid "Iroquoian (Other)"
-msgstr "Langue iroquoianne (Autre)"
-
-# id::ita
-#: clm.value:406
-msgid "Italian"
-msgstr "Italien"
-
-# id::jav
-#: clm.value:407
-msgid "Javanese"
-msgstr "Javanais"
-
-# id::jpn
-#: clm.value:408
-msgid "Japanese"
-msgstr "Japonais"
-
-# id::jpr
-#: clm.value:409
-msgid "Judeo-Persian"
-msgstr "Judéo-persan"
-
-# id::jrb
-#: clm.value:410
-msgid "Judeo-Arabic"
-msgstr "Judéo-arabe"
-
-# id::kaa
-#: clm.value:411
-msgid "Kara-Kalpak"
-msgstr "Kara-kalpak"
-
-# id::kab
-#: clm.value:412
-msgid "Kabyle"
-msgstr "Kabyle"
-
-# id::kac
-#: clm.value:413
-msgid "Kachin"
-msgstr "Kachin"
-
-# id::kal
-#: clm.value:414
-msgid "Kalâtdlisut"
-msgstr "Kalâtdlisut"
-
-# id::kam
-#: clm.value:415
-msgid "Kamba"
-msgstr "Kamba"
-
-# id::kan
-#: clm.value:416
-msgid "Kannada"
-msgstr "Kannara"
-
-# id::kar
-#: clm.value:417
-msgid "Karen"
-msgstr "Karen"
-
-# id::kas
-#: clm.value:418
-msgid "Kashmiri"
-msgstr "Kachméré"
-
-# id::kau
-#: clm.value:419
-msgid "Kanuri"
-msgstr "Kanuri"
-
-# id::kaw
-#: clm.value:420
-msgid "Kawi"
-msgstr "Kawi"
-
-# id::kaz
-#: clm.value:421
-msgid "Kazakh"
-msgstr "Kazakh"
-
-# id::kbd
-#: clm.value:422
-msgid "Kabardian"
-msgstr "Kabardine"
-
-# id::kha
-#: clm.value:423
-msgid "Khasi"
-msgstr "Khasi"
-
-# id::khi
-#: clm.value:424
-msgid "Khoisan (Other)"
-msgstr "Khoin (Autre)"
-
-# id::khm
-#: clm.value:425
-msgid "Khmer"
-msgstr "Khmer"
-
-# id::kho
-#: clm.value:426
-msgid "Khotanese"
-msgstr "Khotanais"
-
-# id::kik
-#: clm.value:427
-msgid "Kikuyu"
-msgstr "Kikuyu"
-
-# id::kin
-#: clm.value:428
-msgid "Kinyarwanda"
-msgstr "Kinyarwanda"
-
-# id::kir
-#: clm.value:429
-msgid "Kyrgyz"
-msgstr "Kirghize"
-
-# id::kmb
-#: clm.value:430
-msgid "Kimbundu"
-msgstr "Kimboundou"
-
-# id::kok
-#: clm.value:431
-msgid "Konkani"
-msgstr "Konkani"
-
-# id::kom
-#: clm.value:432
-msgid "Komi"
-msgstr "Komi"
-
-# id::kon
-#: clm.value:433
-msgid "Kongo"
-msgstr "Kongo"
-
-# id::kor
-#: clm.value:434
-msgid "Korean"
-msgstr "Coréen"
-
-# id::kos
-#: clm.value:435
-msgid "Kusaie"
-msgstr "Kusaie"
-
-# id::kpe
-#: clm.value:436
-msgid "Kpelle"
-msgstr "Kpellé"
-
-# id::kro
-#: clm.value:437
-msgid "Kru"
-msgstr "Kru"
-
-# id::kru
-#: clm.value:438
-msgid "Kurukh"
-msgstr "Kurukh"
-
-# id::kua
-#: clm.value:439
-msgid "Kuanyama"
-msgstr "Ovambo"
-
-# id::kum
-#: clm.value:440
-msgid "Kumyk"
-msgstr "Kumyk"
-
-# id::kur
-#: clm.value:441
-msgid "Kurdish"
-msgstr "Kurde"
-
-# id::-kus
-#: clm.value:442
-msgid "Kusaie"
-msgstr "Kusaie"
-
-# id::kut
-#: clm.value:443
-msgid "Kutenai"
-msgstr "Kutenai"
-
-# id::lad
-#: clm.value:444
-msgid "Ladino"
-msgstr "Ladino"
-
-# id::lah
-#: clm.value:445
-msgid "Lahnda"
-msgstr "Lahnda"
-
-# id::lam
-#: clm.value:446
-msgid "Lamba"
-msgstr "Lamba"
-
-# id::-lan
-#: clm.value:447
-msgid "Occitan (post-1500)"
-msgstr "Occitan (après 1500)"
-
-# id::lao
-#: clm.value:448
-msgid "Lao"
-msgstr "Lao"
-
-# id::-lap
-#: clm.value:449
-msgid "Sami"
-msgstr "Lapon"
-
-# id::lat
-#: clm.value:450
-msgid "Latin"
-msgstr "Latin"
-
-# id::lav
-#: clm.value:451
-msgid "Latvian"
-msgstr "Lette"
-
-# id::lez
-#: clm.value:452
-msgid "Lezgian"
-msgstr "Lezgian"
-
-# id::lim
-#: clm.value:453
-msgid "Limburgish"
-msgstr "Limburgish"
-
-# id::lin
-#: clm.value:454
-msgid "Lingala"
-msgstr "Lingala"
-
-# id::lit
-#: clm.value:455
-msgid "Lithuanian"
-msgstr "Lituanien"
-
-# id::lol
-#: clm.value:456
-msgid "Mongo-Nkundu"
-msgstr "Mongo-Nkundu"
-
-# id::loz
-#: clm.value:457
-msgid "Lozi"
-msgstr "Lozi"
-
-# id::ltz
-#: clm.value:458
-msgid "Letzeburgesch"
-msgstr "Letzeburgesch"
-
-# id::lua
-#: clm.value:459
-msgid "Luba-Lulua"
-msgstr "Luba-Lulua"
-
-# id::lub
-#: clm.value:460
-msgid "Luba-Katanga"
-msgstr "Luba-Katanga"
-
-# id::lug
-#: clm.value:461
-msgid "Ganda"
-msgstr "Ganda"
-
-# id::lui
-#: clm.value:462
-msgid "Luiseño"
-msgstr "Luiseño"
-
-# id::lun
-#: clm.value:463
-msgid "Lunda"
-msgstr "Lunda"
-
-# id::luo
-#: clm.value:464
-msgid "Luo (Kenya and Tanzania)"
-msgstr "Luo (Kenya et Tanzanie)"
-
-# id::lus
-#: clm.value:465
-msgid "Lushai"
-msgstr "Lushei"
-
-# id::mac
-#: clm.value:466
-msgid "Macedonian"
-msgstr "Macédonien"
-
-# id::mad
-#: clm.value:467
-msgid "Madurese"
-msgstr "Madurais"
-
-# id::mag
-#: clm.value:468
-msgid "Magahi"
-msgstr "Magahi"
-
-# id::mah
-#: clm.value:469
-msgid "Marshallese"
-msgstr "Marshallois"
-
-# id::mai
-#: clm.value:470
-msgid "Maithili"
-msgstr "Maithili"
-
-# id::mak
-#: clm.value:471
-msgid "Makasar"
-msgstr "Macassar"
-
-# id::mal
-#: clm.value:472
-msgid "Malayalam"
-msgstr "Malayalam"
-
-# id::man
-#: clm.value:473
-msgid "Mandingo"
-msgstr "Meninka"
-
-# id::mao
-#: clm.value:474
-msgid "Maori"
-msgstr "Maori"
-
-# id::map
-#: clm.value:475
-msgid "Austronesian (Other)"
-msgstr "Austronesian (Autre)"
-
-# id::mar
-#: clm.value:476
-msgid "Marathi"
-msgstr "Marathi"
-
-# id::mas
-#: clm.value:477
-msgid "Masai"
-msgstr "Masai"
-
-# id::-max
-#: clm.value:478
-msgid "Manx"
-msgstr "Manx"
-
-# id::may
-#: clm.value:479
-msgid "Malay"
-msgstr "Malais"
-
-# id::mdr
-#: clm.value:480
-msgid "Mandar"
-msgstr "Mandar"
-
-# id::men
-#: clm.value:481
-msgid "Mende"
-msgstr "Mendé"
-
-# id::mga
-#: clm.value:482
-msgid "Irish, Middle (ca. 1100-1550)"
-msgstr "Moyen irlandais (aux environs de 1100-1550)"
-
-# id::mic
-#: clm.value:483
-msgid "Micmac"
-msgstr "Micmac"
-
-# id::min
-#: clm.value:484
-msgid "Minangkabau"
-msgstr "Minangkabau"
-
-# id::mis
-#: clm.value:485
-msgid "Miscellaneous languages"
-msgstr "Diverses langues"
-
-# id::mkh
-#: clm.value:486
-msgid "Mon-Khmer (Other)"
-msgstr "Mon-Khmer (Autre)"
-
-# id::-mla
-#: clm.value:487
-msgid "Malagasy"
-msgstr "Malgache"
-
-# id::mlg
-#: clm.value:488
-msgid "Malagasy"
-msgstr "Malgache"
-
-# id::mlt
-#: clm.value:489
-msgid "Maltese"
-msgstr "Maltais"
-
-# id::mnc
-#: clm.value:490
-msgid "Manchu"
-msgstr "Mandchou"
-
-# id::mni
-#: clm.value:491
-msgid "Manipuri"
-msgstr "Meithei"
-
-# id::mno
-#: clm.value:492
-msgid "Manobo languages"
-msgstr "Langues Manobo"
-
-# id::moh
-#: clm.value:493
-msgid "Mohawk"
-msgstr "Mohawk"
-
-# id::mol
-#: clm.value:494
-msgid "Moldavian"
-msgstr "Moldave"
-
-# id::mon
-#: clm.value:495
-msgid "Mongolian"
-msgstr "Mongol"
-
-# id::mos
-#: clm.value:496
-msgid "Mooré"
-msgstr "Mooré"
-
-# id::mul
-#: clm.value:497
-msgid "Multiple languages"
-msgstr "Langues multiples"
-
-# id::mun
-#: clm.value:498
-msgid "Munda (Other)"
-msgstr "Mounda (Autre)"
-
-# id::mus
-#: clm.value:499
-msgid "Creek"
-msgstr "Creek"
-
-# id::mwr
-#: clm.value:500
-msgid "Marwari"
-msgstr "Marvari"
-
-# id::myn
-#: clm.value:501
-msgid "Mayan languages"
-msgstr "Langues mayas"
-
-# id::nah
-#: clm.value:502
-msgid "Nahuatl"
-msgstr "Nahuatl"
-
-# id::nai
-#: clm.value:503
-msgid "North American Indian (Other)"
-msgstr "Indien de l'Amerique du Nort (Autre)"
-
-# id::nap
-#: clm.value:504
-msgid "Neapolitan Italian"
-msgstr "Italien napolitain"
-
-# id::nau
-#: clm.value:505
-msgid "Nauru"
-msgstr "Nauru"
-
-# id::nav
-#: clm.value:506
-msgid "Navajo"
-msgstr "Navaho"
-
-# id::nbl
-#: clm.value:507
-msgid "Ndebele (South Africa)"
-msgstr "Ndébélé (Afrique du Sud)"
-
-# id::nde
-#: clm.value:508
-msgid "Ndebele (Zimbabwe)  "
-msgstr "Ndébélé (Zimbabwe)"
-
-# id::ndo
-#: clm.value:509
-msgid "Ndonga"
-msgstr "Ndonga"
-
-# id::nds
-#: clm.value:510
-msgid "Low German"
-msgstr "Bas-allemand"
-
-# id::nep
-#: clm.value:511
-msgid "Nepali"
-msgstr "Népalais"
-
-# id::new
-#: clm.value:512
-msgid "Newari"
-msgstr "Newari"
-
-# id::nia
-#: clm.value:513
-msgid "Nias"
-msgstr "Nias"
-
-# id::nic
-#: clm.value:514
-msgid "Niger-Kordofanian (Other)"
-msgstr "Niger-Kordofanian (Autre)"
-
-# id::niu
-#: clm.value:515
-msgid "Niuean"
-msgstr "Niue"
-
-# id::nno
-#: clm.value:516
-msgid "Norwegian (Nynorsk)"
-msgstr "Norvégien (Nynorsk)"
-
-# id::nob
-#: clm.value:517
-msgid "Norwegian (Bokmål)"
-msgstr "Norvégien (Bokmål)"
-
-# id::nog
-#: clm.value:518
-msgid "Nogai"
-msgstr "Nogai"
-
-# id::non
-#: clm.value:519
-msgid "Old Norse"
-msgstr "Vieil islandais"
-
-# id::nor
-#: clm.value:520
-msgid "Norwegian"
-msgstr "Norvégien"
-
-# id::nso
-#: clm.value:521
-msgid "Northern Sotho"
-msgstr "Sotho du Nord"
-
-# id::nub
-#: clm.value:522
-msgid "Nubian languages"
-msgstr "Langues nubiennes"
-
-# id::nya
-#: clm.value:523
-msgid "Nyanja"
-msgstr "Nyanga"
-
-# id::nym
-#: clm.value:524
-msgid "Nyamwezi"
-msgstr "Nyamwezi"
-
-# id::nyn
-#: clm.value:525
-msgid "Nyankole"
-msgstr "Nkole"
-
-# id::nyo
-#: clm.value:526
-msgid "Nyoro"
-msgstr "Nyoro"
-
-# id::nzi
-#: clm.value:527
-msgid "Nzima"
-msgstr "Nzima"
-
-# id::oci
-#: clm.value:528
-msgid "Occitan (post-1500)"
-msgstr "Occitan (après 1500)"
-
-# id::oji
-#: clm.value:529
-msgid "Ojibwa"
-msgstr "Ojibwa"
-
-# id::ori
-#: clm.value:530
-msgid "Oriya"
-msgstr "Oriya"
-
-# id::orm
-#: clm.value:531
-msgid "Oromo"
-msgstr "Oromo"
-
-# id::osa
-#: clm.value:532
-msgid "Osage"
-msgstr "Osage"
-
-# id::oss
-#: clm.value:533
-msgid "Ossetic"
-msgstr "Ossète"
-
-# id::ota
-#: clm.value:534
-msgid "Turkish, Ottoman"
-msgstr "Turquie, Ottoman "
-
-# id::oto
-#: clm.value:535
-msgid "Otomian languages"
-msgstr "Langues otomangues"
-
-# id::paa
-#: clm.value:536
-msgid "Papuan (Other)"
-msgstr "Papou (Autre)"
-
-# id::pag
-#: clm.value:537
-msgid "Pangasinan"
-msgstr "Pangasinan"
-
-# id::pal
-#: clm.value:538
-msgid "Pahlavi"
-msgstr "Pahlavi"
-
-# id::pam
-#: clm.value:539
-msgid "Pampanga"
-msgstr "Pampangan"
-
-# id::pan
-#: clm.value:540
-msgid "Panjabi"
-msgstr "Panjabi"
-
-# id::pap
-#: clm.value:541
-msgid "Papiamento"
-msgstr "Papiamento"
-
-# id::pau
-#: clm.value:542
-msgid "Palauan"
-msgstr "Palauan"
-
-# id::peo
-#: clm.value:543
-msgid "Old Persian (ca. 600-400 B.C.)"
-msgstr "Vieux perse (aux environs de 600 à 400 avant J.-C.)"
-
-# id::per
-#: clm.value:544
-msgid "Persian"
-msgstr "Persan"
-
-# id::phi
-#: clm.value:545
-msgid "Philippine (Other)"
-msgstr "Philippine (Autre)"
-
-# id::phn
-#: clm.value:546
-msgid "Phoenician"
-msgstr "Phénicien"
-
-# id::pli
-#: clm.value:547
-msgid "Pali"
-msgstr "Pali"
-
-# id::pol
-#: clm.value:548
-msgid "Polish"
-msgstr "Polonais"
-
-# id::pon
-#: clm.value:549
-msgid "Ponape"
-msgstr "Ponapé"
-
-# id::por
-#: clm.value:550
-msgid "Portuguese"
-msgstr "Portuguais"
-
-# id::pra
-#: clm.value:551
-msgid "Prakrit languages"
-msgstr "Langues prâkrit"
-
-# id::pro
-#: clm.value:552
-msgid "Provençal (to 1500)"
-msgstr "Provençal (jusqu’à 1500)"
-
-# id::pus
-#: clm.value:553
-msgid "Pushto"
-msgstr "Afghan"
-
-# id::que
-#: clm.value:554
-msgid "Quechua"
-msgstr "Quechua"
-
-# id::raj
-#: clm.value:555
-msgid "Rajasthani"
-msgstr "Rajasthani"
-
-# id::rap
-#: clm.value:556
-msgid "Rapanui"
-msgstr "Rapanui"
-
-# id::rar
-#: clm.value:557
-msgid "Rarotongan"
-msgstr "Rarotonga"
-
-# id::roa
-#: clm.value:558
-msgid "Romance (Other)"
-msgstr "Sentimental (Autre)"
-
-# id::roh
-#: clm.value:559
-msgid "Raeto-Romance"
-msgstr "Rhéto-roman"
-
-# id::rom
-#: clm.value:560
-msgid "Romani"
-msgstr "Romani"
-
-# id::rum
-#: clm.value:561
-msgid "Romanian"
-msgstr "Roumain"
-
-# id::run
-#: clm.value:562
-msgid "Rundi"
-msgstr "Rundi"
-
-# id::rus
-#: clm.value:563
-msgid "Russian"
-msgstr "Russie"
-
-# id::sad
-#: clm.value:564
-msgid "Sandawe"
-msgstr "Wassandaui"
-
-# id::sag
-#: clm.value:565
-msgid "Sango (Ubangi Creole)"
-msgstr "Sango (Ubangi Creole)"
-
-# id::sah
-#: clm.value:566
-msgid "Yakut"
-msgstr "Yakoute"
-
-# id::sai
-#: clm.value:567
-msgid "South American Indian (Other)"
-msgstr "Indien de l’Amérique du Sud (Autre)"
-
-# id::sal
-#: clm.value:568
-msgid "Salishan languages"
-msgstr "Langues salish"
-
-# id::sam
-#: clm.value:569
-msgid "Samaritan Aramaic"
-msgstr "Araméen samaritain"
-
-# id::san
-#: clm.value:570
-msgid "Sanskrit"
-msgstr "Sanskrit"
-
-# id::-sao
-#: clm.value:571
-msgid "Samoan"
-msgstr "Samoan"
-
-# id::sas
-#: clm.value:572
-msgid "Sasak"
-msgstr "Sasak"
-
-# id::sat
-#: clm.value:573
-msgid "Santali"
-msgstr "Santali"
-
-# id::scc
-#: clm.value:574
-msgid "Serbian"
-msgstr "Serbe"
-
-# id::sco
-#: clm.value:575
-msgid "Scots"
-msgstr "Écossais"
-
-# id::scr
-#: clm.value:576
-msgid "Croatian"
-msgstr "Croate"
-
-# id::sel
-#: clm.value:577
-msgid "Selkup"
-msgstr "Selkoup"
-
-# id::sem
-#: clm.value:578
-msgid "Semitic (Other)"
-msgstr "Sémitique (Autre)"
-
-# id::sga
-#: clm.value:579
-msgid "Irish, Old (to 1100)"
-msgstr "Vieil irlandais (jusqu’à 1100)"
-
-# id::sgn
-#: clm.value:580
-msgid "Sign languages"
-msgstr "Langages gestuels"
-
-# id::shn
-#: clm.value:581
-msgid "Shan"
-msgstr "Shan"
-
-# id::-sho
-#: clm.value:582
-msgid "Shona"
-msgstr "Shona"
-
-# id::sid
-#: clm.value:583
-msgid "Sidamo"
-msgstr "Sidamo"
-
-# id::sin
-#: clm.value:584
-msgid "Sinhalese"
-msgstr "Singhalais"
-
-# id::sio
-#: clm.value:585
-msgid "Siouan (Other)"
-msgstr "Sioux (Autre)"
-
-# id::sit
-#: clm.value:586
-msgid "Sino-Tibetan (Other)"
-msgstr "Sino-tibétain (Autre)"
-
-# id::sla
-#: clm.value:587
-msgid "Slavic (Other)"
-msgstr "Slave (Autre)"
-
-# id::slo
-#: clm.value:588
-msgid "Slovak"
-msgstr "Slovaque"
-
-# id::slv
-#: clm.value:589
-msgid "Slovenian"
-msgstr "Slovène"
-
-# id::sma
-#: clm.value:590
-msgid "Southern Sami"
-msgstr "Lapon du Sud"
-
-# id::sme
-#: clm.value:591
-msgid "Northern Sami"
-msgstr "Lapon du Nord"
-
-# id::smi
-#: clm.value:592
-msgid "Sami"
-msgstr "Lapon"
-
-# id::smj
-#: clm.value:593
-msgid "Lule Sami"
-msgstr "Lule Lapon"
-
-# id::smn
-#: clm.value:594
-msgid "Inari Sami"
-msgstr "Inari Lapon"
-
-# id::smo
-#: clm.value:595
-msgid "Samoan"
-msgstr "Samoan"
-
-# id::sms
-#: clm.value:596
-msgid "Skolt Sami"
-msgstr "Skolt Lapon"
-
-# id::sna
-#: clm.value:597
-msgid "Shona"
-msgstr "Shona"
-
-# id::snd
-#: clm.value:598
-msgid "Sindhi"
-msgstr "Sindhi"
-
-# id::-snh
-#: clm.value:599
-msgid "Sinhalese"
-msgstr "Singhalais"
-
-# id::snk
-#: clm.value:600
-msgid "Soninke"
-msgstr "Soninké"
-
-# id::sog
-#: clm.value:601
-msgid "Sogdian"
-msgstr "Sogdien"
-
-# id::som
-#: clm.value:602
-msgid "Somali"
-msgstr "Somali"
-
-# id::son
-#: clm.value:603
-msgid "Songhai"
-msgstr "Songhaï"
-
-# id::sot
-#: clm.value:604
-msgid "Sotho"
-msgstr "Sotho"
-
-# id::spa
-#: clm.value:605
-msgid "Spanish"
-msgstr "Espagnol"
-
-# id::srd
-#: clm.value:606
-msgid "Sardinian"
-msgstr "Sarde"
-
-# id::srr
-#: clm.value:607
-msgid "Serer"
-msgstr "Sérère"
-
-# id::ssa
-#: clm.value:608
-msgid "Nilo-Saharan (Other)"
-msgstr "Nilo-saharien (Autre)"
-
-# id::-sso
-#: clm.value:609
-msgid "Sotho"
-msgstr "Sotho"
-
-# id::ssw
-#: clm.value:610
-msgid "Swazi"
-msgstr "Swazi"
-
-# id::suk
-#: clm.value:611
-msgid "Sukuma"
-msgstr "Sukuma"
-
-# id::sun
-#: clm.value:612
-msgid "Sundanese"
-msgstr "Soudanais"
-
-# id::sus
-#: clm.value:613
-msgid "Susu"
-msgstr "Soso"
-
-# id::sux
-#: clm.value:614
-msgid "Sumerian"
-msgstr "Sumérien"
-
-# id::swa
-#: clm.value:615
-msgid "Swahili"
-msgstr "Swahili"
-
-# id::swe
-#: clm.value:616
-msgid "Swedish"
-msgstr "Suédois"
-
-# id::-swz
-#: clm.value:617
-msgid "Swazi"
-msgstr "Swazi"
-
-# id::syr
-#: clm.value:618
-msgid "Syriac"
-msgstr "Syriaque"
-
-# id::-tag
-#: clm.value:619
-msgid "Tagalog"
-msgstr "Tagal"
-
-# id::tah
-#: clm.value:620
-msgid "Tahitian"
-msgstr "Tahitien"
-
-# id::tai
-#: clm.value:621
-msgid "Tai (Other)"
-msgstr "Tai (Autre)"
-
-# id::-taj
-#: clm.value:622
-msgid "Tajik"
-msgstr "Tadjik"
-
-# id::tam
-#: clm.value:623
-msgid "Tamil"
-msgstr "Tamoul"
-
-# id::-tar
-#: clm.value:624
-msgid "Tatar"
-msgstr "Tatar"
-
-# id::tat
-#: clm.value:625
-msgid "Tatar"
-msgstr "Tatar"
-
-# id::tel
-#: clm.value:626
-msgid "Telugu"
-msgstr "Telugu"
-
-# id::tem
-#: clm.value:627
-msgid "Temne"
-msgstr "Temne"
-
-# id::ter
-#: clm.value:628
-msgid "Terena"
-msgstr "Terena"
-
-# id::tet
-#: clm.value:629
-msgid "Tetum"
-msgstr "Tetum"
-
-# id::tgk
-#: clm.value:630
-msgid "Tajik"
-msgstr "Tadjik"
-
-# id::tgl
-#: clm.value:631
-msgid "Tagalog"
-msgstr "Tagal"
-
-# id::tha
-#: clm.value:632
-msgid "Thai"
-msgstr "Thai"
-
-# id::tib
-#: clm.value:633
-msgid "Tibetan"
-msgstr "Tibétain"
-
-# id::tig
-#: clm.value:634
-msgid "Tigré"
-msgstr "Tigré"
-
-# id::tir
-#: clm.value:635
-msgid "Tigrinya"
-msgstr "Tigrina"
-
-# id::tiv
-#: clm.value:636
-msgid "Tiv"
-msgstr "Tiv"
-
-# id::tkl
-#: clm.value:637
-msgid "Tokelauan"
-msgstr "Tokelauan"
-
-# id::tli
-#: clm.value:638
-msgid "Tlingit"
-msgstr "Tlingit"
-
-# id::tmh
-#: clm.value:639
-msgid "Tamashek"
-msgstr "Tamacheq"
-
-# id::tog
-#: clm.value:640
-msgid "Tonga (Nyasa)"
-msgstr "Tonga (Nyassa)"
-
-# id::ton
-#: clm.value:641
-msgid "Tongan"
-msgstr "Tongan"
-
-# id::tpi
-#: clm.value:642
-msgid "Tok Pisin"
-msgstr "Tok Pisin"
-
-# id::-tru
-#: clm.value:643
-msgid "Truk"
-msgstr "Trukois"
-
-# id::tsi
-#: clm.value:644
-msgid "Tsimshian"
-msgstr "Tsimshian"
-
-# id::tsn
-#: clm.value:645
-msgid "Tswana"
-msgstr "Bechouana"
-
-# id::tso
-#: clm.value:646
-msgid "Tsonga"
-msgstr "Balonga"
-
-# id::-tsw
-#: clm.value:647
-msgid "Tswana"
-msgstr "Bechouana"
-
-# id::tuk
-#: clm.value:648
-msgid "Turkmen"
-msgstr "Türkmène"
-
-# id::tum
-#: clm.value:649
-msgid "Tumbuka"
-msgstr "Tamboka"
-
-# id::tup
-#: clm.value:650
-msgid "Tupi languages"
-msgstr "Langues tupies"
-
-# id::tur
-#: clm.value:651
-msgid "Turkish"
-msgstr "Turc"
-
-# id::tut
-#: clm.value:652
-msgid "Altaic (Other)"
-msgstr "Altaïque (Autre)"
-
-# id::tvl
-#: clm.value:653
-msgid "Tuvaluan"
-msgstr "Tuvaluan"
-
-# id::twi
-#: clm.value:654
-msgid "Twi"
-msgstr "Twi"
-
-# id::tyv
-#: clm.value:655
-msgid "Tuvinian"
-msgstr "Tuvinian"
-
-# id::udm
-#: clm.value:656
-msgid "Udmurt"
-msgstr "Oudmourte"
-
-# id::uga
-#: clm.value:657
-msgid "Ugaritic"
-msgstr "Ougaritique"
-
-# id::uig
-#: clm.value:658
-msgid "Uighur"
-msgstr "Ouïgour"
-
-# id::ukr
-#: clm.value:659
-msgid "Ukrainian"
-msgstr "Ukrainien"
-
-# id::umb
-#: clm.value:660
-msgid "Umbundu"
-msgstr "Mbundu"
-
-# id::und
-#: clm.value:661
-msgid "Undetermined"
-msgstr "Indéterminé"
-
-# id::urd
-#: clm.value:662
-msgid "Urdu"
-msgstr "Urdu"
-
-# id::uzb
-#: clm.value:663
-msgid "Uzbek"
-msgstr "Ouzbek"
 
 # id::vai
-#: clm.value:664
+#: clm.value:vai
 msgid "Vai"
 msgstr "Vaï"
 
-# id::ven
-#: clm.value:665
-msgid "Venda"
-msgstr "Venda"
-
-# id::vie
-#: clm.value:666
-msgid "Vietnamese"
-msgstr "Vietnamien"
-
-# id::vol
-#: clm.value:667
-msgid "Volapük"
-msgstr "Volapük"
-
-# id::vot
-#: clm.value:668
-msgid "Votic"
-msgstr "Votic"
-
-# id::wak
-#: clm.value:669
-msgid "Wakashan languages"
-msgstr "Langues wakashes"
-
-# id::wal
-#: clm.value:670
-msgid "Walamo"
-msgstr "Walamo"
-
-# id::war
-#: clm.value:671
-msgid "Waray"
-msgstr "Waray"
-
-# id::was
-#: clm.value:672
-msgid "Washo"
-msgstr "Washo"
-
-# id::wel
-#: clm.value:673
-msgid "Welsh"
-msgstr "Gallois"
-
-# id::wen
-#: clm.value:674
-msgid "Sorbian languages"
-msgstr "Langues sorabes"
-
-# id::wln
-#: clm.value:675
-msgid "Walloon"
-msgstr "Wallon"
-
-# id::wol
-#: clm.value:676
-msgid "Wolof"
-msgstr "Wolof"
-
-# id::xal
-#: clm.value:677
-msgid "Kalmyk"
-msgstr "Kalmouk"
-
-# id::xho
-#: clm.value:678
-msgid "Xhosa"
-msgstr "Xhosa"
-
-# id::yao
-#: clm.value:679
-msgid "Yao (Africa)"
-msgstr "Yao (Afrique)"
-
-# id::yap
-#: clm.value:680
-msgid "Yapese"
-msgstr "Yapois"
-
-# id::yid
-#: clm.value:681
-msgid "Yiddish"
-msgstr "Judéo-allemand"
-
-# id::yor
-#: clm.value:682
-msgid "Yoruba"
-msgstr "Yoruba"
-
-# id::ypk
-#: clm.value:683
-msgid "Yupik languages"
-msgstr "Langues yupiks"
-
-# id::zap
-#: clm.value:684
-msgid "Zapotec"
-msgstr "Zapoteco"
-
-# id::zen
-#: clm.value:685
-msgid "Zenaga"
-msgstr "Zenaga"
-
-# id::zha
-#: clm.value:686
-msgid "Zhuang"
-msgstr "Zhuang"
-
-# id::znd
-#: clm.value:687
-msgid "Zande"
-msgstr "Azande"
-
-# id::zul
-#: clm.value:688
-msgid "Zulu"
-msgstr "Zoulou"
-
-# id::zun
-#: clm.value:689
-msgid "Zuni"
-msgstr "Zuni"
-
-# id::a
-#: cifm.value:691
-msgid "Microfilm"
-msgstr "Microfilm"
-
-# id::b
-#: cifm.value:692
-msgid "Microfiche"
-msgstr "Microfiche"
-
-# id::c
-#: cifm.value:693
-msgid "Microopaque"
-msgstr "Microfiche opaque "
-
-# id::d
-#: cifm.value:694
-msgid "Large print"
-msgstr "Gros caractères"
-
-# id::f
-#: cifm.value:695
-msgid "Braille"
-msgstr "Braille"
-
-# id::r
-#: cifm.value:696
-msgid "Regular print reproduction"
-msgstr "Reproduction d’imprimés réguliers"
-
-# id::s
-#: cifm.value:697
-msgid "Electronic"
-msgstr "Électronique"
-
-# id::a
-#: citm.value:699
-msgid "Language material"
-msgstr "Document linguistique"
-
-# id::t
-#: citm.value:700
-msgid "Manuscript language material"
-msgstr "Texte manuscrit"
-
-# id::g
-#: citm.value:701
-msgid "Projected medium"
-msgstr "Support média projeté"
-
-# id::k
-#: citm.value:702
-msgid "Two-dimensional nonprojectable graphic"
-msgstr "Schéma non projetable à deux dimensions"
-
-# id::r
-#: citm.value:703
-msgid "Three-dimensional artifact or naturally occurring object"
-msgstr "Artefact à trois dimensions ou objet d’origine naturelle"
-
-# id::o
-#: citm.value:704
-msgid "Kit"
-msgstr "Trousse"
-
-# id::p
-#: citm.value:705
-msgid "Mixed materials"
-msgstr "Documents divers"
-
-# id::e
-#: citm.value:706
-msgid "Cartographic material"
-msgstr "Document cartographique"
-
-# id::f
-#: citm.value:707
-msgid "Manuscript cartographic material"
-msgstr "Document cartographique manuscrit"
-
-# id::c
-#: citm.value:708
-msgid "Notated music"
-msgstr "Musique annotée"
-
-# id::d
-#: citm.value:709
-msgid "Manuscript notated music"
-msgstr "Manuscrit de musique annotée"
-
 # id::i
-#: citm.value:710
-msgid "Nonmusical sound recording"
-msgstr "Enregistrement sonore non musical"
-
-# id::j
-#: citm.value:711
-msgid "Musical sound recording"
-msgstr "Enregistrement sonore musical"
-
-# id::m
-#: citm.value:712
-msgid "Computer file"
-msgstr "Fichier informatique"
-
-# id::a
-#: cblvl.value:714
-msgid "Monographic component part"
-msgstr "Partie composante monographique"
-
-# id::b
-#: cblvl.value:715
-msgid "Serial component part"
-msgstr "Élément de collections"
-
-# id::c
-#: cblvl.value:716
-msgid "Collection"
-msgstr "Collection"
-
-# id::d
-#: cblvl.value:717
-msgid "Subunit"
-msgstr "Sous-unité"
-
-# id::i
-#: cblvl.value:718
+#: cblvl.value:i
 msgid "Integrating resource"
 msgstr "Ressource intégrée"
 
-# id::m
-#: cblvl.value:719
-msgid "Monograph/Item"
-msgstr "Monographie ou article"
+# id::u
+#: clfm.value:u
+msgid "Unknown"
+msgstr "Inconnu"
 
-# id::s
-#: cblvl.value:720
-msgid "Serial"
-msgstr "Collections"
-
-# id::en-US
-#: i18n_l.name:724
-msgid "English (US)"
-msgstr ""
-
-# id::en-US
-#: i18n_l.description:725
-msgid "American English"
-msgstr "Anglais américain"
-
-# id::en-CA
-#: i18n_l.name:727
-msgid "English (Canada)"
-msgstr ""
-
-# id::en-CA
-#: i18n_l.description:728
-msgid "Canadian English"
-msgstr "Anglais canadien"
-
-# id::fr-CA
-#: i18n_l.name:730
-msgid "French (Canada)"
-msgstr ""
-
-# id::fr-CA
-#: i18n_l.description:731
-#, fuzzy
-msgid "Canadian French"
-msgstr "Français canadien"
-
-# id::es-US
-#: i18n_l.name:733
-msgid "Spanish (US)"
-msgstr ""
-
-# id::es-US
-#: i18n_l.description:734
-msgid "American Spanish"
-msgstr "Espagnol américain"
-
-# id::es-MX
-#: i18n_l.name:736
-msgid "Spanish (Mexico)"
-msgstr ""
-
-# id::es-MX
-#: i18n_l.description:737
-msgid "Mexican Spanish"
-msgstr "Espagnol mexicain"
-
-# id::hy-AM
-#: i18n_l.name:739
-msgid "Armenian"
-msgstr "Arménien"
-
-# id::hy-AM
-#: i18n_l.description:740
-msgid "Armenian"
-msgstr "Arménien"
-
-# id::loc
-#: czs.label:745
-msgid "Library of Congress"
-msgstr ""
-
-# id::loc
-#: czs.label:747
-msgid "OCLC"
-msgstr ""
-
-# id::1
-#: cza.label:750
-msgid "Title Control Number"
-msgstr ""
-
-# id::2
-# id::6
-#: cza.label:752
-#, fuzzy
-msgid "ISBN"
-msgstr "SSN"
-
-# id::3
-#: cza.label:754
-msgid "LCCN"
-msgstr ""
-
-# id::4
-#: cza.label:756
-msgid "Author"
-msgstr ""
-
-# id::5
-#: cza.label:758
-msgid "Title"
-msgstr ""
+# id::p
+#: clfm.value:p
+msgid "Poetry"
+msgstr "Poésie"
 
 # id::6
-# id::2
-#: cza.label:760
-#, fuzzy
-msgid "ISSN"
-msgstr "SSN"
-
-# id::7
-#: cza.label:762
-msgid "Publisher"
-msgstr ""
-
-# id::8
-#: cza.label:764
-msgid "Publication Date"
-msgstr ""
-
-# id::9
-#: cza.label:766
-msgid "Item Type"
-msgstr ""
-
-# id::10
-#: cza.label:769
-msgid "Title Control Number"
-msgstr ""
-
-# id::11
-# id::6
-# id::2
-#: cza.label:771
-#, fuzzy
-msgid "ISBN"
-msgstr "SSN"
-
-# id::12
-#: cza.label:773
-msgid "LCCN"
-msgstr ""
-
-# id::13
-#: cza.label:775
-msgid "Author"
-msgstr ""
-
-# id::14
-#: cza.label:777
-msgid "Title"
-msgstr ""
-
-# id::15
-# id::2
-#: cza.label:779
-#, fuzzy
-msgid "ISSN"
-msgstr "SSN"
-
-# id::16
-#: cza.label:781
-msgid "Publisher"
-msgstr ""
-
-# id::17
-#: cza.label:783
-msgid "Publication Date"
-msgstr ""
-
-# id::18
-#: cza.label:785
-msgid "Item Type"
-msgstr ""
-
-# id::1
-#: aout.name:792
-msgid "Consortium"
-msgstr "Consortium"
-
-# id::1
-#: aout.opac_label:793
-msgid "Everywhere"
-msgstr ""
-
-# id::2
-#: aout.name:795
-msgid "System"
-msgstr "Système"
-
-# id::2
-#: aout.opac_label:796
-msgid "Local Library System"
-msgstr ""
-
-# id::3
-#: aout.name:798
-msgid "Branch"
-msgstr "Direction générale"
-
-# id::3
-#: aout.opac_label:799
-msgid "This Branch"
-msgstr ""
-
-# id::4
-#: aout.name:801
-msgid "Sub-library"
-msgstr ""
-
-# id::4
-#: aout.opac_label:802
-msgid "This Specialized Library"
-msgstr ""
-
-# id::5
-#: aout.name:804
-msgid "Bookmobile"
-msgstr "Bibliobus"
-
-# id::5
-#: aout.opac_label:805
-msgid "Your Bookmobile"
-msgstr ""
-
-# id::1
-#: aou.name:809
-msgid "Example Consortium"
-msgstr "Exemple de consortium"
-
-# id::2
-#: aou.name:811
-msgid "Example System 1"
-msgstr "Exemple de système 1"
-
-# id::3
-#: aou.name:813
-msgid "Example System 2"
-msgstr "Exemple de système 2"
-
-# id::4
-#: aou.name:815
-msgid "Example Branch 1"
-msgstr "Exemple de Direction générale 1"
-
-# id::5
-#: aou.name:817
-msgid "Example Branch 2"
-msgstr "Exemple de Direction générale 2"
-
-# id::6
-#: aou.name:819
-msgid "Example Branch 3"
-msgstr "Exemple de Direction générale 3"
-
-# id::7
-#: aou.name:821
-msgid "Example Branch 4"
-msgstr "Exemple de Direction générale 4"
-
-# id::8
-#: aou.name:823
-#, fuzzy
-msgid "Example Sub-library 1"
-msgstr "Exemple de sous-bibliothèque 1"
-
-# id::9
-#: aou.name:825
-msgid "Example Bookmobile 1"
-msgstr "Exemple de bibliobus de 1"
-
-# id::2
-#: ppl.description:836
-msgid "Allow a user to log in to the OPAC"
-msgstr ""
-
-# id::4
-#: ppl.description:838
-msgid "Allow a user to log in to the staff client"
-msgstr ""
-
-# id::5
-#: ppl.description:840
-msgid "Allow a user to create a metarecord holds"
-msgstr ""
-
-# id::6
-#: ppl.description:842
-msgid "Allow a user to place a hold at the title level"
-msgstr ""
-
-# id::7
-#: ppl.description:844
-msgid "Allow a user to place a volume level hold"
-msgstr ""
-
-# id::8
-#: ppl.description:846
-#, fuzzy
-msgid "Allow a user to place a hold on a specific copy"
-msgstr "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
-
-# id::9
-#: ppl.description:848
-msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
-msgstr ""
-
-# id::10
-#: ppl.description:850
-msgid "* no longer applicable"
-msgstr ""
-
-# id::11
-#: ppl.description:852
-#, fuzzy
-msgid "Allow a user to view another user's holds"
-msgstr ""
-"Permet à un utilisateur de consulter les articles mis en réserve par un "
-"autre utilisateur"
-
-# id::13
-#: ppl.description:854
-msgid "* no longer applicable"
-msgstr ""
-
-# id::14
-#: ppl.description:856
-#, fuzzy
-msgid "Allow a user to update another user's hold"
-msgstr ""
-"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
-"utilisateur"
-
-# id::15
-#: ppl.description:858
-msgid "Allow a user to renew items"
-msgstr ""
-
-# id::16
-#: ppl.description:860
-msgid "Allow a user to view bill details"
-msgstr ""
-
-# id::17
-#: ppl.description:862
-msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
-msgstr ""
-
-# id::18
-#: ppl.description:864
-msgid "Allow a user to edit a MARC record"
-msgstr ""
-
-# id::19
-#: ppl.description:866
-msgid "Allow a user to create new MARC records"
-msgstr ""
-
-# id::20
-#: ppl.description:868
-msgid "Allow a user to import a MARC record via the Z39.50 interface"
-msgstr ""
-
-# id::21
-# id::89
-#: ppl.description:870
-#, fuzzy
-msgid "Allow a user to create a volume"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
-
-# id::22
-#: ppl.description:872
-msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
-msgstr ""
-
-# id::23
-# id::21
-# id::89
-#: ppl.description:874
-#, fuzzy
-msgid "Allow a user to delete a volume"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
-
-# id::25
-# id::75
-#: ppl.description:876
-#, fuzzy
-msgid "Allow a user to edit a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::26
-# id::25
-# id::75
-#: ppl.description:878
-#, fuzzy
-msgid "Allow a user to delete a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::27
-#: ppl.description:880
-msgid "Allow a user to continue to renew an item even if it is required for a hold"
-msgstr ""
-
-# id::28
-# id::14
-#: ppl.description:882
-#, fuzzy
-msgid "Allow a user to create another user"
-msgstr ""
-"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
-"utilisateur"
-
-# id::29
-#: ppl.description:884
-msgid "Allow a user to edit a user's record"
-msgstr ""
-
-# id::30
-#: ppl.description:886
-msgid "Allow a user to mark a user as deleted"
-msgstr ""
-
-# id::31
-# id::11
-#: ppl.description:888
-#, fuzzy
-msgid "Allow a user to view another user's Patron Record"
-msgstr ""
-"Permet à un utilisateur de consulter les articles mis en réserve par un "
-"autre utilisateur"
-
-# id::32
-# id::75
-#: ppl.description:890
-#, fuzzy
-msgid "Allow a user to check in a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::33
-#: ppl.description:892
-msgid "Allow a user to place an item in transit"
-msgstr ""
-
-# id::34
-#: ppl.description:894
-msgid "Allow a user to view user permissions within the user permissions editor"
-msgstr ""
-
-# id::35
-#: ppl.description:896
-msgid "* no longer applicable"
-msgstr ""
-
-# id::36
-#: ppl.description:898
-msgid "Allow a user to record payments in the Billing Interface"
-msgstr ""
-
-# id::37
-#: ppl.description:900
-msgid "Allow a user to mark an item as 'lost'"
-msgstr ""
-
-# id::38
-#: ppl.description:902
-msgid "Allow a user to mark an item as 'missing'"
-msgstr ""
-
-# id::39
-#: ppl.description:904
-msgid "Allow a user to mark an item as 'claims returned'"
-msgstr ""
-
-# id::41
-# id::43
-#: ppl.description:906
-#, fuzzy
-msgid "Allow a user to create a new billable transaction"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
-
-# id::43
-#: ppl.description:908
-#, fuzzy
-msgid "Allow a user to create a new bill on a transaction"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
-
-# id::44
-#: ppl.description:910
-#, fuzzy
-msgid "Allow a user to view another user's containers (buckets)"
-msgstr "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
-
-# id::45
-#: ppl.description:912
-#, fuzzy
-msgid "Allow a user to create a new container for another user"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
-
-# id::24
-# id::88
-#: ppl.description:914
-#, fuzzy
-msgid "Allow a user to create a new copy object"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::47
-#: ppl.description:916
-msgid "Allow a user to change the settings for an organization unit"
-msgstr ""
-
-# id::48
-#: ppl.description:918
-#, fuzzy
-msgid "Allow a user to see what another use has checked out"
-msgstr ""
-"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
-"session"
-
-# id::42
-#: ppl.description:920
-#, fuzzy
-msgid "Allow a user may view another user's transactions"
-msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
-
-# id::49
-#: ppl.description:922
-#, fuzzy
-msgid "Allow a user to delete another user container"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
-
-# id::50
-# id::45
-#: ppl.description:924
-#, fuzzy
-msgid "Allow a user to create a container item for another user"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
-
-# id::51
-#: ppl.description:926
-#, fuzzy
-msgid "Allow a user to add other users to permission groups"
-msgstr ""
-"L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
-
-# id::52
-#: ppl.description:928
-#, fuzzy
-msgid "Allow a user to remove other users from permission groups"
-msgstr ""
-"L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
-
-# id::53
-#: ppl.description:930
-#, fuzzy
-msgid "Allow a user to view other users' permission groups"
-msgstr ""
-"Permet à un utilisateur de consulter les groupes de permission des autres "
-"utilisateurs"
-
-# id::54
-#: ppl.description:932
-#, fuzzy
-msgid "Allow a user to determine whether another user can check out an item"
-msgstr ""
-"Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
-"article"
-
-# id::55
-#: ppl.description:934
-#, fuzzy
-msgid "Allow a user to edit copies in batch"
-msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
-
-# id::56
-#: ppl.description:936
-msgid "User may create a new patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::57
-# id::56
-#: ppl.description:938
-#, fuzzy
-msgid "User may create a copy statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::58
-# id::56
-#: ppl.description:940
-#, fuzzy
-msgid "User may create an entry in a patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::59
-# id::56
-#: ppl.description:942
-#, fuzzy
-msgid "User may create an entry in a copy statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::60
-# id::56
-#: ppl.description:944
-#, fuzzy
-msgid "User may update a patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::61
-# id::63
-#: ppl.description:946
-#, fuzzy
-msgid "User may update a copy statistical category"
-msgstr ""
-"L’utilisateur peut mettre à jour une entrée de catégorie statistique "
-"d’exemplaires"
-
-# id::62
-# id::56
-#: ppl.description:948
-#, fuzzy
-msgid "User may update an entry in a patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::63
-# id::59
-# id::56
-#: ppl.description:950
-#, fuzzy
-msgid "User may update an entry in a copy statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::65
-#: ppl.description:952
-msgid "User may link a copy to an entry in a statistical category"
-msgstr ""
-
-# id::64
-#: ppl.description:954
-msgid "User may link another user to an entry in a statistical category"
-msgstr ""
-
-# id::66
-# id::56
-#: ppl.description:956
-#, fuzzy
-msgid "User may delete a patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::67
-# id::69
-#: ppl.description:958
-#, fuzzy
-msgid "User may delete a copy statistical category"
-msgstr ""
-"L’utilisateur peut supprimer une entrée de catégorie statistique "
-"d’exemplaires"
-
-# id::68
-# id::58
-# id::56
-#: ppl.description:960
-#, fuzzy
-msgid "User may delete an entry from a patron statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::69
-# id::59
-# id::56
-#: ppl.description:962
-#, fuzzy
-msgid "User may delete an entry from a copy statistical category"
-msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
-
-# id::70
-#: ppl.description:964
-#, fuzzy
-msgid "User may delete a patron statistical category entry map"
-msgstr ""
-"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
-"clients"
-
-# id::71
-#: ppl.description:966
-#, fuzzy
-msgid "User may delete a copy statistical category entry map"
-msgstr ""
-"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
-"d’exemplaires"
-
-# id::72
-#: ppl.description:968
-#, fuzzy
-msgid "Allow a user to create a new non-cataloged item type"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau type d’article non catalogué"
-
-# id::73
-#: ppl.description:970
-#, fuzzy
-msgid "Allow a user to update a non-cataloged item type"
-msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
-
-# id::74
-#: ppl.description:972
-#, fuzzy
-msgid "Allow a user to create a new in-house-use "
-msgstr "Permet à un utilisateur de créer une nouvelle utilisation à l’interne"
-
-# id::75
-#: ppl.description:974
-#, fuzzy
-msgid "Allow a user to check out a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
-
-# id::76
-#: ppl.description:976
-#, fuzzy
-msgid "Allow a user to create a new copy location"
-msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
-
-# id::77
-#: ppl.description:978
-#, fuzzy
-msgid "Allow a user to update a copy location"
-msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
-
-# id::78
-#: ppl.description:980
-#, fuzzy
-msgid "Allow a user to delete a copy location"
-msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
-
-# id::79
-#: ppl.description:982
-#, fuzzy
-msgid "Allow a user to create a transit_copy object for transiting a copy"
-msgstr ""
-"Permet à un utilisateur de créer un objet de copie de transit pour procéder "
-"à la transition d’un exemplaire"
-
-# id::80
-#: ppl.description:984
-#, fuzzy
-msgid "Allow a user to close out a transit on a copy"
-msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
-
-# id::81
-#: ppl.description:986
-#, fuzzy
-msgid "Allow a user to see if another user has permission to place a hold on a given copy"
-msgstr ""
-"Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
-"mettre en réserve un exemplaire en particulier"
-
-# id::82
-#: ppl.description:988
-#, fuzzy
-msgid "Allow a user to view which users have checked out a given copy"
-msgstr ""
-"Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
-"en particulier"
-
-# id::83
-#: ppl.description:990
-#, fuzzy
-msgid "Allow a user to perform Z39.50 queries against remote servers"
-msgstr ""
-"Permet à un utilisateur d’effectuer des requêtes z3950 auprès des serveurs à "
-"distance"
-
-# id::84
-#: ppl.description:992
-#, fuzzy
-msgid "Allow a user to register a new workstation"
-msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
-
-# id::85
-#: ppl.description:994
-#, fuzzy
-msgid "Allow a user to view all notes attached to a copy"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un "
-"exemplaire"
-
-# id::86
-#: ppl.description:996
-#, fuzzy
-msgid "Allow a user to view all notes attached to a volume"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un volume"
-
-# id::87
-#: ppl.description:998
-#, fuzzy
-msgid "Allow a user to view all notes attached to a title"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un titre"
-
-# id::89
-#: ppl.description:1000
-#, fuzzy
-msgid "Allow a user to create a new volume note"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
-
-# id::88
-#: ppl.description:1002
-#, fuzzy
-msgid "Allow a user to create a new copy note"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::90
-#: ppl.description:1004
-#, fuzzy
-msgid "Allow a user to create a new title note"
-msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
-
-# id::91
-# id::49
-#: ppl.description:1006
-#, fuzzy
-msgid "Allow a user to delete another user's copy notes"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
-
-# id::92
-# id::49
-#: ppl.description:1008
-#, fuzzy
-msgid "Allow a user to delete another user's volume note"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
-
-# id::93
-# id::49
-#: ppl.description:1010
-#, fuzzy
-msgid "Allow a user to delete another user's title note"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
-
-# id::94
-#: ppl.description:1012
-#, fuzzy
-msgid "Allow a user to update another user's container"
-msgstr "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
-
-# id::95
-#: ppl.description:1014
-#, fuzzy
-msgid "Allow a user to create a container for themselves"
-msgstr "Permet à un utilisateur de créer son propre panier"
-
-# id::96
-#: ppl.description:1016
-#, fuzzy
-msgid "Allow a user to view notifications attached to a hold"
-msgstr ""
-"Permet à un utilisateur d’afficher les notifications associées à un article "
-"mis en réserve"
-
-# id::97
-#: ppl.description:1018
-#, fuzzy
-msgid "Allow a user to create new hold notifications"
-msgstr ""
-"Permet à un utilisateur de créer de nouvelles notifications relatives à des "
-"articles mis en réserve"
-
-# id::98
-#: ppl.description:1020
-#, fuzzy
-msgid "Allow a user to update an organization unit setting"
-msgstr ""
-"Permet à un utilisateur de mettre à jour un paramètre d’unité "
-"organisationnelle"
-
-# id::99
-#: ppl.description:1022
-#, fuzzy
-msgid "Allow a user to upload an offline script"
-msgstr "Permet à un utilisateur de téléverser un script hors ligne"
-
-# id::100
-#: ppl.description:1024
-#, fuzzy
-msgid "Allow a user to view uploaded offline script information"
-msgstr ""
-"Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
-"téléversé"
-
-# id::101
-#: ppl.description:1026
-#, fuzzy
-msgid "Allow a user to execute an offline script batch"
-msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
-
-# id::102
-#: ppl.description:1028
-#, fuzzy
-msgid "Allow a user to change the due date on an item to any date"
-msgstr ""
-"Permet à un utilisateur de régler la date d’échéance relative à un article"
-
-# id::103
-#: ppl.description:1030
-#, fuzzy
-msgid "Allow a user to bypass the circulation permit call for check out"
-msgstr ""
-"Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
-"sortir un article"
-
-# id::104
-#: ppl.description:1032
-#, fuzzy
-msgid "Allow a user to override the copy_is_reference event"
-msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
-
-# id::105
-#: ppl.description:1034
-#, fuzzy
-msgid "Allow a user to void a bill"
-msgstr "Permet à un utilisateur d’éviter une facture"
-
-# id::106
-#: ppl.description:1036
-msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
-msgstr ""
-
-# id::107
-#: ppl.description:1038
-#, fuzzy
-msgid "Allow a user to check out an item in a non-circulatable status"
-msgstr "Permet à un utilisateur de sortir un article qui n’a pas été prêté"
-
-# id::108
-#: ppl.description:1040
-#, fuzzy
-msgid "Allow a user to check in/out an item that has an alert message"
-msgstr ""
-"Permet à un utilisateur d’entrer ou de sortir un article associé à un "
-"message d’alerte"
-
-# id::109
-#: ppl.description:1042
-#, fuzzy
-msgid "Allow a user to remove the lost status from a copy"
-msgstr "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
-
-# id::110
-#: ppl.description:1044
-#, fuzzy
-msgid "Allow a user to change the missing status on a copy"
-msgstr "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
-
-# id::111
-#: ppl.description:1046
-#, fuzzy
-msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
-msgstr ""
-"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-"se trouve à la source ou à la destination du transit"
-
-# id::112
-#: ppl.description:1048
-#, fuzzy
-msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
-msgstr ""
-"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-"ne se trouve pas à la source ou à la destination du transit"
-
-# id::113
-#: ppl.description:1050
-#, fuzzy
-msgid "Allow a user to query the ZIP code data method"
-msgstr ""
-"Permet à un utilisateur d’interroger la méthode de données relatives aux "
-"codes postaux"
-
-# id::114
-#: ppl.description:1052
-msgid "Allow a user to cancel holds"
-msgstr ""
+#: ccs.name:6
+msgid "In transit"
+msgstr "En transit"
+
+# id::pau
+#: clm.value:pau
+msgid "Palauan"
+msgstr "Palauan"
 
 # id::115
-#: ppl.description:1054
+#: ppl.description:115
 #, fuzzy
 msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 "Permet à un utilisateur de créer des copies d’articles mis en réserve (p. "
 "ex. deux articles mis en réserve pour le même titre)"
 
+#: cza.label:5 cza.label:14
+msgid "Title"
+msgstr ""
+
+# id::kir
+#: clm.value:kir
+msgid "Kyrgyz"
+msgstr "Kirghize"
+
+# id::en-US
+#: i18n_l.description:en-US
+msgid "American English"
+msgstr "Anglais américain"
+
+# id::b
+#: cblvl.value:b
+msgid "Serial component part"
+msgstr "Élément de collections"
+
+# id::niu
+#: clm.value:niu
+msgid "Niuean"
+msgstr "Niue"
+
+# id::fat
+#: clm.value:fat
+msgid "Fanti"
+msgstr "Fanti"
+
+# id::1
+#: crcd.name:1
+msgid "7_days_0_renew"
+msgstr "7_jours_0_renouvellement"
+
+# id::123
+#: ppl.description:123
+#, fuzzy
+msgid "Allow a user to un-bar a patron"
+msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
+
+# id::tig
+#: clm.value:tig
+msgid "Tigré"
+msgstr "Tigré"
+
+# id::mas
+#: clm.value:mas
+msgid "Masai"
+msgstr "Masai"
+
+# id::bam
+#: clm.value:bam
+msgid "Bambara"
+msgstr "Bambara"
+
+# id::snd
+#: clm.value:snd
+msgid "Sindhi"
+msgstr "Sindhi"
+
+# id::7
+#: aou.name:7
+msgid "Example Branch 4"
+msgstr "Exemple de Direction générale 4"
+
+#: cam.description:b
+msgid "The item is intended for children, approximate ages 6-8 years."
+msgstr ""
+
+# id::abk
+#: clm.value:abk
+msgid "Abkhaz"
+msgstr "Abkhaz"
+
+# id::sat
+#: clm.value:sat
+msgid "Santali"
+msgstr "Santali"
+
+# id::dua
+#: clm.value:dua
+msgid "Duala"
+msgstr "Douala"
+
+# id::ukr
+#: clm.value:ukr
+msgid "Ukrainian"
+msgstr "Ukrainien"
+
+# id::vot
+#: clm.value:vot
+msgid "Votic"
+msgstr "Votic"
+
+# id::5
+#: aou.name:5
+msgid "Example Branch 2"
+msgstr "Exemple de Direction générale 2"
+
+# id::h
+#: clfm.value:h
+msgid "Humor, satires, etc."
+msgstr "Humeur, satires, etc."
+
+# id::43
+#: ppl.description:43
+#, fuzzy
+msgid "Allow a user to create a new bill on a transaction"
+msgstr ""
+"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
+
+# id::bnt
+#: clm.value:bnt
+msgid "Bantu (Other)"
+msgstr "Bantu (Autre)"
+
+# id::kau
+#: clm.value:kau
+msgid "Kanuri"
+msgstr "Kanuri"
+
+# id::umb
+#: clm.value:umb
+msgid "Umbundu"
+msgstr "Mbundu"
+
+# id::2
+#: crrf.name:2
+msgid "10_cent_per_day"
+msgstr "10_cents_par_jour"
+
+# id::41
+# id::43
+#: ppl.description:41
+#, fuzzy
+msgid "Allow a user to create a new billable transaction"
+msgstr ""
+"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
+
+# id::49
+#: ppl.description:49
+#, fuzzy
+msgid "Allow a user to delete another user container"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+
+# id::cel
+#: clm.value:cel
+msgid "Celtic (Other)"
+msgstr "Celtique (Autre) "
+
+# id::2
+#: cst.value:2
+msgid "Barred"
+msgstr "Barré"
+
+# id::hil
+#: clm.value:hil
+msgid "Hiligaynon"
+msgstr "Hiligaynon"
+
+# id::kac
+#: clm.value:kac
+msgid "Kachin"
+msgstr "Kachin"
+
+# id::4
+#: crmf.name:4
+msgid "overdue_max"
+msgstr "retard_maximum"
+
+# id::164
+# id::77
+#: ppl.description:164
+#, fuzzy
+msgid "Allow a user to update a fund allocation"
+msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
+
+# id::j
+#: clfm.value:j
+msgid "Short stories"
+msgstr "Nouvelles"
+
+# id::pag
+#: clm.value:pag
+msgid "Pangasinan"
+msgstr "Pangasinan"
+
+# id::156
+# id::153
+# id::157
+# id::88
+#: ppl.description:156
+#, fuzzy
+msgid "Allow a user to update a funding source"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::82
+#: ppl.description:82
+#, fuzzy
+msgid "Allow a user to view which users have checked out a given copy"
+msgstr ""
+"Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
+"en particulier"
+
+# id::pam
+#: clm.value:pam
+msgid "Pampanga"
+msgstr "Pampangan"
+
+# id::nah
+#: clm.value:nah
+msgid "Nahuatl"
+msgstr "Nahuatl"
+
+# id::yid
+#: clm.value:yid
+msgid "Yiddish"
+msgstr "Judéo-allemand"
+
+#: vqbrad.description:8
+msgid "Accession Number"
+msgstr ""
+
 # id::117
-#: ppl.description:1056
+#: ppl.description:117
 #, fuzzy
 msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 "Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture "
 "pour un emplacement donné"
 
-# id::116
-#: ppl.description:1058
-#, fuzzy
-msgid "Allow a user to remove a closed date interval for a given location"
-msgstr ""
-"Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
-"pour un emplacement donné"
+# id::cpp
+#: clm.value:cpp
+msgid "Creoles and Pidgins, Portuguese-based (Other)"
+msgstr "Langues créoles et pidgin, portuguais (Autre)"
 
-# id::118
-#: ppl.description:1060
-#, fuzzy
-msgid "Allow a user to create a new closed date for a location"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
-"emplacement"
+# id::ton
+#: clm.value:ton
+msgid "Tongan"
+msgstr "Tongan"
 
-# id::119
-#: ppl.description:1062
-#, fuzzy
-msgid "Allow a user to delete a non cataloged type"
-msgstr "Permet à un utilisateur de supprimer un type non catalogué"
+# id::ijo
+#: clm.value:ijo
+msgid "Ijo"
+msgstr "Ijo"
 
-# id::120
-#: ppl.description:1064
-#, fuzzy
-msgid "Allow a user to put someone into collections"
-msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
+# id::cai
+#: clm.value:cai
+msgid "Central American Indian (Other)"
+msgstr "Amérindien de l’Amérique centrale (Autre)"
 
-# id::121
-#: ppl.description:1066
-#, fuzzy
-msgid "Allow a user to remove someone from collections"
-msgstr "Permet à un utilisateur de retirer une personne des collections"
-
-# id::122
-#: ppl.description:1068
-#, fuzzy
-msgid "Allow a user to bar a patron"
-msgstr "Permet à un utilisateur d’exclure un client"
-
-# id::123
-#: ppl.description:1070
-#, fuzzy
-msgid "Allow a user to un-bar a patron"
-msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
-
-# id::124
-#: ppl.description:1072
-#, fuzzy
-msgid "Allow a user to remove an existing workstation so a new one can replace it"
-msgstr ""
-"Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
-"nouveau poste puisse le remplacer"
-
-# id::125
-#: ppl.description:1074
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Utilisateur'\"."
-
-# id::126
-#: ppl.description:1076
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Patron\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Client\""
-
-# id::127
-#: ppl.description:1078
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Staff\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Personnel\""
-
-# id::128
-#: ppl.description:1080
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Circulator\""
-
-# id::129
-#: ppl.description:1082
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Cataloger\""
-
-# id::130
-#: ppl.description:1084
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"GlobalAdmin\""
-
-# id::131
-#: ppl.description:1086
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"LocalAdmin\""
+# id::14
+#: ccs.name:14
+msgid "Damaged"
+msgstr "Endommagé"
 
 # id::132
-#: ppl.description:1088
+#: ppl.description:132
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"LibraryManager\""
 
-# id::133
-#: ppl.description:1090
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
+# id::sma
+#: clm.value:sma
+msgid "Southern Sami"
+msgstr "Lapon du Sud"
+
+# id::kaw
+#: clm.value:kaw
+msgid "Kawi"
+msgstr "Kawi"
+
+#: ppl.description:20
+msgid "Allow a user to import a MARC record via the Z39.50 interface"
 msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Cat1\""
+
+# id::kal
+#: clm.value:kal
+msgid "Kalâtdlisut"
+msgstr "Kalâtdlisut"
+
+# id::kok
+#: clm.value:kok
+msgid "Konkani"
+msgstr "Konkani"
+
+# id::nau
+#: clm.value:nau
+msgid "Nauru"
+msgstr "Nauru"
+
+# id::g
+#: cam.value:g
+msgid "General"
+msgstr "Généralités"
+
+# id::sas
+#: clm.value:sas
+msgid "Sasak"
+msgstr "Sasak"
+
+# id::0
+#: ccs.name:0
+msgid "Available"
+msgstr "Disponible"
+
+# id::6
+#: crcd.name:6
+msgid "35_days_1_renew"
+msgstr "35_jours_1_renouvellement"
+
+# id::zul
+#: clm.value:zul
+msgid "Zulu"
+msgstr "Zoulou"
+
+# id::87
+#: ppl.description:87
+#, fuzzy
+msgid "Allow a user to view all notes attached to a title"
+msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un titre"
+
+# id::geo
+#: clm.value:geo
+msgid "Georgian"
+msgstr "Géorgien"
+
+# id::155
+# id::153
+# id::157
+# id::88
+#: ppl.description:155
+#, fuzzy
+msgid "Allow a user to view a funding source"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::arc
+#: clm.value:arc
+msgid "Aramaic"
+msgstr "Araméen"
+
+# id::84
+#: ppl.description:84
+#, fuzzy
+msgid "Allow a user to register a new workstation"
+msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
+
+# id::tir
+#: clm.value:tir
+msgid "Tigrinya"
+msgstr "Tigrina"
+
+# id::chk
+#: clm.value:chk clm.value:-tru
+msgid "Truk"
+msgstr "Trukois"
+
+# id::tib
+#: clm.value:tib
+msgid "Tibetan"
+msgstr "Tibétain"
+
+#: cza.label:7 cza.label:16 vqbrad.description:12
+msgid "Publisher"
+msgstr ""
+
+# id::inh
+#: clm.value:inh
+msgid "Ingush"
+msgstr "Ingouche"
+
+# id::dzo
+#: clm.value:dzo
+msgid "Dzongkha"
+msgstr "Dzonga"
+
+# id::grn
+#: clm.value:grn clm.value:-gua
+msgid "Guarani"
+msgstr "Guarani"
+
+# id::iii
+#: clm.value:iii
+msgid "Sichuan Yi"
+msgstr "Sichuan Yi "
+
+# id::btk
+#: clm.value:btk
+msgid "Batak"
+msgstr "Batak"
+
+# id::div
+#: clm.value:div
+msgid "Divehi"
+msgstr "Divehi"
+
+# id::sga
+#: clm.value:sga
+msgid "Irish, Old (to 1100)"
+msgstr "Vieil irlandais (jusqu’à 1100)"
+
+# id::kru
+#: clm.value:kru
+msgid "Kurukh"
+msgstr "Kurukh"
+
+# id::her
+#: clm.value:her
+msgid "Herero"
+msgstr "Herero"
+
+# id::3
+#: crcd.name:3
+msgid "3_months_0_renew"
+msgstr "3_mois_0_renouvellement"
+
+#: ppl.description:7
+msgid "Allow a user to place a volume level hold"
+msgstr ""
+
+# id::lav
+#: clm.value:lav
+msgid "Latvian"
+msgstr "Lette"
+
+# id::eng
+#: clm.value:eng
+msgid "English"
+msgstr "Anglais"
+
+# id::55
+#: ppl.description:55
+#, fuzzy
+msgid "Allow a user to edit copies in batch"
+msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
+
+# id::d
+#: cifm.value:d
+msgid "Large print"
+msgstr "Gros caractères"
+
+# id::scr
+#: clm.value:scr
+msgid "Croatian"
+msgstr "Croate"
+
+# id::j
+#: cam.value:j
+msgid "Juvenile"
+msgstr "Jeunes"
+
+# id::chi
+#: clm.value:chi
+msgid "Chinese"
+msgstr "Chinois"
+
+# id::51
+#: ppl.description:51
+#, fuzzy
+msgid "Allow a user to add other users to permission groups"
+msgstr ""
+"L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
+
+# id::11
+#: ppl.description:11
+#, fuzzy
+msgid "Allow a user to view another user's holds"
+msgstr ""
+"Permet à un utilisateur de consulter les articles mis en réserve par un "
+"autre utilisateur"
+
+# id::iku
+#: clm.value:iku
+msgid "Inuktitut"
+msgstr "Inuktitut"
+
+# id::mun
+#: clm.value:mun
+msgid "Munda (Other)"
+msgstr "Mounda (Autre)"
+
+# id::pli
+#: clm.value:pli
+msgid "Pali"
+msgstr "Pali"
+
+#: cza.label:3 cza.label:12
+msgid "LCCN"
+msgstr ""
+
+# id::119
+#: ppl.description:119
+#, fuzzy
+msgid "Allow a user to delete a non cataloged type"
+msgstr "Permet à un utilisateur de supprimer un type non catalogué"
+
+# id::yap
+#: clm.value:yap
+msgid "Yapese"
+msgstr "Yapois"
+
+# id::ara
+#: clm.value:ara
+msgid "Arabic"
+msgstr "Arabe"
+
+# id::ven
+#: clm.value:ven
+msgid "Venda"
+msgstr "Venda"
+
+#: ppl.description:34
+msgid "Allow a user to view user permissions within the user permissions editor"
+msgstr ""
+
+#: pgt.name:3
+msgid "Staff"
+msgstr ""
 
 # id::134
-#: ppl.description:1092
+#: ppl.description:134
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
 "\"Supercat\""
 
-# id::135
-#: ppl.description:1094
+#: clm.value''in:gwi
+msgid "Gwich"
+msgstr ""
+
+# id::iro
+#: clm.value:iro
+msgid "Iroquoian (Other)"
+msgstr "Langue iroquoianne (Autre)"
+
+# id::ori
+#: clm.value:ori
+msgid "Oriya"
+msgstr "Oriya"
+
+# id::125
+#: ppl.description:125
 #, fuzzy
-msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
+msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr ""
 "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"SIP-Client\""
+"\"Utilisateur'\"."
 
-# id::136
-#: ppl.description:1096
-#, fuzzy
-msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Vendor\""
+# id::ipk
+#: clm.value:ipk
+msgid "Inupiaq"
+msgstr "Inupiaq"
 
-# id::137
-#: ppl.description:1098
-#, fuzzy
-msgid "Allow a user to place a hold on an age-protected item"
+#: i18n_l.name:en-CA
+msgid "English (Canada)"
 msgstr ""
-"Permet à un utilisateur de mettre en réserve un article protégé contre "
-"l’usure"
+
+# id::hin
+#: clm.value:hin
+msgid "Hindi"
+msgstr "Hindi"
+
+# id::ewo
+#: clm.value:ewo
+msgid "Ewondo"
+msgstr "Ewondo"
+
+#: cza.label:1 cza.label:10
+msgid "Title Control Number"
+msgstr ""
+
+# id::139
+#: ppl.description:139
+msgid "Allow staff to override checkout count failure"
+msgstr ""
+"Permet aux membres du personnel de contourner un échec du nombre de sorties"
+
+# id::hun
+#: clm.value:hun
+msgid "Hungarian"
+msgstr "Hongrois"
+
+# id::f
+#: clfm.value:f
+msgid "Novels"
+msgstr "Romans"
+
+# id::wol
+#: clm.value:wol
+msgid "Wolof"
+msgstr "Wolof"
+
+# id::bos
+#: clm.value:bos
+msgid "Bosnian"
+msgstr "Bosniaque"
+
+# id::rom
+#: clm.value:rom
+msgid "Romani"
+msgstr "Romani"
+
+# id::vie
+#: clm.value:vie
+msgid "Vietnamese"
+msgstr "Vietnamien"
+
+#: aout.opac_label:4
+msgid "This Specialized Library"
+msgstr ""
+
+# id::mnc
+#: clm.value:mnc
+msgid "Manchu"
+msgstr "Mandchou"
+
+# id::1
+#: aou.name:1
+msgid "Example Consortium"
+msgstr "Exemple de consortium"
+
+# id::rus
+#: clm.value:rus
+msgid "Russian"
+msgstr "Russie"
+
+# id::gba
+#: clm.value:gba
+msgid "Gbaya"
+msgstr "Gbaya"
+
+# id::luo
+#: clm.value:luo
+msgid "Luo (Kenya and Tanzania)"
+msgstr "Luo (Kenya et Tanzanie)"
+
+# id::tiv
+#: clm.value:tiv
+msgid "Tiv"
+msgstr "Tiv"
+
+# id::und
+#: clm.value:und
+msgid "Undetermined"
+msgstr "Indéterminé"
+
+#: cam.description:f
+msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
+msgstr ""
+
+# id::90
+#: ppl.description:90
+#, fuzzy
+msgid "Allow a user to create a new title note"
+msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
+
+# id::3
+#: cnal.name:3
+msgid "No Access"
+msgstr "Aucun accès"
+
+#: ppl.description:175
+msgid "Allow a user to create/view/update/delete a provider"
+msgstr ""
+
+#: ppl.description:17
+msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
+msgstr ""
+
+# id::1
+#: clfm.value:1
+msgid "Fiction (not further specified)"
+msgstr "Fiction (aucune autre spécification)"
+
+# id::108
+#: ppl.description:108
+#, fuzzy
+msgid "Allow a user to check in/out an item that has an alert message"
+msgstr ""
+"Permet à un utilisateur d’entrer ou de sortir un article associé à un "
+"message d’alerte"
 
 # id::138
-#: ppl.description:1100
+#: ppl.description:138
 #, fuzzy
 msgid "Allow a user to renew an item past the maximun renewal count"
 msgstr ""
 "Permet à un utilisateur de renouveler un article après le nombre de "
 "renouvellement maximum"
 
-# id::139
-#: ppl.description:1102
-msgid "Allow staff to override checkout count failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec du nombre de sorties"
+# id::bra
+#: clm.value:bra
+msgid "Braj"
+msgstr "Braj"
 
-# id::140
-#: ppl.description:1104
-msgid "Allow staff to override overdue count failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec du nombre de retards"
+# id::bat
+#: clm.value:bat
+msgid "Baltic (Other)"
+msgstr "Balti (Autre)"
 
-# id::141
-#: ppl.description:1106
-msgid "Allow staff to override fine amount checkout failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec de sortie relatif au "
-"montant d’une amende"
+# id::tso
+#: clm.value:tso
+msgid "Tsonga"
+msgstr "Balonga"
 
-# id::142
-#: ppl.description:1108
-msgid "Allow staff to override circulation copy range failure"
+#: aout.opac_label:5
+msgid "Your Bookmobile"
 msgstr ""
 
-# id::143
-#: ppl.description:1110
-msgid "Allow staff to override item on holds shelf failure"
+#: clfm.description:i
+msgid "The item is a single letter or collection of correspondence."
 msgstr ""
 
-# id::144
-#: ppl.description:1112
-msgid "Allow staff to force checkout of Missing/Lost type items"
-msgstr ""
-"Permet aux membres du personnel de forcer la sortie des types d’articles "
-"manquants ou perdus"
+# id::m
+#: citm.value:m
+msgid "Computer file"
+msgstr "Fichier informatique"
 
-# id::146
-#: ppl.description:1114
+# id::phi
+#: clm.value:phi
+msgid "Philippine (Other)"
+msgstr "Philippine (Autre)"
+
+# id::48
+#: ppl.description:48
 #, fuzzy
-msgid "Allow a user to place multiple holds on a single title"
+msgid "Allow a user to see what another use has checked out"
 msgstr ""
-"Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
-"seul titre"
+"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
+"session"
 
-# id::147
-#: ppl.description:1116
-#, fuzzy
-msgid "Allow a user to run reports"
-msgstr "Permet à un utilisateur d’exécuter des rapports"
+# id::ger
+#: clm.value:ger
+msgid "German"
+msgstr "Allemand"
 
-# id::148
-#: ppl.description:1118
+# id::131
+#: ppl.description:131
 #, fuzzy
-msgid "Allow a user to share report his own folders"
+msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
-"Permet à un utilisateur de partager un rapport dans ses propres dossiers"
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"LocalAdmin\""
 
-# id::149
-#: ppl.description:1120
-#, fuzzy
-msgid "Allow a user to view report output"
-msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
+# id::sla
+#: clm.value:sla
+msgid "Slavic (Other)"
+msgstr "Slave (Autre)"
 
-# id::150
-#: ppl.description:1122
-#, fuzzy
-msgid "Allow a user to checkout an item that is marked as non-circ"
+#: ppl.description:33
+msgid "Allow a user to place an item in transit"
 msgstr ""
-"Permet à un utilisateur de sortir un article qui est désigné comme « non "
-"prêté »"
 
-# id::151
-#: ppl.description:1124
-#, fuzzy
-msgid "Allow a user to delete an item out of another user's container"
+# id::baq
+#: clm.value:baq
+msgid "Basque"
+msgstr "Basque"
+
+# id::tum
+#: clm.value:tum
+msgid "Tumbuka"
+msgstr "Tamboka"
+
+#: ppl.description:27
+msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
-"Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
-"d’un autre utilisateur"
 
-# id::153
-# id::157
-# id::88
-#: ppl.description:1126
+# id::1
+#: cbs.source:1
+msgid "oclc"
+msgstr "oclc"
+
+# id::71
+#: ppl.description:71
 #, fuzzy
-msgid "Allow a user to create a new funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgid "User may delete a copy statistical category entry map"
+msgstr ""
+"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
+"d’exemplaires"
+
+# id::mdr
+#: clm.value:mdr
+msgid "Mandar"
+msgstr "Mandar"
+
+# id::a
+#: cblvl.value:a
+msgid "Monographic component part"
+msgstr "Partie composante monographique"
+
+#: clfm.description:p
+msgid "The item is a poem or collection of poems."
+msgstr ""
+
+# id::t
+#: citm.value:t
+msgid "Manuscript language material"
+msgstr "Texte manuscrit"
+
+# id::che
+#: clm.value:che
+msgid "Chechen"
+msgstr "Tchétchène"
+
+# id::nzi
+#: clm.value:nzi
+msgid "Nzima"
+msgstr "Nzima"
+
+# id::dut
+#: clm.value:dut
+msgid "Dutch"
+msgstr "Hollandais"
+
+# id::1
+#: cnct.name:1
+msgid "Paperback Book"
+msgstr "Livre de poche"
+
+# id::eka
+#: clm.value:eka
+msgid "Ekajuk"
+msgstr "Ekajuk"
+
+# id::grb
+#: clm.value:grb
+msgid "Grebo"
+msgstr "Grebo"
+
+# id::2
+#: crcd.name:2
+msgid "28_days_2_renew"
+msgstr "28_jours_2_renouvellements"
+
+# id::nep
+#: clm.value:nep
+msgid "Nepali"
+msgstr "Népalais"
+
+# id::127
+#: ppl.description:127
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Staff\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Personnel\""
+
+# id::sms
+#: clm.value:sms
+msgid "Skolt Sami"
+msgstr "Skolt Lapon"
+
+# id::nbl
+#: clm.value:nbl
+msgid "Ndebele (South Africa)"
+msgstr "Ndébélé (Afrique du Sud)"
+
+# id::4
+#: ccs.name:4
+msgid "Missing"
+msgstr "Manquant"
+
+# id::wel
+#: clm.value:wel
+msgid "Welsh"
+msgstr "Gallois"
+
+# id::ota
+#: clm.value:ota
+msgid "Turkish, Ottoman"
+msgstr "Turquie, Ottoman "
+
+# id::6
+# id::2
+#: cza.label:6 cza.label:15 vqbrad.description:6
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::goh
+#: clm.value:goh
+msgid "German, Old High (ca. 750-1050)"
+msgstr "Vieux haut-allemand (aux environs de 750-1050)"
+
+# id::70
+#: ppl.description:70
+#, fuzzy
+msgid "User may delete a patron statistical category entry map"
+msgstr ""
+"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
+"clients"
+
+# id::tem
+#: clm.value:tem
+msgid "Temne"
+msgstr "Temne"
+
+# id::jpr
+#: clm.value:jpr
+msgid "Judeo-Persian"
+msgstr "Judéo-persan"
+
+# id::day
+#: clm.value:day
+msgid "Dayak"
+msgstr "Dayak"
+
+# id::gon
+#: clm.value:gon
+msgid "Gondi"
+msgstr "Gondi"
+
+# id::28
+# id::14
+#: ppl.description:28
+#, fuzzy
+msgid "Allow a user to create another user"
+msgstr ""
+"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
+"utilisateur"
+
+# id::bak
+#: clm.value:bak
+msgid "Bashkir"
+msgstr "Bashkir"
+
+# id::kam
+#: clm.value:kam
+msgid "Kamba"
+msgstr "Kamba"
+
+#: ppl.description:4
+msgid "Allow a user to log in to the staff client"
+msgstr ""
+
+#: i18n_l.name:es-MX
+msgid "Spanish (Mexico)"
+msgstr ""
+
+# id::i
+#: citm.value:i
+msgid "Nonmusical sound recording"
+msgstr "Enregistrement sonore non musical"
+
+#: pgt.name:2
+msgid "Patrons"
+msgstr ""
+
+# id::102
+#: ppl.description:102
+#, fuzzy
+msgid "Allow a user to change the due date on an item to any date"
+msgstr ""
+"Permet à un utilisateur de régler la date d’échéance relative à un article"
+
+# id::76
+#: ppl.description:76
+#, fuzzy
+msgid "Allow a user to create a new copy location"
+msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
+
+# id::nso
+#: clm.value:nso
+msgid "Northern Sotho"
+msgstr "Sotho du Nord"
+
+# id::8
+#: crcd.name:8
+msgid "1_hour_2_renew"
+msgstr "1_heure_2_renouvellements"
+
+# id::i
+#: clfm.value:i
+msgid "Letters"
+msgstr "Lettres"
+
+# id::mak
+#: clm.value:mak
+msgid "Makasar"
+msgstr "Macassar"
+
+# id::afa
+#: clm.value:afa
+msgid "Afroasiatic (Other)"
+msgstr "Afro-asiatique (Autre)"
+
+# id::bih
+#: clm.value:bih
+msgid "Bihari"
+msgstr "Bihari"
+
+# id::ine
+#: clm.value:ine
+msgid "Indo-European (Other)"
+msgstr "Indo-européenne (Autre)"
+
+# id::kin
+#: clm.value:kin
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
+
+# id::ile
+#: clm.value:ile
+msgid "Interlingue"
+msgstr "Interlingue"
+
+# id::12
+#: ccs.name:12
+msgid "Reserves"
+msgstr "Réserves"
+
+# id::heb
+#: clm.value:heb
+msgid "Hebrew"
+msgstr "Hébreu"
+
+# id::lit
+#: clm.value:lit
+msgid "Lithuanian"
+msgstr "Lituanien"
+
+# id::epo
+#: clm.value:epo clm.value:-esp
+msgid "Esperanto"
+msgstr "Espéranto"
+
+# id::67
+# id::69
+#: ppl.description:67
+#, fuzzy
+msgid "User may delete a copy statistical category"
+msgstr ""
+"L’utilisateur peut supprimer une entrée de catégorie statistique "
+"d’exemplaires"
+
+# id::cpf
+#: clm.value:cpf
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Langues créoles et pidgin, français (Autre)"
+
+# id::ssw
+#: clm.value:ssw clm.value:-swz
+msgid "Swazi"
+msgstr "Swazi"
+
+# id::-lap
+#: clm.value:-lap clm.value:smi
+msgid "Sami"
+msgstr "Lapon"
+
+#: ppl.description:65
+msgid "User may link a copy to an entry in a statistical category"
+msgstr ""
+
+# id::inc
+#: clm.value:inc
+msgid "Indic (Other)"
+msgstr "Langue indo-aryenne (Autre)"
+
+# id::tel
+#: clm.value:tel
+msgid "Telugu"
+msgstr "Telugu"
+
+#: cza.label:4 cza.label:13
+msgid "Author"
+msgstr ""
+
+# id::2
+#: cbs.source:2
+msgid "System Local"
+msgstr "Système local"
 
 # id::154
 # id::153
 # id::157
 # id::88
-#: ppl.description:1127
+#: ppl.description:154
 #, fuzzy
 msgid "Allow a user to delete a funding source"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-# id::155
+# id::new
+#: clm.value:new
+msgid "Newari"
+msgstr "Newari"
+
+#: aout.name:4
+msgid "Sub-library"
+msgstr ""
+
+# id::5
+#: crcd.name:5
+msgid "2_months_2_renew"
+msgstr "2_mois_2_renouvellements"
+
+# id::2
+#: cnal.name:2
+msgid "Unfiltered"
+msgstr "Non filtré"
+
+# id::133
+#: ppl.description:133
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Cat1\""
+
+# id::25
+# id::75
+#: ppl.description:25
+#, fuzzy
+msgid "Allow a user to edit a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::61
+# id::63
+#: ppl.description:61
+#, fuzzy
+msgid "User may update a copy statistical category"
+msgstr ""
+"L’utilisateur peut mettre à jour une entrée de catégorie statistique "
+"d’exemplaires"
+
+# id::ful
+#: clm.value:ful
+msgid "Fula"
+msgstr "Fulfude"
+
+# id::a
+#: cifm.value:a
+msgid "Microfilm"
+msgstr "Microfilm"
+
+# id::nub
+#: clm.value:nub
+msgid "Nubian languages"
+msgstr "Langues nubiennes"
+
+# id::arm
+#: clm.value:arm i18n_l.name:hy-AM i18n_l.description:hy-AM
+msgid "Armenian"
+msgstr "Arménien"
+
+# id::sad
+#: clm.value:sad
+msgid "Sandawe"
+msgstr "Wassandaui"
+
+# id::126
+#: ppl.description:126
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Patron\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Client\""
+
+#: clfm.description:s
+msgid "The item is a speech or collection of speeches."
+msgstr ""
+
+# id::bad
+#: clm.value:bad
+msgid "Banda"
+msgstr "Banda"
+
+# id::tam
+#: clm.value:tam
+msgid "Tamil"
+msgstr "Tamoul"
+
+# id::aus
+#: clm.value:aus
+msgid "Australian languages"
+msgstr "Langues australiennes"
+
+# id::
+#: cam.value:
+msgid "Unknown or unspecified"
+msgstr "Inconnu ou non spécifié"
+
+#: ppl.description:10 ppl.description:13 ppl.description:35
+msgid "* no longer applicable"
+msgstr ""
+
+# id::m
+#: cblvl.value:m
+msgid "Monograph/Item"
+msgstr "Monographie ou article"
+
+# id::103
+#: ppl.description:103
+#, fuzzy
+msgid "Allow a user to bypass the circulation permit call for check out"
+msgstr ""
+"Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
+"sortir un article"
+
+# id::pus
+#: clm.value:pus
+msgid "Pushto"
+msgstr "Afghan"
+
+# id::b
+#: cifm.value:b
+msgid "Microfiche"
+msgstr "Microfiche"
+
+# id::wln
+#: clm.value:wln
+msgid "Walloon"
+msgstr "Wallon"
+
+# id::112
+#: ppl.description:112
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
+msgstr ""
+"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
+"ne se trouve pas à la source ou à la destination du transit"
+
+# id::din
+#: clm.value:din
+msgid "Dinka"
+msgstr "Dinka"
+
+# id::chu
+#: clm.value:chu
+msgid "Church Slavic"
+msgstr "Slavon liturgique"
+
+# id::nno
+#: clm.value:nno
+msgid "Norwegian (Nynorsk)"
+msgstr "Norvégien (Nynorsk)"
+
+# id::lam
+#: clm.value:lam
+msgid "Lamba"
+msgstr "Lamba"
+
+# id::mic
+#: clm.value:mic
+msgid "Micmac"
+msgstr "Micmac"
+
+# id::-gag
+#: clm.value:-gag clm.value:glg
+msgid "Galician"
+msgstr "Galicien"
+
+# id::mad
+#: clm.value:mad
+msgid "Madurese"
+msgstr "Madurais"
+
+# id::kmb
+#: clm.value:kmb
+msgid "Kimbundu"
+msgstr "Kimboundou"
+
+# id::ssa
+#: clm.value:ssa
+msgid "Nilo-Saharan (Other)"
+msgstr "Nilo-saharien (Autre)"
+
+# id::sag
+#: clm.value:sag
+msgid "Sango (Ubangi Creole)"
+msgstr "Sango (Ubangi Creole)"
+
+# id::kha
+#: clm.value:kha
+msgid "Khasi"
+msgstr "Khasi"
+
+# id::man
+#: clm.value:man
+msgid "Mandingo"
+msgstr "Meninka"
+
+# id::mah
+#: clm.value:mah
+msgid "Marshallese"
+msgstr "Marshallois"
+
+# id::yao
+#: clm.value:yao
+msgid "Yao (Africa)"
+msgstr "Yao (Afrique)"
+
+# id::mar
+#: clm.value:mar
+msgid "Marathi"
+msgstr "Marathi"
+
+# id::slv
+#: clm.value:slv
+msgid "Slovenian"
+msgstr "Slovène"
+
+# id::sal
+#: clm.value:sal
+msgid "Salishan languages"
+msgstr "Langues salish"
+
+#: pgt.name:4
+msgid "Catalogers"
+msgstr ""
+
+# id::152
+#: ppl.description:152
+msgid "Allow a staff member to define where another staff member has their permissions"
+msgstr ""
+"Permet aux membres du personnel de déterminer pour quelles actions un autre "
+"membre du personnel a obtenu leurs permissions"
+
+# id::san
+#: clm.value:san
+msgid "Sanskrit"
+msgstr "Sanskrit"
+
+# id::9
+#: ccs.name:9
+msgid "On order"
+msgstr "Sur commande"
+
+# id::e
+#: clfm.value:e
+msgid "Essays"
+msgstr "Essais"
+
+#: aout.opac_label:2
+msgid "Local Library System"
+msgstr ""
+
+# id::r
+#: cifm.value:r
+msgid "Regular print reproduction"
+msgstr "Reproduction d’imprimés réguliers"
+
 # id::153
 # id::157
 # id::88
-#: ppl.description:1128
+#: ppl.description:153
 #, fuzzy
-msgid "Allow a user to view a funding source"
+msgid "Allow a user to create a new funding source"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-# id::156
-# id::153
-# id::157
-# id::88
-#: ppl.description:1129
-#, fuzzy
-msgid "Allow a user to update a funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::157
-# id::88
-#: ppl.description:1130
-#, fuzzy
-msgid "Allow a user to create a new fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::158
-# id::157
-# id::88
-#: ppl.description:1131
-#, fuzzy
-msgid "Allow a user to delete a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::159
-# id::158
-# id::157
-# id::88
-#: ppl.description:1132
-#, fuzzy
-msgid "Allow a user to view a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
-# id::160
-# id::157
-# id::88
-#: ppl.description:1133
-#, fuzzy
-msgid "Allow a user to update a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+# id::elx
+#: clm.value:elx
+msgid "Elamite"
+msgstr "Élamite"
 
 # id::161
 # id::76
-#: ppl.description:1134
+#: ppl.description:161
 #, fuzzy
 msgid "Allow a user to create a new fund allocation"
 msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
 
+# id::53
+#: ppl.description:53
+#, fuzzy
+msgid "Allow a user to view other users' permission groups"
+msgstr ""
+"Permet à un utilisateur de consulter les groupes de permission des autres "
+"utilisateurs"
+
+# id::ady
+#: clm.value:ady
+msgid "Adygei"
+msgstr "Adygué"
+
+# id::57
+# id::56
+#: ppl.description:57
+#, fuzzy
+msgid "User may create a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::nor
+#: clm.value:nor
+msgid "Norwegian"
+msgstr "Norvégien"
+
+# id::lug
+#: clm.value:lug
+msgid "Ganda"
+msgstr "Ganda"
+
+#: aout.opac_label:1
+msgid "Everywhere"
+msgstr ""
+
+# id::6
+#: aou.name:6
+msgid "Example Branch 3"
+msgstr "Exemple de Direction générale 3"
+
+# id::4
+#: aou.name:4
+msgid "Example Branch 1"
+msgstr "Exemple de Direction générale 1"
+
+# id::lah
+#: clm.value:lah
+msgid "Lahnda"
+msgstr "Lahnda"
+
+# id::hit
+#: clm.value:hit
+msgid "Hittite"
+msgstr "Hittite"
+
+# id::118
+#: ppl.description:118
+#, fuzzy
+msgid "Allow a user to create a new closed date for a location"
+msgstr ""
+"Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
+"emplacement"
+
+# id::tuk
+#: clm.value:tuk
+msgid "Turkmen"
+msgstr "Türkmène"
+
+#: cam.description:j
+msgid "The item is intended for children and young people, approximate ages 0-15 years."
+msgstr ""
+
+# id::suk
+#: clm.value:suk
+msgid "Sukuma"
+msgstr "Sukuma"
+
+# id::p
+#: citm.value:p
+msgid "Mixed materials"
+msgstr "Documents divers"
+
+# id::72
+#: ppl.description:72
+#, fuzzy
+msgid "Allow a user to create a new non-cataloged item type"
+msgstr ""
+"Permet à un utilisateur de créer un nouveau type d’article non catalogué"
+
+# id::8
+#: ccs.name:8
+msgid "On holds shelf"
+msgstr "Étagère des articles mis en réserve"
+
+# id::5
+#: aout.name:5
+msgid "Bookmobile"
+msgstr "Bibliobus"
+
+# id::ypk
+#: clm.value:ypk
+msgid "Yupik languages"
+msgstr "Langues yupiks"
+
+# id::tvl
+#: clm.value:tvl
+msgid "Tuvaluan"
+msgstr "Tuvaluan"
+
+# id::54
+#: ppl.description:54
+#, fuzzy
+msgid "Allow a user to determine whether another user can check out an item"
+msgstr ""
+"Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
+"article"
+
+# id::104
+#: ppl.description:104
+#, fuzzy
+msgid "Allow a user to override the copy_is_reference event"
+msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
+
+# id::bej
+#: clm.value:bej
+msgid "Beja"
+msgstr "Beja"
+
+# id::gem
+#: clm.value:gem
+msgid "Germanic (Other)"
+msgstr "Germanique (Autre)"
+
+#: cza.label:9 cza.label:18
+msgid "Item Type"
+msgstr ""
+
+# id::kab
+#: clm.value:kab
+msgid "Kabyle"
+msgstr "Kabyle"
+
+# id::10
+#: crcd.name:10
+msgid "14_days_2_renew"
+msgstr "14_jours_2_renouvellements"
+
+#: ppl.description:15
+msgid "Allow a user to renew items"
+msgstr ""
+
+# id::2
+#: cit.name:2
+msgid "SSN"
+msgstr "SSN"
+
+# id::got
+#: clm.value:got
+msgid "Gothic"
+msgstr "Gotique"
+
+# id::tmh
+#: clm.value:tmh
+msgid "Tamashek"
+msgstr "Tamacheq"
+
+# id::kaa
+#: clm.value:kaa
+msgid "Kara-Kalpak"
+msgstr "Kara-kalpak"
+
+# id::swa
+#: clm.value:swa
+msgid "Swahili"
+msgstr "Swahili"
+
+# id::car
+#: clm.value:car
+msgid "Carib"
+msgstr "Caribe"
+
+# id::sam
+#: clm.value:sam
+msgid "Samaritan Aramaic"
+msgstr "Araméen samaritain"
+
+# id::chr
+#: clm.value:chr
+msgid "Cherokee"
+msgstr "Cherokee"
+
+#: ppl.description:176
+msgid "Allow a user to view and purchase from a provider"
+msgstr ""
+
+# id::5
+#: ccs.name:5
+msgid "In process"
+msgstr "En traitement"
+
+#: ppl.description:173
+msgid "Allow a user to view/credit/debit a fund"
+msgstr ""
+
+# id::78
+#: ppl.description:78
+#, fuzzy
+msgid "Allow a user to delete a copy location"
+msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
+
+# id::mag
+#: clm.value:mag
+msgid "Magahi"
+msgstr "Magahi"
+
+# id::paa
+#: clm.value:paa
+msgid "Papuan (Other)"
+msgstr "Papou (Autre)"
+
+# id::-mla
+#: clm.value:-mla clm.value:mlg
+msgid "Malagasy"
+msgstr "Malgache"
+
+# id::tli
+#: clm.value:tli
+msgid "Tlingit"
+msgstr "Tlingit"
+
+# id::mao
+#: clm.value:mao
+msgid "Maori"
+msgstr "Maori"
+
+# id::frm
+#: clm.value:frm
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "Moyen français (aux environs de 1400-1600)"
+
+# id::bai
+#: clm.value:bai
+msgid "Bamileke languages"
+msgstr "Langues bamilekes"
+
+# id::ibo
+#: clm.value:ibo
+msgid "Igbo"
+msgstr "Igbo"
+
+# id::lad
+#: clm.value:lad
+msgid "Ladino"
+msgstr "Ladino"
+
+# id::cat
+#: clm.value:cat
+msgid "Catalan"
+msgstr "Catalan"
+
+# id::srr
+#: clm.value:srr
+msgid "Serer"
+msgstr "Sérère"
+
+# id::e
+#: cam.value:e
+msgid "Adult"
+msgstr "Adulte"
+
+# id::42
+#: ppl.description:42
+#, fuzzy
+msgid "Allow a user may view another user's transactions"
+msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
+
+# id::phn
+#: clm.value:phn
+msgid "Phoenician"
+msgstr "Phénicien"
+
+# id::wen
+#: clm.value:wen
+msgid "Sorbian languages"
+msgstr "Langues sorabes"
+
+# id::a
+#: cam.value:a
+msgid "Preschool"
+msgstr "Préscolaire"
+
+# id::sel
+#: clm.value:sel
+msgid "Selkup"
+msgstr "Selkoup"
+
+# id::bal
+#: clm.value:bal
+msgid "Baluchi"
+msgstr "Baluchi"
+
+# id::pan
+#: clm.value:pan
+msgid "Panjabi"
+msgstr "Panjabi"
+
+# id::oss
+#: clm.value:oss
+msgid "Ossetic"
+msgstr "Ossète"
+
+# id::raj
+#: clm.value:raj
+msgid "Rajasthani"
+msgstr "Rajasthani"
+
+# id::non
+#: clm.value:non
+msgid "Old Norse"
+msgstr "Vieil islandais"
+
+# id::77
+#: ppl.description:77
+#, fuzzy
+msgid "Allow a user to update a copy location"
+msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
+
+# id::hau
+#: clm.value:hau
+msgid "Hausa"
+msgstr "Haoussa"
+
+# id::kut
+#: clm.value:kut
+msgid "Kutenai"
+msgstr "Kutenai"
+
+# id::mol
+#: clm.value:mol
+msgid "Moldavian"
+msgstr "Moldave"
+
+# id::111
+#: ppl.description:111
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
+msgstr ""
+"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
+"se trouve à la source ou à la destination du transit"
+
+# id::lol
+#: clm.value:lol
+msgid "Mongo-Nkundu"
+msgstr "Mongo-Nkundu"
+
+# id::kum
+#: clm.value:kum
+msgid "Kumyk"
+msgstr "Kumyk"
+
+#: vqbrad.description:14
+msgid "Edition"
+msgstr ""
+
+# id::ava
+#: clm.value:ava
+msgid "Avaric"
+msgstr "Avaric"
+
+#: ppl.description:22
+msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
+msgstr ""
+
+# id::mos
+#: clm.value:mos
+msgid "Mooré"
+msgstr "Mooré"
+
+# id::101
+#: ppl.description:101
+#, fuzzy
+msgid "Allow a user to execute an offline script batch"
+msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
+
+# id::gmh
+#: clm.value:gmh
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "Haut-allemand moyen (aux environs de 1050-1500)"
+
+# id::81
+#: ppl.description:81
+#, fuzzy
+msgid "Allow a user to see if another user has permission to place a hold on a given copy"
+msgstr ""
+"Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
+"mettre en réserve un exemplaire en particulier"
+
+# id::2
+# id::6
+#: cza.label:2 cza.label:11 vqbrad.description:5
+#, fuzzy
+msgid "ISBN"
+msgstr "SSN"
+
+# id::mai
+#: clm.value:mai
+msgid "Maithili"
+msgstr "Maithili"
+
+#: pgt.name:5
+msgid "Circulators"
+msgstr ""
+
+# id::tai
+#: clm.value:tai
+msgid "Tai (Other)"
+msgstr "Tai (Autre)"
+
+# id::tpi
+#: clm.value:tpi
+msgid "Tok Pisin"
+msgstr "Tok Pisin"
+
+# id::bin
+#: clm.value:bin
+msgid "Edo"
+msgstr "Edo"
+
+# id::3
+#: cit.name:3
+msgid "Other"
+msgstr "Autre"
+
+# id::peo
+#: clm.value:peo
+msgid "Old Persian (ca. 600-400 B.C.)"
+msgstr "Vieux perse (aux environs de 600 à 400 avant J.-C.)"
+
+# id::k
+#: citm.value:k
+msgid "Two-dimensional nonprojectable graphic"
+msgstr "Schéma non projetable à deux dimensions"
+
+# id::ban
+#: clm.value:ban
+msgid "Balinese"
+msgstr "Balinais"
+
+# id::tkl
+#: clm.value:tkl
+msgid "Tokelauan"
+msgstr "Tokelauan"
+
+# id::doi
+#: clm.value:doi
+msgid "Dogri"
+msgstr "Dogra"
+
+# id::pro
+#: clm.value:pro
+msgid "Provençal (to 1500)"
+msgstr "Provençal (jusqu’à 1500)"
+
+# id::lim
+#: clm.value:lim
+msgid "Limburgish"
+msgstr "Limburgish"
+
+# id::egy
+#: clm.value:egy
+msgid "Egyptian"
+msgstr "Égyptien"
+
+#: vqbrad.description:7
+msgid "Price"
+msgstr ""
+
+# id::tyv
+#: clm.value:tyv
+msgid "Tuvinian"
+msgstr "Tuvinian"
+
+# id::o
+#: citm.value:o
+msgid "Kit"
+msgstr "Trousse"
+
+# id::1
+#: acpl.name:1
+msgid "Stacks"
+msgstr "Piles"
+
+# id::mul
+#: clm.value:mul
+msgid "Multiple languages"
+msgstr "Langues multiples"
+
+# id::mlt
+#: clm.value:mlt
+msgid "Maltese"
+msgstr "Maltais"
+
+# id::asm
+#: clm.value:asm
+msgid "Assamese"
+msgstr "Assamais"
+
+# id::88
+#: ppl.description:88
+#, fuzzy
+msgid "Allow a user to create a new copy note"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+#: pgt.name:10
+msgid "Local System Administrator"
+msgstr ""
+
+#: cza.label:8 cza.label:17 vqbrad.description:13
+msgid "Publication Date"
+msgstr ""
+
+#: ppl.description:16
+msgid "Allow a user to view bill details"
+msgstr ""
+
+# id::gaa
+#: clm.value:gaa
+msgid "Gã"
+msgstr "Gã"
+
+# id::tsn
+#: clm.value:tsn clm.value:-tsw
+msgid "Tswana"
+msgstr "Bechouana"
+
+# id::lat
+#: clm.value:lat
+msgid "Latin"
+msgstr "Latin"
+
+# id::62
+# id::56
+#: ppl.description:62
+#, fuzzy
+msgid "User may update an entry in a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::cop
+#: clm.value:cop
+msgid "Coptic"
+msgstr "Copte"
+
+# id::5
+#: crmf.name:5
+msgid "overdue_equip_min"
+msgstr "retard_équipement_minimum"
+
+# id::ltz
+#: clm.value:ltz
+msgid "Letzeburgesch"
+msgstr "Letzeburgesch"
+
+# id::-fri
+#: clm.value:-fri clm.value:fry
+msgid "Frisian"
+msgstr "Frison"
+
+# id::myn
+#: clm.value:myn
+msgid "Mayan languages"
+msgstr "Langues mayas"
+
+# id::por
+#: clm.value:por
+msgid "Portuguese"
+msgstr "Portuguais"
+
+# id::ace
+#: clm.value:ace
+msgid "Achinese"
+msgstr "Aceh"
+
+# id::1
+#: cit.name:1
+msgid "Drivers License"
+msgstr "Permis de conduire"
+
+#: ppl.description:38
+msgid "Allow a user to mark an item as 'missing'"
+msgstr ""
+
+# id::69
+# id::59
+# id::56
+#: ppl.description:69
+#, fuzzy
+msgid "User may delete an entry from a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::140
+#: ppl.description:140
+msgid "Allow staff to override overdue count failure"
+msgstr ""
+"Permet aux membres du personnel de contourner un échec du nombre de retards"
+
+# id::ter
+#: clm.value:ter
+msgid "Terena"
+msgstr "Terena"
+
+# id::ave
+#: clm.value:ave
+msgid "Avestan"
+msgstr "Avesta"
+
+# id::min
+#: clm.value:min
+msgid "Minangkabau"
+msgstr "Minangkabau"
+
+# id::him
+#: clm.value:him
+msgid "Himachali"
+msgstr "Himachali"
+
 # id::162
 # id::78
-#: ppl.description:1135
+#: ppl.description:162
 #, fuzzy
 msgid "Allow a user to delete a fund allocation"
 msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
 
-# id::163
-# id::162
-# id::78
-#: ppl.description:1136
-#, fuzzy
-msgid "Allow a user to view a fund allocation"
-msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
-
-# id::164
-# id::77
-#: ppl.description:1137
-#, fuzzy
-msgid "Allow a user to update a fund allocation"
-msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
-
-# id::165
-#: ppl.description:1138
-msgid "Lowest level permission required to access the ACQ interface"
-msgstr ""
-
-# id::166
-# id::88
-#: ppl.description:1139
-#, fuzzy
-msgid "Allow a user to create a new provider"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
-
 # id::167
 # id::166
 # id::88
-#: ppl.description:1140
+#: ppl.description:167
 #, fuzzy
 msgid "Allow a user to delate a provider"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
+# id::147
+#: ppl.description:147
+#, fuzzy
+msgid "Allow a user to run reports"
+msgstr "Permet à un utilisateur d’exécuter des rapports"
+
+# id::znd
+#: clm.value:znd
+msgid "Zande"
+msgstr "Azande"
+
+# id::fro
+#: clm.value:fro
+msgid "French, Old (ca. 842-1400)"
+msgstr "Ancien français (aux environs de 842-1400)"
+
+#: ppl.description:39
+msgid "Allow a user to mark an item as 'claims returned'"
+msgstr ""
+
+# id::sit
+#: clm.value:sit
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-tibétain (Autre)"
+
+# id::en-CA
+#: i18n_l.description:en-CA
+msgid "Canadian English"
+msgstr "Anglais canadien"
+
+# id::-eth
+#: clm.value:-eth clm.value:gez
+msgid "Ethiopic"
+msgstr "Éthiopien"
+
+#: vqarad.description:1
+msgid "Identifier"
+msgstr ""
+
+# id::83
+#: ppl.description:83
+#, fuzzy
+msgid "Allow a user to perform Z39.50 queries against remote servers"
+msgstr ""
+"Permet à un utilisateur d’effectuer des requêtes z3950 auprès des serveurs à "
+"distance"
+
+# id::13
+#: ccs.name:13
+msgid "Discard/Weed"
+msgstr "Retrait/Triage"
+
+# id::110
+#: ppl.description:110
+#, fuzzy
+msgid "Allow a user to change the missing status on a copy"
+msgstr "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
+
+# id::jpn
+#: clm.value:jpn
+msgid "Japanese"
+msgstr "Japonais"
+
+# id::cor
+#: clm.value:cor
+msgid "Cornish"
+msgstr "Cornique"
+
+# id::bul
+#: clm.value:bul
+msgid "Bulgarian"
+msgstr "Bulgare"
+
+# id::roa
+#: clm.value:roa
+msgid "Romance (Other)"
+msgstr "Sentimental (Autre)"
+
+# id::32
+# id::75
+#: ppl.description:32
+#, fuzzy
+msgid "Allow a user to check in a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::yor
+#: clm.value:yor
+msgid "Yoruba"
+msgstr "Yoruba"
+
+# id::arw
+#: clm.value:arw
+msgid "Arawak"
+msgstr "Arawak"
+
+# id::nyn
+#: clm.value:nyn
+msgid "Nyankole"
+msgstr "Nkole"
+
+# id::fre
+#: clm.value:fre
+msgid "French"
+msgstr "Français"
+
+# id::tog
+#: clm.value:tog
+msgid "Tonga (Nyasa)"
+msgstr "Tonga (Nyassa)"
+
+# id::ben
+#: clm.value:ben
+msgid "Bengali"
+msgstr "Bengali"
+
+# id::bas
+#: clm.value:bas
+msgid "Basa"
+msgstr "Baasa"
+
+#: ppl.description:106
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
+msgstr ""
+
+#: ppl.description:36
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::s
+#: clfm.value:s
+msgid "Speeches"
+msgstr "Discours"
+
+# id::kos
+#: clm.value:kos clm.value:-kus
+msgid "Kusaie"
+msgstr "Kusaie"
+
+# id::nap
+#: clm.value:nap
+msgid "Neapolitan Italian"
+msgstr "Italien napolitain"
+
+# id::fin
+#: clm.value:fin
+msgid "Finnish"
+msgstr "Finnois"
+
+# id::sun
+#: clm.value:sun
+msgid "Sundanese"
+msgstr "Soudanais"
+
+# id::alb
+#: clm.value:alb
+msgid "Albanian"
+msgstr "Albanais"
+
+# id::96
+#: ppl.description:96
+#, fuzzy
+msgid "Allow a user to view notifications attached to a hold"
+msgstr ""
+"Permet à un utilisateur d’afficher les notifications associées à un article "
+"mis en réserve"
+
+# id::osa
+#: clm.value:osa
+msgid "Osage"
+msgstr "Osage"
+
+#: vqbrad.description:10
+msgid "TCN Source"
+msgstr ""
+
+# id::44
+#: ppl.description:44
+#, fuzzy
+msgid "Allow a user to view another user's containers (buckets)"
+msgstr "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
+
+# id::-tag
+#: clm.value:-tag clm.value:tgl
+msgid "Tagalog"
+msgstr "Tagal"
+
+# id::scc
+#: clm.value:scc
+msgid "Serbian"
+msgstr "Serbe"
+
+# id::ast
+#: clm.value:ast
+msgid "Bable"
+msgstr "Bable"
+
+# id::d
+#: cblvl.value:d
+msgid "Subunit"
+msgstr "Sous-unité"
+
+# id::ita
+#: clm.value:ita
+msgid "Italian"
+msgstr "Italien"
+
+# id::chb
+#: clm.value:chb
+msgid "Chibcha"
+msgstr "Chibcha"
+
+# id::8
+#: aou.name:8
+#, fuzzy
+msgid "Example Sub-library 1"
+msgstr "Exemple de sous-bibliothèque 1"
+
+# id::nav
+#: clm.value:nav
+msgid "Navajo"
+msgstr "Navaho"
+
+# id::mno
+#: clm.value:mno
+msgid "Manobo languages"
+msgstr "Langues Manobo"
+
+# id::cha
+#: clm.value:cha
+msgid "Chamorro"
+msgstr "Chamorro"
+
+# id::lua
+#: clm.value:lua
+msgid "Luba-Lulua"
+msgstr "Luba-Lulua"
+
+# id::79
+#: ppl.description:79
+#, fuzzy
+msgid "Allow a user to create a transit_copy object for transiting a copy"
+msgstr ""
+"Permet à un utilisateur de créer un objet de copie de transit pour procéder "
+"à la transition d’un exemplaire"
+
+# id::wak
+#: clm.value:wak
+msgid "Wakashan languages"
+msgstr "Langues wakashes"
+
+# id::amh
+#: clm.value:amh
+msgid "Amharic"
+msgstr "Amharic"
+
+# id::cze
+#: clm.value:cze
+msgid "Czech"
+msgstr "Tchèque"
+
+# id::-taj
+#: clm.value:-taj clm.value:tgk
+msgid "Tajik"
+msgstr "Tadjik"
+
+# id::rap
+#: clm.value:rap
+msgid "Rapanui"
+msgstr "Rapanui"
+
+# id::urd
+#: clm.value:urd
+msgid "Urdu"
+msgstr "Urdu"
+
+# id::24
+# id::88
+#: ppl.description:24
+#, fuzzy
+msgid "Allow a user to create a new copy object"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::loz
+#: clm.value:loz
+msgid "Lozi"
+msgstr "Lozi"
+
+# id::60
+# id::56
+#: ppl.description:60
+#, fuzzy
+msgid "User may update a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::149
+#: ppl.description:149
+#, fuzzy
+msgid "Allow a user to view report output"
+msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
+
+# id::gor
+#: clm.value:gor
+msgid "Gorontalo"
+msgstr "Gorontalo"
+
+# id::chg
+#: clm.value:chg
+msgid "Chagatai"
+msgstr "Djaghatai"
+
+# id::89
+#: ppl.description:89
+#, fuzzy
+msgid "Allow a user to create a new volume note"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::9
+#: crcd.name:9
+msgid "28_days_0_renew"
+msgstr "28_jours_0_renouvellement"
+
+# id::11
+#: ccs.name:11
+msgid "Cataloging"
+msgstr "Catalogage"
+
+# id::4
+#: crcd.name:4
+msgid "3_days_1_renew"
+msgstr "3_jours_1_renouvellement"
+
+# id::vol
+#: clm.value:vol
+msgid "Volapük"
+msgstr "Volapük"
+
+# id::art
+#: clm.value:art
+msgid "Artificial (Other)"
+msgstr "Artificiel (Autre)"
+
+# id::nia
+#: clm.value:nia
+msgid "Nias"
+msgstr "Nias"
+
+# id::arn
+#: clm.value:arn
+msgid "Mapuche"
+msgstr "Mapuche"
+
+#: vqbrad.description:9
+msgid "TCN Value"
+msgstr ""
+
+# id::uig
+#: clm.value:uig
+msgid "Uighur"
+msgstr "Ouïgour"
+
+# id::chy
+#: clm.value:chy
+msgid "Cheyenne"
+msgstr "Cheyenne"
+
+#: clfm.description:u
+msgid "The literary form of the item is unknown."
+msgstr ""
+
+# id::fon
+#: clm.value:fon
+msgid "Fon"
+msgstr "Fon"
+
+# id::awa
+#: clm.value:awa
+msgid "Awadhi"
+msgstr "Awadhi"
+
+# id::cre
+#: clm.value:cre
+msgid "Cree"
+msgstr "Cri"
+
+# id::oto
+#: clm.value:oto
+msgid "Otomian languages"
+msgstr "Langues otomangues"
+
+# id::nym
+#: clm.value:nym
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
+
+# id::ind
+#: clm.value:ind
+msgid "Indonesian"
+msgstr "Indonésienne"
+
+# id::1
+#: cst.value:1
+msgid "Good"
+msgstr "Bien"
+
+# id::den
+#: clm.value:den
+msgid "Slave"
+msgstr "Slave"
+
+# id::haw
+#: clm.value:haw
+msgid "Hawaiian"
+msgstr "Hawaïen"
+
+#: czs.label:loc
+msgid "Library of Congress"
+msgstr ""
+
+# id::sid
+#: clm.value:sid
+msgid "Sidamo"
+msgstr "Sidamo"
+
+#: ppl.description:171
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::105
+#: ppl.description:105
+#, fuzzy
+msgid "Allow a user to void a bill"
+msgstr "Permet à un utilisateur d’éviter une facture"
+
+# id::158
+# id::157
+# id::88
+#: ppl.description:158
+#, fuzzy
+msgid "Allow a user to delete a fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::sin
+#: clm.value:sin clm.value:-snh
+msgid "Sinhalese"
+msgstr "Singhalais"
+
+# id::ada
+#: clm.value:ada
+msgid "Adangme"
+msgstr "Adangme"
+
+# id::tha
+#: clm.value:tha
+msgid "Thai"
+msgstr "Thai"
+
+# id::afr
+#: clm.value:afr
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+# id::a
+#: citm.value:a
+msgid "Language material"
+msgstr "Document linguistique"
+
+# id::31
+# id::11
+#: ppl.description:31
+#, fuzzy
+msgid "Allow a user to view another user's Patron Record"
+msgstr ""
+"Permet à un utilisateur de consulter les articles mis en réserve par un "
+"autre utilisateur"
+
+#: vqbrad.description:4
+msgid "Pagination"
+msgstr ""
+
+# id::uga
+#: clm.value:uga
+msgid "Ugaritic"
+msgstr "Ougaritique"
+
+# id::uzb
+#: clm.value:uzb
+msgid "Uzbek"
+msgstr "Ouzbek"
+
+# id::ira
+#: clm.value:ira
+msgid "Iranian (Other)"
+msgstr "Iranien (Autre) "
+
+# id::zen
+#: clm.value:zen
+msgid "Zenaga"
+msgstr "Zenaga"
+
+# id::bug
+#: clm.value:bug
+msgid "Bugis"
+msgstr "Bugis"
+
+# id::7
+#: ccs.name:7
+msgid "Reshelving"
+msgstr "Remise des documents sur les rayons"
+
+# id::bur
+#: clm.value:bur
+msgid "Burmese"
+msgstr "Birman"
+
+# id::160
+# id::157
+# id::88
+#: ppl.description:160
+#, fuzzy
+msgid "Allow a user to update a fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+# id::ale
+#: clm.value:ale
+msgid "Aleut"
+msgstr "Aléoute"
+
+# id::kro
+#: clm.value:kro
+msgid "Kru"
+msgstr "Kru"
+
+#: clfm.description:m
+msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
+msgstr ""
+
+# id::lin
+#: clm.value:lin
+msgid "Lingala"
+msgstr "Lingala"
+
+# id::1
+#: ccs.name:1
+msgid "Checked out"
+msgstr "Sortie"
+
+# id::arg
+#: clm.value:arg
+msgid "Aragonese Spanish"
+msgstr "Aragonais, espagnol"
+
+# id::b
+#: cam.value:b
+msgid "Primary"
+msgstr "Primaire"
+
+# id::mis
+#: clm.value:mis
+msgid "Miscellaneous languages"
+msgstr "Diverses langues"
+
+# id::syr
+#: clm.value:syr
+msgid "Syriac"
+msgstr "Syriaque"
+
+# id::kar
+#: clm.value:kar
+msgid "Karen"
+msgstr "Karen"
+
+# id::grc
+#: clm.value:grc
+msgid "Greek, Ancient (to 1453)"
+msgstr "Grec ancien (jusqu’à 1453)"
+
+# id::fur
+#: clm.value:fur
+msgid "Friulian"
+msgstr "Frioulan"
+
+# id::nyo
+#: clm.value:nyo
+msgid "Nyoro"
+msgstr "Nyoro"
+
+# id::e
+#: citm.value:e
+msgid "Cartographic material"
+msgstr "Document cartographique"
+
+# id::bre
+#: clm.value:bre
+msgid "Breton"
+msgstr "Breton"
+
+# id::91
+# id::49
+#: ppl.description:91
+#, fuzzy
+msgid "Allow a user to delete another user's copy notes"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+
+# id::-gae
+#: clm.value:-gae clm.value:gla
+msgid "Scottish Gaelic"
+msgstr "Gaélique d'Écosse"
+
+# id::tur
+#: clm.value:tur
+msgid "Turkish"
+msgstr "Turc"
+
+# id::94
+#: ppl.description:94
+#, fuzzy
+msgid "Allow a user to update another user's container"
+msgstr "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
+
+# id::10
+#: ccs.name:10
+msgid "ILL"
+msgstr "Prêts entre bibliothèques"
+
+# id::del
+#: clm.value:del
+msgid "Delaware"
+msgstr "Delaware"
+
+# id::war
+#: clm.value:war
+msgid "Waray"
+msgstr "Waray"
+
+# id::1
+#: aout.name:1
+msgid "Consortium"
+msgstr "Consortium"
+
+# id::snk
+#: clm.value:snk
+msgid "Soninke"
+msgstr "Soninké"
+
+# id::124
+#: ppl.description:124
+#, fuzzy
+msgid "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+"Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
+"nouveau poste puisse le remplacer"
+
+# id::zap
+#: clm.value:zap
+msgid "Zapotec"
+msgstr "Zapoteco"
+
+# id::hmn
+#: clm.value:hmn
+msgid "Hmong"
+msgstr "Hmong"
+
+#: ppl.description:179
+msgid "Allow a user to create/view/update/delete a currency_type"
+msgstr ""
+
+# id::92
+# id::49
+#: ppl.description:92
+#, fuzzy
+msgid "Allow a user to delete another user's volume note"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+
+# id::178
+# id::153
+#: ppl.description:178
+msgid "Allow a staff member to directly remove a bibliographic record"
+msgstr ""
+"Permet à un membre du personnel de supprimer directement une fiche "
+"bibliographique"
+
+# id::-cam
+#: clm.value:-cam clm.value:khm
+msgid "Khmer"
+msgstr "Khmer"
+
+# id::chv
+#: clm.value:chv
+msgid "Chuvash"
+msgstr "Tchouvache"
+
+#: cam.description:d
+msgid "The item is intended for young people, approximate ages 14-17 years."
+msgstr ""
+
+# id::may
+#: clm.value:may
+msgid "Malay"
+msgstr "Malais"
+
+#: ppl.description:19
+msgid "Allow a user to create new MARC records"
+msgstr ""
+
+# id::zun
+#: clm.value:zun
+msgid "Zuni"
+msgstr "Zuni"
+
+# id::f
+#: citm.value:f
+msgid "Manuscript cartographic material"
+msgstr "Document cartographique manuscrit"
+
+# id::iba
+#: clm.value:iba
+msgid "Iban"
+msgstr "Iban"
+
+#: aout.opac_label:3
+msgid "This Branch"
+msgstr ""
+
+# id::109
+#: ppl.description:109
+#, fuzzy
+msgid "Allow a user to remove the lost status from a copy"
+msgstr "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
+
+# id::tut
+#: clm.value:tut
+msgid "Altaic (Other)"
+msgstr "Altaïque (Autre)"
+
+# id::73
+#: ppl.description:73
+#, fuzzy
+msgid "Allow a user to update a non-cataloged item type"
+msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
+
+# id::ceb
+#: clm.value:ceb
+msgid "Cebuano"
+msgstr "Cebuano"
+
+# id::moh
+#: clm.value:moh
+msgid "Mohawk"
+msgstr "Mohawk"
+
 # id::168
 # id::166
 # id::88
-#: ppl.description:1141
+#: ppl.description:168
 #, fuzzy
 msgid "Allow a user to view a provider"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-# id::169
+# id::dgr
+#: clm.value:dgr
+msgid "Dogrib"
+msgstr "Dogrib"
+
+# id::mga
+#: clm.value:mga
+msgid "Irish, Middle (ca. 1100-1550)"
+msgstr "Moyen irlandais (aux environs de 1100-1550)"
+
+# id::j
+#: citm.value:j
+msgid "Musical sound recording"
+msgstr "Enregistrement sonore musical"
+
+# id::63
+# id::59
+# id::56
+#: ppl.description:63
+#, fuzzy
+msgid "User may update an entry in a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::2
+#: aou.name:2
+msgid "Example System 1"
+msgstr "Exemple de système 1"
+
+#: czs.label:loc
+msgid "OCLC"
+msgstr ""
+
+# id::jav
+#: clm.value:jav
+msgid "Javanese"
+msgstr "Javanais"
+
+# id::45
+#: ppl.description:45
+#, fuzzy
+msgid "Allow a user to create a new container for another user"
+msgstr ""
+"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
+
 # id::166
 # id::88
-#: ppl.description:1142
+#: ppl.description:166
 #, fuzzy
-msgid "Allow a user to update a provider"
+msgid "Allow a user to create a new provider"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-# id::170
-#: ppl.description:1143
-msgid "Allow a user to create/view/update/delete a funding source"
+# id::3
+#: aou.name:3
+msgid "Example System 2"
+msgstr "Exemple de système 2"
+
+#: vqbrad.description:1
+msgid "Author of work"
 msgstr ""
 
-# id::171
-#: ppl.description:1144
-msgid "Allow a user to create/view/update/delete a fund"
-msgstr ""
-
-# id::172
-#: ppl.description:1145
-msgid "Allow a user to view/credit/debit a funding source"
-msgstr ""
-
-# id::173
-#: ppl.description:1146
-msgid "Allow a user to view/credit/debit a fund"
-msgstr ""
-
-# id::174
-# id::21
-# id::89
-#: ppl.description:1147
+# id::121
+#: ppl.description:121
 #, fuzzy
-msgid "Allows a user to create a picklist"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+msgid "Allow a user to remove someone from collections"
+msgstr "Permet à un utilisateur de retirer une personne des collections"
 
-# id::175
-#: ppl.description:1148
-msgid "Allow a user to create/view/update/delete a provider"
-msgstr ""
-
-# id::176
-#: ppl.description:1149
-msgid "Allow a user to view and purchase from a provider"
-msgstr ""
+# id::kan
+#: clm.value:kan
+msgid "Kannada"
+msgstr "Kannara"
 
 # id::177
 # id::11
-#: ppl.description:1150
+#: ppl.description:177
 #, fuzzy
 msgid "Allow a user to view another users picklist"
 msgstr ""
 "Permet à un utilisateur de consulter les articles mis en réserve par un "
 "autre utilisateur"
 
-# id::152
-#: ppl.description:1151
-msgid "Allow a staff member to define where another staff member has their permissions"
-msgstr ""
-"Permet aux membres du personnel de déterminer pour quelles actions un autre "
-"membre du personnel a obtenu leurs permissions"
+# id::dum
+#: clm.value:dum
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Moyen néerlandais (aux environs de 1050-1350)"
 
-# id::178
-# id::153
-#: ppl.description:1153
-msgid "Allow a staff member to directly remove a bibliographic record"
-msgstr ""
-"Permet à un membre du personnel de supprimer directement une fiche "
-"bibliographique"
+# id::80
+#: ppl.description:80
+#, fuzzy
+msgid "Allow a user to close out a transit on a copy"
+msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
 
-# id::179
-#: ppl.description:1155
-msgid "Allow a user to create/view/update/delete a currency_type"
+# id::per
+#: clm.value:per
+msgid "Persian"
+msgstr "Persan"
+
+# id::mon
+#: clm.value:mon
+msgid "Mongolian"
+msgstr "Mongol"
+
+# id::cho
+#: clm.value:cho
+msgid "Choctaw"
+msgstr "Choctaw"
+
+# id::aym
+#: clm.value:aym
+msgid "Aymara"
+msgstr "Aïmara"
+
+# id::sai
+#: clm.value:sai
+msgid "South American Indian (Other)"
+msgstr "Indien de l’Amérique du Sud (Autre)"
+
+# id::122
+#: ppl.description:122
+#, fuzzy
+msgid "Allow a user to bar a patron"
+msgstr "Permet à un utilisateur d’exclure un client"
+
+# id::es-MX
+#: i18n_l.description:es-MX
+msgid "Mexican Spanish"
+msgstr "Espagnol mexicain"
+
+# id::150
+#: ppl.description:150
+#, fuzzy
+msgid "Allow a user to checkout an item that is marked as non-circ"
+msgstr ""
+"Permet à un utilisateur de sortir un article qui est désigné comme « non "
+"prêté »"
+
+# id::-sho
+#: clm.value:-sho clm.value:sna
+msgid "Shona"
+msgstr "Shona"
+
+# id::chp
+#: clm.value:chp
+msgid "Chipewyan"
+msgstr "Chippewyan"
+
+# id::cos
+#: clm.value:cos
+msgid "Corsican"
+msgstr "Corse"
+
+# id::kpe
+#: clm.value:kpe
+msgid "Kpelle"
+msgstr "Kpellé"
+
+# id::74
+#: ppl.description:74
+#, fuzzy
+msgid "Allow a user to create a new in-house-use "
+msgstr "Permet à un utilisateur de créer une nouvelle utilisation à l’interne"
+
+# id::95
+#: ppl.description:95
+#, fuzzy
+msgid "Allow a user to create a container for themselves"
+msgstr "Permet à un utilisateur de créer son propre panier"
+
+# id::c
+#: cifm.value:c
+msgid "Microopaque"
+msgstr "Microfiche opaque "
+
+# id::som
+#: clm.value:som
+msgid "Somali"
+msgstr "Somali"
+
+# id::arp
+#: clm.value:arp
+msgid "Arapaho"
+msgstr "Arapaho"
+
+# id::130
+#: ppl.description:130
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"GlobalAdmin\""
+
+# id::ber
+#: clm.value:ber
+msgid "Berber (Other)"
+msgstr "Berbère (Autre)"
+
+# id::chn
+#: clm.value:chn
+msgid "Chinook jargon"
+msgstr "Chinook"
+
+# id::aka
+#: clm.value:aka
+msgid "Akan"
+msgstr "Akan"
+
+# id::lus
+#: clm.value:lus
+msgid "Lushai"
+msgstr "Lushei"
+
+# id::97
+#: ppl.description:97
+#, fuzzy
+msgid "Allow a user to create new hold notifications"
+msgstr ""
+"Permet à un utilisateur de créer de nouvelles notifications relatives à des "
+"articles mis en réserve"
+
+#: i18n_l.name:en-US
+msgid "English (US)"
 msgstr ""
 
-# id::1
-#: pgt.name:1279
+# id::pon
+#: clm.value:pon
+msgid "Ponape"
+msgstr "Ponapé"
+
+#: ppl.description:37
+msgid "Allow a user to mark an item as 'lost'"
+msgstr ""
+
+# id::tah
+#: clm.value:tah
+msgid "Tahitian"
+msgstr "Tahitien"
+
+# id::bla
+#: clm.value:bla
+msgid "Siksika"
+msgstr "Siksika"
+
+# id::174
+# id::21
+# id::89
+#: ppl.description:174
+#, fuzzy
+msgid "Allows a user to create a picklist"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::nds
+#: clm.value:nds
+msgid "Low German"
+msgstr "Bas-allemand"
+
+# id::dar
+#: clm.value:dar
+msgid "Dargwa"
+msgstr "Dargwa"
+
+#: ppl.description:9
+msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
+msgstr ""
+
+# id::m
+#: clfm.value:m
+msgid "Mixed forms"
+msgstr "Divers genres"
+
+# id::sog
+#: clm.value:sog
+msgid "Sogdian"
+msgstr "Sogdien"
+
+# id::pra
+#: clm.value:pra
+msgid "Prakrit languages"
+msgstr "Langues prâkrit"
+
+# id::gay
+#: clm.value:gay
+msgid "Gayo"
+msgstr "Gayo"
+
+# id::113
+#: ppl.description:113
+#, fuzzy
+msgid "Allow a user to query the ZIP code data method"
+msgstr ""
+"Permet à un utilisateur d’interroger la méthode de données relatives aux "
+"codes postaux"
+
+#: ppl.description:47
+msgid "Allow a user to change the settings for an organization unit"
+msgstr ""
+
+# id::0
+#: clfm.value:0
+msgid "Not fiction (not further specified)"
+msgstr "néraux (aucune autre spécification)"
+
+# id::kua
+#: clm.value:kua
+msgid "Kuanyama"
+msgstr "Ovambo"
+
+# id::-tar
+#: clm.value:-tar clm.value:tat
+msgid "Tatar"
+msgstr "Tatar"
+
+# id::c
+#: citm.value:c
+msgid "Notated music"
+msgstr "Musique annotée"
+
+# id::93
+# id::49
+#: ppl.description:93
+#, fuzzy
+msgid "Allow a user to delete another user's title note"
+msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+
+#: ppl.description:30
+msgid "Allow a user to mark a user as deleted"
+msgstr ""
+
+# id::7
+#: crmf.name:7
+msgid "overdue_equip_max"
+msgstr "retard_équipement_maximum"
+
+#: cam.description:
+msgid "The target audience for the item not known or not specified."
+msgstr ""
+
+# id::jrb
+#: clm.value:jrb
+msgid "Judeo-Arabic"
+msgstr "Judéo-arabe"
+
+# id::-gal
+#: clm.value:-gal clm.value:orm
+msgid "Oromo"
+msgstr "Oromo"
+
+# id::s
+#: cblvl.value:s
+msgid "Serial"
+msgstr "Collections"
+
+#: clfm.description:j
+msgid "The item is a short story or collection of short stories."
+msgstr ""
+
+#: pgt.name:1
 msgid "Users"
 msgstr ""
 
-# id::2
-#: pgt.name:1281
-msgid "Patrons"
+#: ppl.description:165
+msgid "Lowest level permission required to access the ACQ interface"
 msgstr ""
 
-# id::3
-#: pgt.name:1283
-msgid "Staff"
+# id::sem
+#: clm.value:sem
+msgid "Semitic (Other)"
+msgstr "Sémitique (Autre)"
+
+# id::85
+#: ppl.description:85
+#, fuzzy
+msgid "Allow a user to view all notes attached to a copy"
 msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un "
+"exemplaire"
 
-# id::4
-#: pgt.name:1285
-msgid "Catalogers"
-msgstr ""
+# id::kho
+#: clm.value:kho
+msgid "Khotanese"
+msgstr "Khotanais"
 
-# id::5
-#: pgt.name:1287
-msgid "Circulators"
-msgstr ""
+# id::169
+# id::166
+# id::88
+#: ppl.description:169
+#, fuzzy
+msgid "Allow a user to update a provider"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
-# id::10
-#: pgt.name:1289
-msgid "Local System Administrator"
-msgstr ""
+# id::bem
+#: clm.value:bem
+msgid "Bemba"
+msgstr "Bemba"
 
-# id::10
-#: pgt.description:1290
-msgid "System maintenance, configuration, etc."
-msgstr ""
-
-# id::1
-#: acpl.name:1421
-msgid "Stacks"
-msgstr "Piles"
-
-# id::1
-#: vqbrad.description:1476
+#: vqbrad.description:1
 msgid "Title of work"
 msgstr ""
 
-# id::1
-#: vqbrad.description:1477
-msgid "Author of work"
+# id::50
+# id::45
+#: ppl.description:50
+#, fuzzy
+msgid "Allow a user to create a container item for another user"
+msgstr ""
+"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
+
+# id::86
+#: ppl.description:86
+#, fuzzy
+msgid "Allow a user to view all notes attached to a volume"
+msgstr ""
+"Permet à un utilisateur d’afficher toutes les notes associées à un volume"
+
+# id::que
+#: clm.value:que
+msgid "Quechua"
+msgstr "Quechua"
+
+# id::crp
+#: clm.value:crp
+msgid "Creoles and Pidgins (Other)"
+msgstr "Langues créoles et pidgin (Autre)"
+
+# id::nic
+#: clm.value:nic
+msgid "Niger-Kordofanian (Other)"
+msgstr "Niger-Kordofanian (Autre)"
+
+# id::est
+#: clm.value:est
+msgid "Estonian"
+msgstr "Estonien"
+
+# id::fan
+#: clm.value:fan
+msgid "Fang"
+msgstr "Fan"
+
+# id::mal
+#: clm.value:mal
+msgid "Malayalam"
+msgstr "Malayalam"
+
+#: ppl.description:170
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr ""
+
+# id::smn
+#: clm.value:smn
+msgid "Inari Sami"
+msgstr "Inari Lapon"
+
+#: i18n_l.name:fr-CA
+msgid "French (Canada)"
 msgstr ""
 
 # id::3
-#: vqbrad.description:1478
-msgid "Language of work"
-msgstr ""
+#: aout.name:3
+msgid "Branch"
+msgstr "Direction générale"
 
-# id::4
-#: vqbrad.description:1479
-msgid "Pagination"
-msgstr ""
+# id::afh
+#: clm.value:afh
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (langage artificiel)"
 
-# id::5
-# id::2
-# id::6
-#: vqbrad.description:1480
-#, fuzzy
-msgid "ISBN"
-msgstr "SSN"
-
-# id::6
-# id::2
-#: vqbrad.description:1481
-#, fuzzy
-msgid "ISSN"
-msgstr "SSN"
-
-# id::7
-#: vqbrad.description:1482
-msgid "Price"
-msgstr ""
-
-# id::8
-#: vqbrad.description:1483
-msgid "Accession Number"
-msgstr ""
-
-# id::9
-#: vqbrad.description:1484
-msgid "TCN Value"
-msgstr ""
-
-# id::10
-#: vqbrad.description:1485
-msgid "TCN Source"
-msgstr ""
-
-# id::11
-#: vqbrad.description:1486
-msgid "Internal ID"
-msgstr ""
-
-# id::12
-#: vqbrad.description:1487
-msgid "Publisher"
-msgstr ""
-
-# id::13
-#: vqbrad.description:1488
-msgid "Publication Date"
-msgstr ""
-
-# id::14
-#: vqbrad.description:1489
-msgid "Edition"
-msgstr ""
-
-# id::15
-#: vqbrad.description:1490
+#: vqbrad.description:15
 msgid "Item Barcode"
 msgstr ""
 
-# id::1
-#: vqarad.description:1540
-msgid "Identifier"
+# id::107
+#: ppl.description:107
+#, fuzzy
+msgid "Allow a user to check out an item in a non-circulatable status"
+msgstr "Permet à un utilisateur de sortir un article qui n’a pas été prêté"
+
+# id::151
+#: ppl.description:151
+#, fuzzy
+msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
+"Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
+"d’un autre utilisateur"
+
+# id::3
+#: cbs.source:3
+msgid "Project Gutenberg"
+msgstr "Project Gutenberg"
+
+# id::9
+#: aou.name:9
+msgid "Example Bookmobile 1"
+msgstr "Exemple de bibliobus de 1"
+
+#: cam.description:g
+msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
+msgstr ""
+
+# id::120
+#: ppl.description:120
+#, fuzzy
+msgid "Allow a user to put someone into collections"
+msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
+
+# id::fij
+#: clm.value:fij
+msgid "Fijian"
+msgstr "Fidjien"
+
+# id::ilo
+#: clm.value:ilo
+msgid "Iloko"
+msgstr "Iloko"
+
+# id::98
+#: ppl.description:98
+#, fuzzy
+msgid "Allow a user to update an organization unit setting"
+msgstr ""
+"Permet à un utilisateur de mettre à jour un paramètre d’unité "
+"organisationnelle"
+
+# id::-sao
+#: clm.value:-sao clm.value:smo
+msgid "Samoan"
+msgstr "Samoan"
+
+# id::75
+#: ppl.description:75
+#, fuzzy
+msgid "Allow a user to check out a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::glv
+#: clm.value:glv clm.value:-max
+msgid "Manx"
+msgstr "Manx"
+
+# id::rar
+#: clm.value:rar
+msgid "Rarotongan"
+msgstr "Rarotonga"
+
+#: clfm.description:h
+msgid "The item is a humorous work, satire or of similar literary form."
+msgstr ""
+
+# id::3
+#: crrf.name:3
+msgid "50_cent_per_day"
+msgstr "50_cents_par_jour"
+
+# id::dyu
+#: clm.value:dyu
+msgid "Dyula"
+msgstr "Dyula"
+
+# id::23
+# id::21
+# id::89
+#: ppl.description:23
+#, fuzzy
+msgid "Allow a user to delete a volume"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::gre
+#: clm.value:gre
+msgid "Greek, Modern (1453- )"
+msgstr "Grec moderne (de 1453 à)"
+
+# id::efi
+#: clm.value:efi
+msgid "Efik"
+msgstr "Efik"
+
+# id::nob
+#: clm.value:nob
+msgid "Norwegian (Bokmål)"
+msgstr "Norvégien (Bokmål)"
+
+# id::141
+#: ppl.description:141
+msgid "Allow staff to override fine amount checkout failure"
+msgstr ""
+"Permet aux membres du personnel de contourner un échec de sortie relatif au "
+"montant d’une amende"
+
+# id::135
+#: ppl.description:135
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"SIP-Client\""
+
+# id::14
+#: ppl.description:14
+#, fuzzy
+msgid "Allow a user to update another user's hold"
+msgstr ""
+"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
+"utilisateur"
+
+# id::mus
+#: clm.value:mus
+msgid "Creek"
+msgstr "Creek"
+
+# id::c
+#: cam.value:c
+msgid "Pre-adolescent"
+msgstr "Pré-adolescent"
+
+# id::smj
+#: clm.value:smj
+msgid "Lule Sami"
+msgstr "Lule Lapon"
+
+# id::59
+# id::56
+#: ppl.description:59
+#, fuzzy
+msgid "User may create an entry in a copy statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::bis
+#: clm.value:bis
+msgid "Bislama"
+msgstr "Bislama"
+
+# id::kon
+#: clm.value:kon
+msgid "Kongo"
+msgstr "Kongo"
+
+# id::ach
+#: clm.value:ach
+msgid "Acoli"
+msgstr "Acoli "
+
+# id::mkh
+#: clm.value:mkh
+msgid "Mon-Khmer (Other)"
+msgstr "Mon-Khmer (Autre)"
+
+#: ppl.description:29
+msgid "Allow a user to edit a user's record"
+msgstr ""
+
+# id::pap
+#: clm.value:pap
+msgid "Papiamento"
+msgstr "Papiamento"
+
+# id::mwr
+#: clm.value:mwr
+msgid "Marwari"
+msgstr "Marvari"
+
+# id::2
+#: crmf.name:2
+msgid "overdue_min"
+msgstr "retard_minimum"
+
+# id::dak
+#: clm.value:dak
+msgid "Dakota"
+msgstr "Dakota"
+
+# id::pol
+#: clm.value:pol
+msgid "Polish"
+msgstr "Polonais"
+
+# id::3
+#: crmf.name:3
+msgid "overdue_mid"
+msgstr "retard_moyen"
+
+# id::hat
+#: clm.value:hat
+msgid "Haitian French Creole"
+msgstr "Créole français de Haïti"
+
+# id::bik
+#: clm.value:bik
+msgid "Bikol"
+msgstr "Bikol"
+
+# id::swe
+#: clm.value:swe
+msgid "Swedish"
+msgstr "Suédois"
+
+#: cam.description:c
+msgid "The item is intended for young people, approximate ages 9-13 years."
+msgstr ""
+
+# id::sgn
+#: clm.value:sgn
+msgid "Sign languages"
+msgstr "Langages gestuels"
+
+# id::8
+#: ppl.description:8
+#, fuzzy
+msgid "Allow a user to place a hold on a specific copy"
+msgstr "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
+
+# id::136
+#: ppl.description:136
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Vendor\""
+
+# id::chm
+#: clm.value:chm
+msgid "Mari"
+msgstr "Mari"
+
+# id::ewe
+#: clm.value:ewe
+msgid "Ewe"
+msgstr "Éwé"
+
+# id::tup
+#: clm.value:tup
+msgid "Tupi languages"
+msgstr "Langues tupies"
+
+# id::alg
+#: clm.value:alg
+msgid "Algonquian (Other)"
+msgstr "Algonquins (Autre)"
+
+# id::fao
+#: clm.value:fao clm.value:-far
+msgid "Faroese"
+msgstr "Féringien"
+
+# id::dan
+#: clm.value:dan
+msgid "Danish"
+msgstr "Danois"
+
+# id::dra
+#: clm.value:dra
+msgid "Dravidian (Other)"
+msgstr "Dravidienne (Autre)"
+
+# id::es-US
+#: i18n_l.description:es-US
+msgid "American Spanish"
+msgstr "Espagnol américain"
+
+# id::cpe
+#: clm.value:cpe
+msgid "Creoles and Pidgins, English-based (Other)"
+msgstr "Langues créoles et pidgin, anglais (Autre)"
+
+# id::128
+#: ppl.description:128
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Circulator\""
+
+# id::cus
+#: clm.value:cus
+msgid "Cushitic (Other)"
+msgstr "Couchitique (Autre)"
+
+# id::56
+#: ppl.description:56
+msgid "User may create a new patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::tet
+#: clm.value:tet
+msgid "Tetum"
+msgstr "Tetum"
+
+# id::66
+# id::56
+#: ppl.description:66
+#, fuzzy
+msgid "User may delete a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::pal
+#: clm.value:pal
+msgid "Pahlavi"
+msgstr "Pahlavi"
+
+# id::slo
+#: clm.value:slo
+msgid "Slovak"
+msgstr "Slovaque"
+
+# id::159
+# id::158
+# id::157
+# id::88
+#: ppl.description:159
+#, fuzzy
+msgid "Allow a user to view a fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+#: ppl.description:142
+msgid "Allow staff to override circulation copy range failure"
+msgstr ""
+
+# id::148
+#: ppl.description:148
+#, fuzzy
+msgid "Allow a user to share report his own folders"
+msgstr ""
+"Permet à un utilisateur de partager un rapport dans ses propres dossiers"
+
+# id::gil
+#: clm.value:gil
+msgid "Gilbertese"
+msgstr "Gilbertais"
+
+# id::100
+#: ppl.description:100
+#, fuzzy
+msgid "Allow a user to view uploaded offline script information"
+msgstr ""
+"Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
+"téléversé"
+
+# id::kik
+#: clm.value:kik
+msgid "Kikuyu"
+msgstr "Kikuyu"
+
+# id::2
+#: crahp.name:2
+msgid "6month"
+msgstr "6 mois"
+
+#: ppl.description:143
+msgid "Allow staff to override item on holds shelf failure"
+msgstr ""
+
+# id::ang
+#: clm.value:ang
+msgid "English, Old (ca. 450-1100)"
+msgstr "Ancien anglais (aux environs de 450-1100)"
+
+# id::nai
+#: clm.value:nai
+msgid "North American Indian (Other)"
+msgstr "Indien de l'Amerique du Nort (Autre)"
+
+# id::crh
+#: clm.value:crh
+msgid "Crimean Tatar"
+msgstr "Tatar de Crimée"
+
+# id::bho
+#: clm.value:bho
+msgid "Bhojpuri"
+msgstr "Bhojpuri"
+
+# id::f
+#: cam.value:f
+msgid "Specialized"
+msgstr "Spécialisé"
+
+# id::tsi
+#: clm.value:tsi
+msgid "Tsimshian"
+msgstr "Tsimshian"
+
+#: clfm.description:1
+msgid "The item is a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+
+# id::cmc
+#: clm.value:cmc
+msgid "Chamic languages"
+msgstr "Langues chamiques"
+
+# id::nog
+#: clm.value:nog
+msgid "Nogai"
+msgstr "Nogai"
+
+#: clfm.description:0
+msgid "The item is not a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+
+# id::lui
+#: clm.value:lui
+msgid "Luiseño"
+msgstr "Luiseño"
+
+# id::enm
+#: clm.value:enm
+msgid "English, Middle (1100-1500)"
+msgstr "Moyen anglais (1100-1500)"
+
+# id::sah
+#: clm.value:sah
+msgid "Yakut"
+msgstr "Yakoute"
+
+# id::sux
+#: clm.value:sux
+msgid "Sumerian"
+msgstr "Sumérien"
+
+# id::6
+#: crmf.name:6
+msgid "overdue_equip_mid"
+msgstr "retard_équipement_moyen"
+
+# id::xho
+#: clm.value:xho
+msgid "Xhosa"
+msgstr "Xhosa"
+
+# id::mni
+#: clm.value:mni
+msgid "Manipuri"
+msgstr "Meithei"
+
+# id::bua
+#: clm.value:bua
+msgid "Buriat"
+msgstr "Buriat"
+
+# id::52
+#: ppl.description:52
+#, fuzzy
+msgid "Allow a user to remove other users from permission groups"
+msgstr ""
+"L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
+
+#: ppl.description:2
+msgid "Allow a user to log in to the OPAC"
+msgstr ""
+
+# id::hup
+#: clm.value:hup
+msgid "Hupa"
+msgstr "Hupa"
+
+# id::ina
+#: clm.value:ina clm.value:-int
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (Langue Auxiliaire Internationale)"
+
+# id::ice
+#: clm.value:ice
+msgid "Icelandic"
+msgstr "Islandais"
+
+# id::twi
+#: clm.value:twi
+msgid "Twi"
+msgstr "Twi"
+
+# id::guj
+#: clm.value:guj
+msgid "Gujarati"
+msgstr "Gujarati"
+
+# id::map
+#: clm.value:map
+msgid "Austronesian (Other)"
+msgstr "Austronesian (Autre)"
+
+# id::akk
+#: clm.value:akk
+msgid "Akkadian"
+msgstr "Akkadien"
+
+# id::1
+#: cnal.name:1
+msgid "Filtered"
+msgstr "Filtré"
+
+# id::kor
+#: clm.value:kor
+msgid "Korean"
+msgstr "Coréen"
+
+# id::shn
+#: clm.value:shn
+msgid "Shan"
+msgstr "Shan"
+
+# id::d
+#: citm.value:d
+msgid "Manuscript notated music"
+msgstr "Manuscrit de musique annotée"
+
+# id::kom
+#: clm.value:kom
+msgid "Komi"
+msgstr "Komi"
+
+#: cam.description:e
+msgid "The item is intended for adults."
+msgstr ""
+
+# id::c
+#: cblvl.value:c
+msgid "Collection"
+msgstr "Collection"
+
+# id::nya
+#: clm.value:nya
+msgid "Nyanja"
+msgstr "Nyanga"
+
+#: ppl.description:5
+msgid "Allow a user to create a metarecord holds"
+msgstr ""
+
+#: ppl.description:172
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::khi
+#: clm.value:khi
+msgid "Khoisan (Other)"
+msgstr "Khoin (Autre)"
+
+# id::cad
+#: clm.value:cad
+msgid "Caddo"
+msgstr "Caddo"
+
+# id::lez
+#: clm.value:lez
+msgid "Lezgian"
+msgstr "Lezgian"
+
+# id::kas
+#: clm.value:kas
+msgid "Kashmiri"
+msgstr "Kachméré"
+
+# id::116
+#: ppl.description:116
+#, fuzzy
+msgid "Allow a user to remove a closed date interval for a given location"
+msgstr ""
+"Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
+"pour un emplacement donné"
+
+# id::hai
+#: clm.value:hai
+msgid "Haida"
+msgstr "Skittagetan"
+
+# id::-lan
+#: clm.value:-lan clm.value:oci
+msgid "Occitan (post-1500)"
+msgstr "Occitan (après 1500)"
+
+# id::son
+#: clm.value:son
+msgid "Songhai"
+msgstr "Songhaï"
+
+#: i18n_l.name:es-US
+msgid "Spanish (US)"
+msgstr ""
+
+# id::2
+#: ccs.name:2
+msgid "Bindery"
+msgstr "Atelier de reliure"
+
+# id::2
+#: aout.name:2
+msgid "System"
+msgstr "Système"
+
+# id::157
+# id::88
+#: ppl.description:157
+#, fuzzy
+msgid "Allow a user to create a new fund"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+
+#: pgt.description:10
+msgid "System maintenance, configuration, etc."
+msgstr ""
+
+#: ppl.description:114
+msgid "Allow a user to cancel holds"
+msgstr ""
+
+#: vqbrad.description:3
+msgid "Language of work"
+msgstr ""
+
+# id::144
+#: ppl.description:144
+msgid "Allow staff to force checkout of Missing/Lost type items"
+msgstr ""
+"Permet aux membres du personnel de forcer la sortie des types d’articles "
+"manquants ou perdus"
+
+# id::aar
+#: clm.value:aar
+msgid "Afar"
+msgstr "Afar"
+
+# id::1
+#: crahp.name:1
+msgid "3month"
+msgstr "3 mois"
+
+# id::r
+#: citm.value:r
+msgid "Three-dimensional artifact or naturally occurring object"
+msgstr "Artefact à trois dimensions ou objet d’origine naturelle"
+
+# id::68
+# id::58
+# id::56
+#: ppl.description:68
+#, fuzzy
+msgid "User may delete an entry from a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::udm
+#: clm.value:udm
+msgid "Udmurt"
+msgstr "Oudmourte"
+
+# id::gle
+#: clm.value:gle clm.value:-iri
+msgid "Irish"
+msgstr "Irlandais"
+
+# id::11
+#: crcd.name:11 crmf.name:1 crrf.name:1
+msgid "default"
+msgstr "par défaut"
+
+# id::kaz
+#: clm.value:kaz
+msgid "Kazakh"
+msgstr "Kazakh"
+
+# id::kbd
+#: clm.value:kbd
+msgid "Kabardian"
+msgstr "Kabardine"
+
+# id::bel
+#: clm.value:bel
+msgid "Belarusian"
+msgstr "Bélarussien"
+
+# id::mac
+#: clm.value:mac
+msgid "Macedonian"
+msgstr "Macédonien"
+
+#: cam.description:a
+msgid "The item is intended for children, approximate ages 0-5 years."
+msgstr ""
+
+# id::26
+# id::25
+# id::75
+#: ppl.description:26
+#, fuzzy
+msgid "Allow a user to delete a copy"
+msgstr "Permet à un utilisateur de sortir un exemplaire"
+
+# id::s
+#: cifm.value:s
+msgid "Electronic"
+msgstr "Électronique"
+
+# id::lun
+#: clm.value:lun
+msgid "Lunda"
+msgstr "Lunda"
+
+# id::sme
+#: clm.value:sme
+msgid "Northern Sami"
+msgstr "Lapon du Nord"
+
+#: ppl.description:64
+msgid "User may link another user to an entry in a statistical category"
+msgstr ""
+
+# id::xal
+#: clm.value:xal
+msgid "Kalmyk"
+msgstr "Kalmouk"
+
+# id::d
+#: cam.value:d
+msgid "Adolescent"
+msgstr "Adolescent"
+
+# id::rum
+#: clm.value:rum
+msgid "Romanian"
+msgstr "Roumain"
+
+# id::aze
+#: clm.value:aze
+msgid "Azerbaijani"
+msgstr "Azerbaïdjanais"
+
+# id::srd
+#: clm.value:srd
+msgid "Sardinian"
+msgstr "Sarde"
+
+# id::hmo
+#: clm.value:hmo
+msgid "Hiri Motu"
+msgstr "Hiri-motu "
+
+#: ppl.description:6
+msgid "Allow a user to place a hold at the title level"
+msgstr ""
+
+# id::146
+#: ppl.description:146
+#, fuzzy
+msgid "Allow a user to place multiple holds on a single title"
+msgstr ""
+"Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
+"seul titre"
+
+# id::g
+#: citm.value:g
+msgid "Projected medium"
+msgstr "Support média projeté"
+
+# id::roh
+#: clm.value:roh
+msgid "Raeto-Romance"
+msgstr "Rhéto-roman"
+
+# id::lao
+#: clm.value:lao
+msgid "Lao"
+msgstr "Lao"
+
+# id::129
+#: ppl.description:129
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
+msgstr ""
+"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
+"\"Cataloger\""
+
+# id::21
+# id::89
+#: ppl.description:21
+#, fuzzy
+msgid "Allow a user to create a volume"
+msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+
+# id::137
+#: ppl.description:137
+#, fuzzy
+msgid "Allow a user to place a hold on an age-protected item"
+msgstr ""
+"Permet à un utilisateur de mettre en réserve un article protégé contre "
+"l’usure"
+
+# id::sio
+#: clm.value:sio
+msgid "Siouan (Other)"
+msgstr "Sioux (Autre)"
+
+# id::men
+#: clm.value:men
+msgid "Mende"
+msgstr "Mendé"
+
+# id::58
+# id::56
+#: ppl.description:58
+#, fuzzy
+msgid "User may create an entry in a patron statistical category"
+msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
+
+# id::oji
+#: clm.value:oji
+msgid "Ojibwa"
+msgstr "Ojibwa"
+
+# id::sus
+#: clm.value:sus
+msgid "Susu"
+msgstr "Soso"
+
+# id::cau
+#: clm.value:cau
+msgid "Caucasian (Other)"
+msgstr "Catalan (Autre)"
+
+# id::kur
+#: clm.value:kur
+msgid "Kurdish"
+msgstr "Kurde"
+
+# id::wal
+#: clm.value:wal
+msgid "Walamo"
+msgstr "Walamo"
+
+# id::99
+#: ppl.description:99
+#, fuzzy
+msgid "Allow a user to upload an offline script"
+msgstr "Permet à un utilisateur de téléverser un script hors ligne"
+
+# id::3
+#: ccs.name:3
+msgid "Lost"
+msgstr "Perdu"
+
+# id::nde
+#: clm.value:nde
+msgid "Ndebele (Zimbabwe)  "
+msgstr "Ndébélé (Zimbabwe)"
+
+# id::lub
+#: clm.value:lub
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
+
+# id::d
+#: clfm.value:d
+msgid "Dramas"
+msgstr "Drames"
+
+# id::zha
+#: clm.value:zha
+msgid "Zhuang"
+msgstr "Zhuang"
+
+# id::f
+#: cifm.value:f
+msgid "Braille"
+msgstr "Braille"
+
+# id::c
+#: clfm.value:c
+msgid "Comic strips"
+msgstr "Bandes dessinées"
+
+# id::ido
+#: clm.value:ido
+msgid "Ido"
+msgstr "Ido"
+
+# id::fr-CA
+#: i18n_l.description:fr-CA
+#, fuzzy
+msgid "Canadian French"
+msgstr "Français canadien"
+
+# id::fiu
+#: clm.value:fiu
+msgid "Finno-Ugrian (Other)"
+msgstr "Finno-ougrienne (Autre)"
+
+# id::apa
+#: clm.value:apa
+msgid "Apache languages"
+msgstr "Langues apaches"
+
+# id::-ajm
+#: clm.value:-ajm
+msgid "Aljamía"
+msgstr "Aljamía"
+
+# id::run
+#: clm.value:run
+msgid "Rundi"
+msgstr "Rundi"
+
+# id::7
+#: crcd.name:7
+msgid "7_days_2_renew"
+msgstr "7_jours_2_renouvellements"
+
+# id::-esk
+#: clm.value:-esk
+msgid "Eskimo languages"
+msgstr "Langues inuites"
+
+# id::ath
+#: clm.value:ath
+msgid "Athapascan (Other)"
+msgstr "Athapascan (Autre)"
+
+# id::ndo
+#: clm.value:ndo
+msgid "Ndonga"
+msgstr "Ndonga"
+
+# id::sco
+#: clm.value:sco
+msgid "Scots"
+msgstr "Écossais"
+
+# id::sot
+#: clm.value:sot clm.value:-sso
+msgid "Sotho"
+msgstr "Sotho"
+
+# id::was
+#: clm.value:was
+msgid "Washo"
+msgstr "Washo"
+
+# id::spa
+#: clm.value:spa
+msgid "Spanish"
+msgstr "Espagnol"
+
+#: ppl.description:18
+msgid "Allow a user to edit a MARC record"
+msgstr ""
+
+# id::163
+# id::162
+# id::78
+#: ppl.description:163
+#, fuzzy
+msgid "Allow a user to view a fund allocation"
+msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
 
 # id::19
 #~ msgid "User is allowed to create new MARC records"

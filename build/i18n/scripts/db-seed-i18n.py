@@ -55,6 +55,7 @@ class SQL(basel10n.BaseL10N):
         findi18n = re.compile(r'.*?oils_i18n_gettext\((.*?)\'\)')
         intkey = re.compile(r'\s*(?P<id>\d+),\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
         textkey = re.compile(r'\s*\'(?P<id>.*?)\',\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
+        serts = dict()
 
         # Iterate through the source SQL grabbing table names and l10n strings
         sourcefile = open(source)
@@ -71,14 +72,20 @@ class SQL(basel10n.BaseL10N):
                         # Otherwise, it must be a text-based primary key parameter
                         fi18n = textkey.search(parms)
                     fq_field = "%s.%s" % (fi18n.group('class'), fi18n.group('property'))
-                    poe = polib.POEntry()
-                    poe.occurrences = [(fq_field, num)]
-                    poe.tcomment = 'id::' + fi18n.group('id')
                     # Unescape escaped SQL single-quotes for translators' sanity
-                    poe.msgid = re.compile(r'\'\'').sub("'", fi18n.group('string'))
-                    self.pot.append(poe)
+                    msgid = re.compile(r'\'\'').sub("'", fi18n.group('string'))
+                    if (msgid in serts):
+                        serts[msgid].occurrences.append((fq_field, fi18n.group('id')))
+                    else:
+                        poe = polib.POEntry()
+                        poe.occurrences = [(fq_field, fi18n.group('id'))]
+                        poe.msgid = msgid
+                        serts[msgid] = poe
             except:
                 print "Error in line %d of SQL source file" % (num) 
+
+        for poe in serts.values():
+            self.pot.append(poe)
 
     def create_sql(self, locale):
         """
@@ -91,13 +98,11 @@ class SQL(basel10n.BaseL10N):
         for entry in self.pot:
             for fq_field in entry.occurrences:
                 # Escape SQL single-quotes to avoid b0rkage
-                msgid = re.compile(r'\'').sub("''", entry.tcomment)
                 msgstr = re.compile(r'\'').sub("''", entry.msgstr)
-                msgid = re.compile(r'^id::').sub('', msgid)
                 if msgstr == '':
                     # Don't generate a stmt for an untranslated string
                     break
-                self.sql.append(insert % (fq_field[0], msgid, locale, msgstr))
+                self.sql.append(insert % (fq_field[0], fq_field[1], locale, msgstr))
 
 def main():
     """
