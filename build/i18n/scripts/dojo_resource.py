@@ -53,22 +53,29 @@ class DojoResource (basel10n.BaseL10N):
         Extracts translatable strings from Evergreen's Dojo resource bundles.
         """
         self.pothead()
-        
+
+        # Avoid generating duplicate entries by keeping track of msgids
+        msgids = dict()
+
         bundle = simplejson.load(open(source, 'r'))
 
         for key, value in bundle.iteritems():
-            poe = polib.POEntry()
-            poe.occurrences = [(os.path.basename(source), key)]
-            poe.msgid = value
-            poe.msgstr = value
+            if value in msgids:
+                msgids[str(value)].occurrences.append((os.path.basename(source), str(key)))
+            else:
+                poe = polib.POEntry()
+                poe.occurrences = [(os.path.basename(source), str(key))]
+                poe.msgid = str(value)
+                msgids[str(value)] = poe
+
+        # Now add the POEntries to our POFile
+        for poe in msgids.values():
             self.pot.append(poe)
 
     def create_bundle(self):
         """
         Creates a Dojo resource bundle file based on a translated PO file.
         """
-
-        msg = "\t\"%s\": \"%s\""
 
         for entry in self.pot:
             for filename, msgkey in entry.occurrences:

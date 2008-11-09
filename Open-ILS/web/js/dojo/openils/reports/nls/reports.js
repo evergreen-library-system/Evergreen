@@ -80,8 +80,6 @@
 	"WIDGET_REAL_DATE": "Real Date",
 	"WIDGET_RELATIVE_DATE": "Relative Date",
 	
-	/* The following strings are for the *.js files found in the Open-ILS/web/reports/xul/ directory */
-	
 	"OPERATORS_EQUALS": "Equals",
 	"OPERATORS_LIKE": "Contains Matching substring",
 	"OPERATORS_ILIKE": "Contains Matching substring (ignore case)",
