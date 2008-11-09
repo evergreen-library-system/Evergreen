@@ -83,9 +83,7 @@ dtds2pot:
 
 dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/conify.js --output $(POTSRC)/conify.js.pot
-	@msghack --empty -o $(POTSRC)/conify.js.pot $(POTSRC)/conify.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(POTSRC)/reports.js.pot
-	@msghack --empty -o $(POTSRC)/reports.js.pot $(POTSRC)/reports.js.pot
 
 po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.js.po --output $(PROJECT)/$(LOCALE)/conify.js
@@ -110,7 +108,7 @@ po2props:
 
 sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRCDIR)/$(SQLSRCFILE) --output $(POTSRC)/$(SQLPOT)
-	@msghack --empty -o $(POTSRC)/$(SQLPOT) $(POTSRC)/$(SQLPOT)
+#	@msghack --empty -o $(POTSRC)/$(SQLPOT) $(POTSRC)/$(SQLPOT)
 
 po2sql:
 	scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT).sql
