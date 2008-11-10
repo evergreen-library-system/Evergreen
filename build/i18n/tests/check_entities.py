@@ -17,7 +17,7 @@
 # vim:et:sw=4:ts=4: set fileencoding=utf-8 :
 
 """
-Parse DTD files and XUL files looking for trouble
+Parse DTD files and XML files looking for trouble
     * Missing entities
 """
 
@@ -30,9 +30,10 @@ DTD_DIRS = (
         '../../../Open-ILS/web/opac/locale/en-US/',
         )
 
-XUL_DIRS = (
+XML_DIRS = (
         '../../../Open-ILS/xul/staff_client/server/',
         '../../../Open-ILS/xul/staff_client/chrome/',
+        '../../../Open-ILS/web/reports/',
         )
 
 def parse_entities():
@@ -113,19 +114,22 @@ def parse_entities():
 
     return entities
 
-def check_xul_files(entities):
+def check_files(entities):
     """
-    Finds all the XUL and JavaScript files
+    Finds all the XUL, XHTML, and JavaScript files
     """
 
     basedir = os.path.normpath(os.path.dirname(os.path.abspath(__file__)))
 
     xul_files = []
 
-    for x_dir in XUL_DIRS:
+    for x_dir in XML_DIRS:
         for root, dirs, files in os.walk(x_dir):
             for x_file in files:
-                if os.path.splitext(x_file)[1] == '.xul' or os.path.splitext(x_file)[1] == '.js':
+                if os.path.splitext(x_file)[1] == '.xul' or \
+				   os.path.splitext(x_file)[1] == '.js' or \
+				   os.path.splitext(x_file)[1] == '.html' or \
+				   os.path.splitext(x_file)[1] == '.xhtml':
                     check_xul(root, x_file, entities)
 
 def check_xul(root, filename, entities):
@@ -171,4 +175,4 @@ def check_xul(root, filename, entities):
 
 if __name__ == '__main__':
     entities = parse_entities() 
-    check_xul_files(entities)
+    check_files(entities)
