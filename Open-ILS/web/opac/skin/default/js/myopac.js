@@ -358,9 +358,11 @@ function myOPACDrawHolds(r) {
 
         $n(row, 'myopac_holds_selected_chkbx').checked = false;
 
-        var exp_date = dojo.date.stamp.fromISOString(h.expire_time());
-        $n(row, 'myopac_hold_expire_time').appendChild(
-            text(dojo.date.locale.format(exp_date, {selector:'date'})));
+        if(h.expire_time()) {
+            var exp_date = dojo.date.stamp.fromISOString(h.expire_time());
+            $n(row, 'myopac_hold_expire_time').appendChild(
+                text(dojo.date.locale.format(exp_date, {selector:'date'})));
+        }
 
 		unHideMe(row);
 
