@@ -1224,6 +1224,12 @@
 <!ENTITY staff.z39_50.search_class.tcn "Accession #">
 <!ENTITY staff.z39_50.search_class.title "Title">
 <!ENTITY staff.z39_50_import_interface_label "Z39.50 Import">
+<!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
+<!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
+<!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent at run time">
+<!ENTITY staff.server.admin.org_unit_settings.edit_setting "Edit Setting">
+<!ENTITY staff.server.admin.org_unit_settings.delete_setting "Delete Setting">
+<!ENTITY staff.server.admin.org_unit_settings.update_setting "Update Setting">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
@@ -1384,7 +1390,7 @@
 <!ENTITY staff.server.admin.hold_pull.author "Author">
 <!ENTITY staff.server.admin.hold_pull.copy_location "Copy Location">
 <!ENTITY staff.server.admin.hold_pull.call_number "Call Number">
-<!ENTITY staff.server.admin.hold_pull.barcode "Item Barcode">
+<!ENTITY staff.server.admin.hold_pull.item_barcode "Item Barcode">
 <!ENTITY staff.server.admin.hold_pull.copy "Copy Number">
 <!ENTITY staff.server.admin.hold_pull.format "Format">
 <!ENTITY staff.server.admin.hold_pull.patron_barcode "Patron Barcode">
@@ -1474,18 +1480,15 @@
 <!ENTITY staff.server.admin.org_settings.global.default_locale "Default Locale">
 <!ENTITY staff.server.admin.org_settings.circ.void_overdue_on_lost "Void overdue fines when items are marked lost">
 <!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'Soft hold stalling interval'>
-<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft.desc 
-    'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"'>
+<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft.desc 'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"'>
 <!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "Hard hold boundary">
 <!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Soft hold boundary">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex "Patron barcode format">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex.desc 'Regular expression defining the patron barcode format'>
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max "Maximum previous checkouts displayed">
-<!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc 
-    "This is maximum number of previous circulations the staff client will display when investigating item details">
+<!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc "This is maximum number of previous circulations the staff client will display when investigating item details">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
-<!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 
-    'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
+<!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
 
 
 
@@ -2501,12 +2504,14 @@
 <!ENTITY ev.staff.patron.ue_xhtml.primary_id.label "Primary Identification">
 <!ENTITY ev.staff.patron.ue_xhtml.parent_guardian.label "Parent or Guardian">
 <!ENTITY ev.staff.patron.ue_xhtml.email_address.label "Email Address">
+<!ENTITY ev.staff.patron.ue_xhtml.phone_example "Example: 123-456-7890 or 123-456-7890 ex123">
 <!ENTITY ev.staff.patron.ue_xhtml.daytime_phone.label "Daytime Phone">
 <!ENTITY ev.staff.patron.ue_xhtml.evening_phone.label "Evening Phone">
 <!ENTITY ev.staff.patron.ue_xhtml.other_phone.label "Other (Cell Phone)">
 <!ENTITY ev.staff.patron.ue_xhtml.home_library.label "Home Library">
 <!ENTITY ev.staff.patron.ue_xhtml.address.label "Address">
 <!ENTITY ev.staff.patron.ue_xhtml.in_city_limits.label "Within City Limits">
+<!ENTITY ev.staff.patron.ue_xhtml.county.label "County">
 <!ENTITY ev.staff.patron.ue_xhtml.valid.label "Valid">
 <!ENTITY ev.staff.patron.ue_xhtml.mailing_address.label "Mailing Address">
 <!ENTITY ev.staff.patron.ue_xhtml.physical_address.label "Physical Address">
@@ -2520,6 +2525,11 @@
 <!ENTITY ev.staff.patron.ue_xhtml.state.label "State">
 <!ENTITY ev.staff.patron.ue_xhtml.country.label "Country">
 <!ENTITY ev.staff.patron.ue_xhtml.profile_group.label "Profile Group">
+<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_delete.label "Delete this Address">
+<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_detach.label "Detach this Address">
+<!ENTITY ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label "(XXX-YY-ZZZZ)">
+<!ENTITY ev.staff.patron.ue_xhtml.primary_ident_dl_help.label "(GA-123456789)">
+<!ENTITY ev.staff.patron.ue_xhtml.edit.label "Edit">
 <!-- Used in a selection list, the '-' at the start and end draws attention to the entry -->
 <!ENTITY ev.staff.patron.ue_xhtml.required.label " -- Required -- ">
 <!ENTITY ev.staff.patron.ue_xhtml.account_expiration_date.label "Account Expiration Date">

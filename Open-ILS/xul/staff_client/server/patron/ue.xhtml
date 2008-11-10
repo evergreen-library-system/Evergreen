@@ -341,11 +341,11 @@
 												<input type='text' id='ue_primary_ident'/>
 												<span id='primary_ident_ssn_help' 
 													style='padding-left: 2px; font-size: 8pt;' class='hide_me'>
-													(XXX-YY-ZZZZ)
+													&ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label;
 												</span>
 												<span id='primary_ident_dl_help' 
 													style='padding-left: 2px; font-size: 8pt;' class='hide_me'>
-													(GA-123456789)
+													&ev.staff.patron.ue_xhtml.primary_ident_dl_help.label;	
 												</span>
 											</div>
 										</td>
@@ -399,7 +399,7 @@
 										<td>
 											<div class='wide left'>
 												<input class='pad' type='text' id='ue_day_phone' size='18'/>
-												<span style='font-size: 9pt;'> Example: 123-456-7890 or 123-456-7890 ex123</span>
+												<span style='font-size: 9pt;'>&ev.staff.patron.ue_xhtml.phone_example;</span>
 											</div>
 										</td>
 									</tr>
@@ -457,7 +457,7 @@
 																&ev.staff.patron.ue_xhtml.address_owned_by.label;
 																<span name='addr_owner_name'/>
 																<span name='owner_link_div'>
-																	(<a name='addr_owner' href='javascript:void(0);'>Edit</a>)
+																	(<a name='addr_owner' href='javascript:void(0);'>&ev.staff.patron.ue_xhtml.edit.label;</a>)
 																</span>
 															</div>
 														</td>
@@ -532,10 +532,10 @@
 														<td colspan='6'>
 															<div class='button_row'>
 																<input type='submit' name='ue_addr_delete' 
-																	value='Delete this Address'/>
+																	value='&ev.staff.patron.ue_xhtml.ue_addr_delete.label;'/>
 																<span style='padding-left: 10px;'> </span>
 																<input type='submit' name='ue_addr_detach' 
-																	value='Detach this Address' class='hide_me'/>
+																	value='&ev.staff.patron.ue_xhtml.ue_addr_detach.label;' class='hide_me'/>
 															</div>
 														</td>
 													</tr>
@@ -833,7 +833,7 @@
 				<tr><td>&ev.staff.patron.ue_xhtml.secondary_id_type.label;</td><td id='ue_summary_ident_type2'/></tr>
 				<tr><td>&ev.staff.patron.ue_xhtml.secondary_id.label;</td><td id='ue_summary_ident_value2'/></tr>
 				<tr><td>&ev.staff.patron.ue_xhtml.email_address.label;</td><td id='ue_summary_email'/></tr>
-				<tr><td>&ev.staff.patron.ue_xhtml.day_phone.label;</td><td id='ue_summary_day_phone'/></tr>
+				<tr><td>&ev.staff.patron.ue_xhtml.daytime_phone.label;</td><td id='ue_summary_day_phone'/></tr>
 				<tr><td>&ev.staff.patron.ue_xhtml.evening_phone.label;</td><td id='ue_summary_evening_phone'/></tr>
 				<tr><td>&ev.staff.patron.ue_xhtml.other_phone.label;</td><td id='ue_summary_other_phone'/></tr>
 				<tr><td>&ev.staff.patron.ue_xhtml.home_library.label;</td><td id='ue_summary_home_ou'/></tr>
