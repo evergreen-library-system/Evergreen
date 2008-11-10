@@ -21,7 +21,7 @@
 
 <html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
-        <title>Org Unit Settings</title>
+        <title>&staff.server.admin.org_unit_settings.title;</title>
         <link type='text/css' rel='stylesheet' href='admin.css'/>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src='org_unit_settings.js'></script>
@@ -99,14 +99,14 @@
     <body class="tundra tall">
         <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
             <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
-                <h1>Org Unit Settings</h1><br/>
-                <span>Context Location</span>
+                <h1>&staff.server.admin.org_unit_settings.title;</h1><br/>
+                <span>&staff.server.admin.org_unit_settings.context;</span>
                 <span>
                     <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
                         searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
                     </select>
                 </span>
-                <span> * Indicates the setting is not inherited from the parent at run time</span>
+                <span>&staff.server.admin.org_unit_settings.uninherited;</span>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='tall'>
                 <script>
@@ -126,7 +126,7 @@
         </div>
 
         <!-- edit dialog -->
-        <div dojoType="dijit.Dialog" jsId='osEditDialog' title="Edit Setting">
+        <div dojoType="dijit.Dialog" jsId='osEditDialog' title="&staff.server.admin.org_unit_settings.edit_setting;">
             <table class='form_table'>
                 <thead>
                     <tr><td colspan='2' align='center'><div id='os-edit-name'/></td></tr>
@@ -155,10 +155,10 @@
                     </tr>
                     <tr>
                         <td> 
-                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>Delete Setting</button>
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting(true);'>&staff.server.admin.org_unit_settings.delete_setting;</button>
                         </td>
                         <td> 
-                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>Update Setting</button>
+                            <button dojoType='dijit.form.Button' onclick='osEditSetting();'>&staff.server.admin.org_unit_settings.update_setting;</button>
                         </td>
                     </tr>
                 </tbody>
