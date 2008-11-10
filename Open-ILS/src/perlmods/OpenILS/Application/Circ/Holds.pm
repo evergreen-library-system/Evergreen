@@ -654,10 +654,58 @@ sub _hold_status {
 }
 
 
-#sub find_local_hold {
-#	my( $class, $session, $copy, $user ) = @_;
-#	return $class->find_nearest_permitted_hold($session, $copy, $user);
-#}
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_hold_queue_stats",
+	api_name	=> "open-ils.circ.hold.queue_stats.retrieve",
+    signature => {
+        desc => q/
+            Returns object with total_holds count, queue_position, and potential_copies count
+        /
+    }
+);
+
+sub retrieve_hold_queue_stats {
+    my($self, $conn, $auth, $hold_id) = @_;
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	my $hold = $e->retrieve_action_hold_request($hold_id) or return $e->event;
+	if($e->requestor->id != $hold->usr) {
+		return $e->event unless $e->allowed('VIEW_HOLD');
+	}
+    return retrieve_hold_queue_status_impl($e, $hold);
+}
+
+sub retrieve_hold_queue_status_impl {
+    my $e = shift;
+    my $hold = shift;
+
+    my $hold_ids = $e->search_action_hold_request(
+        [
+            {   target => $hold->target, 
+                hold_type => $hold->hold_type,
+                cancel_time => undef,
+                fulfillment_time => undef
+            },
+            {order_by => {ahr => 'request_time asc'}}
+        ], 
+        {idlist => 1} 
+    );
+
+    my $pos = 0;
+    for my $hid (@$hold_ids) {
+        $pos++;
+        last if $hid == $hold->id;
+    }
+
+    my $potentials = $e->search_action_hold_copy_map({hold => $hold->id}, {idlist => 1});
+
+    return {
+        total_holds => scalar(@$hold_ids),
+        queue_position => $pos,
+        potential_copies => scalar(@$potentials)
+    };
+}
 
 
 sub fetch_open_hold_by_current_copy {
