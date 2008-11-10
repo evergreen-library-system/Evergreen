@@ -2961,5 +2961,32 @@ sub retrieve_org_hours {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'verify_user_password',
+	api_name	=> 'open-ils.actor.verify_user_password',
+	signature	=> q/
+        Given a barcode or username and the MD5 encoded password, 
+        returns 1 if the password is correct.  Returns 0 otherwise.
+	/
+);
+
+sub verify_user_password {
+    my($self, $conn, $auth, $barcode, $username, $password) = @_;
+    my $e = new_editor(authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
+    my $user;
+    if($barcode) {
+        my $card = $e->search_actor_card([
+            {barcode => $barcode},
+            {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0] or return 0;
+        $user = $card->usr;
+    } else {
+        $user = $e->search_actor_user({usrname => $username})->[0] or return 0;
+    }
+    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    return 1 if $user->passwd eq $password;
+    return 0;
+}
+
 1;
 
