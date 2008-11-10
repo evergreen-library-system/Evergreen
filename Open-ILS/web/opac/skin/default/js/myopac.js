@@ -404,21 +404,29 @@ function myOPACDrawHoldStatus(hold) {
 function myOShowHoldStatus(r) {
 
 	var hold = r.hold;
-	var status = r.getResultObject();
-    holdStatusCache[hold.id()] = status;
+	var qstats = r.getResultObject();
+    holdStatusCache[hold.id()] = qstats;
 
 	var row = $("myopac_holds_row_" + r.hold.id());
 
-	if( status < 3 )
-		unHideMe($n(row, 'hold_status_waiting'));
-
-	if( status == 3 )
-		unHideMe($n(row, 'hold_status_transit'));
-
-	if( status == 4 ) {
+	if( qstats.status == 4 ) {
 		unHideMe($n(row, 'hold_status_available'));
 		hideMe($n(row, 'myopac_holds_cancel_link'));
 	}
+
+    if(false) {
+        var node = $n(row, 'hold_qstats');
+        // XXX best way to display this info + dojo i18n
+        node.appendChild(text(qstats.queue_position+' of '+qstats.queue_position+' with '+qstats.potential_copies+' copies'));
+        unHideMe(node);
+
+    } else {
+	    if( qstats.status < 3 )
+		    unHideMe($n(row, 'hold_status_waiting'));
+    
+	    if( qstats.status == 3 )
+		    unHideMe($n(row, 'hold_status_transit'));
+    }
 }
 
 
@@ -1380,7 +1388,7 @@ function myopacDoHoldAction() {
     var holds = [];
     for(var i = 0; i < selectedRows.length; i++) {
         hold = holdCache[myopacHoldIDFromRow(selectedRows[i])];
-        var status = holdStatusCache[hold.id()];
+        var qstats = holdStatusCache[hold.id()];
         switch(action) {
             case 'cancel':
                 holds.push(hold);
@@ -1391,7 +1399,7 @@ function myopacDoHoldAction() {
                     holds.push(hold);
                 break;
             case 'freeze':
-                if(!isTrue(hold.frozen()) && status < 3)
+                if(!isTrue(hold.frozen()) && qstats.status < 3)
                     holds.push(hold);
                 break;
         }

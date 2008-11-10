@@ -100,17 +100,17 @@ function holdsDrawEditor(args) {
 function _holdsUpdateEditHold() {
 
 	var hold = holdArgs.editHold;
-	var status = holdArgs.status;
+	var qstats = holdArgs.status;
 
 	var orgsel = $('holds_org_selector');
     var frozenbox = $('holds_frozen_chkbox');
 
 	setSelector(orgsel, hold.pickup_lib());
 
-	if( hold.capture_time() || status > 2 ) {
+	if( hold.capture_time() || qstats.status > 2 ) {
         frozenbox.disabled = true;
         $('holds_frozen_thaw_input').disabled = true;
-        if(status == 3) {
+        if(qstats.status == 3) {
             // no pickup lib changes while in-transit
 		    orgsel.disabled = true;
         } else {
