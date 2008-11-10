@@ -124,5 +124,5 @@ while ( my $rec = <> ) {
 if (grep /^mfr$/, %out_files) {
 	$main_out->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
 }
-$main_out->print("-- COMMIT;\n\n");
+$main_out->print("COMMIT;\n\n");
 $main_out->close; 
