@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 21:56-0400\n"
+"POT-Creation-Date: 2008-11-09 23:03-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5180,6 +5180,30 @@ msgstr ""
 msgid "Z39.50 Import"
 msgstr ""
 
+#: staff.server.admin.org_unit_settings.title
+msgid "Organization Unit Settings"
+msgstr ""
+
+#: staff.server.admin.org_unit_settings.context
+msgid "Context Location"
+msgstr ""
+
+#: staff.server.admin.org_unit_settings.uninherited
+msgid " * Indicates the setting is not inherited from the parent at run time"
+msgstr ""
+
+#: staff.server.admin.org_unit_settings.edit_setting
+msgid "Edit Setting"
+msgstr ""
+
+#: staff.server.admin.org_unit_settings.delete_setting
+msgid "Delete Setting"
+msgstr ""
+
+#: staff.server.admin.org_unit_settings.update_setting
+msgid "Update Setting"
+msgstr ""
+
 #: staff.server.admin.offline.xacts.caption
 msgid "Offline Sessions"
 msgstr ""
@@ -5793,8 +5817,8 @@ msgctxt "staff.server.admin.hold_pull.call_number"
 msgid "Call Number"
 msgstr ""
 
-#: staff.server.admin.hold_pull.barcode
-msgctxt "staff.server.admin.hold_pull.barcode"
+#: staff.server.admin.hold_pull.item_barcode
+msgctxt "staff.server.admin.hold_pull.item_barcode"
 msgid "Item Barcode"
 msgstr ""
 
@@ -9490,10 +9514,12 @@ msgid "Country"
 msgstr ""
 
 #: staff.patron.ue.delete_this_address.label
+msgctxt "staff.patron.ue.delete_this_address.label"
 msgid "Delete this Address"
 msgstr ""
 
 #: staff.patron.ue.detach_this_address.label
+msgctxt "staff.patron.ue.detach_this_address.label"
 msgid "Detach this Address"
 msgstr ""
 
@@ -10083,6 +10109,10 @@ msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
 msgid "Email Address"
 msgstr ""
 
+#: ev.staff.patron.ue_xhtml.phone_example
+msgid "Example: 123-456-7890 or 123-456-7890 ex123"
+msgstr ""
+
 #: ev.staff.patron.ue_xhtml.daytime_phone.label
 msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
 msgid "Daytime Phone"
@@ -10110,6 +10140,11 @@ msgstr ""
 #: ev.staff.patron.ue_xhtml.in_city_limits.label
 msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
 msgid "Within City Limits"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.county.label
+msgctxt "ev.staff.patron.ue_xhtml.county.label"
+msgid "County"
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.valid.label
@@ -10174,6 +10209,29 @@ msgstr ""
 #: ev.staff.patron.ue_xhtml.profile_group.label
 msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
 msgid "Profile Group"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.ue_addr_delete.label
+msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
+msgid "Delete this Address"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.ue_addr_detach.label
+msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
+msgid "Detach this Address"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label
+msgid "(XXX-YY-ZZZZ)"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.primary_ident_dl_help.label
+msgid "(GA-123456789)"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.edit.label
+msgctxt "ev.staff.patron.ue_xhtml.edit.label"
+msgid "Edit"
 msgstr ""
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
