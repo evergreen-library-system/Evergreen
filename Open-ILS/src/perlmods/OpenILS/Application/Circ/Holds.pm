@@ -660,7 +660,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.circ.hold.queue_stats.retrieve",
     signature => {
         desc => q/
-            Returns object with total_holds count, queue_position, and potential_copies count
+            Returns object with total_holds count, queue_position, potential_copies count, and status code
         /
     }
 );
@@ -703,7 +703,8 @@ sub retrieve_hold_queue_status_impl {
     return {
         total_holds => scalar(@$hold_ids),
         queue_position => $pos,
-        potential_copies => scalar(@$potentials)
+        potential_copies => scalar(@$potentials),
+        status => _hold_status($e, $hold)
     };
 }
 
