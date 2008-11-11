@@ -383,6 +383,7 @@ sub title_browse {
 					  limit => 1
 					}
 				} 
+			  order_by	=> { mfr => { value => 'desc' },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
@@ -411,6 +412,7 @@ sub title_browse {
 					  limit => 1
 					}
 				} 
+			  order_by	=> { mfr => { value => 'asc' },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
