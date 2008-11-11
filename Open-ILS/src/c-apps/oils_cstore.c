@@ -59,7 +59,7 @@ static char* searchBETWEENPredicate ( const char*, osrfHash*, jsonObject* );
 static char* searchINPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
 static char* searchPredicate ( const char*, osrfHash*, jsonObject* );
 static char* searchJOIN ( const jsonObject*, osrfHash* );
-static char* searchWHERE ( const jsonObject*, osrfHash*, int );
+static char* searchWHERE ( const jsonObject*, osrfHash*, int, osrfMethodContext* );
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
 static char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
@@ -1235,11 +1235,11 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 	char* value = NULL;
 
 	if (!jsonObjectGetKeyConst( node, "value" )) {
-		value = searchWHERE( node, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN );
+		value = searchWHERE( node, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 	} else if (jsonObjectGetKeyConst( node, "value" )->type == JSON_ARRAY) {
 		value = searchValueTransform(jsonObjectGetKeyConst( node, "value" ));
 	} else if (jsonObjectGetKeyConst( node, "value" )->type == JSON_HASH) {
-		value = searchWHERE( jsonObjectGetKeyConst( node, "value" ), osrfHashGet( oilsIDL(), class ), AND_OP_JOIN );
+		value = searchWHERE( jsonObjectGetKeyConst( node, "value" ), osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 	} else if (jsonObjectGetKeyConst( node, "value" )->type != JSON_NULL) {
 		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			value = jsonNumberToDBString( field, jsonObjectGetKeyConst( node, "value" ) );
@@ -1570,7 +1570,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				buffer_add( join_buf, " AND " );
 			}
 
-			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN );
+			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN, NULL );
 			buffer_fadd( join_buf, " %s", jpred );
 			free(jpred);
 			free(filter_op);
@@ -1601,7 +1601,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 [ { +class : { -or|-and : [ { field : { op : value }, ... }, ...] ... }, ... }, ... ]
 
 */
-static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
+
+static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int opjoin_type, osrfMethodContext* ctx ) {
 
 	growing_buffer* sql_buf = buffer_init(128);
 
@@ -1618,7 +1619,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                 else buffer_add(sql_buf, " AND ");
             }
 
-            char* subpred = searchWHERE( node, meta, opjoin_type );
+            char* subpred = searchWHERE( node, meta, opjoin_type, ctx );
             buffer_fadd(sql_buf, "( %s )", subpred);
             free(subpred);
         }
@@ -1641,17 +1642,32 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
                     free(subpred);
                 } else {
-                    char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN );
+                    char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN, ctx );
                     buffer_fadd(sql_buf, "( %s )", subpred);
                     free(subpred);
                 }
             } else if ( !strcasecmp("-or",search_itr->key) ) {
-                char* subpred = searchWHERE( node, meta, OR_OP_JOIN );
+                char* subpred = searchWHERE( node, meta, OR_OP_JOIN, ctx );
                 buffer_fadd(sql_buf, "( %s )", subpred);
                 free(subpred);
             } else if ( !strcasecmp("-and",search_itr->key) ) {
-                char* subpred = searchWHERE( node, meta, AND_OP_JOIN );
+                char* subpred = searchWHERE( node, meta, AND_OP_JOIN, ctx );
                 buffer_fadd(sql_buf, "( %s )", subpred);
+                free(subpred);
+            } else if ( !strcasecmp("-exists",search_itr->key) ) {
+                char* subpred = SELECT(
+			ctx,
+			jsonObjectGetKey( node, "select" ),
+			jsonObjectGetKey( node, "from" ),
+			jsonObjectGetKey( node, "where" ),
+			jsonObjectGetKey( node, "having" ),
+			jsonObjectGetKey( node, "order_by" ),
+			jsonObjectGetKey( node, "limit" ),
+			jsonObjectGetKey( node, "offset" ),
+			0
+                );
+
+                buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
                 free(subpred);
             } else {
 
@@ -1998,16 +2014,18 @@ static char* SELECT (
 		    buffer_add(sql_buf, " WHERE ");
 
 		    // and it's on the the WHERE clause
-		    char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN );
+		    char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN, ctx );
 
 		    if (!pred) {
-			    osrfAppSessionStatus(
-				    ctx->session,
-				    OSRF_STATUS_INTERNALSERVERERROR,
-				    "osrfMethodException",
-				    ctx->request,
-				    "Severe query error in WHERE predicate -- see error log for more details"
-			    );
+			    if (ctx) {
+			        osrfAppSessionStatus(
+				        ctx->session,
+				        OSRF_STATUS_INTERNALSERVERERROR,
+				        "osrfMethodException",
+				        ctx->request,
+				        "Severe query error in WHERE predicate -- see error log for more details"
+			        );
+			    }
 			    free(core_class);
 			    buffer_free(having_buf);
 			    buffer_free(group_buf);
@@ -2025,16 +2043,18 @@ static char* SELECT (
 		    buffer_add(sql_buf, " HAVING ");
 
 		    // and it's on the the WHERE clause
-		    char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN );
+		    char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
 
 		    if (!pred) {
-			    osrfAppSessionStatus(
-				    ctx->session,
-				    OSRF_STATUS_INTERNALSERVERERROR,
-				    "osrfMethodException",
-				    ctx->request,
-				    "Severe query error in HAVING predicate -- see error log for more details"
-			    );
+			    if (ctx) {
+			        osrfAppSessionStatus(
+				        ctx->session,
+				        OSRF_STATUS_INTERNALSERVERERROR,
+				        "osrfMethodException",
+				        ctx->request,
+				        "Severe query error in HAVING predicate -- see error log for more details"
+			        );
+			    }
 			    free(core_class);
 			    buffer_free(having_buf);
 			    buffer_free(group_buf);
@@ -2142,13 +2162,15 @@ static char* SELECT (
 		    // IT'S THE OOOOOOOOOOOLD STYLE!
 		    } else {
 			    osrfLogError(OSRF_LOG_MARK, "%s: Possible SQL injection attempt; direct order by is not allowed", MODULENAME);
-			    osrfAppSessionStatus(
-				    ctx->session,
-				    OSRF_STATUS_INTERNALSERVERERROR,
-				    "osrfMethodException",
-				    ctx->request,
-				    "Severe query error -- see error log for more details"
-			    );
+			    if (ctx) {
+			        osrfAppSessionStatus(
+				        ctx->session,
+				        OSRF_STATUS_INTERNALSERVERERROR,
+				        "osrfMethodException",
+				        ctx->request,
+				        "Severe query error -- see error log for more details"
+			        );
+			    }
 
 			    free(core_class);
 			    buffer_free(having_buf);
@@ -2338,7 +2360,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 	buffer_add(sql_buf, " WHERE ");
 
-	char* pred = searchWHERE( search_hash, meta, AND_OP_JOIN );
+	char* pred = searchWHERE( search_hash, meta, AND_OP_JOIN, ctx );
 	if (!pred) {
 		osrfAppSessionStatus(
 			ctx->session,
