@@ -1236,7 +1236,7 @@
 <!ENTITY staff.z39_50_import_interface_label "Z39.50 Import">
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
 <!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
-<!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent at run time">
+<!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
 <!ENTITY staff.server.admin.org_unit_settings.edit_setting "Edit Setting">
 <!ENTITY staff.server.admin.org_unit_settings.delete_setting "Delete Setting">
 <!ENTITY staff.server.admin.org_unit_settings.update_setting "Update Setting">
