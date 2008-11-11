@@ -2,7 +2,7 @@ var cpdTemplate;
 var cpdCounter = 0;
 var cpdNodes = {};
 
-function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth ) {
+function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, copy_location ) {
 var i = cpdCheckExisting(contextRow);
 	if(i) return i;
 
@@ -48,6 +48,7 @@ var i = cpdCheckExisting(contextRow);
 		orgid				: orgid,
 		depth				: depth,
 		templateRow		: templateRow, /* contains everything */
+		copy_location		: copy_location,
 		mainTbody		: mainTbody, /* holds the copy rows */
 		extrasRow		: extrasRow, /* wrapper row for all extras */
 		counter			: counter
@@ -194,6 +195,11 @@ function cpdDrawCopies(r) {
 function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
+
+    if (r.args.copy_location && copy.location().name() != r.args.copy_location) {
+        hideMe(row);
+        return;
+    }
 
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(copy.location().name()));

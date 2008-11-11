@@ -23,6 +23,7 @@ var localTOC;
 var cachedRecords;
 
 var rdetailShowLocal = true;
+var rdetailShowCopyLocation = true;
 
 
 
@@ -412,7 +413,7 @@ function rdetailShowExtra(type, args) {
 function rdetailVolumeDetails(args) {
 	var row = $(args.rowid);
 	var tbody = row.parentNode;
-	cpdBuild( tbody, row, record, args.cn, args.org, args.depth );
+	cpdBuild( tbody, row, record, args.cn, args.org, args.depth, args.copy_location );
 	return;
 }
 
@@ -521,10 +522,14 @@ function rdetailShowTOC(r) {
 
 function rdetailBuildInfoRows() {
 	var req;
+    var method = FETCH_COPY_COUNTS_SUMMARY;
+    if (rdetailShowCopyLocation)
+        method = FETCH_COPY_LOCATION_COUNTS_SUMMARY;
+        
 	if( rdetailShowLocal ) 
-		req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id(), getLocation(), getDepth())
+		req = new Request(method, record.doc_id(), getLocation(), getDepth())
 	else
-		req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id());
+		req = new Request(method, record.doc_id());
 	req.callback(_rdetailBuildInfoRows);
 	req.send();
 }
@@ -664,8 +669,11 @@ function _rdetailBuildInfoRows(r) {
 		//if(isLocal) unHideMe(rowNode);
 		unHideMe(rowNode);
 
+        if (rdetailShowCopyLocation)
+	        unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header') );
+
 		rdetailSetPath( thisOrg, isLocal );
-		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg );
+		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg, arr[2] );
 
 		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
 	}
@@ -674,7 +682,7 @@ function _rdetailBuildInfoRows(r) {
 }
 
 
-function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
+function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 
 	if(local) {
 		var cache = callnumberCache[cn];
@@ -687,10 +695,16 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 
 	$n(row, 'rdetail_callnumber_cell').appendChild(text(cn));
 
+    if (rdetailShowCopyLocation) {
+	    var cl_cell = $n(row, 'rdetail_copylocation_cell');
+	    cl_cell.appendChild(text(cl));
+	    unHideMe(cl_cell);
+    }
+
 	_debug('setting action clicks for cn ' + cn);
 
 	var dHref = 'javascript:rdetailVolumeDetails('+
-		'{rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
+		'{copy_location : "'+cl+'", rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
 
 	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", '+orgNode.id()+', "'+depth+'");'; 
 

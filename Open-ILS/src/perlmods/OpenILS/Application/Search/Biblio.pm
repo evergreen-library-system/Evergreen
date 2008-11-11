@@ -1330,6 +1330,26 @@ sub copy_count_summary {
 }
 
 __PACKAGE__->register_method(
+	method		=> "copy_location_count_summary",
+	api_name	=> "open-ils.search.biblio.copy_location_counts.summary.retrieve",
+	notes 		=> <<"	NOTES");
+	returns an array of these:
+		[ org_id, callnumber_label, copy_location, <status1_count>, <status2_cout>,...]
+		where statusx is a copy status name.  the statuses are sorted
+		by id.
+	NOTES
+
+sub copy_location_count_summary {
+	my( $self, $client, $rid, $org, $depth ) = @_;
+	$org ||= 1;
+	$depth ||= 0;
+    my $data = $U->storagereq(
+		'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
+
+    return [ sort { $a->[1] cmp $b->[1] || $a->[2] cmp $b->[2] } @$data ];
+}
+
+__PACKAGE__->register_method(
 	method		=> "copy_count_location_summary",
 	api_name	=> "open-ils.search.biblio.copy_counts.location.summary.retrieve",
 	notes 		=> <<"	NOTES");

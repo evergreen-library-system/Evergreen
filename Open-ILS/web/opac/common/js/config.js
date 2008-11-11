@@ -305,6 +305,7 @@ var LOGIN_DELETE					= "open-ils.auth:open-ils.auth.session.delete";
 var FETCH_USER_PREFS				= "open-ils.actor:open-ils.actor.patron.settings.retrieve"; 
 var UPDATE_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.update"; 
 var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.retrieve.all";
+var FETCH_COPY_LOCATION_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_location_counts.summary.retrieve";
 var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 //var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.location.summary.retrieve";
 var FETCH_MARC_HTML				= "open-ils.search:open-ils.search.biblio.record.html";

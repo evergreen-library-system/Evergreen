@@ -513,6 +513,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.copyInfo.headerLabel "Copy Information">
 <!ENTITY rdetail.copyInfo.library "Library">
 <!ENTITY rdetail.copyInfo.callnumber "Callnumber">
+<!ENTITY rdetail.copyInfo.copylocation "Copy Location">
 <!ENTITY rdetail.copyInfo.local "View Copy Information for this location only">
 <!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
 <!ENTITY rdetail.copyInfo.actions "Actions">

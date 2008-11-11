@@ -23,6 +23,7 @@
 			<tr>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
+				<td  name='rdetail_copylocation_header' class='rdetail_copy_info_header_cell hide_me'>&rdetail.copyInfo.copylocation;</td>
 				<td  class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.actions;</td>
 				<td  nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
 					<div name='rdetail_status_cell'> </div>
@@ -38,6 +39,7 @@
 					</a>
 				</td>
 				<td name='rdetail_callnumber_cell'> </td>
+				<td class="hide_me" name='rdetail_copylocation_cell'> </td>
 				<td name='rdetail_actions_cell'> 
 					<div style='padding-bottom: 1px;'>
 						<a style='font-size: 8pt;'
