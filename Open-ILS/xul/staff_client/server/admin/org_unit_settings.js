@@ -155,7 +155,7 @@ function osGetEditLink(rowIdx) {
 function osLaunchEditor(name) {
     osEditDialog._osattr = name;
     osEditDialog.show();
-    user.buildPermOrgSelector('UPDATE_ORG_UNIT_SETTING.' + name, osEditContextSelector);
+    user.buildPermOrgSelector('UPDATE_ORG_UNIT_SETTING.' + name, osEditContextSelector, osSettings[name].context);
     dojo.byId('os-edit-name').innerHTML = osSettings[name].label;
     dojo.byId('os-edit-desc').innerHTML = osSettings[name].desc || '';
 
@@ -164,19 +164,23 @@ function osLaunchEditor(name) {
     dojo.style(osEditNumberTextBox.domNode, 'display', 'none');
     dojo.style(osEditBoolSelect.domNode, 'display', 'none');
 
+    var widget;
     switch(osSettings[name].type) {
         case 'number':
-            dojo.style(osEditNumberTextBox.domNode, 'display', 'block');
+            widget = osEditNumberTextBox; 
             break;
         case 'currency':
-            dojo.style(osEditCurrencyTextBox.domNode, 'display', 'block');
+            widget = osEditCurrencyTextBox; 
             break;
         case 'bool':
-            dojo.style(osEditBoolSelect.domNode, 'display', 'block');
+            widget = osEditBoolSelect; 
             break;
         default:
-            dojo.style(osEditTextBox.domNode, 'display', 'block');
+            widget = osEditTextBox;
     }
+
+    dojo.style(widget.domNode, 'display', 'block');
+    widget.setValue(osSettings[name].value);
 }
 
 function osEditSetting(deleteMe) {
