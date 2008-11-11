@@ -14,7 +14,7 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				second_given_name family_name billing_address
 				claims_returned_count home_ou dob deleted
 				active master_account ident_type ident_value
-				ident_type2 ident_value2 net_access_level
+				ident_type2 ident_value2 net_access_level alias
 				photo_url create_date expire_date credit_forward_balance
 				super_user usrgroup passwd card last_xact_id
 				standing barred profile prefix suffix alert_message

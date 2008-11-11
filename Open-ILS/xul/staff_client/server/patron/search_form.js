@@ -77,6 +77,19 @@ patron.search_form.prototype = {
 							};
 						}
 					],
+					'alias' : [
+						['render'],
+						function(e) {
+							return function() {
+								if (params.query&&params.query.alias) {
+									e.setAttribute('value',params.query.alias);
+									e.value = params.query.alias;
+								} else {
+									e.value = '';
+								}
+							};
+						}
+					],
 					'email' : [
 						['render'],
 						function(e) {

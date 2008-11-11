@@ -44,6 +44,7 @@ CREATE TABLE actor.usr (
 	second_given_name	TEXT,
 	family_name		TEXT				NOT NULL,
 	suffix			TEXT,
+	alias			TEXT,
 	day_phone		TEXT,
 	evening_phone		TEXT,
 	other_phone		TEXT,

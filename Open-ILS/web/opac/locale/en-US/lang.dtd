@@ -1162,6 +1162,8 @@
 <!ENTITY staff.patron_search_form.city.label 'City:'>
 <!ENTITY staff.patron_search_form.clear.accesskey 'C'>
 <!ENTITY staff.patron_search_form.clear.label 'Clear Form'>
+<!ENTITY staff.patron_search_form.alias.accesskey ''>
+<!ENTITY staff.patron_search_form.alias.label 'Alias:'>
 <!ENTITY staff.patron_search_form.email.accesskey ''>
 <!ENTITY staff.patron_search_form.email.label 'Email:'>
 <!ENTITY staff.patron_search_form.family_name.accesskey 'L'>

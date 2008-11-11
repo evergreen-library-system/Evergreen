@@ -56,6 +56,12 @@
 				accesskey="&staff.patron_search_form.second_given_name.accesskey;"/>
 			<textbox id="second_given_name" group="0"/>
 		</row>
+		<row id="psr14">
+			<label id="psl14" control="alias" 
+				value="&staff.patron_search_form.alias.label;" 
+				accesskey="&staff.patron_search_form.alias.accesskey;"/>
+			<textbox id="alias" group="0"/>
+		</row>
 		<row id="psr4">
 			<label id="psl4" control="email" 
 				value="&staff.patron_search_form.email.label;" 
