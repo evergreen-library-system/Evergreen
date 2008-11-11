@@ -323,6 +323,134 @@ Returns the XML representation of the requested bibliographic record's holdings
 );
 
 
+sub title_browse {
+	my $self = shift;
+	my $client = shift;
+
+	my $title = shift;
+	my $ou = shift;
+	my $page_size = shift || 9;
+	my $page = shift || 0;
+
+	my ($before_limit,$after_limit) = (0,0);
+	my ($before_offset,$after_offset) = (0,0);
+
+	if (!$page) {
+		$before_limit = $after_limit = int($page_size / 2);
+		$after_limit += 1 if ($page_size % 2);
+	} else {
+		$before_offset = $after_offset = int($page_size / 2);
+		$before_offset += 1 if ($page_size % 2);
+		$before_limit = $after_limit = $page_size;
+	}
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my @ou_ids;
+	if ($ou && $ou ne '-') {
+		my $orgs = $_storage->request(
+			"open-ils.cstore.direct.actor.org_unit.search",
+			{ shortname => $ou },
+			{ flesh		=> 10,
+			  flesh_fields	=> { aou	=> [qw/children/] }
+			}
+		)->gather(1);
+		@ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+	}
+
+	$logger->debug("Searching for titles at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	my @list = ();
+
+	if ($page <= 0) {
+		my $before = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> mfr => [qw/record value/],
+			  from		=> 'mfr',
+			  where		=>
+				{ '+mfr'	=>
+					{ tag	=> 245,
+					  subfield => 'a',
+					  value => { '<' => lc($title) }
+					},
+				  '-exists'	=>
+					{ select=> { acp => [ 'id' ] },
+					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
+					  where	=>
+						{ '+acn' => { record => { '=' => { '+mfr' => 'record } } },
+						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
+						}
+					  limit => 1
+					}
+				} 
+			  limit		=> $before_limit,
+			  offset	=> abs($page) * $page_size - $before_offset,
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } reverse(@$before);
+	}
+
+	if ($page >= 0) {
+		my $after = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> mfr => [qw/record value/],
+			  from		=> 'mfr',
+			  where		=>
+				{ '+mfr'	=>
+					{ tag	=> 245,
+					  subfield => 'a',
+					  value => { '>=' => lc($title) }
+					},
+				  '-exists'	=>
+					{ select=> { acp => [ 'id' ] },
+					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
+					  where	=>
+						{ '+acn' => { record => { '=' => { '+mfr' => 'record } } },
+						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
+						}
+					  limit => 1
+					}
+				} 
+			  limit		=> $after_limit,
+			  offset	=> abs($page) * $page_size - $after_offset,
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } @$after;
+	}
+
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'title_browse',
+	api_name  => 'open-ils.supercat.title.browse',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns a list of the requested orgs titles (by id) held
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'title',
+				  desc => 'The target title',
+				  type => 'string' },
+				{ name => 'org_unit',
+				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of call numbers to retrieve, default is 9',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Record IDs that have copies at the relevant org units',
+			  type => 'array' }
+		}
+);
+
+
 sub new_record_holdings {
 	my $self = shift;
 	my $client = shift;
