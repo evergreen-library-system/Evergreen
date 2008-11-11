@@ -248,7 +248,13 @@ class CSEditor(object):
 # -------------------------------------------------------------------------
 # Creates a class method for each action on each type of fieldmapper object
 # -------------------------------------------------------------------------
+__editor_loaded = False
 def oilsLoadCSEditor():
+    global __editor_loaded
+    if __editor_loaded:
+        return
+    __editor_loaded = True
+
     obj = IDLParser.get_parser().IDLObject
 
     for k, fm in obj.iteritems():
