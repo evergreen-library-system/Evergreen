@@ -19,6 +19,7 @@ sub new
     $self->{PATTERN} = {};
     $self->{COPY} = undef;
     $self->{UNIT} = undef;
+    $self->{COMPRESSIBLE} = 1;	# until proven otherwise
 
     foreach my $subfield ($caption->subfields) {
 	my ($key, $val) = @$subfield;
@@ -59,8 +60,35 @@ sub new
 	}
     }
 
+    # subsequent levels of enumeration (primary and alternate)
+    # If an enumeration level doesn't document the number
+    # of "issues" per "volume", or whether numbering of issues
+    # restarts, then we can't compress.
+    foreach my $key ('b', 'c', 'd', 'e', 'f', 'h') {
+	if (exists $self->{ENUMS}->{$key}) {
+	    my $pattern = $self->{ENUMS}->{$key};
+	    if (!$pattern->{RESTART} || !$pattern->{COUNT}
+		|| ($pattern->{COUNT} eq 'var')
+		|| ($pattern->{COUNT} eq 'und')) {
+		$self->{COMPRESSIBLE} = 0;
+		last;
+	    }
+	}
+    }
+
+    # If there's a $x subfield and a $j, then it's compressible
+    if (exists $self->{PATTERN}->{x} && exists $self->{CHRONS}->{'j'}) {
+	$self->{COMPRESSIBLE} = 1;
+    }
+
     bless ($self, $class);
     return $self;
+}
+
+sub compressible {
+    my $self = shift;
+
+    return $self->{COMPRESSIBLE};
 }
 
 sub caption {

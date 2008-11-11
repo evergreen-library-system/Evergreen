@@ -165,8 +165,18 @@ sub next {
 sub match {
     my $self = shift;
     my $pat = shift;
+    my $caption = $self->{CAPTION};
 
     foreach my $key ('a'..'f') {
+	my $nextkey;
+
+	($nextkey = $key)++;
+	# If the next smaller enumeration exists, and is numbered
+	# continuously, then we don't need to check this one, because
+	# gaps in issue numbering matter, not changes in volume numbering
+	next if (exists $self->{ENUMS}->{$nextkey}
+		 && !$caption->{ENUMS}->{$nextkey}->{RESTART});
+
 	# If a subfield exists in $self but not in $pat, or vice versa
 	# or if the field has different values, then fail
 	if (exists($self->{ENUMS}->{$key}) != exists($pat->{$key})
@@ -178,4 +188,18 @@ sub match {
     return 1;
 }
 
+# 
+# Check that all the fields in a holdings statement are
+# included in the corresponding caption.
+# 
+sub validate {
+    my $self = shift;
+
+    foreach my $key (keys %{$self->{ENUMS}}) {
+	if (!exists $self->{CAPTION}->{ENUMS}->{$key}) {
+	    return 0;
+	}
+    }
+    return 1;
+}
 1;
