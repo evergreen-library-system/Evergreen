@@ -1499,8 +1499,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc "This is maximum number of previous circulations the staff client will display when investigating item details">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
-
-
+<!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval "Estimated Hold Wait (Days)">
+<!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval.desc "When predicting the amount of time a patron will be waiting for a hold to be fulfilled,this is the default/average number of days to assume an item will be checked out.">
 
 
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
