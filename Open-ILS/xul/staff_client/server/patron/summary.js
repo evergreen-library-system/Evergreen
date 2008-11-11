@@ -364,6 +364,16 @@ patron.summary.prototype = {
 							};
 						}
 					],
+					'patron_alias' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									obj.patron.alias()
+								);
+							};
+						}
+					],
 					'patron_photo_url' : [
 						['render'],
 						function(e) {

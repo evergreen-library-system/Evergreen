@@ -355,6 +355,10 @@ patron.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.email(); }
 		},
 		{ 
+			'persist' : 'hidden width ordinal', 'id' : 'alias', 'label' : commonStrings.getString('staff.au_alias_label'), 'flex' : 1, 
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.alias(); }
+		},
+		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : commonStrings.getString('staff.au_birth_date_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.dob().substr(0,10); }
 		},

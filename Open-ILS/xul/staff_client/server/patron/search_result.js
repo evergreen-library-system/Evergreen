@@ -156,7 +156,7 @@ patron.search_result.prototype = {
 					obj.search_term_count++;
 				break;
 
-				case 'family_name': case 'first_given_name': case 'second_given_name': case 'email':
+				case 'family_name': case 'first_given_name': case 'second_given_name': case 'email': case 'alias':
 
 					search_hash[ i ] = {};
 					search_hash[ i ].value = query[i];
