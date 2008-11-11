@@ -233,7 +233,7 @@ if(!dojo._hasResource["openils.User"]) {
          * @param perm The permission to check
          * @param selector The pre-created dijit.form.FilteringSelect object.  
          */
-        buildPermOrgSelector : function(perm, selector) {
+        buildPermOrgSelector : function(perm, selector, selectedOrg) {
             var _u = this;
     
             dojo.require('dojo.data.ItemFileReadStore');
@@ -241,7 +241,10 @@ if(!dojo._hasResource["openils.User"]) {
             function hookupStore(store) {
                 selector.store = store;
                 selector.startup();
-                selector.setValue(_u.user.ws_ou());
+                if(selectedOrg != null)
+                    selector.setValue(selectedOrg);
+                else
+                    selector.setValue(_u.user.ws_ou());
             }
 
             function buildTreePicker(orgList) {
