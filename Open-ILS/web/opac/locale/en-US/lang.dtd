@@ -1471,25 +1471,24 @@
 <!ENTITY staff.server.admin.org_settings.update_success "Update succeeded.">
 <!ENTITY staff.server.admin.org_settings.apply_all.confirm "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?">
 
-<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "Hold Expiration Alert Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval "Holds: Expire Alert Interval">
 <!ENTITY staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc "Amount of time before a hold expires at which point the patron should be alerted">
-<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "Default Hold Expirate Interval">
+<!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval "Holds: Expire Interval">
 <!ENTITY staff.server.admin.org_settings.circ.hold_expire_interval.desc 'Amount of time after a hold is placed before the hold expires.  Example "100 days"'>
 <!ENTITY staff.server.admin.org_settings.global.credit.allow "Allow Credit Card Payments">
 <!ENTITY staff.server.admin.org_settings.global.credit.allow.desc "If enabled, patrons will be able to pay fines accrued at this location via credit card">
 <!ENTITY staff.server.admin.org_settings.global.default_locale "Default Locale">
 <!ENTITY staff.server.admin.org_settings.circ.void_overdue_on_lost "Void overdue fines when items are marked lost">
-<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'Soft hold stalling interval'>
+<!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft 'Holds: Soft stalling interval'>
 <!ENTITY staff.server.admin.org_settings.circ.hold_stalling.soft.desc 'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"'>
-<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "Hard hold boundary">
-<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Soft hold boundary">
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.hard "Holds: Hard boundary">
+<!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Holds: Soft boundary">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex "Patron barcode format">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex.desc 'Regular expression defining the patron barcode format'>
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max "Maximum previous checkouts displayed">
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc "This is maximum number of previous circulations the staff client will display when investigating item details">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
-
 
 
 
