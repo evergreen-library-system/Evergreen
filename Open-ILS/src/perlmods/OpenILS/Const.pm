@@ -82,6 +82,7 @@ econst OILS_SETTING_HOLD_HARD_STALL => 'circ.hold_stalling.hard';
 econst OILS_SETTING_HOLD_SOFT_BOUNDARY => 'circ.hold_boundary.soft';
 econst OILS_SETTING_HOLD_HARD_BOUNDARY => 'circ.hold_boundary.hard';
 econst OILS_SETTING_HOLD_EXPIRE => 'circ.hold_expire_interval';
+econst OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL => 'circ.hold_estimate_wait_interval';
 
 
 

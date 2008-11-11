@@ -685,26 +685,32 @@ sub retrieve_hold_queue_status_impl {
             {   target => $hold->target, 
                 hold_type => $hold->hold_type,
                 cancel_time => undef,
-                fulfillment_time => undef
+                capture_time => undef
             },
             {order_by => {ahr => 'request_time asc'}}
         ], 
         {idlist => 1} 
     );
 
-    my $pos = 0;
+    my $qpos = 0;
     for my $hid (@$hold_ids) {
-        $pos++;
+        $qpos++;
         last if $hid == $hold->id;
     }
 
     my $potentials = $e->search_action_hold_copy_map({hold => $hold->id}, {idlist => 1});
+    my $num_potentials = scalar(@$potentials);
+
+    my $user_org = $e->json_query({select => {au => 'home_ou'}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
+    my $default_hold_interval = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
+    my $estimated_wait = $qpos * ($default_hold_interval / $num_potentials) if $default_hold_interval;
 
     return {
         total_holds => scalar(@$hold_ids),
-        queue_position => $pos,
-        potential_copies => scalar(@$potentials),
-        status => _hold_status($e, $hold)
+        queue_position => $qpos,
+        potential_copies => $num_potentials,
+        status => _hold_status($e, $hold),
+        estimated_wait => int($estimated_wait)
     };
 }
 
