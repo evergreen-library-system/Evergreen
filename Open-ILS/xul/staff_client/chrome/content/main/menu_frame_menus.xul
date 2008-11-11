@@ -48,6 +48,7 @@
 	<command id="cmd_reprint" />
 	<command id="cmd_retrieve_last_patron" />
 	<command id="cmd_retrieve_last_record" />
+	<command id="cmd_verify_credentials" />
 
 	<command id="cmd_change_session" />
 	<command id="cmd_manage_offline_xacts" />
@@ -140,6 +141,7 @@
 		<menuseparator />
 		<menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuitem label="&staff.main.menu.circ.barcode.retrieve_patron;" accesskey="&staff.main.menu.circ.barcode.retrieve_patron.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+		<menuitem label="&staff.main.menu.circ.verify_credentials;" accesskey="&staff.main.menu.circ.verify_credentials.accesskey;" command="cmd_verify_credentials"/>
 		<menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
 		<menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />

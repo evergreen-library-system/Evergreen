@@ -452,6 +452,16 @@ main.menu.prototype = {
 				}
 			],
 
+            'cmd_verify_credentials' : [
+                ['oncommand'],
+                function() {
+					obj.set_tab(
+						obj.url_prefix(urls.XUL_VERIFY_CREDENTIALS),
+						{ 'tab_name' : offlineStrings.getString('menu.cmd_verify_credentials.tabname') },
+						{}
+					);
+                }
+            ],
 
 			/* Cataloging Menu */
 			'cmd_z39_50_import' : [

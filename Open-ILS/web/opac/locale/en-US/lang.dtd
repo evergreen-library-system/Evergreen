@@ -39,6 +39,7 @@
 <!ENTITY common.step6.label 'Step 6)'>
 <!ENTITY common.username "Username">
 <!ENTITY common.username.label "Username:">
+<!ENTITY common.barcode "Barcode">
 <!ENTITY common.password "Password">
 <!ENTITY common.refresh "Refresh">
 <!ENTITY common.submit "Submit">
@@ -62,6 +63,7 @@
 <!ENTITY common.login.accesskey "L">
 <!ENTITY common.password.accesskey "P">
 <!ENTITY common.username.accesskey "U">
+<!ENTITY common.barcode.accesskey "B">
 <!ENTITY staff.about.title "About">
 <!ENTITY staff.acp_label_barcode "Barcode">
 <!ENTITY staff.acp_label_call_number "Call Number">
@@ -178,6 +180,10 @@
 <!ENTITY staff.auth.submit_prompt.key "S">
 <!ENTITY staff.auth.title "Evergreen Staff Client 3">
 <!ENTITY staff.auth.version "Evergreen 0.1.0 20051202">
+<!ENTITY staff.auth.verify.caption "Verify Credentials">
+<!ENTITY staff.auth.verify.submit.label "Verify">
+<!ENTITY staff.auth.verify.submit.accesskey "V">
+
 <!ENTITY staff.bills_current_payment_label "Current Payment">
 <!ENTITY staff.bills_information "Information">
 <!ENTITY staff.bills_interface_label "Bills">
@@ -692,6 +698,8 @@
 <!ENTITY staff.main.menu.circ.reprint.label "Re-Print Last">
 <!ENTITY staff.main.menu.circ.special.key "S">
 <!ENTITY staff.main.menu.circ.special.label "Special Circulation">
+<!ENTITY staff.main.menu.circ.verify_credentials "Verify Credentials">
+<!ENTITY staff.main.menu.circ.verify_credentials.accesskey "V">
 <!ENTITY staff.main.menu.edit.buckets.copies "Copy Buckets">
 <!ENTITY staff.main.menu.edit.buckets.copies.accesskey "B">
 <!ENTITY staff.main.menu.edit.buckets.key "B">
