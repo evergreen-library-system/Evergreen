@@ -19,27 +19,51 @@ function verify_init() {
             'command',
             function() {
                 try {
+                    var barcode = document.getElementById('barcode_prompt').value;
+                    var name = document.getElementById('name_prompt').value;
+                    var password = document.getElementById('password_prompt').value; 
                     var req = net.simple_request(
                         'AUTH_VERIFY_CREDENTIALS',
                         [ 
                             ses(), 
-                            document.getElementById('barcode_prompt').value,
-                            document.getElementById('name_prompt').value,
-                            hex_md5( document.getElementById('password_prompt').value )
+                            barcode,
+                            name,
+                            hex_md5( password )
                         ]
                     );
 
                     if (typeof req.ilsevent != 'undefined') { throw(req); }
 
                     var msg_area = document.getElementById('messages');
-                    var desc = document.createElement('description'); msg_area.insertBefore(desc, msg_area.firstChild);
-                    desc.setAttribute('class', String(req) == '1' ? 'success_text' : 'failure_text');
-                    var text = document.createTextNode( 
-                        String(req) == '1' ? 
-                            offlineStrings.getString('menu.cmd_verify_credentials.correct_credentials') : 
-                            offlineStrings.getString('menu.cmd_verify_credentials.incorrect_credentials') 
+                    var hbox = document.createElement('hbox'); msg_area.insertBefore(hbox, msg_area.firstChild);
+                    var success_msg = document.createElement('description'); hbox.appendChild(success_msg);
+                    success_msg.setAttribute('class', String(req) == '1' ? 'success_text' : 'failure_text');
+                    success_msg.appendChild(
+                        document.createTextNode( 
+                            String(req) == '1' ? 
+                                offlineStrings.getString('menu.cmd_verify_credentials.correct_credentials') : 
+                                offlineStrings.getString('menu.cmd_verify_credentials.incorrect_credentials') 
+                        )
                     );
-                    desc.appendChild(text);
+                    var name_msg = document.createElement('description'); hbox.appendChild(name_msg);
+                    name_msg.appendChild(
+                        document.createTextNode(
+                            offlineStrings.getFormattedString('menu.cmd_verify_credentials.name_feedback',[name]) 
+                        )
+                    );
+                    var barcode_msg = document.createElement('description'); hbox.appendChild(barcode_msg);
+                    barcode_msg.appendChild(
+                        document.createTextNode(
+                            offlineStrings.getFormattedString('menu.cmd_verify_credentials.barcode_feedback',[barcode]) 
+                        )
+                    );
+                    var date_msg = document.createElement('description'); hbox.appendChild(date_msg);
+                    date_msg.appendChild(
+                        document.createTextNode(
+                            new Date()
+                        )
+                    );
+
 
                 } catch(E) {
                     alert(E);

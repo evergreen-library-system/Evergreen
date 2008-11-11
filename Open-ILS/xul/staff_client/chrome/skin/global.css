@@ -19,8 +19,8 @@ messagecatalog { -moz-binding: url('chrome://open_ils_staff_client/content/main/
 
 .my_overflow { overflow: auto; }
 
-.success_text { color: green; }
-.failure_text { color: red; }
+.success_text { color: white; background-color: green; }
+.failure_text { color: white; background-color: red; }
 
 .text_left { text-align: left; }
 .text_right { text-align: right; }
