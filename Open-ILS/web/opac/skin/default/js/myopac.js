@@ -401,6 +401,7 @@ function myOPACDrawHoldStatus(hold) {
 	req.send();
 }
 
+var myopacShowHoldEstimate = false;
 function myOShowHoldStatus(r) {
 
 	var hold = r.hold;
@@ -408,6 +409,14 @@ function myOShowHoldStatus(r) {
     holdStatusCache[hold.id()] = qstats;
 
 	var row = $("myopac_holds_row_" + r.hold.id());
+
+    if(qstats.estimated_wait || myopacShowHoldEstimate) {
+        myopacShowHoldEstimate = true;
+        if(qstats.estimated_wait)
+            $n(row, 'myopac_holds_estimated_wait').appendChild(text(qstats.estimated_wait));
+        unHideMe($('myopac_holds_estimated_wait_column'));
+        unHideMe($n(row, 'myopac_holds_estimated_wait'));
+    } 
 
 	if( qstats.status == 4 ) {
 		unHideMe($n(row, 'hold_status_available'));

@@ -40,15 +40,16 @@
 
 		<thead class='color_3'>
 			<tr>
-				<td width='30%'>&common.title;</td>
-				<td width='30%'>&common.author;</td>
+				<td width=''>&common.title;</td>
+				<td width=''>&common.author;</td>
 				<td>&myopac.holds.formats;</td>
 				<td>&myopac.holds.location;</td>
 				<td>&common.status;</td>
+				<td class='hide_me' id='myopac_holds_estimated_wait_column'>&myopac.holds.estimated_wait;</td>
 				<td>&myopac.holds.unfrozen;</td>
 				<td>&myopac.holds.frozen.until;</td>
 				<td>&opac.holds.expire_time;</td>
-                <td width='15%'>&common.select;
+                <td width=''>&common.select;
                     (<a id='myopac_select_all_holds' onclick='myopacSelectAllHolds();' 
                         class='classic_link' href='javascript:void(0);'>&common.all;</a>/<a id='myopac_select_none_holds' 
                         onclick='myopacSelectNoneHolds();' class='classic_link'  href='javascript:void(0);'>&common.none;</a>)
@@ -88,6 +89,7 @@
 					<span class='hide_me' name='hold_status_available'><b style='color:red'>&myopac.holds.status.available;</b></span>
 					<span class='hide_me' name='hold_qstats'></span>
 				</td>
+                <td class='hide_me' name='myopac_holds_estimated_wait'/>
 
                 <td>
                     <!-- These characaters do not display in Internet Exploror, *sigh*
