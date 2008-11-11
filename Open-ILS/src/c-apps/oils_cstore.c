@@ -18,6 +18,7 @@
 #  define MODULENAME "open-ils.cstore"
 #endif
 
+#define SUBSELECT	4
 #define DISABLE_I18N	2
 #define SELECT_DISTINCT	1
 #define AND_OP_JOIN     0
@@ -1664,7 +1665,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 			jsonObjectGetKey( node, "order_by" ),
 			jsonObjectGetKey( node, "limit" ),
 			jsonObjectGetKey( node, "offset" ),
-			0
+			SUBSELECT
                 );
 
                 buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
@@ -2235,7 +2236,7 @@ static char* SELECT (
 		free(string);
 	}
 
-	buffer_add(sql_buf, ";");
+	if (!(flags & SUBSELECT)) buffer_add(sql_buf, ";");
 
 	free(core_class);
 	if (defaultselhash) jsonObjectFree(defaultselhash);
