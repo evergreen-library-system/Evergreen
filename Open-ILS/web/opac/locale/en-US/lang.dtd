@@ -2581,5 +2581,6 @@
 <!ENTITY ev.staff.patron.ue_xhtml.cancel.value "Cancel">
 <!ENTITY ev.staff.patron.ue_xhtml.alert_message_reset.value "Clear">
 <!ENTITY ev.staff.patron.ue_xhtml.date_selector.label "Date selector">
+<!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
 <!ENTITY staff.portal.title "Evergreen Staff Client Portal Page">
 <!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">

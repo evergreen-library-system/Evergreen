@@ -167,7 +167,6 @@ function uEditDefineData(patron) {
 				}
 			}
 		},
-
 		{
 			required : false,
 			object	: patron,
@@ -206,6 +205,15 @@ function uEditDefineData(patron) {
 						uEditFindFieldByKey('suffix').widget.node.onchange();
 					}
 				},
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'alias',
+			widget	: {
+				id		: 'ue_alias',
+				type	: 'input',
 			}
 		},
 		{
