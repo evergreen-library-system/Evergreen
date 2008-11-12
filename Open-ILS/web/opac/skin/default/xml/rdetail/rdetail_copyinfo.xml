@@ -43,11 +43,11 @@
 				<td name='rdetail_actions_cell'> 
 					<div style='padding-bottom: 1px;'>
 						<a style='font-size: 8pt;'
-							name='details' class='classic_link'>&rdetail.copyInfo.details;</a>
+							name='details' class='hide_me classic_link'>&rdetail.copyInfo.details;</a>
 					</div>
 					<div style='margin-top: 2px;'>
 						<a name='browse' style='font-size: 8pt;'
-							class='classic_link'>&rdetail.copyInfo.browse;</a>
+							class='hide_me classic_link'>&rdetail.copyInfo.browse;</a>
 					</div>
 					<div style='margin-top: 2px;' name='hold_div' class='hide_me'>
 						<a name='hold' style='font-size: 8pt;' href='javascript:void(0);'

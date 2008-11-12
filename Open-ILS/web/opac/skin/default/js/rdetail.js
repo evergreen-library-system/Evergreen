@@ -609,6 +609,9 @@ var localCNFound = false;
 var ctr = 0;
 function _rdetailBuildInfoRows(r) {
 
+    if (rdetailShowCopyLocation)
+	    unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header' ) );
+
 	removeChildren(copyRowParent);
 
 	_rdetailRows();
@@ -624,9 +627,6 @@ function _rdetailBuildInfoRows(r) {
 		var thisOrg = findOrgUnit(arr[0]);
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
-
-        if (rdetailShowCopyLocation)
-	        unHideMe( $n( rowNode, 'rdetail_copylocation_header' ) );
 
 		if(rowNode.getAttribute("used")) {
 
@@ -658,7 +658,12 @@ function _rdetailBuildInfoRows(r) {
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
 		var statuses = arr[2];
-        if (rdetailShowCopyLocation) statuses = arr[3];
+		var cl = '';
+        if (rdetailShowCopyLocation) {
+            cl = arr[2];
+            statuses = arr[3];
+        }
+
 
 		rdetailApplyStatuses(rowNode, cpc_temp, statuses);
 
@@ -674,9 +679,6 @@ function _rdetailBuildInfoRows(r) {
 
 		//if(isLocal) unHideMe(rowNode);
 		unHideMe(rowNode);
-
-		var cl = '';
-        if (rdetailShowCopyLocation) cl = arr[2];
 
 		rdetailSetPath( thisOrg, isLocal );
 		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg, cl );
@@ -714,7 +716,9 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 
 	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", '+orgNode.id()+', "'+depth+'");'; 
 
+	unHideMe( $n(row, 'details') )
 	$n(row, 'details').setAttribute('href', dHref);
+	unHideMe( $n(row, 'browse') )
 	$n(row, 'browse').setAttribute('href', bHref);
 
 	if(isXUL()) {
