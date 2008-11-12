@@ -519,9 +519,9 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
 <!ENTITY rdetail.copyInfo.actions "Actions">
 <!ENTITY rdetail.copyInfo.print "Print Call Numbers for this library">
-<!ENTITY rdetail.copyInfo.details "details">
-<!ENTITY rdetail.copyInfo.browse "browse">
-<!ENTITY rdetail.copyInfo.hold "place hold">
+<!ENTITY rdetail.copyInfo.details "Copy Details">
+<!ENTITY rdetail.copyInfo.browse "Browse Call Numbers">
+<!ENTITY rdetail.copyInfo.hold "Place Hold">
 <!ENTITY rdetail.extras.summary "Copy Summary">
 <!ENTITY rdetail.extras.browser "Shelf Browser">
 <!ENTITY rdetail.extras.reviews "Reviews">
