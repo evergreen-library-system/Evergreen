@@ -3,6 +3,8 @@ use strict;
 use integer;
 use Carp;
 
+use Data::Dumper;
+
 use MARC::Record;
 
 sub new {
@@ -64,23 +66,50 @@ sub format {
     my $caption = $self->{CAPTION};
     my $str = "";
 
+    # Enumerations
     foreach my $key ('a'..'f') {
-	last if !exists $caption->{ENUMS}->{$key};
+	last if !defined $caption->caption($key);
 # 	printf("fmt %s: '%s'\n", $key, $caption->caption($key));
 
 	$str .= ($key eq 'a' ? "" : ':') . $caption->caption($key) . $self->{ENUMS}->{$key}->{HOLDINGS};
     }
 
+    # Chronology
+    if (defined $caption->caption('i')) {
+	$str .= '(';
+	foreach my $key ('i'..'l') {
+	    my $capstr;
+
+	    last if !defined $caption->caption($key);
+
+	    $capstr = $caption->caption($key);
+	    if (substr($capstr,0,1) eq '(') {
+		# a caption enclosed in parentheses is not displayed
+		$capstr = '';
+	    }
+
+	    $str .= ($key eq 'i' ? '' : ':') . $capstr . $self->{CHRON}->{$key};
+	}
+	$str .= ')';
+    }
+
     if (exists $caption->{ENUMS}->{'g'}) {
 	# There's at least one level of alternative enumeration
-	$str .= ' ';
+	$str .= '=';
 	foreach my $key ('g', 'h') {
-	    $str .= ($key eq 'g' ? '' : ':') . $caption->enum($key) . $self->{ENUMS}->{$key}->{HOLDINGS};
+	    $str .= ($key eq 'g' ? '' : ':') . $caption->caption($key) . $self->{ENUMS}->{$key}->{HOLDINGS};
+	}
+
+	if (exists $caption->{CHRONS}->{m}) {
+	    # Alternative Chronology
+	    $str .= '(';
+	    $str .= $caption->caption('m') . $self->{ENUMS}->{m}->{HOLDINGS};
+	    $str .= ')';
 	}
     }
 
     # Public Note
-    $str .= ' '. $caption->{ENUMS}->{'z'} if (exists $caption->{ENUMS}->{'z'});
+    $str .= ' '. $caption->{ENUMS}->{'z'} if (defined $caption->caption('z'));
 
     # Breaks in the sequence
     if ($self->{BREAK} eq 'n') {
