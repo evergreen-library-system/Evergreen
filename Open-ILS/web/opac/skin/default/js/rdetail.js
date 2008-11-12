@@ -626,7 +626,7 @@ function _rdetailBuildInfoRows(r) {
 		if(!rowNode) continue;
 
         if (rdetailShowCopyLocation)
-	        unHideMe( rowNode, 'rdetail_copylocation_header' );
+	        unHideMe( $n( rowNode, 'rdetail_copylocation_header' ) );
 
 		if(rowNode.getAttribute("used")) {
 
