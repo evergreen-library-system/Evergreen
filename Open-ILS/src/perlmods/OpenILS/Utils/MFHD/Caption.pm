@@ -97,7 +97,13 @@ sub caption {
 
     if (@_) {
 	$key = shift;
-	return $self->{ENUMS}->{$key}->{CAPTION};
+	if (exists $self->{ENUMS}->{$key}) {
+	    return $self->{ENUMS}->{$key}->{CAPTION};
+	} elsif (exists $self->{CHRONS}->{$key}) {
+	    return $self->{CHRONS}->{$key};
+	} else {
+	    return undef;
+	}
     } else {
 	return $self->{CAPTION};
     }
