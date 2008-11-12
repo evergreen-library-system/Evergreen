@@ -625,6 +625,9 @@ function _rdetailBuildInfoRows(r) {
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
 
+        if (rdetailShowCopyLocation)
+	        unHideMe( rowNode, 'rdetail_copylocation_header') );
+
 		if(rowNode.getAttribute("used")) {
 
 			if( rowNode.nextSibling ) {
@@ -654,7 +657,10 @@ function _rdetailBuildInfoRows(r) {
 		var cpc_temp = rowNode.removeChild(
 			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
-		rdetailApplyStatuses(rowNode, cpc_temp, arr[2]);
+		var statuses = arr[2];
+        if (rdetailShowCopyLocation) statuses = arr[3];
+
+		rdetailApplyStatuses(rowNode, cpc_temp, statuses);
 
 		var isLocal = false;
 		if( orgIsMine( findOrgUnit(getLocation()), thisOrg ) ) { 
@@ -669,11 +675,11 @@ function _rdetailBuildInfoRows(r) {
 		//if(isLocal) unHideMe(rowNode);
 		unHideMe(rowNode);
 
-        if (rdetailShowCopyLocation)
-	        unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header') );
+		var cl = '';
+        if (rdetailShowCopyLocation) cl = arr[2];
 
 		rdetailSetPath( thisOrg, isLocal );
-		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg, arr[2] );
+		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg, cl );
 
 		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
 	}
