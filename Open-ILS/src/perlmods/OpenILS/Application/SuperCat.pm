@@ -335,20 +335,17 @@ sub new_books_by_item {
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	my $o_search = { shortname => $ou };
-	if (!$ou || $ou eq '-') {
-		$o_search = { parent_ou => undef };
+	my @ou_ids;
+	if ($ou && $ou ne '-') {
+		my $orgs = $_storage->request(
+			"open-ils.cstore.direct.actor.org_unit.search",
+			{ shortname => $ou },
+			{ flesh		=> 10,
+			  flesh_fields	=> { aou	=> [qw/children/] }
+			}
+		)->gather(1);
+		@ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 	}
-
-	my $orgs = $_storage->request(
-		"open-ils.cstore.direct.actor.org_unit.search",
-		$o_search,
-		{ flesh		=> 3,
-		  flesh_fields	=> { aou	=> [qw/children/] }
-		}
-	)->gather(1);
-
-	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 
 	$logger->debug("Searching for records with new copies at orgs [".join(',',@ou_ids)."], based on $ou");
 	my $cns = $_storage->request(
@@ -363,7 +360,8 @@ sub new_books_by_item {
 			}, 
           order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
 		  limit		=> $page_size,
-		  offset	=> $offset
+		  offset	=> $offset,
+          distinct  => 1
 		}
 	)->gather(1);
 
