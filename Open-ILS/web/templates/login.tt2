@@ -1,0 +1,25 @@
+<!-- general purpose login dialog -->
+<div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
+    <b>Please Login</b>
+    <form>
+        <table>
+            <tr>
+                <td>Username</td>
+                <td><input type='dijit.form.TextBox' id='oils-login-username'/></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type='dijit.form.TextBox' id='oils-login-password' type='password'/></td>
+            </tr>
+            <tr>
+                <td>Workstation</td>
+                <td><span id='oils-login-workstation'/></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button onclick='oilsDoLogin();' dojoType='dijit.form.Button'>Login</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -14,28 +14,7 @@
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/base.js"></script>
     </head>
     <body class='tundra'>
-
-        <!-- general purpose login dialog -->
-        <div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
-            <b>Please Login</b>
-            <form onsubmit='oilsDoLogin();'>
-            <table>
-                <tr>
-                    <td>Username</td>
-                    <td><input type='dijit.form.TextBox' id='oils-login-username'/></td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td><input type='dijit.form.TextBox' id='oils-login-password' type='password'/></td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <button type='submit' dojoType='dijit.form.Button'>Login</button>
-                    </td>
-                </tr>
-            </table>
-            </form>
-        </div>
-        [% content %]
+        [% INCLUDE login.tt2 %] <!-- shared login page -->
+        [% content %] <!-- Page body -->
     </body>
 </html>
