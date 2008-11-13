@@ -30,6 +30,7 @@ function drawForm() {
 
     for(var name in sources) {
         source = sources[name];
+        if(name == 'native-evergreen-catalog') continue;
         bibSourceSelect.addOption(name, name+':'+source.host);
         for(var attr in source.attrs) 
             if(!attr.match(/^#/)) // xml comment nodes
