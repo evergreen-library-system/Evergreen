@@ -356,7 +356,7 @@ sub new_books_by_item {
 		{ select	=> { acn => ['record'],
                          acp => [{ aggregate => 1 => transform => max => column => create_date => alias => 'create_date'}]
                        },
-		  from		=> { 'acn' => { 'acp' : { field => call_number => fkey => 'id' } } },
+		  from		=> { 'acn' => { 'acp' => { field => call_number => fkey => 'id' } } },
 		  where		=>
 			{ '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () },
               '+acn' => { record => { '>' => 0 } },
@@ -455,7 +455,7 @@ sub tag_sf_browse {
 					  where	=>
 						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
 						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
-						}
+						},
 					  limit => 1
 					}
 				}, 
@@ -484,7 +484,7 @@ sub tag_sf_browse {
 					  where	=>
 						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
 						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
-						}
+						},
 					  limit => 1
 					}
 				}, 
