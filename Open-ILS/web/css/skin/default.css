@@ -5,6 +5,9 @@
 @import "/js/dojo/dojo/resources/dojo.css";
 @import "/js/dojo/dijit/themes/tundra/tundra.css";
 @import "/js/dojo/dojox/grid/_grid/Grid.css";
+@import "/js/dojo/dojox/grid/resources/Grid.css";
+@import "/js/dojo/dojox/grid/resources/tundraGrid.css";
+
 
 
 html, body, #oils-base-body-block {

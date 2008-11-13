@@ -31,5 +31,7 @@
         <handler path='acq/po/search' template='acq/po/search.tt2'/>
         <handler path='acq/receiving/process' template='acq/receiving/process.tt2'/>
         <handler path='acq/settings/li_attr' template='acq/settings/li_attr.tt2'/>
+
+        <handler path='conify/global/config/billing_type' template='conify/global/config/billing_type.tt2'/>
     </handlers>
 </oils_web>

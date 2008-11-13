@@ -1,0 +1,20 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
+<h1>Billing Types</h1><br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="id">ID</th>
+                    <th field="name" width='300px;'>Name</th>
+                    <th field="owner">Owning Location</th>
+                    <th field="default_price">Default Price</th>
+                </tr>
+            </thead>
+        </table>    
+    </div>
+</div>
+[% END %]
+
+
