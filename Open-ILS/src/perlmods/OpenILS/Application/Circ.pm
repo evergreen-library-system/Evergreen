@@ -83,6 +83,20 @@ sub fetch_bill_types {
 }
 
 
+__PACKAGE__->register_method(
+    method => 'ranged_billing_types',
+    api_name => 'open-ils.circ.billing_type.ranged.retrieve.all');
+
+sub ranged_billing_types {
+    my($self, $conn, $auth, $org_id, $depth) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->search_config_billing_type(
+        {owner => $U->get_org_full_path($org_id, $depth)});
+}
+
+
+
 # ------------------------------------------------------------------------
 # Returns an array of {circ, record} hashes checked out by the user.
 # ------------------------------------------------------------------------
