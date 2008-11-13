@@ -323,11 +323,13 @@ Returns the XML representation of the requested bibliographic record's holdings
 );
 
 
-sub title_browse {
+sub tag_sf_browse {
 	my $self = shift;
 	my $client = shift;
 
-	my $title = shift;
+	my $tag = shift;
+	my $subfield = shift;
+	my $value = shift;
 	my $ou = shift;
 	my $page_size = shift || 9;
 	my $page = shift || 0;
@@ -358,31 +360,31 @@ sub title_browse {
 		@ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 	}
 
-	$logger->debug("Searching for titles at orgs [".join(',',@ou_ids)."], based on $ou");
+	$logger->debug("Searching for records at orgs [".join(',',@ou_ids)."], based on $ou");
 
 	my @list = ();
 
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> mfr => [qw/record value/],
+			{ select	=> { mfr => [qw/record value/] },
 			  from		=> 'mfr',
 			  where		=>
 				{ '+mfr'	=>
-					{ tag	=> 245,
-					  subfield => 'a',
-					  value => { '<' => lc($title) }
+					{ tag	=> $tag,
+					  subfield => $subfield,
+					  value => { '<' => lc($value) }
 					},
 				  '-exists'	=>
 					{ select=> { acp => [ 'id' ] },
 					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
 					  where	=>
-						{ '+acn' => { record => { '=' => { '+mfr' => 'record } } },
+						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
 						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
 						}
 					  limit => 1
 					}
-				} 
+				}, 
 			  order_by	=> { mfr => { value => 'desc' },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
@@ -394,24 +396,24 @@ sub title_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> mfr => [qw/record value/],
+			{ select	=> { mfr => [qw/record value/] },
 			  from		=> 'mfr',
 			  where		=>
 				{ '+mfr'	=>
-					{ tag	=> 245,
-					  subfield => 'a',
-					  value => { '>=' => lc($title) }
+					{ tag	=> $tag,
+					  subfield => $subfield,
+					  value => { '>=' => lc($value) }
 					},
 				  '-exists'	=>
 					{ select=> { acp => [ 'id' ] },
 					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
 					  where	=>
-						{ '+acn' => { record => { '=' => { '+mfr' => 'record } } },
+						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
 						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
 						}
 					  limit => 1
 					}
-				} 
+				}, 
 			  order_by	=> { mfr => { value => 'asc' },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
@@ -423,18 +425,24 @@ sub title_browse {
 	return \@list;
 }
 __PACKAGE__->register_method(
-	method    => 'title_browse',
-	api_name  => 'open-ils.supercat.title.browse',
+	method    => 'tag_sf_browse',
+	api_name  => 'open-ils.supercat.tag.browse',
 	api_level => 1,
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested orgs titles (by id) held
+Returns a list of the requested org-scoped record ids held
 		  DESC
 		  params   =>
 		  	[
-				{ name => 'title',
-				  desc => 'The target title',
+				{ name => 'tag',
+				  desc => 'The target MARC tag',
+				  type => 'string' },
+				{ name => 'subfield',
+				  desc => 'The target MARC subfield',
+				  type => 'string' },
+				{ name => 'value',
+				  desc => 'The target string',
 				  type => 'string' },
 				{ name => 'org_unit',
 				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
