@@ -447,9 +447,9 @@ sub find_free_tcn {
 
 	my $add_039 = 0;
 
-	my $xpath = '//marc:datafield[@tag="039"]/subfield[@code="a"]';
+	my $xpath = '//marc:datafield[@tag="039"]/marc:subfield[@code="a"]';
 	my ($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
-	$xpath = '//marc:datafield[@tag="039"]/subfield[@code="b"]';
+	$xpath = '//marc:datafield[@tag="039"]/marc:subfield[@code="b"]';
 	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
 
 	if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {
@@ -460,14 +460,14 @@ sub find_free_tcn {
 
 
 	if(!$tcn) {
-		$xpath = '//marc:datafield[@tag="020"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="020"]/marc:subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISBN";
 		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
 	}
 
 	if(!$tcn) { 
-		$xpath = '//marc:datafield[@tag="022"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="022"]/marc:subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISSN";
 		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
@@ -481,7 +481,7 @@ sub find_free_tcn {
 	}
 
 	if(!$tcn) {
-		$xpath = '//marc:datafield[@tag="035"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="035"]/marc:subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "System Legacy";
 		if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
