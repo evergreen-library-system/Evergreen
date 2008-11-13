@@ -3432,7 +3432,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-
+	<class id="cbt" controller="open-ils.cstore" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type">
+		<fields oils_persist:primary="id">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" />
+            <field name="default_price" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="money"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_BILLING_TYPE"/>
+                <retrieve permission="CREATE_BILLING_TYPE|UPDATE_BILLING_TYPE|DELETE_BILLING_TYPE"/>
+                <update permission="UPDATE_BILLING_TYPE"/>
+                <delete permission="DELETE_BILLING_TYPE"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

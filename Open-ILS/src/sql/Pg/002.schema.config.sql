@@ -488,5 +488,14 @@ CREATE TABLE config.i18n_core (
 
 CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
 
+CREATE TABLE config.billing_type (
+    id              SERIAL  PRIMARY KEY,
+    name            TEXT    NOT NULL,
+    owner           INT     NOT NULL, -- REFERENCES actor.org_unit (id)
+    default_price   NUMERIC(6,2),
+    CONSTRAINT billing_type_once_per_lib UNIQUE (name, owner)
+);
+
+
 COMMIT;
 
