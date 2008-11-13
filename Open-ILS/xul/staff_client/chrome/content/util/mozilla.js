@@ -63,6 +63,7 @@ util.mozilla.change_locale = function( locale ) {
         try { current_locale = util.mozilla.prefs().getCharPref('general.useragent.locale'); } catch(E) { alert('util.locale.change, prefs() = ' + E); }
         if (locale != current_locale) {
             util.mozilla.prefs().setCharPref('general.useragent.locale',locale);
+            util.mozilla.prefs().setCharPref('intl.accept_languages',locale);
             util.mozilla.chromeRegistry().reloadChrome();
         }
 
