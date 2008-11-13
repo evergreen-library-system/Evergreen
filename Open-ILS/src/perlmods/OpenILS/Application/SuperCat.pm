@@ -323,6 +323,80 @@ Returns the XML representation of the requested bibliographic record's holdings
 );
 
 
+sub new_books_by_item {
+	my $self = shift;
+	my $client = shift;
+
+	my $ou = shift;
+	my $page_size = shift || 10;
+	my $page = shift || 1;
+
+    my $offset = $page_size * ($page - 1);
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $o_search = { shortname => $ou };
+	if (!$ou || $ou eq '-') {
+		$o_search = { parent_ou => undef };
+	}
+
+	my $orgs = $_storage->request(
+		"open-ils.cstore.direct.actor.org_unit.search",
+		$o_search,
+		{ flesh		=> 3,
+		  flesh_fields	=> { aou	=> [qw/children/] }
+		}
+	)->gather(1);
+
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+
+	$logger->debug("Searching for records with new copies at orgs [".join(',',@ou_ids)."], based on $ou");
+	my $cns = $_storage->request(
+		"open-ils.cstore.json_query.atomic",
+		{ select	=> { acn => ['record'],
+                         acp => [{ aggregate => 1 => transform => max => column => create_date => alias => 'create_date'}]
+                       },
+		  from		=> { 'acn' => { 'acp' : { field => call_number => fkey => 'id' } } },
+		  where		=>
+			{ '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () },
+              '+acn' => { record => { '>' => 0 } },
+			}, 
+          order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
+		  limit		=> $page_size,
+		  offset	=> $offset
+		}
+	)->gather(1);
+
+	return [ map { $_->{record} } @$cns ];
+}
+__PACKAGE__->register_method(
+	method    => 'new_books_by_item',
+	api_name  => 'open-ils.supercat.new_book_list',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'org_unit',
+				  desc => 'The org unit shortname (or "-" or undef for global) to list',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of records to retrieve, default is 10',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of records to retrieve, calculated based on page_size.  Starts at 1.',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Record IDs',
+			  type => 'array' }
+		}
+);
+
+
 sub tag_sf_browse {
 	my $self = shift;
 	my $client = shift;
@@ -377,15 +451,15 @@ sub tag_sf_browse {
 					},
 				  '-exists'	=>
 					{ select=> { acp => [ 'id' ] },
-					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
+					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
 					  where	=>
 						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
+						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
 						}
 					  limit => 1
 					}
 				}, 
-			  order_by	=> { mfr => { value => 'desc' },
+			  order_by	=> { mfr => { value => 'desc' } },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
@@ -406,15 +480,15 @@ sub tag_sf_browse {
 					},
 				  '-exists'	=>
 					{ select=> { acp => [ 'id' ] },
-					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } }
+					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
 					  where	=>
 						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-						  '+acp' => { deleted => 'f', (@org_ids) ? ( circ_lib => \@org_ids) : () }
+						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
 						}
 					  limit => 1
 					}
 				}, 
-			  order_by	=> { mfr => { value => 'asc' },
+			  order_by	=> { mfr => { value => 'asc' } },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
