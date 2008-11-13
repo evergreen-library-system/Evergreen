@@ -1953,7 +1953,10 @@ static char* SELECT (
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
-				    if (!jsonBoolIsTrue( jsonObjectGetKey( selfield, "aggregate" ) )) {
+				    if (
+                        !jsonBoolIsTrue( jsonObjectGetKey( selfield, "aggregate" ) ) ||
+	                    ((int)jsonObjectGetNumber(jsonObjectGetKey( selfield, "aggregate" ))) == 1 // support 1/0 for perl's sake
+                    ) {
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
@@ -2321,8 +2324,10 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
             if (locale) {
         		char* i18n = osrfHashGet(field, "i18n");
-	            if (jsonBoolIsTrue(jsonObjectGetKey( order_hash, "no_i18n" )))
-                    i18n = NULL;
+			    if (
+                    !jsonBoolIsTrue( jsonObjectGetKey( order_hash, "no_i18n" ) ) ||
+                    ((int)jsonObjectGetNumber(jsonObjectGetKey( order_hash, "no_i18n" ))) == 1 // support 1/0 for perl's sake
+                ) i18n = NULL;
 
     			if ( i18n && !strncasecmp("true", i18n, 4)) {
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
