@@ -360,8 +360,7 @@ sub new_books_by_item {
 			}, 
           order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
 		  limit		=> $page_size,
-		  offset	=> $offset,
-          distinct  => 1
+		  offset	=> $offset
 		}
 	)->gather(1);
 
