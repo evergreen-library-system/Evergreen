@@ -178,8 +178,15 @@
 <!ENTITY staff.auth.quit_prompt.key "x">
 <!ENTITY staff.auth.submit_prompt "Submit">
 <!ENTITY staff.auth.submit_prompt.key "S">
-<!ENTITY staff.auth.title "Evergreen Staff Client 3">
-<!ENTITY staff.auth.version "Evergreen 0.1.0 20051202">
+<!ENTITY staff.auth.title "Evergreen Staff Client">
+<!ENTITY staff.auth.about_btn.label "About this client...">
+<!ENTITY staff.auth.about_btn.accesskey "">
+<!ENTITY staff.auth.new_window_btn.label "Open New Window">
+<!ENTITY staff.auth.new_window_btn.accesskey "N">
+<!ENTITY staff.auth.locale.label "Locale:">
+<!ENTITY staff.auth.locale.accesskey "e">
+<!ENTITY staff.auth.apply_locale_btn.label "Apply Locale">
+<!ENTITY staff.auth.apply_locale_btn.accesskey "A">
 <!ENTITY staff.auth.verify.caption "Verify Credentials">
 <!ENTITY staff.auth.verify.submit.label "Verify">
 <!ENTITY staff.auth.verify.submit.accesskey "V">

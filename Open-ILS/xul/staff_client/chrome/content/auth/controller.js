@@ -131,6 +131,10 @@ auth.controller.prototype = {
 						['render'],
 						function(e) { return function() {} }
 					],
+					'apply_locale_btn' : [
+						['render'],
+						function(e) { return function() {} }
+					],
 					'progress_bar' : [
 						['render'],
 						function(e) { return function() {} }
@@ -369,6 +373,7 @@ auth.controller.prototype = {
 		this.controller.view.name_prompt.disabled = true;
 		this.controller.view.password_prompt.disabled = true;
 		this.controller.view.submit_button.disabled = true;
+		this.controller.view.apply_locale_btn.disabled = true;
 		XML_HTTP_SERVER = this.controller.view.server_prompt.value;
 
 		try {
@@ -458,6 +463,7 @@ auth.controller.prototype = {
 		this.controller.view.progress_bar.value = 0; 
 		this.controller.view.progress_bar.setAttribute('real','0.0');
 		this.controller.view.submit_button.disabled = false;
+		this.controller.view.apply_locale_btn.disabled = false;
 		this.controller.view.password_prompt.disabled = false;
 		this.controller.view.password_prompt.value = '';
 		this.controller.view.name_prompt.disabled = false;

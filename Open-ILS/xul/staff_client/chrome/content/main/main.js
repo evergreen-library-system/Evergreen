@@ -236,10 +236,7 @@ function main_init() {
 			document.getElementById('debug_gb').hidden = false;
 		}
         window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);
-		//var x = document.getElementById('version_label');
-		//x.setAttribute('value','Build ID: ' + version);
 		var x = document.getElementById('about_btn');
-		x.setAttribute('label', offlineStrings.getString('main.about_btn.label'));
 		x.addEventListener(
 			'command',
 			function() {
@@ -251,7 +248,6 @@ function main_init() {
 		);
 
 		var y = document.getElementById('new_window_btn');
-		y.setAttribute('label', offlineStrings.getString('main.new_window_btn.label'));
 		y.addEventListener(
 			'command',
 			function() {
@@ -264,6 +260,50 @@ function main_init() {
 				} else {
 					alert ( offlineStrings.getString('main.new_window_btn.login_first_warning') );
 				}
+			},
+			false
+		);
+
+		JSAN.use('util.mozilla');
+		var z = document.getElementById('locale_menupopup');
+		if (z) {
+			while (z.lastChild) z.removeChild(z.lastChild);
+			var locales = util.mozilla.chromeRegistry().getLocalesForPackage( String( location.href ).split(/\//)[2] );
+			var current_locale = util.mozilla.prefs().getCharPref('general.useragent.locale');
+            while (locales.hasMore()) {
+                var locale = locales.getNext();
+                var parts = locale.split(/-/);
+                var label;
+                try {
+                    label = locale + ' : ' + util.mozilla.languages().GetStringFromName(parts[0]);
+                    if (parts.length > 1) {
+                        try {
+                            label += ' (' + util.mozilla.regions().GetStringFromName(parts[1].toLowerCase()) + ')';
+                        } catch(E) {
+                            label += ' (' + parts[1] + ')';
+                        }
+                    }
+                } catch(E) {
+                    label = locale;
+                }
+				var mi = document.createElement('menuitem');
+				mi.setAttribute('label',label);
+				mi.setAttribute('value',locale);
+                if (locale == current_locale) {
+                    if (z.parentNode.tagName == 'menulist') {
+                        mi.setAttribute('selected','true');
+                        z.parentNode.setAttribute('label',label);
+                        z.parentNode.setAttribute('value',locale);
+                    }
+                }
+                z.appendChild( mi );
+            }
+		}
+		var xx = document.getElementById('apply_locale_btn');
+		xx.addEventListener(
+			'command',
+			function() {
+				util.mozilla.change_locale(z.parentNode.value);
 			},
 			false
 		);

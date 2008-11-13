@@ -84,11 +84,16 @@
 	<groupbox id="main_groupbox" flex="1" style="overflow: auto;">
 		<caption id="main_caption" label="&staff.main.auth.caption;"/>
 		<hbox>
-			<label id="version_label"/>
-			<button id="about_btn"/>
+			<button id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
 
-			<label id="new_window_label"/>
-			<button id="new_window_btn"/>
+			<button id="new_window_btn" label="&staff.auth.new_window_btn.label;" accesskey="&staff.auth.new_window_btn.accesskey;" />
+
+            <label value="&staff.auth.locale.label;" accesskey="&staff.auth.locale.accesskey;" control="locale_menu"/>
+            <menulist id="locale_menu">
+                <menupopup id="locale_menupopup">
+                </menupopup>
+            </menulist>
+			<button id="apply_locale_btn" label="&staff.auth.apply_locale_btn.label;" accesskey="&staff.auth.apply_locale_btn.accesskey;" />
 		</hbox>
 		<label value=" "/>
 
