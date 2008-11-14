@@ -406,7 +406,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
@@ -422,7 +422,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
@@ -438,7 +438,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
@@ -454,7 +454,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
@@ -470,7 +470,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target series', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
