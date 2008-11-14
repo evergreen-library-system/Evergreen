@@ -915,6 +915,30 @@ sub _marcxml_to_full_rows {
 
 			push @ns_list, $ns;
 		}
+
+        if ($xmltype eq 'metabib' and $tag eq '245') {
+       		$tag = 'tnf';
+    
+    		for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
+    			next unless ($data and $data->getAttribute( "code" ) eq 'a');
+    
+    			$ns = $type->new;
+    
+    			$ns->tag( $tag );
+    			$ns->ind1( $ind1 );
+    			$ns->ind2( $ind2 );
+    			$ns->subfield( $data->getAttribute( "code" ) );
+    			my $val = substr( $data->textContent, $ind2 );
+    			$val = NFD($val);
+    			$val =~ s/\pM+//sgo;
+    			$val =~ s/\pC+//sgo;
+    			$val =~ s/\W+$//sgo;
+                $val =~ s/(\d{4})-(\d{4})/$1 $2/sgo;
+    			$ns->value( lc($val) );
+    
+    			push @ns_list, $ns;
+    		}
+        }
 	}
 
 	$log->debug("Returning ".scalar(@ns_list)." Fieldmapper nodes from $xmltype xml");
