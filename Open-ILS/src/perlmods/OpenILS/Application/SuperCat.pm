@@ -402,7 +402,7 @@ sub general_browse {
 __PACKAGE__->register_method(
 	method    => 'general_browse',
 	api_name  => 'open-ils.supercat.title.browse',
-	tag       => '245', subfield => 'a',
+	tag       => 'tnf', subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
