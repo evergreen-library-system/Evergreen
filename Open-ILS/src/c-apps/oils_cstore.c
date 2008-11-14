@@ -1657,18 +1657,33 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                 free(subpred);
             } else if ( !strcasecmp("-exists",search_itr->key) ) {
                 char* subpred = SELECT(
-			ctx,
-			jsonObjectGetKey( node, "select" ),
-			jsonObjectGetKey( node, "from" ),
-			jsonObjectGetKey( node, "where" ),
-			jsonObjectGetKey( node, "having" ),
-			jsonObjectGetKey( node, "order_by" ),
-			jsonObjectGetKey( node, "limit" ),
-			jsonObjectGetKey( node, "offset" ),
-			SUBSELECT
+                    ctx,
+                    jsonObjectGetKey( node, "select" ),
+                    jsonObjectGetKey( node, "from" ),
+                    jsonObjectGetKey( node, "where" ),
+                    jsonObjectGetKey( node, "having" ),
+                    jsonObjectGetKey( node, "order_by" ),
+                    jsonObjectGetKey( node, "limit" ),
+                    jsonObjectGetKey( node, "offset" ),
+                    SUBSELECT
                 );
 
                 buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
+                free(subpred);
+            } else if ( !strcasecmp("-not-exists",search_itr->key) ) {
+                char* subpred = SELECT(
+                    ctx,
+                    jsonObjectGetKey( node, "select" ),
+                    jsonObjectGetKey( node, "from" ),
+                    jsonObjectGetKey( node, "where" ),
+                    jsonObjectGetKey( node, "having" ),
+                    jsonObjectGetKey( node, "order_by" ),
+                    jsonObjectGetKey( node, "limit" ),
+                    jsonObjectGetKey( node, "offset" ),
+                    SUBSELECT
+                );
+
+                buffer_fadd(sql_buf, "NOT EXISTS ( %s )", subpred);
                 free(subpred);
             } else {
 
