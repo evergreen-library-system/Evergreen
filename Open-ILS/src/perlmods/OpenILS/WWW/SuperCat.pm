@@ -143,6 +143,9 @@ sub child_init {
 		->request("open-ils.supercat.record.formats")
 		->gather(1);
 
+    $list = [ map { (keys %$_)[0] } @$list ];
+    push @$list, 'htmlholdings','html';
+
     for my $browse_axis ( qw/title author subject topic series/ ) {
         for my $record_browse_format ( @$list ) {
             {
@@ -153,8 +156,16 @@ sub child_init {
                 	my $record_list = shift;
                 	my $prev = shift;
                 	my $next = shift;
+                	my $real_format = shift || $__f;
+                	my $unapi = shift;
+                	my $base = shift;
+                	my $site = shift;
 
-                	my $feed = create_record_feed( 'record', $__f, $record_list, undef, undef, 0 );
+                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /-full$/o ? 1 : 0 );
+                	$feed->root( "$base/../" );
+                	$feed->lib( $site );
+                	$feed->link( next => $next => $feed->type );
+                	$feed->link( previous => $prev => $feed->type );
 
                 	return (
                         "Content-type: ". $feed->type ."; charset=utf-8\n\n",
@@ -1309,7 +1320,9 @@ sub string_browse {
 		$page
 	)->gather(1);
 
-	my ($header,$content) = $browse_types{$axis}{$format}->($tree,$prev,$next);
+    (my $norm_format = $format) =~ s/-full$//o;
+
+	my ($header,$content) = $browse_types{$axis}{$norm_format}->($tree,$prev,$next,$format,$unapi,$base,$site);
 	print $header.$content;
 	return Apache2::Const::OK;
 }
