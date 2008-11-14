@@ -143,20 +143,25 @@ sub child_init {
 		->request("open-ils.supercat.record.formats")
 		->gather(1);
 
-    for my $record_browse_format ( @$list ) {
-        for my $browse_axis ( qw/title author subject topic series/ ) {
-            $browse_types{$browse_axis}{$record_browse_format} = sub {
-            	my $record_list = shift;
-            	my $prev = shift;
-            	my $next = shift;
+    for my $browse_axis ( qw/title author subject topic series/ ) {
+        for my $record_browse_format ( @$list ) {
+            {
+                my $__f = $record_browse_format;
+                my $__a = $browse_axis;
 
-            	my $feed = create_record_feed( 'record', $record_browse_format, $record_list, undef, undef, 0 );
+                $browse_types{$__a}{$__f} = sub {
+                	my $record_list = shift;
+                	my $prev = shift;
+                	my $next = shift;
 
-            	return (
-                    "Content-type: ". $feed->type ."; charset=utf-8\n\n",
-                    $feed->toString
-                );
-            };
+                	my $feed = create_record_feed( 'record', $__f, $record_list, undef, undef, 0 );
+
+                	return (
+                        "Content-type: ". $feed->type ."; charset=utf-8\n\n",
+                        $feed->toString
+                    );
+                };
+            }
         }
     }
 }
