@@ -38,7 +38,7 @@ sub handler {
     $r->content_type('text/html; encoding=utf8');
 
     my $tt = Template->new({
-        OUTPUT => $r,
+        OUTPUT => ($ctx->{force_valid_xml}) ? sub { validate_as_xml($r, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
     });
 
@@ -49,6 +49,21 @@ sub handler {
 
     return Apache2::Const::OK;
 }
+
+sub validate_as_xml {
+    my $r = shift;
+    my $data = shift;
+    eval { XML::Simple->new->XMLin($data); };
+    if($@) {
+        my $err = "Invalid XML: $@";
+        $r->log->error($err);
+        $r->content_type('text/plain; encoding=utf8');
+        $r->print("\n$err\n\n$data");
+    } else {
+        $r->print($data);
+    }
+}
+
 
 sub load_context {
     my $r = shift;
@@ -120,6 +135,7 @@ sub parse_config {
     $ctx->{media_prefix} = (ref $data->{media_prefix}) ? '' : $data->{media_prefix};
     $ctx->{base_uri} = (ref $data->{base_uri}) ? '' : $data->{base_uri};
     $ctx->{template_paths} = [];
+    $ctx->{force_valid_xml} = ($data->{force_valid_xml} =~ /true/io) ? 1 : 0;
 
     my $tpaths = $data->{template_paths}->{path};
     $tpaths = [$tpaths] unless ref $tpaths;

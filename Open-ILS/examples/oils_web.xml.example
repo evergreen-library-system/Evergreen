@@ -6,6 +6,11 @@
          E.g. <media_prefix>http://static.example.com/media</media_prefix> -->
     <media_prefix/>
 
+    <!-- If set to true, all output will be parsed as XML before delivery to the client.  
+        If XML parsing fails, the error message, with HTML included, will be output as text/plain.
+        XML parsing adds overhead, so this should only be used for debugging -->
+    <force_valid_xml>false</force_valid_xml>
+
     <!-- Where templates can be found.  Paths will be checked in the order entered here.
          It's possible to override individual or sets of templates by putting them into
          a path in front of the default template path -->
