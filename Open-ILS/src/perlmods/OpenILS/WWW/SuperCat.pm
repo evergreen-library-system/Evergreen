@@ -139,6 +139,26 @@ sub child_init {
 
 	$cn_browse_xslt = $xslt->parse_stylesheet( $cn_browse_xslt );
 
+	my $list = $supercat
+		->request("open-ils.supercat.record.formats")
+		->gather(1);
+
+    for my $record_browse_format ( @$list ) {
+        for my $browse_axis ( qw/title author subject topic series/ ) {
+            $browse_types{$browse_axis}{$record_browse_format} = sub {
+            	my $record_list = shift;
+            	my $prev = shift;
+            	my $next = shift;
+
+            	my $feed = create_record_feed( 'record', $record_browse_format, $record_list, undef, undef, 0 );
+
+            	return (
+                    "Content-type: ". $feed->type ."; charset=utf-8\n\n",
+                    $feed->toString
+                );
+            };
+        }
+    }
 }
 
 sub oisbn {

@@ -394,6 +394,93 @@ Returns the XML representation of the requested bibliographic record's holdings
 );
 
 
+sub general_browse {
+	my $self = shift;
+	my $client = shift;
+    return tag_sf_browse($self, $client, $self->{tag}, $self->{subfield}, @_);
+}
+__PACKAGE__->register_method(
+	method    => 'general_browse',
+	api_name  => 'open-ils.supercat.title.browse',
+	tag       => '245', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		  params   =>
+		  	[ { name => 'value', desc => 'The target title', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_browse',
+	api_name  => 'open-ils.supercat.author.browse',
+	tag       => [qw/100 110 111/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		  params   =>
+		  	[ { name => 'value', desc => 'The target author', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_browse',
+	api_name  => 'open-ils.supercat.subject.browse',
+	tag       => [qw/600 610 611 630 648 650 651 653 655 656 662 690 691 696 697 698 699/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		  params   =>
+		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_browse',
+	api_name  => 'open-ils.supercat.topic.browse',
+	tag       => [qw/650 690/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		  params   =>
+		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_browse',
+	api_name  => 'open-ils.supercat.series.browse',
+	tag       => [qw/440 490 800 810 811 830/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held"
+		  params   =>
+		  	[ { name => 'value', desc => 'The target series', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+
+
 sub tag_sf_browse {
 	my $self = shift;
 	my $client = shift;
