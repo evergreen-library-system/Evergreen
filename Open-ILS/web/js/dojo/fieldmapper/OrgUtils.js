@@ -115,7 +115,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 		var org = fieldmapper.aou.findOrgUnit(id);
 		return fieldmapper.aout.findOrgType(
 			fieldmapper.aou.findOrgUnit(id).ou_type()
-		).depth;
+		).depth();
 	}
 	fieldmapper.aou.findOrgDepth = fieldmapper.aou.prototype.findOrgDepth;
 
