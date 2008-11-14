@@ -1,6 +1,32 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
 <h1>Billing Types</h1><br/>
+
+<div dojoType="dijit.form.DropDownButton">
+    <span>New Billing Type</span>
+    <div dojoType="dijit.TooltipDialog" execute="btCreate(arguments[0]);">
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td><label for="name">Name: </label></td>
+                <td><input dojoType="dijit.form.TextBox" name="name"></td>
+            </tr>
+            <tr>
+                <td><label for="name">Owning Location: </label></td>
+                <td><input dojoType="openils.widget.OrgUnitFilteringSelect" name="name"></td>
+            </tr>
+            <tr>
+                <td><label for="name">Default Price: </label></td>
+                <td><input dojoType="dijit.form.CurrencyTextBox" name="default_price" required='false'></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType=dijit.form.Button type="submit">Create</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div> 
+
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>

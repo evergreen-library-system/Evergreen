@@ -1,6 +1,8 @@
 dojo.require('dojox.grid.DataGrid');
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dijit.form.CurrencyTextBox');
 dojo.require('fieldmapper.OrgUtils');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 var btContextOrg;
 var btList;
