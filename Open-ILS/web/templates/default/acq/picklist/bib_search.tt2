@@ -49,8 +49,8 @@
                 <div dojoType='dijit.form.Button' type='submit'>Submit</div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 <div id='oils-acq-pl-search-results' style='height:100%'>
     <script>
         dojo.require('dijit.form.FilteringSelect');
@@ -85,7 +85,7 @@
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Save</button>
+                        <button dojoType='dijit.form.Button' type="submit">Save</button>
                     </td>
                 </tr>
             </table>

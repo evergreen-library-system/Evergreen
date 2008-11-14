@@ -68,7 +68,7 @@
                     <td><label for="name">Provider: </label></td>
                     <td>
                         <input jsId='newPOProviderSelector' name="provider" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'/>
                     </td>
                 </tr>
                 <tr>
@@ -92,7 +92,7 @@
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Create</button>
+                        <button dojoType='dijit.form.Button' type="submit">Create</button>
                     </td>
                 </tr>
             </table>

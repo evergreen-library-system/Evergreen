@@ -25,11 +25,11 @@
             <table class='dijitTooltipTable'>
                 <tr>
                     <td><label for="label">Label: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="label"></td>
+                    <td><input dojoType="dijit.form.TextBox" name="label"/></td>
                 </tr>
                 <tr>
                     <td><label for="name">Code: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="code"></td>
+                    <td><input dojoType="dijit.form.TextBox" name="code"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>

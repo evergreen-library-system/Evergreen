@@ -39,15 +39,15 @@
             <table class='dijitTooltipTable'>
                 <tr>
                     <td><label for="name">Name: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="name"></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
                 </tr>
                 <tr>
                     <td><label for="name">Code: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="code"></td>
+                    <td><input dojoType="dijit.form.TextBox" name="code"/></td>
                 </tr>
                 <tr>
                     <td><label for="year">Year: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="year"></td>
+                    <td><input dojoType="dijit.form.TextBox" name="year"/></td>
                 </tr>
                 <tr>
                     <td><label for="currency_type">Currency Type: </label></td>
