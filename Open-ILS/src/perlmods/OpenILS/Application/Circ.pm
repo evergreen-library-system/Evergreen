@@ -91,6 +91,7 @@ sub ranged_billing_types {
     my($self, $conn, $auth, $org_id, $depth) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_BILLING_TYPE', $org_id);
     return $e->search_config_billing_type(
         {owner => $U->get_org_full_path($org_id, $depth)});
 }
