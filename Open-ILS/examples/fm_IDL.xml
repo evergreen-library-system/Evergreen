@@ -3447,10 +3447,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_BILLING_TYPE"/>
-                <retrieve permission="VIEW_BILLING_TYPE|CREATE_BILLING_TYPE|UPDATE_BILLING_TYPE|DELETE_BILLING_TYPE"/>
-                <update permission="UPDATE_BILLING_TYPE"/>
-                <delete permission="DELETE_BILLING_TYPE"/>
+                <create permission="CREATE_BILLING_TYPE" context_field="owner"/>
+                <retrieve permission="VIEW_BILLING_TYPE|CREATE_BILLING_TYPE|UPDATE_BILLING_TYPE|DELETE_BILLING_TYPE" context_field="owner"/>
+                <update permission="UPDATE_BILLING_TYPE" context_field="owner"/>
+                <delete permission="DELETE_BILLING_TYPE" context_field="owner"/>
             </actions>
         </permacrud>
 	</class>
