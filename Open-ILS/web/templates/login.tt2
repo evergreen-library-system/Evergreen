@@ -5,11 +5,11 @@
         <table>
             <tr>
                 <td>Username</td>
-                <td><input type='dijit.form.TextBox' id='oils-login-username'/></td>
+                <td><input dojoType='dijit.form.TextBox' id='oils-login-username'/></td>
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input type='dijit.form.TextBox' id='oils-login-password' type='password'/></td>
+                <td><input dojoType='dijit.form.TextBox' id='oils-login-password' type='password'/></td>
             </tr>
             <tr>
                 <td>Workstation</td>
