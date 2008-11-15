@@ -1,0 +1,807 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-14 22:07-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+
+#. Common Entities
+#: reports.common.logged_in_as
+msgid "You are logged in as "
+msgstr ""
+
+#: reports.common.loading
+msgid "Loading..."
+msgstr ""
+
+#: reports.oils_rpt.title
+msgid "Evergreen: Reports"
+msgstr ""
+
+#: reports.oils_rpt.insufficient_permissions
+msgid "You do not have sufficient permissions to run reports"
+msgstr ""
+
+#: reports.oils_rpt.my_folders
+msgid "My Folders"
+msgstr ""
+
+#: reports.oils_rpt.shared_folders
+msgid "Shared Folders"
+msgstr ""
+
+#: reports.oils_rpt.manage_folder_contents
+msgid "Manage Folder Contents"
+msgstr ""
+
+#: reports.oils_rpt.manage_folder
+msgid "Manage Folder"
+msgstr ""
+
+#: reports.oils_rpt.created_by
+msgid "created by "
+msgstr ""
+
+#: reports.oils_rpt.create_new_sub_folder
+msgctxt "reports.oils_rpt.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr ""
+
+#: reports.oils_rpt.folder_type
+msgid "Folder type: "
+msgstr ""
+
+#: reports.oils_rpt.folder_name
+msgctxt "reports.oils_rpt.folder_name"
+msgid "Folder Name:"
+msgstr ""
+
+#: reports.oils_rpt.share_folder
+msgid "Share this folder:"
+msgstr ""
+
+#: reports.oils_rpt.do_not_share
+msgctxt "reports.oils_rpt.do_not_share"
+msgid "Do not share"
+msgstr ""
+
+#: reports.oils_rpt.share
+msgctxt "reports.oils_rpt.share"
+msgid "Share"
+msgstr ""
+
+#: reports.oils_rpt.share_with
+msgctxt "reports.oils_rpt.share_with"
+msgid "Share with:"
+msgstr ""
+
+#: reports.oils_rpt.create_sub_folder
+msgctxt "reports.oils_rpt.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr ""
+
+#: reports.oils_rpt_builder.title
+msgid "Evergreen: Report Builder"
+msgstr ""
+
+#: reports.oils_rpt_builder.reports_home
+msgid "Reports Home"
+msgstr ""
+
+#: reports.oils_rpt_builder.cloning_template
+msgid "Cloning template"
+msgstr ""
+
+#: reports.oils_rpt_builder.template_name
+msgid "Template Name: "
+msgstr ""
+
+#: reports.oils_rpt_builder.template_description
+msgid "Template Description: "
+msgstr ""
+
+#: reports.oils_rpt_builder.template_type
+msgid "Template Type: "
+msgstr ""
+
+#: reports.oils_rpt_builder.save_this_template
+msgid "Save this Template: "
+msgstr ""
+
+#: reports.oils_rpt_builder.filtering_note
+msgid ""
+"Indicates that when filtering on the item, a list of named choices will be "
+"generated."
+msgstr ""
+
+#: reports.oils_rpt_builder.temp_disp_items
+msgid "Template Display Items"
+msgstr ""
+
+#: reports.oils_rpt_builder.remove_selected
+msgid "Remove Selected"
+msgstr ""
+
+#: reports.oils_rpt_builder.move_up
+msgctxt "reports.oils_rpt_builder.move_up"
+msgid "Move Up"
+msgstr ""
+
+#: reports.oils_rpt_builder.move_down
+msgctxt "reports.oils_rpt_builder.move_down"
+msgid "Move Down"
+msgstr ""
+
+#. The below two entity strings were the contents of the .xhtml file but I don't think that works when using XML entities
+#. ENTITY reports.oils_rpt_builder.move_up "Move &uarr;"
+#. ENTITY reports.oils_rpt_builder.move_down "Move &darr;"
+#: reports.oils_rpt_builder.template_filters
+msgid "Template Filters"
+msgstr ""
+
+#: reports.oils_rpt_builder.report_aggregate_filters
+msgid "Report Aggregate Filters"
+msgstr ""
+
+#: reports.oils_rpt_builder.hint
+msgid "Hint: "
+msgstr ""
+
+#: reports.oils_rpt_builder.hint_item_details
+msgid "Double-click on an item to see the item details."
+msgstr ""
+
+#: reports.oils_rpt_builder.template_types
+msgid "Template Types"
+msgstr ""
+
+#: reports.oils_rpt_builder.display_items
+msgid "Display Items"
+msgstr ""
+
+#: reports.oils_rpt_builder.filters
+msgid "Filters"
+msgstr ""
+
+#: reports.oils_rpt_builder.aggregate_filters
+msgctxt "reports.oils_rpt_builder.aggregate_filters"
+msgid "Aggregate Filters"
+msgstr ""
+
+#: reports.oils_rpt_builder.field_editor_window.label
+msgid "Select how this field should be displayed:"
+msgstr ""
+
+#: reports.oils_rpt_builder.add_item
+msgid "Add Item"
+msgstr ""
+
+#: reports.oils_rpt_builder.select_filter_to_apply
+msgid "Select what filter should be applied to this field:"
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_a_transform
+msgctxt "reports.oils_rpt_builder.choose_a_transform"
+msgid "Choose a Transform: "
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_a_filter
+msgctxt "reports.oils_rpt_builder.choose_a_filter"
+msgid "Choose a Filter: "
+msgstr ""
+
+#: reports.oils_rpt_builder.create_filter
+msgid "Create Filter"
+msgstr ""
+
+#: reports.oils_rpt_builder.aggregate_filter_to_apply
+msgid "Select what aggregate filter should be applied to this field:"
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_a_transform
+msgctxt "reports.oils_rpt_builder.choose_a_transform"
+msgid "Choose a Transform: "
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_a_filter
+msgctxt "reports.oils_rpt_builder.choose_a_filter"
+msgid "Choose a Filter: "
+msgstr ""
+
+#: reports.oils_rpt_builder.create_aggregate_filter
+msgid "Create Aggregate Filter"
+msgstr ""
+
+#: reports.oils_rpt_builder.selected_to_sort_columns
+msgid "Select how the columns should be sorted"
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_column
+msgid "Choose a column: "
+msgstr ""
+
+#: reports.oils_rpt_builder.choose_sorting_direction
+msgid "Choose the direction the sorting should occur: "
+msgstr ""
+
+#: reports.oils_rpt_builder.ascending
+msgid "Ascending"
+msgstr ""
+
+#: reports.oils_rpt_builder.descending
+msgid "Descending"
+msgstr ""
+
+#: reports.oils_rpt_builder.add_sort
+msgid "Add Sort"
+msgstr ""
+
+#: reports.oils_rpt_builder.close_window
+msgid "Close Window"
+msgstr ""
+
+#: reports.oils_rpt_builder.confirm_new_report
+msgid ""
+"This will destroy the report you are currently constructing.  Are you sure "
+"you wish to do this?"
+msgstr ""
+
+#: reports.oils_rpt_common.action_succeeded
+msgid "Action Succeeded"
+msgstr ""
+
+#: reports.oils_rpt_common.action_failed
+msgid "Action Failed"
+msgstr ""
+
+#: reports.oils_rpt_editor.template_name
+msgid "Template Name:"
+msgstr ""
+
+#: reports.oils_rpt_editor.template_creator
+msgid "Template Creator:"
+msgstr ""
+
+#: reports.oils_rpt_editor.template_description
+msgid "Template Description:"
+msgstr ""
+
+#: reports.oils_rpt_editor.report_name
+msgid "Report Name:"
+msgstr ""
+
+#: reports.oils_rpt_editor.report_description
+msgid "Report Description:"
+msgstr ""
+
+#: reports.oils_rpt_editor.report_columns
+msgid "Report Columns:"
+msgstr ""
+
+#: reports.oils_rpt_editor.pivot_label_column
+msgid "Pivot Label Column:"
+msgstr ""
+
+#: reports.oils_rpt_editor.select_option
+msgid "Select One (optional)"
+msgstr ""
+
+#: reports.oils_rpt_editor.pivot_data_column
+msgid "Pivot Data Column:"
+msgstr ""
+
+#: reports.oils_rpt_editor.store_report_definition
+msgid "Choose a folder to store this report definition: "
+msgstr ""
+
+#: reports.oils_rpt_editor.selected_folder
+msgctxt "reports.oils_rpt_editor.selected_folder"
+msgid "Selected Folder: "
+msgstr ""
+
+#: reports.oils_rpt_editor.output_options
+msgid "Output Options"
+msgstr ""
+
+#: reports.oils_rpt_editor.excel_output
+msgid "Excel Output"
+msgstr ""
+
+#: reports.oils_rpt_editor.csv_output
+msgid "CSV Output"
+msgstr ""
+
+#: reports.oils_rpt_editor.html_output
+msgid "HTML Output"
+msgstr ""
+
+#: reports.oils_rpt_editor.bar_charts
+msgid "Bar Charts"
+msgstr ""
+
+#: reports.oils_rpt_editor.line_charts
+msgid "Line Charts"
+msgstr ""
+
+#: reports.oils_rpt_editor.recurring_report
+msgid "Recurring Report: "
+msgstr ""
+
+#: reports.oils_rpt_editor.recurring_interval
+msgid "Recurrence Interval: "
+msgstr ""
+
+#: reports.oils_rpt_editor.days
+msgctxt "reports.oils_rpt_editor.days"
+msgid "Day(s)"
+msgstr ""
+
+#: reports.oils_rpt_editor.weeks
+msgctxt "reports.oils_rpt_editor.weeks"
+msgid "Weeks(s)"
+msgstr ""
+
+#: reports.oils_rpt_editor.months
+msgid "Month(s)"
+msgstr ""
+
+#: reports.oils_rpt_editor.run_asap
+msgid "Run ASAP "
+msgstr ""
+
+#: reports.oils_rpt_editor.or_at
+msgid "or at: "
+msgstr ""
+
+#: reports.oils_rpt_editor.at
+msgid "at"
+msgstr ""
+
+#: reports.oils_rpt_editor.sent_to_email
+msgid "Send completion notification to this Email address:"
+msgstr ""
+
+#: reports.oils_rpt_editor.midnight
+msgid "Midnight"
+msgstr ""
+
+#: reports.oils_rpt_editor.noon
+msgid "Noon"
+msgstr ""
+
+#: reports.oils_rpt_editor.storage_folder_for_output
+msgid "Choose a folder to store this report's output:"
+msgstr ""
+
+#: reports.oils_rpt_editor.save_report
+msgid "Save Report"
+msgstr ""
+
+#: reports.oils_rpt_editor.empty_parameter
+msgid ""
+"One or more of the user-defined parameters has been left empty. Please fill "
+"in all fields."
+msgstr ""
+
+#: reports.oils_rpt_editor.same_name
+msgid "There is already a report in this folder with the given name."
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.change_folder_name
+msgid "Change folder name"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.delete_folder
+msgid "Delete this folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.create_new_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.share_this_folder
+msgid "Share this folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.hide_folder
+msgid "Hide (un-share) this folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.disable_recurrence
+msgid "Disable recurrence"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.fldr_mngr_actions_submit
+msgid "Go"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.change_name
+msgid "Enter new name:"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.submit
+msgctxt "reports.oils_rpt_folder_manager.submit"
+msgid "Submit"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.folder_name
+msgctxt "reports.oils_rpt_folder_manager.folder_name"
+msgid "Folder Name:"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.do_not_share
+msgctxt "reports.oils_rpt_folder_manager.do_not_share"
+msgid "Do not share"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.share
+msgctxt "reports.oils_rpt_folder_manager.share"
+msgid "Share"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.share_with
+msgctxt "reports.oils_rpt_folder_manager.share_with"
+msgid "Share with:"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.create_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.change_name_confirm
+msgid "Are you sure you wish to change this folder's name?"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.delete_name_confirm
+msgid "Are you sure you wish to delete this folder?"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.cannot_delete
+msgid "This folder may not be deleted because it is not empty."
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.already_shared
+msgid "This folder is already shared"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.folder_not_shared
+msgid "This folder is not shared"
+msgstr ""
+
+#: reports.oils_rpt_folder_manager.confirm_hide_folder
+msgid "Are you sure you wish to hide this folder?"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.new_report_from_template
+msgid "Create a new report from selected template"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.clone_template
+msgid "Clone selected template"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.delete_template
+msgid "Delete selected template(s)"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.clone_report
+msgid "Clone report"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.schedule_report
+msgid "Schedule report"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.delete_reports
+msgid "Delete selected report(s)"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.view_report_output
+msgid "View report output"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.delete_output
+msgid "Delete selected output(s)"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.move_templates
+msgid "Move the selected template(s) to a different folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.move_reports
+msgid "Move the selected report(s) to a different folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.move_output
+msgid "Move the selected output(s) to a different folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.submit
+msgctxt "reports.oils_rpt_folder_window.submit"
+msgid "Submit"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.limit_output
+msgid "Limit output to "
+msgstr ""
+
+#: reports.oils_rpt_folder_window.all
+msgid "All"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.pending_items
+msgid "Pending Items"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.new_template
+msgid "Create a new Template for this folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.no_items_to_display
+msgid "No items to display"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.completed_items
+msgid "Completed Items"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.selected_folder
+msgctxt "reports.oils_rpt_folder_window.selected_folder"
+msgid "Selected Folder: "
+msgstr ""
+
+#: reports.oils_rpt_folder_window.select_folder
+msgid "Select Folder"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.cancel
+msgid "Cancel"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.confirm_delete
+msgid "Are you sure you wish to delete the selected item(s)?"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.dependant_reports_no_delete
+msgid ""
+"One or more of the selected templates could not be deleted because there are "
+"reports that depend on them."
+msgstr ""
+
+#: reports.oils_rpt_folder_window.dependant_outputs_no_delete
+msgid ""
+"One or more of The selected reports could not be deleted because there are "
+"outputs that depend on them."
+msgstr ""
+
+#: reports.oils_rpt_folder_window.cannot_delete_another_users_data
+msgid "You may not delete another user's items"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.cannot_move_another_users_data
+msgid "You may not move another user's items"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.delete_all_attached_reports
+msgid ""
+"        This will also delete all of your attached reports and outputs for \n"
+"this template. \n"
+" \n"
+"If other users have reports or outputs attached to this template, \n"
+"those will be left untouched and the template will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.delete_all_attached_outputs
+msgid ""
+"        This will also delete all of your attached outputs for \n"
+"this report. \n"
+" \n"
+"If other users have outputs attached to this report, \n"
+"those will be left untouched and the report will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.column
+msgid "Column"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.transform
+msgid "Transform"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.action
+msgid "Action"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.user_params
+msgid "User Params"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.or
+msgid "OR"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.use_relative_date
+msgid "Use a relative date instead."
+msgstr ""
+
+#: reports.oils_rpt_param_editor.days
+msgctxt "reports.oils_rpt_param_editor.days"
+msgid "Day(s)"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.weeks
+msgctxt "reports.oils_rpt_param_editor.weeks"
+msgid "Weeks(s)"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.months
+msgid "Months(s)"
+msgstr ""
+
+#: reports.oils_rpt_param_editor.ago
+msgid " ago"
+msgstr ""
+
+#: reports.xul.template_builder.db_source_browser.label
+msgid "Database Source Browser"
+msgstr ""
+
+#: reports.xul.template_builder.sources_menulist.label
+msgid "Sources"
+msgstr ""
+
+#: reports.xul.template_builder.source_name.label
+msgid "Source Name"
+msgstr ""
+
+#: reports.xul.template_builder.source_specifier.label
+msgid "Source Specifier:"
+msgstr ""
+
+#: reports.xul.template_builder.field_name.label
+msgid "Field Name"
+msgstr ""
+
+#: reports.xul.template_builder.data_type.label
+msgid "Data Type"
+msgstr ""
+
+#: reports.xul.template_builder.field_transform.label
+msgid "Field Transform"
+msgstr ""
+
+#: reports.xul.template_builder.params.label
+msgid "Params"
+msgstr ""
+
+#: reports.xul.template_builder.applicable_datatypes.label
+msgid "Applicable Datatypes"
+msgstr ""
+
+#: reports.xul.template_builder.output_type.label
+msgid "Output Type"
+msgstr ""
+
+#: reports.xul.template_builder.template_config_caption.label
+msgid "Template Configuration"
+msgstr ""
+
+#: reports.xul.template_builder.name.label
+msgid "Name:"
+msgstr ""
+
+#: reports.xul.template_builder.description.label
+msgid "Description:"
+msgstr ""
+
+#: reports.xul.template_builder.save.label
+msgid "Save"
+msgstr ""
+
+#: reports.xul.template_builder.displayed_fields.label
+msgid "Displayed Fields"
+msgstr ""
+
+#: reports.xul.template_builder.base_filters.label
+msgid "Base Filters"
+msgstr ""
+
+#: reports.xul.template_builder.aggregate_filters.label
+msgctxt "reports.xul.template_builder.aggregate_filters.label"
+msgid "Aggregate Filters"
+msgstr ""
+
+#: reports.xul.template_builder.display_name.label
+msgid "Display Name"
+msgstr ""
+
+#: reports.xul.template_builder.field_transform_type.label
+msgid "Field Transform Type"
+msgstr ""
+
+#: reports.xul.template_builder.alter_display_header.label
+msgid "Alter Display Header"
+msgstr ""
+
+#: reports.xul.template_builder.change_transform.label
+msgctxt "reports.xul.template_builder.change_transform.label"
+msgid "Change Transform"
+msgstr ""
+
+#: reports.xul.template_builder.move_up.label
+msgctxt "reports.xul.template_builder.move_up.label"
+msgid "Move Up"
+msgstr ""
+
+#: reports.xul.template_builder.move_down.label
+msgctxt "reports.xul.template_builder.move_down.label"
+msgid "Move Down"
+msgstr ""
+
+#: reports.xul.template_builder.remove_selected_field.label
+msgid "Remove Selected Field"
+msgstr ""
+
+#: reports.xul.template_builder.filter_field.label
+msgid "Filter Field"
+msgstr ""
+
+#: reports.xul.template_builder.operator.label
+msgid "Operator"
+msgstr ""
+
+#: reports.xul.template_builder.value.label
+msgid "Value"
+msgstr ""
+
+#: reports.xul.template_builder.change_transform.label
+msgctxt "reports.xul.template_builder.change_transform.label"
+msgid "Change Transform"
+msgstr ""
+
+#: reports.xul.template_builder.change_operator.label
+msgid "Change Operator"
+msgstr ""
+
+#: reports.xul.template_builder.change_value.label
+msgid "Change value"
+msgstr ""
+
+#: reports.xul.template_builder.remove_value.label
+msgid "Remove value"
+msgstr ""
+
+#: reports.xul.template_builder.remove_selected_fields.label
+msgid "Remove Selected Fields"
+msgstr ""
+
+#: reports.xul.template_builder.source_specifier.label
+msgid "Source Specifier"
+msgstr ""
+
+#: reports.xul.template_builder.table_name.label
+msgid "Table Name"
+msgstr ""
+
+#: reports.xul.template_builder.sql_alias.label
+msgid "SQL Alias"
+msgstr ""
+
+#: reports.xul.template_builder.relationship.label
+msgid "Relationship"
+msgstr ""

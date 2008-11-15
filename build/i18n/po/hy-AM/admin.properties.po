@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-14 22:08-0400\n"
 "PO-Revision-Date: 2008-08-01 14:55+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,6 @@ msgid "Global Font Adjust set to Smaller than Default"
 msgstr "Համընդհանուր ֆոնտի համընկնեցումը դրված է Լռակյացից ավելի փոքրի:"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
 msgid "Global Font Adjust set to Default"
 msgstr "Համընդհանուր ֆոնտի համընկնեցումը դրված է Լռակյացի:"
 
@@ -126,11 +125,6 @@ msgstr "Համընդհանուր ֆոնտը դրված է 17pt"
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
 msgstr "Համընդհանուր ֆոնտը դրված է 18pt"
-
-#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
-msgid "Global Font Adjust set to Default"
-msgstr "Համընդհանուր ֆոնտի համընկնեցումը դրված է Լռակյացի:"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."
