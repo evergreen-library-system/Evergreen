@@ -1,46 +1,46 @@
 <div id='oils_rpt_folder_manager_div' class='hide_me' style='margin-top: 10px; text-align: center;'>
 	<select id='oils_rpt_folder_manager_actions'>
-		<option value='change_name'>Change folder name</option>
-		<option value='delete' id='oils_rpt_folder_manager_delete_opt'>Delete this folder</option>
-		<option value='create_sub_folder'>Create a new sub-folder</option>
-		<option id='oils_rpt_folder_manager_share_opt' value='share'>Share this folder</option>
-		<option id='oils_rpt_folder_manager_unshare_opt' value='unshare'>Hide (un-share) this folder</option>
+		<option value='change_name'>&reports.oils_rpt_folder_manager.change_folder_name;</option>
+		<option value='delete' id='oils_rpt_folder_manager_delete_opt'>&reports.oils_rpt_folder_manager.delete_folder;</option>
+		<option value='create_sub_folder'>&reports.oils_rpt_folder_manager.create_new_sub_folder;</option>
+		<option id='oils_rpt_folder_manager_share_opt' value='share'>&reports.oils_rpt_folder_manager.share_this_folder;</option>
+		<option id='oils_rpt_folder_manager_unshare_opt' value='unshare'>&reports.oils_rpt_folder_manager.hide_folder;</option>
 
-		<option class='hide_me'>Disable recurrence</option><!-- XXX -->
+		<option class='hide_me'>&reports.oils_rpt_folder_manager.disable_recurrence;</option><!-- XXX -->
 
 	</select>
-	<input id='oils_rpt_folder_manager_actions_submit' type='submit' value='Go'/>
+	<input id='oils_rpt_folder_manager_actions_submit' type='submit' value='&reports.oils_rpt_folder_manager.fldr_mngr_actions_submit;'/>
 
 	<div id='oils_rpt_folder_manager_action_div' style='margin: 15px;'>
 
 		<div id='oils_rpt_folder_manager_change_name_div'>
-			Enter new name: 
+			&reports.oils_rpt_folder_manager.change_name; 
 			<input id='oils_rpt_folder_manager_name_input' type='text'/>
-			<input type='submit' value='Submit' id='oils_rpt_folder_manager_change_name_submit'/>
+			<input type='submit' value='&reports.oils_rpt_folder_manager.submit;' id='oils_rpt_folder_manager_change_name_submit'/>
 		</div>
 
 		<div id='oils_rpt_folder_manager_create_sub'>
 			<table class='oils_rpt_generic_table'>
 				<tbody>
 					<tr>
-						<td>Folder Name:</td>
+						<td>&reports.oils_rpt_folder_manager.folder_name;</td>
 						<td><input id='oils_rpt_folder_manager_sub_name' type='text'/></td>
 					</tr>
 					<tr>
-						<td>Share this folder:</td>
+						<td>&reports.oils_rpt_folder_manager.share_this_folder;</td>
 						<td>
 							<select id='oils_rpt_folder_manager_sub_shared'>
-								<option value='no' selected='selected'>Do not share</option>
-								<option value='yes'>Share</option>
+								<option value='no' selected='selected'>&reports.oils_rpt_folder_manager.do_not_share;</option>
+								<option value='yes'>&reports.oils_rpt_folder_manager.share;</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td>Share with:</td>
+						<td>&reports.oils_rpt_folder_manager.share_with;</td>
 						<td><select id='oils_rpt_folder_manager_sub_lib_picker'/></td>
 					</tr>
 					<tr><td colspan='2' align='center'>
-						<input type='submit' value='Create Sub Folder' 
+						<input type='submit' value='&reports.oils_rpt_folder_manager.create_sub_folder;' 
 							id='oils_rpt_folder_manager_sub_lib_create'/>
 					</td></tr>
 				</tbody>
@@ -51,11 +51,11 @@
 			<table class='oils_rpt_generic_table'>
 				<tbody>
 					<tr>
-						<td>Share with:</td>
+						<td>&reports.oils_rpt_folder_manager.share_with;</td>
 						<td><select id='oils_rpt_folder_manager_share_lib_picker'/></td>
 					</tr>
 					<tr><td colspan='2' align='center'>
-						<input type='submit' value='Share this folder' 
+						<input type='submit' value='&reports.oils_rpt_folder_manager.share_this_folder;' 
 							id='oils_rpt_folder_manager_share_submit'/>
 					</td></tr>
 				</tbody>
@@ -66,25 +66,25 @@
 	</div>
 
 	<span class='hide_me' id='oils_rpt_folder_manager_change_name_confirm'>
-		Are you sure you wish to change this folder's name?
+		&reports.oils_rpt_folder_manager.change_name_confirm;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_manager_delete_confirm'>
-		Are you sure you wish to delete this folder?
+		&reports.oils_rpt_folder_manager.delete_name_confirm;
 	</span>
 		
 	<span class='hide_me' id='oils_rpt_folder_cannot_delete'>
-		This folder may not be deleted because it is not empty.
+		&reports.oils_rpt_folder_manager.cannot_delete;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_already_shared'>
-		This folder is already shared
+		&reports.oils_rpt_folder_manager.already_shared;
 	</span>
 	<span class='hide_me' id='oils_rpt_folder_already_unshared'>
-		This folder is not shared
+		&reports.oils_rpt_folder_manager.folder_not_shared;
 	</span>
 	<span class='hide_me' id='oils_rpt_folder_unshare_confirm'>
-		Are you sure you wish to hide this folder?
+		&reports.oils_rpt_folder_manager.confirm_hide_folder;
 	</span>
 
 

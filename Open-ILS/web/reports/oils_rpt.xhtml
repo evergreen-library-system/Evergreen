@@ -4,12 +4,13 @@
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
 	<!ENTITY nbsp " ">
+	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Reports</title>
+		<title>&reports.oils_rpt.title;</title>
 		<!--#include virtual="oils_rpt_common.xhtml"-->
 		<script type="text/javascript">
 		<![CDATA[
@@ -26,11 +27,11 @@
 
 	<body>
 		<div class='welcome_box'>
-			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
+			<span>&reports.common.logged_in_as;</span><b><span id='oils_rpt_user'/></b>
 		</div>
 
 		<div id='oils_rpt_permission_denied' class='hide_me'>
-			You do not have sufficient permissions to run reports
+			&reports.oils_rpt.insufficient_permissions;
 		</div>
 
 		<!--
@@ -40,7 +41,7 @@
 		-->
 
 		<div id='oils_rpt_tree_loading'>
-			Loading...
+			&reports.common.loading;
 		</div>
 
 		<table id='oils_rpt_folder_table' class='hide_me'>
@@ -48,13 +49,13 @@
 				<tr>
 					<td id='oils_rpt_folder_table_left_td'>
 						<div class='oils_rpt_folder_tree_div'>
-							<div><b>My Folders</b></div>
+							<div><b>&reports.oils_rpt.my_folders;</b></div>
 							<div id='oils_rpt_template_folder_tree' class='oils_rpt_folder_tree'/>
 							<div id='oils_rpt_report_folder_tree' class='oils_rpt_folder_tree'/>
 							<div id='oils_rpt_output_folder_tree' class='oils_rpt_folder_tree'/>
 						</div>
 						<div class='oils_rpt_folder_tree_div'>
-							<div><b>Shared Folders</b></div>
+							<div><b>&reports.oils_rpt.shared_folders;</b></div>
 							<div id='oils_rpt_template_shared_folder_tree' class='oils_rpt_folder_tree'/>
 							<div id='oils_rpt_report_shared_folder_tree' class='oils_rpt_folder_tree'/>
 							<div id='oils_rpt_output_shared_folder_tree' class='oils_rpt_folder_tree'/>
@@ -67,9 +68,9 @@
 							<table class='oils_rpt_tab_table' id='oils_rpt_folder_manager_tab_table'><tbody>
 								<tr>
 									<td width='50%'>
-										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>Manage Folder Contents</a></td>
+										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder_contents;</a></td>
 									<td width='50%'>
-										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Manage Folder</a></td>
+										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder;</a></td>
 								</tr>
 							</tbody></table>
 
@@ -78,7 +79,7 @@
 									<tr>
 										<td>
 											<span><b id='oils_rpt_folder_name_label'/>: 
-											created by </span> <b id='oils_rpt_folder_creator_label'/>
+											&reports.oils_rpt.created_by;</span> <b id='oils_rpt_folder_creator_label'/>
 										</td>
 									</tr>
 								</tbody>
@@ -100,35 +101,34 @@
 
 						<div id='oils_rpt_top_folder' class='hide_me oils_rpt_folder_window'>
 							<div>
-								<span><b>Create a new sub-folder</b>.  Folder type: </span> <b id='oils_rpt_top_folder_type'/>
+								<span><b>&reports.oils_rpt.create_new_sub_folder;</b>. &reports.oils_rpt.folder_type;</span> <b id='oils_rpt_top_folder_type'/>
 							</div>
 							<table class='oils_rpt_generic_table'>
 								<tbody>
 									<tr>
-										<td>Folder Name:</td>
+										<td>&reports.oils_rpt.folder_name;</td>
 										<td><input id='oils_rpt_top_folder_name' type='text'/></td>
 									</tr>
 									<tr>
-										<td>Share this folder:</td>
+										<td>&reports.oils_rpt.share_folder;</td>
 										<td>
 											<select id='oils_rpt_top_folder_shared'>
-												<option value='f' selected='selected'>Do not share</option>
-												<option value='t'>Share</option>
+												<option value='f' selected='selected'>&reports.oils_rpt.do_not_share;</option>
+												<option value='t'>&reports.oils_rpt.share;</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
-										<td>Share with:</td>
+										<td>&reports.oils_rpt.share_with;</td>
 										<td><select id='oils_rpt_top_folder_lib_picker'/></td>
 									</tr>
 									<tr><td colspan='2' align='center'>
-										<input type='submit' value='Create Sub Folder' id='oils_rpt_top_folder_create'/>
+										<input type='submit' value='&reports.oils_rpt.create_sub_folder;' id='oils_rpt_top_folder_create'/>
 									</td></tr>
 								</tbody>
 							</table>
 						</div>
 					</td>
-
 
 				</tr>
 			</tbody>
