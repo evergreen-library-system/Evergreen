@@ -90,9 +90,7 @@
 <!ENTITY reports.oils_rpt_editor.days "Day(s)">
 <!ENTITY reports.oils_rpt_editor.weeks "Weeks(s)">
 <!ENTITY reports.oils_rpt_editor.months "Month(s)">
-<!ENTITY reports.oils_rpt_editor.run_asap "Run ASAP ">
-<!ENTITY reports.oils_rpt_editor.or_at "or at: ">
-<!ENTITY reports.oils_rpt_editor.at "at">
+<!ENTITY reports.oils_rpt_editor.run_asap "Run as soon as possible">
 <!ENTITY reports.oils_rpt_editor.sent_to_email "Send completion notification to this Email address:">
 <!ENTITY reports.oils_rpt_editor.midnight "Midnight">
 <!ENTITY reports.oils_rpt_editor.noon "Noon">
