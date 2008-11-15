@@ -1,8 +1,9 @@
-#
+# 
 msgid ""
-msgstr "Project-Id-Version: Evergreen 1.4\n"
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-08 22:37:01-0400\n"
+"POT-Creation-Date: 2008-11-14 22:08:11-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,6 +273,10 @@ msgstr ""
 
 #: ccs.name:0
 msgid "Available"
+msgstr ""
+
+#: ppl.description:180
+msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
 msgstr ""
 
 #: crcd.name:6
@@ -3237,4 +3242,3 @@ msgstr ""
 #: ppl.description:163
 msgid "Allow a user to view a fund allocation"
 msgstr ""
-

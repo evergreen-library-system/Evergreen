@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-11-14 22:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -766,6 +766,10 @@ msgstr ""
 msgid "Expiration date"
 msgstr ""
 
+#: myopac.holds.estimated_wait
+msgid "Estimated Wait (days)"
+msgstr ""
+
 #. =================================================================
 #. MyOPAC Preferences Page
 #. =================================================================
@@ -1431,6 +1435,7 @@ msgid "Recipient"
 msgstr ""
 
 #: opac.holds.placeHold
+msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
 msgstr ""
 
@@ -1623,7 +1628,6 @@ msgid "less info"
 msgstr ""
 
 #: rdetail.cn.hold
-msgctxt "rdetail.cn.hold"
 msgid "place hold"
 msgstr ""
 
@@ -1744,6 +1748,10 @@ msgstr ""
 msgid "Callnumber"
 msgstr ""
 
+#: rdetail.copyInfo.copylocation
+msgid "Copy Location"
+msgstr ""
+
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
 msgstr ""
@@ -1761,16 +1769,16 @@ msgid "Print Call Numbers for this library"
 msgstr ""
 
 #: rdetail.copyInfo.details
-msgid "details"
+msgid "Copy Details"
 msgstr ""
 
 #: rdetail.copyInfo.browse
-msgid "browse"
+msgid "Browse Call Numbers"
 msgstr ""
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
-msgid "place hold"
+msgid "Place Hold"
 msgstr ""
 
 #: rdetail.extras.summary
