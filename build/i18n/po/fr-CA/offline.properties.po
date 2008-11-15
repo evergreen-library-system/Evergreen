@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 23:00-0400\n"
+"POT-Creation-Date: 2008-11-14 22:43-0400\n"
 "PO-Revision-Date: 2008-09-08 12:00-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -701,14 +701,6 @@ msgstr "cache effacé"
 msgid "debug the debug :D"
 msgstr "Déboguer le problème :D"
 
-#: main.about_btn.label
-msgid "About this client..."
-msgstr "À propos de ce client…"
-
-#: main.new_window_btn.label
-msgid "Open New Window"
-msgstr "Ouvrir une nouvelle fenêtre"
-
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
 msgstr "Veuillez d’abord ouvrir une session!"
@@ -790,3 +782,9 @@ msgid "Error adjusting the font size: %1$s"
 msgstr ""
 "Une erreur s’est produite lors de l’ajustement de la taille de la police : "
 "%1$s"
+
+#~ msgid "About this client..."
+#~ msgstr "À propos de ce client…"
+
+#~ msgid "Open New Window"
+#~ msgstr "Ouvrir une nouvelle fenêtre"

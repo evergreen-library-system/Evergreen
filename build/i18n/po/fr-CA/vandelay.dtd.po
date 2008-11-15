@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 22:59-0400\n"
+"POT-Creation-Date: 2008-11-14 22:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -436,4 +436,8 @@ msgstr ""
 
 #: vandelay.queue.imported
 msgid "Imported:"
+msgstr ""
+
+#: vandelay.queue.column_picker.title
+msgid "Column Picker"
 msgstr ""
