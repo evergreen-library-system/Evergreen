@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 23:00-0400\n"
+"POT-Creation-Date: 2008-11-14 22:43-0400\n"
 "PO-Revision-Date: 2008-08-04 14:52+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -668,14 +668,6 @@ msgstr "Քեշը մաքրված է"
 msgid "debug the debug :D"
 msgstr "debug the debug :D"
 
-#: main.about_btn.label
-msgid "About this client..."
-msgstr "Այս հաճախորդի մասին..."
-
-#: main.new_window_btn.label
-msgid "Open New Window"
-msgstr "Բացիր նոր պատուհան"
-
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
 msgstr "Մուտք եղիր սկզբից"
@@ -749,3 +741,9 @@ msgstr "Սխալ՝ get_contentWindow(%1$s): %2$s"
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
 msgstr "Սխալ՝ տառատեսակի չափը հավասարեցնելիս: %1$s"
+
+#~ msgid "About this client..."
+#~ msgstr "Այս հաճախորդի մասին..."
+
+#~ msgid "Open New Window"
+#~ msgstr "Բացիր նոր պատուհան"
