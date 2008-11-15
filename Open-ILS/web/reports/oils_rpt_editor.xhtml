@@ -156,51 +156,69 @@
 				</td>
 			</tr>
 			<tr>
-				<th>
-					<span>&reports.oils_rpt_editor.run_asap;</span>
-						<input type='checkbox' id='oils_rpt_report_editor_run_now'
+				<!-- XXX: This needs to be replaced with a radio button widget -->
+				<th colspan="2">
+					<div>
+						<input type='checkbox' id='oils_rpt_report_editor_run_now' checked='checked'
 							onclick='
 								if(this.checked) {
 									DOM.oils_rpt_param_editor_sched_start_date.disabled = true;
 									DOM.oils_rpt_param_editor_sched_start_hour.disabled = true;
+									dojo.attr(dojo.byId("oils_rpt_report_editor_schedule"), "checked", false);
 								} else {
 									DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
 									DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
+									dojo.attr(dojo.byId("oils_rpt_report_editor_schedule"), "checked", true);
 								}
 							'
 						/>
-					<span>&reports.oils_rpt_editor.or_at;</span>
+						<span>&reports.oils_rpt_editor.run_asap;</span>
+					</div>
+					<div>
+						<input type='checkbox' id='oils_rpt_report_editor_schedule'
+							onclick='
+								if(this.checked) {
+									DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
+									DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
+									dojo.attr(dojo.byId("oils_rpt_report_editor_run_now"), "checked", false);
+								} else {
+									DOM.oils_rpt_param_editor_sched_start_date.disabled = true;
+									DOM.oils_rpt_param_editor_sched_start_hour.disabled = true;
+									dojo.attr(dojo.byId("oils_rpt_report_editor_run_now"), "checked", true);
+								}
+							'
+						/>
+
+						<!-- XXX: This should be replaced with a standard date/time picker for i18n purposes -->
+						<input id="oils_rpt_param_editor_sched_start_date" type="text" size="10" disabled="disabled"/>
+						<select id='oils_rpt_param_editor_sched_start_hour' disabled="disabled">
+							<option value="00:00">&reports.oils_rpt_editor.midnight;</option>
+							<option value="01:00">1 AM</option>
+							<option value="02:00">2 AM</option>
+							<option value="03:00">3 AM</option>
+							<option value="04:00">4 AM</option>
+							<option value="05:00">5 AM</option>
+							<option value="06:00">6 AM</option>
+							<option value="07:00">7 AM</option>
+							<option value="09:00">8 AM</option>
+							<option value="09:00">9 AM</option>
+							<option value="10:00">10 AM</option>
+							<option value="11:00">11 AM</option>
+							<option value="12:00">&reports.oils_rpt_editor.noon;</option>
+							<option value="13:00">1 PM</option>
+							<option value="14:00">2 PM</option>
+							<option value="15:00">3 PM</option>
+							<option value="16:00">4 PM</option>
+							<option value="17:00">5 PM</option>
+							<option value="18:00">6 PM</option>
+							<option value="19:00">7 PM</option>
+							<option value="20:00">8 PM</option>
+							<option value="21:00">9 PM</option>
+							<option value="22:00">10 PM</option>
+							<option value="23:00">11 PM</option>
+						</select>
+					</div>
 				</th>
-				<td>
-					<input id="oils_rpt_param_editor_sched_start_date" type="text" size="10"/>
-						&reports.oils_rpt_editor.at;
-					<select id='oils_rpt_param_editor_sched_start_hour'>
-						<option value="00:00">&reports.oils_rpt_editor.midnight;</option>
-						<option value="01:00">1 AM</option>
-						<option value="02:00">2 AM</option>
-						<option value="03:00">3 AM</option>
-						<option value="04:00">4 AM</option>
-						<option value="05:00">5 AM</option>
-						<option value="06:00">6 AM</option>
-						<option value="07:00">7 AM</option>
-						<option value="09:00">8 AM</option>
-						<option value="09:00">9 AM</option>
-						<option value="10:00">10 AM</option>
-						<option value="11:00">11 AM</option>
-						<option value="12:00">&reports.oils_rpt_editor.noon;</option>
-						<option value="13:00">1 PM</option>
-						<option value="14:00">2 PM</option>
-						<option value="15:00">3 PM</option>
-						<option value="16:00">4 PM</option>
-						<option value="17:00">5 PM</option>
-						<option value="18:00">6 PM</option>
-						<option value="19:00">7 PM</option>
-						<option value="20:00">8 PM</option>
-						<option value="21:00">9 PM</option>
-						<option value="22:00">10 PM</option>
-						<option value="23:00">11 PM</option>
-					</select>
-				</td>
 			</tr>
 			<tr>
 				<th>&reports.oils_rpt_editor.sent_to_email;</th>
