@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-11-14 22:07-0400\n"
 "PO-Revision-Date: 2007-11-19 14:19-0500\n"
 "Last-Translator: Dan Scott <dscott@laurentian.ca>\n"
 "Language-Team: French - Canadian <en@li.org>\n"
@@ -852,6 +852,10 @@ msgstr ""
 msgid "Expiration date"
 msgstr ""
 
+#: myopac.holds.estimated_wait
+msgid "Estimated Wait (days)"
+msgstr ""
+
 # =================================================================
 # MyOPAC Preferences Page
 #. =================================================================
@@ -1560,6 +1564,7 @@ msgid "Recipient"
 msgstr "Destinataire"
 
 #: opac.holds.placeHold
+msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
 msgstr "Mettre en réserve"
 
@@ -1758,7 +1763,6 @@ msgid "less info"
 msgstr "moins d'information"
 
 #: rdetail.cn.hold
-msgctxt "rdetail.cn.hold"
 msgid "place hold"
 msgstr "mettre en réserve"
 
@@ -1884,6 +1888,10 @@ msgstr "Bibliothèque"
 msgid "Callnumber"
 msgstr "Cote"
 
+#: rdetail.copyInfo.copylocation
+msgid "Copy Location"
+msgstr ""
+
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
 msgstr "Voir les renseignements sur l'exemplaire de cet emplacement seulement"
@@ -1901,17 +1909,17 @@ msgid "Print Call Numbers for this library"
 msgstr "Imprimer les cotes de cette bibliothèque"
 
 #: rdetail.copyInfo.details
-msgid "details"
-msgstr "détails"
+msgid "Copy Details"
+msgstr ""
 
 #: rdetail.copyInfo.browse
-msgid "browse"
-msgstr "naviguer"
+msgid "Browse Call Numbers"
+msgstr ""
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
-msgid "place hold"
-msgstr "mettre en réserve"
+msgid "Place Hold"
+msgstr "Mettre en réserve"
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
@@ -2539,6 +2547,12 @@ msgstr ""
 #: selfck.day6
 msgid "Sunday"
 msgstr ""
+
+#~ msgid "details"
+#~ msgstr "détails"
+
+#~ msgid "browse"
+#~ msgstr "naviguer"
 
 #~ msgid "Literary&nbsp;Form"
 #~ msgstr "Littéraire&nbsp;Formulaire"

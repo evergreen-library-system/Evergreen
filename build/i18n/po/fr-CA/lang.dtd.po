@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-09 23:03-0400\n"
+"POT-Creation-Date: 2008-11-14 22:07-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -175,6 +175,11 @@ msgstr "Nom d’utilisateur"
 msgid "&Username:"
 msgstr "Nom d’&utilisateur :"
 
+#: common.barcode
+msgctxt "common.barcode"
+msgid "Barcode"
+msgstr "Code à barres"
+
 #: common.password
 msgctxt "common.password"
 msgid "Password"
@@ -253,6 +258,11 @@ msgstr "L"
 msgctxt "common.password.accesskey"
 msgid "P"
 msgstr "P"
+
+#: common.barcode.accesskey
+msgctxt "common.barcode.accesskey"
+msgid "B"
+msgstr "B"
 
 #: staff.about.title
 msgid "About"
@@ -753,12 +763,44 @@ msgid "S"
 msgstr "S"
 
 #: staff.auth.title
-msgid "Evergreen Staff Client 3"
-msgstr "Client membre du personnel d’Evergreen 3"
+msgctxt "staff.auth.title"
+msgid "Evergreen Staff Client"
+msgstr "Client membre du personnel d’Evergreen"
 
-#: staff.auth.version
-msgid "Evergreen 0.1.0 20051202"
-msgstr "Evergreen 0.1.0 20051202"
+#: staff.auth.about_btn.label
+msgid "About this client..."
+msgstr ""
+
+#: staff.auth.about_btn.accesskey
+msgid ""
+"_: staff.auth.about_btn.accesskey\n"
+""
+msgstr ""
+
+#: staff.auth.new_window_btn.label
+#: staff.auth.new_window_btn.accesskey
+msgid "Open &New Window"
+msgstr ""
+
+#: staff.auth.locale.label
+#: staff.auth.locale.accesskey
+msgid "Local&e:"
+msgstr ""
+
+#: staff.auth.apply_locale_btn.label
+#: staff.auth.apply_locale_btn.accesskey
+msgid "&Apply Locale"
+msgstr ""
+
+#: staff.auth.verify.caption
+msgctxt "staff.auth.verify.caption"
+msgid "Verify Credentials"
+msgstr ""
+
+#: staff.auth.verify.submit.label
+#: staff.auth.verify.submit.accesskey
+msgid "&Verify"
+msgstr ""
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -1073,9 +1115,8 @@ msgid "Add to Bucket"
 msgstr "Ajouter dans la case"
 
 #: staff.cat.popup.add_to_bucket.key
+msgctxt "staff.cat.popup.add_to_bucket.key"
 msgid ""
-"_: staff.cat.popup.add_to_bucket.key\n"
-""
 msgstr ""
 
 #: staff.cat.popup.browse.record.tab.key
@@ -2831,6 +2872,16 @@ msgstr "S"
 msgid "Special Circulation"
 msgstr "Prêt spécial"
 
+#: staff.main.menu.circ.verify_credentials
+msgctxt "staff.main.menu.circ.verify_credentials"
+msgid "Verify Credentials"
+msgstr ""
+
+#: staff.main.menu.circ.verify_credentials.accesskey
+msgctxt "staff.main.menu.circ.verify_credentials.accesskey"
+msgid "V"
+msgstr "V"
+
 #: staff.main.menu.edit.buckets.copies
 msgctxt "staff.main.menu.edit.buckets.copies"
 msgid "Copy Buckets"
@@ -3169,6 +3220,7 @@ msgid "A"
 msgstr "A"
 
 #: staff.main.menu.title
+msgctxt "staff.main.menu.title"
 msgid "Evergreen Staff Client"
 msgstr "Client membre du personnel d’Evergreen"
 
@@ -4893,6 +4945,15 @@ msgctxt "staff.patron_search_form.clear.label staff.patron_search_form.clear.acc
 msgid "&Clear Form"
 msgstr "&Effacer le formulaire"
 
+#: staff.patron_search_form.alias.accesskey
+msgctxt "staff.patron_search_form.alias.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_search_form.alias.label
+msgid "Alias:"
+msgstr ""
+
 #: staff.patron_search_form.email.accesskey
 msgctxt "staff.patron_search_form.email.accesskey"
 msgid ""
@@ -5200,7 +5261,9 @@ msgid "Context Location"
 msgstr ""
 
 #: staff.server.admin.org_unit_settings.uninherited
-msgid " * Indicates the setting is not inherited from the parent at run time"
+msgid ""
+" * Indicates the setting is not inherited from the parent org unit at run "
+"time"
 msgstr ""
 
 #: staff.server.admin.org_unit_settings.edit_setting
@@ -6178,7 +6241,7 @@ msgstr ""
 "sera mis à jour. Êtes-vous certain de vouloir continuer?"
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval
-msgid "Hold Expiration Alert Interval"
+msgid "Holds: Expire Alert Interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
@@ -6188,7 +6251,7 @@ msgid ""
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval
-msgid "Default Hold Expirate Interval"
+msgid "Holds: Expire Interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval.desc
@@ -6216,7 +6279,7 @@ msgid "Void overdue fines when items are marked lost"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft
-msgid "Soft hold stalling interval"
+msgid "Holds: Soft stalling interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
@@ -6226,11 +6289,11 @@ msgid ""
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.hard
-msgid "Hard hold boundary"
+msgid "Holds: Hard boundary"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.soft
-msgid "Soft hold boundary"
+msgid "Holds: Soft boundary"
 msgstr ""
 
 #: staff.server.admin.org_settings.opac.barcode_regex
@@ -6259,6 +6322,47 @@ msgstr ""
 msgid ""
 "Amount of time to wait before changing an item from \"reshelving\" status to "
 "\"available\".  Examples \"1 day\", \"6 hours\""
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_estimate_wait_interval
+msgid "Holds: Estimated Wait (Days)"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.hold_estimate_wait_interval.desc
+msgid ""
+"When predicting the amount of time a patron will be waiting for a hold to be "
+"fulfilled,this is the default/average number of days to assume an item will "
+"be checked out."
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
+msgid "Selfcheck: Patron Login Timeout (in seconds)"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc
+msgid ""
+"Number of seconds of inactivity before the patron is logged out of the "
+"selfcheck interface"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event
+msgid "Selfcheck: Pop-up alert for errors"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event.desc
+msgid ""
+"If true, checkout/renewal errors will cause a pop-up window in addition to "
+"the on-screen message"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
+msgid "Selfcheck: Require patron password"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
+msgid ""
+"If true, patrons will be required to enter their password in addition to "
+"their username/barcode to log into the selfcheck interface"
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -10546,6 +10650,10 @@ msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
 msgid "Date selector"
 msgstr "Sélecteur de date"
 
+#: ev.staff.patron.ue_xhtml.alias.label
+msgid "Alias"
+msgstr ""
+
 #: staff.portal.title
 msgid "Evergreen Staff Client Portal Page"
 msgstr "Page du portail des clients membres du personnel d’Evergreen"
@@ -10562,6 +10670,12 @@ msgstr ""
 "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
 "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
 "documents de procédures."
+
+#~ msgid "Evergreen Staff Client 3"
+#~ msgstr "Client membre du personnel d’Evergreen 3"
+
+#~ msgid "Evergreen 0.1.0 20051202"
+#~ msgstr "Evergreen 0.1.0 20051202"
 
 #~ msgid "CSV to Clipboard"
 #~ msgstr "Copier la liste en format CSV dans le presse-papiers"

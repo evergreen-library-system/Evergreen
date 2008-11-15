@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 21:56-0400\n"
+"POT-Creation-Date: 2008-11-14 22:08-0400\n"
 "PO-Revision-Date: 2008-09-08 12:00-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -587,6 +587,26 @@ msgstr "Gestionnaire des thèmes"
 msgid "Exit Evergreen completely?"
 msgstr "Quitter Evergreen définitivement?"
 
+#: menu.cmd_verify_credentials.tabname
+msgid "Verify Credentials"
+msgstr ""
+
+#: menu.cmd_verify_credentials.correct_credentials
+msgid "Success testing credentials!"
+msgstr ""
+
+#: menu.cmd_verify_credentials.incorrect_credentials
+msgid "Failure testing credentials!"
+msgstr ""
+
+#: menu.cmd_verify_credentials.name_feedback
+msgid "Username: <%1$s>"
+msgstr ""
+
+#: menu.cmd_verify_credentials.barcode_feedback
+msgid "Barcode: <%1$s>"
+msgstr ""
+
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
 msgstr "L’éditeur désire rechercher : %1$s"
@@ -701,14 +721,6 @@ msgstr "cache effacé"
 msgid "debug the debug :D"
 msgstr "Déboguer le problème :D"
 
-#: main.about_btn.label
-msgid "About this client..."
-msgstr "À propos de ce client…"
-
-#: main.new_window_btn.label
-msgid "Open New Window"
-msgstr "Ouvrir une nouvelle fenêtre"
-
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
 msgstr "Veuillez d’abord ouvrir une session!"
@@ -790,3 +802,9 @@ msgid "Error adjusting the font size: %1$s"
 msgstr ""
 "Une erreur s’est produite lors de l’ajustement de la taille de la police : "
 "%1$s"
+
+#~ msgid "About this client..."
+#~ msgstr "À propos de ce client…"
+
+#~ msgid "Open New Window"
+#~ msgstr "Ouvrir une nouvelle fenêtre"

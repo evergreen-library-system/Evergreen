@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > admin.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-11-14 22:08-0400\n"
 "PO-Revision-Date: 2008-08-27 09:47-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -42,7 +42,6 @@ msgstr ""
 "par défaut »"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
 msgid "Global Font Adjust set to Default"
 msgstr "Le paramètre « Global Font Adjust » est réglé à « Par défaut »"
 
@@ -135,11 +134,6 @@ msgstr "La police Global Font est réglée à « 17 pts »"
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
 msgstr "La police Global Font est réglée à « 18 pts »"
-
-#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
-msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
-msgid "Global Font Adjust set to Default"
-msgstr "Le paramètre « Global Font Adjust » est réglé à « Par défaut »"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."
