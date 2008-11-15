@@ -2,20 +2,20 @@
 	<table width='100%' id='oils_rpt_editor_table'>
 		<tbody>
 			<tr>
-				<th>Template Name:</th>
+				<th>&reports.oils_rpt_editor.template_name;</th>
 				<td><span id='oils_rpt_report_editor_template_name'/></td>
 			</tr>
 			<tr>
-				<th>Template Creator:</th>
+				<th>&reports.oils_rpt_editor.template_creator;</th>
 				<td><span id='oils_rpt_report_editor_template_creator'/></td>
 			</tr>
 			<tr>
-				<th>Template Description:</th>
+				<th>&reports.oils_rpt_editor.template_description;</th>
 				<td><span id='oils_rpt_report_editor_template_description'/></td>
 			</tr>
 
 			<tr>
-				<th>Report Name:</th>
+				<th>&reports.oils_rpt_editor.report_name;</th>
 				<script>
 					var oils_rpt_report_editor_name_func = function(obj) {
 						if(obj.value) removeCSSClass(obj, OILS_RPT_INVALID_DATA);
@@ -29,23 +29,23 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Report Description:</th>
+				<th>&reports.oils_rpt_editor.report_description;</th>
 				<td><textarea cols='45' rows='2' id='oils_rpt_report_editor_desc'/></td>
 			</tr>
 			<tr>
-				<th>Report Columns:</th>
+				<th>&reports.oils_rpt_editor.report_columns;</th>
 				<td><b id='oils_rpt_report_editor_cols'/></td>
 			</tr>
 			<tr class='hide_me' id='oils_rpt_editor_pivot_label_row'>
-				<th>Pivot Label Column:</th>
+				<th>&reports.oils_rpt_editor.pivot_label_column;</th>
 				<td>
                     <select id='oils_rpt_editor_pivot_label'>
-                        <option selected='selected' value=''> -- Select One (optional) -- </option>
+                        <option selected='selected' value=''> -- &reports.oils_rpt_editor.select_option; -- </option>
                     </select>
                 </td>
 			</tr>
 			<tr class='hide_me' id='oils_rpt_editor_pivot_data_row'>
-				<th>Pivot Data Column:</th>
+				<th>&reports.oils_rpt_editor.pivot_data_column;</th>
 				<td>
                     <select id='oils_rpt_editor_pivot_data'>
                     </select>
@@ -56,10 +56,10 @@
 			<tr><td colspan='2'><hr/></td></tr>
 			-->
 			<tr>
-				<th>Choose a folder to store this report definition: </th>
+				<th>&reports.oils_rpt_editor.store_report_definition;</th>
 				<td>
 					<div style='margin-bottom: 7px;'>
-						<span>Selected Folder: </span>
+						<span>&reports.oils_rpt_editor.selected_folder;</span>
 						<b id='oils_rpt_report_editor_selected_folder'/>
 					</div>
 					<span id='oils_rpt_report_editor_dest_folder'/>
@@ -83,18 +83,18 @@
 			-->
 			<tr>
 				<td colspan='2'>
-					<div><b>Output Options</b></div>
+					<div><b>&reports.oils_rpt_editor.output_options;</b></div>
 					<ul>
-						<li><input type="checkbox" id="oils_rpt_format_excel" value="t" checked="checked"/><span>Excel Output</span></li>
-						<li><input type="checkbox" id="oils_rpt_format_csv" value="t"/><span>CSV Output</span></li>
+						<li><input type="checkbox" id="oils_rpt_format_excel" value="t" checked="checked"/><span>&reports.oils_rpt_editor.excel_output;</span></li>
+						<li><input type="checkbox" id="oils_rpt_format_csv" value="t"/><span>&reports.oils_rpt_editor.csv_output;</span></li>
 						<li>
-							<input type="checkbox" id="oils_rpt_format_html" value="t" checked="checked"/>HTML Output
+							<input type="checkbox" id="oils_rpt_format_html" value="t" checked="checked"/>&reports.oils_rpt_editor.html_output;
 							<ul>
-								<li><input type="checkbox" id="oils_rpt_format_chart_bar" value="t" checked="checked"/><span>Bar Charts</span></li>
+								<li><input type="checkbox" id="oils_rpt_format_chart_bar" value="t" checked="checked"/><span>&reports.oils_rpt_editor.bar_charts;</span></li>
 								<!--
 								<li><input type="checkbox" id="oils_rpt_format_chart_pie" value="t"/><span>Pie Charts</span></li>
 								-->
-								<li><input type="checkbox" id="oils_rpt_format_chart_line" value="t"/><span>Line Charts</span></li>
+								<li><input type="checkbox" id="oils_rpt_format_chart_line" value="t"/><span>&reports.oils_rpt_editor.line_charts;</span></li>
 							</ul>
 						</li>
 					</ul>
@@ -105,7 +105,7 @@
 			<tr><td colspan='2'><hr/></td></tr>
 			-->
 			<tr>
-				<th>Recurring Report: </th>
+				<th>&reports.oils_rpt_editor.recurring_report;</th>
 				<td>
 					<input type="checkbox" id="oils_rpt_recur" value="t"
 						onclick='
@@ -120,7 +120,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Recurrence Interval: </th>
+				<th>&reports.oils_rpt_editor.recurring_interval;</th>
 				<td>
 					<select id="oils_rpt_recur_count" disabled='disabled'>
 						<option value='1'>1</option>
@@ -149,15 +149,15 @@
 						<option value='24'>24</option>
 					</select>
 					<select id="oils_rpt_recur_interval_type" disabled='disabled'>
-						<option value="days">Day(s)</option>
-						<option value="weeks">Week(s)</option>
-						<option value="months">Month(s)</option>
+						<option value="days">&reports.oils_rpt_editor.days;</option>
+						<option value="weeks">&reports.oils_rpt_editor.weeks;</option>
+						<option value="months">&reports.oils_rpt_editor.months;</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<span>Run ASAP </span>
+					<span>&reports.oils_rpt_editor.run_asap;</span>
 						<input type='checkbox' id='oils_rpt_report_editor_run_now'
 							onclick='
 								if(this.checked) {
@@ -169,13 +169,13 @@
 								}
 							'
 						/>
-					<span> or at: </span>
+					<span>&reports.oils_rpt_editor.or_at;</span>
 				</th>
 				<td>
 					<input id="oils_rpt_param_editor_sched_start_date" type="text" size="10"/>
-						at
+						&reports.oils_rpt_editor.at;
 					<select id='oils_rpt_param_editor_sched_start_hour'>
-						<option value="00:00">Midnight</option>
+						<option value="00:00">&reports.oils_rpt_editor.midnight;</option>
 						<option value="01:00">1 AM</option>
 						<option value="02:00">2 AM</option>
 						<option value="03:00">3 AM</option>
@@ -187,7 +187,7 @@
 						<option value="09:00">9 AM</option>
 						<option value="10:00">10 AM</option>
 						<option value="11:00">11 AM</option>
-						<option value="12:00">Noon</option>
+						<option value="12:00">&reports.oils_rpt_editor.noon;</option>
 						<option value="13:00">1 PM</option>
 						<option value="14:00">2 PM</option>
 						<option value="15:00">3 PM</option>
@@ -203,14 +203,14 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Send completion notification to this Email address: </th>
+				<th>&reports.oils_rpt_editor.sent_to_email;</th>
 				<td><input id="oils_rpt_param_editor_sched_email" type="text" size="25"/></td>
 			</tr>
 			<tr>
-				<th>Choose a folder to store this report's output: </th>
+				<th>&reports.oils_rpt_editor.storage_folder_for_output;</th>
 				<td>
 					<div style='margin-bottom: 7px;'>
-						<span>Selected Folder: </span>
+						<span>&reports.oils_rpt_editor.selected_folder;</span>
 						<b id='oils_rpt_output_selected_folder'/>
 					</div>
 					<span id='oils_rpt_output_dest_folder'/>
@@ -219,7 +219,7 @@
 
 			<tr>
 				<td colspan='2'>
-					<input id='oils_rpt_report_editor_save' type='submit' value='Save Report'/>
+					<input id='oils_rpt_report_editor_save' type='submit' value='&reports.oils_rpt_editor.save_report;'/>
 				</td>
 			</tr>
 
@@ -227,12 +227,11 @@
 	</table>
 
 	<span id='oils_rpt_empty_param' class='hide_me'>
-		One or more of the user-defined parameters has been left empty.
-		Please fill in all fields.
+		&reports.oils_rpt_editor.empty_parameter;
 	</span>
 
     <span id='oils_rpt_report_exists' class='hide_me'>
-        There is already a report in this folder with the given name.
+        &reports.oils_rpt_editor.same_name;
     </span>
 
 </div>

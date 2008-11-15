@@ -4,12 +4,13 @@
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
 	<!ENTITY nbsp " ">
+	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Report Builder</title>
+		<title>&reports.oils_rpt_builder.title;</title>
 		<!--#include virtual="oils_rpt_common.xhtml"-->
 		<script type="text/javascript">
 		<![CDATA[
@@ -23,18 +24,18 @@
 	<body>
 
 		<div class='welcome_box'>
-			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
+			<span>&reports.common.logged_in_as;</span><b><span id='oils_rpt_user'/></b>
 		</div>
 
 		<div>
-			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt.xhtml");'>Reports Home</a>
+			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt.xhtml");'>&reports.oils_rpt_builder.reports_home;</a>
 			<span id='oils_rpt_builder_cloning' class='hide_me' style='padding-left: 10px;'>
-				(<b>Cloning template "<span id='oils_rpt_build_cloning_name'/>"</b>)
+				(<b>&reports.oils_rpt_builder.cloning_template; "<span id='oils_rpt_build_cloning_name'/>"</b>)
 			</span>
 		</div>
 
 		<div id='oils_rpt_tree_loading'>
-			Loading...
+			&reports.common.loading;
 		</div>
 
 		<table class='hide_me' id='oils_rpt_table'>
@@ -44,16 +45,16 @@
 
 						<table id='oils_rpt_name_table'><tbody>
 							<tr>
-								<td width='20%'>Template Name: </td>
+								<td width='20%'>&reports.oils_rpt_builder.template_name;</td>
 								<td><input size='32' id='oils_rpt_builder_new_name'/></td>
 							</tr><tr>
-								<td>Template Description: </td>
+								<td>&reports.oils_rpt_builder.template_description;</td>
 								<td><textarea cols='50' rows='2' id='oils_rpt_builder_new_desc'/></td>
 							</tr><tr>
-								<td>Template Type: </td>
+								<td>&reports.oils_rpt_builder.template_type;</td>
 								<td><select id='oils_rpt_builder_type_selector'/></td>
 							</tr><tr>
-								<td>Save this Template: </td>
+								<td>&reports.oils_rpt_builder.save_this_template;</td>
 								<td><input type='submit' value='Save Template' id='oils_rpt_builder_save_template'/></td>
 							</tr>
 						</tbody></table>
@@ -66,46 +67,46 @@
 						<div>
 							<b>**</b>
 							<span style='padding-left: 6px;'>
-								Indicates that when filtering on the item, a list of named choices will be generated.
+								&reports.oils_rpt_builder.filtering_note;
 							</span>
 						</div>
 
 					</td>
 					<td id='oils_rpt_table_right_td' align='right'>
 						<div class='oils_rpt_info_div'>
-							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Display Items</div>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.temp_disp_items;</div>
 							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
-							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected</button>
-							<button onclick='oilsMoveUpDisplayItems();'>Move &uarr;</button>
-							<button onclick='oilsMoveDownDisplayItems();'>Move &darr;</button>
+							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
+							<button onclick='oilsMoveUpDisplayItems();'>&reports.oils_rpt_builder.move_up;</button>
+							<button onclick='oilsMoveDownDisplayItems();'>&reports.oils_rpt_builder.move_down;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
-							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Filters</div>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.template_filters;</div>
 							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
-							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> Remove Selected</button>
+							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
-							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Aggregate Filters</div>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.report_aggregate_filters;</div>
 							<select id='oils_rpt_agg_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
-							<button onclick='oilsDelSelectedAggFilterItems();'><u>X</u> Remove Selected</button>
+							<button onclick='oilsDelSelectedAggFilterItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
-							<span style='color:red;font-weight:bold;'>Hint: </span> Double-click on an item to see the item details.
+							<span style='color:red;font-weight:bold;'>&reports.oils_rpt_builder.hint;</span> &reports.oils_rpt_builder.hint_item_details;
 						</div>
 					</td>	
 				</tr>
 			</tbody>
 		</table>
-		<span class='hide_me' id='oils_rpt_tree_label'>Template Types</span>
+		<span class='hide_me' id='oils_rpt_tree_label'>&reports.oils_rpt_builder.template_types;</span>
 
 
 		<div id='oils_rpt_column_editor' class='floaty hide_me'>
 
 			<table id='oils_rpt_editor_tab_table' class='oils_rpt_tab_table'><tbody>
 				<tr>
-					<td width='25%' class='oils_rpt_tab_picker_selected'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items</a></td>
-					<td width='25%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
-					<td width='25%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
+					<td width='25%' class='oils_rpt_tab_picker_selected'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>&reports.oils_rpt_builder.display_items;</a></td>
+					<td width='25%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>&reports.oils_rpt_builder.filters;</a></td>
+					<td width='25%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>&reports.oils_rpt_builder.aggregate_filters;</a></td>
 					<!--
 					<td width='25%'><a id='oils_rpt_order_by_tab' href='javascript:void(0);'>Column Sorting</a></td>
 					-->
@@ -119,25 +120,25 @@
 			<div id='oils_rpt_tform_div'>
 				<input size='42' id='oils_rpt_tform_label_input'/>
 				<div class='oils_rpt_field_editor_window'>
-					<div style='margin-bottom: 10px;'>Select how this field should be displayed:</div>
+					<div style='margin-bottom: 10px;'>&reports.oils_rpt_builder.field_editor_window.label;</div>
 					<div id='oils_rpt_tform_table'/>
 				</div>
 				<br/><br/>
-				<button id='oils_rpt_tform_submit'>Add Item</button>
+				<button id='oils_rpt_tform_submit'>&reports.oils_rpt_builder.add_item;</button>
 			</div>
 
 			<div id='oils_rpt_filter_div' class='hide_me'>
 				<div class='oils_rpt_field_editor_window'>
-					<div style='margin-bottom: 10px;'>Select what filter should be applied to this field:</div>
+					<div style='margin-bottom: 10px;'>&reports.oils_rpt_builder.select_filter_to_apply;</div>
 					<div>
 						<table><tbody><tr>
-							<td>Choose a Transform: </td>
+							<td>&reports.oils_rpt_builder.choose_a_transform;</td>
 							<td>
 								<div id='oils_rpt_filter_tform_table'/>
 							</td>
 						</tr>
 						<tr>	
-							<td>Choose a Filter: </td>
+							<td>&reports.oils_rpt_builder.choose_a_filter;</td>
 							<td>
 								<div id='oils_rpt_filter_op_table'/>
 							</td>
@@ -145,30 +146,30 @@
 					</div>
 
 				</div>
-				<button id='oils_rpt_filter_submit'>Create Filter</button>
+				<button id='oils_rpt_filter_submit'>&reports.oils_rpt_builder.create_filter;</button>
 			</div>
 
 			<div id='oils_rpt_agg_filter_div' class='hide_me'>
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>
-						Select what aggregate filter should be applied to this field:
+						&reports.oils_rpt_builder.aggregate_filter_to_apply;
 					</div>
 					<div>
 						<table><tbody><tr>
-							<td>Choose a Transform: </td>
+							<td>&reports.oils_rpt_builder.choose_a_transform;</td>
 							<td>
 								<div id='oils_rpt_agg_filter_tform_table'/>
 							</td>
 						</tr>
 						<tr>	
-							<td>Choose a Filter: </td>
+							<td>&reports.oils_rpt_builder.choose_a_filter;</td>
 							<td>
 								<div id='oils_rpt_agg_filter_op_table'/>
 							</td>
 						</tr></tbody></table>
 					</div>
 				</div>
-				<button id='oils_rpt_agg_filter_submit'>Create Aggregate Filter</button>
+				<button id='oils_rpt_agg_filter_submit'>&reports.oils_rpt_builder.create_aggregate_filter;</button>
 			</div>
 
 
@@ -176,41 +177,40 @@
 			<div id='oils_rpt_order_by_div' class='hide_me'>
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>
-						Select how the columns should be sorted
+						&reports.oils_rpt_builder.selected_to_sort_columns;
 					</div>
 					<div>
 						<table><tbody>
 							<tr>
-							<td>Choose a column: </td>
+							<td>&reports.oils_rpt_builder.choose_column;</td>
 							<td>
 								<select id='oils_rpt_order_by_selector'/>
 							</td>
 						</tr>
 						<tr>	
-							<td>Choose the direction the sorting should occur: </td>
+							<td>&reports.oils_rpt_builder.choose_sorting_direction;</td>
 							<td>
 								<select id='oils_rpt_order_by_dir'>
-									<option value='ascending' selected='selected'>Ascending</option>
-									<option value='descending'>Descending</option>
+									<option value='ascending' selected='selected'>&reports.oils_rpt_builder.ascending;</option>
+									<option value='descending'>&reports.oils_rpt_builder.descending;</option>
 								</select>
 							</td>
 						</tr></tbody></table>
 					</div>
 				</div>
-				<button id='oils_rpt_order_by_submit'>Add Sort</button>
+				<button id='oils_rpt_order_by_submit'>&reports.oils_rpt_builder.add_sort;</button>
 			</div>
 
 
 
 			<div id='oils_rpt_column_editor_close_div'>
-				<button id='oils_rpt_column_editor_close_button'>Close Window</button>
+				<button id='oils_rpt_column_editor_close_button'>&reports.oils_rpt_builder.close_window;</button>
 			</div>
 		</div>
 
 
 		<span class='hide_me' id='oils_rpt_confirm_new_report'>
-			This will destroy the report you are currently constructing.  
-			Are you sure you wish to do this?
+			&reports.oils_rpt_builder.confirm_new_report;
 		</span>
 
 	</body>

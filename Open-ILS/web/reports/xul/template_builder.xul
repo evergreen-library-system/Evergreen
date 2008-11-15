@@ -4,6 +4,13 @@
 <?xml-stylesheet href="/opac/common/js/jscalendar/calendar-brown.css" type="text/css" ?>
 <?xml-stylesheet href='/js/dojo/dojo/resources/dojo.css' type='text/css'?>
 
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!ENTITY nbsp " ">
+	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
+]>
+
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 <!-- Load dojo -->
@@ -57,11 +64,11 @@
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar-setup.js"/>
 
 <groupbox flex="1">
-	<caption label="Database Source Browser"/>
+	<caption label="&reports.xul.template_builder.db_source_browser.label;"/>
 	<hbox flex="1">
 		<hbox flex="1">
 			<vbox flex="1">
-				<menulist label="Sources" popup="source-menu"/>
+				<menulist label="&reports.xul.template_builder.sources_menulist.label;" popup="source-menu"/>
 				<tree
 					id="idl-browse-tree"
 					flex="2"
@@ -69,7 +76,7 @@
 					ondblclick="sourceTreeHandlerDblClick(event)"
 				>
 					<treecols>
-						<treecol primary="true" label="Source Name" flex="1"/>
+						<treecol primary="true" label="&reports.xul.template_builder.source_name.label;" flex="1"/>
 					</treecols>
 					<treechildren id="sources-treetop" alternatingbackground="true" />
 				</tree>
@@ -81,7 +88,7 @@
 		<hbox flex="2">
 			<vbox flex="1">
 				<hbox>
-					<label control="path-label" value="Source Specifier:"/>
+					<label control="path-label" value="&reports.xul.template_builder.source_specifier.label;"/>
 					<textbox id="path-label" flex="1"/>
 				</hbox>
 				<hbox flex="1">
@@ -95,8 +102,8 @@
 								enableColumnDrag="true"
 							>
 								<treecols>
-									<treecol label="Field Name" flex="1"/>
-									<treecol label="Data Type" flex="0"/>
+									<treecol label="&reports.xul.template_builder.field_name.label;" flex="1"/>
+									<treecol label="&reports.xul.template_builder.data_type.label;" flex="0"/>
 								</treecols>
 								<treechildren id="class-treetop" alternatingbackground="true" />
 							</tree>
@@ -116,10 +123,10 @@
 								enableColumnDrag="true"
 							>
 								<treecols>
-									<treecol label="Field Transform" flex="1"/>
-									<treecol label="Params" flex="0" hidden="true"/>
-									<treecol label="Applicable Datatypes" flex="1" hidden="true"/>
-									<treecol label="Output Type" flex="1" />
+									<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+									<treecol label="&reports.xul.template_builder.params.label;" flex="0" hidden="true"/>
+									<treecol label="&reports.xul.template_builder.applicable_datatypes.label;" flex="1" hidden="true"/>
+									<treecol label="&reports.xul.template_builder.output_type.label;" flex="1" />
 								</treecols>
 								<treechildren id="trans-treetop" alternatingbackground="true" />
 							</tree>
@@ -139,21 +146,21 @@
 
 
 <groupbox flex="1" orient="horizontal">
-	<caption label="Template Configuration"/>
+	<caption label="&reports.xul.template_builder.template_config_caption.label;"/>
 
 	<hbox flex="1">
 		<vbox flex="1">
 			<hbox>
 			<vbox>
-				<label control="template-name" value="Name:" style="height:2em"/>
-				<label control="template-description" value="Description:"/>
+				<label control="template-name" value="&reports.xul.template_builder.name.label;" style="height:2em"/>
+				<label control="template-description" value="&reports.xul.template_builder.description.label;"/>
 			</vbox>
 			<vbox flex="1">
 				<textbox id="template-name" flex="1"/>
 				<textbox id="template-description" multiline="true" flex="1" style="max-height:3em"/>
 			</vbox>
 			<vbox pack="end">
-				<button onclick="save_template();" label="Save"/>
+				<button onclick="save_template();" label="&reports.xul.template_builder.save.label;"/>
 			</vbox>
 			</hbox>
 
@@ -162,17 +169,17 @@
 					<tabs>
 						<tab
 							id="dis_tab"
-							label="Displayed Fields"
+							label="&reports.xul.template_builder.displayed_fields.label;"
 							onclick="transformSelectHandler(true);"
 						/>
 						<tab
 							id="filter_tab"
-							label="Base Filters"
+							label="&reports.xul.template_builder.base_filters.label;"
 							onclick="transformSelectHandler(true);"
 						/>
 						<tab
 							id="aggfilter_tab"
-							label="Aggregate Filters"
+							label="&reports.xul.template_builder.aggregate_filters.label;"
 							disabled="true"
 							onclick="transformSelectHandler(true);"
 						/>
@@ -198,25 +205,25 @@
 										enableColumnDrag="true"
 									>
 										<treecols>
-											<treecol label="Display Name" flex="3"/>
-											<treecol label="Field Name" hidden="true" flex="1"/>
-											<treecol label="Data Type" flex="1"/>
-											<treecol label="Field Transform" flex="1"/>
-											<treecol label="Field Transform Type" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.display_name.label;" flex="3"/>
+											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.data_type.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
 										</treecols>
 										<treechildren id="dis-col-treetop" alternatingbackground="true" />
 									</tree>
 								</hbox>
 								<hbox pack="center">
-									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
-									<button type="menu" label="Change Transform">
+									<button label="&reports.xul.template_builder.alter_display_header.label;" oncommand="alterColumnLabel()"/>
+									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
 										<menupopup id='dis_tab_trans_menu'/>
 									</button>
 									<spacer flex="1"/>
-									<button label="Move Up" oncommand="changeDisplayOrder('u')"/>
-									<button label="Move Down" oncommand="changeDisplayOrder('d')"/>
+									<button label="&reports.xul.template_builder.move_up.label;" oncommand="changeDisplayOrder('u')"/>
+									<button label="&reports.xul.template_builder.move_down.label;" oncommand="changeDisplayOrder('d')"/>
 									<spacer flex="1"/>
-									<button label="Remove Selected Field" oncommand="removeReportAtom()"/>
+									<button label="&reports.xul.template_builder.remove_selected_field.label;" oncommand="removeReportAtom()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
@@ -232,28 +239,28 @@
 										enableColumnDrag="true"
 									>
 										<treecols>
-											<treecol label="Filter Field" flex="2"/>
-											<treecol label="Field Name" hidden="true" flex="1"/>
-											<treecol label="Data Type" hidden="true" flex="1"/>
-											<treecol label="Field Transform" flex="1"/>
-											<treecol label="Field Transform Type" hidden="true" flex="1"/>
-											<treecol label="Operator" flex="1"/>
-											<treecol label="Value" flex="1"/>
+											<treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
+											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
 										</treecols>
 										<treechildren id="filter-col-treetop" alternatingbackground="true" />
 									</tree>
 								</hbox>
 								<hbox pack="center">
-									<button type="menu" label="Change Transform">
+									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
 										<menupopup id='filter_tab_trans_menu'/>
 									</button>
-									<button type="menu" label="Change Operator">
+									<button type="menu" label="&reports.xul.template_builder.change_operator.label;">
 										<menupopup id='filter_tab_op_menu'/>
 									</button>
-									<button label="Change value" command="filter_tab_value_action"/>
-									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
+									<button label="&reports.xul.template_builder.change_value.label;" command="filter_tab_value_action"/>
+									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
-									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
@@ -269,28 +276,28 @@
 										enableColumnDrag="true"
 									>
 										<treecols>
-											<treecol label="Filter Field" flex="2"/>
-											<treecol label="Field Name" hidden="true" flex="1"/>
-											<treecol label="Data Type" hidden="true" flex="1"/>
-											<treecol label="Field Transform" flex="1"/>
-											<treecol label="Field Transform Type" hidden="true" flex="1"/>
-											<treecol label="Operator" flex="1"/>
-											<treecol label="Value" flex="1"/>
+											<treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
+											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
 										</treecols>
 										<treechildren id="aggfilter-col-treetop" alternatingbackground="true" />
 									</tree>
 								</hbox>
 								<hbox pack="center">
-									<button type="menu" label="Change Transform">
+									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
 										<menupopup id='aggfilter_tab_trans_menu'/>
 									</button>
-									<button type="menu" label="Change Operator">
+									<button type="menu" label="&reports.xul.template_builder.change_operator.label;">
 										<menupopup id='aggfilter_tab_op_menu'/>
 									</button>
-									<button label="Change value" command="aggfilter_tab_value_action"/>
-									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
+									<button label="&reports.xul.template_builder.change_value.label;" command="aggfilter_tab_value_action"/>
+									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
-									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
@@ -311,10 +318,10 @@
 			enableColumnDrag="true"
 		>
 			<treecols>
-				<treecol label="Source Specifier" flex="2"/>
-				<treecol label="Table Name" flex="1" hidden="true"/>
-				<treecol label="SQL Alias" flex="1" hidden="true"/>
-				<treecol label="Relationship" flex="1" hidden="true"/>
+				<treecol label="&reports.xul.template_builder.source_specifier.label;" flex="2"/>
+				<treecol label="&reports.xul.template_builder.table_name.label;" flex="1" hidden="true"/>
+				<treecol label="&reports.xul.template_builder.sql_alias.label;" flex="1" hidden="true"/>
+				<treecol label="&reports.xul.template_builder.relationship.label;" flex="1" hidden="true"/>
 			</treecols>
 			<treechildren id="used-sources-treetop" alternatingbackground="true" />
 		</tree>

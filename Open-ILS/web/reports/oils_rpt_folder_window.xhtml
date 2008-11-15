@@ -12,41 +12,41 @@
 				<td colspan='2'> 
 					<span>
 						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
-							<option type='template' value='create_report'>Create a new report from selected template</option>
-							<option type='template' value='clone_template'>Clone selected template</option>
-							<option type='template' value='delete_template'>Delete selected template(s)</option>
-							<option type='report' value='change_params' disabled='disabled'>Clone report</option>
-							<option type='report' value='schedule_report' disabled='disabled'>Schedule report</option>
-							<option type='report' value='delete_report'>Delete selected report(s)</option>
-							<option type='output' value='show_output'>View report output</option>
-							<option type='output' value='delete_output'>Delete selected output(s)</option>
+							<option type='template' value='create_report'>&reports.oils_rpt_folder_window.new_report_from_template;</option>
+							<option type='template' value='clone_template'>&reports.oils_rpt_folder_window.clone_template;</option>
+							<option type='template' value='delete_template'>&reports.oils_rpt_folder_window.delete_template;</option>
+							<option type='report' value='change_params' disabled='disabled'>&reports.oils_rpt_folder_window.clone_report;</option>
+							<option type='report' value='schedule_report' disabled='disabled'>&reports.oils_rpt_folder_window.schedule_report;</option>
+							<option type='report' value='delete_report'>&reports.oils_rpt_folder_window.delete_reports;</option>
+							<option type='output' value='show_output'>&reports.oils_rpt_folder_window.view_report_output;</option>
+							<option type='output' value='delete_output'>&reports.oils_rpt_folder_window.delete_output;</option>
 
-							<option type='template' value='move_template'>Move the selected template(s) to a different folder</option>
-							<option type='report' value='move_report'>Move the select report(s) to a different folder</option>
-							<option type='output' value='move_output'>Move the selected output(s) to a different folder</option>
+							<option type='template' value='move_template'>&reports.oils_rpt_folder_window.move_templates;</option>
+							<option type='report' value='move_report'>&reports.oils_rpt_folder_window.move_reports;</option>
+							<option type='output' value='move_output'>&reports.oils_rpt_folder_window.move_output;</option>
 						</select>
 					</span>
-					<input type='submit' value='Submit' id='oils_rpt_folder_content_action_go'/>
+					<input type='submit' value='&reports.oils_rpt_folder_window.submit;' id='oils_rpt_folder_content_action_go'/>
 				</td>
 			</tr>
 
 			<tr id='oils_rpt_content_count_row'>
 				<td style='text-align:left;'>
 					<div>
-						Limit output to 
+						&reports.oils_rpt_folder_window.limit_output;
 						<select id='oils_rpt_output_limit_selector'>
 							<option value='5'>5</option>
 							<option value='10'>10</option>
 							<option value='25'>25</option>
 							<option value='50'>50</option>
-							<option value=''>All</option>
+							<option value=''>&reports.oils_rpt_folder_window.all;</option>
 						</select>
-						<span><b id='oils_rpt_pending_output' class='hide_me'>Pending Items</b></span>
+						<span><b id='oils_rpt_pending_output' class='hide_me'>&reports.oils_rpt_folder_window.pending_items;</b></span>
 					</div>
 				</td>
 				<td style='text-align:right;'>
 					<a id='oils_rpt_folder_window_contents_new_template' 
-						href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
+						href='javascript:void(0);'><b>&reports.oils_rpt_folder_window.new_template;</b></a>
 				</td>
 			</tr>
 
@@ -57,7 +57,7 @@
 			</tr>
 
 			<tr class='hide_me' id='oils_rpt_content_row_empty'>
-				<td style='text-align:left;'><b>No items to display</b></td>
+				<td style='text-align:left;'><b>&reports.oils_rpt_folder_window.no_items_to_display;</b></td>
 			</tr>
 
 
@@ -67,15 +67,15 @@
 			<tr id='oils_rpt_content_count_row_2' class='hide_me'>
 				<td style='text-align:left;padding-top: 20px;'>
 					<div>
-						Limit output to 
+						&reports.oils_rpt_folder_window.limit_output;
 						<select id='oils_rpt_output_limit_selector_2'>
 							<option value='5'>5</option>
 							<option value='10'>10</option>
 							<option value='25'>25</option>
 							<option value='50'>50</option>
-							<option value=''>All</option>
+							<option value=''>&reports.oils_rpt_folder_window.all;</option>
 						</select>
-						<span><b>Completed Items</b></span>
+						<span><b>&reports.oils_rpt_folder_window.completed_items;</b></span>
 					</div>
 				</td>
 			</tr>
@@ -91,55 +91,41 @@
 	</table>
 
 	<div id='oils_rpt_move_folder_div' class='hide_me' style='width:100%; padding: 5px; margin-left: 10px;'>
-		<div>Selected Folder: <b id='oils_rpt_move_folder_selected'/></div>
+		<div>&reports.oils_rpt_folder_window.selected_folder;<b id='oils_rpt_move_folder_selected'/></div>
 		<hr/>
 		<div id='oils_rpt_move_folder_picker'/>
 		<hr/>
-		<input type='submit' value='Select Folder' id='oils_rpt_change_folder_submit'/>
-		<input type='submit' value='Cancel' id='oils_rpt_change_folder_cancel'/>
+		<input type='submit' value='&reports.oils_rpt_folder_window.select_folder;' id='oils_rpt_change_folder_submit'/>
+		<input type='submit' value='&reports.oils_rpt_folder_window.cancel;' id='oils_rpt_change_folder_cancel'/>
 	</div>
 
 	<span class='hide_me' id='oils_rpt_folder_contents_confirm_delete'>
-		Are you sure you wish to delete the selected item(s)?
+		&reports.oils_rpt_folder_window.confirm_delete;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_contents_template_no_delete'>
-		One or more of the selected templates could not be deleted because 
-		there are reports that depend on them.
+		&reports.oils_rpt_folder_window.dependant_reports_no_delete;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_contents_report_no_delete'>
-		One or more of The selected reports could not be deleted because 
-		there are outputs that depend on them.
+		&reports.oils_rpt_folder_window.dependant_outputs_no_delete;
 	</span>
 
 
 	<span class='hide_me' id='oils_rpt_folder_contents_no_delete'>
-		You may not delete another user's items
+		&reports.oils_rpt_folder_window.cannot_delete_another_users_data;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_change_folder_not_allowed'>
-		You may not move another user's items
+		&reports.oils_rpt_folder_window.cannot_move_another_users_data;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_verify_template_delete'>
-        This will also delete all of your attached reports and outputs for
-        this template.  
-
-        If other users have reports or outputs attached to this template,
-        those will be left untouched and the template will not be deleted.
-        
-        Do you wish continue?
+		&reports.oils_rpt_folder_window.delete_all_attached_reports;
 	</span>
 
 	<span class='hide_me' id='oils_rpt_verify_report_delete'>
-        This will also delete all of your attached outputs for
-        this report.  
-        
-        If other users have outputs attached to this report,
-        those will be left untouched and the report will not be deleted.
-        
-        Do you wish continue?
+		&reports.oils_rpt_folder_window.delete_all_attached_outputs;
 	</span>
 
 
