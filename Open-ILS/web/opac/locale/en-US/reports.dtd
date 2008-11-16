@@ -188,6 +188,7 @@
 <!ENTITY reports.xul.template_builder.params.label "Params">
 <!ENTITY reports.xul.template_builder.applicable_datatypes.label "Applicable Datatypes">
 <!ENTITY reports.xul.template_builder.output_type.label "Output Type">
+<!ENTITY reports.xul.template_builder.source_add.label "Add Selected Fields">
 <!ENTITY reports.xul.template_builder.template_config_caption.label "Template Configuration">
 <!ENTITY reports.xul.template_builder.name.label "Name:">
 <!ENTITY reports.xul.template_builder.description.label "Description:">
