@@ -371,7 +371,6 @@ cat.copy_browser.prototype = {
 										if (typeof robj.ilsevent != 'undefined') {
 											if ( (robj.ilsevent != 0) && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
 										}
-										alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_items.complete'));
 										obj.refresh_list();
 									}
 

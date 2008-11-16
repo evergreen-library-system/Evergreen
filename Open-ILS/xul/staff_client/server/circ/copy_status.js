@@ -130,7 +130,6 @@ circ.copy_status.prototype = {
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.sel_checkin.error'),E);
 							}
@@ -152,7 +151,6 @@ circ.copy_status.prototype = {
 									}
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.cmd_replace_barcodes.error'), E);
 							}
@@ -199,7 +197,6 @@ circ.copy_status.prototype = {
 								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 					'sel_patron' : [
@@ -234,7 +231,6 @@ circ.copy_status.prototype = {
 								}
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 

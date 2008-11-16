@@ -8,7 +8,6 @@ cat.copy_buckets = function (params) {
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
-	this.first_pause = true;
 }
 
 cat.copy_buckets.prototype = {
@@ -17,11 +16,6 @@ cat.copy_buckets.prototype = {
 	'bucket_id_name_map' : {},
 
 	'render_pending_copies' : function() {
-		if (this.first_pause) {
-			this.first_pause = false;
-		} else {
-			alert($('catStrings').getString('staff.cat.copy_buckets.render_pending_copies.complete'));
-		}
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.copy_ids.length; i++) {
@@ -342,7 +336,6 @@ cat.copy_buckets.prototype = {
 									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.error'), E);
 								}
 							}
-							alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.complete'));
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -362,7 +355,6 @@ cat.copy_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.complete'));
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.error'),E);
@@ -394,8 +386,6 @@ cat.copy_buckets.prototype = {
 										}
 										throw robj;
 									}
-
-									alert($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_new_bucket.success', [name]));
 
 									obj.controller.render('copy_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;

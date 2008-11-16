@@ -9,7 +9,6 @@ cat.record_buckets = function (params) {
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
-	this.first_pause = true;
     var x = document.getElementById("record_buckets_tabbox");
     if (x) {
         x.addEventListener(
@@ -96,11 +95,6 @@ cat.record_buckets.prototype = {
 	'bucket_id_name_map' : {},
 
 	'render_pending_records' : function() {
-		if (this.first_pause) {
-			this.first_pause = false;
-		} else {
-			alert( $("commonStrings").getString('common.action_complete'));
-		}
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.record_ids.length; i++) {
@@ -529,7 +523,6 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							alert( $("commonStrings").getString('common.action_complete'));
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -549,7 +542,6 @@ cat.record_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert( $("commonStrings").getString('common.action_complete'));
 								var x = document.getElementById('info_box');
                                 x.setAttribute('hidden','true');
                                 obj.controller.view.cmd_record_buckets_delete_bucket.setAttribute('disabled','true');
@@ -597,8 +589,6 @@ cat.record_buckets.prototype = {
 										}
 										throw robj;
 									}
-
-									alert($("catStrings").getFormattedString('staff.cat.record_buckets.new_bucket.bucket_created', [name]));
 
 									obj.controller.render('record_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;
@@ -721,8 +711,6 @@ cat.record_buckets.prototype = {
 								);
 								if (typeof robj.ilsevent != 'undefined') {
 									throw(robj);
-								} else {
-									alert($("catStrings").getString('staff.cat.record_buckets.merge_records.success'));
 								}
 
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
@@ -807,7 +795,7 @@ cat.record_buckets.prototype = {
 										s += $("catStrings").getFormattedString('staff.cat.record_buckets.delete_records.s2', [record_ids[i], robj.textcode, robj.desc]);
 									}
 								}
-								if (s) { alert(s); } else { alert($("catStrings").getString('staff.cat.record_buckets.delete_records.delete_success.alert')); }
+								if (s) { alert(s); }
 
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
 								setTimeout(
