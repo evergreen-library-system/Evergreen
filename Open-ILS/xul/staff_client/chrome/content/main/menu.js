@@ -871,6 +871,7 @@ main.menu.prototype = {
 		var idx = this.controller.view.tabs.selectedIndex;
 		if (params && typeof params.index != 'undefined') idx = params.index;
 		var tab = this.controller.view.tabs.childNodes[ idx ];
+		if (params.focus) tab.focus();
 		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 
