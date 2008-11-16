@@ -66,7 +66,7 @@ cat.record_buckets.export_records = function(obj, output_type) {
 		var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
 			.createInstance(Components.interfaces.nsIWebBrowserPersist);
 
-		var proto_uri = 'http://' + window.location.hostname + '/exporter?format=' + output_type;
+		var proto_uri = 'https://' + window.location.hostname + '/exporter?format=' + output_type + '&ses=' + ses();
 
 		dump('Record Export URI is ' + proto_uri + '&id=' + record_ids.join('&id=') + '\n');
 
