@@ -348,7 +348,7 @@ cat.record_buckets.prototype = {
 									);
 									if (typeof bucket.ilsevent != 'undefined') {
 										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
-											alert('Could not find a bucket with ID = ' + bucket_id);
+											alert(catStrings.getFormattedString('staff.cat.record_buckets.menulist.change_bucket.undefined',[bucket_id]));
 										} else {
 											obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.change_bucket.error'),bucket);
 										}
