@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-08 23:51:52-0400\n"
+"POT-Creation-Date: 2008-11-16 10:43:55-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid "invalid start date -  YYYY-MM-DD"
 msgstr ""
 
-#: reports.js:RPT_BUILDER_CONFIRM_SAVE
+#: reports.js:TEMPLATE_CONF_CONFIRM_SAVE reports.js:RPT_BUILDER_CONFIRM_SAVE
 msgid ""
 "Name : ${0}\n"
 "Description: ${1}\n"
@@ -198,13 +198,6 @@ msgstr ""
 
 #: reports.js:TRANSFORMS_LAST reports.js:TFORMS_LABEL_LAST
 msgid "Last Value"
-msgstr ""
-
-#: reports.js:TEMPLATE_CONF_CONFIRM_SAVE
-msgid ""
-"Name : ${0}\n"
-"Description: $[1}\n"
-"Save Template?"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_BARE
