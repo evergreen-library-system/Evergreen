@@ -422,7 +422,8 @@ util.list.prototype = {
 								util.widgets.dispatch('select',obj.node);
 							}
 						} catch(E) {
-							alert('fixme2: ' + E);
+                            // Let's not alert on this for now.  Getting contentView has no properties in record buckets under certain conditions
+							dump('fixme2: ' + E + '\n');
 						}
 					}
 
@@ -568,7 +569,8 @@ util.list.prototype = {
 								util.widgets.dispatch('select',obj.node);
 							}
 						} catch(E) {
-							alert('fixme2: ' + E);
+                            // Let's not alert on this for now.  Getting contentView has no properties in record buckets under certain conditions
+							dump('fixme2: ' + E + '\n');
 						}
 					}
 
