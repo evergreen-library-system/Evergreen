@@ -66,6 +66,7 @@
 
 <!ENTITY reports.oils_rpt_common.action_succeeded "Action Succeeded">
 <!ENTITY reports.oils_rpt_common.action_failed "Action Failed">
+<!ENTITY reports.oils_rpt_common.generic_calendar_button "Date selector">
 
 
 <!ENTITY reports.oils_rpt_editor.template_name "Template Name:">
