@@ -135,7 +135,7 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<button label="Add Selected Fields" id="source-add" oncommand="addReportAtoms()"/>
+					<button label="&reports.xul.template_builder.source_add.label;" id="source-add" oncommand="addReportAtoms()"/>
 				</hbox>
 			</vbox>
 		</hbox>
