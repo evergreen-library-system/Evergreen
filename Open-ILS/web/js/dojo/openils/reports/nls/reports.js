@@ -123,7 +123,7 @@
 	"TEMPLATE_CONF_NOT_IN": "Field does not match one of list (comma separated):",
 	"TEMPLATE_CONF_IN": "Field matches one of list (comma separated):",
 	"TEMPLATE_CONF_DEFAULT": "Value ${0}:",
-	"TEMPLATE_CONF_CONFIRM_SAVE": "Name : ${0}\nDescription: $[1}\nSave Template?",
+	"TEMPLATE_CONF_CONFIRM_SAVE": "Name : ${0}\nDescription: ${1}\nSave Template?",
 	"TEMPLATE_CONF_SUCCESS_SAVE": "Template ${0} was successfully saved.",
 	
 	"TRANSFORMS_BARE": "Raw Data",
