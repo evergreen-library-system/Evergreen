@@ -206,4 +206,29 @@ CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS 
 	) z;
 $$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting( setting_name TEXT, org_id INT ) RETURNS actor.org_unit_setting AS $$
+DECLARE
+    setting RECORD;
+    cur_org INT;
+BEGIN
+    cur_org := org_id;
+    LOOP
+        SELECT INTO setting * FROM actor.org_unit_setting WHERE org_unit = cur_org AND name = setting_name;
+        IF FOUND THEN
+            RETURN setting;
+        END IF;
+        SELECT INTO cur_org parent_ou FROM actor.org_unit WHERE id = cur_org;
+        IF cur_org IS NULL THEN
+            RETURN NULL;
+        END IF;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION actor.org_unit_ancestor_setting( TEXT, INT) IS $$
+/**
+* Search "up" the org_unit tree until we find the first occurrence of an 
+* org_unit_setting with the given name.
+*/
+$$;
 
