@@ -84,19 +84,28 @@
 				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
 				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
-				$('top').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.callnumber.record());
-				get_contentWindow($('top')).xulG = { 'docid' : g.callnumber.record() };
+                var tb = $('top_box'); while (tb.firstChild) tb.removeChild(tb.lastChild);
+                var top = document.createElement('iframe'); tb.appendChild(top);
+				top.setAttribute('src',urls.XUL_BIB_BRIEF);
+				top.setAttribute('flex','1');
+				get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
 				//g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
 				//g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
-				$('item_summary').setAttribute('src',urls.XUL_COPY_SUMMARY);
-				get_contentWindow($('item_summary')).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
+                var ib = $('item_summary_box'); while(ib.firstChild) ib.removeChild(ib.lastChild);
+                var item_summary = document.createElement('iframe'); ib.appendChild(item_summary);
+				item_summary.setAttribute('src',urls.XUL_COPY_SUMMARY);
+				item_summary.setAttribute('flex','1');
+				get_contentWindow(item_summary).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
 
 				$('r_last').disabled = true;
 				if (g.circ) {
 					$('r_last').disabled = false;
 					g.data.temp_circ = g.circ; g.data.stash('temp_circ');
-					$('circ').setAttribute('src',urls.XUL_CIRC_BRIEF); // + '?no_border=1');
-					get_contentWindow($('circ')).xulG = { 'no_border' : 1 };
+                    var cb = $('circ_box'); while(cb.firstChild) cb.removeChild(cb.lastChild);
+                    var circ_frame = document.createElement('iframe'); cb.appendChild(circ_frame);
+					circ_frame.setAttribute('src',urls.XUL_CIRC_BRIEF);
+				    circ_frame.setAttribute('flex','1');
+					get_contentWindow(circ_frame).xulG = { 'no_border' : 1 };
 					if (g.circ.checkin_time()) {
 						$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.last_circ'));
 					} else {
@@ -189,13 +198,9 @@
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
 	<vbox flex="1" style="overflow: auto;">
-		<vbox style="border: none; overflow: none; min-height: 80;">
-			<iframe flex="1" id="top" style="overflow: none; min-height: 80;"/>
-		</vbox>
+		<vbox id="top_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
 		<splitter><grippy/></splitter>
-		<vbox style="border: none; overflow: none; min-height: 80;">
-			<iframe flex="1" id="item_summary" style="overflow: none; min-height: 80;"/>
-		</vbox>
+		<vbox id="item_summary_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="holds" style="overflow: none; min-height: 80;">
 			<caption id="hold_caption" label="&staff.circ.copy_details.hold_caption;"/>
@@ -211,7 +216,7 @@
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="circs" style="overflow: none; min-height: 80;">
 			<caption id="circ_caption" label="&staff.circ.copy_details.circ_caption;" style="font-weight: bold"/>
-			<iframe id="circ" style="min-height: 80" flex="1"/>
+            <vbox id="circ_box" flex="1" style="min-height: 80"/>
 		</groupbox>
 	</vbox>
 	<hbox>

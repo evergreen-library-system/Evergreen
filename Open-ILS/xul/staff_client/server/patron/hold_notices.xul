@@ -57,8 +57,11 @@
 
 				a_list_of_one();
 
-				document.getElementById('bib_brief').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.ahr.target());
-				get_contentWindow(document.getElementById('bib_brief')).xulG = { 'docid' : g.ahr.target() };
+				var x = document.getElementById('bib_brief_box'); while (x.firstChild) x.removeChild(x.lastChild);
+                var bib_brief = document.createElement('iframe'); x.appendChild(bib_brief);
+                bib_brief.setAttribute('flex',1);
+                bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF); 
+				get_contentWindow(bib_brief).xulG = { 'docid' : g.ahr.target() };
 
 				refresh();
 
@@ -173,7 +176,12 @@
 				/* template */
 				var node = $('notification_template').cloneNode(true); np.appendChild(node); node.hidden = false;
 				util.widgets.apply(node,'name','notify_time',
-					function(n){n.setAttribute("tooltiptext", $("patronStrings").getFormattedString('staff.patron.hold_notices.tooltiptext',[g.notifications[i].id(), g.notifications[i].hold(), g.notifications[i].notify_staff()]));
+					function(n){
+                        n.setAttribute(
+                            "tooltiptext", 
+                            $("patronStrings").getFormattedString('staff.patron.hold_notices.tooltiptext',[g.notifications[i].id(), g.notifications[i].hold(), g.notifications[i].notify_staff()])
+                        );
+                    }
 				);
 				apply(node,'method',g.notifications[i].method ? g.notifications[i].method() : '');
 				apply(node,'note',g.notifications[i].note() ? g.notifications[i].note() : '');
@@ -240,7 +248,7 @@
 
     <vbox id="v1" flex="1" persist="height">
         <label id="patron_name" class="patronNameLarge"/>
-        <iframe id="bib_brief" flex="1"/>
+        <vbox id="bib_brief_box" flex="1"/>
     </vbox>
 
     <splitter><grippy/></splitter>

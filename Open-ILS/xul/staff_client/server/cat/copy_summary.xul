@@ -50,7 +50,7 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat_copy_summary.xul');
 
-				var copy_id = xul_param('copy_id');
+				var copy_id = xul_param('copy_id'); 
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date'); JSAN.use('util.widgets');

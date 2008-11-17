@@ -70,8 +70,8 @@
 
 						switch(g.mbts.xact_type()) {
 							case 'circulation' : retrieve_circ(); break;
-							case 'grocery' : retrieve_grocery(); break;
-							default: break;
+							case 'grocery' : retrieve_grocery(); $('copy_summary_vbox').hidden = true; $('copy_summary_splitter').hidden = true; break;
+							default: $('copy_summary_vbox').hidden = true; $('copy_summary_splitter').hidden = true; break;
 						}
 
 					} catch(E) {
@@ -115,9 +115,11 @@
 						$('renewal').value = r || 'No';
 
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
-						//get_contentWindow($('copy_summary')).xulG = { 'copy_id' : r_circ.target_copy() };
-						$('copy_summary').hidden=false;
+                        var csb = $('copy_summary_vbox'); while (csb.firstChild) csb.removeChild(csb.lastChild);
+                        var copy_summary = document.createElement('iframe'); csb.appendChild(copy_summary);
+						copy_summary.setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
+						copy_summary.setAttribute('flex','1');
+						get_contentWindow(copy_summary).xulG = { 'copy_id' : r_circ.target_copy() };
 
 						g.network.simple_request(
 							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',
@@ -240,7 +242,6 @@
 				retrieve_patron();
 
 				retrieve_mbts();
-				//retrieve_circ();
 
 				init_lists();
 
@@ -320,9 +321,9 @@
 
 		<splitter><grippy/></splitter>
 
-		<iframe id="copy_summary" flex="1" hidden="true"/>
+        <vbox id="copy_summary_vbox" flex="1" />
 
-		<splitter><grippy/></splitter>
+		<splitter id="copy_summary_splitter"><grippy/></splitter>
 
 			<groupbox orient="vertical" flex="2">
 				<caption label="&staff.patron.bill_details.bills.label;" style="color: red"/>

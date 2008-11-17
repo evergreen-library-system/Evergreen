@@ -139,13 +139,11 @@ function my_init() {
 		/******************************************************************************************************/
 		/* Show the Record Details? */
 
+        var bdb = document.getElementById('brief_display_box'); while(bdb.firstChild) bdb.removeChild(bdb.lastChild);
 		if (g.docid) {
-			document.getElementById('brief_display').setAttribute(
-				'src',
-				urls.XUL_BIB_BRIEF + '?docid=' + g.docid
-			);
-		} else {
-			document.getElementById('brief_display').setAttribute('hidden','true');
+            var brief_display = document.createElement('iframe'); bdb.appendChild(brief_display); 
+			brief_display.setAttribute( 'src', urls.XUL_BIB_BRIEF + '?docid=' + g.docid); // this is a modal window, so can't push in xulG
+			brief_display.setAttribute( 'flex','1' );
 		}
 
 		/******************************************************************************************************/

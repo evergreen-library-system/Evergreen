@@ -61,10 +61,16 @@
 				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
 				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
-				$('top').setAttribute('src',urls.XUL_BIB_BRIEF);// + '?docid=' + g.callnumber.record());
-				get_contentWindow($('top')).xulG = { 'docid' : g.callnumber.record() };
-				$('mid').setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + g.copy.id());
-				get_contentWindow($('mid')).xulG = { 'copy_id' : g.copy.id() };
+                var tv = $('top_vbox'); while(tv.firstChild) tv.removeChild(tv.lastChild);
+                var top = document.createElement('iframe'); tv.appendChild(top);
+				top.setAttribute('src',urls.XUL_BIB_BRIEF);
+                top.setAttribute('flex','1');
+				get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
+                var mv = $('mid_vbox'); while(mv.firstChild) mv.removeChild(mv.lastChild);
+                var mid = document.createElement('iframe'); mv.appendChild(mid);
+				mid.setAttribute('src',urls.XUL_COPY_SUMMARY);
+                mid.setAttribute('flex','1');
+				get_contentWindow(mid).xulG = { 'copy_id' : g.copy.id() };
 
 				show_circs();
 
@@ -131,12 +137,12 @@
 	]]>
 	</script>
 
-	<vbox flex="1" style="overflow: auto;">
-		<iframe id="top" style="overflow: auto;"/>
+	<vbox flex="1" class="my_overflow">
+        <vbox id="top_vbox" flex="1" class="my_overflow"/>
 		<splitter><grippy/></splitter>
-		<iframe id="mid" style="overflow: auto;"/>
+        <vbox id="mid_vbox" flex="1" class="my_overflow"/>
 		<splitter><grippy/></splitter>
-		<groupbox flex="1" id="circs" style="overflow: auto;">
+		<groupbox flex="1" id="circs" class="my_overflow">
 			<caption label="&staff.circ.circ_summary.caption;"/>
 		</groupbox>
 		<hbox>

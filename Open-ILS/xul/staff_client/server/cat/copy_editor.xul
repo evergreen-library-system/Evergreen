@@ -37,9 +37,9 @@
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
-	<iframe id="brief_display"/>
+    <vbox id="brief_display_box"/>
 
-	<groupbox flex="1" style="overflow: auto">
+	<groupbox flex="1" class="my_overflow">
 		<caption id="caption" label="&staff.cat.copy_editor.groupbox1.label;"/>
 
 		<hbox id="top_nav">

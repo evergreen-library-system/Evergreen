@@ -53,23 +53,35 @@
 				g.patron_id = xul_param('patron_id');
 
 				try{
-					$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES); 
-					get_contentWindow($('notes_frame')).xulG = 
+                    var np = $('notes_panel'); while (np.firstChild) np.deleteChild(np.lastChild);
+                    var notes_frame = document.createElement('iframe'); np.appendChild(notes_frame);
+					notes_frame.setAttribute('src',urls.XUL_PATRON_INFO_NOTES); 
+					notes_frame.setAttribute('flex','1');
+					get_contentWindow(notes_frame).xulG = 
 						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
-					$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS);
-					get_contentWindow($('stat_cats_frame')).xulG = 
+					var scp = $('stat_cats_panel'); while (scp.firstChild) scp.deleteChild(scp.lastChild);
+                    var stat_cats_frame = document.createElement('iframe'); scp.appendChild(stat_cats_frame);
+                    stat_cats_frame.setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS);
+                    stat_cats_frame.setAttribute('flex','1');
+					get_contentWindow(stat_cats_frame).xulG = 
 						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
-					$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS);
-					get_contentWindow($('surveys_frame')).xulG = 
+                    var sp = $('surveys_panel'); while (sp.firstChild) sp.deleteChild(sp.lastChild);
+                    var surveys_frame = document.createElement('iframe'); sp.appendChild(surveys_frame);
+					surveys_frame.setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS);
+					surveys_frame.setAttribute('flex','1');
+					get_contentWindow(surveys_frame).xulG = 
 						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
-					$('group_frame').setAttribute('src',urls.XUL_PATRON_INFO_GROUP);
-					get_contentWindow($('group_frame')).xulG = 
+                    var gp = $('group_panel'); while (gp.firstChild) gp.deleteChild(gp.lastChild);
+                    var group_frame = document.createElement('iframe'); gp.appendChild(group_frame);
+					group_frame.setAttribute('src',urls.XUL_PATRON_INFO_GROUP);
+					group_frame.setAttribute('flex','1');
+					get_contentWindow(group_frame).xulG = 
 						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 
@@ -109,18 +121,10 @@
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 			</tabs>
 			<tabpanels flex="1">
-				<tabpanel id="notes_panel" orient="vertical">
-					<iframe id="notes_frame" flex="1"/>
-				</tabpanel>
-				<tabpanel id="stat_cats_panel" orient="vertical">
-					<iframe id="stat_cats_frame" flex="1"/>
-				</tabpanel>
-				<tabpanel id="surveys_panel" orient="vertical">
-					<iframe id="surveys_frame" flex="1"/>
-				</tabpanel>
-				<tabpanel id="group_panel" orient="vertical">
-					<iframe id="group_frame" flex="1"/>
-				</tabpanel>
+				<tabpanel id="notes_panel" orient="vertical" />
+				<tabpanel id="stat_cats_panel" orient="vertical" />
+				<tabpanel id="surveys_panel" orient="vertical" />
+				<tabpanel id="group_panel" orient="vertical" />
 			</tabpanels>
 		</tabbox>
 	</vbox>

@@ -23,8 +23,11 @@ function my_init() {
 		/* What record am I dealing with?  Am I adding just copies or copies and volumes? */
 
 		g.doc_id = xul_param('doc_id');
-		document.getElementById('summary').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + window.escape(g.doc_id));
-		get_contentWindow(document.getElementById('summary')).xulG = { 'docid' : g.doc_id };
+        var sb = document.getElementById('summary_box'); while(sb.firstChild) sb.removeChild(sb.lastChild);
+        var summary = document.createElement('iframe'); sb.appendChild(summary);
+		summary.setAttribute('src',urls.XUL_BIB_BRIEF);
+		summary.setAttribute('flex','1');
+		get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
 
 		g.copy_shortcut = xul_param('copy_shortcut',{'JSON2js_if_cgi':true});
 		g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
