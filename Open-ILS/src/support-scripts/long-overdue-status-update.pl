@@ -1,74 +1,45 @@
 #!/usr/bin/perl
-use strict;
+# ---------------------------------------------------------------------
+# Long Overdue script with default period param.
+# ./long-overdue-status-update.pl <bootstrap_config> <lockfile> <age (default '180 days')>
+# ---------------------------------------------------------------------
+
+use strict; 
 use warnings;
-
-use lib 'LIBDIR/perl5/';
-
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
-use OpenSRF::Application;
-use OpenSRF::EX qw/:try/;
-use OpenSRF::AppSession;
-use OpenSRF::Utils::SettingsClient;
-use OpenILS::Application::AppUtils;
-use OpenILS::Utils::Fieldmapper;
-use Digest::MD5 qw/md5_hex/;
 
-use Getopt::Long;
+my $config = shift || die "bootstrap config required\n";
+my $lockfile = shift || "/tmp/long_overdue-LOCK";
+my $age = shift;
 
-my ($od_length, $user, $password, $config) =
-	('180 days', 'admin', 'open-ils', 'SYSCONFDIR/opensrf_core.xml');
+$age = '180 days' if (!defined($age) or $age == 0);
+ 
+if (-e $lockfile) {
+        open(F,$lockfile);
+        my $pid = <F>;
+        close F;
 
-GetOptions(
-	'overdue=s'	=> \$od_length,
-	'user=s'	=> \$user,
-	'password=s'	=> \$password,
-	'config=s'	=> \$config,
-);
-
-OpenSRF::System->bootstrap_client( config_file => $config );
-Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
-
-my $auth = login($user,$password);
-
-my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-my $req = $ses->request(
-	'open-ils.cstore',
-	'open-ils.cstore.json_query',
-	{ select => { circ =>  [ qw/id/ ] }, from => circ => where => { due_date => { ">" => { transform => "age", value => "340 days" } } } }
-);
-
-while ( my $res = $req->recv( timeout => 120 ) ) {
-	print $res->content->target_copy . "\n";
+        open(F,'/bin/ps axo pid|');
+        while ( my $p = <F>) {
+                chomp($p);
+                if ($p =~ s/\s*(\d+)$/$1/o && $p == $pid) {
+                        die "I seem to be running already at pid $pid.  If not, try again\n";
+                }
+        }
+        close F;
 }
 
-sub login {        
-	my( $username, $password, $type ) = @_;
+open(F, ">$lockfile");
+print F $$;
+close F;
 
-	$type |= "staff"; 
+OpenSRF::System->bootstrap_client( config_file => $config );
 
-	my $seed = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.init',
-		$username
-	);
+my $r = OpenSRF::AppSession
+		->create( 'open-ils.storage' )
+		->request( 'open-ils.storage.action.circulation.long_overdue' => $age );
 
-	die("No auth seed. Couldn't talk to the auth server") unless $seed;
+while (!$r->complete) { $r->recv };
 
-	my $response = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.complete',
-                {       username => $username,
-                        password => md5_hex($seed . md5_hex($password)),
-                        type => $type });
-
-        die("No auth response returned on login.") unless $response;
-
-        my $authtime = $response->{payload}->{authtime};
-        my $authtoken = $response->{payload}->{authtoken};
-
-	die("Login failed for user $username!") unless $authtoken;
-
-        return $authtoken;
-}       
-
-
+unlink $lockfile;
