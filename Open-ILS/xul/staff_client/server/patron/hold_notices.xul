@@ -197,18 +197,13 @@
 				xml += '<caption label="' + $("patronStrings").getString('staff.patron.hold_notices.new_notification_record') + '"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
 				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.method') + '"/><textbox id="method" name="fancy_data"/></row>';
 				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.note') + '"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
-				xml += '<row><spacer/><hbox><button label="' + $("patronStrings").getString('staff.patron.hold_notices.cancel') + '" name="fancy_cancel"';
+				xml += '<row><spacer/><hbox><button label="' + $("patronStrings").getString('staff.patron.hold_notices.cancel') + '" name="fancy_cancel" ';
 				xml += 'accesskey="' + $("patronStrings").getString('staff.patron.hold_notices.cancel_accesskey') + '"/>';
-				xml += '<button label="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') + '";'
+				xml += '<button label="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') + '" ';
 				xml += 'accesskey="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record_accesskey') + '" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
-				//g.data.init({'via':'stash'});
-				//g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
 				JSAN.use('util.window'); var win = new util.window();
 				var fancy_prompt_data = win.open(
 					urls.XUL_FANCY_PROMPT,
-					//+ '?xml_in_stash=temp_notification_xml'
-					//+ '&focus=' + window.escape('method')
-					//+ '&title=' + window.escape('Add Notification Record'),
 					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
 					{ 'xml' : xml, 'focus' : 'method', 'title' : $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') }
 				);
