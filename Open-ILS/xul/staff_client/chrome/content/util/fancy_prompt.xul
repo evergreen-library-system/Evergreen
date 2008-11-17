@@ -92,7 +92,10 @@
 					try { document.title = xul_param('title',{'modal_xulG':true}); } catch(E) {}
 				}
 
-				if (xul_param('focus',{'modal_xulG':true})) document.getElementById(xul_param('focus',{'modal_xulG':true})).focus();
+				if (xul_param('focus',{'modal_xulG':true})) {
+                    var focus_element = document.getElementById(xul_param('focus',{'modal_xulG':true}));
+                    if (focus_element) focus_element.focus();
+                }
 
 				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 				xulG.fancy_status = 'incomplete';
