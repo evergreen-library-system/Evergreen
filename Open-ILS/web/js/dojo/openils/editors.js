@@ -2,8 +2,8 @@ if(!dojo._hasResource["openils.editors"]){
 dojo._hasResource["openils.editors"] = true;
 dojo.provide("openils.editors");
 
-dojo.require("dojox.grid._data.dijitEditors");
-dojo.require("dojox.grid._data.editors");
+dojo.require("dojox.grid.compat._data.dijitEditors");
+dojo.require("dojox.grid.compat._data.editors");
 dojo.require("dijit.form.NumberSpinner");
 dojo.require('dijit.form.FilteringSelect');
 

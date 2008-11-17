@@ -20,7 +20,7 @@ dojo.provide('openils.acq.Picklist');
 
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojox.grid.Grid');
-dojo.require('dojox.grid._data.model');
+dojo.require('dojox.grid.compat._data.model');
 dojo.require('fieldmapper.Fieldmapper');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.Event');
