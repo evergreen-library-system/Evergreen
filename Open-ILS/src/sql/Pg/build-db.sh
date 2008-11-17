@@ -98,6 +98,7 @@ ordered_file_list="
   070.schema.container.sql
   080.schema.money.sql
   090.schema.action.sql
+  099.functions.global.sql
   
   100.circ_matrix.sql
   110.hold_matrix.sql
