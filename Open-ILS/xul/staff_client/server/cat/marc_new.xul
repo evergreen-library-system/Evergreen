@@ -124,9 +124,12 @@
 									}
 								}
 							};
-							$('marc_editor').setAttribute('src',url);
+                            var marc_editor = document.createElement('iframe');
+                            $('marc_editor_box').appendChild(marc_editor);
+							marc_editor.setAttribute('flex','1');
+							marc_editor.setAttribute('src',url);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							get_contentWindow($('marc_editor')).xulG = params;
+							get_contentWindow(marc_editor).xulG = params;
 
 							/* hide template widgets */
 							$('actions').hidden = true;
@@ -155,12 +158,11 @@
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
-	<vbox flex="1">
+	<vbox id="marc_editor_box" flex="1">
 		<hbox id="actions">
 			<hbox id="menu_placeholder" />
 			<button id="load" label="&staff.cat.marc_new.load.label;" accesskey="&staff.cat.marc_new.load.accesskey;"/>
 		</hbox>
-		<iframe id="marc_editor" flex="1"/>
 	</vbox>
 
 </window>
