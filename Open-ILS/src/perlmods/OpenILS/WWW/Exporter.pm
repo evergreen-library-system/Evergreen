@@ -88,6 +88,11 @@ sub handler {
 	my $container = $cgi->param('containerid');
 	if ($container) {
 		my $bucket = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve', $container )->gather(1);
+        unless($bucket) {
+            $r->log->error("No such bucket $container"); 
+            $logger->error("No such bucket $container"); 
+            return Apache2::Const::NOT_FOUND;
+        }
         if ($bucket->pub !~ /t|1/oi) {
     		my $authid = $cgi->cookie('ses') || $cgi->param('ses');
 	    	my $auth = verify_login($authid);
