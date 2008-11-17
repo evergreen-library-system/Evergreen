@@ -185,9 +185,9 @@ sub do_class_search {
 		$logger->debug("z3950: service: $tmp_args{service}, async: $tmp_args{async}");
 
         if ($tmp_args{service} eq 'native-evergreen-catalog') { 
-            my $method = $self->method_lookup('open-ils.search.biblio.zstyle'); 
+            my $method = $self->method_lookup('open-ils.search.biblio.zstyle.staff'); 
             $conn->respond( 
-                $self->method_lookup('open-ils.search.biblio.zstyle')->run($auth, \%tmp_args) 
+                $self->method_lookup('open-ils.search.biblio.zstyle.staff')->run($auth, \%tmp_args) 
             ); 
 
         } else { 

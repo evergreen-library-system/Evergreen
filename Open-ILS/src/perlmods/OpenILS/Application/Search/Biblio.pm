@@ -559,6 +559,12 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 	signature	=> q/@see open-ils.search.biblio.multiclass/);
 
+__PACKAGE__->register_method(
+	method		=> 'cat_search_z_style_wrapper',
+	api_name	=> 'open-ils.search.biblio.zstyle.staff',
+	stream		=> 1,
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+
 sub cat_search_z_style_wrapper {
 	my $self = shift;
 	my $client = shift;
@@ -621,7 +627,7 @@ __PACKAGE__->register_method(
 	method		=> 'the_quest_for_knowledge',
 	api_name		=> 'open-ils.search.biblio.multiclass',
 	signature	=> q/
-		Performs a multi class bilbli or metabib search
+		Performs a multi class biblio or metabib search
 		@param searchhash A search object layed out like so:
 			searches : { "$class" : "$value", ...}
 			org_unit : The org id to focus the search at
