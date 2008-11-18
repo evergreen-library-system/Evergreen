@@ -672,6 +672,9 @@
 	<event code='1879' textcode='ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq_lineitem_attr was not found</desc>
 	</event>
+	<event code='1880' textcode='CONFIG_BILLING_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_billing_type was not found</desc>
+	</event>
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
