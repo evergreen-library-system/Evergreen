@@ -186,12 +186,12 @@ sub mark_longoverdue {
 		  SET	stop_fines = 'LONGOVERDUE',
 			stop_fines_time = now()
 		  WHERE	id IN (
-		    SELECT  id
+		    SELECT  circ.id
                       FROM  $circ circ
                             LEFT JOIN $setting setting
                                 ON (circ.circ_lib = setting.org_unit AND setting.name = 'circ.long_overdue.interval')
                       WHERE circ.checkin_time IS NULL AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','LONGOVERDUE'))
-                            AND AGE(circ.due_date) > CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL)
+                            AND AGE(circ.due_date) > CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
                   )
 	SQL
 
