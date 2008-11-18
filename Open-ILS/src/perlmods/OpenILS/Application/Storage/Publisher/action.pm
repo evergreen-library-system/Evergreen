@@ -164,9 +164,48 @@ sub complete_reshelving {
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.action.circulation.reshelving.complete',
 	api_level       => 1,
-	stream		=> 1,
 	argc		=> 1,
 	method          => 'complete_reshelving',
+);
+
+sub mark_longoverdue {
+	my $self = shift;
+	my $client = shift;
+	my $window = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
+	throw OpenSRF::EX::InvalidArg ("I need an interval of more than 0 seconds!")
+		unless (interval_to_seconds( $window ));
+
+	my $setting = actor::org_unit_setting->table;
+	my $circ = action::circulation->table;
+
+	my $sql = <<"	SQL";
+		UPDATE	$circ
+		  SET	stop_fines = 'LONGOVERDUE',
+			stop_fines_time = now()
+		  WHERE	id IN (
+		    SELECT  id
+                      FROM  $circ circ
+                            LEFT JOIN $setting setting
+                                ON (circ.circ_lib = setting.org_unit AND setting.name = 'circ.long_overdue.interval')
+                      WHERE circ.checkin_time IS NULL AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','LONGOVERDUE'))
+                            AND AGE(circ.due_date) > CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL)
+                  )
+	SQL
+
+	my $sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth->execute($window);
+
+	return $sth->rows;
+
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.circulation.long_overdue',
+	api_level       => 1,
+	argc		=> 1,
+	method          => 'mark_longoverdue',
 );
 
 sub auto_thaw_frozen_holds {

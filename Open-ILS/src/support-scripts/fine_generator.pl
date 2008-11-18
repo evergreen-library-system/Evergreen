@@ -1,8 +1,7 @@
 #!/usr/bin/perl
 # ---------------------------------------------------------------------
-# Generic databse object dumper.
-# ./object_dumper.pl <bootstrap_config> <type>, <type>, ...
-# ./object_dumper.pl /openils/conf/opensrf_core.xml permission.grp_tree
+# Fine generator with default grace period param.
+# ./object_dumper.pl <bootstrap_config> <lockfile> <grace (default 0)>
 # ---------------------------------------------------------------------
 
 use strict; 
