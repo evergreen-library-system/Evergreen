@@ -1174,7 +1174,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 						msg += '\nHold for patron ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + ' ' + au_obj.second_given_name() + '\n';
 						msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 						if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
-						if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
+						if (get_bool(check.payload.hold.email_notify())) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
 						msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F') + '\n';
 					}
 					var rv = 0;
@@ -1260,7 +1260,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				msg += '\nHold for patron ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + ' ' + au_obj.second_given_name() + '\n';
 				msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 				if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
-				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
+				if (get_bool(check.payload.hold.email_notify())) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
 				msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F');
 			}
 			var rv = 0;
