@@ -113,7 +113,6 @@
 					}
 				} else {
 					$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_circ'));
-					$('circ').hidden = true;
 				}
 
 				if (g.transit) {
