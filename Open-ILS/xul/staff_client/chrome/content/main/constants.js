@@ -140,6 +140,7 @@ const api = {
 	'FM_BRE_DELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.delete', 'secure' : false },
 	'FM_BRE_UNDELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.undelete', 'secure' : false },
 	'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn', 'secure' : false },
+	'FM_CBT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.billing_type.ranged.retrieve.all', 'secure' : false },
 	'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all', 'secure' : false },
 	'FM_CIRC_DETAILS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve' },
 	'FM_CIRC_DETAILS.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve.authoritative' },

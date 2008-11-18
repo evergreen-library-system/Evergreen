@@ -100,18 +100,27 @@ function patron_bill_init() {
         JSAN.use('util.functional');
         var ml = util.widgets.make_menulist(
             util.functional.map_list(
-                g.OpenILS.data.list.billing_type.sort(),
-                function(obj) { return [ obj, obj ]; }
-            )
+                g.OpenILS.data.list.cbt.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } ), //g.OpenILS.data.list.billing_type.sort(),
+                function(obj) { return [ obj.name(), obj.id() ]; } //function(obj) { return [ obj, obj ]; }
+            ),
+            g.OpenILS.data.list.cbt.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0]
         );
         ml.setAttribute('id','billing_type');
         document.getElementById('menu_placeholder').appendChild(ml);
+        ml.addEventListener(
+            'command',
+            function() {
+                $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
+            },
+            false
+        ); 
 
         retrieve_patron();
 
         $('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
-        $('bill_amount').focus();
+        $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
+        $('bill_amount').select(); $('bill_amount').focus();
 
         if (xul_param('xact_id',{'modal_xulG':true})) { 
             g.mbts_id = xul_param('xact_id',{'modal_xulG':true});
@@ -150,14 +159,14 @@ function patron_bill_finish() {
                 billing.note( $('bill_note').value );
                 billing.xact( xact_id );
                 billing.amount( util.money.sanitize( $('bill_amount').value ) );
-                billing.billing_type( $('billing_type').value );
+                billing.billing_type( g.OpenILS.data.hash.cbt[$('billing_type').value].name() );
             var mb_id = g.network.request(
                 api.FM_MB_CREATE.app,
                 api.FM_MB_CREATE.method,
                 [ ses(), billing ]
             );
             if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
-            alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
+            //alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
         } else {
             throw(xact_id);
         }

@@ -506,7 +506,6 @@ OpenILS.data.prototype = {
 			}
 		);
 
-
 		this.chain.push(
 			function() {
 				var f = gen_fm_retrieval_func(
@@ -744,7 +743,26 @@ OpenILS.data.prototype = {
 			}
 		);
 
-
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
+					'cbt',
+					[
+						api.FM_CBT_RETRIEVE.app,
+						api.FM_CBT_RETRIEVE.method,
+						[ obj.session.key, obj.list.au[0].ws_ou() ],
+						false
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
 
 		if (typeof this.on_complete == 'function') {
 
