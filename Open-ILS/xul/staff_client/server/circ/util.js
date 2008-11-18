@@ -2055,7 +2055,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
 							msg += '\n';
 						}
-						if (check.payload.hold.email_notify()) {
+						if (get_bool(check.payload.hold.email_notify())) {
 							var payload_email = au_obj.email() ? au_obj.email() : '';
 							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
 							msg += '\n';
@@ -2185,7 +2185,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
 					msg += '\n';
 				}
-				if (check.payload.hold.email_notify()) {
+				if (get_bool(check.payload.hold.email_notify())) {
 					var payload_email = au_obj.email() ? au_obj.email() : '';
 					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
 					msg += '\n';
