@@ -65,6 +65,12 @@ sub format {
     my $self = shift;
     my $caption = $self->{CAPTION};
     my $str = "";
+    my %month = ( '01' => 'Jan.', '02' => 'Feb.', '03' => 'Mar.',
+		  '04' => 'Apr.', '05' => 'May ', '06' => 'Jun.',
+		  '07' => 'Jul.', '08' => 'Aug.', '09' => 'Sep.',
+		  '10' => 'Oct.', '11' => 'Nov.', '12' => 'Dec.',
+		  '21' => 'Spring', '22' => 'Summer',
+		  '23' => 'Autumn', '24' => 'Winter' );
 
     # Enumerations
     foreach my $key ('a'..'f') {
@@ -79,6 +85,8 @@ sub format {
 	$str .= '(';
 	foreach my $key ('i'..'l') {
 	    my $capstr;
+	    my $chron;
+	    my $sep;
 
 	    last if !defined $caption->caption($key);
 
@@ -88,7 +96,17 @@ sub format {
 		$capstr = '';
 	    }
 
-	    $str .= ($key eq 'i' ? '' : ':') . $capstr . $self->{CHRON}->{$key};
+	    # If this is the second level of chronology, then it's
+	    # likely to be a month or season, so we should use the
+	    # string name rather than the number given.
+	    if ($key eq 'j' && exists $month{$self->{CHRON}->{$key}}) {
+		$chron = $month{$self->{CHRON}->{$key}};
+	    } else {
+		$chron = $self->{CHRON}->{$key};
+	    }
+
+
+	    $str .= (($key eq 'i' || $str =~ /[. ]$/) ? '' : ':') . $capstr . $chron;
 	}
 	$str .= ')';
     }
@@ -130,6 +148,7 @@ sub next {
     my $self = shift;
     my $caption = $self->{CAPTION};
     my $next = {};
+    my $carry;
 
     foreach my $key ('a' .. 'h') {
 	next if !exists $self->{ENUMS}->{$key};
@@ -155,12 +174,26 @@ sub next {
 	    last;
 	}
     }
-    foreach my $key (reverse('a'.. 'f')) {
+
+
+    # $carry keeps track of whether we need to carry into the next
+    # higher level of enumeration. It's not actually necessary except
+    # for when the loop ends: if we need to carry from $b into $a
+    # then $carry will be set when the loop ends.
+    # 
+    # We need to keep track of this because there are two different
+    # reasons why we might increment the highest level of enumeration ($a)
+    # 1) we hit the correct number of items in $b (ie, 5th iss of quarterly)
+    # 2) it's the right time of the year.
+    #
+    $carry = 0;
+    foreach my $key (reverse('b'.. 'f')) {
 	next if !exists $next->{$key};
 	if (!exists $caption->{ENUMS}->{$key}) {
 	    # Just assume that it increments continuously and give up
 	    warn "Holding data exists for $key, but no caption specified";
 	    $next->{$key} += 1;
+	    $carry = 0;
 	    last;
 	}
 
@@ -168,8 +201,7 @@ sub next {
 	if ($cap->{RESTART} && $cap->{COUNT}
 	    && ($next->{$key} eq $cap->{COUNT})) {
 	    $next->{$key} = 1;
-	    # I increment the next higher level of enumeration by continuing
-	    # the loop.
+	    $carry = 1;
 	} else {
 	    # If I don't need to "carry" beyond here, then I just increment
 	    # this level of the enumeration and stop looping, since the
@@ -178,8 +210,22 @@ sub next {
 	    # NOTE: This DOES NOT take into account the incrementing
 	    # of enumerations based on the calendar. (eg: The Economist)
 	    $next->{$key} += 1;
+	    $carry = 0;
 	    last;
 	}
+    }
+
+    # The easy part is done. There are two things left to do:
+    # 1) Calculate the date of the next issue, if necessary
+    # 2) Increment the highest level of enumeration (either by date
+    #    or because $carry is set because of the above loop
+
+    if (!%{$caption->{CHRONS}}) {
+	# The simple case: if there is no chronology specified
+	# then just check $carry and return
+	$next->{'a'} += $carry;
+    } else {
+	# Complicated: figure out date of next issue
     }
 
     return($next);
