@@ -1040,21 +1040,6 @@ sub opensearch_feed {
 	}
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
-	if ($terms eq 'help') {
-		print $cgi->header(-type => 'text/html');
-		print <<"		HTML";
-			<html>
-			 <head>
-			  <title>just type something!</title>
-			 </head>
-			 <body>
-			  <p>You are in a maze of dark, twisty stacks, all alike.</p>
-			 </body>
-			</html>
-		HTML
-		return Apache2::Const::OK;
-    }
-	
 	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
 
