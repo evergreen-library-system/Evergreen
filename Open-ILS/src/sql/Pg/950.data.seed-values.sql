@@ -1293,12 +1293,12 @@ INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, u
 
 SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_tree));
 
-INSERT INTO permission.grp_penalty_threshold (grp,penalty,threshold)
-    VALUES (1,1,10.0);
-INSERT INTO permission.grp_penalty_threshold (grp,penalty,threshold)
-    VALUES (1,2,10.0);
+INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
+    VALUES (1,1,1,10.0);
+INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
+    VALUES (1,1,2,10.0);
 
-SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_tree));
+SELECT SETVAL('permission.grp_penalty_threshold_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_penalty_threshold));
 
 -- XXX Incomplete base permission setup.  A patch would be appreciated.
 INSERT INTO permission.grp_perm_map VALUES (57, 2, 15, 0, false);

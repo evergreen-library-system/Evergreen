@@ -144,36 +144,6 @@ CREATE TABLE actor.usr_note (
 );
 CREATE INDEX actor_usr_note_usr_idx ON actor.usr_note (usr);
 
-CREATE TABLE actor.usr_standing_penalty (
-	id			SERIAL	PRIMARY KEY,
-	usr			INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	standing_penalty	INT	NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	staff			INT	REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	set_date		TIMESTAMP WITH TIME ZONE	DEFAULT NOW()
-);
-COMMENT ON TABLE actor.usr_standing_penalty IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User standing penalties
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-$$;
-
-CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (usr);
-
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
 	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
@@ -516,5 +486,37 @@ CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);
 CREATE OR REPLACE FUNCTION public.first5 ( TEXT ) RETURNS TEXT AS $$
 	SELECT SUBSTRING( $1, 1, 5);
 $$ LANGUAGE SQL;
+
+CREATE TABLE actor.usr_standing_penalty (
+	id			SERIAL	PRIMARY KEY,
+	org_unit		INT	NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	usr			INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	standing_penalty	INT	NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	staff			INT	REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	set_date		TIMESTAMP WITH TIME ZONE	DEFAULT NOW()
+);
+COMMENT ON TABLE actor.usr_standing_penalty IS $$
+/*
+ * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * User standing penalties
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
+CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (usr);
+
 
 COMMIT;

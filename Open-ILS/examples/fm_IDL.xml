@@ -1725,10 +1725,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="grp" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="link"/>
 			<field name="penalty" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="link"/>
 			<field name="threshold" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="float"/>
+			<field name="org_unit" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="penalty" reltype="has_a" key="id" map="" class="csp"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
         </links>
 	</class>
 	<class id="ccs" controller="open-ils.cstore" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
@@ -1761,9 +1763,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="standing_penalty" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="org_unit" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="standing_penalty" reltype="has_a" key="id" map="" class="csp"/>
 		</links>

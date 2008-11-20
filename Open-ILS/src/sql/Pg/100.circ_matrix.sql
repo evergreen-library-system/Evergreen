@@ -301,7 +301,7 @@ BEGIN
 	SELECT INTO circ_test * from config.circ_matrix_test WHERE matchpoint = result.matchpoint;
 
 	IF circ_test.org_depth IS NOT NULL THEN
-		SELECT INTO overdue_orgs ARRAY_ACCUM(id) FROM actor.org_unit_descendants( circ_ou, circ_test.org_depth );
+		SELECT INTO overdue_orgs ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_ou, circ_test.org_depth );
 	END IF; 
 
 	-- Fail if we couldn't find a set of tests
@@ -324,6 +324,7 @@ BEGIN
       FROM  actor.usr_standing_penalty usp
             JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
       WHERE usr = match_user
+            AND usp.org_unit IN ( SELECT * FROM explode_array(overdue_orgs) )
             AND csp.block_list LIKE '%RENEW%';
 
     IF patron_penalties > 0 THEN
@@ -339,6 +340,7 @@ BEGIN
       FROM  actor.usr_standing_penalty usp
             JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
       WHERE usr = match_user
+            AND usp.org_unit IN ( SELECT * FROM explode_array(overdue_orgs) )
             AND csp.block_list LIKE '%CIRC%';
 
     IF patron_penalties > 0 THEN
@@ -406,8 +408,8 @@ BEGIN
 			AND due_date < NOW()
 			AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
 		IF items_overdue >= max_overdue THEN
-            DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 2;
-            INSERT INTO actor.usr_standing_penalty (usr, standing_penalty) VALUES (match_usr, 2);
+			DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 2 AND org_unit = circ_ou;
+			INSERT INTO actor.usr_standing_penalty (usr, standing_penalty, org_unit) VALUES (match_usr, 2, circ_ou);
 			result.fail_part := 'config.circ_matrix_test.max_overdue';
 			result.success := FALSE;
 			done := TRUE;
@@ -446,8 +448,8 @@ BEGIN
 		END LOOP;
 
 		IF current_fines >= max_fines THEN
-            DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 1;
-            INSERT INTO actor.usr_standing_penalty (usr, standing_penalty) VALUES (match_usr, 1);
+			DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 1 AND org_unit = circ_ou;
+			INSERT INTO actor.usr_standing_penalty (usr, standing_penalty, org_unit) VALUES (match_usr, 1, circ_ou);
 			result.fail_part := 'config.circ_matrix_test.max_fines';
 			result.success := FALSE;
 			RETURN NEXT result;
