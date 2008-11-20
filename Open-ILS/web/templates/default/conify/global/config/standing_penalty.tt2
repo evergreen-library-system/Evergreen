@@ -1,0 +1,56 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/standing_penalty.js'> </script>
+<style>
+    @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
+</style>
+<h1>Standing Penalty Types</h1><br/>
+
+<div dojoType="dijit.form.DropDownButton">
+    <span>New Standing Penalty</span>
+    <div dojoType="dijit.TooltipDialog" execute="spCreate(arguments[0]);">
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td><label for="name">Code: </label></td>
+                <td><input dojoType="dijit.form.TextBox" name="name"/></td>
+            </tr>
+            <tr>
+                <td><label for="label">Label: </label></td>
+                <td><input dojoType="dijit.form.TextBox" name="label"/></td>
+            </tr>
+            <tr>
+                <td><label for="block_list">Blocked Actions: </label></td>
+                <td>
+                    <select style='overflow-y:auto;' multiple='true' dojoType="dojox.form.CheckedMultiSelect" name="block_list">
+                        <option value='CIRC'>CIRC</option>
+                        <option value='RENEW'>RENEW</option>
+                        <option value='HOLD'>HOLD</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType='dijit.form.Button' type="submit">Create</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div> 
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="spGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="id">ID</th>
+                    <th field="name" width='auto'>Name</th>
+                    <th field="label" width='auto'>Label</th>
+                    <th field="block_list" width='auto'>Block List</th>
+                </tr>
+            </thead>
+        </table>    
+    </div>
+</div>
+
+[% END %]
+
+
