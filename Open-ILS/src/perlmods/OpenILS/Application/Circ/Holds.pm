@@ -935,11 +935,10 @@ sub flesh_hold_notices {
 }
 
 
-
-
 __PACKAGE__->register_method(
 	method => 'fetch_captured_holds',
 	api_name	=> 'open-ils.circ.captured_holds.on_shelf.retrieve',
+    stream => 1,
 	signature	=> q/
 		Returns a list of un-fulfilled holds for a given title id
 		@param authtoken The login session key
@@ -950,6 +949,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method => 'fetch_captured_holds',
 	api_name	=> 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
+    stream => 1,
 	signature	=> q/
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
@@ -966,36 +966,50 @@ sub fetch_captured_holds {
 
 	$org ||= $e->requestor->ws_ou;
 
-	my $holds = $e->search_action_hold_request(
-		{ 
-			capture_time		=> { "!=" => undef },
-			current_copy		=> { "!=" => undef },
-			fulfillment_time	=> undef,
-			pickup_lib			=> $org,
-			cancel_time			=> undef,
-		}
-	);
+    my $hold_ids = $e->json_query(
+        { 
+            select => { ahr => ['id'] },
+            from => {
+                ahr => {
+                    acp => {
+                        field => 'id',
+                        fkey => 'current_copy'
+                    },
+                }
+            }, 
+            where => {
+                '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
+                '+ahr' => {
+                    capture_time		=> { "!=" => undef },
+                    current_copy		=> { "!=" => undef },
+                    fulfillment_time	=> undef,
+                    pickup_lib			=> $org,
+                    cancel_time			=> undef,
+                }
+            }
+        },
+    );
 
-	my @res;
-	for my $h (@$holds) {
-		my $copy = $e->retrieve_asset_copy($h->current_copy)
-			or return $e->event;
-		push( @res, $h ) if 
-			$copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
-	}
+    for my $hold_id (@$hold_ids) {
+        if($self->api_name =~ /id_list/) {
+            $conn->respond($hold_id->{id});
+            next;
+        } else {
+            $conn->respond(
+                $e->retrieve_action_hold_request([
+                    $hold_id->{id},
+                    {
+                        flesh => 1,
+                        flesh_fields => {ahr => ['notifications', 'transit']},
+                        order_by => {anh => 'notify_time desc'}
+                    }
+                ])
+            );
+        }
+    }
 
-	if( ! $self->api_name =~ /id_list/ ) {
-		flesh_hold_transits(\@res);
-		flesh_hold_notices(\@res, $e);
-	}
-
-	if( $self->api_name =~ /id_list/ ) {
-		return [ map { $_->id } @res ];
-	} else {
-		return \@res;
-	}
+    return undef;
 }
-
 __PACKAGE__->register_method(
 	method	=> "check_title_hold",
 	api_name	=> "open-ils.circ.title_hold.is_possible",
