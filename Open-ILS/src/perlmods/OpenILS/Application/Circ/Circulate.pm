@@ -170,9 +170,6 @@ sub run_method {
     # --------------------------------------------------------------------------
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
-    $circulator->check_penalty_on_renew(1) if
-        $circulator->is_renewal and $U->ou_ancestor_setting_value(
-            $circulator->circ_lib, 'circ.renew.check_penalty', $circulator->editor);
 
     if($legacy_script_support and not $circulator->is_checkin) {
         $circulator->mk_script_runner();
@@ -314,6 +311,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::Circ::ScriptBuilder;
 use OpenILS::Const qw/:const/;
+use OpenILS::Utils::Penalty;
 
 my $holdcode    = "OpenILS::Application::Circ::Holds";
 my $transcode   = "OpenILS::Application::Circ::Transit";
@@ -327,7 +325,6 @@ sub DESTROY { }
 # --------------------------------------------------------------------------
 my @AUTOLOAD_FIELDS = qw/
     notify_hold
-    penalty_request
     remote_hold
     backdate
     copy
@@ -340,7 +337,6 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
-    check_penalty_on_renew
     is_noncat
     is_precat
     request_precat
@@ -675,8 +671,7 @@ sub do_permit {
     $self->run_copy_permit_scripts() 
         unless $self->is_precat or $self->is_noncat;
     $self->check_item_deposit_events();
-    $self->override_events() unless 
-        $self->is_renewal and not $self->check_penalty_on_renew;
+    $self->override_events();
     return if $self->bail_out;
 
     if($self->is_precat and not $self->request_precat) {
@@ -798,31 +793,6 @@ sub do_copy_checks {
     }
 }
 
-
-sub send_penalty_request {
-    my $self = shift;
-    my $ses = OpenSRF::AppSession->create('open-ils.penalty');
-    $self->penalty_request(
-        $ses->request(  
-            'open-ils.penalty.patron_penalty.calculate', 
-            {   update => 1, 
-                authtoken => $self->editor->authtoken,
-                patron => $self->patron } ) );
-}
-
-sub gather_penalty_request {
-    my $self = shift;
-    return [] unless $self->penalty_request;
-    my $data = $self->penalty_request->recv;
-    if( ref $data ) {
-        throw $data if UNIVERSAL::isa($data,'Error');
-        $data = $data->content;
-        return $data->{fatal_penalties};
-    }
-    $logger->error("circulator: penalty request returned no data");
-    return [];
-}
-
 my $LEGACY_CIRC_EVENT_MAP = {
     'actor.usr.barred' => 'PATRON_BARRED',
     'asset.copy.circulate' =>  'COPY_CIRC_NOT_ALLOWED',
@@ -857,10 +827,6 @@ sub run_patron_permit_scripts {
 
     } else {
 
-        $self->send_penalty_request() unless
-            $self->is_renewal and not $self->check_penalty_on_renew;
-
-
         # --------------------------------------------------------------------- # Now run the patron permit script 
         # ---------------------------------------------------------------------
         $runner->load($self->circ_permit_patron);
@@ -869,8 +835,9 @@ sub run_patron_permit_scripts {
 
         my $patron_events = $result->{events};
 
-        my $penalties = ($self->is_renewal and not $self->check_penalty_on_renew) ? 
-            [] : $self->gather_penalty_request();
+        OpenILS::Utils::Penalty->calculate_penalties($self->editor, undef, $self->patron);
+        my $mask = ($self->is_renewal) ? 'RENEW' : 'CIRC';
+        my $penalties = OpenILS::Utils::penalty->retrieve_penalties($self->editor, $patronid, $mask);
 
         push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
     }
@@ -1205,18 +1172,11 @@ sub do_checkout {
     $self->handle_checkout_holds();
     return if $self->bail_out;
 
-   # ------------------------------------------------------------------------------
-   # Update the patron penalty info in the DB.  Run it for permit-overrides or
-    # renewals since both of those cases do not require the penalty server to
-    # run during the permit phase of the checkout
-   # ------------------------------------------------------------------------------
-    if( $self->permit_override or $self->is_renewal ) {
-        $U->update_patron_penalties(
-            authtoken => $self->editor->authtoken,
-            patron    => $self->patron,
-            background  => 1,
-        );
-    }
+    # ------------------------------------------------------------------------------
+    # Update the patron penalty info in the DB.  Run it for permit-overrides 
+    # since the penalties are not updated during the permit phase
+    # ------------------------------------------------------------------------------
+    $U->update_patron_penalties_nonblock(patronid => $self->patron->id) if $self->permit_override;
 
     my $record = $U->record_to_mvr($self->title) unless $self->is_precat;
     $self->push_events(
@@ -1796,15 +1756,7 @@ sub do_checkin {
             unless @{$self->events};
     }
 
-
-   # ------------------------------------------------------------------------------
-   # Update the patron penalty info in the DB
-   # ------------------------------------------------------------------------------
-   $U->update_patron_penalties(
-      authtoken => $self->editor->authtoken,
-      patron    => $self->patron,
-      background  => 1 ) if $self->is_checkin;
-
+    $U->update_patron_penalties_nonblock(patronid => $self->patron->id) if $self->is_checkin;
     $self->checkin_flesh_events;
     return;
 }

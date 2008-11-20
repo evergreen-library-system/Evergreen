@@ -1068,12 +1068,11 @@ sub fetch_user_by_barcode {
 # ---------------------------------------------------------------------
 # Updates and returns the patron penalties
 # ---------------------------------------------------------------------
-sub update_patron_penalties {
+sub update_patron_penalties_nonblock {
 	my( $self, %args ) = @_;
 	return $self->simplereq(
 		'open-ils.penalty',
-		'open-ils.penalty.patron_penalty.calculate', 
-		{ update => 1, %args }
+		'open-ils.penalty.patron_penalty.calculate', {background => 1}
 	);
 }
 

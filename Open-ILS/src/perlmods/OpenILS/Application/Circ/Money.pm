@@ -195,10 +195,7 @@ sub make_payments {
 	# ------------------------------------------------------------------------------
 	# Update the patron penalty info in the DB
 	# ------------------------------------------------------------------------------
-	$U->update_patron_penalties( 
-		authtoken => $login,
-		patronid  => $userid,
-	);
+	$U->update_patron_penalties_nonblock(patronid  => $userid);
 
 	$client->respond_complete(1);	
 
@@ -405,10 +402,7 @@ sub billing_items_create {
 	# ------------------------------------------------------------------------------
 	# Update the patron penalty info in the DB
 	# ------------------------------------------------------------------------------
-	$U->update_patron_penalties(
-		authtoken => $login,
-		patronid  => $xact->usr,
-	);
+	$U->update_patron_penalties_nonblock(patronid  => $xact->usr);
 
 	return $billing->id;
 }
@@ -457,7 +451,7 @@ sub void_bill {
 
 	$e->commit;
     # update the penalties for each affected user
-	$U->update_patron_penalties( authtoken => $authtoken, patronid  => $_ ) for keys %users;
+	$U->update_patron_penalties_nonblock(patronid  => $_) for keys %users;
 	return 1;
 }
 
