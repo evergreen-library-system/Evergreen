@@ -39,6 +39,14 @@ CREATE TABLE permission.grp_tree (
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
+CREATE TABLE permission.grp_penalty_threshold (
+	id			SERIAL	        PRIMARY KEY,
+    grp         INT             NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    penalty     INT             NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    threshold   NUMERIC(8,2)    NOT NULL,
+    CONSTRAINT penalty_grp_once UNIQUE (grp,penalty)
+);
+
 CREATE TABLE permission.grp_perm_map (
 	id		SERIAL	PRIMARY KEY,
 	grp		INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,

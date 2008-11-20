@@ -117,8 +117,6 @@ CREATE TABLE config.circ_matrix_test (
 	matchpoint      INT     PRIMARY KEY NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	circulate       BOOL    NOT NULL DEFAULT TRUE,	-- Hard "can't circ" flag requiring an override
 	max_items_out   INT,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
-	max_overdue     INT,                            -- Total overdue active circulations must be less than this, NULL means skip (always pass)
-	max_fines       NUMERIC(8,2),                   -- Total fines owed must be less than this, NULL means skip (always pass)
 	org_depth       INT,                            -- Set to the top OU for the max-out applicability range
 	script_test     TEXT                            -- filename or javascript source ??
 );
@@ -232,9 +230,13 @@ DECLARE
 	result			action.matrix_test_result;
 	circ_test		config.circ_matrix_test%ROWTYPE;
 	out_by_circ_mod		config.circ_matrix_circ_mod_test%ROWTYPE;
+	patron_penalties 		INT;
+	tmp_grp 		INT;
 	items_out		INT;
+	max_overdue		INT;
 	items_overdue		INT;
 	overdue_orgs		INT[];
+	max_fines		    NUMERIC(8,2) := 0.0;
 	current_fines		NUMERIC(8,2) := 0.0;
 	tmp_fines		NUMERIC(8,2);
 	tmp_groc		RECORD;
@@ -318,6 +320,34 @@ BEGIN
 		RETURN NEXT result;
 	END IF;
 
+    SELECT  INTO patron_penalties COUNT(*)
+      FROM  actor.usr_standing_penalty usp
+            JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
+      WHERE usr = match_user
+            AND csp.block_list LIKE '%RENEW%';
+
+    IF patron_penalties > 0 THEN
+        result.fail_part := 'config.circ_matrix_test.stop_blocked_user.circ';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    patron_penalties := 0;
+
+    SELECT  INTO patron_penalties COUNT(*)
+      FROM  actor.usr_standing_penalty usp
+            JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
+      WHERE usr = match_user
+            AND csp.block_list LIKE '%CIRC%';
+
+    IF patron_penalties > 0 THEN
+        result.fail_part := 'config.circ_matrix_test.stop_blocked_user.renew';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
 	-- Fail if the user has too many items checked out
 	IF circ_test.max_items_out IS NOT NULL THEN
     	SELECT  INTO items_out COUNT(*)
@@ -327,7 +357,7 @@ BEGIN
                 AND checkin_time IS NULL
                 AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
 	   	IF items_out >= circ_test.max_items_out THEN
-		    	result.fail_part := 'config.circ_matrix_test.max_items_out';
+	    	result.fail_part := 'config.circ_matrix_test.max_items_out';
 			result.success := FALSE;
 			done := TRUE;
 	   		RETURN NEXT result;
@@ -353,7 +383,21 @@ BEGIN
 	END LOOP;
 
 	-- Fail if the user has too many overdue items
-	IF circ_test.max_overdue IS NOT NULL THEN
+    tmp_grp := user_object.profile;
+    LOOP
+        SELECT pgpt.threshold::INT INTO max_overdue FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 2;
+        IF max_overdue IS NULL THEN
+            SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+        ELSE
+            EXIT;
+        END IF;
+
+        IF tmp_grp IS NULL THEN
+            EXIT;
+        END IF;
+    END LOOP;
+
+	IF max_overdue IS NOT NULL THEN
 		SELECT  INTO items_overdue COUNT(*)
 		  FROM  action.circulation
 		  WHERE usr = match_user
@@ -361,7 +405,9 @@ BEGIN
 			AND checkin_time IS NULL
 			AND due_date < NOW()
 			AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
-		IF items_overdue >= circ_test.max_overdue THEN
+		IF items_overdue >= max_overdue THEN
+            DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 2;
+            INSERT INTO actor.usr_standing_penalty (usr, standing_penalty) VALUES (match_usr, 2);
 			result.fail_part := 'config.circ_matrix_test.max_overdue';
 			result.success := FALSE;
 			done := TRUE;
@@ -370,7 +416,21 @@ BEGIN
 	END IF;
 
 	-- Fail if the user has a high fine balance
-	IF circ_test.max_fines IS NOT NULL THEN
+    tmp_grp := user_object.profile;
+    LOOP
+        SELECT pgpt.threshold INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 1;
+        IF max_overdue IS NULL THEN
+            SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+        ELSE
+            EXIT;
+        END IF;
+
+        IF tmp_grp IS NULL THEN
+            EXIT;
+        END IF;
+    END LOOP;
+
+	IF max_fines IS NOT NULL THEN
 		FOR tmp_groc IN SELECT * FROM money.grocery WHERE usr = match_usr AND xact_finish IS NULL AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND billing_location IN ( SELECT * FROM explode_array(overdue_orgs) ))) LOOP
 			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_groc.id AND NOT voided;
 			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
@@ -385,7 +445,9 @@ BEGIN
 			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
 		END LOOP;
 
-		IF current_fines >= circ_test.max_fines THEN
+		IF current_fines >= max_fines THEN
+            DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 1;
+            INSERT INTO actor.usr_standing_penalty (usr, standing_penalty) VALUES (match_usr, 1);
 			result.fail_part := 'config.circ_matrix_test.max_fines';
 			result.success := FALSE;
 			RETURN NEXT result;
@@ -410,6 +472,8 @@ CREATE OR REPLACE FUNCTION action.item_user_renew_test( INT, BIGINT, INT ) RETUR
 	SELECT * FROM action.item_user_circ_test( $1, $2, $3, TRUE );
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION actor.refresh_auto_penalties( user INT ) RETURNS INT AS $func$
+$func$ LANGUAGE plpgsql;
 
 COMMIT;
 

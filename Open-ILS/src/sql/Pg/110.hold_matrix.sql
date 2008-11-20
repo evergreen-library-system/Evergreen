@@ -252,13 +252,30 @@ BEGIN
 		END IF;
 	END IF;
 
+	SELECT	INTO patron_penalties COUNT(*)
+	  FROM	actor.usr_standing_penalty usp
+            JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
+	  WHERE	usr = match_user
+            AND csp.block_list LIKE '%HOLD%';
+
+	IF patron_penalties > 0 THEN
+		result.fail_part := 'config.hold_matrix_test.stop_blocked_user.hold';
+		result.success := FALSE;
+		done := TRUE;
+		RETURN NEXT result;
+	END IF;
+
+    patron_penalties := 0;
+
 	IF hold_test.stop_blocked_user IS TRUE THEN
 		SELECT	INTO patron_penalties COUNT(*)
-		  FROM	actor.usr_standing_penalty
-		  WHERE	usr = match_user;
+		  FROM	actor.usr_standing_penalty usp
+                JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
+		  WHERE	usr = match_user
+                AND csp.block_list LIKE '%CIRC%';
 
-		IF items_out > 0 THEN
-			result.fail_part := 'config.hold_matrix_test.stop_blocked_user';
+		IF patron_penalties > 0 THEN
+			result.fail_part := 'config.hold_matrix_test.stop_blocked_user.circ';
 			result.success := FALSE;
 			done := TRUE;
 			RETURN NEXT result;
@@ -273,7 +290,7 @@ BEGIN
 			AND cancel_time IS NULL
 			AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
 
-		IF items_out >= hold_test.max_holds THEN
+		IF hold_count >= hold_test.max_holds THEN
 			result.fail_part := 'config.hold_matrix_test.max_holds';
 			result.success := FALSE;
 			done := TRUE;
