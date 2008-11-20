@@ -38,5 +38,6 @@
         <handler path='acq/settings/li_attr' template='acq/settings/li_attr.tt2'/>
 
         <handler path='conify/global/config/billing_type' template='conify/global/config/billing_type.tt2'/>
+        <handler path='conify/global/config/standing_penalty' template='conify/global/config/standing_penalty.tt2'/>
     </handlers>
 </oils_web>
