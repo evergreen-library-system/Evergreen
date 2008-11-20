@@ -101,6 +101,11 @@ econst OILS_BILLING_NOTE_SYSTEM => 'SYSTEM GENERATED';
 econst OILS_ACQ_DEBIT_TYPE_PURCHASE => 'purchase';
 econst OILS_ACQ_DEBIT_TYPE_TRANSFER => 'xfer';
 
+# all penalties with ID < 100 are managed automatically
+econst OILS_PENALTY_AUTO_ID => 100;
+econst OILS_PENALTY_PATRON_EXCEEDS_FINES => 1;
+econst OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT => 2;
+
 
 
 # ---------------------------------------------------------------------

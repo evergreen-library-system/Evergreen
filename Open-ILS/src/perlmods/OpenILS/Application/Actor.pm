@@ -30,6 +30,7 @@ use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenILS::Utils::Penalty;
 
 use OpenILS::Application::Actor::UserGroups;
 sub initialize {
@@ -308,9 +309,6 @@ sub update_patron {
 	return $evt if $evt;
 
 	($new_patron, $evt) = _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
-	return $evt if $evt;
-
-	($new_patron, $evt) = _create_standing_penalties($session, $user_session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
 
 	$logger->activity("user ".$user_obj->id." updating/creating  user ".$new_patron->id);
@@ -896,38 +894,6 @@ sub set_user_perms {
 
 	return scalar(@$maps);
 }
-
-
-sub _create_standing_penalties {
-
-	my($session, $user_session, $patron, $new_patron) = @_;
-
-	my $maps = $patron->standing_penalties;
-	my $method;
-
-	for my $map (@$maps) {
-
-		if ($map->isdeleted()) {
-			$method = "open-ils.storage.direct.actor.user_standing_penalty.delete";
-		} elsif ($map->isnew()) {
-			$method = "open-ils.storage.direct.actor.user_standing_penalty.create";
-			$map->clear_id;
-		} else {
-			next;
-		}
-
-		$map->usr($new_patron->id);
-
-		$logger->debug( "Updating standing penalty with method $method and session $user_session and map $map" );
-
-		my $stat = $session->request($method, $map)->gather(1);
-		return (undef, $U->DB_UPDATE_FAILED($map)) unless $stat;
-	}
-
-	return ($new_patron, undef);
-}
-
-
 
 __PACKAGE__->register_method(
 	method	=> "search_username",
@@ -2762,17 +2728,44 @@ sub trim_tree {
 __PACKAGE__->register_method(
 	method	=> "update_penalties",
 	api_name	=> "open-ils.actor.user.penalties.update");
+
 sub update_penalties {
-	my( $self, $conn, $auth, $userid ) = @_;
-	my $e = new_editor(authtoken=>$auth);
-	return $e->event unless $e->checkauth;
-	$U->update_patron_penalties( 
-		authtoken => $auth,
-		patronid  => $userid,
-	);
-	return 1;
+	my( $self, $conn, $auth, $user_id ) = @_;
+	my $e = new_editor(authtoken=>$auth, xact => 1);
+	return $e->die_event unless $e->checkauth;
+    my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $user_id);
+    return $evt if $evt;
+    $e->commit;
+    return 1;
 }
 
+__PACKAGE__->register_method(
+	method	=> "apply_penalty",
+	api_name	=> "open-ils.actor.user.penalty.apply");
+
+sub apply_penalty {
+	my($self, $conn, $auth, $user_id, $penalty_name) = @_;
+	my $e = new_editor(authtoken=>$auth, xact => 1);
+	return $e->die_event unless $e->checkauth;
+    my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+
+    my $penalty = $e->search_config_standing_penalty({name => $penalty_name})->[0]
+        or return $e->die_event;
+
+    # is it already applied?
+    return 1 if $e->search_actor_user_standing_penalty(
+        {usr => $user_id, standing_penalty => $penalty->id})->[0];
+
+    my $newp = Fieldmapper::actor::user_standing_penalty->new;
+    $newp->standing_penalty($penalty->id);
+    $newp->usr($user_id);
+    $e->create_actor_user_standing_penalty($newp) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
 
 
 __PACKAGE__->register_method(
