@@ -139,8 +139,7 @@ DEBS =  \
 	ntpdate\
 	psmisc\
 	python-dev\
-	python-setuptools\
-	syslog-ng
+	python-setuptools
 
 CENTOS = \
 	apr-util-devel \
@@ -302,7 +301,6 @@ DEB_APACHE_MODS = \
 # generic CPAN modules
 CPAN_MODULES = \
     DateTime::Format::ISO8601 \
-    TMTM/Class-DBI-0.96.tar.gz \
     RHANDOM/Net-Server-0.90.tar.gz \
     MARC::Charset MARC::File::XML \
     JSON::XS \
@@ -311,6 +309,9 @@ CPAN_MODULES = \
 	Business::CreditCard::Object \
 	XML::LibXML::XPathContext
 
+# generic CPAN modules to force the install
+CPAN_MODULES_FORCE = \
+    TMTM/Class-DBI-0.96.tar.gz
 
 # ----------------------------------------------------------------------------
 
@@ -337,6 +338,7 @@ ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
 # Install the CPAN modules
 install_cpan: 
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(CPAN_MODULES_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw#install $$m#);"; done
 
 # Install ejabberd from official project installer binary
 install_ejabberd:    
@@ -450,7 +452,7 @@ install_centos_pgsql:
 	yum -y install $(PGSQL_CENTOS)
 
 install_centos_perl:
-	for m in $(CENTOS_PERL_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw/install $$m);"; done
+	for m in $(CENTOS_PERL_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw#install $$m#);"; done
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
 	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
