@@ -15,14 +15,14 @@
                 <td><input dojoType="dijit.form.TextBox" name="name"/></td>
             </tr>
             <tr>
-                <td><label for="name">Owning Location: </label></td>
+                <td><label for="owner">Owning Location: </label></td>
                 <td>
                     <input dojoType="openils.widget.OrgUnitFilteringSelect" name="owner" 
                         jsId='btOwningOrg' searchAttr='shortname' labelAttr='shortname'/>
                 </td>
             </tr>
             <tr>
-                <td><label for="name">Default Price: </label></td>
+                <td><label for="default_price">Default Price: </label></td>
                 <td><input dojoType="dijit.form.CurrencyTextBox" name="default_price" required='false'/></td>
             </tr>
             <tr>
