@@ -109,13 +109,17 @@ sub get_group_penalty_thresholds {
 # into the fatal_penalties set.  Others will be sorted into the info_penalties set
 sub retrieve_penalties {
     my($class, $e, $user_id, @fatal_mask) = @_;
-    my $penalties = $e->search_actor_user_standing_penalty({usr => $user_id});
+    my $penalties = $e->search_actor_user_standing_penalty([
+        {usr => $user_id},
+        {flesh => 1, flesh_fields => {ausp => ['standing_penalty']}}
+    ]);
+
     my(@info, @fatal);
     for my $p (@$penalties) {
         my $pushed = 0;
-        if($p->block_list) {
+        if($p->standing_penalty->block_list) {
             for my $m (@fatal_mask) {
-                if($p->block_list =~ /$m/) {
+                if($p->standing_penalty->block_list =~ /$m/) {
                     push(@fatal, $p->name);
                     $pushed = 1;
                 }
