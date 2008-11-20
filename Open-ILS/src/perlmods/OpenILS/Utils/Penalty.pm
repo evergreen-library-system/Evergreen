@@ -12,8 +12,6 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
 my $U = "OpenILS::Application::AppUtils";
 
-my $grp_penalty_thresholds = {};
-
 
 # calculate and update the well-known penalties
 sub calculate_penalties {
@@ -88,9 +86,9 @@ sub collect_user_stats {
 }
 
 # get the ranged set of penalties for a give group
+# XXX this could probably benefit from a stored proc
 sub get_group_penalty_thresholds {
     my($class, $e, $grp_id) = @_;
-#    return $grp_penalty_thresholds->{$grp_id} if $grp_penalty_thresholds->{$grp_id};
     my @thresholds;
     my $cur_grp = $grp_id;
     do {
@@ -100,7 +98,6 @@ sub get_group_penalty_thresholds {
         }
     } while(defined ($cur_grp = $e->retrieve_permission_grp_tree($cur_grp)->parent));
     
-#    return $grp_penalty_thresholds->{$grp_id} = \@thresholds;
     return \@thresholds;
 }
 
@@ -109,6 +106,7 @@ sub get_group_penalty_thresholds {
 # into the fatal_penalties set.  Others will be sorted into the info_penalties set
 sub retrieve_penalties {
     my($class, $e, $user_id, @fatal_mask) = @_;
+
     my $penalties = $e->search_actor_user_standing_penalty([
         {usr => $user_id},
         {flesh => 1, flesh_fields => {ausp => ['standing_penalty']}}
