@@ -675,6 +675,9 @@
 	<event code='1880' textcode='CONFIG_BILLING_TYPE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_billing_type was not found</desc>
 	</event>
+	<event code='1881' textcode='PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_penalty_threshold was not found</desc>
+	</event>
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
