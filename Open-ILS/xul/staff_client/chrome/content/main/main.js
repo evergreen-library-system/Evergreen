@@ -8,6 +8,8 @@ function grant_perms(url) {
 	if (pref) {
 		pref.setCharPref("capability.principal.codebase.p0.granted", perms);
 		pref.setCharPref("capability.principal.codebase.p0.id", url);
+		pref.setCharPref("capability.principal.codebase.p1.granted", perms);
+		pref.setCharPref("capability.principal.codebase.p1.id", url.replace('http:','https:'));
 		pref.setBoolPref("dom.disable_open_during_load",false);
 		pref.setBoolPref("browser.popups.showPopupBlocker",false);
 	}
