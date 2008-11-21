@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Editor;
 use OpenSRF::Utils::Cache;
 use Encode;
 
@@ -1651,7 +1652,7 @@ __PACKAGE__->register_method(
 sub copies_by_cn_label {
 	my( $self, $conn, $record, $label, $circ_lib ) = @_;
 	my $e = new_editor();
-	my $cns = $e->search_asset_call_number({record => $record, label => $label, deleted => 'f'}, {idlist=>1});
+	my $cns = OpenILS::Utils::Editor->new->search_asset_call_number({record => $record, label => $label, deleted => 'f'}, {idlist=>1});
 	return [] unless @$cns;
 
 	# show all non-deleted copies in the staff client ...
