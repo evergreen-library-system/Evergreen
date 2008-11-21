@@ -121,6 +121,8 @@ INSERT INTO config.standing_penalty (id,name,label,block_list)
 	VALUES (1,'PATRON_EXCEEDS_FINES','Patron exceeds fine threshold','CIRC|HOLD|RENEW');
 INSERT INTO config.standing_penalty (id,name,label,block_list)
 	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT','Patron exceeds max overdue item threshold','CIRC|HOLD|RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list)
+	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT','Patron exceeds max checked out item threshold','CIRC');
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
 CREATE TABLE config.xml_transform (

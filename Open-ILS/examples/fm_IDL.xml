@@ -646,6 +646,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC Form" name="marc_form" oils_obj:array_position="14" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Videorecording Format" name="marc_vr_format" oils_obj:array_position="15" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Reference?" name="ref_flag" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Holdable?" name="holdable" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Range is from Owning Lib?" name="distance_is_from_owner" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Transit Range" name="transit_range" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Max Holds" name="max_holds" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Max includes Frozen" name="include_frozen_holds" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
@@ -660,6 +666,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
+			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
 		</links>
 	</class>
 
@@ -679,6 +686,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Reference?" name="ref_flag" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Circulate?" name="circulate" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Duration Rule" name="duration_rule" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Script Test" name="script_test" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
@@ -688,43 +700,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
-		</links>
-	</class>
-
-	<class id="chmt" controller="open-ils.cstore" oils_obj:fieldmapper="config::hold_matrix_test" oils_persist:tablename="config.hold_matrix_test" reporter:label="Hold Matrix Test Set">
-		<fields oils_persist:primary="matchpoint">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Holdable?" name="holdable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Range is from Owning Lib?" name="distance_is_from_owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Transit Range" name="transit_range" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int"/>
-			<field reporter:label="Max Holds" name="max_holds" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int"/>
-			<field reporter:label="Max includes Frozen" name="include_frozen_holds" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
-			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
-		</links>
-	</class>
-
-	<class id="ccmt" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_test" oils_persist:tablename="config.circ_matrix_test" reporter:label="Circulation Matrix Test Set">
-		<fields oils_persist:primary="matchpoint">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
-			<field reporter:label="Circulate?" name="circulate" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Max Items Out" name="max_items_out" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int"/>
-			<field reporter:label="Max Overdue" name="max_overdue" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int"/>
-			<field reporter:label="Max Fines" name="max_fines" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money"/>
-			<field reporter:label="Test Script" name="script_test" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Test Context Location" name="org_unit" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int"/>
-		</fields>
-		<links>
-			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
+			<link field="duration_rule" reltype="has_a" key="id" map="" class="crcd"/>
+			<link field="max_fine_rule" reltype="has_a" key="id" map="" class="crmf"/>
+			<link field="recurring_fine_rule" reltype="has_a" key="id" map="" class="crrf"/>
 		</links>
 	</class>
 
@@ -741,24 +719,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
 			<link field="circ_mod" reltype="has_a" key="id" map="" class="ccm"/>
-		</links>
-	</class>
-
-	<class id="ccmrs" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_ruleset" oils_persist:tablename="config.circ_matrix_ruleset" reporter:label="Circulation Matrix Rule Set">
-		<fields oils_persist:primary="matchpoint">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Matchpoint ID" name="matchpoint" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
-			<field reporter:label="Duration Rule" name="duration_rule" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
-			<link field="duration_rule" reltype="has_a" key="id" map="" class="crcd"/>
-			<link field="max_fine_rule" reltype="has_a" key="id" map="" class="crmf"/>
-			<link field="recurring_fine_rule" reltype="has_a" key="id" map="" class="crrf"/>
 		</links>
 	</class>
 

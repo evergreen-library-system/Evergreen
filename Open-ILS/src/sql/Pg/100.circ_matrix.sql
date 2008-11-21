@@ -96,30 +96,26 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
 --
 
 CREATE TABLE config.circ_matrix_matchpoint (
-	id	    		SERIAL	PRIMARY KEY,
-	active			BOOL	NOT NULL DEFAULT TRUE,
-	org_unit		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-	grp		    	INT	NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
-	circ_modifier	TEXT	REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
-	marc_type		TEXT	REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
-	marc_form		TEXT	REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
-	marc_vr_format	TEXT	REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
-	ref_flag		BOOL,
-	is_renewal    	BOOL,
+	id	    		    SERIAL	PRIMARY KEY,
+	active			    BOOL    NOT NULL DEFAULT TRUE,
+	org_unit		    INT	    NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+	grp		    	    INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,	-- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
+	circ_modifier	    TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_type		    TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_form		    TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
+	marc_vr_format	    TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+	ref_flag		    BOOL,
+	is_renewal    	    BOOL,
 	usr_age_lower_bound	INTERVAL,
 	usr_age_upper_bound	INTERVAL,
+	circulate           BOOL    NOT NULL DEFAULT TRUE,	-- Hard "can't circ" flag requiring an override
+	duration_rule		INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
+	recurring_fine_rule	INT     NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
+	max_fine_rule		INT     NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
+	script_test         TEXT,                           -- javascript source 
 	CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal)
 );
 
-
--- Tests to determine if circ can occur for this item at this location for this patron
-CREATE TABLE config.circ_matrix_test (
-	matchpoint      INT     PRIMARY KEY NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	circulate       BOOL    NOT NULL DEFAULT TRUE,	-- Hard "can't circ" flag requiring an override
-	max_items_out   INT,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
-	org_depth       INT,                            -- Set to the top OU for the max-out applicability range
-	script_test     TEXT                            -- filename or javascript source ??
-);
 
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
@@ -130,15 +126,7 @@ CREATE TABLE config.circ_matrix_circ_mod_test (
 );
 
 
--- How to circ, assuming tests pass
-CREATE TABLE config.circ_matrix_ruleset (
-	matchpoint		INT	PRIMARY KEY REFERENCES config.circ_matrix_matchpoint (id) DEFERRABLE INITIALLY DEFERRED,
-	duration_rule		INT	NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
-	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
-	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED
-);
-
-CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS INT AS $func$
+CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS config.circ_matrix_matchpoint AS $func$
 DECLARE
 	current_group	permission.grp_tree%ROWTYPE;
 	user_object	actor.usr%ROWTYPE;
@@ -214,7 +202,7 @@ BEGIN
 		SELECT INTO current_group * FROM permission.grp_tree WHERE id = current_group.parent;
 	END LOOP;
 
-	RETURN matchpoint.id;
+	RETURN matchpoint;
 END;
 $func$ LANGUAGE plpgsql;
 
@@ -222,25 +210,18 @@ $func$ LANGUAGE plpgsql;
 CREATE TYPE action.matrix_test_result AS ( success BOOL, matchpoint INT, fail_part TEXT );
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
-	matchpoint_id		INT;
 	user_object		actor.usr%ROWTYPE;
+	standing_penalty    config.standing_penalty%ROWTYPE;
 	item_object		asset.copy%ROWTYPE;
 	item_status_object	config.copy_status%ROWTYPE;
 	item_location_object	asset.copy_location%ROWTYPE;
 	result			action.matrix_test_result;
-	circ_test		config.circ_matrix_test%ROWTYPE;
+	circ_test		config.circ_matrix_matchpoint%ROWTYPE;
 	out_by_circ_mod		config.circ_matrix_circ_mod_test%ROWTYPE;
-	patron_penalties 		INT;
+	penalty_type 		TEXT;
 	tmp_grp 		INT;
 	items_out		INT;
-	max_overdue		INT;
-	items_overdue		INT;
-	overdue_orgs		INT[];
-	max_fines		    NUMERIC(8,2) := 0.0;
-	current_fines		NUMERIC(8,2) := 0.0;
-	tmp_fines		NUMERIC(8,2);
-	tmp_groc		RECORD;
-	tmp_circ		RECORD;
+	context_org_list		INT[];
 	done			BOOL := FALSE;
 BEGIN
 	result.success := TRUE;
@@ -295,14 +276,10 @@ BEGIN
 		RETURN NEXT result;
 	END IF;
 
-	SELECT INTO matchpoint_id action.find_circ_matrix_matchpoint(circ_ou, match_item, match_user, renewal);
-	result.matchpoint := matchpoint_id;
+	SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, match_item, match_user, renewal);
+	result.matchpoint := circ_test.id;
 
-	SELECT INTO circ_test * from config.circ_matrix_test WHERE matchpoint = result.matchpoint;
-
-	IF circ_test.org_depth IS NOT NULL THEN
-		SELECT INTO overdue_orgs ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_ou, circ_test.org_depth );
-	END IF; 
+	SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_test.org_unit );
 
 	-- Fail if we couldn't find a set of tests
 	IF result.matchpoint IS NULL THEN
@@ -320,59 +297,33 @@ BEGIN
 		RETURN NEXT result;
 	END IF;
 
-    SELECT  INTO patron_penalties COUNT(*)
-      FROM  actor.usr_standing_penalty usp
-            JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
-      WHERE usr = match_user
-            AND usp.org_unit IN ( SELECT * FROM explode_array(overdue_orgs) )
-            AND csp.block_list LIKE '%RENEW%';
-
-    IF patron_penalties > 0 THEN
-        result.fail_part := 'config.circ_matrix_test.stop_blocked_user.circ';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
+    IF renewal THEN
+        penalty_type = '%RENEW%';
+    ELSE
+        penalty_type = '%CIRC%';
     END IF;
 
-    patron_penalties := 0;
-
-    SELECT  INTO patron_penalties COUNT(*)
-      FROM  actor.usr_standing_penalty usp
-            JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
-      WHERE usr = match_user
-            AND usp.org_unit IN ( SELECT * FROM explode_array(overdue_orgs) )
-            AND csp.block_list LIKE '%CIRC%';
-
-    IF patron_penalties > 0 THEN
-        result.fail_part := 'config.circ_matrix_test.stop_blocked_user.renew';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
-
-	-- Fail if the user has too many items checked out
-	IF circ_test.max_items_out IS NOT NULL THEN
-    	SELECT  INTO items_out COUNT(*)
-          FROM  action.circulation
+    FOR standing_penalty IN
+        SELECT  DISTINCT csp.*
+          FROM  actor.usr_standing_penalty usp
+                JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
           WHERE usr = match_user
-                AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
-                AND checkin_time IS NULL
-                AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
-	   	IF items_out >= circ_test.max_items_out THEN
-	    	result.fail_part := 'config.circ_matrix_test.max_items_out';
-			result.success := FALSE;
-			done := TRUE;
-	   		RETURN NEXT result;
-   		END IF;
-	END IF;
+                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND csp.block_list LIKE penalty_type LOOP
+
+        result.fail_part := standing_penalty.name;
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END LOOP;
 
 	-- Fail if the user has too many items with specific circ_modifiers checked out
-	FOR out_by_circ_mod IN SELECT * FROM config.circ_matrix_circ_mod_test WHERE matchpoint = matchpoint_id LOOP
+	FOR out_by_circ_mod IN SELECT * FROM config.circ_matrix_circ_mod_test WHERE matchpoint = circ_test.id LOOP
 		SELECT  INTO items_out COUNT(*)
 		  FROM  action.circulation circ
 			JOIN asset.copy cp ON (cp.id = circ.target_copy)
 		  WHERE circ.usr = match_user
-                	AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
+           	AND circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
 			AND circ.checkin_time IS NULL
 			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL)
 			AND cp.circ_modifier = out_by_circ_mod.circ_mod;
@@ -383,79 +334,6 @@ BEGIN
 			RETURN NEXT result;
 		END IF;
 	END LOOP;
-
-	-- Fail if the user has too many overdue items
-    tmp_grp := user_object.profile;
-    LOOP
-        SELECT pgpt.threshold::INT INTO max_overdue FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 2;
-        IF max_overdue IS NULL THEN
-            SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
-        ELSE
-            EXIT;
-        END IF;
-
-        IF tmp_grp IS NULL THEN
-            EXIT;
-        END IF;
-    END LOOP;
-
-	IF max_overdue IS NOT NULL THEN
-		SELECT  INTO items_overdue COUNT(*)
-		  FROM  action.circulation
-		  WHERE usr = match_user
-                	AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
-			AND checkin_time IS NULL
-			AND due_date < NOW()
-			AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
-		IF items_overdue >= max_overdue THEN
-			DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 2 AND org_unit = circ_ou;
-			INSERT INTO actor.usr_standing_penalty (usr, standing_penalty, org_unit) VALUES (match_usr, 2, circ_ou);
-			result.fail_part := 'config.circ_matrix_test.max_overdue';
-			result.success := FALSE;
-			done := TRUE;
-			RETURN NEXT result;
-		END IF;
-	END IF;
-
-	-- Fail if the user has a high fine balance
-    tmp_grp := user_object.profile;
-    LOOP
-        SELECT pgpt.threshold INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 1;
-        IF max_overdue IS NULL THEN
-            SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
-        ELSE
-            EXIT;
-        END IF;
-
-        IF tmp_grp IS NULL THEN
-            EXIT;
-        END IF;
-    END LOOP;
-
-	IF max_fines IS NOT NULL THEN
-		FOR tmp_groc IN SELECT * FROM money.grocery WHERE usr = match_usr AND xact_finish IS NULL AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND billing_location IN ( SELECT * FROM explode_array(overdue_orgs) ))) LOOP
-			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_groc.id AND NOT voided;
-			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_groc.id AND NOT voided;
-			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
-		END LOOP;
-
-		FOR tmp_circ IN SELECT * FROM action.circulation WHERE usr = match_usr AND xact_finish IS NULL AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) ))) LOOP
-			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_circ.id AND NOT voided;
-			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_circ.id AND NOT voided;
-			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
-		END LOOP;
-
-		IF current_fines >= max_fines THEN
-			DELETE FROM actor.usr_standing_penalty WHERE usr = match_usr AND standing_penalty = 1 AND org_unit = circ_ou;
-			INSERT INTO actor.usr_standing_penalty (usr, standing_penalty, org_unit) VALUES (match_usr, 1, circ_ou);
-			result.fail_part := 'config.circ_matrix_test.max_fines';
-			result.success := FALSE;
-			RETURN NEXT result;
-			done := TRUE;
-		END IF;
-	END IF;
 
 	-- If we passed everything, return the successful matchpoint id
 	IF NOT done THEN
@@ -474,7 +352,183 @@ CREATE OR REPLACE FUNCTION action.item_user_renew_test( INT, BIGINT, INT ) RETUR
 	SELECT * FROM action.item_user_circ_test( $1, $2, $3, TRUE );
 $func$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION actor.refresh_auto_penalties( user INT ) RETURNS INT AS $func$
+
+CREATE OR REPLACE FUNCTION actor.calculate_system_penalties( match_user INT, context_org INT ) RETURNS SETOF actor.usr_standing_penalty AS $func$
+DECLARE
+	user_object 		actor.usr%ROWTYPE;
+	sp_row  	    	actor.usr_standing_penalty%ROWTYPE;
+    max_fines           permission.grp_penalty_threshold%ROWTYPE;
+    max_overdue         permission.grp_penalty_threshold%ROWTYPE;
+    max_items_out       permission.grp_penalty_threshold%ROWTYPE;
+	tmp_grp      		INT;
+	items_overdue		INT;
+	items_out   		INT;
+	context_org_list	INT[];
+	current_fines		NUMERIC(8,2) := 0.0;
+	tmp_fines	    	NUMERIC(8,2);
+	tmp_groc		    RECORD;
+	tmp_circ	    	RECORD;
+	tmp_org 		    actor.org_unit%ROWTYPE;
+BEGIN
+	SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
+
+    -- Max fines
+	SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+
+	-- Fail if the user has a high fine balance
+    LOOP
+        tmp_grp := user_object.profile;
+        LOOP
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 1 AND org_unit = tmp_org.id;
+
+            IF max_fines.threshold IS NULL THEN
+                SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+            ELSE
+                EXIT;
+            END IF;
+
+            IF tmp_grp IS NULL THEN
+                EXIT;
+            END IF;
+        END LOOP;
+
+        IF max_fines.threshold IS NOT NULL OR tmp_org.parent_ou IS NULL THEN
+            EXIT;
+        END IF;
+
+	    SELECT * INTO tmp_org FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+
+    END LOOP;
+
+	IF max_fines.threshold IS NOT NULL THEN
+		FOR tmp_groc IN
+                SELECT  *
+                  FROM  money.grocery g
+                        JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
+                  WHERE usr = match_user
+                        AND xact_finish IS NULL
+                LOOP
+			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_groc.id AND NOT voided;
+			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
+			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_groc.id AND NOT voided;
+			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
+		END LOOP;
+
+		FOR tmp_circ IN
+                SELECT  *
+                  FROM  action.circulation circ
+                        JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
+                  WHERE usr = match_user
+                        AND xact_finish IS NULL
+                LOOP
+			SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_circ.id AND NOT voided;
+			current_fines = current_fines + COALESCE(tmp_fines, 0.0);
+			SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_circ.id AND NOT voided;
+			current_fines = current_fines - COALESCE(tmp_fines, 0.0);
+		END LOOP;
+
+		IF current_fines >= max_fines.threshold THEN
+            sp_row.usr := match_user;
+            sp_row.org_unit := max_fines.org_unit;
+            sp_row.standing_penalty := 1;
+            RETURN NEXT sp_row;
+		END IF;
+	END IF;
+
+    -- Start over for max overdue
+	SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+
+	-- Fail if the user has too many overdue items
+    LOOP
+        tmp_grp := user_object.profile;
+        LOOP
+
+            SELECT * INTO max_overdue FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 2 AND org_unit = tmp_org.id;
+
+            IF max_overdue.threshold IS NULL THEN
+                SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+            ELSE
+                EXIT;
+            END IF;
+
+            IF tmp_grp IS NULL THEN
+                EXIT;
+            END IF;
+        END LOOP;
+
+        IF max_overdue.threshold IS NOT NULL OR tmp_org.parent_ou IS NULL THEN
+            EXIT;
+        END IF;
+
+	    SELECT INTO tmp_org * FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+
+    END LOOP;
+
+	IF max_overdue.threshold IS NOT NULL THEN
+		SELECT  INTO items_overdue COUNT(*)
+		  FROM  action.circulation circ
+                JOIN  actor.org_unit_full_path( max_overdue.org_unit ) fp ON (circ.circ_lib = fp.id)
+		  WHERE circ.usr = match_user
+			AND circ.checkin_time IS NULL
+			AND circ.due_date < NOW()
+			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
+
+		IF items_overdue >= max_overdue.threshold::INT THEN
+            sp_row.usr := match_user;
+            sp_row.org_unit := max_overdue.org_unit;
+            sp_row.standing_penalty := 2;
+            RETURN NEXT sp_row;
+		END IF;
+	END IF;
+
+    -- Start over for max out
+	SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+
+	-- Fail if the user has too many overdue items
+    LOOP
+        tmp_grp := user_object.profile;
+        LOOP
+            SELECT * INTO max_items_out FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 3 AND org_unit = tmp_org.id;
+
+            IF max_items_out.threshold IS NULL THEN
+                SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+            ELSE
+                EXIT;
+            END IF;
+
+            IF tmp_grp IS NULL THEN
+                EXIT;
+            END IF;
+        END LOOP;
+
+        IF max_items_out.threshold IS NOT NULL OR tmp_org.parent_ou IS NULL THEN
+            EXIT;
+        END IF;
+
+	    SELECT INTO tmp_org * FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+
+    END LOOP;
+
+
+	-- Fail if the user has too many items checked out
+	IF max_items_out.threshold IS NOT NULL THEN
+    	SELECT  INTO items_out COUNT(*)
+          FROM  action.circulation circ
+                JOIN  actor.org_unit_full_path( max_items_out.org_unit ) fp ON (circ.circ_lib = fp.id)
+          WHERE circ.usr = match_user
+                AND circ.checkin_time IS NULL
+                AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
+
+	   	IF items_out >= max_items_out.threshold::INT THEN
+            sp_row.usr := match_user;
+            sp_row.org_unit := max_items_out.org_unit;
+            sp_row.standing_penalty := 3;
+            RETURN NEXT sp_row;
+   		END IF;
+	END IF;
+
+    RETURN;
+END;
 $func$ LANGUAGE plpgsql;
 
 COMMIT;
