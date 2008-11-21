@@ -356,7 +356,8 @@ $func$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION actor.calculate_system_penalties( match_user INT, context_org INT ) RETURNS SETOF actor.usr_standing_penalty AS $func$
 DECLARE
 	user_object 		actor.usr%ROWTYPE;
-	sp_row  	    	actor.usr_standing_penalty%ROWTYPE;
+	new_sp_row  	   	actor.usr_standing_penalty%ROWTYPE;
+	existing_sp_row    	actor.usr_standing_penalty%ROWTYPE;
     max_fines           permission.grp_penalty_threshold%ROWTYPE;
     max_overdue         permission.grp_penalty_threshold%ROWTYPE;
     max_items_out       permission.grp_penalty_threshold%ROWTYPE;
@@ -401,6 +402,17 @@ BEGIN
     END LOOP;
 
 	IF max_fines.threshold IS NOT NULL THEN
+
+        FOR existing_sp_row IN
+                SELECT  *
+                  FROM  actor.usr_standing_penalty
+                  WHERE usr = match_user
+                        AND org_unit = max_fines.org_unit
+                        AND standing_penalty = 1
+                LOOP
+            RETURN NEXT existing_sp_row;
+        END LOOP;
+
 		FOR tmp_groc IN
                 SELECT  *
                   FROM  money.grocery g
@@ -428,10 +440,10 @@ BEGIN
 		END LOOP;
 
 		IF current_fines >= max_fines.threshold THEN
-            sp_row.usr := match_user;
-            sp_row.org_unit := max_fines.org_unit;
-            sp_row.standing_penalty := 1;
-            RETURN NEXT sp_row;
+            new_sp_row.usr := match_user;
+            new_sp_row.org_unit := max_fines.org_unit;
+            new_sp_row.standing_penalty := 1;
+            RETURN NEXT new_sp_row;
 		END IF;
 	END IF;
 
@@ -465,6 +477,17 @@ BEGIN
     END LOOP;
 
 	IF max_overdue.threshold IS NOT NULL THEN
+
+        FOR existing_sp_row IN
+                SELECT  *
+                  FROM  actor.usr_standing_penalty
+                  WHERE usr = match_user
+                        AND org_unit = max_overdue.org_unit
+                        AND standing_penalty = 2
+                LOOP
+            RETURN NEXT existing_sp_row;
+        END LOOP;
+
 		SELECT  INTO items_overdue COUNT(*)
 		  FROM  action.circulation circ
                 JOIN  actor.org_unit_full_path( max_overdue.org_unit ) fp ON (circ.circ_lib = fp.id)
@@ -474,10 +497,10 @@ BEGIN
 			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
 
 		IF items_overdue >= max_overdue.threshold::INT THEN
-            sp_row.usr := match_user;
-            sp_row.org_unit := max_overdue.org_unit;
-            sp_row.standing_penalty := 2;
-            RETURN NEXT sp_row;
+            new_sp_row.usr := match_user;
+            new_sp_row.org_unit := max_overdue.org_unit;
+            new_sp_row.standing_penalty := 2;
+            RETURN NEXT new_sp_row;
 		END IF;
 	END IF;
 
@@ -512,6 +535,17 @@ BEGIN
 
 	-- Fail if the user has too many items checked out
 	IF max_items_out.threshold IS NOT NULL THEN
+
+        FOR existing_sp_row IN
+                SELECT  *
+                  FROM  actor.usr_standing_penalty
+                  WHERE usr = match_user
+                        AND org_unit = max_items_out.org_unit
+                        AND standing_penalty = 3
+                LOOP
+            RETURN NEXT existing_sp_row;
+        END LOOP;
+
     	SELECT  INTO items_out COUNT(*)
           FROM  action.circulation circ
                 JOIN  actor.org_unit_full_path( max_items_out.org_unit ) fp ON (circ.circ_lib = fp.id)
@@ -520,10 +554,10 @@ BEGIN
                 AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
 
 	   	IF items_out >= max_items_out.threshold::INT THEN
-            sp_row.usr := match_user;
-            sp_row.org_unit := max_items_out.org_unit;
-            sp_row.standing_penalty := 3;
-            RETURN NEXT sp_row;
+            new_sp_row.usr := match_user;
+            new_sp_row.org_unit := max_items_out.org_unit;
+            new_sp_row.standing_penalty := 3;
+            RETURN NEXT new_sp_row;
    		END IF;
 	END IF;
 
