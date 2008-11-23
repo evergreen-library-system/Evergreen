@@ -27,6 +27,7 @@ use Data::Dumper;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenILS::Utils::Penalty;
 
 __PACKAGE__->register_method(
 	method	=> "make_payments",
@@ -192,12 +193,11 @@ sub make_payments {
 
 	$apputils->commit_db_session($session);
 
-	# ------------------------------------------------------------------------------
-	# Update the patron penalty info in the DB
-	# ------------------------------------------------------------------------------
-	$U->update_patron_penalties_nonblock(patronid  => $userid);
+    $client->respond_complete(1);	
 
-	$client->respond_complete(1);	
+	$e = new_editor(xact => 1);
+    $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $userid, $drawer);
+    $e->commit unless $evt;
 
 	return undef;
 }
@@ -379,30 +379,27 @@ sub billing_items_create {
 	my( $self, $client, $login, $billing ) = @_;
 
 	my $e = new_editor(authtoken => $login, xact => 1);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('CREATE_BILL');
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('CREATE_BILL');
 
 	my $xact = $e->retrieve_money_billable_transaction($billing->xact)
-		or return $e->event;
+		or return $e->die_event;
 
 	# if the transaction was closed, re-open it
 	if($xact->xact_finish) {
 		$xact->clear_xact_finish;
 		$e->update_money_billable_transaction($xact)
-			or return $e->event;
+			or return $e->die_event;
 	}
 
 	my $amt = $billing->amount;
 	$amt =~ s/\$//og;
 	$billing->amount($amt);
 
-	$e->create_money_billing($billing) or return $e->event;
+	$e->create_money_billing($billing) or return $e->die_event;
+    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $xact->usr, $e->requestor->ws_ou);
+    return $evt if $evt;
 	$e->commit;
-
-	# ------------------------------------------------------------------------------
-	# Update the patron penalty info in the DB
-	# ------------------------------------------------------------------------------
-	$U->update_patron_penalties_nonblock(patronid  => $xact->usr);
 
 	return $billing->id;
 }
@@ -449,9 +446,8 @@ sub void_bill {
 	    return $evt if $evt;
     }
 
+    OpenILS::Utils::Penalty->calculate_penalties($e, $_, $e->requestor->ws_ou) for keys %users;
 	$e->commit;
-    # update the penalties for each affected user
-	$U->update_patron_penalties_nonblock(patronid  => $_) for keys %users;
 	return 1;
 }
 

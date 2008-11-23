@@ -835,9 +835,9 @@ sub run_patron_permit_scripts {
 
         my $patron_events = $result->{events};
 
-        OpenILS::Utils::Penalty->calculate_penalties($self->editor, undef, $self->patron);
+        OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
         my $mask = ($self->is_renewal) ? 'RENEW' : 'CIRC';
-        my $penalties = OpenILS::Utils::penalty->retrieve_penalties($self->editor, $patronid, $mask);
+        my $penalties = OpenILS::Utils::Penalty->retrieve_penalties($self->editor, $patronid, $self->circ_lib, $mask);
 
         push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
     }
@@ -1176,7 +1176,7 @@ sub do_checkout {
     # Update the patron penalty info in the DB.  Run it for permit-overrides 
     # since the penalties are not updated during the permit phase
     # ------------------------------------------------------------------------------
-    $U->update_patron_penalties_nonblock(patronid => $self->patron->id) if $self->permit_override;
+    OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
 
     my $record = $U->record_to_mvr($self->title) unless $self->is_precat;
     $self->push_events(
@@ -1756,7 +1756,7 @@ sub do_checkin {
             unless @{$self->events};
     }
 
-    $U->update_patron_penalties_nonblock(patronid => $self->patron->id) if $self->is_checkin;
+    OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
     $self->checkin_flesh_events;
     return;
 }
