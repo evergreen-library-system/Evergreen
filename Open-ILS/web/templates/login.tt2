@@ -1,5 +1,6 @@
 <!-- general purpose login dialog -->
 <div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
+    <script>dojo.require('dijit.form.TextBox');</script>
     <b>Please Login</b>
     <form>
         <table>
