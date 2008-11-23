@@ -104,11 +104,14 @@ if(!dojo._hasResource["openils.Util"]) {
      * false, the response content will be null when an event is encountered.
      */
     openils.Util.alertEvent = true;
-    openils.Util.readResponse = function(r, eventOk) {
+    openils.Util.readResponse = function(r, eventOk, isList) {
         var msg = r.recv();
         if(msg == null) return msg;
         var val = msg.content();
-        if(e = openils.Event.parse(val)) {
+        var testval = val;
+        if(isList && dojo.isArray(val))
+            testval = val[0];
+        if(e = openils.Event.parse(testval)) {
             if(eventOk) return e;
             console.log(e.toString());
             if(openils.Util.alertEvent)
