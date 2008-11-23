@@ -174,9 +174,9 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	fieldmapper.rxpt.Identifier = 'xact';
 	fieldmapper.cxt.Identifier = 'name';
 	fieldmapper.amtr.Identifier = 'matchpoint';
-	fieldmapper.chmt.Identifier = 'matchpoint';
-	fieldmapper.ccmt.Identifier = 'matchpoint';
-	fieldmapper.ccmrs.Identifier = 'matchpoint';
+	//fieldmapper.chmt.Identifier = 'matchpoint';
+	//fieldmapper.ccmt.Identifier = 'matchpoint';
+	//fieldmapper.ccmrs.Identifier = 'matchpoint';
 
 	fieldmapper.OpenSRF = {};
 
