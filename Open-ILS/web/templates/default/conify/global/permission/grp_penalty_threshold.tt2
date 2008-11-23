@@ -1,0 +1,60 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>
+<h1>Group Penalty Thresholds</h1><br/>
+
+<!-- grp, penalty, org_unit, threshold -->
+
+<div dojoType="dijit.form.DropDownButton">
+    <span>New Group Penalty Threshold</span>
+    <div dojoType="dijit.TooltipDialog" execute="gptCreate(arguments[0]);">
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td><label for="name">Group: </label></td>
+                <td>
+                    <input dojoType="" name="name"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="org_unit">Context Org Unit: </label></td>
+                <td>
+                    <input dojoType="" name="org_unit"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="penalty">Penalty: </label></td>
+                <td>
+                    <select dojoType="" name="penalty"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="threshold">Threshold: </label></td>
+                <td><input dojoType="dijit.form.NumberTextBox" name="threshold"/></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType='dijit.form.Button' type="submit">Create</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div> 
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="gptGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="id">ID</th>
+                    <th field="grp" width='auto'>Group</th>
+                    <th field="org_unit" width='auto'>Context Org Unit</th>
+                    <th field="penalty" width='auto'>Penalty</th>
+                    <th field="threshold" width='auto'>threshold</th>
+                </tr>
+            </thead>
+        </table>    
+    </div>
+</div>
+
+[% END %]
+
+
