@@ -1440,8 +1440,7 @@ sub get_org_descendants {
 }
 
 sub get_org_ancestors {
-	my($self, $org_id, $depth) = @_;
-	$depth ||= 0;
+	my($self, $org_id) = @_;
 
 	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query({
 		select => {
@@ -1449,7 +1448,7 @@ sub get_org_ancestors {
 				transform => 'actor.org_unit_ancestors',
 				column => 'id',
 				result_field => 'id',
-				params => [$depth]
+				params => []
 			}],
 		},
 		from => 'aou',
