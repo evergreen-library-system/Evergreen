@@ -3,7 +3,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch), Ubuntu (gutsy), and Gentoo.
+# Currently supports Debian (etch), Ubuntu (gutsy/hardy), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -51,127 +51,45 @@ LIBDBI=libdbi-0.8.3
 LIBDBI_DRIVERS=libdbi-drivers-0.8.3
 LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
-# Some people are firewalled out of indexdata.dk
-YAZ=yaz-3.0.36
-YAZ_HOST=http://evergreen-ils.org/~denials/yaz
-
-# ejabberd is not packaged on CentOS/RHEL, so we have to
-# download the installable package from the source
-EJABBERD_VER=2.0.1
-EJABBERD_PKG=ejabberd-2.0.1_2-linux-x86-installer.bin
-EJABBERD_HOST=http://www.process-one.net/downloads/ejabberd
-
-# libmemcache is not packaged on CentOS/RHEL
-LIBMEMCACHE=libmemcache-1.4.0.rc2
-LIBMEMCACHE_HOST=http://people.freebsd.org/~seanc/libmemcache/
+# We need a recent version of Yaz
+# Debian Lenny and Ubuntu 8.10 come with 3.0.34
+YAZ=yaz-3.0.38
+YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 # Business::OnlinePayment is not packaged on CentOS/RHEL
 PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
 PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
 
-
-# XML::LibXSLT fails due to old libxslt
-XSLT=libxslt-1.1.22
-XSLT_HOST=ftp://ftp.gnome.org/pub/GNOME/sources/libxslt/1.1
-
-# libxslt depends on a newer version of libxml2:
-XML2=libxml2-2.6.30.tar.gz
-XML2_HOST=ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6
-
 APT_TOOL=aptitude
 
 # Debian dependencies
 DEBS =  \
-	apache2-mpm-prefork\
-	apache2-prefork-dev\
 	aspell\
 	aspell-en\
-	autoconf\
-	automake\
-	build-essential\
-	ejabberd\
-	less\
-	libapache2-mod-perl2\
 	libbusiness-creditcard-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-perl\
-	libcache-memcached-perl\
-	libclass-dbi-abstractsearch-perl\
 	libclass-dbi-pg-perl\
-	libclass-dbi-sqlite-perl\
 	libdatetime-format-builder-perl\
 	libdatetime-format-mail-perl\
 	libdatetime-perl\
 	libdatetime-timezone-perl\
 	libemail-send-perl\
-	liberror-perl\
-	libexpat1-dev\
-	libfile-find-rule-perl\
-	libfreezethaw-perl\
 	libgd-graph3d-perl\
-	liblog-log4perl-perl\
 	libmarc-record-perl\
-	libmemcache-dev\
-	libmodule-build-perl\
-	libnet-jabber-perl\
 	libole-storage-lite-perl\
-	libperl-dev\
 	libpq-dev\
-	libreadline5-dev\
-	librpc-xml-perl\
 	libspreadsheet-writeexcel-perl\
-	libtemplate-perl\
-	libtest-pod-perl\
 	libtext-aspell-perl\
 	libtext-csv-perl\
-	libtext-csv-perl\
-	libtie-ixhash-perl\
-	libtool\
-	libuniversal-require-perl\
-	libunix-syslog-perl\
-	libwww-perl\
-	libxml2-dev\
-	libxml-libxml-perl\
-	libxml-libxslt-perl\
-	libxml-simple-perl\
-	libxslt1-dev\
-	memcached\
-	ntpdate\
-	psmisc\
-	python-dev\
-	python-setuptools
+	libtext-csv-perl
 
 CENTOS = \
-	apr-util-devel \
 	aspell \
 	aspell-devel \
 	aspell-en \
-	autoconf \
-	automake \
-	gcc \
 	gd-devel \
-	gdbm-devel \
-	httpd-devel \
-	less \
-	libtool \
-	libxml2-devel \
-	libxslt-devel \
-	make \
-	mod_perl \
-	mod_ssl \
-	ncurses \
-	ncurses-devel \
-	ntp \
-	perl-DBD-Pg \
-	perl-DBI \
-	perl-XML-LibXML \
-	perl-XML-Simple \
-	perl-libwww-perl \
-	psmisc \
-	python-devel \
-	python-setuptools\
-	readline-devel \
-	wget
+	perl-DBD-Pg
 
 PGSQL_CENTOS = \
 	postgresql \
@@ -188,42 +106,24 @@ CENTOS_PERL_FORCE = \
 # that are simply too painful to workaround
 CENTOS_PERL_NOTEST = \
 	Business::OnlinePayment::AuthorizeNet \
-	DateTime::Format::Strptime \
-	RPC::XML
+	DateTime::Format::Strptime
 
 # This is a developer's version, but B:OP:AuthorizeNet depends on it
 CENTOS_PERL_VERSION = \
 	IVAN/Business-OnlinePayment-3.00_08.tar.gz
 
-CENTOS_PERL_LOCAL = \
-	XML-LibXSLT
-
 CENTOS_PERL = \
 	Business::CreditCard \
-	Cache::Memcached \
-	Class::DBI::AbstractSearch \
 	Class::DBI::Pg \
-	Class::DBI::SQLite \
 	DateTime \
 	DateTime::TimeZone \
 	DateTime::Format::Builder \
-	Error \
-	File::Find::Rule \
-	FreezeThaw \
 	GD::Graph3d \
-	Log::Log4perl \
 	MARC::Record \
-	Net::Jabber \
 	Net::Z3950::ZOOM \
 	Spreadsheet::WriteExcel \
-	Template \
-	Test::Pod \
 	Text::Aspell \
-	Text::CSV \
-	Tie::IxHash \
-	Unix::Syslog \
-	UNIVERSAL::require \
-	XML::LibXSLT
+	Text::CSV
 
 PGSQL_DEBIAN = \
 	postgresql-8.1\
@@ -240,51 +140,21 @@ PGSQL_UBUNTU = \
 	postgresql-server-dev-8.2
 
 GENTOOS = \
-    vim\
-    ntp\
-    memcached\
-    libmemcache\
-    net-misc/telnet-bsd\
-    app-portage/gentoolkit\
-    gsasl\
-    ejabberd\
-    mod_perl\
     yaz\
     aspell-en\
-    net-fs/nfs-utils\
-    dev-libs/apr\
     dev-db/libpq\
     dev-db/postgresql\
     dev-perl/Email-Send\
-    dev-perl/Cache-Memcached\
     dev-perl/DateTime\
     dev-perl/DateTime-TimeZone\
-    dev-perl/DBI\
     dev-perl/DBD-Pg\
     dev-perl/GD-Graph3d\
-    dev-perl/Log-Log4perl\
     dev-perl/Text-Aspell\
-    dev-perl/Unix-Syslog\
-    dev-perl/XML-LibXML\
-    dev-perl/XML-LibXSLT\
-    dev-perl/XML-Simple\
-    dev-perl/Net-Jabber\
-    dev-perl/libwww-perl\
     dev-perl/Template-Toolkit\
-    dev-perl/Error\
     dev-perl/Text-CSV_XS\
-    dev-perl/Spreadsheet-WriteExcel\
-    dev-perl/Tie-IxHash\
-	dev-perl/FreezeThaw
-
-GENTOO_RC = \
-    ejabberd\
-    memcached\
-    portmap
+    dev-perl/Spreadsheet-WriteExcel
 
 GENTOO_PERL = \
-    UNIVERSAL::require\
-    Class::DBI::AbstractSearch\
     MARC::Record \
     Net::Z3950::ZOOM \
     Text::CSV
@@ -300,33 +170,24 @@ DEB_APACHE_MODS = \
 
 # generic CPAN modules
 CPAN_MODULES = \
-    DateTime::Format::ISO8601 \
-    RHANDOM/Net-Server-0.90.tar.gz \
+    Business::CreditCard::Object \
     MARC::Charset MARC::File::XML \
-    JSON::XS \
-    SRU \
     Net::Z3950::ZOOM \
-	Business::CreditCard::Object \
-	XML::LibXML::XPathContext
-
-# generic CPAN modules to force the install
-CPAN_MODULES_FORCE = \
-    TMTM/Class-DBI-0.96.tar.gz
+    SRU
 
 # ----------------------------------------------------------------------------
 
 all: 
 	@echo "please specify an OS" && exit 0
 
-
 # these should be the same for any distro
 install: install_yaz install_cpan install_js_sm install_libdbi 
 
-centos: install_centos_pgsql install_centos_rpms install_ejabberd install_libmemcache install install_libxml2 install_libxslt install_centos_perl create_ld_local
+centos: install_centos_pgsql install_centos_rpms install install_centos_perl create_ld_local
 
 debian: install_pgsql_debian install_debs install debian_sys_config
 
-gentoo: install_gentoos install_gentoo_rc install_gentoo_perl install
+gentoo: install_gentoos install_gentoo_perl install
 
 rhel: centos
 
@@ -338,32 +199,6 @@ ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
 # Install the CPAN modules
 install_cpan: 
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
-	for m in $(CPAN_MODULES_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw#install $$m#);"; done
-
-# Install ejabberd from official project installer binary
-install_ejabberd:    
-	if [ ! -f $(EJABBERD_PKG).gz ]; then wget $(EJABBERD_HOST)/$(EJABBERD_VER)/$(EJABBERD_PKG).gz; fi;
-	gunzip $(EJABBERD_PKG).gz
-	chmod u+x $(EJABBERD_PKG).gz
-	./$(EJABBERD_PKG) --mode unattended --prefix /opt/ejabberd --adminpw evergreen
-
-# Install libmemcache from the official project source
-install_libmemcache:
-	if [ ! -d $(LIBMEMCACHE) ]; then wget $(LIBMEMCACHE_HOST)/$(LIBMEMCACHE).tar.bz2; fi;
-	tar xjf $(LIBMEMCACHE).tar.bz2
-	cd $(LIBMEMCACHE) && ./configure && make && make install
-
-# Install a newer version of libxslt
-install_libxslt:    
-	if [ ! -d $(XSLT) ]; then wget $(XSLT_HOST)/$(XSLT).tar.gz; fi;
-	tar xzf $(XSLT).tar.gz
-	cd $(XSLT) && ./configure --with-libxml-prefix=/usr/local && make && make install
-
-# Install a newer version of libxml2
-install_libxml2:    
-	if [ ! -d $(XML2) ]; then wget $(XML2_HOST)/$(XML2).tar.gz; fi;
-	tar xzf $(XML2).tar.gz
-	cd $(XML2) && ./configure && make && make install
 
 # Install a known working version of YAZ
 install_yaz:    
@@ -401,8 +236,6 @@ clean:
 	make -C $(LIBDBI) clean
 	make -C $(LIBDBI_DRIVERS) clean
 	make -C $(LIBJS_PERL) clean
-	make -C $(XML2) clean
-	make -C $(XSLT) clean
 	make -f Makefile.ref -C js/src/ clean
 
 
@@ -412,12 +245,6 @@ clean:
 debian_sys_config: 
 	# link the apache modules in
 	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
-	
-	# adds a placeholder module so apxs will be happy
-	if [ ! "$$(grep mod_placeholder /etc/apache2/httpd.conf)" ]; then \
-		echo -e "#\n#LoadModule mod_placeholder /usr/lib/apache2/modules/mod_placeholder.so" \
-			>> /etc/apache2/httpd.conf; \
-	fi;
 
 # Install the debian-specific dependencies
 install_debs:
@@ -434,9 +261,6 @@ install_pgsql_ubuntu:
 
 install_gentoos:
 	emerge -n $(GENTOOS)
-
-install_gentoo_rc:
-	for m in $(GENTOO_RC); do rc-update add $$m default; done;
 
 install_gentoo_perl:
 	for m in $(GENTOO_PERL); do perl -MCPAN -e "install \"$$m\";"; done
@@ -456,7 +280,6 @@ install_centos_perl:
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
 	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
 	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
-	for m in $(CENTOS_PERL_LOCAL); do LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib perl -MCPAN -e "install \"$$m\";"; done
 
 # We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
 # if it is not already there
