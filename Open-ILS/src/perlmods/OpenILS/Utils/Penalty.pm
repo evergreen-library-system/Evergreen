@@ -59,6 +59,7 @@ sub retrieve_penalties {
                 if($p->standing_penalty->block_list =~ /$m/) {
                     push(@fatal, $p->name);
                     $pushed = 1;
+                    last;
                 }
             }
         }
