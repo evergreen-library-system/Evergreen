@@ -1692,6 +1692,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
         </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <retrieve 
+                    permission="VIEW_GROUP_PENALTY_THRESHOLD|CREATE_GROUP_PENALTY_THRESHOLD|UPDATE_GROUP_PENALTY_THRESHOLD|DELETE_GROUP_PENALTY_THRESHOLD" 
+                    context_field='org_unit'/>
+                <update permission="UPDATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <delete permission="DELETE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ccs" controller="open-ils.cstore" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
