@@ -12,6 +12,13 @@ function spBuildGrid() {
             params: [openils.User.authtoken, {id:{'!=':null}}],
             oncomplete: function(r) {
                 if(spList = openils.Util.readResponse(r)) {
+                    spList = spList.sort(
+                        function(a, b) {
+                            if(a.id() > b.id()) 
+                                return 1;
+                            return -1;
+                        }
+                    );
                     var store = new dojo.data.ItemFileReadStore({data:csp.toStoreData(spList)});
                     spGrid.setStore(store);
                     spGrid.render();
@@ -27,7 +34,12 @@ function spCreate(args) {
     var penalty = new csp();
     penalty.name(args.name);
     penalty.label(args.label);
-    penalty.block_list(args.block_list);
+
+    var str = '';
+    for(var idx in args.block_list)
+        str += args.block_list[idx] + '|';
+    str = str.replace(/\|$/, '');
+    penalty.block_list(str || null);
 
     fieldmapper.standardRequest(
         ['open-ils.permacrud', 'open-ils.permacrud.create.csp'],
@@ -35,7 +47,7 @@ function spCreate(args) {
             params: [openils.User.authtoken, penalty],
             oncomplete: function(r) {
                 if(new String(openils.Util.readResponse(r)) != '0')
-                    buildSPGrid();
+                    spBuildGrid();
             }
         }
     );
