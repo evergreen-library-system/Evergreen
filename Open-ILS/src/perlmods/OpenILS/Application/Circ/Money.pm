@@ -50,24 +50,17 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub make_payments {
+	my($self, $client, $login, $payments) = @_;
+	my($user, $trans, $evt);
 
-	my( $self, $client, $login, $payments ) = @_;
+	my $e = new_editor(authtoken => $login, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $patron = $e->retrieve_actor_user($payments->{userid}) or return $e->die_event;
+	return $e->die_event unless $e->allowed('CREATE_PAYMENT', $patron->home_ou);
 
-	my( $user, $trans, $evt );
-
-	( $user, $evt ) = $apputils->checkses($login);
-	return $evt if $evt;
-	$evt = $apputils->check_perms($user->id, $user->ws_ou, 'CREATE_PAYMENT');
-	return $evt if $evt;
-
-	my $e = new_editor(); # at this point, just for convenience
-
-	$logger->info("Creating payment objects: " . Dumper($payments) );
-
-	my $session = $apputils->start_db_session;
 	my $type		= $payments->{payment_type};
 	my $credit	= $payments->{patron_credit} || 0;
-	my $drawer	= $user->wsid;
+	my $drawer	= $e->requestor->wsid;
 	my $userid	= $payments->{userid};
 	my $note		= $payments->{note};
 	my $cc_type = $payments->{cc_type} || 'n/a';
@@ -79,6 +72,8 @@ sub make_payments {
 
 	my $total_paid = 0;
 
+    my %orgs;
+
 	for my $pay (@{$payments->{payments}}) {
 
 		my $transid = $pay->[0];
@@ -87,28 +82,16 @@ sub make_payments {
 
 		$total_paid += $amount;
 
+        $orgs{$U->xact_org($transid, $e)} = 1;
+
 		$trans = fetch_mbts($self, $client, $login, $transid);
 		return $trans if $U->event_code($trans);
 
-		$logger->info("payment: processing transaction [$transid] with balance_owed = ". 
-			$trans->balance_owed. ",  payment amount = $amount, and payment type = $type");
-
-		if($trans->usr != $userid) { # Do we need to restrict this in some way ??
-			$logger->info( " * User $userid is making a payment for " . 
-				"a different user: " .  $trans->usr . ' for transaction ' . $trans->id  );
-		}
-
-		if($type eq 'credit_payment') {
-			$credit -= $amount;
-			$logger->activity("user ".$user->id." reducing patron credit by ".
-				"$credit for making a credit_payment on transaction ".$trans->id);
-		}
+        # making payment with existing patron credit
+		$credit -= $amount if $type eq 'credit_payment';
 
 		# A negative payment is a refund.  
 		if( $amount < 0 ) {
-			
-			$logger->info("payment: received a negative payment (refund) of $amount");
-
 			# If the refund causes the transaction balance to exceed 0 dollars, 
 			# we are in effect loaning the patron money.  This is not allowed.
 			if( ($trans->balance_owed - $amount) > 0 ) {
@@ -137,7 +120,7 @@ sub make_payments {
 		$payobj->xact($transid);
 		$payobj->note($note);
 
-		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($user->id); }
+		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($e->requestor->id); }
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
 		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
 		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
@@ -151,77 +134,41 @@ sub make_payments {
 
 			# Any overpay on this transaction goes directly into patron credit 
 			$cred = -$cred;
-
-			$logger->info("payment: amount ($amount) exceeds transaction balance of ".
-				$trans->balance_owed.".  Applying patron credit of $cred");
-
 			$credit += $cred;
+            my $circ = $e->retrieve_action_circulation($transid);
 
-			$trans = $session->request(
-				"open-ils.storage.direct.money.billable_transaction.retrieve", $transid )->gather(1);
-
-			# If this is a circulation, we can't close the transaction unless stop_fines is set
-			my $circ = $session->request(
-				'open-ils.storage.direct.action.circulation.retrieve', $transid )->gather(1);
-
-			if( !$circ || $circ->stop_fines ) {
-
+			if(!$circ || $circ->stop_fines) {
+			    # If this is a circulation, we can't close the transaction unless stop_fines is set
+                $trans = $e->retrieve_money_billable_transaction($transid);
 				$trans->xact_finish("now");
-				my $s = $session->request(
-					"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
-	
-				if(!$s) { throw OpenSRF::EX::ERROR 
-					("Error updating billable_xact in circ.money.payment"); }
+                $e->update_money_billable_transaction($trans) or return $e->die_event;
 			}
 		}
 
-		my $s = $session->request(
-			"open-ils.storage.direct.money.$type.create", $payobj )->gather(1);
-		if(!$s) { throw OpenSRF::EX::ERROR ("Error creating new $type"); }
-
+        my $method = "create_money_$type";
+        $e->$method($payobj) or return $e->die_event;
 	}
 
-
-	my $uid = $user->id;
-	$logger->info("user $uid applying total ".
-		"credit of $credit to user $userid") if $credit != 0;
-
-	$logger->info("user $uid applying total payment of $total_paid to user $userid");
-
-	$evt = _update_patron_credit( $session, $userid, $credit );
+	$evt = _update_patron_credit($e, $patron, $credit);
 	return $evt if $evt;
 
-	$apputils->commit_db_session($session);
+    for my $org_id (keys %orgs) {
+        # calculate penalties for each of the affected orgs
+        $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $userid, $org_id);
+        return $evt if $evt;
+    }
 
-    $client->respond_complete(1);	
-
-	$e = new_editor(xact => 1);
-    $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $userid, $drawer);
-    $e->commit unless $evt;
-
-	return undef;
+    $e->commit;
+    return 1;
 }
 
 
 sub _update_patron_credit {
-	my( $session, $userid, $credit ) = @_;
-	#return if $credit <= 0;
-
-	my $patron = $session->request( 
-		'open-ils.storage.direct.actor.user.retrieve', $userid )->gather(1);
-
-	$patron->credit_forward_balance( 
-		$patron->credit_forward_balance + $credit);
-
-	if( $patron->credit_forward_balance < 0 ) {
-		return OpenILS::Event->new('NEGATIVE_PATRON_BALANCE');
-	}
-	
-	$logger->info("Total patron credit for $userid is now " . $patron->credit_forward_balance );
-
-	$session->request( 
-		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);
-
+	my($e, $patron, $credit) = @_;
+    return undef if $credit == 0;
+	$patron->credit_forward_balance($patron->credit_forward_balance + $credit);
+    return OpenILS::Event->new('NEGATIVE_PATRON_BALANCE') if $patron->credit_forward_balance < 0;
+    $e->update_actor_user($patron) or return $e->die_event;
 	return undef;
 }
 
@@ -397,7 +344,7 @@ sub billing_items_create {
 	$billing->amount($amt);
 
 	$e->create_money_billing($billing) or return $e->die_event;
-    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $xact->usr, $e->requestor->ws_ou);
+    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $xact->usr, $U->xact_org($xact->id));
     return $evt if $evt;
 	$e->commit;
 
@@ -420,33 +367,43 @@ sub void_bill {
 	my( $s, $c, $authtoken, @billids ) = @_;
 
 	my $e = new_editor( authtoken => $authtoken, xact => 1 );
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VOID_BILLING');
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('VOID_BILLING');
 
     my %users;
     for my $billid (@billids) {
 
 	    my $bill = $e->retrieve_money_billing($billid)
-		    or return $e->event;
+		    or return $e->die_event;
 
         my $xact = $e->retrieve_money_billable_transaction($bill->xact)
-            or return $e->event;
+            or return $e->die_event;
 
-        $users{$xact->usr} = 1;
-    
-	    return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill) 
-		    if $bill->voided and $bill->voided =~ /t/io;
-    
+        if($U->is_true($bill->voided)) {
+            $e->rollback;
+	        return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill);
+        }
+
+        my $org = $U->xact_org($bill->xact, $e);
+        $users{$xact->usr} = {} unless $users{$xact->usr};
+        $users{$xact->usr}->{$org} = 1;
+
 	    $bill->voided('t');
 	    $bill->voider($e->requestor->id);
 	    $bill->void_time('now');
     
-	    $e->update_money_billing($bill) or return $e->event;
+	    $e->update_money_billing($bill) or return $e->die_event;
 	    my $evt = _check_open_xact($e, $bill->xact, $xact);
 	    return $evt if $evt;
     }
 
-    OpenILS::Utils::Penalty->calculate_penalties($e, $_, $e->requestor->ws_ou) for keys %users;
+    # calculate penalties for all user/org combinations
+    for my $user_id (keys %users) {
+        for my $org_id (keys %{$users{$user_id}}) {
+            OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $org_id);
+        }
+    }
+
 	$e->commit;
 	return 1;
 }
