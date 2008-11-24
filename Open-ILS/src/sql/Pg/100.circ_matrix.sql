@@ -306,7 +306,7 @@ BEGIN
     FOR standing_penalty IN
         SELECT  DISTINCT csp.*
           FROM  actor.usr_standing_penalty usp
-                JOIN config.standing_penalty csp ON (csp.id = usp.penalty)
+                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
                 AND csp.block_list LIKE penalty_type LOOP
