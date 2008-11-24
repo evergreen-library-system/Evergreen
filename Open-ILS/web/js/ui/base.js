@@ -15,7 +15,10 @@ function oilsSetupUser() {
         dojo.cookie('ses', openils.User.authtoken, {expires:-1, path:'/'}); // remove the cookie
         openils.User.authtoken = null;
         dojo.addOnLoad(function(){
-            oilsLoginDialog.show();
+            oilsLoginDialog.show(); 
+            var func = function(){ oilsDoLogin(); };
+            openils.Util.registerEnterHandler(dojo.byId('oils-login-username'), func);
+            openils.Util.registerEnterHandler(dojo.byId('oils-login-password'), func);
             dojo.byId('oils-login-workstation').innerHTML = workstation || '';
         });
         return;
