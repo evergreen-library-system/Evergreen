@@ -1442,7 +1442,7 @@ INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3'
 INSERT INTO config.xml_transform VALUES ( 'mods33', 'http://www.loc.gov/mods/v3', 'mods33', '');
 
 -- circ matrix
-INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,1,11,1,1);
+INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,11,1,1);
 
 
 -- hold matrix - 110.hold_matrix.sql:
