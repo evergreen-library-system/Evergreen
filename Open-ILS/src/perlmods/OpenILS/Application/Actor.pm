@@ -319,21 +319,14 @@ sub update_patron {
 	}
 
 	$apputils->commit_db_session($session);
-	my $fuser =  flesh_user($new_patron->id());
 
-	if( $opatron ) {
-		# Log the new and old patron for investigation
-		$logger->info("$user_session updating patron object. orig patron object = ".
-			OpenSRF::Utils::JSON->perl2JSON($opatron). " |||| new patron = ".OpenSRF::Utils::JSON->perl2JSON($fuser));
-	}
-
-
-	return $fuser;
+	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj));
 }
 
 
 sub flesh_user {
 	my $id = shift;
+    my $e = shift;
 	return new_flesh_user($id, [
 		"cards",
 		"card",
@@ -341,7 +334,7 @@ sub flesh_user {
 		"addresses",
 		"billing_address",
 		"mailing_address",
-		"stat_cat_entries" ] );
+		"stat_cat_entries" ], $e );
 }
 
 
@@ -931,7 +924,7 @@ sub user_retrieve_by_barcode {
 	}
 
 	$card = $card->[0];
-	my $user = flesh_user($card->usr());
+	my $user = flesh_user($card->usr(), new_editor(requestor => $user_obj));
 
 	$evt = $U->check_perms($user_obj->id, $user->home_ou, 'VIEW_USER');
 	return $evt if $evt;
@@ -2795,7 +2788,13 @@ sub new_flesh_user {
 
 	my $id = shift;
 	my $fields = shift || [];
-	my $e	= shift || new_editor(xact=>1);
+	my $e = shift;
+
+    my $fetch_penalties = 0;
+    if(grep {$_ eq 'standing_penalties'} @$fields) {
+        $fields = [grep {$_ ne 'standing_penalties'} @$fields];
+        $fetch_penalties = 1;
+    }
 
 	my $user = $e->retrieve_actor_user(
    	[
@@ -2824,6 +2823,20 @@ sub new_flesh_user {
 			}
 		}
 	}
+
+    if($fetch_penalties) {
+        # grab the user penalties ranged for this location
+        $user->standing_penalties(
+            $e->search_actor_user_standing_penalty([
+                {   usr => $id, 
+                    org_unit => $U->get_org_ancestors($e->requestor->ws_ou)
+                },
+                {   flesh => 1,
+                    flesh_fields => {ausp => ['standing_penalty']}
+                }
+            ])
+        );
+    }
 
 	$e->rollback;
 	$user->clear_passwd();
