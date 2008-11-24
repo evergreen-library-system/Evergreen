@@ -26,15 +26,14 @@ sub calculate_penalties {
             $_->{standing_penalty} == $pen_obj->{standing_penalty} and
             ($_->{id} || '') ne ($pen_obj->{id} || '') } @$penalties;
 
+        my $pen = Fieldmapper::actor::user_standing_penalty->new;
+        $pen->$_($pen_obj->{$_}) for keys %$pen_obj;
+
         if(defined $pen_obj->{id}) {
-            $e->delete_actor_user_standing_penalty($pen_obj->{id}) 
-                or return $e->die_event;
+            $e->delete_actor_user_standing_penalty($pen) or return $e->die_event;
 
         } else {
-            my $newp = Fieldmapper::actor::user_standing_penalty->new;
-            $newp->$_($pen_obj->{$_}) for keys %$pen_obj;
-            $e->create_actor_user_standing_penalty($newp)
-                or return $e->die_event;
+            $e->create_actor_user_standing_penalty($pen) or return $e->die_event;
         }
     }
 
