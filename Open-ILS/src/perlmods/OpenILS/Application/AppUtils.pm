@@ -1569,5 +1569,27 @@ sub get_copy_price {
 	return 0;
 }
 
+# given a transaction ID, this returns the context org_unit for the transaction
+sub xact_org {
+    my($self, $xact_id, $e) = @_;
+    $e ||= new_editor();
+    
+    my $loc = $e->json_query({
+        "select" => {circ => ["circ_lib"]},
+        from     => "circ",
+        "where"  => {id => $xact_id},
+    });
+
+    return $loc->[0]->{circ_lib} if @$loc;
+
+    $loc = $e->json_query({
+        "select" => {mg => ["billing_location"]},
+        from     => "mg",
+        "where"  => {id => $xact_id},
+    });
+
+    return $loc->[0]->{billing_location};
+}
+
 1;
 
