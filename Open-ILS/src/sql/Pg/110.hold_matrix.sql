@@ -255,7 +255,7 @@ BEGIN
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
-                AND csp.block_list LIKE '%HOLD%';
+                AND csp.block_list LIKE '%HOLD%' LOOP
 
         result.fail_part := standing_penalty.name;
         result.success := FALSE;
@@ -270,7 +270,7 @@ BEGIN
                     JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
               WHERE usr = match_user
                     AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
-                    AND csp.block_list LIKE '%CIRC%';
+                    AND csp.block_list LIKE '%CIRC%' LOOP
     
             result.fail_part := standing_penalty.name;
             result.success := FALSE;
