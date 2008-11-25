@@ -6,24 +6,30 @@
 
 <div dojoType="dijit.form.DropDownButton">
     <span>New Group Penalty Threshold</span>
-    <div dojoType="dijit.TooltipDialog" execute="gptCreate(arguments[0]);">
+    <div dojoType="dijit.TooltipDialog" execute="GPT.create(arguments[0]);">
+        <script type='dojo/connect' event='onOpen'>
+            new openils.User().buildPermOrgSelector('CREATE_GROUP_PENALTY_THRESHOLD', gptOwningOrg);
+            GPT.loadCsp();
+            GPT.grpSelector.drawGroups();
+        </script>
         <table class='dijitTooltipTable'>
             <tr>
                 <td><label for="name">Group: </label></td>
                 <td>
-                    <input dojoType="" name="name"/>
+                    <select dojoType="openils.widget.PermGrpFilteringSelect" name="name" jsId='GPT.grpSelector'/>
                 </td>
             </tr>
             <tr>
                 <td><label for="org_unit">Context Org Unit: </label></td>
                 <td>
-                    <input dojoType="" name="org_unit"/>
+                    <select dojoType="openils.widget.OrgUnitFilteringSelect" name="org_unit"
+                        jsId='gptOwningOrg' searchAttr='shortname' labelAttr='shortname'/>
                 </td>
             </tr>
             <tr>
                 <td><label for="penalty">Penalty: </label></td>
                 <td>
-                    <select dojoType="" name="penalty"/>
+                    <select dojoType="dijit.form.FilteringSelect" jsId='GPT.penaltySelector' name="penalty"/>
                 </td>
             </tr>
             <tr>
@@ -45,7 +51,7 @@
             <thead>
                 <tr>
                     <th field="id">ID</th>
-                    <th field="grp" width='auto'>Group</th>
+                    <th field="grp" width='auto' get='GPT.getGroupName'>Group</th>
                     <th field="org_unit" width='auto'>Context Org Unit</th>
                     <th field="penalty" width='auto'>Penalty</th>
                     <th field="threshold" width='auto'>threshold</th>
