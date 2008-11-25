@@ -537,8 +537,6 @@ sub mk_env {
         }
     }
 
-    return undef if $self->is_checkin;
-
     # --------------------------------------------------------------------------
     # Grab the patron
     # --------------------------------------------------------------------------
@@ -1577,7 +1575,6 @@ sub checkout_noncat {
 sub do_checkin {
     my $self = shift;
     $self->log_me("do_checkin()");
-
 
     return $self->bail_on_events(
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
