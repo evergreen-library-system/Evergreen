@@ -102,6 +102,8 @@ if(!dojo._hasResource["openils.Util"]) {
      * If false, they will be treated as error conditions and their content will
      * be alerted if openils.Util.alertEvent is set to true.  Also, if eventOk is
      * false, the response content will be null when an event is encountered.
+     * @param isList If true, assume the response will be a list of data and
+     * check the 1st item in the list for event-ness instead of the list itself.
      */
     openils.Util.alertEvent = true;
     openils.Util.readResponse = function(r, eventOk, isList) {
