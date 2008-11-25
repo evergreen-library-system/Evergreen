@@ -382,10 +382,9 @@ my @AUTOLOAD_FIELDS = qw/
     phone_renewal
     desk_renewal
     retarget
-    circ_test_success
     matrix_test_result
-    circ_matrix_test
-    circ_matrix_ruleset
+    circ_matrix_matchpoint
+    circ_test_success
     legacy_script_support
     is_deposit
     is_rental
@@ -682,9 +681,7 @@ sub do_permit {
     }
 
     $self->push_events(
-      OpenILS::Event->new(
-            'SUCCESS', 
-            payload => $self->mk_permit_key));
+        OpenILS::Event->new('SUCCESS', payload => $self->mk_permit_key));
 }
 
 sub check_item_deposit_events {
@@ -822,7 +819,8 @@ sub run_patron_permit_scripts {
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
             push(@allevents, OpenILS::Event->new(
-                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}})) for @$results;
+                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
+                )) for @$results;
         }
 
     } else {
@@ -838,8 +836,9 @@ sub run_patron_permit_scripts {
         OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
         my $mask = ($self->is_renewal) ? 'RENEW' : 'CIRC';
         my $penalties = OpenILS::Utils::Penalty->retrieve_penalties($self->editor, $patronid, $self->circ_lib, $mask);
+        $penalties = $penalties->{fatal_penalties};
 
-        push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
+        push(@allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
     }
 
     $logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
@@ -867,25 +866,16 @@ sub run_indb_circ_test {
             );
 
     $self->circ_test_success($U->is_true($results->[0]->{success}));
-    if($self->circ_test_success) {
-        $self->circ_matrix_test(
-            $self->editor->retrieve_config_circ_matrix_test(
-                $results->[0]->{matchpoint}
-            )
-        );
-    }
 
-    if($self->circ_test_success) {
-        $self->circ_matrix_ruleset(
-            $self->editor->retrieve_config_circ_matrix_ruleset([
-                $results->[0]->{matchpoint},
+    if(my $mp = $results->[0]->{matchpoint}) {
+        $self->circ_matrix_matchpoint(
+            $self->editor->retrieve_config_circ_matrix_matchpoint([
+                $mp,
                 {   flesh => 1,
-                    flesh_fields => {
-                        'ccmrs' => ['duration_rule', 'recurring_fine_rule', 'max_fine_rule']
-                    }
+                    flesh_fields => {ccmm => 
+                        ['duration_rule', 'recurring_fine_rule', 'max_fine_rule']}
                 }
-                ]
-            )
+            ])
         );
     }
 
@@ -911,9 +901,9 @@ sub do_inspect {
         return $results;
     }
 
-    my $duration_rule = $self->circ_matrix_ruleset->duration_rule;
-    my $recurring_fine_rule = $self->circ_matrix_ruleset->recurring_fine_rule;
-    my $max_fine_rule = $self->circ_matrix_ruleset->max_fine_rule;
+    my $duration_rule = $self->circ_matrix_matchpoint->duration_rule;
+    my $recurring_fine_rule = $self->circ_matrix_matchpoint->recurring_fine_rule;
+    my $max_fine_rule = $self->circ_matrix_matchpoint->max_fine_rule;
 
     my $policy = $self->get_circ_policy(
         $duration_rule, $recurring_fine_rule, $max_fine_rule);
@@ -983,7 +973,8 @@ sub run_copy_permit_scripts {
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
             push(@allevents, OpenILS::Event->new(
-                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}})) for @$results;
+                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
+                )) for @$results;
         }
     } else {
     
@@ -1339,9 +1330,9 @@ sub run_checkout_scripts {
 
     if(!$self->legacy_script_support) {
         $self->run_indb_circ_test();
-        $duration = $self->circ_matrix_ruleset->duration_rule;
-        $recurring = $self->circ_matrix_ruleset->recurring_fine_rule;
-        $max_fine = $self->circ_matrix_ruleset->max_fine_rule;
+        $duration = $self->circ_matrix_matchpoint->duration_rule;
+        $recurring = $self->circ_matrix_matchpoint->recurring_fine_rule;
+        $max_fine = $self->circ_matrix_matchpoint->max_fine_rule;
 
     } else {
 
