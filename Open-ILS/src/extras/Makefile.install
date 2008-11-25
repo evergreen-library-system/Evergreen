@@ -3,14 +3,20 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch), Ubuntu (gutsy/hardy), and Gentoo.
+# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/ibex), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
-# 	make -f Makefile.install debian
+# 	make -f Makefile.install debian-etch
 # 	- or -
-# 	make -f Makefile.install ubuntu
+# 	make -f Makefile.install debian-lenny
+# 	- or -
+# 	make -f Makefile.install ubuntu-gutsy
+# 	- or -
+# 	make -f Makefile.install ubuntu-hardy
+# 	- or -
+# 	make -f Makefile.install ubuntu-ibex
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -20,7 +26,8 @@
 #
 # Notes:
 #
-# 	This makefile has been tested much more with Debian than CentOS, Gentoo, or RHEL.
+# 	This makefile has been tested much more with Debian and Ubuntu than
+# 	CentOS, Gentoo, or RHEL.
 #
 # 	Gentoo (especially amd64) requires a good bit of masked package
 # 	mangling for some packages.  These are not documented here because
@@ -34,8 +41,11 @@ SHELL=/bin/bash
 # XXX
 # Gentoo needs explicit versions on many of these packages
 # to simulate a "blessed" set of packages
+#
 # Also, I (think) Gentoo has a javascript::spidermonkey package that does
 # not require fetching the sources externally ... needs testing/updating in here
+#
+# Intrepid has libmozjs-dev and spidermonkey-bin - might work
 
 LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.19
@@ -84,6 +94,11 @@ DEBS =  \
 	libtext-csv-perl\
 	libtext-csv-perl
 
+# Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
+EXTRA_DEBS = \
+	libyaz-dev \
+	yaz
+
 CENTOS = \
 	aspell \
 	aspell-devel \
@@ -125,19 +140,32 @@ CENTOS_PERL = \
 	Text::Aspell \
 	Text::CSV
 
-PGSQL_DEBIAN = \
-	postgresql-8.1\
-	postgresql-client-8.1\
-	postgresql-contrib-8.1\
-	postgresql-plperl-8.1\
+PGSQL_CLIENT_DEBS_8.1 = \
+	postgresql-client-8.1 \
 	postgresql-server-dev-8.1
 
-PGSQL_UBUNTU = \
-	postgresql-8.2\
-	postgresql-client-8.2\
-	postgresql-contrib-8.2\
-	postgresql-plperl-8.2\
+PGSQL_SERVER_DEBS_8.1 = \
+	postgresql-8.1 \
+	postgresql-contrib-8.1 \
+	postgresql-plperl-8.1
+
+PGSQL_CLIENT_DEBS_82 = \
+	postgresql-client \
 	postgresql-server-dev-8.2
+
+PGSQL_SERVER_DEBS_82 = \
+	postgresql \
+	postgresql-contrib-8.2 \
+	postgresql-plperl-8.2
+
+PGSQL_CLIENT_DEBS_83 = \
+	postgresql-client \
+	postgresql-server-dev-8.3
+
+PGSQL_SERVER_DEBS_83 = \
+	postgresql \
+	postgresql-contrib-8.3 \
+	postgresql-plperl-8.3
 
 GENTOOS = \
     yaz\
@@ -164,16 +192,18 @@ DEB_APACHE_MODS = \
     include\
     proxy\
     proxy_http\
-    rewrite\
-    ssl
- 
+    rewrite
 
-# generic CPAN modules
+# Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::CreditCard::Object \
-    MARC::Charset MARC::File::XML \
-    Net::Z3950::ZOOM \
     SRU
+
+# Intrepid and Lenny have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
+CPAN_MODULES_MARC = \
+    MARC::Charset \
+    MARC::File::XML \
+    Net::Z3950::ZOOM
 
 # ----------------------------------------------------------------------------
 
@@ -181,24 +211,36 @@ all:
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_yaz install_cpan install_js_sm install_libdbi 
+install: install_cpan install_js_sm install_libdbi 
 
-centos: install_centos_pgsql install_centos_rpms install install_centos_perl create_ld_local
+centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local
 
-debian: install_pgsql_debian install_debs install debian_sys_config
+debian-etch: etch generic_debian
+debian-lenny: lenny generic_debian
+etch: install_pgsql_client_debs_81 install_yaz install_cpan_marc
+lenny: install_pgsql_client_debs_83 install_extra_debs
+generic_debian:  install_debs install debian_sys_config
 
 gentoo: install_gentoos install_gentoo_perl install
 
 rhel: centos
 
-ubuntu: install_pgsql_ubuntu install_debs install debian_sys_config
-
+ubuntu-gutsy: hardy generic_ubuntu 
+ubuntu-hardy: hardy generic_ubuntu
+ubuntu-ibex: ibex generic_ubuntu
+hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc
+ibex: install_pgsql_client_debs_83 install_extra_debs
+generic_ubuntu: install_debs install debian_sys_config
 
 # - COMMON TARGETS ---------------------------------------------------------
 
 # Install the CPAN modules
 install_cpan: 
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+
+# Install the CPAN modules for MARC functionality
+install_cpan_marc: 
+	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install a known working version of YAZ
 install_yaz:    
@@ -250,11 +292,30 @@ debian_sys_config:
 install_debs:
 	$(APT_TOOL) install $(DEBS)
 
-install_pgsql_debian:
-	$(APT_TOOL) install $(PGSQL_DEBIAN)
+install_pgsql_client_debs_83:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_83)
 
-install_pgsql_ubuntu:
-	$(APT_TOOL) install $(PGSQL_UBUNTU)
+install_pgsql_server_debs_83:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_83)
+
+install_pgsql_client_debs_82:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_82)
+
+install_pgsql_server_debs_82:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_82)
+
+# Etch requires an explicit version to avoid PostgreSQL 7.4
+install_pgsql_client_debs_81:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_81)
+
+# Etch requires an explicit version to avoid PostgreSQL 7.4
+install_pgsql_server_debs_81:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_81)
+
+# Install the debian-specific dependencies for more modern distros
+install_extra_debs:
+	$(APT_TOOL) install $(EXTRA_DEBS)
+
 
 # ------------------------------------------------------------------
 # - GENTOO ---------------------------------------------------------
