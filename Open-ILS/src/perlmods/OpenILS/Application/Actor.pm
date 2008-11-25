@@ -2760,6 +2760,25 @@ sub apply_penalty {
 
 
 __PACKAGE__->register_method(
+	method	=> "ranged_penalty_thresholds",
+	api_name	=> "open-ils.actor.grp_penalty_threshold.ranged.retrieve");
+
+sub ranged_penalty_thresholds {
+	my($self, $conn, $auth, $context_org) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_GROUP_PENALTY_THRESHOLD', $context_org);
+    my $list = $e->search_permission_grp_penalty_threshold(
+        {org_unit => $U->get_org_ancestors($context_org)}
+    );
+
+    for my $t (@$list) {
+    }
+}
+
+
+
+__PACKAGE__->register_method(
 	method	=> "user_retrieve_fleshed_by_id",
 	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
 
