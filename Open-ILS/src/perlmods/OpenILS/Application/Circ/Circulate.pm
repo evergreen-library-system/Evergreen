@@ -565,7 +565,7 @@ sub mk_env {
 	}
 
     return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'))
-        unless $self->patron($patron);
+        unless $self->patron($patron) or $self->is_checkin;
 }
 
 # --------------------------------------------------------------------------
@@ -1744,7 +1744,9 @@ sub do_checkin {
             unless @{$self->events};
     }
 
-    OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
+    OpenILS::Utils::Penalty->calculate_penalties(
+        $self->editor, $self->patron->id, $self->circ_lib) if $self->patron;
+
     $self->checkin_flesh_events;
     return;
 }
