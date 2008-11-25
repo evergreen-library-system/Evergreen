@@ -74,10 +74,18 @@ sub format {
 
     # Enumerations
     foreach my $key ('a'..'f') {
+	my $capstr;
+
 	last if !defined $caption->caption($key);
+
 # 	printf("fmt %s: '%s'\n", $key, $caption->caption($key));
 
-	$str .= ($key eq 'a' ? "" : ':') . $caption->caption($key) . $self->{ENUMS}->{$key}->{HOLDINGS};
+	$capstr = $caption->caption($key);
+	if (substr($capstr, 0, 1) eq '(') {
+	    # a caption enclosed in parentheses is not displayed
+	    $capstr = '';
+	}
+	$str .= ($key eq 'a' ? "" : ':') . $capstr . $self->{ENUMS}->{$key}->{HOLDINGS};
     }
 
     # Chronology
@@ -175,6 +183,9 @@ sub next {
 	}
     }
 
+    if ($caption->enumeration_is_chronology) {
+	# do something
+    }
 
     # $carry keeps track of whether we need to carry into the next
     # higher level of enumeration. It's not actually necessary except

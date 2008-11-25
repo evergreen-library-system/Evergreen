@@ -109,4 +109,30 @@ sub caption {
     }
 }
 
+# If items are identified by chronology only, with no separate
+# enumeration (eg, a newspaper issue), then the chronology is
+# recorded in the enumeration subfields $a - $f.  We can tell
+# that this is the case if there are $a - $f subfields and no
+# chronology subfields ($i-$k), and none of the $a-$f subfields
+# have associated $u or $v subfields, but there are $w and $y
+# subfields.
+
+sub enumeration_is_chronology {
+    my $self = shift;
+
+    # There is always a '$a' subfield in well-formed fields.
+    return 0 if exists $self->{CHRONS}->{i};
+
+    foreach my $key ('a' .. 'f') {
+	my $enum;
+
+	last if !exists $self->{ENUMS}->{$key};
+
+	$enum = $self->{ENUMS}->{$key};
+	return 0 if defined $enum->{COUNT} || defined $enum->{RESTART};
+    }
+
+    return (exists $self->{PATTERN}->{w} && exists $self->{PATTERN}->{y});
+}
+
 1;
