@@ -20,16 +20,10 @@ my $descs = undef;
 
 sub new {
 	my( $class, $event, %params ) = @_;
-
 	_load_events() unless $events;
 
-	if( $event ne 'SUCCESS' ) {
-		$logger->info("Returning non-success event object: $event ");  
-	}
-
+	throw OpenSRF::EX ("Bad event name: $event") unless $event;
 	my $e = $events->{$event};
-	throw OpenSRF::EX 
-		("No event defined with textcode: $event") unless defined $e;
 
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
@@ -50,7 +44,7 @@ sub new {
 		ilsevent		=> $e, 
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l $ff:$ll $fff:$lll", 
-		desc			=> $descs->{$lang}->{$e},
+		desc			=> $descs->{$lang}->{$e} || '',
 		servertime	=> $t,
 		pid			=> $$, %params };
 }
