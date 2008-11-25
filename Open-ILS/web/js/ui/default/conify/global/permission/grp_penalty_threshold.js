@@ -2,6 +2,7 @@ dojo.require('dojox.grid.DataGrid');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('dijit.form.NumberTextBox');
 dojo.require('dijit.form.FilteringSelect');
+dojo.require('openils.PermGrp');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.widget.PermGrpFilteringSelect');
 
@@ -23,9 +24,9 @@ var GPT = {
     },
 
     buildGrid  : function() {
-        GPT.grpSelector.fetchGroups(
+        openils.PermGrp.fetchGroupTree(
             function() {
-                GPT.grpSelector.flatten();
+                openils.PermGrp.flatten();
                 fieldmapper.standardRequest(
                     ['open-ils.permacrud', 'open-ils.permacrud.search.pgpt.atomic'],
                     {   async: true,
@@ -63,7 +64,7 @@ var GPT = {
     getGroupName : function(rowIdx, item) {
         if(!item) return '';
         var grpId = this.grid.store.getValue(item, this.field);
-        return GPT.grpSelector.groupMap[grpId].name();
+        return openils.PermGrp.groupIdMap[grpId].name();
     },
 
     _loadCspComplete : function(r) {
