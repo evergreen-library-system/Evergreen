@@ -128,11 +128,13 @@ sub get_settings {
 	my $parser = XML::LibXML->new();
 	my $opensrf_config = $parser->parse_file($config_file);
 
-	$settings->{host} = $opensrf_config->findnodes($host);
-	$settings->{port} = $opensrf_config->findnodes($port);
-	$settings->{db} = $opensrf_config->findnodes($dbname);
-	$settings->{user} = $opensrf_config->findnodes($user);
-	$settings->{pw} = $opensrf_config->findnodes($pw);
+	# If the user passed in settings at the command line,
+	# we don't want to override them
+	$settings->{host} = $settings->{host} || $opensrf_config->findnodes($host);
+	$settings->{port} = $settings->{port} || $opensrf_config->findnodes($port);
+	$settings->{db} = $settings->{db} || $opensrf_config->findnodes($dbname);
+	$settings->{user} = $settings->{user} || $opensrf_config->findnodes($user);
+	$settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
 }
 
 # Creates the database schema by calling build-db.sh
@@ -140,10 +142,11 @@ sub create_schema {
 	my $settings = shift;
 
 	chdir(dirname($build_db_sh));
-	system(File::Spec->catfile('.', basename($build_db_sh)) . " " .
+	my $cmd = File::Spec->catfile('.', basename($build_db_sh)) . " " .
 		$settings->{host} ." ".  $settings->{port} ." ". 
 		$settings->{db} ." ".  $settings->{user} ." ". 
-		$settings->{pw});
+		$settings->{pw};
+	system($cmd);
 	chdir($script_dir);
 }
 
