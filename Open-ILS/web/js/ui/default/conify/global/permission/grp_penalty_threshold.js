@@ -25,18 +25,21 @@ var GPT = {
     },
 
     buildGrid  : function() {
-        openils.PermGrp.fetchGroupTree(
-            function() {
-                openils.PermGrp.flatten();
-                fieldmapper.standardRequest(
-                    ['open-ils.permacrud', 'open-ils.permacrud.search.pgpt.atomic'],
-                    {   async: true,
-                        params: [openils.User.authtoken, {id:{'!=':null}}],
-                        oncomplete: GPT._gridComplete
-                    }
-                );
-            }
-        );
+        var postPenaltyFunc = function() {
+            openils.PermGrp.fetchGroupTree(
+                function() {
+                    openils.PermGrp.flatten();
+                    fieldmapper.standardRequest(
+                        ['open-ils.permacrud', 'open-ils.permacrud.search.pgpt.atomic'],
+                        {   async: true,
+                            params: [openils.User.authtoken, {id:{'!=':null}}],
+                            oncomplete: GPT._gridComplete
+                        }
+                    );
+                }
+            );
+        };
+        GPT.loadCsp(postPenaltyFunc);
     },
 
     create : function(args) {
@@ -68,28 +71,34 @@ var GPT = {
         return openils.PermGrp.groupIdMap[grpId].name();
     },
 
-    _loadCspComplete : function(r) {
-        if(list = openils.Util.readResponse(r, false, true)) {
-            list = list.sort(
-                function(a, b) {
-                    if(a.id() > b.id()) 
-                        return 1;
-                    return -1;
-                }
-            );
-            GPT.penaltySelector.store = 
-                new dojo.data.ItemFileReadStore({data:csp.toStoreData(list)});
-            GPT.penaltySelector.startup();
-
-        }
+    drawCspSelector : function() {
+        GPT.penaltySelector.store = 
+            new dojo.data.ItemFileReadStore({data:csp.toStoreData(GPT.standingPenalties)});
+        GPT.penaltySelector.startup();
     },
 
-    loadCsp : function() {
+    loadCsp : function(onload) {
+        GPT.penaltyMap = {};
         fieldmapper.standardRequest(
             ['open-ils.permacrud', 'open-ils.permacrud.search.csp.atomic'],
             {   async: true,
                 params: [openils.User.authtoken, {id:{'!=':null}}],
-                oncomplete: GPT._loadCspComplete
+                oncomplete: function(r) {
+                    if(list = openils.Util.readResponse(r, false, true)) {
+                        list = list.sort(
+                            function(a, b) {
+                                // why not take this opportunity to do some other stuff? ;)
+                                GPT.penaltyMap[a.id()] = a;
+                                GPT.penaltyMap[b.id()] = b;
+                                if(a.id() > b.id()) 
+                                    return 1;
+                                return -1;
+                            }
+                        );
+                        GPT.standingPenalties = list;
+                        if(onload) onload(list);
+                    }
+                }
             }
         );
     }, 
@@ -98,6 +107,13 @@ var GPT = {
         if(item) {
             var orgId = this.grid.store.getValue(item, this.field);
             return fieldmapper.aou.findOrgUnit(orgId).shortname();
+        }
+    },
+
+    getPenaltyInfo : function(rowIndex, item) {
+        if(item) {
+            var pId = this.grid.store.getValue(item, this.field);
+            return GPT.penaltyMap[pId].name();
         }
     }
 };
