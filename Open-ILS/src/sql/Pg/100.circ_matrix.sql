@@ -507,7 +507,7 @@ BEGIN
     -- Start over for max out
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
 
-    -- Fail if the user has too many overdue items
+    -- Fail if the user has too many checked out items
     LOOP
         tmp_grp := user_object.profile;
         LOOP
