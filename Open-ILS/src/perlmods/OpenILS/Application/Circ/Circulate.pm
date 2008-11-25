@@ -857,7 +857,7 @@ sub run_indb_circ_test {
                 {   from => [
                         $dbfunc,
                         $self->editor->requestor->ws_ou,
-                        ($self->is_precat) ? undef : $self->copy->id, 
+                        ($self->is_precat or $self->is_noncat) ? undef : $self->copy->id, 
                         $self->patron->id,
                     ]
                 }
