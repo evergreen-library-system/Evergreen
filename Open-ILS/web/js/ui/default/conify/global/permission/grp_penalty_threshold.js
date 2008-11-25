@@ -25,41 +25,54 @@ var GPT = {
     },
 
     buildGrid  : function() {
-        var postPenaltyFunc = function() {
-            openils.PermGrp.fetchGroupTree(
+        fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.grp_penalty_threshold.ranged.retrieve'],
+            {   async: true,
+                params: [openils.User.authtoken, GPT.contextOrg],
+                oncomplete: GPT._gridComplete
+            }
+        );
+    },
+
+    init : function() {
+        GPT.contextOrg = openils.User.user.ws_ou();
+
+        var connect = function() {
+            dojo.connect(GPT.contextOrgSelector, 'onChange',
                 function() {
-                    openils.PermGrp.flatten();
-                    fieldmapper.standardRequest(
-                        ['open-ils.permacrud', 'open-ils.permacrud.search.pgpt.atomic'],
-                        {   async: true,
-                            params: [openils.User.authtoken, {id:{'!=':null}}],
-                            oncomplete: GPT._gridComplete
-                        }
-                    );
+                    GPT.contextOrg = this.getValue();
+                    GPT.buildGrid();
                 }
             );
         };
-        GPT.loadCsp(postPenaltyFunc);
+        new openils.User().buildPermOrgSelector('VIEW_GROUP_PENALTY_THRESHOLD', GPT.contextOrgSelector, null, connect);
+
+        GPT.loadCsp(
+            function() {
+                openils.PermGrp.fetchGroupTree(
+                    function() { openils.PermGrp.flatten(); GPT.buildGrid(); }
+                );
+            }
+        );
     },
 
     create : function(args) {
+        if(!(args.grp && args.org_unit && args.penalty && args.threshold))
+            return;
 
-        return alert(js2JSON(args));
-
-        if(!(args.name && args.label)) return;
-
-        var penalty = new pgpt();
-        penalty.name(args.name);
-        penalty.label(args.label);
-
+        var thresh = new pgpt();
+        thresh.grp(args.grp);
+        thresh.org_unit(args.org_unit);
+        thresh.penalty(args.penalty);
+        thresh.threshold(args.threshold);
 
         fieldmapper.standardRequest(
             ['open-ils.permacrud', 'open-ils.permacrud.create.pgpt'],
             {   async: true,
-                params: [openils.User.authtoken, penalty],
+                params: [openils.User.authtoken, thresh],
                 oncomplete: function(r) {
                     if(new String(openils.Util.readResponse(r)) != '0')
-                        gptBuildGrid();
+                        GPT.buildGrid();
                 }
             }
         );
@@ -82,7 +95,7 @@ var GPT = {
         fieldmapper.standardRequest(
             ['open-ils.permacrud', 'open-ils.permacrud.search.csp.atomic'],
             {   async: true,
-                params: [openils.User.authtoken, {id:{'!=':null}}],
+                params: [openils.User.authtoken, {id:{'<':100}}],
                 oncomplete: function(r) {
                     if(list = openils.Util.readResponse(r, false, true)) {
                         list = list.sort(
@@ -118,4 +131,4 @@ var GPT = {
     }
 };
 
-openils.Util.addOnLoad(GPT.buildGrid);
+openils.Util.addOnLoad(GPT.init);

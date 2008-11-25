@@ -14,9 +14,9 @@
         </script>
         <table class='dijitTooltipTable'>
             <tr>
-                <td><label for="name">Group: </label></td>
+                <td><label for="grp">Group: </label></td>
                 <td>
-                    <select dojoType="openils.widget.PermGrpFilteringSelect" name="name" jsId='GPT.grpSelector'/>
+                    <select dojoType="openils.widget.PermGrpFilteringSelect" name="grp" jsId='GPT.grpSelector'/>
                 </td>
             </tr>
             <tr>
@@ -44,6 +44,9 @@
         </table>
     </div>
 </div> 
+<span>Context Org Unit</span>
+<select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='GPT.contextOrgSelector' 
+    searchAttr='shortname' labelAttr='shortname'> </select>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
