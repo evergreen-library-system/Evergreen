@@ -5,6 +5,7 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermGrp');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.widget.PermGrpFilteringSelect');
+dojo.require('fieldmapper.OrgUtils');
 
 var GPT = {
 
@@ -91,6 +92,13 @@ var GPT = {
                 oncomplete: GPT._loadCspComplete
             }
         );
+    }, 
+
+    getOrgInfo : function(rowIndex, item) {
+        if(item) {
+            var orgId = this.grid.store.getValue(item, this.field);
+            return fieldmapper.aou.findOrgUnit(orgId).shortname();
+        }
     }
 };
 
