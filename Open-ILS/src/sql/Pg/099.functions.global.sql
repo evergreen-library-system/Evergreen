@@ -23,15 +23,14 @@ DECLARE
 BEGIN
     sel := 'SELECT id::BIGINT FROM ' || table_name || ' WHERE ' || quote_ident(col_name) || ' = ' || quote_literal(src_usr);
     upd := 'UPDATE ' || table_name || ' SET ' || quote_ident(col_name) || ' = ' || quote_literal(dest_usr) || ' WHERE id = ';
-    del := 'DELETE FROM ' || table_name || ' WHERE ' || quote_ident(col_name) || ' = ' || quote_literal(src_usr);
+    del := 'DELETE FROM ' || table_name || ' WHERE id = ';
     FOR cur_row IN EXECUTE sel LOOP
         BEGIN
-            upd := upd || cur_row.id;
-            -- RAISE NOTICE 'Attempting to merge % %', table_name, cur_row.id;
-            EXECUTE upd;
+            --RAISE NOTICE 'Attempting to merge % %', table_name, cur_row.id;
+            EXECUTE upd || cur_row.id;
         EXCEPTION WHEN unique_violation THEN
-            -- RAISE NOTICE 'Deleting conflicting % %', table_name, cur_row.id;
-            EXECUTE del;
+            --RAISE NOTICE 'Deleting conflicting % %', table_name, cur_row.id;
+            EXECUTE del || cur_row.id;
         END;
     END LOOP;
 END;
