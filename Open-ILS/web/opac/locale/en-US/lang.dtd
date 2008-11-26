@@ -1502,6 +1502,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.hold_boundary.soft "Holds: Soft boundary">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex "Patron barcode format">
 <!ENTITY staff.server.admin.org_settings.opac.barcode_regex.desc 'Regular expression defining the patron barcode format'>
+<!ENTITY staff.server.admin.org_settings.global.password_regex "Password format">
+<!ENTITY staff.server.admin.org_settings.global.password_regex.desc 'Regular expression defining the password format'>
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max "Maximum previous checkouts displayed">
 <!ENTITY staff.server.admin.org_settings.circ.item_checkout_history.max.desc "This is maximum number of previous circulations the staff client will display when investigating item details">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
