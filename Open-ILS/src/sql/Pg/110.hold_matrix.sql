@@ -44,7 +44,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     marc_vr_format          TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
     ref_flag                BOOL,
     holdable                BOOL    NOT NULL DEFAULT TRUE,                -- Hard "can't hold" flag requiring an override
-    distance_is_from_owne   BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
+    distance_is_from_owner  BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
     transit_range           INT        REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,        -- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
     max_holds               INT,                            -- Total hold requests must be less than this, NULL means skip (always pass)
     include_frozen_holds    BOOL    NOT NULL DEFAULT TRUE,                -- Include frozen hold requests in the count for max_holds test
