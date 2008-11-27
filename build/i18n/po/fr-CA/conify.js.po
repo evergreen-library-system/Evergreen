@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-14 22:43:43-0400\n"
+"POT-Creation-Date: 2008-11-19 21:26:24-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
-msgstr ""
+msgstr "Nouveau type"
 
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
@@ -42,7 +42,7 @@ msgstr ""
 
 #: conify.js:LABEL_GRANTABLE
 msgid "Grantable"
-msgstr ""
+msgstr "Octroyable"
 
 #: conify.js:SUCCESS_CREATING_STATUS
 msgid "New ${0} status created"
@@ -58,7 +58,7 @@ msgstr ""
 
 #: conify.js:STATUS_DELETED
 msgid "${0} deleted"
-msgstr ""
+msgstr "${0} supprimé"
 
 #: conify.js:ERROR_CREATING_PERMISSION
 msgid "Problem creating new Permission"
@@ -94,7 +94,7 @@ msgstr ""
 
 #: conify.js:LABEL_DESCRIPTION
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
@@ -118,7 +118,7 @@ msgstr ""
 
 #: conify.js:ID
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: conify.js:SUCCESS_NEW_CHILD_GROUP
 msgid "New child Group created for ${0}"
@@ -146,7 +146,7 @@ msgstr ""
 
 #: conify.js:OPAC_VISIBLE
 msgid "OPAC Visible"
-msgstr ""
+msgstr "Catalogue visible?"
 
 #: conify.js:ERROR_SAVING_PHYSICAL
 msgid "Problem saving Physical Address data for ${0}"
@@ -174,7 +174,7 @@ msgstr ""
 
 #: conify.js:NAME
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: conify.js:ERROR_CREATING_CHILD_AOUT
 msgid "Problem creating child organization type"
@@ -206,7 +206,7 @@ msgstr ""
 
 #: conify.js:LABEL_DEPTH
 msgid "Depth"
-msgstr ""
+msgstr "Profondeur"
 
 #: conify.js:SUCCESS_CREATING_CHILD_AOU
 msgid "New child Organizational Unit created for ${0}"
@@ -218,7 +218,7 @@ msgstr ""
 
 #: conify.js:LABEL_VALUE
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: conify.js:ERROR_ORPHANS
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
@@ -238,7 +238,7 @@ msgstr ""
 
 #: conify.js:LABEL_TRANSLATION conify.js:TRANSLATION
 msgid "Translation"
-msgstr ""
+msgstr "Traduction"
 
 #: conify.js:SUCCESS_SAVING_HOLDS
 msgid "Saved changes to the Holds Address of ${0}"
@@ -246,7 +246,7 @@ msgstr ""
 
 #: conify.js:LABEL_CODE
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: conify.js:ERROR_DELETING_PERM_MAPPING
 msgid "Problem deleting permission mapping ${0}"
@@ -294,7 +294,7 @@ msgstr ""
 
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
-msgstr ""
+msgstr "Nouveau groupe"
 
 #: conify.js:ERROR_SAVING_HOO
 msgid "Problem saving Hours of Operation data for ${0}"

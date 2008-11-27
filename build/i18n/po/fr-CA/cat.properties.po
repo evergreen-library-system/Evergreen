@@ -504,7 +504,7 @@ msgstr "Créer des copies"
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
-msgstr ""
+msgstr "Notes au sujet de l'exemplaire"
 
 #: staff.cat.copy_editor.status
 msgid "Status"
@@ -684,11 +684,11 @@ msgstr "Erreur de remplissage des catégories statistiques aux fins d’affichag
 
 #: staff.cat.copy_editor.remove_stat_cat_entry
 msgid "<Remove Stat Cat>"
-msgstr ""
+msgstr "<Enlever catégories statistiques>"
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
-msgstr ""
+msgstr "<Enlever protection>"
 
 #: staff.cat.copy_editor.remove_circulate_as_type
 msgid "<Remove Circulate as Type>"
@@ -702,43 +702,43 @@ msgstr "<Unset>"
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
-msgstr ""
+msgstr "Bibliothèque propriétaire: Côte"
 
 #: staff.cat.copy_editor.field.creator.label
 msgid "Creator"
-msgstr ""
+msgstr "Créateur"
 
 #: staff.cat.copy_editor.field.last_editor.label
 msgid "Last Editor"
-msgstr ""
+msgstr "Éditeur précédent"
 
 #: staff.cat.copy_editor.field.barcode.label
 msgid "Barcode"
-msgstr ""
+msgstr "Code à barres"
 
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
-msgstr ""
+msgstr "Date de création"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Date de la dernière modification"
 
 #: staff.cat.copy_editor.field.location.label
 msgid "Location/Collection"
-msgstr ""
+msgstr "Emplacement/Collection"
 
 #: staff.cat.copy_editor.field.circulation_library.label
 msgid "Circulation Library"
-msgstr ""
+msgstr "Bibliothèque de prêt"
 
 #: staff.cat.copy_editor.field.copy_number.label
 msgid "Copy Number"
-msgstr ""
+msgstr "Numéro de l'exemplaire"
 
 #: staff.cat.copy_editor.field.circulate.label
 msgid "Circulate?"
-msgstr ""
+msgstr "Prêté"
 
 #: staff.cat.copy_editor.field.circulate.yes_or_true
 msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
@@ -752,7 +752,7 @@ msgstr "Non"
 
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr ""
+msgstr "Mise en réserve possible?"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
 msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
@@ -766,57 +766,57 @@ msgstr "Non"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Délai obligatoire avant la mise en réserve"
 
 #: staff.cat.copy_editor.field.loan_duration.label
 msgid "Loan Duration"
-msgstr ""
+msgstr "Durée du prêt"
 
 #: staff.cat.copy_editor.field.loan_duration.short
 msgid "Short"
-msgstr ""
+msgstr "Courte"
 
 #: staff.cat.copy_editor.field.loan_duration.normal
 msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normale"
 
 #: staff.cat.copy_editor.field.loan_duration.extended
 msgid "Long"
-msgstr ""
+msgstr "Longue"
 
 #: staff.cat.copy_editor.field.fine_level.label
 msgid "Fine Level"
-msgstr ""
+msgstr "Niveau des amendes"
 
 #: staff.cat.copy_editor.field.fine_level.low
 msgid "Low"
-msgstr ""
+msgstr "Faible"
 
 #: staff.cat.copy_editor.field.fine_level.normal
 msgctxt "staff.cat.copy_editor.field.fine_level.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: staff.cat.copy_editor.field.fine_level.high
 msgid "High"
-msgstr ""
+msgstr "Élevé"
 
 #: staff.cat.copy_editor.field.circulate_as_type.label
 msgid "Circulate as Type"
-msgstr ""
+msgstr "Prêter en tant que type"
 
 #: staff.cat.copy_editor.field.circulation_modifier.label
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "Modificateur de prêt"
 
 #: staff.cat.copy_editor.field.alert_message.label
 msgid "Alert Message"
-msgstr ""
+msgstr "Message d'alerte"
 
 #: staff.cat.copy_editor.field.deposit.label
 msgid "Deposit?"
-msgstr ""
+msgstr "Dépot?"
 
 #: staff.cat.copy_editor.field.deposit.yes_or_true
 msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
@@ -830,15 +830,15 @@ msgstr "Non"
 
 #: staff.cat.copy_editor.field.deposit_amount.label
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Montant du dépot"
 
 #: staff.cat.copy_editor.field.price.label
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: staff.cat.copy_editor.field.opac_visible.label
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "Catalogue visible?"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
 msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
@@ -852,7 +852,7 @@ msgstr "Non"
 
 #: staff.cat.copy_editor.field.reference.label
 msgid "Reference?"
-msgstr ""
+msgstr "Référence"
 
 #: staff.cat.copy_editor.field.reference.yes_or_true
 msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
@@ -1064,7 +1064,7 @@ msgstr "Aucun compte d’autorité correspondant n’a été trouvé"
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
-msgstr ""
+msgstr "Modèle MARC"
 
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
@@ -1111,7 +1111,7 @@ msgstr "Compte : %1$s"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
-msgstr ""
+msgstr "Paniers de d'enregistrement"
 
 #: staff.cat.record_buckets.save_file_as
 msgid "Save File As"
@@ -1702,7 +1702,7 @@ msgstr "Erreur de stockage des préférences"
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
-msgstr ""
+msgstr "Catalogue natif"
 
 #: staff.cat.z3950.obj_list_init.list_construction_error
 msgid "Failure during list construction."
@@ -1715,46 +1715,46 @@ msgstr "Affichage des résultats"
 #: staff.cat.z3950.results_view.accesskey
 msgctxt "staff.cat.z3950.results_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.z3950.marc_view.label
 msgid "MARC View"
-msgstr ""
+msgstr "Affichage MARC"
 
 #: staff.cat.z3950.marc_view.accesskey
 msgctxt "staff.cat.z3950.marc_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.z3950.hide_top_pane.label
 msgid "Hide Top Pane"
-msgstr ""
+msgstr "Masquer panneau du haut"
 
 #: staff.cat.z3950.hide_top_pane.accesskey
 msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "H"
 
 #: staff.cat.z3950.unhide_top_pane.label
 msgid "Show Top Pane"
-msgstr ""
+msgstr "Afficher panneau du haut"
 
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "H"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Compte avec TCN %1$s désigné pour recouvrement."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
 msgid "No record marked for overlay."
-msgstr ""
+msgstr "Aucun compte désigné pour recouvrement."
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."

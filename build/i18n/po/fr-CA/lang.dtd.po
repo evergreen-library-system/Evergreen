@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-14 22:43-0400\n"
+"POT-Creation-Date: 2008-11-19 21:25-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -209,11 +209,11 @@ msgstr "Enregi&strer ces transactions"
 
 #: common.true
 msgid "True"
-msgstr ""
+msgstr "Vrai"
 
 #: common.false
 msgid "False"
-msgstr ""
+msgstr "Faux"
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -759,7 +759,7 @@ msgstr "Client membre du personnel d’Evergreen"
 
 #: staff.auth.about_btn.label
 msgid "About this client..."
-msgstr ""
+msgstr "À propos de ce client..."
 
 #: staff.auth.about_btn.accesskey
 msgid ""
@@ -770,17 +770,17 @@ msgstr ""
 #: staff.auth.new_window_btn.label
 #: staff.auth.new_window_btn.accesskey
 msgid "Open &New Window"
-msgstr ""
+msgstr "Ouvrir une &nouvelle fenêtre"
 
 #: staff.auth.locale.label
 #: staff.auth.locale.accesskey
 msgid "Local&e:"
-msgstr ""
+msgstr "Loca&lisation"
 
 #: staff.auth.apply_locale_btn.label
 #: staff.auth.apply_locale_btn.accesskey
 msgid "&Apply Locale"
-msgstr ""
+msgstr "&Appliquer localisation"
 
 #: staff.bills_current_payment_label
 msgid "Current Payment"
@@ -2195,7 +2195,6 @@ msgid "Displaying results"
 msgstr "Affichage des résultats"
 
 #: staff.fieldmapper_label
-#, fuzzy
 msgid "Fieldmapper"
 msgstr "Instrument de cartographie"
 
@@ -2354,7 +2353,7 @@ msgstr "R"
 
 #: staff.main.auth.add_ssl_exception
 msgid "Add SSL Exception"
-msgstr ""
+msgstr "Ajouter une exception SSL"
 
 #: staff.main.auth.server
 msgid "Server"
@@ -2441,7 +2440,6 @@ msgstr "&Télécharger la liste des clients hors ligne"
 
 #: staff.main.menu.admin.fieldmapper.label
 #: staff.main.menu.admin.fieldmapper.accesskey
-#, fuzzy
 msgid "Field&mapper"
 msgstr "Instrument de cartographie"
 
@@ -2648,7 +2646,7 @@ msgstr "Afficher le volume"
 
 #: staff.main.menu.cat.vandelay.label
 msgid "MARC Batch Import/Export"
-msgstr ""
+msgstr "Importer/Exporter des fichiers MARC par lots"
 
 #: staff.main.menu.cat.z39_50_import.label
 #: staff.main.menu.cat.z39_50_import.accesskey
@@ -3443,7 +3441,6 @@ msgid "Cont"
 msgstr "Cont"
 
 #: staff.marc.008.BKS.fest.desc
-#, fuzzy
 msgid "Festschrift"
 msgstr "Mélanges"
 
@@ -5215,29 +5212,31 @@ msgstr "Importation Z39.50"
 
 #: staff.server.admin.org_unit_settings.title
 msgid "Organization Unit Settings"
-msgstr ""
+msgstr "Paramètres d'unités organisationnelles"
 
 #: staff.server.admin.org_unit_settings.context
 msgid "Context Location"
-msgstr ""
+msgstr "Endroit de contexte"
 
 #: staff.server.admin.org_unit_settings.uninherited
 msgid ""
 " * Indicates the setting is not inherited from the parent org unit at run "
 "time"
 msgstr ""
+" * Indique que le paramètre n'est pas hérité de l'unité organisationnelle "
+"parentale lors de l'exécution du programme"
 
 #: staff.server.admin.org_unit_settings.edit_setting
 msgid "Edit Setting"
-msgstr ""
+msgstr "Modifier paramètre"
 
 #: staff.server.admin.org_unit_settings.delete_setting
 msgid "Delete Setting"
-msgstr ""
+msgstr "Supprimer paramètre"
 
 #: staff.server.admin.org_unit_settings.update_setting
 msgid "Update Setting"
-msgstr ""
+msgstr "Mettre à jour le paramètre"
 
 #: staff.server.admin.offline.xacts.caption
 msgid "Offline Sessions"
@@ -5734,7 +5733,7 @@ msgstr "Mise en réserve possible :"
 
 #: staff.server.admin.copy_locations.editor.hold_verify.label
 msgid "Hold Verify: "
-msgstr ""
+msgstr "Vérification des articles mis en réserve"
 
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
@@ -5765,7 +5764,7 @@ msgstr "Bibliothèque propriétaire"
 
 #: staff.server.admin.copy_locations.editor.library.filter
 msgid "Focus Location:"
-msgstr ""
+msgstr "Emplacement cible :"
 
 #: staff.server.admin.copy_locations.editor.holdable
 msgid "Holdable"
@@ -5773,7 +5772,7 @@ msgstr "Mise en réserve possible"
 
 #: staff.server.admin.copy_locations.editor.hold_verify
 msgid "Hold Verify"
-msgstr ""
+msgstr "Vérification des articles mis en réserve"
 
 #: staff.server.admin.copy_locations.editor.help
 msgctxt "staff.server.admin.copy_locations.editor.help"
@@ -6119,7 +6118,7 @@ msgstr "Liste des transits"
 
 #: staff.server.admin.index.conify
 msgid "Server Settings"
-msgstr ""
+msgstr "Paramètres du serveur"
 
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
@@ -6170,12 +6169,10 @@ msgid "Default Item Price"
 msgstr "Prix des articles par défaut"
 
 #: staff.server.admin.org_settings.from_address
-#, fuzzy
 msgid "Sending email address for patron notices"
 msgstr "adresse électronique pour les avis aux clients"
 
 #: staff.server.admin.org_settings.bounce_note
-#, fuzzy
 msgid "Email delivery failures will be returned this address"
 msgstr ""
 "(remarque : les courriels non acheminés seront retournés à cette adresse)"
@@ -6203,87 +6200,105 @@ msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval
 msgid "Holds: Expire Alert Interval"
-msgstr ""
+msgstr "Articles mis en réserve: Intervalle d'alerte d'expiration"
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
 msgid ""
 "Amount of time before a hold expires at which point the patron should be "
 "alerted"
 msgstr ""
+"Montant de temps avant une demande de mis en réserve devient expiré et le "
+"devrait être averti"
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval
 msgid "Holds: Expire Interval"
-msgstr ""
+msgstr "Articles mis en réserve: Intervalle d'expiration"
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval.desc
 msgid ""
 "Amount of time after a hold is placed before the hold expires.  Example \"100 "
 "days\""
 msgstr ""
+"Montant de temps après un article est mis en réserve avant que la demande soit "
+"expiré. Exemple \"100 jours\""
 
 #: staff.server.admin.org_settings.global.credit.allow
 msgid "Allow Credit Card Payments"
-msgstr ""
+msgstr "Permettre les paiements par carte de crédit"
 
 #: staff.server.admin.org_settings.global.credit.allow.desc
 msgid ""
 "If enabled, patrons will be able to pay fines accrued at this location via "
 "credit card"
 msgstr ""
+"Si ceci est activé, les clients pourront payer leurs amendes accumulé à "
+"cet endroit avec une carte de crédit"
 
 #: staff.server.admin.org_settings.global.default_locale
 msgid "Default Locale"
-msgstr ""
+msgstr "Localisation par défaut"
 
 #: staff.server.admin.org_settings.circ.void_overdue_on_lost
 msgid "Void overdue fines when items are marked lost"
 msgstr ""
+"Annuler les amendes en retard lorsque les articles sont désigné comme "
+"étant perdus"
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft
 msgid "Holds: Soft stalling interval"
-msgstr ""
+msgstr "Articles mis en réserve: Intervalle de délai indulgente"
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
 msgid ""
 "How long to wait before allowing remote items to be opportunisticaly "
 "captured for a hold.  Example \"5 days\""
 msgstr ""
+"Le montant de temps d'attente nécessaire avant de permettre des articles "
+"à distance d'être saisie et mis en réserve. Exemple \"5 jours\""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.hard
 msgid "Holds: Hard boundary"
-msgstr ""
+msgstr "Articles mis en réserve: Limite sévère"
 
 #: staff.server.admin.org_settings.circ.hold_boundary.soft
 msgid "Holds: Soft boundary"
-msgstr ""
+msgstr "Articles mis en réserve: Limite indulgente"
 
 #: staff.server.admin.org_settings.opac.barcode_regex
 msgid "Patron barcode format"
-msgstr ""
+msgstr "Format de code à barres pour les clients"
 
 #: staff.server.admin.org_settings.opac.barcode_regex.desc
 msgid "Regular expression defining the patron barcode format"
 msgstr ""
+"« Regular expression » qui décrit le format du code à barres des clients"
 
 #: staff.server.admin.org_settings.circ.item_checkout_history.max
 msgid "Maximum previous checkouts displayed"
-msgstr ""
+msgstr "Nombre maximum de sorties d'articles affichées"
 
 #: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
 msgid ""
 "This is maximum number of previous circulations the staff client will "
 "display when investigating item details"
 msgstr ""
+"Ceci est le nombre maximale de prêts précédents que le client pour les "
+"membres personnel affichera lorsque les détails au sujet de l'article sont "
+"examinés"
 
 #: staff.server.admin.org_settings.circ.reshelving_complete.interval
 msgid "Change reshelving status interval"
 msgstr ""
+"Modifier l'intervalle du statut de la remise des documents sur les rayons"
 
 #: staff.server.admin.org_settings.circ.reshelving_complete.interval.desc
 msgid ""
 "Amount of time to wait before changing an item from \"reshelving\" status to "
 "\"available\".  Examples \"1 day\", \"6 hours\""
 msgstr ""
+"Temps d'attente avant de changer le status d'un article de \"remise des "
+"documents sur les rayons\" à \"disponible\". Examples \"1 jour\", "
+"\"6 heures\""
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
 msgid "Selfcheck: Patron Login Timeout (in seconds)"
@@ -7304,7 +7319,6 @@ msgid "D"
 msgstr "D"
 
 #: staff.circ.holds.edit_expire_time
-#, fuzzy
 msgid "Edit Expiration Date"
 msgstr "Modifier la date d’activation"
 
@@ -8146,7 +8160,6 @@ msgstr "&Aide"
 
 #: staff.cat.record_buckets_overlay.query_list_actions.label
 #: staff.cat.record_buckets_overlay.query_list_actions.accesskey
-#, fuzzy
 msgctxt "staff.cat.record_buckets_overlay.query_list_actions.label staff.cat.record_buckets_overlay.query_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "Actions relatives à la liste"
@@ -8187,7 +8200,6 @@ msgstr "Ajouter les articles sélectionnés aux comptes en attente"
 
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.label
 #: staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey
-#, fuzzy
 msgctxt "staff.cat.record_buckets_overlay.pending_buckets_list_actions.label staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "Actions relatives à la liste"
@@ -8247,7 +8259,6 @@ msgstr "Propriétaire :"
 
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.label
 #: staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey
-#, fuzzy
 msgctxt "staff.cat.record_buckets_overlay.record_buckets_list_actions.label staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey"
 msgid "&List Actions"
 msgstr "Actions relatives à la liste"
@@ -8576,7 +8587,6 @@ msgstr "Extraire &un plus grand nombre de résultats"
 
 #: staff.cat.z3950.list_actions.label
 #: staff.cat.z3950.list_actions.accesskey
-#, fuzzy
 msgctxt "staff.cat.z3950.list_actions.label staff.cat.z3950.list_actions.accesskey"
 msgid "&List Actions"
 msgstr "Actions relatives à la liste"
@@ -8646,7 +8656,7 @@ msgstr "Récupération..."
 
 #: staff.patron.bill_cc_info.title
 msgid "Credit Card Information"
-msgstr ""
+msgstr "Renseignements sur les cartes de crédit"
 
 #: staff.patron.bill_cc_info.visa.label
 msgid "Visa"
@@ -8710,9 +8720,8 @@ msgstr "Type de carte de crédit"
 
 #. "Check" is used here to indicate a payment by check, not "Verify"
 #: staff.patron.bill_check_info.title
-#, fuzzy
 msgid "Check Info"
-msgstr "Entrée"
+msgstr "Vérifier l’information"
 
 #. "Check" is used here to indicate a payment by check, not "Verify"
 #: staff.patron.bill_check_info.check_info.label
@@ -9121,7 +9130,7 @@ msgstr "Impression automatique"
 
 #: staff.patron.hold_notices.title
 msgid "Hold Notices"
-msgstr ""
+msgstr "Avis pour les articles mis en réserve"
 
 #: staff.patron.hold_notices.add_record_notification.label
 #: staff.patron.hold_notices.add_record_notification.accesskey
@@ -9360,7 +9369,7 @@ msgstr "Quantité"
 
 #: staff.patron.user_edit.grantable.label
 msgid "Grantable"
-msgstr "Acceptable"
+msgstr "Octroyable"
 
 #: staff.patron.user_edit.save.label
 msgctxt "staff.patron.user_edit.save.label"
@@ -9485,7 +9494,6 @@ msgstr "Suffixe"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: staff.patron.ue.choose.label
-#, fuzzy
 msgctxt "staff.patron.ue.choose.label"
 msgid "- Pick -"
 msgstr "- Sélectionner -"
@@ -9619,7 +9627,7 @@ msgstr "Ville"
 #: staff.patron.ue.county.label
 msgctxt "staff.patron.ue.county.label"
 msgid "County"
-msgstr "Pays"
+msgstr "Comté"
 
 #: staff.patron.ue.state.label
 msgctxt "staff.patron.ue.state.label"
@@ -10085,7 +10093,6 @@ msgstr "Exporter"
 
 #: staff.generic.list_actions.label
 #: staff.generic.list_actions.accesskey
-#, fuzzy
 msgctxt "staff.generic.list_actions.label staff.generic.list_actions.accesskey"
 msgid "&List Actions"
 msgstr "Actions relatives à la liste"
@@ -10098,25 +10105,21 @@ msgstr "&Copier dans le presse-papiers"
 
 #: staff.generic.list_actions.csv_to_printer.label
 #: staff.generic.list_actions.csv_to_printer.accesskey
-#, fuzzy
 msgid "&Print List CSV"
 msgstr "Imprimer la liste en format CSV"
 
 #: staff.generic.list_actions.csv_to_clipboard.label
 #: staff.generic.list_actions.csv_to_clipboard.accesskey
-#, fuzzy
 msgid "&Copy List CSV to Clipboard"
 msgstr "Copier la liste en format CSV dans le presse-papiers"
 
 #: staff.generic.list_actions.csv_to_file.label
 #: staff.generic.list_actions.csv_to_file.accesskey
-#, fuzzy
 msgid "Save List CSV to &File"
 msgstr "Enregistrer la liste en format CSV dans le fichier"
 
 #: staff.generic.list_actions.save_columns.label
 #: staff.generic.list_actions.save_columns.accesskey
-#, fuzzy
 msgid "&Save List Configuration"
 msgstr "Enregistrer la configuration de la liste"
 
@@ -10237,7 +10240,6 @@ msgstr "Suffixe"
 
 #. Used in a selection list, the '-' at the start and end draws attention to the entry
 #: ev.staff.patron.ue_xhtml.pick_suffix.label
-#, fuzzy
 msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
 msgid "- Pick -"
 msgstr "- Sélectioner - "
@@ -10269,7 +10271,7 @@ msgstr "Adresse électronique"
 
 #: ev.staff.patron.ue_xhtml.phone_example
 msgid "Example: 123-456-7890 or 123-456-7890 ex123"
-msgstr ""
+msgstr "Exemple: 123-456-7890 ou 123-7890 po123"
 
 #: ev.staff.patron.ue_xhtml.daytime_phone.label
 msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
@@ -10303,7 +10305,7 @@ msgstr "Dans les limites de la ville"
 #: ev.staff.patron.ue_xhtml.county.label
 msgctxt "ev.staff.patron.ue_xhtml.county.label"
 msgid "County"
-msgstr "Pays"
+msgstr "Comté"
 
 #: ev.staff.patron.ue_xhtml.valid.label
 msgctxt "ev.staff.patron.ue_xhtml.valid.label"
@@ -10352,7 +10354,7 @@ msgstr "Ville"
 #: ev.staff.patron.ue_xhtml.conuty.label
 msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
 msgid "County"
-msgstr "Pays"
+msgstr "Comté"
 
 #: ev.staff.patron.ue_xhtml.state.label
 msgctxt "ev.staff.patron.ue_xhtml.state.label"
@@ -10381,11 +10383,11 @@ msgstr "Détacher cette adresse"
 
 #: ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label
 msgid "(XXX-YY-ZZZZ)"
-msgstr ""
+msgstr "(XXX-YY-ZZZZ)"
 
 #: ev.staff.patron.ue_xhtml.primary_ident_dl_help.label
 msgid "(GA-123456789)"
-msgstr ""
+msgstr "(GA-123456789)"
 
 #: ev.staff.patron.ue_xhtml.edit.label
 msgctxt "ev.staff.patron.ue_xhtml.edit.label"

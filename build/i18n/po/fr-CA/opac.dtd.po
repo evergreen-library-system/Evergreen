@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 22:59-0400\n"
+"POT-Creation-Date: 2008-11-19 21:25-0400\n"
 "PO-Revision-Date: 2007-11-19 14:19-0500\n"
 "Last-Translator: Dan Scott <dscott@laurentian.ca>\n"
 "Language-Team: French - Canadian <en@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. =================================================================
 #: lang.version
 msgid "remote v1"
-msgstr "supprimer v1"
+msgstr "remote v1"
 
 #: lang.description
 msgid "English"
@@ -36,16 +36,15 @@ msgstr "PINES"
 
 #: common.all
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #: common.currency
 msgid "$"
 msgstr "$"
 
 #: common.language
-#, fuzzy
 msgid "Language: "
-msgstr "Langue"
+msgstr "Langue : "
 
 #: common.name
 msgid "Name"
@@ -53,7 +52,7 @@ msgstr "Nom"
 
 #: common.none
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: common.title
 msgctxt "common.title"
@@ -137,7 +136,7 @@ msgstr "Résultats"
 
 #: common.select
 msgid "Select"
-msgstr ""
+msgstr "Sélectionner"
 
 #: common.status
 msgid "Status"
@@ -206,7 +205,7 @@ msgstr "Recherche en cours"
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr ""
+msgstr " d'environ "
 
 #: common.relevancy
 msgid "Match Score: "
@@ -251,7 +250,6 @@ msgstr "Chargement du sélecteur de bibliothèque..."
 # ==========================================================
 # Tips
 #: common.org.note
-#, fuzzy
 msgctxt "common.org.note"
 msgid "Tip:"
 msgstr "Conseil :"
@@ -277,7 +275,6 @@ msgid "Basic Catalog (HTML only)"
 msgstr "Catalogue de base (HTML seulement)"
 
 #: common.password_criteria
-#, fuzzy
 msgid ""
 "The password must be at least 7 characters in length, \n"
 "contain at least one letter (a-z/A-Z), \n"
@@ -288,34 +285,33 @@ msgstr ""
 
 #: common.a2z.title
 msgid "Title: A to Z"
-msgstr ""
+msgstr "Titre: A à Z"
 
 #: common.z2a.title
 msgid "Title: Z to A"
-msgstr ""
+msgstr "Titre: Z à A"
 
 #: common.a2z.author
 msgid "Author: A to Z"
-msgstr ""
+msgstr "Auteur: A à Z"
 
 #: common.z2a.author
 msgid "Author: Z to A"
-msgstr ""
+msgstr "Auteur: Z à A"
 
 #: common.new2old.pubdate
 msgid "Date: Newest to Oldest"
-msgstr ""
+msgstr "Date : de moins à plus âgé"
 
 #: common.old2new.pubdate
 msgid "Date: Oldest to Newest"
-msgstr ""
+msgstr "Date : de plus à moins âgé"
 
 #: opac.style.reddish
 msgid "Reddish"
-msgstr ""
+msgstr "Rougeâtre"
 
 #: holds.where_am_i
-#, fuzzy
 msgid ""
 "Holds lists are not as simple as \n"
 "'first come, first served.'  A complex matrix combining \n"
@@ -341,7 +337,6 @@ msgstr ""
 "disponibles. "
 
 #: holds.advanced_options
-#, fuzzy
 msgid ""
 "If you wish to broaden the scope of your hold to include other \n"
 "versions of this title, select the formats that would be acceptable. \n"
@@ -433,7 +428,6 @@ msgid "Large"
 msgstr "Gros"
 
 #: home.js.disabled
-#, fuzzy
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
 "Catalog. \n"
@@ -461,7 +455,6 @@ msgstr ""
 #. MyOPAC bookbag page
 #. =================================================================
 #: myopac.delete.bookbag
-#, fuzzy
 msgid ""
 "This will remove the selected bookbag and all items contained within the "
 "bookbag. \n"
@@ -540,7 +533,6 @@ msgid "remove"
 msgstr "supprimer"
 
 #: myopac.publish.text
-#, fuzzy
 msgid ""
 "Sharing a Bookbag means that the contents of the Bookbag will be visible to "
 "others. \n"
@@ -557,7 +549,6 @@ msgid "Are you sure you wish to remove this bookbag item?"
 msgstr "Voulez-vous vraiment supprimer cet élément du sac de livres?"
 
 #: myopac.publish.confirm
-#, fuzzy
 msgid ""
 "Sharing this bookbag will allow the contents \n"
 "of the bookbag to be seen by others.  Are you sure you wish to share this "
@@ -579,7 +570,6 @@ msgid "Bookbag successfully updated"
 msgstr "Le sac de livres a été mis à jour"
 
 #: myopac.create.warning
-#, fuzzy
 msgid ""
 "Warning: Adding items to a bookbag creates a link between you and the \n"
 "items in the database.  The contents of the bookbag are NOT publicly \n"
@@ -604,53 +594,52 @@ msgstr "Les sacs de livres sont..."
 #. =================================================================
 #: myopac.checked.out
 msgid "Total items out:"
-msgstr ""
+msgstr "Nombre total de prêts"
 
 #: myopac.checked.overdue
 msgid "Total items overdue:"
-msgstr ""
+msgstr "Nombre total de retards"
 
 #: myopac.checked.renew
 msgid "Renew Selected Items"
-msgstr ""
+msgstr "Renouveler les articles sélectionnés"
 
 #: myopac.checked.renewing
 msgid "Renewing..."
-msgstr ""
+msgstr "Renouvellement..."
 
 #: myopac.checked.renew.remaining
 msgctxt "myopac.checked.renew.remaining"
 msgid "Renewals Remaining"
-msgstr ""
+msgstr "Renouvellements restants"
 
 #: myopac.checked.noitems
-#, fuzzy
 msgid "You have no items checked out at this time"
 msgstr "Vous n'avez aucun élément en réserve en ce moment"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
-msgstr ""
+msgstr "Autres prêts"
 
 #: myopac.checked.circ.lib
 msgid "Circulating Library"
-msgstr ""
+msgstr "Bibliothèque de prêt"
 
 #: myopac.checked.item.type
 msgid "Circulation Type"
-msgstr ""
+msgstr "Type de prêt"
 
 #: myopac.checked.circ.time
 msgid "Please return by ..."
-msgstr ""
+msgstr "S.V.P. retourner avant le..."
 
 #: myopac.checked.renew.success
 msgid "item(s) successfully renewed"
-msgstr ""
+msgstr "article(s) renouvelé(s)"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir renouveler les articles sélectionnés?"
 
 #: myopac.checked.renew.fail
 msgid ""
@@ -658,12 +647,18 @@ msgid ""
 "means the item is needed to fulfill a hold.  Please see a librarian for "
 "further help."
 msgstr ""
+"Le système n'a pas réussi à renouveler l'article. D'habitude, ceci "
+"signifie que l'article est nécessaire afin de satisfaire une demande "
+"de mis en réserve. Veuillez consulter une bibliothécaire pour des "
+"renseignements."
 
 #: myopac.checked.renew.fail2
 msgid ""
 "Library policy prevents the renewal of this item at this time.  Please see a "
 "librarian for further details."
 msgstr ""
+"La politique de la bibliothèque ne permet pas le renouvellement de cet "
+"article. Veuillez consulter une bibliothécaire pour des renseignements."
 
 # =================================================================
 # MyOPAC Fines Page
@@ -701,7 +696,6 @@ msgid "Checkout Date"
 msgstr "Date d'emprunt"
 
 #: myopac.fines.due
-#, fuzzy
 msgctxt "myopac.fines.due"
 msgid "Due Date"
 msgstr "Échéance"
@@ -785,15 +779,15 @@ msgstr ""
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
-msgstr ""
+msgstr "Suspendre"
 
 #: myopac.holds.thaw_selected
 msgid "Activate"
-msgstr ""
+msgstr "Activer"
 
 #: myopac.holds.thaw_date_selected
 msgid "Set Active Date"
-msgstr ""
+msgstr "Régler la date d'activation"
 
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
@@ -803,14 +797,17 @@ msgstr "Annuler"
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
 msgstr ""
+"Traitement des articles mis en réserve...Veuillez patienter un instant."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
-msgstr ""
+msgstr "Actions pour les articles mis en réserve sélectionnés"
 
 #: myopac.holds.cancel.confirm
 msgid "Are you sure you wish to cancel the selected holds?"
 msgstr ""
+"Êtes-vous certain de vouloir annuler les demandes de mis en réserve "
+"sélectionner?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
@@ -818,39 +815,51 @@ msgid ""
 "If an item has already been selected to fulfill the hold, it will not be "
 "suspended"
 msgstr ""
+"Êtes-vous certain de vouloir suspendre les demandes de mis en réserve "
+"sélectionner?\nSi un article a déjà été sélectionner afin de satisfaire "
+"une demande de mis en réserve, il ne sera suspendu."
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
 msgstr ""
+"Êtes-vous certain de vouloir activer les demandes de mis en réserve "
+"sélectionnés?"
 
 #: myopac.holds.thaw_date.confirm
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
 msgstr ""
+"Êtes-vous certain de vouloir changer la date d'activation pour les demandes "
+"de mis en réserve sélectionnés?"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
 "Select an automatic activation date.  If no date is chosen, the holds will "
 "remain suspended until they are manually activated."
 msgstr ""
+"Sélectionner un date d'activation automatique. Si aucune date n'est choisi, "
+"les demandes de mis en réserve seront suspendus jusqu'à ce qu'ils soient "
+"activées de façon manuelle."
 
 #: opac.holds.freeze
 msgid "Suspend this hold"
-msgstr ""
+msgstr "Suspendre cette demande de mis en réserve"
 
 #: opac.holds.freeze.help
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
 msgstr ""
+"Une demande de mis en réserve retiendra sa place dans la file mais ne sera "
+"pas complétée avant qu'il soit activée."
 
 #: opac.holds.freeze.thaw_date
 msgid "Automatically activate hold on:"
-msgstr ""
+msgstr "Activer automatiquement la demande de mis en réserve le :"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
-msgstr ""
+msgstr "Date d'expiration"
 
 # =================================================================
 # MyOPAC Preferences Page
@@ -919,7 +928,6 @@ msgid "Preferences update failed!"
 msgstr "Échec de la mise à jour des préférences!"
 
 #: myopac.prefs.help
-#, fuzzy
 msgid ""
 "This setting defines how you will be notified of holds that are ready to be "
 "picked up from the library. \n"
@@ -935,11 +943,11 @@ msgstr ""
 
 #: myopac.holds.unfrozen
 msgid "Active"
-msgstr ""
+msgstr "Active"
 
 #: myopac.holds.frozen.until
 msgid "Activate on..."
-msgstr ""
+msgstr "Activer le..."
 
 # =================================================================
 # MyOPAC Summary page
@@ -947,7 +955,6 @@ msgstr ""
 #. MyOPAC Summary page
 #. =================================================================
 #: myopac.summary.expired
-#, fuzzy
 msgid ""
 "Your account expired on <span id='myopac.expired.date'/>! \n"
 "Please see a librarian to renew your account."
@@ -1037,7 +1044,7 @@ msgstr "Ville"
 
 #: myopac.summary.address.county
 msgid "County"
-msgstr "Pays"
+msgstr "Comté"
 
 #: myopac.summary.address.state
 msgid "State"
@@ -1070,6 +1077,8 @@ msgstr "Échec de la mise à jour du nom d'utilisateur"
 #: myopac.summary.username.invalid
 msgid "Username cannot contain spaces or have the same format as a barcode"
 msgstr ""
+"Nom d'utilisateur ne peut pas contenir des espaces ni avoir le même "
+"format qu'un code à barres"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1215,7 +1224,7 @@ msgstr "Cote"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr ""
+msgstr "Emplacement sur le rayonnage"
 
 # ==========================================================
 # MARC expert search
@@ -1258,7 +1267,6 @@ msgstr "Y compris les résultats pour"
 #. Tips
 #. ==========================================================
 #: tips.label
-#, fuzzy
 msgctxt "tips.label"
 msgid "Tip:"
 msgstr "Conseil :"
@@ -1316,13 +1324,11 @@ msgid "Log in for personalized features"
 msgstr "Ouverture de session pour personnaliser des paramètres "
 
 #: navigate.logout
-#, fuzzy
 msgctxt "navigate.logout"
 msgid "Log out"
 msgstr "Fermeture de session"
 
 #: navigate.logout.title
-#, fuzzy
 msgctxt "navigate.logout.title"
 msgid "Log out"
 msgstr "Fermeture de session"
@@ -1404,7 +1410,7 @@ msgstr "GALILEO"
 
 #: footer.copyright
 msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr ""
+msgstr "Droits d'auteur &#xA9; 2006-2008 Georgia Public Library Service"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1517,7 +1523,7 @@ msgstr "Recherche en cours"
 #. =================================================================
 #: opac.title.home
 msgid "Evergreen Home"
-msgstr " Evergreen Accueil "
+msgstr "Evergreen Accueil"
 
 #: opac.title.mresult
 msgid "Evergreen Title Groups"
@@ -1602,7 +1608,7 @@ msgstr "Envoyer la recherche"
 
 #: advanced.search.reset
 msgid "Reset Form"
-msgstr ""
+msgstr "Réinitialiser le formulaire"
 
 #: advanced.search.filters
 msgid "Search Filters"
@@ -1626,7 +1632,7 @@ msgstr "De base"
 
 #: advanced.literary.form
 msgid "Literary Form"
-msgstr ""
+msgstr "Forme littéraire"
 
 #: advanced.non.fiction
 msgid "Non Fiction"
@@ -1690,28 +1696,27 @@ msgstr "Aller"
 
 #: advanced.biblevel
 msgid "Bib Level"
-msgstr ""
+msgstr "Niveau bibliographique"
 
 #: advanced.filter.pubyear
-#, fuzzy
 msgid "Publication Year"
 msgstr "Date de publication"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
-msgstr ""
+msgstr "Est"
 
 #: advanced.filter.pubyear.before
 msgid "Before"
-msgstr ""
+msgstr "Avant"
 
 #: advanced.filter.pubyear.after
 msgid "After"
-msgstr ""
+msgstr "Après"
 
 #: advanced.filter.pubyear.between
 msgid "Between"
-msgstr ""
+msgstr "Entre"
 
 # =================================================================
 # Rdetail
@@ -1744,7 +1749,6 @@ msgid "Holdable"
 msgstr "Mise en réserve possible"
 
 #: rdetail.cn.due
-#, fuzzy
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
 msgstr "Échéance"
@@ -1821,7 +1825,6 @@ msgid "Create a new bookbag"
 msgstr "Créer un nouveau sac de livres"
 
 #: rdetail.record.deleted
-#, fuzzy
 msgid ""
 "This record has been deleted from the database. \n"
 "We recommend that you remove this title from any bookbags it may have been "
@@ -1969,23 +1972,23 @@ msgstr "Ressources en ligne"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
-msgstr ""
+msgstr "Trier les résultats par pertinence"
 
 #: result.sort_by.title
 msgid "Sort Results by Title"
-msgstr ""
+msgstr "Trier les résultats par titre"
 
 #: result.sort_by.author
 msgid "Sort Results by Author"
-msgstr ""
+msgstr "Trier les résultats par auteur"
 
 #: result.sort_by.pubdate
 msgid "Sort Results by Publication Date"
-msgstr ""
+msgstr "Trier les résultats par date de publication"
 
 #: result.limit2avail
 msgid "Limit to Available"
-msgstr ""
+msgstr "Limiter les résultats aux articles disponibles"
 
 #: result.info.copies
 msgid "Available copies / Total copies"
@@ -2069,7 +2072,7 @@ msgstr "Effectuer une recherche par auteur"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
-msgstr ""
+msgstr "Parcourir dans Google Books Search"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2089,7 +2092,7 @@ msgstr "Code à barres de l'exemplaire :"
 
 #: common.hold.place
 msgid "Place hold for my account"
-msgstr ""
+msgstr "Mettre en réserve pour mon compte"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
@@ -2122,7 +2125,7 @@ msgstr "Options avancées de mise en réserve"
 #: common.hold.delivery
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
-"Veuillez un emplacement physique pour la livraison de l'élément mis en "
+"Veuillez sélectionner un emplacement physique pour la livraison de l'élément mis en "
 "réserve."
 
 #: common.hold.exists
@@ -2130,7 +2133,6 @@ msgid "A hold already exists on the requested item."
 msgstr "L'élément demandé a déjà été mis en réserve."
 
 #: common.hold.exists.override
-#, fuzzy
 msgid ""
 "A hold already exists on the requested \n"
 "item. Would you like to create the hold anyway?"
@@ -2139,7 +2141,6 @@ msgstr ""
 "une nouvelle mise en réserve?"
 
 #: common.hold.barred
-#, fuzzy
 msgid ""
 "PATRON BARRED. Please see any notes in the \n"
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
@@ -2149,7 +2150,6 @@ msgstr ""
 "la page « Mon compte » ou communiquer avec votre bibliothèque locale."
 
 #: common.hold.item.invalid
-#, fuzzy
 msgid ""
 "This hold is no longer valid. It's likely that the \n"
 "target for the hold was deleted from the system.  Please cancel this hold "
@@ -2178,7 +2178,6 @@ msgstr ""
 "YYY-ZZZZ"
 
 #: common.hold.failed
-#, fuzzy
 msgid ""
 "No items were found that could fulfill the requested holds. \n"
 "It's possible that choosing a different format will result in a successful "
@@ -2273,7 +2272,6 @@ msgid "Change Password"
 msgstr "Changer le mot de passe"
 
 #: login.first.time
-#, fuzzy
 msgid ""
 "This appears to be the first time you have logged in. \n"
 "You will need to change your password."
@@ -2325,7 +2323,6 @@ msgstr ""
 "locale."
 
 #: login.failed
-#, fuzzy
 msgid ""
 "Login failed. The username or password provided was not valid. \n"
 "Ensure Caps-Lock is off and try again or contact your local library."
@@ -2344,11 +2341,11 @@ msgstr "Aller!"
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr ""
+msgstr "Sélectionner langue"
 
 #: slimpac.start.title
 msgid "Simple Search"
-msgstr ""
+msgstr "Recherche simplifiée"
 
 #: slimpac.start.nowSearching
 msgid "Now searching: "
@@ -2356,7 +2353,7 @@ msgstr "Recherche en cours : "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
-msgstr ""
+msgstr "Catalogue Dynamique"
 
 # =================================================================
 # Slimpac Advanced Search
@@ -2368,21 +2365,20 @@ msgid "Item Language"
 msgstr "Langue d'élément"
 
 #: slimpac.advanced.create_date
-#, fuzzy
 msgid "Record Creation Date"
 msgstr "Date de création du compte"
 
 #: slimpac.advanced.edit_date
 msgid "Record Edit Date"
-msgstr ""
+msgstr "Date de modification de l'entrée"
 
 #: opac.image_provided
 msgid "Image provided by"
-msgstr ""
+msgstr "Image fourni par"
 
 #: vendor.name
 msgid "Amazon"
-msgstr ""
+msgstr "Amazon"
 
 #: vendor.base_link
 msgid "http://amazon.com/dp/"
@@ -2393,11 +2389,11 @@ msgstr ""
 #. =================================================================
 #: selfck.staff_login_label
 msgid "Staff login"
-msgstr ""
+msgstr "Ouverture de session du personnel"
 
 #: selfck.staff_login
 msgid "Library barcode or username"
-msgstr ""
+msgstr "Code à barres ou nom d'utilisateur"
 
 #: selfck.staff_pw
 msgctxt "selfck.staff_pw"
@@ -2411,15 +2407,15 @@ msgstr "Envoyer"
 
 #: selfck.clear
 msgid "Clear"
-msgstr ""
+msgstr "Vider"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"
-msgstr ""
+msgstr "Veuillez balayer votre code à barres"
 
 #: selfck.item_barcode_label
 msgid "Please scan an item to checkout or renew:"
-msgstr ""
+msgstr "Veuillez balayer l'article que vous voulez sortir ou renouveler :"
 
 #: selfck.barcode
 msgctxt "selfck.barcode"
@@ -2437,7 +2433,6 @@ msgid "Author"
 msgstr "Auteur"
 
 #: selfck.due_date
-#, fuzzy
 msgctxt "selfck.due_date"
 msgid "Due Date"
 msgstr "Échéance"
@@ -2445,100 +2440,100 @@ msgstr "Échéance"
 #: selfck.remaining
 msgctxt "selfck.remaining"
 msgid "Renewals Remaining"
-msgstr ""
+msgstr "Renouvellements restants"
 
 #: selfck.cotype
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: selfck.cotype_co
 msgid "Checkout"
-msgstr ""
+msgstr "Sorti"
 
 #: selfck.cotype_rn
 msgid "Renewal"
-msgstr ""
+msgstr "Renouvellement"
 
 #: selfck.done
 msgid "Done"
-msgstr ""
+msgstr "Terminé"
 
 #: selfck.welcome
 msgid "Welcome"
-msgstr ""
+msgstr "Bienvenue"
 
 #: selfck.printing
 msgid "Printing Receipt..."
-msgstr ""
+msgstr "Impression du reçu..."
 
 #. event messages
 #: selfck.event.co_success
 msgid "Check out succeeded"
-msgstr ""
+msgstr "Sorti réussi"
 
 #: selfck.event.co_unknown
 msgid "An unknown event has occurred"
-msgstr ""
+msgstr "Un événement inattendu s'est produit"
 
 #: selfck.event.dupe_barcode
 msgid "This item has already been checked out during this session"
-msgstr ""
+msgstr "Cet article a déjà été sorti pendant cette session"
 
 #: selfck.event.patron_not_found
 msgid "The patron barcode was not found"
-msgstr ""
+msgstr "Le code à barres du client n'a pas été trouvé"
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
-msgstr ""
+msgstr "L'article demandé n'est pas dans le catalogue"
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
-msgstr ""
+msgstr "L'article demandé ne peut pas être prêté"
 
 #: selfck.event.already_out
 msgid "The requested item is already checked out to another patron"
-msgstr ""
+msgstr "L'article demandé est déjà sorti par un autre client"
 
 #: selfck.items_out
 msgid "You checked out the following items"
-msgstr ""
+msgstr "Vous avez sorti les articles suivants"
 
 #: selfck.org_hours
 msgid "Hours of Operation"
-msgstr ""
+msgstr "Heures d'ouverture"
 
 #: selfck.org_phone
 msgid "Library Phone Number"
-msgstr ""
+msgstr "Numéro de téléphone de la bibliothèque"
 
 #: selfck.day0
 msgid "Monday"
-msgstr ""
+msgstr "Lundi"
 
 #: selfck.day1
 msgid "Tuesday"
-msgstr ""
+msgstr "Mardi"
 
 #: selfck.day2
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercredi"
 
 #: selfck.day3
 msgid "Thursday"
-msgstr ""
+msgstr "Jeudi"
 
 #: selfck.day4
 msgid "Friday"
-msgstr ""
+msgstr "Vendredi"
 
 #: selfck.day5
 msgid "Saturday"
-msgstr ""
+msgstr "Samedi"
 
 #: selfck.day6
 msgid "Sunday"
-msgstr ""
+msgstr "Dimanche"
 
 #~ msgid "Literary&nbsp;Form"
 #~ msgstr "Littéraire&nbsp;Formulaire"

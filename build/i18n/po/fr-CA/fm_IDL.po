@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > fm_IDL.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-05 22:59:56-0400\n"
+"POT-Creation-Date: 2008-11-19 21:25:59-0400\n"
 "PO-Revision-Date: 2008-09-08 10:44-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -94,7 +94,7 @@ msgstr "Extractions simples de comptes"
 
 #: field.czs.host.label:545
 msgid "Host"
-msgstr ""
+msgstr "Hôte"
 
 #: field.au.id.label:1416 field.rud.id.label:3657
 msgid "User ID"
@@ -195,7 +195,7 @@ msgstr "XPath"
 
 #: field.mrd.date2.label:1684
 msgid "Date2"
-msgstr ""
+msgstr "Date2"
 
 #: field.au.groups.label:1436
 msgid "Additional Permission Groups"
@@ -283,11 +283,11 @@ msgstr "Entrées"
 
 #: field.cblvl.code.label:2126
 msgid "Bib Level Code"
-msgstr "Code de niveau de la bibliothèque"
+msgstr "Code de niveau de la bibliographique"
 
 #: field.vii.record.label:167
 msgid "Import Record"
-msgstr ""
+msgstr "Importer le compte"
 
 #: field.bre.call_numbers.label:1221
 msgid "Call Numbers"
@@ -500,7 +500,7 @@ msgstr "Liste des éléments classiques"
 
 #: field.viiad.id.label:216
 msgid "Definition ID"
-msgstr ""
+msgstr "ID de définition"
 
 #: field.mdp.accepting_usr.label:3274
 msgid "Accepting User"
@@ -739,7 +739,7 @@ msgstr "Date/heure de notification"
 
 #: field.vii.id.label:166
 msgid "Import Item ID"
-msgstr ""
+msgstr "Importer l'ID de l'article"
 
 #: class.chmt.label:695
 msgid "Hold Matrix Test Set"
@@ -751,7 +751,7 @@ msgstr "Point de correspondance matriciel des articles mis en réserve"
 
 #: field.mrd.date1.label:1683
 msgid "Date1"
-msgstr ""
+msgstr "Date1"
 
 #: field.bre.subject_field_entries.label:1241
 msgid "Indexed Subject Field Entries"
@@ -1073,7 +1073,7 @@ msgstr "Transaction"
 
 #: class.vii.label:161 class.viiad.label:211
 msgid "Import Item Attribute Definition"
-msgstr ""
+msgstr "Importer la définition d'attribut de l'article"
 
 #: field.rocit.owning_lib_name.label:3977
 msgid "Owning Lib Name"
@@ -1348,7 +1348,7 @@ msgstr "Article de ligne de facturation"
 
 #: field.czs.transmission_format.label:549
 msgid "Transmission Format"
-msgstr ""
+msgstr "Format de transmission"
 
 #: field.rsr.external_uri.label:3644
 msgid "External URI List (normalized)"
@@ -1417,7 +1417,7 @@ msgstr "Prénom"
 
 #: class.cza.label:558
 msgid "Z39.50 Attribute"
-msgstr ""
+msgstr "Attribut Z39.50"
 
 #: field.au.permissions.label:1393
 msgid "All Permissions"
@@ -1514,7 +1514,7 @@ msgstr "Indicatif de langue"
 
 #: field.cza.id.label:563
 msgid "Z39.50 Attr ID"
-msgstr ""
+msgstr "ID d'attribut Z39.50"
 
 #: field.combcirc.usr_post_code.label:1890
 #: field.acirc.usr_post_code.label:1957
@@ -1656,7 +1656,7 @@ msgstr "Notes de l’utilisateur"
 
 #: field.vii.copy_number.label:172 field.viiad.copy_number.label:239
 msgid "Copy Number"
-msgstr ""
+msgstr "Numéro de l'exemplaire"
 
 #: field.acn.notes.label:1151
 msgid "Notes"
@@ -1673,7 +1673,7 @@ msgstr "Valeur"
 
 #: field.viiad.keep.label:220
 msgid "Keep"
-msgstr ""
+msgstr "Garder"
 
 #: field.bre.tcn_source.label:1235 field.rmsr.tcn_source.label:3582
 #: field.rssr.tcn_source.label:3604 field.rsr.tcn_source.label:3627
@@ -1940,7 +1940,7 @@ msgstr "ID de l’adresse"
 
 #: field.rccbs.patron_county.label:3849
 msgid "User County"
-msgstr "Pays de l’utilisateur"
+msgstr "Comté de l’utilisateur"
 
 #: field.rocit.circ_lib.label:3980
 msgid "Circ Lib"
@@ -2281,7 +2281,7 @@ msgstr "Dernière note de facturation"
 
 #: field.czs.port.label:546
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: field.rccbs.billing_location.label:3824
 msgid "Billing Location Link"
@@ -2602,7 +2602,7 @@ msgstr "Questions"
 
 #: field.crmf.is_percent.label:2963
 msgid "Is Percent"
-msgstr ""
+msgstr "Est un pourcentage"
 
 #: field.cifm.code.label:1123
 msgid "Item Form Code"
@@ -2622,7 +2622,7 @@ msgstr "Date/heure du début du sondage"
 
 #: field.vii.priv_note.label:186 field.viiad.priv_note.label:237
 msgid "Private Note"
-msgstr ""
+msgstr "Note privée"
 
 #: field.au.checkouts.label:1391
 msgid "All Circulations"
@@ -2655,7 +2655,7 @@ msgstr "Type de supplantation"
 
 #: field.vqbr.matches.label:292 field.vqar.matches.label:424
 msgid "Matches"
-msgstr ""
+msgstr "Correspond à"
 
 #: field.mrd.char_encoding.label:1671
 msgid "Character Encoding"
