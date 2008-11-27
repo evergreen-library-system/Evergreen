@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-14 22:08:11-0400\n"
+"POT-Creation-Date: 2008-11-16 11:08:52-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -14,7 +14,7 @@ msgstr ""
 
 #: vqbrad.description:11
 msgid "Internal ID"
-msgstr ""
+msgstr "ID interne"
 
 # id::vai
 #: clm.value:vai
@@ -56,7 +56,7 @@ msgstr ""
 
 #: cza.label:5 cza.label:14
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 # id::kir
 #: clm.value:kir
@@ -117,11 +117,11 @@ msgstr "Sindhi"
 # id::7
 #: aou.name:7
 msgid "Example Branch 4"
-msgstr "Exemple de Direction générale 4"
+msgstr "Exemple de succursale 4"
 
 #: cam.description:b
 msgid "The item is intended for children, approximate ages 6-8 years."
-msgstr ""
+msgstr "L'article est destiné aux enfants âgés de 6 à 8 ans."
 
 # id::abk
 #: clm.value:abk
@@ -151,7 +151,7 @@ msgstr "Votic"
 # id::5
 #: aou.name:5
 msgid "Example Branch 2"
-msgstr "Exemple de Direction générale 2"
+msgstr "Exemple de succursale 2"
 
 # id::h
 #: clfm.value:h
@@ -275,7 +275,7 @@ msgstr "Judéo-allemand"
 
 #: vqbrad.description:8
 msgid "Accession Number"
-msgstr ""
+msgstr "Numéro de versement"
 
 # id::117
 #: ppl.description:117
@@ -330,7 +330,8 @@ msgstr "Kawi"
 
 #: ppl.description:20
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
-msgstr ""
+msgstr "Permet à un utilisateur d'importer un fichier MARC à partir "
+"de l'interface Z39.50"
 
 # id::kal
 #: clm.value:kal
@@ -364,7 +365,8 @@ msgstr "Disponible"
 
 #: ppl.description:180
 msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
-msgstr ""
+msgstr "Permet à un utilisateur de désigné une transaction comme une "
+"dette non-recouvrable"
 
 # id::6
 #: crcd.name:6
@@ -425,7 +427,7 @@ msgstr "Tibétain"
 
 #: cza.label:7 cza.label:16 vqbrad.description:12
 msgid "Publisher"
-msgstr ""
+msgstr "Éditeur"
 
 # id::inh
 #: clm.value:inh
@@ -479,7 +481,8 @@ msgstr "3_mois_0_renouvellement"
 
 #: ppl.description:7
 msgid "Allow a user to place a volume level hold"
-msgstr ""
+msgstr "Permet à un utilisateur de placer une mis en réserve au niveau du "
+"volume"
 
 # id::lav
 #: clm.value:lav
@@ -549,7 +552,7 @@ msgstr "Pali"
 
 #: cza.label:3 cza.label:12
 msgid "LCCN"
-msgstr ""
+msgstr "LCCN"
 
 # id::119
 #: ppl.description:119
@@ -575,10 +578,12 @@ msgstr "Venda"
 #: ppl.description:34
 msgid "Allow a user to view user permissions within the user permissions editor"
 msgstr ""
+"Permet à l'utilisateur d'afficher les permissions dans l'éditeur de "
+"permissons"
 
 #: pgt.name:3
 msgid "Staff"
-msgstr ""
+msgstr "Membres du personnel"
 
 # id::134
 #: ppl.description:134
@@ -590,7 +595,7 @@ msgstr ""
 
 #: clm.value''in:gwi
 msgid "Gwich"
-msgstr ""
+msgstr "Gwich"
 
 # id::iro
 #: clm.value:iro
@@ -617,7 +622,7 @@ msgstr "Inupiaq"
 
 #: i18n_l.name:en-CA
 msgid "English (Canada)"
-msgstr ""
+msgstr "Anglais (Canada)"
 
 # id::hin
 #: clm.value:hin
@@ -631,7 +636,7 @@ msgstr "Ewondo"
 
 #: cza.label:1 cza.label:10
 msgid "Title Control Number"
-msgstr ""
+msgstr "Numéro de contrôle pour les titres"
 
 # id::139
 #: ppl.description:139
@@ -671,7 +676,7 @@ msgstr "Vietnamien"
 
 #: aout.opac_label:4
 msgid "This Specialized Library"
-msgstr ""
+msgstr "Cette bibliothèque spécialisée"
 
 # id::mnc
 #: clm.value:mnc
@@ -711,6 +716,8 @@ msgstr "Indéterminé"
 #: cam.description:f
 msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
 msgstr ""
+"L'article est destiné à une audience particulier et la nature de sa "
+"présentation fait qu'il n'intéresserait pas une autre audience."
 
 # id::90
 #: ppl.description:90
@@ -726,10 +733,14 @@ msgstr "Aucun accès"
 #: ppl.description:175
 msgid "Allow a user to create/view/update/delete a provider"
 msgstr ""
+"Permet à l'utilisateur de créer/afficher/modifier/supprimer "
+"un fournisseur"
 
 #: ppl.description:17
 msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
 msgstr ""
+"Permet à l'utilisateur de voir les transactions d'épicerie ou de prêt dans "
+"l'interface de facturation; duplicata de VIEW_TRANSACTION"
 
 # id::1
 #: clfm.value:1
@@ -769,11 +780,11 @@ msgstr "Balonga"
 
 #: aout.opac_label:5
 msgid "Your Bookmobile"
-msgstr ""
+msgstr "Votre bibliobus"
 
 #: clfm.description:i
 msgid "The item is a single letter or collection of correspondence."
-msgstr ""
+msgstr "L'article est une lettre ou une collection de correspondance."
 
 # id::m
 #: citm.value:m
@@ -813,7 +824,7 @@ msgstr "Slave (Autre)"
 
 #: ppl.description:33
 msgid "Allow a user to place an item in transit"
-msgstr ""
+msgstr "Permet à l'utilisateur de faire passer l'article en transit"
 
 # id::baq
 #: clm.value:baq
@@ -828,6 +839,9 @@ msgstr "Tamboka"
 #: ppl.description:27
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
+"Permet à un utilisateur de continuer de renouveler un article même si "
+"ce dernier est requis pour un demande de mis en réserve"
+
 
 # id::1
 #: cbs.source:1
@@ -854,7 +868,7 @@ msgstr "Partie composante monographique"
 
 #: clfm.description:p
 msgid "The item is a poem or collection of poems."
-msgstr ""
+msgstr "L'article est un poème ou une collection de poèmes."
 
 # id::t
 #: citm.value:t
@@ -996,10 +1010,12 @@ msgstr "Kamba"
 #: ppl.description:4
 msgid "Allow a user to log in to the staff client"
 msgstr ""
+"Permet à l'utilisateur d'ouvrir une session avec le client "
+"du personnel"
 
 #: i18n_l.name:es-MX
 msgid "Spanish (Mexico)"
-msgstr ""
+msgstr "Espagnol (Mexique)"
 
 # id::i
 #: citm.value:i
@@ -1008,7 +1024,7 @@ msgstr "Enregistrement sonore non musical"
 
 #: pgt.name:2
 msgid "Patrons"
-msgstr ""
+msgstr "Clients"
 
 # id::102
 #: ppl.description:102
@@ -1115,6 +1131,8 @@ msgstr "Lapon"
 #: ppl.description:65
 msgid "User may link a copy to an entry in a statistical category"
 msgstr ""
+"L'utilisateur peut lier un exemplaire à une entrée dans une catégorie "
+"statistique"
 
 # id::inc
 #: clm.value:inc
@@ -1128,7 +1146,7 @@ msgstr "Telugu"
 
 #: cza.label:4 cza.label:13
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 # id::2
 #: cbs.source:2
@@ -1151,7 +1169,7 @@ msgstr "Newari"
 
 #: aout.name:4
 msgid "Sub-library"
-msgstr ""
+msgstr "Sous-bibliothèque"
 
 # id::5
 #: crcd.name:5
@@ -1222,7 +1240,7 @@ msgstr ""
 
 #: clfm.description:s
 msgid "The item is a speech or collection of speeches."
-msgstr ""
+msgstr "L'article est un discours ou une collection de discours."
 
 # id::bad
 #: clm.value:bad
@@ -1246,7 +1264,7 @@ msgstr "Inconnu ou non spécifié"
 
 #: ppl.description:10 ppl.description:13 ppl.description:35
 msgid "* no longer applicable"
-msgstr ""
+msgstr "* n'est plus applicable"
 
 # id::m
 #: cblvl.value:m
@@ -1371,7 +1389,7 @@ msgstr "Langues salish"
 
 #: pgt.name:4
 msgid "Catalogers"
-msgstr ""
+msgstr "Catalogueurs"
 
 # id::152
 #: ppl.description:152
@@ -1397,7 +1415,7 @@ msgstr "Essais"
 
 #: aout.opac_label:2
 msgid "Local Library System"
-msgstr ""
+msgstr "Système local de bibliothèques"
 
 # id::r
 #: cifm.value:r
@@ -1456,17 +1474,17 @@ msgstr "Ganda"
 
 #: aout.opac_label:1
 msgid "Everywhere"
-msgstr ""
+msgstr "Partout"
 
 # id::6
 #: aou.name:6
 msgid "Example Branch 3"
-msgstr "Exemple de Direction générale 3"
+msgstr "Exemple de succursale 3"
 
 # id::4
 #: aou.name:4
 msgid "Example Branch 1"
-msgstr "Exemple de Direction générale 1"
+msgstr "Exemple de succursale 1"
 
 # id::lah
 #: clm.value:lah
@@ -1494,6 +1512,9 @@ msgstr "Türkmène"
 #: cam.description:j
 msgid "The item is intended for children and young people, approximate ages 0-15 years."
 msgstr ""
+"L'article est destiné aux enfants et aux jeunes entre les âges "
+"approximatifs de 0 à 15 ans."
+
 
 # id::suk
 #: clm.value:suk
@@ -1558,7 +1579,7 @@ msgstr "Germanique (Autre)"
 
 #: cza.label:9 cza.label:18
 msgid "Item Type"
-msgstr ""
+msgstr "Type d'article"
 
 # id::kab
 #: clm.value:kab
@@ -1572,7 +1593,7 @@ msgstr "14_jours_2_renouvellements"
 
 #: ppl.description:15
 msgid "Allow a user to renew items"
-msgstr ""
+msgstr "Permet à l'utilisateur de renouveller des articles"
 
 # id::2
 #: cit.name:2
@@ -1617,6 +1638,7 @@ msgstr "Cherokee"
 #: ppl.description:176
 msgid "Allow a user to view and purchase from a provider"
 msgstr ""
+"Permet à un utilisateur d'afficher et d'acheter d'un fournisseur"
 
 # id::5
 #: ccs.name:5
@@ -1625,7 +1647,7 @@ msgstr "En traitement"
 
 #: ppl.description:173
 msgid "Allow a user to view/credit/debit a fund"
-msgstr ""
+msgstr "Permet à un utilisateur d'afficher/créditer/débiter une caisse"
 
 # id::78
 #: ppl.description:78
@@ -1785,7 +1807,7 @@ msgstr "Kumyk"
 
 #: vqbrad.description:14
 msgid "Edition"
-msgstr ""
+msgstr "Édition"
 
 # id::ava
 #: clm.value:ava
@@ -1795,6 +1817,10 @@ msgstr "Avaric"
 #: ppl.description:22
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
 msgstr ""
+"Permet à un utilisateur de modifier des volumes - nécessaire pour "
+"fusionner des comptes. Ceci est le double de VOLUME_UPDATE; l'utilisateur "
+"doit avoir les deux permissions aux niveau approprié pour fusionner les "
+"comptes."
 
 # id::mos
 #: clm.value:mos
@@ -1898,7 +1924,7 @@ msgstr "Égyptien"
 
 #: vqbrad.description:7
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 # id::tyv
 #: clm.value:tyv
@@ -1938,15 +1964,15 @@ msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 #: pgt.name:10
 msgid "Local System Administrator"
-msgstr ""
+msgstr "Administrateur de système local"
 
 #: cza.label:8 cza.label:17 vqbrad.description:13
 msgid "Publication Date"
-msgstr ""
+msgstr "Date de publication"
 
 #: ppl.description:16
 msgid "Allow a user to view bill details"
-msgstr ""
+msgstr "Permet à l'utilisateur d'afficher les détails des factures"
 
 # id::gaa
 #: clm.value:gaa
@@ -2013,6 +2039,8 @@ msgstr "Permis de conduire"
 #: ppl.description:38
 msgid "Allow a user to mark an item as 'missing'"
 msgstr ""
+"Permet à l'utilisateur de désigner un article comme "
+"étant « manquant »"
 
 # id::69
 # id::59
@@ -2100,7 +2128,7 @@ msgstr "Éthiopien"
 
 #: vqarad.description:1
 msgid "Identifier"
-msgstr ""
+msgstr "Identificateur"
 
 # id::83
 #: ppl.description:83
@@ -2190,6 +2218,8 @@ msgstr ""
 #: ppl.description:36
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr ""
+"Permet à un utilisateur d'enregistrer des paiements dans l'interface "
+"de facturation"
 
 # id::s
 #: clfm.value:s
@@ -2236,7 +2266,7 @@ msgstr "Osage"
 
 #: vqbrad.description:10
 msgid "TCN Source"
-msgstr ""
+msgstr "Source de NCT"
 
 # id::44
 #: ppl.description:44
@@ -2416,7 +2446,7 @@ msgstr "Mapuche"
 
 #: vqbrad.description:9
 msgid "TCN Value"
-msgstr ""
+msgstr "Valeur de NCT"
 
 # id::uig
 #: clm.value:uig
@@ -2430,7 +2460,7 @@ msgstr "Cheyenne"
 
 #: clfm.description:u
 msgid "The literary form of the item is unknown."
-msgstr ""
+msgstr "La forme littéraire de l'article est inconnue."
 
 # id::fon
 #: clm.value:fon
@@ -2479,7 +2509,7 @@ msgstr "Hawaïen"
 
 #: czs.label:loc
 msgid "Library of Congress"
-msgstr ""
+msgstr "Bibliothèque du Congrès"
 
 # id::sid
 #: clm.value:sid
@@ -2489,6 +2519,9 @@ msgstr "Sidamo"
 #: ppl.description:171
 msgid "Allow a user to create/view/update/delete a fund"
 msgstr ""
+"Permet à un utilisateur de créer/afficher/modifier/supprimer "
+"une caisse"
+
 
 # id::105
 #: ppl.description:105
@@ -2540,7 +2573,7 @@ msgstr ""
 
 #: vqbrad.description:4
 msgid "Pagination"
-msgstr ""
+msgstr "Pagination"
 
 # id::uga
 #: clm.value:uga
@@ -2598,6 +2631,8 @@ msgstr "Kru"
 #: clfm.description:m
 msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
 msgstr ""
+"L'article contient plusieurs formes littéraires (par exemple, poésie "
+"et nouvelles)."
 
 # id::lin
 #: clm.value:lin
@@ -2728,6 +2763,8 @@ msgstr "Hmong"
 #: ppl.description:179
 msgid "Allow a user to create/view/update/delete a currency_type"
 msgstr ""
+"Permet à un utilisateur de créer/afficher/modifier/supprimer une "
+"devise"
 
 # id::92
 # id::49
@@ -2757,6 +2794,8 @@ msgstr "Tchouvache"
 #: cam.description:d
 msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
+"L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 "
+"ans."
 
 # id::may
 #: clm.value:may
@@ -2765,7 +2804,7 @@ msgstr "Malais"
 
 #: ppl.description:19
 msgid "Allow a user to create new MARC records"
-msgstr ""
+msgstr "Permet à un utilisateur de créer des nouveau comptes MARC"
 
 # id::zun
 #: clm.value:zun
@@ -2784,7 +2823,7 @@ msgstr "Iban"
 
 #: aout.opac_label:3
 msgid "This Branch"
-msgstr ""
+msgstr "Cette succursale"
 
 # id::109
 #: ppl.description:109
@@ -2851,7 +2890,7 @@ msgstr "Exemple de système 1"
 
 #: czs.label:loc
 msgid "OCLC"
-msgstr ""
+msgstr "OCLC"
 
 # id::jav
 #: clm.value:jav
@@ -2879,7 +2918,7 @@ msgstr "Exemple de système 2"
 
 #: vqbrad.description:1
 msgid "Author of work"
-msgstr ""
+msgstr "Auteur de l'oeuvre"
 
 # id::121
 #: ppl.description:121
@@ -3041,7 +3080,7 @@ msgstr ""
 
 #: i18n_l.name:en-US
 msgid "English (US)"
-msgstr ""
+msgstr "Anglais (États-Unis)"
 
 # id::pon
 #: clm.value:pon
@@ -3050,7 +3089,7 @@ msgstr "Ponapé"
 
 #: ppl.description:37
 msgid "Allow a user to mark an item as 'lost'"
-msgstr ""
+msgstr "Permet à l'utilisateur de désigner un article comme étant « perdu »"
 
 # id::tah
 #: clm.value:tah
@@ -3115,6 +3154,8 @@ msgstr ""
 #: ppl.description:47
 msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
+"Permet à un utilisateur de changer les paramètres d'une unité "
+"organisationnelle"
 
 # id::0
 #: clfm.value:0
@@ -3146,6 +3187,8 @@ msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur
 #: ppl.description:30
 msgid "Allow a user to mark a user as deleted"
 msgstr ""
+"Permet à l'utilisateur de désigner un utilisateur comme étant "
+"supprimé"
 
 # id::7
 #: crmf.name:7
@@ -3155,6 +3198,7 @@ msgstr "retard_équipement_maximum"
 #: cam.description:
 msgid "The target audience for the item not known or not specified."
 msgstr ""
+"Le public cible de l'article n'est pas connu ou n'est pas spécifié."
 
 # id::jrb
 #: clm.value:jrb
@@ -3173,15 +3217,17 @@ msgstr "Collections"
 
 #: clfm.description:j
 msgid "The item is a short story or collection of short stories."
-msgstr ""
+msgstr "L'article est une nouvelle ou une collection de nouvelles."
 
 #: pgt.name:1
 msgid "Users"
-msgstr ""
+msgstr "Utilisateurs"
 
 #: ppl.description:165
 msgid "Lowest level permission required to access the ACQ interface"
 msgstr ""
+"Niveau de permission minimale nécessaire pour accéder l'interface "
+"d'ACQ".
 
 # id::sem
 #: clm.value:sem
@@ -3216,7 +3262,7 @@ msgstr "Bemba"
 
 #: vqbrad.description:1
 msgid "Title of work"
-msgstr ""
+msgstr "Titre de l'oeuvre"
 
 # id::50
 # id::45
@@ -3266,6 +3312,8 @@ msgstr "Malayalam"
 #: ppl.description:170
 msgid "Allow a user to create/view/update/delete a funding source"
 msgstr ""
+"Permet à un utilisateur de créer/afficher/modifier/supprimer une source "
+"de fonds"
 
 # id::smn
 #: clm.value:smn
@@ -3274,12 +3322,12 @@ msgstr "Inari Lapon"
 
 #: i18n_l.name:fr-CA
 msgid "French (Canada)"
-msgstr ""
+msgstr "Français (Canada)"
 
 # id::3
 #: aout.name:3
 msgid "Branch"
-msgstr "Direction générale"
+msgstr "Succursale"
 
 # id::afh
 #: clm.value:afh
@@ -3288,7 +3336,7 @@ msgstr "Afrihili (langage artificiel)"
 
 #: vqbrad.description:15
 msgid "Item Barcode"
-msgstr ""
+msgstr "Code à barres de l'article"
 
 # id::107
 #: ppl.description:107
@@ -3467,7 +3515,7 @@ msgstr "Mon-Khmer (Autre)"
 
 #: ppl.description:29
 msgid "Allow a user to edit a user's record"
-msgstr ""
+msgstr "Permet à l'utilisateur de modifier un compte d'un utilisateur"
 
 # id::pap
 #: clm.value:pap
@@ -3517,6 +3565,7 @@ msgstr "Suédois"
 #: cam.description:c
 msgid "The item is intended for young people, approximate ages 9-13 years."
 msgstr ""
+"L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
 
 # id::sgn
 #: clm.value:sgn
@@ -3895,7 +3944,7 @@ msgstr "Songhaï"
 
 #: i18n_l.name:es-US
 msgid "Spanish (US)"
-msgstr ""
+msgstr "Espagnol (États-Unis)"
 
 # id::2
 #: ccs.name:2
@@ -3916,7 +3965,7 @@ msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
 #: pgt.description:10
 msgid "System maintenance, configuration, etc."
-msgstr ""
+msgstr "Entretient du système, configuration, etc."
 
 #: ppl.description:114
 msgid "Allow a user to cancel holds"
@@ -3924,7 +3973,7 @@ msgstr ""
 
 #: vqbrad.description:3
 msgid "Language of work"
-msgstr ""
+msgstr "Langue de l'oeuvre"
 
 # id::144
 #: ppl.description:144

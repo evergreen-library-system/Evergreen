@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-14 22:08:10-0400\n"
+"POT-Creation-Date: 2008-11-16 11:08:50-0400\n"
 "PO-Revision-Date: 2008-09-08 11:30-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -115,7 +115,7 @@ msgstr "L’article demandé appelé metabib_subject_field_entry n’a pas été
 
 #: 1711.BIB_QUEUE_EXISTS:917
 msgid "A bib record queue with the same name already exists"
-msgstr ""
+msgstr "Une file de comptes de bibliothèque avec ce nom existe déjà"
 
 #: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:853
 #: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:857
@@ -860,7 +860,7 @@ msgstr "L’ex demandé n’a pas été trouvé"
 
 #: 7019.HOLD_CAPTURE_DELAYED:1051
 msgid "Hold capture was delayed for this item"
-msgstr ""
+msgstr "Délai de la saisie de cet article mis en réserve"
 
 #: 8004.OFFLINE_CONFIG_ERROR:1071 8005.OFFLINE_CHECKSUM_FAILED:1075
 #: 8006.OFFLINE_SESSION_NOT_FOUND:1079
@@ -971,7 +971,7 @@ msgstr ""
 
 #: 1712.AUTH_QUEUE_EXISTS:921
 msgid "An authority record queue with the same name already exists"
-msgstr ""
+msgstr "Une file de comptes d'autorité avec un nom pareil existe déjà"
 
 #: 2003.INTERNAL_SERVER_ERROR:937
 msgid "There was an internal server error"

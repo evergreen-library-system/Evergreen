@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-14 22:08-0400\n"
+"POT-Creation-Date: 2008-11-16 11:08-0400\n"
 "PO-Revision-Date: 2008-09-08 12:00-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -155,11 +155,11 @@ msgstr ""
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
 
 #: cat.save_record
 msgid "Save Record"
@@ -500,11 +500,11 @@ msgstr "Administration locale"
 
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
-msgstr ""
+msgstr "Importer/Exporter des fichiers MARC"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
-msgstr ""
+msgstr "Paramètres du serveur"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
@@ -589,23 +589,23 @@ msgstr "Quitter Evergreen définitivement?"
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr ""
+msgstr "Vérification des qualifications"
 
 #: menu.cmd_verify_credentials.correct_credentials
 msgid "Success testing credentials!"
-msgstr ""
+msgstr "Test de qualifications réussi"
 
 #: menu.cmd_verify_credentials.incorrect_credentials
 msgid "Failure testing credentials!"
-msgstr ""
+msgstr "Test de qualifications échoué"
 
 #: menu.cmd_verify_credentials.name_feedback
 msgid "Username: <%1$s>"
-msgstr ""
+msgstr "Nom d'utilisateur: <%1$s>"
 
 #: menu.cmd_verify_credentials.barcode_feedback
 msgid "Barcode: <%1$s>"
-msgstr ""
+msgstr "Code à barres: <%1$s>"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"

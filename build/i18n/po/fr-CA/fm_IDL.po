@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > fm_IDL.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-14 22:07:45-0400\n"
+"POT-Creation-Date: 2008-11-16 11:08:24-0400\n"
 "PO-Revision-Date: 2008-09-08 10:44-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -34,7 +34,7 @@ msgstr "MARC21Slim"
 #: field.acqpon.edit_time.label:3779 field.jub.edit_time.label:3801
 #: field.acqlin.edit_time.label:3833
 msgid "Edit Time"
-msgstr ""
+msgstr "Temps de modification"
 
 #: field.rocit.title.label:4501
 msgid "Title"
@@ -66,7 +66,7 @@ msgstr "Données démographiques"
 
 #: field.acqpro.currency_type.label:3492 field.acqfs.currency_type.label:3509
 msgid "Currency"
-msgstr ""
+msgstr "Devise"
 
 #: class.mwp.label:2743
 msgid "Work Payment"
@@ -109,7 +109,7 @@ msgstr "Extractions simples de comptes"
 
 #: field.czs.host.label:544
 msgid "Host"
-msgstr ""
+msgstr "Hôte"
 
 #: field.au.id.label:1417 field.rud.id.label:4199
 msgid "User ID"
@@ -173,7 +173,7 @@ msgstr "Référence"
 
 #: field.acqfsb.amount.label:3698
 msgid "Balance after Spent"
-msgstr ""
+msgstr "Solde après dépense"
 
 #: field.mb.billing_type.label:3365 field.rmocbbol.billing_type.label:4552
 #: field.rmocbbcol.billing_type.label:4583
@@ -217,7 +217,7 @@ msgstr "XPath"
 
 #: field.mrd.date2.label:1686
 msgid "Date2"
-msgstr ""
+msgstr "Date2"
 
 #: field.au.groups.label:1438
 msgid "Additional Permission Groups"
@@ -241,11 +241,11 @@ msgstr "Lien de la cote"
 
 #: field.jub.item_count.label:3807
 msgid "Item Count"
-msgstr ""
+msgstr "Nombre d'articles"
 
 #: field.czs.label.label:543 field.cza.label.label:565
 msgid "Label"
-msgstr ""
+msgstr "Étiquette"
 
 #: field.circ.checkin_lib.label:1816 field.combcirc.checkin_lib.label:1871
 #: field.acirc.checkin_lib.label:1938 field.rodcirc.checkin_lib.label:4446
@@ -310,7 +310,7 @@ msgstr "Entrées"
 
 #: field.cblvl.code.label:2128
 msgid "Bib Level Code"
-msgstr "Code de niveau de la bibliothèque"
+msgstr "Code de niveau de la bibliographique"
 
 #: field.acqpl.create_time.label:3734 field.acqpo.create_time.label:3753
 #: field.acqpon.create_time.label:3778 field.jub.create_time.label:3800
@@ -321,7 +321,7 @@ msgstr "Heure de création"
 
 #: field.vii.record.label:166
 msgid "Import Record"
-msgstr ""
+msgstr "Importer le compte"
 
 #: field.bre.call_numbers.label:1222
 msgid "Call Numbers"
@@ -539,7 +539,7 @@ msgid "Import/Overlay Fields for Removal"
 msgstr ""
 
 #: field.rocit.dewey_block_hundreds.label:4509
-msgid "Dewy Hundreds"
+msgid "Dewey Hundreds"
 msgstr "Dewey - centaines"
 
 #: class.rocit.label:4496
@@ -556,7 +556,7 @@ msgstr "ID de l’emplacement"
 #: field.acqlipad.id.label:3934 field.acqliuad.id.label:3951
 #: field.acqlilad.id.label:3967
 msgid "Definition ID"
-msgstr ""
+msgstr "ID de définition"
 
 #: field.mdp.accepting_usr.label:3276
 msgid "Accepting User"
@@ -568,11 +568,11 @@ msgstr "Définition de l’attribution du compte de bibliothèque en attente"
 
 #: field.acqpon.value.label:3781 field.acqlin.value.label:3835
 msgid "Vote Value"
-msgstr ""
+msgstr "Valeur de vote"
 
 #: field.vii.definition.label:167
 msgid "Attribute Definition"
-msgstr ""
+msgstr "Définition d'attribut"
 
 #: field.rmsr.biblio_record.label:4132 field.rssr.biblio_record.label:4154
 #: field.rsr.biblio_record.label:4187
@@ -581,7 +581,7 @@ msgstr "Compte bibliographique complet"
 
 #: field.acqfdeb.origin_amount.label:3553
 msgid "Origin Amount"
-msgstr ""
+msgstr "Montant d'origine"
 
 #: field.vqbr.marc.label:285 field.vqar.marc.label:418
 #: field.jub.marc.label:3802
@@ -666,7 +666,7 @@ msgstr "Intervalle d’expiration de l’utilisateur"
 
 #: field.acqf.debits.label:3578
 msgid "Debits"
-msgstr ""
+msgstr "Débits"
 
 #: field.circ.fine_interval.label:1825 field.combcirc.fine_interval.label:1880
 #: field.acirc.fine_interval.label:1947 field.rodcirc.fine_interval.label:4455
@@ -774,7 +774,7 @@ msgstr "Règle de l’amende maximale"
 
 #: field.jub.selector.label:3796
 msgid "Selecting Org Unit"
-msgstr ""
+msgstr "Sélection de l'unité organisationnelle"
 
 #: field.ssr.total.label:2227
 msgid "Total Results"
@@ -821,7 +821,7 @@ msgstr "Date/heure de notification"
 
 #: field.vii.id.label:165
 msgid "Import Item ID"
-msgstr ""
+msgstr "Importer l'ID de l'article"
 
 #: class.chmt.label:694
 msgid "Hold Matrix Test Set"
@@ -833,7 +833,7 @@ msgstr "Point de correspondance matriciel des articles mis en réserve"
 
 #: field.mrd.date1.label:1685
 msgid "Date1"
-msgstr ""
+msgstr "Date1"
 
 #: field.bre.subject_field_entries.label:1242
 msgid "Indexed Subject Field Entries"
@@ -952,7 +952,7 @@ msgstr "Totaux des prêts"
 
 #: field.acqexr.id.label:3473
 msgid "Exchange Rate ID"
-msgstr ""
+msgstr "ID du taux d'échange"
 
 #: field.au.credit_forward_balance.label:1408
 msgid "User Credit Balance"
@@ -972,7 +972,7 @@ msgstr "Date d’échéance"
 
 #: field.acqfa.allocator.label:3715
 msgid "Allocating User"
-msgstr ""
+msgstr "Allouer à l'utilisateur"
 
 #: field.aout.id.label:2560
 msgid "Type ID"
@@ -1072,7 +1072,7 @@ msgstr "Compte de bibliothèque cible"
 
 #: field.acqfa.percent.label:3714
 msgid "Percent"
-msgstr ""
+msgstr "Pourcentage"
 
 #: class.ac.label:2435
 msgid "Library Card"
@@ -1135,11 +1135,11 @@ msgstr "Protection de l’âge"
 
 #: field.acqpl.id.label:3730
 msgid "Picklist ID"
-msgstr ""
+msgstr "ID de la liste de choix"
 
 #: class.czs.label:537 field.czs.name.label:542 field.cza.source.label:563
 msgid "Z39.50 Source"
-msgstr ""
+msgstr "Source Z39.50"
 
 #: field.acn.record.label:1151 field.combcirc.copy_bib_record.label:1909
 #: field.acirc.copy_bib_record.label:1976
@@ -1176,7 +1176,7 @@ msgstr "Transaction"
 
 #: class.vii.label:160 class.viiad.label:210
 msgid "Import Item Attribute Definition"
-msgstr ""
+msgstr "Importer la définition d'attribut de l'article"
 
 #: field.rocit.owning_lib_name.label:4519
 msgid "Owning Lib Name"
@@ -1238,7 +1238,7 @@ msgstr "Type d’élément"
 
 #: field.jub.picklist.label:3797
 msgid "Picklist"
-msgstr ""
+msgstr "Liste de choix"
 
 #: field.ssr.visible.label:2229
 msgid "Visible"
@@ -1331,7 +1331,7 @@ msgstr "Prêt possible?"
 
 #: field.acqfdeb.debit_type.label:3557
 msgid "Debit Type"
-msgstr ""
+msgstr "Type de débit"
 
 #: field.acp.stat_cat_entry_copy_maps.label:2910
 msgid "Stat-Cat entry maps"
@@ -1339,7 +1339,7 @@ msgstr "Cartes d’entrées des catégories statistiques"
 
 #: field.acqct.label.label:3463
 msgid "Currency Label"
-msgstr ""
+msgstr "Étiquette de devise"
 
 #: field.aout.children.label:2556
 msgid "Subordinate Types"
@@ -1441,11 +1441,11 @@ msgstr "Type de média SIP2"
 
 #: field.acqlid.recv_time.label:3872
 msgid "Actual Receive Date"
-msgstr ""
+msgstr "Date de réception actuelle"
 
 #: field.acpl.hold_verify.label:2071
 msgid "Hold Capture Requires Verification"
-msgstr ""
+msgstr "Saisie de l'article mis en réserve nécessite une vérification"
 
 #: field.vqbrad.code.label:316 field.vqarad.code.label:447
 #: field.cza.code.label:566 field.ccm.code.label:594
@@ -1485,7 +1485,7 @@ msgstr ""
 
 #: field.czs.transmission_format.label:548
 msgid "Transmission Format"
-msgstr ""
+msgstr "Format de transmission"
 
 #: field.rsr.external_uri.label:4186
 msgid "External URI List (normalized)"
@@ -1562,7 +1562,7 @@ msgstr "Prénom"
 
 #: class.cza.label:557
 msgid "Z39.50 Attribute"
-msgstr ""
+msgstr "Attribut Z39.50"
 
 #: field.au.permissions.label:1394
 msgid "All Permissions"
@@ -1610,7 +1610,7 @@ msgstr "Statut pub"
 
 #: field.acqfs.credits.label:3513
 msgid "Credits"
-msgstr ""
+msgstr "Crédits"
 
 #: field.rocit.create_date.label:4518
 msgid "Create Date"
@@ -1669,7 +1669,7 @@ msgstr "Indicatif de langue"
 
 #: field.cza.id.label:562
 msgid "Z39.50 Attr ID"
-msgstr ""
+msgstr "ID d'attribut Z39.50"
 
 #: field.combcirc.usr_post_code.label:1892
 #: field.acirc.usr_post_code.label:1959
@@ -1714,7 +1714,7 @@ msgstr "Sujets géographiques (normalisé)"
 
 #: field.acqlid.id.label:3867
 msgid "Item Detail ID"
-msgstr ""
+msgstr "ID de détails de l'article"
 
 #: field.vii.call_number.label:170 field.viiad.call_number.label:222
 #: field.combcirc.copy_call_number.label:1905
@@ -1724,7 +1724,7 @@ msgstr "Cote"
 
 #: field.acqpro.id.label:3489
 msgid "Provider ID"
-msgstr ""
+msgstr "ID du fournisseur"
 
 #: field.au.card.label:1405
 msgid "Current Library Card"
@@ -1804,7 +1804,7 @@ msgstr "Aviser par courriel?"
 
 #: field.acqfdeb.id.label:3551
 msgid "Debit ID"
-msgstr ""
+msgstr "ID du débit"
 
 #: field.circ.payment_total.label:1846 field.combcirc.payment_total.label:1901
 #: field.acirc.payment_total.label:1968 field.mg.payment_total.label:2629
@@ -1831,7 +1831,7 @@ msgstr "Notes de l’utilisateur"
 
 #: field.vii.copy_number.label:171 field.viiad.copy_number.label:238
 msgid "Copy Number"
-msgstr ""
+msgstr "Numéro de l'exemplaire"
 
 #: field.acn.notes.label:1152
 msgid "Notes"
@@ -1849,7 +1849,7 @@ msgstr "Valeur"
 
 #: field.viiad.keep.label:219
 msgid "Keep"
-msgstr ""
+msgstr "Garder"
 
 #: field.bre.tcn_source.label:1236 field.rmsr.tcn_source.label:4124
 #: field.rssr.tcn_source.label:4146 field.rsr.tcn_source.label:4169
@@ -1862,7 +1862,7 @@ msgstr "Entrées CAT1"
 
 #: field.acqexr.from_currency.label:3474
 msgid "From Currency"
-msgstr ""
+msgstr "De la devise"
 
 #: field.mrd.enc_level.label:1675
 msgid "ELvl"
@@ -1930,7 +1930,7 @@ msgstr "Valeur de TCN"
 
 #: field.acqf.currency_type.label:3574
 msgid "Currency Type"
-msgstr ""
+msgstr "Devise"
 
 #: class.ahn.label:2047
 msgid "Hold Notification"
@@ -2027,7 +2027,7 @@ msgstr "Date/heure de la fin de la transaction"
 
 #: field.acqfdeb.origin_currency_type.label:3554
 msgid "Origin Currency"
-msgstr ""
+msgstr "Devise d'origine"
 
 #: field.mrd.bib_level.label:1671
 msgid "BLvl"
@@ -2071,7 +2071,7 @@ msgstr "Valeur normalisée"
 
 #: field.acqlid.eg_copy_id.label:3869
 msgid "Evergreen Copy ID"
-msgstr ""
+msgstr "ID de l'exemplaire dans Evergreen"
 
 #: field.ccmt.circulate.label:719
 msgid "Circulate?"
@@ -2160,7 +2160,7 @@ msgstr "ID de l’adresse"
 
 #: field.rccbs.patron_county.label:4391
 msgid "User County"
-msgstr "Pays de l’utilisateur"
+msgstr "Comté de l’utilisateur"
 
 #: field.rocit.circ_lib.label:4522
 msgid "Circ Lib"
@@ -2218,7 +2218,7 @@ msgstr "Paiement en argent"
 
 #: field.acqlia.definition.label:3854
 msgid "Definition"
-msgstr ""
+msgstr "Définition"
 
 #: field.acqlin.lineitem.label:3830
 msgid "Line Item"
@@ -2266,7 +2266,7 @@ msgstr "Note de paiement"
 
 #: field.acqfsrcb.amount.label:3685
 msgid "Balance Remaining"
-msgstr ""
+msgstr "Solde restant"
 
 #: field.amtr.matchpoint.label:127 field.chmm.id.label:635
 #: field.ccmm.id.label:671 field.chmt.matchpoint.label:699
@@ -2525,7 +2525,7 @@ msgstr "Dernière note de facturation"
 
 #: field.czs.port.label:545
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: field.rccbs.billing_location.label:4366
 msgid "Billing Location Link"
@@ -2533,7 +2533,7 @@ msgstr "Lien vers l’emplacement de la facturation"
 
 #: field.acqpro.name.label:3490
 msgid "Provider Name"
-msgstr ""
+msgstr "Nom du fournisseur"
 
 #: field.mrd.cat_form.label:1672
 msgid "Cat Form"
@@ -2577,7 +2577,7 @@ msgstr "Nom de groupe"
 
 #: field.acqexr.ratio.label:3476
 msgid "Ratio"
-msgstr ""
+msgstr "Taux"
 
 #: field.acqfdeb.fund.label:3552 field.acqf.id.label:3570
 #: field.acqfat.fund.label:3593 field.acqfdt.fund.label:3606
@@ -2706,7 +2706,7 @@ msgstr "Sujets du nom personnel (normalisé)"
 
 #: field.acqct.code.label:3462
 msgid "Currency Code"
-msgstr ""
+msgstr "Code de devise"
 
 #: field.rccbs.patron_zip.label:4393
 msgid "User ZIP Code"
@@ -2840,11 +2840,11 @@ msgstr "Article prêté non catalogué"
 
 #: field.vii.deposit.label:175 field.viiad.deposit.label:226
 msgid "Deposit"
-msgstr ""
+msgstr "Dépôt"
 
 #: field.acqfat.amount.label:3594
 msgid "Total Allocation Amount"
-msgstr ""
+msgstr "Montant total alloué"
 
 #: class.asva.label:2996
 msgid "Survey Answer"
@@ -2882,7 +2882,7 @@ msgstr "Questions"
 
 #: field.crmf.is_percent.label:2965
 msgid "Is Percent"
-msgstr ""
+msgstr "Est un pourcentage"
 
 #: field.cifm.code.label:1124
 msgid "Item Form Code"
@@ -2902,7 +2902,7 @@ msgstr "Date/heure du début du sondage"
 
 #: field.vii.priv_note.label:185 field.viiad.priv_note.label:236
 msgid "Private Note"
-msgstr ""
+msgstr "Note privée"
 
 #: field.au.checkouts.label:1392
 msgid "All Circulations"
@@ -2911,7 +2911,7 @@ msgstr "Tous les articles prêtés"
 #: field.acqpo.provider.label:3755 field.jub.provider.label:3799
 #: field.acqlipad.provider.label:3938
 msgid "Provider"
-msgstr ""
+msgstr "Fournisseur"
 
 #: field.aws.name.label:581
 msgid "Workstation Name"
@@ -2941,7 +2941,7 @@ msgstr "Type de supplantation"
 
 #: field.vqbr.matches.label:291 field.vqar.matches.label:423
 msgid "Matches"
-msgstr ""
+msgstr "Correspond à"
 
 #: field.mrd.char_encoding.label:1673
 msgid "Character Encoding"
@@ -3075,15 +3075,15 @@ msgstr "Préfixe"
 
 #: field.acqfscred.id.label:3536
 msgid "Credit ID"
-msgstr ""
+msgstr "ID de crédit"
 
 #: field.acqpon.editor.label:3780 field.acqlin.editor.label:3834
 msgid "Editor"
-msgstr ""
+msgstr "Éditeur"
 
 #: field.jub.source_label.label:3804
 msgid "Source Label"
-msgstr ""
+msgstr "Étiquette de source"
 
 #: field.actsce.owner.label:2686 field.asce.owner.label:3313
 #: field.rsce1.owner.label:4335 field.rsce2.owner.label:4349
@@ -3092,11 +3092,11 @@ msgstr "Propriétaire de l’entrée"
 
 #: field.acqexr.to_currency.label:3475
 msgid "To Currency"
-msgstr ""
+msgstr "À la devise"
 
 #: field.jub.expected_recv_time.label:3805
 msgid "Expected Receive Date"
-msgstr ""
+msgstr "Date de réception prévue"
 
 #: field.rccc.circ_modifier.label:4290 field.rocit.circ_modifier.label:4511
 msgid "Circ Modifier"
@@ -3104,7 +3104,7 @@ msgstr "Modification de prêt"
 
 #: field.jub.eg_bib_id.label:3803
 msgid "Evergreen Bib ID"
-msgstr ""
+msgstr "ID bibliographique dans Evergreen"
 
 #: field.rsr.series_title.label:4176
 msgid "Series Title (normalized)"
@@ -3116,7 +3116,7 @@ msgstr ""
 
 #: field.jub.attributes.label:3808
 msgid "Descriptive Attributes"
-msgstr ""
+msgstr "Attributs descriptifs"
 
 #: field.mbt.grocery.label:2663
 msgid "Grocery Billing link"
@@ -3176,7 +3176,7 @@ msgstr "Bibliothèque d’origine"
 
 #: field.acqlia.id.label:3849
 msgid "Attribute Value ID"
-msgstr ""
+msgstr "ID d'attribut de valeur"
 
 #: class.clm.label:1009
 msgid "Language Map"
@@ -3297,7 +3297,7 @@ msgstr ""
 
 #: field.acqf.year.label:3573
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: field.mb.void_time.label:3368
 msgid "Void Timestamp"
