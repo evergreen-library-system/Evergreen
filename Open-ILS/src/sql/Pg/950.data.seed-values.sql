@@ -915,7 +915,7 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (47, 'UPDATE_ORG_UNIT', oils_i18n_gettext(47, 'Allow a user to change the settings for an organization unit', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (48, 'VIEW_CIRCULATIONS', oils_i18n_gettext(48, 'Allow a user to see what another use has checked out', 'ppl', 'description'));
+    (48, 'VIEW_CIRCULATIONS', oils_i18n_gettext(48, 'Allow a user to see what another user has checked out', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'Allow a user may view another user''s transactions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
@@ -1097,7 +1097,7 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (137, 'ITEM_AGE_PROTECTED.override', oils_i18n_gettext(137, 'Allow a user to place a hold on an age-protected item', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (138, 'MAX_RENEWALS_REACHED.override', oils_i18n_gettext(138, 'Allow a user to renew an item past the maximun renewal count', 'ppl', 'description'));
+    (138, 'MAX_RENEWALS_REACHED.override', oils_i18n_gettext(138, 'Allow a user to renew an item past the maximum renewal count', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (139, 'PATRON_EXCEEDS_CHECKOUT_COUNT.override', oils_i18n_gettext(139, 'Allow staff to override checkout count failure', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
