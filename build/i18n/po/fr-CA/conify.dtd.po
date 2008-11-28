@@ -1,6 +1,5 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
 #. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -208,7 +207,7 @@ msgstr "Adresse physique"
 
 #: conify.org_unit.addresses_pane.holds.title
 msgid "Holds Address"
-msgstr "Adresse de la mis en réserve"
+msgstr "Adresse de la mise en réserve"
 
 #: conify.org_unit.addresses_pane.mailing.title
 msgid "Mailing Address"

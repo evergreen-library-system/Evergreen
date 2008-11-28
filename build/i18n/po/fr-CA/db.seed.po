@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2008-11-16 11:08:52-0400\n"
-"PO-Revision-Date: 2008-08-28 09:21-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 10:14-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,13 +48,11 @@ msgstr "Palauan"
 
 # id::115
 #: ppl.description:115
-#, fuzzy
 msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
-msgstr ""
-"Permet à un utilisateur de créer des copies d’articles mis en réserve (p. "
-"ex. deux articles mis en réserve pour le même titre)"
+msgstr "Permet à un utilisateur de créer des copies d’articles mis en réserve (p. ex. deux articles mis en réserve pour le même titre)"
 
-#: cza.label:5 cza.label:14
+#: cza.label:5
+#: cza.label:14
 msgid "Title"
 msgstr "Titre"
 
@@ -90,7 +88,6 @@ msgstr "7_jours_0_renouvellement"
 
 # id::123
 #: ppl.description:123
-#, fuzzy
 msgid "Allow a user to un-bar a patron"
 msgstr "Permet à un utilisateur d’annuler l’exclusion d’un client"
 
@@ -160,10 +157,8 @@ msgstr "Humeur, satires, etc."
 
 # id::43
 #: ppl.description:43
-#, fuzzy
 msgid "Allow a user to create a new bill on a transaction"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
+msgstr "Permet à un utilisateur de créer une nouvelle facture pour une transaction"
 
 # id::bnt
 #: clm.value:bnt
@@ -188,14 +183,11 @@ msgstr "10_cents_par_jour"
 # id::41
 # id::43
 #: ppl.description:41
-#, fuzzy
 msgid "Allow a user to create a new billable transaction"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle facture pour une transaction"
+msgstr "Permet à un utilisateur de créer une nouvelle facture pour une transaction"
 
 # id::49
 #: ppl.description:49
-#, fuzzy
 msgid "Allow a user to delete another user container"
 msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
 
@@ -227,9 +219,8 @@ msgstr "retard_maximum"
 # id::164
 # id::77
 #: ppl.description:164
-#, fuzzy
 msgid "Allow a user to update a fund allocation"
-msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
+msgstr "Permet à un utilisateur de mettre à jour une allocation de fonds"
 
 # id::j
 #: clfm.value:j
@@ -246,17 +237,13 @@ msgstr "Pangasinan"
 # id::157
 # id::88
 #: ppl.description:156
-#, fuzzy
 msgid "Allow a user to update a funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de mettre à jour une source de fonds"
 
 # id::82
 #: ppl.description:82
-#, fuzzy
 msgid "Allow a user to view which users have checked out a given copy"
-msgstr ""
-"Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire "
-"en particulier"
+msgstr "Permet à un utilisateur de savoir quels utilisateurs ont sorti un exemplaire en particulier"
 
 # id::pam
 #: clm.value:pam
@@ -279,11 +266,8 @@ msgstr "Numéro de versement"
 
 # id::117
 #: ppl.description:117
-#, fuzzy
 msgid "Allow a user to update a closed date interval for a given location"
-msgstr ""
-"Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture "
-"pour un emplacement donné"
+msgstr "Permet à un utilisateur de mettre à jour un intervalle de dates de fermeture pour un emplacement donné"
 
 # id::cpp
 #: clm.value:cpp
@@ -312,11 +296,8 @@ msgstr "Endommagé"
 
 # id::132
 #: ppl.description:132
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"LibraryManager\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"LibraryManager\""
 
 # id::sma
 #: clm.value:sma
@@ -330,8 +311,7 @@ msgstr "Kawi"
 
 #: ppl.description:20
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
-msgstr "Permet à un utilisateur d'importer un fichier MARC à partir "
-"de l'interface Z39.50"
+msgstr "Permet à un utilisateur d'importer un fichier MARC à partir de l'interface Z39.50"
 
 # id::kal
 #: clm.value:kal
@@ -365,8 +345,7 @@ msgstr "Disponible"
 
 #: ppl.description:180
 msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
-msgstr "Permet à un utilisateur de désigné une transaction comme une "
-"dette non-recouvrable"
+msgstr "Permet à un utilisateur de désigné une transaction comme une dette non-recouvrable"
 
 # id::6
 #: crcd.name:6
@@ -380,10 +359,8 @@ msgstr "Zoulou"
 
 # id::87
 #: ppl.description:87
-#, fuzzy
 msgid "Allow a user to view all notes attached to a title"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un titre"
+msgstr "Permet à un utilisateur d’afficher toutes les notes associées à un titre"
 
 # id::geo
 #: clm.value:geo
@@ -395,9 +372,8 @@ msgstr "Géorgien"
 # id::157
 # id::88
 #: ppl.description:155
-#, fuzzy
 msgid "Allow a user to view a funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur d'afficher une source de fonds"
 
 # id::arc
 #: clm.value:arc
@@ -406,7 +382,6 @@ msgstr "Araméen"
 
 # id::84
 #: ppl.description:84
-#, fuzzy
 msgid "Allow a user to register a new workstation"
 msgstr "Permet à un utilisateur d’inscrire un nouveau poste de travail"
 
@@ -416,7 +391,8 @@ msgid "Tigrinya"
 msgstr "Tigrina"
 
 # id::chk
-#: clm.value:chk clm.value:-tru
+#: clm.value:chk
+#: clm.value:-tru
 msgid "Truk"
 msgstr "Trukois"
 
@@ -425,7 +401,9 @@ msgstr "Trukois"
 msgid "Tibetan"
 msgstr "Tibétain"
 
-#: cza.label:7 cza.label:16 vqbrad.description:12
+#: cza.label:7
+#: cza.label:16
+#: vqbrad.description:12
 msgid "Publisher"
 msgstr "Éditeur"
 
@@ -440,7 +418,8 @@ msgid "Dzongkha"
 msgstr "Dzonga"
 
 # id::grn
-#: clm.value:grn clm.value:-gua
+#: clm.value:grn
+#: clm.value:-gua
 msgid "Guarani"
 msgstr "Guarani"
 
@@ -481,8 +460,7 @@ msgstr "3_mois_0_renouvellement"
 
 #: ppl.description:7
 msgid "Allow a user to place a volume level hold"
-msgstr "Permet à un utilisateur de placer une mis en réserve au niveau du "
-"volume"
+msgstr "Permet à un utilisateur de placer une demande de mise en réserve au niveau du volume"
 
 # id::lav
 #: clm.value:lav
@@ -496,7 +474,6 @@ msgstr "Anglais"
 
 # id::55
 #: ppl.description:55
-#, fuzzy
 msgid "Allow a user to edit copies in batch"
 msgstr "Permet à un utilisateur de modifier les exemplaires par lots"
 
@@ -522,18 +499,13 @@ msgstr "Chinois"
 
 # id::51
 #: ppl.description:51
-#, fuzzy
 msgid "Allow a user to add other users to permission groups"
-msgstr ""
-"L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
+msgstr "L’utilisateur peut ajouter d’autres utilisateurs aux groupes de permission"
 
 # id::11
 #: ppl.description:11
-#, fuzzy
 msgid "Allow a user to view another user's holds"
-msgstr ""
-"Permet à un utilisateur de consulter les articles mis en réserve par un "
-"autre utilisateur"
+msgstr "Permet à un utilisateur de consulter les articles mis en réserve par un autre utilisateur"
 
 # id::iku
 #: clm.value:iku
@@ -550,13 +522,13 @@ msgstr "Mounda (Autre)"
 msgid "Pali"
 msgstr "Pali"
 
-#: cza.label:3 cza.label:12
+#: cza.label:3
+#: cza.label:12
 msgid "LCCN"
 msgstr "LCCN"
 
 # id::119
 #: ppl.description:119
-#, fuzzy
 msgid "Allow a user to delete a non cataloged type"
 msgstr "Permet à un utilisateur de supprimer un type non catalogué"
 
@@ -577,9 +549,7 @@ msgstr "Venda"
 
 #: ppl.description:34
 msgid "Allow a user to view user permissions within the user permissions editor"
-msgstr ""
-"Permet à l'utilisateur d'afficher les permissions dans l'éditeur de "
-"permissons"
+msgstr "Permet à l'utilisateur d'afficher les permissions dans l'éditeur de permissons"
 
 #: pgt.name:3
 msgid "Staff"
@@ -587,11 +557,8 @@ msgstr "Membres du personnel"
 
 # id::134
 #: ppl.description:134
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Supercat\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Supercat\""
 
 #: clm.value''in:gwi
 msgid "Gwich"
@@ -609,11 +576,8 @@ msgstr "Oriya"
 
 # id::125
 #: ppl.description:125
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Utilisateur'\"."
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Utilisateur'\"."
 
 # id::ipk
 #: clm.value:ipk
@@ -634,15 +598,15 @@ msgstr "Hindi"
 msgid "Ewondo"
 msgstr "Ewondo"
 
-#: cza.label:1 cza.label:10
+#: cza.label:1
+#: cza.label:10
 msgid "Title Control Number"
 msgstr "Numéro de contrôle pour les titres"
 
 # id::139
 #: ppl.description:139
 msgid "Allow staff to override checkout count failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec du nombre de sorties"
+msgstr "Permet aux membres du personnel de contourner un échec du nombre de sorties"
 
 # id::hun
 #: clm.value:hun
@@ -715,13 +679,10 @@ msgstr "Indéterminé"
 
 #: cam.description:f
 msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
-msgstr ""
-"L'article est destiné à une audience particulier et la nature de sa "
-"présentation fait qu'il n'intéresserait pas une autre audience."
+msgstr "L'article est destiné à une audience particulier et la nature de sa présentation fait qu'il n'intéresserait pas une autre audience."
 
 # id::90
 #: ppl.description:90
-#, fuzzy
 msgid "Allow a user to create a new title note"
 msgstr "Permet à un utilisateur de créer une nouvelle note de titre"
 
@@ -732,15 +693,11 @@ msgstr "Aucun accès"
 
 #: ppl.description:175
 msgid "Allow a user to create/view/update/delete a provider"
-msgstr ""
-"Permet à l'utilisateur de créer/afficher/modifier/supprimer "
-"un fournisseur"
+msgstr "Permet à l'utilisateur de créer/afficher/modifier/supprimer un fournisseur"
 
 #: ppl.description:17
 msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
-msgstr ""
-"Permet à l'utilisateur de voir les transactions d'épicerie ou de prêt dans "
-"l'interface de facturation; duplicata de VIEW_TRANSACTION"
+msgstr "Permet à l'utilisateur de voir les transactions d'épicerie ou de prêt dans l'interface de facturation; duplicata de VIEW_TRANSACTION"
 
 # id::1
 #: clfm.value:1
@@ -749,19 +706,13 @@ msgstr "Fiction (aucune autre spécification)"
 
 # id::108
 #: ppl.description:108
-#, fuzzy
 msgid "Allow a user to check in/out an item that has an alert message"
-msgstr ""
-"Permet à un utilisateur d’entrer ou de sortir un article associé à un "
-"message d’alerte"
+msgstr "Permet à un utilisateur d’entrer ou de sortir un article associé à un message d’alerte"
 
 # id::138
 #: ppl.description:138
-#, fuzzy
 msgid "Allow a user to renew an item past the maximun renewal count"
-msgstr ""
-"Permet à un utilisateur de renouveler un article après le nombre de "
-"renouvellement maximum"
+msgstr "Permet à un utilisateur de renouveler un article après le nombre de renouvellement maximum"
 
 # id::bra
 #: clm.value:bra
@@ -798,11 +749,8 @@ msgstr "Philippine (Autre)"
 
 # id::48
 #: ppl.description:48
-#, fuzzy
 msgid "Allow a user to see what another use has checked out"
-msgstr ""
-"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
-"session"
+msgstr "Permet à un utilisateur de savoir si un autre utilisateur a quitté sa session"
 
 # id::ger
 #: clm.value:ger
@@ -811,11 +759,8 @@ msgstr "Allemand"
 
 # id::131
 #: ppl.description:131
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"LocalAdmin\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"LocalAdmin\""
 
 # id::sla
 #: clm.value:sla
@@ -838,10 +783,7 @@ msgstr "Tamboka"
 
 #: ppl.description:27
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
-msgstr ""
-"Permet à un utilisateur de continuer de renouveler un article même si "
-"ce dernier est requis pour un demande de mis en réserve"
-
+msgstr "Permet à un utilisateur de continuer de renouveler un article même si ce dernier est requis pour un demande de mis en réserve"
 
 # id::1
 #: cbs.source:1
@@ -850,11 +792,8 @@ msgstr "oclc"
 
 # id::71
 #: ppl.description:71
-#, fuzzy
 msgid "User may delete a copy statistical category entry map"
-msgstr ""
-"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique "
-"d’exemplaires"
+msgstr "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique d’exemplaires"
 
 # id::mdr
 #: clm.value:mdr
@@ -917,11 +856,8 @@ msgstr "Népalais"
 
 # id::127
 #: ppl.description:127
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Staff\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Personnel\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Personnel\""
 
 # id::sms
 #: clm.value:sms
@@ -950,10 +886,11 @@ msgstr "Turquie, Ottoman "
 
 # id::6
 # id::2
-#: cza.label:6 cza.label:15 vqbrad.description:6
-#, fuzzy
+#: cza.label:6
+#: cza.label:15
+#: vqbrad.description:6
 msgid "ISSN"
-msgstr "SSN"
+msgstr "ISSN"
 
 # id::goh
 #: clm.value:goh
@@ -962,11 +899,8 @@ msgstr "Vieux haut-allemand (aux environs de 750-1050)"
 
 # id::70
 #: ppl.description:70
-#, fuzzy
 msgid "User may delete a patron statistical category entry map"
-msgstr ""
-"L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de "
-"clients"
+msgstr "L’utilisateur peut supprimer une carte d’entrée de catégorie statistique de clients"
 
 # id::tem
 #: clm.value:tem
@@ -991,11 +925,8 @@ msgstr "Gondi"
 # id::28
 # id::14
 #: ppl.description:28
-#, fuzzy
 msgid "Allow a user to create another user"
-msgstr ""
-"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
-"utilisateur"
+msgstr "Permet à un utilisateur de créer une autre utilisateur"
 
 # id::bak
 #: clm.value:bak
@@ -1009,9 +940,7 @@ msgstr "Kamba"
 
 #: ppl.description:4
 msgid "Allow a user to log in to the staff client"
-msgstr ""
-"Permet à l'utilisateur d'ouvrir une session avec le client "
-"du personnel"
+msgstr "Permet à l'utilisateur d'ouvrir une session avec le client du personnel"
 
 #: i18n_l.name:es-MX
 msgid "Spanish (Mexico)"
@@ -1028,14 +957,11 @@ msgstr "Clients"
 
 # id::102
 #: ppl.description:102
-#, fuzzy
 msgid "Allow a user to change the due date on an item to any date"
-msgstr ""
-"Permet à un utilisateur de régler la date d’échéance relative à un article"
+msgstr "Permet à un utilisateur de régler la date d’échéance relative à un article"
 
 # id::76
 #: ppl.description:76
-#, fuzzy
 msgid "Allow a user to create a new copy location"
 msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
 
@@ -1100,18 +1026,16 @@ msgid "Lithuanian"
 msgstr "Lituanien"
 
 # id::epo
-#: clm.value:epo clm.value:-esp
+#: clm.value:epo
+#: clm.value:-esp
 msgid "Esperanto"
 msgstr "Espéranto"
 
 # id::67
 # id::69
 #: ppl.description:67
-#, fuzzy
 msgid "User may delete a copy statistical category"
-msgstr ""
-"L’utilisateur peut supprimer une entrée de catégorie statistique "
-"d’exemplaires"
+msgstr "L’utilisateur peut supprimer une entrée de catégorie statistique d’exemplaires"
 
 # id::cpf
 #: clm.value:cpf
@@ -1119,20 +1043,20 @@ msgid "Creoles and Pidgins, French-based (Other)"
 msgstr "Langues créoles et pidgin, français (Autre)"
 
 # id::ssw
-#: clm.value:ssw clm.value:-swz
+#: clm.value:ssw
+#: clm.value:-swz
 msgid "Swazi"
 msgstr "Swazi"
 
 # id::-lap
-#: clm.value:-lap clm.value:smi
+#: clm.value:-lap
+#: clm.value:smi
 msgid "Sami"
 msgstr "Lapon"
 
 #: ppl.description:65
 msgid "User may link a copy to an entry in a statistical category"
-msgstr ""
-"L'utilisateur peut lier un exemplaire à une entrée dans une catégorie "
-"statistique"
+msgstr "L'utilisateur peut lier un exemplaire à une entrée dans une catégorie statistique"
 
 # id::inc
 #: clm.value:inc
@@ -1144,7 +1068,8 @@ msgstr "Langue indo-aryenne (Autre)"
 msgid "Telugu"
 msgstr "Telugu"
 
-#: cza.label:4 cza.label:13
+#: cza.label:4
+#: cza.label:13
 msgid "Author"
 msgstr "Auteur"
 
@@ -1158,9 +1083,8 @@ msgstr "Système local"
 # id::157
 # id::88
 #: ppl.description:154
-#, fuzzy
 msgid "Allow a user to delete a funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de supprimer une source de fonds"
 
 # id::new
 #: clm.value:new
@@ -1183,27 +1107,20 @@ msgstr "Non filtré"
 
 # id::133
 #: ppl.description:133
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Cat1\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Cat1\""
 
 # id::25
 # id::75
 #: ppl.description:25
-#, fuzzy
 msgid "Allow a user to edit a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
+msgstr "Permet à un utilisateur de modifier un exemplaire"
 
 # id::61
 # id::63
 #: ppl.description:61
-#, fuzzy
 msgid "User may update a copy statistical category"
-msgstr ""
-"L’utilisateur peut mettre à jour une entrée de catégorie statistique "
-"d’exemplaires"
+msgstr "L’utilisateur peut mettre à jour une entrée de catégorie statistique d’exemplaires"
 
 # id::ful
 #: clm.value:ful
@@ -1221,7 +1138,9 @@ msgid "Nubian languages"
 msgstr "Langues nubiennes"
 
 # id::arm
-#: clm.value:arm i18n_l.name:hy-AM i18n_l.description:hy-AM
+#: clm.value:arm
+#: i18n_l.name:hy-AM
+#: i18n_l.description:hy-AM
 msgid "Armenian"
 msgstr "Arménien"
 
@@ -1232,11 +1151,8 @@ msgstr "Wassandaui"
 
 # id::126
 #: ppl.description:126
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Patron\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Client\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Client\""
 
 #: clfm.description:s
 msgid "The item is a speech or collection of speeches."
@@ -1262,7 +1178,9 @@ msgstr "Langues australiennes"
 msgid "Unknown or unspecified"
 msgstr "Inconnu ou non spécifié"
 
-#: ppl.description:10 ppl.description:13 ppl.description:35
+#: ppl.description:10
+#: ppl.description:13
+#: ppl.description:35
 msgid "* no longer applicable"
 msgstr "* n'est plus applicable"
 
@@ -1273,11 +1191,8 @@ msgstr "Monographie ou article"
 
 # id::103
 #: ppl.description:103
-#, fuzzy
 msgid "Allow a user to bypass the circulation permit call for check out"
-msgstr ""
-"Permet à un utilisateur de contourner un appel d’autorisation de prêt pour "
-"sortir un article"
+msgstr "Permet à un utilisateur de contourner un appel d’autorisation de prêt pour sortir un article"
 
 # id::pus
 #: clm.value:pus
@@ -1296,11 +1211,8 @@ msgstr "Wallon"
 
 # id::112
 #: ppl.description:112
-#, fuzzy
 msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
-msgstr ""
-"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-"ne se trouve pas à la source ou à la destination du transit"
+msgstr "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur ne se trouve pas à la source ou à la destination du transit"
 
 # id::din
 #: clm.value:din
@@ -1328,7 +1240,8 @@ msgid "Micmac"
 msgstr "Micmac"
 
 # id::-gag
-#: clm.value:-gag clm.value:glg
+#: clm.value:-gag
+#: clm.value:glg
 msgid "Galician"
 msgstr "Galicien"
 
@@ -1394,9 +1307,7 @@ msgstr "Catalogueurs"
 # id::152
 #: ppl.description:152
 msgid "Allow a staff member to define where another staff member has their permissions"
-msgstr ""
-"Permet aux membres du personnel de déterminer pour quelles actions un autre "
-"membre du personnel a obtenu leurs permissions"
+msgstr "Permet aux membres du personnel de déterminer pour quelles actions un autre membre du personnel a obtenu leurs permissions"
 
 # id::san
 #: clm.value:san
@@ -1426,9 +1337,8 @@ msgstr "Reproduction d’imprimés réguliers"
 # id::157
 # id::88
 #: ppl.description:153
-#, fuzzy
 msgid "Allow a user to create a new funding source"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de créer une nouvelle source de fonds"
 
 # id::elx
 #: clm.value:elx
@@ -1438,17 +1348,13 @@ msgstr "Élamite"
 # id::161
 # id::76
 #: ppl.description:161
-#, fuzzy
 msgid "Allow a user to create a new fund allocation"
-msgstr "Permet à un utilisateur de créer un nouvel emplacement d’exemplaire"
+msgstr "Permet à un utilisateur de créer une nouvelle allocation de fonds"
 
 # id::53
 #: ppl.description:53
-#, fuzzy
 msgid "Allow a user to view other users' permission groups"
-msgstr ""
-"Permet à un utilisateur de consulter les groupes de permission des autres "
-"utilisateurs"
+msgstr "Permet à un utilisateur de consulter les groupes de permission des autres utilisateurs"
 
 # id::ady
 #: clm.value:ady
@@ -1458,7 +1364,6 @@ msgstr "Adygué"
 # id::57
 # id::56
 #: ppl.description:57
-#, fuzzy
 msgid "User may create a copy statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -1498,11 +1403,8 @@ msgstr "Hittite"
 
 # id::118
 #: ppl.description:118
-#, fuzzy
 msgid "Allow a user to create a new closed date for a location"
-msgstr ""
-"Permet à un utilisateur de créer une nouvelle date de fermeture pour un "
-"emplacement"
+msgstr "Permet à un utilisateur de créer une nouvelle date de fermeture pour un emplacement"
 
 # id::tuk
 #: clm.value:tuk
@@ -1511,10 +1413,7 @@ msgstr "Türkmène"
 
 #: cam.description:j
 msgid "The item is intended for children and young people, approximate ages 0-15 years."
-msgstr ""
-"L'article est destiné aux enfants et aux jeunes entre les âges "
-"approximatifs de 0 à 15 ans."
-
+msgstr "L'article est destiné aux enfants et aux jeunes entre les âges approximatifs de 0 à 15 ans."
 
 # id::suk
 #: clm.value:suk
@@ -1528,10 +1427,8 @@ msgstr "Documents divers"
 
 # id::72
 #: ppl.description:72
-#, fuzzy
 msgid "Allow a user to create a new non-cataloged item type"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau type d’article non catalogué"
+msgstr "Permet à un utilisateur de créer un nouveau type d’article non catalogué"
 
 # id::8
 #: ccs.name:8
@@ -1555,15 +1452,11 @@ msgstr "Tuvaluan"
 
 # id::54
 #: ppl.description:54
-#, fuzzy
 msgid "Allow a user to determine whether another user can check out an item"
-msgstr ""
-"Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un "
-"article"
+msgstr "Permet à un utilisateur de déterminer si un autre utilisateur peut sortir un article"
 
 # id::104
 #: ppl.description:104
-#, fuzzy
 msgid "Allow a user to override the copy_is_reference event"
 msgstr "Permet à un utilisateur d’éviter un cas de copy_is_reference"
 
@@ -1577,7 +1470,8 @@ msgstr "Beja"
 msgid "Germanic (Other)"
 msgstr "Germanique (Autre)"
 
-#: cza.label:9 cza.label:18
+#: cza.label:9
+#: cza.label:18
 msgid "Item Type"
 msgstr "Type d'article"
 
@@ -1637,8 +1531,7 @@ msgstr "Cherokee"
 
 #: ppl.description:176
 msgid "Allow a user to view and purchase from a provider"
-msgstr ""
-"Permet à un utilisateur d'afficher et d'acheter d'un fournisseur"
+msgstr "Permet à un utilisateur d'afficher et d'acheter d'un fournisseur"
 
 # id::5
 #: ccs.name:5
@@ -1651,7 +1544,6 @@ msgstr "Permet à un utilisateur d'afficher/créditer/débiter une caisse"
 
 # id::78
 #: ppl.description:78
-#, fuzzy
 msgid "Allow a user to delete a copy location"
 msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
 
@@ -1666,7 +1558,8 @@ msgid "Papuan (Other)"
 msgstr "Papou (Autre)"
 
 # id::-mla
-#: clm.value:-mla clm.value:mlg
+#: clm.value:-mla
+#: clm.value:mlg
 msgid "Malagasy"
 msgstr "Malgache"
 
@@ -1717,7 +1610,6 @@ msgstr "Adulte"
 
 # id::42
 #: ppl.description:42
-#, fuzzy
 msgid "Allow a user may view another user's transactions"
 msgstr "L’utilisateur peut consulter les transactions d’un autre utilisateur"
 
@@ -1768,7 +1660,6 @@ msgstr "Vieil islandais"
 
 # id::77
 #: ppl.description:77
-#, fuzzy
 msgid "Allow a user to update a copy location"
 msgstr "Permet à un utilisateur de mettre à jour un emplacement d’exemplaires"
 
@@ -1789,11 +1680,8 @@ msgstr "Moldave"
 
 # id::111
 #: ppl.description:111
-#, fuzzy
 msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
-msgstr ""
-"Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur "
-"se trouve à la source ou à la destination du transit"
+msgstr "Permet à un utilisateur d’annuler un transit d’exemplaire si l’utilisateur se trouve à la source ou à la destination du transit"
 
 # id::lol
 #: clm.value:lol
@@ -1816,11 +1704,7 @@ msgstr "Avaric"
 
 #: ppl.description:22
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
-msgstr ""
-"Permet à un utilisateur de modifier des volumes - nécessaire pour "
-"fusionner des comptes. Ceci est le double de VOLUME_UPDATE; l'utilisateur "
-"doit avoir les deux permissions aux niveau approprié pour fusionner les "
-"comptes."
+msgstr "Permet à un utilisateur de modifier des volumes - nécessaire pour fusionner des comptes. Ceci est le double de VOLUME_UPDATE; l'utilisateur doit avoir les deux permissions aux niveau approprié pour fusionner les comptes."
 
 # id::mos
 #: clm.value:mos
@@ -1829,7 +1713,6 @@ msgstr "Mooré"
 
 # id::101
 #: ppl.description:101
-#, fuzzy
 msgid "Allow a user to execute an offline script batch"
 msgstr "Permet à un utilisateur d’exécuter un lot de scripts hors ligne"
 
@@ -1840,18 +1723,16 @@ msgstr "Haut-allemand moyen (aux environs de 1050-1500)"
 
 # id::81
 #: ppl.description:81
-#, fuzzy
 msgid "Allow a user to see if another user has permission to place a hold on a given copy"
-msgstr ""
-"Permet à un utilisateur de savoir si un autre utilisateur est autorisé à "
-"mettre en réserve un exemplaire en particulier"
+msgstr "Permet à un utilisateur de savoir si un autre utilisateur est autorisé à mettre en réserve un exemplaire en particulier"
 
 # id::2
 # id::6
-#: cza.label:2 cza.label:11 vqbrad.description:5
-#, fuzzy
+#: cza.label:2
+#: cza.label:11
+#: vqbrad.description:5
 msgid "ISBN"
-msgstr "SSN"
+msgstr "ISBN"
 
 # id::mai
 #: clm.value:mai
@@ -1958,7 +1839,6 @@ msgstr "Assamais"
 
 # id::88
 #: ppl.description:88
-#, fuzzy
 msgid "Allow a user to create a new copy note"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 
@@ -1966,7 +1846,9 @@ msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
 msgid "Local System Administrator"
 msgstr "Administrateur de système local"
 
-#: cza.label:8 cza.label:17 vqbrad.description:13
+#: cza.label:8
+#: cza.label:17
+#: vqbrad.description:13
 msgid "Publication Date"
 msgstr "Date de publication"
 
@@ -1980,7 +1862,8 @@ msgid "Gã"
 msgstr "Gã"
 
 # id::tsn
-#: clm.value:tsn clm.value:-tsw
+#: clm.value:tsn
+#: clm.value:-tsw
 msgid "Tswana"
 msgstr "Bechouana"
 
@@ -1992,7 +1875,6 @@ msgstr "Latin"
 # id::62
 # id::56
 #: ppl.description:62
-#, fuzzy
 msgid "User may update an entry in a patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -2012,7 +1894,8 @@ msgid "Letzeburgesch"
 msgstr "Letzeburgesch"
 
 # id::-fri
-#: clm.value:-fri clm.value:fry
+#: clm.value:-fri
+#: clm.value:fry
 msgid "Frisian"
 msgstr "Frison"
 
@@ -2038,23 +1921,19 @@ msgstr "Permis de conduire"
 
 #: ppl.description:38
 msgid "Allow a user to mark an item as 'missing'"
-msgstr ""
-"Permet à l'utilisateur de désigner un article comme "
-"étant « manquant »"
+msgstr "Permet à l'utilisateur de désigner un article comme étant « manquant »"
 
 # id::69
 # id::59
 # id::56
 #: ppl.description:69
-#, fuzzy
 msgid "User may delete an entry from a copy statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::140
 #: ppl.description:140
 msgid "Allow staff to override overdue count failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec du nombre de retards"
+msgstr "Permet aux membres du personnel de contourner un échec du nombre de retards"
 
 # id::ter
 #: clm.value:ter
@@ -2079,21 +1958,18 @@ msgstr "Himachali"
 # id::162
 # id::78
 #: ppl.description:162
-#, fuzzy
 msgid "Allow a user to delete a fund allocation"
-msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
+msgstr "Permet à un utilisateur de supprimer une allocation de fonds"
 
 # id::167
 # id::166
 # id::88
 #: ppl.description:167
-#, fuzzy
 msgid "Allow a user to delate a provider"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de supprimer un fournisseur"
 
 # id::147
 #: ppl.description:147
-#, fuzzy
 msgid "Allow a user to run reports"
 msgstr "Permet à un utilisateur d’exécuter des rapports"
 
@@ -2122,7 +1998,8 @@ msgid "Canadian English"
 msgstr "Anglais canadien"
 
 # id::-eth
-#: clm.value:-eth clm.value:gez
+#: clm.value:-eth
+#: clm.value:gez
 msgid "Ethiopic"
 msgstr "Éthiopien"
 
@@ -2132,11 +2009,8 @@ msgstr "Identificateur"
 
 # id::83
 #: ppl.description:83
-#, fuzzy
 msgid "Allow a user to perform Z39.50 queries against remote servers"
-msgstr ""
-"Permet à un utilisateur d’effectuer des requêtes z3950 auprès des serveurs à "
-"distance"
+msgstr "Permet à un utilisateur d’effectuer des requêtes Z39.50 auprès des serveurs à distance"
 
 # id::13
 #: ccs.name:13
@@ -2145,7 +2019,6 @@ msgstr "Retrait/Triage"
 
 # id::110
 #: ppl.description:110
-#, fuzzy
 msgid "Allow a user to change the missing status on a copy"
 msgstr "Permet à un utilisateur de changer l’état « manquant » d’un exemplaire"
 
@@ -2172,7 +2045,6 @@ msgstr "Sentimental (Autre)"
 # id::32
 # id::75
 #: ppl.description:32
-#, fuzzy
 msgid "Allow a user to check in a copy"
 msgstr "Permet à un utilisateur de sortir un exemplaire"
 
@@ -2217,9 +2089,7 @@ msgstr ""
 
 #: ppl.description:36
 msgid "Allow a user to record payments in the Billing Interface"
-msgstr ""
-"Permet à un utilisateur d'enregistrer des paiements dans l'interface "
-"de facturation"
+msgstr "Permet à un utilisateur d'enregistrer des paiements dans l'interface de facturation"
 
 # id::s
 #: clfm.value:s
@@ -2227,7 +2097,8 @@ msgid "Speeches"
 msgstr "Discours"
 
 # id::kos
-#: clm.value:kos clm.value:-kus
+#: clm.value:kos
+#: clm.value:-kus
 msgid "Kusaie"
 msgstr "Kusaie"
 
@@ -2253,11 +2124,8 @@ msgstr "Albanais"
 
 # id::96
 #: ppl.description:96
-#, fuzzy
 msgid "Allow a user to view notifications attached to a hold"
-msgstr ""
-"Permet à un utilisateur d’afficher les notifications associées à un article "
-"mis en réserve"
+msgstr "Permet à un utilisateur d’afficher les notifications associées à un article mis en réserve"
 
 # id::osa
 #: clm.value:osa
@@ -2270,12 +2138,12 @@ msgstr "Source de NCT"
 
 # id::44
 #: ppl.description:44
-#, fuzzy
 msgid "Allow a user to view another user's containers (buckets)"
 msgstr "Permet à l’utilisateur de consulter les paniers d’un autre utilisateur"
 
 # id::-tag
-#: clm.value:-tag clm.value:tgl
+#: clm.value:-tag
+#: clm.value:tgl
 msgid "Tagalog"
 msgstr "Tagal"
 
@@ -2306,7 +2174,6 @@ msgstr "Chibcha"
 
 # id::8
 #: aou.name:8
-#, fuzzy
 msgid "Example Sub-library 1"
 msgstr "Exemple de sous-bibliothèque 1"
 
@@ -2332,11 +2199,8 @@ msgstr "Luba-Lulua"
 
 # id::79
 #: ppl.description:79
-#, fuzzy
 msgid "Allow a user to create a transit_copy object for transiting a copy"
-msgstr ""
-"Permet à un utilisateur de créer un objet de copie de transit pour procéder "
-"à la transition d’un exemplaire"
+msgstr "Permet à un utilisateur de créer un objet de copie de transit pour procéder à la transition d’un exemplaire"
 
 # id::wak
 #: clm.value:wak
@@ -2354,7 +2218,8 @@ msgid "Czech"
 msgstr "Tchèque"
 
 # id::-taj
-#: clm.value:-taj clm.value:tgk
+#: clm.value:-taj
+#: clm.value:tgk
 msgid "Tajik"
 msgstr "Tadjik"
 
@@ -2371,9 +2236,8 @@ msgstr "Urdu"
 # id::24
 # id::88
 #: ppl.description:24
-#, fuzzy
 msgid "Allow a user to create a new copy object"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de créer un nouvel objet d'exemplaire"
 
 # id::loz
 #: clm.value:loz
@@ -2383,13 +2247,11 @@ msgstr "Lozi"
 # id::60
 # id::56
 #: ppl.description:60
-#, fuzzy
 msgid "User may update a patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
 # id::149
 #: ppl.description:149
-#, fuzzy
 msgid "Allow a user to view report output"
 msgstr "Permet à un utilisateur de consulter le résultat d’un rapport"
 
@@ -2405,7 +2267,6 @@ msgstr "Djaghatai"
 
 # id::89
 #: ppl.description:89
-#, fuzzy
 msgid "Allow a user to create a new volume note"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
 
@@ -2518,27 +2379,23 @@ msgstr "Sidamo"
 
 #: ppl.description:171
 msgid "Allow a user to create/view/update/delete a fund"
-msgstr ""
-"Permet à un utilisateur de créer/afficher/modifier/supprimer "
-"une caisse"
-
+msgstr "Permet à un utilisateur de créer/afficher/modifier/supprimer une caisse"
 
 # id::105
 #: ppl.description:105
-#, fuzzy
 msgid "Allow a user to void a bill"
-msgstr "Permet à un utilisateur d’éviter une facture"
+msgstr "Permet à un utilisateur d’annuler une facture"
 
 # id::158
 # id::157
 # id::88
 #: ppl.description:158
-#, fuzzy
 msgid "Allow a user to delete a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de supprimer un fonds"
 
 # id::sin
-#: clm.value:sin clm.value:-snh
+#: clm.value:sin
+#: clm.value:-snh
 msgid "Sinhalese"
 msgstr "Singhalais"
 
@@ -2565,11 +2422,8 @@ msgstr "Document linguistique"
 # id::31
 # id::11
 #: ppl.description:31
-#, fuzzy
 msgid "Allow a user to view another user's Patron Record"
-msgstr ""
-"Permet à un utilisateur de consulter les articles mis en réserve par un "
-"autre utilisateur"
+msgstr "Permet à un utilisateur de consulter les articles mis en réserve par un autre utilisateur"
 
 #: vqbrad.description:4
 msgid "Pagination"
@@ -2614,9 +2468,8 @@ msgstr "Birman"
 # id::157
 # id::88
 #: ppl.description:160
-#, fuzzy
 msgid "Allow a user to update a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de mettre à jour un fonds"
 
 # id::ale
 #: clm.value:ale
@@ -2630,9 +2483,7 @@ msgstr "Kru"
 
 #: clfm.description:m
 msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
-msgstr ""
-"L'article contient plusieurs formes littéraires (par exemple, poésie "
-"et nouvelles)."
+msgstr "L'article contient plusieurs formes littéraires (par exemple, poésie et nouvelles)."
 
 # id::lin
 #: clm.value:lin
@@ -2697,12 +2548,12 @@ msgstr "Breton"
 # id::91
 # id::49
 #: ppl.description:91
-#, fuzzy
 msgid "Allow a user to delete another user's copy notes"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+msgstr "Permet à un utilisateur de supprimer les notes d'exemplaire d’un autre utilisateur"
 
 # id::-gae
-#: clm.value:-gae clm.value:gla
+#: clm.value:-gae
+#: clm.value:gla
 msgid "Scottish Gaelic"
 msgstr "Gaélique d'Écosse"
 
@@ -2713,7 +2564,6 @@ msgstr "Turc"
 
 # id::94
 #: ppl.description:94
-#, fuzzy
 msgid "Allow a user to update another user's container"
 msgstr "Permet à un utilisateur de mettre à jour un autre panier d’utilisateur"
 
@@ -2744,11 +2594,8 @@ msgstr "Soninké"
 
 # id::124
 #: ppl.description:124
-#, fuzzy
 msgid "Allow a user to remove an existing workstation so a new one can replace it"
-msgstr ""
-"Permet à un utilisateur de supprimer un poste de travail existant afin qu’un "
-"nouveau poste puisse le remplacer"
+msgstr "Permet à un utilisateur de supprimer un poste de travail existant afin qu’un nouveau poste puisse le remplacer"
 
 # id::zap
 #: clm.value:zap
@@ -2762,27 +2609,23 @@ msgstr "Hmong"
 
 #: ppl.description:179
 msgid "Allow a user to create/view/update/delete a currency_type"
-msgstr ""
-"Permet à un utilisateur de créer/afficher/modifier/supprimer une "
-"devise"
+msgstr "Permet à un utilisateur de créer/afficher/modifier/supprimer une devise"
 
 # id::92
 # id::49
 #: ppl.description:92
-#, fuzzy
 msgid "Allow a user to delete another user's volume note"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+msgstr "Permet à un utilisateur de supprimer les notes de volume d’un autre utilisateur"
 
 # id::178
 # id::153
 #: ppl.description:178
 msgid "Allow a staff member to directly remove a bibliographic record"
-msgstr ""
-"Permet à un membre du personnel de supprimer directement une fiche "
-"bibliographique"
+msgstr "Permet à un membre du personnel de supprimer directement une fiche bibliographique"
 
 # id::-cam
-#: clm.value:-cam clm.value:khm
+#: clm.value:-cam
+#: clm.value:khm
 msgid "Khmer"
 msgstr "Khmer"
 
@@ -2793,9 +2636,7 @@ msgstr "Tchouvache"
 
 #: cam.description:d
 msgid "The item is intended for young people, approximate ages 14-17 years."
-msgstr ""
-"L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 "
-"ans."
+msgstr "L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 ans."
 
 # id::may
 #: clm.value:may
@@ -2827,7 +2668,6 @@ msgstr "Cette succursale"
 
 # id::109
 #: ppl.description:109
-#, fuzzy
 msgid "Allow a user to remove the lost status from a copy"
 msgstr "Permet à un utilisateur de supprimer l’état « perdu » d’un exemplaire"
 
@@ -2838,7 +2678,6 @@ msgstr "Altaïque (Autre)"
 
 # id::73
 #: ppl.description:73
-#, fuzzy
 msgid "Allow a user to update a non-cataloged item type"
 msgstr "Permet à un utilisateur de mettre à jour un type non catalogué"
 
@@ -2856,9 +2695,8 @@ msgstr "Mohawk"
 # id::166
 # id::88
 #: ppl.description:168
-#, fuzzy
 msgid "Allow a user to view a provider"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur d'afficher les détails d'un fournisseur"
 
 # id::dgr
 #: clm.value:dgr
@@ -2879,7 +2717,6 @@ msgstr "Enregistrement sonore musical"
 # id::59
 # id::56
 #: ppl.description:63
-#, fuzzy
 msgid "User may update an entry in a copy statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -2899,17 +2736,14 @@ msgstr "Javanais"
 
 # id::45
 #: ppl.description:45
-#, fuzzy
 msgid "Allow a user to create a new container for another user"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
+msgstr "Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
 
 # id::166
 # id::88
 #: ppl.description:166
-#, fuzzy
 msgid "Allow a user to create a new provider"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de créer un nouveau fournisseur"
 
 # id::3
 #: aou.name:3
@@ -2922,7 +2756,6 @@ msgstr "Auteur de l'oeuvre"
 
 # id::121
 #: ppl.description:121
-#, fuzzy
 msgid "Allow a user to remove someone from collections"
 msgstr "Permet à un utilisateur de retirer une personne des collections"
 
@@ -2934,11 +2767,8 @@ msgstr "Kannara"
 # id::177
 # id::11
 #: ppl.description:177
-#, fuzzy
 msgid "Allow a user to view another users picklist"
-msgstr ""
-"Permet à un utilisateur de consulter les articles mis en réserve par un "
-"autre utilisateur"
+msgstr "Permet à un utilisateur de consulter la liste de choix d'un autre utilisateur"
 
 # id::dum
 #: clm.value:dum
@@ -2947,7 +2777,6 @@ msgstr "Moyen néerlandais (aux environs de 1050-1350)"
 
 # id::80
 #: ppl.description:80
-#, fuzzy
 msgid "Allow a user to close out a transit on a copy"
 msgstr "Permet à un utilisateur de fermer un transit relatif à un exemplaire"
 
@@ -2978,7 +2807,6 @@ msgstr "Indien de l’Amérique du Sud (Autre)"
 
 # id::122
 #: ppl.description:122
-#, fuzzy
 msgid "Allow a user to bar a patron"
 msgstr "Permet à un utilisateur d’exclure un client"
 
@@ -2989,14 +2817,12 @@ msgstr "Espagnol mexicain"
 
 # id::150
 #: ppl.description:150
-#, fuzzy
 msgid "Allow a user to checkout an item that is marked as non-circ"
-msgstr ""
-"Permet à un utilisateur de sortir un article qui est désigné comme « non "
-"prêté »"
+msgstr "Permet à un utilisateur de sortir un article qui est désigné comme « non prêté »"
 
 # id::-sho
-#: clm.value:-sho clm.value:sna
+#: clm.value:-sho
+#: clm.value:sna
 msgid "Shona"
 msgstr "Shona"
 
@@ -3017,13 +2843,11 @@ msgstr "Kpellé"
 
 # id::74
 #: ppl.description:74
-#, fuzzy
 msgid "Allow a user to create a new in-house-use "
 msgstr "Permet à un utilisateur de créer une nouvelle utilisation à l’interne"
 
 # id::95
 #: ppl.description:95
-#, fuzzy
 msgid "Allow a user to create a container for themselves"
 msgstr "Permet à un utilisateur de créer son propre panier"
 
@@ -3044,11 +2868,8 @@ msgstr "Arapaho"
 
 # id::130
 #: ppl.description:130
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"GlobalAdmin\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"GlobalAdmin\""
 
 # id::ber
 #: clm.value:ber
@@ -3072,11 +2893,8 @@ msgstr "Lushei"
 
 # id::97
 #: ppl.description:97
-#, fuzzy
 msgid "Allow a user to create new hold notifications"
-msgstr ""
-"Permet à un utilisateur de créer de nouvelles notifications relatives à des "
-"articles mis en réserve"
+msgstr "Permet à un utilisateur de créer de nouvelles notifications relatives à des articles mis en réserve"
 
 #: i18n_l.name:en-US
 msgid "English (US)"
@@ -3105,9 +2923,8 @@ msgstr "Siksika"
 # id::21
 # id::89
 #: ppl.description:174
-#, fuzzy
 msgid "Allows a user to create a picklist"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+msgstr "Permet à un utilisateur de créer une liste de choix"
 
 # id::nds
 #: clm.value:nds
@@ -3145,17 +2962,12 @@ msgstr "Gayo"
 
 # id::113
 #: ppl.description:113
-#, fuzzy
 msgid "Allow a user to query the ZIP code data method"
-msgstr ""
-"Permet à un utilisateur d’interroger la méthode de données relatives aux "
-"codes postaux"
+msgstr "Permet à un utilisateur d’interroger la méthode de données relatives aux codes postaux"
 
 #: ppl.description:47
 msgid "Allow a user to change the settings for an organization unit"
-msgstr ""
-"Permet à un utilisateur de changer les paramètres d'une unité "
-"organisationnelle"
+msgstr "Permet à un utilisateur de changer les paramètres d'une unité organisationnelle"
 
 # id::0
 #: clfm.value:0
@@ -3168,7 +2980,8 @@ msgid "Kuanyama"
 msgstr "Ovambo"
 
 # id::-tar
-#: clm.value:-tar clm.value:tat
+#: clm.value:-tar
+#: clm.value:tat
 msgid "Tatar"
 msgstr "Tatar"
 
@@ -3180,15 +2993,12 @@ msgstr "Musique annotée"
 # id::93
 # id::49
 #: ppl.description:93
-#, fuzzy
 msgid "Allow a user to delete another user's title note"
-msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur"
+msgstr "Permet à un utilisateur de supprimer une note de titre d’un autre utilisateur"
 
 #: ppl.description:30
 msgid "Allow a user to mark a user as deleted"
-msgstr ""
-"Permet à l'utilisateur de désigner un utilisateur comme étant "
-"supprimé"
+msgstr "Permet à l'utilisateur de désigner un utilisateur comme étant supprimé"
 
 # id::7
 #: crmf.name:7
@@ -3197,8 +3007,7 @@ msgstr "retard_équipement_maximum"
 
 #: cam.description:
 msgid "The target audience for the item not known or not specified."
-msgstr ""
-"Le public cible de l'article n'est pas connu ou n'est pas spécifié."
+msgstr "Le public cible de l'article n'est pas connu ou n'est pas spécifié."
 
 # id::jrb
 #: clm.value:jrb
@@ -3206,7 +3015,8 @@ msgid "Judeo-Arabic"
 msgstr "Judéo-arabe"
 
 # id::-gal
-#: clm.value:-gal clm.value:orm
+#: clm.value:-gal
+#: clm.value:orm
 msgid "Oromo"
 msgstr "Oromo"
 
@@ -3225,9 +3035,7 @@ msgstr "Utilisateurs"
 
 #: ppl.description:165
 msgid "Lowest level permission required to access the ACQ interface"
-msgstr ""
-"Niveau de permission minimale nécessaire pour accéder l'interface "
-"d'ACQ".
+msgstr "Niveau de permission minimale nécessaire pour accéder l'interface "
 
 # id::sem
 #: clm.value:sem
@@ -3236,11 +3044,8 @@ msgstr "Sémitique (Autre)"
 
 # id::85
 #: ppl.description:85
-#, fuzzy
 msgid "Allow a user to view all notes attached to a copy"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un "
-"exemplaire"
+msgstr "Permet à un utilisateur d’afficher toutes les notes associées à un exemplaire"
 
 # id::kho
 #: clm.value:kho
@@ -3251,9 +3056,8 @@ msgstr "Khotanais"
 # id::166
 # id::88
 #: ppl.description:169
-#, fuzzy
 msgid "Allow a user to update a provider"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de mettre à jour les détails d'un fournisseur"
 
 # id::bem
 #: clm.value:bem
@@ -3267,17 +3071,13 @@ msgstr "Titre de l'oeuvre"
 # id::50
 # id::45
 #: ppl.description:50
-#, fuzzy
 msgid "Allow a user to create a container item for another user"
-msgstr ""
-"Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
+msgstr "Permet à un utilisateur de créer un nouveau panier pour un autre utilisateur"
 
 # id::86
 #: ppl.description:86
-#, fuzzy
 msgid "Allow a user to view all notes attached to a volume"
-msgstr ""
-"Permet à un utilisateur d’afficher toutes les notes associées à un volume"
+msgstr "Permet à un utilisateur d’afficher toutes les notes associées à un volume"
 
 # id::que
 #: clm.value:que
@@ -3311,9 +3111,7 @@ msgstr "Malayalam"
 
 #: ppl.description:170
 msgid "Allow a user to create/view/update/delete a funding source"
-msgstr ""
-"Permet à un utilisateur de créer/afficher/modifier/supprimer une source "
-"de fonds"
+msgstr "Permet à un utilisateur de créer/afficher/modifier/supprimer une source de fonds"
 
 # id::smn
 #: clm.value:smn
@@ -3340,17 +3138,13 @@ msgstr "Code à barres de l'article"
 
 # id::107
 #: ppl.description:107
-#, fuzzy
 msgid "Allow a user to check out an item in a non-circulatable status"
-msgstr "Permet à un utilisateur de sortir un article qui n’a pas été prêté"
+msgstr "Permet à un utilisateur de sortir un article qui n’est pas prêtable"
 
 # id::151
 #: ppl.description:151
-#, fuzzy
 msgid "Allow a user to delete an item out of another user's container"
-msgstr ""
-"Permet à un utilisateur de supprimer un article qui se trouve dans le panier "
-"d’un autre utilisateur"
+msgstr "Permet à un utilisateur de supprimer un article qui se trouve dans le panier d’un autre utilisateur"
 
 # id::3
 #: cbs.source:3
@@ -3368,7 +3162,6 @@ msgstr ""
 
 # id::120
 #: ppl.description:120
-#, fuzzy
 msgid "Allow a user to put someone into collections"
 msgstr "Permet à un utilisateur d’ajouter une personne aux collections"
 
@@ -3384,25 +3177,23 @@ msgstr "Iloko"
 
 # id::98
 #: ppl.description:98
-#, fuzzy
 msgid "Allow a user to update an organization unit setting"
-msgstr ""
-"Permet à un utilisateur de mettre à jour un paramètre d’unité "
-"organisationnelle"
+msgstr "Permet à un utilisateur de mettre à jour un paramètre d’unité organisationnelle"
 
 # id::-sao
-#: clm.value:-sao clm.value:smo
+#: clm.value:-sao
+#: clm.value:smo
 msgid "Samoan"
 msgstr "Samoan"
 
 # id::75
 #: ppl.description:75
-#, fuzzy
 msgid "Allow a user to check out a copy"
 msgstr "Permet à un utilisateur de sortir un exemplaire"
 
 # id::glv
-#: clm.value:glv clm.value:-max
+#: clm.value:glv
+#: clm.value:-max
 msgid "Manx"
 msgstr "Manx"
 
@@ -3429,7 +3220,6 @@ msgstr "Dyula"
 # id::21
 # id::89
 #: ppl.description:23
-#, fuzzy
 msgid "Allow a user to delete a volume"
 msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
 
@@ -3451,25 +3241,17 @@ msgstr "Norvégien (Bokmål)"
 # id::141
 #: ppl.description:141
 msgid "Allow staff to override fine amount checkout failure"
-msgstr ""
-"Permet aux membres du personnel de contourner un échec de sortie relatif au "
-"montant d’une amende"
+msgstr "Permet aux membres du personnel de contourner un échec de sortie relatif au montant d’une amende"
 
 # id::135
 #: ppl.description:135
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"SIP-Client\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"SIP-Client\""
 
 # id::14
 #: ppl.description:14
-#, fuzzy
 msgid "Allow a user to update another user's hold"
-msgstr ""
-"Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre "
-"utilisateur"
+msgstr "Permet à un utilisateur de mettre à jour l’article mis en réserve d’un autre utilisateur"
 
 # id::mus
 #: clm.value:mus
@@ -3489,7 +3271,6 @@ msgstr "Lule Lapon"
 # id::59
 # id::56
 #: ppl.description:59
-#, fuzzy
 msgid "User may create an entry in a copy statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -3564,8 +3345,7 @@ msgstr "Suédois"
 
 #: cam.description:c
 msgid "The item is intended for young people, approximate ages 9-13 years."
-msgstr ""
-"L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
+msgstr "L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
 
 # id::sgn
 #: clm.value:sgn
@@ -3574,17 +3354,13 @@ msgstr "Langages gestuels"
 
 # id::8
 #: ppl.description:8
-#, fuzzy
 msgid "Allow a user to place a hold on a specific copy"
 msgstr "L’utilisateur est autorisé à mettre en réserve un exemplaire spécifique"
 
 # id::136
 #: ppl.description:136
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Vendor\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Vendor\""
 
 # id::chm
 #: clm.value:chm
@@ -3607,7 +3383,8 @@ msgid "Algonquian (Other)"
 msgstr "Algonquins (Autre)"
 
 # id::fao
-#: clm.value:fao clm.value:-far
+#: clm.value:fao
+#: clm.value:-far
 msgid "Faroese"
 msgstr "Féringien"
 
@@ -3633,11 +3410,8 @@ msgstr "Langues créoles et pidgin, anglais (Autre)"
 
 # id::128
 #: ppl.description:128
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Circulator\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Circulator\""
 
 # id::cus
 #: clm.value:cus
@@ -3657,7 +3431,6 @@ msgstr "Tetum"
 # id::66
 # id::56
 #: ppl.description:66
-#, fuzzy
 msgid "User may delete a patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -3676,9 +3449,8 @@ msgstr "Slovaque"
 # id::157
 # id::88
 #: ppl.description:159
-#, fuzzy
 msgid "Allow a user to view a fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur d'afficher un fonds"
 
 #: ppl.description:142
 msgid "Allow staff to override circulation copy range failure"
@@ -3686,10 +3458,8 @@ msgstr ""
 
 # id::148
 #: ppl.description:148
-#, fuzzy
 msgid "Allow a user to share report his own folders"
-msgstr ""
-"Permet à un utilisateur de partager un rapport dans ses propres dossiers"
+msgstr "Permet à un utilisateur de partager un rapport dans ses propres dossiers"
 
 # id::gil
 #: clm.value:gil
@@ -3698,11 +3468,8 @@ msgstr "Gilbertais"
 
 # id::100
 #: ppl.description:100
-#, fuzzy
 msgid "Allow a user to view uploaded offline script information"
-msgstr ""
-"Permet à un utilisateur d’afficher les renseignements d’un script hors ligne "
-"téléversé"
+msgstr "Permet à un utilisateur d’afficher les renseignements d’un script hors ligne téléversé"
 
 # id::kik
 #: clm.value:kik
@@ -3808,14 +3575,12 @@ msgstr "Buriat"
 
 # id::52
 #: ppl.description:52
-#, fuzzy
 msgid "Allow a user to remove other users from permission groups"
-msgstr ""
-"L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
+msgstr "L’utilisateur peut supprimer d’autres utilisateurs des groupes de permission"
 
 #: ppl.description:2
 msgid "Allow a user to log in to the OPAC"
-msgstr ""
+msgstr "Permet à un utilisateur d'ouvrir une session dans le catalogue"
 
 # id::hup
 #: clm.value:hup
@@ -3823,7 +3588,8 @@ msgid "Hupa"
 msgstr "Hupa"
 
 # id::ina
-#: clm.value:ina clm.value:-int
+#: clm.value:ina
+#: clm.value:-int
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (Langue Auxiliaire Internationale)"
 
@@ -3879,7 +3645,7 @@ msgstr "Komi"
 
 #: cam.description:e
 msgid "The item is intended for adults."
-msgstr ""
+msgstr "Cet article est destiné aux adultes."
 
 # id::c
 #: cblvl.value:c
@@ -3921,11 +3687,8 @@ msgstr "Kachméré"
 
 # id::116
 #: ppl.description:116
-#, fuzzy
 msgid "Allow a user to remove a closed date interval for a given location"
-msgstr ""
-"Permet à un utilisateur de supprimer un intervalle de dates de fermeture "
-"pour un emplacement donné"
+msgstr "Permet à un utilisateur de supprimer un intervalle de dates de fermeture pour un emplacement donné"
 
 # id::hai
 #: clm.value:hai
@@ -3933,7 +3696,8 @@ msgid "Haida"
 msgstr "Skittagetan"
 
 # id::-lan
-#: clm.value:-lan clm.value:oci
+#: clm.value:-lan
+#: clm.value:oci
 msgid "Occitan (post-1500)"
 msgstr "Occitan (après 1500)"
 
@@ -3959,9 +3723,8 @@ msgstr "Système"
 # id::157
 # id::88
 #: ppl.description:157
-#, fuzzy
 msgid "Allow a user to create a new fund"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un exemplaire"
+msgstr "Permet à un utilisateur de créer un nouveau fonds"
 
 #: pgt.description:10
 msgid "System maintenance, configuration, etc."
@@ -3969,7 +3732,7 @@ msgstr "Entretient du système, configuration, etc."
 
 #: ppl.description:114
 msgid "Allow a user to cancel holds"
-msgstr ""
+msgstr "Permet à un utilisateur d'annuler des demandes de mise en réserve"
 
 #: vqbrad.description:3
 msgid "Language of work"
@@ -3978,9 +3741,7 @@ msgstr "Langue de l'oeuvre"
 # id::144
 #: ppl.description:144
 msgid "Allow staff to force checkout of Missing/Lost type items"
-msgstr ""
-"Permet aux membres du personnel de forcer la sortie des types d’articles "
-"manquants ou perdus"
+msgstr "Permet aux membres du personnel de forcer la sortie des types d’articles manquants ou perdus"
 
 # id::aar
 #: clm.value:aar
@@ -4001,7 +3762,6 @@ msgstr "Artefact à trois dimensions ou objet d’origine naturelle"
 # id::58
 # id::56
 #: ppl.description:68
-#, fuzzy
 msgid "User may delete an entry from a patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -4011,12 +3771,15 @@ msgid "Udmurt"
 msgstr "Oudmourte"
 
 # id::gle
-#: clm.value:gle clm.value:-iri
+#: clm.value:gle
+#: clm.value:-iri
 msgid "Irish"
 msgstr "Irlandais"
 
 # id::11
-#: crcd.name:11 crmf.name:1 crrf.name:1
+#: crcd.name:11
+#: crmf.name:1
+#: crrf.name:1
 msgid "default"
 msgstr "par défaut"
 
@@ -4048,9 +3811,8 @@ msgstr ""
 # id::25
 # id::75
 #: ppl.description:26
-#, fuzzy
 msgid "Allow a user to delete a copy"
-msgstr "Permet à un utilisateur de sortir un exemplaire"
+msgstr "Permet à un utilisateur de supprimer un exemplaire"
 
 # id::s
 #: cifm.value:s
@@ -4107,11 +3869,8 @@ msgstr ""
 
 # id::146
 #: ppl.description:146
-#, fuzzy
 msgid "Allow a user to place multiple holds on a single title"
-msgstr ""
-"Permet à un utilisateur d’effectuer de multiples mises en réserve pour un "
-"seul titre"
+msgstr "Permet à un utilisateur d’effectuer de multiples mises en réserve pour un seul titre"
 
 # id::g
 #: citm.value:g
@@ -4130,26 +3889,19 @@ msgstr "Lao"
 
 # id::129
 #: ppl.description:129
-#, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
-msgstr ""
-"Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe "
-"\"Cataloger\""
+msgstr "Permet à un utilisateur d’ajouter ou de retirer des utilisateurs du groupe \"Cataloger\""
 
 # id::21
 # id::89
 #: ppl.description:21
-#, fuzzy
 msgid "Allow a user to create a volume"
-msgstr "Permet à un utilisateur de créer une nouvelle note sur un volume"
+msgstr "Permet à un utilisateur de créer un nouveau volume"
 
 # id::137
 #: ppl.description:137
-#, fuzzy
 msgid "Allow a user to place a hold on an age-protected item"
-msgstr ""
-"Permet à un utilisateur de mettre en réserve un article protégé contre "
-"l’usure"
+msgstr "Permet à un utilisateur de mettre en réserve un article protégé contre l’usure"
 
 # id::sio
 #: clm.value:sio
@@ -4164,7 +3916,6 @@ msgstr "Mendé"
 # id::58
 # id::56
 #: ppl.description:58
-#, fuzzy
 msgid "User may create an entry in a patron statistical category"
 msgstr "L’utilisateur peut créer une catégorie statistique de nouveaux clients"
 
@@ -4195,7 +3946,6 @@ msgstr "Walamo"
 
 # id::99
 #: ppl.description:99
-#, fuzzy
 msgid "Allow a user to upload an offline script"
 msgstr "Permet à un utilisateur de téléverser un script hors ligne"
 
@@ -4241,7 +3991,6 @@ msgstr "Ido"
 
 # id::fr-CA
 #: i18n_l.description:fr-CA
-#, fuzzy
 msgid "Canadian French"
 msgstr "Français canadien"
 
@@ -4291,7 +4040,8 @@ msgid "Scots"
 msgstr "Écossais"
 
 # id::sot
-#: clm.value:sot clm.value:-sso
+#: clm.value:sot
+#: clm.value:-sso
 msgid "Sotho"
 msgstr "Sotho"
 
@@ -4307,125 +4057,12 @@ msgstr "Espagnol"
 
 #: ppl.description:18
 msgid "Allow a user to edit a MARC record"
-msgstr ""
+msgstr "Permet à un utilisateur de modifier un fichier MARC"
 
 # id::163
 # id::162
 # id::78
 #: ppl.description:163
-#, fuzzy
 msgid "Allow a user to view a fund allocation"
-msgstr "Permet à un utilisateur de supprimer un emplacement d’exemplaires"
+msgstr "Permet à un utilisateur d'afficher une allocation de fonds"
 
-# id::19
-#~ msgid "User is allowed to create new MARC records"
-#~ msgstr "L’utilisateur peut créer de nouveaux comptes de MARC"
-
-# id::41
-#~ msgid "User may create new billable transactions"
-#~ msgstr "L’utilisateur peut créer de nouvelles transactions facturables"
-
-# id::24
-#~ msgid "User is allowed to create a new copy object"
-#~ msgstr "L’utilisateur peut créer un nouvel objet d’exemplaire"
-
-# id::47
-#~ msgid "Allows a user to change org unit settings"
-#~ msgstr ""
-#~ "Permet à un utilisateur de modifier les paramètres de l’unité "
-#~ "organisationnelle"
-
-# id::50
-#~ msgid "Create a container item for another user"
-#~ msgstr "Créer un article de panier pour un autre utilisateur"
-
-# id::57
-#~ msgid "User may create a copy stat cat"
-#~ msgstr "L’utilisateur peut créer une catégorie statistique d’exemplaires"
-
-# id::58
-#~ msgid "User may create a new patron stat cat entry"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une nouvelle entrée de catégorie statistique de "
-#~ "clients"
-
-# id::59
-#~ msgid "User may create a new copy stat cat entry"
-#~ msgstr ""
-#~ "L’utilisateur peut créer une nouvelle entrée de catégorie statistique "
-#~ "d’exemplaires"
-
-# id::60
-#~ msgid "User may update a patron stat cat"
-#~ msgstr "L’utilisateur peut mettre à jour une catégorie statistique de clients"
-
-# id::61
-#~ msgid "User may update a copy stat cat"
-#~ msgstr ""
-#~ "L’utilisateur peut mettre à jour une catégorie statistique d’exemplaires"
-
-# id::62
-#~ msgid "User may update a patron stat cat entry"
-#~ msgstr ""
-#~ "L’utilisateur peut mettre à jour une entrée de catégorie statistique de "
-#~ "clients"
-
-# id::65
-#~ msgid "User may link a copy to a stat cat entry"
-#~ msgstr ""
-#~ "L’utilisateur peut associer un exemplaire à une entrée de catégorie "
-#~ "statistique"
-
-# id::64
-#~ msgid "User may link another user to a stat cat entry"
-#~ msgstr ""
-#~ "L’utilisateur peut associer un autre utilisateur à une entrée de catégorie "
-#~ "statistique"
-
-# id::66
-#~ msgid "User may delete a patron stat cat"
-#~ msgstr ""
-#~ "L’utilisateur peut supprimer une entrée de catégorie statistique de clients"
-
-# id::67
-#~ msgid "User may delete a copy stat cat"
-#~ msgstr "L’utilisateur peut supprimer une catégorie statistique d’exemplaires"
-
-# id::68
-#~ msgid "User may delete a patron stat cat entry"
-#~ msgstr "L’utilisateur peut supprimer une catégorie statistique de clients"
-
-# id::91
-#~ msgid "Allows a user to delete someone elses copy notes"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer les notes sur l’exemplaire d’un autre "
-#~ "utilisateur"
-
-# id::92
-#~ msgid "Allows a user to delete someone elses volume note"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer la note sur le volume d’un autre "
-#~ "utilisateur"
-
-# id::93
-#~ msgid "Allows a user to delete someone elses title note"
-#~ msgstr ""
-#~ "Permet à un utilisateur de supprimer la note de titre d’un autre utilisateur"
-
-# id::106
-#~ msgid "Allows a person to check in/out an item that is claims returned"
-#~ msgstr ""
-#~ "Permet à un utilisateur d’entrer ou de sortir un article considéré comme "
-#~ "retourné"
-
-#~ msgid "Gwich'in"
-#~ msgstr "Gwich’in"
-
-#~ msgid "Sub-lib"
-#~ msgstr "Sous-bibliothèque"
-
-#~ msgid "123 Main St."
-#~ msgstr "123, rue principale"
-
-#~ msgid "Administrator"
-#~ msgstr "Administrateur"

@@ -1,19 +1,20 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > reports.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-11-27 14:05-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team: NRCan Library <Warren.Layton@nrcan.gc.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -119,12 +120,8 @@ msgid "Save this Template: "
 msgstr "Enregistrer ce modèle : "
 
 #: reports.oils_rpt_builder.filtering_note
-msgid ""
-"Indicates that when filtering on the item, a list of named choices will be "
-"generated."
-msgstr ""
-"Indique que lorsqu'un filtre s'applique à l'article, une liste de choix "
-"sera générée"
+msgid "Indicates that when filtering on the item, a list of named choices will be generated."
+msgstr "Indique que lorsqu'un filtre s'applique à l'article, une liste de choix sera générée"
 
 #: reports.oils_rpt_builder.temp_disp_items
 msgid "Template Display Items"
@@ -253,12 +250,8 @@ msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
 #: reports.oils_rpt_builder.confirm_new_report
-msgid ""
-"This will destroy the report you are currently constructing.  Are you sure "
-"you wish to do this?"
-msgstr ""
-"Cette action détruira le rapport sur lequel vous travaillez en ce moment. "
-"Désirez-vous vraiment le détruire?"
+msgid "This will destroy the report you are currently constructing.  Are you sure you wish to do this?"
+msgstr "Cette action détruira le rapport sur lequel vous travaillez en ce moment. Désirez-vous vraiment le détruire?"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"
@@ -310,9 +303,7 @@ msgstr "Pivoter la colonne de données"
 
 #: reports.oils_rpt_editor.store_report_definition
 msgid "Choose a folder to store this report definition: "
-msgstr ""
-"Choisir un répertoire dans lequel la définition du rapport "
-"sera sauvegardée : "
+msgstr "Choisir un répertoire dans lequel la définition du rapport sera sauvegardée : "
 
 #: reports.oils_rpt_editor.selected_folder
 msgctxt "reports.oils_rpt_editor.selected_folder"
@@ -390,12 +381,8 @@ msgid "Save Report"
 msgstr "Enregistrer le rapport"
 
 #: reports.oils_rpt_editor.empty_parameter
-msgid ""
-"One or more of the user-defined parameters has been left empty. Please fill "
-"in all fields."
-msgstr ""
-"Une ou plusieurs paramètres défini par l'utilisateur sont vide. Veuillez "
-"remplir tous les champs."
+msgid "One or more of the user-defined parameters has been left empty. Please fill in all fields."
+msgstr "Une ou plusieurs paramètres défini par l'utilisateur sont vide. Veuillez remplir tous les champs."
 
 #: reports.oils_rpt_editor.same_name
 msgid "There is already a report in this folder with the given name."
@@ -579,15 +566,11 @@ msgid "Are you sure you wish to delete the selected item(s)?"
 msgstr "Désirez-vous vraiment supprimer les articles sélectionnés?"
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
-msgid ""
-"One or more of the selected templates could not be deleted because there are "
-"reports that depend on them."
+msgid "One or more of the selected templates could not be deleted because there are reports that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
-msgid ""
-"One or more of The selected reports could not be deleted because there are "
-"outputs that depend on them."
+msgid "One or more of The selected reports could not be deleted because there are outputs that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
@@ -814,3 +797,4 @@ msgstr "Alias SQL"
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
 msgstr "Rapport"
+

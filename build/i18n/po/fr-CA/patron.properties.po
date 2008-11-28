@@ -1,12 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > patron.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 12:49-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 14:04-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: French - Canadian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,8 +34,7 @@ msgid ""
 "Problem retrieving %1$s.  Please report this message: \n"
 "%2$s"
 msgstr ""
-"Un problème est survenue lors de la récupération %1$s. Veuillez signaler ce "
-"message : \n"
+"Un problème est survenue lors de la récupération %1$s. Veuillez signaler ce message : \n"
 "%2$s."
 
 #: staff.patron.barcode_entry.barcode_not_found
@@ -44,12 +42,8 @@ msgid "Barcode %1$s not found."
 msgstr "Code à barres %1$s non trouvé."
 
 #: staff.patron.barcode_entry.consent_from_patron
-msgid ""
-"Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal "
-"information shared with your library?"
-msgstr ""
-"Les clients %1$s, %2$s de %3$s (%4$s) acceptent ils de partager leurs "
-"renseignements personnels avec votre bibliothèque?"
+msgid "Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal information shared with your library?"
+msgstr "Les clients %1$s, %2$s de %3$s (%4$s) acceptent ils de partager leurs renseignements personnels avec votre bibliothèque?"
 
 #: staff.patron.barcode_entry.patron_consent_title
 msgid "Patron/Library Opt-In Confirmation"
@@ -87,8 +81,7 @@ msgstr "Toutes les facturations sélectionnées ont déjà été annulées."
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
 msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr ""
-"Êtes vous certain de vouloir annuler $%1$s facturations d’articles de ligne?"
+msgstr "Êtes vous certain de vouloir annuler $%1$s facturations d’articles de ligne?"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_title"
@@ -134,13 +127,11 @@ msgstr "Historique des factures"
 
 #: staff.patron.bill_history.handle_add.message_plural
 msgid "Are you sure you would like to add a billing to bills %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
+msgstr "Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
 
 #: staff.patron.bill_history.handle_add.message_singular
 msgid "Are you sure you would like to add a billing to bill %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
+msgstr "Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
 
 #: staff.patron.bill_history.handle_add.title
 msgid "Bill Patron"
@@ -193,14 +184,11 @@ msgstr "Paiement annoté"
 msgid ""
 "%1$s\n"
 "\n"
-"Another way to \"zero\" this transaction is to use Add Billing and add a "
-"miscellaneous bill to counter the negative balance."
+"Another way to \"zero\" this transaction is to use Add Billing and add a miscellaneous bill to counter the negative balance."
 msgstr ""
 "%1$s\n"
 "\n"
-"Une autre façon de mettre cette transaction à \"zero\" est d’utiliser Ajouter "
-"une facturation et d’ajouter une facture quelconque pour compenser le solde "
-"négatif."
+"Une autre façon de mettre cette transaction à \"zero\" est d’utiliser Ajouter une facturation et d’ajouter une facture quelconque pour compenser le solde négatif."
 
 #: staff.patron.bills.pay.payment_failed
 msgid "Bill payment likely failed"
@@ -242,8 +230,7 @@ msgstr "Toutes les facturations sont déjà annulées sur cette facture."
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
 msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr ""
-"Êtes vous certain de vouloir annuler $%1$s facturations d’articles en ligne?"
+msgstr "Êtes vous certain de vouloir annuler $%1$s facturations d’articles en ligne?"
 
 #: staff.patron.bills.void_all_billings.void.title
 msgctxt "staff.patron.bills.void_all_billings.void.title"
@@ -306,8 +293,7 @@ msgstr "Message d’alerte : \"%1$s\"<br/><br/>"
 
 #: staff.patron.display.init.network_request.inactive_card
 msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-msgstr ""
-"Le compte du client a été récupéré à l’aide d’une carte INACTIVE.<br/><br/>"
+msgstr "Le compte du client a été récupéré à l’aide d’une carte INACTIVE.<br/><br/>"
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED.<br/><br/>"
@@ -330,12 +316,8 @@ msgid "Alert"
 msgstr "Alerte"
 
 #: staff.patron.display.init.network_request.window_message
-msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
-msgstr ""
-"Appuyez sur un bouton de navigation ci dessus (par exemple, Sorties) pour "
-"effacer cette alerte."
+msgid "Press a navigation button above (for example, Check Out) to clear this alert."
+msgstr "Appuyez sur un bouton de navigation ci dessus (par exemple, Sorties) pour effacer cette alerte."
 
 #: staff.patron.display.init.network_request.dump_error_message
 msgid "Not re-displaying this alert message: %1$s"
@@ -343,9 +325,7 @@ msgstr "Ce message d’alerte ne se réaffiche pas : %1$s"
 
 #: staff.patron.display.init.network_request.error_showing_alert
 msgid "Error showing patron alert and holds availability."
-msgstr ""
-"Une erreur s’est produite dans le message d’alerte du client et la "
-"disponibilité des articles mis en réserve."
+msgstr "Une erreur s’est produite dans le message d’alerte du client et la disponibilité des articles mis en réserve."
 
 #: staff.patron.display.render_search_form.patron_search
 msgid "Patron Search"
@@ -357,9 +337,7 @@ msgstr "Client :"
 
 #: staff.patron.hold_notices.tooltiptext
 msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
-msgstr ""
-"Code d’utilisateur : %1$s ID de la mise en réserve : %2$s ID du personnel "
-"responsable de la notification : %3$s"
+msgstr "Code d’utilisateur : %1$s ID de la mise en réserve : %2$s ID du personnel responsable de la notification : %3$s"
 
 #: staff.patron.hold_notices.new_notification_record
 msgid "New Notification Record"
@@ -399,15 +377,11 @@ msgstr "La notification n’a probablement pas été créée."
 
 #: staff.patron.holds.init.hold_num_error
 msgid "Error retrieving details for hold #%1$s"
-msgstr ""
-"Une erreur s’est produite lors de la récupération des détails de la mise en "
-"réserve no %1$s"
+msgstr "Une erreur s’est produite lors de la récupération des détails de la mise en réserve no %1$s"
 
 #: staff.patron.holds.show_notifications.error_rendering_notifs
 msgid "Error rendering or retrieving hold notifications."
-msgstr ""
-"Une erreur s’est produite lors de la production ou de la récupération des "
-"notifications."
+msgstr "Une erreur s’est produite lors de la production ou de la récupération des notifications."
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
@@ -439,20 +413,12 @@ msgid "Choose a Pick Up Library"
 msgstr "Choisir une bibliothèque d’emprunt"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
-msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to "
-"\"%2$s\"?;"
-msgstr ""
-"Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour "
-"l’article mis en réserve %1$s to \"%2$s\"?;"
+msgid "Are you sure you would like to change the Hold Range for hold %1$s to \"%2$s\"?;"
+msgstr "Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour l’article mis en réserve %1$s to \"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
-msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to "
-"\"%2$s\"?;"
-msgstr ""
-"Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour "
-"l’article mis en réserve %1$s to \"%2$s\"?;"
+msgid "Are you sure you would like to change the Hold Range for holds %1$s to \"%2$s\"?;"
+msgstr "Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour l’article mis en réserve %1$s to \"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
 msgctxt "staff.patron.holds.holds_edit_selection_depth.modify_holds_title"
@@ -493,20 +459,12 @@ msgid "Choose a Pick Up Library"
 msgstr "Choisir une bibliothèque d’emprunt"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
-msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to "
-"%2$s?"
-msgstr ""
-"Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour "
-"l’article mis en réserve %1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Pick Up Library for hold %1$s to %2$s?"
+msgstr "Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour l’article mis en réserve %1$s to \"%2$s\"?"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
-msgid ""
-"Are you sure you would like to change the Pick Up Library for holds %1$s to "
-"%2$s?"
-msgstr ""
-"Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour "
-"l’article mis en réserve %1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Pick Up Library for holds %1$s to %2$s?"
+msgstr "Êtes vous certain de vouloir modifier la catégorie de mise en réserve pour l’article mis en réserve %1$s to \"%2$s\"?"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title
 msgctxt "staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title"
@@ -514,13 +472,8 @@ msgid "Modifying Holds"
 msgstr "Modification des articles mis en réserve."
 
 #: staff.patron.holds.holds_edit_phone_notify.new_phone_number
-msgid ""
-"Please enter a new phone number for hold notification (leave the field empty "
-"to disable phone notification):"
-msgstr ""
-"Veuillez entrer un nouveau numéro de téléphone pour l’article mis en réserve "
-"pour la notification (laissez le champs vide pour désactiver la "
-"notification de numéro de téléphone) :"
+msgid "Please enter a new phone number for hold notification (leave the field empty to disable phone notification):"
+msgstr "Veuillez entrer un nouveau numéro de téléphone pour l’article mis en réserve pour la notification (laissez le champs vide pour désactiver la notification de numéro de téléphone) :"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.label
 msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
@@ -544,24 +497,15 @@ msgstr "C"
 
 #: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
 msgid "Choose a Hold Notification Phone Number"
-msgstr ""
-"Choisir un numéro de téléphone de notification pour l’article mis en réserve"
+msgstr "Choisir un numéro de téléphone de notification pour l’article mis en réserve"
 
 #: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular
-msgid ""
-"Are you sure you would like to change the Notification Phone Number for hold "
-"%1$s to \"%2$s\"?"
-msgstr ""
-"Êtes vous certain de vouloir modifier le numéro de téléphone de notification "
-"pour l’article mis en réserve %1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Notification Phone Number for hold %1$s to \"%2$s\"?"
+msgstr "Êtes vous certain de vouloir modifier le numéro de téléphone de notification pour l’article mis en réserve %1$s to \"%2$s\"?"
 
 #: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural
-msgid ""
-"Are you sure you would like to change the Notification Phone Number for "
-"holds %1$s to \"%2$s\"?"
-msgstr ""
-"Êtes vous certain de vouloir modifier le numéro de téléphone de notification "
-"pour l’article mis en réserve %1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Notification Phone Number for holds %1$s to \"%2$s\"?"
+msgstr "Êtes vous certain de vouloir modifier le numéro de téléphone de notification pour l’article mis en réserve %1$s to \"%2$s\"?"
 
 #: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
 msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
@@ -569,13 +513,8 @@ msgid "Modifying Holds"
 msgstr "Modification des articles mis en réserve."
 
 #: staff.patron.holds.holds_edit_email_notify.description
-msgid ""
-"Send email notifications (when appropriate)?  The email address used is "
-"found in the hold recipient account."
-msgstr ""
-"Envoyer des notifications par courriel (s’il y a lieu)? L’adresse "
-"électronique utilisée se trouve dans le compte du destinataire de l’article "
-"mis en réserve."
+msgid "Send email notifications (when appropriate)?  The email address used is found in the hold recipient account."
+msgstr "Envoyer des notifications par courriel (s’il y a lieu)? L’adresse électronique utilisée se trouve dans le compte du destinataire de l’article mis en réserve."
 
 #: staff.patron.holds.holds_edit_email_notify.btn_email.label
 msgid "Email"
@@ -609,32 +548,21 @@ msgstr "Régler la notification par courriel pour l’article mis en réserve."
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
 msgid "Are you sure you would like to enable email notification for hold %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir activer la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+msgstr "Êtes vous certain de vouloir activer la notification par courriel pour l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
-msgid ""
-"Are you sure you would like to enable email notification for holds %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir activer la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+msgid "Are you sure you would like to enable email notification for holds %1$s?"
+msgstr "Êtes vous certain de vouloir activer la notification par courriel pour l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.singular
 msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.singular"
-msgid ""
-"Are you sure you would like to disable email notification for hold %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir désactiver la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+msgid "Are you sure you would like to disable email notification for hold %1$s?"
+msgstr "Êtes vous certain de vouloir désactiver la notification par courriel pour l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.plural
 msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.plural"
-msgid ""
-"Are you sure you would like to disable email notification for hold %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir désactiver la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+msgid "Are you sure you would like to disable email notification for hold %1$s?"
+msgstr "Êtes vous certain de vouloir désactiver la notification par courriel pour l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
 msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
@@ -643,13 +571,11 @@ msgstr "Modification des articles mis en réserve."
 
 #: staff.patron.holds.holds_retarget.reset_hold_message.singular
 msgid "Are you sure you would like to reset hold %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir réinitialiser l’article mis en réserve %1$s?"
+msgstr "Êtes vous certain de vouloir réinitialiser l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_retarget.reset_hold_message.plural
 msgid "Are you sure you would like to reset holds %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir réinitialiser l’article mis en réserve %1$s?"
+msgstr "Êtes vous certain de vouloir réinitialiser l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_retarget.reset_hold_title
 msgid "Resetting Holds"
@@ -673,8 +599,7 @@ msgstr "Annuler l’article mis en réserve"
 
 #: staff.patron.holds.holds_cancel.cancel_for_barcodes
 msgid "For barcodes %1$s, should the associated transits also be cancelled?"
-msgstr ""
-"Pour les codes à barres %1$s, faut il aussi annuler les transits associés?"
+msgstr "Pour les codes à barres %1$s, faut il aussi annuler les transits associés?"
 
 #: staff.patron.holds.holds_cancel.cancel_for_barcodes.title
 msgid "Cancelling Transits"
@@ -682,20 +607,15 @@ msgstr "Annuler les transits"
 
 #: staff.patron.holds.holds_cancel.hold_transits_not_cancelled
 msgid "Hold transits not likely cancelled."
-msgstr ""
-"Les transits d’articles mis en réserve ne sont probablement pas annulés."
+msgstr "Les transits d’articles mis en réserve ne sont probablement pas annulés."
 
 #: staff.patron.holds.holds_cancel.hold_not_cancelled
 msgid "Holds not likely cancelled."
 msgstr "Les articles mis en réserve ne sont probablement pas annulés."
 
 #: staff.patron.holds.show_catalog.unknown_htype
-msgid ""
-"I do not understand the hold type of %1$s so I can not display the "
-"appropriate record in the catalog."
-msgstr ""
-"Je ne comprends pas le type d’article mis en réserve de %1$s, je ne peux "
-"donc pas afficher le compte approprié dans le catalogue."
+msgid "I do not understand the hold type of %1$s so I can not display the appropriate record in the catalog."
+msgstr "Je ne comprends pas le type d’article mis en réserve de %1$s, je ne peux donc pas afficher le compte approprié dans le catalogue."
 
 #: staff.patron.holds.show_catalog.retrieving_title
 msgctxt "staff.patron.holds.show_catalog.retrieving_title"
@@ -740,12 +660,8 @@ msgid "spawn search"
 msgstr "recherche dans l’ensemble"
 
 #: staff.patron.info_group.remove_patron.warning_message
-msgid ""
-"WARNING: If you remove the currently displayed patron, a NEW group will be "
-"displayed in this interface."
-msgstr ""
-"AVERTISSEMENT : Si vous supprimez le client affiché actuellement, un NOUVEAU "
-"groupe s’affichera dans cette interface."
+msgid "WARNING: If you remove the currently displayed patron, a NEW group will be displayed in this interface."
+msgstr "AVERTISSEMENT : Si vous supprimez le client affiché actuellement, un NOUVEAU groupe s’affichera dans cette interface."
 
 #: staff.patron.info_group.remove_patron.warning_message_confirm
 msgid "Remove selected patrons from this group?  %1$s"
@@ -753,9 +669,7 @@ msgstr "Supprimer les clients sélectionnés dans ce groupe? %1$s"
 
 #: staff.patron.info_group.remove_patron.error_removing_patron
 msgid "error removing patron (ID=%1$s) from usergroup"
-msgstr ""
-"une erreur s’est produite lors de la suppression du client (ID=%1$s) du "
-"groupe d’utilisateurs"
+msgstr "une erreur s’est produite lors de la suppression du client (ID=%1$s) du groupe d’utilisateurs"
 
 #: staff.patron.info_group.remove_patron.patrons_removed_from_group
 msgid "Patrons removed from group."
@@ -805,9 +719,7 @@ msgstr "Transférer le client vers le groupe d’utilisateurs"
 
 #: staff.patron.info_group.link_patron.error_linking_patron
 msgid "error linking patron (ID=%1$s)"
-msgstr ""
-"une erreur s’est produite lors de l’établissement de lien vers le client "
-"(ID=%1$s) "
+msgstr "une erreur s’est produite lors de l’établissement de lien vers le client (ID=%1$s) "
 
 #: staff.patron.info_group.link_patron.usergroups_updated
 msgid "User groups updated."
@@ -815,8 +727,7 @@ msgstr "Groupes d’utilisateurs mis à jour."
 
 #: staff.patron.info_group.link_patron.error_linking_patrons
 msgid "error linking patrons"
-msgstr ""
-"une erreur s’est produite lors de l’établissement de lien entre les clients"
+msgstr "une erreur s’est produite lors de l’établissement de lien entre les clients"
 
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
@@ -924,8 +835,7 @@ msgstr "La note n’a probablement pas été créée."
 
 #: staff.patron.info_stat_cats.retrieve_fleshed_patron.failed
 msgid "Failed to retrieve patron stat cats."
-msgstr ""
-"La tentative de récupération des catégories statistiques du client a échoué."
+msgstr "La tentative de récupération des catégories statistiques du client a échoué."
 
 #: staff.patron.info_stat_cats.render_stat_cats.opac_visible
 msgid "OPAC Visible"
@@ -941,8 +851,7 @@ msgstr "produire ou récupérer des catégories statistiques"
 
 #: staff.patron.info_surveys.retrieve_surveys.failed
 msgid "Failed to retrieve all the survey responses."
-msgstr ""
-"La tentative de récupération de toutes les réponses au sondage a échoué."
+msgstr "La tentative de récupération de toutes les réponses au sondage a échoué."
 
 #: staff.patron.info_surveys.render_surveys.required
 msgid "Required"
@@ -965,12 +874,8 @@ msgid "Error showing NonCat circulations"
 msgstr "Une erreur s’est produite lors de l’affichage des prêts autres que cat."
 
 #: staff.patron.items.items_renew_all.list_is_busy
-msgid ""
-"This is list is busy retrieving or rendering rows for a prior action.  Abort "
-"the prior action and proceed?"
-msgstr ""
-"Cette liste sert à récupérer ou à produire des rangées pour une action "
-"antérieure. Abandonner l’action précédente et continuer?"
+msgid "This is list is busy retrieving or rendering rows for a prior action.  Abort the prior action and proceed?"
+msgstr "Cette liste sert à récupérer ou à produire des rangées pour une action antérieure. Abandonner l’action précédente et continuer?"
 
 #: staff.patron.items.items_renew_all.renew_items_in_list
 msgid "Renew all the items in this list?"
@@ -997,7 +902,6 @@ msgid "%1$s renewed."
 msgstr "%1$s renouvelé."
 
 #: staff.patron.items.items_renew.not_renewed
-#, fuzzy
 msgid ""
 "%1$s not renewed.\n"
 "%2$s"
@@ -1015,9 +919,7 @@ msgstr ""
 
 #: staff.patron.items.items_renew.no_renew_for_barcode
 msgid "Renew probably did not happen for barcode %1$s"
-msgstr ""
-"Le renouvellement n’a probablement pas été effectué pour le code à barres "
-"%1$s"
+msgstr "Le renouvellement n’a probablement pas été effectué pour le code à barres %1$s"
 
 #: staff.patron.items.items_renew.no_renew
 msgid "Renew probably did not happen."
@@ -1102,9 +1004,7 @@ msgstr "Récupération du titre…"
 
 #: staff.patron.items.retrieve_row.callback_error
 msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
-msgstr ""
-"Une erreur s’est produite dans le rappel de FM_CIRC_DETAILS.authoritative "
-"dans client/articles.js"
+msgstr "Une erreur s’est produite dans le rappel de FM_CIRC_DETAILS.authoritative dans client/articles.js"
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
 msgid "error in patron/items.js retrieve_row():"
@@ -1189,9 +1089,7 @@ msgstr "La session d’utilisateur n’est pas définie"
 
 #: staff.patron.ue.uEditSaveuser.error_creating_note
 msgid "Error creating patron guardian or parent note"
-msgstr ""
-"Une erreur s’est produite lors de la création d’une note de tuteur ou de "
-"parent client."
+msgstr "Une erreur s’est produite lors de la création d’une note de tuteur ou de parent client."
 
 #: staff.patron.ue.uEditShowSearch.search
 msgctxt "staff.patron.ue.uEditShowSearch.search"
@@ -1235,3 +1133,4 @@ msgid ""
 msgstr ""
 "La recherche serait : \n"
 "%1$s"
+

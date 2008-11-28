@@ -1,12 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-08-27 11:39-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 13:57-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,12 +53,8 @@ msgstr "Pas encore mis en œuvre"
 
 #: staff.circ.check_digit.bad
 msgctxt "staff.circ.check_digit.bad"
-msgid ""
-"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
-"anyway?"
-msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
+msgstr "Numéro de chèque erroné, possiblement en raison d’un problème de balayage. Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
@@ -175,8 +170,7 @@ msgstr "Non"
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
-msgstr ""
-"Erreur de sortie d’article non catalogué. %1$s n’est pas un numéro valide."
+msgstr "Erreur de sortie d’article non catalogué. %1$s n’est pas un numéro valide."
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
@@ -212,25 +206,16 @@ msgid "Override Checkout Failure?"
 msgstr "Ne pas tenir compte de l’échec de la sortie?"
 
 #: staff.circ.checkout.override.item_deposit_required.warning
-msgid ""
-"A billing for an Item Deposit will be added to the patron's account if this "
-"action is overrided."
-msgstr ""
-"Une facturation pour le dépôt d'un item sera ajoutée au compte du client "
-"si cette action est contournée."
+msgid "A billing for an Item Deposit will be added to the patron's account if this action is overrided."
+msgstr "Une facturation pour le dépôt d'un item sera ajoutée au compte du client si cette action est contournée."
 
 #: staff.circ.checkout.override.item_rental_fee_required.warning
-msgid ""
-"A billing for an Item Rental Fee will be added to the patron's account if "
-"this action is overrided."
-msgstr ""
-"Une facturation pour le frais de location pour cette item sera ajoutée au "
-"compte du client si cette action est contournée."
+msgid "A billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
+msgstr "Une facturation pour le frais de location pour cette item sera ajoutée au compte du client si cette action est contournée."
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-msgstr ""
-"Article mal balayé ou non catalogué. Sortir comme article déjà catalogué?"
+msgstr "Article mal balayé ou non catalogué. Sortir comme article déjà catalogué?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
@@ -245,12 +230,8 @@ msgid "Checkout cancelled"
 msgstr "Sortie annulée"
 
 #: staff.circ.checkout.card.inactive
-msgid ""
-"The card used to retrieve this account is inactive and may not be used to "
-"circulate items."
-msgstr ""
-"La carte utilisée pour récupérer ce compte est inactive et peut ne pas être "
-"utilisée pour prêter des articles."
+msgid "The card used to retrieve this account is inactive and may not be used to circulate items."
+msgstr "La carte utilisée pour récupérer ce compte est inactive et peut ne pas être utilisée pour prêter des articles."
 
 #: staff.circ.checkout.barcode.check_out_failed
 msgid "Check Out Failed"
@@ -258,13 +239,11 @@ msgstr "La sortie a échoué"
 
 #: staff.circ.checkout.account.inactive
 msgid "This account is inactive and may not circulate items."
-msgstr ""
-"Ce compte est inactif et ne peut pas être utilisé pour prêter des articles."
+msgstr "Ce compte est inactif et ne peut pas être utilisé pour prêter des articles."
 
 #: staff.circ.checkout.account.expired
 msgid "This account has expired and may not circulate items."
-msgstr ""
-"Ce compte est expiré et ne peut pas être utilisé pour prêter des articles."
+msgstr "Ce compte est expiré et ne peut pas être utilisé pour prêter des articles."
 
 #: staff.circ.checkout.item_due
 msgid "This item was due on %1$s."
@@ -301,12 +280,8 @@ msgstr "Permission refusée = %1$s"
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkout.suggest_offline
-msgid ""
-"Check Out Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
-msgstr ""
-"La sortie a échoué. Si vous désirez utiliser l’interface hors ligne, "
-"sélectionnez Prêt -> Interface hors ligne dans la barre de menu supérieure."
+msgid "Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgstr "La sortie a échoué. Si vous désirez utiliser l’interface hors ligne, sélectionnez Prêt -> Interface hors ligne dans la barre de menu supérieure."
 
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
@@ -359,13 +334,8 @@ msgid "%1$s, %2$s : %3$s"
 msgstr "%1$s, %2$s : %3$s"
 
 #: staff.circ.copy_details.bad_hold_status
-msgid ""
-"This item is not captured for a hold, however its status is incorrectly set "
-"to \"On Holds Shelf\".  Please check this item in to correct the status."
-msgstr ""
-"Cet article n’est pas saisi pour un article mis en réserve, toutefois, cet "
-"état est réglé incorrectement à \"Sur l’étagère des articles mis en réserve\". "
-"Veuillez entrer cet article pour en corriger l’état."
+msgid "This item is not captured for a hold, however its status is incorrectly set to \"On Holds Shelf\".  Please check this item in to correct the status."
+msgstr "Cet article n’est pas saisi pour un article mis en réserve, toutefois, cet état est réglé incorrectement à \"Sur l’étagère des articles mis en réserve\". Veuillez entrer cet article pour en corriger l’état."
 
 #: staff.circ.copy_details.no_hold
 msgid "This item is not captured for a hold."
@@ -389,8 +359,7 @@ msgstr "Il semble que le code à barres %1$s n’a pas été remplacé."
 
 #: staff.circ.copy_status.cmd_replace_barcodes.error
 msgid "Barcode replacements did not likely happen."
-msgstr ""
-"Il semble que les remplacements de code à barres n’ont pas été effectués."
+msgstr "Il semble que les remplacements de code à barres n’ont pas été effectués."
 
 #: staff.circ.copy_status.sel_edit.error
 msgid "with copy editor"
@@ -462,14 +431,8 @@ msgid "Volumes for record # %1$s"
 msgstr "Le volume pour le compte no %1$s"
 
 #: staff.circ.copy_status.edit_volumes.duplicate
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
-msgstr ""
-"La modification a échoué: Vous avez tenté de changer la cote d’un volume par "
-"une cote qui est déjà utilisée pour la bibliothèque donnée. Vous devriez "
-"plutôt associer les articles à la cote désirée."
+msgid "Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead."
+msgstr "La modification a échoué: Vous avez tenté de changer la cote d’un volume par une cote qui est déjà utilisée pour la bibliothèque donnée. Vous devriez plutôt associer les articles à la cote désirée."
 
 #: staff.circ.copy_status.edit_volumes.success
 msgid "Volumes modified."
@@ -502,12 +465,8 @@ msgid "Override Delete Failure?"
 msgstr "Ne pas tenir compte de l’échec de la suppression?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
-msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
-msgstr ""
-"Vous devez supprimer tous les exemplaires du volume avant de pouvoir "
-"supprimer le volume lui-même."
+msgid "You must delete all the copies on the volume before you may delete the volume itself."
+msgstr "Vous devez supprimer tous les exemplaires du volume avant de pouvoir supprimer le volume lui-même."
 
 #: staff.circ.copy_status.delete_volumes.success
 msgid "Volumes deleted."
@@ -533,15 +492,11 @@ msgstr "OK"
 
 #: staff.circ.copy_status.mark_library
 msgid "Library and Record marked as Volume Transfer Destination"
-msgstr ""
-"La bibliothèque et le compte ont été désignés comme destination de transfert "
-"des volumes"
+msgstr "La bibliothèque et le compte ont été désignés comme destination de transfert des volumes"
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr ""
-"Choisir une seule bibliothèque pour la désigner comme destination de "
-"transfert des volumes"
+msgstr "Choisir une seule bibliothèque pour la désigner comme destination de transfert des volumes"
 
 #: staff.circ.copy_status.mark_library.limit_one.title
 msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
@@ -549,18 +504,12 @@ msgid "Limit Selection"
 msgstr "Limite de sélection"
 
 #: staff.circ.copy_status.transfer_volume.none
-msgid ""
-"Please mark a library as the destination from within holdings maintenance "
-"and then try this again."
-msgstr ""
-"Veuillez désigner une bibliothèque comme destination à partir de la tenue à "
-"jour du fonds documentaire et réessayez."
+msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
+msgstr "Veuillez désigner une bibliothèque comme destination à partir de la tenue à jour du fonds documentaire et réessayez."
 
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr ""
-"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte "
-"suivant?"
+msgstr "Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte suivant?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
@@ -601,12 +550,8 @@ msgstr "Il semble que tous les volumes n’ont pas été transférés."
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
-msgid ""
-"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
-"anyway?"
-msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
+msgstr "Numéro de chèque erroné, possiblement en raison d’un problème de balayage. Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
@@ -706,9 +651,7 @@ msgstr "Articles ="
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
-msgstr ""
-"Êtes-vous certain de vouloir désigner %1$s comme ayant été utilisé %2$s "
-"fois?"
+msgstr "Désirez-vous vraiment désigner %1$s comme ayant été utilisé %2$s fois?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
@@ -726,12 +669,8 @@ msgstr "Non"
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
-msgid ""
-"In House Use Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
-msgstr ""
-"Échec de l’utilisation interne. Si vous désirez utiliser l’interface hors "
-"ligne,  hors ligne dans la barre de menu supérieure."
+msgid "In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgstr "Échec de l’utilisation interne. Si vous désirez utiliser l’interface hors ligne,  hors ligne dans la barre de menu supérieure."
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
@@ -814,9 +753,7 @@ msgstr "Éditeur de modèles reçu"
 
 #: staff.circ.utils.abort_transits.confirm
 msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr ""
-"Désirez-vous réellement annuler les transits pour les exemplaires suivants : "
-"%1$s?"
+msgstr "Désirez-vous réellement annuler les transits pour les exemplaires suivants : %1$s?"
 
 #: staff.circ.utils.abort_transits.title
 msgid "Aborting Transits"
@@ -837,12 +774,8 @@ msgid "Copy ID = %1$s"
 msgstr "ID de l’exemplaire = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
-msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
-msgstr ""
-"Cet article n’était plus en transit au moment de l’annulation. Cette erreur "
-"est peut-être survenue en raison d’un affichage périmé?"
+msgid "This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?"
+msgstr "Cet article n’était plus en transit au moment de l’annulation. Cette erreur est peut-être survenue en raison d’un affichage périmé?"
 
 #: staff.circ.utils.abort_transits.unexpected_error
 msgid "Transit not likely aborted."
@@ -854,8 +787,7 @@ msgstr "Un problème est survenu lors de l’extraction du client."
 
 #: staff.circ.utils.retrieve_copy.failure
 msgid "Problem retrieving copy details."
-msgstr ""
-"Un problème est survenu lors de l’extraction des détails sur un exemplaire."
+msgstr "Un problème est survenu lors de l’extraction des détails sur un exemplaire."
 
 #: staff.circ.utils.retrieve_circs.failure
 msgid "Problem retrieving circulations."
@@ -1212,9 +1144,7 @@ msgstr "%1$s était déjà entré."
 
 #: staff.circ.utils.item_not_cataloged
 msgid "ITEM_NOT_CATALOGED event but copy status is %1$s"
-msgstr ""
-"Événement article non catalogué (ITEM_NOT_CATALOGED), mais l’état de "
-"l’exemplaire est %1$s."
+msgstr "Événement article non catalogué (ITEM_NOT_CATALOGED), mais l’état de l’exemplaire est %1$s."
 
 #: staff.circ.utils.route_to.msg
 msgid "This item needs to be routed to %1$s"
@@ -1226,9 +1156,7 @@ msgstr "Nous devrions avoir reçu une indication ROUTE_ITEM (article acheminé).
 
 #: staff.circ.utils.route_item_status_error
 msgid "status of Holds Shelf, but no actual hold found."
-msgstr ""
-"état de l’étagère des articles mis en réserve, mais aucun article mis en "
-"réserve n’a été trouvé."
+msgstr "état de l’étagère des articles mis en réserve, mais aucun article mis en réserve n’a été trouvé."
 
 #: staff.circ.utils.payload.hold.barcode
 msgctxt "staff.circ.utils.payload.hold.barcode"
@@ -1273,12 +1201,8 @@ msgid "Do Not Print"
 msgstr "Ne pas imprimer"
 
 #: staff.circ.utils.hold_capture_delayed.description
-msgid ""
-"This item could fulfill a hold request but capture has been delayed by "
-"policy."
-msgstr ""
-"Cet article pourrait satisfaire un demande de mis en réserve mais un "
-"délai a été engendré par la politique."
+msgid "This item could fulfill a hold request but capture has been delayed by policy."
+msgstr "Cet article pourrait satisfaire un demande de mise en réserve mais un délai a été engendré par la politique."
 
 #: staff.circ.utils.hold_capture_delayed.titlebar
 msgid "Hold Capture Delayed"
@@ -1315,8 +1239,7 @@ msgstr "Destination : %1$s."
 
 #: staff.circ.utils.route_to.no_address
 msgid "We do not have a holds address for this library."
-msgstr ""
-"Nous n’avons pas d’adresse d’article mis en réserve pour cette bibliothèque."
+msgstr "Nous n’avons pas d’adresse d’article mis en réserve pour cette bibliothèque."
 
 #: staff.circ.utils.route_to.no_address.error
 msgid "Unable to retrieve mailing address."
@@ -1345,13 +1268,8 @@ msgstr "Échec de l’entrée (dans circ.util.checkin) (%1$s) :"
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkin.suggest_offline
-msgid ""
-"Check In Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
-msgstr ""
-"Échec de l’entrée. Si vous désirez utiliser l’interface hors ligne, "
-"sélectionner Circulation -> Interface hors ligne dans la barre de menu "
-"supérieure."
+msgid "Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgstr "Échec de l’entrée. Si vous désirez utiliser l’interface hors ligne, sélectionner Circulation -> Interface hors ligne dans la barre de menu supérieure."
 
 #: staff.circ.checkin.renew_failed.error
 msgid "Renew Failed for %1$s"
@@ -1375,61 +1293,40 @@ msgid "Barcode: %1$s Message: %2$s"
 msgstr "Code à barres : %1$s Message : %2$s"
 
 #: staff.circ.renew.override.item_deposit_required.warning.barcode
-msgid ""
-"For item with barcode %1$s, a billing for an Item Deposit will be added to "
-"the patron's account if this action is overrided."
-msgstr ""
-"Pour l'item avec le code à barres %1$s, une facturation pour le dépôt d'un "
-"item sera ajoutée au compte du client si cette action est contournée."
+msgid "For item with barcode %1$s, a billing for an Item Deposit will be added to the patron's account if this action is overrided."
+msgstr "Pour l'item avec le code à barres %1$s, une facturation pour le dépôt d'un item sera ajoutée au compte du client si cette action est contournée."
 
 #: staff.circ.renew.override.item_rental_fee_required.warning.barcode
-msgid ""
-"For item with barcode %1$s, a billing for an Item Rental Fee will be added "
-"to the patron's account if this action is overrided."
-msgstr ""
-"Pour l'item avec le code à barres %1$s, une facturation pour le frais de "
-"location sera ajoutée au compte du client si cette action est contournée." 
+msgid "For item with barcode %1$s, a billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
+msgstr "Pour l'item avec le code à barres %1$s, une facturation pour le frais de location sera ajoutée au compte du client si cette action est contournée."
 
 #: staff.circ.holds.activate.prompt
 msgid "Are you sure you would like to activate hold %1$s?"
-msgstr "Êtes-vous certain de vouloir activer l’article mis en réserve %1$s?"
+msgstr "Désirez-vous vraiment activer l’article mis en réserve %1$s?"
 
 #: staff.circ.holds.activate.prompt.plural
 msgid "Are you sure you would like to activate holds %1$s?"
-msgstr "Êtes-vous certain de vouloir activer les articles mis en réserve %1$s?"
+msgstr "Désirez-vous vraiment activer les articles mis en réserve %1$s?"
 
 #: staff.circ.holds.suspend.prompt
 msgid "Are you sure you would like to suspend hold %1$s?"
-msgstr "Êtes-vous certain de vouloir suspendre l’article mis en réserve %1$s?"
+msgstr "Désirez-vous vraiment suspendre l’article mis en réserve %1$s?"
 
 #: staff.circ.holds.suspend.prompt.plural
 msgid "Are you sure you would like to suspend holds %1$s?"
-msgstr ""
-"Êtes-vous certain de vouloir suspendre les articles mis en réserve %1$s?"
+msgstr "Désirez-vous vraiment suspendre les articles mis en réserve %1$s?"
 
 #: staff.circ.holds.activation_date.prompt
-msgid ""
-"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
-"This will also Suspend the hold."
-msgstr ""
-"Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) "
-"pour l’article mis en réserve %1$s, ce qui suspendra l’article mis en "
-"réserve."
+msgid "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  This will also Suspend the hold."
+msgstr "Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) pour l’article mis en réserve %1$s, ce qui suspendra l’article mis en réserve."
 
 #: staff.circ.holds.activation_date.prompt.plural
-msgid ""
-"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-"This will also Suspend the holds."
-msgstr ""
-"Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) "
-"pour les articles mis en réserve %1$s, ce qui suspendra les articles mis en "
-"réserve."
+msgid "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  This will also Suspend the holds."
+msgstr "Veuillez entrer une date d’activation (ou laissez en blanc pour rétablir) pour les articles mis en réserve %1$s, ce qui suspendra les articles mis en réserve."
 
 #: staff.circ.holds.activation_date.too_early.error
-msgid ""
-"Activation Date needs to be either unset or set to fall on a future date."
-msgstr ""
-"La date d’activation doit être rétablie ou réglée à une date ultérieure."
+msgid "Activation Date needs to be either unset or set to fall on a future date."
+msgstr "La date d’activation doit être rétablie ou réglée à une date ultérieure."
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
@@ -1437,25 +1334,16 @@ msgid "Invalid Date"
 msgstr "Date invalide"
 
 #: staff.circ.holds.expire_time.prompt
-msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
-msgstr ""
-"Veuillez entrer une date d'expiration (ou laissez vide pour canceller) "
-"pour l'article mis en réserve %1$s."
+msgid "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgstr "Veuillez entrer une date d'expiration (ou laissez vide pour canceller) pour l'article mis en réserve %1$s."
 
 #: staff.circ.holds.expire_time.prompt.plural
-msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
-msgstr ""
-"Veuillez entrer une date d'expiration (ou laissez vide pour canceller) "
-"pour les articles mis en réserve %1$s."
+msgid "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgstr "Veuillez entrer une date d'expiration (ou laissez vide pour canceller) pour les articles mis en réserve %1$s."
 
 #: staff.circ.holds.expire_time.too_early.error
-#, fuzzy
-msgid ""
-"Expiration Date needs to be either unset or set to fall on a future date."
-msgstr ""
-"La date d’activation doit être rétablie ou réglée à une date ultérieure."
+msgid "Expiration Date needs to be either unset or set to fall on a future date."
+msgstr "La date d’activation doit être rétablie ou réglée à une date ultérieure."
 
 #: staff.circ.holds.expire_time.invalid_date
 msgctxt "staff.circ.holds.expire_time.invalid_date"
@@ -1505,9 +1393,6 @@ msgid "Holds not likely suspended."
 msgstr "Il semble que les articles mis en réserve n’ont pas été suspendus."
 
 #: staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit
-msgid ""
-"You may not edit the pickup library for holds that are in-transit or ready "
-"for pickup."
-msgstr ""
-"Vous ne pouvez pas modifier la bibliothèque d’emprunt lorsque les articles "
-"mis en réserve sont en transit ou prêts à être empruntés."
+msgid "You may not edit the pickup library for holds that are in-transit or ready for pickup."
+msgstr "Vous ne pouvez pas modifier la bibliothèque d’emprunt lorsque les articles mis en réserve sont en transit ou prêts à être empruntés."
+

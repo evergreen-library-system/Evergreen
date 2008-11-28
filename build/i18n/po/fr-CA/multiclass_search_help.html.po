@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > multiclass_search_help.html.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 10:49-0500\n"
-"Last-Translator: Warren Layton\n"
-"Language-Team: NRCan Library\n"
+"PO-Revision-Date: 2008-11-27 14:02-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,17 +37,8 @@ msgid "Definition"
 msgstr "Définition"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
-msgstr ""
-"Le mot-clé</strong>, le <strong>titre</strong>, l’<strong>auteur</strong>, "
-"le <strong>sujet</strong> et la <strong>collection</strong> appuient les "
-"sous catégories de recherche supplémentaires, indiqués par un "
-"<kbd>|</kbd>.Par exemple : <kbd>titre|approprié : Autant en emporte le vent."
+msgid "keyword</strong>, <strong>title</strong>,             <strong>author</strong>, <strong>subject</strong>, and             <strong>series</strong> support additional search subclasses,             specified with a <kbd>|</kbd>. For example:             <kbd>title|proper:gone with the wind"
+msgstr "Le mot-clé</strong>, le <strong>titre</strong>, l’<strong>auteur</strong>, le <strong>sujet</strong> et la <strong>collection</strong> appuient les sous catégories de recherche supplémentaires, indiqués par un <kbd>|</kbd>.Par exemple : <kbd>titre|approprié : Autant en emporte le vent."
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
 msgid "keyword/kw"
@@ -95,9 +86,7 @@ msgstr "Langue"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
 msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-msgstr ""
-"Limite par langue (préciser les multiples langues à l’aide de lang :l1, lang "
-":l2, etc.)"
+msgstr "Limite par langue (préciser les multiples langues à l’aide de lang :l1, lang :l2, etc.)"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
 msgid "site"
@@ -105,9 +94,7 @@ msgstr "site"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
 msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-msgstr ""
-"Effectuer une recherche dans une unité organisationnelle précise, "
-"correspondant au nom actor.org_unit.shortname"
+msgstr "Effectuer une recherche dans une unité organisationnelle précise, correspondant au nom actor.org_unit.shortname"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
 msgid "sort"
@@ -131,6 +118,5 @@ msgstr "disponible"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
 msgid "if set to anything other than \"false\" or \"0\", limits to available items"
-msgstr ""
-"si le paramètre est réglé à une autre fonction que \"faux\" ou \"0\", limiter "
-"aux articles « Disponible »"
+msgstr "si le paramètre est réglé à une autre fonction que \"faux\" ou \"0\", limiter aux articles « Disponible »"
+

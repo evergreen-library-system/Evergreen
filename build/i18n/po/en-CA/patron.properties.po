@@ -1,19 +1,20 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > patron.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-29 00:22-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-11-27 13:47-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -38,9 +39,7 @@ msgid "Barcode %1$s not found."
 msgstr ""
 
 #: staff.patron.barcode_entry.consent_from_patron
-msgid ""
-"Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal "
-"information shared with your library?"
+msgid "Does patron %1$s, %2$s from %3$s (%4$s) consent to having their personal information shared with your library?"
 msgstr ""
 
 #: staff.patron.barcode_entry.patron_consent_title
@@ -182,8 +181,7 @@ msgstr ""
 msgid ""
 "%1$s\n"
 "\n"
-"Another way to \"zero\" this transaction is to use Add Billing and add a "
-"miscellaneous bill to counter the negative balance."
+"Another way to \"zero\" this transaction is to use Add Billing and add a miscellaneous bill to counter the negative balance."
 msgstr ""
 
 #: staff.patron.bills.pay.payment_failed
@@ -312,9 +310,7 @@ msgid "Alert"
 msgstr ""
 
 #: staff.patron.display.init.network_request.window_message
-msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+msgid "Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 
 #: staff.patron.display.init.network_request.dump_error_message
@@ -411,15 +407,11 @@ msgid "Choose a Pick Up Library"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
-msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to "
-"\"%2$s\"?;"
+msgid "Are you sure you would like to change the Hold Range for hold %1$s to \"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
-msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to "
-"\"%2$s\"?;"
+msgid "Are you sure you would like to change the Hold Range for holds %1$s to \"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
@@ -461,15 +453,11 @@ msgid "Choose a Pick Up Library"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
-msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to "
-"%2$s?"
+msgid "Are you sure you would like to change the Pick Up Library for hold %1$s to %2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
-msgid ""
-"Are you sure you would like to change the Pick Up Library for holds %1$s to "
-"%2$s?"
+msgid "Are you sure you would like to change the Pick Up Library for holds %1$s to %2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title
@@ -478,9 +466,7 @@ msgid "Modifying Holds"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.new_phone_number
-msgid ""
-"Please enter a new phone number for hold notification (leave the field empty "
-"to disable phone notification):"
+msgid "Please enter a new phone number for hold notification (leave the field empty to disable phone notification):"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.label
@@ -508,15 +494,11 @@ msgid "Choose a Hold Notification Phone Number"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular
-msgid ""
-"Are you sure you would like to change the Notification Phone Number for hold "
-"%1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Notification Phone Number for hold %1$s to \"%2$s\"?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural
-msgid ""
-"Are you sure you would like to change the Notification Phone Number for "
-"holds %1$s to \"%2$s\"?"
+msgid "Are you sure you would like to change the Notification Phone Number for holds %1$s to \"%2$s\"?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
@@ -525,9 +507,7 @@ msgid "Modifying Holds"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.description
-msgid ""
-"Send email notifications (when appropriate)?  The email address used is "
-"found in the hold recipient account."
+msgid "Send email notifications (when appropriate)?  The email address used is found in the hold recipient account."
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.btn_email.label
@@ -565,20 +545,17 @@ msgid "Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
-msgid ""
-"Are you sure you would like to enable email notification for holds %1$s?"
+msgid "Are you sure you would like to enable email notification for holds %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.singular
 msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.singular"
-msgid ""
-"Are you sure you would like to disable email notification for hold %1$s?"
+msgid "Are you sure you would like to disable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.plural
 msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.plural"
-msgid ""
-"Are you sure you would like to disable email notification for hold %1$s?"
+msgid "Are you sure you would like to disable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
@@ -631,10 +608,8 @@ msgid "Holds not likely cancelled."
 msgstr ""
 
 #: staff.patron.holds.show_catalog.unknown_htype
-msgid ""
-"I do not understand the hold type of %1$s so I can not display the "
-"appropriate record in the catalog."
-msgstr ""
+msgid "I do not understand the hold type of %1$s so I can not display the appropriate record in the catalog."
+msgstr "I do not understand the hold type of %1$s so I can not display the appropriate record in the catalogue."
 
 #: staff.patron.holds.show_catalog.retrieving_title
 msgctxt "staff.patron.holds.show_catalog.retrieving_title"
@@ -679,9 +654,7 @@ msgid "spawn search"
 msgstr ""
 
 #: staff.patron.info_group.remove_patron.warning_message
-msgid ""
-"WARNING: If you remove the currently displayed patron, a NEW group will be "
-"displayed in this interface."
+msgid "WARNING: If you remove the currently displayed patron, a NEW group will be displayed in this interface."
 msgstr ""
 
 #: staff.patron.info_group.remove_patron.warning_message_confirm
@@ -895,9 +868,7 @@ msgid "Error showing NonCat circulations"
 msgstr ""
 
 #: staff.patron.items.items_renew_all.list_is_busy
-msgid ""
-"This is list is busy retrieving or rendering rows for a prior action.  Abort "
-"the prior action and proceed?"
+msgid "This is list is busy retrieving or rendering rows for a prior action.  Abort the prior action and proceed?"
 msgstr ""
 
 #: staff.patron.items.items_renew_all.renew_items_in_list
@@ -1012,7 +983,7 @@ msgstr ""
 
 #: staff.patron.items.show_catalog.barcode_not_cataloged
 msgid "%1$s is not cataloged"
-msgstr ""
+msgstr "%1$s is not catalogued"
 
 #: staff.patron.items.show_catalog.retrieving_title
 msgctxt "staff.patron.items.show_catalog.retrieving_title"
@@ -1134,3 +1105,4 @@ msgid ""
 "Search would be:\n"
 "%1$s"
 msgstr ""
+

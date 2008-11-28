@@ -1,12 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/cat.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 17:20-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 13:56-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,11 +83,11 @@ msgstr "navigateur d’exemplaires -> Modifier les articles"
 
 #: staff.cat.copy_browser.delete_items.confirm.plural
 msgid "Are you sure you would like to delete these %1$s items?"
-msgstr "Êtes-vous certain de vouloir supprimer ces %1$s éléments?"
+msgstr "Désirez-vous vraiment supprimer ces %1$s éléments?"
 
 #: staff.cat.copy_browser.delete_items.confirm
 msgid "Are you sure you would like to delete this item?"
-msgstr "Êtes-vous certain de vouloir supprimer cet élément?"
+msgstr "Désirez-vous vraiment supprimer cet élément?"
 
 #: staff.cat.copy_browser.delete_items.title
 msgid "Delete Items?"
@@ -152,14 +151,8 @@ msgid "Volumes"
 msgstr "Volumes"
 
 #: staff.cat.copy_browser.edit_volume.failed
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
-msgstr ""
-"La modification a échoué : Vous avez tenté de changer la cote d’un volume "
-"par une cote qui est déjà utilisée pour la bibliothèque donnée. Vous devriez "
-"plutôt transférer les articles à la cote désirée."
+msgid "Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead."
+msgstr "La modification a échoué : Vous avez tenté de changer la cote d’un volume par une cote qui est déjà utilisée pour la bibliothèque donnée. Vous devriez plutôt transférer les articles à la cote désirée."
 
 #: staff.cat.copy_browser.edit_volume.success
 msgid "Volumes modified."
@@ -179,7 +172,7 @@ msgstr "Désirez-vous vraiment supprimer ce volume?"
 
 #: staff.cat.copy_browser.delete_volume.prompt.plural
 msgid "Are you sure you would like to delete these %1$s volumes?"
-msgstr "Êtes-vous certain de vouloir supprimer ces %1$s volumes?"
+msgstr "Désirez-vous vraiment supprimer ces %1$s volumes?"
 
 #: staff.cat.copy_browser.delete_volume.title
 msgid "Delete Volumes?"
@@ -201,12 +194,8 @@ msgid "Override Delete Failure?"
 msgstr "Ne pas tenir compte de l’échec de suppression?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
-msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
-msgstr ""
-"Vous devez supprimer tous les exemplaires du volume avant de pouvoir "
-"supprimer le volume lui-même."
+msgid "You must delete all the copies on the volume before you may delete the volume itself."
+msgstr "Vous devez supprimer tous les exemplaires du volume avant de pouvoir supprimer le volume lui-même."
 
 #: staff.cat.copy_browser.delete_volume.success
 msgid "Volumes deleted."
@@ -218,13 +207,11 @@ msgstr "navigateur d’exemplaires -> supprimer les volumes"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
-msgstr ""
-"Bibliothèque + compte désignés comme destination de transfert des articles"
+msgstr "Bibliothèque + compte désignés comme destination de transfert des articles"
 
 #: staff.cat.copy_browser.mark_library.prompt
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr ""
-"Choisir une seule bibliothèque comme destination de transfert des volumes"
+msgstr "Choisir une seule bibliothèque comme destination de transfert des volumes"
 
 #: staff.cat.copy_browser.mark_library.title
 msgctxt "staff.cat.copy_browser.mark_library.title"
@@ -245,18 +232,12 @@ msgid "Limit Selection"
 msgstr "Limite de sélection"
 
 #: staff.cat.copy_browser.transfer_volume.alert
-msgid ""
-"Please mark a library as the destination from within holdings maintenance "
-"and then try this again."
-msgstr ""
-"Veuillez désigner une bibliothèque comme destination à partir de la tenue à "
-"jour du fonds documentaire et réessayer."
+msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
+msgstr "Veuillez désigner une bibliothèque comme destination à partir de la tenue à jour du fonds documentaire et réessayer."
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr ""
-"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte "
-"suivant?"
+msgstr "Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte suivant?"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
@@ -300,12 +281,8 @@ msgstr "Il semble que tous les volumes n’ont pas été transférés."
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
 msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
-msgid ""
-"Please mark a volume as the destination from within holdings maintenance and "
-"then try this again."
-msgstr ""
-"Veuillez désigner un volume comme destination à partir de la tenue à jour du "
-"fonds documentaire et réessayer."
+msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
+msgstr "Veuillez désigner un volume comme destination à partir de la tenue à jour du fonds documentaire et réessayer."
 
 #: staff.cat.copy_browser.transfer_items.unexpected_error
 msgid "All copies not likely transferred."
@@ -347,9 +324,7 @@ msgstr "Action terminée."
 
 #: staff.cat.copy_buckets.retrieve_row.error
 msgid "Error retrieving details for item with copy id = %1$s"
-msgstr ""
-"Erreur de récupération des détails concernant l’article avec ID d’exemplaire "
-"= %1$s"
+msgstr "Erreur de récupération des détails concernant l’article avec ID d’exemplaire = %1$s"
 
 #: staff.cat.copy_buckets.menulist.render.choose_bucket
 msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
@@ -372,8 +347,7 @@ msgstr "Panier avec un ID introuvable = %1$s"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket id?"
-msgstr ""
-"Erreur de récupération du panier. Avez-vous utilisé un ID de panier valide?"
+msgstr "Erreur de récupération du panier. Avez-vous utilisé un ID de panier valide?"
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
@@ -437,20 +411,12 @@ msgid "Batch Item Deletion"
 msgstr "Suppression d’articles par lots"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
-msgid ""
-"Please mark a volume as the destination from within the copy browser and "
-"then try this again."
-msgstr ""
-"Veuillez désigner un volume comme la destination dans le navigateur "
-"d’exemplaires et réessayez."
+msgid "Please mark a volume as the destination from within the copy browser and then try this again."
+msgstr "Veuillez désigner un volume comme la destination dans le navigateur d’exemplaires et réessayez."
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
-msgid ""
-"Transfer the items in bucket \"%1$s\" from their original volumes to the "
-"volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
-msgstr ""
-"Transférer les articles dans le panier \"%1$s\", de leurs volumes originaux au "
-"volume étiqueté \"%2$s\" pour la bibliothèque \"%3$s\" dans le compte suivant?"
+msgid "Transfer the items in bucket \"%1$s\" from their original volumes to the volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
+msgstr "Transférer les articles dans le panier \"%1$s\", de leurs volumes originaux au volume étiqueté \"%2$s\" pour la bibliothèque \"%3$s\" dans le compte suivant?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -490,9 +456,7 @@ msgstr "La création du panier a échoué."
 
 #: staff.cat.copy_buckets_quick.addition.error
 msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
-msgstr ""
-"L’ajout a probablement échoué pour le panier = %1$s et l’ID de l’exemplaire "
-"= %2$s."
+msgstr "L’ajout a probablement échoué pour le panier = %1$s et l’ID de l’exemplaire = %2$s."
 
 #: staff.cat.copy_editor.caption
 msgid "Copy Editor"
@@ -583,8 +547,7 @@ msgstr "Cliquez ici"
 
 #: staff.cat.copy_editor.import_templates.save.prompt
 msgid "Save all of these imported templates permanently to this account?"
-msgstr ""
-"Sauvegarder tous ces modèles importés de façon permanente dans ce compte?"
+msgstr "Sauvegarder tous ces modèles importés de façon permanente dans ce compte?"
 
 #: staff.cat.copy_editor.import_templates.save.title
 msgid "Final warning"
@@ -614,34 +577,20 @@ msgid "Error saving templates"
 msgstr "Erreur de sauvegarde des modèles."
 
 #: staff.cat.copy_editor.import_templates.note
-msgid ""
-"Note: These imported templates will get saved along with any new template "
-"you try to create, but if that does not happen, then these templates will "
-"disappear with the next invocation of the item attribute editor."
-msgstr ""
-"Remarque : Ces modèles importés seront sauvegardés avec tous les nouveaux "
-"modèles que vous tentez de créer, sinon ces modèles disparaîtront lors de la "
-"prochaine invocation de l’éditeur d’attributs de l’article."
+msgid "Note: These imported templates will get saved along with any new template you try to create, but if that does not happen, then these templates will disappear with the next invocation of the item attribute editor."
+msgstr "Remarque : Ces modèles importés seront sauvegardés avec tous les nouveaux modèles que vous tentez de créer, sinon ces modèles disparaîtront lors de la prochaine invocation de l’éditeur d’attributs de l’article."
 
 #: staff.cat.copy_editor.import_templates.error
 msgid "Error importing templates"
 msgstr "Erreur d’importation des modèles"
 
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
-msgid ""
-"Error retrieving Volume information for copy %1$s.  The owning library for "
-"this copy will not be changed."
-msgstr ""
-"Erreur de l’extraction de l’information sur le volume pour l’exemplaire "
-"%1$s. La bibliothèque propriétaire de cet exemplaire demeurera la même."
+msgid "Error retrieving Volume information for copy %1$s.  The owning library for this copy will not be changed."
+msgstr "Erreur de l’extraction de l’information sur le volume pour l’exemplaire %1$s. La bibliothèque propriétaire de cet exemplaire demeurera la même."
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
-msgid ""
-"Error changing owning library for copy %1$s.  The owning library for this "
-"copy will not be changed."
-msgstr ""
-"Erreur de changement de bibliothèque propriétaire pour l’exemplaire %1$s. La "
-"bibliothèque propriétaire de cet exemplaire demeurera la même."
+msgid "Error changing owning library for copy %1$s.  The owning library for this copy will not be changed."
+msgstr "Erreur de changement de bibliothèque propriétaire pour l’exemplaire %1$s. La bibliothèque propriétaire de cet exemplaire demeurera la même."
 
 #: staff.cat.copy_editor.copy_count
 msgid "1 copy"
@@ -691,10 +640,9 @@ msgid "<Remove Protection>"
 msgstr "<Enlever protection>"
 
 #: staff.cat.copy_editor.field.unset_or_null
-#, fuzzy
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
-msgstr "<Unset>"
+msgstr "<Non fixé>"
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
@@ -977,10 +925,9 @@ msgid "No"
 msgstr "Non"
 
 #: staff.cat.copy_summary.unset
-#, fuzzy
 msgctxt "staff.cat.copy_summary.unset"
 msgid "<Unset>"
-msgstr "<Unset>"
+msgstr "<Non fixé>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
@@ -1097,9 +1044,7 @@ msgstr "Le compte n’a probablement pas été mis à jour."
 
 #: staff.cat.opac.refresh.function_not_implemented.alert
 msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
-msgstr ""
-"Pas encore mis en œuvre. Solution de rechange : Choisir l’option « "
-"Reproduire dans le nouvel onglet »"
+msgstr "Pas encore mis en œuvre. Solution de rechange : Choisir l’option « Reproduire dans le nouvel onglet »"
 
 #: staff.cat.opac.set_tab_name
 msgid "Record: %1$s"
@@ -1151,8 +1096,7 @@ msgstr "Entrez le numéro du panier :"
 
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
-msgstr ""
-"Erreur de récupération du panier. Avez-vous utilisé un ID de panier valide?"
+msgstr "Erreur de récupération du panier. Avez-vous utilisé un ID de panier valide?"
 
 #: staff.cat.record_buckets.delete_bucket_named
 msgctxt "staff.cat.record_buckets.delete_bucket_named"
@@ -1319,8 +1263,7 @@ msgstr "La création du panier a échoué."
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
-msgstr ""
-"L’ajout a probablement échoué pour le panier = %1$s et l’ID du compte = %2$s"
+msgstr "L’ajout a probablement échoué pour le panier = %1$s et l’ID du compte = %2$s"
 
 #: staff.cat.spine_labels.copy
 msgid "copy"
@@ -1354,9 +1297,7 @@ msgstr "Remplacer le code à barres"
 
 #: staff.cat.util.replace_barcode.error_alert
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr ""
-"Nous avons été incapables d’extraire un article dont le code à barres est "
-"\"%1$s\"."
+msgstr "Nous avons été incapables d’extraire un article dont le code à barres est \"%1$s\"."
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.prompt
 msgid "Enter the replacement barcode for the copy:"
@@ -1389,21 +1330,12 @@ msgstr "La renomination n’a probablement pas fonctionnée."
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
 msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
-msgid ""
-"Please mark a volume as the destination from within holdings maintenance and "
-"then try this again."
-msgstr ""
-"Veuillez désigner un volume comme destination à partir de la tenue à jour du "
-"fonds documentaire et réessayez."
+msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
+msgstr "Veuillez désigner un volume comme destination à partir de la tenue à jour du fonds documentaire et réessayez."
 
 #: staff.cat.util.transfer_copies.params_message
-msgid ""
-"Transfer items from their original volumes to %1$s's volume labelled %2$s on "
-"the following record (and change their circulation libs to match)?"
-msgstr ""
-"Transférez les articles de leurs volumes originaux aux %1$s volumes "
-"étiquetés %2$s dans le compte suivant (et changer leurs bibliothèques de "
-"prêt afin qu’elles correspondent)?"
+msgid "Transfer items from their original volumes to %1$s's volume labelled %2$s on the following record (and change their circulation libs to match)?"
+msgstr "Transférez les articles de leurs volumes originaux aux %1$s volumes étiquetés %2$s dans le compte suivant (et changer leurs bibliothèques de prêt afin qu’elles correspondent)?"
 
 #: staff.cat.util.transfer_copies.transfer.label
 msgctxt "staff.cat.util.transfer_copies.transfer.label"
@@ -1500,13 +1432,8 @@ msgid "Copies not modified."
 msgstr "Les exemplaires n’ont pas été modifiés."
 
 #: staff.cat.util.mark_item_damaged.af_message
-msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
-msgstr ""
-"L’action a échoué. Un ou plusieurs de ces articles sont dans un état spécial "
-"comme \"Sorti\" ou \"En transit\" et leur état ne peut pas être changé par « "
-"Endommagé »."
+msgid "Action failed.  One or more of these items is in a special status such as \"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+msgstr "L’action a échoué. Un ou plusieurs de ces articles sont dans un état spécial comme \"Sorti\" ou \"En transit\" et leur état ne peut pas être changé par « Endommagé »."
 
 #: staff.cat.util.mark_item_damaged.af_title
 msgctxt "staff.cat.util.mark_item_damaged.af_title"
@@ -1524,13 +1451,8 @@ msgid "Check here to confirm this message"
 msgstr "Cochez ici pour confirmer ce message"
 
 #: staff.cat.util.mark_item_damaged.md_message
-msgid ""
-"Change the status for these items to Damaged?  You will have to manually "
-"retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
-msgstr ""
-"Changer l’état de ces articles par « Endommagé »? Vous devrez récupérer "
-"manuellement le dernier prêt si vous devez facturer un client. Codes à "
-"barres : %1$s"
+msgid "Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
+msgstr "Changer l’état de ces articles par « Endommagé »? Vous devrez récupérer manuellement le dernier prêt si vous devez facturer un client. Codes à barres : %1$s"
 
 #: staff.cat.util.mark_item_damaged.md_title
 msgid "Mark Damaged"
@@ -1564,13 +1486,8 @@ msgid "%1$s items marked Damaged."
 msgstr "Les articles %1$s sont désignés comme endommagés."
 
 #: staff.cat.util.mark_item_missing.af_message
-msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
-msgstr ""
-"L’action a échoué. Un ou plusieurs de ces articles sont dans un état spécial "
-"comme \"Sorti\" ou \"En transit\" et leur état ne peut pas être changé par « "
-"Manquant »."
+msgid "Action failed.  One or more of these items is in a special status such as \"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+msgstr "L’action a échoué. Un ou plusieurs de ces articles sont dans un état spécial comme \"Sorti\" ou \"En transit\" et leur état ne peut pas être changé par « Manquant »."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
@@ -1632,12 +1549,8 @@ msgid "Apply"
 msgstr "Appliquer"
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
-msgid ""
-"You may not add more than %1$s items at a time for a given volume in this "
-"interface."
-msgstr ""
-"Il est possible que vous ne puissiez pas ajouter plus de %1$s articles à la "
-"fois pour un volume donné dans cette interface."
+msgid "You may not add more than %1$s items at a time for a given volume in this interface."
+msgstr "Il est possible que vous ne puissiez pas ajouter plus de %1$s articles à la fois pour un volume donné dans cette interface."
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.title
 msgid "Maximum items exceeded."
@@ -1673,12 +1586,8 @@ msgid "Check here to confirm this message."
 msgstr "Cochez ici pour confirmer ce message."
 
 #: staff.cat.volume_copy_creator.stash_and_close.problem_with_volume
-msgid ""
-"Problem finding or creating %1$s.  We will skip item creation for this "
-"volume."
-msgstr ""
-"Problème à trouver ou à créer %1$s. Nous passerons outre la création "
-"d’articles pour ce volume."
+msgid "Problem finding or creating %1$s.  We will skip item creation for this volume."
+msgstr "Problème à trouver ou à créer %1$s. Nous passerons outre la création d’articles pour ce volume."
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err2
 msgid "volume tree update 2"
@@ -1921,11 +1830,8 @@ msgid "Overlay Aborted"
 msgstr "Recouvrement annulé"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
-msgid ""
-"Please mark a record for overlay from within the catalog and try this again."
-msgstr ""
-"Veuillez désigner un compte pour le recouvrement à partir du catalogue et "
-"réessayez."
+msgid "Please mark a record for overlay from within the catalog and try this again."
+msgstr "Veuillez désigner un compte pour le recouvrement à partir du catalogue et réessayez."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
 msgid "MARC Editor"
@@ -1992,3 +1898,4 @@ msgstr "Erreur de l’extraction des références z39.50 stockées."
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
 msgstr "Problème de stockage des références z39.50."
+

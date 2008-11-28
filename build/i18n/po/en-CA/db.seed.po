@@ -1,17 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2008-10-29 00:22:42-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-11-27 16:22-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.0.1\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 # id::1
 #: cbs.source:3
@@ -231,7 +232,7 @@ msgstr ""
 # id::11
 #: ccs.name:123
 msgid "Cataloging"
-msgstr ""
+msgstr "Cataloguing"
 
 # id::12
 #: ccs.name:124
@@ -3621,12 +3622,12 @@ msgstr ""
 # id::72
 #: ppl.description:968
 msgid "Allow a user to create a new non-cataloged item type"
-msgstr ""
+msgstr "Allow a user to create a new non-catalogued item type"
 
 # id::73
 #: ppl.description:970
 msgid "Allow a user to update a non-cataloged item type"
-msgstr ""
+msgstr "Allow a user to update a non-catalogued item type"
 
 # id::74
 #: ppl.description:972
@@ -3856,7 +3857,7 @@ msgstr ""
 # id::119
 #: ppl.description:1062
 msgid "Allow a user to delete a non cataloged type"
-msgstr ""
+msgstr "Allow a user to delete a non catalogued type"
 
 # id::120
 #: ppl.description:1064
@@ -3906,7 +3907,7 @@ msgstr ""
 # id::129
 #: ppl.description:1082
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
-msgstr ""
+msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
 # id::130
 #: ppl.description:1084
@@ -4171,7 +4172,7 @@ msgstr ""
 # id::4
 #: pgt.name:1285
 msgid "Catalogers"
-msgstr ""
+msgstr "Cataloguers"
 
 # id::5
 #: pgt.name:1287
@@ -4267,3 +4268,4 @@ msgstr ""
 #: vqarad.description:1538
 msgid "Identifier"
 msgstr ""
+

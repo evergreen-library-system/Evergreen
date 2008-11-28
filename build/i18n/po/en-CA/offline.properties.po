@@ -1,13 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-29 00:22-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2008-11-27 16:29-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,8 +16,7 @@ msgstr ""
 
 #: common.exception
 msgid ""
-"!! This software has encountered an error.  Please tell your friendly system "
-"administrator or software developer the following:\n"
+"!! This software has encountered an error.  Please tell your friendly system administrator or software developer the following:\n"
 "%1$s\n"
 "%2$s\n"
 msgstr ""
@@ -90,7 +87,7 @@ msgstr ""
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
-msgstr ""
+msgstr "Are you sure you want to delete title record #%1$s from the catalogue?"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
@@ -102,7 +99,7 @@ msgstr ""
 
 #: cat.opac.undelete_record.confirm
 msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr ""
+msgstr "Are you sure you want to undelete title record #%1$s from the catalogue?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -200,9 +197,7 @@ msgid "Enter the number of items:"
 msgstr ""
 
 #: circ.offline_checkout.download.warning
-msgid ""
-"WARNING: The non-barcode types have not been downloaded from the server.  "
-"You should log in to retrieve these."
+msgid "WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these."
 msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.lost
@@ -222,9 +217,7 @@ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
 msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
-msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
-"%3$s."
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %3$s."
 msgstr ""
 
 #: circ.offline_checkout.date.early
@@ -332,9 +325,7 @@ msgid "Missing required surveys."
 msgstr ""
 
 #: circ.offline_register.missing.files.error
-msgid ""
-"ERROR: Offline patron registration requires some server-generated files.  "
-"Please login periodically to retrieve these files."
+msgid "ERROR: Offline patron registration requires some server-generated files.  Please login periodically to retrieve these files."
 msgstr ""
 
 #: jsan.file_not_found.error
@@ -409,7 +400,7 @@ msgstr ""
 
 #: menu.cmd_search_opac.tab
 msgid "Catalog"
-msgstr ""
+msgstr "Catalogue"
 
 #: menu.cmd_search_bib_id.tab
 msgid "What is the internal ID for the bibliographic record?"
@@ -496,9 +487,7 @@ msgid "Download completed"
 msgstr ""
 
 #: menu.cmd_download_patrons.error
-msgid ""
-"There was a problem with the download.  The server returned a status %1$s : "
-"%2$s"
+msgid "There was a problem with the download.  The server returned a status %1$s : %2$s"
 msgstr ""
 
 #: menu.cmd_stat_cat_edit.tab
@@ -507,7 +496,7 @@ msgstr ""
 
 #: menu.cmd_non_cat_type_edit.tab
 msgid "Non-Cataloged Type Editor"
-msgstr ""
+msgstr "Non-Catalogued Type Editor"
 
 #: menu.cmd_copy_location_edit.tab
 msgid "Copy Location Editor"
@@ -578,10 +567,7 @@ msgid "Transaction Export Warning"
 msgstr ""
 
 #: main.transaction_export.success.prompt
-msgid ""
-"Your transactions have been successfully exported to file %1$s. We strongly "
-"recommend that you now purge the transactions from this staff client.  Would "
-"you like for us to do this?"
+msgid "Your transactions have been successfully exported to file %1$s. We strongly recommend that you now purge the transactions from this staff client.  Would you like for us to do this?"
 msgstr ""
 
 #: main.transaction_export.success.title
@@ -589,22 +575,15 @@ msgid "Transaction Export Successful"
 msgstr ""
 
 #: main.transaction_export.filename.error
-msgid ""
-"Error purging transactions:  Taking too long to find a unique filename for "
-"archival."
+msgid "Error purging transactions:  Taking too long to find a unique filename for archival."
 msgstr ""
 
 #: main.transaction_export.duplicate.warning
-msgid ""
-"Please note that you now have two sets of identical transactions.  Unless "
-"the set you just exported is solely for archival purposes, we run the risk "
-"of duplicate transactions being processed on the server."
+msgid "Please note that you now have two sets of identical transactions.  Unless the set you just exported is solely for archival purposes, we run the risk of duplicate transactions being processed on the server."
 msgstr ""
 
 #: main.transaction_export.no_filename.error
-msgid ""
-"Either you did not choose a filename, or you tried to overwrite an existing "
-"file."
+msgid "Either you did not choose a filename, or you tried to overwrite an existing file."
 msgstr ""
 
 #: main.transaction_export.no_transactions.error
@@ -612,9 +591,7 @@ msgid "There are no outstanding transactions to export."
 msgstr ""
 
 #: main.transaction_import.outstanding.error
-msgid ""
-"There are already outstanding transactions on this staff client.  Upload "
-"these first."
+msgid "There are already outstanding transactions on this staff client.  Upload these first."
 msgstr ""
 
 #: main.transaction_import.title
@@ -625,8 +602,7 @@ msgstr ""
 msgid ""
 "Your transactions have been successfully migrated to this staff client.\n"
 "\n"
-"We recommend that you delete the external copy.  Would you like for us to "
-"delete %1$s?"
+"We recommend that you delete the external copy.  Would you like for us to delete %1$s?"
 msgstr ""
 
 #: main.transaction_import.success
@@ -654,20 +630,15 @@ msgid "Please login first!"
 msgstr ""
 
 #: main.settings.migrate
-msgid ""
-"This version of the staff client stores local settings in a different "
-"location than your previous installation.  Should we attempt to migrate "
-"these settings?"
+msgid "This version of the staff client stores local settings in a different location than your previous installation.  Should we attempt to migrate these settings?"
 msgstr ""
 
 #: main.settings.migrate.failed
 msgid ""
-"WARNING: Unable to migrate legacy settings.  The settings and configuration "
-"files appear to exist in multiple locations. \n"
+"WARNING: Unable to migrate legacy settings.  The settings and configuration files appear to exist in multiple locations. \n"
 "To resolve this problem manually, please consider:\n"
 "\t%1$s\n"
-"which is in the directory where we want to store settings for the current "
-"operating system account, and:\n"
+"which is in the directory where we want to store settings for the current operating system account, and:\n"
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
@@ -707,3 +678,4 @@ msgstr ""
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
 msgstr ""
+

@@ -1,12 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > auth.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-08-22 14:38-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 13:55-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,17 +42,11 @@ msgstr "Mise à l’essai de la version..."
 
 #: staff.auth.controller.error_version
 msgid "There was an error checking version support."
-msgstr ""
-"Une erreur est survenue au cours de la vérification du soutien de la "
-"version."
+msgstr "Une erreur est survenue au cours de la vérification du soutien de la version."
 
 #: staff.auth.controller.version_mismatch
-msgid ""
-"This server does not support your version of the staff client.  Please check "
-"with your system administrator."
-msgstr ""
-"Ce serveur ne prend pas en charge votre version du client du personnel. "
-"Veuillez consulter votre administrateur de système."
+msgid "This server does not support your version of the staff client.  Please check with your system administrator."
+msgstr "Ce serveur ne prend pas en charge votre version du client du personnel. Veuillez consulter votre administrateur de système."
 
 #. # login with <username> and <password> at <server>
 #: staff.auth.controller.error_login
@@ -62,26 +55,21 @@ msgstr "Ouvrir une session à l’aide de %1$s et %2$s à %3$s"
 
 #: staff.auth.controller.confirm_close
 msgid "Are you sure you would like to exit the program completely?"
-msgstr "Êtes-vous certain de vouloir quitter le programme?"
+msgstr "Désirez-vous vraiment quitter le programme?"
 
 #: staff.auth.session.unregistered
 msgid "%1$s is not registered with this server."
 msgstr "%1$s n’est pas enregistré sur ce serveur."
 
 #: staff.auth.session.login_failed
-msgid ""
-"Login failed.  Please check your Server Hostname, Username, Password, and "
-"your CAPS LOCK key."
-msgstr ""
-"L’ouveture de session a échoué. Veuillez vérifier le nom d’hôte du serveur, "
-"votre nom d’utilisateur et votre mot de passe, ainsi que votre touche de "
-"clavier « FIXMAJ »."
+msgid "Login failed.  Please check your Server Hostname, Username, Password, and your CAPS LOCK key."
+msgstr "L’ouveture de session a échoué. Veuillez vérifier le nom d’hôte du serveur, votre nom d’utilisateur et votre mot de passe, ainsi que votre touche de clavier « FIXMAJ »."
 
 #: staff.auth.session.init_false
 msgid "open-ils.auth.authenticate.init returned false"
-msgstr ""
-"L’instruction open-ils.auth.authenticate.init retourne la valeur « False »"
+msgstr "L’instruction open-ils.auth.authenticate.init retourne la valeur « False »"
 
 #: staff.auth.titlebar.label
 msgid "Evergreen Staff Client - %1$s"
 msgstr "Client Evergreen pour les membres du personnel - %1$s"
+

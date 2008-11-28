@@ -1,19 +1,21 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > fm_IDL.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2008-10-29 00:22:10-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-11-27 13:08-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.0.1\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
-#: field.aihu.org_unit.label:871 field.ancihu.org_unit.label:888
+#: field.aihu.org_unit.label:871
+#: field.ancihu.org_unit.label:888
 msgid "Using Library"
 msgstr ""
 
@@ -29,8 +31,10 @@ msgstr ""
 msgid "MARC21Slim"
 msgstr ""
 
-#: field.acqpl.edit_time.label:3713 field.acqpo.edit_time.label:3732
-#: field.acqpon.edit_time.label:3757 field.jub.edit_time.label:3779
+#: field.acqpl.edit_time.label:3713
+#: field.acqpo.edit_time.label:3732
+#: field.acqpon.edit_time.label:3757
+#: field.jub.edit_time.label:3779
 #: field.acqlin.edit_time.label:3811
 msgid "Edit Time"
 msgstr ""
@@ -63,7 +67,8 @@ msgstr ""
 msgid "Demographic Info"
 msgstr ""
 
-#: field.acqpro.currency_type.label:3470 field.acqfs.currency_type.label:3487
+#: field.acqpro.currency_type.label:3470
+#: field.acqfs.currency_type.label:3487
 msgid "Currency"
 msgstr ""
 
@@ -109,11 +114,13 @@ msgstr ""
 msgid "Host"
 msgstr ""
 
-#: field.au.id.label:1417 field.rud.id.label:4177
+#: field.au.id.label:1417
+#: field.rud.id.label:4177
 msgid "User ID"
 msgstr ""
 
-#: field.asc.entries.label:2423 field.actsc.entries.label:2453
+#: field.asc.entries.label:2423
+#: field.actsc.entries.label:2453
 #: field.acqpl.entries.label:3714
 msgid "Entries"
 msgstr ""
@@ -154,7 +161,8 @@ msgstr ""
 msgid "Call Number Dewey/Prefix"
 msgstr ""
 
-#: field.crahp.name.label:2951 field.crmf.name.label:2963
+#: field.crahp.name.label:2951
+#: field.crmf.name.label:2963
 msgid "Rule Name"
 msgstr ""
 
@@ -162,7 +170,8 @@ msgstr ""
 msgid "LitF Code"
 msgstr ""
 
-#: field.vii.ref.label:177 field.viiad.ref.label:228
+#: field.vii.ref.label:177
+#: field.viiad.ref.label:228
 #: field.rocit.ref.label:4504
 msgid "Reference"
 msgstr ""
@@ -171,13 +180,15 @@ msgstr ""
 msgid "Balance after Spent"
 msgstr ""
 
-#: field.mb.billing_type.label:3364 field.rmocbbol.billing_type.label:4530
+#: field.mb.billing_type.label:3364
+#: field.rmocbbol.billing_type.label:4530
 #: field.rmocbbcol.billing_type.label:4561
 #: field.rmocbbhol.billing_type.label:4595
 msgid "Billing Type"
 msgstr ""
 
-#: class.mckp.label:2851 field.mdp.check_payment.label:3280
+#: class.mckp.label:2851
+#: field.mdp.check_payment.label:3280
 msgid "Check Payment"
 msgstr ""
 
@@ -185,7 +196,8 @@ msgstr ""
 msgid "Legacy CAT1 Link"
 msgstr ""
 
-#: field.viiad.tag.label:218 field.mfr.tag.label:1531
+#: field.viiad.tag.label:218
+#: field.mfr.tag.label:1531
 msgid "Tag"
 msgstr ""
 
@@ -197,7 +209,8 @@ msgstr ""
 msgid "User Profile Group"
 msgstr ""
 
-#: field.vbm.matched_attr.label:367 field.vam.matched_attr.label:498
+#: field.vbm.matched_attr.label:367
+#: field.vam.matched_attr.label:498
 msgid "Matched Attribute"
 msgstr ""
 
@@ -205,8 +218,10 @@ msgstr ""
 msgid "Notification Method"
 msgstr ""
 
-#: field.vqbrad.xpath.label:318 field.vqarad.xpath.label:449
-#: field.acqlimad.xpath.label:3887 field.acqligad.xpath.label:3901
+#: field.vqbrad.xpath.label:318
+#: field.vqarad.xpath.label:449
+#: field.acqlimad.xpath.label:3887
+#: field.acqligad.xpath.label:3901
 #: field.acqlipad.xpath.label:3915
 msgid "XPath"
 msgstr ""
@@ -239,22 +254,28 @@ msgstr ""
 msgid "Item Count"
 msgstr ""
 
-#: field.czs.label.label:543 field.cza.label.label:565
+#: field.czs.label.label:543
+#: field.cza.label.label:565
 msgid "Label"
 msgstr ""
 
-#: field.circ.checkin_lib.label:1815 field.combcirc.checkin_lib.label:1870
-#: field.acirc.checkin_lib.label:1937 field.rodcirc.checkin_lib.label:4424
+#: field.circ.checkin_lib.label:1815
+#: field.combcirc.checkin_lib.label:1870
+#: field.acirc.checkin_lib.label:1937
+#: field.rodcirc.checkin_lib.label:4424
 msgid "Check In Library"
 msgstr ""
 
-#: field.aua.state.label:1741 field.acqpo.state.label:3734
+#: field.aua.state.label:1741
+#: field.acqpo.state.label:3734
 #: field.jub.state.label:3784
 msgid "State"
 msgstr ""
 
-#: field.mp.voided.label:3190 field.mbp.voided.label:3221
-#: field.mndp.voided.label:3252 field.mdp.voided.label:3277
+#: field.mp.voided.label:3190
+#: field.mbp.voided.label:3221
+#: field.mndp.voided.label:3252
+#: field.mdp.voided.label:3277
 #: field.mb.voided.label:3368
 msgid "Voided?"
 msgstr ""
@@ -271,7 +292,8 @@ msgstr ""
 msgid "General Demographic Division"
 msgstr ""
 
-#: field.asvq.responses.label:782 field.asv.responses.label:2240
+#: field.asvq.responses.label:782
+#: field.asv.responses.label:2240
 msgid "Responses"
 msgstr ""
 
@@ -279,16 +301,20 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: field.ssr.deleted.label:2229 field.rocit.deleted.label:4506
+#: field.ssr.deleted.label:2229
+#: field.rocit.deleted.label:4506
 msgid "Deleted"
 msgstr ""
 
-#: field.aou.ou_type.label:2358 class.aout.label:2550
+#: field.aou.ou_type.label:2358
+#: class.aout.label:2550
 msgid "Organizational Unit Type"
 msgstr ""
 
-#: field.mcrp.payment_ts.label:2507 field.mwp.payment_ts.label:2752
-#: field.mgp.payment_ts.label:2773 field.mckp.payment_ts.label:2863
+#: field.mcrp.payment_ts.label:2507
+#: field.mwp.payment_ts.label:2752
+#: field.mgp.payment_ts.label:2773
+#: field.mckp.payment_ts.label:2863
 msgid "Payment Timestamp"
 msgstr ""
 
@@ -300,7 +326,8 @@ msgstr ""
 msgid "Indicator 2"
 msgstr ""
 
-#: field.au.checkins.label:1442 field.aou.checkins.label:2369
+#: field.au.checkins.label:1442
+#: field.aou.checkins.label:2369
 msgid "Checkins"
 msgstr ""
 
@@ -308,8 +335,10 @@ msgstr ""
 msgid "Bib Level Code"
 msgstr ""
 
-#: field.acqpl.create_time.label:3712 field.acqpo.create_time.label:3731
-#: field.acqpon.create_time.label:3756 field.jub.create_time.label:3778
+#: field.acqpl.create_time.label:3712
+#: field.acqpo.create_time.label:3731
+#: field.acqpon.create_time.label:3756
+#: field.jub.create_time.label:3778
 #: field.acqlin.create_time.label:3810
 msgid "Creation Time"
 msgstr ""
@@ -322,8 +351,10 @@ msgstr ""
 msgid "Call Numbers"
 msgstr ""
 
-#: field.mp.payment_ts.label:3187 field.mbp.payment_ts.label:3218
-#: field.mndp.payment_ts.label:3249 field.mdp.payment_ts.label:3272
+#: field.mp.payment_ts.label:3187
+#: field.mbp.payment_ts.label:3218
+#: field.mndp.payment_ts.label:3249
+#: field.mdp.payment_ts.label:3272
 msgid "Payment Date/Time"
 msgstr ""
 
@@ -351,7 +382,8 @@ msgstr ""
 msgid "Legacy CAT2 Value"
 msgstr ""
 
-#: class.acn.label:1137 field.acp.call_number.label:2884
+#: class.acn.label:1137
+#: field.acp.call_number.label:2884
 msgid "Call Number/Volume"
 msgstr ""
 
@@ -371,10 +403,14 @@ msgstr ""
 msgid "Statistical Category Entries"
 msgstr ""
 
-#: field.vibtf.owner.label:144 field.viiad.owner.label:216
-#: field.vbq.owner.label:259 field.vaq.owner.label:392
-#: field.acqpro.owner.label:3469 field.acqfs.owner.label:3486
-#: field.acqpl.owner.label:3709 field.acqpo.owner.label:3730
+#: field.vibtf.owner.label:144
+#: field.viiad.owner.label:216
+#: field.vbq.owner.label:259
+#: field.vaq.owner.label:392
+#: field.acqpro.owner.label:3469
+#: field.acqfs.owner.label:3486
+#: field.acqpl.owner.label:3709
+#: field.acqpo.owner.label:3730
 msgid "Owner"
 msgstr ""
 
@@ -384,7 +420,7 @@ msgstr ""
 
 #: class.ancihu.label:881
 msgid "Non-cataloged In House Use"
-msgstr ""
+msgstr "Non-catalogued In House Use"
 
 #: field.ahr.holdable_formats.label:2310
 msgid "Holdable Formats (for M-type hold)"
@@ -398,11 +434,13 @@ msgstr ""
 msgid "PO Line Item Note ID"
 msgstr ""
 
-#: field.vbm.eg_record.label:368 field.vam.eg_record.label:499
+#: field.vbm.eg_record.label:368
+#: field.vam.eg_record.label:499
 msgid "Evergreen Record"
 msgstr ""
 
-#: field.vbm.id.label:365 field.vam.id.label:496
+#: field.vbm.id.label:365
+#: field.vam.id.label:496
 msgid "Match ID"
 msgstr ""
 
@@ -446,16 +484,19 @@ msgstr ""
 msgid "Line Items"
 msgstr ""
 
-#: field.vii.circulate.label:174 field.viiad.circulate.label:225
+#: field.vii.circulate.label:174
+#: field.viiad.circulate.label:225
 msgid "Circulate"
 msgstr ""
 
-#: field.vii.status.label:172 field.viiad.status.label:223
+#: field.vii.status.label:172
+#: field.viiad.status.label:223
 #: field.rocit.status.label:4508
 msgid "Status"
 msgstr ""
 
-#: field.aun.pub.label:825 field.acpn.pub.label:1496
+#: field.aun.pub.label:825
+#: field.acpn.pub.label:1496
 #: field.acpl.opac_visible.label:2073
 msgid "Is OPAC Visible?"
 msgstr ""
@@ -476,20 +517,24 @@ msgstr ""
 msgid "Dewey Block -- Hundreds"
 msgstr ""
 
-#: field.acn.deleted.label:1145 field.au.deleted.label:1438
+#: field.acn.deleted.label:1145
+#: field.au.deleted.label:1438
 #: field.acp.deleted.label:2892
 msgid "Is Deleted"
 msgstr ""
 
-#: field.acn.edit_date.label:1146 field.acp.edit_date.label:2897
+#: field.acn.edit_date.label:1146
+#: field.acp.edit_date.label:2897
 msgid "Last Edit Date/Time"
 msgstr ""
 
-#: field.mbts.xact_type.label:811 field.rccbs.xact_type.label:4355
+#: field.mbts.xact_type.label:811
+#: field.rccbs.xact_type.label:4355
 msgid "Transaction Type"
 msgstr ""
 
-#: field.mbt.xact_start.label:2660 field.rccbs.xact_start.label:4353
+#: field.mbt.xact_start.label:2660
+#: field.rccbs.xact_start.label:4353
 msgid "Transaction Start Date/Time"
 msgstr ""
 
@@ -513,7 +558,8 @@ msgstr ""
 msgid "Bib Level"
 msgstr ""
 
-#: field.actsce.stat_cat.label:2686 field.asce.stat_cat.label:3313
+#: field.actsce.stat_cat.label:2686
+#: field.asce.stat_cat.label:3313
 msgid "Stat Cat"
 msgstr ""
 
@@ -537,13 +583,17 @@ msgstr ""
 msgid "Classic Item List"
 msgstr ""
 
-#: field.acqfs.allocations.label:3490 field.acqf.allocations.label:3555
+#: field.acqfs.allocations.label:3490
+#: field.acqf.allocations.label:3555
 msgid "Allocations"
 msgstr ""
 
-#: field.viiad.id.label:215 field.acqliad.id.label:3871
-#: field.acqlimad.id.label:3884 field.acqligad.id.label:3898
-#: field.acqlipad.id.label:3912 field.acqliuad.id.label:3929
+#: field.viiad.id.label:215
+#: field.acqliad.id.label:3871
+#: field.acqlimad.id.label:3884
+#: field.acqligad.id.label:3898
+#: field.acqlipad.id.label:3912
+#: field.acqliuad.id.label:3929
 #: field.acqlilad.id.label:3945
 msgid "Definition ID"
 msgstr ""
@@ -556,7 +606,8 @@ msgstr ""
 msgid "Queued Bib Record Attribute Definition"
 msgstr ""
 
-#: field.acqpon.value.label:3759 field.acqlin.value.label:3813
+#: field.acqpon.value.label:3759
+#: field.acqlin.value.label:3813
 msgid "Vote Value"
 msgstr ""
 
@@ -564,7 +615,8 @@ msgstr ""
 msgid "Attribute Definition"
 msgstr ""
 
-#: field.rmsr.biblio_record.label:4110 field.rssr.biblio_record.label:4132
+#: field.rmsr.biblio_record.label:4110
+#: field.rssr.biblio_record.label:4132
 #: field.rsr.biblio_record.label:4165
 msgid "Full Bibliographic record"
 msgstr ""
@@ -573,7 +625,8 @@ msgstr ""
 msgid "Origin Amount"
 msgstr ""
 
-#: field.vqbr.marc.label:285 field.vqar.marc.label:418
+#: field.vqbr.marc.label:285
+#: field.vqar.marc.label:418
 #: field.jub.marc.label:3780
 msgid "MARC"
 msgstr ""
@@ -586,9 +639,12 @@ msgstr ""
 msgid "In House Use"
 msgstr ""
 
-#: field.circ.circ_type.label:1843 field.combcirc.circ_type.label:1898
-#: field.acirc.circ_type.label:1965 class.rcirct.label:4185
-#: field.rcirct.type.label:4191 field.rccc.circ_type.label:4266
+#: field.circ.circ_type.label:1843
+#: field.combcirc.circ_type.label:1898
+#: field.acirc.circ_type.label:1965
+#: class.rcirct.label:4185
+#: field.rcirct.type.label:4191
+#: field.rccc.circ_type.label:4266
 #: field.rodcirc.circ_type.label:4451
 msgid "Circulation Type"
 msgstr ""
@@ -617,7 +673,8 @@ msgstr ""
 msgid "Type Name"
 msgstr ""
 
-#: field.rmsr.author.label:4105 field.rssr.author.label:4127
+#: field.rmsr.author.label:4105
+#: field.rssr.author.label:4127
 #: field.rsr.author.label:4151
 msgid "Author (normalized)"
 msgstr ""
@@ -626,7 +683,8 @@ msgstr ""
 msgid "Excluded"
 msgstr ""
 
-#: field.vii.holdable.label:178 field.viiad.holdable.label:229
+#: field.vii.holdable.label:178
+#: field.viiad.holdable.label:229
 msgid "Holdable"
 msgstr ""
 
@@ -657,8 +715,10 @@ msgstr ""
 msgid "Debits"
 msgstr ""
 
-#: field.circ.fine_interval.label:1824 field.combcirc.fine_interval.label:1879
-#: field.acirc.fine_interval.label:1946 field.rodcirc.fine_interval.label:4433
+#: field.circ.fine_interval.label:1824
+#: field.combcirc.fine_interval.label:1879
+#: field.acirc.fine_interval.label:1946
+#: field.rodcirc.fine_interval.label:4433
 msgid "Fine Interval"
 msgstr ""
 
@@ -666,9 +726,12 @@ msgstr ""
 msgid "Basic Record Descriptor"
 msgstr ""
 
-#: field.circ.billing_total.label:1844 field.combcirc.billing_total.label:1899
-#: field.acirc.billing_total.label:1966 field.mg.billing_total.label:2627
-#: field.mbt.billing_total.label:2666 field.rodcirc.billing_total.label:4452
+#: field.circ.billing_total.label:1844
+#: field.combcirc.billing_total.label:1899
+#: field.acirc.billing_total.label:1966
+#: field.mg.billing_total.label:2627
+#: field.mbt.billing_total.label:2666
+#: field.rodcirc.billing_total.label:4452
 msgid "Billing Totals"
 msgstr ""
 
@@ -684,15 +747,18 @@ msgstr ""
 msgid "Organizational Unit"
 msgstr ""
 
-#: field.ancc.circ_time.label:3016 field.rccc.xact_start.label:4265
+#: field.ancc.circ_time.label:3016
+#: field.rccc.xact_start.label:4265
 msgid "Circulation Date/Time"
 msgstr ""
 
-#: field.cza.format.label:567 field.cvrfm.value.label:617
+#: field.cza.format.label:567
+#: field.cvrfm.value.label:617
 msgid "Format"
 msgstr ""
 
-#: field.rmsr.issn.label:4109 field.rssr.issn.label:4131
+#: field.rmsr.issn.label:4109
+#: field.rssr.issn.label:4131
 #: field.rsr.issn.label:4158
 msgid "ISSN"
 msgstr ""
@@ -705,7 +771,8 @@ msgstr ""
 msgid "Lineitem ID"
 msgstr ""
 
-#: field.rmsr.title.label:4104 field.rssr.title.label:4126
+#: field.rmsr.title.label:4104
+#: field.rssr.title.label:4126
 #: field.rsr.title.label:4149
 msgid "Title Proper (normalized)"
 msgstr ""
@@ -714,11 +781,16 @@ msgstr ""
 msgid "Item Selection Depth"
 msgstr ""
 
-#: field.vii.circ_lib.label:169 field.viiad.circ_lib.label:221
-#: field.circ.circ_lib.label:1818 field.combcirc.circ_lib.label:1873
-#: field.acirc.circ_lib.label:1940 field.acp.circ_lib.label:2886
-#: field.ancc.circ_lib.label:3015 field.rodcirc.circ_lib.label:4427
-#: field.rmocbbcol.circ_lib.label:4559 field.rmobbcol.circ_lib.label:4576
+#: field.vii.circ_lib.label:169
+#: field.viiad.circ_lib.label:221
+#: field.circ.circ_lib.label:1818
+#: field.combcirc.circ_lib.label:1873
+#: field.acirc.circ_lib.label:1940
+#: field.acp.circ_lib.label:2886
+#: field.ancc.circ_lib.label:3015
+#: field.rodcirc.circ_lib.label:4427
+#: field.rmocbbcol.circ_lib.label:4559
+#: field.rmobbcol.circ_lib.label:4576
 msgid "Circulating Library"
 msgstr ""
 
@@ -726,14 +798,18 @@ msgstr ""
 msgid "Unvoided Paid Amount"
 msgstr ""
 
-#: field.vii.opac_visible.label:186 field.viiad.opac_visible.label:237
-#: field.aou.opac_visible.label:2363 field.asc.opac_visible.label:2426
-#: field.actsc.opac_visible.label:2456 field.acp.opac_visible.label:2904
+#: field.vii.opac_visible.label:186
+#: field.viiad.opac_visible.label:237
+#: field.aou.opac_visible.label:2363
+#: field.asc.opac_visible.label:2426
+#: field.actsc.opac_visible.label:2456
+#: field.acp.opac_visible.label:2904
 #: field.rocit.opac_visible.label:4503
 msgid "OPAC Visible"
 msgstr ""
 
-#: field.asc.id.label:2424 field.actsc.id.label:2454
+#: field.asc.id.label:2424
+#: field.actsc.id.label:2454
 msgid "Stat Cat ID"
 msgstr ""
 
@@ -745,7 +821,8 @@ msgstr ""
 msgid "Genres (normalized)"
 msgstr ""
 
-#: field.rmsr.publisher.label:4106 field.rssr.publisher.label:4128
+#: field.rmsr.publisher.label:4106
+#: field.rssr.publisher.label:4128
 #: field.rsr.publisher.label:4152
 msgid "Publisher (normalized)"
 msgstr ""
@@ -754,9 +831,11 @@ msgstr ""
 msgid "Billed User"
 msgstr ""
 
-#: field.ccmrs.max_fine_rule.label:755 field.circ.max_fine_rule.label:1827
+#: field.ccmrs.max_fine_rule.label:755
+#: field.circ.max_fine_rule.label:1827
 #: field.combcirc.max_fine_rule.label:1882
-#: field.acirc.max_fine_rule.label:1949 class.crmf.label:2956
+#: field.acirc.max_fine_rule.label:1949
+#: class.crmf.label:2956
 #: field.rodcirc.max_fine_rule.label:4436
 msgid "Max Fine Rule"
 msgstr ""
@@ -773,8 +852,10 @@ msgstr ""
 msgid "Library Circulation Location Link"
 msgstr ""
 
-#: field.vii.alert_message.label:183 field.viiad.alert_message.label:234
-#: field.au.alert_message.label:1402 field.acp.alert_message.label:2882
+#: field.vii.alert_message.label:183
+#: field.viiad.alert_message.label:234
+#: field.au.alert_message.label:1402
+#: field.acp.alert_message.label:2882
 msgid "Alert Message"
 msgstr ""
 
@@ -782,25 +863,39 @@ msgstr ""
 msgid "Last Payment Date/Time"
 msgstr ""
 
-#: field.mbts.id.label:799 field.mg.id.label:2619 field.mbt.id.label:2657
-#: field.mwp.xact.label:2753 field.mgp.xact.label:2774
-#: field.rxbt.xact.label:4217 field.rxpt.xact.label:4231
+#: field.mbts.id.label:799
+#: field.mg.id.label:2619
+#: field.mbt.id.label:2657
+#: field.mwp.xact.label:2753
+#: field.mgp.xact.label:2774
+#: field.rxbt.xact.label:4217
+#: field.rxpt.xact.label:4231
 #: field.rccbs.id.label:4340
 msgid "Transaction ID"
 msgstr ""
 
-#: field.mwp.id.label:2750 field.mgp.id.label:2771 field.mckp.id.label:2861
-#: field.mp.id.label:3185 field.mbp.id.label:3216 field.mndp.id.label:3247
+#: field.mwp.id.label:2750
+#: field.mgp.id.label:2771
+#: field.mckp.id.label:2861
+#: field.mp.id.label:3185
+#: field.mbp.id.label:3216
+#: field.mndp.id.label:3247
 #: field.mdp.id.label:3270
 msgid "Payment ID"
 msgstr ""
 
-#: field.mcrp.amount.label:2503 field.mwp.amount.label:2748
-#: field.mgp.amount.label:2769 field.mckp.amount.label:2857
-#: field.mp.amount.label:3184 field.mbp.amount.label:3215
-#: field.mndp.amount.label:3246 field.mdp.amount.label:3269
-#: field.mb.amount.label:3362 field.acqfscred.amount.label:3516
-#: field.acqfdeb.amount.label:3533 field.acqfa.amount.label:3691
+#: field.mcrp.amount.label:2503
+#: field.mwp.amount.label:2748
+#: field.mgp.amount.label:2769
+#: field.mckp.amount.label:2857
+#: field.mp.amount.label:3184
+#: field.mbp.amount.label:3215
+#: field.mndp.amount.label:3246
+#: field.mdp.amount.label:3269
+#: field.mb.amount.label:3362
+#: field.acqfscred.amount.label:3516
+#: field.acqfdeb.amount.label:3533
+#: field.acqfa.amount.label:3691
 msgid "Amount"
 msgstr ""
 
@@ -840,7 +935,8 @@ msgstr ""
 msgid "Allowed Org Unit"
 msgstr ""
 
-#: class.clfm.label:2723 field.rccc.lit_form.label:4271
+#: class.clfm.label:2723
+#: field.rccc.lit_form.label:4271
 msgid "Literary Form"
 msgstr ""
 
@@ -852,7 +948,8 @@ msgstr ""
 msgid "Response Group ID"
 msgstr ""
 
-#: field.chmm.active.label:636 field.ccmm.active.label:672
+#: field.chmm.active.label:636
+#: field.ccmm.active.label:672
 msgid "Active?"
 msgstr ""
 
@@ -868,8 +965,10 @@ msgstr ""
 msgid "User Setting"
 msgstr ""
 
-#: field.circ.duration.label:1822 field.combcirc.duration.label:1877
-#: field.acirc.duration.label:1944 field.cnct.circ_duration.label:2540
+#: field.circ.duration.label:1822
+#: field.combcirc.duration.label:1877
+#: field.acirc.duration.label:1944
+#: field.cnct.circ_duration.label:2540
 #: field.rodcirc.duration.label:4431
 msgid "Circulation Duration"
 msgstr ""
@@ -906,8 +1005,10 @@ msgstr ""
 msgid "Recurring Fine Rule"
 msgstr ""
 
-#: field.circ.duration_rule.label:1823 field.combcirc.duration_rule.label:1878
-#: field.acirc.duration_rule.label:1945 field.rodcirc.duration_rule.label:4432
+#: field.circ.duration_rule.label:1823
+#: field.combcirc.duration_rule.label:1878
+#: field.acirc.duration_rule.label:1945
+#: field.rodcirc.duration_rule.label:4432
 msgid "Circ Duration Rule"
 msgstr ""
 
@@ -931,7 +1032,9 @@ msgstr ""
 msgid "Survey Responses"
 msgstr ""
 
-#: field.atc.id.label:906 field.ahtc.id.label:3330 field.iatc.id.label:4402
+#: field.atc.id.label:906
+#: field.ahtc.id.label:3330
+#: field.iatc.id.label:4402
 msgid "Transit ID"
 msgstr ""
 
@@ -951,7 +1054,8 @@ msgstr ""
 msgid "Queued Bib Record Attribute"
 msgstr ""
 
-#: field.aun.create_date.label:822 field.acp.create_date.label:2890
+#: field.aun.create_date.label:822
+#: field.acp.create_date.label:2890
 msgid "Creation Date/Time"
 msgstr ""
 
@@ -967,8 +1071,10 @@ msgstr ""
 msgid "Type ID"
 msgstr ""
 
-#: field.circ.payments.label:1841 field.combcirc.payments.label:1896
-#: field.acirc.payments.label:1963 field.rodcirc.payments.label:4449
+#: field.circ.payments.label:1841
+#: field.combcirc.payments.label:1896
+#: field.acirc.payments.label:1963
+#: field.rodcirc.payments.label:4449
 msgid "Transaction Payments"
 msgstr ""
 
@@ -980,11 +1086,13 @@ msgstr ""
 msgid "Eligible Copies"
 msgstr ""
 
-#: field.mp.cash_payment.label:3191 field.mbp.cash_payment.label:3222
+#: field.mp.cash_payment.label:3191
+#: field.mbp.cash_payment.label:3222
 msgid "Cash Payment Detail"
 msgstr ""
 
-#: field.vibtf.id.label:143 field.mfr.id.label:1526
+#: field.vibtf.id.label:143
+#: field.mfr.id.label:1526
 msgid "Field ID"
 msgstr ""
 
@@ -996,7 +1104,8 @@ msgstr ""
 msgid "Non-cat Item Type"
 msgstr ""
 
-#: field.chmm.user_home_ou.label:637 field.rmocbbhol.home_ou.label:4593
+#: field.chmm.user_home_ou.label:637
+#: field.rmocbbhol.home_ou.label:4593
 #: field.rmobbhol.home_ou.label:4610
 msgid "User Home Library"
 msgstr ""
@@ -1005,8 +1114,10 @@ msgstr ""
 msgid "Queued Authority Record Match"
 msgstr ""
 
-#: field.rccbs.total_owed.label:4358 field.rmocbbol.billed.label:4531
-#: field.rmocbbcol.billed.label:4562 field.rmocbbhol.billed.label:4596
+#: field.rccbs.total_owed.label:4358
+#: field.rmocbbol.billed.label:4531
+#: field.rmocbbcol.billed.label:4562
+#: field.rmocbbhol.billed.label:4596
 msgid "Total Billed"
 msgstr ""
 
@@ -1018,11 +1129,13 @@ msgstr ""
 msgid "User Statistical Category"
 msgstr ""
 
-#: field.ccmm.grp.label:674 class.pgt.label:2968
+#: field.ccmm.grp.label:674
+#: class.pgt.label:2968
 msgid "Permission Group"
 msgstr ""
 
-#: field.mp.forgive_payment.label:3196 field.mbp.forgive_payment.label:3227
+#: field.mp.forgive_payment.label:3196
+#: field.mbp.forgive_payment.label:3227
 #: field.mndp.forgive_payment.label:3254
 msgid "Forgive Payment Detail"
 msgstr ""
@@ -1047,7 +1160,8 @@ msgstr ""
 msgid "Capture Date/Time"
 msgstr ""
 
-#: field.mbts.balance_owed.label:798 field.rccbs.balance_owed.label:4373
+#: field.mbts.balance_owed.label:798
+#: field.rccbs.balance_owed.label:4373
 msgid "Balance Owed"
 msgstr ""
 
@@ -1071,7 +1185,8 @@ msgstr ""
 msgid "Middle Name"
 msgstr ""
 
-#: field.aihu.staff.label:872 field.ancihu.staff.label:889
+#: field.aihu.staff.label:872
+#: field.ancihu.staff.label:889
 msgid "Recording Staff"
 msgstr ""
 
@@ -1083,7 +1198,8 @@ msgstr ""
 msgid "Statistical Catagory Entries"
 msgstr ""
 
-#: field.crahp.id.label:2950 field.crmf.id.label:2962
+#: field.crahp.id.label:2950
+#: field.crmf.id.label:2962
 msgid "Rule ID"
 msgstr ""
 
@@ -1091,8 +1207,10 @@ msgstr ""
 msgid "Loan Duration"
 msgstr ""
 
-#: field.vbq.queue_type.label:262 field.vaq.queue_type.label:395
-#: field.mrd.item_type.label:1678 field.aua.address_type.label:1735
+#: field.vbq.queue_type.label:262
+#: field.vaq.queue_type.label:395
+#: field.mrd.item_type.label:1678
+#: field.aua.address_type.label:1735
 #: field.acqlia.attr_type.label:3829
 msgid "Type"
 msgstr ""
@@ -1109,7 +1227,8 @@ msgstr ""
 msgid "PO Line Item"
 msgstr ""
 
-#: field.rmsr.quality.label:4101 field.rssr.quality.label:4123
+#: field.rmsr.quality.label:4101
+#: field.rssr.quality.label:4123
 #: field.rsr.quality.label:4146
 msgid "Overall Record Quality"
 msgstr ""
@@ -1126,11 +1245,14 @@ msgstr ""
 msgid "Picklist ID"
 msgstr ""
 
-#: class.czs.label:537 field.czs.name.label:542 field.cza.source.label:563
+#: class.czs.label:537
+#: field.czs.name.label:542
+#: field.cza.source.label:563
 msgid "Z39.50 Source"
 msgstr ""
 
-#: field.acn.record.label:1151 field.combcirc.copy_bib_record.label:1908
+#: field.acn.record.label:1151
+#: field.combcirc.copy_bib_record.label:1908
 #: field.acirc.copy_bib_record.label:1975
 msgid "Bib Record"
 msgstr ""
@@ -1139,7 +1261,8 @@ msgstr ""
 msgid "User City"
 msgstr ""
 
-#: field.ahn.hold.label:2051 field.aufh.hold.label:3051
+#: field.ahn.hold.label:2051
+#: field.aufh.hold.label:3051
 msgid "Hold"
 msgstr ""
 
@@ -1155,15 +1278,18 @@ msgstr ""
 msgid "Requesting User"
 msgstr ""
 
-#: field.auoi.opt_in_ws.label:523 class.aws.label:575
+#: field.auoi.opt_in_ws.label:523
+#: class.aws.label:575
 msgid "Workstation"
 msgstr ""
 
-#: field.mcrp.xact.label:2508 field.mb.xact.label:3370
+#: field.mcrp.xact.label:2508
+#: field.mb.xact.label:3370
 msgid "Transaction"
 msgstr ""
 
-#: class.vii.label:160 class.viiad.label:210
+#: class.vii.label:160
+#: class.viiad.label:210
 msgid "Import Item Attribute Definition"
 msgstr ""
 
@@ -1179,12 +1305,14 @@ msgstr ""
 msgid "Fine Level"
 msgstr ""
 
-#: field.vqbra.record.label:342 field.vqara.record.label:473
+#: field.vqbra.record.label:342
+#: field.vqara.record.label:473
 #: field.ssr.record.label:2225
 msgid "Record"
 msgstr ""
 
-#: field.aun.id.label:824 field.acpn.id.label:1494
+#: field.aun.id.label:824
+#: field.acpn.id.label:1494
 msgid "Note ID"
 msgstr ""
 
@@ -1204,11 +1332,13 @@ msgstr ""
 msgid "Hold Request"
 msgstr ""
 
-#: field.aihu.item.label:870 class.acp.label:2875
+#: field.aihu.item.label:870
+#: class.acp.label:2875
 msgid "Item"
 msgstr ""
 
-#: field.chmm.marc_form.label:646 field.ccmm.marc_form.label:677
+#: field.chmm.marc_form.label:646
+#: field.ccmm.marc_form.label:677
 #: field.rccc.item_form.label:4272
 msgid "MARC Form"
 msgstr ""
@@ -1221,7 +1351,8 @@ msgstr ""
 msgid "User Permission Group"
 msgstr ""
 
-#: field.ancihu.item_type.label:887 field.citm.value.label:2110
+#: field.ancihu.item_type.label:887
+#: field.citm.value.label:2110
 msgid "Item Type"
 msgstr ""
 
@@ -1245,8 +1376,10 @@ msgstr ""
 msgid "Billable Transaction link"
 msgstr ""
 
-#: field.circ.id.label:1825 field.combcirc.id.label:1880
-#: field.acirc.id.label:1947 field.rodcirc.id.label:4434
+#: field.circ.id.label:1825
+#: field.combcirc.id.label:1880
+#: field.acirc.id.label:1947
+#: field.rodcirc.id.label:4434
 msgid "Circ ID"
 msgstr ""
 
@@ -1282,11 +1415,13 @@ msgstr ""
 msgid "Last Transaction ID"
 msgstr ""
 
-#: field.mp.check_payment.label:3194 field.mbp.check_payment.label:3225
+#: field.mp.check_payment.label:3194
+#: field.mbp.check_payment.label:3225
 msgid "Check Payment Detail"
 msgstr ""
 
-#: field.ahr.id.label:2311 field.rhrr.id.label:4202
+#: field.ahr.id.label:2311
+#: field.rhrr.id.label:4202
 msgid "Hold ID"
 msgstr ""
 
@@ -1338,12 +1473,15 @@ msgstr ""
 msgid "Fixed Field Entry"
 msgstr ""
 
-#: field.bre.fingerprint.label:1230 field.rmsr.fingerprint.label:4100
-#: field.rssr.fingerprint.label:4122 field.rsr.fingerprint.label:4145
+#: field.bre.fingerprint.label:1230
+#: field.rmsr.fingerprint.label:4100
+#: field.rssr.fingerprint.label:4122
+#: field.rsr.fingerprint.label:4145
 msgid "Fingerprint"
 msgstr ""
 
-#: field.chmm.ref_flag.label:648 field.ccmm.ref_flag.label:679
+#: field.chmm.ref_flag.label:648
+#: field.ccmm.ref_flag.label:679
 msgid "Reference?"
 msgstr ""
 
@@ -1355,14 +1493,22 @@ msgstr ""
 msgid "Dewey Block -- Tens"
 msgstr ""
 
-#: field.vii.owning_lib.label:168 field.viiad.owning_lib.label:220
-#: field.aws.owning_lib.label:582 field.chmm.item_owning_ou.label:640
-#: field.acn.owning_lib.label:1150 field.asv.owner.label:2246
-#: field.asc.owner.label:2427 field.actsc.owner.label:2457
-#: field.cnct.owning_lib.label:2544 field.acqlid.owning_lib.label:3853
-#: field.rmocbbol.owning_lib.label:4529 field.rmobbol.owning_lib.label:4544
-#: field.rmocbbcol.owning_lib.label:4560 field.rmobbcol.owning_lib.label:4577
-#: field.rmocbbhol.owning_lib.label:4594 field.rmobbhol.owning_lib.label:4611
+#: field.vii.owning_lib.label:168
+#: field.viiad.owning_lib.label:220
+#: field.aws.owning_lib.label:582
+#: field.chmm.item_owning_ou.label:640
+#: field.acn.owning_lib.label:1150
+#: field.asv.owner.label:2246
+#: field.asc.owner.label:2427
+#: field.actsc.owner.label:2457
+#: field.cnct.owning_lib.label:2544
+#: field.acqlid.owning_lib.label:3853
+#: field.rmocbbol.owning_lib.label:4529
+#: field.rmobbol.owning_lib.label:4544
+#: field.rmocbbcol.owning_lib.label:4560
+#: field.rmobbcol.owning_lib.label:4577
+#: field.rmocbbhol.owning_lib.label:4594
+#: field.rmobbhol.owning_lib.label:4611
 msgid "Owning Library"
 msgstr ""
 
@@ -1370,7 +1516,8 @@ msgstr ""
 msgid "Circ Lib Name"
 msgstr ""
 
-#: field.vqbr.create_time.label:283 field.vqar.create_time.label:416
+#: field.vqbr.create_time.label:283
+#: field.vqar.create_time.label:416
 msgid "Create Time"
 msgstr ""
 
@@ -1378,8 +1525,10 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: field.circ.circ_staff.label:1819 field.combcirc.circ_staff.label:1874
-#: field.acirc.circ_staff.label:1941 field.ancc.staff.label:3020
+#: field.circ.circ_staff.label:1819
+#: field.combcirc.circ_staff.label:1874
+#: field.acirc.circ_staff.label:1941
+#: field.ancc.staff.label:3020
 #: field.rodcirc.circ_staff.label:4428
 msgid "Circulating Staff"
 msgstr ""
@@ -1393,7 +1542,8 @@ msgstr ""
 msgid "Patron Birth Year"
 msgstr ""
 
-#: field.atc.hold_transit_copy.label:912 class.ahtc.label:3321
+#: field.atc.hold_transit_copy.label:912
+#: class.ahtc.label:3321
 #: field.iatc.hold_transit_copy.label:4408
 msgid "Hold Transit"
 msgstr ""
@@ -1402,7 +1552,8 @@ msgstr ""
 msgid "OPAC Surevey?"
 msgstr ""
 
-#: field.vqbra.id.label:341 field.vqara.id.label:472
+#: field.vqbra.id.label:341
+#: field.vqara.id.label:472
 msgid "Attribute ID"
 msgstr ""
 
@@ -1434,13 +1585,20 @@ msgstr ""
 msgid "Hold Capture Requires Verification"
 msgstr ""
 
-#: field.vqbrad.code.label:316 field.vqarad.code.label:447
-#: field.cza.code.label:566 field.ccm.code.label:594
-#: field.cvrfm.code.label:616 field.acqpro.code.label:3471
-#: field.acqfs.code.label:3488 field.acqf.code.label:3553
-#: field.acqliad.code.label:3872 field.acqlimad.code.label:3885
-#: field.acqligad.code.label:3899 field.acqlipad.code.label:3913
-#: field.acqliuad.code.label:3930 field.acqlilad.code.label:3946
+#: field.vqbrad.code.label:316
+#: field.vqarad.code.label:447
+#: field.cza.code.label:566
+#: field.ccm.code.label:594
+#: field.cvrfm.code.label:616
+#: field.acqpro.code.label:3471
+#: field.acqfs.code.label:3488
+#: field.acqf.code.label:3553
+#: field.acqliad.code.label:3872
+#: field.acqlimad.code.label:3885
+#: field.acqligad.code.label:3899
+#: field.acqlipad.code.label:3913
+#: field.acqliuad.code.label:3930
+#: field.acqlilad.code.label:3946
 msgid "Code"
 msgstr ""
 
@@ -1448,13 +1606,16 @@ msgstr ""
 msgid "Patron Name"
 msgstr ""
 
-#: class.cvrfm.label:611 field.chmm.marc_vr_format.label:647
+#: class.cvrfm.label:611
+#: field.chmm.marc_vr_format.label:647
 #: field.ccmm.marc_vr_format.label:678
 msgid "Videorecording Format"
 msgstr ""
 
-#: field.circ.due_date.label:1821 field.combcirc.due_date.label:1876
-#: field.acirc.due_date.label:1943 field.rodcirc.due_date.label:4430
+#: field.circ.due_date.label:1821
+#: field.combcirc.due_date.label:1876
+#: field.acirc.due_date.label:1943
+#: field.rodcirc.due_date.label:4430
 msgid "Due Date/Time"
 msgstr ""
 
@@ -1466,7 +1627,8 @@ msgstr ""
 msgid "Billing Line Item"
 msgstr ""
 
-#: field.acqfs.id.label:3484 field.acqfscred.funding_source.label:3515
+#: field.acqfs.id.label:3484
+#: field.acqfscred.funding_source.label:3515
 msgid "Funding Source ID"
 msgstr ""
 
@@ -1482,8 +1644,10 @@ msgstr ""
 msgid "Summary (normalized)"
 msgstr ""
 
-#: field.actsce.id.label:2684 field.actscecm.id.label:3080
-#: field.asce.id.label:3311 field.rsce1.id.label:4312
+#: field.actsce.id.label:2684
+#: field.actscecm.id.label:3080
+#: field.asce.id.label:3311
+#: field.rsce1.id.label:4312
 #: field.rsce2.id.label:4326
 msgid "Entry ID"
 msgstr ""
@@ -1513,13 +1677,16 @@ msgstr ""
 msgid "Goods Payment"
 msgstr ""
 
-#: field.rmsr.isbn.label:4108 field.rssr.isbn.label:4130
+#: field.rmsr.isbn.label:4108
+#: field.rssr.isbn.label:4130
 #: field.rsr.isbn.label:4157
 msgid "ISBN"
 msgstr ""
 
-#: field.circ.checkin_staff.label:1816 field.combcirc.checkin_staff.label:1871
-#: field.acirc.checkin_staff.label:1938 field.rodcirc.checkin_staff.label:4425
+#: field.circ.checkin_staff.label:1816
+#: field.combcirc.checkin_staff.label:1871
+#: field.acirc.checkin_staff.label:1938
+#: field.rodcirc.checkin_staff.label:4425
 msgid "Check In Staff"
 msgstr ""
 
@@ -1567,23 +1734,30 @@ msgstr ""
 msgid "Test Context Location"
 msgstr ""
 
-#: field.atc.source_send_time.label:910 field.ahtc.source_send_time.label:3334
+#: field.atc.source_send_time.label:910
+#: field.ahtc.source_send_time.label:3334
 #: field.iatc.source_send_time.label:4406
 msgid "Send Date/Time"
 msgstr ""
 
-#: class.circ.label:1810 field.rccc.id.label:4262
+#: class.circ.label:1810
+#: field.rccc.id.label:4262
 msgid "Circulation"
 msgstr ""
 
-#: field.vii.price.label:179 field.viiad.price.label:230
-#: field.acp.price.label:2905 field.rocit.price.label:4483
+#: field.vii.price.label:179
+#: field.viiad.price.label:230
+#: field.acp.price.label:2905
+#: field.rocit.price.label:4483
 msgid "Price"
 msgstr ""
 
-#: field.vii.barcode.label:180 field.viiad.barcode.label:231
-#: field.ac.barcode.label:2440 field.acp.barcode.label:2883
-#: field.acqlid.barcode.label:3848 field.rocit.barcode.label:4484
+#: field.vii.barcode.label:180
+#: field.viiad.barcode.label:231
+#: field.ac.barcode.label:2440
+#: field.acp.barcode.label:2883
+#: field.acqlid.barcode.label:3848
+#: field.rocit.barcode.label:4484
 msgid "Barcode"
 msgstr ""
 
@@ -1603,8 +1777,10 @@ msgstr ""
 msgid "Create Date"
 msgstr ""
 
-#: field.vii.deposit_amount.label:176 field.viiad.deposit_amount.label:227
-#: field.acp.deposit_amount.label:2894 field.rocit.deposit_amount.label:4505
+#: field.vii.deposit_amount.label:176
+#: field.viiad.deposit_amount.label:227
+#: field.acp.deposit_amount.label:2894
+#: field.rocit.deposit_amount.label:4505
 msgid "Deposit Amount"
 msgstr ""
 
@@ -1616,8 +1792,10 @@ msgstr ""
 msgid "PO Note ID"
 msgstr ""
 
-#: field.circ.xact_finish.label:1837 field.combcirc.xact_finish.label:1892
-#: field.acirc.xact_finish.label:1959 field.mbt.xact_finish.label:2659
+#: field.circ.xact_finish.label:1837
+#: field.combcirc.xact_finish.label:1892
+#: field.acirc.xact_finish.label:1959
+#: field.mbt.xact_finish.label:2659
 #: field.rodcirc.xact_finish.label:4446
 msgid "Transaction Finish Date/Time"
 msgstr ""
@@ -1626,13 +1804,21 @@ msgstr ""
 msgid "Is Reference"
 msgstr ""
 
-#: field.viiad.name.label:217 field.vbq.name.label:260
-#: field.vaq.name.label:393 field.cza.name.label:564 field.ccm.name.label:595
-#: field.aus.name.label:841 field.cxt.name.label:1061
-#: field.acpl.name.label:2072 field.asv.name.label:2244
-#: field.aou.name.label:2357 field.asc.name.label:2425
-#: field.actsc.name.label:2455 field.cnct.name.label:2543
-#: field.acqf.name.label:3550 field.acqpl.name.label:3711
+#: field.viiad.name.label:217
+#: field.vbq.name.label:260
+#: field.vaq.name.label:393
+#: field.cza.name.label:564
+#: field.ccm.name.label:595
+#: field.aus.name.label:841
+#: field.cxt.name.label:1061
+#: field.acpl.name.label:2072
+#: field.asv.name.label:2244
+#: field.aou.name.label:2357
+#: field.asc.name.label:2425
+#: field.actsc.name.label:2455
+#: field.cnct.name.label:2543
+#: field.acqf.name.label:3550
+#: field.acqpl.name.label:3711
 #: field.acqlia.attr_name.label:3830
 msgid "Name"
 msgstr ""
@@ -1641,7 +1827,8 @@ msgstr ""
 msgid "Workstation link"
 msgstr ""
 
-#: field.chmm.marc_type.label:645 field.ccmm.marc_type.label:676
+#: field.chmm.marc_type.label:645
+#: field.ccmm.marc_type.label:676
 #: field.rccc.item_type.label:4273
 msgid "MARC Type"
 msgstr ""
@@ -1650,7 +1837,8 @@ msgstr ""
 msgid "Last Edit Data/Time"
 msgstr ""
 
-#: field.clm.code.label:1014 field.bre.language.label:1239
+#: field.clm.code.label:1014
+#: field.bre.language.label:1239
 msgid "Language Code"
 msgstr ""
 
@@ -1663,8 +1851,10 @@ msgstr ""
 msgid "Patron ZIP"
 msgstr ""
 
-#: field.circ.xact_start.label:1838 field.combcirc.xact_start.label:1893
-#: field.acirc.xact_start.label:1960 field.rodcirc.xact_start.label:4447
+#: field.circ.xact_start.label:1838
+#: field.combcirc.xact_start.label:1893
+#: field.acirc.xact_start.label:1960
+#: field.rodcirc.xact_start.label:4447
 msgid "Check Out Date/Time"
 msgstr ""
 
@@ -1703,7 +1893,8 @@ msgstr ""
 msgid "Item Detail ID"
 msgstr ""
 
-#: field.vii.call_number.label:170 field.viiad.call_number.label:222
+#: field.vii.call_number.label:170
+#: field.viiad.call_number.label:222
 #: field.combcirc.copy_call_number.label:1904
 #: field.acirc.copy_call_number.label:1971
 msgid "Call Number"
@@ -1717,12 +1908,14 @@ msgstr ""
 msgid "Current Library Card"
 msgstr ""
 
-#: field.atc.target_copy.label:911 field.ahtc.target_copy.label:3335
+#: field.atc.target_copy.label:911
+#: field.ahtc.target_copy.label:3335
 #: field.iatc.target_copy.label:4407
 msgid "Transited Copy"
 msgstr ""
 
-#: field.actsce.value.label:2687 field.rsce1.value.label:4314
+#: field.actsce.value.label:2687
+#: field.rsce1.value.label:4314
 #: field.rsce2.value.label:4328
 msgid "Entry Value"
 msgstr ""
@@ -1744,7 +1937,8 @@ msgstr ""
 msgid "Checked"
 msgstr ""
 
-#: field.mfr.record.label:1529 field.mrd.record.label:1681
+#: field.mfr.record.label:1529
+#: field.mrd.record.label:1681
 msgid "Bib Record Entry"
 msgstr ""
 
@@ -1764,7 +1958,9 @@ msgstr ""
 msgid "Total Encumbrance Amount"
 msgstr ""
 
-#: field.acp.id.label:2901 field.erfcc.id.label:4246 field.rocit.id.label:4482
+#: field.acp.id.label:2901
+#: field.erfcc.id.label:4246
+#: field.rocit.id.label:4482
 msgid "Copy ID"
 msgstr ""
 
@@ -1776,8 +1972,10 @@ msgstr ""
 msgid "Record Format"
 msgstr ""
 
-#: field.circ.target_copy.label:1835 field.combcirc.target_copy.label:1890
-#: field.acirc.target_copy.label:1957 field.rodcirc.target_copy.label:4444
+#: field.circ.target_copy.label:1835
+#: field.combcirc.target_copy.label:1890
+#: field.acirc.target_copy.label:1957
+#: field.rodcirc.target_copy.label:4444
 msgid "Circulating Item"
 msgstr ""
 
@@ -1793,9 +1991,12 @@ msgstr ""
 msgid "Debit ID"
 msgstr ""
 
-#: field.circ.payment_total.label:1845 field.combcirc.payment_total.label:1900
-#: field.acirc.payment_total.label:1967 field.mg.payment_total.label:2628
-#: field.mbt.payment_total.label:2667 field.rodcirc.payment_total.label:4453
+#: field.circ.payment_total.label:1845
+#: field.combcirc.payment_total.label:1900
+#: field.acirc.payment_total.label:1967
+#: field.mg.payment_total.label:2628
+#: field.mbt.payment_total.label:2667
+#: field.rodcirc.payment_total.label:4453
 msgid "Payment Totals"
 msgstr ""
 
@@ -1807,7 +2008,8 @@ msgstr ""
 msgid "Test ID"
 msgstr ""
 
-#: field.mp.goods_payment.label:3197 field.mbp.goods_payment.label:3228
+#: field.mp.goods_payment.label:3197
+#: field.mbp.goods_payment.label:3228
 #: field.mndp.goods_payment.label:3255
 msgid "Goods Payment Detail"
 msgstr ""
@@ -1816,7 +2018,8 @@ msgstr ""
 msgid "User Notes"
 msgstr ""
 
-#: field.vii.copy_number.label:171 field.viiad.copy_number.label:238
+#: field.vii.copy_number.label:171
+#: field.viiad.copy_number.label:238
 msgid "Copy Number"
 msgstr ""
 
@@ -1828,8 +2031,10 @@ msgstr ""
 msgid "Fast Simple Record Extracts"
 msgstr ""
 
-#: field.vqbra.attr_value.label:344 field.vqara.attr_value.label:475
-#: field.aus.value.label:843 field.asce.value.label:3314
+#: field.vqbra.attr_value.label:344
+#: field.vqara.attr_value.label:475
+#: field.aus.value.label:843
+#: field.asce.value.label:3314
 #: field.acqlia.attr_value.label:3831
 msgid "Value"
 msgstr ""
@@ -1838,8 +2043,10 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#: field.bre.tcn_source.label:1236 field.rmsr.tcn_source.label:4102
-#: field.rssr.tcn_source.label:4124 field.rsr.tcn_source.label:4147
+#: field.bre.tcn_source.label:1236
+#: field.rmsr.tcn_source.label:4102
+#: field.rssr.tcn_source.label:4124
+#: field.rsr.tcn_source.label:4147
 msgid "TCN Source"
 msgstr ""
 
@@ -1871,7 +2078,8 @@ msgstr ""
 msgid "Voiding Staff Member"
 msgstr ""
 
-#: field.acqpon.creator.label:3755 field.acqlin.creator.label:3809
+#: field.acqpon.creator.label:3755
+#: field.acqlin.creator.label:3809
 #: field.rocit.creator.label:4501
 msgid "Creator"
 msgstr ""
@@ -1898,9 +2106,10 @@ msgstr ""
 
 #: class.cnct.label:2535
 msgid "Non-cataloged Type"
-msgstr ""
+msgstr "Non-catalogued Type"
 
-#: field.asvq.question.label:784 field.asvr.question.label:941
+#: field.asvq.question.label:784
+#: field.asvr.question.label:941
 #: field.asva.question.label:3003
 msgid "Question"
 msgstr ""
@@ -1909,8 +2118,10 @@ msgstr ""
 msgid "Previous Stop"
 msgstr ""
 
-#: field.bre.tcn_value.label:1237 field.rmsr.tcn_value.label:4103
-#: field.rssr.tcn_value.label:4125 field.rsr.tcn_value.label:4148
+#: field.bre.tcn_value.label:1237
+#: field.rmsr.tcn_value.label:4103
+#: field.rssr.tcn_value.label:4125
+#: field.rsr.tcn_value.label:4148
 msgid "TCN Value"
 msgstr ""
 
@@ -1922,13 +2133,17 @@ msgstr ""
 msgid "Hold Notification"
 msgstr ""
 
-#: field.rcirct.id.label:4190 field.rmocbbol.id.label:4528
-#: field.rmocbbcol.id.label:4558 field.rmocbbhol.id.label:4592
+#: field.rcirct.id.label:4190
+#: field.rmocbbol.id.label:4528
+#: field.rmocbbcol.id.label:4558
+#: field.rmocbbhol.id.label:4592
 msgid "Circulation ID"
 msgstr ""
 
-#: field.circ.opac_renewal.label:1828 field.combcirc.opac_renewal.label:1883
-#: field.acirc.opac_renewal.label:1950 field.rodcirc.opac_renewal.label:4437
+#: field.circ.opac_renewal.label:1828
+#: field.combcirc.opac_renewal.label:1883
+#: field.acirc.opac_renewal.label:1950
+#: field.rodcirc.opac_renewal.label:4437
 msgid "OPAC Renewal"
 msgstr ""
 
@@ -1948,7 +2163,8 @@ msgstr ""
 msgid "Subfield"
 msgstr ""
 
-#: field.acn.creator.label:1144 field.acp.creator.label:2891
+#: field.acn.creator.label:1144
+#: field.acp.creator.label:2891
 msgid "Creating User"
 msgstr ""
 
@@ -1964,13 +2180,16 @@ msgstr ""
 msgid "TCN"
 msgstr ""
 
-#: field.acn.editor.label:1147 field.bre.editor.label:1229
+#: field.acn.editor.label:1147
+#: field.bre.editor.label:1229
 #: field.acp.editor.label:2898
 msgid "Last Editing User"
 msgstr ""
 
-#: field.circ.max_fine.label:1826 field.combcirc.max_fine.label:1881
-#: field.acirc.max_fine.label:1948 field.crmf.amount.label:2961
+#: field.circ.max_fine.label:1826
+#: field.combcirc.max_fine.label:1881
+#: field.acirc.max_fine.label:1948
+#: field.crmf.amount.label:2961
 #: field.rodcirc.max_fine.label:4435
 msgid "Max Fine Amount"
 msgstr ""
@@ -1991,11 +2210,13 @@ msgstr ""
 msgid "Hold Type"
 msgstr ""
 
-#: field.vqbr.queue.label:286 field.vqar.queue.label:419
+#: field.vqbr.queue.label:286
+#: field.vqar.queue.label:419
 msgid "Queue"
 msgstr ""
 
-#: field.mp.credit_payment.label:3193 field.mbp.credit_payment.label:3224
+#: field.mp.credit_payment.label:3193
+#: field.mbp.credit_payment.label:3224
 msgid "Credit Payment Detail"
 msgstr ""
 
@@ -2003,7 +2224,8 @@ msgstr ""
 msgid "Request Date/Time"
 msgstr ""
 
-#: field.vbm.queued_record.label:366 field.vam.queued_record.label:497
+#: field.vbm.queued_record.label:366
+#: field.vam.queued_record.label:497
 msgid "Queued Record"
 msgstr ""
 
@@ -2043,7 +2265,8 @@ msgstr ""
 msgid "Circulation Matrix Matchpoint"
 msgstr ""
 
-#: field.aihu.use_time.label:873 field.ancihu.use_time.label:890
+#: field.aihu.use_time.label:873
+#: field.ancihu.use_time.label:890
 msgid "Use Date/Time"
 msgstr ""
 
@@ -2063,8 +2286,10 @@ msgstr ""
 msgid "XML/XSLT Transform Definition"
 msgstr ""
 
-#: field.mcrp.accepting_usr.label:2502 field.mwp.accepting_usr.label:2747
-#: field.mgp.accepting_usr.label:2768 field.mckp.accepting_usr.label:2856
+#: field.mcrp.accepting_usr.label:2502
+#: field.mwp.accepting_usr.label:2747
+#: field.mgp.accepting_usr.label:2768
+#: field.mckp.accepting_usr.label:2856
 msgid "Accepting Staff Member"
 msgstr ""
 
@@ -2092,7 +2317,8 @@ msgstr ""
 msgid "Is Active?"
 msgstr ""
 
-#: field.ccmm.org_unit.label:673 field.acqf.org.label:3549
+#: field.ccmm.org_unit.label:673
+#: field.acqf.org.label:3549
 #: field.acqpl.org_unit.label:3710
 msgid "Org Unit"
 msgstr ""
@@ -2105,11 +2331,16 @@ msgstr ""
 msgid "Fulfillment Date/Time"
 msgstr ""
 
-#: field.mg.note.label:2620 field.mwp.note.label:2751
-#: field.mgp.note.label:2772 field.mckp.note.label:2862
-#: field.mp.note.label:3186 field.mbp.note.label:3217
-#: field.mndp.note.label:3248 field.mdp.note.label:3271
-#: field.mb.note.label:3366 field.acqfscred.note.label:3517
+#: field.mg.note.label:2620
+#: field.mwp.note.label:2751
+#: field.mgp.note.label:2772
+#: field.mckp.note.label:2862
+#: field.mp.note.label:3186
+#: field.mbp.note.label:3217
+#: field.mndp.note.label:3248
+#: field.mdp.note.label:3271
+#: field.mb.note.label:3366
+#: field.acqfscred.note.label:3517
 #: field.acqfa.note.label:3694
 msgid "Note"
 msgstr ""
@@ -2170,12 +2401,15 @@ msgstr ""
 msgid "User Survey Question"
 msgstr ""
 
-#: field.circ.phone_renewal.label:1829 field.combcirc.phone_renewal.label:1884
-#: field.acirc.phone_renewal.label:1951 field.rodcirc.phone_renewal.label:4438
+#: field.circ.phone_renewal.label:1829
+#: field.combcirc.phone_renewal.label:1884
+#: field.acirc.phone_renewal.label:1951
+#: field.rodcirc.phone_renewal.label:4438
 msgid "Phone Renewal"
 msgstr ""
 
-#: field.combcirc.usr_home_ou.label:1901 field.acirc.usr_home_ou.label:1968
+#: field.combcirc.usr_home_ou.label:1901
+#: field.acirc.usr_home_ou.label:1968
 msgid "Patron Home Library"
 msgstr ""
 
@@ -2187,7 +2421,8 @@ msgstr ""
 msgid "Overall Quality"
 msgstr ""
 
-#: field.au.active.label:1401 field.sra.active.label:2146
+#: field.au.active.label:1401
+#: field.sra.active.label:2146
 msgid "Active"
 msgstr ""
 
@@ -2235,7 +2470,8 @@ msgstr ""
 msgid "Shelving Location Name"
 msgstr ""
 
-#: field.vii.pub_note.label:184 field.viiad.pub_note.label:235
+#: field.vii.pub_note.label:184
+#: field.viiad.pub_note.label:235
 msgid "Public Note"
 msgstr ""
 
@@ -2247,18 +2483,23 @@ msgstr ""
 msgid "Balance Remaining"
 msgstr ""
 
-#: field.amtr.matchpoint.label:127 field.chmm.id.label:635
-#: field.ccmm.id.label:671 field.chmt.matchpoint.label:699
-#: field.ccmt.matchpoint.label:718 field.ccmcmt.matchpoint.label:737
+#: field.amtr.matchpoint.label:127
+#: field.chmm.id.label:635
+#: field.ccmm.id.label:671
+#: field.chmt.matchpoint.label:699
+#: field.ccmt.matchpoint.label:718
+#: field.ccmcmt.matchpoint.label:737
 #: field.ccmrs.matchpoint.label:752
 msgid "Matchpoint ID"
 msgstr ""
 
-#: field.mbts.total_paid.label:807 field.rccbs.total_paid.label:4357
+#: field.mbts.total_paid.label:807
+#: field.rccbs.total_paid.label:4357
 msgid "Total Paid"
 msgstr ""
 
-#: field.vibtf.field.label:145 field.vqbra.field.label:343
+#: field.vibtf.field.label:145
+#: field.vqbra.field.label:343
 #: field.vqara.field.label:474
 msgid "Field"
 msgstr ""
@@ -2279,16 +2520,20 @@ msgstr ""
 msgid "Owning Org Unit"
 msgstr ""
 
-#: field.au.performed_circulations.label:1443 None:1470
+#: field.au.performed_circulations.label:1443
+#: None:1470
 msgid "Circulations Performed as Staff"
 msgstr ""
 
-#: field.asvr.id.label:940 field.asva.id.label:3002
+#: field.asvr.id.label:940
+#: field.asva.id.label:3002
 msgid "Answer ID"
 msgstr ""
 
-#: field.mcrp.payment.label:2510 field.mwp.payment.label:2754
-#: field.mgp.payment.label:2775 field.mckp.payment.label:2865
+#: field.mcrp.payment.label:2510
+#: field.mwp.payment.label:2754
+#: field.mgp.payment.label:2775
+#: field.mckp.payment.label:2865
 msgid "Payment link"
 msgstr ""
 
@@ -2306,8 +2551,10 @@ msgstr ""
 msgid "Is Holdable?"
 msgstr ""
 
-#: field.bre.create_date.label:1225 field.au.create_date.label:1407
-#: field.circ.create_time.label:1839 field.combcirc.create_time.label:1894
+#: field.bre.create_date.label:1225
+#: field.au.create_date.label:1407
+#: field.circ.create_time.label:1839
+#: field.combcirc.create_time.label:1894
 #: field.acirc.create_time.label:1961
 msgid "Record Creation Date/Time"
 msgstr ""
@@ -2348,15 +2595,18 @@ msgstr ""
 msgid "Currently Frozen"
 msgstr ""
 
-#: field.aihu.id.label:869 field.ancihu.id.label:886
+#: field.aihu.id.label:869
+#: field.ancihu.id.label:886
 msgid "Use ID"
 msgstr ""
 
-#: field.vbq.complete.label:261 field.vaq.complete.label:394
+#: field.vbq.complete.label:261
+#: field.vaq.complete.label:394
 msgid "Complete"
 msgstr ""
 
-#: field.atc.dest_recv_time.label:905 field.ahtc.dest_recv_time.label:3328
+#: field.atc.dest_recv_time.label:905
+#: field.ahtc.dest_recv_time.label:3328
 #: field.iatc.dest_recv_time.label:4401
 msgid "Receive Date/Time"
 msgstr ""
@@ -2365,7 +2615,8 @@ msgstr ""
 msgid "Poll Style?"
 msgstr ""
 
-#: field.rmsr.pubdate.label:4107 field.rssr.pubdate.label:4129
+#: field.rmsr.pubdate.label:4107
+#: field.rssr.pubdate.label:4129
 #: field.rsr.pubdate.label:4153
 msgid "Publication Year (normalized)"
 msgstr ""
@@ -2390,8 +2641,12 @@ msgstr ""
 msgid "Can Have Volumes?"
 msgstr ""
 
-#: field.vqbr.id.label:282 field.vqar.id.label:415 field.bre.id.label:1231
-#: field.aufh.id.label:3052 field.rmsr.id.label:4099 field.rssr.id.label:4121
+#: field.vqbr.id.label:282
+#: field.vqar.id.label:415
+#: field.bre.id.label:1231
+#: field.aufh.id.label:3052
+#: field.rmsr.id.label:4099
+#: field.rssr.id.label:4121
 #: field.rsr.id.label:4143
 msgid "Record ID"
 msgstr ""
@@ -2404,7 +2659,8 @@ msgstr ""
 msgid "Stop Fines Reason"
 msgstr ""
 
-#: field.au.email.label:1411 field.aou.email.label:2361
+#: field.au.email.label:1411
+#: field.aou.email.label:2361
 msgid "Email Address"
 msgstr ""
 
@@ -2432,15 +2688,19 @@ msgstr ""
 msgid "User Demographics"
 msgstr ""
 
-#: field.atc.prev_hop.label:908 field.iatc.prev_hop.label:4404
+#: field.atc.prev_hop.label:908
+#: field.iatc.prev_hop.label:4404
 msgid "Previous Hop (unused)"
 msgstr ""
 
-#: field.acqpon.purchase_order.label:3754 field.jub.purchase_order.label:3776
+#: field.acqpon.purchase_order.label:3754
+#: field.jub.purchase_order.label:3776
 msgid "Purchase Order"
 msgstr ""
 
-#: field.vqbrad.id.label:315 field.vqarad.id.label:446 field.sra.id.label:2145
+#: field.vqbrad.id.label:315
+#: field.vqarad.id.label:446
+#: field.sra.id.label:2145
 #: field.ssr.id.label:2223
 msgid "ID"
 msgstr ""
@@ -2449,7 +2709,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: field.vii.circ_as_type.label:182 field.viiad.circ_as_type.label:233
+#: field.vii.circ_as_type.label:182
+#: field.viiad.circ_as_type.label:233
 msgid "Circulate As MARC Type"
 msgstr ""
 
@@ -2461,7 +2722,8 @@ msgstr ""
 msgid "Line Item Count"
 msgstr ""
 
-#: field.circ.usr.label:1836 field.ancc.patron.label:3019
+#: field.circ.usr.label:1836
+#: field.ancc.patron.label:3019
 #: field.rodcirc.usr.label:4445
 msgid "Patron"
 msgstr ""
@@ -2470,7 +2732,8 @@ msgstr ""
 msgid "House Credit Payment"
 msgstr ""
 
-#: field.atc.source.label:909 field.iatc.source.label:4405
+#: field.atc.source.label:909
+#: field.iatc.source.label:4405
 msgid "Source"
 msgstr ""
 
@@ -2519,7 +2782,8 @@ msgstr ""
 msgid "Combined Aged and Active Circulations"
 msgstr ""
 
-#: field.atc.dest.label:904 field.iatc.dest.label:4400
+#: field.atc.dest.label:904
+#: field.iatc.dest.label:4400
 msgid "Destination"
 msgstr ""
 
@@ -2539,7 +2803,8 @@ msgstr ""
 msgid "Billing Location"
 msgstr ""
 
-#: field.vqbr.imported_as.label:288 field.vqar.imported_as.label:420
+#: field.vqbr.imported_as.label:288
+#: field.vqar.imported_as.label:420
 msgid "Final Target Record"
 msgstr ""
 
@@ -2555,10 +2820,14 @@ msgstr ""
 msgid "Ratio"
 msgstr ""
 
-#: field.acqfdeb.fund.label:3530 field.acqf.id.label:3548
-#: field.acqfat.fund.label:3571 field.acqfdt.fund.label:3584
-#: field.acqfet.fund.label:3597 field.acqfst.fund.label:3610
-#: field.acqfcb.fund.label:3623 field.acqfsb.fund.label:3675
+#: field.acqfdeb.fund.label:3530
+#: field.acqf.id.label:3548
+#: field.acqfat.fund.label:3571
+#: field.acqfdt.fund.label:3584
+#: field.acqfet.fund.label:3597
+#: field.acqfst.fund.label:3610
+#: field.acqfcb.fund.label:3623
+#: field.acqfsb.fund.label:3675
 msgid "Fund ID"
 msgstr ""
 
@@ -2598,7 +2867,8 @@ msgstr ""
 msgid "Queued Authority Record Attribute"
 msgstr ""
 
-#: field.atc.copy_status.label:903 field.iatc.copy_status.label:4399
+#: field.atc.copy_status.label:903
+#: field.iatc.copy_status.label:4399
 msgid "Pretransit Copy Status"
 msgstr ""
 
@@ -2606,7 +2876,8 @@ msgstr ""
 msgid "Indexed Author Field Entries"
 msgstr ""
 
-#: field.vqbrad.remove.label:319 field.vqarad.remove.label:450
+#: field.vqbrad.remove.label:319
+#: field.vqarad.remove.label:450
 msgid "Remove RegExp"
 msgstr ""
 
@@ -2630,7 +2901,8 @@ msgstr ""
 msgid "Flattened MARC Fields"
 msgstr ""
 
-#: field.vqbr.attributes.label:290 field.vqar.attributes.label:422
+#: field.vqbr.attributes.label:290
+#: field.vqar.attributes.label:422
 msgid "Attributes"
 msgstr ""
 
@@ -2687,10 +2959,14 @@ msgstr ""
 msgid "User ZIP Code"
 msgstr ""
 
-#: field.mcrp.payment_type.label:2509 field.mwp.payment_type.label:2755
-#: field.mgp.payment_type.label:2776 field.mckp.payment_type.label:2866
-#: field.mp.payment_type.label:3188 field.mbp.payment_type.label:3219
-#: field.mndp.payment_type.label:3250 field.mdp.payment_type.label:3273
+#: field.mcrp.payment_type.label:2509
+#: field.mwp.payment_type.label:2755
+#: field.mgp.payment_type.label:2776
+#: field.mckp.payment_type.label:2866
+#: field.mp.payment_type.label:3188
+#: field.mbp.payment_type.label:3219
+#: field.mndp.payment_type.label:3250
+#: field.mdp.payment_type.label:3273
 msgid "Payment Type"
 msgstr ""
 
@@ -2711,7 +2987,8 @@ msgid "Last Billing Date/Time"
 msgstr ""
 
 #: field.mcrp.amount_collected.label:2504
-#: field.mwp.amount_collected.label:2749 field.mgp.amount_collected.label:2770
+#: field.mwp.amount_collected.label:2749
+#: field.mgp.amount_collected.label:2770
 #: field.mckp.amount_collected.label:2858
 msgid "Amount Collected"
 msgstr ""
@@ -2743,7 +3020,8 @@ msgstr ""
 msgid "Funding Source"
 msgstr ""
 
-#: field.combcirc.usr_profile.label:1902 field.acirc.usr_profile.label:1969
+#: field.combcirc.usr_profile.label:1902
+#: field.acirc.usr_profile.label:1969
 #: field.rccc.profile_group.label:4275
 msgid "Patron Profile Group"
 msgstr ""
@@ -2752,11 +3030,13 @@ msgstr ""
 msgid "User Home Library Short (Policy) Name"
 msgstr ""
 
-#: field.au.dob.label:1410 field.rud.dob.label:4178
+#: field.au.dob.label:1410
+#: field.rud.dob.label:4178
 msgid "Date of Birth"
 msgstr ""
 
-#: field.aun.title.label:826 field.acpn.title.label:1497
+#: field.aun.title.label:826
+#: field.acpn.title.label:1497
 msgid "Note Title"
 msgstr ""
 
@@ -2768,7 +3048,8 @@ msgstr ""
 msgid "Answers"
 msgstr ""
 
-#: field.acqfa.fund.label:3689 field.acqlid.fund.label:3851
+#: field.acqfa.fund.label:3689
+#: field.acqlid.fund.label:3851
 msgid "Fund"
 msgstr ""
 
@@ -2811,9 +3092,10 @@ msgstr ""
 
 #: class.ancc.label:3010
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Non-catalogued Circulation"
 
-#: field.vii.deposit.label:175 field.viiad.deposit.label:226
+#: field.vii.deposit.label:175
+#: field.viiad.deposit.label:226
 msgid "Deposit"
 msgstr ""
 
@@ -2825,8 +3107,11 @@ msgstr ""
 msgid "Survey Answer"
 msgstr ""
 
-#: class.mbt.label:2652 field.mp.xact.label:3189 field.mbp.xact.label:3220
-#: field.mndp.xact.label:3251 field.mdp.xact.label:3274
+#: class.mbt.label:2652
+#: field.mp.xact.label:3189
+#: field.mbp.xact.label:3220
+#: field.mndp.xact.label:3251
+#: field.mdp.xact.label:3274
 msgid "Billable Transaction"
 msgstr ""
 
@@ -2838,8 +3123,10 @@ msgstr ""
 msgid "Transit"
 msgstr ""
 
-#: field.circ.billings.label:1840 field.combcirc.billings.label:1895
-#: field.acirc.billings.label:1962 field.rodcirc.billings.label:4448
+#: field.circ.billings.label:1840
+#: field.combcirc.billings.label:1895
+#: field.acirc.billings.label:1962
+#: field.rodcirc.billings.label:4448
 msgid "Transaction Billings"
 msgstr ""
 
@@ -2867,7 +3154,8 @@ msgstr ""
 msgid "LitF Name"
 msgstr ""
 
-#: field.aun.value.label:828 field.acpn.value.label:1498
+#: field.aun.value.label:828
+#: field.acpn.value.label:1498
 msgid "Note Content"
 msgstr ""
 
@@ -2875,7 +3163,8 @@ msgstr ""
 msgid "Survey Start Date/Time"
 msgstr ""
 
-#: field.vii.priv_note.label:185 field.viiad.priv_note.label:236
+#: field.vii.priv_note.label:185
+#: field.viiad.priv_note.label:236
 msgid "Private Note"
 msgstr ""
 
@@ -2883,7 +3172,8 @@ msgstr ""
 msgid "All Circulations"
 msgstr ""
 
-#: field.acqpo.provider.label:3733 field.jub.provider.label:3777
+#: field.acqpo.provider.label:3733
+#: field.jub.provider.label:3777
 #: field.acqlipad.provider.label:3916
 msgid "Provider"
 msgstr ""
@@ -2900,7 +3190,8 @@ msgstr ""
 msgid "Allocation ID"
 msgstr ""
 
-#: field.vbq.id.label:258 field.vaq.id.label:391
+#: field.vbq.id.label:258
+#: field.vaq.id.label:391
 msgid "Queue ID"
 msgstr ""
 
@@ -2912,7 +3203,8 @@ msgstr ""
 msgid "Bump Type"
 msgstr ""
 
-#: field.vqbr.matches.label:291 field.vqar.matches.label:423
+#: field.vqbr.matches.label:291
+#: field.vqar.matches.label:423
 msgid "Matches"
 msgstr ""
 
@@ -2920,7 +3212,8 @@ msgstr ""
 msgid "Character Encoding"
 msgstr ""
 
-#: field.mp.work_payment.label:3195 field.mbp.work_payment.label:3226
+#: field.mp.work_payment.label:3195
+#: field.mbp.work_payment.label:3226
 #: field.mndp.work_payment.label:3253
 msgid "Work Payment Detail"
 msgstr ""
@@ -2933,9 +3226,14 @@ msgstr ""
 msgid "Non-cat Circulation ID"
 msgstr ""
 
-#: field.auoi.usr.label:525 field.aun.usr.label:827 field.aus.usr.label:842
-#: field.aua.usr.label:1744 field.ac.usr.label:2442 field.mg.usr.label:2621
-#: field.mbt.usr.label:2658 field.actscecm.target_usr.label:3083
+#: field.auoi.usr.label:525
+#: field.aun.usr.label:827
+#: field.aus.usr.label:842
+#: field.aua.usr.label:1744
+#: field.ac.usr.label:2442
+#: field.mg.usr.label:2621
+#: field.mbt.usr.label:2658
+#: field.actscecm.target_usr.label:3083
 #: field.acqliuad.usr.label:3932
 msgid "User"
 msgstr ""
@@ -2956,8 +3254,10 @@ msgstr ""
 msgid "Billing Location Name"
 msgstr ""
 
-#: field.circ.stop_fines.label:1833 field.combcirc.stop_fines.label:1888
-#: field.acirc.stop_fines.label:1955 field.rodcirc.stop_fines.label:4442
+#: field.circ.stop_fines.label:1833
+#: field.combcirc.stop_fines.label:1888
+#: field.acirc.stop_fines.label:1955
+#: field.rodcirc.stop_fines.label:4442
 msgid "Fine Stop Reason"
 msgstr ""
 
@@ -2989,7 +3289,8 @@ msgstr ""
 msgid "Index Field"
 msgstr ""
 
-#: field.asvq.survey.label:785 field.asvr.survey.label:943
+#: field.asvq.survey.label:785
+#: field.asvr.survey.label:943
 #: class.asv.label:2234
 msgid "Survey"
 msgstr ""
@@ -2998,7 +3299,8 @@ msgstr ""
 msgid "Billing ID"
 msgstr ""
 
-#: field.aou.circulations.label:2366 field.acp.circulations.label:2910
+#: field.aou.circulations.label:2366
+#: field.acp.circulations.label:2910
 msgid "Circulations"
 msgstr ""
 
@@ -3006,12 +3308,14 @@ msgstr ""
 msgid "Setting ID"
 msgstr ""
 
-#: field.rmobbol.balance.label:4546 field.rmobbcol.balance.label:4579
+#: field.rmobbol.balance.label:4546
+#: field.rmobbcol.balance.label:4579
 #: field.rmobbhol.balance.label:4613
 msgid "Balance"
 msgstr ""
 
-#: field.au.mailing_address.label:1423 field.aou.mailing_address.label:2356
+#: field.au.mailing_address.label:1423
+#: field.aou.mailing_address.label:2356
 msgid "Mailing Address"
 msgstr ""
 
@@ -3019,7 +3323,8 @@ msgstr ""
 msgid "Pubdate"
 msgstr ""
 
-#: field.acn.label.label:1149 field.acqlid.cn_label.label:3849
+#: field.acn.label.label:1149
+#: field.acqlid.cn_label.label:3849
 #: field.rccc.call_number_label.label:4278
 msgid "Call Number Label"
 msgstr ""
@@ -3032,7 +3337,8 @@ msgstr ""
 msgid "Survey ID"
 msgstr ""
 
-#: field.bre.metarecord.label:1238 field.rsr.metarecord.label:4144
+#: field.bre.metarecord.label:1238
+#: field.rsr.metarecord.label:4144
 msgid "Metarecord"
 msgstr ""
 
@@ -3048,7 +3354,8 @@ msgstr ""
 msgid "Credit ID"
 msgstr ""
 
-#: field.acqpon.editor.label:3758 field.acqlin.editor.label:3812
+#: field.acqpon.editor.label:3758
+#: field.acqlin.editor.label:3812
 msgid "Editor"
 msgstr ""
 
@@ -3056,8 +3363,10 @@ msgstr ""
 msgid "Source Label"
 msgstr ""
 
-#: field.actsce.owner.label:2685 field.asce.owner.label:3312
-#: field.rsce1.owner.label:4313 field.rsce2.owner.label:4327
+#: field.actsce.owner.label:2685
+#: field.asce.owner.label:3312
+#: field.rsce1.owner.label:4313
+#: field.rsce2.owner.label:4327
 msgid "Entry Owner"
 msgstr ""
 
@@ -3069,7 +3378,8 @@ msgstr ""
 msgid "Expected Receive Date"
 msgstr ""
 
-#: field.rccc.circ_modifier.label:4268 field.rocit.circ_modifier.label:4489
+#: field.rccc.circ_modifier.label:4268
+#: field.rocit.circ_modifier.label:4489
 msgid "Circ Modifier"
 msgstr ""
 
@@ -3101,10 +3411,13 @@ msgstr ""
 msgid "Non-fulfilling Copy"
 msgstr ""
 
-#: field.vii.location.label:173 field.viiad.location.label:224
+#: field.vii.location.label:173
+#: field.viiad.location.label:224
 #: field.combcirc.copy_location.label:1905
-#: field.acirc.copy_location.label:1972 field.acp.location.label:2903
-#: field.acqlid.location.label:3854 field.rccc.shelving_location.label:4274
+#: field.acirc.copy_location.label:1972
+#: field.acp.location.label:2903
+#: field.acqlid.location.label:3854
+#: field.rccc.shelving_location.label:4274
 msgid "Shelving Location"
 msgstr ""
 
@@ -3112,16 +3425,23 @@ msgstr ""
 msgid "Organizational Unit ID"
 msgstr ""
 
-#: field.chmm.pickup_ou.label:639 field.ahr.pickup_lib.label:2313
+#: field.chmm.pickup_ou.label:639
+#: field.ahr.pickup_lib.label:2313
 msgid "Pickup Library"
 msgstr ""
 
-#: field.vqbrad.description.label:317 field.vqarad.description.label:448
-#: field.ccm.description.label:596 field.cam.description.label:1106
-#: field.asv.description.label:2241 field.pgt.description.label:2974
-#: field.acqliad.description.label:3873 field.acqlimad.description.label:3886
-#: field.acqligad.description.label:3900 field.acqlipad.description.label:3914
-#: field.acqliuad.description.label:3931 field.acqlilad.description.label:3947
+#: field.vqbrad.description.label:317
+#: field.vqarad.description.label:448
+#: field.ccm.description.label:596
+#: field.cam.description.label:1106
+#: field.asv.description.label:2241
+#: field.pgt.description.label:2974
+#: field.acqliad.description.label:3873
+#: field.acqlimad.description.label:3886
+#: field.acqligad.description.label:3900
+#: field.acqlipad.description.label:3914
+#: field.acqliuad.description.label:3931
+#: field.acqlilad.description.label:3947
 msgid "Description"
 msgstr ""
 
@@ -3129,7 +3449,8 @@ msgstr ""
 msgid "Indexed Keyword Field Entries"
 msgstr ""
 
-#: field.vqbr.import_time.label:284 field.vqar.import_time.label:417
+#: field.vqbr.import_time.label:284
+#: field.vqar.import_time.label:417
 msgid "Import Time"
 msgstr ""
 
@@ -3153,7 +3474,8 @@ msgstr ""
 msgid "Language Map"
 msgstr ""
 
-#: field.vqbr.purpose.label:289 field.vqar.purpose.label:421
+#: field.vqbr.purpose.label:289
+#: field.vqar.purpose.label:421
 msgid "Purpose"
 msgstr ""
 
@@ -3184,8 +3506,10 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: field.circ.checkin_time.label:1817 field.combcirc.checkin_time.label:1872
-#: field.acirc.checkin_time.label:1939 field.rodcirc.checkin_time.label:4426
+#: field.circ.checkin_time.label:1817
+#: field.combcirc.checkin_time.label:1872
+#: field.acirc.checkin_time.label:1939
+#: field.rodcirc.checkin_time.label:4426
 msgid "Check In Date/Time"
 msgstr ""
 
@@ -3206,8 +3530,10 @@ msgstr ""
 msgid "Last Billing Type"
 msgstr ""
 
-#: field.circ.recuring_fine.label:1830 field.combcirc.recuring_fine.label:1885
-#: field.acirc.recuring_fine.label:1952 field.rodcirc.recuring_fine.label:4439
+#: field.circ.recuring_fine.label:1830
+#: field.combcirc.recuring_fine.label:1885
+#: field.acirc.recuring_fine.label:1952
+#: field.rodcirc.recuring_fine.label:4439
 msgid "Recurring Fine Amount"
 msgstr ""
 
@@ -3227,9 +3553,12 @@ msgstr ""
 msgid "Closed Dates"
 msgstr ""
 
-#: field.vii.circ_modifier.label:181 field.viiad.circ_modifier.label:232
-#: class.ccm.label:589 field.chmm.circ_modifier.label:644
-#: field.ccmm.circ_modifier.label:675 field.ccmcmt.circ_mod.label:739
+#: field.vii.circ_modifier.label:181
+#: field.viiad.circ_modifier.label:232
+#: class.ccm.label:589
+#: field.chmm.circ_modifier.label:644
+#: field.ccmm.circ_modifier.label:675
+#: field.ccmcmt.circ_mod.label:739
 #: field.acp.circ_modifier.label:2887
 msgid "Circulation Modifier"
 msgstr ""
@@ -3238,10 +3567,14 @@ msgstr ""
 msgid "Addresses"
 msgstr ""
 
-#: field.vqbrad.ident.label:320 field.vqarad.ident.label:451
-#: field.acqliad.ident.label:3874 field.acqlimad.ident.label:3888
-#: field.acqligad.ident.label:3902 field.acqlipad.ident.label:3917
-#: field.acqliuad.ident.label:3933 field.acqlilad.ident.label:3948
+#: field.vqbrad.ident.label:320
+#: field.vqarad.ident.label:451
+#: field.acqliad.ident.label:3874
+#: field.acqlimad.ident.label:3888
+#: field.acqligad.ident.label:3902
+#: field.acqlipad.ident.label:3917
+#: field.acqliuad.ident.label:3933
+#: field.acqlilad.ident.label:3948
 msgid "Is Identifier?"
 msgstr ""
 
@@ -3249,8 +3582,10 @@ msgstr ""
 msgid "Opt-in Date/Time"
 msgstr ""
 
-#: field.circ.desk_renewal.label:1820 field.combcirc.desk_renewal.label:1875
-#: field.acirc.desk_renewal.label:1942 field.rodcirc.desk_renewal.label:4429
+#: field.circ.desk_renewal.label:1820
+#: field.combcirc.desk_renewal.label:1875
+#: field.acirc.desk_renewal.label:1942
+#: field.rodcirc.desk_renewal.label:4429
 msgid "Desk Renewal"
 msgstr ""
 
@@ -3274,6 +3609,8 @@ msgstr ""
 msgid "Void Timestamp"
 msgstr ""
 
-#: field.au.billable_transactions.label:1441 None:1463
+#: field.au.billable_transactions.label:1441
+#: None:1463
 msgid "Billable Transactions"
 msgstr ""
+

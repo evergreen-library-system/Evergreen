@@ -1,21 +1,23 @@
 # translation of opac.dtd.po to French - Canadian
 # Dan Scott <dscott@laurentian.ca>, 2007.
 # extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd, ../../Open-ILS/web/opac/locale/fr-CA/opac.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen\n"
+"Project-Id-Version: Evergreen ILS > opac.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2007-11-19 14:19-0500\n"
-"Last-Translator: Dan Scott <dscott@laurentian.ca>\n"
-"Language-Team: French - Canadian <en@li.org>\n"
+"PO-Revision-Date: 2008-11-27 14:01-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 # =================================================================
 # Some generic stuff
@@ -43,9 +45,8 @@ msgid "$"
 msgstr "$"
 
 #: common.language
-#, fuzzy
 msgid "Language: "
-msgstr "Langue"
+msgstr "Langue :"
 
 #: common.name
 msgid "Name"
@@ -218,18 +219,11 @@ msgstr "Conseils :"
 
 #: common.tips.tip1
 msgid "Click on a folder icon in the sidebar to access related quick searches"
-msgstr ""
-"Cliquez sur une icône de dossier dans la colonne du côté pour accéder à des "
-"recherches rapides connexes"
+msgstr "Cliquez sur une icône de dossier dans la colonne du côté pour accéder à des recherches rapides connexes"
 
 #: common.tips.tip2
-msgid ""
-"If you don't find what you want try expanding your search using the range "
-"selector at the right of the search bar"
-msgstr ""
-"Si vous ne trouvez pas ce que vous cherchez, essayez d'élargir votre "
-"recherche en utilisant le sélecteur de plage à droite de la barre de "
-"recherche"
+msgid "If you don't find what you want try expanding your search using the range selector at the right of the search bar"
+msgstr "Si vous ne trouvez pas ce que vous cherchez, essayez d'élargir votre recherche en utilisant le sélecteur de plage à droite de la barre de recherche"
 
 #: common.org.openAll
 msgid "Expand All"
@@ -251,18 +245,13 @@ msgstr "Chargement du sélecteur de bibliothèque..."
 # ==========================================================
 # Tips
 #: common.org.note
-#, fuzzy
 msgctxt "common.org.note"
 msgid "Tip:"
 msgstr "Conseil :"
 
 #: common.org.notetext
-msgid ""
-"Click on a location's name to select it.  Click on the folder icons to "
-"expand a section."
-msgstr ""
-"Cliquez sur le nom d'un emplacement pour le sélectionner. Cliquez sur les "
-"icônes de dossier pour agrandir une section."
+msgid "Click on a location's name to select it.  Click on the folder icons to expand a section."
+msgstr "Cliquez sur le nom d'un emplacement pour le sélectionner. Cliquez sur les icônes de dossier pour agrandir une section."
 
 #: opac.login.login
 msgctxt "opac.login.login"
@@ -277,14 +266,14 @@ msgid "Basic Catalog (HTML only)"
 msgstr "Catalogue de base (HTML seulement)"
 
 #: common.password_criteria
-#, fuzzy
 msgid ""
 "The password must be at least 7 characters in length, \n"
 "contain at least one letter (a-z/A-Z), \n"
 "and contain at least one number."
 msgstr ""
-"Le mot de passe doit être constitué d'au moins 7 caractères et contenir au "
-"moins une lettre (a-z/A-Z) et au moins un chiffre."
+"Le mot de passe doit être constitué d'au moins 7 caractères \n"
+"et contenir au moins une lettre (a-z/A-Z) \n"
+"et au moins un chiffre."
 
 #: common.a2z.title
 msgid "Title: A to Z"
@@ -315,7 +304,6 @@ msgid "Reddish"
 msgstr "Rougeâtre"
 
 #: holds.where_am_i
-#, fuzzy
 msgid ""
 "Holds lists are not as simple as \n"
 "'first come, first served.'  A complex matrix combining \n"
@@ -327,29 +315,25 @@ msgid ""
 "Your library will contact you when you hold items become \n"
 "available."
 msgstr ""
-"PINES est un système à l'échelle de l'État dont les clients et les éléments "
-"sont associés à plus de 250 bibliothèques. Dans PINES, les listes des mises "
-"en réserve ne reposent pas sur le simple principe du « premier arrivé, "
-"premier servi ». Une matrice complexe prenant en compte le propriétaire de "
-"l'élément, la bibliothèque d'origine du client et la date d'achat de "
-"l'élément détermine les priorités des mises en réserve; la liste est "
-"dynamique et change avec chaque mise en réserve. Par conséquent, toute "
-"indication d'une place dans la liste des mises en réserve serait inexacte. "
-"Le système de mise en réserve PINES est conçu pour obtenir un élément de la "
-"manière la plus rapide et la plus efficace. Votre bibliothèque inscrite à "
-"PINES vous avertira lorsque les éléments que vous avez réservés seront "
-"disponibles. "
+"Les listes des mises en réserve ne reposent pas sur le simple principe \n"
+"du « premier arrivé, premier servi ». Une matrice complexe prenant en \n"
+"compte le propriétaire de l'élément, la bibliothèque d'origine du client et la date \n"
+"d'achat de l'élément détermine les priorités des mises en réserve; la liste est \n"
+"dynamique et change avec chaque mise en réserve. Par conséquent, toute \n"
+"indication d'une place dans la liste des mises en réserve serait inexacte. Le \n"
+"système de mise en réserve est conçu pour obtenir un élément de la \n"
+"manière la plus rapide et la plus efficace. Votre bibliothèque vous avertira \n"
+"lorsque les éléments que vous avez réservés seront disponibles. "
 
 #: holds.advanced_options
-#, fuzzy
 msgid ""
 "If you wish to broaden the scope of your hold to include other \n"
 "versions of this title, select the formats that would be acceptable. \n"
 "The first available copy will be sent to you."
 msgstr ""
-"Si vous désirez élargir la portée de votre mise en réserve pour inclure "
-"d'autres versions de cet ouvrage, sélectionnez les formats qui seraient "
-"acceptables. Le premier exemplaire qui devient disponible vous sera envoyé."
+"Si vous désirez élargir la portée de votre mise en réserve pour inclure \n"
+"d'autres versions de cet ouvrage, sélectionnez les formats qui seraient acceptables. \n"
+"Le premier exemplaire qui devient disponible vous sera envoyé."
 
 # =================================================================
 # Events and Permissions
@@ -362,9 +346,7 @@ msgstr "Opération réussie"
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
-msgstr ""
-"Échec de l'ouverture de session. Le nom d'utilisateur ou le mot de passe "
-"entré est incorrect."
+msgstr "Échec de l'ouverture de session. Le nom d'utilisateur ou le mot de passe entré est incorrect."
 
 #: ilsevent.1001
 msgid "Login session has timed out or does not exist"
@@ -384,9 +366,7 @@ msgstr "Permission refusée"
 
 #: ilsperm.CREATE_HOLD
 msgid "User is not allowed to create holds for other users at this location"
-msgstr ""
-"L'utilisateur n'est pas autorisé à créer des réserves pour d'autres "
-"utilisateurs à cet endroit"
+msgstr "L'utilisateur n'est pas autorisé à créer des réserves pour d'autres utilisateurs à cet endroit"
 
 # =================================================================
 # common/pages
@@ -433,27 +413,20 @@ msgid "Large"
 msgstr "Gros"
 
 #: home.js.disabled
-#, fuzzy
 msgid ""
-"JavaScript must be enabled in order for you to use the regular Evergreen "
-"Catalog. \n"
-"However, it seems JavaScript is either disabled or not supported by your "
-"browser. \n"
-"To use the regular Evergreen Catalog, enable JavaScript by changing your "
-"browser options, then \n"
+"JavaScript must be enabled in order for you to use the regular Evergreen Catalog. \n"
+"However, it seems JavaScript is either disabled or not supported by your browser. \n"
+"To use the regular Evergreen Catalog, enable JavaScript by changing your browser options, then \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<a style='color: blue; text-decoration: underline;' href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
-"JavaScript doit être activé afin de pouvoir utiliser le catalogue Evergreen "
-"ordinaire. Cependant, il semble que JavaScript soit désactivé ou qu'il soit "
-"incompatible avec votre navigateur. Pour utiliser le catalogue Evergreen "
-"ordinaire, activez JavaScript en changeant les options de votre navigateur, "
-"puis <a style='color: blue; text-decoration: underline;' href='/'>essayez de "
-"nouveau</a>. <br/><br/>Sinon, vous pouvez utiliser le catalogue de base en "
-"version HTML-seulement <a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>ici</a>."
+"JavaScript doit être activé afin de pouvoir utiliser le catalogue Evergreen ordinaire. \n"
+"Cependant, il semble que JavaScript soit désactivé ou qu'il soit incompatible avec votre navigateur. \n"
+"Pour utiliser le catalogue Evergreen ordinaire, activez JavaScript en changeant les options de votre navigateur, puis \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>essayez de nouveau</a>. \n"
+"<br/><br/>Sinon, vous pouvez utiliser le catalogue de base en version HTML-seulement \n"
+"<a style='color: blue; text-decoration: underline;' href='/opac/extras/slimpac/start.html'>ici</a>."
 
 # =================================================================
 # MyOPAC bookbag page
@@ -461,14 +434,12 @@ msgstr ""
 #. MyOPAC bookbag page
 #. =================================================================
 #: myopac.delete.bookbag
-#, fuzzy
 msgid ""
-"This will remove the selected bookbag and all items contained within the "
-"bookbag. \n"
+"This will remove the selected bookbag and all items contained within the bookbag. \n"
 "Are you sure you wish to continue?"
 msgstr ""
-"Cette commande supprimera le sac de livres sélectionné et tous les éléments "
-"qu'il contient. Voulez-vous vraiment continuer?"
+"Cette commande supprimera le sac de livres sélectionné et tous les éléments qu'il contient. \n"
+"Voulez-vous vraiment continuer?"
 
 #: myopac.no.bookbags
 msgid "You have not created any bookbags"
@@ -540,31 +511,26 @@ msgid "remove"
 msgstr "supprimer"
 
 #: myopac.publish.text
-#, fuzzy
 msgid ""
-"Sharing a Bookbag means that the contents of the Bookbag will be visible to "
-"others. \n"
+"Sharing a Bookbag means that the contents of the Bookbag will be visible to others. \n"
 "To see the public view of a shared Bookbag, click the \"View\" link in the \n"
 "\"Shared\" column of the Bookbag list at the top of this page."
 msgstr ""
-"Les autres voient le contenu de tout sac de livres partagé. Pour voir le "
-"contenu public d'un sac de livres partagé, cliquez sur le lien 'Visualiser' "
-"dans la colonne 'Partagé' de la liste du sac de livres en haut de cette "
-"page."
+"Les autres voient le contenu de tout sac de livres partagé. \n"
+"Pour voir le contenu public d'un sac de livres partagé, cliquez sur le lien \n"
+"'Visualiser' dans la colonne 'Partagé' de la liste du sac de livres en haut de cette page."
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
 msgstr "Voulez-vous vraiment supprimer cet élément du sac de livres?"
 
 #: myopac.publish.confirm
-#, fuzzy
 msgid ""
 "Sharing this bookbag will allow the contents \n"
-"of the bookbag to be seen by others.  Are you sure you wish to share this "
-"bookbag?"
+"of the bookbag to be seen by others.  Are you sure you wish to share this bookbag?"
 msgstr ""
-"Le partage de ce sac de livres permettra à d'autres de voir son contenu. "
-"Voulez-vous vraiment partager ce sac de livres?"
+"Le partage de ce sac de livres permettra \n"
+"à d'autres de voir son contenu. Voulez-vous vraiment partager ce sac de livres?"
 
 #: myopac.unpublish.confirm
 msgid "Are you sure you wish to hide this bookbag?"
@@ -579,7 +545,6 @@ msgid "Bookbag successfully updated"
 msgstr "Le sac de livres a été mis à jour"
 
 #: myopac.create.warning
-#, fuzzy
 msgid ""
 "Warning: Adding items to a bookbag creates a link between you and the \n"
 "items in the database.  The contents of the bookbag are NOT publicly \n"
@@ -588,12 +553,12 @@ msgid ""
 "we suggest that you do not place said items in a bookbag or that you \n"
 "avoid using bookbags all together.  Thank you."
 msgstr ""
-"Attention : L'ajout d'éléments dans un sac de livres crée un lien entre vous "
-"et les éléments de la base de données. Le contenu d'un sac de livres "
-"partagé s'affiche publiquement. Si vous préférez ne pas avoir de lien entre "
-"votre dossier client et un ou des éléments en particulier, nous vous "
-"suggérons de ne pas placer ces éléments dans un sac de livres ou d'éviter "
-"tout simplement d'utiliser les sacs de livres. Merci."
+"Attention : L'ajout d'éléments dans un sac de livres crée un lien entre vous et \n"
+"les éléments de la base de données. Le contenu d'un sac de livres partagé \n"
+"s'affiche publiquement. Si vous préférez ne pas avoir de lien entre votre dossier \n"
+"client et un ou des éléments en particulier, nous vous suggérons de ne pas placer \n"
+"ces éléments dans un sac de livres ou d'éviter tout simplement d'utiliser les sacs de \n"
+"livres. Merci."
 
 #: myopac.describe.bookbags
 msgid "Bookbags are..."
@@ -624,7 +589,6 @@ msgid "Renewals Remaining"
 msgstr "Renouvellements restants"
 
 #: myopac.checked.noitems
-#, fuzzy
 msgid "You have no items checked out at this time"
 msgstr "Vous n'avez aucun élément en réserve en ce moment"
 
@@ -650,26 +614,15 @@ msgstr "article(s) renouvelé(s)"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
-msgstr "Êtes-vous certain de vouloir renouveler les articles sélectionnés?"
+msgstr "Désirez-vous vraiment renouveler les articles sélectionnés?"
 
 #: myopac.checked.renew.fail
-msgid ""
-"The system is unable to renew the selected item at this time.  This usually "
-"means the item is needed to fulfill a hold.  Please see a librarian for "
-"further help."
-msgstr ""
-"Le système n'a pas réussi à renouveler l'article. D'habitude, ceci "
-"signifie que l'article est nécessaire afin de satisfaire une demande "
-"de mis en réserve. Veuillez consulter une bibliothécaire pour des "
-"renseignements."
+msgid "The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help."
+msgstr "Le système n'a pas réussi à renouveler l'article. D'habitude, ceci signifie que l'article est nécessaire afin de satisfaire une demande de mise en réserve. Veuillez consulter une bibliothécaire pour des renseignements."
 
 #: myopac.checked.renew.fail2
-msgid ""
-"Library policy prevents the renewal of this item at this time.  Please see a "
-"librarian for further details."
-msgstr ""
-"La politique de la bibliothèque ne permet pas le renouvellement de cet "
-"article. Veuillez consulter une bibliothécaire pour des renseignements."
+msgid "Library policy prevents the renewal of this item at this time.  Please see a librarian for further details."
+msgstr "La politique de la bibliothèque ne permet pas le renouvellement de cet article. Veuillez consulter une bibliothécaire pour des renseignements."
 
 # =================================================================
 # MyOPAC Fines Page
@@ -707,7 +660,6 @@ msgid "Checkout Date"
 msgstr "Date d'emprunt"
 
 #: myopac.fines.due
-#, fuzzy
 msgctxt "myopac.fines.due"
 msgid "Due Date"
 msgstr "Échéance"
@@ -783,11 +735,8 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: myopac.holds.verify
-msgid ""
-"If you wish to cancel the selected hold, click OK, otherwise click Cancel."
-msgstr ""
-"cliquez sur OK pour annuler l'élément en réserve sélectionné, sinon cliquez "
-"sur Annuler."
+msgid "If you wish to cancel the selected hold, click OK, otherwise click Cancel."
+msgstr "cliquez sur OK pour annuler l'élément en réserve sélectionné, sinon cliquez sur Annuler."
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
@@ -808,8 +757,7 @@ msgstr "Annuler"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
-msgstr ""
-"Traitement des articles mis en réserve...Veuillez patienter un instant."
+msgstr "Traitement des articles mis en réserve...Veuillez patienter un instant."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
@@ -817,58 +765,39 @@ msgstr "Actions pour les articles mis en réserve sélectionnés"
 
 #: myopac.holds.cancel.confirm
 msgid "Are you sure you wish to cancel the selected holds?"
-msgstr ""
-"Êtes-vous certain de vouloir annuler les demandes de mis en réserve "
-"sélectionner?"
+msgstr "Désirez-vous vraiment annuler les demandes de mise en réserve sélectionner?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
 "Are you sure you wish to suspend the selected holds? \n"
-"If an item has already been selected to fulfill the hold, it will not be "
-"suspended"
+"If an item has already been selected to fulfill the hold, it will not be suspended"
 msgstr ""
-"Êtes-vous certain de vouloir suspendre les demandes de mis en réserve "
-"sélectionner?\nSi un article a déjà été sélectionner afin de satisfaire "
-"une demande de mis en réserve, il ne sera suspendu."
+"Désirez-vous vraiment suspendre les demandes de mise en réserve sélectionner?\n"
+"Si un article a déjà été sélectionner afin de satisfaire une demande de mis en réserve, il ne sera suspendu."
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
-msgstr ""
-"Êtes-vous certain de vouloir activer les demandes de mis en réserve "
-"sélectionnés?"
-
+msgstr "Désirez-vous vraiment activer les demandes de mise en réserve sélectionnés?"
 
 #: myopac.holds.thaw_date.confirm
-msgid ""
-"Are you sure you wish to change the activate date for the selected holds?"
-msgstr ""
-"Êtes-vous certain de vouloir changer la date d'activation pour les demandes "
-"de mis en réserve sélectionnés?"
+msgid "Are you sure you wish to change the activate date for the selected holds?"
+msgstr "Désirez-vous vraiment changer la date d'activation pour les demandes de mise en réserve sélectionnés?"
 
 #: myopac.holds.freeze.select_thaw
-msgid ""
-"Select an automatic activation date.  If no date is chosen, the holds will "
-"remain suspended until they are manually activated."
-msgstr ""
-"Sélectionner un date d'activation automatique. Si aucune date n'est choisi, "
-"les demandes de mis en réserve seront suspendus jusqu'à ce qu'ils soient "
-"activées de façon manuelle."
+msgid "Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated."
+msgstr "Sélectionner un date d'activation automatique. Si aucune date n'est choisi, les demandes de mise en réserve seront suspendus jusqu'à ce qu'ils soient activées de façon manuelle."
 
 #: opac.holds.freeze
 msgid "Suspend this hold"
-msgstr "Suspendre cette demande de mis en réserve"
+msgstr "Suspendre cette demande de mise en réserve"
 
 #: opac.holds.freeze.help
-msgid ""
-"A suspended hold will retain its place in the queue, but will not be "
-"fulfilled until it has been activated."
-msgstr ""
-"Une demande de mis en réserve retiendra sa place dans la file mais ne sera "
-"pas complétée avant qu'il soit activée."
+msgid "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated."
+msgstr "Une demande de mise en réserve retiendra sa place dans la file mais ne sera pas complétée avant qu'il soit activée."
 
 #: opac.holds.freeze.thaw_date
 msgid "Automatically activate hold on:"
-msgstr "Activer automatiquement la demande de mis en réserve le :"
+msgstr "Activer automatiquement la demande de mise en réserve le :"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
@@ -925,8 +854,7 @@ msgstr "Lieu de recherche par défaut"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
-msgstr ""
-"par défaut, toujours effectuer la recherche dans ma bibliothèque d'origine."
+msgstr "par défaut, toujours effectuer la recherche dans ma bibliothèque d'origine."
 
 #: myopac.prefs.search.range
 msgid "Default Search Range"
@@ -945,19 +873,14 @@ msgid "Preferences update failed!"
 msgstr "Échec de la mise à jour des préférences!"
 
 #: myopac.prefs.help
-#, fuzzy
 msgid ""
-"This setting defines how you will be notified of holds that are ready to be "
-"picked up from the library. \n"
+"This setting defines how you will be notified of holds that are ready to be picked up from the library. \n"
 "By default, holds will use the notification style you choose here. \n"
-"However, you will still have the option to change individual holds "
-"regardless of this setting."
+"However, you will still have the option to change individual holds regardless of this setting."
 msgstr ""
-"Ce paramètre définit le moyen par lequel vous serez averti que les éléments "
-"mis en réserve sont prêts à être ramassés à la bibliothèque. Par défaut, la "
-"réserve utilisera le mode d'avis que vous avez choisi ici. Cependant, peu "
-"importe ce paramètre, vous pouvez toujours changer les mises en réserve "
-"individuelles."
+"Ce paramètre définit le moyen par lequel vous serez averti que les éléments mis en réserve sont prêts à être ramassés à la bibliothèque. \n"
+"Par défaut, la réserve utilisera le mode d'avis que vous avez choisi ici. \n"
+"Cependant, peu importe ce paramètre, vous pouvez toujours changer les mises en réserve individuelles."
 
 #: myopac.holds.unfrozen
 msgid "Active"
@@ -973,12 +896,11 @@ msgstr "Activer le..."
 #. MyOPAC Summary page
 #. =================================================================
 #: myopac.summary.expired
-#, fuzzy
 msgid ""
 "Your account expired on <span id='myopac.expired.date'/>! \n"
 "Please see a librarian to renew your account."
 msgstr ""
-"Votre compte est arrivé à échéance le <span id='myopac.expired.date'/>! "
+"Votre compte est arrivé à échéance le <span id='myopac.expired.date'/>! \n"
 "Veuillez vous adresser à un bibliothécaire pour renouveler votre compte."
 
 #: myopac.summary.notes
@@ -1078,12 +1000,8 @@ msgid "Please enter a username"
 msgstr "Veuillez entrer un nom d'utilisateur"
 
 #: myopac.summary.username.dup
-msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
-msgstr ""
-"Le nom d'utilisateur demandé n'est pas disponible. Veuillez en choisir un "
-"autre."
+msgid "The requested username is not available.  Please choose a different username."
+msgstr "Le nom d'utilisateur demandé n'est pas disponible. Veuillez en choisir un autre."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1095,9 +1013,7 @@ msgstr "Échec de la mise à jour du nom d'utilisateur"
 
 #: myopac.summary.username.invalid
 msgid "Username cannot contain spaces or have the same format as a barcode"
-msgstr ""
-"Nom d'utilisateur ne peut pas contenir des espaces ni avoir le même "
-"format qu'un code à barres"
+msgstr "Nom d'utilisateur ne peut pas contenir des espaces ni avoir le même format qu'un code à barres"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1286,7 +1202,6 @@ msgstr "Y compris les résultats pour"
 #. Tips
 #. ==========================================================
 #: tips.label
-#, fuzzy
 msgctxt "tips.label"
 msgid "Tip:"
 msgstr "Conseil :"
@@ -1344,13 +1259,11 @@ msgid "Log in for personalized features"
 msgstr "Ouverture de session pour personnaliser des paramètres "
 
 #: navigate.logout
-#, fuzzy
 msgctxt "navigate.logout"
 msgid "Log out"
 msgstr "Fermeture de session"
 
 #: navigate.logout.title
-#, fuzzy
 msgctxt "navigate.logout.title"
 msgid "Log out"
 msgstr "Fermeture de session"
@@ -1722,7 +1635,6 @@ msgid "Bib Level"
 msgstr "Niveau bibliographique"
 
 #: advanced.filter.pubyear
-#, fuzzy
 msgid "Publication Year"
 msgstr "Date de publication"
 
@@ -1773,7 +1685,6 @@ msgid "Holdable"
 msgstr "Mise en réserve possible"
 
 #: rdetail.cn.due
-#, fuzzy
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
 msgstr "Échéance"
@@ -1849,15 +1760,12 @@ msgid "Create a new bookbag"
 msgstr "Créer un nouveau sac de livres"
 
 #: rdetail.record.deleted
-#, fuzzy
 msgid ""
 "This record has been deleted from the database. \n"
-"We recommend that you remove this title from any bookbags it may have been "
-"added to."
+"We recommend that you remove this title from any bookbags it may have been added to."
 msgstr ""
-"Cet enregistrement a été supprimé de la base de données. Nous vous "
-"recommandons de supprimer ce titre des sacs de livres auxquels il a pu être "
-"ajouté."
+"Cet enregistrement a été supprimé de la base de données. \n"
+"Nous vous recommandons de supprimer ce titre des sacs de livres auxquels il a pu être ajouté."
 
 #: rdetail.none
 msgid "(none)"
@@ -2025,13 +1933,11 @@ msgstr "Exemplaires disponibles / Nombre total d'exemplaires"
 
 #: result.info.no.items
 msgid "No items with the selected format were found in this location."
-msgstr ""
-"Aucun élément dans le format sélectionné ne se trouve à cet emplacement."
+msgstr "Aucun élément dans le format sélectionné ne se trouve à cet emplacement."
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
-msgstr ""
-"Les éléments du catalogue ayant le format choisi sont indiqués ci-dessous."
+msgstr "Les éléments du catalogue ayant le format choisi sont indiqués ci-dessous."
 
 #: result.info.show
 msgid "Show records for"
@@ -2051,9 +1957,7 @@ msgstr "Vous vouliez peut-être dire :"
 
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
-msgstr ""
-"Vous obtiendrez davantage d'occurrences en faisant une recherche dans tous "
-"les formats de l'élément :"
+msgstr "Vous obtiendrez davantage d'occurrences en faisant une recherche dans tous les formats de l'élément :"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
@@ -2153,43 +2057,36 @@ msgstr "Options avancées de mise en réserve"
 
 #: common.hold.delivery
 msgid "Please select a physical location where your hold can be delivered."
-msgstr ""
-"Veuillez sélectionner un emplacement physique pour la livraison de l'élément mis en "
-"réserve."
+msgstr "Veuillez sélectionner un emplacement physique pour la livraison de l'élément mis en réserve."
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "L'élément demandé a déjà été mis en réserve."
 
 #: common.hold.exists.override
-#, fuzzy
 msgid ""
 "A hold already exists on the requested \n"
 "item. Would you like to create the hold anyway?"
 msgstr ""
-" L'élément demandé a déjà été mis en réserve. Voulez-vous quand même créer "
-"une nouvelle mise en réserve?"
+" L'élément demandé a déjà été mis en réserve. \n"
+"Voulez-vous quand même créer une nouvelle mise en réserve?"
 
 #: common.hold.barred
-#, fuzzy
 msgid ""
 "PATRON BARRED. Please see any notes in the \n"
-"\"Staff Notes\" section of your \"My Account\" page or contact your local "
-"library."
+"\"Staff Notes\" section of your \"My Account\" page or contact your local library."
 msgstr ""
-"CLIENT INTERDIT. Veuillez consulter la section « Notes du personnel » dans "
-"la page « Mon compte » ou communiquer avec votre bibliothèque locale."
+"CLIENT INTERDIT. Veuillez consulter la section \n"
+"« Notes du personnel » dans la page « Mon compte » ou communiquer avec votre bibliothèque locale."
 
 #: common.hold.item.invalid
-#, fuzzy
 msgid ""
 "This hold is no longer valid. It's likely that the \n"
-"target for the hold was deleted from the system.  Please cancel this hold "
-"and \n"
+"target for the hold was deleted from the system.  Please cancel this hold and \n"
 "place a new one."
 msgstr ""
-"Cette mise en réserve n'est plus valide. Elle a probablement été effacée "
-"dans le système. Veuillez l'annuler et en créer une nouvelle."
+"Cette mise en réserve n'est plus valide. Elle a probablement \n"
+"été effacée dans le système. Veuillez l'annuler et en créer une nouvelle."
 
 #: common.hold.patron.invalid
 msgid "The patron barcode entered as the hold recipient is invalid."
@@ -2202,26 +2099,20 @@ msgid "(Help)"
 msgstr "(Aide)"
 
 #: common.phone.format.help
-msgid ""
-"The phone number does not have the correct format. The expected format is "
-"XXX-YYY-ZZZZ"
-msgstr ""
-"Le format du numéro de téléphone est incorrect. Le format correct est XXX-"
-"YYY-ZZZZ"
+msgid "The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ"
+msgstr "Le format du numéro de téléphone est incorrect. Le format correct est XXX-YYY-ZZZZ"
 
 #: common.hold.failed
-#, fuzzy
 msgid ""
 "No items were found that could fulfill the requested holds. \n"
-"It's possible that choosing a different format will result in a successful "
-"hold. \n"
+"It's possible that choosing a different format will result in a successful hold. \n"
 "It is also possible that you have exceeded the number of allowable holds. \n"
 "For further information, please consult your local librarian."
 msgstr ""
-"Aucun élément susceptible de répondre à la demande de mise en réserve n'a "
-"été trouvé. Le choix d'un format différent pourrait permettre une mise en "
-"réserve. Vous avez peut-être aussi dépassé le nombre permis de mises en "
-"réserve. Adressez-vous à un bibliothécaire local pour en savoir davantage."
+"Aucun élément susceptible de répondre à la demande de mise en réserve n'a été trouvé. \n"
+"Le choix d'un format différent pourrait permettre une mise en réserve. \n"
+"Vous avez peut-être aussi dépassé le nombre permis de mises en réserve. \n"
+"Adressez-vous à un bibliothécaire local pour en savoir davantage."
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
@@ -2248,12 +2139,8 @@ msgid "(Patron has no configured email address)"
 msgstr "(Le client n'a pas d'adresse électronique configurée)"
 
 #: common.email.set
-msgid ""
-"(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
-"for setting your email address)"
-msgstr ""
-"(Voir <a class='classic_link' id='holds.no_email.my_account'>Mon compte </a> "
-"pour établir votre adresse électronique)"
+msgid "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> for setting your email address)"
+msgstr "(Voir <a class='classic_link' id='holds.no_email.my_account'>Mon compte </a> pour établir votre adresse électronique)"
 
 #: common.keywords.label
 msgid "Keywords:"
@@ -2305,13 +2192,12 @@ msgid "Change Password"
 msgstr "Changer le mot de passe"
 
 #: login.first.time
-#, fuzzy
 msgid ""
 "This appears to be the first time you have logged in. \n"
 "You will need to change your password."
 msgstr ""
-"Il semble que ce soit votre première ouverture de session. Vous devrez "
-"changer votre mot de passe."
+"Il semble que ce soit votre première ouverture de session. \n"
+"Vous devrez changer votre mot de passe."
 
 #: login.password.current.enter
 msgid "Enter your current password"
@@ -2343,29 +2229,20 @@ msgid "The password provided is not strong enough."
 msgstr "Le mot de passe fourni n'est pas assez solide."
 
 #: login.barcode.inactive
-msgid ""
-"The barcode used to login is marked as inactive.  Please contact your local "
-"library."
-msgstr ""
-"Le code à barres utilisé est inactif. Veuillez communiquer avec votre "
-"bibliothèque locale."
+msgid "The barcode used to login is marked as inactive.  Please contact your local library."
+msgstr "Le code à barres utilisé est inactif. Veuillez communiquer avec votre bibliothèque locale."
 
 #: login.account.inactive
 msgid "This account has been deactivated.  Please contact your local library."
-msgstr ""
-"Ce compte a été désactivé. Veuillez communiquer avec votre bibliothèque "
-"locale."
+msgstr "Ce compte a été désactivé. Veuillez communiquer avec votre bibliothèque locale."
 
 #: login.failed
-#, fuzzy
 msgid ""
 "Login failed. The username or password provided was not valid. \n"
 "Ensure Caps-Lock is off and try again or contact your local library."
 msgstr ""
-"Échec de l'ouverture de session. Le nom d'utilisateur ou le mot de passe "
-"fourni est invalide. Vérifier que la touche des majuscules n'est pas "
-"verrouillée et essayez de nouveau ou communiquez avec votre bibliothèque "
-"locale."
+"Échec de l'ouverture de session. Le nom d'utilisateur ou le mot de passe fourni est invalide. \n"
+"Vérifier que la touche des majuscules n'est pas verrouillée et essayez de nouveau ou communiquez avec votre bibliothèque locale."
 
 #: button.go
 msgid "Go!"
@@ -2400,7 +2277,6 @@ msgid "Item Language"
 msgstr "Langue d'élément"
 
 #: slimpac.advanced.create_date
-#, fuzzy
 msgid "Record Creation Date"
 msgstr "Date de création du compte"
 
@@ -2469,7 +2345,6 @@ msgid "Author"
 msgstr "Auteur"
 
 #: selfck.due_date
-#, fuzzy
 msgctxt "selfck.due_date"
 msgid "Due Date"
 msgstr "Échéance"
@@ -2574,24 +2449,18 @@ msgstr "Dimanche"
 
 #~ msgid "details"
 #~ msgstr "détails"
-
 #~ msgid "browse"
 #~ msgstr "naviguer"
-
 #~ msgid "Literary&nbsp;Form"
 #~ msgstr "Littéraire&nbsp;Formulaire"
-
 #~ msgid " of at least "
 #~ msgstr " d'au moins "
-
 #~ msgid "Share"
 #~ msgstr "Partager ce sac de livres"
-
 #~ msgid "Edit/Cancel"
 #~ msgstr "Éditer/Annuler"
-
 #~ msgid "Username cannot contain spaces"
 #~ msgstr "Le nom d'utilisateur ne peut pas contenir d'espace"
-
 #~ msgid "Place hold for me"
 #~ msgstr "Mettre en réserve pour moi"
+

@@ -1,12 +1,11 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 12:00-0500\n"
-"Last-Translator: Warren Layton\n"
+"PO-Revision-Date: 2008-11-27 14:03-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,13 +18,11 @@ msgstr ""
 
 #: common.exception
 msgid ""
-"!! This software has encountered an error.  Please tell your friendly system "
-"administrator or software developer the following:\n"
+"!! This software has encountered an error.  Please tell your friendly system administrator or software developer the following:\n"
 "%1$s\n"
 "%2$s\n"
 msgstr ""
-"!! Une erreur s’est produite dans ce logiciel. Veuillez aviser votre "
-"administrateur de système ou développeur de logiciel de ce qui suit :\n"
+"!! Une erreur s’est produite dans ce logiciel. Veuillez aviser votre administrateur de système ou développeur de logiciel de ce qui suit :\n"
 "%1$s\n"
 "%2$s\n"
 " "
@@ -52,9 +49,7 @@ msgstr "Veuillez signaler cet incident."
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté %3."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté %3."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -98,9 +93,7 @@ msgstr "Comptes de bibliothèque : %1$s"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
-msgstr ""
-"Êtes vous certain de vouloir supprimer le compte intitulé #%1$s du "
-"catalogue?"
+msgstr "Êtes vous certain de vouloir supprimer le compte intitulé #%1$s du catalogue?"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
@@ -112,9 +105,7 @@ msgstr "Supprimer"
 
 #: cat.opac.undelete_record.confirm
 msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr ""
-"Êtes vous certain de vouloir récupérer le compte intitulé #%1$s du "
-"catalogue?"
+msgstr "Êtes vous certain de vouloir récupérer le compte intitulé #%1$s du catalogue?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -149,9 +140,7 @@ msgstr "Cochez ici pour confirmer cette action."
 #. # variables: document ID, error code, error description
 #: cat.opac.record_delete.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
-msgstr ""
-"Une erreur s’est produite lors de la suppression des comptes n° %1$s : %2$s> "
-"[%1$s : %2$s] : %3$s"
+msgstr "Une erreur s’est produite lors de la suppression des comptes n° %1$s : %2$s> [%1$s : %2$s] : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgid "Record with ID %1$s marked for overlay."
@@ -222,44 +211,28 @@ msgid "Enter the number of items:"
 msgstr "Saisir le numéro des articles :"
 
 #: circ.offline_checkout.download.warning
-msgid ""
-"WARNING: The non-barcode types have not been downloaded from the server.  "
-"You should log in to retrieve these."
-msgstr ""
-"AVERTISSEMENT : Les types sans code à barres n’ont pas été téléchargés à "
-"partir du serveur. Vous devez ouvrir une session pour les récupérer."
+msgid "WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these."
+msgstr "AVERTISSEMENT : Les types sans code à barres n’ont pas été téléchargés à partir du serveur. Vous devez ouvrir une session pour les récupérer."
 
 #: circ.offline_checkout.barcode.flagged.lost
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté Perdu."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté Perdu."
 
 #: circ.offline_checkout.barcode.flagged.expired
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté Expiré."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté Expiré."
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté Barré."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté Barré."
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté Bloqué."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté Bloqué."
 
 #: circ.offline_checkout.barcode.flagged.unknown
-msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
-"%3$s."
-msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté d’un code inconnu : %3$s."
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %3$s."
+msgstr "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été étiquetté d’un code inconnu : %3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
@@ -366,13 +339,8 @@ msgid "Missing required surveys."
 msgstr "Sondages requis manquants."
 
 #: circ.offline_register.missing.files.error
-msgid ""
-"ERROR: Offline patron registration requires some server-generated files.  "
-"Please login periodically to retrieve these files."
-msgstr ""
-"ERREUR : L’inscription du client hors ligne nécessite des fichiers créés par "
-"le serveur. Veuillez ouvrir une session périodiquement pour récupérer ces "
-"fichiers."
+msgid "ERROR: Offline patron registration requires some server-generated files.  Please login periodically to retrieve these files."
+msgstr "ERREUR : L’inscription du client hors ligne nécessite des fichiers créés par le serveur. Veuillez ouvrir une session périodiquement pour récupérer ces fichiers."
 
 #: jsan.file_not_found.error
 msgid "File not found: %1$s"
@@ -430,9 +398,7 @@ msgstr "Impossible de renommer. Une autre copie a un code à barres \"%1$s\"."
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
-msgstr ""
-"Une erreur s’est produite lors de la mise à l’essai du remplacement du code "
-"à barres \"%1$s\"."
+msgstr "Une erreur s’est produite lors de la mise à l’essai du remplacement du code à barres \"%1$s\"."
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
@@ -535,12 +501,8 @@ msgid "Download completed"
 msgstr "Téléchargement terminé"
 
 #: menu.cmd_download_patrons.error
-msgid ""
-"There was a problem with the download.  The server returned a status %1$s : "
-"%2$s"
-msgstr ""
-"Un problème est survenu lors du téléchargement. Le serveur a retourné un "
-"statut %1$s : %2$s"
+msgid "There was a problem with the download.  The server returned a status %1$s : %2$s"
+msgstr "Un problème est survenu lors du téléchargement. Le serveur a retourné un statut %1$s : %2$s"
 
 #: menu.cmd_stat_cat_edit.tab
 msgid "Statistical Category Editor"
@@ -567,9 +529,8 @@ msgid "XUL Editor"
 msgstr "Éditeur XUL"
 
 #: menu.cmd_fieldmapper.tab
-#, fuzzy
 msgid "Fieldmapper"
-msgstr "Instrument de cartographie"
+msgstr ""
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
@@ -640,58 +601,32 @@ msgid "Transaction Export Warning"
 msgstr "Avertissement d’exportation de la transaction."
 
 #: main.transaction_export.success.prompt
-msgid ""
-"Your transactions have been successfully exported to file %1$s. We strongly "
-"recommend that you now purge the transactions from this staff client.  Would "
-"you like for us to do this?"
-msgstr ""
-"Vos transactions ont été exportées vers le fichier %1$s. Il est fortement "
-"recommandé de supprimer maintenant les transactions du client membre du "
-"personnel. Désirez vous que nous le fassions pour vous?"
+msgid "Your transactions have been successfully exported to file %1$s. We strongly recommend that you now purge the transactions from this staff client.  Would you like for us to do this?"
+msgstr "Vos transactions ont été exportées vers le fichier %1$s. Il est fortement recommandé de supprimer maintenant les transactions du client membre du personnel. Désirez vous que nous le fassions pour vous?"
 
 #: main.transaction_export.success.title
 msgid "Transaction Export Successful"
 msgstr "Transaction exportée"
 
 #: main.transaction_export.filename.error
-msgid ""
-"Error purging transactions:  Taking too long to find a unique filename for "
-"archival."
-msgstr ""
-"Une erreur est survenue lors de la suppression des transactions : La "
-"recherche pour trouver un nom de fichier aux fins d’archivage est trop "
-"longue."
+msgid "Error purging transactions:  Taking too long to find a unique filename for archival."
+msgstr "Une erreur est survenue lors de la suppression des transactions : La recherche pour trouver un nom de fichier aux fins d’archivage est trop longue."
 
 #: main.transaction_export.duplicate.warning
-msgid ""
-"Please note that you now have two sets of identical transactions.  Unless "
-"the set you just exported is solely for archival purposes, we run the risk "
-"of duplicate transactions being processed on the server."
-msgstr ""
-"Veuillez prendre note que vous avez maintenant deux ensembles de "
-"transactions identiques. À moins que l’ensemble que vous venez d’exporter "
-"sert uniquement à des fins d’archivage, vous courez le risque que les "
-"transactions traitées sur le serveur soient reproduites."
+msgid "Please note that you now have two sets of identical transactions.  Unless the set you just exported is solely for archival purposes, we run the risk of duplicate transactions being processed on the server."
+msgstr "Veuillez prendre note que vous avez maintenant deux ensembles de transactions identiques. À moins que l’ensemble que vous venez d’exporter sert uniquement à des fins d’archivage, vous courez le risque que les transactions traitées sur le serveur soient reproduites."
 
 #: main.transaction_export.no_filename.error
-msgid ""
-"Either you did not choose a filename, or you tried to overwrite an existing "
-"file."
-msgstr ""
-"Soit vous n’avez pas choisi un nom de fichier ou vous avez tenté de "
-"remplacer un fichier existant."
+msgid "Either you did not choose a filename, or you tried to overwrite an existing file."
+msgstr "Soit vous n’avez pas choisi un nom de fichier ou vous avez tenté de remplacer un fichier existant."
 
 #: main.transaction_export.no_transactions.error
 msgid "There are no outstanding transactions to export."
 msgstr "Il ne reste aucune transaction à exporter."
 
 #: main.transaction_import.outstanding.error
-msgid ""
-"There are already outstanding transactions on this staff client.  Upload "
-"these first."
-msgstr ""
-"Des transactions sont déjà en attente pour ce client membre du personnel. "
-"Téléchargez-les en amont d’abord."
+msgid "There are already outstanding transactions on this staff client.  Upload these first."
+msgstr "Des transactions sont déjà en attente pour ce client membre du personnel. Téléchargez-les en amont d’abord."
 
 #: main.transaction_import.title
 msgid "Import Transaction File"
@@ -701,13 +636,11 @@ msgstr "Importez le fichier de transaction."
 msgid ""
 "Your transactions have been successfully migrated to this staff client.\n"
 "\n"
-"We recommend that you delete the external copy.  Would you like for us to "
-"delete %1$s?"
+"We recommend that you delete the external copy.  Would you like for us to delete %1$s?"
 msgstr ""
 "Vos transactions ont été transférées à ce client membre du personnel.\n"
 "\n"
-"Il est recommandé de supprimer la copie externe. Désirez vous que nous les "
-"supprimions pour vous %1$s?"
+"Il est recommandé de supprimer la copie externe. Désirez vous que nous les supprimions pour vous %1$s?"
 
 #: main.transaction_import.success
 msgid "Transaction Import Successful"
@@ -726,33 +659,22 @@ msgid "Please login first!"
 msgstr "Veuillez d’abord ouvrir une session!"
 
 #: main.settings.migrate
-msgid ""
-"This version of the staff client stores local settings in a different "
-"location than your previous installation.  Should we attempt to migrate "
-"these settings?"
-msgstr ""
-"Cette version du client membre du personnel permet de stocker les paramètres "
-"locaux dans un emplacement différent de celui de l’installation précédente. "
-"Devrions nous tenter de transférer ces paramètres?"
+msgid "This version of the staff client stores local settings in a different location than your previous installation.  Should we attempt to migrate these settings?"
+msgstr "Cette version du client membre du personnel permet de stocker les paramètres locaux dans un emplacement différent de celui de l’installation précédente. Devrions nous tenter de transférer ces paramètres?"
 
 #: main.settings.migrate.failed
 msgid ""
-"WARNING: Unable to migrate legacy settings.  The settings and configuration "
-"files appear to exist in multiple locations. \n"
+"WARNING: Unable to migrate legacy settings.  The settings and configuration files appear to exist in multiple locations. \n"
 "To resolve this problem manually, please consider:\n"
 "\t%1$s\n"
-"which is in the directory where we want to store settings for the current "
-"operating system account, and:\n"
+"which is in the directory where we want to store settings for the current operating system account, and:\n"
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
-"AVERTISSEMENT : Impossible de transférer les anciens paramètres. Les "
-"paramètres et les fichiers de configuration semblent exister dans multiples "
-"emplacements. \n"
+"AVERTISSEMENT : Impossible de transférer les anciens paramètres. Les paramètres et les fichiers de configuration semblent exister dans multiples emplacements. \n"
 "Pour résoudre ce problème manuellement, il faut considérer :\n"
 "\t%1$s\n"
-"qui se trouve dans le répertoire dans lequel nous voulons stocker les "
-"paramètres du compte du système d’exploitation actuel et :\n"
+"qui se trouve dans le répertoire dans lequel nous voulons stocker les paramètres du compte du système d’exploitation actuel et :\n"
 "\t%2$s\n"
 "dans lequel nous stockions ces renseignements antérieurement.\n"
 
@@ -770,9 +692,7 @@ msgstr ""
 
 #: main.settings.migrate.error
 msgid "Error trying to move %1$s to directory %2$s"
-msgstr ""
-"Une erreur s’est produite lors de la tentative de transfert de %1$s vers le "
-"répertoire %2$s."
+msgstr "Une erreur s’est produite lors de la tentative de transfert de %1$s vers le répertoire %2$s."
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
@@ -788,23 +708,18 @@ msgstr "\"%1$s\" a été copié dans le presse papier."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
-msgstr ""
-"Une erreur s’est produite dans les répertoires get_contentWindow(%1$s) et "
-"wrappedJSObject : %2$s"
+msgstr "Une erreur s’est produite dans les répertoires get_contentWindow(%1$s) et wrappedJSObject : %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
-"Une erreur s’est produite dans le répertoire get_contentWindow(%1$s) : %2$s"
+msgstr "Une erreur s’est produite dans le répertoire get_contentWindow(%1$s) : %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
-"Une erreur s’est produite lors de l’ajustement de la taille de la police : "
-"%1$s"
+msgstr "Une erreur s’est produite lors de l’ajustement de la taille de la police : %1$s"
 
 #~ msgid "About this client..."
 #~ msgstr "À propos de ce client…"
-
 #~ msgid "Open New Window"
 #~ msgstr "Ouvrir une nouvelle fenêtre"
+
