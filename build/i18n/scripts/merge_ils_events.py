@@ -19,15 +19,19 @@ def merge_events(master, localization):
 
     events = master_xml.getElementsByTagName('event')
     for event in events:
-        merged.documentElement.appendChild(merged.createTextNode("\n"))
-        l10n_node = get_l10n_event_desc(l10n_xml, event.getAttribute('code'))
-        for child in event.childNodes:
-            if child.nodeName == 'desc':
-                if child.getAttribute('xml:lang') == l10n_node.getAttribute('xml:lang'):
-                    event.removeChild(child)
-        event.appendChild(l10n_node)
-        merged.documentElement.appendChild(event)
-        merged.documentElement.appendChild(merged.createTextNode("\n"))
+        try: 
+            code = event.getAttribute('code')
+            merged.documentElement.appendChild(merged.createTextNode("\n"))
+            l10n_node = get_l10n_event_desc(l10n_xml, code)
+            for child in event.childNodes:
+                if child.nodeName == 'desc':
+                    if child.getAttribute('xml:lang') == l10n_node.getAttribute('xml:lang'):
+                        event.removeChild(child)
+            event.appendChild(l10n_node)
+            merged.documentElement.appendChild(event)
+            merged.documentElement.appendChild(merged.createTextNode("\n"))
+        except AttributeError:
+            print("%s probably has an <event> [%s] without a matching <desc> node" % (localization, code))
 
     return merged
 
