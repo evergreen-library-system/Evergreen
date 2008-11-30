@@ -3,7 +3,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/ibex), and Gentoo.
+# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/intrepid), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -16,7 +16,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-hardy
 # 	- or -
-# 	make -f Makefile.install ubuntu-ibex
+# 	make -f Makefile.install ubuntu-intrepid
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -96,6 +96,9 @@ DEBS =  \
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
+	libmarc-charset-perl \
+	libmarc-xml-perl \
+	libnet-z3950-zoom-perl \
 	libyaz-dev \
 	yaz
 
@@ -227,9 +230,9 @@ rhel: centos
 
 ubuntu-gutsy: hardy generic_ubuntu 
 ubuntu-hardy: hardy generic_ubuntu
-ubuntu-ibex: ibex generic_ubuntu
+ubuntu-intrepid: intrepid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc
-ibex: install_pgsql_client_debs_83 install_extra_debs
+intrepid: install_pgsql_client_debs_83 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config
 
 # - COMMON TARGETS ---------------------------------------------------------
