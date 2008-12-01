@@ -93,6 +93,12 @@ if (!$recid) {
 	$sth->fetch;
 	$sth->finish;
 	$dbh->disconnect;
+
+	# In a clean Evergreen schema, the maximum ID will be -1; but sequences
+	# have to start at 1, so handle the clean Evergreen schema situation
+	if ($recid == 0) {
+		$recid = 1;
+	}
 }
 
 my %tcn_source_map = (
