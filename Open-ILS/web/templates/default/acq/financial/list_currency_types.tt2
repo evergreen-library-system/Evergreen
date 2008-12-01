@@ -6,29 +6,18 @@
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_currency_types.js'> </script>
 
-<script type="text/javascript">
-    function createCT(fields) {
-        alert('create: ' + fields.code);
-    }
-</script>
-
 <div class='oils-acq-actions-div'>
     <div dojoType="dijit.form.DropDownButton">
+        <!-- TODO: add perm and disable button if necessary XXX -->
         <span>New Currency Type</span>
-
         <div dojoType="dijit.TooltipDialog" execute="createCT(arguments[0]);">
-            <script type='dojo/connect' event='onOpen'>
-                // XXX check perm and disable button if necessary ...
-                //globalUser.buildPermOrgSelector('ADMIN_CURRENCY_TYPE', currencyTypeOwnerSelect);
-            </script>
-
             <table class='dijitTooltipTable'>
                 <tr>
                     <td><label for="label">Label: </label></td>
                     <td><input dojoType="dijit.form.TextBox" name="label"/></td>
                 </tr>
                 <tr>
-                    <td><label for="name">Code: </label></td>
+                    <td><label for="code">Code: </label></td>
                     <td><input dojoType="dijit.form.TextBox" name="code"/></td>
                 </tr>
                 <tr>
