@@ -3478,6 +3478,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Currency Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+                <delete permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqexr" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::exchange_rate" oils_persist:tablename="acq.exchange_rate">
