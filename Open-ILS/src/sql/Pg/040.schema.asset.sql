@@ -28,7 +28,8 @@ CREATE TABLE asset.copy_location (
 	holdable	BOOL	NOT NULL DEFAULT TRUE,
 	hold_verify	BOOL	NOT NULL DEFAULT FALSE,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
-	circulate	BOOL	NOT NULL DEFAULT TRUE
+	circulate	BOOL	NOT NULL DEFAULT TRUE,
+	CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib)
 );
 
 CREATE TABLE asset.copy (
