@@ -51,6 +51,7 @@ sub handler {
     return 403 unless $user;
 
 	my $mark_bad = $cgi->param('action') eq 'unmark' ? 'f' : 't';
+	my $format = $cgi->param('format') || 'csv';
 
 	my $file = $cgi->param('idfile');
 	if ($file) {
@@ -76,13 +77,12 @@ sub handler {
 
     return 404 unless @xacts;
 
+    my @lines;
+
     my ($yr,$mon,$day) = (localtime())[5,4,3]; $yr += 1900;
     my $date = sprintf('%d-%02d-%02d',$yr,$mon,$day);
 
-    $r->headers_out->set("Content-Disposition" => "inline; filename=bad_debt_$date.csv");
-	$r->content_type('application/octet-stream');
-
-    $r->print( '"Transaction ID","Message","Amount Owed","Transaction Start Date","User Barcode"'."\n" );
+    my @header = ( '"Transaction ID"', '"Message"', '"Amount Owed"', '"Transaction Start Date"', '"User Barcode"' );
 
 	my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
     my $actor = OpenSRF::AppSession->create('open-ils.actor');
@@ -104,26 +104,60 @@ sub handler {
             my $failures = $actor->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $w, ['MARK_BAD_DEBT'])->gather(1);
     
             if (@$failures) {
-                $r->print("$xact,\"Permission Failure\",\"\",\"\",\"\"\n");
+                push @lines, [ $xact, '"Permission Failure"', '""', '""', '""' ];
             } else {
                 $x->unrecovered($mark_bad);
                 my $result = $cstore->request('open-ils.cstore.direct.money.billable_xact.update' => $x)->gather(1);
                 if ($result != $x->id) {
-                    $r->print("$xact,\"Update Failure\",\"\",\"\",\"\"\n");
+                    push @lines, [ $xact, '"Update Failure"', '""', '""', '""' ];
                 } else {
                     my $amount = $s->balance_owed;
                     my $start = $s->xact_start;
                     my $barcode = $c->barcode;
-                    $r->print("$xact,\"Marked Bad Debt\",\"$amount\",\"$start\",\"$barcode\"\n");
+
+                    if ( $mark_bad eq 't' ) {
+                        push @lines, [ $xact, '"Marked Bad Debt"', $amount, "\"$start\"", "\"$barcode\"" ];
+                    } else {
+                        push @lines, [ $xact, '"Unmarked Bad Debt"', $amount, "\"$start\"", "\"$barcode\"" ];
+                    }
                 }
             }
         } otherwise {
-            $r->print("$xact,\"Update Failure\",\"\",\"\",\"\"\n");
+            push @lines, [ $xact, '"Update Failure"', '""', '""', '""' ];
         };
     }
 
     $cstore->request('open-ils.cstore.transaction.commit')->gather(1);
     $cstore->disconnect();
+
+    if ($format eq 'csv') {
+        $r->headers_out->set("Content-Disposition" => "inline; filename=bad_debt_$date.csv");
+	    $r->content_type('application/octet-stream');
+
+        $r->print( join(',', @header) . "\n" );
+        $r->print( join(',', @$_    ) . "\n" ) for (@lines);
+
+    } elsif ($format eq 'json') {
+
+	    $r->content_type('application/json');
+
+        $r->print( '[' );
+
+        my $first = 1;
+        for my $line ( @lines ) {
+            $r->print( ',' ) if $first;
+            $first = 0;
+
+            $r->print( '{' );
+            for my $field ( 0 .. 4 ) {
+                $r->print( "$header[$field] : $$line[$field]" );
+                $r->print( ',' ) if ($field < 4);
+            }
+            $r->print( '}' );
+        }
+
+        $r->print( ']' );
+    }
 
 	return Apache2::Const::OK;
 
