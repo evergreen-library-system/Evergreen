@@ -17,18 +17,23 @@ sub initialize {
     my $self = shift;
     my $conf = OpenSRF::Utils::SettingsClient->new;
     my @pfx2 = ( "apps", "open-ils.circ","app_settings" );
-    my @pfx = ( @pfx2, "scripts" );
-
-    my $p       = $conf->config_value(  @pfx, 'circ_permit_patron' );
-    my $c       = $conf->config_value(  @pfx, 'circ_permit_copy' );
-    my $d       = $conf->config_value(  @pfx, 'circ_duration' );
-    my $f       = $conf->config_value(  @pfx, 'circ_recurring_fines' );
-    my $m       = $conf->config_value(  @pfx, 'circ_max_fines' );
-    my $pr  = $conf->config_value(  @pfx, 'circ_permit_renew' );
-    my $lb  = $conf->config_value(  @pfx2, 'script_path' );
 
     $legacy_script_support = $conf->config_value(@pfx2, 'legacy_script_support');
     $legacy_script_support = ($legacy_script_support and $legacy_script_support =~ /true/i);
+
+    my $lb  = $conf->config_value(  @pfx2, 'script_path' );
+    $lb = [ $lb ] unless ref($lb);
+    $script_libs = $lb;
+
+    return unless $legacy_script_support;
+
+    my @pfx = ( @pfx2, "scripts" );
+    my $p   = $conf->config_value(  @pfx, 'circ_permit_patron' );
+    my $c   = $conf->config_value(  @pfx, 'circ_permit_copy' );
+    my $d   = $conf->config_value(  @pfx, 'circ_duration' );
+    my $f   = $conf->config_value(  @pfx, 'circ_recurring_fines' );
+    my $m   = $conf->config_value(  @pfx, 'circ_max_fines' );
+    my $pr  = $conf->config_value(  @pfx, 'circ_permit_renew' );
 
     $logger->error( "Missing circ script(s)" ) 
         unless( $p and $c and $d and $f and $m and $pr );
@@ -39,9 +44,6 @@ sub initialize {
     $scripts{circ_recurring_fines}= $f;
     $scripts{circ_max_fines}        = $m;
     $scripts{circ_permit_renew} = $pr;
-
-    $lb = [ $lb ] unless ref($lb);
-    $script_libs = $lb;
 
     $logger->debug(
         "circulator: Loaded rules scripts for circ: " .
