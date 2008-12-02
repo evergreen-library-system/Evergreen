@@ -20,18 +20,24 @@ var user = new openils.User();
 var searchLimit = 10;
 
 function drawForm() {
-
-    var sources = fieldmapper.standardRequest(
+    fieldmapper.standardRequest(
         ['open-ils.search', 'open-ils.search.z3950.retrieve_services'], 
-        [user.authtoken]
+        {   async: true,
+            params: [user.authtoken],
+            oncomplete: _drawForm
+        }
     );
+}
 
-    openils.Event.parse_and_raise(sources);
+function _drawForm(r) {
+
+    var sources = openils.Util.readResponse(r);
+    if(!sources) return;
 
     for(var name in sources) {
         source = sources[name];
         if(name == 'native-evergreen-catalog') continue;
-        bibSourceSelect.addOption(name, name+':'+source.host);
+        bibSourceSelect.addOption({value:name, label:source.label});
         for(var attr in source.attrs) 
             if(!attr.match(/^#/)) // xml comment nodes
                 searchFields.push(source.attrs[attr]);
