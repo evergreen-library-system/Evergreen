@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 21:56-0400\n"
+"POT-Creation-Date: 2008-12-02 22:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -348,6 +348,7 @@ msgid "Enter bucket number:"
 msgstr ""
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
 msgid "Could not find a bucket with ID = %1$s"
 msgstr ""
 
@@ -654,6 +655,10 @@ msgstr ""
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
+msgstr ""
+
+#: staff.cat.copy_editor.remove_circulate_as_type
+msgid "<Remove Circulate as Type>"
 msgstr ""
 
 #: staff.cat.copy_editor.field.unset_or_null
@@ -994,6 +999,10 @@ msgstr ""
 msgid "Add Row"
 msgstr ""
 
+#: staff.cat.marcedit.insert_row.label
+msgid "Insert Row"
+msgstr ""
+
 #: staff.cat.marcedit.remove_row.label
 msgid "Remove Row"
 msgstr ""
@@ -1280,6 +1289,11 @@ msgstr ""
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
+msgstr ""
+
+#: staff.cat.record_buckets.menulist.change_bucket.undefined
+msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
 msgstr ""
 
 #: staff.cat.spine_labels.copy
