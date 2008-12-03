@@ -197,6 +197,9 @@ DEB_APACHE_MODS = \
     proxy_http\
     rewrite
 
+DEB_APACHE_DISMODS = \
+    deflate
+
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::CreditCard::Object \
@@ -290,6 +293,8 @@ clean:
 debian_sys_config: 
 	# link the apache modules in
 	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
+	# keep the bad apache modules away
+	for m in $(DEB_APACHE_DISMODS); do a2dismod $$m; done;
 
 # Install the debian-specific dependencies
 install_debs:
