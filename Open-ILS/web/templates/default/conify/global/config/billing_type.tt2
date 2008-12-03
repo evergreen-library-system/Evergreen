@@ -38,15 +38,22 @@
 <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='btContextOrgSelect' 
     searchAttr='shortname' labelAttr='shortname'> </select>
 
+<!-- not enough columns to matter here, but a good example of dojo column picker
+<div dojoType="dijit.Menu" jsid="btGridMenu" id="btGridMenu" style="display: none;">
+    <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
+</div>
+-->
+
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+        <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" 
+            rowSelector='20px' selectionMode='none' columnReordering='true' headerMenu="btGridMenu">
             <thead>
                 <tr>
                     <th field="id">ID</th>
-                    <th field="name" width='250px;'>Name</th>
+                    <th field="name" width='250px;' editable='true' cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
                     <th field="owner" width='250px;' get='getOrgInfo'>Owning Location</th>
-                    <th field="default_price">Default Price</th>
+                    <th field="default_price" editable='true' cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.CurrencyTextBox'>Default Price</th>
                 </tr>
             </thead>
         </table>    

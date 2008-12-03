@@ -1,6 +1,8 @@
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojox.grid.cells.dijit');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.CurrencyTextBox');
+dojo.require('dojox.widget.PlaceholderMenuItem');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 
@@ -37,7 +39,7 @@ function buildBTGrid() {
             oncomplete: function(r) {
                 if(btList = openils.Util.readResponse(r)) {
                     btList = openils.Util.objectSort(btList);
-                    var store = new dojo.data.ItemFileReadStore({data:cbt.toStoreData(btList)});
+                    var store = new dojo.data.ItemFileWriteStore({data:cbt.toStoreData(btList)});
                     btGrid.setStore(store);
                     btGrid.render();
                 }
