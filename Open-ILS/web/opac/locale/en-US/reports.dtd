@@ -51,9 +51,6 @@
 <!ENTITY reports.oils_rpt_builder.choose_a_filter "Choose a Filter: ">
 <!ENTITY reports.oils_rpt_builder.create_filter "Create Filter">
 <!ENTITY reports.oils_rpt_builder.aggregate_filter_to_apply "Select what aggregate filter should be applied to this field:">
-<!ENTITY reports.oils_rpt_builder.choose_a_transform "Choose a Transform: ">
-<!ENTITY reports.oils_rpt_builder.choose_a_filter "Choose a Filter: ">
-<!ENTITY reports.oils_rpt_builder.create_aggregate_filter "Create Aggregate Filter">
 <!ENTITY reports.oils_rpt_builder.selected_to_sort_columns "Select how the columns should be sorted">
 <!ENTITY reports.oils_rpt_builder.choose_column "Choose a column: ">
 <!ENTITY reports.oils_rpt_builder.choose_sorting_direction "Choose the direction the sorting should occur: ">
@@ -200,7 +197,6 @@
 <!ENTITY reports.xul.template_builder.display_name.label "Display Name">
 <!ENTITY reports.xul.template_builder.field_transform_type.label "Field Transform Type">
 <!ENTITY reports.xul.template_builder.alter_display_header.label "Alter Display Header">
-<!ENTITY reports.xul.template_builder.change_transform.label "Change Transform">
 <!ENTITY reports.xul.template_builder.move_up.label "Move Up">
 <!ENTITY reports.xul.template_builder.move_down.label "Move Down">
 <!ENTITY reports.xul.template_builder.remove_selected_field.label "Remove Selected Field">
@@ -212,7 +208,6 @@
 <!ENTITY reports.xul.template_builder.change_value.label "Change value">
 <!ENTITY reports.xul.template_builder.remove_value.label "Remove value">
 <!ENTITY reports.xul.template_builder.remove_selected_fields.label "Remove Selected Fields">
-<!ENTITY reports.xul.template_builder.source_specifier.label "Source Specifier">
 <!ENTITY reports.xul.template_builder.table_name.label "Table Name">
 <!ENTITY reports.xul.template_builder.sql_alias.label "SQL Alias">
 <!ENTITY reports.xul.template_builder.relationship.label "Relationship">
