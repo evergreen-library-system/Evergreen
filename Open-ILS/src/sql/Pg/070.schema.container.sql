@@ -24,8 +24,6 @@ CREATE TABLE container.copy_bucket_type (
 	code	TEXT	PRIMARY KEY,
 	label	TEXT	NOT NULL UNIQUE
 );
-INSERT INTO container.copy_bucket_type (code,label) VALUES ('misc','Miscellaneous');
-INSERT INTO container.copy_bucket_type (code,label) VALUES ('staff_client','General Staff Client container');
 
 CREATE TABLE container.copy_bucket (
 	id		SERIAL				PRIMARY KEY,
@@ -66,7 +64,6 @@ CREATE TABLE container.call_number_bucket_type (
 	code	TEXT	PRIMARY KEY,
 	label	TEXT	NOT NULL UNIQUE
 );
-INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc','Miscellaneous');
 
 CREATE TABLE container.call_number_bucket (
 	id	SERIAL	PRIMARY KEY,
@@ -106,9 +103,6 @@ CREATE TABLE container.biblio_record_entry_bucket_type (
 	code	TEXT	PRIMARY KEY,
 	label	TEXT	NOT NULL UNIQUE
 );
-INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc','Miscellaneous');
-INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client','General Staff Client container');
-INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag','Book Bag');
 
 
 CREATE TABLE container.biblio_record_entry_bucket (
@@ -149,10 +143,6 @@ CREATE TABLE container.user_bucket_type (
 	code	TEXT	PRIMARY KEY,
 	label	TEXT	NOT NULL UNIQUE
 );
-INSERT INTO container.user_bucket_type (code,label) VALUES ('misc','Miscellaneous');
-INSERT INTO container.user_bucket_type (code,label) VALUES ('folks','Friends');
-INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.view','List Published Book Bags');
-INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.add','Add to Published Book Bags');
 
 CREATE TABLE container.user_bucket (
 	id	SERIAL	PRIMARY KEY,

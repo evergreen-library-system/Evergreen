@@ -805,21 +805,6 @@ INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent) VALUES
 	oils_i18n_gettext(5, 'Your Bookmobile', 'aout', 'opac_label'), 3, 3 );
 SELECT SETVAL('actor.org_unit_type_id_seq'::TEXT, 100);
 
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 2, oils_i18n_gettext(2, 'Long Overdue Collection Fee', 'cbt', 'name'), 1);
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 3, oils_i18n_gettext(3, 'Lost Materials', 'cbt', 'name'), 1);
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 4, oils_i18n_gettext(4, 'Lost Materials Processing Fee', 'cbt', 'name'), 1);
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 5, oils_i18n_gettext(5, 'System: Deposit', 'cbt', 'name'), 1);
-INSERT INTO config.billing_type (id, name, owner) VALUES
-	( 6, oils_i18n_gettext(6, 'System: Rental', 'cbt', 'name'), 1);
-
-SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
-
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (1, NULL, 1, 'CONS', oils_i18n_gettext(1, 'Example Consortium', 'aou', 'name'));
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
@@ -843,6 +828,22 @@ SELECT SETVAL('actor.org_unit_id_seq'::TEXT, 100);
 INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
 
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
+
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 2, oils_i18n_gettext(2, 'Long Overdue Collection Fee', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 3, oils_i18n_gettext(3, 'Lost Materials', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 4, oils_i18n_gettext(4, 'Lost Materials Processing Fee', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 5, oils_i18n_gettext(5, 'System: Deposit', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 6, oils_i18n_gettext(6, 'System: Rental', 'cbt', 'name'), 1);
+
+SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
+
 
 --006.data.permissions.sql:
 INSERT INTO permission.perm_list VALUES 
@@ -1566,3 +1567,14 @@ INSERT INTO vandelay.authority_attr_definition (id, code, description, xpath, id
 SELECT SETVAL('vandelay.authority_attr_definition_id_seq'::TEXT, 100);
 
 
+INSERT INTO container.copy_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccpbt', 'label'));
+INSERT INTO container.copy_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'ccpbt', 'label'));
+INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccnbt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cbrebt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'cbrebt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag', oils_i18n_gettext('bookbag', 'Book Bag', 'cbrebt', 'label'));
+
+INSERT INTO container.user_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cubt', 'label'));
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks', oils_i18n_gettext('folks', 'Friends', 'cubt', 'label'));
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.view', oils_i18n_gettext('folks:pub_book_bags.view', 'List Published Book Bags', 'cubt', 'label'));
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.add', oils_i18n_gettext('folks:pub_book_bags.add', 'Add to Published Book Bags', 'cubt', 'label'));
