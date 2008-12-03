@@ -36,6 +36,7 @@ function buildBTGrid() {
             params: [openils.User.authtoken, btContextOrg, fieldmapper.aou.findOrgDepth(btContextOrg)],
             oncomplete: function(r) {
                 if(btList = openils.Util.readResponse(r)) {
+                    btList = openils.Util.objectSort(btList);
                     var store = new dojo.data.ItemFileReadStore({data:cbt.toStoreData(btList)});
                     btGrid.setStore(store);
                     btGrid.render();

@@ -12,13 +12,7 @@ function spBuildGrid() {
             params: [openils.User.authtoken, {id:{'!=':null}}],
             oncomplete: function(r) {
                 if(spList = openils.Util.readResponse(r)) {
-                    spList = spList.sort(
-                        function(a, b) {
-                            if(a.id() > b.id()) 
-                                return 1;
-                            return -1;
-                        }
-                    );
+                    spList = openils.Util.objectSort(spList);
                     var store = new dojo.data.ItemFileReadStore({data:csp.toStoreData(spList)});
                     spGrid.setStore(store);
                     spGrid.render();
