@@ -20,6 +20,13 @@ DROP SCHEMA container CASCADE;
 BEGIN;
 CREATE SCHEMA container;
 
+CREATE TABLE container.copy_bucket_type (
+	code	TEXT	PRIMARY KEY,
+	label	TEXT	NOT NULL UNIQUE
+);
+INSERT INTO container.copy_bucket_type (code,label) VALUES ('misc','Miscellaneous');
+INSERT INTO container.copy_bucket_type (code,label) VALUES ('staff_client','General Staff Client container');
+
 CREATE TABLE container.copy_bucket (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL
@@ -29,7 +36,7 @@ CREATE TABLE container.copy_bucket (
 								DEFERRABLE
 								INITIALLY DEFERRED,
 	name		TEXT				NOT NULL,
-	btype		TEXT				NOT NULL DEFAULT 'misc',
+	btype		TEXT				NOT NULL DEFAULT 'misc' REFERENCES container.copy_bucket_type (code),
 	pub		BOOL				NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
@@ -55,6 +62,12 @@ CREATE TABLE container.copy_bucket_item (
 
 
 
+CREATE TABLE container.call_number_bucket_type (
+	code	TEXT	PRIMARY KEY,
+	label	TEXT	NOT NULL UNIQUE
+);
+INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc','Miscellaneous');
+
 CREATE TABLE container.call_number_bucket (
 	id	SERIAL	PRIMARY KEY,
 	owner	INT	NOT NULL
@@ -64,7 +77,7 @@ CREATE TABLE container.call_number_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	btype	TEXT	NOT NULL DEFAULT 'misc',
+	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.call_number_bucket_type (code),
 	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
@@ -89,6 +102,14 @@ CREATE TABLE container.call_number_bucket_item (
 
 
 
+CREATE TABLE container.biblio_record_entry_bucket_type (
+	code	TEXT	PRIMARY KEY,
+	label	TEXT	NOT NULL UNIQUE
+);
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc','Miscellaneous');
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client','General Staff Client container');
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag','Book Bag');
+
 
 CREATE TABLE container.biblio_record_entry_bucket (
 	id	SERIAL	PRIMARY KEY,
@@ -99,7 +120,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	btype	TEXT	NOT NULL DEFAULT 'misc',
+	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.biblio_record_entry_bucket_type (code),
 	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
@@ -124,6 +145,14 @@ CREATE TABLE container.biblio_record_entry_bucket_item (
 
 
 
+CREATE TABLE container.user_bucket_type (
+	code	TEXT	PRIMARY KEY,
+	label	TEXT	NOT NULL UNIQUE
+);
+INSERT INTO container.user_bucket_type (code,label) VALUES ('misc','Miscellaneous');
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks','Friends');
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.view','List Published Book Bags');
+INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:pub_book_bags.add','Add to Published Book Bags');
 
 CREATE TABLE container.user_bucket (
 	id	SERIAL	PRIMARY KEY,
@@ -134,7 +163,7 @@ CREATE TABLE container.user_bucket (
 				DEFERRABLE
 				INITIALLY DEFERRED,
 	name	TEXT	NOT NULL,
-	btype	TEXT	NOT NULL DEFAULT 'misc',
+	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.user_bucket_type (code),
 	pub	BOOL	NOT NULL DEFAULT FALSE,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)

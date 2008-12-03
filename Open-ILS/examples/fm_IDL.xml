@@ -616,6 +616,82 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="ccpbt" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Copy Bucket Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_COPY_BTYPE|UPDATE_COPY_BTYPE|DELETE_COPY_BTYPE" global_required="true"/>
+                <update permission="UPDATE_COPY_BTYPE" global_required="true"/>
+                <delete permission="DELETE_COPY_BTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="ccnbt" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_type" oils_persist:tablename="container.call_number_bucket_type" reporter:label="Call Number Bucket Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_CN_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_CN_BTYPE|UPDATE_CN_BTYPE|DELETE_CN_BTYPE" global_required="true"/>
+                <update permission="UPDATE_CN_BTYPE" global_required="true"/>
+                <delete permission="DELETE_CN_BTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="cbrebt" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_type" oils_persist:tablename="container.biblio_record_entry_bucket_type" reporter:label="Bibliographic Record Bucket Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_BIB_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_BIB_BTYPE|UPDATE_BIB_BTYPE|DELETE_BIB_BTYPE" global_required="true"/>
+                <update permission="UPDATE_BIB_BTYPE" global_required="true"/>
+                <delete permission="DELETE_BIB_BTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="cubt" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_type" oils_persist:tablename="container.user_bucket_type" reporter:label="User Bucket Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_USER_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_USER_BTYPE|UPDATE_USER_BTYPE|DELETE_USER_BTYPE" global_required="true"/>
+                <update permission="UPDATE_USER_BTYPE" global_required="true"/>
+                <delete permission="DELETE_USER_BTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="cvrfm" controller="open-ils.cstore" oils_obj:fieldmapper="config::videorecording_format_map" oils_persist:tablename="config.videorecording_format_map" reporter:label="Videorecording Format" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
