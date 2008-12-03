@@ -25,7 +25,7 @@ util.network.prototype = {
 		//obj.error.sdump('D_SES','simple_request '+ method_id +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
 		//	'\noverride_params = ' + override_params + '\n');
 		if (typeof api[method_id] == 'undefined') {
-			throw( offlineStrings.getFormattedString(network.method_not_found.error, [method_id]) );
+			throw( offlineStrings.getFormattedString('network.method_not_found.error', [method_id]) );
 		}
 		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
 		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
