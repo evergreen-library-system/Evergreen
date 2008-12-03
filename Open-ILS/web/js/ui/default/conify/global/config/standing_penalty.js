@@ -1,23 +1,20 @@
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojox.form.CheckedMultiSelect');
 dojo.require('dijit.form.TextBox');
 
-var spList;
-
 function spBuildGrid() {
+    var store = new dojo.data.ItemFileWriteStore({data:csp.toStoreData([])});
+    spGrid.setStore(store);
+    spGrid.render();
     fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.csp.atomic'],
+        ['open-ils.permacrud', 'open-ils.permacrud.search.csp'],
         {   async: true,
-            params: [openils.User.authtoken, {id:{'!=':null}}],
-            oncomplete: function(r) {
-                if(spList = openils.Util.readResponse(r)) {
-                    spList = openils.Util.objectSort(spList);
-                    var store = new dojo.data.ItemFileReadStore({data:csp.toStoreData(spList)});
-                    spGrid.setStore(store);
-                    spGrid.render();
-                }
-            }
+            params: [openils.User.authtoken, {id:{'!=':null}}, {order_by:{csp:'id'}}],
+            onresponse: function(r) {
+                if(sp = openils.Util.readResponse(r)) 
+                    store.newItem(csp.toStoreData([sp]).items[0]);
+            }, 
         }
     );
 }
