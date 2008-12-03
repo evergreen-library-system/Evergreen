@@ -157,6 +157,17 @@ function my_init() {
 
 		tag_menu.appendChild(
 			createMenuitem(
+				{ label : $('catStrings').getString('staff.cat.marcedit.insert_row.label'),
+				  oncommand : 
+					'var e = document.createEvent("KeyEvents");' +
+					'e.initKeyEvent("keypress",1,1,null,1,0,1,0,13,0);' +
+					'current_focus.inputField.dispatchEvent(e);'
+				 }
+			)
+		);
+
+		tag_menu.appendChild(
+			createMenuitem(
 				{ label : $('catStrings').getString('staff.cat.marcedit.remove_row.label'),
 				  oncommand : 
 					'var e = document.createEvent("KeyEvents");' +
