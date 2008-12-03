@@ -341,12 +341,12 @@ util.network.prototype = {
 						//+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
 						//+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
 						//'simple_auth' + (new Date()).toString(),
-						'Authorize',
+						offlineStrings.getFormattedString('network.permission.authorize'),
 						'chrome,resizable,modal,width=700,height=500',
 						{
 							'login_type' : 'temp',
 							'desc_brief' : offlineStrings.getFormattedString('network.permission.description.brief', [robj.ilsperm]),
-							'desc_full' : 'offlineStrings.getFormattedString('network.permission.description.full', [name])
+							'desc_full' : offlineStrings.getFormattedString('network.permission.description.full', [name])
 							//'simple_auth' : (new Date()).toString(),
 						}
 					);
