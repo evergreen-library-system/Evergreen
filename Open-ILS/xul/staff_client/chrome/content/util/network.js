@@ -1,4 +1,8 @@
 dump('entering util/network.js\n');
+// vim:noet:sw=4:ts=4:
+
+var offlineStrings;
+offlineStrings = document.getElementById('offlineStrings');
 
 if (typeof util == 'undefined') util = {};
 util.network = function () {
@@ -20,7 +24,9 @@ util.network.prototype = {
 		//var sparams = js2JSON(params);
 		//obj.error.sdump('D_SES','simple_request '+ method_id +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
 		//	'\noverride_params = ' + override_params + '\n');
-		if (typeof api[method_id] == 'undefined') throw( 'Method not found for ' + method_id );
+		if (typeof api[method_id] == 'undefined') {
+			throw( offlineStrings.getFormattedString(network.method_not_found.error, [method_id]) );
+		}
 		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
 		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
 	},
@@ -38,7 +44,7 @@ util.network.prototype = {
 					try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
 				}
 			} catch(I) { 
-				obj.NETWORK_FAILURE = 'Unknown status';
+				obj.NETWORK_FAILURE = offlineStrings.getString('network.unknown_status');
 			}
 			result = null;
 		}
@@ -106,7 +112,7 @@ util.network.prototype = {
 						} catch(E) {
 							try {
 								E.ilsevent = -2;
-								E.textcode = 'Server/Method Error';
+								E.textcode = offlineStrings.getString('network.server_or_method.error');
 							} catch(F) {}
 							f( { 'getResultObject' : function() { return E; } } );
 						}
@@ -176,11 +182,23 @@ util.network.prototype = {
 				try { network_failure_string = String( obj.NETWORK_FAILURE ); } catch(E) { network_failure_string = E; }
 				try { network_failure_status_string = typeof obj.NETWORK_FAILURE == 'object' && typeof obj.NETWORK_FAILURE != 'null' && typeof obj.NETWORK_FAILURE.status == 'function' ? obj.NETWORK_FAILURE.status() : ''; } catch(E) { network_failure_status_string = ''; obj.error.sdump('D_ERROR', 'setting network_failure_status_string: ' + E); }
 				
-				try { msg = 'Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Ignore Errors in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this information:\nmethod=' + name + '\nparams=' + js2JSON(params) + '\nTHROWN:\n' + network_failure_string + '\nSTATUS:\n' + network_failure_status_string; } catch(E) { msg = E; }
+				try { msg = offlineStrings.getFormattedString('network.server.failure.exception', [data.server_unadorned]) + '\n' +
+							offlineStrings.getFormattedString('network.server.method', [name]) + '\n' + 
+							offlineStrings.getFormattedString('network.server.params', [js2JSON(params)]) + '\n' + 
+							offlineStrings.getString('network.server.thrown_label') + '\n' + network_failure_string + '\n' + 
+							offlineStrings.getString('network.server.status_label') + '\n' + network_failure_status_string;
+				} catch(E) { msg = E; }
 
 				try { obj.error.sdump('D_SES_ERROR',msg); } catch(E) { alert(E); }
 
-				r = obj.error.yns_alert(msg,'Network Failure','Retry Network','Ignore Errors',null,'Check here to confirm this message');
+				r = obj.error.yns_alert(
+					msg,
+					offlineStrings.getString('network.network_failure'),
+					offlineStrings.getString('network.retry_network'),
+					offlineStrings.getString('network.ignore_errors'),
+					null,
+					offlineStrings.getString('common.confirm')
+				);
 				if (r == 1) {
 					data.proceed_offline = true; data.stash('proceed_offline');
 					dump('Remembering proceed_offline for 200000 ms.\n');
@@ -201,8 +219,9 @@ util.network.prototype = {
 					if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
 					return req;
 				break;
+
 				case 1: 
-					return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : 'Network/Server Problem' }; } };
+					return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : offlineStrings.getString('network.server_or_method.error') }; } };
 				break;
 			}
 		}
@@ -228,7 +247,7 @@ util.network.prototype = {
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error setting window titles to match new login',E);
+			obj.error.standard_unexpected_error_alert(offlineStrings.getString('network.window_title.error'),E);
 		}
 	},
 
@@ -246,12 +265,12 @@ util.network.prototype = {
 			//+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
 			//+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
 			//'simple_auth' + (new Date()).toString(),
-			'Authorize',
+			offlineStrings.getString('network.new_session.authorize'),
 			'chrome,resizable,modal,width=700,height=500',
 			{
 				'login_type' : 'staff',
-				'desc_brief' : text ? 'Session Expired' : 'Operator Change',
-				'desc_full' : text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'
+				'desc_brief' : text ? offlineStrings.getString('network.new_session.expired') : offlineStrings.getString('network.new_session.operator_change'),
+				'desc_full' : text ? offlineStrings.getString('network.new_session.expired.prompt') : offlineStrings.getString('network.new_session.operator_change.prompt')
 				//'simple_auth' : (new Date()).toString(),
 			}
 		);
@@ -271,7 +290,7 @@ util.network.prototype = {
                 cookieSvc.setCookieString(cookieUriSSL, null, "ses="+data.session.key, null);
 
             } catch(E) {
-                alert('Error setting session cookie: ' + E);
+                alert(offineStrings.getFormattedString('main.session_cookie.error', [E]));
             }
 			if (! data.list.au ) data.list.au = [];
 			data.list.au[0] = JSON2js( data.temporary_session.usr );
@@ -326,8 +345,8 @@ util.network.prototype = {
 						'chrome,resizable,modal,width=700,height=500',
 						{
 							'login_type' : 'temp',
-							'desc_brief' : 'Permission Denied: ' + robj.ilsperm,
-							'desc_full' : 'Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: ' + name
+							'desc_brief' : offlineStrings.getFormattedString('network.permission.description.brief', [robj.ilsperm]),
+							'desc_full' : 'offlineStrings.getFormattedString('network.permission.description.full', [name])
 							//'simple_auth' : (new Date()).toString(),
 						}
 					);
@@ -354,7 +373,7 @@ util.network.prototype = {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 					obj.sound.bad();
 					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
-						'<groupbox><caption label="Exceptions"/>' + 
+						'<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
 						'<grid><columns><column/><column/></columns><rows>';
 					for (var i = 0; i < r.length; i++) {
 						var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -366,10 +385,10 @@ util.network.prototype = {
 							'<description>' + t3 + '</description>' + 
 							'</row><row>' + '<description>' + t4 + '</description>' + '</row>';
 					}
-					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox>' + 
-						'<description>Force this action?</description>' + 
-						'<button accesskey="N" label="No" name="fancy_cancel"/>' + 
-						'<button id="override" accesskey="Y" label="Yes" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+					xml += '</rows></grid></groupbox><groupbox><caption label="' + offlineStrings.getString('network.override.override') +'"/><hbox>' + 
+						'<description>' + offlineStrings.getString('network.override.force.prompt') + '</description>' + 
+						'<button accesskey="' + offlineStrings.getString('common.no.accesskey') + '" label="' + offlineStrings.getString('common.no') + '" name="fancy_cancel"/>' + 
+						'<button id="override" accesskey="' + offlineStrings.getString('common.yes.accesskey') + '" label="' + offlineStrings.getString('common.yes') + '" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
 					//JSAN.use('OpenILS.data');
 					//var data = new OpenILS.data(); data.init({'via':'stash'});
 					//data.temp_override_xml = xml; data.stash('temp_override_xml');

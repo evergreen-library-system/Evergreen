@@ -100,7 +100,7 @@ function main_init() {
                 cookieSvc.setCookieString(cookieUriSSL, null, "ses="+G.data.session.key, null);
 
             } catch(E) {
-                alert('Error setting session cookie: ' + E);
+                alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
             }
 
 			grant_perms(url);
