@@ -805,6 +805,21 @@ INSERT INTO actor.org_unit_type (id, name, opac_label, depth, parent) VALUES
 	oils_i18n_gettext(5, 'Your Bookmobile', 'aout', 'opac_label'), 3, 3 );
 SELECT SETVAL('actor.org_unit_type_id_seq'::TEXT, 100);
 
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 2, oils_i18n_gettext(2, 'Long Overdue Collection Fee', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 3, oils_i18n_gettext(3, 'Lost Materials', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 4, oils_i18n_gettext(4, 'Lost Materials Processing Fee', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 5, oils_i18n_gettext(5, 'System: Deposit', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 6, oils_i18n_gettext(6, 'System: Rental', 'cbt', 'name'), 1);
+
+SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
+
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (1, NULL, 1, 'CONS', oils_i18n_gettext(1, 'Example Consortium', 'aou', 'name'));
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 

@@ -1194,12 +1194,15 @@ sub apply_deposit_fee {
 	my $bill = Fieldmapper::money::billing->new;
     my $amount = $copy->deposit_amount;
     my $billing_type;
+    my $btype;
 
     if($self->is_deposit) {
         $billing_type = OILS_BILLING_TYPE_DEPOSIT;
+        $btype = 5;
         $self->deposit_billing($bill);
     } else {
         $billing_type = OILS_BILLING_TYPE_RENTAL;
+        $btype = 6;
         $self->rental_billing($bill);
     }
 
@@ -1207,6 +1210,7 @@ sub apply_deposit_fee {
 	$bill->amount($amount);
 	$bill->note(OILS_BILLING_NOTE_SYSTEM);
 	$bill->billing_type($billing_type);
+	$bill->btype($btype);
     $self->editor->create_money_billing($bill) or $self->bail_on_events($self->editor->event);
 
 	$logger->info("circulator: charged $amount on checkout with billing type $billing_type");
@@ -1758,7 +1762,7 @@ sub check_circ_deposit {
     my $self = shift;
     return unless $self->circ;
     my $deposit = $self->editor->search_money_billing(
-        {   billing_type => OILS_BILLING_TYPE_DEPOSIT, 
+        {   btype => 5, 
             xact => $self->circ->id, 
             voided => 'f'
         }, {idlist => 1})->[0];
@@ -2139,7 +2143,7 @@ sub checkin_handle_backdate {
         { 
             billing_ts => { '>=' => $bd }, 
             xact => $self->circ->id, 
-            billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
+            btype => 1
         }
     );
 

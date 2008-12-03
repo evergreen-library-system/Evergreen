@@ -435,6 +435,7 @@ sub add_collections_fee {
 	my $bill = Fieldmapper::money::billing->new;
 	$bill->note($fee_note);
 	$bill->xact($xact->id);
+	$bill->btype(2);
 	$bill->billing_type(OILS_BILLING_TYPE_COLLECTION_FEE);
 	$bill->amount($fee_amount);
 

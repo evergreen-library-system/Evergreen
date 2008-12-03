@@ -79,7 +79,8 @@ package money::billing;
 use base qw/money/;
 __PACKAGE__->table('money_billing');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount billing_ts billing_type note voided voider void_time/);
+__PACKAGE__->columns(Essential => qw/xact amount billing_ts billing_type note
+                                     voided voider void_time btype/);
 #-------------------------------------------------------------------------------
 
 package money::payment;

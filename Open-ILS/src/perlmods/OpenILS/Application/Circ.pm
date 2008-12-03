@@ -293,14 +293,14 @@ sub new_set_circ_lost {
     my $price = $U->get_copy_price($e, $copy, $copy->call_number);
 
     if( $price > 0 ) {
-        my $evt = create_bill($e, $price, 'Lost Materials', $circ->id);
+        my $evt = create_bill($e, $price, 3, 'Lost Materials', $circ->id);
         return $evt if $evt;
     }
 
     # ---------------------------------------------------------------------
     # if there is a processing fee, charge that too
     if( $proc_fee > 0 ) {
-        my $evt = create_bill($e, $proc_fee, 'Lost Materials Processing Fee', $circ->id);
+        my $evt = create_bill($e, $proc_fee, 4, 'Lost Materials Processing Fee', $circ->id);
         return $evt if $evt;
     }
 
@@ -347,7 +347,7 @@ sub reopen_xact {
 
 
 sub create_bill {
-	my( $e, $amount, $type, $xactid ) = @_;
+	my( $e, $amount, $btype, $type, $xactid ) = @_;
 
 	$logger->info("The system is charging $amount [$type] on xact $xactid");
 
@@ -357,6 +357,7 @@ sub create_bill {
 	$bill->xact($xactid);
 	$bill->amount($amount);
 	$bill->billing_type($type); 
+	$bill->btype($btype); 
 	$bill->note('SYSTEM GENERATED');
     $e->create_money_billing($bill) or return $e->die_event;
 
@@ -374,7 +375,7 @@ sub void_overdues {
 
     my $bill_search = { 
         xact => $circ->id, 
-        billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS 
+        btype => 1 
     };
 
     if( $backdate ) {

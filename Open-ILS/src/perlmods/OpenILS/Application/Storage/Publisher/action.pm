@@ -640,7 +640,7 @@ sub generate_fines {
 	
 			my @fines = money::billing->search_where(
 				{ xact => $c->id,
-				  billing_type => 'Overdue materials',
+				  btype => 1,
 				  billing_ts => { '>' => $c->due_date } },
 				{ order_by => 'billing_ts DESC'}
 			);
@@ -752,6 +752,7 @@ sub generate_fines {
 					{ xact		=> ''.$c->id,
 					  note		=> "System Generated Overdue Fine",
 					  billing_type	=> "Overdue materials",
+					  btype		=> 1,
 					  amount	=> sprintf('%0.2f', $recuring_fine/100),
 					  billing_ts	=> $timestamptz,
 					}
