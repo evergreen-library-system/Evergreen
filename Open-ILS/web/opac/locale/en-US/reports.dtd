@@ -44,6 +44,7 @@
 <!ENTITY reports.oils_rpt_builder.display_items "Display Items">
 <!ENTITY reports.oils_rpt_builder.filters "Filters">
 <!ENTITY reports.oils_rpt_builder.aggregate_filters "Aggregate Filters">
+<!ENTITY reports.oils_rpt_builder.create_aggregate_filter "Create Aggregate Filter">
 <!ENTITY reports.oils_rpt_builder.field_editor_window.label "Select how this field should be displayed:">
 <!ENTITY reports.oils_rpt_builder.add_item "Add Item">
 <!ENTITY reports.oils_rpt_builder.select_filter_to_apply "Select what filter should be applied to this field:">
