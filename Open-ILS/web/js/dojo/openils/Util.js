@@ -168,4 +168,16 @@ if(!dojo._hasResource["openils.Util"]) {
         node.className = className;
     }
 
+    openils.Util.objectSort = function(list, field) {
+        if(dojo.isArray(list)) {
+            if(!field) field = 'id';
+            return list.sort(
+                function(a, b) {
+                    if(a[field]() > b[field]()) return 1;
+                    return -1;
+                }
+            );
+        }
+        return [];
+    };
 }
