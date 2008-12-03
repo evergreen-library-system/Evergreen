@@ -261,6 +261,18 @@ util.network.prototype = {
 			data.session.key = data.temporary_session.key; 
 			data.session.authtime = data.temporary_session.authtime; 
 			data.stash('session');
+            try {
+                var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+                var cookieUri = ios.newURI("http://" + data.server_unadorned, null, null);
+                var cookieUriSSL = ios.newURI("https://" + data.server_unadorned, null, null);
+                var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
+
+                cookieSvc.setCookieString(cookieUri, null, "ses="+data.session.key, null);
+                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+data.session.key, null);
+
+            } catch(E) {
+                alert('Error setting session cookie: ' + E);
+            }
 			if (! data.list.au ) data.list.au = [];
 			data.list.au[0] = JSON2js( data.temporary_session.usr );
 			data.stash('list');

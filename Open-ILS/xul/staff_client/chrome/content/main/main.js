@@ -90,6 +90,18 @@ function main_init() {
 			G.data.server = url; G.data.stash('server'); 
 			G.data.session = { 'key' : G.auth.session.key, 'auth' : G.auth.session.authtime }; G.data.stash('session');
 			G.data.stash_retrieve();
+            try {
+                var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+                var cookieUri = ios.newURI("http://" + G.data.server_unadorned, null, null);
+                var cookieUriSSL = ios.newURI("https://" + G.data.server_unadorned, null, null);
+                var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
+
+                cookieSvc.setCookieString(cookieUri, null, "ses="+G.data.session.key, null);
+                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+G.data.session.key, null);
+
+            } catch(E) {
+                alert('Error setting session cookie: ' + E);
+            }
 
 			grant_perms(url);
 
