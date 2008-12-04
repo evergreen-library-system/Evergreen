@@ -74,11 +74,16 @@ class SQL(basel10n.BaseL10N):
                     fq_field = "%s.%s" % (fi18n.group('class'), fi18n.group('property'))
                     # Unescape escaped SQL single-quotes for translators' sanity
                     msgid = re.compile(r'\'\'').sub("'", fi18n.group('string'))
+
+                    # Hmm, sometimes people use ":" in text identifiers and
+                    # polib doesn't seem to like that; urlencode the colon
+                    occurid = re.compile(r':').sub("%3A", fi18n.group('id'))
+
                     if (msgid in serts):
-                        serts[msgid].occurrences.append((fq_field, fi18n.group('id')))
+                        serts[msgid].occurrences.append((fq_field, occurid))
                     else:
                         poe = polib.POEntry()
-                        poe.occurrences = [(fq_field, fi18n.group('id'))]
+                        poe.occurrences = [(fq_field, occurid)]
                         poe.msgid = msgid
                         serts[msgid] = poe
             except:
@@ -99,10 +104,14 @@ class SQL(basel10n.BaseL10N):
             for fq_field in entry.occurrences:
                 # Escape SQL single-quotes to avoid b0rkage
                 msgstr = re.compile(r'\'').sub("''", entry.msgstr)
+
+                # And unescape any colons in the occurence ID
+                occurid = re.compile(r'%3A').sub(':', fq_field[1])
+
                 if msgstr == '':
                     # Don't generate a stmt for an untranslated string
                     break
-                self.sql.append(insert % (fq_field[0], fq_field[1], locale, msgstr))
+                self.sql.append(insert % (fq_field[0], occurid, locale, msgstr))
 
 def main():
     """
