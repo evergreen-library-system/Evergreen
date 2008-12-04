@@ -587,7 +587,6 @@ sub import_record_list_impl {
             }
 
             $e->commit;
-            push @ingest_queue, $ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id);
             push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id), rec_id => $rec_id };
 
         } else { # authority
