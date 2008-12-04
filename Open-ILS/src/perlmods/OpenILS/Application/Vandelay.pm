@@ -534,6 +534,9 @@ sub import_record_list_impl {
     my $total = @$rec_ids;
     my $count = 0;
     my %queues;
+    my @ingest_queue;
+
+    my $ingest_ses = OpenSRF::AppSession->connect('open-ils.ingest');
 
     for my $rec_id (@$rec_ids) {
 
@@ -562,11 +565,11 @@ sub import_record_list_impl {
             if(defined $overlay_target) {
                 $logger->info("vl: overlaying record $overlay_target");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-                    $e, $overlay_target, $rec->marc); #$rec->bib_source
+                    $e, $overlay_target, $rec->marc, undef, undef, undef, 1); #$rec->bib_source
             } else {
                 $logger->info("vl: importing new record");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-                    $e, $rec->marc); #$rec->bib_source
+                    $e, $rec->marc, undef, undef, undef, 1); #$rec->bib_source
             }
 
             if($U->event_code($record)) {
@@ -582,6 +585,10 @@ sub import_record_list_impl {
                 $e->rollback;
                 next;
             }
+
+            $e->commit;
+            push @ingest_queue, $ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id);
+            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id), rec_id => $rec_id };
 
         } else { # authority
 
@@ -623,9 +630,11 @@ sub import_record_list_impl {
                 $e->rollback;
                 next;
             }
+
+            $e->commit;
+            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.authority.record', $rec_id), rec_id => $rec_id };
         }
 
-        $e->commit;
         $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % 10) == 0;
     }
 
@@ -641,7 +650,7 @@ sub import_record_list_impl {
                     $queue->complete('t');
                     $e->update_vandelay_bib_queue($queue) or return $e->die_event;
                     $e->commit;
-                    return;
+                    last
                 }
             }
         } else {
@@ -653,11 +662,19 @@ sub import_record_list_impl {
                     $queue->complete('t');
                     $e->update_vandelay_authority_queue($queue) or return $e->die_event;
                     $e->commit;
-                    return;
+                    last
                 }
             }
         }
     }
+
+    $count = 0;
+    for my $ingest (@ingest_queue) {
+        try { $ingest->{req}->gather(1); } otherwise {};
+        $conn->respond({total => $total, progress => $count, imported => $ingest->{rec_id}}) if (++$count % 10) == 0;
+    } 
+
+    $ingest_ses->disconnect();
 
     $e->rollback;
     return undef;
