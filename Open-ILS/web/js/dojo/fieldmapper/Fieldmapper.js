@@ -158,6 +158,10 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	}
 
 	fieldmapper.i18n_l.Identifier = 'code';
+	fieldmapper.ccpbt.Identifier = 'code';
+	fieldmapper.ccnbt.Identifier = 'code';
+	fieldmapper.cbrebt.Identifier = 'code';
+	fieldmapper.cubt.Identifier = 'code';
 	fieldmapper.ccm.Identifier = 'code';
 	fieldmapper.cvrfm.Identifier = 'code';
 	fieldmapper.clm.Identifier = 'code';
