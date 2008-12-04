@@ -36,7 +36,7 @@ sub fetch_bib_sources {
 
 
 sub biblio_record_replace_marc  {
-	my($class, $e, $recid, $newxml, $source, $fixtcn, $override) = @_;
+	my($class, $e, $recid, $newxml, $source, $fixtcn, $override, $noingest) = @_;
 
 	my $rec = $e->retrieve_biblio_record_entry($recid)
 		or return $e->die_event;
@@ -70,15 +70,17 @@ sub biblio_record_replace_marc  {
 	$rec->marc( $U->entityize( $marcdoc->documentElement->toString ) );
 	$e->update_biblio_record_entry($rec) or return $e->die_event;
 
-    # we don't care about the result, just fire off the request
-    my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    $ses->request('open-ils.ingest.full.biblio.record', $recid);
+    unless ($noingest) {
+        # we don't care about the result, just fire off the request
+        my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+        $ses->request('open-ils.ingest.full.biblio.record', $recid);
+    }
 
 	return $rec;
 }
 
 sub biblio_record_xml_import {
-	my($class, $e, $xml, $source, $auto_tcn, $override) = @_;
+	my($class, $e, $xml, $source, $auto_tcn, $override, $noingest) = @_;
 
 	my( $evt, $tcn, $tcn_source, $marcdoc );
 
@@ -107,9 +109,11 @@ sub biblio_record_xml_import {
     $record = $e->create_biblio_record_entry($record) or return $e->die_event;
 	$logger->info("marc create/import created new record ".$record->id);
 
-    # we don't care about the result, just fire off the request
-    my $ses = OpenSRF::AppSession->create('open-ils.ingest');
-    $ses->request('open-ils.ingest.full.biblio.record', $record->id);
+    unless ($noingest) {
+        # we don't care about the result, just fire off the request
+        my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+        $ses->request('open-ils.ingest.full.biblio.record', $record->id);
+    }
 
 	return $record;
 }
@@ -234,7 +238,7 @@ sub find_free_tcn {
 
 		if($tcn) {
 			$marcxml->documentElement->removeChild(
-				$marcxml->documentElement->findnodes( '//datafield[@tag="035"]' )
+				$marcxml->documentElement->findnodes( '//marc:datafield[@tag="035"]' )
 			);
 		}
 	}
