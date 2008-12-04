@@ -587,7 +587,7 @@ sub import_record_list_impl {
             }
 
             $e->commit;
-            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id), rec_id => $rec_id };
+            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.biblio.record', $record->id), rec_id => $record->id };
 
         } else { # authority
 
@@ -631,7 +631,7 @@ sub import_record_list_impl {
             }
 
             $e->commit;
-            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.authority.record', $rec_id), rec_id => $rec_id };
+            push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.authority.record', $record->id), rec_id => $record->id };
         }
 
         $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % 10) == 0;
