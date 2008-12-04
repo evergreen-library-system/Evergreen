@@ -666,6 +666,7 @@ sub import_record_list_impl {
             }
         }
     }
+    $e->rollback;
 
     $count = 0;
     for my $ingest (@ingest_queue) {
@@ -674,8 +675,6 @@ sub import_record_list_impl {
     } 
 
     $ingest_ses->disconnect();
-
-    $e->rollback;
     return undef;
 }
 
