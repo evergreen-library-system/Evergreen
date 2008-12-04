@@ -248,7 +248,7 @@ sub find_free_tcn {
 
 		if($tcn) {
 			$marcxml->documentElement->removeChild(
-				$marcxml->documentElement->findnodes( '//datafield[@tag="035"]' )
+				$marcxml->documentElement->findnodes( '//marc:datafield[@tag="035"]' )
 			);
 		}
 	}
