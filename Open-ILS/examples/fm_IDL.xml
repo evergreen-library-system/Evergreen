@@ -3252,11 +3252,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Work Payment Detail" name="work_payment" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
 			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
+			<link field="credit_payment" reltype="might_have" key="id" map="" class="mcrp"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
