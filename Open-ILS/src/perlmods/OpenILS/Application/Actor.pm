@@ -3083,5 +3083,36 @@ sub retrieve_friends {
     return OpenILS::Application::Actor::Friends->retrieve_friends($e, $user_id);
 }
 
+
+
+__PACKAGE__->register_method (
+	method		=> 'apply_friend_perms',
+	api_name	=> 'open-ils.actor.friends.perms.apply',
+	signature	=> {
+        desc => q/
+        /
+    }
+);
+sub apply_friend_perms {
+    my($self, $conn, $auth, $user_id, $delegate_id, @perms) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->event unless $e->checkauth;
+
+    if($user_id != $e->requestor->id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+        return $e->die_event unless $e->allowed('VIEW_USER', $user->home_ou);
+    }
+
+    for my $perm (@perms) {
+        my $evt = 
+            OpenILS::Application::Actor::Friends->apply_friend_perm(
+                $e, $user_id, $delegate_id, $perm);
+        return $evt if $evt;
+    }
+
+    $e->commit;
+    return 1;
+}
+
 1;
 
