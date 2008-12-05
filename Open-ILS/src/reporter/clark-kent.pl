@@ -372,7 +372,7 @@ sub build_excel {
 	my $r = shift;
 	my $xls = Spreadsheet::WriteExcel::Big->new($file);
 
-	my $sheetname = substr($r->{report}->{name},1,31);
+	my $sheetname = substr($r->{report}->{name},0,30);
 	$sheetname =~ s/\W/_/gos;
 	
 	my $sheet = $xls->add_worksheet($sheetname);
