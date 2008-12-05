@@ -11,7 +11,7 @@ my $U = "OpenILS::Application::AppUtils";
 # ----------------------------------------------------------------
 
 # export these fields for friend display
-my @keep_user_fields = qw/id usrname first_given_name second_given_name family_name alias/;
+my @expose_user_fields = qw/id usrname first_given_name second_given_name family_name alias/;
 
 my $out_links_query = {
     select => {cubi => ['target_user']}, 
@@ -97,7 +97,10 @@ sub retrieve_friends {
 sub load_linked_user_perms {
     my($self, $e, $user_id, @users) = @_;
     my $items = [];
-    my $select = {select => {au => \@keep_user_fields}};
+
+    # use this query to retrieve trimmed linked user objects
+    my $user_select = 
+        {select => {au => \@expose_user_fields}, from => 'au', where => undef};
 
     for my $d_user (@users) {
 
@@ -108,12 +111,24 @@ sub load_linked_user_perms {
             '+cub' => {btype => {like => 'folks:%'}, owner => $user_id}
         };
 
+        my $perms_granted = [ 
+            map {substr($_->{btype}, 6)} @{$e->json_query($perm_check_query)}];
+
+        # fetch all of the bucket items linked from the delegate user 
+        # to the base user with the folks: prefix on the bucket type
+        $perm_check_query->{where} = {
+            '+cubi' => {target_user => $user_id},
+            '+cub' => {btype => {like => 'folks:%'}, owner => $d_user}
+        };
+
+        my $perms_received = [ 
+            map {substr($_->{btype}, 6)} @{$e->json_query($perm_check_query)}];
+
+        $user_select->{where} = {id => $d_user};
         push(@$items, {
-                user => $e->retrieve_actor_user([$d_user, $select]),
-                permissions => [ 
-                    # trim the folks: prefix from the bucket type
-                    map {substr($_->{btype}, 6)} @{$e->json_query($perm_check_query)} 
-                ]
+                user => $e->json_query($user_select),
+                perms_granted => $perms_granted,
+                perms_received => $perms_received
             }
         );
     }
