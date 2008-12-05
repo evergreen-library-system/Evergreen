@@ -57,6 +57,7 @@ CREATE TABLE actor.usr (
 	super_user		BOOL				NOT NULL DEFAULT FALSE,
 	barred			BOOL				NOT NULL DEFAULT FALSE,
 	deleted			BOOL				NOT NULL DEFAULT FALSE,
+	juvenile		BOOL				NOT NULL DEFAULT FALSE,
 	usrgroup		SERIAL				NOT NULL,
 	claims_returned_count	INT				NOT NULL DEFAULT 0,
 	credit_forward_balance	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,

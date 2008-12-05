@@ -1479,13 +1479,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Family Linkage or other Group" name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field reporter:label="OPAC/Staff Client User Name" name="usrname" oils_obj:array_position="49" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="OPAC/Staff Client Holds Alias" name="alias" oils_obj:array_position="50" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label="Additional Permission Groups" name="groups" oils_obj:array_position="51" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="52" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="User Notes" name="notes" oils_obj:array_position="53" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Demographic Info" name="demographic" oils_obj:array_position="54" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Billable Transactions" name="billable_transactions" oils_obj:array_position="55" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Checkins" name="checkins" oils_obj:array_position="56" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_obj:array_position="57" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Juvenile" name="alias" oils_obj:array_position="51" oils_persist:virtual="false"  reporter:datatype="bool"/>
+			<field reporter:label="Additional Permission Groups" name="groups" oils_obj:array_position="52" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="53" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="User Notes" name="notes" oils_obj:array_position="54" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Demographic Info" name="demographic" oils_obj:array_position="55" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billable Transactions" name="billable_transactions" oils_obj:array_position="56" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Checkins" name="checkins" oils_obj:array_position="57" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_obj:array_position="58" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="demographic" reltype="might_have" key="id" map="" class="rud"/>
