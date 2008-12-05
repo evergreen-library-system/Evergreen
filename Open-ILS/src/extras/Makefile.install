@@ -295,6 +295,8 @@ debian_sys_config:
 	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
 	# keep the bad apache modules away
 	for m in $(DEB_APACHE_DISMODS); do a2dismod $$m; done;
+	# refresh the dynamic library cache
+	ldconfig
 
 # Install the debian-specific dependencies
 install_debs:
