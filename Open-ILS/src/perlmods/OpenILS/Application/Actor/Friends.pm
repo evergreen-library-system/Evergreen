@@ -11,7 +11,7 @@ my $U = "OpenILS::Application::AppUtils";
 # ----------------------------------------------------------------
 
 # export these fields for friend display
-my @keep_user_fields = qw/usrname first_given_name second_given_name family_name alias/;
+my @keep_user_fields = qw/id usrname first_given_name second_given_name family_name alias/;
 
 my $out_links_query = {
     select => {cubi => ['target_user']}, 
@@ -38,6 +38,15 @@ my $in_links_query = {
     }
 };
 
+my $perm_check_query = { 
+    select => {cub =>  ['btype'] }, 
+    from => {
+        cub => {
+            cubi => {field => 'bucket', fkey => 'id'}
+        }
+    }, 
+    limit => 1
+};
 
 sub retrieve_friends {
     my($self, $e, $user_id) = @_;
@@ -50,6 +59,8 @@ sub retrieve_friends {
     $in_links_query->{where}->{'+cubi'}->{target_user} = $user_id;
     my @in_linked = map {$_->{owner}} @{$e->json_query($in_links_query)};
 
+    # determine which users are confirmed, pending outbound 
+    # requests, and pending inbound requests
     my @confirmed;
     my @pending_out;
     my @pending_in;
@@ -67,23 +78,41 @@ sub retrieve_friends {
             unless grep {$_ == $in_link} @confirmed;
     }
 
-    my $select = {select => {au => \@keep_user_fields}};
-
-    my $confirmed = (@confirmed) ? 
-        $e->search_actor_user([{id => \@confirmed}, $select]) : [];
-
-    my $pending_out = (@pending_out) ?
-        $e->search_actor_user([{id => \@pending_out}, $select]) : [];
-
-    my $pending_in = (@pending_in) ? 
-        $e->search_actor_user([{id => \@pending_in}, $select]) : [];
-
     return {
-        confirmed => $confirmed,
-        pending_out => $pending_out,
-        pending_in =>$pending_in
+        confirmed => $self->load_linked_user_perms($e, $user_id, @confirmed),
+        pending_out => $self->load_linked_user_perms($e, $user_id, @pending_out),
+        pending_in => $self->load_linked_user_perms($e, $user_id, @pending_in)
     };
 }
+
+# given a base user and set of linked users, returns the trimmed linked user
+# records, plus the perms (by name) each user has been granted
+sub load_linked_user_perms {
+    my($self, $e, $user_id, @users) = @_;
+    my $items = [];
+    my $select = {select => {au => \@keep_user_fields}};
+
+    for my $d_user (@users) {
+
+        # fetch all of the bucket items linked from base user to 
+        # delegate user with the folks: prefix on the bucket type
+        $perm_check_query->{where} = {
+            '+cubi' => {target_user => $d_user},
+            '+cub' => {btype => {like => 'folks:%'}, owner => $user_id}
+        };
+
+        push(@$items, {
+                user => $e->retrieve_actor_user([$d_user, $select]),
+                permissions => [ 
+                    # trim the folks: prefix from the bucket type
+                    map {substr($_->{btype}, 6)} @{$e->json_query($perm_check_query)} 
+                ]
+            }
+        );
+    }
+    return $items;
+}
+
 
 my $direct_links_query = { 
     select => {cub =>  ['id'] }, 
@@ -116,15 +145,6 @@ sub confirmed_friends {
 }
 
 
-my $perm_check_query = { 
-    select => {cub =>  ['id'] }, 
-    from => {
-        cub => {
-            cubi => {field => 'bucket', fkey => 'id'}
-        }
-    }, 
-    limit => 1
-};
 
 # returns 1 if delegate_user is allowed to perform 'perm' for base_user
 sub friend_perm_allowed {
