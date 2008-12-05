@@ -49,7 +49,8 @@ my $perm_check_query = {
 };
 
 sub retrieve_friends {
-    my($self, $e, $user_id) = @_;
+    my($self, $e, $user_id, $options) = @_;
+    $options ||= {};
 
     # users I have links to
     $out_links_query->{where}->{'+cub'}->{owner} = $user_id;
@@ -78,11 +79,17 @@ sub retrieve_friends {
             unless grep {$_ == $in_link} @confirmed;
     }
 
-    return {
-        confirmed => $self->load_linked_user_perms($e, $user_id, @confirmed),
-        pending_out => $self->load_linked_user_perms($e, $user_id, @pending_out),
-        pending_in => $self->load_linked_user_perms($e, $user_id, @pending_in)
-    };
+    if($$options{confirmed_only}) {
+        return {
+            confirmed => $self->load_linked_user_perms($e, $user_id, @confirmed),
+        };
+    } else {
+        return {
+            confirmed => $self->load_linked_user_perms($e, $user_id, @confirmed),
+            pending_out => $self->load_linked_user_perms($e, $user_id, @pending_out),
+            pending_in => $self->load_linked_user_perms($e, $user_id, @pending_in)
+        };
+    }
 }
 
 # given a base user and set of linked users, returns the trimmed linked user

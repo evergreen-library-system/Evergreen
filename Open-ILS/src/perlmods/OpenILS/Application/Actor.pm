@@ -3071,16 +3071,18 @@ __PACKAGE__->register_method (
 );
 
 sub retrieve_friends {
-    my($self, $conn, $auth, $user_id) = @_;
+    my($self, $conn, $auth, $user_id, $options) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     $user_id ||= $e->requestor->id;
+
     if($user_id != $e->requestor->id) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->event;
         return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     }
 
-    return OpenILS::Application::Actor::Friends->retrieve_friends($e, $user_id);
+    return OpenILS::Application::Actor::Friends->retrieve_friends(  
+        $e, $user_id, $options);
 }
 
 
