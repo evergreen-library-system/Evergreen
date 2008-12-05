@@ -28,11 +28,12 @@ use OpenILS::Const qw/:const/;
 
 use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
+use OpenILS::Application::Actor::UserGroups;
+use OpenILS::Application::Actor::Friends;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
 
-use OpenILS::Application::Actor::UserGroups;
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
 	OpenILS::Application::Actor::UserGroups->initialize();
@@ -3056,6 +3057,31 @@ sub merge_users {
 }
 
 
+
+__PACKAGE__->register_method (
+	method		=> 'retrieve_friends',
+	api_name	=> 'open-ils.actor.friends.retrieve',
+	signature	=> {
+        desc => q/
+            returns { confirmed: [], pending_out: [], pending_in: []}
+            pending_out are users I'm requesting friendship with
+            pending_in are users requesting friendship with me
+        /
+    }
+);
+
+sub retrieve_friends {
+    my($self, $conn, $auth, $user_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    $user_id ||= $e->requestor->id;
+    if($user_id != $e->requestor->id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    }
+
+    return OpenILS::Application::Actor::Friends->retrieve_friends($e, $user_id);
+}
 
 1;
 
