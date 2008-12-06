@@ -96,13 +96,13 @@
             <hbox id="top_pane" persist="height" flex="1">
                 <groupbox id="x_splitter1" persist="width" flex="1">
                     <caption label="&staff.cat.z3950.query.label;"/>
-                    <hbox>
+                    <vbox>
                         <spacer flex="1"/>
                         <description>
                         &staff.cat.z3950.query.description;
                         </description>
                         <spacer flex="1"/>
-                    </hbox>
+                    </vbox>
                     <grid flex="1">
                         <columns><column /><column flex="1" /></columns>
                         <rows id="query_inputs" class="my_overflow">
@@ -138,8 +138,8 @@
                     <grid flex="1">
                         <columns>
                         <column/>
-                        <column/>
-                        <column/>
+                        <column flex="1"/>
+                        <column flex="1"/>
                         </columns>
                         <rows id="service_rows" class="my_overflow">
                             <row>
