@@ -159,6 +159,7 @@ function patron_bill_finish() {
                 billing.note( $('bill_note').value );
                 billing.xact( xact_id );
                 billing.amount( util.money.sanitize( $('bill_amount').value ) );
+                billing.btype( $('billing_type').value );
                 billing.billing_type( g.OpenILS.data.hash.cbt[$('billing_type').value].name() );
             var mb_id = g.network.request(
                 api.FM_MB_CREATE.app,
