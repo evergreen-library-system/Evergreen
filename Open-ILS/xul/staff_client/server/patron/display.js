@@ -117,6 +117,7 @@ patron.display.prototype = {
 							removeCSSClass(document.documentElement,'PATRON_INACTIVE');
 							removeCSSClass(document.documentElement,'PATRON_EXPIRED');
 							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+							removeCSSClass(document.documentElement,'PATRON_JUVENILE');
 							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
 							removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
 							removeCSSClass(document.documentElement,'PATRON_AGE_LT_65');

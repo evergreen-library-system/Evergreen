@@ -619,6 +619,9 @@ patron.util.set_penalty_css = function(patron) {
 			addCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
 		}
 
+        if ( get_bool( patron.juvenile() ) ) addCSSClass(document.documentElement,'PATRON_JUVENILE');
+        else removeCSSClass(document.documentElement,'PATRON_JUVENILE');
+
 		if (patron.mailing_address()) {
 			if (!get_bool(patron.mailing_address().valid())) {
 				addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');

@@ -74,3 +74,6 @@ deck#patron_deck { border-left: solid thin black; }
 .line_item { font-family: monospace; }
 .checking_barcode { color: orange; text-decoration: blink; }
 
+.PATRON_JUVENILE .dob { color: purple; }
+.PATRON_JUVENILE label.juvenile_indicator { display: inline; color: purple; }
+
