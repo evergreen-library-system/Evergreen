@@ -45,9 +45,10 @@ sub import {
 	return if (keys %$fieldmap);
 	return if (!OpenSRF::System->connected && !$args{IDL});
 
-        # parse the IDL ...
-        my $file = $args{IDL} || OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
-        my $idl = XMLin( $file, ForceArray => 0, KeyAttr => ['name', 'id'], ValueAttr => {link =>'key'} )->{class};
+	# parse the IDL ...
+	my $file = $args{IDL} || OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
+	my $idl = XMLin( $file, ForceArray => 0, KeyAttr => ['name', 'id'], ValueAttr => {link =>'key'} )->{class};
+
 	for my $c ( keys %$idl ) {
 		next unless ($idl->{$c}{'oils_obj:fieldmapper'});
 		my $n = 'Fieldmapper::'.$idl->{$c}{'oils_obj:fieldmapper'};
@@ -55,7 +56,7 @@ sub import {
 		$log->debug("Building Fieldmapper class for [$n] from IDL");
 
 		$$fieldmap{$n}{hint} = $c;
-		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
+		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} && $idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
 		$$fieldmap{$n}{table} = $idl->{$c}{'oils_persist:tablename'};
 		$$fieldmap{$n}{sequence} = $idl->{$c}{fields}{'oils_persist:sequence'};
 		$$fieldmap{$n}{identity} = $idl->{$c}{fields}{'oils_persist:primary'};
