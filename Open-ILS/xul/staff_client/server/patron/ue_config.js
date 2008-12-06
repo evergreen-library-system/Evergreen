@@ -18,7 +18,10 @@ const defaultCountry		= 'USA';
 const defaultNetAccess	= 'None';
 const defaultNetLevel   = 1;
 const CSS_INVALID_DATA	= 'invalid_value';
+
+// XXX Should become an org unit setting XXX
 const ADULT_AGE			= 18;
+
 //const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
 var dataFields;
@@ -1068,6 +1071,8 @@ function uEditCheckDOB(field) {
 		hideMe(f.widget.node.parentNode.parentNode.parentNode);
 		return;
 	}
+
+	uEditFindFieldByKey('juvenile').widget.node.checked = true;
 
 	unHideMe(f.widget.node.parentNode.parentNode.parentNode);
 	f.required = true;
