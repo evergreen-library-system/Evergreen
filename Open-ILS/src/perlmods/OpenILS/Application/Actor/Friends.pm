@@ -45,7 +45,6 @@ my $perm_check_query = {
             cubi => {field => 'bucket', fkey => 'id'}
         }
     }, 
-    limit => 1
 };
 
 sub retrieve_friends {
