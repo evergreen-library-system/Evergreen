@@ -23,6 +23,28 @@ __PACKAGE__->register_method(
 	method		=> 'new_usergroup_id',
 );
 
+sub juv_to_adult {
+	my $self = shift;
+	my $client = shift;
+	my $adult_age = shift;
+
+	my $sql = <<"	SQL";
+            UPDATE  actor.usr
+              SET   juvenile = FALSE
+              WHERE AGE(dob) > ?::INTERVAL;
+	SQL
+
+    my $sth = actor::user->db_Main->prepare_cached($sql);
+    $sth->execute($adult_age);
+
+    return $sth->rows;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.juvenile_to_adult',
+	api_level	=> 1,
+	method		=> 'juv_to_adult',
+);
+
 sub usr_total_owed {
 	my $self = shift;
 	my $client = shift;
