@@ -96,24 +96,25 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
 --
 
 CREATE TABLE config.circ_matrix_matchpoint (
-    id                    SERIAL    PRIMARY KEY,
-    active                BOOL    NOT NULL DEFAULT TRUE,
-    org_unit            INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    grp                    INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
+    id                   SERIAL    PRIMARY KEY,
+    active               BOOL    NOT NULL DEFAULT TRUE,
+    org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
     marc_type            TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
     marc_form            TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_vr_format        TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
-    ref_flag            BOOL,
-    is_renewal            BOOL,
-    usr_age_lower_bound    INTERVAL,
-    usr_age_upper_bound    INTERVAL,
-    circulate           BOOL    NOT NULL DEFAULT TRUE,    -- Hard "can't circ" flag requiring an override
+    marc_vr_format       TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+    ref_flag             BOOL,
+    juvenile_flag        BOOL,
+    is_renewal           BOOL,
+    usr_age_lower_bound  INTERVAL,
+    usr_age_upper_bound  INTERVAL,
+    circulate            BOOL    NOT NULL DEFAULT TRUE,    -- Hard "can't circ" flag requiring an override
     duration_rule        INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
-    recurring_fine_rule    INT     NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
+    recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
     max_fine_rule        INT     NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
-    script_test         TEXT,                           -- javascript source 
-    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal)
+    script_test          TEXT,                           -- javascript source 
+    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal)
 );
 
 
@@ -149,7 +150,8 @@ BEGIN
                 LEFT JOIN actor.org_unit_proximity p ON (p.from_org = context_ou AND p.to_org = d.id)
               WHERE    m.grp = current_group.id AND m.active
               ORDER BY    CASE WHEN p.prox        IS NULL THEN 999 ELSE p.prox END,
-                    CASE WHEN m.is_renewal = renewal        THEN 64 ELSE 0 END +
+                    CASE WHEN m.is_renewal = renewal        THEN 128 ELSE 0 END +
+                    CASE WHEN m.juvenile_flag    IS NOT NULL THEN 64 ELSE 0 END +
                     CASE WHEN m.circ_modifier    IS NOT NULL THEN 32 ELSE 0 END +
                     CASE WHEN m.marc_type        IS NOT NULL THEN 16 ELSE 0 END +
                     CASE WHEN m.marc_form        IS NOT NULL THEN 8 ELSE 0 END +
@@ -180,6 +182,10 @@ BEGIN
 
             IF current_mp.ref_flag IS NOT NULL THEN
                 CONTINUE WHEN current_mp.ref_flag <> item_object.ref;
+            END IF;
+
+            IF current_mp.juvenile_flag IS NOT NULL THEN
+                CONTINUE WHEN current_mp.juvenile_flag <> user_object.juvenile;
             END IF;
 
             IF current_mp.usr_age_lower_bound IS NOT NULL THEN

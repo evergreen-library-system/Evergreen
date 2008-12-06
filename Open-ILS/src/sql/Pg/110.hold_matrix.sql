@@ -42,6 +42,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     marc_type               TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
     marc_form               TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
     marc_vr_format          TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+    juvenile_flag           BOOL,
     ref_flag                BOOL,
     holdable                BOOL    NOT NULL DEFAULT TRUE,                -- Hard "can't hold" flag requiring an override
     distance_is_from_owner  BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
@@ -50,7 +51,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     include_frozen_holds    BOOL    NOT NULL DEFAULT TRUE,                -- Include frozen hold requests in the count for max_holds test
     stop_blocked_user       BOOL    NOT NULL DEFAULT FALSE,                -- Stop users who cannot check out items from placing holds
     age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED,    -- still not sure we want to move this off the copy
-    CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format)
+    CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag)
 );
 
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
@@ -83,6 +84,7 @@ BEGIN
               FROM    config.hold_matrix_matchpoint m
               WHERE    m.requestor_grp = current_requestor_group.id AND m.active
               ORDER BY    CASE WHEN m.circ_modifier    IS NOT NULL THEN 16 ELSE 0 END +
+                    CASE WHEN m.juvenile_flag    IS NOT NULL THEN 16 ELSE 0 END +
                     CASE WHEN m.marc_type        IS NOT NULL THEN 8 ELSE 0 END +
                     CASE WHEN m.marc_form        IS NOT NULL THEN 4 ELSE 0 END +
                     CASE WHEN m.marc_vr_format    IS NOT NULL THEN 2 ELSE 0 END +
@@ -108,6 +110,10 @@ BEGIN
 
             IF current_mp.marc_vr_format IS NOT NULL THEN
                 CONTINUE WHEN current_mp.marc_vr_format <> rec_descriptor.vr_format;
+            END IF;
+
+            IF current_mp.juvenile_flag IS NOT NULL THEN
+                CONTINUE WHEN current_mp.juvenile_flag <> user_object.juvenile;
             END IF;
 
             IF current_mp.ref_flag IS NOT NULL THEN
