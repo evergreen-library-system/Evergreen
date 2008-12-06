@@ -348,6 +348,15 @@ function uEditDefineData(patron) {
 		{
 			required : false,
 			object	: patron,
+			key		: 'juvenile',
+			widget	: {
+				id			: 'ue_juvenile',
+				type		: 'checkbox',
+			}
+		},
+		{
+			required : false,
+			object	: patron,
 			key		: 'barred',
 			widget	: {
 				id			: 'ue_barred',

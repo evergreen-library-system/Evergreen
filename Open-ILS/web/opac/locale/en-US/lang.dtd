@@ -2564,6 +2564,7 @@
 <!ENTITY ev.staff.patron.ue_xhtml.net_access_level.label "Internet Access Level">
 <!ENTITY ev.staff.patron.ue_xhtml.active.label "Active">
 <!ENTITY ev.staff.patron.ue_xhtml.barred.label "Barred">
+<!ENTITY ev.staff.patron.ue_xhtml.juvenile.label "Juvenile">
 <!ENTITY ev.staff.patron.ue_xhtml.set_family_group_lead_account.label "Set as Family or Group Lead Account">
 <!ENTITY ev.staff.patron.ue_xhtml.claims_returned_count.label "Claims Returned Count">
 <!ENTITY ev.staff.patron.ue_xhtml.alert_message.label "Alert Message">
