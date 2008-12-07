@@ -5,10 +5,11 @@
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
+CHROME_LOCALES = $$(ls server/locale)
 
 install-exec-local: build
 
-build: build_dir generated open-ils stamp
+build: build_dir chrome2remote generated open-ils stamp
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
@@ -29,6 +30,14 @@ build_dir:
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
 	external/prune_dirs.sh build/
+
+# Convert chrome to remote for server localization
+chrome2remote:
+	sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/auth/verify_credentials.xul
+	sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/main/simple_auth.xul
+	@for loc in $(CHROME_LOCALES); do \
+		cp -r chrome/locale/$$loc build/server/locale/. ; \
+	done;
 
 stamp:
 	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
