@@ -47,7 +47,7 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" 
-            rowSelector='20px' selectionMode='none' columnReordering='true' headerMenu="btGridMenu">
+            rowSelector='20px' selectionMode='none' columnReordering='true'><!-- headerMenu="btGridMenu">-->
             <thead>
                 <tr>
                     <th field="id">ID</th>
