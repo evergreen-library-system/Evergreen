@@ -12,6 +12,8 @@ var groupsCache				= {};
 var netLevelsCache			= {};
 //var guardianNote				= null;
 
+if(!window.xulG) var xulG = null;
+
 function $(id) { return document.getElementById(id); }
 
 /* fetch the necessary data to start off */
