@@ -2,17 +2,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <file type="notice" date="[% date.format(date.now,'%Y-%m-%d') %]" time="[% date.format(date.now, '%H:%M:%S') %]">
     [%- FOREACH circ_set = overdues %]
-    <notice type='overdue' notify_interval='[% circ_set.notice.notify_interval %]'>
         [%- SET user = circ_set.circ_list.0.usr -%]
         [%- SET lib = circ_set.circ_list.0.circ_lib -%]
         [%- SET user_addr = user.mailing_address -%]
-        [%- IF !user_addr -%]
+        [%- IF !user_addr or user_addr.valid == 'f' -%]
                 [%- SET user_addr = user.billing_address -%]
         [%- END %]
         [%- SET lib_addr = lib.mailing_address -%]
         [%- IF !lib_addr -%]
                 [%- SET lib_addr = lib.billing_address -%]
-        [%- END %]
+        [%- END -%]
+        [%- IF !user_addr or user_addr.valid == 'f'; NEXT; END; %]
+    <notice type='overdue' notify_interval='[% circ_set.notice.notify_interval %]'>
         <patron>
             <barcode>[% user.card.barcode %]</barcode>
             <first_given_name>[% user.first_given_name %]</first_given_name>
