@@ -76,6 +76,12 @@
                         onClick="location.href = '[% ctx.base_uri %]/acq/provider/list';">Providers</div>
                 <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                         onClick="location.href = '[% ctx.base_uri %]/acq/currency_type/list';">Currency Types</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '[% ctx.base_uri %]/conify/global/config/billing_type';">Billing Types</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '[% ctx.base_uri %]/conify/global/config/standing_penalty';">Standing Penalties</div>
+                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                        onClick="location.href = '[% ctx.base_uri %]/conify/global/permission/grp_penalty_threshold';">Group Penalty Thresholds</div>
             </div>
         </div>
     </div>
