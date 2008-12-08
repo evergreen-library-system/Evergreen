@@ -28,7 +28,6 @@ const api = {
 	'AUTH_WORKSTATION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.workstation.register' },
 	'AUTH_VERIFY_CREDENTIALS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.verify_user_password' },
 	'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
-	'BILLING_TYPE_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.billing_type.retrieve.all', 'secure' : false },
 	'BLOB_AU_PARTS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve.parts', 'cacheable' : true, 'ttl' : 120000 },
 	'BLOB_MARC_CALLNUMBERS_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc_cn.retrieve', 'secure' : false },
 	'BLOB_MOBTS_CIRC_MVR_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.fleshed' },
