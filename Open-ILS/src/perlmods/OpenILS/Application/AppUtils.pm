@@ -1245,49 +1245,18 @@ sub make_mbts {
 sub ou_ancestor_setting_value {
     my($self, $org_id, $name, $e) = @_;
     $e = $e || OpenILS::Utils::CStoreEditor->new;
-    my $query = {
-        select => {
-            aous => [ {
-                transform => 'actor.org_unit_ancestor_setting',
-                params => [$org_id],
-                column => 'name',
-                result_field => 'value',
-                alias => 'value'
-            } ]
-        },
-        from => 'aous',
-        where => {name => $name},
-        limit => 1 # since name is not required to be unique, this approach could return duplicate rows
-    };
-
-    my $obj = $e->json_query($query);
-    return OpenSRF::Utils::JSON->JSON2perl($obj->[0]->{value}) if @$obj;
+    my $set = $self->ou_ancestor_setting($org_id, $name, $e);
+    return $set->{value} if $set;
     return undef;
 }
 
 sub ou_ancestor_setting {
     my( $self, $orgid, $name, $e ) = @_;
     $e = $e || OpenILS::Utils::CStoreEditor->new;
-
-    my $query = {
-        select => {
-            aous => [ {
-                transform => 'actor.org_unit_ancestor_setting',
-                params => [$orgid],
-                column => 'name',
-                result_field => 'id',
-                alias => 'id'
-            } ]
-        },
-        from => 'aous',
-        where => {name => $name},
-        limit => 1 # since name is not required to be unique, this approach could return duplicate rows
-    };
-
-    my $obj = $e->json_query($query);
-    return undef unless @$obj;
-    my $setting = $e->retrieve_actor_org_unit_setting($obj->[0]->{id});
-    return { org => $setting->org_unit, value => OpenSRF::Utils::JSON->JSON2perl($setting->value) };
+    my $query = {from => ['actor.org_unit_ancestor_setting', $name, $orgid]};
+    my $setting = $e->json_query($query)->[0];
+    return undef unless $setting;
+    return {org => $setting->{org_unit}, value => OpenSRF::Utils::JSON->JSON2perl($setting->{value})};
 }	
 		
 

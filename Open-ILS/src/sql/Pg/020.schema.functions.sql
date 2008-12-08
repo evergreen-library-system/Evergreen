@@ -206,7 +206,7 @@ CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS 
 	) z;
 $$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting( setting_name TEXT, org_id INT ) RETURNS actor.org_unit_setting AS $$
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting( setting_name TEXT, org_id INT ) RETURNS SETOF actor.org_unit_setting AS $$
 DECLARE
     setting RECORD;
     cur_org INT;
@@ -215,13 +215,12 @@ BEGIN
     LOOP
         SELECT INTO setting * FROM actor.org_unit_setting WHERE org_unit = cur_org AND name = setting_name;
         IF FOUND THEN
-            RETURN setting;
+            RETURN NEXT setting;
         END IF;
         SELECT INTO cur_org parent_ou FROM actor.org_unit WHERE id = cur_org;
-        IF cur_org IS NULL THEN
-            RETURN NULL;
-        END IF;
+        EXIT WHEN cur_org IS NULL;
     END LOOP;
+    RETURN;
 END;
 $$ LANGUAGE plpgsql;
 
