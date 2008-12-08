@@ -5,7 +5,7 @@
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
-CHROME_LOCALES = $$(ls server/locale)
+CHROME_LOCALES = $$(ls chrome/locale)
 
 install-exec-local: build
 
