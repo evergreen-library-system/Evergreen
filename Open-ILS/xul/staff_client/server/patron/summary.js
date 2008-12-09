@@ -103,9 +103,24 @@ patron.summary.prototype = {
 								util.widgets.remove_children(e2);
 								var penalties = obj.patron.standing_penalties();
 								for (var i = 0; i < penalties.length; i++) {
+
+									var b = document.createElement('hbox');
+									var r = document.createElement('button');
 									var x = document.createElement('label');
-									x.setAttribute('value',penalties[i].penalty_type());
-									e2.appendChild(x);
+
+									//x.setAttribute('value',penalties[i].penalty_type());
+									x.setAttribute('value',penalties[i].standing_penalty().name());
+									b.appendChild(x);
+
+                                    // XXX check a permission here? How to fire the remove action ??? XXX
+									r.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
+									b.appendChild(r);
+
+                                    if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(b,'PENALTY_RENEW');
+                                    if (penalties[i].standing_penalty().block_list().match(/HOLD/)) addCSSClass(b,'PENALTY_HOLD');
+                                    if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(b,'PENALTY_CIRC');
+
+									e2.appendChild(b);
 								}
 							};
 						}
