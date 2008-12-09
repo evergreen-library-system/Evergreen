@@ -120,9 +120,11 @@ patron.summary.prototype = {
                                     if (penalties[i].standing_penalty().id() > 100) {
                                     }
 
-                                    if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(label,'PENALTY_RENEW');
-                                    if (penalties[i].standing_penalty().block_list().match(/HOLD/)) addCSSClass(label,'PENALTY_HOLD');
-                                    if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(label,'PENALTY_CIRC');
+                                    if (penalties[i].standing_penalty().block_list()) {
+                                        if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(label,'PENALTY_RENEW');
+                                        if (penalties[i].standing_penalty().block_list().match(/HOLD/)) addCSSClass(label,'PENALTY_HOLD');
+                                        if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(label,'PENALTY_CIRC');
+                                    }
 
 									e2.appendChild(row);
                                     e2.parentNode.parentNode.hidden = false;
