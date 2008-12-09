@@ -21,7 +21,12 @@
 	</groupbox>
 	<groupbox id="PatronSummaryStanding_groupbox" flex="0" hidden="true" class="standing">
 		<caption id="pssgbc" label="&staff.patron.summary_overlay.pssgbc.standing.label;" class="shrinkable_groupbox"/>
-		<vbox id="patron_standing_penalties"/>
+		<grid id="patron_standing_penalties">
+            <columns>
+                <column/>
+                <column/>
+            </columns>
+        </grid>
 	</groupbox>
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0" class="status"/>
 	<!--

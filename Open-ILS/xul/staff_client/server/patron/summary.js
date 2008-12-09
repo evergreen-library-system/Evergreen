@@ -104,23 +104,23 @@ patron.summary.prototype = {
 								var penalties = obj.patron.standing_penalties();
 								for (var i = 0; i < penalties.length; i++) {
 
-									var b = document.createElement('hbox');
-									var r = document.createElement('button');
-									var x = document.createElement('label');
+									var row = document.createElement('row');
+									var label = document.createElement('label');
+									var button = document.createElement('button');
 
 									//x.setAttribute('value',penalties[i].penalty_type());
-									x.setAttribute('value',penalties[i].standing_penalty().name());
-									b.appendChild(x);
+									label.setAttribute('value',penalties[i].standing_penalty().label());
+									row.appendChild(label);
 
                                     // XXX check a permission here? How to fire the remove action ??? XXX
-									r.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
-									b.appendChild(r);
+									button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
+									row.appendChild(button);
 
-                                    if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(b,'PENALTY_RENEW');
-                                    if (penalties[i].standing_penalty().block_list().match(/HOLD/)) addCSSClass(b,'PENALTY_HOLD');
-                                    if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(b,'PENALTY_CIRC');
+                                    if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(label,'PENALTY_RENEW');
+                                    if (penalties[i].standing_penalty().block_list().match(/HOLD/)) addCSSClass(label,'PENALTY_HOLD');
+                                    if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(label,'PENALTY_CIRC');
 
-									e2.appendChild(b);
+									e2.appendChild(row);
                                     e2.parentNode.hidden = false;
 								}
 							};
