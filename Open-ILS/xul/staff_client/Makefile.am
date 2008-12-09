@@ -10,34 +10,40 @@ SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 
 install-exec-local: build
 
-build: build_dir chrome2remote generated custom_skins open-ils stamp
+build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
 
 build_dir:
 	@echo ' * Creating and populating build/ '
-	mkdir -p build/
-	cp -R chrome build/
-	cp -R server build/
-	cp -R defaults build/
-	cp -R components build/
-	cp application.ini build/
-	cp -R build/chrome/content/util/ build/server/
-	cp -R build/chrome/content/auth/ build/server/
-	cp build/chrome/content/main/constants.js build/server/main/constants.js
-	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
-	cp build/chrome/content/main/bindings.xml build/server/main/bindings.xml
-	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
-	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
-	external/prune_dirs.sh build/
+	@mkdir -p build/
+	@cp -fR chrome build/
+	@cp -fR server build/
+	@cp -fR defaults build/
+	@cp -fR components build/
+	@cp application.ini build/
+	@cp -fR build/chrome/content/util/ build/server/
+	@cp -fR build/chrome/content/auth/ build/server/
+	@cp build/chrome/content/main/constants.js build/server/main/constants.js
+	@cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
+	@cp build/chrome/content/main/bindings.xml build/server/main/bindings.xml
+	@cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
+	@cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
+	@external/prune_dirs.sh build/
 
 # Convert chrome to remote for server localization
 chrome2remote:
-	sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/auth/verify_credentials.xul
-	sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/main/simple_auth.xul
+	@sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/auth/verify_credentials.xul
+	@sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/main/simple_auth.xul
 	@for loc in $(CHROME_LOCALES); do \
-		cp -r chrome/locale/$$loc build/server/locale/. ; \
+		cp -fr chrome/locale/$$loc build/server/locale/. ; \
+	done;
+
+# Update the manifest for our installed locales
+localize_manifest:
+	@for loc in $(CHROME_LOCALES) ; do \
+		if [ "$$loc" != "en-US" ]; then ( echo "locale open_ils_staff_client $$loc locale/$$loc/" >> build/chrome/chrome.manifest ) ; fi; \
 	done;
 
 stamp:
@@ -55,15 +61,15 @@ stamp:
 
 generated:
 	@echo ' * Grabbing lang.dtd from the OPAC code '
-	cp @top_srcdir@/Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
+	@cp @top_srcdir@/Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
 
 open-ils:
 	@echo ' * Grabbing more OPAC code and legacy code and custom code'
-	cp @top_srcdir@/Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
-	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
-	external/prune_dirs.sh build/
+	@cp @top_srcdir@/Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
+	@cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
+	@external/prune_dirs.sh build/
 
 custom_skins:
 	@for skin in $(SKIN_CSS); do \
-		if [ ! -f "$$skin" ]; then touch build/"$$skin"; fi \
+		if [ ! -f "$$skin" ]; then ( touch build/"$$skin" ); fi \
 	done;
