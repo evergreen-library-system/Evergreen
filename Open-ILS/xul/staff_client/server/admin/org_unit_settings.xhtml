@@ -120,6 +120,16 @@
                 'global.juvenile_age_threshold' : {
                     label : '&staff.server.admin.org_settings.global.juvenile_age_threshold;',
                     desc : '&staff.server.admin.org_settings.global.juvenile_age_threshold.desc;',
+                },
+                'cat.bib.keep_on_empty' : {
+                    label : '&staff.server.admin.org_settings.cat.bib.keep_on_empty;',
+                    desc : '&staff.server.admin.org_settings.cat.bib.keep_on_empty.desc;',
+                    type : 'bool'
+                },
+                'cat.bib.alert_on_empty' : {
+                    label : '&staff.server.admin.org_settings.cat.bib.alert_on_empty;',
+                    desc : '&staff.server.admin.org_settings.cat.bib.alert_on_empty.desc;',
+                    type : 'bool'
                 }
             };
         </script>
@@ -144,7 +154,7 @@
                             {name: 'Edit', get: osGetEditLink, 
                                 value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>Edit&lt;/a>'},
                             {name: 'Setting', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
-                            {name: 'Context', get: osGetGridData, field:'context', width:'auto'},
+                            {name: 'Context', get: osGetGridData, field:'context'},
                             {name: 'Value', get: osGetGridData, field:'value', width:'auto'},
                         ]]
                     }];
