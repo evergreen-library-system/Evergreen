@@ -10,6 +10,7 @@ var surveyAnswersCache		= {};
 var userCache					= {};
 var groupsCache				= {};
 var netLevelsCache			= {};
+var orgSettings             = [];
 //var guardianNote				= null;
 
 if(!window.xulG) var xulG = null;
@@ -140,6 +141,8 @@ function uEditBuild() {
 	if (xulG) if (xulG.params) if (xulG.params.usr) usr = xulG.params.usr;
 	patron = fetchFleshedUser(usr);
 	if(!patron) patron = uEditNewPatron(); 
+
+    orgSettings = fetchBatchOrgSetting(USER.ws_ou(), ['global.juvenile_age_threshold']);
 	
 	uEditDraw( 
 		uEditFetchIdentTypes(),

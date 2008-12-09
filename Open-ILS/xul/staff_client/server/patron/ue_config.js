@@ -19,8 +19,8 @@ const defaultNetAccess	= 'None';
 const defaultNetLevel   = 1;
 const CSS_INVALID_DATA	= 'invalid_value';
 
-// XXX Should become an org unit setting XXX
-const ADULT_AGE			= 18;
+// if no org setting exists
+const DEFAULT_ADULT_AGE			= '18 years';
 
 //const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
@@ -1060,21 +1060,21 @@ function uEditCheckDOB(field) {
 	}
 
 	var base = new Date();
-	base.setYear( today.getYear() + 1900 - ADULT_AGE );
-
-	/* patron is at least 18 */
+    var age = orgSettings['global.juvenile_age_threshold'].value || DEFAULT_ADULT_AGE;
+    base.setTime(base.getTime() - Number(interval_to_seconds(age) + '000'));
 
 	var f = uEditFindFieldByKey('ident_value2');
+	unHideMe(f.widget.node.parentNode.parentNode.parentNode);
 
 	if( dob < base ) { /* patron is of age */
 		f.required = false;
-		hideMe(f.widget.node.parentNode.parentNode.parentNode);
+        if(!uEditNodeVal(f))
+		    hideMe(f.widget.node.parentNode.parentNode.parentNode);
 		return;
 	}
 
 	uEditFindFieldByKey('juvenile').widget.node.checked = true;
 
-	unHideMe(f.widget.node.parentNode.parentNode.parentNode);
 	f.required = true;
 	uEditCheckErrors();
 }
