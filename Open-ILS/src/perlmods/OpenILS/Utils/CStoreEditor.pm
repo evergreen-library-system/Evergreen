@@ -208,8 +208,9 @@ sub xact_start {
 # -----------------------------------------------------------------------------
 sub xact_commit {
 	my $self = shift;
+    return unless $self->{xact_id};
 	$self->log(D, "comitting db session");
-	my $stat = $self->request($self->app.'.transaction.commit') if $self->{xact_id};
+	my $stat = $self->request($self->app.'.transaction.commit');
 	$self->log(E, "error comitting database transaction") unless $stat;
     delete $self->{xact_id};
 	return $stat;
@@ -220,9 +221,9 @@ sub xact_commit {
 # -----------------------------------------------------------------------------
 sub xact_rollback {
 	my $self = shift;
-   return unless $self->{session};
+   return unless $self->{session} and $self->{xact_id};
 	$self->log(I, "rolling back db session");
-	my $stat = $self->request($self->app.".transaction.rollback") if $self->{xact_id};
+	my $stat = $self->request($self->app.".transaction.rollback");
 	$self->log(E, "error rolling back database transaction") unless $stat;
     delete $self->{xact_id};
 	return $stat;
