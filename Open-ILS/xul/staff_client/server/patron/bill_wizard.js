@@ -98,19 +98,20 @@ function patron_bill_init() {
         JSAN.use('util.money');
         JSAN.use('util.widgets');
         JSAN.use('util.functional');
+        var billing_list = util.functional.filter_list( g.OpenILS.data.list.cbt, function (x) { x.id() < 100 } );
         var ml = util.widgets.make_menulist(
             util.functional.map_list(
-                g.OpenILS.data.list.cbt.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } ), //g.OpenILS.data.list.billing_type.sort(),
+                billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } ), //g.OpenILS.data.list.billing_type.sort(),
                 function(obj) { return [ obj.name(), obj.id() ]; } //function(obj) { return [ obj, obj ]; }
             ),
-            g.OpenILS.data.list.cbt.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0]
+            billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0]
         );
         ml.setAttribute('id','billing_type');
         document.getElementById('menu_placeholder').appendChild(ml);
         ml.addEventListener(
             'command',
             function() {
-                $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
+                $('bill_amount').value = billing_list[ ml.value ].default_price();
             },
             false
         ); 
@@ -119,7 +120,7 @@ function patron_bill_init() {
 
         $('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
-        $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
+        $('bill_amount').value = billing_list[ ml.value ].default_price();
         $('bill_amount').select(); $('bill_amount').focus();
 
         if (xul_param('xact_id',{'modal_xulG':true})) { 
