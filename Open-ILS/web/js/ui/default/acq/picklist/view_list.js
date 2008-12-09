@@ -1,4 +1,4 @@
-dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid.DataGrid');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
@@ -11,10 +11,8 @@ var listAll = false;
 
 function makeGridFromList() {
     var store = new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(plList)});
-    var model = new dojox.grid.data.DojoData(null, store, 
-        {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    plListGrid.setModel(model);
-    plListGrid.update();
+    plListGrid.setStore(store);
+    plListGrid.render();
 }
 
 

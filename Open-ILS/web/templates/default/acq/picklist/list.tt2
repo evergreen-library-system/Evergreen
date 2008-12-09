@@ -45,22 +45,28 @@
 
 
 <script>
-    function getName(rowIndex) {
-        data = plListGrid.model.getRow(rowIndex);
-        if(!data) return;
-        return '<a href="[% ctx.base_uri %]/acq/picklist/view/'+data.id+'">'+data.name+'</a>';
+    function getName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return '<a href="[% ctx.base_uri %]/acq/picklist/view/'+id+'">'+name+'</a>';
     }
-
-    var plListGridStructure = [{
-        cells : [[
-            {name: 'ID', field: 'id'},
-            {name: 'Name', width:'auto', get:getName}, 
-            {name: 'Selector', field:'owner'},
-            {name: 'Create Time', field: 'create_time'}, 
-            {name: 'Edit Time', field: 'edit_time'},
-            {name: 'Entry Count', field: 'entry_count'},
-        ]]
-    }];
 </script>
-<div jsId='plListGrid' dojoType="dojox.Grid" structure='plListGridStructure'></div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="plListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="id">ID</th>
+                    <th field="name" width='auto' get='getName'>Name</th>
+                    <th field="owner">Selector</th>
+                    <th field="create_time">Create Time</th>
+                    <th field="edit_time">Edit Time</th>
+                    <th field="entry_count">Entry Count</th>
+                </tr>
+            </thead>
+        </table>    
+    </div>
+</div>
+
 [% END %]
