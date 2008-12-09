@@ -2773,8 +2773,7 @@ sub ranged_penalty_thresholds {
         {org_unit => $U->get_org_ancestors($context_org)}
     );
 
-    for my $t (@$list) {
-    }
+    return $list;
 }
 
 
