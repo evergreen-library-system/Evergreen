@@ -77,22 +77,28 @@
 
 <!-- The main grid lives here -->
 <script>
-    function getName(rowIndex) {
-        data = fundingSourceListGrid.model.getRow(rowIndex);
-        if(!data) return;
-        return '<a href="[% ctx.base_uri %]/acq/funding_source/view/'+data.id+'">'+data.name+'</a>';
+    function getName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');        
+        var id = this.grid.store.getValue(item, 'id');
+        return '<a href="[% ctx.base_uri %]/acq/funding_source/view/'+id+'">'+name+'</a>';
     }
-
-    var fsGridStructure = [{
-        cells : [[
-            {name: 'ID', field: 'id'},
-            {name: 'Name', width:'auto', get:getName}, 
-            {name: 'Code', field:'code'},
-            {name: 'Owner', width:'auto', get:getOrgInfo}, 
-            {name: 'Currency Type', field: "currency_type"},
-            {name: 'Balance', get:getBalanceInfo}
-        ]]
-    }];
 </script>
-<div id="oils-acq-funding-source-list-grid" jsId='fundingSourceListGrid' dojoType="dojox.Grid" structure='fsGridStructure'></div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+         <table jsId="fundingSourceListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead> 
+                <tr> 
+                    <th field="id">ID</th> 
+                    <th field="name" width='auto' get='getName'>Name</th> 
+                    <th field="owner" width='auto'get='getOrgInfo'>Owner</th> 
+                    <th field="code" width='auto'>Code</th>
+                    <th field="currency_type" width='auto'>Currency Type</th> 
+                    <th field="balance" width='auto' get='getBalanceInfo'>Balance</th> 
+                </tr> 
+            </thead> 
+        </table>     
+    </div> 
+</div> 
+ 
 [% END %]
