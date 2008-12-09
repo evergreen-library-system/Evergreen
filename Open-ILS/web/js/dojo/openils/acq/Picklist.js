@@ -146,8 +146,11 @@ openils.acq.Picklist.deleteList = function(list, onComplete) {
 
 /* iterate through the list of IDs deleting asynchronously as we go... */
 openils.acq.Picklist._deleteList = function(list, idx, onComplete) {
-    if(idx >= list.length)
-        return onComplete();
+    if(idx >= list.length) {
+        if(onComplete)
+            onComplete();
+        return;
+    }
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.delete'],
         {   async: true,
