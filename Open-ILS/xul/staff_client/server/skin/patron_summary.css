@@ -1,9 +1,8 @@
+@import url("patron_summary_custom.css");
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
-
-* { font-size: large; }
 
 .PENALTY_RENEW { background-color: yellow; }
 .PENALTY_HOLD { background-color: orange; }
 .PENALTY_CIRC { background-color: red; }
-

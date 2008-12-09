@@ -1,3 +1,5 @@
+@import url("patron_display_custom.css");
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
@@ -76,4 +78,3 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_JUVENILE .dob { color: purple; }
 .PATRON_JUVENILE label.juvenile_indicator { display: inline; color: purple; }
-

@@ -1,6 +1,7 @@
+@import url("simple_auth_custom.css");
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
 .staff groupbox { border: #FF3333; }
 .temp groupbox { border: #FF9933; }
-

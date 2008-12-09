@@ -1,5 +1,6 @@
+@import url("cat_custom.css");
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
 .has_copies { color: black; background-color: lightgreen; font-weight: bold; }
-

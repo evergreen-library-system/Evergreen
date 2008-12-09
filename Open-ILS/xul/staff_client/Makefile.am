@@ -5,11 +5,12 @@
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
-CHROME_LOCALES = $$(ls chrome/locale)
+CHROME_LOCALES = $$(ls -1 chrome/locale)
+SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 
 install-exec-local: build
 
-build: build_dir chrome2remote generated open-ils stamp
+build: build_dir chrome2remote generated custom_skins open-ils stamp
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
@@ -62,4 +63,7 @@ open-ils:
 	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
 	external/prune_dirs.sh build/
 
-
+custom_skins:
+	@for skin in $(SKIN_CSS); do \
+		if [ ! -f "$$skin" ]; then touch build/"$$skin"; fi \
+	done;
