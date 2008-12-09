@@ -355,6 +355,8 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_juvenile',
 				type		: 'checkbox',
+				onpostchange	: function(field) { uEditCheckDOB(uEditFindFieldByKey('dob')); },
+				onblur	: function(field) { uEditCheckDOB(uEditFindFieldByKey('dob')); }
 			}
 		},
 		{
@@ -1038,44 +1040,57 @@ var __lastdob;
 function uEditCheckDOB(field) {
 
 	var dob = uEditNodeVal(field);
+    var ident_field = uEditFindFieldByKey('ident_value2');
 
-	/* don't bother if the data isn't valid */
-	if(!dob || !dob.match(field.widget.regex)) 
-		return;
+    if(dob) {
 
-	if( dob == __lastdob ) return;
+        /* don't bother if the data isn't valid */
+        if(!dob.match(field.widget.regex)) 
+            return;
 
-	__lastdob = dob;
+        if( dob == __lastdob ) return;
 
-	var parts = dob.split(/-/);
-	parts[2] = parts[2].replace(/[T ].*/,'');
-	dob = buildDate( parts[0], parts[1], parts[2] );
+        __lastdob = dob;
 
-	var today = new Date();
+        var parts = dob.split(/-/);
+        parts[2] = parts[2].replace(/[T ].*/,'');
+        dob = buildDate( parts[0], parts[1], parts[2] );
 
-	if(!dob || dob > today) {
-		addCSSClass(field.widget.node, CSS_INVALID_DATA);
-		alertId('ue_bad_date');
-		return;
-	}
+        var today = new Date();
 
-	var base = new Date();
-    var age = orgSettings['global.juvenile_age_threshold'].value || DEFAULT_ADULT_AGE;
-    base.setTime(base.getTime() - Number(interval_to_seconds(age) + '000'));
+        if(!dob || dob > today) {
+            addCSSClass(field.widget.node, CSS_INVALID_DATA);
+            alertId('ue_bad_date');
+            return;
+        }
 
-	var f = uEditFindFieldByKey('ident_value2');
-	unHideMe(f.widget.node.parentNode.parentNode.parentNode);
+        var base = new Date();
+        var age = orgSettings['global.juvenile_age_threshold'].value || DEFAULT_ADULT_AGE;
+        base.setTime(base.getTime() - Number(interval_to_seconds(age) + '000'));
 
-	if( dob < base ) { /* patron is of age */
-		f.required = false;
-        if(!uEditNodeVal(f))
-		    hideMe(f.widget.node.parentNode.parentNode.parentNode);
-		return;
-	}
 
-	uEditFindFieldByKey('juvenile').widget.node.checked = true;
+        unHideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
+        if( dob < base ) { /* patron is of age */
+            ident_field.required = false;
+	        uEditFindFieldByKey('juvenile').widget.node.checked = false;
+            if(!uEditNodeVal(ident_field))
+                hideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
+            return;
+        }
 
-	f.required = true;
+    } else {
+        // no DOB and we are not flagged as a juvenile
+        if(uEditFindFieldByKey('juvenile').widget.node.checked == false) {
+            if(!uEditNodeVal(ident_field))
+                hideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
+            return;
+        }
+    }
+
+    unHideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
+    if(!uEditFindFieldByKey('juvenile').widget.node.checked)
+	    uEditFindFieldByKey('juvenile').widget.node.checked = true;
+	ident_field.required = true;
 	uEditCheckErrors();
 }
 
