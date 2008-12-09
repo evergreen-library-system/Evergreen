@@ -121,7 +121,7 @@ patron.summary.prototype = {
                                     if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(label,'PENALTY_CIRC');
 
 									e2.appendChild(row);
-                                    e2.parentNode.hidden = false;
+                                    e2.parentNode.parentNode.hidden = false;
 								}
 							};
 						}
