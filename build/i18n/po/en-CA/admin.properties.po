@@ -1,20 +1,20 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/admin.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > admin.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"PO-Revision-Date: 2008-12-01 21:40-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -278,15 +278,15 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat
 msgid "Non-Cataloged?"
-msgstr ""
+msgstr "Non-Catalogued?"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat_type
 msgid "Non-Cataloged Type"
-msgstr ""
+msgstr "Non-Catalogued Type"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat_count
 msgid "Non-Cataloged Count"
-msgstr ""
+msgstr "Non-Catalogued Count"
 
 #: staff.admin.offline_manage_xacts.init_error_list.backdate
 msgid "Check In Backdate"
@@ -325,9 +325,7 @@ msgid "Taking too long to find a unique filename."
 msgstr ""
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts
-msgid ""
-"Something bad happened.  New offline transactions were accumulated during "
-"our attempted upload.  Tell your system admin that the file involved is %1$s"
+msgid "Something bad happened.  New offline transactions were accumulated during our attempted upload.  Tell your system admin that the file involved is %1$s"
 msgstr ""
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.title
@@ -425,3 +423,4 @@ msgstr ""
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
 msgstr ""
+

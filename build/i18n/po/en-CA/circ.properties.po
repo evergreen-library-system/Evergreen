@@ -1,20 +1,20 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"PO-Revision-Date: 2008-12-01 21:48-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -52,9 +52,7 @@ msgstr ""
 
 #: staff.circ.check_digit.bad
 msgctxt "staff.circ.check_digit.bad"
-msgid ""
-"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
-"anyway?"
+msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
 msgstr ""
 
 #: staff.circ.barcode.bad
@@ -117,7 +115,7 @@ msgstr ""
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
-msgstr ""
+msgstr "error in sorting non-catalogued items: %1$s"
 
 #: staff.circ.checkout.date.exception
 msgid "Use this format: YYYY-MM-DD"
@@ -134,7 +132,7 @@ msgstr ""
 
 #: staff.circ.checkout.cmd_checkout_submit.title
 msgid "Non-cataloged Items"
-msgstr ""
+msgstr "Non-catalogued Items"
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.msg
 msgid "You tried to circulate %1$d %2$s.  The maximum is 99 per action."
@@ -143,7 +141,7 @@ msgstr ""
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Non-catalogued Circulation"
 
 #: staff.circ.checkout.ok.btn
 msgctxt "staff.circ.checkout.ok.btn"
@@ -157,7 +155,7 @@ msgstr ""
 #: staff.circ.checkout.cmd_checkout_submit.confirm.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.confirm.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Non-catalogued Circulation"
 
 #: staff.circ.checkout.yes.btn
 msgctxt "staff.circ.checkout.yes.btn"
@@ -171,12 +169,12 @@ msgstr ""
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
-msgstr ""
+msgstr "Error with non-catalogued checkout.  %1$s is not a valid number."
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Non-catalogued Circulation"
 
 #: staff.circ.checkout.disable.error
 msgid "Error determining whether to disable checkout."
@@ -192,7 +190,7 @@ msgstr ""
 
 #: staff.circ.checkout.non_cataloged.pending
 msgid "Non-cataloged checkout pending..."
-msgstr ""
+msgstr "Non-catalogued checkout pending..."
 
 #: staff.circ.checkout.barcode.pending
 msgid "%1$s checkout pending..."
@@ -207,37 +205,31 @@ msgid "Override Checkout Failure?"
 msgstr ""
 
 #: staff.circ.checkout.override.item_deposit_required.warning
-msgid ""
-"A billing for an Item Deposit will be added to the patron's account if this "
-"action is overrided."
+msgid "A billing for an Item Deposit will be added to the patron's account if this action is overrided."
 msgstr ""
 
 #: staff.circ.checkout.override.item_rental_fee_required.warning
-msgid ""
-"A billing for an Item Rental Fee will be added to the patron's account if "
-"this action is overrided."
+msgid "A billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
 msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-msgstr ""
+msgstr "Mis-scan or non-catalogued item.  Checkout as a pre-catalogued item?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
-msgstr ""
+msgstr "Pre-catalogued"
 
 #: staff.circ.non_cataloged
 msgid "Non-cataloged"
-msgstr ""
+msgstr "Non-catalogued"
 
 #: staff.circ.checkout.cancelled
 msgid "Checkout cancelled"
 msgstr ""
 
 #: staff.circ.checkout.card.inactive
-msgid ""
-"The card used to retrieve this account is inactive and may not be used to "
-"circulate items."
+msgid "The card used to retrieve this account is inactive and may not be used to circulate items."
 msgstr ""
 
 #: staff.circ.checkout.barcode.check_out_failed
@@ -287,9 +279,7 @@ msgstr ""
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkout.suggest_offline
-msgid ""
-"Check Out Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
+msgid "Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.checkout.barcode
@@ -343,9 +333,7 @@ msgid "%1$s, %2$s : %3$s"
 msgstr ""
 
 #: staff.circ.copy_details.bad_hold_status
-msgid ""
-"This item is not captured for a hold, however its status is incorrectly set "
-"to \"On Holds Shelf\".  Please check this item in to correct the status."
+msgid "This item is not captured for a hold, however its status is incorrectly set to \"On Holds Shelf\".  Please check this item in to correct the status."
 msgstr ""
 
 #: staff.circ.copy_details.no_hold
@@ -442,10 +430,7 @@ msgid "Volumes for record # %1$s"
 msgstr ""
 
 #: staff.circ.copy_status.edit_volumes.duplicate
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
+msgid "Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead."
 msgstr ""
 
 #: staff.circ.copy_status.edit_volumes.success
@@ -479,9 +464,7 @@ msgid "Override Delete Failure?"
 msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
-msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+msgid "You must delete all the copies on the volume before you may delete the volume itself."
 msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.success
@@ -520,9 +503,7 @@ msgid "Limit Selection"
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.none
-msgid ""
-"Please mark a library as the destination from within holdings maintenance "
-"and then try this again."
+msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.confirm
@@ -568,9 +549,7 @@ msgstr ""
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
-msgid ""
-"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
-"anyway?"
+msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
 msgstr ""
 
 #: staff.circ.copy_status.status.null_result
@@ -579,16 +558,16 @@ msgstr ""
 
 #: staff.circ.copy_status.status.copy_not_found
 msgid "%1$s was either mis-scanned or is not cataloged."
-msgstr ""
+msgstr "%1$s was either mis-scanned or is not catalogued."
 
 #: staff.circ.copy_status.status.not_cataloged
 msgctxt "staff.circ.copy_status.status.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "Not Catalogued"
 
 #: staff.circ.copy_status.status.pre_cat
 msgid "Item is a pre-cataloged item."
-msgstr ""
+msgstr "Item is a pre-catalogued item."
 
 #: staff.circ.copy_status.status.hold
 msgid "Item is captured for a Hold."
@@ -663,7 +642,7 @@ msgstr ""
 
 #: staff.circ.in_house_use.noncataloged
 msgid "Non-Cataloged"
-msgstr ""
+msgstr "Non-Catalogued"
 
 #: staff.circ.in_house_use.items_dump
 msgid "items ="
@@ -689,9 +668,7 @@ msgstr ""
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
-msgid ""
-"In House Use Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
+msgid "In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.in_house_use.failed
@@ -796,9 +773,7 @@ msgid "Copy ID = %1$s"
 msgstr ""
 
 #: staff.circ.utils.abort_transits.not_found
-msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
+msgid "This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?"
 msgstr ""
 
 #: staff.circ.utils.abort_transits.unexpected_error
@@ -831,11 +806,11 @@ msgstr ""
 
 #: staff.circ.utils.offline.noncat
 msgid "Non-Cataloged?"
-msgstr ""
+msgstr "Non-Catalogued?"
 
 #: staff.circ.utils.offline.noncat_type
 msgid "Non-Cataloged Type ID"
-msgstr ""
+msgstr "Non-Catalogued Type ID"
 
 #: staff.circ.utils.offline.count
 msgid "Count"
@@ -864,7 +839,7 @@ msgstr ""
 #: staff.circ.utils.not_cataloged
 msgctxt "staff.circ.utils.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "Not Catalogued"
 
 #: staff.circ.utils.retrieving
 msgid "Retrieving..."
@@ -1225,9 +1200,7 @@ msgid "Do Not Print"
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.description
-msgid ""
-"This item could fulfill a hold request but capture has been delayed by "
-"policy."
+msgid "This item could fulfill a hold request but capture has been delayed by policy."
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.titlebar
@@ -1248,7 +1221,7 @@ msgstr ""
 
 #: staff.circ.utils.needs_cataloging
 msgid "%1$s needs to be cataloged."
-msgstr ""
+msgstr "%1$s needs to be catalogued."
 
 #: staff.circ.utils.copy_status.error
 msgid "FIXME -- this case \"%1$s\" is unhandled."
@@ -1294,9 +1267,7 @@ msgstr ""
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkin.suggest_offline
-msgid ""
-"Check In Failed.  If you wish to use the offline interface, in the top "
-"menubar select Circulation -> Offline Interface"
+msgid "Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.checkin.renew_failed.error
@@ -1320,10 +1291,12 @@ msgstr ""
 msgid "Barcode: %1$s Message: %2$s"
 msgstr ""
 
-#: staff.circ.circ.override.item_rental_fee_required.warning.barcode
-msgid ""
-"For item with barcode %1$s, a billing for an Item Rental Fee will be added "
-"to the patron's account if this action is overrided."
+#: staff.circ.renew.override.item_deposit_required.warning.barcode
+msgid "For item with barcode %1$s, a billing for an Item Deposit will be added to the patron's account if this action is overrided."
+msgstr ""
+
+#: staff.circ.renew.override.item_rental_fee_required.warning.barcode
+msgid "For item with barcode %1$s, a billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
 msgstr ""
 
 #: staff.circ.holds.activate.prompt
@@ -1343,20 +1316,15 @@ msgid "Are you sure you would like to suspend holds %1$s?"
 msgstr ""
 
 #: staff.circ.holds.activation_date.prompt
-msgid ""
-"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
-"This will also Suspend the hold."
+msgid "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  This will also Suspend the hold."
 msgstr ""
 
 #: staff.circ.holds.activation_date.prompt.plural
-msgid ""
-"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-"This will also Suspend the holds."
+msgid "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  This will also Suspend the holds."
 msgstr ""
 
 #: staff.circ.holds.activation_date.too_early.error
-msgid ""
-"Activation Date needs to be either unset or set to fall on a future date."
+msgid "Activation Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
@@ -1365,18 +1333,15 @@ msgid "Invalid Date"
 msgstr ""
 
 #: staff.circ.holds.expire_time.prompt
-msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgid "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
 msgstr ""
 
 #: staff.circ.holds.expire_time.prompt.plural
-msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgid "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
 msgstr ""
 
 #: staff.circ.holds.expire_time.too_early.error
-msgid ""
-"Expiration Date needs to be either unset or set to fall on a future date."
+msgid "Expiration Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
 #: staff.circ.holds.expire_time.invalid_date
@@ -1427,7 +1392,6 @@ msgid "Holds not likely suspended."
 msgstr ""
 
 #: staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit
-msgid ""
-"You may not edit the pickup library for holds that are in-transit or ready "
-"for pickup."
+msgid "You may not edit the pickup library for holds that are in-transit or ready for pickup."
 msgstr ""
+

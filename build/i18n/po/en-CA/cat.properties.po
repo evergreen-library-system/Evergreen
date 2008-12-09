@@ -1,20 +1,20 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/cat.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"PO-Revision-Date: 2008-12-01 21:44-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team:  <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: cat.barcode_for_item
 msgid "The barcode for the item is %1$s"
@@ -50,11 +50,11 @@ msgstr ""
 
 #: staff.cat.bib_brief.noncat
 msgid "(Not Cataloged)"
-msgstr ""
+msgstr "(Not Catalogued)"
 
 #: staff.cat.bib_brief.noncat.alert
 msgid "Item not cataloged."
-msgstr ""
+msgstr "Item not catalogued."
 
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
@@ -150,10 +150,7 @@ msgid "Volumes"
 msgstr ""
 
 #: staff.cat.copy_browser.edit_volume.failed
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
+msgid "Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead."
 msgstr ""
 
 #: staff.cat.copy_browser.edit_volume.success
@@ -196,9 +193,7 @@ msgid "Override Delete Failure?"
 msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
-msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
+msgid "You must delete all the copies on the volume before you may delete the volume itself."
 msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.success
@@ -236,9 +231,7 @@ msgid "Limit Selection"
 msgstr ""
 
 #: staff.cat.copy_browser.transfer_volume.alert
-msgid ""
-"Please mark a library as the destination from within holdings maintenance "
-"and then try this again."
+msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
 msgstr ""
 
 #: staff.cat.copy_browser.transfer.prompt
@@ -287,9 +280,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
 msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
-msgid ""
-"Please mark a volume as the destination from within holdings maintenance and "
-"then try this again."
+msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
 msgstr ""
 
 #: staff.cat.copy_browser.transfer_items.unexpected_error
@@ -419,15 +410,11 @@ msgid "Batch Item Deletion"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
-msgid ""
-"Please mark a volume as the destination from within the copy browser and "
-"then try this again."
+msgid "Please mark a volume as the destination from within the copy browser and then try this again."
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
-msgid ""
-"Transfer the items in bucket \"%1$s\" from their original volumes to the "
-"volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
+msgid "Transfer the items in bucket \"%1$s\" from their original volumes to the volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
@@ -589,10 +576,7 @@ msgid "Error saving templates"
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.note
-msgid ""
-"Note: These imported templates will get saved along with any new template "
-"you try to create, but if that does not happen, then these templates will "
-"disappear with the next invocation of the item attribute editor."
+msgid "Note: These imported templates will get saved along with any new template you try to create, but if that does not happen, then these templates will disappear with the next invocation of the item attribute editor."
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.error
@@ -600,15 +584,11 @@ msgid "Error importing templates"
 msgstr ""
 
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
-msgid ""
-"Error retrieving Volume information for copy %1$s.  The owning library for "
-"this copy will not be changed."
+msgid "Error retrieving Volume information for copy %1$s.  The owning library for this copy will not be changed."
 msgstr ""
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
-msgid ""
-"Error changing owning library for copy %1$s.  The owning library for this "
-"copy will not be changed."
+msgid "Error changing owning library for copy %1$s.  The owning library for this copy will not be changed."
 msgstr ""
 
 #: staff.cat.copy_editor.copy_count
@@ -656,6 +636,10 @@ msgstr ""
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
+msgstr ""
+
+#: staff.cat.copy_editor.remove_circulate_as_type
+msgid "<Remove Circulate as Type>"
 msgstr ""
 
 #: staff.cat.copy_editor.field.unset_or_null
@@ -950,7 +934,7 @@ msgstr ""
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
-msgstr ""
+msgstr "Not Catalogued"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1024,6 +1008,10 @@ msgstr ""
 msgid "No matching authority records found"
 msgstr ""
 
+#: staff.cat.marc_new.tab_name
+msgid "MARC Template"
+msgstr ""
+
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
 msgstr ""
@@ -1063,6 +1051,10 @@ msgstr ""
 
 #: staff.cat.opac.set_tab_name
 msgid "Record: %1$s"
+msgstr ""
+
+#: staff.cat.record_buckets.tab_name
+msgid "Record Buckets"
 msgstr ""
 
 #: staff.cat.record_buckets.save_file_as
@@ -1341,15 +1333,11 @@ msgstr ""
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
 msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
-msgid ""
-"Please mark a volume as the destination from within holdings maintenance and "
-"then try this again."
+msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
 msgstr ""
 
 #: staff.cat.util.transfer_copies.params_message
-msgid ""
-"Transfer items from their original volumes to %1$s's volume labelled %2$s on "
-"the following record (and change their circulation libs to match)?"
+msgid "Transfer items from their original volumes to %1$s's volume labelled %2$s on the following record (and change their circulation libs to match)?"
 msgstr ""
 
 #: staff.cat.util.transfer_copies.transfer.label
@@ -1400,11 +1388,11 @@ msgstr ""
 
 #: staff.cat.util.show_in_opac.unknown_barcode
 msgid "%1$s is not cataloged"
-msgstr ""
+msgstr "%1$s is not catalogued"
 
 #: staff.cat.util.show_in_opac.catalog_error_for_doc_id
 msgid "Error opening catalog for document ID = %1$s"
-msgstr ""
+msgstr "Error opening catalogue for document ID = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
 msgid "Batch"
@@ -1447,9 +1435,7 @@ msgid "Copies not modified."
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_message
-msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+msgid "Action failed.  One or more of these items is in a special status such as \"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_title
@@ -1468,9 +1454,7 @@ msgid "Check here to confirm this message"
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.md_message
-msgid ""
-"Change the status for these items to Damaged?  You will have to manually "
-"retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
+msgid "Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.md_title
@@ -1505,9 +1489,7 @@ msgid "%1$s items marked Damaged."
 msgstr ""
 
 #: staff.cat.util.mark_item_missing.af_message
-msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+msgid "Action failed.  One or more of these items is in a special status such as \"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 
 #: staff.cat.util.mark_item_missing.af_title
@@ -1570,9 +1552,7 @@ msgid "Apply"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
-msgid ""
-"You may not add more than %1$s items at a time for a given volume in this "
-"interface."
+msgid "You may not add more than %1$s items at a time for a given volume in this interface."
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.title
@@ -1609,9 +1589,7 @@ msgid "Check here to confirm this message."
 msgstr ""
 
 #: staff.cat.volume_copy_creator.stash_and_close.problem_with_volume
-msgid ""
-"Problem finding or creating %1$s.  We will skip item creation for this "
-"volume."
+msgid "Problem finding or creating %1$s.  We will skip item creation for this volume."
 msgstr ""
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err2
@@ -1632,7 +1610,7 @@ msgstr ""
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
-msgstr ""
+msgstr "Native Catalogue"
 
 #: staff.cat.z3950.obj_list_init.list_construction_error
 msgid "Failure during list construction."
@@ -1672,6 +1650,18 @@ msgstr ""
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgid "Record with ID %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgid "Record with TCN %1$s marked for overlay."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
+msgid "No record marked for overlay."
 msgstr ""
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
@@ -1841,9 +1831,8 @@ msgid "Overlay Aborted"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
-msgid ""
-"Please mark a record for overlay from within the catalog and try this again."
-msgstr ""
+msgid "Please mark a record for overlay from within the catalog and try this again."
+msgstr "Please mark a record for overlay from within the catalogue and try this again."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
 msgid "MARC Editor"
@@ -1908,3 +1897,4 @@ msgstr ""
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
 msgstr ""
+
