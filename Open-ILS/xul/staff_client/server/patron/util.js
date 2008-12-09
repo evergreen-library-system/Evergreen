@@ -553,7 +553,7 @@ patron.util.set_penalty_css = function(patron) {
 		var penalties = patron.standing_penalties();
 		for (var i = 0; i < penalties.length; i++) {
 			/* this comes from /opac/common/js/utils.js */
-			addCSSClass(document.documentElement,penalties[i].penalty_type());
+			addCSSClass(document.documentElement,penalties[i].standing_penalty().name());
 		}
 
 		switch(penalties.length) {

@@ -3,3 +3,7 @@
 
 * { font-size: large; }
 
+.PENALTY_RENEW { background-color: yellow; }
+.PENALTY_HOLD { background-color: orange; }
+.PENALTY_CIRC { background-color: red; }
+
