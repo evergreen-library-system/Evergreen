@@ -356,7 +356,7 @@ install_centos_perl:
 # if it is not already there
 create_ld_local:
 	if [ "$$(ldconfig -v 2> /dev/null | grep '^/usr/local/lib' | wc -l)" -eq 0 ]; then \
-		echo '/usr/local/lib' > /etc/ld.so.conf.d/local.conf; \
+		echo '/usr/local/lib' >> /etc/ld.so.conf.d/local.conf; \
 		ldconfig; \
 	fi;
 
