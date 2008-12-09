@@ -4112,7 +4112,7 @@ msgstr ""
 
 #: staff.marc.008.srce.desc
 msgid "Cataloging Source"
-msgstr ""
+msgstr "Cataloguing Source"
 
 #: staff.marc.008.srce.field
 msgctxt "staff.marc.008.srce.field"
@@ -4208,7 +4208,7 @@ msgstr ""
 
 #: staff.marc.LDR.desc.desc
 msgid "Descriptive Cataloging Form"
-msgstr ""
+msgstr "Descriptive Cataloguing Form"
 
 #: staff.marc.LDR.desc.field
 msgctxt "staff.marc.LDR.desc.field"
