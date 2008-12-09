@@ -111,11 +111,13 @@ patron.summary.prototype = {
 									label.setAttribute('value',penalties[i].standing_penalty().label());
 									row.appendChild(label);
 
+    								var button = document.createElement('button');
+	    							button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
+	    							button.disabled = true;
+		    						row.appendChild(button);
+
                                     // XXX check a permission here? How to fire the remove action ??? XXX
-                                    if (penalties[i].standing_penalty().id() >= 100) {
-    									var button = document.createElement('button');
-	    								button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
-		    							row.appendChild(button);
+                                    if (penalties[i].standing_penalty().id() > 100) {
                                     }
 
                                     if (penalties[i].standing_penalty().block_list().match(/RENEW/)) addCSSClass(label,'PENALTY_RENEW');
