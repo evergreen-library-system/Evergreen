@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-14 22:07-0400\n"
+"POT-Creation-Date: 2008-12-09 22:47-0400\n"
 "PO-Revision-Date: 2008-08-19 00:30+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -745,7 +745,7 @@ msgstr "P"
 msgid "Exit Evergreen"
 msgstr "Ելք Evergreen-ից"
 
-#: staff.auth.quit_prompt.key
+#: staff.auth.quit_prompt.accesskey
 msgid "x"
 msgstr "x"
 
@@ -1247,7 +1247,6 @@ msgid "Subject"
 msgstr "Խորագիր"
 
 #: staff.cat.search_submit
-msgctxt "staff.cat.search_submit"
 msgid "Search"
 msgstr "Որոնում"
 
@@ -1948,6 +1947,7 @@ msgid "Adult"
 msgstr "Մեծահասակ"
 
 #: staff.copy.attr.stat.audience.example2
+msgctxt "staff.copy.attr.stat.audience.example2"
 msgid "Juvenile"
 msgstr "Պատանեկան"
 
@@ -2388,12 +2388,10 @@ msgstr "Տարբերակ"
 msgid "Workstation"
 msgstr "Աշխատանքային կայան"
 
-#: staff.main.menu.acquisitions.key
-msgid "q"
-msgstr "q"
-
 #: staff.main.menu.acquisitions.label
-msgid "Acquisitions"
+#: staff.main.menu.acquisitions.accesskey
+#, fuzzy
+msgid "Ac&quisitions"
 msgstr "Համալրում"
 
 #: staff.main.menu.admin.accesskey
@@ -2563,13 +2561,10 @@ msgstr "V"
 msgid "Add Volume"
 msgstr "Ավելացրու հատոր"
 
-#: staff.main.menu.cat.bib_search.key
-msgctxt "staff.main.menu.cat.bib_search.key"
-msgid "S"
-msgstr "S"
-
 #: staff.main.menu.cat.bib_search.label
-msgid "Search the Catalog"
+#: staff.main.menu.cat.bib_search.accesskey
+#, fuzzy
+msgid "&Search the Catalog"
 msgstr "Որոնիր քարտարանում"
 
 #: staff.main.menu.cat.bib_status.key
@@ -2601,13 +2596,10 @@ msgstr "Արտածիր նյութը"
 msgid "Create &New Marc Record"
 msgstr "Ստեղծիր &նոր Marc գրառում"
 
-#: staff.main.menu.cat.dedup.key
-msgctxt "staff.main.menu.cat.dedup.key"
-msgid "M"
-msgstr "M"
-
 #: staff.main.menu.cat.dedup.label
-msgid "Merge and Transfer Interface"
+#: staff.main.menu.cat.dedup.accesskey
+#, fuzzy
+msgid "&Merge and Transfer Interface"
 msgstr "Ձուլիր և փոխանցիր միջերեսը"
 
 #: staff.main.menu.cat.edit_copy_buckets.label
@@ -2686,22 +2678,16 @@ msgctxt "staff.main.menu.circ.barcode.show_item.accesskey"
 msgid "B"
 msgstr "B"
 
-#: staff.main.menu.circ.checkin.key
-msgctxt "staff.main.menu.circ.checkin.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.checkin.label
-msgid "Check In Items"
+#: staff.main.menu.circ.checkin.accesskey
+#, fuzzy
+msgid "&Check In Items"
 msgstr "Հետ ընդունված նյութեր"
 
-#: staff.main.menu.circ.checkout.key
-msgctxt "staff.main.menu.circ.checkout.key"
-msgid "O"
-msgstr "O"
-
 #: staff.main.menu.circ.checkout.label
-msgid "Check Out Items"
+#: staff.main.menu.circ.checkout.accesskey
+#, fuzzy
+msgid "Check &Out Items"
 msgstr "Սպասարկված նյութեր"
 
 #: staff.main.menu.circ.claimed_returned.key
@@ -2737,13 +2723,10 @@ msgstr "Գտնված է"
 msgid "&Browse Holds Shelf"
 msgstr "&Դիտիր պահումների դարակը"
 
-#: staff.main.menu.circ.hold_capture.key
-msgctxt "staff.main.menu.circ.hold_capture.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.circ.hold_capture.label
-msgid "Capture Holds"
+#: staff.main.menu.circ.hold_capture.accesskey
+#, fuzzy
+msgid "Capture &Holds"
 msgstr "Որսա պահւոմները"
 
 #: staff.main.menu.circ.hold_pull.label
@@ -2756,14 +2739,10 @@ msgstr "Մղելու ցուցակ&ներ պահումների հարցման հ�
 msgid "Record &In-House Use"
 msgstr "Գրառումը &ներքին օգտագործման համար է"
 
-#: staff.main.menu.circ.key
-msgctxt "staff.main.menu.circ.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.label
-msgctxt "staff.main.menu.circ.label"
-msgid "Circulation"
+#: staff.main.menu.circ.accesskey
+#, fuzzy
+msgid "&Circulation"
 msgstr "Սպասարկում"
 
 #: staff.main.menu.circ.lost.key
@@ -2799,13 +2778,10 @@ msgstr "Նշված է Բացակա"
 msgid "Enter O&ffline Interface"
 msgstr "Մուտք արա Օ&ֆլայն միջերեսը"
 
-#: staff.main.menu.circ.patron_registration.key
-msgctxt "staff.main.menu.circ.patron_registration.key"
-msgid "R"
-msgstr "R"
-
 #: staff.main.menu.circ.patron_registration.label
-msgid "Register Patron"
+#: staff.main.menu.circ.patron_registration.accesskey
+#, fuzzy
+msgid "&Register Patron"
 msgstr "Գրանցիր ընթերցողին"
 
 #: staff.main.menu.circ.patron_retrieve.label
@@ -2968,14 +2944,10 @@ msgstr "g"
 msgid "Find Again"
 msgstr "Որոնիր նորից"
 
-#: staff.main.menu.edit.key
-msgctxt "staff.main.menu.edit.key"
-msgid "E"
-msgstr "E"
-
 #: staff.main.menu.edit.label
-msgctxt "staff.main.menu.edit.label"
-msgid "Edit"
+#: staff.main.menu.edit.accesskey
+#, fuzzy
+msgid "&Edit"
 msgstr "Խմբագրիր"
 
 #: staff.main.menu.edit.paste.key
@@ -3076,31 +3048,22 @@ msgctxt "staff.main.menu.file.close_tab.key"
 msgid ""
 msgstr ""
 
-#: staff.main.menu.file.key
-msgctxt "staff.main.menu.file.key"
-msgid "F"
-msgstr "F"
-
 #: staff.main.menu.file.label
-msgid "File"
+#: staff.main.menu.file.accesskey
+#, fuzzy
+msgid "&File"
 msgstr "Ֆայլ"
 
-#: staff.main.menu.file.new.key
-msgctxt "staff.main.menu.file.new.key"
-msgid "N"
-msgstr "N"
-
 #: staff.main.menu.file.new.label
-msgid "New Window"
+#: staff.main.menu.file.new.accesskey
+#, fuzzy
+msgid "&New Window"
 msgstr "Նոր պատուհան"
 
-#: staff.main.menu.file.new_tab.key
-msgctxt "staff.main.menu.file.new_tab.key"
-msgid "T"
-msgstr "T"
-
 #: staff.main.menu.file.new_tab.label
-msgid "New Tab"
+#: staff.main.menu.file.new_tab.accesskey
+#, fuzzy
+msgid "New &Tab"
 msgstr "Նոր Տաբ"
 
 #: staff.main.menu.file.open.key
@@ -3121,15 +3084,11 @@ msgstr "S"
 msgid "Save Session"
 msgstr "Հիշիր սեսիան"
 
-#: staff.main.menu.help.key
-msgctxt "staff.main.menu.help.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.help.label
-msgctxt "staff.main.menu.help.label"
-msgid "Help"
-msgstr "Օգնություն"
+#: staff.main.menu.help.accesskey
+msgctxt "staff.main.menu.help.label staff.main.menu.help.accesskey"
+msgid "&Help"
+msgstr "&Օգնություն"
 
 #: staff.main.menu.quit
 msgid "Quit Program"
@@ -3165,13 +3124,10 @@ msgstr "Որոնիր &Քարտարանը"
 msgid "Search for copies by &Barcode"
 msgstr "Որոնիր օրինակները ըստ &Շտրիխ կոդի"
 
-#: staff.main.menu.search.key
-msgid "r"
-msgstr "r"
-
 #: staff.main.menu.search.label
-msgctxt "staff.main.menu.search.label"
-msgid "Search"
+#: staff.main.menu.search.accesskey
+#, fuzzy
+msgid "Sea&rch"
 msgstr "Որոնում"
 
 #: staff.main.menu.search.patrons.label
@@ -5803,7 +5759,6 @@ msgid "Hold Verify"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
-msgctxt "staff.server.admin.copy_locations.editor.help"
 msgid "Help"
 msgstr "Օգնություն"
 
@@ -6290,6 +6245,14 @@ msgstr ""
 msgid "Regular expression defining the patron barcode format"
 msgstr ""
 
+#: staff.server.admin.org_settings.global.password_regex
+msgid "Password format"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.password_regex.desc
+msgid "Regular expression defining the password format"
+msgstr ""
+
 #: staff.server.admin.org_settings.circ.item_checkout_history.max
 msgid "Maximum previous checkouts displayed"
 msgstr ""
@@ -6349,6 +6312,34 @@ msgstr ""
 msgid ""
 "If true, patrons will be required to enter their password in addition to "
 "their username/barcode to log into the selfcheck interface"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.juvenile_age_threshold
+msgid "Juvenile Age Threshold"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.juvenile_age_threshold.desc
+msgid ""
+"The age at which a user is no long considered a juvenile.  For example, \"18 "
+"years\"."
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty
+msgid "Do not automatically delete empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
+msgid ""
+"Do not automatically delete a bib record when all attached copies are "
+"deleted"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty
+msgid "Alert on empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty.desc
+msgid "Alert staff when the last copy for a record is being deleted"
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -6602,7 +6593,9 @@ msgid "Auto-Print Hold and Transit Slips"
 msgstr "Ավտո տպիր պահման և տրանզիտի կտրոնները"
 
 #: staff.circ.checkin_overlay.effective_date.label
-msgid "Effective Date:"
+#: staff.circ.checkin_overlay.effective_date.accesskey
+#, fuzzy
+msgid "Effective &Date:"
 msgstr "Արդյունավետ ամսաթիվ"
 
 #: staff.circ.checkin_overlay.actions.label
@@ -6766,6 +6759,12 @@ msgstr "Կանչիր &պահման ընթերցողին"
 msgctxt "staff.circ.copy_details.done.label staff.circ.copy_details.done.accesskey"
 msgid "&Done"
 msgstr "&Կատարված"
+
+#: staff.circ.copy_status_overlay.sel_items.label
+#: staff.circ.copy_status_overlay.sel_items.accesskey
+msgctxt "staff.circ.copy_status_overlay.sel_items.label staff.circ.copy_status_overlay.sel_items.accesskey"
+msgid "Actions for &Selected Items"
+msgstr "Գործողություններ &ընտրված նյութերի համար"
 
 #: staff.circ.copy_status_overlay.sel_clip.label
 #: staff.circ.copy_status_overlay.sel_clip.accesskey
@@ -9211,6 +9210,12 @@ msgctxt "staff.patron.holds_overlay.holds_export.label"
 msgid "Export"
 msgstr "Արտահանիր"
 
+#: staff.patron.holds_overlay.print.label
+#: staff.patron.holds_overlay.print.accesskey
+msgctxt "staff.patron.holds_overlay.print.label staff.patron.holds_overlay.print.accesskey"
+msgid "&Print"
+msgstr "&Տպել"
+
 #: staff.patron.info_group.clone.label
 #: staff.patron.info_group.clone.accesskey
 msgid "Register a &New Group Member by Cloning Selected Patrons"
@@ -10429,6 +10434,11 @@ msgctxt "ev.staff.patron.ue_xhtml.barred.label"
 msgid "Barred"
 msgstr "Կասեցված"
 
+#: ev.staff.patron.ue_xhtml.juvenile.label
+msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
+msgid "Juvenile"
+msgstr "Պատանեկան"
+
 #: ev.staff.patron.ue_xhtml.set_family_group_lead_account.label
 msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
 msgid "Set as Family or Group Lead Account"
@@ -10625,6 +10635,12 @@ msgstr ""
 "Սա Evergreen-ի աշխատակազմի պորտալի էջն է: Կարող ես փոփոխել այն քո "
 "կազմակերպության պահանջներին համապատասխան: Օրինակ, կարող ես ավելացնել "
 "հղումներ գործողոթյուններ իրականացնող փաստաթղթերին:"
+
+#~ msgid "q"
+#~ msgstr "q"
+
+#~ msgid "r"
+#~ msgstr "r"
 
 #~ msgid "Evergreen Staff Client 3"
 #~ msgstr "Evergreen Staff Client 3"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-02 22:45-0400\n"
+"POT-Creation-Date: 2008-12-09 22:47-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -745,7 +745,7 @@ msgstr ""
 msgid "Exit Evergreen"
 msgstr ""
 
-#: staff.auth.quit_prompt.key
+#: staff.auth.quit_prompt.accesskey
 msgid "x"
 msgstr ""
 
@@ -1246,7 +1246,6 @@ msgid "Subject"
 msgstr ""
 
 #: staff.cat.search_submit
-msgctxt "staff.cat.search_submit"
 msgid "Search"
 msgstr ""
 
@@ -1947,6 +1946,7 @@ msgid "Adult"
 msgstr ""
 
 #: staff.copy.attr.stat.audience.example2
+msgctxt "staff.copy.attr.stat.audience.example2"
 msgid "Juvenile"
 msgstr ""
 
@@ -2387,12 +2387,9 @@ msgstr ""
 msgid "Workstation"
 msgstr ""
 
-#: staff.main.menu.acquisitions.key
-msgid "q"
-msgstr ""
-
 #: staff.main.menu.acquisitions.label
-msgid "Acquisitions"
+#: staff.main.menu.acquisitions.accesskey
+msgid "Ac&quisitions"
 msgstr ""
 
 #: staff.main.menu.admin.accesskey
@@ -2562,13 +2559,9 @@ msgstr ""
 msgid "Add Volume"
 msgstr ""
 
-#: staff.main.menu.cat.bib_search.key
-msgctxt "staff.main.menu.cat.bib_search.key"
-msgid "S"
-msgstr ""
-
 #: staff.main.menu.cat.bib_search.label
-msgid "Search the Catalog"
+#: staff.main.menu.cat.bib_search.accesskey
+msgid "&Search the Catalog"
 msgstr ""
 
 #: staff.main.menu.cat.bib_status.key
@@ -2600,13 +2593,9 @@ msgstr ""
 msgid "Create &New Marc Record"
 msgstr ""
 
-#: staff.main.menu.cat.dedup.key
-msgctxt "staff.main.menu.cat.dedup.key"
-msgid "M"
-msgstr ""
-
 #: staff.main.menu.cat.dedup.label
-msgid "Merge and Transfer Interface"
+#: staff.main.menu.cat.dedup.accesskey
+msgid "&Merge and Transfer Interface"
 msgstr ""
 
 #: staff.main.menu.cat.edit_copy_buckets.label
@@ -2685,22 +2674,14 @@ msgctxt "staff.main.menu.circ.barcode.show_item.accesskey"
 msgid "B"
 msgstr ""
 
-#: staff.main.menu.circ.checkin.key
-msgctxt "staff.main.menu.circ.checkin.key"
-msgid "C"
-msgstr ""
-
 #: staff.main.menu.circ.checkin.label
-msgid "Check In Items"
-msgstr ""
-
-#: staff.main.menu.circ.checkout.key
-msgctxt "staff.main.menu.circ.checkout.key"
-msgid "O"
+#: staff.main.menu.circ.checkin.accesskey
+msgid "&Check In Items"
 msgstr ""
 
 #: staff.main.menu.circ.checkout.label
-msgid "Check Out Items"
+#: staff.main.menu.circ.checkout.accesskey
+msgid "Check &Out Items"
 msgstr ""
 
 #: staff.main.menu.circ.claimed_returned.key
@@ -2736,13 +2717,9 @@ msgstr ""
 msgid "&Browse Holds Shelf"
 msgstr ""
 
-#: staff.main.menu.circ.hold_capture.key
-msgctxt "staff.main.menu.circ.hold_capture.key"
-msgid "H"
-msgstr ""
-
 #: staff.main.menu.circ.hold_capture.label
-msgid "Capture Holds"
+#: staff.main.menu.circ.hold_capture.accesskey
+msgid "Capture &Holds"
 msgstr ""
 
 #: staff.main.menu.circ.hold_pull.label
@@ -2755,14 +2732,9 @@ msgstr ""
 msgid "Record &In-House Use"
 msgstr ""
 
-#: staff.main.menu.circ.key
-msgctxt "staff.main.menu.circ.key"
-msgid "C"
-msgstr ""
-
 #: staff.main.menu.circ.label
-msgctxt "staff.main.menu.circ.label"
-msgid "Circulation"
+#: staff.main.menu.circ.accesskey
+msgid "&Circulation"
 msgstr ""
 
 #: staff.main.menu.circ.lost.key
@@ -2798,13 +2770,9 @@ msgstr ""
 msgid "Enter O&ffline Interface"
 msgstr ""
 
-#: staff.main.menu.circ.patron_registration.key
-msgctxt "staff.main.menu.circ.patron_registration.key"
-msgid "R"
-msgstr ""
-
 #: staff.main.menu.circ.patron_registration.label
-msgid "Register Patron"
+#: staff.main.menu.circ.patron_registration.accesskey
+msgid "&Register Patron"
 msgstr ""
 
 #: staff.main.menu.circ.patron_retrieve.label
@@ -2967,14 +2935,9 @@ msgstr ""
 msgid "Find Again"
 msgstr ""
 
-#: staff.main.menu.edit.key
-msgctxt "staff.main.menu.edit.key"
-msgid "E"
-msgstr ""
-
 #: staff.main.menu.edit.label
-msgctxt "staff.main.menu.edit.label"
-msgid "Edit"
+#: staff.main.menu.edit.accesskey
+msgid "&Edit"
 msgstr ""
 
 #: staff.main.menu.edit.paste.key
@@ -3075,31 +3038,19 @@ msgctxt "staff.main.menu.file.close_tab.key"
 msgid ""
 msgstr ""
 
-#: staff.main.menu.file.key
-msgctxt "staff.main.menu.file.key"
-msgid "F"
-msgstr ""
-
 #: staff.main.menu.file.label
-msgid "File"
-msgstr ""
-
-#: staff.main.menu.file.new.key
-msgctxt "staff.main.menu.file.new.key"
-msgid "N"
+#: staff.main.menu.file.accesskey
+msgid "&File"
 msgstr ""
 
 #: staff.main.menu.file.new.label
-msgid "New Window"
-msgstr ""
-
-#: staff.main.menu.file.new_tab.key
-msgctxt "staff.main.menu.file.new_tab.key"
-msgid "T"
+#: staff.main.menu.file.new.accesskey
+msgid "&New Window"
 msgstr ""
 
 #: staff.main.menu.file.new_tab.label
-msgid "New Tab"
+#: staff.main.menu.file.new_tab.accesskey
+msgid "New &Tab"
 msgstr ""
 
 #: staff.main.menu.file.open.key
@@ -3120,14 +3071,10 @@ msgstr ""
 msgid "Save Session"
 msgstr ""
 
-#: staff.main.menu.help.key
-msgctxt "staff.main.menu.help.key"
-msgid "H"
-msgstr ""
-
 #: staff.main.menu.help.label
-msgctxt "staff.main.menu.help.label"
-msgid "Help"
+#: staff.main.menu.help.accesskey
+msgctxt "staff.main.menu.help.label staff.main.menu.help.accesskey"
+msgid "&Help"
 msgstr ""
 
 #: staff.main.menu.quit
@@ -3164,13 +3111,9 @@ msgstr ""
 msgid "Search for copies by &Barcode"
 msgstr ""
 
-#: staff.main.menu.search.key
-msgid "r"
-msgstr ""
-
 #: staff.main.menu.search.label
-msgctxt "staff.main.menu.search.label"
-msgid "Search"
+#: staff.main.menu.search.accesskey
+msgid "Sea&rch"
 msgstr ""
 
 #: staff.main.menu.search.patrons.label
@@ -5793,7 +5736,6 @@ msgid "Hold Verify"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
-msgctxt "staff.server.admin.copy_locations.editor.help"
 msgid "Help"
 msgstr ""
 
@@ -6333,6 +6275,34 @@ msgid ""
 "their username/barcode to log into the selfcheck interface"
 msgstr ""
 
+#: staff.server.admin.org_settings.global.juvenile_age_threshold
+msgid "Juvenile Age Threshold"
+msgstr ""
+
+#: staff.server.admin.org_settings.global.juvenile_age_threshold.desc
+msgid ""
+"The age at which a user is no long considered a juvenile.  For example, \"18 "
+"years\"."
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty
+msgid "Do not automatically delete empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
+msgid ""
+"Do not automatically delete a bib record when all attached copies are "
+"deleted"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty
+msgid "Alert on empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty.desc
+msgid "Alert staff when the last copy for a record is being deleted"
+msgstr ""
+
 #: staff.server.admin.stat_cat.title
 msgid "Evergreen: Statistical Category Editor"
 msgstr ""
@@ -6580,7 +6550,8 @@ msgid "Auto-Print Hold and Transit Slips"
 msgstr ""
 
 #: staff.circ.checkin_overlay.effective_date.label
-msgid "Effective Date:"
+#: staff.circ.checkin_overlay.effective_date.accesskey
+msgid "Effective &Date:"
 msgstr ""
 
 #: staff.circ.checkin_overlay.actions.label
@@ -6743,6 +6714,12 @@ msgstr ""
 #: staff.circ.copy_details.done.accesskey
 msgctxt "staff.circ.copy_details.done.label staff.circ.copy_details.done.accesskey"
 msgid "&Done"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.sel_items.label
+#: staff.circ.copy_status_overlay.sel_items.accesskey
+msgctxt "staff.circ.copy_status_overlay.sel_items.label staff.circ.copy_status_overlay.sel_items.accesskey"
+msgid "Actions for &Selected Items"
 msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_clip.label
@@ -9178,6 +9155,12 @@ msgctxt "staff.patron.holds_overlay.holds_export.label"
 msgid "Export"
 msgstr ""
 
+#: staff.patron.holds_overlay.print.label
+#: staff.patron.holds_overlay.print.accesskey
+msgctxt "staff.patron.holds_overlay.print.label staff.patron.holds_overlay.print.accesskey"
+msgid "&Print"
+msgstr ""
+
 #: staff.patron.info_group.clone.label
 #: staff.patron.info_group.clone.accesskey
 msgid "Register a &New Group Member by Cloning Selected Patrons"
@@ -10370,6 +10353,11 @@ msgstr ""
 #: ev.staff.patron.ue_xhtml.barred.label
 msgctxt "ev.staff.patron.ue_xhtml.barred.label"
 msgid "Barred"
+msgstr ""
+
+#: ev.staff.patron.ue_xhtml.juvenile.label
+msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
+msgid "Juvenile"
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.set_family_group_lead_account.label
