@@ -175,7 +175,7 @@
 <!ENTITY staff.auth.password_prompt.accesskey "P">
 <!ENTITY staff.auth.password_prompt.key "P">
 <!ENTITY staff.auth.quit_prompt "Exit Evergreen">
-<!ENTITY staff.auth.quit_prompt.key "x">
+<!ENTITY staff.auth.quit_prompt.accesskey "x">
 <!ENTITY staff.auth.submit_prompt "Submit">
 <!ENTITY staff.auth.submit_prompt.key "S">
 <!ENTITY staff.auth.title "Evergreen Staff Client">
@@ -571,7 +571,7 @@
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
 <!ENTITY staff.main.auth.workstation "Workstation">
-<!ENTITY staff.main.menu.acquisitions.key "q">
+<!ENTITY staff.main.menu.acquisitions.accesskey "q">
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.accesskey "-">
 <!ENTITY staff.main.menu.admin.browse_holds.accesskey "B">
@@ -624,7 +624,7 @@
 <!ENTITY staff.main.menu.cat.add_copy.label "Add Item">
 <!ENTITY staff.main.menu.cat.add_volume.key "V">
 <!ENTITY staff.main.menu.cat.add_volume.label "Add Volume">
-<!ENTITY staff.main.menu.cat.bib_search.key "S">
+<!ENTITY staff.main.menu.cat.bib_search.accesskey "S">
 <!ENTITY staff.main.menu.cat.bib_search.label "Search the Catalog">
 <!ENTITY staff.main.menu.cat.bib_status.key "B">
 <!ENTITY staff.main.menu.cat.bib_status.label "Display Bib Record">
@@ -633,7 +633,7 @@
 <!ENTITY staff.main.menu.cat.copy_status.label "Display Item">
 <!ENTITY staff.main.menu.cat.create_marc.accesskey "N">
 <!ENTITY staff.main.menu.cat.create_marc.label "Create New Marc Record">
-<!ENTITY staff.main.menu.cat.dedup.key "M">
+<!ENTITY staff.main.menu.cat.dedup.accesskey "M">
 <!ENTITY staff.main.menu.cat.dedup.label "Merge and Transfer Interface">
 <!ENTITY staff.main.menu.cat.edit_copy_buckets.accesskey "B">
 <!ENTITY staff.main.menu.cat.edit_copy_buckets.label "Manage Copy Buckets">
@@ -660,9 +660,9 @@
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron.accesskey "P">
 <!ENTITY staff.main.menu.circ.barcode.show_item "Show Item Status by Barcode">
 <!ENTITY staff.main.menu.circ.barcode.show_item.accesskey "B">
-<!ENTITY staff.main.menu.circ.checkin.key "C">
+<!ENTITY staff.main.menu.circ.checkin.accesskey "C">
 <!ENTITY staff.main.menu.circ.checkin.label "Check In Items">
-<!ENTITY staff.main.menu.circ.checkout.key "O">
+<!ENTITY staff.main.menu.circ.checkout.accesskey "O">
 <!ENTITY staff.main.menu.circ.checkout.label "Check Out Items">
 <!ENTITY staff.main.menu.circ.claimed_returned.key "C">
 <!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'>
@@ -672,13 +672,13 @@
 <!ENTITY staff.main.menu.circ.found.label "Mark Found">
 <!ENTITY staff.main.menu.circ.hold_browse.accesskey "B">
 <!ENTITY staff.main.menu.circ.hold_browse.label "Browse Holds Shelf">
-<!ENTITY staff.main.menu.circ.hold_capture.key "H">
+<!ENTITY staff.main.menu.circ.hold_capture.accesskey "H">
 <!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
 <!ENTITY staff.main.menu.circ.hold_pull.accesskey "S">
 <!ENTITY staff.main.menu.circ.hold_pull.label "Pull List for Hold Requests">
 <!ENTITY staff.main.menu.circ.in_house.accesskey "I">
 <!ENTITY staff.main.menu.circ.in_house.label "Record In-House Use">
-<!ENTITY staff.main.menu.circ.key "C">
+<!ENTITY staff.main.menu.circ.accesskey "C">
 <!ENTITY staff.main.menu.circ.label "Circulation">
 <!ENTITY staff.main.menu.circ.lost.key "L">
 <!ENTITY staff.main.menu.circ.lost.label "Mark Lost">
@@ -688,7 +688,7 @@
 <!ENTITY staff.main.menu.circ.missing.label "Mark Missing">
 <!ENTITY staff.main.menu.circ.offline.accesskey "f">
 <!ENTITY staff.main.menu.circ.offline.label "Enter Offline Interface">
-<!ENTITY staff.main.menu.circ.patron_registration.key "R">
+<!ENTITY staff.main.menu.circ.patron_registration.accesskey "R">
 <!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron">
 <!ENTITY staff.main.menu.circ.patron_retrieve.accesskey "L">
 <!ENTITY staff.main.menu.circ.patron_retrieve.label "Retrieve Last Patron">
@@ -727,7 +727,7 @@
 <!ENTITY staff.main.menu.edit.find.label "Find">
 <!ENTITY staff.main.menu.edit.find_again.key "g">
 <!ENTITY staff.main.menu.edit.find_again.label "Find Again">
-<!ENTITY staff.main.menu.edit.key "E">
+<!ENTITY staff.main.menu.edit.accesskey "E">
 <!ENTITY staff.main.menu.edit.label "Edit">
 <!ENTITY staff.main.menu.edit.paste.key "P">
 <!ENTITY staff.main.menu.edit.paste.label "Paste">
@@ -752,17 +752,17 @@
 <!ENTITY staff.main.menu.file.close_tab.accesskey "C">
 <!ENTITY staff.main.menu.file.close_tab.key "">
 <!ENTITY staff.main.menu.file.close_tab.label "Close Tab">
-<!ENTITY staff.main.menu.file.key "F">
+<!ENTITY staff.main.menu.file.accesskey "F">
 <!ENTITY staff.main.menu.file.label "File">
-<!ENTITY staff.main.menu.file.new.key "N">
+<!ENTITY staff.main.menu.file.new.accesskey "N">
 <!ENTITY staff.main.menu.file.new.label "New Window">
-<!ENTITY staff.main.menu.file.new_tab.key "T">
+<!ENTITY staff.main.menu.file.new_tab.accesskey "T">
 <!ENTITY staff.main.menu.file.new_tab.label "New Tab">
 <!ENTITY staff.main.menu.file.open.key "O">
 <!ENTITY staff.main.menu.file.open.label "Open Session">
 <!ENTITY staff.main.menu.file.save.key "S">
 <!ENTITY staff.main.menu.file.save.label "Save Session">
-<!ENTITY staff.main.menu.help.key "H">
+<!ENTITY staff.main.menu.help.accesskey "H">
 <!ENTITY staff.main.menu.help.label "Help">
 <!ENTITY staff.main.menu.quit "Quit Program">
 <!ENTITY staff.main.menu.quit.accesskey "Q">
@@ -773,7 +773,7 @@
 <!ENTITY staff.main.menu.search.catalog.label "Search the Catalog">
 <!ENTITY staff.main.menu.search.copies.accesskey "B">
 <!ENTITY staff.main.menu.search.copies.label "Search for copies by Barcode">
-<!ENTITY staff.main.menu.search.key "r">
+<!ENTITY staff.main.menu.search.accesskey "r">
 <!ENTITY staff.main.menu.search.label "Search">
 <!ENTITY staff.main.menu.search.patrons.accesskey "P">
 <!ENTITY staff.main.menu.search.patrons.label "Search for Patrons">

@@ -170,7 +170,7 @@
 		<vbox id="progress_space">
 			<progressmeter id="progress_bar" mode="normal" value="0" hidden="true"/>
 		</vbox>
-		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.key;" command="cmd_close_window"/>
+		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.accesskey;" command="cmd_close_window"/>
 		<groupbox id="debug_gb" flex="1" hidden="true">
 			<caption label="&staff.main.auth.debug.caption;"/>
 			<hbox>
