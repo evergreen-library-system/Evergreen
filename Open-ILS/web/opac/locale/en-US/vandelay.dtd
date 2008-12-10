@@ -27,7 +27,7 @@
 <!ENTITY vandelay.file.to.upload "File to Upload:">
 <!ENTITY vandelay.for.example "Example">
 <!ENTITY vandelay.identifier "Identifier">
-<!ENTITY vandelay.id.field "Identifer Field?">
+<!ENTITY vandelay.id.field "Identifier Field?">
 <!ENTITY vandelay.id "ID">
 <!ENTITY vandelay.import.matches "Import Matches">
 <!ENTITY vandelay.import.records "Import Records">
