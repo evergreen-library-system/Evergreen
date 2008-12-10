@@ -1,16 +1,20 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/lang.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
-"POT-Creation-Date: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-09 23:19-0400\n"
 "PO-Revision-Date: 2008-12-01 22:02-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: lang.version
 msgid "remote v1"
@@ -754,7 +758,7 @@ msgstr "P"
 msgid "Exit Evergreen"
 msgstr "Exit Evergreen"
 
-#: staff.auth.quit_prompt.key
+#: staff.auth.quit_prompt.accesskey
 msgid "x"
 msgstr "x"
 
@@ -778,7 +782,9 @@ msgid "About this client..."
 msgstr ""
 
 #: staff.auth.about_btn.accesskey
-msgid "_: staff.auth.about_btn.accesskey\n"
+msgid ""
+"_: staff.auth.about_btn.accesskey\n"
+""
 msgstr ""
 
 #: staff.auth.new_window_btn.label
@@ -1111,6 +1117,21 @@ msgctxt "staff.cat.popup.add_to_bucket"
 msgid "Add to Bucket"
 msgstr "Add to Bucket"
 
+#: staff.cat.popup.add_to_bucket.key
+msgctxt "staff.cat.popup.add_to_bucket.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.browse.record.tab.key
+msgctxt "staff.cat.popup.browse.record.tab.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.browse.record.window.key
+msgctxt "staff.cat.popup.browse.record.window.key"
+msgid ""
+msgstr ""
+
 #: staff.cat.popup.browse_record.tab
 msgid "View Copies (Tab)"
 msgstr "View Copies (Tab)"
@@ -1118,6 +1139,16 @@ msgstr "View Copies (Tab)"
 #: staff.cat.popup.browse_record.window
 msgid "View Copies (Window)"
 msgstr "View Copies (Window)"
+
+#: staff.cat.popup.edit.record.tab.key
+msgctxt "staff.cat.popup.edit.record.tab.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.edit.record.window.key
+msgctxt "staff.cat.popup.edit.record.window.key"
+msgid ""
+msgstr ""
 
 #: staff.cat.popup.edit_record.tab
 msgid "Edit Record (Tab)"
@@ -1222,7 +1253,6 @@ msgid "Subject"
 msgstr "Subject"
 
 #: staff.cat.search_submit
-msgctxt "staff.cat.search_submit"
 msgid "Search"
 msgstr "Search"
 
@@ -1356,6 +1386,11 @@ msgstr "D"
 msgctxt "staff.checkin.print_receipt.label"
 msgid "Print List"
 msgstr "Print List"
+
+#: staff.checkin.print_receipt.accesskey
+msgctxt "staff.checkin.print_receipt.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.checkin.reprint_receipt_label
 msgctxt "staff.checkin.reprint_receipt_label"
@@ -2040,6 +2075,11 @@ msgstr "B"
 msgid "Clone Copy"
 msgstr "Clone Copy"
 
+#: staff.copy.clone.key
+msgctxt "staff.copy.clone.key"
+msgid ""
+msgstr ""
+
 #: staff.copy.close
 msgid "Close Window"
 msgstr "Close Window"
@@ -2061,6 +2101,11 @@ msgstr "Value"
 #: staff.copy.delete
 msgid "Delete Copy"
 msgstr "Delete Copy"
+
+#: staff.copy.delete.key
+msgctxt "staff.copy.delete.key"
+msgid ""
+msgstr ""
 
 #: staff.copy.edit_categories
 msgid "Edit Categories"
@@ -2141,6 +2186,11 @@ msgstr "Barcode goes here"
 msgid "Transfer Copy"
 msgstr "Transfer Copy"
 
+#: staff.copy.transfer.key
+msgctxt "staff.copy.transfer.key"
+msgid ""
+msgstr ""
+
 #: staff.copy.wizard.title
 msgid "Batch Add Copies Wizard"
 msgstr "Batch Add Copies Wizard"
@@ -2151,8 +2201,9 @@ msgid "Copies"
 msgstr ""
 
 #: staff.copy_stat_cat_editor_interface_label
+#, fuzzy
 msgid "Copy statistical categories"
-msgstr ""
+msgstr "Statistical &Category Editor"
 
 #: staff.display_patron_interface_label
 #, fuzzy
@@ -2199,6 +2250,11 @@ msgstr "Done"
 msgctxt "staff.hold_capture.print_receipt.label"
 msgid "Print List"
 msgstr "Print List"
+
+#: staff.hold_capture.print_receipt.accesskey
+msgctxt "staff.hold_capture.print_receipt.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.hold_capture.reprint_receipt_label
 msgctxt "staff.hold_capture.reprint_receipt_label"
@@ -2352,12 +2408,10 @@ msgstr "Version"
 msgid "Workstation"
 msgstr "Workstation"
 
-#: staff.main.menu.acquisitions.key
-msgid "q"
-msgstr "q"
-
 #: staff.main.menu.acquisitions.label
-msgid "Acquisitions"
+#: staff.main.menu.acquisitions.accesskey
+#, fuzzy
+msgid "Ac&quisitions"
 msgstr "Acquisitions"
 
 #: staff.main.menu.admin.accesskey
@@ -2529,13 +2583,10 @@ msgstr "V"
 msgid "Add Volume"
 msgstr "Add Volume"
 
-#: staff.main.menu.cat.bib_search.key
-msgctxt "staff.main.menu.cat.bib_search.key"
-msgid "S"
-msgstr "S"
-
 #: staff.main.menu.cat.bib_search.label
-msgid "Search the Catalog"
+#: staff.main.menu.cat.bib_search.accesskey
+#, fuzzy
+msgid "&Search the Catalog"
 msgstr "Search the Catalogue"
 
 #: staff.main.menu.cat.bib_status.key
@@ -2567,14 +2618,10 @@ msgstr "Display Item"
 msgid "Create &New Marc Record"
 msgstr "Create &New Marc Record"
 
-#: staff.main.menu.cat.dedup.key
-msgctxt "staff.main.menu.cat.dedup.key"
-msgid "M"
-msgstr "M"
-
 #: staff.main.menu.cat.dedup.label
+#: staff.main.menu.cat.dedup.accesskey
 #, fuzzy
-msgid "Merge and Transfer Interface"
+msgid "&Merge and Transfer Interface"
 msgstr "Merge/Transfer Interface"
 
 #: staff.main.menu.cat.edit_copy_buckets.label
@@ -2653,22 +2700,16 @@ msgctxt "staff.main.menu.circ.barcode.show_item.accesskey"
 msgid "B"
 msgstr "B"
 
-#: staff.main.menu.circ.checkin.key
-msgctxt "staff.main.menu.circ.checkin.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.checkin.label
-msgid "Check In Items"
+#: staff.main.menu.circ.checkin.accesskey
+#, fuzzy
+msgid "&Check In Items"
 msgstr "Check In Items"
 
-#: staff.main.menu.circ.checkout.key
-msgctxt "staff.main.menu.circ.checkout.key"
-msgid "O"
-msgstr "O"
-
 #: staff.main.menu.circ.checkout.label
-msgid "Check Out Items"
+#: staff.main.menu.circ.checkout.accesskey
+#, fuzzy
+msgid "Check &Out Items"
 msgstr "Check Out Items"
 
 #: staff.main.menu.circ.claimed_returned.key
@@ -2704,13 +2745,10 @@ msgstr "Mark Found"
 msgid "&Browse Holds Shelf"
 msgstr "&Browse Holds Shelf"
 
-#: staff.main.menu.circ.hold_capture.key
-msgctxt "staff.main.menu.circ.hold_capture.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.circ.hold_capture.label
-msgid "Capture Holds"
+#: staff.main.menu.circ.hold_capture.accesskey
+#, fuzzy
+msgid "Capture &Holds"
 msgstr "Capture Holds"
 
 #: staff.main.menu.circ.hold_pull.label
@@ -2723,14 +2761,10 @@ msgstr "Pull Li&st for Hold Requests"
 msgid "Record &In-House Use"
 msgstr "Record &In-House Use"
 
-#: staff.main.menu.circ.key
-msgctxt "staff.main.menu.circ.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.label
-msgctxt "staff.main.menu.circ.label"
-msgid "Circulation"
+#: staff.main.menu.circ.accesskey
+#, fuzzy
+msgid "&Circulation"
 msgstr "Circulation"
 
 #: staff.main.menu.circ.lost.key
@@ -2766,13 +2800,10 @@ msgstr "Mark Missing"
 msgid "Enter O&ffline Interface"
 msgstr "Enter O&ffline Interface"
 
-#: staff.main.menu.circ.patron_registration.key
-msgctxt "staff.main.menu.circ.patron_registration.key"
-msgid "R"
-msgstr "R"
-
 #: staff.main.menu.circ.patron_registration.label
-msgid "Register Patron"
+#: staff.main.menu.circ.patron_registration.accesskey
+#, fuzzy
+msgid "&Register Patron"
 msgstr "Register Patron"
 
 #: staff.main.menu.circ.patron_retrieve.label
@@ -2925,14 +2956,10 @@ msgstr "g"
 msgid "Find Again"
 msgstr "Find Again"
 
-#: staff.main.menu.edit.key
-msgctxt "staff.main.menu.edit.key"
-msgid "E"
-msgstr "E"
-
 #: staff.main.menu.edit.label
-msgctxt "staff.main.menu.edit.label"
-msgid "Edit"
+#: staff.main.menu.edit.accesskey
+#, fuzzy
+msgid "&Edit"
 msgstr "Edit"
 
 #: staff.main.menu.edit.paste.key
@@ -2971,13 +2998,28 @@ msgstr "U"
 msgid "Undo"
 msgstr "Undo"
 
+#: staff.main.menu.entity.bib.key
+msgctxt "staff.main.menu.entity.bib.key"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
 msgstr "Bib Records"
 
+#: staff.main.menu.entity.copy.key
+msgctxt "staff.main.menu.entity.copy.key"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.entity.copy.label
 msgid "Items"
 msgstr "Items"
+
+#: staff.main.menu.entity.patron.key
+msgctxt "staff.main.menu.entity.patron.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.entity.patron.label
 msgid "Patrons"
@@ -2987,6 +3029,11 @@ msgstr "Patrons"
 msgctxt "staff.main.menu.entity.patron.register.key"
 msgid "R"
 msgstr "R"
+
+#: staff.main.menu.entity.volume.key
+msgctxt "staff.main.menu.entity.volume.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.entity.volume.label
 msgctxt "staff.main.menu.entity.volume.label"
@@ -3008,31 +3055,27 @@ msgstr "C"
 msgid "&Close Tab"
 msgstr "&Close Tab"
 
-#: staff.main.menu.file.key
-msgctxt "staff.main.menu.file.key"
-msgid "F"
-msgstr "F"
+#: staff.main.menu.file.close_tab.key
+msgctxt "staff.main.menu.file.close_tab.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.file.label
-msgid "File"
+#: staff.main.menu.file.accesskey
+#, fuzzy
+msgid "&File"
 msgstr "File"
 
-#: staff.main.menu.file.new.key
-msgctxt "staff.main.menu.file.new.key"
-msgid "N"
-msgstr "N"
-
 #: staff.main.menu.file.new.label
-msgid "New Window"
+#: staff.main.menu.file.new.accesskey
+#, fuzzy
+msgid "&New Window"
 msgstr "New Window"
 
-#: staff.main.menu.file.new_tab.key
-msgctxt "staff.main.menu.file.new_tab.key"
-msgid "T"
-msgstr "T"
-
 #: staff.main.menu.file.new_tab.label
-msgid "New Tab"
+#: staff.main.menu.file.new_tab.accesskey
+#, fuzzy
+msgid "New &Tab"
 msgstr "New Tab"
 
 #: staff.main.menu.file.open.key
@@ -3053,14 +3096,11 @@ msgstr "S"
 msgid "Save Session"
 msgstr "Save Session"
 
-#: staff.main.menu.help.key
-msgctxt "staff.main.menu.help.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.help.label
-msgctxt "staff.main.menu.help.label"
-msgid "Help"
+#: staff.main.menu.help.accesskey
+#, fuzzy
+msgctxt "staff.main.menu.help.label staff.main.menu.help.accesskey"
+msgid "&Help"
 msgstr "Help"
 
 #: staff.main.menu.quit
@@ -3076,6 +3116,11 @@ msgstr "Q"
 msgctxt "staff.main.menu.replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Replace Barcode"
+
+#: staff.main.menu.reports.key
+msgctxt "staff.main.menu.reports.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.reports.label
 msgctxt "staff.main.menu.reports.label"
@@ -3093,13 +3138,10 @@ msgstr "Search the &Catalogue"
 msgid "Search for copies by &Barcode"
 msgstr "for copies by &Barcode"
 
-#: staff.main.menu.search.key
-msgid "r"
-msgstr "r"
-
 #: staff.main.menu.search.label
-msgctxt "staff.main.menu.search.label"
-msgid "Search"
+#: staff.main.menu.search.accesskey
+#, fuzzy
+msgid "Sea&rch"
 msgstr "Search"
 
 #: staff.main.menu.search.patrons.label
@@ -4396,8 +4438,12 @@ msgid "E"
 msgstr "E"
 
 #: staff.marc.editor.keys.help
-msgid "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;"
-msgstr "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;"
+msgid ""
+"Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = "
+"Delete Row;"
+msgstr ""
+"Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = "
+"Delete Row;"
 
 #: staff.marc.file
 msgctxt "staff.marc.file"
@@ -4569,6 +4615,11 @@ msgstr "Done"
 #: staff.patron_display.checkout.print_receipt.label
 msgid "Print Receipt"
 msgstr "Print Receipt"
+
+#: staff.patron_display.checkout.print_receipt.accesskey
+msgctxt "staff.patron_display.checkout.print_receipt.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_display.checkout.reprint_receipt_label
 msgid "Re-Print Last Receipt"
@@ -4854,6 +4905,11 @@ msgstr ""
 msgid "Search for Patron"
 msgstr "Search for Patron"
 
+#: staff.patron_search_form.city.accesskey
+msgctxt "staff.patron_search_form.city.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.city.label
 msgid "City:"
 msgstr "City:"
@@ -4863,6 +4919,11 @@ msgstr "City:"
 msgctxt "staff.patron_search_form.clear.label staff.patron_search_form.clear.accesskey"
 msgid "&Clear Form"
 msgstr "&Clear Form"
+
+#: staff.patron_search_form.email.accesskey
+msgctxt "staff.patron_search_form.email.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
@@ -4874,10 +4935,20 @@ msgstr "Email:"
 msgid "&Last Name:"
 msgstr "&Last Name:"
 
+#: staff.patron_search_form.first_given_name.accesskey
+msgctxt "staff.patron_search_form.first_given_name.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.first_given_name.label
 msgctxt "staff.patron_search_form.first_given_name.label"
 msgid "First Name:"
 msgstr "First Name:"
+
+#: staff.patron_search_form.ident.accesskey
+msgctxt "staff.patron_search_form.ident.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.ident.label
 msgid "ID:"
@@ -4887,6 +4958,11 @@ msgstr "ID:"
 #: staff.patron_search_form.phone.accesskey
 msgid "&Phone:"
 msgstr "&Phone:"
+
+#: staff.patron_search_form.post_code.accesskey
+msgctxt "staff.patron_search_form.post_code.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.post_code.label
 msgid "ZIP:"
@@ -4898,10 +4974,20 @@ msgctxt "staff.patron_search_form.search.label staff.patron_search_form.search.a
 msgid "&Search"
 msgstr "&Search"
 
+#: staff.patron_search_form.second_given_name.accesskey
+msgctxt "staff.patron_search_form.second_given_name.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.second_given_name.label
 msgctxt "staff.patron_search_form.second_given_name.label"
 msgid "Middle Name:"
 msgstr "Middle Name:"
+
+#: staff.patron_search_form.state.accesskey
+msgctxt "staff.patron_search_form.state.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.state.label
 msgid "State:"
@@ -4911,6 +4997,11 @@ msgstr "Province:"
 #: staff.patron_search_form.street1.accesskey
 msgid "A&ddress 1:"
 msgstr "A&ddress 1:"
+
+#: staff.patron_search_form.street2.accesskey
+msgctxt "staff.patron_search_form.street2.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.street2.label
 msgid "Address 2:"
@@ -5139,7 +5230,9 @@ msgid "Context Location"
 msgstr ""
 
 #: staff.server.admin.org_unit_settings.uninherited
-msgid " * Indicates the setting is not inherited from the parent org unit at run time"
+msgid ""
+" * Indicates the setting is not inherited from the parent org unit at run "
+"time"
 msgstr ""
 
 #: staff.server.admin.org_unit_settings.edit_setting
@@ -5181,7 +5274,10 @@ msgid "Uploaded Transaction Files"
 msgstr ""
 
 #: staff.server.admin.offline.xacts.status.desc
-msgid "The transactions from the following workstations have been uploaded, but not processed.  When all expected workstations are present here, use the Process button above."
+msgid ""
+"The transactions from the following workstations have been uploaded, but not "
+"processed.  When all expected workstations are present here, use the "
+"Process button above."
 msgstr ""
 
 #: staff.server.admin.offline.xacts.errors.label
@@ -5190,7 +5286,9 @@ msgid "Exceptions"
 msgstr "Exception"
 
 #: staff.server.admin.offline.xacts.errors.desc
-msgid "All transactions from this session have been processed.  The errors, if any, are listed below."
+msgid ""
+"All transactions from this session have been processed.  The errors, if any, "
+"are listed below."
 msgstr ""
 
 #: staff.server.admin.offline.xacts.export.label
@@ -5547,7 +5645,9 @@ msgstr "Delete"
 
 #. Translators: do not translate "<b>YYYY-MM-DD</b>" or "<b>HH:MM</b>"
 #: staff.server.admin.closed_dates.editor.allmultiday.format
-msgid "Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the form <b>HH:MM</b>"
+msgid ""
+"Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the "
+"form <b>HH:MM</b>"
 msgstr ""
 
 #: staff.server.admin.closed_dates.add.allday
@@ -5601,8 +5701,9 @@ msgid "Cancel"
 msgstr "Cancel"
 
 #: staff.server.admin.closed_dates.confirm_delete
+#, fuzzy
 msgid "Are you sure you wish to delete the selected close date?"
-msgstr ""
+msgstr "Are you sure you wish to delete the selected non-catalogued type?"
 
 #: staff.server.admin.closed_dates.date.invalid
 msgid "Invalid date format"
@@ -5685,7 +5786,6 @@ msgid "Hold Verify"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.help
-msgctxt "staff.server.admin.copy_locations.editor.help"
 msgid "Help"
 msgstr "Help"
 
@@ -5710,11 +5810,15 @@ msgid "Delete"
 msgstr "Delete"
 
 #: staff.server.admin.copy_locations.editor.help.holdable
-msgid "If a copy location is 'Holdable', copies in that location may have holds placed on them."
+msgid ""
+"If a copy location is 'Holdable', copies in that location may have holds "
+"placed on them."
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.delete.confirm
-msgid "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail."
+msgid ""
+"Are you sure you wish to delete the selected copy location?  Note: If copies "
+"are currently attached to this location, the delete operation will fail."
 msgstr ""
 
 #: staff.server.admin.copy_locations.submit
@@ -5927,8 +6031,14 @@ msgid "Are you sure you wish to delete the selected non-cataloged type?"
 msgstr "Are you sure you wish to delete the selected non-catalogued type?"
 
 #: staff.server.admin.non_cat_types.in_house.help
-msgid "If the \"In-House\" flag is set on a non-cataloged type, items that circulate as that type will create \"In-House\" circulations.  This is ideal for computer use, room \"rentals\", etc."
-msgstr "If the \"In-House\" flag is set on a non-catalogued type, items that circulate as that type will create \"In-House\" circulations.  This is ideal for computer use, room \"rentals\", etc."
+msgid ""
+"If the \"In-House\" flag is set on a non-cataloged type, items that circulate "
+"as that type will create \"In-House\" circulations.  This is ideal for "
+"computer use, room \"rentals\", etc."
+msgstr ""
+"If the \"In-House\" flag is set on a non-catalogued type, items that circulate "
+"as that type will create \"In-House\" circulations.  This is ideal for "
+"computer use, room \"rentals\", etc."
 
 #: staff.server.admin.non_cat_types.update.success
 msgid "Non-cataloged type successfully updated"
@@ -6077,7 +6187,9 @@ msgid "Email delivery failures will be returned this address"
 msgstr ""
 
 #: staff.server.admin.org_settings.apply_all.note
-msgid "I. \"Apply to all Locations\" will force the new setting to be applied to all locations in the location dropdown."
+msgid ""
+"I. \"Apply to all Locations\" will force the new setting to be applied to all "
+"locations in the location dropdown."
 msgstr ""
 
 #: staff.server.admin.org_settings.update_success
@@ -6085,7 +6197,9 @@ msgid "Update succeeded."
 msgstr ""
 
 #: staff.server.admin.org_settings.apply_all.confirm
-msgid "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?"
+msgid ""
+"This will update the setting for all of the locations listed in the dropdown "
+"menu. Are you sure you wish to continue?"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval
@@ -6093,7 +6207,9 @@ msgid "Holds: Expire Alert Interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_alert_interval.desc
-msgid "Amount of time before a hold expires at which point the patron should be alerted"
+msgid ""
+"Amount of time before a hold expires at which point the patron should be "
+"alerted"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval
@@ -6101,7 +6217,9 @@ msgid "Holds: Expire Interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval.desc
-msgid "Amount of time after a hold is placed before the hold expires.  Example \"100 days\""
+msgid ""
+"Amount of time after a hold is placed before the hold expires.  Example \"100 "
+"days\""
 msgstr ""
 
 #: staff.server.admin.org_settings.global.credit.allow
@@ -6109,7 +6227,9 @@ msgid "Allow Credit Card Payments"
 msgstr ""
 
 #: staff.server.admin.org_settings.global.credit.allow.desc
-msgid "If enabled, patrons will be able to pay fines accrued at this location via credit card"
+msgid ""
+"If enabled, patrons will be able to pay fines accrued at this location via "
+"credit card"
 msgstr ""
 
 #: staff.server.admin.org_settings.global.default_locale
@@ -6125,7 +6245,9 @@ msgid "Holds: Soft stalling interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
-msgid "How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example \"5 days\""
+msgid ""
+"How long to wait before allowing remote items to be opportunisticaly "
+"captured for a hold.  Example \"5 days\""
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.hard
@@ -6149,7 +6271,9 @@ msgid "Maximum previous checkouts displayed"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
-msgid "This is maximum number of previous circulations the staff client will display when investigating item details"
+msgid ""
+"This is maximum number of previous circulations the staff client will "
+"display when investigating item details"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.reshelving_complete.interval
@@ -6157,7 +6281,9 @@ msgid "Change reshelving status interval"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.reshelving_complete.interval.desc
-msgid "Amount of time to wait before changing an item from \"reshelving\" status to \"available\".  Examples \"1 day\", \"6 hours\""
+msgid ""
+"Amount of time to wait before changing an item from \"reshelving\" status to "
+"\"available\".  Examples \"1 day\", \"6 hours\""
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
@@ -6165,7 +6291,9 @@ msgid "Selfcheck: Patron Login Timeout (in seconds)"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc
-msgid "Number of seconds of inactivity before the patron is logged out of the selfcheck interface"
+msgid ""
+"Number of seconds of inactivity before the patron is logged out of the "
+"selfcheck interface"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event
@@ -6173,7 +6301,9 @@ msgid "Selfcheck: Pop-up alert for errors"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event.desc
-msgid "If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message"
+msgid ""
+"If true, checkout/renewal errors will cause a pop-up window in addition to "
+"the on-screen message"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
@@ -6181,7 +6311,27 @@ msgid "Selfcheck: Require patron password"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid "If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface"
+msgid ""
+"If true, patrons will be required to enter their password in addition to "
+"their username/barcode to log into the selfcheck interface"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty
+msgid "Do not automatically delete empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
+msgid ""
+"Do not automatically delete a bib record when all attached copies are "
+"deleted"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty
+msgid "Alert on empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty.desc
+msgid "Alert staff when the last copy for a record is being deleted"
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -6259,7 +6409,9 @@ msgid "Patron Statistical Categories"
 msgstr "Statistical &Category Editor"
 
 #: staff.server.admin.stat_cat.info_prompt
-msgid "* To edit or view information about an entry, click on the entry in the drop-down menu"
+msgid ""
+"* To edit or view information about an entry, click on the entry in the "
+"drop-down menu"
 msgstr ""
 
 #: staff.server.admin.stat_cat.none_defined
@@ -6308,7 +6460,9 @@ msgid "Enter the value for the new statistical category entry"
 msgstr ""
 
 #: staff.server.admin.stat_cat.delete.confirm
-msgid "This will delete the selected statistical category and all attached entries. Are you sure you wish to continue?"
+msgid ""
+"This will delete the selected statistical category and all attached entries. "
+"Are you sure you wish to continue?"
 msgstr ""
 
 #: staff.server.admin.stat_cat.entry_delete.confirm
@@ -6482,6 +6636,11 @@ msgstr ""
 msgctxt "staff.circ.checkout_overlay.barcode.accesskey"
 msgid "C"
 msgstr "C"
+
+#: staff.circ.checkout_overlay.export.accesskey
+msgctxt "staff.circ.checkout_overlay.export.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.checkout_overlay.export.label
 msgctxt "staff.circ.checkout_overlay.export.label"
@@ -6676,6 +6835,11 @@ msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Replace Barcode"
 
+#: staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.save_columns.label
 msgctxt "staff.circ.copy_status_overlay.save_columns.label"
 msgid "Save Columns"
@@ -6730,9 +6894,19 @@ msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.label"
 msgid "Delete Items"
 msgstr ""
 
+#: staff.circ.copy_status_overlay.cmd_delete_items.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.cmd_delete_volumes.label
 msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.label"
 msgid "Delete Volumes"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey"
+msgid ""
 msgstr ""
 
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label
@@ -6790,9 +6964,19 @@ msgctxt "staff.circ.copy_status_overlay.copy_status_export.label"
 msgid "Export"
 msgstr "Export"
 
+#: staff.circ.copy_status_overlay.copy_status_export.accesskey
+msgctxt "staff.circ.copy_status_overlay.copy_status_export.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.copy_status_print_export.label
 msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.label"
 msgid "Print Export"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.copy_status_print_export.accesskey
+msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.accesskey"
+msgid ""
 msgstr ""
 
 #: staff.circ.copy_status_overlay.trim_list.label
@@ -7246,6 +7430,11 @@ msgstr "C"
 #: staff.circ.holds.save_columns
 msgctxt "staff.circ.holds.save_columns"
 msgid "Save Columns"
+msgstr ""
+
+#: staff.circ.holds.save_columns.accesskey
+msgctxt "staff.circ.holds.save_columns.accesskey"
+msgid ""
 msgstr ""
 
 #: staff.cat.copy_browser.actions.sel_clip.label
@@ -8407,7 +8596,9 @@ msgid "Query"
 msgstr ""
 
 #: staff.cat.z3950.query.description
-msgid "Tip: Click a search field label and then the 'Save as Default' button to have that field focused by default."
+msgid ""
+"Tip: Click a search field label and then the 'Save as Default' button to "
+"have that field focused by default."
 msgstr ""
 
 #: staff.cat.z3950.clear.label
@@ -9261,8 +9452,12 @@ msgid "Welcome "
 msgstr ""
 
 #: staff.patron.ue.interface_note.label
-msgid "Note: required or invalid fields are <span style='border-bottom: 2px solid red;'>marked with color</span>"
-msgstr "Note: required or invalid fields are <span style='border-bottom: 2px solid red;'>marked with colour</span>"
+msgid ""
+"Note: required or invalid fields are <span style='border-bottom: 2px solid "
+"red;'>marked with color</span>"
+msgstr ""
+"Note: required or invalid fields are <span style='border-bottom: 2px solid "
+"red;'>marked with colour</span>"
 
 #: staff.patron.ue.view_errors.label
 msgctxt "staff.patron.ue.view_errors.label"
@@ -9598,7 +9793,8 @@ msgid "You are now ready to save the user to the database."
 msgstr ""
 
 #: staff.patron.ue.message2.label
-msgid "To view or print a summary of the changes, click on the 'View Summary' link."
+msgid ""
+"To view or print a summary of the changes, click on the 'View Summary' link."
 msgstr ""
 
 #: staff.patron.ue.message3.label
@@ -9620,8 +9816,12 @@ msgid "Forward"
 msgstr ""
 
 #: staff.patron.ue.user_summary.label
-msgid "User Summary Information (Deleted items are marked in <span class='deleted'>color</span><span>)</span>"
-msgstr "User Summary Information (Deleted items are marked in <span class='deleted'>colour</span><span>)</span>"
+msgid ""
+"User Summary Information (Deleted items are marked in <span "
+"class='deleted'>color</span><span>)</span>"
+msgstr ""
+"User Summary Information (Deleted items are marked in <span "
+"class='deleted'>colour</span><span>)</span>"
 
 #: staff.patron.ue.barcode.label
 msgctxt "staff.patron.ue.barcode.label"
@@ -9680,7 +9880,9 @@ msgid "Answer"
 msgstr ""
 
 #: staff.patron.ue.bad_dob.label
-msgid "The date of birth field is not formatted correctly.  We are expecting YYYY-MM-DD"
+msgid ""
+"The date of birth field is not formatted correctly.  We are expecting YYYY-"
+"MM-DD"
 msgstr ""
 
 #: staff.patron.ue.bad_username.label
@@ -9712,7 +9914,9 @@ msgid "The selected barcode already exists in the database"
 msgstr ""
 
 #: staff.patron.ue.new_barcode_warn.label
-msgid "This will de-activate the existing barcode for this user!  If you wish to continue, enter the new barcode below.  Otherwise, click the Cancel button."
+msgid ""
+"This will de-activate the existing barcode for this user!  If you wish to "
+"continue, enter the new barcode below.  Otherwise, click the Cancel button."
 msgstr ""
 
 #: staff.patron.ue.no_ident.label
@@ -9785,7 +9989,9 @@ msgid "Required survey is unanswered"
 msgstr ""
 
 #: staff.patron.ue.delete_addr_warn.label
-msgid "This will remove this address from the user. Are you sure you wish to continue?"
+msgid ""
+"This will remove this address from the user. Are you sure you wish to "
+"continue?"
 msgstr ""
 
 #: staff.patron.ue.yes.label
@@ -9807,31 +10013,45 @@ msgid "User update succeeded"
 msgstr ""
 
 #: staff.patron.ue.dup_ident1.label
-msgid "A user already exists with the primary identification provided.  Do you wish to view the duplicate record now?"
+msgid ""
+"A user already exists with the primary identification provided.  Do you wish "
+"to view the duplicate record now?"
 msgstr ""
 
 #: staff.patron.ue.dup_username.label
-msgid "The selected username is in use by another user. Please choose a different username."
+msgid ""
+"The selected username is in use by another user. Please choose a different "
+"username."
 msgstr ""
 
 #: staff.patron.ue.dup_barcode.label
-msgid "The selected barcode is in use by another user.  Please choose a different barcode."
+msgid ""
+"The selected barcode is in use by another user.  Please choose a different "
+"barcode."
 msgstr ""
 
 #: staff.patron.ue.cancel_confirm.label
-msgid "Are you sure you wish to cancel this editing session? Canceling will destroy any unsaved changes you have made thus far to the user."
+msgid ""
+"Are you sure you wish to cancel this editing session? Canceling will destroy "
+"any unsaved changes you have made thus far to the user."
 msgstr ""
 
 #: staff.patron.ue.juv_guardian.label
-msgid "This patron is under 18 years of age.  Please enter the name of the parent or guardian for this patron."
+msgid ""
+"This patron is under 18 years of age.  Please enter the name of the parent "
+"or guardian for this patron."
 msgstr ""
 
 #: staff.patron.ue.bad_date.label
-msgid "The date provided is either in the future or invalid.  We are expecting YYYY-MM-DD"
+msgid ""
+"The date provided is either in the future or invalid.  We are expecting "
+"YYYY-MM-DD"
 msgstr ""
 
 #: staff.patron.ue.made_barred.label
-msgid "Please add a note to the patron's alert message explaining why the patron is barred."
+msgid ""
+"Please add a note to the patron's alert message explaining why the patron is "
+"barred."
 msgstr ""
 
 #: staff.patron.items_overlay.sel_clip.label
@@ -10297,7 +10517,10 @@ msgid "No surveys have been created for this location."
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.finishing_message.label
-msgid "You are now ready to save the user to the database.<br/>To view or print a summary of the changes, click on the 'View Summary' link.<br/>To save the user, click on the 'Save User' button."
+msgid ""
+"You are now ready to save the user to the database.<br/>To view or print a "
+"summary of the changes, click on the 'View Summary' link.<br/>To save the "
+"user, click on the 'Save User' button."
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.back.label
@@ -10370,7 +10593,9 @@ msgid "Answer"
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.claims_return_confirm.label
-msgid "This will reset the claims returned count for this user. Are you sure you wish to perform this action?"
+msgid ""
+"This will reset the claims returned count for this user. Are you sure you "
+"wish to perform this action?"
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.unsaved_changes.label
@@ -10378,7 +10603,11 @@ msgid "You have unsaved changes."
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.xact_collision.label
-msgid "It appears that someone else was also editing this user. Saving the user now will destroy their changes.  Click 'OK' to refresh the user and continue editing. Click 'Cancel' to do nothing. Note that you will not be able to save the user until this page has been refreshed."
+msgid ""
+"It appears that someone else was also editing this user. Saving the user now "
+"will destroy their changes.  Click 'OK' to refresh the user and continue "
+"editing. Click 'Cancel' to do nothing. Note that you will not be able to "
+"save the user until this page has been refreshed."
 msgstr ""
 
 #: ev.staff.patron.ue_xhtml.no_profile.label
@@ -10421,101 +10650,18 @@ msgid "Evergreen Staff Client Portal Page"
 msgstr ""
 
 #: staff.portal.default.welcome
-msgid "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents."
+msgid ""
+"This is the Evergreen staff client portal page. You can customize this with "
+"the information or functionality your organization needs to support its "
+"operations. For example, you could add links to process and procedure "
+"documents."
 msgstr ""
+
+#~ msgid "q"
+#~ msgstr "q"
+
+#~ msgid "r"
+#~ msgstr "r"
 
 #~ msgid "Evergreen Staff Client 3"
 #~ msgstr "Evergreen Staff Client 3"
-#~ msgid "Evergreen 0.1.0 20051202"
-#~ msgstr "Evergreen 0.1.0 20051202"
-#~ msgid "Circ As Type"
-#~ msgstr "Circ As Type"
-#~ msgid "Circ Lib"
-#~ msgstr "Circ Lib"
-#~ msgid "Pickup Lib"
-#~ msgstr "Pickup Lib"
-#~ msgid "Checkouts"
-#~ msgstr "Checkouts"
-#~ msgid "Dob"
-#~ msgstr "Dob"
-#~ msgid "Ident Type2"
-#~ msgstr "Ident Type2"
-#~ msgid "Ident Type"
-#~ msgstr "Ident Type"
-#~ msgid "Ident Value2"
-#~ msgstr "Ident Value2"
-#~ msgid "Ident Value"
-#~ msgstr "Ident Value"
-#~ msgid "Passwd"
-#~ msgstr "Passwd"
-#~ msgid "Stat Cat Entries"
-#~ msgstr "Stat Cat Entries"
-#~ msgid "Usrname"
-#~ msgstr "Usrname"
-#~ msgid "BILLS"
-#~ msgstr "BILLS"
-#~ msgid "Circulating Lib"
-#~ msgstr "Circulating Lib"
-#~ msgid "ISBN/ISSN"
-#~ msgstr "ISBN/ISSN"
-#~ msgid "CHECK IN"
-#~ msgstr "CHECK IN"
-#~ msgid "CHECK OUT"
-#~ msgstr "CHECK OUT"
-#~ msgid "Ident Type:"
-#~ msgstr "Ident Type:"
-#~ msgid "Circ Id"
-#~ msgstr "Circ Id"
-#~ msgid "COPIES EDIT"
-#~ msgstr "COPIES EDIT"
-#~ msgid "PINES Attributes"
-#~ msgstr "PINES Attributes"
-#~ msgid "COPIES"
-#~ msgstr "COPIES"
-#~ msgid "COPY STAT-CATS"
-#~ msgstr "COPY STAT-CATS"
-#~ msgid "DISPLAY PATRON"
-#~ msgstr "DISPLAY PATRON"
-#~ msgid "FIELDMAPPER"
-#~ msgstr "FIELDMAPPER"
-#~ msgid "FCONSOLE"
-#~ msgstr "FCONSOLE"
-#~ msgid "HOLD CAPTURE"
-#~ msgstr "HOLD CAPTURE"
-#~ msgid "ITEMS OUT"
-#~ msgstr "ITEMS OUT"
-#~ msgid "CONSOLE"
-#~ msgstr "CONSOLE"
-#~ msgid "JS SHELL"
-#~ msgstr "JS SHELL"
-#~ msgid "the &Catalog"
-#~ msgstr "the &Catalog"
-#~ msgid "for &Patrons"
-#~ msgstr "for &Patrons"
-#~ msgid "for record by &TCN"
-#~ msgstr "for record by &TCN"
-#~ msgid "Doc Id"
-#~ msgstr "Doc Id"
-#~ msgid "CATALOG NAVIGATOR"
-#~ msgstr "CATALOG NAVIGATOR"
-#~ msgid "PATRON"
-#~ msgstr "PATRON"
-#~ msgid "DOB:"
-#~ msgstr "DOB:"
-#~ msgid "PATRON EDIT"
-#~ msgstr "PATRON EDIT"
-#~ msgid "PATRON "
-#~ msgstr "PATRON "
-#~ msgid "NEW PATRON"
-#~ msgstr "NEW PATRON"
-#~ msgid "PATRON SEARCH"
-#~ msgstr "PATRON SEARCH"
-#~ msgid "PATRON STAT-CATS"
-#~ msgstr "PATRON STAT-CATS"
-#~ msgid "RECEIPTS"
-#~ msgstr "RECEIPTS"
-#~ msgid "SURVEY ADMIN"
-#~ msgstr "SURVEY ADMIN"
-#~ msgid "Z39.50 IMPORT"
-#~ msgstr "Z39.50 IMPORT"
-

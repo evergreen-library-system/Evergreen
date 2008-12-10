@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-08 22:47:17-0400\n"
+"POT-Creation-Date: 2008-12-09 23:20:01-0400\n"
 "PO-Revision-Date: 2008-08-09 17:28+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,6 +591,14 @@ msgstr "Ewondo"
 msgid "Title Control Number"
 msgstr ""
 
+# id::138
+#: ppl.description:138
+#, fuzzy
+msgid "Allow a user to renew an item past the maximum renewal count"
+msgstr ""
+"Թույլ է տալիս օգտվողին թարմացնել նյութը, որը գերազանցել է ամենաշատ "
+"թարմացումների քանակը:  "
+
 # id::139
 #: ppl.description:139
 msgid "Allow staff to override checkout count failure"
@@ -695,14 +703,6 @@ msgstr "Գեղարվեստական (սահմանված չէ)"
 msgid "Allow a user to check in/out an item that has an alert message"
 msgstr "Թույլ է տալիս օգտվողին սպասարկել զգուշացնող հաղորդումով նյութը"
 
-# id::138
-#: ppl.description:138
-#, fuzzy
-msgid "Allow a user to renew an item past the maximun renewal count"
-msgstr ""
-"Թույլ է տալիս օգտվողին թարմացնել նյութը, որը գերազանցել է ամենաշատ "
-"թարմացումների քանակը:  "
-
 # id::bra
 #: clm.value:bra
 msgid "Braj"
@@ -735,12 +735,6 @@ msgstr "Համակարգչային ֆայլ"
 #: clm.value:phi
 msgid "Philippine (Other)"
 msgstr "Philippine (այլ)"
-
-# id::48
-#: ppl.description:48
-#, fuzzy
-msgid "Allow a user to see what another use has checked out"
-msgstr "Թույլ է տալիս օգտվողին տեսնել ինչ է մյուս օգտվոչը վերցրել"
 
 # id::ger
 #: clm.value:ger
@@ -1072,6 +1066,12 @@ msgstr ""
 #: cbs.source:2
 msgid "System Local"
 msgstr "System Local"
+
+# id::48
+#: ppl.description:48
+#, fuzzy
+msgid "Allow a user to see what another user has checked out"
+msgstr "Թույլ է տալիս օգտվողին տեսնել ինչ է մյուս օգտվոչը վերցրել"
 
 # id::new
 #: clm.value:new

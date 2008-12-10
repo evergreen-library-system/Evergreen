@@ -1,8 +1,9 @@
-#
+# 
 msgid ""
-msgstr "Project-Id-Version: Evergreen 1.4\n"
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-08 22:47:17-0400\n"
+"POT-Creation-Date: 2008-12-09 23:20:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -466,6 +467,10 @@ msgstr ""
 msgid "Title Control Number"
 msgstr ""
 
+#: ppl.description:138
+msgid "Allow a user to renew an item past the maximum renewal count"
+msgstr ""
+
 #: ppl.description:139
 msgid "Allow staff to override checkout count failure"
 msgstr ""
@@ -550,10 +555,6 @@ msgstr ""
 msgid "Allow a user to check in/out an item that has an alert message"
 msgstr ""
 
-#: ppl.description:138
-msgid "Allow a user to renew an item past the maximun renewal count"
-msgstr ""
-
 #: clm.value:bra
 msgid "Braj"
 msgstr ""
@@ -580,10 +581,6 @@ msgstr ""
 
 #: clm.value:phi
 msgid "Philippine (Other)"
-msgstr ""
-
-#: ppl.description:48
-msgid "Allow a user to see what another use has checked out"
 msgstr ""
 
 #: clm.value:ger
@@ -844,6 +841,10 @@ msgstr ""
 
 #: cbs.source:2
 msgid "System Local"
+msgstr ""
+
+#: ppl.description:48
+msgid "Allow a user to see what another user has checked out"
 msgstr ""
 
 #: clm.value:new
@@ -3133,4 +3134,3 @@ msgstr ""
 #: ppl.description:18
 msgid "Allow a user to edit a MARC record"
 msgstr ""
-

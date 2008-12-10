@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-11-19 21:26:22-0400\n"
+"POT-Creation-Date: 2008-12-09 23:20:01-0400\n"
 "PO-Revision-Date: 2008-08-28 09:21-0500\n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -306,8 +306,9 @@ msgstr "Kawi"
 
 #: ppl.description:20
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
-msgstr "Permet à un utilisateur d'importer un fichier MARC à partir "
-"de l'interface Z39.50"
+msgstr ""
+"Permet à un utilisateur d'importer un fichier MARC à partir de l'interface "
+"Z39.50"
 
 # id::kal
 #: clm.value:kal
@@ -441,8 +442,8 @@ msgstr "3_mois_0_renouvellement"
 
 #: ppl.description:7
 msgid "Allow a user to place a volume level hold"
-msgstr "Permet à un utilisateur de placer une mis en réserve au niveau du "
-"volume"
+msgstr ""
+"Permet à un utilisateur de placer une mis en réserve au niveau du volume"
 
 # id::lav
 #: clm.value:lav
@@ -592,6 +593,14 @@ msgstr "Ewondo"
 msgid "Title Control Number"
 msgstr "Numéro de contrôle pour les titres"
 
+# id::138
+#: ppl.description:138
+#, fuzzy
+msgid "Allow a user to renew an item past the maximum renewal count"
+msgstr ""
+"Permet à un utilisateur de renouveler un article après le nombre de "
+"renouvellement maximum"
+
 # id::139
 #: ppl.description:139
 msgid "Allow staff to override checkout count failure"
@@ -701,13 +710,6 @@ msgstr ""
 "Permet à un utilisateur d’entrer ou de sortir un article associé à un "
 "message d’alerte"
 
-# id::138
-#: ppl.description:138
-msgid "Allow a user to renew an item past the maximun renewal count"
-msgstr ""
-"Permet à un utilisateur de renouveler un article après le nombre de "
-"renouvellement maximum"
-
 # id::bra
 #: clm.value:bra
 msgid "Braj"
@@ -740,14 +742,6 @@ msgstr "Fichier informatique"
 #: clm.value:phi
 msgid "Philippine (Other)"
 msgstr "Philippine (Autre)"
-
-# id::48
-#: ppl.description:48
-#, fuzzy
-msgid "Allow a user to see what another use has checked out"
-msgstr ""
-"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
-"session"
 
 # id::ger
 #: clm.value:ger
@@ -783,9 +777,8 @@ msgstr "Tamboka"
 #: ppl.description:27
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
-"Permet à un utilisateur de continuer de renouveler un article même si "
-"ce dernier est requis pour un demande de mis en réserve"
-
+"Permet à un utilisateur de continuer de renouveler un article même si ce "
+"dernier est requis pour un demande de mis en réserve"
 
 # id::1
 #: cbs.source:1
@@ -949,9 +942,7 @@ msgstr "Kamba"
 
 #: ppl.description:4
 msgid "Allow a user to log in to the staff client"
-msgstr ""
-"Permet à l'utilisateur d'ouvrir une session avec le client "
-"du personnel"
+msgstr "Permet à l'utilisateur d'ouvrir une session avec le client du personnel"
 
 #: i18n_l.name:es-MX
 msgid "Spanish (Mexico)"
@@ -1090,6 +1081,14 @@ msgstr "Auteur"
 #: cbs.source:2
 msgid "System Local"
 msgstr "Système local"
+
+# id::48
+#: ppl.description:48
+#, fuzzy
+msgid "Allow a user to see what another user has checked out"
+msgstr ""
+"Permet à un utilisateur de savoir si un autre utilisateur a quitté sa "
+"session"
 
 # id::new
 #: clm.value:new
@@ -1419,9 +1418,8 @@ msgstr "Türkmène"
 #: cam.description:j
 msgid "The item is intended for children and young people, approximate ages 0-15 years."
 msgstr ""
-"L'article est destiné aux enfants et aux jeunes entre les âges "
-"approximatifs de 0 à 15 ans."
-
+"L'article est destiné aux enfants et aux jeunes entre les âges approximatifs "
+"de 0 à 15 ans."
 
 # id::suk
 #: clm.value:suk
@@ -1708,10 +1706,9 @@ msgstr "Avaric"
 #: ppl.description:22
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
 msgstr ""
-"Permet à un utilisateur de modifier des volumes - nécessaire pour "
-"fusionner des comptes. Ceci est le double de VOLUME_UPDATE; l'utilisateur "
-"doit avoir les deux permissions aux niveau approprié pour fusionner les "
-"comptes."
+"Permet à un utilisateur de modifier des volumes - nécessaire pour fusionner "
+"des comptes. Ceci est le double de VOLUME_UPDATE; l'utilisateur doit avoir "
+"les deux permissions aux niveau approprié pour fusionner les comptes."
 
 # id::mos
 #: clm.value:mos
@@ -1924,9 +1921,7 @@ msgstr "Permis de conduire"
 
 #: ppl.description:38
 msgid "Allow a user to mark an item as 'missing'"
-msgstr ""
-"Permet à l'utilisateur de désigner un article comme "
-"étant « manquant »"
+msgstr "Permet à l'utilisateur de désigner un article comme étant « manquant »"
 
 # id::69
 # id::59
@@ -1978,8 +1973,9 @@ msgid "French, Old (ca. 842-1400)"
 msgstr "Ancien français (aux environs de 842-1400)"
 
 #: ppl.description:39
+#, fuzzy
 msgid "Allow a user to mark an item as 'claims returned'"
-msgstr ""
+msgstr "Permet à l'utilisateur de désigner un article comme étant « perdu »"
 
 # id::sit
 #: clm.value:sit
@@ -2085,8 +2081,8 @@ msgstr ""
 #: ppl.description:36
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr ""
-"Permet à un utilisateur d'enregistrer des paiements dans l'interface "
-"de facturation"
+"Permet à un utilisateur d'enregistrer des paiements dans l'interface de "
+"facturation"
 
 # id::s
 #: clfm.value:s
@@ -2468,8 +2464,8 @@ msgstr "Kru"
 #: clfm.description:m
 msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
 msgstr ""
-"L'article contient plusieurs formes littéraires (par exemple, poésie "
-"et nouvelles)."
+"L'article contient plusieurs formes littéraires (par exemple, poésie et "
+"nouvelles)."
 
 # id::lin
 #: clm.value:lin
@@ -2624,9 +2620,8 @@ msgstr "Tchouvache"
 msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
 "Permet à un utilisateur de créer/afficher/modifier/supprimer une "
-"devise"
-"L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 "
-"ans."
+"deviseL'article est destiné au jeunes entre les âges approximatifs de 14 à "
+"17 ans."
 
 # id::may
 #: clm.value:may
@@ -2788,11 +2783,9 @@ msgstr "Permet à un utilisateur d’exclure un client"
 msgid "Mexican Spanish"
 msgstr "Espagnol mexicain"
 
-# id::150
 #: ppl.description:150
 msgid "Allow a user to checkout an item that is marked as non-circ"
-"Permet à un utilisateur de sortir un article qui est désigné comme « non "
-"prêté »"
+msgstr ""
 
 # id::-sho
 #: clm.value:-sho clm.value:sna
@@ -2972,9 +2965,7 @@ msgstr "Permet à un utilisateur de supprimer le panier d’un autre utilisateur
 
 #: ppl.description:30
 msgid "Allow a user to mark a user as deleted"
-msgstr ""
-"Permet à l'utilisateur de désigner un utilisateur comme étant "
-"supprimé"
+msgstr "Permet à l'utilisateur de désigner un utilisateur comme étant supprimé"
 
 # id::7
 #: crmf.name:7
@@ -2983,8 +2974,7 @@ msgstr "retard_équipement_maximum"
 
 #: cam.description:
 msgid "The target audience for the item not known or not specified."
-msgstr ""
-"Le public cible de l'article n'est pas connu ou n'est pas spécifié."
+msgstr "Le public cible de l'article n'est pas connu ou n'est pas spécifié."
 
 # id::jrb
 #: clm.value:jrb
@@ -3319,8 +3309,7 @@ msgstr "Suédois"
 
 #: cam.description:c
 msgid "The item is intended for young people, approximate ages 9-13 years."
-msgstr ""
-"L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
+msgstr "L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
 
 # id::sgn
 #: clm.value:sgn
@@ -3769,8 +3758,9 @@ msgid "Macedonian"
 msgstr "Macédonien"
 
 #: cam.description:a
+#, fuzzy
 msgid "The item is intended for children, approximate ages 0-5 years."
-msgstr ""
+msgstr "L'article est destiné aux enfants âgés de 6 à 8 ans."
 
 # id::26
 # id::25
@@ -3795,8 +3785,11 @@ msgid "Northern Sami"
 msgstr "Lapon du Nord"
 
 #: ppl.description:64
+#, fuzzy
 msgid "User may link another user to an entry in a statistical category"
 msgstr ""
+"L'utilisateur peut lier un exemplaire à une entrée dans une catégorie "
+"statistique"
 
 # id::xal
 #: clm.value:xal
@@ -4027,8 +4020,9 @@ msgid "Spanish"
 msgstr "Espagnol"
 
 #: ppl.description:18
+#, fuzzy
 msgid "Allow a user to edit a MARC record"
-msgstr ""
+msgstr "Permet à l'utilisateur de modifier un compte d'un utilisateur"
 
 # id::19
 #~ msgid "User is allowed to create new MARC records"

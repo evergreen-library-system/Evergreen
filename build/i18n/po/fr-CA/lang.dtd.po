@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-19 21:25-0400\n"
+"POT-Creation-Date: 2008-12-09 23:19-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -738,7 +738,7 @@ msgstr "P"
 msgid "Exit Evergreen"
 msgstr "Quitter Evergreen"
 
-#: staff.auth.quit_prompt.key
+#: staff.auth.quit_prompt.accesskey
 msgid "x"
 msgstr "x"
 
@@ -1230,7 +1230,6 @@ msgid "Subject"
 msgstr "Sujet"
 
 #: staff.cat.search_submit
-msgctxt "staff.cat.search_submit"
 msgid "Search"
 msgstr "Recherche"
 
@@ -2372,12 +2371,10 @@ msgstr "Version"
 msgid "Workstation"
 msgstr "Poste de travail"
 
-#: staff.main.menu.acquisitions.key
-msgid "q"
-msgstr "q"
-
 #: staff.main.menu.acquisitions.label
-msgid "Acquisitions"
+#: staff.main.menu.acquisitions.accesskey
+#, fuzzy
+msgid "Ac&quisitions"
 msgstr "Acquisitions"
 
 #: staff.main.menu.admin.accesskey
@@ -2548,13 +2545,10 @@ msgstr "V"
 msgid "Add Volume"
 msgstr "Ajout du volume"
 
-#: staff.main.menu.cat.bib_search.key
-msgctxt "staff.main.menu.cat.bib_search.key"
-msgid "S"
-msgstr "S"
-
 #: staff.main.menu.cat.bib_search.label
-msgid "Search the Catalog"
+#: staff.main.menu.cat.bib_search.accesskey
+#, fuzzy
+msgid "&Search the Catalog"
 msgstr "Effectuer une recherche dans le catalogue"
 
 #: staff.main.menu.cat.bib_status.key
@@ -2586,13 +2580,10 @@ msgstr "Afficher l’article"
 msgid "Create &New Marc Record"
 msgstr "Créer un &nouveau compte MARC"
 
-#: staff.main.menu.cat.dedup.key
-msgctxt "staff.main.menu.cat.dedup.key"
-msgid "M"
-msgstr "M"
-
 #: staff.main.menu.cat.dedup.label
-msgid "Merge and Transfer Interface"
+#: staff.main.menu.cat.dedup.accesskey
+#, fuzzy
+msgid "&Merge and Transfer Interface"
 msgstr "Interface de fusion et de transfert"
 
 #: staff.main.menu.cat.edit_copy_buckets.label
@@ -2671,22 +2662,16 @@ msgctxt "staff.main.menu.circ.barcode.show_item.accesskey"
 msgid "B"
 msgstr "B"
 
-#: staff.main.menu.circ.checkin.key
-msgctxt "staff.main.menu.circ.checkin.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.checkin.label
-msgid "Check In Items"
+#: staff.main.menu.circ.checkin.accesskey
+#, fuzzy
+msgid "&Check In Items"
 msgstr "Entrer des articles"
 
-#: staff.main.menu.circ.checkout.key
-msgctxt "staff.main.menu.circ.checkout.key"
-msgid "O"
-msgstr "O"
-
 #: staff.main.menu.circ.checkout.label
-msgid "Check Out Items"
+#: staff.main.menu.circ.checkout.accesskey
+#, fuzzy
+msgid "Check &Out Items"
 msgstr "Sortir des articles"
 
 #: staff.main.menu.circ.claimed_returned.key
@@ -2722,13 +2707,10 @@ msgstr "Marquer comme « trouvé »"
 msgid "&Browse Holds Shelf"
 msgstr "&Parcourir l’« étagère » d’articles en réserve"
 
-#: staff.main.menu.circ.hold_capture.key
-msgctxt "staff.main.menu.circ.hold_capture.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.circ.hold_capture.label
-msgid "Capture Holds"
+#: staff.main.menu.circ.hold_capture.accesskey
+#, fuzzy
+msgid "Capture &Holds"
 msgstr "Saisir les articles mis en réserve"
 
 #: staff.main.menu.circ.hold_pull.label
@@ -2741,14 +2723,10 @@ msgstr "Afficher la liste pour les demandes de &mise en réserve"
 msgid "Record &In-House Use"
 msgstr "Consigner l’utilisation &interne"
 
-#: staff.main.menu.circ.key
-msgctxt "staff.main.menu.circ.key"
-msgid "C"
-msgstr "C"
-
 #: staff.main.menu.circ.label
-msgctxt "staff.main.menu.circ.label"
-msgid "Circulation"
+#: staff.main.menu.circ.accesskey
+#, fuzzy
+msgid "&Circulation"
 msgstr "Prêt"
 
 #: staff.main.menu.circ.lost.key
@@ -2784,13 +2762,10 @@ msgstr "Marquer comme « manquant »"
 msgid "Enter O&ffline Interface"
 msgstr "Entrer l’interface &hors ligne"
 
-#: staff.main.menu.circ.patron_registration.key
-msgctxt "staff.main.menu.circ.patron_registration.key"
-msgid "R"
-msgstr "R"
-
 #: staff.main.menu.circ.patron_registration.label
-msgid "Register Patron"
+#: staff.main.menu.circ.patron_registration.accesskey
+#, fuzzy
+msgid "&Register Patron"
 msgstr "Inscrire le client"
 
 #: staff.main.menu.circ.patron_retrieve.label
@@ -2943,14 +2918,10 @@ msgstr "g"
 msgid "Find Again"
 msgstr "Trouver de nouveau"
 
-#: staff.main.menu.edit.key
-msgctxt "staff.main.menu.edit.key"
-msgid "E"
-msgstr "E"
-
 #: staff.main.menu.edit.label
-msgctxt "staff.main.menu.edit.label"
-msgid "Edit"
+#: staff.main.menu.edit.accesskey
+#, fuzzy
+msgid "&Edit"
 msgstr "Modifier"
 
 #: staff.main.menu.edit.paste.key
@@ -3051,31 +3022,22 @@ msgctxt "staff.main.menu.file.close_tab.key"
 msgid ""
 msgstr ""
 
-#: staff.main.menu.file.key
-msgctxt "staff.main.menu.file.key"
-msgid "F"
-msgstr "F"
-
 #: staff.main.menu.file.label
-msgid "File"
+#: staff.main.menu.file.accesskey
+#, fuzzy
+msgid "&File"
 msgstr "Fichier"
 
-#: staff.main.menu.file.new.key
-msgctxt "staff.main.menu.file.new.key"
-msgid "N"
-msgstr "N"
-
 #: staff.main.menu.file.new.label
-msgid "New Window"
+#: staff.main.menu.file.new.accesskey
+#, fuzzy
+msgid "&New Window"
 msgstr "Nouvelle fenêtre"
 
-#: staff.main.menu.file.new_tab.key
-msgctxt "staff.main.menu.file.new_tab.key"
-msgid "T"
-msgstr "T"
-
 #: staff.main.menu.file.new_tab.label
-msgid "New Tab"
+#: staff.main.menu.file.new_tab.accesskey
+#, fuzzy
+msgid "New &Tab"
 msgstr "Nouvel onglet"
 
 #: staff.main.menu.file.open.key
@@ -3096,15 +3058,11 @@ msgstr "S"
 msgid "Save Session"
 msgstr "Enregistrer la session"
 
-#: staff.main.menu.help.key
-msgctxt "staff.main.menu.help.key"
-msgid "H"
-msgstr "H"
-
 #: staff.main.menu.help.label
-msgctxt "staff.main.menu.help.label"
-msgid "Help"
-msgstr "Aide"
+#: staff.main.menu.help.accesskey
+msgctxt "staff.main.menu.help.label staff.main.menu.help.accesskey"
+msgid "&Help"
+msgstr "&Aide"
 
 #: staff.main.menu.quit
 msgid "Quit Program"
@@ -3140,14 +3098,11 @@ msgstr "Rechercher dans le &catalogue"
 msgid "Search for copies by &Barcode"
 msgstr "Rechercher des copies par code à &barres"
 
-#: staff.main.menu.search.key
-msgid "r"
-msgstr "r"
-
 #: staff.main.menu.search.label
-msgctxt "staff.main.menu.search.label"
-msgid "Search"
-msgstr "Rechercher"
+#: staff.main.menu.search.accesskey
+#, fuzzy
+msgid "Sea&rch"
+msgstr "Recherche"
 
 #: staff.main.menu.search.patrons.label
 #: staff.main.menu.search.patrons.accesskey
@@ -5775,7 +5730,6 @@ msgid "Hold Verify"
 msgstr "Vérification des articles mis en réserve"
 
 #: staff.server.admin.copy_locations.editor.help
-msgctxt "staff.server.admin.copy_locations.editor.help"
 msgid "Help"
 msgstr "Aide"
 
@@ -6219,8 +6173,8 @@ msgid ""
 "Amount of time after a hold is placed before the hold expires.  Example \"100 "
 "days\""
 msgstr ""
-"Montant de temps après un article est mis en réserve avant que la demande soit "
-"expiré. Exemple \"100 jours\""
+"Montant de temps après un article est mis en réserve avant que la demande "
+"soit expiré. Exemple \"100 jours\""
 
 #: staff.server.admin.org_settings.global.credit.allow
 msgid "Allow Credit Card Payments"
@@ -6231,8 +6185,8 @@ msgid ""
 "If enabled, patrons will be able to pay fines accrued at this location via "
 "credit card"
 msgstr ""
-"Si ceci est activé, les clients pourront payer leurs amendes accumulé à "
-"cet endroit avec une carte de crédit"
+"Si ceci est activé, les clients pourront payer leurs amendes accumulé à cet "
+"endroit avec une carte de crédit"
 
 #: staff.server.admin.org_settings.global.default_locale
 msgid "Default Locale"
@@ -6241,8 +6195,8 @@ msgstr "Localisation par défaut"
 #: staff.server.admin.org_settings.circ.void_overdue_on_lost
 msgid "Void overdue fines when items are marked lost"
 msgstr ""
-"Annuler les amendes en retard lorsque les articles sont désigné comme "
-"étant perdus"
+"Annuler les amendes en retard lorsque les articles sont désigné comme étant "
+"perdus"
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft
 msgid "Holds: Soft stalling interval"
@@ -6253,8 +6207,8 @@ msgid ""
 "How long to wait before allowing remote items to be opportunisticaly "
 "captured for a hold.  Example \"5 days\""
 msgstr ""
-"Le montant de temps d'attente nécessaire avant de permettre des articles "
-"à distance d'être saisie et mis en réserve. Exemple \"5 jours\""
+"Le montant de temps d'attente nécessaire avant de permettre des articles à "
+"distance d'être saisie et mis en réserve. Exemple \"5 jours\""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.hard
 msgid "Holds: Hard boundary"
@@ -6297,8 +6251,7 @@ msgid ""
 "\"available\".  Examples \"1 day\", \"6 hours\""
 msgstr ""
 "Temps d'attente avant de changer le status d'un article de \"remise des "
-"documents sur les rayons\" à \"disponible\". Examples \"1 jour\", "
-"\"6 heures\""
+"documents sur les rayons\" à \"disponible\". Examples \"1 jour\", \"6 heures\""
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
 msgid "Selfcheck: Patron Login Timeout (in seconds)"
@@ -6328,6 +6281,24 @@ msgstr ""
 msgid ""
 "If true, patrons will be required to enter their password in addition to "
 "their username/barcode to log into the selfcheck interface"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty
+msgid "Do not automatically delete empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
+msgid ""
+"Do not automatically delete a bib record when all attached copies are "
+"deleted"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty
+msgid "Alert on empty bib records"
+msgstr ""
+
+#: staff.server.admin.org_settings.cat.bib.alert_on_empty.desc
+msgid "Alert staff when the last copy for a record is being deleted"
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -10618,6 +10589,12 @@ msgstr ""
 "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
 "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
 "documents de procédures."
+
+#~ msgid "q"
+#~ msgstr "q"
+
+#~ msgid "r"
+#~ msgstr "r"
 
 #~ msgid "Evergreen Staff Client 3"
 #~ msgstr "Client membre du personnel d’Evergreen 3"
