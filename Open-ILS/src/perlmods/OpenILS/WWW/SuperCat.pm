@@ -32,7 +32,7 @@ use MARC::File::XML;
 my $log = 'OpenSRF::Utils::Logger';
 
 # set the bootstrap config when this module is loaded
-my ($bootstrap, $cstore, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
+my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
 
 $browse_types{call_number}{xml} = sub {
 	my $tree = shift;
@@ -124,7 +124,6 @@ sub child_init {
 	Fieldmapper->import(IDL => $idl);
 
 	$supercat = OpenSRF::AppSession->create('open-ils.supercat');
-	$cstore = OpenSRF::AppSession->create('open-ils.cstore');
 	$actor = OpenSRF::AppSession->create('open-ils.actor');
 	$search = OpenSRF::AppSession->create('open-ils.search');
 	$parser = new XML::LibXML;
