@@ -33,18 +33,19 @@ function loadFundGrid() {
 
             var yearStore = {identifier:'year', name:'year', items:[]};
 
-            var added = [];
+            var added = {};
             for(var i = 0; i < storeData.items.length; i++) {
                 var year = storeData.items[i].year;
-                if(added.indexOf(year) == -1) {
+                if(!(year in added)) {
                     yearStore.items.push({year:year});
-                    added.push(year);
+                    added[year] = 1;
                 }
             }
             yearStore.items = yearStore.items.sort().reverse();
             fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
             var today = new Date().getFullYear().toString();
-            fundFilterYearSelect.setValue((added.indexOf(today != -1)) ? today : added[0]);
+            if(today in added)
+                fundFilterYearSelect.setValue(today);
         }
     );
 }
