@@ -71,10 +71,10 @@ sub handler {
 	if(my $shortname = redirect_libs($user_ip)) {
 
 		$logger->info("Apache redirecting $user_ip to $shortname");
-		my $session = OpenSRF::AppSession->create("open-ils.storage");
+		my $session = OpenSRF::AppSession->create("open-ils.actor");
 
 		my $org = $session->request(
-			"open-ils.storage.direct.actor.org_unit.search.shortname",
+            'open-ils.actor.org_unit.retrieve_by_shorname',
 			 $shortname)->gather(1);
 
 		if($org) { $url .= "?ol=" . $org->id; }
