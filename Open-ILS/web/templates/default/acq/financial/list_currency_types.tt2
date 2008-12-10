@@ -35,13 +35,18 @@
 </div>
 
 <!-- The main grid lives here -->
-<script>
-    var currencyTypeListGridStructure = [{
-        cells : [[
-            {name: 'Code', field:'code'},
-            {name: 'Label', field:'label', width:'auto'}
-        ]]
-    }];
-</script>
-<div jsId='currencyTypeListGrid' dojoType="dojox.Grid" structure='currencyTypeListGridStructure'></div>
+</script> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+        <table jsId="currencyTypeListGrid" dojoType="dojox.grid.DataGrid" query="{code: '*'}" rowSelector='20px'> 
+            <thead> 
+                <tr> 
+                    <th field="code">Code</th> 
+                    <th field="label" width='auto'>Label</th> 
+                </tr> 
+            </thead> 
+        </table>     
+    </div> 
+</div> 
+
 [% END %]

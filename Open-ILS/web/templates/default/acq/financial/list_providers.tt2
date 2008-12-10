@@ -28,7 +28,7 @@
                     <td><label for="currency_type">Currency Type:</label></td>
                     <td>
                         <input jsId='providerCurrencySelector' name="currency_type" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                               dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
                         </input>
                     </td>
                 </tr>
@@ -36,7 +36,7 @@
                     <td valign='top'><label for="owner">Owning Location:</label></td>
                     <td>
                         <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='providerOwnerSelect'
-                            searchAttr="shortname" name="owner" autocomplete="true" labelAttr='shortname'> </input>
+                               searchAttr="shortname" name="owner" autocomplete="true" labelAttr='shortname'> </input>
                     </td>
                 </tr>
                 <tr>
@@ -54,22 +54,28 @@
 
 <!-- The main grid lives here -->
 <script>
-    function getName(rowIndex) {
-        data = providerListGrid.model.getRow(rowIndex);
-        if(!data) return;
-        return '<a href="[% ctx.base_uri %]/acq/provider/view/'+data.id+'">'+data.name+'</a>';
+    function getName(rowIndex, item) {
+        if(!item) return;
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return '<a href="[% ctx.base_uri %]/acq/provider/view/'+id+'">'+name+'</a>';
     }
+</script> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+        <table jsId="providerListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+            <thead> 
+                <tr> 
+                    <th field="id">ID</th> 
+                    <th field="name" width='auto' get='getName'>Name</th> 
+                    <th field="code">Code</th> 
+                    <th field="owner" get='getOrgInfo'>Owner</th> 
+                    <th field="currency_type">Currency Type</th> 
+                </tr> 
+            </thead> 
+        </table>     
+    </div> 
+</div>
 
-    var providerGridStructure = [{
-        cells : [[
-            {name: 'ID', field: 'id'},
-            {name: 'Name', get:getName, width:'auto'}, 
-            {name: 'Code', field:'code'},
-            {name: 'Owner', get:getOrgInfo}, 
-            {name: 'Currency Type', field: "currency_type"}
-        ]]
-    }];
-</script>
-<div jsId='providerListGrid' dojoType="dojox.Grid" structure='providerGridStructure'></div>
 [% END %]
 

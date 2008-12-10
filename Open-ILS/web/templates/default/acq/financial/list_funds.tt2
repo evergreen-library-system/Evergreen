@@ -19,7 +19,7 @@
                     return;
                 } else {
                     location.href =  /* go to the details page for this fund */
-                        '[% ctx.base_uri %]/acq/fund/view/'+fundId;
+                    '[% ctx.base_uri %]/acq/fund/view/'+fundId;
                 }
             }
         );
@@ -53,7 +53,7 @@
                     <td><label for="currency_type">Currency Type: </label></td>
                     <td>
                         <input jsId='fundCurrencySelector' name="currency_type" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                               dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
                         </input>
                     </td>
                 </tr>
@@ -61,7 +61,7 @@
                     <td valign='top'><label for="org">Owning Location: </label></td>
                     <td>
                         <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='fundOwnerSelect'
-                            searchAttr="shortname" name="org" autocomplete="true" labelAttr='shortname'> </input>
+                               searchAttr="shortname" name="org" autocomplete="true" labelAttr='shortname'> </input>
                     </td>
                 </tr>
                 <tr>
@@ -75,35 +75,40 @@
 
     <button dojoType="dijit.form.Button" 
             onclick="openils.acq.Fund.deleteFromGrid(
-                fundListGrid, function(){location.href = location.href})">
+                     fundListGrid, function(){location.href = location.href})">
         Delete Selected
     </button>
 
     <label>Year</label>
     <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();' style='width:100px;'
-        jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
+            jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
 </div>
 
 <!-- The main grid lives here -->
 <script>
-    function getName(rowIndex) {
-        data = fundListGrid.model.getRow(rowIndex);
-        if(!data) return;
-        return '<a href="[% ctx.base_uri %]/acq/fund/view/'+data.id+'">'+data.name+'</a>';
+    function getName(rowIndex, item) {
+        if(!item) return;
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return '<a href="[% ctx.base_uri %]/acq/fund/view/'+id+'">'+name+'</a>';
     }
-
-    var fundListGridStructure = [{
-        cells : [[
-            {name: 'ID', field: 'id'},
-            {name: 'Name', width:'auto', get:getName}, 
-            {name: 'Code', field:'code'},
-            {name: 'Year', field: "year"}, 
-            {name: 'Location', get:getOrgInfo}, 
-            {name: 'Currency Type', field: "currency_type"},
-            {name: 'Combined Balance', get:getBalanceInfo}
-        ]]
-    }];
-</script>
-<div jsId='fundListGrid' dojoType="dojox.Grid" structure='fundListGridStructure'></div>
+</script> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+        <table jsId="fundListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+            <thead> 
+                <tr> 
+                    <th field="id">ID</th> 
+                    <th field="name" width='auto' get='getName'>Name</th> 
+                    <th field="code">Code</th> 
+                    <th field="year">Year</th> 
+                    <th field="org" get='getOrgInfo'>Location</th> 
+                    <th field="currency_type">Currency Type</th> 
+                    <th field="combined_balance" get='getBalanceInfo'>Combined Balance</th>
+                </tr> 
+            </thead> 
+        </table>     
+    </div> 
+</div> 
 [% END %]
 
