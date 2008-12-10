@@ -100,10 +100,10 @@
 
 
 <!-- The File menu on the main menu -->
-<menu id="main.menu.file" label="&staff.main.menu.file.label;" accesskey="&staff.main.menu.file.key;" >
+<menu id="main.menu.file" label="&staff.main.menu.file.label;" accesskey="&staff.main.menu.file.accesskey;" >
 	<menupopup id="main.menu.file.popup">
-		<menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.key;" key="new-window-key" command="cmd_new_window"/>
-		<menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.key;" key="new-tab-key" command="cmd_new_tab"/>
+		<menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.accesskey;" key="new-window-key" command="cmd_new_window"/>
+		<menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.accesskey;" key="new-tab-key" command="cmd_new_tab"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" oldaccesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
 		<menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" key="close-all-tabs-key" command="cmd_close_all_tabs"/>
@@ -114,7 +114,7 @@
 </menu>
 
 <!-- The Edit menu on the main menu -->
-<menu id="main.menu.edit" label="&staff.main.menu.edit.label;" accesskey="&staff.main.menu.edit.key;">
+<menu id="main.menu.edit" label="&staff.main.menu.edit.label;" accesskey="&staff.main.menu.edit.accesskey;">
 	<menupopup id="main.menu.edit.popup">
 		<menuitem label="&staff.main.menu.edit.buckets.copies;" command="cmd_edit_copy_buckets" accesskey="&staff.main.menu.edit.buckets.copies.accesskey;"/>
 		<menuitem label="&staff.main.menu.edit.buckets.volumes;" command="cmd_edit_volume_buckets" accesskey="&staff.main.menu.edit.buckets.volumes.accesskey;"/>
@@ -126,14 +126,14 @@
 </menu>
 
 <!-- The Circulation menu on the main menu -->
-<menu id="main.menu.circ" label="&staff.main.menu.circ.label;" accesskey="&staff.main.menu.circ.key;">
+<menu id="main.menu.circ" label="&staff.main.menu.circ.label;" accesskey="&staff.main.menu.circ.accesskey;">
 	<menupopup id="main.menu.circ.popup">
-		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
-		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
-		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
+		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" key="circ-checkin-key" command="cmd_circ_checkin"/>
+		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" key="patron-register-key" command="cmd_patron_register"/>
 		<menuitem label="&staff.main.menu.circ.patron_retrieve.label;" accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;" command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
 		<menuseparator />
-		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
+		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
 		<menuitem label="&staff.main.menu.circ.hold_pull.label;" accesskey="&staff.main.menu.circ.hold_pull.accesskey;" command="cmd_circ_hold_pull_list"/>
 		<menuitem label="&staff.main.menu.circ.hold_browse.label;" command="cmd_browse_holds_shelf" accesskey="&staff.main.menu.circ.hold_browse.accesskey;"/>
 		<menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
@@ -151,13 +151,13 @@
 <!-- The Cataloging menu on the main menu -->
 <menu id="main.menu.cat" label="&staff.main.menu.cat.label;" accesskey="&staff.main.menu.cat.accesskey;">
 	<menupopup id="main.menu.cat.popup">
-		<menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.key;" key="search-opac-key" command="cmd_search_opac"/>
+		<menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
 		<menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
 		<menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
 		<menuitem label="&staff.main.menu.cat.copy_status.label;" accesskey="&staff.main.menu.cat.copy_status.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
 		<menuseparator />
 		<!--
-		<menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.key;" command="cmd_broken"/>
+		<menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.accesskey;" command="cmd_broken"/>
 		-->
 		<menuitem label="&staff.main.menu.cat.edit_copy_buckets.label;" command="cmd_edit_copy_buckets" accesskey="&staff.main.menu.cat.edit_copy_buckets.accesskey;"/>
 		<menuitem label="&staff.main.menu.cat.edit_volume_buckets.label;" command="cmd_edit_volume_buckets" accesskey="&staff.main.menu.cat.edit_volume_buckets.accesskey;"/>
@@ -173,7 +173,7 @@
 </menu>
 
 <!-- The Search menu on the main menu -->
-<menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.key;">
+<menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.accesskey;">
 	<menupopup id="main.menu.search.popup">
 		<menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" key="patron-search-key" command="cmd_patron_search" />
 		<menuitem label="&staff.main.menu.search.catalog.label;" accesskey="&staff.main.menu.search.catalog.accesskey;" key="search-opac-key" command="cmd_search_opac" />
@@ -185,7 +185,7 @@
 </menu>
 
 <!-- The Help menu on the main menu -->
-<menu id="main.menu.help" label="&staff.main.menu.help.label;" accesskey="&staff.main.menu.help.key;">
+<menu id="main.menu.help" label="&staff.main.menu.help.label;" accesskey="&staff.main.menu.help.accesskey;">
 	<menupopup id="main.menu.help.popup">
 		<menuitem label="stub" />
 	</menupopup>
