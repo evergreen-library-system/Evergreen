@@ -33,7 +33,7 @@ CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
   GROUP BY cp.id;
 
 CREATE OR REPLACE VIEW extend_reporter.global_bibs_by_holding_update AS
-  SELECT id, LAST(holding_update) AS holding_update, update_type
+  SELECT DISTINCT ON (id) id, holding_update, update_type
     FROM (SELECT  b.id,
                   LAST(cp.create_date) AS holding_update,
                   'add' AS update_type
@@ -53,7 +53,7 @@ CREATE OR REPLACE VIEW extend_reporter.global_bibs_by_holding_update AS
             WHERE cp.deleted
                   AND b.id > 0
             GROUP BY b.id)x
-    GROUP BY id, update_type;
+    ORDER BY id, holding_update;
         
 COMMIT;
 
