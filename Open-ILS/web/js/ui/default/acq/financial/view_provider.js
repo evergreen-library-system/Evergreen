@@ -2,7 +2,8 @@ dojo.require("dijit.Dialog");
 dojo.require('dijit.layout.TabContainer');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dijit.form.FilteringSelect');
-dojo.require('dojox.grid.Grid');
+dojo.require('dojox.grid.DataGrid');
+dojo.require('dojo.data.ItemFileReadStore');
 dojo.require("fieldmapper.OrgUtils");
 dojo.require('openils.acq.Provider');
 dojo.require('openils.Event');
@@ -12,31 +13,30 @@ dojo.require('openils.Util');
 var provider = null;
 var marcRegex = /^\/\/\*\[@tag="(\d+)"]\/\*\[@code="(\w)"]$/;
 
-function getOrgInfo(rowIndex) {
-    data = providerGrid.model.getRow(rowIndex);
-    if(!data) return;
-    return fieldmapper.aou.findOrgUnit(data.owner).shortname();
+function getOrgInfo(rowIndex, item) {
+    if(!item) return ''; 
+    var owner = this.grid.store.getValue(item, 'owner'); 
+    return fieldmapper.aou.findOrgUnit(owner).shortname();
+
 }
 
-function getTag(rowIdx) {
-    data = padGrid.model.getRow(rowIdx);
-    if(!data) return;
-    return data.xpath.replace(marcRegex, '$1');
+function getTag(rowIdx, item) {
+    if(!item) return '';
+    var xpath = this.grid.store.getValue(item, 'xpath');
+    return xpath.replace(marcRegex, '$1');
 }
 
-function getSubfield(rowIdx) {
-    data = padGrid.model.getRow(rowIdx);
-    if(!data) return;
-    return data.xpath.replace(marcRegex, '$2');
+function getSubfield(rowIdx, item) {
+    if(!item) return '';
+    var xpath = this.grid.store.getValue(item, 'xpath');
+    return xpath.replace(marcRegex, '$2');
 }
-
 
 function loadProviderGrid() {
     var store = new dojo.data.ItemFileReadStore({data:acqpro.toStoreData([provider])});
-    var model = new dojox.grid.data.DojoData(
-        null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    providerGrid.setModel(model);
-    providerGrid.update();
+   
+    providerGrid.setStore(store);
+    providerGrid.render();
 }
 
 function loadPADGrid() {

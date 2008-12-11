@@ -4,25 +4,26 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
+
         <div dojoType="dijit.layout.ContentPane" 
                 class='oils-acq-detail-content-pane' title="Summary" selected='true' style='height:400px;'>
-            <script>
-                var providerGridLayout = [{
-                    cells : [[
-                        {name: 'ID', field: 'id'},
-                        {name: 'Name', field: "name", width:'auto'}, 
-                        {name: 'Code', field:'code'},
-                        {name: 'Owner', get:getOrgInfo}, 
-                        {name: 'Currency Type', field: "currency_type"},
-                    ]]
-                }];
-            </script>
-            <div jsId='providerGrid' dojoType="dojox.Grid" structure='providerGridLayout'> </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="providerGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="name" width='auto'>Name</th> 
+                                <th field="code">Code</th> 
+                                <th field="owner" get='getOrgInfo'>Owner</th> 
+                                <th field="currency_type">Currency Type</th> 
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div>             
         </div>
 
-        <!--
-            Provider order record data types
-        -->
         <div dojoType="dijit.layout.ContentPane" 
                 class='oils-acq-detail-content-pane' title="Order Record Format" style='height:400px;'>
 
@@ -80,7 +81,7 @@
                             </tr>
                             <tr>
                                 <td colspan='2' align='center'>
-                                    <button dojoType=dijit.form.Button type="submit">Apply</button>
+                                    <button dojoType='dijit.form.Button' type="submit">Apply</button>
                                 </td>
                             </tr>
                         </table>
@@ -96,22 +97,22 @@
             </div>
 
             <script type='dojo/connect' event='onShow'>loadPADGrid();</script>
-            <script>
-                var padGridLayout = [{
-                    cells : [[
-                        {name: 'ID', field: 'id'},
-                        {name: 'Code', field:'code', width:'auto'},
-                        {name: 'Description', field: "description", width:'auto'}, 
-                        {name: 'Tag', get:getTag},
-                        {name: 'Subfield', get:getSubfield},
-                        {name: 'Identifier', field:'ident'},
-                        {name: 'XPath', field:'xpath', width:'auto'}
-                    ]]
-                }];
-            </script>
-            <div jsId='padGrid' dojoType="dojox.Grid" structure='padGridLayout'> </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="padGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="code" width='auto'>Code</th> 
+                                <th field="description" width='auto'>Description</th>                                 
+                                <th field="tag" get='getTag'>Tag</th> 
+                                <th field="subfield" get='getSubfield'>Subfield</th> 
+                                <th field="xpath" width='auto'>XPath</th> 
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div>             
         </div>
-    </div>
-</div>
 [% END %]
 
