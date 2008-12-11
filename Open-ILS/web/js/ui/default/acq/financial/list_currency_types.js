@@ -1,7 +1,7 @@
 dojo.require("dijit.Dialog");
 dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
@@ -10,13 +10,20 @@ dojo.require('fieldmapper.dojoData');
 var currencyTypes = [];
 
 function loadCTypesGrid() {
-    openils.acq.CurrencyType.fetchAll(
-        function(types) {
-            var store = new dojo.data.ItemFileReadStore(
-                {data:acqct.toStoreData(types, 'code', {identifier:'code'})});
-           
-            currencyTypeListGrid.setStore(store);
-            currencyTypeListGrid.render();
+    var store = new dojo.data.ItemFileWriteStore({data:acqct.initStoreData('code', {identifier:'code'})});
+    currencyTypeListGrid.setStore(store);
+    currencyTypeListGrid.render();
+
+    fieldmapper.standardRequest(
+        [ 'open-ils.acq', 'open-ils.acq.currency_type.all.retrieve'],
+        { async: true,
+          params: [openils.User.authtoken],
+          onresponse : function(r){
+                if(ct = openils.Util.readResponse(r)) {
+                    openils.acq.CurrencyType.cache[ct.code()] = ct;
+                    store.newItem(acqct.itemToStoreData(ct));
+                }
+            }
         }
     );
 }
