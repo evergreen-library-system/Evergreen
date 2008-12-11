@@ -4,8 +4,8 @@ dojo.require('dijit.layout.ContentPane');
 dojo.require("dijit.form.FilteringSelect");
 dojo.require("dijit.form.Textarea");
 dojo.require("dijit.form.CurrencyTextBox");
-dojo.require('dojox.grid.Grid');
-
+dojo.require('dojox.grid.DataGrid');
+dojo.require('dojo.data.ItemFileReadStore');
 dojo.require("fieldmapper.OrgUtils");
 dojo.require('openils.acq.FundingSource');
 dojo.require('openils.acq.Fund');
@@ -57,10 +57,11 @@ function loadFS() {
 }
 
 /** Some grid rendering accessor functions ----- */
-function getOrgInfo(rowIndex) {
-    data = fundingSourceGrid.model.getRow(rowIndex);
-    if(!data) return;
-    return fieldmapper.aou.findOrgUnit(data.owner).shortname();
+function getOrgInfo(rowIndex, item) {
+    if(!item) return ''; 
+    var owner = this.grid.store.getValue(item, 'owner'); 
+    return fieldmapper.aou.findOrgUnit(owner).shortname();
+
 }
 
 function getSummaryInfo(rowIndex) {
@@ -71,19 +72,20 @@ function getSummaryInfo(rowIndex) {
 function loadFSGrid() {
     if(!fundingSource) return;
     var store = new dojo.data.ItemFileReadStore({data:acqfs.toStoreData([fundingSource])});
-    var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    fundingSourceGrid.setModel(model);
-    fundingSourceGrid.update();
+
+    fundingSourceGrid.setStore(store);
+    fundingSourceGrid.render();
 }
 
 
 /** builds the credits grid ----- */
 function loadCreditGrid() {
     if(fsCreditGrid.isLoaded) return;
+ 
     var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fundingSource.credits())});
-    var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    fsCreditGrid.setModel(model);
-    fsCreditGrid.update();
+   
+    fsCreditGrid.setStore(store);
+    fsCreditGrid.render();
     fsCreditGrid.isLoaded = true;
 }
 
@@ -91,9 +93,9 @@ function loadCreditGrid() {
 function loadAllocationGrid() {
     if(fsAllocationGrid.isLoaded) return;
     var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fundingSource.allocations())});
-    var model = new dojox.grid.data.DojoData(null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}});
-    fsAllocationGrid.setModel(model);
-    fsAllocationGrid.update();
+
+    fsAllocationGrid.setStore(store);
+    fsAllocationGrid.render();
     fsAllocationGrid.isLoaded = true;
 }
 

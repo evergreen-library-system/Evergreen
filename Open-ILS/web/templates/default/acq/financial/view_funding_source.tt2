@@ -108,55 +108,64 @@
     <div dojoType="dijit.layout.TabContainer">
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Summary" selected='true'>
             <script type='dojo/connect' event='onShow'>loadFSGrid();</script>
-            <script>
-                /** Define the columns for the funding source grid ----- */
-                var fundingSourceGridLayout = [{
-                    cells : [[
-                        {name: 'ID', field: 'id'},
-                        {name: 'Name', field: "name", width:'auto'}, 
-                        {name: 'Code', field: "code"},
-                        {name: 'Balance', get:getSummaryInfo, field:'balance'},
-                        {name: 'Total Credits', get:getSummaryInfo, field:'credit_total'},
-                        {name: 'Total Debits', get:getSummaryInfo, field:'allocation_total'},
-                        {name: 'Currency Type', field: "currency_type"},
-                        {name: 'Owner', field: "owner", width:'auto', get:getOrgInfo}, 
-                    ]]
-                }];
-            </script>
-            <div jsId='fundingSourceGrid' dojoType="dojox.Grid" structure='fundingSourceGridLayout'> </div>
-        </div>
+
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="fundingSourceGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="name" width='auto'>Name</th> 
+                                <th field="code">Code</th> 
+                                <th field="balance" get='getSummaryInfo'>Balance</th>
+                                <th field="credit_totals" get='getSummaryInfo'>Total Credits</th>
+                                <th field="allocation_total" get='getSummaryInfo'>Total Debits</th>
+                                <th field="currency_type">Currency Type</th> 
+                                <th field="owner" width='auto' get='getOrgInfo'>Owner</th>
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div>               
+ 
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Credits">
-            <script type='dojo/connect' event='onShow'>loadCreditGrid();</script>
-            <script>
-                /** Define the columns for the funding source credits grid ----- */
-                var fsCreditGridLayout = [{
-                    cells : [[
-                        {name: 'ID', field: 'id'},
-                        {name: 'Amount', field: "amount"}, 
-                        {name: 'Note', field: "note", width:'auto'}, 
-                    ]]
-                }];
-            </script>
-            <div jsId='fsCreditGrid' dojoType="dojox.Grid" structure='fsCreditGridLayout'> </div>
-        </div>
+            <script type='dojo/connect' event='onShow'>loadCreditGrid();
+            </script> 
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="fsCreditGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="amount">Amount</th> 
+                                <th field="note" width='auto'>Note</th> 
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div> 
+            
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
-            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
-            <script>
-                /** Define the columns for the funding source allocations grid ----- */
-                var fsAllocationGridLayout = [{
-                    cells : [[
-                        {name: 'ID', field: 'id'},
-                        {name: 'Fund', field: "fund", get:getFund}, 
-                        {name: 'Amount', field: "amount"}, 
-                        {name: 'Percent', field: "percent"}, 
-                        {name: 'Allocated By', field: "allocator"}, 
-                        {name: 'Note', field: "note", width:'auto'}, 
-                    ]]
-                }];
-            </script>
-            <div jsId='fsAllocationGrid' dojoType="dojox.Grid" structure='fsAllocationGridLayout'> </div>
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script> 
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="fsAllocationGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="fund" get='getFund'>Fund</th> 
+                                <th field="amount">Amount</th> 
+                                <th field="percent">Percent</th> 
+                                <th field="allocator">Allocated By</th> 
+                                <th field="note" width='auto'>Note</th> 
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div> 
+            </div> 
         </div>
     </div>
 </div>
+
 [% END %]
 
