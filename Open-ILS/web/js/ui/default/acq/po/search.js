@@ -3,12 +3,14 @@ dojo.require('dijit.form.Button');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.NumberTextBox');
 dojo.require('dojox.grid.DataGrid');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.acq.Provider');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
 dojo.require('openils.User');
 dojo.require('openils.Util');
+dojo.require('openils.acq.PO');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 
@@ -38,27 +40,26 @@ function getDateTimeField(rowIndex, item) {
 }
 
 function doSearch(fields) {
-    var itemList = [];
     if(!isNaN(fields.id)) 
         fields = {id:fields.id};
     else
         delete fields.id;
 
+    var store = new dojo.data.ItemFileWriteStore({data:acqpo.initStoreData()});
+    poGrid.setStore(store);
+    poGrid.render();
+
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.search'],
-        {
-            async:1,
+        {   async:1,
             params: [openils.User.authtoken, fields],
             onresponse : function(r) {
-                var msg = r.recv();
-                if(msg) itemList.push(msg.content());
-            },
-            oncomplete : function(r) {
+                if(po = openils.Util.readResponse(r)) {
+                    openils.acq.PO.cache[po.id()] = po;
+                    store.newItem(acqpo.itemToStoreData(po));
+                }
                 dojo.style('po-grid', 'visibility', 'visible');
-                var store = new dojo.data.ItemFileReadStore({data:acqpo.toStoreData(itemList)});
-                poGrid.setStore(store);
-                poGrid.render();
-            },
+            } 
         }
     );
 }
