@@ -2,7 +2,7 @@ dojo.require("dijit.Dialog");
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
@@ -17,13 +17,22 @@ function getOrgInfo(rowIndex, item) {
 }
 
 function loadProviderGrid() {
-    openils.acq.Provider.createStore(
-        function(storeData) {
-            var store = new dojo.data.ItemFileReadStore({data:storeData});
-           
-            providerListGrid.setStore(store);
-            providerListGrid.render();
-        }
+    var store = new dojo.data.ItemFileWriteStore({data:acqpro.initStoreData()});
+    providerListGrid.setStore(store);
+    providerListGrid.render();
+    
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.provider.org.retrieve'],
+        {   async: true,
+            params: [openils.User.authtoken],
+            onresponse : function(r) {
+                if( lp = openils.Util.readResponse(r)) {
+                    openils.acq.Provider.cache[lp.id()] = lp;
+                    store.newItem(acqpro.itemToStoreData(lp));
+                }
+            }
+        }       
+        
     );
 }
 
