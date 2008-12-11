@@ -4372,7 +4372,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-    <class id="ergbhu" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::global_bibs_by_holding_update" oils_persist:tablename="extend_reporter.global_bibs_by_holding_update" reporter:label="Bib IDs by Holding Add/Delete Time (OCLC batch update)">
+    <class id="ergbhu"
+           controller="open-ils.reporter-store"
+           oils_obj:fieldmapper="extend_reporter::global_bibs_by_holding_update"
+           oils_persist:tablename="extend_reporter.global_bibs_by_holding_update"
+           reporter:label="Bib IDs by Holding Add/Delete Time (OCLC batch update)">
         <fields oils_persist:primary="id">
             <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
             <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
