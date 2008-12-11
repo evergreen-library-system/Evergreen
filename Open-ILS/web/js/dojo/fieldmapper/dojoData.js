@@ -36,17 +36,22 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		return this;
 	}
 
-	function _toStoreData (list, label, params) {
-
+    function _initStoreData(label, params) {
 		if (!params) params = {};
-		if (!list) list = {};
-
-		// a sane default
 		if (!params.identifier) params.identifier = this.Identifier;
 		if (!label) label = params.label;
 		if (!label) label = params.identifier;
+		return { label : label, identifier : params.identifier, items : [] };
+    }
 
-		var data = { label : label, identifier : params.identifier, items : [] };
+    function _itemToStoreData(fmObj, params) {
+		if (!params) params = {};
+        return fmObj.toHash(true, params.virtualFields);
+    }
+
+	function _toStoreData (list, label, params) {
+		if (!params) params = {};
+        var data = this.initStoreData(label, params);
 
 		for (var i in list) data.items.push( list[i].toHash(true, params.virtualFields) );
 
@@ -89,6 +94,8 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 
 	for (var i in fmclasses) fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
 	for (var i in fmclasses) fieldmapper[i].toStoreData = _toStoreData;
+	for (var i in fmclasses) fieldmapper[i].itemToStoreData = _itemToStoreData;
+	for (var i in fmclasses) fieldmapper[i].initStoreData = _initStoreData;
 
 	fieldmapper.aou.prototype._ignore_fields = ['children'];
 	fieldmapper.aout.prototype._ignore_fields = ['children'];
