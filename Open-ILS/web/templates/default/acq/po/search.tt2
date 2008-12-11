@@ -7,10 +7,10 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
 <script>
-    function getId(rowIndex) {
-        data = poGrid.model.getRow(rowIndex);
-        if(!data) return;
-        return '<a href="[% ctx.base_uri %]/acq/po/view/' + data.id + '">'+data.id;
+    function getId(rowIndex, item) {
+        if(!item) return;
+        var data = this.grid.store.getValue(item, 'id');
+        return '<a href="[% ctx.base_uri %]/acq/po/view/' + data + '">'+data;
     }
 </script>
 
@@ -33,7 +33,7 @@
         <tr>
             <td><label for='provider'>Provider</label></td>
             <td><select labelAttr='code' searchAttr='code' name='provider' 
-                style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select></td>
+                        style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select></td>
         </tr>
         <tr>
             <td><label for='state'>State</label></td>
@@ -56,21 +56,24 @@
         </tr>
     </table>
 </form>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+        <table id="po-grid" jsId="poGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+            <thead> 
+                <tr> 
+                    <th field="id" get='getId'>ID</th> 
+                    <th field="owner" get='getPOOwner'>Owner</th> 
+                    <th field="ordering_agency" get='getOrgInfo'>Ordering Agency</th> 
+                    <th field="create_time" get='getDateTimeField' width='auto'>Create Time</th> 
+                    <th field="edit_time" get='getDateTimeField' width ='auto'>Edit Time</th> 
+                    <th field="provider" get='getProvider' width='auto'>Provider</th>
+                    <th field="state">State</th> 
+                </tr> 
+            </thead> 
+        </table>     
+    </div> 
+</div>
 
-<script>
-    var poGridStructure = [{
-        cells : [[
-            {name: 'ID', field: 'id', get:getId},
-            {name: 'Owner', get:getPOOwner},
-            {name: 'Ordering Agency', get:getOrgInfo},
-            {name: 'Create Time', field:'create_time', get:getDateTimeField, width:'auto'},
-            {name: 'Edit Time', field: "edit_time", get:getDateTimeField, width:'auto'},
-            {name: 'Provider', get:getProvider, width:'auto'},
-            {name: 'State', field:'state'}
-        ]]
-    }];
-</script>
-<div jsId='poGrid' id='po-grid' dojoType="dojox.Grid" structure='poGridStructure'></div>
 <script>dojo.style('po-grid', 'visibility', 'hidden');</script>
 [% END %]
 
