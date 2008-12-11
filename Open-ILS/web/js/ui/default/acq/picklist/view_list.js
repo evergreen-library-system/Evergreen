@@ -14,7 +14,6 @@ function loadGrid() {
     if(listAll)
         method = method.replace(/user/, 'user.all');
 
-    //var store = new dojo.data.ItemFileWriteStore({data:acqpl.toStoreData([])});
     var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()});
     plListGrid.setStore(store);
     plListGrid.render();
