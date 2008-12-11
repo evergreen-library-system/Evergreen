@@ -488,6 +488,7 @@ sub retrieve_funding_source_allocations {
 __PACKAGE__->register_method(
 	method => 'retrieve_all_currency_type',
 	api_name	=> 'open-ils.acq.currency_type.all.retrieve',
+    stream => 1,
 	signature => {
         desc => 'Retrieves all currency_type objects',
         params => [
@@ -502,7 +503,7 @@ sub retrieve_all_currency_type {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('GENERAL_ACQ');
-    return $e->retrieve_all_acq_currency_type();
+    $conn->respond($_) for @{$e->retrieve_all_acq_currency_type()};
 }
 
 sub currency_conversion_impl {
