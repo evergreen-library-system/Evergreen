@@ -3733,6 +3733,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
     </class>
 
+    <class id="ergbhu"
+           controller="open-ils.reporter-store"
+           oils_obj:fieldmapper="extend_reporter::global_bibs_by_holding_update"
+           oils_persist:tablename="extend_reporter.global_bibs_by_holding_update"
+           reporter:label="Bib IDs by Holding Add/Delete Time (OCLC batch update)">
+        <fields oils_persist:primary="id">
+            <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+            <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+            <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+            <field reporter:label="Bib ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+            <field reporter:label="Update Time" name="holding_update" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp" />
+            <field reporter:label="Update Type" name="update_type" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+        </fields>
+        <links>
+            <link field="id" reltype="has_a" key="id" map="" class="bre"/>
+        </links>
+    </class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
