@@ -2,7 +2,7 @@ dojo.require("dijit.Dialog");
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
@@ -24,28 +24,35 @@ function getBalanceInfo(rowIndex, item) {
 }
 
 function loadFundGrid() {
-    openils.acq.Fund.createStore(
-        function(storeData) {
-            var store = new dojo.data.ItemFileReadStore({data:storeData});
-            
-            fundListGrid.setStore(store);
-            fundListGrid.render();
-
-            var yearStore = {identifier:'year', name:'year', items:[]};
-
-            var added = {};
-            for(var i = 0; i < storeData.items.length; i++) {
-                var year = storeData.items[i].year;
-                if(!(year in added)) {
-                    yearStore.items.push({year:year});
-                    added[year] = 1;
+    var store = new dojo.data.ItemFileWriteStore({data:acqf.initStoreData()});
+    fundListGrid.setStore(store);
+    fundListGrid.render();
+    var yearStore = {identifier:'year', name:'year', items:[]};
+    var yearsAdded = {}; /* don't duplicate the years in the selector */
+    
+    fieldmapper.standardRequest(
+       [ 'open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
+       {    async: true,
+            params: [openils.User.authtoken, null, {flesh_summary:1}],
+            onresponse : function(r) {
+                if(lf = openils.Util.readResponse(r)) {
+                    openils.acq.Fund.cache[lf.id()] = lf;
+                    store.newItem(acqf.itemToStoreData(lf));
+                    var year = lf.year();
+                    if(!(year in yearsAdded)) {
+                        yearStore.items.push({year:year});
+                        yearsAdded[year] = 1;
+                    }
                 }
+            },
+            oncomplete : function(r) {
+                // sort the unique list of years and set the selector to "now" if possible
+                yearStore.items = yearStore.items.sort().reverse();
+                fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
+                var today = new Date().getFullYear().toString();
+                if(today in yearsAdded)
+                    fundFilterYearSelect.setValue(today);
             }
-            yearStore.items = yearStore.items.sort().reverse();
-            fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
-            var today = new Date().getFullYear().toString();
-            if(today in added)
-                fundFilterYearSelect.setValue(today);
         }
     );
 }
