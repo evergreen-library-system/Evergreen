@@ -356,9 +356,9 @@ sub new_books_by_item {
 		  from		=> { 'acn' => { 'acp' => { field => call_number => fkey => 'id' } } },
 		  where		=>
 			{ '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () },
-              '+acn' => { record => { '>' => 0 } },
+			  '+acn' => { record => { '>' => 0 } },
 			}, 
-          order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
+		  order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
 		  limit		=> $page_size,
 		  offset	=> $offset
 		}
