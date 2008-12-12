@@ -65,6 +65,7 @@ sub spool_marc {
     my $data_fingerprint = '';
 	my $purpose = $cgi->param('purpose');
 	my $infile = $cgi->param('marc_upload');
+    my $bib_source = $cgi->param('bib_source');
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my $dir = $conf->config_value(
@@ -100,7 +101,10 @@ sub spool_marc {
 
 	    OpenSRF::Utils::Cache->new->put_cache(
 		    'vandelay_import_spool_' . $data_fingerprint,
-		    { purpose => $purpose, path => $outfile }
+		    {   purpose => $purpose, 
+                path => $outfile,
+                bib_source => $bib_source
+            }
 	    );
     }
 
