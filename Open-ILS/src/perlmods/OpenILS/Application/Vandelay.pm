@@ -109,6 +109,7 @@ sub add_record_to_bib_queue {
 	my $queue = shift;
 	my $marc = shift;
 	my $purpose = shift;
+    my $bib_source = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -119,7 +120,7 @@ sub add_record_to_bib_queue {
 		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
 		 $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
 
-	my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose);
+	my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose, $bib_source);
 
 	return $e->die_event unless ($new_rec);
 	$e->commit;
@@ -137,11 +138,13 @@ sub _add_bib_rec {
 	my $marc = shift;
 	my $queue = shift;
 	my $purpose = shift;
+    my $bib_source = shift;
 
 	my $rec = new Fieldmapper::vandelay::queued_bib_record();
 	$rec->marc( $marc );
 	$rec->queue( $queue );
 	$rec->purpose( $purpose ) if ($purpose);
+    $rec->bib_source($bib_source);
 
 	return $e->create_vandelay_queued_bib_record( $rec );
 }
@@ -220,6 +223,7 @@ sub process_spool {
     my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
 	my $purpose = $data->{purpose};
     my $filename = $data->{path};
+    my $bib_source = $data->{bib_source};
 
     unless(-r $filename) {
         $logger->error("unable to read MARC file $filename");
@@ -251,7 +255,7 @@ sub process_spool {
 			$xml =~ s/[\x00-\x1f]//go;
 
 			if ($type eq 'bib') {
-				_add_bib_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
+				_add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
 			} else {
 				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			}
