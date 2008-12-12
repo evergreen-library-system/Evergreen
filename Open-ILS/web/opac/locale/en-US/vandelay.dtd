@@ -104,3 +104,4 @@
 <!ENTITY vandelay.queue.total "Total:">
 <!ENTITY vandelay.queue.imported "Imported:">
 <!ENTITY vandelay.queue.column_picker.title "Column Picker">
+<!ENTITY vandelay.import.bib_sources "Select a Record Source">

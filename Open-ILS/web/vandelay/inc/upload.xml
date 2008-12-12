@@ -30,6 +30,13 @@
             </td>
         </tr>
         <tr>
+            <td>&vandelay.import.bib_sources;</td>
+            <td>
+                <select jsId='vlUploadSourceSelector' dojoType='dijit.form.FilteringSelect'>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td>
                 <span id="vl-file-label">&vandelay.file.to.upload;</span>
             </td>

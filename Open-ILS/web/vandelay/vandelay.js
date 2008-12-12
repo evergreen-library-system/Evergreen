@@ -76,13 +76,14 @@ var allUserAuthQueues;
 var selectableGridRecords;
 var cgi = new openils.CGI();
 var vlQueueGridColumePicker = {};
+var vlBibSources = [];
 
 /**
   * Grab initial data
   */
 function vlInit() {
     authtoken = dojo.cookie('ses') || cgi.param('ses');
-    var initNeeded = 4; // how many async responses do we need before we're init'd 
+    var initNeeded = 5; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
     openils.Util.registerEnterHandler(
@@ -118,6 +119,17 @@ function vlInit() {
                     userAuthQueues.push(allUserAuthQueues[i]);
             }
             checkInitDone();
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.search.cbs'],
+        {   async: true,
+            params: [authtoken, {id:{"!=":null}}],
+            oncomplete : function(r) {
+                vlBibSources = openils.Util.readResponse(r, false, true);
+                checkInitDone();
+            }
         }
     );
 
@@ -833,6 +845,7 @@ function vlFleshQueueSelect(selector, type) {
 function vlShowUploadForm() {
     displayGlobalDiv('vl-marc-upload-div');
     vlFleshQueueSelect(vlUploadQueueSelector, vlUploadRecordType.getValue());
+    vlUploadSourceSelector.store = new dojo.data.ItemFileReadStore({data:cbs.toStoreData(vlBibSources)});
 }
 
 function vlShowQueueSelect() {
