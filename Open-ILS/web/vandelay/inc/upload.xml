@@ -32,7 +32,7 @@
         <tr>
             <td>&vandelay.import.bib_sources;</td>
             <td>
-                <select jsId='vlUploadSourceSelector' dojoType='dijit.form.FilteringSelect'>
+                <select jsId='vlUploadSourceSelector' dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'>
                 </select>
             </td>
         </tr>

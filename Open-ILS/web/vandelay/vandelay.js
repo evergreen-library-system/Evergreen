@@ -123,9 +123,9 @@ function vlInit() {
     );
 
     fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.cbs'],
+        ['open-ils.permacrud', 'open-ils.permacrud.search.cbs.atomic'],
         {   async: true,
-            params: [authtoken, {id:{"!=":null}}],
+            params: [authtoken, {id:{"!=":null}}, {order_by:{cbs:'id'}}],
             oncomplete : function(r) {
                 vlBibSources = openils.Util.readResponse(r, false, true);
                 checkInitDone();
@@ -845,7 +845,9 @@ function vlFleshQueueSelect(selector, type) {
 function vlShowUploadForm() {
     displayGlobalDiv('vl-marc-upload-div');
     vlFleshQueueSelect(vlUploadQueueSelector, vlUploadRecordType.getValue());
-    vlUploadSourceSelector.store = new dojo.data.ItemFileReadStore({data:cbs.toStoreData(vlBibSources)});
+    vlUploadSourceSelector.store = 
+        new dojo.data.ItemFileReadStore({data:cbs.toStoreData(vlBibSources, 'source')});
+    vlUploadSourceSelector.setValue(vlBibSources[0].id());
 }
 
 function vlShowQueueSelect() {
