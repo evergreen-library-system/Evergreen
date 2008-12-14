@@ -891,48 +891,53 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             }
         }
 
-        if (foreign_context->size > 0) {
-        	osrfStringArray* class_list = osrfHashKeys( foreign_context );
+        osrfStringArray* class_list;
 
-            int i = 0;
-            char* class_name = NULL;
-        	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
-                osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
+        if (foreign_context) {
+            class_list = osrfHashKeys( foreign_context );
 
-                jsonObject* _tmp_params = jsonParseStringFmt(
-                    "{\"%s\":\"%s\"}",
-                    osrfHashGet(fcontext, "field"),
-                    oilsFMGetString(param, osrfHashGet(fcontext, "fkey"))
-                );
-
-        		jsonObject* _list = doFieldmapperSearch(
-                    ctx,
-                    class,
-                    _tmp_params,
-                    &err
-                );
+            if (class_list->size > 0) {
+    
+                int i = 0;
+                char* class_name = NULL;
+            	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
+                    osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
+    
+                    jsonObject* _tmp_params = jsonParseStringFmt(
+                        "{\"%s\":\"%s\"}",
+                        osrfHashGet(fcontext, "field"),
+                        oilsFMGetString(param, osrfHashGet(fcontext, "fkey"))
+                    );
+    
+            		jsonObject* _list = doFieldmapperSearch(
+                        ctx,
+                        class,
+                        _tmp_params,
+                        &err
+                    );
+            
+       
+                    jsonObject* _fparam = jsonObjectGetIndex(_list, 0);
+            
+                    if (!_fparam) {
+                        jsonObjectFree(_tmp_params);
+                        jsonObjectFree(_list);
+                        return 0;
+                    }
         
-   
-                jsonObject* _fparam = jsonObjectGetIndex(_list, 0);
-        
-                if (!_fparam) {
                     jsonObjectFree(_tmp_params);
                     jsonObjectFree(_list);
-                    return 0;
+    
+                    char* foreign_field = NULL;
+                    while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
+                        osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
+                    }
+       
+                    jsonObjectFree(_fparam);
                 }
     
-                jsonObjectFree(_tmp_params);
-                jsonObjectFree(_list);
-
-                char* foreign_field = NULL;
-                while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
-                    osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
-                }
-   
-                jsonObjectFree(_fparam);
+                osrfStringArrayFree(class_list);
             }
-
-            osrfStringArrayFree(class_list);
         }
 
         jsonObjectFree(param);
