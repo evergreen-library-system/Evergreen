@@ -124,7 +124,7 @@ sub CRUD_action_object_permcheck {
     my $perm_field_value = $action_node->getAttribute('permission');
 
     if ($perm_field_value) {
-        my @perms = split '\|', $perm_field_value;
+        my @perms = split ' ', $perm_field_value;
 
         my @context_ous;
         if ($action_node->getAttribute('global_required')) {
@@ -134,7 +134,7 @@ sub CRUD_action_object_permcheck {
             my $context_field_value = $action_node->getAttribute('context_field');
 
             if ($context_field_value) {
-                push @context_ous, $obj->$_ for ( split '\|', $context_field_value );
+                push @context_ous, $obj->$_ for ( split ' ', $context_field_value );
             } else {  
                 for my $context_node ( $xpc->findnodes( "perm:context", $action_node ) ) {
                     my $context_field = $context_node->getAttribute('field');
@@ -154,7 +154,7 @@ sub CRUD_action_object_permcheck {
                             push @context_ous, $remote_object->$context_field;
                         }
                     } else {
-                        push @context_ous, $obj->$_ for ( split '\|', $context_field );
+                        push @context_ous, $obj->$_ for ( split ' ', $context_field );
                     }
                 }
             }
