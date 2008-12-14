@@ -826,7 +826,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     osrfStringArray* context_org_array = osrfNewStringArray(1);
 
     char* pkey_value = NULL;
-    int OK = 0;
     int err = 0;
     if (global_required && strcmp( "true", global_required )) {
         // check for perm at top of org tree
@@ -838,7 +837,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         if (!_tree_top) {
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
-            return -1;
+            return 0;
         }
 
         osrfStringArrayAdd( context_org_array, oilsFMGetString( _tree_top, "id" ) );
@@ -876,7 +875,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             if (!param) {
                 jsonObjectFree(_tmp_params);
                 jsonObjectFree(_list);
-                return -1;
+                return 0;
             }
 
             jsonObjectFree(_tmp_params);
@@ -919,7 +918,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 if (!_fparam) {
                     jsonObjectFree(_tmp_params);
                     jsonObjectFree(_list);
-                    return -1;
+                    return 0;
                 }
     
                 jsonObjectFree(_tmp_params);
@@ -939,8 +938,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         jsonObjectFree(param);
     }
 
-    char* context_org;
-    char* perm;
+    char* context_org = NULL;
+    char* perm = NULL;
+    int OK = 0;
+
+    if (permission->size == 0) OK = 1;
     
     int i = 0;
     while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
@@ -995,8 +997,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     if (pkey_value) free(pkey_value);
     osrfStringArrayFree(context_org_array);
 
-    if (!OK) return 0;
-    return 1;
+    return OK;
 }
 #endif
 
