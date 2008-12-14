@@ -117,7 +117,7 @@ int osrfAppInitialize() {
 	method_str = buffer_data(method_name);
 	osrfAppRegisterMethod( MODULENAME, method_str, "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 	free(method_str);
-#endif;
+#endif
 
 	// first we register all the transaction and savepoint methods
 	buffer_reset(method_name);
