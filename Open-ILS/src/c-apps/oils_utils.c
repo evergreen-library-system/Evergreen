@@ -74,12 +74,23 @@ long oilsFMGetObjectId( const jsonObject* obj ) {
 
 
 oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int size ) {
-	if(!permissions) return NULL;
+	if (!permissions) return NULL;
 	int i;
 	oilsEvent* evt = NULL;
-	if(orgid == -1) orgid = 1; /* XXX  */
 
-	for( i = 0; i != size && permissions[i]; i++ ) {
+	if (orgid == -1) {
+		jsonObject* org = oilsUtilsQuickReq(
+            "open-ils.cstore", 
+            "open-ils.cstore.direct.actor.org_unit.search",
+            jsonParseString("{\"parent_ou\":null}")
+        );
+
+        orgid = (int)jsonObjectGetNumber( oilsFMGetObject( org, "id" ) );
+
+        jsonObjectFree(org);
+    }
+
+	for( i = 0; i < size && permissions[i]; i++ ) {
 
 		char* perm = permissions[i];
 		jsonObject* params = jsonParseStringFmt("[%d, \"%s\", %d]", userid, perm, orgid);

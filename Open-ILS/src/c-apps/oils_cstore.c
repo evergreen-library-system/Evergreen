@@ -4,7 +4,7 @@
 #include "opensrf/utils.h"
 #include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
-#include "openils/oils_idl.h"
+#include "openils/oils_utils.h"
 #include <dbi/dbi.h>
 
 #include <time.h>
@@ -15,7 +15,11 @@
 #ifdef RSTORE
 #  define MODULENAME "open-ils.reporter-store"
 #else
-#  define MODULENAME "open-ils.cstore"
+#  ifdef PCRUD
+#    define MODULENAME "open-ils.pcrud"
+#  else
+#    define MODULENAME "open-ils.cstore"
+#  endif
 #endif
 
 #define SUBSELECT	4
@@ -69,6 +73,10 @@ void userDataFree( void* );
 static void sessionDataFree( char*, void* );
 static char* getSourceDefinition( osrfHash* );
 
+#ifdef PCRUD
+static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
+#endif
+
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
 //static osrfHash * readHandles;
@@ -95,19 +103,21 @@ void osrfAppChildExit() {
 }
 
 int osrfAppInitialize() {
-	growing_buffer* method_name;
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
 	if (!oilsIDLInit( osrf_settings_host_value("/IDL") )) return 1; /* return non-zero to indicate error */
 
+    char* method_str = NULL;
+	growing_buffer* method_name = buffer_init(64);
+#ifndef PCRUD
 	// Generic search thingy
-	method_name =  buffer_init(64);
 	buffer_fadd(method_name, "%s.json_query", MODULENAME);
-	char* method_str = buffer_data(method_name);
+	method_str = buffer_data(method_name);
 	osrfAppRegisterMethod( MODULENAME, method_str, "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 	free(method_str);
+#endif;
 
 	// first we register all the transaction and savepoint methods
 	buffer_reset(method_name);
@@ -190,6 +200,11 @@ int osrfAppInitialize() {
 
 			if (!osrfHashGet(idlClass, "fieldmapper")) continue;
 
+#ifdef PCRUD
+			if (!osrfHashGet(idlClass, "permacrud")) continue;
+			if (!osrfHashGet( osrfHashGet(idlClass, "permacrud"), method_type )) continue;
+#endif
+
 			char* readonly = osrfHashGet(idlClass, "readonly");
 			if (	readonly &&
 				!strncasecmp( "true", readonly, 4) &&
@@ -202,7 +217,7 @@ int osrfAppInitialize() {
 			_fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
 			part = strtok_r(_fm, ":", &st_tmp);
 
-			growing_buffer* method_name =  buffer_init(64);
+			method_name =  buffer_init(64);
 			buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
 
 			while ((part = strtok_r(NULL, ":", &st_tmp))) {
@@ -646,12 +661,20 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	}
 	else if (!strcmp(methodtype, "search")) {
 
-		obj = doFieldmapperSearch(ctx, class_obj, ctx->params, &err);
+		jsonObject* _p = jsonObjectClone( ctx->params );
+#ifdef PCRUD
+        jsonObjectRemoveIndex(_p, 0);
+#endif
+
+		obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
 		if(err) return err;
 
 		jsonObject* cur;
 		jsonIterator* itr = jsonNewIterator( obj );
 		while ((cur = jsonIteratorNext( itr ))) {
+#ifdef PCRUD
+        	if(!verifyObjectPCRUD(ctx, cur)) continue;
+#endif
 			osrfAppRespond( ctx, cur );
 		}
 		jsonIteratorFree(itr);
@@ -659,19 +682,28 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	} else if (!strcmp(methodtype, "id_list")) {
 
+		int _opt_pos = 1;
+#ifdef PCRUD
+		_opt_pos = 2;
+#endif
+
 		jsonObject* _p = jsonObjectClone( ctx->params );
-		if (jsonObjectGetIndex( _p, 1 )) {
-			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
-			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
+#ifdef PCRUD
+        jsonObjectRemoveIndex(_p, 0);
+#endif
+
+		if (jsonObjectGetIndex( _p, _opt_pos )) {
+			jsonObjectRemoveKey( jsonObjectGetIndex( _p, _opt_pos ), "flesh" );
+			jsonObjectRemoveKey( jsonObjectGetIndex( _p, _opt_pos ), "flesh_columns" );
 		} else {
-			jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
+			jsonObjectSetIndex( _p, _opt_pos, jsonNewObjectType(JSON_HASH) );
 		}
 
 		growing_buffer* sel_list = buffer_init(64);
 		buffer_fadd(sel_list, "{ \"%s\":[\"%s\"] }", osrfHashGet( class_obj, "classname" ), osrfHashGet( class_obj, "primarykey" ));
 		char* _s = buffer_release(sel_list);
 
-		jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "select", jsonParseString(_s) );
+		jsonObjectSetKey( jsonObjectGetIndex( _p, _opt_pos ), "select", jsonParseString(_s) );
 		osrfLogDebug(OSRF_LOG_MARK, "%s: Select qualifer set to [%s]", MODULENAME, _s);
 		free(_s);
 
@@ -682,20 +714,12 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObject* cur;
 		jsonIterator* itr = jsonNewIterator( obj );
 		while ((cur = jsonIteratorNext( itr ))) {
+#ifdef PCRUD
+        	if(!verifyObjectPCRUD(ctx, cur)) continue;
+#endif
 			osrfAppRespond(
 				ctx,
-				jsonObjectGetIndex(
-					cur,
-					atoi(
-						osrfHashGet(
-							osrfHashGet(
-								osrfHashGet( class_obj, "fields" ),
-								osrfHashGet( class_obj, "primarykey")
-							),
-							"array_position"
-						)
-					)
-				)
+				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
 			);
 		}
 		jsonIteratorFree(itr);
@@ -712,6 +736,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param ) {
 	
+    int ret = 1;
 	osrfHash* meta = (osrfHash*) ctx->method->userData;
 	osrfHash* class = osrfHashGet( meta, "class" );
 	
@@ -734,14 +759,258 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 
 		return 0;
 	}
-	return 1;
+
+#ifdef PCRUD
+    ret = verifyObjectPCRUD( ctx, param );
+#endif
+
+	return ret;
 }
+
+#ifdef PCRUD
+static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
+
+	dbhandle = writehandle;
+
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( meta, "class" );
+    char* method_type = strdup( osrfHashGet(meta, "methodtype") );
+
+    if ( ( *method_type == 's' || *method_type == 'i' ) ) {
+        free(method_type);
+        method_type = strdup("retrieve");
+    }
+	
+    osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
+	free(method_type);
+
+    if (!pcrud) {
+        // No permacrud for this method type on this class
+
+   		growing_buffer* msg = buffer_init(128);
+		buffer_fadd(
+			msg,
+			"%s: %s on class %s has no permacrud IDL entry",
+			MODULENAME,
+			osrfHashGet(meta, "methodtype"),
+			osrfHashGet(class, "classname")
+		);
+
+		char* m = buffer_release(msg);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+
+		free(m);
+
+		return 0;
+    }
+
+    //XXX turn this into a user id
+	char* auth = jsonObjectToSimpleString( jsonObjectGetIndex( ctx->params, 0 ) );
+    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", jsonNewObject(auth));
+
+    if (!user) {
+        free(auth);
+        return 0;
+    }
+
+    int userid = atoi( oilsFMGetString( user, "id" ) );
+
+    jsonObjectFree(user);
+    free(auth);
+
+    osrfStringArray* permission = osrfHashGet(pcrud, "permission");
+    char* global_required = osrfHashGet(pcrud, "global_required");
+    osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
+    osrfHash* foreign_context = osrfHashGet(pcrud, "foreign_context");
+
+    osrfStringArray* context_org_array = osrfNewStringArray(1);
+
+    char* pkey_value = NULL;
+    int OK = 0;
+    int err = 0;
+    if (global_required && strcmp( "true", global_required )) {
+        // check for perm at top of org tree
+        jsonObject* _tmp_params = jsonParseString("{\"parent_ou\":null}");
+		jsonObject* _list = doFieldmapperSearch(ctx, oilsIDLFindPath("/aou"), _tmp_params, &err);
+
+        jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
+
+        if (!_tree_top) {
+            jsonObjectFree(_tmp_params);
+            jsonObjectFree(_list);
+            return -1;
+        }
+
+        osrfStringArrayAdd( context_org_array, oilsFMGetString( _tree_top, "id" ) );
+
+        jsonObjectFree(_tmp_params);
+        jsonObjectFree(_list);
+
+    } else {
+
+        jsonObject *param = NULL;
+        if (obj) param = jsonObjectClone(obj);
+	    if (!param) param = jsonObjectClone(jsonObjectGetIndex( ctx->params, 1 ));
+
+       // XXX if the object has a non-null pkey, check for object-specific perm,
+       // else context org(s) for group perm check
+	    char* pkey = osrfHashGet(class, "primarykey");
+
+        if (param->classname) {
+            pkey_value = oilsFMGetString( param, pkey );
+
+        } else {
+            pkey_value = jsonObjectToSimpleString( param );
+
+            jsonObject* _tmp_params = jsonParseStringFmt("{\"%s\":\"%s\"}", pkey, pkey_value);
+    		jsonObject* _list = doFieldmapperSearch(
+                ctx,
+                class,
+                _tmp_params,
+                &err
+            );
+    
+            jsonObjectFree(param);
+            param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+    
+            if (!param) {
+                jsonObjectFree(_tmp_params);
+                jsonObjectFree(_list);
+                return -1;
+            }
+
+            jsonObjectFree(_tmp_params);
+            jsonObjectFree(_list);
+
+        }
+
+        if (local_context->size > 0) {
+            int i = 0;
+            char* lcontext = NULL;
+            while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
+                osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
+            }
+        }
+
+        if (foreign_context->size > 0) {
+        	osrfStringArray* class_list = osrfHashKeys( foreign_context );
+
+            int i = 0;
+            char* class_name = NULL;
+        	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
+                osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
+
+                jsonObject* _tmp_params = jsonParseStringFmt(
+                    "{\"%s\":\"%s\"}",
+                    osrfHashGet(fcontext, "field"),
+                    oilsFMGetString(param, osrfHashGet(fcontext, "fkey"))
+                );
+
+        		jsonObject* _list = doFieldmapperSearch(
+                    ctx,
+                    class,
+                    _tmp_params,
+                    &err
+                );
+        
+   
+                jsonObject* _fparam = jsonObjectGetIndex(_list, 0);
+        
+                if (!_fparam) {
+                    jsonObjectFree(_tmp_params);
+                    jsonObjectFree(_list);
+                    return -1;
+                }
+    
+                jsonObjectFree(_tmp_params);
+                jsonObjectFree(_list);
+
+                char* foreign_field = NULL;
+                while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
+                    osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
+                }
+   
+                jsonObjectFree(_fparam);
+            }
+
+            osrfStringArrayFree(class_list);
+        }
+
+        jsonObjectFree(param);
+    }
+
+    char* context_org;
+    char* perm;
+    
+    int i = 0;
+    while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
+        int j = 0;
+        while ( (context_org = osrfStringArrayGetString(context_org_array, j++)) ) {
+            dbi_result result;
+
+            if (pkey_value) {
+                result = dbi_conn_queryf(
+                    writehandle,
+                    "SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s', %d) AS has_perm;",
+                    userid,
+                    perm,
+                    osrfHashGet(class, "classname"),
+                    pkey_value,
+                    atoi(context_org)
+                );
+
+                if (result) {
+                    jsonObject* return_val = oilsMakeJSONFromResult( result );
+                    char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
+                    if ( *has_perm == 't' ) OK = 1;
+                    free(has_perm); 
+                    jsonObjectFree(return_val);
+                    dbi_result_free(result); 
+                    break;
+                }
+            }
+
+            result = dbi_conn_queryf(
+                writehandle,
+                "SELECT permission.usr_has_perm(%d, '%s', %d) AS has_perm;",
+                userid,
+                perm,
+                atoi(context_org)
+            );
+
+            if (result) {
+                jsonObject* return_val = oilsMakeJSONFromResult( result );
+                char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
+                if ( *has_perm == 't' ) OK = 1;
+                free(has_perm); 
+                jsonObjectFree(return_val);
+                dbi_result_free(result); 
+                break;
+            }
+
+        }
+        if (OK) break;
+    }
+
+    if (pkey_value) free(pkey_value);
+    osrfStringArrayFree(context_org_array);
+
+    if (!OK) return 0;
+    return 1;
+}
+#endif
+
 
 static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+#ifdef PCRUD
+	jsonObject* target = jsonObjectGetIndex( ctx->params, 1 );
+	jsonObject* options = jsonObjectGetIndex( ctx->params, 2 );
+#else
 	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
 	jsonObject* options = jsonObjectGetIndex( ctx->params, 1 );
+#endif
 
 	if (!verifyObjectClass(ctx, target)) {
 		*err = -1;
@@ -780,9 +1049,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
 
         // Set the last_xact_id
-	osrfHash* last_xact_id;
-	if ((last_xact_id = oilsIDLFindPath("/%s/fields/last_xact_id", target->classname))) {
-		int index = atoi( osrfHashGet(last_xact_id, "array_position") );
+	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
+	if (index > -1) {
 		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
 		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
 	}       
@@ -814,25 +1082,14 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
 
-		jsonObject* field_object = jsonObjectGetIndex( target, atoi(osrfHashGet(field, "array_position")) );
+		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
 		char* value;
 		if (field_object && field_object->classname) {
-			value = jsonObjectToSimpleString(
-					jsonObjectGetIndex(
-						field_object,
-						atoi(
-							osrfHashGet(
-								osrfHashGet(
-									oilsIDLFindPath("/%s/fields", field_object->classname),
-									(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
-								),
-								"array_position"
-							)
-						)
-					)
-				);
-
+			value = oilsFMGetString(
+				field_object,
+				(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
+			);
 		} else {
 			value = jsonObjectToSimpleString( field_object );
 		}
@@ -927,8 +1184,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		*err = -1;
 	} else {
 
-		int pos = atoi(osrfHashGet( osrfHashGet(fields, pkey), "array_position" ));
-		char* id = jsonObjectToSimpleString(jsonObjectGetIndex(target, pos));
+		char* id = oilsFMGetString(target, pkey);
 		if (!id) {
 			unsigned long long new_id = dbi_conn_sequence_last(writehandle, seq);
 			growing_buffer* _id = buffer_init(10);
@@ -954,7 +1210,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 			jsonObjectSetKey(
 				jsonObjectGetIndex(fake_params, 0),
-				osrfHashGet(meta, "primarykey"),
+				pkey,
 				jsonNewObject(id)
 			);
 
@@ -984,16 +1240,24 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
+    int id_pos = 0;
+    int order_pos = 1;
+
+#ifdef PCRUD
+    id_pos = 1;
+    order_pos = 2;
+#endif
+
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
 	jsonObject* obj;
 
-	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
-	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, 1);
+	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, id_pos));
+	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, order_pos);
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
-		"%s retrieving %s object with id %s",
+		"%s retrieving %s object with primary key value of %s",
 		MODULENAME,
 		osrfHashGet(meta, "fieldmapper"),
 		id
@@ -1023,6 +1287,13 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 	jsonObjectFree( list );
 	jsonObjectFree( fake_params );
+
+#ifdef PCRUD
+	if(!verifyObjectPCRUD(ctx, obj)) {
+        jsonObjectFree(obj);
+		return jsonNULL;
+	}
+#endif
 
 	return obj;
 }
@@ -2646,8 +2917,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
 			do {
 				obj = oilsMakeFieldmapperFromResult( result, meta );
-				int pkey_pos = atoi( osrfHashGet( osrfHashGet( fields, pkey ), "array_position" ) );
-				char* pkey_val = jsonObjectToSimpleString( jsonObjectGetIndex( obj, pkey_pos ) );
+				char* pkey_val = oilsFMGetString( obj, pkey );
 				if ( osrfHashGet( dedup, pkey_val ) ) {
 					jsonObjectFree(obj);
 					free(pkey_val);
@@ -2916,7 +3186,11 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
-	jsonObject* target = jsonObjectGetIndex(ctx->params, 0);
+#ifdef PCRUD
+	jsonObject* target = jsonObjectGetIndex( ctx->params, 1 );
+#else
+	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
+#endif
 
 	if (!verifyObjectClass(ctx, target)) {
 		*err = -1;
@@ -2952,9 +3226,8 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
 
         // Set the last_xact_id
-	osrfHash* last_xact_id;
-	if ((last_xact_id = oilsIDLFindPath("/%s/fields/last_xact_id", target->classname))) {
-		int index = atoi( osrfHashGet(last_xact_id, "array_position") );
+	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
+	if (index > -1) {
 		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
 		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
 	}       
@@ -2962,13 +3235,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 	char* pkey = osrfHashGet(meta, "primarykey");
 	osrfHash* fields = osrfHashGet(meta, "fields");
 
-	char* id =
-		jsonObjectToSimpleString(
-			jsonObjectGetIndex(
-				target,
-				atoi( osrfHashGet( osrfHashGet( fields, pkey ), "array_position" ) )
-			)
-		);
+	char* id = oilsFMGetString( target, pkey );
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
@@ -2993,25 +3260,14 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		if(!( strcmp( field_name, pkey ) )) continue;
 		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
 
-		jsonObject* field_object = jsonObjectGetIndex( target, atoi(osrfHashGet(field, "array_position")) );
+		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
 		char* value;
 		if (field_object && field_object->classname) {
-			value = jsonObjectToSimpleString(
-					jsonObjectGetIndex(
-						field_object,
-						atoi(
-							osrfHashGet(
-								osrfHashGet(
-									oilsIDLFindPath("/%s/fields", field_object->classname),
-									(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
-								),
-								"array_position"
-							)
-						)
-					)
-				);
-
+			value = oilsFMGetString(
+				field_object,
+				(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
+            );
 		} else {
 			value = jsonObjectToSimpleString( field_object );
 		}
@@ -3129,21 +3385,27 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 
 	char* pkey = osrfHashGet(meta, "primarykey");
 
+	int _obj_pos = 0;
+#ifdef PCRUD
+		_obj_pos = 1;
+#endif
+
 	char* id;
-	if (jsonObjectGetIndex(ctx->params, 0)->classname) {
-		if (!verifyObjectClass(ctx, jsonObjectGetIndex( ctx->params, 0 ))) {
+	if (jsonObjectGetIndex(ctx->params, _obj_pos)->classname) {
+		if (!verifyObjectClass(ctx, jsonObjectGetIndex( ctx->params, _obj_pos ))) {
 			*err = -1;
 			return jsonNULL;
 		}
 
-		id = jsonObjectToSimpleString(
-			jsonObjectGetIndex(
-				jsonObjectGetIndex(ctx->params, 0),
-				atoi( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "array_position") )
-			)
-		);
+		id = oilsFMGetString( jsonObjectGetIndex(ctx->params, _obj_pos), pkey );
 	} else {
-		id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+#ifdef PCRUD
+        if (!verifyObjectPCRUD( ctx, NULL )) {
+			*err = -1;
+			return jsonNULL;
+        }
+#endif
+		id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, _obj_pos));
 	}
 
 	osrfLogDebug(

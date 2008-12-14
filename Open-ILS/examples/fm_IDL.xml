@@ -135,7 +135,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 
 	<!-- Actually in the DB -->
-	<class id="vibtf" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
+	<class id="vibtf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_bib_trash_fields_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -150,14 +150,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_IMPORT_TRASH_FIELD" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_TRASH_FIELD|UPDATE_IMPORT_TRASH_FIELD|DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
 				<update permission="UPDATE_IMPORT_TRASH_FIELD" context_field="owner"/>
 				<delete permission="DELETE_IMPORT_TRASH_FIELD" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vii" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item Attribute Definition">
+	<class id="vii" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -194,7 +194,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<create permission="CREATE_IMPORT_ITEM">
                     <context link="definition" field="owner"/>
 				</create>
-				<retrieve permission="CREATE_IMPORT_ITEM|UPDATE_IMPORT_ITEM|DELETE_IMPORT_ITEM">
+				<retrieve permission="CREATE_IMPORT_ITEM UPDATE_IMPORT_ITEM DELETE_IMPORT_ITEM">
                     <context link="definition" field="owner"/>
 				</retrieve>
 				<update permission="UPDATE_IMPORT_ITEM">
@@ -207,7 +207,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="viiad" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::import_item_attr_definition" oils_persist:tablename="vandelay.import_item_attr_definition" reporter:label="Import Item Attribute Definition">
+	<class id="viiad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_item_attr_definition" oils_persist:tablename="vandelay.import_item_attr_definition" reporter:label="Import Item Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -243,14 +243,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_ITEM_ATTR_DEF|UPDATE_IMPORT_ITEM_ATTR_DEF|DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_ITEM_ATTR_DEF UPDATE_IMPORT_ITEM_ATTR_DEF DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
 				<update permission="UPDATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
 				<delete permission="DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vbq" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::bib_queue" oils_persist:tablename="vandelay.bib_queue" reporter:label="Import/Overlay Bib Queue">
+	<class id="vbq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::bib_queue" oils_persist:tablename="vandelay.bib_queue" reporter:label="Import/Overlay Bib Queue">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queue_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -267,14 +267,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_BIB_IMPORT_QUEUE|UPDATE_BIB_IMPORT_QUEUE|DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_BIB_IMPORT_QUEUE UPDATE_BIB_IMPORT_QUEUE DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vqbr" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::queued_bib_record" oils_persist:tablename="vandelay.queued_bib_record" reporter:label="Queued Bib Record">
+	<class id="vqbr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::queued_bib_record" oils_persist:tablename="vandelay.queued_bib_record" reporter:label="Queued Bib Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queued_record_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -300,14 +300,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_BIB_IMPORT_QUEUE|UPDATE_BIB_IMPORT_QUEUE|DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_BIB_IMPORT_QUEUE UPDATE_BIB_IMPORT_QUEUE DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vqbrad" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::bib_attr_definition" oils_persist:tablename="vandelay.bib_attr_definition" reporter:label="Queued Bib Record Attribute Definition">
+	<class id="vqbrad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::bib_attr_definition" oils_persist:tablename="vandelay.bib_attr_definition" reporter:label="Queued Bib Record Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.bib_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -325,7 +325,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<create permission="CREATE_BIB_IMPORT_FIELD_DEF" global_required="true"/>
                 <retrieve/>
                 <!--
-				<retrieve permission="CREATE_BIB_IMPORT_IMPORT_FIELD_DEF|UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF|DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
+				<retrieve permission="CREATE_BIB_IMPORT_IMPORT_FIELD_DEF UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
                 -->
 				<update permission="UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
@@ -333,7 +333,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="vqbra" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::queued_bib_record_attr" oils_persist:tablename="vandelay.queued_bib_record_attr" reporter:label="Queued Bib Record Attribute">
+	<class id="vqbra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::queued_bib_record_attr" oils_persist:tablename="vandelay.queued_bib_record_attr" reporter:label="Queued Bib Record Attribute">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queued_bib_record_attr_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -350,14 +350,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_BIB_IMPORT_QUEUE|UPDATE_BIB_IMPORT_QUEUE|DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_BIB_IMPORT_QUEUE UPDATE_BIB_IMPORT_QUEUE DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vbm" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::bib_match" oils_persist:tablename="vandelay.bib_match" reporter:label="Queued Bib Record Match">
+	<class id="vbm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::bib_match" oils_persist:tablename="vandelay.bib_match" reporter:label="Queued Bib Record Match">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.bib_match_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -376,14 +376,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_BIB_IMPORT_QUEUE|UPDATE_BIB_IMPORT_QUEUE|DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_BIB_IMPORT_QUEUE UPDATE_BIB_IMPORT_QUEUE DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_BIB_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vaq" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::authority_queue" oils_persist:tablename="vandelay.authority_queue" reporter:label="Import/Overlay Authority Queue">
+	<class id="vaq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::authority_queue" oils_persist:tablename="vandelay.authority_queue" reporter:label="Import/Overlay Authority Queue">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queue_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -400,14 +400,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE|UPDATE_AUTHORITY_IMPORT_QUEUE|DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE UPDATE_AUTHORITY_IMPORT_QUEUE DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vqar" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::queued_authority_record" oils_persist:tablename="vandelay.queued_authority_record" reporter:label="Queued Authority Record">
+	<class id="vqar" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::queued_authority_record" oils_persist:tablename="vandelay.queued_authority_record" reporter:label="Queued Authority Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queued_record_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -431,14 +431,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE|UPDATE_AUTHORITY_IMPORT_QUEUE|DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE UPDATE_AUTHORITY_IMPORT_QUEUE DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vqarad" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::authority_attr_definition" oils_persist:tablename="vandelay.authority_attr_definition" reporter:label="Queued Authority Record Attribute Definition">
+	<class id="vqarad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::authority_attr_definition" oils_persist:tablename="vandelay.authority_attr_definition" reporter:label="Queued Authority Record Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.authority_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -456,7 +456,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<create permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
                 <retrieve/>
                 <!--
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF|UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF|DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
+				<retrieve permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
                 -->
 				<update permission="UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
@@ -464,7 +464,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="vqara" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::queued_authority_record_attr" oils_persist:tablename="vandelay.queued_authority_record_attr" reporter:label="Queued Authority Record Attribute">
+	<class id="vqara" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::queued_authority_record_attr" oils_persist:tablename="vandelay.queued_authority_record_attr" reporter:label="Queued Authority Record Attribute">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queued_authority_record_attr_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -481,14 +481,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE|UPDATE_AUTHORITY_IMPORT_QUEUE|DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE UPDATE_AUTHORITY_IMPORT_QUEUE DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
-	<class id="vam" controller="open-ils.cstore" oils_obj:fieldmapper="vandelay::authority_match" oils_persist:tablename="vandelay.authority_match" reporter:label="Queued Authority Record Match">
+	<class id="vam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::authority_match" oils_persist:tablename="vandelay.authority_match" reporter:label="Queued Authority Record Match">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.authority_match_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -506,7 +506,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE|UPDATE_AUTHORITY_IMPORT_QUEUE|DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
+				<retrieve permission="CREATE_AUTHORITY_IMPORT_QUEUE UPDATE_AUTHORITY_IMPORT_QUEUE DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<update permission="UPDATE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_QUEUE" global_required="true"/>
 			</actions>
@@ -534,7 +534,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-    <class id="czs" controller="open-ils.cstore" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
+    <class id="czs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
         <fields oils_persist:primary="name">
             <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
             <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -594,7 +594,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="ccm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_modifier" oils_persist:tablename="config.circ_modifier" reporter:label="Circulation Modifier">
+	<class id="ccm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_modifier" oils_persist:tablename="config.circ_modifier" reporter:label="Circulation Modifier">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -616,7 +616,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="ccpbt" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Copy Bucket Type" oils_persist:field_safe="true">
+	<class id="ccpbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Copy Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -628,14 +628,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_COPY_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_COPY_BTYPE|UPDATE_COPY_BTYPE|DELETE_COPY_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_COPY_BTYPE UPDATE_COPY_BTYPE DELETE_COPY_BTYPE" global_required="true"/>
                 <update permission="UPDATE_COPY_BTYPE" global_required="true"/>
                 <delete permission="DELETE_COPY_BTYPE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
 
-	<class id="ccnbt" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_type" oils_persist:tablename="container.call_number_bucket_type" reporter:label="Call Number Bucket Type" oils_persist:field_safe="true">
+	<class id="ccnbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::call_number_bucket_type" oils_persist:tablename="container.call_number_bucket_type" reporter:label="Call Number Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -647,14 +647,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_CN_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_CN_BTYPE|UPDATE_CN_BTYPE|DELETE_CN_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_CN_BTYPE UPDATE_CN_BTYPE DELETE_CN_BTYPE" global_required="true"/>
                 <update permission="UPDATE_CN_BTYPE" global_required="true"/>
                 <delete permission="DELETE_CN_BTYPE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
 
-	<class id="cbrebt" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_type" oils_persist:tablename="container.biblio_record_entry_bucket_type" reporter:label="Bibliographic Record Bucket Type" oils_persist:field_safe="true">
+	<class id="cbrebt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::biblio_record_entry_bucket_type" oils_persist:tablename="container.biblio_record_entry_bucket_type" reporter:label="Bibliographic Record Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -666,14 +666,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_BIB_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_BIB_BTYPE|UPDATE_BIB_BTYPE|DELETE_BIB_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_BIB_BTYPE UPDATE_BIB_BTYPE DELETE_BIB_BTYPE" global_required="true"/>
                 <update permission="UPDATE_BIB_BTYPE" global_required="true"/>
                 <delete permission="DELETE_BIB_BTYPE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
 
-	<class id="cubt" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_type" oils_persist:tablename="container.user_bucket_type" reporter:label="User Bucket Type" oils_persist:field_safe="true">
+	<class id="cubt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::user_bucket_type" oils_persist:tablename="container.user_bucket_type" reporter:label="User Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -685,14 +685,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_USER_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_USER_BTYPE|UPDATE_USER_BTYPE|DELETE_USER_BTYPE" global_required="true"/>
+                <retrieve permission="CREATE_USER_BTYPE UPDATE_USER_BTYPE DELETE_USER_BTYPE" global_required="true"/>
                 <update permission="UPDATE_USER_BTYPE" global_required="true"/>
                 <delete permission="DELETE_USER_BTYPE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
 
-	<class id="cvrfm" controller="open-ils.cstore" oils_obj:fieldmapper="config::videorecording_format_map" oils_persist:tablename="config.videorecording_format_map" reporter:label="Videorecording Format" oils_persist:field_safe="true">
+	<class id="cvrfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::videorecording_format_map" oils_persist:tablename="config.videorecording_format_map" reporter:label="Videorecording Format" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -704,7 +704,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -939,7 +939,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="atc" controller="open-ils.cstore" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy" reporter:core="true" reporter:label="Copy Transit">
+	<class id="atc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy" reporter:core="true" reporter:label="Copy Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -968,8 +968,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                     <context link="target_copy" field="circ_lib"/>
                 </create>
                 <retrieve/>
-                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
-                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+                <update permission="UPDATE_TRANSIT" context_field="dest source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest source"/>
             </actions>
         </permacrud>
 	</class>
@@ -1050,7 +1050,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 	</class>
-	<class id="clm" controller="open-ils.cstore" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Language Map" oils_persist:field_safe="true">
+	<class id="clm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Language Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1062,7 +1062,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -1096,7 +1096,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="cxt" controller="open-ils.cstore" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
+	<class id="cxt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
 		<fields oils_persist:primary="name">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1117,7 +1117,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="cmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
+	<class id="cmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1141,7 +1141,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="cam" controller="open-ils.cstore" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map" reporter:label="Audience Map" oils_persist:field_safe="true">
+	<class id="cam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map" reporter:label="Audience Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1154,13 +1154,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="cifm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map" reporter:label="Item Form Map" oils_persist:field_safe="true">
+	<class id="cifm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map" reporter:label="Item Form Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1172,13 +1172,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="acn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
+	<class id="acn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1234,7 +1234,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links/>
 	</class>
-	<class id="mct" controller="open-ils.cstore" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker">
+	<class id="mct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.collections_tracker_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1258,7 +1258,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="bre" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry" reporter:core="true" reporter:label="Bibliographic Record">
+	<class id="bre" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry" reporter:core="true" reporter:label="Bibliographic Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1308,13 +1308,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_MARC|IMPORT_MARC" global_required="true"/>
+                <create permission="CREATE_MARC IMPORT_MARC" global_required="true"/>
                 <retrieve/>
                 <update permission="UPDATE_MARC" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="aouhoo" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
+	<class id="aouhoo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1348,7 +1348,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="aoucd" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
+	<class id="aoucd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_closed_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1371,7 +1371,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="crcd" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
+	<class id="crcd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_circ_duration_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1530,7 +1530,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="acpn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note" reporter:label="Copy Note">
+	<class id="acpn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note" reporter:label="Copy Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1597,7 +1597,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source_records" reltype="has_many" key="metarecord" map="source" class="mmrsm"/>
 		</links>
 	</class>
-	<class id="cnal" controller="open-ils.cstore" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level">
+	<class id="cnal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1615,7 +1615,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="ppl" controller="open-ils.cstore" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
+	<class id="ppl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.perm_list_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1628,7 +1628,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_PERM" global_required="true"/>
-                <retrieve permission="CREATE_PERM|UPDATE_PERM|DELETE_PERM" global_required="true"/>
+                <retrieve permission="CREATE_PERM UPDATE_PERM DELETE_PERM" global_required="true"/>
                 <update permission="UPDATE_PERM" global_required="true"/>
                 <delete permission="DELETE_PERM" global_required="true"/>
             </actions>
@@ -1741,7 +1741,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="csp" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing_penalty" oils_persist:tablename="config.standing_penalty">
+	<class id="csp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::standing_penalty" oils_persist:tablename="config.standing_penalty">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_penalty_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1755,13 +1755,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_STANDING_PENALTY" global_required="true"/>
-                <retrieve permission="CREATE_STANDING_PENALTY|UPDATE_STANDING_PENALTY|DELETE_STANDING_PENALTY" global_required="true"/>
+                <retrieve permission="CREATE_STANDING_PENALTY UPDATE_STANDING_PENALTY DELETE_STANDING_PENALTY" global_required="true"/>
                 <update permission="UPDATE_STANDING_PENALTY" global_required="true"/>
                 <delete permission="DELETE_STANDING_PENALTY" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="pgpt" controller="open-ils.cstore" oils_obj:fieldmapper="permission::grp_penalty_threshold" oils_persist:tablename="permission.grp_penalty_threshold">
+	<class id="pgpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_penalty_threshold" oils_persist:tablename="permission.grp_penalty_threshold">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_penalty_threshold_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1781,14 +1781,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <actions>
                 <create permission="CREATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
                 <retrieve 
-                    permission="VIEW_GROUP_PENALTY_THRESHOLD|CREATE_GROUP_PENALTY_THRESHOLD|UPDATE_GROUP_PENALTY_THRESHOLD|DELETE_GROUP_PENALTY_THRESHOLD" 
+                    permission="VIEW_GROUP_PENALTY_THRESHOLD CREATE_GROUP_PENALTY_THRESHOLD UPDATE_GROUP_PENALTY_THRESHOLD DELETE_GROUP_PENALTY_THRESHOLD" 
                     context_field='org_unit'/>
                 <update permission="UPDATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
                 <delete permission="DELETE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
             </actions>
         </permacrud>
 	</class>
-	<class id="ccs" controller="open-ils.cstore" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
+	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1802,7 +1802,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_COPY_STATUS" global_required="true"/>
-                <retrieve permission="CREATE_COPY_STATUS|UPDATE_COPY_STATUS|DELETE_COPY_STATUS" global_required="true"/>
+                <retrieve permission="CREATE_COPY_STATUS UPDATE_COPY_STATUS DELETE_COPY_STATUS" global_required="true"/>
                 <update permission="UPDATE_COPY_STATUS" global_required="true"/>
                 <delete permission="DELETE_COPY_STATUS" global_required="true"/>
             </actions>
@@ -1850,7 +1850,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="acnn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
+	<class id="acnn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1883,7 +1883,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="arn" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
+	<class id="arn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2161,7 +2161,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="notify_staff" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="acpl" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location">
+	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2202,7 +2202,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 		</links>
 	</class>
-	<class id="citm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map" oils_persist:field_safe="true">
+	<class id="citm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2214,13 +2214,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="cblvl" controller="open-ils.cstore" oils_obj:fieldmapper="config::bib_level_map" oils_persist:tablename="config.bib_level_map" reporter:label="Bib Level Map" oils_persist:field_safe="true">
+	<class id="cblvl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::bib_level_map" oils_persist:tablename="config.bib_level_map" reporter:label="Bib Level Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2232,13 +2232,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="sra" controller="open-ils.cstore" oils_obj:fieldmapper="search::relevance_adjustment" oils_persist:tablename="search.relevance_adjustment" reporter:label="Relevance Adjustment">
+	<class id="sra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="search::relevance_adjustment" oils_persist:tablename="search.relevance_adjustment" reporter:label="Relevance Adjustment">
 		<fields oils_persist:primary="id" oils_persist:sequence="search.relevance_adjustment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2255,13 +2255,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
-                <retrieve permission="CREATE_RELEVANCE_ADJUSTMENT|UPDATE_RELEVANCE_ADJUSTMENT|DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
+                <retrieve permission="CREATE_RELEVANCE_ADJUSTMENT UPDATE_RELEVANCE_ADJUSTMENT DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
                 <update permission="UPDATE_RELEVANCE_ADJUSTMENT" global_required="true"/>
                 <delete permission="DELETE_RELEVANCE_ADJUSTMENT" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="lasso" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_lasso" oils_persist:tablename="actor.org_lasso">
+	<class id="lasso" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso" oils_persist:tablename="actor.org_lasso">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2273,13 +2273,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_LASSO" global_required="true"/>
-                <retrieve permission="CREATE_LASSO|UPDATE_LASSO|DELETE_LASSO" global_required="true"/>
+                <retrieve permission="CREATE_LASSO UPDATE_LASSO DELETE_LASSO" global_required="true"/>
                 <update permission="UPDATE_LASSO" global_required="true"/>
                 <delete permission="DELETE_LASSO" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="lmap" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_lasso_map" oils_persist:tablename="actor.org_lasso_map">
+	<class id="lmap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso_map" oils_persist:tablename="actor.org_lasso_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2295,7 +2295,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_LASSO_MAP" global_required="true"/>
-                <retrieve permission="CREATE_LASSO_MAP|UPDATE_LASSO_MAP|DELETE_LASSO_MAP" global_required="true"/>
+                <retrieve permission="CREATE_LASSO_MAP UPDATE_LASSO_MAP DELETE_LASSO_MAP" global_required="true"/>
                 <update permission="UPDATE_LASSO_MAP" global_required="true"/>
                 <delete permission="DELETE_LASSO_MAP" global_required="true"/>
             </actions>
@@ -2332,7 +2332,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links/>
 	</class>
-	<class id="asv" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey" reporter:label="Survey">
+	<class id="asv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey" reporter:label="Survey">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2364,7 +2364,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="aoa" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
+	<class id="aoa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_address_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2444,7 +2444,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 		</links>
 	</class>
-	<class id="aou" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit" oils_persist:field_safe="true">
+	<class id="aou" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2489,7 +2489,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_ORG_UNIT" context_field="parent_ou"/>
-                <retrieve permission="CREATE_ORG_UNIT|UPDATE_ORG_UNIT|DELETE_ORG_UNIT">
+                <retrieve permission="CREATE_ORG_UNIT UPDATE_ORG_UNIT DELETE_ORG_UNIT">
                     <context field="id"/>
                     <context field="parent_ou"/>
 				</retrieve>
@@ -2648,7 +2648,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="aout" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type">
+	<class id="aout" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2671,7 +2671,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_ORG_TYPE" global_required="true"/>
-                <retrieve permission="CREATE_ORG_UNIT|UPDATE_ORG_UNIT|DELETE_ORG_UNIT" global_required="true"/>
+                <retrieve permission="CREATE_ORG_UNIT UPDATE_ORG_UNIT DELETE_ORG_UNIT" global_required="true"/>
                 <update permission="UPDATE_ORG_TYPE" global_required="true"/>
                 <delete permission="DELETE_ORG_TYPE" global_required="true"/>
             </actions>
@@ -2738,7 +2738,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 		</links>
 	</class>
-	<class id="cbs" controller="open-ils.cstore" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
+	<class id="cbs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.bib_source_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2829,7 +2829,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="clfm" controller="open-ils.cstore" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map" reporter:label="Literary Form" oils_persist:field_safe="true">
+	<class id="clfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map" reporter:label="Literary Form" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2842,7 +2842,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE|UPDATE_MARC_CODE|DELETE_MARC_CODE" global_required="true"/>
+                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -2981,7 +2981,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="acp" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
+	<class id="acp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3074,7 +3074,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links/>
 	</class>
-	<class id="pgt" controller="open-ils.cstore" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
+	<class id="pgt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3095,7 +3095,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_PERM" global_required="true"/>
-                <retrieve permission="CREATE_PERM|UPDATE_PERM|DELETE_PERM" global_required="true"/>
+                <retrieve permission="CREATE_PERM UPDATE_PERM DELETE_PERM" global_required="true"/>
                 <update permission="UPDATE_PERM" global_required="true"/>
                 <delete permission="DELETE_PERM" global_required="true"/>
             </actions>
@@ -3196,7 +3196,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
 		</links>
 	</class>
-	<class id="pgpm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::grp_perm_map" oils_persist:tablename="permission.grp_perm_map">
+	<class id="pgpm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_perm_map" oils_persist:tablename="permission.grp_perm_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_perm_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3214,7 +3214,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="ASSIGN_GROUP_PERM" global_required="true"/>
-                <retrieve permission="ASSIGN_GROUP_PERM|UPDATE_GROUP_PERM|REMOVE_GROUP_PERM" global_required="true"/>
+                <retrieve permission="ASSIGN_GROUP_PERM UPDATE_GROUP_PERM REMOVE_GROUP_PERM" global_required="true"/>
                 <update permission="UPDATE_GROUP_PERM" global_required="true"/>
                 <delete permission="REMOVE_GROUP_PERM" global_required="true"/>
             </actions>
@@ -3429,7 +3429,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="ahtc" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy" reporter:core="true" reporter:label="Hold Transit">
+	<class id="ahtc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy" reporter:core="true" reporter:label="Hold Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3460,8 +3460,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                     <context link="target_copy" field="circ_lib"/>
                 </create>
                 <retrieve/>
-                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
-                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+                <update permission="UPDATE_TRANSIT" context_field="dest source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest source"/>
             </actions>
         </permacrud>
 	</class>
@@ -3501,7 +3501,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="i18n" controller="open-ils.cstore" oils_obj:fieldmapper="config::i18n_core" oils_persist:tablename="config.i18n_core" oils_persist:field_safe="true">
+	<class id="i18n" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_core" oils_persist:tablename="config.i18n_core" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_core_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3518,13 +3518,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_TRANSLATION" global_required="true"/>
-                <retrieve permission="CREATE_TRANSLATION|UPDATE_TRANSLATION|DELETE_TRANSLATION" global_required="true"/>
+                <retrieve permission="CREATE_TRANSLATION UPDATE_TRANSLATION DELETE_TRANSLATION" global_required="true"/>
                 <update permission="UPDATE_TRANSLATION" global_required="true"/>
                 <delete permission="DELETE_TRANSLATION" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="i18n_l" controller="open-ils.cstore" oils_obj:fieldmapper="config::i18n_locale" oils_persist:tablename="config.i18n_locale" oils_persist:field_safe="true">
+	<class id="i18n_l" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_locale" oils_persist:tablename="config.i18n_locale" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3538,13 +3538,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_LOCALE" global_required="true"/>
-                <retrieve permission="CREATE_LOCALE|UPDATE_LOCALE|DELETE_LOCALE" global_required="true"/>
+                <retrieve permission="CREATE_LOCALE UPDATE_LOCALE DELETE_LOCALE" global_required="true"/>
                 <update permission="UPDATE_LOCALE" global_required="true"/>
                 <delete permission="DELETE_LOCALE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="cbt" controller="open-ils.cstore" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type">
+	<class id="cbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.billing_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3560,13 +3560,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_BILLING_TYPE" context_field="owner"/>
-                <retrieve permission="VIEW_BILLING_TYPE|CREATE_BILLING_TYPE|UPDATE_BILLING_TYPE|DELETE_BILLING_TYPE" context_field="owner"/>
+                <retrieve permission="VIEW_BILLING_TYPE CREATE_BILLING_TYPE UPDATE_BILLING_TYPE DELETE_BILLING_TYPE" context_field="owner"/>
                 <update permission="UPDATE_BILLING_TYPE" context_field="owner"/>
                 <delete permission="DELETE_BILLING_TYPE" context_field="owner"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type">
+	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type">
 		<fields oils_persist:primary="code">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3618,7 +3618,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source">
+	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />

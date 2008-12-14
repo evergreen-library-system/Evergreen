@@ -18,8 +18,8 @@
 	<xsl:template name="output-tokens">
 		<xsl:param name="list" />
 		<xsl:variable name="newlist" select="normalize-space($list)" />
-		<xsl:variable name="first" select="substring-before($newlist, '|')" />
-		<xsl:variable name="remaining" select="substring-after($list, '|')" />
+		<xsl:variable name="first" select="substring-before($newlist, ' ')" />
+		<xsl:variable name="remaining" select="substring-after($list, ' ')" />
 		<xsl:choose test="$first">
 			<xsl:when test="$first">
 				<xsl:value-of select="$first" /><xsl:text>

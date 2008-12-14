@@ -15,6 +15,8 @@
 #define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistence/v1"
 #define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
 #define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
+#define REPORTER_NS "http://open-ils.org/spec/opensrf/IDL/reporter/v1"
+#define PERM_NS "http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
 
 static xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 
@@ -95,6 +97,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 			osrfHash* _tmp;
 			osrfHash* links = osrfNewHash();
 			osrfHash* fields = osrfNewHash();
+			osrfHash* pcrud = osrfNewHash();
 
 			osrfHashSet( usrData, fields, "fields" );
 			osrfHashSet( usrData, links, "links" );
@@ -267,6 +270,157 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 						osrfLogDebug(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 
+						_l = _l->next;
+					}
+				}
+/**** Structure of permacrud in memory ****
+
+{ create :
+    { permission : [ x, y, z ],
+      global_required : "true", -- anything else, or missing, is false
+      local_context : [ f1, f2 ],
+      foreign_context : { class1 : { fkey : local_class_key, field : class1_field, context : [ a, b, c ] }, ...}
+    },
+  retrieve : null, -- no perm check, or structure similar to the others
+  update : -- like create
+    ...
+  delete : -- like create
+    ...
+}   
+
+**** Structure of permacrud in memory ****/
+
+				if (!strcmp( (char*)_cur->name, "permacrud" )) {
+					osrfHashSet( usrData, pcrud, "permacrud" );
+					xmlNodePtr _l = _cur->children;
+
+					while(_l) {
+						if (strcmp( (char*)_l->name, "actions" )) {
+							_l = _l->next;
+							continue;
+						}
+
+						xmlNodePtr _a = _l->children;
+
+						while(_a) {
+							if (
+								strcmp( (char*)_a->name, "create" ) &&
+								strcmp( (char*)_a->name, "retreive" ) &&
+								strcmp( (char*)_a->name, "update" ) &&
+								strcmp( (char*)_a->name, "delete" )
+							) {
+								_a = _a->next;
+								continue;
+							}
+
+							string_tmp = strdup( (char*)_a->name );
+							osrfLogDebug(OSRF_LOG_MARK, "Found Permacrud action %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+
+							_tmp = osrfNewHash();
+							osrfHashSet( pcrud, _tmp, string_tmp );
+
+							osrfStringArray* map = osrfNewStringArray(0);
+							string_tmp = NULL;
+							if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "permission") )) {
+								char* map_list = strdup( string_tmp );
+								osrfLogDebug(OSRF_LOG_MARK, "Permacrud permission list is %s", string_tmp );
+	
+								if (strlen( map_list ) > 0) {
+									char* st_tmp = NULL;
+									char* _map_class = strtok_r(map_list, "|", &st_tmp);
+									osrfStringArrayAdd(map, strdup(_map_class));
+							
+									while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+										osrfStringArrayAdd(map, strdup(_map_class));
+									}
+								}
+								free(map_list);
+								osrfHashSet( _tmp, map, "permission");
+							}
+
+					    	osrfHashSet( _tmp, (char*)xmlGetProp(_l, BAD_CAST "global_required"), "global_required");
+
+							map = osrfNewStringArray(0);
+							string_tmp = NULL;
+							if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "context_field") )) {
+								char* map_list = strdup( string_tmp );
+								osrfLogDebug(OSRF_LOG_MARK, "Permacrud context_field list is %s", string_tmp );
+	
+								if (strlen( map_list ) > 0) {
+									char* st_tmp = NULL;
+									char* _map_class = strtok_r(map_list, "|", &st_tmp);
+									osrfStringArrayAdd(map, strdup(_map_class));
+							
+									while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+										osrfStringArrayAdd(map, strdup(_map_class));
+									}
+								}
+								free(map_list);
+							}
+							osrfHashSet( _tmp, map, "local_context");
+
+							xmlNodePtr _f = _l->children;
+
+							while(_f) {
+								if ( strcmp( (char*)_f->name, "context" ) ) {
+									_f = _f->next;
+									continue;
+								}
+
+								string_tmp = NULL;
+								if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "link")) ) {
+									osrfLogDebug(OSRF_LOG_MARK, "Permacrud context link definition is %s", string_tmp );
+
+									osrfHash* _tmp_fcontext = osrfNewHash();
+									osrfHash* _flink = oilsIDLFindPath("/%s/links/%s", osrfHashGet(usrData, "classname"), string_tmp);
+
+									osrfHashSet( _tmp_fcontext, osrfNewHash(), osrfHashGet(_flink, "class") );
+									_tmp_fcontext = osrfHashGet( _tmp_fcontext, osrfHashGet(_flink, "class") );
+									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
+									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
+
+									map = osrfNewStringArray(0);
+									string_tmp = NULL;
+									if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "field") )) {
+										char* map_list = strdup( string_tmp );
+										osrfLogDebug(OSRF_LOG_MARK, "Permacrud foreign context field list is %s", string_tmp );
+			
+										if (strlen( map_list ) > 0) {
+											char* st_tmp = NULL;
+											char* _map_class = strtok_r(map_list, "|", &st_tmp);
+											osrfStringArrayAdd(map, strdup(_map_class));
+									
+											while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+												osrfStringArrayAdd(map, strdup(_map_class));
+											}
+										}
+										free(map_list);
+									}
+									osrfHashSet( _tmp_fcontext, map, "context");
+
+								} else {
+
+									if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "field") )) {
+										char* map_list = strdup( string_tmp );
+										osrfLogDebug(OSRF_LOG_MARK, "Permacrud foreign context field list is %s", string_tmp );
+			
+										if (strlen( map_list ) > 0) {
+											char* st_tmp = NULL;
+											char* _map_class = strtok_r(map_list, "|", &st_tmp);
+											osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
+									
+											while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+												osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
+											}
+										}
+										free(map_list);
+									}
+
+								}
+								_f = _f->next;
+							}
+							_a = _a->next;
+						}
 						_l = _l->next;
 					}
 				}

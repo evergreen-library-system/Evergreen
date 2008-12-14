@@ -12,7 +12,7 @@ oils_dataloader_SOURCES = oils_dataloader.c
 oils_dataloader_LDFLAGS = $(AM_LDFLAGS) -loils_idl
 oils_dataloader_DEPENDENCIES = liboils_idl.la liboils_utils.la
 
-lib_LTLIBRARIES = liboils_idl.la liboils_utils.la oils_cstore.la oils_rstore.la oils_auth.la
+lib_LTLIBRARIES = liboils_idl.la liboils_utils.la oils_cstore.la oils_rstore.la oils_pcrud.la oils_auth.la
 
 liboils_idl_la_SOURCES = oils_idl-core.c
 
@@ -26,6 +26,11 @@ oils_rstore_la_SOURCES = oils_cstore.c
 oils_rstore_la_CFLAGS = $(AM_CFLAGS) -DRSTORE -c
 oils_rstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_idl -ldbi -ldbdpgsql -module
 oils_rstore_la_DEPENDENCIES = liboils_utils.la liboils_idl.la
+
+oils_pcrud_la_SOURCES = oils_cstore.c
+oils_pcrud_la_CFLAGS = $(AM_CFLAGS) -DPCRUD -c
+oils_pcrud_la_LDFLAGS = $(AM_LDFLAGS) -loils_idl -ldbi -ldbdpgsql -module
+oils_pcrud_la_DEPENDENCIES = liboils_utils.la liboils_idl.la
 
 oils_auth_la_SOURCES = oils_auth.c
 oils_auth_la_LDFLAGS = -module -loils_idl -loils_utils
