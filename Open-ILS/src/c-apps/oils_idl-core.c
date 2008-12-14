@@ -335,8 +335,8 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									}
 								}
 								free(map_list);
-								osrfHashSet( _tmp, map, "permission");
 							}
+							osrfHashSet( _tmp, map, "permission");
 
 					    	osrfHashSet( _tmp, (char*)xmlGetProp(_l, BAD_CAST "global_required"), "global_required");
 
@@ -359,6 +359,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							}
 							osrfHashSet( _tmp, map, "local_context");
 
+							osrfHash* foreign_context = osrfNewHash();
+							osrfHashSet( _tmp, foreign_context, "foreign_context");
+
 							xmlNodePtr _f = _l->children;
 
 							while(_f) {
@@ -371,11 +374,11 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 								if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "link")) ) {
 									osrfLogDebug(OSRF_LOG_MARK, "Permacrud context link definition is %s", string_tmp );
 
-									osrfHash* _tmp_fcontext = osrfNewHash();
 									osrfHash* _flink = oilsIDLFindPath("/%s/links/%s", osrfHashGet(usrData, "classname"), string_tmp);
 
-									osrfHashSet( _tmp_fcontext, osrfNewHash(), osrfHashGet(_flink, "class") );
-									_tmp_fcontext = osrfHashGet( _tmp_fcontext, osrfHashGet(_flink, "class") );
+									osrfHashSet( foreign_context, osrfNewHash(), osrfHashGet(_flink, "class") );
+									osrfHash* _tmp_fcontext = osrfHashGet( foreign_context, osrfHashGet(_flink, "class") );
+
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
 
