@@ -1005,7 +1005,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 
                         osrfStringArrayFree(class_list);
                         free(foreign_pkey_value);
-                        free(foreign_pkey);
                         jsonObjectFree(param);
 
                         return 0;
@@ -1013,7 +1012,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         
                     jsonObjectFree(_tmp_params);
                     free(foreign_pkey_value);
-                    free(foreign_pkey);
     
                     int j = 0;
                     char* foreign_field = NULL;
