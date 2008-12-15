@@ -966,7 +966,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
                     osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
 
-	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class", (osrfStringArray*)(osrfHashGet(fcontext,"context"))->size, class_name);
+	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
     
                     jsonObject* _tmp_params = jsonParseStringFmt(
                         "{\"%s\":\"%s\"}",
