@@ -1407,6 +1407,19 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	if(!verifyObjectPCRUD(ctx, obj)) {
         jsonObjectFree(obj);
         *err = -1;
+
+        growing_buffer* msg = buffer_init(128);
+        buffer_fadd(
+            msg,
+            "%s: Insufficient permissions",
+            MODULENAME
+        );
+
+        char* m = buffer_release(msg);
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+
+        free(m);
+
 		return jsonNULL;
 	}
 #endif
