@@ -208,7 +208,7 @@ int osrfAppInitialize() {
                 free(tmp_method);
                 tmp_method = strdup("retrieve");
             }
-            if (!osrfHashGet( osrfHashGet(idlClass, "permacrud"), method_type )) continue;
+            if (!osrfHashGet( osrfHashGet(idlClass, "permacrud"), tmp_method )) continue;
             free(tmp_method);
 #endif
 
