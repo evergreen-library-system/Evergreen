@@ -305,7 +305,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						while(_a) {
 							if (
 								strcmp( (char*)_a->name, "create" ) &&
-								strcmp( (char*)_a->name, "retreive" ) &&
+								strcmp( (char*)_a->name, "retrieve" ) &&
 								strcmp( (char*)_a->name, "update" ) &&
 								strcmp( (char*)_a->name, "delete" )
 							) {
