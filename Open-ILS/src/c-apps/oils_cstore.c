@@ -806,7 +806,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     //XXX turn this into a user id
 	char* auth = jsonObjectToSimpleString( jsonObjectGetIndex( ctx->params, 0 ) );
-    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", jsonNewObject(auth));
+    jsonObject* auth_object = jsonNewObject(auth);
+    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
+    jsonObjectFree(auth_object);
 
     if (!user) {
         free(auth);
