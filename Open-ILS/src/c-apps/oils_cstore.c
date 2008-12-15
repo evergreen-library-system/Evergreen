@@ -1015,8 +1015,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     free(foreign_pkey_value);
                     free(foreign_pkey);
     
+                    int j = 0;
                     char* foreign_field = NULL;
-                    while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
+                    while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), j++)) ) {
                         osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
 	                    osrfLogDebug(
                             OSRF_LOG_MARK,
