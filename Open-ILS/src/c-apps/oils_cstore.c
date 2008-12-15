@@ -837,6 +837,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     }
 
     int userid = atoi( oilsFMGetString( user, "id" ) );
+	osrfLogDebug( OSRF_LOG_MARK, "permacrud checking user %d (auth token: %s)", userid, auth );
 
     jsonObjectFree(user);
     free(auth);
@@ -850,7 +851,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     char* pkey_value = NULL;
     int err = 0;
-    if (global_required && strcmp( "true", global_required )) {
+    if (global_required && !strcmp( "true", global_required )) {
+	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
+
         // check for perm at top of org tree
         jsonObject* _tmp_params = jsonParseString("{\"parent_ou\":null}");
 		jsonObject* _list = doFieldmapperSearch(ctx, oilsIDLFindPath("/aou"), _tmp_params, &err);
@@ -860,15 +863,29 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         if (!_tree_top) {
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
+    
+            growing_buffer* msg = buffer_init(128);
+            buffer_fadd(
+                msg,
+                "%s: Internal error, could not find the top of the org tree (parent_ou = NULL)",
+                MODULENAME
+            );
+    
+            char* m = buffer_release(msg);
+            osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
+            free(m);
+
             return 0;
         }
 
         osrfStringArrayAdd( context_org_array, oilsFMGetString( _tree_top, "id" ) );
+	    osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", osrfStringArrayGetString(context_org_array, 0) );
 
         jsonObjectFree(_tmp_params);
         jsonObjectFree(_list);
 
     } else {
+	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
 
         jsonObject *param = NULL;
         if (obj) param = jsonObjectClone(obj);
@@ -911,6 +928,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             char* lcontext = NULL;
             while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
                 osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
+	            osrfLogDebug( OSRF_LOG_MARK, "adding %s to the context org list", osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
             }
         }
 
