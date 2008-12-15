@@ -817,7 +817,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
     jsonObjectFree(auth_object);
 
-    if (!user) {
+    if (!user->classname || strcmp(user->classname, "au")) {
 
         growing_buffer* msg = buffer_init(128);
         buffer_fadd(
