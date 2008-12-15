@@ -977,7 +977,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             		jsonObject* _list = doFieldmapperSearch(
                         ctx,
                         osrfHashGet( oilsIDL(), class_name ),
-                        class,
                         _tmp_params,
                         &err
                     );
