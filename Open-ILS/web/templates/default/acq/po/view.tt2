@@ -9,7 +9,8 @@
     <div id='oils-acq-list-header-label'>PO Details</div>
 </div>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+ <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+
     <div dojoType="dijit.layout.TabContainer">
 
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Summary" selected='true'>
@@ -33,12 +34,12 @@
                     </table>     
                 </div> 
             </div> 
-
-            <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Line Items">
-                <script type='dojo/connect' event='onShow'>loadLIGrid();</script>
-                [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-lineitem' %]
-                [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
-            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Line Items">
+            <script type='dojo/connect' event='onShow'>loadLIGrid();</script>
+            [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-lineitem' %]
+            [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
         </div>
     </div>
-    [% END %]
+</div>
+[% END %]
