@@ -232,7 +232,6 @@ int osrfAppInitialize() {
             }
             buffer_fadd(method_name, ".%s", method_type);
 
-
             char* method = buffer_release(method_name);
             free(_fm);
 
@@ -240,7 +239,7 @@ int osrfAppInitialize() {
             osrfHashSet( method_meta, strdup(method_type), "methodtype" );
 
             int flags = 0;
-            if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
+            if (*method_type == 'i' || *method_type == 's') {
                 flags = flags | OSRF_METHOD_STREAMING;
             }
 
@@ -2038,7 +2037,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
 	osrfLogDebug(
         OSRF_LOG_MARK,
-        "Entering searchWHERE; search_hash addr = %d, meta addr = %d, opjoin_type = %d, ctx addr = %d",
+        "%s: Entering searchWHERE; search_hash addr = %d, meta addr = %d, opjoin_type = %d, ctx addr = %d",
         MODULENAME,
         search_hash,
         meta,
