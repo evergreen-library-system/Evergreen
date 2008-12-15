@@ -918,9 +918,26 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	            osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
                 jsonObjectFree(_tmp_params);
                 jsonObjectFree(_list);
+
+                growing_buffer* msg = buffer_init(128);
+                buffer_fadd(
+                    msg,
+                    "%s: no object found with primary key %s of %s",
+                    MODULENAME,
+                    pkey,
+                    pkey_value
+                );
+        
+                char* m = buffer_release(msg);
+                osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+        
+                free(m);
+                free(pkey_value);
+
                 return 0;
             }
 
+            free(pkey_value);
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
 

@@ -321,7 +321,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 							osrfStringArray* map = osrfNewStringArray(0);
 							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "permission") )) {
+							if( (string_tmp = (char*)xmlGetProp(_a, BAD_CAST "permission") )) {
 								char* map_list = strdup( string_tmp );
 								osrfLogDebug(OSRF_LOG_MARK, "Permacrud permission list is %s", string_tmp );
 	
@@ -338,11 +338,11 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							}
 							osrfHashSet( _tmp, map, "permission");
 
-					    	osrfHashSet( _tmp, (char*)xmlGetProp(_l, BAD_CAST "global_required"), "global_required");
+					    	osrfHashSet( _tmp, (char*)xmlGetProp(_a, BAD_CAST "global_required"), "global_required");
 
 							map = osrfNewStringArray(0);
 							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "context_field") )) {
+							if( (string_tmp = (char*)xmlGetProp(_a, BAD_CAST "context_field") )) {
 								char* map_list = strdup( string_tmp );
 								osrfLogDebug(OSRF_LOG_MARK, "Permacrud context_field list is %s", string_tmp );
 	
@@ -362,7 +362,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfHash* foreign_context = osrfNewHash();
 							osrfHashSet( _tmp, foreign_context, "foreign_context");
 
-							xmlNodePtr _f = _l->children;
+							xmlNodePtr _f = _a->children;
 
 							while(_f) {
 								if ( strcmp( (char*)_f->name, "context" ) ) {
