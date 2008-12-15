@@ -968,10 +968,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class %s", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
     
+                    char* foreign_pkey = osrfHashGet(fcontext, "field");
+                    char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
+
                     jsonObject* _tmp_params = jsonParseStringFmt(
                         "[{\"%s\":\"%s\"}]",
-                        osrfHashGet(fcontext, "field"),
-                        oilsFMGetString(param, osrfHashGet(fcontext, "fkey"))
+                        foreign_pkey,
+                        foreign_pkey_value
                     );
     
             		jsonObject* _list = doFieldmapperSearch(
@@ -980,18 +983,37 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         _tmp_params,
                         &err
                     );
-            
-       
+
                     jsonObject* _fparam = jsonObjectGetIndex(_list, 0);
             
                     if (!_fparam) {
                         jsonObjectFree(_tmp_params);
                         jsonObjectFree(_list);
+
+                        growing_buffer* msg = buffer_init(128);
+                        buffer_fadd(
+                            msg,
+                            "%s: no object found with primary key %s of %s",
+                            MODULENAME,
+                            foreign_pkey,
+                            foreign_pkey_value
+                        );
+                
+                        char* m = buffer_release(msg);
+                        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+                        free(m);
+                
+                        osrfStringArrayFree(class_list);
+                        free(foreign_pkey_value);
+                        free(foreign_pkey);
+                        jsonObjectFree(param);
+
                         return 0;
                     }
         
                     jsonObjectFree(_tmp_params);
-                    jsonObjectFree(_list);
+                    free(foreign_pkey_value);
+                    free(foreign_pkey);
     
                     char* foreign_field = NULL;
                     while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
@@ -1005,7 +1027,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         );
                     }
        
-                    jsonObjectFree(_fparam);
+                    jsonObjectFree(_list);
                 }
     
                 osrfStringArrayFree(class_list);
