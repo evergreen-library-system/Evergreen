@@ -855,7 +855,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
         // check for perm at top of org tree
-        jsonObject* _tmp_params = jsonParseString("{\"parent_ou\":null}");
+        jsonObject* _tmp_params = jsonParseString("[{\"parent_ou\":null}]");
 		jsonObject* _list = doFieldmapperSearch(ctx, oilsIDLFindPath("/aou"), _tmp_params, &err);
 
         jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
@@ -903,7 +903,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             pkey_value = jsonObjectToSimpleString( param );
 	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
 
-            jsonObject* _tmp_params = jsonParseStringFmt("{\"%s\":\"%s\"}", pkey, pkey_value);
+            jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
     		jsonObject* _list = doFieldmapperSearch(
                 ctx,
                 class,
@@ -969,7 +969,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
     
                     jsonObject* _tmp_params = jsonParseStringFmt(
-                        "{\"%s\":\"%s\"}",
+                        "[{\"%s\":\"%s\"}]",
                         osrfHashGet(fcontext, "field"),
                         oilsFMGetString(param, osrfHashGet(fcontext, "fkey"))
                     );
