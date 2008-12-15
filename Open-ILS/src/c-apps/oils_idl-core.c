@@ -321,16 +321,16 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 							osrfStringArray* map = osrfNewStringArray(0);
 							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetProp(_a, BAD_CAST "permission") )) {
+							if( (string_tmp = (char*)xmlGetNoNsProp(_a, BAD_CAST "permission") )) {
 								char* map_list = strdup( string_tmp );
 								osrfLogDebug(OSRF_LOG_MARK, "Permacrud permission list is %s", string_tmp );
 	
 								if (strlen( map_list ) > 0) {
 									char* st_tmp = NULL;
-									char* _map_class = strtok_r(map_list, "|", &st_tmp);
+									char* _map_class = strtok_r(map_list, " ", &st_tmp);
 									osrfStringArrayAdd(map, strdup(_map_class));
 							
-									while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
 										osrfStringArrayAdd(map, strdup(_map_class));
 									}
 								}
@@ -338,20 +338,20 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							}
 							osrfHashSet( _tmp, map, "permission");
 
-					    	osrfHashSet( _tmp, (char*)xmlGetProp(_a, BAD_CAST "global_required"), "global_required");
+					    	osrfHashSet( _tmp, (char*)xmlGetNoNsProp(_a, BAD_CAST "global_required"), "global_required");
 
 							map = osrfNewStringArray(0);
 							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetProp(_a, BAD_CAST "context_field") )) {
+							if( (string_tmp = (char*)xmlGetNoNsProp(_a, BAD_CAST "context_field") )) {
 								char* map_list = strdup( string_tmp );
 								osrfLogDebug(OSRF_LOG_MARK, "Permacrud context_field list is %s", string_tmp );
 	
 								if (strlen( map_list ) > 0) {
 									char* st_tmp = NULL;
-									char* _map_class = strtok_r(map_list, "|", &st_tmp);
+									char* _map_class = strtok_r(map_list, " ", &st_tmp);
 									osrfStringArrayAdd(map, strdup(_map_class));
 							
-									while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
 										osrfStringArrayAdd(map, strdup(_map_class));
 									}
 								}
@@ -371,7 +371,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 								}
 
 								string_tmp = NULL;
-								if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "link")) ) {
+								if( (string_tmp = (char*)xmlGetNoNsProp(_f, BAD_CAST "link")) ) {
 									osrfLogDebug(OSRF_LOG_MARK, "Permacrud context link definition is %s", string_tmp );
 
 									osrfHash* _flink = oilsIDLFindPath("/%s/links/%s", osrfHashGet(usrData, "classname"), string_tmp);
@@ -384,16 +384,16 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 									map = osrfNewStringArray(0);
 									string_tmp = NULL;
-									if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "field") )) {
+									if( (string_tmp = (char*)xmlGetNoNsProp(_f, BAD_CAST "field") )) {
 										char* map_list = strdup( string_tmp );
 										osrfLogDebug(OSRF_LOG_MARK, "Permacrud foreign context field list is %s", string_tmp );
 			
 										if (strlen( map_list ) > 0) {
 											char* st_tmp = NULL;
-											char* _map_class = strtok_r(map_list, "|", &st_tmp);
+											char* _map_class = strtok_r(map_list, " ", &st_tmp);
 											osrfStringArrayAdd(map, strdup(_map_class));
 									
-											while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+											while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
 												osrfStringArrayAdd(map, strdup(_map_class));
 											}
 										}
@@ -403,16 +403,16 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 								} else {
 
-									if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "field") )) {
+									if( (string_tmp = (char*)xmlGetNoNsProp(_f, BAD_CAST "field") )) {
 										char* map_list = strdup( string_tmp );
 										osrfLogDebug(OSRF_LOG_MARK, "Permacrud foreign context field list is %s", string_tmp );
 			
 										if (strlen( map_list ) > 0) {
 											char* st_tmp = NULL;
-											char* _map_class = strtok_r(map_list, "|", &st_tmp);
+											char* _map_class = strtok_r(map_list, " ", &st_tmp);
 											osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
 									
-											while ((_map_class = strtok_r(NULL, "|", &st_tmp))) {
+											while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
 												osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
 											}
 										}
