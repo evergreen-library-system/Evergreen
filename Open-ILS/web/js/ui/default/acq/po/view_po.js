@@ -55,6 +55,8 @@ function loadLIGrid() {
     function load(po) {
         lineitems = po.lineitems();
         var store = new dojo.data.ItemFileReadStore({data:jub.toStoreData(lineitems)});
+        var model = new dojox.grid.data.DojoData(
+            null, store, {rowsPerPage: 20, clientSort: true, query:{id:'*'}}); 
         JUBGrid.populate(liGrid, model, lineitems)
     }
 
