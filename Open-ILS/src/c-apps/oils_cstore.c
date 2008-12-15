@@ -192,9 +192,6 @@ int osrfAppInitialize() {
 
         int i = 0; 
         char* method_type;
-        char* st_tmp = NULL;
-        char* _fm;
-        char* part;
         osrfHash* method_meta;
         while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
             osrfLogDebug(OSRF_LOG_MARK, "Using files to build %s class methods for %s", method_type, classname);
@@ -226,7 +223,9 @@ int osrfAppInitialize() {
 #ifdef PCRUD
             buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
 #else
-            _fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
+            char* st_tmp = NULL;
+            char* part = NULL;
+            char* _fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
             part = strtok_r(_fm, ":", &st_tmp);
 
             buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
@@ -235,10 +234,10 @@ int osrfAppInitialize() {
                 buffer_fadd(method_name, ".%s", part);
             }
             buffer_fadd(method_name, ".%s", method_type);
+            free(_fm);
 #endif
 
             char* method = buffer_release(method_name);
-            free(_fm);
 
             osrfHashSet( method_meta, method, "methodname" );
             osrfHashSet( method_meta, strdup(method_type), "methodtype" );
@@ -909,14 +908,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         return 0;
     }
 
-    jsonObject user = verifyUserPCRUD( ctx );
+    jsonObject* user = verifyUserPCRUD( ctx );
     if (!user) return 0;
 
     int userid = atoi( oilsFMGetString( user, "id" ) );
-	osrfLogDebug( OSRF_LOG_MARK, "permacrud checking user %d (auth token: %s)", userid, auth );
-
     jsonObjectFree(user);
-    free(auth);
 
     osrfStringArray* permission = osrfHashGet(pcrud, "permission");
     char* global_required = osrfHashGet(pcrud, "global_required");
