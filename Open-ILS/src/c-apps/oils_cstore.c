@@ -74,6 +74,7 @@ static void sessionDataFree( char*, void* );
 static char* getSourceDefinition( osrfHash* );
 
 #ifdef PCRUD
+static jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
 #endif
 
@@ -221,16 +222,20 @@ int osrfAppInitialize() {
             method_meta = osrfNewHash();
             osrfHashSet(method_meta, idlClass, "class");
 
+            method_name =  buffer_init(64);
+#ifdef PCRUD
+            buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
+#else
             _fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
             part = strtok_r(_fm, ":", &st_tmp);
 
-            method_name =  buffer_init(64);
             buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
 
             while ((part = strtok_r(NULL, ":", &st_tmp))) {
                 buffer_fadd(method_name, ".%s", part);
             }
             buffer_fadd(method_name, ".%s", method_type);
+#endif
 
             char* method = buffer_release(method_name);
             free(_fm);
@@ -461,6 +466,15 @@ static void sessionDataFree( char* key, void* item ) {
 int beginTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+#ifdef PRCRUD
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
+
     dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
     if (!result) {
         osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
@@ -486,6 +500,17 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 int setSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+    int spNamePos = 0;
+#ifdef PRCRUD
+    spNamePos = 1;
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
+
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
         osrfAppSessionStatus(
                 ctx->session,
@@ -497,7 +522,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
 
     dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
     if (!result) {
@@ -523,6 +548,17 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 int releaseSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+    int spNamePos = 0;
+#ifdef PRCRUD
+    spNamePos = 1;
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
+
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
         osrfAppSessionStatus(
                 ctx->session,
@@ -534,7 +570,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
 
     dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
     if (!result) {
@@ -560,6 +596,17 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+    int spNamePos = 0;
+#ifdef PRCRUD
+    spNamePos = 1;
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
+
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
         osrfAppSessionStatus(
                 ctx->session,
@@ -571,7 +618,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
 
     dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
     if (!result) {
@@ -597,6 +644,15 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 int commitTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+#ifdef PRCRUD
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
+
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to commit" );
         return -1;
@@ -618,6 +674,15 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 
 int rollbackTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+#ifdef PRCRUD
+    jsonObject* user = verifyUserPCRUD( ctx );
+    if (!user) {
+        jsonObjectFree(user);
+        return -1;
+    }
+    jsonObjectFree(user);
+#endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to roll back" );
@@ -778,6 +843,36 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 }
 
 #ifdef PCRUD
+
+static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
+    char* auth = jsonObjectToSimpleString( jsonObjectGetIndex( ctx->params, 0 ) );
+    jsonObject* auth_object = jsonNewObject(auth);
+    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
+    jsonObjectFree(auth_object);
+
+    if (!user->classname || strcmp(user->classname, "au")) {
+
+        growing_buffer* msg = buffer_init(128);
+        buffer_fadd(
+            msg,
+            "%s: permacrud received a bad auth token: %s",
+            MODULENAME,
+            auth
+        );
+
+        char* m = buffer_release(msg);
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+
+        free(m);
+        free(auth);
+
+        return jsonNULL;
+    }
+
+    return user;
+
+}
+
 static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
 
     dbhandle = writehandle;
@@ -814,30 +909,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         return 0;
     }
 
-    //XXX turn this into a user id
-    char* auth = jsonObjectToSimpleString( jsonObjectGetIndex( ctx->params, 0 ) );
-    jsonObject* auth_object = jsonNewObject(auth);
-    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
-    jsonObjectFree(auth_object);
-
-    if (!user->classname || strcmp(user->classname, "au")) {
-
-        growing_buffer* msg = buffer_init(128);
-        buffer_fadd(
-            msg,
-            "%s: permacrud received a bad auth token: %s",
-            MODULENAME,
-            auth
-        );
-
-        char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
-
-        free(m);
-        free(auth);
-
-        return 0;
-    }
+    jsonObject user = verifyUserPCRUD( ctx );
+    if (!user) return 0;
 
     int userid = atoi( oilsFMGetString( user, "id" ) );
 	osrfLogDebug( OSRF_LOG_MARK, "permacrud checking user %d (auth token: %s)", userid, auth );
