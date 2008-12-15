@@ -949,7 +949,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             char* lcontext = NULL;
             while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
                 osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
-	            osrfLogDebug( OSRF_LOG_MARK, "adding class-local field %s to the context org list", osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
+	            osrfLogDebug( OSRF_LOG_MARK, "adding class-local field %s (value: %s) to the context org list", lcontext, osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
             }
         }
 
@@ -996,6 +996,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     char* foreign_field = NULL;
                     while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), i++)) ) {
                         osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
+	                    osrfLogDebug(
+                            OSRF_LOG_MARK,
+                            "adding foreign class %s field %s (value: %s) to the context org list",
+                            class_name,
+                            foreign_field,
+                            osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
+                        );
                     }
        
                     jsonObjectFree(_fparam);
