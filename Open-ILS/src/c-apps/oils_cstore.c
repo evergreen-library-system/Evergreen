@@ -669,7 +669,10 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
         jsonObject* _p = jsonObjectClone( ctx->params );
 #ifdef PCRUD
-        jsonObjectRemoveIndex(_p, 0);
+        jsonObjectFree(_p);
+        _p = jsonParseString("[]");
+        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 1)));
+        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 2)));
 #endif
 
         obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
@@ -690,28 +693,26 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
     } else if (!strcmp(methodtype, "id_list")) {
 
-        int _opt_pos = 1;
-#ifdef PCRUD
-        _opt_pos = 2;
-#endif
-
         jsonObject* _p = jsonObjectClone( ctx->params );
 #ifdef PCRUD
-        jsonObjectRemoveIndex(_p, 0);
+        jsonObjectFree(_p);
+        _p = jsonParseString("[]");
+        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 1)));
+        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 2)));
 #endif
 
-        if (jsonObjectGetIndex( _p, _opt_pos )) {
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, _opt_pos ), "flesh" );
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, _opt_pos ), "flesh_columns" );
+        if (jsonObjectGetIndex( _p, 1 )) {
+            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
+            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
         } else {
-            jsonObjectSetIndex( _p, _opt_pos, jsonNewObjectType(JSON_HASH) );
+            jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
         }
 
         growing_buffer* sel_list = buffer_init(64);
         buffer_fadd(sel_list, "{ \"%s\":[\"%s\"] }", osrfHashGet( class_obj, "classname" ), osrfHashGet( class_obj, "primarykey" ));
         char* _s = buffer_release(sel_list);
 
-        jsonObjectSetKey( jsonObjectGetIndex( _p, _opt_pos ), "select", jsonParseString(_s) );
+        jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "select", jsonParseString(_s) );
         osrfLogDebug(OSRF_LOG_MARK, "%s: Select qualifer set to [%s]", MODULENAME, _s);
         free(_s);
 
