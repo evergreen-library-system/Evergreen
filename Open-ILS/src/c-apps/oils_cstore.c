@@ -856,7 +856,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
         // check for perm at top of org tree
         jsonObject* _tmp_params = jsonParseString("[{\"parent_ou\":null}]");
-		jsonObject* _list = doFieldmapperSearch(ctx, oilsIDLFindPath("/aou"), _tmp_params, &err);
+		jsonObject* _list = doFieldmapperSearch(ctx, osrfHashGet( oilsIDL(), "aou" ), _tmp_params, &err);
 
         jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
 
@@ -966,7 +966,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
                     osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
 
-	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
+	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class %s", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
     
                     jsonObject* _tmp_params = jsonParseStringFmt(
                         "[{\"%s\":\"%s\"}]",
@@ -976,6 +976,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     
             		jsonObject* _list = doFieldmapperSearch(
                         ctx,
+                        osrfHashGet( oilsIDL(), class_name ),
                         class,
                         _tmp_params,
                         &err
