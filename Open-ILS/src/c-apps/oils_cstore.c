@@ -2036,6 +2036,16 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int opjoin_type, osrfMethodContext* ctx ) {
 
+	osrfLogDebug(
+        OSRF_LOG_MARK,
+        "Entering searchWHERE; search_hash addr = %d, meta addr = %d, opjoin_type = %d, ctx addr = %d",
+        MODULENAME,
+        search_hash,
+        meta,
+        opjoin_type,
+        ctx
+    );
+
 	growing_buffer* sql_buf = buffer_init(128);
 
 	jsonObject* node = NULL;
@@ -2810,7 +2820,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		free(join_clause);
 	}
 
-	char* tmpsql = buffer_data(sql_buf);
+	char* tmpsql = buffer_data(sql_buf); // This strdup's ... no worries.
 	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s", MODULENAME, tmpsql);
 	free(tmpsql);
 
