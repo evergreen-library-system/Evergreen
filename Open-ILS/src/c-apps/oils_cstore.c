@@ -1071,6 +1071,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
 	            osrfLogDebug( OSRF_LOG_MARK, " .... here .... " );
                 if ( *has_perm == 't' ) OK = 1;
+	            osrfLogDebug( OSRF_LOG_MARK, " .... here .... " );
 	            osrfLogDebug( OSRF_LOG_MARK, "Result for perm [%s] for user %d at org %d is [%s]", perm, userid, atoi(context_org), has_perm );
                 free(has_perm); 
                 jsonObjectFree(return_val);
