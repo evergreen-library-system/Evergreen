@@ -47,6 +47,8 @@
             </table>
             <div id='oils-acq-search-fields-submit-block'>
                 <div dojoType='dijit.form.Button' type='submit'>Submit</div>
+                
+                <div dojoType='dijit.form.Button' onclick='clearSearchForm()'>Clear Form</div>
             </div>
         </div>
     </form>

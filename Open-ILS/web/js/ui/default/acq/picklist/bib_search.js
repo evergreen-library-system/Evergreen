@@ -69,6 +69,13 @@ function _drawForm(r) {
     }
 }
 
+function clearSearchForm() {
+    for(var f in searchFields) {
+        var field = searchFields[f];
+        dijit.byId('text_input_'+field.name).setValue('');
+    }
+}
+
 function doSearch(values) {
     dojo.style('searchProgress', 'visibility', 'visible');
     searchProgress.update({progress: 0});
