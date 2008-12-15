@@ -897,9 +897,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
         if (param->classname) {
             pkey_value = oilsFMGetString( param, pkey );
+	        osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s", pkey_value );
 
         } else {
             pkey_value = jsonObjectToSimpleString( param );
+	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
 
             jsonObject* _tmp_params = jsonParseStringFmt("{\"%s\":\"%s\"}", pkey, pkey_value);
     		jsonObject* _list = doFieldmapperSearch(
@@ -913,6 +915,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
     
             if (!param) {
+	            osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
                 jsonObjectFree(_tmp_params);
                 jsonObjectFree(_list);
                 return 0;
@@ -924,11 +927,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         }
 
         if (local_context->size > 0) {
+	        osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified", local_context->size);
             int i = 0;
             char* lcontext = NULL;
             while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
                 osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
-	            osrfLogDebug( OSRF_LOG_MARK, "adding %s to the context org list", osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
+	            osrfLogDebug( OSRF_LOG_MARK, "adding class-local field %s to the context org list", osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
             }
         }
 
@@ -936,6 +940,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
         if (foreign_context) {
             class_list = osrfHashKeys( foreign_context );
+	        osrfLogDebug( OSRF_LOG_MARK, "%d foreign context classes(s) specified", class_list->size);
 
             if (class_list->size > 0) {
     
@@ -943,6 +948,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 char* class_name = NULL;
             	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
                     osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
+
+	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class", (osrfStringArray*)(osrfHashGet(fcontext,"context"))->size, class_name);
     
                     jsonObject* _tmp_params = jsonParseStringFmt(
                         "{\"%s\":\"%s\"}",
@@ -988,7 +995,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     char* perm = NULL;
     int OK = 0;
 
-    if (permission->size == 0) OK = 1;
+    if (permission->size == 0) {
+	    osrfLogDebug( OSRF_LOG_MARK, "No permission specified for this action, passing through" );
+        OK = 1;
+    }
     
     int i = 0;
     while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
