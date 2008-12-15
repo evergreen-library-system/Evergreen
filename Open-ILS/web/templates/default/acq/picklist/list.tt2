@@ -1,10 +1,10 @@
 [% WRAPPER 'default/base.tt2' %]
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-picklist-my-list-header'>
-        <div id='oils-acq-list-header-label'>My Picklists</div>
+        <div id='oils-acq-list-header-label'>My Selection Lists</div>
     </div>
     <div id='oils-acq-picklist-all-list-header'>
-        <div id='oils-acq-list-header-label'>All Picklists</div>
+        <div id='oils-acq-list-header-label'>All Selection Lists</div>
     </div>
 </div>
 
@@ -23,7 +23,7 @@
 
 <div class='oils-acq-actions-div'>
     <div dojoType="dijit.form.DropDownButton">
-        <span>New Picklist</span>
+        <span>New Selection List</span>
         <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
             <table class='dijitTooltipTable'>
                 <tr>
