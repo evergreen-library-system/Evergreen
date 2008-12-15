@@ -118,7 +118,7 @@
                                 <th field="name" width='auto'>Name</th> 
                                 <th field="code">Code</th> 
                                 <th field="balance" get='getSummaryInfo'>Balance</th>
-                                <th field="credit_totals" get='getSummaryInfo'>Total Credits</th>
+                                <th field="credit_total" get='getSummaryInfo'>Total Credits</th>
                                 <th field="allocation_total" get='getSummaryInfo'>Total Debits</th>
                                 <th field="currency_type">Currency Type</th> 
                                 <th field="owner" width='auto' get='getOrgInfo'>Owner</th>
