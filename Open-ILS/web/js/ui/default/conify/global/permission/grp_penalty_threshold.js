@@ -1,5 +1,5 @@
 dojo.require('dojox.grid.DataGrid');
-dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.NumberTextBox');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermGrp');
@@ -9,30 +9,23 @@ dojo.require('fieldmapper.OrgUtils');
 
 var GPT = {
 
-    _gridComplete : function(r) {
-        if(GPT.list = openils.Util.readResponse(r, false, true)) {
-            GPT.list = GPT.list.sort(
-                function(a, b) {
-                    if(a.id() > b.id()) 
-                        return 1;
-                    return -1;
-                }
-            );
-            var store = new dojo.data.ItemFileReadStore({data:pgpt.toStoreData(GPT.list)});
+ buildGrid : function () {
+        var store = new dojo.data.ItemFileWriteStore({data:pgpt.initStoreData()});
             gptGrid.setStore(store);
             gptGrid.render();
-        }
-    },
 
-    buildGrid  : function() {
-        fieldmapper.standardRequest(
-            ['open-ils.actor', 'open-ils.actor.grp_penalty_threshold.ranged.retrieve'],
-            {   async: true,
-                params: [openils.User.authtoken, GPT.contextOrg],
-                oncomplete: GPT._gridComplete
-            }
-        );
-    },
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.grp_penalty_threshold.ranged.retrieve'],
+                {   async: true,
+                    params: [openils.User.authtoken, GPT.contextOrg],
+                    onresponse: function (r) { 
+                        if(obj = openils.Util.readResponse(r, false, true)) {
+                            store.newItem(pgpt.itemToStoreData(obj));
+                        }
+                    }
+                }
+            );
+    },   
 
     init : function() {
         GPT.contextOrg = openils.User.user.ws_ou();
@@ -56,6 +49,13 @@ var GPT = {
         );
     },
 
+
+    _onCreateComplete : function(r) {
+        if(threshold = openils.Util.readResponse(r)) {
+            gptGrid.store.newItem(pgpt.itemToStoreData(threshold));
+        }
+    },
+
     create : function(args) {
         if(!(args.grp && args.org_unit && args.penalty && args.threshold))
             return;
@@ -70,10 +70,7 @@ var GPT = {
             ['open-ils.permacrud', 'open-ils.permacrud.create.pgpt'],
             {   async: true,
                 params: [openils.User.authtoken, thresh],
-                oncomplete: function(r) {
-                    if(new String(openils.Util.readResponse(r)) != '0')
-                        GPT.buildGrid();
-                }
+                oncomplete:GPT._onCreateComplete 
             }
         );
     },
