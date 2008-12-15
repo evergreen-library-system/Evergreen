@@ -1045,13 +1045,38 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 );
 
                 if (result) {
-                    jsonObject* return_val = oilsMakeJSONFromResult( result );
-                    char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
-                    if ( *has_perm == 't' ) OK = 1;
-                    free(has_perm); 
-                    jsonObjectFree(return_val);
+    	            osrfLogDebug(
+                        OSRF_LOG_MARK,
+                        "Recieved a result for object permission [%s] for user %d on object %s (class %s) at org %d",
+                        perm,
+                        userid,
+                        pkey_value,
+                        osrfHashGet(class, "classname"),
+                        atoi(context_org)
+                    );
+
+                    if (dbi_result_first_row(result)) {
+                        jsonObject* return_val = oilsMakeJSONFromResult( result );
+                        char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
+
+        	            osrfLogDebug(
+                            OSRF_LOG_MARK,
+                            "Status of object permission [%s] for user %d on object %s (class %s) at org %d is %s",
+                            perm,
+                            userid,
+                            pkey_value,
+                            osrfHashGet(class, "classname"),
+                            atoi(context_org),
+                            has_perm
+                        );
+
+                        if ( *has_perm == 't' ) OK = 1;
+                        free(has_perm); 
+                        jsonObjectFree(return_val);
+                    }
+
                     dbi_result_free(result); 
-                    break;
+                    if (OK) break;
                 }
             }
 
@@ -1065,18 +1090,18 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             );
 
             if (result) {
-	            osrfLogDebug( OSRF_LOG_MARK, "Recieved a result for perm [%s] for user %d at org %d", perm, userid, atoi(context_org) );
-                jsonObject* return_val = oilsMakeJSONFromResult( result );
-	            osrfLogDebug( OSRF_LOG_MARK, " .... here .... " );
-                char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
-	            osrfLogDebug( OSRF_LOG_MARK, " .... here .... " );
-                if ( *has_perm == 't' ) OK = 1;
-	            osrfLogDebug( OSRF_LOG_MARK, " .... here .... " );
-	            osrfLogDebug( OSRF_LOG_MARK, "Result for perm [%s] for user %d at org %d is [%s]", perm, userid, atoi(context_org), has_perm );
-                free(has_perm); 
-                jsonObjectFree(return_val);
+	            osrfLogDebug( OSRF_LOG_MARK, "Recieved a result for permission [%s] for user %d at org %d", perm, userid, atoi(context_org) );
+                if (dbi_result_first_row(result)) {
+                    jsonObject* return_val = oilsMakeJSONFromResult( result );
+                    char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
+	                osrfLogDebug( OSRF_LOG_MARK, "Status of permission [%s] for user %d at org %d is [%s]", perm, userid, atoi(context_org), has_perm );
+                    if ( *has_perm == 't' ) OK = 1;
+                    free(has_perm); 
+                    jsonObjectFree(return_val);
+                }
+
                 dbi_result_free(result); 
-                break;
+                if (OK) break;
             }
 
         }
