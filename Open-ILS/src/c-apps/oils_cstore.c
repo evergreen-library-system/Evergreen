@@ -674,6 +674,8 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 #endif
 
         obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
+
+        jsonObjectFree(_p);
         if(err) return err;
 
         jsonObject* cur;
@@ -715,6 +717,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
         free(_s);
 
         obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
+
         jsonObjectFree(_p);
         if(err) return err;
 
@@ -2039,6 +2042,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
     int first = 1;
     if ( search_hash->type == JSON_ARRAY ) {
+	    osrfLogDebug(OSRF_LOG_MARK, "%s: In WHERE clause, condition type is JSON_ARRAY", MODULENAME);
         jsonIterator* search_itr = jsonNewIterator( search_hash );
         while ( (node = jsonIteratorNext( search_itr )) ) {
             if (first) {
@@ -2055,6 +2059,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
         jsonIteratorFree(search_itr);
 
     } else if ( search_hash->type == JSON_HASH ) {
+	    osrfLogDebug(OSRF_LOG_MARK, "%s: In WHERE clause, condition type is JSON_HASH", MODULENAME);
         jsonIterator* search_itr = jsonNewIterator( search_hash );
         while ( (node = jsonIteratorNext( search_itr )) ) {
 
@@ -3057,6 +3062,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 	char* sql = buildSELECT( search_hash, order_hash, meta, ctx );
 	if (!sql) {
+		osrfLogDebug(OSRF_LOG_MARK, "Problem building query, returning NULL");
 		*err = -1;
 		return NULL;
 	}
