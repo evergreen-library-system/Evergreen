@@ -40,6 +40,7 @@
         <handler path='conify/global/config/billing_type' template='conify/global/config/billing_type.tt2'/>
         <handler path='conify/global/config/standing_penalty' template='conify/global/config/standing_penalty.tt2'/>
         <handler path='conify/global/config/z3950_source' template='conify/global/config/z3950_source.tt2'/>
+        <handler path='conify/global/config/circ_modifier' template='conify/global/config/circ_modifier.tt2'/>
         <handler path='conify/global/permission/grp_penalty_threshold' template='conify/global/permission/grp_penalty_threshold.tt2'/>
     </handlers>
 </oils_web>
