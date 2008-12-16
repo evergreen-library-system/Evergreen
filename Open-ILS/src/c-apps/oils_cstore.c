@@ -465,12 +465,9 @@ static void sessionDataFree( char* key, void* item ) {
 int beginTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-#ifdef PRCRUD
+#ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -500,13 +497,10 @@ int setSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
     int spNamePos = 0;
-#ifdef PRCRUD
+#ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -548,13 +542,10 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
     int spNamePos = 0;
-#ifdef PRCRUD
+#ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -596,13 +587,10 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
     int spNamePos = 0;
-#ifdef PRCRUD
+#ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -643,12 +631,9 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 int commitTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-#ifdef PRCRUD
+#ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -674,12 +659,9 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 int rollbackTransaction ( osrfMethodContext* ctx ) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-#ifdef PRCRUD
+#ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) {
-        jsonObjectFree(user);
-        return -1;
-    }
+    if (!user) return -1;
     jsonObjectFree(user);
 #endif
 
@@ -863,11 +845,11 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
 
         free(m);
-        free(auth);
-
-        return jsonNULL;
+        jsonObjectFree(user);
+        user = jsonNULL;
     }
 
+    free(auth);
     return user;
 
 }
