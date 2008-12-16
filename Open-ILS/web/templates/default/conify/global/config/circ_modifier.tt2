@@ -1,0 +1,21 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_modifier.js'> </script>
+<h1>Circulation Modifier</h1> <br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="cmGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="code">Code</th>
+                    <th field="name" width='auto'>Name</th>
+                    <th field="description" width='auto'>Description</th>
+                    <th field="sip2_media_type" width='auto'>SIP2 Media Type</th>
+                    <th field="magnetic_media" width='auto' get='getMagneticMedia'>Magnetic Media</th>
+                </tr>
+            </thead>
+        </table>    
+    </div>
+</div>
+ 
+[% END %]
