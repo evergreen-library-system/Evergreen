@@ -51,6 +51,7 @@
     </div> 
 
     <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
+    <button dojoType='dijit.form.Button' onclick='saveChanges();' disabled='disabled' jsId='cmSaveButton'>Save Changes</button>
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="cmGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>

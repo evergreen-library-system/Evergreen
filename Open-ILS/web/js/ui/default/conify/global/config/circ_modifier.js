@@ -10,6 +10,7 @@ function buildCMGrid() {
     var store = new dojo.data.ItemFileWriteStore({data:ccm.initStoreData('code', {identifier:'code'})})
     cmGrid.setStore(store);
     cmGrid.render();
+    dojo.connect(store, 'onSet', cmGridChanged);
 
     fieldmapper.standardRequest(
         ['open-ils.permacrud', 'open-ils.permacrud.search.ccm'],
@@ -23,6 +24,18 @@ function buildCMGrid() {
            }
         }
     );
+}
+
+function cmGridChanged(item, attr, oldVal, newVal) {
+    var cm = cmCache[cmGrid.store.getValue(item, 'code')];
+    console.log("changing cm " + cm.code() + " object: " + attr + " = " + newVal);
+    cm[attr](newVal);
+    cm.ischanged(true);
+    cmSaveButton.setDisabled(false);
+}
+
+function saveChanges() {
+    /* loop through the changed objects in cmCache and update them in the DB */
 }
 
 function getMagneticMedia(rowIdx, item) {
