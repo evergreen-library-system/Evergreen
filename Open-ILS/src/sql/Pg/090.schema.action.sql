@@ -132,7 +132,7 @@ CREATE OR REPLACE VIEW action.open_circ_count_by_circ_mod AS
       FROM  action.circulation circ
             JOIN asset.copy cp ON (circ.target_copy = cp.id)
       WHERE circ.checkin_time IS NULL
-            AND ( circ.stop_fines IN ('LOST','LONGOVERDUE','CLAIMSRETURNED') OR circ.stop_fines IS NULL )
+            AND ( circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL )
       GROUP BY 1,2;
 
 CREATE OR REPLACE VIEW action.open_circulation AS
