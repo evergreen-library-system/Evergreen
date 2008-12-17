@@ -1,6 +1,7 @@
 dojo.require('dojox.grid.DataGrid');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.CheckBox');
+dojo.require('dijit.form.FilteringSelect');
 
 function buildCMGrid() {
     var store = new dojo.data.ItemFileWriteStore({data:ccm.initStoreData('code', {identifier:'code'})})
@@ -12,8 +13,8 @@ function buildCMGrid() {
        {   async: true,
                params: [openils.User.authtoken, {code:{'!=':null}}],
                onresponse: function (r) { 
-               if(obj = openils.Util.readResponse(r)) {
-                   store.newItem(ccm.itemToStoreData(obj));
+                   if(obj = openils.Util.readResponse(r)) {
+                       store.newItem(ccm.itemToStoreData(obj));
                    
                }
            }
@@ -27,6 +28,32 @@ function getMagneticMedia(rowIdx, item) {
     if(openils.Util.isTrue(magMed))
         return "<span style='color:green;'>&#x2713;</span>";
     return "<span style='color:red;'>&#x2717;</span>";
+}
+
+function cmCreate(args) {
+    if(! (args.code && args.name && args.description && args.sip2_media_type)) 
+        return;
+
+    var cmod = new ccm();
+    cmod.code(args.code);
+    cmod.name(args.name);
+    cmod.description(args.description);
+    cmod.sip2_media_type(args.sip2_media_type);
+    if(args.magnetic_media[0] == 'on')
+        cmod.magnetic_media('t')
+    else
+        cmod.magnetic_media('f');
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.create.ccm'],
+        {   async: true,
+            params: [openils.User.authtoken, cmod],
+            oncomplete: function(r) {
+                if(cm = openils.Util.readResponse(r))
+                    cmGrid.store.newItem(ccm.itemToStoreData(cm));
+            }
+        }
+    );
 }
 
     
