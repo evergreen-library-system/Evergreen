@@ -500,7 +500,7 @@ BEGIN
           WHERE circ.usr = match_user
             AND circ.checkin_time IS NULL
             AND circ.due_date < NOW()
-            AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
+            AND (circ.stop_fines = 'MAXFINES' OR circ.stop_fines IS NULL);
 
         IF items_overdue >= max_overdue.threshold::INT THEN
             new_sp_row.usr := match_user;
@@ -557,7 +557,7 @@ BEGIN
                 JOIN  actor.org_unit_full_path( max_items_out.org_unit ) fp ON (circ.circ_lib = fp.id)
           WHERE circ.usr = match_user
                 AND circ.checkin_time IS NULL
-                AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL);
+                AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL);
 
            IF items_out >= max_items_out.threshold::INT THEN
             new_sp_row.usr := match_user;
