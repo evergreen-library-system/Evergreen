@@ -67,11 +67,12 @@ function _deleteFromGrid(list, idx) {
         return;
 
     var item = list[idx];
+    var code = cmGrid.store.getValue(item, 'code');
 
     fieldmapper.standardRequest(
         ['open-ils.permacrud', 'open-ils.permacrud.delete.ccm'],
         {   async: true,
-            params: [openils.User.authtoken, item.code],
+            params: [openils.User.authtoken, code],
             oncomplete: function(r) {
                 if(stat = openils.Util.readResponse(r)) {
                     // delete succeeded, remove it from the grid and the local cache
