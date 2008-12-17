@@ -925,6 +925,7 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		osrfHashGet(meta, "fieldmapper"),
 		id
 	);
+	free(id);
 
 	jsonObject* fake_params = jsonParseString("[]");
 	jsonObjectPush(fake_params, jsonParseString("{}"));
@@ -932,7 +933,7 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	jsonObjectSetKey(
 		jsonObjectGetIndex(fake_params, 0),
 		osrfHashGet(meta, "primarykey"),
-		jsonParseString(id)
+		jsonObjectClone(jsonObjectGetIndex(ctx->params, 0))
 	);
 
 	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
