@@ -206,7 +206,7 @@ sub fetch_user_data {
 		my $circ_counts = 
 			OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
 
-		$ctx->{patronOverdue} = $circ_counts->{overdue} || 0;
+		$ctx->{patronOverdue} = $circ_counts->{overdue}  + $circ_counts->{long_overdue};
 		my $out = $ctx->{patronOverdue} + $circ_counts->{out};
 
 		$ctx->{patronItemsOut} = $out 
