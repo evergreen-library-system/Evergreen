@@ -413,7 +413,7 @@ sub insert_user_funcs {
                         "checkin_time"=>undef,
                         "usr"=>$userid,
                         "-or"=>[
-                            {"stop_fines"=>["LOST","LONGOVERDUE","CLAIMSRETURNED"]},
+                            {"stop_fines"=>["MAXFINES","LONGOVERDUE"]},
                             {"stop_fines"=>undef}
                         ]
                     }
