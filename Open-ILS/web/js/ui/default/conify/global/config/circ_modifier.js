@@ -3,6 +3,8 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
 
+var cmCache = {};
+
 function buildCMGrid() {
     var store = new dojo.data.ItemFileWriteStore({data:ccm.initStoreData('code', {identifier:'code'})})
     cmGrid.setStore(store);
@@ -11,14 +13,14 @@ function buildCMGrid() {
     fieldmapper.standardRequest(
        ['open-ils.permacrud', 'open-ils.permacrud.search.ccm'],
        {   async: true,
-               params: [openils.User.authtoken, {code:{'!=':null}}],
-               onresponse: function (r) { 
-                   if(obj = openils.Util.readResponse(r)) {
-                       store.newItem(ccm.itemToStoreData(obj));
-                   
-               }
-           }
-       }
+           params: [openils.User.authtoken, {code:{'!=':null}}],
+           onresponse: function (r) { 
+                if(obj = openils.Util.readResponse(r)) {
+                    store.newItem(ccm.itemToStoreData(obj));
+                    cmCache[obj.code()] = obj;
+                }
+            }
+        }
     );
 }
 
