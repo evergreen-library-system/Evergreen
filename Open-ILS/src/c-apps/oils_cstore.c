@@ -3064,7 +3064,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		
 	}
 
-	jsonObject* obj = jsonParseString(id);
+	jsonObject* obj = jsonNewObject(id);
 
 	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
 		dbi_conn_quote_string(dbhandle, &id);
@@ -3155,7 +3155,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 		id
 	);
 
-	obj = jsonParseString(id);
+	obj = jsonNewObject(id);
 
 	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
 		dbi_conn_quote_string(writehandle, &id);
