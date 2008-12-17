@@ -11,15 +11,15 @@ function buildCMGrid() {
     cmGrid.render();
 
     fieldmapper.standardRequest(
-       ['open-ils.permacrud', 'open-ils.permacrud.search.ccm'],
-       {   async: true,
-           params: [openils.User.authtoken, {code:{'!=':null}}],
-           onresponse: function (r) { 
+        ['open-ils.permacrud', 'open-ils.permacrud.search.ccm'],
+        {   async: true,
+            params: [openils.User.authtoken, {code:{'!=':null}}],
+            onresponse: function (r) { 
                 if(obj = openils.Util.readResponse(r)) {
                     store.newItem(ccm.itemToStoreData(obj));
                     cmCache[obj.code()] = obj;
                 }
-            }
+           }
         }
     );
 }
@@ -58,6 +58,32 @@ function cmCreate(args) {
     );
 }
 
-    
+function deleteFromGrid() {
+    _deleteFromGrid(cmGrid.selection.getSelected(), 0);
+}   
+
+function _deleteFromGrid(list, idx) {
+    if(idx >= list.length) // we've made it through the list
+        return;
+
+    var item = list[idx];
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.delete.ccm'],
+        {   async: true,
+            params: [openils.User.authtoken, item.code],
+            oncomplete: function(r) {
+                if(stat = openils.Util.readResponse(r)) {
+                    // delete succeeded, remove it from the grid and the local cache
+                    cmGrid.store.deleteItem(item); 
+                    delete cmCache[item.code];
+                }
+                _deleteFromGrid(list, ++idx);
+            }
+        }
+    );
+}
+
 openils.Util.addOnLoad(buildCMGrid);
+
 

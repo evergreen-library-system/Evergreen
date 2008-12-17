@@ -50,12 +50,15 @@
         </div>
     </div> 
 
+    <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
+
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="cmGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>
             <thead>
                 <tr>
                     <th field="code">Code</th>
-                    <th field="name" width='auto'>Name</th>
+                    <th field="name" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
                     <th field="description" width='auto'>Description</th>
                     <th field="sip2_media_type" width='auto'>SIP2 Media Type</th>
                     <th field="magnetic_media" width='auto' get='getMagneticMedia'>Magnetic Media</th>
