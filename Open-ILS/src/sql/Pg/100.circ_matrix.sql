@@ -325,7 +325,7 @@ BEGIN
           WHERE usr = match_user
                 AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
                 AND checkin_time IS NULL
-                AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
+                AND (stop_fines IN ('MAXFINES','LONGOVERDUE') OR stop_fines IS NULL)
 	   	IF items_out >= circ_test.max_items_out THEN
 		    	result.fail_part := 'config.circ_matrix_test.max_items_out';
 			result.success := FALSE;
@@ -342,7 +342,7 @@ BEGIN
 		  WHERE circ.usr = match_user
                 	AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
 			AND circ.checkin_time IS NULL
-			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL)
+            AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
 			AND cp.circ_modifier = out_by_circ_mod.circ_mod;
 		IF items_out >= out_by_circ_mod.items_out THEN
 			result.fail_part := 'config.circ_matrix_circ_mod_test';
