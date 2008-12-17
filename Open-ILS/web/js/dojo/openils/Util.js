@@ -178,4 +178,8 @@ if(!dojo._hasResource["openils.Util"]) {
         }
         return [];
     };
+
+    openils.Util.isTrue = function(val) {
+        return (val && val != '0' && !(val+'').match(/^f$/i));
+    };
 }
