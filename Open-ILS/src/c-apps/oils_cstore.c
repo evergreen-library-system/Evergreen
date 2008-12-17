@@ -3641,7 +3641,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 		id
 	);
 
-	obj = jsonCloneObject(jsonObjectGetIndex( ctx->params, _obj_pos ));
+	obj = jsonNewObject(id);
 
 	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
 		dbi_conn_quote_string(writehandle, &id);
