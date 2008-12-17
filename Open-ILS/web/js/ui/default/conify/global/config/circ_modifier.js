@@ -1,4 +1,5 @@
 dojo.require('dojox.grid.DataGrid');
+dojo.require('dojox.grid.cells.dijit');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
