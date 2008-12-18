@@ -35,6 +35,7 @@ function cmGridChanged(item, attr, oldVal, newVal) {
 }
 
 function saveChanges() {
+    cmGrid.doclick(0); // force still-focused changes
     /* loop through the changed objects in cmCache and update them in the DB */
 }
 
