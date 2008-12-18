@@ -9,7 +9,7 @@ var zsList;
 
 function buildZSGrid() {
     fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.czs.atomic'],
+        ['open-ils.pcrud', 'open-ils.pcrud.search.czs.atomic'],
         {   async: true,
             params: [openils.User.authtoken, {name:{'!=':null}}],
             oncomplete: function(r) {

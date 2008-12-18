@@ -90,7 +90,7 @@ var GPT = {
     loadCsp : function(onload) {
         GPT.penaltyMap = {};
         fieldmapper.standardRequest(
-            ['open-ils.permacrud', 'open-ils.permacrud.search.csp.atomic'],
+            ['open-ils.pcrud', 'open-ils.pcrud.search.csp.atomic'],
             {   async: true,
                 params: [openils.User.authtoken, {id:{'<':100}}],
                 oncomplete: function(r) {

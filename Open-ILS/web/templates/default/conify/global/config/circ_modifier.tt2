@@ -53,6 +53,34 @@
     <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
     <button dojoType='dijit.form.Button' onclick='saveChanges();' disabled='disabled' jsId='cmSaveButton'>Save Changes</button>
 
+    <script type ="text/javascript">
+        function formatSIPMediaType(inDatum) {
+            switch (inDatum) {
+                case '000':
+                    return 'Other';
+                case '001':
+                    return 'Book';
+                case '002':
+                    return 'Magazine';
+                case '003':
+                    return 'Bound Journal';
+                case '004':
+                    return 'Audio Tape';
+                case '005':
+                    return 'Video Tape';
+                case '006':
+                    return 'CD/CDROM';
+                case '007':
+                    return 'Diskette';
+                case '008':
+                    return 'Book with diskette';
+                case '009':
+                    return 'Book with CD';
+                case '010':
+                    return 'Book with audio tape';
+            }
+        }   
+    </script>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="cmGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>
             <thead>
@@ -61,12 +89,17 @@
                     <th field="name" width='auto' editable='true' 
                         cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
                     <th field="description" width='auto'>Description</th>
-                    <th field="sip2_media_type" width='auto'>SIP2 Media Type</th>
-                    <th field="magnetic_media" width='auto' get='getMagneticMedia'>Magnetic Media</th>
+                    <th field="sip2_media_type" width='auto' editable='true' 
+                        cellType='dojox.grid.cells.Select' 
+                        options='Other,Book,Magazine,Bound Journal,Audio Tape,Video Tape,CD/CDROM,Diskette,Book with Diskette,Book with CD,Book with Audio Tape' 
+                        values='000,001,002,003,004,005,006,007,008,009,010' 
+                        formatter='formatSIPMediaType'>SIP2 Media Type</th>
+                    <th field="magnetic_media" editable='true' cellType='dojox.grid.cells.Select' 
+                        options='No,Yes' values='f,t' formatter='formatMagneticMedia'>Magnetic Media</th>
                 </tr>
             </thead>
         </table>    
     </div>
 </div>
- 
+
 [% END %]

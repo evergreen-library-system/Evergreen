@@ -8,7 +8,7 @@ function spBuildGrid() {
     spGrid.setStore(store);
     spGrid.render();
     fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.csp'],
+        ['open-ils.pcrud', 'open-ils.pcrud.search.csp'],
         {   async: true,
             params: [openils.User.authtoken, {id:{'!=':null}}, {order_by:{csp:'id'}}],
             onresponse: function(r) {

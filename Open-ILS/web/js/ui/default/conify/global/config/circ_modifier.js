@@ -13,7 +13,7 @@ function buildCMGrid() {
     dojo.connect(store, 'onSet', cmGridChanged);
 
     fieldmapper.standardRequest(
-        ['open-ils.permacrud', 'open-ils.permacrud.search.ccm'],
+        ['open-ils.pcrud', 'open-ils.pcrud.search.ccm'],
         {   async: true,
             params: [openils.User.authtoken, {code:{'!=':null}}],
             onresponse: function (r) { 
@@ -39,12 +39,13 @@ function saveChanges() {
     /* loop through the changed objects in cmCache and update them in the DB */
 }
 
-function getMagneticMedia(rowIdx, item) {
-    if(!item) return '';
-    var magMed = this.grid.store.getValue(item, this.field);
-    if(openils.Util.isTrue(magMed))
-        return "<span style='color:green;'>&#x2713;</span>";
-    return "<span style='color:red;'>&#x2717;</span>";
+function formatMagneticMedia(inDatum) {
+    switch (inDatum) {
+        case 't':
+            return "<span style='color:green;'>&#x2713;</span>";
+        case 'f':
+            return "<span style='color:red;'>&#x2717;</span>";
+    }
 }
 
 function cmCreate(args) {
