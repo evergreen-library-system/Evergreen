@@ -99,6 +99,7 @@ function save_org () {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            pCRUD.disconnect();
             throw 'update error';
 		},
 		oncomplete : function (r) {
@@ -121,6 +122,7 @@ function save_org () {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            pCRUD.disconnect();
             throw 'begin error';
 		},
 		oncomplete : function (r) {
