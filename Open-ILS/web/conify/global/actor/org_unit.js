@@ -86,6 +86,7 @@ function save_org () {
 			} else {
 				highlighter.editor_pane.red.play();
 				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                throw 'commit error';
 			}
             pCRUD.disconnect();
 		},
@@ -98,18 +99,17 @@ function save_org () {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            throw 'update error';
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
 			if ( res && res.content() ) {
-				ou_list_store.setValue( current_ou, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
                 commit.send();
 			} else {
 				highlighter.editor_pane.red.play();
 				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
                 pCRUD.disconnect();
+                throw 'update error';
 			}
 		},
 	});
@@ -121,6 +121,7 @@ function save_org () {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            throw 'begin error';
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
@@ -130,6 +131,7 @@ function save_org () {
 				highlighter.editor_pane.red.play();
 				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
                 pCRUD.disconnect();
+                throw 'begin error';
 			}
 		},
 	});
