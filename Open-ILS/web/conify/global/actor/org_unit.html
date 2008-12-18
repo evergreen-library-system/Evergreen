@@ -73,7 +73,7 @@
 					window.dirtyStore = [];
 		
 					pCRUD.request({
-						method : 'open-ils.permacrud.search.aou.atomic',
+						method : 'open-ils.pcrud.search.aou.atomic',
 						timeout : 15,
 						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
 						onerror : function (r) { throw aou_strings.ERROR_FETCHING_ORGS; },
@@ -113,7 +113,7 @@
 					}).send();
 
                     pCRUD.request({
-                        method : 'open-ils.permacrud.search.aout.atomic',
+                        method : 'open-ils.pcrud.search.aout.atomic',
                         timeout : 10,
                         params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
                         onerror : function (r) { status_update(aou_strings.ERROR_FETCHING_TYPES_AOUT) },
@@ -356,7 +356,7 @@
 										modified_ou.isdeleted( 1 );
 	
 										pCRUD.request({
-											method : 'open-ils.permacrud.delete.aou',
+											method : 'open-ils.pcrud.delete.aou',
 											timeout : 10,
 											params : [ ses, modified_ou ],
 											onerror : function (r) {
@@ -421,7 +421,7 @@
 								var new_obj;
 	
 								pCRUD.request({
-									method : 'open-ils.permacrud.create.aou',
+									method : 'open-ils.pcrud.create.aou',
 									timeout : 10,
 									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
@@ -494,8 +494,8 @@
 						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="&conify.save_button.label;">
 							<script type="dojo/connect" event="onClick">
 <![CDATA[
-								var method_name = 'open-ils.permacrud.update.aouhoo';
-								if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.permacrud.create.aouhoo';
+								var method_name = 'open-ils.pcrud.update.aouhoo';
+								if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.pcrud.create.aouhoo';
 	
 								pCRUD.request({
 									method : method_name,
@@ -573,8 +573,8 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.permacrud.update.aoa';
-										if (current_billing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+										var method_name = 'open-ils.pcrud.update.aoa';
+										if (current_billing_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
 	
 										pCRUD.request({
 											method : method_name,
@@ -642,8 +642,8 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.permacrud.update.aoa';
-										if (current_holds_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+										var method_name = 'open-ils.pcrud.update.aoa';
+										if (current_holds_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
 	
 										pCRUD.request({
 											method : method_name,
@@ -710,8 +710,8 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.permacrud.update.aoa';
-										if (current_mailing_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+										var method_name = 'open-ils.pcrud.update.aoa';
+										if (current_mailing_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
 	
 										pCRUD.request({
 											method : method_name,
@@ -778,8 +778,8 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.permacrud.update.aoa';
-										if (current_ill_address.isnew() == 1) method_name = 'open-ils.permacrud.create.aoa';
+										var method_name = 'open-ils.pcrud.update.aoa';
+										if (current_ill_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
 	
 										pCRUD.request({
 											method : method_name,

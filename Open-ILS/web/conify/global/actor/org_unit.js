@@ -38,7 +38,7 @@ dojo.requireLocalization("openils.conify", "conify");
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+var pCRUD = new OpenSRF.ClientSession('open-ils.pcrud');
 
 var current_ou, current_ou_hoo;
 var virgin_ou_id = -1;
@@ -61,8 +61,38 @@ function save_org () {
 	save_ou_button.disabled = false;
 	delete_ou_button.disabled = false;
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.aou',
+    if (!pCRUD.connect()) {
+		highlighter.editor_pane.red.play();
+		status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+        return null;
+    }
+    
+	var commit = pCRUD.request({
+		method : 'open-ils.pcrud.transaction.commit',
+		timeout : 10,
+		params : [ ses, modified_ou ],
+		onerror : function (r) {
+			highlighter.editor_pane.red.play();
+			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            pCRUD.disconnect();
+            throw 'commit error';
+		},
+		oncomplete : function (r) {
+			var res = r.recv();
+			if ( res ) {
+				ou_list_store.setValue( current_ou, 'ischanged', 0 );
+				highlighter.editor_pane.green.play();
+				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
+			} else {
+				highlighter.editor_pane.red.play();
+				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+			}
+            pCRUD.disconnect();
+		},
+	});
+
+	var update = pCRUD.request({
+		method : 'open-ils.pcrud.update.aou',
 		timeout : 10,
 		params : [ ses, modified_ou ],
 		onerror : function (r) {
@@ -75,12 +105,36 @@ function save_org () {
 				ou_list_store.setValue( current_ou, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
 				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                commit.send();
 			} else {
 				highlighter.editor_pane.red.play();
 				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                pCRUD.disconnect();
 			}
 		},
-	}).send();
+	});
+
+	var begin = pCRUD.request({
+		method : 'open-ils.pcrud.transaction.begin',
+		timeout : 10,
+		params : [ ses, modified_ou ],
+		onerror : function (r) {
+			highlighter.editor_pane.red.play();
+			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+		},
+		oncomplete : function (r) {
+			var res = r.recv();
+			if ( res && res.content() ) {
+                update.send();
+			} else {
+				highlighter.editor_pane.red.play();
+				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                pCRUD.disconnect();
+			}
+		},
+	});
+
+    begin.send();
 }
 	
 function hoo_load () {
@@ -89,7 +143,7 @@ function hoo_load () {
 	current_ou_hoo.isnew(1);
 
 	pCRUD.request({
-		method : 'open-ils.permacrud.retrieve.aouhoo',
+		method : 'open-ils.pcrud.retrieve.aouhoo',
 		params : [ ses, ou_list_store.getValue( current_ou, 'id' ) ],
 		onerror : function (r) { 
 			throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOURS, [ou_list_store.getValue( current_ou, 'name' )]);
@@ -136,7 +190,7 @@ function addr_load () {
 
 	if (ou_list_store.getValue( current_ou, 'billing_address' )) {
 		pCRUD.request({
-			method : 'open-ils.permacrud.retrieve.aoa',
+			method : 'open-ils.pcrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'billing_address' ) ],
 			onerror : function (r) {
 				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )]);
@@ -166,7 +220,7 @@ function addr_load () {
 
 	if (ou_list_store.getValue( current_ou, 'mailing_address' )) {
 		pCRUD.request({
-			method : 'open-ils.permacrud.retrieve.aoa',
+			method : 'open-ils.pcrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'mailing_address' ) ],
 			onerror : function (r) {
 				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_MAILING, [ou_list_store.getValue( current_ou, 'name' )]);
@@ -196,7 +250,7 @@ function addr_load () {
 
 	if (ou_list_store.getValue( current_ou, 'holds_address' )) {
 		pCRUD.request({
-			method : 'open-ils.permacrud.retrieve.aoa',
+			method : 'open-ils.pcrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'holds_address' ) ],
 			onerror : function (r) {
 				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )]);
@@ -226,7 +280,7 @@ function addr_load () {
 
 	if (ou_list_store.getValue( current_ou, 'ill_address' )) {
 		pCRUD.request({
-			method : 'open-ils.permacrud.retrieve.aoa',
+			method : 'open-ils.pcrud.retrieve.aoa',
 			params : [ ses, ou_list_store.getValue( current_ou, 'ill_address' ) ],
 			onerror : function (r) {
 				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_ILL, [ou_list_store.getValue( current_ou, 'name' )]);
