@@ -204,7 +204,7 @@ function osEditSetting(deleteMe) {
                 break;
             case 'bool':
                 var val = osEditBoolSelect.getValue();
-                obj[name] = (val == 'true') ? 1 : null;
+                obj[name] = (val == 'true') ? true : false;
                 break;
             default:
                 obj[name] = osEditTextBox.getValue();
