@@ -33,12 +33,38 @@ function cmGridChanged(item, attr, oldVal, newVal) {
     cm.ischanged(true);
     cmSaveButton.setDisabled(false);
 }
-
 function saveChanges() {
-    cmGrid.doclick(0); // force still-focused changes
-    /* loop through the changed objects in cmCache and update them in the DB */
+    cmGrid.doclick(0);   
+    var changedObjects = [];
+    for(var i in cmCache){
+        var cm = cmCache[i];
+        if(cm.ischanged())
+            changedObjects.push(cm);
+    }   
+    _saveChanges(changedObjects, 0);
 }
+function _saveChanges(changedObjects, idx) {
+    
+    if(idx >= changedObjects.length) {
+        // we've made it through the list
+        cmSaveButton.setDisabled(true);
+        return;
+    }
 
+    var item = changedObjects[idx];
+         
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.update.ccm'],
+        {   async: true,
+            params: [openils.User.authtoken, item],
+            oncomplete: function(r) {
+                if(stat = openils.Util.readResponse(r)) {
+                    _saveChanges(changedObjects, ++idx);
+                }
+            }
+        }
+    );
+}
 function formatMagneticMedia(inDatum) {
     switch (inDatum) {
         case 't':
