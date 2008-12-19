@@ -3,62 +3,62 @@
 
     <!-- Options for <loglevel>: 0 None, 1 Error, 2 Warning, 3 Info, 4 debug -->
 
-	<opensrf>
+    <opensrf>
 
-		<routers>
+        <routers>
             <!-- define the list of routers our services will register with -->
-			<router>
+            <router>
                 <!-- This is the public router.  On this router, we only register applications
                      which should be accessible to everyone on the opensrf network -->
                 <name>router</name>
                 <domain>public.localhost</domain>
                 <services>
-				    <service>opensrf.math</service> 
-				    <service>open-ils.cat</service> 
-				    <service>open-ils.supercat</service> 
-				    <service>open-ils.search</service> 
-				    <service>open-ils.circ</service> 
-				    <service>open-ils.actor</service> 
-				    <service>open-ils.auth</service> 
-				    <service>open-ils.collections</service>  
-				    <service>open-ils.reporter</service>  
+                    <service>opensrf.math</service> 
+                    <service>open-ils.cat</service> 
+                    <service>open-ils.supercat</service> 
+                    <service>open-ils.search</service> 
+                    <service>open-ils.circ</service> 
+                    <service>open-ils.actor</service> 
+                    <service>open-ils.auth</service> 
+                    <service>open-ils.collections</service>  
+                    <service>open-ils.reporter</service>  
                 </services>
             </router>
 
-			<router>
+            <router>
                 <!-- This is the private router.  All applications must register with 
                     this router, so no explicit <services> section is required -->
                 <name>router</name>
                 <domain>private.localhost</domain>
             </router>
-		</routers>
+        </routers>
 
 
         <!-- Our domain should match that of the private router -->
-		<domain>private.localhost</domain>
-		<username>osrf</username>
-		<passwd>osrf</passwd>
-		<port>5222</port>
+        <domain>private.localhost</domain>
+        <username>osrf</username>
+        <passwd>osrf</passwd>
+        <port>5222</port>
 
-		<logfile>/openils/var/log/osrfsys.log</logfile>
+        <logfile>/openils/var/log/osrfsys.log</logfile>
         <!--
-		<logfile>syslog</logfile>
-		<syslog>local0</syslog>
-		<actlog>local1</actlog>
+        <logfile>syslog</logfile>
+        <syslog>local0</syslog>
+        <actlog>local1</actlog>
         -->
-		<loglevel>3</loglevel>
-		<settings_config>/openils/conf/opensrf.xml</settings_config>
-	</opensrf>
+        <loglevel>3</loglevel>
+        <settings_config>/openils/conf/opensrf.xml</settings_config>
+    </opensrf>
 
 
-	<!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
-	<gateway>
+    <!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
+    <gateway>
 
-		<client>true</client>
-		<router_name>router</router_name>
+        <client>true</client>
+        <router_name>router</router_name>
 
         <!-- The gateway connects to the public domain for security -->
-		<domain>public.localhost</domain>
+        <domain>public.localhost</domain>
 
       <!-- this section will be soon deprecated for multi-domain mode... -->
       <services>
@@ -73,20 +73,20 @@
          <service>open-ils.reporter</service>
       </services>
 
-		<!-- jabber login info -->
-		<username>osrf</username>
-		<passwd>osrf</passwd>
-		<port>5222</port>
-		<loglevel>3</loglevel>
-		<logfile>/openils/var/log/gateway.log</logfile>
+        <!-- jabber login info -->
+        <username>osrf</username>
+        <passwd>osrf</passwd>
+        <port>5222</port>
+        <loglevel>3</loglevel>
+        <logfile>/openils/var/log/gateway.log</logfile>
         <!--
-    	<logfile>syslog</logfile>
-		<syslog>local6</syslog>
-		<actlog>local1</actlog>
+        <logfile>syslog</logfile>
+        <syslog>local6</syslog>
+        <actlog>local1</actlog>
         -->
-	</gateway>
+    </gateway>
 
-	<!-- ======================================================================================== -->
+    <!-- ======================================================================================== -->
 
     <routers>
         <router> <!-- public router -->
@@ -133,7 +133,7 @@
         </router>
     </routers>
 
-	<!-- ======================================================================================== -->
+    <!-- ======================================================================================== -->
 
 </config>
 
