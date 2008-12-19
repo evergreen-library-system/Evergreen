@@ -488,6 +488,19 @@ main.menu.prototype = {
 							network.simple_request('AUTH_DELETE', [ obj.data.session.key ] );
 							obj.data.session = obj.data.previous_session;
 							obj.data.stash('session');
+				            try {
+								var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+								var cookieUri = ios.newURI("http://" + obj.data.server_unadorned, null, null);
+								var cookieUriSSL = ios.newURI("https://" + obj.data.server_unadorned, null, null);
+								var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
+
+								cookieSvc.setCookieString(cookieUri, null, "ses="+obj.data.session.key, null);
+								cookieSvc.setCookieString(cookieUriSSL, null, "ses="+obj.data.session.key, null);
+
+            } catch(E) {
+                alert('Error setting session cookie: ' + E);
+            }
+
 							removeCSSClass(document.getElementById('main_tabbox'),'operator_change');
 						} else {
 							if (network.get_new_session(offlineStrings.getString('menu.cmd_chg_session.label'),{'url_prefix':obj.url_prefix})) {
