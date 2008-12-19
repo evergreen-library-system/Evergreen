@@ -294,6 +294,19 @@ function uEditDefineData(patron) {
 				id			: 'ue_day_phone',
 				type		: 'input',
 				regex		:  phoneRegex,
+                onblur      : function() {
+                    if(uEditUsePhonePw)
+                        uEditMakePhonePw();
+                },
+                onpostchange: function(field, newval) {
+                    /*  if this is a new patron and we are using the phone number for
+                        the password and the staff edits the phone number after entering
+                        it (think typos), update the password too */
+                    if(uEditUsePhonePw && patron.isnew() && patron.passwd() != newval) {
+                        patron.passwd(null);
+                        uEditMakePhonePw();
+                    }
+                }
 			}
 		},
 		{
@@ -305,6 +318,10 @@ function uEditDefineData(patron) {
 				id			: 'ue_night_phone',
 				type		: 'input',
 				regex		:  phoneRegex,
+                onblur      : function() {
+                    if(uEditUsePhonePw)
+                        uEditMakePhonePw();
+                }
 			}
 		},
 		{
@@ -316,6 +333,10 @@ function uEditDefineData(patron) {
 				id			: 'ue_other_phone',
 				type		: 'input',
 				regex		:  phoneRegex,
+                onblur      : function() {
+                    if(uEditUsePhonePw)
+                        uEditMakePhonePw();
+                }
 			}
 		},
 		{
@@ -1065,7 +1086,10 @@ function uEditCheckDOB(field) {
         }
 
         var base = new Date();
-        var age = orgSettings['global.juvenile_age_threshold'].value || DEFAULT_ADULT_AGE;
+        var age;
+        if(orgSettings['global.juvenile_age_threshold'])
+            age = orgSettings['global.juvenile_age_threshold'].value;
+        else age = DEFAULT_ADULT_AGE;
         base.setTime(base.getTime() - Number(interval_to_seconds(age) + '000'));
 
 

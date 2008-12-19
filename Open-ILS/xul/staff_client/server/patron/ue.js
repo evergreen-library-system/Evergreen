@@ -12,6 +12,7 @@ var groupsCache				= {};
 var netLevelsCache			= {};
 var orgSettings             = [];
 //var guardianNote				= null;
+var uEditUsePhonePw = false;
 
 if(!window.xulG) var xulG = null;
 
@@ -139,10 +140,17 @@ function uEditBuild() {
 	var usr = cgi.param('usr'); 
 	if (xulG) if (xulG.usr) usr = xulG.usr;
 	if (xulG) if (xulG.params) if (xulG.params.usr) usr = xulG.params.usr;
+
+    orgSettings = fetchBatchOrgSetting(USER.ws_ou(), [
+        'global.juvenile_age_threshold',
+        'patron.password.use_phone'
+    ]);
+
+    uEditUsePhonePw = (orgSettings['patron.password.use_phone'] && 
+        orgSettings['patron.password.use_phone'].value);
+
 	patron = fetchFleshedUser(usr);
 	if(!patron) patron = uEditNewPatron(); 
-
-    orgSettings = fetchBatchOrgSetting(USER.ws_ou(), ['global.juvenile_age_threshold']);
 	
 	uEditDraw( 
 		uEditFetchIdentTypes(),
@@ -244,6 +252,7 @@ function uEditNewPatron() {
 }
 
 function uEditMakeRandomPw(patron) {
+    if(uEditUsePhonePw) return;
 	var rand  = Math.random();
 	rand = parseInt(rand * 10000) + '';
 	while(rand.length < 4) rand += '0';
@@ -253,8 +262,20 @@ function uEditMakeRandomPw(patron) {
 	return rand;
 }
 
-function uEditResetPw() { 
-	var pw = uEditMakeRandomPw(patron);	
+function uEditMakePhonePw() {
+    if(patron.passwd()) return;
+    if( (pw = patron.day_phone()) || 
+        (pw = patron.evening_phone()) || (pw = patron.other_phone()) ) {
+            pw = pw.substring(pw.length - 4); // this is iffy
+            uEditResetPw(pw);
+	        appendClear($('ue_password_plain'), text(pw));
+	        unHideMe($('ue_password_gen'));
+	        patron.passwd(pw);
+    }
+}
+
+function uEditResetPw(pw) { 
+    if(!pw) pw = uEditMakeRandomPw(patron);	
 	$('ue_password1').value = pw;
 	$('ue_password2').value = pw;
     $('ue_password1').onchange();
