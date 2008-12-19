@@ -72,7 +72,7 @@
 	<vbox>
 		<hbox>
 			<hbox id="checkin_effective_date_hbox">
-				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_date_textbox" accesskey="D"/>
+				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_date_textbox" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
 				<textbox id="checkin_effective_date_textbox"/>
 			</hbox>
 			<menubar>

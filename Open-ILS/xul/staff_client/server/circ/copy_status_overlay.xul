@@ -136,7 +136,7 @@
 			<menuitem command="save_columns" label="&staff.circ.copy_status_overlay.save_columns.label;"/>
 		</menupopup>
 	</menu>
-	<menu label="Actions for Selected Items" accesskey="S">
+	<menu label="&staff.circ.copy_status_overlay.sel_items.label;" accesskey="&staff.circ.copy_status_overlay.sel_items.accesskey;">
 		<menupopup>
 			<menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
 			<menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>

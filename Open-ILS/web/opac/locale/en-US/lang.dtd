@@ -1497,14 +1497,11 @@
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval "Change reshelving status interval">
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout "Selfcheck: Patron Login Timeout (in seconds)">
-<!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc 
-    "Number of seconds of inactivity before the patron is logged out of the selfcheck interface">
+<!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc "Number of seconds of inactivity before the patron is logged out of the selfcheck interface">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event "Selfcheck: Pop-up alert for errors">
-<!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event.desc 
-    "If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message">
+<!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event.desc "If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.require_patron_password "Selfcheck: Require patron password">
-<!ENTITY staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc 
-    "If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface">
+<!ENTITY staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc "If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface">
 <!ENTITY staff.server.admin.org_settings.cat.bib.keep_on_empty "Do not automatically delete empty bib records">
 <!ENTITY staff.server.admin.org_settings.cat.bib.keep_on_empty.desc 'Do not automatically delete a bib record when all attached copies are deleted'>
 <!ENTITY staff.server.admin.org_settings.cat.bib.alert_on_empty 'Alert on empty bib records'>
@@ -1576,6 +1573,7 @@
 <!ENTITY staff.circ.checkin_overlay.background_text "Check In or Process Item">
 <!ENTITY staff.circ.checkin_overlay.background_text.hold_capture "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.effective_date.label "Effective Date:">
+<!ENTITY staff.circ.checkin_overlay.effective_date.accesskey "D">
 <!ENTITY staff.circ.checkin_overlay.actions.label "Actions for Selected Items">
 <!ENTITY staff.circ.checkin_overlay.actions.accesskey "S">
 <!ENTITY staff.circ.checkin_overlay.checkin_export.label "Export">
@@ -1618,6 +1616,8 @@
 <!ENTITY staff.circ.copy_details.r_hold.accesskey "H">
 <!ENTITY staff.circ.copy_details.done.label "Done">
 <!ENTITY staff.circ.copy_details.done.accesskey "D">
+<!ENTITY staff.circ.copy_status_overlay.sel_items.label "Actions for Selected Items">
+<!ENTITY staff.circ.copy_status_overlay.sel_items.accesskey "S">
 <!ENTITY staff.circ.copy_status_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.copy_status_overlay.sel_clip.accesskey "C">
 <!ENTITY staff.circ.copy_status_overlay.sel_bucket.label "Add to Item Bucket">
@@ -2282,6 +2282,8 @@
 <!ENTITY staff.patron.holds_overlay.actions_for_holds.label "Actions for Selected Holds">
 <!ENTITY staff.patron.holds_overlay.actions_for_holds.accesskey "S">
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
+<!ENTITY staff.patron.holds_overlay.print.label "Print">
+<!ENTITY staff.patron.holds_overlay.print.accesskey "P">
 <!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
 <!ENTITY staff.patron.info_group.clone.accesskey "N">
 <!ENTITY staff.patron.info_group.remove.accesskey "R">
