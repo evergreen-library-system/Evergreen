@@ -497,9 +497,9 @@ main.menu.prototype = {
 								cookieSvc.setCookieString(cookieUri, null, "ses="+obj.data.session.key, null);
 								cookieSvc.setCookieString(cookieUriSSL, null, "ses="+obj.data.session.key, null);
 
-            } catch(E) {
-                alert('Error setting session cookie: ' + E);
-            }
+					    } catch(E) {
+						    alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
+					    }
 
 							removeCSSClass(document.getElementById('main_tabbox'),'operator_change');
 						} else {
