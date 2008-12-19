@@ -88,7 +88,8 @@
                     <th field="code">Code</th>
                     <th field="name" width='auto' editable='true' 
                         cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
-                    <th field="description" width='auto'>Description</th>
+                    <th field="description" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Description</th>
                     <th field="sip2_media_type" width='auto' editable='true' 
                         cellType='dojox.grid.cells.Select' 
                         options='Other,Book,Magazine,Bound Journal,Audio Tape,Video Tape,CD/CDROM,Diskette,Book with Diskette,Book with CD,Book with Audio Tape' 
