@@ -90,10 +90,14 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 	    retrieveAll : function ( fm_class /* Fieldmapper class hint */, opts /* Option hash */) {
             var pkey = fieldmapper[fm_class].Indentifier;
 
+            var order_by = {};
+            if (opts.order_by) order_by.order_by = opts.order_by;
+            if (opts.select) order_by.select = opts.select;
+
             var req_hash = dojo.mixin(
                 opts, 
                 { method : 'open-ils.pcrud.search.' + fm_class + '.atomic',
-                  params : [ this.auth(), { fieldmapper[fm_class].Indentifier : { '!=' : null } } ]
+                  params : [ this.auth(), { fieldmapper[fm_class].Indentifier : { '!=' : null } }, order_by ]
                 }
             );
 
@@ -114,10 +118,14 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 	    search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
             var pkey = fieldmapper[fm_class].Indentifier;
 
+            var order_by = {};
+            if (opts.order_by) order_by.order_by = opts.order_by;
+            if (opts.select) order_by.select = opts.select;
+
             var req_hash = dojo.mixin(
                 opts, 
                 { method : 'open-ils.pcrud.search.' + fm_class + '.atomic',
-                  params : [ this.auth(), search ]
+                  params : [ this.auth(), search, order_by ]
                 }
             );
 
