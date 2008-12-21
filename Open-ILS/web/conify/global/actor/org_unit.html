@@ -69,60 +69,57 @@
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
 				<script type="dojo/method">
 <![CDATA[
-					var ou_list_data = { label : 'shortname', identifier : 'id' };
-					window.dirtyStore = [];
-		
-					pCRUD.request({
-						method : 'open-ils.pcrud.search.aou.atomic',
-						timeout : 15,
-						params : [ ses, { id : { "!=" : null } }, { order_by : { aou : 'shortname' } } ],
-						onerror : function (r) { throw aou_strings.ERROR_FETCHING_ORGS; },
-						oncomplete : function (r) {
-							window._ou_list = r.recv().content();
-							window._ou_data = aou.toStoreData( window._ou_list );
-							window.ou_list_store = new dojo.data.ItemFileWriteStore({ data : window._ou_data });
 
-							window.ou_list_store.onSet = function (item, attr, o, n) {
-								if (attr == 'ischanged') return;
-								if (n == o) return;
-								this.setValue( item, 'ischanged', 1);
-							};
+                    pcrud.retrieveAll( 'aou', {
+                        timeout : 10, order_by : { aou : 'shortname' },
+                        onerror : function (r) { status_update(aou_strings.ERROR_FETCHING_ORGS); },
+                        oncomplete : function (r) {
+                            var _ou_list = r.recv().content();
+                            var _ou_data = aou.toStoreData( _ou_list );
+                            ou_list_store = new dojo.data.ItemFileWriteStore({ data : _ou_data });
 
-							dojo.addOnUnload( function (event) {
+                            ou_list_store.onSet = function (item, attr, o, n) {
+                                if (attr == 'ischanged') return;
+                                if (n == o) return;
+                                this.setValue( item, 'ischanged', 1);
+                            };
 
-								ou_list_store.fetch({
-									query : { ischanged : 1 },
-									queryOptions : { deep : true },
-									onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-									scope : ou_list_store
-								});
+                            dojo.addOnUnload( function (event) {
 
-								if (dirtyStore.length > 0) {
-									var confirmation = confirm(aou_strings.CONFIRM_EXIT_AOU);
+                                ou_list_store.fetch({
+                                    query : { ischanged : 1 },
+                                    queryOptions : { deep : true },
+                                    onItem : function (item, req) {
+                                        try {
+                                            if (this.isItem( item )) window.dirtyStore.push( item );
+                                        } catch (e) {}
+                                    },
+                                    scope : window.ou_list_store
+                                });
 
-									if (confirmation) {
-										for (var i in window.dirtyStore) {
-											window.current_ou = window.dirtyStore[i];
-											save_org(true);
-										}
-									}
-								}
+                                if (window.dirtyStore.length > 0) {
+                                    var confirmation = confirm(aou_strings.CONFIRM_EXIT_AOU);
 
-							});
-						}
-					}).send();
+                                    if (confirmation) {
+                                        for (var i in dirtyStore) {
+                                            window.current_ou = window.dirtyStore[i];
+                                            save_org(true);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
 
-                    pCRUD.request({
-                        method : 'open-ils.pcrud.search.aout.atomic',
-                        timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'depth' } } ],
-                        onerror : function (r) { status_update(aou_strings.ERROR_FETCHING_TYPES_AOUT) },
+                    pcrud.retrieveAll( 'aout', {
+                        timeout : 10, order_by : { aout : 'depth' },
+                        onerror : function (r) { status_update(aou_strings.ERROR_FETCHING_TYPES_AOUT); },
                         oncomplete : function (r) {
                             window._ou_type_list = r.recv().content();
                             window._ou_type_data = aout.toStoreData( window._ou_type_list );
                             window.ou_type_store = new dojo.data.ItemFileReadStore({ data : window._ou_type_data });
-                        }
-                    }).send();
+                       }
+                    });
 
 					highlighter.ou_tree = {};
 					highlighter.editor_pane = {};

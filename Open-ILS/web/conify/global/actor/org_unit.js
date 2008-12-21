@@ -17,6 +17,7 @@
 
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
+dojo.require('openils.PermaCrud');
 dojo.require('dojo.parser');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.stamp');
@@ -39,8 +40,10 @@ var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.pcrud');
+var pcrud = new openils.PermaCrud({ authtoken : ses });
 
-var current_ou, current_ou_hoo;
+var current_ou, current_ou_hoo, ou_list_store
+var dirtyStore = [];
 var virgin_ou_id = -1;
 
 var aou_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
@@ -54,91 +57,33 @@ function status_update (markup) {
 }
 
 function save_org () {
-	var modified_ou = new aou().fromStoreItem( current_ou );
-	modified_ou.ischanged( 1 );
 
 	new_kid_button.disabled = false;
 	save_ou_button.disabled = false;
 	delete_ou_button.disabled = false;
 
-    if (!pCRUD.connect()) {
-		highlighter.editor_pane.red.play();
-		status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-        return null;
-    }
-    
-	var commit = pCRUD.request({
-		method : 'open-ils.pcrud.transaction.commit',
-		timeout : 10,
-		params : [ ses, modified_ou ],
+	var modified_ou = new aou().fromStoreItem( current_ou );
+	modified_ou.ischanged( 1 );
+
+    pcrud.apply( modified_ou, {
+        timeout : 10, // makes it synchronous
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-            pCRUD.disconnect();
-            throw 'commit error';
 		},
 		oncomplete : function (r) {
 			var res = r.recv();
-			if ( res ) {
+			if ( res && res.content() ) {
 				ou_list_store.setValue( current_ou, 'ischanged', 0 );
 				highlighter.editor_pane.green.play();
 				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
 			} else {
 				highlighter.editor_pane.red.play();
 				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-                throw 'commit error';
-			}
-            pCRUD.disconnect();
-		},
-	});
-
-	var update = pCRUD.request({
-		method : 'open-ils.pcrud.update.aou',
-		timeout : 10,
-		params : [ ses, modified_ou ],
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-            pCRUD.disconnect();
-            throw 'update error';
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-                commit.send();
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-                pCRUD.disconnect();
-                throw 'update error';
 			}
 		},
-	});
+    });
 
-	var begin = pCRUD.request({
-		method : 'open-ils.pcrud.transaction.begin',
-		timeout : 10,
-		params : [ ses, modified_ou ],
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-            pCRUD.disconnect();
-            throw 'begin error';
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-                update.send();
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-                pCRUD.disconnect();
-                throw 'begin error';
-			}
-		},
-	});
-
-    begin.send();
 }
 	
 function hoo_load () {
