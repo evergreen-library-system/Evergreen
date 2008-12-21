@@ -18,6 +18,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
     dojo._hasResource["openils.PermaCrud"] = true;
     dojo.provide("openils.PermaCrud");
+    dojo.require("fieldmapper.Fieldmapper");
     dojo.require("openils.User");
 
     dojo.declare('openils.PermaCrud', null, {
@@ -88,16 +89,19 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 	    },
 
 	    retrieveAll : function ( fm_class /* Fieldmapper class hint */, opts /* Option hash */) {
-            var pkey = fieldmapper[fm_class].Indentifier;
+            var pkey = fieldmapper[fm_class].Identifier;
 
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
 
+            var search = {};
+            search[pkey] = { '!=' : null };
+
             var req_hash = dojo.mixin(
                 opts, 
                 { method : 'open-ils.pcrud.search.' + fm_class + '.atomic',
-                  params : [ this.auth(), { fieldmapper[fm_class].Indentifier : { '!=' : null } }, order_by ]
+                  params : [ this.auth(), search, order_by ]
                 }
             );
 
@@ -116,8 +120,6 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 	    },
 
 	    search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
-            var pkey = fieldmapper[fm_class].Indentifier;
-
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
@@ -143,7 +145,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             return req;
 	    },
 
-        _CUD : function ( method /* 'create' or 'update' or 'delete' */ list /* Fieldmapper object */, opts /* Option hash */) {
+        _CUD : function ( method /* 'create' or 'update' or 'delete' */, list /* Fieldmapper object */, opts /* Option hash */) {
 
             if (dojo.isArray(list)) {
                 if (list.classname) list = [ list ];
@@ -154,35 +156,53 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!this.connected) this.connect();
 
             var _pcrud = this;
-            var final_complete = opts.oncomplete;
-            var final_error = opts.onerror;
 
-            function _CUD_recursive ( obj_list, pos, final_complete ) {
+            function _CUD_recursive ( obj_list, pos, final_complete, final_error ) {
                 var obj = obj_list[pos];
                 var req_hash = {
                     method : 'open-ils.pcrud.' + method + '.' + obj.classname,
                     params : [ _pcrud.auth(), obj ],
-                    onerror : final_error || function (r) { _pcrud.disconnect(); throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj); };
+                    onerror : final_error || function (r) { _pcrud.disconnect(); throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj); }
                 };
 
                 var req = _pcrud.session.request( req_hash );
+                req._final_complete = final_complete;
+                req._final_error = final_error;
 
-                if (++pos == all_objs.length) {
+                if (++pos == obj_list.length) {
                     req.oncomplete = function (r) {
-                        _pcrud.commit();
+
+                        _pcrud.session.request({
+                            method : 'open-ils.pcrud.transaction.commit',
+                            timeout : 10,
+                            params : [ ses ],
+                            onerror : function (r) {
+                                _pcrud.disconnect();
+                                throw 'Transaction commit error';
+                            },      
+                            oncomplete : function (r) {
+                                var res = r.recv();
+                                if ( res && res.content() ) {
+                                    _auto_CUD_recursive( list, 0 );
+                                } else {
+                                    _pcrud.disconnect();
+                                    throw 'Transaction commit error';
+                                }
+                            },
+            	        }).send();
+
+                        if (r._final_complete) r._final_complete(r);
                         _pcrud.disconnect();
-                        final_complete(r);
                     };
 
                     req.onerror = function (r) {
+                        if (r._final_error) r._final_error(r);
                         _pcrud.disconnect();
-                        final_error(r);
                     };
 
                 } else {
                     req._pos = pos;
                     req._obj_list = obj_list;
-                    req._final_complete = final_complete;
                     req.oncomplete = function (r) {
                         var res = r.recv();
                         if ( res && res.content() ) {
@@ -197,10 +217,13 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 req.send();
             }
 
+            var f_complete = opts.oncomplete;
+            var f_error = opts.onerror;
+
             this.session.request({
-                method : 'open-ils.pcrud.transaction.commit',
+                method : 'open-ils.pcrud.transaction.begin',
                 timeout : 10,
-                params : [ ses, modified_ou ],
+                params : [ ses ],
                 onerror : function (r) {
                     _pcrud.disconnect();
                     throw 'Transaction begin error';
@@ -208,7 +231,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 oncomplete : function (r) {
                     var res = r.recv();
                     if ( res && res.content() ) {
-                        _CUD_recursive( list, 0 );
+                        _CUD_recursive( list, 0, f_complete, f_error );
                     } else {
                         _pcrud.disconnect();
                         throw 'Transaction begin error';
@@ -244,46 +267,65 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!this.connected) this.connect();
 
             var _pcrud = this;
-            var final_complete = opts.oncomplete;
-            var final_error = opts.onerror;
 
-            function _auto_CUD_recursive ( obj_list, pos, final_complete ) {
+            function _auto_CUD_recursive ( obj_list, pos, final_complete, final_error ) {
                 var obj = obj_list[pos];
 
                 var method;
-                if (obj.isnew)     method = 'create';
-                if (obj.ischanged) method = 'update';
-                if (obj.isdeleted) method = 'delete';
+                if (obj.ischanged()) method = 'update';
+                if (obj.isnew())     method = 'create';
+                if (obj.isdeleted()) method = 'delete';
                 if (!method) throw 'No action detected';
 
                 var req_hash = {
                     method : 'open-ils.pcrud.' + method + '.' + obj.classname,
+                    timeout : 10,
                     params : [ _pcrud.auth(), obj ],
-                    onerror : final_error || function (r) { _pcrud.disconnect(); throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj); };
+                    onerror : final_error || function (r) { _pcrud.disconnect(); throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj); }
                 };
 
                 var req = _pcrud.session.request( req_hash );
+                req._final_complete = final_complete;
+                req._final_error = final_error;
 
-                if (++pos == all_objs.length) {
+                if (++pos == obj_list.length) {
                     req.oncomplete = function (r) {
-                        _pcrud.commit();
+
+                        _pcrud.session.request({
+                            method : 'open-ils.pcrud.transaction.commit',
+                            timeout : 10,
+                            params : [ ses ],
+                            onerror : function (r) {
+                                _pcrud.disconnect();
+                                throw 'Transaction commit error';
+                            },      
+                            oncomplete : function (r) {
+                                var res = r.recv();
+                                if ( res && res.content() ) {
+                                    _auto_CUD_recursive( list, 0 );
+                                } else {
+                                    _pcrud.disconnect();
+                                    throw 'Transaction commit error';
+                                }
+                            },
+            	        }).send();
+
+                        if (r._final_complete) r._final_complete(r);
                         _pcrud.disconnect();
-                        final_complete(r);
                     };
 
                     req.onerror = function (r) {
+                        if (r._final_error) r._final_error(r);
                         _pcrud.disconnect();
-                        final_error(r);
                     };
 
                 } else {
                     req._pos = pos;
                     req._obj_list = obj_list;
-                    req._final_complete = final_complete;
                     req.oncomplete = function (r) {
                         var res = r.recv();
                         if ( res && res.content() ) {
-                            _auto_CUD_recursive( r._obj_list, r._pos, r._final_complete );
+                            _auto_CUD_recursive( r._obj_list, r._pos, r._final_complete, r._final_error );
                         } else {
                             _pcrud.disconnect();
                             throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj);
@@ -294,10 +336,13 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 req.send();
             }
 
+            var f_complete = opts.oncomplete;
+            var f_error = opts.onerror;
+
             this.session.request({
-                method : 'open-ils.pcrud.transaction.commit',
+                method : 'open-ils.pcrud.transaction.begin',
                 timeout : 10,
-                params : [ ses, modified_ou ],
+                params : [ ses ],
                 onerror : function (r) {
                     _pcrud.disconnect();
                     throw 'Transaction begin error';
@@ -305,7 +350,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 oncomplete : function (r) {
                     var res = r.recv();
                     if ( res && res.content() ) {
-                        _auto_CUD_recursive( list, 0 );
+                        _auto_CUD_recursive( list, 0, f_complete, f_error );
                     } else {
                         _pcrud.disconnect();
                         throw 'Transaction begin error';
