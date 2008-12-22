@@ -125,7 +125,30 @@ var GPT = {
             var pId = this.grid.store.getValue(item, this.field);
             return GPT.penaltyMap[pId].name();
         }
-    }
-};
+    },
 
+    deleteFromGrid : function() {
+        GPT._deleteFromGrid(gptGrid.selection.getSelected(), 0);
+    },   
+
+    _deleteFromGrid : function(list, idx) {
+        if(idx >= list.length) // we've made it through the list
+            return;
+
+        var item = list[idx];
+        var id = gptGrid.store.getValue(item, 'id');
+        fieldmapper.standardRequest(
+            ['open-ils.permacrud', 'open-ils.permacrud.delete.pgpt'],
+            {   async: true,
+                params: [openils.User.authtoken, id],
+                oncomplete: function(r) {
+                    if(obj = openils.Util.readResponse(r)) {
+                        gptGrid.store.deleteItem(item);
+                    }
+                    GPT._deleteFromGrid(list, ++idx);
+                }
+            }
+        );
+    },
+ };
 openils.Util.addOnLoad(GPT.init);

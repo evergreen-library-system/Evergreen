@@ -8,7 +8,7 @@
     <span>New Group Penalty Threshold</span>
     <div dojoType="dijit.TooltipDialog" execute="GPT.create(arguments[0]);">
         <script type='dojo/connect' event='onOpen'>
-            new openils.User().buildPermOrgSelector('CREATE_GROUP_PENALTY_THRESHOLD', gptOwningOrg);
+            new openils.User().buildPermOrgSelector('ADMIN_GROUP_PENALTY_THRESHOLD', gptOwningOrg);
             GPT.drawCspSelector();
             GPT.grpSelector.drawGroups();
         </script>
@@ -43,7 +43,10 @@
             </tr>
         </table>
     </div>
-</div> 
+</div>
+
+<button dojoType='dijit.form.Button' onClick="GPT.deleteFromGrid">Delete Selected</button>
+ 
 <span>Context Org Unit</span>
 <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='GPT.contextOrgSelector' 
     searchAttr='shortname' labelAttr='shortname'> </select>
@@ -65,5 +68,4 @@
 </div>
 
 [% END %]
-
 
