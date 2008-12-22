@@ -928,20 +928,6 @@ sub _create_standing_penalties {
 }
 
 
-
-__PACKAGE__->register_method(
-	method	=> "search_username",
-	api_name	=> "open-ils.actor.user.search.username",
-);
-
-sub search_username {
-	my($self, $client, $username) = @_;
-    return new_editor()->search_actor_user({usrname=>$username});
-}
-
-
-
-
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_by_barcode",
     authoritative => 1,
