@@ -72,6 +72,29 @@ function verify_init() {
             },
             false
         );
+        document.getElementById('cmd_retrieve').addEventListener(
+            'command',
+            function() {
+                var barcode = document.getElementById('barcode_prompt').value;
+                var name = document.getElementById('name_prompt').value;
+                var req = net.simple_request(
+                    'FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME',
+                    [
+                        ses(),
+                        barcode,
+                        name
+                    ]
+                );
+                if (typeof req.ilsevent != 'undefined') { 
+                    alert (req.desc);
+                    document.getElementById('name_prompt').focus();
+                } else {
+                    var url = xulG.url_prefix( urls.XUL_PATRON_DISPLAY ); 
+                    xulG.set_tab( url, {}, { 'id' : req } );
+                }
+            },
+            false
+        );
 
         document.getElementById('name_prompt').focus();
 

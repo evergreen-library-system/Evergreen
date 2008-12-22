@@ -115,6 +115,7 @@ const api = {
 	'FM_ATC_VOID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.transit.abort' },
 	'FM_ATC_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.transit.retrieve', 'secure' : false },
 	'FM_ATC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.transit.retrieve_by_lib', 'secure' : false },
+    'FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve_id_by_barcode_or_username' },
 	'FM_AU_IDS_RETRIEVE_VIA_HASH' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.search.advanced' },
 	'FM_AU_LIST_RETRIEVE_VIA_GROUP' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.members.retrieve' },
 	'FM_AU_LIST_RETRIEVE_VIA_GROUP.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.members.retrieve.authoritative' },

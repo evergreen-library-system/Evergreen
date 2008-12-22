@@ -190,6 +190,8 @@
 <!ENTITY staff.auth.verify.caption "Verify Credentials">
 <!ENTITY staff.auth.verify.submit.label "Verify">
 <!ENTITY staff.auth.verify.submit.accesskey "V">
+<!ENTITY staff.auth.verify.retrieve.label "Retrieve">
+<!ENTITY staff.auth.verify.retrieve.accesskey "R">
 
 <!ENTITY staff.bills_current_payment_label "Current Payment">
 <!ENTITY staff.bills_information "Information">

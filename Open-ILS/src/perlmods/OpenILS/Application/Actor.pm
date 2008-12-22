@@ -3009,6 +3009,39 @@ sub verify_user_password {
     return 0;
 }
 
+__PACKAGE__->register_method (
+	method		=> 'retrieve_usr_id_via_barcode_or_usrname',
+	api_name	=> "open-ils.actor.user.retrieve_id_by_barcode_or_username",
+	signature	=> q/
+        Given a barcode or username returns the id for the user or
+        a failure event.
+	/
+);
+
+sub retrieve_usr_id_via_barcode_or_usrname {
+    my($self, $conn, $auth, $barcode, $username) = @_;
+    my $e = new_editor(authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
+    my $user;
+    my $user_by_barcode;
+    my $user_by_username;
+    if($barcode) {
+        my $card = $e->search_actor_card([
+            {barcode => $barcode},
+            {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0] or return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+        $user_by_barcode = $card->usr;
+        $user = $user_by_barcode;
+    }
+    if ($username) {
+        $user_by_username = $e->search_actor_user({usrname => $username})->[0] or return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+
+        $user = $user_by_username;
+    }
+	return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if (!$user);
+	return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id); 
+    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    return $user->id;
+}
 
 
 __PACKAGE__->register_method (
