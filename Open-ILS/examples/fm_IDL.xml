@@ -1779,12 +1779,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
-                <retrieve 
-                    permission="VIEW_GROUP_PENALTY_THRESHOLD CREATE_GROUP_PENALTY_THRESHOLD UPDATE_GROUP_PENALTY_THRESHOLD DELETE_GROUP_PENALTY_THRESHOLD" 
-                    context_field='org_unit'/>
-                <update permission="UPDATE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
-                <delete permission="DELETE_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <create permission="ADMIN_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <retrieve permission="VIEW_GROUP_PENALTY_THRESHOLD ADMIN_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <update permission="ADMIN_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
+                <delete permission="ADMIN_GROUP_PENALTY_THRESHOLD" context_field='org_unit'/>
             </actions>
         </permacrud>
 	</class>
