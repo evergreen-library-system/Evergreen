@@ -110,7 +110,7 @@
 						}
 
 						if (g.data.user_org_unit_opt_in_enabled) {
-							var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
+							var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]); // FIXME -- robj is no longer returning a usr id
 							if (typeof r.ilsevent != 'undefined') {
 								throw(r);
 							} else {
