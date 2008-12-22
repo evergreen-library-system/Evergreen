@@ -455,7 +455,8 @@ CREATE TABLE actor.usr_address (
 	county			TEXT,
 	state			TEXT	NOT NULL,
 	country			TEXT	NOT NULL,
-	post_code		TEXT	NOT NULL
+	post_code		TEXT	NOT NULL,
+	replaces	    INT	REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX actor_usr_addr_usr_idx ON actor.usr_address (usr);
