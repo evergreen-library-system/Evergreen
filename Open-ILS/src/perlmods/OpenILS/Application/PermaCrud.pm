@@ -3,6 +3,7 @@
 package OpenILS::Application::PermaCrud;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
+use strict; use warnings;
 
 use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;
@@ -71,10 +72,11 @@ sub CRUD_action_object_permcheck {
     }
 
     my $class_node;
+    my $error = '';
     try {
         ($class_node) = $xpc->findnodes( "//idl:class[\@id='$self->{class_hint}']", $idl->documentElement );
     } catch Error with {
-        my $error = shift;
+        $error = shift;
         $log->error("Error finding class node: $error [//idl:class[\@id='$self->{class_hint}']]");
         throw OpenSRF::DomainObject::oilsException->new(
             statusCode => 500,
@@ -94,7 +96,7 @@ sub CRUD_action_object_permcheck {
     try {
         ($action_node) = $xpc->findnodes( "perm:permacrud/perm:actions/perm:$self->{action}", $class_node );
     } catch Error with {
-        my $error = shift;
+        $error = shift;
         $log->error("Error finding action node: $error [perm:permacrud/perm:actions/perm:$self->{action}]");
         throw OpenSRF::DomainObject::oilsException->new(
             statusCode => 500,
@@ -190,7 +192,7 @@ sub CRUD_action_object_permcheck {
 
     $o_type =~ s/\./_/og;
     my $method = $self->{action} . "_$o_type";
-    $e->$method($obj) or return $e->die_event;
+    my $val = $e->$method($obj) or return $e->die_event;
     $e->commit;
 
     return $val;
