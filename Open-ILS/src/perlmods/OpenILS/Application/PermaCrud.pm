@@ -116,7 +116,7 @@ sub CRUD_action_object_permcheck {
     if (!ref($obj)) {
         my $retrieve_method = 'retrieve_' . $fm_class;
         $retrieve_method =~ s/::/_/go;
-        $obj = $e->$retrieve_method( $obj );
+        $obj = $e->$retrieve_method( $obj ) or return $e->die_event;
     }
 
     (my $o_type = $fm_class) =~ s/::/./go;
