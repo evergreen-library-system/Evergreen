@@ -2989,14 +2989,21 @@ sub verify_user_password {
     my $e = new_editor(authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
     my $user;
+    my $user_by_barcode;
+    my $user_by_username;
     if($barcode) {
         my $card = $e->search_actor_card([
             {barcode => $barcode},
             {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0] or return 0;
-        $user = $card->usr;
-    } else {
-        $user = $e->search_actor_user({usrname => $username})->[0] or return 0;
+        $user_by_barcode = $card->usr;
+        $user = $user_by_barcode;
     }
+    if ($username) {
+        $user_by_username = $e->search_actor_user({usrname => $username})->[0] or return 0;
+        $user = $user_by_username;
+    }
+    return 0 if (!$user);
+    return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id); 
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     return 1 if $user->passwd eq $password;
     return 0;
