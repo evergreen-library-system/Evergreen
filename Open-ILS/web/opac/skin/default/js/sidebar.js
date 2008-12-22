@@ -121,7 +121,25 @@ function changePassword() {
 	}
 }
 
+var pwRegexSetting;
 function strongPassword(pass, alrt) {
+
+    /* first, let's see if there is a configured regex */
+    if(!pwRegexSetting) {
+        var regex = fetchOrgSettingDefault(G.user.home_ou(), 'global.password_regex');
+        if(regex) {
+            if(pass.match(new RegExp(regex))) {
+                return true;
+            } else {
+                if(alrt)
+	               alert($('pw_not_strong').innerHTML);
+                return false;
+            }
+        }
+    }
+
+    /* no regex configured, use the default */
+
 	var good = false;
 
 	do {
