@@ -188,7 +188,9 @@ sub CRUD_action_object_permcheck {
         return $obj;
     }
 
-    my $val = $e->session->request("open-ils.cstore.direct.$o_type.$self->{action}" => $obj )->gather(1);
+    $o_type =~ s/\./_/og;
+    my $method = $self->{action} . "_$o_type";
+    $e->$method($obj) or return $e->die_event;
     $e->commit;
 
     return $val;
