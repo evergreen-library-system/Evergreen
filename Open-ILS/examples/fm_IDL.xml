@@ -1843,9 +1843,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User" name="usr" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Valid Address?" name="valid" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Within City Limits?" name="within_city_limits" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Replaces" name="replaces" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="replaces" reltype="has_a" key="id" map="" class="aua"/>
 		</links>
 	</class>
 	<class id="acnn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
