@@ -1845,9 +1845,16 @@ sub checked_out {
 
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
+    my $user = $e->retrieve_actor_user($userid) or return $e->event;
 
 	if( $userid ne $e->requestor->id ) {
-		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+		unless($e->allowed('VIEW_CIRCULATIONS', $user->home_ou)) {
+
+            # see if there is a friend link allowing circ.view perms
+            my $allowed = OpenILS::Application::Actor::Friends->friend_perm_allowed(
+                $e, $userid, $e->requestor->id, 'circ.view');
+            return $e->event unless $allowed;
+        }
 	}
 
 	my $count = $self->api_name =~ /count/;
