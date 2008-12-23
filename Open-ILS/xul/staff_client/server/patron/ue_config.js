@@ -509,6 +509,8 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 				}
 			)
 		);
+        if(!patron.addresses())
+            patron.addresses([]);
 
 		/* XXX */
 		for( var f in dataFields ) {
@@ -530,6 +532,8 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 					}
 				)
 			);
+            if(!patron.addresses())
+                patron.addresses([]);
 
 		} else {
 			address.isdeleted(1);
