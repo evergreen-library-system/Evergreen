@@ -74,6 +74,9 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 .postit_hb { -moz-border-radius: 30px; background-color: black; }
 .postit_gb { -moz-border-radius: 30px; background-color: yellow; }
 
+.success_text { color: white; background-color: green; }
+.failure_text { color: white; background-color: red; }
+
 .text_left { text-align: left; }
 .text_right { text-align: right; }
 .text_center { text-align: center; }
