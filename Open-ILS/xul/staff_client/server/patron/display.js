@@ -365,7 +365,17 @@ patron.display.prototype = {
 				{},
 				{
 					'barcode' : obj.barcode,
-					'id' : obj.id, 
+					'id' : obj.id,
+                    'verify_credentials' : function(patron) {
+                        var vframe = obj.right_deck.reset_iframe(
+                            urls.XUL_VERIFY_CREDENTIALS,
+                            {},
+                            {
+                                'barcode' : patron.card().barcode(),
+                                'usrname' : patron.usrname()
+                            }
+                        );
+                    }, 
 					'on_finished' : function(patron) {
 
 						obj.patron = patron; obj.controller.render();

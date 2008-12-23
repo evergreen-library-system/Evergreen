@@ -69,7 +69,11 @@ function verify_init() {
                 } catch(E) {
                     alert(E);
                 }
-                document.getElementById('name_prompt').focus();
+                if (document.getElementById('name_prompt').disabled) {
+                    document.getElementById('password_prompt').focus();
+                } else {
+                    document.getElementById('name_prompt').focus();
+                }
             },
             false
         );
@@ -97,7 +101,16 @@ function verify_init() {
             false
         );
 
-        document.getElementById('name_prompt').focus();
+        if (xulG.barcode) {
+            document.getElementById('name_prompt').disabled = true;
+            document.getElementById('name_prompt').value = xulG.usrname;
+            document.getElementById('barcode_prompt').disabled = true;
+            document.getElementById('barcode_prompt').value = xulG.barcode;
+            document.getElementById('cmd_retrieve').setAttribute('disabled','true');
+            document.getElementById('password_prompt').focus();
+        } else {
+            document.getElementById('name_prompt').focus();
+        }
 
     } catch(E) {
         alert(E);

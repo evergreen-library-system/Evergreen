@@ -137,8 +137,13 @@
 		<row id="pdsgr0">
 			<label id="PatronSummaryContact_library_card_label" class="text_left card label"
 				value="&staff.patron_display.library_card.label;"/>
-			<label id="patron_card" class="card value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
-			<!--<textbox id="patron_card" class="plain" readonly="true" onclick="this.select()"/>-->
+			<label id="patron_card" class="card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
+		</row>
+		<row id="pdsgr0a">
+            <button id="PatronSummary_verify_passwd_label" 
+                label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;"
+                command="cmd_verify_credentials"/>
+            <spacer/>
 		</row>
 		<row id="pdsgr1">
 			<label id="PatronSummaryContact_ident_label" class="text_left"
