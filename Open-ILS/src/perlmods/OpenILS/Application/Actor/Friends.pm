@@ -170,7 +170,7 @@ sub confirmed_friends {
 # returns 1 if delegate_user is allowed to perform 'perm' for base_user
 sub friend_perm_allowed {
     my($self, $e, $base_user_id, $delegate_user_id, $perm) = @_;
-    return 0 unless $self->confirmed_friends($base_user_id, $delegate_user_id);
+    return 0 unless $self->confirmed_friends($e, $base_user_id, $delegate_user_id);
     $perm_check_query->{where} = {
         '+cubi' => {target_user => $delegate_user_id},
         '+cub' => {btype => "folks:$perm", owner => $base_user_id}
