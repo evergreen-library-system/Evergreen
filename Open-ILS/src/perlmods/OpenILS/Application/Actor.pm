@@ -1845,9 +1845,9 @@ sub checked_out {
 
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-    my $user = $e->retrieve_actor_user($userid) or return $e->event;
 
 	if( $userid ne $e->requestor->id ) {
+        my $user = $e->retrieve_actor_user($userid) or return $e->event;
 		unless($e->allowed('VIEW_CIRCULATIONS', $user->home_ou)) {
 
             # see if there is a friend link allowing circ.view perms
