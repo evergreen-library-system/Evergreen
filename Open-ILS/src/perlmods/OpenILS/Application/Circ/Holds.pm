@@ -30,6 +30,7 @@ use OpenILS::Utils::PermitHold;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::Circ::Transit;
+use OpenILS::Application::Actor::Friends;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -322,32 +323,35 @@ different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
 sub retrieve_holds {
-	my($self, $client, $login_session, $user_id) = @_;
+	my($self, $client, $auth, $user_id) = @_;
 
-	my( $user, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $user_id, 'VIEW_HOLD' );
-	return $evt if $evt;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    $user_id = $e->requestor->id unless defined $user_id;
 
-	my $holds = $apputils->simplereq(
-		'open-ils.cstore',
-		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ 
-			usr =>  $user_id , 
+    unless($user_id == $e->requestor->id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        unless($e->allowed('VIEW_HOLD', $user->home_ou)) {
+            my $allowed = OpenILS::Application::Actor::Friends->friend_perm_allowed(
+                $e, $user_id, $e->requestor->id, 'hold.view');
+            return $e->event unless $allowed;
+        }
+    }
+
+    my $holds = $e->search_action_hold_request([
+		{   usr =>  $user_id , 
 			fulfillment_time => undef,
 			cancel_time => undef,
 		}, 
-		{ order_by => { ahr => "request_time" } }
-	);
+		{order_by => {ahr => "request_time"}}
+	]);
 	
 	if( ! $self->api_name =~ /id_list/ ) {
 		for my $hold ( @$holds ) {
 			$hold->transit(
-				$apputils->simplereq(
-					'open-ils.cstore',
-					"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
-					{ hold => $hold->id },
-					{ order_by => { ahtc => 'id desc' }, limit => 1 }
-				)->[0]
+                $e->search_action_hold_transit_copy([
+					{hold => $hold->id},
+					{order_by => {ahtc => 'id desc'}, limit => 1}])->[0]
 			);
 		}
 	}
