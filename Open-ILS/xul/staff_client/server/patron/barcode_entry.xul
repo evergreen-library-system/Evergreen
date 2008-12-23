@@ -94,23 +94,25 @@
 
 				tb.disabled = true;
 				document.getElementById('progress').setAttribute('hidden','false');
-				net.simple_request('PATRON_BARCODE_EXISTS.authoritative',[ ses(), barcode ],
+				net.simple_request('FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME',[ ses(), barcode, null ],
 					function(req) {
 						document.getElementById('progress').setAttribute('hidden','true');
 						tb.disabled = false; tb.select(); tb.focus(); ;
 						var robj = req.getResultObject();
 						if (typeof robj.ilsevent != 'undefined') {
 							sound.bad();
-							add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
-							return;
-						} else if (robj == 0) {
-							sound.bad(); 
-							add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
+                            switch(Number(robj.ilsevent)) {
+							    case 1002 /* ACTOR_USER_NOT_FOUND */: 
+							        add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
+                                break;
+                                default:
+                                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
+                            }
 							return;
 						}
 
 						if (g.data.user_org_unit_opt_in_enabled) {
-							var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]); // FIXME -- robj is no longer returning a usr id
+							var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
 							if (typeof r.ilsevent != 'undefined') {
 								throw(r);
 							} else {
