@@ -1006,7 +1006,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	jsonObjectSetKey(
 		jsonObjectGetIndex(fake_params, 0),
 		osrfHashGet(meta, "primarykey"),
-		jsonObjectClone(jsonObjectGetIndex(ctx->params, id_pos))
+		jsonObjectClone(jsonObjectGetIndex(ctx->params, 0))
 	);
 
 
