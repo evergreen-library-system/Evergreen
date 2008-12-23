@@ -113,10 +113,12 @@ function _deleteFromGrid(list, idx) {
 
     var item = list[idx];
     var id = spGrid.store.getValue(item, 'id');
-    if(id > 100){
+
+    if(id < 100) { // don't delete system penalties
         _deleteFromGrid(list, ++idx);
         return;
     }
+
     fieldmapper.standardRequest(
        ['open-ils.permacrud', 'open-ils.permacrud.delete.csp'],
        {   async: true,
