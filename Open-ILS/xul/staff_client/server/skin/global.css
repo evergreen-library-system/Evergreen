@@ -42,7 +42,7 @@ description { -moz-user-select: text; }
 .outline_me { -moz-outline: solid; }
 .clipboard_outline_me { -moz-outline: dotted thin gray; }
 
-.click_link { text-decoration: underline; color: blue; }
+.click_link { text-decoration: underline; color: blue; -moz-user-focus: normal; }
 
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
