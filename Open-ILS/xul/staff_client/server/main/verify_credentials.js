@@ -1,10 +1,11 @@
 function verify_init() {
     try {
-        offlineStrings = document.getElementById('offlineStrings');
+        commonStrings = document.getElementById('commonStrings');
+        patronStrings = document.getElementById('patronStrings');
 
         if (typeof JSAN == 'undefined') {
             throw(
-                offlineStrings.getString('common.jsan.missing')
+                commonStrings.getString('common.jsan.missing')
             );
         }
 
@@ -41,20 +42,20 @@ function verify_init() {
                     success_msg.appendChild(
                         document.createTextNode( 
                             String(req) == '1' ? 
-                                offlineStrings.getString('menu.cmd_verify_credentials.correct_credentials') : 
-                                offlineStrings.getString('menu.cmd_verify_credentials.incorrect_credentials') 
+                                patronStrings.getString('staff.patron.cmd_verify_credentials.correct_credentials') : 
+                                patronStrings.getString('staff.patron.cmd_verify_credentials.incorrect_credentials') 
                         )
                     );
                     var name_msg = document.createElement('description'); hbox.appendChild(name_msg);
                     name_msg.appendChild(
                         document.createTextNode(
-                            offlineStrings.getFormattedString('menu.cmd_verify_credentials.name_feedback',[name]) 
+                            patronStrings.getFormattedString('staff.patron.cmd_verify_credentials.name_feedback',[name]) 
                         )
                     );
                     var barcode_msg = document.createElement('description'); hbox.appendChild(barcode_msg);
                     barcode_msg.appendChild(
                         document.createTextNode(
-                            offlineStrings.getFormattedString('menu.cmd_verify_credentials.barcode_feedback',[barcode]) 
+                            patronStrings.getFormattedString('staff.patron.cmd_verify_credentials.barcode_feedback',[barcode]) 
                         )
                     );
                     var date_msg = document.createElement('description'); hbox.appendChild(date_msg);
