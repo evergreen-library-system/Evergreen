@@ -39,11 +39,11 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
              * Load the fields from the grid and map them to the MenuItem's.  
              * Load settings from server
              */
-            init : function(grid, persistPrefix, authtoken) {
+            init : function(args) {
 
-                this.grid = grid;
-                this.persistPrefix = persistPrefix
-                this.authtoken = authtoken;
+                this.grid = args.grid;
+                this.persistPrefix = args.prefix;
+                this.authtoken = args.authtoken;
                 this.cells = this.grid.structure[0].cells[0];
                 var self = this;
 
