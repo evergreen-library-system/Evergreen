@@ -19,6 +19,17 @@
                     this.addOption({value:'CIRC', label:'CIRC'});
                     this.addOption({value:'RENEW', label:'RENEW'});
                     this.addOption({value:'HOLD', label:'HOLD'});
+                },
+                attr : function(name, value) {
+                    if(name == 'value' && value == null) {
+                        var val = this.inherited('attr', arguments);
+                        var str = '';
+                        for(var i in val)
+                            str += val[i] + '|';
+                        return str.substring(0, str.length - 1);
+                    } else {
+                        return this.inherited('attr', arguments);
+                    } 
                 }
             } 
         );
@@ -66,7 +77,7 @@
                         cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Label</th>
                     <th field="block_list" width='auto' editable='true' 
                         cellType='dojox.grid.cells._Widget'
-                        widgetClass='openils.widget.StandingPenaltyBlockedSelector' jsId='formatBlockList'>Block List</th>
+                        widgetClass='openils.widget.StandingPenaltyBlockedSelector'>Block List</th>
                 </tr>
             </thead>
         </table>    

@@ -31,7 +31,7 @@ function spCreate(args) {
     var penalty = new csp();
     penalty.name(args.name);
     penalty.label(args.label);
-    penalty.block_list(formatBlockList(args.block_list)); 
+    penalty.block_list(args.block_list); 
 
     fieldmapper.standardRequest(
         ['open-ils.permacrud', 'open-ils.permacrud.create.csp'],
@@ -44,22 +44,10 @@ function spCreate(args) {
         }
     );
 }
-
-function formatBlockList(list) {
-    var str = '';
-    for(var idx in list)
-        str += list[idx] + '|';
-    return  str.replace(/\|$/, '');  
-}
-
 function spGridChanged(item, attr, oldVal, newVal) {
     var sp = spCache[spGrid.store.getValue(item, 'id')];
     console.log("changing cm " + sp.id() + " object: " + attr + " = " + newVal);
-    if(attr == 'block_list') {
-        sp[attr](formatBlockList(newVal));
-    } else {
-        sp[attr](newVal);
-    }
+    sp[attr](newVal);
     sp.ischanged(true);
     spSaveButton.setDisabled(false);
 }
@@ -121,15 +109,15 @@ function _deleteFromGrid(list, idx) {
 
     fieldmapper.standardRequest(
        ['open-ils.permacrud', 'open-ils.permacrud.delete.csp'],
-       {   async: true,
-           params: [openils.User.authtoken, id],
-           oncomplete: function(r) {
-           if(obj = openils.Util.readResponse(r)) {
-               spGrid.store.deleteItem(item);
-           }
-           _deleteFromGrid(list, ++idx);
-           }
-       }
+       {    async: true,
+            params: [openils.User.authtoken, id],
+            oncomplete: function(r) {
+                if(obj = openils.Util.readResponse(r)) {
+                    spGrid.store.deleteItem(item);
+                }
+                _deleteFromGrid(list, ++idx);
+            }
+        }
     );
 }
 
