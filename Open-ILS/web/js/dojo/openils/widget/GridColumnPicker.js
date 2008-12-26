@@ -35,6 +35,10 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
 
             USER_PERSIST_SETTING : 'ui.grid_columns',
 
+            /**
+             * Load the fields from the grid and map them to the MenuItem's.  
+             * Load settings from server
+             */
             init : function(grid, persistPrefix, authtoken) {
 
                 this.grid = grid;
@@ -54,6 +58,7 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
                         }
                     }
                 );
+                this.load();
             },
 
             onClose : function() {
@@ -61,6 +66,9 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
                 this.persist();
             },
 
+            /**
+             * Save new settings on the server
+             */
             persist : function() {
                 var selected = [];
                 var autoFields = [];
@@ -82,7 +90,37 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
                         }
                     }
                 );
-            } 
-        }
+            },
+
+            /**
+             * Load existing settings from the server
+             */
+            load : function() {
+                var self = this;
+                fieldmapper.standardRequest(
+                    ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
+                    {   async: true,
+                        params: [this.authtoken, null, this.USER_PERSIST_SETTING+'.'+this.persistPrefix],
+                        oncomplete: function(r) { self._loadCallback(r); }
+                    }
+                );
+            },
+
+            _loadCallback : function(r) {
+                if(settings = openils.Util.readResponse(r)) {
+                    dojo.forEach(this.getChildren(),
+                        function(child) {
+                            if(child.field) {
+                                if(!openils.Util.arrayContains(settings.columns, child.field.ident)) {
+                                    child.attr("checked", false);
+                                    child.onChange(child.checked);
+                                }
+                            }
+                        }
+                    );
+                }
+            },
+
+        } // class def
     );
 }
