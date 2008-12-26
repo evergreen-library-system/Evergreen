@@ -19,6 +19,7 @@ dojo.require('openils.Event');
 dojo.require('fieldmapper.Fieldmapper');
 
 if(!dojo._hasResource["openils.GridColumnPicker"]) {
+    console.log("DEPRECATED! Use openils.widget.GridColumnPicker instead.");
     dojo._hasResource["openils.GridColumnPicker"] = true;
     dojo.provide('openils.GridColumnPicker');
     dojo.declare('openils.GridColumnPicker', null, {
