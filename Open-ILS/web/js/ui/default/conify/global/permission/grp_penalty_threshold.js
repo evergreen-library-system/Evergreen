@@ -92,19 +92,11 @@ var GPT = {
         fieldmapper.standardRequest(
             ['open-ils.pcrud', 'open-ils.pcrud.search.csp.atomic'],
             {   async: true,
-                params: [openils.User.authtoken, {id:{'<':100}}],
+                params: [openils.User.authtoken, {id:{'<':100}}, {order_by:{csp:'id'}}],
                 oncomplete: function(r) {
                     if(list = openils.Util.readResponse(r, false, true)) {
-                        list = list.sort(
-                            function(a, b) {
-                                // why not take this opportunity to do some other stuff? ;)
-                                GPT.penaltyMap[a.id()] = a;
-                                GPT.penaltyMap[b.id()] = b;
-                                if(a.id() > b.id()) 
-                                    return 1;
-                                return -1;
-                            }
-                        );
+                        for(var idx in list)
+                            GPT.penaltyMap[list[idx].id()] = list[idx];
                         GPT.standingPenalties = list;
                         if(onload) onload(list);
                     }
