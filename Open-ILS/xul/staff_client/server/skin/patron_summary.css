@@ -3,6 +3,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
-.PENALTY_RENEW { background-color: yellow; }
-.PENALTY_HOLD { background-color: orange; }
-.PENALTY_CIRC { background-color: red; }
+.PENALTY_RENEW { background-color: yellow; color: black; }
+.PENALTY_HOLD { background-color: orange; color: black; }
+.PENALTY_CIRC { background-color: red; color: white; }
+
