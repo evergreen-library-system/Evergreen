@@ -38,16 +38,17 @@
 <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='btContextOrgSelect' 
     searchAttr='shortname' labelAttr='shortname'> </select>
 
-<!-- not enough columns to matter here, but a good example of dojo column picker
-<div dojoType="dijit.Menu" jsid="btGridMenu" id="btGridMenu" style="display: none;">
+<script>dojo.require('openils.widget.GridColumnPicker');</script>
+
+<!-- column picker menu -->
+<div dojoType="openils.widget.GridColumnPicker" jsid="btGridMenu" id="btGridMenu" style="display: none;" grid='btGrid'>
     <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
 </div>
--->
-
+<!-- grid -->
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" 
-            rowSelector='20px' selectionMode='none' columnReordering='true'><!-- headerMenu="btGridMenu">-->
+            rowSelector='20px' selectionMode='none' columnReordering='true' headerMenu="btGridMenu">
             <thead>
                 <tr>
                     <th field="id">ID</th>
@@ -59,6 +60,18 @@
         </table>    
     </div>
 </div>
+<!-- attach the grid to the column picker and load the settings -->
+<script>
+    openils.Util.addOnLoad(
+        function() {
+            btGridMenu.init({
+                grid: btGrid, 
+                prefix: 'conify.global.config.billing_type.btGridMenu', 
+                authtoken: openils.User.authtoken
+            });
+        }
+    );
+</script>
 
 [% END %]
 
