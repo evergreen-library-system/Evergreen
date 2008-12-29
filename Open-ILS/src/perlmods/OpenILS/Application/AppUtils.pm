@@ -1541,7 +1541,7 @@ sub get_copy_price {
 # given a transaction ID, this returns the context org_unit for the transaction
 sub xact_org {
     my($self, $xact_id, $e) = @_;
-    $e ||= new_editor();
+    $e ||= OpenILS::Utils::CStoreEditor->new;
     
     my $loc = $e->json_query({
         "select" => {circ => ["circ_lib"]},
