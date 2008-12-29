@@ -101,6 +101,8 @@ sub retrieve_picklist {
             $e->allowed('VIEW_PICKLIST', $picklist->org_unit, $picklist);
     }
 
+    $picklist->owner($e->retrieve_actor_user($picklist->owner)) 
+        if($$options{flesh_owner});
     $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname) 
         if($$options{flesh_username});
 
@@ -183,6 +185,7 @@ sub retrieve_user_picklist {
         } else {
             my $pl = $e->retrieve_acq_picklist($id);
             $pl->entry_count(retrieve_lineitem_count($e, $id)) if $$options{flesh_lineitem_count};
+            $pl->owner($e->retrieve_actor_user($pl->owner)) if $$options{flesh_owner};
             $pl->owner($e->retrieve_actor_user($pl->owner)->usrname) if $$options{flesh_username};
             $conn->respond($pl);
         }
@@ -233,6 +236,8 @@ sub retrieve_all_user_picklist {
         my $picklist = $e->retrieve_acq_picklist($pl) or return $e->event;
         $picklist->entry_count(retrieve_lineitem_count($e, $picklist->id))
             if($$options{flesh_lineitem_count});
+        $picklist->owner($e->retrieve_actor_user($picklist->owner))
+            if $$options{flesh_owner};
         $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname)
             if $$options{flesh_username};
         $conn->respond($picklist);
