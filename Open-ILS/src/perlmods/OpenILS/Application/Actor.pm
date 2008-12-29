@@ -3064,31 +3064,23 @@ __PACKAGE__->register_method (
 );
 
 sub merge_users {
-    my($self, $conn, $auth, $src_id, $dest_id, $options) = @_;
+    my($self, $conn, $auth, $master_id, $options, @user_ids) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
 
-    my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
-    my $dest_user = $e->retrieve_actor_user($dest_id) or return $e->die_event;
+    for my $src_id (@user_ids) {
+        my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
+        my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
 
-    return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
-    if($src_user->home_ou ne $dest_user->home_ou) {
-        return $e->die_event unless $e->allowed('MERGE_USERS', $dest_user->home_ou);
+        return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
+        if($src_user->home_ou ne $master_user->home_ou) {
+            return $e->die_event unless $e->allowed('MERGE_USERS', $master_user->home_ou);
+        }
+
+        return $e->die_event unless 
+            $e->json_query({from => ['actor.usr_merge', $src_id, $master_id]});
     }
 
-    my $query = {
-        select => {
-            au => [ {
-                transform => 'actor.usr_merge',
-                params => [$dest_id],
-                column => 'id',
-            } ]
-        },
-        from => 'au',
-        where => {id => $src_id},
-    };
-
-    return $e->die_event unless $e->json_query($query);
     $e->commit;
     return 1;
 }
