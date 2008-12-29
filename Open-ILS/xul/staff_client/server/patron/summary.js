@@ -93,20 +93,12 @@ patron.summary.prototype = {
 							};
 						}
 					],
-					'patron_standing' : [
+					'patron_standing_penalties' : [
 						['render'],
 						function(e) {
 							return function() {
-							/*
-								e.setAttribute('value',
-									obj.OpenILS.data.hash.cst[
-										obj.patron.standing()
-									].value()
-								);
-							*/
-								var e2 = document.getElementById('patron_standing_penalties');
 								JSAN.use('util.widgets');
-								util.widgets.remove_children(e2);
+								util.widgets.remove_children(e);
 								var penalties = obj.patron.standing_penalties();
 								for (var i = 0; i < penalties.length; i++) {
 
@@ -119,11 +111,13 @@ patron.summary.prototype = {
 
     								var button = document.createElement('button');
 	    							button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
+                                    button.setAttribute('image','/xul/server/skin/media/images/icon_delete.gif');
 	    							button.setAttribute('disabled','true');
 		    						row.appendChild(button);
 
                                     // XXX check a permission here? How to fire the remove action ??? XXX
                                     if (penalties[i].standing_penalty().id() > 100) {
+	    							    button.setAttribute('disabled','false');
                                     }
 
                                     if (penalties[i].standing_penalty().block_list()) {
@@ -132,8 +126,8 @@ patron.summary.prototype = {
                                         if (penalties[i].standing_penalty().block_list().match(/CIRC/)) addCSSClass(label,'PENALTY_CIRC');
                                     }
 
-									e2.appendChild(row);
-                                    e2.parentNode.parentNode.hidden = false;
+									e.appendChild(row);
+                                    e.parentNode.parentNode.hidden = false;
 								}
 							};
 						}
