@@ -1,6 +1,5 @@
 @import "/js/dojo/dojo/resources/dojo.css";
 @import "/js/dojo/dijit/themes/tundra/tundra.css";
-@import "/js/dojo/dijit/tests/css/dijitTests.css";
 @import "/js/dojo/dojox/grid/_grid/Grid.css";
 .container:after {content: ""; display: block; height: 0; clear: both; }
 body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white; margin: 0px; padding: 0px;}
