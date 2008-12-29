@@ -126,6 +126,11 @@ CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE chec
 CREATE INDEX circ_circ_lib_idx ON "action".circulation (circ_lib);
 CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_finish IS NULL;
 
+CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ();
+CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
+CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
+
+
 CREATE TABLE action.aged_circulation (
 	usr_post_code		TEXT,
 	usr_home_ou		INT	NOT NULL,
