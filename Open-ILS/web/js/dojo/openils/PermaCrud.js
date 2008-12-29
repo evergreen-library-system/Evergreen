@@ -66,7 +66,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         },
         
 
-	    retrieve : function ( fm_class /* Fieldmapper class hint */, id /* Fieldmapper object primary key value */,  opts /* Option hash */) {
+        retrieve : function ( fm_class /* Fieldmapper class hint */, id /* Fieldmapper object primary key value */,  opts /* Option hash */) {
             var req_hash = dojo.mixin(
                 opts, 
                 { method : 'open-ils.pcrud.retrieve.' + fm_class,
@@ -86,9 +86,9 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             req.send();
 
             return req;
-	    },
+        },
 
-	    retrieveAll : function ( fm_class /* Fieldmapper class hint */, opts /* Option hash */) {
+        retrieveAll : function ( fm_class /* Fieldmapper class hint */, opts /* Option hash */) {
             var pkey = fieldmapper[fm_class].Identifier;
 
             var order_by = {};
@@ -117,9 +117,9 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             req.send();
 
             return req;
-	    },
+        },
 
-	    search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
+        search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
@@ -143,7 +143,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             req.send();
 
             return req;
-	    },
+        },
 
         _CUD : function ( method /* 'create' or 'update' or 'delete' */, list /* Fieldmapper object */, opts /* Option hash */) {
 
@@ -189,7 +189,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                                     throw 'Transaction commit error';
                                 }
                             },
-            	        }).send();
+                        }).send();
 
                         if (r._final_complete) r._final_complete(r);
                         _pcrud.disconnect();
@@ -237,7 +237,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                         throw 'Transaction begin error';
                     }
                 },
-	        }).send();
+            }).send();
         },
 
         create : function ( list, opts ) {
@@ -308,7 +308,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                                     throw 'Transaction commit error';
                                 }
                             },
-            	        }).send();
+                        }).send();
 
                         if (r._final_complete) r._final_complete(r);
                         _pcrud.disconnect();
@@ -356,7 +356,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                         throw 'Transaction begin error';
                     }
                 },
-	        }).send();
+            }).send();
         }
 
     });
