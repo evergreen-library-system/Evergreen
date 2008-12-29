@@ -47,6 +47,8 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
                 this.cells = this.grid.structure[0].cells[0];
                 var self = this;
 
+                dojo.style(this.grid.domNode.id, 'visibility', 'hidden');
+
                 dojo.forEach(this.getChildren(),
                     function(child) {
                         for(var i in self.cells) {
@@ -107,6 +109,7 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
             },
 
             _loadCallback : function(r) {
+                dojo.style(this.grid.domNode.id, 'visibility', 'visible');
                 if(settings = openils.Util.readResponse(r)) {
                     dojo.forEach(this.getChildren(),
                         function(child) {
