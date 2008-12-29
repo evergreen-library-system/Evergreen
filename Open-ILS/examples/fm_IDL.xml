@@ -1806,7 +1806,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="ausp" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
+	<class id="ausp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_standing_penalty_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1825,6 +1825,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="standing_penalty" reltype="has_a" key="id" map="" class="csp"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_USER"><context link="usr" field="home_ou"/></create>
+				<retrieve permission="VIEW_USER"><context link="usr" field="home_ou"/></retrieve>
+				<update permission="UPDATE_USER"><context link="usr" field="home_ou"/></update>
+				<delete permission="UPDATE_USER"><context link="usr" field="home_ou"/></delete>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="aua" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address" reporter:label="User Address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq">
