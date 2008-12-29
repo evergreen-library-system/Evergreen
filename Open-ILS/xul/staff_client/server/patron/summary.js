@@ -119,7 +119,7 @@ patron.summary.prototype = {
 
     								var button = document.createElement('button');
 	    							button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
-	    							button.disabled = true;
+	    							button.setAttribute('disabled','true');
 		    						row.appendChild(button);
 
                                     // XXX check a permission here? How to fire the remove action ??? XXX
