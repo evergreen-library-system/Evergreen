@@ -26,7 +26,11 @@ my $r = OpenSRF::AppSession
 		->create( 'open-ils.storage' )
 		->request( 'open-ils.storage.action.hold_request.copy_targeter' => '24h' );
 
-while (!$r->complete) { $r->recv };
+while (!$r->complete) { 
+    my $start = time;
+    $r->recv(timeout => 3600);
+    last if (time() - $start) >= 3600;
+};
 
 unlink $lockfile;
 
