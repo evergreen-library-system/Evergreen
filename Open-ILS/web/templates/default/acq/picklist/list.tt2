@@ -20,15 +20,25 @@
         dojo.style('oils-acq-picklist-all-list-header', 'display', 'none');
     }
 </script>
-
+<script>
+    function formatName(inDatum) {
+        for(var i in plCache){
+            var pl = plCache[i];
+            var id = pl.id();
+            if (inDatum  == pl.name()){
+                return '<a href="[% ctx.base_uri %]/acq/picklist/view/'+id+'">'+inDatum+'</a>';
+            }
+        }
+    }
+</script>
 <div class='oils-acq-actions-div'>
-    <div dojoType="dijit.form.DropDownButton">
-        <span>New Selection List</span>
-        <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td><label for="name">Name:</label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
+  <div dojoType="dijit.form.DropDownButton">
+    <span>New Selection List</span>
+    <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
+      <table class='dijitTooltipTable'>
+        <tr>
+          <td><label for="name">Name:</label></td>
+          <td><input dojoType="dijit.form.TextBox" name="name"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
@@ -37,35 +47,29 @@
                 </tr>
             </table>
         </div>
-    </div> 
+    </div>
+    <button dojoType='dijit.form.Button' onclick="saveChanges();" disabled='disabled' jsId="plSaveButton">Save Changes</button>
     <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">
         Delete Selected
     </button>
 </div>
 
-
-<script>
-    function getName(rowIndex, item) {
-        if(!item) return '';
-        var name = this.grid.store.getValue(item, 'name');
-        var id = this.grid.store.getValue(item, 'id');
-        return '<a href="[% ctx.base_uri %]/acq/picklist/view/'+id+'">'+name+'</a>';
-    }
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="plListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
             <thead>
                 <tr>
                     <th field="id">ID</th>
-                    <th field="name" width='auto' get='getName'>Name</th>
-                    <th field="owner">Selector</th>
-                    <th field="create_time">Create Time</th>
-                    <th field="edit_time">Edit Time</th>
+                    <th field="name" width='auto' editable='true'
+                        cellType='dojox.grid.cells._Widget'
+                        widgetClass='dijit.form.TextBox' formatter='formatName'>Name</th>
+                    <th field="owner" get='getOwnerName'>Selector</th>
+                    <th field="create_time" width='auto' get='getDateTimeField'>Create Time</th>
+                    <th field="edit_time" width='auto' get='getDateTimeField'>Edit Time</th>
                     <th field="entry_count">Entry Count</th>
                 </tr>
             </thead>
-        </table>    
+        </table>
     </div>
 </div>
 

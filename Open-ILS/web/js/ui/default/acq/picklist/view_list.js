@@ -4,10 +4,12 @@ dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.Button');
+dojo.require('dojox.grid.cells.dijit');
 dojo.require('openils.acq.Picklist');
 dojo.require('openils.Util');
 
 var listAll = false;
+var plCache = {};
 
 function loadGrid() {
     var method = 'open-ils.acq.picklist.user.retrieve';
@@ -17,20 +19,29 @@ function loadGrid() {
     var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()});
     plListGrid.setStore(store);
     plListGrid.render();
+    dojo.connect(store, 'onSet', plGridChanged);
 
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
 
         {   async: true,
             params: [openils.User.authtoken, 
-                {flesh_lineitem_count:1, flesh_username:1}],
+                {flesh_lineitem_count:1, flesh_owner:1}],
 
             onresponse : function(r) {
-                if(pl = openils.Util.readResponse(r)) 
+                if(pl = openils.Util.readResponse(r)) {
+                    plCache[pl.id()] = pl;
                     store.newItem(acqpl.itemToStoreData(pl));
+                }
             }
         }
     );
+}
+function getOwnerName(rowIndex, item) {
+    if(!item) return ''; 
+    var id= this.grid.store.getValue(item, 'id'); 
+    var pl = plCache[id];
+    return pl.owner().usrname();
 }
 
 function createPL(fields) {
@@ -55,7 +66,54 @@ function createPL(fields) {
         }
     );
 }
+function plGridChanged(item, attr, oldVal, newVal) {
+    var pl = plCache[plListGrid.store.getValue(item, 'id')];
+    console.log("changing pl " + pl.id() + " object: " + attr + " = " + newVal);
+    pl[attr](newVal);
+    pl.ischanged(true);
+    plSaveButton.setDisabled(false);
+}
+function saveChanges() {
+    plListGrid.doclick(0);   
+    var changedObjects = [];
+    for(var i in plCache){
+        var pl = plCache[i];
+        if(pl.ischanged())
+            changedObjects.push(pl);
+    }   
+    _saveChanges(changedObjects, 0);
+}
+function _saveChanges(changedObjects, idx) {
+    
+    if(idx >= changedObjects.length) {
+        // we've made it through the list
+        plSaveButton.setDisabled(true);
+        return;
+    }
 
+    var pl = changedObjects[idx];
+    var owner = pl.owner();
+    pl.owner(owner.id()); // un-flesh the owner object
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.update'],
+        {   async: true,
+            params: [openils.User.authtoken, pl],
+            oncomplete: function(r) {
+                if(stat = openils.Util.readResponse(r)) {
+                    _saveChanges(changedObjects, ++idx);
+                }
+            }
+        }
+    );
+}
+
+function getDateTimeField(rowIndex, item) {
+    if(!item) return '';
+    var data = this.grid.store.getValue(item, this.field);
+    var date = dojo.date.stamp.fromISOString(data);
+    return dojo.date.locale.format(date, {formatLength:'short'});
+}
 function deleteFromGrid() {
     var list = []
     var selected = plListGrid.selection.getSelected();
