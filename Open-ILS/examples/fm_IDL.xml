@@ -3058,7 +3058,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="crahp" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
+	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3069,6 +3069,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Allowed Proximity" name="prox" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_AGE_PROTECT_RULE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_AGE_PROTECT_RULE" global_required="true"/>
+                <delete permission="ADMIN_AGE_PROTECT_RULE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="crmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_max_fine_id_seq">
