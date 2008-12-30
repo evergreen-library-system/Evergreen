@@ -1127,6 +1127,8 @@
 <!ENTITY staff.patron_display.items.print_receipt.accesskey 'P'>
 <!ENTITY staff.patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
 <!ENTITY staff.patron_display.library_card.label 'Library Card:'>
+<!ENTITY staff.patron_display.verify_password.label 'Test Password'>
+<!ENTITY staff.patron_display.verify_password.accesskey 'T'>
 <!ENTITY staff.patron_display.mailing.city.label 'Mailing City:'>
 <!ENTITY staff.patron_display.mailing.post_code.label 'Mailing ZIP:'>
 <!ENTITY staff.patron_display.mailing.state.label 'Mailing State:'>
