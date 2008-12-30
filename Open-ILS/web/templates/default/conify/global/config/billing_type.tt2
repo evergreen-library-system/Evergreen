@@ -60,18 +60,6 @@
         </table>    
     </div>
 </div>
-<!-- attach the grid to the column picker and load the settings -->
-<script>
-    openils.Util.addOnLoad(
-        function() {
-            btGridMenu.init({
-                grid: btGrid, 
-                prefix: 'conify.global.config.billing_type.btGridMenu', 
-                authtoken: openils.User.authtoken
-            });
-        }
-    );
-</script>
 
 [% END %]
 

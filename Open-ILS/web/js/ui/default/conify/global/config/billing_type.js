@@ -17,6 +17,12 @@ function getOrgInfo(rowIndex, item) {
 }
 
 function btInit() {
+    btGridMenu.init({
+        grid: btGrid,
+        prefix: 'conify.global.config.billing_type.btGridMenu',
+        authtoken: openils.User.authtoken
+    });
+
     buildBTGrid();
     var connect = function() {
         dojo.connect(btContextOrgSelect, 'onChange',
