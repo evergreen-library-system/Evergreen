@@ -161,6 +161,7 @@ const api = {
 	'FM_CNAL_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.net_access_level.retrieve.all', 'secure' : false },
 	'FM_CNCT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cat_types.retrieve.all', 'secure' : false },
 	'FM_CRAHP_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.config.rules.age_hold_protect.retrieve.all', 'secure' : false },
+    'FM_CSP_PCRUD_SEARCH' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.csp.atomic', 'secure' : false },
 	'FM_CST_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve', 'secure' : false },
 	'FM_MB_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.create' },
 	'FM_MB_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.retrieve.all' },
