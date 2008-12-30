@@ -35,7 +35,6 @@
 	<script type="text/javascript" src="copy_editor.js"/>
 
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
     <vbox id="brief_display_box"/>
 

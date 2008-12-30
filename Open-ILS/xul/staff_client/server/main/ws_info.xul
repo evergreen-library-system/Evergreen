@@ -184,8 +184,6 @@
 	]]>
 	</script>
 
-    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
-
 	<vbox flex="1" style="background: #993333">
 		<description>
 			&staff.main.ws_info.entry;

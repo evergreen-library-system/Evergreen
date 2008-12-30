@@ -75,7 +75,6 @@
 
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale' -->/common.properties"/>
 
 	<commandset id="copy_buckets_cmds">
 		<command id="sel_clip1" />

@@ -81,7 +81,6 @@
 		<command id="cmd_save_cols" />
 	</commandset>
 
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
 	<box id="patron_search_result_main" />

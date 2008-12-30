@@ -53,7 +53,6 @@
 	]]>
 	</script>
 	<messagecatalog id="adminStrings" src="/xul/server/locale/<!--#echo var='locale'-->/admin.properties"/>
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 
 	<vbox id="admin_offline_manage_xacts_main" flex="1">
 

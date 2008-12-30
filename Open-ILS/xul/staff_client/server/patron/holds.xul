@@ -71,7 +71,6 @@
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale' -->/patron.properties"/>
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset id="holds_cmds">
 		<command id="sel_mark_items_damaged" disabled="true"/>

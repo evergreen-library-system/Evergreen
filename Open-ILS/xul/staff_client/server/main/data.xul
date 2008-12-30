@@ -219,8 +219,6 @@
 	]]>
 	</script>
 
-    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
-
 	<groupbox id="data_groupbox" flex="1" class="my_overflow"> 
 		<caption id="caption" label="&staff.main.data.loading;"/> 
 		<description id="data_progress"/>

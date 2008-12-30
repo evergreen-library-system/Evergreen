@@ -183,7 +183,6 @@
 
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
 		<caption label="&staff.cat.copy_summary.label;" id="caption"/>

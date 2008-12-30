@@ -203,7 +203,6 @@ vim: noet:sw=4:ts=4:
 	]]>
 	</script>
 
-    <messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
 
 	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">

@@ -66,7 +66,6 @@
 	</script>
 
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<commandset id="print_list_cmds">
 		<command id="cmd_broken" />

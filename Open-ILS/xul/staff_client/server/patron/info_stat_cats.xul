@@ -179,7 +179,6 @@
 	</script>
 	
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 	<stack hidden="true" id="actsc_template" flex="1">
 		<groupbox flex="1" style="background-color: black;"/>

@@ -81,7 +81,6 @@
 		<command id="cmd_alternate_view" />
 	</commandset>
 	
-	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
 	<box id="bills_main" />
