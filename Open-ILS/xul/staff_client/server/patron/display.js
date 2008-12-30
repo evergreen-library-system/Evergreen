@@ -359,6 +359,18 @@ patron.display.prototype = {
                         function() {
                              var frame = obj.right_deck.reset_iframe( urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + obj.patron.id(), {}, {});
                         }
+                    ],
+                    'cmd_standing_penalties' : [
+                        ['command'],
+                        function() {
+                            var vframe = obj.right_deck.reset_iframe(
+                                urls.XUL_STANDING_PENALTIES,
+                                {},
+                                {
+                                    'patron' : obj.patron,
+                                }
+                            );
+                        } 
                     ]
 				}
 			}

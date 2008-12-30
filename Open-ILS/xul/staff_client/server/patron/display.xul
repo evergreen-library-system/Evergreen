@@ -101,6 +101,7 @@
 		<command id="cmd_search_form" />
 		<command id="cmd_verify_credentials" />
 		<command id="cmd_perm_editor" />
+		<command id="cmd_standing_penalties" />
 	</commandset>
 
 	<box id="patron_display_main" class="my_overflow" />

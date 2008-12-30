@@ -257,6 +257,87 @@ patron.util.mp_columns = function(modify,params) {
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
+patron.util.csp_columns = function(modify,params) {
+
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+    JSAN.use('util.functional');
+
+    var commonStrings = document.getElementById('commonStrings');
+
+	var c = [
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_id', 'label' : commonStrings.getString('staff.csp_id_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.id(); }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_name', 'label' : commonStrings.getString('staff.csp_name_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.csp.name(); }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_label', 'label' : commonStrings.getString('staff.csp_label_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.csp.label(); }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_block_list', 'label' : commonStrings.getString('staff.csp_block_list_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.block_list(); }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_block_circ', 'label' : commonStrings.getString('staff.csp_block_circ_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+                return String( my.csp.block_list() ).match('circ') ? commonStrings.getString('staff.csp_block_circ_yes') : commonStrings.getString('staff.csp_block_circ_no'); 
+            }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_block_renew', 'label' : commonStrings.getString('staff.csp_block_renew_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+                return String( my.csp.block_list() ).match('renew') ? commonStrings.getString('staff.csp_block_renew_yes') : commonStrings.getString('staff.csp_block_renew_no'); 
+
+            }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_block_hold', 'label' : commonStrings.getString('staff.csp_block_hold_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+                return String( my.csp.block_list() ).match('hold') ?  commonStrings.getString('staff.csp_block_hold_yes') : commonStrings.getString('staff.csp_block_hold_no'); 
+            }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'csp_applied', 'label' : commonStrings.getString('staff.csp_applied_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : function(my) { 
+                return util.functional.find_id_object_in_list( my.au.standing_penalties(), my.csp.id() ) 
+                    ? commonStrings.getString('staff.csp_applied_yes') : commonStrings.getString('staff.csp_applied_no'); 
+            }
+		}
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	if (params) {
+		if (params.just_these) {
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			c = new_c;
+		}
+		if (params.except_these) {
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
+	}
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
+}
+
+
 patron.util.columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});

@@ -85,6 +85,8 @@
                     <menupopup>
                         <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                         <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>
+                        <menuitem label="&staff.patron_navbar.actions.menu.standing_penalties.label;" accesskey="&staff.patron_navbar.actions.menu.standing_penalties.accesskey;" 
+                            command="cmd_standing_penalties"/>
                     </menupopup>
                 </menu>
             </menubar>
