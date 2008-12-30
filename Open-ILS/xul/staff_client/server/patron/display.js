@@ -353,6 +353,12 @@ patron.display.prototype = {
                                 }
                             );
                         } 
+                    ],
+                    'cmd_perm_editor' : [
+                        ['command'],
+                        function() {
+                             var frame = obj.right_deck.reset_iframe( urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + obj.patron.id(), {}, {});
+                        }
                     ]
 				}
 			}
