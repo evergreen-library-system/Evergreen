@@ -56,7 +56,7 @@
 
 <hbox id="PatronNavBar1">
 	<spacer flex="1"/>
-    <arrowscrollbox orient="horizontal" flex="1">
+    <arrowscrollbox id="PatronNavBarScrollbox" orient="horizontal" flex="1">
 	    <spacer flex="1"/>
         <button id="PatronNavBar_refresh" command="cmd_patron_refresh" class="nav"
             label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>

@@ -32,6 +32,7 @@ patron.display.prototype = {
 		obj.left_deck = new util.deck('patron_left_deck');
 
 		function spawn_checkout_interface() {
+            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
 			obj.reset_nav_styling('cmd_patron_checkout');
 			var frame = obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT,
@@ -137,6 +138,7 @@ patron.display.prototype = {
 					'cmd_patron_refresh' : [
 						['command'],
 						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_refresh" ) ); } catch(E) {};
 							obj.network.simple_request(
 								'RECALCULATE_STANDING_PENALTIES',
 								[ ses(), obj.patron.id() ]
@@ -151,6 +153,7 @@ patron.display.prototype = {
 					'cmd_patron_items' : [
 						['command'],
 						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_items" ) ); } catch(E) {};
 							obj.reset_nav_styling('cmd_patron_items');
 							var frame = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_ITEMS,
@@ -176,6 +179,7 @@ patron.display.prototype = {
 					'cmd_patron_edit' : [
 						['command'],
 						function(ev) {
+                                try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_edit" ) ); } catch(E) {};
 								obj.reset_nav_styling('cmd_patron_edit');
 
 								function spawn_search(s) {
@@ -249,6 +253,7 @@ patron.display.prototype = {
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_info" ) ); } catch(E) {};
 							obj.reset_nav_styling('cmd_patron_info');
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_INFO, // + '?patron_id=' + window.escape( obj.patron.id() ),
@@ -270,6 +275,7 @@ patron.display.prototype = {
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_holds" ) ); } catch(E) {};
 							obj.reset_nav_styling('cmd_patron_holds');
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_HOLDS,	
@@ -292,6 +298,7 @@ patron.display.prototype = {
 					'cmd_patron_bills' : [
 						['command'],
 						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_bills" ) ); } catch(E) {};
 							obj.reset_nav_styling('cmd_patron_bills');
 							var f = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_BILLS,
