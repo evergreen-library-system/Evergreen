@@ -69,7 +69,6 @@
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
 	<commandset id="patron_summary_cmds">
-        <command id="cmd_verify_credentials"/>
 	</commandset>
 
 	<box id="patron_summary_main" />

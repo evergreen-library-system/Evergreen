@@ -340,7 +340,20 @@ patron.display.prototype = {
 						function(e) {
 							return function() {}
 						}
-					]
+					],
+                    'cmd_verify_credentials' : [
+                        ['command'],
+                        function() {
+                            var vframe = obj.right_deck.reset_iframe(
+                                urls.XUL_VERIFY_CREDENTIALS,
+                                {},
+                                {
+                                    'barcode' : obj.patron.card().barcode(),
+                                    'usrname' : obj.patron.usrname()
+                                }
+                            );
+                        } 
+                    ]
 				}
 			}
 		);
@@ -373,16 +386,6 @@ patron.display.prototype = {
 				{
 					'barcode' : obj.barcode,
 					'id' : obj.id,
-                    'verify_credentials' : function(patron) {
-                        var vframe = obj.right_deck.reset_iframe(
-                            urls.XUL_VERIFY_CREDENTIALS,
-                            {},
-                            {
-                                'barcode' : patron.card().barcode(),
-                                'usrname' : patron.usrname()
-                            }
-                        );
-                    }, 
 					'on_finished' : function(patron) {
 
 						obj.patron = patron; obj.controller.render();

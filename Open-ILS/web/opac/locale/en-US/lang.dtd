@@ -1167,6 +1167,8 @@
 <!ENTITY staff.patron_navbar.refresh.accesskey ''>
 <!ENTITY staff.patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY staff.patron_navbar.retrieve.accesskey 'R'>
+<!ENTITY staff.patron_navbar.actions.menu.label 'Actions for this Patron'>
+<!ENTITY staff.patron_navbar.actions.menu.accesskey 'A'>
 <!ENTITY staff.patron_register_interface_label "New Patron">
 <!ENTITY staff.patron_search_form.caption 'Search for Patron'>
 <!ENTITY staff.patron_search_form.city.accesskey ''>

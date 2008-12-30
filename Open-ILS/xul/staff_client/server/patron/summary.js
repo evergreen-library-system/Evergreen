@@ -35,12 +35,6 @@ patron.summary.prototype = {
 						['command'],
 						function() { alert($("commonStrings").getString('common.unimplemented')); }
 					],
-                    'cmd_verify_credentials' : [
-                        ['command'],
-                        function() {
-                            xulG.verify_credentials(obj.patron);
-                        }
-                    ],
 					'patron_alert' : [
 						['render'],
 						function(e) {
