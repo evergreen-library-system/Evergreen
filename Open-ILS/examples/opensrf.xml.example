@@ -648,9 +648,9 @@ vim:et:ts=4:sw=4:
                 <stateless>1</stateless>
                 <language>C</language>
                 <implementation>oils_cstore.so</implementation>
-                <max_requests>95</max_requests>
+                <max_requests>200</max_requests>
                 <unix_config>
-                    <max_requests>400</max_requests>
+                    <max_requests>1000</max_requests>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -674,38 +674,38 @@ vim:et:ts=4:sw=4:
 
 
             <open-ils.pcrud>
-                    <keepalive>4</keepalive>
-                    <migratable>1</migratable>
-                    <stateless>1</stateless>
-                    <language>C</language>
-                    <implementation>oils_pcrud.so</implementation>
-                    <max_requests>95</max_requests>
+                <keepalive>6</keepalive>
+                <migratable>1</migratable>
+                <stateless>1</stateless>
+                <language>C</language>
+                <implementation>oils_pcrud.so</implementation>
+                <max_requests>200</max_requests>
 
-                    <unix_config>
-                            <unix_log>pcrud.log</unix_log>
-                            <unix_sock>pcrud.sock</unix_sock>
-                            <unix_pid>pcrud.pid</unix_pid>
-                            <max_requests>200</max_requests>
-                            <min_children>2</min_children>
-                            <max_children>35</max_children>
-                            <min_spare_children>2</min_spare_children>
-                            <max_spare_children>20</max_spare_children>
-                    </unix_config>
+                <unix_config>
+                    <unix_log>open-ils.pcrud.log</unix_log>
+                    <unix_sock>open-ils.pcrud.sock</unix_sock>
+                    <unix_pid>open-ils.pcrud.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
 
-                    <app_settings>
-                            <IDL>SYSCONFDIR/fm_IDL.xml</IDL>
-                            <driver>pgsql</driver>
-                            <database>
-                                    <type>master</type>
-                                    <weight>2</weight>
-                                    <user>postgres</user>
-                                    <host>localhost</host>
-                                    <port>5432</port>
-                                    <pw>postgres</pw>
-                                    <db>evergreen</db>
-                                    <client_encoding>UTF-8</client_encoding>
-                            </database>
-                    </app_settings>
+                <app_settings>
+                    <IDL>SYSCONFDIR/fm_IDL.xml</IDL>
+                    <driver>pgsql</driver>
+                    <database>
+                        <type>master</type>
+                        <weight>2</weight>
+                        <user>postgres</user>
+                        <host>localhost</host>
+                        <port>5432</port>
+                        <pw>postgres</pw>
+                        <db>evergreen</db>
+                        <client_encoding>UTF-8</client_encoding>
+                    </database>
+                </app_settings>
             </open-ils.pcrud>
 
 
