@@ -1164,7 +1164,7 @@
 <!ENTITY staff.patron_navbar.items.accesskey 'I'>
 <!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost, Claimed Returned, Long Overdue, Has Unpaid Billings'>
 <!ENTITY staff.patron_navbar.refresh 'Refresh'>
-<!ENTITY staff.patron_navbar.refresh.accesskey 'R'>
+<!ENTITY staff.patron_navbar.refresh.accesskey ''>
 <!ENTITY staff.patron_navbar.retrieve 'Retrieve Patron'>
 <!ENTITY staff.patron_navbar.retrieve.accesskey 'R'>
 <!ENTITY staff.patron_register_interface_label "New Patron">
