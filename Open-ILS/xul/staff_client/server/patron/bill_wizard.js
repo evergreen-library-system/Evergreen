@@ -104,15 +104,15 @@ function patron_bill_init() {
                 billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } ), //g.OpenILS.data.list.billing_type.sort(),
                 function(obj) { return [ obj.name(), obj.id() ]; } //function(obj) { return [ obj, obj ]; }
             ),
-            billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0]
+            billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0].id()
         );
         ml.setAttribute('id','billing_type');
         document.getElementById('menu_placeholder').appendChild(ml);
         ml.addEventListener(
             'command',
             function() {
-                if ( billing_list[ ml.value ] ) {
-                    $('bill_amount').value = billing_list[ ml.value ].default_price();
+                if ( g.OpenILS.data.hash.cbt[ ml.value ] ) {
+                    $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
                 }
             },
             false
@@ -122,8 +122,8 @@ function patron_bill_init() {
 
         $('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
-        if ( billing_list[ ml.value ] ) {
-            $('bill_amount').value = billing_list[ ml.value ].default_price();
+        if ( g.OpenILS.data.hash.cbt[ ml.value ] ) {
+            $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
         }
         $('bill_amount').select(); $('bill_amount').focus();
 
