@@ -272,6 +272,7 @@ Please see a librarian to renew your account.">
 <!ENTITY myopac.summary.home "Home Library">
 <!ENTITY myopac.summary.genesis "Account Creation Date">
 <!ENTITY myopac.summary.addresses "Addresses">
+<!ENTITY myopac.summary.addresses.pending "Pending Addresses">
 <!ENTITY myopac.summary.address.type "Address Type">
 <!ENTITY myopac.summary.address.street "Street">
 <!ENTITY myopac.summary.address.city "City">

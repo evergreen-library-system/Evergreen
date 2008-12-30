@@ -426,7 +426,7 @@ function myOShowHoldStatus(r) {
     if(false) {
         var node = $n(row, 'hold_qstats');
         // XXX best way to display this info + dojo i18n
-        node.appendChild(text(qstats.queue_position+' of '+qstats.queue_position+' with '+qstats.potential_copies+' copies'));
+        node.appendChild(text('hold #' + qstats.queue_position+' of '+qstats.queue_position+' and '+qstats.potential_copies+' item(s)'));
         unHideMe(node);
 
     } else {
@@ -833,9 +833,12 @@ function _myOPACSummaryShowUer(r) {
 	}
 	removeChildren(tbody);
 
-	for( var a in user.addresses() ) {
+    var addrs = user.addresses();
+	for( var a in addrs ) {
+        var addr = addrs[a];
+        if(addr.replaces() != null) continue;
 		var row = template.cloneNode(true);
-		myOPACDrawAddr(row, user.addresses()[a]);
+		myOPACDrawAddr(row, addr, addrs);
 		tbody.appendChild(row);
 	}
 }
@@ -861,15 +864,33 @@ function myopacDrawNotes(r) {
 
 
 
-function myOPACDrawAddr(row, addr) {
+function myOPACDrawAddr(row, addr, addrs) {
+    appendClear($n(row, 'myopac_addr_type'),text(addr.address_type()));
+    var street = (addr.street2()) ? addr.street1() + ", " + addr.street2() : addr.street1();
+    appendClear($n(row, 'myopac_addr_street'),text(street));
+    appendClear($n(row, 'myopac_addr_city'),text(addr.city()));
+    appendClear($n(row, 'myopac_addr_county'),text(addr.county()));
+    appendClear($n(row, 'myopac_addr_state'),text(addr.state()));
+    appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
 
-	appendClear($n(row, 'myopac_addr_type'),text(addr.address_type()));
-	var street = (addr.street2()) ? addr.street1() + ", " + addr.street2() : addr.street1();
-	appendClear($n(row, 'myopac_addr_street'),text(street));
-	appendClear($n(row, 'myopac_addr_city'),text(addr.city()));
-	appendClear($n(row, 'myopac_addr_county'),text(addr.county()));
-	appendClear($n(row, 'myopac_addr_state'),text(addr.state()));
-	appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
+    /* if we have a replacement address, plop it into the table next to this addr */
+    var repl = grep(addrs,
+        function(a) { 
+            return a.replaces() == addr.id(); 
+        } 
+    );
+
+    if(repl) {
+        repl = repl[0];
+        unHideMe($n(row, 'myopac_pending_addr_td'));
+        $n(row, 'myopac_pending_addr_type').value = repl.address_type();
+        var street = (repl.street2()) ? repl.street1() + ", " + repl.street2() : repl.street1();
+        $n(row, 'myopac_pending_addr_street').value = street;
+        $n(row, 'myopac_pending_addr_city').value = repl.city();
+        $n(row, 'myopac_pending_addr_county').value = repl.county();
+        $n(row, 'myopac_pending_addr_state').value = repl.state();
+        $n(row, 'myopac_pending_addr_zip').value = repl.post_code();
+    }
 }
 
 

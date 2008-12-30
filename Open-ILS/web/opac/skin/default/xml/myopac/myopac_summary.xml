@@ -169,32 +169,72 @@
 
 	<br/><hr/><br/>
 
-
-	<!--
-	<br/><br/><br/>
-	-->
 	<table width='100%' class='light_border data_grid'>
-		<thead class='color_4'>
-			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>&myopac.summary.addresses;</b></td></tr>
-			<tr>
-				<td width='16%'>&myopac.summary.address.type;</td>
-				<td width='16%'>&myopac.summary.address.street;</td>
-				<td width='16%'>&myopac.summary.address.city;</td>
-				<td width='16%'>&myopac.summary.address.county;</td>
-				<td width='16%'>&myopac.summary.address.state;</td>
-				<td width='16%'>&myopac.summary.address.zip;</td>
-			</tr>
-		</thead>
-
+        <thead>
+            <tr>
+                <td>&myopac.summary.addresses;</td>
+                <td>&myopac.summary.addresses.pending;</td>
+            </tr>
+        </thead>
 		<tbody id='myopac_addr_tbody'>
 			<tr id='myopac_addr_row' class='light_border'>
-				<td name='myopac_addr_type'> </td>
-				<td name='myopac_addr_street'> </td>
-				<td name='myopac_addr_city'> </td>
-				<td name='myopac_addr_county'> </td>
-				<td name='myopac_addr_state'> </td>
-				<td name='myopac_addr_zip'> </td>
-			</tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&myopac.summary.address.type;</td>
+                            <td name='myopac_addr_type'> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.street;</td>
+                            <td name='myopac_addr_street'> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.city;</td>
+                            <td name='myopac_addr_city'> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.county;</td>
+                            <td name='myopac_addr_county'> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.state;</td>
+                            <td name='myopac_addr_state'> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.zip;</td>
+                            <td name='myopac_addr_zip'> </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class='hide_me' name='myopac_pending_addr_td'>
+                    <table>
+                        <tr>
+                            <td>&myopac.summary.address.type;</td>
+                            <td><input name='myopac_pending_addr_type'/> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.street;</td>
+                            <td><input name='myopac_pending_addr_street'/> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.city;</td>
+                            <td><input name='myopac_pending_addr_city'/> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.county;</td>
+                            <td><input name='myopac_pending_addr_county'/> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.state;</td>
+                            <td><input name='myopac_pending_addr_state'/> </td>
+                        </tr>
+                        <tr>
+                            <td>&myopac.summary.address.zip;</td>
+                            <td><input name='myopac_pending_addr_zip'/> </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
 		</tbody>
 	</table>
 
