@@ -294,7 +294,7 @@ CREATE OR REPLACE FUNCTION money.materialized_summary_billing_add () RETURNS TRI
 BEGIN
 	IF NOT NEW.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_billed = total_billed + NEW.amount,
+		  SET	total_owed = total_owed + NEW.amount,
 			last_billing_ts = NEW.billing_ts,
 			last_billing_note = NEW.note,
 			last_billing_type = NEW.billing_type,
@@ -326,7 +326,7 @@ BEGIN
 		END IF;
 
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_billed = total_billed - NEW.amount,
+		  SET	total_owed = total_owed - NEW.amount,
 			balance_owed = balance_owed - NEW.amount
 		  WHERE	id = NEW.xact;
 
@@ -341,13 +341,13 @@ BEGIN
 		END IF;
 
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_billed = total_billed + NEW.amount,
+		  SET	total_owed = total_owed + NEW.amount,
 			balance_owed = balance_owed + NEW.amount
 		  WHERE	id = NEW.xact;
 
 	ELSE
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_billed = total_billed - (OLD.amount - NEW.amount),
+		  SET	total_owed = total_owed - (OLD.amount - NEW.amount),
 			balance_owed = balance_owed - (OLD.amount - NEW.amount)
 		  WHERE	id = NEW.xact;
 	END IF;
@@ -375,7 +375,7 @@ BEGIN
 
 	IF NOT OLD.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_billed = total_billed - OLD.amount,
+		  SET	total_owed = total_owed - OLD.amount,
 			balance_owed = balance_owed + OLD.amount
 		  WHERE	id = OLD.xact;
 	END IF;
