@@ -711,7 +711,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="chmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::hold_matrix_matchpoint" oils_persist:tablename="config.hold_matrix_matchpoint" reporter:label="Hold Matrix Matchpoint">
+	<class id="chmm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_matrix_matchpoint" oils_persist:tablename="config.hold_matrix_matchpoint" reporter:label="Hold Matrix Matchpoint">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hold_matrix_matchpoint_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -752,6 +752,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
 			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+                <retrieve permission="ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+                <update permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+                <delete permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="ccmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_matchpoint" oils_persist:tablename="config.circ_matrix_matchpoint" reporter:label="Circulation Matrix Matchpoint">
