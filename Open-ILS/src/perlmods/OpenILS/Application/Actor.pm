@@ -2739,7 +2739,7 @@ sub apply_penalty {
 	my($self, $conn, $auth, $penalty) = @_;
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	return $e->die_event unless $e->checkauth;
-    my $user = $e->retrieve_actor_user(penalty->usr) or return $e->die_event;
+    my $user = $e->retrieve_actor_user($penalty->usr) or return $e->die_event;
     return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
     # is it already applied?
