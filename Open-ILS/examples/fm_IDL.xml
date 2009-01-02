@@ -703,10 +703,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
-                <update permission="UPDATE_MARC_CODE" global_required="true"/>
-                <delete permission="DELETE_MARC_CODE" global_required="true"/>
+                <create permission="ADMIN_MARC_CODE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_MARC_CODE" global_required="true"/>
+                <delete permission="ADMIN_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
@@ -1178,10 +1178,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
-                <update permission="UPDATE_MARC_CODE" global_required="true"/>
-                <delete permission="DELETE_MARC_CODE" global_required="true"/>
+                <create permission="ADMIN_MARC_CODE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_MARC_CODE" global_required="true"/>
+                <delete permission="ADMIN_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
@@ -2228,10 +2228,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
-                <update permission="UPDATE_MARC_CODE" global_required="true"/>
-                <delete permission="DELETE_MARC_CODE" global_required="true"/>
+                <create permission="ADMIN_MARC_CODE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_MARC_CODE" global_required="true"/>
+                <delete permission="ADMIN_MARC_CODE" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
