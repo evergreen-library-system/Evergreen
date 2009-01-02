@@ -29,7 +29,7 @@ util.functional.filter_object = function(obj,f) {
 }
 
 util.functional.find_list = function(list,f) {
-	for (var i in list) {
+	for (var i = 0; i < list.length; i++) {
 		var t = f( list[i] );
 		if (t) return list[i];
 	}
