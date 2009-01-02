@@ -1153,7 +1153,7 @@
 <!ENTITY staff.patron_display.penalty.menu.actions.accesskey "P">
 <!ENTITY staff.patron_display.penalty.menu.actions.apply.label "Apply to Patron">
 <!ENTITY staff.patron_display.penalty.menu.actions.apply.accesskey "A">
-<!ENTITY staff.patron_display.penalty.menu.actions.remove.label "Remoe from Patron">
+<!ENTITY staff.patron_display.penalty.menu.actions.remove.label "Remove from Patron">
 <!ENTITY staff.patron_display.penalty.menu.actions.remove.accesskey "R">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
