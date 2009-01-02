@@ -842,7 +842,7 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
         );
 
         char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException", ctx->request, m );
 
         free(m);
         jsonObjectFree(user);
@@ -883,7 +883,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         );
 
         char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_FORBIDDEN, "osrfMethodException", ctx->request, m );
 
         free(m);
 
@@ -983,7 +983,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 );
         
                 char* m = buffer_release(msg);
-                osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+                osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
         
                 free(m);
                 free(pkey_value);
@@ -1054,7 +1054,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         );
                 
                         char* m = buffer_release(msg);
-                        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+                        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
                         free(m);
                 
                         osrfStringArrayFree(class_list);
@@ -1493,12 +1493,12 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
         growing_buffer* msg = buffer_init(128);
         buffer_fadd(
             msg,
-            "%s: Insufficient permissions",
+            "%s: Insufficient permissions to retrieve object",
             MODULENAME
         );
 
         char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_NOTALLOWED, "osrfMethodException", ctx->request, m );
 
         free(m);
 
