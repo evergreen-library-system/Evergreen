@@ -1,6 +1,11 @@
 <oils_web>
+
     <!-- This should match the Apache Directory/Location[Match] configuration path -->
     <base_uri>/eg</base_uri>
+
+    <!-- when locating files that don't have explicit handlers defined, assume the
+        files have the following filename extension -->
+    <default_template_extension>tt2</default_template_extension>
 
     <!-- media_prefix can be a remote server.  
          E.g. <media_prefix>http://static.example.com/media</media_prefix> -->
@@ -20,9 +25,8 @@
     </template_paths>
 
     <handlers>
-        <handler path='acq/picklist/list' template='acq/picklist/list.tt2'/>
-        <handler path='acq/picklist/view' template='acq/picklist/view.tt2'/>
-        <handler path='acq/picklist/bib_search' template='acq/picklist/bib_search.tt2'/>
+        <!-- add custom handlers here.  These are for templates that live in non-obvious locations.  
+            In other words, if the path + default extension does not map directly to a template file -->
         <handler path='acq/fund/list' template='acq/financial/list_funds.tt2'/>
         <handler path='acq/fund/view' template='acq/financial/view_fund.tt2'/>
         <handler path='acq/funding_source/list' template='acq/financial/list_funding_sources.tt2'/>
@@ -31,17 +35,5 @@
         <handler path='acq/currency_type/view' template='acq/financial/view_currency_type.tt2'/>
         <handler path='acq/provider/list' template='acq/financial/list_providers.tt2'/>
         <handler path='acq/provider/view' template='acq/financial/view_provider.tt2'/>
-        <handler path='acq/po/view' template='acq/po/view.tt2'/>
-        <handler path='acq/po/li_search' template='acq/po/li_search.tt2'/>
-        <handler path='acq/po/search' template='acq/po/search.tt2'/>
-        <handler path='acq/receiving/process' template='acq/receiving/process.tt2'/>
-        <handler path='acq/settings/li_attr' template='acq/settings/li_attr.tt2'/>
-
-        <handler path='conify/global/config/billing_type' template='conify/global/config/billing_type.tt2'/>
-        <handler path='conify/global/config/standing_penalty' template='conify/global/config/standing_penalty.tt2'/>
-        <handler path='conify/global/config/z3950_source' template='conify/global/config/z3950_source.tt2'/>
-        <handler path='conify/global/config/circ_modifier' template='conify/global/config/circ_modifier.tt2'/>
-        <handler path='conify/global/config/hold_matrix_matchpoint' template='conify/global/config/hold_matrix_matchpoint.tt2'/>
-        <handler path='conify/global/permission/grp_penalty_threshold' template='conify/global/permission/grp_penalty_threshold.tt2'/>
     </handlers>
 </oils_web>

@@ -30,7 +30,7 @@ sub handler {
     check_web_config($r); # option to disable this
     my $ctx = load_context($r);
     my $base = $ctx->{base_uri};
-    my($template, $page_args) = find_template($r, $base);
+    my($template, $page_args) = find_template($r, $base, $ctx);
     return Apache2::Const::DECLINED unless $template;
 
     $template = $ctx->{skin} . "/$template";
@@ -86,6 +86,8 @@ sub load_context {
 sub find_template {
     my $r = shift;
     my $base = shift;
+    my $ctx = shift;
+    my $skin = $ctx->{skin};
     my $path = $r->uri;
     $path =~ s/$base//og;
     my @parts = split('/', $path);
@@ -105,9 +107,24 @@ sub find_template {
         }
     }
 
-    unless($template) {
-        $r->log->warn("No template configured for path $path");
-        return ();
+    unless($template) { # no template configured
+
+        # see if we can magically find the template based on the path and default extension
+        my $ext = $ctx->{default_template_extension};
+        for my $tpath (@{$ctx->{template_paths}}) {
+            my $fpath = "$tpath/$skin/$path.$ext";
+            $r->log->debug("looking at possible template $fpath");
+            if(-r $fpath) {
+                $template = "$path.$ext";
+                last;
+            }
+        }
+
+        # no template configured or found
+        unless($template) {
+            $r->log->warn("No template configured for path $path");
+            return ();
+        }
     }
 
     $r->log->debug("template = $template : page args = @$page_args");
@@ -136,6 +153,7 @@ sub parse_config {
     $ctx->{base_uri} = (ref $data->{base_uri}) ? '' : $data->{base_uri};
     $ctx->{template_paths} = [];
     $ctx->{force_valid_xml} = ($data->{force_valid_xml} =~ /true/io) ? 1 : 0;
+    $ctx->{default_template_extension} = $data->{default_template_extension} || 'tt2';
 
     my $tpaths = $data->{template_paths}->{path};
     $tpaths = [$tpaths] unless ref $tpaths;
