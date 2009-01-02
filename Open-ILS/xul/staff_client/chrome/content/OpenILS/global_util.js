@@ -3,6 +3,9 @@
 	function ses(a) {
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		switch(a) {
+            case 'ws_ou' :
+                return data.list.au[0].ws_ou();
+            break;
 			case 'authtime' :
 				return data.session.authtime;
 			break;
