@@ -54,7 +54,7 @@ patron.display.prototype = {
 
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.summary_window.g.summary.controller.render('patron_checkouts');
-						obj.summary_window.g.summary.controller.render('patron_standing');
+						obj.summary_window.g.summary.controller.render('patron_standing_penalties');
 						if (obj.items_window) {
 							obj.items_window.g.items.list.append(
 								{
@@ -164,7 +164,7 @@ patron.display.prototype = {
 									'on_list_change' : function(b) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 										obj.summary_window.g.summary.controller.render('patron_checkouts');
-										obj.summary_window.g.summary.controller.render('patron_standing');
+										obj.summary_window.g.summary.controller.render('patron_standing_penalties');
 										obj.summary_window.g.summary.controller.render('patron_bill');
 										obj.bill_window.g.bills.refresh(true);
 									},
@@ -286,7 +286,7 @@ patron.display.prototype = {
 									'on_list_change' : function(h) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 										//obj.summary_window.g.summary.controller.render('patron_holds');
-										//obj.summary_window.g.summary.controller.render('patron_standing');
+										//obj.summary_window.g.summary.controller.render('patron_standing_penalties');
 										obj.refresh_all();
 									},
 									'url_prefix' : xulG.url_prefix,
@@ -363,13 +363,19 @@ patron.display.prototype = {
                     'cmd_standing_penalties' : [
                         ['command'],
                         function() {
-                            var vframe = obj.right_deck.reset_iframe(
-                                urls.XUL_STANDING_PENALTIES,
-                                {},
-                                {
-                                    'patron' : obj.patron,
-                                }
-                            );
+                            function penalty_interface() {
+                                return obj.right_deck.reset_iframe(
+                                    urls.XUL_STANDING_PENALTIES,
+                                    {},
+                                    {
+                                        'patron' : obj.patron,
+                                        'refresh' : function() { 
+                                            obj.refresh_all(); 
+                                        }
+                                    }
+                                );
+                            }
+                            penalty_interface();
                         } 
                     ]
 				}

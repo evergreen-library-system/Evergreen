@@ -314,19 +314,19 @@ patron.util.csp_columns = function(modify,params) {
         },
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'ausp_set_date', 'label' : commonStrings.getString('staff.ausp_set_date_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+			'primary' : false, 'hidden' : false, 'render' : function(my) { 
                 return my.ausp ? my.ausp.set_date() : '';
             }
         },
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'ausp_note', 'label' : commonStrings.getString('staff.ausp_note_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+			'primary' : false, 'hidden' : false, 'render' : function(my) { 
                 return my.ausp ? my.ausp.note() : '';
             }
         },
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'ausp_org_unit', 'label' : commonStrings.getString('staff.ausp_org_unit_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { 
+			'primary' : false, 'hidden' : false, 'render' : function(my) { 
                 return my.ausp ? data.hash.aou[ my.ausp.org_unit() ].shortname() : '';
             }
         }

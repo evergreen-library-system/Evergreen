@@ -42,6 +42,7 @@
 		<caption id="penalty_caption" label="&staff.patron_display.penalty.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
+                <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
                 <spacer flex="1"/>
                 <menubar>
                     <menu label="&staff.patron_display.penalty.menu.actions.label;" accesskey="&staff.patron_display.penalty.menu.actions.accesskey;">
