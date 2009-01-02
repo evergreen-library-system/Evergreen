@@ -95,6 +95,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         retrieveAll : function ( fm_class /* Fieldmapper class hint */, opts /* Option hash */) {
             var pkey = fieldmapper[fm_class].Identifier;
 
+            if(!opts) opts = {};
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
