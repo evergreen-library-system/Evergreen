@@ -2794,6 +2794,7 @@ sub ranged_penalty_thresholds {
 
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_fleshed_by_id",
+    authoritative => 1,
 	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
 
 sub user_retrieve_fleshed_by_id {
