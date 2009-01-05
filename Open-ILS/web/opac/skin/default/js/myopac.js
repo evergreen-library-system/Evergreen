@@ -866,12 +866,14 @@ function myopacDrawNotes(r) {
 
 function myOPACDrawAddr(row, addr, addrs) {
     appendClear($n(row, 'myopac_addr_type'),text(addr.address_type()));
-    var street = (addr.street2()) ? addr.street1() + ", " + addr.street2() : addr.street1();
-    appendClear($n(row, 'myopac_addr_street'),text(street));
+    appendClear($n(row, 'myopac_addr_street'),text(addr.street1()));
+    appendClear($n(row, 'myopac_addr_street2'),text(addr.street2()));
     appendClear($n(row, 'myopac_addr_city'),text(addr.city()));
     appendClear($n(row, 'myopac_addr_county'),text(addr.county()));
     appendClear($n(row, 'myopac_addr_state'),text(addr.state()));
+    appendClear($n(row, 'myopac_addr_country'),text(addr.country()));
     appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
+    $n(row, 'myopac_addr_edit_link').onclick = function(){myopacEditAddress(addr)};
 
     /* if we have a replacement address, plop it into the table next to this addr */
     var repl = grep(addrs,
@@ -880,18 +882,99 @@ function myOPACDrawAddr(row, addr, addrs) {
         } 
     );
 
+    $n(row, 'myopac_pending_addr_td').id = 'myopac_pending_addr_td_' + addr.id();
+
     if(repl) {
+        hideMe($n(row, 'myopac_addr_edit_td')); // hide the edit link
         repl = repl[0];
-        unHideMe($n(row, 'myopac_pending_addr_td'));
-        $n(row, 'myopac_pending_addr_type').value = repl.address_type();
-        var street = (repl.street2()) ? repl.street1() + ", " + repl.street2() : repl.street1();
-        $n(row, 'myopac_pending_addr_street').value = street;
-        $n(row, 'myopac_pending_addr_city').value = repl.city();
-        $n(row, 'myopac_pending_addr_county').value = repl.county();
-        $n(row, 'myopac_pending_addr_state').value = repl.state();
-        $n(row, 'myopac_pending_addr_zip').value = repl.post_code();
+        myopacSetAddrInputs(row, repl);
     }
 }
+
+function myopacEditAddress(addr) {
+    var td = $('myopac_pending_addr_td_' + addr.id());
+    var row = td.parentNode;
+    myopacSetAddrInputs(row, addr);
+}
+
+function myopacSetAddrInputs(row, addr, prefix) {
+    unHideMe($n(row, 'myopac_pending_addr_td'));
+    $n(row, 'myopac_pending_addr_type').value = addr.address_type();
+    $n(row, 'myopac_pending_addr_street').value = addr.street1();
+    $n(row, 'myopac_pending_addr_street2').value = addr.street2();
+    $n(row, 'myopac_pending_addr_city').value = addr.city();
+    $n(row, 'myopac_pending_addr_county').value = addr.county();
+    $n(row, 'myopac_pending_addr_state').value = addr.state();
+    $n(row, 'myopac_pending_addr_country').value = addr.country();
+    $n(row, 'myopac_pending_addr_zip').value = addr.post_code();
+    $n(row, 'myopac_pending_addr_edit_link').onclick = function(){myopacSaveAddress(row, addr)};
+    $n(row, 'myopac_pending_addr_del_link').onclick = function(){myopacSaveAddress(row, addr, true)};
+}
+
+// if no pending addr exists, this is called with the original address
+function myopacSaveAddress(row, addr, deleteMe) {
+
+    if(addr.replaces() == null) {
+        // we are editing a non-pending address.  create a pending address to manage that
+        var repl = new aua();
+        repl.usr(addr.usr());
+        repl.address_type(addr.address_type());
+        repl.within_city_limits(addr.within_city_limits());
+        repl.replaces(addr.id());
+        repl.isnew(true);
+        repl.id(null);
+        addr = repl;
+    }
+
+    if(deleteMe) {
+        if(addr.id() == null) {
+            hideMe($n(row, 'myopac_pending_addr_td'));
+            return;
+        }
+        addr.isdeleted(true);
+    } else {
+        addr.address_type($n(row, 'myopac_pending_addr_type').value);
+        addr.street1($n(row, 'myopac_pending_addr_street').value);
+        addr.street2($n(row, 'myopac_pending_addr_street2').value);
+        addr.city($n(row, 'myopac_pending_addr_city').value);
+        addr.county($n(row, 'myopac_pending_addr_county').value);
+        addr.state($n(row, 'myopac_pending_addr_state').value);
+        addr.country($n(row, 'myopac_pending_addr_country').value);
+        addr.post_code($n(row, 'myopac_pending_addr_zip').value);
+    }
+
+	var req = new Request(
+        'open-ils.actor:open-ils.actor.user.address.pending.cud', 
+        G.user.session, addr);
+
+    req.callback(
+        function(r) {
+            var resp = r.getResultObject(); 
+
+            if(addr.isnew()) {
+                // new, add to list of addrs
+                addr.id(resp);
+                fleshedUser.addresses().push(addr);
+
+            } else {
+                // deleted, remove from list of addrs
+                if(addr.isdeleted()) {
+                    hideMe($n(row, 'myopac_pending_addr_td'));
+                    var addrs = [];
+                    for(var i in fleshedUser.addresses()) {
+                        var a = fleshedUser.addresses()[i];
+                        if(a.id() != addr.id())
+                            addrs.push(a);
+                    }
+                    fleshedUser.addresses(addrs);
+                }
+            }
+
+           alert('done');
+        }
+    );
+    req.send();
+};
 
 
 function myOPACUpdateUsername() {

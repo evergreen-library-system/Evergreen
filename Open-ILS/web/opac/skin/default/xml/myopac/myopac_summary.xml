@@ -189,6 +189,10 @@
                             <td name='myopac_addr_street'> </td>
                         </tr>
                         <tr>
+                            <td>&myopac.summary.address.street;</td>
+                            <td name='myopac_addr_street2'> </td>
+                        </tr>
+                        <tr>
                             <td>&myopac.summary.address.city;</td>
                             <td name='myopac_addr_city'> </td>
                         </tr>
@@ -201,8 +205,17 @@
                             <td name='myopac_addr_state'> </td>
                         </tr>
                         <tr>
+                            <td>&myopac.summary.address.country;</td>
+                            <td name='myopac_addr_country'> </td>
+                        </tr>
+                        <tr>
                             <td>&myopac.summary.address.zip;</td>
                             <td name='myopac_addr_zip'> </td>
+                        </tr>
+                        <tr>
+                            <td name='myopac_addr_edit_td' colspan='2'>
+                                <a class='classic_link' name='myopac_addr_edit_link' href='javascript:void(0);'>Edit Address</a>
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -217,6 +230,10 @@
                             <td><input name='myopac_pending_addr_street'/> </td>
                         </tr>
                         <tr>
+                            <td>&myopac.summary.address.street;</td>
+                            <td><input name='myopac_pending_addr_street2'/> </td>
+                        </tr>
+                        <tr>
                             <td>&myopac.summary.address.city;</td>
                             <td><input name='myopac_pending_addr_city'/> </td>
                         </tr>
@@ -229,8 +246,18 @@
                             <td><input name='myopac_pending_addr_state'/> </td>
                         </tr>
                         <tr>
+                            <td>&myopac.summary.address.country;</td>
+                            <td><input name='myopac_pending_addr_country'/> </td>
+                        </tr>
+                        <tr>
                             <td>&myopac.summary.address.zip;</td>
                             <td><input name='myopac_pending_addr_zip'/> </td>
+                        </tr>
+                        <tr>
+                            <td name='myopac_addr_edit_td' colspan='2'>
+                                <a class='classic_link' name='myopac_pending_addr_edit_link' href='javascript:void(0);'>Save Changes</a>
+                                <a style='padding-left:10px;' class='classic_link' name='myopac_pending_addr_del_link' href='javascript:void(0);'>Discard Pending Address</a>
+                            </td>
                         </tr>
                     </table>
                 </td>
