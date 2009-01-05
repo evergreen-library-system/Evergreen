@@ -410,6 +410,7 @@ patron.display.prototype = {
 				{
 					'barcode' : obj.barcode,
 					'id' : obj.id,
+                    'refresh' : function() { obj.refresh_all(); },
 					'on_finished' : function(patron) {
 
 						obj.patron = patron; obj.controller.render();

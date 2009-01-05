@@ -24,15 +24,27 @@ function penalty_init() {
             {
                 'columns' : patron.util.csp_columns({}),
                 'map_row_to_columns' : patron.util.std_map_row_to_columns(),
-                'retrieve_row' : function(params) { params.row_node.setAttribute('retrieve_id',params.row.my.csp.id()); params.on_retrieve(params.row); return params.row; },
+                'retrieve_row' : function(params) { 
+                    params.row_node.setAttribute('retrieve_id',params.row.my.csp.id()); 
+                    if (params.row.my.ausp) { params.row_node.setAttribute('retrieve_ausp_id',params.row.my.ausp.id()); }
+                    params.on_retrieve(params.row); 
+                    return params.row; 
+                },
                 'on_select' : function(ev) {
                     var sel = list.retrieve_selection();
                     var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+                    var ausp_ids = util.functional.filter_list(
+                        util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_ausp_id') || 'null' ); } ),
+                        function(o) { return o != null; }
+                    );
                     if (ids.length > 0) {
                         document.getElementById('cmd_apply_penalty').setAttribute('disabled','false');
-                        document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
                     } else {
                         document.getElementById('cmd_apply_penalty').setAttribute('disabled','true');
+                    }
+                    if (ausp_ids.length > 0) {
+                        document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
+                    } else {
                         document.getElementById('cmd_remove_penalty').setAttribute('disabled','true');
                     }
                 }
@@ -48,7 +60,7 @@ function penalty_init() {
                             'my' : {
                                 'csp' : data.list.csp[i],
                                 'au' : xulG.patron,
-                                'ausp' : util.functional.find_list( xulG.patron.standing_penalties(), function(o) { dump(js2JSON(o) + '\n'); return o.standing_penalty().id() == data.list.csp[i].id(); } )
+                                'ausp' : util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.standing_penalty().id() == data.list.csp[i].id(); } )
                             }
                         }
                     }
@@ -99,6 +111,48 @@ function penalty_init() {
             },
             false
         );
+
+        document.getElementById('cmd_remove_penalty').addEventListener(
+            'command',
+            function() {
+                var sel = list.retrieve_selection();
+                var ids = util.functional.filter_list(
+                    util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_ausp_id') || 'null' ); } ),
+                    function(o) { return o != null; }
+                );
+                if (ids.length > 0) {
+                    function gen_func(id) {
+                        return function() {
+                            var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == id; } );
+                            penalty.isdeleted(1);
+
+                            var req = net.simple_request( 'FM_AUSP_REMOVE', [ ses(), penalty ] );
+                            if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
+                                error.standard_unexpected_error_alert(patronStrings.getFormattedString('staff.patron.standing_penalty.remove_error',[data.hash.csp[id].name()]),req);
+                            }
+                        }; 
+                    }
+
+                    var funcs = [];
+                    for (var i = 0; i < ids.length; i++) {
+                        funcs.push( gen_func(ids[i]) );
+                    } 
+                    funcs.push(
+                        function() {
+                            if (xulG && typeof xulG.refresh == 'function') {
+                                xulG.refresh();
+                            }
+                            document.getElementById('progress').hidden = true;
+                        }
+                    );
+                    document.getElementById('progress').hidden = false;
+                    JSAN.use('util.exec'); var exec = new util.exec();
+                    exec.chain(funcs);
+                }
+            },
+            false
+        );
+
 
     } catch(E) {
         alert(E);

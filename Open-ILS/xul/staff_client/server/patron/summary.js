@@ -1,6 +1,7 @@
 dump('entering patron.summary.js\n');
 
 function $(id) { return document.getElementById(id); }
+var patronStrings = $('patronStrings');
 
 if (typeof patron == 'undefined') patron = {};
 patron.summary = function (params) {
@@ -79,7 +80,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									$("patronStrings").getString('staff.patron.summary.patron_net_access') + 
+									patronStrings.getString('staff.patron.summary.patron_net_access') + 
 									' ' + obj.OpenILS.data.hash.cnal[
 										obj.patron.net_access_level()
 									].name()
@@ -104,14 +105,49 @@ patron.summary.prototype = {
 									row.appendChild(label);
 
     								var button = document.createElement('button');
-	    							button.setAttribute('label', $("patronStrings").getString('staff.patron.summary.standing_penalty.remove'));
+	    							button.setAttribute('label', patronStrings.getString('staff.patron.summary.standing_penalty.remove'));
                                     button.setAttribute('image','/xul/server/skin/media/images/icon_delete.gif');
 	    							button.setAttribute('disabled','true');
+	    							button.setAttribute('hidden','true');
+                                    button.setAttribute('retrieve_ausp_id',penalties[i].id());
 		    						row.appendChild(button);
 
                                     // XXX check a permission here? How to fire the remove action ??? XXX
                                     if (penalties[i].standing_penalty().id() > 100) {
 	    							    button.setAttribute('disabled','false');
+	    							    button.setAttribute('hidden','false');
+                                        button.addEventListener(
+                                            'command',
+                                            function(ev) {
+                                                try {
+                                                    JSAN.use('util.functional');
+                                                    var id = ev.target.getAttribute('retrieve_ausp_id');
+                                                    var penalty = util.functional.find_list( obj.patron.standing_penalties(), function(o) { return o.id() == id; } );
+                                                    penalty.isdeleted(1);
+
+                                                    var req = obj.network.simple_request( 'FM_AUSP_REMOVE', [ ses(), penalty ] );
+                                                    if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
+                                                        obj.error.standard_unexpected_error_alert(
+                                                            patronStrings.getFormattedString(
+                                                                'staff.patron.standing_penalty.remove_error',
+                                                                [obj.data.hash.csp[id].name()]
+                                                            ),
+                                                            req
+                                                        );
+                                                    }
+                                                    if (typeof xulG.refresh == 'function') { xulG.refresh(); }
+                                                } catch(F) {
+                                                    obj.error.standard_unexpected_error_alert(
+                                                        patronStrings.getFormattedString(
+                                                            'staff.patron.standing_penalty.remove_error',
+                                                            [ev.target.getAttribute('retrieve_ausp_id')]
+                                                        ),
+                                                        F
+                                                    );
+                                                }
+                                            },
+                                            false
+                                        );
                                     }
 
                                     if (penalties[i].standing_penalty().block_list()) {
@@ -151,7 +187,7 @@ patron.summary.prototype = {
 									function(req) {
 										JSAN.use('util.money');
 										var robj = req.getResultObject();
-										e.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+										e.setAttribute('value', patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
 									}
 								);
 								/*
@@ -319,7 +355,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									$("patronStrings").getString('staff.patron.summary.expires_on') + ' ' + (
+									patronStrings.getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
 										'<Unset>'
@@ -609,7 +645,7 @@ patron.summary.prototype = {
 								[ ses(), obj.id ]
 							);
 						} else {
-							throw($("patronStrings").getString('staff.patron.summary.retrieve.no_barcode'));
+							throw(patronStrings.getString('staff.patron.summary.retrieve.no_barcode'));
 						}
 						if (robj) {
 

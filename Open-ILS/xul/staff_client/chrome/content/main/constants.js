@@ -133,6 +133,7 @@ const api = {
 	'FM_AUS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.retrieve' },
 	'FM_AUS_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.update' },
 	'FM_AUSP_APPLY' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.apply' },
+	'FM_AUSP_REMOVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.remove' },
 	'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve', 'secure' : false },
 	'FM_BRE_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve.authoritative', 'secure' : false },
 	'FM_BRE_ID_SEARCH_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.find_by_barcode', 'secure' : false },
