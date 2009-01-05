@@ -3187,7 +3187,7 @@ sub update_user_pending_address {
     }
 
     $e->commit;
-    return 1;
+    return $addr->id;
 }
 
 
