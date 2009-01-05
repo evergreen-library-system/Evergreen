@@ -86,7 +86,7 @@ function penalty_init() {
                             penalty.org_unit( ses('ws_ou') );
                             penalty.note( note );
                             var req = net.simple_request( 'FM_AUSP_APPLY', [ ses(), penalty ] );
-                            if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
+                            if (typeof req.ilsevent != 'undefined') {
                                 error.standard_unexpected_error_alert(patronStrings.getFormattedString('staff.patron.standing_penalty.apply_error',[data.hash.csp[id].name()]),req);
                             }
                         }; 
