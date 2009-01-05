@@ -2752,7 +2752,7 @@ sub apply_penalty {
 
     $e->create_actor_user_standing_penalty($penalty) or return $e->die_event;
     $e->commit;
-    return 1;
+    return $penalty->id;
 }
 
 __PACKAGE__->register_method(
