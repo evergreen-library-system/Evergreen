@@ -1265,7 +1265,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	growing_buffer* val_buf = buffer_init(128);
 
 	buffer_fadd(table_buf,"INSERT INTO %s", osrfHashGet(meta, "tablename"));
-	buffer_add(col_buf,"(");
+	OSRF_BUFFER_ADD_CHAR( col_buf, '(' );
 	buffer_add(val_buf,"VALUES (");
 
 
@@ -1295,8 +1295,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		if (first) {
 			first = 0;
 		} else {
-			buffer_add(col_buf, ",");
-			buffer_add(val_buf, ",");
+			OSRF_BUFFER_ADD_CHAR( col_buf, ',' );
+			OSRF_BUFFER_ADD_CHAR( val_buf, ',' );
 		}
 
 		buffer_add(col_buf, field_name);
@@ -1341,8 +1341,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	}
 
 
-	buffer_add(col_buf,")");
-	buffer_add(val_buf,")");
+	OSRF_BUFFER_ADD_CHAR( col_buf, ')' );
+	OSRF_BUFFER_ADD_CHAR( val_buf, ')' );
 
 	char* table_str = buffer_release(table_buf);
 	char* col_str   = buffer_release(col_buf);
@@ -1580,10 +1580,7 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 		}
 	}
 
-	buffer_add(
-		sql_buf,
-		")"
-	);
+	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
 
 	return buffer_release(sql_buf);
 }
@@ -2394,7 +2391,7 @@ static char* SELECT (
 				    if (first) {
 					    first = 0;
 				    } else {
-					    buffer_add(select_buf, ",");
+						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
 				    }
 
                     if (locale) {
@@ -2427,8 +2424,8 @@ static char* SELECT (
 				    if (first) {
 					    first = 0;
 				    } else {
-					    buffer_add(select_buf, ",");
-				    }
+						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+					}
 
 				    if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
 					    __alias = jsonObjectToSimpleString( tmp_const );
@@ -2470,7 +2467,7 @@ static char* SELECT (
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
-						    buffer_add(group_buf, ",");
+							OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
 					    }
 
 					    buffer_fadd(group_buf, " %d", sel_pos);
@@ -2479,7 +2476,7 @@ static char* SELECT (
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
-						    buffer_add(group_buf, ",");
+							OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
 					    }
 
 					    __column = searchFieldTransform(cname, field, selfield);
@@ -2502,7 +2499,7 @@ static char* SELECT (
 
 	    if (is_agg) jsonObjectFree(is_agg);
     } else {
-        buffer_add(select_buf, "*");
+		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
     }
 
 
@@ -2749,7 +2746,7 @@ static char* SELECT (
 		free(string);
 	}
 
-	if (!(flags & SUBSELECT)) buffer_add(sql_buf, ";");
+	if (!(flags & SUBSELECT)) OSRF_BUFFER_ADD_CHAR(sql_buf, ';');
 
 	free(core_class);
 	if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -2829,7 +2826,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			if (first) {
 				first = 0;
 			} else {
-				buffer_add(select_buf, ",");
+				OSRF_BUFFER_ADD_CHAR(select_buf, ',');
 			}
 
             if (locale) {
@@ -3017,7 +3014,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 	if (defaultselhash) jsonObjectFree(defaultselhash);
 
-	buffer_add(sql_buf, ";");
+	OSRF_BUFFER_ADD_CHAR(sql_buf, ';');
 	return buffer_release(sql_buf);
 }
 
@@ -3501,13 +3498,13 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		if (!field_object || field_object->type == JSON_NULL) {
 			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) ) && !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
 				if (first) first = 0;
-				else buffer_add(sql, ",");
+				else OSRF_BUFFER_ADD_CHAR(sql, ',');
 				buffer_fadd( sql, " %s = NULL", field_name );
 			}
 			
 		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			if (first) first = 0;
-			else buffer_add(sql, ",");
+			else OSRF_BUFFER_ADD_CHAR(sql, ',');
 
 			if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
 				buffer_fadd( sql, " %s = %ld", field_name, atol(value) );
@@ -3520,7 +3517,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		} else {
 			if ( dbi_conn_quote_string(dbhandle, &value) ) {
 				if (first) first = 0;
-				else buffer_add(sql, ",");
+				else OSRF_BUFFER_ADD_CHAR(sql, ',');
 				buffer_fadd( sql, " %s = %s", field_name, value );
 
 			} else {
