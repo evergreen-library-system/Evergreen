@@ -12,7 +12,7 @@ var marcType = {};
 var marcForm = {};
 var vrForm = {};
 var pcrud = new openils.PermaCrud();
-
+var hmCache = [];
 
 function getOrgInfo(rowIndex, item) {
     if(!item) return '';
@@ -133,6 +133,32 @@ function buildHMGrid() {
                     // cmCache[obj.code()] = obj;
                 }
            }
+        }
+    );
+}
+function deleteFromGrid() {
+    _deleteFromGrid(hmGrid.selection.getSelected(), 0);
+}   
+
+function _deleteFromGrid(list, idx) {
+    if(idx >= list.length) // we've made it through the list
+        return;
+
+    var item = list[idx];
+    var id = hmGrid.store.getValue(item, 'id');
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.delete.chmm'],
+        {   async: true,
+            params: [openils.User.authtoken, id],
+            oncomplete: function(r) {
+                if(stat = openils.Util.readResponse(r)) {
+                    // delete succeeded, remove it from the grid and the local cache
+                    hmGrid.store.deleteItem(item); 
+                    delete hmCache[item.code];
+                }
+                _deleteFromGrid(list, ++idx);
+            }
         }
     );
 }
