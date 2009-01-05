@@ -184,4 +184,24 @@ if(!dojo._hasResource["openils.Util"]) {
     openils.Util.isTrue = function(val) {
         return (val && val != '0' && !(val+'').match(/^f$/i));
     };
+
+    /**
+     * Turns a list into a mapped object.
+     * @param list The list
+     * @param pkey The field to use as the map key 
+     * @param isFunc If true, the map key field is an accessor function 
+     * that will return the value of the map key
+     */
+    openils.Util.mapList = function(list, pkey, isFunc) {
+        if(!(list && pkey)) 
+            return null;
+        var map = {};
+        for(var i in list) {
+            if(isFunc)
+                map[list[i][pkey]()] = list[i];
+            else
+                map[list[i][pkey]] = list[i];
+        }
+        return map;
+    };
 }
