@@ -927,6 +927,7 @@ sub user_retrieve_by_barcode {
 
 __PACKAGE__->register_method(
 	method	=> "get_user_by_id",
+    authoritative => 1,
 	api_name	=> "open-ils.actor.user.retrieve",);
 
 sub get_user_by_id {
@@ -3159,6 +3160,35 @@ sub apply_friend_perms {
     $e->commit;
     return 1;
 }
+
+
+__PACKAGE__->register_method (
+	method		=> 'update_user_pending_address',
+	api_name	=> 'open-ils.actor.user.address.pending.cud'
+);
+
+sub update_user_pending_address {
+    my($self, $conn, $auth, $addr) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->event unless $e->checkauth;
+
+    if($addr->usr != $e->requestor->id) {
+        my $user = $e->retrieve_actor_user($addr->usr) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    }
+
+    if($addr->isnew) {
+        $e->create_actor_user_address($addr) or return $e->die_event;
+    } elsif($addr->isdeleted) {
+        $e->delete_actor_user_address($addr) or return $e->die_event;
+    } else {
+        $e->update_actor_user_address($addr) or return $e->die_event;
+    }
+
+    $e->commit;
+    return 1;
+}
+
 
 1;
 
