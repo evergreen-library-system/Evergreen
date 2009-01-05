@@ -14,28 +14,28 @@
                     <th field="active" width='auto' editable='true' 
                         cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Active?</th>
                     <th field="user_home_ou" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>User Home Library</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>User Home Library</th>
                     <th field="request_ou" width='auto' editable='true' 
-                        cellType='dojox.grid.cells.Select'>Request Library</th>
-                    <th field="pickup_ou" editable='true' cellType='dojox.grid.cells.Select'>Pickup Library</th>
+                        cellType='dojox.grid.cells.Select' get='getOrgInfo'>Request Library</th>
+                    <th field="pickup_ou" editable='true' cellType='dojox.grid.cells.Select' get='getOrgInfo'>Pickup Library</th>
                     <th field="item_owning_ou" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Owning Library</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>Owning Library</th>
                          <th field="item_circ_ou" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Item Circ Library</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>Item Circ Library</th>
                          <th field="usr_grp" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>User Permission Group</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getGroupName'>User Permission Group</th>
                          <th field="requestor_grp" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Requestor Permission Group</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getGroupName'>Requestor Permission Group</th>
                         <th field="circ_modifier" width='auto' editable='true' 
                         cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Circulation Modifier</th>
                          <th field="marc_type" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>MARC Type</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getMarcType'>MARC Type</th>
                          <th field="marc_form" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>MARC Format</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getMarcForm'>MARC Format</th>
                          <th field="marc_vr_format" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Videorecording Format</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getVrForm'>Videorecording Format</th>
                          <th field="ref_flag" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Reference?</th>
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' formatter='formatReference'>Reference?</th>
                         
                 </tr>
             </thead>
