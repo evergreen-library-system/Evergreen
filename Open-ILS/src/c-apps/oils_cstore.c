@@ -110,52 +110,44 @@ int osrfAppInitialize() {
 
     if (!oilsIDLInit( osrf_settings_host_value("/IDL") )) return 1; /* return non-zero to indicate error */
 
-    char* method_str = NULL;
     growing_buffer* method_name = buffer_init(64);
 #ifndef PCRUD
     // Generic search thingy
     buffer_fadd(method_name, "%s.json_query", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 #endif
 
     // first we register all the transaction and savepoint methods
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.transaction.begin", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "beginTransaction", "", 0, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "beginTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.transaction.commit", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "commitTransaction", "", 0, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "commitTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.transaction.rollback", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "rollbackTransaction", "", 0, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "rollbackTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.savepoint.set", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "setSavepoint", "", 1, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "setSavepoint", "", 1, 0 );
 
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.savepoint.release", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "releaseSavepoint", "", 1, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "releaseSavepoint", "", 1, 0 );
 
     buffer_reset(method_name);
     buffer_fadd(method_name, "%s.savepoint.rollback", MODULENAME);
-    method_str = buffer_data(method_name);
-    osrfAppRegisterMethod( MODULENAME, method_str, "rollbackSavepoint", "", 1, 0 );
-    free(method_str);
+	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+						   "rollbackSavepoint", "", 1, 0 );
 
     buffer_free(method_name);
 
@@ -2890,9 +2882,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		free(join_clause);
 	}
 
-	char* tmpsql = buffer_data(sql_buf); // This strdup's ... no worries.
-	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s", MODULENAME, tmpsql);
-	free(tmpsql);
+	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s",
+				 MODULENAME, OSRF_BUFFER_C_STR(sql_buf));
 
 	buffer_add(sql_buf, " WHERE ");
 
