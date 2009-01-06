@@ -113,39 +113,46 @@ int osrfAppInitialize() {
     growing_buffer* method_name = buffer_init(64);
 #ifndef PCRUD
     // Generic search thingy
-    buffer_fadd(method_name, "%s.json_query", MODULENAME);
+    buffer_add(method_name, MODULENAME);
+	buffer_add(method_name, ".json_query");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 #endif
 
     // first we register all the transaction and savepoint methods
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.transaction.begin", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".transaction.begin");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "beginTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.transaction.commit", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".transaction.commit");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "commitTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.transaction.rollback", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".transaction.rollback");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "rollbackTransaction", "", 0, 0 );
 
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.savepoint.set", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".savepoint.set");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "setSavepoint", "", 1, 0 );
 
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.savepoint.release", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".savepoint.release");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "releaseSavepoint", "", 1, 0 );
 
     buffer_reset(method_name);
-    buffer_fadd(method_name, "%s.savepoint.rollback", MODULENAME);
+	OSRF_BUFFER_ADD(method_name, MODULENAME);
+	OSRF_BUFFER_ADD(method_name, ".savepoint.rollback");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "rollbackSavepoint", "", 1, 0 );
 
@@ -223,9 +230,11 @@ int osrfAppInitialize() {
             buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
 
             while ((part = strtok_r(NULL, ":", &st_tmp))) {
-                buffer_fadd(method_name, ".%s", part);
+				OSRF_BUFFER_ADD_CHAR(method_name, '.');
+				OSRF_BUFFER_ADD(method_name, part);
             }
-            buffer_fadd(method_name, ".%s", method_type);
+			OSRF_BUFFER_ADD_CHAR(method_name, '.');
+			OSRF_BUFFER_ADD(method_name, method_type);
             free(_fm);
 #endif
 
@@ -919,11 +928,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             jsonObjectFree(_list);
     
             growing_buffer* msg = buffer_init(128);
-            buffer_fadd(
-                msg,
-                "%s: Internal error, could not find the top of the org tree (parent_ou = NULL)",
-                MODULENAME
-            );
+			OSRF_BUFFER_ADD( msg, MODULENAME );
+			OSRF_BUFFER_ADD( msg,
+				": Internal error, could not find the top of the org tree (parent_ou = NULL)" );
     
             char* m = buffer_release(msg);
             osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
@@ -1278,7 +1285,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	growing_buffer* col_buf = buffer_init(128);
 	growing_buffer* val_buf = buffer_init(128);
 
-	buffer_fadd(table_buf,"INSERT INTO %s", osrfHashGet(meta, "tablename"));
+	OSRF_BUFFER_ADD(table_buf, "INSERT INTO ");
+	OSRF_BUFFER_ADD(table_buf, osrfHashGet(meta, "tablename"));
 	OSRF_BUFFER_ADD_CHAR( col_buf, '(' );
 	buffer_add(val_buf,"VALUES (");
 
@@ -1330,7 +1338,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			}
 		} else {
 			if ( dbi_conn_quote_string(writehandle, &value) ) {
-				buffer_fadd( val_buf, "%s", value );
+				OSRF_BUFFER_ADD( val_buf, value );
 
 			} else {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", MODULENAME, value);
@@ -1505,11 +1513,8 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
         *err = -1;
 
         growing_buffer* msg = buffer_init(128);
-        buffer_fadd(
-            msg,
-            "%s: Insufficient permissions to retrieve object",
-            MODULENAME
-        );
+		OSRF_BUFFER_ADD( msg, MODULENAME );
+		OSRF_BUFFER_ADD( msg, ": Insufficient permissions to retrieve object" );
 
         char* m = buffer_release(msg);
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_NOTALLOWED, "osrfMethodException", ctx->request, m );
@@ -1577,13 +1582,13 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 
 		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			char* val = jsonNumberToDBString( field, in_item );
-			buffer_fadd( sql_buf, "%s", val );
+			OSRF_BUFFER_ADD( sql_buf, val );
 			free(val);
 
 		} else {
 			char* key_string = jsonObjectToSimpleString(in_item);
 			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
-				buffer_fadd( sql_buf, "%s", key_string );
+				OSRF_BUFFER_ADD( sql_buf, key_string );
 				free(key_string);
 			} else {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
@@ -1611,7 +1616,8 @@ static char* searchValueTransform( const jsonObject* array ) {
 		val = jsonObjectToSimpleString(func_item);
 
 		if (func_item_first == 2) {
-			buffer_fadd(sql_buf, "%s( ", val);
+			OSRF_BUFFER_ADD(sql_buf, val);
+			OSRF_BUFFER_ADD(sql_buf, "( ");
 			free(val);
 			func_item_first--;
 			continue;
@@ -1625,7 +1631,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 		if (func_item->type == JSON_NULL) {
 			buffer_add( sql_buf, "NULL" );
 		} else if ( dbi_conn_quote_string(dbhandle, &val) ) {
-			buffer_fadd( sql_buf, "%s", val );
+			OSRF_BUFFER_ADD( sql_buf, val );
 		} else {
 			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 			free(val);
@@ -1636,10 +1642,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 		free(val);
 	}
 
-	buffer_add(
-		sql_buf,
-		" )"
-	);
+	buffer_add( sql_buf, " )" );
 
 	return buffer_release(sql_buf);
 }
@@ -1684,7 +1687,8 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
        		    if ( !val ) {
 	    		    buffer_add( sql_buf, ",NULL" );
        		    } else if ( dbi_conn_quote_string(dbhandle, &val) ) {
-	    		    buffer_fadd( sql_buf, ",%s", val );
+					OSRF_BUFFER_ADD_CHAR( sql_buf, ',' );
+					OSRF_BUFFER_ADD( sql_buf, val );
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 		    	    free(field_transform);
@@ -2065,7 +2069,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			}
 
 			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN, NULL );
-			buffer_fadd( join_buf, " %s", jpred );
+			OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+			OSRF_BUFFER_ADD( join_buf, jpred );
 			free(jpred);
 			free(filter_op);
 		}
@@ -2075,7 +2080,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		const jsonObject* join_filter = jsonObjectGetKeyConst( snode, "join" );
 		if (join_filter) {
 			char* jpred = searchJOIN( join_filter, idlClass );
-			buffer_fadd( join_buf, " %s", jpred );
+			OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+			OSRF_BUFFER_ADD( join_buf, jpred );
 			free(jpred);
 		}
 
@@ -2485,7 +2491,7 @@ static char* SELECT (
 					    }
 
 					    buffer_fadd(group_buf, " %d", sel_pos);
-				    /*
+					/*
 				    } else if (is_agg = jsonObjectGetKey( selfield, "having" )) {
 					    if (gfirst) {
 						    gfirst = 0;
@@ -2494,9 +2500,10 @@ static char* SELECT (
 					    }
 
 					    __column = searchFieldTransform(cname, field, selfield);
-					    buffer_fadd(group_buf, " %s", __column);
+						OSRF_BUFFER_ADD_CHAR(group_buf, ' ');
+						OSRF_BUFFER_ADD(group_buf, __column);
 					    __column = searchFieldTransform(cname, field, selfield);
-				    */
+					*/
 				    }
 			    }
 
@@ -2715,11 +2722,8 @@ static char* SELECT (
 	string = buffer_release(group_buf);
 
 	if (strlen(string)) {
-		buffer_fadd(
-			sql_buf,
-			" GROUP BY %s",
-			string
-		);
+		OSRF_BUFFER_ADD( sql_buf, " GROUP BY " );
+		OSRF_BUFFER_ADD( sql_buf, string );
 	}
 
 	free(string);
@@ -2727,11 +2731,8 @@ static char* SELECT (
  	string = buffer_release(having_buf);
  
  	if (strlen(string)) {
- 		buffer_fadd(
- 			sql_buf,
- 			" HAVING %s",
- 			string
- 		);
+		OSRF_BUFFER_ADD( sql_buf, " HAVING " );
+		OSRF_BUFFER_ADD( sql_buf, string );
  	}
 
 	free(string);
@@ -2739,11 +2740,8 @@ static char* SELECT (
 	string = buffer_release(order_buf);
 
 	if (strlen(string)) {
-		buffer_fadd(
-			sql_buf,
-			" ORDER BY %s",
-			string
-		);
+		OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
+		OSRF_BUFFER_ADD( sql_buf, string );
 	}
 
 	free(string);
@@ -2878,7 +2876,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 	if ( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, meta );
-		buffer_fadd(sql_buf, " %s", join_clause);
+		OSRF_BUFFER_ADD_CHAR(sql_buf, ' ');
+		OSRF_BUFFER_ADD(sql_buf, join_clause);
 		free(join_clause);
 	}
 
@@ -2993,11 +2992,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			string = buffer_release(order_buf);
 
 			if (strlen(string)) {
-				buffer_fadd(
-					sql_buf,
-					" ORDER BY %s",
-					string
-				);
+				OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
+				OSRF_BUFFER_ADD( sql_buf, string );
 			}
 
 			free(string);
