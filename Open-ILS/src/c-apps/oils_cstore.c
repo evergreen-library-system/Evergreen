@@ -861,10 +861,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     osrfHash* meta = (osrfHash*) ctx->method->userData;
     osrfHash* class = osrfHashGet( meta, "class" );
     char* method_type = strdup( osrfHashGet(meta, "methodtype") );
+    int fetch = 1;
 
     if ( ( *method_type == 's' || *method_type == 'i' ) ) {
         free(method_type);
         method_type = strdup("retrieve");
+        fetch = 0; // don't go to the db for the object for retrieve-type methods
     }
 
     osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
@@ -941,27 +943,32 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     } else {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
 	    char* pkey = osrfHashGet(class, "primarykey");
+        jsonObject *param = NULL;
 
         if (obj->classname) {
             pkey_value = oilsFMGetString( obj, pkey );
+            if (!fetch) param = jsonObjectClone(obj);
 	        osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s", pkey_value );
         } else {
             pkey_value = jsonObjectToSimpleString( obj );
+            fetch = 1;
 	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
         }
 
-        jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
-   		jsonObject* _list = doFieldmapperSearch(
-            ctx,
-            class,
-            _tmp_params,
-            &err
-        );
+        if (fetch) {
+            jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
+   	    	jsonObject* _list = doFieldmapperSearch(
+                ctx,
+                class,
+                _tmp_params,
+                &err
+            );
     
-        jsonObject *param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+           param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
     
-        jsonObjectFree(_tmp_params);
-        jsonObjectFree(_list);
+            jsonObjectFree(_tmp_params);
+            jsonObjectFree(_list);
+        }
 
         if (!param) {
             osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
