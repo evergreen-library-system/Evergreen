@@ -903,8 +903,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     osrfStringArray* context_org_array = osrfNewStringArray(1);
 
-    char* pkey_value = NULL;
     int err = 0;
+    char* pkey_value = NULL;
     if (global_required && !strcmp( "true", global_required )) {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
@@ -940,61 +940,56 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     } else {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
-
-        jsonObject *param = NULL;
-        if (obj) param = jsonObjectClone(obj);
-	    if (!param) param = jsonObjectClone(jsonObjectGetIndex( ctx->params, 1 ));
-
-       // XXX if the object has a non-null pkey, check for object-specific perm,
-       // else context org(s) for group perm check
 	    char* pkey = osrfHashGet(class, "primarykey");
 
-        if (param->classname) {
-            pkey_value = oilsFMGetString( param, pkey );
+        if (obj->classname) {
+            pkey_value = oilsFMGetString( obj, pkey );
 	        osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s", pkey_value );
-
         } else {
-            pkey_value = jsonObjectToSimpleString( param );
+            pkey_value = jsonObjectToSimpleString( obj );
 	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
+        }
 
-            jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
-    		jsonObject* _list = doFieldmapperSearch(
-                ctx,
-                class,
-                _tmp_params,
-                &err
-            );
+        jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
+   		jsonObject* _list = doFieldmapperSearch(
+            ctx,
+            class,
+            _tmp_params,
+            &err
+        );
     
-            jsonObjectFree(param);
-            param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+        jsonObject *param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
     
-            if (!param) {
-	            osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
-                jsonObjectFree(_tmp_params);
-                jsonObjectFree(_list);
+        jsonObjectFree(_tmp_params);
+        jsonObjectFree(_list);
 
-                growing_buffer* msg = buffer_init(128);
-                buffer_fadd(
-                    msg,
-                    "%s: no object found with primary key %s of %s",
-                    MODULENAME,
-                    pkey,
-                    pkey_value
-                );
-        
-                char* m = buffer_release(msg);
-                osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
-        
-                free(m);
-                free(pkey_value);
-
-                return 0;
-            }
-
-            free(pkey_value);
+        if (!param) {
+            osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
 
+            growing_buffer* msg = buffer_init(128);
+            buffer_fadd(
+                msg,
+                "%s: no object found with primary key %s of %s",
+                MODULENAME,
+                pkey,
+                pkey_value
+            );
+        
+            char* m = buffer_release(msg);
+            osrfAppSessionStatus(
+                ctx->session,
+                OSRF_STATUS_INTERNALSERVERERROR,
+                "osrfMethodException",
+                ctx->request,
+                m
+            );
+        
+            free(m);
+            if (pkey_value) free(pkey_value);
+
+            return 0;
         }
 
         if (local_context->size > 0) {
@@ -1003,7 +998,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             char* lcontext = NULL;
             while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
                 osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
-	            osrfLogDebug( OSRF_LOG_MARK, "adding class-local field %s (value: %s) to the context org list", lcontext, osrfStringArrayGetString(context_org_array, context_org_array->size - 1) );
+	            osrfLogDebug(
+                    OSRF_LOG_MARK,
+                    "adding class-local field %s (value: %s) to the context org list",
+                    lcontext,
+                    osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
+                );
             }
         }
 
@@ -1020,7 +1020,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
                     osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
 
-	                osrfLogDebug( OSRF_LOG_MARK, "%d foreign context fields(s) specified for class %s", ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size, class_name);
+	                osrfLogDebug(
+                        OSRF_LOG_MARK,
+                        "%d foreign context fields(s) specified for class %s",
+                        ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size,
+                        class_name
+                    );
     
                     char* foreign_pkey = osrfHashGet(fcontext, "field");
                     char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
@@ -1054,9 +1059,15 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         );
                 
                         char* m = buffer_release(msg);
-                        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
+                        osrfAppSessionStatus(
+                            ctx->session,
+                            OSRF_STATUS_INTERNALSERVERERROR,
+                            "osrfMethodException",
+                            ctx->request,
+                            m
+                        );
+
                         free(m);
-                
                         osrfStringArrayFree(class_list);
                         free(foreign_pkey_value);
                         jsonObjectFree(param);
