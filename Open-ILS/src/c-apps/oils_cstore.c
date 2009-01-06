@@ -970,7 +970,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 &err
             );
     
-           param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+            param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
     
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
