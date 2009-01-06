@@ -748,19 +748,25 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 #endif
 
         if (jsonObjectGetIndex( _p, 1 )) {
+            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "select" );
+            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "no_i18n" );
             jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
             jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
         } else {
             jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
         }
 
-        growing_buffer* sel_list = buffer_init(64);
-        buffer_fadd(sel_list, "{ \"%s\":[\"%s\"] }", osrfHashGet( class_obj, "classname" ), osrfHashGet( class_obj, "primarykey" ));
-        char* _s = buffer_release(sel_list);
+        jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonParseString("true") );
 
-        jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "select", jsonParseString(_s) );
-        osrfLogDebug(OSRF_LOG_MARK, "%s: Select qualifer set to [%s]", MODULENAME, _s);
-        free(_s);
+        jsonObjectSetKey(
+            jsonObjectGetIndex( _p, 1 ),
+            "select",
+            jsonParseStringFmt(
+                "{ \"%s\":[\"%s\"] }",
+                osrfHashGet( class_obj, "classname" ),
+                osrfHashGet( class_obj, "primarykey" )
+            )
+        );
 
         obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
 
@@ -972,8 +978,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
         if (!param) {
             osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
-            jsonObjectFree(_tmp_params);
-            jsonObjectFree(_list);
 
             growing_buffer* msg = buffer_init(128);
             buffer_fadd(
