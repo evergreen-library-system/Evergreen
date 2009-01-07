@@ -65,12 +65,23 @@ var FM_TABLE_DISPLAY = {
 			'cash_payment',
 			'check_payment',	
 			'credit_card_payment'
+		],
+		money : [
+			'cash_payment',
+			'check_payment',	
+			'credit_card_payment'
 		]
 	},
 
 	'mups' : {
 		fields : [
 			'usr',
+			'credit_payment',
+			'forgive_payment',
+			'work_payment',
+			'goods_payment'
+		],
+		money : [
 			'credit_payment',
 			'forgive_payment',
 			'work_payment',

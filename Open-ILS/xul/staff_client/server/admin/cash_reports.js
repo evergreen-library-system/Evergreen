@@ -97,7 +97,7 @@ function crDrawRange() {
 		org, $('cr_start').value, $('cr_end').value );
 	req.callback(
 		function(r) {
-			drawFMObjectTable( { dest : 'cr_desk_payments', obj : r.getResultObject() });
+			drawFMObjectTable( { dest : 'cr_desk_payments', obj : r.getResultObject(), moneySummaryRow : true });
 			sortables_init();
 		}
 	);
@@ -107,7 +107,7 @@ function crDrawRange() {
 		org, $('cr_start').value, $('cr_end').value );
 	req.callback(
 		function(r) {
-			drawFMObjectTable( { dest : 'cr_user_payments', obj : r.getResultObject() });
+			drawFMObjectTable( { dest : 'cr_user_payments', obj : r.getResultObject(), moneySummaryRow : true });
 			sortables_init();
 		}
 	);

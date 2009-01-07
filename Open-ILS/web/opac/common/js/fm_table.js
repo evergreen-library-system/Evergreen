@@ -30,6 +30,7 @@ function FMObjectBuilder( obj, args ) {
 	this.subtables = [];
 	this.display = args.display;
 	this.selectCol = args.selectCol;
+	this.moneySummaryRow = args.moneySummaryRow;
 	this.selectColName = args.selectColName;
 	this.selectAllName = args.selectAllName;
 	this.selectNoneName = args.selectNoneName;
@@ -81,6 +82,28 @@ FMObjectBuilder.prototype.build = function() {
 			td.appendChild(none);
 			this.thead_tr.appendChild(td);
 		}
+
+		if (this.moneySummaryRow) {
+			this.moneySummaryRow = elem('tr');
+
+			if( this.selectCol )
+				this.moneySummaryRow.appendChild(elem('td'));
+
+			for( var i = 0; i < this.keys.length; i++ ) {
+				var key = this.keys[i];
+
+				var td = elem('td');
+				td.setAttribute('name', this.table.id + key);
+
+				if (this.money && grep(this.money,function(i){return (i==key)}) )
+					td.appendChild(text('0.00'));
+
+				this.moneySummaryRow.appendChild(td);
+			}
+
+			this.tbody.appendChild(this.moneySummaryRow);
+		}
+
 		for( var i = 0; i < this.keys.length; i++ ) 
 			this.thead_tr.appendChild(elem('td',null,this.keys[i]));
 	
@@ -113,6 +136,7 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 	if( this.display[o.classname] ) {
 		this.keys = this.display[o.classname].fields;
 		this.bold = this.display[o.classname].bold;
+		this.money = this.display[o.classname].money;
 	}
 
 	if(!this.keys && FM_TABLE_DISPLAY[o.classname])
@@ -120,6 +144,9 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 
 	if(!this.bold && FM_TABLE_DISPLAY[o.classname])
 		this.bold = FM_TABLE_DISPLAY[o.classname].bold;
+
+	if(!this.money && FM_TABLE_DISPLAY[o.classname])
+		this.money = FM_TABLE_DISPLAY[o.classname].money;
 
 	if(!this.keys) {
 		this.keys = fmclasses[o.classname];
@@ -155,6 +182,7 @@ FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 		row.appendChild(td);
 	}
 	this.tbody.appendChild(row);
+	if (this.moneySummaryRow) this.tbody.appendChild(this.moneySummaryRow);
 }
 
 FMObjectBuilder.prototype.munge = function(data) {
@@ -165,6 +193,7 @@ FMObjectBuilder.prototype.munge = function(data) {
 			data = data.replace(/:\d{2}-.*/,'');
 		}
 	}
+
 	return data;
 }
 
@@ -217,6 +246,18 @@ FMObjectBuilder.prototype.fleshData = function(td, data, key) {
 		}
 
 	} else {
+		if (this.money && grep(this.money,function(i){return (i==key)}) ) {
+			td.setAttribute('align', 'right');
+			data = parseFloat(data).toFixed(2);
+
+			if (isNaN(data)) data = '0.00';
+
+			if (this.moneySummaryRow) {
+				var summary_td = $n(this.moneySummaryRow, this.table.id + key);
+				summary_td.innerHTML = parseFloat(parseFloat(summary_td.innerHTML) + parseFloat(data)).toFixed(2);
+			}
+		}
+
 		if( this.bold && grep(this.bold,function(i){return (i==key)}) ) {
 			var span = elem('span',{'class':'fm_table_bold'}, data);
 			td.appendChild(span);
