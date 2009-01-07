@@ -82,23 +82,23 @@
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
-					<textbox id="cc_number" onchange="g.payment_blob.cc_number = event.target.value"/>
+					<textbox id="cc_number" onchange="g.payment_blob.cc_number = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
-					<textbox id="expire_month" onchange="g.payment_blob.expire_month = event.target.value"/>
+					<textbox id="expire_month" onchange="g.payment_blob.expire_month = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
-					<textbox id="expire_year" onchange="g.payment_blob.expire_year = event.target.value"/>
+					<textbox id="expire_year" onchange="g.payment_blob.expire_year = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
-					<textbox id="approval_code" onchange="g.payment_blob.approval_code = event.target.value"/>
+					<textbox id="approval_code" onchange="g.payment_blob.approval_code = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.note.value;"/>
-					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true"/>
+					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true" context="clipboard"/>
 				</row>
 			</rows>
 		</grid>

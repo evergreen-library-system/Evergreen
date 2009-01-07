@@ -70,11 +70,11 @@
 			<rows>
 				<row>
 					<label value="&staff.patron.bill_check_info.check_number.value;"/>
-					<textbox id="check_number" onchange="g.payment_blob.check_number = event.target.value"/>
+					<textbox id="check_number" onchange="g.payment_blob.check_number = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_check_info.note.value;"/>
-					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true"/>
+					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true" context="clipboard"/>
 				</row>
 			</rows>
 		</grid>

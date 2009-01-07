@@ -159,8 +159,8 @@
 					<grid flex="1"><columns><column/><column flex="1"/></columns> \
 						<rows> \
 							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="false"/></row> \
-							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data"/></row> \
-							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data"/></row> \
+							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data" context="clipboard"/></row> \
+							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row> \
 							<row><spacer/><hbox> \
 								<button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.label') + '" name="fancy_cancel" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.accesskey') + '"/> \
 								<button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label') + '" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.accesskey') + '" name="fancy_submit"/></hbox></row> \

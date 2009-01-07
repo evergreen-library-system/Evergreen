@@ -148,8 +148,8 @@
                             </row>
                             <row>
                                 <checkbox id="native-evergreen-catalog_service" mytype="service_class" service="native-evergreen-catalog" label="&staff.cat.z3950.catalog_service.label;" tooltiptext="&staff.cat.z3950.catalog_service.tooltiptext;" /> 
-                                <textbox id="native-evergreen-catalog_username" hidden="true"/>
-                                <textbox id="native-evergreen-catalog_password" type="password" hidden="true"/>
+                                <textbox id="native-evergreen-catalog_username" hidden="true" context="clipboard"/>
+                                <textbox id="native-evergreen-catalog_password" type="password" hidden="true" context="clipboard"/>
                             </row>
                         </rows>
                     </grid>

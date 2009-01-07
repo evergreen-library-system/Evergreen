@@ -190,7 +190,7 @@
 		</description>
 		<hbox>
 			<label value="&staff.main.ws_info.name;" control="wsname"/>
-			<textbox id="wsname" />
+			<textbox id="wsname"  context="clipboard"/>
 		</hbox>
 		<hbox>
 			<hbox id="placeholder"/>

@@ -412,7 +412,7 @@ patron.holds.prototype = {
 							try {
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 								xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.new_phone_number')+'</description>';
-								xml += '<textbox id="phone" name="fancy_data"/>';
+								xml += '<textbox id="phone" name="fancy_data" context="clipboard"/>';
 								xml += '</vbox>';
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 								bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_done.label')+'"';

@@ -42,43 +42,43 @@
 			<label id="psl1" control="family_name" 
 				value="&staff.patron_search_form.family_name.label;" 
 				accesskey="&staff.patron_search_form.family_name.accesskey;"/>
-			<textbox id="family_name" group="0"/>
+			<textbox id="family_name" group="0" context="clipboard"/>
 		</row>
 		<row id="psr2">
 			<label id="psl2" control="first_given_name" 
 				value="&staff.patron_search_form.first_given_name.label;" 
 				accesskey="&staff.patron_search_form.first_given_name.accesskey;"/>
-			<textbox id="first_given_name" group="0"/>
+			<textbox id="first_given_name" group="0" context="clipboard"/>
 		</row>
 		<row id="psr3">
 			<label id="psl3" control="second_given_name" 
 				value="&staff.patron_search_form.second_given_name.label;" 
 				accesskey="&staff.patron_search_form.second_given_name.accesskey;"/>
-			<textbox id="second_given_name" group="0"/>
+			<textbox id="second_given_name" group="0" context="clipboard"/>
 		</row>
 		<row id="psr14">
 			<label id="psl14" control="alias" 
 				value="&staff.patron_search_form.alias.label;" 
 				accesskey="&staff.patron_search_form.alias.accesskey;"/>
-			<textbox id="alias" group="0"/>
+			<textbox id="alias" group="0" context="clipboard"/>
 		</row>
 		<row id="psr4">
 			<label id="psl4" control="email" 
 				value="&staff.patron_search_form.email.label;" 
 				accesskey="&staff.patron_search_form.email.accesskey;"/>
-			<textbox id="email" group="0"/>
+			<textbox id="email" group="0" context="clipboard"/>
 		</row>
 		<row id="psr5">
 			<label id="psl5" control="phone" 
 				value="&staff.patron_search_form.phone.label;" 
 				accesskey="&staff.patron_search_form.phone.accesskey;"/>
-			<textbox id="phone" group="2"/>
+			<textbox id="phone" group="2" context="clipboard"/>
 		</row>
 		<row id="psr6">
 			<label id="psl6" control="ident" 
 				value="&staff.patron_search_form.ident.label;" 
 				accesskey="&staff.patron_search_form.ident.accesskey;"/>
-			<textbox id="ident" group="2"/>
+			<textbox id="ident" group="2" context="clipboard"/>
 		</row>
 		<row id="psr6a">
 			<label id="psl6a" value=" "/>
@@ -87,31 +87,31 @@
 			<label id="psl7" control="street1" 
 				value="&staff.patron_search_form.street1.label;" 
 				accesskey="&staff.patron_search_form.street1.accesskey;"/>
-			<textbox id="street1" group="1"/>
+			<textbox id="street1" group="1" context="clipboard"/>
 		</row>
 		<row id="psr8">
 			<label id="psl8" control="street2" 
 				value="&staff.patron_search_form.street2.label;" 
 				accesskey="&staff.patron_search_form.street2.accesskey;"/>
-			<textbox id="street2" group="1"/>
+			<textbox id="street2" group="1" context="clipboard"/>
 		</row>
 		<row id="psr9">
 			<label id="psl9" control="city" 
 				value="&staff.patron_search_form.city.label;" 
 				accesskey="&staff.patron_search_form.city.accesskey;"/>
-			<textbox id="city" group="1"/>
+			<textbox id="city" group="1" context="clipboard"/>
 		</row>
 		<row id="psr10" hidden="true">
 			<label id="psl10" control="state" 
 				value="&staff.patron_search_form.state.label;" 
 				accesskey="&staff.patron_search_form.state.accesskey;"/>
-			<textbox id="state" group="1"/>
+			<textbox id="state" group="1" context="clipboard"/>
 		</row>
 		<row id="psr11">
 			<label id="psl11" control="post_code" 
 				value="&staff.patron_search_form.post_code.label;" 
 				accesskey="&staff.patron_search_form.post_code.accesskey;"/>
-			<textbox id="post_code" group="1"/>
+			<textbox id="post_code" group="1" context="clipboard"/>
 		</row>
 		<row id="psr12">
 			<spacer id="pss12"/>
