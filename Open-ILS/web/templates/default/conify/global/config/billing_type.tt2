@@ -33,7 +33,7 @@
         </table>
     </div>
 </div> 
-
+<button dojoType='dijit.form.Button' onclick='btDrawEditDialog();'>Edit Current Row</button>
 <span>Context Org Unit</span>
 <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='btContextOrgSelect' 
     searchAttr='shortname' labelAttr='shortname'> </select>
@@ -48,17 +48,46 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
         <table jsId="btGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" 
-            rowSelector='20px' selectionMode='none' columnReordering='true' headerMenu="btGridMenu">
+            rowSelector='20px' columnReordering='true' headerMenu="btGridMenu">
             <thead>
                 <tr>
                     <th field="id">ID</th>
-                    <th field="name" width='250px;' editable='true' cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
-                    <th field="owner" width='250px;' get='getOrgInfo'>Owning Location</th>
-                    <th field="default_price" editable='true' cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.CurrencyTextBox'>Default Price</th>
+                    <th field="name" width='250px;'>Name</th>
+                    <th field="owner" width='250px;'get='getOrgInfo'>Owning Location</th>
+                    <th field="default_price">Default Price</th>
                 </tr>
             </thead>
         </table>    
     </div>
+</div>
+<div style='display:none;' dojoType="dijit.Dialog" jsId='btEditDialog'>
+    <script>dojo.require('dijit.form.TextBox');</script>
+    <b>Test Editing Dialog</b>
+    <form>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td><span id='btId'/></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input dojoType='dijit.form.TextBox' jsId='btName'/></td>
+            </tr>
+            <tr>
+                <td>Owning Location</td>
+                <td><select dojoType='openils.widget.OrgUnitFilteringSelect' jsId='btOwnerLocation' searchAttr='shortname' labelAttr='shortname'/></td>
+            </tr>
+            <tr>
+                <td> DefaultPrice</td>
+                <td><input dojoType='dijit.form.CurrencyTextBox' jsId='btDefaultPrice'></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button jsId='editSave' dojoType='dijit.form.Button'>Save Changes</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 
 [% END %]

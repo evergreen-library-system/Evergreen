@@ -2,6 +2,7 @@ dojo.require('dojox.grid.DataGrid');
 dojo.require('dojox.grid.cells.dijit');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.CurrencyTextBox');
+dojo.require('dijit.Dialog');
 dojo.require('dojox.widget.PlaceholderMenuItem');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
@@ -55,7 +56,7 @@ function buildBTGrid() {
 }
 
 function btCreate(args) {
-    if(!args.name || args.owner == null) 
+    if(!args.name || args.owner == null)
         return;
     if(args.default_price == '' || isNaN(args.default_price))
         args.default_price = null;
@@ -77,6 +78,68 @@ function btCreate(args) {
     );
 }
 
+function btDrawEditDialog() {
+    btEditDialog.show();
+    var item =  btGrid.selection.getSelected()[0];
+    if(!item) {
+        btEditDialog.hide();
+        return;
+    }
+    var id = btGrid.store.getValue(item, 'id');
+    var name = btGrid.store.getValue(item, 'name');
+    var owner = btGrid.store.getValue(item, 'owner');
+    var price = btGrid.store.getValue(item, 'default_price');
+
+    dojo.byId('btId').innerHTML = id;
+    btName.setValue(name);
+    btOwnerLocation.setValue(owner);
+    btDefaultPrice.setValue(price);
+    new openils.User().buildPermOrgSelector('ADMIN_BILLING_TYPE', btOwnerLocation, owner);
+
+    if (id >= 100){
+        btOwnerLocation.setDisabled(false);
+        btDefaultPrice.setDisabled(false);
+
+    } else {
+        btOwnerLocation.setDisabled(true);
+        btDefaultPrice.setDisabled(true);
+    }
+    
+    // add an onclick for the save button that knows which object we are editing
+    editSave.domNode.onclick = function() {
+        var map = openils.Util.mapList(btList, 'id', true);
+        var bt = map[id]; // id comes from the getValue() call above
+        saveChanges(bt, item);
+    }
+}
+
+
+function saveChanges(bt, item){
+    bt.name(btName.getValue());
+    bt.owner(btOwnerLocation.getValue());
+    bt.default_price(btDefaultPrice.getValue());
+
+    fieldmapper.standardRequest(
+        ['open-ils.permacrud', 'open-ils.permacrud.update.cbt'],
+        {   async: true,
+            params: [openils.User.authtoken, bt],
+            oncomplete: function(r) {
+
+                if(openils.Util.readResponse(r)) {
+                    // update succeeded.  put the new values into the grid
+                    btGrid.store.setValue(item, 'name', bt.name());
+                    btGrid.store.setValue(item, 'default_price', (bt.default_price()));
+                    btGrid.store.setValue(item, 'owner', bt.owner());
+                    btEditDialog.hide();
+
+                } else {
+                    // update failed.  indicate this to the user somehow
+                    alert('Update Failed. Reason: ');
+                }
+            }
+        }
+    );
+}
 openils.Util.addOnLoad(btInit);
 
 
