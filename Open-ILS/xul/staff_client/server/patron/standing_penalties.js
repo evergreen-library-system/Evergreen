@@ -62,6 +62,10 @@ function penalty_init() {
                 var menuitem = document.createElement('menuitem'); csp_list.appendChild(menuitem);
                 menuitem.setAttribute('label',data.list.csp[i].label());
                 menuitem.setAttribute('value',data.list.csp[i].id());
+                menuitem.setAttribute('id','csp_'+data.list.csp[i].id());
+                if (util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.standing_penalty().id() == data.list.csp[i].id(); } )) {
+                    menuitem.setAttribute('disabled','true');
+                }
                 menuitem.addEventListener(
                     'command',
                     function(ev) {
@@ -95,6 +99,7 @@ function penalty_init() {
                                         }
                                     };
                                     rows[ req ] = list.append( row_params );
+                                    ev.target.setAttribute('disabled','true');
                                 }
                                 if (xulG && typeof xulG.refresh == 'function') {
                                     xulG.refresh();
@@ -131,6 +136,8 @@ function penalty_init() {
                                     var parentNode = node.parentNode;
                                     parentNode.removeChild( node );
                                     delete(rows[ id ]);
+                                    var csp_id = typeof penalty.standing_penalty() == 'object' ? penalty.standing_penalty().id() : penalty.standing_penalty();
+                                    document.getElementById('csp_'+csp_id).setAttribute('disabled','false');
                                 }
                             } catch(E) {
                                 alert(E);
