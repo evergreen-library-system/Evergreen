@@ -1,6 +1,6 @@
 /* EXAMPLES:
 
-<div dojoType="openils.widget.FilteringTreeSelect" tree="orgTree" parentField="parent_ou" nameField="shortname"/>
+<div dojoType="openils.widget.FilteringTreeSelect" tree="orgTree" parentField="parent_ou" searchAttr="shortname"/>
 <div dojoType="openils.widget.FilteringTreeSelect" tree="grpTree"/>
 
 The tree attribute is expected to be a tree-shaped pile of OpenSRF objects.
@@ -21,21 +21,30 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             defaultPad : 6,
             childField : 'children',
             parentField : 'parent',
-            nameField : 'name',
             valueField : '',
             tree : "",
             options : [],
             values : [],
 
             startup : function () {
+                this.labelAttr = '_label'; // force it
+                this.labelType = 'html'; // force it
+
                 this._tree = dojox.jsonPath.query(window, '$.' + this.tree, {evalType:"RESULT"});
+                if (!dojo.isArray(this._tree)) this._tree = [ this._tree ];
+
                 this._datalist = [];
                 if (!this.valueField) this.valueField = this._tree.Identifier;
 
-                this._add_items( this._tree, 0 );
+                var self = this;
+                this._tree.forEach( function (node) { self._add_items( node, 0 ); } );
 
-                var construct = {data : {identifier : this.valueField, items: this.datalist}};
-                this.store = new dojo.data.ItemFileReadStore(construct);
+                this.store = new dojo.data.ItemFileReadStore({
+                    data : {
+                        identifier : this.valueField,
+                        items : this._datalist
+                    }
+                });
 
                 this.inherited(arguments);
             },
@@ -44,7 +53,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 var lpad = this.defaultPad * depth++;
 
                 var data = node.toStoreData();
-                data._label = '<div style="padding-left:'+lpad+'px;">' + node[this.nameField]() + '</div>';
+                data._label = '<div style="padding-left:'+lpad+'px;">' + node[this.searchAttr]() + '</div>';
 
                 this._datalist.push( data );
 
@@ -54,13 +63,6 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 }
 
                 return null;
-            },
-
-            _getMenuLabelFromItem : function(item) {
-                return {
-                    html: true,
-                    label: item._label
-                };
             }
         }
     );
