@@ -17,9 +17,9 @@ function penalty_init() {
 
         JSAN.use('util.error'); var error = new util.error();
         JSAN.use('util.network'); var net = new util.network();
-        JSAN.use('patron.util'); JSAN.use('util.list'); JSAN.use('util.functional');
+        JSAN.use('patron.util'); JSAN.use('util.list'); JSAN.use('util.functional'); JSAN.use('util.widgets');
 
-        var list = new util.list( 'csp_list' );
+        var list = new util.list( 'ausp_list' );
         list.init( 
             {
                 'columns' : patron.util.ausp_columns({}),
@@ -55,49 +55,61 @@ function penalty_init() {
             rows[ xulG.patron.standing_penalties()[i].id() ] = list.append( row_params );
         };
 
-        document.getElementById('cmd_apply_penalty').addEventListener(
-            'command',
-            function() {
-                var sel = list.retrieve_selection();
-                var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
-                if (ids.length > 0) {
+        var csp_list = document.getElementById('csp_list');
+        util.widgets.remove_children(csp_list);
+        for (var i = 0; i < data.list.csp.length; i++) {
+            if (data.list.csp[i].id() > 100) {
+                var menuitem = document.createElement('menuitem'); csp_list.appendChild(menuitem);
+                menuitem.setAttribute('label',data.list.csp[i].label());
+                menuitem.setAttribute('value',data.list.csp[i].id());
+                menuitem.addEventListener(
+                    'command',
+                    function(ev) {
+                        var id = ev.target.getAttribute('value');
 
-                    var note = window.prompt(patronStrings.getString('staff.patron.standing_penalty.note_prompt'),'',patronStrings.getString('staff.patron.standing_penalty.note_title'));
+                        var note = window.prompt(patronStrings.getString('staff.patron.standing_penalty.note_prompt'),'',patronStrings.getString('staff.patron.standing_penalty.note_title'));
 
-                    function gen_func(id) {
-                        return function() {
-                            var penalty = new ausp();
-                            penalty.usr( xulG.patron.id() );
-                            penalty.isnew( 1 );
-                            penalty.standing_penalty( id );
-                            penalty.org_unit( ses('ws_ou') );
-                            penalty.note( note );
-                            var req = net.simple_request( 'FM_AUSP_APPLY', [ ses(), penalty ] );
-                            if (typeof req.ilsevent != 'undefined') {
-                                error.standard_unexpected_error_alert(patronStrings.getFormattedString('staff.patron.standing_penalty.apply_error',[data.hash.csp[id].name()]),req);
+                        var penalty = new ausp();
+                        penalty.usr( xulG.patron.id() );
+                        penalty.isnew( 1 );
+                        penalty.standing_penalty( id );
+                        penalty.org_unit( ses('ws_ou') );
+                        penalty.note( note );
+                        net.simple_request(
+                            'FM_AUSP_APPLY', 
+                            [ ses(), penalty ],
+                            function(reqobj) {
+                                var req = reqobj.getResultObject();
+                                if (typeof req.ilsevent != 'undefined') {
+                                    error.standard_unexpected_error_alert(patronStrings.getFormattedString('staff.patron.standing_penalty.apply_error',[data.hash.csp[id].name()]),req);
+                                } else {
+                                    penalty.id(req);
+                                    xulG.patron.standing_penalties( xulG.patron.standing_penalties().concat( penalty ) );
+                                    var row_params = {
+                                        'row' : {
+                                            'my' : {
+                                                'ausp' : penalty,
+                                                'csp' : data.hash.csp[ penalty.standing_penalty() ],
+                                                'au' : xulG.patron,
+                                            }
+                                        }
+                                    };
+                                    rows[ req ] = list.append( row_params );
+                                }
+                                if (xulG && typeof xulG.refresh == 'function') {
+                                    xulG.refresh();
+                                }
+                                document.getElementById('progress').hidden = true;
                             }
-                        }; 
-                    }
+                        );
 
-                    var funcs = [];
-                    for (var i = 0; i < ids.length; i++) {
-                        funcs.push( gen_func(ids[i]) );
-                    } 
-                    funcs.push(
-                        function() {
-                            if (xulG && typeof xulG.refresh == 'function') {
-                                xulG.refresh();
-                            }
-                            document.getElementById('progress').hidden = true;
-                        }
-                    );
-                    document.getElementById('progress').hidden = false;
-                    JSAN.use('util.exec'); var exec = new util.exec();
-                    exec.chain(funcs);
-                }
-            },
-            false
-        );
+                        document.getElementById('progress').hidden = false;
+                    },
+                    false
+                );
+            }
+        }
+
 
         document.getElementById('cmd_remove_penalty').addEventListener(
             'command',

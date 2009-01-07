@@ -1151,8 +1151,12 @@
 <!ENTITY staff.patron_display.penalty.caption "Staff-Generated Blocks / Standing Penalties">
 <!ENTITY staff.patron_display.penalty.menu.actions.label "Actions for these Penalties">
 <!ENTITY staff.patron_display.penalty.menu.actions.accesskey "P">
+<!ENTITY staff.patron_display.penalty.menu.apply.label "Apply New Penalty">
+<!ENTITY staff.patron_display.penalty.menu.apply.accesskey "N">
 <!ENTITY staff.patron_display.penalty.menu.actions.remove.label "Remove from Patron">
 <!ENTITY staff.patron_display.penalty.menu.actions.remove.accesskey "R">
+<!ENTITY staff.patron_display.penalty.menu.actions.edit.label "Edit Note">
+<!ENTITY staff.patron_display.penalty.menu.actions.edit.accesskey "E">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
