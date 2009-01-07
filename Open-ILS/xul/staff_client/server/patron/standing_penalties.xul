@@ -47,7 +47,6 @@
                 <menubar>
                     <menu label="&staff.patron_display.penalty.menu.actions.label;" accesskey="&staff.patron_display.penalty.menu.actions.accesskey;">
                         <menupopup>
-                            <menuitem command="cmd_apply_penalty" label="&staff.patron_display.penalty.menu.actions.apply.label;" accesskey="&staff.patron-display.menu.actions.apply.accesskey;"/>
                             <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
                         </menupopup>
                     </menu>
@@ -59,7 +58,6 @@
 
     <popupset id="csp_popupset">
         <popup id="csp_actions" position="at_pointer">
-            <menuitem command="cmd_apply_penalty" label="&staff.patron_display.penalty.menu.actions.apply.label;" accesskey="&staff.patron-display.menu.actions.apply.accesskey;"/>
             <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
         </popup>
     </popupset>

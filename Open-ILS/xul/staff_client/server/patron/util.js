@@ -257,7 +257,7 @@ patron.util.mp_columns = function(modify,params) {
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
-patron.util.csp_columns = function(modify,params) {
+patron.util.ausp_columns = function(modify,params) {
 
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
     JSAN.use('util.functional');
@@ -298,12 +298,6 @@ patron.util.csp_columns = function(modify,params) {
 			'persist' : 'hidden width ordinal', 'id' : 'csp_block_hold', 'label' : commonStrings.getString('staff.csp_block_hold_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { 
                 return String( my.csp.block_list() ).match('HOLD') ?  commonStrings.getString('staff.csp_block_hold_yes') : commonStrings.getString('staff.csp_block_hold_no'); 
-            }
-		},
-		{
-			'persist' : 'hidden width ordinal', 'id' : 'ausp_applied', 'label' : commonStrings.getString('staff.ausp_applied_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : function(my) { 
-                return my.ausp ? commonStrings.getString('staff.ausp_applied_yes') : commonStrings.getString('staff.ausp_applied_no'); 
             }
 		},
 		{
