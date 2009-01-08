@@ -1773,11 +1773,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
-			<field name="grp" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="link"/>
-			<field name="penalty" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="link"/>
-			<field name="threshold" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="float"/>
-			<field name="org_unit" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
+			<field name="grp" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="link" reporter:label="Group"/>
+			<field name="penalty" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="link" reporter:label="Penalty"/>
+			<field name="threshold" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="float" reporter:label="Threshold"/>
+			<field name="org_unit" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" reporter:label="Org Unit"/>
 		</fields>
 		<links>
 			<link field="penalty" reltype="has_a" key="id" map="" class="csp"/>
@@ -1818,13 +1818,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field name="set_date" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="timestamp"/>
-			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field name="standing_penalty" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field name="org_unit" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field name="note" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" reporter:label="ID" />
+			<field name="set_date" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="timestamp" reporter:label="Set Date"/>
+			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" reporter:label="User"/>
+			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" reporter:label="Staff"/>
+			<field name="standing_penalty" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" reporter:label="Standing Penalty"/>
+			<field name="org_unit" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" reporter:label="Org Unit"/>
+			<field name="note" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" reporter:label="Note"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -3572,10 +3572,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
-			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" />
-            <field name="default_price" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="money"/>
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" reporter:label="ID" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" reporter:label="Name" oils_persist:i18n="true"/>
+			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" reporter:label="Org Unit" />
+            <field name="default_price" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="money" reporter:label="Default Price"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
