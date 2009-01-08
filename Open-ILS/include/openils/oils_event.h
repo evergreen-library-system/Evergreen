@@ -5,6 +5,9 @@
 #include "opensrf/log.h"
 #include "opensrf/osrf_hash.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* OILS Event structure */
 struct _oilsEventStruct {
@@ -53,6 +56,8 @@ jsonObject* oilsEventToJSON( oilsEvent* event );
 /* Frees an event object */
 void oilsEventFree( oilsEvent* event );
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif
