@@ -1,6 +1,9 @@
 #include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 
+#ifndef OILS_UTILS_H
+#define OILS_UTILS_H
+
 // XXX replacing this with liboils_idl implementation
 // #include "openils/fieldmapper_lookup.h"
 
@@ -10,6 +13,10 @@
 #include "oils_constants.h"
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_settings.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
   Loads the IDL. Returns NULL on failure
@@ -110,3 +117,9 @@ jsonObject* oilsUtilsFetchWorkstationByName( const char* name );
 
 
 int oilsUtilsIsDBTrue( const char* val );
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
