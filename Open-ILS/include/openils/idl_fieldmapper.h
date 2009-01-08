@@ -4,6 +4,10 @@
 
 #ifndef FIELDMAPPER_API
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef OILS_IDL_API
 #include "oils_idl.h"
 #endif
@@ -13,6 +17,10 @@
 #define fm_pton(x,y) oilsIDL_pton(x,y)
 #define fm_ntop(x,y) oilsIDL_ntop(x,y)
 #define isFieldmapper(x) oilsIDL_classIsFieldmapper(x)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
