@@ -1,5 +1,6 @@
 dojo.require('dijit.Dialog');
 dojo.require('dojo.cookie');
+dojo.require('fieldmapper.AutoIDL');  // make conditional.  TT variable sets JS var to enable/disable?
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
 dojo.require('openils.CGI');
