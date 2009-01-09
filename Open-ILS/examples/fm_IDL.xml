@@ -840,6 +840,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="responses" reltype="has_many" key="question" map="" class="asvr"/>
 			<link field="answers" reltype="has_many" key="question" map="" class="asva"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <delete permission="ADMIN_SURVEY" link="survey" field="owner"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mbts" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_summary" reporter:label="Billable Transaction Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -1000,6 +1008,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="answer" reltype="has_a" key="id" map="" class="asva"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <delete permission="ADMIN_SURVEY" link="survey" field="owner"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ccbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_id_seq">
@@ -2372,10 +2388,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_SURVEY" context_field="owner"/>
+                <create permission="ADMIN_SURVEY" context_field="owner"/>
                 <retrieve/>
-                <update permission="UPDATE_SURVEY" context_field="owner"/>
-                <delete permission="DELETE_SURVEY" context_field="owner"/>
+                <update permission="ADMIN_SURVEY" context_field="owner"/>
+                <delete permission="ADMIN_SURVEY" context_field="owner"/>
             </actions>
         </permacrud>
 	</class>
