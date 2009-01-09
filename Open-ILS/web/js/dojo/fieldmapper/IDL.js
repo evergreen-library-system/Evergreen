@@ -23,7 +23,8 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     error : function (response) {
                         fieldmapper.IDL.loaded = false;
                         dojo.require('fieldmapper.fmall', true);
-                        callback();
+                        if(callback)
+                            callback();
                     }
                 });
             }
@@ -81,7 +82,8 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 idl[id] = obj;
             }
     
-            callback();
+            if(callback)
+                callback();
         },
     
         /* parses the links and fields portion of the IDL */
