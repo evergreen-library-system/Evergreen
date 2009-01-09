@@ -22,6 +22,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo.require("DojoSRF");
     dojo.require('openils.Event');
     dojo.require('fieldmapper.Fieldmapper');
+    dojo.require('fieldmapper.OrgUtils');
 
     dojo.declare('openils.User', null, {
 
@@ -175,21 +176,47 @@ if(!dojo._hasResource["openils.User"]) {
 
     
         /**
-         * Returns a list of the "highest" org units where the user
-         * has the given permission.
+         * Returns a list of the "highest" org units where the user has the given permission(s).
+         * @param permList A single permission or list of permissions
+         * @param includeDescendents If true, return a list of 'highest' orgs plus descendents
+         * @idlist If true, return a list of IDs instead of org unit objects
          */
-        getPermOrgList : function(perm, onload) {
-            fieldmapper.standardRequest(
-                ['open-ils.actor', 'open-ils.actor.user.work_perm.highest_org_set'],
-                {   async: true,
-                    params: [this.authtoken, perm],
-                    oncomplete: function(r) {
-                        org_list = r.recv().content();
-                        onload(org_list);
+        getPermOrgList : function(permList, onload, includeDescendents, idlist) {
+            if(typeof permList == 'string') permList = [permList];
+
+            var oncomplete = function(r) {
+                var permMap = openils.Util.readResponse(r);
+                var orgList = [];
+                for(var perm in permMap) {
+                    var permOrgList = permMap[perm];
+                    if(includeDescendents) {
+                        for(var i in permOrgList) {
+                            orgList = orgList.concat(
+                                fieldmapper.aou.descendantNodeList(permOrgList[i]));
+                        }
+                    } else {
+                        orgList = orgList.concat(permOrgList);
                     }
+                }
+                // remove duplicates
+                var trimmed = [];
+                for(var idx in orgList) {
+                    var val = (idlist) ? orgList[idx].id() : orgList[idx];
+                    if(trimmed.indexOf(val) < 0)
+                        trimmed.push(val);
+                }
+                onload(trimmed);
+            };
+
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.user.work_perm.highest_org_set.batch'],
+                {   async: true,
+                    params: [this.authtoken, permList],
+                    oncomplete: oncomplete
                 }
             );
         },
+
     
         /**
          * Builds a dijit.Tree using the orgs where the user has the requested permission
