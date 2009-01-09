@@ -27,7 +27,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	dojo._hasResource["fieldmapper.Fieldmapper"] = true;
 	dojo.provide("fieldmapper.Fieldmapper");
 	dojo.require("DojoSRF");
-	dojo.require("fieldmapper.fmall", true);
 
 	dojo.declare( "fieldmapper.Fieldmapper", null, {
 
@@ -138,46 +137,77 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	fieldmapper.staffRequest = function (meth, params) { return fieldmapper._request(meth, true, params) };
 	fieldmapper.Fieldmapper.prototype.staffRequest = fieldmapper.staffRequest;
 
-	for( var cl in fmclasses ) {
-		dojo.provide( cl );
-		dojo.declare( cl , fieldmapper.Fieldmapper, {
-			constructor : function () {
-				if (!this.a) this.a = [];
-				this.classname = this.declaredClass;
-				this._fields = fmclasses[this.classname];
-				for( var pos = 0; pos <  this._fields.length; pos++ ) {
-					var p = parseInt(pos) + 3;
-					var f = this._fields[pos];
-					this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
-				}
-			}
-		});
-		fieldmapper[cl] = window[cl]; // alias into place
-		fieldmapper[cl].Identifier = 'id'; // alias into place
+    // if we were called by the IDL loader ...
+    if ( fieldmapper.IDL && fieldmapper.IDL.loaded ) {
+    	for( var cl in fieldmapper.IDL.fmclasses ) {
+    		dojo.provide( cl );
+    		dojo.declare( cl , fieldmapper.Fieldmapper, {
+    			constructor : function () {
+    				if (!this.a) this.a = [];
+    				this.classname = this.declaredClass;
+                    this._fields = [];
+                    this.structure = fieldmapper.IDL.fmclasses[this.classname]
 
-	}
+                    for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
+                        var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
+                        var p = field.array_position;
+                        if (p > 2) continue;
 
-	fieldmapper.i18n_l.Identifier = 'code';
-	fieldmapper.ccpbt.Identifier = 'code';
-	fieldmapper.ccnbt.Identifier = 'code';
-	fieldmapper.cbrebt.Identifier = 'code';
-	fieldmapper.cubt.Identifier = 'code';
-	fieldmapper.ccm.Identifier = 'code';
-	fieldmapper.cvrfm.Identifier = 'code';
-	fieldmapper.clm.Identifier = 'code';
-	fieldmapper.cam.Identifier = 'code';
-	fieldmapper.cifm.Identifier = 'code';
-	fieldmapper.citm.Identifier = 'code';
-	fieldmapper.cblvl.Identifier = 'code';
-	fieldmapper.clfm.Identifier = 'code';
-	fieldmapper.mous.Identifier = 'usr';
-	fieldmapper.moucs.Identifier = 'usr';
-	fieldmapper.mucs.Identifier = 'usr';
-	fieldmapper.mus.Identifier = 'usr';
-	fieldmapper.rxbt.Identifier = 'xact';
-	fieldmapper.rxpt.Identifier = 'xact';
-	fieldmapper.cxt.Identifier = 'name';
-	fieldmapper.amtr.Identifier = 'matchpoint';
+        				this._fields.push( field.name );
+    					this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
+                    }
+    			}
+    		});
+    		fieldmapper[cl] = window[cl]; // alias into place
+    		fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
+    	}
+
+    // ... otherwise we need to get the oldschool fmall.js stuff, which will lack .structure
+    } else {
+    	if (!fmclasses)
+            dojo.require("fieldmapper.fmall", true);
+
+    	for( var cl in fmclasses ) {
+    		dojo.provide( cl );
+    		dojo.declare( cl , fieldmapper.Fieldmapper, {
+    			constructor : function () {
+    				if (!this.a) this.a = [];
+    				this.classname = this.declaredClass;
+    				this._fields = fmclasses[this.classname];
+    				for( var pos = 0; pos <  this._fields.length; pos++ ) {
+    					var p = parseInt(pos) + 3;
+    					var f = this._fields[pos];
+    					this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
+    				}
+    			}
+    		});
+    		fieldmapper[cl] = window[cl]; // alias into place
+    		fieldmapper[cl].Identifier = 'id'; // alias into place
+    	}
+
+    	fieldmapper.i18n_l.Identifier = 'code';
+    	fieldmapper.ccpbt.Identifier = 'code';
+    	fieldmapper.ccnbt.Identifier = 'code';
+    	fieldmapper.cbrebt.Identifier = 'code';
+    	fieldmapper.cubt.Identifier = 'code';
+    	fieldmapper.ccm.Identifier = 'code';
+    	fieldmapper.cvrfm.Identifier = 'code';
+    	fieldmapper.clm.Identifier = 'code';
+    	fieldmapper.cam.Identifier = 'code';
+    	fieldmapper.cifm.Identifier = 'code';
+    	fieldmapper.citm.Identifier = 'code';
+    	fieldmapper.cblvl.Identifier = 'code';
+    	fieldmapper.clfm.Identifier = 'code';
+    	fieldmapper.mous.Identifier = 'usr';
+    	fieldmapper.moucs.Identifier = 'usr';
+    	fieldmapper.mucs.Identifier = 'usr';
+    	fieldmapper.mus.Identifier = 'usr';
+    	fieldmapper.rxbt.Identifier = 'xact';
+    	fieldmapper.rxpt.Identifier = 'xact';
+    	fieldmapper.cxt.Identifier = 'name';
+    	fieldmapper.amtr.Identifier = 'matchpoint';
+
+    }
 
 	fieldmapper.OpenSRF = {};
 
