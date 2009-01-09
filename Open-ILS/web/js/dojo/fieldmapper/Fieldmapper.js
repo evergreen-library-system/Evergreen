@@ -145,7 +145,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     				if (!this.a) this.a = [];
     				this.classname = this.declaredClass;
                     this._fields = [];
-                    this.structure = fieldmapper.IDL.fmclasses[this.classname]
+                    this.Structure = fieldmapper.IDL.fmclasses[this.classname]
 
                     for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
                         var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
