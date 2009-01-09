@@ -30,7 +30,8 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 this.labelAttr = '_label'; // force it
                 this.labelType = 'html'; // force it
 
-                this._tree = dojox.jsonPath.query(window, '$.' + this.tree, {evalType:"RESULT"});
+                this._tree = (typeof this.tree == 'string') ? 
+                        dojox.jsonPath.query(window, '$.' + this.tree, {evalType:"RESULT"}) : this.tree;
                 if (!dojo.isArray(this._tree)) this._tree = [ this._tree ];
 
                 this._datalist = [];
@@ -52,7 +53,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             _add_items : function ( node, depth ) {
                 var lpad = this.defaultPad * depth++;
 
-                var data = node.toStoreData();
+                var data = node.toStoreItem();
                 data._label = '<div style="padding-left:'+lpad+'px;">' + node[this.searchAttr]() + '</div>';
 
                 this._datalist.push( data );
