@@ -89,7 +89,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
             req.send();
 
-            if (req_hash.timeout) return req.result.content();
+            if (req_hash.timeout) return req.recv().content();
             return req;
         },
 
@@ -124,7 +124,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
             req.send();
 
-            if (req_hash.timeout) return req.result.content();
+            if (req_hash.timeout) return req.recv().content();
             return req;
         },
 
@@ -154,7 +154,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
             req.send();
 
-            if (req_hash.timeout) return req.result.content();
+            if (req_hash.timeout) return req.recv().content();
             return req;
         },
 
