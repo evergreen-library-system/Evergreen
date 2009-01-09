@@ -40,9 +40,10 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 var node = classes[i];
                 var id = node.getAttribute('id');
                 var fields = node.getElementsByTagName('fields')[0];
+                window.fmclasses[id] = [];
     
                 var obj = { 
-                    fields  : this._parseFields(node),
+                    fields  : this._parseFields(node, id),
                     name    : node.getAttribute('id'),
                     //table   : node.getAttributeNS(this.NS_PERSIST, 'tablename'),
                     //core    : node.getAttributeNS(this.NS_REPORTS, 'core'),
@@ -87,7 +88,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
         },
     
         /* parses the links and fields portion of the IDL */
-        _parseFields : function(node) {
+        _parseFields : function(node, classname) {
             var data = [];
     
             var fields = node.getElementsByTagName('fields')[0];
@@ -99,10 +100,9 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     
     
             for(var i = 0; i < fields.length; i++) {
-    
                 var field = fields[i];
                 var name = field.getAttribute('name');
-    
+
                 var obj = {
                     field : field,
                     name	: name,
@@ -114,8 +114,12 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     type	: 'field',
                     virtual : (fields[i].getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
                 };
+
                 obj.label = obj.label || obj.name;
                 obj.datatype = obj.datatype || 'text';
+
+                if (obj.array_position > 2)
+                    window.fmclasses[classname].push(obj.name);
     
                 var link = null;
                 for(var l = 0; l < links.length; l++) {
@@ -150,6 +154,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
 
     });
 
+    window.fmclasses = {};
     fieldmapper.IDL.load = function (callback, force) { return new fieldmapper.IDL(callback, force); };
     fieldmapper.IDL.loaded = false;
 
