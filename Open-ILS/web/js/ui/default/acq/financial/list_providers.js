@@ -28,7 +28,7 @@ function loadProviderGrid() {
             onresponse : function(r) {
                 if( lp = openils.Util.readResponse(r)) {
                     openils.acq.Provider.cache[lp.id()] = lp;
-                    store.newItem(acqpro.itemToStoreData(lp));
+                    store.newItem(acqpro.toStoreItem(lp));
                 }
             }
         }       

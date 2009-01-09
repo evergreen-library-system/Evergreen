@@ -34,7 +34,7 @@ function loadFSGrid() {
             onresponse : function(r) { /* request object */
                 if(fs = openils.Util.readResponse(r)) {
                     openils.acq.FundingSource.cache[fs.id()] = fs;
-                    store.newItem(acqfs.itemToStoreData(fs));
+                    store.newItem(acqfs.toStoreItem(fs));
                 }
             }
         }

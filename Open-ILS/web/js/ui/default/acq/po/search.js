@@ -56,7 +56,7 @@ function doSearch(fields) {
             onresponse : function(r) {
                 if(po = openils.Util.readResponse(r)) {
                     openils.acq.PO.cache[po.id()] = po;
-                    store.newItem(acqpo.itemToStoreData(po));
+                    store.newItem(acqpo.toStoreItem(po));
                 }
                 dojo.style('po-grid', 'visibility', 'visible');
             } 

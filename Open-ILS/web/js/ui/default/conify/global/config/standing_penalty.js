@@ -18,7 +18,7 @@ function spBuildGrid() {
             params: [openils.User.authtoken, {id:{'!=':null}}, {order_by:{csp:'id'}}],
             onresponse: function(r) {
                 if(sp = openils.Util.readResponse(r)) 
-                    store.newItem(csp.itemToStoreData(sp));
+                    store.newItem(csp.toStoreItem(sp));
                 spCache[sp.id()] = sp;
             } 
         }
@@ -39,7 +39,7 @@ function spCreate(args) {
           params: [openils.User.authtoken, penalty],
           oncomplete: function(r) {
               if(obj = openils.Util.readResponse(r))
-                  spGrid.store.newItem(csp.itemToStoreData(obj));
+                  spGrid.store.newItem(csp.toStoreItem(obj));
             }
         }
     );

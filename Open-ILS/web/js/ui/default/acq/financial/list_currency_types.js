@@ -21,7 +21,7 @@ function loadCTypesGrid() {
           onresponse : function(r){
                 if(ct = openils.Util.readResponse(r)) {
                     openils.acq.CurrencyType.cache[ct.code()] = ct;
-                    store.newItem(acqct.itemToStoreData(ct));
+                    store.newItem(acqct.toStoreItem(ct));
                 }
             }
         }

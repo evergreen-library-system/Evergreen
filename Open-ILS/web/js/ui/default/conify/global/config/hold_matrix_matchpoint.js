@@ -129,7 +129,7 @@ function buildHMGrid() {
             params: [openils.User.authtoken, {id:{'!=':null}}],
             onresponse: function (r) {
                 if(obj = openils.Util.readResponse(r)) {
-                    store.newItem(chmm.itemToStoreData(obj));
+                    store.newItem(chmm.toStoreItem(obj));
                     // cmCache[obj.code()] = obj;
                 }
            }

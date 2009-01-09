@@ -31,7 +31,7 @@ function loadGrid() {
             onresponse : function(r) {
                 if(pl = openils.Util.readResponse(r)) {
                     plCache[pl.id()] = pl;
-                    store.newItem(acqpl.itemToStoreData(pl));
+                    store.newItem(acqpl.toStoreItem(pl));
                 }
             }
         }

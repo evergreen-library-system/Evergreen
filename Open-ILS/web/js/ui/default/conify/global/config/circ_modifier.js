@@ -18,7 +18,7 @@ function buildCMGrid() {
             params: [openils.User.authtoken, {code:{'!=':null}}],
             onresponse: function (r) { 
                 if(obj = openils.Util.readResponse(r)) {
-                    store.newItem(ccm.itemToStoreData(obj));
+                    store.newItem(ccm.toStoreItem(obj));
                     cmCache[obj.code()] = obj;
                 }
            }
@@ -94,7 +94,7 @@ function cmCreate(args) {
             params: [openils.User.authtoken, cmod],
             oncomplete: function(r) {
                 if(cm = openils.Util.readResponse(r))
-                    cmGrid.store.newItem(ccm.itemToStoreData(cm));
+                    cmGrid.store.newItem(ccm.toStoreItem(cm));
             }
         }
     );

@@ -20,7 +20,7 @@ var GPT = {
                     params: [openils.User.authtoken, GPT.contextOrg],
                     onresponse: function (r) { 
                         if(obj = openils.Util.readResponse(r, false, true)) {
-                            store.newItem(pgpt.itemToStoreData(obj));
+                            store.newItem(pgpt.toStoreItem(obj));
                         }
                     }
                 }
@@ -52,7 +52,7 @@ var GPT = {
 
     _onCreateComplete : function(r) {
         if(threshold = openils.Util.readResponse(r)) {
-            gptGrid.store.newItem(pgpt.itemToStoreData(threshold));
+            gptGrid.store.newItem(pgpt.toStoreItem(threshold));
         }
     },
 

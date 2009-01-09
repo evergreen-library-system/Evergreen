@@ -37,7 +37,7 @@ function loadFundGrid() {
             onresponse : function(r) {
                 if(lf = openils.Util.readResponse(r)) {
                     openils.acq.Fund.cache[lf.id()] = lf;
-                    store.newItem(acqf.itemToStoreData(lf));
+                    store.newItem(acqf.toStoreItem(lf));
                     var year = lf.year();
                     if(!(year in yearsAdded)) {
                         yearStore.items.push({year:year});
