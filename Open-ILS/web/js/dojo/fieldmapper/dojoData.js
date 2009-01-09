@@ -95,7 +95,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 	for (var i in fmclasses) fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
 	for (var i in fmclasses) fieldmapper[i].toStoreData = _toStoreData;
 	for (var i in fmclasses) fieldmapper[i].itemToStoreData = _itemToStoreData;
-	for (var i in fmclasses) fieldmapper[i].prototype.itemToStoreData = function ( args ) { _itemToStoreData(this, args) };
+	for (var i in fmclasses) fieldmapper[i].prototype.itemToStoreData = function ( args ) { return _itemToStoreData(this, args) };
 	for (var i in fmclasses) fieldmapper[i].initStoreData = _initStoreData;
 
 	fieldmapper.aou.prototype._ignore_fields = ['children'];
