@@ -63,3 +63,5 @@ table { border-collapse: collapse; }
 .dijitTooltipTable td {padding: 3px;} /* custom class for handling dialog tables */
 /* ----------------------------------------------------------------- */
 
+
+.oils-fm-edit-dialog td { padding: 5px; }
