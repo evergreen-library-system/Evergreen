@@ -184,20 +184,22 @@ if(!dojo._hasResource["openils.User"]) {
         getPermOrgList : function(permList, onload, includeDescendents, idlist) {
             if(typeof permList == 'string') permList = [permList];
 
+            console.log('loading org perms ' + permList + ' for user ' + this.user.id());
             var oncomplete = function(r) {
                 var permMap = openils.Util.readResponse(r);
                 var orgList = [];
                 for(var perm in permMap) {
                     var permOrgList = permMap[perm];
-                    if(includeDescendents) {
-                        for(var i in permOrgList) {
+                    for(var i in permOrgList) {
+                        if(includeDescendents) {
                             orgList = orgList.concat(
                                 fieldmapper.aou.descendantNodeList(permOrgList[i]));
+                        } else {
+                            orgList = orgList.concat(fieldmapper.aou.findOrgUnit(permOrgList[i]));
                         }
-                    } else {
-                        orgList = orgList.concat(permOrgList);
                     }
                 }
+
                 // remove duplicates
                 var trimmed = [];
                 for(var idx in orgList) {
