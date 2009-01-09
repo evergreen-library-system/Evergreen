@@ -842,10 +842,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <create permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </create>
                 <retrieve/>
-                <update permission="ADMIN_SURVEY" link="survey" field="owner"/>
-                <delete permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <update permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </update>
+                <delete permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </delete>
             </actions>
         </permacrud>
 	</class>
@@ -1010,10 +1016,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <create permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </create>
                 <retrieve/>
-                <update permission="ADMIN_SURVEY" link="survey" field="owner"/>
-                <delete permission="ADMIN_SURVEY" link="survey" field="owner"/>
+                <update permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </update>
+                <delete permission="ADMIN_SURVEY">
+                    <context link="survey" field="owner"/>
+                </delete>
             </actions>
         </permacrud>
 	</class>
@@ -1777,10 +1789,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_STANDING_PENALTY" global_required="true"/>
-                <retrieve permission="CREATE_STANDING_PENALTY UPDATE_STANDING_PENALTY DELETE_STANDING_PENALTY" global_required="true"/>
-                <update permission="UPDATE_STANDING_PENALTY" global_required="true"/>
-                <delete permission="DELETE_STANDING_PENALTY" global_required="true"/>
+                <create permission="ADMIN_STANDING_PENALTY" global_required="true"/>
+                <retrieve permission="ADMIN_STANDING_PENALTY VIEW_STANDING_PENALTY" global_required="true"/>
+                <update permission="ADMIN_STANDING_PENALTY" global_required="true"/>
+                <delete permission="ADMIN_STANDING_PENALTY" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
