@@ -41,7 +41,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		},
 
 		_isfieldmapper : true,
-		fm_classes : fmclasses,
 
 		clone : function() {
 			var obj = new this.constructor();
@@ -164,7 +163,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
     // ... otherwise we need to get the oldschool fmall.js stuff, which will lack .structure
     } else {
-    	if (!fmclasses)
+    	if (!window.fmclasses)
             dojo.require("fieldmapper.fmall", true);
 
     	for( var cl in fmclasses ) {
