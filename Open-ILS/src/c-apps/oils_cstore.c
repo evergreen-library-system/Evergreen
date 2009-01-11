@@ -158,20 +158,23 @@ int osrfAppInitialize() {
 
     buffer_free(method_name);
 
-    osrfStringArray* global_methods = osrfNewStringArray(6);
-
-    osrfStringArrayAdd( global_methods, "create" );
-    osrfStringArrayAdd( global_methods, "retrieve" );
-    osrfStringArrayAdd( global_methods, "update" );
-    osrfStringArrayAdd( global_methods, "delete" );
-    osrfStringArrayAdd( global_methods, "search" );
-    osrfStringArrayAdd( global_methods, "id_list" );
-
+	static const char* global_method[] = {
+		"create",
+		"retrieve",
+		"update",
+		"delete",
+		"search",
+		"id_list"
+	};
+	const int global_method_count
+		= sizeof( global_method ) / sizeof ( global_method[0] );
+	
     int c_index = 0; 
     char* classname;
     osrfStringArray* classes = osrfHashKeys( oilsIDL() );
     osrfLogDebug(OSRF_LOG_MARK, "%d classes loaded", classes->size );
-    osrfLogDebug(OSRF_LOG_MARK, "At least %d methods will be generated", classes->size * global_methods->size);
+    osrfLogDebug(OSRF_LOG_MARK,
+		"At least %d methods will be generated", classes->size * global_method_count);
 
     while ( (classname = osrfStringArrayGetString(classes, c_index++)) ) {
         osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
@@ -189,33 +192,37 @@ int osrfAppInitialize() {
             continue;
         }
 
-        int i = 0; 
-        char* method_type;
-        osrfHash* method_meta;
-        while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
-            osrfLogDebug(OSRF_LOG_MARK, "Using files to build %s class methods for %s", method_type, classname);
-
-            if (!osrfHashGet(idlClass, "fieldmapper")) continue;
-
+        // Look up some other attributes of the current class
+        const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
+		const char* readonly = osrfHashGet(idlClass, "readonly");
 #ifdef PCRUD
-            if (!osrfHashGet(idlClass, "permacrud")) continue;
-
-            char* tmp_method = strdup(method_type);
-            if ( *tmp_method == 'i' || *tmp_method == 's') {
-                free(tmp_method);
-                tmp_method = strdup("retrieve");
-            }
-            if (!osrfHashGet( osrfHashGet(idlClass, "permacrud"), tmp_method )) continue;
-            free(tmp_method);
+        osrfHash* idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
 #endif
 
-            char* readonly = osrfHashGet(idlClass, "readonly");
-            if (	readonly &&
+        int i;
+        for( i = 0; i < global_method_count; ++i ) {
+            const char* method_type = global_method[ i ];
+            osrfLogDebug(OSRF_LOG_MARK,
+                "Using files to build %s class methods for %s", method_type, classname);
+
+            if (!idlClass_fieldmapper) continue;
+
+#ifdef PCRUD
+            if (!idlClass_permacrud) continue;
+
+            const char* tmp_method = method_type;
+            if ( *tmp_method == 'i' || *tmp_method == 's') {
+                tmp_method = "retrieve";
+            }
+            if (!osrfHashGet( idlClass_permacrud, tmp_method )) continue;
+#endif
+
+            if (    readonly &&
                     !strncasecmp( "true", readonly, 4) &&
                     ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
                ) continue;
 
-            method_meta = osrfNewHash();
+            osrfHash* method_meta = osrfNewHash();
             osrfHashSet(method_meta, idlClass, "class");
 
             method_name =  buffer_init(64);
@@ -224,7 +231,7 @@ int osrfAppInitialize() {
 #else
             char* st_tmp = NULL;
             char* part = NULL;
-            char* _fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
+            char* _fm = strdup( idlClass_fieldmapper );
             part = strtok_r(_fm, ":", &st_tmp);
 
             buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
@@ -262,7 +269,6 @@ int osrfAppInitialize() {
         }
     }
 
-    osrfStringArrayFree( global_methods );
     return 0;
 }
 
