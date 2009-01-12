@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > vandelay.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:21-0400\n"
+"POT-Creation-Date: 2008-12-09 22:47-0400\n"
 "PO-Revision-Date: 2008-11-27 13:47-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
@@ -427,3 +428,18 @@ msgstr ""
 msgid "Record Bucket ID"
 msgstr ""
 
+#: vandelay.select_actions
+msgid "-- Actions --"
+msgstr ""
+
+#: vandelay.queue.total
+msgid "Total:"
+msgstr ""
+
+#: vandelay.queue.imported
+msgid "Imported:"
+msgstr ""
+
+#: vandelay.queue.column_picker.title
+msgid "Column Picker"
+msgstr ""

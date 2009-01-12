@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 00:22-0400\n"
+"POT-Creation-Date: 2008-12-09 22:48-0400\n"
 "PO-Revision-Date: 2008-11-27 12:42-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -52,7 +53,9 @@ msgstr ""
 
 #: staff.circ.check_digit.bad
 msgctxt "staff.circ.check_digit.bad"
-msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
+msgid ""
+"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
+"anyway?"
 msgstr ""
 
 #: staff.circ.barcode.bad
@@ -205,11 +208,15 @@ msgid "Override Checkout Failure?"
 msgstr ""
 
 #: staff.circ.checkout.override.item_deposit_required.warning
-msgid "A billing for an Item Deposit will be added to the patron's account if this action is overrided."
+msgid ""
+"A billing for an Item Deposit will be added to the patron's account if this "
+"action is overrided."
 msgstr ""
 
 #: staff.circ.checkout.override.item_rental_fee_required.warning
-msgid "A billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
+msgid ""
+"A billing for an Item Rental Fee will be added to the patron's account if "
+"this action is overrided."
 msgstr ""
 
 #: staff.circ.checkout.not_cataloged.confirm
@@ -229,7 +236,9 @@ msgid "Checkout cancelled"
 msgstr ""
 
 #: staff.circ.checkout.card.inactive
-msgid "The card used to retrieve this account is inactive and may not be used to circulate items."
+msgid ""
+"The card used to retrieve this account is inactive and may not be used to "
+"circulate items."
 msgstr ""
 
 #: staff.circ.checkout.barcode.check_out_failed
@@ -279,7 +288,9 @@ msgstr ""
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkout.suggest_offline
-msgid "Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgid ""
+"Check Out Failed.  If you wish to use the offline interface, in the top "
+"menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.checkout.barcode
@@ -333,7 +344,9 @@ msgid "%1$s, %2$s : %3$s"
 msgstr ""
 
 #: staff.circ.copy_details.bad_hold_status
-msgid "This item is not captured for a hold, however its status is incorrectly set to \"On Holds Shelf\".  Please check this item in to correct the status."
+msgid ""
+"This item is not captured for a hold, however its status is incorrectly set "
+"to \"On Holds Shelf\".  Please check this item in to correct the status."
 msgstr ""
 
 #: staff.circ.copy_details.no_hold
@@ -430,7 +443,10 @@ msgid "Volumes for record # %1$s"
 msgstr ""
 
 #: staff.circ.copy_status.edit_volumes.duplicate
-msgid "Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead."
+msgid ""
+"Edit failed:  You tried to change a volume's callnumber to one that is "
+"already in use for the given library.  You should transfer the items to the "
+"desired callnumber instead."
 msgstr ""
 
 #: staff.circ.copy_status.edit_volumes.success
@@ -464,7 +480,9 @@ msgid "Override Delete Failure?"
 msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
-msgid "You must delete all the copies on the volume before you may delete the volume itself."
+msgid ""
+"You must delete all the copies on the volume before you may delete the "
+"volume itself."
 msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.success
@@ -503,7 +521,9 @@ msgid "Limit Selection"
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.none
-msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
+msgid ""
+"Please mark a library as the destination from within holdings maintenance "
+"and then try this again."
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.confirm
@@ -549,7 +569,9 @@ msgstr ""
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
-msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
+msgid ""
+"Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
+"anyway?"
 msgstr ""
 
 #: staff.circ.copy_status.status.null_result
@@ -668,7 +690,9 @@ msgstr ""
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
-msgid "In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgid ""
+"In House Use Failed.  If you wish to use the offline interface, in the top "
+"menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.in_house_use.failed
@@ -773,7 +797,9 @@ msgid "Copy ID = %1$s"
 msgstr ""
 
 #: staff.circ.utils.abort_transits.not_found
-msgid "This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?"
+msgid ""
+"This item was no longer in transit at the time of the abort.  Perhaps this "
+"happened from a stale display?"
 msgstr ""
 
 #: staff.circ.utils.abort_transits.unexpected_error
@@ -1200,7 +1226,9 @@ msgid "Do Not Print"
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.description
-msgid "This item could fulfill a hold request but capture has been delayed by policy."
+msgid ""
+"This item could fulfill a hold request but capture has been delayed by "
+"policy."
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.titlebar
@@ -1267,7 +1295,9 @@ msgstr ""
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkin.suggest_offline
-msgid "Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
+msgid ""
+"Check In Failed.  If you wish to use the offline interface, in the top "
+"menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.checkin.renew_failed.error
@@ -1291,8 +1321,16 @@ msgstr ""
 msgid "Barcode: %1$s Message: %2$s"
 msgstr ""
 
-#: staff.circ.circ.override.item_rental_fee_required.warning.barcode
-msgid "For item with barcode %1$s, a billing for an Item Rental Fee will be added to the patron's account if this action is overrided."
+#: staff.circ.renew.override.item_deposit_required.warning.barcode
+msgid ""
+"For item with barcode %1$s, a billing for an Item Deposit will be added to "
+"the patron's account if this action is overrided."
+msgstr ""
+
+#: staff.circ.renew.override.item_rental_fee_required.warning.barcode
+msgid ""
+"For item with barcode %1$s, a billing for an Item Rental Fee will be added "
+"to the patron's account if this action is overrided."
 msgstr ""
 
 #: staff.circ.holds.activate.prompt
@@ -1312,15 +1350,20 @@ msgid "Are you sure you would like to suspend holds %1$s?"
 msgstr ""
 
 #: staff.circ.holds.activation_date.prompt
-msgid "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  This will also Suspend the hold."
+msgid ""
+"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
+"This will also Suspend the hold."
 msgstr ""
 
 #: staff.circ.holds.activation_date.prompt.plural
-msgid "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  This will also Suspend the holds."
+msgid ""
+"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
+"This will also Suspend the holds."
 msgstr ""
 
 #: staff.circ.holds.activation_date.too_early.error
-msgid "Activation Date needs to be either unset or set to fall on a future date."
+msgid ""
+"Activation Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
@@ -1329,15 +1372,18 @@ msgid "Invalid Date"
 msgstr ""
 
 #: staff.circ.holds.expire_time.prompt
-msgid "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
 msgstr ""
 
 #: staff.circ.holds.expire_time.prompt.plural
-msgid "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+msgid ""
+"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
 msgstr ""
 
 #: staff.circ.holds.expire_time.too_early.error
-msgid "Expiration Date needs to be either unset or set to fall on a future date."
+msgid ""
+"Expiration Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
 #: staff.circ.holds.expire_time.invalid_date
@@ -1388,6 +1434,7 @@ msgid "Holds not likely suspended."
 msgstr ""
 
 #: staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit
-msgid "You may not edit the pickup library for holds that are in-transit or ready for pickup."
+msgid ""
+"You may not edit the pickup library for holds that are in-transit or ready "
+"for pickup."
 msgstr ""
-
