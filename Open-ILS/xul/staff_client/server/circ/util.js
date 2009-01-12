@@ -2047,7 +2047,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 						msg += '\n';
 						var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
 						msg += '\n';
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron',  [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+                        if (au_obj.alias()) {
+    						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+                        } else {
+    						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron',  [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+                        }
 						msg += '\n';
 						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
 						msg += '\n';
@@ -2177,7 +2181,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				JSAN.use('patron.util');
 				var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
 				msg += '\n';
-				document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron', [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+                if (au_obj.alias()) {
+                    msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+                } else {
+    				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron', [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+                }
 				msg += '\n';
 				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
 				msg += '\n';
