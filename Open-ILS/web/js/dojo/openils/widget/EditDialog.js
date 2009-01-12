@@ -12,11 +12,7 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
         'openils.widget.EditDialog',
         [dijit.Dialog],
         {
-            fmClass : '',
-            fmObject : null,
-            mode : 'update',
-            fieldOrder : null, // ordered list of field names, optional.
-            editPane : null,
+            editPane : null, // reference to our EditPane object
 
             constructor : function() {
                 //this.inherited(arguments);
