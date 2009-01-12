@@ -140,6 +140,13 @@ patron.search_result.prototype = {
         var search_depth = 0;
 		for (var i in query) {
 			switch( i ) {
+                case 'card':
+					search_hash[ i ] = {};
+					search_hash[ i ].value = query[i];
+					search_hash[i].group = 3; 
+					obj.search_term_count++;
+				break;
+
 				case 'phone': case 'ident': 
 				
 					search_hash[ i ] = {};
@@ -156,7 +163,7 @@ patron.search_result.prototype = {
 					obj.search_term_count++;
 				break;
 
-				case 'family_name': case 'first_given_name': case 'second_given_name': case 'email': case 'alias':
+				case 'family_name': case 'first_given_name': case 'second_given_name': case 'email': case 'alias': case 'usrname':
 
 					search_hash[ i ] = {};
 					search_hash[ i ].value = query[i];

@@ -80,6 +80,18 @@
 				accesskey="&staff.patron_search_form.ident.accesskey;"/>
 			<textbox id="ident" group="2" context="clipboard"/>
 		</row>
+		<row id="psr6b">
+			<label id="psl6b" control="usrname" 
+				value="&staff.patron_search_form.usrname.label;" 
+				accesskey="&staff.patron_search_form.usrname.accesskey;"/>
+			<textbox id="usrname" group="0" context="clipboard"/>
+		</row>
+		<row id="psr6c">
+			<label id="psl6c" control="card" 
+				value="&staff.patron_search_form.card.label;" 
+				accesskey="&staff.patron_search_form.card.accesskey;"/>
+			<textbox id="card" group="0" context="clipboard"/>
+		</row>
 		<row id="psr6a">
 			<label id="psl6a" value=" "/>
 		</row>

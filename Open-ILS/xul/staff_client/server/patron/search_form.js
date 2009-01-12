@@ -90,6 +90,32 @@ patron.search_form.prototype = {
 							};
 						}
 					],
+					'usrname' : [
+						['render'],
+						function(e) {
+							return function() {
+								if (params.query&&params.query.usrname) {
+									e.setAttribute('value',params.query.usrname);
+									e.value = params.query.usrname;
+								} else {
+									e.value = '';
+								}
+							};
+						}
+					],
+					'card' : [
+						['render'],
+						function(e) {
+							return function() {
+								if (params.query&&params.query.card) {
+									e.setAttribute('value',params.query.card);
+									e.value = params.query.card;
+								} else {
+									e.value = '';
+								}
+							};
+						}
+					],
 					'email' : [
 						['render'],
 						function(e) {
