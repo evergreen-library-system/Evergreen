@@ -195,7 +195,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                         _pcrud.session.request({
                             method : 'open-ils.pcrud.transaction.commit',
                             timeout : 10,
-                            params : [ ses ],
+                            params : [ _pcrud.auth() ],
                             onerror : function (r) {
                                 _pcrud.disconnect();
                                 throw 'Transaction commit error';
@@ -243,7 +243,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             this.session.request({
                 method : 'open-ils.pcrud.transaction.begin',
                 timeout : 10,
-                params : [ ses ],
+                params : [ _pcrud.auth() ],
                 onerror : function (r) {
                     _pcrud.disconnect();
                     throw 'Transaction begin error';
@@ -316,7 +316,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                         _pcrud.session.request({
                             method : 'open-ils.pcrud.transaction.commit',
                             timeout : 10,
-                            params : [ ses ],
+                            params : [ _pcrud.auth() ],
                             onerror : function (r) {
                                 _pcrud.disconnect();
                                 throw 'Transaction commit error';
@@ -364,7 +364,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             this.session.request({
                 method : 'open-ils.pcrud.transaction.begin',
                 timeout : 10,
-                params : [ ses ],
+                params : [ _pcrud.auth() ],
                 onerror : function (r) {
                     _pcrud.disconnect();
                     throw 'Transaction begin error';
