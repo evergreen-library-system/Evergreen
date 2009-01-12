@@ -15,6 +15,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             fmObject : null,
             mode : 'update',
             fieldOrder : null, // ordered list of field names, optional.
+            fieldList : [], // holds the field name + associated widget
+            sortedFieldList : [], // holds the sorted IDL defs for our fields
 
             /**
              * Builds a basic table of key / value pairs.  Keys are IDL display labels.
@@ -49,15 +51,28 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     row.appendChild(valTd);
                     tbody.appendChild(row);
 
-                    new openils.widget.AutoWidget({
+                    var widget = new openils.widget.AutoWidget({
                         idlField : field, 
                         fmObject : this.fmObject,
                         parentNode : valTd,
                         orgLimitPerms : this.limitPerms
-                    }).build();
+                    });
+                    widget.build();
+                    this.fieldList.push({name:field.name, widget:widget});
                 }
 
                 openils.Util.addCSSClass(table, 'oils-fm-edit-dialog');
+            },
+
+            getFields : function() {
+                return this.fieldList.map(function(a) { return a.name });
+            },
+
+            getFieldValue : function(field) {
+                for(var i in this.fieldList) {
+                    if(field == this.fieldList[i].name)
+                        return this.fieldList[i].widget.getFormattedValue();
+                }
             },
 
             _buildSortedFieldList : function() {

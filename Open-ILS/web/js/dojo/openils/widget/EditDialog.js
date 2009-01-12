@@ -16,6 +16,12 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
             fmObject : null,
             mode : 'update',
             fieldOrder : null, // ordered list of field names, optional.
+            editPane : null,
+
+            constructor : function() {
+                //this.inherited(arguments);
+                this.editPane = new openils.widget.EditPane();
+            },
 
             /**
              * Builds a basic table of key / value pairs.  Keys are IDL display labels.
@@ -23,13 +29,8 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
              */
             startup : function() {
                 this.inherited(arguments);
-                var pane = new openils.widget.EditPane();
-                pane.mode = this.mode;
-                pane.fmClass = this.fmClass;
-                pane.fmObject = this.fmObject;
-                pane.fieldOrder = this.fieldOrder;
-                pane.startup();
-                this.domNode.appendChild(pane.domNode);
+                this.editPane.startup();
+                this.domNode.appendChild(this.editPane.domNode);
             }
         }
     );

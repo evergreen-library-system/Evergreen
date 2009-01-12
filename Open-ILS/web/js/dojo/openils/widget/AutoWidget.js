@@ -36,6 +36,21 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
             }
         },
 
+        /**
+         * Turn the value from the dojo widget into a value oils understands
+         */
+        getFormattedValue : function() {
+            var value = this.widget.attr('value');
+            switch(this.idlField.datatype) {
+                case 'bool':
+                    return (value) ? 't' : 'f'
+                case 'timestamp':
+                    return dojo.date.stamp.toISOString(value);
+                default:
+                    return value;
+            }
+        },
+
         build : function(onload) {
             this.onload = onload;
             this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
