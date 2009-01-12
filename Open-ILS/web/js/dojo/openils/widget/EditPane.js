@@ -6,6 +6,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
     dojo.require('openils.Util');
     dojo.require('openils.User');
     dojo.require('fieldmapper.IDL');
+    dojo.require('openils.PermaCrud');
 
     dojo.declare(
         'openils.widget.EditPane',
@@ -124,6 +125,24 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         }
                     );
                 } 
+            },
+
+            performEditAction : function(opts) {
+
+                var pcrud = new openils.PermaCrud();
+                var fields = this.getFields();
+                for(var idx in fields) 
+                    this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
+
+                if(opts.async) {
+                    opts.oncomplete = function(r) {
+                        pcrud.disconnect()
+                        opts.oncomplete(r);
+                    };
+                }
+
+                pcrud[this.mode](this.fmObject, opts);
+                if(!opts.async) pcrud.disconnect();
             }
         }
     );
