@@ -41,6 +41,12 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
             this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
             switch(this.idlField.datatype) {
+                
+                case 'id':
+                    dojo.require('dijit.form.TextBox');
+                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                    this.widget.setDisabled(true); // never allow editing of IDs
+                    break;
 
                 case 'org_unit':
                     this._buildOrgSelector();
