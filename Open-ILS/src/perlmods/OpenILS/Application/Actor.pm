@@ -1110,9 +1110,24 @@ sub patron_adv_search {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
-	return $U->storagereq(
+
+    my $bcids = [];
+    if(my $bc = $$search_hash{card}{value}) {
+        $bcids = $e->json_query({
+            select => {ac => ['usr']}, 
+            from => {ac => {au => {field => 'id', fkey => 'usr'}}}, 
+            where => {'+ac' => {barcode => {like => "$bc%"}, active => 't'}, '+au' => {deleted => 'f'}}
+        });
+        $bcids = map [ {$_->{usr} ] @$bcids;
+    }
+
+    my $ids = $U->storagereq(
 		"open-ils.storage.actor.user.crazy_search", $search_hash, 
             $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_depth);
+
+    my %h; # dedup
+    $h{$_} = 1 for (@$bcids, $ids);
+    return [keys %h];
 }
 
 

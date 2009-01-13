@@ -1064,18 +1064,6 @@ sub fetch_user_by_barcode {
 	
 }
 
-
-# ---------------------------------------------------------------------
-# Updates and returns the patron penalties
-# ---------------------------------------------------------------------
-sub update_patron_penalties_nonblock {
-	my( $self, %args ) = @_;
-	return $self->simplereq(
-		'open-ils.penalty',
-		'open-ils.penalty.patron_penalty.calculate', {background => 1}
-	);
-}
-
 sub fetch_bill {
 	my( $self, $billid ) = @_;
 	$logger->debug("Fetching billing $billid");
@@ -1084,8 +1072,6 @@ sub fetch_bill {
 	my $evt = OpenILS::Event->new('MONEY_BILLING_NOT_FOUND') unless $bill;
 	return($bill, $evt);
 }
-
-
 
 my $ORG_TREE;
 sub fetch_org_tree {

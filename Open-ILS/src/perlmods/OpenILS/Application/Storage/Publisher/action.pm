@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
+use OpenILS::Penalty;
 
 sub isTrue {
 	my $v = shift;
@@ -601,7 +602,6 @@ sub generate_fines {
 
 	my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
 
-	my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
 	for my $c (@circs) {
 	
 		try {
@@ -765,13 +765,7 @@ sub generate_fines {
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
-			$penalty->request(
-				'open-ils.penalty.patron_penalty.calculate',
-				{ patron	=> $c->usr->to_fieldmapper,
-				  update	=> 1,
-				  background	=> 1,
-				}
-			)->gather(1);
+            OpenILS::Utils::Penalty->calculate_penalties(undef, $c->usr, $c->circ_lib);
 
 		} catch Error with {
 			my $e = shift;

@@ -17,6 +17,12 @@ my $U = "OpenILS::Application::AppUtils";
 sub calculate_penalties {
     my($class, $e, $user_id, $context_org) = @_;
 
+    my $rollback = 0;
+    unless($e) {
+        $e = new_editor(xact =>1);
+        $rollback = 1;
+    }
+
     my $penalties = $e->json_query({from => ['actor.calculate_system_penalties',$user_id, $context_org]});
 
     for my $pen_obj (@$penalties) {
@@ -37,6 +43,7 @@ sub calculate_penalties {
         }
     }
 
+    $e->rollback if $rollback;
     return undef;
 }
 
@@ -56,13 +63,13 @@ sub retrieve_penalties {
         if($p->standing_penalty->block_list) {
             for my $m (@fatal_mask) {
                 if($p->standing_penalty->block_list =~ /$m/) {
-                    push(@fatal, $p->standing_penalty->name);
+                    push(@fatal, $p->standing_penalty);
                     $pushed = 1;
                     last;
                 }
             }
         }
-        push(@info, $p->standing_penalty->name) unless $pushed;
+        push(@info, $p->standing_penalty) unless $pushed;
     }
 
     return {fatal_penalties => \@fatal, info_penalties => \@info};

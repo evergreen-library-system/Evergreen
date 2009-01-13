@@ -838,7 +838,13 @@ sub run_patron_permit_scripts {
         my $penalties = OpenILS::Utils::Penalty->retrieve_penalties($self->editor, $patronid, $self->circ_lib, $mask);
         $penalties = $penalties->{fatal_penalties};
 
-        push(@allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
+        for my $pen (@$penalties) {
+            my $event = OpenILS::Event->new($pen->name);
+            $event->{desc} = $pen->label;
+            push(@allevents, $event);
+        }
+
+        push(@allevents, OpenILS::Event->new($_)) for (@$patron_events);
     }
 
     $logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
