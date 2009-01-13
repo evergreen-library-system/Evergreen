@@ -482,6 +482,7 @@ sub patron_search {
 	# group 0 = user
 	# group 1 = address
 	# group 2 = phone, ident
+	# group 3 = barcode
 
 	my $usr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 	my @usrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
@@ -492,6 +493,13 @@ sub patron_search {
 	my $pv = $$search{phone}{value};
 	my $iv = $$search{ident}{value};
 	my $nv = $$search{name}{value};
+	my $cv = $$search{card}{value};
+
+	my $card = '';
+	if ($cv) {
+	    $card = 'JOIN (SELECT DISTINCT usr FROM actor.card WHERE barcode LIKE ?||\'%\') AS card ON (card.usr = users.id)';
+	    unshift(@usrv, $cv);
+	}
 
 	my $phone = '';
 	my @ps;
@@ -579,7 +587,7 @@ sub patron_search {
 
 	$select = <<"	SQL";
 		SELECT	DISTINCT $distinct_list
-		  FROM	$u_table AS users
+		  FROM	$u_table AS users $card
 			JOIN ($select) AS search ON (search.id = users.id)
 			JOIN $descendants d ON (d.id = users.home_ou)
 			$opt_in_join
