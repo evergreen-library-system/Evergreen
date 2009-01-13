@@ -602,6 +602,7 @@ sub generate_fines {
 
 	my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
 
+	my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
 	for my $c (@circs) {
 	
 		try {
@@ -765,7 +766,20 @@ sub generate_fines {
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
-            OpenILS::Utils::Penalty->calculate_penalties(undef, $c->usr, $c->circ_lib);
+            if(0) { # caluclate penalties inline.  Needs to be tested.
+                OpenILS::Utils::Penalty->calculate_penalties(
+                    undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+
+            } else {
+
+			    $penalty->request(
+				    'open-ils.penalty.patron_penalty.calculate',
+				    { patron	=> $c->usr->to_fieldmapper,
+				    update	=> 1,
+				    background	=> 1,
+				    }
+			    )->gather(1);
+            }
 
 		} catch Error with {
 			my $e = shift;
