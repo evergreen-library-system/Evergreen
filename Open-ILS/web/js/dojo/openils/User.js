@@ -278,12 +278,7 @@ if(!dojo._hasResource["openils.User"]) {
             }
 
             function buildTreePicker(orgList) {
-                var orgNodeList = [];
-                for(var i = 0; i < orgList.length; i++) 
-                    orgNodeList = orgNodeList.concat(
-                        fieldmapper.aou.descendantNodeList(orgList[i]));
-
-                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgNodeList)});
+                var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgList)});
                 hookupStore(store);
                 _u.permOrgStoreCache[perm] = store;
             }
