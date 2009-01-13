@@ -62,7 +62,7 @@ sub retrieve_penalties {
                 }
             }
         }
-        push(@info, $p->name) unless $pushed;
+        push(@info, $p->standing_penalty->name) unless $pushed;
     }
 
     return {fatal_penalties => \@fatal, info_penalties => \@info};
