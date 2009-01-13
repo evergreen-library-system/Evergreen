@@ -203,7 +203,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                             oncomplete : function (r) {
                                 var res = r.recv();
                                 if ( res && res.content() ) {
-                                    _auto_CUD_recursive( list, 0 );
+                                    _CUD_recursive( list, 0 );
                                 } else {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
