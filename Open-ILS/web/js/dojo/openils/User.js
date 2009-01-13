@@ -286,7 +286,7 @@ if(!dojo._hasResource["openils.User"]) {
 	        if (_u.permOrgStoreCache[perm])
 		        hookupStore(_u.permOrgStoreCache[perm]);
 	        else
-                _u.getPermOrgList(perm, buildTreePicker);
+                _u.getPermOrgList(perm, buildTreePicker, true);
         },
     });
 
