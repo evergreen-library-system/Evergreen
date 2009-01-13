@@ -8,7 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenILS::Penalty;
+use OpenILS::Utils::Penalty;
 
 sub isTrue {
 	my $v = shift;
