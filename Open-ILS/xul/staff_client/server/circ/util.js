@@ -1907,6 +1907,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 			{
 				'title' : document.getElementById('circStrings').getString('staff.circ.utils.checkin.override'),
 				'overridable_events' : [
+                    null /* custom event */,
 					1203 /* COPY_BAD_STATUS */,
 					1213 /* PATRON_BARRED */,
 					1217 /* PATRON_INACTIVE */,
@@ -2275,6 +2276,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
 		} else {
 
+            if (check.ilsevent == null) { return null; /* handled */ }
 			switch (Number(check.ilsevent)) {
 				case 1203 /* COPY_BAD_STATUS */ :
 				case 1213 /* PATRON_BARRED */ :
@@ -2316,8 +2318,9 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 				var renew = req.getResultObject();
 				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
 				for (var j = 0; j < renew.length; j++) {
-					switch(Number(renew[j].ilsevent)) {
+					switch(renew[j].ilsevent == null ? null : Number(renew[j].ilsevent)) {
 						case 0 /* SUCCESS */ : break;
+						case null /* custom event */ : break;
 						case 5000 /* PERM_FAILURE */: break;
 						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
 						case 1213 /* PATRON_BARRED */ : break;
@@ -2357,6 +2360,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 			{
 				'title' : document.getElementById('circStrings').getString('staff.circ.checkin.renew_failed.override'),
 				'overridable_events' : [
+                    null /* custom event */,
 					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 					1213 /* PATRON_BARRED */,
 					1215 /* CIRC_EXCEEDS_COPY_RANGE */,

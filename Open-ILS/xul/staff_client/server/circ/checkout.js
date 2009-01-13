@@ -558,6 +558,7 @@ circ.checkout.prototype = {
 				{
 					'title' : document.getElementById('circStrings').getString('staff.circ.checkout.override.confirm'),
 					'overridable_events' : [ 
+                        null /* custom event */,
 						1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 						1213 /* PATRON_BARRED */,
 						1215 /* CIRC_EXCEEDS_COPY_RANGE */,
@@ -672,7 +673,10 @@ circ.checkout.prototype = {
 
 				for (var i = 0; i < test_permit.length; i++) {
 					dump('found [' + test_permit[i].ilsevent + ']\n');
-					switch(Number(test_permit[i].ilsevent)) {
+					switch(test_permit[i].ilsevent == null ? null : Number(test_permit[i].ilsevent)) {
+						case null /* custom event */ :
+							found_handled = true;
+						break;
 						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ :
 							found_handled = true;
 						break;
