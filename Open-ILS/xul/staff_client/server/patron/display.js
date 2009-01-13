@@ -382,6 +382,23 @@ patron.display.prototype = {
 			}
 		);
 
+        var x = document.getElementById("PatronNavBar_checkout");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_refresh");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_items");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_holds");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_info");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_edit");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_bills");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+        var x = document.getElementById("PatronNavBar_exit");
+        x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
+
 		if (obj.barcode || obj.id) {
 			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 				try { window.xulG.set_tab_name($("patronStrings").getString('staff.patron.display.init.retrieving_patron')); } catch(E) { alert(E); }
