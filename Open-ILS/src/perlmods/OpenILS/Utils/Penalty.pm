@@ -56,7 +56,7 @@ sub retrieve_penalties {
         if($p->standing_penalty->block_list) {
             for my $m (@fatal_mask) {
                 if($p->standing_penalty->block_list =~ /$m/) {
-                    push(@fatal, $p->name);
+                    push(@fatal, $p->standing_penalty->name);
                     $pushed = 1;
                     last;
                 }
