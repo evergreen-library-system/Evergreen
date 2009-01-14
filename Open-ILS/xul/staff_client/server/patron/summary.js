@@ -95,6 +95,14 @@ patron.summary.prototype = {
 								JSAN.use('util.widgets');
 								util.widgets.remove_children(e);
 								var penalties = obj.patron.standing_penalties();
+                                if (penalties.length == 0) {
+									var row = document.createElement('row');
+									var label = document.createElement('label');
+                                    label.setAttribute('value',patronStrings.getString('staff.patron.summary.standing_penalty.none'));
+                                    addCSSClass(label,'NO_PENALTY');
+									row.appendChild(label);
+									e.appendChild(row);
+                                }
 								for (var i = 0; i < penalties.length; i++) {
 
 									var row = document.createElement('row');
@@ -157,7 +165,6 @@ patron.summary.prototype = {
                                     }
 
 									e.appendChild(row);
-                                    e.parentNode.parentNode.hidden = false;
 								}
 							};
 						}

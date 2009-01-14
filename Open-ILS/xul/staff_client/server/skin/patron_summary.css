@@ -3,7 +3,10 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+.NO_PENALTY { background-color: lime; color: black; }
 .PENALTY_RENEW { background-color: yellow; color: black; }
 .PENALTY_HOLD { background-color: orange; color: black; }
 .PENALTY_CIRC { background-color: red; color: white; }
 
+groupbox.standing { max-height: 7em; min-height: 7em; }
+groupbox.standing vbox { max-height: 5em; min-height: 5em; overflow: auto }
