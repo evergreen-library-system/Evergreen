@@ -203,16 +203,16 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                             oncomplete : function (r) {
                                 var res = r.recv();
                                 if ( res && res.content() ) {
-                                    _CUD_recursive( list, 0 );
+                                    console.log(req + ' : ' + req._final_complete);
+                                    if(req._final_complete)
+                                        req._final_complete(req);
+                                    _pcrud.disconnect();
                                 } else {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
                                 }
                             },
                         }).send();
-
-                        if (r._final_complete) r._final_complete(r);
-                        _pcrud.disconnect();
                     };
 
                     req.onerror = function (r) {
