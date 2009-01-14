@@ -26,9 +26,16 @@ my $lassos = $e->request(
     {order_by => {lasso => 'name'}}
 );
 
-print
-    "var _lasso = [\n  new lasso(" .
-    join( "),\n  new lasso(", map { OpenSRF::Utils::JSON->perl2JSON( bless($_, 'ARRAY') ) } @$lassos ) .
-    ")\n]; /* Org Search Groups (Lassos) */ \n";
-
+# We need at least one defined search group; otherwise, just generate an empty array
+if (scalar(@$lassos) > 0) {
+    print
+        "var _lasso = [\n  new lasso(" .
+        join( "),\n  new lasso(", map { OpenSRF::Utils::JSON->perl2JSON( bless($_, 'ARRAY') ) } @$lassos ) .
+        ")\n]; /* Org Search Groups (Lassos) */ \n";
+} else {
+    print <<HERE;
+var _lasso = [
+]; /* Org Search Groups (Lassos) */
+HERE
+}
 
