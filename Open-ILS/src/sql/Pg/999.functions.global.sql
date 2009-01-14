@@ -167,18 +167,19 @@ $$;
 
 
 
-CREATE OR REPLACE FUNCTION actor.approve_pending_address(pending_id INT) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION actor.approve_pending_address(pending_id INT) RETURNS BIGINT AS $$
 DECLARE
     old_id INT;
 BEGIN
     SELECT INTO old_id replaces FROM actor.usr_address where id = pending_id;
     IF old_id IS NULL THEN
         RAISE NOTICE 'Address % does not replace any address', pending_id;
-        RETURN;
+        RETURN NULL;
     END IF;
     DELETE FROM actor.usr_address WHERE id = -old_id;
     UPDATE actor.usr_address SET id = -id WHERE id = old_id;
     UPDATE actor.usr_address SET replaces = NULL, id = old_id WHERE id = pending_id;
+    RETURN old_id;
 END
 $$ LANGUAGE plpgsql;
 
