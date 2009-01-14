@@ -16,14 +16,15 @@ use Getopt::Long;
 my @files;
 my ($config, $output, @auto, @order, @wipe, $quiet) =
 	('/openils/conf/opensrf_core.xml');
+my $nocommit = 0;
 
-GetOptions(
-	'config=s'	=> \$config,
-	'output=s'	=> \$output,
-	'wipe=s'	=> \@wipe,
-	'autoprimary=s'	=> \@auto,
-	'order=s'	=> \@order,
-	'quiet'		=> \$quiet,
+GetOptions( 'config=s'	    => \$config,
+            'output=s'	    => \$output,
+            'wipe=s'	    => \@wipe,
+            'autoprimary=s' => \@auto,
+            'order=s'	    => \@order,
+            'nocommit|n'    => \$nocommit,
+            'quiet'         => \$quiet,
 );
 
 my %lineset;
@@ -130,5 +131,5 @@ for my $h (@order) {
 		if (!grep { $_ eq $h} @auto);
 }
 
-$output->print("COMMIT;\n\n");
+$output->print("COMMIT;\n\n") unless $nocommit;
 $output->close; 
