@@ -2,7 +2,6 @@ dump('entering util/network.js\n');
 // vim:noet:sw=4:ts=4:
 
 var offlineStrings;
-offlineStrings = document.getElementById('offlineStrings');
 
 if (typeof util == 'undefined') util = {};
 util.network = function () {
@@ -10,12 +9,16 @@ util.network = function () {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.sound'); this.sound = new util.sound();
 
+    offlineStrings = document.getElementById('offlineStrings');
+
 	return this;
 };
 
 util.network.prototype = {
 
 	'link_id' : 0,
+
+    'network_timeout' : 55, /* seconds */
 
 	'NETWORK_FAILURE' : null,
 
@@ -34,8 +37,13 @@ util.network.prototype = {
 	'get_result' : function (req) {
 		var obj = this;
 		var result;
+        var fake_ilsevent_for_network_errors = { 'ilsevent' : -1, 'textcode' : offlineStrings.getString('network.server_or_method.error') }; 
 		try {
-			result = req.getResultObject();	
+            if (req.cancelled) {
+                result = fake_ilsevent_for_network_errors;
+            } else {
+    			result = req.getResultObject();	
+            }
 		} catch(E) {
 			try {
 				if (instanceOf(E, NetworkFailure)) {
@@ -46,8 +54,8 @@ util.network.prototype = {
 			} catch(I) { 
 				obj.NETWORK_FAILURE = offlineStrings.getString('network.unknown_status');
 			}
-			result = null;
-		}
+            result = fake_ilsevent_for_network_errors;
+        }
 		return result;
 	},
 
@@ -69,7 +77,7 @@ util.network.prototype = {
 			}
 	
 		} catch(E) {
-			alert(E); 
+			alert('1: ' + E); 
 		}
 	},
 
@@ -90,11 +98,14 @@ util.network.prototype = {
 			for(var index in params) {
 				request.addParam(params[index]);
 			}
-	
+
+            var start_timer = (new Date).getTime();	
 			if (f)  {
 				request.setCompleteCallback(
 					function(req) {
 						try {
+                            var duration = ( (new Date).getTime() - start_timer )/1000;
+                            if ( obj.get_result(req) == null && duration > obj.network_timeout ) req.cancelled = true;
 							var json_string = js2JSON(obj.get_result(req));
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
@@ -127,6 +138,8 @@ util.network.prototype = {
 			} else {
 				try {
 					request.send(true);
+                    var duration = ( (new Date).getTime() - start_timer )/1000;
+                    if ( obj.get_result(request) == null && duration > obj.network_timeout ) request.cancelled = true;
 				} catch(E) {
 					throw(E);
 				}
@@ -147,7 +160,7 @@ util.network.prototype = {
 			}
 
 		} catch(E) {
-			alert(E);
+			alert('2: ' + E);
 			if (instanceOf(E,perm_ex)) {
 				alert('in util.network, _request : permission exception: ' + js2JSON(E));
 			}
@@ -156,75 +169,82 @@ util.network.prototype = {
 	},
 
 	'check_for_offline' : function (app,name,params,req,override_params,_params) {
-		var obj = this;
-		var result = obj.get_result(req);
-		if (result != null) return req;
+        try {
+            var obj = this;
+            var result = obj.get_result(req);
+            if (result == null) return req;
+            if (typeof result.ilsevent == 'undefined') return req;
+            if (result.ilsevent != -1) return req;
 
-		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		var proceed = true;
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+            var proceed = true;
 
-		while(proceed) {
+            while(proceed) {
 
-			proceed = false;
+                proceed = false;
 
-			var r;
+                var r;
 
-			if (data.proceed_offline) {
+                if (data.proceed_offline) {
 
-				r = 1;
+                    r = 1;
 
-			} else {
+                } else {
 
-				var network_failure_string;
-				var network_failure_status_string;
-				var msg;
+                    var network_failure_string;
+                    var network_failure_status_string;
+                    var msg;
 
-				try { network_failure_string = String( obj.NETWORK_FAILURE ); } catch(E) { network_failure_string = E; }
-				try { network_failure_status_string = typeof obj.NETWORK_FAILURE == 'object' && typeof obj.NETWORK_FAILURE != 'null' && typeof obj.NETWORK_FAILURE.status == 'function' ? obj.NETWORK_FAILURE.status() : ''; } catch(E) { network_failure_status_string = ''; obj.error.sdump('D_ERROR', 'setting network_failure_status_string: ' + E); }
-				
-				try { msg = offlineStrings.getFormattedString('network.server.failure.exception', [data.server_unadorned]) + '\n' +
-							offlineStrings.getFormattedString('network.server.method', [name]) + '\n' + 
-							offlineStrings.getFormattedString('network.server.params', [js2JSON(params)]) + '\n' + 
-							offlineStrings.getString('network.server.thrown_label') + '\n' + network_failure_string + '\n' + 
-							offlineStrings.getString('network.server.status_label') + '\n' + network_failure_status_string;
-				} catch(E) { msg = E; }
+                    try { network_failure_string = String( obj.NETWORK_FAILURE ); } catch(E) { network_failure_string = E; }
+                    try { network_failure_status_string = typeof obj.NETWORK_FAILURE == 'object' && typeof obj.NETWORK_FAILURE != 'null' && typeof obj.NETWORK_FAILURE.status == 'function' ? obj.NETWORK_FAILURE.status() : ''; } catch(E) { network_failure_status_string = ''; obj.error.sdump('D_ERROR', 'setting network_failure_status_string: ' + E); }
+                    
+                    try { msg = offlineStrings.getFormattedString('network.server.failure.exception', [data.server_unadorned]) + '\n' +
+                                offlineStrings.getFormattedString('network.server.method', [name]) + '\n' + 
+                                offlineStrings.getFormattedString('network.server.params', [js2JSON(params)]) + '\n' + 
+                                offlineStrings.getString('network.server.thrown_label') + '\n' + network_failure_string + '\n' + 
+                                offlineStrings.getString('network.server.status_label') + '\n' + network_failure_status_string;
+                    } catch(E) { msg = E; }
 
-				try { obj.error.sdump('D_SES_ERROR',msg); } catch(E) { alert(E); }
+                    try { obj.error.sdump('D_SES_ERROR',msg); } catch(E) { alert('3: ' + E); }
 
-				r = obj.error.yns_alert(
-					msg,
-					offlineStrings.getString('network.network_failure'),
-					offlineStrings.getString('network.retry_network'),
-					offlineStrings.getString('network.ignore_errors'),
-					null,
-					offlineStrings.getString('common.confirm')
-				);
-				if (r == 1) {
-					data.proceed_offline = true; data.stash('proceed_offline');
-					dump('Remembering proceed_offline for 200000 ms.\n');
-					setTimeout(
-						function() {
-							data.proceed_offline = false; data.stash('proceed_offline');
-							dump('Setting proceed_offline back to false.\n');
-						}, 200000
-					);
-				}
-			}
+                    r = obj.error.yns_alert(
+                        msg,
+                        offlineStrings.getString('network.network_failure'),
+                        offlineStrings.getString('network.retry_network'),
+                        offlineStrings.getString('network.ignore_errors'),
+                        null,
+                        offlineStrings.getString('common.confirm')
+                    );
+                    if (r == 1) {
+                        data.proceed_offline = true; data.stash('proceed_offline');
+                        dump('Remembering proceed_offline for 200000 ms.\n');
+                        setTimeout(
+                            function() {
+                                data.proceed_offline = false; data.stash('proceed_offline');
+                                dump('Setting proceed_offline back to false.\n');
+                            }, 200000
+                        );
+                    }
+                }
 
-			dump( r == 0 ? 'Retry Network\n' : 'Ignore Errors\n' );
+                dump( r == 0 ? 'Retry Network\n' : 'Ignore Errors\n' );
 
-			switch(r) {
-				case 0: 
-					req = obj._request(app,name,params,null,override_params,_params);
-					if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
-					return req;
-				break;
+                switch(r) {
+                    case 0: 
+                        req = obj._request(app,name,params,null,override_params,_params);
+                        if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
+                        return req;
+                    break;
 
-				case 1: 
-					return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : offlineStrings.getString('network.server_or_method.error') }; } };
-				break;
-			}
-		}
+                    case 1: 
+                        return req;
+                    break;
+                }
+            }
+        } catch(E) {
+			alert('4: ' + E);
+            throw(E);
+        }
 	},
 
 	'reset_titlebars' : function(data) {
