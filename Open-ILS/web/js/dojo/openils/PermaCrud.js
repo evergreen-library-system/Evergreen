@@ -80,16 +80,23 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             var _pcrud = this;
             var req = this.session.request( req_hash );
 
-
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
 
-            if (!req.oncomplete)
-                req.oncomplete = function (r) { r.result = r.recv(); _pcrud.last_result = r.result; };
+            // if it's an async call and the user does not care about 
+            // the responses, pull them off the network and discard them
+            if (!req_hash.timeout && !req.oncomplete)
+                req.oncomplete = function (r) { while(r.recv()){}; };
 
             req.send();
 
-            if (req_hash.timeout) return req.recv().content();
+            // for synchronous calls with no handlers, return the first received value
+            if (req_hash.timeout && !opts.oncomplete && !opts.onresponse) {
+                var resp = req.recv();
+                if(resp) return resp.content();
+                return null;
+            }
+
             return req;
         },
 
@@ -121,13 +128,21 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
-
-            if (!req.oncomplete)
-                req.oncomplete = function (r) { r.result = r.recv(); _pcrud.last_result = r.result; };
+            
+            // if it's an async call and the user does not care about 
+            // the responses, pull them off the network and discard them
+            if (!req_hash.timeout && !req.oncomplete)
+                req.oncomplete = function (r) { while(r.recv()){}; };
 
             req.send();
 
-            if (req_hash.timeout) return req.recv().content();
+            // for synchronous calls with no handlers, return the first received value
+            if (req_hash.timeout && !opts.oncomplete && !opts.onresponse) {
+                var resp = req.recv();
+                if(resp) return resp.content();
+                return null;
+            }
+
             return req;
         },
 
@@ -155,12 +170,20 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
 
-            if (!req.oncomplete)
-                req.oncomplete = function (r) { r.result = r.recv(); _pcrud.last_result = r.result; };
+            // if it's an async call and the user does not care about 
+            // the responses, pull them off the network and discard them
+            if (!req_hash.timeout && !req.oncomplete)
+                req.oncomplete = function (r) { while(r.recv()){}; };
 
             req.send();
 
-            if (req_hash.timeout) return req.recv().content();
+            // for synchronous calls with no handlers, return the first received value
+            if (req_hash.timeout && !opts.oncomplete && !opts.onresponse) {
+                var resp = req.recv();
+                if(resp) return resp.content();
+                return null;
+            }
+
             return req;
         },
 
@@ -203,7 +226,6 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                             oncomplete : function (r) {
                                 var res = r.recv();
                                 if ( res && res.content() ) {
-                                    console.log(req + ' : ' + req._final_complete);
                                     if(req._final_complete)
                                         req._final_complete(req);
                                     _pcrud.disconnect();
