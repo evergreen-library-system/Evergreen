@@ -2866,6 +2866,8 @@ sub new_flesh_user {
 	if( grep { $_ eq 'addresses' } @$fields ) {
 
 		$user->addresses([]) unless @{$user->addresses};
+        # don't expose "replaced" addresses by default
+        $user->addresses([grep {$_->id >= 0} @{$user->addresses}]);
 	
 		if( ref $user->billing_address ) {
 			unless( grep { $user->billing_address->id == $_->id } @{$user->addresses} ) {
@@ -3124,6 +3126,29 @@ sub merge_users {
     return 1;
 }
 
+
+__PACKAGE__->register_method (
+	method		=> 'approve_user_address',
+	api_name	=> 'open-ils.actor.user.pending_address.approve',
+	signature	=> {
+        desc => q/
+        /
+    }
+);
+
+sub approve_user_address {
+    my($self, $conn, $auth, $addr_id) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
+    my $addr = $e->retrieve_actor_user_address($addr_id)
+        or return $e->die_event;
+    my $user = $e->retrieve_actor_user($addr->usr);
+    return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    my $result = $e->json_query({from => ['actor.approve_pending_address', $addr_id]})->[0]
+        or return $e->die_event;
+    $e->commit;
+    return [values %$result]->[0]; 
+}
 
 
 __PACKAGE__->register_method (
