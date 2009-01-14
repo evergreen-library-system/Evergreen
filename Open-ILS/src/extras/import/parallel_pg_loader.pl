@@ -17,6 +17,7 @@ use Getopt::Long;
 my @files;
 my ($config, $output, @auto, @order, @wipe) =
 	('/openils/conf/opensrf_core.xml', 'pg_loader-output');
+my $nocommit = 0;
 
 GetOptions(
 	'config=s'	=> \$config,
@@ -24,6 +25,7 @@ GetOptions(
 	'wipe=s'	=> \@wipe,
 	'autoprimary=s'	=> \@auto,
 	'order=s'	=> \@order,
+	'nocommit=i'	=> \$nocommit,
 );
 
 my $pwd = `pwd`;
@@ -124,5 +126,5 @@ while ( my $rec = <> ) {
 if (grep /^mfr$/, %out_files) {
 	$main_out->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
 }
-$main_out->print("COMMIT;\n\n");
+$main_out->print("COMMIT;\n\n") unless $nocommit;
 $main_out->close; 
