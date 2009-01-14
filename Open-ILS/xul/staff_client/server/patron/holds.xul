@@ -30,6 +30,8 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/util/network.js"/>
+	<script type="text/javascript" src="/xul/server/patron/holds.js"/>
 	<script>
 	<![CDATA[
 		function $(id) { return document.getElementById(id); }
