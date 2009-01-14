@@ -35,7 +35,8 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 if (!dojo.isArray(this._tree)) this._tree = [ this._tree ];
 
                 this._datalist = [];
-                if (!this.valueField) this.valueField = this._tree.Identifier;
+                if (!this.valueField) this.valueField = this._tree[0].Identifier;
+                if (!this.searchAttr) this.searchAttr = this.valueField;
 
                 var self = this;
                 this._tree.forEach( function (node) { self._add_items( node, 0 ); } );
@@ -43,6 +44,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 this.store = new dojo.data.ItemFileReadStore({
                     data : {
                         identifier : this.valueField,
+                        label : this.labelAttr,
                         items : this._datalist
                     }
                 });
