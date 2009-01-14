@@ -165,6 +165,45 @@ function penalty_init() {
             false
         );
 
+        document.getElementById('cmd_edit_penalty').addEventListener(
+            'command',
+            function() {
+                var sel = list.retrieve_selection();
+                var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+                if (ids.length > 0) {
+                    var note = window.prompt(
+                        patronStrings.getString( 'staff.patron.standing_penalty.note_prompt.' + (ids.length == 1 ? 'singular' : 'plural') ),
+                        '',
+                        patronStrings.getString( 'staff.patron.standing_penalty.note_prompt.title' )
+                    );
+                    if (note == null) { return; } /* cancel */
+                    for (var i = 0; i < ids.length; i++) {
+                        var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
+                        penalty.note( note ); /* this is for rendering, and propogates by reference to the object associated with the row in the GUI */
+                    } 
+                    document.getElementById('progress').hidden = false;
+                    net.simple_request( 
+                        'FM_AUSP_UPDATE_NOTE', [ ses(), ids, note ],
+                        function(reqObj) {
+                            var req = reqObj.getResultObject();
+                            if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
+                                error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.update_error'),req);
+                            } else {
+                                for (var i = 0; i < ids.length; i++) {
+                                    list.refresh_row( rows[ ids[i] ] );
+                                }
+                            }
+                            if (xulG && typeof xulG.refresh == 'function') {
+                                xulG.refresh();
+                            }
+                            document.getElementById('progress').hidden = true;
+                        }
+                    );
+                }
+            },
+            false
+        );
+
 
     } catch(E) {
         alert(E);

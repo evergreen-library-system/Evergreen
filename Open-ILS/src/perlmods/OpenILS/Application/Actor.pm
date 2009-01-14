@@ -2772,6 +2772,28 @@ sub remove_penalty {
 }
 
 __PACKAGE__->register_method(
+	method	=> "update_penalty_note",
+	api_name	=> "open-ils.actor.user.penalty.note.update");
+
+sub update_penalty_note {
+	my($self, $conn, $auth, $penalty_ids, $note) = @_;
+	my $e = new_editor(authtoken=>$auth, xact => 1);
+	return $e->die_event unless $e->checkauth;
+    for my $penalty_id (@$penalty_ids) {
+        my $penalty = $e->search_actor_user_standing_penalty( { id => $penalty_id } )->[0];
+        if (! $penalty ) { return $e->die_event; }
+        my $user = $e->retrieve_actor_user($penalty->usr) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+
+        $penalty->note( $note ); $penalty->ischanged( 1 );
+
+        $e->update_actor_user_standing_penalty($penalty) or return $e->die_event;
+    }
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
 	method => "ranged_penalty_thresholds",
 	api_name => "open-ils.actor.grp_penalty_threshold.ranged.retrieve",
     stream => 1
