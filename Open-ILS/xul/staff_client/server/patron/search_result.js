@@ -211,6 +211,7 @@ patron.search_result.prototype = {
 				return;
 			}
 
+            obj.list.clear();
 			//this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
 			var funcs = [];
 

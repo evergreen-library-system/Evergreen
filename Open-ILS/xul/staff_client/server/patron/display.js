@@ -98,6 +98,18 @@ patron.display.prototype = {
 							}
 						}
 					],
+                    'cmd_patron_merge' : [
+                        ['command'],
+                        function(ev) {
+                            JSAN.use('patron.util');
+                            if (patron.util.merge( obj.retrieve_ids )) {
+                                obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
+                                obj.controller.view.cmd_patron_merge.setAttribute('disabled','true');
+                                var sobj = obj.search_result.g.search_result;
+                                if ( sobj.query ) { sobj.search( sobj.query ); }
+                            }
+                        }
+                    ],
 					'cmd_search_form' : [
 						['command'],
 						function(ev) {
@@ -571,6 +583,7 @@ patron.display.prototype = {
 
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
+			obj.controller.view.cmd_patron_merge.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 
 			var loc = urls.XUL_PATRON_SEARCH_FORM; 
@@ -583,6 +596,7 @@ patron.display.prototype = {
 				},
 				'on_submit' : function(query) {
 					obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
+			        obj.controller.view.cmd_patron_merge.setAttribute('disabled','true');
 					var list_frame = obj.right_deck.reset_iframe(
 						urls.XUL_PATRON_SEARCH_RESULT, // + '?' + query,
 						{},
@@ -592,6 +606,7 @@ patron.display.prototype = {
 								if (!list) return;
 								if (list.length < 1) return;
 								obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
+								if (list.length > 1) obj.controller.view.cmd_patron_merge.setAttribute('disabled','false');
 								obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 								obj.retrieve_ids = list;
 								obj.controller.view.patron_name.setAttribute('value',$("patronStrings").getString('staff.patron.display.init.retrieving'));

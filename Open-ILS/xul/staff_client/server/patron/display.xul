@@ -98,6 +98,7 @@
 		<command id="cmd_patron_info" />
 		<command id="cmd_patron_exit" />
 		<command id="cmd_patron_retrieve" />
+		<command id="cmd_patron_merge" />
 		<command id="cmd_search_form" />
 		<command id="cmd_verify_credentials" />
 		<command id="cmd_perm_editor" />

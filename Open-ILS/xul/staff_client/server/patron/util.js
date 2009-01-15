@@ -5,7 +5,8 @@ patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
 	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
-	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id'
+	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id',
+    'merge'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -737,5 +738,68 @@ patron.util.set_penalty_css = function(patron) {
 	}
 }
 
+patron.util.merge = function(record_ids) {
+    var error;
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+        JSAN.use('util.error'); error = new util.error();
+        var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+        top_xml += '<description>' + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.merge_lead') + '</description>';
+        top_xml += '<hbox>';
+        top_xml += '<button id="lead" disabled="true" label="'
+                + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.button.label') + '" name="fancy_submit"/>';
+        top_xml += '<button label="' + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.cancel_button.label') +'" accesskey="'
+                + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.cancel_button.accesskey') +'" name="fancy_cancel"/></hbox></vbox>';
+
+        var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
+        xml += '<table><tr valign="top">';
+        for (var i = 0; i < record_ids.length; i++) {
+            xml += '<td><input value="' + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.lead')
+            xml += '" id="record_' + record_ids[i] + '" type="radio" name="lead"';
+            xml += ' onclick="' + "try { var x = $('lead'); x.setAttribute('value',";
+            xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
+            xml += '</input>' + $("patronStrings").getFormattedString('staff.patron.usr_buckets.merge_records.lead_record_number',[record_ids[i]]) + '</td>';
+        }
+        xml += '</tr><tr valign="top">';
+        for (var i = 0; i < record_ids.length; i++) {
+            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px" flex="1" src="' + urls.XUL_PATRON_SUMMARY; 
+            xml += '?id=' + record_ids[i] + '&amp;show_name=1"/></td>';
+        }
+        xml += '</tr></table></form>';
+        JSAN.use('util.window'); var win = new util.window();
+        var fancy_prompt_data = win.open(
+            urls.XUL_FANCY_PROMPT,
+            'fancy_prompt', 'chrome,resizable,modal,width=750,height=500',
+            {
+                'top_xml' : top_xml, 'xml' : xml, 'title' : $("patronStrings").getString('staff.patron.usr_buckets.merge_records.fancy_prompt_title')
+            }
+        );
+
+        if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status == 'incomplete') {
+            alert($("patronStrings").getString('staff.patron.usr_buckets.merge_records.fancy_prompt.alert'));
+            return false;
+        }
+
+        JSAN.use('util.functional'); JSAN.use('util.network'); var network = new util.network();
+        var robj = network.simple_request('FM_AU_MERGE', 
+            [ 
+                ses(), 
+                fancy_prompt_data.lead,
+                {}, 
+                util.functional.filter_list( record_ids,
+                    function(o) {
+                        return o != fancy_prompt_data.lead;
+                    }
+                )
+            ]
+        );
+        if (Number(robj) != 1) { throw(robj); }
+        return fancy_prompt_data.lead;
+    } catch(E) {
+		dump('patron.util.merge: ' + js2JSON(E) + '\n');
+        try { error.standard_unexpected_error_alert('Error in patron.util.merge',E); } catch(F) { alert('patron.util.merge: ' + E + '\n'); }
+        return false;
+    }
+}
 
 dump('exiting patron/util.js\n');

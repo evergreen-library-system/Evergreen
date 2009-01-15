@@ -98,6 +98,7 @@
     <vbox flex="1">
         <hbox flex="1">
         	<spacer flex="1"/>
+        	<button id="pnb1b2" label="&staff.patron.display_overlay.merge_patrons.label;" accesskey="&staff.patron.display_overlay.merge_patrons.accesskey;" command="cmd_patron_merge"/>
         	<button id="pnb1b0" label="&staff.patron.display_overlay.search_form.label;" accesskey="&staff.patron.display_overlay.search_form.accesskey;" command="cmd_search_form"/>
         	<button id="pnb1b1" label="&staff.patron.display_overlay.retrieve_patron.label;" accesskey="&staff.patron.display_overlay.retrieve_patron.accesskey;" command="cmd_patron_retrieve"/>
         </hbox>

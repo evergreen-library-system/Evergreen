@@ -105,6 +105,10 @@
 							if (g.sel_list.length > 0) {
 								$('retrieve_p').disabled = false;
 								$('retrieve_p').setAttribute('disabled','false');
+                                if (g.sel_list.length > 1) {
+								    $('merge_p').disabled = false;
+    								$('merge_p').setAttribute('disabled','false');
+                                }
 								$('clone').disabled = false;
 								$('clone').setAttribute('disabled','false');
 								$('remove').disabled = false;
@@ -114,6 +118,8 @@
 							} else {
 								$('retrieve_p').disabled = true;
 								$('retrieve_p').setAttribute('disabled','true');
+								$('merge_p').disabled = true;
+								$('merge_p').setAttribute('disabled','true');
 								$('clone').disabled = true;
 								$('clone').setAttribute('disabled','true');
 								$('remove').disabled = true;
@@ -126,6 +132,8 @@
 				);
 				$('retrieve_p').disabled = true;
 				$('retrieve_p').setAttribute('disabled','true');
+				$('merge_p').disabled = true;
+				$('merge_p').setAttribute('disabled','true');
 				$('clone').disabled = true;
 				$('clone').setAttribute('disabled','true');
 				$('remove').disabled = true;
@@ -188,6 +196,7 @@
 									'id' : g.sel_list[i],
 									'url_prefix' : xulG.url_prefix,
 									'new_tab' : xulG.new_tab,
+                                    'set_tab' : xulG.set_tab
 								}
 							);
 						} catch(E) {
@@ -199,6 +208,32 @@
 				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_group.retrieve_patron.failed_retrieving_patrons'),E);
 			}
 		}
+
+        function merge_patrons() {
+			try {
+				if (! g.sel_list ) return;
+                JSAN.use('patron.util'); 
+                var result = patron.util.merge(g.sel_list);
+                if (result) {
+                    if (result != g.patron_id && g.sel_list.indexOf( g.patron_id ) != -1) {
+                        xulG.set_tab(
+                            urls.XUL_PATRON_DISPLAY,
+                            { 'tab_name' : $("patronStrings").getString('staff.patron.info_group.retrieve_patron.tab_name') }, 
+                            {
+                                'id' : result,
+                                'url_prefix' : xulG.url_prefix,
+                                'new_tab' : xulG.new_tab,
+                                'set_tab' : xulG.set_tab
+                            } 
+                        );
+                    } else {
+                        refresh();
+                    }
+                }
+			} catch(E) {
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_group.merge_patrons.failed_merging_patrons'),E);
+			}
+        }
 
 		function clone_patron() {
 			if (! g.sel_list ) return;
@@ -420,6 +455,7 @@
 		<command id="move" accesskey="&staff.patron.info_group.move.accesskey;" label="&staff.patron.info_group.move.label;" oncommand="try{link_patron(true);}catch(E){alert('FIXME:'+E);}"/>	
 		<command id="add" accesskey="&staff.patron.info_group.add.accesskey;" label="&staff.patron.info_group.add.label;" oncommand="try{link_patron(false);}catch(E){alert('FIXME:'+E);}"/>	
 		<command id="retrieve_p" label="&staff.patron.info_group.retrieve_p.label;" accesskey="&staff.patron.info_group.retrieve_p.accesskey;" oncommand="try{retrieve_patron();}catch(E){alert(E);}"/>
+		<command id="merge_p" label="&staff.patron.info_group.merge_patrons.label;" accesskey="&staff.patron.info_group.merge_patrons.accesskey;" oncommand="try{merge_patrons();}catch(E){alert(E);}"/>
 	</commandset>
 
 	<popupset id="info_group_popupset">
@@ -429,6 +465,7 @@
 			<menuitem command="move" />
 			<menuitem command="add" />
 			<menuitem command="retrieve_p" />
+			<menuitem command="merge_p" />
 		</popup>
 	</popupset>
 
@@ -445,6 +482,7 @@
 							<menuitem command="move" />
 							<menuitem command="add" />
 							<menuitem command="retrieve_p" />
+							<menuitem command="merge_p" />
 						</menupopup>
 					</menu>
 				</menubar>
