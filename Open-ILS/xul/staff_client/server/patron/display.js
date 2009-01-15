@@ -511,6 +511,12 @@ patron.display.prototype = {
 										obj.stop_checkouts = true;
 										}
 									}
+								    var penalties = obj.patron.standing_penalties();
+								    for (var i = 0; i < penalties.length; i++) {
+                                        if (penalties[i].standing_penalty().block_list()) {
+                                            msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
+                                        }
+                                    }
 									var holds = req.getResultObject();
 									if (holds.ready && holds.ready > 0) {
 										msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
