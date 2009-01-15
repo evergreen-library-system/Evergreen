@@ -3151,14 +3151,19 @@ __PACKAGE__->register_method (
 );
 
 sub approve_user_address {
-    my($self, $conn, $auth, $addr_id) = @_;
+    my($self, $conn, $auth, $addr) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
-    my $addr = $e->retrieve_actor_user_address($addr_id)
-        or return $e->die_event;
+    if(ref $addr) {
+        # if the caller passes an address object, assume they want to 
+        # update it first before approving it
+        $e->update_actor_user_address($addr) or return $e->die_event;
+    } else {
+        $addr = $e->retrieve_actor_user_address($addr) or return $e->die_event;
+    }
     my $user = $e->retrieve_actor_user($addr->usr);
     return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
-    my $result = $e->json_query({from => ['actor.approve_pending_address', $addr_id]})->[0]
+    my $result = $e->json_query({from => ['actor.approve_pending_address', $addr->id]})->[0]
         or return $e->die_event;
     $e->commit;
     return [values %$result]->[0]; 
