@@ -44,15 +44,34 @@ COMMENT ON FUNCTION actor.usr_merge_rows(TEXT, TEXT, INT, INT) IS $$
 $$;
 
 
-CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT ) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT, del_addrs BOOLEAN, del_cards BOOLEAN, deactivate_cards BOOLEAN ) RETURNS VOID AS $$
 BEGIN
 
+    -- do some initial cleanup 
+    UPDATE actor.usr SET card = NULL WHERE id = src_usr;
+    UPDATE actor.usr SET mailing_address = NULL WHERE id = src_usr;
+    UPDATE actor.usr SET billing_address = NULL WHERE id = src_usr;
+
     -- actor.*
-    UPDATE actor.card SET usr = dest_usr WHERE usr = src_usr;
+    IF del_cards THEN
+        DELETE FROM actor.card where usr = src_usr;
+    ELSE
+        IF deactivate_cards THEN
+            UPDATE actor.card SET active = 'f' WHERE usr = src_usr;
+        END IF;
+        UPDATE actor.card SET usr = dest_usr WHERE usr = src_usr;
+    END IF;
+
+
+    IF del_addrs THEN
+        DELETE FROM actor.usr_address WHERE usr = src_usr;
+    ELSE
+        UPDATE actor.usr_address SET usr = dest_usr WHERE usr = src_usr;
+    END IF;
+
     UPDATE actor.usr_note SET usr = dest_usr WHERE usr = src_usr;
     -- dupes are technically OK in actor.usr_standing_penalty, should manually delete them...
     UPDATE actor.usr_standing_penalty SET usr = dest_usr WHERE usr = src_usr;
-    UPDATE actor.usr_address SET usr = dest_usr WHERE usr = src_usr;
     PERFORM actor.usr_merge_rows('actor.usr_org_unit_opt_in', 'usr', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('actor.usr_setting', 'usr', src_usr, dest_usr);
 
@@ -149,10 +168,7 @@ BEGIN
         -- do nothing
     END;
 
-    -- Finally, clean and delete the source user
-    UPDATE actor.usr SET card = NULL WHERE id = src_usr;
-    UPDATE actor.usr SET mailing_address = NULL WHERE id = src_usr;
-    UPDATE actor.usr SET billing_address = NULL WHERE id = src_usr;
+    -- Finally, delete the source user
     DELETE FROM actor.usr WHERE id = src_usr;
 
 END;
