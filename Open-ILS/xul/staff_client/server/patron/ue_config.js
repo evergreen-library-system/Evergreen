@@ -9,6 +9,7 @@ const FETCH_NET_LEVELS	= 'open-ils.actor:open-ils.actor.net_access_level.retriev
 const UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
 const PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
 const ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
+const APPROVE_ADDR		= 'open-ils.actor:open-ils.actor.user.pending_address.approve';
 const FETCH_ADDR_MEMS	= 'open-ils.actor:open-ils.actor.address.members';
 const FETCH_GRP_MEMS		= 'open-ils.actor:open-ils.actor.usergroup.members.retrieve';
 const CREATE_USER_NOTE	= 'open-ils.actor:open-ils.actor.note.create';
@@ -624,6 +625,29 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 
 }
 
+function uEditApproveAddr( tbody, row, address ) {
+    if(!confirm($('ue_add_approve_confirm').innerHTML)) return;
+    var req = new Request(APPROVE_ADDR, SESSION, address.id());
+    req.callback(
+        function(r) {
+            var oldId = r.getResultObject();
+            if(oldId != null) {
+                // remove the replaced address 
+		        patron.addresses(
+			        grep( patron.addresses(), 
+				        function(i) { return (i.id() != oldId); }
+			        )
+		        );
+                // update the ID on the new address
+                address.id(oldId);
+                removeChildren($('ue_address_tbody'));
+	            uEditBuildAddrs(patron);
+            }
+        }
+    );
+    req.send();
+}
+
 
 function uEditFindAddrInput(type, id) {
 	var tbody = $('ue_address_tbody');
@@ -665,6 +689,15 @@ function uEditBuildAddrFields(patron, address) {
 		uEditAddrTemplate.cloneNode(true));
 
 	uEditCheckSharedAddr(patron, address, tbody, row);
+    
+    // see if this is a pending address
+    if( address.replaces() != null ) {
+        var button = $n(row, 'ue_addr_approve');
+        unHideMe(button);
+        button.onclick = 
+            function() { uEditApproveAddr( tbody, row, address ); }
+    }
+
 
 	$n(row, 'ue_addr_delete').onclick = 
 		function() { 

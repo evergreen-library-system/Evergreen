@@ -2595,6 +2595,8 @@
 <!ENTITY ev.staff.patron.ue_xhtml.profile_group.label "Profile Group">
 <!ENTITY ev.staff.patron.ue_xhtml.ue_addr_delete.label "Delete this Address">
 <!ENTITY ev.staff.patron.ue_xhtml.ue_addr_detach.label "Detach this Address">
+<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_approve.label "Approve Pending Address">
+<!ENTITY ev.staff.patron.ue_xhtml.ue_addr_approve_confirm.label "Approve pending address?  This operation will be be instantenous.">
 <!ENTITY ev.staff.patron.ue_xhtml.primary_ident_ssn_help.label "(XXX-YY-ZZZZ)">
 <!ENTITY ev.staff.patron.ue_xhtml.primary_ident_dl_help.label "(GA-123456789)">
 <!ENTITY ev.staff.patron.ue_xhtml.edit.label "Edit">
