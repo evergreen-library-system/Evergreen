@@ -268,7 +268,7 @@ util.error.prototype = {
 
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
-		if (typeof E.ilsevent != 'undefined') {
+		if (E != null && typeof E.ilsevent != 'undefined') {
 			if (E.ilsevent == 0 /* SUCCESS */ ) {
 				msg = "The action involved likely succeeded, however, this part of the software needs to be updated to better understand success messages from the server, so please let us know about it.";
 			}
