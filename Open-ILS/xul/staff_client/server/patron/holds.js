@@ -1021,15 +1021,17 @@ patron.holds.prototype = {
                 break;
 			}
 			var robj = obj.network.simple_request( method, params );
-			if (typeof robj.ilsevent != 'undefined') throw(robj);
+			if (robj != null && typeof robj.ilsevent != 'undefined') throw(robj);
 			if (method == 'FM_AHR_RETRIEVE_ALL_VIA_BRE') {
 				holds = [];
-				holds = holds.concat( robj.copy_holds );
-				holds = holds.concat( robj.volume_holds );
-				holds = holds.concat( robj.title_holds );
-				holds = holds.sort();
+                if (robj != null) {
+                    holds = holds.concat( robj.copy_holds );
+                    holds = holds.concat( robj.volume_holds );
+                    holds = holds.concat( robj.title_holds );
+                    holds = holds.sort();
+                }
 			} else {
-				holds = robj;
+				holds = robj == null ? [] : robj;
 			}
 			//alert('method = ' + method + ' params = ' + js2JSON(params));
 		}
