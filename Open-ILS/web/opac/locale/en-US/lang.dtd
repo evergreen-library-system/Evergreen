@@ -2303,6 +2303,8 @@
 <!ENTITY staff.patron.display_overlay.search_form.accesskey "F">
 <!ENTITY staff.patron.display_overlay.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.patron.display_overlay.retrieve_patron.accesskey "R">
+<!ENTITY staff.patron.display_overlay.merge_patrons.label "Merge Patrons">
+<!ENTITY staff.patron.display_overlay.merge_patrons.accesskey "M">
 <!ENTITY staff.patron.bills_overlay.selected_balance.value "Selected Balance:">
 <!ENTITY staff.patron.bills_overlay.unselected.value "Un-Selected:">
 <!ENTITY staff.patron.bills_overlay.voided.value "Voided:">
@@ -2337,6 +2339,8 @@
 <!ENTITY staff.patron.info_group.add.label "Move another patron to this patron group.">
 <!ENTITY staff.patron.info_group.retrieve_p.accesskey "P">
 <!ENTITY staff.patron.info_group.retrieve_p.label "Retrieve Selected Patrons">
+<!ENTITY staff.patron.info_group.merge_patrons.accesskey "">
+<!ENTITY staff.patron.info_group.merge_patrons.label "Merge Selected Patrons">
 <!ENTITY staff.patron.info_group.group_member.label "Group Members">
 <!ENTITY staff.patron.info_group.choose_an_action.label "Choose an Action...">
 <!ENTITY staff.patron.info_group.choose_an_action.accesskey "A">
