@@ -640,6 +640,7 @@ function uEditApproveAddr( tbody, row, address ) {
 		        );
                 // update the ID on the new address
                 address.id(oldId);
+                address.replaces(null);
                 removeChildren($('ue_address_tbody'));
 	            uEditBuildAddrs(patron);
             }
@@ -694,10 +695,23 @@ function uEditBuildAddrFields(patron, address) {
     if( address.replaces() != null ) {
         var button = $n(row, 'ue_addr_approve');
         unHideMe(button);
-        button.onclick = 
-            function() { uEditApproveAddr( tbody, row, address ); }
+        button.onclick = function() { uEditApproveAddr( tbody, row, address ); }
+        var oldaddr = grep(patron.addresses(), function(a){return (a.id() == address.replaces());});
+        if(oldaddr) {
+            oldaddr = oldaddr[0];
+            unHideMe($n(row, 'ue_addr_replaced_row')); 
+            $n(row, 'ue_addr_replaced_div').innerHTML = 
+                $("patronStrings").getFormattedString(
+                    'web.staff.patron.ue.uedit_show_addr_replacement', [
+                    oldaddr.address_type(),
+                    oldaddr.street1(),
+                    oldaddr.street2(),
+                    oldaddr.city(),
+                    oldaddr.state(),
+                    oldaddr.post_code() 
+                ]);
+        }
     }
-
 
 	$n(row, 'ue_addr_delete').onclick = 
 		function() { 
