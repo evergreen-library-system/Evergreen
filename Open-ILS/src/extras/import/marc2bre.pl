@@ -25,8 +25,8 @@ use DBI;
 my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $tcn_offset, $tcn_mapfile, $tcn_dumpfile, $used_id_file, $used_tcn_file, $enc, @files, @trash_fields, @req_fields, $use901, $quiet, $tcn_field, $tcn_subfield) =
 	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC', 0);
 
-my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
-	('Pg','localhost','evergreen','postgres','postgres');
+my ($db_driver, $db_host, $db_port, $db_name, $db_user, $db_pw) =
+	('Pg', 'localhost', 5432, 'evergreen', 'postgres', 'postgres');
 
 GetOptions(
 	'marctype=s'	=> \$marctype, # format of MARC files being processed defaults to USMARC, often set to XML
@@ -52,6 +52,7 @@ GetOptions(
 	'used_tcn_file=s'	=> \$used_tcn_file, # external file which prevents tcn collisions by specifying tcns already in use in the database, format = one tcn number per line
 	"db_driver=s"	=> \$db_driver, # database driver type, usually 'Pg'
 	"db_host=s"	=> \$db_host, # database hostname
+	"db_port=i"	=> \$db_port, # database port
 	"db_name=s"	=> \$db_name, # database name
 	"db_user=s"	=> \$db_user, # database username
 	"db_pw=s"	=> \$db_pw, # database password
@@ -79,7 +80,7 @@ my @ses;
 my @req;
 my %processing_cache;
 
-my $dsn = "dbi:$db_driver:host=$db_host;dbname=$db_name";
+my $dsn = "dbi:$db_driver:host=$db_host;port=$db_port;dbname=$db_name";
 
 if (!$recid) {
     my $table = 'biblio_record_entry';
