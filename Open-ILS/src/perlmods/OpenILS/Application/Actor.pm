@@ -3110,6 +3110,13 @@ sub merge_users {
 	return $e->die_event unless $e->checkauth;
 
     my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
+    my $del_addrs = ($U->ou_ancestor_setting_value(
+        $master_user->home_ou, 'circ.user_merge.delete_addresses', $e)) ? 't' : 'f';
+    my $del_cards = ($U->ou_ancestor_setting_value(
+        $master_user->home_ou, 'circ.user_merge.delete_cards', $e)) ? 't' : 'f';
+    my $deactivate_cards = ($U->ou_ancestor_setting_value(
+        $master_user->home_ou, 'circ.user_merge.deactivate_cards', $e)) ? 't' : 'f';
+
     for my $src_id (@$user_ids) {
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
 
@@ -3119,7 +3126,14 @@ sub merge_users {
         }
 
         return $e->die_event unless 
-            $e->json_query({from => ['actor.usr_merge', $src_id, $master_id]});
+            $e->json_query({from => [
+                'actor.usr_merge', 
+                $src_id, 
+                $master_id,
+                $del_addrs,
+                $del_cards,
+                $deactivate_cards
+            ]});
     }
 
     $e->commit;
