@@ -785,7 +785,6 @@ patron.util.merge = function(record_ids) {
             [ 
                 ses(), 
                 fancy_prompt_data.lead,
-                {}, 
                 util.functional.filter_list( record_ids,
                     function(o) {
                         return o != fancy_prompt_data.lead;

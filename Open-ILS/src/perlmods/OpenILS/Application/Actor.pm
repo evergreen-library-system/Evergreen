@@ -3097,19 +3097,19 @@ __PACKAGE__->register_method (
 	api_name	=> 'open-ils.actor.user.merge',
 	signature	=> {
         desc => q/
-            Given a source user and destination user, transfer all data from the source
-            to the dest. user and delete the source user.  All user related data is 
+            Given a list of source users and destination user, transfer all data from the source
+            to the dest user and delete the source user.  All user related data is 
             transferred, including circulations, holds, bookbags, etc.
         /
     }
 );
 
 sub merge_users {
-    my($self, $conn, $auth, $master_id, $options, @user_ids) = @_;
+    my($self, $conn, $auth, $master_id, $user_ids, $options) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
 
-    for my $src_id (@user_ids) {
+    for my $src_id (@$user_ids) {
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
         my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
 
