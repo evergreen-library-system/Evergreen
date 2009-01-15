@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > offline.properties.po\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: 2008-12-01 22:04-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: common.exception
 msgid ""
@@ -75,8 +76,16 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: common.no.accesskey
+msgid "N"
+msgstr ""
+
 #: common.yes
 msgid "Yes"
+msgstr ""
+
+#: common.yes.accesskey
+msgid "Y"
 msgstr ""
 
 #: common.unimplemented
@@ -120,7 +129,7 @@ msgid "Record deleted."
 msgstr ""
 
 #: cat.opac.record_deleted.confirm
-msgctxt "cat.opac.record_deleted.confirm"
+#: cat.opac.record_undeleted.confirm
 msgid "Check here to confirm this action."
 msgstr ""
 
@@ -128,12 +137,7 @@ msgstr ""
 msgid "Record undeleted."
 msgstr ""
 
-#: cat.opac.record_undeleted.confirm
-msgctxt "cat.opac.record_undeleted.confirm"
-msgid "Check here to confirm this action."
-msgstr ""
-
-#. # variables: document ID, error code, error description
+# variables: document ID, error code, error description
 #: cat.opac.record_delete.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
 msgstr ""
@@ -367,7 +371,7 @@ msgid "Enter original barcode for the item:"
 msgstr ""
 
 #: menu.cmd_replace_barcode.label
-msgctxt "menu.cmd_replace_barcode.label"
+#: menu.cmd_replace_barcode.replacement.label
 msgid "Replace Barcode"
 msgstr ""
 
@@ -377,11 +381,6 @@ msgstr ""
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
-msgstr ""
-
-#: menu.cmd_replace_barcode.replacement.label
-msgctxt "menu.cmd_replace_barcode.replacement.label"
-msgid "Replace Barcode"
 msgstr ""
 
 #: menu.cmd_replace_barcode.blank.error
@@ -556,6 +555,10 @@ msgstr ""
 msgid "Tab"
 msgstr ""
 
+#: main.session_cookie.error
+msgid "Error setting session cookie: %1$s"
+msgstr ""
+
 #: menu.set_tab.error
 msgid "pause for error"
 msgstr ""
@@ -657,6 +660,95 @@ msgstr ""
 msgid "Error trying to move %1$s to directory %2$s"
 msgstr ""
 
+#: network.override.exceptions
+msgid "Exceptions"
+msgstr ""
+
+#: network.override.override
+msgid "Override"
+msgstr ""
+
+#: network.override.force.prompt
+msgid "Force this action?"
+msgstr ""
+
+#: network.ignore_errors
+msgid "Ignore Errors"
+msgstr ""
+
+#: network.method_not_found.error
+msgid "Method not found for %1$s"
+msgstr ""
+
+#: network.new_session.authorize
+#: network.permission.authorize
+msgid "Authorize"
+msgstr ""
+
+#: network.new_session.expired
+msgid "Session Expired"
+msgstr ""
+
+#: network.new_session.expired.prompt
+msgid "Please enter the credentials for a new login session."
+msgstr ""
+
+#: network.new_session.operator_change
+msgid "Operator Change"
+msgstr ""
+
+#: network.new_session.operator_change.prompt
+msgid "Please enter the credentials for the new login session.  Note that the previous session is still active."
+msgstr ""
+
+#: network.permission.description.brief
+msgid "Permission Denied: %1$s"
+msgstr ""
+
+#: network.permission.description.full
+msgid "Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: %1$s"
+msgstr ""
+
+#: network.server_or_method.error
+msgid "Server or method error"
+msgstr ""
+
+#: network.server.failure.exception
+msgid "Network or server failure.  Please check your Internet connection to %1$s and choose Retry Network.  If you need to enter Offline Mode, choose Ignore Errors in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your help desk or friendly Evergreen administrators, and give them this information:"
+msgstr ""
+
+#: network.server.method
+msgid "method=%1$s"
+msgstr ""
+
+#: network.server.params
+msgid "params=%1$s"
+msgstr ""
+
+#: network.server.thrown_label
+msgid "THROWN:"
+msgstr ""
+
+#: network.server.status_label
+msgid "STATUS:"
+msgstr ""
+
+#: network.network_failure
+msgid "Network Failure"
+msgstr ""
+
+#: network.retry_network
+msgid "Retry Network"
+msgstr ""
+
+#: network.unknown_status
+msgid "Unknown status"
+msgstr ""
+
+#: network.window_title.error
+msgid "Error setting window titles to match new login"
+msgstr ""
+
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
 msgstr ""
@@ -680,4 +772,3 @@ msgstr ""
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
 msgstr ""
-

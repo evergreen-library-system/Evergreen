@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/cat.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > cat.properties.po\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: 2008-12-01 21:44-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: cat.barcode_for_item
 msgid "The barcode for the item is %1$s"
@@ -93,17 +94,27 @@ msgid "Delete Items?"
 msgstr ""
 
 #: staff.cat.copy_browser.delete_items.delete
-msgctxt "staff.cat.copy_browser.delete_items.delete"
+#: staff.cat.copy_browser.delete_volume.delete
+#: staff.cat.record_buckets.delete_records.button.label
 msgid "Delete"
 msgstr ""
 
 #: staff.cat.copy_browser.delete_items.cancel
-msgctxt "staff.cat.copy_browser.delete_items.cancel"
+#: staff.cat.copy_browser.delete_volume.cancel
+#: staff.cat.copy_browser.transfer.cancel.label
+#: staff.cat.copy_editor.cancel.label
+#: staff.cat.copy_notes.new_note.cancel.label
+#: staff.cat.record_buckets.merge_records.cancel_button.label
+#: staff.cat.record_buckets.delete_records.cancel_button.label
+#: staff.cat.util.transfer_copies.cancel.label
+#: staff.cat.util.mark_item_damaged.md_cancel_label
+#: staff.cat.util.mark_item_missing.ms_cancel_label
+#: staff.cat.z3950.confirm_overlay.cancel.label
 msgid "Cancel"
 msgstr ""
 
 #: staff.cat.copy_browser.delete_items.override
-msgctxt "staff.cat.copy_browser.delete_items.override"
+#: staff.cat.copy_browser.delete_volume.override
 msgid "Override Delete Failure?"
 msgstr ""
 
@@ -116,7 +127,9 @@ msgid "copy browser -> delete items"
 msgstr ""
 
 #: staff.cat.copy_browser.print_spine.tab
-msgctxt "staff.cat.copy_browser.print_spine.tab"
+#: staff.cat.spine_labels.preview.title
+#: staff.cat.util.spine_editor.tab_name
+#: staff.cat.util.spine_editor.spine_editor_error
 msgid "Spine Labels"
 msgstr ""
 
@@ -145,7 +158,7 @@ msgid "Volume"
 msgstr ""
 
 #: staff.cat.copy_browser.edit_volume.title.plural
-msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
+#: staff.cat.copy_browser.list_init.volume_count
 msgid "Volumes"
 msgstr ""
 
@@ -177,21 +190,6 @@ msgstr ""
 msgid "Delete Volumes?"
 msgstr ""
 
-#: staff.cat.copy_browser.delete_volume.delete
-msgctxt "staff.cat.copy_browser.delete_volume.delete"
-msgid "Delete"
-msgstr ""
-
-#: staff.cat.copy_browser.delete_volume.cancel
-msgctxt "staff.cat.copy_browser.delete_volume.cancel"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.copy_browser.delete_volume.override
-msgctxt "staff.cat.copy_browser.delete_volume.override"
-msgid "Override Delete Failure?"
-msgstr ""
-
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid "You must delete all the copies on the volume before you may delete the volume itself."
 msgstr ""
@@ -213,7 +211,7 @@ msgid "Choose just one Library to mark as Volume Transfer Destination"
 msgstr ""
 
 #: staff.cat.copy_browser.mark_library.title
-msgctxt "staff.cat.copy_browser.mark_library.title"
+#: staff.cat.copy_browser.mark_volume.title
 msgid "Limit Selection"
 msgstr ""
 
@@ -225,11 +223,6 @@ msgstr ""
 msgid "Choose just one Volume to mark as Item Transfer Destination"
 msgstr ""
 
-#: staff.cat.copy_browser.mark_volume.title
-msgctxt "staff.cat.copy_browser.mark_volume.title"
-msgid "Limit Selection"
-msgstr ""
-
 #: staff.cat.copy_browser.transfer_volume.alert
 msgid "Please mark a library as the destination from within holdings maintenance and then try this again."
 msgstr ""
@@ -239,17 +232,16 @@ msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr ""
 
 #: staff.cat.copy_browser.transfer.submit.label
-msgctxt "staff.cat.copy_browser.transfer.submit.label"
+#: staff.cat.util.transfer_copies.transfer.label
 msgid "Transfer"
 msgstr ""
 
-#: staff.cat.copy_browser.transfer.cancel.label
-msgctxt "staff.cat.copy_browser.transfer.cancel.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.copy_browser.transfer.cancel.accesskey
-msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
+#: staff.cat.copy_notes.new_note.cancel.accesskey
+#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
+#: staff.cat.record_buckets.delete_records.cancel_button.accesskey
+#: staff.cat.util.transfer_copies.cancel.accesskey
+#: staff.cat.z3950.confirm_overlay.cancel.accesskey
 msgid "C"
 msgstr ""
 
@@ -258,7 +250,7 @@ msgid "Volume Transfer"
 msgstr ""
 
 #: staff.cat.copy_browser.transfer.incomplete
-msgctxt "staff.cat.copy_browser.transfer.incomplete"
+#: staff.cat.util.transfer_copies.aborted_transfer
 msgid "Transfer Aborted"
 msgstr ""
 
@@ -279,7 +271,7 @@ msgid "All volumes not likely transferred."
 msgstr ""
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
-msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
+#: staff.cat.util.transfer_copies.unmarked_volume_alert
 msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
 msgstr ""
 
@@ -299,11 +291,6 @@ msgstr ""
 msgid "Location/Barcode"
 msgstr ""
 
-#: staff.cat.copy_browser.list_init.volume_count
-msgctxt "staff.cat.copy_browser.list_init.volume_count"
-msgid "Volumes"
-msgstr ""
-
 #: staff.cat.copy_browser.list_init.copy_count
 msgid "Copies"
 msgstr ""
@@ -317,7 +304,9 @@ msgid "Problem refreshing the volume/copy tree."
 msgstr ""
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
-msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
+#: staff.cat.copy_buckets.copy_buckets_delete_item.complete
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
+#: staff.cat.record_buckets.rednder_pending_records.alert
 msgid "Action completed."
 msgstr ""
 
@@ -326,17 +315,17 @@ msgid "Error retrieving details for item with copy id = %1$s"
 msgstr ""
 
 #: staff.cat.copy_buckets.menulist.render.choose_bucket
-msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
+#: staff.cat.record_buckets.menulist_placeholder.item1
 msgid "Choose a bucket..."
 msgstr ""
 
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
-msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
+#: staff.cat.record_buckets.menulist_placeholder.item2
 msgid "Retrieve shared bucket..."
 msgstr ""
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
-msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
+#: staff.cat.record_buckets.change_bucket.bucket_id
 msgid "Enter bucket number:"
 msgstr ""
 
@@ -349,12 +338,7 @@ msgid "Error retrieving bucket.  Did you use a valid bucket id?"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
-msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
-msgid "Addition likely failed."
-msgstr ""
-
 #: staff.cat.copy_buckets.copy_buckets_sel_add.error
-msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
 msgid "Addition likely failed."
 msgstr ""
 
@@ -362,19 +346,9 @@ msgstr ""
 msgid "Deletion likely failed."
 msgstr ""
 
-#: staff.cat.copy_buckets.copy_buckets_delete_item.complete
-msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
-msgid "Action completed."
-msgstr ""
-
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
-msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
+#: staff.cat.record_buckets.delete_bucket_named
 msgid "Delete the bucket named %1$s?"
-msgstr ""
-
-#: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
-msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
-msgid "Action completed."
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
@@ -382,17 +356,21 @@ msgid "Bucket deletion likely failed."
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
-msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
+#: staff.cat.record_buckets.new_bucket.bucket_prompt
+#: staff.cat.record_buckets_quick.name_of_bucket
 msgid "What would you like to name the bucket?"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.title
-msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
+#: staff.cat.record_buckets.new_bucket.bucket_prompt_title
+#: staff.cat.record_buckets_quick.name_of_bucket.title
 msgid "Bucket Creation"
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
-msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
+#: staff.cat.record_buckets.new_bucket.same_name_alert
 msgid "You already have a bucket with that name."
 msgstr ""
 
@@ -401,7 +379,8 @@ msgid "Bucket \"%1$s\" created."
 msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.error
-msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
+#: staff.cat.record_buckets_quick.bucket_creation_failure
 msgid "Bucket creation failed."
 msgstr ""
 
@@ -434,23 +413,8 @@ msgid "Copy this item into which bucket?"
 msgstr ""
 
 #: staff.cat.copy_buckets_quick.bucket_prompt.plural
-msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
+#: staff.cat.record_buckets_quick.copy_multiple_records
 msgid "Copy these %1$s items into which bucket?"
-msgstr ""
-
-#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
-msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
-msgid "What would you like to name the bucket?"
-msgstr ""
-
-#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
-msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
-msgid "Bucket Creation"
-msgstr ""
-
-#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
-msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
-msgid "Bucket creation failed."
 msgstr ""
 
 #: staff.cat.copy_buckets_quick.addition.error
@@ -530,17 +494,31 @@ msgid "Template %1$s already exists."
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.replace.yes
-msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
+#: staff.cat.copy_editor.import_templates.save.yes
+#: staff.cat.copy_editor.field.circulate.yes_or_true
+#: staff.cat.copy_editor.field.holdable.yes_or_true
+#: staff.cat.copy_editor.field.deposit.yes_or_true
+#: staff.cat.copy_editor.field.opac_visible.yes_or_true
+#: staff.cat.copy_editor.field.reference.yes_or_true
+#: staff.cat.copy_notes.delete_note.prompt.yes
+#: staff.cat.copy_summary.yes
 msgid "Yes"
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.replace.no
-msgctxt "staff.cat.copy_editor.import_templates.replace.no"
+#: staff.cat.copy_editor.import_templates.save.no
+#: staff.cat.copy_editor.field.circulate.no_or_false
+#: staff.cat.copy_editor.field.holdable.no_or_false
+#: staff.cat.copy_editor.field.deposit.no_or_false
+#: staff.cat.copy_editor.field.opac_visible.no_or_false
+#: staff.cat.copy_editor.field.reference.no_or_false
+#: staff.cat.copy_notes.delete_note.prompt.no
+#: staff.cat.copy_summary.no
 msgid "No"
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.replace.click_here
-msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
+#: staff.cat.copy_editor.import_templates.save.click_here
 msgid "Click here"
 msgstr ""
 
@@ -550,21 +528,6 @@ msgstr ""
 
 #: staff.cat.copy_editor.import_templates.save.title
 msgid "Final warning"
-msgstr ""
-
-#: staff.cat.copy_editor.import_templates.save.yes
-msgctxt "staff.cat.copy_editor.import_templates.save.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.import_templates.save.no
-msgctxt "staff.cat.copy_editor.import_templates.save.no"
-msgid "No"
-msgstr ""
-
-#: staff.cat.copy_editor.import_templates.save.click_here
-msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
-msgid "Click here"
 msgstr ""
 
 #: staff.cat.copy_editor.import_templates.save.success
@@ -600,18 +563,14 @@ msgid "%1$s copies"
 msgstr ""
 
 #: staff.cat.copy_editor.apply.label
-msgctxt "staff.cat.copy_editor.apply.label"
+#: staff.cat.volume_copy_creator.my_init.btn.label
 msgid "Apply"
 msgstr ""
 
 #: staff.cat.copy_editor.apply.accesskey
-msgctxt "staff.cat.copy_editor.apply.accesskey"
+#: staff.cat.copy_notes.render_notes.accesskey
+#: staff.cat.copy_notes.new_note.add_note.accesskey
 msgid "A"
-msgstr ""
-
-#: staff.cat.copy_editor.cancel.label
-msgctxt "staff.cat.copy_editor.cancel.label"
-msgid "Cancel"
 msgstr ""
 
 #: staff.cat.copy_editor.handle_update.success
@@ -643,7 +602,7 @@ msgid "<Remove Circulate as Type>"
 msgstr ""
 
 #: staff.cat.copy_editor.field.unset_or_null
-msgctxt "staff.cat.copy_editor.field.unset_or_null"
+#: staff.cat.copy_summary.unset
 msgid "<Unset>"
 msgstr ""
 
@@ -687,28 +646,8 @@ msgstr ""
 msgid "Circulate?"
 msgstr ""
 
-#: staff.cat.copy_editor.field.circulate.yes_or_true
-msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.circulate.no_or_false
-msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
-msgid "No"
-msgstr ""
-
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr ""
-
-#: staff.cat.copy_editor.field.holdable.yes_or_true
-msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.holdable.no_or_false
-msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
-msgid "No"
 msgstr ""
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
@@ -724,7 +663,7 @@ msgid "Short"
 msgstr ""
 
 #: staff.cat.copy_editor.field.loan_duration.normal
-msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+#: staff.cat.copy_editor.field.fine_level.normal
 msgid "Normal"
 msgstr ""
 
@@ -738,11 +677,6 @@ msgstr ""
 
 #: staff.cat.copy_editor.field.fine_level.low
 msgid "Low"
-msgstr ""
-
-#: staff.cat.copy_editor.field.fine_level.normal
-msgctxt "staff.cat.copy_editor.field.fine_level.normal"
-msgid "Normal"
 msgstr ""
 
 #: staff.cat.copy_editor.field.fine_level.high
@@ -765,16 +699,6 @@ msgstr ""
 msgid "Deposit?"
 msgstr ""
 
-#: staff.cat.copy_editor.field.deposit.yes_or_true
-msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.deposit.no_or_false
-msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
-msgid "No"
-msgstr ""
-
 #: staff.cat.copy_editor.field.deposit_amount.label
 msgid "Deposit Amount"
 msgstr ""
@@ -787,37 +711,12 @@ msgstr ""
 msgid "OPAC Visible?"
 msgstr ""
 
-#: staff.cat.copy_editor.field.opac_visible.yes_or_true
-msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.opac_visible.no_or_false
-msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
-msgid "No"
-msgstr ""
-
 #: staff.cat.copy_editor.field.reference.label
 msgid "Reference?"
 msgstr ""
 
-#: staff.cat.copy_editor.field.reference.yes_or_true
-msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.reference.no_or_false
-msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
-msgid "No"
-msgstr ""
-
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
-msgstr ""
-
-#: staff.cat.copy_notes.render_notes.accesskey
-msgctxt "staff.cat.copy_notes.render_notes.accesskey"
-msgid "A"
 msgstr ""
 
 #: staff.cat.copy_notes.widgets_apply.note_id
@@ -848,16 +747,6 @@ msgstr ""
 msgid "Delete Note"
 msgstr ""
 
-#: staff.cat.copy_notes.delete_note.prompt.yes
-msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_notes.delete_note.prompt.no
-msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
-msgid "No"
-msgstr ""
-
 #: staff.cat.copy_notes.delete_note.success
 msgid "Note deleted."
 msgstr ""
@@ -882,23 +771,8 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: staff.cat.copy_notes.new_note.cancel.label
-msgctxt "staff.cat.copy_notes.new_note.cancel.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.copy_notes.new_note.cancel.accesskey
-msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
-msgid "C"
-msgstr ""
-
 #: staff.cat.copy_notes.new_note.add_note.label
 msgid "Add Note"
-msgstr ""
-
-#: staff.cat.copy_notes.new_note.add_note.accesskey
-msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
-msgid "A"
 msgstr ""
 
 #: staff.cat.copy_notes.new_note.success
@@ -915,21 +789,6 @@ msgstr ""
 
 #: staff.cat.copy_summary.total_circs.label
 msgid "Total Circs"
-msgstr ""
-
-#: staff.cat.copy_summary.yes
-msgctxt "staff.cat.copy_summary.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_summary.no
-msgctxt "staff.cat.copy_summary.no"
-msgid "No"
-msgstr ""
-
-#: staff.cat.copy_summary.unset
-msgctxt "staff.cat.copy_summary.unset"
-msgid "<Unset>"
 msgstr ""
 
 #: staff.cat.copy_summary.not_cataloged
@@ -1025,7 +884,8 @@ msgid "Record created."
 msgstr ""
 
 #: staff.cat.marc_new.retrieving.label
-msgctxt "staff.cat.marc_new.retrieving.label"
+#: staff.cat.record_buckets.cmd_sel_opac.tab_name
+#: staff.cat.z3950.replace_tab_with_opac.tab_name
 msgid "Retrieving title..."
 msgstr ""
 
@@ -1069,11 +929,6 @@ msgstr ""
 msgid "Records could not be exported."
 msgstr ""
 
-#: staff.cat.record_buckets.rednder_pending_records.alert
-msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
-msgid "Action completed."
-msgstr ""
-
 #: staff.cat.record_buckets.retrieve_row.std_unexpected_error
 msgid "Error retrieving mvr for record with ID = %1$s"
 msgstr ""
@@ -1082,43 +937,8 @@ msgstr ""
 msgid "Could not retrieve your buckets."
 msgstr ""
 
-#: staff.cat.record_buckets.menulist_placeholder.item1
-msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
-msgid "Choose a bucket..."
-msgstr ""
-
-#: staff.cat.record_buckets.menulist_placeholder.item2
-msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
-msgid "Retrieve shared bucket..."
-msgstr ""
-
-#: staff.cat.record_buckets.change_bucket.bucket_id
-msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
-msgid "Enter bucket number:"
-msgstr ""
-
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
-msgstr ""
-
-#: staff.cat.record_buckets.delete_bucket_named
-msgctxt "staff.cat.record_buckets.delete_bucket_named"
-msgid "Delete the bucket named %1$s?"
-msgstr ""
-
-#: staff.cat.record_buckets.new_bucket.bucket_prompt
-msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
-msgid "What would you like to name the bucket?"
-msgstr ""
-
-#: staff.cat.record_buckets.new_bucket.bucket_prompt_title
-msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
-msgid "Bucket Creation"
-msgstr ""
-
-#: staff.cat.record_buckets.new_bucket.same_name_alert
-msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
-msgid "You already have a bucket with that name."
 msgstr ""
 
 #: staff.cat.record_buckets.new_bucket.bucket_created
@@ -1131,16 +951,6 @@ msgstr ""
 
 #: staff.cat.record_buckets.merge_records.button.label
 msgid "Merge"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.cancel_button.label
-msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
-msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-msgid "C"
 msgstr ""
 
 #: staff.cat.record_buckets.merge_records.lead_record_number
@@ -1171,21 +981,6 @@ msgstr ""
 msgid "Delete these records?"
 msgstr ""
 
-#: staff.cat.record_buckets.delete_records.button.label
-msgctxt "staff.cat.record_buckets.delete_records.button.label"
-msgid "Delete"
-msgstr ""
-
-#: staff.cat.record_buckets.delete_records.cancel_button.label
-msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.record_buckets.delete_records.cancel_button.accesskey
-msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
-msgid "C"
-msgstr ""
-
 #: staff.cat.record_buckets.delete_records.xml2
 msgid "Record? # %1$s"
 msgstr ""
@@ -1199,11 +994,13 @@ msgid "Delete Aborted"
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.s1
-msgid "Error deleting these records:\n"
+msgid ""
+"Error deleting these records:\n"
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.s2
-msgid "Record #%1$s : %2$s  : %3$s\n"
+msgid ""
+"Record #%1$s : %2$s  : %3$s\n"
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.delete_success.alert
@@ -1218,17 +1015,12 @@ msgstr ""
 msgid "Not Yet Implemented"
 msgstr ""
 
-#: staff.cat.record_buckets.cmd_sel_opac.tab_name
-msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
-msgid "Retrieving title..."
-msgstr ""
-
 #: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
 msgid "Showing in OPAC"
 msgstr ""
 
 #: staff.cat.record_buckets.submit.query_status
-msgctxt "staff.cat.record_buckets.submit.query_status"
+#: staff.cat.z3950.initial_search.searching
 msgid "Searching..."
 msgstr ""
 
@@ -1240,28 +1032,8 @@ msgstr ""
 msgid "Copy this record into which bucket?"
 msgstr ""
 
-#: staff.cat.record_buckets_quick.copy_multiple_records
-msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
-msgid "Copy these %1$s items into which bucket?"
-msgstr ""
-
 #: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
 msgid "Trying to init record_buckets_quick.xul"
-msgstr ""
-
-#: staff.cat.record_buckets_quick.name_of_bucket
-msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
-msgid "What would you like to name the bucket?"
-msgstr ""
-
-#: staff.cat.record_buckets_quick.name_of_bucket.title
-msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
-msgid "Bucket Creation"
-msgstr ""
-
-#: staff.cat.record_buckets_quick.bucket_creation_failure
-msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
-msgid "Bucket creation failed."
 msgstr ""
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
@@ -1280,11 +1052,6 @@ msgstr ""
 msgid "Generate"
 msgstr ""
 
-#: staff.cat.spine_labels.preview.title
-msgctxt "staff.cat.spine_labels.preview.title"
-msgid "Spine Labels"
-msgstr ""
-
 #: staff.cat.spine_labels.preview.std_unexpected_err
 msgid "Preview and Print"
 msgstr ""
@@ -1294,7 +1061,7 @@ msgid "Enter original barcode for the copy:"
 msgstr ""
 
 #: staff.cat.util.replace_barcode.old_bc_window_prompt.title
-msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
+#: staff.cat.util.replace_barcode.new_bc_window_prompt.title
 msgid "Replace Barcode"
 msgstr ""
 
@@ -1304,11 +1071,6 @@ msgstr ""
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.prompt
 msgid "Enter the replacement barcode for the copy:"
-msgstr ""
-
-#: staff.cat.util.replace_barcode.new_bc_window_prompt.title
-msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
-msgid "Replace Barcode"
 msgstr ""
 
 #: staff.cat.util.replace_barcode.new_bc.failed
@@ -1331,37 +1093,12 @@ msgstr ""
 msgid "Rename did not likely occur."
 msgstr ""
 
-#: staff.cat.util.transfer_copies.unmarked_volume_alert
-msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
-msgid "Please mark a volume as the destination from within holdings maintenance and then try this again."
-msgstr ""
-
 #: staff.cat.util.transfer_copies.params_message
 msgid "Transfer items from their original volumes to %1$s's volume labelled %2$s on the following record (and change their circulation libs to match)?"
 msgstr ""
 
-#: staff.cat.util.transfer_copies.transfer.label
-msgctxt "staff.cat.util.transfer_copies.transfer.label"
-msgid "Transfer"
-msgstr ""
-
-#: staff.cat.util.transfer_copies.cancel.label
-msgctxt "staff.cat.util.transfer_copies.cancel.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.util.transfer_copies.cancel.accesskey
-msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
-msgid "C"
-msgstr ""
-
 #: staff.cat.util.transfer_copies.window_title
 msgid "Item Transfer"
-msgstr ""
-
-#: staff.cat.util.transfer_copies.aborted_transfer
-msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
-msgid "Transfer Aborted"
 msgstr ""
 
 #: staff.cat.util.transfer_copies.override_transfer_failure
@@ -1374,16 +1111,6 @@ msgstr ""
 
 #: staff.cat.util.transfer_copies.transfer_error
 msgid "All items not likely transferred."
-msgstr ""
-
-#: staff.cat.util.spine_editor.tab_name
-msgctxt "staff.cat.util.spine_editor.tab_name"
-msgid "Spine Labels"
-msgstr ""
-
-#: staff.cat.util.spine_editor.spine_editor_error
-msgctxt "staff.cat.util.spine_editor.spine_editor_error"
-msgid "Spine Labels"
 msgstr ""
 
 #: staff.cat.util.show_in_opac.unknown_barcode
@@ -1399,12 +1126,12 @@ msgid "Batch"
 msgstr ""
 
 #: staff.cat.util.copy_editor.edit_in_title
-msgctxt "staff.cat.util.copy_editor.edit_in_title"
+#: staff.cat.util.copy_editor.edit
 msgid "Edit"
 msgstr ""
 
 #: staff.cat.util.copy_editor.view_in_title
-msgctxt "staff.cat.util.copy_editor.view_in_title"
+#: staff.cat.util.copy_editor.view
 msgid "View"
 msgstr ""
 
@@ -1420,16 +1147,6 @@ msgstr ""
 msgid "Batch View"
 msgstr ""
 
-#: staff.cat.util.copy_editor.edit
-msgctxt "staff.cat.util.copy_editor.edit"
-msgid "Edit"
-msgstr ""
-
-#: staff.cat.util.copy_editor.view
-msgctxt "staff.cat.util.copy_editor.view"
-msgid "View"
-msgstr ""
-
 #: staff.cat.util.copy_editor.not_modified
 msgid "Copies not modified."
 msgstr ""
@@ -1439,17 +1156,20 @@ msgid "Action failed.  One or more of these items is in a special status such as
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_title
-msgctxt "staff.cat.util.mark_item_damaged.af_title"
+#: staff.cat.util.mark_item_missing.af_title
 msgid "Action failed."
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_ok_label
-msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
+#: staff.cat.util.mark_item_damaged.md_ok_label
+#: staff.cat.util.mark_item_missing.af_ok_label
+#: staff.cat.util.mark_item_missing.ms_ok_label
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
 msgid "OK"
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_confirm_action
-msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
+#: staff.cat.util.mark_item_missing.af_confirm_action
 msgid "Check here to confirm this message"
 msgstr ""
 
@@ -1461,18 +1181,10 @@ msgstr ""
 msgid "Mark Damaged"
 msgstr ""
 
-#: staff.cat.util.mark_item_damaged.md_ok_label
-msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
-msgid "OK"
-msgstr ""
-
-#: staff.cat.util.mark_item_damaged.md_cancel_label
-msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.util.mark_item_damaged.md_confirm_action
-msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
+#: staff.cat.util.mark_item_missing.ms_confirm_action
+#: staff.cat.z3950.spawn_marc_editor.confirm_action
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
 msgid "Check here to confirm this action"
 msgstr ""
 
@@ -1492,42 +1204,12 @@ msgstr ""
 msgid "Action failed.  One or more of these items is in a special status such as \"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 
-#: staff.cat.util.mark_item_missing.af_title
-msgctxt "staff.cat.util.mark_item_missing.af_title"
-msgid "Action failed."
-msgstr ""
-
-#: staff.cat.util.mark_item_missing.af_ok_label
-msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
-msgid "OK"
-msgstr ""
-
-#: staff.cat.util.mark_item_missing.af_confirm_action
-msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
-msgid "Check here to confirm this message"
-msgstr ""
-
 #: staff.cat.util.mark_item_missing.ms_message
 msgid "'Change the status for these items to Missing? Barcodes: %1$s"
 msgstr ""
 
 #: staff.cat.util.mark_item_missing.ms_title
 msgid "Mark Missing"
-msgstr ""
-
-#: staff.cat.util.mark_item_missing.ms_ok_label
-msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
-msgid "OK"
-msgstr ""
-
-#: staff.cat.util.mark_item_missing.ms_cancel_label
-msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.util.mark_item_missing.ms_confirm_action
-msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
-msgid "Check here to confirm this action"
 msgstr ""
 
 #: staff.cat.util.mark_item_missing.marking_error
@@ -1544,11 +1226,6 @@ msgstr ""
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
-msgstr ""
-
-#: staff.cat.volume_copy_creator.my_init.btn.label
-msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
-msgid "Apply"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
@@ -1577,11 +1254,6 @@ msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_title
 msgid "Invalid Barcode"
-msgstr ""
-
-#: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
-msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
-msgid "OK"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
@@ -1621,7 +1293,7 @@ msgid "Results View"
 msgstr ""
 
 #: staff.cat.z3950.results_view.accesskey
-msgctxt "staff.cat.z3950.results_view.accesskey"
+#: staff.cat.z3950.marc_view.accesskey
 msgid "V"
 msgstr ""
 
@@ -1629,27 +1301,17 @@ msgstr ""
 msgid "MARC View"
 msgstr ""
 
-#: staff.cat.z3950.marc_view.accesskey
-msgctxt "staff.cat.z3950.marc_view.accesskey"
-msgid "V"
-msgstr ""
-
 #: staff.cat.z3950.hide_top_pane.label
 msgid "Hide Top Pane"
 msgstr ""
 
 #: staff.cat.z3950.hide_top_pane.accesskey
-msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+#: staff.cat.z3950.unhide_top_pane.accesskey
 msgid "T"
 msgstr ""
 
 #: staff.cat.z3950.unhide_top_pane.label
 msgid "Show Top Pane"
-msgstr ""
-
-#: staff.cat.z3950.unhide_top_pane.accesskey
-msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
-msgid "T"
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
@@ -1686,11 +1348,6 @@ msgstr ""
 
 #: staff.cat.z3950.initial_search.no_search_selection
 msgid "No services selected to search."
-msgstr ""
-
-#: staff.cat.z3950.initial_search.searching
-msgctxt "staff.cat.z3950.initial_search.searching"
-msgid "Searching..."
 msgstr ""
 
 #: staff.cat.z3950.initial_search.failed_search
@@ -1737,25 +1394,20 @@ msgstr ""
 msgid "Failure during search result handling."
 msgstr ""
 
-#: staff.cat.z3950.replace_tab_with_opac.tab_name
-msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
-msgid "Retrieving title..."
-msgstr ""
-
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
-msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
 msgid ""
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.title
-msgctxt "staff.cat.z3950.spawn_marc_editor.title"
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
 msgid "Import Collision"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
-msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
+#: staff.cat.z3950.confirm_overlay.lead.label
 msgid "Overlay"
 msgstr ""
 
@@ -1764,22 +1416,17 @@ msgid "Import with alternate TCN %1$s"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.permission_error
-msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
 msgid "check permission"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
-msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
 msgid "Cancel Import"
 msgstr ""
 
-#: staff.cat.z3950.spawn_marc_editor.confirm_action
-msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
-msgid "Check here to confirm this action"
-msgstr ""
-
 #: staff.cat.z3950.spawn_marc_editor.successful_overlay
-msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
 msgid "Record successfully overlaid."
 msgstr ""
 
@@ -1803,23 +1450,8 @@ msgstr ""
 msgid "Overlay this record?"
 msgstr ""
 
-#: staff.cat.z3950.confirm_overlay.lead.label
-msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
-msgid "Overlay"
-msgstr ""
-
 #: staff.cat.z3950.confirm_overlay.lead.accesskey
 msgid "O"
-msgstr ""
-
-#: staff.cat.z3950.confirm_overlay.cancel.label
-msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.z3950.confirm_overlay.cancel.accesskey
-msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
-msgid "C"
 msgstr ""
 
 #: staff.cat.z3950.confirm_overlay.title
@@ -1842,35 +1474,8 @@ msgstr ""
 msgid "Overlay Record"
 msgstr ""
 
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
-msgid ""
-"A record with TCN %1$s already exists.\n"
-"FIXME: add record summary here"
-msgstr ""
-
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
-msgid "Import Collision"
-msgstr ""
-
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
 msgid "Overlay with alternate TCN %1$s"
-msgstr ""
-
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
-msgid "check permission"
-msgstr ""
-
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
-msgid "Cancel Import"
-msgstr ""
-
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
-msgid "Check here to confirm this action"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
@@ -1879,11 +1484,6 @@ msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
 msgid "Record overlay cancelled"
-msgstr ""
-
-#: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
-msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
-msgid "Record successfully overlaid."
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
@@ -1897,4 +1497,3 @@ msgstr ""
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
 msgstr ""
-

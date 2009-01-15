@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
+# extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:38-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 "X-Accelerator-Marker: &\n"
 
 #: vandelay.add.existing.queue
@@ -31,9 +32,10 @@ msgstr ""
 msgid "Auto-Import Non-Colliding Records"
 msgstr ""
 
-#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
-msgid "Auto Width"
+msgid ""
+"_: Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger.\n"
+"Auto Width"
 msgstr ""
 
 #: vandelay.back.to.import.queue
@@ -109,12 +111,7 @@ msgid "Done"
 msgstr ""
 
 #: vandelay.edit.attributes
-msgctxt "vandelay.edit.attributes"
-msgid "Edit Attributes"
-msgstr ""
-
 #: vandelay.edit.attrs
-msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
 msgstr ""
 
@@ -135,7 +132,7 @@ msgid "Identifier"
 msgstr ""
 
 #: vandelay.id.field
-msgid "Identifer Field?"
+msgid "Identifier Field?"
 msgstr ""
 
 #: vandelay.id
@@ -440,4 +437,8 @@ msgstr ""
 
 #: vandelay.queue.column_picker.title
 msgid "Column Picker"
+msgstr ""
+
+#: vandelay.import.bib_sources
+msgid "Select a Record Source"
 msgstr ""

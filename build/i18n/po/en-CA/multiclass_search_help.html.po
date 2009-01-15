@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,115 +11,105 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
-msgctxt "../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1"
+#: None:1
+#: None:2
 msgid "Multiclass Search Help"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
-msgctxt "../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2"
-msgid "Multiclass Search Help"
-msgstr ""
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
+#: None:3
 msgid "Recognized search keys include:"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
+#: None:4
 msgid "Search key"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
+#: None:5
 msgid "Definition"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
+#: None:6
+msgid "<strong>keyword</strong>, <strong>title</strong>,            <strong>author</strong>, <strong>subject</strong>, and            <strong>series</strong> support additional search subclasses,            specified with a <kbd>|</kbd>. For example:            <kbd>title|proper:gone with the wind</kbd>"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
+#: None:7
 msgid "keyword/kw"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
+#: None:8
 msgid "search keyword(s)"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
+#: None:9
 msgid "author/au/name"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
+#: None:10
 msgid "search author(s)"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
+#: None:11
 msgid "title/ti"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
+#: None:12
 msgid "search title"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
+#: None:13
 msgid "subject/su"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
+#: None:14
 msgid "search subject"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
+#: None:15
 msgid "series/se"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
+#: None:16
 msgid "search series"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
+#: None:17
 msgid "lang"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
+#: None:18
 msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
+#: None:19
 msgid "site"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
+#: None:20
 msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
+#: None:21
 msgid "sort"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
+#: None:22
 msgid "sort type (title, author, pubdate)"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
+#: None:23
 msgid "dir"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
+#: None:24
 msgid "sort direction (asc, desc)"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
+#: None:25
 msgid "available"
 msgstr ""
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
+#: None:26
 msgid "if set to anything other than \"false\" or \"0\", limits to available items"
 msgstr ""

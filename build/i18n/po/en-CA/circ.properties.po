@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > circ.properties.po\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: 2008-12-01 21:48-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -25,7 +26,8 @@ msgid "Item %1$s has never circulated."
 msgstr ""
 
 #: staff.circ.invalid_date
-msgctxt "staff.circ.invalid_date"
+#: staff.circ.holds.activation_date.invalid_date
+#: staff.circ.holds.expire_time.invalid_date
 msgid "Invalid Date"
 msgstr ""
 
@@ -46,12 +48,12 @@ msgid "Problem setting backdate: %1$s"
 msgstr ""
 
 #: staff.circ.unimplemented
-msgctxt "staff.circ.unimplemented"
+#: staff.circ.checkout.unimplemented
 msgid "Not Yet Implemented"
 msgstr ""
 
 #: staff.circ.check_digit.bad
-msgctxt "staff.circ.check_digit.bad"
+#: staff.circ.copy_status.test_barcode.prompt
 msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
 msgstr ""
 
@@ -60,7 +62,8 @@ msgid "Bad Barcode"
 msgstr ""
 
 #: staff.circ.cancel
-msgctxt "staff.circ.cancel"
+#: staff.circ.copy_status.delete_volumes.cancel
+#: staff.circ.copy_status.transfer_volume.cancel.label
 msgid "Cancel"
 msgstr ""
 
@@ -76,7 +79,7 @@ msgstr ""
 msgid "Check here to confirm this message."
 msgstr ""
 
-#. # If we know the name of the object, we could parameterize that as well
+# If we know the name of the object, we could parameterize that as well
 #: staff.circ.checkin.exception
 msgid "Something went wrong in circ.util.checkin: %1$s"
 msgstr ""
@@ -86,7 +89,7 @@ msgid "Something went wrong in circ.util.checkin2: %1$s"
 msgstr ""
 
 #: staff.circ.checkin.exception.external
-msgctxt "staff.circ.checkin.exception.external"
+#: staff.circ.checkin.exception.no_external
 msgid "circ.checkin: Calling external .on_checkin()"
 msgstr ""
 
@@ -94,22 +97,12 @@ msgstr ""
 msgid "circ.checkin2: Calling external .on_checkin()"
 msgstr ""
 
-#: staff.circ.checkin.exception.no_external
-msgctxt "staff.circ.checkin.exception.no_external"
-msgid "circ.checkin: Calling external .on_checkin()"
-msgstr ""
-
 #: staff.circ.checkin2.exception.no_external
 msgid "circ.util.checkin2: No external .on_failure()"
 msgstr ""
 
 #: staff.circ.util.checkin.exception.external
-msgctxt "staff.circ.util.checkin.exception.external"
-msgid "circ.util.checkin: Calling external .on_checkin()"
-msgstr ""
-
 #: staff.circ.util.checkin.exception.no_external
-msgctxt "staff.circ.util.checkin.exception.no_external"
 msgid "circ.util.checkin: Calling external .on_checkin()"
 msgstr ""
 
@@ -119,11 +112,6 @@ msgstr "error in sorting non-catalogued items: %1$s"
 
 #: staff.circ.checkout.date.exception
 msgid "Use this format: YYYY-MM-DD"
-msgstr ""
-
-#: staff.circ.checkout.unimplemented
-msgctxt "staff.circ.checkout.unimplemented"
-msgid "Not Yet Implemented"
 msgstr ""
 
 #: staff.circ.checkout.cmd_checkout_submit.msg
@@ -139,12 +127,15 @@ msgid "You tried to circulate %1$d %2$s.  The maximum is 99 per action."
 msgstr ""
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
-msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
+#: staff.circ.checkout.cmd_checkout_submit.confirm.title
+#: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgid "Non-cataloged Circulation"
 msgstr "Non-catalogued Circulation"
 
 #: staff.circ.checkout.ok.btn
-msgctxt "staff.circ.checkout.ok.btn"
+#: staff.circ.copy_status.ok
+#: staff.circ.in_house_use.ok
+#: staff.circ.utils.msg.ok
 msgid "OK"
 msgstr ""
 
@@ -152,29 +143,23 @@ msgstr ""
 msgid "Are you sure you want to circulate %1$d %2$s?"
 msgstr ""
 
-#: staff.circ.checkout.cmd_checkout_submit.confirm.title
-msgctxt "staff.circ.checkout.cmd_checkout_submit.confirm.title"
-msgid "Non-cataloged Circulation"
-msgstr "Non-catalogued Circulation"
-
 #: staff.circ.checkout.yes.btn
-msgctxt "staff.circ.checkout.yes.btn"
+#: staff.circ.in_house_use.yes
+#: staff.circ.utils.yes
+#: staff.circ.holds.modifying_holds.yes
 msgid "Yes"
 msgstr ""
 
 #: staff.circ.checkout.no.btn
-msgctxt "staff.circ.checkout.no.btn"
+#: staff.circ.in_house_use.no
+#: staff.circ.utils.no
+#: staff.circ.holds.modifying_holds.no
 msgid "No"
 msgstr ""
 
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.msg
 msgid "Error with non-cataloged checkout.  %1$s is not a valid number."
 msgstr "Error with non-catalogued checkout.  %1$s is not a valid number."
-
-#: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
-msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
-msgid "Non-cataloged Circulation"
-msgstr "Non-catalogued Circulation"
 
 #: staff.circ.checkout.disable.error
 msgid "Error determining whether to disable checkout."
@@ -276,14 +261,16 @@ msgstr ""
 msgid "Permission Denied = %1$s"
 msgstr ""
 
-#. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
-#. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
+# "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
+# "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkout.suggest_offline
 msgid "Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
 
+# pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.checkout.barcode
-msgctxt "staff.circ.checkout.barcode"
+#: staff.circ.hold_capture.print.barcode
+#: staff.circ.in_house_use.barcode
 msgid "Barcode:"
 msgstr ""
 
@@ -327,7 +314,7 @@ msgstr ""
 msgid "This item is not in transit."
 msgstr ""
 
-#. # Displays user info: "Family name, First name : Barcode"
+# Displays user info: "Family name, First name : Barcode"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
 msgstr ""
@@ -389,7 +376,7 @@ msgid "Are you sure sure you want to delete these items? %1$s"
 msgstr ""
 
 #: staff.circ.copy_status.del_items.title
-msgctxt "staff.circ.copy_status.del_items.title"
+#: staff.circ.copy_status.delete_volumes.override
 msgid "Override Delete Failure?"
 msgstr ""
 
@@ -453,16 +440,6 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: staff.circ.copy_status.delete_volumes.cancel
-msgctxt "staff.circ.copy_status.delete_volumes.cancel"
-msgid "Cancel"
-msgstr ""
-
-#: staff.circ.copy_status.delete_volumes.override
-msgctxt "staff.circ.copy_status.delete_volumes.override"
-msgid "Override Delete Failure?"
-msgstr ""
-
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid "You must delete all the copies on the volume before you may delete the volume itself."
 msgstr ""
@@ -480,13 +457,8 @@ msgid "Choose just one Volume to mark as Item Transfer Destination"
 msgstr ""
 
 #: staff.circ.copy_status.mark_volume.title
-msgctxt "staff.circ.copy_status.mark_volume.title"
+#: staff.circ.copy_status.mark_library.limit_one.title
 msgid "Limit Selection"
-msgstr ""
-
-#: staff.circ.copy_status.ok
-msgctxt "staff.circ.copy_status.ok"
-msgid "OK"
 msgstr ""
 
 #: staff.circ.copy_status.mark_library
@@ -495,11 +467,6 @@ msgstr ""
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr ""
-
-#: staff.circ.copy_status.mark_library.limit_one.title
-msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
-msgid "Limit Selection"
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.none
@@ -512,11 +479,6 @@ msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
-msgstr ""
-
-#: staff.circ.copy_status.transfer_volume.cancel.label
-msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
-msgid "Cancel"
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.cancel.accesskey
@@ -547,11 +509,6 @@ msgstr ""
 msgid "All volumes not likely transferred."
 msgstr ""
 
-#: staff.circ.copy_status.test_barcode.prompt
-msgctxt "staff.circ.copy_status.test_barcode.prompt"
-msgid "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") anyway?"
-msgstr ""
-
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
 msgstr ""
@@ -561,7 +518,7 @@ msgid "%1$s was either mis-scanned or is not cataloged."
 msgstr "%1$s was either mis-scanned or is not catalogued."
 
 #: staff.circ.copy_status.status.not_cataloged
-msgctxt "staff.circ.copy_status.status.not_cataloged"
+#: staff.circ.utils.not_cataloged
 msgid "Not Cataloged"
 msgstr "Not Catalogued"
 
@@ -585,28 +542,22 @@ msgstr ""
 msgid "To Printer"
 msgstr ""
 
-#. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
-#: staff.circ.hold_capture.print.barcode
-msgctxt "staff.circ.hold_capture.print.barcode"
-msgid "Barcode:"
-msgstr ""
-
-#. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
+# pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.title
 msgid "Title:"
 msgstr ""
 
-#. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
+# pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.author
 msgid "Author:"
 msgstr ""
 
-#. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
+# pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.route_to
 msgid "Route to:"
 msgstr ""
 
-#. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
+# pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.patron
 msgid "Patron:"
 msgstr ""
@@ -631,11 +582,6 @@ msgstr ""
 msgid "In-House Use"
 msgstr ""
 
-#: staff.circ.in_house_use.barcode
-msgctxt "staff.circ.in_house_use.barcode"
-msgid "Barcode:"
-msgstr ""
-
 #: staff.circ.in_house_use.noncat_sort_error
 msgid "error in noncat sorting:"
 msgstr ""
@@ -656,28 +602,13 @@ msgstr ""
 msgid "In-House Use Verification"
 msgstr ""
 
-#: staff.circ.in_house_use.yes
-msgctxt "staff.circ.in_house_use.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.circ.in_house_use.no
-msgctxt "staff.circ.in_house_use.no"
-msgid "No"
-msgstr ""
-
-#. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
+# adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
 msgid "In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
-msgstr ""
-
-#: staff.circ.in_house_use.ok
-msgctxt "staff.circ.in_house_use.ok"
-msgid "OK"
 msgstr ""
 
 #: staff.circ.in_house_use.external
@@ -725,7 +656,7 @@ msgid "Save Templates File As"
 msgstr ""
 
 #: staff.circ.print_list_template.export.error
-msgctxt "staff.circ.print_list_template.export.error"
+#: staff.circ.print_list_template.import.error
 msgid "Error exporting templates"
 msgstr ""
 
@@ -741,11 +672,6 @@ msgstr ""
 msgid "Please reload this interface."
 msgstr ""
 
-#: staff.circ.print_list_template.import.error
-msgctxt "staff.circ.print_list_template.import.error"
-msgid "Error exporting templates"
-msgstr ""
-
 #: staff.circ.print_list_template.tab_name
 msgid "Receipt Template Editor"
 msgstr ""
@@ -756,16 +682,6 @@ msgstr ""
 
 #: staff.circ.utils.abort_transits.title
 msgid "Aborting Transits"
-msgstr ""
-
-#: staff.circ.utils.yes
-msgctxt "staff.circ.utils.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.circ.utils.no
-msgctxt "staff.circ.utils.no"
-msgid "No"
 msgstr ""
 
 #: staff.circ.utils.abort_transits.not_allowed
@@ -836,11 +752,6 @@ msgstr ""
 msgid "Use Time"
 msgstr ""
 
-#: staff.circ.utils.not_cataloged
-msgctxt "staff.circ.utils.not_cataloged"
-msgid "Not Cataloged"
-msgstr "Not Catalogued"
-
 #: staff.circ.utils.retrieving
 msgid "Retrieving..."
 msgstr ""
@@ -854,7 +765,7 @@ msgid "Short"
 msgstr ""
 
 #: staff.circ.utils.loan_duration.normal
-msgctxt "staff.circ.utils.loan_duration.normal"
+#: staff.circ.utils.fine_level.normal
 msgid "Normal"
 msgstr ""
 
@@ -864,11 +775,6 @@ msgstr ""
 
 #: staff.circ.utils.fine_level.low
 msgid "Low"
-msgstr ""
-
-#: staff.circ.utils.fine_level.normal
-msgctxt "staff.circ.utils.fine_level.normal"
-msgid "Normal"
 msgstr ""
 
 #: staff.circ.utils.fine_level.high
@@ -899,7 +805,7 @@ msgstr ""
 msgid "Deposit?"
 msgstr ""
 
-#. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
+# The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.circ.utils.unset
 msgid "<Unset>"
 msgstr ""
@@ -952,7 +858,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#. # TCN is an acronym for Title Control Number
+# TCN is an acronym for Title Control Number
 #: staff.circ.utils.tcn
 msgid "TCN"
 msgstr ""
@@ -1037,22 +943,22 @@ msgstr ""
 msgid "Request Date"
 msgstr ""
 
-#. # Time the hold became available
+# Time the hold became available
 #: staff.circ.utils.available_timestamp
 msgid "Available On (Timestamp)"
 msgstr ""
 
-#. # Date the hold became available
+# Date the hold became available
 #: staff.circ.utils.available_time
 msgid "Available On"
 msgstr ""
 
-#. # Time the hold was captured
+# Time the hold was captured
 #: staff.circ.utils.capture_timestamp
 msgid "Capture Timestamp"
 msgstr ""
 
-#. # Date the hold was captured
+# Date the hold was captured
 #: staff.circ.utils.capture_time
 msgid "Capture Date"
 msgstr ""
@@ -1158,7 +1064,7 @@ msgid "status of Holds Shelf, but no actual hold found."
 msgstr ""
 
 #: staff.circ.utils.payload.hold.barcode
-msgctxt "staff.circ.utils.payload.hold.barcode"
+#: staff.circ.renew.barcode
 msgid "Barcode: %1$s"
 msgstr ""
 
@@ -1166,7 +1072,7 @@ msgstr ""
 msgid "Title: %1$s"
 msgstr ""
 
-#. # Hold for patron familyName, firstName secondName
+# Hold for patron familyName, firstName secondName
 #: staff.circ.utils.payload.hold.patron
 msgid "Hold for patron %1$s, %2$s %3$s"
 msgstr ""
@@ -1227,11 +1133,6 @@ msgstr "%1$s needs to be catalogued."
 msgid "FIXME -- this case \"%1$s\" is unhandled."
 msgstr ""
 
-#: staff.circ.utils.msg.ok
-msgctxt "staff.circ.utils.msg.ok"
-msgid "OK"
-msgstr ""
-
 #: staff.circ.utils.route_to.destination
 msgid "Destination: %1$s."
 msgstr ""
@@ -1264,8 +1165,8 @@ msgstr ""
 msgid "Check In Failed (in circ.util.checkin) (%1$s):"
 msgstr ""
 
-#. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
-#. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
+# "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
+# "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkin.suggest_offline
 msgid "Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface"
 msgstr ""
@@ -1276,11 +1177,6 @@ msgstr ""
 
 #: staff.circ.checkin.renew_failed.override
 msgid "Override Renew Failure?"
-msgstr ""
-
-#: staff.circ.renew.barcode
-msgctxt "staff.circ.renew.barcode"
-msgid "Barcode: %1$s"
 msgstr ""
 
 #: staff.circ.renew.barcode.status
@@ -1327,11 +1223,6 @@ msgstr ""
 msgid "Activation Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
-#: staff.circ.holds.activation_date.invalid_date
-msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
-msgstr ""
-
 #: staff.circ.holds.expire_time.prompt
 msgid "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
 msgstr ""
@@ -1344,23 +1235,8 @@ msgstr ""
 msgid "Expiration Date needs to be either unset or set to fall on a future date."
 msgstr ""
 
-#: staff.circ.holds.expire_time.invalid_date
-msgctxt "staff.circ.holds.expire_time.invalid_date"
-msgid "Invalid Date"
-msgstr ""
-
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
-msgstr ""
-
-#: staff.circ.holds.modifying_holds.yes
-msgctxt "staff.circ.holds.modifying_holds.yes"
-msgid "Yes"
-msgstr ""
-
-#: staff.circ.holds.modifying_holds.no
-msgctxt "staff.circ.holds.modifying_holds.no"
-msgid "No"
 msgstr ""
 
 #: staff.circ.holds.already_activated
@@ -1394,4 +1270,3 @@ msgstr ""
 #: staff.circ.holds.error.may_not_edit_pickup_lib_for_hold_intransit
 msgid "You may not edit the pickup library for holds that are in-transit or ready for pickup."
 msgstr ""
-

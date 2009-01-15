@@ -1,20 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > common.properties.po\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 11:39-0400\n"
+"POT-Creation-Date: 2009-01-14 23:43-0500\n"
 "PO-Revision-Date: 2008-12-01 21:50-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team:  <warren.layton@gmail.com>\n"
+"Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 0.10.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #: common.exception
 msgid ""
@@ -60,7 +61,7 @@ msgid "Expired"
 msgstr ""
 
 #: common.barcode.status.warning.barred
-msgctxt "common.barcode.status.warning.barred"
+#: staff.au_barred_label
 msgid "Barred"
 msgstr ""
 
@@ -80,7 +81,7 @@ msgstr ""
 msgid "Action completed."
 msgstr ""
 
-#. # common.grouping_string = the string that should be inserted between elements of a grouped list
+# common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
 msgid ","
 msgstr ""
@@ -130,7 +131,7 @@ msgid "Error adjusting the font size: %1$s"
 msgstr ""
 
 #: staff.acp_label_barcode
-msgctxt "staff.acp_label_barcode"
+#: staff.card_barcode_label
 msgid "Barcode"
 msgstr ""
 
@@ -179,7 +180,7 @@ msgid "Price"
 msgstr ""
 
 #: staff.acp_label_status
-msgctxt "staff.acp_label_status"
+#: staff.ahr_status_label
 msgid "Status"
 msgstr ""
 
@@ -208,7 +209,7 @@ msgid "Fulfillment Time"
 msgstr ""
 
 #: staff.ahr_hold_type_label
-msgctxt "staff.ahr_hold_type_label"
+#: staff.mbts_xact_type_label
 msgid "Type"
 msgstr ""
 
@@ -240,17 +241,12 @@ msgstr ""
 msgid "Selection Depth"
 msgstr ""
 
-#: staff.ahr_status_label
-msgctxt "staff.ahr_status_label"
-msgid "Status"
-msgstr ""
-
 #: staff.ahr_target_label
 msgid "Target"
 msgstr ""
 
 #: staff.ahr_usr_label
-msgctxt "staff.ahr_usr_label"
+#: staff.mbts_usr_label
 msgid "User"
 msgstr ""
 
@@ -267,7 +263,7 @@ msgid "Remaining Renewals"
 msgstr ""
 
 #: staff.mvr_label_author
-msgctxt "staff.mvr_label_author"
+#: staff.z39_50.search_class.author
 msgid "Author"
 msgstr ""
 
@@ -276,7 +272,7 @@ msgid "Document ID"
 msgstr ""
 
 #: staff.mvr_label_title
-msgctxt "staff.mvr_label_title"
+#: staff.z39_50.search_class.title
 msgid "Title"
 msgstr ""
 
@@ -304,11 +300,6 @@ msgstr ""
 msgid "Finish"
 msgstr ""
 
-#: staff.mbts_xact_type_label
-msgctxt "staff.mbts_xact_type_label"
-msgid "Type"
-msgstr ""
-
 #: staff.mbts_total_owed_label
 msgid "Total Billed"
 msgstr ""
@@ -319,11 +310,6 @@ msgstr ""
 
 #: staff.mbts_balance_owed_label
 msgid "Balance Owed"
-msgstr ""
-
-#: staff.mbts_usr_label
-msgctxt "staff.mbts_usr_label"
-msgid "User"
 msgstr ""
 
 #: staff.mbts_last_billing_note_label
@@ -355,12 +341,12 @@ msgid "Billing Type"
 msgstr ""
 
 #: staff.mb_xact_label
-msgctxt "staff.mb_xact_label"
+#: staff.mp_xact_label
 msgid "Transaction ID"
 msgstr ""
 
 #: staff.mb_billing_ts_label
-msgctxt "staff.mb_billing_ts_label"
+#: staff.mp_payment_timestamp_label
 msgid "When"
 msgstr ""
 
@@ -369,12 +355,12 @@ msgid "Void Time"
 msgstr ""
 
 #: staff.mb_note_label
-msgctxt "staff.mb_note_label"
+#: staff.mp_note_label
 msgid "Note"
 msgstr ""
 
 #: staff.mb_amount_label
-msgctxt "staff.mb_amount_label"
+#: staff.mp_amount_label
 msgid "Amount"
 msgstr ""
 
@@ -383,7 +369,7 @@ msgid "Voider"
 msgstr ""
 
 #: staff.mb_voided_label
-msgctxt "staff.mb_voided_label"
+#: staff.mp_voided_label
 msgid "Voided"
 msgstr ""
 
@@ -399,18 +385,8 @@ msgstr ""
 msgid "Forgive Payment"
 msgstr ""
 
-#: staff.mp_payment_timestamp_label
-msgctxt "staff.mp_payment_timestamp_label"
-msgid "When"
-msgstr ""
-
 #: staff.mp_payment_type_label
 msgid "Payment Type"
-msgstr ""
-
-#: staff.mp_voided_label
-msgctxt "staff.mp_voided_label"
-msgid "Voided"
 msgstr ""
 
 #: staff.mp_id_label
@@ -421,11 +397,6 @@ msgstr ""
 msgid "Goods Payment"
 msgstr ""
 
-#: staff.mp_xact_label
-msgctxt "staff.mp_xact_label"
-msgid "Transaction ID"
-msgstr ""
-
 #: staff.mp_credit_payment_label
 msgid "Credit Payment"
 msgstr ""
@@ -434,18 +405,8 @@ msgstr ""
 msgid "Work Payment"
 msgstr ""
 
-#: staff.mp_note_label
-msgctxt "staff.mp_note_label"
-msgid "Note"
-msgstr ""
-
 #: staff.mp_cash_payment_label
 msgid "Cash Payment"
-msgstr ""
-
-#: staff.mp_amount_label
-msgctxt "staff.mp_amount_label"
-msgid "Amount"
 msgstr ""
 
 #: staff.mp_check_payment_label
@@ -460,11 +421,6 @@ msgstr ""
 msgid "Staff"
 msgstr ""
 
-#: staff.card_barcode_label
-msgctxt "staff.card_barcode_label"
-msgid "Barcode"
-msgstr ""
-
 #: staff.au_active_label
 msgid "Active"
 msgstr ""
@@ -475,11 +431,6 @@ msgstr ""
 
 #: staff.au_profile_label
 msgid "Profile"
-msgstr ""
-
-#: staff.au_barred_label
-msgctxt "staff.au_barred_label"
-msgid "Barred"
 msgstr ""
 
 #: staff.au_alert_message_label
@@ -582,11 +533,6 @@ msgstr ""
 msgid "Suffix"
 msgstr ""
 
-#: staff.z39_50.search_class.author
-msgctxt "staff.z39_50.search_class.author"
-msgid "Author"
-msgstr ""
-
 #: staff.z39_50.search_class.isbn
 msgid "ISBN"
 msgstr ""
@@ -659,11 +605,6 @@ msgstr ""
 msgid "Accession #"
 msgstr ""
 
-#: staff.z39_50.search_class.title
-msgctxt "staff.z39_50.search_class.title"
-msgid "Title"
-msgstr ""
-
 #: staff.z39_50_import_interface_label
 msgid "Z39.50 Import"
 msgstr ""
@@ -699,4 +640,3 @@ msgstr ""
 #: staff.main.gen_offline_widgets.registration.success
 msgid "Registration successful"
 msgstr ""
-
