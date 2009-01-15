@@ -74,25 +74,12 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				);
 			}
 
-			osrfStringArray* controller = osrfNewStringArray(0);
-			string_tmp = NULL;
-			if( (string_tmp = (char*)xmlGetProp(kid, BAD_CAST "controller") )) {
-				char* controller_list = strdup( string_tmp );
+			// Tokenize controller attribute into an osrfStringArray
+			string_tmp = (char*) xmlGetProp(kid, BAD_CAST "controller");
+			if( string_tmp )
 				osrfLogDebug(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
-
-				if (strlen( controller_list ) > 0) {
-					char* st_tmp = NULL;
-					char* _controller_class = strtok_r(controller_list, " ", &st_tmp);
-					osrfStringArrayAdd(controller, strdup(_controller_class));
-
-					while ((_controller_class = strtok_r(NULL, " ", &st_tmp))) {
-						osrfStringArrayAdd(controller, strdup(_controller_class));
-					}
-				}
-				free(controller_list);
-			}
+			osrfStringArray* controller = osrfStringArrayTokenize( string_tmp, ' ' );
 			osrfHashSet( usrData, controller, "controller");
-
 
 			osrfHash* _tmp;
 			osrfHash* links = osrfNewHash();
@@ -233,24 +220,11 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						}
 						osrfLogDebug(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
 
-						osrfStringArray* map = osrfNewStringArray(0);
-
-						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "map") )) {
-							char* map_list = strdup( string_tmp );
+						// Tokenize map attribute into an osrfStringArray
+						string_tmp = (char*) xmlGetProp(_l, BAD_CAST "map");
+						if( string_tmp )
 							osrfLogDebug(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
-
-							if (strlen( map_list ) > 0) {
-								char* st_tmp = NULL;
-								char* _map_class = strtok_r(map_list, " ", &st_tmp);
-								osrfStringArrayAdd(map, strdup(_map_class));
-						
-								while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-									osrfStringArrayAdd(map, strdup(_map_class));
-								}
-							}
-							free(map_list);
-						}
+						osrfStringArray* map = osrfStringArrayTokenize( string_tmp, ' ' );
 						osrfHashSet( _tmp, map, "map");
 
 						string_tmp = NULL;
@@ -313,50 +287,28 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 								continue;
 							}
 
-							string_tmp = strdup( (char*)_a->name );
+							string_tmp = (char*) _a->name;
 							osrfLogDebug(OSRF_LOG_MARK, "Found Permacrud action %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 
 							_tmp = osrfNewHash();
 							osrfHashSet( pcrud, _tmp, string_tmp );
 
-							osrfStringArray* map = osrfNewStringArray(0);
-							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetNoNsProp(_a, BAD_CAST "permission") )) {
-								char* map_list = strdup( string_tmp );
-								osrfLogDebug(OSRF_LOG_MARK, "Permacrud permission list is %s", string_tmp );
-	
-								if (strlen( map_list ) > 0) {
-									char* st_tmp = NULL;
-									char* _map_class = strtok_r(map_list, " ", &st_tmp);
-									osrfStringArrayAdd(map, strdup(_map_class));
-							
-									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-										osrfStringArrayAdd(map, strdup(_map_class));
-									}
-								}
-								free(map_list);
-							}
+							// Tokenize permission attribute into an osrfStringArray
+							string_tmp = (char*) xmlGetProp(_a, BAD_CAST "permission");
+							if( string_tmp )
+								osrfLogDebug(OSRF_LOG_MARK,
+									"Permacrud permission list is %s", string_tmp );
+							osrfStringArray* map = osrfStringArrayTokenize( string_tmp, ' ' );
 							osrfHashSet( _tmp, map, "permission");
 
 					    	osrfHashSet( _tmp, (char*)xmlGetNoNsProp(_a, BAD_CAST "global_required"), "global_required");
 
-							map = osrfNewStringArray(0);
-							string_tmp = NULL;
-							if( (string_tmp = (char*)xmlGetNoNsProp(_a, BAD_CAST "context_field") )) {
-								char* map_list = strdup( string_tmp );
-								osrfLogDebug(OSRF_LOG_MARK, "Permacrud context_field list is %s", string_tmp );
-	
-								if (strlen( map_list ) > 0) {
-									char* st_tmp = NULL;
-									char* _map_class = strtok_r(map_list, " ", &st_tmp);
-									osrfStringArrayAdd(map, strdup(_map_class));
-							
-									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-										osrfStringArrayAdd(map, strdup(_map_class));
-									}
-								}
-								free(map_list);
-							}
+							// Tokenize context_field attribute into an osrfStringArray
+							string_tmp = (char*) xmlGetProp(_a, BAD_CAST "context_field");
+							if( string_tmp )
+								osrfLogDebug(OSRF_LOG_MARK,
+									"Permacrud context_field list is %s", string_tmp );
+							map = osrfStringArrayTokenize( string_tmp, ' ' );
 							osrfHashSet( _tmp, map, "local_context");
 
 							osrfHash* foreign_context = osrfNewHash();
@@ -382,23 +334,12 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
 
-									map = osrfNewStringArray(0);
-									string_tmp = NULL;
-									if( (string_tmp = (char*)xmlGetNoNsProp(_f, BAD_CAST "field") )) {
-										char* map_list = strdup( string_tmp );
-										osrfLogDebug(OSRF_LOG_MARK, "Permacrud foreign context field list is %s", string_tmp );
-			
-										if (strlen( map_list ) > 0) {
-											char* st_tmp = NULL;
-											char* _map_class = strtok_r(map_list, " ", &st_tmp);
-											osrfStringArrayAdd(map, strdup(_map_class));
-									
-											while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-												osrfStringArrayAdd(map, strdup(_map_class));
-											}
-										}
-										free(map_list);
-									}
+									// Tokenize field attribute into an osrfStringArray
+									string_tmp = (char*) xmlGetProp(_f, BAD_CAST "field");
+									if( string_tmp )
+										osrfLogDebug(OSRF_LOG_MARK,
+											"Permacrud foreign context field list is %s", string_tmp );
+									map = osrfStringArrayTokenize( string_tmp, ' ' );
 									osrfHashSet( _tmp_fcontext, map, "context");
 
 								} else {
@@ -410,10 +351,10 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 										if (strlen( map_list ) > 0) {
 											char* st_tmp = NULL;
 											char* _map_class = strtok_r(map_list, " ", &st_tmp);
-											osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
+											osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), _map_class);
 									
 											while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-												osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), strdup(_map_class));
+												osrfStringArrayAdd(osrfHashGet( _tmp, "local_context"), _map_class);
 											}
 										}
 										free(map_list);
