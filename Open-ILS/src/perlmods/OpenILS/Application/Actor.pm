@@ -3109,9 +3109,9 @@ sub merge_users {
     my $e = new_editor(xact => 1, authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
 
+    my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
     for my $src_id (@$user_ids) {
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
-        my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
 
         return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
         if($src_user->home_ou ne $master_user->home_ou) {
