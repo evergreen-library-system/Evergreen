@@ -143,7 +143,7 @@ msgid "Check here to confirm this action."
 msgstr ""
 
 #. # variables: document ID, error code, error description
-#: cat.opac.record_delete.error
+#: cat.opac.record_deleted.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
 msgstr ""
 

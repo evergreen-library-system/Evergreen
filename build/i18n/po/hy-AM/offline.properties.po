@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-14 22:08-0400\n"
+"POT-Creation-Date: 2008-12-09 22:48-0400\n"
 "PO-Revision-Date: 2008-08-04 14:52+0400\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,9 +77,17 @@ msgstr "Սխալ ամսաթիվ"
 msgid "No"
 msgstr "Ոչ"
 
+#: common.no.accesskey
+msgid "N"
+msgstr ""
+
 #: common.yes
 msgid "Yes"
 msgstr "Այո"
+
+#: common.yes.accesskey
+msgid "Y"
+msgstr ""
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
@@ -136,7 +144,7 @@ msgid "Check here to confirm this action."
 msgstr "Գործողությպւնը հաստատելու համար ընտրիր սա:"
 
 #. # variables: document ID, error code, error description
-#: cat.opac.record_delete.error
+#: cat.opac.record_deleted.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
 msgstr "Սխալ՝ գրառումը ջնջելիս #%1$s : %2$s : %3$s"
 
@@ -593,6 +601,10 @@ msgstr "Սխալ բոլոր տագերը փակելիս"
 msgid "Tab"
 msgstr "Տաբ"
 
+#: main.session_cookie.error
+msgid "Error setting session cookie: %1$s"
+msgstr ""
+
 #: menu.set_tab.error
 msgid "pause for error"
 msgstr "կանգ առ սխալի համար"
@@ -737,6 +749,112 @@ msgstr ""
 #: main.settings.migrate.error
 msgid "Error trying to move %1$s to directory %2$s"
 msgstr "Սխալ՝ երբ փորձում եք տեղափոխէլ %1$s դեպի գրադարան %2$s"
+
+#: network.override.exceptions
+msgid "Exceptions"
+msgstr ""
+
+#: network.override.override
+msgid "Override"
+msgstr ""
+
+#: network.override.force.prompt
+msgid "Force this action?"
+msgstr ""
+
+#: network.ignore_errors
+msgid "Ignore Errors"
+msgstr ""
+
+#: network.method_not_found.error
+msgid "Method not found for %1$s"
+msgstr ""
+
+#: network.new_session.authorize
+msgctxt "network.new_session.authorize"
+msgid "Authorize"
+msgstr ""
+
+#: network.new_session.expired
+msgid "Session Expired"
+msgstr ""
+
+#: network.new_session.expired.prompt
+msgid "Please enter the credentials for a new login session."
+msgstr ""
+
+#: network.new_session.operator_change
+msgid "Operator Change"
+msgstr ""
+
+#: network.new_session.operator_change.prompt
+msgid ""
+"Please enter the credentials for the new login session.  Note that the "
+"previous session is still active."
+msgstr ""
+
+#: network.permission.authorize
+msgctxt "network.permission.authorize"
+msgid "Authorize"
+msgstr ""
+
+#: network.permission.description.brief
+msgid "Permission Denied: %1$s"
+msgstr ""
+
+#: network.permission.description.full
+msgid ""
+"Another staff member with the above permission may authorize this specific "
+"action.  Please notify your library administrator if you need this "
+"permission.  If you feel you have received this exception in error, please "
+"inform your friendly Evergreen developers or helpdesk staff of the above "
+"permission and this debug information: %1$s"
+msgstr ""
+
+#: network.server_or_method.error
+msgid "Server or method error"
+msgstr ""
+
+#: network.server.failure.exception
+msgid ""
+"Network or server failure.  Please check your Internet connection to %1$s "
+"and choose Retry Network.  If you need to enter Offline Mode, choose Ignore "
+"Errors in this and subsequent dialogs.  If you believe this error is due to "
+"a bug in Evergreen and not network problems, please contact your help desk "
+"or friendly Evergreen administrators, and give them this information:"
+msgstr ""
+
+#: network.server.method
+msgid "method=%1$s"
+msgstr ""
+
+#: network.server.params
+msgid "params=%1$s"
+msgstr ""
+
+#: network.server.thrown_label
+msgid "THROWN:"
+msgstr ""
+
+#: network.server.status_label
+msgid "STATUS:"
+msgstr ""
+
+#: network.network_failure
+msgid "Network Failure"
+msgstr ""
+
+#: network.retry_network
+msgid "Retry Network"
+msgstr ""
+
+#: network.unknown_status
+msgid "Unknown status"
+msgstr ""
+
+#: network.window_title.error
+msgid "Error setting window titles to match new login"
+msgstr ""
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
