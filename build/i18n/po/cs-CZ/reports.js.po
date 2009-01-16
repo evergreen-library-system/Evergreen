@@ -1,0 +1,424 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2009-01-16 09:56:34-0400\n"
+"PO-Revision-Date: 2008-12-17 09:38+0100\n"
+"Last-Translator: Aneta Plzáková <anjuli@post.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
+msgid "In list"
+msgstr "V seznamu"
+
+#: reports.js:WIDGET_REAL_DATE
+msgid "Real Date"
+msgstr "Reálné datum"
+
+#: reports.js:TFORMS_LABEL_MONTH_NAME
+msgid "Month Name'"
+msgstr "Název měaíce"
+
+#: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
+msgid "Is not NULL"
+msgstr "Není nulový"
+
+#: reports.js:FOLDERS_TEMPLATE
+msgid "Template"
+msgstr "Šablona"
+
+#: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
+msgid "invalid start date -  YYYY-MM-DD"
+msgstr "neplatné datum zahájení - RRRR-MM-DD"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_SAVE reports.js:RPT_BUILDER_CONFIRM_SAVE
+msgid ""
+"Name : ${0}\n"
+"Description: ${1}\n"
+"Save Template?"
+msgstr ""
+"Jméno : ${0}\n"
+"Popis : ${1}\n"
+"Uložit šablonu?"
+
+#: reports.js:OPERATORS_GT_EQUAL reports.js:FILTERS_LABEL_GT_EQUAL
+msgid "Greater than or equal to"
+msgstr "Větší nebo rovno"
+
+#: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
+msgid "Change the column header to: ${0}"
+msgstr "Změnit záhlaví sloupce na: ${0}"
+
+#: reports.js:TEMPLATE_CONF_BETWEEN
+msgid "Field value is between (comma separated):"
+msgstr "Hodnota pole je mezi (odděleno čárkou):"
+
+#: reports.js:TFORMS_LABEL_DAY_NAME reports.js:TRANSFORMS_DAY_NAME
+msgid "Day Name"
+msgstr "Název dne"
+
+#: reports.js:SOURCE_SETUP_CONFIRM_EXIT
+#, fuzzy
+msgid ""
+"You have started building a template!\n"
+" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+msgstr ""
+"Zahájil/a jste tvorbu šablony!\n"
+"Vybrání nového zdroje zničí současnou šablonu a začne znovu. Je to v "
+"pořádku?"
+
+#: reports.js:WIDGET_YEARS
+msgid "Year(s)"
+msgstr "Rok(y)"
+
+#: reports.js:FOLDER_WINDOW_SELECT_ITEM
+msgid "Please select an item from the list"
+msgstr "Vyberte prosím položku ze seznamu"
+
+#: reports.js:FOLDERS_REPORT
+msgid "Report"
+msgstr "Zpráva"
+
+#: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
+msgid "On or Before (Date/Time)"
+msgstr "V nebo před (Datum/Čas)"
+
+#: reports.js:TEMPLATE_CONF_FALSE
+msgid "False"
+msgstr "Nepravda"
+
+#: reports.js:TEMPLATE_CONF_DEFAULT
+msgid "Value ${0}:"
+msgstr "Hodnota ${0}:"
+
+#: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
+msgid "Count Distinct"
+msgstr ""
+
+#: reports.js:TRANSFORMS_SUBSTRING
+msgid "Substring"
+msgstr ""
+
+#: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
+msgid "Change Folders"
+msgstr "Změnit složky"
+
+#: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
+msgid "Template ${0} was successfully saved."
+msgstr "Šablona ${0} byla úspěšně uložena."
+
+#: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
+msgid "Please enter a report name"
+msgstr "Zadejte prosím jméno zprávy"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_SELECT
+msgid "Select"
+msgstr "Vybrat"
+
+#: reports.js:FILTERS_LABEL_LT_TIME reports.js:OPERATORS_LT_TIME
+msgid "Before (Date/Time)"
+msgstr "Před (Datum/Čas)"
+
+#: reports.js:TFORMS_LABEL_DOY reports.js:TRANSFORMS_DOY
+msgid "Day of Year"
+msgstr "Den roku"
+
+#: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
+#, fuzzy
+msgid "Sum"
+msgstr "Součet"
+
+#: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
+msgid "Lower case"
+msgstr "Malá písmena"
+
+#: reports.js:TFORMS_LABEL_DOW reports.js:TRANSFORMS_DOW
+msgid "Day of Week"
+msgstr "Den týdne"
+
+#: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
+msgid "Output Folders"
+msgstr "Výstupní položky"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_ALL
+msgid "All"
+msgstr "Vše"
+
+#: reports.js:REPORT_EDITOR_REPORT_FOLDERS
+msgid "Report Folders"
+msgstr "Složka zpráv"
+
+#: reports.js:FILTERS_LABEL_BETWEEN reports.js:OPERATORS_BETWEEN
+msgid "Between"
+msgstr "Mezi"
+
+#: reports.js:FILTERS_LABEL_LT_EQUAL reports.js:OPERATORS_LT_EQUAL
+msgid "Less than or equal to"
+msgstr "Menší nebo rovno"
+
+#: reports.js:TRANSFORMS_UPPER reports.js:TFORMS_LABEL_UPPER
+msgid "Upper case"
+msgstr "Velká písmena"
+
+#: reports.js:FILTERS_LABEL_NOT_BETWEEN reports.js:OPERATORS_NOT_BETWEEN
+msgid "Not between"
+msgstr "Není mezi"
+
+#: reports.js:WIDGET_MONTHS
+msgid "Month(s)"
+msgstr "Měsíc(e)"
+
+#: reports.js:SOURCE_BROWSE_AGGREGATE
+#, fuzzy
+msgid "Aggregate"
+msgstr "Souhrn"
+
+#: reports.js:TEMPLATE_CONF_TRUE
+msgid "True"
+msgstr "Pravda"
+
+#: reports.js:TFORMS_LABEL_AVERAGE reports.js:TRANSFORMS_AVERAGE
+msgid "Average"
+msgstr "Průměr"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_NONE
+msgid "None"
+msgstr "Žádný"
+
+#: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
+msgid "Drop trailing decimals"
+msgstr ""
+
+#: reports.js:TRANSFORMS_HOUR_TRUNC reports.js:TFORMS_LABEL_HOUR_TRUNC
+msgid "Hour"
+msgstr "Hodina"
+
+#: reports.js:TRANSFORMS_AGE reports.js:TFORMS_LABEL_AGE
+msgid "Age"
+msgstr "Stáří"
+
+#: reports.js:TRANSFORMS_QOY reports.js:TFORMS_LABEL_QOY
+msgid "Quarter of Year"
+msgstr "Čtvrtletí"
+
+#: reports.js:TRANSFORMS_LAST reports.js:TFORMS_LABEL_LAST
+msgid "Last Value"
+msgstr "Poslední hodnota"
+
+#: reports.js:TEMPLATE_CONF_BARE
+#, fuzzy
+msgid "Bare"
+msgstr "Prázdný"
+
+#: reports.js:TEMPLATE_CONF_IN
+#, fuzzy
+msgid "Field matches one of list (comma separated):"
+msgstr "Pole odpovídají jednomu ze seznamu (odděleno čárkou):"
+
+#: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
+msgid "Year + Month"
+msgstr "Rok + Měsíc"
+
+#: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
+msgid "First contiguous non-space string"
+msgstr ""
+
+#: reports.js:TEMPLATE_CONF_NOT_BETWEEN
+msgid "Field value is not between (comma separated):"
+msgstr "Hodnota pole není mezi (odděleno čárkou):"
+
+#: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
+#: reports.js:TFORMS_LABEL_RAW_DATA
+msgid "Raw Data"
+msgstr "Nezpracované údaje"
+
+#: reports.js:SOURCE_SETUP_ALL_AVAIL_SOURCES
+msgid "All Available Sources"
+msgstr "Všechny dostupné zdroje"
+
+#: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
+msgid "Contains Matching substring"
+msgstr ""
+
+#: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
+#: reports.js:FILTERS_LABEL_EQUALS
+msgid "Equals"
+msgstr "Je roven"
+
+#: reports.js:WIDGET_QUARTERS
+msgid "Quarter(s)"
+msgstr "Čtvrtletí"
+
+#: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
+msgid "Date"
+msgstr "Datum"
+
+#: reports.js:TFORMS_LABEL_COUNT reports.js:TRANSFORMS_COUNT
+msgid "Count"
+msgstr "Počet"
+
+#: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
+msgid "Less than"
+msgstr "Menší než"
+
+#: reports.js:SOURCE_SETUP_CORE_SOURCES
+msgid "Core Sources"
+msgstr "Základní zdroje"
+
+#: reports.js:TRANSFORMS_MONTHS_AGO reports.js:TFORMS_LABEL_MONTHS_AGO
+msgid "Months ago"
+msgstr "Před měsíci"
+
+#: reports.js:TRANSFORMS_ROUND reports.js:TFORMS_LABEL_ROUND
+msgid "Round"
+msgstr "Okolo"
+
+#: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
+msgid "Is NULL or Blank"
+msgstr "Je nulový nebo prázdný"
+
+#: reports.js:FILTERS_LABEL_GT_TIME reports.js:OPERATORS_GT_TIME
+msgid "After (Date/Time)"
+msgstr "Po (Datum/Čas)"
+
+#: reports.js:TRANSFORMS_WOY reports.js:TFORMS_LABEL_WOY
+msgid "Week of Year"
+msgstr "Týden roku"
+
+#: reports.js:TFORMS_LABEL_DOM reports.js:TRANSFORMS_DOM
+msgid "Day of Month"
+msgstr "Den měsíce"
+
+#: reports.js:SOURCE_BROWSE_NON_AGGREGATE
+#, fuzzy
+msgid "Non-Aggregate"
+msgstr "Nesouhrný"
+
+#: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
+msgid "Is NULL"
+msgstr "Je nulový"
+
+#: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
+#, fuzzy
+msgid "Min"
+msgstr "Min."
+
+#: reports.js:OPERATORS_NOT_NULL_BLANK reports.js:FILTERS_LABEL_NOT_NULL_BLANK
+msgid "Is not NULL or Blank"
+msgstr "Je nenulový nebo prázdný"
+
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Den/Dny"
+
+#: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
+#, fuzzy
+msgid "Report Output: ${0}"
+msgstr "Výstup zprávy: ${0}"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_STATE
+msgid "Click OK for TRUE and Cancel for FALSE."
+msgstr "Klikněte na OK pro PRAVDU a ZRUŠIT pro NEPRAVDU."
+
+#: reports.js:FOLDERS_TEMPLATES
+msgid "Templates"
+msgstr "Šablony"
+
+#: reports.js:WIDGET_RELATIVE_DATE
+msgid "Relative Date"
+msgstr ""
+
+#: reports.js:TRANSFORMS_FIRST reports.js:TFORMS_LABEL_FIRST
+msgid "First Value"
+msgstr "První hodnota"
+
+#: reports.js:FILTERS_LABEL_GREATER_THAN reports.js:OPERATORS_GREATER_THAN
+msgid "Greater than"
+msgstr "Větší než"
+
+#: reports.js:TEMPLATE_CONF_BOOLEAN_VALUE
+msgid "Boolean Value"
+msgstr "Booleovská hodnota"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
+msgid "Please provide an output folder"
+msgstr "Vyberte prosím složku pro výstupy"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
+msgid "Please provide a report folder"
+msgstr "Vyberte prosím složku pro zprávy"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Název měsíce"
+
+#: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
+#, fuzzy
+msgid "First 5 characters (for US ZIP code)"
+msgstr "Prvních 5 písmen"
+
+#: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
+msgid "On or After (Date/Time)"
+msgstr "V nebo po datu (Datum/Čas)"
+
+#: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
+msgid "Year"
+msgstr "Rok"
+
+#: reports.js:FOLDERS_REPORTS
+msgid "Reports"
+msgstr "Zprávy"
+
+#: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
+msgid "Quarters ago"
+msgstr "Před čtvrtletími"
+
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Výstup"
+
+#: reports.js:TEMPLATE_CONF_SELECT_CANCEL
+msgid "Select the value, or cancel:"
+msgstr "Vyberte hodnotu, nebo zruště:"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_RESET
+msgid ""
+"You have already added the [${0}] field\n"
+"from the [${1}] source. Click OK if you\n"
+"would like to reset this field."
+msgstr ""
+"Ještě jste nepřidal/a pole [${0}]\n"
+"ze zdroje [${1}].  Klikněte na OK, pokud\n"
+"chcete toto pole zrušit."
+
+#: reports.js:OPERATORS_NOT_IN_LIST reports.js:FILTERS_LABEL_NOT_IN
+msgid "Not in list"
+msgstr "Není v seznamu"
+
+#: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
+msgid "Contains Matching substring (ignore case)"
+msgstr ""
+
+#: reports.js:TFORMS_LABEL_MOY reports.js:TRANSFORMS_MOY
+msgid "Month of Year"
+msgstr "Měsíc"
+
+#: reports.js:TRANSFORMS_HOD reports.js:TFORMS_LABEL_HOD
+msgid "Hour of day"
+msgstr "Hodina"
+
+#: reports.js:TRANSFORMS_MAX reports.js:TFORMS_LABEL_MAX
+msgid "Max"
+msgstr "Max"
+
+#: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
+#, fuzzy
+msgid "Field does not match one of list (comma separated):"
+msgstr "Pole odpovídají jednomu ze seznamu (odděleno čárkou):"

@@ -1,0 +1,138 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-30 16:30+0100\n"
+"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"Language-Team: UISK <PetrKubiska@seznam.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
+msgctxt "../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1"
+msgid "Multiclass Search Help"
+msgstr "Multimediální vyhledávací pomoc"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
+msgctxt "../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2"
+msgid "Multiclass Search Help"
+msgstr "Multimediální vyhledávací pomoc"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
+msgid "Recognized search keys include:"
+msgstr "Rozpoznané vyhledávací klíče obsahují:"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
+msgid "Search key"
+msgstr "Vyhledávací klíč"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
+msgid "Definition"
+msgstr "Definice"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
+msgid ""
+"keyword</strong>, <strong>title</strong>,             "
+"<strong>author</strong>, <strong>subject</strong>, and             "
+"<strong>series</strong> support additional search subclasses,             "
+"specified with a <kbd>|</kbd>. For example:             "
+"<kbd>title|proper:gone with the wind"
+msgstr ""
+"klíčové slovo</strong>, <strong>název</strong>,             "
+"<strong>autor</strong>, <strong>předmět</strong>, a             "
+"<strong>edice</strong> podpora dalšíhoí hledání podtřídy,             "
+"stanovené s <kbd>|</kbd>. Například:             <kbd>název|řádné:odešel s "
+"větrem"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
+#, fuzzy
+msgid "keyword/kw"
+msgstr "klíčové slovo//kw"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
+msgid "search keyword(s)"
+msgstr "hledání klíčového slova(slov)"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
+msgid "author/au/name"
+msgstr "autor/au/jméno"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
+msgid "search author(s)"
+msgstr "hledání autora(y)"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
+#, fuzzy
+msgid "title/ti"
+msgstr "titul/ti"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
+#, fuzzy
+msgid "search title"
+msgstr "hledání titulu"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
+msgid "subject/su"
+msgstr "předmět/su"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
+msgid "search subject"
+msgstr "hledat předmět"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
+msgid "series/se"
+msgstr "série/se"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
+msgid "search series"
+msgstr "vyhledávání série"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
+msgid "lang"
+msgstr "jazyk"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
+msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+msgstr "limitován jazykem (specifikace více jazyků s lang:l1 lang:l2 ...)"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
+msgid "site"
+msgstr "stránka"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
+#, fuzzy
+msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+msgstr "vyhledávání v určeném org jednotky, odpovídá actor.org_unit.shortname"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
+msgid "sort"
+msgstr "třídit"
+
+# u výrazu PUBDATE jsem nenalezl adékvátní překlad
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
+msgid "sort type (title, author, pubdate)"
+msgstr "řadit typ (název, autor, pubdate)"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
+msgid "dir"
+msgstr ""
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
+msgid "sort direction (asc, desc)"
+msgstr "řadit směrem (asc, desc)"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
+msgid "available"
+msgstr "dostupné"
+
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
+msgid "if set to anything other than \"false\" or \"0\", limits to available items"
+msgstr ""
+"je-li nastavena na cokoliv jiného než  \"false \" nebo \"0 \", omezení na "
+"dostupné exempláře"

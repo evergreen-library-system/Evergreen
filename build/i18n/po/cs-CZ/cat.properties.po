@@ -1,0 +1,2009 @@
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-30 15:02+0100\n"
+"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: cat.barcode_for_item
+msgid "The barcode for the item is %1$s"
+msgstr "Čárový kód exempláře je %1$s"
+
+#: cat.batch_operation_failed
+msgid "The whole batch operation failed. %1$s"
+msgstr "Celá dávková procedura selhala. %1$s"
+
+#: cat.copy_buckets.tab
+msgid "Copy Buckets"
+msgstr "Kopírovat skupinu"
+
+#: cat.total_bucket_items_in_bucket
+msgid "Contains %1$s bucket items"
+msgstr "Obsahuje %1$s exempláře ve skupině"
+
+#: cat.results_returned
+msgid "Returning %1$s hits"
+msgstr "Odpovídá %1$s výsledků"
+
+#: staff.cat.bib_brief.record_id
+msgid "Record ID = %1$s"
+msgstr "ID záznamu = %1$s"
+
+#: staff.cat.bib_brief.deleted
+msgid "(Deleted)"
+msgstr "(Smazáno)"
+
+#: staff.cat.bib_brief.inactive
+msgid "(Inactive)"
+msgstr "(Neaktivní)"
+
+#: staff.cat.bib_brief.noncat
+msgid "(Not Cataloged)"
+msgstr "(Nezkatalogizováno)"
+
+#: staff.cat.bib_brief.noncat.alert
+msgid "Item not cataloged."
+msgstr "Exemplář není zkatalogizován."
+
+#: staff.cat.copy_browser.add_item.title
+msgid "Add Item"
+msgstr "Přidání exempláře"
+
+# zobrazené mi připadá lepší než prohlížeč...budou se kopírovat nějaké výsledky vyhledávání
+#: staff.cat.copy_browser.add_item.error
+msgid "copy browser -> add copies"
+msgstr "kopírovat zobrazené -> přidat exempláře"
+
+#: staff.cat.copy_browser.add_items_bucket.error
+msgid "copy browser -> add copies to bucket"
+msgstr "kopírovat zobrazené -> přidat exempláře do skupiny"
+
+#: staff.cat.copy_browser.replace_barcode.failed
+msgid "Barcode %1$s not likely replaced."
+msgstr "Čárový kód %1$s nebyl nahrazen."
+
+#: staff.cat.copy_browser.replace_barcode.error
+msgid "copy browser -> replace barcode"
+msgstr "kopírovat zobrazené -> nahradit čárový kód"
+
+#: staff.cat.copy_browser.edit_items.error
+msgid "Copy Browser -> Edit Items"
+msgstr "kopírovat zobrazené -> editovat exempláře"
+
+#: staff.cat.copy_browser.delete_items.confirm.plural
+msgid "Are you sure you would like to delete these %1$s items?"
+msgstr "Opravdu chcete smazat exempláře %1$s?"
+
+#: staff.cat.copy_browser.delete_items.confirm
+msgid "Are you sure you would like to delete this item?"
+msgstr "Opravdu chcete smazat tento exemplář?"
+
+#: staff.cat.copy_browser.delete_items.title
+msgid "Delete Items?"
+msgstr "Smazat exempláře?"
+
+#: staff.cat.copy_browser.delete_items.delete
+msgctxt "staff.cat.copy_browser.delete_items.delete"
+msgid "Delete"
+msgstr "Smazat"
+
+#: staff.cat.copy_browser.delete_items.cancel
+msgctxt "staff.cat.copy_browser.delete_items.cancel"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.copy_browser.delete_items.override
+msgctxt "staff.cat.copy_browser.delete_items.override"
+msgid "Override Delete Failure?"
+msgstr "Překonat chybu smazání?"
+
+#: staff.cat.copy_browser.delete_items.complete
+msgid "Action complete."
+msgstr "Proces dokončen."
+
+#: staff.cat.copy_browser.delete_items.error
+msgid "copy browser -> delete items"
+msgstr "kopírovat zobrazené -> smazat exempláře"
+
+#: staff.cat.copy_browser.print_spine.tab
+msgctxt "staff.cat.copy_browser.print_spine.tab"
+msgid "Spine Labels"
+msgstr "Hřbetní štítky"
+
+#: staff.cat.copy_browser.print_spine.error
+msgid "copy browser -> Spine Labels"
+msgstr "koírovat zobrazené -> hřbetní štítky"
+
+#: staff.cat.copy_browser.add_volume.permission_error
+msgid "You do not have permission to add volumes to that library."
+msgstr "Nemáte oprávnění k přidávání svazků do této knihovny."
+
+#: staff.cat.copy_browser.add_volume.title
+msgid "Add Volume/Item"
+msgstr "Přidat svazek/exemplář"
+
+#: staff.cat.copy_browser.add_volume.error
+msgid "copy browser -> add volumes"
+msgstr "kopírovat zobrazené -> přidat svazky"
+
+#: staff.cat.copy_browser.edit_volume.permission_error
+msgid "You do not have permission to edit this volume."
+msgstr "Nemáte oprávnění k editaci tohoto svazku."
+
+#: staff.cat.copy_browser.edit_volume.title
+msgid "Volume"
+msgstr "Svazek"
+
+#: staff.cat.copy_browser.edit_volume.title.plural
+msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
+msgid "Volumes"
+msgstr "Svazky"
+
+#: staff.cat.copy_browser.edit_volume.failed
+msgid ""
+"Edit failed:  You tried to change a volume's callnumber to one that is "
+"already in use for the given library.  You should transfer the items to the "
+"desired callnumber instead."
+msgstr ""
+"Chyba editace: Snažili jste se změnit signaturu svazku na takovou, která už "
+"ve vaší knihovně existuje. Měli byste přesunout exempláře do požadované "
+"sigantury."
+
+#: staff.cat.copy_browser.edit_volume.success
+msgid "Volumes modified."
+msgstr "Svazky změněny."
+
+#: staff.cat.copy_browser.edit_volume.error
+msgid "volume update error:"
+msgstr "chyba aktualizace svazku:"
+
+#: staff.cat.copy_browser.edit_volume.exception
+msgid "Copy Browser -> Volume Edit"
+msgstr "kopírovat zobrazené -> editovat svazky"
+
+#: staff.cat.copy_browser.delete_volume.prompt
+msgid "Are you sure you would like to delete this volume?"
+msgstr "Opravdu chcete smazat tento svazek?"
+
+#: staff.cat.copy_browser.delete_volume.prompt.plural
+msgid "Are you sure you would like to delete these %1$s volumes?"
+msgstr "Opravdu chcete smazat tyto %1$s svazky?"
+
+#: staff.cat.copy_browser.delete_volume.title
+msgid "Delete Volumes?"
+msgstr "Smazat svazky?"
+
+#: staff.cat.copy_browser.delete_volume.delete
+msgctxt "staff.cat.copy_browser.delete_volume.delete"
+msgid "Delete"
+msgstr "Smazat"
+
+#: staff.cat.copy_browser.delete_volume.cancel
+msgctxt "staff.cat.copy_browser.delete_volume.cancel"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.copy_browser.delete_volume.override
+msgctxt "staff.cat.copy_browser.delete_volume.override"
+msgid "Override Delete Failure?"
+msgstr "Překonat chybu smazání?"
+
+#: staff.cat.copy_browser.delete_volume.copies_remain
+msgid ""
+"You must delete all the copies on the volume before you may delete the "
+"volume itself."
+msgstr "Musíte smazat všechny exempláře svazku než smažete celý svazek."
+
+#: staff.cat.copy_browser.delete_volume.success
+msgid "Volumes deleted."
+msgstr "Svazky smazány."
+
+#: staff.cat.copy_browser.delete_volume.exception
+msgid "copy browser -> delete volumes"
+msgstr "kopírovat zobrazené -> smazat svazky"
+
+#: staff.cat.copy_browser.mark_library.alert
+msgid "Library + Record marked as Volume Transfer Destination"
+msgstr "Knihovna + záznam označeny jako cíl přesunu svazků"
+
+#: staff.cat.copy_browser.mark_library.prompt
+msgid "Choose just one Library to mark as Volume Transfer Destination"
+msgstr "Označte pouze jednu knihovnu jako cíl přesunu svazků"
+
+#: staff.cat.copy_browser.mark_library.title
+msgctxt "staff.cat.copy_browser.mark_library.title"
+msgid "Limit Selection"
+msgstr "Omezit výběr"
+
+# nutný kontext
+#: staff.cat.copy_browser.mark_volume.alert
+msgid "Volume marked as Item Transfer Destination"
+msgstr "Svazek označen jako exemplář určený k přesunu"
+
+# nutný kontext
+#: staff.cat.copy_browser.mark_volume.prompt
+msgid "Choose just one Volume to mark as Item Transfer Destination"
+msgstr "Označte pouze jeden svazek jako exemplář určený k přesunu"
+
+#: staff.cat.copy_browser.mark_volume.title
+msgctxt "staff.cat.copy_browser.mark_volume.title"
+msgid "Limit Selection"
+msgstr "Omezit výběr"
+
+# nutný kontext
+#: staff.cat.copy_browser.transfer_volume.alert
+msgid ""
+"Please mark a library as the destination from within holdings maintenance "
+"and then try this again."
+msgstr ""
+"Vyberte v seznamu knihovnu, která má být cílová, a poté zkuste proces "
+"zopakovat"
+
+#: staff.cat.copy_browser.transfer.prompt
+msgid "Transfer volumes %1$s to library %2$s on the following record?"
+msgstr "Přesunout svazky %1$s do knihovny %2$s v následujícím záznamu?"
+
+#: staff.cat.copy_browser.transfer.submit.label
+msgctxt "staff.cat.copy_browser.transfer.submit.label"
+msgid "Transfer"
+msgstr "Přesunout"
+
+#: staff.cat.copy_browser.transfer.cancel.label
+msgctxt "staff.cat.copy_browser.transfer.cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.copy_browser.transfer.cancel.accesskey
+msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.copy_browser.transfer.title
+msgid "Volume Transfer"
+msgstr "Přesun svazků"
+
+#: staff.cat.copy_browser.transfer.incomplete
+msgctxt "staff.cat.copy_browser.transfer.incomplete"
+msgid "Transfer Aborted"
+msgstr "Přesun přerušen"
+
+#: staff.cat.copy_browser.transfer.override.failure
+msgid "Override Volume Transfer Failure?"
+msgstr "Překonat chybu přesunu?"
+
+#: staff.cat.copy_browser.transfer.ineligible_destination
+msgid "That destination cannot have volumes."
+msgstr "Tato lokace nemůže mít svazky."
+
+#: staff.cat.copy_browser.transfer.success
+msgid "Volumes transferred."
+msgstr "Svazky přesunuty."
+
+#: staff.cat.copy_browser.transfer.unexpected_error
+msgid "All volumes not likely transferred."
+msgstr "Svazky nemohly být přesunuty."
+
+#: staff.cat.copy_browser.transfer_items.missing_volume
+msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
+msgid ""
+"Please mark a volume as the destination from within holdings maintenance and "
+"then try this again."
+msgstr ""
+"Označte svazek a cílovou knihovnu v seznamu vlastníků a poté zkuste proces "
+"zopakovat."
+
+#: staff.cat.copy_browser.transfer_items.unexpected_error
+msgid "All copies not likely transferred."
+msgstr "Žádný exemplář nebyl pravděpodobně přesunut."
+
+#: staff.cat.copy_browser.missing_library
+msgid "Missing library list."
+msgstr "Chybí seznam knihoven."
+
+# nutný kontext
+#: staff.cat.copy_browser.consortial_copy_count.error
+msgid "Error retrieving consortial copy count."
+msgstr "Chyba načítání společného účtu exempláře."
+
+#: staff.cat.copy_browser.list_init.tree_location
+msgid "Location/Barcode"
+msgstr "Lokace/Čárový kód"
+
+#: staff.cat.copy_browser.list_init.volume_count
+msgctxt "staff.cat.copy_browser.list_init.volume_count"
+msgid "Volumes"
+msgstr "Svazky"
+
+#: staff.cat.copy_browser.list_init.copy_count
+msgid "Copies"
+msgstr "Exempláře"
+
+#: staff.cat.copy_browser.actions.error
+msgid "Copy Browser Actions"
+msgstr "Chyba kopírování zobrazeného"
+
+#: staff.cat.copy_browser.refresh_list.error
+msgid "Problem refreshing the volume/copy tree."
+msgstr "Problém s aktualizací seznamu svazků/exemplářů."
+
+#: staff.cat.copy_buckets.render_pending_copies.complete
+msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
+msgid "Action completed."
+msgstr "Akce dokončena"
+
+#: staff.cat.copy_buckets.retrieve_row.error
+msgid "Error retrieving details for item with copy id = %1$s"
+msgstr "Chyba při načítání údajů o exempláři s ID = %1$s"
+
+# kontext nutný - vypadá to jako hláška běžícího procesu
+#: staff.cat.copy_buckets.menulist.render.choose_bucket
+msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
+msgid "Choose a bucket..."
+msgstr "Vybrat skupinu..."
+
+#: staff.cat.copy_buckets.menulist.render.retrieve_bucket
+msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
+msgid "Retrieve shared bucket..."
+msgstr "Načítání sdílené skupiny..."
+
+#: staff.cat.copy_buckets.menulist.change_bucket.prompt
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
+msgid "Enter bucket number:"
+msgstr "Vložte číslo skupiny:"
+
+#: staff.cat.copy_buckets.menulist.change_bucket.undefined
+msgid "Could not find a bucket with ID = %1$s"
+msgstr "Skupina s ID = %1$s nebyla nalezena"
+
+#: staff.cat.copy_buckets.menulist.change_bucket.error
+msgid "Error retrieving bucket.  Did you use a valid bucket id?"
+msgstr "Chyba při načítání skupiny. Použili jste platné ID skupiny?"
+
+#: staff.cat.copy_buckets.copy_buckets_add.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
+msgid "Addition likely failed."
+msgstr "Přidávání pravděpodobně selhalo."
+
+#: staff.cat.copy_buckets.copy_buckets_sel_add.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
+msgid "Addition likely failed."
+msgstr "Přidávání pravděpodobně selhalo."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_item.error
+msgid "Deletion likely failed."
+msgstr "Smazání pravděpodobně selhalo."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_item.complete
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
+msgid "Action completed."
+msgstr "Akce dokončena."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
+msgid "Delete the bucket named %1$s?"
+msgstr "Odstranit skupinu %1$s?"
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
+msgid "Action completed."
+msgstr "Akce dokončena."
+
+#: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
+msgid "Bucket deletion likely failed."
+msgstr "Odstranění skupiny se pravděpodobně nezdařilo."
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Jaké jméno má být skupině přiřazeno?"
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.title
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
+msgstr "Vytvoření skupiny"
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
+msgid "You already have a bucket with that name."
+msgstr "Skupina s tímto jménem byla již dříve vytvořena"
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.success
+msgid "Bucket \"%1$s\" created."
+msgstr "Skupina \"%1$s\" byla vytvořena."
+
+#: staff.cat.copy_buckets.copy_buckets_new_bucket.error
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
+msgstr "Vytvoření skupiny selhalo."
+
+#: staff.cat.copy_buckets.batch.error
+msgid "Batch Item Deletion"
+msgstr "Dávkové odstranění exemplářů"
+
+# nutný kontext
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
+msgid ""
+"Please mark a volume as the destination from within the copy browser and "
+"then try this again."
+msgstr ""
+"Označte svazek a cílovou knihovnu v zobrazení a poté zkuste proces "
+"zopakovat."
+
+# nutný kontext
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
+msgid ""
+"Transfer the items in bucket \"%1$s\" from their original volumes to the "
+"volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
+msgstr ""
+"Přesunout exempláře ve skupině  \"%1$s\"  z původních svazků do označených "
+"\"%2$s\" do knihovny \"%3$s\" v následujícím záznamu?"
+
+#: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
+msgid "Items not likely transferred."
+msgstr "Exempláře nebyly pravděpodobně přesunuty."
+
+#: staff.cat.copy_buckets.cmd_export_to_copy_status.error
+msgid "Copy Status from Copy Buckets"
+msgstr "Kopírovat status ze skupiny exemplářů."
+
+#: staff.cat.copy_buckets.prep_item_for_list.error
+msgid "List building failed."
+msgstr "Vytvoření seznamu selhalo."
+
+#: staff.cat.copy_buckets_quick.bucket_prompt
+msgid "Copy this item into which bucket?"
+msgstr "Do které skupiny se má exemplář zkopírovat?"
+
+#: staff.cat.copy_buckets_quick.bucket_prompt.plural
+msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
+msgid "Copy these %1$s items into which bucket?"
+msgstr "Do které skupiny se mají exempláře %1$s zkopírovat?"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Jak chcete skupinu pojmenovat?"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
+msgstr "Vytvoření skupiny"
+
+#: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
+msgstr "Vytvoření skupiny selhalo."
+
+#: staff.cat.copy_buckets_quick.addition.error
+msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
+msgstr "Přidání do skupiny = %1$s a exempláře = %2$s pravděpodobně selhalo."
+
+# nutný kontext
+#: staff.cat.copy_editor.caption
+msgid "Copy Editor"
+msgstr "Editor exemplář"
+
+#: staff.cat.copy_editor.create_copies
+msgid "Create Copies"
+msgstr "Vytvořit exempláře"
+
+#: staff.cat.copy_editor.copy_notes
+msgid "Copy Notes"
+msgstr "Poznámky k exempláři"
+
+#: staff.cat.copy_editor.status
+msgid "Status"
+msgstr "Status"
+
+#: staff.cat.copy_editor.retrieve_templates.error
+msgid "Error retrieving templates"
+msgstr "Chyba při načítání šablony"
+
+#: staff.cat.copy_editor.apply_templates.error
+msgid "Error applying template"
+msgstr "Chyba při užití šablony"
+
+#: staff.cat.copy_editor.save_as_template.prompt
+msgid "Enter template name:"
+msgstr "Pojmenujte šablonu:"
+
+#: staff.cat.copy_editor.save_as_template.title
+msgid "Save As Template"
+msgstr "Uložit jako šablonu"
+
+#: staff.cat.copy_editor.save_as_template.success
+msgid "Template \"%1$s\" saved."
+msgstr "Šablona \"%1$s\" uložena."
+
+#: staff.cat.copy_editor.save_as_template.error
+msgid "Error saving template"
+msgstr "Chyba při ukládání šablony"
+
+#: staff.cat.copy_editor.delete_template.confirm
+msgid "Delete template \"%1$s\"?"
+msgstr "Smazat šablonu \"%1$s\"?"
+
+#: staff.cat.copy_editor.delete_template.success
+msgid "Template \"%1$s\" deleted."
+msgstr "Šablona \"%1$s\" byla smazána."
+
+#: staff.cat.copy_editor.delete_template.error
+msgid "Error deleting template"
+msgstr "Chyba při smazání šablony"
+
+#: staff.cat.copy_editor.export_templates.title
+msgid "Save Templates File As"
+msgstr "Uložit soubor šablon jako"
+
+#: staff.cat.copy_editor.export_templates.error
+msgid "Error exporting templates"
+msgstr "Chyba při exportování šablon"
+
+#: staff.cat.copy_editor.import_templates.title
+msgid "Import Templates File"
+msgstr "Importovat soubor šablon"
+
+#: staff.cat.copy_editor.import_templates.replace.prompt
+msgid "Replace the existing template with the imported template?"
+msgstr "Nahradit existující šablonu importovanou šablonou?"
+
+#: staff.cat.copy_editor.import_templates.replace.title
+msgid "Template %1$s already exists."
+msgstr "Šablona %1$s již existuje"
+
+#: staff.cat.copy_editor.import_templates.replace.yes
+msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.import_templates.replace.no
+msgctxt "staff.cat.copy_editor.import_templates.replace.no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_editor.import_templates.replace.click_here
+msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
+msgid "Click here"
+msgstr "Klikněte sem"
+
+#: staff.cat.copy_editor.import_templates.save.prompt
+msgid "Save all of these imported templates permanently to this account?"
+msgstr "Trvale uložit všechny importované šablony na tomto účtu?"
+
+#: staff.cat.copy_editor.import_templates.save.title
+msgid "Final warning"
+msgstr "Poslední varování"
+
+#: staff.cat.copy_editor.import_templates.save.yes
+msgctxt "staff.cat.copy_editor.import_templates.save.yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.import_templates.save.no
+msgctxt "staff.cat.copy_editor.import_templates.save.no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_editor.import_templates.save.click_here
+msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
+msgid "Click here"
+msgstr "Klikněte sem"
+
+#: staff.cat.copy_editor.import_templates.save.success
+msgid "All templates saved."
+msgstr "Všechny šablony uloženy."
+
+#: staff.cat.copy_editor.import_templates.save.error
+msgid "Error saving templates"
+msgstr "Chyba při ukládání šablon"
+
+# nutný kontext
+#: staff.cat.copy_editor.import_templates.note
+msgid ""
+"Note: These imported templates will get saved along with any new template "
+"you try to create, but if that does not happen, then these templates will "
+"disappear with the next invocation of the item attribute editor."
+msgstr ""
+"Poznámka: Tyto importované šablony budou uloženy spolu s dalšími, které "
+"vytvoříte. Pokud se tak nestane, šablony zmizí spolu s příštím spuštěním "
+"editoru exemplářů."
+
+#: staff.cat.copy_editor.import_templates.error
+msgid "Error importing templates"
+msgstr "Chyba importu šablon"
+
+#: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
+msgid ""
+"Error retrieving Volume information for copy %1$s.  The owning library for "
+"this copy will not be changed."
+msgstr ""
+"Chyba načítání informací o svazku pro exemplář %1$s. Domovská knihovna u "
+"tohoto exempláře nebude změněna."
+
+#: staff.cat.copy_editor.apply_owning_lib.call_number.error
+msgid ""
+"Error changing owning library for copy %1$s.  The owning library for this "
+"copy will not be changed."
+msgstr ""
+"Chyba změny domovské knihovny. Vlastnictví tohoto exempláře %1$s nebylo "
+"změněno."
+
+#: staff.cat.copy_editor.copy_count
+msgid "1 copy"
+msgstr "1 exemplář"
+
+#: staff.cat.copy_editor.copy_count.plural
+msgid "%1$s copies"
+msgstr "%1$s exemplářů"
+
+#: staff.cat.copy_editor.apply.label
+msgctxt "staff.cat.copy_editor.apply.label"
+msgid "Apply"
+msgstr "Použít"
+
+#: staff.cat.copy_editor.apply.accesskey
+msgctxt "staff.cat.copy_editor.apply.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.cat.copy_editor.cancel.label
+msgctxt "staff.cat.copy_editor.cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.copy_editor.handle_update.success
+msgid "Items were added or modified."
+msgstr "Exempláře byly přidány nebo upraveny."
+
+#: staff.cat.copy_editor.handle_update.error
+msgid "copy update error:"
+msgstr "chyba aktualizace exemplářů:"
+
+# nutný kontext
+#: staff.cat.copy_editor.add_stat_cat.error
+msgid "Error adding statistical category to display definition"
+msgstr "Chyba přidání statistické kategorie k zobrazení definice"
+
+#: staff.cat.copy_editor.populate_stat_cat.error
+msgid "Error populating statistical categories for display"
+msgstr "Chyba zveřejnění statistických kategorií pro zobrazení"
+
+#: staff.cat.copy_editor.remove_stat_cat_entry
+msgid "<Remove Stat Cat>"
+msgstr "<Odstranit katalogizační status>"
+
+#: staff.cat.copy_editor.remove_age_based_hold_protection
+msgid "<Remove Protection>"
+msgstr "<Odstranit ochranu>"
+
+#: staff.cat.copy_editor.remove_circulate_as_type
+msgid "<Remove Circulate as Type>"
+msgstr "<Odstranit Vypůjčit jako typ>"
+
+#: staff.cat.copy_editor.field.unset_or_null
+msgctxt "staff.cat.copy_editor.field.unset_or_null"
+msgid "<Unset>"
+msgstr "<Zrušit>"
+
+#: staff.cat.copy_editor.field.owning_library.label
+msgid "Owning Lib : Call Number"
+msgstr "Domovská knihovna : signatura"
+
+#: staff.cat.copy_editor.field.creator.label
+msgid "Creator"
+msgstr "Vytvořeno"
+
+#: staff.cat.copy_editor.field.last_editor.label
+msgid "Last Editor"
+msgstr "Poslední editace"
+
+#: staff.cat.copy_editor.field.barcode.label
+msgid "Barcode"
+msgstr "Čárový kód"
+
+#: staff.cat.copy_editor.field.creation_date.label
+msgid "Creation Date"
+msgstr "Datum vytvoření"
+
+#: staff.cat.copy_editor.field.last_edit_date.label
+msgid "Last Edit Date"
+msgstr "Datum poslední změny"
+
+#: staff.cat.copy_editor.field.location.label
+msgid "Location/Collection"
+msgstr "Lokace/Fond"
+
+#: staff.cat.copy_editor.field.circulation_library.label
+msgid "Circulation Library"
+msgstr "Výpůjční knihovna"
+
+#: staff.cat.copy_editor.field.copy_number.label
+msgid "Copy Number"
+msgstr "Číslo exempláře"
+
+#: staff.cat.copy_editor.field.circulate.label
+msgid "Circulate?"
+msgstr "Půjčovat?"
+
+#: staff.cat.copy_editor.field.circulate.yes_or_true
+msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.field.circulate.no_or_false
+msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_editor.field.holdable.label
+msgid "Holdable?"
+msgstr "Možno rezervovat?"
+
+#: staff.cat.copy_editor.field.holdable.yes_or_true
+msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.field.holdable.no_or_false
+msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Ne"
+
+# rezervace je umožněna pouze zletilému čtenáři, ochrana dětí
+#: staff.cat.copy_editor.field.age_based_hold_protection.label
+msgid "Age-based Hold Protection"
+msgstr "Rezervace omezena věkem"
+
+#: staff.cat.copy_editor.field.loan_duration.label
+msgid "Loan Duration"
+msgstr "Délka výpůjčky"
+
+#: staff.cat.copy_editor.field.loan_duration.short
+msgid "Short"
+msgstr "Krátká"
+
+#: staff.cat.copy_editor.field.loan_duration.normal
+msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+msgid "Normal"
+msgstr "Normální"
+
+#: staff.cat.copy_editor.field.loan_duration.extended
+msgid "Long"
+msgstr "Dlouhá"
+
+#: staff.cat.copy_editor.field.fine_level.label
+msgid "Fine Level"
+msgstr "Typ pokuty"
+
+#: staff.cat.copy_editor.field.fine_level.low
+msgid "Low"
+msgstr "Nízký"
+
+#: staff.cat.copy_editor.field.fine_level.normal
+msgctxt "staff.cat.copy_editor.field.fine_level.normal"
+msgid "Normal"
+msgstr "Normální"
+
+#: staff.cat.copy_editor.field.fine_level.high
+msgid "High"
+msgstr "Vysoký"
+
+# doslovný překlad
+#: staff.cat.copy_editor.field.circulate_as_type.label
+msgid "Circulate as Type"
+msgstr "Půjčit jako typ"
+
+#: staff.cat.copy_editor.field.circulation_modifier.label
+msgid "Circulation Modifier"
+msgstr "Modifikátor výpůjčky"
+
+#: staff.cat.copy_editor.field.alert_message.label
+msgid "Alert Message"
+msgstr "Varovná zpráva"
+
+#: staff.cat.copy_editor.field.deposit.label
+msgid "Deposit?"
+msgstr "Vklad?"
+
+#: staff.cat.copy_editor.field.deposit.yes_or_true
+msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.field.deposit.no_or_false
+msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_editor.field.deposit_amount.label
+msgid "Deposit Amount"
+msgstr "Výše vkladu"
+
+#: staff.cat.copy_editor.field.price.label
+msgid "Price"
+msgstr "Cena"
+
+#: staff.cat.copy_editor.field.opac_visible.label
+msgid "OPAC Visible?"
+msgstr "Zobrazit v OPACu?"
+
+#: staff.cat.copy_editor.field.opac_visible.yes_or_true
+msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.field.opac_visible.no_or_false
+msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_editor.field.reference.label
+msgid "Reference?"
+msgstr "Příruční knihovna?"
+
+#: staff.cat.copy_editor.field.reference.yes_or_true
+msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_editor.field.reference.no_or_false
+msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_notes.render_notes.label
+msgid "Add New Note"
+msgstr "Přidat poznámku"
+
+#: staff.cat.copy_notes.render_notes.accesskey
+msgctxt "staff.cat.copy_notes.render_notes.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.cat.copy_notes.widgets_apply.note_id
+msgid "Note ID:"
+msgstr "ID poznámky:"
+
+#: staff.cat.copy_notes.widgets_apply.creator_id
+msgid "Creator ID:"
+msgstr "ID katalogizátora:"
+
+#: staff.cat.copy_notes.widgets.public
+msgid "Public"
+msgstr "Veřejné"
+
+#: staff.cat.copy_notes.widgets.private
+msgid "Private"
+msgstr "Soukromé"
+
+#: staff.cat.copy_notes.delete_note.label
+msgid "Delete This Note"
+msgstr "Smazat poznámku"
+
+#: staff.cat.copy_notes.delete_note.prompt.msg
+msgid "Delete the note titled \"%1$s\" created on %2$s?"
+msgstr "Smazat poznámku \"%1$s\" vytvořenou \"%2$s\"?"
+
+#: staff.cat.copy_notes.delete_note.prompt.title
+msgid "Delete Note"
+msgstr "Smazat poznámku"
+
+#: staff.cat.copy_notes.delete_note.prompt.yes
+msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_notes.delete_note.prompt.no
+msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_notes.delete_note.success
+msgid "Note deleted."
+msgstr "Poznámka smazána."
+
+#: staff.cat.copy_notes.delete_note.close_window
+msgid "Close Window"
+msgstr "Zavřít okno"
+
+#: staff.cat.copy_notes.new_note.label
+msgid "New Note"
+msgstr "Nová poznámka"
+
+#: staff.cat.copy_notes.new_note.public
+msgid "Public?"
+msgstr "Veřejná?"
+
+#: staff.cat.copy_notes.new_note.title
+msgid "Title"
+msgstr "Název"
+
+#: staff.cat.copy_notes.new_note.note
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.cat.copy_notes.new_note.cancel.label
+msgctxt "staff.cat.copy_notes.new_note.cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.copy_notes.new_note.cancel.accesskey
+msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.copy_notes.new_note.add_note.label
+msgid "Add Note"
+msgstr "Přidat poznámku"
+
+#: staff.cat.copy_notes.new_note.add_note.accesskey
+msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.cat.copy_notes.new_note.success
+msgid "Note added."
+msgstr "Poznámka přidána."
+
+#: staff.cat.copy_notes.new_note.error
+msgid "The note was not likely created."
+msgstr "Poznámka pravděpodobně nebyla vytvořena."
+
+#: staff.cat.copy_summary.copy_id
+msgid "Copy ID = %1$s"
+msgstr "ID exempláře = %1$s"
+
+#: staff.cat.copy_summary.total_circs.label
+msgid "Total Circs"
+msgstr "Celkový počet výpůjček"
+
+#: staff.cat.copy_summary.yes
+msgctxt "staff.cat.copy_summary.yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.cat.copy_summary.no
+msgctxt "staff.cat.copy_summary.no"
+msgid "No"
+msgstr "Ne"
+
+#: staff.cat.copy_summary.unset
+msgctxt "staff.cat.copy_summary.unset"
+msgid "<Unset>"
+msgstr "<Zrušit>"
+
+#: staff.cat.copy_summary.not_cataloged
+msgid "Not Cataloged"
+msgstr "Nezkatalogizováno"
+
+#: staff.cat.marcedit.help.add_row
+msgid "Add Row: CTRL+Enter"
+msgstr "Přidat řádek: CTRL+Enter"
+
+#: staff.cat.marcedit.help.insert_row
+msgid "Insert Row: CTRL+Shift+Enter"
+msgstr "Vložit řádek: CTRL+Shift+Enter"
+
+#: staff.cat.marcedit.help.add_subfield
+msgid "Add Subfield: CTRL+D"
+msgstr "Přidat podpole: CTRL+D"
+
+#: staff.cat.marcedit.help.remove_row
+msgid "Remove Row: CTRL+Del"
+msgstr "Smazat řádek: CTRL+Del"
+
+#: staff.cat.marcedit.help.remove_subfield
+msgid "Remove Subfield: SHIFT+Del"
+msgstr "Smazat podpole: SHIFT+Del"
+
+#: staff.cat.marcedit.help.replace_006
+msgid "Create/Replace 006: CTRL+F6"
+msgstr "Vytvořit/nahradit 006: CTRL+F6"
+
+#: staff.cat.marcedit.help.replace_007
+msgid "Create/Replace 007: CTRL+F7"
+msgstr "Vytvořit/nahradit 007: CTRL+F7"
+
+#: staff.cat.marcedit.help.replace_008
+msgid "Create/Replace 008: CTRL+F8"
+msgstr "Vytvořit/nahradit 008: CTRL+F8"
+
+#: staff.cat.marcedit.save.label
+msgid "Save Record"
+msgstr "Uložit záznam"
+
+#: staff.cat.marcedit.marcTag.LDR.label
+msgid "MARC Leader"
+msgstr "MARC Leader"
+
+#: staff.cat.marcedit.add_row.label
+msgid "Add Row"
+msgstr "Přidat řádek"
+
+#: staff.cat.marcedit.remove_row.label
+msgid "Remove Row"
+msgstr "Odstranit řádek"
+
+#: staff.cat.marcedit.replace_006.label
+msgid "Add/Replace 006"
+msgstr "Přidat/nahradit 006"
+
+#: staff.cat.marcedit.replace_007.label
+msgid "Add/Replace 007"
+msgstr "Přidat/nahradit 007"
+
+#: staff.cat.marcedit.replace_008.label
+msgid "Add/Replace 008"
+msgstr "Přidat/nahradit 008"
+
+# podpole nepatří mezi kontrolovaná na správnost vyplnění
+#: staff.cat.marcedit.not_authority_field.label
+msgid "Not a controlled subfield"
+msgstr "Podpole není kontrolováno"
+
+#: staff.cat.marcedit.apply_selected.label
+msgid "Apply Selected"
+msgstr "Použít vybrané"
+
+#: staff.cat.marcedit.no_authority_match.label
+msgid "No matching authority records found"
+msgstr "Nebyl nalezen odpovídající autoritní záznam"
+
+#: staff.cat.marc_new.tab_name
+msgid "MARC Template"
+msgstr "Šablona MARC"
+
+#: staff.cat.marc_new.create_record.label
+msgid "Create Record"
+msgstr "Vytvořit záznam"
+
+#: staff.cat.marc_new.system_local.label
+msgid "System Local"
+msgstr "Lokální"
+
+#: staff.cat.marc_new.record_created.label
+msgid "Record created."
+msgstr "Záznam vytvořen."
+
+# nutný kontext - není jasné, co se stahuje
+#: staff.cat.marc_new.retrieving.label
+msgctxt "staff.cat.marc_new.retrieving.label"
+msgid "Retrieving title..."
+msgstr "Stahování záznamu..."
+
+# předpokládám, že neni nutné zdůrazňovat, že se jedná o Marc...
+#: staff.cat.marc_new.creating_record.error
+msgid "Error creating MARC record."
+msgstr "Chyba při vytváření záznamu."
+
+#: staff.cat.marc_new.loading_template.error
+msgid "Error loading MARC template: %1$s"
+msgstr "Chyba při nahrávání šablony: %1$s"
+
+#: staff.cat.opac.set_marc_edit.alert
+msgid "Record successfully saved."
+msgstr "Záznam byl uložen."
+
+#: staff.cat.opac.set_marc_edit.std_unexpected_error
+msgid "Record not likely updated."
+msgstr "Záznam nebyl pravděpodobně aktualizován."
+
+# nutný kontext
+#: staff.cat.opac.refresh.function_not_implemented.alert
+msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
+msgstr "Zatím neimplementováno. Pomoc: Zvolte Duplikovat v nabidce Nový list"
+
+#: staff.cat.opac.set_tab_name
+msgid "Record: %1$s"
+msgstr "Záznam: %1$s"
+
+#: staff.cat.record_buckets.tab_name
+msgid "Record Buckets"
+msgstr "Skupina záznamů"
+
+#: staff.cat.record_buckets.save_file_as
+msgid "Save File As"
+msgstr "Uložit soubor jako"
+
+#: staff.cat.record_buckets.export_records.alert
+msgid "File not downloaded."
+msgstr "Soubor nebyl stažen."
+
+#: staff.cat.record_buckets.export_records.std_unexpected_error
+msgid "Records could not be exported."
+msgstr "Záznamy nemohly být exportovány."
+
+#: staff.cat.record_buckets.rednder_pending_records.alert
+msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
+msgid "Action completed."
+msgstr "Proces dokončen."
+
+# co je mvr?
+#: staff.cat.record_buckets.retrieve_row.std_unexpected_error
+msgid "Error retrieving mvr for record with ID = %1$s"
+msgstr "Chyba načítání mvr pro záznam ID =  %1$s"
+
+#: staff.cat.record_buckets.buckets.std_unexpected_error
+msgid "Could not retrieve your buckets."
+msgstr "Vaše skupina nebyla načtena."
+
+#: staff.cat.record_buckets.menulist_placeholder.item1
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
+msgid "Choose a bucket..."
+msgstr "Výběr skupiny..."
+
+#: staff.cat.record_buckets.menulist_placeholder.item2
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
+msgid "Retrieve shared bucket..."
+msgstr "Načítání sdílené skupiny..."
+
+#: staff.cat.record_buckets.change_bucket.bucket_id
+msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
+msgid "Enter bucket number:"
+msgstr "Vložte číslo skupiny:"
+
+#: staff.cat.record_buckets.change_bucket.error
+msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
+msgstr "Chyba načítání skupiny. Zadali jste platné ID skupiny?"
+
+#: staff.cat.record_buckets.delete_bucket_named
+msgctxt "staff.cat.record_buckets.delete_bucket_named"
+msgid "Delete the bucket named %1$s?"
+msgstr "Smazat skupinu %1$s?"
+
+#: staff.cat.record_buckets.new_bucket.bucket_prompt
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
+msgid "What would you like to name the bucket?"
+msgstr "Jak má být skupina pojmenována?"
+
+#: staff.cat.record_buckets.new_bucket.bucket_prompt_title
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
+msgid "Bucket Creation"
+msgstr "Vytvoření skupiny"
+
+#: staff.cat.record_buckets.new_bucket.same_name_alert
+msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
+msgid "You already have a bucket with that name."
+msgstr "Skupina s tímto jménem již existuje."
+
+#: staff.cat.record_buckets.new_bucket.bucket_created
+msgid "Bucket %1$s created."
+msgstr "Skupina %1$s byla vytvořena."
+
+#: staff.cat.record_buckets.merge_records.merge_lead
+msgid "Merge these records? (Select the \"lead\" record first)"
+msgstr "Sloučit tyto záznamy? (Vyberte nejprve \"hlavní\" záznam)"
+
+#: staff.cat.record_buckets.merge_records.button.label
+msgid "Merge"
+msgstr "Sloučit"
+
+#: staff.cat.record_buckets.merge_records.cancel_button.label
+msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
+msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.record_buckets.merge_records.lead_record_number
+msgid "Lead Record? # %1$s"
+msgstr "Hlavní záznam? # %1$s"
+
+# nutný kontext
+#: staff.cat.record_buckets.merge_records.lead
+msgid "Lead"
+msgstr "Vedoucí"
+
+#: staff.cat.record_buckets.merge_records.fancy_prompt_title
+msgid "Record Merging"
+msgstr "Sloučení záznamů"
+
+#: staff.cat.record_buckets.merge_records.fancy_prompt.alert
+msgid "Merge Aborted"
+msgstr "Sloučení selhalo"
+
+#: staff.cat.record_buckets.merge_records.success
+msgid "Records were successfully merged."
+msgstr "Záznamy byly úspěšně sloučeny."
+
+#: staff.cat.record_buckets.merge_records.catch.std_unex_error
+msgid "Records were not likely merged."
+msgstr "Záznamy pravděpodobně nebyly sloučeny."
+
+#: staff.cat.record_buckets.delete_records.xml1
+msgid "Delete these records?"
+msgstr "Smazat tyto záznamy?"
+
+#: staff.cat.record_buckets.delete_records.button.label
+msgctxt "staff.cat.record_buckets.delete_records.button.label"
+msgid "Delete"
+msgstr "Smazat"
+
+#: staff.cat.record_buckets.delete_records.cancel_button.label
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.record_buckets.delete_records.cancel_button.accesskey
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.record_buckets.delete_records.xml2
+msgid "Record? # %1$s"
+msgstr "Záznam? # %1$s"
+
+#: staff.cat.record_buckets.delete_records.fancy_prompt_title
+msgid "Record Purging"
+msgstr "Čištění záznamů"
+
+#: staff.cat.record_buckets.delete_records.fancy_prompt.alert
+msgid "Delete Aborted"
+msgstr "Odstranění selhalo"
+
+#: staff.cat.record_buckets.delete_records.s1
+msgid "Error deleting these records:\n"
+msgstr "Chyba mazání těchto záznamů: \n"
+
+#: staff.cat.record_buckets.delete_records.s2
+msgid "Record #%1$s : %2$s  : %3$s\n"
+msgstr "Záznam #%1$s : %2$s  : %3$s\n"
+
+#: staff.cat.record_buckets.delete_records.delete_success.alert
+msgid "Records deleted."
+msgstr "Záznamy byly odstraněny."
+
+#: staff.cat.record_buckets.delete_records.catch.std_unex_err
+msgid "Records were not likely deleted."
+msgstr "Záznamy pravděpodobně nebyly odstraněny."
+
+#: staff.cat.record_buckets.cmd_broken.alert
+msgid "Not Yet Implemented"
+msgstr "Zatím nebylo realizováno"
+
+#: staff.cat.record_buckets.cmd_sel_opac.tab_name
+msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
+msgid "Retrieving title..."
+msgstr "Stahování záznamu..."
+
+#: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
+msgid "Showing in OPAC"
+msgstr "Zobrazení v OPACu"
+
+#: staff.cat.record_buckets.submit.query_status
+msgctxt "staff.cat.record_buckets.submit.query_status"
+msgid "Searching..."
+msgstr "Vyhledávání..."
+
+#: staff.cat.record_buckets.prep_record_for_list.std_unex_err
+msgid "Could not retrieve this record: %1$s"
+msgstr "Nebylo možné získat záznam: %1$s"
+
+#: staff.cat.record_buckets_quick.copy_one_record
+msgid "Copy this record into which bucket?"
+msgstr "Do které skupiny má být záznam zkopírován?"
+
+#: staff.cat.record_buckets_quick.copy_multiple_records
+msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
+msgid "Copy these %1$s items into which bucket?"
+msgstr "Do které skupiny mají být exempláře %1$s zkopírovány?"
+
+# nutný kontext
+#: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
+msgid "Trying to init record_buckets_quick.xul"
+msgstr "Zavádí se record_buckets_quick.xul"
+
+#: staff.cat.record_buckets_quick.name_of_bucket
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
+msgid "What would you like to name the bucket?"
+msgstr "Jak má být skupina pojmenována?"
+
+#: staff.cat.record_buckets_quick.name_of_bucket.title
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
+msgid "Bucket Creation"
+msgstr "Vytvoření skupiny"
+
+#: staff.cat.record_buckets_quick.bucket_creation_failure
+msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
+msgid "Bucket creation failed."
+msgstr "Vytvoření skupiny selhalo."
+
+#: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
+msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
+msgstr "Proces pro skupinu = %1$s a záznam ID = %2$s pravděpodobně selhal"
+
+#: staff.cat.spine_labels.copy
+msgid "copy"
+msgstr "exemplář"
+
+#: staff.cat.spine_labels.copies
+msgid "copies"
+msgstr "exempláře"
+
+#: staff.cat.spine_labels.generate.std_unexpeceted_err
+msgid "Generate"
+msgstr "Vygenerovat"
+
+#: staff.cat.spine_labels.preview.title
+msgctxt "staff.cat.spine_labels.preview.title"
+msgid "Spine Labels"
+msgstr "Hřbetní štítky"
+
+#: staff.cat.spine_labels.preview.std_unexpected_err
+msgid "Preview and Print"
+msgstr "Náhled a tisk"
+
+# proč original? Není nějaká ochrana proti duplicitním čárovým kódům?
+#: staff.cat.util.replace_barcode.old_bc_window_prompt.prompt
+msgid "Enter original barcode for the copy:"
+msgstr "Vložit původní čárový kód k exempláři:"
+
+#: staff.cat.util.replace_barcode.old_bc_window_prompt.title
+msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
+msgid "Replace Barcode"
+msgstr "Nahradit čárový kód"
+
+#: staff.cat.util.replace_barcode.error_alert
+msgid "We were unable to retrieve an item with barcode \"%1$s\"."
+msgstr "Nebylo možné nalézt exemplář s čárovým kódem \"%1$s\"."
+
+#: staff.cat.util.replace_barcode.new_bc_window_prompt.prompt
+msgid "Enter the replacement barcode for the copy:"
+msgstr "Vložit náhradní čárový kód pro exemplář:"
+
+#: staff.cat.util.replace_barcode.new_bc_window_prompt.title
+msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
+msgid "Replace Barcode"
+msgstr "Nahradit čárový kód"
+
+#: staff.cat.util.replace_barcode.new_bc.failed
+msgid "Rename aborted.  Blank barcodes are not allowed."
+msgstr "Přejmenujte zamítnuté. Prázdné čárové kódy nejsou povoleny."
+
+#: staff.cat.util.replace_barcode.testing_error
+msgid "Error testing replacement barcode \"%1$s\"."
+msgstr "Chyba testu změny čárového kódu \"%1$s\"."
+
+#: staff.cat.util.replace_barcode.insufficient_permission_for_rename
+msgid "Rename aborted.  Insufficient permission."
+msgstr "Přejmenování zamítnuto. Nemáte oprávnění."
+
+#: staff.cat.util.replace_barcode.item_rename_error
+msgid "Error renaming item."
+msgstr "Chyba přejmenování exempláře."
+
+#: staff.cat.util.replace_barcode.rename_error
+msgid "Rename did not likely occur."
+msgstr "Přejmenování se nezdařilo."
+
+# nutný kontext
+#: staff.cat.util.transfer_copies.unmarked_volume_alert
+msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
+msgid ""
+"Please mark a volume as the destination from within holdings maintenance and "
+"then try this again."
+msgstr ""
+"Označte svazek a dílčí knihovnu v zobrazení a poté zkuste proces zopakovat."
+
+#: staff.cat.util.transfer_copies.params_message
+msgid ""
+"Transfer items from their original volumes to %1$s's volume labelled %2$s on "
+"the following record (and change their circulation libs to match)?"
+msgstr ""
+"Přesunout exempláře z původních svazků do %1$s's do označených %2$s's v "
+"následujícím záznamu (a změnit jejich výpůjční knihovny)?"
+
+#: staff.cat.util.transfer_copies.transfer.label
+msgctxt "staff.cat.util.transfer_copies.transfer.label"
+msgid "Transfer"
+msgstr "Přesunout"
+
+#: staff.cat.util.transfer_copies.cancel.label
+msgctxt "staff.cat.util.transfer_copies.cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.util.transfer_copies.cancel.accesskey
+msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.util.transfer_copies.window_title
+msgid "Item Transfer"
+msgstr "Přesun exempláře"
+
+#: staff.cat.util.transfer_copies.aborted_transfer
+msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
+msgid "Transfer Aborted"
+msgstr "Přesun zrušen"
+
+#: staff.cat.util.transfer_copies.override_transfer_failure
+msgid "Override Transfer Failure?"
+msgstr "Překonat chybu přesunu?"
+
+#: staff.cat.util.transfer_copies.successful_transfer
+msgid "Items transferred."
+msgstr "Exempláře přesunuty."
+
+#: staff.cat.util.transfer_copies.transfer_error
+msgid "All items not likely transferred."
+msgstr "Pravděpodobně se nezdařilo přesunout všechny exempláře."
+
+#: staff.cat.util.spine_editor.tab_name
+msgctxt "staff.cat.util.spine_editor.tab_name"
+msgid "Spine Labels"
+msgstr "Hřbetní štítky"
+
+#: staff.cat.util.spine_editor.spine_editor_error
+msgctxt "staff.cat.util.spine_editor.spine_editor_error"
+msgid "Spine Labels"
+msgstr "Hřbetní štítky"
+
+#: staff.cat.util.show_in_opac.unknown_barcode
+msgid "%1$s is not cataloged"
+msgstr "%1$s nebyl zkatalogizován"
+
+#: staff.cat.util.show_in_opac.catalog_error_for_doc_id
+msgid "Error opening catalog for document ID = %1$s"
+msgstr "Chyba při otevírání katalogu pro dokument ID = %1$s"
+
+#: staff.cat.util.copy_editor.batch_in_title
+msgid "Batch"
+msgstr "Dávka"
+
+#: staff.cat.util.copy_editor.edit_in_title
+msgctxt "staff.cat.util.copy_editor.edit_in_title"
+msgid "Edit"
+msgstr "Editovat"
+
+#: staff.cat.util.copy_editor.view_in_title
+msgctxt "staff.cat.util.copy_editor.view_in_title"
+msgid "View"
+msgstr "Zobrazit"
+
+#: staff.cat.util.copy_editor.copy_attributes_in_title
+msgid "Copy Attributes"
+msgstr "Vlastnosti exempláře"
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr "Editovat dávku"
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr "Zobrazit dávku"
+
+#: staff.cat.util.copy_editor.edit
+msgctxt "staff.cat.util.copy_editor.edit"
+msgid "Edit"
+msgstr "Editovat"
+
+#: staff.cat.util.copy_editor.view
+msgctxt "staff.cat.util.copy_editor.view"
+msgid "View"
+msgstr "Zobrazit"
+
+#: staff.cat.util.copy_editor.not_modified
+msgid "Copies not modified."
+msgstr "Exempláře nebyly modifikovány."
+
+#: staff.cat.util.mark_item_damaged.af_message
+msgid ""
+"Action failed.  One or more of these items is in a special status such as "
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+msgstr ""
+"Proces selhal. Jeden nebo více exemplářů mají speciální status jako "
+"\"Vypůjčeno\" nebo \"V přepravě\", a proto není jim možné změnit status na "
+"Poškozeno."
+
+#: staff.cat.util.mark_item_damaged.af_title
+msgctxt "staff.cat.util.mark_item_damaged.af_title"
+msgid "Action failed."
+msgstr "Proces selhal."
+
+#: staff.cat.util.mark_item_damaged.af_ok_label
+msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_damaged.af_confirm_action
+msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
+msgid "Check here to confirm this message"
+msgstr "Zde potvrďte zprávu"
+
+#: staff.cat.util.mark_item_damaged.md_message
+msgid ""
+"Change the status for these items to Damaged?  You will have to manually "
+"retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
+msgstr ""
+"Změnit status u těchto exemplářů na Poškozeno? Bude nutné manuálně vyhledat "
+"poslední výpůjční transakci, pokud si přejete čtenáři dát pokutu. Čárový "
+"kód: %1$s"
+
+#: staff.cat.util.mark_item_damaged.md_title
+msgid "Mark Damaged"
+msgstr "Označit poškozené"
+
+#: staff.cat.util.mark_item_damaged.md_ok_label
+msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_damaged.md_cancel_label
+msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.util.mark_item_damaged.md_confirm_action
+msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Zde potvrďte proces"
+
+#: staff.cat.util.mark_item_damaged.marking_error
+msgid "Error marking item %1$s damaged."
+msgstr "Chyba při označení exempláře %1$s jako poškozené."
+
+#: staff.cat.util.mark_item_damaged.one_item_damaged
+msgid "Item marked Damaged"
+msgstr "Exemplář označen jako poškozený."
+
+#: staff.cat.util.mark_item_damaged.multiple_item_damaged
+msgid "%1$s items marked Damaged."
+msgstr "%1$s exemplářů označeno jako poškozené."
+
+#: staff.cat.util.mark_item_missing.af_message
+msgid ""
+"Action failed.  One or more of these items is in a special status such as "
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+msgstr ""
+"Proces selhal. Jeden nebo více exemplářů mají speciální status jako "
+"\"Vypůjčeno\" nebo \"V přepravě\", a proto není jim možné změnit status na "
+"ztrátu."
+
+#: staff.cat.util.mark_item_missing.af_title
+msgctxt "staff.cat.util.mark_item_missing.af_title"
+msgid "Action failed."
+msgstr "Proces selhal."
+
+#: staff.cat.util.mark_item_missing.af_ok_label
+msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing.af_confirm_action
+msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
+msgid "Check here to confirm this message"
+msgstr "Zde potvrďte zprávu"
+
+#: staff.cat.util.mark_item_missing.ms_message
+msgid "'Change the status for these items to Missing? Barcodes: %1$s"
+msgstr "Změnit status pro tyto exempláře na ztracené? Čárové kódy: %1$s"
+
+# nutný kontext
+#: staff.cat.util.mark_item_missing.ms_title
+msgid "Mark Missing"
+msgstr "Chybí označení"
+
+#: staff.cat.util.mark_item_missing.ms_ok_label
+msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing.ms_cancel_label
+msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.util.mark_item_missing.ms_confirm_action
+msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Zde potvrďte proces"
+
+#: staff.cat.util.mark_item_missing.marking_error
+msgid "Error marking item %1$s missing."
+msgstr "Chyba při označení exempláře %1$s  jako ztráta."
+
+#: staff.cat.util.mark_item_missing.one_item_missing
+msgid "Item marked Missing"
+msgstr "Exemplář označen jako ztráta."
+
+#: staff.cat.util.mark_item_missing.multiple_item_missing
+msgid "%1$s items marked Missing."
+msgstr "%1$s exemplářů označeno jako ztráta."
+
+#: staff.cat.volume_buckets.window_tab_name
+msgid "Volume Buckets"
+msgstr "Skupina svazků"
+
+#: staff.cat.volume_copy_creator.my_init.btn.label
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
+msgid "Apply"
+msgstr "Použít"
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.message
+msgid ""
+"You may not add more than %1$s items at a time for a given volume in this "
+"interface."
+msgstr ""
+"Nelze přidat víc než %1$s exemplářů najednou k vybranému svazku v tomto "
+"rozhraní."
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.title
+msgid "Maximum items exceeded."
+msgstr "Překročen maximální počet exemplářů"
+
+#: staff.cat.volume_copy_creator.render_volume_count_entry.ok_label
+msgid "Ok"
+msgstr "OK"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
+msgid "Call Numbers"
+msgstr "Signatury"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
+msgid "# of Copies"
+msgstr "# exemplářů"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
+msgid "\"%1$s\" is an invalid barcode."
+msgstr "\"%1$s\" je neplatný čárový kód."
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_title
+msgid "Invalid Barcode"
+msgstr "Neplatný čárový kód"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
+msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
+msgid "Check here to confirm this message."
+msgstr "Zde potvrďte zprávu"
+
+#: staff.cat.volume_copy_creator.stash_and_close.problem_with_volume
+msgid ""
+"Problem finding or creating %1$s.  We will skip item creation for this "
+"volume."
+msgstr ""
+"Problém s nalezením nebo vytvořením %1$s. Pro svazek nebudou vytvořeny "
+"exempláře."
+
+#: staff.cat.volume_copy_creator.stash_and_close.tree_err2
+msgid "volume tree update 2"
+msgstr "Aktualizace seznamu svazků 2"
+
+#: staff.cat.volume_copy_creator.stash_and_close.tree_err3
+msgid "volume tree update 3"
+msgstr "Aktualizace seznamu svazků 3"
+
+#: staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs
+msgid "Error retrieving stored preferences"
+msgstr "Chyba načítání uložených nastavení"
+
+#: staff.cat.volume_copy_creator.save_prefs.err_storing_prefs
+msgid "Error storing preferences"
+msgstr "Chyba ukládání nastavení"
+
+# nutný kontext
+#: staff.cat.z3950.native_catalog
+msgid "Native Catalog"
+msgstr "Původní katalog"
+
+#: staff.cat.z3950.obj_list_init.list_construction_error
+msgid "Failure during list construction."
+msgstr "Selhání při vytváření seznamu."
+
+#: staff.cat.z3950.results_view.label
+msgid "Results View"
+msgstr "Zobrazení výsledků"
+
+#: staff.cat.z3950.results_view.accesskey
+msgctxt "staff.cat.z3950.results_view.accesskey"
+msgid "V"
+msgstr "V"
+
+#: staff.cat.z3950.marc_view.label
+msgid "MARC View"
+msgstr "Zobrazení MARCu"
+
+#: staff.cat.z3950.marc_view.accesskey
+msgctxt "staff.cat.z3950.marc_view.accesskey"
+msgid "V"
+msgstr "V"
+
+#: staff.cat.z3950.hide_top_pane.label
+msgid "Hide Top Pane"
+msgstr "Skrýt horní pole"
+
+#: staff.cat.z3950.hide_top_pane.accesskey
+msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+msgid "T"
+msgstr "T"
+
+#: staff.cat.z3950.unhide_top_pane.label
+msgid "Show Top Pane"
+msgstr "Zobrazit horní pole"
+
+#: staff.cat.z3950.unhide_top_pane.accesskey
+msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
+msgid "T"
+msgstr "T"
+
+# nevím význam pro overlay
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Záznam ID %1$s označen k přepsání."
+
+# nevím význam pro overlay
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Záznam s TCN %1$s označen k přepsání."
+
+# nevím význam pro overlay
+#: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
+msgid "No record marked for overlay."
+msgstr "Žádný záznam nebyl označen k přepsání."
+
+#: staff.cat.z3950.obj_controller_init.marc_view_error
+msgid "Failure during MARC view."
+msgstr "Chyba při zobrazení MARCu."
+
+#: staff.cat.z3950.obj_controller_init.marc_import_error
+msgid "Failure during MARC import."
+msgstr "Chyba při importu MARCu."
+
+# nevím význam pro overlay
+#: staff.cat.z3950.obj_controller_init.marc_import_overlay_error
+msgid "Failure during MARC import overlay."
+msgstr "Chyba importu MARCu k přepsání."
+
+#: staff.cat.z3950.obj_controller_init.search_fields_error
+msgid "Error setting up search fields."
+msgstr "Chyba nastavení vyhledávacích polí."
+
+# pokud se nenačetla, zřejmě není v provozu?
+#: staff.cat.z3950.obj_controller_init.z39_service_error
+msgid "Z39.50 services not likely retrieved."
+msgstr "Nezdařilo se spojení se službou Z39.50"
+
+#: staff.cat.z3950.initial_search.no_search_selection
+msgid "No services selected to search."
+msgstr "Nebyly vybrány služby pro vyhledávání."
+
+#: staff.cat.z3950.initial_search.searching
+msgctxt "staff.cat.z3950.initial_search.searching"
+msgid "Searching..."
+msgstr "Vyhledávání ..."
+
+#: staff.cat.z3950.initial_search.failed_search
+msgid "Failure during initial search."
+msgstr "Chyba při počátečním vyhledávání."
+
+# nutný kontext
+#: staff.cat.z3950.page_next.more_results
+msgid "Retrieving more results..."
+msgstr "Načítání dalších výsledků"
+
+#: staff.cat.z3950.page_next.subsequent_search_error
+msgid "Failure during subsequent search."
+msgstr "Selhání během opakovaného vyhledávání."
+
+#: staff.cat.z3950.search.search_error
+msgid "Failure during actual search."
+msgstr "Selhání během současného vyhledávání."
+
+#: staff.cat.z3950.handle_results.null_server_error
+msgid "Server Error: request returned null"
+msgstr "Chyba serveru: nulová odpověď"
+
+#: staff.cat.z3950.handle_results.server_error
+msgid "Server Error: %1$s : %2$s"
+msgstr "Chyba serveru: %1$s : %2$s"
+
+# nutný kontext
+#: staff.cat.z3950.handle_results.raw_query
+msgid "Raw query: %1$s"
+msgstr "Obecný dotaz: %1$s"
+
+# nutný kontext
+#: staff.cat.z3950.handle_results.showing_results
+msgid "Showing %1$s of %2$s for %3$s"
+msgstr "Zobrazení %1$s z %2$s pro %3$s"
+
+#: staff.cat.z3950.handle_results.num_of_results
+msgid "%1$s records found"
+msgstr "%1$s záznamů nenalezeno"
+
+#: staff.cat.z3950.handle_results.result_error
+msgid "Error retrieving results."
+msgstr "Chyba načítání záznamů."
+
+#: staff.cat.z3950.handle_results.search_result_error
+msgid "Failure during search result handling."
+msgstr "Chyba při zpracování výsledku vyhledávání."
+
+#: staff.cat.z3950.replace_tab_with_opac.tab_name
+msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
+msgid "Retrieving title..."
+msgstr "Načítání záznamů"
+
+# Co je FIXME?
+#: staff.cat.z3950.spawn_marc_editor.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
+msgid ""
+"A record with TCN %1$s already exists.\n"
+"FIXME: add record summary here"
+msgstr ""
+"Záznam s TCN %1$s již existuje.\n"
+"FIXME: Zde vložte shrnutí záznamu"
+
+#: staff.cat.z3950.spawn_marc_editor.title
+msgctxt "staff.cat.z3950.spawn_marc_editor.title"
+msgid "Import Collision"
+msgstr "Kolize importu"
+
+#: staff.cat.z3950.spawn_marc_editor.btn1_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
+msgid "Overlay"
+msgstr "Přepsat"
+
+#: staff.cat.z3950.spawn_marc_editor.btn2_import
+msgid "Import with alternate TCN %1$s"
+msgstr "Importovat s alternativním TCN %1$s"
+
+#: staff.cat.z3950.spawn_marc_editor.permission_error
+msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
+msgid "check permission"
+msgstr "kontrola oprávnění"
+
+#: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
+msgid "Cancel Import"
+msgstr "Zrušit import"
+
+#: staff.cat.z3950.spawn_marc_editor.confirm_action
+msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Zde potvrďte proces"
+
+#: staff.cat.z3950.spawn_marc_editor.successful_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
+msgid "Record successfully overlaid."
+msgstr "Záznam úspěšně přepsán."
+
+#: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
+msgid "Record successfully imported with alternate TCN."
+msgstr "Import záznamu s alternativním TCN se zdařil."
+
+#: staff.cat.z3950.spawn_marc_editor.import_cancelled
+msgid "Record import cancelled"
+msgstr "Import záznamů byl stornován"
+
+#: staff.cat.z3950.spawn_marc_editor.successful_import
+msgid "Record successfully imported."
+msgstr "Import záznamu se zdařil."
+
+#: staff.cat.z3950.spawn_marc_editor.import_error
+msgid "Record not likely imported."
+msgstr "Záznam pravděpodobně nebyl importován."
+
+#: staff.cat.z3950.confirm_overlay.description
+msgid "Overlay this record?"
+msgstr "Přepsat tento záznam?"
+
+#: staff.cat.z3950.confirm_overlay.lead.label
+msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
+msgid "Overlay"
+msgstr "Přepsat"
+
+#: staff.cat.z3950.confirm_overlay.lead.accesskey
+msgid "O"
+msgstr "O"
+
+#: staff.cat.z3950.confirm_overlay.cancel.label
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
+msgid "Cancel"
+msgstr "Storno"
+
+#: staff.cat.z3950.confirm_overlay.cancel.accesskey
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.z3950.confirm_overlay.title
+msgid "Record Overlay"
+msgstr "Přepsání záznamu"
+
+#: staff.cat.z3950.confirm_overlay.aborted
+msgid "Overlay Aborted"
+msgstr "Přepsání zrušeno"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
+msgid ""
+"Please mark a record for overlay from within the catalog and try this again."
+msgstr "Označte prosím v katalogu záznam určený k přepsání a zopakujte proces."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
+msgid "MARC Editor"
+msgstr "MARC editor"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
+msgid "Overlay Record"
+msgstr "Přepsání záznamu"
+
+# co je FIXME?
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
+msgid ""
+"A record with TCN %1$s already exists.\n"
+"FIXME: add record summary here"
+msgstr ""
+"Záznam s TCN %1$s již existuje.\n"
+"FIXME: Zde vložte shrnutí záznamu"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
+msgid "Import Collision"
+msgstr "Kolize importu"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
+msgid "Overlay with alternate TCN %1$s"
+msgstr "Přepis s alternativním TCN %1$s"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
+msgid "check permission"
+msgstr "kontrola oprávnění"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
+msgid "Cancel Import"
+msgstr "Zrušit import"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Zde potvrďte proces"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
+msgid "Record successfully overlaid with alternate TCN."
+msgstr "Záznam úspěsně přepsán s alternativním TCN."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
+msgid "Record overlay cancelled"
+msgstr "Přepsání záznamu stornováno"
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
+msgid "Record successfully overlaid."
+msgstr "Záznam úspěšně přepsán."
+
+#: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
+msgid "Record not likely overlaid."
+msgstr "Záznam pravděpodobně nebyl přepsán."
+
+# netuším co je credential
+#: staff.cat.z3950.load_creds.z3950_cred_error
+msgid "Error retrieving stored z39.50 credentials"
+msgstr "Chyba načítání dat pomocí Z39.50 z důvodu nesprávné identity"
+
+# credential
+#: staff.cat.z3950.save_creds.z3950_cred_error
+msgid "Problem storing z39.50 credentials."
+msgstr ""
+"Problém s uložením dat získaných přes Z39.50 z důvodu nesprávné identity."

@@ -1,0 +1,83 @@
+#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-10 10:08+0100\n"
+"Last-Translator: Vaclav Jansa <v.jansa@stk.cz>\n"
+"Language-Team: UISK <petrkubiska@seznam.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: staff.auth.controller.not_configured
+msgid "Not yet configured for the specified server."
+msgstr "Dosud nebyl konfigurován pro konkrétní server."
+
+#: staff.auth.controller.testing_hostname
+msgid "Testing hostname..."
+msgstr "Testování hostitelského serveru..."
+
+#: staff.auth.controller.prompt_hostname
+msgid "Please enter a server hostname."
+msgstr "Prosím vložte jméno serveru."
+
+#: staff.auth.controller.error_hostname
+msgid "There was an error testing this hostname."
+msgstr "Došlo k chybě při testování tohoto jména serveru."
+
+#: staff.auth.controller.status
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: staff.auth.controller.testing_version
+msgid "Testing version..."
+msgstr "Testování verze..."
+
+#: staff.auth.controller.error_version
+msgid "There was an error checking version support."
+msgstr "Došlo k chybě při kontrole podpory verze."
+
+#: staff.auth.controller.version_mismatch
+msgid ""
+"This server does not support your version of the staff client.  Please check "
+"with your system administrator."
+msgstr ""
+"Tento server nepodporuje vaši verzi služebního klienta. Obraťte se prosím na "
+"správce systému."
+
+#. # login with <username> and <password> at <server>
+#: staff.auth.controller.error_login
+msgid "login with %1$s and %2$s at %3$s"
+msgstr "přihlášení s %1$s a %2$s v %3$s"
+
+#: staff.auth.controller.confirm_close
+msgid "Are you sure you would like to exit the program completely?"
+msgstr "Jste si jisti, že chcete úplně ukončit program?"
+
+#: staff.auth.session.unregistered
+msgid "%1$s is not registered with this server."
+msgstr "%1$s není registrován s tímto serverem."
+
+#: staff.auth.session.login_failed
+msgid ""
+"Login failed.  Please check your Server Hostname, Username, Password, and "
+"your CAPS LOCK key."
+msgstr ""
+"Přihlášení se nezdařilo. Zkontrolujte si prosím jméno serveru, uživatelské "
+"jméno, heslo a váš CAPS LOCK."
+
+# u tohoto výrazu si myslím, že překlad je asi zbytečný
+#: staff.auth.session.init_false
+msgid "open-ils.auth.authenticate.init returned false"
+msgstr "open-ils.auth.authenticate.init returned false"
+
+#: staff.auth.titlebar.label
+msgid "Evergreen Staff Client - %1$s"
+msgstr "Služební klient Evergreen - %1$s"

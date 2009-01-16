@@ -1,0 +1,727 @@
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-10 10:02+0100\n"
+"Last-Translator: Vaclav Jansa <v.jansa@stk.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: common.exception
+msgid ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+msgstr ""
+"!! V systému došlo k závažné chybě. Nahlaste prosím Vašemu systémovému "
+"administrátorovi následující : \n"
+"%1$s\n"
+"%2$s\n"
+
+# nevím, jak uživatelsky přívětivě sdělit, že systému chybí knihovna Java Skriptu...
+#: common.jsan.missing
+msgid "The JSAN library object is missing."
+msgstr "Chybí část kódu knihovny JSAN"
+
+#: common.error
+msgid "Please inform your help desk or developers of this error:"
+msgstr "Informujte prosím svého administrátora o následující chybě:"
+
+#: common.ok
+msgid "Ok"
+msgstr "OK"
+
+#: common.clear
+msgid "Clear"
+msgstr "Vyčistit"
+
+#: common.confirm
+msgid "Check here to confirm this message."
+msgstr "Zde potvrďte tuto zprávu."
+
+#: common.error.default
+msgid "Please report that this happened."
+msgstr "Nahlašte prosím, že k tomuto došlo"
+
+#: common.barcode.status.warning
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+msgstr "Varování: Z %1$s, tento čárový kód (%2$s) byl označen %3$s."
+
+#: common.barcode.status.warning.lost
+msgid "Lost"
+msgstr "Ztraceno"
+
+#: common.barcode.status.warning.expired
+msgid "Expired"
+msgstr "Prošlé"
+
+#: common.barcode.status.warning.barred
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
+msgstr "Omezeno"
+
+#: common.barcode.status.warning.blocked
+msgid "Blocked"
+msgstr "Blokováno"
+
+#: common.barcode.status.warning.unknown
+msgid "with an unknown code: %1$s"
+msgstr "s neznámým kódem: %1$s"
+
+#: common.date.invalid
+msgid "Invalid Date"
+msgstr "Neplatné datum"
+
+#: common.action_complete
+msgid "Action completed."
+msgstr "Proces dokončen"
+
+#. # common.grouping_string = the string that should be inserted between elements of a grouped list
+#: common.grouping_string
+msgid ","
+msgstr ","
+
+#: common.unimplemented
+msgid "Not yet implemented"
+msgstr "Zatím neimplementováno"
+
+#: common.yes
+msgid "Yes"
+msgstr "Ano"
+
+#: common.no
+msgid "No"
+msgstr "Ne"
+
+#: common.check_to_confirm
+msgid "Check here to confirm this message"
+msgstr "Zde potvrďte tuto zprávu."
+
+#: lang.version
+msgid "remote v1"
+msgstr "vzdálený v1"
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr "Problém s vyčištěním cache: %1$s"
+
+# předpokladam, že clipboard ve významu kopírování textu
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr "Proces kopírování selhal: %1$s"
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr "\"%1$s\" zkopírováno do paměti"
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr "Chyba get_contentWindow(%1$s) a wrappedJSObject: %2$s"
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr "Chyba get_contentWindow(%1$s): %2$s"
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr "Chyba změny velikosti písma: %1$s"
+
+#: staff.acp_label_barcode
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
+msgstr "Čárový kód"
+
+#: staff.acp_label_call_number
+msgid "Call Number"
+msgstr "Signatura"
+
+# problémové, nutný kontext
+#: staff.acp_label_circ_as_type
+msgid "Circulate As Type"
+msgstr "Typ výpůjčky"
+
+#: staff.acp_label_circ_lib
+msgid "Circulation Library"
+msgstr "Výpůjční knihovna"
+
+#: staff.acp_label_circ_modifier
+msgid "Circulation Modifier"
+msgstr "Modifikace výpůjčky"
+
+#: staff.acp_label_copy_number
+msgid "Copy Number"
+msgstr "Číslo exempláře"
+
+#: staff.acp_label_deposit_amount
+msgid "Deposit Amount"
+msgstr "Výše vkladu"
+
+#: staff.acp_label_fine_level
+msgid "Fine Level"
+msgstr "Úroveň pokut"
+
+#: staff.acp_label_id
+msgid "Copy ID"
+msgstr "ID exempláře"
+
+#: staff.acp_label_loan_duration
+msgid "Loan Duration"
+msgstr "Délka výpůjčky"
+
+#: staff.acp_label_location
+msgid "Location"
+msgstr "Lokace"
+
+#: staff.acp_label_price
+msgid "Price"
+msgstr "Cena"
+
+#: staff.acp_label_status
+msgctxt "staff.acp_label_status"
+msgid "Status"
+msgstr "Status"
+
+#: staff.ahr_current_copy_label
+msgid "Current Copy"
+msgstr "Aktuální exemplář"
+
+#: staff.ahr_current_copy_location_label
+msgid "Current Copy Location"
+msgstr "Lokace aktuálního exempláře"
+
+#: staff.ahr_email_notify_label
+msgid "Email Notify"
+msgstr "E-mailové upozornění"
+
+#: staff.ahr_expire_time_label
+msgid "Expire Time"
+msgstr "Čas expirace"
+
+#: staff.ahr_expire_date_label
+msgid "Expire Date"
+msgstr "Datum expirace"
+
+#: staff.ahr_fulfillment_time_label
+msgid "Fulfillment Time"
+msgstr "Čas splnění"
+
+#: staff.ahr_hold_type_label
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
+msgstr "Typ "
+
+# Rezervovatelné formáty - je nutné zdůrazňovat ten formát?
+#: staff.ahr_holdable_formats_label
+msgid "Holdable Formats"
+msgstr "Možno rezervovat"
+
+#: staff.ahr_id_label
+msgid "Hold ID"
+msgstr "ID rezervace"
+
+#: staff.ahr_phone_notify_label
+msgid "Phone Notify"
+msgstr "Telefonické upozornění"
+
+# Víc by se mi líbilo Vyzvednout v:
+#: staff.ahr_pickup_lib_label
+msgid "Pickup Library"
+msgstr "Knihovna pro vyzvednutí "
+
+#: staff.ahr_prev_check_time_label
+msgid "Previous Check Time"
+msgstr "Čas předchozí kontroly"
+
+#: staff.ahr_requestor_label
+msgid "Requestor"
+msgstr "Žadatel"
+
+#: staff.ahr_selection_depth_label
+msgid "Selection Depth"
+msgstr "Hloubka výběru"
+
+#: staff.ahr_status_label
+msgctxt "staff.ahr_status_label"
+msgid "Status"
+msgstr "Status"
+
+#: staff.ahr_target_label
+msgid "Target"
+msgstr "Cíl "
+
+#: staff.ahr_usr_label
+msgctxt "staff.ahr_usr_label"
+msgid "User"
+msgstr "Uživatel"
+
+#: staff.circ_label_due_date
+msgid "Due Date"
+msgstr "Vrátit do"
+
+#: staff.circ_label_id
+msgid "Circulation ID"
+msgstr "ID výpůjčky"
+
+# problůémové, nutný kontext
+#: staff.circ_label_renewal_remaining
+msgid "Remaining Renewals"
+msgstr "Zbývá k prodloužení"
+
+#: staff.mvr_label_author
+msgctxt "staff.mvr_label_author"
+msgid "Author"
+msgstr "Autor"
+
+#: staff.mvr_label_doc_id
+msgid "Document ID"
+msgstr "ID dokumentu"
+
+#: staff.mvr_label_title
+msgctxt "staff.mvr_label_title"
+msgid "Title"
+msgstr "Název"
+
+# Dates ve smyslu bib. údaje, údaje o jednotce nebo data výpůjčky?
+#: staff.bills_xact_dates_label
+msgid "Record / Dates"
+msgstr "Záznam / údaje"
+
+#: staff.bills_information
+msgid "Information"
+msgstr "Informace"
+
+#: staff.bills_current_payment_label
+msgid "Current Payment"
+msgstr "Aktuální platba"
+
+#: staff.mbts_id_label
+msgid "Bill #"
+msgstr "Účet #"
+
+#: staff.mbts_xact_start_label
+msgid "Start"
+msgstr "Start"
+
+#: staff.mbts_xact_finish_label
+msgid "Finish"
+msgstr "Konec"
+
+#: staff.mbts_xact_type_label
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
+msgstr "Typ"
+
+#: staff.mbts_total_owed_label
+msgid "Total Billed"
+msgstr "Celkově naúčtováno"
+
+#: staff.mbts_total_paid_label
+msgid "Total Paid"
+msgstr "Celkově zaplaceno"
+
+#: staff.mbts_balance_owed_label
+msgid "Balance Owed"
+msgstr "Dlužná částka"
+
+#: staff.mbts_usr_label
+msgctxt "staff.mbts_usr_label"
+msgid "User"
+msgstr "Uživatel"
+
+#: staff.mbts_last_billing_note_label
+msgid "Last Billing Note"
+msgstr "Poslední účtovaná zpráva"
+
+#: staff.mbts_last_billing_type_label
+msgid "Last Billing Type"
+msgstr "Poslední účtovaný typ"
+
+#: staff.mbts_last_billing_timestamp_label
+msgid "Last Billed"
+msgstr "Naposledy účtováno"
+
+#: staff.mbts_last_payment_note_label
+msgid "Last Payment Note"
+msgstr "Poslední placená zpráva"
+
+#: staff.mbts_last_payment_type_label
+msgid "Last Payment Type"
+msgstr "Poslední placený typ"
+
+#: staff.mbts_last_payment_timestamp_label
+msgid "Last Payment"
+msgstr "Poslední platba"
+
+#: staff.mb_billing_type_label
+msgid "Billing Type"
+msgstr "Typ fakturace"
+
+#: staff.mb_xact_label
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
+msgstr "ID transakce"
+
+#: staff.mb_billing_ts_label
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
+msgstr "Kdy"
+
+#: staff.mb_void_time_label
+msgid "Void Time"
+msgstr "Neplatný čas"
+
+#: staff.mb_note_label
+msgctxt "staff.mb_note_label"
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.mb_amount_label
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
+msgstr "Částka"
+
+# nenašla jsem význam
+#: staff.mb_voider_label
+msgid "Voider"
+msgstr "Ke zrušení"
+
+#: staff.mb_voided_label
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
+msgstr "Zrušený"
+
+#: staff.mb_id_label
+msgid "Billing ID"
+msgstr "ID účtu"
+
+#: staff.mp_credit_card_payment_label
+msgid "Credit Card Payment"
+msgstr "Platba platební kartou"
+
+#: staff.mp_forgive_payment_label
+msgid "Forgive Payment"
+msgstr "Prominutí platby"
+
+#: staff.mp_payment_timestamp_label
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
+msgstr "Kdy"
+
+#: staff.mp_payment_type_label
+msgid "Payment Type"
+msgstr "Typ platby"
+
+#: staff.mp_voided_label
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
+msgstr "Zrušený"
+
+#: staff.mp_id_label
+msgid "Payment ID"
+msgstr "ID platby"
+
+# něco jako částka k dobru čtenáře?? něco jako předplacený kredit k dobru?
+#: staff.mp_goods_payment_label
+msgid "Goods Payment"
+msgstr "K dobru čtenáře"
+
+#: staff.mp_xact_label
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
+msgstr "ID transakce"
+
+# v alephu je credit ve významu k dobru čtenáře. Tady se mi to ale překrývá s goods payment a work payment.... Knihovna obvykle neplatí přes knihovní systém za práci a zboží....
+#: staff.mp_credit_payment_label
+msgid "Credit Payment"
+msgstr "Platba k dobru"
+
+# viz předchozí poznámka
+#: staff.mp_work_payment_label
+msgid "Work Payment"
+msgstr "Platba za práci"
+
+#: staff.mp_note_label
+msgctxt "staff.mp_note_label"
+msgid "Note"
+msgstr "Poznámka"
+
+#: staff.mp_cash_payment_label
+msgid "Cash Payment"
+msgstr "Platba v hotovosti"
+
+#: staff.mp_amount_label
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
+msgstr "Částka"
+
+#: staff.mp_check_payment_label
+msgid "Check Payment"
+msgstr "Kontrola platby"
+
+#: staff.mp_cash_drawer_label
+msgid "Workstation"
+msgstr "Pracovní stanice"
+
+#: staff.mp_accepting_usr_label
+msgid "Staff"
+msgstr "Zaměstnanec"
+
+#: staff.card_barcode_label
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
+msgstr "Čárový kód"
+
+#: staff.au_active_label
+msgid "Active"
+msgstr "Aktivní"
+
+#: staff.au_usrname_label
+msgid "Login Name"
+msgstr "Login"
+
+#: staff.au_profile_label
+msgid "Profile"
+msgstr "Profil"
+
+#: staff.au_barred_label
+msgctxt "staff.au_barred_label"
+msgid "Barred"
+msgstr "Omezeno"
+
+#: staff.au_alert_message_label
+msgid "Alert"
+msgstr "Výstraha"
+
+#: staff.au_claims_returned_count_label
+msgid "Returns Claimed"
+msgstr "Vyžádané vrácení"
+
+#: staff.au_create_date_label
+msgid "Created On"
+msgstr "Vytvořeno "
+
+#: staff.au_expire_date_label
+msgid "Expires On"
+msgstr "Expirace"
+
+#: staff.au_home_library_label
+msgid "Home Library"
+msgstr "Domovská knihovna"
+
+#: staff.au_home_library_fullname_label
+msgid "Home Library (Full Name)"
+msgstr "Domovská knihovna (celý název)"
+
+#: staff.au_credit_forward_balance_label
+msgid "Credit"
+msgstr "Kredit"
+
+# většinu dne tráví člověk v zaměstnání, takže by to mohl být day phone:-)
+#: staff.au_day_phone_label
+msgid "Day Phone"
+msgstr "Telefon do práce"
+
+# večery dost liddí tráví doma, takže evening phone může být domů
+#: staff.au_evening_phone_label
+msgid "Evening Phone"
+msgstr "Telefon domů"
+
+# po vyčerpání tel. domů a do zaměstnání zbývá jen mobil:-)
+#: staff.au_other_phone_label
+msgid "Other Phone"
+msgstr "Mobilní telefon"
+
+#: staff.au_email_label
+msgid "Email"
+msgstr "E-mail"
+
+#: staff.au_birth_date_label
+msgid "Birth Date"
+msgstr "Datum narození"
+
+#: staff.au_ident_type_label
+msgid "Identification Type"
+msgstr "Typ identifikace"
+
+#: staff.au_ident_value_label
+msgid "Identification Value"
+msgstr "Hodnota identifikace"
+
+#: staff.au_ident_type2_label
+msgid "Identification Type 2"
+msgstr "Typ identifikace 2"
+
+#: staff.au_ident_value2_label
+msgid "Identification Value 2"
+msgstr "Hodnota identifikace 2"
+
+#: staff.au_net_access_level_label
+msgid "Internet Access"
+msgstr "Přístup k internetu"
+
+# nutné vidět kontext
+#: staff.au_master_account_label
+msgid "Group Lead"
+msgstr "Vedoucí skupina"
+
+#: staff.au_group_id_label
+msgid "Group ID"
+msgstr "ID skupiny"
+
+#: staff.au_id_label
+msgid "User ID"
+msgstr "ID uživatele"
+
+#: staff.au_name_prefix_label
+msgid "Prefix"
+msgstr "Titul před jménem"
+
+#: staff.au_family_name_label
+msgid "Family Name"
+msgstr "Příjmení"
+
+#: staff.au_first_given_name_label
+msgid "First Name"
+msgstr "Křestní jméno"
+
+#: staff.au_second_given_name_label
+msgid "Middle Name"
+msgstr "Druhé jméno"
+
+# předpokládám, že se jedná o tituly čtenáře
+#: staff.au_name_suffix_label
+msgid "Suffix"
+msgstr "Titul za jménem"
+
+#: staff.z39_50.search_class.author
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
+msgstr "Autor"
+
+#: staff.z39_50.search_class.isbn
+msgid "ISBN"
+msgstr "ISBN"
+
+#: staff.z39_50.search_class.issn
+msgid "ISSN"
+msgstr "ISSN"
+
+#: staff.z39_50.search_class.item_type
+msgid "Item Type"
+msgstr "Typ dokumentu"
+
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr "Všechny formáty"
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr "Referáty/články"
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr "Knihy"
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr "Počítačové soubory"
+
+#: staff.z39_50.search_class.item_type.map
+msgid "Maps"
+msgstr "Mapy"
+
+#: staff.z39_50.search_class.item_type.mix
+msgid "Mixed material"
+msgstr "Smíšené materiály"
+
+#: staff.z39_50.search_class.item_type.rec
+msgid "Sound recordings"
+msgstr "Zvukové záznamy"
+
+#: staff.z39_50.search_class.item_type.sco
+msgid "Musical scores"
+msgstr "Hudební partituty"
+
+#: staff.z39_50.search_class.item_type.ser
+msgid "Serials"
+msgstr "Seriály"
+
+#: staff.z39_50.search_class.item_type.url
+msgid "Internet Resources"
+msgstr "Internetové zdroje"
+
+#: staff.z39_50.search_class.item_type.vis
+msgid "Visual materials"
+msgstr "Vizuální materiály"
+
+#: staff.z39_50.search_class.lccn
+msgid "LCCN"
+msgstr "LCCN"
+
+#: staff.z39_50.search_class.pubdate
+msgid "Publication Date"
+msgstr "Datum vydání"
+
+#: staff.z39_50.search_class.publisher
+msgid "Publisher"
+msgstr "Nakladatel"
+
+#: staff.z39_50.search_class.tcn
+msgid "Accession #"
+msgstr "Přírůstek #"
+
+#: staff.z39_50.search_class.title
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
+msgstr "Název"
+
+#: staff.z39_50_import_interface_label
+msgid "Z39.50 Import"
+msgstr "Import ze Z39.50"
+
+#: staff.main.data.loaded
+msgid "Data loaded."
+msgstr "Data načtena."
+
+# offline synchronizace se serverem se mi v češtině nelíbí
+#: staff.main.gen_offline_widgets.synced
+msgid "Offline interface synchronized with server."
+msgstr "Online připojení na server obnoveno."
+
+# noncat ve smyslu nezkatalogizováno? Nezkatalogizované třídění ??
+#: staff.main.gen_offline_widgets.noncat_sort.error
+msgid "error in noncat sorting:"
+msgstr "chyba třídění:"
+
+#: staff.main.gen_offline_widgets.please_wait
+msgid "Please wait"
+msgstr "Čekejte prosím"
+
+#: staff.main.gen_offline_widgets.workstation_registration_denied
+msgid "You do not have permission to register a workstation."
+msgstr "Nemáte oprávnění k práci s touto racovní stanicí"
+
+#: staff.main.gen_offline_widgets.registration.override
+msgid "Override Registration Failure?"
+msgstr "Překonat chybu registrace?"
+
+#: staff.main.gen_offline_widgets.registration.error
+msgid "Workstation Registration error (%1$s)"
+msgstr "Chyba registrace pracovní stanice (%1$s)"
+
+#: staff.main.gen_offline_widgets.registration.success
+msgid "Registration successful"
+msgstr "Registrace byla úspěšná"
+
+#~ msgid "Alias"
+#~ msgstr "Alias"

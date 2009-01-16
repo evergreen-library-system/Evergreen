@@ -1,0 +1,810 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-30 16:43+0100\n"
+"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#. Common Entities
+#: reports.common.logged_in_as
+msgid "You are logged in as "
+msgstr "Jste nahraný v jako"
+
+#: reports.common.loading
+msgid "Loading..."
+msgstr "Zavádí se ..."
+
+#: reports.oils_rpt.title
+msgid "Evergreen: Reports"
+msgstr "Evergreen: Zprávy"
+
+#: reports.oils_rpt.insufficient_permissions
+msgid "You do not have sufficient permissions to run reports"
+msgstr "Nemáte dostačná oprávnění ke spuštění zpráv"
+
+#: reports.oils_rpt.my_folders
+msgid "My Folders"
+msgstr "Mé složky"
+
+#: reports.oils_rpt.shared_folders
+msgid "Shared Folders"
+msgstr "Společné složky"
+
+#: reports.oils_rpt.manage_folder_contents
+msgid "Manage Folder Contents"
+msgstr "Spravovat obsah složky"
+
+#: reports.oils_rpt.manage_folder
+msgid "Manage Folder"
+msgstr "Spravovat složku"
+
+#: reports.oils_rpt.created_by
+msgid "created by "
+msgstr "vytvořený"
+
+#: reports.oils_rpt.create_new_sub_folder
+msgctxt "reports.oils_rpt.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr "Vytvořit novou podsložku"
+
+#: reports.oils_rpt.folder_type
+msgid "Folder type: "
+msgstr "Typy složek"
+
+#: reports.oils_rpt.folder_name
+msgctxt "reports.oils_rpt.folder_name"
+msgid "Folder Name:"
+msgstr "Jména složek"
+
+#: reports.oils_rpt.share_folder
+msgid "Share this folder:"
+msgstr "Sdílet tuto složku:"
+
+#: reports.oils_rpt.do_not_share
+msgctxt "reports.oils_rpt.do_not_share"
+msgid "Do not share"
+msgstr "Nesdílet"
+
+#: reports.oils_rpt.share
+msgctxt "reports.oils_rpt.share"
+msgid "Share"
+msgstr "Sdílet"
+
+#: reports.oils_rpt.share_with
+msgctxt "reports.oils_rpt.share_with"
+msgid "Share with:"
+msgstr "Sdílet s:"
+
+#: reports.oils_rpt.create_sub_folder
+msgctxt "reports.oils_rpt.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr "Vytvořit podsložku"
+
+#: reports.oils_rpt_builder.title
+#, fuzzy
+msgid "Evergreen: Report Builder"
+msgstr "Evergreen: Zprávy stavitele"
+
+#: reports.oils_rpt_builder.reports_home
+msgid "Reports Home"
+msgstr "Domácí zprávy"
+
+#: reports.oils_rpt_builder.cloning_template
+msgid "Cloning template"
+msgstr "Klonování šablony (vzoru)"
+
+#: reports.oils_rpt_builder.template_name
+msgid "Template Name: "
+msgstr "Název šablony"
+
+#: reports.oils_rpt_builder.template_description
+msgid "Template Description: "
+msgstr "Popis šablony"
+
+#: reports.oils_rpt_builder.template_type
+msgid "Template Type: "
+msgstr "Typ šablony:"
+
+#: reports.oils_rpt_builder.save_this_template
+msgid "Save this Template: "
+msgstr "Uložit tuto šablonu:"
+
+#: reports.oils_rpt_builder.filtering_note
+msgid ""
+"Indicates that when filtering on the item, a list of named choices will be "
+"generated."
+msgstr ""
+"Signalizovat, že při filtrování exempláře bude vygenerován seznam "
+"pojmenovaných možností."
+
+#: reports.oils_rpt_builder.temp_disp_items
+msgid "Template Display Items"
+msgstr "Šablona zobrazení exemplářů"
+
+#: reports.oils_rpt_builder.remove_selected
+msgid "Remove Selected"
+msgstr "Odstranění označených"
+
+#: reports.oils_rpt_builder.move_up
+msgctxt "reports.oils_rpt_builder.move_up"
+msgid "Move Up"
+msgstr "Přeřadit, povýšit, posunout se"
+
+#: reports.oils_rpt_builder.move_down
+msgctxt "reports.oils_rpt_builder.move_down"
+msgid "Move Down"
+msgstr "Přesunout dolů"
+
+#. The below two entity strings were the contents of the .xhtml file but I don't think that works when using XML entities
+#. ENTITY reports.oils_rpt_builder.move_up "Move &uarr;"
+#. ENTITY reports.oils_rpt_builder.move_down "Move &darr;"
+#: reports.oils_rpt_builder.template_filters
+msgid "Template Filters"
+msgstr "Šablona filtru"
+
+#: reports.oils_rpt_builder.report_aggregate_filters
+msgid "Report Aggregate Filters"
+msgstr "Zpráva seskupených filtrů"
+
+#: reports.oils_rpt_builder.hint
+msgid "Hint: "
+msgstr "Pokyn:"
+
+#: reports.oils_rpt_builder.hint_item_details
+msgid "Double-click on an item to see the item details."
+msgstr "Dvojitým klikem na exemplář se rozbrazí detaily."
+
+#: reports.oils_rpt_builder.template_types
+msgid "Template Types"
+msgstr "Typy šablon"
+
+#: reports.oils_rpt_builder.display_items
+msgid "Display Items"
+msgstr "Zobrazení exemplářů"
+
+#: reports.oils_rpt_builder.filters
+msgid "Filters"
+msgstr "Filtry"
+
+#: reports.oils_rpt_builder.aggregate_filters
+msgctxt "reports.oils_rpt_builder.aggregate_filters"
+msgid "Aggregate Filters"
+msgstr "Seskupené filtry"
+
+#: reports.oils_rpt_builder.create_aggregate_filter
+msgid "Create Aggregate Filter"
+msgstr "Vytvoření seskupení filtru"
+
+#: reports.oils_rpt_builder.field_editor_window.label
+msgid "Select how this field should be displayed:"
+msgstr "Výběr (toho),  jak by mělo být toto pole zobrazeno:"
+
+#: reports.oils_rpt_builder.add_item
+msgid "Add Item"
+msgstr "Přidat exemplář"
+
+#: reports.oils_rpt_builder.select_filter_to_apply
+msgid "Select what filter should be applied to this field:"
+msgstr "Výběr (toho), jaký filtr by měl být aplikován do tohoto pole"
+
+#: reports.oils_rpt_builder.choose_a_transform
+msgid "Choose a Transform: "
+msgstr "Volba transformace:"
+
+#: reports.oils_rpt_builder.choose_a_filter
+msgid "Choose a Filter: "
+msgstr "Volba filtru:"
+
+#: reports.oils_rpt_builder.create_filter
+msgid "Create Filter"
+msgstr "Vytvořit filtr"
+
+#: reports.oils_rpt_builder.aggregate_filter_to_apply
+msgid "Select what aggregate filter should be applied to this field:"
+msgstr "Výběr toho, které seskupení filtů by mělo být v tomto poli aplikováno:"
+
+#: reports.oils_rpt_builder.selected_to_sort_columns
+msgid "Select how the columns should be sorted"
+msgstr "Vybrání toho, jak by měli být kolonky (rubriky) setříděny"
+
+#: reports.oils_rpt_builder.choose_column
+msgid "Choose a column: "
+msgstr "Vybrat kolonku (rubriku):"
+
+#: reports.oils_rpt_builder.choose_sorting_direction
+msgid "Choose the direction the sorting should occur: "
+msgstr "Vybrat kontrolu třídění kdyby se vyskytoval:"
+
+#: reports.oils_rpt_builder.ascending
+msgid "Ascending"
+msgstr "Rostoucí, vzestupný"
+
+#: reports.oils_rpt_builder.descending
+msgid "Descending"
+msgstr "Klesající, sestupný"
+
+#: reports.oils_rpt_builder.add_sort
+msgid "Add Sort"
+msgstr "Přidat druh, stav"
+
+#: reports.oils_rpt_builder.close_window
+msgid "Close Window"
+msgstr "Zavřít okno"
+
+#: reports.oils_rpt_builder.confirm_new_report
+msgid ""
+"This will destroy the report you are currently constructing.  Are you sure "
+"you wish to do this?"
+msgstr ""
+"Tobo bude zničená zpráva, kterou jste aktuálně sestavil. Jste si jist "
+"přáním, udělat to?"
+
+#: reports.oils_rpt_common.action_succeeded
+msgid "Action Succeeded"
+msgstr "Úspěšná akce"
+
+#: reports.oils_rpt_common.action_failed
+msgid "Action Failed"
+msgstr "Neúspěšná akce"
+
+#: reports.oils_rpt_common.generic_calendar_button
+msgid "Date selector"
+msgstr "Výběrová lhůta"
+
+#: reports.oils_rpt_editor.template_name
+msgid "Template Name:"
+msgstr "Jméno šablony:"
+
+#: reports.oils_rpt_editor.template_creator
+msgid "Template Creator:"
+msgstr "Tvůrce šablony:"
+
+#: reports.oils_rpt_editor.template_description
+msgid "Template Description:"
+msgstr "Popis šablony:"
+
+#: reports.oils_rpt_editor.report_name
+msgid "Report Name:"
+msgstr "Jméno zprávy:"
+
+#: reports.oils_rpt_editor.report_description
+msgid "Report Description:"
+msgstr "Popis zprávy"
+
+#: reports.oils_rpt_editor.report_columns
+msgid "Report Columns:"
+msgstr "Kolonky (rubriky) zpráv:"
+
+#: reports.oils_rpt_editor.pivot_label_column
+msgid "Pivot Label Column:"
+msgstr "Otáčivý štítek kolonky"
+
+#: reports.oils_rpt_editor.select_option
+msgid "Select One (optional)"
+msgstr "Výbraný jeden (optimální)"
+
+#: reports.oils_rpt_editor.pivot_data_column
+msgid "Pivot Data Column:"
+msgstr "Otáčivá data kolonky:"
+
+#: reports.oils_rpt_editor.store_report_definition
+msgid "Choose a folder to store this report definition: "
+msgstr "Zvolit vymezení složky k uskladnění této zprávy:"
+
+#: reports.oils_rpt_editor.selected_folder
+msgctxt "reports.oils_rpt_editor.selected_folder"
+msgid "Selected Folder: "
+msgstr "Označená složka:"
+
+#: reports.oils_rpt_editor.output_options
+msgid "Output Options"
+msgstr "Výstupní možnosti"
+
+#: reports.oils_rpt_editor.excel_output
+msgid "Excel Output"
+msgstr "Excelový výstup"
+
+#: reports.oils_rpt_editor.csv_output
+msgid "CSV Output"
+msgstr "CSV výstup"
+
+#: reports.oils_rpt_editor.html_output
+msgid "HTML Output"
+msgstr "HTML výstup"
+
+#: reports.oils_rpt_editor.bar_charts
+msgid "Bar Charts"
+msgstr "Sloupcové diagramy"
+
+#: reports.oils_rpt_editor.line_charts
+msgid "Line Charts"
+msgstr "Spojnicový diagram"
+
+#: reports.oils_rpt_editor.recurring_report
+msgid "Recurring Report: "
+msgstr "Periodická zpráva:"
+
+#: reports.oils_rpt_editor.recurring_interval
+msgid "Recurrence Interval: "
+msgstr "Interval opakování:"
+
+#: reports.oils_rpt_editor.days
+msgctxt "reports.oils_rpt_editor.days"
+msgid "Day(s)"
+msgstr "Den (dny)"
+
+#: reports.oils_rpt_editor.weeks
+msgctxt "reports.oils_rpt_editor.weeks"
+msgid "Weeks(s)"
+msgstr "Týden (týdny)"
+
+#: reports.oils_rpt_editor.months
+msgid "Month(s)"
+msgstr "Měsíc (měsíce)"
+
+#: reports.oils_rpt_editor.run_asap
+msgid "Run as soon as possible"
+msgstr "Spustit tak brzy jak je to možné"
+
+#: reports.oils_rpt_editor.sent_to_email
+msgid "Send completion notification to this Email address:"
+msgstr "Poslat hlášení o dokončení na tuto emailovou adresu:"
+
+#: reports.oils_rpt_editor.midnight
+msgid "Midnight"
+msgstr "Půlnoc"
+
+#: reports.oils_rpt_editor.noon
+msgid "Noon"
+msgstr "Poledne"
+
+#: reports.oils_rpt_editor.storage_folder_for_output
+msgid "Choose a folder to store this report's output:"
+msgstr "Vybrat složku ke skladování tohoto oznamujícího výstupu:"
+
+#: reports.oils_rpt_editor.save_report
+msgid "Save Report"
+msgstr "Uložit zprávu:"
+
+#: reports.oils_rpt_editor.empty_parameter
+msgid ""
+"One or more of the user-defined parameters has been left empty. Please fill "
+"in all fields."
+msgstr ""
+"Jeden nebo více  uživatelsko-definovaných parametrů bylo zanecháno "
+"prázdných. Prosím vyplňte všechna pole."
+
+#: reports.oils_rpt_editor.same_name
+msgid "There is already a report in this folder with the given name."
+msgstr "To je zpráva, která se v této složce pod daným názvem již nachází."
+
+#: reports.oils_rpt_folder_manager.change_folder_name
+msgid "Change folder name"
+msgstr "Změnit název složky"
+
+#: reports.oils_rpt_folder_manager.delete_folder
+msgid "Delete this folder"
+msgstr "Vymazat tuto složku"
+
+#: reports.oils_rpt_folder_manager.create_new_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_new_sub_folder"
+msgid "Create a new sub-folder"
+msgstr "Vytvořit novou podsložku"
+
+#: reports.oils_rpt_folder_manager.share_this_folder
+msgid "Share this folder"
+msgstr "Sdílet tuto složku"
+
+#: reports.oils_rpt_folder_manager.hide_folder
+msgid "Hide (un-share) this folder"
+msgstr "Skrýt (nesdílet) tuto složku"
+
+#: reports.oils_rpt_folder_manager.disable_recurrence
+msgid "Disable recurrence"
+msgstr "Opakování zakázáno"
+
+#: reports.oils_rpt_folder_manager.fldr_mngr_actions_submit
+msgid "Go"
+msgstr "Jít, start"
+
+#: reports.oils_rpt_folder_manager.change_name
+msgid "Enter new name:"
+msgstr "Zadat nové jméno"
+
+#: reports.oils_rpt_folder_manager.submit
+msgctxt "reports.oils_rpt_folder_manager.submit"
+msgid "Submit"
+msgstr "Předložit, nabídnout"
+
+#: reports.oils_rpt_folder_manager.folder_name
+msgctxt "reports.oils_rpt_folder_manager.folder_name"
+msgid "Folder Name:"
+msgstr "Název složky:"
+
+#: reports.oils_rpt_folder_manager.do_not_share
+msgctxt "reports.oils_rpt_folder_manager.do_not_share"
+msgid "Do not share"
+msgstr "Nesdílet"
+
+#: reports.oils_rpt_folder_manager.share
+msgctxt "reports.oils_rpt_folder_manager.share"
+msgid "Share"
+msgstr "Sdílet"
+
+#: reports.oils_rpt_folder_manager.share_with
+msgctxt "reports.oils_rpt_folder_manager.share_with"
+msgid "Share with:"
+msgstr "Sdílet s:"
+
+#: reports.oils_rpt_folder_manager.create_sub_folder
+msgctxt "reports.oils_rpt_folder_manager.create_sub_folder"
+msgid "Create Sub Folder"
+msgstr "Vytvořit podsložku"
+
+#: reports.oils_rpt_folder_manager.change_name_confirm
+msgid "Are you sure you wish to change this folder's name?"
+msgstr "Jste si jisti Vaším přáním změnit název této složky?"
+
+#: reports.oils_rpt_folder_manager.delete_name_confirm
+msgid "Are you sure you wish to delete this folder?"
+msgstr "Jste si jisti Vaším přáním vymazat tuto složku?"
+
+#: reports.oils_rpt_folder_manager.cannot_delete
+msgid "This folder may not be deleted because it is not empty."
+msgstr "Tato složka nesmí být vymazána, protože není prázdná."
+
+#: reports.oils_rpt_folder_manager.already_shared
+msgid "This folder is already shared"
+msgstr "Tato složka je opravdu společná"
+
+#: reports.oils_rpt_folder_manager.folder_not_shared
+msgid "This folder is not shared"
+msgstr "Tato složka není společná"
+
+#: reports.oils_rpt_folder_manager.confirm_hide_folder
+msgid "Are you sure you wish to hide this folder?"
+msgstr "Jste si jisti Vaším práním skrýt tuto složku?"
+
+#: reports.oils_rpt_folder_window.new_report_from_template
+msgid "Create a new report from selected template"
+msgstr "Vytvořit novou zprávu z vybrané (označené) šablony"
+
+#: reports.oils_rpt_folder_window.clone_template
+msgid "Clone selected template"
+msgstr "Klonovat označenou šablonu"
+
+#: reports.oils_rpt_folder_window.delete_template
+msgid "Delete selected template(s)"
+msgstr "Smazat vybranou(é) šablonu(y)"
+
+#: reports.oils_rpt_folder_window.clone_report
+msgid "Clone report"
+msgstr "Klonovat zprávu"
+
+#: reports.oils_rpt_folder_window.schedule_report
+msgid "Schedule report"
+msgstr "Seznam (tabulka) zpráv"
+
+#: reports.oils_rpt_folder_window.delete_reports
+msgid "Delete selected report(s)"
+msgstr "Smazat vybranou(é) zprávu(y)"
+
+#: reports.oils_rpt_folder_window.view_report_output
+msgid "View report output"
+msgstr "Prohlížet výstupní zprávu"
+
+#: reports.oils_rpt_folder_window.delete_output
+msgid "Delete selected output(s)"
+msgstr "Smazat vybraný(é) výstup(y)"
+
+#: reports.oils_rpt_folder_window.move_templates
+msgid "Move the selected template(s) to a different folder"
+msgstr "Pohyb vybrané(ých) šablony do jiné složky"
+
+#: reports.oils_rpt_folder_window.move_reports
+msgid "Move the selected report(s) to a different folder"
+msgstr "Pohyb vybrané(ých) zprávy do jiné složky"
+
+#: reports.oils_rpt_folder_window.move_output
+msgid "Move the selected output(s) to a different folder"
+msgstr "Pohyb vybraného(ých) výstupu do jiné složky"
+
+#: reports.oils_rpt_folder_window.submit
+msgctxt "reports.oils_rpt_folder_window.submit"
+msgid "Submit"
+msgstr "Nabídnout, předložit"
+
+#: reports.oils_rpt_folder_window.limit_output
+msgid "Limit output to "
+msgstr "Omezení výstupu"
+
+#: reports.oils_rpt_folder_window.all
+msgid "All"
+msgstr "Všechno"
+
+#: reports.oils_rpt_folder_window.pending_items
+msgid "Pending Items"
+msgstr "Nevyřízené exempláře"
+
+#: reports.oils_rpt_folder_window.new_template
+msgid "Create a new Template for this folder"
+msgstr "Vytvořit novou šablonu pro tuto složku"
+
+#: reports.oils_rpt_folder_window.no_items_to_display
+msgid "No items to display"
+msgstr "Nezobrazení exemplářů"
+
+#: reports.oils_rpt_folder_window.completed_items
+msgid "Completed Items"
+msgstr "Doplněné exemláře"
+
+#: reports.oils_rpt_folder_window.selected_folder
+msgctxt "reports.oils_rpt_folder_window.selected_folder"
+msgid "Selected Folder: "
+msgstr "Vybraná složka:"
+
+#: reports.oils_rpt_folder_window.select_folder
+msgid "Select Folder"
+msgstr "Vybrat složku"
+
+#: reports.oils_rpt_folder_window.cancel
+msgid "Cancel"
+msgstr "Zrušit, vymazat"
+
+#: reports.oils_rpt_folder_window.confirm_delete
+msgid "Are you sure you wish to delete the selected item(s)?"
+msgstr "Jste si jisti svým přáním smazat vybraný(é) exempláře?"
+
+#: reports.oils_rpt_folder_window.dependant_reports_no_delete
+msgid ""
+"One or more of the selected templates could not be deleted because there are "
+"reports that depend on them."
+msgstr ""
+"Jedna nebo více z vybraných šablon nemohou být smazány, protože existující  "
+"zprávy jsou na nich závislé"
+
+#: reports.oils_rpt_folder_window.dependant_outputs_no_delete
+msgid ""
+"One or more of The selected reports could not be deleted because there are "
+"outputs that depend on them."
+msgstr ""
+"Jedna nebo více z vybraných zpráv nemohou být smazány, protože existující "
+"výstupy jsou na ní (nich) závislé"
+
+#: reports.oils_rpt_folder_window.cannot_delete_another_users_data
+msgid "You may not delete another user's items"
+msgstr "Nemůžete smazat exempláře jiných uživatelů"
+
+#: reports.oils_rpt_folder_window.cannot_move_another_users_data
+msgid "You may not move another user's items"
+msgstr "Nemůžete přesouvat exempláře jiných uživatelů"
+
+#: reports.oils_rpt_folder_window.delete_all_attached_reports
+#, fuzzy
+msgid ""
+"        This will also delete all of your attached reports and outputs for \n"
+"this template. \n"
+" \n"
+"If other users have reports or outputs attached to this template, \n"
+"those will be left untouched and the template will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+"Toto bude také smazáno, všechno z Vašich připojených zpráv a výstupů pro "
+"tuto šablonu. Jestliže jiní uživatelé mají zprávy nebo výstupy připojené k "
+"této šabloně,  /n ty budou zachovány nedotčené, nebudou smazány /n /n "
+"Přejete si pokračovat?"
+
+#: reports.oils_rpt_folder_window.delete_all_attached_outputs
+#, fuzzy
+msgid ""
+"        This will also delete all of your attached outputs for \n"
+"this report. \n"
+" \n"
+"If other users have outputs attached to this report, \n"
+"those will be left untouched and the report will not be deleted. \n"
+" \n"
+"Do you wish to continue?"
+msgstr ""
+"Toto bude také smazáné, všechny z Vašich připojených výstupů fro /n  tyto "
+"zprávy. /n /n Jestliže jiní uživatelé mají výstupy připojené k této zprávě, "
+"/n ty budou zachovány nedotčené. /n /n Přejete si pokračovat?"
+
+#: reports.oils_rpt_param_editor.column
+msgid "Column"
+msgstr "Kolonka, rubrika, sloupec"
+
+#: reports.oils_rpt_param_editor.transform
+msgid "Transform"
+msgstr "Přeměnit"
+
+#: reports.oils_rpt_param_editor.action
+msgid "Action"
+msgstr "Akce, čin"
+
+#: reports.oils_rpt_param_editor.user_params
+msgid "User Params"
+msgstr "Uživatelské parametry"
+
+#: reports.oils_rpt_param_editor.or
+msgid "OR"
+msgstr "Nebo"
+
+#: reports.oils_rpt_param_editor.use_relative_date
+msgid "Use a relative date instead."
+msgstr "Užít raději úměrné datum."
+
+#: reports.oils_rpt_param_editor.days
+msgctxt "reports.oils_rpt_param_editor.days"
+msgid "Day(s)"
+msgstr "Den (dny)"
+
+#: reports.oils_rpt_param_editor.weeks
+msgctxt "reports.oils_rpt_param_editor.weeks"
+msgid "Weeks(s)"
+msgstr "Týden (týdny)"
+
+#: reports.oils_rpt_param_editor.months
+msgid "Months(s)"
+msgstr "Měsíc (měsíce)"
+
+#: reports.oils_rpt_param_editor.ago
+msgid " ago"
+msgstr "předtím, dříve"
+
+#: reports.xul.template_builder.db_source_browser.label
+msgid "Database Source Browser"
+msgstr "Databáze zdrojového prohlížeče"
+
+#: reports.xul.template_builder.sources_menulist.label
+msgid "Sources"
+msgstr "Zdroje"
+
+#: reports.xul.template_builder.source_name.label
+msgid "Source Name"
+msgstr "Název zdroje"
+
+#: reports.xul.template_builder.source_specifier.label
+msgid "Source Specifier:"
+msgstr "Zdrojový specifikátor:"
+
+#: reports.xul.template_builder.field_name.label
+msgid "Field Name"
+msgstr "Název pole"
+
+#: reports.xul.template_builder.data_type.label
+msgid "Data Type"
+msgstr "Typ data"
+
+#: reports.xul.template_builder.field_transform.label
+msgid "Field Transform"
+msgstr "Přeměna pole"
+
+#: reports.xul.template_builder.params.label
+msgid "Params"
+msgstr "Parametry"
+
+#: reports.xul.template_builder.applicable_datatypes.label
+msgid "Applicable Datatypes"
+msgstr "Platné typy dat"
+
+#: reports.xul.template_builder.output_type.label
+msgid "Output Type"
+msgstr "Typy výstupů"
+
+#: reports.xul.template_builder.source_add.label
+msgid "Add Selected Fields"
+msgstr "Přidat vybraná pole"
+
+#: reports.xul.template_builder.template_config_caption.label
+msgid "Template Configuration"
+msgstr "Uspořádání šablony"
+
+#: reports.xul.template_builder.name.label
+msgid "Name:"
+msgstr "Název:"
+
+#: reports.xul.template_builder.description.label
+msgid "Description:"
+msgstr "Popis:"
+
+#: reports.xul.template_builder.save.label
+msgid "Save"
+msgstr "Uložit"
+
+#: reports.xul.template_builder.displayed_fields.label
+msgid "Displayed Fields"
+msgstr "Zobrazená pole"
+
+#: reports.xul.template_builder.base_filters.label
+msgid "Base Filters"
+msgstr "Základní filtry"
+
+#: reports.xul.template_builder.aggregate_filters.label
+msgctxt "reports.xul.template_builder.aggregate_filters.label"
+msgid "Aggregate Filters"
+msgstr "Souhrnné filtry"
+
+#: reports.xul.template_builder.display_name.label
+msgid "Display Name"
+msgstr "Zobrazit jméno"
+
+#: reports.xul.template_builder.field_transform_type.label
+msgid "Field Transform Type"
+msgstr "Pole proměnného typu"
+
+#: reports.xul.template_builder.alter_display_header.label
+msgid "Alter Display Header"
+msgstr "Upravit zobrazení záhlaví"
+
+#: reports.xul.template_builder.move_up.label
+msgctxt "reports.xul.template_builder.move_up.label"
+msgid "Move Up"
+msgstr "Přeřadit, povýšit"
+
+#: reports.xul.template_builder.move_down.label
+msgctxt "reports.xul.template_builder.move_down.label"
+msgid "Move Down"
+msgstr "Poklesnout"
+
+#: reports.xul.template_builder.remove_selected_field.label
+msgid "Remove Selected Field"
+msgstr "Odstranit vybrané pole"
+
+#: reports.xul.template_builder.filter_field.label
+msgid "Filter Field"
+msgstr "Filtr pole"
+
+#: reports.xul.template_builder.operator.label
+msgid "Operator"
+msgstr "Operátor"
+
+#: reports.xul.template_builder.value.label
+msgid "Value"
+msgstr "Důležitost, význam, účinnost"
+
+#: reports.xul.template_builder.change_transform.label
+msgid "Change Transform"
+msgstr "Změna"
+
+#: reports.xul.template_builder.change_operator.label
+msgid "Change Operator"
+msgstr "Změnit operátor"
+
+#: reports.xul.template_builder.change_value.label
+msgid "Change value"
+msgstr "Změnit důležitost"
+
+#: reports.xul.template_builder.remove_value.label
+msgid "Remove value"
+msgstr "Odstranit hodnotu"
+
+#: reports.xul.template_builder.remove_selected_fields.label
+msgid "Remove Selected Fields"
+msgstr "Odstranit vybraná pole"
+
+#: reports.xul.template_builder.table_name.label
+msgid "Table Name"
+msgstr "Název tabulky"
+
+#: reports.xul.template_builder.sql_alias.label
+msgid "SQL Alias"
+msgstr "SQL Alias"
+
+#: reports.xul.template_builder.relationship.label
+msgid "Relationship"
+msgstr "Vztah, vazba"
+
+#~ msgid "Source Specifier"
+#~ msgstr "Specifikátor zdroje"

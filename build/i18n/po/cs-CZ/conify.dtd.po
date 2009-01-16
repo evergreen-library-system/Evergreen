@@ -1,0 +1,503 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:55-0400\n"
+"PO-Revision-Date: 2008-12-28 20:51+0100\n"
+"Last-Translator: Monika Horáková <mon.hor@seznam.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#. Common entities
+#: conify.save_button.label
+msgctxt "conify.save_button.label"
+msgid "Save"
+msgstr "Uložit"
+
+#: conify.delete_button.label
+msgctxt "conify.delete_button.label"
+msgid "Delete"
+msgstr "Smazat"
+
+#: conify.new_kid_button.label
+msgctxt "conify.new_kid_button.label"
+msgid "New Child"
+msgstr "Nový přírůstek"
+
+#. Main configuration interface menu
+#: conify.admin.title
+#, fuzzy
+msgid "Global :: Administration"
+msgstr "Globálně :: Administrace"
+
+#: conify.admin.top_pane.title
+msgctxt "conify.admin.top_pane.title"
+msgid "Controls"
+msgstr "Ovládací prvky"
+
+#: conify.admin.configure
+msgid "Configure your ILS"
+msgstr "Konfigurovat své ILS"
+
+#: conify.admin.left_pane.controls
+msgctxt "conify.admin.left_pane.controls"
+msgid "Controls"
+msgstr "Ovládací prvky"
+
+#: conify.admin.org_unit_type.link
+msgid "Organization Types"
+msgstr "Typy organizací"
+
+#: conify.admin.org_unit.link
+msgctxt "conify.admin.org_unit.link"
+msgid "Organizational Units"
+msgstr "Organizační jednotky"
+
+#: conify.admin.grp_tree.link
+msgctxt "conify.admin.grp_tree.link"
+msgid "Permission Groups"
+msgstr "Skupiny povolení"
+
+#: conify.admin.perm_list.link
+msgid "Permissions"
+msgstr "Povolení"
+
+#: conify.admin.copy_status.link
+msgid "Copy Statuses"
+msgstr "Stavy výtisků"
+
+#: conify.admin.marc_code_maps.link
+msgid "MARC Codes"
+msgstr "Kódy MARC"
+
+#: conify.admin.bottom_pane.title
+msgctxt "conify.admin.bottom_pane.title"
+msgid "Controls"
+msgstr "Ovládací prvky"
+
+#. Organization unit type configuration interface
+#: conify.org_unit_type.title
+#, fuzzy
+msgid "Global :: Actor :: Organization Unit Types"
+msgstr "Globálně :: Vykonavatel :: Typy organizační jednotky "
+
+#: conify.org_unit_type.type_tree.label
+msgid "Organization Unit Types"
+msgstr "Typy organizačních jednotek"
+
+#: conify.org_unit_type.type_name
+msgid "Type Name"
+msgstr ""
+
+#: conify.org_unit_type.opac_label
+msgid "OPAC Label"
+msgstr ""
+
+#: conify.org_unit_type.parent_type
+msgid "Parent Type"
+msgstr ""
+
+#: conify.org_unit_type.can_have_volumes
+msgid "Can Have Volumes and Copies"
+msgstr "Může mít svazky a výtisky"
+
+#: conify.org_unit_type.can_have_users
+msgid "Can Have Users"
+msgstr "Může mít uživatele"
+
+#. Organization unit configuration interface
+#: conify.org_unit.title
+#, fuzzy
+msgid "Global :: Actor :: Organization Units"
+msgstr "Globálně :: Vykonavatel :: Organizační jednotky"
+
+#: conify.org_unit.ou_tree.label
+msgctxt "conify.org_unit.ou_tree.label"
+msgid "Organizational Units"
+msgstr "Organizační jednotky"
+
+#: conify.org_unit.editor_pane.title
+msgid "Main Settings"
+msgstr "Hlavní nastavení"
+
+#: conify.org_unit.editor_pane.org_unit_name
+msgid "Organization Unit Name"
+msgstr "Název jednotky organizace"
+
+#: conify.org_unit.editor_pane.org_unit_code
+msgid "Organization Unit Policy Code"
+msgstr ""
+
+#: conify.org_unit.editor_pane.main_email
+msgid "Main Email Address"
+msgstr "Hlavní e-mailová adresa"
+
+#: conify.org_unit.editor_pane.main_phone
+msgid "Main Phone Number"
+msgstr "Hlavní telefonní číslo"
+
+#: conify.org_unit.editor_pane.org_unit_type
+msgid "Organization Unit Type"
+msgstr "Typ organizační jednotky"
+
+#: conify.org_unit.editor_pane.parent
+#, fuzzy
+msgid "Parent Organization Unit"
+msgstr "Mateřská organizační jednotka"
+
+#: conify.org_unit.editor_pane.opac_visible
+msgid "OPAC Visible"
+msgstr "Viditelný OPAC"
+
+#. Hours of operation
+#: conify.org_unit.hoo_pane.title
+msgid "Hours of Operation"
+msgstr "Provozní doba"
+
+#: conify.org_unit.hoo_pane.open_time
+msgid "Open time"
+msgstr "Otevřeno"
+
+#: conify.org_unit.hoo_pane.close_time
+msgid "Close time"
+msgstr "Zavřeno"
+
+#: conify.org_unit.hoo_pane.closed
+msgid "Closed"
+msgstr "Zavřeno"
+
+#: conify.org_unit.hoo_pane.monday
+msgid "Monday"
+msgstr "Pondělí"
+
+#: conify.org_unit.hoo_pane.tuesday
+msgid "Tuesday"
+msgstr "Úterý"
+
+#: conify.org_unit.hoo_pane.wednesday
+msgid "Wednesday"
+msgstr "Středa"
+
+#: conify.org_unit.hoo_pane.thursday
+msgid "Thursday"
+msgstr "Čtvrtek"
+
+#: conify.org_unit.hoo_pane.friday
+msgid "Friday"
+msgstr "Pátek"
+
+#: conify.org_unit.hoo_pane.saturday
+msgid "Saturday"
+msgstr "Sobota"
+
+#: conify.org_unit.hoo_pane.sunday
+msgid "Sunday"
+msgstr "Neděle"
+
+#. Addresses
+#: conify.org_unit.addresses_pane.title
+msgid "Addresses"
+msgstr "Adresy"
+
+#: conify.org_unit.addresses_pane.physical.title
+msgid "Physical Address"
+msgstr "Fyzická adresa"
+
+#: conify.org_unit.addresses_pane.holds.title
+msgid "Holds Address"
+msgstr "Adresy rezervací"
+
+#: conify.org_unit.addresses_pane.mailing.title
+msgid "Mailing Address"
+msgstr "E-mailová adresa"
+
+#: conify.org_unit.addresses_pane.ill.title
+msgid "ILL Address"
+msgstr "Adresa ILL"
+
+#: conify.org_unit.addresses_pane.type
+msgid "Type"
+msgstr "Typ"
+
+#: conify.org_unit.addresses_pane.valid
+msgid "Valid"
+msgstr "Platný"
+
+#: conify.org_unit.addresses_pane.street1
+msgid "Street 1"
+msgstr "Ulice 1"
+
+#: conify.org_unit.addresses_pane.street2
+msgid "Street 2"
+msgstr "Ulice 2"
+
+#: conify.org_unit.addresses_pane.city
+msgid "City"
+msgstr "Město"
+
+#: conify.org_unit.addresses_pane.state
+msgid "State"
+msgstr "Stát"
+
+#: conify.org_unit.addresses_pane.zip
+msgid "Zip"
+msgstr "PSČ"
+
+#: conify.org_unit.addresses_pane.country
+msgid "Country"
+msgstr "Země"
+
+#: conify.org_unit.addresses_pane.county
+msgid "County"
+msgstr "Kraj"
+
+#. This is a highlighted label that is followed by the name of the organizational unit
+#: conify.org_unit.status_bar
+msgid "Now editing:"
+msgstr "Nyní editovat:"
+
+#: conify.copy_status.title
+#, fuzzy
+msgid "Global :: Configuration :: Copy Status"
+msgstr "Globálně :: Konfigurace :: Kopírovat stav"
+
+#: conify.copy_status.new_status.label
+msgid "New Status:"
+msgstr "Nový stav:"
+
+#: conify.copy_status.new_status.name
+msgid "New Status Name"
+msgstr ""
+
+#: conify.copy_status.new_status.save
+msgctxt "conify.copy_status.new_status.save"
+msgid "Add"
+msgstr "Přidat"
+
+#: conify.copy_status.save_changes
+msgctxt "conify.copy_status.save_changes"
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: conify.copy_status.delete_selected
+msgctxt "conify.copy_status.delete_selected"
+msgid "Delete Selected"
+msgstr "Smazat vybrané"
+
+#: conify.marc_code_maps.title
+#, fuzzy
+msgid "Global :: Configuration :: MARC Code Maps"
+msgstr "Globálně :: Konfigurace :: přehled kódů MARC"
+
+#: conify.marc_code_maps.audience_map.title
+msgid "Audience Map"
+msgstr "Přehled návštěv"
+
+#: conify.marc_code_maps.audience_map.new.label
+msgid "New Audience Map:"
+msgstr "Přehled nových návštěv"
+
+#: conify.marc_code_maps.new_code
+msgctxt "conify.marc_code_maps.new_code"
+msgid "New Code"
+msgstr "Nový kód"
+
+#: conify.marc_code_maps.new_value
+msgid "New Value"
+msgstr "Nová hodnota"
+
+#: conify.marc_code_maps.audience_map.description
+msgctxt "conify.marc_code_maps.audience_map.description"
+msgid "Description"
+msgstr "Popis"
+
+#: conify.marc_code_maps.delete_selected
+msgctxt "conify.marc_code_maps.delete_selected"
+msgid "Delete Selected"
+msgstr "Smazat vybrané"
+
+#: conify.marc_code_maps.save_changes
+msgctxt "conify.marc_code_maps.save_changes"
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: conify.marc_code_maps.bib_level.title
+msgid "Bibliographic Level Map"
+msgstr "Přehled bibiografických úrovní"
+
+#: conify.marc_code_maps.bib_level.new.label
+msgid "New Bibliographic Level:"
+msgstr "Nová bibliografická úroveň"
+
+#: conify.marc_code_maps.add
+msgctxt "conify.marc_code_maps.add"
+msgid "Add"
+msgstr "Přidat"
+
+#: conify.marc_code_maps.item_form.title
+msgid "Item Form Map"
+msgstr "Přehled forem exemplářů"
+
+#: conify.marc_code_maps.item_form.new.label
+msgid "New Item Form:"
+msgstr "Nová forma exempláře:"
+
+#: conify.marc_code_maps.item_type.title
+msgid "Item Type Map"
+msgstr "Přehled typů exemplářů"
+
+#: conify.marc_code_maps.item_type.new.label
+msgid "New Item Type:"
+msgstr "Typ nového exempláře:"
+
+#: conify.marc_code_maps.language.title
+msgid "Language Map"
+msgstr "Jazyková mapa"
+
+#: conify.marc_code_maps.language.new.label
+msgid "New Language:"
+msgstr "Nový jazyk"
+
+#: conify.marc_code_maps.literary_form.title
+msgid "Literary Form Map"
+msgstr "Přehled literárních forem"
+
+#: conify.marc_code_maps.literary_form.new.label
+msgid "New Literary Form:"
+msgstr "Nová literární forma:"
+
+#: conify.marc_code_maps.video.title
+msgid "Videorecording Format Map"
+msgstr "Přehled videozáznamových formátů"
+
+#: conify.marc_code_maps.video.new.label
+msgid "New Video Recording Format:"
+msgstr "Nový videozáznamový formát"
+
+#. perm_list.html Entities
+#: conify.perm_list.permission_list.title
+#, fuzzy
+msgid "Global :: Permission :: Permission List"
+msgstr "Globálně :: Povolení :: Seznam povolení"
+
+#: conify.perm_list.new_code.label
+msgctxt "conify.perm_list.new_code.label"
+msgid "New Code"
+msgstr "Nový kód"
+
+#: conify.perm_list.add_button.label
+msgctxt "conify.perm_list.add_button.label"
+msgid "Add"
+msgstr "Přidat"
+
+#: conify.perm_list.save_changes.label
+msgctxt "conify.perm_list.save_changes.label"
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: conify.perm_list.delete_selected.label
+msgctxt "conify.perm_list.delete_selected.label"
+msgid "Delete Selected"
+msgstr "Smazat vybrané"
+
+#: conify.perm_list.new_permission.label
+msgid "New Permission:"
+msgstr "Nové povolení:"
+
+#. grp_tree.html Entities
+#: conify.grp_tree.group_tree.title
+#, fuzzy
+msgid "Global :: Permission :: Group Tree"
+msgstr "Globálně :: Povolení :: Strom skupiny"
+
+#: conify.grp_tree.permission_groups.label
+msgctxt "conify.grp_tree.permission_groups.label"
+msgid "Permission Groups"
+msgstr "Skupiny povolení"
+
+#: conify.grp_tree.group_config.label
+msgid "Group Configuration"
+msgstr "Konfigurace skupiny"
+
+#: conify.grp_tree.group_name.label
+msgid "Group Name"
+msgstr "Název skupiny"
+
+#: conify.grp_tree.description.label
+msgctxt "conify.grp_tree.description.label"
+msgid "Description"
+msgstr "Popis"
+
+#: conify.grp_tree.permission_interval.label
+msgid "Permission Interval"
+msgstr "Období povolení/interval povolení"
+
+#: conify.grp_tree.editing_permission.label
+msgid "Editing Permission"
+msgstr "Úprava povolení"
+
+#: conify.grp_tree.parent_group.label
+#, fuzzy
+msgid "Parent Group"
+msgstr "Mateřská skupina"
+
+#: conify.grp_tree.user_group.label
+msgid "User Group"
+msgstr "Uživatelská skupina"
+
+#: conify.grp_tree.save_button.label
+msgctxt "conify.grp_tree.save_button.label"
+msgid "Save"
+msgstr "Uložit"
+
+#: conify.grp_tree.delete_button.label
+msgctxt "conify.grp_tree.delete_button.label"
+msgid "Delete"
+msgstr "Smazat"
+
+#: conify.grp_tree.new_child_button.label
+msgctxt "conify.grp_tree.new_child_button.label"
+msgid "New Child"
+msgstr "Nový přírůstek"
+
+#: conify.grp_tree.group_permissions.title
+msgid "Group Permissions"
+msgstr "Skupiny povolení"
+
+#: conify.grp_tree.new_mapping.label
+msgid "New Mapping"
+msgstr "Nové zobrazení/nové mapování"
+
+#: conify.grp_tree.permission.label
+msgid "Permission:"
+msgstr "Povolení:"
+
+#: conify.grp_tree.depth.label
+msgid "Depth:"
+msgstr "Hloubka:"
+
+#: conify.grp_tree.grantable.label
+msgid "Grantable:"
+msgstr "Půjčitelný:"
+
+#: conify.grp_tree.add_mapping_button.label
+msgid "Add Mapping"
+msgstr "Přidat zobrazení/mapování"
+
+#: conify.grp_tree.save_changes.label
+msgctxt "conify.grp_tree.save_changes.label"
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: conify.grp_tree.remove_selected.label
+msgctxt "conify.grp_tree.remove_selected.label"
+msgid "Delete Selected"
+msgstr "Smazat vybrané"

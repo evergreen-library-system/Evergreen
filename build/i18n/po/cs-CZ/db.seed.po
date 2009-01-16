@@ -1,0 +1,3353 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2009-01-16 09:56:33-0400\n"
+"PO-Revision-Date: 2008-12-30 15:51+0100\n"
+"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: vqbrad.description:11
+msgid "Internal ID"
+msgstr "Interní ID"
+
+#: clm.value:vai
+msgid "Vai"
+msgstr "Vai"
+
+#: cblvl.value:i
+msgid "Integrating resource"
+msgstr "Integrace zdroje"
+
+#: clfm.value:u
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: clfm.value:p
+msgid "Poetry"
+msgstr "Poezie"
+
+#: ccs.name:6
+msgid "In transit"
+msgstr "V přepravě"
+
+#: clm.value:pau
+msgid "Palauan"
+msgstr "Palauština"
+
+#: ppl.description:115
+msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
+msgstr ""
+"Umožňuje uživateli vytvoření vícenásobné rezervace (dvě nebo více rezervací "
+"na jeden titul)"
+
+#: cza.label:5 cza.label:14
+msgid "Title"
+msgstr "Název"
+
+#: clm.value:kir
+msgid "Kyrgyz"
+msgstr "Kyrgyzština"
+
+#: i18n_l.description:en-US
+msgid "American English"
+msgstr "Americká angličtina"
+
+# možná by bylo lepší užít číslo periodika
+#: cblvl.value:b
+msgid "Serial component part"
+msgstr "Číslo/svazek seriálu"
+
+#: clm.value:niu
+msgid "Niuean"
+msgstr "Niueština"
+
+#: clm.value:fat
+msgid "Fanti"
+msgstr "Fantiština"
+
+#: crcd.name:1
+msgid "7_days_0_renew"
+msgstr "7_dní_0_prodloužení"
+
+#: ppl.description:123
+msgid "Allow a user to un-bar a patron"
+msgstr "Umožňuje uživateli zrušit čárový kód čtenáře"
+
+#: clm.value:tig
+msgid "Tigré"
+msgstr "Tigrejština"
+
+#: clm.value:mas
+msgid "Masai"
+msgstr "Masajština"
+
+#: clm.value:bam
+msgid "Bambara"
+msgstr "Bambarština"
+
+#: clm.value:snd
+msgid "Sindhi"
+msgstr "Sindhština"
+
+# nutný kontext
+#: aou.name:7
+msgid "Example Branch 4"
+msgstr "Vzor pobočky 4"
+
+#: cam.description:b
+msgid "The item is intended for children, approximate ages 6-8 years."
+msgstr "Jednotka je určená dětem přibližně ve věku 6-8 let."
+
+#: clm.value:abk
+msgid "Abkhaz"
+msgstr "Abchazština"
+
+#: clm.value:sat
+msgid "Santali"
+msgstr "Santali"
+
+#: clm.value:dua
+msgid "Duala"
+msgstr "Dualština"
+
+#: clm.value:ukr
+msgid "Ukrainian"
+msgstr "Ukrajinština"
+
+#: clm.value:vot
+msgid "Votic"
+msgstr "Votiatština"
+
+# nutný kontext
+#: aou.name:5
+msgid "Example Branch 2"
+msgstr "Vzor pobočky 2"
+
+#: clfm.value:h
+msgid "Humor, satires, etc."
+msgstr "Humor, satira apod."
+
+#: ppl.description:43
+msgid "Allow a user to create a new bill on a transaction"
+msgstr "Umožňuje uživateli vytvoření nového účtu na transakci"
+
+#: clm.value:bnt
+msgid "Bantu (Other)"
+msgstr "Bantuské jazyky (ostatní)"
+
+#: clm.value:kau
+msgid "Kanuri"
+msgstr "Kanuri"
+
+#: clm.value:umb
+msgid "Umbundu"
+msgstr "Umbundu"
+
+# nutná úprava dle kontextu. 10 haléřů za den se mi nelíbí
+#: crrf.name:2
+msgid "10_cent_per_day"
+msgstr "10_centů_za_den"
+
+#: ppl.description:41
+msgid "Allow a user to create a new billable transaction"
+msgstr "Umožňuje uživateli vytvoření nové zúčtovatelné transakce"
+
+# nutný kontext
+#: ppl.description:49
+msgid "Allow a user to delete another user container"
+msgstr "Umožňuje uživateli smazání obsah schránky jiného uživatele"
+
+#: clm.value:cel
+msgid "Celtic (Other)"
+msgstr "Keltské jazyky (ostatní)"
+
+#: cst.value:2
+msgid "Barred"
+msgstr "Zamezený"
+
+#: clm.value:hil
+msgid "Hiligaynon"
+msgstr "Hiligayonština"
+
+#: clm.value:kac
+msgid "Kachin"
+msgstr "Kačjinština"
+
+#: crmf.name:4
+msgid "overdue_max"
+msgstr "zpoždění_max"
+
+#: clfm.value:j
+msgid "Short stories"
+msgstr "Povídky"
+
+#: clm.value:pag
+msgid "Pangasinan"
+msgstr "Pangasinan"
+
+#: ppl.description:82
+msgid "Allow a user to view which users have checked out a given copy"
+msgstr "Umožňuje uživateli zjistit, který čtenář má daný výtisk vypůjčen"
+
+#: clm.value:pam
+msgid "Pampanga"
+msgstr "Pampangau"
+
+#: clm.value:nah
+msgid "Nahuatl"
+msgstr "Nahuatl"
+
+#: clm.value:yid
+msgid "Yiddish"
+msgstr "Jidiš"
+
+#: vqbrad.description:8
+msgid "Accession Number"
+msgstr "Přírůstkové číslo"
+
+# nutný kontext
+#: ppl.description:117
+msgid "Allow a user to update a closed date interval for a given location"
+msgstr "Umožňuje uživateli aktualizovat uzavřené rozmezí dat pro danou lokaci"
+
+#: clm.value:cpp
+msgid "Creoles and Pidgins, Portuguese-based (Other)"
+msgstr "Kreolština a jiné pidginy na základě portugalštiny"
+
+#: clm.value:ton
+msgid "Tongan"
+msgstr "Tongština"
+
+#: clm.value:ijo
+msgid "Ijo"
+msgstr "Idžo"
+
+#: clm.value:cai
+msgid "Central American Indian (Other)"
+msgstr "Indiánské jazyky Střední Ameriky (ostatní)"
+
+#: ccs.name:14
+msgid "Damaged"
+msgstr "Poškozený"
+
+# nutný kontext
+#: ppl.description:132
+msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
+msgstr "Umožňuje užvateli přidat/odebrat čtenáře do/z \"KnihovníManažer\" skupiny"
+
+#: clm.value:sma
+msgid "Southern Sami"
+msgstr "Sami jazyky jižní"
+
+#: clm.value:kaw
+msgid "Kawi"
+msgstr "Kawi"
+
+#: ppl.description:20
+msgid "Allow a user to import a MARC record via the Z39.50 interface"
+msgstr "Umožnuje uživateli import MARC záznamu pomocí Z39.50 rozhraní"
+
+#: clm.value:kal
+msgid "Kalâtdlisut"
+msgstr "Grónština"
+
+#: clm.value:kok
+msgid "Konkani"
+msgstr "Konkánština"
+
+#: clm.value:nau
+msgid "Nauru"
+msgstr "Naurština"
+
+#: cam.value:g
+msgid "General"
+msgstr "Hlavní"
+
+#: clm.value:sas
+msgid "Sasak"
+msgstr "Sasakština"
+
+#: ccs.name:0
+msgid "Available"
+msgstr "Dostupný"
+
+#: crcd.name:6
+msgid "35_days_1_renew"
+msgstr "35_dní_1_prodloužení"
+
+#: clm.value:zul
+msgid "Zulu"
+msgstr "Zuluština"
+
+#: ppl.description:87
+msgid "Allow a user to view all notes attached to a title"
+msgstr "Umožňuje uživateli zobrazit všechny zprávy připojené k tituly"
+
+#: clm.value:geo
+msgid "Georgian"
+msgstr "Gruzínština"
+
+#: clm.value:arc
+msgid "Aramaic"
+msgstr "Aramejština"
+
+#: ppl.description:84
+msgid "Allow a user to register a new workstation"
+msgstr "Umožňuje uživateli registraci na novém počítači"
+
+#: clm.value:tir
+msgid "Tigrinya"
+msgstr "Tigriňa"
+
+#: clm.value:chk clm.value:-tru
+msgid "Truk"
+msgstr "Čukčtina"
+
+#: clm.value:tib
+msgid "Tibetan"
+msgstr "Tibetština"
+
+#: cza.label:7 cza.label:16 vqbrad.description:12
+msgid "Publisher"
+msgstr "Vydavatel"
+
+#: clm.value:inh
+msgid "Ingush"
+msgstr "Inguština"
+
+#: clm.value:dzo
+msgid "Dzongkha"
+msgstr "Dzongka"
+
+#: clm.value:grn clm.value:-gua
+msgid "Guarani"
+msgstr "Guaraní"
+
+#: clm.value:iii
+msgid "Sichuan Yi"
+msgstr "S'čchuanština"
+
+#: clm.value:btk
+msgid "Batak"
+msgstr "Batačtina"
+
+#: clm.value:div
+msgid "Divehi"
+msgstr "Divehi"
+
+#: clm.value:sga
+msgid "Irish, Old (to 1100)"
+msgstr "Irština, stará (do 1100)"
+
+#: clm.value:kru
+msgid "Kurukh"
+msgstr "Kurukh"
+
+#: clm.value:her
+msgid "Herero"
+msgstr "Hererština"
+
+#: crcd.name:3
+msgid "3_months_0_renew"
+msgstr "3_měsíce_0_prodloužení"
+
+#: ppl.description:7
+msgid "Allow a user to place a volume level hold"
+msgstr "Umožňuje uživateli rezervaci svazku"
+
+#: clm.value:lav
+msgid "Latvian"
+msgstr "Lotyšština"
+
+#: clm.value:eng
+msgid "English"
+msgstr "Angličtina"
+
+#: ppl.description:55
+msgid "Allow a user to edit copies in batch"
+msgstr "Umožňuje uživateli editovat exempláře ve skupině"
+
+#: cifm.value:d
+msgid "Large print"
+msgstr "Velký výtisk"
+
+#: clm.value:scr
+msgid "Croatian"
+msgstr "Chorvatština"
+
+#: cam.value:j
+msgid "Juvenile"
+msgstr "Pro mládež"
+
+#: clm.value:chi
+msgid "Chinese"
+msgstr "Čínština"
+
+#: ppl.description:51
+msgid "Allow a user to add other users to permission groups"
+msgstr "Umožňuje přidávat jiné uživatele do povolených skupin"
+
+#: ppl.description:11
+msgid "Allow a user to view another user's holds"
+msgstr "Umožnuje zobrazení rezervací jiného uživatele"
+
+#: clm.value:iku
+msgid "Inuktitut"
+msgstr "Inuitština"
+
+#: clm.value:mun
+msgid "Munda (Other)"
+msgstr "Mundské jazyky (ostatní)"
+
+#: clm.value:pli
+msgid "Pali"
+msgstr "Páli"
+
+#: cza.label:3 cza.label:12
+msgid "LCCN"
+msgstr "LCCN"
+
+#: ppl.description:119
+msgid "Allow a user to delete a non cataloged type"
+msgstr "Umožňuje smazání nezkatalogizovaný typ"
+
+#: clm.value:yap
+msgid "Yapese"
+msgstr "Yapese"
+
+#: clm.value:ara
+msgid "Arabic"
+msgstr "Arabština"
+
+#: clm.value:ven
+msgid "Venda"
+msgstr "Vendština"
+
+#: ppl.description:34
+msgid "Allow a user to view user permissions within the user permissions editor"
+msgstr ""
+"Umožňuje zobrazit uživatelská oprávnění v editoru uživatelských oprávnění"
+
+#: pgt.name:3
+msgid "Staff"
+msgstr "Personál"
+
+#: ppl.description:134
+msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
+msgstr "Umožňuje přidat/odebrat uživatele do/ze skupiny \"Superkatalogizace\""
+
+#: clm.value''in:gwi
+msgid "Gwich"
+msgstr "Gwich'in"
+
+#: clm.value:iro
+msgid "Iroquoian (Other)"
+msgstr "Irokézské jazyky (ostatní)"
+
+#: clm.value:ori
+msgid "Oriya"
+msgstr "Urijština"
+
+#: ppl.description:125
+msgid "Allow a user to add/remove users to/from the \"User\" group"
+msgstr "Umožňuje přidat/odebrat uživatele do/ze skupiny \"Uživatel\" "
+
+#: clm.value:ipk
+msgid "Inupiaq"
+msgstr "Inuitština"
+
+#: i18n_l.name:en-CA
+msgid "English (Canada)"
+msgstr "Angličtina (Kanada)"
+
+#: clm.value:hin
+msgid "Hindi"
+msgstr "Hindština"
+
+#: clm.value:ewo
+msgid "Ewondo"
+msgstr "Ewondo"
+
+#: cza.label:1 cza.label:10
+msgid "Title Control Number"
+msgstr "Kontrolní číslo titulu"
+
+#: ppl.description:138
+#, fuzzy
+msgid "Allow a user to renew an item past the maximum renewal count"
+msgstr "Umožňuje prodloužení exempláře i po dosažení maxima prodloužení"
+
+#: ppl.description:139
+msgid "Allow staff to override checkout count failure"
+msgstr "Umožňuje personálu překonat chybu výpůjčky"
+
+#: clm.value:hun
+msgid "Hungarian"
+msgstr "Maďarština"
+
+#: clfm.value:f
+msgid "Novels"
+msgstr "Novely"
+
+#: clm.value:wol
+msgid "Wolof"
+msgstr "Wolofština"
+
+#: clm.value:bos
+msgid "Bosnian"
+msgstr "Bosenština"
+
+#: clm.value:rom
+msgid "Romani"
+msgstr "Romština"
+
+#: clm.value:vie
+msgid "Vietnamese"
+msgstr "Vietnamština"
+
+#: aout.opac_label:4
+msgid "This Specialized Library"
+msgstr "Specializovaná knihovna"
+
+#: clm.value:mnc
+msgid "Manchu"
+msgstr "Mandžuština"
+
+#: aou.name:1
+msgid "Example Consortium"
+msgstr "Příklad konsorcia"
+
+#: clm.value:rus
+msgid "Russian"
+msgstr "Ruština"
+
+#: clm.value:gba
+msgid "Gbaya"
+msgstr "Gbaja"
+
+#: clm.value:luo
+msgid "Luo (Kenya and Tanzania)"
+msgstr "Luo (Keňa a Tanzánie)"
+
+#: clm.value:tiv
+msgid "Tiv"
+msgstr "Tivština"
+
+#: clm.value:und
+msgid "Undetermined"
+msgstr "Neurčitý"
+
+#: cam.description:f
+msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
+msgstr ""
+"Exemplář zaměřený na specifickou skupinu uživatelů a způsob prezentace činí "
+"exemplář nezajímavým pro jinou skupinu"
+
+#: ppl.description:90
+msgid "Allow a user to create a new title note"
+msgstr "Umožňuje vytvoření nové poznámky k titlu"
+
+#: cnal.name:3
+msgid "No Access"
+msgstr "Nepřístupné"
+
+# grocery - předpokládám že košík uživatele
+#: ppl.description:17
+msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
+msgstr ""
+"Umožňuje zobrazení košík nebo výpůjčky jiného uživatele v kontě; duplikát "
+"ZOBRAZENÍ_TRANSAKCÍ"
+
+#: clfm.value:1
+msgid "Fiction (not further specified)"
+msgstr "Beletrie (bez další specifikace)"
+
+#: ppl.description:108
+msgid "Allow a user to check in/out an item that has an alert message"
+msgstr "Umožňuje vypůjčit/vrátit exemplář, který má připojené upozornění"
+
+#: clm.value:bra
+msgid "Braj"
+msgstr "Bradžština"
+
+#: clm.value:bat
+msgid "Baltic (Other)"
+msgstr "Baltské jazyky (ostatní)"
+
+#: clm.value:tso
+msgid "Tsonga"
+msgstr "Tsonga"
+
+# Bookmobile - pojízdná knihovna
+#: aout.opac_label:5
+msgid "Your Bookmobile"
+msgstr "Váš bibliobus"
+
+# velice nejistý překlad
+#: clfm.description:i
+msgid "The item is a single letter or collection of correspondence."
+msgstr "Exemplář je jediný odpovídající zadání nebo sbírce."
+
+#: citm.value:m
+msgid "Computer file"
+msgstr "Počítačový soubor"
+
+#: clm.value:phi
+msgid "Philippine (Other)"
+msgstr "Filipínské jazyky (ostatní)"
+
+#: clm.value:ger
+msgid "German"
+msgstr "Německy"
+
+#: ppl.description:131
+msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
+msgstr ""
+"Umožňuje přidání/odebrání uživatele z/do skupiny  \"LokálníAdmministrace\""
+
+#: clm.value:sla
+msgid "Slavic (Other)"
+msgstr "Slovanské jazyky (ostatní)"
+
+#: ppl.description:33
+msgid "Allow a user to place an item in transit"
+msgstr "Umožňuje uživateli umístit exemplář do přepravy"
+
+#: clm.value:baq
+msgid "Basque"
+msgstr "Baskičtina"
+
+#: clm.value:tum
+msgid "Tumbuka"
+msgstr "Tumbukština"
+
+#: ppl.description:27
+msgid "Allow a user to continue to renew an item even if it is required for a hold"
+msgstr ""
+"Umožňuje uživateli prodloužení exempláře, i když je na něj zadaná rezervace"
+
+#: cbs.source:1
+msgid "oclc"
+msgstr "oclc"
+
+# vůbec nerozumím, co tím autor myslel
+#: ppl.description:71
+msgid "User may delete a copy statistical category entry map"
+msgstr "Uživatel může smazat statistickou kategorii mapy záznamu"
+
+#: clm.value:mdr
+msgid "Mandar"
+msgstr "Mandar"
+
+#: cblvl.value:a
+msgid "Monographic component part"
+msgstr "Dílčí část monografie"
+
+#: clfm.description:p
+msgid "The item is a poem or collection of poems."
+msgstr "Jednotka je báseň nebo sbírka básní"
+
+# není mi jasná souvislost s language
+#: citm.value:t
+msgid "Manuscript language material"
+msgstr "Rukopisný materiál"
+
+#: clm.value:che
+msgid "Chechen"
+msgstr "Čečenština"
+
+#: clm.value:nzi
+msgid "Nzima"
+msgstr "Nzima"
+
+#: clm.value:dut
+msgid "Dutch"
+msgstr "Nizozemština"
+
+#: cnct.name:1
+msgid "Paperback Book"
+msgstr "Brožovaná kniha"
+
+#: clm.value:eka
+msgid "Ekajuk"
+msgstr "Ekajuk"
+
+#: clm.value:grb
+msgid "Grebo"
+msgstr "Grebo"
+
+#: crcd.name:2
+msgid "28_days_2_renew"
+msgstr "28_dní_2_prodlouižení"
+
+#: clm.value:nep
+msgid "Nepali"
+msgstr "Nepálština"
+
+#: ppl.description:127
+msgid "Allow a user to add/remove users to/from the \"Staff\" group"
+msgstr "Umožňuje přidat/odebrat uživatele do/ze skupiny  \"Personál\""
+
+#: clm.value:sms
+msgid "Skolt Sami"
+msgstr "Skolt Sami"
+
+#: clm.value:nbl
+msgid "Ndebele (South Africa)"
+msgstr "Ndebelština (Jižní Afrika)"
+
+#: ccs.name:4
+msgid "Missing"
+msgstr "Ztráta"
+
+#: clm.value:wel
+msgid "Welsh"
+msgstr "Velština"
+
+#: clm.value:ota
+msgid "Turkish, Ottoman"
+msgstr "Turečtina, osmanská"
+
+#: cza.label:6 cza.label:15 vqbrad.description:6
+msgid "ISSN"
+msgstr "ISSN"
+
+#: clm.value:goh
+msgid "German, Old High (ca. 750-1050)"
+msgstr "Němčina, horní, starší doba (cca 750-1050)"
+
+# nechápu význam
+#: ppl.description:70
+msgid "User may delete a patron statistical category entry map"
+msgstr "Umožňuje smazání statistického záznamu čtenáře"
+
+#: clm.value:tem
+msgid "Temne"
+msgstr "Temne"
+
+#: clm.value:jpr
+msgid "Judeo-Persian"
+msgstr "Judeo-perština"
+
+#: clm.value:day
+msgid "Dayak"
+msgstr "Dajáčtina"
+
+#: clm.value:gon
+msgid "Gondi"
+msgstr "Góndština"
+
+#: ppl.description:28
+msgid "Allow a user to create another user"
+msgstr "Umožňuje vytvoření jiného uživatele"
+
+#: clm.value:bak
+msgid "Bashkir"
+msgstr "Baškirština"
+
+#: clm.value:kam
+msgid "Kamba"
+msgstr "Kambština"
+
+# podumat nad překladem
+#: ppl.description:4
+msgid "Allow a user to log in to the staff client"
+msgstr "Umožňuje přihlášení do klienta personálu"
+
+#: i18n_l.name:es-MX
+msgid "Spanish (Mexico)"
+msgstr "Španělština (Mexiko)"
+
+#: citm.value:i
+msgid "Nonmusical sound recording"
+msgstr "Nehudební zvukový záznam"
+
+#: pgt.name:2
+msgid "Patrons"
+msgstr "Čtenáři"
+
+#: ppl.description:102
+msgid "Allow a user to change the due date on an item to any date"
+msgstr "Umožňuje uživateli změnu data vrácení exempláře na jakékoliv jiné datum"
+
+#: ppl.description:76
+msgid "Allow a user to create a new copy location"
+msgstr "Umožňuje vytvoření novou lokaci jednotky"
+
+#: clm.value:nso
+msgid "Northern Sotho"
+msgstr "Severní sothoština"
+
+#: crcd.name:8
+msgid "1_hour_2_renew"
+msgstr "1_hodina_2_prodloužení"
+
+# nutný kontext
+#: clfm.value:i
+msgid "Letters"
+msgstr "Dopisy"
+
+#: clm.value:mak
+msgid "Makasar"
+msgstr "Makasarština"
+
+#: clm.value:afa
+msgid "Afroasiatic (Other)"
+msgstr "Afroasijské jazyky (ostatní)"
+
+#: clm.value:bih
+msgid "Bihari"
+msgstr "Bihárština"
+
+#: clm.value:ine
+msgid "Indo-European (Other)"
+msgstr "Indoevropské jazyky (jiné)"
+
+#: clm.value:kin
+msgid "Kinyarwanda"
+msgstr "Rwandština"
+
+#: clm.value:ile
+msgid "Interlingue"
+msgstr "Interlingue"
+
+#: ccs.name:12
+msgid "Reserves"
+msgstr "Rezervy"
+
+#: clm.value:heb
+msgid "Hebrew"
+msgstr "Hebrejština"
+
+#: clm.value:lit
+msgid "Lithuanian"
+msgstr "Litevština "
+
+#: clm.value:epo clm.value:-esp
+msgid "Esperanto"
+msgstr "Esperanto"
+
+# nutný kontext
+#: ppl.description:67
+msgid "User may delete a copy statistical category"
+msgstr "Umožňuje smazání statistické kategorie exempláře"
+
+#: clm.value:cpf
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Kreolština a pigdin, vycházející z francouzštiny (ostatní)"
+
+#: clm.value:ssw clm.value:-swz
+msgid "Swazi"
+msgstr "Svatština"
+
+#: clm.value:-lap clm.value:smi
+msgid "Sami"
+msgstr "Sami jazyky"
+
+# nechápu význam
+#: ppl.description:65
+msgid "User may link a copy to an entry in a statistical category"
+msgstr "Umožňuje odkázat exemplář na záznam ve statistické kategorii"
+
+#: clm.value:inc
+msgid "Indic (Other)"
+msgstr "Indo-árijské jazyky (ostatní)"
+
+#: clm.value:tel
+msgid "Telugu"
+msgstr "Telugu"
+
+#: cza.label:4 cza.label:13
+msgid "Author"
+msgstr "Autor"
+
+# nutný kontext
+#: cbs.source:2
+msgid "System Local"
+msgstr "Lokální systém"
+
+#: ppl.description:48
+#, fuzzy
+msgid "Allow a user to see what another user has checked out"
+msgstr "Umožňuje zobrazit jaké dokumenty má jiný čtenář půjčené"
+
+#: clm.value:new
+msgid "Newari"
+msgstr "Névárština"
+
+#: aout.name:4
+msgid "Sub-library"
+msgstr "Dílčí knihovna"
+
+#: crcd.name:5
+msgid "2_months_2_renew"
+msgstr "2_měsíce_2_prodloužení"
+
+#: cnal.name:2
+msgid "Unfiltered"
+msgstr "Netříděné"
+
+#: ppl.description:133
+msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
+msgstr "Umožňuje přidání/odebrání uživatelů do/ze skupiny \"Kat1\" "
+
+#: ppl.description:25
+msgid "Allow a user to edit a copy"
+msgstr "Umožňuje editaci exempláře"
+
+# není mi to jasné
+#: ppl.description:61
+msgid "User may update a copy statistical category"
+msgstr "Umožňuje aktualizaci statistické kategorie exempláře"
+
+#: clm.value:ful
+msgid "Fula"
+msgstr "Fulahština"
+
+#: cifm.value:a
+msgid "Microfilm"
+msgstr "Mikrofilm"
+
+#: clm.value:nub
+msgid "Nubian languages"
+msgstr "Núbijské jazyky"
+
+#: clm.value:arm i18n_l.name:hy-AM i18n_l.description:hy-AM
+msgid "Armenian"
+msgstr "Arménština"
+
+#: clm.value:sad
+msgid "Sandawe"
+msgstr "Sandawština"
+
+#: ppl.description:126
+msgid "Allow a user to add/remove users to/from the \"Patron\" group"
+msgstr "Umožňuje přidání/odebrání uživatele z/do skupiny \"Čtenář\""
+
+#: clfm.description:s
+msgid "The item is a speech or collection of speeches."
+msgstr "Jednotka je projev nebo sbírkou projevů"
+
+#: clm.value:bad
+msgid "Banda"
+msgstr "Banda"
+
+#: clm.value:tam
+msgid "Tamil"
+msgstr "Tamilština"
+
+#: clm.value:aus
+msgid "Australian languages"
+msgstr "Australské jazky"
+
+#: cam.value:
+msgid "Unknown or unspecified"
+msgstr "Neznámý nebo nespecifikovaný"
+
+#: ppl.description:10 ppl.description:13 ppl.description:35
+msgid "* no longer applicable"
+msgstr "* již se neužívá"
+
+#: cblvl.value:m
+msgid "Monograph/Item"
+msgstr "Monografie/Jednotka"
+
+# není moc šikovný překlad
+#: ppl.description:103
+msgid "Allow a user to bypass the circulation permit call for check out"
+msgstr "Umožňuje překonání užvatelských oprávnění pro výpůjčku "
+
+#: clm.value:pus
+msgid "Pushto"
+msgstr "Paštština"
+
+#: cifm.value:b
+msgid "Microfiche"
+msgstr "Mikrofiš"
+
+#: clm.value:wln
+msgid "Walloon"
+msgstr "Valonština"
+
+# nutný kontext
+#: ppl.description:112
+msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
+msgstr ""
+"Umožňuje zakázat přepravu jednotky pokud uživatel není v cílové kniihovně"
+
+#: clm.value:din
+msgid "Dinka"
+msgstr "Dinkština"
+
+#: clm.value:chu
+msgid "Church Slavic"
+msgstr "Církevní slověnština"
+
+#: clm.value:nno
+msgid "Norwegian (Nynorsk)"
+msgstr "Norština (Nynorsk)"
+
+#: clm.value:lam
+msgid "Lamba"
+msgstr "Lambština"
+
+#: clm.value:mic
+msgid "Micmac"
+msgstr "Micmac"
+
+#: clm.value:-gag clm.value:glg
+msgid "Galician"
+msgstr "Galicijština"
+
+#: clm.value:mad
+msgid "Madurese"
+msgstr "Madurština"
+
+#: clm.value:kmb
+msgid "Kimbundu"
+msgstr "Kimbundština"
+
+#: clm.value:ssa
+msgid "Nilo-Saharan (Other)"
+msgstr "Nilsko-saharské jazyky (ostatní)"
+
+#: clm.value:sag
+msgid "Sango (Ubangi Creole)"
+msgstr "Sangština (Ubangi Creole)"
+
+#: clm.value:kha
+msgid "Khasi"
+msgstr "Khasi"
+
+#: clm.value:man
+msgid "Mandingo"
+msgstr "Mandingština"
+
+#: clm.value:mah
+msgid "Marshallese"
+msgstr "Maršalština"
+
+#: clm.value:yao
+msgid "Yao (Africa)"
+msgstr "Jaoština (Afrika)"
+
+#: clm.value:mar
+msgid "Marathi"
+msgstr "Maráthština"
+
+#: clm.value:slv
+msgid "Slovenian"
+msgstr "Slovinština"
+
+#: clm.value:sal
+msgid "Salishan languages"
+msgstr "Salishské jazyky"
+
+#: pgt.name:4
+msgid "Catalogers"
+msgstr "Katalogizátoři"
+
+#: ppl.description:152
+msgid "Allow a staff member to define where another staff member has their permissions"
+msgstr "Umožňuje definovat, ke kterým funkcím má člen personálu oprávnění."
+
+#: clm.value:san
+msgid "Sanskrit"
+msgstr "Sanskrt"
+
+#: ccs.name:9
+msgid "On order"
+msgstr "Na objednávku"
+
+#: clfm.value:e
+msgid "Essays"
+msgstr "Eseje"
+
+# nutný kontext
+#: aout.opac_label:2
+msgid "Local Library System"
+msgstr "Lokální knihovní systém "
+
+#: cifm.value:r
+msgid "Regular print reproduction"
+msgstr "Reprodukce běžným písmem"
+
+#: clm.value:elx
+msgid "Elamite"
+msgstr "Elamština"
+
+#: ppl.description:53
+msgid "Allow a user to view other users' permission groups"
+msgstr "Umožňuje zobrazení skupin oprávnění jiných uživatelů"
+
+#: clm.value:ady
+msgid "Adygei"
+msgstr "Adygei"
+
+# nutný kontext
+#: ppl.description:57
+msgid "User may create a copy statistical category"
+msgstr "Umožňuje vytvoření statistické kategorie jednotky"
+
+#: clm.value:nor
+msgid "Norwegian"
+msgstr "Norština"
+
+#: clm.value:lug
+msgid "Ganda"
+msgstr "Ganda"
+
+#: aout.opac_label:1
+msgid "Everywhere"
+msgstr "Kdekoliv"
+
+# nutný kontext
+#: aou.name:6
+msgid "Example Branch 3"
+msgstr "Příklad pobočky 3"
+
+# nutný kontext
+#: aou.name:4
+msgid "Example Branch 1"
+msgstr "Příklad pobočky 1"
+
+#: clm.value:lah
+msgid "Lahnda"
+msgstr "Lahndština"
+
+#: clm.value:hit
+msgid "Hittite"
+msgstr "Chetitština"
+
+# nutný kontext
+#: ppl.description:118
+msgid "Allow a user to create a new closed date for a location"
+msgstr "Umožňuje vytvoření nového uzavřeného data pro lokaci"
+
+#: clm.value:tuk
+msgid "Turkmen"
+msgstr "Turkmenština"
+
+#: cam.description:j
+msgid "The item is intended for children and young people, approximate ages 0-15 years."
+msgstr ""
+"Tento exemplář je určen pro děti a mládež, přibližné věkové skupiny 0-15 "
+"let."
+
+#: clm.value:suk
+msgid "Sukuma"
+msgstr "Sukuma"
+
+#: citm.value:p
+msgid "Mixed materials"
+msgstr "Smíšené materiály"
+
+#: ppl.description:72
+msgid "Allow a user to create a new non-cataloged item type"
+msgstr "Povolit uživateli vytvářet nový nezkatalogizovaý typ exempláře"
+
+#: ccs.name:8
+#, fuzzy
+msgid "On holds shelf"
+msgstr "Na rezervace knih"
+
+#: aout.name:5
+msgid "Bookmobile"
+msgstr "Pojízdná knihovna"
+
+#: clm.value:ypk
+msgid "Yupik languages"
+msgstr "Yupik jazyky"
+
+#: clm.value:tvl
+msgid "Tuvaluan"
+msgstr "Tuvaluan"
+
+#: ppl.description:54
+msgid "Allow a user to determine whether another user can check out an item"
+msgstr ""
+"Povolit uživateli rozhodnout, jestli jiný uživatel může odhlásit exemplář"
+
+#: ppl.description:104
+msgid "Allow a user to override the copy_is_reference event"
+msgstr "Povolit uživateli překonat copy_is_reference událost"
+
+#: clm.value:bej
+msgid "Beja"
+msgstr "Beja"
+
+#: clm.value:gem
+msgid "Germanic (Other)"
+msgstr "Germánské (Ostatní)"
+
+#: cza.label:9 cza.label:18
+msgid "Item Type"
+msgstr "Typ exempláře"
+
+#: clm.value:kab
+msgid "Kabyle"
+msgstr "Kabyle"
+
+#: crcd.name:10
+msgid "14_days_2_renew"
+msgstr "14_dní_2_obnovit"
+
+#: ppl.description:15
+msgid "Allow a user to renew items"
+msgstr "Povolit uživateli obnovit exempláře"
+
+#: cit.name:2
+msgid "SSN"
+msgstr "SSN"
+
+#: clm.value:got
+msgid "Gothic"
+msgstr "gótština"
+
+#: clm.value:tmh
+#, fuzzy
+msgid "Tamashek"
+msgstr "Tamashek"
+
+#: clm.value:kaa
+msgid "Kara-Kalpak"
+msgstr "Kara-Kalpak"
+
+#: clm.value:swa
+msgid "Swahili"
+msgstr "Svahilština"
+
+#: clm.value:car
+msgid "Carib"
+msgstr "Karibština"
+
+#: clm.value:sam
+#, fuzzy
+msgid "Samaritan Aramaic"
+msgstr "Samaritan Aramaic"
+
+#: clm.value:chr
+#, fuzzy
+msgid "Cherokee"
+msgstr "Cherokee"
+
+#: ccs.name:5
+msgid "In process"
+msgstr "V procesu"
+
+#: ppl.description:78
+msgid "Allow a user to delete a copy location"
+msgstr "Povolit uživateli mazání umístění exempláře"
+
+#: clm.value:mag
+#, fuzzy
+msgid "Magahi"
+msgstr "Magahi"
+
+#: clm.value:paa
+msgid "Papuan (Other)"
+msgstr "Papuánština (ostatní)"
+
+#: clm.value:-mla clm.value:mlg
+#, fuzzy
+msgid "Malagasy"
+msgstr "Malagasy"
+
+#: clm.value:tli
+#, fuzzy
+msgid "Tlingit"
+msgstr "Tlingit"
+
+#: clm.value:mao
+#, fuzzy
+msgid "Maori"
+msgstr "Maori"
+
+#: clm.value:frm
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "Francouzština, střední (cca 1400-1600)"
+
+#: clm.value:bai
+#, fuzzy
+msgid "Bamileke languages"
+msgstr "Bamileke jazyky"
+
+#: clm.value:ibo
+#, fuzzy
+msgid "Igbo"
+msgstr "Igbo"
+
+#: clm.value:lad
+#, fuzzy
+msgid "Ladino"
+msgstr "Ladino"
+
+#: clm.value:cat
+msgid "Catalan"
+msgstr "Katalánština"
+
+#: clm.value:srr
+#, fuzzy
+msgid "Serer"
+msgstr "Serer"
+
+#: cam.value:e
+msgid "Adult"
+msgstr "Dospělý"
+
+#: ppl.description:42
+msgid "Allow a user may view another user's transactions"
+msgstr "Povolit uživateli prohlédnout transakce jiného uživatele"
+
+#: clm.value:phn
+#, fuzzy
+msgid "Phoenician"
+msgstr "Phoenician"
+
+#: clm.value:wen
+#, fuzzy
+msgid "Sorbian languages"
+msgstr "Sorbian jazyky"
+
+#: cam.value:a
+msgid "Preschool"
+msgstr "Předškolní"
+
+#: clm.value:sel
+#, fuzzy
+msgid "Selkup"
+msgstr "Selkup"
+
+#: clm.value:bal
+#, fuzzy
+msgid "Baluchi"
+msgstr "Baluchi"
+
+#: clm.value:pan
+#, fuzzy
+msgid "Panjabi"
+msgstr "Panjabi"
+
+#: clm.value:oss
+#, fuzzy
+msgid "Ossetic"
+msgstr "Osetština"
+
+#: clm.value:raj
+#, fuzzy
+msgid "Rajasthani"
+msgstr "Rajasthani"
+
+#: clm.value:non
+msgid "Old Norse"
+msgstr "Starý severský"
+
+#: ppl.description:77
+msgid "Allow a user to update a copy location"
+msgstr "Povolit uživateli aktualizovat umístění exempláře"
+
+#: clm.value:hau
+#, fuzzy
+msgid "Hausa"
+msgstr "Hausa"
+
+#: clm.value:kut
+#, fuzzy
+msgid "Kutenai"
+msgstr "Kutenai"
+
+#: clm.value:mol
+#, fuzzy
+msgid "Moldavian"
+msgstr "Moldavština"
+
+#: ppl.description:111
+msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
+msgstr "Povolit uživateli "
+
+#: clm.value:lol
+#, fuzzy
+msgid "Mongo-Nkundu"
+msgstr "Mongo-Nkundu"
+
+#: clm.value:kum
+#, fuzzy
+msgid "Kumyk"
+msgstr "Kumyk"
+
+#: vqbrad.description:14
+msgid "Edition"
+msgstr "Edice"
+
+#: clm.value:ava
+#, fuzzy
+msgid "Avaric"
+msgstr "Avaric"
+
+#: ppl.description:22
+msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
+msgstr ""
+"Povolit uživateli editovat svazky - potřebné pro sloučení záznamů. Toto je "
+"duplikát VOLUME_UPDATE; uživatel musí mít oprávnění na odpovídající úrovni "
+"pro sloučení záznamů."
+
+#: clm.value:mos
+msgid "Mooré"
+msgstr "Mooré"
+
+#: ppl.description:101
+#, fuzzy
+msgid "Allow a user to execute an offline script batch"
+msgstr "Povolit uživateli vykonat offline zápis skupiny"
+
+#: clm.value:gmh
+#, fuzzy
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "Germánština, Middle High (cca 1050-1500)"
+
+#: ppl.description:81
+msgid "Allow a user to see if another user has permission to place a hold on a given copy"
+msgstr ""
+"Povolit uživateli vidět, jestli jiný uživatel má oprávnění umístit rezervaci "
+"na daný exemplář"
+
+#: cza.label:2 cza.label:11 vqbrad.description:5
+msgid "ISBN"
+msgstr "ISBN"
+
+#: clm.value:mai
+#, fuzzy
+msgid "Maithili"
+msgstr "Maithili"
+
+#: pgt.name:5
+#, fuzzy
+msgid "Circulators"
+msgstr "výpůjčky"
+
+#: clm.value:tai
+#, fuzzy
+msgid "Tai (Other)"
+msgstr "Tai (Ostatní)"
+
+#: clm.value:tpi
+msgid "Tok Pisin"
+msgstr "Tok Pisin"
+
+#: clm.value:bin
+#, fuzzy
+msgid "Edo"
+msgstr "Edo"
+
+#: cit.name:3
+msgid "Other"
+msgstr "Ostatní"
+
+#: clm.value:peo
+msgid "Old Persian (ca. 600-400 B.C.)"
+msgstr "Stará perština (cca 600-400 př. Kr.)"
+
+#: citm.value:k
+#, fuzzy
+msgid "Two-dimensional nonprojectable graphic"
+msgstr "Dvojrozměrná neprojektovaná grafika"
+
+#: clm.value:ban
+#, fuzzy
+msgid "Balinese"
+msgstr "Balinese"
+
+#: clm.value:tkl
+#, fuzzy
+msgid "Tokelauan"
+msgstr "Tokelauan"
+
+#: clm.value:doi
+#, fuzzy
+msgid "Dogri"
+msgstr "Dogri"
+
+#: clm.value:pro
+#, fuzzy
+msgid "Provençal (to 1500)"
+msgstr "Provensálština (do 1500)"
+
+#: clm.value:lim
+#, fuzzy
+msgid "Limburgish"
+msgstr "Limburgish"
+
+#: clm.value:egy
+#, fuzzy
+msgid "Egyptian"
+msgstr "Egypština"
+
+#: vqbrad.description:7
+msgid "Price"
+msgstr "Cena"
+
+#: clm.value:tyv
+#, fuzzy
+msgid "Tuvinian"
+msgstr "Tuvinian"
+
+#: citm.value:o
+#, fuzzy
+msgid "Kit"
+msgstr "Kit"
+
+#: acpl.name:1
+#, fuzzy
+msgid "Stacks"
+msgstr "Regály"
+
+#: clm.value:mul
+msgid "Multiple languages"
+msgstr "Vícenásobné jazyky"
+
+#: clm.value:mlt
+#, fuzzy
+msgid "Maltese"
+msgstr "Maltese"
+
+#: clm.value:asm
+#, fuzzy
+msgid "Assamese"
+msgstr "Assamese"
+
+#: ppl.description:88
+msgid "Allow a user to create a new copy note"
+msgstr "Povolit uživateli vytvářet nové poznámky exempláře"
+
+#: pgt.name:10
+msgid "Local System Administrator"
+msgstr "Místní správce systému"
+
+#: cza.label:8 cza.label:17 vqbrad.description:13
+msgid "Publication Date"
+msgstr "Datum zveřejnění"
+
+#: ppl.description:16
+msgid "Allow a user to view bill details"
+msgstr "Povolit uživateli vidět detaily účtu"
+
+#: clm.value:gaa
+#, fuzzy
+msgid "Gã"
+msgstr "Gã"
+
+#: clm.value:tsn clm.value:-tsw
+#, fuzzy
+msgid "Tswana"
+msgstr "Tswana"
+
+#: clm.value:lat
+#, fuzzy
+msgid "Latin"
+msgstr "Latina"
+
+#: ppl.description:62
+msgid "User may update an entry in a patron statistical category"
+msgstr "Uživatel může aktualizovat záznam v uživatelově statistické kategorii"
+
+#: clm.value:cop
+msgid "Coptic"
+msgstr "Coptic"
+
+#: crmf.name:5
+msgid "overdue_equip_min"
+msgstr "overdue_equip_min"
+
+#: clm.value:ltz
+#, fuzzy
+msgid "Letzeburgesch"
+msgstr "Letzeburgesch"
+
+#: clm.value:-fri clm.value:fry
+#, fuzzy
+msgid "Frisian"
+msgstr "Frisian"
+
+#: clm.value:myn
+#, fuzzy
+msgid "Mayan languages"
+msgstr "Májské jazyky"
+
+#: clm.value:por
+msgid "Portuguese"
+msgstr "Portugalština"
+
+#: clm.value:ace
+msgid "Achinese"
+msgstr "Achinese"
+
+#: cit.name:1
+msgid "Drivers License"
+msgstr "Řidičský průkaz"
+
+#: ppl.description:38
+msgid "Allow a user to mark an item as 'missing'"
+msgstr "Povolit uživateli označit exemplář jako 'chybějící'"
+
+#: ppl.description:69
+msgid "User may delete an entry from a copy statistical category"
+msgstr "Uživatel může odstranit záznam ze statistické kategorie exempláře"
+
+#: ppl.description:140
+#, fuzzy
+msgid "Allow staff to override overdue count failure"
+msgstr "Povolit zaměstnancům anulovat počet selhání"
+
+#: clm.value:ter
+#, fuzzy
+msgid "Terena"
+msgstr "Terena"
+
+#: clm.value:ave
+#, fuzzy
+msgid "Avestan"
+msgstr "Avestan"
+
+#: clm.value:min
+#, fuzzy
+msgid "Minangkabau"
+msgstr "Minangkabau"
+
+#: clm.value:him
+#, fuzzy
+msgid "Himachali"
+msgstr "Himachali"
+
+#: ppl.description:147
+msgid "Allow a user to run reports"
+msgstr "Povolit uživateli spustit zprávy"
+
+#: clm.value:znd
+msgid "Zande"
+msgstr "Zande"
+
+#: clm.value:fro
+#, fuzzy
+msgid "French, Old (ca. 842-1400)"
+msgstr "Francouzština, Starý (cca 842-1400)"
+
+#: ppl.description:39
+msgid "Allow a user to mark an item as 'claims returned'"
+msgstr "Povolit uživateli označit exemplář jako 'požadavky vráceny'"
+
+#: clm.value:sit
+#, fuzzy
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-Tibetan (Ostatní)"
+
+#: i18n_l.description:en-CA
+msgid "Canadian English"
+msgstr "Kanadská Angličtina"
+
+#: clm.value:-eth clm.value:gez
+msgid "Ethiopic"
+msgstr "Etiopština"
+
+#: vqarad.description:1
+msgid "Identifier"
+msgstr "Identifikátor"
+
+#: ppl.description:83
+msgid "Allow a user to perform Z39.50 queries against remote servers"
+msgstr "Povolit uživateli vykonat Z39.50 dotazy na vzdálené servery"
+
+#: ccs.name:13
+#, fuzzy
+msgid "Discard/Weed"
+msgstr "Vyřadit/Plevel"
+
+#: ppl.description:110
+msgid "Allow a user to change the missing status on a copy"
+msgstr "Povolit uživateli měnit chybějící stav exempláře"
+
+#: clm.value:jpn
+msgid "Japanese"
+msgstr "Japonština"
+
+#: clm.value:cor
+#, fuzzy
+msgid "Cornish"
+msgstr "Cornish"
+
+#: clm.value:bul
+msgid "Bulgarian"
+msgstr "Bulharština"
+
+#: clm.value:roa
+msgid "Romance (Other)"
+msgstr "Románština (Ostatní)"
+
+#: ppl.description:32
+msgid "Allow a user to check in a copy"
+msgstr "Povolit uživateli kontrolovat exemplář"
+
+#: clm.value:yor
+#, fuzzy
+msgid "Yoruba"
+msgstr "Yoruba"
+
+#: clm.value:arw
+#, fuzzy
+msgid "Arawak"
+msgstr "Arawak"
+
+#: clm.value:nyn
+#, fuzzy
+msgid "Nyankole"
+msgstr "Nyankole"
+
+#: clm.value:fre
+msgid "French"
+msgstr "Francouzština"
+
+#: clm.value:tog
+#, fuzzy
+msgid "Tonga (Nyasa)"
+msgstr "Tonga (Nyasa)"
+
+#: clm.value:ben
+msgid "Bengali"
+msgstr "Bengálština"
+
+#: clm.value:bas
+#, fuzzy
+msgid "Basa"
+msgstr "Basa"
+
+#: ppl.description:106
+#, fuzzy
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
+msgstr ""
+"Povolit uživateli půjčit nebo vrátit exemplář, který má status 'požadavek "
+"vrácen'"
+
+#: ppl.description:36
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr "Povolit uživateli zaznamenávat platy ve fakturovacím rozhraní"
+
+#: clfm.value:s
+msgid "Speeches"
+msgstr "Řeči"
+
+#: clm.value:kos clm.value:-kus
+#, fuzzy
+msgid "Kusaie"
+msgstr "Kusaie"
+
+#: clm.value:nap
+msgid "Neapolitan Italian"
+msgstr "Neapolská italština"
+
+#: clm.value:fin
+#, fuzzy
+msgid "Finnish"
+msgstr "Finnish"
+
+#: clm.value:sun
+msgid "Sundanese"
+msgstr "Sundanese"
+
+#: clm.value:alb
+msgid "Albanian"
+msgstr "Albánština"
+
+#: ppl.description:96
+msgid "Allow a user to view notifications attached to a hold"
+msgstr "Povolit uživateli vidět oznámení připojené k rezervaci"
+
+#: clm.value:osa
+#, fuzzy
+msgid "Osage"
+msgstr "Osage"
+
+#: vqbrad.description:10
+msgid "TCN Source"
+msgstr "TCN zdroj"
+
+#: ppl.description:44
+#, fuzzy
+msgid "Allow a user to view another user's containers (buckets)"
+msgstr "Povolit uživateli vidět jiné uživatelské kontejnery (skupiny)"
+
+#: clm.value:-tag clm.value:tgl
+#, fuzzy
+msgid "Tagalog"
+msgstr "Tagalog"
+
+#: clm.value:scc
+msgid "Serbian"
+msgstr "Srbština"
+
+#: clm.value:ast
+#, fuzzy
+msgid "Bable"
+msgstr "Bable"
+
+#: cblvl.value:d
+#, fuzzy
+msgid "Subunit"
+msgstr "Subunit"
+
+#: clm.value:ita
+msgid "Italian"
+msgstr "Italština"
+
+#: clm.value:chb
+#, fuzzy
+msgid "Chibcha"
+msgstr "Chibcha"
+
+#: aou.name:8
+msgid "Example Sub-library 1"
+msgstr "Příklad část knihovny 1"
+
+#: clm.value:nav
+#, fuzzy
+msgid "Navajo"
+msgstr "Navajo"
+
+#: clm.value:mno
+#, fuzzy
+msgid "Manobo languages"
+msgstr "Manobo jazyky"
+
+#: clm.value:cha
+#, fuzzy
+msgid "Chamorro"
+msgstr "Chamorro"
+
+#: clm.value:lua
+msgid "Luba-Lulua"
+msgstr "Luba-Lulua"
+
+#: ppl.description:79
+msgid "Allow a user to create a transit_copy object for transiting a copy"
+msgstr "Povolit uživateli vytvořit transit_copy object pro přesun exempláře "
+
+#: clm.value:wak
+#, fuzzy
+msgid "Wakashan languages"
+msgstr "Wakashan jazyky"
+
+#: clm.value:amh
+#, fuzzy
+msgid "Amharic"
+msgstr "Amharic"
+
+#: clm.value:cze
+msgid "Czech"
+msgstr "Čeština"
+
+#: clm.value:-taj clm.value:tgk
+#, fuzzy
+msgid "Tajik"
+msgstr "Tajik"
+
+#: clm.value:rap
+#, fuzzy
+msgid "Rapanui"
+msgstr "Rapanui"
+
+#: clm.value:urd
+#, fuzzy
+msgid "Urdu"
+msgstr "Urdu"
+
+#: ppl.description:24
+msgid "Allow a user to create a new copy object"
+msgstr "Povolit uživateli vytvořit nový předmět exempláře"
+
+#: clm.value:loz
+#, fuzzy
+msgid "Lozi"
+msgstr "Lozi"
+
+#: ppl.description:60
+msgid "User may update a patron statistical category"
+msgstr "Uživatel může aktualizovat statistickou kategorii uživatele"
+
+#: ppl.description:149
+msgid "Allow a user to view report output"
+msgstr "Povolit uživateli vidět zprávu na výstupu"
+
+#: clm.value:gor
+#, fuzzy
+msgid "Gorontalo"
+msgstr "Gorontalo"
+
+#: clm.value:chg
+#, fuzzy
+msgid "Chagatai"
+msgstr "Chagatai"
+
+#: ppl.description:89
+msgid "Allow a user to create a new volume note"
+msgstr "Povolit uživateli vytvořit novou poznámku svazku"
+
+#: crcd.name:9
+msgid "28_days_0_renew"
+msgstr "28_dní_0_obnovit"
+
+#: ccs.name:11
+msgid "Cataloging"
+msgstr "Katalogizovat"
+
+#: crcd.name:4
+msgid "3_days_1_renew"
+msgstr "3_dni_1_obnovit"
+
+#: clm.value:vol
+#, fuzzy
+msgid "Volapük"
+msgstr "Volapük"
+
+#: clm.value:art
+#, fuzzy
+msgid "Artificial (Other)"
+msgstr "Artificial (Ostatní)"
+
+#: clm.value:nia
+#, fuzzy
+msgid "Nias"
+msgstr "Nias"
+
+#: clm.value:arn
+#, fuzzy
+msgid "Mapuche"
+msgstr "Mapuche"
+
+#: vqbrad.description:9
+msgid "TCN Value"
+msgstr "TCN hodnota"
+
+#: clm.value:uig
+#, fuzzy
+msgid "Uighur"
+msgstr "Uighur"
+
+#: clm.value:chy
+#, fuzzy
+msgid "Cheyenne"
+msgstr "Cheyenne"
+
+#: clfm.description:u
+msgid "The literary form of the item is unknown."
+msgstr "Literární forma exempláře je neznámá."
+
+#: clm.value:fon
+#, fuzzy
+msgid "Fon"
+msgstr "Fon"
+
+#: clm.value:awa
+#, fuzzy
+msgid "Awadhi"
+msgstr "Awadhi"
+
+#: clm.value:cre
+#, fuzzy
+msgid "Cree"
+msgstr "Cree"
+
+#: clm.value:oto
+#, fuzzy
+msgid "Otomian languages"
+msgstr "Otomian jazyky"
+
+#: clm.value:nym
+#, fuzzy
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
+
+#: clm.value:ind
+msgid "Indonesian"
+msgstr "Indonéština"
+
+#: cst.value:1
+msgid "Good"
+msgstr "Dobrý"
+
+#: clm.value:den
+#, fuzzy
+msgid "Slave"
+msgstr "Otrok"
+
+#: clm.value:haw
+#, fuzzy
+msgid "Hawaiian"
+msgstr "Hawaiian"
+
+#: czs.label:loc
+msgid "Library of Congress"
+msgstr "Kongresová knihovna"
+
+#: clm.value:sid
+#, fuzzy
+msgid "Sidamo"
+msgstr "Sidamo"
+
+#: ppl.description:105
+#, fuzzy
+msgid "Allow a user to void a bill"
+msgstr "Povoit uživateli neplatný účet"
+
+#: clm.value:sin clm.value:-snh
+#, fuzzy
+msgid "Sinhalese"
+msgstr "Sinhalese"
+
+#: clm.value:ada
+#, fuzzy
+msgid "Adangme"
+msgstr "Adangme"
+
+#: clm.value:tha
+msgid "Thai"
+msgstr "Thaiština"
+
+#: clm.value:afr
+msgid "Afrikaans"
+msgstr "Afrikánština"
+
+#: citm.value:a
+msgid "Language material"
+msgstr "Jazyková materiál"
+
+#: ppl.description:31
+#, fuzzy
+msgid "Allow a user to view another user's Patron Record"
+msgstr "Povolit uživateli vidět jiný uživatelův záznam"
+
+#: vqbrad.description:4
+msgid "Pagination"
+msgstr "Stránkování"
+
+#: clm.value:uga
+#, fuzzy
+msgid "Ugaritic"
+msgstr "Ugaritic"
+
+#: clm.value:uzb
+#, fuzzy
+msgid "Uzbek"
+msgstr "Uzbek"
+
+#: clm.value:ira
+msgid "Iranian (Other)"
+msgstr "Íránština (Ostatní)"
+
+#: clm.value:zen
+#, fuzzy
+msgid "Zenaga"
+msgstr "Zenaga"
+
+#: clm.value:bug
+#, fuzzy
+msgid "Bugis"
+msgstr "Bugis"
+
+#: ccs.name:7
+#, fuzzy
+msgid "Reshelving"
+msgstr "Přestavění"
+
+#: clm.value:bur
+#, fuzzy
+msgid "Burmese"
+msgstr "Burmese"
+
+#: clm.value:ale
+#, fuzzy
+msgid "Aleut"
+msgstr "Aleut"
+
+#: clm.value:kro
+#, fuzzy
+msgid "Kru"
+msgstr "Kru"
+
+#: clfm.description:m
+msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
+msgstr ""
+"Tento exemplář je nejrůznější literárních form (např. poezie nebo povídky).\t"
+
+#: clm.value:lin
+#, fuzzy
+msgid "Lingala"
+msgstr "Lingala"
+
+#: ccs.name:1
+msgid "Checked out"
+msgstr "Odhlášeno"
+
+#: clm.value:arg
+#, fuzzy
+msgid "Aragonese Spanish"
+msgstr "Aragonese španělština"
+
+#: cam.value:b
+msgid "Primary"
+msgstr "Primární"
+
+#: clm.value:mis
+msgid "Miscellaneous languages"
+msgstr "Různé jazyky"
+
+#: clm.value:syr
+#, fuzzy
+msgid "Syriac"
+msgstr "Syriac"
+
+#: clm.value:kar
+#, fuzzy
+msgid "Karen"
+msgstr "Karen"
+
+#: clm.value:grc
+msgid "Greek, Ancient (to 1453)"
+msgstr "Řečtina, Starověk (do 1453)"
+
+#: clm.value:fur
+#, fuzzy
+msgid "Friulian"
+msgstr "Friulian"
+
+#: clm.value:nyo
+#, fuzzy
+msgid "Nyoro"
+msgstr "Nyoro"
+
+#: citm.value:e
+msgid "Cartographic material"
+msgstr "Kartografický materiál"
+
+#: clm.value:bre
+#, fuzzy
+msgid "Breton"
+msgstr "Breton"
+
+#: ppl.description:91
+#, fuzzy
+msgid "Allow a user to delete another user's copy notes"
+msgstr "Povolit uživateli mazat jiným uživatelům poznámky exempláře"
+
+#: clm.value:-gae clm.value:gla
+msgid "Scottish Gaelic"
+msgstr "Skotská gaelština"
+
+#: clm.value:tur
+msgid "Turkish"
+msgstr "Turečtina"
+
+#: ppl.description:94
+msgid "Allow a user to update another user's container"
+msgstr "Povolit uživateli aktualizovat skupinu jiného uživatele"
+
+#: ccs.name:10
+msgid "ILL"
+msgstr "ILL"
+
+#: clm.value:del
+#, fuzzy
+msgid "Delaware"
+msgstr "Delaware"
+
+#: clm.value:war
+#, fuzzy
+msgid "Waray"
+msgstr "Waray"
+
+#: aout.name:1
+msgid "Consortium"
+msgstr "Společenství"
+
+#: clm.value:snk
+#, fuzzy
+msgid "Soninke"
+msgstr "Soninke"
+
+#: ppl.description:124
+msgid "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+"Povolit uživateli odstranit existující pracovní stanici a nahradit jí jinou"
+
+#: clm.value:zap
+#, fuzzy
+msgid "Zapotec"
+msgstr "Zapotec"
+
+#: clm.value:hmn
+#, fuzzy
+msgid "Hmong"
+msgstr "Hmong"
+
+#: ppl.description:92
+msgid "Allow a user to delete another user's volume note"
+msgstr "Povolit uživateli mazat poznámku svazku jiného uživatele"
+
+#: ppl.description:153
+msgid "Allow a staff member to directly remove a bibliographic record"
+msgstr "Povolit zaměstanci přímo odstranit bibliografický záznam"
+
+#: clm.value:-cam clm.value:khm
+#, fuzzy
+msgid "Khmer"
+msgstr "Khmer"
+
+#: clm.value:chv
+#, fuzzy
+msgid "Chuvash"
+msgstr "Chuvash"
+
+#: cam.description:d
+msgid "The item is intended for young people, approximate ages 14-17 years."
+msgstr ""
+"Tento exemplář je určen pro mladé lidi, přibližné věkové skupiny 14-17 let.\t"
+
+#: clm.value:may
+#, fuzzy
+msgid "Malay"
+msgstr "Malay"
+
+#: ppl.description:19
+msgid "Allow a user to create new MARC records"
+msgstr "Povolit uživateli vytvořit nový záznam MARC"
+
+#: clm.value:zun
+#, fuzzy
+msgid "Zuni"
+msgstr "Zuni"
+
+#: citm.value:f
+msgid "Manuscript cartographic material"
+msgstr "Rukopisný kartografický dokument"
+
+#: clm.value:iba
+msgid "Iban"
+msgstr "Iban"
+
+#: aout.opac_label:3
+msgid "This Branch"
+msgstr "Tato pobočka"
+
+#: ppl.description:109
+msgid "Allow a user to remove the lost status from a copy"
+msgstr "Povolit uživateli odebrat status ztraceno u exempláře"
+
+#: clm.value:tut
+msgid "Altaic (Other)"
+msgstr "Altajské (Jiné)"
+
+#: ppl.description:73
+#, fuzzy
+msgid "Allow a user to update a non-cataloged item type"
+msgstr "Povolit uživateli aktualizovat neevidované druhy exemplářů"
+
+#: clm.value:ceb
+msgid "Cebuano"
+msgstr "Cebuano"
+
+#: clm.value:moh
+msgid "Mohawk"
+msgstr "Mohawk"
+
+#: clm.value:dgr
+msgid "Dogrib"
+msgstr "Dogrib"
+
+#: clm.value:mga
+msgid "Irish, Middle (ca. 1100-1550)"
+msgstr "Irština, střední (asi 1100-1550)"
+
+#: citm.value:j
+msgid "Musical sound recording"
+msgstr "Hudební zvukový záznam"
+
+#: ppl.description:63
+msgid "User may update an entry in a copy statistical category"
+msgstr "Uživatel může aktualizovat záznam v kategorii statistik exempláře"
+
+#: aou.name:2
+#, fuzzy
+msgid "Example System 1"
+msgstr "Příklad systému 1"
+
+#: czs.label:loc
+msgid "OCLC"
+msgstr "OCLC"
+
+#: clm.value:jav
+msgid "Javanese"
+msgstr "Javánština"
+
+#: ppl.description:45
+msgid "Allow a user to create a new container for another user"
+msgstr "Povolit uživateli vytvářet kontejner pro jiného uživatele"
+
+#: aou.name:3
+#, fuzzy
+msgid "Example System 2"
+msgstr "Příklad systému 2"
+
+#: vqbrad.description:1
+msgid "Author of work"
+msgstr "Autor díla"
+
+#: ppl.description:121
+#, fuzzy
+msgid "Allow a user to remove someone from collections"
+msgstr "Povolit uživateli odebrat někoho z kolekcí"
+
+#: clm.value:kan
+msgid "Kannada"
+msgstr "Kannadština"
+
+#: clm.value:dum
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Holandština, střední (asi 1050-1350)"
+
+#: ppl.description:80
+msgid "Allow a user to close out a transit on a copy"
+msgstr "Povolit uživateli zabránit přepravování exempláře"
+
+#: clm.value:per
+msgid "Persian"
+msgstr "Perština"
+
+#: clm.value:mon
+msgid "Mongolian"
+msgstr "Mongolština"
+
+#: clm.value:cho
+msgid "Choctaw"
+msgstr "Choctaw"
+
+#: clm.value:aym
+msgid "Aymara"
+msgstr "Ajmarština"
+
+#: clm.value:sai
+msgid "South American Indian (Other)"
+msgstr "Jihoamerické indiánské (Jiné)"
+
+#: ppl.description:122
+msgid "Allow a user to bar a patron"
+msgstr "Povolit uživateli zakázat klienta"
+
+#: i18n_l.description:es-MX
+msgid "Mexican Spanish"
+msgstr "Mexická španělština"
+
+#: ppl.description:150
+msgid "Allow a user to checkout an item that is marked as non-circ"
+msgstr "Povolit uživateli ověřit exemplář označený jako necirkulační"
+
+#: clm.value:-sho clm.value:sna
+msgid "Shona"
+msgstr "Šonština"
+
+#: clm.value:chp
+msgid "Chipewyan"
+msgstr "Chipewyan"
+
+#: clm.value:cos
+msgid "Corsican"
+msgstr "Korsičtina"
+
+#: clm.value:kpe
+msgid "Kpelle"
+msgstr "Kpelle"
+
+#: ppl.description:74
+#, fuzzy
+msgid "Allow a user to create a new in-house-use "
+msgstr "Povolit uživateli vytvořit nové \"používání z domova\""
+
+#: ppl.description:95
+#, fuzzy
+msgid "Allow a user to create a container for themselves"
+msgstr "Povolit uživateli vytvořit jeho vlastní kontejner"
+
+#: cifm.value:c
+#, fuzzy
+msgid "Microopaque"
+msgstr "Microopaque"
+
+#: clm.value:som
+msgid "Somali"
+msgstr "Somálština"
+
+#: clm.value:arp
+msgid "Arapaho"
+msgstr "Arapažština"
+
+#: ppl.description:130
+msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
+msgstr "Povolit uživateli přidat/odebrat uživatele do/z skupiny \"GlobalAdmin\""
+
+#: clm.value:ber
+msgid "Berber (Other)"
+msgstr "Berberské (Jiné)"
+
+#: clm.value:chn
+msgid "Chinook jargon"
+msgstr "Chinook žargon"
+
+#: clm.value:aka
+msgid "Akan"
+msgstr "Akanština"
+
+#: clm.value:lus
+msgid "Lushai"
+msgstr "Lushai"
+
+#: ppl.description:97
+msgid "Allow a user to create new hold notifications"
+msgstr "Povolit uživateli vytvářet oznámení nové rezervace"
+
+#: i18n_l.name:en-US
+msgid "English (US)"
+msgstr "Angličtina (US)"
+
+#: clm.value:pon
+msgid "Ponape"
+msgstr "Ponape"
+
+#: ppl.description:37
+msgid "Allow a user to mark an item as 'lost'"
+msgstr "Povolit uživateli označit exemplář za 'ztracený'"
+
+#: clm.value:tah
+msgid "Tahitian"
+msgstr "Tahitština"
+
+#: clm.value:bla
+msgid "Siksika"
+msgstr "Siksika"
+
+#: clm.value:nds
+msgid "Low German"
+msgstr "Dolnoněmčina"
+
+#: clm.value:dar
+msgid "Dargwa"
+msgstr "Dargwa"
+
+#: ppl.description:9
+msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
+msgstr ""
+"Povolit uživateli vytvářet rezervace pro jiné uživatele (pokud je povoleno, "
+"stále ještě se provádí ověření, zda mají povoleno provádět požadovaný typ "
+"rezervace, například KOPÍRUJ_REZERVACE)"
+
+#: clfm.value:m
+msgid "Mixed forms"
+msgstr "Smíšené formy"
+
+#: clm.value:sog
+msgid "Sogdian"
+msgstr "Sogdian"
+
+#: clm.value:pra
+#, fuzzy
+msgid "Prakrit languages"
+msgstr "Prakritské jazyky"
+
+#: clm.value:gay
+msgid "Gayo"
+msgstr "Gayo"
+
+#: ppl.description:113
+#, fuzzy
+msgid "Allow a user to query the ZIP code data method"
+msgstr "Povolit uživateli dotaz na kód PSČ"
+
+#: ppl.description:47
+msgid "Allow a user to change the settings for an organization unit"
+msgstr "Povolit uživateli měnit nastavení organizační jednotky"
+
+#: clfm.value:0
+msgid "Not fiction (not further specified)"
+msgstr "Literatura faktu (blíže nespecifikovaná)"
+
+#: clm.value:kua
+msgid "Kuanyama"
+msgstr "Kuanyama"
+
+#: clm.value:-tar clm.value:tat
+msgid "Tatar"
+msgstr "Tatarština"
+
+#: citm.value:c
+msgid "Notated music"
+msgstr "Zapsaná hudba"
+
+#: ppl.description:93
+#, fuzzy
+msgid "Allow a user to delete another user's title note"
+msgstr "Povolit uživateli mazat poznámku k názvu jiného uživatele"
+
+#: ppl.description:30
+msgid "Allow a user to mark a user as deleted"
+msgstr "Povolit uživateli označit uživatele jako smazaného"
+
+#: crmf.name:7
+#, fuzzy
+msgid "overdue_equip_max"
+msgstr "anulování_připravit_max"
+
+#: cam.description:
+msgid "The target audience for the item not known or not specified."
+msgstr "Uživatelské určení daného exempláře neznámé nebo neurčené."
+
+#: clm.value:jrb
+msgid "Judeo-Arabic"
+msgstr "Judajsko-arabské"
+
+#: clm.value:-gal clm.value:orm
+msgid "Oromo"
+msgstr "Oromština"
+
+#: cblvl.value:s
+msgid "Serial"
+msgstr "Pokračující zdroj"
+
+#: clfm.description:j
+msgid "The item is a short story or collection of short stories."
+msgstr "Exemplář je krátký příběh nebo sbírka krátkých příběhů."
+
+#: pgt.name:1
+msgid "Users"
+msgstr "Uživatelé"
+
+#: clm.value:sem
+msgid "Semitic (Other)"
+msgstr "Semitské (Jiné)"
+
+#: ppl.description:85
+msgid "Allow a user to view all notes attached to a copy"
+msgstr "Povolit uživateli zobrazit všechny poznámky připojené k exempláři"
+
+#: clm.value:kho
+msgid "Khotanese"
+msgstr "Khotaněština"
+
+#: clm.value:bem
+msgid "Bemba"
+msgstr "Bemba"
+
+#: vqbrad.description:1
+msgid "Title of work"
+msgstr "Název díla"
+
+#: ppl.description:50
+msgid "Allow a user to create a container item for another user"
+msgstr "Povolit uživateli vytvořit kontejner pro jiného uživatele"
+
+#: ppl.description:86
+msgid "Allow a user to view all notes attached to a volume"
+msgstr "Povolit uživateli zobrazit všechny poznámky připojené ke svazku"
+
+#: clm.value:que
+msgid "Quechua"
+msgstr "Kečuánština"
+
+#: clm.value:crp
+msgid "Creoles and Pidgins (Other)"
+msgstr "Kreolské a pidginy (Jiné)"
+
+#: clm.value:nic
+msgid "Niger-Kordofanian (Other)"
+msgstr "Nigerokordofánské (Jiné)"
+
+#: clm.value:est
+msgid "Estonian"
+msgstr "Estonština"
+
+#: clm.value:fan
+msgid "Fang"
+msgstr "Fang"
+
+#: clm.value:mal
+msgid "Malayalam"
+msgstr "Malajámština"
+
+#: clm.value:smn
+msgid "Inari Sami"
+msgstr "Inari sámština"
+
+#: i18n_l.name:fr-CA
+msgid "French (Canada)"
+msgstr "Francouzština (Kanada)"
+
+#: aout.name:3
+#, fuzzy
+msgid "Branch"
+msgstr "Pobočka"
+
+#: clm.value:afh
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (Umělý jazyk)"
+
+#: vqbrad.description:15
+msgid "Item Barcode"
+msgstr "Čárový kód exempláře"
+
+#: ppl.description:107
+msgid "Allow a user to check out an item in a non-circulatable status"
+msgstr "Povolit uživateli zjistit stav necirkulujícího exempláře"
+
+#: ppl.description:151
+#, fuzzy
+msgid "Allow a user to delete an item out of another user's container"
+msgstr "Povolit uživateli smazat exemplář z kontejneru jiného uživatele"
+
+#: cbs.source:3
+msgid "Project Gutenberg"
+msgstr "Projekt Gutenberg"
+
+#: aou.name:9
+msgid "Example Bookmobile 1"
+msgstr "Příklad pojízdné knihovny 1"
+
+#: cam.description:g
+msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
+msgstr ""
+"Exemplář je všeobecného zaměření a není zaměřen na určitou úroveň znalostí."
+
+#: ppl.description:120
+#, fuzzy
+msgid "Allow a user to put someone into collections"
+msgstr "Povolit uživateli umístit někoho do kolekcí"
+
+#: clm.value:fij
+msgid "Fijian"
+msgstr "Fidžijština"
+
+#: clm.value:ilo
+msgid "Iloko"
+msgstr "Iloko"
+
+#: ppl.description:98
+#, fuzzy
+msgid "Allow a user to update an organization unit setting"
+msgstr "Povolit uživateli aktualizovat nastavení organizační jednotky"
+
+#: clm.value:-sao clm.value:smo
+msgid "Samoan"
+msgstr "Samojština"
+
+#: ppl.description:75
+msgid "Allow a user to check out a copy"
+msgstr "Povolit uživateli ověřit exemplář"
+
+#: clm.value:glv clm.value:-max
+msgid "Manx"
+msgstr "Manština"
+
+#: clm.value:rar
+msgid "Rarotongan"
+msgstr "Rarotongan"
+
+#: clfm.description:h
+msgid "The item is a humorous work, satire or of similar literary form."
+msgstr "Exemplář je humorná práce, satira nebo podobná literární forma."
+
+#: crrf.name:3
+msgid "50_cent_per_day"
+msgstr "50_centů_za_den"
+
+#: clm.value:dyu
+msgid "Dyula"
+msgstr "Dyulština"
+
+#: ppl.description:23
+msgid "Allow a user to delete a volume"
+msgstr "Povolit uživateli smazat svazek"
+
+#: clm.value:gre
+msgid "Greek, Modern (1453- )"
+msgstr "Řečtina, moderní (1453-)"
+
+#: clm.value:efi
+msgid "Efik"
+msgstr "Efikština"
+
+#: clm.value:nob
+msgid "Norwegian (Bokmål)"
+msgstr "Norština (Bokmål)"
+
+#: ppl.description:141
+#, fuzzy
+msgid "Allow staff to override fine amount checkout failure"
+msgstr "Povolit zaměstnancům anulovat selhání dané množstvím"
+
+#: ppl.description:135
+msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
+msgstr "Povolit uživateli přidat/odebrat uživatele do/z skupiny \"SIP-Client\""
+
+#: ppl.description:14
+msgid "Allow a user to update another user's hold"
+msgstr "Povolit uživateli aktualizovat rezervaci jiného uživatele"
+
+#: clm.value:mus
+msgid "Creek"
+msgstr "Creek"
+
+#: cam.value:c
+msgid "Pre-adolescent"
+msgstr "Předpubertální"
+
+#: clm.value:smj
+msgid "Lule Sami"
+msgstr "Lule sámština"
+
+#: ppl.description:59
+msgid "User may create an entry in a copy statistical category"
+msgstr "Uživatel může vytvářet záznam v kategorii statistik exempláře"
+
+#: clm.value:bis
+msgid "Bislama"
+msgstr "Bislamština"
+
+#: clm.value:kon
+msgid "Kongo"
+msgstr "Kongo"
+
+#: clm.value:ach
+msgid "Acoli"
+msgstr "Acoli"
+
+#: clm.value:mkh
+msgid "Mon-Khmer (Other)"
+msgstr "Mon-Kmérština (Jiné)"
+
+#: ppl.description:29
+msgid "Allow a user to edit a user's record"
+msgstr "Povolit uživateli editovat záznam uživatele"
+
+#: clm.value:pap
+msgid "Papiamento"
+msgstr "Papiamento"
+
+#: clm.value:mwr
+msgid "Marwari"
+msgstr "Marwari"
+
+#: crmf.name:2
+#, fuzzy
+msgid "overdue_min"
+msgstr "zpoždění_min"
+
+#: clm.value:dak
+msgid "Dakota"
+msgstr "Dakota"
+
+#: clm.value:pol
+msgid "Polish"
+msgstr "Polština"
+
+#: crmf.name:3
+msgid "overdue_mid"
+msgstr "zpoždění_střední"
+
+#: clm.value:hat
+msgid "Haitian French Creole"
+msgstr "Haitština"
+
+#: clm.value:bik
+msgid "Bikol"
+msgstr "Bikolské"
+
+#: clm.value:swe
+msgid "Swedish"
+msgstr "Švédština"
+
+#: cam.description:c
+msgid "The item is intended for young people, approximate ages 9-13 years."
+msgstr "Exemplář je určen mladistvým ve věku 9-13 let."
+
+#: clm.value:sgn
+msgid "Sign languages"
+msgstr "Znakové jazyky"
+
+#: ppl.description:8
+msgid "Allow a user to place a hold on a specific copy"
+msgstr "Povolit uživateli rezervovat specifický exemplář"
+
+#: ppl.description:136
+msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
+msgstr "Povolit uživateli přidat/odebrat uživatele z/do skupiny \"Vendor\""
+
+#: clm.value:chm
+msgid "Mari"
+msgstr "Marijština"
+
+#: clm.value:ewe
+msgid "Ewe"
+msgstr "Eweština"
+
+#: clm.value:tup
+msgid "Tupi languages"
+msgstr "Jazyky Tupi"
+
+#: clm.value:alg
+msgid "Algonquian (Other)"
+msgstr "Algonkinské (Jiné)"
+
+#: clm.value:fao clm.value:-far
+msgid "Faroese"
+msgstr "Faerština"
+
+#: clm.value:dan
+msgid "Danish"
+msgstr "Dánština"
+
+#: clm.value:dra
+msgid "Dravidian (Other)"
+msgstr "Dravidština (Jiné)"
+
+#: i18n_l.description:es-US
+msgid "American Spanish"
+msgstr "Americká španělština"
+
+#: clm.value:cpe
+msgid "Creoles and Pidgins, English-based (Other)"
+msgstr "Kreolské a pidgin, založené na angličtině (Jiné)"
+
+#: ppl.description:128
+msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
+msgstr "Povolit uživateli přidat/odebrat uživatele z/do skupiny  \"Circulator\""
+
+#: clm.value:cus
+msgid "Cushitic (Other)"
+msgstr "Kušitské (Jiné)"
+
+#: ppl.description:56
+msgid "User may create a new patron statistical category"
+msgstr "Uživatel může vytvářet novou kategorii statistik klientů"
+
+#: clm.value:tet
+msgid "Tetum"
+msgstr "Tetum"
+
+#: ppl.description:66
+msgid "User may delete a patron statistical category"
+msgstr "Uživatel může mazat kategorii statistik klienta"
+
+#: clm.value:pal
+msgid "Pahlavi"
+msgstr "Pahlavi"
+
+#: clm.value:slo
+msgid "Slovak"
+msgstr "Slovenština"
+
+#: ppl.description:142
+msgid "Allow staff to override circulation copy range failure"
+msgstr ""
+"Povolit zaměstnancům anulovat selhání dané vzdáleností cirkulujícího "
+"exempláře"
+
+#: ppl.description:148
+msgid "Allow a user to share report his own folders"
+msgstr "Povolit uživateli sdílenou zprávu jeho vlastních složek"
+
+#: clm.value:gil
+msgid "Gilbertese"
+msgstr "Gilbertese"
+
+#: ppl.description:100
+msgid "Allow a user to view uploaded offline script information"
+msgstr "Povolit uživateli zobrazit informaci uploadovaného offline skriptu"
+
+#: clm.value:kik
+msgid "Kikuyu"
+msgstr "Kikujština"
+
+#: crahp.name:2
+msgid "6month"
+msgstr "6měsíční"
+
+#: ppl.description:143
+msgid "Allow staff to override item on holds shelf failure"
+msgstr ""
+"Povolit zaměstnancům anulovat rezervaci exempláře na regálu při neúspěchu"
+
+#: clm.value:ang
+msgid "English, Old (ca. 450-1100)"
+msgstr "Stará angličtina (asi 450-1100)"
+
+#: clm.value:nai
+msgid "North American Indian (Other)"
+msgstr "Severoamerické indiánské (Jiné)"
+
+#: clm.value:crh
+msgid "Crimean Tatar"
+msgstr "Krymská tatarština"
+
+#: clm.value:bho
+msgid "Bhojpuri"
+msgstr "Bhojpuri"
+
+#: cam.value:f
+msgid "Specialized"
+msgstr "Specializovaný"
+
+#: clm.value:tsi
+msgid "Tsimshian"
+msgstr "Tsimshiánština"
+
+#: clfm.description:1
+msgid "The item is a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+"Exemplář je beletrie a žádná další identifikace literární formy není "
+"požadována"
+
+#: clm.value:cmc
+msgid "Chamic languages"
+msgstr ""
+
+#: clm.value:nog
+msgid "Nogai"
+msgstr "Nogai"
+
+#: clfm.description:0
+msgid "The item is not a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+"Exemplář není beletrie a žádná další identifikace literární formy není "
+"požadována"
+
+#: clm.value:lui
+msgid "Luiseño"
+msgstr "Luiseño"
+
+#: clm.value:enm
+msgid "English, Middle (1100-1500)"
+msgstr "Angličtina, Střední (1100-1500)"
+
+#: clm.value:sah
+msgid "Yakut"
+msgstr "Yakut"
+
+#: clm.value:sux
+msgid "Sumerian"
+msgstr "Sumerština"
+
+#: crmf.name:6
+#, fuzzy
+msgid "overdue_equip_mid"
+msgstr "zpoždění_příprava_střední"
+
+#: clm.value:xho
+msgid "Xhosa"
+msgstr "Xhoština"
+
+#: clm.value:mni
+msgid "Manipuri"
+msgstr "Manipurština"
+
+#: clm.value:bua
+msgid "Buriat"
+msgstr "Buriatština"
+
+#: ppl.description:52
+msgid "Allow a user to remove other users from permission groups"
+msgstr "Povolit uživateli odebírat jiné uživatele ze skupiny oprávnění"
+
+#: ppl.description:2
+msgid "Allow a user to log in to the OPAC"
+msgstr "Povolit uživateli přihlásit se do OPACu"
+
+#: clm.value:hup
+msgid "Hupa"
+msgstr "Hupa"
+
+#: clm.value:ina clm.value:-int
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (International Auxiliary Language Association)"
+
+#: clm.value:ice
+msgid "Icelandic"
+msgstr "Islandština"
+
+#: clm.value:twi
+msgid "Twi"
+msgstr "Ťwiština"
+
+#: clm.value:guj
+msgid "Gujarati"
+msgstr "Guaraní"
+
+#: clm.value:map
+msgid "Austronesian (Other)"
+msgstr "Austronéské (Jiné)"
+
+#: clm.value:akk
+msgid "Akkadian"
+msgstr "Akkadština"
+
+#: cnal.name:1
+msgid "Filtered"
+msgstr "Filtrováno"
+
+#: clm.value:kor
+msgid "Korean"
+msgstr "Korejština"
+
+#: clm.value:shn
+msgid "Shan"
+msgstr "Shan"
+
+#: citm.value:d
+msgid "Manuscript notated music"
+msgstr "Notový zápis"
+
+#: clm.value:kom
+msgid "Komi"
+msgstr "Komiština"
+
+#: cam.description:e
+msgid "The item is intended for adults."
+msgstr "Exemplář je určen dospělým."
+
+#: cblvl.value:c
+msgid "Collection"
+msgstr "Sbírka"
+
+#: clm.value:nya
+#, fuzzy
+msgid "Nyanja"
+msgstr "Čičevština"
+
+#: ppl.description:5
+#, fuzzy
+msgid "Allow a user to create a metarecord holds"
+msgstr "Povolit uživateli vytvořit rezervace metazáznamu"
+
+#: clm.value:khi
+msgid "Khoisan (Other)"
+msgstr "Khoisan (Jiné)"
+
+#: clm.value:cad
+msgid "Caddo"
+msgstr "Caddo"
+
+#: clm.value:lez
+msgid "Lezgian"
+msgstr "Lezgiánština"
+
+#: clm.value:kas
+msgid "Kashmiri"
+msgstr "Kašmírština"
+
+#: ppl.description:116
+msgid "Allow a user to remove a closed date interval for a given location"
+msgstr "Povolit uživateli odebrat uzavřené časové období pro danou lokaci"
+
+#: clm.value:hai
+msgid "Haida"
+msgstr "Haidština"
+
+#: clm.value:-lan clm.value:oci
+#, fuzzy
+msgid "Occitan (post-1500)"
+msgstr "Okcitánština (po-1500)"
+
+#: clm.value:son
+msgid "Songhai"
+msgstr "Songhai"
+
+#: i18n_l.name:es-US
+msgid "Spanish (US)"
+msgstr "Španělština (US)"
+
+#: ccs.name:2
+msgid "Bindery"
+msgstr "Knihařská dílna"
+
+#: aout.name:2
+msgid "System"
+msgstr "Systém"
+
+#: pgt.description:10
+msgid "System maintenance, configuration, etc."
+msgstr "Systémová údržba, konfigurace, apod."
+
+#: ppl.description:114
+msgid "Allow a user to cancel holds"
+msgstr "Povolit uživateli rušit rezervace"
+
+#: vqbrad.description:3
+msgid "Language of work"
+msgstr "Jazyk díla"
+
+#: ppl.description:144
+msgid "Allow staff to force checkout of Missing/Lost type items"
+msgstr "Povolit zaměstnancům nucené zjištění chybějících/ztracených exemplářů"
+
+#: clm.value:aar
+msgid "Afar"
+msgstr "Afarština"
+
+#: crahp.name:1
+msgid "3month"
+msgstr "3měsíční"
+
+#: citm.value:r
+msgid "Three-dimensional artifact or naturally occurring object"
+msgstr "Prostorový objekt nebo přírodní objekt"
+
+#: ppl.description:68
+msgid "User may delete an entry from a patron statistical category"
+msgstr "Uživatel může mazat záznam z kategorie statistik"
+
+#: clm.value:udm
+msgid "Udmurt"
+msgstr "Udmurtština"
+
+#: clm.value:gle clm.value:-iri
+msgid "Irish"
+msgstr "Irština"
+
+#: crcd.name:11 crmf.name:1 crrf.name:1
+msgid "default"
+msgstr "prodlení"
+
+#: clm.value:kaz
+msgid "Kazakh"
+msgstr "Kazaština"
+
+#: clm.value:kbd
+msgid "Kabardian"
+msgstr "Kabardština"
+
+#: clm.value:bel
+msgid "Belarusian"
+msgstr "Běloruština"
+
+#: clm.value:mac
+msgid "Macedonian"
+msgstr "Makedonština"
+
+#: cam.description:a
+msgid "The item is intended for children, approximate ages 0-5 years."
+msgstr "Exemplář je určen dětem ve věku 0-5 let."
+
+#: ppl.description:26
+msgid "Allow a user to delete a copy"
+msgstr "Povolit uživateli smazat exemplář"
+
+#: cifm.value:s
+msgid "Electronic"
+msgstr "Elektronický"
+
+#: clm.value:lun
+msgid "Lunda"
+msgstr "Lunda"
+
+#: clm.value:sme
+msgid "Northern Sami"
+msgstr "Severní Sámština"
+
+#: ppl.description:64
+#, fuzzy
+msgid "User may link another user to an entry in a statistical category"
+msgstr "Uživatel může propojit jiného uživatele se záznamem ve statistikách"
+
+#: clm.value:xal
+msgid "Kalmyk"
+msgstr "Kalmyk"
+
+#: cam.value:d
+msgid "Adolescent"
+msgstr "Mladistvý"
+
+#: clm.value:rum
+msgid "Romanian"
+msgstr "Rumunština"
+
+#: clm.value:aze
+msgid "Azerbaijani"
+msgstr "Ázerbájdžánština"
+
+#: clm.value:srd
+msgid "Sardinian"
+msgstr "Sardština"
+
+#: clm.value:hmo
+msgid "Hiri Motu"
+msgstr "Hiri Motu"
+
+#: ppl.description:6
+msgid "Allow a user to place a hold at the title level"
+msgstr "Povolit uživateli rezervovat na úrovni názvu"
+
+#: ppl.description:146
+msgid "Allow a user to place multiple holds on a single title"
+msgstr "Povolit uživateli rezervovat stejný titul vícekrát"
+
+#: citm.value:g
+#, fuzzy
+msgid "Projected medium"
+msgstr "Promítaný nosič"
+
+#: clm.value:roh
+msgid "Raeto-Romance"
+msgstr "Rétorománština"
+
+#: clm.value:lao
+msgid "Lao"
+msgstr "Laoština"
+
+#: ppl.description:129
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
+msgstr "Povolit uživateli přidat/odebrat uživatele do/z skupiny \"Cataloger\""
+
+#: ppl.description:21
+msgid "Allow a user to create a volume"
+msgstr "Povolit uživateli vytvořit svazek"
+
+#: ppl.description:137
+msgid "Allow a user to place a hold on an age-protected item"
+msgstr "Povolit uživatel rezervovat exemplář s věkovým omezením"
+
+#: clm.value:sio
+msgid "Siouan (Other)"
+msgstr "Siouxština"
+
+#: clm.value:men
+msgid "Mende"
+msgstr "Mende"
+
+#: ppl.description:58
+msgid "User may create an entry in a patron statistical category"
+msgstr "Uživatel může vytvořit záznam v kategorii uživatelských statistik"
+
+#: clm.value:oji
+msgid "Ojibwa"
+msgstr "Ojibwa"
+
+#: clm.value:sus
+msgid "Susu"
+msgstr "Susu"
+
+#: clm.value:cau
+msgid "Caucasian (Other)"
+msgstr "Kavkazština (Jiné)"
+
+#: clm.value:kur
+msgid "Kurdish"
+msgstr "Kurdština"
+
+#: clm.value:wal
+msgid "Walamo"
+msgstr "Walamo"
+
+#: ppl.description:99
+msgid "Allow a user to upload an offline script"
+msgstr "Povolit uživateli uploadovat offline skript"
+
+#: ccs.name:3
+#, fuzzy
+msgid "Lost"
+msgstr "Ztraceno"
+
+#: clm.value:nde
+msgid "Ndebele (Zimbabwe)  "
+msgstr "Ndebele (Zimbabwe)"
+
+#: clm.value:lub
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
+
+#: clfm.value:d
+msgid "Dramas"
+msgstr "Drama"
+
+#: clm.value:zha
+msgid "Zhuang"
+msgstr "Zhuang"
+
+#: cifm.value:f
+msgid "Braille"
+msgstr "Braillovo písmo"
+
+#: clfm.value:c
+msgid "Comic strips"
+msgstr "Kreslené příběhy"
+
+#: clm.value:ido
+msgid "Ido"
+msgstr "Ido"
+
+#: i18n_l.description:fr-CA
+msgid "Canadian French"
+msgstr "Kanadská francouzština"
+
+#: clm.value:fiu
+msgid "Finno-Ugrian (Other)"
+msgstr "Ugrofinské (Jiné)"
+
+#: clm.value:apa
+#, fuzzy
+msgid "Apache languages"
+msgstr "Apačské jazyky"
+
+#: clm.value:-ajm
+msgid "Aljamía"
+msgstr "Aljamía"
+
+#: clm.value:run
+msgid "Rundi"
+msgstr "Rundi"
+
+#: crcd.name:7
+#, fuzzy
+msgid "7_days_2_renew"
+msgstr "7_dní_do_obnovení"
+
+#: clm.value:-esk
+msgid "Eskimo languages"
+msgstr "Inuitština"
+
+#: clm.value:ath
+msgid "Athapascan (Other)"
+msgstr "Athapascan (Jiné)"
+
+#: clm.value:ndo
+msgid "Ndonga"
+msgstr "Ndonga"
+
+#: clm.value:sco
+msgid "Scots"
+msgstr "Skotština"
+
+#: clm.value:sot clm.value:-sso
+msgid "Sotho"
+msgstr "Sotho"
+
+#: clm.value:was
+msgid "Washo"
+msgstr "Washo"
+
+#: clm.value:spa
+msgid "Spanish"
+msgstr "Španělsky"
+
+#: ppl.description:18
+msgid "Allow a user to edit a MARC record"
+msgstr "Povolit uživateli editovat záznam MARC"

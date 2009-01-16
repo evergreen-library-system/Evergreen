@@ -1,0 +1,5334 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/fm_IDL.dtd
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:55-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+
+#: field.aihu.org_unit.label
+msgctxt "field.aihu.org_unit.label"
+msgid "Using Library"
+msgstr ""
+
+#: field.ancihu.org_unit.label
+msgctxt "field.ancihu.org_unit.label"
+msgid "Using Library"
+msgstr ""
+
+#: field.rxbt.voided.label
+msgid "Voided Billing Amount"
+msgstr ""
+
+#: field.bre.source.label
+msgid "Record Source"
+msgstr ""
+
+#: field.bre.marc.label
+msgid "MARC21Slim"
+msgstr ""
+
+#: field.rocit.title.label
+msgid "Title"
+msgstr ""
+
+#: field.mbts.xact_start.label
+msgid "Transaction Start Time"
+msgstr ""
+
+#: field.aua.post_code.label
+msgid "Postal Code"
+msgstr ""
+
+#: field.vqbr.bib_source.label
+msgid "Bib Source"
+msgstr ""
+
+#: field.aua.within_city_limits.label
+msgid "Within City Limits?"
+msgstr ""
+
+#: field.rhrr.hold_type.label
+msgid "Hold Request Type"
+msgstr ""
+
+#: field.au.demographic.label
+msgid "Demographic Info"
+msgstr ""
+
+#: class.mwp.label
+msgid "Work Payment"
+msgstr ""
+
+#: field.au.ident_value2.label
+msgid "Secondary Identification"
+msgstr ""
+
+#: class.acirc.label
+msgid "Aged (patronless) Circulation"
+msgstr ""
+
+#: field.mbts.last_payment_note.label
+msgctxt "field.mbts.last_payment_note.label"
+msgid "Last Payment Note"
+msgstr ""
+
+#: field.rccbs.last_payment_note.label
+msgctxt "field.rccbs.last_payment_note.label"
+msgid "Last Payment Note"
+msgstr ""
+
+#: field.au.expire_date.label
+msgid "Privilege Expiration Date"
+msgstr ""
+
+#: field.ac.id.label
+msgid "Card ID"
+msgstr ""
+
+#: field.mp.credit_card_payment.label
+msgctxt "field.mp.credit_card_payment.label"
+msgid "Credit Card Payment Detail"
+msgstr ""
+
+#: field.mbp.credit_card_payment.label
+msgctxt "field.mbp.credit_card_payment.label"
+msgid "Credit Card Payment Detail"
+msgstr ""
+
+#: class.rssr.label
+msgid "Simple Record Extracts"
+msgstr ""
+
+#: field.czs.host.label
+msgid "Host"
+msgstr ""
+
+#: field.au.id.label
+msgctxt "field.au.id.label"
+msgid "User ID"
+msgstr ""
+
+#: field.rud.id.label
+msgctxt "field.rud.id.label"
+msgid "User ID"
+msgstr ""
+
+#: field.asc.entries.label
+msgctxt "field.asc.entries.label"
+msgid "Entries"
+msgstr ""
+
+#: field.actsc.entries.label
+msgctxt "field.actsc.entries.label"
+msgid "Entries"
+msgstr ""
+
+#: field.acp.dummy_title.label
+msgid "Precat Dummy Title"
+msgstr ""
+
+#: field.acpn.create_date.label
+msgid "Note Creation Date/Time"
+msgstr ""
+
+#: field.aua.street2.label
+msgid "Street (2)"
+msgstr ""
+
+#: field.au.barred.label
+msgid "Barred"
+msgstr ""
+
+#: field.mcrp.id.label
+msgid "Pyament ID"
+msgstr ""
+
+#: field.au.claims_returned_count.label
+msgid "Claims-returned Count"
+msgstr ""
+
+#: field.bre.series_field_entries.label
+msgid "Indexed Series Field Entries"
+msgstr ""
+
+#: field.rccbs.demographic_general_division.label
+msgid "User Age Demographic"
+msgstr ""
+
+#: field.rccc.dewey.label
+msgid "Call Number Dewey/Prefix"
+msgstr ""
+
+#: field.crahp.name.label
+msgctxt "field.crahp.name.label"
+msgid "Rule Name"
+msgstr ""
+
+#: field.crmf.name.label
+msgctxt "field.crmf.name.label"
+msgid "Rule Name"
+msgstr ""
+
+#: field.clfm.code.label
+msgid "LitF Code"
+msgstr ""
+
+#: field.vii.ref.label
+msgctxt "field.vii.ref.label"
+msgid "Reference"
+msgstr ""
+
+#: field.viiad.ref.label
+msgctxt "field.viiad.ref.label"
+msgid "Reference"
+msgstr ""
+
+#: field.rocit.ref.label
+msgctxt "field.rocit.ref.label"
+msgid "Reference"
+msgstr ""
+
+#: field.mb.billing_type.label
+msgctxt "field.mb.billing_type.label"
+msgid "Billing Type"
+msgstr ""
+
+#: field.rmocbbol.billing_type.label
+msgctxt "field.rmocbbol.billing_type.label"
+msgid "Billing Type"
+msgstr ""
+
+#: field.rmocbbcol.billing_type.label
+msgctxt "field.rmocbbcol.billing_type.label"
+msgid "Billing Type"
+msgstr ""
+
+#: field.rmocbbhol.billing_type.label
+msgctxt "field.rmocbbhol.billing_type.label"
+msgid "Billing Type"
+msgstr ""
+
+#: class.mckp.label
+msgctxt "class.mckp.label"
+msgid "Check Payment"
+msgstr ""
+
+#: field.mdp.check_payment.label
+msgctxt "field.mdp.check_payment.label"
+msgid "Check Payment"
+msgstr ""
+
+#: field.rccc.stat_cat_1.label
+msgid "Legacy CAT1 Link"
+msgstr ""
+
+#: field.viiad.tag.label
+msgctxt "field.viiad.tag.label"
+msgid "Tag"
+msgstr ""
+
+#: field.mfr.tag.label
+msgctxt "field.mfr.tag.label"
+msgid "Tag"
+msgstr ""
+
+#: field.aout.org_units.label
+msgid "Org Units"
+msgstr ""
+
+#: field.rccbs.profile_group.label
+msgid "User Profile Group"
+msgstr ""
+
+#: field.vbm.matched_attr.label
+msgctxt "field.vbm.matched_attr.label"
+msgid "Matched Attribute"
+msgstr ""
+
+#: field.vam.matched_attr.label
+msgctxt "field.vam.matched_attr.label"
+msgid "Matched Attribute"
+msgstr ""
+
+#: field.ahn.method.label
+msgid "Notification Method"
+msgstr ""
+
+#: field.vqbrad.xpath.label
+msgctxt "field.vqbrad.xpath.label"
+msgid "XPath"
+msgstr ""
+
+#: field.vqarad.xpath.label
+msgctxt "field.vqarad.xpath.label"
+msgid "XPath"
+msgstr ""
+
+#: field.mrd.date2.label
+msgid "Date2"
+msgstr ""
+
+#: field.au.groups.label
+msgid "Additional Permission Groups"
+msgstr ""
+
+#: field.ccm.magnetic_media.label
+msgid "Magnetic Media"
+msgstr ""
+
+#: field.ahr.request_lib.label
+msgid "Requesting Library"
+msgstr ""
+
+#: field.ahtc.source.label
+msgid "Sending Library"
+msgstr ""
+
+#: field.rccc.call_number.label
+msgid "Call Number Link"
+msgstr ""
+
+#: field.czs.label.label
+msgctxt "field.czs.label.label"
+msgid "Label"
+msgstr ""
+
+#: field.cza.label.label
+msgctxt "field.cza.label.label"
+msgid "Label"
+msgstr ""
+
+#: field.circ.checkin_lib.label
+msgctxt "field.circ.checkin_lib.label"
+msgid "Check In Library"
+msgstr ""
+
+#: field.combcirc.checkin_lib.label
+msgctxt "field.combcirc.checkin_lib.label"
+msgid "Check In Library"
+msgstr ""
+
+#: field.acirc.checkin_lib.label
+msgctxt "field.acirc.checkin_lib.label"
+msgid "Check In Library"
+msgstr ""
+
+#: field.rodcirc.checkin_lib.label
+msgctxt "field.rodcirc.checkin_lib.label"
+msgid "Check In Library"
+msgstr ""
+
+#: field.aua.state.label
+msgid "State"
+msgstr ""
+
+#: field.mp.voided.label
+msgctxt "field.mp.voided.label"
+msgid "Voided?"
+msgstr ""
+
+#: field.mbp.voided.label
+msgctxt "field.mbp.voided.label"
+msgid "Voided?"
+msgstr ""
+
+#: field.mndp.voided.label
+msgctxt "field.mndp.voided.label"
+msgid "Voided?"
+msgstr ""
+
+#: field.mdp.voided.label
+msgctxt "field.mdp.voided.label"
+msgid "Voided?"
+msgstr ""
+
+#: field.mb.voided.label
+msgctxt "field.mb.voided.label"
+msgid "Voided?"
+msgstr ""
+
+#: class.citm.label
+msgid "Item Type Map"
+msgstr ""
+
+#: field.rccbs.billing_location_shortname.label
+msgid "Billing Location Short (Policy) Name"
+msgstr ""
+
+#: field.rud.general_division.label
+msgid "General Demographic Division"
+msgstr ""
+
+#: field.asvq.responses.label
+msgctxt "field.asvq.responses.label"
+msgid "Responses"
+msgstr ""
+
+#: field.asv.responses.label
+msgctxt "field.asv.responses.label"
+msgid "Responses"
+msgstr ""
+
+#: field.mrd.item_form.label
+msgid "Form"
+msgstr ""
+
+#: field.ssr.deleted.label
+msgctxt "field.ssr.deleted.label"
+msgid "Deleted"
+msgstr ""
+
+#: field.rocit.deleted.label
+msgctxt "field.rocit.deleted.label"
+msgid "Deleted"
+msgstr ""
+
+#: field.aou.ou_type.label
+msgctxt "field.aou.ou_type.label"
+msgid "Organizational Unit Type"
+msgstr ""
+
+#: class.aout.label
+msgctxt "class.aout.label"
+msgid "Organizational Unit Type"
+msgstr ""
+
+#: field.mcrp.payment_ts.label
+msgctxt "field.mcrp.payment_ts.label"
+msgid "Payment Timestamp"
+msgstr ""
+
+#: field.mwp.payment_ts.label
+msgctxt "field.mwp.payment_ts.label"
+msgid "Payment Timestamp"
+msgstr ""
+
+#: field.mgp.payment_ts.label
+msgctxt "field.mgp.payment_ts.label"
+msgid "Payment Timestamp"
+msgstr ""
+
+#: field.mckp.payment_ts.label
+msgctxt "field.mckp.payment_ts.label"
+msgid "Payment Timestamp"
+msgstr ""
+
+#: field.mfr.ind1.label
+msgid "Indicator 1"
+msgstr ""
+
+#: field.mfr.ind2.label
+msgid "Indicator 2"
+msgstr ""
+
+#: field.au.checkins.label
+msgctxt "field.au.checkins.label"
+msgid "Checkins"
+msgstr ""
+
+#: field.aou.checkins.label
+msgctxt "field.aou.checkins.label"
+msgid "Checkins"
+msgstr ""
+
+#: field.cblvl.code.label
+msgid "Bib Level Code"
+msgstr ""
+
+#: field.vii.record.label
+msgid "Import Record"
+msgstr ""
+
+#: field.bre.call_numbers.label
+msgid "Call Numbers"
+msgstr ""
+
+#: field.mp.payment_ts.label
+msgctxt "field.mp.payment_ts.label"
+msgid "Payment Date/Time"
+msgstr ""
+
+#: field.mbp.payment_ts.label
+msgctxt "field.mbp.payment_ts.label"
+msgid "Payment Date/Time"
+msgstr ""
+
+#: field.mndp.payment_ts.label
+msgctxt "field.mndp.payment_ts.label"
+msgid "Payment Date/Time"
+msgstr ""
+
+#: field.mdp.payment_ts.label
+msgctxt "field.mdp.payment_ts.label"
+msgid "Payment Date/Time"
+msgstr ""
+
+#: field.clm.value.label
+msgid "Language"
+msgstr ""
+
+#: link.au.checkins.label
+msgid "Check-ins Performed as Staff"
+msgstr ""
+
+#: field.au.other_phone.label
+msgid "Other Phone"
+msgstr ""
+
+#: field.bre.simple_record.label
+msgid "Simple Record Extracts "
+msgstr ""
+
+#: class.actsce.label
+msgid "User Stat Cat Entry"
+msgstr ""
+
+#: field.rccc.stat_cat_2_value.label
+msgid "Legacy CAT2 Value"
+msgstr ""
+
+#: class.acn.label
+msgctxt "class.acn.label"
+msgid "Call Number/Volume"
+msgstr ""
+
+#: field.acp.call_number.label
+msgctxt "field.acp.call_number.label"
+msgid "Call Number/Volume"
+msgstr ""
+
+#: field.mrd.control_type.label
+msgid "Ctrl"
+msgstr ""
+
+#: field.au.family_name.label
+msgid "Last Name"
+msgstr ""
+
+#: field.rccc.stat_cat_2.label
+msgid "Legacy CAT2 Link"
+msgstr ""
+
+#: field.au.stat_cat_entries.label
+msgid "Statistical Category Entries"
+msgstr ""
+
+#: field.vibtf.owner.label
+msgctxt "field.vibtf.owner.label"
+msgid "Owner"
+msgstr ""
+
+#: field.viiad.owner.label
+msgctxt "field.viiad.owner.label"
+msgid "Owner"
+msgstr ""
+
+#: field.vbq.owner.label
+msgctxt "field.vbq.owner.label"
+msgid "Owner"
+msgstr ""
+
+#: field.vaq.owner.label
+msgctxt "field.vaq.owner.label"
+msgid "Owner"
+msgstr ""
+
+#: class.ancihu.label
+msgid "Non-cataloged In House Use"
+msgstr ""
+
+#: field.ahr.holdable_formats.label
+msgid "Holdable Formats (for M-type hold)"
+msgstr ""
+
+#: field.acp.notes.label
+msgid "Copy Notes"
+msgstr ""
+
+#: field.vbm.eg_record.label
+msgctxt "field.vbm.eg_record.label"
+msgid "Evergreen Record"
+msgstr ""
+
+#: field.vam.eg_record.label
+msgctxt "field.vam.eg_record.label"
+msgid "Evergreen Record"
+msgstr ""
+
+#: field.vbm.id.label
+msgctxt "field.vbm.id.label"
+msgid "Match ID"
+msgstr ""
+
+#: field.vam.id.label
+msgctxt "field.vam.id.label"
+msgid "Match ID"
+msgstr ""
+
+#: field.mbts.total_owed.label
+msgid "Total Owed"
+msgstr ""
+
+#: field.pgt.application_perm.label
+msgid "Required Permission"
+msgstr ""
+
+#: field.au.ident_type2.label
+msgid "Secondary Identification Type"
+msgstr ""
+
+#: field.actscecm.stat_cat.label
+msgid "Statistical Category"
+msgstr ""
+
+#: field.mbts.last_payment_ts.label
+msgid "Last Payment Timestamp"
+msgstr ""
+
+#: class.rmobbcol.label
+msgid "Open Circulation Balance by Circulating Library and Owning Library"
+msgstr ""
+
+#: field.ahr.usr.label
+msgid "Hold User"
+msgstr ""
+
+#: class.mdp.label
+msgid "Payments: Desk"
+msgstr ""
+
+#: field.asvr.answer.label
+msgid "Answer"
+msgstr ""
+
+#: field.vii.circulate.label
+msgctxt "field.vii.circulate.label"
+msgid "Circulate"
+msgstr ""
+
+#: field.viiad.circulate.label
+msgctxt "field.viiad.circulate.label"
+msgid "Circulate"
+msgstr ""
+
+#: field.vii.status.label
+msgctxt "field.vii.status.label"
+msgid "Status"
+msgstr ""
+
+#: field.viiad.status.label
+msgctxt "field.viiad.status.label"
+msgid "Status"
+msgstr ""
+
+#: field.rocit.status.label
+msgctxt "field.rocit.status.label"
+msgid "Status"
+msgstr ""
+
+#: field.aun.pub.label
+msgctxt "field.aun.pub.label"
+msgid "Is OPAC Visible?"
+msgstr ""
+
+#: field.acpn.pub.label
+msgctxt "field.acpn.pub.label"
+msgid "Is OPAC Visible?"
+msgstr ""
+
+#: field.acpl.opac_visible.label
+msgctxt "field.acpl.opac_visible.label"
+msgid "Is OPAC Visible?"
+msgstr ""
+
+#: field.ahr.notifications.label
+msgid "Notifications"
+msgstr ""
+
+#: field.aou.shortname.label
+msgid "Short (Policy) Name"
+msgstr ""
+
+#: field.asvr.answer_date.label
+msgid "Answer Date/Time"
+msgstr ""
+
+#: field.rccc.dewey_block_hundreds.label
+msgid "Dewey Block -- Hundreds"
+msgstr ""
+
+#: field.acn.deleted.label
+msgctxt "field.acn.deleted.label"
+msgid "Is Deleted"
+msgstr ""
+
+#: field.au.deleted.label
+msgctxt "field.au.deleted.label"
+msgid "Is Deleted"
+msgstr ""
+
+#: field.acp.deleted.label
+msgctxt "field.acp.deleted.label"
+msgid "Is Deleted"
+msgstr ""
+
+#: field.acn.edit_date.label
+msgctxt "field.acn.edit_date.label"
+msgid "Last Edit Date/Time"
+msgstr ""
+
+#: field.acp.edit_date.label
+msgctxt "field.acp.edit_date.label"
+msgid "Last Edit Date/Time"
+msgstr ""
+
+#: field.mbts.xact_type.label
+msgctxt "field.mbts.xact_type.label"
+msgid "Transaction Type"
+msgstr ""
+
+#: field.rccbs.xact_type.label
+msgctxt "field.rccbs.xact_type.label"
+msgid "Transaction Type"
+msgstr ""
+
+#: field.mbt.xact_start.label
+msgctxt "field.mbt.xact_start.label"
+msgid "Transaction Start Date/Time"
+msgstr ""
+
+#: field.rccbs.xact_start.label
+msgctxt "field.rccbs.xact_start.label"
+msgid "Transaction Start Date/Time"
+msgstr ""
+
+#: class.mbts.label
+msgid "Billable Transaction Summary"
+msgstr ""
+
+#: field.mb.billing_ts.label
+msgid "Billing Timestamp"
+msgstr ""
+
+#: field.au.billing_address.label
+msgid "Physical Address"
+msgstr ""
+
+#: field.mrd.item_lang.label
+msgid "Lang"
+msgstr ""
+
+#: field.cblvl.value.label
+msgid "Bib Level"
+msgstr ""
+
+#: field.actsce.stat_cat.label
+msgctxt "field.actsce.stat_cat.label"
+msgid "Stat Cat"
+msgstr ""
+
+#: field.asce.stat_cat.label
+msgctxt "field.asce.stat_cat.label"
+msgid "Stat Cat"
+msgstr ""
+
+#: field.mrd.id.label
+msgid "Descriptor ID"
+msgstr ""
+
+#: field.cit.name.label
+msgid "Identification Name"
+msgstr ""
+
+#: class.vibtf.label
+msgid "Import/Overlay Fields for Removal"
+msgstr ""
+
+#: field.rocit.dewey_block_hundreds.label
+msgid "Dewy Hundreds"
+msgstr ""
+
+#: class.rocit.label
+msgid "Classic Item List"
+msgstr ""
+
+#: field.viiad.id.label
+msgid "Definition ID"
+msgstr ""
+
+#: field.mdp.accepting_usr.label
+msgid "Accepting User"
+msgstr ""
+
+#: class.vqbrad.label
+msgid "Queued Bib Record Attribute Definition"
+msgstr ""
+
+#: field.vii.definition.label
+msgid "Attribute Definition"
+msgstr ""
+
+#: field.rmsr.biblio_record.label
+msgctxt "field.rmsr.biblio_record.label"
+msgid "Full Bibliographic record"
+msgstr ""
+
+#: field.rssr.biblio_record.label
+msgctxt "field.rssr.biblio_record.label"
+msgid "Full Bibliographic record"
+msgstr ""
+
+#: field.rsr.biblio_record.label
+msgctxt "field.rsr.biblio_record.label"
+msgid "Full Bibliographic record"
+msgstr ""
+
+#: field.vqbr.marc.label
+msgctxt "field.vqbr.marc.label"
+msgid "MARC"
+msgstr ""
+
+#: field.vqar.marc.label
+msgctxt "field.vqar.marc.label"
+msgid "MARC"
+msgstr ""
+
+#: class.iatc.label
+msgid "Inter-system Copy Transit"
+msgstr ""
+
+#: class.aihu.label
+msgid "In House Use"
+msgstr ""
+
+#: field.circ.circ_type.label
+msgctxt "field.circ.circ_type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.combcirc.circ_type.label
+msgctxt "field.combcirc.circ_type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.acirc.circ_type.label
+msgctxt "field.acirc.circ_type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: class.rcirct.label
+msgctxt "class.rcirct.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.rcirct.type.label
+msgctxt "field.rcirct.type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.rccc.circ_type.label
+msgctxt "field.rccc.circ_type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.rodcirc.circ_type.label
+msgctxt "field.rodcirc.circ_type.label"
+msgid "Circulation Type"
+msgstr ""
+
+#: field.ahtc.hold.label
+msgid "Hold requiring Transit"
+msgstr ""
+
+#: field.bre.notes.label
+msgid "Non-MARC Record Notes"
+msgstr ""
+
+#: field.aou.ill_address.label
+msgid "ILL Receiving Address"
+msgstr ""
+
+#: field.ahr.fulfillment_staff.label
+msgid "Fulfilling Staff"
+msgstr ""
+
+#: field.aout.name.label
+msgid "Type Name"
+msgstr ""
+
+#: field.rmsr.author.label
+msgctxt "field.rmsr.author.label"
+msgid "Author (normalized)"
+msgstr ""
+
+#: field.rssr.author.label
+msgctxt "field.rssr.author.label"
+msgid "Author (normalized)"
+msgstr ""
+
+#: field.rsr.author.label
+msgctxt "field.rsr.author.label"
+msgid "Author (normalized)"
+msgstr ""
+
+#: field.ssr.excluded.label
+msgid "Excluded"
+msgstr ""
+
+#: field.vii.holdable.label
+msgctxt "field.vii.holdable.label"
+msgid "Holdable"
+msgstr ""
+
+#: field.viiad.holdable.label
+msgctxt "field.viiad.holdable.label"
+msgid "Holdable"
+msgstr ""
+
+#: field.circ.stop_fines_time.label
+msgctxt "field.circ.stop_fines_time.label"
+msgid "Fine Stop Date/Time"
+msgstr ""
+
+#: field.combcirc.stop_fines_time.label
+msgctxt "field.combcirc.stop_fines_time.label"
+msgid "Fine Stop Date/Time"
+msgstr ""
+
+#: field.acirc.stop_fines_time.label
+msgctxt "field.acirc.stop_fines_time.label"
+msgid "Fine Stop Date/Time"
+msgstr ""
+
+#: field.rodcirc.stop_fines_time.label
+msgctxt "field.rodcirc.stop_fines_time.label"
+msgid "Fine Stop Date/Time"
+msgstr ""
+
+#: field.au.settings.label
+msgid "All User Settings"
+msgstr ""
+
+#: field.acn.copies.label
+msgid "Copies"
+msgstr ""
+
+#: field.ahr.cancel_time.label
+msgid "Hold Cancel Date/Time"
+msgstr ""
+
+#: field.pgt.perm_interval.label
+msgid "User Expiration Interval"
+msgstr ""
+
+#: field.circ.fine_interval.label
+msgctxt "field.circ.fine_interval.label"
+msgid "Fine Interval"
+msgstr ""
+
+#: field.combcirc.fine_interval.label
+msgctxt "field.combcirc.fine_interval.label"
+msgid "Fine Interval"
+msgstr ""
+
+#: field.acirc.fine_interval.label
+msgctxt "field.acirc.fine_interval.label"
+msgid "Fine Interval"
+msgstr ""
+
+#: field.rodcirc.fine_interval.label
+msgctxt "field.rodcirc.fine_interval.label"
+msgid "Fine Interval"
+msgstr ""
+
+#: class.mrd.label
+msgid "Basic Record Descriptor"
+msgstr ""
+
+#: field.circ.billing_total.label
+msgctxt "field.circ.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.combcirc.billing_total.label
+msgctxt "field.combcirc.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.acirc.billing_total.label
+msgctxt "field.acirc.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.mg.billing_total.label
+msgctxt "field.mg.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.mbt.billing_total.label
+msgctxt "field.mbt.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.rodcirc.billing_total.label
+msgctxt "field.rodcirc.billing_total.label"
+msgid "Billing Totals"
+msgstr ""
+
+#: field.chmt.transit_range.label
+msgid "Transit Range"
+msgstr ""
+
+#: class.aua.label
+msgid "User Address"
+msgstr ""
+
+#: class.aou.label
+msgid "Organizational Unit"
+msgstr ""
+
+#: field.ancc.circ_time.label
+msgctxt "field.ancc.circ_time.label"
+msgid "Circulation Date/Time"
+msgstr ""
+
+#: field.rccc.xact_start.label
+msgctxt "field.rccc.xact_start.label"
+msgid "Circulation Date/Time"
+msgstr ""
+
+#: field.cza.format.label
+msgctxt "field.cza.format.label"
+msgid "Format"
+msgstr ""
+
+#: field.cvrfm.value.label
+msgctxt "field.cvrfm.value.label"
+msgid "Format"
+msgstr ""
+
+#: field.rmsr.issn.label
+msgctxt "field.rmsr.issn.label"
+msgid "ISSN"
+msgstr ""
+
+#: field.rssr.issn.label
+msgctxt "field.rssr.issn.label"
+msgid "ISSN"
+msgstr ""
+
+#: field.rsr.issn.label
+msgctxt "field.rsr.issn.label"
+msgid "ISSN"
+msgstr ""
+
+#: class.cifm.label
+msgid "Item Form Map"
+msgstr ""
+
+#: field.rmsr.title.label
+msgctxt "field.rmsr.title.label"
+msgid "Title Proper (normalized)"
+msgstr ""
+
+#: field.rssr.title.label
+msgctxt "field.rssr.title.label"
+msgid "Title Proper (normalized)"
+msgstr ""
+
+#: field.rsr.title.label
+msgctxt "field.rsr.title.label"
+msgid "Title Proper (normalized)"
+msgstr ""
+
+#: field.ahr.selection_depth.label
+msgid "Item Selection Depth"
+msgstr ""
+
+#: field.vii.circ_lib.label
+msgctxt "field.vii.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.viiad.circ_lib.label
+msgctxt "field.viiad.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.circ.circ_lib.label
+msgctxt "field.circ.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.combcirc.circ_lib.label
+msgctxt "field.combcirc.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.acirc.circ_lib.label
+msgctxt "field.acirc.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.acp.circ_lib.label
+msgctxt "field.acp.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.ancc.circ_lib.label
+msgctxt "field.ancc.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.rodcirc.circ_lib.label
+msgctxt "field.rodcirc.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.rmocbbcol.circ_lib.label
+msgctxt "field.rmocbbcol.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.rmobbcol.circ_lib.label
+msgctxt "field.rmobbcol.circ_lib.label"
+msgid "Circulating Library"
+msgstr ""
+
+#: field.rxpt.unvoided.label
+msgid "Unvoided Paid Amount"
+msgstr ""
+
+#: field.vii.opac_visible.label
+msgctxt "field.vii.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.viiad.opac_visible.label
+msgctxt "field.viiad.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.aou.opac_visible.label
+msgctxt "field.aou.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.asc.opac_visible.label
+msgctxt "field.asc.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.actsc.opac_visible.label
+msgctxt "field.actsc.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.acp.opac_visible.label
+msgctxt "field.acp.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.rocit.opac_visible.label
+msgctxt "field.rocit.opac_visible.label"
+msgid "OPAC Visible"
+msgstr ""
+
+#: field.asc.id.label
+msgctxt "field.asc.id.label"
+msgid "Stat Cat ID"
+msgstr ""
+
+#: field.actsc.id.label
+msgctxt "field.actsc.id.label"
+msgid "Stat Cat ID"
+msgstr ""
+
+#: field.cam.code.label
+msgid "Audience Code"
+msgstr ""
+
+#: field.rsr.genre.label
+msgid "Genres (normalized)"
+msgstr ""
+
+#: field.rmsr.publisher.label
+msgctxt "field.rmsr.publisher.label"
+msgid "Publisher (normalized)"
+msgstr ""
+
+#: field.rssr.publisher.label
+msgctxt "field.rssr.publisher.label"
+msgid "Publisher (normalized)"
+msgstr ""
+
+#: field.rsr.publisher.label
+msgctxt "field.rsr.publisher.label"
+msgid "Publisher (normalized)"
+msgstr ""
+
+#: field.mbts.usr.label
+msgid "Billed User"
+msgstr ""
+
+#: field.ccmrs.max_fine_rule.label
+msgctxt "field.ccmrs.max_fine_rule.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.circ.max_fine_rule.label
+msgctxt "field.circ.max_fine_rule.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.combcirc.max_fine_rule.label
+msgctxt "field.combcirc.max_fine_rule.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.acirc.max_fine_rule.label
+msgctxt "field.acirc.max_fine_rule.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: class.crmf.label
+msgctxt "class.crmf.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.rodcirc.max_fine_rule.label
+msgctxt "field.rodcirc.max_fine_rule.label"
+msgid "Max Fine Rule"
+msgstr ""
+
+#: field.ssr.total.label
+msgid "Total Results"
+msgstr ""
+
+#: field.rccc.circ_lib_id.label
+msgid "Library Circulation Location Link"
+msgstr ""
+
+#: field.vii.alert_message.label
+msgctxt "field.vii.alert_message.label"
+msgid "Alert Message"
+msgstr ""
+
+#: field.viiad.alert_message.label
+msgctxt "field.viiad.alert_message.label"
+msgid "Alert Message"
+msgstr ""
+
+#: field.au.alert_message.label
+msgctxt "field.au.alert_message.label"
+msgid "Alert Message"
+msgstr ""
+
+#: field.acp.alert_message.label
+msgctxt "field.acp.alert_message.label"
+msgid "Alert Message"
+msgstr ""
+
+#: field.rccbs.last_payment_ts.label
+msgid "Last Payment Date/Time"
+msgstr ""
+
+#: field.mbts.id.label
+msgctxt "field.mbts.id.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.mg.id.label
+msgctxt "field.mg.id.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.mbt.id.label
+msgctxt "field.mbt.id.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.mwp.xact.label
+msgctxt "field.mwp.xact.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.mgp.xact.label
+msgctxt "field.mgp.xact.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.rxbt.xact.label
+msgctxt "field.rxbt.xact.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.rxpt.xact.label
+msgctxt "field.rxpt.xact.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.rccbs.id.label
+msgctxt "field.rccbs.id.label"
+msgid "Transaction ID"
+msgstr ""
+
+#: field.mwp.id.label
+msgctxt "field.mwp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mgp.id.label
+msgctxt "field.mgp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mckp.id.label
+msgctxt "field.mckp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mp.id.label
+msgctxt "field.mp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mbp.id.label
+msgctxt "field.mbp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mndp.id.label
+msgctxt "field.mndp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mdp.id.label
+msgctxt "field.mdp.id.label"
+msgid "Payment ID"
+msgstr ""
+
+#: field.mcrp.amount.label
+msgctxt "field.mcrp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mwp.amount.label
+msgctxt "field.mwp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mgp.amount.label
+msgctxt "field.mgp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mckp.amount.label
+msgctxt "field.mckp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mp.amount.label
+msgctxt "field.mp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mbp.amount.label
+msgctxt "field.mbp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mndp.amount.label
+msgctxt "field.mndp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mdp.amount.label
+msgctxt "field.mdp.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.mb.amount.label
+msgctxt "field.mb.amount.label"
+msgid "Amount"
+msgstr ""
+
+#: field.ahn.notify_time.label
+msgid "Notification Date/Time"
+msgstr ""
+
+#: field.vii.id.label
+msgid "Import Item ID"
+msgstr ""
+
+#: class.chmt.label
+msgid "Hold Matrix Test Set"
+msgstr ""
+
+#: class.chmm.label
+msgid "Hold Matrix Matchpoint"
+msgstr ""
+
+#: field.mrd.date1.label
+msgid "Date1"
+msgstr ""
+
+#: field.bre.subject_field_entries.label
+msgid "Indexed Subject Field Entries"
+msgstr ""
+
+#: field.ccmrs.duration_rule.label
+msgid "Duration Rule"
+msgstr ""
+
+#: class.acpl.label
+msgid "Copy/Shelving Location"
+msgstr ""
+
+#: field.auoi.org_unit.label
+msgid "Allowed Org Unit"
+msgstr ""
+
+#: class.clfm.label
+msgctxt "class.clfm.label"
+msgid "Literary Form"
+msgstr ""
+
+#: field.rccc.lit_form.label
+msgctxt "field.rccc.lit_form.label"
+msgid "Literary Form"
+msgstr ""
+
+#: field.ahr.prev_check_time.label
+msgid "Last Targeting Date/Time"
+msgstr ""
+
+#: field.asvr.response_group_id.label
+msgid "Response Group ID"
+msgstr ""
+
+#: field.chmm.active.label
+msgctxt "field.chmm.active.label"
+msgid "Active?"
+msgstr ""
+
+#: field.ccmm.active.label
+msgctxt "field.ccmm.active.label"
+msgid "Active?"
+msgstr ""
+
+#: field.au.usrname.label
+msgid "OPAC/Staff Client User Name"
+msgstr ""
+
+#: field.ssr.rel.label
+msgid "Relevance"
+msgstr ""
+
+#: class.aus.label
+msgid "User Setting"
+msgstr ""
+
+#: field.circ.duration.label
+msgctxt "field.circ.duration.label"
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.combcirc.duration.label
+msgctxt "field.combcirc.duration.label"
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.acirc.duration.label
+msgctxt "field.acirc.duration.label"
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.cnct.circ_duration.label
+msgctxt "field.cnct.circ_duration.label"
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.rodcirc.duration.label
+msgctxt "field.rodcirc.duration.label"
+msgid "Circulation Duration"
+msgstr ""
+
+#: field.rccc.language.label
+msgid "Item Language"
+msgstr ""
+
+#: class.mbp.label
+msgid "Payments: Brick-and-mortar"
+msgstr ""
+
+#: class.actscecm.label
+msgid "User Statistical Category Entry"
+msgstr ""
+
+#: class.vqarad.label
+msgid "Queued Authority Record Attribute Definition"
+msgstr ""
+
+#: field.ahn.note.label
+msgid "Notification Note"
+msgstr ""
+
+#: field.ccmrs.recurring_fine_rule.label
+msgctxt "field.ccmrs.recurring_fine_rule.label"
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.circ.recuring_fine_rule.label
+msgctxt "field.circ.recuring_fine_rule.label"
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.combcirc.recuring_fine_rule.label
+msgctxt "field.combcirc.recuring_fine_rule.label"
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.acirc.recuring_fine_rule.label
+msgctxt "field.acirc.recuring_fine_rule.label"
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.rodcirc.recuring_fine_rule.label
+msgctxt "field.rodcirc.recuring_fine_rule.label"
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: field.circ.duration_rule.label
+msgctxt "field.circ.duration_rule.label"
+msgid "Circ Duration Rule"
+msgstr ""
+
+#: field.combcirc.duration_rule.label
+msgctxt "field.combcirc.duration_rule.label"
+msgid "Circ Duration Rule"
+msgstr ""
+
+#: field.acirc.duration_rule.label
+msgctxt "field.acirc.duration_rule.label"
+msgid "Circ Duration Rule"
+msgstr ""
+
+#: field.rodcirc.duration_rule.label
+msgctxt "field.rodcirc.duration_rule.label"
+msgid "Circ Duration Rule"
+msgstr ""
+
+#: field.ccmt.max_overdue.label
+msgid "Max Overdue"
+msgstr ""
+
+#: field.ccmt.max_items_out.label
+msgid "Max Items Out"
+msgstr ""
+
+#: class.asc.label
+msgid "Asset Statistical Category"
+msgstr ""
+
+#: field.asv.required.label
+msgid "Is Required?"
+msgstr ""
+
+#: field.au.survey_responses.label
+msgid "Survey Responses"
+msgstr ""
+
+#: field.atc.id.label
+msgctxt "field.atc.id.label"
+msgid "Transit ID"
+msgstr ""
+
+#: field.ahtc.id.label
+msgctxt "field.ahtc.id.label"
+msgid "Transit ID"
+msgstr ""
+
+#: field.iatc.id.label
+msgctxt "field.iatc.id.label"
+msgid "Transit ID"
+msgstr ""
+
+#: field.acp.total_circ_count.label
+msgid "Total Circulations"
+msgstr ""
+
+#: field.rccbs.usr_home_ou_name.label
+msgid "User Home Library Name"
+msgstr ""
+
+#: field.au.credit_forward_balance.label
+msgid "User Credit Balance"
+msgstr ""
+
+#: class.vqbra.label
+msgid "Queued Bib Record Attribute"
+msgstr ""
+
+#: field.aun.create_date.label
+msgctxt "field.aun.create_date.label"
+msgid "Creation Date/Time"
+msgstr ""
+
+#: field.acp.create_date.label
+msgctxt "field.acp.create_date.label"
+msgid "Creation Date/Time"
+msgstr ""
+
+#: field.rocit.due_date.label
+msgid "Due Date"
+msgstr ""
+
+#: field.aout.id.label
+msgid "Type ID"
+msgstr ""
+
+#: field.circ.payments.label
+msgctxt "field.circ.payments.label"
+msgid "Transaction Payments"
+msgstr ""
+
+#: field.combcirc.payments.label
+msgctxt "field.combcirc.payments.label"
+msgid "Transaction Payments"
+msgstr ""
+
+#: field.acirc.payments.label
+msgctxt "field.acirc.payments.label"
+msgid "Transaction Payments"
+msgstr ""
+
+#: field.rodcirc.payments.label
+msgctxt "field.rodcirc.payments.label"
+msgid "Transaction Payments"
+msgstr ""
+
+#: class.bre.label
+msgid "Bibliographic Record"
+msgstr ""
+
+#: field.ahr.eligible_copies.label
+msgid "Eligible Copies"
+msgstr ""
+
+#: field.mp.cash_payment.label
+msgctxt "field.mp.cash_payment.label"
+msgid "Cash Payment Detail"
+msgstr ""
+
+#: field.mbp.cash_payment.label
+msgctxt "field.mbp.cash_payment.label"
+msgid "Cash Payment Detail"
+msgstr ""
+
+#: field.vibtf.id.label
+msgctxt "field.vibtf.id.label"
+msgid "Field ID"
+msgstr ""
+
+#: field.mfr.id.label
+msgctxt "field.mfr.id.label"
+msgid "Field ID"
+msgstr ""
+
+#: field.mrd.type_mat.label
+msgid "TMat"
+msgstr ""
+
+#: field.ancc.item_type.label
+msgid "Non-cat Item Type"
+msgstr ""
+
+#: field.chmm.user_home_ou.label
+msgctxt "field.chmm.user_home_ou.label"
+msgid "User Home Library"
+msgstr ""
+
+#: field.rmocbbhol.home_ou.label
+msgctxt "field.rmocbbhol.home_ou.label"
+msgid "User Home Library"
+msgstr ""
+
+#: field.rmobbhol.home_ou.label
+msgctxt "field.rmobbhol.home_ou.label"
+msgid "User Home Library"
+msgstr ""
+
+#: class.vam.label
+msgid "Queued Authority Record Match"
+msgstr ""
+
+#: field.rccbs.total_owed.label
+msgctxt "field.rccbs.total_owed.label"
+msgid "Total Billed"
+msgstr ""
+
+#: field.rmocbbol.billed.label
+msgctxt "field.rmocbbol.billed.label"
+msgid "Total Billed"
+msgstr ""
+
+#: field.rmocbbcol.billed.label
+msgctxt "field.rmocbbcol.billed.label"
+msgid "Total Billed"
+msgstr ""
+
+#: field.rmocbbhol.billed.label
+msgctxt "field.rmocbbhol.billed.label"
+msgid "Total Billed"
+msgstr ""
+
+#: class.aun.label
+msgid "User Note"
+msgstr ""
+
+#: class.actsc.label
+msgid "User Statistical Category"
+msgstr ""
+
+#: field.ccmm.grp.label
+msgctxt "field.ccmm.grp.label"
+msgid "Permission Group"
+msgstr ""
+
+#: class.pgt.label
+msgctxt "class.pgt.label"
+msgid "Permission Group"
+msgstr ""
+
+#: field.mp.forgive_payment.label
+msgctxt "field.mp.forgive_payment.label"
+msgid "Forgive Payment Detail"
+msgstr ""
+
+#: field.mbp.forgive_payment.label
+msgctxt "field.mbp.forgive_payment.label"
+msgid "Forgive Payment Detail"
+msgstr ""
+
+#: field.mndp.forgive_payment.label
+msgctxt "field.mndp.forgive_payment.label"
+msgid "Forgive Payment Detail"
+msgstr ""
+
+#: field.rhrr.target.label
+msgid "Hold Target"
+msgstr ""
+
+#: field.au.suffix.label
+msgid "Suffix/Title"
+msgstr ""
+
+#: field.asvr.effective_date.label
+msgid "Effective Answer Date/Time"
+msgstr ""
+
+#: field.acp.deposit.label
+msgid "Is Deposit Required"
+msgstr ""
+
+#: field.ahr.capture_time.label
+msgid "Capture Date/Time"
+msgstr ""
+
+#: field.mbts.balance_owed.label
+msgctxt "field.mbts.balance_owed.label"
+msgid "Balance Owed"
+msgstr ""
+
+#: field.rccbs.balance_owed.label
+msgctxt "field.rccbs.balance_owed.label"
+msgid "Balance Owed"
+msgstr ""
+
+#: field.chmt.max_holds.label
+msgid "Max Holds"
+msgstr ""
+
+#: field.rhrr.bib_record.label
+msgid "Target Bib Record"
+msgstr ""
+
+#: class.ac.label
+msgid "Library Card"
+msgstr ""
+
+#: field.au.second_given_name.label
+msgid "Middle Name"
+msgstr ""
+
+#: field.aihu.staff.label
+msgctxt "field.aihu.staff.label"
+msgid "Recording Staff"
+msgstr ""
+
+#: field.ancihu.staff.label
+msgctxt "field.ancihu.staff.label"
+msgid "Recording Staff"
+msgstr ""
+
+#: field.aou.billing_address.label
+msgid "Billing Address"
+msgstr ""
+
+#: field.acp.stat_cat_entries.label
+msgid "Statistical Catagory Entries"
+msgstr ""
+
+#: field.crahp.id.label
+msgctxt "field.crahp.id.label"
+msgid "Rule ID"
+msgstr ""
+
+#: field.crmf.id.label
+msgctxt "field.crmf.id.label"
+msgid "Rule ID"
+msgstr ""
+
+#: field.acp.loan_duration.label
+msgid "Loan Duration"
+msgstr ""
+
+#: field.vbq.queue_type.label
+msgctxt "field.vbq.queue_type.label"
+msgid "Type"
+msgstr ""
+
+#: field.vaq.queue_type.label
+msgctxt "field.vaq.queue_type.label"
+msgid "Type"
+msgstr ""
+
+#: field.mrd.item_type.label
+msgctxt "field.mrd.item_type.label"
+msgid "Type"
+msgstr ""
+
+#: field.aua.address_type.label
+msgctxt "field.aua.address_type.label"
+msgid "Type"
+msgstr ""
+
+#: field.ahr.expire_time.label
+msgid "Hold Expire Date/Time"
+msgstr ""
+
+#: field.bre.full_record_entries.label
+msgid "Flattened MARC Fields "
+msgstr ""
+
+#: field.rmsr.quality.label
+msgctxt "field.rmsr.quality.label"
+msgid "Overall Record Quality"
+msgstr ""
+
+#: field.rssr.quality.label
+msgctxt "field.rssr.quality.label"
+msgid "Overall Record Quality"
+msgstr ""
+
+#: field.rsr.quality.label
+msgctxt "field.rsr.quality.label"
+msgid "Overall Record Quality"
+msgstr ""
+
+#: class.mg.label
+msgid "Grocery Transaction"
+msgstr ""
+
+#: field.rocit.age_protect.label
+msgid "Age Protection"
+msgstr ""
+
+#: class.czs.label
+msgctxt "class.czs.label"
+msgid "Z39.50 Source"
+msgstr ""
+
+#: field.czs.name.label
+msgctxt "field.czs.name.label"
+msgid "Z39.50 Source"
+msgstr ""
+
+#: field.cza.source.label
+msgctxt "field.cza.source.label"
+msgid "Z39.50 Source"
+msgstr ""
+
+#: field.acn.record.label
+msgctxt "field.acn.record.label"
+msgid "Bib Record"
+msgstr ""
+
+#: field.combcirc.copy_bib_record.label
+msgctxt "field.combcirc.copy_bib_record.label"
+msgid "Bib Record"
+msgstr ""
+
+#: field.acirc.copy_bib_record.label
+msgctxt "field.acirc.copy_bib_record.label"
+msgid "Bib Record"
+msgstr ""
+
+#: field.rccbs.patron_city.label
+msgid "User City"
+msgstr ""
+
+#: field.ahn.hold.label
+msgctxt "field.ahn.hold.label"
+msgid "Hold"
+msgstr ""
+
+#: field.aufh.hold.label
+msgctxt "field.aufh.hold.label"
+msgid "Hold"
+msgstr ""
+
+#: field.cifm.value.label
+msgid "Item Form"
+msgstr ""
+
+#: class.cit.label
+msgid "Identification Type"
+msgstr ""
+
+#: field.ahr.requestor.label
+msgid "Requesting User"
+msgstr ""
+
+#: field.auoi.opt_in_ws.label
+msgctxt "field.auoi.opt_in_ws.label"
+msgid "Workstation"
+msgstr ""
+
+#: class.aws.label
+msgctxt "class.aws.label"
+msgid "Workstation"
+msgstr ""
+
+#: field.mcrp.xact.label
+msgctxt "field.mcrp.xact.label"
+msgid "Transaction"
+msgstr ""
+
+#: field.mb.xact.label
+msgctxt "field.mb.xact.label"
+msgid "Transaction"
+msgstr ""
+
+#: class.vii.label
+msgctxt "class.vii.label"
+msgid "Import Item Attribute Definition"
+msgstr ""
+
+#: class.viiad.label
+msgctxt "class.viiad.label"
+msgid "Import Item Attribute Definition"
+msgstr ""
+
+#: field.rocit.owning_lib_name.label
+msgid "Owning Lib Name"
+msgstr ""
+
+#: field.rccc.circ_lib.label
+msgid "Library Circulation Location Short (Policy) Name"
+msgstr ""
+
+#: field.acp.fine_level.label
+msgid "Fine Level"
+msgstr ""
+
+#: field.vqbra.record.label
+msgctxt "field.vqbra.record.label"
+msgid "Record"
+msgstr ""
+
+#: field.vqara.record.label
+msgctxt "field.vqara.record.label"
+msgid "Record"
+msgstr ""
+
+#: field.ssr.record.label
+msgctxt "field.ssr.record.label"
+msgid "Record"
+msgstr ""
+
+#: field.aun.id.label
+msgctxt "field.aun.id.label"
+msgid "Note ID"
+msgstr ""
+
+#: field.acpn.id.label
+msgctxt "field.acpn.id.label"
+msgid "Note ID"
+msgstr ""
+
+#: field.ahr.bib_rec.label
+msgid "Bib Record link"
+msgstr ""
+
+#: field.rsr.uniform_title.label
+msgid "Uniform Title (normalized)"
+msgstr ""
+
+#: field.mg.xact_finish.label
+msgid "Transaction Finish Timestamp"
+msgstr ""
+
+#: class.ahr.label
+msgid "Hold Request"
+msgstr ""
+
+#: field.aihu.item.label
+msgctxt "field.aihu.item.label"
+msgid "Item"
+msgstr ""
+
+#: class.acp.label
+msgctxt "class.acp.label"
+msgid "Item"
+msgstr ""
+
+#: field.chmm.marc_form.label
+msgctxt "field.chmm.marc_form.label"
+msgid "MARC Form"
+msgstr ""
+
+#: field.ccmm.marc_form.label
+msgctxt "field.ccmm.marc_form.label"
+msgid "MARC Form"
+msgstr ""
+
+#: field.rccc.item_form.label
+msgctxt "field.rccc.item_form.label"
+msgid "MARC Form"
+msgstr ""
+
+#: class.ccmt.label
+msgid "Circulation Matrix Test Set"
+msgstr ""
+
+#: field.chmm.usr_grp.label
+msgid "User Permission Group"
+msgstr ""
+
+#: field.ancihu.item_type.label
+msgctxt "field.ancihu.item_type.label"
+msgid "Item Type"
+msgstr ""
+
+#: field.citm.value.label
+msgctxt "field.citm.value.label"
+msgid "Item Type"
+msgstr ""
+
+#: field.ssr.visible.label
+msgid "Visible"
+msgstr ""
+
+#: class.rmocbbol.label
+msgid "Open Circulation Billing by Owning Library"
+msgstr ""
+
+#: field.ahr.phone_notify.label
+msgid "Notifications Phone Number"
+msgstr ""
+
+#: field.mg.billable_transaction.label
+msgid "Billable Transaction link"
+msgstr ""
+
+#: field.circ.id.label
+msgctxt "field.circ.id.label"
+msgid "Circ ID"
+msgstr ""
+
+#: field.combcirc.id.label
+msgctxt "field.combcirc.id.label"
+msgid "Circ ID"
+msgstr ""
+
+#: field.acirc.id.label
+msgctxt "field.acirc.id.label"
+msgid "Circ ID"
+msgstr ""
+
+#: field.rodcirc.id.label
+msgctxt "field.rodcirc.id.label"
+msgid "Circ ID"
+msgstr ""
+
+#: field.bre.deleted.label
+msgid "Is Deleted?"
+msgstr ""
+
+#: class.vaq.label
+msgid "Import/Overlay Authority Queue"
+msgstr ""
+
+#: field.mbt.billings.label
+msgid "Billing Line Items"
+msgstr ""
+
+#: field.acp.circulate.label
+msgid "Can Circulate"
+msgstr ""
+
+#: field.rocit.call_number_label.label
+msgid "Callnumber Label"
+msgstr ""
+
+#: field.aou.parent_ou.label
+msgid "Parent Organizational Unit"
+msgstr ""
+
+#: class.erfcc.label
+msgid "Total Circulation Count, Including Legacy"
+msgstr ""
+
+#: field.bre.last_xact_id.label
+msgid "Last Transaction ID"
+msgstr ""
+
+#: field.mp.check_payment.label
+msgctxt "field.mp.check_payment.label"
+msgid "Check Payment Detail"
+msgstr ""
+
+#: field.mbp.check_payment.label
+msgctxt "field.mbp.check_payment.label"
+msgid "Check Payment Detail"
+msgstr ""
+
+#: field.ahr.id.label
+msgctxt "field.ahr.id.label"
+msgid "Hold ID"
+msgstr ""
+
+#: field.rhrr.id.label
+msgctxt "field.rhrr.id.label"
+msgid "Hold ID"
+msgstr ""
+
+#: field.mbts.last_billing_ts.label
+msgid "Last Billing Timestamp"
+msgstr ""
+
+#: field.rocit.dewey_block_tens.label
+msgid "Dewy Tens"
+msgstr ""
+
+#: field.rocit.stat_cat_1_value.label
+msgid "Legacy Stat Cat 1 Value"
+msgstr ""
+
+#: field.pgt.usergroup.label
+msgid "Is User Group"
+msgstr ""
+
+#: field.rccbs.usr.label
+msgid "User Link"
+msgstr ""
+
+#: field.acpl.circulate.label
+msgid "Can Circulate?"
+msgstr ""
+
+#: field.acp.stat_cat_entry_copy_maps.label
+msgid "Stat-Cat entry maps"
+msgstr ""
+
+#: field.aout.children.label
+msgid "Subordinate Types"
+msgstr ""
+
+#: field.bre.fixed_fields.label
+msgid "Fixed Field Entry"
+msgstr ""
+
+#: field.bre.fingerprint.label
+msgctxt "field.bre.fingerprint.label"
+msgid "Fingerprint"
+msgstr ""
+
+#: field.rmsr.fingerprint.label
+msgctxt "field.rmsr.fingerprint.label"
+msgid "Fingerprint"
+msgstr ""
+
+#: field.rssr.fingerprint.label
+msgctxt "field.rssr.fingerprint.label"
+msgid "Fingerprint"
+msgstr ""
+
+#: field.rsr.fingerprint.label
+msgctxt "field.rsr.fingerprint.label"
+msgid "Fingerprint"
+msgstr ""
+
+#: field.chmm.ref_flag.label
+msgctxt "field.chmm.ref_flag.label"
+msgid "Reference?"
+msgstr ""
+
+#: field.ccmm.ref_flag.label
+msgctxt "field.ccmm.ref_flag.label"
+msgid "Reference?"
+msgstr ""
+
+#: field.pgt.children.label
+msgid "Child Groups"
+msgstr ""
+
+#: field.rccc.dewey_block_tens.label
+msgid "Dewey Block -- Tens"
+msgstr ""
+
+#: field.vii.owning_lib.label
+msgctxt "field.vii.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.viiad.owning_lib.label
+msgctxt "field.viiad.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.aws.owning_lib.label
+msgctxt "field.aws.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.chmm.item_owning_ou.label
+msgctxt "field.chmm.item_owning_ou.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.acn.owning_lib.label
+msgctxt "field.acn.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.asv.owner.label
+msgctxt "field.asv.owner.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.asc.owner.label
+msgctxt "field.asc.owner.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.actsc.owner.label
+msgctxt "field.actsc.owner.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.cnct.owning_lib.label
+msgctxt "field.cnct.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmocbbol.owning_lib.label
+msgctxt "field.rmocbbol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmobbol.owning_lib.label
+msgctxt "field.rmobbol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmocbbcol.owning_lib.label
+msgctxt "field.rmocbbcol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmobbcol.owning_lib.label
+msgctxt "field.rmobbcol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmocbbhol.owning_lib.label
+msgctxt "field.rmocbbhol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rmobbhol.owning_lib.label
+msgctxt "field.rmobbhol.owning_lib.label"
+msgid "Owning Library"
+msgstr ""
+
+#: field.rocit.circ_lib_name.label
+msgid "Circ Lib Name"
+msgstr ""
+
+#: field.vqbr.create_time.label
+msgctxt "field.vqbr.create_time.label"
+msgid "Create Time"
+msgstr ""
+
+#: field.vqar.create_time.label
+msgctxt "field.vqar.create_time.label"
+msgid "Create Time"
+msgstr ""
+
+#: field.amtr.success.label
+msgid "Success"
+msgstr ""
+
+#: field.circ.circ_staff.label
+msgctxt "field.circ.circ_staff.label"
+msgid "Circulating Staff"
+msgstr ""
+
+#: field.combcirc.circ_staff.label
+msgctxt "field.combcirc.circ_staff.label"
+msgid "Circulating Staff"
+msgstr ""
+
+#: field.acirc.circ_staff.label
+msgctxt "field.acirc.circ_staff.label"
+msgid "Circulating Staff"
+msgstr ""
+
+#: field.ancc.staff.label
+msgctxt "field.ancc.staff.label"
+msgid "Circulating Staff"
+msgstr ""
+
+#: field.rodcirc.circ_staff.label
+msgctxt "field.rodcirc.circ_staff.label"
+msgid "Circulating Staff"
+msgstr ""
+
+#: class.asce.label
+msgid "Item Stat Cat Entry"
+msgstr ""
+
+#: field.combcirc.usr_birth_year.label
+msgctxt "field.combcirc.usr_birth_year.label"
+msgid "Patron Birth Year"
+msgstr ""
+
+#: field.acirc.usr_birth_year.label
+msgctxt "field.acirc.usr_birth_year.label"
+msgid "Patron Birth Year"
+msgstr ""
+
+#: field.atc.hold_transit_copy.label
+msgctxt "field.atc.hold_transit_copy.label"
+msgid "Hold Transit"
+msgstr ""
+
+#: class.ahtc.label
+msgctxt "class.ahtc.label"
+msgid "Hold Transit"
+msgstr ""
+
+#: field.iatc.hold_transit_copy.label
+msgctxt "field.iatc.hold_transit_copy.label"
+msgid "Hold Transit"
+msgstr ""
+
+#: field.asv.opac.label
+msgid "OPAC Surevey?"
+msgstr ""
+
+#: field.vqbra.id.label
+msgctxt "field.vqbra.id.label"
+msgid "Attribute ID"
+msgstr ""
+
+#: field.vqara.id.label
+msgctxt "field.vqara.id.label"
+msgid "Attribute ID"
+msgstr ""
+
+#: field.aun.creator.label
+msgid "Creating Staff"
+msgstr ""
+
+#: class.ccmrs.label
+msgid "Circulation Matrix Rule Set"
+msgstr ""
+
+#: field.ahr.target.label
+msgid "Target Object ID"
+msgstr ""
+
+#: field.ccm.sip2_media_type.label
+msgid "SIP2 Media Type"
+msgstr ""
+
+#: field.acpl.hold_verify.label
+msgid "Hold Capture Requires Verification"
+msgstr ""
+
+#: field.vqbrad.code.label
+msgctxt "field.vqbrad.code.label"
+msgid "Code"
+msgstr ""
+
+#: field.vqarad.code.label
+msgctxt "field.vqarad.code.label"
+msgid "Code"
+msgstr ""
+
+#: field.cza.code.label
+msgctxt "field.cza.code.label"
+msgid "Code"
+msgstr ""
+
+#: field.ccm.code.label
+msgctxt "field.ccm.code.label"
+msgid "Code"
+msgstr ""
+
+#: field.cvrfm.code.label
+msgctxt "field.cvrfm.code.label"
+msgid "Code"
+msgstr ""
+
+#: field.rocit.patron_name.label
+msgid "Patron Name"
+msgstr ""
+
+#: class.cvrfm.label
+msgctxt "class.cvrfm.label"
+msgid "Videorecording Format"
+msgstr ""
+
+#: field.chmm.marc_vr_format.label
+msgctxt "field.chmm.marc_vr_format.label"
+msgid "Videorecording Format"
+msgstr ""
+
+#: field.ccmm.marc_vr_format.label
+msgctxt "field.ccmm.marc_vr_format.label"
+msgid "Videorecording Format"
+msgstr ""
+
+#: field.circ.due_date.label
+msgctxt "field.circ.due_date.label"
+msgid "Due Date/Time"
+msgstr ""
+
+#: field.combcirc.due_date.label
+msgctxt "field.combcirc.due_date.label"
+msgid "Due Date/Time"
+msgstr ""
+
+#: field.acirc.due_date.label
+msgctxt "field.acirc.due_date.label"
+msgid "Due Date/Time"
+msgstr ""
+
+#: field.rodcirc.due_date.label
+msgctxt "field.rodcirc.due_date.label"
+msgid "Due Date/Time"
+msgstr ""
+
+#: field.asvq.id.label
+msgid "Question ID"
+msgstr ""
+
+#: class.mb.label
+msgid "Billing Line Item"
+msgstr ""
+
+#: field.czs.transmission_format.label
+msgid "Transmission Format"
+msgstr ""
+
+#: field.rsr.external_uri.label
+msgid "External URI List (normalized)"
+msgstr ""
+
+#: field.actsce.id.label
+msgctxt "field.actsce.id.label"
+msgid "Entry ID"
+msgstr ""
+
+#: field.actscecm.id.label
+msgctxt "field.actscecm.id.label"
+msgid "Entry ID"
+msgstr ""
+
+#: field.asce.id.label
+msgctxt "field.asce.id.label"
+msgid "Entry ID"
+msgstr ""
+
+#: field.rsce1.id.label
+msgctxt "field.rsce1.id.label"
+msgid "Entry ID"
+msgstr ""
+
+#: field.rsce2.id.label
+msgctxt "field.rsce2.id.label"
+msgid "Entry ID"
+msgstr ""
+
+#: field.acp.age_protect.label
+msgid "Age Hold Protection"
+msgstr ""
+
+#: field.amtr.fail_part.label
+msgid "Failure Part"
+msgstr ""
+
+#: field.acp.copy_number.label
+msgid "Copy Number on Volume"
+msgstr ""
+
+#: field.mbts.last_payment_type.label
+msgctxt "field.mbts.last_payment_type.label"
+msgid "Last Payment Type"
+msgstr ""
+
+#: field.rccbs.last_payment_type.label
+msgctxt "field.rccbs.last_payment_type.label"
+msgid "Last Payment Type"
+msgstr ""
+
+#: class.mgp.label
+msgid "Goods Payment"
+msgstr ""
+
+#: field.rmsr.isbn.label
+msgctxt "field.rmsr.isbn.label"
+msgid "ISBN"
+msgstr ""
+
+#: field.rssr.isbn.label
+msgctxt "field.rssr.isbn.label"
+msgid "ISBN"
+msgstr ""
+
+#: field.rsr.isbn.label
+msgctxt "field.rsr.isbn.label"
+msgid "ISBN"
+msgstr ""
+
+#: field.circ.checkin_staff.label
+msgctxt "field.circ.checkin_staff.label"
+msgid "Check In Staff"
+msgstr ""
+
+#: field.combcirc.checkin_staff.label
+msgctxt "field.combcirc.checkin_staff.label"
+msgid "Check In Staff"
+msgstr ""
+
+#: field.acirc.checkin_staff.label
+msgctxt "field.acirc.checkin_staff.label"
+msgid "Check In Staff"
+msgstr ""
+
+#: field.rodcirc.checkin_staff.label
+msgctxt "field.rodcirc.checkin_staff.label"
+msgid "Check In Staff"
+msgstr ""
+
+#: field.ccmt.script_test.label
+msgid "Test Script"
+msgstr ""
+
+#: field.mdp.cash_drawer.label
+msgid "Cash Drawer"
+msgstr ""
+
+#: class.asvr.label
+msgid "Survey Response"
+msgstr ""
+
+#: class.crahp.label
+msgid "Age Hold Protection Rule"
+msgstr ""
+
+#: field.czs.db.label
+msgid "DB"
+msgstr ""
+
+#: field.au.first_given_name.label
+msgid "First Name"
+msgstr ""
+
+#: class.cza.label
+msgid "Z39.50 Attribute"
+msgstr ""
+
+#: field.au.permissions.label
+msgid "All Permissions"
+msgstr ""
+
+#: field.mbts.xact_finish.label
+msgid "Transaction Finish Time"
+msgstr ""
+
+#: field.cit.id.label
+msgid "Identification ID"
+msgstr ""
+
+#: field.ccmt.org_unit.label
+msgid "Test Context Location"
+msgstr ""
+
+#: field.atc.source_send_time.label
+msgctxt "field.atc.source_send_time.label"
+msgid "Send Date/Time"
+msgstr ""
+
+#: field.ahtc.source_send_time.label
+msgctxt "field.ahtc.source_send_time.label"
+msgid "Send Date/Time"
+msgstr ""
+
+#: field.iatc.source_send_time.label
+msgctxt "field.iatc.source_send_time.label"
+msgid "Send Date/Time"
+msgstr ""
+
+#: class.circ.label
+msgctxt "class.circ.label"
+msgid "Circulation"
+msgstr ""
+
+#: field.rccc.id.label
+msgctxt "field.rccc.id.label"
+msgid "Circulation"
+msgstr ""
+
+#: field.vii.price.label
+msgctxt "field.vii.price.label"
+msgid "Price"
+msgstr ""
+
+#: field.viiad.price.label
+msgctxt "field.viiad.price.label"
+msgid "Price"
+msgstr ""
+
+#: field.acp.price.label
+msgctxt "field.acp.price.label"
+msgid "Price"
+msgstr ""
+
+#: field.rocit.price.label
+msgctxt "field.rocit.price.label"
+msgid "Price"
+msgstr ""
+
+#: field.vii.barcode.label
+msgctxt "field.vii.barcode.label"
+msgid "Barcode"
+msgstr ""
+
+#: field.viiad.barcode.label
+msgctxt "field.viiad.barcode.label"
+msgid "Barcode"
+msgstr ""
+
+#: field.ac.barcode.label
+msgctxt "field.ac.barcode.label"
+msgid "Barcode"
+msgstr ""
+
+#: field.acp.barcode.label
+msgctxt "field.acp.barcode.label"
+msgid "Barcode"
+msgstr ""
+
+#: field.rocit.barcode.label
+msgctxt "field.rocit.barcode.label"
+msgid "Barcode"
+msgstr ""
+
+#: field.pgt.id.label
+msgid "Group ID"
+msgstr ""
+
+#: field.mrd.pub_status.label
+msgid "Pub Status"
+msgstr ""
+
+#: field.rocit.create_date.label
+msgid "Create Date"
+msgstr ""
+
+#: field.vii.deposit_amount.label
+msgctxt "field.vii.deposit_amount.label"
+msgid "Deposit Amount"
+msgstr ""
+
+#: field.viiad.deposit_amount.label
+msgctxt "field.viiad.deposit_amount.label"
+msgid "Deposit Amount"
+msgstr ""
+
+#: field.acp.deposit_amount.label
+msgctxt "field.acp.deposit_amount.label"
+msgid "Deposit Amount"
+msgstr ""
+
+#: field.rocit.deposit_amount.label
+msgctxt "field.rocit.deposit_amount.label"
+msgid "Deposit Amount"
+msgstr ""
+
+#: field.rxbt.total.label
+msgid "Total Billing Amount"
+msgstr ""
+
+#: field.circ.xact_finish.label
+msgctxt "field.circ.xact_finish.label"
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.combcirc.xact_finish.label
+msgctxt "field.combcirc.xact_finish.label"
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.acirc.xact_finish.label
+msgctxt "field.acirc.xact_finish.label"
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.mbt.xact_finish.label
+msgctxt "field.mbt.xact_finish.label"
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.rodcirc.xact_finish.label
+msgctxt "field.rodcirc.xact_finish.label"
+msgid "Transaction Finish Date/Time"
+msgstr ""
+
+#: field.acp.ref.label
+msgid "Is Reference"
+msgstr ""
+
+#: field.viiad.name.label
+msgctxt "field.viiad.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.vbq.name.label
+msgctxt "field.vbq.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.vaq.name.label
+msgctxt "field.vaq.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.cza.name.label
+msgctxt "field.cza.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.ccm.name.label
+msgctxt "field.ccm.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.aus.name.label
+msgctxt "field.aus.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.cxt.name.label
+msgctxt "field.cxt.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.acpl.name.label
+msgctxt "field.acpl.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.asv.name.label
+msgctxt "field.asv.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.aou.name.label
+msgctxt "field.aou.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.asc.name.label
+msgctxt "field.asc.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.actsc.name.label
+msgctxt "field.actsc.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.cnct.name.label
+msgctxt "field.cnct.name.label"
+msgid "Name"
+msgstr ""
+
+#: field.mckp.cash_drawer.label
+msgid "Workstation link"
+msgstr ""
+
+#: field.chmm.marc_type.label
+msgctxt "field.chmm.marc_type.label"
+msgid "MARC Type"
+msgstr ""
+
+#: field.ccmm.marc_type.label
+msgctxt "field.ccmm.marc_type.label"
+msgid "MARC Type"
+msgstr ""
+
+#: field.rccc.item_type.label
+msgctxt "field.rccc.item_type.label"
+msgid "MARC Type"
+msgstr ""
+
+#: field.bre.edit_date.label
+msgid "Last Edit Data/Time"
+msgstr ""
+
+#: field.clm.code.label
+msgctxt "field.clm.code.label"
+msgid "Language Code"
+msgstr ""
+
+#: field.bre.language.label
+msgctxt "field.bre.language.label"
+msgid "Language Code"
+msgstr ""
+
+#: field.cza.id.label
+msgid "Z39.50 Attr ID"
+msgstr ""
+
+#: field.combcirc.usr_post_code.label
+msgctxt "field.combcirc.usr_post_code.label"
+msgid "Patron ZIP"
+msgstr ""
+
+#: field.acirc.usr_post_code.label
+msgctxt "field.acirc.usr_post_code.label"
+msgid "Patron ZIP"
+msgstr ""
+
+#: field.circ.xact_start.label
+msgctxt "field.circ.xact_start.label"
+msgid "Check Out Date/Time"
+msgstr ""
+
+#: field.combcirc.xact_start.label
+msgctxt "field.combcirc.xact_start.label"
+msgid "Check Out Date/Time"
+msgstr ""
+
+#: field.acirc.xact_start.label
+msgctxt "field.acirc.xact_start.label"
+msgid "Check Out Date/Time"
+msgstr ""
+
+#: field.rodcirc.xact_start.label
+msgctxt "field.rodcirc.xact_start.label"
+msgid "Check Out Date/Time"
+msgstr ""
+
+#: field.rxbt.unvoided.label
+msgid "Unvoided Billing Amount"
+msgstr ""
+
+#: field.rxpt.total.label
+msgid "Total Paid Amount"
+msgstr ""
+
+#: field.circ.billable_transaction.label
+msgctxt "field.circ.billable_transaction.label"
+msgid "Base Transaction"
+msgstr ""
+
+#: field.combcirc.billable_transaction.label
+msgctxt "field.combcirc.billable_transaction.label"
+msgid "Base Transaction"
+msgstr ""
+
+#: field.acirc.billable_transaction.label
+msgctxt "field.acirc.billable_transaction.label"
+msgid "Base Transaction"
+msgstr ""
+
+#: field.rodcirc.billable_transaction.label
+msgctxt "field.rodcirc.billable_transaction.label"
+msgid "Base Transaction"
+msgstr ""
+
+#: field.rccc.patron_home_lib_shortname.label
+msgid "Patron Home Library Short (Policy) Name"
+msgstr ""
+
+#: field.ac.active.label
+msgid "IsActive?"
+msgstr ""
+
+#: field.cnct.in_house.label
+msgid "In House?"
+msgstr ""
+
+#: field.rsr.geographic_subject.label
+msgid "Geographic Subjects (normalized)"
+msgstr ""
+
+#: field.vii.call_number.label
+msgctxt "field.vii.call_number.label"
+msgid "Call Number"
+msgstr ""
+
+#: field.viiad.call_number.label
+msgctxt "field.viiad.call_number.label"
+msgid "Call Number"
+msgstr ""
+
+#: field.combcirc.copy_call_number.label
+msgctxt "field.combcirc.copy_call_number.label"
+msgid "Call Number"
+msgstr ""
+
+#: field.acirc.copy_call_number.label
+msgctxt "field.acirc.copy_call_number.label"
+msgid "Call Number"
+msgstr ""
+
+#: field.au.card.label
+msgid "Current Library Card"
+msgstr ""
+
+#: field.atc.target_copy.label
+msgctxt "field.atc.target_copy.label"
+msgid "Transited Copy"
+msgstr ""
+
+#: field.ahtc.target_copy.label
+msgctxt "field.ahtc.target_copy.label"
+msgid "Transited Copy"
+msgstr ""
+
+#: field.iatc.target_copy.label
+msgctxt "field.iatc.target_copy.label"
+msgid "Transited Copy"
+msgstr ""
+
+#: field.actsce.value.label
+msgctxt "field.actsce.value.label"
+msgid "Entry Value"
+msgstr ""
+
+#: field.rsce1.value.label
+msgctxt "field.rsce1.value.label"
+msgid "Entry Value"
+msgstr ""
+
+#: field.rsce2.value.label
+msgctxt "field.rsce2.value.label"
+msgid "Entry Value"
+msgstr ""
+
+#: field.acpn.creator.label
+msgid "Note Creator"
+msgstr ""
+
+#: field.combcirc.copy_circ_lib.label
+msgctxt "field.combcirc.copy_circ_lib.label"
+msgid "Copy Circulating Library"
+msgstr ""
+
+#: field.acirc.copy_circ_lib.label
+msgctxt "field.acirc.copy_circ_lib.label"
+msgid "Copy Circulating Library"
+msgstr ""
+
+#: class.vbm.label
+msgid "Queued Bib Record Match"
+msgstr ""
+
+#: field.ssr.checked.label
+msgid "Checked"
+msgstr ""
+
+#: field.mfr.record.label
+msgctxt "field.mfr.record.label"
+msgid "Bib Record Entry"
+msgstr ""
+
+#: field.mrd.record.label
+msgctxt "field.mrd.record.label"
+msgid "Bib Record Entry"
+msgstr ""
+
+#: field.rccbs.usr_home_ou.label
+msgid "User Home Library Link"
+msgstr ""
+
+#: field.ccmm.usr_age_lower_bound.label
+msgid "User Age: Lower Bound"
+msgstr ""
+
+#: field.acp.id.label
+msgctxt "field.acp.id.label"
+msgid "Copy ID"
+msgstr ""
+
+#: field.erfcc.id.label
+msgctxt "field.erfcc.id.label"
+msgid "Copy ID"
+msgstr ""
+
+#: field.rocit.id.label
+msgctxt "field.rocit.id.label"
+msgid "Copy ID"
+msgstr ""
+
+#: field.au.day_phone.label
+msgid "Daytime Phone"
+msgstr ""
+
+#: field.czs.record_format.label
+msgid "Record Format"
+msgstr ""
+
+#: field.circ.target_copy.label
+msgctxt "field.circ.target_copy.label"
+msgid "Circulating Item"
+msgstr ""
+
+#: field.combcirc.target_copy.label
+msgctxt "field.combcirc.target_copy.label"
+msgid "Circulating Item"
+msgstr ""
+
+#: field.acirc.target_copy.label
+msgctxt "field.acirc.target_copy.label"
+msgid "Circulating Item"
+msgstr ""
+
+#: field.rodcirc.target_copy.label
+msgctxt "field.rodcirc.target_copy.label"
+msgid "Circulating Item"
+msgstr ""
+
+#: field.rocit.author.label
+msgid "Author"
+msgstr ""
+
+#: field.ahr.email_notify.label
+msgid "Notify by Email?"
+msgstr ""
+
+#: field.circ.payment_total.label
+msgctxt "field.circ.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.combcirc.payment_total.label
+msgctxt "field.combcirc.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.acirc.payment_total.label
+msgctxt "field.acirc.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.mg.payment_total.label
+msgctxt "field.mg.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.mbt.payment_total.label
+msgctxt "field.mbt.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.rodcirc.payment_total.label
+msgctxt "field.rodcirc.payment_total.label"
+msgid "Payment Totals"
+msgstr ""
+
+#: field.rccc.patron_id.label
+msgid "Patron Link"
+msgstr ""
+
+#: field.ccmcmt.id.label
+msgid "Test ID"
+msgstr ""
+
+#: field.mp.goods_payment.label
+msgctxt "field.mp.goods_payment.label"
+msgid "Goods Payment Detail"
+msgstr ""
+
+#: field.mbp.goods_payment.label
+msgctxt "field.mbp.goods_payment.label"
+msgid "Goods Payment Detail"
+msgstr ""
+
+#: field.mndp.goods_payment.label
+msgctxt "field.mndp.goods_payment.label"
+msgid "Goods Payment Detail"
+msgstr ""
+
+#: field.au.notes.label
+msgid "User Notes"
+msgstr ""
+
+#: field.vii.copy_number.label
+msgctxt "field.vii.copy_number.label"
+msgid "Copy Number"
+msgstr ""
+
+#: field.viiad.copy_number.label
+msgctxt "field.viiad.copy_number.label"
+msgid "Copy Number"
+msgstr ""
+
+#: field.acn.notes.label
+msgid "Notes"
+msgstr ""
+
+#: class.rmsr.label
+msgid "Fast Simple Record Extracts"
+msgstr ""
+
+#: field.vqbra.attr_value.label
+msgctxt "field.vqbra.attr_value.label"
+msgid "Value"
+msgstr ""
+
+#: field.vqara.attr_value.label
+msgctxt "field.vqara.attr_value.label"
+msgid "Value"
+msgstr ""
+
+#: field.aus.value.label
+msgctxt "field.aus.value.label"
+msgid "Value"
+msgstr ""
+
+#: field.asce.value.label
+msgctxt "field.asce.value.label"
+msgid "Value"
+msgstr ""
+
+#: field.viiad.keep.label
+msgid "Keep"
+msgstr ""
+
+#: field.bre.tcn_source.label
+msgctxt "field.bre.tcn_source.label"
+msgid "TCN Source"
+msgstr ""
+
+#: field.rmsr.tcn_source.label
+msgctxt "field.rmsr.tcn_source.label"
+msgid "TCN Source"
+msgstr ""
+
+#: field.rssr.tcn_source.label
+msgctxt "field.rssr.tcn_source.label"
+msgid "TCN Source"
+msgstr ""
+
+#: field.rsr.tcn_source.label
+msgctxt "field.rsr.tcn_source.label"
+msgid "TCN Source"
+msgstr ""
+
+#: class.rsce1.label
+msgid "CAT1 Entry"
+msgstr ""
+
+#: field.mrd.enc_level.label
+msgid "ELvl"
+msgstr ""
+
+#: field.ahtc.dest.label
+msgid "Destination Library"
+msgstr ""
+
+#: class.aufh.label
+msgid "Unfulfilled Hold Targets"
+msgstr ""
+
+#: field.mb.voider.label
+msgid "Voiding Staff Member"
+msgstr ""
+
+#: field.rocit.creator.label
+msgid "Creator"
+msgstr ""
+
+#: field.rccc.dewey_range_hundreds.label
+msgid "Dewey Range -- Hundreds"
+msgstr ""
+
+#: field.rccc.copy_id.label
+msgid "Copy Link"
+msgstr ""
+
+#: field.ahr.selection_ou.label
+msgid "Selection Locus"
+msgstr ""
+
+#: field.rsr.series_statement.label
+msgid "Series Statement (normalized)"
+msgstr ""
+
+#: class.rccbs.label
+msgid "Classic Open Transaction Summary"
+msgstr ""
+
+#: class.cnct.label
+msgid "Non-cataloged Type"
+msgstr ""
+
+#: field.asvq.question.label
+msgctxt "field.asvq.question.label"
+msgid "Question"
+msgstr ""
+
+#: field.asvr.question.label
+msgctxt "field.asvr.question.label"
+msgid "Question"
+msgstr ""
+
+#: field.asva.question.label
+msgctxt "field.asva.question.label"
+msgid "Question"
+msgstr ""
+
+#: field.ahtc.prev_hop.label
+msgid "Previous Stop"
+msgstr ""
+
+#: field.bre.tcn_value.label
+msgctxt "field.bre.tcn_value.label"
+msgid "TCN Value"
+msgstr ""
+
+#: field.rmsr.tcn_value.label
+msgctxt "field.rmsr.tcn_value.label"
+msgid "TCN Value"
+msgstr ""
+
+#: field.rssr.tcn_value.label
+msgctxt "field.rssr.tcn_value.label"
+msgid "TCN Value"
+msgstr ""
+
+#: field.rsr.tcn_value.label
+msgctxt "field.rsr.tcn_value.label"
+msgid "TCN Value"
+msgstr ""
+
+#: class.ahn.label
+msgid "Hold Notification"
+msgstr ""
+
+#: field.rcirct.id.label
+msgctxt "field.rcirct.id.label"
+msgid "Circulation ID"
+msgstr ""
+
+#: field.rmocbbol.id.label
+msgctxt "field.rmocbbol.id.label"
+msgid "Circulation ID"
+msgstr ""
+
+#: field.rmocbbcol.id.label
+msgctxt "field.rmocbbcol.id.label"
+msgid "Circulation ID"
+msgstr ""
+
+#: field.rmocbbhol.id.label
+msgctxt "field.rmocbbhol.id.label"
+msgid "Circulation ID"
+msgstr ""
+
+#: field.circ.opac_renewal.label
+msgctxt "field.circ.opac_renewal.label"
+msgid "OPAC Renewal"
+msgstr ""
+
+#: field.combcirc.opac_renewal.label
+msgctxt "field.combcirc.opac_renewal.label"
+msgid "OPAC Renewal"
+msgstr ""
+
+#: field.acirc.opac_renewal.label
+msgctxt "field.acirc.opac_renewal.label"
+msgid "OPAC Renewal"
+msgstr ""
+
+#: field.rodcirc.opac_renewal.label
+msgctxt "field.rodcirc.opac_renewal.label"
+msgid "OPAC Renewal"
+msgstr ""
+
+#: field.rsr.topic_subject.label
+msgid "Topic Subjects (normalized)"
+msgstr ""
+
+#: field.rccbs.barcode.label
+msgid "User Barcode"
+msgstr ""
+
+#: field.au.profile.label
+msgid "Main (Profile) Permission Group"
+msgstr ""
+
+#: field.mfr.subfield.label
+msgid "Subfield"
+msgstr ""
+
+#: field.acn.creator.label
+msgctxt "field.acn.creator.label"
+msgid "Creating User"
+msgstr ""
+
+#: field.acp.creator.label
+msgctxt "field.acp.creator.label"
+msgid "Creating User"
+msgstr ""
+
+#: field.acp.holdable.label
+msgid "Is Holdable"
+msgstr ""
+
+#: field.czs.auth.label
+msgid "Auth"
+msgstr ""
+
+#: field.rocit.tcn_value.label
+msgid "TCN"
+msgstr ""
+
+#: field.acn.editor.label
+msgctxt "field.acn.editor.label"
+msgid "Last Editing User"
+msgstr ""
+
+#: field.bre.editor.label
+msgctxt "field.bre.editor.label"
+msgid "Last Editing User"
+msgstr ""
+
+#: field.acp.editor.label
+msgctxt "field.acp.editor.label"
+msgid "Last Editing User"
+msgstr ""
+
+#: field.circ.max_fine.label
+msgctxt "field.circ.max_fine.label"
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.combcirc.max_fine.label
+msgctxt "field.combcirc.max_fine.label"
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.acirc.max_fine.label
+msgctxt "field.acirc.max_fine.label"
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.crmf.amount.label
+msgctxt "field.crmf.amount.label"
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.rodcirc.max_fine.label
+msgctxt "field.rodcirc.max_fine.label"
+msgid "Max Fine Amount"
+msgstr ""
+
+#: field.rccc.dewey_range_tens.label
+msgid "Dewey Range -- Tens"
+msgstr ""
+
+#: field.ahtc.copy_status.label
+msgid "Copy Status at Transit"
+msgstr ""
+
+#: field.aou.settings.label
+msgid "Settings"
+msgstr ""
+
+#: field.ahr.hold_type.label
+msgid "Hold Type"
+msgstr ""
+
+#: field.vqbr.queue.label
+msgctxt "field.vqbr.queue.label"
+msgid "Queue"
+msgstr ""
+
+#: field.vqar.queue.label
+msgctxt "field.vqar.queue.label"
+msgid "Queue"
+msgstr ""
+
+#: field.mp.credit_payment.label
+msgctxt "field.mp.credit_payment.label"
+msgid "Credit Payment Detail"
+msgstr ""
+
+#: field.mbp.credit_payment.label
+msgctxt "field.mbp.credit_payment.label"
+msgid "Credit Payment Detail"
+msgstr ""
+
+#: field.mndp.credit_payment.label
+msgctxt "field.mndp.credit_payment.label"
+msgid "Credit Payment Detail"
+msgstr ""
+
+#: field.ahr.request_time.label
+msgid "Request Date/Time"
+msgstr ""
+
+#: field.vbm.queued_record.label
+msgctxt "field.vbm.queued_record.label"
+msgid "Queued Record"
+msgstr ""
+
+#: field.vam.queued_record.label
+msgctxt "field.vam.queued_record.label"
+msgid "Queued Record"
+msgstr ""
+
+#: field.rccbs.xact_finish.label
+msgid "Transaction End Date/Time"
+msgstr ""
+
+#: field.mrd.bib_level.label
+msgid "BLvl"
+msgstr ""
+
+#: field.aou.workstations.label
+msgid "Workstations"
+msgstr ""
+
+#: field.au.hold_requests.label
+msgid "All Hold Requests"
+msgstr ""
+
+#: field.au.master_account.label
+msgid "Is Group Lead Account"
+msgstr ""
+
+#: class.ccmm.label
+msgid "Circulation Matrix Matchpoint"
+msgstr ""
+
+#: field.aihu.use_time.label
+msgctxt "field.aihu.use_time.label"
+msgid "Use Date/Time"
+msgstr ""
+
+#: field.ancihu.use_time.label
+msgctxt "field.ancihu.use_time.label"
+msgid "Use Date/Time"
+msgstr ""
+
+#: field.mfr.value.label
+msgid "Normalized Value"
+msgstr ""
+
+#: field.ccmt.circulate.label
+msgid "Circulate?"
+msgstr ""
+
+#: class.cxt.label
+msgid "XML/XSLT Transform Definition"
+msgstr ""
+
+#: field.mcrp.accepting_usr.label
+msgctxt "field.mcrp.accepting_usr.label"
+msgid "Accepting Staff Member"
+msgstr ""
+
+#: field.mwp.accepting_usr.label
+msgctxt "field.mwp.accepting_usr.label"
+msgid "Accepting Staff Member"
+msgstr ""
+
+#: field.mgp.accepting_usr.label
+msgctxt "field.mgp.accepting_usr.label"
+msgid "Accepting Staff Member"
+msgstr ""
+
+#: field.mckp.accepting_usr.label
+msgctxt "field.mckp.accepting_usr.label"
+msgid "Accepting Staff Member"
+msgstr ""
+
+#: field.rccc.demographic_general_division.label
+msgid "Patron Age Demographic"
+msgstr ""
+
+#: class.ccmcmt.label
+msgid "Circulation Matrix Circulation Modifier Subtest"
+msgstr ""
+
+#: field.rsr.corporate_subject.label
+msgid "Corporate Name Subjects (normalized)"
+msgstr ""
+
+#: field.acp.dummy_author.label
+msgid "Precat Dummy Author"
+msgstr ""
+
+#: class.rodcirc.label
+msgid "Overdue Circulation"
+msgstr ""
+
+#: field.bre.active.label
+msgid "Is Active?"
+msgstr ""
+
+#: field.ccmm.org_unit.label
+msgid "Org Unit"
+msgstr ""
+
+#: field.crahp.prox.label
+msgid "Allowed Proximity"
+msgstr ""
+
+#: field.ahr.fulfillment_time.label
+msgid "Fulfillment Date/Time"
+msgstr ""
+
+#: field.mg.note.label
+msgctxt "field.mg.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mwp.note.label
+msgctxt "field.mwp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mgp.note.label
+msgctxt "field.mgp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mckp.note.label
+msgctxt "field.mckp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mp.note.label
+msgctxt "field.mp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mbp.note.label
+msgctxt "field.mbp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mndp.note.label
+msgctxt "field.mndp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mdp.note.label
+msgctxt "field.mdp.note.label"
+msgid "Note"
+msgstr ""
+
+#: field.mb.note.label
+msgctxt "field.mb.note.label"
+msgid "Note"
+msgstr ""
+
+#: class.vqbr.label
+msgid "Queued Bib Record"
+msgstr ""
+
+#: field.rocit.stat_cat_1.label
+msgid "Legacy Stat Cat 1"
+msgstr ""
+
+#: field.rocit.stat_cat_2.label
+msgid "Legacy Stat Cat 2"
+msgstr ""
+
+#: field.aua.id.label
+msgid "Address ID"
+msgstr ""
+
+#: field.rccbs.patron_county.label
+msgid "User County"
+msgstr ""
+
+#: field.rocit.circ_lib.label
+msgid "Circ Lib"
+msgstr ""
+
+#: field.chmt.include_frozen_holds.label
+msgid "Max includes Frozen"
+msgstr ""
+
+#: field.acn.id.label
+msgid "Call Number/Volume ID"
+msgstr ""
+
+#: field.aout.opac_label.label
+msgid "OPAC Label"
+msgstr ""
+
+#: class.vqar.label
+msgid "Queued Authority Record"
+msgstr ""
+
+#: class.au.label
+msgid "ILS User"
+msgstr ""
+
+#: class.asvq.label
+msgid "User Survey Question"
+msgstr ""
+
+#: field.circ.phone_renewal.label
+msgctxt "field.circ.phone_renewal.label"
+msgid "Phone Renewal"
+msgstr ""
+
+#: field.combcirc.phone_renewal.label
+msgctxt "field.combcirc.phone_renewal.label"
+msgid "Phone Renewal"
+msgstr ""
+
+#: field.acirc.phone_renewal.label
+msgctxt "field.acirc.phone_renewal.label"
+msgid "Phone Renewal"
+msgstr ""
+
+#: field.rodcirc.phone_renewal.label
+msgctxt "field.rodcirc.phone_renewal.label"
+msgid "Phone Renewal"
+msgstr ""
+
+#: field.combcirc.usr_home_ou.label
+msgctxt "field.combcirc.usr_home_ou.label"
+msgid "Patron Home Library"
+msgstr ""
+
+#: field.acirc.usr_home_ou.label
+msgctxt "field.acirc.usr_home_ou.label"
+msgid "Patron Home Library"
+msgstr ""
+
+#: field.chmm.requestor_grp.label
+msgid "Requestor Permission Group"
+msgstr ""
+
+#: field.bre.quality.label
+msgid "Overall Quality"
+msgstr ""
+
+#: field.au.active.label
+msgctxt "field.au.active.label"
+msgid "Active"
+msgstr ""
+
+#: field.sra.active.label
+msgctxt "field.sra.active.label"
+msgid "Active"
+msgstr ""
+
+#: field.mdp.cash_payment.label
+msgid "Cash Payment"
+msgstr ""
+
+#: class.cblvl.label
+msgid "Bib Level Map"
+msgstr ""
+
+#: field.cxt.xslt.label
+msgid "XSLT"
+msgstr ""
+
+#: field.au.addresses.label
+msgid "All Addresses"
+msgstr ""
+
+#: class.sra.label
+msgid "Relevance Adjustment"
+msgstr ""
+
+#: field.ccmm.usr_age_upper_bound.label
+msgid "User Age: Upper Bound"
+msgstr ""
+
+#: field.ahr.fulfillment_lib.label
+msgid "Fulfilling Library"
+msgstr ""
+
+#: field.mrd.vr_format.label
+msgid "Video Recording Format"
+msgstr ""
+
+#: field.rocit.shelving_location.label
+msgid "Shelving Location Name"
+msgstr ""
+
+#: field.vii.pub_note.label
+msgctxt "field.vii.pub_note.label"
+msgid "Public Note"
+msgstr ""
+
+#: field.viiad.pub_note.label
+msgctxt "field.viiad.pub_note.label"
+msgid "Public Note"
+msgstr ""
+
+#: field.mcrp.note.label
+msgid "Payment Note"
+msgstr ""
+
+#: field.amtr.matchpoint.label
+msgctxt "field.amtr.matchpoint.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.chmm.id.label
+msgctxt "field.chmm.id.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.ccmm.id.label
+msgctxt "field.ccmm.id.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.chmt.matchpoint.label
+msgctxt "field.chmt.matchpoint.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.ccmt.matchpoint.label
+msgctxt "field.ccmt.matchpoint.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.ccmcmt.matchpoint.label
+msgctxt "field.ccmcmt.matchpoint.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.ccmrs.matchpoint.label
+msgctxt "field.ccmrs.matchpoint.label"
+msgid "Matchpoint ID"
+msgstr ""
+
+#: field.mbts.total_paid.label
+msgctxt "field.mbts.total_paid.label"
+msgid "Total Paid"
+msgstr ""
+
+#: field.rccbs.total_paid.label
+msgctxt "field.rccbs.total_paid.label"
+msgid "Total Paid"
+msgstr ""
+
+#: field.vibtf.field.label
+msgctxt "field.vibtf.field.label"
+msgid "Field"
+msgstr ""
+
+#: field.vqbra.field.label
+msgctxt "field.vqbra.field.label"
+msgid "Field"
+msgstr ""
+
+#: field.vqara.field.label
+msgctxt "field.vqara.field.label"
+msgid "Field"
+msgstr ""
+
+#: field.ahtc.transit_copy.label
+msgid "Base Transit"
+msgstr ""
+
+#: field.ccmt.max_fines.label
+msgid "Max Fines"
+msgstr ""
+
+#: field.aufh.fail_time.label
+msgid "Retargeting Date/Time"
+msgstr ""
+
+#: field.acpl.owning_lib.label
+msgid "Owning Org Unit"
+msgstr ""
+
+#: field.au.performed_circulations.label
+msgctxt "field.au.performed_circulations.label"
+msgid "Circulations Performed as Staff"
+msgstr ""
+
+#: link.au.performed_circulations.label
+msgctxt "link.au.performed_circulations.label"
+msgid "Circulations Performed as Staff"
+msgstr ""
+
+#: field.asvr.id.label
+msgctxt "field.asvr.id.label"
+msgid "Answer ID"
+msgstr ""
+
+#: field.asva.id.label
+msgctxt "field.asva.id.label"
+msgid "Answer ID"
+msgstr ""
+
+#: field.mcrp.payment.label
+msgctxt "field.mcrp.payment.label"
+msgid "Payment link"
+msgstr ""
+
+#: field.mwp.payment.label
+msgctxt "field.mwp.payment.label"
+msgid "Payment link"
+msgstr ""
+
+#: field.mgp.payment.label
+msgctxt "field.mgp.payment.label"
+msgid "Payment link"
+msgstr ""
+
+#: field.mckp.payment.label
+msgctxt "field.mckp.payment.label"
+msgid "Payment link"
+msgstr ""
+
+#: field.rmobbol.billing_types.label
+msgctxt "field.rmobbol.billing_types.label"
+msgid "Billing Types"
+msgstr ""
+
+#: field.rmobbcol.billing_types.label
+msgctxt "field.rmobbcol.billing_types.label"
+msgid "Billing Types"
+msgstr ""
+
+#: field.rmobbhol.billing_types.label
+msgctxt "field.rmobbhol.billing_types.label"
+msgid "Billing Types"
+msgstr ""
+
+#: field.aua.city.label
+msgid "City"
+msgstr ""
+
+#: field.acpl.holdable.label
+msgid "Is Holdable?"
+msgstr ""
+
+#: field.bre.create_date.label
+msgctxt "field.bre.create_date.label"
+msgid "Record Creation Date/Time"
+msgstr ""
+
+#: field.au.create_date.label
+msgctxt "field.au.create_date.label"
+msgid "Record Creation Date/Time"
+msgstr ""
+
+#: field.circ.create_time.label
+msgctxt "field.circ.create_time.label"
+msgid "Record Creation Date/Time"
+msgstr ""
+
+#: field.combcirc.create_time.label
+msgctxt "field.combcirc.create_time.label"
+msgid "Record Creation Date/Time"
+msgstr ""
+
+#: field.acirc.create_time.label
+msgctxt "field.acirc.create_time.label"
+msgid "Record Creation Date/Time"
+msgstr ""
+
+#: field.acp.holds.label
+msgid "Holds"
+msgstr ""
+
+#: field.chmm.request_ou.label
+msgid "Request Library"
+msgstr ""
+
+#: field.rccc.patron_city.label
+msgid "Patron City"
+msgstr ""
+
+#: field.aou.children.label
+msgid "Subordinate Organizational Units"
+msgstr ""
+
+#: field.asva.responses.label
+msgid "Responses using this Answer"
+msgstr ""
+
+#: field.ahr.thaw_date.label
+msgid "Thaw Date (if frozen)"
+msgstr ""
+
+#: field.asvr.usr.label
+msgid "Responding User"
+msgstr ""
+
+#: class.rccc.label
+msgid "Classic Circulation View"
+msgstr ""
+
+#: field.ahr.frozen.label
+msgid "Currently Frozen"
+msgstr ""
+
+#: field.aihu.id.label
+msgctxt "field.aihu.id.label"
+msgid "Use ID"
+msgstr ""
+
+#: field.ancihu.id.label
+msgctxt "field.ancihu.id.label"
+msgid "Use ID"
+msgstr ""
+
+#: field.vbq.complete.label
+msgctxt "field.vbq.complete.label"
+msgid "Complete"
+msgstr ""
+
+#: field.vaq.complete.label
+msgctxt "field.vaq.complete.label"
+msgid "Complete"
+msgstr ""
+
+#: field.atc.dest_recv_time.label
+msgctxt "field.atc.dest_recv_time.label"
+msgid "Receive Date/Time"
+msgstr ""
+
+#: field.ahtc.dest_recv_time.label
+msgctxt "field.ahtc.dest_recv_time.label"
+msgid "Receive Date/Time"
+msgstr ""
+
+#: field.iatc.dest_recv_time.label
+msgctxt "field.iatc.dest_recv_time.label"
+msgid "Receive Date/Time"
+msgstr ""
+
+#: field.asv.poll.label
+msgid "Poll Style?"
+msgstr ""
+
+#: field.rmsr.pubdate.label
+msgctxt "field.rmsr.pubdate.label"
+msgid "Publication Year (normalized)"
+msgstr ""
+
+#: field.rssr.pubdate.label
+msgctxt "field.rssr.pubdate.label"
+msgid "Publication Year (normalized)"
+msgstr ""
+
+#: field.rsr.pubdate.label
+msgctxt "field.rsr.pubdate.label"
+msgid "Publication Year (normalized)"
+msgstr ""
+
+#: field.cnct.id.label
+msgid "Non-cat Type ID"
+msgstr ""
+
+#: field.asva.answer.label
+msgid "Answer Text"
+msgstr ""
+
+#: field.aou.holds_address.label
+msgid "Holds Receiving Address"
+msgstr ""
+
+#: field.acpn.owning_copy.label
+msgid "Copy"
+msgstr ""
+
+#: field.aout.can_have_vols.label
+msgid "Can Have Volumes?"
+msgstr ""
+
+#: field.vqbr.id.label
+msgctxt "field.vqbr.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.vqar.id.label
+msgctxt "field.vqar.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.bre.id.label
+msgctxt "field.bre.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.aufh.id.label
+msgctxt "field.aufh.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.rmsr.id.label
+msgctxt "field.rmsr.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.rssr.id.label
+msgctxt "field.rssr.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: field.rsr.id.label
+msgctxt "field.rsr.id.label"
+msgid "Record ID"
+msgstr ""
+
+#: class.cam.label
+msgid "Audience Map"
+msgstr ""
+
+#: field.rocit.stop_fines.label
+msgid "Stop Fines Reason"
+msgstr ""
+
+#: field.au.email.label
+msgctxt "field.au.email.label"
+msgid "Email Address"
+msgstr ""
+
+#: field.aou.email.label
+msgctxt "field.aou.email.label"
+msgid "Email Address"
+msgstr ""
+
+#: field.clfm.description.label
+msgid "LitF Description"
+msgstr ""
+
+#: field.au.passwd.label
+msgid "Password (obfuscated)"
+msgstr ""
+
+#: field.mrd.audience.label
+msgid "Audn"
+msgstr ""
+
+#: field.cam.value.label
+msgid "Audience"
+msgstr ""
+
+#: field.aout.parent.label
+msgid "Parent Type"
+msgstr ""
+
+#: class.rud.label
+msgid "User Demographics"
+msgstr ""
+
+#: field.atc.prev_hop.label
+msgctxt "field.atc.prev_hop.label"
+msgid "Previous Hop (unused)"
+msgstr ""
+
+#: field.iatc.prev_hop.label
+msgctxt "field.iatc.prev_hop.label"
+msgid "Previous Hop (unused)"
+msgstr ""
+
+#: field.vqbrad.id.label
+msgctxt "field.vqbrad.id.label"
+msgid "ID"
+msgstr ""
+
+#: field.vqarad.id.label
+msgctxt "field.vqarad.id.label"
+msgid "ID"
+msgstr ""
+
+#: field.sra.id.label
+msgctxt "field.sra.id.label"
+msgid "ID"
+msgstr ""
+
+#: field.ssr.id.label
+msgctxt "field.ssr.id.label"
+msgid "ID"
+msgstr ""
+
+#: field.aou.users.label
+msgid "Users"
+msgstr ""
+
+#: field.vii.circ_as_type.label
+msgctxt "field.vii.circ_as_type.label"
+msgid "Circulate As MARC Type"
+msgstr ""
+
+#: field.viiad.circ_as_type.label
+msgctxt "field.viiad.circ_as_type.label"
+msgid "Circulate As MARC Type"
+msgstr ""
+
+#: field.circ.usr.label
+msgctxt "field.circ.usr.label"
+msgid "Patron"
+msgstr ""
+
+#: field.ancc.patron.label
+msgctxt "field.ancc.patron.label"
+msgid "Patron"
+msgstr ""
+
+#: field.rodcirc.usr.label
+msgctxt "field.rodcirc.usr.label"
+msgid "Patron"
+msgstr ""
+
+#: class.mcrp.label
+msgid "House Credit Payment"
+msgstr ""
+
+#: field.atc.source.label
+msgctxt "field.atc.source.label"
+msgid "Source"
+msgstr ""
+
+#: field.iatc.source.label
+msgctxt "field.iatc.source.label"
+msgid "Source"
+msgstr ""
+
+#: field.chmt.age_hold_protect_rule.label
+msgid "Copy Age Hold Protection Rule"
+msgstr ""
+
+#: field.cxt.prefix.label
+msgid "Namespace Prefix"
+msgstr ""
+
+#: field.au.cards.label
+msgid "All Library Cards"
+msgstr ""
+
+#: field.rxpt.voided.label
+msgid "Voided (Returned) Paid Amount"
+msgstr ""
+
+#: class.rmocbbhol.label
+msgid "Open Circulation Billing by User Home Library and Owning Library"
+msgstr ""
+
+#: field.mbts.last_billing_note.label
+msgctxt "field.mbts.last_billing_note.label"
+msgid "Last Billing Note"
+msgstr ""
+
+#: field.rccbs.last_billing_note.label
+msgctxt "field.rccbs.last_billing_note.label"
+msgid "Last Billing Note"
+msgstr ""
+
+#: field.czs.port.label
+msgid "Port"
+msgstr ""
+
+#: field.rccbs.billing_location.label
+msgid "Billing Location Link"
+msgstr ""
+
+#: field.mrd.cat_form.label
+msgid "Cat Form"
+msgstr ""
+
+#: class.combcirc.label
+msgid "Combined Aged and Active Circulations"
+msgstr ""
+
+#: field.atc.dest.label
+msgctxt "field.atc.dest.label"
+msgid "Destination"
+msgstr ""
+
+#: field.iatc.dest.label
+msgctxt "field.iatc.dest.label"
+msgid "Destination"
+msgstr ""
+
+#: field.au.evening_phone.label
+msgid "Evening Phone"
+msgstr ""
+
+#: field.au.ident_type.label
+msgid "Primary Identification Type"
+msgstr ""
+
+#: class.rmobbol.label
+msgid "Open Circulation Balance by Owning Library"
+msgstr ""
+
+#: field.mg.billing_location.label
+msgid "Billing Location"
+msgstr ""
+
+#: field.vqbr.imported_as.label
+msgctxt "field.vqbr.imported_as.label"
+msgid "Final Target Record"
+msgstr ""
+
+#: field.vqar.imported_as.label
+msgctxt "field.vqar.imported_as.label"
+msgid "Final Target Record"
+msgstr ""
+
+#: class.mndp.label
+msgid "Payments: Non-drawer Staff"
+msgstr ""
+
+#: field.pgt.name.label
+msgid "Group Name"
+msgstr ""
+
+#: field.aout.can_have_users.label
+msgid "Can Have Users?"
+msgstr ""
+
+#: field.rocit.stat_cat_2_value.label
+msgid "Legacy Stat Cat 2 Value"
+msgstr ""
+
+#: field.chmt.distance_is_from_owner.label
+msgid "Range is from Owning Lib?"
+msgstr ""
+
+#: field.rocit.use_count.label
+msgid "Use Count"
+msgstr ""
+
+#: field.chmm.item_circ_ou.label
+msgid "Item Circ Library"
+msgstr ""
+
+#: field.mckp.xact.label
+msgid "Transaction link"
+msgstr ""
+
+#: field.mbt.circulation.label
+msgid "Circulation Billing link"
+msgstr ""
+
+#: class.vqara.label
+msgid "Queued Authority Record Attribute"
+msgstr ""
+
+#: field.atc.copy_status.label
+msgctxt "field.atc.copy_status.label"
+msgid "Pretransit Copy Status"
+msgstr ""
+
+#: field.iatc.copy_status.label
+msgctxt "field.iatc.copy_status.label"
+msgid "Pretransit Copy Status"
+msgstr ""
+
+#: field.bre.author_field_entries.label
+msgid "Indexed Author Field Entries"
+msgstr ""
+
+#: field.vqbrad.remove.label
+msgctxt "field.vqbrad.remove.label"
+msgid "Remove RegExp"
+msgstr ""
+
+#: field.vqarad.remove.label
+msgctxt "field.vqarad.remove.label"
+msgid "Remove RegExp"
+msgstr ""
+
+#: field.aou.phone.label
+msgid "Phone Number"
+msgstr ""
+
+#: field.acn.create_date.label
+msgid "Create Date/Time"
+msgstr ""
+
+#: class.atc.label
+msgid "Copy Transit"
+msgstr ""
+
+#: field.au.super_user.label
+msgid "Is Super User"
+msgstr ""
+
+#: class.mfr.label
+msgid "Flattened MARC Fields"
+msgstr ""
+
+#: field.vqbr.attributes.label
+msgctxt "field.vqbr.attributes.label"
+msgid "Attributes"
+msgstr ""
+
+#: field.vqar.attributes.label
+msgctxt "field.vqar.attributes.label"
+msgid "Attributes"
+msgstr ""
+
+#: field.chmt.holdable.label
+msgid "Holdable?"
+msgstr ""
+
+#: field.acp.circ_as_type.label
+msgid "Circulation Type (MARC)"
+msgstr ""
+
+#: field.auoi.staff.label
+msgid "Staff Member"
+msgstr ""
+
+#: field.aws.id.label
+msgid "Workstation ID"
+msgstr ""
+
+#: class.vbq.label
+msgid "Import/Overlay Bib Queue"
+msgstr ""
+
+#: field.atc.persistant_transfer.label
+msgctxt "field.atc.persistant_transfer.label"
+msgid "Is Persistent? (unused)"
+msgstr ""
+
+#: field.iatc.persistant_transfer.label
+msgctxt "field.iatc.persistant_transfer.label"
+msgid "Is Persistent? (unused)"
+msgstr ""
+
+#: field.rccc.patron_zip.label
+msgid "Patron ZIP Code"
+msgstr ""
+
+#: field.ahtc.persistant_transfer.label
+msgid "Is Persistent?"
+msgstr ""
+
+#: field.au.net_access_level.label
+msgid "Internet Access Level"
+msgstr ""
+
+#: field.rsr.name_subject.label
+msgid "Personal Name Subjects (normalized)"
+msgstr ""
+
+#: class.rmocbbcol.label
+msgid "Open Circulation Billing by Circulating Library and Owning Library"
+msgstr ""
+
+#: field.rccbs.patron_zip.label
+msgid "User ZIP Code"
+msgstr ""
+
+#: field.mcrp.payment_type.label
+msgctxt "field.mcrp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mwp.payment_type.label
+msgctxt "field.mwp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mgp.payment_type.label
+msgctxt "field.mgp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mckp.payment_type.label
+msgctxt "field.mckp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mp.payment_type.label
+msgctxt "field.mp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mbp.payment_type.label
+msgctxt "field.mbp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mndp.payment_type.label
+msgctxt "field.mndp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mdp.payment_type.label
+msgctxt "field.mdp.payment_type.label"
+msgid "Payment Type"
+msgstr ""
+
+#: field.mdp.credit_card_payment.label
+msgid "Credit Card Payment"
+msgstr ""
+
+#: field.au.usrgroup.label
+msgid "Family Linkage or other Group"
+msgstr ""
+
+#: field.ahn.id.label
+msgid "Notification ID"
+msgstr ""
+
+#: field.rccbs.last_billing_ts.label
+msgid "Last Billing Date/Time"
+msgstr ""
+
+#: field.mcrp.amount_collected.label
+msgctxt "field.mcrp.amount_collected.label"
+msgid "Amount Collected"
+msgstr ""
+
+#: field.mwp.amount_collected.label
+msgctxt "field.mwp.amount_collected.label"
+msgid "Amount Collected"
+msgstr ""
+
+#: field.mgp.amount_collected.label
+msgctxt "field.mgp.amount_collected.label"
+msgid "Amount Collected"
+msgstr ""
+
+#: field.mckp.amount_collected.label
+msgctxt "field.mckp.amount_collected.label"
+msgid "Amount Collected"
+msgstr ""
+
+#: field.ahr.current_copy.label
+msgid "Currently Targeted Copy"
+msgstr ""
+
+#: field.aout.depth.label
+msgid "Type Depth"
+msgstr ""
+
+#: field.mbt.unrecovered.label
+msgid "Unrecovered Debt"
+msgstr ""
+
+#: field.rccc.stat_cat_1_value.label
+msgid "Legacy CAT1 Value"
+msgstr ""
+
+#: class.auoi.label
+msgid "User Sharing Opt-in"
+msgstr ""
+
+#: field.combcirc.usr_profile.label
+msgctxt "field.combcirc.usr_profile.label"
+msgid "Patron Profile Group"
+msgstr ""
+
+#: field.acirc.usr_profile.label
+msgctxt "field.acirc.usr_profile.label"
+msgid "Patron Profile Group"
+msgstr ""
+
+#: field.rccc.profile_group.label
+msgctxt "field.rccc.profile_group.label"
+msgid "Patron Profile Group"
+msgstr ""
+
+#: field.rccbs.usr_home_ou_shortname.label
+msgid "User Home Library Short (Policy) Name"
+msgstr ""
+
+#: field.au.dob.label
+msgctxt "field.au.dob.label"
+msgid "Date of Birth"
+msgstr ""
+
+#: field.rud.dob.label
+msgctxt "field.rud.dob.label"
+msgid "Date of Birth"
+msgstr ""
+
+#: field.aun.title.label
+msgctxt "field.aun.title.label"
+msgid "Note Title"
+msgstr ""
+
+#: field.acpn.title.label
+msgctxt "field.acpn.title.label"
+msgid "Note Title"
+msgstr ""
+
+#: field.auoi.id.label
+msgid "Opt-in ID"
+msgstr ""
+
+#: field.asvq.answers.label
+msgid "Answers"
+msgstr ""
+
+#: field.combcirc.copy_owning_lib.label
+msgctxt "field.combcirc.copy_owning_lib.label"
+msgid "Copy Owning Library"
+msgstr ""
+
+#: field.acirc.copy_owning_lib.label
+msgctxt "field.acirc.copy_owning_lib.label"
+msgid "Copy Owning Library"
+msgstr ""
+
+#: field.ccmcmt.items_out.label
+msgid "Items Out"
+msgstr ""
+
+#: field.bre.creator.label
+msgid "Record Creator"
+msgstr ""
+
+#: field.vbm.field_type.label
+msgid "Field Type"
+msgstr ""
+
+#: field.cza.truncation.label
+msgid "Truncation"
+msgstr ""
+
+#: field.acpl.id.label
+msgid "Location ID"
+msgstr ""
+
+#: field.rocit.patron_barcode.label
+msgid "Patron Barcode"
+msgstr ""
+
+#: field.pgt.parent.label
+msgid "Parent Group"
+msgstr ""
+
+#: field.rccc.owning_lib_name.label
+msgid "Owning Library Short (Policy) Name"
+msgstr ""
+
+#: class.ancc.label
+msgid "Non-cataloged Circulation"
+msgstr ""
+
+#: field.vii.deposit.label
+msgctxt "field.vii.deposit.label"
+msgid "Deposit"
+msgstr ""
+
+#: field.viiad.deposit.label
+msgctxt "field.viiad.deposit.label"
+msgid "Deposit"
+msgstr ""
+
+#: class.asva.label
+msgid "Survey Answer"
+msgstr ""
+
+#: class.mbt.label
+msgctxt "class.mbt.label"
+msgid "Billable Transaction"
+msgstr ""
+
+#: field.mp.xact.label
+msgctxt "field.mp.xact.label"
+msgid "Billable Transaction"
+msgstr ""
+
+#: field.mbp.xact.label
+msgctxt "field.mbp.xact.label"
+msgid "Billable Transaction"
+msgstr ""
+
+#: field.mndp.xact.label
+msgctxt "field.mndp.xact.label"
+msgid "Billable Transaction"
+msgstr ""
+
+#: field.mdp.xact.label
+msgctxt "field.mdp.xact.label"
+msgid "Billable Transaction"
+msgstr ""
+
+#: field.rccc.patron_home_lib.label
+msgid "Patron Home Library Link"
+msgstr ""
+
+#: field.ahr.transit.label
+msgid "Transit"
+msgstr ""
+
+#: field.circ.billings.label
+msgctxt "field.circ.billings.label"
+msgid "Transaction Billings"
+msgstr ""
+
+#: field.combcirc.billings.label
+msgctxt "field.combcirc.billings.label"
+msgid "Transaction Billings"
+msgstr ""
+
+#: field.acirc.billings.label
+msgctxt "field.acirc.billings.label"
+msgid "Transaction Billings"
+msgstr ""
+
+#: field.rodcirc.billings.label
+msgctxt "field.rodcirc.billings.label"
+msgid "Transaction Billings"
+msgstr ""
+
+#: field.au.photo_url.label
+msgid "Photo URL"
+msgstr ""
+
+#: class.mp.label
+msgid "Payments: All"
+msgstr ""
+
+#: field.asv.questions.label
+msgid "Questions"
+msgstr ""
+
+#: field.crmf.is_percent.label
+msgid "Is Percent"
+msgstr ""
+
+#: field.cifm.code.label
+msgid "Item Form Code"
+msgstr ""
+
+#: field.clfm.value.label
+msgid "LitF Name"
+msgstr ""
+
+#: field.aun.value.label
+msgctxt "field.aun.value.label"
+msgid "Note Content"
+msgstr ""
+
+#: field.acpn.value.label
+msgctxt "field.acpn.value.label"
+msgid "Note Content"
+msgstr ""
+
+#: field.asv.start_date.label
+msgid "Survey Start Date/Time"
+msgstr ""
+
+#: field.vii.priv_note.label
+msgctxt "field.vii.priv_note.label"
+msgid "Private Note"
+msgstr ""
+
+#: field.viiad.priv_note.label
+msgctxt "field.viiad.priv_note.label"
+msgid "Private Note"
+msgstr ""
+
+#: field.au.checkouts.label
+msgid "All Circulations"
+msgstr ""
+
+#: field.aws.name.label
+msgid "Workstation Name"
+msgstr ""
+
+#: field.mckp.check_number.label
+msgid "Check Number"
+msgstr ""
+
+#: field.rsr.summary.label
+msgid "Summary (normalized)"
+msgstr ""
+
+#: field.vbq.id.label
+msgctxt "field.vbq.id.label"
+msgid "Queue ID"
+msgstr ""
+
+#: field.vaq.id.label
+msgctxt "field.vaq.id.label"
+msgid "Queue ID"
+msgstr ""
+
+#: field.au.ident_value.label
+msgid "Primary Identification"
+msgstr ""
+
+#: field.sra.bump.label
+msgid "Bump Type"
+msgstr ""
+
+#: field.vqbr.matches.label
+msgctxt "field.vqbr.matches.label"
+msgid "Matches"
+msgstr ""
+
+#: field.vqar.matches.label
+msgctxt "field.vqar.matches.label"
+msgid "Matches"
+msgstr ""
+
+#: field.mrd.char_encoding.label
+msgid "Character Encoding"
+msgstr ""
+
+#: field.mp.work_payment.label
+msgctxt "field.mp.work_payment.label"
+msgid "Work Payment Detail"
+msgstr ""
+
+#: field.mbp.work_payment.label
+msgctxt "field.mbp.work_payment.label"
+msgid "Work Payment Detail"
+msgstr ""
+
+#: field.mndp.work_payment.label
+msgctxt "field.mndp.work_payment.label"
+msgid "Work Payment Detail"
+msgstr ""
+
+#: field.erfcc.circ_count.label
+msgid "Total Circulation Count"
+msgstr ""
+
+#: field.ancc.id.label
+msgid "Non-cat Circulation ID"
+msgstr ""
+
+#: field.auoi.usr.label
+msgctxt "field.auoi.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.aun.usr.label
+msgctxt "field.aun.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.aus.usr.label
+msgctxt "field.aus.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.aua.usr.label
+msgctxt "field.aua.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.ac.usr.label
+msgctxt "field.ac.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.mg.usr.label
+msgctxt "field.mg.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.mbt.usr.label
+msgctxt "field.mbt.usr.label"
+msgid "User"
+msgstr ""
+
+#: field.actscecm.target_usr.label
+msgctxt "field.actscecm.target_usr.label"
+msgid "User"
+msgstr ""
+
+#: field.aua.street1.label
+msgid "Street (1)"
+msgstr ""
+
+#: field.mg.billings.label
+msgid "Billings"
+msgstr ""
+
+#: field.mrd.lit_form.label
+msgid "LitF"
+msgstr ""
+
+#: field.rccbs.billing_location_name.label
+msgid "Billing Location Name"
+msgstr ""
+
+#: field.circ.stop_fines.label
+msgctxt "field.circ.stop_fines.label"
+msgid "Fine Stop Reason"
+msgstr ""
+
+#: field.combcirc.stop_fines.label
+msgctxt "field.combcirc.stop_fines.label"
+msgid "Fine Stop Reason"
+msgstr ""
+
+#: field.acirc.stop_fines.label
+msgctxt "field.acirc.stop_fines.label"
+msgid "Fine Stop Reason"
+msgstr ""
+
+#: field.rodcirc.stop_fines.label
+msgctxt "field.rodcirc.stop_fines.label"
+msgid "Fine Stop Reason"
+msgstr ""
+
+#: field.mbt.payments.label
+msgid "Payment Line Items"
+msgstr ""
+
+#: field.cxt.namespace_uri.label
+msgid "Namespace URI"
+msgstr ""
+
+#: field.sra.multiplier.label
+msgid "Multiplier"
+msgstr ""
+
+#: class.rmobbhol.label
+msgid "Open Circulation Balance by User Home Library and Owning Library"
+msgstr ""
+
+#: field.aua.valid.label
+msgid "Valid Address?"
+msgstr ""
+
+#: field.acp.status.label
+msgid "Copy Status"
+msgstr ""
+
+#: field.sra.field.label
+msgid "Index Field"
+msgstr ""
+
+#: field.asvq.survey.label
+msgctxt "field.asvq.survey.label"
+msgid "Survey"
+msgstr ""
+
+#: field.asvr.survey.label
+msgctxt "field.asvr.survey.label"
+msgid "Survey"
+msgstr ""
+
+#: class.asv.label
+msgctxt "class.asv.label"
+msgid "Survey"
+msgstr ""
+
+#: field.mb.id.label
+msgid "Billing ID"
+msgstr ""
+
+#: field.aou.circulations.label
+msgctxt "field.aou.circulations.label"
+msgid "Circulations"
+msgstr ""
+
+#: field.acp.circulations.label
+msgctxt "field.acp.circulations.label"
+msgid "Circulations"
+msgstr ""
+
+#: field.aus.id.label
+msgid "Setting ID"
+msgstr ""
+
+#: field.rmobbol.balance.label
+msgctxt "field.rmobbol.balance.label"
+msgid "Balance"
+msgstr ""
+
+#: field.rmobbcol.balance.label
+msgctxt "field.rmobbcol.balance.label"
+msgid "Balance"
+msgstr ""
+
+#: field.rmobbhol.balance.label
+msgctxt "field.rmobbhol.balance.label"
+msgid "Balance"
+msgstr ""
+
+#: field.au.mailing_address.label
+msgctxt "field.au.mailing_address.label"
+msgid "Mailing Address"
+msgstr ""
+
+#: field.aou.mailing_address.label
+msgctxt "field.aou.mailing_address.label"
+msgid "Mailing Address"
+msgstr ""
+
+#: field.rocit.pubdate.label
+msgid "Pubdate"
+msgstr ""
+
+#: field.acn.label.label
+msgctxt "field.acn.label.label"
+msgid "Call Number Label"
+msgstr ""
+
+#: field.rccc.call_number_label.label
+msgctxt "field.rccc.call_number_label.label"
+msgid "Call Number Label"
+msgstr ""
+
+#: field.au.standing_penalties.label
+msgid "Standing Penalties"
+msgstr ""
+
+#: field.asv.id.label
+msgid "Survey ID"
+msgstr ""
+
+#: field.bre.metarecord.label
+msgctxt "field.bre.metarecord.label"
+msgid "Metarecord"
+msgstr ""
+
+#: field.rsr.metarecord.label
+msgctxt "field.rsr.metarecord.label"
+msgid "Metarecord"
+msgstr ""
+
+#: field.aua.county.label
+msgid "County"
+msgstr ""
+
+#: field.au.prefix.label
+msgid "Prefix"
+msgstr ""
+
+#: field.rccc.patron_county.label
+msgid "Patron County"
+msgstr ""
+
+#: field.actsce.owner.label
+msgctxt "field.actsce.owner.label"
+msgid "Entry Owner"
+msgstr ""
+
+#: field.asce.owner.label
+msgctxt "field.asce.owner.label"
+msgid "Entry Owner"
+msgstr ""
+
+#: field.rsce1.owner.label
+msgctxt "field.rsce1.owner.label"
+msgid "Entry Owner"
+msgstr ""
+
+#: field.rsce2.owner.label
+msgctxt "field.rsce2.owner.label"
+msgid "Entry Owner"
+msgstr ""
+
+#: field.rccc.circ_modifier.label
+msgctxt "field.rccc.circ_modifier.label"
+msgid "Circ Modifier"
+msgstr ""
+
+#: field.rocit.circ_modifier.label
+msgctxt "field.rocit.circ_modifier.label"
+msgid "Circ Modifier"
+msgstr ""
+
+#: field.rsr.series_title.label
+msgid "Series Title (normalized)"
+msgstr ""
+
+#: field.mbt.grocery.label
+msgid "Grocery Billing link"
+msgstr ""
+
+#: field.actscecm.stat_cat_entry.label
+msgid "Entry Text"
+msgstr ""
+
+#: field.aufh.current_copy.label
+msgid "Non-fulfilling Copy"
+msgstr ""
+
+#: field.vii.location.label
+msgctxt "field.vii.location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.viiad.location.label
+msgctxt "field.viiad.location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.combcirc.copy_location.label
+msgctxt "field.combcirc.copy_location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.acirc.copy_location.label
+msgctxt "field.acirc.copy_location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.acp.location.label
+msgctxt "field.acp.location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.rccc.shelving_location.label
+msgctxt "field.rccc.shelving_location.label"
+msgid "Shelving Location"
+msgstr ""
+
+#: field.aou.id.label
+msgid "Organizational Unit ID"
+msgstr ""
+
+#: field.chmm.pickup_ou.label
+msgctxt "field.chmm.pickup_ou.label"
+msgid "Pickup Library"
+msgstr ""
+
+#: field.ahr.pickup_lib.label
+msgctxt "field.ahr.pickup_lib.label"
+msgid "Pickup Library"
+msgstr ""
+
+#: field.vqbrad.description.label
+msgctxt "field.vqbrad.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.vqarad.description.label
+msgctxt "field.vqarad.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.ccm.description.label
+msgctxt "field.ccm.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.cam.description.label
+msgctxt "field.cam.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.asv.description.label
+msgctxt "field.asv.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.pgt.description.label
+msgctxt "field.pgt.description.label"
+msgid "Description"
+msgstr ""
+
+#: field.bre.keyword_field_entries.label
+msgid "Indexed Keyword Field Entries"
+msgstr ""
+
+#: field.vqbr.import_time.label
+msgctxt "field.vqbr.import_time.label"
+msgid "Import Time"
+msgstr ""
+
+#: field.vqar.import_time.label
+msgctxt "field.vqar.import_time.label"
+msgid "Import Time"
+msgstr ""
+
+#: field.aufh.circ_lib.label
+msgid "Non-fulfilling Library"
+msgstr ""
+
+#: field.au.home_ou.label
+msgid "Home Library"
+msgstr ""
+
+#: field.rocit.edit_date.label
+msgid "Edit Date"
+msgstr ""
+
+#: class.clm.label
+msgid "Language Map"
+msgstr ""
+
+#: field.vqbr.purpose.label
+msgctxt "field.vqbr.purpose.label"
+msgid "Purpose"
+msgstr ""
+
+#: field.vqar.purpose.label
+msgctxt "field.vqar.purpose.label"
+msgid "Purpose"
+msgstr ""
+
+#: field.crahp.age.label
+msgid "Item Age"
+msgstr ""
+
+#: field.au.standing.label
+msgid "Standing (unused)"
+msgstr ""
+
+#: field.circ.renewal_remaining.label
+msgctxt "field.circ.renewal_remaining.label"
+msgid "Remaining Renewals"
+msgstr ""
+
+#: field.combcirc.renewal_remaining.label
+msgctxt "field.combcirc.renewal_remaining.label"
+msgid "Remaining Renewals"
+msgstr ""
+
+#: field.acirc.renewal_remaining.label
+msgctxt "field.acirc.renewal_remaining.label"
+msgid "Remaining Renewals"
+msgstr ""
+
+#: field.rodcirc.renewal_remaining.label
+msgctxt "field.rodcirc.renewal_remaining.label"
+msgid "Remaining Renewals"
+msgstr ""
+
+#: field.asv.usr_summary.label
+msgid "Display in User Summary"
+msgstr ""
+
+#: field.ahn.notify_staff.label
+msgid "Notifying Staff"
+msgstr ""
+
+#: field.aua.country.label
+msgid "Country"
+msgstr ""
+
+#: field.circ.checkin_time.label
+msgctxt "field.circ.checkin_time.label"
+msgid "Check In Date/Time"
+msgstr ""
+
+#: field.combcirc.checkin_time.label
+msgctxt "field.combcirc.checkin_time.label"
+msgid "Check In Date/Time"
+msgstr ""
+
+#: field.acirc.checkin_time.label
+msgctxt "field.acirc.checkin_time.label"
+msgid "Check In Date/Time"
+msgstr ""
+
+#: field.rodcirc.checkin_time.label
+msgctxt "field.rodcirc.checkin_time.label"
+msgid "Check In Date/Time"
+msgstr ""
+
+#: field.mg.payments.label
+msgid "Payments"
+msgstr ""
+
+#: field.rocit.owning_lib.label
+msgid "Owning Lib"
+msgstr ""
+
+#: class.rsce2.label
+msgid "CAT2 Entry"
+msgstr ""
+
+#: field.mbts.last_billing_type.label
+msgctxt "field.mbts.last_billing_type.label"
+msgid "Last Billing Type"
+msgstr ""
+
+#: field.rccbs.last_billing_type.label
+msgctxt "field.rccbs.last_billing_type.label"
+msgid "Last Billing Type"
+msgstr ""
+
+#: field.circ.recuring_fine.label
+msgctxt "field.circ.recuring_fine.label"
+msgid "Recurring Fine Amount"
+msgstr ""
+
+#: field.combcirc.recuring_fine.label
+msgctxt "field.combcirc.recuring_fine.label"
+msgid "Recurring Fine Amount"
+msgstr ""
+
+#: field.acirc.recuring_fine.label
+msgctxt "field.acirc.recuring_fine.label"
+msgid "Recurring Fine Amount"
+msgstr ""
+
+#: field.rodcirc.recuring_fine.label
+msgctxt "field.rodcirc.recuring_fine.label"
+msgid "Recurring Fine Amount"
+msgstr ""
+
+#: field.asv.end_date.label
+msgid "Survey End Date/Time"
+msgstr ""
+
+#: field.mg.xact_start.label
+msgid "Transaction Start Timestamp"
+msgstr ""
+
+#: field.bre.title_field_entries.label
+msgid "Indexed Title Field Entries"
+msgstr ""
+
+#: field.aou.closed_dates.label
+msgid "Closed Dates"
+msgstr ""
+
+#: field.vii.circ_modifier.label
+msgctxt "field.vii.circ_modifier.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.viiad.circ_modifier.label
+msgctxt "field.viiad.circ_modifier.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: class.ccm.label
+msgctxt "class.ccm.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.chmm.circ_modifier.label
+msgctxt "field.chmm.circ_modifier.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.ccmm.circ_modifier.label
+msgctxt "field.ccmm.circ_modifier.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.ccmcmt.circ_mod.label
+msgctxt "field.ccmcmt.circ_mod.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.acp.circ_modifier.label
+msgctxt "field.acp.circ_modifier.label"
+msgid "Circulation Modifier"
+msgstr ""
+
+#: field.aou.addresses.label
+msgid "Addresses"
+msgstr ""
+
+#: field.vqbrad.ident.label
+msgctxt "field.vqbrad.ident.label"
+msgid "Is Identifier?"
+msgstr ""
+
+#: field.vqarad.ident.label
+msgctxt "field.vqarad.ident.label"
+msgid "Is Identifier?"
+msgstr ""
+
+#: field.auoi.opt_in_ts.label
+msgid "Opt-in Date/Time"
+msgstr ""
+
+#: field.circ.desk_renewal.label
+msgctxt "field.circ.desk_renewal.label"
+msgid "Desk Renewal"
+msgstr ""
+
+#: field.combcirc.desk_renewal.label
+msgctxt "field.combcirc.desk_renewal.label"
+msgid "Desk Renewal"
+msgstr ""
+
+#: field.acirc.desk_renewal.label
+msgctxt "field.acirc.desk_renewal.label"
+msgid "Desk Renewal"
+msgstr ""
+
+#: field.rodcirc.desk_renewal.label
+msgctxt "field.rodcirc.desk_renewal.label"
+msgid "Desk Renewal"
+msgstr ""
+
+#: class.acpn.label
+msgid "Copy Note"
+msgstr ""
+
+#: field.citm.code.label
+msgid "Item Type Code"
+msgstr ""
+
+#: field.czs.attrs.label
+msgid "Attrs"
+msgstr ""
+
+#: field.mb.void_time.label
+msgid "Void Timestamp"
+msgstr ""
+
+#: field.au.billable_transactions.label
+msgctxt "field.au.billable_transactions.label"
+msgid "Billable Transactions"
+msgstr ""
+
+#: link.au.billable_transactions.label
+msgctxt "link.au.billable_transactions.label"
+msgid "Billable Transactions"
+msgstr ""

@@ -1,0 +1,443 @@
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
+"PO-Revision-Date: 2008-12-10 09:54+0100\n"
+"Last-Translator: Vaclav Jansa <v.jansa@stk.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: staff.admin.font_settings.sound
+msgid "Sound preference saved to file system."
+msgstr "Nastavení zvuku uloženo na lokální počítač."
+
+#: staff.admin.font_settings.save
+msgid "Global Font saved to file system."
+msgstr "Písmo uloženo na lokální počítač."
+
+#: staff.admin.font_settings.sound.disabled
+msgid "Sound is now disabled."
+msgstr "Všechny zvuky vypnuty."
+
+#: staff.admin.font_settings.sound.enabled
+msgid "Sound is now enabled."
+msgstr "Všechny zvuky zapnuty."
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
+msgid "Global Font Adjust set to Smaller than Default"
+msgstr "Písmo bylo změněno na menší než defaultní"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
+msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
+msgid "Global Font Adjust set to Default"
+msgstr "Písmo bylo změněno na implicitní"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
+msgid "Global Font Adjust set to Larger than Default"
+msgstr "Písmo bylo změněno na větší než implicitní"
+
+# Překlad small, x-small a a xx- small není ideální, ale nic lepšího mě nenapadá
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
+msgid "Global Font set to XX-Small"
+msgstr "Písmo nastaveno na extra malé"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
+msgid "Global Font set to X-Small"
+msgstr "Písmo nastaveno na velmi malé"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
+msgid "Global Font set to Small"
+msgstr "Písmo nastaveno na malé"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
+msgid "Global Font set to Medium"
+msgstr "Písmo nastaveno na střední"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGE
+msgid "Global Font set to Large"
+msgstr "Písmo nastaveno na velké"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE
+msgid "Global Font set to X-Large"
+msgstr "Písmo nastaveno na velmi velké"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE
+msgid "Global Font set to XX-Large"
+msgstr "Písmo nastaveno na extra velké"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
+msgid "Global Font set to 5pt"
+msgstr "Písmo nastaveno na velikost 5 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
+msgid "Global Font set to 6pt"
+msgstr "Písmo nastaveno na velikost 6 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
+msgid "Global Font set to 7pt"
+msgstr "Písmo nastaveno na velikost 7 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
+msgid "Global Font set to 8pt"
+msgstr "Písmo nastaveno na velikost 8 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
+msgid "Global Font set to 9pt"
+msgstr "Písmo nastaveno na velikost 9 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
+msgid "Global Font set to 10pt"
+msgstr "Písmo nastaveno na velikost 10 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
+msgid "Global Font set to 11pt"
+msgstr "Písmo nastaveno na velikost 11 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
+msgid "Global Font set to 12pt"
+msgstr "Písmo nastaveno na velikost 12 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
+msgid "Global Font set to 13pt"
+msgstr "Písmo nastaveno na velikost 13 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
+msgid "Global Font set to 14pt"
+msgstr "Písmo nastaveno na velikost 14 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
+msgid "Global Font set to 15pt"
+msgstr "Písmo nastaveno na velikost 15 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
+msgid "Global Font set to 16pt"
+msgstr "Písmo nastaveno na velikost 16 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
+msgid "Global Font set to 17pt"
+msgstr "Písmo nastaveno na velikost 17 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
+msgid "Global Font set to 18pt"
+msgstr "Písmo nastaveno na velikost 18 pt"
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
+msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
+msgid "Global Font Adjust set to Default"
+msgstr "Písmo bylo změněno na implicitní"
+
+#: staff.admin.transit_list.missing_list
+msgid "Missing library list."
+msgstr "Chybí seznam knihoven."
+
+# nutný kontext
+#: staff.admin.transit_list.no_match
+msgid "No matching transits."
+msgstr "Není odpovídající přesun."
+
+#: staff.admin.transit_list.invalid_date
+msgid "Invalid Date (%1$s), setting to Today"
+msgstr "Neplatné datum (%1$s), datum bylo nastaveno dnešní"
+
+#: staff.admin.transit_list.invalid_date_format
+msgid "Invalid Date (%1$s,%2$s), setting to Today"
+msgstr "Neplatná data (%1$s), datum bylo nastaveno dnešní"
+
+#: staff.admin.transit_list.date_processing.error
+msgid "error processing date"
+msgstr "chyba při zpracování data"
+
+#: staff.admin.transit_list.retrieving_transit.error
+msgid "error retrieving transits"
+msgstr "chyba při načítání přesunu"
+
+#: staff.admin.transit_list.preretrieving_transit.error
+msgid "error pre-retrieving transits"
+msgstr "chyba před načítáním přesunu"
+
+#: staff.admin.transit_list.retrieving_row.error
+msgid "error retrieving row"
+msgstr "chyba načítání řádku"
+
+#: staff.admin.transit_list.empty_array.error
+msgid "Empty array returned by hold retrieve."
+msgstr "Při načítání rezervace byl získán prázdný soubor."
+
+#: staff.admin.transit_list.retrieve_hold.error
+msgid "retrieving hold id = %1$s for transit id = %2$s"
+msgstr "načítání rezervace id = %1$s pro přesun id = %2$s"
+
+#: staff.admin.transit_list.transit_id.error
+msgid "retrieving transit id = %1$s"
+msgstr "načítání přesunu id = %1$s"
+
+#: staff.admin.offline_manage_xacts.init_list.organization
+msgid "Organization"
+msgstr "Organizace"
+
+#: staff.admin.offline_manage_xacts.init_list.description
+msgid "Description"
+msgstr "Popis"
+
+#: staff.admin.offline_manage_xacts.init_list.date_created
+msgid "Date Created"
+msgstr "Datum vytvoření"
+
+#: staff.admin.offline_manage_xacts.init_list.created_by
+msgid "Created By"
+msgstr "Vytvořeno"
+
+#: staff.admin.offline_manage_xacts.init_list.upload_count
+msgid "Upload Count"
+msgstr "Nahrát konto"
+
+#: staff.admin.offline_manage_xacts.init_list.transactions_processed
+msgid "Transactions Processed"
+msgstr "Transakce zpracována"
+
+#: staff.admin.offline_manage_xacts.init_list.processing
+msgid "Processing?"
+msgstr "Zpracovává se?"
+
+#: staff.admin.offline_manage_xacts.init_list.date_started
+msgid "Date Started"
+msgstr "Datum zahájení"
+
+#: staff.admin.offline_manage_xacts.init_list.date_completed
+msgid "Date Completed"
+msgstr "Datum ukončení"
+
+#: staff.admin.offline_manage_xacts.init_list.session
+msgid "Session"
+msgstr "Relace"
+
+#: staff.admin.offline_manage_xacts.init_script_list.date_uploaded
+msgid "Date Uploaded"
+msgstr "Datum aktualizace"
+
+#: staff.admin.offline_manage_xacts.init_script_list.uploaded_by
+msgid "Uploaded By"
+msgstr "Aktualizováno"
+
+# Netuším co je time delta. Nejbližší výraz delta clock - intervalový čítač
+#: staff.admin.offline_manage_xacts.init_script_list.time_delta
+msgid "Server/Local Time Delta"
+msgstr "Rozdíl času pracovní stanice od času serveru"
+
+#: staff.admin.offline_manage_xacts.init_script_list.workstation
+msgctxt "staff.admin.offline_manage_xacts.init_script_list.workstation"
+msgid "Workstation"
+msgstr "Pracovní stanice"
+
+#: staff.admin.offline_manage_xacts.init_error_list.workstation
+msgctxt "staff.admin.offline_manage_xacts.init_error_list.workstation"
+msgid "Workstation"
+msgstr "Pracovní stanice"
+
+#: staff.admin.offline_manage_xacts.init_error_list.timestamp
+msgid "Timestamp"
+msgstr "Datum poslední změny"
+
+#: staff.admin.offline_manage_xacts.init_error_list.type
+msgid "Type"
+msgstr "Typ"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_code
+msgid "Event Code"
+msgstr "Kód události"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_name
+msgid "Event Name"
+msgstr "Jméno události"
+
+#: staff.admin.offline_manage_xacts.init_error_list.event_description
+msgid "Event Description"
+msgstr "Popis události"
+
+#: staff.admin.offline_manage_xacts.init_error_list.item_barcode
+msgid "Item Barcode"
+msgstr "Čárový kód exempláře"
+
+#: staff.admin.offline_manage_xacts.init_error_list.patron_barcode
+msgid "Patron Barcode"
+msgstr "Čárový kód čtenáře"
+
+#: staff.admin.offline_manage_xacts.init_error_list.due_date
+msgid "Due Date"
+msgstr "Vraťte do"
+
+#: staff.admin.offline_manage_xacts.init_error_list.count
+msgid "In House Use Count"
+msgstr "Počet prezenčních užití"
+
+#: staff.admin.offline_manage_xacts.init_error_list.noncat
+msgid "Non-Cataloged?"
+msgstr "Nezkatalogizováno?"
+
+# nutný kontext
+#: staff.admin.offline_manage_xacts.init_error_list.noncat_type
+msgid "Non-Cataloged Type"
+msgstr "Nekatalogizovaný typ"
+
+# nutný kontext
+#: staff.admin.offline_manage_xacts.init_error_list.noncat_count
+msgid "Non-Cataloged Count"
+msgstr "Počet nekatalogizovaných"
+
+# nutný kontext
+#: staff.admin.offline_manage_xacts.init_error_list.backdate
+msgid "Check In Backdate"
+msgstr "Zpětně vrátit k datu"
+
+#: staff.admin.offline_manage_xacts.error.check_perm
+msgid "Error checking permissions"
+msgstr "Chyba při kontrole oprávnění"
+
+#: staff.admin.offline_manage_xacts.error.bad_cgi_response
+msgid "Bad response from CGI component"
+msgstr "Chybná odpověď CGI skriptu"
+
+#: staff.admin.offline_manage_xacts.error.execute_error
+msgid "Execute error:"
+msgstr "Chyba spuštění:"
+
+#: staff.admin.offline_manage_xacts.error.session_execute_error
+msgid "Error executing session"
+msgstr "Chyba spuštění relace"
+
+# velmi nouzový překlad
+#: staff.admin.offline_manage_xacts.error.session_retrieval
+msgid "Error retrieving session errors:"
+msgstr "Vícenásobná chyba spuštění relace:"
+
+#: staff.admin.offline_manage_xacts.error.non_existent_file
+msgid "Cannot rename a non-existent file"
+msgstr "Nelze přejmenovat neexistující soubor"
+
+#: staff.admin.offline_manage_xacts.error.renaming_file
+msgid "Error renaming transaction file"
+msgstr "Chyba přejmenování přenosového souboru"
+
+# nutný kontext
+#: staff.admin.offline_manage_xacts.error.unique_file
+msgid "Taking too long to find a unique filename."
+msgstr "Příliš dlouhá doba pro nalezení jedinečného jména souboru."
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts
+msgid ""
+"Something bad happened.  New offline transactions were accumulated during "
+"our attempted upload.  Tell your system admin that the file involved is %1$s"
+msgstr ""
+"Vyskytl se problém. Nové offline transakce se nahromadily po dobu pokusů o "
+"přenos. Oznamte svému systémovému administrátorovi, že poškozený soubor je "
+"%1$s"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.title
+msgid "Transaction conflicts"
+msgstr "Transakční konflikty"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.ok
+msgid "Ok"
+msgstr "OK"
+
+#: staff.admin.offline_manage_xacts.error.transaction_conflicts.confirm
+msgid "Check here to confirm this message"
+msgstr "Zaškrtnutím potvrďte zprávu"
+
+#: staff.admin.offline_manage_xacts.error.reverting_file
+msgid "Error reverting transaction file"
+msgstr "Chyba při obnově přenosového souboru"
+
+#: staff.admin.offline_manage_xacts.error.archiving_file
+msgid "Error archiving transaction file"
+msgstr "Chyba archivace přenosového souboru"
+
+# nouzový překlad
+#: staff.admin.offline_manage_xacts.session_upload
+msgid "Please select a session to upload to."
+msgstr "Vyberte prosím relaci, do níž se má nahrávat."
+
+#: staff.admin.offline_manage_xacts.single_session_upload
+msgid "Please select a single session to upload to."
+msgstr "Prosím vyberte jednu relaci, do níž se má nahrávat."
+
+# nouzový překlad
+#: staff.admin.offline_manage_xacts.no_transactions
+msgid "No pending transactions to upload."
+msgstr "Žádná nevyřízená transakce k nahrání."
+
+#: staff.admin.offline_manage_xacts.error.uploading_file
+msgid "There was an error:"
+msgstr "Nastala chyba:"
+
+#: staff.admin.offline_manage_xacts.error.uploading_transactions
+msgid "Error uploading transactions"
+msgstr "Chyba nahrávání transakcí"
+
+#: staff.admin.offline_manage_xacts.error.retrieving_session
+msgid "Error retrieving session status"
+msgstr "Chyba načítání statusu relace"
+
+#: staff.admin.offline_manage_xacts.create_session.prompt
+msgid "Please enter a description:"
+msgstr "Vložte popis:"
+
+#: staff.admin.offline_manage_xacts.create_session
+msgid "Create an Offline Transaction Session"
+msgstr "Vytvořit offline přenosový proces"
+
+#: staff.admin.offline_manage_xacts.error.create_session
+msgid "Error creating session"
+msgstr "Chyba při vytváření relace"
+
+#: staff.admin.offline_manage_xacts.error.create_session.alert
+msgid "Error: %1$s"
+msgstr "Chyba: %1$s"
+
+#: staff.admin.offline_manage_xacts.error.retrieving_sessions
+msgid "Error retrieving offline sessions."
+msgstr "Chyba načítání offline relací."
+
+# nouzový překlad
+#: staff.admin.offline_manage_xacts.error.rendering_session
+msgid "Error rendering session list"
+msgstr "Chyba zpracování seznamu relací"
+
+#: staff.admin.offline_manage_xacts.upload_status
+msgid "Uploaded Transactions for %1$s"
+msgstr "Nahrané transakce pro %1$s"
+
+# netuším, co je to script list
+#: staff.admin.offline_manage_xacts.error.rendering_script
+msgid "Error rendering script list"
+msgstr "Chyba zpracování seznamu skriptů"
+
+#: staff.admin.offline_manage_xacts.error.rendering_errors
+msgid "Exceptions for %1$s"
+msgstr "Výjimky pro %1$s"
+
+# nouzový překlad
+#: staff.admin.offline_manage_xacts.error.rendering_error_list
+msgid "Error rendering error list"
+msgstr "Chyba zpracování seznamu chyb"
+
+#: staff.admin.offline_manage_xacts.completed
+msgid "Completed"
+msgstr "Hotovo"
+
+#: staff.admin.offline_manage_xacts.no
+msgid "No"
+msgstr "Ne"
+
+#: staff.admin.offline_manage_xacts.yes
+msgid "Yes"
+msgstr "Ano"

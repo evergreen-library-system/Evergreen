@@ -1,0 +1,468 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 09:55-0400\n"
+"PO-Revision-Date: 2008-12-17 21:10+0100\n"
+"Last-Translator: Aneta Plzáková <anjuli@post.cz>\n"
+"Language-Team: UISK <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: vandelay.add.existing.queue
+msgid "or Add to an Existing Queue"
+msgstr "nebo přidat k existujícímu seznamu"
+
+#: vandelay.auth.attrs
+#, fuzzy
+msgid "Authority attributes"
+msgstr "Pole autoritního záznamu"
+
+#: vandelay.auth.records
+msgid "Authority Records"
+msgstr "Autoritní záznam"
+
+#: vandelay.auto.import.noncolliding
+msgid "Auto-Import Non-Colliding Records"
+msgstr "Automatický import nekolidujících záznamů"
+
+#. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
+#: vandelay.auto.width
+#, fuzzy
+msgid "Auto Width"
+msgstr "Automatická šířka"
+
+#: vandelay.back.to.import.queue
+msgid "Back To Import Queue"
+msgstr "Zpět k importování seznamu"
+
+#: vandelay.bib.attrs
+#, fuzzy
+msgid "Bibliographic attributes"
+msgstr "Pole bibliogafického záznamu"
+
+#: vandelay.bib.records
+msgid "Bibliographic Records"
+msgstr "Bibliografický záznam"
+
+#: vandelay.cancel
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: vandelay.edit
+msgid "Edit"
+msgstr "Editovat"
+
+#: vandelay.code
+msgid "Code"
+msgstr "Kód"
+
+#: vandelay.column
+msgid "Column"
+msgstr "Sloupec"
+
+#: vandelay.create.attr.def
+msgid "Create Attribute Definition"
+msgstr "Vytvořte definici pole"
+
+#: vandelay.create
+msgid "Create"
+msgstr "Vytvořit"
+
+#: vandelay.create.date
+msgid "Create Date"
+msgstr "Vytvořit datum"
+
+#: vandelay.create.upload.queue
+msgid "Create a New Upload Queue"
+msgstr "Vytvořit nový seznam pro nahrání"
+
+#: vandelay.creator
+msgid "Creator"
+msgstr "Vytvořil"
+
+#: vandelay.delete.queue
+msgid "Delete Queue"
+msgstr "Smazat seznam"
+
+#: vandelay.delete.record
+msgid "Delete record"
+msgstr "Smazat záznam"
+
+#: vandelay.descrip
+msgid "Description"
+msgstr "Popis"
+
+#: vandelay.dest.match.point
+#, fuzzy
+msgid "Destination Match Point"
+msgstr "Shoda oblasti"
+
+#: vandelay.display
+msgid "Display"
+msgstr "Zobrazit"
+
+#: vandelay.done
+msgid "Done"
+msgstr "Hotovo"
+
+#: vandelay.edit.attributes
+msgctxt "vandelay.edit.attributes"
+msgid "Edit Attributes"
+msgstr "Editovat pole"
+
+#: vandelay.edit.attrs
+msgctxt "vandelay.edit.attrs"
+msgid "Edit Attributes"
+msgstr "Editovat pole"
+
+#: vandelay.false
+#, fuzzy
+msgid "False"
+msgstr "Nepravda"
+
+#: vandelay.file.to.upload
+msgid "File to Upload:"
+msgstr "Soubor k nahrání"
+
+#: vandelay.for.example
+msgid "Example"
+msgstr "Příklad"
+
+#: vandelay.identifier
+msgid "Identifier"
+msgstr "Identifikátor"
+
+#: vandelay.id.field
+#, fuzzy
+msgid "Identifier Field?"
+msgstr "Identifikátor pole?"
+
+#: vandelay.id
+msgid "ID"
+msgstr "ID"
+
+#: vandelay.import.matches
+msgid "Import Matches"
+msgstr ""
+
+#: vandelay.import.records
+msgid "Import Records"
+msgstr "Importovat záznamy"
+
+#: vandelay.import.selected
+msgid "Import Selected"
+msgstr "Importovat vybrané"
+
+#: vandelay.import.all
+msgid "Import All"
+msgstr "Importovat vše"
+
+#: vandelay.import.time
+msgid "Import Time"
+msgstr "Importovat čas"
+
+#: vandelay.inspect.queue
+msgid "Inspect Queue"
+msgstr "Zkontrolovat seznam"
+
+#: vandelay.last.edit.date
+msgid "Last Edit Date"
+msgstr "Poslední editované datum"
+
+#: vandelay.limit.to.collision.matches
+msgid "Limit to Collision Matches"
+msgstr ""
+
+#: vandelay.limit.to.non.imported
+msgid "Limit to Non-Imported Records"
+msgstr ""
+
+#: vandelay.marc.file.upload
+#, fuzzy
+msgid "Evergreen MARC File Upload"
+msgstr "Nahrát soubor v Evregreen MARC"
+
+#: vandelay.marc.record
+msgid "MARC Record"
+msgstr "Záznam MARC"
+
+#: vandelay.matches
+#, fuzzy
+msgid "Matches"
+msgstr "Shody"
+
+#: vandelay.next.page
+msgid "Next Page"
+msgstr "Další stránka"
+
+#: vandelay.overlay.selected.record
+msgid "Overlay selected record with imported record"
+msgstr ""
+
+#: vandelay.overlay.target
+msgid "Overlay Target"
+msgstr ""
+
+#: vandelay.page
+msgid "Page"
+msgstr "Stránka"
+
+#: vandelay.powered.by.evergreen
+msgid "Powered by Evergreen!"
+msgstr "Powered by Evergreen!"
+
+#: vandelay.prev.page
+msgid "Previous Page"
+msgstr "Předchozí stránka"
+
+#: vandelay.processing
+msgid "Processing... "
+msgstr "Zpracovávání..."
+
+#: vandelay.queue
+#, fuzzy
+msgid "Queue"
+msgstr "Seznam"
+
+#: vandelay.queue.type
+#, fuzzy
+msgid "Queue Type"
+msgstr "Typ seznamu"
+
+#: vandelay.record.queue
+#, fuzzy
+msgid "Record Queue"
+msgstr "Záznam seznamu"
+
+#: vandelay.record.type
+msgid "Record Type"
+msgstr "Typ záznamu"
+
+#: vandelay.refresh
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: vandelay.remove.advanced
+msgid "Remove (advanced)"
+msgstr "Odstranit (pokročilé)"
+
+#: vandelay.remove
+msgid "Remove"
+msgstr "Odstranit"
+
+#: vandelay.results.per.page
+msgid "Results Per Page"
+msgstr "Výsledků na stránku"
+
+#: vandelay.retrieve.queue
+msgid "Retrieve Queue"
+msgstr "Vyhledávání seznamu"
+
+#: vandelay.return
+msgid "Return"
+msgstr "Návrat"
+
+#: vandelay.select.cols
+#, fuzzy
+msgid "Select Columns"
+msgstr "Vyberte sloupec"
+
+#: vandelay.select.queue
+#, fuzzy
+msgid "Select a Queue to Inspect"
+msgstr "Vyberte seznam ke kontrole"
+
+#: vandelay.source.match.point
+#, fuzzy
+msgid "Source Match Point"
+msgstr "Shoda zdroje"
+
+#: vandelay.source
+msgid "Source"
+msgstr "Zdroj"
+
+#: vandelay.subfields
+msgid "Subfield(s)"
+msgstr "Podpole"
+
+#: vandelay.subfield
+msgid "Subfield"
+msgstr "Podlpole"
+
+#: vandelay.sure.to.delete
+msgid "Are you sure you want to delete this record?"
+msgstr "Jste si jistý, že chcete smazat tento záznam?"
+
+#: vandelay.sure.to.delete.queue
+#, fuzzy
+msgid "Are you sure you want to delete this queue?"
+msgstr "Jste si jistý, že chcete smazat tento seznam?"
+
+#: vandelay.tags
+msgid "Tag(s)"
+msgstr "Identifikátor/y"
+
+#: vandelay.tag
+msgid "Tag"
+msgstr "Identifikátor"
+
+#: vandelay.tcn.source
+msgid "TCN Source"
+msgstr ""
+
+#: vandelay.tcn.value
+msgid "TCN Value"
+msgstr ""
+
+#: vandelay.tooltip.subfields
+#, fuzzy
+msgid "You can enter multiple subfields, separated by spaces and/or commas."
+msgstr "Můžete vložit hromadná podpole oddělená mezerami a/nebo čárkami."
+
+#: vandelay.tooltip.tags
+#, fuzzy
+msgid "You can enter multiple tags, separated by spaces and/or commas."
+msgstr "Můžete vložit hromadné identifikátory oddělené mezerami a/nebo čárkami."
+
+#: vandelay.true
+msgid "True"
+msgstr "Pravda"
+
+#: vandelay.update
+msgid "Update"
+msgstr "Aktualizace"
+
+#: vandelay.uploading
+msgid "Uploading..."
+msgstr "Nahrávání"
+
+#: vandelay.upload.status
+msgid "Upload Status"
+msgstr "Status nahrávání"
+
+#: vandelay.upload
+msgid "Upload"
+msgstr "Nahrát"
+
+#: vandelay.vandelay
+msgid "Vandelay"
+msgstr ""
+
+#: vandelay.view.marc
+msgid "View MARC"
+msgstr "Podívat se na MARC"
+
+#: vandelay.xpath.advanced
+msgid "XPath (advanced)"
+msgstr "XPath (pokročilý)"
+
+#: vandelay.xpath
+msgid "XPath"
+msgstr "XPath"
+
+#: vandelay.save
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: vandelay.record_saved
+msgid "Record Saved"
+msgstr "Záznam uložen"
+
+#: vandelay.export.records
+msgid "Export Records"
+msgstr "Exportovat záznamy"
+
+#: vandelay.export.use_field_no
+#, fuzzy
+msgid "Use Field Number"
+msgstr "Použít číslo pole"
+
+#: vandelay.export.from_csv
+msgid "From CSV File"
+msgstr "Z CSV souboru"
+
+#: vandelay.export.record_id
+msgid "Record ID"
+msgstr "ID záznamu"
+
+#: vandelay.export.or
+msgid "Or"
+msgstr "Nebo"
+
+#: vandelay.export.format
+msgid "Record Format"
+msgstr "Formát záznamu"
+
+#: vandelay.export.format.marc21
+msgid "MARC21"
+msgstr "MARC21"
+
+#: vandelay.export.format.unimarc
+msgid "UNIMARC"
+msgstr "UNIMARC"
+
+#: vandelay.export.format.xml
+msgid "MARC XML"
+msgstr "MARC XML"
+
+#: vandelay.export.format.bre
+#, fuzzy
+msgid "Evergreen Record Entry"
+msgstr "Vstup do záznamu Evergreen"
+
+#: vandelay.export.encoding
+msgid "Record Encoding"
+msgstr "Kódování záznamu"
+
+#: vandelay.export.utf8
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: vandelay.export.marc8
+msgid "MARC8"
+msgstr "MARC8"
+
+#: vandelay.export.holdings
+msgid "Include holdings in Bibliographic Records"
+msgstr "Obsahuje vlastnictví v bibliografických záznamech"
+
+#: vandelay.export.retrieve
+msgid "Retrieve Records"
+msgstr "Vyhledat záznam"
+
+#: vandelay.export.field_no_hint
+msgid "(starting from 0)"
+msgstr "(začít od nuly)"
+
+#: vandelay.export.bucket
+msgid "Record Bucket ID"
+msgstr ""
+
+#: vandelay.select_actions
+msgid "-- Actions --"
+msgstr "--Akce--"
+
+#: vandelay.queue.total
+msgid "Total:"
+msgstr "Celkem:"
+
+#: vandelay.queue.imported
+msgid "Imported:"
+msgstr "Importováno:"
+
+#: vandelay.queue.column_picker.title
+#, fuzzy
+msgid "Column Picker"
+msgstr "Výběr sloupce"
+
+#: vandelay.import.bib_sources
+msgid "Select a Record Source"
+msgstr ""

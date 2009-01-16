@@ -1,0 +1,981 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2009-01-16 09:56:31-0400\n"
+"PO-Revision-Date: 2008-12-30 16:03+0100\n"
+"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"Language-Team: UISK <PetrKubiska@seznam.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: 1208.TITLE_LAST_COPY:66
+msgid "The last copy attached to a title is being removed or deleted"
+msgstr "Poslední kopie připojena k titulu je odstraněna nebo smazána"
+
+#: 1232.ITEM_DEPOSIT_REQUIRED:157 1233.ITEM_RENTAL_FEE_REQUIRED:160
+#: 1234.ITEM_DEPOSIT_PAID:163
+msgid ""
+msgstr ""
+
+#: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:435
+msgid "The requested money_user_circulation_summary was not found"
+msgstr "Požadovaný money_user_circulation_summary nebyl nalezen"
+
+#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:503
+msgid "The requested container_copy_bucket was not found"
+msgstr "Požadovaný container_copy_bucket nebyl nalezen"
+
+#: 1218.ITEM_AGE_PROTECTED:104
+msgid "This item is too new to have a hold placed on it"
+msgstr "Tato položka je příliš nová, aby bylo umístěno půjčování"
+
+#: 1214.PATRON_DUP_IDENT1:87
+msgid "The selected primary identification type and value are in use by another patron"
+msgstr ""
+"Zvolený druh primární identifikace a hodnoty jsou používány jiným "
+"návštěvníkem"
+
+#: 1561.PERMISSION_PERM_LIST_NOT_FOUND:327
+msgid "The requested permission_perm_list was not found"
+msgstr "Požadovaný permission_perm_lis nebyl nalezen"
+
+#: 1213.PATRON_BARRED:83
+#, fuzzy
+msgid "The patron is barred"
+msgstr "Návštěvník je zakázaný"
+
+#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:575
+msgid "The requested config_circ_matrix_test was not found"
+msgstr "Požadovaný config_circ_matrix_test nebyl nalezen"
+
+#: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:414
+msgid "The requested metabib_series_field_entry was not found"
+msgstr "Požadovaný metabib_series_field_entry nebyl nalezen"
+
+#: 8002.OFFLINE_FILE_ERROR:741
+msgid " An offline file or directory could not be created or accessed "
+msgstr " Offline soubor nebo adresář nelze vytvořit nebo zpřístupnit"
+
+#: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:587
+msgid "The requested vandelay.import_item was not found"
+msgstr "Požadovaný vandelay.import_item nebyl nalezen"
+
+#: 1502.ASSET_COPY_NOT_FOUND:182
+msgid ""
+"\n"
+"\t\t\tSomeone attempted to retrieve a copy object from the \n"
+"\t\t\tsystem and the object was not found.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tNěkdo se pokusil získat kopii objektu ze \n"
+"\t\t\tsystému a objekt nebyl nalezen.\n"
+"\t\t"
+
+#: 1639.REPORTER_SCHEDULE_NOT_FOUND:557
+msgid "The requested reporter_schedule was not found"
+msgstr "Požadovaný reporter_schedule nebyl nalezen"
+
+#: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:563
+msgid "The requested action_open_circ_count_by_circ_mod was not found"
+msgstr "Požadovaný action_open_circ_count_by_circ_mod nebyl nalezen"
+
+#: 0.SUCCESS:14
+msgid " "
+msgstr ""
+
+#: 7006.COPY_IS_REFERENCE:684
+msgid " Copy is reference material "
+msgstr " Kopie je referenční material"
+
+#: 1609.CONFIG_RULES_RECURING_FINE_NOT_FOUND:468
+msgid "The requested config_rules_recuring_fine was not found"
+msgstr "Požadovaný config_rules_recuring_fine nebyl nalezen"
+
+#: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:465
+msgid "The requested metabib_subject_field_entry was not found"
+msgstr "Požadovaný metabib_subject_field_entry nebyl nalezen"
+
+#: 1711.BIB_QUEUE_EXISTS:631
+msgid "A bib record queue with the same name already exists"
+msgstr "Bib záznam fronty se stejným názvem již existuje"
+
+#: 1507.CONTAINER_ITEM_NOT_FOUND:205
+#, fuzzy
+msgid ""
+"\n"
+"\t\t\tSomeone attempted to retrieve a container item object from the \n"
+"\t\t\tsystem and the object was not found.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tNěkdo se pokusil načíst objekt položky z \n"
+"\t\t\tsystému a objekt nebyl nalezen.\n"
+"\t\t"
+
+#: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:262
+msgid "The requested action_survey_response was not found"
+msgstr "Požadovaný action_survey_response nebyl nalezen"
+
+#: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:310
+msgid "The requested money_open_billable_transaction_summary was not found"
+msgstr "Požadovaný money_open_billable_transaction_summary nebyl nalezen"
+
+#: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:307
+msgid "The requested config_rules_circ_duration was not found"
+msgstr "Požadovaný config_rules_circ_duration nebyl nalezen"
+
+#: 1607.ACTION_OPEN_CIRCULATION_NOT_FOUND:462
+msgid "The requested action_open_circulation was not found"
+msgstr "Požadovaný action_open_circulation nebyl nalezen"
+
+#: 1559.METABIB_FULL_REC_NOT_FOUND:321
+msgid "The requested metabib_full_rec was not found"
+msgstr "Požadovaný metabib_full_rec nebyl nalezen"
+
+#: 1527.OPEN_TCN_NOT_FOUND:228
+msgid "No TCN could be found that does not collide with existing records"
+msgstr "U TNC by mohlo být zjištěno, že nebude souhlasit s existujícími záznamy"
+
+#: 2001.DATABASE_UPDATE_FAILED:642
+msgid "The attempt to write to the DB failed"
+msgstr "Pokus zapisovat do DB se nezdařilo"
+
+#: 8000.OFFLINE_SESSION_ACTIVE:735
+msgid " An offline session for this location is currently processing "
+msgstr " Offline relace pro tuto lokalitu je v současné době zpracovávána"
+
+#: 1563.METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND:333
+msgid "The requested metabib_keyword_field_entry was not found"
+msgstr "Požadovaný metabib_keyword_field_entry nebyl nalezen"
+
+#: 1546.CONFIG_AUDIENCE_MAP_NOT_FOUND:286
+msgid "The requested config_audience_map was not found"
+msgstr "Požadovaný config_audience_map nebyl nalezen"
+
+#: 1001.NO_SESSION:26
+#, fuzzy
+msgid "User login session has either timed out or does not exist"
+msgstr "Uživatelské jméno relace má časový limit nebo neexistuje"
+
+#: 1525.BILLING_NOT_FOUND:224
+msgid " Requested billing note does not exist "
+msgstr "Požadovaná fakturace neexistuje"
+
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:738
+msgid " An offline file for this workstation exists within this session "
+msgstr "Offline soubor pro tuto pracovní stanici existuje v této relaci"
+
+#: 1529.ACTOR_WORKSTATION_NOT_FOUND:236
+msgid "The requested actor_workstation was not found"
+msgstr "Požadovaný actor_workstation nebyl nalezen"
+
+#: 1227.COPY_DELETE_WARNING:140
+msgid "The copy in question is not in an ideal status for deleting"
+msgstr "Příslušný výtisk není v ideálním stavu pro vymazání"
+
+#: 1223.PATRON_NO_PHONE:122
+msgid "The user does not have a valid phone number assigned"
+msgstr "Uživatel nemá přiřazené platné telefonní číslo"
+
+#: 1002.ACTOR_USER_NOT_FOUND:29
+msgid "Someone attempted to retrieve a user from the system and the user was not found"
+msgstr "Někdo se pokusil získat uživatele ze systému a uživatel nebyl nalezen"
+
+#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:569
+msgid "The requested vandelay_bib_queue was not found"
+msgstr "Požadovaný vandelay_bib_queue nebyl nalezen"
+
+#: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:548
+msgid "The requested reporter_output_folder was not found"
+msgstr "Požadovaný reporter_output_folder nebyl nalezen"
+
+#: 1217.PATRON_INACTIVE:101
+msgid "This account is marked as inactive"
+msgstr "Tento účet je označen za neaktivní"
+
+#: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:551
+msgid "The requested reporter_report_folder was not found"
+msgstr "Požadovaný reporter_report_folder nebyl nalezen"
+
+#: 1545.PERM_EX_NOT_FOUND:283
+msgid "The requested perm_ex was not found"
+msgstr "Požadovaný perm_ex nebyl nalezen"
+
+#: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:304
+msgid "The requested actor_org_unit_closed_date was not found"
+msgstr "Požadovaný actor_org_unit_closed_date nebyl nalezen"
+
+#: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:271
+msgid "The requested authority_record_descriptor was not found"
+msgstr "Požadovaný authority_record_descriptor nebyl nalezen"
+
+#: 7011.COPY_STATUS_LOST:699
+msgid "Copy has is marked as lost"
+msgstr "Kopie je označena jako ztracená"
+
+#: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:402
+msgid "The requested container_call_number_bucket was not found"
+msgstr "Požadovaný container_call_number_bucket nebyl nalezen"
+
+#: 1229.VOLUME_DELETED:147
+msgid "The requested volume is marked as deleted"
+msgstr "Požadovaný svazek je označen jako smazaný"
+
+#: 1635.REPORTER_REPORT_NOT_FOUND:545
+msgid "The requested reporter_report was not found"
+msgstr "Požadovaný reporter_report nebyl nalezen"
+
+#: 1631.MONEY_COLLECTIONS_TRACKER_NOT_FOUND:533
+#: 1632.CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND:536
+#: 1633.MONEY_DESK_PAYMENT_NOT_FOUND:539
+msgid "The requested money_collections_tracker was not found"
+msgstr "Požadovaný money_collections_tracker nebyl nalezen"
+
+#: 5000.PERM_FAILURE:651
+msgid "Permission Denied"
+msgstr "Povolení odepřeno"
+
+#: 7015.NEGATIVE_PATRON_BALANCE:711
+msgid "This requested action would result in a negative patron balance"
+msgstr ""
+"Toto požadované opatření by mělo za následek negativní zůstatek návštěvníka"
+
+#: 1569.ACTOR_USER_STANDING_PENALTY_NOT_FOUND:351
+msgid "The requested actor_user_standing_penalty was not found"
+msgstr "Požadovaný actor_user_standing_penalty nebyl nalezen"
+
+#: 1200.USERNAME_EXISTS:39
+msgid "The given username already exists in the database"
+msgstr "Dané uživatelské jméno již v databází existuje"
+
+#: 9000.REPORT_TEMPLATE_EXISTS:769
+msgid " A report template with the given name and folder already exists"
+msgstr "Zpráva šablony s daným jménem a složkou již existuje"
+
+#: 1602.ACTOR_STAT_CAT_ENTRY_NOT_FOUND:447
+msgid "The requested actor_stat_cat_entry was not found"
+msgstr "Požadovaný actor_stat_cat_entry nebyl nalezen"
+
+#: 1710.CONTAINER_EXISTS:628
+msgid "User has already created a bucket with the requested name"
+msgstr "Uživatel již vytvořil oblast s požadovaným jménem"
+
+#: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
+msgid "The requested container_biblio_record_entry_bucket was not found"
+msgstr "Požadovaný container_biblio_record_entry_bucket nebyl nalezen"
+
+#: 1701.COPY_LOCATION_EXISTS:601
+msgid " The copy location object already exists "
+msgstr "Umístění kopie objektu již existuje"
+
+#: 1703.WORKSTATION_NAME_EXISTS:607
+msgid " A workstation with that name already exists "
+msgstr " Pracovní stanice s tímto jménem již existuje"
+
+#: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:497
+msgid "The requested actor_stat_cat_entry_user_map was not found"
+msgstr "Požadovaný actor_stat_cat_entry_user_map nebyl nalezen"
+
+#: 8007.OFFLINE_SESSION_EXISTS:756
+msgid " A session with the given name already exists "
+msgstr "Relace s daným jménem již existuje"
+
+#: 1558.ASSET_COPY_NOTE_NOT_FOUND:318
+msgid "The requested asset_copy_note was not found"
+msgstr "Požadovaný asset_copy_note nebyl nalezen"
+
+#: 7017.ROUTE_TO_COPY_LOCATION:720
+msgid ""
+" \n"
+"\t\tA copy needs to be routed to a copy location.  The location\n"
+"\t\tshould be specified within the event with a 'location' key\n"
+"\t\t"
+msgstr ""
+
+#: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:191
+msgid ""
+"\n"
+"\t\t\tSomeone attempted to retrieve a transit object from the \n"
+"\t\t\tsystem and the object was not found.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tNěkdo se pokusil získat tranzitní objekt ze \n"
+"\t\t\tsystemu a objekt nebyl nalezen.\n"
+"\t\t\t"
+
+#: 1624.MONEY_PAYMENT_NOT_FOUND:512
+msgid "The requested money_payment was not found"
+msgstr "Požadovaný money_payment nebyl nalezen"
+
+#: 1596.ACTOR_ORG_UNIT_TYPE_NOT_FOUND:429
+msgid "The requested actor_org_unit_type was not found"
+msgstr "Požadovaný actor_org_unit_type nebyl nalezen"
+
+#: 1004.Z3950_BAD_QUERY:35
+msgid "The Z query is not formatted correctly"
+msgstr "Z dotaz není ve správném formátu"
+
+#: 1205.CARD_EXISTS:57
+msgid "The given user barcode already exists"
+msgstr "Daný uživatelský čárový kód jíž existuje"
+
+#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:578
+msgid "The requested vandelay_queued_bib_record was not found"
+msgstr "Požadovaná vandelay_queued_bib_record nebyl nalezen"
+
+#: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:394
+msgid "The requested actor_org_address was not found"
+msgstr "Požadovaný actor_org_address nebyl nalezen"
+
+#: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:176
+msgid "The requested biblio_record_entry was not found"
+msgstr "Požadovaný biblio_record_entry nebyl nalezen"
+
+#: 1613.PERMISSION_GRP_TREE_NOT_FOUND:479
+msgid "The requested permission_grp_tree was not found"
+msgstr "Požadovaný permission_grp_tree nebyl nalezen"
+
+#: 1523.TITLE_NOTE_NOT_FOUND:221
+msgid " Requested title note does not exist "
+msgstr " Požadovaný titul neexistuje"
+
+#: 9001.REPORT_REPORT_EXISTS:773
+msgid " A report with the given name and folder already exists"
+msgstr " Záznam s tímto názvem a jménem složky již existuje"
+
+#: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:257
+msgid "The requested action_in_house_use was not found"
+msgstr "Požadovaný action_in_house_use nebyl nalezen"
+
+#: 7016.ITEM_ON_HOLDS_SHELF:714
+msgid "This requested item is currently on the holds shelf"
+msgstr "Požadovaný exemplář je aktuálně rezervován"
+
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:681
+msgid " Location does not allow materials to circulate "
+msgstr " Lokace neumožňuje obíhání materiálů k půjčování"
+
+#: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:330
+msgid "The requested metabib_metarecord_source_map was not found"
+msgstr "Požadovaný metabib_metarecord_source_map nebyl nalezen"
+
+#: 1531.ACTION_SURVEY_QUESTION_NOT_FOUND:242
+msgid "The requested action_survey_question was not found"
+msgstr "Požadovaný action_survey_question nebyl nalezen"
+
+#: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:476
+msgid "The requested config_rules_max_fine was not found"
+msgstr "Požadovaný config_rules_max_fine nebyl nalezen"
+
+#: 1557.ACTOR_ORG_UNIT_SETTING_NOT_FOUND:315
+msgid "The requested actor_org_unit_setting was not found"
+msgstr "Požadovaný actor_org_unit_setting  nebyl nalezen"
+
+#: 7009.CIRC_CLAIMS_RETURNED:693
+#, fuzzy
+msgid " Requested circulation is marked claims returned "
+msgstr " Požadováná výpůjčka je označena požadavkem vrácení"
+
+#: 1629.PERMISSION_USR_GRP_MAP_NOT_FOUND:526
+msgid "The requested permission_usr_grp_map was not found"
+msgstr "Požadovaný permission_usr_grp_map nebyl nalezen"
+
+#: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:459
+msgid "The requested money_work_payment was not found"
+msgstr "Požadovaný money_work_payment nebyl nalezen"
+
+#: 2000.BAD_PARAMS:639
+#, fuzzy
+msgid "Invalid parameters were encountered in a method"
+msgstr "Neplatné parametry se setkaly v systému"
+
+#: 1564.MONEY_CASH_PAYMENT_NOT_FOUND:336
+msgid "The requested money_cash_payment was not found"
+msgstr "Požadovaný money_cash_payment nebyl nalezen"
+
+#: 1221.ORG_CANNOT_HAVE_VOLS:115
+msgid "The selected location cannot have volumes attached"
+msgstr "Označená lokace nemůže mít připojeny svazky"
+
+#: 1704.TCN_EXISTS:610
+msgid "A record already exists with the requested TCN value"
+msgstr "Záznam již existuje s požadovanou hodnotou TCN"
+
+#: 1.UNKNOWN:17
+#, fuzzy
+msgid "Placeholder event.  Used for development only"
+msgstr "Zástupe události. Používáno pouze pro rozvoj"
+
+#: 1622.BIBLIO_RECORD_NODE_NOT_FOUND:506
+msgid "The requested biblio_record_node was not found"
+msgstr "Požadovaný biblio_record_node nebyl nalezen"
+
+#: 8003.OFFLINE_PARAM_ERROR:744
+msgid " Missing params in offline upload "
+msgstr " Chybějící parametry v offline nahrávání"
+
+#: 1534.ACTOR_USER_SETTING_NOT_FOUND:251
+msgid "The requested actor_user_setting was not found"
+msgstr "Požadovaný actor_user_setting nebyl nalezen"
+
+#: 1211.BILL_ALREADY_VOIDED:76
+msgid "The selecte bill has already been voided"
+msgstr "Označený účet byl již zrušen"
+
+#: 1222.PATRON_NO_EMAIL_ADDRESS:119
+msgid "The user does not have a valid email address assigned"
+msgstr "Uživatel nemá přidělenou platnou e-mailovou adresu "
+
+#: 7001.PATRON_BAD_STANDING:668
+#, fuzzy
+msgid ""
+"\n"
+"\t\t\tThe patron in question is not able to check out materials because\n"
+"\t\t\ttheir account is in bad standing\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tDotyčný návštěvník není způsobilý nahlížet do našich materiálů, protože\n"
+"\t\t\ttjejich účet je ve špatném stavu\n"
+"\t\t"
+
+# within the copy's circulation range....nějak mi  nedochází smysl
+#: 1215.CIRC_EXCEEDS_COPY_RANGE:94
+msgid ""
+"\n"
+"\t\t\tThe selected copy may not circulate because the recipient's home \n"
+"\t\t\tlocation is not within the copy's circulation range\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tOznačený výtisk nemůže být půjčen, protože dům příjemce \n"
+"\t\t\tnení v\n"
+"\t\t"
+
+#: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:456
+msgid "The requested config_lit_form_map was not found"
+msgstr "Požadovaný config_lit_form_map nebyl nalezen"
+
+#: 1567.METABIB_RECORD_DESCRIPTOR_NOT_FOUND:345
+msgid "The requested metabib_record_descriptor was not found"
+msgstr "Požadovaný metabib_record_descriptor nebyl nalezen"
+
+#: 1702.OPEN_CIRCULATION_EXISTS:604
+msgid " There is an open circulation on the requested item "
+msgstr " Zde je otevřené půjčování na požadovaný exemplář"
+
+#: 8009.OFFLINE_NO_ORG:762 8010.OFFLINE_SESSION_COMPLETE:765
+msgid " No org id was provided "
+msgstr "Žádný org id nebyl poskytnut"
+
+#: 1630.ACTOR_USER_NOTE_NOT_FOUND:529
+msgid "The requested actor_user_note was not found"
+msgstr "Požadovaný actor_user_note nebyl nalezen"
+
+#: 1508.ASSET_CALL_NUMBER_NOT_FOUND:208
+msgid "Requested asset_call_number was not found"
+msgstr "Požadovaný asset_call_number nebyl nalezen"
+
+#: 1209.Z3950_LOGIN_FAILED:69
+msgid "The login failed"
+msgstr "Přihlášení se nezdařilo"
+
+#: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:277
+msgid "The requested money_credit_card_payment was not found"
+msgstr "Požadovaný money_credit_card_paymen nebyl nalezen"
+
+#: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:482
+msgid "The requested action_survey_answer was not found"
+msgstr "Požadovaný action_survey_answer nebyl nalezen"
+
+#: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:254
+msgid "The requested metabib_author_field_entry was not found"
+msgstr "Požadovaný metabib_author_field_entry nebyl nalezen"
+
+#: 1626.ASSET_STAT_CAT_ENTRY_NOT_FOUND:518
+msgid "The requested asset_stat_cat_entry was not found"
+msgstr "Požadovaný asset_stat_cat_entry nebyl nalezen"
+
+#: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:426
+msgid "The requested config_non_cataloged_type was not found"
+msgstr "Požadovaný config_non_cataloged_type  nebyl nalezen"
+
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:128
+msgid "The transit on this item may not be aborted due to the state the item is in"
+msgstr ""
+"Přesun tohoto exempláře nemůže být zrušen vzhledem ke stavu exempláře, který "
+"je v"
+
+#: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:274
+msgid "The requested config_language_map was not found"
+msgstr "Požadovaný config_language_map nebyl nalezen"
+
+#: 1206.VOLUME_NOT_EMPTY:60
+msgid "The selected volume has copies attached"
+msgstr "Zvolený svazek má připojené kopie"
+
+#: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:268
+msgid "The requested authority_record_entry was not found"
+msgstr "Požadovaný authority_record_entry nebyl nalezen"
+
+#: 1203.COPY_BAD_STATUS:48
+msgid "The given copy is not in a standard circulation status"
+msgstr "Daná kopie není ve stavu standardního půjčování"
+
+#: 1601.MONEY_BILLABLE_TRANSACTION_NOT_FOUND:444
+msgid "The requested money_billable_transaction was not found"
+msgstr "Požadovaný money_billable_transaction nebyl nalezen"
+
+#: 7004.COPY_NOT_AVAILABLE:678
+msgid " Copy is not available "
+msgstr " Kopie není k dispozici"
+
+#: 1550.MONEY_OPEN_USER_SUMMARY_NOT_FOUND:296
+msgid "The requested money_open_user_summary was not found"
+msgstr "Požadovaný money_open_user_summary nebyl nalezen"
+
+#: 1207.REFUND_EXCEEDS_BALANCE:63
+msgid "A refund greater than the negative balance on a transaction was provided"
+msgstr "Náhrada vyšší než záporný zůstatek o transakci byl poskutnut\t \t"
+
+#: 3.NO_CHANGE:20
+msgid "No change occurred"
+msgstr "Nenastala žádná změna"
+
+#: 1201.CIRC_PERMIT_BAD_KEY:42
+msgid "A checkout was attempted without a valid checkout permit key"
+msgstr ""
+"Ověřování bylo vyzkoušeno bez platného ověřovacího klíčeA byl pokus o "
+"vyzkoušení bez platného povolení k vyzkoušení klíč"
+
+#: 1593.MONEY_CREDIT_PAYMENT_NOT_FOUND:420
+msgid "The requested money_credit_payment was not found"
+msgstr "Požadovaný money_credit_payment nebyl nalezen"
+
+#: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
+msgid "The requested metabib_title_field_entry was not found"
+msgstr "Požadovaný metabib_title_field_entry nebyl nalezen"
+
+#: 1202.ITEM_NOT_CATALOGED:45
+msgid "The requested item is not cataloged in the database"
+msgstr "Požadovaný exemplář není katalogizovan v databázi"
+
+#: 1628.MONEY_BILLING_NOT_FOUND:523
+msgid "The requested money_billing was not found"
+msgstr "Požadovaný money_billing nebyl nalezen"
+
+#: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:280
+msgid "The requested config_metabib_field was not found"
+msgstr "Požadovaný config_metabib_field nebyl nalezen"
+
+#: 2002.DATABASE_QUERY_FAILED:645
+msgid "The attempt to query to the DB failed"
+msgstr "Pokus o dotaz na DB se nezdařil"
+
+#: 1549.CONFIG_STANDING_NOT_FOUND:293
+msgid "The requested config_standing was not found"
+msgstr "Požadovaný config_standing nebyl nalezen"
+
+#: 1210.INCORRECT_PASSWORD:73
+msgid "The provided password is not correct"
+msgstr "Poskytnuté heslo není správné"
+
+#: 1582.CONFIG_ITEM_TYPE_MAP_NOT_FOUND:388
+msgid "The requested config_item_type_map was not found"
+msgstr "Požadovaný config_item_type_map nebyl nalezen"
+
+#: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:590
+msgid "The requested config_circ_matrix_ruleset_not_found was not found"
+msgstr "Požadovaný config_circ_matrix_ruleset_not_found nebyl nalezen"
+
+#: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:239
+msgid "The requested config_identification_type was not found"
+msgstr "Požadovaný config_identification_type nebyl nalezen"
+
+#: 1579.ASSET_COPY_LOCATION_NOT_FOUND:379
+msgid "The requested asset_copy_location was not found"
+msgstr "Požadovaný asset_copy_location nebyl nalezen"
+
+#: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:356
+msgid "The requested asset_call_number_note was not found"
+msgstr "Požadovaný asset_call_number_note nebyl nalezen"
+
+#: 1528.ACTOR_USER_ADDRESS_NOT_FOUND:231
+msgid "Requested address was not found"
+msgstr "Požadovaná adresa nebyla nalezena"
+
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:672
+msgid "The patron in question has the maximum number of items already checked out"
+msgstr "Příslušný uživatel si vypůjčil maximální počet exemplářů"
+
+#: 1003.Z3950_SEARCH_FAILED:32
+msgid "The Z search did not succeed"
+msgstr "Z hledání se nepodařilo"
+
+#: 1533.ACTOR_USR_NOTE_NOT_FOUND:248
+msgid "The requested actor_usr_note was not found"
+msgstr "Poždaovaný actor_usr_note nebyl nalezen"
+
+#: 1620.PERMISSION_GRP_PERM_MAP_NOT_FOUND:500
+msgid "The requested permission_grp_perm_map was not found"
+msgstr "Požadovaný permission_grp_perm_map nebyl nalezen"
+
+#: 1204.CIRC_BAD_STATUS:54
+#, fuzzy
+msgid ""
+"\n"
+"\t\t\tThe given circulation is not in a standard status or\n"
+"\t\t\tthe circulation was never fully closed properly\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tDaná výpůjčka není ve standardním stavu\n"
+"\t\t\tvýpůjčka nebyla nikdy zcela správně uzavřena\n"
+"\t\t"
+
+#: 1709.MAX_HOLDS:625
+msgid "User has reached the maximum number of holds"
+msgstr "Uživatel dosáhl maximálního počtu rezervací"
+
+#: 1706.ITEM_BARCODE_EXISTS:616
+msgid "An item with the same barcode exists"
+msgstr "Existuje exemplář se stejným čárovým kódem"
+
+#: 7014.COPY_IN_TRANSIT:708
+msgid "Copy is in transit"
+msgstr "Kopie je v přesunu"
+
+#: 1219.COPY_REMOTE_CIRC_LIB:107 1220.ITEM_NOT_HOLDABLE:111
+msgid "A copy with a remote circulating library (circ_lib) was encountered"
+msgstr ""
+
+#: 7000.ROUTE_ITEM:661
+#, fuzzy
+msgid ""
+" \n"
+"\t\t\tA copy needs to be routed to a different location\t\n"
+"\t\t\tThe destination location will be specified by an 'org' key\n"
+"\t\t\twithin the event object\n"
+"\t\t"
+msgstr ""
+" \n"
+"\t\t\tKopie musí být umístěna na jiné místo\t\n"
+"\t\t\tCílové umístění musí být upřesněno 'org'klíčem\n"
+"\t\t\\v případě objektu\n"
+"\t\t \t"
+
+#: 7007.COPY_NEEDED_FOR_HOLD:687
+msgid " Copy is needed to fulfil a hold "
+msgstr "Výtisk je potřebný k vykonání rezervace"
+
+#: 7010.COPY_ALERT_MESSAGE:696
+msgid " The requested copy has an alert message attached "
+msgstr " Požadovaná kopie má připojenou výstražnou zprávu"
+
+#: 1231.RECORD_NOT_EMPTY:154
+msgid "The selected bib record has volumes attached"
+msgstr "Zvolený bib záznam má připojeny svazky"
+
+#: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:185
+msgid "The requested action_hold_request was not found"
+msgstr "Požadovaný action_hold_reques nebyl nalezen"
+
+#: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:79
+msgid "The patron has too many overdue items"
+msgstr "Uživatel má přiliš mnoho exemplářů po vypršení výpůjční lhůty"
+
+#: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:376
+msgid "The requested action_hold_notification was not found"
+msgstr "Požadovaný action_hold_notification nebyl nalezen"
+
+#: 1610.MONEY_CHECK_PAYMENT_NOT_FOUND:471
+msgid "The requested money_check_payment was not found"
+msgstr "Požadovaný money_check_payment nebyl nalezen"
+
+#: 1623.PERMISSION_USR_PERM_MAP_NOT_FOUND:509
+msgid "The requested permission_usr_perm_map was not found"
+msgstr "Požadovaný permission_usr_perm_map nebyl nalezen"
+
+#: 1581.ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND:385
+msgid "The requested asset_stat_cat_entry_copy_map was not found"
+msgstr "Požadovaný asset_stat_cat_entry_copy_map nebyl nalezen"
+
+#: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:289
+msgid "The requested config_item_form_map was not found"
+msgstr "Požadovaný config_item_form_map nebyl nalezen"
+
+#: 1592.CONTAINER_USER_BUCKET_NOT_FOUND:417
+msgid "The requested container_user_bucket was not found"
+msgstr "Požadovaný container_user_bucket nebyl nalezen"
+
+#: 1617.ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND:491
+msgid "The requested action_unfulfilled_hold_list was not found"
+msgstr "Požadovaný action_unfulfilled_hold_list nebyl nalezen"
+
+#: 1552.ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND:301
+msgid "The requested actor_org_unit_hours_of_operation was not found"
+msgstr "Požadovaný actor_org_unit_hours_of_operation nebyl nalezen"
+
+#: 1576.EX_NOT_FOUND:370
+msgid "The requested ex was not found"
+msgstr "Požadovaná ex nebyl nalezen"
+
+#: 7019.HOLD_CAPTURE_DELAYED:726
+msgid "Hold capture was delayed for this item"
+msgstr "Získání rezervace pro tento exemplář byl opožděn"
+
+#: 8004.OFFLINE_CONFIG_ERROR:747 8005.OFFLINE_CHECKSUM_FAILED:750
+#: 8006.OFFLINE_SESSION_NOT_FOUND:753
+msgid " Offline server is not configured properly "
+msgstr " Offline server není správně nastaven"
+
+#: 1568.CONFIG_COPY_STATUS_NOT_FOUND:348
+msgid "The requested config_copy_status was not found"
+msgstr "Požadovaný config_copy_status was nebyl nalezen"
+
+#: 1539.CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND:265
+msgid "The requested container_copy_bucket_item was not found"
+msgstr "Požadovaný container_copy_bucket_item nebyl nalezen"
+
+#: 1590.ACTOR_STAT_CAT_NOT_FOUND:411
+msgid "The requested actor_stat_cat was not found"
+msgstr "Požadovaný actor_stat_cat was nebyl nalezen"
+
+#: 7003.COPY_CIRC_NOT_ALLOWED:675
+msgid " Target copy is not allowed to circulate "
+msgstr " Cílová kopie není povolena k oběhu"
+
+#: 7008.MAX_RENEWALS_REACHED:690
+msgid " Circulation has no more renewals remaining "
+msgstr " Oběh nemá více zbývajících opakování"
+
+#: 1577.ACTION_HOLD_COPY_MAP_NOT_FOUND:373
+msgid "The requested action_hold_copy_map was not found"
+msgstr "Požadovaný action_hold_copy_map nebyl nalezen"
+
+#: 1648.PERMISSION_USR_WORK_OU_MAP_NOT_FOUND:584
+msgid "The requested permission_usr_work_ou_map was not found"
+msgstr "Požadovaný permission_usr_work_ou_map nebyl nalezen"
+
+#: 1638.REPORTER_TEMPLATE_FOLDER_NOT_FOUND:554
+msgid "The requested reporter_template_folder was not found"
+msgstr "Požadovaný reporter_template_folder nebyl nalezen"
+
+#: 1500.ACTION_CIRCULATION_NOT_FOUND:173
+msgid ""
+"\n"
+"\t\t\tSomeone attempted to retrieve a circulation object from the system and \n"
+"\t\t\tthe object was not found.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tNěkdo se pokusil načíst pohyb objektu ze systému a \n"
+"\t\t\tobjekt byl nenalezen.\n"
+"\t\t"
+
+#: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:572
+msgid "The requested vandelay_authority_queue was not found"
+msgstr "Požadovaný vandelay_authority_queue nebyl nalezen"
+
+#: 1565.ACTOR_PROFILE_NOT_FOUND:339
+msgid "The requested actor_profile was not found"
+msgstr "Požadovaný actor_profile was nebyl nalezen"
+
+#: 1616.MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND:488
+msgid "The requested money_open_user_circulation_summary was not found"
+msgstr "Požadovaný money_open_user_circulation_summary nebyl nalezen"
+
+#: 1583.ACTION_SURVEY_NOT_FOUND:391
+msgid "The requested action_survey was not found"
+msgstr "Požadovaný action_survey nebyl nalezen"
+
+#: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:515
+msgid "The requested container_biblio_record_entry_bucket_item was not found"
+msgstr "Požadovaný container_biblio_record_entry_bucket_item nebyl nalezen"
+
+#: 1000.LOGIN_FAILED:23
+msgid "User login failed"
+msgstr "Přihlášení se nezdařilo"
+
+#: 1599.MONEY_GROCERY_NOT_FOUND:438
+msgid "The requested money_grocery was not found"
+msgstr "Požadovaný money_grocery nebyl nalezen"
+
+#: 7012.COPY_STATUS_MISSING:702
+msgid "Copy has is marked as missing"
+msgstr "Kopie byla označená jako chybějící"
+
+#: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:450
+msgid "The requested container_user_bucket_item was not found"
+msgstr "Požadovaný container_user_bucket_item nebyl nalezen"
+
+#: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:245
+msgid "The requested money_billable_transaction_summary was not found"
+msgstr "Požadovaný money_billable_transaction_summary nebyl nalezen"
+
+#: 1712.AUTH_QUEUE_EXISTS:634
+#, fuzzy
+msgid "An authority record queue with the same name already exists"
+msgstr "Záznam autority fronty se stejným názvem již existuje"
+
+#: 2003.INTERNAL_SERVER_ERROR:648
+msgid "There was an internal server error"
+msgstr "Došlo k vnitřní chybě serveru"
+
+#: 8008.OFFLINE_INVALID_SESSION:759
+msgid " The session name is invalid "
+msgstr "Název relace je neplatný"
+
+#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:581
+msgid "The requested vandelay_queued_authority_record was not found"
+msgstr "Požadovaný vandelay_queued_authority_record nebyl nalezen"
+
+#: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:432
+msgid "The requested biblio_record_note was not found"
+msgstr "Požadovaný biblio_record_note nebyl nalezen"
+
+#: 1588.ASSET_STAT_CAT_NOT_FOUND:405
+msgid "The requested asset_stat_cat was not found"
+msgstr "Požadovaný asset_stat_cat nebyl nalezen"
+
+#: 1224.PATRON_ACCOUNT_EXPIRED:125
+msgid "The patron's account has expired"
+msgstr "Návštěvníkův účet vypršel"
+
+#: 1560.METABIB_METARECORD_NOT_FOUND:324
+msgid "The requested metabib_metarecord was not found"
+msgstr "Požadovaný metabib_metarecord nebyl nalezen"
+
+#: 1707.HOLD_EXISTS:619
+msgid "User already has an open hold on the selected item"
+msgstr "Uživatel má již otevřenu rezervaci příslušného exempláře"
+
+#: 1506.CONTAINER_NOT_FOUND:199
+#, fuzzy
+msgid ""
+"\n"
+"\t\t\tSomeone attempted to retrieve a container object from the \n"
+"\t\t\tsystem and the object was not found.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tNěkdo se pokusil načíst zásobník objektů ze \n"
+"\t\t\tsystemu a objekt byl nenalezen.\n"
+"\t\t"
+
+#: 1566.MONEY_FORGIVE_PAYMENT_NOT_FOUND:342
+msgid "The requested money_forgive_payment was not found"
+msgstr "Požadovaný money_forgive_payment nebyl nalezen"
+
+#: 1230.XACT_COLLISION:150
+msgid "The saved item has been edited by another user"
+msgstr "Uložený exemplář byl upraven jiným uživatelem"
+
+#: 1700.NON_CAT_TYPE_EXISTS:598
+msgid " The non-cataloged type object already exists "
+msgstr "Nekatalogový typ objektu již existuje"
+
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:622
+msgid "A duplicate money.collections_tracker object already exists in the database"
+msgstr "Duplikát money.collections_tracker již v databázi existuje"
+
+#: 1634.REPORTER_TEMPLATE_NOT_FOUND:542
+msgid "The requested reporter_template was not found"
+msgstr "Požadovaný reporter_template nebyl nalezen"
+
+#: 1600.CONFIG_BIB_SOURCE_NOT_FOUND:441
+msgid "The requested config_bib_source was not found"
+msgstr "Požadovaný config_bib_source nebyl nalezen"
+
+#: 1228.BIB_RECORD_DELETED:144
+msgid "The requested bib record is marked as deleted"
+msgstr "Požadovaný bib záznam je již označen jako smazaný"
+
+#: 7018.COPY_MARKED_LOST:723
+msgid "The requested item is already marked as lost"
+msgstr "Požadovaný exemplář je již označen jako ztracený"
+
+#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:566
+msgid "The requested config_circ_modifier was not found"
+msgstr "Požadovaný config_circ_modifier nebyl nalezen"
+
+#: 1705.VOLUME_LABEL_EXISTS:613
+#, fuzzy
+msgid "A volume with the same label, title and owning library exists"
+msgstr "Svazky se stejným označením, názvem a vlastníkem knihovny existují"
+
+#: 1589.ACTOR_CARD_NOT_FOUND:408
+msgid "The requested actor_card was not found"
+msgstr "Požadovaný actor_card was nebyl nalezen"
+
+#: 1216.PATRON_CARD_INACTIVE:98
+msgid "The patron's card is not active"
+msgstr "Návštěvníkova karta je neaktivní"
+
+#: 7013.PATRON_EXCEEDS_FINES:705
+msgid "The patron in question has reached the maximum fine amount"
+msgstr "Návštěvník, o nějž jde, dosáhl maximální hodnoty pokut"
+
+#: 1586.ACTOR_ORG_UNIT_NOT_FOUND:399
+msgid "The requested actor_org_unit was not found"
+msgstr "Požadovaný actor_org_unit wa nebyl nalezen"
+
+#: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:364
+msgid "The requested container_call_number_bucket_item was not found"
+msgstr "Požadovaný container_call_number_bucket_item nebyl nalezen"
+
+#: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:213
+msgid "The requested action_hold_transit_copy was not found"
+msgstr "Požadovaný action_hold_transit_copy nebyl nalezen"
+
+#: 1594.AUTHORITY_FULL_REC_NOT_FOUND:423
+msgid "The requested authority_full_rec was not found"
+msgstr "Požadovaný authority_full_rec nebyl nalezen"
+
+#: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:135
+#, fuzzy
+msgid ""
+"\n"
+"\t\t\tThis refund amount is not allowed because it exceeds \n"
+"\t\t\tthe total amount of desk payments for this transaction.\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tTato částka náhrad není dovolena, protože překračuje \n"
+"\t\t\tcelkovou sumu, platby přepážky pro tuto transakci.\n"
+"\t\t"
+
+#: 1580.METABIB_VIRTUAL_RECORD_NOT_FOUND:382
+msgid "The requested metabib_virtual_record was not found"
+msgstr "Požadovaný metabib_virtual_record nebyl nalezen"
+
+#: 1640.ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND:560
+msgid "The requested actor_usr_org_unit_opt_in was not found"
+msgstr "Požadovaný actor_usr_org_unit_opt_in nebyl nalezen"
+
+#: 1572.AUTHORITY_RECORD_NOTE_NOT_FOUND:359
+msgid "The requested authority_record_note was not found"
+msgstr "Požadovaný authority_record_note nebyl nalezen"
+
+#: 1520.WORKSTATION_NOT_FOUND:218
+msgid " Requested workstation object does not exist "
+msgstr "Požadovaná pracovní stanice neexistuje"
+
+#: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:485
+msgid "The requested action_non_cataloged_circulation was not found"
+msgstr "Požadovaný action_non_cataloged_circulation nebyl nalezen"
+
+#: 1604.MONEY_USER_SUMMARY_NOT_FOUND:453
+msgid "The requested money_user_summary was not found"
+msgstr "Požadovaný money_user_summary nebyl nalezen"
+
+#~ msgid "The requested acq.funding_source_dedit was not found"
+#~ msgstr "Požadovaný acq.funding_source_dedit  nebyl nalezen"
