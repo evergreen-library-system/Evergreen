@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-09 23:19-0400\n"
+"POT-Creation-Date: 2009-01-16 09:55-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warren Layton\n"
 "Language-Team: NRCan Library\n"
@@ -6556,7 +6556,9 @@ msgstr ""
 "d’acheminement"
 
 #: staff.circ.checkin_overlay.effective_date.label
-msgid "Effective Date:"
+#: staff.circ.checkin_overlay.effective_date.accesskey
+#, fuzzy
+msgid "Effective &Date:"
 msgstr "Date de mise en vigueur :"
 
 #: staff.circ.checkin_overlay.actions.label
@@ -6720,6 +6722,12 @@ msgstr "Récupérer &un article mis en réserve pour le client"
 msgctxt "staff.circ.copy_details.done.label staff.circ.copy_details.done.accesskey"
 msgid "&Done"
 msgstr "&Terminé"
+
+#: staff.circ.copy_status_overlay.sel_items.label
+#: staff.circ.copy_status_overlay.sel_items.accesskey
+msgctxt "staff.circ.copy_status_overlay.sel_items.label staff.circ.copy_status_overlay.sel_items.accesskey"
+msgid "Actions for &Selected Items"
+msgstr "Actions pour les &articles sélectionnés"
 
 #: staff.circ.copy_status_overlay.sel_clip.label
 #: staff.circ.copy_status_overlay.sel_clip.accesskey
@@ -9161,6 +9169,12 @@ msgstr "Actions relatives aux &articles mis en réserve sélectionnés"
 msgctxt "staff.patron.holds_overlay.holds_export.label"
 msgid "Export"
 msgstr "Exporter"
+
+#: staff.patron.holds_overlay.print.label
+#: staff.patron.holds_overlay.print.accesskey
+msgctxt "staff.patron.holds_overlay.print.label staff.patron.holds_overlay.print.accesskey"
+msgid "&Print"
+msgstr "&Impression"
 
 #: staff.patron.info_group.clone.label
 #: staff.patron.info_group.clone.accesskey

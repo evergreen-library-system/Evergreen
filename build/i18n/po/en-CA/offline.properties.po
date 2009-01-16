@@ -1,9 +1,10 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-14 23:43-0500\n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
 "PO-Revision-Date: 2008-12-01 22:04-0500\n"
 "Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
@@ -11,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 0.10.1\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -19,7 +20,8 @@ msgstr ""
 
 #: common.exception
 msgid ""
-"!! This software has encountered an error.  Please tell your friendly system administrator or software developer the following:\n"
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
 "%1$s\n"
 "%2$s\n"
 msgstr ""
@@ -110,7 +112,8 @@ msgstr ""
 
 #: cat.opac.undelete_record.confirm
 msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Are you sure you want to undelete title record #%1$s from the catalogue?"
+msgstr ""
+"Are you sure you want to undelete title record #%1$s from the catalogue?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -129,7 +132,7 @@ msgid "Record deleted."
 msgstr ""
 
 #: cat.opac.record_deleted.confirm
-#: cat.opac.record_undeleted.confirm
+msgctxt "cat.opac.record_deleted.confirm"
 msgid "Check here to confirm this action."
 msgstr ""
 
@@ -137,7 +140,12 @@ msgstr ""
 msgid "Record undeleted."
 msgstr ""
 
-# variables: document ID, error code, error description
+#: cat.opac.record_undeleted.confirm
+msgctxt "cat.opac.record_undeleted.confirm"
+msgid "Check here to confirm this action."
+msgstr ""
+
+#. # variables: document ID, error code, error description
 #: cat.opac.record_deleted.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
 msgstr ""
@@ -211,7 +219,9 @@ msgid "Enter the number of items:"
 msgstr ""
 
 #: circ.offline_checkout.download.warning
-msgid "WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these."
+msgid ""
+"WARNING: The non-barcode types have not been downloaded from the server.  "
+"You should log in to retrieve these."
 msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.lost
@@ -231,7 +241,9 @@ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
 msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
-msgid "Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %3$s."
+msgid ""
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 
 #: circ.offline_checkout.date.early
@@ -339,7 +351,9 @@ msgid "Missing required surveys."
 msgstr ""
 
 #: circ.offline_register.missing.files.error
-msgid "ERROR: Offline patron registration requires some server-generated files.  Please login periodically to retrieve these files."
+msgid ""
+"ERROR: Offline patron registration requires some server-generated files.  "
+"Please login periodically to retrieve these files."
 msgstr ""
 
 #: jsan.file_not_found.error
@@ -371,7 +385,7 @@ msgid "Enter original barcode for the item:"
 msgstr ""
 
 #: menu.cmd_replace_barcode.label
-#: menu.cmd_replace_barcode.replacement.label
+msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
 msgstr ""
 
@@ -381,6 +395,11 @@ msgstr ""
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
+msgstr ""
+
+#: menu.cmd_replace_barcode.replacement.label
+msgctxt "menu.cmd_replace_barcode.replacement.label"
+msgid "Replace Barcode"
 msgstr ""
 
 #: menu.cmd_replace_barcode.blank.error
@@ -496,7 +515,9 @@ msgid "Download completed"
 msgstr ""
 
 #: menu.cmd_download_patrons.error
-msgid "There was a problem with the download.  The server returned a status %1$s : %2$s"
+msgid ""
+"There was a problem with the download.  The server returned a status %1$s : "
+"%2$s"
 msgstr ""
 
 #: menu.cmd_stat_cat_edit.tab
@@ -580,7 +601,10 @@ msgid "Transaction Export Warning"
 msgstr ""
 
 #: main.transaction_export.success.prompt
-msgid "Your transactions have been successfully exported to file %1$s. We strongly recommend that you now purge the transactions from this staff client.  Would you like for us to do this?"
+msgid ""
+"Your transactions have been successfully exported to file %1$s. We strongly "
+"recommend that you now purge the transactions from this staff client.  Would "
+"you like for us to do this?"
 msgstr ""
 
 #: main.transaction_export.success.title
@@ -588,15 +612,22 @@ msgid "Transaction Export Successful"
 msgstr ""
 
 #: main.transaction_export.filename.error
-msgid "Error purging transactions:  Taking too long to find a unique filename for archival."
+msgid ""
+"Error purging transactions:  Taking too long to find a unique filename for "
+"archival."
 msgstr ""
 
 #: main.transaction_export.duplicate.warning
-msgid "Please note that you now have two sets of identical transactions.  Unless the set you just exported is solely for archival purposes, we run the risk of duplicate transactions being processed on the server."
+msgid ""
+"Please note that you now have two sets of identical transactions.  Unless "
+"the set you just exported is solely for archival purposes, we run the risk "
+"of duplicate transactions being processed on the server."
 msgstr ""
 
 #: main.transaction_export.no_filename.error
-msgid "Either you did not choose a filename, or you tried to overwrite an existing file."
+msgid ""
+"Either you did not choose a filename, or you tried to overwrite an existing "
+"file."
 msgstr ""
 
 #: main.transaction_export.no_transactions.error
@@ -604,7 +635,9 @@ msgid "There are no outstanding transactions to export."
 msgstr ""
 
 #: main.transaction_import.outstanding.error
-msgid "There are already outstanding transactions on this staff client.  Upload these first."
+msgid ""
+"There are already outstanding transactions on this staff client.  Upload "
+"these first."
 msgstr ""
 
 #: main.transaction_import.title
@@ -615,7 +648,8 @@ msgstr ""
 msgid ""
 "Your transactions have been successfully migrated to this staff client.\n"
 "\n"
-"We recommend that you delete the external copy.  Would you like for us to delete %1$s?"
+"We recommend that you delete the external copy.  Would you like for us to "
+"delete %1$s?"
 msgstr ""
 
 #: main.transaction_import.success
@@ -635,15 +669,20 @@ msgid "Please login first!"
 msgstr ""
 
 #: main.settings.migrate
-msgid "This version of the staff client stores local settings in a different location than your previous installation.  Should we attempt to migrate these settings?"
+msgid ""
+"This version of the staff client stores local settings in a different "
+"location than your previous installation.  Should we attempt to migrate "
+"these settings?"
 msgstr ""
 
 #: main.settings.migrate.failed
 msgid ""
-"WARNING: Unable to migrate legacy settings.  The settings and configuration files appear to exist in multiple locations. \n"
+"WARNING: Unable to migrate legacy settings.  The settings and configuration "
+"files appear to exist in multiple locations. \n"
 "To resolve this problem manually, please consider:\n"
 "\t%1$s\n"
-"which is in the directory where we want to store settings for the current operating system account, and:\n"
+"which is in the directory where we want to store settings for the current "
+"operating system account, and:\n"
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
@@ -681,7 +720,7 @@ msgid "Method not found for %1$s"
 msgstr ""
 
 #: network.new_session.authorize
-#: network.permission.authorize
+msgctxt "network.new_session.authorize"
 msgid "Authorize"
 msgstr ""
 
@@ -698,7 +737,14 @@ msgid "Operator Change"
 msgstr ""
 
 #: network.new_session.operator_change.prompt
-msgid "Please enter the credentials for the new login session.  Note that the previous session is still active."
+msgid ""
+"Please enter the credentials for the new login session.  Note that the "
+"previous session is still active."
+msgstr ""
+
+#: network.permission.authorize
+msgctxt "network.permission.authorize"
+msgid "Authorize"
 msgstr ""
 
 #: network.permission.description.brief
@@ -706,7 +752,12 @@ msgid "Permission Denied: %1$s"
 msgstr ""
 
 #: network.permission.description.full
-msgid "Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: %1$s"
+msgid ""
+"Another staff member with the above permission may authorize this specific "
+"action.  Please notify your library administrator if you need this "
+"permission.  If you feel you have received this exception in error, please "
+"inform your friendly Evergreen developers or helpdesk staff of the above "
+"permission and this debug information: %1$s"
 msgstr ""
 
 #: network.server_or_method.error
@@ -714,7 +765,12 @@ msgid "Server or method error"
 msgstr ""
 
 #: network.server.failure.exception
-msgid "Network or server failure.  Please check your Internet connection to %1$s and choose Retry Network.  If you need to enter Offline Mode, choose Ignore Errors in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your help desk or friendly Evergreen administrators, and give them this information:"
+msgid ""
+"Network or server failure.  Please check your Internet connection to %1$s "
+"and choose Retry Network.  If you need to enter Offline Mode, choose Ignore "
+"Errors in this and subsequent dialogs.  If you believe this error is due to "
+"a bug in Evergreen and not network problems, please contact your help desk "
+"or friendly Evergreen administrators, and give them this information:"
 msgstr ""
 
 #: network.server.method

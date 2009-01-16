@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 10:43-0400\n"
+"POT-Creation-Date: 2009-01-16 09:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -177,6 +177,10 @@ msgctxt "reports.oils_rpt_builder.aggregate_filters"
 msgid "Aggregate Filters"
 msgstr ""
 
+#: reports.oils_rpt_builder.create_aggregate_filter
+msgid "Create Aggregate Filter"
+msgstr ""
+
 #: reports.oils_rpt_builder.field_editor_window.label
 msgid "Select how this field should be displayed:"
 msgstr ""
@@ -190,12 +194,10 @@ msgid "Select what filter should be applied to this field:"
 msgstr ""
 
 #: reports.oils_rpt_builder.choose_a_transform
-msgctxt "reports.oils_rpt_builder.choose_a_transform"
 msgid "Choose a Transform: "
 msgstr ""
 
 #: reports.oils_rpt_builder.choose_a_filter
-msgctxt "reports.oils_rpt_builder.choose_a_filter"
 msgid "Choose a Filter: "
 msgstr ""
 
@@ -205,20 +207,6 @@ msgstr ""
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
 msgid "Select what aggregate filter should be applied to this field:"
-msgstr ""
-
-#: reports.oils_rpt_builder.choose_a_transform
-msgctxt "reports.oils_rpt_builder.choose_a_transform"
-msgid "Choose a Transform: "
-msgstr ""
-
-#: reports.oils_rpt_builder.choose_a_filter
-msgctxt "reports.oils_rpt_builder.choose_a_filter"
-msgid "Choose a Filter: "
-msgstr ""
-
-#: reports.oils_rpt_builder.create_aggregate_filter
-msgid "Create Aggregate Filter"
 msgstr ""
 
 #: reports.oils_rpt_builder.selected_to_sort_columns
@@ -738,11 +726,6 @@ msgstr ""
 msgid "Alter Display Header"
 msgstr ""
 
-#: reports.xul.template_builder.change_transform.label
-msgctxt "reports.xul.template_builder.change_transform.label"
-msgid "Change Transform"
-msgstr ""
-
 #: reports.xul.template_builder.move_up.label
 msgctxt "reports.xul.template_builder.move_up.label"
 msgid "Move Up"
@@ -770,7 +753,6 @@ msgid "Value"
 msgstr ""
 
 #: reports.xul.template_builder.change_transform.label
-msgctxt "reports.xul.template_builder.change_transform.label"
 msgid "Change Transform"
 msgstr ""
 
@@ -788,10 +770,6 @@ msgstr ""
 
 #: reports.xul.template_builder.remove_selected_fields.label
 msgid "Remove Selected Fields"
-msgstr ""
-
-#: reports.xul.template_builder.source_specifier.label
-msgid "Source Specifier"
 msgstr ""
 
 #: reports.xul.template_builder.table_name.label
