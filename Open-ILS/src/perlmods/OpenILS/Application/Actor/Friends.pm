@@ -125,7 +125,7 @@ sub load_linked_user_perms {
 
         $user_select->{where} = {id => $d_user};
         push(@$items, {
-                user => $e->json_query($user_select),
+                user => $e->json_query($user_select)->[0],
                 perms_granted => $perms_granted,
                 perms_received => $perms_received
             }
