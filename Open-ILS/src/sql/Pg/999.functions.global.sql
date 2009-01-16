@@ -189,7 +189,6 @@ DECLARE
 BEGIN
     SELECT INTO old_id replaces FROM actor.usr_address where id = pending_id;
     IF old_id IS NULL THEN
-        RAISE NOTICE 'Address % does not replace any address', pending_id;
         RETURN NULL;
     END IF;
     DELETE FROM actor.usr_address WHERE id = -old_id;
