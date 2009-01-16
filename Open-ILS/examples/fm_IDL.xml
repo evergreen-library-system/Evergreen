@@ -580,6 +580,147 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
     </class>
 
+	<class id="ath" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::hook" oils_persist:tablename="action_trigger.hook" reporter:label="Trigger hook point">
+		<fields oils_persist:primary="key">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Hook Key" name="key" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Core Type" name="core_type" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Passive" name="passive" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="atcol" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::collector" oils_persist:tablename="action_trigger.collector" reporter:label="Trigger Evironment Collector">
+		<fields oils_persist:primary="module">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Module Name" name="module" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="atval" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::validator" oils_persist:tablename="action_trigger.validator" reporter:label="Trigger Condition Validator">
+		<fields oils_persist:primary="module">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Module Name" name="module" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="atreact" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::reactor" oils_persist:tablename="action_trigger.reactor" reporter:label="Trigger Event Reactor">
+		<fields oils_persist:primary="module">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Module Name" name="module" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="atclean" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::cleanup" oils_persist:tablename="action_trigger.cleanup" reporter:label="Trigger Event Cleanup">
+		<fields oils_persist:primary="module">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Module Name" name="module" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+	</class>
+
+	<class id="atenv" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::environment" oils_persist:tablename="action_trigger.environment" reporter:label="Trigger Event Environment Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Event Definition" name="event_def" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Field Path" name="path" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Collector" name="collector" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
+			<link field="collector" reltype="has_a" key="id" map="" class="atcol"/>
+		</links>
+	</class>
+
+	<class id="atevdef" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event_definition" oils_persist:tablename="action_trigger.event_definition" reporter:label="Trigger Event Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_definition_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Active" name="active" OIls_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Owning Library" name="owner" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="org_unit"/>
+			<field reporter:label="Hook" name="hook" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Validator" name="validator" oils_obj:array_position="7" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Reactor" name="reactor" oils_obj:array_position="8" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Success Cleanup" name="cleanup_success" oils_obj:array_position="9" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Failure Cleanup" name="cleanup_failure" oils_obj:array_position="10" oils_persist:virtual="false"  reporter:datatype="link"/>
+			<field reporter:label="Processing Delay" name="delay" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="interval"/>
+			<field reporter:label="Processing Delay Context Field" name="delay_field" oils_obj:array_position="12" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Processing Group Context Field" name="group_field" oils_obj:array_position="13" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Template" name="template" oils_obj:array_position="14" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Environmet Entries" name="env" oils_obj:array_position="15" oils_persist:virtual="true"  reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="hook" reltype="has_a" key="id" map="" class="ath"/>
+			<link field="validator" reltype="has_a" key="id" map="" class="atval"/>
+			<link field="reactor" reltype="has_a" key="id" map="" class="atreact"/>
+			<link field="cleanup_success" reltype="has_a" key="id" map="" class="atclean"/>
+			<link field="cleanup_failure" reltype="has_a" key="id" map="" class="atclean"/>
+			<link field="env" reltype="has_many" key="id" map="" class="atenv"/>
+		</links>
+	</class>
+
+	<class id="atev" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event" oils_persist:tablename="action_trigger.event" reporter:label="Trigger Event Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Event ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Target ID" name="target" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Event Definition" name="event_def" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Add Time" name="add_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Run Time" name="run_time" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Start Time" name="start_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Update Time" name="update_time" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Complete Time" name="complete_time" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="State" name="state" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Template Output" name="template_output" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Error Output" name="error_output" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
+		</links>
+	</class>
+
+	<class id="atevparam" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Event ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Event Definition" name="event_def" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Parameter Name" name="param" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Evaluation Value" name="value" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
+		</links>
+	</class>
+
 	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
