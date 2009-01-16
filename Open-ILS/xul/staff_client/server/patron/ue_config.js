@@ -628,7 +628,6 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 function uEditApproveAddr( tbody, row, address ) {
     if(!confirm($('ue_add_approve_confirm').innerHTML)) return;
     var req = new Request(APPROVE_ADDR, SESSION, address);
-    alert(address.street1());
     req.callback(
         function(r) {
             var oldId = r.getResultObject();
