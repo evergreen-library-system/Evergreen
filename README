@@ -112,13 +112,13 @@ source directory, replacing <user>, <password>, <hostname>, <port>, and <dbname>
 with the appropriate values for your PostgreSQL database:
 
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
-       --service all --create-schema --create-bootstrap --user <user> \
-       --password <password> --hostname <hostname> --port <port> \
+       --service all --create-schema --create-bootstrap --create-offline \
+       --user <user> --password <password> --hostname <hostname> --port <port> \
        --database <dbname>
 
 This will create the database schema and configure all of the services in
 your /openils/conf/opensrf.xml configuration file to point to that database.
-It also creates the configuration file required by the Evergreen cgi-bin
+It also creates the configuration files required by the Evergreen cgi-bin
 administration scripts.
 
 Getting help:
