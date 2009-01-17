@@ -2341,10 +2341,9 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
             if (locale) {
         		char* i18n = osrfHashGet(field, "i18n");
-			    if ( !(
-                        jsonBoolIsTrue( jsonObjectGetKey( order_hash, "no_i18n" ) ) ||
-                        ((int)jsonObjectGetNumber(jsonObjectGetKey( order_hash, "no_i18n" ))) == 1 // support 1/0 for perl's sake
-                     )
+			    if ( 
+                    jsonBoolIsTrue( jsonObjectGetKey( order_hash, "no_i18n" ) ) ||
+                    ((int)jsonObjectGetNumber(jsonObjectGetKey( order_hash, "no_i18n" ))) == 1 // support 1/0 for perl's sake
                 ) i18n = NULL;
 
     			if ( i18n && !strncasecmp("true", i18n, 4)) {
