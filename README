@@ -80,19 +80,23 @@ Creating the Evergreen database:
 ===============================
 
 PostgreSQL 8.2 will be installed on your system by the Makefile.install
-prerequisite installer, but you will need to create the database and add the
-appropriate languages and extensions to support Evergreen. Issue the following
-commands as the "postgres" user to set up a database called "evergreen". Note
-that the location of the PostgreSQL "contrib" packages may vary depending on
-your distribution:
+prerequisite installer if packages are available for your distribution, or
+you will have to compile PostgreSQL 8.2 from source and install it (which
+is beyond the scope of this document).
+
+Once the PostgreSQL 8.2 database server has been installed, you will need to
+create the database and add the appropriate languages and extensions to
+support Evergreen. Issue the following commands as the "postgres" user to set
+up a database called "evergreen". Note that the location of the PostgreSQL
+"contrib" packages may vary depending on your distribution:
 
 createdb -E UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
 createlang plpgsql evergreen
-psql -f /usr/share/postgresql/8.2/contrib/tablefunc.sql
-psql -f /usr/share/postgresql/8.2/contrib/tsearch2.sql
-psql -f /usr/share/postgresql/8.2/contrib/pgxml.sql
+psql -f /usr/share/postgresql/8.2/contrib/tablefunc.sql -d evergreen
+psql -f /usr/share/postgresql/8.2/contrib/tsearch2.sql -d evergreen
+psql -f /usr/share/postgresql/8.2/contrib/pgxml.sql -d evergreen
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
 user to access the database. Issue the following command as the "postgres"
