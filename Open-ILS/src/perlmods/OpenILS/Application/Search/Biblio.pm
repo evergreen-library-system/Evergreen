@@ -1276,11 +1276,12 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_all_copy_statuses",
 	api_name	=> "open-ils.search.config.copy_status.retrieve.all" );
 
-my $copy_statuses;
+my %copy_statuses;
 sub retrieve_all_copy_statuses {
 	my( $self, $client ) = @_;
-	return $copy_statuses if $copy_statuses;
-	return $copy_statuses = 
+    my $locale = $client->session->session_locale || 'en-US';
+	return $copy_statuses{$locale} if $copy_statuses{$locale};
+	return $copy_statuses{$locale} = 
 		new_editor()->retrieve_all_config_copy_status();
 }
 
