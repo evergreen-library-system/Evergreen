@@ -2267,6 +2267,7 @@ static char* SELECT (
 static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
 	const char* locale = osrf_message_get_last_locale();
+	osrfLogDebug(OSRF_LOG_MARK, "%s Last message locale =  %s", MODULENAME, locale);
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
