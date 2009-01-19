@@ -14,4 +14,4 @@ install-exec-local:
 	$(APXS2) -i -a @srcdir@/mod_xmlent.la
 
 clean-local:
-	rm @srcdir@/mod_xmlent.la @srcdir@/mod_xmlent.lo @srcdir@/mod_xmlent.slo
+	rm -f @srcdir@/mod_xmlent.la @srcdir@/mod_xmlent.lo @srcdir@/mod_xmlent.slo
