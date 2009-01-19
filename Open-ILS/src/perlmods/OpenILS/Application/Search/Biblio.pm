@@ -1282,12 +1282,9 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_all_copy_statuses",
 	api_name	=> "open-ils.search.config.copy_status.retrieve.all" );
 
-my $copy_statuses;
 sub retrieve_all_copy_statuses {
 	my( $self, $client ) = @_;
-	return $copy_statuses if $copy_statuses;
-	return $copy_statuses = 
-		new_editor()->retrieve_all_config_copy_status();
+	return new_editor()->retrieve_all_config_copy_status();
 }
 
 
