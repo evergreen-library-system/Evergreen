@@ -111,14 +111,26 @@ sub find_template {
 
         # see if we can magically find the template based on the path and default extension
         my $ext = $ctx->{default_template_extension};
-        for my $tpath (@{$ctx->{template_paths}}) {
-            my $fpath = "$tpath/$skin/$path.$ext";
-            $r->log->debug("looking at possible template $fpath");
-            if(-r $fpath) {
-                $template = "$path.$ext";
-                last;
+
+        my @parts = split('/', $path);
+        my $localpath = $path;
+        my @args;
+        while(@parts) {
+            last unless $localpath;
+            for my $tpath (@{$ctx->{template_paths}}) {
+                my $fpath = "$tpath/$skin/$localpath.$ext";
+                $r->log->debug("looking at possible template $fpath");
+                if(-r $fpath) {
+                    $template = "$localpath.$ext";
+                    last;
+                }
             }
-        }
+            last if $template;
+            push(@args, pop @parts);
+            $localpath = '/'.join('/', @parts);
+        } 
+
+        $page_args = [@args];
 
         # no template configured or found
         unless($template) {
