@@ -106,6 +106,7 @@ ordered_file_list="
   210.schema.serials.sql
 
   300.schema.staged_search.sql
+  400.schema.action_trigger.sql
   
   500.view.cross-schema.sql
   
