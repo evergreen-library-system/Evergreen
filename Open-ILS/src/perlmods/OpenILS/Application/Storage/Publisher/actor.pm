@@ -559,9 +559,9 @@ sub patron_search {
 		}
 	} elsif ($addr_where) {
 		$select = "$a_select";
-	} else {
-		return undef;
 	}
+
+	return undef if (!$select && !$card);
 
 	my $order_by = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ') ' . (split / /,$_)[1] } @$sort;
 	my $distinct_list = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ')' } @$sort;
@@ -585,11 +585,12 @@ sub patron_search {
 
 	my $descendants = "actor.org_unit_descendants($ws_ou, $ws_ou_depth)";
 
+	$select = "JOIN ($select) AS search ON (search.id = users.id)" if ($select);
 	$select = <<"	SQL";
 		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users $card
-			JOIN ($select) AS search ON (search.id = users.id)
 			JOIN $descendants d ON (d.id = users.home_ou)
+			$select
 			$opt_in_join
 			$clone_select
 		  WHERE	users.deleted = FALSE
