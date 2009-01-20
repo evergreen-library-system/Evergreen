@@ -47,9 +47,13 @@ sub new
 	    carp '$v specified for top-level enumeration'
 	      unless defined($last_enum);
 	    $self->{ENUMS}->{$last_enum}->{RESTART} = ($val eq 'r');
-	} elsif ($key =~ /[npw-z]/) {
+	} elsif ($key =~ /[npwxz]/) {
 	    # Publication Pattern ('o' == type of unit, 'q'..'t' undefined)
 	    $self->{PATTERN}->{$key} = $val;
+	} elsif ($key eq 'y') {
+	    # Publication pattern: 'y' is repeatable
+	    $self->{PATTERN}->{y} = [] if (!defined $self->{PATTERN}->{y});
+	    push @{$self->{PATTERN}->{y}}, $val;
 	} elsif ($key eq 'o') {
 	    # Type of unit
 	    $self->{UNIT} = $val;
@@ -82,7 +86,17 @@ sub new
     }
 
     bless ($self, $class);
+
+    if (exists $self->{PATTERN}->{y}) {
+	$self->decode_pattern;
+    }
+
     return $self;
+}
+
+sub decode_pattern {
+    my $self = shift;
+    my $pattern = $self->{PATTERN}->{y};
 }
 
 sub compressible {
