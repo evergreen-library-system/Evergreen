@@ -1,4 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!--
+  The French (fr-CA) version of the contextual help for fields and subfields in
+  the MARC editor was harvested from the MARC 21 Formats documentation hosted
+  on the Library and Archives Canada Web site at http://collectionscanada.ca/
+  with the permission of Library and Archives Canada. This material is
+  protected by copyright owned by Library and Archives Canada. This material
+  is not an official version of the MARC 21 standard.
+-->
 <fields>
   <field repeatable='false' tag='001'>
     <name>Numéro de contrôle</name>
