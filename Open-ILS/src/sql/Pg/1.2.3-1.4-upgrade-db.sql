@@ -1943,7 +1943,7 @@ CREATE TABLE vandelay.import_item_attr_definition (
 
 CREATE TABLE vandelay.bib_queue (
 	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
-	item_attr_def	TEXT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	item_attr_def	BIGINT	REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 ) INHERITS (vandelay.queue);
 ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
