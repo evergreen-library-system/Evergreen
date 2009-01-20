@@ -965,7 +965,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 	</class>
 
-	<class id="asvq" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question" reporter:label="User Survey Question">
+	<class id="asvq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question" reporter:label="User Survey Question">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_question_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1135,7 +1135,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="asvr" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response" reporter:label="Survey Response">
+	<class id="asvr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response" reporter:label="Survey Response">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_response_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
