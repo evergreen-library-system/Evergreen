@@ -3,7 +3,6 @@ use strict; use warnings;
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
-use OpenILS::Application::Actor;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::Circ::Holds;
 use DateTime::Format::ISO8601;
@@ -203,8 +202,7 @@ sub fetch_user_data {
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
 	if( $ctx->{fetch_patron_circ_info} ) {
-		my $circ_counts = 
-			OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
+		my $circ_counts = $U->storagereq('open-ils.storage.actor.user.checked_out.count', $patron->id);
 
 		$ctx->{patronOverdue} = $circ_counts->{overdue}  + $circ_counts->{long_overdue};
 		my $out = $ctx->{patronOverdue} + $circ_counts->{out};
