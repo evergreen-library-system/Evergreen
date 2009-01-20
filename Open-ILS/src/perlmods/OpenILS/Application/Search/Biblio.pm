@@ -1317,7 +1317,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.biblio.copy_counts.summary.retrieve",
 	notes 		=> <<"	NOTES");
 	returns an array of these:
-		[ org_id, callnumber_label, <status1_count>, <status2_cout>,...]
+		[ org_id, callnumber_label, <status1_count>, <status2_count>,...]
 		where statusx is a copy status name.  the statuses are sorted
 		by id.
 	NOTES
@@ -1337,7 +1337,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.biblio.copy_location_counts.summary.retrieve",
 	notes 		=> <<"	NOTES");
 	returns an array of these:
-		[ org_id, callnumber_label, copy_location, <status1_count>, <status2_cout>,...]
+		[ org_id, callnumber_label, copy_location, <status1_count>, <status2_count>,...]
 		where statusx is a copy status name.  the statuses are sorted
 		by id.
 	NOTES
@@ -1357,7 +1357,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.biblio.copy_counts.location.summary.retrieve",
 	notes 		=> <<"	NOTES");
 	returns an array of these:
-		[ org_id, callnumber_label, <status1_count>, <status2_cout>,...]
+		[ org_id, callnumber_label, <status1_count>, <status2_count>,...]
 		where statusx is a copy status name.  the statuses are sorted
 		by id.
 	NOTES
