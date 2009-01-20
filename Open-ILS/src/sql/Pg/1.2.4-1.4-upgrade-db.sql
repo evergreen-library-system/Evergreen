@@ -26,7 +26,7 @@ CREATE TABLE config.upgrade_log (
     version         TEXT    PRIMARY KEY,
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
-INSERT INTO config.upgrade_log (version) VALUES ('1.4.0.0rc2');
+INSERT INTO config.upgrade_log (version) VALUES ('1.4.0.0');
 
 SELECT set_curcfg('default');
 
@@ -467,6 +467,7 @@ ALTER TABLE money.credit_card_payment ALTER expire_year DROP NOT NULL;
 ALTER TABLE money.credit_card_payment ALTER approval_code DROP NOT NULL;
 
 
+ALTER TABLE asset.copy_location ADD CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib);
 ALTER TABLE asset.copy ALTER price DROP NOT NULL;
 ALTER TABLE asset.copy ALTER price DROP DEFAULT;
 
@@ -1506,7 +1507,7 @@ BEGIN
           WHERE usr = match_user
                 AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
                 AND checkin_time IS NULL
-                AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
+                AND (stop_fines IN ('MAXFINES','LONGOVERDUE') OR stop_fines IS NULL)
 	   	IF items_out >= circ_test.max_items_out THEN
 		    	result.fail_part := 'config.circ_matrix_test.max_items_out';
 			result.success := FALSE;
@@ -1523,7 +1524,7 @@ BEGIN
 		  WHERE circ.usr = match_user
                 	AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
 			AND circ.checkin_time IS NULL
-			AND (circ.stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR circ.stop_fines IS NULL)
+			AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
 			AND cp.circ_modifier = out_by_circ_mod.circ_mod;
 		IF items_out >= out_by_circ_mod.items_out THEN
 			result.fail_part := 'config.circ_matrix_circ_mod_test';
@@ -1541,7 +1542,7 @@ BEGIN
                 	AND (circ_test.org_depth IS NULL OR (circ_test.org_depth IS NOT NULL AND circ_lib IN ( SELECT * FROM explode_array(overdue_orgs) )))
 			AND checkin_time IS NULL
 			AND due_date < NOW()
-			AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE') OR stop_fines IS NULL);
+			 AND (stop_fines IN ('MAXFINES','LONGOVERDUE') OR stop_fines IS NULL)
 		IF items_overdue >= circ_test.max_overdue THEN
 			result.fail_part := 'config.circ_matrix_test.max_overdue';
 			result.success := FALSE;
@@ -2576,6 +2577,29 @@ INSERT INTO vandelay.import_item_attr_definition (
     'p',
     'k'
 );
+
+CREATE OR REPLACE VIEW extend_reporter.global_bibs_by_holding_update AS
+  SELECT DISTINCT ON (id) id, holding_update, update_type
+    FROM (SELECT  b.id,
+                  LAST(cp.create_date) AS holding_update,
+                  'add' AS update_type
+            FROM  biblio.record_entry b
+                  JOIN asset.call_number cn ON (cn.record = b.id)
+                  JOIN asset.copy cp ON (cp.call_number = cn.id)
+            WHERE NOT cp.deleted
+                  AND b.id > 0
+            GROUP BY b.id
+              UNION
+          SELECT  b.id,
+                  LAST(cp.edit_date) AS holding_update,
+                  'delete' AS update_type
+            FROM  biblio.record_entry b
+                  JOIN asset.call_number cn ON (cn.record = b.id)
+                  JOIN asset.copy cp ON (cp.call_number = cn.id)
+            WHERE cp.deleted
+                  AND b.id > 0
+            GROUP BY b.id)x
+    ORDER BY id, holding_update;
 
 INSERT INTO vandelay.authority_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Identifier','//*[@tag="001"]', TRUE);
 
