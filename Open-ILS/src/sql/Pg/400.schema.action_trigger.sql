@@ -78,11 +78,11 @@ CREATE TABLE action_trigger.event_definition (
     id              SERIAL      PRIMARY KEY,
     active          BOOL        NOT NULL DEFAULT TRUE,
     owner           INT         NOT NULL REFERENCES actor.org_unit (id),
-    hook            INT         NOT NULL REFERENCES action_trigger.hook (key),
-    validator       INT         NOT NULL REFERENCES action_trigger.validator (module),
-    reactor         INT         NOT NULL REFERENCES action_trigger.reactor (module),
-    cleanup_success INT         REFERENCES action_trigger.cleanup (module),
-    cleanup_failure INT         REFERENCES action_trigger.cleanup (module),
+    hook            TEXT        NOT NULL REFERENCES action_trigger.hook (key),
+    validator       TEXT        NOT NULL REFERENCES action_trigger.validator (module),
+    reactor         TEXT        NOT NULL REFERENCES action_trigger.reactor (module),
+    cleanup_success TEXT        REFERENCES action_trigger.cleanup (module),
+    cleanup_failure TEXT        REFERENCES action_trigger.cleanup (module),
     delay           INTERVAL    NOT NULL DEFAULT '5 minutes',
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
