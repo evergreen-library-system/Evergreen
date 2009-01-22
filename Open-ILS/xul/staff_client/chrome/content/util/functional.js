@@ -12,7 +12,7 @@ util.functional.EXPORT_TAGS	= { ':all' : util.functional.EXPORT_OK };
 
 util.functional.filter_list = function(list,f) {
 	var new_list = [];
-	for (var i in list) {
+	for (var i = 0; i < list.length; i++) {
 		var t = f( list[i] );
 		if (t) new_list.push( list[i] );
 	}
