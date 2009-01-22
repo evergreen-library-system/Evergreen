@@ -334,6 +334,21 @@ var CIRC_MOD_MAP = {
 		maxFine					: 'overdue_mid'
 	},
 
+    'videogame' : {
+        SIPMediaType                    : '006',
+        magneticMedia                   : 'f',
+        durationRule                    : '7_days_2_renew',
+        recurringFinesRule      : '10_cent_per_day',
+        maxFine                                 : 'overdue_mid'
+    },
+    'videogamelong' : {
+        SIPMediaType                    : '006',
+        magneticMedia                   : 'f',
+        durationRule                    : '14_days_2_renew',
+        recurringFinesRule      : '10_cent_per_day',
+        maxFine                                 : 'overdue_mid'
+    },
+
 	'talking book'				: {  
 		SIPMediaType			: '006',
 		magneticMedia			: 'f',
