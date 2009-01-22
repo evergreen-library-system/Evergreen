@@ -16,9 +16,13 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 
 my ($delim, @fields) = (' \| ');
+my $set_001_003 = 0;
+my $repository_code = 'Evergreen';
 GetOptions(
 	'delimiter=s'	=> \$delim,
 	'field=s'	=> \@fields,
+    'set_001_003'   => \$set_001_003,
+    'repository_code=s'   => \$repository_code,
 );
 
 my %partmap;
@@ -58,9 +62,26 @@ while (<>) {
 		$r->delete_field($_) for ($r->field('901'));
 		$r->append_fields( $f );
 
+        if ($set_001_003) {
+            my $old_001 = $r->field('001');
+            if ($old_001) {
+                $old_001->update($partlist{id});
+            } else {
+                my $new_001 = new MARC::Field('001',$partlist{id});
+                $r->insert_fields_ordered($new_001);
+            } 
+            my $old_003 = $r->field('003');
+            if ($old_003) {
+                $old_003->update($repository_code);
+            } else {
+                my $new_003 = new MARC::Field('003',$repository_code);
+                $r->insert_fields_ordered($new_003);
+            } 
+        }
+
 		print $r->as_xml_record;
 	} otherwise {
-		warn "failed on record $., $partlist{marc}\n";
+		warn "failed on record $., $partlist{marc}, for $@\n";
 	};
 }
 
