@@ -25,6 +25,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.circ</service>
           <service>open-ils.actor</service>
           <service>open-ils.auth</service>
+          <service>open-ils.fielder</service>
           <service>open-ils.collections</service>
           <service>open-ils.reporter</service>
         </services>
