@@ -33,12 +33,15 @@
             </router>
         </routers>
 
-
         <!-- Our domain should match that of the private router -->
         <domain>private.localhost</domain>
         <username>osrf</username>
         <passwd>osrf</passwd>
         <port>5222</port>
+
+        <!-- name of the router used on our private domain.  
+        this should match one of the <name> of the private router above -->
+        <router_name>router</router_name>
 
         <logfile>/openils/var/log/osrfsys.log</logfile>
         <!--
