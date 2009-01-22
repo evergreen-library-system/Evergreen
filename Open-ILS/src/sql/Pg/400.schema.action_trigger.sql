@@ -14,7 +14,7 @@
  *
  */
 
-DROP SCHEMA action_trigger CASCADE;
+DROP SCHEMA IF EXISTS action_trigger CASCADE;
 
 BEGIN;
 
