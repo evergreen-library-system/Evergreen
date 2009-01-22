@@ -509,6 +509,8 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 				}
 			)
 		);
+        if(!patron.addresses())
+            patron.addresses([]);
 
 		/* XXX */
 		for( var f in dataFields ) {
@@ -530,6 +532,12 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 					}
 				)
 			);
+            if(!patron.addresses()) {
+                patron.addresses([]);
+                patron.billing_address(null);
+                patron.mailing_address(null);
+	            patron.ischanged(1);
+            }
 
 		} else {
 			address.isdeleted(1);
@@ -539,10 +547,10 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 	tbody.removeChild(row);
 
 	var bid = patron.billing_address();
-	bid = (typeof bid == 'object') ? bid.id() : bid;
+	bid = (bid != null && typeof bid == 'object') ? bid.id() : bid;
 
 	var mid = patron.mailing_address();
-	mid = (typeof mid == 'object') ? mid.id() : mid;
+	mid = (mid != null && typeof mid == 'object') ? mid.id() : mid;
 
 
 	/* -----------------------------------------------------------------------
