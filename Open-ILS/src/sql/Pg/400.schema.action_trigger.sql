@@ -87,7 +87,8 @@ CREATE TABLE action_trigger.event_definition (
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
     template        TEXT        NOT NULL, -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
-    CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, cleanup, delay, delay_field)
+    CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, delay, delay_field)
+);
 
 CREATE TABLE action_trigger.environment (
     id          SERIAL  PRIMARY KEY,
@@ -111,7 +112,7 @@ CREATE TABLE action_trigger.event (
     update_time     TIMESTAMPTZ,
     complete_time   TIMESTAMPTZ,
     update_process  INT,
-    state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','found','collecting','validating','reacting','cleanup','complete','error'))
+    state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','found','collecting','validating','reacting','cleanup','complete','error')),
     template_output TEXT,
     error_output    TEXT
 );
@@ -124,5 +125,5 @@ CREATE TABLE action_trigger.event_params (
     CONSTRAINT event_params_event_def_param_once UNIQUE (event_def,param)
 );
 
-COMMIT;
+--COMMIT;
 
