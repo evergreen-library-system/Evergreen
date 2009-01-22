@@ -70,11 +70,17 @@ Configure OpenSRF for the Evergreen application:
 There are a number of example OpenSRF configuration files in /openils/conf/ that
 you can use as a template for your Evergreen installation.
 
-cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 
-Note that eg_db_config.pl will set the database connection information in
-opensrf.xml for you.
+When you installed OpenSRF, you will have created four Jabber users on two
+separate domains and edited the opensrf_core.xml file accordingly. Please
+refer back to the OpenSRF README and edit the Evergreen version of the
+opensrf_core.xml file using the same Jabber users and domains as you used
+while installing and testing OpenSRF.
+
+eg_db_config.pl, described in the following section, will set the database
+connection information in opensrf.xml for you.
 
 Creating the Evergreen database:
 ===============================
