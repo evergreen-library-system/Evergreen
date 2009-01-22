@@ -174,7 +174,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION actor.usr_merge(INT, INT) IS $$
+COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
 /**
  * Merges all user date from src_usr to dest_usr.  When collisions occur, 
  * keep dest_usr's data and delete src_usr's data.
