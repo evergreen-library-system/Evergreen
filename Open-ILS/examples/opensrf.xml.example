@@ -889,6 +889,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
                 <appname>open-ils.permacrud</appname>  
+                <appname>open-ils.pcrud</appname>  
                 <appname>open-ils.fielder</appname>  
                 <appname>open-ils.vandelay</appname>  
             </activeapps>
