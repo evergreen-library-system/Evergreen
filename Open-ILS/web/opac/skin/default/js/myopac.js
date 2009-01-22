@@ -1450,12 +1450,15 @@ function myopacDrawHoldThawDateForm() {
 }
 
 function myopacApplyThawDate() {
-    var dateString = dojo.date.stamp.toISOString(dijit.byId('myopac_holds_thaw_date_input').getValue());
+    var dateString = dijit.byId('myopac_holds_thaw_date_input').getValue();
     if(dateString) {
-        dateString = holdsVerifyThawDate(dateString);
-        if(!dateString) return;
-    } else {
-        dateString = null;
+        dateString = dojo.date.stamp.toISOString(dateString);
+        if(dateString) {
+            dateString = holdsVerifyThawDate(dateString);
+            if(!dateString) return;
+        } else {
+            dateString = null;
+        }
     }
     myopacProcessHolds('freeze', dateString);
 }
