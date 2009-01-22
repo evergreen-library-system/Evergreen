@@ -14,8 +14,9 @@ prerequisites for Evergreen is to use the Makefile.install prerequisite
 installer.
 
 Issue the following commands as the root user to install prerequisites
-using the Makefile.install prerequisite installer, substituting "debian"
-or "ubuntu" for <osname> below:
+using the Makefile.install prerequisite installer, substituting
+"debian-etch", "debian-lenny", "ubuntu-hardy", or "ubuntu-intrepid"
+as matches your Linux distribution version for <osname> below:
 
 make -f Open-ILS/src/extras/Makefile.install <osname>
 
