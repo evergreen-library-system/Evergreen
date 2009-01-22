@@ -491,7 +491,7 @@ function getItemConfig() {
 
 function setMaxFineByCircLocation() {
 	var max_libs = [ 'DTRL', 'SJRLS' ];
-	var mid_libs = [ 'ARL', 'CHRL', 'ECGR', 'FRRLS', 'HCLS', 'OCRL', 'OHOOP', 'OKRL', 'PMRLS', 'PPL', 'STRL' ];
+    var mid_libs = [ 'ARL', 'CHRL', 'ECGR', 'FRRLS', 'HCLS', 'NCLS', 'OCRL', 'OHOOP', 'OKRL', 'PMRLS', 'PPL', 'STRL' ];
 
 	var cl = (volume && volume.id != -1) ? volume.owning_lib : currentLocation.id;
 	var max_fine = null;
