@@ -301,8 +301,10 @@ circ.checkin.prototype = {
 			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
 			circ.util.checkin_via_barcode(
-				ses(), { 'barcode' : barcode }, backdate, auto_print, {
-					'disable_textbox' : function() { 
+				ses(), 
+                { 
+                    'barcode' : barcode,
+ 					'disable_textbox' : function() { 
 						obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
 						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
 					},
@@ -315,7 +317,9 @@ circ.checkin.prototype = {
 						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
 						obj.checkin2(checkin,backdate);
 					}
-				}
+                }, 
+                backdate, 
+                auto_print
 			);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.exception', [E]));

@@ -1871,39 +1871,44 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 		JSAN.use('util.error'); var error = new util.error();
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		JSAN.use('util.date');
+		JSAN.use('util.date'); JSAN.use('util.functional');
 
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
 		//var params = { 'barcode' : barcode };
 		if (backdate) params.backdate = util.date.formatted_date(backdate + ' 00:00:00','%{iso8601}');
 
-		if (typeof async == 'object') {
-			try { async.disable_textbox(); }
-			catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
+		if (typeof params.disable_textbox == 'function') {
+			try { params.disable_textbox(); }
+			catch(E) { error.sdump('D_ERROR','params.disable_textbox() = ' + E); };
 		}
+
+        function checkin_callback(req) {
+            try {
+                var check = req.getResultObject();
+                var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
+                if (typeof params.checkin_result == 'function') {
+                    try { params.checkin_result(r); }
+                    catch(E) { error.sdump('D_ERROR','params.checkin_result() = ' + E); };
+                }
+				if (typeof async == 'function') async(check);
+				return check;
+            } catch(E) {
+                JSAN.use('util.error'); var error = new util.error();
+                error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['1']), E);
+                if (typeof params.enable_textbox == 'function') {
+                    try { params.enable_textbox(); }
+                    catch(E) { error.sdump('D_ERROR','params.disable_textbox() = ' + E); };
+                }
+                return null;
+            }
+        } 
+
 		var check = network.request(
 			api.CHECKIN_VIA_BARCODE.app,
 			api.CHECKIN_VIA_BARCODE.method,
-			[ session, params ],
-			async ? function(req) {
-				try {
-					var check = req.getResultObject();
-					var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
-					if (typeof async == 'object') {
-						try { async.checkin_result(r); }
-						catch(E) { error.sdump('D_ERROR','async.checkin_result() = ' + E); };
-					}
-				} catch(E) {
-					JSAN.use('util.error'); var error = new util.error();
-					error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['1']), E);
-					if (typeof async == 'object') {
-						try { async.enable_textbox(); }
-						catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
-					}
-					return null;
-				}
-			} : null,
+			[ session, util.functional.filter_object( params, function(i,o) { return typeof o != 'function'; } ) ],
+			async ? checkin_callback : null,
 			{
 				'title' : document.getElementById('circStrings').getString('staff.circ.utils.checkin.override'),
 				'overridable_events' : [
@@ -1932,16 +1937,16 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 				}
 			}
 		);
-		if (!async) {
-			return circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
+		if (! async ) {
+			return checkin_callback( { 'getResultObject' : function() { return check; } } );
 		}
 
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['2']), E);
-		if (typeof async == 'object') {
-			try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
+		if (typeof params.enable_textbox == 'function') {
+			try { params.enable_textbox(); } catch(E) { error.sdump('D_ERROR','params.disable_textbox() = ' + E); };
 		}
 		return null;
 	}
