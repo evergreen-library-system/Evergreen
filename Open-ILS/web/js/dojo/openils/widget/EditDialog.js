@@ -15,7 +15,6 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
             editPane : null, // reference to our EditPane object
 
             constructor : function() {
-                //this.inherited(arguments);
                 this.editPane = new openils.widget.EditPane();
             },
 
