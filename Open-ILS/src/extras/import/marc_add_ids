@@ -18,11 +18,13 @@ binmode(STDOUT, ':utf8');
 my ($delim, @fields) = (' \| ');
 my $set_001_003 = 0;
 my $repository_code = 'Evergreen';
+my $set_as_deleted = 0;
 GetOptions(
 	'delimiter=s'	=> \$delim,
 	'field=s'	=> \@fields,
     'set_001_003'   => \$set_001_003,
     'repository_code=s'   => \$repository_code,
+    'set_as_deleted'   => \$set_as_deleted,
 );
 
 my %partmap;
@@ -77,6 +79,14 @@ while (<>) {
                 my $new_003 = new MARC::Field('003',$repository_code);
                 $r->insert_fields_ordered($new_003);
             } 
+        }
+
+        if ($set_as_deleted) {
+            my $leader = $r->leader();
+            if (length($leader)>4) {
+                substr($leader,5,1,"d");
+                $r->leader($leader);
+            }
         }
 
 		print $r->as_xml_record;
