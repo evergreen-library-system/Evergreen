@@ -14,8 +14,8 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
         {
             editPane : null, // reference to our EditPane object
 
-            constructor : function() {
-                this.editPane = new openils.widget.EditPane();
+            constructor : function(args) {
+                this.editPane = new openils.widget.EditPane(args);
                 var self = this;
                 this.editPane.onCancel = function() { self.hide(); }
                 this.editPane.onPostApply = function() { self.hide(); }

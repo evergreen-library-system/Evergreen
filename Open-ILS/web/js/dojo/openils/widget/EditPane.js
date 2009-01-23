@@ -22,6 +22,11 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             onCancel : null, // cancel callback
             hideActionButtons : false,
 
+            constructor : function(args) {
+                for(var k in args)
+                    this[k] = args[k];
+            },
+
             /**
              * Builds a basic table of key / value pairs.  Keys are IDL display labels.
              * Values are dijit's, when values set
