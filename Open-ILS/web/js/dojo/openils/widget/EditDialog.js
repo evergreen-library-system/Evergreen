@@ -16,6 +16,9 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
 
             constructor : function() {
                 this.editPane = new openils.widget.EditPane();
+                var self = this;
+                this.editPane.onCancel = function() { self.hide(); }
+                this.editPane.onPostApply = function() { self.hide(); }
             },
 
             /**

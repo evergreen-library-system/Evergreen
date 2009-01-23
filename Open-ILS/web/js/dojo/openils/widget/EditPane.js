@@ -18,6 +18,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             fieldOrder : null, // ordered list of field names, optional.
             fieldList : [], // holds the field name + associated widget
             sortedFieldList : [], // holds the sorted IDL defs for our fields
+            onPostApply : null, // apply callback
+            onCancel : null, // cancel callback
+            hideActionButtons : false,
 
             /**
              * Builds a basic table of key / value pairs.  Keys are IDL display labels.
@@ -61,8 +64,37 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     widget.build();
                     this.fieldList.push({name:field.name, widget:widget});
                 }
-
+                if(!this.hideActionButtons)
+                    this.buildActionButtons(tbody);
+    
                 openils.Util.addCSSClass(table, 'oils-fm-edit-dialog');
+            },
+
+            buildActionButtons : function(tbody) {
+                var row = document.createElement('tr');
+                var cancelTd = document.createElement('td');
+                var applyTd = document.createElement('td');
+                row.appendChild(cancelTd);
+                row.appendChild(applyTd);
+                tbody.appendChild(row);
+
+                var self = this;
+                new dijit.form.Button({
+                    label:'Cancel', // XXX
+                    onClick : this.onCancel
+                }, cancelTd);
+
+                new dijit.form.Button({
+                    label:'Save',  // XXX
+                    onClick: function() {
+                        self.performEditAction({
+                            oncomplete:function() {
+                                if(self.onPostApply)
+                                    self.onPostApply();
+                            }
+                        });
+                    }
+                }, applyTd);
             },
 
             getFields : function() {
@@ -128,21 +160,13 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             },
 
             performEditAction : function(opts) {
-
                 var pcrud = new openils.PermaCrud();
                 var fields = this.getFields();
+                if(this.mode == 'create')
+                    this.fmObject = new fieldmapper[this.fmClass]();
                 for(var idx in fields) 
                     this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
-
-                if(opts.async) {
-                    opts.oncomplete = function(r) {
-                        pcrud.disconnect()
-                        opts.oncomplete(r);
-                    };
-                }
-
                 pcrud[this.mode](this.fmObject, opts);
-                if(!opts.async) pcrud.disconnect();
             }
         }
     );

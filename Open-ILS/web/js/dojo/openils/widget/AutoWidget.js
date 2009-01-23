@@ -112,7 +112,7 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
             this.widget.searchAttr = 'shortname';
             this.widget.labelAttr = 'shortname';
             this.widget.parentField = 'parent_ou';
-            //
+            
             // if we have a limit perm, find the relevent orgs (async)
             if(this.orgLimitPerms && this.orgLimitPerms.length > 0) {
                 this.async = true;
