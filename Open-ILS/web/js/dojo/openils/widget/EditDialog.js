@@ -1,8 +1,18 @@
+/**
+var dialog = new openils.widget.EditDialog({
+    fmObject: survey,
+    fieldOrder: ['id', 'name', 'description', 'start_date', 'end_date']
+});
+dialog.startup();
+dialog.show();
+*/
+
+
+
 if(!dojo._hasResource['openils.widget.EditDialog']) {
     dojo.provide('openils.widget.EditDialog');
     dojo.require('openils.widget.EditPane');
     dojo.require('dijit.Dialog');
-
 
     /**
      * Given a fieldmapper object, this builds a pop-up dialog used for editing the object

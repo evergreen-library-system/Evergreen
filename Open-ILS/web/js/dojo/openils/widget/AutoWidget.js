@@ -1,136 +1,90 @@
 if(!dojo._hasResource['openils.widget.AutoWidget']) {
     dojo.provide('openils.widget.AutoWidget');
-    dojo.require('openils.Util');
-    dojo.require('openils.User');
+    dojo.require('dojo.data.ItemFileWriteStore');
+    dojo.require('fieldmapper.dojoData');
     dojo.require('fieldmapper.IDL');
 
+    // common superclass to auto-generated UIs
     dojo.declare('openils.widget.AutoWidget', null, {
 
-        async : false,
+        fieldOrder : null, // ordered list of field names, optional.
+        sortedFieldList : [], // holds the sorted IDL defs for our fields
+        fmObject : null, // single fielmapper object
+        fmObjectList : null, // list of fieldmapper objects
+        fmClass : '', // our fieldmapper class
 
-        /**
-         * args:
-         *  idlField -- Field description object from fieldmapper.IDL.fmclasses
-         *  fmObject -- If available, the object being edited.  This will be used 
-         *      to set the value of the widget.
-         *  fmClass -- Class name (not required if idlField or fmObject is set)
-         *  fmField -- Field name (not required if idlField)
-         *  parentNode -- If defined, the widget will be appended to this DOM node
-         *  dijitArgs -- Optional parameters object, passed directly to the dojo widget
-         *  orgLimitPerms -- If this field defines a set of org units and an orgLimitPerms 
-         *      is defined, the code will limit the org units in the set to those
-         *      allowed by the permission
-         */
-        constructor : function(args) {
-            for(var k in args)
-                this[k] = args[k];
+        // locates the relevent IDL info
+        initAutoEnv : function() {
+            if(this.fmObjectList && this.fmObjectList.length)
+                this.fmClass = this.fmObjectList[0].classname;
+            if(this.fmObject)
+                this.fmClass = this.fmObject.classname;
+            this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            this.buildSortedFieldList();
+        },
 
-            // find the field description in the IDL if not provided
-            if(!this.idlField) {
+        buildAutoStore : function() {
+            var list = [];
+            if(this.fmObjectList) {
+                list = this.fmObjectList;
+            } else {
                 if(this.fmObject)
-                    this.fmClass = this.fmObject.classname;
-                var fields = fieldmapper.IDL.fmclasses[this.fmClass][fields];
-                for(var f in fields) 
-                    if(fields[f].name == this.fmField)
-                        this.idlField = fields[f];
+                    list = [this.fmObject];
             }
+            return new dojo.data.ItemFileWriteStore(
+                {data:fieldmapper[this.fmClass].toStoreData(list)});
         },
 
-        /**
-         * Turn the value from the dojo widget into a value oils understands
-         */
-        getFormattedValue : function() {
-            var value = this.widget.attr('value');
-            switch(this.idlField.datatype) {
-                case 'bool':
-                    return (value) ? 't' : 'f'
-                case 'timestamp':
-                    return dojo.date.stamp.toISOString(value);
-                default:
-                    return value;
-            }
-        },
+        buildSortedFieldList : function() {
+            this.sortedFieldList = [];
 
-        build : function(onload) {
-            this.onload = onload;
-            this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
+            if(this.fieldOrder) {
 
-            switch(this.idlField.datatype) {
+                for(var idx in this.fieldOrder) {
+                    var name = this.fieldOrder[idx];
+                    for(var idx2 in this.fmIDL.fields) {
+                        if(this.fmIDL.fields[idx2].name == name) {
+                            this.sortedFieldList.push(this.fmIDL.fields[idx2]);
+                            break;
+                        }
+                    }
+                }
                 
-                case 'id':
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-                    this.widget.setDisabled(true); // never allow editing of IDs
-                    break;
+                // if the user-defined order does not list all fields, 
+                // shove the extras on the end.
+                var anonFields = [];
+                for(var idx in this.fmIDL.fields)  {
+                    var name = this.fmIDL.fields[idx].name;
+                    if(this.fieldOrder.indexOf(name) < 0) {
+                        anonFields.push(this.fmIDL.fields[idx]);
+                    }
+                }
 
-                case 'org_unit':
-                    this._buildOrgSelector();
-                    break;
-
-                case 'money':
-                    dojo.require('dijit.form.CurrencyTextBox');
-                    this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
-                    break;
-
-                case 'timestamp':
-                    dojo.require('dijit.form.DateTextBox');
-                    dojo.require('dojo.date.stamp');
-                    this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
-                    if(this.widgetValue != null) 
-                        this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
-                    break;
-
-                case 'bool':
-                    dojo.require('dijit.form.CheckBox');
-                    this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
-                    this.widgetValue = openils.Util.isTrue(this.widgetValue);
-                    break;
-
-                default:
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-            }
-
-            if(!this.async) this._widgetLoaded();
-            return this.widget;
-        },
-
-        /**
-         * For widgets that run asynchronously, provide a callback for finishing up
-         */
-        _widgetLoaded : function(value) {
-            if(this.fmObject) 
-                this.widget.attr('value', this.widgetValue);
-            if(this.onload)
-                this.onload(this.widget, self);
-        },
-
-        _buildOrgSelector : function() {
-            dojo.require('fieldmapper.OrgUtils');
-            dojo.require('openils.widget.FilteringTreeSelect');
-            this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
-            this.widget.searchAttr = 'shortname';
-            this.widget.labelAttr = 'shortname';
-            this.widget.parentField = 'parent_ou';
-            
-            // if we have a limit perm, find the relevent orgs (async)
-            if(this.orgLimitPerms && this.orgLimitPerms.length > 0) {
-                this.async = true;
-                var user = new openils.User();
-                var self = this;
-                user.getPermOrgList(this.orgLimitPerms, 
-                    function(orgList) {
-                        self.widget.tree = orgList;
-                        self.widget.startup();
-                        self._widgetLoaded();
+                anonFields = anonFields.sort(
+                    function(a, b) {
+                        if(a.label > b.label) return 1;
+                        if(a.label < b.label) return -1;
+                        return 0;
                     }
                 );
 
+                this.sortedFieldList = this.sortedFieldList.concat(anonFields);
+
             } else {
-                this.widget.tree = fieldmapper.aou.globalOrgTree;
-                this.widget.startup();
-            }
-        }
+                // no sort order defined, sort all fields on display label
+
+                for(var f in this.fmIDL.fields) 
+                    this.sortedFieldList.push(this.fmIDL.fields[f]);
+                this.sortedFieldList = this.sortedFieldList.sort(
+                    // by default, sort on label
+                    function(a, b) {
+                        if(a.label > b.label) return 1;
+                        if(a.label < b.label) return -1;
+                        return 0;
+                    }
+                );
+            } 
+        },
     });
 }
 

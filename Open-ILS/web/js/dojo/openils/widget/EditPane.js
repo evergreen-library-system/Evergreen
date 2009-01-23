@@ -1,23 +1,18 @@
 if(!dojo._hasResource['openils.widget.EditPane']) {
     dojo.provide('openils.widget.EditPane');
     dojo.require('openils.widget.AutoWidget');
+    dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.Util');
-    dojo.require('openils.User');
-    dojo.require('fieldmapper.IDL');
     dojo.require('openils.PermaCrud');
 
     dojo.declare(
         'openils.widget.EditPane',
-        [dijit.layout.ContentPane],
+        [dijit.layout.ContentPane, openils.widget.AutoWidget],
         {
-            fmClass : '',
-            fmObject : null,
             mode : 'update',
-            fieldOrder : null, // ordered list of field names, optional.
             fieldList : [], // holds the field name + associated widget
-            sortedFieldList : [], // holds the sorted IDL defs for our fields
             onPostApply : null, // apply callback
             onCancel : null, // cancel callback
             hideActionButtons : false,
@@ -33,8 +28,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
              */
             startup : function() {
                 this.inherited(arguments);
-                this.fmClass = (this.fmObject) ? this.fmObject.classname : this.fmClass;
-                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+                this.initAutoEnv();
 
                 var table = document.createElement('table');
                 var tbody = document.createElement('tbody');
@@ -44,8 +38,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 this.limitPerms = [];
                 if(this.fmIDL.permacrud && this.fmIDL.permacrud[this.mode])
                     this.limitPerms = this.fmIDL.permacrud[this.mode].perms;
-
-                this._buildSortedFieldList()
 
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
@@ -60,7 +52,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     row.appendChild(valTd);
                     tbody.appendChild(row);
 
-                    var widget = new openils.widget.AutoWidget({
+                    var widget = new openils.widget.AutoFieldWidget({
                         idlField : field, 
                         fmObject : this.fmObject,
                         parentNode : valTd,
@@ -111,57 +103,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     if(field == this.fieldList[i].name)
                         return this.fieldList[i].widget.getFormattedValue();
                 }
-            },
-
-            _buildSortedFieldList : function() {
-                this.sortedFieldList = [];
-
-                if(this.fieldOrder) {
-
-                    for(var idx in this.fieldOrder) {
-                        var name = this.fieldOrder[idx];
-                        for(var idx2 in this.fmIDL.fields) {
-                            if(this.fmIDL.fields[idx2].name == name) {
-                                this.sortedFieldList.push(this.fmIDL.fields[idx2]);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // if the user-defined order does not list all fields, 
-                    // shove the extras on the end.
-                    var anonFields = [];
-                    for(var idx in this.fmIDL.fields)  {
-                        var name = this.fmIDL.fields[idx].name;
-                        if(this.fieldOrder.indexOf(name) < 0) {
-                            anonFields.push(this.fmIDL.fields[idx]);
-                        }
-                    }
-
-                    anonFields = anonFields.sort(
-                        function(a, b) {
-                            if(a.label > b.label) return 1;
-                            if(a.label < b.label) return -1;
-                            return 0;
-                        }
-                    );
-
-                    this.sortedFieldList = this.sortedFieldList.concat(anonFields);
-
-                } else {
-                    // no sort order defined, sort all fields on display label
-
-                    for(var f in this.fmIDL.fields) 
-                        this.sortedFieldList.push(this.fmIDL.fields[f]);
-                    this.sortedFieldList = this.sortedFieldList.sort(
-                        // by default, sort on label
-                        function(a, b) {
-                            if(a.label > b.label) return 1;
-                            if(a.label < b.label) return -1;
-                            return 0;
-                        }
-                    );
-                } 
             },
 
             performEditAction : function(opts) {
