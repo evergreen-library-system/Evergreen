@@ -5,7 +5,7 @@ use base qw/OpenSRF::Application/;
 
 sub ils_version {
     # version format is "x-y-z-p", for example "1-2-1-0" for Evergreen 1.2.1.0
-    return "1-4-0";
+    return "1-4-0-1";
 }
 
 __PACKAGE__->register_method(
