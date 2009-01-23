@@ -1,71 +1,72 @@
 /* EXAMPLES:
 
-<div dojoType="openils.widget.FilteringTreeSelect" tree="orgTree" parentField="parent_ou" searchAttr="shortname"/>
-<div dojoType="openils.widget.FilteringTreeSelect" tree="grpTree"/>
+<input jsId='ftree' dojoType="openils.widget.FilteringTreeSelect" searchAttr='shortname' labelAttr='shortname' tree='myTree'/>
 
-The tree attribute is expected to be a tree-shaped pile of OpenSRF objects.
+--- OR --
+
+var tree = new openils.widget.FilteringTreeSelect(null, parentDiv);
+tree.searchAttr = 'shortname';
+tree.labelAttr = 'shortname';
+tree.parentField = 'parent_ou';
+tree1.tree = fieldmapper.aou.globalOrgTree;
+tree1.startup();
 
 */
 
 if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
     dojo.provide("openils.widget.FilteringTreeSelect");
     dojo.require("dijit.form.FilteringSelect");
-    dojo.require('dojo.data.ItemFileReadStore');
-    dojo.require('openils.Util');
-    dojo.require("dojox.jsonPath");
 
     dojo.declare(
-        "openils.widget.FilteringTreeSelect", [dijit.form.ComboBox], 
-        {
+        "openils.widget.FilteringTreeSelect", [dijit.form.FilteringSelect], {
 
-            defaultPad : 6,
-            childField : 'children',
+            defaultPad : 10,
             parentField : 'parent',
-            valueField : '',
-            tree : "",
-            options : [],
-            values : [],
+            labelAttr : 'name',
+            childField : 'children',
+            tree : null,
 
-            startup : function () {
-                this.labelAttr = '_label'; // force it
-                this.labelType = 'html'; // force it
-
-                this._tree = (typeof this.tree == 'string') ? 
+            startup : function() {
+                this.tree = (typeof this.tree == 'string') ? 
                         dojox.jsonPath.query(window, '$.' + this.tree, {evalType:"RESULT"}) : this.tree;
-                if (!dojo.isArray(this._tree)) this._tree = [ this._tree ];
-
-                this._datalist = [];
-                if (!this.valueField) this.valueField = this._tree[0].Identifier;
-                if (!this.searchAttr) this.searchAttr = this.valueField;
-
-                var self = this;
-                this._tree.forEach( function (node) { self._add_items( node, 0 ); } );
-
-                this.store = new dojo.data.ItemFileReadStore({
-                    data : {
-                        identifier : this.valueField,
-                        label : this.labelAttr,
-                        items : this._datalist
-                    }
-                });
-
+                if(!this.tree) {
+                    console.log("openils.widget.FilteringTreeSelect: Tree needed!");
+                    return;
+                }
+                var list = this._makeNodeList(this.tree);
+                this.store = new dojo.data.ItemFileReadStore(
+                    {data:fieldmapper[list[0].classname].toStoreData(list)});
                 this.inherited(arguments);
             },
 
-            _add_items : function ( node, depth ) {
-                var lpad = this.defaultPad * depth++;
+            // Compile the tree down to a dept-first list of nodes
+            _makeNodeList : function(node, list) {
+                if(!list) list = [];
+                list.push(node);
+                for(var i in node[this.childField]()) 
+                    this._makeNodeList(node[this.childField]()[i], list);
+                return list;
+            },
 
-                var data = node.toStoreItem();
-                data._label = '<div style="padding-left:'+lpad+'px;">' + node[this.searchAttr]() + '</div>';
+            // For each item, find the depth at display time by searching up the tree.
+            _getMenuLabelFromItem : function(item) {
+                var pad = -this.defaultPad;
+                var self = this;
 
-                this._datalist.push( data );
-
-                var kids = node[this.childField]();
-                for (var j in kids) {
-                    this._add_items( kids[j], depth );
+                function processItem(list) {
+                    if(!list.length) return;
+                    var pitem = list[0];
+                    pad += self.defaultPad;
+                    var parentId = self.store.getValue(pitem, self.parentField);
+                    self.store.fetch({onComplete:processItem, query:{id:''+parentId}});
                 }
+                processItem([item]);
 
-                return null;
+                return {
+                    html: true,
+                    label: '<div style="padding-left:'+pad+'px;">' +
+                        this.store.getValue(item, this.labelAttr) + '</div>'
+                }
             }
         }
     );
