@@ -29,7 +29,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(!this.idlField) {
                 if(this.fmObject)
                     this.fmClass = this.fmObject.classname;
-                var fields = fieldmapper.IDL.fmclasses[this.fmClass][fields];
+                var fields = fieldmapper.IDL.fmclasses[this.fmClass].fields;
                 for(var f in fields) 
                     if(fields[f].name == this.fmField)
                         this.idlField = fields[f];
@@ -50,17 +50,35 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     return value;
             }
         },
+        
+        getDisplayString : function() {
+            var value = this.widgetValue;
+            switch(this.idlField.datatype) {
+                case 'bool':
+                    return (value) ? 'True' : 'False'; // XXX i18n!
+                case 'timestamp':
+                    dojo.require('dojo.date.locale');
+                    dojo.require('dojo.date.stamp');
+                    var date = dojo.date.stamp.fromISOString(value);
+                    return dojo.date.locale.format(date, {formatLength:'short'});
+                case 'org_unit':
+                    return fieldmapper.aou.findOrgUnit(value).shortname();
+                default:
+                    return value;
+            }
+        },
 
         build : function(onload) {
             this.onload = onload;
-            this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
+            if(this.widgetValue == null)
+                this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
             switch(this.idlField.datatype) {
                 
                 case 'id':
                     dojo.require('dijit.form.TextBox');
                     this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-                    this.widget.setDisabled(true); // never allow editing of IDs
+                    this.widget.attr('disabled', true); // never allow editing of IDs
                     break;
 
                 case 'org_unit':
@@ -99,7 +117,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          * For widgets that run asynchronously, provide a callback for finishing up
          */
         _widgetLoaded : function(value) {
-            if(this.fmObject) 
+            if(this.widgetValue != null) 
                 this.widget.attr('value', this.widgetValue);
             if(this.onload)
                 this.onload(this.widget, self);

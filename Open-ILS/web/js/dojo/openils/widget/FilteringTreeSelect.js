@@ -42,7 +42,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 this.inherited(arguments);
             },
 
-            // Compile the tree down to a dept-first list of nodes
+            // Compile the tree down to a depth-first list of nodes
             _makeNodeList : function(node) {
                 this.dataList.push(node);
                 for(var i in node[this.childField]()) 
