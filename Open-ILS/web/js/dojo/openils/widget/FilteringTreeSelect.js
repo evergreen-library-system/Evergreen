@@ -25,6 +25,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             labelAttr : 'name',
             childField : 'children',
             tree : null,
+            dataList : [],
 
             startup : function() {
                 this.tree = (typeof this.tree == 'string') ? 
@@ -33,19 +34,19 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                     console.log("openils.widget.FilteringTreeSelect: Tree needed!");
                     return;
                 }
-                var list = this._makeNodeList(this.tree);
+                if(!dojo.isArray(this.tree)) this.tree = [this.tree];
+                var self = this;
+                this.tree.forEach(function(node) { self._makeNodeList(node); });
                 this.store = new dojo.data.ItemFileReadStore(
-                    {data:fieldmapper[list[0].classname].toStoreData(list)});
+                    {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
                 this.inherited(arguments);
             },
 
             // Compile the tree down to a dept-first list of nodes
-            _makeNodeList : function(node, list) {
-                if(!list) list = [];
-                list.push(node);
+            _makeNodeList : function(node) {
+                this.dataList.push(node);
                 for(var i in node[this.childField]()) 
-                    this._makeNodeList(node[this.childField]()[i], list);
-                return list;
+                    this._makeNodeList(node[this.childField]()[i]);
             },
 
             // For each item, find the depth at display time by searching up the tree.
