@@ -47,8 +47,8 @@ my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';p
 
 my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
-my $SQL = 'SELECT id FROM biblio.record_entry';
-$SQL .= " WHERE edit_date > '$after'" if ($after);
+my $SQL = 'SELECT id FROM biblio.record_entry WHERE id > 0';
+$SQL .= " AND edit_date > '$after'" if ($after);
 
 my $ids = $dbh->selectcol_arrayref($SQL);
 
