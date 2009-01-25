@@ -445,11 +445,11 @@ OpenILS.data.prototype = {
 					if (classname == 'aou' || classname == 'my_aou')
 						obj.error.sdump_levels.D_SES_RESULT = false;
 					var robj = obj.network.request( app, method, params);
-					if (!robj || robj.ilsevent) {
+					if (robj != null && typeof robj.ilsevent != 'undefined') {
 						obj.error.standard_unexpected_error_alert('The staff client failed to retrieve expected data from this call, "' + method + '"',robj);
 						throw(robj);
 					}
-					obj.list[classname] = robj;
+					obj.list[classname] = robj == null ? [] : robj;
 					obj.error.sdump_levels.D_SES_RESULT = level;
 					convert();
 					obj.data_progress('Retrieved list for ' + classname + ' objects. ');
