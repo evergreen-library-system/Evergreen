@@ -89,6 +89,7 @@ CREATE TABLE action_trigger.event_definition (
     template        TEXT        NOT NULL, -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
     CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, delay, delay_field)
 );
+);
 
 CREATE TABLE action_trigger.environment (
     id          SERIAL  PRIMARY KEY,

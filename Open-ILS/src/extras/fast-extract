@@ -18,11 +18,12 @@ binmode(STDOUT, ':utf8');
 
 $| = 1;
 
-my ($config, $after) = ('SYSCONFDIR/opensrf_core.xml');
+my ($config, $delim, $after) = ('SYSCONFDIR/opensrf_core.xml', ' | ');
 
 GetOptions(
 	"after=s"	=> \$after,
 	"boostrap=s"	=> \$config,
+	"delimiter=s"	=> \$delim,
 );
 
 OpenSRF::System->bootstrap_client( config_file => $config );
@@ -47,13 +48,13 @@ my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';p
 my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
 my $SQL = 'SELECT id FROM biblio.record_entry';
-$sql .= " WHERE edit_date > '$after'" if ($after);
+$SQL .= " WHERE edit_date > '$after'" if ($after);
 
 warn "Initial selection SQL: $SQL\n";
 
 my $ids = $dbh->selectcol_arrayref($SQL);
 
-my $sql = <<'SQL';
+$SQL = <<'SQL';
 SELECT  id,
         tcn_source,
         tcn_value,
@@ -66,6 +67,6 @@ warn "Record retrieval SQL: $SQL\n";
 
 for my $id ( @$ids ) {
     my $row = $dbh->selectrow_hashref( $SQL, {}, $id );
-    print "$$row{id} | $$row{tnc_source} | $$row{tcn_value} | $$row{marc}\n";
+    print "$$row{id}$delim$$row{tnc_source}$delim$$row{tcn_value}$delim$$row{marc}\n";
 }
 
