@@ -173,7 +173,7 @@ GetOptions("create-schema" => \$cschema,
 );
 
 if (grep(/^all$/, @services)) {
-	@services = qw/reporter open-ils.cstore open-ils.storage open-ils.reporter-store/;
+	@services = qw/reporter open-ils.cstore open-ils.pcrud open-ils.storage open-ils.reporter-store/;
 }
 
 my $eg_config = File::Spec->catfile($script_dir, '../extras/eg_config');
@@ -263,6 +263,7 @@ SERVICE OPTIONS
         Specify "all" or one or more of the following services to update:
             * reporter
             * open-ils.cstore
+            * open-ils.pcrud
             * open-ils.storage
             * open-ils.reporter-store
     
