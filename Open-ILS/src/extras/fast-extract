@@ -50,8 +50,6 @@ my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 =>
 my $SQL = 'SELECT id FROM biblio.record_entry';
 $SQL .= " WHERE edit_date > '$after'" if ($after);
 
-warn "Initial selection SQL: $SQL\n";
-
 my $ids = $dbh->selectcol_arrayref($SQL);
 
 $SQL = <<'SQL';
@@ -62,8 +60,6 @@ SELECT  id,
   FROM  biblio.record_entry
   WHERE id = ?
 SQL
-
-warn "Record retrieval SQL: $SQL\n";
 
 for my $id ( @$ids ) {
     my $row = $dbh->selectrow_hashref( $SQL, {}, $id );
