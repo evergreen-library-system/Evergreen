@@ -15,11 +15,15 @@ MARC::Charset->ignore_errors(1);
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 
+$| = 1;
+
 my ($delim, @fields) = (' \| ');
+my $quiet = 0;
 my $set_001_003 = 0;
 my $repository_code = 'Evergreen';
 my $set_as_deleted = 0;
 GetOptions(
+	'quiet'	=> \$quiet,
 	'delimiter=s'	=> \$delim,
 	'field=s'	=> \@fields,
     'set_001_003'   => \$set_001_003,
@@ -51,6 +55,8 @@ while (<>) {
 	}
 
 	next unless ($partlist{marc});
+    next unless ($partlist{id} =~ /^\d+$/);
+    $partlist{marc} =~ s/<(\/?)marc:/<$1/go;
 
 	try {
 		my $r = MARC::Record->new_from_xml($partlist{marc});
@@ -89,9 +95,14 @@ while (<>) {
             }
         }
 
-		print $r->as_xml_record;
+		my $x = $r->as_xml_record;
+        $x =~ s/\n//gso;
+        print $x."\n";
+        $count++;
+        print STDERR "\r$count" unless ($quiet || $count % 100);
+
 	} otherwise {
-		warn "failed on record $., $partlist{marc}, for $@\n";
+		warn "failed on record $., $partlist{marc}, for $@\n" if (!$quiet);
 	};
 }
 
