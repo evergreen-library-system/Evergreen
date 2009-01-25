@@ -38,7 +38,7 @@ for (@fields) {
 	$partcount++;
 }
 
-my $count = 0
+my $count = 0;
 while (<>) {
 	chomp;
 	my @values = split $delim;

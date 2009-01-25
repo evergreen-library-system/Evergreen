@@ -13,7 +13,7 @@ my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/long_overdue-LOCK";
 my $age = shift;
 
-$age = '180 days' if (!defined($age) or $age == 0);
+$age = '180 days' if (!defined($age));
  
 if (-e $lockfile) {
         open(F,$lockfile);
