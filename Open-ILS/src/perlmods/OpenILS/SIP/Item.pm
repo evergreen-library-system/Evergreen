@@ -146,7 +146,9 @@ sub id {
 
 sub title_id {
     my $self = shift;
-    return ($self->{mods}) ? $self->{mods}->title : $self->{copy}->dummy_title;
+    my $t =  ($self->{mods}) ? $self->{mods}->title : $self->{copy}->dummy_title;
+    $t =~ s/\pM+//og;
+    return $t;
 }
 
 sub permanent_location {
