@@ -178,14 +178,33 @@
 
 			// ----
 
+            JSAN.use('util.error'); 
+            g.error = new util.error();
 			JSAN.use('OpenILS.data');
 			g.data = new OpenILS.data()
-			g.data.on_error = xulG.auth.logoff;
 
 			g.data.session = {};
 			g.data.session.key = xulG.auth.session.key;
 			g.data.session.authtime = xulG.auth.session.authtime;
 			g.data.stash('session');
+            g.data.on_error = function(E) {
+                try {
+                    g.error.standard_unexpected_error_alert('Error during login sequence.  The client will logout after this dialog.',E);
+                    setTimeout(
+                        function() {
+                            try {
+                                xulG.auth.logoff();
+                            } catch(E3) {
+                                alert(E3);
+                            }
+                        }, 0
+                    );
+                } catch(E2) {
+                    alert(E2);
+                    try { xulG.auth.logoff(); } catch(E4) { alert(E4); };
+                }
+                return false;
+            }
 			g.data.on_complete = function () {
 
                 try {

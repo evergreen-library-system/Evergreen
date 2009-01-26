@@ -778,12 +778,12 @@ OpenILS.data.prototype = {
 		this.exec.on_error = function(E) { 
 		
 			if (typeof obj.on_error == 'function') {
-				obj.on_error();
+				return obj.on_error(E); /* false breaks chain */
 			} else {
 				alert('oops: ' + E ); 
+			    return false; /* break chain */
 			}
 
-			return false; /* break chain */
 		}
 
 		this.exec.chain( this.chain );
