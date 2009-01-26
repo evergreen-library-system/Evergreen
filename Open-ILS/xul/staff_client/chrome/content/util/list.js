@@ -74,7 +74,7 @@ util.list.prototype = {
 						}
 
 						if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
-							var r = window.confirm('WARNING: Only ' + obj.row_count.fleshed + ' out of ' + obj.row_count.total + ' rows in this list have been retrieved for immediate viewing.  Sorting this list requires that all these rows be retrieved, and this may take some time and lag the staff client.  Would you like to proceed?');
+							var r = window.confirm(document.getElementById('offlineStrings').getFormattedString('list.row_fetch_warning',[obj.row_count.fleshed,obj.row_count.total]));
 
 							if (r) {
 								setTimeout( do_it, 0 );
@@ -94,13 +94,20 @@ util.list.prototype = {
 			this.node.appendChild(treechildren);
 			this.treechildren = treechildren;
 		}
-		if (typeof params.on_select == 'function') {
-			this.node.addEventListener(
-				'select',
-				params.on_select,
-				false
-			);
-		}
+        this.node.addEventListener(
+            'select',
+            function(ev) {
+                if (typeof params.on_select == 'function') {
+                    params.on_select(ev);
+                }
+                var x = document.getElementById(obj.node.id + '_clipfield');
+                if (x) {
+                    var sel = obj.retrieve_selection();
+                    x.setAttribute('disabled', sel.length == 0);
+                }
+            },
+            false
+        );
 		if (typeof params.on_click == 'function') {
 			this.node.addEventListener(
 				'click',
@@ -203,7 +210,7 @@ util.list.prototype = {
 			JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
 			file.set_object(my_cols);
 			file.close();
-			alert('Columns saved.');
+			alert(document.getElementById('offlineStrings').getString('list.columns_saved'));
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('_save_columns_tree',E);
 		}
@@ -658,7 +665,7 @@ util.list.prototype = {
 			}
 			*/
 			for (var i = 0; i < obj.columns.length; i++) {
-			var treecell = document.createElement('treecell'); treecell.setAttribute('label','Retrieving...');
+			var treecell = document.createElement('treecell'); treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
 			treerow.appendChild(treecell);
 			}
 			/*
@@ -1105,14 +1112,14 @@ util.list.prototype = {
         if (params.no_full_retrieve) {
             params.data = obj.dump_csv( params );
             params.not_json = true;
-            if (!params.title) params.title = 'Save List CSV As';
+            if (!params.title) params.title = document.getElementById('offlineStrings').getString('list.save_csv_as');
             f.export_file( params );
         } else {
             obj.wrap_in_full_retrieve( 
                 function() { 
                     params.data = obj.dump_csv( params );
                     params.not_json = true;
-                    if (!params.title) params.title = 'Save List CSV As';
+                    if (!params.title) params.title = document.getElementById('offlineStrings').getString('list.save_csv_as');
                     f.export_file( params );
                 }
             );
@@ -1188,7 +1195,7 @@ util.list.prototype = {
 		return dump;
 	},
 
-	'clipboard' : function() {
+	'clipboard' : function(params) {
 		try {
 			var obj = this;
 			var dump = obj.dump_selected_with_keys({'skip_hidden_columns':true,'labels_instead_of_ids':true});
@@ -1296,7 +1303,142 @@ util.list.prototype = {
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('pre sorting', E);
 		}
-	}
+	},
+
+	'render_list_actions' : function(params) {
+		var obj = this;
+		switch(this.node.nodeName) {
+			case 'tree' : return this._render_list_actions_for_tree(params); break;
+			default: throw('NYI: Need ._render_list_actions() for ' + this.node.nodeName); break;
+		}
+	},
+
+    '_render_list_actions_for_tree' : function(params) {
+        var obj = this;
+        try {
+            var btn = document.createElement('button');
+            btn.setAttribute('id',obj.node.id + '_list_actions');
+            btn.setAttribute('type','menu');
+            btn.setAttribute('allowevents','true');
+            //btn.setAttribute('oncommand','this.firstChild.showPopup();');
+            btn.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.menu.label'));
+            btn.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.menu.accesskey'));
+            var mp = document.createElement('menupopup');
+            btn.appendChild(mp);
+            var mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_clipfield');
+            mi.setAttribute('disabled','true');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.field_to_clipboard.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.field_to_clipboard.accesskey'));
+            mp.appendChild(mi);
+            mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_csv_to_clipboard');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.csv_to_clipboard.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.csv_to_clipboard.accesskey'));
+            mp.appendChild(mi);
+            mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_csv_to_printer');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.csv_to_printer.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.csv_to_printer.accesskey'));
+            mp.appendChild(mi);
+            mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_csv_to_file');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.csv_to_file.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.csv_to_file.accesskey'));
+            mp.appendChild(mi);
+            mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_save_columns');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.save_column_configuration.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.save_column_configuration.accesskey'));
+            mp.appendChild(mi);
+            return btn;
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('rendering list actions',E);
+        }
+    },
+
+	'set_list_actions' : function(params) {
+		var obj = this;
+		switch(this.node.nodeName) {
+			case 'tree' : return this._set_list_actions_for_tree(params); break;
+			default: throw('NYI: Need ._set_list_actions() for ' + this.node.nodeName); break;
+		}
+	},
+
+    '_set_list_actions_for_tree' : function(params) {
+        // This should be called after the button element from render_list_actions has been appended to the DOM
+        var obj = this;
+        try {
+            var x = document.getElementById(obj.node.id + '_clipfield');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.clipboard(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+            x = document.getElementById(obj.node.id + '_csv_to_clipboard');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.dump_csv_to_clipboard(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+            x = document.getElementById(obj.node.id + '_csv_to_printer');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.dump_csv_to_printer(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+            x = document.getElementById(obj.node.id + '_csv_to_file');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.dump_csv_to_file(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+            x = document.getElementById(obj.node.id + '_save_columns');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.save_columns(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('setting list actions',E);
+        }
+    }
 
 }
 dump('exiting util.list.js\n');
