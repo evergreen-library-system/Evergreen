@@ -360,7 +360,7 @@ main.menu.prototype = {
 			'cmd_standalone' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_STANDALONE),{},{});
+					xulG.window.open(obj.url_prefix(urls.XUL_STANDALONE),'Offline/Standalone Mode','chrome,resizable');
 				}
 			],
 
@@ -623,7 +623,7 @@ main.menu.prototype = {
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name' : offlineStrings.getString('menu.cmd_console.tab')},{});
+					xulG.window.open(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),offlineStrings.getString('menu.cmd_console.tab'),'chrome,resizable');
 				}
 			],
 			'cmd_shell' : [
@@ -648,7 +648,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD),'survey_wizard','chrome'); 
+					xulG.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD),'survey_wizard','chrome,resizable'); 
 				}
 			],
 			'cmd_public_opac' : [
@@ -690,19 +690,19 @@ main.menu.prototype = {
 			'cmd_extension_manager' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name' : offlineStrings.getString('menu.cmd_extension_manager.tab')},{});
+					xulG.window.open('chrome://mozapps/content/extensions/extensions.xul?type=extensions',offlineStrings.getString('menu.cmd_extension_manager.tab'),'chrome,resizable');
 				}
 			],
 			'cmd_theme_manager' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name' : offlineStrings.getString('menu.cmd_theme_manager.tab')},{});
+					xulG.window.open('chrome://mozapps/content/extensions/extensions.xul?type=themes',offlineStrings.getString('menu.cmd_theme_manager.tab'),'chrome,resizable');
 				}
 			],
 			'cmd_about_config' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://global/content/config.xul',{'tab_name' : 'about:config'},{});
+					xulG.window.open('chrome://global/content/config.xul','about:config','chrome,resizable');
 				}
 			],
 			'cmd_shutdown' : [
