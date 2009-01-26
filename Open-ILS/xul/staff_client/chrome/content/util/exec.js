@@ -59,6 +59,7 @@ util.exec.prototype = {
 								}
 							} else {
 								dump('chain broken\n');
+                                return;
 							}
 						}
 					}
