@@ -233,6 +233,41 @@ sub xact_rollback {
 }
 
 
+# -----------------------------------------------------------------------------
+# Savepoint functions.  If no savepoint name is provided, the same name is used 
+# for each successive savepoint, in which case only the last savepoint set can 
+# be released or rolled back.
+# -----------------------------------------------------------------------------
+sub set_savepoint {
+    my $self = shift;
+    my $name = shift || 'savepoint';
+    return unless $self->{session} and $self->{xact_id};
+	$self->log(I, "setting savepoint '$name'");
+	my $stat = $self->request($self->app.".savepoint.set")
+	    or $self->log(E, "error setting savepoint '$name'");
+    return $stat;
+}
+
+sub release_savepoint {
+    my $self = shift;
+    my $name = shift || 'savepoint';
+    return unless $self->{session} and $self->{xact_id};
+	$self->log(I, "releasing savepoint '$name'");
+	my $stat = $self->request($self->app.".savepoint.release")
+        or $self->log(E, "error releasing savepoint '$name'");
+    return $stat;
+}
+
+sub rollback_savepoint {
+    my $self = shift;
+    my $name = shift || 'savepoint';
+    return unless $self->{session} and $self->{xact_id};
+	$self->log(I, "rollback savepoint '$name'");
+	my $stat = $self->request($self->app.".savepoint.rollback")
+        or $self->log(E, "error rolling back savepoint '$name'");
+    return $stat;
+}
+
 
 # -----------------------------------------------------------------------------
 # Rolls back the transaction and disconnects
