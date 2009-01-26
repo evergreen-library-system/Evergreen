@@ -8,24 +8,19 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
-<!--
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/menu_frame.css" type="text/css"?>
--->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
-<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="chrome://open_ils_staff_client/content/main/menu_frame_overlay.xul"?>
-<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
-<!--
 <?xul-overlay href="/xul/server/main/menu_frame_overlay.xul"?>
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
--->
 
 <window id="menu_frame_win"
 	onload="try { my_init(); } catch(E) { alert(E); }"
@@ -39,8 +34,6 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="JSAN.js"/>
-	<script type="text/javascript" src="constants.js"/>
-	<script type="text/javascript" src="../OpenILS/util/fmall.js"/>
 	<script type="text/javascript">
 	<![CDATA[
 		function my_init() {
@@ -48,10 +41,10 @@
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				if (typeof JSAN == 'undefined') { throw(document.getElementById('offlineStrings').getString('common.jsan.missing')); }
 				JSAN.errorLevel = "die"; // none, warn, or die
-				/*
 				JSAN.addRepository('/xul/server/');
-				*/
+				/*
 				JSAN.addRepository('..');
+				*/
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for menu_frame.xul');
 
@@ -77,10 +70,11 @@
 		}
 	]]>
 	</script>
+<!--
 	<script src="chrome://venkman/content/venkman-overlay.js"/>
 
 	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties" />	
-
+-->
 	<commandset id="universal_cmds" />
 
 	<keyset id="menu_frame_keys" />

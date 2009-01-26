@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+<!DOCTYPE overlay PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
 <overlay id="menu_frame_menus" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

@@ -2,11 +2,12 @@ dump('entering main/menu.js\n');
 // vim:noet:sw=4:ts=4:
 
 var offlineStrings;
-offlineStrings = document.getElementById('offlineStrings');
 
 if (typeof main == 'undefined') main = {};
 main.menu = function () {
 
+    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+    offlineStrings = document.getElementById('offlineStrings');
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.window'); this.window = new util.window();
 
@@ -47,11 +48,13 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.window.open(
+					var mframe = obj.window.open(
 						obj.url_prefix(urls.XUL_MENU_FRAME)
 						+ '?server='+window.escape(urls.remote),
 						'main' + obj.window.window_name_increment(),
 						'chrome,resizable'); 
+                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                    mframe.xulG = xulG;
 				}
 			],
 			'cmd_new_tab' : [
@@ -499,6 +502,7 @@ main.menu.prototype = {
 							obj.data.session = obj.data.previous_session;
 							obj.data.stash('session');
 				            try {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 								var cookieUri = ios.newURI("http://" + obj.data.server_unadorned, null, null);
 								var cookieUriSSL = ios.newURI("https://" + obj.data.server_unadorned, null, null);
@@ -664,6 +668,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function clear_the_cache() {
 					try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var cacheClass 		= Components.classes["@mozilla.org/network/cache-service;1"];
 						var cacheService	= cacheClass.getService(Components.interfaces.nsICacheService);
 						cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
@@ -704,6 +709,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					if (window.confirm(offlineStrings.getString('menu.cmd_shutdown.prompt'))) {
+					    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
 						var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
 						var enumerator = windowManagerInterface.getEnumerator(null);
@@ -750,6 +756,7 @@ main.menu.prototype = {
 				function(p) {
 					return function() {
 						try {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								if (p
 									&& p.firstChild 
 									&& ( p.firstChild.nodeName == 'iframe' || p.firstChild.nodeName == 'browser' )
@@ -891,8 +898,9 @@ main.menu.prototype = {
 		content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
 		content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
-		content_params.open_chrome_window = function(a,b,c) { return obj.window.open(a,b,c); };
+		content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
 		content_params.url_prefix = function(url) { return obj.url_prefix(url); };
+        content_params.chrome_xulG = xulG;
 		if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
 		
 		var frame;

@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
-<?xul-overlay href="chrome://open_ils_staff_client/content/main/menu_frame_menus.xul"?>
-<!--
+<!DOCTYPE overlay PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
 <?xul-overlay href="/xul/server/main/menu_frame_menus.xul"?>
--->
 <overlay id="menu_frame_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
