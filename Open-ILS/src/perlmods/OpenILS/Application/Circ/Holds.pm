@@ -1621,7 +1621,17 @@ sub all_rec_holds {
 	$args ||= { fulfillment_time => undef };
 	$args->{cancel_time} = undef;
 
-	my $resp = { volume_holds => [], copy_holds => [] };
+	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [] };
+
+    my $mr_map = $e->search_metabib_metarecord_source_map({source => $title_id})->[0];
+    if($mr_map) {
+        $resp->{metarecord_holds} = $e->search_action_hold_request(
+            {   hold_type => OILS_HOLD_TYPE_METARECORD,
+                target => $mr_map->metarecord,
+                %$args 
+            }, {idlist => 1}
+        );
+    }
 
 	$resp->{title_holds} = $e->search_action_hold_request(
 		{ 
