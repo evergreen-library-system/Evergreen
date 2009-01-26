@@ -278,7 +278,8 @@ const urls = {
 	'XUL_MARC_NEW' : '/xul/server/cat/marc_new.xul',
 	'XUL_MARC_EDIT' : '/xul/server/cat/marcedit.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
-	'XUL_MENU_FRAME' : 'chrome://open_ils_staff_client/content/main/menu_frame.xul',
+	/* 'XUL_MENU_FRAME' : 'chrome://open_ils_staff_client/content/main/menu_frame.xul', */
+	'XUL_MENU_FRAME' : '/xul/server/main/menu_frame.xul',
 	'XUL_NON_CAT_LABEL_EDIT' : '/xul/server/admin/non_cat_types.xhtml',
 	'XUL_OFFLINE_UPLOAD_XACTS' : '/xul/server/admin/upload_xacts.xhtml',
 	'XUL_OFFLINE_MANAGE_XACTS' : '/xul/server/admin/offline_manage_xacts.xul',
