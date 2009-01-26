@@ -183,7 +183,7 @@ sub session {
 		}
 
 		$self->{session}->connect if $self->{xact} or $self->{connect} or $always_xact;
-		$self->xact_start if $self->{xact} or $always_xact;
+		$self->xact_begin if $self->{xact} or $always_xact;
 	}
 
     $xact_ed_cache{$self->{xact_id}} = $self if $always_xact;
@@ -194,12 +194,13 @@ sub session {
 # -----------------------------------------------------------------------------
 # Starts a storage transaction
 # -----------------------------------------------------------------------------
-sub xact_start {
+sub xact_begin {
 	my $self = shift;
-	$self->log(D, "starting new db session");
+	$self->log(D, "starting new database transaction");
 	my $stat = $self->request($self->app . '.transaction.begin') unless $self->{xact_id};
 	$self->log(E, "error starting database transaction") unless $stat;
     $self->{xact_id} = $stat;
+    $self->{xact} = 1;
 	return $stat;
 }
 
@@ -213,6 +214,7 @@ sub xact_commit {
 	my $stat = $self->request($self->app.'.transaction.commit');
 	$self->log(E, "error comitting database transaction") unless $stat;
     delete $self->{xact_id};
+    delete $self->{xact};
 	return $stat;
 }
 
@@ -221,11 +223,12 @@ sub xact_commit {
 # -----------------------------------------------------------------------------
 sub xact_rollback {
 	my $self = shift;
-   return unless $self->{session} and $self->{xact_id};
+    return unless $self->{session} and $self->{xact_id};
 	$self->log(I, "rolling back db session");
 	my $stat = $self->request($self->app.".transaction.rollback");
 	$self->log(E, "error rolling back database transaction") unless $stat;
     delete $self->{xact_id};
+    delete $self->{xact};
 	return $stat;
 }
 
@@ -237,14 +240,13 @@ sub xact_rollback {
 sub rollback {
 	my $self = shift;
 	$self->xact_rollback;
-   delete $self->{xact};
 	$self->disconnect;
 }
 
 sub disconnect {
 	my $self = shift;
 	$self->session->disconnect if $self->{session};
-   delete $self->{session};
+    delete $self->{session};
 }
 
 
