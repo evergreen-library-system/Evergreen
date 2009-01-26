@@ -119,6 +119,19 @@ auth.controller.prototype = {
 						['keypress'],
 						handle_keypress
 					],
+                    'server_menu' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                for (var s in obj.data.ws_info) {
+                                    var mi = document.createElement('menuitem');
+                                    mi.setAttribute('label',s);
+                                    mi.setAttribute('value',s);
+                                    e.appendChild(mi);
+                                }
+                            };
+                        }
+                    ],
 					'name_prompt' : [
 						['keypress'],
 						handle_keypress
@@ -219,6 +232,16 @@ auth.controller.prototype = {
 			},
 			false
 		);
+        obj.controller.view.server_prompt.addEventListener(
+            'command',
+            function (ev) {
+                obj.controller.view.name_prompt.focus();
+                obj.controller.view.name_prompt.select();
+				obj.test_server(ev.target.value);
+				obj.controller.render('ws_deck'); 
+            },
+            false
+        );
 
 		// This talks to our ILS
 		JSAN.use('auth.session');

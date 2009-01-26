@@ -109,7 +109,9 @@
 					<row>
 						<label value="&staff.main.auth.hostname;" control="server_prompt" accesskey="&staff.main.auth.hostname.accesskey;"/>
 						<vbox>
-							<textbox id="server_prompt"/>
+							<menulist editable="true" id="server_prompt" flex="1">
+                                <menupopup id="server_menu" />
+                            </menulist>
                             <hbox>
 							    <button label="&staff.main.auth.retest;" id="retest" accesskey="&staff.main.auth.retest.accesskey;" command="cmd_test_server"/>
 							    <button label="&staff.main.auth.add_ssl_exception;" id="ssl_exception" command="cmd_ssl_exception"/>
