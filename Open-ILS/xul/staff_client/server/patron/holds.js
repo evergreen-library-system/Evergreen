@@ -1028,6 +1028,7 @@ patron.holds.prototype = {
                     holds = holds.concat( robj.copy_holds );
                     holds = holds.concat( robj.volume_holds );
                     holds = holds.concat( robj.title_holds );
+                    holds = holds.concat( robj.metarecord_holds );
                     holds = holds.sort();
                 }
 			} else {
