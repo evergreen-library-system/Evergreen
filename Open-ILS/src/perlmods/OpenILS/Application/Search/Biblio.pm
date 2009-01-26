@@ -133,6 +133,19 @@ sub record_id_to_mods_slim {
 }
 
 
+
+__PACKAGE__->register_method(
+	method	=> "record_id_to_mods_slim_batch",
+	api_name	=> "open-ils.search.biblio.record.mods_slim.batch.retrieve",
+    stream => 1
+);
+sub record_id_to_mods_slim_batch {
+	my($self, $conn, $id_list) = @_;
+    $conn->respond(_records_to_mods($_)->[0]) for @$id_list;
+    return undef;
+}
+
+
 # Returns the number of copies attached to a record based on org location
 __PACKAGE__->register_method(
 	method	=> "record_id_to_copy_count",
