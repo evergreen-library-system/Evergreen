@@ -127,9 +127,12 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <connect_timeout>10</connect_timeout>
         <max_reconnect_attempts>5</max_reconnect_attempts>
       </transport>
-      <logfile>syslog</logfile>
-      <syslog>local2</syslog>
-      <loglevel>5</loglevel>
+      <logfile>LOCALSTATEDIR/log/router-public.log</logfile>
+      <!--
+        <logfile>syslog</logfile>
+        <syslog>local2</syslog>
+      -->
+      <loglevel>3</loglevel>
     </router>
     <router>
       <!-- private router -->
@@ -149,9 +152,12 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <connect_timeout>10</connect_timeout>
         <max_reconnect_attempts>5</max_reconnect_attempts>
       </transport>
-      <logfile>syslog</logfile>
-      <syslog>local2</syslog>
-      <loglevel>4</loglevel>
+      <logfile>LOCALSTATEDIR/log/router-private.log</logfile>
+      <!--
+        <logfile>syslog</logfile>
+        <syslog>local2</syslog>
+      -->
+      <loglevel>3</loglevel>
     </router>
   </routers>
   <!-- ======================================================================================== -->
