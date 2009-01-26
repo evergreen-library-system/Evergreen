@@ -15,7 +15,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="/xul/server/OpenILS/util_overlay_chrome.xul"?>
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="opac_win"
 	onload="try { my_init(); } catch(E) { alert(E); }"
