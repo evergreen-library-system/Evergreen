@@ -280,7 +280,7 @@ util.error.prototype = {
 			}
 		}
 		if (!msg) msg = '';
-		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + (new Date()) + '\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + (E.desc ? E.desc + '\n' : '') : '') + ( typeof E.status != 'undefined' ? 'Status: ' + E.status + '\n': '' );
+		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + (new Date()) + '\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + (E.desc ? E.desc + '\n' : '') : '') + ( typeof E.status != 'undefined' ? 'Status: ' + E.status + '\n': '' ) + ( typeof E == 'string' ? E + '\n' : '' );
 		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
 		var r = obj.yns_alert(
 			alert_msg,	
