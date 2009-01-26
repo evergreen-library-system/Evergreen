@@ -418,40 +418,61 @@ osrfHash* oilsIDLFindPath( const char* path, ... ) {
 	return obj;
 }
 
+static osrfHash* findClassDef( const char* classname ) {
+	if( !classname || !idlHash )
+		return NULL;
+	else
+		return osrfHashGet( idlHash, classname );
+}
+
 int oilsIDL_classIsFieldmapper ( const char* classname ) {
-	if (!classname) return 0;
-	if(oilsIDLFindPath( "/%s", classname )) return 1;
-	return 0;
+	if( findClassDef( classname ) )
+		return 1;
+	else
+		return 0;
 }
 
 int oilsIDL_ntop (const char* classname, const char* fieldname) {
-	osrfHash* _pos = NULL;
+	osrfHash* class_def_hash = findClassDef( classname );
+	if( !class_def_hash )
+		return -1;			// No such class
+	
+	osrfHash* fields_hash = osrfHashGet( class_def_hash, "fields" );
+	if( !fields_hash )
+		return -1;			// No list of fields fo the class
 
-	if (!oilsIDL_classIsFieldmapper(classname)) return -1;
-	_pos = oilsIDLFindPath( "/%s/fields/%s", classname, fieldname );
-	if (_pos) return atoi( osrfHashGet(_pos, "array_position") );
-	return -1;
+	osrfHash* field_def_hash = osrfHashGet( fields_hash, fieldname );
+	if( !field_def_hash )
+		return -1;			// No such field
+
+	const char* pos_attr = osrfHashGet( field_def_hash, "array_position" );
+	if( !pos_attr )
+		return -1;			// No array_position attribute
+
+	return atoi( pos_attr );	// Return position as int
 }
 
 char * oilsIDL_pton (const char* classname, int pos) {
+	osrfHash* class_def_hash = findClassDef( classname );
+	if( !class_def_hash )
+		return NULL;		// No such class
+	
+	osrfHash* fields_hash = osrfHashGet( class_def_hash, "fields" );
+	if( !fields_hash )
+		return NULL;		// No list of fields fo the class
+
 	char* ret = NULL;
-	osrfHash* f = NULL;
-	osrfHash* fields = NULL;
-	osrfHashIterator* itr = NULL;
+	osrfHash* field_def_hash = NULL;
+	osrfHashIterator* iter = osrfNewHashIterator( fields_hash );
 
-	if (!oilsIDL_classIsFieldmapper(classname)) return NULL;
-
-	fields = oilsIDLFindPath( "/%s/fields", classname );
-	itr = osrfNewHashIterator( fields );
-
-	while ( (f = osrfHashIteratorNext( itr )) ) {
-		if ( atoi(osrfHashGet(f, "array_position")) == pos ) {
-			ret = strdup(osrfHashIteratorKey(itr));
+	while ( ( field_def_hash = osrfHashIteratorNext( iter ) ) ) {
+		if ( atoi( osrfHashGet( field_def_hash, "array_position" ) ) == pos ) {
+			ret = strdup( osrfHashIteratorKey( iter ) );
 			break;
 		}
 	}
 
-	osrfHashIteratorFree( itr );
+	osrfHashIteratorFree( iter );
 
 	return ret;
 }
