@@ -220,10 +220,12 @@
 
                     document.getElementById('caption').setAttribute('label', document.getElementById('commonStrings').getString('staff.main.data.loaded'));
 
-                    xulG.window.open(urls.XUL_MENU_FRAME
+			        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    var mframe = xulG.window.open(urls.XUL_MENU_FRAME
                         + '?server='+window.escape(xulG.url),
                         'main'+xulG.window.window_name_increment(),'chrome,resizable'
                     );
+                    mframe.xulG = xulG; // This is the xulG from main.js, with auth, url, and window
 
                 } catch(E) {
                     alert(E);
