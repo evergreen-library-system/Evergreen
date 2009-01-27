@@ -27,7 +27,7 @@ sub cleanup {
     my $self = shift;
 
     if (defined $self->reacted) {
-        $self->update_state( 'cleaning');
+        $self->update_state( 'cleaning') || throw 'Unable to update event state';
         try {
             my $cleanup = $self->reacted ? $self->definition->cleanup_success : $self->definition->cleanup_failure;
             $self->cleanedup(
@@ -38,12 +38,14 @@ sub cleanup {
             );
         } otherwise {
             $log->error( shift() );
-            $self->update_state( 'error' );
+            $self->update_state( 'error' ) || throw 'Unable to update event state';
         };
 
-        $self->cleanedup ?
-            $self->update_state( 'complete' ) :
-            $self->update_state( 'error' );
+        if ($self->cleanedup) {
+            $self->update_state( 'complete' ) || throw 'Unable to update event state';
+        } else {
+            $self->update_state( 'error' ) || throw 'Unable to update event state';
+        }
 
     } else {
         $self->{cleanedup} = undef;
@@ -58,7 +60,7 @@ sub react {
         if ($self->definition->group_field) { # can't react individually to a grouped definition
             $self->{reacted} = undef;
         } else {
-            $self->update_state( 'reacting');
+            $self->update_state( 'reacting') || throw 'Unable to update event state';
             try {
                 $self->reacted(
                     OpenILS::Application::Trigger::ModRunner
@@ -68,12 +70,14 @@ sub react {
                 );
             } otherwise {
                 $log->error( shift() );
-                $self->update_state( 'error' );
+                $self->update_state( 'error' ) || throw 'Unable to update event state';
             };
 
-            defined $self->reacted ? 
-                $self->update_state( 'reacted' ) :
-                $self->update_state( 'error' );
+            if (defined $self->reacted) {
+                $self->update_state( 'reacted' ) || throw 'Unable to update event state';
+            } else {
+                $self->update_state( 'error' ) || throw 'Unable to update event state';
+            }
         }
     } else {
         $self->{reacted} = undef;
@@ -87,7 +91,7 @@ sub validate {
     return $self if (defined $self->valid);
 
     if ($self->build_environment->environment->{complete}) {
-        $self->update_state( 'validating');
+        $self->update_state( 'validating') || throw 'Unable to update event state';
         try {
             $self->valid(
                 OpenILS::Application::Trigger::ModRunner
@@ -97,13 +101,17 @@ sub validate {
             );
         } otherwise {
             $log->error( shift() );
-            $self->update_state( 'error' );
+            $self->update_state( 'error' ) || throw 'Unable to update event state';
         };
 
         if (defined $self->valid) {
-            $self->valid ? $self->update_state( 'valid' ) : $self->update_state( 'invalid' );
+            if ($self->valid) {
+                $self->update_state( 'valid' ) || throw 'Unable to update event state';
+            } else {
+                $self->update_state( 'invalid' ) || throw 'Unable to update event state';
+            }
         } else {
-            $self->update_state( 'error' );
+            $self->update_state( 'error' ) || throw 'Unable to update event state';
         }
     } else {
         $self->{valid} = undef
@@ -212,7 +220,7 @@ sub build_environment {
     my $self = shift;
     return $self if ($self->environment->{complete});
 
-    $self->update_state( 'collecting');
+    $self->update_state( 'collecting') || throw 'Unable to update event state';
 
     try {
         $self->definition( $self->editor->retrieve_action_trigger_event_definition( $self->event->event_def ) );
@@ -251,12 +259,14 @@ sub build_environment {
         $self->environment->{complete} = 1;
     } otherwise {
         $log->error( shift() );
-        $self->update_state( 'error' );
+        $self->update_state( 'error' ) || throw 'Unable to update event state';
     };
 
-    $self->environment->{complete} ? 
-        $self->update_state( 'collected' ) :
-        $self->update_state( 'error' );
+    if ($self->environment->{complete})
+        $self->update_state( 'collected' ) || throw 'Unable to update event state';
+    } else {
+        $self->update_state( 'error' ) || throw 'Unable to update event state';
+    }
 
     return $self;
 }
