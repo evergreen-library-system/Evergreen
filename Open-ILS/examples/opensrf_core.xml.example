@@ -19,15 +19,17 @@ Example OpenSRF bootstrap configuration file for Evergreen
 
         <services>
           <service>opensrf.math</service>
-          <service>open-ils.cat</service>
-          <service>open-ils.supercat</service>
-          <service>open-ils.search</service>
-          <service>open-ils.circ</service>
           <service>open-ils.actor</service>
           <service>open-ils.auth</service>
-          <service>open-ils.fielder</service>
+          <service>open-ils.cat</service>
+          <service>open-ils.circ</service>
           <service>open-ils.collections</service>
+          <service>open-ils.fielder</service>
+          <service>open-ils.permacrud</service>
           <service>open-ils.reporter</service>
+          <service>open-ils.search</service>
+          <service>open-ils.supercat</service>
+          <service>open-ils.vandelay</service>
         </services>
       </router>
 
