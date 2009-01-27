@@ -112,7 +112,7 @@ CREATE TABLE action_trigger.event (
     update_time     TIMESTAMPTZ,
     complete_time   TIMESTAMPTZ,
     update_process  INT,
-    state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','found','collecting','validating','reacting','cleanup','complete','error')),
+    state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','invalid','found','collecting','collected','validating','valid','reacting','reacted','cleaning','complete','error')),
     template_output TEXT,
     error_output    TEXT
 );
