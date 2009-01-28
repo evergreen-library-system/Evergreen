@@ -49,13 +49,17 @@ CREATE TABLE action_trigger.collector (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Collector:: namespace
     description TEXT    
 );
-INSERT INTO action_trigger.collector (module,description) VALUES ('CircCountsByCircMod','Count of Circulations for a User, broken down by circulation modifier');
+INSERT INTO action_trigger.collector (module,description) VALUES ('fourty_two','Returns the answer to life, the universe and everything');
+--INSERT INTO action_trigger.collector (module,description) VALUES ('CircCountsByCircMod','Count of Circulations for a User, broken down by circulation modifier');
 
 -- Simple tests on an FM object from hook.core_type to test for "should we still do this."
 CREATE TABLE action_trigger.validator (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Validator:: namespace
     description TEXT    
 );
+INSERT INTO action_trigger.validator (module,description) VALUES ('fourty_two','Returns the answer to life, the universe and everything');
+INSERT INTO action_trigger.validator (module,description) VALUES ('NOOP_True','Always returns true -- validation always passes');
+INSERT INTO action_trigger.validator (module,description) VALUES ('NOOP_False','Always returns false -- validation always fails');
 INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOpen','Check that the circulation is still open');
 INSERT INTO action_trigger.validator (module,description) VALUES ('HoldIsAvailable','Check that an item is on the hold shelf');
 
@@ -64,6 +68,9 @@ CREATE TABLE action_trigger.reactor (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Reactor:: namespace
     description TEXT    
 );
+INSERT INTO action_trigger.reactor (module,description) VALUES ('fourty_two','Returns the answer to life, the universe and everything');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_True','Always returns true -- reaction always passes');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_False','Always returns false -- reaction always fails');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('SendEmail','Send an email based on a user-defined template');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('GenerateBatchOverduePDF','Output a batch PDF of overdue notices for printing');
 
@@ -72,6 +79,9 @@ CREATE TABLE action_trigger.cleanup (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Cleanup:: namespace
     description TEXT    
 );
+INSERT INTO action_trigger.cleanup (module,description) VALUES ('fourty_two','Returns the answer to life, the universe and everything');
+INSERT INTO action_trigger.cleanup (module,description) VALUES ('NOOP_True','Always returns true -- cleanup always passes');
+INSERT INTO action_trigger.cleanup (module,description) VALUES ('NOOP_False','Always returns false -- cleanup always fails');
 INSERT INTO action_trigger.cleanup (module,description) VALUES ('ClearAllPending','Remove all future, pending notifications for this target');
 
 CREATE TABLE action_trigger.event_definition (
