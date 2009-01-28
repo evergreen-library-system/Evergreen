@@ -36,7 +36,7 @@ sub init {
                 flesh => 2,
                 flesh_fields => {
                     atev    => [ 'event_def' ],
-                    atevdef => [ qw/hook validator reactor cleanup_success cleanup_failure/ ]
+                    atevdef => [ 'hook' ]
                 }
             }
         ])
@@ -252,10 +252,7 @@ sub build_environment {
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
     
-        my @env_list = $self->editor->search_action_trigger_environment([
-            { event_def => $self->event->event_def },
-            { flesh => 1, flesh_fields => ['collector'] }
-        ]);
+        my @env_list = $self->editor->search_action_trigger_environment( { event_def => $self->event->event_def } );
         my @param_list = $self->editor->search_action_trigger_params( { event_def => $self->event->event_def } );
     
         $self->environment->{params}{ $_->param } = eval $_->value for ( @param_list );
