@@ -11,16 +11,46 @@ my $log = 'OpenSRF::Utils::Logger';
 
 sub new {
     my $class = shift;
+    my $id = shift;
     $class = ref($class) || $class;
 
+    my $self = bless { id => $id, editor => new_editor() } => $class;
+
+    return $self->init()
+}
+
+sub init {
+    my $self = shift;
     my $id = shift;
-    return undef unless ($id);
 
-    my $cstore = new_editor();
-    my $event = $cstore->retrieve_action_trigger_event( $id );
-    return undef unless ($event);
+    return $self if ($self->event);
 
-    return bless { id => $id, event => $event, environment => {}, editor => $cstore } => $class;
+    $self->id( $id ); 
+    $self->environment( {} ); 
+
+    return $self if (!$self->id);
+
+    $self->event(
+        $self->editor->retrieve_action_trigger_event([
+            $self->id, {
+                flesh => 2,
+                flesh_fields => {
+                    atev    => [ 'event_def' ],
+                    atevdef => [ qw/hook validator reactor cleanup_success cleanup_failure/ ]
+                }
+            }
+        ])
+    );
+
+    my $class = $self->_fm_class_by_hint( $self->event->event_def->hook->core_type );
+    
+    my $meth = "retreive_" . $class;
+    $meth =~ s/Fieldmapper:://;
+    $meth =~ s/::/_/;
+    
+    $self->target( $self->editor->$meth( $self->event->target ) );
+
+    return $self;
 }
 
 sub cleanup {
@@ -29,9 +59,9 @@ sub cleanup {
     if (defined $self->reacted) {
         $self->update_state( 'cleaning') || die 'Unable to update event state';
         try {
-            my $cleanup = $self->reacted ? $self->definition->cleanup_success : $self->definition->cleanup_failure;
+            my $cleanup = $self->reacted ? $self->event->event_def->cleanup_success : $self->event->event_def->cleanup_failure;
             $self->cleanedup(
-                OpenILS::Application::Trigger::ModRunner
+                OpenILS::Application::Trigger::ModRunner::Cleanup
                     ->new( $cleanup, $self->environment )
                     ->run
                     ->final_result
@@ -57,14 +87,14 @@ sub react {
     my $self = shift;
 
     if ($self->valid) {
-        if ($self->definition->group_field) { # can't react individually to a grouped definition
+        if ($self->event->event_def->group_field) { # can't react individually to a grouped definition
             $self->{reacted} = undef;
         } else {
             $self->update_state( 'reacting') || die 'Unable to update event state';
             try {
                 $self->reacted(
-                    OpenILS::Application::Trigger::ModRunner
-                        ->new( $self->definition->reactor, $self->environment )
+                    OpenILS::Application::Trigger::ModRunner::Reactor
+                        ->new( $self->event->event_def->reactor, $self->environment )
                         ->run
                         ->final_result
                 );
@@ -94,8 +124,8 @@ sub validate {
         $self->update_state( 'validating') || die 'Unable to update event state';
         try {
             $self->valid(
-                OpenILS::Application::Trigger::ModRunner
-                    ->new( $self->definition->validator, $self->environment )
+                OpenILS::Application::Trigger::ModRunner::Validator
+                    ->new( $self->event->event_def->validator, $self->environment )
                     ->run
                     ->final_result
             );
@@ -192,28 +222,22 @@ sub target {
     return $self->{target};
 }
 
-sub definition {
-    my $self = shift;
-    return undef unless (ref $self);
-
-    my $d = shift;
-    $self->{definition} = $d if (defined $d);
-    return $self->{definition};
-}
-
 sub update_state {
     my $self = shift;
     return undef unless ($self && ref $self);
 
-    my $state = shift || return undef;
+    my $state = shift;
+    return undef unless ($state);
 
     $self->editor->xact_begin || return undef;
-    $self->event->update_time( 'now' );
-    $self->event->update_process( $$ );
-    $self->event->state( $state );
-    $self->editor->update_action_trigger_event( $self->event );
-    $self->editor->xact_commit || return undef;
 
+    my $e = $self->editor->retrieve_action_trigger_event( $self->id );
+    $e->update_time( 'now' );
+    $e->update_process( $$ );
+    $e->state( $state );
+    $self->editor->update_action_trigger_event( $e );
+
+    return $self->editor->xact_commit || undef;
 }
 
 sub build_environment {
@@ -223,26 +247,15 @@ sub build_environment {
     $self->update_state( 'collecting') || die 'Unable to update event state';
 
     try {
-        $self->definition( $self->editor->retrieve_action_trigger_event_definition( $self->event->event_def ) );
-    
-        $self->definition->hook( $self->editor->retrieve_action_trigger_hook( $self->definition->hook ) );
-        $self->definition->validator( $self->editor->retrieve_action_trigger_validator( $self->definition->validator ) );
-        $self->definition->reactor( $self->editor->retrieve_action_trigger_reactor( $self->definition->reactor ) );
-        $self->definition->cleanup_success( $self->editor->retrieve_action_trigger_cleanup( $self->definition->cleanup_success ) ) if $self->definition->cleanup_success;
-        $self->definition->cleanup_failure( $self->editor->retrieve_action_trigger_cleanup( $self->definition->cleanup_failure ) ) if $self->definition->cleanup_failure;
-    
-        my $class = $self->_fm_class_by_hint( $self->definition->hook->core_type );
-    
-        my $meth = "retreive_" . $class;
-        $meth =~ s/Fieldmapper:://;
-        $meth =~ s/::/_/;
-    
-        $self->target( $self->editor->$meth( $self->event->target ) );
+   
         $self->environment->{target} = $self->target;
-        $self->environment->{event} = $self->event->to_bare_hash;
-        $self->environment->{template} = $self->definition->template;
+        $self->environment->{event} = $self->event;
+        $self->environment->{template} = $self->event->event_def->template;
     
-        my @env_list = $self->editor->search_action_trigger_environment( { event_def => $self->event->event_def } );
+        my @env_list = $self->editor->search_action_trigger_environment([
+            { event_def => $self->event->event_def },
+            { flesh => 1, flesh_fields => ['collector'] }
+        ]);
         my @param_list = $self->editor->search_action_trigger_params( { event_def => $self->event->event_def } );
     
         $self->environment->{params}{ $_->param } = eval $_->value for ( @param_list );
@@ -252,8 +265,7 @@ sub build_environment {
             @path = split('.', $e->path) if ($e->path);
             @label = split('.', $e->label) if ($e->label);
     
-            my $collector = $e->collector;
-            $self->_object_by_path( $target, $collector, \@label, \@path );
+            $self->_object_by_path( $self->event->target, $e->collector, \@label, \@path );
         }
     
         $self->environment->{complete} = 1;
@@ -335,7 +347,7 @@ sub _object_by_path {
             my @new_obj_list;
             for my $o ( @$obj_list ) {
                 push @new_obj_list,
-                    OpenILS::Application::Trigger::ModRunner
+                    OpenILS::Application::Trigger::ModRunner::Collector
                         ->new( $collector, $o )
                         ->run
                         ->final_result
