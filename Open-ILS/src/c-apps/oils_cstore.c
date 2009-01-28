@@ -880,6 +880,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         free(method_type);
         method_type = strdup("retrieve");
         fetch = 0; // don't go to the db for the object for retrieve-type methods
+    } else if ( *method_type == 'c' ) {
+        fetch = 0; // CAN'T go to the db for the object for create-type methods
     }
 
     osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
