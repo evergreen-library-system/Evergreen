@@ -1,6 +1,8 @@
 package OpenILS::Application::Trigger::ModLoader;
 use UNIVERSAL::require;
 
+sub prefix { return 'OpenILS::Application::Trigger' }
+
 sub new {
     my $class = shift;
     $class = ref($class) || $class;
@@ -55,7 +57,7 @@ sub load {
     my $loaded = $m->use;
 
     if (!$loaded) {
-        $builtin_m = "OpenILS::Application::Trigger::$m";
+        $builtin_m = $self->prefix . "::$m";
         $loaded = $builtin_m->use;
 
         if (!$loaded) {
@@ -67,7 +69,7 @@ sub load {
 
                 if (!$loaded) {
                     $h =  $self->handler;
-                    my $builtin_m = "OpenILS::Application::Trigger::$m";
+                    $builtin_m = $self->prefix . "::$m";
                     $loaded = $m->use;
 
                     $m = $builtin_m if ($loaded);
@@ -151,6 +153,22 @@ sub run {
 
     return $self;
 };
+
+package OpenILS::Application::Trigger::ModRunner::Collector;
+use base 'OpenILS::Application::Trigger::ModRunner';
+sub prefix { return 'OpenILS::Application::Trigger::Collector' }
+
+package OpenILS::Application::Trigger::ModRunner::Validator;
+use base 'OpenILS::Application::Trigger::ModRunner';
+sub prefix { return 'OpenILS::Application::Trigger::Validator' }
+
+package OpenILS::Application::Trigger::ModRunner::Reactor;
+use base 'OpenILS::Application::Trigger::ModRunner';
+sub prefix { return 'OpenILS::Application::Trigger::Reactor' }
+
+package OpenILS::Application::Trigger::ModRunner::Cleanup;
+use base 'OpenILS::Application::Trigger::ModRunner';
+sub prefix { return 'OpenILS::Application::Trigger::Cleanup' }
 
 package OpenILS::Application::Trigger::ModStackRunner;
 use base 'OpenILS::Application::Trigger::ModRunner';
