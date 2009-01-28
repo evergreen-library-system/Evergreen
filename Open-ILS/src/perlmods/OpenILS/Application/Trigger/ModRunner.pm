@@ -7,12 +7,11 @@ sub new {
     my $class = shift;
     $class = ref($class) || $class;
 
-    my $mod_thing = shift;
-    return undef unless ($mod_thing);
+    my $mod = shift;
+    return undef unless ($mod);
 
     my $self = bless {
-        mod_thing => $mod_thing,
-        module => $mod_thing->module(),
+        module => ref $mod ? $mod->module() : $mod,
         handler => 'handler'
     } => $class;
 
@@ -76,6 +75,15 @@ sub load {
                 }
             } else {
                 $loaded = $m->use;
+
+                # The following is an escape hatch for builtin dummy handlers
+                if (!$loaded) {
+                    $loaded = $self->prefix->use;
+                    if ($loaded && $self->prefix->can( $self->module ) ) {
+                        $m = $self->prefix;
+                        $h = $self->module;
+                    }
+                }
             }
         } else {
             $m = $builtin_m;
