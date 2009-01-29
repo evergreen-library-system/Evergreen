@@ -57,21 +57,29 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for patron_summary.xul');
+				
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+				
+				var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == '1';
+				var url = horizontal_interface ? '/xul/server/patron/summary_overlay_horiz.xul' : '/xul/server/patron/summary_overlay.xul';
+				
 				observer = new myObserver();
-				document.loadOverlay(location.protocol + '//' + location.hostname + '/xul/server/patron/summary_overlay.xul',observer)
+				document.loadOverlay(location.protocol + '//' + location.hostname + url,observer)
 			} catch(E) {
-				alert(E);
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul:my_init()', E]);
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
 			}
 		}
 		
 		function post_overlay() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for patron_summary.xul');
 
 				var patron_id = xul_param('id'); 
 				var patron_bc = xul_param('barcode'); 
@@ -86,7 +94,7 @@
 				window.refresh = function () { g.summary.retrieve(); }
 				font_helper();
 			} catch(E) {
-				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul', E]);
+				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/summary.xul:post_overlay()', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}

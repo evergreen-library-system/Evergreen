@@ -26,13 +26,17 @@ patron.display.prototype = {
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
-
+		
+		var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == '1';
+		document.getElementById('ui.circ.patron_summary.horizontal').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
+		document.getElementById('pdms1').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
+		
 		JSAN.use('util.deck'); 
 		obj.right_deck = new util.deck('patron_right_deck');
 		obj.left_deck = new util.deck('patron_left_deck');
 
 		function spawn_checkout_interface() {
-            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
+	            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
 			obj.reset_nav_styling('cmd_patron_checkout');
 			var frame = obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT,
@@ -196,7 +200,7 @@ patron.display.prototype = {
 
 								function spawn_search(s) {
 									obj.error.sdump('D_TRACE', $("commonStrings").getFormattedString('staff.patron.display.cmd_patron_edit.edit_search', [js2JSON(s)]) ); 
-									obj.data.stash_retrieve();
+									obj.OpenILS.data.stash_retrieve();
 									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
 									//loc += '?doit=1&query=' + window.escape(js2JSON(s));
 									xulG.new_tab( loc, {}, { 'doit' : 1, 'query' : s } );

@@ -2645,3 +2645,5 @@
 <!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
 <!ENTITY staff.portal.title "Evergreen Staff Client Portal Page">
 <!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">
+<!ENTITY ui.circ.patron_summary.horizontal "Alternative Horizontal Patron Summary Panel">
+<!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
