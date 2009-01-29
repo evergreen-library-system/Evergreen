@@ -177,7 +177,7 @@ patron.display.prototype = {
 
 								function spawn_search(s) {
 									obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
-									obj.data.stash_retrieve();
+									obj.OpenILS.data.stash_retrieve();
 									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
 									//loc += '?doit=1&query=' + window.escape(js2JSON(s));
 									xulG.new_tab( loc, {}, { 'doit' : 1, 'query' : s } );
