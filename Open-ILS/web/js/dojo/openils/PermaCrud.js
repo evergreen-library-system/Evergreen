@@ -58,11 +58,13 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         },
 
         disconnect : function ( onerror ) {
+            this.connected = false;
+            return true;
+            // disconnect returns nothing, which is null, which is not true, cause the following to always run ... arg.
             if (!this.session.disconnect()) {
                 if (onerror) onerror(this.session);
                 return false;
             }
-            return true;
         },
         
 
