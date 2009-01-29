@@ -18,12 +18,13 @@ binmode(STDOUT, ':utf8');
 
 $| = 1;
 
-my ($config, $delim, $after) = ('SYSCONFDIR/opensrf_core.xml', ' | ');
+my ($config, $delim, $after,$deleted) = ('SYSCONFDIR/opensrf_core.xml', ' | ');
 
 GetOptions(
 	"after=s"	=> \$after,
 	"boostrap=s"	=> \$config,
 	"delimiter=s"	=> \$delim,
+	"include-deleted"	=> \$deleted,
 );
 
 OpenSRF::System->bootstrap_client( config_file => $config );
@@ -49,6 +50,7 @@ my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 =>
 
 my $SQL = 'SELECT id FROM biblio.record_entry WHERE id > 0';
 $SQL .= " AND edit_date > '$after'" if ($after);
+$SQL .= " AND deleted IS FALSE" if (!$deleted);
 
 my $ids = $dbh->selectcol_arrayref($SQL);
 
@@ -63,6 +65,6 @@ SQL
 
 for my $id ( @$ids ) {
     my $row = $dbh->selectrow_hashref( $SQL, {}, $id );
-    print "$$row{id}$delim$$row{tnc_source}$delim$$row{tcn_value}$delim$$row{marc}\n";
+    print "$$row{deleted}$delim$$row{id}$delim$$row{tnc_source}$delim$$row{tcn_value}$delim$$row{marc}\n";
 }
 

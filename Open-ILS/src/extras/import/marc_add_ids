@@ -48,6 +48,7 @@ while (<>) {
 		($partlist{tcn_value} = $values[ $partmap{tcn_value}]) =~ s/^\s*//o if ($part eq 'tcn_value');
 		($partlist{tcn_source} = $values[ $partmap{tcn_source}]) =~ s/^\s*//o if ($part eq 'tcn_source');
 		($partlist{id} = $values[ $partmap{id}]) =~ s/^\s*//o if ($part eq 'id');
+		($partlist{deleted} = $values[ $partmap{deleted}]) =~ s/^\s*//o if ($part eq 'deleted');
 		$partlist{marc} = $values[ $partmap{marc}] if ($part eq 'marc');
 
 		$partlist{tcn_value} =~ s/\s*$//o if ($part eq 'tcn_value');
@@ -88,7 +89,7 @@ while (<>) {
             } 
         }
 
-        if ($set_as_deleted) {
+        if ($set_as_deleted && $partlist{deleted} eq 't') {
             my $leader = $r->leader();
             if (length($leader)>4) {
                 substr($leader,5,1,"d");
