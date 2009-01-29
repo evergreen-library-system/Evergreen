@@ -38,6 +38,8 @@ for (@fields) {
 	$partcount++;
 }
 
+print '<collection xmlns="http://www.loc.gov/MARC21/slim">';
+
 my $count = 0;
 while (<>) {
 	chomp;
@@ -99,6 +101,7 @@ while (<>) {
 
 		my $x = $r->as_xml_record;
         $x =~ s/\n//gso;
+        $x =~ s/^<[^>]>//o;
         print $x."\n";
         $count++;
         print STDERR "\r$count" unless ($quiet || $count % 100);
@@ -108,4 +111,5 @@ while (<>) {
 	};
 }
 
+print '</collection>';
 
