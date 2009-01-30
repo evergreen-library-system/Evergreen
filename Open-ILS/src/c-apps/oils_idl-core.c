@@ -329,6 +329,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
 
+								    if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "jump")) )
+									    osrfHashSet( _tmp_fcontext, osrfStringArrayTokenize( prop_str, '.' ), "jump" );
+
 									// Tokenize field attribute into an osrfStringArray
 									const char * field_list = (char*) xmlGetProp(_f, BAD_CAST "field");
 									if( field_list )
@@ -345,7 +348,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "field") )) {
 										char* map_list = strdup( prop_str );
 										osrfLogDebug(OSRF_LOG_MARK,
-											"Permacrud foreign context field list is %s", prop_str );
+											"Permacrud local context field list is %s", prop_str );
 			
 										if (strlen( map_list ) > 0) {
 											char* st_tmp = NULL;
