@@ -874,14 +874,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     osrfHash* meta = (osrfHash*) ctx->method->userData;
     osrfHash* class = osrfHashGet( meta, "class" );
     char* method_type = strdup( osrfHashGet(meta, "methodtype") );
-    int fetch = 1;
+    int fetch = 0;
 
     if ( ( *method_type == 's' || *method_type == 'i' ) ) {
         free(method_type);
-        method_type = strdup("retrieve");
-        fetch = 0; // don't go to the db for the object for retrieve-type methods
-    } else if ( *method_type == 'c' ) {
-        fetch = 0; // CAN'T go to the db for the object for create-type methods
+        method_type = strdup("retrieve"); // search and id_list are equivelant to retrieve for this
+    } else if ( *method_type == 'u' || *method_type == 'd' ) {
+        fetch = 1; // MUST go to the db for the object for update and delete
     }
 
     osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
@@ -1061,11 +1060,44 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         &err
                     );
 
-                    jsonObject* _fparam = jsonObjectGetIndex(_list, 0);
-            
+                    jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+                    jsonObjectFree(_tmp_params);
+                    jsonObjectFree(_list);
+ 
+                    osrfStringArray* jump_list = osrfHashGet(fcontext, "jump");
+
+                    if (_fparam && jump_list) {
+                        char* flink = NULL;
+                        int k = 0;
+                        while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
+                            free(foreign_pkey_value);
+
+                            osrfHash* foreign_link_hash = oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
+
+                            foreign_pkey_value = oilsFMGetString(_fparam, flink);
+                            foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
+
+                            _tmp_params = jsonParseStringFmt(
+                                "[{\"%s\":\"%s\"}]",
+                                foreign_pkey,
+                                foreign_pkey_value
+                            );
+
+                    		_list = doFieldmapperSearch(
+                                ctx,
+                                osrfHashGet( oilsIDL(), osrfHashGet( foreign_link_hash, "class" ) ),
+                                _tmp_params,
+                                &err
+                            );
+
+                            _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+                            jsonObjectFree(_tmp_params);
+                            jsonObjectFree(_list);
+                        }
+                    }
+
+           
                     if (!_fparam) {
-                        jsonObjectFree(_tmp_params);
-                        jsonObjectFree(_list);
 
                         growing_buffer* msg = buffer_init(128);
                         buffer_fadd(
@@ -1093,7 +1125,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         return 0;
                     }
         
-                    jsonObjectFree(_tmp_params);
                     free(foreign_pkey_value);
     
                     int j = 0;
@@ -1108,8 +1139,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                             osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
                         );
                     }
-       
-                    jsonObjectFree(_list);
+
+                    jsonObjectFree(_fparam);
                 }
     
                 osrfStringArrayFree(class_list);
