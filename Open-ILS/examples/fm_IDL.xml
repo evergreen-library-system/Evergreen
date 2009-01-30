@@ -3307,6 +3307,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="question" reltype="has_a" key="id" map="" class="asvq"/>
 			<link field="responses" reltype="has_many" key="answer" map="" class="asvr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </update>
+                <delete permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ancc" controller="open-ils.cstore" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cataloged_circulation_id_seq">
