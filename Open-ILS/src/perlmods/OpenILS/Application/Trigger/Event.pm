@@ -35,12 +35,37 @@ sub init {
             $self->id, {
                 flesh => 2,
                 flesh_fields => {
-                    atev    => [ 'event_def' ],
-                    atevdef => [ 'hook' ]
+                    atev    => [ qw/event_def/ ],
+                    atevdef => [ qw/hook env params/ ]
                 }
             }
         ])
     );
+
+    if ($self->event->state eq 'valid') {
+        $self->valid(1);
+    } elsif ($self->event->state eq 'invalid') {
+        $self->valid(0);
+    } elsif ($self->event->state eq 'reacting') {
+        $self->valid(1);
+    } elsif ($self->event->state eq 'reacted') {
+        $self->valid(1);
+        $self->reacted(1);
+    } elsif ($self->event->state eq 'cleaning') {
+        $self->valid(1);
+        $self->reacted(1);
+    } elsif ($self->event->state eq 'complete') {
+        $self->valid(1);
+        $self->reacted(1);
+        $self->cleanedup(1);
+    } elsif ($self->event->state eq 'error') {
+        $self->valid(0);
+        $self->reacted(0);
+        $self->cleanedup(0);
+    }
+
+
+    $self->update_state('found') || die 'Unable to update event state';
 
     my $class = $self->_fm_class_by_hint( $self->event->event_def->hook->core_type );
     
@@ -55,6 +80,9 @@ sub init {
 
 sub cleanup {
     my $self = shift;
+    my $env = shift || $self->environment;
+
+    return $self if (defined $self->cleanedup);
 
     if (defined $self->reacted) {
         $self->update_state( 'cleaning') || die 'Unable to update event state';
@@ -62,7 +90,7 @@ sub cleanup {
             my $cleanup = $self->reacted ? $self->event->event_def->cleanup_success : $self->event->event_def->cleanup_failure;
             $self->cleanedup(
                 OpenILS::Application::Trigger::ModRunner::Cleanup
-                    ->new( $cleanup, $self->environment )
+                    ->new( $cleanup, $env)
                     ->run
                     ->final_result
             );
@@ -85,6 +113,9 @@ sub cleanup {
 
 sub react {
     my $self = shift;
+    my $env = shift || $self->environment;
+
+    return $self if (defined $self->reacted);
 
     if ($self->valid) {
         if ($self->event->event_def->group_field) { # can't react individually to a grouped definition
@@ -94,7 +125,7 @@ sub react {
             try {
                 $self->reacted(
                     OpenILS::Application::Trigger::ModRunner::Reactor
-                        ->new( $self->event->event_def->reactor, $self->environment )
+                        ->new( $self->event->event_def->reactor, $env )
                         ->run
                         ->final_result
                 );
@@ -213,6 +244,19 @@ sub editor {
     return $self->{editor};
 }
 
+sub unfind {
+    my $self = shift;
+    return undef unless (ref $self);
+
+    die 'Cannot unfind a reacted event' if (defined $self->reacted);
+
+    $self->update_state( 'pending' ) || die 'Unable to update event state';
+    $self->{id} = undef;
+    $self->{event} = undef;
+    $self->{environment} = undef;
+    return $self;
+}
+
 sub target {
     my $self = shift;
     return undef unless (ref $self);
@@ -232,12 +276,30 @@ sub update_state {
     $self->editor->xact_begin || return undef;
 
     my $e = $self->editor->retrieve_action_trigger_event( $self->id );
+    $e->start_time( 'now' ) unless $e->start_time;
     $e->update_time( 'now' );
     $e->update_process( $$ );
     $e->state( $state );
-    $self->editor->update_action_trigger_event( $e );
 
-    return $self->editor->xact_commit || undef;
+    $e->clear_start_time() if ($e->state eq 'pending');
+
+    my $ok = $self->editor->update_action_trigger_event( $e );
+    if (!$ok) {
+        $self->editor->xact_rollback;
+        return undef;
+    } else {
+        $ok = $self->editor->xact_commit;
+    }
+
+    if ($ok) {
+        $e = $self->editor->data;
+        $self->event->start_time( $e->start_time );
+        $self->event->update_time( $e->update_time );
+        $self->event->update_process( $e->update_process );
+        $self->event->state( $e->state );
+    }
+
+    return $ok || undef;
 }
 
 sub build_environment {
@@ -251,18 +313,20 @@ sub build_environment {
         $self->environment->{target} = $self->target;
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
+
+        $self->environment->{params}{ $_->param } = eval $_->value for ( @{$self->event->event_def->params} );
     
-        my @env_list = $self->editor->search_action_trigger_environment( { event_def => $self->event->event_def } );
-        my @param_list = $self->editor->search_action_trigger_params( { event_def => $self->event->event_def } );
-    
-        $self->environment->{params}{ $_->param } = eval $_->value for ( @param_list );
-    
-        for my $e ( @env_list ) {
+        for my $e ( @{$self->event->event_def->env} ) {
             my (@label, @path);
             @path = split('.', $e->path) if ($e->path);
             @label = split('.', $e->label) if ($e->label);
     
             $self->_object_by_path( $self->event->target, $e->collector, \@label, \@path );
+        }
+
+        if ($self->event->event_def->group_field) {
+            my @group_path = split('.', $self->event->event_def->group_field);
+            my $group_object = $self->_object_by_path( $self->event->target, undef, [], \@group_path );
         }
     
         $self->environment->{complete} = 1;
