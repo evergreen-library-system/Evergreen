@@ -50,6 +50,9 @@ pref("javascript.options.showInConsole",true);
 pref("nglayout.debug.disable_xul_cache",false);
 pref("nglayout.debug.disable_xul_fastload",false);
 pref("browser.xul.error_pages.enabled",true);
+// This one is specific for Open-ILS; debug options on login window
+pref("open-ils.debug_options", true);
+
 
 pref("browser.download.useDownloadDir", true);
 pref("browser.download.folderList", 0);

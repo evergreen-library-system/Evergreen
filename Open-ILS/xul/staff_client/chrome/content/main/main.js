@@ -31,6 +31,23 @@ function clear_the_cache() {
 	}
 }
 
+function toOpenWindowByType(inType, uri) { /* for Venkman */
+    try {
+    	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
+    	window.open(uri, "_blank", winopts);
+    } catch(E) {
+        alert(E); throw(E);
+    }
+}
+
+function start_debugger() {
+    setTimeout(
+        function() {
+            try { start_venkman(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
@@ -46,6 +63,8 @@ function main_init() {
 			);
 		}
 		/////////////////////////////////////////////////////////////////////////////
+
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
@@ -249,6 +268,11 @@ function main_init() {
 			version = 'versionless debug build';
 			document.getElementById('debug_gb').hidden = false;
 		}
+
+        if (pref && pref.getBoolPref('open-ils.debug_options')) {
+			document.getElementById('debug_gb').hidden = false;
+        }
+
         window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);
 		var x = document.getElementById('about_btn');
 		x.addEventListener(
@@ -322,10 +346,7 @@ function main_init() {
 			false
 		);
 
-        var pref = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefBranch);
-
-		if ( found_ws_info_in_Achrome() && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
+		if ( found_ws_info_in_Achrome() && pref && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
 			//b.addEventListener(

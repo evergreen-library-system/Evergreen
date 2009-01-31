@@ -565,6 +565,8 @@
 <!ENTITY staff.main.auth.debug.clear.accesskey "C">
 <!ENTITY staff.main.auth.debug.javascript "JavaScript Console">
 <!ENTITY staff.main.auth.debug.javascript.accesskey "J">
+<!ENTITY staff.main.auth.debug.debugger "Debugger">
+<!ENTITY staff.main.auth.debug.debugger.accesskey "D">
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
 <!ENTITY staff.main.auth.offline.caption "Offline Use">
