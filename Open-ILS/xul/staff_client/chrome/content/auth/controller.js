@@ -66,6 +66,12 @@ auth.controller.prototype = {
                             start_debugger();
                         }
                     ],
+                    'cmd_inspector' : [
+                        ['command'],
+                        function() {
+                            start_inspector();
+                        }
+                    ],
 					'cmd_override' : [
 						['command'],
 						function() {

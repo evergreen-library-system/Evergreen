@@ -230,6 +230,7 @@
 				<menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
 				<menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
 				<menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{xulG.window.win.start_debugger();}catch(E){alert(E);}"/>
+				<menuitem label="&staff.main.auth.debug.inspector;" oncommand="try{xulG.window.win.start_inspector();}catch(E){alert(E);}"/>
 			</menupopup>
 		</menu>
 	</menupopup>

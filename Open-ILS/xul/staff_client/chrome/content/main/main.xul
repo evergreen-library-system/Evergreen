@@ -56,6 +56,7 @@
 	</script>
 
     <script type="text/javascript" src="chrome://venkman/content/venkman-overlay.js"/>
+    <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"/>
 	<messagecatalog id="authStrings" src="chrome://open_ils_staff_client/locale/auth.properties"/>
 	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
@@ -69,6 +70,7 @@
 		<command id="cmd_standalone_import"/>
 		<command id="cmd_js_console"/>
 		<command id="cmd_debugger"/>
+		<command id="cmd_inspector"/>
 		<command id="cmd_clear_cache"/>
 		<command id="cmd_test_server"/>
 		<command id="cmd_ssl_exception" hidden="true"/>
@@ -180,6 +182,7 @@
 			<hbox>
 				<button label="&staff.main.auth.debug.javascript;" accesskey="&staff.main.auth.debug.javascript.accesskey;" command="cmd_js_console"/>
 				<button label="&staff.main.auth.debug.debugger;" accesskey="&staff.main.auth.debug.debugger.accesskey;" command="cmd_debugger"/>
+				<button label="&staff.main.auth.debug.inspector;" accesskey="&staff.main.auth.debug.inspector.accesskey;" command="cmd_inspector"/>
 				<button label="&staff.main.auth.debug.clear;" accesskey="&staff.main.auth.debug.clear.accesskey;" command="cmd_clear_cache"/>
 			</hbox>
 		</groupbox>

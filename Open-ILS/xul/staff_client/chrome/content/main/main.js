@@ -48,6 +48,14 @@ function start_debugger() {
     );
 };
 
+function start_inspector() {
+    setTimeout(
+        function() {
+            try { inspectDOMDocument(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
