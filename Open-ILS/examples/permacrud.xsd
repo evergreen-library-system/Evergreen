@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="context" nillable="true">
  <xs:complexType>
   <xs:attribute name="link"/>
+  <xs:attribute name="jump"/>
   <xs:attribute name="field" use="required"/>
   <xs:attribute name="global_required"/>
  </xs:complexType>
