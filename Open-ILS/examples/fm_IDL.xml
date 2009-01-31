@@ -672,6 +672,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Processing Group Context Field" name="group_field" oils_obj:array_position="13" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Template" name="template" oils_obj:array_position="14" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Environmet Entries" name="env" oils_obj:array_position="15" oils_persist:virtual="true"  reporter:datatype="link"/>
+			<field reporter:label="Parameters" name="params" oils_obj:array_position="16" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -681,6 +682,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cleanup_success" reltype="has_a" key="id" map="" class="atclean"/>
 			<link field="cleanup_failure" reltype="has_a" key="id" map="" class="atclean"/>
 			<link field="env" reltype="has_many" key="id" map="" class="atenv"/>
+			<link field="params" reltype="has_many" key="id" map="" class="atevparam"/>
 		</links>
 	</class>
 
@@ -3307,6 +3309,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="question" reltype="has_a" key="id" map="" class="asvq"/>
 			<link field="responses" reltype="has_many" key="answer" map="" class="asvr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </update>
+                <delete permission="ADMIN_SURVEY">
+                    <context link="question" jump="survey" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="ancc" controller="open-ils.cstore" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cataloged_circulation_id_seq">

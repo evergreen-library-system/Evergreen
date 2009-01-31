@@ -6,5 +6,6 @@ The following table lists the data sets we have collected for testing purposes.
 | lul_fre_100.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 100 records, French, pre-1923  |
 | lul_fre_500.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 500 records, French, pre-1923  |
 | jazz_1k.marc      | MARC21    | MARC8    | Unicorn GL3.1 | 1000 records  |
+| map_data.marc     | MARC21    | UTF8     | Voyager (LoC) | 3 records with some geospatial metadata  |
 | music_5k.marc     | MARC21    | MARC8    | Unicorn GL3.1 | 5000 records  |
 | hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
