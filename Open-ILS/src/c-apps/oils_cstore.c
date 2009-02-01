@@ -1508,8 +1508,6 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
-	jsonObject* obj;
-
 	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, id_pos));
 	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, order_pos);
 
@@ -1541,7 +1539,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
+	jsonObject* obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 
 	jsonObjectFree( list );
 	jsonObjectFree( fake_params );
@@ -3173,38 +3171,11 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	}
 	
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
+
 	dbi_result result = dbi_conn_query(dbhandle, sql);
-
-	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
-	if(result) {
-		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
-		osrfHash* dedup = osrfNewHash();
-
-		if (dbi_result_first_row(result)) {
-			/* JSONify the result */
-			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
-			do {
-				obj = oilsMakeFieldmapperFromResult( result, meta );
-				char* pkey_val = oilsFMGetString( obj, pkey );
-				if ( osrfHashGet( dedup, pkey_val ) ) {
-					jsonObjectFree(obj);
-					free(pkey_val);
-				} else {
-					osrfHashSet( dedup, pkey_val, pkey_val );
-					jsonObjectPush(res_list, obj);
-				}
-			} while (dbi_result_next_row(result));
-		} else {
-			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
-		}
-
-		osrfHashFree(dedup);
-
-		/* clean up the query */
-		dbi_result_free(result); 
-
-	} else {
-		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
+	if( NULL == result ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]",
+			MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -3214,11 +3185,37 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 		);
 		*err = -1;
 		free(sql);
-		jsonObjectFree(res_list);
 		return jsonNULL;
 
+	} else {
+		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 	}
 
+	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
+	osrfHash* dedup = osrfNewHash();
+
+	if (dbi_result_first_row(result)) {
+		/* JSONify the result */
+		osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
+		do {
+			obj = oilsMakeFieldmapperFromResult( result, meta );
+			char* pkey_val = oilsFMGetString( obj, pkey );
+			if ( osrfHashGet( dedup, pkey_val ) ) {
+				jsonObjectFree(obj);
+				free(pkey_val);
+			} else {
+				osrfHashSet( dedup, pkey_val, pkey_val );
+				jsonObjectPush(res_list, obj);
+			}
+		} while (dbi_result_next_row(result));
+	} else {
+		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s",
+			MODULENAME, sql );
+	}
+
+	osrfHashFree(dedup);
+	/* clean up the query */
+	dbi_result_free(result);
 	free(sql);
 
 	if (res_list->size && order_hash) {
