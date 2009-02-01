@@ -35,19 +35,18 @@ sub create_events_for_object {
 
     my $editor = new_editor(xact=>1);
 
-    my $hooks = $editor->search_action_trigger_hook([
+    my $hooks = $editor->search_action_trigger_hook(
         { key       => $key,
           core_type => $target->json_hint
-        },
-        { idlist    => 1 }
-    ]);
+        }
+    );
 
     my %hook_hash = map { ($_->id, $_) } @$hooks;
 
     my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location ] });
     my $defs = $editor->search_action_trigger_event_definition([
-        { hook   => $hooks,
-          owner  => [ map { $_->{id} } @$orgs ],
+        { hook   => [ map { $_->id   } @$hooks ],
+          owner  => [ map { $_->{id} } @$orgs  ],
           active => 't'
         },
         { idlist => 1 }
