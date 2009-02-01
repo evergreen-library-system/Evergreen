@@ -89,6 +89,12 @@ util.network.prototype = {
 				'\noverride_params = ' + override_params + '\n_params = ' + _params +
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 
+            if (document.getElementById('network_progress')) {
+                if (g && g.menu && g.menu.network_meter && typeof g.menu.network_meter.inc == 'function') g.menu.network_meter.inc(app,name);
+            } else if (typeof xulG != 'undefined') {
+                if (xulG && xulG.network_meter && typeof xulG.network_meter.inc == 'function') xulG.network_meter.inc(app,name);
+            }
+
 			var request = new RemoteRequest( app, name );
 			if (_params && _params.secure) {
 				request.setSecure(true);
@@ -106,6 +112,13 @@ util.network.prototype = {
 						try {
                             var duration = ( (new Date).getTime() - start_timer )/1000;
                             if ( obj.get_result(req) == null && duration > obj.network_timeout ) req.cancelled = true;
+
+                            if (document.getElementById('network_progress')) {
+                                if (g && g.menu && g.menu.network_meter && typeof g.menu.network_meter.dec == 'function') g.menu.network_meter.dec(app,name);
+                            } else if (typeof xulG != 'undefined') {
+                                if (xulG && xulG.network_meter && typeof xulG.network_meter.dec == 'function') xulG.network_meter.dec(app,name);
+                            }
+
 							var json_string = js2JSON(obj.get_result(req));
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
@@ -140,6 +153,13 @@ util.network.prototype = {
 					request.send(true);
                     var duration = ( (new Date).getTime() - start_timer )/1000;
                     if ( obj.get_result(request) == null && duration > obj.network_timeout ) request.cancelled = true;
+
+                    if (document.getElementById('network_progress')) {
+                        if (g && g.menu && g.menu.network_meter && typeof g.menu.network_meter.dec == 'function') g.menu.network_meter.dec(app,name);
+                    } else if (typeof xulG != 'undefined') {
+                        if (xulG && xulG.network_meter && typeof xulG.network_meter.dec == 'function') xulG.network_meter.dec(app,name);
+                    }
+
 				} catch(E) {
 					throw(E);
 				}

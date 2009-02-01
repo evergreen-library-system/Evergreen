@@ -12,6 +12,7 @@ main.menu = function () {
 	JSAN.use('util.window'); this.window = new util.window();
 
 	this.w = window;
+    document.getElementById('network_progress').setAttribute('count','0');
 }
 
 main.menu.prototype = {
@@ -882,6 +883,22 @@ main.menu.prototype = {
 		}
 	},
 
+    'network_meter' : {
+        'inc' : function(msg) {
+            var m = document.getElementById('network_progress');
+            var count = 1 + Number( m.getAttribute('count') );
+            m.setAttribute('mode','undetermined');
+            m.setAttribute('count', count);
+        },
+        'dec' : function(msg) {
+            var m = document.getElementById('network_progress');
+            var count = 1 - Number( m.getAttribute('count') );
+            if (count < 0) count = 0;
+            if (count == 0) m.setAttribute('mode','determined');
+            m.setAttribute('count', count);
+        }
+    },
+
 	'set_tab' : function(url,params,content_params) {
 		var obj = this;
 		if (!url) url = '/xul/server/';
@@ -900,6 +917,7 @@ main.menu.prototype = {
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
 		content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
 		content_params.url_prefix = function(url) { return obj.url_prefix(url); };
+        content_params.network_meter = obj.network_meter;
         content_params.chrome_xulG = xulG;
 		if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
 		

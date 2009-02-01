@@ -38,7 +38,12 @@
 			<tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
 		</tabpanels>
 	</tabbox>
-	<toolbox id="entity_toolbox"/>
+    <statusbar>
+        <statusbarpanel />
+        <spacer flex="1" />
+        <progressmeter id="network_progress" flex="1" mode="determined" value="0" />
+        <statusbarpanel />
+    </statusbar>
 </box>
 
 <!-- The main top level menubar -->
@@ -49,7 +54,7 @@
 		<menu id="main.menu.search" />
 		<menu id="main.menu.circ" />
 		<menu id="main.menu.cat" />
-		<spacer flex="1" />
+        <spacer flex="1" />
 		<menu id="main.menu.admin" />
 		<menu id="main.menu.help" />
 	</menubar>
