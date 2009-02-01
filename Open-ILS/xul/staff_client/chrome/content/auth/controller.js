@@ -72,6 +72,12 @@ auth.controller.prototype = {
                             start_inspector();
                         }
                     ],
+                    'cmd_chrome_list' : [
+                        ['command'],
+                        function() {
+                            start_chrome_list();
+                        }
+                    ],
 					'cmd_override' : [
 						['command'],
 						function() {

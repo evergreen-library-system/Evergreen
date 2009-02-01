@@ -56,6 +56,14 @@ function start_inspector() {
     );
 };
 
+function start_chrome_list() {
+    setTimeout(
+        function() {
+            try { startChromeList(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {

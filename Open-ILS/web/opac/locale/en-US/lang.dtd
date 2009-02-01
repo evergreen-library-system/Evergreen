@@ -567,6 +567,10 @@
 <!ENTITY staff.main.auth.debug.javascript.accesskey "J">
 <!ENTITY staff.main.auth.debug.debugger "Debugger">
 <!ENTITY staff.main.auth.debug.debugger.accesskey "D">
+<!ENTITY staff.main.auth.debug.inspector "DOM Inspector">
+<!ENTITY staff.main.auth.debug.inspector.accesskey "I">
+<!ENTITY staff.main.auth.debug.chrome_list "Chrome List">
+<!ENTITY staff.main.auth.debug.chrome_list.accesskey "">
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
 <!ENTITY staff.main.auth.offline.caption "Offline Use">
