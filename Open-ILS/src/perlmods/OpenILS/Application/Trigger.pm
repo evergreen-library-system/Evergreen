@@ -15,6 +15,7 @@ use DateTime::Format::ISO8601;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Trigger::Event;
+use OpenILS::Application::Trigger::EventGroup;
 
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -117,53 +118,30 @@ __PACKAGE__->register_method(
     argc     => 1
 );
 
-sub run_events {
+sub fire_event_group {
     my $self = shift;
     my $client = shift;
-    my $events = shift; # expects events ready for reaction
+    my $events = shift;
 
-    my $env = {};
-    if (ref($events) eq 'ARRAY') {
-        $$evn{target} = [];
-        $$evn{event} = [];
-        for my $e ( @$events ) {
-            for my $evn_part ( keys %{ $e->environment } ) {
-                if ($env_part eq 'target') {
-                    push @{ $$evn{target} }, $e->environment->{target};
-                } elsif ($env_part eq 'event') {
-                    push @{ $$evn{event} }, $e->environment->{event};
-                } else {
-                    push @{ $$evn{$evn_part} }, $e->environment->{$evn_part};
-                }
-            }
-        }
-    } else {
-        $env = $events->environment;
-        $events = [$events];
+    my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
+
+    if ($e->validate->valid) {
+        $e->react->cleanup;
     }
-
-    my @event_list;
-    for my $e ( @$events ) {
-        next unless ($e->valid);
-        push @event_list, $e;
-    }
-
-    $event_list[0]->react( $env );
-    $event_list[0]->cleanup( $env );
 
     return {
-        reacted   => $event_list[0]->reacted,
-        cleanedup => $event_list[0]->cleanedup,
-        events    => @event_list == 1 ? $event_list[0] : \@event_list
+        valid     => $e->valid,
+        reacted   => $e->reacted,
+        cleanedup => $e->cleanedup,
+        events    => $e->events
     };
 }
 __PACKAGE__->register_method(
-    api_name => 'open-ils.trigger.event.run_validated',
-    method   => 'fire_single_event',
+    api_name => 'open-ils.trigger.event_group.fire',
+    method   => 'fire_event_group',
     api_level=> 1,
     argc     => 1
 );
-
 
 sub pending_events {
     my $self = shift;
@@ -209,10 +187,10 @@ sub grouped_events {
 
                 # push this event onto the event+grouping_pkey_value stack
                 $groups{$e->event->event_def->id}{$ident_value} ||= [];
-                push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e_id;
+                push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
             } else {
                 # it's a non-grouped event
-                push @{ $groups{'*'} }, $e_id;
+                push @{ $groups{'*'} }, $e;
             }
         }
     }
@@ -220,8 +198,43 @@ sub grouped_events {
     return \%groups;
 }
 __PACKAGE__->register_method(
-    api_name => 'open-ils.trigger.event.found_by_group',
+    api_name => 'open-ils.trigger.event.find_pending_by_group',
     method   => 'grouped_events',
+    api_level=> 1
+);
+
+sub run_all_events {
+    my $self = shift;
+    my $client = shift;
+
+    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run();
+
+    for my $def ( %$groups ) {
+        if ($def eq '*') {
+            for my $event ( @{ $$groups{'*'} } ) {
+                $client->respond(
+                    $self
+                        ->method_lookup('open-ils.trigger.event.fire')
+                        ->run($event)
+                );
+            }
+        } else {
+            my $defgroup = $$groups{$def};
+            for my $ident ( keys %$defgroup ) {
+                $client->respond(
+                    $self
+                        ->method_lookup('open-ils.trigger.event_group.fire')
+                        ->run($$defgroup{$ident})
+                );
+            }
+        }
+    }
+                
+            
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.event.run_all_pending',
+    method   => 'run_all_events',
     api_level=> 1
 );
 

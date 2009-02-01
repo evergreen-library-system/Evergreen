@@ -12,9 +12,15 @@ my $log = 'OpenSRF::Utils::Logger';
 sub new {
     my $class = shift;
     my $id = shift;
+    my $editor = shift;
     $class = ref($class) || $class;
 
-    my $self = bless { id => $id, editor => new_editor() } => $class;
+    return $id if (ref($id) && ref($id) == $class);
+
+    my $standalone = $editor ? 0 : 1;
+    $editor ||= new_editor();
+
+    my $self = bless { id => $id, editor => $editor, standalone => $standalone } => $class;
 
     return $self->init()
 }
@@ -266,6 +272,15 @@ sub target {
     return $self->{target};
 }
 
+sub standalone {
+    my $self = shift;
+    return undef unless (ref $self);
+
+    my $t = shift;
+    $self->{standalone} = $t if (defined $t);
+    return $self->{standalone};
+}
+
 sub update_state {
     my $self = shift;
     return undef unless ($self && ref $self);
@@ -273,7 +288,9 @@ sub update_state {
     my $state = shift;
     return undef unless ($state);
 
-    $self->editor->xact_begin || return undef;
+    if ($self->standalone) {
+        $self->editor->xact_begin || return undef;
+    }
 
     my $e = $self->editor->retrieve_action_trigger_event( $self->id );
     $e->start_time( 'now' ) unless $e->start_time;
@@ -285,10 +302,10 @@ sub update_state {
 
     my $ok = $self->editor->update_action_trigger_event( $e );
     if (!$ok) {
-        $self->editor->xact_rollback;
+        $self->editor->xact_rollback if ($self->standalone);
         return undef;
     } else {
-        $ok = $self->editor->xact_commit;
+        $ok = $self->editor->xact_commit if ($self->standalone);
     }
 
     if ($ok) {
