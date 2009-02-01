@@ -12,7 +12,18 @@ main.menu = function () {
 	JSAN.use('util.window'); this.window = new util.window();
 
 	this.w = window;
-    document.getElementById('network_progress').setAttribute('count','0');
+    var x = document.getElementById('network_progress');
+    x.setAttribute('count','0');
+    x.addEventListener(
+        'click',
+        function() {
+            if ( window.confirm(offlineStrings.getString('menu.reset_network_stats')) ) {
+                var x = document.getElementById('network_progress_rows');
+                while(x.firstChild) { x.removeChild( x.lastChild ); }
+            }
+        },
+        false
+    );
 }
 
 main.menu.prototype = {
@@ -884,18 +895,56 @@ main.menu.prototype = {
 	},
 
     'network_meter' : {
-        'inc' : function(msg) {
-            var m = document.getElementById('network_progress');
-            var count = 1 + Number( m.getAttribute('count') );
-            m.setAttribute('mode','undetermined');
-            m.setAttribute('count', count);
+        'inc' : function(app,method) {
+            try {
+                var m = document.getElementById('network_progress');
+                var count = 1 + Number( m.getAttribute('count') );
+                m.setAttribute('mode','undetermined');
+                m.setAttribute('count', count);
+                var rows = document.getElementById('network_progress_rows');
+                var row = document.getElementById('network_progress_tip_'+app+'_'+method);
+                if (!row) {
+                    row = document.createElement('row'); row.setAttribute('id','network_progress_tip_'+app+'_'+method);
+                    var a = document.createElement('label'); a.setAttribute('value','App:');
+                    var b = document.createElement('label'); b.setAttribute('value',app);
+                    var c = document.createElement('label'); c.setAttribute('value','Method:');
+                    var d = document.createElement('label'); d.setAttribute('value',method);
+                    var e = document.createElement('label'); e.setAttribute('value','Total:');
+                    var f = document.createElement('label'); f.setAttribute('value','0'); 
+                    f.setAttribute('id','network_progress_tip_total_'+app+'_'+method);
+                    var g = document.createElement('label'); g.setAttribute('value','Outstanding:');
+                    var h = document.createElement('label'); h.setAttribute('value','0');
+                    h.setAttribute('id','network_progress_tip_out_'+app+'_'+method);
+                    row.appendChild(a); row.appendChild(b); row.appendChild(c);
+                    row.appendChild(d); row.appendChild(e); row.appendChild(f);
+                    row.appendChild(g); row.appendChild(h); rows.appendChild(row);
+                }
+                var total = document.getElementById('network_progress_tip_total_'+app+'_'+method);
+                if (total) {
+                    total.setAttribute('value', 1 + Number( total.getAttribute('value') ));
+                }
+                var out = document.getElementById('network_progress_tip_out_'+app+'_'+method);
+                if (out) {
+                    out.setAttribute('value', 1 + Number( out.getAttribute('value') ));
+                }
+            } catch(E) {
+                dump('network_meter.inc(): ' + E + '\n');
+            }
         },
-        'dec' : function(msg) {
-            var m = document.getElementById('network_progress');
-            var count = 1 - Number( m.getAttribute('count') );
-            if (count < 0) count = 0;
-            if (count == 0) m.setAttribute('mode','determined');
-            m.setAttribute('count', count);
+        'dec' : function(app,method) {
+            try {
+                var m = document.getElementById('network_progress');
+                var count = -1 + Number( m.getAttribute('count') );
+                if (count < 0) count = 0;
+                if (count == 0) m.setAttribute('mode','determined');
+                m.setAttribute('count', count);
+                var out = document.getElementById('network_progress_tip_out_'+app+'_'+method);
+                if (out) {
+                    out.setAttribute('value', -1 + Number( out.getAttribute('value') ));
+                }
+            } catch(E) {
+                dump('network_meter.dec(): ' + E + '\n');
+            }
         }
     },
 
