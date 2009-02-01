@@ -64,6 +64,14 @@ function start_chrome_list() {
     );
 };
 
+function start_js_shell() {
+    setTimeout(
+        function() {
+            try { window.open('chrome://open_ils_staff_client/content/util/shell.html','shell','chrome,resizable,scrollbars'); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {

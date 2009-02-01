@@ -78,6 +78,12 @@ auth.controller.prototype = {
                             start_chrome_list();
                         }
                     ],
+                    'cmd_js_shell' : [
+                        ['command'],
+                        function() {
+                            start_js_shell();
+                        }
+                    ],
 					'cmd_override' : [
 						['command'],
 						function() {

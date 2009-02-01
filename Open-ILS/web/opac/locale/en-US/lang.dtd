@@ -571,6 +571,8 @@
 <!ENTITY staff.main.auth.debug.inspector.accesskey "I">
 <!ENTITY staff.main.auth.debug.chrome_list "Chrome List">
 <!ENTITY staff.main.auth.debug.chrome_list.accesskey "">
+<!ENTITY staff.main.auth.debug.js_shell "Javascript Shell">
+<!ENTITY staff.main.auth.debug.js_shell.accesskey "">
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
 <!ENTITY staff.main.auth.offline.caption "Offline Use">
@@ -597,6 +599,8 @@
 <!ENTITY staff.main.menu.admin.cmd_console.label "JavaScript Console">
 <!ENTITY staff.main.menu.admin.cmd_shell.accesskey "H">
 <!ENTITY staff.main.menu.admin.cmd_shell.label "JavaScript Shell">
+<!ENTITY staff.main.menu.admin.cmd_chrome_shell.accesskey "">
+<!ENTITY staff.main.menu.admin.cmd_chrome_shell.label "JavaScript Shell (Chrome)">
 <!ENTITY staff.main.menu.admin.cmd_test.label "Test Module">
 <!ENTITY staff.main.menu.admin.copy_location_edit.accesskey "L">
 <!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">

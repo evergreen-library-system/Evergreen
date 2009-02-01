@@ -3,10 +3,9 @@
 <html onclick="keepFocusInTextbox(event)">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>JavaScript Shell 1.3.1</title>
+<title>JavaScript Shell 1.4</title>
 
 <script type="text/javascript">
-// Modified by Jason for Evergreen
 var 
 histList = [""], 
 histPos = 0, 
@@ -94,11 +93,11 @@ function inputKeydown(e) {
     setTimeout(function() { _in.value = ""; }, 0); // can't preventDefault on input, so clear it later
   } else if (e.keyCode == 38) { // up
     // go up in history if at top or ctrl-up
-    if (e.ctrlKey || _in.selectionStart == null || _in.selectionStart == 0)
+    if (e.ctrlKey || caretInFirstLine(_in))
       hist(true);
   } else if (e.keyCode == 40) { // down
     // go down in history if at end or ctrl-down
-    if (e.ctrlKey || _in.selectionStart == null || _in.selectionEnd == _in.textLength)
+    if (e.ctrlKey || caretInLastLine(_in))
       hist(false);
   } else if (e.keyCode == 9) { // tab
     tabcomplete();
@@ -109,6 +108,28 @@ function inputKeydown(e) {
   
   //return true;
 };
+
+function caretInFirstLine(textbox)
+{
+  // IE doesn't support selectionStart/selectionEnd
+  if (textbox.selectionStart == undefined)
+    return true;
+
+  var firstLineBreak = textbox.value.indexOf("\n");
+  
+  return ((firstLineBreak == -1) || (textbox.selectionStart <= firstLineBreak));
+}
+
+function caretInLastLine(textbox)
+{
+  // IE doesn't support selectionStart/selectionEnd
+  if (textbox.selectionEnd == undefined)
+    return true;
+
+  var lastLineBreak = textbox.value.lastIndexOf("\n");
+  
+  return (textbox.selectionEnd > lastLineBreak);
+}
 
 function recalculateInputHeight()
 {
@@ -152,6 +173,13 @@ load : function load(url)
   println("Loading " + url + "...", "message");
 },
 
+clear : function clear()
+{
+  var CHILDREN_TO_PRESERVE = 3;
+  while (_out.childNodes[CHILDREN_TO_PRESERVE]) 
+    _out.removeChild(_out.childNodes[CHILDREN_TO_PRESERVE]);
+},
+
 print : function print(s) { println(s, "print"); },
 
 // the normal function, "print", shouldn't return a value
@@ -162,8 +190,18 @@ pr : function pr(s)
   return s;
 },
 
-props : function props(e)
+props : function props(e, onePerLine)
 {
+  if (e === null) {
+    println("props called with null argument", "error");
+    return;
+  }
+
+  if (e === undefined) {
+    println("props called with undefined argument", "error");
+    return;
+  }
+
   var ns = ["Methods", "Fields", "Unreachables"];
   var as = [[], [], []]; // array of (empty) arrays of arrays!
   var p, j, i; // loop variables, several used multiple times
@@ -205,7 +243,11 @@ props : function props(e)
   for (j=0; j<protoLevels; ++j)
     for (i=0;i<ns.length;++i)
       if (as[i][j].length) 
-        printWithRunin(ns[i] + times(" of prototype", j), as[i][j].join(", "), "propList");
+        printWithRunin(
+          ns[i] + times(" of prototype", j), 
+          (onePerLine ? "\n\n" : "") + as[i][j].sort().join(onePerLine ? "\n" : ", ") + (onePerLine ? "\n\n" : ""), 
+          "propList"
+        );
 },
 
 blink : function blink(node)
@@ -264,12 +306,7 @@ mathHelp : function mathHelp()
   printWithRunin("Math methods", "abs, acos, asin, atan, atan2, ceil, cos, exp, floor, log, max, min, pow, random, round, sin, sqrt, tan", "propList");
 },
 
-ans : undefined,
-
-cls : function cls()
-{
-	while (_out.lastChild) { _out.removeChild( _out.lastChild ); }
-}
+ans : undefined
 };
 
 
@@ -301,9 +338,10 @@ function hist(up)
       setTimeout(
         function() {
           _in.value = ''; 
-          _in.value = histList[histPos]; 
+          _in.value = histList[histPos];
+          var caretPos = _in.value.length;
           if (_in.setSelectionRange) 
-            _in.setSelectionRange(0, 0);
+            _in.setSelectionRange(caretPos, caretPos);
         },
         0
       );
@@ -394,18 +432,22 @@ function tabcomplete()
     return i;
   }
 
+  // XXX should be used more consistently (instead of using selectionStart/selectionEnd throughout code)
+  // XXX doesn't work in IE, even though it contains IE-specific code
   function getcaretpos(inp)
   {
-    if(inp.selectionEnd)
+    if(inp.selectionEnd != null)
       return inp.selectionEnd;
-
+      
     if(inp.createTextRange)
     {
-      //dump('using createTextRange\n');
       var docrange = _win.Shell.document.selection.createRange();
       var inprange = inp.createTextRange();
-      inprange.setEndPoint('EndToStart', docrange);
-      return inprange.text.length;
+      if (inprange.setEndPoint)
+      {
+        inprange.setEndPoint('EndToStart', docrange);
+        return inprange.text.length;
+      }
     }
 
     return inp.value.length; // sucks, punt
@@ -667,7 +709,7 @@ h3 { margin-top: 0; margin-bottom: 0em; }
 h3 + div { margin: 0; }
 
 form { margin: 0; padding: 0; }
-#input { width: 100%; border: none; padding: 0; }
+#input { width: 100%; border: none; padding: 0; overflow: auto; }
 
 .input { color: blue; background: white; font: inherit; font-weight: bold; margin-top: .5em; /* background: #E6E6FF; */ }
 .normalOutput { color: black; background: white; }
@@ -679,9 +721,9 @@ form { margin: 0; padding: 0; }
 </style>
 </head>
 
-<body onload="try { init(); } catch(E) { dump(E+'\n'); alert(E); }"> 
+<body onload="init()">
 
- <div id="output"><h3>JavaScript Shell 1.3.1</h3><div>Features: autocompletion of property names with Tab, multiline input with Shift+Enter, input history with (Ctrl+) Up/Down, <a accesskey=M href="javascript:go('scope(Math); mathHelp();');">Math</a>, <a accesskey=H href="http://www.squarefree.com/shell/?ignoreReferrerFrom=shell1.3.1">help</a></div><div>Values and functions: ans, print(string), <a accesskey=P href="javascript:go('props(ans)')">props(object)</a>, <a accesskey=B href="javascript:go('blink(ans)')">blink(node)</a>, load(scriptURL), scope(object), cls()</div></div>
+<div id="output"><h3>JavaScript Shell 1.4</h3><div>Features: autocompletion of property names with Tab, multiline input with Shift+Enter, input history with (Ctrl+) Up/Down, <a accesskey="M" href="javascript:go('scope(Math); mathHelp();');" title="Accesskey: M">Math</a>, <a accesskey="H" href="http://www.squarefree.com/shell/?ignoreReferrerFrom=shell1.4"  title="Accesskey: H">help</a></div><div>Values and functions: ans, print(string), <a accesskey="P" href="javascript:go('props(ans)')" title="Accesskey: P">props(object)</a>, <a accesskey="B" href="javascript:go('blink(ans)')" title="Accesskey: B">blink(node)</a>, <a accesskey="C" href="javascript:go('clear()')" title="Accesskey: C">clear()</a>, load(scriptURL), scope(object)</div></div>
 
 <div><textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea></div>
 

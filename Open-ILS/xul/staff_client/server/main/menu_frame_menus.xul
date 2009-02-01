@@ -222,6 +222,8 @@
 				<menuitem label="&staff.main.menu.admin.fieldmapper.label;" accesskey="&staff.main.menu.admin.fieldmapper.accesskey;" command="cmd_fieldmapper"/>
 				<menuitem label="&staff.main.menu.admin.cmd_console.label;" accesskey="&staff.main.menu.admin.cmd_console.accesskey;" command="cmd_console"/>
 				<menuitem label="&staff.main.menu.admin.cmd_shell.label;" accesskey="&staff.main.menu.admin.cmd_shell.accesskey;" command="cmd_shell"/>
+				<menuitem label="&staff.main.menu.admin.cmd_chrome_shell.label;" accesskey="&staff.main.menu.admin.cmd_chrome_shell.accesskey;" 
+                    oncommand="try{xulG.window.win.start_js_shell();}catch(E){alert(E);}"/>
 				<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
 				<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
 				<menuitem label="&staff.main.menu.admin.clear_cache.label;" accesskey="&staff.main.menu.admin.clear_cache.accesskey;" command="cmd_clear_cache"/>
