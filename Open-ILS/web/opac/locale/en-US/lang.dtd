@@ -635,6 +635,7 @@
 <!ENTITY staff.main.menu.admin.xuleditor.accesskey "X">
 <!ENTITY staff.main.menu.admin.xuleditor.label "XUL Test">
 <!ENTITY staff.main.menu.admin.venkman.label "Venkman">
+<!ENTITY staff.main.menu.admin.ping "Ping Server">
 <!ENTITY staff.main.menu.cat.accesskey "g">
 <!ENTITY staff.main.menu.cat.add_bib.key "B">
 <!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">

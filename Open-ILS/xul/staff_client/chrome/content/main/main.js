@@ -151,7 +151,8 @@ function main_init() {
 			var xulG = {
 				'auth' : G.auth,
 				'url' : url,
-				'window' : G.window
+				'window' : G.window,
+                'data' : G.data
 			};
 
 			if (G.data.ws_info && G.data.ws_info[G.auth.controller.view.server_prompt.value]) {

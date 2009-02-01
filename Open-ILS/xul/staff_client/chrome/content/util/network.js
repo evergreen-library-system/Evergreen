@@ -470,7 +470,39 @@ util.network.prototype = {
 		} catch(E) {
 			throw(E);
 		}
-	}
+	},
+
+    'ping' : function() {
+        try {
+            JSAN.use('util.file'); JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+			var file = new util.file('ping.bat');
+            var path = file._file.path;
+			file.write_content('truncate+exec',
+                '#!/bin/sh\n' +
+                'ping -n 15 ' + data.server_unadorned + ' > "' + path + '.txt"\n' + /* windows */
+                'ping -c 15 ' + data.server_unadorned + ' >> "' + path + '.txt"\n'  /* unix */
+            );
+            file.close();
+			file = new util.file('ping.bat');
+
+			var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+			process.init(file._file);
+
+			var args = [];
+
+			dump('process.run = ' + process.run(true, args, args.length) + '\n');
+
+            file.close();
+
+            var file = new util.file('ping.bat.txt');
+            var output = file.get_content();
+            file.close();
+
+            return output;
+        } catch(E) {
+            alert(E);
+        }
+    }
 }
 
 /*

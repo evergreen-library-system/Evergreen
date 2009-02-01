@@ -234,6 +234,7 @@
 				<menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{xulG.window.win.start_debugger();}catch(E){alert(E);}"/>
 				<menuitem label="&staff.main.auth.debug.inspector;" oncommand="try{xulG.window.win.start_inspector();}catch(E){alert(E);}"/>
 				<menuitem label="&staff.main.auth.debug.chrome_list;" oncommand="try{xulG.window.win.start_chrome_list();}catch(E){alert(E);}"/>
+                <menuitem label="&staff.main.menu.admin.ping;" oncommand="try{netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');JSAN.use('util.network'); var n = new util.network(); alert(n.ping());}catch(E){alert(E);}"/>
 			</menupopup>
 		</menu>
 	</menupopup>
