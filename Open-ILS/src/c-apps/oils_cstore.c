@@ -470,7 +470,10 @@ static void sessionDataFree( char* key, void* item ) {
 }
 
 int beginTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -501,7 +504,10 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 }
 
 int setSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
     int spNamePos = 0;
 #ifdef PCRUD
@@ -546,9 +552,12 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int releaseSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    int spNamePos = 0;
+	int spNamePos = 0;
 #ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -591,9 +600,12 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    int spNamePos = 0;
+	int spNamePos = 0;
 #ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -636,7 +648,10 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int commitTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -664,7 +679,10 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 }
 
 int rollbackTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -692,9 +710,12 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 }
 
 int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
     osrfHash* class_obj = osrfHashGet( meta, "class" );
 
     int err = 0;
@@ -3064,7 +3085,11 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 }
 
 int doJSONSearch ( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
 	osrfLogDebug(OSRF_LOG_MARK, "Recieved query request");
 
 	int err = 0;
