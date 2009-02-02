@@ -75,7 +75,7 @@ sub init {
 
     my $class = $self->_fm_class_by_hint( $self->event->event_def->hook->core_type );
     
-    my $meth = "retreive_" . $class;
+    my $meth = "retrieve_" . $class;
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/;
     
