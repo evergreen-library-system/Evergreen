@@ -2353,9 +2353,15 @@ static char* SELECT (
 		
 		core_class = strdup( tmp_itr->key );
 		join_hash = snode;
+		
+		jsonObject* extra = jsonIteratorNext( tmp_itr );
 
 		jsonIteratorFree( tmp_itr );
 		snode = NULL;
+		
+		// There shouldn't be more than one entry in join_hash
+		if( extra )
+			return NULL;	// Malformed join_hash; extra entry
 
 	} else if (join_hash->type == JSON_ARRAY) {
         from_function = 1;
@@ -2365,6 +2371,8 @@ static char* SELECT (
 		core_class = jsonObjectToSimpleString( join_hash );
 		join_hash = NULL;
 	}
+	else
+		return NULL;
 
 	// punt if we don't know about the core class (and it's not a function)
 	if (!from_function && !(core_meta = osrfHashGet( oilsIDL(), core_class ))) {
