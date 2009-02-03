@@ -20,6 +20,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <services>
           <service>opensrf.math</service>
           <service>open-ils.actor</service>
+          <service>open-ils.acq</service>
           <service>open-ils.auth</service>
           <service>open-ils.cat</service>
           <service>open-ils.circ</service>
