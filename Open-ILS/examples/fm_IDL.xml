@@ -3793,7 +3793,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="acqexr" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::exchange_rate" oils_persist:tablename="acq.exchange_rate">
+	<class id="acqexr" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::exchange_rate" oils_persist:tablename="acq.exchange_rate">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.exchange_rate_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3807,6 +3807,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="from_currency" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="to_currency" reltype="has_a" key="code" map="" class="acqct"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+				<delete permission="ADMIN_CURRENCY_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="acqpro" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::provider" oils_persist:tablename="acq.provider">
