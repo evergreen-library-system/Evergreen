@@ -2340,7 +2340,6 @@ static char* SELECT (
 	// metadata about the core search class
 	osrfHash* core_meta = NULL;
 	osrfHash* core_fields = NULL;
-	osrfHash* idlClass = NULL;
 
 	// punt if there's no core class
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size ))
@@ -2432,9 +2431,9 @@ static char* SELECT (
 	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {
 
 		    // round trip through the idl, just to be safe
-		    idlClass = osrfHashGet( oilsIDL(), selclass_itr->key );
+			const char* cname = selclass_itr->key;
+			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
 		    if (!idlClass) continue;
-		    char* cname = osrfHashGet(idlClass, "classname");
 
 		    // make sure the target relation is in the join tree
 		    if (strcmp(core_class,cname)) {
@@ -2460,8 +2459,8 @@ static char* SELECT (
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
 		    while ( (selfield = jsonIteratorNext( select_itr )) ) {
 
-			    char* __column = NULL;
-			    char* __alias = NULL;
+			    char* _column = NULL;
+			    char* _alias = NULL;
 
 			    // ... if it's a sstring, just toss it on the pile
 			    if (selfield->type == JSON_STRING) {
@@ -2472,7 +2471,7 @@ static char* SELECT (
 				    free(_requested_col);
 
 				    if (!field) continue;
-				    __column = strdup(osrfHashGet(field, "name"));
+				    _column = strdup(osrfHashGet(field, "name"));
 
 				    if (first) {
 					    first = 0;
@@ -2489,21 +2488,21 @@ static char* SELECT (
         	                char* pkey = osrfHashGet(idlClass, "primarykey");
         	                char* tname = osrfHashGet(idlClass, "tablename");
 
-                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, __column, pkey, cname, pkey, locale, __column);
+                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, _column, pkey, cname, pkey, locale, _column);
                         } else {
-				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
                         }
                     } else {
-				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
                     }
 
 			    // ... but it could be an object, in which case we check for a Field Transform
 			    } else {
 
-				    __column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
+				    _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
 				    // again, just to be safe
-				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), __column );
+				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _column );
 				    if (!field) continue;
 				    const char* fname = osrfHashGet(field, "name");
 
@@ -2514,15 +2513,15 @@ static char* SELECT (
 					}
 
 				    if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
-					    __alias = jsonObjectToSimpleString( tmp_const );
+					    _alias = jsonObjectToSimpleString( tmp_const );
 				    } else {
-					    __alias = strdup(__column);
+					    _alias = strdup(_column);
 				    }
 
 				    if (jsonObjectGetKeyConst( selfield, "transform" )) {
-					    free(__column);
-					    __column = searchFieldTransform(cname, field, selfield);
-					    buffer_fadd(select_buf, " %s AS \"%s\"", __column, __alias);
+					    free(_column);
+					    _column = searchFieldTransform(cname, field, selfield);
+					    buffer_fadd(select_buf, " %s AS \"%s\"", _column, _alias);
 				    } else {
                         if (locale) {
                 		    char* i18n = osrfHashGet(field, "i18n");
@@ -2533,12 +2532,12 @@ static char* SELECT (
         	                    char* pkey = osrfHashGet(idlClass, "primarykey");
         	                    char* tname = osrfHashGet(idlClass, "tablename");
 
-                                buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, __alias);
+                                buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, _alias);
                             } else {
-					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                             }
                         } else {
-					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                         }
 				    }
 			    }
@@ -2565,16 +2564,16 @@ static char* SELECT (
 							OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
 					    }
 
-					    __column = searchFieldTransform(cname, field, selfield);
+					    _column = searchFieldTransform(cname, field, selfield);
 						OSRF_BUFFER_ADD_CHAR(group_buf, ' ');
-						OSRF_BUFFER_ADD(group_buf, __column);
-					    __column = searchFieldTransform(cname, field, selfield);
+						OSRF_BUFFER_ADD(group_buf, _column);
+					    _column = searchFieldTransform(cname, field, selfield);
 					*/
 				    }
 			    }
 
-			    if (__column) free(__column);
-			    if (__alias) free(__alias);
+			    if (_column) free(_column);
+			    if (_alias) free(_alias);
 
 			    sel_pos++;
 		    }
