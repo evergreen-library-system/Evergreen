@@ -19,6 +19,8 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
     dojo._hasResource["openils.acq.CurrencyType"] = true;
     dojo.provide("openils.acq.CurrencyType");
     dojo.require('openils.User');
+    dojo.require('openils.Util');
+    dojo.require('openils.PermaCrud');
 
     dojo.declare('openils.acq.CurrencyType', null, {
     });
@@ -29,18 +31,18 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
      * Retrieves all of the currency types
      */
     openils.acq.CurrencyType.fetchAll = function(onComplete) {
-        var req = new OpenSRF.ClientSession('open-ils.acq').request(
-            'open-ils.acq.currency_type.all.retrieve', openils.User.authtoken);
-
-        req.oncomplete = function(r) {
-            var msg = r.recv();
-            var types = msg.content();
-            for(var i in types) 
-                openils.acq.CurrencyType.cache[types[i].code()] = types[i];
-            onComplete(types);
-        }
-        req.send();
-    }
+        var list = [];
+        var pcrud = new openils.PermaCrud();
+        pcrud.retrieveAll('acqct', {
+            async : true,
+            oncomplete : function(r) {
+                var types = openils.Util.readResponse(r);
+                for(var idx in types)
+                    openils.acq.CurrencyType.cache[types[idx].code()] = types[idx];
+                onComplete(types);
+            }
+        });
+    };
 
     openils.acq.CurrencyType.loadSelectWidget = function(selector) {
         openils.acq.CurrencyType.fetchAll(
@@ -50,6 +52,6 @@ if(!dojo._hasResource["openils.acq.CurrencyType"]) {
                 selector.setValue(ctypes[0].code()); /* XXX get from setting */
             }
         );
-    }
+    };
 }
 
