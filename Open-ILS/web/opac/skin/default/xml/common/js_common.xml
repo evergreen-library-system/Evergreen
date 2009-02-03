@@ -41,7 +41,7 @@
         var locale = location.href.replace( /.+opac\/([^\/]+)\/skin.+/, '$1' );
         if (!locale) locale = '<!--#echo var="locale"-->';
 
-        djConfig.locale = locale;
+        djConfig.locale = locale.toLowerCase();
 
     </script>
 
