@@ -12,12 +12,12 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
         [dijit.layout.ContentPane, openils.widget.AutoWidget],
         {
             mode : 'update',
-            fieldList : [], // holds the field name + associated widget
             onPostApply : null, // apply callback
             onCancel : null, // cancel callback
             hideActionButtons : false,
 
             constructor : function(args) {
+                this.fieldList = [];
                 for(var k in args)
                     this[k] = args[k];
             },
@@ -60,11 +60,22 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     });
                     widget.build();
                     this.fieldList.push({name:field.name, widget:widget});
+                    this.applySaveOnEnter(widget);
                 }
                 if(!this.hideActionButtons)
                     this.buildActionButtons(tbody);
     
                 openils.Util.addCSSClass(table, 'oils-fm-edit-dialog');
+            },
+
+            applySaveOnEnter : function(widget) {
+                var self = this;
+                dojo.connect(this, 'onKeyDown',
+                    function(e) {
+                        if(e.keyCode == dojo.keys.ENTER) 
+                            self.performAutoEditAction();
+                    }
+                );
             },
 
             buildActionButtons : function(tbody) {
@@ -83,14 +94,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
                 new dijit.form.Button({
                     label:'Save',  // XXX
-                    onClick: function() {
-                        self.performEditAction({
-                            oncomplete:function() {
-                                if(self.onPostApply)
-                                    self.onPostApply();
-                            }
-                        });
-                    }
+                    onClick: function() {self.performAutoEditAction();}
                 }, applyTd);
             },
 
@@ -105,12 +109,22 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
             },
 
+            performAutoEditAction : function() {
+                var self = this;
+                self.performEditAction({
+                    oncomplete:function() {
+                        if(self.onPostApply)
+                            self.onPostApply();
+                    }
+                });
+            },
+
             performEditAction : function(opts) {
                 var pcrud = new openils.PermaCrud();
                 var fields = this.getFields();
                 if(this.mode == 'create')
                     this.fmObject = new fieldmapper[this.fmClass]();
-                for(var idx in fields) 
+                for(var idx in fields)  
                     this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
                 pcrud[this.mode](this.fmObject, opts);
             }
