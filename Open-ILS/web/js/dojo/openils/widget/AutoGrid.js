@@ -14,10 +14,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             /* if true, pop up an edit dialog when user hits Enter on a give row */
             editOnEnter : false, 
 
-            /* maps dojo store items to fieldmapper objects, since the 
-             * grid may not have access to all fm objects */
-            storeItemObjectMapper : null,  
-
             startup : function() {
                 this.inherited(arguments);
                 this.initAutoEnv();
@@ -42,6 +38,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             /* capture keydown and launch edit dialog on enter */
             _applyEditOnEnter : function() {
+                this.onMouseOverRow = function(e) {};
+                this.onMouseOut = function(e) {};
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
                         if(e.keyCode == dojo.keys.ENTER) {
@@ -55,18 +53,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             _drawEditDialog : function(storeItem) {
                 var grid = this;
-                var fmObject = this.storeItemObjectMapper(storeItem);
+                var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
                 var dialog = new openils.widget.EditDialog({
                     fmObject:fmObject,
                     onPostApply : function() {
-                        // update the grid store
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
                             if(idents.filter(function(j){return (j == field)})[0])
                                 continue; // don't try to edit an identifier field
                             grid.store.setValue(storeItem, field, fmObject[field]());
                         }
+                        grid.update();
+                        dialog.destroy();
                     }
                 });
                 dialog.editPane.fieldOrder = this.fieldOrder;
