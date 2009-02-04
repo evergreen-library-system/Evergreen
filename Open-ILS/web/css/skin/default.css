@@ -4,10 +4,7 @@
 /* import the dojo CSS */
 @import "/js/dojo/dojo/resources/dojo.css";
 @import "/js/dojo/dijit/themes/tundra/tundra.css";
-@import "/js/dojo/dojox/grid/_grid/Grid.css";
-@import "/js/dojo/dojox/grid/resources/Grid.css";
 @import "/js/dojo/dojox/grid/resources/tundraGrid.css";
-
 
 
 html, body, #oils-base-body-block {
@@ -18,6 +15,7 @@ html, body, #oils-base-body-block {
     padding:0;
 }
 table { border-collapse: collapse; }
+
 /* use this for divs whose contents should be entirely contained within the div */
 .container:after {content: ""; display: block; height: 0; clear: both; }
 
