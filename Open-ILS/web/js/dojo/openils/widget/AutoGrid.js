@@ -39,19 +39,24 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             /* capture keydown and launch edit dialog on enter */
             _applyEditOnEnter : function() {
                 this.onMouseOverRow = function(e) {};
-                this.onMouseOut = function(e) {};
+                this.onMouseOutRow = function(e) {};
+                this.onCellFocus = function(cell, rowIndex) { 
+                    openils.Util.addCSSClass(
+                        cell.getNode(rowIndex).parentNode,
+                        'oils-grid-row-selected');
+                }
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
                         if(e.keyCode == dojo.keys.ENTER) {
                             this.selection.deselectAll();
                             this.selection.select(this.focus.rowIndex);
-                            this._drawEditDialog(this.selection.getFirstSelected());
+                            this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
                         }
                     }
                 );
             },
 
-            _drawEditDialog : function(storeItem) {
+            _drawEditDialog : function(storeItem, rowIndex) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
