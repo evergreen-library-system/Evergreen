@@ -3,12 +3,21 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('dojox.grid.DataGrid');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
+    dojo.require('openils.widget.EditDialog');
     dojo.require('openils.Util');
 
     dojo.declare(
         'openils.widget.AutoGrid',
         [dojox.grid.DataGrid, openils.widget.AutoWidget],
         {
+
+            /* if true, pop up an edit dialog when user hits Enter on a give row */
+            editOnEnter : false, 
+
+            /* maps dojo store items to fieldmapper objects, since the 
+             * grid may not have access to all fm objects */
+            storeItemObjectMapper : null,  
+
             startup : function() {
                 this.inherited(arguments);
                 this.initAutoEnv();
@@ -27,7 +36,43 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
                 this.setStructure([{cells: [fields]}]);
                 this.setStore(this.buildAutoStore());
+                if(this.editOnEnter) 
+                    this._applyEditOnEnter();
             },
+
+            /* capture keydown and launch edit dialog on enter */
+            _applyEditOnEnter : function() {
+                dojo.connect(this, 'onKeyDown',
+                    function(e) {
+                        if(e.keyCode == dojo.keys.ENTER) {
+                            this.selection.deselectAll();
+                            this.selection.select(this.focus.rowIndex);
+                            this._drawEditDialog(this.selection.getFirstSelected());
+                        }
+                    }
+                );
+            },
+
+            _drawEditDialog : function(storeItem) {
+                var grid = this;
+                var fmObject = this.storeItemObjectMapper(storeItem);
+                var idents = grid.store.getIdentityAttributes();
+                var dialog = new openils.widget.EditDialog({
+                    fmObject:fmObject,
+                    onPostApply : function() {
+                        // update the grid store
+                        for(var i in fmObject._fields) {
+                            var field = fmObject._fields[i];
+                            if(idents.filter(function(j){return (j == field)})[0])
+                                continue; // don't try to edit an identifier field
+                            grid.store.setValue(storeItem, field, fmObject[field]());
+                        }
+                    }
+                });
+                dialog.editPane.fieldOrder = this.fieldOrder;
+                dialog.startup();
+                dialog.show();
+            }
         }
     );
     openils.widget.AutoGrid.markupFactory = dojox.grid.DataGrid.markupFactory;
