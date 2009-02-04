@@ -12,7 +12,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             startup : function() {
                 this.inherited(arguments);
                 this.initAutoEnv();
-                var existing = (this.structure) ? this.structure[0].cells[0] : [];
+                var existing = (this.structure && this.structure[0].cells[0]) ? 
+                    this.structure[0].cells[0] : [];
                 var fields = [];
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
@@ -27,7 +28,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.setStructure([{cells: [fields]}]);
                 this.setStore(this.buildAutoStore());
             },
-
         }
     );
     openils.widget.AutoGrid.markupFactory = dojox.grid.DataGrid.markupFactory;
