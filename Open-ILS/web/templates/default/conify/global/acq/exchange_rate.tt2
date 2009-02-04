@@ -14,6 +14,7 @@
 
     var cache = {};
     function renderGrid() {
+        erGrid.storeItemObjectMapper = function(item) { return cache[item.id]; };
         var pcrud = new openils.PermaCrud();
         pcrud.retrieveAll('acqexr', 
             {   async : true,
@@ -30,34 +31,12 @@
         );
     }
     openils.Util.addOnLoad(renderGrid);
-
-    openils.Util.addOnLoad(function() {
-        dojo.connect(erGrid, 'onKeyDown',
-            function(e) {
-                if(e.keyCode == dojo.keys.ENTER) {
-                    this.selection.deselectAll();
-                    this.selection.select(this.focus.rowIndex);
-                    var item = this.selection.getFirstSelected();
-                    var dialog = new openils.widget.EditDialog({
-                        fmObject:cache[item.id],
-                        onPostApply : function() {
-                            // update grid item object
-                        }
-                    });
-                    dialog.editPane.fieldOrder = erGrid.fieldOrder;
-                    dialog.startup();
-                    dialog.show();
-                }
-            }
-        );
-    });
-
 </script>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'>
-    <table jsId="erGrid" dojoType="openils.widget.AutoGrid" 
+    <table jsId="erGrid" dojoType="openils.widget.AutoGrid" class='editable-auto-grid'
             fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']"
-            query="{id: '*'}" rowSelector='20px' fmClass='acqexr'>
+            query="{id: '*'}" rowSelector='20px' fmClass='acqexr' editOnEnter='true'>
     </table>
 </div>
 [% END %]
