@@ -2399,7 +2399,10 @@ static char* SELECT (
 	growing_buffer* group_buf = buffer_init(128);
 	growing_buffer* having_buf = buffer_init(128);
 
-	if(!from_function) {
+	// Build a select list
+	if(from_function)   // From a function we select everything
+		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
+	else {
 
 		// If we need to build a default list, do so
 		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
@@ -2428,26 +2431,43 @@ static char* SELECT (
 		    // round trip through the idl, just to be safe
 			const char* cname = selclass_itr->key;
 			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
-		    if (!idlClass) continue;
+		    if (!idlClass)
+				// No such class.  Skip it.
+				continue;
 
-		    // make sure the target relation is in the join tree
-		    if (strcmp(core_class,cname)) {
-			    if (!join_hash) continue;
+		    // Make sure the target relation is in the join tree.
+			
+			// At this point join_hash is a step down from the join_hash we
+			// received as a parameter.  If the original was a JSON_STRING,
+			// then json_hash is now NULL.  If the original was a JSON_HASH,
+			// then json_hash is now the first (and only) entry in it,
+			// denoting the core class.  We've already excluded the
+			// possibility that the original was a JSON_ARRAY, because in
+			// that case from_function would be non-NULL, and we wouldn't
+			// be here.
 
-				unsigned long size;
+		    if ( strcmp( core_class, cname )) {
+			    if (!join_hash) 
+					// There's only one class in the FROM clause,
+					// and this isn't it.  Skip it.
+					continue;
 
 				if (join_hash->type == JSON_STRING) {
 				    string = jsonObjectToSimpleString(join_hash);
-					size = strcmp( string, cname ) ? 0 : 1;
+					int different = strcmp( string, cname );
 				    free(string);
-			    } else {
+					if ( different )
+						// There's only one class in the FROM clause,
+						// and this isn't it.  Skip it.
+						continue;
+				} else {
 				    jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
-					size = found->size;
+					unsigned long size = found->size;
 					jsonObjectFree( found );
-			    }
-
-			    if ( 0 == size )
-				    continue;
+					if ( 0 == size )
+						// No such class anywhere in the join tree.  Skip it.
+						continue;
+				}
 		    }
 
 		    // stitch together the column list ...
@@ -2579,8 +2599,6 @@ static char* SELECT (
         // jsonIteratorFree(selclass_itr);
 
 	    if (is_agg) jsonObjectFree(is_agg);
-    } else {
-		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
     }
 
 
