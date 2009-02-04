@@ -2321,7 +2321,6 @@ static char* SELECT (
 
 	// general tmp objects
 	const jsonObject* tmp_const;
-	jsonObject* _tmp = NULL;
 	jsonObject* selclass = NULL;
 	jsonObject* selfield = NULL;
 	jsonObject* snode = NULL;
@@ -2338,7 +2337,6 @@ static char* SELECT (
 
 	// metadata about the core search class
 	osrfHash* core_meta = NULL;
-	osrfHash* core_fields = NULL;
 
 	// punt if there's no core class
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size ))
@@ -2401,27 +2399,25 @@ static char* SELECT (
 	growing_buffer* group_buf = buffer_init(128);
 	growing_buffer* having_buf = buffer_init(128);
 
-	if (!from_function) 
-        core_fields = osrfHashGet(core_meta, "fields");
+	if(!from_function) {
 
-	// ... and if we /are/ building the default list, do that
-	if ( (_tmp = jsonObjectGetKey(selhash,core_class)) && !_tmp->size ) {
-		
-		int i = 0;
-		char* field;
+		// If we need to build a default list, do so
+		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
+		if ( _tmp && !_tmp->size ) {
 
-        if (!from_function) {
+			int i = 0;
+			char* field;
+			osrfHash* core_fields = osrfHashGet( core_meta, "fields" );
+
     		osrfStringArray* keys = osrfHashKeys( core_fields );
-	    	while ( (field = osrfStringArrayGetString(keys, i++)) ) {
+			while ( (field = osrfStringArrayGetString(keys, i++)) ) {
 		    	if ( strncasecmp( "true", osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ), 4 ) )
-			    	jsonObjectPush( _tmp, jsonNewObject( field ) );
+					jsonObjectPush( _tmp, jsonNewObject( field ) );
     		}
-	    	osrfStringArrayFree(keys);
-        }
-	}
-
-	// Now we build the actual select list
-	if (!from_function) {
+			osrfStringArrayFree(keys);
+		}
+	
+		// Now build the actual select list
 	    int sel_pos = 1;
 	    jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
 	    first = 1;
