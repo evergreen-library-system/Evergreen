@@ -2326,7 +2326,6 @@ static char* SELECT (
 	jsonObject* selfield = NULL;
 	jsonObject* snode = NULL;
 	jsonObject* onode = NULL;
-	jsonObject* found = NULL;
 
 	char* string = NULL;
 	int from_function = 0;
@@ -2439,20 +2438,20 @@ static char* SELECT (
 		    if (strcmp(core_class,cname)) {
 			    if (!join_hash) continue;
 
-			    if (join_hash->type == JSON_STRING) {
+				unsigned long size;
+
+				if (join_hash->type == JSON_STRING) {
 				    string = jsonObjectToSimpleString(join_hash);
-				    found = strcmp(string,cname) ? NULL : jsonParseString("{\"1\":\"1\"}");
+					size = strcmp( string, cname ) ? 0 : 1;
 				    free(string);
 			    } else {
-				    found = jsonObjectFindPath(join_hash, "//%s", cname);
+				    jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
+					size = found->size;
+					jsonObjectFree( found );
 			    }
 
-			    if (!found->size) {
-				    jsonObjectFree(found);
+			    if ( 0 == size )
 				    continue;
-			    }
-
-			    jsonObjectFree(found);
 		    }
 
 		    // stitch together the column list ...
