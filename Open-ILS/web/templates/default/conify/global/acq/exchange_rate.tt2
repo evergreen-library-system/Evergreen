@@ -1,0 +1,65 @@
+[% WRAPPER default/base.tt2 %]
+<!--
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
+-->
+<h1>Exchange Rates</h1><br/>
+
+<script>
+    dojo.require('dojo.data.ItemFileWriteStore');
+    dojo.require('openils.widget.EditDialog');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.PermaCrud');
+    dojo.require('openils.Util');
+    dojo.require('dojox.grid.DataGrid');
+
+    var cache = {};
+    function renderGrid() {
+        var pcrud = new openils.PermaCrud();
+        pcrud.retrieveAll('acqexr', 
+            {   async : true,
+                oncomplete : function(r) {
+                    var list = openils.Util.readResponse(r);
+                    erGrid.fmObjectList = list;
+                    for(var i in list) {
+                        cache[list[i].id()] = list[i];
+                        erGrid.store.newItem(list[i].toStoreItem());
+                    }
+                    erGrid.update();
+                }
+            }
+        );
+    }
+    openils.Util.addOnLoad(renderGrid);
+
+    openils.Util.addOnLoad(function() {
+        dojo.connect(erGrid, 'onKeyDown',
+            function(e) {
+                if(e.keyCode == dojo.keys.ENTER) {
+                    this.selection.deselectAll();
+                    this.selection.select(this.focus.rowIndex);
+                    var item = this.selection.getFirstSelected();
+                    var dialog = new openils.widget.EditDialog({
+                        fmObject:cache[item.id],
+                        onPostApply : function() {
+                            // update grid item object
+                        }
+                    });
+                    dialog.editPane.fieldOrder = erGrid.fieldOrder;
+                    dialog.startup();
+                    dialog.show();
+                }
+            }
+        );
+    });
+
+</script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'>
+    <table jsId="erGrid" dojoType="openils.widget.AutoGrid" 
+            fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']"
+            query="{id: '*'}" rowSelector='20px' fmClass='acqexr'>
+    </table>
+</div>
+[% END %]
+
+
