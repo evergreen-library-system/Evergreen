@@ -456,6 +456,7 @@ CREATE TABLE actor.usr_address (
 	state			TEXT	NOT NULL,
 	country			TEXT	NOT NULL,
 	post_code		TEXT	NOT NULL,
+    pending         BOOL    NOT NULL DEFAULT FALSE,
 	replaces	    INT	REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED
 );
 
