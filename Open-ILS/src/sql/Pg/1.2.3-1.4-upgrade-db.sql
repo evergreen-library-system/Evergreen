@@ -135,6 +135,18 @@ UPDATE config.metabib_field SET xpath = regexp_replace(xpath, 'mods:', 'mods32:'
 ALTER TABLE config.copy_status ADD COLUMN opac_visible BOOL NOT NULL DEFAULT FALSE;
 UPDATE config.copy_status SET opac_visible = holdable;
 
+CREATE TABLE config.bib_level_map (
+        code    TEXT    PRIMARY KEY,
+        value   TEXT    NOT NULL
+);
+INSERT INTO config.bib_level_map (code, value) VALUES ('a', oils_i18n_gettext('a', 'Monographic component part', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('b', oils_i18n_gettext('b', 'Serial component part', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('c', oils_i18n_gettext('c', 'Collection', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('d', oils_i18n_gettext('d', 'Subunit', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('i', oils_i18n_gettext('i', 'Integrating resource', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('m', oils_i18n_gettext('m', 'Monograph/Item', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('s', 'Serial', 'cblvl', 'value'));
+
 CREATE TABLE config.z3950_source (
     name                TEXT    PRIMARY KEY,
     label               TEXT    NOT NULL UNIQUE,
