@@ -13,6 +13,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             /* if true, pop up an edit dialog when user hits Enter on a give row */
             editOnEnter : false, 
+            defaultCellWidth : null,
 
             startup : function() {
 
@@ -33,6 +34,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fields.push(entry);
                     if(!entry.get) 
                         entry.get = openils.widget.AutoGrid.defaultGetter
+                    if(!entry.width && this.defaultCellWidth)
+                        entry.width = this.defaultCellWidth;
                 }
 
                 this.setStructure([{cells: [fields]}]);

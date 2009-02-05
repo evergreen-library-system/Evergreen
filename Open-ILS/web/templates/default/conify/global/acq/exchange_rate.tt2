@@ -21,35 +21,6 @@
     }
     openils.Util.addOnLoad(renderGrid);
 </script>
-
-<style>
-
-.oils-header-panel {
-    width:99%;
-    margin-top:20px;
-}
-.oils-header-panel div:first-child {
-    width:48%;
-    text-align:left;
-    float:left;
-    font-size:130%;
-    font-weight: bold;
-    vertical-align:bottom;
-    position:relative;
-    bottom:0px;
-    left:5px;
-}
-.oils-header-panel div:last-child {
-    width:48%;
-    text-align:right;
-    float:right;
-    vertical-align:bottom;
-    position:relative;
-    bottom:0px;
-    right:5px;
-}
-</style>
-
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
     <div>Exchange Rates</div>
     <div><button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>New</button></div>
@@ -57,7 +28,7 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
     <table jsId="erGrid" dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']" 
+            fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']" defaultCellWidth='12'
             query="{id: '*'}" rowSelector='20px' fmClass='acqexr' editOnEnter='true'>
     </table>
 </div>
