@@ -63,4 +63,28 @@ table { border-collapse: collapse; }
 
 
 .oils-fm-edit-dialog { margin: 5px; }
-.oils-fm-edit-dialog td { padding: 5px; }
+.oils-fm-edit-dialog td { padding: 5px; border:1px solid #999;}
+.oils-header-panel {
+    width:99%;
+    margin-top:20px;
+}
+.oils-header-panel div:first-child {
+    width:48%;
+    text-align:left;
+    float:left;
+    font-size:130%;
+    font-weight: bold;
+    vertical-align:bottom;
+    position:relative;
+    bottom:0px;
+    left:5px;
+}
+.oils-header-panel div:last-child {
+    width:48%;
+    text-align:right;
+    float:right;
+    vertical-align:bottom;
+    position:relative;
+    bottom:0px;
+    right:5px;
+}

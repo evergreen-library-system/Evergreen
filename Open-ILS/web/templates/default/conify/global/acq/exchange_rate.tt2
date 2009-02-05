@@ -2,7 +2,6 @@
 <!--
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
 -->
-<h1>Exchange Rates</h1><br/>
 
 <script>
     dojo.require('openils.widget.AutoGrid');
@@ -16,15 +15,47 @@
                 onresponse : function(r) {
                     var item = openils.Util.readResponse(r);
                     erGrid.store.newItem(item.toStoreItem());
-                    erGrid.update();
                }     
             }
         );
     }
     openils.Util.addOnLoad(renderGrid);
 </script>
-<button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>Create</button>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'>
+
+<style>
+
+.oils-header-panel {
+    width:99%;
+    margin-top:20px;
+}
+.oils-header-panel div:first-child {
+    width:48%;
+    text-align:left;
+    float:left;
+    font-size:130%;
+    font-weight: bold;
+    vertical-align:bottom;
+    position:relative;
+    bottom:0px;
+    left:5px;
+}
+.oils-header-panel div:last-child {
+    width:48%;
+    text-align:right;
+    float:right;
+    vertical-align:bottom;
+    position:relative;
+    bottom:0px;
+    right:5px;
+}
+</style>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Exchange Rates</div>
+    <div><button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>New</button></div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
     <table jsId="erGrid" dojoType="openils.widget.AutoGrid" 
             fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']" 
             query="{id: '*'}" rowSelector='20px' fmClass='acqexr' editOnEnter='true'>
