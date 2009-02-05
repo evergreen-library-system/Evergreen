@@ -11,7 +11,7 @@
 
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="my_init()">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="try { my_init(); font_helper(); } catch(E) { alert(E); }">
 
 <scripts id="openils_util_scripts"/>
 <script type="text/javascript" src="/xul/server/main/JSAN.js"/>

@@ -23,7 +23,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="menu_frame_win"
-	onload="try { my_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
 	orient="vertical" width="800" height="500"
 	sizemode="maximized" persist="width height" title="&staff.main.menu.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

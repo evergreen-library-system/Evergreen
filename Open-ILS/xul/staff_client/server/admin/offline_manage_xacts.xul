@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="admin_offline_manage_xacts_win" 
-	onload="try { my_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

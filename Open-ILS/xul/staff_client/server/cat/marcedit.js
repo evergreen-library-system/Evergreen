@@ -233,8 +233,6 @@ function my_init() {
 
 		loadRecord(xml_record);
 
-        font_helper();
-
 	} catch(E) {
 		alert('FIXME, MARC Editor, my_init: ' + E);
 	}
