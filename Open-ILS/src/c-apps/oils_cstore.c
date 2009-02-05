@@ -2426,7 +2426,7 @@ static char* SELECT (
 	    first = 1;
 	    gfirst = 1;
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
-	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {
+	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {    // For each class
 
 		    // round trip through the idl, just to be safe
 			const char* cname = selclass_itr->key;
@@ -2470,23 +2470,27 @@ static char* SELECT (
 				}
 		    }
 
+			// Look up some attributes of the current class, so that we 
+			// don't have to look them up again for each field
+			osrfHash* class_field_set = osrfHashGet( idlClass, "fields" );
+			char* class_pkey = osrfHashGet( idlClass, "primarykey" );
+			char* class_tname = osrfHashGet( idlClass, "tablename" );
+			
 		    // stitch together the column list ...
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
-		    while ( (selfield = jsonIteratorNext( select_itr )) ) {
+		    while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
 
 			    char* _column = NULL;
-			    char* _alias = NULL;
 
-			    // ... if it's a sstring, just toss it on the pile
+			    // ... if it's a string, just toss it on the pile
 			    if (selfield->type == JSON_STRING) {
 
 				    // again, just to be safe
-				    char* _requested_col = jsonObjectToSimpleString(selfield);
-				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _requested_col );
-				    free(_requested_col);
+					const char* _requested_col = selfield->value.s;
+				    osrfHash* field = osrfHashGet( class_field_set, _requested_col );
+				    if (!field) continue;		// No such field in current class; skip it
 
-				    if (!field) continue;
-				    _column = strdup(osrfHashGet(field, "name"));
+					_column = osrfHashGet(field, "name");
 
 				    if (first) {
 					    first = 0;
@@ -2500,16 +2504,17 @@ static char* SELECT (
                             i18n = NULL;
 
     	    		    if ( i18n && !strncasecmp("true", i18n, 4)) {
-        	                char* pkey = osrfHashGet(idlClass, "primarykey");
-        	                char* tname = osrfHashGet(idlClass, "tablename");
-
-                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, _column, pkey, cname, pkey, locale, _column);
+                            buffer_fadd( select_buf,
+								" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
+								class_tname, cname, _column, class_pkey, cname, class_pkey, locale, _column );
                         } else {
 				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
                         }
                     } else {
 				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
                     }
+					
+					_column = NULL;    // So that we won't try to free it...
 
 			    // ... but it could be an object, in which case we check for a Field Transform
 			    } else {
@@ -2517,9 +2522,10 @@ static char* SELECT (
 				    _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
 				    // again, just to be safe
-				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _column );
+				    osrfHash* field = osrfHashGet( class_field_set, _column );
 				    if (!field) continue;
-				    const char* fname = osrfHashGet(field, "name");
+
+					const char* fname = osrfHashGet(field, "name");
 
 				    if (first) {
 					    first = 0;
@@ -2527,6 +2533,7 @@ static char* SELECT (
 						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
 					}
 
+					char* _alias;
 				    if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
 					    _alias = jsonObjectToSimpleString( tmp_const );
 				    } else {
@@ -2544,10 +2551,9 @@ static char* SELECT (
                                 i18n = NULL;
     
     	        		    if ( i18n && !strncasecmp("true", i18n, 4)) {
-        	                    char* pkey = osrfHashGet(idlClass, "primarykey");
-        	                    char* tname = osrfHashGet(idlClass, "tablename");
-
-                                buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, _alias);
+                                buffer_fadd( select_buf,
+									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
+		 							class_tname, cname, fname, class_pkey, cname, class_pkey, locale, _alias);
                             } else {
 					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                             }
@@ -2555,13 +2561,17 @@ static char* SELECT (
 					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                         }
 				    }
+
+				    if (_alias) free(_alias);
+
 			    }
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
+					const jsonObject* aggregate_obj = jsonObjectGetKey( selfield, "aggregate" );
 				    if ( !(
-                            jsonBoolIsTrue( jsonObjectGetKey( selfield, "aggregate" ) ) ||
-	                        ((int)jsonObjectGetNumber(jsonObjectGetKey( selfield, "aggregate" ))) == 1 // support 1/0 for perl's sake
+                            jsonBoolIsTrue( aggregate_obj ) ||
+	                        ((int)jsonObjectGetNumber( aggregate_obj )) == 1 // support 1/0 for perl's sake
                          )
                     ) {
 					    if (gfirst) {
@@ -2588,15 +2598,14 @@ static char* SELECT (
 			    }
 
 			    if (_column) free(_column);
-			    if (_alias) free(_alias);
 
 			    sel_pos++;
-		    }
+		    } // end while -- iterating across SELECT columns
 
-            // jsonIteratorFree(select_itr);
-	    }
+            jsonIteratorFree(select_itr);
+	    } // end while -- iterating across classes
 
-        // jsonIteratorFree(selclass_itr);
+        jsonIteratorFree(selclass_itr);
 
 	    if (is_agg) jsonObjectFree(is_agg);
     }
@@ -2743,7 +2752,7 @@ static char* SELECT (
 					    buffer_add(order_buf, direction);
 				    }
 
-			    }
+			    } // end while
                 // jsonIteratorFree(order_itr);
 
 		    } else if ( snode->type == JSON_ARRAY ) {
@@ -2765,7 +2774,7 @@ static char* SELECT (
 				    buffer_add(order_buf, _f);
 				    free(_f);
 
-			    }
+			    } // end while
                 // jsonIteratorFree(order_itr);
 
 
@@ -2792,10 +2801,10 @@ static char* SELECT (
 			    return NULL;
 		    }
 
-	    }
-    }
+	    } // end while
+		// jsonIteratorFree(class_itr);
+	}
 
-    // jsonIteratorFree(class_itr);
 
 	string = buffer_release(group_buf);
 
@@ -2921,9 +2930,10 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
             if (locale) {
         		char* i18n = osrfHashGet(field, "i18n");
+				const jsonObject* il8n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
 			    if (
-                    jsonBoolIsTrue( jsonObjectGetKey( order_hash, "no_i18n" ) ) ||
-                    ((int)jsonObjectGetNumber(jsonObjectGetKey( order_hash, "no_i18n" ))) == 1 // support 1/0 for perl's sake
+					jsonBoolIsTrue( il8n_obj ) ||
+					((int)jsonObjectGetNumber( il8n_obj )) == 1 // support 1/0 for perl's sake
                 ) i18n = NULL;
 
     			if ( i18n && !strncasecmp("true", i18n, 4)) {
