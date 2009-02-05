@@ -46,6 +46,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var row = document.createElement('tr');
                     var nameTd = document.createElement('td');
                     var valTd = document.createElement('td');
+                    var valSpan = document.createElement('span');
+                    valTd.appendChild(valSpan);
 
                     nameTd.appendChild(document.createTextNode(field.label));
                     row.appendChild(nameTd);
@@ -55,7 +57,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var widget = new openils.widget.AutoFieldWidget({
                         idlField : field, 
                         fmObject : this.fmObject,
-                        parentNode : valTd,
+                        parentNode : valSpan,
                         orgLimitPerms : this.limitPerms
                     });
 
@@ -83,20 +85,24 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 var row = document.createElement('tr');
                 var cancelTd = document.createElement('td');
                 var applyTd = document.createElement('td');
+                var cancelSpan = document.createElement('span');
+                var applySpan = document.createElement('span');
                 row.appendChild(cancelTd);
                 row.appendChild(applyTd);
+                cancelTd.appendChild(cancelSpan);
+                applyTd.appendChild(applySpan);
                 tbody.appendChild(row);
 
                 var self = this;
                 new dijit.form.Button({
                     label:'Cancel', // XXX
                     onClick : this.onCancel
-                }, cancelTd);
+                }, cancelSpan);
 
                 new dijit.form.Button({
                     label:'Save',  // XXX
                     onClick: function() {self.performAutoEditAction();}
-                }, applyTd);
+                }, applySpan);
             },
 
             getFields : function() {
