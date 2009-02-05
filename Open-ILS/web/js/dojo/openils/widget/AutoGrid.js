@@ -54,6 +54,12 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     this.selection.select(this.focus.rowIndex);
                 };
 
+                dojo.connect(this, 'onRowDblClick',
+                    function(e) {
+                        this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
+                    }
+                );
+
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
                         if(e.keyCode == dojo.keys.ENTER) {
@@ -78,8 +84,13 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 continue; // don't try to edit an identifier field
                             grid.store.setValue(storeItem, field, fmObject[field]());
                         }
-                        grid.update();
                         dialog.destroy();
+                        setTimeout(function(){
+                            grid.views.views[1].getCellNode(rowIndex, 0).focus();},200);
+                    },
+                    onCancel : function() {
+                        setTimeout(function(){
+                            grid.views.views[1].getCellNode(rowIndex, 0).focus();},200);
                     }
                 });
                 dialog.editPane.fieldOrder = this.fieldOrder;
@@ -94,12 +105,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fmClass : this.fmClass,
                     onPostSubmit : function(r) {
                         var fmObject = openils.Util.readResponse(r);
-                        if(fmObject) {
+                        if(fmObject) 
                             grid.store.newItem(fmObject.toStoreItem());
-                            grid.update();
-                        }
                         dialog.destroy();
-                    }
+                        setTimeout(function(){
+                            grid.selection.select(grid.rowCount-1);
+                            grid.views.views[1].getCellNode(grid.rowCount-1, 1).focus();
+                        },200);
+                    },
                 });
                 dialog.editPane.fieldOrder = this.fieldOrder;
                 dialog.editPane.mode = 'create';
