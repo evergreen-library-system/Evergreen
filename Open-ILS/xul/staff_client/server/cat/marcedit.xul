@@ -9,15 +9,17 @@
 <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="my_init()">
 
+<scripts id="openils_util_scripts"/>
+<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
-<script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
-<script src="/opac/common/js/JSON_v1.js" type="application/x-javascript; e4x=1"/>
 
 <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
-<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties" />
 
 <groupbox flex="0">
 	<caption label="&staff.cat.marcedit.options.label;"/>
