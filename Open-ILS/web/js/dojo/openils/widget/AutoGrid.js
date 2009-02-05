@@ -15,11 +15,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
 
             startup : function() {
+
+                this.selectionMode = 'single';
                 this.inherited(arguments);
                 this.initAutoEnv();
                 var existing = (this.structure && this.structure[0].cells[0]) ? 
                     this.structure[0].cells[0] : [];
                 var fields = [];
+
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
@@ -30,6 +33,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     if(!entry.get) 
                         entry.get = openils.widget.AutoGrid.defaultGetter
                 }
+
                 this.setStructure([{cells: [fields]}]);
                 this.setStore(this.buildAutoStore());
                 if(this.editOnEnter) 
@@ -38,13 +42,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             /* capture keydown and launch edit dialog on enter */
             _applyEditOnEnter : function() {
+
                 this.onMouseOverRow = function(e) {};
                 this.onMouseOutRow = function(e) {};
                 this.onCellFocus = function(cell, rowIndex) { 
-                    openils.Util.addCSSClass(
-                        cell.getNode(rowIndex).parentNode,
-                        'oils-grid-row-selected');
-                }
+                    this.selection.deselectAll();
+                    this.selection.select(this.focus.rowIndex);
+                };
+
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
                         if(e.keyCode == dojo.keys.ENTER) {
