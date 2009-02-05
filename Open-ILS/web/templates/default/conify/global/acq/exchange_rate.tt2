@@ -23,6 +23,7 @@
     }
     openils.Util.addOnLoad(renderGrid);
 </script>
+<button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>Create</button>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'>
     <table jsId="erGrid" dojoType="openils.widget.AutoGrid" 
             fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']" 

@@ -26,7 +26,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
-                    var entry = existing.filter(function(i){return (i.field == field.name)})[0];
+                    var entry = existing.filter(
+                        function(i){return (i.field == field.name)})[0];
                     if(entry) entry.name = field.label;
                     else entry = {field:field.name, name:field.label};
                     fields.push(entry);
@@ -67,7 +68,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var idents = grid.store.getIdentityAttributes();
                 var dialog = new openils.widget.EditDialog({
                     fmObject:fmObject,
-                    onPostApply : function() {
+                    onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
                             if(idents.filter(function(j){return (j == field)})[0])
@@ -79,10 +80,30 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     }
                 });
                 dialog.editPane.fieldOrder = this.fieldOrder;
+                dialog.editPane.mode = 'update';
+                dialog.startup();
+                dialog.show();
+            },
+
+            showCreateDialog : function() {
+                var grid = this;
+                var dialog = new openils.widget.EditDialog({
+                    fmClass : this.fmClass,
+                    onPostSubmit : function(r) {
+                        var fmObject = openils.Util.readResponse(r);
+                        if(fmObject) {
+                            grid.store.newItem(fmObject.toStoreItem());
+                            grid.update();
+                        }
+                        dialog.destroy();
+                    }
+                });
+                dialog.editPane.fieldOrder = this.fieldOrder;
+                dialog.editPane.mode = 'create';
                 dialog.startup();
                 dialog.show();
             }
-        }
+        } 
     );
     openils.widget.AutoGrid.markupFactory = dojox.grid.DataGrid.markupFactory;
 

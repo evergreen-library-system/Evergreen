@@ -34,10 +34,10 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
                     self.hide(); 
                 }
 
-                this.editPane.onPostApply = function() { 
+                this.editPane.onPostSubmit = function(r) { 
                     self.hide(); 
-                    if(args.onPostApply)
-                        args.onPostApply();
+                    if(args.onPostSubmit)
+                        args.onPostSubmit(r);
                 }
             },
 
