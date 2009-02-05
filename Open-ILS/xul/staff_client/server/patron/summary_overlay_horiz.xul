@@ -15,14 +15,6 @@
 
 <hbox id="patron_info_sidebar">
 	<image id="patron_photo_url" />
-	<splitter id="pisbs1" collapse="before" persist="state hidden"><grippy /></splitter>
-	<vbox id="pisbvb2" persist="width" flex="1">
-		<button label="Alert" disabled="true" />
-		<button label="Block on Circ" disabled="true" />
-		<button label="Block on Hold" disabled="true" />
-		<button label="Block on Renew" disabled="true" />
-	</vbox>
-	<splitter id="pisbs2" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb2a" persist="width" flex="1">
 		<label id="patron_name" hidden="true" class="patronNameLarge"/>
 		<grid flex="1" style="border: solid thin">
@@ -48,27 +40,21 @@
 			</rows>
 		</grid>
 	</vbox>
-	<splitter id="pisbs3" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb4" persist="width" flex="1">
 		<grid id="PatronSummaryStatus_grid" flex="1"/>
 	</vbox>
-	<splitter id="pisbs4" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb5" persist="width" flex="1">
 		<grid id="PatronSummaryStatus_grid2" flex="1"/>
 	</vbox>
-	<splitter id="pisbs5" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb6" persist="width" flex="1">
 		<grid id="PatronSummaryContact_grid" flex="1"/>
 	</vbox>
-	<splitter id="pisbs6" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb7" persist="width" flex="1">
 		<groupbox id="PatronSummaryContact_mailing_address" orient="vertical"/>
 	</vbox>
-	<splitter id="pisbs7" collapse="before" persist="state hidden"><grippy /></splitter>
 	<vbox id="pisbvb8" persist="width" flex="1">
 		<groupbox id="PatronSummaryContact_physical_address" orient="vertical"/>
 	</vbox>
-	<splitter id="pisbs8" collapse="before" persist="state hidden"><grippy /></splitter>
 	<spacer/>
 </hbox>
 
