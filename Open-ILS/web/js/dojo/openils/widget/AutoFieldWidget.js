@@ -118,6 +118,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
         _buildLinkSelector : function() {
             if(this.idlField.reltype != 'has_a') return false;
+
             dojo.require('openils.PermaCrud');
             dojo.require('dojo.data.ItemFileReadStore');
             dojo.require('dijit.form.FilteringSelect');
@@ -128,23 +129,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
             var vfield;
+
             for(var f in rclassIdl.fields) {
                 if(self.idlField.key == rclassIdl.fields[f].name) {
                     vfield = rclassIdl.fields[f];
                     break;
                 }
             }
+
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
-            var list = new openils.PermaCrud().retrieveAll(linkClass);
 
-            self.widget.store = new dojo.data.ItemFileReadStore(
-                {data:fieldmapper[linkClass].toStoreData(list)}
-            );
-            self.widget.startup();
-            self._widgetLoaded();
-
-            /*
             new openils.PermaCrud().retrieveAll(linkClass, {   
                 async : true,
                 oncomplete : function(r) {
@@ -157,7 +152,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     self._widgetLoaded();
                 }
             });
-            */
+
+            return true;
         },
 
         /**
