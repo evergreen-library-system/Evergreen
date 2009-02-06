@@ -117,7 +117,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         _buildLinkSelector : function() {
-            if(this.idlField.reltype != 'has_a') return false;
+
+            /* verify we can and should grab the related class */
+            var linkClass = this.idlField['class'];
+            if(this.idlField.reltype != 'has_a')  return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 
             dojo.require('openils.PermaCrud');
             dojo.require('dojo.data.ItemFileReadStore');
@@ -125,7 +130,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             var self = this;
             this.async = true;
-            var linkClass = this.idlField['class'];
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
             var vfield;
