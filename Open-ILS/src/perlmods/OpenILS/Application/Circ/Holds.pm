@@ -454,6 +454,46 @@ sub retrieve_holds_by_pickup_lib {
 	}
 }
 
+
+__PACKAGE__->register_method(
+	method	=> "uncancel_hold",
+	api_name	=> "open-ils.circ.hold.uncancel"
+);
+
+sub uncancel_hold {
+	my($self, $client, $auth, $hold_id) = @_;
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->event unless $e->checkauth;
+
+	my $hold = $e->retrieve_action_hold_request($hold_id)
+		or return $e->die_event;
+    return $e->die_event unless $e->allowed('CANCEL_HOLDS', $hold->request_lib);
+
+    return 0 if $hold->fulfillment_time;
+    return 1 unless $hold->cancel_time;
+
+    # if configured to reset the request time, also reset the expire time
+    if($U->ou_ancestor_setting_value(
+        $hold->request_lib, 'circ.hold_reset_request_time_on_uncancel', $e)) {
+
+        $hold->request_time('now');
+        my $interval = $U->ou_ancestor_setting_value($hold->request_lib, OILS_SETTING_HOLD_EXPIRE);
+        if($interval) {
+            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+            $hold->expire_time($U->epoch2ISO8601($date->epoch));
+        }
+    }
+
+    $hold->clear_cancel_time;
+    $e->update_action_hold_request($hold) or return $e->die_event;
+    $e->commit;
+
+    $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $hold_id);
+
+    return 1;
+}
+
+
 __PACKAGE__->register_method(
 	method	=> "cancel_hold",
 	api_name	=> "open-ils.circ.hold.cancel",
