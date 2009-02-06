@@ -842,7 +842,7 @@ function holdProcessResult( hold, res, recurse ) {
 
 function holdsCancel(holdid, user) {
 	if(!user) user = G.user;
-	var req = new Request(CANCEL_HOLD, user.session, holdid);
+	var req = new Request(CANCEL_HOLD, user.session, holdid, /* Patron via OPAC */ 6);
 	req.send(true);
 	return req.result();
 	runEvt('common', 'holdUpdated');
