@@ -323,11 +323,12 @@ different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
 sub retrieve_holds {
-	my($self, $client, $auth, $user_id) = @_;
+	my($self, $client, $auth, $user_id, $options) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     $user_id = $e->requestor->id unless defined $user_id;
+    $options ||= {};
 
     unless($user_id == $e->requestor->id) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->event;
@@ -345,6 +346,21 @@ sub retrieve_holds {
 		}, 
 		{order_by => {ahr => "request_time"}}
 	]);
+
+    if($$options{canceled}) {
+        my $count = $$options{cancel_count} || 
+            $U->ou_ancestor_setting_value($e->requestor->ws_ou, 
+                'circ.canceled_hold_display_count', $e) || 5;
+
+        my $canceled = $e->search_action_hold_request([
+		    {   usr =>  $user_id , 
+			    fulfillment_time => undef,
+			    cancel_time => {'!=' => undef},
+		    }, 
+		    {order_by => {ahr => "cancel_time desc"}, limit => $count}
+	    ]);
+        push(@$holds, @$canceled);
+    }
 	
 	if( ! $self->api_name =~ /id_list/ ) {
 		for my $hold ( @$holds ) {
