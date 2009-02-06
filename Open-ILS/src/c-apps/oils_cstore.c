@@ -1725,11 +1725,17 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 	return buffer_release(sql_buf);
 }
 
+// class is a class name
+// field is a field definition as stored in the IDL
+// node comes from the method parameter, and represents an entry in the SELECT list
 static char* searchFieldTransform (const char* class, osrfHash* field, const jsonObject* node) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
 	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
+
+	if(transform_subcolumn)
+		OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );    // enclose transform in parentheses
 
 	if (field_transform) {
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
@@ -1756,29 +1762,16 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
     	    	}
 				free(val);
 			}
-
         }
 
-       	buffer_add(
-        	sql_buf,
-	        " )"
-       	);
+		buffer_add( sql_buf, " )" );
 
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
 	}
 
-    if (transform_subcolumn) {
-        char * tmp = buffer_release(sql_buf);
-        sql_buf = buffer_init(32);
-        buffer_fadd(
-            sql_buf,
-            "(%s).\"%s\"",
-            tmp,
-            transform_subcolumn
-        );
-        free(tmp);
-    }
+    if (transform_subcolumn)
+        buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
  
 	if (field_transform) free(field_transform);
 	if (transform_subcolumn) free(transform_subcolumn);
@@ -2480,8 +2473,6 @@ static char* SELECT (
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
 		    while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
 
-			    char* _column = NULL;
-
 			    // ... if it's a string, just toss it on the pile
 			    if (selfield->type == JSON_STRING) {
 
@@ -2490,7 +2481,7 @@ static char* SELECT (
 				    osrfHash* field = osrfHashGet( class_field_set, _requested_col );
 				    if (!field) continue;		// No such field in current class; skip it
 
-					_column = osrfHashGet(field, "name");
+					const char* col_name = osrfHashGet(field, "name");
 
 				    if (first) {
 					    first = 0;
@@ -2499,31 +2490,31 @@ static char* SELECT (
 				    }
 
                     if (locale) {
-            		    char* i18n = osrfHashGet(field, "i18n");
+            		    const char* i18n;
 			            if (flags & DISABLE_I18N)
                             i18n = NULL;
+						else
+							i18n = osrfHashGet(field, "i18n");
 
     	    		    if ( i18n && !strncasecmp("true", i18n, 4)) {
                             buffer_fadd( select_buf,
 								" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
-								class_tname, cname, _column, class_pkey, cname, class_pkey, locale, _column );
+								class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, col_name );
                         } else {
-				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
+				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                         }
                     } else {
-				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, _column, _column);
+				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                     }
 					
-					_column = NULL;    // So that we won't try to free it...
-
 			    // ... but it could be an object, in which case we check for a Field Transform
 			    } else {
 
-				    _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
+				    char* _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
-				    // again, just to be safe
+				    // Get the field definition from the IDL
 				    osrfHash* field = osrfHashGet( class_field_set, _column );
-				    if (!field) continue;
+				    if (!field) continue;         // No such field defined in IDL.  Skip it.
 
 					const char* fname = osrfHashGet(field, "name");
 
@@ -2546,9 +2537,11 @@ static char* SELECT (
 					    buffer_fadd(select_buf, " %s AS \"%s\"", _column, _alias);
 				    } else {
                         if (locale) {
-                		    char* i18n = osrfHashGet(field, "i18n");
+                		    const char* i18n;
 			                if (flags & DISABLE_I18N)
                                 i18n = NULL;
+							else
+								i18n = osrfHashGet(field, "i18n");
     
     	        		    if ( i18n && !strncasecmp("true", i18n, 4)) {
                                 buffer_fadd( select_buf,
@@ -2563,6 +2556,7 @@ static char* SELECT (
 				    }
 
 				    if (_alias) free(_alias);
+					if (_column) free(_column);
 
 			    }
 
@@ -2596,8 +2590,6 @@ static char* SELECT (
 					*/
 				    }
 			    }
-
-			    if (_column) free(_column);
 
 			    sel_pos++;
 		    } // end while -- iterating across SELECT columns
@@ -2929,12 +2921,14 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			}
 
             if (locale) {
-        		char* i18n = osrfHashGet(field, "i18n");
-				const jsonObject* il8n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
+        		const char* i18n;
+				const jsonObject* i18n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
 			    if (
-					jsonBoolIsTrue( il8n_obj ) ||
-					((int)jsonObjectGetNumber( il8n_obj )) == 1 // support 1/0 for perl's sake
+					jsonBoolIsTrue( i18n_obj ) ||
+					((int)jsonObjectGetNumber( i18n_obj )) == 1 // support 1/0 for perl's sake
                 ) i18n = NULL;
+				else
+					i18n = osrfHashGet(field, "i18n");
 
     			if ( i18n && !strncasecmp("true", i18n, 4)) {
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
