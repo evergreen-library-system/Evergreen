@@ -141,6 +141,8 @@ static void dump_class( osrfHash* class_hash, const char* class_name )
 				printf( "%s%s: %s\n", indent, attr_name, (char*) class_attr );
 			else if( !strcmp( attr_name, "tablename" ) )
 				printf( "%s%s: %s\n", indent, attr_name, (char*) class_attr );
+			else if( !strcmp( attr_name, "restrict_primary" ) )
+				printf( "%s%s: %s\n", indent, attr_name, (char*) class_attr );
 			else if( !strcmp( attr_name, "virtual" ) )
 				printf( "%s%s: %s\n", indent, attr_name, (char*) class_attr );
 			else if( !strcmp( attr_name, "controller" ) )

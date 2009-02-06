@@ -48,6 +48,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     //table   : node.getAttributeNS(this.NS_PERSIST, 'tablename'),
                     //core    : node.getAttributeNS(this.NS_REPORTS, 'core'),
                     label   : node.getAttributeNS(this.NS_REPORTS, 'label'),
+                    restrict_primary   : node.getAttributeNS(this.NS_PERSIST, 'restrict_primary'),
                     virtual : (node.getAttributeNS(this.NS_PERSIST, 'virtual') == 'true'),
                     pkey    : fields.getAttributeNS(this.NS_PERSIST, 'primary')
                 };
