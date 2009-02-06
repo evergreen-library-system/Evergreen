@@ -449,7 +449,7 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub cancel_hold {
-	my($self, $client, $auth, $holdid) = @_;
+	my($self, $client, $auth, $holdid, $cause, $note) = @_;
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->event unless $e->checkauth;
@@ -496,6 +496,8 @@ sub cancel_hold {
 	}
 
 	$hold->cancel_time('now');
+    $hold->cancel_cause($cause);
+    $hold->cancel_note($note);
 	$e->update_action_hold_request($hold)
 		or return $e->event;
 
