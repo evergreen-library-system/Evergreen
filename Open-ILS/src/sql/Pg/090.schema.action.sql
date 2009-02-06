@@ -251,11 +251,12 @@ CREATE TABLE action.hold_request_cancel_cause (
     id      SERIAL  PRIMARY KEY,
     label   TEXT    UNIQUE
 );
-INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Untargeted expiration');
-INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Hold Shelf expiration');
-INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Patron via phone');
-INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Patron in person');
-INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Staff forced');
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Untargeted expiration');  -- 1
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Hold Shelf expiration');  -- 2
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Patron via phone');       -- 3
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Patron in person');       -- 4
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Staff forced');           -- 5
+INSERT INTO action.hold_request_cancel_cause (label) VALUES ('Patron via OPAC');        -- 6
 
 CREATE TABLE action.hold_request (
 	id			SERIAL				PRIMARY KEY,
