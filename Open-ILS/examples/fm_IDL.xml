@@ -2614,6 +2614,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" oils_obj:array_position="32" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Cancelation cause" name="cancel_cause" oils_obj:array_position="33" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Cancelation note" name="cancel_note" oils_obj:array_position="34" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -2628,6 +2630,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
+			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 		</links>
 	</class>
 	<class id="aou" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit" oils_persist:field_safe="true">
@@ -3637,6 +3640,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+
+	<class id="ahrcc" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_cancel_cause" oils_persist:tablename="action.hold_request_cancel_cause">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_cancel_cause_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Cause ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Cause Label" name="label" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_HOLD_CANCEL_CAUSE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_HOLD_CANCEL_CAUSE" global_required="true"/>
+                <delete permission="ADMIN_HOLD_CANCEL_CAUSE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+
 	<class id="ahtc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy" reporter:core="true" reporter:label="Hold Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
