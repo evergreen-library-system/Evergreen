@@ -153,7 +153,7 @@ INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,
-    source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+    source      TEXT    NOT NULL REFERENCES config.z3950_source (name) DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL,
     label       TEXT    NOT NULL,
     code        INT     NOT NULL,
@@ -1973,8 +1973,8 @@ CREATE TABLE vandelay.bib_match (
 -- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
-    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
-    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE,
+    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
