@@ -269,7 +269,7 @@ CREATE TABLE action.hold_request (
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
 	cancel_time		TIMESTAMP WITH TIME ZONE,
-	cancel_cause	INT REFERENCES action.hold_request_cancel_cause (id) ON DELETE SET NULL,
+	cancel_cause	INT REFERENCES action.hold_request_cancel_cause (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	cancel_note		TEXT,
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,

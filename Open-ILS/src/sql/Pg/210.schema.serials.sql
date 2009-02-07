@@ -10,7 +10,7 @@ CREATE TABLE asset.uri (
 	active	BOOL	NOT NULL DEFAULT TRUE
 );
 
-ALTER TABLE asset.call_number ADD COLUMN uri INT REFERENCES asset.uri (id);
+ALTER TABLE asset.call_number ADD COLUMN uri INT REFERENCES asset.uri (id) DEFERRABLE INITIALLY DEFERRED;
 
 BEGIN;
 

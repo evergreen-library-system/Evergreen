@@ -56,7 +56,7 @@ CREATE TABLE money.billing (
 	void_time	TIMESTAMP WITH TIME ZONE,
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_type	TEXT				NOT NULL,
-	btype		INT				NOT NULL REFERENCES config.billing_type (id) ON DELETE RESTRICT,
+	btype		INT				NOT NULL REFERENCES config.billing_type (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
 	note		TEXT
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
