@@ -463,7 +463,7 @@ CREATE TABLE config.z3950_source (
 
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,
-    source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+    source      TEXT    NOT NULL REFERENCES config.z3950_source (name) DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL,
     label       TEXT    NOT NULL,
     code        INT     NOT NULL,
