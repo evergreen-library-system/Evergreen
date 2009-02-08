@@ -1755,7 +1755,8 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 					OSRF_BUFFER_ADD( sql_buf, val );
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-		    	    free(field_transform);
+					free(transform_subcolumn);
+					free(field_transform);
 					free(val);
         			buffer_free(sql_buf);
 	        		return NULL;
@@ -2473,6 +2474,13 @@ static char* SELECT (
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
 		    while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
 
+				// If we need a separator comma, add one
+				if (first) {
+					first = 0;
+				} else {
+					OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+				}
+
 			    // ... if it's a string, just toss it on the pile
 			    if (selfield->type == JSON_STRING) {
 
@@ -2482,12 +2490,6 @@ static char* SELECT (
 				    if (!field) continue;		// No such field in current class; skip it
 
 					const char* col_name = osrfHashGet(field, "name");
-
-				    if (first) {
-					    first = 0;
-				    } else {
-						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
-				    }
 
                     if (locale) {
             		    const char* i18n;
@@ -2516,33 +2518,31 @@ static char* SELECT (
 				    osrfHash* field = osrfHashGet( class_field_set, _column );
 				    if (!field) continue;         // No such field defined in IDL.  Skip it.
 
-					const char* fname = osrfHashGet(field, "name");
-
-				    if (first) {
-					    first = 0;
-				    } else {
-						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
-					}
-
+					// Decide what to use as a column alias
 					char* _alias;
-				    if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
-					    _alias = jsonObjectToSimpleString( tmp_const );
-				    } else {
-					    _alias = strdup(_column);
-				    }
+					if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
+						_alias = jsonObjectToSimpleString( tmp_const );
+						free(_column);
+					} else {         // Use column name as its own alias
+						_alias = _column;
+					}
+					_column = NULL;   // To emphasize that we're through with _column
 
-				    if (jsonObjectGetKeyConst( selfield, "transform" )) {
-					    free(_column);
-					    _column = searchFieldTransform(cname, field, selfield);
-					    buffer_fadd(select_buf, " %s AS \"%s\"", _column, _alias);
-				    } else {
+					if (jsonObjectGetKeyConst( selfield, "transform" )) {
+						char* transform_str = searchFieldTransform(cname, field, selfield);
+						buffer_fadd(select_buf, " %s AS \"%s\"", transform_str, _alias);
+						free(transform_str);
+					} else {
+
+						const char* fname = osrfHashGet(field, "name");
+
                         if (locale) {
                 		    const char* i18n;
 			                if (flags & DISABLE_I18N)
                                 i18n = NULL;
 							else
 								i18n = osrfHashGet(field, "i18n");
-    
+
     	        		    if ( i18n && !strncasecmp("true", i18n, 4)) {
                                 buffer_fadd( select_buf,
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
@@ -2555,9 +2555,7 @@ static char* SELECT (
                         }
 				    }
 
-				    if (_alias) free(_alias);
-					if (_column) free(_column);
-
+				    free(_alias);
 			    }
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
