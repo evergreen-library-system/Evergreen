@@ -3949,7 +3949,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acqpro" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::provider" oils_persist:tablename="acq.provider">
+	<class id="acqpro" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider" oils_persist:tablename="acq.provider" reporter:label="Provider">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3964,6 +3964,122 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_PROVIDER" context_field="owner"/>
+                <retrieve permission="ADMIN_PROVIDER" context_field="owner"/>
+                <update   permission="ADMIN_PROVIDER" context_field="owner"/>
+                <delete   permission="ADMIN_PROVIDER" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqpa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_address" oils_persist:tablename="acq.provider_address" reporter:label="Provider Address">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_address_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="address_type" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="city" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="country" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="county" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field name="provider" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="post_code" oils_obj:array_position="9" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="state" oils_obj:array_position="10" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="street1" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="street2" oils_obj:array_position="12" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field name="valid" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </create>
+                <retrieve permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </retrieve>
+                <update permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </update>
+                <delete permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqpc" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::provider_contact" oils_persist:tablename="acq.provider_contact" reporter:label="Provider Contact">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_contact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field name="provider" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="name" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="role" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="email" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="phone" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+        </fields>
+		<links>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </create>
+                <retrieve permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </retrieve>
+                <update permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </update>
+                <delete permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
+    </class>
+	<class id="acqpca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_contact_address" oils_persist:tablename="acq.provider_contact_address" reporter:label="Provider Contact Address">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_contact_address_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Type" name="address_type" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="City" name="city" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Country" name="country" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="County" name="county" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Address ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Postal Code" name="post_code" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="State" name="state" oils_obj:array_position="9" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Street (1)" name="street1" oils_obj:array_position="10" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Street (2)" name="street2" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Contact" name="contact" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Valid Address?" name="valid" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="contact" reltype="has_a" key="id" map="" class="acqpc"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER">
+                    <context link="contact" jump='provider' field="owner"/>
+                </create>
+                <retrieve permission="ADMIN_PROVIDER">
+                    <context link="contact" jump='provider' field="owner"/>
+                </retrieve>
+                <update permission="ADMIN_PROVIDER">
+                    <context link="contact" jump='provider' field="owner"/>
+                </update>
+                <delete permission="ADMIN_PROVIDER">
+                    <context link="contact" jump='provider' field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source">

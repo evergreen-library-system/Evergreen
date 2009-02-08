@@ -38,6 +38,44 @@ CREATE TABLE acq.provider (
 	CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
 );
 
+CREATE TABLE acq.provider_address (
+	id		SERIAL	PRIMARY KEY,
+	valid		BOOL	NOT NULL DEFAULT TRUE,
+	address_type	TEXT,
+    provider    INT     NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+	street1		TEXT	NOT NULL,
+	street2		TEXT,
+	city		TEXT	NOT NULL,
+	county		TEXT,
+	state		TEXT	NOT NULL,
+	country		TEXT	NOT NULL,
+	post_code	TEXT	NOT NULL
+);
+
+CREATE TABLE acq.provider_contact (
+	id		SERIAL	PRIMARY KEY,
+    provider    INT NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+    name    TEXT NULL NULL,
+    role    TEXT, -- free-form.. e.g. "our sales guy"
+    email   TEXT,
+    phone   TEXT
+);
+
+CREATE TABLE acq.provider_contact_address (
+	id			SERIAL	PRIMARY KEY,
+	valid			BOOL	NOT NULL DEFAULT TRUE,
+	address_type	TEXT,
+	contact    		INT	    NOT NULL REFERENCES acq.provider_contact (id) DEFERRABLE INITIALLY DEFERRED,
+	street1			TEXT	NOT NULL,
+	street2			TEXT,
+	city			TEXT	NOT NULL,
+	county			TEXT,
+	state			TEXT	NOT NULL,
+	country			TEXT	NOT NULL,
+	post_code		TEXT	NOT NULL
+);
+
+
 CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
