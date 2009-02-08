@@ -4012,7 +4012,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="acqpc" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::provider_contact" oils_persist:tablename="acq.provider_contact" reporter:label="Provider Contact">
+	<class id="acqpc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_contact" oils_persist:tablename="acq.provider_contact" reporter:label="Provider Contact">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_contact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
