@@ -118,6 +118,21 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dialog.editPane.mode = 'create';
                 dialog.startup();
                 dialog.show();
+            },
+
+            loadAll : function(opts) {
+                dojo.require('openils.PermaCrud');
+                if(!opts) opts = {};
+                var self = this;
+                opts = dojo.mixin(opts, {
+                    async : true,
+                    streaming : true,
+                    onresponse : function(r) {
+                        var item = openils.Util.readResponse(r);
+                        self.store.newItem(item.toStoreItem());
+                    }
+                });
+                new openils.PermaCrud().retrieveAll(this.fmClass, opts);
             }
         } 
     );
