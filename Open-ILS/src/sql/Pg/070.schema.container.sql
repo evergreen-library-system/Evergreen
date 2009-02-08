@@ -40,6 +40,12 @@ CREATE TABLE container.copy_bucket (
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
+CREATE TABLE container.copy_bucket_note (
+    id      SERIAL      PRIMARY KEY,
+    bucket  INT         NOT NULL REFERENCES container.copy_bucket (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 CREATE TABLE container.copy_bucket_item (
 	id		SERIAL	PRIMARY KEY,
 	bucket		INT	NOT NULL
@@ -54,9 +60,15 @@ CREATE TABLE container.copy_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+    pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE container.copy_bucket_item_note (
+    id      SERIAL      PRIMARY KEY,
+    item    INT         NOT NULL REFERENCES container.copy_bucket_item (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
 
 
 
@@ -80,6 +92,12 @@ CREATE TABLE container.call_number_bucket (
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
+CREATE TABLE container.call_number_bucket_note (
+    id      SERIAL      PRIMARY KEY,
+    bucket  INT         NOT NULL REFERENCES container.call_number_bucket (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 CREATE TABLE container.call_number_bucket_item (
 	id		SERIAL	PRIMARY KEY,
 	bucket		INT	NOT NULL
@@ -94,8 +112,16 @@ CREATE TABLE container.call_number_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+    pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE container.call_number_bucket_item_note (
+    id      SERIAL      PRIMARY KEY,
+    item    INT         NOT NULL REFERENCES container.call_number_bucket_item (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 
 
 
@@ -120,6 +146,12 @@ CREATE TABLE container.biblio_record_entry_bucket (
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
+CREATE TABLE container.biblio_record_entry_bucket_note (
+    id      SERIAL      PRIMARY KEY,
+    bucket  INT         NOT NULL REFERENCES container.biblio_record_entry_bucket (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 CREATE TABLE container.biblio_record_entry_bucket_item (
 	id				SERIAL	PRIMARY KEY,
 	bucket				INT	NOT NULL
@@ -134,7 +166,14 @@ CREATE TABLE container.biblio_record_entry_bucket_item (
 							ON UPDATE CASCADE
 							DEFERRABLE
 							INITIALLY DEFERRED,
+    pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE container.biblio_record_entry_bucket_item_note (
+    id      SERIAL      PRIMARY KEY,
+    item    INT         NOT NULL REFERENCES container.biblio_record_entry_bucket_item (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
 );
 
 
@@ -159,6 +198,12 @@ CREATE TABLE container.user_bucket (
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );
 
+CREATE TABLE container.user_bucket_note (
+    id      SERIAL      PRIMARY KEY,
+    bucket  INT         NOT NULL REFERENCES container.user_bucket (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 CREATE TABLE container.user_bucket_item (
 	id		SERIAL	PRIMARY KEY,
 	bucket		INT	NOT NULL
@@ -173,7 +218,15 @@ CREATE TABLE container.user_bucket_item (
 					ON UPDATE CASCADE
 					DEFERRABLE
 					INITIALLY DEFERRED,
+    pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE container.user_bucket_item_note (
+    id      SERIAL      PRIMARY KEY,
+    item    INT         NOT NULL REFERENCES container.user_bucket_item (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    note    TEXT        NOT NULL
+);
+
 
 COMMIT;
