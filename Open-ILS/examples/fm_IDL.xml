@@ -1181,10 +1181,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" />
 			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccb"/>
+		</links>
+	</class>
+	<class id="ccbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item_note" oils_persist:tablename="container.copy_bucket_item_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="ccbi"/>
 		</links>
 	</class>
 	<class id="are" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry">
@@ -2292,10 +2306,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" />
 			<field name="target_call_number" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="target_call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
+		</links>
+	</class>
+	<class id="ccnbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item_note" oils_persist:tablename="container.call_number_bucket_item_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_item_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="ccnbi"/>
 		</links>
 	</class>
 	<class id="cbreb" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket" oils_persist:tablename="container.biblio_record_entry_bucket">
@@ -2314,6 +2342,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
+		</links>
+	</class>
+	<class id="cbrebn" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_note" oils_persist:tablename="container.biblio_record_entry_bucket_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="bucket" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
 		</links>
 	</class>
 	<class id="ahcm" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map">
@@ -2705,6 +2746,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="items" reltype="has_many" key="bucket" map="" class="ccnbi"/>
 		</links>
 	</class>
+	<class id="ccnbn" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_note" oils_persist:tablename="container.call_number_bucket_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="bucket" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
+		</links>
+	</class>
 	<class id="asc" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat" reporter:label="Asset Statistical Category">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -2782,6 +2836,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="items" reltype="has_many" key="bucket" map="" class="cubi"/>
+		</links>
+	</class>
+	<class id="cubn" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_note" oils_persist:tablename="container.user_bucket_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="bucket" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
 		</links>
 	</class>
 	<class id="mcrp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment" reporter:label="House Credit Payment">
@@ -2998,10 +3065,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" />
 			<field name="target_user" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="target_user" reltype="has_a" key="id" map="" class="au"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
+		</links>
+	</class>
+	<class id="cubin" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_item_note" oils_persist:tablename="container.user_bucket_item_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_item_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="cubi"/>
 		</links>
 	</class>
 	<class id="mus" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary">
@@ -3449,6 +3530,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="items" reltype="has_many" key="bucket" map="" class="ccbi"/>
 		</links>
 	</class>
+	<class id="ccbn" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_note" oils_persist:tablename="container.copy_bucket_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="bucket" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="ccb"/>
+		</links>
+	</class>
 	<class id="puwoum" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_work_ou_map" oils_persist:tablename="permission.usr_work_ou_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_work_ou_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -3619,10 +3713,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" />
 			<field name="target_biblio_record_entry" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="target_biblio_record_entry" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+		</links>
+	</class>
+	<class id="cbrebin" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item_note" oils_persist:tablename="container.biblio_record_entry_bucket_item_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="cbrebi"/>
 		</links>
 	</class>
 	<class id="asce" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry" reporter:label="Item Stat Cat Entry">
