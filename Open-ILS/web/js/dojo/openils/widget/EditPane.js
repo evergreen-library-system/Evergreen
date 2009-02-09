@@ -29,6 +29,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             startup : function() {
                 this.inherited(arguments);
                 this.initAutoEnv();
+                this.hideActionButtons = this.readOnly;
 
                 var table = document.createElement('table');
                 var tbody = document.createElement('tbody');
@@ -59,7 +60,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         fmObject : this.fmObject,
                         fmClass : this.fmClass,
                         parentNode : valSpan,
-                        orgLimitPerms : this.limitPerms
+                        orgLimitPerms : this.limitPerms,
+                        readOnly : this.readOnly
                     });
 
                     widget.build();

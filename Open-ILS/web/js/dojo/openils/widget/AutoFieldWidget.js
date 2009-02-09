@@ -43,7 +43,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          * Turn the value from the dojo widget into a value oils understands
          */
         getFormattedValue : function() {
-            var value = this.widget.attr('value');
+            var value = this.baseWidgetValue();
             switch(this.idlField.datatype) {
                 case 'bool':
                     return (value) ? 't' : 'f'
@@ -52,6 +52,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 default:
                     return value;
             }
+        },
+
+        baseWidgetValue : function(value) {
+            var attr = (this.readOnly) ? 'content' : 'value';
+            if(arguments.length) this.widget.attr(attr, value);
+            return this.widget.attr(attr, value);
         },
         
         getDisplayString : function() {
@@ -67,7 +73,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'org_unit':
                     return fieldmapper.aou.findOrgUnit(value).shortname();
                 default:
-                    return value;
+                    return value+'';
             }
         },
 
@@ -76,43 +82,50 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.widgetValue == null)
                 this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
-            switch(this.idlField.datatype) {
-                
-                case 'id':
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-                    this.widget.attr('disabled', true); // never allow editing of IDs
-                    break;
+            if(this.readOnly) {
+                dojo.require('dijit.layout.ContentPane');
+                this.widget = new dijit.layout.ContentPane(this.dijitArgs, this.parentNode);
 
-                case 'org_unit':
-                    this._buildOrgSelector();
-                    break;
+            } else {
 
-                case 'money':
-                    dojo.require('dijit.form.CurrencyTextBox');
-                    this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
-                    break;
+                switch(this.idlField.datatype) {
+                    
+                    case 'id':
+                        dojo.require('dijit.form.TextBox');
+                        this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                        this.widget.attr('disabled', true); // never allow editing of IDs
+                        break;
 
-                case 'timestamp':
-                    dojo.require('dijit.form.DateTextBox');
-                    dojo.require('dojo.date.stamp');
-                    this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
-                    if(this.widgetValue != null) 
-                        this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
-                    break;
+                    case 'org_unit':
+                        this._buildOrgSelector();
+                        break;
 
-                case 'bool':
-                    dojo.require('dijit.form.CheckBox');
-                    this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
-                    this.widgetValue = openils.Util.isTrue(this.widgetValue);
-                    break;
+                    case 'money':
+                        dojo.require('dijit.form.CurrencyTextBox');
+                        this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
+                        break;
 
-                case 'link':
-                    if(this._buildLinkSelector()) break;
+                    case 'timestamp':
+                        dojo.require('dijit.form.DateTextBox');
+                        dojo.require('dojo.date.stamp');
+                        this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
+                        if(this.widgetValue != null) 
+                            this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
+                        break;
 
-                default:
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                    case 'bool':
+                        dojo.require('dijit.form.CheckBox');
+                        this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
+                        this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        break;
+
+                    case 'link':
+                        if(this._buildLinkSelector()) break;
+
+                    default:
+                        dojo.require('dijit.form.TextBox');
+                        this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                }
             }
 
             if(!this.async) this._widgetLoaded();
@@ -167,10 +180,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          * For widgets that run asynchronously, provide a callback for finishing up
          */
         _widgetLoaded : function(value) {
-            if(this.widgetValue != null) 
-                this.widget.attr('value', this.widgetValue);
-            if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
-                this.widget.attr('disabled', true); 
+            if(this.readOnly) {
+                this.baseWidgetValue(this.getDisplayString());
+            } else {
+                this.baseWidgetValue(this.widgetValue);
+                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                    this.widget.attr('disabled', true); 
+            }
             if(this.onload)
                 this.onload(this.widget, self);
         },
