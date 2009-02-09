@@ -25,11 +25,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             for(var k in args)
                 this[k] = args[k];
 
+            console.log(this.fmClass + ' : ' + this.fmObject + ' : ' + this.idlField);
+
             // find the field description in the IDL if not provided
+            if(this.fmObject) 
+                this.fmClass = this.fmObject.classname;
+            this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+
             if(!this.idlField) {
-                if(this.fmObject)
-                    this.fmClass = this.fmObject.classname;
-                var fields = fieldmapper.IDL.fmclasses[this.fmClass].fields;
+                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+                var fields = this.fmIDL.fields;
                 for(var f in fields) 
                     if(fields[f].name == this.fmField)
                         this.idlField = fields[f];
@@ -166,6 +171,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _widgetLoaded : function(value) {
             if(this.widgetValue != null) 
                 this.widget.attr('value', this.widgetValue);
+            if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                this.widget.attr('disabled', true); 
             if(this.onload)
                 this.onload(this.widget, self);
         },

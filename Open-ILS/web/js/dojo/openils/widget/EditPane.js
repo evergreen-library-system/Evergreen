@@ -57,6 +57,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var widget = new openils.widget.AutoFieldWidget({
                         idlField : field, 
                         fmObject : this.fmObject,
+                        fmClass : this.fmClass,
                         parentNode : valSpan,
                         orgLimitPerms : this.limitPerms
                     });
@@ -133,7 +134,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     this.fmObject = new fieldmapper[this.fmClass]();
                 for(var idx in fields)  
                     this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
-                if(this.mode == 'create')
+                if(this.mode == 'create' && this.fmIDL.pkey_sequence)
                     this.fmObject[fieldmapper[this.fmClass].Identifier](null);
                 pcrud[this.mode](this.fmObject, opts);
             }

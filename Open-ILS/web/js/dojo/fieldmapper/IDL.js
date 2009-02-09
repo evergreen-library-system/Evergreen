@@ -50,7 +50,8 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     label   : node.getAttributeNS(this.NS_REPORTS, 'label'),
                     restrict_primary   : node.getAttributeNS(this.NS_PERSIST, 'restrict_primary'),
                     virtual : (node.getAttributeNS(this.NS_PERSIST, 'virtual') == 'true'),
-                    pkey    : fields.getAttributeNS(this.NS_PERSIST, 'primary')
+                    pkey    : fields.getAttributeNS(this.NS_PERSIST, 'primary'),
+                    pkey_sequence : fields.getAttributeNS(this.NS_PERSIST, 'sequence')
                 };
 
                 var permacrud = node.getElementsByTagName('permacrud')[0];
