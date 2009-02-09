@@ -36,7 +36,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 if(!dojo.isArray(this.tree)) this.tree = [this.tree];
                 this.dataList = [];
                 var self = this;
-                this.tree.forEach(function(node) { self._makeNodeList(node); });
+                dojo.forEach(this.tree, function(node) { self._makeNodeList(node); });
                 this.store = new dojo.data.ItemFileReadStore(
                     {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
                 this.inherited(arguments);
