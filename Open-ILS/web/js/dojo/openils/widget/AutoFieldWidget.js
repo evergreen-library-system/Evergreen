@@ -25,8 +25,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             for(var k in args)
                 this[k] = args[k];
 
-            console.log(this.fmClass + ' : ' + this.fmObject + ' : ' + this.idlField);
-
             // find the field description in the IDL if not provided
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
