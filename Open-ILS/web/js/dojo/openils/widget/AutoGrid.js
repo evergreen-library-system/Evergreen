@@ -15,6 +15,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
             defaultCellWidth : null,
 
+            /* by default, don't show auto-generated (sequence) fields */
+            showSequenceFields : false, 
+
             startup : function() {
 
                 this.selectionMode = 'single';
@@ -27,6 +30,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
+                    if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                        continue; 
                     var entry = existing.filter(
                         function(i){return (i.field == field.name)})[0];
                     if(entry) entry.name = field.label;
