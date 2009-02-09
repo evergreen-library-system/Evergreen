@@ -85,8 +85,17 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             grid.store.setValue(storeItem, field, fmObject[field]());
                         }
                         dialog.destroy();
-                        setTimeout(function(){
-                            grid.views.views[0].getCellNode(rowIndex, 0).focus();},200);
+
+                        if(self.onPostUpdate)
+                            self.onPostUpdate(storeItem, rowIndex);
+
+                        setTimeout(
+                            function(){
+                                try { 
+                                    grid.views.views[0].getCellNode(rowIndex, 0).focus(); 
+                                } catch (E) {}
+                            },200
+                        );
                     },
                     onCancel : function() {
                         setTimeout(function(){
@@ -108,9 +117,13 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         if(fmObject) 
                             grid.store.newItem(fmObject.toStoreItem());
                         dialog.destroy();
+                        if(grid.onPostCreate)
+                            grid.onPostCreate(fmObject);
                         setTimeout(function(){
-                            grid.selection.select(grid.rowCount-1);
-                            grid.views.views[0].getCellNode(grid.rowCount-1, 1).focus();
+                            try {
+                                grid.selection.select(grid.rowCount-1);
+                                grid.views.views[0].getCellNode(grid.rowCount-1, 1).focus();
+                            } catch (E) {}
                         },200);
                     },
                 });
