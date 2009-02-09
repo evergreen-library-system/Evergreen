@@ -856,6 +856,14 @@ sub storagereq {
 		'open-ils.storage', $method, @params );
 }
 
+sub storagereq_xact {
+	my($self, $method, @params) = @_;
+	my $ses = $self->start_db_session();
+	my $val = $ses->request($method, @params)->gather(1);
+	$self->rollback_db_session($ses);
+    return $val;
+}
+
 sub cstorereq {
 	my( $self, $method, @params ) = @_;
 	return $self->simplereq(
