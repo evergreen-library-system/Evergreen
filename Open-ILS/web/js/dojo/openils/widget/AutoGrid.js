@@ -86,11 +86,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         }
                         dialog.destroy();
                         setTimeout(function(){
-                            grid.views.views[1].getCellNode(rowIndex, 0).focus();},200);
+                            grid.views.views[0].getCellNode(rowIndex, 0).focus();},200);
                     },
                     onCancel : function() {
                         setTimeout(function(){
-                            grid.views.views[1].getCellNode(rowIndex, 0).focus();},200);
+                            grid.views.views[0].getCellNode(rowIndex, 0).focus();},200);
                     }
                 });
                 dialog.editPane.fieldOrder = this.fieldOrder;
@@ -110,7 +110,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         dialog.destroy();
                         setTimeout(function(){
                             grid.selection.select(grid.rowCount-1);
-                            grid.views.views[1].getCellNode(grid.rowCount-1, 1).focus();
+                            grid.views.views[0].getCellNode(grid.rowCount-1, 1).focus();
                         },200);
                     },
                 });
