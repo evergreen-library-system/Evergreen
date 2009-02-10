@@ -1662,42 +1662,46 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 	return buffer_release(sql_buf);
 }
 
+// Receive a JSON_ARRAY representing a function call.  The first
+// entry in the array is the function name.  The rest are parameters.
 static char* searchValueTransform( const jsonObject* array ) {
 	growing_buffer* sql_buf = buffer_init(32);
 
 	char* val = NULL;
-	int func_item_index = 0;
-	int func_item_first = 2;
 	jsonObject* func_item;
+	
+	// Get the function name
+	if( array->size > 0 ) {
+		func_item = jsonObjectGetIndex( array, 0 );
+		val = jsonObjectToSimpleString( func_item );
+		OSRF_BUFFER_ADD( sql_buf, val );
+		OSRF_BUFFER_ADD( sql_buf, "( " );
+		free(val);
+	}
+	
+	// Get the parameters
+	int func_item_index = 1;   // We already grabbed the zeroth entry
 	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
-		val = jsonObjectToSimpleString(func_item);
+		// Add a separator comma, if we need one
+		if( func_item_index > 1 )
+			buffer_add( sql_buf, ", " );
 
-		if (func_item_first == 2) {
-			OSRF_BUFFER_ADD(sql_buf, val);
-			OSRF_BUFFER_ADD(sql_buf, "( ");
-			free(val);
-			func_item_first--;
-			continue;
-		}
-
-		if (func_item_first)
-			func_item_first--;
-		else
-			buffer_add(sql_buf, ", ");
-
+		// Add the current parameter
 		if (func_item->type == JSON_NULL) {
 			buffer_add( sql_buf, "NULL" );
-		} else if ( dbi_conn_quote_string(dbhandle, &val) ) {
-			OSRF_BUFFER_ADD( sql_buf, val );
 		} else {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-			free(val);
-			buffer_free(sql_buf);
-			return NULL;
+			val = jsonObjectToSimpleString(func_item);
+			if ( dbi_conn_quote_string(dbhandle, &val) ) {
+				OSRF_BUFFER_ADD( sql_buf, val );
+				free(val);
+			} else {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+				buffer_free(sql_buf);
+				free(val);
+				return NULL;
+			}
 		}
-
-		free(val);
 	}
 
 	buffer_add( sql_buf, " )" );
@@ -2158,7 +2162,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
 	osrfLogDebug(
         OSRF_LOG_MARK,
-        "%s: Entering searchWHERE; search_hash addr = %d, meta addr = %d, opjoin_type = %d, ctx addr = %d",
+        "%s: Entering searchWHERE; search_hash addr = %p, meta addr = %p, opjoin_type = %d, ctx addr = %p",
         MODULENAME,
         search_hash,
         meta,
@@ -2259,7 +2263,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     char* table = getSourceDefinition(meta);
                     osrfLogError(
                         OSRF_LOG_MARK,
-                        "%s: Attempt to reference non-existant column %s on %s (%s)",
+                        "%s: Attempt to reference non-existent column %s on %s (%s)",
                         MODULENAME,
                         search_itr->key,
                         table,
@@ -2603,8 +2607,8 @@ static char* SELECT (
 
 	char* col_list = buffer_release(select_buf);
 	char* table = NULL;
-    if (!from_function) table = getSourceDefinition(core_meta);
-    else table = searchValueTransform(join_hash);
+	if (from_function) table = searchValueTransform(join_hash);
+	else table = getSourceDefinition(core_meta);
 
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
@@ -2619,14 +2623,18 @@ static char* SELECT (
 		    free(join_clause);
 	    }
 
+		// Build a WHERE clause, if there is one
 	    if ( search_hash ) {
 		    buffer_add(sql_buf, " WHERE ");
 
-		    // and it's on the the WHERE clause
+		    // and it's on the WHERE clause
 		    char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN, ctx );
 
-		    if (!pred) {
-			    if (ctx) {
+		    if (pred) {
+				buffer_add(sql_buf, pred);
+				free(pred);
+			} else {
+				if (ctx) {
 			        osrfAppSessionStatus(
 				        ctx->session,
 				        OSRF_STATUS_INTERNALSERVERERROR,
@@ -2642,20 +2650,21 @@ static char* SELECT (
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
-		    } else {
-			    buffer_add(sql_buf, pred);
-			    free(pred);
 		    }
         }
 
+		// Build a HAVING clause, if there is one
 	    if ( having_hash ) {
 		    buffer_add(sql_buf, " HAVING ");
 
 		    // and it's on the the WHERE clause
 		    char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
 
-		    if (!pred) {
-			    if (ctx) {
+		    if (pred) {
+				buffer_add(sql_buf, pred);
+				free(pred);
+			} else {
+				if (ctx) {
 			        osrfAppSessionStatus(
 				        ctx->session,
 				        OSRF_STATUS_INTERNALSERVERERROR,
@@ -2671,12 +2680,10 @@ static char* SELECT (
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
-		    } else {
-			    buffer_add(sql_buf, pred);
-			    free(pred);
 		    }
 	    }
 
+		// Build an ORDER BY clause, if there is one
 	    first = 1;
 	    jsonIterator* class_itr = jsonNewIterator( order_hash );
 	    while ( (snode = jsonIteratorNext( class_itr )) ) {
