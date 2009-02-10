@@ -17,10 +17,15 @@ sub initialize { return 1; }
 my $svc = 'open-ils.cstore';
 my $meth = 'open-ils.cstore.direct.container';
 my %types;
+my %ctypes;
 $types{'biblio'} = "$meth.biblio_record_entry_bucket";
 $types{'callnumber'} = "$meth.call_number_bucket";
 $types{'copy'} = "$meth.copy_bucket";
 $types{'user'} = "$meth.user_bucket";
+$ctypes{'biblio'} = "container_biblio_record_entry_bucket";
+$ctypes{'callnumber'} = "container_call_number_bucket";
+$ctypes{'copy'} = "container_copy_bucket";
+$ctypes{'user'} = "container_user_bucket";
 my $event;
 
 sub _sort_buckets {
@@ -63,67 +68,50 @@ __PACKAGE__->register_method(
 	method	=> "bucket_flesh",
 	api_name	=> "open-ils.actor.container.flesh",
 	argc		=> 3, 
-	notes		=> <<"	NOTES");
-		Fleshes a bucket by id
-		PARAMS(authtoken, bucketClass, bucketId)
-		bucketclasss include biblio, callnumber, copy, and user.  
-		bucketclass defaults to biblio.
-		If requestor ID is different than bucketOwnerId, requestor must have
-		VIEW_CONTAINER permissions.
-	NOTES
+);
+
+__PACKAGE__->register_method(
+	method	=> "bucket_flesh_pub",
+	api_name	=> "open-ils.actor.container.public.flesh",
+	argc		=> 3, 
+);
 
 sub bucket_flesh {
+	my($self, $conn, $auth, $class, $bucket_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return _bucket_flesh($self, $conn, $e, $class, $bucket_id);
+}
 
-	my($self, $client, $authtoken, $class, $bucket) = @_;
+sub bucket_flesh_pub {
+    my($self, $conn, $class, $bucket_id) = @_;
+    my $e = new_editor();
+    return _bucket_flesh($self, $conn, $e, $class, $bucket_id);
+}
 
-	my( $staff, $evt ) = $apputils->checkses($authtoken);
-	return $evt if $evt;
+sub _bucket_flesh {
+	my($self, $conn, $e, $class, $bucket_id) = @_;
+	my $meth = 'retrieve_' . $ctypes{$class};
+    my $bkt = $e->$meth($bucket_id) or return $e->event;
 
-	$logger->debug("User " . $staff->id . " retrieving bucket $bucket");
-
-	my $meth = $types{$class};
-
-	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
-	#if(!$bkt) {return undef};
-	return OpenILS::Event->new('CONTAINER_NOT_FOUND', payload=>$bucket) unless $bkt;
-
-	if(!$bkt->pub) {
-		my( $user, $e ) = $apputils->checkrequestor( $staff, $bkt->owner, 'VIEW_CONTAINER' );
-		return $e if $e;
+	unless($U->is_true($bkt->pub)) {
+        return undef if $self->api_name =~ /public/;
+        unless($bkt->owner eq $e->requestor->id) {
+            return $e->event unless $e->allowed('VIEW_CONTAINER', $bkt);
+        }
 	}
 
     my $fmclass = $bkt->class_name . "i";
-	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.atomic", { bucket => $bucket }, {order_by => {$fmclass => "pos"}} ) );
-
-	return $bkt;
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "bucket_flesh_public",
-	api_name	=> "open-ils.actor.container.public.flesh",
-	argc		=> 3, 
-	notes		=> <<"	NOTES");
-		Fleshes a bucket by id
-		PARAMS(authtoken, bucketClass, bucketId)
-		bucketclasss include biblio, callnumber, copy, and user.  
-		bucketclass defaults to biblio.
-		If requestor ID is different than bucketOwnerId, requestor must have
-		VIEW_CONTAINER permissions.
-	NOTES
-
-sub bucket_flesh_public {
-
-	my($self, $client, $class, $bucket) = @_;
-
-	my $meth = $types{$class};
-	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
-	return undef unless ($bkt and $bkt->pub);
-
-    my $fmclass = $bkt->class_name . "i";
-	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.atomic", { bucket => $bucket }, {order_by => {$fmclass => "pos"}} ) );
+    $meth = 'search_' . $ctypes{$class} . '_item';
+	$bkt->items(
+        $e->$meth(
+            {bucket => $bucket_id}, 
+            {   order_by => {$fmclass => "pos"},
+                flesh => 1, 
+                flesh_fields => {cbrebi => ['notes']}
+            }
+        )
+    );
 
 	return $bkt;
 }
