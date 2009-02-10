@@ -45,21 +45,19 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub bucket_retrieve_all {
-	my($self, $client, $authtoken, $userid) = @_;
+	my($self, $client, $auth, $user_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
-	my( $staff, $evt ) = $apputils->checkses($authtoken);
-	return $evt if $evt;
-
-	my( $user, $e ) = $apputils->checkrequestor( $staff, $userid, 'VIEW_CONTAINER');
-	return $e if $e;
-
-	$logger->debug("User " . $staff->id . 
-		" retrieving all buckets for user $userid");
-
+    if($e->requestor->id ne $user_id) {
+        return $e->event unless $e->allowed('VIEW_CONTAINER');
+    }
+    
 	my %buckets;
-
-	$buckets{$_} = $apputils->simplereq( 
-		$svc, $types{$_} . ".search.atomic", { owner => $userid } ) for keys %types;
+    for my $type (keys %ctypes) {
+        my $meth = "search_" . $ctypes{$type};
+	    $buckets{$type} = $e->$meth({owner => $user_id});
+    }
 
 	return \%buckets;
 }
@@ -114,6 +112,42 @@ sub _bucket_flesh {
     );
 
 	return $bkt;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "item_note_cud",
+	api_name	=> "open-ils.actor.container.item_note.cud",
+);
+
+
+sub item_note_cud {
+    my($self, $conn, $auth, $class, $note) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $meth = 'retrieve_' . $ctypes{$class};
+    my $nclass = $note->class_name;
+    (my $iclass = $nclass) =~ s/n$//og;
+
+    my $db_note = $e->$meth($note->id, {
+        flesh => 2,
+        flesh_fields => {
+            $nclass => ['item'],
+            $iclass => ['bucket']
+        }
+    });
+
+    if($db_note->item->bucket->owner ne $e->requestor->id) {
+        return $e->die_event unless 
+            $e->allowed('UPDATE_CONTAINER', $db_note->item->bucket);
+    }
+
+    $meth = 'create_' . $ctypes{$class} if $note->isnew;
+    $meth = 'update_' . $ctypes{$class} if $note->ischanged;
+    $meth = 'delete_' . $ctypes{$class} if $note->isdeleted;
+    return $e->die_event unless $e->$meth($note);
+    $e->commit;
 }
 
 
@@ -308,21 +342,37 @@ sub __item_delete {
 
 	my $stat;
 	if( $class eq 'copy' ) {
+        for my $note (@${$e->search_container_copy_bucket_item_note({item => $item->id})}) {
+            return $e->event unless 
+                $e->delete_container_copy_bucket_item_note($note);
+        }
 		return $e->event unless
 			$stat = $e->delete_container_copy_bucket_item($item);
 	}
 
 	if( $class eq 'callnumber' ) {
+        for my $note (@${$e->search_container_call_number_bucket_item_note({item => $item->id})}) {
+            return $e->event unless 
+                $e->delete_container_call_number_bucket_item_note($note);
+        }
 		return $e->event unless
 			$stat = $e->delete_container_call_number_bucket_item($item);
 	}
 
 	if( $class eq 'biblio' ) {
+        for my $note (@${$e->search_container_biblio_record_entry_bucket_item_note({item => $item->id})}) {
+            return $e->event unless 
+                $e->delete_container_biblio_record_entry_bucket_item_note($note);
+        }
 		return $e->event unless
 			$stat = $e->delete_container_biblio_record_entry_bucket_item($item);
 	}
 
 	if( $class eq 'user') {
+        for my $note (@${$e->search_container_user_bucket_item_note({item => $item->id})}) {
+            return $e->event unless 
+                $e->delete_container_user_bucket_item_note($note);
+        }
 		return $e->event unless
 			$stat = $e->delete_container_user_bucket_item($item);
 	}
