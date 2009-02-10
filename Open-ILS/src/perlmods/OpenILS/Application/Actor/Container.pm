@@ -92,8 +92,9 @@ sub bucket_flesh {
 		return $e if $e;
 	}
 
+    my $fmclass = $bkt->class_name . "i";
 	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.atomic", { bucket => $bucket } ) );
+		"$meth"."_item.search.atomic", { bucket => $bucket }, {order_by => {$fmclass => "pos"}} ) );
 
 	return $bkt;
 }
@@ -120,8 +121,9 @@ sub bucket_flesh_public {
 	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
 	return undef unless ($bkt and $bkt->pub);
 
+    my $fmclass = $bkt->class_name . "i";
 	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.atomic", { bucket => $bucket } ) );
+		"$meth"."_item.search.atomic", { bucket => $bucket }, {order_by => {$fmclass => "pos"}} ) );
 
 	return $bkt;
 }
