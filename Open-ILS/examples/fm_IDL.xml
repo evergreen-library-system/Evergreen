@@ -1182,10 +1182,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="notes" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccb"/>
+            <link field="notes" reltype="has_many" map="" key="item" class="ccbin"/>
 		</links>
 	</class>
 	<class id="ccbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item_note" oils_persist:tablename="container.copy_bucket_item_note">
@@ -2307,10 +2309,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="target_call_number" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="notes" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="target_call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
+            <link field="notes" reltype="has_many" map="" key="item" class="ccnbin"/>
 		</links>
 	</class>
 	<class id="ccnbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item_note" oils_persist:tablename="container.call_number_bucket_item_note">
@@ -3066,10 +3070,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="target_user" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="notes" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="target_user" reltype="has_a" key="id" map="" class="au"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
+            <link field="notes" reltype="has_many" map="" key="item" class="cubin"/>
 		</links>
 	</class>
 	<class id="cubin" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_item_note" oils_persist:tablename="container.user_bucket_item_note">
@@ -3714,10 +3720,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="target_biblio_record_entry" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field name="pos" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="notes" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="target_biblio_record_entry" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+            <link field="notes" reltype="has_many" map="" key="item" class="cbrebin"/>
 		</links>
 	</class>
 	<class id="cbrebin" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item_note" oils_persist:tablename="container.biblio_record_entry_bucket_item_note">
