@@ -1,0 +1,24 @@
+<div id='statusbar' align="right">
+	<table align='right' width='100%'>
+		<tbody>
+			<tr>
+				<td align='left' class='title' width='20%' nowrap='nowrap'>
+					<b>
+					<span style='padding: 1px;' id='now_searching_location'>  </span>
+					</b>
+					<i id='including_results_for' class='hide_me'>
+						<span>&status.results;</span> <b id='including_results_location'> </b>
+					</i>
+				</td>
+                <td align='right' style='padding:4px;'>
+                    <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
+                    <!--#include virtual="../result/filtersort.xml" -->
+                    <!--#endif -->
+                </td>
+			</tr>
+		</tbody>
+	</table>
+	<script language='javascript' type='text/javascript'>
+		config.ids.common.now_searching = 'now_searching_location';
+	</script>
+</div>

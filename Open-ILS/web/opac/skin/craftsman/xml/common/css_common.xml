@@ -1,0 +1,26 @@
+<!-- CSS shared across pages goes here --> 
+
+<link type='text/css' rel='stylesheet' href="<!--#echo var='OILS_SKIN_BASE'-->/craftsman/css/layout.css"/>
+<link type='text/css' rel='stylesheet' href="<!--#echo var='OILS_SKIN_BASE'-->/craftsman/css/default.css"/>
+
+<!-- Our font CSS's -->
+<link type='text/css' rel='stylesheet' href='<!--#echo var="OILS_CSS_BASE"-->/mediumfont.css' />
+
+<!-- Our colors -->
+<link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/craftsman/css/colors.css" />
+
+<!-- An alternate stylesheet -->
+<link type='text/css' rel="alternate stylesheet" title='&opac.style.reddish;' href="<!--#echo var='OILS_THEME_BASE'-->/reddish/css/colors.css" />
+
+<!-- OpenSearch auto discovery -->
+<link type="application/opensearchdescription+xml"
+	rel='search' title="Evergreen"
+	href="http://<!--#echo var='SERVER_NAME'-->/opac/extras/opensearch/1.1/-/osd.xml" />
+<link type='text/css' rel="alternate stylesheet" title='&opac.style.reddish;' href="<!--#echo var='OILS_THEME_BASE'-->/reddish/css/colors.css" />
+
+<!-- enable Dojo date picker -->
+<style type="text/css">
+	@import '/js/dojo/dojo/resources/dojo.css';
+	@import '/js/dojo/dijit/themes/tundra/tundra.css';
+	@import '/js/dojo/dijit/themes/tundra/tundra_rtl.css';
+</style>
