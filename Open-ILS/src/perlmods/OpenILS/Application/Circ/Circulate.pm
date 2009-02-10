@@ -2359,5 +2359,42 @@ sub run_renew_permit {
 }
 
 
+sub append_reading_list {
+    my $self = shift;
+    my $e = $self->editor;
+    return undef unless $self->patron and $self->title;
+
+    my $bkt = $e->search_container_biblio_record_entry_bucket(
+        {owner => $self->patron->id, btype => 'reading_list'})->[0];
+
+    my $pos = 1;
+
+    if($bkt) {
+        # find the next position
+        my $last_item = $e->search_container_biblio_record_entry_bucket_item(
+            {bucket => $bkt->id}, {order_by => {'cbrebi' => 'pos desc'}, limit => 1})->[0];
+        $pos = $last_item->pos + 1 if $last_item;
+
+    } else {
+        $bkt = Fieldmapper::container::biblio_record_entry_bucket->new;
+        $bkt->owner($self->patron->id);
+        $bkt->name('');
+        $bkt->btype('reading_list');
+        $bkt->pub('f');
+        $e->create_container_biblio_record_entry_bucket($bkt) or return $e->die_event;
+
+    }
+
+    my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+    $item->bucket($bkt->id);
+    $item->target_biblio_record_entry($self->title->id);
+    $item->pos($pos);
+
+    $e->create_container_biblio_record_entry_bucket_item($item)
+        or return $e->die_event;
+
+    return undef;
+}
+
 
 
