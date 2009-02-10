@@ -189,8 +189,10 @@ DECLARE
 BEGIN
     SELECT INTO old_id replaces FROM actor.usr_address where id = pending_id;
     IF old_id IS NULL THEN
+        UPDATE actor.usr_address SET pending = 'f' WHERE id = pending_id;
         RETURN NULL;
     END IF;
+    -- address replaces an existing address
     DELETE FROM actor.usr_address WHERE id = -old_id;
     UPDATE actor.usr_address SET id = -id WHERE id = old_id;
     UPDATE actor.usr_address SET replaces = NULL, id = old_id WHERE id = pending_id;
