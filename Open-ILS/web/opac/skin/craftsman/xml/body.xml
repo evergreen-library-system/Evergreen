@@ -1,0 +1,51 @@
+<!--
+<body onload='init();' style='height: 100%; border: 2px solid black;'>
+-->
+<body onload='init();'>
+<div id='container'>
+	<div id='header'>
+		<table cellspacing='0' width='100%'>
+			<tr>
+				<td width='10%'><!--#include virtual="common/logo.xml"--></td>
+				<td align='right' width='90%'>
+					<table cellspacing='0' width='100%'>
+						<tr>
+							<td><!--#include virtual="common/fonts.xml"--></td>
+						</tr>
+						<!--#if expr="$OILS_PAGE!='advanced.xml'"-->
+						<tr>
+							<td><!--#include virtual="common/searchbar.xml"--></td>
+						</tr>
+						<tr>
+							<td><!--#include virtual="common/statusbar.xml"--></td>
+						</tr>
+						<!--#endif-->
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id='header-shadow'></div>
+	<table id='main-content'>
+		<tbody>
+			<tr>
+				<td id='main_left_cell'>
+					<div style='width: 300px;'>
+					<!--#include virtual="common/sidebar.xml"-->
+					</div>
+				</td>
+				<td id='main_right_cell'>
+					<div id='content' class=''>
+						<!--#include virtual="common/altcanvas.xml"-->
+						<!--#include virtual="common/ilsevents.xml"--> 
+						<!--#include virtual="page_${OILS_PAGE}"-->
+					</div>
+					<!--#include virtual="common/tips.xml"-->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class='clear'></div>
+	<!--#include virtual='footer.xml'-->
+</div>
+</body>

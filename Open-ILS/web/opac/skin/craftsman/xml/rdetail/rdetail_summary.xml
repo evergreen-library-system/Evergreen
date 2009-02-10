@@ -1,0 +1,83 @@
+
+<!-- This holds the record summary information -->
+<div class='details-grid'>
+	<table id='rdetail_details_table'>
+		<tbody id='rdetail_details_tbody'>
+
+			<tr>
+				<td id='rdetail_image_cell' rowspan='10' style='border-right: 1px solid #efefef; text-align: center;'>
+					<a id='rdetail_img_link'>
+						<img style='margin: 0 auto; border: none;' id='rdetail_image' onerror='hideMe($("rdetail.jacket_attrib_div"));hideMe($("rdetail_img_link"));'/>
+					</a>
+                    <!-- vendor attribution link -->
+                    <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
+                        <div>&opac.image_provided;</div>
+                        <div><a target='_blank' href='&vendor.base_link;' class='classic_link' id='rdetail.jacket_attrib_link'>&vendor.name;</a></div>
+                    </div>
+				</td>
+				<td class='title'>&common.title;</td>		
+				<td id='rdetail_title'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.author;</td>		
+				<td><a title='&rdetail.author.search;' id='rdetail_author'></a></td>
+			</tr>
+			<tr>
+				<td class='title'>&common.isbn;</td>			
+				<td id='rdetail_isbn'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.edition;</td>		
+				<td id='rdetail_edition'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.pubdate;</td>		
+				<td id='rdetail_pubdate'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.publisher;</td>		
+				<td id='rdetail_publisher'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.physical;</td>		
+				<td id='rdetail_physical_desc'> </td>
+			</tr>
+			<tr>
+				<td class='title'>&common.format;</td>			
+				<td>
+					<img id='rdetail_tor_pic' class='tor_pic' />
+					<span id='rdetail_tor' style='padding-left: 5px;'> </span>
+				</td>
+			</tr>
+			<tr>
+				<td class='title'>&rdetail.detailMain.abstract;</td>	
+				<td id='rdetail_abstract'> </td>
+			</tr>
+
+			<tr class='hide_me' id='rdetail_online_row'>
+				<td class='title'>&rdetail.summary.online;</td>
+				<td id='rdetail_online'> </td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- Empty span used for creating unAPI links -->
+	<abbr name="unapi" class="unapi-id">
+		<!-- unAPI URI goes here -->
+	</abbr>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.rdetail.details_body		= 'rdetail_details_body'; 
+		config.ids.rdetail.title			= 'rdetail_title';
+		config.ids.rdetail.author			= 'rdetail_author';
+		config.ids.rdetail.isbn				= 'rdetail_isbn';
+		config.ids.rdetail.edition			= 'rdetail_edition';
+		config.ids.rdetail.pubdate			= 'rdetail_pubdate';
+		config.ids.rdetail.publisher		= 'rdetail_publisher';
+		config.ids.rdetail.tor				= 'rdetail_tor';
+		config.ids.rdetail.abstr			= 'rdetail_abstract';
+		config.ids.rdetail.image			= 'rdetail_image';
+		config.ids.rdetail.tor_pic			= 'rdetail_tor_pic';
+	</script>
+
+</div> <!-- details_body -->
+

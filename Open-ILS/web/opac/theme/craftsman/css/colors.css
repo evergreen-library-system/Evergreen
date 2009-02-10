@@ -1,0 +1,100 @@
+body a			{ color: black; text-decoration: none;}
+body a:visited { color: black; text-decoration: none;}
+body a:hover	{ color: red; text-decoration: underline;}
+
+
+/* the idea is to have 4 complimentary colors that 
+ * are used throughout the opac.  Edit those colors
+ * in this file
+ */
+ 
+.color_1 { background: #A7EA9D; color: #000000; }
+.color_2 { background: #64EA4F; color: #000000; }
+.color_3 { background: #E0F6E0; color: #000000; }
+.color_4 { background: #E0F0E0; color: #000000; }
+
+.border_1 { border: 1px solid #A7EA9D; }
+.border_2 { border: 1px solid #64EA4F; }
+.border_3 { border: 1px solid #E0F6E0; }
+.border_4 { border: 1px solid #E0F0E0; }
+
+.border_1_2 { border: 2px solid #A7EA9D; }
+.border_2_2 { border: 2px solid #64EA4F; }
+.border_3_2 { border: 2px solid #E0F6E0; }
+.border_4_2 { border: 2px solid #E0F0E0; }
+
+.border_1_3 { border: 3px solid #A7EA9D; }
+.border_2_3 { border: 3px solid #64EA4F; }
+.border_3_3 { border: 3px solid #E0F6E0; }
+.border_4_3 { border: 3px solid #E0F0E0; }
+
+
+
+
+/* general purpose light borders */
+.border_5 { border: 1px solid #D0D0D0; }
+.border_6 { border: 1px solid #808080; }
+
+input:focus { background: #E0F0E0; color: #000000;}
+a:focus { background: #E0F0E0; color: #000000;}
+
+
+/* ---------------------------------------------------------------------- */
+
+.canvas { /* main content div for each page */
+    /*
+	border-left: 3px solid #A7EA9D;
+    border-bottom: 3px solid #A7EA9D;
+	border-top: 3px solid #A7EA9D;
+	*/
+}
+
+/* border around home search box */
+.home_search { border: 3px solid #A7EA9D; }
+
+/* main nav sidebar */
+.sidebar_item_active { background: #deddd2; }
+
+/* record detail summary block */
+.rdetail_desc { border: 1px solid #A7EA9D; }
+.rdetail_item { border: 1px solid #A7EA9D; }
+.rdetail_extras_selected { background: #E0F0E0;} 
+
+
+.data_grid thead tr { background: #E0F0E0; color: #000000; }
+.data_grid thead td { border: 1px solid #808080; }
+.data_grid tbody td { border: 1px solid #E0F6E0; }
+.data_grid_nb thead tr { background: #E0F0E0; color: #000000; }
+.data_grid_nb thead td { border: none; }
+.data_grid_nb tbody td { border: none; }
+
+.light_border { border: 1px solid #E0F6E0; }
+
+.adv_quick_search_submit { border-bottom: 3px solid #E0F6E0;}
+
+.myopac_link_active { background: #E0F6E0; }
+
+.sidebar_extra_link { text-decoration: none; }
+#searchbar_tag_on { color: red; }
+.searchbar_item { color: black; } 
+#login_box { border-top: 1px solid #808080; border-bottom: 1px solid #808080; }
+#next_prev_links_dead { color: #808080; text-decoration: none; }
+
+.nav_link_active {font-weight: bold;}
+
+.search_link { text-decoration: none; }
+.result_table_subtable { border-top: 1px solid #E0E0E0; }
+
+.copy_count_cell { border-right: 1px solid #E0E0E0; } 
+.copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
+
+#rdetail_image_cell { }
+
+
+
+.x_mark { color: red; }
+.check_mark { color: green; }
+
+#myopac_holds_thaw_date_form { border: 1px solid #E0E0E0; } 
+
+.invalid_field { border: 3px solid red; }

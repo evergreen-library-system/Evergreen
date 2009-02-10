@@ -1,0 +1,34 @@
+<!-- Searchbar for doing metarecord searches -->
+<div id='searchbar' align='right'>
+	<!-- load my js -->
+	<script language='javascript' type='text/javascript'>
+		config.ids.searchbar = {};
+		config.css.searchbar = {};
+		config.ids.searchbar.text			= 'search_box';	
+		config.ids.searchbar.submit			= 'search_submit';	
+		config.ids.searchbar.type_selector	= 'search_type_selector';
+		config.ids.searchbar.depth_selector	= 'depth_selector';
+		config.ids.searchbar.form_selector	= 'form_selector';
+		config.ids.searchbar.extra_row		= 'searchbar_extra';
+		config.ids.searchbar.main_row		= 'searchbar_main_row';
+		config.ids.searchbar.table			= 'searchbar_table';
+		config.ids.searchbar.location_tag	= 'search_location_tag_link';
+		config.ids.searchbar.lib_sel_span	= 'lib_selector_span';
+		config.ids.searchbar.lib_sel_link	= 'lib_selector_link';
+		config.ids.searchbar.depth_sel_span	= 'depth_selector_span';
+	</script>
+    <style>
+        #searchbar-options-table td {padding:0px 1px 0px 1px;}
+    </style>
+	<table align='right' id='searchbar-options-table'>
+		<tr>
+			<td><input id='search_box' type='text' class='input' /></td>
+			<td><input type='submit' id='search_submit' value='Search' title='&button.go;' class='submit' /></td>
+			<td><!--<span>&common.type;: </span>--><!--#include virtual="stypes_selector.xml"--></td>
+			<td><!--#set var='FORM_SEL_ID' value='form_selector'--></td>
+			<td><!--#include virtual="format_selector.xml"--></td>
+			<td><!--#include virtual="libselect.xml"--></td>
+		</tr>
+	</table>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js'></script>
+</div>

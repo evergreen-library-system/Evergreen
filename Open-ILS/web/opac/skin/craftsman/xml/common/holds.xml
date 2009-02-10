@@ -1,0 +1,242 @@
+<link rel="stylesheet" type="text/css"
+    href='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-brown.css' title="win2k-cold-1" />
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
+
+<div>
+	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
+		<center>
+			<table class='data_grid' style='margin-top: 20px;'>
+				<tbody>
+					<tr>
+						<td>&opac.holds.xulRecipient;:</td>
+						<td><input type='text' id='xul_recipient_barcode' /></td>
+						<td><input type='submit' value='&common.submit;' id='xul_recipient_barcode_submit' /></td>
+						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();' /></td>
+						<td><input type='submit' value='&common.hold.place;' id='xul_recipient_me' /></td>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+	</div>
+
+	<div id='check_holds_box' class='hide_me canvas' 
+		style='margin-top: 6px; width: 100%; text-align: center'>
+		<br/><br/><br/>
+		<b>&common.hold.check;</b>
+	</div>
+
+	<div id='holds_box' class='hide_me details-grid'>
+		<table>
+			<tbody>
+				<tr>
+					<td class='holds_cell' colspan='2' style='padding: 10px 0 0 5px; margin: 0; vertical-align: middle'>
+						<div class='detailsinfo-box'>
+							<h3>&common.hold.create;</h3>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&opac.holds.recipient;:</td>
+					<td class='holds_cell' id='holds_recipient'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.title.label;</td>
+					<td class='holds_cell' id='holds_title'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.author;</td>
+					<td class='holds_cell' id='holds_author'> </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.format;</td>
+					<td class='holds_cell' id='holds_format'> </td>
+				</tr>
+				<tr id='hold_physical_desc_row'>
+					<td class='holds_cell'>&common.physical.label;</td>
+					<td class='holds_cell' id='holds_physical_desc'> </td>
+				</tr>
+
+				<tr class='hide_me' id='holds_cn_row'>
+					<td class='holds_cell'>&common.call.number.label;</td>
+					<td class='holds_cell'><b id='holds_cn'/> </td>
+				</tr>
+
+				<tr class='hide_me' id='holds_copy_row'>
+					<td class='holds_cell'>&common.copy.barcode.label;</td>
+					<td class='holds_cell'><b id='holds_copy'/> </td>
+				</tr>
+
+				<tr class='hide_me' id='holds_type_row'>
+					<td class='holds_cell'>&common.hold.type.label;</td>
+					<td class='holds_cell hide_me' id='holds_is_cn'><b>&common.hold.volume;</b></td>
+					<td class='holds_cell hide_me' id='holds_is_copy'><b>&common.hold.copy;</b></td>
+				</tr>
+
+				<tr>
+					<td class='holds_cell'>&opac.holds.contactPhone;:</td>
+					<td class='holds_cell'>
+						<input id='holds_phone' size='13' maxlength='12'/>
+						<span style='margin-left: 4px; font-size: 7pt;'>&common.phone.format;</span>
+					</td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.phone.enable;</td>
+					<td class='holds_cell'>
+						<input type='checkbox' id='holds_enable_phone'  checked='checked'
+							onchange='
+								if (this.checked) $("holds_phone").disabled=false; 
+								else $("holds_phone").disabled = true;'/>
+					</td>
+				</tr>
+
+				<tr>
+					<td class='holds_cell'>&opac.holds.contactEmail;:</td>
+					<td class='holds_cell' id='holds_email'> 
+                        <span class='hide_me' id='holds.no_email'>
+                           &common.email.none;<br/>
+                           &common.email.set;
+                        </span>
+                        <span class='hide_me' id='holds.no_email.xul'>
+                           &common.email.none; 
+                        </span>
+
+                    </td>
+				</tr>
+				<tr>
+					<td class='holds_cell'>&common.email.enable;</td>
+					<td class='holds_cell'>
+						<input type='checkbox' id='holds_enable_email' checked='checked'/>
+					</td>
+				</tr>
+				<!--
+				<tr id='holds_depth_selector_row' class='hide_me'>
+					<td class='holds_cell'>Hold Range</td>
+					<td class='holds_cell'>
+						<select id='holds_depth_selector'></select>
+					</td>
+				</tr>
+				-->
+				<tr>
+					<td class='holds_cell'>&opac.holds.pickupLocation;</td>
+					<td class='holds_cell'>
+						<select id='holds_org_selector'> </select>
+					</td>
+				</tr>
+
+				<tr>
+					<td class='holds_cell'>&opac.holds.expire_time;</td>
+					<td class='holds_cell'>
+                        <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10' id='holds_expire_time' />
+					</td>
+				</tr>
+
+                <tr>
+                    <td class='holds_cell'>
+                        &opac.holds.freeze;
+                        <a class='classic_link' href='javascript:alert("&opac.holds.freeze.help;");'>&common.help;</a>
+                        </td>
+                    <td class='holds_cell'>
+                        <input type='checkbox' id='holds_frozen_chkbox' 
+                            onchange='
+                                if($("holds_frozen_chkbox").checked) 
+                                    unHideMe($("hold_frozen_thaw_row"));
+                                else
+                                    hideMe($("hold_frozen_thaw_row"));
+                            ' /> 
+                    </td>
+                </tr>
+
+                <tr id='hold_frozen_thaw_row' class='hide_me'>
+                    <td class='holds_cell'>
+                        <script language='javascript' type='text/javascript'> if($('holds_frozen_chkbox').checked) unHideMe($("hold_frozen_thaw_row"));</script>
+                        &opac.holds.freeze.thaw_date;
+                    </td>
+                    <td class='holds_cell'>
+                        <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10' id='holds_frozen_thaw_input' />
+                    </td>
+                </tr>
+
+				<tr id='holds_alt_formats_row_extras' class='hide_me'>
+					<td colspan='2' align='center'>
+						<div class='detailsinfo-box'>
+								<a class='classic_link' href='javascript:void(0);'
+								onclick='unHideMe($("holds_alt_formats_row"));'>&common.hold.advanced;</a>
+						</div>
+					</td>
+				</tr>
+
+				<tr id='holds_alt_formats_row' class='hide_me'>
+
+					<td class='holds_cell'>
+						<div style='margin-bottom: 5px;'>
+							<span>&common.format.alternatives; </span>
+							<span> <a class='classic_link' style='color:red;' href='javascript:void(0);' 
+								onclick='alert($("holds_explain_adv").innerHTML)'>&common.help;</a></span>
+						</div>
+						<div>&common.control.click;</div>
+					</td>
+
+					<td class='holds_cell'>
+						<select id='hold_alt_form_selector' multiple='multiple' style='width: 14em;'>
+							<option value='at'	class='hide_me'>&opac.search.books;</option>
+							<option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
+							<option value='i'		class='hide_me'>&opac.search.audioBooks;</option>
+							<option value='g'		class='hide_me'>&opac.search.videoRecordings;</option>
+							<option value='j'		class='hide_me'>&opac.search.music;</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;</td>
+					<td class='holds_cell'>
+						<button id='holds_submit'>&opac.holds.placeHold;</button>
+						<button class='hide_me' id='holds_update'>&common.hold.update;</button>
+						<span style='padding: 20px;'> </span>
+						<button id='holds_cancel'>&common.cancel;</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<div class='hide_me' id='holds_success'>&opac.holds.success;</div>
+		<div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
+		<span class='hide_me' id='holds_bad_phone'>
+			&common.phone.format.help;
+		</span>
+
+		<span class='hide_me' id='hold_not_allowed'>
+			&common.hold.failed;
+		</span>
+
+	</div>
+
+	<span class='hide_me' id='format_words'>
+		<span name='at'>&opac.search.books;</span>
+		<span name='at-d'>&opac.search.largePrint;</span>
+		<span name='i'>&opac.search.audioBooks;</span>
+		<span name='g'>&opac.search.videoRecordings;</span>
+		<span name='j'>&opac.search.music;</span>
+		<span name='m'>&opac.search.electronic;</span>
+	</span>
+
+	<span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
+
+	<span class='hide_me' id='holds_pick_good_org'>&common.hold.delivery;</span>
+
+	<span class='hide_me' id='hold_dup_exists'>&common.hold.exists;</span>
+
+	<span class='hide_me' id='hold_dup_exists_override'>&common.hold.exists.override;</span>
+
+	<span id='hold_failed_patron_barred' class='hide_me'>&common.hold.barred;</span>
+
+	<span id='invalid_hold' class='hide_me'>&common.hold.item.invalid;</span>
+
+	<span id='holds_invalid_recipient' class='hide_me'>&common.hold.patron.invalid;</span>
+
+</div>
+
+

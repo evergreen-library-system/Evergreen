@@ -1,0 +1,107 @@
+
+<div id='login_box' class='login-box hide_me' style='margin-top: 6px; border: 0; width: 100%;'>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.login = {};
+		config.css.login = {};
+		config.ids.login.box			= "login_box";
+		config.ids.login.username	= "login_username";
+		config.ids.login.password	= "login_password";
+		config.ids.login.button		= "login_button";
+		config.ids.login.cancel		= "login_cancel_button";
+		config.ids.altcanvas.login			= config.ids.login.box;
+	</script>
+
+	<div class='form-panels'>
+		<h2><span>&opac.login.login;</span></h2>
+		
+		<table id='login_table'>
+			<tbody>
+				<tr>
+					<td style='vertical-align: middle;'><span style='font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif;'>&login.username;</span></td>
+					<td>
+						<span class='login_text'>
+							<input id='login_username' type='text' style='width: 220px; font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; padding: 4px; height: 1%;' />
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td style='vertical-align: middle;'>
+						<span style='font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif;'>&common.password;</span>
+					</td>
+					<td>
+						<span class='login_text'>
+							<input id='login_password' type='password' style='width: 220px; font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; padding: 4px; height: 1%;' />
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<span class='login_text' style='margin-right: 20px;'>
+						<input type='submit' value='&common.login;'  id='login_button'/>
+						</span>
+						<span class='login_text' style='margin-left: 20px;'>
+							<input type='submit' id='login_cancel_button' value='&common.cancel;'/>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table id='change_pw_table' class='hide_me'>
+			<thead>
+				<tr><td colspan='2' align='center'><b>&login.password;</b></td></tr>
+			</thead>
+			<tbody>
+	
+				<tr>
+					<td colspan='2'>
+						<div class='info'>
+							&login.first.time;
+							&common.password_criteria;
+						</div>
+					</td>
+				</tr>
+	
+				<tr>
+					<td>&login.password.current.enter;</td>
+					<td><input type='password' id='change_pw_current' style='width: 220px;' /></td>
+				</tr>
+	
+				<tr>
+					<td>&login.password.new.enter;</td>
+					<td><input type='password' id='change_pw_1' style='width: 220px;' /></td>
+				</tr>
+				<tr>
+					<td>&login.password.new.reenter;</td>
+					<td><input type='password' id='change_pw_2' style='width: 220px;' /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<span class='login_text' style='margin-right: 20px;'>
+							<input type='submit' value='&login.password.update;'  id='change_pw_button'/>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<span id='pw_no_match' class='hide_me'>&login.password.nomatch;</span>
+	<span id='pw_update_successful' class='hide_me'>&login.password.success;</span>
+
+	<span id='pw_not_strong' class='hide_me'>
+		&login.password.strength;
+		&common.password_criteria;
+	</span>
+
+	<span id='patron_card_inactive_alert' class='hide_me'>&login.barcode.inactive;</span>
+
+	<span id='patron_inactive_alert' class='hide_me'>&login.account.inactive;</span>
+
+	<span id='patron_login_failed' class='hide_me'>&login.failed;</span>
+
+</div>
+
+

@@ -1,0 +1,146 @@
+<!-- Search results are spit into this table -->
+
+<div id='result_table_div' xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<table id='res_table'> 
+
+		<!-- for some reason, this is the only way i can force the cell widths -->
+		<thead id='result_thead'>
+			<tr>
+				<td class='result_table_pic_header'></td>
+				<td> </td>
+			</tr>
+		</thead>
+
+		<tbody id='result_table'>
+			<tr>
+
+				<td class='result_table_row'>
+					<!--#include virtual="result_info.xml"-->
+				</td>
+			</tr>
+
+			<!-- Template for displaying a search result.  This row template is cloned and inserted
+					for each result returned -->
+
+			<tr id='result_table_template' class='hide_me'>
+
+				<!-- Jacket image goes here -->
+
+				<td align='left'>
+					<table class='book-results'>
+						<tbody>
+							<tr name='counts_row'>
+								<td class='bookjacket' valign='middle' style='vertical-align: middle;'>
+									<a><img name='item_jacket' /></a>
+								</td>
+
+								<td name='result_table_title_cell'>
+									<!-- Title goes here -->
+									<h1><a title="&result.table.keyword;" name='item_title'> 
+										<!-- Title goes here -->
+									</a></h1>
+									
+									<h2><a title="&result.table.author;" name='item_author'> 
+										<!-- Author goes here -->
+									</a></h2>
+									<blockquote>
+										<span name='result_table_extra_span' class='hide_me'>
+											<span name='result_table_pub_box'> 
+												<span name='result_table_edition_span'></span> |
+												<span name='result_table_pub_span'> </span> |
+												<span name='result_table_phys_span'> </span>
+											</span>
+										</span>
+									</blockquote>
+
+									<div name='result_table_format_cell'>
+										<div class='tool-icons'>
+											<a name='text_link'><img src='../../../../images/tor/book-icon.gif' class='dim' /></a>
+											<a name='sound recording-nonmusical_link'><img src='../../../../images/tor/nonmusic-icon.gif' class='dim' /></a>
+											<a name='moving image_link'><img src='../../../../images/tor/mov-icon.gif' class='dim' /></a>
+											<a name='software, multimedia_link'><img src='../../../../images/tor/software-icon.gif' class='dim' /></a>
+											<a name='sound recording-musical_link'><img src='../../../../images/tor/sound-icon.gif' class='dim' /></a>
+											<a name='cartographic_link'><img src='../../../../images/tor/earth-icon.gif' class='dim' /></a>
+											<a name='mixed material_link'><img src='../../../../images/tor/mix-icon.gif' class='dim' /></a>
+											<a name='notated music_link'><img src='../../../../images/tor/mussymbol-icon.gif' class='dim' /></a>
+											<a name='sound recording_link'><img src='../../../../images/tor/recsound-icon.gif' class='dim' /></a>
+											<a name='still image_link'><img src='../../../../images/tor/pic-icon.gif' class='dim' /></a>
+											<a name='three dimensional object_link'><img src='../../../../images/tor/threed-icon.gif' class='dim' /></a>
+											<div class='clear'></div>
+										</div>
+										<span class='hide_me' style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
+											<span>&common.relevancy; </span><span name='relevancy_span'> </span>
+										</span>
+	
+										<span class='placeholder hide_me' name='place_hold_span'>
+											<a href='javascript:void(0);' name='place_hold_link'>&opac.holds.placeHold;</a>
+										</span>
+										<div class='clear'></div>
+	
+										<!-- Empty span used for creating unAPI links -->
+										<abbr name="unapi" class="unapi-id">
+											<!-- unAPI URI goes here -->
+										</abbr>
+
+									    <!-- Empty span used for creating Google Book Search-->
+									    <span name="googleBooks" class="hide_me">
+										    <a style='padding-left: 8px;' class='classic_link' name="googleBooks-link">&result.googleBooks.browse;</a>
+									    </span>
+    
+									</div>
+									
+								</td>
+
+								<!-- Copy this td for each copy count appended -->
+								<td nowrap='nowrap' name="copy_count_cell" class='count' style="width: 80px; padding: 6px 2px;"> </td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+   <!-- ====================== -->
+   <div id='result_info_2' class='pageresults-box hide_me'>
+		<span class='hide_me' id='result_info_div2'>
+		   <span> &common.results; </span> 
+		   <b id='offset_start2'> </b>
+		   <span> - </span>
+		   <b id='offset_end2'> </b>
+		   <span> &common.ofAtLeast; </span>
+		   <b id='result_count2'> </b>
+		   <span style='padding-left: 6px;'> (page </span>
+		   <span id='current_page2'> </span>
+		   <span> &common.of; </span>
+		   <span id='num_pages2'> </span>
+		</span>
+				   
+		<span id='start_end_links_span2' class='hide_me' style='padding-left: 40px;' >
+		<a class='search_page_nav_link' id='search_home_link2' 
+		   title="&rdetail.page.results;">&rdetail.start;</a><a class='search_page_nav_link' 
+		   id='prev_link2' title='&rdetail.page.previous;'>&#171;</a>
+	
+		<span class='search_page_nav_link' id='page_numbers2'> </span>
+		   <a  class='search_page_nav_link' id='next_link2' 
+			  title='&rdetail.page.next;'>&#187;</a>
+			  <!--
+			  <a class='search_page_nav_link' 
+			  id='end_link2' title="&rdetail.page.last;">&rdetail.end;</a>
+			  -->
+		</span>   
+   </div>
+   <!-- ====================== -->
+
+
+	<script language='javascript' type='text/javascript'>
+		config.names.result.format_cell = 'result_table_format_cell';
+		config.names.result.format_link = 'resource_link'
+		config.names.result.format_pic = 'format_pic'
+	</script>
+
+</div>
+
+

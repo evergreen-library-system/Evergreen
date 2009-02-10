@@ -1,0 +1,174 @@
+
+<!-- Navigation bar -->
+
+<div id="sidebar_div" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<div id='main-left-menu'>
+		<ul>
+			<li title="&navigate.home.title;" id='home_link_div'><a class='home-btn' id='home_link' href='index.xml'>&navigate.home;</a></li>
+			<li title="&opac.navigate.advanced.title;" id='advanced_link_div'><a class='advancedsearch-btn' id='advanced_link' href='advanced.xml'>&opac.navigate.advanced;</a></li>
+			<li title="&navigate.myopac.title;" id='myopac_link_div'><a class='account-btn' id='myopac_link' href='myopac/myopac.xml'>&navigate.myopac;</a></li>
+			<li title="&navigate.login.title;" id='login_link_div'><a class='login-btn' id='login_link' href='javascript:void(0);'>&navigate.login;</a></li>
+			<!--Hide Me Section-->
+			<li title="&navigate.logout.title;" id='logout_link_div' class="hide_me"><a class='logout-btn' id='logout_link' href='javascript:void(0);'>&navigate.logout;</a></li>
+			<li title="&navigate.loggedinas.title;" id='logged_in_as_div' class="hide_me"><span class='loginas-btn'>&navigate.loggedinas;<b id='username_dest'> </b></span></li>
+			<li title="&navigate.titleGroupResults;" id='mresult_link_div' class="hide_me"><a id='sidebar_title_group_results'>&navigate.titleGroupResults;</a></li>
+			<li title="&navigate.titleResults;" id='result_link_div' class="hide_me"><a class='title-btn' id='sidebar_title_results'>&navigate.titleResults;</a></li>
+			<li title="&navigate.record.details;" id='rdetail_link_div' class="hide_me"><span class='titledetails-btn'>&navigate.title.details;</span></li>
+		</ul>
+		
+		<div id='main-left-menu'>
+			<div id='subject_tree_sidebar' class='subject_sidebar hide_me'> 
+				<div id='subject_sidebar_tree_div'> </div>
+				<script language='javascript' type='text/javascript'>
+					removeChildren($('subject_sidebar_tree_div'));
+					var subjectSidebarTree = new SlimTree(
+						document.getElementById('subject_sidebar_tree_div'),
+						'subjectSidebarTree', '../../../../images/subject-icon-u.gif');
+					subjectSidebarTree.addNode( 'subjectSidebarTreeRoot', -1, 
+						"&sidebar.relevantSubjects.headerLabel;", 
+						'javascript:subjectSidebarTree.toggle(' +
+							'"subjectSidebarTreeRoot");');
+				</script>
+			</div>			
+			<div id='author_tree_sidebar' class='author_sidebar hide_me'> 
+				<div id='author_sidebar_tree_div'> </div>
+				<script language='javascript' type='text/javascript'>
+					removeChildren($('author_sidebar_tree_div'));
+					var authorSidebarTree = new SlimTree(
+						document.getElementById('author_sidebar_tree_div'),
+						'authorSidebarTree','../../../../images/relevant-icon-u.gif');
+					authorSidebarTree.addNode( 'authorSidebarTreeRoot', -1, 
+						"&sidebar.relevantAuthors.headerLabel;", 
+						'javascript:authorSidebarTree.toggle(' +
+							'"authorSidebarTreeRoot");');
+				</script>
+			</div>			
+			<div id='series_tree_sidebar' class='series_sidebar hide_me'> 
+				<div id='series_sidebar_tree_div'> </div>
+				<script language='javascript' type='text/javascript'>
+					removeChildren($('series_sidebar_tree_div'));
+					var seriesSidebarTree = new SlimTree(
+						document.getElementById('series_sidebar_tree_div'),
+						'seriesSidebarTree',
+						'../../../../images/series-icon-u.gif');
+					seriesSidebarTree.addNode( 'seriesSidebarTreeRoot', -1, 
+						"&sidebar.relevantSeries.headerLabel;", 
+						'javascript:seriesSidebarTree.toggle(' +
+							'"seriesSidebarTreeRoot");');
+				</script>
+			</div>
+		</div>
+	</div>
+
+
+	<div id='main-left-search'>
+	
+		<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me'> 
+			<div id='adv_quick_search'>
+				<h2>&sidebar.quick.search;</h2>
+				<div class='content'>
+					<table>
+						<tbody>
+							<tr>
+								<td>
+									<select id='adv_quick_type' style='width: 6em;'>
+										<option value='isbn'>&opac.advanced.quick.isbn;</option>
+										<option value='issn'>&opac.advanced.quick.issn;</option>
+										<option value='cn'>&opac.advanced.quick.cn;</option>
+										<option value='lccn'>&opac.advanced.quick.lccn;</option>
+										<option value='tcn'>&opac.advanced.quick.tcn;</option>
+										<option value='barcode'>&opac.advanced.quick.barcode;</option>
+									</select>
+								</td>
+								<td><input type='text' id='adv_quick_text' size='16' /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class='buttons'>
+					<a id='adv_quick_submit' href='javascript:advGenericSearch();'>&common.submit;</a>
+				</div>
+	
+				<span class='hide_me' id='myopac.copy.not.found'>&sidebar.copy.not.found;</span>
+			</div>
+		</div>
+
+		<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me'>
+			<h2>&search.marc;</h2>
+			<div class='content'>
+				<table id='adv_sdbar_table'>
+					<tbody>
+						<tr>
+							<td>&search.marc.tag;</td>
+							<td><input name='advanced.marc.tag' maxlength='3' size='3' /></td>
+							<td>&search.marc.subfield;</td>
+							<td><input name='advanced.marc.subfield' maxlength='1' size='1' /></td>
+						</tr>
+						<tr>
+							<td>&search.marc.value;</td>
+							<td colspan='3'><input name='advanced.marc.value' size='18' /></td>
+						</tr>
+						<tr name='crow' class='hide_me'>
+							<td colspan='4' align='center'>
+							<a href='javascript:void(0);' class='classic_link'
+								onclick='
+									var div = $("adv_marc_search_sidebar");
+									if( div.getElementsByTagName("table").length > 1 )
+										div.removeChild(this.parentNode.parentNode.parentNode.parentNode);'>&common.close;</a>
+							</td>
+						</tr>										
+					</tbody>
+				</table>
+			</div>
+			<div id='adv_marc_submit' class='buttons '>
+				<a href='javascript:advAddMARC();'>&search.marc.add.row;</a>
+				<a href='javascript:advMARCRun();'>&common.submit;</a>
+			</div>
+		</div>
+	
+	</div>
+
+
+	<!-- ============================================================================= -->
+	<!-- Our javascript -->
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar.js'></script>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.sidebar = {};
+		config.css.sidebar = {};
+		config.names.sidebar = {};
+		config.css.sidebar.item = {};
+		config.ids.sidebar.home				= 'home_link_div';
+		config.ids.sidebar.advanced		= 'advanced_link_div';
+		config.ids.sidebar.myopac			= 'myopac_link_div';
+		config.ids.sidebar.prefs			= 'prefs_link_div';
+		config.ids.sidebar.mresult			= 'mresult_link_div';
+		config.ids.sidebar.rresult			= 'result_link_div';
+		config.ids.sidebar.rdetail			= "rdetail_link_div"; 
+		config.ids.sidebar.login			= 'login_link';
+		config.ids.sidebar.logout			= 'logout_link';
+		config.ids.sidebar.logoutbox		= 'logout_link_div';
+		config.ids.sidebar.loginbox		= 'login_link_div';
+		config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
+		config.ids.sidebar.username_dest	= 'username_dest';
+		config.ids.sidebar.subject			= 'subject_sidebar';
+		config.ids.sidebar.subject_item	= 'subject_item';
+		config.ids.sidebar.author			= 'author_sidebar';
+		config.ids.sidebar.author_item	= 'author_item';
+		config.ids.sidebar.series			= 'series_sidebar';
+		config.ids.sidebar.series_item	= 'series_item';
+		
+		config.ids.sidebar.home_link		= 'home_link'
+		config.ids.sidebar.advanced_link	= 'advanced_link'
+		config.ids.sidebar.myopac_link	= 'myopac_link'
+		
+		config.names.sidebar.subject_item	= 'subject_item';
+		config.names.sidebar.author_item		= 'author_item';
+		config.names.sidebar.series_item		= 'series_item';
+
+		config.css.encircled				= 'encircled';
+	</script>
+
+</div>
+

@@ -1,0 +1,23 @@
+<div id='footer'>
+	<div class='inner'>
+		<table>
+			<tr>	
+				<td>
+					<a href='/opac/extras/slimpac/start.html'>&opac.basic;</a> |
+					<a href='&footer.find.url;'>&footer.find.library;</a> | 
+					<a href='&footer.help.url;'>&footer.help;</a> | 
+					<a href='&footer.library.url;'>&footer.library.about;</a> | 
+					<a href='&footer.union.url;'>&footer.union;</a>				
+				</td>
+				<td align='right'>
+					<span>&footer.copyright;</span>
+					<span>
+						<a href='http://open-ils.org'><img src='../../../../images/eg_tiny_logo.gif' alt='' style='display: inline; float: right; margin-left: 5px;' /></a>
+						<div style='float: right; padding: 5px 0 0 0;'>&footer.logo;</div>
+						<div class='clear'></div>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

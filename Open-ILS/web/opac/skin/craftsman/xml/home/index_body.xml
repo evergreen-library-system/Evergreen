@@ -1,0 +1,28 @@
+<body onload='init(); getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
+
+	<noscript>
+		<style type="text/css">#toptable { display: none; }</style>
+		<p style="font-size: 1.3em; padding: 3em; text-align: center;">
+		&home.js.disabled;
+		</p>
+	</noscript>
+
+
+	<div id='canvas'>
+		<!--#include virtual="../common/altcanvas.xml"-->
+		<!--#include virtual="homesearch.xml"-->
+	</div>
+	<script language='javascript' type='text/javascript'>isFrontPage = true;</script>
+	<script language="javascript" type='text/javascript'>
+        try { 
+            document.getElementById('toptable').style.display = 'table'; 
+        } catch(e) {
+            try {
+                document.getElementById('toptable').style.display = ''; 
+            } catch(ee) {}
+        }
+    </script>
+	<!--#include virtual='../footer.xml'-->
+</body>
+
+
