@@ -197,36 +197,20 @@ my %increments = {
 		  # x => completely irregular
 };
 
-sub next_date {
-    my $self = shift;
-    my $next = shift;
-    my @keys = @_;
-    my @cur;
-    my @new;
-    my $incr;
+sub is_combined {
+    my $str = shift;
 
-    my $caption = $self->{CAPTION};
-    my $pattern = $caption->{PATTERN};
-    my $frequency = $pattern->{w};
+    return $str =~ m;.+/.+;
+}
 
-    warn "I can't deal with publication patterns yet!" if exists $pattern->{y};
+sub incr_date {
+    my $incr = shift;
+    my @new = @_;
 
-#     print Dumper(@keys);
-#     print Dumper($self);
-
-    foreach my $i (0..@keys) {
-	$new[$i] = $cur[$i] = $self->{SUBFIELDS}->{$keys[$i]}
-	  if exists $self->{SUBFIELDS}->{$keys[$i]};
-    }
-
-    if (defined $frequency) {
-	$incr = $increments{$frequency};
-    }
-
-    if (scalar(@cur) == 1) {
+    if (scalar(@new) == 1) {
 	# only a year is specified. Next date is easy
 	$new[0] += $incr->{years} || 1;
-    } elsif (scalar(@cur) == 2) {
+    } elsif (scalar(@new) == 2) {
 	# Year and month or season
 	if ($new[1] > 20) {
 	    # season
@@ -245,7 +229,7 @@ sub next_date {
 		$new[1] -= 12;
 	    }
 	}
-    } elsif (scalar(@cur) == 3) {
+    } elsif (scalar(@new) == 3) {
 	# Year, Month, Day: now it gets complicated.
 
 	if ($new[2] =~ /^[0-9]+$/) {
@@ -257,20 +241,47 @@ sub next_date {
 	    $new[0] = $dt->year;
 	    $new[1] = $dt->month;
 	    $new[2] = $dt->day;
-	} elsif ($new[2] =~ /^([0-9]+)\/([0-9]+)/) {
-	    my $sdt = DateTime->new(year => $new[0],
-				    month=> $new[1],
-				    day  => $1);
-	    my $edt = DateTime->new(year => $new[0],
-				    month=> $new[1],
-				    day  => $2);
-	    $sdt->add(%{$incr});
-	    $edt->add(%{$incr});
-	    $new[0] = $sdt->year;
-	    $new[1] = $sdt->month;
-	    $new[2] = $sdt->day . '/' . $edt->day;
-	} else {
-	    warn "I don't know how to deal with '$new[2]'";
+	}
+    } else {
+	warn("Don't know how to cope with @new");
+    }
+
+    return @new;
+}
+
+sub next_date {
+    my $self = shift;
+    my $next = shift;
+    my @keys = @_;
+    my @cur;
+    my @new;
+    my $incr;
+
+    my $caption = $self->{CAPTION};
+    my $reg = $caption->{REGULARITY};
+    my $pattern = $caption->{PATTERN};
+    my $freq = $pattern->{w};
+
+    foreach my $i (0..@keys) {
+	$new[$i] = $cur[$i] = $self->{SUBFIELDS}->{$keys[$i]}
+	  if exists $self->{SUBFIELDS}->{$keys[$i]};
+    }
+
+    if (is_combined($new[-1])) {
+	$new[-1] =~ s/^[^\/]+//;
+    }
+
+    # If $frequency is not one of the standard codes defined in %increments
+    # then there has to be a $yp publication regularity pattern that
+    # lists the dates of publication. Use that that list to find the next
+    # date following the current one.
+    # XXX: the code doesn't handle this case yet.
+
+    if (defined $freq && exists $increments{$freq}) {
+	@new = incr_date($increments{$freq}, @new);
+
+	while ($caption->is_omitted(@new)) {
+	    @new = incr_date($increments{$freq}, @new);
 	}
     }
 }
