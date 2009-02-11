@@ -81,5 +81,16 @@ CREATE OR REPLACE VIEW money.open_usr_circulation_summary AS
 	  WHERE	xact_type = 'circulation'
 	  GROUP BY 1;
 
+-- Not a view, but it's cross-schema..
+CREATE TABLE config.idl_field_doc (
+    id              BIGSERIAL   PRIMARY KEY,
+    classname       TEXT        NOT NULL,
+    field           TEXT        NOT NULL,
+    owner           INT         NOT NULL    REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    string          TEXT        NOT NULL
+);
+CREATE UNIQUE INDEX idl_field_doc_identity ON config.idl_field_doc (classname,field,owner);
+
+
 COMMIT;
 
