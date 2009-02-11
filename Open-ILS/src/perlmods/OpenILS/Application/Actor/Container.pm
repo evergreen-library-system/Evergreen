@@ -342,7 +342,7 @@ sub __item_delete {
 
 	my $stat;
 	if( $class eq 'copy' ) {
-        for my $note (@${$e->search_container_copy_bucket_item_note({item => $item->id})}) {
+        for my $note (@{$e->search_container_copy_bucket_item_note({item => $item->id})}) {
             return $e->event unless 
                 $e->delete_container_copy_bucket_item_note($note);
         }
@@ -351,7 +351,7 @@ sub __item_delete {
 	}
 
 	if( $class eq 'callnumber' ) {
-        for my $note (@${$e->search_container_call_number_bucket_item_note({item => $item->id})}) {
+        for my $note (@{$e->search_container_call_number_bucket_item_note({item => $item->id})}) {
             return $e->event unless 
                 $e->delete_container_call_number_bucket_item_note($note);
         }
@@ -360,7 +360,7 @@ sub __item_delete {
 	}
 
 	if( $class eq 'biblio' ) {
-        for my $note (@${$e->search_container_biblio_record_entry_bucket_item_note({item => $item->id})}) {
+        for my $note (@{$e->search_container_biblio_record_entry_bucket_item_note({item => $item->id})}) {
             return $e->event unless 
                 $e->delete_container_biblio_record_entry_bucket_item_note($note);
         }
@@ -369,7 +369,7 @@ sub __item_delete {
 	}
 
 	if( $class eq 'user') {
-        for my $note (@${$e->search_container_user_bucket_item_note({item => $item->id})}) {
+        for my $note (@{$e->search_container_user_bucket_item_note({item => $item->id})}) {
             return $e->event unless 
                 $e->delete_container_user_bucket_item_note($note);
         }
