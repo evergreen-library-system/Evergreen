@@ -72,6 +72,8 @@ static char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*,
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
 static char* getSourceDefinition( osrfHash* );
+static int str_is_true( const char* str );
+static int obj_is_true( const jsonObject* obj );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -186,11 +188,10 @@ int osrfAppInitialize() {
             continue;
         }
 
-        char* virt = osrfHashGet(idlClass, "virtual");
-        if (virt && !strcmp( virt, "true")) {
-            osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
-            continue;
-        }
+		if ( str_is_true( osrfHashGet(idlClass, "virtual") ) ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
+		}
 
         // Look up some other attributes of the current class
         const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
@@ -217,8 +218,7 @@ int osrfAppInitialize() {
             if (!osrfHashGet( idlClass_permacrud, tmp_method )) continue;
 #endif
 
-            if (    readonly &&
-                    !strncasecmp( "true", readonly, 4) &&
+            if (    str_is_true( readonly ) &&
                     ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
                ) continue;
 
@@ -357,11 +357,10 @@ int osrfAppChildInit() {
         osrfHash* class = osrfHashGet( oilsIDL(), classname );
         osrfHash* fields = osrfHashGet( class, "fields" );
 
-        char* virt = osrfHashGet(class, "virtual");
-        if (virt && !strcmp( virt, "true")) {
-            osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
-            continue;
-        }
+		if( str_is_true( osrfHashGet(class, "virtual") ) ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
+		}
 
         char* tabledef = getSourceDefinition(class);
 
@@ -784,7 +783,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
             jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
         }
 
-        jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonParseString("true") );
+		jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonNewBoolObject( 1 ) );
 
         jsonObjectSetKey(
             jsonObjectGetIndex( _p, 1 ),
@@ -934,7 +933,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     jsonObjectFree(user);
 
     osrfStringArray* permission = osrfHashGet(pcrud, "permission");
-    char* global_required = osrfHashGet(pcrud, "global_required");
     osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
     osrfHash* foreign_context = osrfHashGet(pcrud, "foreign_context");
 
@@ -942,7 +940,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     int err = 0;
     char* pkey_value = NULL;
-    if (global_required && !strcmp( "true", global_required )) {
+	if ( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
         // check for perm at top of org tree
@@ -1359,7 +1357,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		osrfHash* field = osrfHashGet( fields, field_name );
 
-		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+		if( str_is_true( osrfHashGet( field, "virtual" ) ) )
+			continue;
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
@@ -1479,7 +1478,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				quiet_str = jsonObjectToSimpleString( quiet_obj );
 		}
 
-		if( quiet_str && !strcmp( quiet_str, "true" )) {  // if quietness is specified
+		if( str_is_true( quiet_str ) ) {  // if quietness is specified
 			obj = jsonNewObject(id);
 		}
 		else {
@@ -2412,8 +2411,8 @@ static char* SELECT (
 
     		osrfStringArray* keys = osrfHashKeys( core_fields );
 			while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-		    	if ( strncasecmp( "true", osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ), 4 ) )
-					jsonObjectPush( _tmp, jsonNewObject( field ) );
+				if( ! str_is_true( osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ) ) )
+					jsonObjectPush( _tmp, jsonNewObject( field ) );   // not virtual; use it
     		}
 			osrfStringArrayFree(keys);
 		}
@@ -2502,7 +2501,7 @@ static char* SELECT (
 						else
 							i18n = osrfHashGet(field, "i18n");
 
-    	    		    if ( i18n && !strncasecmp("true", i18n, 4)) {
+						if( str_is_true( i18n ) ) {
                             buffer_fadd( select_buf,
 								" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
 								class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, col_name );
@@ -2547,7 +2546,7 @@ static char* SELECT (
 							else
 								i18n = osrfHashGet(field, "i18n");
 
-    	        		    if ( i18n && !strncasecmp("true", i18n, 4)) {
+							if( str_is_true( i18n ) ) {
                                 buffer_fadd( select_buf,
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
 		 							class_tname, cname, fname, class_pkey, cname, class_pkey, locale, _alias);
@@ -2565,11 +2564,7 @@ static char* SELECT (
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
 					const jsonObject* aggregate_obj = jsonObjectGetKey( selfield, "aggregate" );
-				    if ( !(
-                            jsonBoolIsTrue( aggregate_obj ) ||
-	                        ((int)jsonObjectGetNumber( aggregate_obj )) == 1 // support 1/0 for perl's sake
-                         )
-                    ) {
+				    if ( ! obj_is_true( aggregate_obj ) ) {
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
@@ -2884,7 +2879,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 		osrfStringArray* keys = osrfHashKeys( fields );
 		while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-			if ( strcasecmp( "true", osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
+			if( ! str_is_true( osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
 				jsonObjectPush( flist, jsonNewObject( field ) );
 		}
 		osrfStringArrayFree(keys);
@@ -2927,15 +2922,13 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
             if (locale) {
         		const char* i18n;
-				const jsonObject* i18n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
-			    if (
-					jsonBoolIsTrue( i18n_obj ) ||
-					((int)jsonObjectGetNumber( i18n_obj )) == 1 // support 1/0 for perl's sake
-                ) i18n = NULL;
+				const jsonObject* no_i18n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
+				if ( obj_is_true( no_i18n_obj ) )    // Suppress internationalization?
+					i18n = NULL;
 				else
 					i18n = osrfHashGet(field, "i18n");
 
-    			if ( i18n && !strncasecmp("true", i18n, 4)) {
+				if( str_is_true( i18n ) ) {
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
         	        char* tname = osrfHashGet(idlClass, "tablename");
 
@@ -3128,19 +3121,13 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	jsonObject* hash = jsonObjectGetIndex(ctx->params, 0);
 
-    int flags = 0;
+	int flags = 0;
 
-	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )))
-         flags |= SELECT_DISTINCT;
+	if ( obj_is_true( jsonObjectGetKey( hash, "distinct" ) ) )
+		flags |= SELECT_DISTINCT;
 
-	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "distinct" ))) == 1 ) // support 1/0 for perl's sake
-         flags |= SELECT_DISTINCT;
-
-	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "no_i18n" )))
-         flags |= DISABLE_I18N;
-
-	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "no_i18n" ))) == 1 ) // support 1/0 for perl's sake
-         flags |= DISABLE_I18N;
+	if ( obj_is_true( jsonObjectGetKey( hash, "no_i18n" ) ) )
+		flags |= DISABLE_I18N;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
 	char* sql = SELECT(
@@ -3577,7 +3564,8 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		osrfHash* field = osrfHashGet( fields, field_name );
 
 		if(!( strcmp( field_name, pkey ) )) continue;
-		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+		if( str_is_true( osrfHashGet(osrfHashGet(fields,field_name), "virtual") ) )
+			continue;
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
@@ -3797,10 +3785,12 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+			
 			char* virt = (char*)osrfHashGet(_f, "virtual");
+			if ( !virt || !(strcmp( virt, "true" )) ) continue;
+			
 			char* pos = (char*)osrfHashGet(_f, "array_position");
-
-			if ( !virt || !pos || !(strcmp( virt, "true" )) ) continue;
+			if ( !pos ) continue;
 
 			fmIndex = atoi( pos );
 			osrfLogInternal(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
@@ -3954,3 +3944,36 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	return object;
 }
 
+// Interpret a string as true or false
+static int str_is_true( const char* str ) {
+	if( NULL == str || strcasecmp( str, "true" ) )
+		return 0;
+	else
+		return 1;
+}
+
+// Interpret a jsonObject as true or false
+static int obj_is_true( const jsonObject* obj ) {
+	if( !obj )
+		return 0;
+	else switch( obj->type )
+	{
+		case JSON_BOOL :
+			if( obj->value.b )
+				return 1;
+			else
+				return 0;
+		case JSON_STRING :
+			if( strcasecmp( obj->value.s, "true" ) )
+				return 0;
+			else
+				return 1;
+		case JSON_NUMBER :          // Support 1/0 for perl's sake
+			if( jsonObjectGetNumber( obj ) == 1.0 )
+				return 1;
+			else
+				return 0;
+		default :
+			return 0;
+	}
+}
