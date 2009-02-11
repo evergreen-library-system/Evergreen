@@ -1683,7 +1683,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
 		// Add a separator comma, if we need one
-		if( func_item_index > 1 )
+		if( func_item_index > 2 )
 			buffer_add( sql_buf, ", " );
 
 		// Add the current parameter
@@ -2357,8 +2357,9 @@ static char* SELECT (
 			return NULL;	// Malformed join_hash; extra entry
 
 	} else if (join_hash->type == JSON_ARRAY) {
-        from_function = 1;
-        selhash = NULL;
+		from_function = 1;
+		core_class = jsonObjectToSimpleString( jsonObjectGetIndex(join_hash, 0) );
+		selhash = NULL;
 
 	} else if (join_hash->type == JSON_STRING) {
 		core_class = jsonObjectToSimpleString( join_hash );
