@@ -1309,7 +1309,9 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register a create method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -3516,7 +3518,9 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register an update method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -3675,7 +3679,9 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register a delete method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -3787,10 +3793,10 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
 			
-			char* virt = (char*)osrfHashGet(_f, "virtual");
-			if ( !virt || !(strcmp( virt, "true" )) ) continue;
+			if ( str_is_true( osrfHashGet(_f, "virtual") ) )
+				continue;
 			
-			char* pos = (char*)osrfHashGet(_f, "array_position");
+			const char* pos = (char*)osrfHashGet(_f, "array_position");
 			if ( !pos ) continue;
 
 			fmIndex = atoi( pos );
