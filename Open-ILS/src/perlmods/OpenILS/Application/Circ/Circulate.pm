@@ -197,6 +197,7 @@ sub run_method {
         # overrides have been performed.  Go ahead and re-override.
         $circulator->override(1) if $circulator->request_precat;
         $circulator->do_permit();
+        $circulator->is_checkout(1);
         unless( $circulator->bail_out ) {
             $circulator->events([]);
             $circulator->do_checkout();
@@ -208,6 +209,7 @@ sub run_method {
         return $data;
 
     } elsif( $api =~ /checkout/ ) {
+        $circulator->is_checkout(1);
         $circulator->do_checkout();
 
     } elsif( $api =~ /checkin/ ) {
@@ -244,6 +246,7 @@ sub run_method {
         $circulator->do_hold_notify($circulator->notify_hold)
             if $circulator->notify_hold;
         $circulator->retarget_holds if $circulator->retarget;
+        $circulator->append_reading_list;
     }
 }
 
@@ -339,6 +342,7 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
+    is_checkout
     is_noncat
     is_precat
     request_precat
@@ -1133,7 +1137,6 @@ sub do_checkout {
     }
 
     if( $self->is_precat ) {
-        #$self->script_runner->insert("environment.isPrecat", 1, 1)
         $self->make_precat_copy;
         return if $self->bail_out;
 
@@ -2257,7 +2260,6 @@ sub log_me {
 sub do_renew {
     my $self = shift;
     $self->log_me("do_renew()");
-    $self->is_renewal(1);
 
     # Make sure there is an open circ to renew that is not
     # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
@@ -2361,8 +2363,20 @@ sub run_renew_permit {
 
 sub append_reading_list {
     my $self = shift;
-    my $e = $self->editor;
-    return undef unless $self->patron and $self->title;
+
+    return undef unless 
+        $self->is_checkout and 
+        $self->patron and 
+        $self->title and
+        !$self->is_precat and
+        !$self->is_noncat;
+
+    my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
+
+	my $setting = $e->search_actor_user_setting(
+		{usr => $self->patron->id,, name => 'circ.keep_checkout_history_list'})->[0];
+    
+    return undef unless $setting and $setting->value;
 
     my $bkt = $e->search_container_biblio_record_entry_bucket(
         {owner => $self->patron->id, btype => 'reading_list'})->[0];
@@ -2392,6 +2406,8 @@ sub append_reading_list {
 
     $e->create_container_biblio_record_entry_bucket_item($item)
         or return $e->die_event;
+
+    $e->commit;
 
     return undef;
 }
