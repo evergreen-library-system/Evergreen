@@ -30,6 +30,18 @@
 	</groupbox>
 </vbox>
 
+<hbox id="pending_buckets_top_ui">
+	<label id="copy_bucket_scan_barcode_label" 
+		value="&staff.circ.copy_status_overlay.copy_status_scan_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey;"
+		control="copy_bucket_barcode_entry_textbox"/>
+	<textbox id="copy_bucket_barcode_entry_textbox" context="clipboard"/>
+	<button id="copy_bucket_submit_barcode_button" 
+		label="&staff.circ.copy_status_overlay.copy_status_submit_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_submit_barcode.accesskey;"
+		command="cmd_copy_bucket_submit_barcode"/>
+</hbox>
+
 <hbox id="pending_buckets_bottom_ui">
     <hbox id="list_actions1"/>
 	<spacer flex="1"/>
