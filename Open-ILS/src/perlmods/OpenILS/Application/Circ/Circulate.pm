@@ -2367,46 +2367,57 @@ sub append_reading_list {
     return undef unless 
         $self->is_checkout and 
         $self->patron and 
-        $self->title and
-        !$self->is_precat and
+        $self->copy and 
         !$self->is_noncat;
 
     my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
 
-	my $setting = $e->search_actor_user_setting(
-		{usr => $self->patron->id,, name => 'circ.keep_checkout_history_list'})->[0];
-    
-    return undef unless $setting and $setting->value;
+    # verify history is globally enabled and uses the bucket mechanism
+    my $htype = OpenSRF::Utils::SettingsClient->new->config_value(
+        apps => 'open-ils.circ' => app_settings => 'checkout_history_mechanism');
 
-    my $bkt = $e->search_container_biblio_record_entry_bucket(
-        {owner => $self->patron->id, btype => 'reading_list'})->[0];
+    unless($htype eq 'bucket') {
+        $e->rollback;
+        return undef;
+    }
+
+    # verify the patron wants to retain the hisory
+	my $setting = $e->search_actor_user_setting(
+		{usr => $self->patron->id, name => 'circ.keep_checkout_history'})->[0];
+    
+    unless($setting and $setting->value) {
+        $e->rollback;
+        return undef;
+    }
+
+    my $bkt = $e->search_container_copy_bucket(
+        {owner => $self->patron->id, btype => 'circ_history'})->[0];
 
     my $pos = 1;
 
     if($bkt) {
-        # find the next position
-        my $last_item = $e->search_container_biblio_record_entry_bucket_item(
-            {bucket => $bkt->id}, {order_by => {'cbrebi' => 'pos desc'}, limit => 1})->[0];
+        # find the next item position
+        my $last_item = $e->search_container_copy_bucket_item(
+            {bucket => $bkt->id}, {order_by => {ccbi => 'pos desc'}, limit => 1})->[0];
         $pos = $last_item->pos + 1 if $last_item;
 
     } else {
-        $bkt = Fieldmapper::container::biblio_record_entry_bucket->new;
+        # create the history bucket if necessary
+        $bkt = Fieldmapper::container::copy_bucket->new;
         $bkt->owner($self->patron->id);
         $bkt->name('');
         $bkt->btype('reading_list');
         $bkt->pub('f');
-        $e->create_container_biblio_record_entry_bucket($bkt) or return $e->die_event;
-
+        $e->create_container_copy_bucket($bkt) or return $e->die_event;
     }
 
-    my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+    my $item = Fieldmapper::container::copy_bucket_item->new;
+
     $item->bucket($bkt->id);
-    $item->target_biblio_record_entry($self->title->id);
+    $item->target_copy($self->copy->id);
     $item->pos($pos);
 
-    $e->create_container_biblio_record_entry_bucket_item($item)
-        or return $e->die_event;
-
+    $e->create_container_copy_bucket_item($item) or return $e->die_event;
     $e->commit;
 
     return undef;
