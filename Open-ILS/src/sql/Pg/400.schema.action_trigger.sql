@@ -135,5 +135,5 @@ CREATE TABLE action_trigger.event_params (
     CONSTRAINT event_params_event_def_param_once UNIQUE (event_def,param)
 );
 
---COMMIT;
+COMMIT;
 
