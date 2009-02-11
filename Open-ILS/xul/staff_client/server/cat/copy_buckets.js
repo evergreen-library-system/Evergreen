@@ -81,7 +81,6 @@ cat.copy_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list1.retrieve_selection();
-						document.getElementById('clip_button1').disabled = sel.length < 1;
 						obj.selection_list1 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
@@ -112,7 +111,6 @@ cat.copy_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list2.retrieve_selection();
-						document.getElementById('clip_button2').disabled = sel.length < 1;
 						obj.selection_list2 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
@@ -140,22 +138,32 @@ cat.copy_buckets.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
-					'save_columns2' : [
-						['command'],
-						function() { obj.list2.save_columns(); }
-					],
-					'save_columns1' : [
-						['command'],
-						function() { obj.list1.save_columns(); }
-					],
-					'sel_clip2' : [
-						['command'],
-						function() { obj.list2.clipboard(); }
-					],
-					'sel_clip1' : [
-						['command'],
-						function() { obj.list1.clipboard(); }
-					],
+                    'list_actions1' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                e.appendChild( obj.list1.render_list_actions() );
+                                obj.list1.set_list_actions(
+                                    {
+                                        'on_complete' : function() { }
+                                    }
+                                );
+                            };
+                        }
+                    ],
+                    'list_actions2' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                e.appendChild( obj.list2.render_list_actions() );
+                                obj.list2.set_list_actions(
+                                    {
+                                        'on_complete' : function() { }
+                                    }
+                                );
+                            };
+                        }
+                    ],
 					'copy_buckets_menulist_placeholder' : [
 						['render'],
 						function(e) {
@@ -580,60 +588,6 @@ cat.copy_buckets.prototype = {
 							obj.list2.dump_csv_to_clipboard();
 						}
 					],
-					'cmd_export1' : [
-						['command'],
-						function() {
-							obj.list1.dump_csv_to_clipboard();
-						}
-					],
-
-                    'cmd_print_export1' : [
-                        ['command'],
-                        function() {
-                            try {
-                                obj.list1.on_all_fleshed =
-                                    function() {
-                                        try {
-                                            dump( obj.list1.dump_csv() + '\n' );
-                                            //copy_to_clipboard(obj.list.dump_csv());
-                                            JSAN.use('util.print'); var print = new util.print();
-                                            print.simple(obj.list1.dump_csv(),{'content_type':'text/plain'});
-                                            setTimeout(function(){ obj.list1.on_all_fleshed = null; },0);
-                                        } catch(E) {
-                                            obj.error.standard_unexpected_error_alert('print export',E);
-                                        }
-                                    }
-                                obj.list1.full_retrieve();
-                            } catch(E) {
-                                obj.error.standard_unexpected_error_alert('print export',E);
-                            }
-                        }
-                    ],
-
-
-                    'cmd_print_export2' : [
-                        ['command'],
-                        function() {
-                            try {
-                                obj.list2.on_all_fleshed =
-                                    function() {
-                                        try {
-                                            dump( obj.list2.dump_csv() + '\n' );
-                                            //copy_to_clipboard(obj.list.dump_csv());
-                                            JSAN.use('util.print'); var print = new util.print();
-                                            print.simple(obj.list2.dump_csv(),{'content_type':'text/plain'});
-                                            setTimeout(function(){ obj.list2.on_all_fleshed = null; },0);
-                                        } catch(E) {
-                                            obj.error.standard_unexpected_error_alert('print export',E);
-                                        }
-                                    }
-                                obj.list2.full_retrieve();
-                            } catch(E) {
-                                obj.error.standard_unexpected_error_alert('print export',E);
-                            }
-                        }
-                    ],
-
 					'cmd_copy_buckets_reprint' : [
 						['command'],
 						function() {
