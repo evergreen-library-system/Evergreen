@@ -700,11 +700,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="hook" reltype="has_a" key="id" map="" class="ath"/>
-			<link field="validator" reltype="has_a" key="id" map="" class="atval"/>
-			<link field="reactor" reltype="has_a" key="id" map="" class="atreact"/>
-			<link field="cleanup_success" reltype="has_a" key="id" map="" class="atclean"/>
-			<link field="cleanup_failure" reltype="has_a" key="id" map="" class="atclean"/>
+			<link field="hook" reltype="has_a" key="key" map="" class="ath"/>
+			<link field="validator" reltype="has_a" key="module" map="" class="atval"/>
+			<link field="reactor" reltype="has_a" key="module" map="" class="atreact"/>
+			<link field="cleanup_success" reltype="has_a" key="module" map="" class="atclean"/>
+			<link field="cleanup_failure" reltype="has_a" key="module" map="" class="atclean"/>
 			<link field="env" reltype="has_many" key="id" map="" class="atenv"/>
 			<link field="params" reltype="has_many" key="id" map="" class="atevparam"/>
 		</links>
