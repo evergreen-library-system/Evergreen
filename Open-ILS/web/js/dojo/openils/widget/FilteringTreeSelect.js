@@ -37,8 +37,10 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 this.dataList = [];
                 var self = this;
                 dojo.forEach(this.tree, function(node) { self._makeNodeList(node); });
-                this.store = new dojo.data.ItemFileReadStore(
-                    {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
+                if(this.dataList.length > 0) {
+                    this.store = new dojo.data.ItemFileReadStore(
+                        {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
+                }
                 this.inherited(arguments);
             },
 
