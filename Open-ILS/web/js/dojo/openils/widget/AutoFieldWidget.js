@@ -57,7 +57,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         baseWidgetValue : function(value) {
             var attr = (this.readOnly) ? 'content' : 'value';
             if(arguments.length) this.widget.attr(attr, value);
-            return this.widget.attr(attr, value);
+            return this.widget.attr(attr);
         },
         
         getDisplayString : function() {
