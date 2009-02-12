@@ -1629,35 +1629,55 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 		buffer_add(sql_buf, "IN (");
 	}
 
-	int in_item_index = 0;
-	int in_item_first = 1;
-	jsonObject* in_item;
-	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
+    if (node->type == JSON_HASH) {
+        // subquery predicate
+        char* subpred = SELECT(
+            ctx,
+            jsonObjectGetKey( node, "select" ),
+            jsonObjectGetKey( node, "from" ),
+            jsonObjectGetKey( node, "where" ),
+            jsonObjectGetKey( node, "having" ),
+            jsonObjectGetKey( node, "order_by" ),
+            jsonObjectGetKey( node, "limit" ),
+            jsonObjectGetKey( node, "offset" ),
+            SUBSELECT
+        );
 
-		if (in_item_first)
-			in_item_first = 0;
-		else
-			buffer_add(sql_buf, ", ");
+        buffer_add(sql_buf, subpred);
+        free(subpred);
 
-		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-			char* val = jsonNumberToDBString( field, in_item );
-			OSRF_BUFFER_ADD( sql_buf, val );
-			free(val);
-
-		} else {
-			char* key_string = jsonObjectToSimpleString(in_item);
-			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
-				OSRF_BUFFER_ADD( sql_buf, key_string );
-				free(key_string);
-			} else {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
-				free(key_string);
-				buffer_free(sql_buf);
-				return NULL;
-			}
-		}
-	}
-
+    } else if (node->type == JSON_ARRAY) {
+        // litteral value list
+    	int in_item_index = 0;
+    	int in_item_first = 1;
+    	jsonObject* in_item;
+    	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
+    
+    		if (in_item_first)
+    			in_item_first = 0;
+    		else
+    			buffer_add(sql_buf, ", ");
+    
+    		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+    			char* val = jsonNumberToDBString( field, in_item );
+    			OSRF_BUFFER_ADD( sql_buf, val );
+    			free(val);
+    
+    		} else {
+    			char* key_string = jsonObjectToSimpleString(in_item);
+    			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
+    				OSRF_BUFFER_ADD( sql_buf, key_string );
+    				free(key_string);
+    			} else {
+    				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+    				free(key_string);
+    				buffer_free(sql_buf);
+    				return NULL;
+    			}
+    		}
+    	}
+    }
+    
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
 
 	return buffer_release(sql_buf);
