@@ -612,7 +612,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 	</class>
 
-	<class id="atval" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::validator" oils_persist:tablename="action_trigger.validator" reporter:label="Trigger Condition Validator">
+	<class id="atval" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::validator" oils_persist:tablename="action_trigger.validator" reporter:label="Trigger Condition Validator">
 		<fields oils_persist:primary="module">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -621,9 +621,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 
-	<class id="atreact" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::reactor" oils_persist:tablename="action_trigger.reactor" reporter:label="Trigger Event Reactor">
+	<class id="atreact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::reactor" oils_persist:tablename="action_trigger.reactor" reporter:label="Trigger Event Reactor">
 		<fields oils_persist:primary="module">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -632,6 +640,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="atclean" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::cleanup" oils_persist:tablename="action_trigger.cleanup" reporter:label="Trigger Event Cleanup">
