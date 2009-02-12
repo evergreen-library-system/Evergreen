@@ -580,7 +580,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
     </class>
 
-	<class id="ath" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::hook" oils_persist:tablename="action_trigger.hook" reporter:label="Trigger hook point">
+	<class id="ath" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::hook" oils_persist:tablename="action_trigger.hook" reporter:label="Trigger hook point">
 		<fields oils_persist:primary="key">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -591,6 +591,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Passive" name="passive" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="bool"/>
 		</fields>
 		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="atcol" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::collector" oils_persist:tablename="action_trigger.collector" reporter:label="Trigger Evironment Collector">
@@ -654,7 +662,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="atevdef" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event_definition" oils_persist:tablename="action_trigger.event_definition" reporter:label="Trigger Event Definition">
+	<class id="atevdef" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_definition" oils_persist:tablename="action_trigger.event_definition" reporter:label="Trigger Event Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -684,6 +692,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="env" reltype="has_many" key="id" map="" class="atenv"/>
 			<link field="params" reltype="has_many" key="id" map="" class="atevparam"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="atev" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event" oils_persist:tablename="action_trigger.event" reporter:label="Trigger Event Entry">
