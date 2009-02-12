@@ -61,8 +61,9 @@ static char* searchFunctionPredicate ( const char*, osrfHash*, const jsonObject*
 static char* searchFieldTransform ( const char*, osrfHash*, const jsonObject*);
 static char* searchFieldTransformPredicate ( const char*, osrfHash*, jsonObject*, const char* );
 static char* searchBETWEENPredicate ( const char*, osrfHash*, jsonObject* );
-static char* searchINPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
-static char* searchPredicate ( const char*, osrfHash*, jsonObject* );
+static char* searchINPredicate ( const char*, osrfHash*,
+								 jsonObject*, const char*, osrfMethodContext* );
+static char* searchPredicate ( const char*, osrfHash*, jsonObject*, osrfMethodContext* );
 static char* searchJOIN ( const jsonObject*, osrfHash* );
 static char* searchWHERE ( const jsonObject*, osrfHash*, int, osrfMethodContext* );
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
@@ -1611,7 +1612,7 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 }
 
 static char* searchINPredicate (const char* class, osrfHash* field,
-		const jsonObject* node, const char* op) {
+		jsonObject* node, const char* op, osrfMethodContext* ctx ) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	buffer_fadd(
@@ -1928,11 +1929,12 @@ static char* searchBETWEENPredicate (const char* class, osrfHash* field, jsonObj
 	return buffer_release(sql_buf);
 }
 
-static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* node ) {
+static char* searchPredicate ( const char* class, osrfHash* field, 
+							   jsonObject* node, osrfMethodContext* ctx ) {
 
 	char* pred = NULL;
 	if (node->type == JSON_ARRAY) { // equality IN search
-		pred = searchINPredicate( class, field, node, NULL );
+		pred = searchINPredicate( class, field, node, NULL, ctx );
 	} else if (node->type == JSON_HASH) { // non-equality search
 		jsonObject* pred_node;
 		jsonIterator* pred_itr = jsonNewIterator( node );
@@ -1940,7 +1942,7 @@ static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* n
 			if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class, field, pred_node );
 			else if ( !(strcasecmp( pred_itr->key,"in" )) || !(strcasecmp( pred_itr->key,"not in" )) )
-				pred = searchINPredicate( class, field, pred_node, pred_itr->key );
+				pred = searchINPredicate( class, field, pred_node, pred_itr->key, ctx );
 			else if ( pred_node->type == JSON_ARRAY )
 				pred = searchFunctionPredicate( class, field, pred_node, pred_itr->key );
 			else if ( pred_node->type == JSON_HASH )
@@ -2296,7 +2298,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 					return NULL;
                 }
 
-                char* subpred = searchPredicate( class, field, node );
+                char* subpred = searchPredicate( class, field, node, ctx );
                 buffer_add( sql_buf, subpred );
                 free(subpred);
             }
