@@ -10,7 +10,7 @@ SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 
 install-exec-local: build
 
-build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp
+build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp bundle
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
@@ -57,6 +57,10 @@ stamp:
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xhtml' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.js' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xml' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
+
+bundle:
+	@tar cvf build.tar build/
+	@mv build.tar build/
 
 generated:
 	@echo ' * Grabbing lang.dtd from the OPAC code '
