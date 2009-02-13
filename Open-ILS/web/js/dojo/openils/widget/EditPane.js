@@ -44,6 +44,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
 
+                    if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
+                        continue; /* don't show auto-generated fields on create */
+
                     var row = document.createElement('tr');
                     var nameTd = document.createElement('td');
                     var valTd = document.createElement('td');
@@ -137,7 +140,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 for(var idx in fields)  
                     this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
                 if(this.mode == 'create' && this.fmIDL.pkey_sequence)
-                    this.fmObject[fieldmapper[this.fmClass].Identifier](null);
+                    this.fmObject[this.fmIDL.pkey](null);
                 pcrud[this.mode](this.fmObject, opts);
             }
         }
