@@ -40,6 +40,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(this.fmIDL.permacrud && this.fmIDL.permacrud[this.mode])
                     this.limitPerms = this.fmIDL.permacrud[this.mode].perms;
 
+                if(!this.overrideWidgets)
+                    this.overrideWidgets = {};
+
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
@@ -64,7 +67,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         fmClass : this.fmClass,
                         parentNode : valSpan,
                         orgLimitPerms : this.limitPerms,
-                        readOnly : this.readOnly
+                        readOnly : this.readOnly,
+                        widget : this.overrideWidgets[field.name]
                     });
 
                     widget.build();

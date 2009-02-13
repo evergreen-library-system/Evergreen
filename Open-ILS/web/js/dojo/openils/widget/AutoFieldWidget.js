@@ -85,6 +85,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         build : function(onload) {
+
+            if(this.widget) {
+                // core widget provided for us, attach and move on
+                this.parentNode.appendChild(this.widget.domNode);
+                return;
+            }
+
             this.onload = onload;
             if(this.widgetValue == null)
                 this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;

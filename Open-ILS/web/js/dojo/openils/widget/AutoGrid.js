@@ -24,8 +24,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.initAutoEnv();
                 this.setStructure(this._compileStructure());
                 this.setStore(this.buildAutoStore());
+                this.overrideEditWidgets = {};
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
+                else if(this.singleEditStyle) 
+                    this._applySingleEditStyle();
             },
 
             _compileStructure : function() {
@@ -73,16 +76,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return [{cells: [fields]}];
             },
 
-
-            /* capture keydown and launch edit dialog on enter */
-            _applyEditOnEnter : function() {
-
+            _applySingleEditStyle : function() {
                 this.onMouseOverRow = function(e) {};
                 this.onMouseOutRow = function(e) {};
                 this.onCellFocus = function(cell, rowIndex) { 
                     this.selection.deselectAll();
                     this.selection.select(this.focus.rowIndex);
                 };
+            },
+
+            /* capture keydown and launch edit dialog on enter */
+            _applyEditOnEnter : function() {
+                this._applySingleEditStyle();
 
                 dojo.connect(this, 'onRowDblClick',
                     function(e) {
@@ -107,6 +112,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var idents = grid.store.getIdentityAttributes();
                 var dialog = new openils.widget.EditDialog({
                     fmObject:fmObject,
+                    overrideWidgets : this.overrideEditWidgets,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -142,6 +148,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var grid = this;
                 var dialog = new openils.widget.EditDialog({
                     fmClass : this.fmClass,
+                    overrideWidgets : this.overrideEditWidgets,
                     onPostSubmit : function(r) {
                         var fmObject = openils.Util.readResponse(r);
                         if(fmObject) 
@@ -163,7 +170,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dialog.show();
             },
 
-            loadAll : function(opts) {
+            loadAll : function(opts, search) {
                 dojo.require('openils.PermaCrud');
                 if(!opts) opts = {};
                 var self = this;
@@ -175,7 +182,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         self.store.newItem(item.toStoreItem());
                     }
                 });
-                new openils.PermaCrud().retrieveAll(this.fmClass, opts);
+                if(search)
+                    new openils.PermaCrud().search(this.fmClass, search, opts);
+                else
+                    new openils.PermaCrud().retrieveAll(this.fmClass, opts);
             }
         } 
     );
