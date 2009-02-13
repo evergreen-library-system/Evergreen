@@ -1443,6 +1443,9 @@ UPDATE actor.usr SET card = (SELECT id FROM actor.card WHERE barcode = '10101010
 -- Admin user permissions
 INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 
+-- Set a work_ou for the Administrator user
+INSERT INTO permission.usr_work_ou_map (usr, work_ou) VALUES (1, 1);
+
 --010.schema.biblio.sql:
 INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','','FOO');
 
