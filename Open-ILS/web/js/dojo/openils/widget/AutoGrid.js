@@ -19,35 +19,60 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             showSequenceFields : false, 
 
             startup : function() {
-
                 this.selectionMode = 'single';
                 this.inherited(arguments);
                 this.initAutoEnv();
-                var existing = (this.structure && this.structure[0].cells[0]) ? 
-                    this.structure[0].cells[0] : [];
-                var fields = [];
-
-                for(var f in this.sortedFieldList) {
-                    var field = this.sortedFieldList[f];
-                    if(!field || field.virtual) continue;
-                    if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
-                        continue; 
-                    var entry = existing.filter(
-                        function(i){return (i.field == field.name)})[0];
-                    if(entry) entry.name = field.label;
-                    else entry = {field:field.name, name:field.label};
-                    fields.push(entry);
-                    if(!entry.get) 
-                        entry.get = openils.widget.AutoGrid.defaultGetter
-                    if(!entry.width && this.defaultCellWidth)
-                        entry.width = this.defaultCellWidth;
-                }
-
-                this.setStructure([{cells: [fields]}]);
+                this.setStructure(this._compileStructure());
                 this.setStore(this.buildAutoStore());
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
             },
+
+            _compileStructure : function() {
+                var existing = (this.structure && this.structure[0].cells[0]) ? 
+                    this.structure[0].cells[0] : [];
+                var fields = [];
+
+                var self = this;
+                function pushEntry(entry) {
+                    if(!entry.get) 
+                        entry.get = openils.widget.AutoGrid.defaultGetter
+                    if(!entry.width && self.defaultCellWidth)
+                        entry.width = self.defaultCellWidth;
+                    fields.push(entry);
+                }
+
+                if(!this.fieldOrder) {
+                    /* no order defined, start with any explicit grid fields */
+                    for(var e in existing) {
+                        var entry = existing[e];
+                        var field = this.fmIDL.fields.filter(
+                            function(i){return (i.name == entry.field)})[0];
+                        if(field) entry.name = entry.name || field.label;
+                        pushEntry(entry);
+                    }
+                }
+
+                for(var f in this.sortedFieldList) {
+                    var field = this.sortedFieldList[f];
+                    if(!field || field.virtual) continue;
+                    
+                    // field was already added above
+                    if(fields.filter(function(i){return (i.field == field.name)})[0]) 
+                        continue;
+
+
+                    if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                        continue; 
+                    var entry = existing.filter(function(i){return (i.field == field.name)})[0];
+                    if(entry) entry.name = field.label;
+                    else entry = {field:field.name, name:field.label};
+                    pushEntry(entry);
+                }
+
+                return [{cells: [fields]}];
+            },
+
 
             /* capture keydown and launch edit dialog on enter */
             _applyEditOnEnter : function() {
