@@ -40,10 +40,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         /**
-         * Turn the value from the dojo widget into a value oils understands
+         * Turn the widget-stored value into a value oils understands
          */
         getFormattedValue : function() {
             var value = this.baseWidgetValue();
+
+            /* text widgets default to "" when no data is entered */
+            if(value == '') return null; 
+
             switch(this.idlField.datatype) {
                 case 'bool':
                     return (value) ? 't' : 'f'
@@ -60,6 +64,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             return this.widget.attr(attr);
         },
         
+        /**
+         * Turn the widget-stored value into something visually suitable
+         */
         getDisplayString : function() {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
