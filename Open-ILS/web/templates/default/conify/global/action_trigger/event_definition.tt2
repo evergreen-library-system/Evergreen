@@ -1,0 +1,114 @@
+[% WRAPPER default/base.tt2 %]
+<script>
+    dojo.require('dijit.layout.TabContainer');
+    dojo.require('openils.widget.AutoGrid');
+    var loaded = {'tab-atevdef' : true};
+
+    openils.Util.addOnLoad(
+        function() { 
+            edGrid.loadAll({order_by:{atevdef : 'hook'}}); 
+            dojo.connect(tabs,'selectChild', 
+                function(child) { 
+                    if(loaded[child.id]) return;
+                    loaded[child.id] = true;
+                    switch(child.id) {
+                        case 'tab-ath': 
+                            thGrid.loadAll({order_by:{ath : 'key'}}); 
+                            break;
+                        case 'tab-atreact': 
+                            trGrid.loadAll({order_by:{atreact : 'module'}}); 
+                            break;
+                        case 'tab-atval': 
+                            tvGrid.loadAll({order_by:{atval : 'module'}}); 
+                            break;
+                    }
+                }
+            );
+        }
+    );
+</script>
+
+<div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='tabs'>
+
+    <div dojoType="dijit.layout.ContentPane" title='Event Definitions' selected='true' id='tab-atevdef'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Event Definitions</div>
+            <div><button dojoType='dijit.form.Button' onClick='edGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="edGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['id', 'owner', 'hook', 'active', 'delay', 'validator', 'reactor']"
+                    query="{id: '*'}" 
+                    fmClass='atevdef'
+                    editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Hooks</div>
+            <div><button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="thGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['key', 'core_type', 'description', 'passive']"
+                    query="{key: '*'}" 
+                    fmClass='ath'
+                    fmClass='atval'
+                    defaultCellWidth='12'
+                    editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='Reactors' id='tab-atreact'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Reactors</div>
+            <div><button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="trGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    query="{module: '*'}" 
+                    fmClass='atreact'
+                    fmClass='atval'
+                    editOnEnter='true'>
+                <thead>
+                    <tr>
+                        <th field='module' width='200px;'/>
+                        <th field='description' width='auto'/>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='Validators' id='tab-atval'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Validators</div>
+            <div><button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="tvGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    query="{module: '*'}" 
+                    fmClass='atval'
+                    editOnEnter='true'>
+                <thead>
+                    <tr>
+                        <th field='module' width='200px'/>
+                        <th field='description' width='auto'/>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+[% END %]
+
+
