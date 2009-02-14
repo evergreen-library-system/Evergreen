@@ -23,8 +23,8 @@ function load() {
     var dlist = [];
 
     fdocGrid.overrideEditWidgets.field = editFieldSelector;
-    fdocGrid.overrideEditWidgets.classname = editClassSelector;
-    dojo.connect(fdocGrid.overrideEditWidgets.classname, 'onChange', updateFieldSelector);
+    fdocGrid.overrideEditWidgets.fm_class = editClassSelector;
+    dojo.connect(fdocGrid.overrideEditWidgets.fm_class, 'onChange', updateFieldSelector);
 
     for(var f in slist) {
         if(slist[f].label != slist[f].name) // only show tables that have an actual label
@@ -33,13 +33,13 @@ function load() {
     dlist = dlist.sort(function(a, b){return (a.name < b.name) ? -1 : 1;});
 
     fmClassSelector.store = 
-        fdocGrid.overrideEditWidgets.classname.store = 
+        fdocGrid.overrideEditWidgets.fm_class.store = 
             new dojo.data.ItemFileReadStore({data:{identifier:'value', label:'name', items:dlist}});
 
     fmClassSelector.startup();
     dojo.connect(fmClassSelector, 'onChange',
         function() {
-            fdocGrid.loadAll({order_by:{fdoc : 'field'}}, {classname: this.attr('value')});
+            fdocGrid.loadAll({order_by:{fdoc : 'field'}}, {fm_class: this.attr('value')});
         }
     );
 }

@@ -12,7 +12,7 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
     <table  jsId="fdocGrid" 
             dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'classname', 'field', 'owner', 'string']"
+            fieldOrder="['id', 'fm_class', 'field', 'owner', 'string']"
             query="{id: '*'}" 
             fmClass='fdoc'
             defaultCellWidth='12'
