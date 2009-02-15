@@ -2015,7 +2015,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		working_hash = join_hash;
 
 	growing_buffer* join_buf = buffer_init(128);
-	char* leftclass = osrfHashGet(leftmeta, "classname");
+	const char* leftclass = osrfHashGet(leftmeta, "classname");
 
 	jsonObject* snode = NULL;
 	jsonIterator* search_itr = jsonNewIterator( working_hash );
@@ -2025,7 +2025,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
 
-		char* class = osrfHashGet(idlClass, "classname");
+		const char* class = osrfHashGet(idlClass, "classname");
 
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "fkey" ) );
 		char* field = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "field" ) );
@@ -2070,14 +2070,13 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			osrfHash* _links = oilsIDLFindPath("/%s/links", leftclass);
 
 			int i = 0;
+			const char* tmp_fkey;
 			osrfStringArray* keys = osrfHashKeys( _links );
-			while ( (fkey = osrfStringArrayGetString(keys, i++)) ) {
-				fkey = strdup(osrfStringArrayGetString(keys, i++));
-				if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", leftclass, fkey), class) ) {
-					field = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey) );
+			while ( (tmp_fkey = osrfStringArrayGetString(keys, i++)) ) {
+				if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", leftclass, tmp_fkey), class) ) {
+					field = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, tmp_fkey) );
+					fkey = strdup(tmp_fkey);
 					break;
-				} else {
-					free(fkey);
 				}
 			}
 			osrfStringArrayFree(keys);
@@ -2086,14 +2085,13 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				_links = oilsIDLFindPath("/%s/links", class);
 
 				i = 0;
+				const char* tmp_fld;
 				keys = osrfHashKeys( _links );
-				while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-					field = strdup(osrfStringArrayGetString(keys, i++));
-					if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", class, field), class) ) {
-						fkey = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", class, field) );
+				while ( (tmp_fld = osrfStringArrayGetString(keys, i++)) ) {
+					if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", class, tmp_fld), class) ) {
+						fkey = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", class, tmp_fld) );
+						field = strdup( tmp_fld );
 						break;
-					} else {
-						free(field);
 					}
 				}
 				osrfStringArrayFree(keys);
@@ -2131,7 +2129,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(type);
 
 		char* table = getSourceDefinition(idlClass);
-		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
+		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
+					table, class, class, field, leftclass, fkey);
 		free(table);
 
 		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
