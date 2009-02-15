@@ -169,6 +169,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dialog.startup();
                 dialog.show();
             },
+            
+            resetStore : function() {
+                this.setStore(this.buildAutoStore());
+            },
 
             loadAll : function(opts, search) {
                 dojo.require('openils.PermaCrud');

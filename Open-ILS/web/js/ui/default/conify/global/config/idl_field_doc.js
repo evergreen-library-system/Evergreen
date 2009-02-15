@@ -39,6 +39,7 @@ function load() {
     fmClassSelector.startup();
     dojo.connect(fmClassSelector, 'onChange',
         function() {
+            fdocGrid.resetStore();
             fdocGrid.loadAll({order_by:{fdoc : 'field'}}, {fm_class: this.attr('value')});
         }
     );
