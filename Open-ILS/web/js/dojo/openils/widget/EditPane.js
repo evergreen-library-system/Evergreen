@@ -73,7 +73,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
                     widget.build();
                     this.fieldList.push({name:field.name, widget:widget});
-                    this.applySaveOnEnter(widget);
+                    //this.applySaveOnEnter(widget);
                 }
                 if(!this.hideActionButtons)
                     this.buildActionButtons(tbody);
