@@ -5,6 +5,10 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// Let's try to enable tracemonkey
+pref("javascript.options.jit.chrome", true);
+pref("javascript.options.jit.content", true);
+
 // We'll use this one to help brand some build information into the client, and rely on subversion keywords
 pref("open-ils.repository.headURL","$HeadURL$");
 pref("open-ils.repository.author","$Author$");
