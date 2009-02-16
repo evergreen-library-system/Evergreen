@@ -41,9 +41,12 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 var id = node.getAttribute('id');
                 var fields = node.getElementsByTagName('fields')[0];
                 window.fmclasses[id] = [];
+                
+                var fieldData = this._parseFields(node, id);
     
                 var obj = { 
-                    fields  : this._parseFields(node, id),
+                    fields  : fieldData.list,
+                    field_map : fieldData.map,
                     name    : node.getAttribute('id'),
                     //table   : node.getAttributeNS(this.NS_PERSIST, 'tablename'),
                     //core    : node.getAttributeNS(this.NS_REPORTS, 'core'),
@@ -92,6 +95,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
         /* parses the links and fields portion of the IDL */
         _parseFields : function(node, classname) {
             var data = [];
+            var map = {};
     
             var fields = node.getElementsByTagName('fields')[0];
             fields = fields.getElementsByTagName('field');
@@ -139,6 +143,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 } 
     
                 data.push(obj);
+                map[obj.name] = obj;
             }
     
             /*
@@ -151,7 +156,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             );
             */
     
-            return data;
+            return { list : data, map : map };
         }
 
     });
