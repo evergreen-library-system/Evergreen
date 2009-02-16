@@ -1,0 +1,92 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'> </script>
+
+<style>
+
+    /* XXX Move me into the CSS tree XXX */
+
+    #uedit-tbody tr td {
+        padding: 5px;
+        text-align: left;
+    }
+    #uedit-help-div {
+        position: fixed;
+        top: 40px;
+        right: 30px;
+        width:300px;
+        height:200px;
+        border:2px dashed #e0e0c0;
+        -moz-border-radius: 10px;
+        font-weight: bold;
+        padding: 20px;
+    }
+    .uedit-help {
+        width: 25px;
+        border:1px solid #e0e0e0;
+        text-align:center;
+        vertical-align:middle;
+    }
+    .divider td {
+        min-height:10px;
+        background-color: #e0e0e0;
+    }
+
+</style>
+
+<!-- context help widget -->
+<a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
+<fieldset id='uedit-help-div' class='hidden'>
+    <legend id='uedit-help-field'/>
+    <div id='uedit-help-text'/>
+</fieldset>
+
+<table>
+    <tbody id='uedit-tbody'>
+        <tr fmclass='ac' fmfield='barcode'/>
+        <tr fmclass='au' fmfield='usrname'/>
+        <tr fmclass='au' fmfield='passwd'/>
+        <tr fmclass='au' fmfield='passwd'><td/><td>Verify Password</td><td/></tr>
+        <tr fmclass='au' fmfield='first_given_name'/>
+        <tr fmclass='au' fmfield='second_given_name'/>
+        <tr fmclass='au' fmfield='family_name'/>
+        <tr fmclass='au' fmfield='suffix'/>
+        <tr fmclass='au' fmfield='alias'/>
+        <tr fmclass='au' fmfield='dob'/>
+        <tr fmclass='au' fmfield='juvenile'/>
+        <tr fmclass='au' fmfield='ident_type'/>
+        <tr fmclass='au' fmfield='ident_value'/>
+        <tr fmclass='au' fmfield='email'/>
+        <tr fmclass='au' fmfield='day_phone'/>
+        <tr fmclass='au' fmfield='evening_phone'/>
+        <tr fmclass='au' fmfield='other_phone'/>
+        <tr fmclass='au' fmfield='home_ou'/>
+        <tr fmclass='au' fmfield='profile'/>
+        <tr fmclass='au' fmfield='expire_date'/>
+        <tr fmclass='au' fmfield='net_access_level'/>
+        <tr fmclass='au' fmfield='active'/>
+        <tr fmclass='au' fmfield='barred'/>
+        <tr fmclass='au' fmfield='master_account'/>
+        <tr fmclass='au' fmfield='claims_returned_count'/>
+        <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
+        <tr class='divider'><td colspan='10'>Address</td></tr>
+        <tr fmclass='aua' fmfield='address_type'/>
+        <tr fmclass='aua' fmfield='post_code'/>
+        <tr fmclass='aua' fmfield='street1'/>
+        <tr fmclass='aua' fmfield='street2'/>
+        <tr fmclass='aua' fmfield='city'/>
+        <tr fmclass='aua' fmfield='county'/>
+        <tr fmclass='aua' fmfield='state'/>
+        <tr fmclass='aua' fmfield='country'/>
+        <tr fmclass='aua' fmfield='valid'/>
+        <tr fmclass='aua' fmfield='within_city_limits'/>
+        <tr><td class='uedit-help'><td>Billing Address</td>
+            <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
+        </tr>
+        <tr><td class='uedit-help'><td>Mailing Address</td>
+            <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
+        </tr>
+        <tr class='divider'><td colspan='10'>Statistical Categories</td></tr>
+        <tr class='divider'><td colspan='10'>Surveys</td></tr>
+    </tbody>
+</table>
+[% END %]
