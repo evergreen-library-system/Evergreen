@@ -7,6 +7,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 
         async : false,
+        cache : {},
 
         /**
          * args:
@@ -88,7 +89,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             if(this.widget) {
                 // core widget provided for us, attach and move on
-                this.parentNode.appendChild(this.widget.domNode);
+                if(this.parentNode) // may already be in the "right" place
+                    this.parentNode.appendChild(this.widget.domNode);
                 return;
             }
 
@@ -99,6 +101,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.readOnly) {
                 dojo.require('dijit.layout.ContentPane');
                 this.widget = new dijit.layout.ContentPane(this.dijitArgs, this.parentNode);
+
+            } else if(this.widgetClass) {
+                dojo.require(this.widgetClass);
+                eval('this.widget = new ' + this.widgetClass + '(this.dijitArgs, this.parentNode);');
 
             } else {
 
@@ -159,10 +165,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             dojo.require('dijit.form.FilteringSelect');
 
             var self = this;
+            var vfield;
+            var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
+
+            if(linkClass == 'pgt')
+                return self._buildPermGrpSelector();
+
             this.async = true;
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
-            var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
-            var vfield;
 
             for(var f in rclassIdl.fields) {
                 if(self.idlField.key == rclassIdl.fields[f].name) {
@@ -230,6 +240,44 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.widget.tree = fieldmapper.aou.globalOrgTree;
                 this.widget.startup();
             }
+        },
+
+        _buildPermGrpSelector : function() {
+            dojo.require('openils.widget.FilteringTreeSelect');
+            this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
+            this.widget.searchAttr = 'name';
+
+            if(this.cache.permGrpTree) {
+                this.widget.tree = this.cache.permGrpTree;
+                this.widget.startup();
+                return;
+            } 
+
+            var self = this;
+            this.async = true;
+            new openils.PermaCrud().retrieveAll('pgt', {
+                async : true,
+                oncomplete : function(r) {
+                    var list = openils.Util.readResponse(r, false, true);
+                    if(!list) return;
+                    var map = {};
+                    var root = null;
+                    for(var l in list)
+                        map[list[l].id()] = list[l];
+                    for(var l in list) {
+                        var node = list[l];
+                        var pnode = map[node.parent()];
+                        if(!pnode) {root = node; continue;}
+                        if(!pnode.children()) pnode.children([]);
+                        pnode.children().push(node);
+                    }
+                    self.widget.tree = self.cache.permGrpTree = root;
+                    self.widget.startup();
+                    self._widgetLoaded();
+                }
+            });
+
+            return true;
         }
     });
 }
