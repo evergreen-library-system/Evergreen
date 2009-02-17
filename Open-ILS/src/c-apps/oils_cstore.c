@@ -68,7 +68,7 @@ static char* searchJOIN ( const jsonObject*, osrfHash* );
 static char* searchWHERE ( const jsonObject*, osrfHash*, int, osrfMethodContext* );
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
-static char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
+char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
 
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
@@ -2322,7 +2322,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 	return buffer_release(sql_buf);
 }
 
-static char* SELECT (
+char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
 		/* SELECT   */ jsonObject* selhash,
