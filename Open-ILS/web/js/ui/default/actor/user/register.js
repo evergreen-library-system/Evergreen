@@ -12,6 +12,7 @@ var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
 var fieldDoc = {};
 var statCats;
+var statCatTempate;
 var surveys;
 var staff;
 
@@ -51,16 +52,21 @@ function loadTable() {
         fleshFMRow(row, fmcls);
     }
 
+    statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-0'));
+
     for(var idx in statCats) {
         var stat = statCats[idx];
-        var row = dojo.byId('stat-cat-row-' + idx);
-        if(!row) row = dojo.byId('stat-cat-row-0').cloneNode(true);
+        var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
+        tbody.insertBefore(row, dojo.byId('survey-cat-divider'));
         dojo.query('[name=name]', row)[0].innerHTML = stat.name();
         var valtd = dojo.query('[name=widget]', row)[0];
         var span = valtd.appendChild(document.createElement('span'));
-        new dijit.form.ComboBox({}, span);
-        tbody.insertBefore(row, dojo.byId('survey-cat-divider'));
+        var store = new dojo.data.ItemFileReadStore(
+                {data:fieldmapper.actsc.toStoreData(stat.entries())});
+        var comboBox = new dijit.form.ComboBox({store:store}, span);
+        comboBox.labelAttr = 'value';
+        comboBox.searchAttr = 'value';
     }
 }
 
