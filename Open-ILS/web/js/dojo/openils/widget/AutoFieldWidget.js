@@ -125,6 +125,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
                         break;
 
+                    case 'int':
+                        dojo.require('dijit.form.NumberTextBox');
+                        this.dijitArgs = dojo.mixin(this.dijitArgs || {}, {constraints:{places:0}});
+                        this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
+                        break;
+
+                    case 'float':
+                        dojo.require('dijit.form.NumberTextBox');
+                        this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
+                        break;
+
                     case 'timestamp':
                         dojo.require('dijit.form.DateTextBox');
                         dojo.require('dojo.date.stamp');
