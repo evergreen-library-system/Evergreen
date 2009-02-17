@@ -7,6 +7,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dijit.form.CheckBox');
+dojo.require('dijit.form.Button');
 
 var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
@@ -15,12 +16,17 @@ var statCats;
 var statCatTempate;
 var surveys;
 var staff;
+var patron;
+var uEditUsePhonePw = false;
+var widgetPile = [];
+var uEditCardVirtId = -1;
+var uEditAddrVirtId = -1;
 
 
 function load() {
     staff = new openils.User().user;
     pcrud = new openils.PermaCrud();
-
+    
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
     for(var i in list) {
         var doc = list[i];
@@ -29,22 +35,18 @@ function load() {
         fieldDoc[doc.fm_class()][doc.field()] = doc;
     }
 
-    statCats = fieldmapper.standardRequest(
-        ['open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all'],
-        {params : [openils.User.authtoken, staff.ws_ou()]}
-    );
+    var tbody = dojo.byId('uedit-tbody');
+    statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-template'));
+    surveyTemplate = tbody.removeChild(dojo.byId('survey-row-template'));
+    surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
-    surveys = fieldmapper.standardRequest(
-        ['open-ils.circ', 'open-ils.circ.survey.retrieve.all'],
-        {params : [openils.User.authtoken]}
-    );
-
-    loadTable();
+    loadStaticFields(tbody);
+    loadStatCats(tbody);
+    loadSurveys(tbody);
 }
 
-function loadTable() {
-    var tbody = dojo.byId('uedit-tbody');
-
+function loadStaticFields(tbody) {
+    // draw static user/addr fields
     for(var idx = 0; tbody.childNodes[idx]; idx++) {
         var row = tbody.childNodes[idx];
         if(row.nodeType != row.ELEMENT_NODE) continue;
@@ -52,44 +54,67 @@ function loadTable() {
         if(!fmcls) continue;
         fleshFMRow(row, fmcls);
     }
+}
 
-    statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-template'));
-    surveyTemplate = tbody.removeChild(dojo.byId('survey-row-template'));
-    surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
+function loadStatCats(tbody) {
+    statCats = fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all'],
+        {params : [openils.User.authtoken, staff.ws_ou()]}
+    );
 
+    // draw stat cats
     for(var idx in statCats) {
         var stat = statCats[idx];
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
         tbody.appendChild(row);
-        dojo.query('[name=name]', row)[0].innerHTML = stat.name();
-        var valtd = dojo.query('[name=widget]', row)[0];
+        getByName(row, 'name').innerHTML = stat.name();
+        var valtd = getByName(row, 'widget');
         var span = valtd.appendChild(document.createElement('span'));
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
         var comboBox = new dijit.form.ComboBox({store:store}, span);
         comboBox.labelAttr = 'value';
         comboBox.searchAttr = 'value';
-    }
 
+        comboBox._wtype = 'statcat';
+        comboBox._statcat = stat.id();
+        widgetPile.push(comboBox); 
+
+    }
+}
+
+function loadSurveys(tbody) {
+
+    surveys = fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.survey.retrieve.all'],
+        {params : [openils.User.authtoken]}
+    );
+
+    // draw surveys
     for(var idx in surveys) {
         var survey = surveys[idx];
         var srow = surveyTemplate.cloneNode(true);
         tbody.appendChild(srow);
-        dojo.query('[name=name]', srow)[0].innerHTML = survey.name();
+        getByName(srow, 'name').innerHTML = survey.name();
 
         for(var q in survey.questions()) {
             var quest = survey.questions()[q];
             var qrow = surveyQuestionTemplate.cloneNode(true);
             tbody.appendChild(qrow);
-            dojo.query('[name=question]', qrow)[0].innerHTML = quest.question();
+            getByName(qrow, 'question').innerHTML = quest.question();
 
-            var span = dojo.query('[name=answers]', qrow)[0].appendChild(document.createElement('span'));
+            var span = getByName(qrow, 'answers').appendChild(document.createElement('span'));
             var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.asva.toStoreData(quest.answers())});
             var select = new dijit.form.FilteringSelect({store:store}, span);
             select.labelAttr = 'answer';
             select.searchAttr = 'answer';
+
+            select._wtype = 'survey';
+            select._survey = survey.id();
+            select._question = quest.id();
+            widgetPile.push(select); 
         }
     }
 }
@@ -133,6 +158,15 @@ function fleshFMRow(row, fmcls) {
         orgLimitPerms : ['UPDATE_USER'],
     });
     widget.build();
+
+    widget._wtype = fmcls;
+    widget._fmfield = fmfield;
+    widget._addr = uEditAddrVirtId;
+    widgetPile.push(widget);
+}
+
+function getByName(node, name) {
+    return dojo.query('[name='+name+']', node)[0];
 }
 
 
@@ -141,6 +175,128 @@ function ueLoadContextHelp(fmcls, fmfield) {
     dojo.byId('uedit-help-field').innerHTML = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield].label;
     dojo.byId('uedit-help-text').innerHTML = fieldDoc[fmcls][fmfield].string();
 }
+
+
+/* creates a new patron object with card attached */
+function uEditNewPatron() {
+    patron = new au();
+    patron.isnew(1);
+    patron.id(-1);
+    card = new ac();
+    card.id(uEditCardVirtId--);
+    card.isnew(1);
+    patron.card(card);
+    patron.cards([card]);
+    //patron.net_access_level(defaultNetLevel);
+    patron.stat_cat_entries([]);
+    patron.survey_responses([]);
+    patron.addresses([]);
+    //patron.home_ou(USER.ws_ou());
+    uEditMakeRandomPw(patron);
+}
+
+function uEditMakeRandomPw(patron) {
+    if(uEditUsePhonePw) return;
+    var rand  = Math.random();
+    rand = parseInt(rand * 10000) + '';
+    while(rand.length < 4) rand += '0';
+/*
+    appendClear($('ue_password_plain'),text(rand));
+    unHideMe($('ue_password_gen'));
+*/
+    patron.passwd(rand);
+    return rand;
+}
+
+function uEditWidgetVal(w) {
+    var val = (w.getFormattedValue) ? w.getFormattedValue() : w.attr('value');
+    if(val == '') val = null;
+    return val;
+}
+
+function uEditSave() {
+    if(!patron) uEditNewPatron();
+
+    for(var idx in widgetPile) {
+        var w = widgetPile[idx];
+        console.log(w._wtype + ' : ' + w._fmfield + ' : ' + uEditWidgetVal(w));
+
+        switch(w._wtype) {
+            case 'au':
+                patron[w._fmfield](uEditWidgetVal(w));
+                break;
+
+            case 'ac':
+                patron.card()[w._fmfield](uEditWidgetVal(w));
+                break;
+
+            case 'aua':
+                var addr = patron.addresses().filter(function(i){return (i.id() == w._addr)})[0];
+                if(!addr) {
+                    addr = new fieldmapper.aua();
+                    addr.id(w._addr);
+                    addr.isnew(1);
+                    patron.addresses().push(addr);
+                    console.log("pushing address " + addr.id());
+                }
+                addr[w._fmfield](uEditWidgetVal(w));
+                break;
+
+            case 'survey':
+                var val = uEditWidgetVal(w);
+                if(val == null) break;
+                var resp = new fieldmapper.asvr();
+                resp.isnew(1);
+                resp.survey(w._survey)
+                resp.usr(patron.id());
+                resp.question(w._question)
+                resp.answer(val);
+                patron.survey_responses().push(resp);
+                break;
+
+            case 'statcat':
+                var val = uEditWidgetVal(w);
+                if(val == null) break;
+                var map = new fieldmapper.actscecm();
+                map.isnew(1);
+                map.stat_cat(w._statcat);
+                map.stat_cat_entry(val);
+                map.target_usr(patron.id());
+                patron.stat_cat_entries().push(map);
+                break;
+        }
+    }
+
+    console.log(js2JSON(patron.addresses()));
+    alert(js2JSON(patron));
+
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.patron.update'],
+        {   async: true,
+            params: [openils.User.authtoken, patron],
+            oncomplete: function(r) {
+                patron = openils.Util.readResponse(r);
+                if(patron) {
+                    alert('success');
+                    //uEditRefresh();
+                } else {
+                    alert('no success?');
+                }
+            }
+        }
+    );
+}
+
+function uEditRefresh() {
+    var href = location.href;
+    href = href.replace(/\&?clone=\d+/, '');
+    location.href = href;
+}
+
+
+
+
+
 
 
 openils.Util.addOnLoad(load);

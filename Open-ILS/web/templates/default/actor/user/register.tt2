@@ -9,13 +9,26 @@
         padding: 5px;
         text-align: left;
     }
+
+    #uedit-save-div {
+        position: fixed;
+        top:40px;
+        right:30px;
+        width:300px;
+        border:2px solid #d9e8f9;
+        -moz-border-radius: 10px;
+        font-weight: bold;
+        padding: 12px;
+        text-align:center;
+        vertical-align:middle;
+    }
+
     #uedit-help-div {
         position: fixed;
-        top: 40px;
-        right: 30px;
+        top:124px;
+        right:30px;
         width:300px;
-        height:200px;
-        border:2px dashed #e0e0c0;
+        border:2px dashed #d9e8f9;
         -moz-border-radius: 10px;
         font-weight: bold;
         padding: 20px;
@@ -32,13 +45,6 @@
     }
 
 </style>
-
-<!-- context help widget -->
-<a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
-<fieldset id='uedit-help-div' class='hidden'>
-    <legend id='uedit-help-field'/>
-    <div id='uedit-help-text'/>
-</fieldset>
 
 <table>
     <tbody id='uedit-tbody'>
@@ -68,22 +74,23 @@
         <tr fmclass='au' fmfield='master_account'/>
         <tr fmclass='au' fmfield='claims_returned_count'/>
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
-        <tr class='divider'><td colspan='0'>Address</td></tr>
-        <tr fmclass='aua' fmfield='address_type'/>
-        <tr fmclass='aua' fmfield='post_code'/>
-        <tr fmclass='aua' fmfield='street1'/>
-        <tr fmclass='aua' fmfield='street2'/>
-        <tr fmclass='aua' fmfield='city'/>
-        <tr fmclass='aua' fmfield='county'/>
-        <tr fmclass='aua' fmfield='state'/>
-        <tr fmclass='aua' fmfield='country'/>
-        <tr fmclass='aua' fmfield='valid'/>
-        <tr fmclass='aua' fmfield='within_city_limits'/>
 
-        <tr><td class='uedit-help'><td>Billing Address</td>
+        <tr class='divider' type='addr'><td colspan='0'>Address</td></tr>
+        <tr fmclass='aua' fmfield='address_type' type='addr'/>
+        <tr fmclass='aua' fmfield='post_code' type='addr'/>
+        <tr fmclass='aua' fmfield='street1' type='addr'/>
+        <tr fmclass='aua' fmfield='street2' type='addr'/>
+        <tr fmclass='aua' fmfield='city' type='addr'/>
+        <tr fmclass='aua' fmfield='county' type='addr'/>
+        <tr fmclass='aua' fmfield='state' type='addr'/>
+        <tr fmclass='aua' fmfield='country' type='addr'/>
+        <tr fmclass='aua' fmfield='valid' type='addr'/>
+        <tr fmclass='aua' fmfield='within_city_limits' type='addr'/>
+
+        <tr type='addr'><td class='uedit-help'><td>Billing Address</td>
             <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
         </tr>
-        <tr><td class='uedit-help'><td>Mailing Address</td>
+        <tr type='addr'><td class='uedit-help'><td>Mailing Address</td>
             <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
         </tr>
 
@@ -94,5 +101,19 @@
         <tr id='survey-question-row-template'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
     </tbody>
 </table>
+
+<div id='uedit-save-div'>
+    <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
+    <button dojoType='dijit.form.Button' jsId='saveCloneButton'>Save &amp; Clone</button>
+    <button dojoType='dijit.form.Button' jsId='cancelButton'>Cancel</button>
+</div>
+
+<!-- context help widget -->
+<a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
+<fieldset id='uedit-help-div' class='hidden'>
+    <legend id='uedit-help-field'/>
+    <div id='uedit-help-text'/>
+</fieldset>
+
 [% END %]
 
