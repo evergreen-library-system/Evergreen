@@ -44,6 +44,19 @@
         background-color: #e0e0e0;
     }
 
+    .divider span { padding: 0px 5px 0px 5px; }
+
+    .newaddr-row td {
+        text-align: right;
+        border-top:1px dashed #d9e8f9;
+    }
+    .newaddr-row td:last-child {
+        border-right:1px dashed #d9e8f9;
+    }
+
+    .uedit-addr-del-button {margin-left: 10px; color:red;}
+    
+
 </style>
 
 <table>
@@ -75,28 +88,37 @@
         <tr fmclass='au' fmfield='claims_returned_count'/>
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
-        <tr class='divider' type='addr'><td colspan='0'>Address</td></tr>
-        <tr fmclass='aua' fmfield='address_type' type='addr'/>
-        <tr fmclass='aua' fmfield='post_code' type='addr'/>
-        <tr fmclass='aua' fmfield='street1' type='addr'/>
-        <tr fmclass='aua' fmfield='street2' type='addr'/>
-        <tr fmclass='aua' fmfield='city' type='addr'/>
-        <tr fmclass='aua' fmfield='county' type='addr'/>
-        <tr fmclass='aua' fmfield='state' type='addr'/>
-        <tr fmclass='aua' fmfield='country' type='addr'/>
-        <tr fmclass='aua' fmfield='valid' type='addr'/>
-        <tr fmclass='aua' fmfield='within_city_limits' type='addr'/>
-
-        <tr type='addr'><td class='uedit-help'><td>Billing Address</td>
-            <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
+        <!-- Address -->
+        <tr name='uedit-addr-divider' class='divider' type='addr-template'>
+            <td colspan='2'>Address</td>
+            <td>
+                <span>Mailing</span><input type='radio' name='mailing_address'>
+                <span>Billing</span><input type='radio' name='billing_address'>
+                <button name='delete-button' class='uedit-addr-del-button'>X</button>
+            </td>
         </tr>
-        <tr type='addr'><td class='uedit-help'><td>Mailing Address</td>
-            <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
+        <tr fmclass='aua' fmfield='address_type' type='addr-template'/>
+        <tr fmclass='aua' fmfield='post_code' type='addr-template'/>
+        <tr fmclass='aua' fmfield='street1' type='addr-template'/>
+        <tr fmclass='aua' fmfield='street2' type='addr-template'/>
+        <tr fmclass='aua' fmfield='city' type='addr-template'/>
+        <tr fmclass='aua' fmfield='county' type='addr-template'/>
+        <tr fmclass='aua' fmfield='state' type='addr-template'/>
+        <tr fmclass='aua' fmfield='country' type='addr-template'/>
+        <tr fmclass='aua' fmfield='valid' type='addr-template'/>
+        <tr fmclass='aua' fmfield='within_city_limits' type='addr-template'/>
+
+        <tr id='new-addr-row' class='newaddr-row'>
+            <td colspan='0' align='middle'/>
+                <button dojoType='dijit.form.Button' onClick='uEditNewAddr'>New Address</button>
+            </td>
         </tr>
 
+        <!-- stat cats -->
         <tr class='divider' id='stat-cat-divider'><td colspan='0'>Statistical Categories</td></tr>
         <tr id='stat-cat-row-template'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
 
+        <!-- surveys -->
         <tr id='survey-row-template' class='divider'><td colspan='0' name='name'/></tr>
         <tr id='survey-question-row-template'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
     </tbody>
@@ -104,8 +126,7 @@
 
 <div id='uedit-save-div'>
     <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
-    <button dojoType='dijit.form.Button' jsId='saveCloneButton'>Save &amp; Clone</button>
-    <button dojoType='dijit.form.Button' jsId='cancelButton'>Cancel</button>
+    <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone'>Save &amp; Clone</button>
 </div>
 
 <!-- context help widget -->

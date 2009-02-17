@@ -21,12 +21,23 @@ var uEditUsePhonePw = false;
 var widgetPile = [];
 var uEditCardVirtId = -1;
 var uEditAddrVirtId = -1;
+var orgSettings = {};
+var tbody;
+var addrTemplateRows;
 
 
 function load() {
     staff = new openils.User().user;
     pcrud = new openils.PermaCrud();
-    
+    uEditNewPatron(); /* XXX */
+
+    orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
+        'global.juvenile_age_threshold',
+        'patron.password.use_phone',
+    ]);
+    for(k in orgSettings)
+        orgSettings[k] = orgSettings[k].value;
+
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
     for(var i in list) {
         var doc = list[i];
@@ -35,18 +46,21 @@ function load() {
         fieldDoc[doc.fm_class()][doc.field()] = doc;
     }
 
-    var tbody = dojo.byId('uedit-tbody');
+    tbody = dojo.byId('uedit-tbody');
+
+    addrTemplateRows = dojo.query('tr[type=addr-template]', tbody);
+    dojo.forEach(addrTemplateRows, function(row) { row.parentNode.removeChild(row); } );
     statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-template'));
     surveyTemplate = tbody.removeChild(dojo.byId('survey-row-template'));
     surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
-    loadStaticFields(tbody);
-    loadStatCats(tbody);
-    loadSurveys(tbody);
+    loadStaticFields();
+    uEditNewAddr(null, uEditAddrVirtId);
+    loadStatCats();
+    loadSurveys();
 }
 
-function loadStaticFields(tbody) {
-    // draw static user/addr fields
+function loadStaticFields() {
     for(var idx = 0; tbody.childNodes[idx]; idx++) {
         var row = tbody.childNodes[idx];
         if(row.nodeType != row.ELEMENT_NODE) continue;
@@ -56,7 +70,8 @@ function loadStaticFields(tbody) {
     }
 }
 
-function loadStatCats(tbody) {
+function loadStatCats() {
+
     statCats = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all'],
         {params : [openils.User.authtoken, staff.ws_ou()]}
@@ -84,7 +99,7 @@ function loadStatCats(tbody) {
     }
 }
 
-function loadSurveys(tbody) {
+function loadSurveys() {
 
     surveys = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.survey.retrieve.all'],
@@ -120,11 +135,12 @@ function loadSurveys(tbody) {
 }
 
 
-function fleshFMRow(row, fmcls) {
+function fleshFMRow(row, fmcls, args) {
     var fmfield = row.getAttribute('fmfield');
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
     var fieldIdl = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield];
+    if(!args) args = {};
 
     var existing = dojo.query('td', row);
     var htd = existing[0] || row.appendChild(document.createElement('td'));
@@ -135,7 +151,7 @@ function fleshFMRow(row, fmcls) {
     if(fieldDoc[fmcls] && fieldDoc[fmcls][fmfield]) {
         var link = dojo.byId('uedit-help-template').cloneNode(true);
         link.id = '';
-        link.setAttribute('href', 'javascript:ueLoadContextHelp("'+fmcls+'","'+fmfield+'")');
+        link.onclick = function() { ueLoadContextHelp(fmcls, fmfield) };
         openils.Util.removeCSSClass(link, 'hidden');
         htd.appendChild(link);
     }
@@ -161,8 +177,9 @@ function fleshFMRow(row, fmcls) {
 
     widget._wtype = fmcls;
     widget._fmfield = fmfield;
-    widget._addr = uEditAddrVirtId;
+    widget._addr = args.addr;
     widgetPile.push(widget);
+    return widget;
 }
 
 function getByName(node, name) {
@@ -183,7 +200,7 @@ function uEditNewPatron() {
     patron.isnew(1);
     patron.id(-1);
     card = new ac();
-    card.id(uEditCardVirtId--);
+    card.id(uEditCardVirtId);
     card.isnew(1);
     patron.card(card);
     patron.cards([card]);
@@ -215,11 +232,8 @@ function uEditWidgetVal(w) {
 }
 
 function uEditSave() {
-    if(!patron) uEditNewPatron();
-
     for(var idx in widgetPile) {
         var w = widgetPile[idx];
-        console.log(w._wtype + ' : ' + w._fmfield + ' : ' + uEditWidgetVal(w));
 
         switch(w._wtype) {
             case 'au':
@@ -237,7 +251,6 @@ function uEditSave() {
                     addr.id(w._addr);
                     addr.isnew(1);
                     patron.addresses().push(addr);
-                    console.log("pushing address " + addr.id());
                 }
                 addr[w._fmfield](uEditWidgetVal(w));
                 break;
@@ -267,9 +280,6 @@ function uEditSave() {
         }
     }
 
-    console.log(js2JSON(patron.addresses()));
-    alert(js2JSON(patron));
-
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.patron.update'],
         {   async: true,
@@ -277,11 +287,8 @@ function uEditSave() {
             oncomplete: function(r) {
                 patron = openils.Util.readResponse(r);
                 if(patron) {
-                    alert('success');
-                    //uEditRefresh();
-                } else {
-                    alert('no success?');
-                }
+                    uEditRefresh();
+                } 
             }
         }
     );
@@ -293,11 +300,31 @@ function uEditRefresh() {
     location.href = href;
 }
 
+function uEditNewAddr(evt, id) {
+    if(id == null) id = --uEditAddrVirtId;
+    dojo.forEach(addrTemplateRows, 
+        function(row) {
+            row = tbody.insertBefore(row.cloneNode(true), dojo.byId('new-addr-row'));
+            row.setAttribute('type', '');
+            row.setAttribute('addr', id+'');
+            if(row.getAttribute('fmclass')) {
+                fleshFMRow(row, 'aua', {addr:id});
+            } else {
+               var btn = dojo.query('[name=delete-button]', row)[0];
+               if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
+            }
+        }
+    );
+}
 
 
-
-
+function uEditDeleteAddr(id) {
+    if(!confirm('Delete address ' + id)) return; /* XXX i18n */
+    var rows = dojo.query('tr[addr='+id+']', tbody);
+    for(var i = 0; i < rows.length; i++)
+        rows[i].parentNode.removeChild(rows[i]);
+    widgetPile = widgetPile.filter(function(w){return (w._addr != id)});
+}
 
 
 openils.Util.addOnLoad(load);
-
