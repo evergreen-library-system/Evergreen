@@ -44,6 +44,7 @@ function load() {
 
 function loadTable() {
     var tbody = dojo.byId('uedit-tbody');
+
     for(var idx = 0; tbody.childNodes[idx]; idx++) {
         var row = tbody.childNodes[idx];
         if(row.nodeType != row.ELEMENT_NODE) continue;
@@ -52,13 +53,15 @@ function loadTable() {
         fleshFMRow(row, fmcls);
     }
 
-    statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-0'));
+    statCatTemplate = tbody.removeChild(dojo.byId('stat-cat-row-template'));
+    surveyTemplate = tbody.removeChild(dojo.byId('survey-row-template'));
+    surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
     for(var idx in statCats) {
         var stat = statCats[idx];
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
-        tbody.insertBefore(row, dojo.byId('survey-cat-divider'));
+        tbody.appendChild(row);
         dojo.query('[name=name]', row)[0].innerHTML = stat.name();
         var valtd = dojo.query('[name=widget]', row)[0];
         var span = valtd.appendChild(document.createElement('span'));
@@ -67,6 +70,27 @@ function loadTable() {
         var comboBox = new dijit.form.ComboBox({store:store}, span);
         comboBox.labelAttr = 'value';
         comboBox.searchAttr = 'value';
+    }
+
+    for(var idx in surveys) {
+        var survey = surveys[idx];
+        var srow = surveyTemplate.cloneNode(true);
+        tbody.appendChild(srow);
+        dojo.query('[name=name]', srow)[0].innerHTML = survey.name();
+
+        for(var q in survey.questions()) {
+            var quest = survey.questions()[q];
+            var qrow = surveyQuestionTemplate.cloneNode(true);
+            tbody.appendChild(qrow);
+            dojo.query('[name=question]', qrow)[0].innerHTML = quest.question();
+
+            var span = dojo.query('[name=answers]', qrow)[0].appendChild(document.createElement('span'));
+            var store = new dojo.data.ItemFileReadStore(
+                {data:fieldmapper.asva.toStoreData(quest.answers())});
+            var select = new dijit.form.FilteringSelect({store:store}, span);
+            select.labelAttr = 'answer';
+            select.searchAttr = 'answer';
+        }
     }
 }
 
