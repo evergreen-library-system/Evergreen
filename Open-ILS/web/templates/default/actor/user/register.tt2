@@ -85,8 +85,10 @@
         <tr><td class='uedit-help'><td>Mailing Address</td>
             <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
         </tr>
-        <tr class='divider'><td colspan='10'>Statistical Categories</td></tr>
-        <tr class='divider'><td colspan='10'>Surveys</td></tr>
+        <tr class='divider' id='stat-cat-divider'><td colspan='10'>Statistical Categories</td></tr>
+        <tr id='stat-cat-row-0'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
+        <tr class='divider' id='survey-cat-divider'><td colspan='10'>Surveys</td></tr>
     </tbody>
 </table>
 [% END %]
+
