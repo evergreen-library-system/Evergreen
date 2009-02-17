@@ -124,18 +124,26 @@ function my_init() {
 
 		// Try to get the locale from our preferences
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        try {
-            const Cc = Components.classes;
-            const Ci = Components.interfaces;
-            locale = Cc["@mozilla.org/preferences-service;1"].
+		try {
+			const Cc = Components.classes;
+			const Ci = Components.interfaces;
+			locale = Cc["@mozilla.org/preferences-service;1"].
 				getService(Ci.nsIPrefBranch).
 				getCharPref("general.useragent.locale");
-        }
+		}
 		catch (e) { }
 
-		// Get the locale-specific tooltips
 		// TODO: We should send a HEAD request to check for the existence of the desired file
-		// then fall back to the default locale if preferred locale is not necessary
+		// then fall back to the default locale if preferred locale is not necessary;
+		// however, for now we have a simplistic check:
+		//
+		// we currently have translations for only two locales; in the absence of a
+		// valid locale, default to the almighty en-US
+		if (locale != 'en-US' && locale != 'fr-CA') {
+			locale = 'en-US';
+		}
+
+		// Get the locale-specific tooltips
 		req.open('GET','/xul/server/locale/' + locale + '/marcedit-tooltips.xml',true);
 
 		context_menus = createComplexXULElement('popupset');
