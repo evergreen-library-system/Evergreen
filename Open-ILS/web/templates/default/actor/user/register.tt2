@@ -68,7 +68,7 @@
         <tr fmclass='au' fmfield='master_account'/>
         <tr fmclass='au' fmfield='claims_returned_count'/>
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
-        <tr class='divider'><td colspan='10'>Address</td></tr>
+        <tr class='divider'><td colspan='0'>Address</td></tr>
         <tr fmclass='aua' fmfield='address_type'/>
         <tr fmclass='aua' fmfield='post_code'/>
         <tr fmclass='aua' fmfield='street1'/>
@@ -87,10 +87,10 @@
             <td><div dojoType='dijit.form.CheckBox' name='billing-addr-widget'></div></td>
         </tr>
 
-        <tr class='divider' id='stat-cat-divider'><td colspan='10'>Statistical Categories</td></tr>
+        <tr class='divider' id='stat-cat-divider'><td colspan='0'>Statistical Categories</td></tr>
         <tr id='stat-cat-row-template'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
 
-        <tr id='survey-row-template' class='divider'><td colspan='10' name='name'/></tr>
+        <tr id='survey-row-template' class='divider'><td colspan='0' name='name'/></tr>
         <tr id='survey-question-row-template'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
     </tbody>
 </table>
