@@ -996,7 +996,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="cit" controller="open-ils.cstore" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
+	<class id="cit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1005,6 +1005,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Identification Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_IDENT_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_IDENT_TYPE" global_required="true"/>
+                <delete permission="ADMIN_IDENT_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="asvq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question" reporter:label="User Survey Question">
