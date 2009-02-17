@@ -2011,8 +2011,17 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(_tmp);
 		working_hash = freeable_hash;
 	}
-	else
+	else {
+		if( join_hash->type != JSON_HASH ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: JOIN failed; expected JSON object type not found",
+				MODULENAME
+			);
+			return NULL;
+		}
 		working_hash = join_hash;
+	}
 
 	growing_buffer* join_buf = buffer_init(128);
 	const char* leftclass = osrfHashGet(leftmeta, "classname");
