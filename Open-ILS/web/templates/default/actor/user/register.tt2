@@ -1,3 +1,4 @@
+[% ctx.page_title = 'User Editor' %]
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'> </script>
 
