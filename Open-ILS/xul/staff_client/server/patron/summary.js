@@ -395,7 +395,6 @@ patron.summary.prototype = {
                                             var hidden_value = e.getAttribute('hidden_value');
                                             e.setAttribute('value',hidden_value);
                                             e.setAttribute('hidden_value',value);
-                                            alert('foo');
                                         }
                                     }
                                 }
