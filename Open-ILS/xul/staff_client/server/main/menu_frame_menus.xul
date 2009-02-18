@@ -169,10 +169,10 @@
 		<menuseparator />
 		<menuitem label="&staff.main.menu.cat.create_marc.label;" accesskey="&staff.main.menu.cat.create_marc.accesskey;" command="cmd_create_marc"/>
 		<menuitem label="&staff.main.menu.cat.z39_50_import.label;" accesskey="&staff.main.menu.cat.z39_50_import.accesskey;" command="cmd_z39_50_import"/>
+		<menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
 		<menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
-		<menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
 	</menupopup>
 </menu>
 
