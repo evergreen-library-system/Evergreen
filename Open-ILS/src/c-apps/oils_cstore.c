@@ -2028,8 +2028,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 	jsonObject* snode = NULL;
 	jsonIterator* search_itr = jsonNewIterator( working_hash );
-	if(freeable_hash)
-		jsonObjectFree(freeable_hash);
 	
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
@@ -2051,6 +2049,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				free(field);
 				jsonIteratorFree(search_itr);
 				return NULL;
@@ -2069,6 +2069,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				free(fkey);
 				jsonIteratorFree(search_itr);
 				return NULL;
@@ -2115,6 +2117,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				jsonIteratorFree(search_itr);
 				return NULL;
 			}
@@ -2176,7 +2180,9 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(field);
 	}
 
-    jsonIteratorFree(search_itr);
+	if(freeable_hash)
+		jsonObjectFree(freeable_hash);
+	jsonIteratorFree(search_itr);
 
 	return buffer_release(join_buf);
 }
