@@ -65,7 +65,7 @@
 				
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
 				
-				var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == '1';
+				var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
 				var url = horizontal_interface ? '/xul/server/patron/summary_overlay_horiz.xul' : '/xul/server/patron/summary_overlay.xul';
 				
 				observer = new myObserver();
