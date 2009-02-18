@@ -365,7 +365,7 @@ patron.summary.prototype = {
 									patronStrings.getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
-										'<Unset>'
+									    patronStrings.getString('staff.patron.field.unset') 
 									)
 								);
 							};
@@ -375,11 +375,30 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+                                var hide_value = e.getAttribute('hide_value');
+								e.setAttribute( hide_value == 'true' ? 'hidden_value' : 'value',
 									obj.patron.dob() ?
 									obj.patron.dob().substr(0,10) :
-									'<Unset>'
+                                    patronStrings.getString('staff.patron.field.unset') 
 								);
+                                e.setAttribute( hide_value == 'false' ? 'hidden_value' : 'value',
+                                    patronStrings.getString('staff.patron.field.hidden') 
+                                );
+                                var x = document.getElementById('PatronSummaryContact_date_of_birth_label');
+                                if (x) {
+                                    var click_to_hide_dob = x.getAttribute('click_to_hide_dob');
+                                    if (click_to_hide_dob == 'true') {
+                                        x.onclick = function() {
+                                            hide_value = e.getAttribute('hide_value');
+                                            e.setAttribute('hide_value', hide_value == 'true' ? 'false' : 'true'); 
+                                            var value = e.getAttribute('value');
+                                            var hidden_value = e.getAttribute('hidden_value');
+                                            e.setAttribute('value',hidden_value);
+                                            e.setAttribute('hidden_value',value);
+                                            alert('foo');
+                                        }
+                                    }
+                                }
 							};
 						}
 					],
