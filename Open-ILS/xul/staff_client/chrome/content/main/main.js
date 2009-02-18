@@ -1,6 +1,7 @@
 dump('entering main/main.js\n');
 // vim:noet:sw=4:ts=4:
 
+var xulG;
 var offlineStrings;
 var authStrings;
 
@@ -148,7 +149,7 @@ function main_init() {
 
 			grant_perms(url);
 
-			var xulG = {
+			xulG = {
 				'auth' : G.auth,
 				'url' : url,
 				'window' : G.window,
@@ -162,6 +163,7 @@ function main_init() {
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
 				iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
 				iframe.contentWindow.xulG = xulG;
+                G.data_xul = iframe.contentWindow;
 			} else {
 				xulG.file = G.file;
 				var deck = G.auth.controller.view.ws_deck;
@@ -316,9 +318,13 @@ function main_init() {
 			function() {
 				if (G.data.session) {
 					try {
-						G.window.open('chrome://open_ils_staff_client/content/main/menu_frame.xul?server=' +
-							G.data.server,'main','chrome,resizable' );
-
+						//G.data_xul.g.open_menu();
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var mframe = xulG.window.open(G.data.server + urls.XUL_MENU_FRAME
+                            + '?server='+window.escape(G.data.server),
+                            'main'+xulG.window.window_name_increment(),'chrome,resizable'
+                        );
+                        mframe.xulG = xulG; 
 					} catch(E) { alert(E); }
 				} else {
 					alert ( offlineStrings.getString('main.new_window_btn.login_first_warning') );
