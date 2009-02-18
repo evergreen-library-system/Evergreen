@@ -1138,6 +1138,7 @@ INSERT INTO permission.perm_list VALUES
     (150, 'COPY_CIRC_NOT_ALLOWED.override', oils_i18n_gettext(150, 'Allow a user to checkout an item that is marked as non-circ', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext(151, 'Allow a user to delete an item out of another user''s container', 'ppl', 'description'));
+INSERT INTO permission.perm_list VALUES 
     (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext(152, 'Allow a staff member to define where another staff member has their permissions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (153, 'CREATE_FUNDING_SOURCE', oils_i18n_gettext(153, 'Allow a user to create a new funding source', 'ppl', 'description')),
@@ -1165,12 +1166,9 @@ INSERT INTO permission.perm_list VALUES
     (175, 'ADMIN_PROVIDER', oils_i18n_gettext(175, 'Allow a user to create/view/update/delete a provider', 'ppl', 'description')),
     (176, 'MANAGE_PROVIDER', oils_i18n_gettext(176, 'Allow a user to view and purchase from a provider', 'ppl', 'description')),
     (177, 'VIEW_PICKLIST', oils_i18n_gettext(177, 'Allow a user to view another users picklist', 'ppl', 'description')),
-INSERT INTO permission.perm_list VALUES 
-    (178, 'DELETE_RECORD', oils_i18n_gettext(178, 'Allow a staff member to directly remove a bibliographic record', 'ppl', 'description'));
-INSERT INTO permission.perm_list VALUES 
-    (179, 'ADMIN_CURRENCY_TYPE', oils_i18n_gettext(179, 'Allow a user to create/view/update/delete a currency_type', 'ppl', 'description'));
-INSERT INTO permission.perm_list VALUES 
-    (180, 'MARK_BAD_DEBT', oils_i18n_gettext(180, 'Allow a user to mark a transaction as bad (unrecoverable) debt', 'ppl', 'description'));
+    (178, 'DELETE_RECORD', oils_i18n_gettext(178, 'Allow a staff member to directly remove a bibliographic record', 'ppl', 'description')),
+    (179, 'ADMIN_CURRENCY_TYPE', oils_i18n_gettext(179, 'Allow a user to create/view/update/delete a currency_type', 'ppl', 'description')),
+    (180, 'MARK_BAD_DEBT', oils_i18n_gettext(180, 'Allow a user to mark a transaction as bad (unrecoverable) debt', 'ppl', 'description')),
     (181, 'VIEW_BILLING_TYPE', oils_i18n_gettext(181, 'Allow a user to view billing types', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
@@ -1424,9 +1422,9 @@ INSERT INTO permission.grp_perm_map VALUES (114, 10, 98, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (132, 10, 101, 1, true);
 INSERT INTO permission.grp_perm_map VALUES (136, 10, 102, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (137, 10, 103, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (139, 10, 147, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (140, 10, 148, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (141, 10, 149, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (140, 10, 147, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (141, 10, 148, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (142, 10, 149, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (97, 5, 41, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (96, 5, 43, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (93, 5, 48, 0, false);
