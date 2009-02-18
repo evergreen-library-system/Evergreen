@@ -8,6 +8,7 @@ dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.Button');
+dojo.require('dojo.date');
 
 var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
@@ -179,7 +180,34 @@ function fleshFMRow(row, fmcls, args) {
     widget._fmfield = fmfield;
     widget._addr = args.addr;
     widgetPile.push(widget);
+    attachEvents(fmcls, fmfield, widget);
     return widget;
+}
+
+function attachEvents(fmcls, fmfield, widget) {
+    if(fmcls == 'au') {
+        switch(fmfield) {
+
+            case 'profile': // when the profile changes, update the expire date
+                dojo.connect(widget.widget, 'onChange', 
+                    function() {
+
+                        var expireWidget = widgetPile.filter(
+                            function(i){return (i._fmfield == 'expire_date')})[0];
+                        var self = this;
+
+                        function found(items) {
+                            if(items.length == 0) return;
+                            var item = items[0];
+                            var interval = self.store.getValue(item, 'perm_interval');
+                            expireWidget.widget.attr('value', 
+                                dojo.date.add(new Date(), 'second', openils.Util.intervalToSeconds(interval)));
+                        }
+                        this.store.fetch({onComplete:found, query:{id:this.attr('value')}});
+                    }
+                );
+        }
+    }
 }
 
 function getByName(node, name) {
