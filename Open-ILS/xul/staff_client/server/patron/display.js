@@ -27,7 +27,7 @@ patron.display.prototype = {
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 		
-		var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == '1';
+		var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
 		document.getElementById('ui.circ.patron_summary.horizontal').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
 		document.getElementById('pdms1').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
 		
