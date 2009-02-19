@@ -2080,35 +2080,46 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		} else if (!field && !fkey) {
 			osrfHash* _links = oilsIDLFindPath("/%s/links", leftclass);
 
-			int i = 0;
-			const char* tmp_fkey;
-			osrfStringArray* keys = osrfHashKeys( _links );
-			while ( (tmp_fkey = osrfStringArrayGetString(keys, i++)) ) {
-				if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", leftclass, tmp_fkey), class) ) {
-					field = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, tmp_fkey) );
-					fkey = strdup(tmp_fkey);
+			// For each link defined for the left class:
+			// see if the link references the joined class
+			osrfHashIterator* itr = osrfNewHashIterator( _links );
+			osrfHash* curr_link = NULL;
+			while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
+				const char* other_class = osrfHashGet( curr_link, "class" );
+				if( other_class && !strcmp( other_class, class ) ) {
+
+					// Found a link between the classes
+					fkey = strdup( osrfHashIteratorKey( itr ) );
+					const char* other_key = osrfHashGet( curr_link, "key" );
+					field = other_key ? strdup( other_key ) : NULL;
 					break;
 				}
 			}
-			osrfStringArrayFree(keys);
-
-			if (!field && !fkey) {
+			osrfHashIteratorFree( itr );
+			
+			if (!field || !fkey) {
+				// Do another such search, with the classes reversed
 				_links = oilsIDLFindPath("/%s/links", class);
 
-				i = 0;
-				const char* tmp_fld;
-				keys = osrfHashKeys( _links );
-				while ( (tmp_fld = osrfStringArrayGetString(keys, i++)) ) {
-					if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", class, tmp_fld), class) ) {
-						fkey = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", class, tmp_fld) );
-						field = strdup( tmp_fld );
+				// For each link defined for the joined class:
+				// see if the link references the left class
+				osrfHashIterator* itr = osrfNewHashIterator( _links );
+				osrfHash* curr_link = NULL;
+				while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
+					const char* other_class = osrfHashGet( curr_link, "class" );
+					if( other_class && !strcmp( other_class, leftclass ) ) {
+
+						// Found a link between the classes
+						fkey = strdup( osrfHashIteratorKey( itr ) );
+						const char* other_key = osrfHashGet( curr_link, "key" );
+						field = other_key ? strdup( other_key ) : NULL;
 						break;
 					}
 				}
-				osrfStringArrayFree(keys);
+				osrfHashIteratorFree( itr );
 			}
 
-			if (!field && !fkey) {
+			if (!field || !fkey) {
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  No link defined between %s and %s",
