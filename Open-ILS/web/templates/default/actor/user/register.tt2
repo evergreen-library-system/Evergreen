@@ -58,6 +58,8 @@
 
     .uedit-addr-del-button {margin-left: 10px; color:red;}
 
+    .dijitTextBoxFocused, .dijitFocused { border:1px dashed #3e3e3e; color: #303030; font-weight:bold;}
+
 </style>
 
 <table>
