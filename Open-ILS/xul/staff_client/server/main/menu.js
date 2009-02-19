@@ -18,8 +18,10 @@ main.menu = function () {
         'click',
         function() {
             if ( window.confirm(offlineStrings.getString('menu.reset_network_stats')) ) {
-                var x = document.getElementById('network_progress_rows');
-                while(x.firstChild) { x.removeChild( x.lastChild ); }
+                var y = document.getElementById('network_progress_rows');
+                while(y.firstChild) { y.removeChild( y.lastChild ); }
+                x.setAttribute('mode','determined');
+                x.setAttribute('count','0');
             }
         },
         false
