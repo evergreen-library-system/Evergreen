@@ -89,6 +89,7 @@
                                 label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
                             <button id="PatronNavBar_info" class="nav" label="&staff.patron_navbar.other;" accesskey="&staff.patron_navbar.other.accesskey;" type="menu">
                                 <menupopup>
+                                    <menuitem label="&staff.patron_navbar.alert;" accesskey="&staff.patron_navbar.alert.accesskey;" command="cmd_patron_alert"/>
                                     <menuitem label="&staff.patron_navbar.info;" accesskey="&staff.patron_navbar.info.accesskey;" command="cmd_patron_info"/>
                                     <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                                     <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>

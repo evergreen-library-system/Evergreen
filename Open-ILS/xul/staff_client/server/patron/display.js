@@ -282,6 +282,16 @@ patron.display.prototype = {
 							);
 						}
 					],
+                    'cmd_patron_alert' : [
+                        ['command'],
+                        function(ev) {
+                            if (obj.msg_url) {
+                                obj.right_deck.set_iframe('data:text/html,'+obj.msg_url,{},{});
+                            } else {
+                                obj.right_deck.set_iframe('data:text/html,<h1>' + $("patronStrings").getString('staff.patron.display.no_alerts_or_messages') + '</h1>',{},{});
+                            }
+                        }
+                    ],
 					'cmd_patron_exit' : [
 						['command'],
 						function(ev) {
@@ -535,6 +545,7 @@ patron.display.prototype = {
 												+ $("patronStrings").getString('staff.patron.display.init.network_request.window_message') + '</pre></blockquote>');
 											obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
 											obj.old_msg = msg;
+                                            obj.msg_url = data_url;
 										} else {
 											obj.error.sdump('D_TRACE',$("patronStrings").getFormattedString('staff.patron.display.init.network_request.dump_error_message', [msg]));
 										}

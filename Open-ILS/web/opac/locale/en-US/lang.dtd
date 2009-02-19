@@ -1186,6 +1186,8 @@
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
 <!ENTITY staff.patron_navbar.info 'Display Info'>
 <!ENTITY staff.patron_navbar.info.accesskey 'o'>
+<!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
+<!ENTITY staff.patron_navbar.alert.accesskey 'A'>
 <!ENTITY staff.patron_navbar.other 'Other'>
 <!ENTITY staff.patron_navbar.other.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
