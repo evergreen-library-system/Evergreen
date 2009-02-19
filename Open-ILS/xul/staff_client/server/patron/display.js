@@ -277,8 +277,6 @@ patron.display.prototype = {
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
-                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_info" ) ); } catch(E) {};
-							obj.reset_nav_styling('cmd_patron_info');
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_INFO, // + '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
@@ -453,7 +451,6 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_holds.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_bills.setAttribute('disabled','true');
 			obj.controller.view.cmd_patron_edit.setAttribute('disabled','true');
-			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.init.retrieving'));
 			document.documentElement.setAttribute('class','');
 			var frame = obj.left_deck.set_iframe(
@@ -474,7 +471,6 @@ patron.display.prototype = {
 						obj.controller.view.cmd_patron_holds.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_bills.setAttribute('disabled','false');
 						obj.controller.view.cmd_patron_edit.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_info.setAttribute('disabled','false');
 
 						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 							try { 
