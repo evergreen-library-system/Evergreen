@@ -29,7 +29,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             startup : function() {
                 this.inherited(arguments);
                 this.initAutoEnv();
-                this.hideActionButtons = this.readOnly;
+                if(this.readOnly)
+                    this.hideActionButtons = true;
 
                 var table = document.createElement('table');
                 var tbody = document.createElement('tbody');
