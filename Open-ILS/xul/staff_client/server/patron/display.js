@@ -266,6 +266,14 @@ patron.display.prototype = {
 							);
 						}
 					],
+                    'cmd_patron_other' : [
+						['command'],
+						function(ev) {
+                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_other" ) ); } catch(E) {};
+							obj.reset_nav_styling('cmd_patron_other');
+                            try { document.getElementById('PatronNavBar_other').firstChild.showPopup(); } catch(E) {};
+                        }
+                    ],
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
@@ -416,7 +424,7 @@ patron.display.prototype = {
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
         var x = document.getElementById("PatronNavBar_holds");
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_info");
+        var x = document.getElementById("PatronNavBar_other");
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
         var x = document.getElementById("PatronNavBar_edit");
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
@@ -588,13 +596,17 @@ patron.display.prototype = {
 	},
 
 	'reset_nav_styling' : function(btn) {
-		this.controller.view.cmd_patron_checkout.setAttribute('style','');
-		this.controller.view.cmd_patron_items.setAttribute('style','');
-		this.controller.view.cmd_patron_edit.setAttribute('style','');
-		this.controller.view.cmd_patron_info.setAttribute('style','');
-		this.controller.view.cmd_patron_holds.setAttribute('style','');
-		this.controller.view.cmd_patron_bills.setAttribute('style','');
-		this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
+        try {
+            this.controller.view.cmd_patron_checkout.setAttribute('style','');
+            this.controller.view.cmd_patron_items.setAttribute('style','');
+            this.controller.view.cmd_patron_edit.setAttribute('style','');
+            this.controller.view.cmd_patron_other.setAttribute('style','');
+            this.controller.view.cmd_patron_holds.setAttribute('style','');
+            this.controller.view.cmd_patron_bills.setAttribute('style','');
+            this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
+        } catch(E) {
+            alert(E);
+        }
 	},
 
 	'render_search_form' : function(params) {
