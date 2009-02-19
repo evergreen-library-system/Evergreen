@@ -33,11 +33,11 @@
 	</hbox>
 	<hbox id="PatronNotNavBar" flex="1" class="my_bg">
 		<box id="ui.circ.patron_summary.horizontal" orient="horizontal" flex="1">
-			<vbox id="pdm3" flex="1" persist="width,height">
+			<vbox id="pdm3" flex="1"> 
 				<deck id="patron_left_deck"/>
 			</vbox>
 			<splitter id="pdms1" orient="horizontal" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
-			<vbox id="pdm4" flex="3" persist="width,height">
+			<vbox id="pdm4" flex="9">
 				<deck id="patron_right_deck"/>
 			</vbox>
 		 </box>	
@@ -47,6 +47,7 @@
 
 <deck id="patron_right_deck" flex="1">
 </deck>
+
 <deck id="patron_left_deck" flex="1">
 </deck>
 
