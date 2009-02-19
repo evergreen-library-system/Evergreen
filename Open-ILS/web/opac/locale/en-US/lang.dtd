@@ -1184,8 +1184,10 @@
 <!ENTITY staff.patron_navbar.edit.accesskey 'E'>
 <!ENTITY staff.patron_navbar.holds 'Holds'>
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
-<!ENTITY staff.patron_navbar.info 'Info'>
+<!ENTITY staff.patron_navbar.info 'Display Info'>
 <!ENTITY staff.patron_navbar.info.accesskey 'o'>
+<!ENTITY staff.patron_navbar.other 'Other'>
+<!ENTITY staff.patron_navbar.other.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
 <!ENTITY staff.patron_navbar.items.accesskey 'I'>
 <!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost, Claimed Returned, Long Overdue, Has Unpaid Billings'>

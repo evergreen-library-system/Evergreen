@@ -441,6 +441,7 @@ patron.display.prototype = {
 				urls.XUL_PATRON_SUMMARY,
 				{},
 				{
+                    'display_window' : window,
 					'barcode' : obj.barcode,
 					'id' : obj.id,
                     'refresh' : function() { obj.refresh_all(); },
