@@ -15,53 +15,94 @@
 
 <hbox id="patron_info_sidebar">
 	<image id="patron_photo_url" />
-	<vbox id="pisbvb2a" persist="width" flex="1">
-		<label id="patron_name" />
-		<hbox>
-			<label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
-			<label id="patron_date_of_birth" class="dob value" hide_value="true" persist="hide_value"/><!-- FIXME: persist doesn't work for this -->
-		</hbox>
-		<grid flex="1" style="border: solid thin">
-			<columns>
-				<column/>
-			</columns>
-			<rows>
-				<row hidden="true">
-					<label id="patron_standing" />
-				</row>
-				<row id="pdsgr1">
-					<label id="patron_profile" class="profile value"/>
-				</row>
-				<row id="pdsgr5">
-					<label id="patron_library" class="homelib value"/>
-				</row>
-				<row id="pdsgr5a">
-					<label id="patron_net_access" class="net_access value"/>
-				</row>
-				<row id="pdsgr5aa">
-					<label id="patron_date_of_exp" class="expire_date value"/>
-				</row>
-			</rows>
-		</grid>
+	<vbox id="patron_info" flex="1">
+        <groupbox flex="1">
+            <caption label="Patron Info"/>
+            <label id="patron_name" />
+            <grid>
+                <columns>
+                    <column/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
+                        <label id="patron_date_of_birth" class="dob value" hide_value="true" persist="hide_value"/><!-- FIXME: persist doesn't work for this -->
+                    </row>
+                    <row>
+                        <label id="PatronSummaryContact_library_card_label" class="text_left card label"
+                            value="&staff.patron_display.library_card.label;"/>
+                        <label id="patron_card" class="card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
+                    </row>
+                    <row>
+                        <label id="PatronSummaryContact_usrname_label" class="text_left usrname label"
+                            value="&staff.patron.summary_overlay.opac_login.value;" />
+                        <label id="patron_usrname" class="usrname value"/>
+                    </row>
+                    <row>
+                        <label id="PatronSummaryContact_email_label" class="text_left email label"
+                            value="&staff.patron_display.email.label;" />
+                        <label id="patron_email" class="email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
+                    </row>
+                </rows>
+            </grid>
+            <spacer/><!-- bug workaround.. for some reason.. maybe timing with the overlay inserting children.. the patron_name label shows up beneath the grid when rendered -->
+        </groupbox>
+    </vbox>
+	<vbox id="contact_info" flex="1">
+        <groupbox flex="1">
+            <caption>
+                <button id="contact_info_btn" label="Mailing Address" type="menu">
+                    <menupopup>
+                        <menuitem label="&staff.patron_display.mailing_address;" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 0;"/>
+                        <menuitem label="&staff.patron_display.physical_address;" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 1;"/>
+                        <menuitem label="Phone Numbers" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 2;"/>
+                        <menuitem label="Identification" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 3;"/>
+                    </menupopup>
+                </button>
+            </caption>
+            <deck id="contact_info_deck">
+    		    <vbox id="PatronSummaryContact_mailing_address" orient="vertical"/>
+                <vbox id="PatronSummaryContact_physical_address" orient="vertical"/>
+                <grid id="PatronSummaryContact_grid_phone" />
+		        <grid id="PatronSummaryContact_grid" flex="1"/>
+            </deck>
+        </groupbox>
 	</vbox>
-	<vbox id="pisbvb4" persist="width" flex="1">
-		<grid id="PatronSummaryStatus_grid" flex="1"/>
+    <vbox>
+        <groupbox flex="1">
+            <caption label="Circ Info"/>
+        	<grid id="PatronSummaryStatus_grid" flex="1"/>
+        </groupbox>
 	</vbox>
-	<vbox id="pisbvb5" persist="width" flex="1">
-		<grid id="PatronSummaryStatus_grid2" flex="1"/>
+    <vbox>
+        <groupbox flex="1">
+            <caption label="Account Info"/>
+            <grid>
+                <columns>
+                    <column/>
+                </columns>
+                <rows>
+                    <row hidden="true">
+                        <label id="patron_standing" />
+                    </row>
+                    <row id="pdsgr1">
+                        <label id="patron_profile" class="profile value"/>
+                    </row>
+                    <row id="pdsgr5">
+                        <label id="patron_library" class="homelib value"/>
+                    </row>
+                    <row id="pdsgr5a">
+                        <label id="patron_net_access" class="net_access value"/>
+                    </row>
+                    <row id="pdsgr5aa">
+                        <label id="patron_date_of_exp" class="expire_date value"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
 	</vbox>
-	<vbox id="pisbvb6" persist="width" flex="1">
-		<grid id="PatronSummaryContact_grid" flex="1"/>
-	</vbox>
-	<vbox id="pisbvb7" persist="width" flex="1">
-		<groupbox id="PatronSummaryContact_mailing_address" orient="vertical"/>
-	</vbox>
-	<vbox id="pisbvb8" persist="width" flex="1">
-		<groupbox id="PatronSummaryContact_physical_address" orient="vertical"/>
-	</vbox>
-	<spacer/>
 </hbox>
-
 
 <grid id="PatronSummaryStatus_grid">
 	<columns id="pdsgc">
@@ -74,11 +115,11 @@
 		<row id="pdsgr4">
 			<label id="PatronSummaryStatus_holds_label" class="text_left holds label"
 				value="&staff.patron_display.holds.label;" />
-			<label id="patron_holds" class="holds value"/>
-		</row><row>
-			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label"
-				value="&staff.patron_display.holds_available.label;"  style="background: grey"/>
-			<label id="patron_holds_available" class="holds_ready label" style="background: grey"/>
+            <hbox>
+    			<label id="patron_holds_available" class="holds_ready label" />
+                <label value="/" class="holds" /> <!-- Would it be better to consolidate this into one label and use .getFormattedString? -->
+    			<label id="patron_holds" class="holds value"/>
+            </hbox>
 		</row>
 		<row id="pdsgr2" class="hide_patron_credit" hidden="true">
 			<label id="PatronSummaryStatus_credit_label" class="text_left credit label"
@@ -89,16 +130,6 @@
 				value="&staff.patron_display.bills.label;" />
 			<label id="patron_bill" class="bill value"/>
 		</row>
-	 </rows>
-</grid>
-<grid id="PatronSummaryStatus_grid2">
-	<columns id="pdsg2c">
-		<column id="pdsg2c1" />
-		<column id="pdsg2c2" />
-		<column id="pdsg2c3" />
-		<column id="pdsg2c4" />
-	</columns>
-	<rows id="pdsg2r" flex="1">
 		<row id="pdsgr3">
 			<label id="PatronSummaryStatus_checkouts_label" class="text_left items_out label"
 				value="&staff.patron_display.checkouts.label;" />
@@ -134,11 +165,6 @@
 		<column id="pdsgc2" />
 	</columns>
 	<rows id="pdsgr" flex="1">
-		<row id="pdsgr0">
-			<label id="PatronSummaryContact_library_card_label" class="text_left card label"
-				value="&staff.patron_display.library_card.label;"/>
-			<label id="patron_card" class="card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
-		</row>
 		<row id="pdsgr1">
 			<label id="PatronSummaryContact_ident_label" class="text_left"
 				value="&staff.patron_display.ident1.label;"/>
@@ -181,23 +207,12 @@
 			<label id="patron_other_phone" class="phone value other_phone"/> 
 		</row>
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
-		<row id="pdsgpr4a">
-			<label id="PatronSummaryContact_usrname_label" class="text_left usrname label"
-				value="&staff.patron.summary_overlay.opac_login.value;" />
-			<label id="patron_usrname" class="usrname value"/>
-		</row>
-		<row id="pdcgpr5">
-			<label id="PatronSummaryContact_email_label" class="text_left email label"
-				value="&staff.patron_display.email.label;" />
-			<label id="patron_email" class="email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
-		</row>
 		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
 
 	</rows>
 </grid>
 
-<groupbox id="PatronSummaryContact_mailing_address">
-	<caption id="pdcmac" label="&staff.patron_display.mailing_address;" class="shrinkable_groupbox"/>
+<vbox id="PatronSummaryContact_mailing_address">
 	<label id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="address street street1 mailing"/>
 	<label id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="address street street2 mailing"/>
 	<hbox id="pdcmah">
@@ -205,10 +220,9 @@
 		<label id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="address state mailing"/>
 		<label id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="address post_code mailing"/>
 	</hbox>
-</groupbox>
+</vbox>
 
-<groupbox id="PatronSummaryContact_physical_address">
-	<caption id="pdcpac" label="&staff.patron_display.physical_address;" class="shrinkable_groupbox"/>
+<vbox id="PatronSummaryContact_physical_address">
 	<label id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="address street street1 physical" />
 	<label id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="address street street2 physical"/>
 	<hbox id="pdcpah">
@@ -216,6 +230,6 @@
 		<label id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="address state physical"/>
 		<label id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="address post_code physical"/>
 	</hbox>
-</groupbox>
+</vbox>
 
 </overlay>
