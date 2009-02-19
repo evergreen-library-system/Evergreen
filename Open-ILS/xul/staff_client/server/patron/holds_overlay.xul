@@ -57,6 +57,7 @@
 </vbox>
 
 <hbox id="holds_top_ui" flex="1">
+    <button id="place_hold_btn" hidden="true" label="&staff.patron.holds_overlay.place_hold.label;" accesskey="&staff.patron.holds_overlay.place_hold.accesskey;" command="cmd_search_opac" />
     <checkbox id="lib_filter_checkbox" persist="checked" checked="true" hidden="true" label="&staff.patron.holds_overlay.lib_filter_checkbox.label;"/>
     <menulist id="lib_type_menu" hidden="true" persist="value">
         <menupopup>

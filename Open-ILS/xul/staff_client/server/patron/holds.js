@@ -901,6 +901,20 @@ patron.holds.prototype = {
                             obj.clear_and_retrieve();
                             ev.target.setAttribute('checked',ev.target.checked);
                         }
+                    ],
+                    'cmd_search_opac' : [
+                        ['command'],
+                        function(ev) {
+                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'patron_id' : obj.patron_id };
+                            content_params.new_tab = xulG.new_tab;
+                            content_params.set_tab = xulG.set_tab;
+                            content_params.set_tab_name = xulG.set_tab_name;
+                            content_params.open_chrome_window = xulG.open_chrome_window;
+                            content_params.url_prefix = xulG.url_prefix;
+                            content_params.network_meter = xulG.network_meter;
+                            content_params.chrome_xulG = xulG.chrome_xulG;
+                            xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_OPAC_WRAPPER, {}, content_params);
+                        }
                     ]
 				}
 			}
@@ -929,6 +943,7 @@ patron.holds.prototype = {
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
             break;
             default:
+                if (obj.controller.view.cmd_search_opac) obj.controller.view.cmd_search_opac.setAttribute('hidden', false);
                 if (x_fetch_more) x_fetch_more.hidden = true;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;

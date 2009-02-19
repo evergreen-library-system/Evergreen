@@ -316,6 +316,7 @@ patron.display.prototype = {
 								//+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
+                                    'display_window' : window,
 									'patron_id' : obj.patron.id(),
 									'on_list_change' : function(h) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

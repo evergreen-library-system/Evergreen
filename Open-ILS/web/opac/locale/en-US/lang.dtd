@@ -2344,6 +2344,8 @@
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
 <!ENTITY staff.patron.holds_overlay.print.label "Print">
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
+<!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
+<!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
 <!ENTITY staff.patron.info_group.clone.accesskey "N">
 <!ENTITY staff.patron.info_group.remove.accesskey "R">
