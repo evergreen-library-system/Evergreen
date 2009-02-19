@@ -44,7 +44,7 @@ int osrfAppInitialize() {
 		"Completes the authentication process.  Returns an object like so: "
 		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
 		"token and authtime is the number of seconds the session will be active"
-		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
+		"PARAMS(username, md5sum( seed + md5sum( password ) ), type, org_id ) "
 		"type can be one of 'opac','staff', or 'temp' and it defaults to 'staff' "
 		"org_id is the location at which the login should be considered "
 		"active for login timeout purposes"	, 1, 0 );
@@ -228,7 +228,7 @@ static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, d
 		jsonObjectFree(value_obj);
 
 
-		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timetouts: opac => %d : staff => %d : temp => %d",
+		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timeouts: opac => %d : staff => %d : temp => %d",
 				_oilsAuthOPACTimeout, _oilsAuthStaffTimeout, _oilsAuthOverrideTimeout );
 	}
 
