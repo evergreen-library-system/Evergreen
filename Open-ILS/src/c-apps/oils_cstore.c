@@ -2028,9 +2028,22 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 	jsonObject* snode = NULL;
 	jsonIterator* search_itr = jsonNewIterator( working_hash );
-	
+
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
+		if( !idlClass ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: JOIN failed.  No class \"%s\" defined in IDL",
+				MODULENAME,
+				search_itr->key
+			);
+			jsonIteratorFree( search_itr );
+			buffer_free( join_buf );
+			if( freeable_hash )
+				jsonObjectFree( freeable_hash );
+			return NULL;
+		}
 
 		const char* class = osrfHashGet(idlClass, "classname");
 
@@ -2096,7 +2109,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				}
 			}
 			osrfHashIteratorFree( itr );
-			
+
 			if (!field || !fkey) {
 				// Do another such search, with the classes reversed
 				_links = oilsIDLFindPath("/%s/links", class);
@@ -2664,7 +2677,7 @@ char* SELECT (
 	    // Now, walk the join tree and add that clause
 	    if ( join_hash ) {
 		    char* join_clause = searchJOIN( join_hash, core_meta );
-		    buffer_add(sql_buf, join_clause);
+			buffer_add(sql_buf, join_clause);
 		    free(join_clause);
 	    }
 
