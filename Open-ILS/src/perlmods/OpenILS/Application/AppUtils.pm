@@ -856,6 +856,14 @@ sub storagereq {
 		'open-ils.storage', $method, @params );
 }
 
+sub storagereq_xact {
+	my($self, $method, @params) = @_;
+	my $ses = $self->start_db_session();
+	my $val = $ses->request($method, @params)->gather(1);
+	$self->rollback_db_session($ses);
+    return $val;
+}
+
 sub cstorereq {
 	my( $self, $method, @params ) = @_;
 	return $self->simplereq(
@@ -1149,20 +1157,13 @@ sub patron_total_items_out {
 sub fetch_mbts {
 	my $self = shift;
 	my $id	= shift;
-	my $editor = shift || OpenILS::Utils::CStoreEditor->new;
+	my $e = shift || OpenILS::Utils::CStoreEditor->new;
+	$id = $id->id if ref($id);
+    
+    my $xact = $e->retrieve_money_billable_transaction_summary($id)
+	    or return (undef, $e->event);
 
-	$id = $id->id if (ref($id));
-
-	my $xact = $editor->retrieve_money_billable_transaction(
-		[
-			$id, {	
-				flesh => 1, 
-				flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } 
-			}
-		]
-	) or return (undef, $editor->event);
-
-	return $self->make_mbts($xact);
+    return ($xact);
 }
 
 
@@ -1172,59 +1173,9 @@ sub fetch_mbts {
 #--------------------------------------------------------------------
 sub make_mbts {
 	my $self = shift;
+    my $e = shift;
 	my @xacts = @_;
-
-	my @mbts;
-	for my $x (@xacts) {
-
-		my $s = new Fieldmapper::money::billable_transaction_summary;
-
-		$s->id( $x->id );
-		$s->usr( $x->usr );
-		$s->xact_start( $x->xact_start );
-		$s->xact_finish( $x->xact_finish );
-		
-		my $to = 0;
-		my $lb = undef;
-		for my $b (@{ $x->billings }) {
-			next if ($self->is_true($b->voided));
-			$to += ($b->amount * 100);
-			$lb ||= $b->billing_ts;
-			if ($b->billing_ts ge $lb) {
-				$lb = $b->billing_ts;
-				$s->last_billing_note($b->note);
-				$s->last_billing_ts($b->billing_ts);
-				$s->last_billing_type($b->billing_type);
-			}
-		}
-
-		$s->total_owed( sprintf('%0.2f', $to / 100 ) );
-		
-		my $tp = 0;
-		my $lp = undef;
-		for my $p (@{ $x->payments }) {
-			next if ($self->is_true($p->voided));
-			$tp += ($p->amount * 100);
-			$lp ||= $p->payment_ts;
-			if ($p->payment_ts ge $lp) {
-				$lp = $p->payment_ts;
-				$s->last_payment_note($p->note);
-				$s->last_payment_ts($p->payment_ts);
-				$s->last_payment_type($p->payment_type);
-			}
-		}
-
-		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
-		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
-		$s->xact_type('grocery') if ($x->grocery);
-		$s->xact_type('circulation') if ($x->circulation);
-
-		$logger->debug("Created mbts with balance_owed = ". $s->balance_owed);
-		
-		push @mbts, $s;
-	}
-		
-	return @mbts;
+    return @{$e->search_money_billable_transaction_summary({id => [ map { $_->id } @xacts ]})};
 }
 		
 		

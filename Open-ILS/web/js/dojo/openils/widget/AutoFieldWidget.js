@@ -7,6 +7,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 
         async : false,
+        cache : {},
 
         /**
          * args:
@@ -26,10 +27,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this[k] = args[k];
 
             // find the field description in the IDL if not provided
+            if(this.fmObject) 
+                this.fmClass = this.fmObject.classname;
+            this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+
             if(!this.idlField) {
-                if(this.fmObject)
-                    this.fmClass = this.fmObject.classname;
-                var fields = fieldmapper.IDL.fmclasses[this.fmClass].fields;
+                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+                var fields = this.fmIDL.fields;
                 for(var f in fields) 
                     if(fields[f].name == this.fmField)
                         this.idlField = fields[f];
@@ -37,10 +41,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         /**
-         * Turn the value from the dojo widget into a value oils understands
+         * Turn the widget-stored value into a value oils understands
          */
         getFormattedValue : function() {
-            var value = this.widget.attr('value');
+            var value = this.baseWidgetValue();
+
+            /* text widgets default to "" when no data is entered */
+            if(value == '') return null; 
+
             switch(this.idlField.datatype) {
                 case 'bool':
                     return (value) ? 't' : 'f'
@@ -50,7 +58,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     return value;
             }
         },
+
+        baseWidgetValue : function(value) {
+            var attr = (this.readOnly) ? 'content' : 'value';
+            if(arguments.length) this.widget.attr(attr, value);
+            return this.widget.attr(attr);
+        },
         
+        /**
+         * Turn the widget-stored value into something visually suitable
+         */
         getDisplayString : function() {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
@@ -64,61 +81,147 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'org_unit':
                     return fieldmapper.aou.findOrgUnit(value).shortname();
                 default:
-                    return value;
+                    return value+'';
             }
         },
 
         build : function(onload) {
+
+            if(this.widget) {
+                // core widget provided for us, attach and move on
+                if(this.parentNode) // may already be in the "right" place
+                    this.parentNode.appendChild(this.widget.domNode);
+                return;
+            }
+
             this.onload = onload;
             if(this.widgetValue == null)
                 this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
-            switch(this.idlField.datatype) {
-                
-                case 'id':
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-                    this.widget.attr('disabled', true); // never allow editing of IDs
-                    break;
+            if(this.readOnly) {
+                dojo.require('dijit.layout.ContentPane');
+                this.widget = new dijit.layout.ContentPane(this.dijitArgs, this.parentNode);
 
-                case 'org_unit':
-                    this._buildOrgSelector();
-                    break;
+            } else if(this.widgetClass) {
+                dojo.require(this.widgetClass);
+                eval('this.widget = new ' + this.widgetClass + '(this.dijitArgs, this.parentNode);');
 
-                case 'money':
-                    dojo.require('dijit.form.CurrencyTextBox');
-                    this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
-                    break;
+            } else {
 
-                case 'timestamp':
-                    dojo.require('dijit.form.DateTextBox');
-                    dojo.require('dojo.date.stamp');
-                    this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
-                    if(this.widgetValue != null) 
-                        this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
-                    break;
+                switch(this.idlField.datatype) {
+                    
+                    case 'id':
+                        dojo.require('dijit.form.TextBox');
+                        this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                        this.widget.attr('disabled', true); // never allow editing of IDs
+                        break;
 
-                case 'bool':
-                    dojo.require('dijit.form.CheckBox');
-                    this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
-                    this.widgetValue = openils.Util.isTrue(this.widgetValue);
-                    break;
+                    case 'org_unit':
+                        this._buildOrgSelector();
+                        break;
 
-                default:
-                    dojo.require('dijit.form.TextBox');
-                    this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                    case 'money':
+                        dojo.require('dijit.form.CurrencyTextBox');
+                        this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
+                        break;
+
+                    case 'int':
+                        dojo.require('dijit.form.NumberTextBox');
+                        this.dijitArgs = dojo.mixin(this.dijitArgs || {}, {constraints:{places:0}});
+                        this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
+                        break;
+
+                    case 'float':
+                        dojo.require('dijit.form.NumberTextBox');
+                        this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
+                        break;
+
+                    case 'timestamp':
+                        dojo.require('dijit.form.DateTextBox');
+                        dojo.require('dojo.date.stamp');
+                        this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
+                        if(this.widgetValue != null) 
+                            this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
+                        break;
+
+                    case 'bool':
+                        dojo.require('dijit.form.CheckBox');
+                        this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
+                        this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        break;
+
+                    case 'link':
+                        if(this._buildLinkSelector()) break;
+
+                    default:
+                        dojo.require('dijit.form.TextBox');
+                        this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                }
             }
 
             if(!this.async) this._widgetLoaded();
             return this.widget;
         },
 
+        _buildLinkSelector : function() {
+
+            /* verify we can and should grab the related class */
+            var linkClass = this.idlField['class'];
+            if(this.idlField.reltype != 'has_a')  return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
+
+            dojo.require('openils.PermaCrud');
+            dojo.require('dojo.data.ItemFileReadStore');
+            dojo.require('dijit.form.FilteringSelect');
+
+            var self = this;
+            var vfield;
+            var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
+
+            if(linkClass == 'pgt')
+                return self._buildPermGrpSelector();
+
+            this.async = true;
+            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
+
+            for(var f in rclassIdl.fields) {
+                if(self.idlField.key == rclassIdl.fields[f].name) {
+                    vfield = rclassIdl.fields[f];
+                    break;
+                }
+            }
+
+            this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
+            this.widget.valueAttr = vfield.name;
+
+            new openils.PermaCrud().retrieveAll(linkClass, {   
+                async : true,
+                oncomplete : function(r) {
+                    var list = openils.Util.readResponse(r, false, true);
+                    if(list) {
+                        self.widget.store = 
+                            new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
+                    }
+                    self.widget.startup();
+                    self._widgetLoaded();
+                }
+            });
+
+            return true;
+        },
+
         /**
          * For widgets that run asynchronously, provide a callback for finishing up
          */
         _widgetLoaded : function(value) {
-            if(this.widgetValue != null) 
-                this.widget.attr('value', this.widgetValue);
+            if(this.readOnly) {
+                this.baseWidgetValue(this.getDisplayString());
+            } else {
+                this.baseWidgetValue(this.widgetValue);
+                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                    this.widget.attr('disabled', true); 
+            }
             if(this.onload)
                 this.onload(this.widget, self);
         },
@@ -148,6 +251,44 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.widget.tree = fieldmapper.aou.globalOrgTree;
                 this.widget.startup();
             }
+        },
+
+        _buildPermGrpSelector : function() {
+            dojo.require('openils.widget.FilteringTreeSelect');
+            this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
+            this.widget.searchAttr = 'name';
+
+            if(this.cache.permGrpTree) {
+                this.widget.tree = this.cache.permGrpTree;
+                this.widget.startup();
+                return;
+            } 
+
+            var self = this;
+            this.async = true;
+            new openils.PermaCrud().retrieveAll('pgt', {
+                async : true,
+                oncomplete : function(r) {
+                    var list = openils.Util.readResponse(r, false, true);
+                    if(!list) return;
+                    var map = {};
+                    var root = null;
+                    for(var l in list)
+                        map[list[l].id()] = list[l];
+                    for(var l in list) {
+                        var node = list[l];
+                        var pnode = map[node.parent()];
+                        if(!pnode) {root = node; continue;}
+                        if(!pnode.children()) pnode.children([]);
+                        pnode.children().push(node);
+                    }
+                    self.widget.tree = self.cache.permGrpTree = root;
+                    self.widget.startup();
+                    self._widgetLoaded();
+                }
+            });
+
+            return true;
         }
     });
 }

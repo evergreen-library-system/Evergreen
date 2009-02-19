@@ -19,6 +19,7 @@ use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
+use OpenILS::Event;
 use Time::HiRes qw(time);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
@@ -395,17 +396,52 @@ sub get_random_survey_global {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'delete_survey',
+	api_name	=> 'open-ils.circ.survey.delete.cascade'
+);
+__PACKAGE__->register_method (
+	method		=> 'delete_survey',
+	api_name	=> 'open-ils.circ.survey.delete.cascade.override'
+);
 
+sub delete_survey {
+    my($self, $conn, $auth, $survey_id) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
 
+    my $survey = $e->retrieve_action_survey($survey_id) 
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('ADMIN_SURVEY', $survey->owner);
 
+    my $questions = $e->search_action_survey_question({survey => $survey_id});
+    my @answers;
+    push(@answers, @{$e->search_action_survey_answer({question => $_->id})}) for @$questions;
+    my $responses = $e->search_action_survey_response({survey => $survey_id});
+
+    return OpenILS::Event->new('SURVEY_RESPONSES_EXIST')
+        if @$responses and $self->api_name =! /override/;
+
+    for my $resp (@$responses) {
+        $e->delete_action_survey_response($resp) or return $e->die_event;
+    }
+
+    for my $ans (@answers) {
+        $e->delete_action_survey_answer($ans) or return $e->die_event;
+    }
+
+    for my $quest (@$questions) {
+        $e->delete_action_survey_question($quest) or return $e->die_event;
+    }
+
+    $e->delete_action_survey($survey) or return $e->die_event;
+
+    $e->commit;
+    return 1;
+}
 
 
 
 
 
 1;
-
-
-
-
-

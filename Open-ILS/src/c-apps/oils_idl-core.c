@@ -66,6 +66,15 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				);
 			}
 
+			if ((prop_str = (char*)xmlGetNsProp(kid, BAD_CAST "restrict_primary", BAD_CAST PERSIST_NS))) {
+				osrfLogDebug(OSRF_LOG_MARK, "Delete restriction policy set at '%s' for pkey of class %s", prop_str, current_class_name );
+				osrfHashSet(
+					class_def_hash,
+					strdup( prop_str ),
+					"restrict_primary"
+				);
+			}
+
 			if ((prop_str = (char*)xmlGetNsProp(kid, BAD_CAST "virtual", BAD_CAST PERSIST_NS))) {
 				osrfHashSet(
 					class_def_hash,

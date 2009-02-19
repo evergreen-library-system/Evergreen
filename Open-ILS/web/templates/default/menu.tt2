@@ -68,20 +68,41 @@
         <div dojoType="dijit.form.DropDownButton">
             <span>Admin</span>
             <div dojoType="dijit.Menu">
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/acq/fund/list';">Funds</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/acq/funding_source/list';">Funding Sources</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/acq/provider/list';">Providers</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/acq/currency_type/list';">Currency Types</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/conify/global/config/billing_type';">Billing Types</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/conify/global/config/standing_penalty';">Standing Penalties</div>
-                <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
-                        onClick="location.href = '[% ctx.base_uri %]/conify/global/permission/grp_penalty_threshold';">Group Penalty Thresholds</div>
+                <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
+                    <span>Acquisitions</span>
+                     <div dojoType="dijit.Menu">
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
+                            onClick="location.href = '[% ctx.base_uri %]/acq/fund/list';">Funds</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/acq/funding_source/list';">Funding Sources</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/acq/provider';">Providers</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/acq/currency_type/list';">Currency Types</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/acq/exchange_rate';">Exchange Rates</div>
+                    </div>
+                </div>
+                <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">
+                    <span>Config</span>
+                     <div dojoType="dijit.Menu">
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/config/billing_type';">Billing Types</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/config/standing_penalty';">Standing Penalties</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/permission/grp_penalty_threshold';">
+                                    Group Penalty Thresholds</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/config/idl_field_doc';">Field Documentation</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/config/z3950_source';">Z39.50 Sources</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/config/circ_modifier';">Circulation Modifiers</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/action_trigger/event_definition';">Action Trigger</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

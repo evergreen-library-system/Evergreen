@@ -1,0 +1,141 @@
+[% ctx.page_title = 'User Editor' %]
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'> </script>
+
+<style>
+
+    /* XXX Move me into the CSS tree XXX */
+
+    #uedit-tbody tr td {
+        padding: 5px;
+        text-align: left;
+    }
+
+
+    #uedit-save-div {
+        position: fixed;
+        top:40px;
+        right:30px;
+        width:300px;
+        border:2px solid #d9e8f9;
+        -moz-border-radius: 10px;
+        font-weight: bold;
+        padding: 12px;
+        text-align:center;
+        vertical-align:middle;
+    }
+
+    #uedit-help-div {
+        position: fixed;
+        top:124px;
+        right:30px;
+        width:300px;
+        border:2px dashed #d9e8f9;
+        -moz-border-radius: 10px;
+        font-weight: bold;
+        padding: 20px;
+    }
+    .uedit-help {
+        width: 25px;
+        border:1px solid #e0e0e0;
+        text-align:center;
+        vertical-align:middle;
+    }
+    .divider td {
+        min-height:10px;
+        background-color: #e0e0e0;
+    }
+
+    .divider span { padding: 0px 5px 0px 5px; }
+
+    .newaddr-row td {
+        text-align: right;
+        border-top:1px dashed #d9e8f9;
+    }
+    .newaddr-row td:last-child {
+        border-right:1px dashed #d9e8f9;
+    }
+
+    .uedit-addr-del-button {margin-left: 10px; color:red;}
+
+</style>
+
+<table>
+    <tbody id='uedit-tbody'>
+        <tr fmclass='ac' fmfield='barcode'/>
+        <tr fmclass='au' fmfield='usrname'/>
+        <tr fmclass='au' fmfield='passwd'/>
+        <tr fmclass='au' fmfield='passwd'><td/><td>Verify Password</td><td/></tr>
+        <tr fmclass='au' fmfield='first_given_name'/>
+        <tr fmclass='au' fmfield='second_given_name'/>
+        <tr fmclass='au' fmfield='family_name'/>
+        <tr fmclass='au' fmfield='suffix'/>
+        <tr fmclass='au' fmfield='alias'/>
+        <tr fmclass='au' fmfield='dob'/>
+        <tr fmclass='au' fmfield='juvenile'/>
+        <tr fmclass='au' fmfield='ident_type'/>
+        <tr fmclass='au' fmfield='ident_value'/>
+        <tr fmclass='au' fmfield='email'/>
+        <tr fmclass='au' fmfield='day_phone'/>
+        <tr fmclass='au' fmfield='evening_phone'/>
+        <tr fmclass='au' fmfield='other_phone'/>
+        <tr fmclass='au' fmfield='home_ou'/>
+        <tr fmclass='au' fmfield='profile'/>
+        <tr fmclass='au' fmfield='expire_date'/>
+        <tr fmclass='au' fmfield='net_access_level'/>
+        <tr fmclass='au' fmfield='active'/>
+        <tr fmclass='au' fmfield='barred'/>
+        <tr fmclass='au' fmfield='master_account'/>
+        <tr fmclass='au' fmfield='claims_returned_count'/>
+        <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
+
+        <!-- Address -->
+        <tr name='uedit-addr-divider' class='divider' type='addr-template'>
+            <td colspan='2'>Address</td>
+            <td>
+                <span>Mailing</span><input type='radio' name='mailing_address'>
+                <span>Billing</span><input type='radio' name='billing_address'>
+                <button name='delete-button' class='uedit-addr-del-button'>X</button>
+            </td>
+        </tr>
+        <tr fmclass='aua' fmfield='address_type' type='addr-template'/>
+        <tr fmclass='aua' fmfield='post_code' type='addr-template'/>
+        <tr fmclass='aua' fmfield='street1' type='addr-template'/>
+        <tr fmclass='aua' fmfield='street2' type='addr-template'/>
+        <tr fmclass='aua' fmfield='city' type='addr-template'/>
+        <tr fmclass='aua' fmfield='county' type='addr-template'/>
+        <tr fmclass='aua' fmfield='state' type='addr-template'/>
+        <tr fmclass='aua' fmfield='country' type='addr-template'/>
+        <tr fmclass='aua' fmfield='valid' type='addr-template'/>
+        <tr fmclass='aua' fmfield='within_city_limits' type='addr-template'/>
+
+        <tr id='new-addr-row' class='newaddr-row'>
+            <td colspan='0' style='text-align:center;'>
+                <button dojoType='dijit.form.Button' onClick='uEditNewAddr'>New Address</button>
+            </td>
+        </tr>
+
+        <!-- stat cats -->
+        <tr class='divider' id='stat-cat-divider'><td colspan='0'>Statistical Categories</td></tr>
+        <tr id='stat-cat-row-template'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
+
+        <!-- surveys -->
+        <tr id='survey-row-template' class='divider'><td colspan='0' name='name'/></tr>
+        <tr id='survey-question-row-template'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
+    </tbody>
+</table>
+
+<div id='uedit-save-div'>
+    <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
+    <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone'>Save &amp; Clone</button>
+</div>
+
+<!-- context help widget -->
+<a class='hidden' id='uedit-help-template'><img src='/opac/images/advancedsearch-icon.png'></img></a>
+<fieldset id='uedit-help-div' class='hidden'>
+    <legend id='uedit-help-field'/>
+    <div id='uedit-help-text'/>
+</fieldset>
+
+[% END %]
+

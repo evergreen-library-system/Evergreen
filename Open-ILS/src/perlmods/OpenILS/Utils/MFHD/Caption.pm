@@ -3,6 +3,7 @@ use strict;
 use integer;
 use Carp;
 
+use DateTime;
 use MARC::Record;
 
 sub new
@@ -97,6 +98,8 @@ sub new
 sub decode_pattern {
     my $self = shift;
     my $pattern = $self->{PATTERN}->{y};
+
+    # XXX WRITE ME (?)
 }
 
 sub compressible {
@@ -147,6 +150,217 @@ sub enumeration_is_chronology {
     }
 
     return (exists $self->{PATTERN}->{w} && exists $self->{PATTERN}->{y});
+}
+
+my %daynames = (
+		'mo' => 1,
+		'tu' => 2,
+		'we' => 3,
+		'th' => 4,
+		'fr' => 5,
+		'sa' => 6,
+		'su' => 7,
+	       );
+
+my $daypat = '(mo|tu|we|th|fr|sa|su)';
+my $weekpat = '(99|98|97|00|01|02|03|04|05)';
+my $weeknopat;
+my $monthpat = '(01|02|03|04|05|06|07|08|09|10|11|12)';
+my $seasonpat = '(21|22|23|24)';
+
+# Initialize $weeknopat to be '(01|02|03|...|51|52|53)'
+$weeknopat = '(';
+foreach my $weekno (1..52) {
+    $weeknopat .= sprintf("%02d|", $weekno);
+}
+$weeknopat .= '53)';
+
+sub match_day {
+    my $pat = shift;
+    my @date = @_;
+    # Translate daynames into day of week for DateTime
+    # also used to check if dayname is valid.
+
+    if (exists $daynames{$pat}) {
+	# dd
+	# figure out day of week for date and compare
+	my $dt = DateTime->new(year  => $date[0],
+			       month => $date[1],
+			       day   => $date[2]);
+	return ($dt->day_of_week == $daynames{$pat});
+    } elsif (length($pat) == 2) {
+	# MM
+	return $pat == $date[3];
+    } elsif (length($pat) == 4) {
+	# MMDD
+	my ($mon, $day);
+	$mon = substr($pat, 0, 2);
+	$day = substr($pat, 2, 2);
+
+	return (($mon == $date[1]) && ($day == $date[2]));
+    } else {
+	carp "Invalid day pattern '$pat'";
+	return 0;
+    }
+}
+
+# Calcuate date of "n"th last "dayname" of month: second last Tuesday
+sub last_week_of_month {
+    my $dt = shift;
+    my $week = shift;
+    my $day = shift;
+    my $end_dt = DateTime->last_day_of_month(year  => $dt->year,
+					     month => $dt->month);
+
+    $day = $daynames{$day};
+    while ($end_dt->day_of_week != $day) {
+	$end_dt->subtract(days => 1);
+    }
+
+    # 99: last week of month, 98: second last, etc.
+    for (my $i = 99 - $week; $i > 0; $i--) {
+	$end_dt->subtract(weeks => 1);
+    }
+
+    return $end_dt;
+}
+
+sub check_date {
+    my $dt = shift;
+    my $month = shift;
+    my $weekno = shift;
+    my $day = shift;
+
+    if (!defined $day) {
+	# MMWW
+	return (($dt->month == $month)
+		&& (($dt->week_of_month == $weekno)
+		    || ($dt->week_of_month == last_day_of_month($dt, $weekno, 'th')->week_of_month)));
+    }
+
+    # simple cases first
+    if ($daynames{$day} != $dt->day_of_week) {
+	# if it's the wrong day of the week, rest doesn't matter
+	return 0;
+    }
+
+    if (!defined $month) {
+	# WWdd
+	return (($dt->weekday_of_month == $weekno)
+		|| ($dt->weekday_of_month == last_day_of_month($dt, $weekno, $day)->weekday_of_month));
+    }
+
+    # MMWWdd
+    if ($month != $dt->month) {
+	# If it's the wrong month, then we're done
+	return 0;
+    }
+
+    # It's the right day of the week
+    # It's the right month
+
+    if ($weekno == $dt->weekday_of_month) {
+	# If this matches, then we're counting from the beginning
+	# of the month and it matches and we're done.
+	return 1;
+    }
+
+    # only case left is that the week number is counting from
+    # the end of the month: eg, second last wednesday
+    return (last_week_of_month($weekno, $day)->weekday_of_month == $dt->weekday_of_month);
+}
+
+sub match_week {
+    my $pat = shift;
+    my @date = @_;
+    my $dt = DateTime->new(year  => $date[0],
+			   month => $date[1],
+			   day   => $date[2]);
+
+    if ($pat =~ m/^$weekpat$daypat$/) {
+	# WWdd: 03we = Third Wednesday
+	return check_date($dt, undef, $1, $2);
+    } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
+	# MMWWdd: 0599tu Last Tuesday in May XXX WRITE ME
+	return check_date($dt, $1, $2, $3);
+    } elsif ($pat =~ m/^$monthpat$weekpat$/) {
+	# MMWW: 1204: Fourth week in December XXX WRITE ME
+	return check_date($dt, $1, $2, undef);
+    } else {
+	carp "invalid week pattern '$pat'";
+	return 0;
+    }
+}
+
+sub match_month {
+    my $pat = shift;
+    my @date = @_;
+
+    return ($pat eq $date[1]);
+}
+
+sub match_season {
+    my $pat = shift;
+    my @date = @_;
+
+    return ($pat eq $date[1]);
+}
+
+sub match_year {
+    my $pat = shift;
+    my @date = @_;
+
+    # XXX WRITE ME
+}
+
+my %dispatch = (
+		'd' => \&match_day,
+		'w' => \&match_week,
+		'm' => \&match_month,
+		's' => \&match_season,
+		'y' => \&match_year,
+);
+sub regularity_match {
+    my $self = shift;
+    my $pubcode = shift;
+    my @date = @_;
+
+    foreach my $regularity ($self->{PATTERN}->{y}) {
+	next unless $regularity =~ m/^$pubcode/;
+
+	my $chroncode= substr($regularity, 1, 1);
+	my @pats = split(/,/, substr($regularity, 2));
+
+	# XXX WRITE ME
+	foreach my $pat (@pats) {
+	    if ($dispatch{$chroncode}->($pat, @date)) {
+		return 1;
+	    }
+	}
+    }
+
+    return 0;
+}
+
+sub is_omitted {
+    my $self = shift;
+    my @date = @_;
+
+    return $self->regularity_match('o', @date);
+}
+
+sub is_published {
+    my $self = shift;
+    my @date = @_;
+
+    return $self->regularity_match('p', @date);
+}
+
+sub is_combined {
+    my $self = shift;
+    my @date = @_;
+
+    return $self->regularity_match('c', @date);
 }
 
 1;

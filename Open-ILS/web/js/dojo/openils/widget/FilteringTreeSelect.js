@@ -25,7 +25,6 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             labelAttr : 'name',
             childField : 'children',
             tree : null,
-            dataList : [],
 
             startup : function() {
                 this.tree = (typeof this.tree == 'string') ? 
@@ -35,10 +34,13 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                     return;
                 }
                 if(!dojo.isArray(this.tree)) this.tree = [this.tree];
+                this.dataList = [];
                 var self = this;
-                this.tree.forEach(function(node) { self._makeNodeList(node); });
-                this.store = new dojo.data.ItemFileReadStore(
-                    {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
+                dojo.forEach(this.tree, function(node) { self._makeNodeList(node); });
+                if(this.dataList.length > 0) {
+                    this.store = new dojo.data.ItemFileReadStore(
+                        {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
+                }
                 this.inherited(arguments);
             },
 

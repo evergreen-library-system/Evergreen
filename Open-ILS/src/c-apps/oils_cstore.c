@@ -61,17 +61,20 @@ static char* searchFunctionPredicate ( const char*, osrfHash*, const jsonObject*
 static char* searchFieldTransform ( const char*, osrfHash*, const jsonObject*);
 static char* searchFieldTransformPredicate ( const char*, osrfHash*, jsonObject*, const char* );
 static char* searchBETWEENPredicate ( const char*, osrfHash*, jsonObject* );
-static char* searchINPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
-static char* searchPredicate ( const char*, osrfHash*, jsonObject* );
+static char* searchINPredicate ( const char*, osrfHash*,
+								 jsonObject*, const char*, osrfMethodContext* );
+static char* searchPredicate ( const char*, osrfHash*, jsonObject*, osrfMethodContext* );
 static char* searchJOIN ( const jsonObject*, osrfHash* );
 static char* searchWHERE ( const jsonObject*, osrfHash*, int, osrfMethodContext* );
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
-static char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
+char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
 
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
 static char* getSourceDefinition( osrfHash* );
+static int str_is_true( const char* str );
+static int obj_is_true( const jsonObject* obj );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -186,11 +189,10 @@ int osrfAppInitialize() {
             continue;
         }
 
-        char* virt = osrfHashGet(idlClass, "virtual");
-        if (virt && !strcmp( virt, "true")) {
-            osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
-            continue;
-        }
+		if ( str_is_true( osrfHashGet(idlClass, "virtual") ) ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
+		}
 
         // Look up some other attributes of the current class
         const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
@@ -217,8 +219,7 @@ int osrfAppInitialize() {
             if (!osrfHashGet( idlClass_permacrud, tmp_method )) continue;
 #endif
 
-            if (    readonly &&
-                    !strncasecmp( "true", readonly, 4) &&
+            if (    str_is_true( readonly ) &&
                     ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
                ) continue;
 
@@ -357,11 +358,10 @@ int osrfAppChildInit() {
         osrfHash* class = osrfHashGet( oilsIDL(), classname );
         osrfHash* fields = osrfHashGet( class, "fields" );
 
-        char* virt = osrfHashGet(class, "virtual");
-        if (virt && !strcmp( virt, "true")) {
-            osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
-            continue;
-        }
+		if( str_is_true( osrfHashGet(class, "virtual") ) ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
+		}
 
         char* tabledef = getSourceDefinition(class);
 
@@ -470,7 +470,10 @@ static void sessionDataFree( char* key, void* item ) {
 }
 
 int beginTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -501,7 +504,10 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 }
 
 int setSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
     int spNamePos = 0;
 #ifdef PCRUD
@@ -546,9 +552,12 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int releaseSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    int spNamePos = 0;
+	int spNamePos = 0;
 #ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -591,9 +600,12 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    int spNamePos = 0;
+	int spNamePos = 0;
 #ifdef PCRUD
     spNamePos = 1;
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -636,7 +648,10 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 }
 
 int commitTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -664,7 +679,10 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 }
 
 int rollbackTransaction ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
 #ifdef PCRUD
     jsonObject* user = verifyUserPCRUD( ctx );
@@ -692,9 +710,12 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 }
 
 int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
-    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
 
-    osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
     osrfHash* class_obj = osrfHashGet( meta, "class" );
 
     int err = 0;
@@ -763,7 +784,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
             jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
         }
 
-        jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonParseString("true") );
+		jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonNewBoolObject( 1 ) );
 
         jsonObjectSetKey(
             jsonObjectGetIndex( _p, 1 ),
@@ -913,7 +934,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     jsonObjectFree(user);
 
     osrfStringArray* permission = osrfHashGet(pcrud, "permission");
-    char* global_required = osrfHashGet(pcrud, "global_required");
     osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
     osrfHash* foreign_context = osrfHashGet(pcrud, "foreign_context");
 
@@ -921,7 +941,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
     int err = 0;
     char* pkey_value = NULL;
-    if (global_required && !strcmp( "true", global_required )) {
+	if ( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
         // check for perm at top of org tree
@@ -1290,7 +1310,9 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register a create method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -1338,7 +1360,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		osrfHash* field = osrfHashGet( fields, field_name );
 
-		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+		if( str_is_true( osrfHashGet( field, "virtual" ) ) )
+			continue;
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
@@ -1458,7 +1481,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				quiet_str = jsonObjectToSimpleString( quiet_obj );
 		}
 
-		if( quiet_str && !strcmp( quiet_str, "true" )) {  // if quietness is specified
+		if( str_is_true( quiet_str ) ) {  // if quietness is specified
 			obj = jsonNewObject(id);
 		}
 		else {
@@ -1508,8 +1531,6 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
-	jsonObject* obj;
-
 	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, id_pos));
 	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, order_pos);
 
@@ -1541,7 +1562,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
+	jsonObject* obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 
 	jsonObjectFree( list );
 	jsonObjectFree( fake_params );
@@ -1591,7 +1612,7 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 }
 
 static char* searchINPredicate (const char* class, osrfHash* field,
-		const jsonObject* node, const char* op) {
+		jsonObject* node, const char* op, osrfMethodContext* ctx ) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	buffer_fadd(
@@ -1609,76 +1630,100 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 		buffer_add(sql_buf, "IN (");
 	}
 
-	int in_item_index = 0;
-	int in_item_first = 1;
-	jsonObject* in_item;
-	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
+    if (node->type == JSON_HASH) {
+        // subquery predicate
+        char* subpred = SELECT(
+            ctx,
+            jsonObjectGetKey( node, "select" ),
+            jsonObjectGetKey( node, "from" ),
+            jsonObjectGetKey( node, "where" ),
+            jsonObjectGetKey( node, "having" ),
+            jsonObjectGetKey( node, "order_by" ),
+            jsonObjectGetKey( node, "limit" ),
+            jsonObjectGetKey( node, "offset" ),
+            SUBSELECT
+        );
 
-		if (in_item_first)
-			in_item_first = 0;
-		else
-			buffer_add(sql_buf, ", ");
+        buffer_add(sql_buf, subpred);
+        free(subpred);
 
-		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-			char* val = jsonNumberToDBString( field, in_item );
-			OSRF_BUFFER_ADD( sql_buf, val );
-			free(val);
-
-		} else {
-			char* key_string = jsonObjectToSimpleString(in_item);
-			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
-				OSRF_BUFFER_ADD( sql_buf, key_string );
-				free(key_string);
-			} else {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
-				free(key_string);
-				buffer_free(sql_buf);
-				return NULL;
-			}
-		}
-	}
-
+    } else if (node->type == JSON_ARRAY) {
+        // litteral value list
+    	int in_item_index = 0;
+    	int in_item_first = 1;
+    	jsonObject* in_item;
+    	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
+    
+    		if (in_item_first)
+    			in_item_first = 0;
+    		else
+    			buffer_add(sql_buf, ", ");
+    
+    		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+    			char* val = jsonNumberToDBString( field, in_item );
+    			OSRF_BUFFER_ADD( sql_buf, val );
+    			free(val);
+    
+    		} else {
+    			char* key_string = jsonObjectToSimpleString(in_item);
+    			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
+    				OSRF_BUFFER_ADD( sql_buf, key_string );
+    				free(key_string);
+    			} else {
+    				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+    				free(key_string);
+    				buffer_free(sql_buf);
+    				return NULL;
+    			}
+    		}
+    	}
+    }
+    
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
 
 	return buffer_release(sql_buf);
 }
 
+// Receive a JSON_ARRAY representing a function call.  The first
+// entry in the array is the function name.  The rest are parameters.
 static char* searchValueTransform( const jsonObject* array ) {
 	growing_buffer* sql_buf = buffer_init(32);
 
 	char* val = NULL;
-	int func_item_index = 0;
-	int func_item_first = 2;
 	jsonObject* func_item;
+	
+	// Get the function name
+	if( array->size > 0 ) {
+		func_item = jsonObjectGetIndex( array, 0 );
+		val = jsonObjectToSimpleString( func_item );
+		OSRF_BUFFER_ADD( sql_buf, val );
+		OSRF_BUFFER_ADD( sql_buf, "( " );
+		free(val);
+	}
+	
+	// Get the parameters
+	int func_item_index = 1;   // We already grabbed the zeroth entry
 	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
-		val = jsonObjectToSimpleString(func_item);
+		// Add a separator comma, if we need one
+		if( func_item_index > 2 )
+			buffer_add( sql_buf, ", " );
 
-		if (func_item_first == 2) {
-			OSRF_BUFFER_ADD(sql_buf, val);
-			OSRF_BUFFER_ADD(sql_buf, "( ");
-			free(val);
-			func_item_first--;
-			continue;
-		}
-
-		if (func_item_first)
-			func_item_first--;
-		else
-			buffer_add(sql_buf, ", ");
-
+		// Add the current parameter
 		if (func_item->type == JSON_NULL) {
 			buffer_add( sql_buf, "NULL" );
-		} else if ( dbi_conn_quote_string(dbhandle, &val) ) {
-			OSRF_BUFFER_ADD( sql_buf, val );
 		} else {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-			free(val);
-			buffer_free(sql_buf);
-			return NULL;
+			val = jsonObjectToSimpleString(func_item);
+			if ( dbi_conn_quote_string(dbhandle, &val) ) {
+				OSRF_BUFFER_ADD( sql_buf, val );
+				free(val);
+			} else {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+				buffer_free(sql_buf);
+				free(val);
+				return NULL;
+			}
 		}
-
-		free(val);
 	}
 
 	buffer_add( sql_buf, " )" );
@@ -1706,11 +1751,17 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 	return buffer_release(sql_buf);
 }
 
+// class is a class name
+// field is a field definition as stored in the IDL
+// node comes from the method parameter, and represents an entry in the SELECT list
 static char* searchFieldTransform (const char* class, osrfHash* field, const jsonObject* node) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
 	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
+
+	if(transform_subcolumn)
+		OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );    // enclose transform in parentheses
 
 	if (field_transform) {
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
@@ -1730,36 +1781,24 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 					OSRF_BUFFER_ADD( sql_buf, val );
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-		    	    free(field_transform);
+					free(transform_subcolumn);
+					free(field_transform);
 					free(val);
         			buffer_free(sql_buf);
 	        		return NULL;
     	    	}
 				free(val);
 			}
-
         }
 
-       	buffer_add(
-        	sql_buf,
-	        " )"
-       	);
+		buffer_add( sql_buf, " )" );
 
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
 	}
 
-    if (transform_subcolumn) {
-        char * tmp = buffer_release(sql_buf);
-        sql_buf = buffer_init(32);
-        buffer_fadd(
-            sql_buf,
-            "(%s).\"%s\"",
-            tmp,
-            transform_subcolumn
-        );
-        free(tmp);
-    }
+    if (transform_subcolumn)
+        buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
  
 	if (field_transform) free(field_transform);
 	if (transform_subcolumn) free(transform_subcolumn);
@@ -1890,11 +1929,12 @@ static char* searchBETWEENPredicate (const char* class, osrfHash* field, jsonObj
 	return buffer_release(sql_buf);
 }
 
-static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* node ) {
+static char* searchPredicate ( const char* class, osrfHash* field, 
+							   jsonObject* node, osrfMethodContext* ctx ) {
 
 	char* pred = NULL;
 	if (node->type == JSON_ARRAY) { // equality IN search
-		pred = searchINPredicate( class, field, node, NULL );
+		pred = searchINPredicate( class, field, node, NULL, ctx );
 	} else if (node->type == JSON_HASH) { // non-equality search
 		jsonObject* pred_node;
 		jsonIterator* pred_itr = jsonNewIterator( node );
@@ -1902,7 +1942,7 @@ static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* n
 			if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class, field, pred_node );
 			else if ( !(strcasecmp( pred_itr->key,"in" )) || !(strcasecmp( pred_itr->key,"not in" )) )
-				pred = searchINPredicate( class, field, pred_node, pred_itr->key );
+				pred = searchINPredicate( class, field, pred_node, pred_itr->key, ctx );
 			else if ( pred_node->type == JSON_ARRAY )
 				pred = searchFunctionPredicate( class, field, pred_node, pred_itr->key );
 			else if ( pred_node->type == JSON_HASH )
@@ -1971,21 +2011,28 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(_tmp);
 		working_hash = freeable_hash;
 	}
-	else
+	else {
+		if( join_hash->type != JSON_HASH ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: JOIN failed; expected JSON object type not found",
+				MODULENAME
+			);
+			return NULL;
+		}
 		working_hash = join_hash;
+	}
 
 	growing_buffer* join_buf = buffer_init(128);
-	char* leftclass = osrfHashGet(leftmeta, "classname");
+	const char* leftclass = osrfHashGet(leftmeta, "classname");
 
 	jsonObject* snode = NULL;
 	jsonIterator* search_itr = jsonNewIterator( working_hash );
-	if(freeable_hash)
-		jsonObjectFree(freeable_hash);
 	
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
 
-		char* class = osrfHashGet(idlClass, "classname");
+		const char* class = osrfHashGet(idlClass, "classname");
 
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "fkey" ) );
 		char* field = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "field" ) );
@@ -2002,6 +2049,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				free(field);
 				jsonIteratorFree(search_itr);
 				return NULL;
@@ -2020,6 +2069,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				free(fkey);
 				jsonIteratorFree(search_itr);
 				return NULL;
@@ -2029,37 +2080,46 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		} else if (!field && !fkey) {
 			osrfHash* _links = oilsIDLFindPath("/%s/links", leftclass);
 
-			int i = 0;
-			osrfStringArray* keys = osrfHashKeys( _links );
-			while ( (fkey = osrfStringArrayGetString(keys, i++)) ) {
-				fkey = strdup(osrfStringArrayGetString(keys, i++));
-				if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", leftclass, fkey), class) ) {
-					field = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey) );
+			// For each link defined for the left class:
+			// see if the link references the joined class
+			osrfHashIterator* itr = osrfNewHashIterator( _links );
+			osrfHash* curr_link = NULL;
+			while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
+				const char* other_class = osrfHashGet( curr_link, "class" );
+				if( other_class && !strcmp( other_class, class ) ) {
+
+					// Found a link between the classes
+					fkey = strdup( osrfHashIteratorKey( itr ) );
+					const char* other_key = osrfHashGet( curr_link, "key" );
+					field = other_key ? strdup( other_key ) : NULL;
 					break;
-				} else {
-					free(fkey);
 				}
 			}
-			osrfStringArrayFree(keys);
-
-			if (!field && !fkey) {
+			osrfHashIteratorFree( itr );
+			
+			if (!field || !fkey) {
+				// Do another such search, with the classes reversed
 				_links = oilsIDLFindPath("/%s/links", class);
 
-				i = 0;
-				keys = osrfHashKeys( _links );
-				while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-					field = strdup(osrfStringArrayGetString(keys, i++));
-					if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", class, field), class) ) {
-						fkey = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", class, field) );
+				// For each link defined for the joined class:
+				// see if the link references the left class
+				osrfHashIterator* itr = osrfNewHashIterator( _links );
+				osrfHash* curr_link = NULL;
+				while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
+					const char* other_class = osrfHashGet( curr_link, "class" );
+					if( other_class && !strcmp( other_class, leftclass ) ) {
+
+						// Found a link between the classes
+						fkey = strdup( osrfHashIteratorKey( itr ) );
+						const char* other_key = osrfHashGet( curr_link, "key" );
+						field = other_key ? strdup( other_key ) : NULL;
 						break;
-					} else {
-						free(field);
 					}
 				}
-				osrfStringArrayFree(keys);
+				osrfHashIteratorFree( itr );
 			}
 
-			if (!field && !fkey) {
+			if (!field || !fkey) {
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  No link defined between %s and %s",
@@ -2068,6 +2128,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				if(freeable_hash)
+					jsonObjectFree(freeable_hash);
 				jsonIteratorFree(search_itr);
 				return NULL;
 			}
@@ -2091,7 +2153,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(type);
 
 		char* table = getSourceDefinition(idlClass);
-		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
+		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
+					table, class, class, field, leftclass, fkey);
 		free(table);
 
 		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
@@ -2128,7 +2191,9 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(field);
 	}
 
-    jsonIteratorFree(search_itr);
+	if(freeable_hash)
+		jsonObjectFree(freeable_hash);
+	jsonIteratorFree(search_itr);
 
 	return buffer_release(join_buf);
 }
@@ -2145,7 +2210,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
 	osrfLogDebug(
         OSRF_LOG_MARK,
-        "%s: Entering searchWHERE; search_hash addr = %d, meta addr = %d, opjoin_type = %d, ctx addr = %d",
+        "%s: Entering searchWHERE; search_hash addr = %p, meta addr = %p, opjoin_type = %d, ctx addr = %p",
         MODULENAME,
         search_hash,
         meta,
@@ -2246,7 +2311,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     char* table = getSourceDefinition(meta);
                     osrfLogError(
                         OSRF_LOG_MARK,
-                        "%s: Attempt to reference non-existant column %s on %s (%s)",
+                        "%s: Attempt to reference non-existent column %s on %s (%s)",
                         MODULENAME,
                         search_itr->key,
                         table,
@@ -2258,7 +2323,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 					return NULL;
                 }
 
-                char* subpred = searchPredicate( class, field, node );
+                char* subpred = searchPredicate( class, field, node, ctx );
                 buffer_add( sql_buf, subpred );
                 free(subpred);
             }
@@ -2283,7 +2348,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 	return buffer_release(sql_buf);
 }
 
-static char* SELECT (
+char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
 		/* SELECT   */ jsonObject* selhash,
@@ -2302,12 +2367,10 @@ static char* SELECT (
 
 	// general tmp objects
 	const jsonObject* tmp_const;
-	jsonObject* _tmp = NULL;
 	jsonObject* selclass = NULL;
 	jsonObject* selfield = NULL;
 	jsonObject* snode = NULL;
 	jsonObject* onode = NULL;
-	jsonObject* found = NULL;
 
 	char* string = NULL;
 	int from_function = 0;
@@ -2320,8 +2383,6 @@ static char* SELECT (
 
 	// metadata about the core search class
 	osrfHash* core_meta = NULL;
-	osrfHash* core_fields = NULL;
-	osrfHash* idlClass = NULL;
 
 	// punt if there's no core class
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size ))
@@ -2334,18 +2395,27 @@ static char* SELECT (
 		
 		core_class = strdup( tmp_itr->key );
 		join_hash = snode;
+		
+		jsonObject* extra = jsonIteratorNext( tmp_itr );
 
 		jsonIteratorFree( tmp_itr );
 		snode = NULL;
+		
+		// There shouldn't be more than one entry in join_hash
+		if( extra )
+			return NULL;	// Malformed join_hash; extra entry
 
 	} else if (join_hash->type == JSON_ARRAY) {
-        from_function = 1;
-        selhash = NULL;
+		from_function = 1;
+		core_class = jsonObjectToSimpleString( jsonObjectGetIndex(join_hash, 0) );
+		selhash = NULL;
 
 	} else if (join_hash->type == JSON_STRING) {
 		core_class = jsonObjectToSimpleString( join_hash );
 		join_hash = NULL;
 	}
+	else
+		return NULL;
 
 	// punt if we don't know about the core class (and it's not a function)
 	if (!from_function && !(core_meta = osrfHashGet( oilsIDL(), core_class ))) {
@@ -2376,153 +2446,175 @@ static char* SELECT (
 	growing_buffer* group_buf = buffer_init(128);
 	growing_buffer* having_buf = buffer_init(128);
 
-	if (!from_function) 
-        core_fields = osrfHashGet(core_meta, "fields");
+	// Build a select list
+	if(from_function)   // From a function we select everything
+		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
+	else {
 
-	// ... and if we /are/ building the default list, do that
-	if ( (_tmp = jsonObjectGetKey(selhash,core_class)) && !_tmp->size ) {
-		
-		int i = 0;
-		char* field;
+		// If we need to build a default list, do so
+		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
+		if ( _tmp && !_tmp->size ) {
 
-        if (!from_function) {
+			int i = 0;
+			char* field;
+			osrfHash* core_fields = osrfHashGet( core_meta, "fields" );
+
     		osrfStringArray* keys = osrfHashKeys( core_fields );
-	    	while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-		    	if ( strncasecmp( "true", osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ), 4 ) )
-			    	jsonObjectPush( _tmp, jsonNewObject( field ) );
+			while ( (field = osrfStringArrayGetString(keys, i++)) ) {
+				if( ! str_is_true( osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ) ) )
+					jsonObjectPush( _tmp, jsonNewObject( field ) );   // not virtual; use it
     		}
-	    	osrfStringArrayFree(keys);
-        }
-	}
-
-	// Now we build the actual select list
-	if (!from_function) {
+			osrfStringArrayFree(keys);
+		}
+	
+		// Now build the actual select list
 	    int sel_pos = 1;
 	    jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
 	    first = 1;
 	    gfirst = 1;
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
-	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {
+	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {    // For each class
 
 		    // round trip through the idl, just to be safe
-		    idlClass = osrfHashGet( oilsIDL(), selclass_itr->key );
-		    if (!idlClass) continue;
-		    char* cname = osrfHashGet(idlClass, "classname");
+			const char* cname = selclass_itr->key;
+			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
+		    if (!idlClass)
+				// No such class.  Skip it.
+				continue;
 
-		    // make sure the target relation is in the join tree
-		    if (strcmp(core_class,cname)) {
-			    if (!join_hash) continue;
+		    // Make sure the target relation is in the join tree.
+			
+			// At this point join_hash is a step down from the join_hash we
+			// received as a parameter.  If the original was a JSON_STRING,
+			// then json_hash is now NULL.  If the original was a JSON_HASH,
+			// then json_hash is now the first (and only) entry in it,
+			// denoting the core class.  We've already excluded the
+			// possibility that the original was a JSON_ARRAY, because in
+			// that case from_function would be non-NULL, and we wouldn't
+			// be here.
 
-			    if (join_hash->type == JSON_STRING) {
+		    if ( strcmp( core_class, cname )) {
+			    if (!join_hash) 
+					// There's only one class in the FROM clause,
+					// and this isn't it.  Skip it.
+					continue;
+
+				if (join_hash->type == JSON_STRING) {
 				    string = jsonObjectToSimpleString(join_hash);
-				    found = strcmp(string,cname) ? NULL : jsonParseString("{\"1\":\"1\"}");
+					int different = strcmp( string, cname );
 				    free(string);
-			    } else {
-				    found = jsonObjectFindPath(join_hash, "//%s", cname);
-			    }
-
-			    if (!found->size) {
-				    jsonObjectFree(found);
-				    continue;
-			    }
-
-			    jsonObjectFree(found);
+					if ( different )
+						// There's only one class in the FROM clause,
+						// and this isn't it.  Skip it.
+						continue;
+				} else {
+				    jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
+					unsigned long size = found->size;
+					jsonObjectFree( found );
+					if ( 0 == size )
+						// No such class anywhere in the join tree.  Skip it.
+						continue;
+				}
 		    }
 
+			// Look up some attributes of the current class, so that we 
+			// don't have to look them up again for each field
+			osrfHash* class_field_set = osrfHashGet( idlClass, "fields" );
+			char* class_pkey = osrfHashGet( idlClass, "primarykey" );
+			char* class_tname = osrfHashGet( idlClass, "tablename" );
+			
 		    // stitch together the column list ...
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
-		    while ( (selfield = jsonIteratorNext( select_itr )) ) {
+		    while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
 
-			    char* __column = NULL;
-			    char* __alias = NULL;
+				// If we need a separator comma, add one
+				if (first) {
+					first = 0;
+				} else {
+					OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+				}
 
-			    // ... if it's a sstring, just toss it on the pile
+			    // ... if it's a string, just toss it on the pile
 			    if (selfield->type == JSON_STRING) {
 
 				    // again, just to be safe
-				    char* _requested_col = jsonObjectToSimpleString(selfield);
-				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _requested_col );
-				    free(_requested_col);
+					const char* _requested_col = selfield->value.s;
+				    osrfHash* field = osrfHashGet( class_field_set, _requested_col );
+				    if (!field) continue;		// No such field in current class; skip it
 
-				    if (!field) continue;
-				    __column = strdup(osrfHashGet(field, "name"));
-
-				    if (first) {
-					    first = 0;
-				    } else {
-						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
-				    }
+					const char* col_name = osrfHashGet(field, "name");
 
                     if (locale) {
-            		    char* i18n = osrfHashGet(field, "i18n");
+            		    const char* i18n;
 			            if (flags & DISABLE_I18N)
                             i18n = NULL;
+						else
+							i18n = osrfHashGet(field, "i18n");
 
-    	    		    if ( i18n && !strncasecmp("true", i18n, 4)) {
-        	                char* pkey = osrfHashGet(idlClass, "primarykey");
-        	                char* tname = osrfHashGet(idlClass, "tablename");
-
-                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, __column, pkey, cname, pkey, locale, __column);
+						if( str_is_true( i18n ) ) {
+                            buffer_fadd( select_buf,
+								" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
+								class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, col_name );
                         } else {
-				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+				            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                         }
                     } else {
-				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                     }
-
+					
 			    // ... but it could be an object, in which case we check for a Field Transform
 			    } else {
 
-				    __column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
+				    char* _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
-				    // again, just to be safe
-				    osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), __column );
-				    if (!field) continue;
-				    const char* fname = osrfHashGet(field, "name");
+				    // Get the field definition from the IDL
+				    osrfHash* field = osrfHashGet( class_field_set, _column );
+				    if (!field) continue;         // No such field defined in IDL.  Skip it.
 
-				    if (first) {
-					    first = 0;
-				    } else {
-						OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+					// Decide what to use as a column alias
+					char* _alias;
+					if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
+						_alias = jsonObjectToSimpleString( tmp_const );
+						free(_column);
+					} else {         // Use column name as its own alias
+						_alias = _column;
 					}
+					_column = NULL;   // To emphasize that we're through with _column
 
-				    if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
-					    __alias = jsonObjectToSimpleString( tmp_const );
-				    } else {
-					    __alias = strdup(__column);
-				    }
+					if (jsonObjectGetKeyConst( selfield, "transform" )) {
+						char* transform_str = searchFieldTransform(cname, field, selfield);
+						buffer_fadd(select_buf, " %s AS \"%s\"", transform_str, _alias);
+						free(transform_str);
+					} else {
 
-				    if (jsonObjectGetKeyConst( selfield, "transform" )) {
-					    free(__column);
-					    __column = searchFieldTransform(cname, field, selfield);
-					    buffer_fadd(select_buf, " %s AS \"%s\"", __column, __alias);
-				    } else {
+						const char* fname = osrfHashGet(field, "name");
+
                         if (locale) {
-                		    char* i18n = osrfHashGet(field, "i18n");
+                		    const char* i18n;
 			                if (flags & DISABLE_I18N)
                                 i18n = NULL;
-    
-    	        		    if ( i18n && !strncasecmp("true", i18n, 4)) {
-        	                    char* pkey = osrfHashGet(idlClass, "primarykey");
-        	                    char* tname = osrfHashGet(idlClass, "tablename");
+							else
+								i18n = osrfHashGet(field, "i18n");
 
-                                buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, cname, fname, pkey, cname, pkey, locale, __alias);
+							if( str_is_true( i18n ) ) {
+                                buffer_fadd( select_buf,
+									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
+		 							class_tname, cname, fname, class_pkey, cname, class_pkey, locale, _alias);
                             } else {
-					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                             }
                         } else {
-					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
                         }
 				    }
+
+				    free(_alias);
 			    }
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
-				    if ( !(
-                            jsonBoolIsTrue( jsonObjectGetKey( selfield, "aggregate" ) ) ||
-	                        ((int)jsonObjectGetNumber(jsonObjectGetKey( selfield, "aggregate" ))) == 1 // support 1/0 for perl's sake
-                         )
-                    ) {
+					const jsonObject* aggregate_obj = jsonObjectGetKey( selfield, "aggregate" );
+				    if ( ! obj_is_true( aggregate_obj ) ) {
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
@@ -2538,35 +2630,30 @@ static char* SELECT (
 							OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
 					    }
 
-					    __column = searchFieldTransform(cname, field, selfield);
+					    _column = searchFieldTransform(cname, field, selfield);
 						OSRF_BUFFER_ADD_CHAR(group_buf, ' ');
-						OSRF_BUFFER_ADD(group_buf, __column);
-					    __column = searchFieldTransform(cname, field, selfield);
+						OSRF_BUFFER_ADD(group_buf, _column);
+					    _column = searchFieldTransform(cname, field, selfield);
 					*/
 				    }
 			    }
 
-			    if (__column) free(__column);
-			    if (__alias) free(__alias);
-
 			    sel_pos++;
-		    }
+		    } // end while -- iterating across SELECT columns
 
-            // jsonIteratorFree(select_itr);
-	    }
+            jsonIteratorFree(select_itr);
+	    } // end while -- iterating across classes
 
-        // jsonIteratorFree(selclass_itr);
+        jsonIteratorFree(selclass_itr);
 
 	    if (is_agg) jsonObjectFree(is_agg);
-    } else {
-		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
     }
 
 
 	char* col_list = buffer_release(select_buf);
 	char* table = NULL;
-    if (!from_function) table = getSourceDefinition(core_meta);
-    else table = searchValueTransform(join_hash);
+	if (from_function) table = searchValueTransform(join_hash);
+	else table = getSourceDefinition(core_meta);
 
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
@@ -2581,14 +2668,18 @@ static char* SELECT (
 		    free(join_clause);
 	    }
 
+		// Build a WHERE clause, if there is one
 	    if ( search_hash ) {
 		    buffer_add(sql_buf, " WHERE ");
 
-		    // and it's on the the WHERE clause
+		    // and it's on the WHERE clause
 		    char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN, ctx );
 
-		    if (!pred) {
-			    if (ctx) {
+		    if (pred) {
+				buffer_add(sql_buf, pred);
+				free(pred);
+			} else {
+				if (ctx) {
 			        osrfAppSessionStatus(
 				        ctx->session,
 				        OSRF_STATUS_INTERNALSERVERERROR,
@@ -2604,20 +2695,21 @@ static char* SELECT (
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
-		    } else {
-			    buffer_add(sql_buf, pred);
-			    free(pred);
 		    }
         }
 
+		// Build a HAVING clause, if there is one
 	    if ( having_hash ) {
 		    buffer_add(sql_buf, " HAVING ");
 
 		    // and it's on the the WHERE clause
 		    char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
 
-		    if (!pred) {
-			    if (ctx) {
+		    if (pred) {
+				buffer_add(sql_buf, pred);
+				free(pred);
+			} else {
+				if (ctx) {
 			        osrfAppSessionStatus(
 				        ctx->session,
 				        OSRF_STATUS_INTERNALSERVERERROR,
@@ -2633,12 +2725,10 @@ static char* SELECT (
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
-		    } else {
-			    buffer_add(sql_buf, pred);
-			    free(pred);
 		    }
 	    }
 
+		// Build an ORDER BY clause, if there is one
 	    first = 1;
 	    jsonIterator* class_itr = jsonNewIterator( order_hash );
 	    while ( (snode = jsonIteratorNext( class_itr )) ) {
@@ -2704,7 +2794,7 @@ static char* SELECT (
 					    buffer_add(order_buf, direction);
 				    }
 
-			    }
+			    } // end while
                 // jsonIteratorFree(order_itr);
 
 		    } else if ( snode->type == JSON_ARRAY ) {
@@ -2726,7 +2816,7 @@ static char* SELECT (
 				    buffer_add(order_buf, _f);
 				    free(_f);
 
-			    }
+			    } // end while
                 // jsonIteratorFree(order_itr);
 
 
@@ -2753,10 +2843,10 @@ static char* SELECT (
 			    return NULL;
 		    }
 
-	    }
-    }
+	    } // end while
+		// jsonIteratorFree(class_itr);
+	}
 
-    // jsonIteratorFree(class_itr);
 
 	string = buffer_release(group_buf);
 
@@ -2839,7 +2929,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 		osrfStringArray* keys = osrfHashKeys( fields );
 		while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-			if ( strcasecmp( "true", osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
+			if( ! str_is_true( osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
 				jsonObjectPush( flist, jsonNewObject( field ) );
 		}
 		osrfStringArrayFree(keys);
@@ -2881,13 +2971,14 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			}
 
             if (locale) {
-        		char* i18n = osrfHashGet(field, "i18n");
-			    if (
-                    jsonBoolIsTrue( jsonObjectGetKey( order_hash, "no_i18n" ) ) ||
-                    ((int)jsonObjectGetNumber(jsonObjectGetKey( order_hash, "no_i18n" ))) == 1 // support 1/0 for perl's sake
-                ) i18n = NULL;
+        		const char* i18n;
+				const jsonObject* no_i18n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
+				if ( obj_is_true( no_i18n_obj ) )    // Suppress internationalization?
+					i18n = NULL;
+				else
+					i18n = osrfHashGet(field, "i18n");
 
-    			if ( i18n && !strncasecmp("true", i18n, 4)) {
+				if( str_is_true( i18n ) ) {
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
         	        char* tname = osrfHashGet(idlClass, "tablename");
 
@@ -3066,7 +3157,11 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 }
 
 int doJSONSearch ( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
 	osrfLogDebug(OSRF_LOG_MARK, "Recieved query request");
 
 	int err = 0;
@@ -3076,19 +3171,13 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	jsonObject* hash = jsonObjectGetIndex(ctx->params, 0);
 
-    int flags = 0;
+	int flags = 0;
 
-	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )))
-         flags |= SELECT_DISTINCT;
+	if ( obj_is_true( jsonObjectGetKey( hash, "distinct" ) ) )
+		flags |= SELECT_DISTINCT;
 
-	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "distinct" ))) == 1 ) // support 1/0 for perl's sake
-         flags |= SELECT_DISTINCT;
-
-	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "no_i18n" )))
-         flags |= DISABLE_I18N;
-
-	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "no_i18n" ))) == 1 ) // support 1/0 for perl's sake
-         flags |= DISABLE_I18N;
+	if ( obj_is_true( jsonObjectGetKey( hash, "no_i18n" ) ) )
+		flags |= DISABLE_I18N;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
 	char* sql = SELECT(
@@ -3173,38 +3262,11 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	}
 	
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
+
 	dbi_result result = dbi_conn_query(dbhandle, sql);
-
-	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
-	if(result) {
-		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
-		osrfHash* dedup = osrfNewHash();
-
-		if (dbi_result_first_row(result)) {
-			/* JSONify the result */
-			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
-			do {
-				obj = oilsMakeFieldmapperFromResult( result, meta );
-				char* pkey_val = oilsFMGetString( obj, pkey );
-				if ( osrfHashGet( dedup, pkey_val ) ) {
-					jsonObjectFree(obj);
-					free(pkey_val);
-				} else {
-					osrfHashSet( dedup, pkey_val, pkey_val );
-					jsonObjectPush(res_list, obj);
-				}
-			} while (dbi_result_next_row(result));
-		} else {
-			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
-		}
-
-		osrfHashFree(dedup);
-
-		/* clean up the query */
-		dbi_result_free(result); 
-
-	} else {
-		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
+	if( NULL == result ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]",
+			MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -3214,11 +3276,37 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 		);
 		*err = -1;
 		free(sql);
-		jsonObjectFree(res_list);
 		return jsonNULL;
 
+	} else {
+		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 	}
 
+	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
+	osrfHash* dedup = osrfNewHash();
+
+	if (dbi_result_first_row(result)) {
+		/* JSONify the result */
+		osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
+		do {
+			obj = oilsMakeFieldmapperFromResult( result, meta );
+			char* pkey_val = oilsFMGetString( obj, pkey );
+			if ( osrfHashGet( dedup, pkey_val ) ) {
+				jsonObjectFree(obj);
+				free(pkey_val);
+			} else {
+				osrfHashSet( dedup, pkey_val, pkey_val );
+				jsonObjectPush(res_list, obj);
+			}
+		} while (dbi_result_next_row(result));
+	} else {
+		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s",
+			MODULENAME, sql );
+	}
+
+	osrfHashFree(dedup);
+	/* clean up the query */
+	dbi_result_free(result);
 	free(sql);
 
 	if (res_list->size && order_hash) {
@@ -3477,7 +3565,9 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register an update method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -3526,7 +3616,8 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		osrfHash* field = osrfHashGet( fields, field_name );
 
 		if(!( strcmp( field_name, pkey ) )) continue;
-		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+		if( str_is_true( osrfHashGet(osrfHashGet(fields,field_name), "virtual") ) )
+			continue;
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
@@ -3635,7 +3726,9 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+	// The following test is harmless but redundant.  If a class is
+	// readonly, we don't register a delete method for it.
+	if( str_is_true( osrfHashGet( meta, "readonly" ) ) ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -3746,10 +3839,12 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
-			char* virt = (char*)osrfHashGet(_f, "virtual");
-			char* pos = (char*)osrfHashGet(_f, "array_position");
-
-			if ( !virt || !pos || !(strcmp( virt, "true" )) ) continue;
+			
+			if ( str_is_true( osrfHashGet(_f, "virtual") ) )
+				continue;
+			
+			const char* pos = (char*)osrfHashGet(_f, "array_position");
+			if ( !pos ) continue;
 
 			fmIndex = atoi( pos );
 			osrfLogInternal(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
@@ -3903,3 +3998,36 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	return object;
 }
 
+// Interpret a string as true or false
+static int str_is_true( const char* str ) {
+	if( NULL == str || strcasecmp( str, "true" ) )
+		return 0;
+	else
+		return 1;
+}
+
+// Interpret a jsonObject as true or false
+static int obj_is_true( const jsonObject* obj ) {
+	if( !obj )
+		return 0;
+	else switch( obj->type )
+	{
+		case JSON_BOOL :
+			if( obj->value.b )
+				return 1;
+			else
+				return 0;
+		case JSON_STRING :
+			if( strcasecmp( obj->value.s, "true" ) )
+				return 0;
+			else
+				return 1;
+		case JSON_NUMBER :          // Support 1/0 for perl's sake
+			if( jsonObjectGetNumber( obj ) == 1.0 )
+				return 1;
+			else
+				return 0;
+		default :
+			return 0;
+	}
+}

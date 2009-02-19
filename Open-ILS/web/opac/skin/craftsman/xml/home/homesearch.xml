@@ -1,0 +1,92 @@
+<div align='center'>
+	<div class='home-searcharea' xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+		<!-- load my js -->
+		<script language='javascript' type='text/javascript' src="<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/depth_selector.js"> </script>
+		<script language='javascript' type='text/javascript' src="<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js"> </script>
+	
+		<script language='javascript' type='text/javascript'>
+			config.ids.searchbar = {};
+			config.css.searchbar = {};
+			config.ids.searchbar.text				= 'search_box';	
+			config.ids.searchbar.submit			= 'search_submit';	
+			config.ids.searchbar.type_selector	= 'search_type_selector';
+			config.ids.searchbar.depth_selector	= 'depth_selector';
+			config.ids.searchbar.form_selector	= 'form_selector';
+			config.ids.searchbar.extra_row		= 'searchbar_extra';
+			config.ids.searchbar.main_row			= 'searchbar_main_row';
+			config.ids.searchbar.table				= 'searchbar_table';
+			config.ids.searchbar.location_tag	= 'search_location_tag_link';
+			config.ids.searchbar.lib_sel_span	= 'lib_selector_span';
+			config.ids.searchbar.lib_sel_link	= 'lib_selector_link';
+			config.ids.searchbar.depth_sel_span	= 'depth_selector_span';
+		</script>
+		<!--Logo-->
+		<div class='home-logo'>
+			<img src='<!--#echo var="OILS_BASE"-->/images/main_logo.jpg' />
+		</div>
+		<!--Title-->
+		<div class='home-title'>
+			<script language='javascript' type='text/javascript'>config.ids.common.now_searching = 'now_searching_location';</script>
+			<span>&opac.search.nowSearching;</span>
+			<span style='padding: 1px;' id='now_searching_location'></span>
+		</div>
+		<!--Search Input/Submit-->
+		<div class='home-search-panel'>
+			<table align='center'>
+				<tr>
+					<td><input id='search_box' type='text' class='search-home-input' /></td>
+					<td><input type='button' id='search_submit' value='Search' class='submit' /></td>
+				</tr>
+			</table>
+		</div>	
+		<!--Filters-->
+		<div class='home-filter-panel'>
+			<span style='padding-right:40px;'><!--#include virtual="../common/stypes_selector.xml"--></span>
+			<span>
+				<!--
+				<span>&common.format;: </span>
+				-->
+				<!--#set var='FORM_SEL_ID' value='form_selector'-->
+				<!--#include virtual="../common/format_selector.xml"-->
+			</span>	
+		</div>	
+	</div>
+</div>
+<div align='center'>
+	<div class='home-bottom-tabs' align='center'>
+		<ul>
+			<li><a id='home_adv_search_link' href='javascript:void(0);' class='advancedsearch'>&opac.navigate.advanced;</a></li>
+			<li>
+				<span class='hide_me' id='depth_selector_span'>
+					<select id='depth_selector' >
+						<option value='new'>&opac.navigate.selectNewOrg;...</option>
+					</select>
+				</span>
+				<span class='hide_me' id='lib_selector_span'>
+					<a id='lib_selector_link' href='javascript:void(0)' class='chooselibrary'>&opac.navigate.selectOrg;</a>
+				</span>
+			</li>
+			<li><a id='home_myopac_link' href='javascript:void(0);' class='myaccount'>&opac.navigate.myopac;</a></li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+
+<!-- locale picker -->
+<div align='center' valign='bottom' style='padding-top:10px;'>
+    <span style='vertical-align: top;'>&common.language;</span>
+    <span dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" 
+        searchAttr="label" required="false" jsId='opacLocaleSelector'>
+        <script>
+            dojo.addOnLoad(function() {
+                opacLocaleSelector.setValue(locale);
+                dojo.connect(opacLocaleSelector, 'onChange', 
+                    function () {
+                        location.href = location.href.replace(/opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+                    }
+                );
+            });
+        </script>
+    </span>
+</div>
+

@@ -1,0 +1,73 @@
+
+<!-- This holds information for copies attached to this record -->
+<div id='rdetail_copy_info_div' class='details-base'>
+
+	<div style='width: 100%; text-align: center;'>
+		<span>
+			<a href='javascript:void(0);' id='copy_info_local_link' 
+				class='rdetail_copy_nav_link hide_me classic_link'><b>&rdetail.copyInfo.local;</b></a>
+		</span>
+		<span width=''>
+			<a href='javascript:void(0);' id='copy_info_all_link' 
+				class='rdetail_copy_nav_link classic_link'><b>&rdetail.copyInfo.all;</b></a>
+		</span>
+	</div>
+
+	<table id='rdetail_copy_info_table' class='details-datagrid'>
+		<thead>
+			<tr>
+				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.library;</td>
+				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.callnumber;</td>
+				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.actions;</td>
+				<td style='border: 1px solid #ddd;' nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
+					<div name='rdetail_status_cell'> </div>&nbsp;
+				</td>
+			</tr>
+		</thead>
+		<tbody id='rdetail_copy_info_tbody'>
+			<tr id='rdetail_copy_info_row' class='hide_me'>
+				<td name='rdetail_library_cell' bgcolor='#fbf9ee' border='1px' bordercolor='#dddddd' style='border: 1px solid #ddd; background-color: #fbf9ee;'>
+					<a name='lib_print_link' class='hide_me'>&rdetail.copyInfo.print;</a>
+				</td>
+				<td name='rdetail_callnumber_cell' style='border: 1px solid #ddd;'> </td>
+				<td name='rdetail_actions_cell' style='border: 1px solid #ddd;'> 
+					<div style='padding: 0 0 2px 0;'><a name='details'>&rdetail.copyInfo.details;</a></div>
+					<div><a name='browse'>&rdetail.copyInfo.browse;</a></div>
+					<div name='hold_div' class='hide_me'>
+						<a name='hold' href='javascript:void(0);'>&rdetail.copyInfo.hold;</a>
+					</div>
+				</td>
+				<td nowrap='nowrap' name='rdetail_copy_count_cell' style='border: 1px solid #ddd;'> &nbsp;</td>
+			</tr>
+			<tr id='rdetail_copy_info_loading'><td>&rdetail.loading;</td></tr>
+		</tbody>
+	</table>
+
+	<!--
+	<table class='hide_me'>
+		<tbody>
+		<tr id='rdetail_volume_details_row'><td colspan='10'></td></tr>
+		</tbody>
+	</table>
+	-->
+
+	<br/><br/>
+
+	<div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.rdetail.cp_status			= "rdetail_copy_info_status";
+		config.ids.rdetail.cp_info_row		= "rdetail_copy_info_row";
+		config.ids.rdetail.cp_info_loading	= "rdetail_copy_info_loading";
+		config.ids.rdetail.cp_info_local		= "copy_info_local_link";
+		config.ids.rdetail.cp_info_all		= "copy_info_all_link";
+		config.ids.rdetail.cp_info_none		= "rdetail_copy_info_none";
+		config.names.rdetail.lib_cell			= "rdetail_library_cell";
+		config.names.rdetail.cn_cell			= "rdetail_callnumber_cell";
+		config.names.rdetail.cp_count_cell	= "rdetail_copy_count_cell";
+		config.names.rdetail.cp_status		= 'rdetail_status_cell';
+	</script>
+
+</div> <!-- copy info -->
+
+

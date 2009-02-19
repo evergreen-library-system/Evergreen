@@ -3,32 +3,195 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('dojox.grid.DataGrid');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
+    dojo.require('openils.widget.EditDialog');
     dojo.require('openils.Util');
 
     dojo.declare(
         'openils.widget.AutoGrid',
         [dojox.grid.DataGrid, openils.widget.AutoWidget],
         {
+
+            /* if true, pop up an edit dialog when user hits Enter on a give row */
+            editOnEnter : false, 
+            defaultCellWidth : null,
+
+            /* by default, don't show auto-generated (sequence) fields */
+            showSequenceFields : false, 
+
             startup : function() {
+                this.selectionMode = 'single';
                 this.inherited(arguments);
                 this.initAutoEnv();
-                var existing = (this.structure) ? this.structure[0].cells[0] : [];
+                this.setStructure(this._compileStructure());
+                this.setStore(this.buildAutoStore());
+                this.overrideEditWidgets = {};
+                if(this.editOnEnter) 
+                    this._applyEditOnEnter();
+                else if(this.singleEditStyle) 
+                    this._applySingleEditStyle();
+            },
+
+            _compileStructure : function() {
+                var existing = (this.structure && this.structure[0].cells[0]) ? 
+                    this.structure[0].cells[0] : [];
                 var fields = [];
+
+                var self = this;
+                function pushEntry(entry) {
+                    if(!entry.get) 
+                        entry.get = openils.widget.AutoGrid.defaultGetter
+                    if(!entry.width && self.defaultCellWidth)
+                        entry.width = self.defaultCellWidth;
+                    fields.push(entry);
+                }
+
+                if(!this.fieldOrder) {
+                    /* no order defined, start with any explicit grid fields */
+                    for(var e in existing) {
+                        var entry = existing[e];
+                        var field = this.fmIDL.fields.filter(
+                            function(i){return (i.name == entry.field)})[0];
+                        if(field) entry.name = entry.name || field.label;
+                        pushEntry(entry);
+                    }
+                }
+
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
+                    
+                    // field was already added above
+                    if(fields.filter(function(i){return (i.field == field.name)})[0]) 
+                        continue;
+
+
+                    if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                        continue; 
                     var entry = existing.filter(function(i){return (i.field == field.name)})[0];
                     if(entry) entry.name = field.label;
                     else entry = {field:field.name, name:field.label};
-                    fields.push(entry);
-                    if(!entry.get) 
-                        entry.get = openils.widget.AutoGrid.defaultGetter
+                    pushEntry(entry);
                 }
-                this.setStructure([{cells: [fields]}]);
+
+                return [{cells: [fields]}];
+            },
+
+            _applySingleEditStyle : function() {
+                this.onMouseOverRow = function(e) {};
+                this.onMouseOutRow = function(e) {};
+                this.onCellFocus = function(cell, rowIndex) { 
+                    this.selection.deselectAll();
+                    this.selection.select(this.focus.rowIndex);
+                };
+            },
+
+            /* capture keydown and launch edit dialog on enter */
+            _applyEditOnEnter : function() {
+                this._applySingleEditStyle();
+
+                dojo.connect(this, 'onRowDblClick',
+                    function(e) {
+                        this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
+                    }
+                );
+
+                dojo.connect(this, 'onKeyDown',
+                    function(e) {
+                        if(e.keyCode == dojo.keys.ENTER) {
+                            this.selection.deselectAll();
+                            this.selection.select(this.focus.rowIndex);
+                            this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
+                        }
+                    }
+                );
+            },
+
+            _drawEditDialog : function(storeItem, rowIndex) {
+                var grid = this;
+                var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
+                var idents = grid.store.getIdentityAttributes();
+                var dialog = new openils.widget.EditDialog({
+                    fmObject:fmObject,
+                    overrideWidgets : this.overrideEditWidgets,
+                    onPostSubmit : function() {
+                        for(var i in fmObject._fields) {
+                            var field = fmObject._fields[i];
+                            if(idents.filter(function(j){return (j == field)})[0])
+                                continue; // don't try to edit an identifier field
+                            grid.store.setValue(storeItem, field, fmObject[field]());
+                        }
+                        dialog.destroy();
+
+                        if(self.onPostUpdate)
+                            self.onPostUpdate(storeItem, rowIndex);
+
+                        setTimeout(
+                            function(){
+                                try { 
+                                    grid.views.views[0].getCellNode(rowIndex, 0).focus(); 
+                                } catch (E) {}
+                            },200
+                        );
+                    },
+                    onCancel : function() {
+                        setTimeout(function(){
+                            grid.views.views[0].getCellNode(rowIndex, 0).focus();},200);
+                    }
+                });
+                dialog.editPane.fieldOrder = this.fieldOrder;
+                dialog.editPane.mode = 'update';
+                dialog.startup();
+                dialog.show();
+            },
+
+            showCreateDialog : function() {
+                var grid = this;
+                var dialog = new openils.widget.EditDialog({
+                    fmClass : this.fmClass,
+                    overrideWidgets : this.overrideEditWidgets,
+                    onPostSubmit : function(r) {
+                        var fmObject = openils.Util.readResponse(r);
+                        if(fmObject) 
+                            grid.store.newItem(fmObject.toStoreItem());
+                        dialog.destroy();
+                        if(grid.onPostCreate)
+                            grid.onPostCreate(fmObject);
+                        setTimeout(function(){
+                            try {
+                                grid.selection.select(grid.rowCount-1);
+                                grid.views.views[0].getCellNode(grid.rowCount-1, 1).focus();
+                            } catch (E) {}
+                        },200);
+                    },
+                });
+                dialog.editPane.fieldOrder = this.fieldOrder;
+                dialog.editPane.mode = 'create';
+                dialog.startup();
+                dialog.show();
+            },
+            
+            resetStore : function() {
                 this.setStore(this.buildAutoStore());
             },
 
-        }
+            loadAll : function(opts, search) {
+                dojo.require('openils.PermaCrud');
+                if(!opts) opts = {};
+                var self = this;
+                opts = dojo.mixin(opts, {
+                    async : true,
+                    streaming : true,
+                    onresponse : function(r) {
+                        var item = openils.Util.readResponse(r);
+                        self.store.newItem(item.toStoreItem());
+                    }
+                });
+                if(search)
+                    new openils.PermaCrud().search(this.fmClass, search, opts);
+                else
+                    new openils.PermaCrud().retrieveAll(this.fmClass, opts);
+            }
+        } 
     );
     openils.widget.AutoGrid.markupFactory = dojox.grid.DataGrid.markupFactory;
 

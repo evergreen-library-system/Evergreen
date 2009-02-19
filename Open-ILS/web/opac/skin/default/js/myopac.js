@@ -921,6 +921,7 @@ function myopacSaveAddress(row, addr, deleteMe) {
         repl.address_type(addr.address_type());
         repl.within_city_limits(addr.within_city_limits());
         repl.replaces(addr.id());
+        repl.pending('t');
         repl.isnew(true);
         repl.id(null);
         addr = repl;

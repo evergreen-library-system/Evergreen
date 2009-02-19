@@ -197,6 +197,7 @@ sub run_method {
         # overrides have been performed.  Go ahead and re-override.
         $circulator->override(1) if $circulator->request_precat;
         $circulator->do_permit();
+        $circulator->is_checkout(1);
         unless( $circulator->bail_out ) {
             $circulator->events([]);
             $circulator->do_checkout();
@@ -208,6 +209,7 @@ sub run_method {
         return $data;
 
     } elsif( $api =~ /checkout/ ) {
+        $circulator->is_checkout(1);
         $circulator->do_checkout();
 
     } elsif( $api =~ /checkin/ ) {
@@ -244,6 +246,7 @@ sub run_method {
         $circulator->do_hold_notify($circulator->notify_hold)
             if $circulator->notify_hold;
         $circulator->retarget_holds if $circulator->retarget;
+        $circulator->append_reading_list;
     }
 }
 
@@ -339,6 +342,7 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
+    is_checkout
     is_noncat
     is_precat
     request_precat
@@ -1133,7 +1137,6 @@ sub do_checkout {
     }
 
     if( $self->is_precat ) {
-        #$self->script_runner->insert("environment.isPrecat", 1, 1)
         $self->make_precat_copy;
         return if $self->bail_out;
 
@@ -2257,7 +2260,6 @@ sub log_me {
 sub do_renew {
     my $self = shift;
     $self->log_me("do_renew()");
-    $self->is_renewal(1);
 
     # Make sure there is an open circ to renew that is not
     # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
@@ -2358,6 +2360,68 @@ sub run_renew_permit {
     #$self->mk_script_runner;
 }
 
+
+sub append_reading_list {
+    my $self = shift;
+
+    return undef unless 
+        $self->is_checkout and 
+        $self->patron and 
+        $self->copy and 
+        !$self->is_noncat;
+
+    my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
+
+    # verify history is globally enabled and uses the bucket mechanism
+    my $htype = OpenSRF::Utils::SettingsClient->new->config_value(
+        apps => 'open-ils.circ' => app_settings => 'checkout_history_mechanism');
+
+    unless($htype eq 'bucket') {
+        $e->rollback;
+        return undef;
+    }
+
+    # verify the patron wants to retain the hisory
+	my $setting = $e->search_actor_user_setting(
+		{usr => $self->patron->id, name => 'circ.keep_checkout_history'})->[0];
+    
+    unless($setting and $setting->value) {
+        $e->rollback;
+        return undef;
+    }
+
+    my $bkt = $e->search_container_copy_bucket(
+        {owner => $self->patron->id, btype => 'circ_history'})->[0];
+
+    my $pos = 1;
+
+    if($bkt) {
+        # find the next item position
+        my $last_item = $e->search_container_copy_bucket_item(
+            {bucket => $bkt->id}, {order_by => {ccbi => 'pos desc'}, limit => 1})->[0];
+        $pos = $last_item->pos + 1 if $last_item;
+
+    } else {
+        # create the history bucket if necessary
+        $bkt = Fieldmapper::container::copy_bucket->new;
+        $bkt->owner($self->patron->id);
+        $bkt->name('');
+        $bkt->btype('reading_list');
+        $bkt->pub('f');
+        $e->create_container_copy_bucket($bkt) or return $e->die_event;
+    }
+
+    my $item = Fieldmapper::container::copy_bucket_item->new;
+
+    $item->bucket($bkt->id);
+    $item->target_copy($self->copy->id);
+    $item->pos($pos);
+
+    $e->create_container_copy_bucket_item($item) or return $e->die_event;
+    $e->commit;
+
+    return undef;
+}
 
 
 

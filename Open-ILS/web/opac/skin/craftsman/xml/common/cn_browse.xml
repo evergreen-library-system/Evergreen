@@ -1,0 +1,36 @@
+<div id='cn_browse' class='hide_me details-base'>
+	<div id='cn_browse_loading'  class='cn_browse_loading hide_me'>&common.cn.loading;</div>
+	<div id='cn_browse_div'> 
+	
+		<div class='tips-bottom-box' style='margin-bottom: 10px;'>
+			<span>&common.cn.browsing;</span><b style='margin-left: 6px;' id='cn_browse_where'> </b>
+		</div>
+		<table class='details-datagrid'>
+		<!-- class = data_grid bookshelf -->
+			<thead>
+				<tr>
+					<td><a id='cn_browse_next' class='classic_link' href='javascript:cnBrowsePrev();'><b>&common.cn.previous;</b></a></td>
+					<td colspan='1' align='center'>&common.cn.shelf;</td>
+					<td align='right'><a id='cn_browse_prev' class='classic_link' href='javascript:cnBrowseNext();'><b>&common.cn.next;</b></a></td>
+				</tr>
+			</thead>
+			<tbody id='cn_tbody'>
+				<tr id='cn_browse_row'>
+					<td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top' style='border: 1px solid #ccc;'>
+						<table>
+							<tr>
+								<td valign='top'><a style='display: block; border: 1px solid #ddd; background: #efefef; padding: 1px;'><img height='60' width='50' class='cn_browse_info' name='cn_browse_pic' border='0' style='border: 1px solid #ddd; background: #efefef;' /></a></td>
+								<td valign='top'>
+								<div class='cn_browse_info' name='cn_browse_cn' style='font-weight: bold; border: 0; padding: 1px;'>  </div>
+								<div class='cn_browse_info' style='border: 0; padding: 1px;'><a name='cn_browse_title' class='classic_link'> </a></div>
+								<div class='cn_browse_info' style='border: 0; padding: 1px;'><a name='cn_browse_author' class='classic_link'>  </a></div>
+								<div class='cn_browse_info' style='border: 0; padding: 1px;' name='cn_browse_lib'>  </div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

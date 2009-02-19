@@ -1,0 +1,85 @@
+<div id='canvas_main'>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar_extras.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/result_common.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/rresult.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/rdetail.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/cn_browse.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'></script>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.rdetail = {};
+		config.ids.rdetail.view_marc = "rdetail_view_marc";
+	</script>
+	<div class='detailsinfo-box'>
+		<table id='np_table' class='hide_me'>
+			<tbody>
+				<tr>
+					<td>
+						<span>
+							&rdetail.result; <strong><span id='np_offset'> </span></strong>
+							 - 
+							<strong><span id='np_count'> </span></strong>
+						</span>
+						<span style='padding-left: 40px;'>
+							<a class='np_nav_link classic_link hide_me' id='np_start'
+								href='javascript:rdetailStart();' title="&rdetail.page.results;">&rdetail.start;</a>
+							<a class='np_nav_link classic_link hide_me' id='np_prev'
+								href='javascript:rdetailPrev();' title='&rdetail.page.previous;'>&lt;&lt;</a>
+							<span> </span>
+							<a  class='np_nav_link classic_link hide_me' id='np_next'
+								href='javascript:rdetailNext();' title='&rdetail.page.next;'>&gt;&gt;</a>
+							<a class='np_nav_link classic_link hide_me' id='np_end'
+								href='javascript:rdetailEnd();' title="&rdetail.page.last;">&rdetail.end;</a>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class='detailsinfo-bottom-box'>
+		<table>
+			<tbody>
+				<tr>
+					<td width='50%' align='left' style='vertical-align: middle;'>
+						<span>&rdetail.detailMain.headerLabel;</span>
+					</td>
+					<td align='right' width='50%' class='detailsinfo-right'>
+						<ul>
+							<li>
+								<span class='placeholder'>
+									<a id='rdetail_place_hold'>&opac.holds.placeHold;</a>
+								</span>
+							</li>
+							<li class='hide_me'>
+								<span class='selectBox' id='rdetail_more_actions'>
+									<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
+										<option value='start'>&rdetail.more;</option>
+										<option disabled='disabled'>--------------</option>
+										<option disabled='disabled'>&rdetail.bookbag.add;</option>
+										<option disabled='disabled'>--------------</option>
+										<option value='new_bookbag' onclick='rdetailNewBookbag();'>&rdetail.bookbag.create;</option>
+									</select>
+								</span>
+							</li>
+						</ul>
+						<div class='clear'></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;' class='hide_me color_4' id='rdetail_deleted_exp'>
+		&rdetail.record.deleted;
+	</div>
+
+	<!--#include virtual="rdetail/rdetail_summary.xml"-->
+	<br/><br/>
+	<!--#include virtual="rdetail/rdetail_extras.xml"-->
+
+	<div class='hide_me' id='rdetail_bb_none'>&rdetail.none;</div>
+	<div class='hide_me' id='rdetail_bb_item_success'>&rdetail.bookbag.add.success;</div>
+	<div class='hide_me' id='rdetail_bb_new'>&rdetail.bookbag.name;</div>
+	<div class='hide_me' id='rdetail_bb_success'>&rdetail.bookbag.create.success;</div>
+
+</div>

@@ -247,6 +247,17 @@ CREATE TRIGGER action_circulation_stop_fines_tgr
 	FOR EACH ROW
 	EXECUTE PROCEDURE action.circulation_claims_returned ();
 
+CREATE TABLE action.hold_request_cancel_cause (
+    id      SERIAL  PRIMARY KEY,
+    label   TEXT    UNIQUE
+);
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (1,'Untargeted expiration');
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (2,'Hold Shelf expiration');
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (3,'Patron via phone');
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4,'Patron in person');
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5,'Staff forced');
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6,'Patron via OPAC');
+SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
 
 CREATE TABLE action.hold_request (
 	id			SERIAL				PRIMARY KEY,
@@ -258,6 +269,8 @@ CREATE TABLE action.hold_request (
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
 	cancel_time		TIMESTAMP WITH TIME ZONE,
+	cancel_cause	INT REFERENCES action.hold_request_cancel_cause (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	cancel_note		TEXT,
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	fulfillment_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,

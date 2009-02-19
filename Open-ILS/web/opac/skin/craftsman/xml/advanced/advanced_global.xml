@@ -1,0 +1,287 @@
+<div class='advancedsearch-box'>
+	<table id='adv_global_search' width='100%' align='center'>
+	<!--class='data_grid data_grid_center'-->
+	
+		<style>
+			#adv_global_search select { width: 13em; }
+			#adv_global_input_table select { width: 7em; }
+			.adv_adv_link { font-size: 8pt; color: red; }
+		</style>
+	
+		<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
+	
+		<tr>
+	
+			<!-- Contains the user-addable(?) rows to define search class, containment and text -->
+			<td width='65%'>
+				<div class='form-panels'>
+					<table id='adv_global_input_table' width='95%' align='center'>		
+						<thead>
+							<tr>
+								<td colspan='2'><h2>&advanced.search.title;</h2></td>
+							</tr>
+						</thead>
+						<tbody id='adv_global_tbody'>
+		
+							<script language='javascript' type='text/javascript'>
+								config.ids.common.now_searching = 'now_searching_location';
+							</script>
+		
+							<!--#set var="adv_global_row_id" value="adv_global_trow"-->
+							<!--#include virtual="adv_global_row.xml"-->
+		
+							<!--#set var="adv_global_row_id" value=""-->
+							<!--#include virtual="adv_global_row.xml"-->
+							<!--#include virtual="adv_global_row.xml"-->
+		
+							<!-- add a new row -->
+							<tr id='adv_global_addrow'>
+								<td align='center'>
+									<button id='myopac_new_global_row' onclick='advAddGblRow();'>&advanced.add.row;</button>
+									<!--<span style='padding-left: 10px;'> </span>
+									<button onclick='advSubmitGlobal();'>&advanced.search.submit;</button>-->
+								</td>
+							</tr>	
+						</tbody>
+					</table>
+				</div>
+			</td>
+			<td rowspan='2' align='right'>
+				<div class='form-panels'>
+					<table>
+						<thead>
+							<tr>
+								<td colspan='2'><h2>&advanced.search.filters;</h2></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td align='right'>
+									<span>&advanced.item.form;</span>
+								</td>
+								<td align='left'>
+									<select multiple='multiple' size='3' id='adv_global_item_form'>
+									</select>	
+								</td>
+							</tr>		
+							<tr>
+								<td align='right'>
+									<span>&advanced.item.type;</span>
+									<a id='adv_global_item_type_link_adv' class='classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										hideMe($("adv_global_item_type_basic"));
+										unHideMe($("adv_global_item_type"));
+										hideMe(this);
+										unHideMe($("adv_global_item_type_link_basic"));
+										'>&advanced.link;</a>
+		
+									<a id='adv_global_item_type_link_basic' class='hide_me classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										unHideMe($("adv_global_item_type_basic"));
+										hideMe($("adv_global_item_type"));
+										unHideMe($("adv_global_item_type_link_adv"));
+										hideMe(this);
+										'>&advanced.basic.link;</a>
+								</td>
+		
+								<td align='left'>
+									<select multiple='multiple' size='3' id='adv_global_item_type' class='hide_me'>
+									</select>	
+									<select multiple='multiple' size='3' id='adv_global_item_type_basic'>
+										<option value='at'>&opac.search.books;</option>
+										<option value='i'>&opac.search.audioBooks;</option>
+										<option value='g'>&opac.search.videoRecordings;</option>
+										<option value='j'>&opac.search.music;</option>
+										<option value='m'>&opac.search.electronic;</option>
+									</select>	
+								</td>
+							</tr>
+		
+							<tr>
+								<td align='right'>
+									<span>&advanced.literary.form;</span>
+									<a id='adv_global_lit_form_link_adv' class='classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										hideMe($("adv_global_lit_form_basic"));
+										unHideMe($("adv_global_lit_form"));
+										hideMe(this);
+										unHideMe($("adv_global_lit_form_link_basic"));
+										'>&advanced.link;</a>
+		
+									<a id='adv_global_lit_form_link_basic' class='hide_me classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										unHideMe($("adv_global_lit_form_basic"));
+										hideMe($("adv_global_lit_form"));
+										unHideMe($("adv_global_lit_form_link_adv"));
+										hideMe(this);
+										'>&advanced.basic.link;</a>
+								</td>
+								<td align='left'>
+									<select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'>
+									</select>	
+									<select multiple='multiple' size='3' id='adv_global_lit_form_basic'>
+										<option value='0 '>&advanced.non.fiction;</option>
+										<option value='1'>&advanced.fiction;</option>
+									</select>	
+								</td>
+							</tr>
+		
+		
+							<!-- Language selector -->
+							<tr>
+								<td align='right'>
+									<span>&advanced.language;</span>
+								</td>
+		
+								<td align='left'>
+									<select multiple='multiple' size='3' id='adv_global_lang'>
+										<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
+									</select>
+								</td>
+							</tr>
+		
+							<!-- Audience selector -->
+							<tr>
+								<td align='right'>
+									<span>&advanced.audience;</span>
+		
+									<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										hideMe($("adv_global_audience_basic"));
+										unHideMe($("adv_global_audience"));
+										hideMe(this);
+										unHideMe($("adv_global_audience_link_basic"));
+										'>&advanced.link;</a>
+		
+									<a id='adv_global_audience_link_basic' class='hide_me classic_link adv_adv_link'
+										href='javascript:void(0);' onclick='
+										unHideMe($("adv_global_audience_basic"));
+										hideMe($("adv_global_audience"));
+										unHideMe($("adv_global_audience_link_adv"));
+										hideMe(this);'>&advanced.basic.link;</a>
+								</td>
+		
+								<td align='left'>
+									<select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'>
+									</select>
+									<select multiple='multiple' size='3' id='adv_global_audience_basic'>
+										<option value='e '>&advanced.adult;</option>
+										<option value='abcdj'>&advanced.juvenile;</option>
+										<option value='fg '>&advanced.general;</option>
+									</select>
+								</td>
+							</tr>
+
+                            <tr>
+                                <td align='right'>
+                                    <span>&advanced.biblevel;</span>
+                                </td>
+                                <td align='left'>
+                                    <select multiple='multiple' size='3' id='adv_global_bib_level'>
+                                    </select>	
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align='right'>
+                                    <span>&advanced.filter.pubyear;</span>
+                                </td>
+                                <td align='left'>
+                                    <select id='adv_global_pub_date_type' onchange='
+                                        if($("adv_global_pub_date_type").selectedIndex == 3)
+                                            unHideMe($("adv_global_pub_date_2_span"));
+                                        else
+                                            hideMe($("adv_global_pub_date_2_span"));'>
+                                        <option value='equals' selected='selected'>&advanced.filter.pubyear.equals;</option>
+                                        <option value='before'>&advanced.filter.pubyear.before;</option>
+                                        <option value='after'>&advanced.filter.pubyear.after;</option>
+                                        <option value='between'>&advanced.filter.pubyear.between;</option>
+                                    </select>	
+                                    <div style='margin-top:5px;'>
+                                        <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
+                                        <span id='adv_global_pub_date_2_span' class='hide_me'>
+                                           &common.and; <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- copy location selector -->
+                            <tr id='adv_copy_location_filter_row' class='hide_me'>
+                                <td align='right'>&opac.advanced.copy_loc_filter;</td>
+                                <td align='left' id='adv_copy_location_filter_td'>
+                                    <select size='3' id='adv_copy_location_filter_select' multiple='multiple'>
+                                    </select>
+                                </td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>	
+		<tr>
+			<td>
+				<div class='form-panels'>	
+					<table width='95%' align='center'>					
+						<thead>
+							<tr>
+								<td width='50%'><h2>&advanced.sort.criteria;</h2></td>
+								<td><h2>&advanced.search.library;</h2></td>
+							</tr>
+						</thead>					
+						<tbody>
+							<tr>		
+							   <script language='javascript' type='text/javascript'>
+								  function __setsortsel() {
+									 var sel = $('adv_global_sort_by')
+											   if(sel.selectedIndex == 0) {
+												   $("adv_global_sort_dir").disabled = true;
+												   $("adv_global_sort_dir").selectedIndex = 0;
+											   } else $("adv_global_sort_dir").disabled = false;
+								  }
+							   </script>
+								<td align=''>
+									<select id='adv_global_sort_by' onchange='__setsortsel();'>
+										<option value='rel'>&advanced.relevance;</option>
+										<option value='title'>&common.title;</option>
+										<option value='author'>&common.author;</option>
+										<option value='pubdate'>&advanced.pubdate;</option>
+									</select>
+								</td>
+								<td align='center' width='100%' nowrap='nowrap'>
+									<b id='now_searching_location'> </b>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<select id='adv_global_sort_dir' disabled='disabled'>
+										<option value='asc'>&advanced.sort.asc;</option>
+										<option value='desc'>&advanced.sort.desc;</option>
+									</select>
+								</td>
+							   <!-- force the enable/disable sort dir code to run -->
+							   <script language='javascript' type='text/javascript'>__setsortsel();</script>
+								<td align='center'>
+									<!--#include virtual="../common/libselect.xml"-->
+								</td>
+							</tr>
+							<tr>
+								<td align='center'>
+									<span>&advanced.frbrize;</span>
+									<input id='adv_group_titles' type='checkbox' />
+								</td>
+								<td align='center'>
+									<span>&result.limit2avail;</span>
+									<input type='checkbox' id='opac.result.limit2avail'/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</td>	
+		</tr>	
+		<tr>
+			<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='&advanced.search.submit;' class='submit'></input></td>
+		</tr>	
+	</table>
+</div>

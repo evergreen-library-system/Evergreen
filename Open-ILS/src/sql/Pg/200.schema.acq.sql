@@ -20,8 +20,8 @@ INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
 
 CREATE TABLE acq.exchange_rate (
     id              SERIAL  PRIMARY KEY,
-    from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code),
-    to_currency     TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
+    to_currency     TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
     ratio           NUMERIC NOT NULL,
     CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
 );
@@ -32,56 +32,94 @@ INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','E
 CREATE TABLE acq.provider (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
-	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
-	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
 	code		TEXT	UNIQUE,
 	CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
 );
 
+CREATE TABLE acq.provider_address (
+	id		SERIAL	PRIMARY KEY,
+	valid		BOOL	NOT NULL DEFAULT TRUE,
+	address_type	TEXT,
+    provider    INT     NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+	street1		TEXT	NOT NULL,
+	street2		TEXT,
+	city		TEXT	NOT NULL,
+	county		TEXT,
+	state		TEXT	NOT NULL,
+	country		TEXT	NOT NULL,
+	post_code	TEXT	NOT NULL
+);
+
+CREATE TABLE acq.provider_contact (
+	id		SERIAL	PRIMARY KEY,
+    provider    INT NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+    name    TEXT NULL NULL,
+    role    TEXT, -- free-form.. e.g. "our sales guy"
+    email   TEXT,
+    phone   TEXT
+);
+
+CREATE TABLE acq.provider_contact_address (
+	id			SERIAL	PRIMARY KEY,
+	valid			BOOL	NOT NULL DEFAULT TRUE,
+	address_type	TEXT,
+	contact    		INT	    NOT NULL REFERENCES acq.provider_contact (id) DEFERRABLE INITIALLY DEFERRED,
+	street1			TEXT	NOT NULL,
+	street2			TEXT,
+	city			TEXT	NOT NULL,
+	county			TEXT,
+	state			TEXT	NOT NULL,
+	country			TEXT	NOT NULL,
+	post_code		TEXT	NOT NULL
+);
+
+
 CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
-	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
-	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
 	code		TEXT	UNIQUE,
 	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
 
 CREATE TABLE acq.funding_source_credit (
 	id	SERIAL	PRIMARY KEY,
-	funding_source    INT     NOT NULL REFERENCES acq.funding_source (id),
+	funding_source    INT     NOT NULL REFERENCES acq.funding_source (id) DEFERRABLE INITIALLY DEFERRED,
 	amount	NUMERIC	NOT NULL,
 	note	TEXT
 );
 
 CREATE TABLE acq.fund (
     id              SERIAL  PRIMARY KEY,
-    org             INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    org             INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name            TEXT    NOT NULL,
     year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
-    currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code),
+    currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
     code            TEXT    UNIQUE,
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
 );
 
 CREATE TABLE acq.fund_debit (
 	id			SERIAL	PRIMARY KEY,
-	fund			INT     NOT NULL REFERENCES acq.fund (id),
+	fund			INT     NOT NULL REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
 	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
-	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
 	amount			NUMERIC	NOT NULL,
 	encumbrance		BOOL	NOT NULL DEFAULT TRUE,
 	debit_type		TEXT	NOT NULL,
-	xfer_destination	INT	REFERENCES acq.fund (id)
+	xfer_destination	INT	REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE acq.fund_allocation (
     id          SERIAL  PRIMARY KEY,
-    funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     amount      NUMERIC,
     percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
-    allocator   INT NOT NULL REFERENCES actor.usr (id),
+    allocator   INT NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     note        TEXT,
     CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
 );
@@ -89,8 +127,8 @@ CREATE TABLE acq.fund_allocation (
 
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
-	owner		INT				NOT NULL REFERENCES actor.usr (id),
-	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	name		TEXT				NOT NULL,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
@@ -99,11 +137,11 @@ CREATE TABLE acq.picklist (
 
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
-	owner		INT				NOT NULL REFERENCES actor.usr (id),
-	ordering_agency		INT				NOT NULL REFERENCES actor.org_unit (id),
+	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	ordering_agency		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	provider	INT				NOT NULL REFERENCES acq.provider (id),
+	provider	INT				NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
 	state		TEXT				NOT NULL DEFAULT 'new'
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
@@ -112,9 +150,9 @@ CREATE INDEX po_state_idx ON acq.purchase_order (state);
 
 CREATE TABLE acq.po_note (
 	id		SERIAL				PRIMARY KEY,
-	purchase_order	INT				NOT NULL REFERENCES acq.purchase_order (id),
-	creator		INT				NOT NULL REFERENCES actor.usr (id),
-	editor		INT				NOT NULL REFERENCES actor.usr (id),
+	purchase_order	INT				NOT NULL REFERENCES acq.purchase_order (id) DEFERRABLE INITIALLY DEFERRED,
+	creator		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	value		TEXT				NOT NULL
@@ -123,15 +161,15 @@ CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
 
 CREATE TABLE acq.lineitem (
 	id                  BIGSERIAL                   PRIMARY KEY,
-	selector            INT                         NOT NULL REFERENCES actor.org_unit (id),
-	provider            INT                         REFERENCES acq.provider (id),
-	purchase_order      INT                         REFERENCES acq.purchase_order (id),
-	picklist            INT                         REFERENCES acq.picklist (id),
+	selector            INT                         NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	provider            INT                         REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+	purchase_order      INT                         REFERENCES acq.purchase_order (id) DEFERRABLE INITIALLY DEFERRED,
+	picklist            INT                         REFERENCES acq.picklist (id) DEFERRABLE INITIALLY DEFERRED,
 	expected_recv_time  TIMESTAMP WITH TIME ZONE,
 	create_time         TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	edit_time           TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	marc                TEXT                        NOT NULL,
-	eg_bib_id           INT                         REFERENCES biblio.record_entry (id),
+	eg_bib_id           INT                         REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
 	source_label        TEXT,
 	item_count          INT                         NOT NULL DEFAULT 0,
 	state               TEXT                        NOT NULL DEFAULT 'new',
@@ -142,9 +180,9 @@ CREATE INDEX li_pl_idx ON acq.lineitem (picklist);
 
 CREATE TABLE acq.lineitem_note (
 	id		SERIAL				PRIMARY KEY,
-	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id),
-	creator		INT				NOT NULL REFERENCES actor.usr (id),
-	editor		INT				NOT NULL REFERENCES actor.usr (id),
+	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
+	creator		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	value		TEXT				NOT NULL
@@ -153,14 +191,14 @@ CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 
 CREATE TABLE acq.lineitem_detail (
 	id		BIGSERIAL			PRIMARY KEY,
-	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id),
-	fund		INT				REFERENCES acq.fund (id),
-	fund_debit	INT				REFERENCES acq.fund_debit (id),
-	eg_copy_id	BIGINT			REFERENCES asset.copy (id) ON DELETE SET NULL,
+	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
+	fund		INT				REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
+	fund_debit	INT				REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
+	eg_copy_id	BIGINT			REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	barcode		TEXT,
 	cn_label	TEXT,
-    owning_lib  INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL,
-    location    INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL,
+    owning_lib  INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    location    INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	recv_time	TIMESTAMP WITH TIME ZONE
 );
 
@@ -182,7 +220,7 @@ CREATE TABLE acq.lineitem_marc_attr_definition (
 CREATE TABLE acq.lineitem_provider_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
 	xpath		TEXT		NOT NULL,
-	provider	INT	NOT NULL REFERENCES acq.provider (id)
+	provider	INT	NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (acq.lineitem_attr_definition);
 
 CREATE TABLE acq.lineitem_generated_attr_definition (
@@ -192,7 +230,7 @@ CREATE TABLE acq.lineitem_generated_attr_definition (
 
 CREATE TABLE acq.lineitem_usr_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
-	usr		INT	NOT NULL REFERENCES actor.usr (id)
+	usr		INT	NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (acq.lineitem_attr_definition);
 
 CREATE TABLE acq.lineitem_local_attr_definition (
@@ -202,7 +240,7 @@ CREATE TABLE acq.lineitem_local_attr_definition (
 CREATE TABLE acq.lineitem_attr (
 	id		BIGSERIAL	PRIMARY KEY,
 	definition	BIGINT		NOT NULL,
-	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id),
+	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
 	attr_type	TEXT		NOT NULL,
 	attr_name	TEXT		NOT NULL,
 	attr_value	TEXT		NOT NULL

@@ -1,0 +1,15 @@
+<span>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/depth_selector.js'></script>
+	<span id='depth_selector_span'>
+		<!--#if expr="$SHOW_DEPTHSEL_TEXT='true'"-->
+		<span>&library.select; </span>
+		<!--#endif-->
+		<select id='depth_selector' >
+			<option value='new'>&library.select.label;</option>
+		</select>
+	</span>
+	<span class='hide_me' id='lib_selector_span'>
+		<a id='lib_selector_link' class='classic_link' href='javascript:void(0)' title='&library.select.help;'></a>
+	</span>
+</span>
+

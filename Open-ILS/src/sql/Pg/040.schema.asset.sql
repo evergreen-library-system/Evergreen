@@ -69,8 +69,8 @@ CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE ass
 CREATE TABLE asset.copy_transparency (
 	id		SERIAL		PRIMARY KEY,
 	deposit_amount	NUMERIC(6,2),
-	owner		INT		NOT NULL REFERENCES actor.org_unit (id),
-	circ_lib	INT		REFERENCES actor.org_unit (id),
+	owner		INT		NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	circ_lib	INT		REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	loan_duration	INT		CHECK ( loan_duration IN (1,2,3) ),
 	fine_level	INT		CHECK ( fine_level IN (1,2,3) ),
 	holdable	BOOL,
@@ -86,8 +86,8 @@ CREATE TABLE asset.copy_transparency (
 
 CREATE TABLE asset.copy_tranparency_map (
 	id		BIGSERIAL	PRIMARY KEY,
-	tansparency	INT	NOT NULL REFERENCES asset.copy_transparency (id),
-	target_copy	INT	NOT NULL UNIQUE REFERENCES asset.copy (id)
+	tansparency	INT	NOT NULL REFERENCES asset.copy_transparency (id) DEFERRABLE INITIALLY DEFERRED,
+	target_copy	INT	NOT NULL UNIQUE REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX cp_tr_cp_idx ON asset.copy_tranparency_map (tansparency);
 

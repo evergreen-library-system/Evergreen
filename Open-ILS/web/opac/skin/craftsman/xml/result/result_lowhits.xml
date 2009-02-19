@@ -1,0 +1,39 @@
+<div id='result_low_hits' class='lowhits-box hide_me'>
+	<ul>
+		<li>
+			<div id='result_low_hits_msg' class='hide_me'>&result.lowhits.few;</div>
+			<div id='result_zero_hits_msg' class='hide_me'>&result.lowhits.zero;</div>
+		</li>	
+		<!-- spell checker -->
+		<li id='did_you_mean'>
+			<span>&result.lowhits.did.you.mean; </span>
+			<a class='classic_link' id='spell_check_link'> </a>
+		</li>
+	
+		<li id='low_hits_remove_format' class='hide_me'>
+			<span>&result.lowhits.formats; </span>
+			<a id='low_hits_remove_format_link' class='classic_link'>&result.lowhits.formats.search;</a>
+		</li>
+	
+		<li id='low_hits_cross_ref' class='hide_me'>
+			<span>&result.lowhits.related;</span>
+			<div>
+				<a id='low_hits_xref_link' class='classic_link' style='padding-right: 5px;'> </a>
+			</div>
+		</li>
+	
+		<li id='low_hits_expand_range' class='hide_me'>
+			<span>&result.lowhits.expand; </span>
+			<a id='low_hits_expand_link' class='classic_link' style='padding-right: 5px;'> </a>
+		</li>
+			
+		<li id='low_hits_search_type' class='hide_me'>
+			<span>&result.lowhits.class;</span>
+			<a id='low_hits_title_search' class='classic_link' style='padding-right: 5px;'>&result.lowhits.title;</a>
+			<a id='low_hits_author_search' class='classic_link' style='padding-right: 5px;'>&result.lowhits.author;</a>
+			<a id='low_hits_subject_search' class='classic_link' style='padding-right: 5px;'>&result.lowhits.subject;</a>
+			<a id='low_hits_series_search' class='classic_link' style='padding-right: 5px;'>&result.lowhits.series;</a>
+			<a id='low_hits_keyword_search' class='classic_link' style='padding-right: 5px;'>&result.lowhits.keyword;</a>
+		</li>
+	</ul>
+</div>

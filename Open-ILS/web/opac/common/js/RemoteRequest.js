@@ -61,7 +61,8 @@ function RemoteRequest( service, method ) {
 
 	/* dojo is currently only available in the OPAC */
 	try {
-		this.locale	= dojo.config.locale;
+		/* We want OpenSRF.locale for xx-YY format */
+		this.locale	= OpenSRF.locale;
 	}
 	catch (e) {
 		this.locale = null;

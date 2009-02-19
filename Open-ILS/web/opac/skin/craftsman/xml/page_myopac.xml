@@ -1,0 +1,68 @@
+<div id='canvas_main' class='hide_me'>
+
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/myopac.js'></script>
+    <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
+
+	<script language='javascript' type='text/javascript'> config.ids.altcanvas.myopac_reload = 'myopac_reloading'; </script>
+	<div id='myopac_reloading' class='hide_me canvas'> &common.loading; </div>
+
+	<script language='javascript' type='text/javascript'>
+		config.ids.myopac = {};
+		config.css.myopac = {};
+		config.names.myopac = {};
+	</script>
+
+	<br/>
+	<table style='width: 98%; text-align: center;'>
+		<tbody>
+			<tr id='myopac_nav_row'>
+
+				<td class='myopac_link border_6' id='myopac_summary_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("summary");'>&myopac.account;</a>
+				</td>
+
+				<td class='myopac_link border_6' id='myopac_checked_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("checked");'>&myopac.checkouts;</a>
+				</td>
+
+				<td class='myopac_link border_6' id='myopac_holds_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("holds");'>&myopac.holds;</a>
+				</td>
+
+				<td class='myopac_link border_6' id='myopac_fines_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("fines");'>&myopac.fines;</a>
+				</td>
+
+				<td class='myopac_link border_6' id='myopac_prefs_td' >
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("prefs");'>&myopac.preferences;</a>
+				</td>
+
+				<td class='myopac_link border_6' id='myopac_bookbag_td' nowrap='nowrap'>
+					<a href='javascript:void(0);' 
+						onclick='myOPACChangePage("bookbag");'>&myopac.bookbags;</a>
+
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+
+	<br/>
+
+	<div id='myopac_main_div'>
+		<!--#include virtual="myopac/myopac_summary.xml"-->
+		<!--#include virtual="myopac/myopac_checked.xml"-->
+		<!--#include virtual="myopac/myopac_holds.xml"-->
+		<!--#include virtual="myopac/myopac_fines.xml"-->
+		<!--#include virtual="myopac/myopac_prefs.xml"-->
+		<!--#include virtual="myopac/myopac_bookbags.xml"-->
+	</div>
+
+</div>
+
+

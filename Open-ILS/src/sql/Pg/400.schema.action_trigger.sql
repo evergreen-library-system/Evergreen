@@ -87,12 +87,12 @@ INSERT INTO action_trigger.cleanup (module,description) VALUES ('ClearAllPending
 CREATE TABLE action_trigger.event_definition (
     id              SERIAL      PRIMARY KEY,
     active          BOOL        NOT NULL DEFAULT TRUE,
-    owner           INT         NOT NULL REFERENCES actor.org_unit (id),
-    hook            TEXT        NOT NULL REFERENCES action_trigger.hook (key),
-    validator       TEXT        NOT NULL REFERENCES action_trigger.validator (module),
-    reactor         TEXT        NOT NULL REFERENCES action_trigger.reactor (module),
-    cleanup_success TEXT        REFERENCES action_trigger.cleanup (module),
-    cleanup_failure TEXT        REFERENCES action_trigger.cleanup (module),
+    owner           INT         NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    hook            TEXT        NOT NULL REFERENCES action_trigger.hook (key) DEFERRABLE INITIALLY DEFERRED,
+    validator       TEXT        NOT NULL REFERENCES action_trigger.validator (module) DEFERRABLE INITIALLY DEFERRED,
+    reactor         TEXT        NOT NULL REFERENCES action_trigger.reactor (module) DEFERRABLE INITIALLY DEFERRED,
+    cleanup_success TEXT        REFERENCES action_trigger.cleanup (module) DEFERRABLE INITIALLY DEFERRED,
+    cleanup_failure TEXT        REFERENCES action_trigger.cleanup (module) DEFERRABLE INITIALLY DEFERRED,
     delay           INTERVAL    NOT NULL DEFAULT '5 minutes',
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
@@ -102,11 +102,11 @@ CREATE TABLE action_trigger.event_definition (
 
 CREATE TABLE action_trigger.environment (
     id          SERIAL  PRIMARY KEY,
-    event_def   INT     NOT NULL REFERENCES action_trigger.event_definition (id),
+    event_def   INT     NOT NULL REFERENCES action_trigger.event_definition (id) DEFERRABLE INITIALLY DEFERRED,
     path        TEXT,       -- fields to flesh. given a hook with a core_type of circ, imagine circ_lib.parent_ou expanding to
                             -- {flesh: 2, flesh_fields: {circ: ['circ_lib'], aou: ['parent_ou']}} ... default is to flesh all
                             -- at flesh depth 1
-    collector   TEXT    REFERENCES action_trigger.collector (module), -- if set, given the object at 'path', return some data
+    collector   TEXT    REFERENCES action_trigger.collector (module) DEFERRABLE INITIALLY DEFERRED, -- if set, given the object at 'path', return some data
                                                                       -- to be stashed at environment.<label>
     label       TEXT    CHECK (label NOT IN ('result','target','event')),
     CONSTRAINT env_event_label_once UNIQUE (event_def,label)
@@ -115,7 +115,7 @@ CREATE TABLE action_trigger.environment (
 CREATE TABLE action_trigger.event (
     id              BIGSERIAL   PRIMARY KEY,
     target          BIGINT      NOT NULL, -- points at the id from class defined by event_def.hook.core_type
-    event_def       INT         REFERENCES action_trigger.event_definition (id),
+    event_def       INT         REFERENCES action_trigger.event_definition (id) DEFERRABLE INITIALLY DEFERRED,
     add_time        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     run_time        TIMESTAMPTZ NOT NULL,
     start_time      TIMESTAMPTZ,
@@ -129,11 +129,11 @@ CREATE TABLE action_trigger.event (
 
 CREATE TABLE action_trigger.event_params (
     id          BIGSERIAL   PRIMARY KEY,
-    event_def   INT         NOT NULL REFERENCES action_trigger.event_definition (id),
+    event_def   INT         NOT NULL REFERENCES action_trigger.event_definition (id) DEFERRABLE INITIALLY DEFERRED,
     param       TEXT        NOT NULL, -- the key under environment.event.params to store the output of ...
-    value       TEXT        NOT NULL, -- ... the eval() output of this.  Has access to environmen (and, well, all of perl)
+    value       TEXT        NOT NULL, -- ... the eval() output of this.  Has access to environment (and, well, all of perl)
     CONSTRAINT event_params_event_def_param_once UNIQUE (event_def,param)
 );
 
---COMMIT;
+COMMIT;
 

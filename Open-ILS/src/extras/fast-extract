@@ -58,6 +58,7 @@ $SQL = <<'SQL';
 SELECT  id,
         tcn_source,
         tcn_value,
+        deleted,
         REGEXP_REPLACE(marc, E'\\n','','g') AS marc
   FROM  biblio.record_entry
   WHERE id = ?

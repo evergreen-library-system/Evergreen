@@ -1,0 +1,74 @@
+<div class='resultinfo-box'>
+	<table>
+		<tbody>
+			<tr>	
+				<td id='next_prev_links'>	
+					<span class='hide_me' id='result_info_div' style='font-size: 9pt;'>
+						<span> &common.results; </span> 
+						<span id='offset_start'> </span>
+						<span> - </span>
+						<span id='offset_end'> </span>
+						<span> &common.ofAtLeast; </span>
+						<span id='result_count'> </span>
+						<span style='padding-left: 6px;'> (page </span>
+						<span id='current_page'> </span>
+						<span> &common.of; </span>
+						<span id='num_pages'> </span>
+					</span>
+	
+					<span id='start_end_links_span' class='hide_me' 
+							style='padding-left: 40px;' >
+						<a class='search_page_nav_link' id='search_home_link' 
+							title="&rdetail.page.results;">&rdetail.start;</a><a class='search_page_nav_link' 
+								id='prev_link' title='&rdetail.page.previous;'>&#171;</a>
+	
+						<span class='search_page_nav_link' id='page_numbers'> </span>
+	
+						<a  class='search_page_nav_link' id='next_link' 
+							title='&rdetail.page.next;'>&#187;</a>
+							<!--
+							<a class='search_page_nav_link' 
+								id='end_link' title="&rdetail.page.last;">&rdetail.end;</a>
+								-->
+					</span>	
+				</td>	
+				<td width='15%' colspan='5' align='center'>
+					<span id='search_info_table' class='hide_me'>
+						<b>&result.info.copies; </b>
+					</span>
+				</td>
+			</tr>		
+		</tbody>
+	</table>
+</div>
+<div class='resultinfo-bottom-box'>
+	<table>
+		<tbody>
+			<tr id='result_thead_row'>
+				<td> 
+					<div class='hide_me' id='no_formats' style='padding: 4px;'>
+						<b>
+							<span style='color:red;'>*</span>
+							&result.info.no.items;
+							<div>&result.info.format.items;</div>
+						</b>
+					</div>
+				</td>
+				<td>
+					<div class='hide_me' id='rresult_show_all' style='padding: 4px;'>
+						<a href='javascript:rresultExpandSearch();' id='rresult_show_all_link' 
+							class='classic_link'>&result.info.show; </a>
+					</div>
+				</td>
+				<td>
+					<div class='hide_me' id='rresult_show_here' style='padding: 4px;'>
+						<a href='javascript:rresultContractSearch();' id='rresult_show_here_link' 
+							class='classic_link'>&result.info.show; </a>
+					</div>
+	
+				</td>
+				<td rowspan='2' class='copy_count_cell' style='font-size: 8pt; padding-top: 4px; width: 80px;'  align='center' name='result_thead_ccell'> </td>
+			</tr>	
+		</tbody>
+	</table>
+</div>

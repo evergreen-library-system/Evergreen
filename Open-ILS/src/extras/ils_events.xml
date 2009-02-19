@@ -719,6 +719,9 @@
 	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
 		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
 	</event>
+	<event code='1713' textcode='SURVEY_RESPONSES_EXIST'>
+		<desc xml:lang="en-US">Responses to this survey exist</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>

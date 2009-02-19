@@ -23,6 +23,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo.require('openils.Event');
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.OrgUtils');
+    dojo.require('openils.Util');
 
     dojo.declare('openils.User', null, {
 

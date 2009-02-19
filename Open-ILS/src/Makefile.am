@@ -243,12 +243,20 @@ webcore-install:
 	cp -r @top_srcdir@/Open-ILS/web/. $(DESTDIR)$(WEBDIR)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(opacextrasdir)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(XSLDIR)
+	cp -r $(DESTDIR)$(WEBDIR)/opac/skin/default/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
+	cp -r @top_srcdir@/Open-ILS/web/opac/skin/craftsman/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/rresult.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/rdetail.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
 	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/mresult.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/rresult.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/rdetail.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/advanced.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/myopac.xml
+	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/cnbrowse.xml
 
 
 offline-install:

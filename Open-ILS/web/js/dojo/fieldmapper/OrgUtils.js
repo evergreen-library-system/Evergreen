@@ -100,7 +100,19 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
    /* ---------------------------------------------------------------------- */
 
 	fieldmapper.aou.prototype.fetchOrgSettingDefault = function (name) {
-		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, name ); 
+		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [this.id(), name] ); 
+	}
+
+	fieldmapper.aou.prototype.fetchOrgSettingBatch = function (nameList) {
+		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [this.id(), nameList] ); 
+	}
+
+	fieldmapper.aou.fetchOrgSettingDefault = function (orgId, name) {
+		return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [orgId, name] ); 
+	}
+
+	fieldmapper.aou.fetchOrgSettingBatch = function (orgId, nameList) {
+		return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [orgId, nameList] ); 
 	}
 
 	fieldmapper.aout.findOrgType = function (id) {

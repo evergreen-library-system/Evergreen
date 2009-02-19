@@ -1,0 +1,37 @@
+
+<!-- These are the UI components that may be needed on any given page.  The must be
+	set to class += 'hide_me' by default -->
+
+<div id='not_the_canvas' xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<!-- the login page -->
+	<!--#if expr="$FRONT_PAGE!='true'"-->
+		<!--#include virtual="login.xml"-->
+	<!--#endif-->
+
+	<!-- The org tree -->
+	<!--#include virtual="orgtree.xml"-->
+
+	<!-- ============================================================================= -->
+	<!-- Register the alternate canvases  -->
+	<script language='javascript' type='text/javascript'>
+		config.ids.altcanvas.org_tree		= config.ids.common.org_container;
+		config.ids.altcanvas.holds			= 'holds_box';
+		config.ids.altcanvas.check_holds	= 'check_holds_box';
+		config.ids.altcanvas.xulholds		= 'xulholds_box';
+		config.ids.altcanvas.loading		= 'loading_alt';
+		//config.ids.altcanvas.cnbrowse		= 'cn_browse';
+	</script>
+
+	<!--#if expr="$FRONT_PAGE!='true'"-->
+		<!--#include virtual="holds.xml"-->
+		<!-- #include virtual="cn_browse.xml"-->
+	<!--#endif-->
+
+	<div id='loading_alt' class='hide_me canvas' style='margin-top: 6px;'>
+		<div style='margin-top: 30px; margin-bottom: 30px; text-align: center; font-weight: 700;'>
+			<img src='../../../../images/progressbar_green.gif' style='margin: 5px;' />
+		</div>
+	</div>
+
+</div>

@@ -646,6 +646,7 @@ function uEditApproveAddr( tbody, row, address ) {
                 // update the ID on the new address
                 address.id(oldId);
                 address.replaces(null);
+                address.pending('f');
                 removeChildren($('ue_address_tbody'));
 	            uEditBuildAddrs(patron);
             }
@@ -697,7 +698,7 @@ function uEditBuildAddrFields(patron, address) {
 	uEditCheckSharedAddr(patron, address, tbody, row);
     
     // see if this is a pending address
-    if( address.replaces() != null ) {
+    if( isTrue(address.pending()) ) {
         var button = $n(row, 'ue_addr_approve');
         unHideMe(button);
         button.onclick = function() { uEditApproveAddr( tbody, row, address ); }

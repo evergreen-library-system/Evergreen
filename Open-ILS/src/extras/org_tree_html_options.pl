@@ -6,6 +6,7 @@ use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use Unicode::Normalize;
+use Data::Dumper;
 
 die "usage: perl org_tree_html_options.pl <bootstrap_config> <output_file>" unless $ARGV[1];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
@@ -16,6 +17,12 @@ Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("ID
 
 my $ses = OpenSRF::AppSession->create("open-ils.actor");
 my $tree = $ses->request("open-ils.actor.org_tree.retrieve")->gather(1);
+
+my @types;
+my $aout = $ses->request("open-ils.actor.org_types.retrieve")->gather(1);
+foreach my $type (@$aout) {
+	$types[int($type->id)] = $type;
+}
 
 print_option($tree);
 
@@ -28,7 +35,7 @@ sub print_option {
 	my $node = shift;
 	return unless ($node->opac_visible =~ /^[y1t]+/i);
 
-	my $depth = $node->ou_type - 1;
+	my $depth = $types[$node->ou_type]->depth;
 	my $sname = entityize($node->shortname);
 	my $name = entityize($node->name);
 	my $kids = $node->children;

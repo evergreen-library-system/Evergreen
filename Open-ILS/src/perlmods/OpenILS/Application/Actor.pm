@@ -2065,8 +2065,7 @@ sub user_transaction_history {
 
 	$e->rollback;
 
-	#my @mbts = _make_mbts( @xacts );
-	my @mbts = $U->make_mbts( @xacts );
+	my @mbts = $U->make_mbts( $e, @xacts );
 
 	if(defined($type)) {
 		@mbts = grep { $_->xact_type eq $type } @mbts;

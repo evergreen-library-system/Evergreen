@@ -204,4 +204,18 @@ if(!dojo._hasResource["openils.Util"]) {
         }
         return map;
     };
+
+    /**
+     * Assume a space-separated interval string, with optional comma
+     * E.g. "1 year, 2 days"  "3 days 6 hours"
+     */
+    openils.Util.intervalToSeconds = function(interval) {
+        var d = new Date();
+        var start = d.getTime();
+        var parts = interval.split(' ');
+        for(var i = 0; i < parts.length; i += 2) 
+            d = dojo.date.add(d, parts[i+1].replace(/s?,?$/,''), Number(parts[i]));
+        return Number((d.getTime() - start) / 1000);
+    };
 }
+

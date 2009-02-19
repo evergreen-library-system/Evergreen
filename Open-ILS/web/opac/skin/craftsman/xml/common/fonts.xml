@@ -1,0 +1,28 @@
+<div id='text_size_div'>
+	<ul>
+		<!--<li><span>&common.textsize.title;</span></li>-->
+		<li><span>Text: </span></li>
+		<li class='btn'>
+			<a href="javascript:void(0);" onclick="setFontSize('large');" title='&common.textsize.large;'>Larger</a> |
+			<a href="javascript:void(0);" onclick="setFontSize('regular');" title='&common.textsize.regular;'>Smaller</a>
+		    <span style='vertical-align: top;'>&nbsp;<span style="font-weight:bold;">|</span>&nbsp;</span>
+		</li>
+        <li>
+		    <span style='vertical-align: top;'>&common.language;</span>
+            <span id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore"
+                searchAttr="label" required="false" jsId='opacLocaleSelector'>
+                <script>
+                    dojo.addOnLoad(function() {
+                        opacLocaleSelector.setValue(locale);
+                        dojo.connect(opacLocaleSelector, 'onChange', 
+                            function () {
+                                location.href = location.href.replace(/opac\/[^\/]+\/skin/, 'opac/' + this.getValue() + '/skin');
+                            }
+                        );
+                    });
+                </script>
+            </span>
+        </li>
+	</ul>
+	<div class='clear'></div>
+</div>

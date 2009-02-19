@@ -252,6 +252,25 @@ vim:et:ts=4:sw=4:
         </cache>
 
         <apps>
+            <!-- Acquisitions server -->
+            <open-ils.acq>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Acq</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.acq_unix.sock</unix_sock>
+                    <unix_pid>open-ils.acq_unix.pid</unix_pid>
+                    <unix_log>open-ils.acq_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+            </open-ils.acq>
+
             <!-- Authentication server -->
             <open-ils.auth>
 
@@ -327,7 +346,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
-					<marc_html_xsl_slim>oilsMARC21slim2HTMLslim.xsl</marc_html_xsl_slim>
+                    <marc_html_xsl_slim>oilsMARC21slim2HTMLslim.xsl</marc_html_xsl_slim>
 
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
@@ -832,7 +851,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
                 <language>perl</language>
-				<implementation>OpenILS::Application::Vandelay</implementation>
+                <implementation>OpenILS::Application::Vandelay</implementation>
                 <max_requests>100</max_requests>
                 <unix_config>
                     <unix_sock>vandelay_unix.sock</unix_sock>
@@ -875,6 +894,7 @@ vim:et:ts=4:sw=4:
                 <appname>opensrf.settings</appname> 
                 <appname>opensrf.math</appname> 
                 <appname>opensrf.dbmath</appname> 
+                <appname>open-ils.acq</appname> 
                 <appname>open-ils.cat</appname> 
                 <appname>open-ils.supercat</appname> 
                 <appname>open-ils.search</appname> 
