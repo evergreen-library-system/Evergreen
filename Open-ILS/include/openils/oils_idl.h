@@ -49,6 +49,8 @@ osrfHash* oilsIDLFindPath( const char*, ... );
 */
 
 int oilsIDL_classIsFieldmapper(const char*);
+osrfHash* oilsIDL_links( const char* classname );
+osrfHash* oilsIDL_fields( const char* classname );
 char * oilsIDL_pton(const char *, int);
 int oilsIDL_ntop(const char *, const char *);
 

@@ -1252,7 +1252,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             );
 
             if (result) {
-	            osrfLogDebug( OSRF_LOG_MARK, "Recieved a result for permission [%s] for user %d at org %d", perm, userid, atoi(context_org) );
+	            osrfLogDebug( OSRF_LOG_MARK, "Received a result for permission [%s] for user %d at org %d", perm, userid, atoi(context_org) );
                 if (dbi_result_first_row(result)) {
                     jsonObject* return_val = oilsMakeJSONFromResult( result );
                     char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
@@ -2030,7 +2030,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 	jsonIterator* search_itr = jsonNewIterator( working_hash );
 
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
+		const char* class = search_itr->key;
+		osrfHash* idlClass = osrfHashGet( oilsIDL(), class );
 		if( !idlClass ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
@@ -2044,8 +2045,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				jsonObjectFree( freeable_hash );
 			return NULL;
 		}
-
-		const char* class = osrfHashGet(idlClass, "classname");
 
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "fkey" ) );
 		char* field = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "field" ) );
@@ -2091,7 +2090,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			field = strdup( field );
 
 		} else if (!field && !fkey) {
-			osrfHash* _links = oilsIDLFindPath("/%s/links", leftclass);
+			osrfHash* _links = oilsIDL_links( leftclass );
 
 			// For each link defined for the left class:
 			// see if the link references the joined class
@@ -2112,7 +2111,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 			if (!field || !fkey) {
 				// Do another such search, with the classes reversed
-				_links = oilsIDLFindPath("/%s/links", class);
+				_links = oilsIDL_links( class );
 
 				// For each link defined for the joined class:
 				// see if the link references the left class
@@ -2952,9 +2951,9 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	jsonIterator* class_itr = jsonNewIterator( selhash );
 	while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), class_itr->key );
+		char* cname = class_itr->key;
+		osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
 		if (!idlClass) continue;
-		char* cname = osrfHashGet(idlClass, "classname");
 
 		if (strcmp(core_class,class_itr->key)) {
 			if (!join_hash) continue;

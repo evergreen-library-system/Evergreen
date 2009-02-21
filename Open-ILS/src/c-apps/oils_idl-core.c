@@ -437,6 +437,22 @@ static osrfHash* findClassDef( const char* classname ) {
 		return osrfHashGet( idlHash, classname );
 }
 
+osrfHash* oilsIDL_links( const char* classname ) {
+	osrfHash* classdef = findClassDef( classname );
+	if( classdef )
+		return osrfHashGet( classdef, "links" );
+	else
+		return NULL;
+}
+
+osrfHash* oilsIDL_fields( const char* classname ) {
+	osrfHash* classdef = findClassDef( classname );
+	if( classdef )
+		return osrfHashGet( classdef, "fields" );
+	else
+		return NULL;
+}
+
 int oilsIDL_classIsFieldmapper ( const char* classname ) {
 	if( findClassDef( classname ) )
 		return 1;
@@ -444,14 +460,12 @@ int oilsIDL_classIsFieldmapper ( const char* classname ) {
 		return 0;
 }
 
+// For a given class: return the array_position associated with a 
+// specified field. (or -1 if it doesn't exist)
 int oilsIDL_ntop (const char* classname, const char* fieldname) {
-	osrfHash* class_def_hash = findClassDef( classname );
-	if( !class_def_hash )
-		return -1;			// No such class
-	
-	osrfHash* fields_hash = osrfHashGet( class_def_hash, "fields" );
+	osrfHash* fields_hash = oilsIDL_fields( classname );
 	if( !fields_hash )
-		return -1;			// No list of fields fo the class
+		return -1;     // No such class, or no fields for it
 
 	osrfHash* field_def_hash = osrfHashGet( fields_hash, fieldname );
 	if( !field_def_hash )
@@ -464,14 +478,12 @@ int oilsIDL_ntop (const char* classname, const char* fieldname) {
 	return atoi( pos_attr );	// Return position as int
 }
 
+// For a given class: return a copy of the name of the field 
+// at a specified array_position (or NULL if there is none)
 char * oilsIDL_pton (const char* classname, int pos) {
-	osrfHash* class_def_hash = findClassDef( classname );
-	if( !class_def_hash )
-		return NULL;		// No such class
-	
-	osrfHash* fields_hash = osrfHashGet( class_def_hash, "fields" );
+	osrfHash* fields_hash = oilsIDL_fields( classname );
 	if( !fields_hash )
-		return NULL;		// No list of fields fo the class
+		return NULL;     // No such class, or no fields for it
 
 	char* ret = NULL;
 	osrfHash* field_def_hash = NULL;
