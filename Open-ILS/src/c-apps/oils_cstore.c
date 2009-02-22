@@ -2463,22 +2463,23 @@ char* SELECT (
 		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
 	else {
 
-		// If we need to build a default list, do so
+		// If we need to build a default list, prepare to do so
 		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
 		if ( _tmp && !_tmp->size ) {
 
-			int i = 0;
-			char* field;
 			osrfHash* core_fields = osrfHashGet( core_meta, "fields" );
 
-    		osrfStringArray* keys = osrfHashKeys( core_fields );
-			while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-				if( ! str_is_true( osrfHashGet( osrfHashGet( core_fields, field ), "virtual" ) ) )
-					jsonObjectPush( _tmp, jsonNewObject( field ) );   // not virtual; use it
-    		}
-			osrfStringArrayFree(keys);
+			osrfHashIterator* field_itr = osrfNewHashIterator( core_fields );
+			osrfHash* field_def;
+			while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
+				if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+					// This field is not virtual, so add it to the list
+					jsonObjectPush( _tmp, jsonNewObject( osrfHashIteratorKey( field_itr ) ) );
+				}
+			}
+			osrfHashIteratorFree( field_itr );
 		}
-	
+
 		// Now build the actual select list
 	    int sel_pos = 1;
 	    jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
