@@ -77,7 +77,6 @@
 		}
 	]]>
 	</script>
-	<script src="chrome://venkman/content/venkman-overlay.js"/>
 
 	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties" />	
 
