@@ -5,6 +5,10 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// Let's try to enable tracemonkey
+pref("javascript.options.jit.chrome", true);
+pref("javascript.options.jit.content", true);
+
 // We'll use this one to help brand some build information into the client, and rely on subversion keywords
 pref("open-ils.repository.headURL","$HeadURL$");
 pref("open-ils.repository.author","$Author$");
@@ -50,6 +54,9 @@ pref("javascript.options.showInConsole",true);
 pref("nglayout.debug.disable_xul_cache",false);
 pref("nglayout.debug.disable_xul_fastload",false);
 pref("browser.xul.error_pages.enabled",true);
+// This one is specific for Open-ILS; debug options on login window
+pref("open-ils.debug_options", true);
+
 
 pref("browser.download.useDownloadDir", true);
 pref("browser.download.folderList", 0);
