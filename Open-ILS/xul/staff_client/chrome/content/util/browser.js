@@ -122,7 +122,7 @@ util.browser.prototype = {
 			cw.xulG.set_tab = window.xulG.set_tab;
 			cw.xulG.new_tab = window.xulG.new_tab;
 			cw.xulG.url_prefix = window.xulG.url_prefix;
-			try { s += ('******** cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
+			try { s += ('******** cw = ' + cw + ' cw.xulG = ' + (cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
 			obj.error.sdump('D_BROWSER',s);
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
@@ -250,7 +250,7 @@ util.browser.prototype = {
 						}
 						//obj.error.sdump('D_BROWSER',s);	
 					} catch(E) {
-						obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + js2JSON(E));
+						obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + (E));
 					}
 				}
 			}

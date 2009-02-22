@@ -55,7 +55,7 @@ util.deck.prototype = {
 			if (content_params) {
 				try {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-					this.error.sdump('D_DECK', 'set_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
+					this.error.sdump('D_DECK', 'set_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + (content_params) );
 					var cw = iframe.contentWindow; 
 					if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
 					cw.IAMXUL = true; cw.xulG = content_params;
@@ -91,11 +91,11 @@ util.deck.prototype = {
 		if (content_params) {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
+				this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + (content_params) );
 				var cw = iframe.contentWindow; 
 				if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
 				cw.IAMXUL = true; cw.xulG = content_params;
-				this.error.sdump('D_DECK', 'cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) );
+				this.error.sdump('D_DECK', 'cw = ' + cw + ' cw.xulG = ' + (cw.xulG) );
 				setTimeout( function() { if (typeof cw.default_focus == 'function') cw.default_focus(); }, 0 );
 			} catch(E) {
 				this.error.sdump('D_ERROR','E: ' + E + '\n');
