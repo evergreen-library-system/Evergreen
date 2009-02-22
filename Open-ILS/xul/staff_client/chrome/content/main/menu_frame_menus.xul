@@ -167,10 +167,10 @@
 		<menuseparator />
 		<menuitem label="&staff.main.menu.cat.create_marc.label;" accesskey="&staff.main.menu.cat.create_marc.accesskey;" command="cmd_create_marc"/>
 		<menuitem label="&staff.main.menu.cat.z39_50_import.label;" accesskey="&staff.main.menu.cat.z39_50_import.accesskey;" command="cmd_z39_50_import"/>
+		<menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
 		<menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
-		<menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
 	</menupopup>
 </menu>
 
@@ -220,6 +220,8 @@
 				<menuitem label="&staff.main.menu.admin.fieldmapper.label;" accesskey="&staff.main.menu.admin.fieldmapper.accesskey;" command="cmd_fieldmapper"/>
 				<menuitem label="&staff.main.menu.admin.cmd_console.label;" accesskey="&staff.main.menu.admin.cmd_console.accesskey;" command="cmd_console"/>
 				<menuitem label="&staff.main.menu.admin.cmd_shell.label;" accesskey="&staff.main.menu.admin.cmd_shell.accesskey;" command="cmd_shell"/>
+				<menuitem label="&staff.main.menu.admin.cmd_chrome_shell.label;" accesskey="&staff.main.menu.admin.cmd_chrome_shell.accesskey;" 
+                    oncommand="try{xulG.window.win.start_js_shell();}catch(E){alert(E);}"/>
 				<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
 				<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
 				<menuitem label="&staff.main.menu.admin.clear_cache.label;" accesskey="&staff.main.menu.admin.clear_cache.accesskey;" command="cmd_clear_cache"/>
@@ -227,7 +229,10 @@
 				<menuitem label="&staff.main.menu.admin.extension_manager.label;" command="cmd_extension_manager"/>
 				<menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
 				<menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
-				<menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{start_venkman();}catch(E){alert(E);}"/>
+				<menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{xulG.window.win.start_debugger();}catch(E){alert(E);}"/>
+				<menuitem label="&staff.main.auth.debug.inspector;" oncommand="try{xulG.window.win.start_inspector();}catch(E){alert(E);}"/>
+				<menuitem label="&staff.main.auth.debug.chrome_list;" oncommand="try{xulG.window.win.start_chrome_list();}catch(E){alert(E);}"/>
+                <menuitem label="&staff.main.menu.admin.ping;" oncommand="try{netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');JSAN.use('util.network'); var n = new util.network(); alert(n.ping());}catch(E){alert(E);}"/>
 			</menupopup>
 		</menu>
 	</menupopup>
