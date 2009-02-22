@@ -39,7 +39,28 @@
 			<tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
 		</tabpanels>
 	</tabbox>
-	<toolbox id="entity_toolbox"/>
+    <statusbar>
+        <statusbarpanel />
+        <spacer flex="1" />
+        <progressmeter id="network_progress" flex="1" mode="determined" value="0" tooltip="network_progress_tip"/>
+        <statusbarpanel />
+    </statusbar>
+    <tooltip id="network_progress_tip" noautohide="true">
+        <grid>
+            <columns>
+                <column/>
+                <column/>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column/>
+                <column/>
+                <column/>
+            </columns>
+            <rows id="network_progress_rows">
+            </rows>
+        </grid>
+    </tooltip>
 </box>
 
 <!-- The main top level menubar -->
