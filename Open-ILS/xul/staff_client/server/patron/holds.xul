@@ -99,6 +99,7 @@
 		<command id="cmd_broken" disabled="true" hidden="true"/>
 		<command id="cmd_holds_retarget"/>
 		<command id="cmd_holds_cancel" />
+		<command id="cmd_search_opac" />
 		<command id="save_columns" />
 	</commandset>
 
