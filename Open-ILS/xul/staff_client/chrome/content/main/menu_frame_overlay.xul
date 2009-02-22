@@ -16,7 +16,7 @@
 <box id="menu_frame_main" flex="1" orient="vertical">
 	<toolbox id="main_toolbox"/>
 	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
-		<tabs id="main_tabs" closebutton="true">
+		<tabs id="main_tabs" closebutton="true" onclosetab="g.menu.close_tab()">
 			<tab id="tab_1" accesskey="&staff.chrome.menu_frame_overlay.tab1.accesskey;" label="&staff.chrome.menu_frame_overlay.tab1.label;" hidden="true" />
 			<tab id="tab_2" accesskey="&staff.chrome.menu_frame_overlay.tab2.accesskey;" label="&staff.chrome.menu_frame_overlay.tab2.label;" hidden="true" />
 			<tab id="tab_3" accesskey="&staff.chrome.menu_frame_overlay.tab3.accesskey;" label="&staff.chrome.menu_frame_overlay.tab3.label;" hidden="true" />
