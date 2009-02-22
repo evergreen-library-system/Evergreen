@@ -638,7 +638,23 @@ OpenILS.data.prototype = {
 			}
 		);
 
-		// Do this after we get the user object
+		// Do these after we get the user object
+
+		this.chain.push(
+			function() {
+				try {
+					var robj = obj.network.simple_request('FM_AOUS_RETRIEVE',[ obj.list.au[0].ws_ou() ]);
+					if (typeof robj.ilsevent != 'undefined') throw(robj);
+					obj.hash.aous = robj;
+					obj.data_progress('Retrieved org unit settings. ');
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
+
 		this.chain.push(
 
 			function() {

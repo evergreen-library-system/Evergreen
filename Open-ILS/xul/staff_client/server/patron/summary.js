@@ -188,6 +188,13 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value','...');
+                                var under_btn; 
+                                if (xulG) {
+                                    if (xulG.display_window) {
+                                        under_btn = xulG.display_window.document.getElementById('under_bills');
+                                        if (under_btn) under_btn.setAttribute('value','...');
+                                    }
+                                }
 								obj.network.simple_request(
 									'FM_MOUS_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
@@ -195,6 +202,8 @@ patron.summary.prototype = {
 										JSAN.use('util.money');
 										var robj = req.getResultObject();
 										e.setAttribute('value', patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+										if (under_btn) under_btn.setAttribute('value', 
+                                            patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
 									}
 								);
 								/*
@@ -232,6 +241,13 @@ patron.summary.prototype = {
 								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) e4.setAttribute('value','...');
 								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
 								var e6 = document.getElementById( 'patron_noncat' ); if (e6) e6.setAttribute('value','...');
+                                var under_btn; 
+                                if (xulG) {
+                                    if (xulG.display_window) {
+                                        under_btn = xulG.display_window.document.getElementById('under_items');
+                                        if (under_btn) under_btn.setAttribute('value','...');
+                                    }
+                                }
 								obj.network.simple_request(
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative',
 									[ ses(), obj.patron.id() ],
@@ -243,6 +259,10 @@ patron.summary.prototype = {
 											if (e3) e3.setAttribute('value', robj.claims_returned	);
 											if (e4) e4.setAttribute('value', robj.long_overdue	);
 											if (e5) e5.setAttribute('value', robj.lost	);
+                                            if (under_btn) under_btn.setAttribute('value', 
+                                                String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) + 
+                                                ( robj.overdue > 0 || robj.claims_returned > 0 || robj.long_overdue > 0 ? '*' : '' )
+                                            );
 										} catch(E) {
 											alert(E);
 										}
@@ -274,6 +294,13 @@ patron.summary.prototype = {
 								e.setAttribute('value','...');
 								var e2 = document.getElementById('patron_holds_available');
 								if (e2) e2.setAttribute('value','...');
+                                var under_btn; 
+                                if (xulG) {
+                                    if (xulG.display_window) {
+                                        under_btn = xulG.display_window.document.getElementById('under_holds');
+                                        if (under_btn) under_btn.setAttribute('value','...');
+                                    }
+                                }
 								obj.network.simple_request(
 									'FM_AHR_COUNT_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
@@ -284,6 +311,7 @@ patron.summary.prototype = {
 										if (e2) e2.setAttribute('value',
 											req.getResultObject().ready
 										);
+                                        if (under_btn) under_btn.setAttribute( 'value', req.getResultObject().ready + '/' + req.getResultObject().total );
 									}
 								);
 							};
@@ -365,7 +393,7 @@ patron.summary.prototype = {
 									patronStrings.getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
-										'<Unset>'
+									    patronStrings.getString('staff.patron.field.unset') 
 									)
 								);
 							};
@@ -375,11 +403,29 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+                                var hide_value = e.getAttribute('hide_value');
+								e.setAttribute( hide_value == 'true' ? 'hidden_value' : 'value',
 									obj.patron.dob() ?
 									obj.patron.dob().substr(0,10) :
-									'<Unset>'
+                                    patronStrings.getString('staff.patron.field.unset') 
 								);
+                                e.setAttribute( hide_value == 'false' ? 'hidden_value' : 'value',
+                                    patronStrings.getString('staff.patron.field.hidden') 
+                                );
+                                var x = document.getElementById('PatronSummaryContact_date_of_birth_label');
+                                if (x) {
+                                    var click_to_hide_dob = x.getAttribute('click_to_hide_dob');
+                                    if (click_to_hide_dob == 'true') {
+                                        x.onclick = function() {
+                                            hide_value = e.getAttribute('hide_value');
+                                            e.setAttribute('hide_value', hide_value == 'true' ? 'false' : 'true'); 
+                                            var value = e.getAttribute('value');
+                                            var hidden_value = e.getAttribute('hidden_value');
+                                            e.setAttribute('value',hidden_value);
+                                            e.setAttribute('hidden_value',value);
+                                        }
+                                    }
+                                }
 							};
 						}
 					],
