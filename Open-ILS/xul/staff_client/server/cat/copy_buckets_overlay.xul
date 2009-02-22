@@ -30,11 +30,20 @@
 	</groupbox>
 </vbox>
 
+<hbox id="pending_buckets_top_ui">
+	<label id="copy_bucket_scan_barcode_label" 
+		value="&staff.circ.copy_status_overlay.copy_status_scan_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey;"
+		control="copy_bucket_barcode_entry_textbox"/>
+	<textbox id="copy_bucket_barcode_entry_textbox" context="clipboard"/>
+	<button id="copy_bucket_submit_barcode_button" 
+		label="&staff.circ.copy_status_overlay.copy_status_submit_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_submit_barcode.accesskey;"
+		command="cmd_copy_bucket_submit_barcode"/>
+</hbox>
+
 <hbox id="pending_buckets_bottom_ui">
-	<button id="save_button1" command="save_columns1" label="&staff.cat.copy_buckets_overlay.pending_buckets.save_columns1;" />
-	<button id="clip_button1" command="sel_clip1" label="&staff.cat.copy_buckets_overlay.pending_buckets.sel_clip1;" disabled="true" />
-	<button id="cmd_print_export_btn1" command="cmd_print_export1" label="&staff.cat.copy_buckets_overlay.pending_buckets.cmd_print_export1;" />
-	<button id="cmd_export_btn1" command="cmd_export1" label="&staff.cat.copy_buckets_overlay.pending_buckets.cmd_export1;" />
+    <hbox id="list_actions1"/>
 	<spacer flex="1"/>
 	<button label="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.label;" command="copy_buckets_add" accesskey="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_add.accesskey;" image="/xul/server/skin/media/images/down_arrow.gif"/>
 	<button label="&staff.cat.copy_buckets_overlay.pending_buckets.copy_buckets_sel_add.label;" command="copy_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
@@ -46,8 +55,6 @@
 	<button command="copy_buckets_delete_bucket" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_delete_bucket.label;"/>
 	<button id="refresh" label="&staff.cat.copy_buckets_overlay.copy_buckets.refresh.label;"/>
 	<spacer flex="1"/>
-	<button id="save_button2" command="save_columns2" label="&staff.cat.copy_buckets_overlay.copy_buckets.save_columns2.label;" />
-	<button id="clip_button2" command="sel_clip2" label="&staff.cat.copy_buckets_overlay.copy_buckets.sel_clip2.label;" disabled="true" />
 	<button command="copy_buckets_delete_item" label="&staff.cat.copy_buckets_overlay.copy_buckets.delete_item.label;" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
 	<button command="copy_buckets_export" label="&staff.cat.copy_buckets_overlay.copy_buckets.export.label;" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
@@ -61,12 +68,7 @@
 </hbox>
 
 <hbox id="copy_buckets_bottom_ui">
-	<button id="copy_buckets_print" label="&staff.cat.copy_buckets_overlay.copy_buckets.print.label;" command="cmd_copy_buckets_print" accesskey="&staff.cat.copy_buckets_overlay.copy_buckets.print.accesskey;"/>
-	<button id="cmd_print_export_btn2" command="cmd_print_export2" label="&staff.cat.copy_buckets_overlay.copy_buckets.print_export.label;" />
-	<button id="copy_buckets_export" 
-		label="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label;"
-		command="cmd_copy_buckets_export"
-		accesskey=""/>
+    <hbox id="list_actions2"/>
 	<spacer flex="1"/>
 	<hbox style="background: grey">
 		<vbox><spacer flex="1"/><label value="&staff.cat.copy_buckets_overlay.copy_buckets.batch.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>

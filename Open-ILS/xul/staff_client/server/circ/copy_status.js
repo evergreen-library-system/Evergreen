@@ -110,14 +110,21 @@ circ.copy_status.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
-					'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
-					'sel_clip' : [
-						['command'],
-						function() { 
-							obj.list.clipboard(); 
-							obj.controller.view.copy_status_barcode_entry_textbox.focus();
-						}
-					],
+                    'list_actions' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                e.appendChild( obj.list.render_list_actions() );
+                                obj.list.set_list_actions(
+                                    {
+                                        'on_complete' : function() { obj.controller.view.copy_status_barcode_entry_textbox.focus(); } 
+                                    }
+                                );
+                            };
+                        }
+                    ],
+                    'sel_clip' : [ ['command'], function() { obj.list.clipboard(); obj.controller.view.copy_status_barcode_entry_textbox.focus(); } ],
+                    'save_columns' : [ ['command'], function() { obj.list.save_columns(); obj.controller.view.copy_status_barcode_entry_textbox.focus(); } ],
 					'sel_checkin' : [
 						['command'],
 						function() {
@@ -327,19 +334,6 @@ circ.copy_status.prototype = {
 							}
 						}
 					],
-					'cmd_csv_to_clipboard' : [ ['command'], function() { 
-						obj.list.dump_csv_to_clipboard(); 
-						obj.controller.view.copy_status_barcode_entry_textbox.focus();
-					} ],
-					'cmd_csv_to_printer' : [ ['command'], function() { 
-						obj.list.dump_csv_to_printer(); 
-						obj.controller.view.copy_status_barcode_entry_textbox.focus();
-					} ],
-					'cmd_csv_to_file' : [ ['command'], function() { 
-						obj.list.dump_csv_to_file( { 'defaultFileName' : 'item_status.txt' } ); 
-						obj.controller.view.copy_status_barcode_entry_textbox.focus();
-					} ],
-
 					'cmd_add_items' : [
 						['command'],
 						function() {

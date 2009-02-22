@@ -70,6 +70,7 @@
 			}
 		}
 
+		function default_focus() { try { setTimeout( function() { document.getElementById('copy_bucket_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
 	]]>
 	</script>
 
@@ -77,18 +78,7 @@
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
 
 	<commandset id="copy_buckets_cmds">
-		<command id="sel_clip1" />
-		<command id="save_columns1" />
-		<command id="sel_clip2" />
-		<command id="save_columns2" />
-		<command id="cmd_print_export1" />
-		<command id="cmd_export1" />
-		<command id="cmd_print_export2" />
-		<command id="cmd_copy_buckets_submit_barcode" />
-		<command id="cmd_copy_buckets_print" />
-		<command id="cmd_copy_buckets_export" />
-		<command id="cmd_copy_buckets_reprint" />
-		<command id="cmd_copy_buckets_done" />
+		<command id="cmd_copy_bucket_submit_barcode" />
 		<command id="cmd_export_to_copy_status" />
 		<command id="copy_buckets_new_bucket" />
 		<command id="copy_buckets_delete_bucket" />
