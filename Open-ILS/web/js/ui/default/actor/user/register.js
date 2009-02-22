@@ -174,8 +174,8 @@ function fleshFMRow(row, fmcls, args) {
         dijitArgs : {style: wstyle},
         orgLimitPerms : ['UPDATE_USER'],
     });
-    widget.build();
 
+    widget.build();
     widget._wtype = fmcls;
     widget._fmfield = fmfield;
     widget._addr = args.addr;
@@ -371,6 +371,14 @@ function uEditDeleteAddr(id) {
         rows[i].parentNode.removeChild(rows[i]);
     widgetPile = widgetPile.filter(function(w){return (w._addr != id)});
 }
+
+function uEditToggleRequired() {
+    if((tbody.className +'').match(/hide-non-required/))
+        openils.Util.removeCSSClass(tbody, 'hide-non-required');
+    else
+        openils.Util.addCSSClass(tbody, 'hide-non-required');
+}
+
 
 
 openils.Util.addOnLoad(load);

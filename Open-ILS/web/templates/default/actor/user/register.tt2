@@ -60,31 +60,41 @@
 
     .dijitTextBoxFocused, .dijitFocused { border:1px dashed #3e3e3e; color: #303030; font-weight:bold;}
 
+    .hide-non-required tr:not([required]) {
+        visibility:hidden;
+        display:none;
+    }
+
+    #require-toggle {
+        margin-top:10px;
+        margin-bottom:-5px;
+    }
+
 </style>
 
 <table>
     <tbody id='uedit-tbody'>
-        <tr fmclass='ac' fmfield='barcode'/>
-        <tr fmclass='au' fmfield='usrname'/>
-        <tr fmclass='au' fmfield='passwd'/>
-        <tr fmclass='au' fmfield='passwd'><td/><td>Verify Password</td><td/></tr>
-        <tr fmclass='au' fmfield='first_given_name'/>
+        <tr fmclass='ac' fmfield='barcode' required='required'/>
+        <tr fmclass='au' fmfield='usrname' required='required'/>
+        <tr fmclass='au' fmfield='passwd' required='required'/>
+        <tr fmclass='au' fmfield='passwd' required='required'><td/><td>Verify Password</td><td/></tr>
+        <tr fmclass='au' fmfield='first_given_name' required='required'/>
         <tr fmclass='au' fmfield='second_given_name'/>
-        <tr fmclass='au' fmfield='family_name'/>
+        <tr fmclass='au' fmfield='family_name' required='required'/>
         <tr fmclass='au' fmfield='suffix'/>
         <tr fmclass='au' fmfield='alias'/>
         <tr fmclass='au' fmfield='dob'/>
         <tr fmclass='au' fmfield='juvenile'/>
-        <tr fmclass='au' fmfield='ident_type'/>
-        <tr fmclass='au' fmfield='ident_value'/>
+        <tr fmclass='au' fmfield='ident_type' required='required'/>
+        <tr fmclass='au' fmfield='ident_value' required='required'/>
         <tr fmclass='au' fmfield='email'/>
         <tr fmclass='au' fmfield='day_phone'/>
         <tr fmclass='au' fmfield='evening_phone'/>
         <tr fmclass='au' fmfield='other_phone'/>
-        <tr fmclass='au' fmfield='home_ou'/>
-        <tr fmclass='au' fmfield='profile'/>
-        <tr fmclass='au' fmfield='expire_date'/>
-        <tr fmclass='au' fmfield='net_access_level'/>
+        <tr fmclass='au' fmfield='home_ou' required='required'/>
+        <tr fmclass='au' fmfield='profile' required='required'/>
+        <tr fmclass='au' fmfield='expire_date' required='required'/>
+        <tr fmclass='au' fmfield='net_access_level' required='required'/>
         <tr fmclass='au' fmfield='active'/>
         <tr fmclass='au' fmfield='barred'/>
         <tr fmclass='au' fmfield='master_account'/>
@@ -92,7 +102,7 @@
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
         <!-- Address -->
-        <tr name='uedit-addr-divider' class='divider' type='addr-template'>
+        <tr name='uedit-addr-divider' class='divider' type='addr-template' required='show'>
             <td colspan='2'>Address</td>
             <td>
                 <span>Mailing</span><input type='radio' name='mailing_address'>
@@ -100,16 +110,16 @@
                 <button name='delete-button' class='uedit-addr-del-button'>X</button>
             </td>
         </tr>
-        <tr fmclass='aua' fmfield='address_type' type='addr-template'/>
-        <tr fmclass='aua' fmfield='post_code' type='addr-template'/>
-        <tr fmclass='aua' fmfield='street1' type='addr-template'/>
-        <tr fmclass='aua' fmfield='street2' type='addr-template'/>
-        <tr fmclass='aua' fmfield='city' type='addr-template'/>
-        <tr fmclass='aua' fmfield='county' type='addr-template'/>
-        <tr fmclass='aua' fmfield='state' type='addr-template'/>
-        <tr fmclass='aua' fmfield='country' type='addr-template'/>
-        <tr fmclass='aua' fmfield='valid' type='addr-template'/>
-        <tr fmclass='aua' fmfield='within_city_limits' type='addr-template'/>
+        <tr fmclass='aua' fmfield='address_type' type='addr-template' required='show'/>
+        <tr fmclass='aua' fmfield='post_code' type='addr-template' required='required'/>
+        <tr fmclass='aua' fmfield='street1' type='addr-template' required='required'/>
+        <tr fmclass='aua' fmfield='street2' type='addr-template' required='show'/>
+        <tr fmclass='aua' fmfield='city' type='addr-template' required='required'/>
+        <tr fmclass='aua' fmfield='county' type='addr-template' required='show'/>
+        <tr fmclass='aua' fmfield='state' type='addr-template' required='required'/>
+        <tr fmclass='aua' fmfield='country' type='addr-template' required='required'/>
+        <tr fmclass='aua' fmfield='valid' type='addr-template' required='show'/>
+        <tr fmclass='aua' fmfield='within_city_limits' type='addr-template' required='show'/>
 
         <tr id='new-addr-row' class='newaddr-row'>
             <td colspan='0' style='text-align:center;'>
@@ -130,6 +140,9 @@
 <div id='uedit-save-div'>
     <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
     <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone'>Save &amp; Clone</button>
+    <div id='require-toggle'>
+        <a href='javascript:uEditToggleRequired();'>Show/Hide Required Fields</a>
+    </div>
 </div>
 
 <!-- context help widget -->
