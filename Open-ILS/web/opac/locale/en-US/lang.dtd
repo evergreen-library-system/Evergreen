@@ -565,6 +565,14 @@
 <!ENTITY staff.main.auth.debug.clear.accesskey "C">
 <!ENTITY staff.main.auth.debug.javascript "JavaScript Console">
 <!ENTITY staff.main.auth.debug.javascript.accesskey "J">
+<!ENTITY staff.main.auth.debug.debugger "Debugger">
+<!ENTITY staff.main.auth.debug.debugger.accesskey "D">
+<!ENTITY staff.main.auth.debug.inspector "DOM Inspector">
+<!ENTITY staff.main.auth.debug.inspector.accesskey "I">
+<!ENTITY staff.main.auth.debug.chrome_list "Chrome List">
+<!ENTITY staff.main.auth.debug.chrome_list.accesskey "">
+<!ENTITY staff.main.auth.debug.js_shell "Javascript Shell">
+<!ENTITY staff.main.auth.debug.js_shell.accesskey "">
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
 <!ENTITY staff.main.auth.offline.caption "Offline Use">
@@ -591,6 +599,8 @@
 <!ENTITY staff.main.menu.admin.cmd_console.label "JavaScript Console">
 <!ENTITY staff.main.menu.admin.cmd_shell.accesskey "H">
 <!ENTITY staff.main.menu.admin.cmd_shell.label "JavaScript Shell">
+<!ENTITY staff.main.menu.admin.cmd_chrome_shell.accesskey "">
+<!ENTITY staff.main.menu.admin.cmd_chrome_shell.label "JavaScript Shell (Chrome)">
 <!ENTITY staff.main.menu.admin.cmd_test.label "Test Module">
 <!ENTITY staff.main.menu.admin.copy_location_edit.accesskey "L">
 <!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">
@@ -625,6 +635,7 @@
 <!ENTITY staff.main.menu.admin.xuleditor.accesskey "X">
 <!ENTITY staff.main.menu.admin.xuleditor.label "XUL Test">
 <!ENTITY staff.main.menu.admin.venkman.label "Venkman">
+<!ENTITY staff.main.menu.admin.ping "Ping Server">
 <!ENTITY staff.main.menu.cat.accesskey "g">
 <!ENTITY staff.main.menu.cat.add_bib.key "B">
 <!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">
@@ -1173,8 +1184,12 @@
 <!ENTITY staff.patron_navbar.edit.accesskey 'E'>
 <!ENTITY staff.patron_navbar.holds 'Holds'>
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
-<!ENTITY staff.patron_navbar.info 'Info'>
+<!ENTITY staff.patron_navbar.info 'Display Info'>
 <!ENTITY staff.patron_navbar.info.accesskey 'o'>
+<!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
+<!ENTITY staff.patron_navbar.alert.accesskey 'A'>
+<!ENTITY staff.patron_navbar.other 'Other'>
+<!ENTITY staff.patron_navbar.other.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
 <!ENTITY staff.patron_navbar.items.accesskey 'I'>
 <!ENTITY staff.patron_navbar.items.problem_items.caption 'Lost, Claimed Returned, Long Overdue, Has Unpaid Billings'>
@@ -2329,6 +2344,8 @@
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
 <!ENTITY staff.patron.holds_overlay.print.label "Print">
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
+<!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
+<!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
 <!ENTITY staff.patron.info_group.clone.accesskey "N">
 <!ENTITY staff.patron.info_group.remove.accesskey "R">
@@ -2645,3 +2662,5 @@
 <!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
 <!ENTITY staff.portal.title "Evergreen Staff Client Portal Page">
 <!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">
+<!ENTITY ui.circ.patron_summary.horizontal "Alternative Horizontal Patron Summary Panel">
+<!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
