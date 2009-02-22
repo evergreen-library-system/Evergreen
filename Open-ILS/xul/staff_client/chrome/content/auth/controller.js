@@ -60,6 +60,30 @@ auth.controller.prototype = {
 							obj.debug('js_console');
 						}
 					],
+                    'cmd_debugger' : [
+                        ['command'],
+                        function() {
+                            start_debugger();
+                        }
+                    ],
+                    'cmd_inspector' : [
+                        ['command'],
+                        function() {
+                            start_inspector();
+                        }
+                    ],
+                    'cmd_chrome_list' : [
+                        ['command'],
+                        function() {
+                            start_chrome_list();
+                        }
+                    ],
+                    'cmd_js_shell' : [
+                        ['command'],
+                        function() {
+                            start_js_shell();
+                        }
+                    ],
 					'cmd_override' : [
 						['command'],
 						function() {

@@ -1,6 +1,7 @@
 dump('entering main/main.js\n');
 // vim:noet:sw=4:ts=4:
 
+var xulG;
 var offlineStrings;
 var authStrings;
 
@@ -31,6 +32,47 @@ function clear_the_cache() {
 	}
 }
 
+function toOpenWindowByType(inType, uri) { /* for Venkman */
+    try {
+    	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
+    	window.open(uri, "_blank", winopts);
+    } catch(E) {
+        alert(E); throw(E);
+    }
+}
+
+function start_debugger() {
+    setTimeout(
+        function() {
+            try { start_venkman(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
+function start_inspector() {
+    setTimeout(
+        function() {
+            try { inspectDOMDocument(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
+function start_chrome_list() {
+    setTimeout(
+        function() {
+            try { startChromeList(); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
+function start_js_shell() {
+    setTimeout(
+        function() {
+            try { window.open('chrome://open_ils_staff_client/content/util/shell.html','shell','chrome,resizable,scrollbars'); } catch(E) { alert(E); }
+        }, 0
+    );
+};
+
 function main_init() {
 	dump('entering main_init()\n');
 	try {
@@ -46,6 +88,8 @@ function main_init() {
 			);
 		}
 		/////////////////////////////////////////////////////////////////////////////
+
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
@@ -105,10 +149,11 @@ function main_init() {
 
 			grant_perms(url);
 
-			var xulG = {
+			xulG = {
 				'auth' : G.auth,
 				'url' : url,
-				'window' : G.window
+				'window' : G.window,
+                'data' : G.data
 			};
 
 			if (G.data.ws_info && G.data.ws_info[G.auth.controller.view.server_prompt.value]) {
@@ -118,6 +163,7 @@ function main_init() {
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
 				iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
 				iframe.contentWindow.xulG = xulG;
+                G.data_xul = iframe.contentWindow;
 			} else {
 				xulG.file = G.file;
 				var deck = G.auth.controller.view.ws_deck;
@@ -249,6 +295,11 @@ function main_init() {
 			version = 'versionless debug build';
 			document.getElementById('debug_gb').hidden = false;
 		}
+
+        if (pref && pref.getBoolPref('open-ils.debug_options')) {
+			document.getElementById('debug_gb').hidden = false;
+        }
+
         window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);
 		var x = document.getElementById('about_btn');
 		x.addEventListener(
@@ -267,9 +318,13 @@ function main_init() {
 			function() {
 				if (G.data.session) {
 					try {
-						G.window.open('chrome://open_ils_staff_client/content/main/menu_frame.xul?server=' +
-							G.data.server,'main','chrome,resizable' );
-
+						//G.data_xul.g.open_menu();
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var mframe = xulG.window.open(( String(urls.XUL_MENU_FRAME).match(/^chrome:/) ? '' : G.data.server ) + urls.XUL_MENU_FRAME
+                            + '?server='+window.escape(G.data.server),
+                            'main'+xulG.window.window_name_increment(),'chrome,resizable'
+                        );
+                        mframe.xulG = xulG; 
 					} catch(E) { alert(E); }
 				} else {
 					alert ( offlineStrings.getString('main.new_window_btn.login_first_warning') );
@@ -322,10 +377,7 @@ function main_init() {
 			false
 		);
 
-        var pref = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefBranch);
-
-		if ( found_ws_info_in_Achrome() && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
+		if ( found_ws_info_in_Achrome() && pref && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
 			//b.addEventListener(
