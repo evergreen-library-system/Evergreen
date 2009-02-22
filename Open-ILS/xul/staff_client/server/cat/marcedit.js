@@ -9,6 +9,7 @@ default xml namespace = marcns;
 
 var tooltip_hash = {};
 var current_focus;
+var _record;
 var _record_type;
 var bib_data;
 
@@ -1336,7 +1337,7 @@ function marcSubfield (sf) {
 
 function loadRecord(rec) {
 	try {
-			var _record = rec;
+			_record = rec;
 			var grid_rows = document.getElementById('recGrid').lastChild;
 
 			while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
