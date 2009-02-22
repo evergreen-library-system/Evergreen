@@ -102,11 +102,15 @@ sub set_ou_settings {
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
+    my $all_allowed = $e->allowed("UPDATE_ORG_UNIT_SETTING_ALL", $org_id);
+
 	for my $name (keys %$settings) {
         my $val = $$settings{$name};
         my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
 
-        return $e->die_event unless $e->allowed("UPDATE_ORG_UNIT_SETTING.$name", $org_id);
+        unless($all_allowed) {
+            return $e->die_event unless $e->allowed("UPDATE_ORG_UNIT_SETTING.$name", $org_id);
+        }
 
         if(defined $val) {
             $val = OpenSRF::Utils::JSON->perl2JSON($val);
