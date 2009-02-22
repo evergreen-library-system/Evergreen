@@ -5,6 +5,10 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// These are specific to Evergreen
+pref("open-ils.write_in_user_chrome_directory", true);
+pref("open-ils.disable_accesskeys_on_tabs", false);
+
 // Let's try to enable tracemonkey
 pref("javascript.options.jit.chrome", true);
 pref("javascript.options.jit.content", true);
@@ -22,9 +26,6 @@ pref("general.useragent.locale", "en-US");
 // We need something like this to get window.open to work in some places (where it complains about
 // navigator.xul not being registered.  But is about:blank the best value to use here?
 pref("browser.chromeURL","about:blank");
-
-// This one is specific for Open-ILS
-pref("open-ils.write_in_user_chrome_directory", true);
 
 // This one just makes things speedier.  We use a lot of XMLHttpRequest
 pref("network.http.max-persistent-connections-per-server",8);

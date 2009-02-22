@@ -26,6 +26,13 @@ main.menu = function () {
         },
         false
     );
+
+	if (xulG.pref.getBoolPref('open-ils.disable_accesskeys_on_tabs')) {
+		var tabs = document.getElementById('main_tabs');
+		for (var i = 0; i < tabs.childNodes.length; i++) {
+			tabs.childNodes[i].setAttribute('accesskey','');
+		}
+	}
 }
 
 main.menu.prototype = {

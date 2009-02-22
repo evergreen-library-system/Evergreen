@@ -8,15 +8,13 @@ var authStrings;
 function grant_perms(url) {
 	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";
 	dump('Granting ' + perms + ' to ' + url + '\n');
-	var pref = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefBranch);
-	if (pref) {
-		pref.setCharPref("capability.principal.codebase.p0.granted", perms);
-		pref.setCharPref("capability.principal.codebase.p0.id", url);
-		pref.setCharPref("capability.principal.codebase.p1.granted", perms);
-		pref.setCharPref("capability.principal.codebase.p1.id", url.replace('http:','https:'));
-		pref.setBoolPref("dom.disable_open_during_load",false);
-		pref.setBoolPref("browser.popups.showPopupBlocker",false);
+	if (G.pref) {
+		G.pref.setCharPref("capability.principal.codebase.p0.granted", perms);
+		G.pref.setCharPref("capability.principal.codebase.p0.id", url);
+		G.pref.setCharPref("capability.principal.codebase.p1.granted", perms);
+		G.pref.setCharPref("capability.principal.codebase.p1.id", url.replace('http:','https:'));
+		G.pref.setBoolPref("dom.disable_open_during_load",false);
+		G.pref.setBoolPref("browser.popups.showPopupBlocker",false);
 	}
 
 }
@@ -89,8 +87,6 @@ function main_init() {
 		}
 		/////////////////////////////////////////////////////////////////////////////
 
-        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 
@@ -98,6 +94,8 @@ function main_init() {
 
 		var mw = self;
 		G =  {};
+        
+		G.pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 		JSAN.use('util.error');
 		G.error = new util.error();
@@ -153,7 +151,8 @@ function main_init() {
 				'auth' : G.auth,
 				'url' : url,
 				'window' : G.window,
-                'data' : G.data
+                'data' : G.data,
+				'pref' : G.pref
 			};
 
 			if (G.data.ws_info && G.data.ws_info[G.auth.controller.view.server_prompt.value]) {
@@ -296,7 +295,7 @@ function main_init() {
 			document.getElementById('debug_gb').hidden = false;
 		}
 
-        if (pref && pref.getBoolPref('open-ils.debug_options')) {
+        if (G.pref && G.pref.getBoolPref('open-ils.debug_options')) {
 			document.getElementById('debug_gb').hidden = false;
         }
 
@@ -377,7 +376,7 @@ function main_init() {
 			false
 		);
 
-		if ( found_ws_info_in_Achrome() && pref && pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
+		if ( found_ws_info_in_Achrome() && G.pref && G.pref.getBoolPref("open-ils.write_in_user_chrome_directory") ) {
 			//var hbox = x.parentNode; var b = document.createElement('button'); 
 			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
 			//b.addEventListener(
