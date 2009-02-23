@@ -31,28 +31,34 @@
 			OILS_OPAC_IMAGES_HOST = '<!--#echo var="OILS_OPAC_IMAGES_HOST"-->extras/ac/jacket/';
 		<!--#endif -->
 
+		<!-- builds the "Now searching: <org_unit>" text on the home page -->
+		function home_init() {
+			getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); 
+			getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));
+		}
 	</script>
 
-    <!-- enable Dojo date picker -->
-    <script language='javascript' type="text/javascript">
+	<!-- enable Dojo date picker -->
+	<script language='javascript' type="text/javascript">
 
-        var djConfig = {parseOnLoad: true, isDebug: false}, lang, bidi;
+		var djConfig = {parseOnLoad: true, isDebug: false}, lang, bidi;
 
-        var locale = location.href.replace( /.+opac\/([^\/]+)\/skin.+/, '$1' );
-        if (!locale) locale = '<!--#echo var="locale"-->';
+		var locale = location.href.replace( /.+opac\/([^\/]+)\/skin.+/, '$1' );
+		if (!locale) locale = '<!--#echo var="locale"-->';
 
-        djConfig.locale = locale.toLowerCase();
+		djConfig.locale = locale.toLowerCase();
 
-    </script>
+	</script>
 
-    <script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
+	<script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
 
-    <script language="javascript" type="text/javascript">
-        dojo.require("dijit._Calendar");
-        dojo.require("dijit.form.DateTextBox");
-        dojo.require("dojo.date.locale");
-        dojo.require("dojo.date.stamp");
-        dojo.require("dojo.parser");
-        dojo.require("openils.I18N");
-        dojo.require("dijit.form.FilteringSelect");
-    </script>
+	<script language="javascript" type="text/javascript">
+		dojo.addOnLoad(init);
+		dojo.require("dijit._Calendar");
+		dojo.require("dijit.form.DateTextBox");
+		dojo.require("dijit.form.FilteringSelect");
+		dojo.require("dojo.date.locale");
+		dojo.require("dojo.date.stamp");
+		dojo.require("dojo.parser");
+		dojo.require("openils.I18N");
+	</script>
