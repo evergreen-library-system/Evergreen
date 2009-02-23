@@ -307,25 +307,30 @@ patron.display.prototype = {
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
-                            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_holds" ) ); } catch(E) {};
-							obj.reset_nav_styling('cmd_patron_holds');
-							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_HOLDS,	
-								//+ '?patron_id=' + window.escape( obj.patron.id() ),
-								{},
-								{
-                                    'display_window' : window,
-									'patron_id' : obj.patron.id(),
-									'on_list_change' : function(h) {
-										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										//obj.summary_window.g.summary.controller.render('patron_holds');
-										//obj.summary_window.g.summary.controller.render('patron_standing_penalties');
-										obj.refresh_all();
-									},
-									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
-								}
-							);
+                            try {
+                                try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_holds" ) ); } catch(E) {};
+                                obj.reset_nav_styling('cmd_patron_holds');
+                                obj.right_deck.set_iframe(
+                                    urls.XUL_PATRON_HOLDS,	
+                                    //+ '?patron_id=' + window.escape( obj.patron.id() ),
+                                    {},
+                                    {
+                                        'display_window' : window,
+                                        'patron_id' : obj.patron.id(),
+                                        'patron_barcode' : obj.patron.card().barcode(),
+                                        'on_list_change' : function(h) {
+                                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                            //obj.summary_window.g.summary.controller.render('patron_holds');
+                                            //obj.summary_window.g.summary.controller.render('patron_standing_penalties');
+                                            obj.refresh_all();
+                                        },
+                                        'url_prefix' : xulG.url_prefix,
+                                        'new_tab' : xulG.new_tab
+                                    }
+                                );
+                            } catch(E) {
+                                alert(E);
+                            }
 						}
 					],
 					'cmd_patron_bills' : [

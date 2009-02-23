@@ -35,6 +35,7 @@ patron.holds.prototype = {
 		var obj = this;
 
 		obj.patron_id = params['patron_id'];
+		obj.patron_barcode = params['patron_barcode'];
 		obj.docid = params['docid'];
 		obj.shelf = params['shelf'];
 		obj.tree_id = params['tree_id'];
@@ -905,7 +906,7 @@ patron.holds.prototype = {
                     'cmd_search_opac' : [
                         ['command'],
                         function(ev) {
-                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'patron_id' : obj.patron_id };
+                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'patron_barcode' : obj.patron_barcode };
                             content_params.new_tab = xulG.new_tab;
                             content_params.set_tab = xulG.set_tab;
                             content_params.set_tab_name = xulG.set_tab_name;
@@ -913,7 +914,7 @@ patron.holds.prototype = {
                             content_params.url_prefix = xulG.url_prefix;
                             content_params.network_meter = xulG.network_meter;
                             content_params.chrome_xulG = xulG.chrome_xulG;
-                            xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_OPAC_WRAPPER, {}, content_params);
+                            xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_OPAC_WRAPPER, {}, content_params);
                         }
                     ]
 				}

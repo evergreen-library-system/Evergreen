@@ -49,6 +49,7 @@
 				g.holds.init( 
 					{ 
 						'patron_id' : xul_param('patron_id'), 
+						'patron_barcode' : xul_param('patron_barcode'), 
 						'docid' : xul_param('docid'),
 						'shelf' : xul_param('shelf'),
 						'pull' : xul_param('pull'),
