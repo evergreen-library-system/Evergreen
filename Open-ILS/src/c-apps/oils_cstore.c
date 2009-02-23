@@ -275,20 +275,30 @@ int osrfAppInitialize() {
 
 static char* getSourceDefinition( osrfHash* class ) {
 
-    char* tabledef = osrfHashGet(class, "tablename");
+	char* tabledef = osrfHashGet(class, "tablename");
 
-    if (!tabledef) {
-        growing_buffer* tablebuf = buffer_init(128);
-        tabledef = osrfHashGet(class, "source_definition");
-        if( !tabledef )
-            tabledef = "(null)";
-        buffer_fadd( tablebuf, "(%s)", tabledef );
-        tabledef = buffer_release(tablebuf);
-    } else {
-        tabledef = strdup(tabledef);
-    }
+	if (tabledef) {
+		tabledef = strdup(tabledef);
+	} else {
+		tabledef = osrfHashGet(class, "source_definition");
+		if( tabledef ) {
+			growing_buffer* tablebuf = buffer_init(128);
+			buffer_fadd( tablebuf, "(%s)", tabledef );
+			tabledef = buffer_release(tablebuf);
+		} else {
+			const char* classname = osrfHashGet( class, "classname" );
+			if( !classname )
+				classname = "???";
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s ERROR No tablename or source_definition for class \"%s\"",
+				MODULENAME,
+				classname
+			);
+		}
+	}
 
-    return tabledef;
+	return tabledef;
 }
 
 /**
@@ -364,6 +374,8 @@ int osrfAppChildInit() {
 		}
 
         char* tabledef = getSourceDefinition(class);
+		if( !tabledef )
+			tabledef = strdup( "(null)" );
 
         growing_buffer* sql_buf = buffer_init(32);
         buffer_fadd( sql_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
@@ -2139,6 +2151,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass,
 					class
 				);
+				free( fkey );
+				free( field );
 				buffer_free(join_buf);
 				if(freeable_hash)
 					jsonObjectFree(freeable_hash);
@@ -2165,6 +2179,16 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(type);
 
 		char* table = getSourceDefinition(idlClass);
+		if( !table ) {
+			free( field );
+			free( fkey );
+			jsonIteratorFree( search_itr );
+			buffer_free( join_buf );
+			if( freeable_hash )
+				jsonObjectFree( freeable_hash );
+			return NULL;
+		}
+
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
 					table, class, class, field, leftclass, fkey);
 		free(table);
@@ -2321,6 +2345,8 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
                 if (!field) {
                     char* table = getSourceDefinition(meta);
+					if( !table )
+						table = strdup( "(?)" );
                     osrfLogError(
                         OSRF_LOG_MARK,
                         "%s: Attempt to reference non-existent column %s on %s (%s)",
@@ -2667,7 +2693,26 @@ char* SELECT (
 	char* table = NULL;
 	if (from_function) table = searchValueTransform(join_hash);
 	else table = getSourceDefinition(core_meta);
-
+	
+	if( !table ) {
+		if (ctx)
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Unable to identify table for core class"
+			);
+		free( col_list );
+		buffer_free( sql_buf );
+		buffer_free( order_buf );
+		buffer_free( group_buf );
+		buffer_free( having_buf );
+		if( defaultselhash ) jsonObjectFree( defaultselhash );
+		free( core_class );
+		return NULL;	
+	}
+	
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
 	free(col_list);
@@ -2677,8 +2722,26 @@ char* SELECT (
 	    // Now, walk the join tree and add that clause
 	    if ( join_hash ) {
 		    char* join_clause = searchJOIN( join_hash, core_meta );
-			buffer_add(sql_buf, join_clause);
-		    free(join_clause);
+			if( join_clause ) {
+				buffer_add(sql_buf, join_clause);
+		    	free(join_clause);
+			} else {
+				if (ctx)
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+  						"Unable to construct JOIN clause(s)"
+					);
+				buffer_free( sql_buf );
+				buffer_free( order_buf );
+				buffer_free( group_buf );
+				buffer_free( having_buf );
+				if( defaultselhash ) jsonObjectFree( defaultselhash );
+				free( core_class );
+				return NULL;
+			}
 	    }
 
 		// Build a WHERE clause, if there is one
@@ -3011,6 +3074,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 	char* col_list = buffer_release(select_buf);
 	char* table = getSourceDefinition(meta);
+	if( !table )
+		table = strdup( "(null)" );
 
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, table, core_class );
 	free(col_list);
