@@ -45,17 +45,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          */
         getFormattedValue : function() {
             var value = this.baseWidgetValue();
-
-            /* text widgets default to "" when no data is entered */
-            if(value == '') return null; 
-
             switch(this.idlField.datatype) {
                 case 'bool':
                     return (value) ? 't' : 'f'
                 case 'timestamp':
                     return dojo.date.stamp.toISOString(value);
                 default:
-                    return value;
+                    return (value == '') ? null : value;
             }
         },
 
