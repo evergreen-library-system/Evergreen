@@ -2466,6 +2466,46 @@ char* SELECT (
 	if (!selhash) {
 		selhash = defaultselhash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
+	} else if( selhash->type != JSON_HASH ) {
+		const char* json_type;
+		switch ( selhash->type )
+		{
+			case 1 :
+				json_type = "JSON_ARRAY";
+				break;
+			case 2 :
+				json_type = "JSON_STRING";
+				break;
+			case 3 :
+				json_type = "JSON_NUMBER";
+				break;
+			case 4 :
+				json_type = "JSON_NULL";
+				break;
+			case 5 :
+				json_type = "JSON_BOOL";
+				break;
+			default :
+				json_type = "(unrecognized)";
+				break;
+		}
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Expected JSON_HASH for SELECT clause; found %s",
+			MODULENAME,
+			json_type
+		);
+
+		if (ctx)
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Malformed SELECT clause in JSON query"
+			);
+		free( core_class );
+		return NULL;
 	} else if ( (tmp_const = jsonObjectGetKeyConst( selhash, core_class )) && tmp_const->type == JSON_STRING ) {
 		char* _x = jsonObjectToSimpleString( tmp_const );
 		if (!strncmp( "*", _x, 1 )) {
