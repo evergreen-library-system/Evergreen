@@ -34,6 +34,11 @@ sub init {
     $self->id( $id ); 
     $self->environment( {} ); 
 
+    if (!$self->id) {
+        $log->error("No Event ID provided");
+        die "No Event ID provided";
+    }
+
     return $self if (!$self->id);
 
     $self->event(
@@ -293,6 +298,12 @@ sub update_state {
     }
 
     my $e = $self->editor->retrieve_action_trigger_event( $self->id );
+    if (!$e) {
+        $log->error( "Could not retrieve object ".$self->id." for update" ) if (!$e);
+        return undef;
+    }
+
+    $log->info( "Retrieved object ".$self->id." for update" );
     $e->start_time( 'now' ) unless $e->start_time;
     $e->update_time( 'now' );
     $e->update_process( $$ );
@@ -303,13 +314,20 @@ sub update_state {
     my $ok = $self->editor->update_action_trigger_event( $e );
     if (!$ok) {
         $self->editor->xact_rollback if ($self->standalone);
+        $log->error( "Update of event ".$self->id." failed" );
         return undef;
     } else {
+        $e = $self->editor->data;
+        $e = $self->editor->retrieve_action_trigger_event( $e ) if (!ref($e));
+        if (!$e) {
+            $log->error( "Update of event ".$self->id." did not return an object" );
+            return undef;
+        }
+        $log->info( "Update of event ".$e->id." suceeded" );
         $ok = $self->editor->xact_commit if ($self->standalone);
     }
 
     if ($ok) {
-        $e = $self->editor->data;
         $self->event->start_time( $e->start_time );
         $self->event->update_time( $e->update_time );
         $self->event->update_process( $e->update_process );
