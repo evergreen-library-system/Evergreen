@@ -906,15 +906,31 @@ patron.holds.prototype = {
                     'cmd_search_opac' : [
                         ['command'],
                         function(ev) {
-                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'passthru_content_params' : { 'patron_barcode' : obj.patron_barcode } };
-                            content_params.new_tab = xulG.new_tab;
-                            content_params.set_tab = xulG.set_tab;
-                            content_params.set_tab_name = xulG.set_tab_name;
-                            content_params.open_chrome_window = xulG.open_chrome_window;
-                            content_params.url_prefix = xulG.url_prefix;
-                            content_params.network_meter = xulG.network_meter;
-                            content_params.chrome_xulG = xulG.chrome_xulG;
-                            xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_OPAC_WRAPPER, {}, content_params);
+                            try {
+                                var content_params = { 
+                                    'show_nav_buttons' : false,
+                                    'show_print_button' : true,
+                                    'passthru_content_params' : { 
+                                        'authtoken' : ses(), 
+                                        'authtime' : ses('authtime'),
+                                        'window_open' : function(a,b,c) {
+                                            try {
+                                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                                                return window.open(a,b,c);
+                                            } catch(E) {
+                                                obj.error.standard_unexpected_error_alert('window_open',E);
+                                            }
+                                        },
+                                        'patron_barcode' : obj.patron_barcode
+                                    },
+                                    'url_prefix' : xulG.url_prefix,
+                                    'url' : xulG.url_prefix( urls.browser )
+                                };
+                                xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER, {}, content_params);
+                            } catch(E) {
+                                g.error.sdump('D_ERROR','set_opac: ' + E);
+                            }
+
                         }
                     ]
 				}
