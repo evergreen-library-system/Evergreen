@@ -906,7 +906,7 @@ patron.holds.prototype = {
                     'cmd_search_opac' : [
                         ['command'],
                         function(ev) {
-                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'patron_barcode' : obj.patron_barcode };
+                            var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'passthru_content_params' : { 'patron_barcode' : obj.patron_barcode } };
                             content_params.new_tab = xulG.new_tab;
                             content_params.set_tab = xulG.set_tab;
                             content_params.set_tab_name = xulG.set_tab_name;
