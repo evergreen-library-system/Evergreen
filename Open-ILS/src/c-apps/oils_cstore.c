@@ -2613,22 +2613,20 @@ char* SELECT (
 					OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
 				}
 
-			    // ... if it's a string, just toss it on the pile
-			    if (selfield->type == JSON_STRING) {
+				// ... if it's a string, just toss it on the pile
+				if (selfield->type == JSON_STRING) {
 
-				    // again, just to be safe
-					const char* _requested_col = selfield->value.s;
-				    osrfHash* field = osrfHashGet( class_field_set, _requested_col );
-				    if (!field) continue;		// No such field in current class; skip it
+					// again, just to be safe
+					const char* col_name = selfield->value.s;
+					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
+					if ( !field_def ) continue;     // No such field in current class; skip it
 
-					const char* col_name = osrfHashGet(field, "name");
-
-                    if (locale) {
-            		    const char* i18n;
-			            if (flags & DISABLE_I18N)
-                            i18n = NULL;
+					if (locale) {
+						const char* i18n;
+						if (flags & DISABLE_I18N)
+							i18n = NULL;
 						else
-							i18n = osrfHashGet(field, "i18n");
+							i18n = osrfHashGet(field_def, "i18n");
 
 						if( str_is_true( i18n ) ) {
                             buffer_fadd( select_buf,
@@ -2641,53 +2639,51 @@ char* SELECT (
 				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                     }
 					
-			    // ... but it could be an object, in which case we check for a Field Transform
-			    } else {
+				// ... but it could be an object, in which case we check for a Field Transform
+				} else {
 
-				    char* _column = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
+					char* col_name = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
-				    // Get the field definition from the IDL
-				    osrfHash* field = osrfHashGet( class_field_set, _column );
-				    if (!field) continue;         // No such field defined in IDL.  Skip it.
+					// Get the field definition from the IDL
+					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
+					if ( !field_def ) continue;         // No such field defined in IDL.  Skip it.
 
 					// Decide what to use as a column alias
 					char* _alias;
 					if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
 						_alias = jsonObjectToSimpleString( tmp_const );
-						free(_column);
-					} else {         // Use column name as its own alias
-						_alias = _column;
+					} else {         // Use field name as the alias
+						_alias = col_name;
 					}
-					_column = NULL;   // To emphasize that we're through with _column
 
 					if (jsonObjectGetKeyConst( selfield, "transform" )) {
-						char* transform_str = searchFieldTransform(cname, field, selfield);
+						char* transform_str = searchFieldTransform(cname, field_def, selfield);
 						buffer_fadd(select_buf, " %s AS \"%s\"", transform_str, _alias);
 						free(transform_str);
 					} else {
-
-						const char* fname = osrfHashGet(field, "name");
 
                         if (locale) {
                 		    const char* i18n;
 			                if (flags & DISABLE_I18N)
                                 i18n = NULL;
 							else
-								i18n = osrfHashGet(field, "i18n");
+								i18n = osrfHashGet(field_def, "i18n");
 
 							if( str_is_true( i18n ) ) {
                                 buffer_fadd( select_buf,
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
-		 							class_tname, cname, fname, class_pkey, cname, class_pkey, locale, _alias);
+		 							class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, _alias);
                             } else {
-					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
+					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
                             }
                         } else {
-					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, _alias);
+					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
                         }
 				    }
 
-				    free(_alias);
+					if( _alias != col_name )
+					    free(_alias);
+					free( col_name );
 			    }
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
@@ -2966,7 +2962,7 @@ char* SELECT (
 
 	string = buffer_release(group_buf);
 
-	if (strlen(string)) {
+	if ( *string ) {
 		OSRF_BUFFER_ADD( sql_buf, " GROUP BY " );
 		OSRF_BUFFER_ADD( sql_buf, string );
 	}
@@ -2975,7 +2971,7 @@ char* SELECT (
 
  	string = buffer_release(having_buf);
  
- 	if (strlen(string)) {
+ 	if ( *string ) {
 		OSRF_BUFFER_ADD( sql_buf, " HAVING " );
 		OSRF_BUFFER_ADD( sql_buf, string );
  	}
@@ -2984,7 +2980,7 @@ char* SELECT (
 
 	string = buffer_release(order_buf);
 
-	if (strlen(string)) {
+	if ( *string ) {
 		OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
 		OSRF_BUFFER_ADD( sql_buf, string );
 	}
@@ -3238,7 +3234,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 			string = buffer_release(order_buf);
 
-			if (strlen(string)) {
+			if ( *string ) {
 				OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
 				OSRF_BUFFER_ADD( sql_buf, string );
 			}
