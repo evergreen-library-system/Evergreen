@@ -57,7 +57,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var valSpan = document.createElement('span');
                     valTd.appendChild(valSpan);
 
+
                     nameTd.appendChild(document.createTextNode(field.label));
+                    row.setAttribute('fmfield', field.name);
                     row.appendChild(nameTd);
                     row.appendChild(valTd);
                     tbody.appendChild(row);
