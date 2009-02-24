@@ -12,6 +12,10 @@ var noEmailMessage;
 var noEmailMessageXUL;
 
 function holdsHandleStaff() {
+
+    // if we know the recipient's barcode, use it
+    if(xulG.patron_barcode) return _holdsHandleStaff();
+
 	swapCanvas($('xulholds_box'));
 	$('xul_recipient_barcode').focus();
 	$('xul_recipient_barcode').onkeypress = function(evt) 
@@ -38,7 +42,7 @@ function _holdsHandleStaffMe() {
 }
 
 function _holdsHandleStaff() {
-	var barcode = $('xul_recipient_barcode').value;
+	var barcode = xulG.patron_barcode || $('xul_recipient_barcode').value;
 	var user = grabUserByBarcode( G.user.session, barcode );
 
 	var evt;
