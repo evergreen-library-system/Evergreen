@@ -2455,10 +2455,47 @@ char* SELECT (
 	else
 		return NULL;
 
-	// punt if we don't know about the core class (and it's not a function)
-	if (!from_function && !(core_meta = osrfHashGet( oilsIDL(), core_class ))) {
-		free(core_class);
-		return NULL;
+	if (!from_function) {
+		// Get the IDL class definition for the core class
+		core_meta = osrfHashGet( oilsIDL(), core_class );
+		if( !core_meta ) {    // Didn't find it?
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: SELECT clause references undefined class: \"%s\"",
+				MODULENAME,
+				core_class
+			);
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"SELECT clause references undefined class in JSON query"
+				);
+			free( core_class );
+			return NULL;
+		}
+
+		// Make sure the class isn't virtual
+		if( str_is_true( osrfHashGet( core_meta, "virtual" ) ) ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Core class is virtual: \"%s\"",
+				MODULENAME,
+				core_class
+			);
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"FROM clause references virtual class in JSON query"
+				);
+			free( core_class );
+			return NULL;
+		}
 	}
 
 	// if the select list is empty, or the core class field list is '*',
@@ -2572,29 +2609,59 @@ char* SELECT (
 			// that case from_function would be non-NULL, and we wouldn't
 			// be here.
 
-		    if ( strcmp( core_class, cname )) {
-			    if (!join_hash) 
-					// There's only one class in the FROM clause,
-					// and this isn't it.  Skip it.
-					continue;
-
-				if (join_hash->type == JSON_STRING) {
-				    string = jsonObjectToSimpleString(join_hash);
-					int different = strcmp( string, cname );
-				    free(string);
-					if ( different )
-						// There's only one class in the FROM clause,
-						// and this isn't it.  Skip it.
-						continue;
+			int class_in_from_clause;    // boolean
+			
+		    if ( ! strcmp( core_class, cname ))
+				// This is the core class -- no problem
+				class_in_from_clause = 1;
+			else {
+				if (!join_hash) 
+					// There's only one class in the FROM clause, and this isn't it
+					class_in_from_clause = 0;
+				else if (join_hash->type == JSON_STRING) {
+					// There's only one class in the FROM clause
+					string = jsonObjectToSimpleString(join_hash);
+					if ( strcmp( string, cname ) )
+						class_in_from_clause = 0;    // This isn't it
+					else 
+						class_in_from_clause = 1;    // This is it
+					free( string );
 				} else {
-				    jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
-					unsigned long size = found->size;
+					jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
+					if ( 0 == found->size )
+						class_in_from_clause = 0;   // Nowhere in the join tree
+					else
+						class_in_from_clause = 1;   // Found it
 					jsonObjectFree( found );
-					if ( 0 == size )
-						// No such class anywhere in the join tree.  Skip it.
-						continue;
 				}
-		    }
+			}
+
+			// If the class isn't in the FROM clause, bail out
+			if( ! class_in_from_clause ) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: SELECT clause references class not in FROM clause: \"%s\"",
+					MODULENAME,
+					cname
+				);
+				if( ctx )
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Selected class not in FROM clause in JSON query"
+					);
+				jsonIteratorFree( selclass_itr );
+				jsonObjectFree( is_agg );
+				buffer_free( sql_buf );
+				buffer_free( select_buf );
+				buffer_free( order_buf );
+				buffer_free( group_buf );
+				buffer_free( having_buf );
+				free( core_class );
+				return NULL;
+			}
 
 			// Look up some attributes of the current class, so that we 
 			// don't have to look them up again for each field
