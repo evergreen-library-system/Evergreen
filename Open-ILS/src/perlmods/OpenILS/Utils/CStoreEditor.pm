@@ -195,7 +195,8 @@ sub session {
 # Starts a storage transaction
 # -----------------------------------------------------------------------------
 sub xact_begin {
-	my $self = shift;
+    my $self = shift;
+    $self->session->connect unless $self->session->state == OpenSRF::AppSession::CONNECTED();
 	$self->log(D, "starting new database transaction");
 	my $stat = $self->request($self->app . '.transaction.begin') unless $self->{xact_id};
 	$self->log(E, "error starting database transaction") unless $stat;
