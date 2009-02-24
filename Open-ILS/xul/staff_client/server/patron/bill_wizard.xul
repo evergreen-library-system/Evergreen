@@ -220,7 +220,7 @@
 				<grid>
 					<columns> <column flex="0" /> <column flex="0" /> </columns>
 					<rows id="page1_rows">
-						<row><label value="&staff.patron.bill_wizard.location.value;"/><textbox id="billing_location" disabled="true" /></row>
+						<row><label value="&staff.patron.bill_wizard.location.value;"/><textbox id="billing_location" disabled="true" context="clipboard" /></row>
 						<row><label value="&staff.patron.bill_wizard.transaction_type.value;"/>
 							<menulist id="xact_type">
 								<menupopup>
@@ -232,8 +232,8 @@
 						<row><label value="&staff.patron.bill_wizard.billing_type.label;"/>
 							<hbox id="menu_placeholder"/>
 						</row>
-						<row><label value="&staff.patron.bill_wizard.amount.value;"/><textbox id="bill_amount" /></row>
-						<row><label value="&staff.patron.bill_wizard.note.value;"/><textbox id="bill_note" multiline="true" rows="5" /></row>
+						<row><label value="&staff.patron.bill_wizard.amount.value;"/><textbox id="bill_amount" context="clipboard" /></row>
+						<row><label value="&staff.patron.bill_wizard.note.value;"/><textbox id="bill_note" multiline="true" rows="5" context="clipboard" /></row>
 					</rows>
 				</grid>
 				<spacer flex="1"/>

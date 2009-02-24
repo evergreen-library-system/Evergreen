@@ -60,7 +60,7 @@
 				value="&staff.circ.checkin.scan.label;" 
 				accesskey="&staff.circ.checkin.scan.accesskey;" 
 				control="checkin_barcode_entry_textbox"/>
-			<textbox id="checkin_barcode_entry_textbox"/>
+			<textbox id="checkin_barcode_entry_textbox" context="clipboard"/>
 			<button id="checkin_submit_barcode_button" 
 				label="&staff.circ.checkin.submit.label;" 
 				command="cmd_checkin_submit_barcode"
@@ -73,7 +73,7 @@
 		<hbox>
 			<hbox id="checkin_effective_date_hbox">
 				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_date_textbox" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
-				<textbox id="checkin_effective_date_textbox"/>
+				<textbox id="checkin_effective_date_textbox" context="clipboard"/>
 			</hbox>
 			<menubar>
 			<menu label="&staff.circ.checkin_overlay.actions.label;" accesskey="&staff.circ.checkin_overlay.actions.accesskey;">

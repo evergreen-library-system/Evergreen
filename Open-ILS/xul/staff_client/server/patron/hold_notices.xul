@@ -195,8 +195,8 @@
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
 				xml += '<caption label="' + $("patronStrings").getString('staff.patron.hold_notices.new_notification_record') + '"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
-				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.method') + '"/><textbox id="method" name="fancy_data"/></row>';
-				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.note') + '"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
+				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.method') + '"/><textbox id="method" name="fancy_data" context="clipboard"/></row>';
+				xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row>';
 				xml += '<row><spacer/><hbox><button label="' + $("patronStrings").getString('staff.patron.hold_notices.cancel') + '" name="fancy_cancel" ';
 				xml += 'accesskey="' + $("patronStrings").getString('staff.patron.hold_notices.cancel_accesskey') + '"/>';
 				xml += '<button label="' + $("patronStrings").getString('staff.patron.hold_notices.add_notif_record') + '" ';

@@ -38,18 +38,18 @@
 					<row>
 						<label value="&staff.patron.bills_overlay.net_balance.value;"/>
 	
-						<textbox id="bill_total_owed" value="" readonly="true" />
+						<textbox id="bill_total_owed" value="" readonly="true"  context="clipboard"/>
 					</row>
 					<row>
 						<label value="&staff.patron.bills_overlay.payment_applied.value;"/>
 			
-						<textbox id="bill_payment_applied" readonly="true"/>
+						<textbox id="bill_payment_applied" readonly="true" context="clipboard"/>
 					</row>
 					<row>
 						<label value="&staff.patron.bills_overlay.new_balance.value;" 
 							style="font-family: bold" />
 	
-						<textbox id="bill_new_balance" readonly="true"/>
+						<textbox id="bill_new_balance" readonly="true" context="clipboard"/>
 					</row>
 				</rows>
 			</grid>
@@ -81,25 +81,25 @@
 						<label value="&staff.patron.bills_overlay.payment_received.value;" style="font-weight: bold"
 							accesskey="&staff.patron.bills_overlay.payment_received.accesskey;" control="bill_payment_amount" />
 			
-						<textbox id="bill_payment_amount" style="border: solid thick black"/>
+						<textbox id="bill_payment_amount" style="border: solid thick black" context="clipboard"/>
 					</row>
 					<row>
 						<label value="&staff.patron.bills_overlay.payment_applied.value;"/>
 			
-						<textbox id="bpato" observes="bill_payment_applied" />
+						<textbox id="bpato" observes="bill_payment_applied"  context="clipboard"/>
 					</row>
 					<row>
 						<label value="&staff.patron.bills_overlay.change.value;" control="bill_change_amount" style="font-weight: bold" />
 	
 						<hbox>
-							<textbox id="bill_change_amount" readonly="true"/>
+							<textbox id="bill_change_amount" readonly="true" context="clipboard"/>
 						</hbox>
 					</row>
 					<row class="hide_patron_credit" hidden="true">
 						<label value="&staff.patron.bills_overlay.patron_credit.value;" 
 							style="font-family: bold" />
 	
-						<textbox id="bill_credit_amount" readonly="true"/>
+						<textbox id="bill_credit_amount" readonly="true" context="clipboard"/>
 					</row>
 				</rows>
 			</grid>

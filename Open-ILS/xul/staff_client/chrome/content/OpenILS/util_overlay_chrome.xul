@@ -1,11 +1,9 @@
-<?xml version="1.0"?>
-<!-- Modified by Jason for Evergreen -->
-
+<?xml version="1.0" encoding="UTF-8"?>
 <overlay id="openils_util_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script>dump('Loading OpenILS/util_overlay.xul\n');</script>
 	<scripts id="openils_util_scripts">
+		<script>dump('starting openils_util_overlay\n');</script>
 		<script type="text/javascript" src="../main/constants.js" />
 		<script type="text/javascript" src="util/utils.js" />
 		<script type="text/javascript" src="util/CGI.js" />
@@ -16,9 +14,10 @@
 		<script type="text/javascript" src="util/RemoteRequest.js" />
 		<script type="text/javascript" src="util/OrgTree.js" />
 		<script type="text/javascript" src="util/org_utils.js" />   
-		<script type="text/javascript" src="global_util.js" />
+		<script type="text/javascript" src="global_util.js" />   
+		<messagecatalog id="offlineStrings" src='chrome://open_ils_staff_client/locale/offline.properties'/>
+		<script>dump('finished openils_util_overlay\n');</script>
 	</scripts>
-	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
 
 </overlay>
 
