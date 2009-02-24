@@ -928,7 +928,7 @@ patron.holds.prototype = {
                                 };
                                 xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER, {}, content_params);
                             } catch(E) {
-                                g.error.sdump('D_ERROR','set_opac: ' + E);
+                                obj.error.sdump('D_ERROR','cmd_search_opac: ' + E);
                             }
 
                         }
