@@ -2584,6 +2584,8 @@ char* SELECT (
 	growing_buffer* group_buf = buffer_init(128);
 	growing_buffer* having_buf = buffer_init(128);
 
+	int aggregate_found = 0;     // boolean
+
 	// Build a select list
 	if(from_function)   // From a function we select everything
 		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
@@ -2608,7 +2610,7 @@ char* SELECT (
 
 		// Now build the actual select list
 	    int sel_pos = 1;
-	    jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
+	    //jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
 	    first = 1;
 	    gfirst = 1;
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
@@ -2634,12 +2636,13 @@ char* SELECT (
 						"Selected class is not defined"
 					);
 				jsonIteratorFree( selclass_itr );
-				jsonObjectFree( is_agg );
+				//jsonObjectFree( is_agg );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
 				buffer_free( order_buf );
 				buffer_free( group_buf );
 				buffer_free( having_buf );
+				if( defaultselhash ) jsonObjectFree( defaultselhash );
 				free( core_class );
 				return NULL;
 			}
@@ -2699,12 +2702,13 @@ char* SELECT (
 						"Selected class not in FROM clause in JSON query"
 					);
 				jsonIteratorFree( selclass_itr );
-				jsonObjectFree( is_agg );
+				//jsonObjectFree( is_agg );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
 				buffer_free( order_buf );
 				buffer_free( group_buf );
 				buffer_free( having_buf );
+				if( defaultselhash ) jsonObjectFree( defaultselhash );
 				free( core_class );
 				return NULL;
 			}
@@ -2751,12 +2755,13 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						jsonObjectFree( is_agg );
+						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
 						buffer_free( group_buf );
 						buffer_free( having_buf );
+						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
 					}
@@ -2805,12 +2810,13 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						jsonObjectFree( is_agg );
+						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
 						buffer_free( group_buf );
 						buffer_free( having_buf );
+						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
 					}
@@ -2869,16 +2875,33 @@ char* SELECT (
 						);
 					jsonIteratorFree( select_itr );
 					jsonIteratorFree( selclass_itr );
-					jsonObjectFree( is_agg );
+					//jsonObjectFree( is_agg );
 					buffer_free( sql_buf );
 					buffer_free( select_buf );
 					buffer_free( order_buf );
 					buffer_free( group_buf );
 					buffer_free( having_buf );
+					if( defaultselhash ) jsonObjectFree( defaultselhash );
 					free( core_class );
 					return NULL;
 				}
 
+				const jsonObject* agg_obj = jsonObjectGetKey( selfield, "aggregate" );
+				if( agg_obj )
+					aggregate_found = 1;
+
+				if( ( ! agg_obj ) || ( ! obj_is_true( agg_obj ) ) ) {
+					// Append a comma (except for the first one)
+					// and add the column to a GROUP BY clause
+					if (gfirst)
+						gfirst = 0;
+					else
+						OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
+
+					buffer_fadd(group_buf, " %d", sel_pos);
+				}
+
+#if 0
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
 					const jsonObject* aggregate_obj = jsonObjectGetKey( selfield, "aggregate" );
@@ -2890,6 +2913,7 @@ char* SELECT (
 					    }
 
 					    buffer_fadd(group_buf, " %d", sel_pos);
+
 					/*
 				    } else if (is_agg = jsonObjectGetKey( selfield, "having" )) {
 					    if (gfirst) {
@@ -2905,6 +2929,7 @@ char* SELECT (
 					*/
 				    }
 			    }
+#endif
 
 			    sel_pos++;
 		    } // end while -- iterating across SELECT columns
@@ -2914,7 +2939,7 @@ char* SELECT (
 
         jsonIteratorFree(selclass_itr);
 
-	    if (is_agg) jsonObjectFree(is_agg);
+	    //if (is_agg) jsonObjectFree(is_agg);
     }
 
 
@@ -3155,7 +3180,7 @@ char* SELECT (
 
 	string = buffer_release(group_buf);
 
-	if ( *string ) {
+	if ( *string && ( aggregate_found || (flags & SELECT_DISTINCT) ) ) {
 		OSRF_BUFFER_ADD( sql_buf, " GROUP BY " );
 		OSRF_BUFFER_ADD( sql_buf, string );
 	}
