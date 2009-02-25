@@ -2423,8 +2423,22 @@ char* SELECT (
 	osrfHash* core_meta = NULL;
 
 	// punt if there's no core class
-	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size ))
+	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size )) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: FROM clause is missing or empty",
+			MODULENAME
+		);
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"FROM clause is missing or empty in JSON query"
+			);
 		return NULL;
+	}
 
 	// get the core class -- the only key of the top level FROM clause, or a string
 	if (join_hash->type == JSON_HASH) {
@@ -2438,11 +2452,25 @@ char* SELECT (
 
 		jsonIteratorFree( tmp_itr );
 		snode = NULL;
-		
-		// There shouldn't be more than one entry in join_hash
-		if( extra )
-			return NULL;	// Malformed join_hash; extra entry
 
+		// There shouldn't be more than one entry in join_hash
+		if( extra ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Malformed FROM clause: extra entry in JSON_HASH",
+				MODULENAME
+			);
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed FROM clause in JSON query"
+				);
+			free( core_class );
+			return NULL;	// Malformed join_hash; extra entry
+		}
 	} else if (join_hash->type == JSON_ARRAY) {
 		from_function = 1;
 		core_class = jsonObjectToSimpleString( jsonObjectGetIndex(join_hash, 0) );
