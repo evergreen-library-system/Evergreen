@@ -2241,7 +2241,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Survey End Date/Time" name="end_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Survey ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="OPAC Surevey?" name="opac" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="OPAC Survey?" name="opac" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Owning Library" name="owner" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 			<field reporter:label="Poll Style?" name="poll" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Is Required?" name="required" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="bool"/>
