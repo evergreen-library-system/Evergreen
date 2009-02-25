@@ -2429,8 +2429,8 @@ sub make_trigger_events {
     my $self = shift;
     return unless $self->circ;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    $ses->request('open-ils.trigger.event.autocreate', $self->circ, 'checkout', $self->circ_lib) if $self->is_checkout;
-    $ses->request('open-ils.trigger.event.autocreate', $self->circ, 'checkin', $self->circ_lib) if $self->is_checkin;
+    $ses->request('open-ils.trigger.event.autocreate', 'checkout', $self->circ, $self->circ_lib) if $self->is_checkout;
+    $ses->request('open-ils.trigger.event.autocreate', 'checkin', $self->circ, $self->circ_lib) if $self->is_checkin;
     # ignore response
 }
 
