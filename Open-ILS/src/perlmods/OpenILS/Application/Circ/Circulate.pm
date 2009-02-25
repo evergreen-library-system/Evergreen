@@ -247,6 +247,7 @@ sub run_method {
             if $circulator->notify_hold;
         $circulator->retarget_holds if $circulator->retarget;
         $circulator->append_reading_list;
+        $circulator->make_trigger_events;
     }
 }
 
@@ -1990,7 +1991,7 @@ sub do_hold_notify {
 }
 
 sub retarget_holds {
-    $logger->info("retargeting prev_check_time=null holds after opportunistic capture");
+    $logger->info("circulator: retargeting prev_check_time=null holds after opportunistic capture");
     my $ses = OpenSRF::AppSession->create('open-ils.storage');
     $ses->request('open-ils.storage.action.hold_request.copy_targeter');
     # no reason to wait for the return value
@@ -2421,6 +2422,16 @@ sub append_reading_list {
     $e->commit;
 
     return undef;
+}
+
+
+sub make_trigger_events {
+    my $self = shift;
+    return unless $self->circ;
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', $self->circ, 'checkout', $self->circ_lib) if $self->is_checkout;
+    $ses->request('open-ils.trigger.event.autocreate', $self->circ, 'checkin', $self->circ_lib) if $self->is_checkin;
+    # ignore response
 }
 
 
