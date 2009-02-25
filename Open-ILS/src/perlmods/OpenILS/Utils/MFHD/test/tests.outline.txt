@@ -1,0 +1,131 @@
+* Test cases for MFHD code
+Basic bibliographic units only. Not testing supplements or
+indexes.
+
+** Test Caption and Pattern fields
+*** Monthly, issue # restarts, calendar change: Jan
+853 ## $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+
+*** Monthly, issue # restarts, calendar change: Mar
+853 ## $82$av.$bno.$u12$vr$i(year)$j(month)$wm$x03
+
+*** Monthly, issue # continuous, calendar change: Jan
+853 ## $83$av.$bno.$u12$vc$i(year)$j(month)$wm$x01
+
+*** Monthly, issue # continuous, calendar change: Mar
+853 ## $84$av.$bno.$u12$vc$i(year)$j(month)$wm$x03
+
+*** Monthly, issue # restarts, Calendar change: Jan, Jul
+853 ## $85$av.$bno.$u6$vr$i(year)$j(month)$wm$x01,07
+
+*** Monthly, issue # continuous, Calendar change: Jan, Jul
+853 ## $86$av.$bno.$u6$vc$i(year)$j(month)$wm$x01,07
+
+*** Monthly, issue # restarts, Calendar change: Jan, Combined issue: Jul/Aug
+853 ## $87$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm07/08
+
+*** Monthly, issue # restarts, Calendar change: Jan, Combined issue: Jan/Feb
+853 ## $88$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm01/02
+
+*** Monthly, iss # restarts, Calendar change: Jan, Combined iss: Nov/Dec
+853 ## $88$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm11/12
+
+*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: Nov/Dec, Jan/Feb
+853 ## $88$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12
+
+** Calculating the publication info for the next issue
+*** Calcuating enumeration (volume, issue)
+**** current issue is 'normal'
+***** subsequent issue is 'normal'
+****** in same volume
+******* issue numbering restarts
+863 ## $81.1$a1$b6$i1990$j06$xMiddle of year, middle of vol.
+863 ## $81.2$a1$b11$i1990$j11$xEnd of year, end of vol.
+
+863 ## $82.1$a1$b6$i1990$j09$xMiddle of year, middle of vol.
+863 ## $82.2$a1$b9$i1990$j12$xEnd of year, middle of vol.
+863 ## $82.3$a1$b11$i1991$j01$xMiddle of year, end of vol.
+
+******** multiple volumes per year
+863 ## $85.1$a1$b5$i1990$j05$xMiddle of year, end of vol.
+
+******* issue numbering is continuous
+863 ## $83.1$a1$b6$i1990$j06$xMiddle of year, middle of vol.
+863 ## $83.2$a1$b11$i1990$j11$xEnd of year, end of vol.
+
+863 ## $84.1$a1$b6$i1990$j09$xMiddle of year, middle of vol.
+863 ## $84.2$a1$b9$i1990$j12$xEnd of year, middle of vol.
+863 ## $84.3$a1$b11$i1991$j01$xMiddle of year, end of vol.
+
+****** in next volume
+******* issue numbering restarts
+863 ## $81.3$a1$b6$i1990$j06$xMiddle of year, middle of vol.
+863 ## $81.4$a1$b11$i1990$j11$xEnd of year, end of vol.
+
+863 ## $82.4$a1$b6$i1990$j09$xMiddle of year, middle of vol.
+863 ## $82.5$a1$b9$i1990$j12$xEnd of year, middle of vol.
+863 ## $82.6$a1$b11$i1991$j01$xMiddle of year, end of vol.
+
+******** multiple volumes per year
+863 ## $85.2$a1$b6$i1990$j06$xMiddle of year, end of vol.
+
+******* issue numbering is continuous
+863 ## $83.3$a1$b6$i1990$j06$xMiddle of year, middle of vol.
+863 ## $83.4$a1$b11$i1990$j11$xEnd of year, end of vol.
+
+863 ## $84.4$a1$b6$i1990$j09$xMiddle of year, middle of vol.
+863 ## $84.5$a1$b9$i1990$j12$xEnd of year, middle of vol.
+863 ## $84.6$a1$b11$i1991$j01$xMiddle of year, end of vol.
+
+******** multiple volumes per year
+863 ## $86.1$a1$b6$i1990$j09$xMiddle of year, end of vol.
+
+***** subsequent issue is combined
+****** in same volume
+****** in next volume
+***** Omitted issue number
+does this happen in a way that is worth recording in a pattern?
+**** current issue is combined
+***** subsequent issue is normal
+****** In same volume
+****** In next volume
+***** subsequent issue is combined
+****** In same volume
+****** In next volume
+***** Omitted issue number
+*** Calculating date
+**** Simple date patterns
+That is, no combined issues, no omitted issues, only one simple
+$yp publication regularity code.
+***** Annual
+***** Bimonthly
+***** Semiweekly
+***** Daily
+***** Biweekly
+***** Semiannual
+***** Biennial
+***** Triennial
+***** Three times a week
+***** Three times a month
+***** Monthly
+***** Quarterly
+***** Semimonthly
+***** Three times a year
+***** Weekly
+**** Fixed publication schedule
+$w frequency is number, $yp publication pattern lists publication
+dates
+**** Omitted dates
+***** Omitted days
+***** Omitted weeks
+***** Omitted months
+***** Omitted seasons
+**** Combined dates
+How does this work with combined issue numbers? Sometimes
+May/June is no.5, and sometimes May/June is no.5/6
+***** Combined weeks
+***** Combined months
+***** Combined seasons
+***** Combined years
+yyy1/yyy2 pattern
+
