@@ -74,7 +74,7 @@ sub create_events_for_object {
         $event->event_def( $def->id );
         $event->run_time( $date->strftime( '%G %T%z' ) );
 
-        $event = $editor->create_action_trigger_event( $event );
+        $editor->create_action_trigger_event( $event );
 
         $client->respond( $event->id );
     }
