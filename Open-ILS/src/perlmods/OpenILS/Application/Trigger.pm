@@ -72,7 +72,7 @@ sub create_events_for_object {
         my $event = Fieldmapper::action_trigger::event->new();
         $event->target( $ident_value );
         $event->event_def( $def->id );
-        $event->run_time( $date->strftime( '%G %T%z' ) );
+        $event->run_time( $date->strftime( '%F %T%z' ) );
 
         $editor->create_action_trigger_event( $event );
 
