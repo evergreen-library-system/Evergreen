@@ -2729,10 +2729,37 @@ char* SELECT (
 				// ... if it's a string, just toss it on the pile
 				if (selfield->type == JSON_STRING) {
 
-					// again, just to be safe
+					// Look up the field in the IDL
 					const char* col_name = selfield->value.s;
 					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
-					if ( !field_def ) continue;     // No such field in current class; skip it
+					if ( !field_def ) {
+						// No such field in current class
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Selected column \"%s\" not defined in IDL for class \"%s\"",
+							MODULENAME,
+							col_name,
+							cname
+						);
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Selected column not defined in JSON query"
+							);
+						jsonIteratorFree( select_itr );
+						jsonIteratorFree( selclass_itr );
+						jsonObjectFree( is_agg );
+						buffer_free( sql_buf );
+						buffer_free( select_buf );
+						buffer_free( order_buf );
+						buffer_free( group_buf );
+						buffer_free( having_buf );
+						free( core_class );
+						return NULL;
+					}
 
 					if (locale) {
 						const char* i18n;
@@ -2759,7 +2786,34 @@ char* SELECT (
 
 					// Get the field definition from the IDL
 					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
-					if ( !field_def ) continue;         // No such field defined in IDL.  Skip it.
+					if ( !field_def ) {
+						// No such field in current class
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Selected column \"%s\" is not defined in IDL for class \"%s\"",
+							MODULENAME,
+							col_name,
+							cname
+						);
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Selected column is not defined in JSON query"
+							);
+						jsonIteratorFree( select_itr );
+						jsonIteratorFree( selclass_itr );
+						jsonObjectFree( is_agg );
+						buffer_free( sql_buf );
+						buffer_free( select_buf );
+						buffer_free( order_buf );
+						buffer_free( group_buf );
+						buffer_free( having_buf );
+						free( core_class );
+						return NULL;
+					}
 
 					// Decide what to use as a column alias
 					char* _alias;
