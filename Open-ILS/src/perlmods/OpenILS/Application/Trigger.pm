@@ -41,7 +41,7 @@ sub create_events_for_object {
         }
     );
 
-    my %hook_hash = map { ($_->id, $_) } @$hooks;
+    my %hook_hash = map { ($_->key, $_) } @$hooks;
 
     my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location ] });
     my $defs = $editor->search_action_trigger_event_definition([
