@@ -1,7 +1,4 @@
-<!--
-<body onload='init();' style='height: 100%; border: 2px solid black;'>
--->
-<body onload='init();'>
+<body class='tundra' onload='init();'>
 <div id='container'>
 	<div id='header'>
 		<table cellspacing='0' width='100%'>
