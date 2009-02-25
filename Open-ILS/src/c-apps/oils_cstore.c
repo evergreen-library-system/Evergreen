@@ -75,6 +75,7 @@ static void sessionDataFree( char*, void* );
 static char* getSourceDefinition( osrfHash* );
 static int str_is_true( const char* str );
 static int obj_is_true( const jsonObject* obj );
+static const char* json_type( int code );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -2480,8 +2481,24 @@ char* SELECT (
 		core_class = jsonObjectToSimpleString( join_hash );
 		join_hash = NULL;
 	}
-	else
+	else {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: FROM clause is unexpected JSON type: %s",
+			MODULENAME,
+			json_type( join_hash->type )
+		);
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Ill-formed FROM clause in JSON query"
+			);
+		free( core_class );
 		return NULL;
+	}
 
 	if (!from_function) {
 		// Get the IDL class definition for the core class
@@ -2532,33 +2549,11 @@ char* SELECT (
 		selhash = defaultselhash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
 	} else if( selhash->type != JSON_HASH ) {
-		const char* json_type;
-		switch ( selhash->type )
-		{
-			case 1 :
-				json_type = "JSON_ARRAY";
-				break;
-			case 2 :
-				json_type = "JSON_STRING";
-				break;
-			case 3 :
-				json_type = "JSON_NUMBER";
-				break;
-			case 4 :
-				json_type = "JSON_NULL";
-				break;
-			case 5 :
-				json_type = "JSON_BOOL";
-				break;
-			default :
-				json_type = "(unrecognized)";
-				break;
-		}
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected JSON_HASH for SELECT clause; found %s",
 			MODULENAME,
-			json_type
+			json_type( selhash->type )
 		);
 
 		if (ctx)
@@ -2619,12 +2614,35 @@ char* SELECT (
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
 	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {    // For each class
 
-		    // round trip through the idl, just to be safe
+		    // Make sure the class is defined in the IDL
 			const char* cname = selclass_itr->key;
 			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
-		    if (!idlClass)
-				// No such class.  Skip it.
-				continue;
+		    if (!idlClass) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: Selected class \"%s\" not defined in IDL",
+					MODULENAME,
+					cname
+				);
+
+				if (ctx)
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Selected class is not defined"
+					);
+				jsonIteratorFree( selclass_itr );
+				jsonObjectFree( is_agg );
+				buffer_free( sql_buf );
+				buffer_free( select_buf );
+				buffer_free( order_buf );
+				buffer_free( group_buf );
+				buffer_free( having_buf );
+				free( core_class );
+				return NULL;
+			}
 
 		    // Make sure the target relation is in the join tree.
 			
@@ -2694,8 +2712,8 @@ char* SELECT (
 			// Look up some attributes of the current class, so that we 
 			// don't have to look them up again for each field
 			osrfHash* class_field_set = osrfHashGet( idlClass, "fields" );
-			char* class_pkey = osrfHashGet( idlClass, "primarykey" );
-			char* class_tname = osrfHashGet( idlClass, "tablename" );
+			const char* class_pkey = osrfHashGet( idlClass, "primarykey" );
+			const char* class_tname = osrfHashGet( idlClass, "tablename" );
 			
 		    // stitch together the column list ...
 		    jsonIterator* select_itr = jsonNewIterator( selclass );
@@ -2735,7 +2753,7 @@ char* SELECT (
                     }
 					
 				// ... but it could be an object, in which case we check for a Field Transform
-				} else {
+				} else if (selfield->type == JSON_HASH) {
 
 					char* col_name = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
 
@@ -2780,6 +2798,32 @@ char* SELECT (
 					    free(_alias);
 					free( col_name );
 			    }
+				else {
+					osrfLogError(
+						OSRF_LOG_MARK,
+						"%s: Selected item is unexpected JSON type: %s",
+						MODULENAME,
+						json_type( selfield->type )
+					);
+					if( ctx )
+						osrfAppSessionStatus(
+							ctx->session,
+							OSRF_STATUS_INTERNALSERVERERROR,
+							"osrfMethodException",
+							ctx->request,
+							"Ill-formed SELECT item in JSON query"
+						);
+					jsonIteratorFree( select_itr );
+					jsonIteratorFree( selclass_itr );
+					jsonObjectFree( is_agg );
+					buffer_free( sql_buf );
+					buffer_free( select_buf );
+					buffer_free( order_buf );
+					buffer_free( group_buf );
+					buffer_free( having_buf );
+					free( core_class );
+					return NULL;
+				}
 
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
@@ -4238,5 +4282,27 @@ static int obj_is_true( const jsonObject* obj ) {
 				return 0;
 		default :
 			return 0;
+	}
+}
+
+// Translate a numeric code into a text string identifying a type of
+// jsonObject.  To be used for building error messages.
+static const char* json_type( int code ) {
+	switch ( code )
+	{
+		case 0 :
+			return "JSON_HASH";
+		case 1 :
+			return "JSON_ARRAY";
+		case 2 :
+			return "JSON_STRING";
+		case 3 :
+			return "JSON_NUMBER";
+		case 4 :
+			return "JSON_NULL";
+		case 5 :
+			return "JSON_BOOL";
+		default :
+			return "(unrecognized)";
 	}
 }
