@@ -293,6 +293,8 @@ sub update_state {
     my $state = shift;
     return undef unless ($state);
 
+    my $fields = shift;
+
     if ($self->standalone) {
         $self->editor->xact_begin || return undef;
     }
@@ -301,6 +303,10 @@ sub update_state {
     if (!$e) {
         $log->error( "Could not retrieve object ".$self->id." for update" ) if (!$e);
         return undef;
+    }
+
+    if ($fields && ref($fields)) {
+        $e->$_($$fields{$_}) for (keys %$fields);
     }
 
     $log->info( "Retrieved object ".$self->id." for update" );
