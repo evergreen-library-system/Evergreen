@@ -9,12 +9,28 @@ use base 'OpenILS::Application::Trigger::Reactor';
 my $log = 'OpenSRF::Utils::Logger';
 
 my $default_template = <<TT;
-To: [%- env.params.recipient -%]
-From: [%- env.params.sender -%]
-Subject: [%- env.params.subject -%]
+To: [%- params.recipient -%]
+From: [%- params.sender -%]
+Subject: [%- params.subject -%]
 
-[% env.params.body %]
+[% params.body %]
 TT
+
+sub ABOUT {
+    return <<ABOUT;
+
+The StagicEmail Reactor Module sends an email to the address specified by the
+"recipient" parameter.  This is the only required parameter (in fact the
+template is not even required), though sender, subject and body parameters are
+also accepted and used by the default template.
+
+The default template looks like:
+-------
+$default_template
+-------
+
+ABOUT
+}
 
 sub handler {
     my $self = shift;
@@ -25,8 +41,12 @@ sub handler {
     $$env{params}{sender} ||= $conf->config_value('email_notify', 'sender_address');
     $$env{params}{subject} ||= 'Test subject -- StaticEmail Reactor';
     $$env{params}{body} ||= 'Test body -- StaticEmail Reactor';
+    $$env{template} ||= $default_template;
 
     $$env{params}{recipient} or return 0;
+
+    my $text = $self->run_TT($env);
+    return 0 if (!$text);
 
     $logger->info("StaticEmail Reactor: sending email to ".
         $$env{params}{recipient}." via SMTP server $smtp");
@@ -34,8 +54,6 @@ sub handler {
     my $sender = Email::Send->new({mailer => 'SMTP'});
     $sender->mailer_args([Host => $smtp]);
 
-    my $TT = $$env{template} || $default_template;
-    my $text = ''; # XXX TemplateToolkit stuff goes here...
 
     my $stat;
     my $err;
