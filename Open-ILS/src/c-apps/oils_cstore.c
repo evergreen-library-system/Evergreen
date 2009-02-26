@@ -2764,6 +2764,34 @@ char* SELECT (
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
+					} else if ( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+						// Virtual field not allowed
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Selected column \"%s\" for class \"%s\" is virtual",
+							MODULENAME,
+							col_name,
+							cname
+						);
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Selected column may not be virtual in JSON query"
+							);
+						jsonIteratorFree( select_itr );
+						jsonIteratorFree( selclass_itr );
+						//jsonObjectFree( is_agg );
+						buffer_free( sql_buf );
+						buffer_free( select_buf );
+						buffer_free( order_buf );
+						buffer_free( group_buf );
+						buffer_free( having_buf );
+						if( defaultselhash ) jsonObjectFree( defaultselhash );
+						free( core_class );
+						return NULL;
 					}
 
 					if (locale) {
@@ -2807,6 +2835,34 @@ char* SELECT (
 								"osrfMethodException",
 								ctx->request,
 								"Selected column is not defined in JSON query"
+							);
+						jsonIteratorFree( select_itr );
+						jsonIteratorFree( selclass_itr );
+						//jsonObjectFree( is_agg );
+						buffer_free( sql_buf );
+						buffer_free( select_buf );
+						buffer_free( order_buf );
+						buffer_free( group_buf );
+						buffer_free( having_buf );
+						if( defaultselhash ) jsonObjectFree( defaultselhash );
+						free( core_class );
+						return NULL;
+					} else if ( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+						// No such field in current class
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Selected column \"%s\" is virtual for class \"%s\"",
+							MODULENAME,
+							col_name,
+							cname
+						);
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Selected column is virtual in JSON query"
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
