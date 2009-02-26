@@ -32,7 +32,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(this.readOnly)
                     this.hideActionButtons = true;
 
-                var table = document.createElement('table');
+                var table = this.table = document.createElement('table');
                 var tbody = document.createElement('tbody');
                 this.domNode.appendChild(table);
                 table.appendChild(tbody);
@@ -80,8 +80,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
                 if(!this.hideActionButtons)
                     this.buildActionButtons(tbody);
-    
-                openils.Util.addCSSClass(table, 'oils-fm-edit-dialog');
             },
 
             applySaveOnEnter : function(widget) {

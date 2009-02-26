@@ -13,6 +13,7 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
     dojo.provide('openils.widget.EditDialog');
     dojo.require('openils.widget.EditPane');
     dojo.require('dijit.Dialog');
+    dojo.require('openils.Util');
 
     /**
      * Given a fieldmapper object, this builds a pop-up dialog used for editing the object
@@ -49,6 +50,7 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
                 this.inherited(arguments);
                 this.editPane.startup();
                 this.domNode.appendChild(this.editPane.domNode);
+                openils.Util.addCSSClass(this.editPane.table, 'oils-fm-edit-dialog');
             }
         }
     );
