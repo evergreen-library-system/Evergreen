@@ -749,7 +749,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="atevparam" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
+	<class id="atevparam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -757,11 +757,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Event ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Event Definition" name="event_def" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Parameter Name" name="param" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Evaluation Value" name="value" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Parameter Value" name="value" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </create>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </retrieve>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </update>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
