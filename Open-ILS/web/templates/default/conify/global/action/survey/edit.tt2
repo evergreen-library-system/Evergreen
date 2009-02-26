@@ -1,0 +1,20 @@
+[% WRAPPER 'default/base.tt2' %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action/survey/edit.js'></script>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    var surveyId = [%ctx.page_args.0 %];
+    openils.Util.addOnLoad(function() { drawSurvey(surveyId) });
+
+</script>
+<!-- General survey info -->
+<div  dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div id='edit-pane'> </div>
+
+</div>
+
+<!-- question/answer table-->
+<table id='survey_table'>
+</table>
+
+[% END %]
