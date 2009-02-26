@@ -73,6 +73,14 @@
 	"SUCCESS_SAVING_HOO": "Hours of Operation updated for ${0}",
 	"SUCCESS_SAVING_ILL": "Saved changes to the ILL Address of ${0}",
 	"SUCCESS_SAVING_MAILING": "Saved changes to the Mailing Address of ${0}",
-	"SUCCESS_SAVING_PHYSICAL": "Saved changes to the Physical Address of ${0}",
-	"TRANSLATION": "Translation"
+    "SUCCESS_SAVING_PHYSICAL": "Saved changes to the Physical Address of ${0}",
+    "TRANSLATION": "Translation",
+    "END_SURVEY": "End Survey Now",
+    "SAVE_ADD": "Save Question & Add Answer",
+    "DELETE_QUESTION": "Delete Question & Answers",
+    "DELETE_ANSWER": "Delete Answer",
+    "SAVE_CHANGES": "Save Changes",
+    "ADD_ANSWER": "Add Answer",
+    "ANSWER": "Answer:",
+    "QUESTION": "Question:"
 }
