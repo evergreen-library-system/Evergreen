@@ -99,12 +99,16 @@ sub cleanup {
         $self->update_state( 'cleaning') || die 'Unable to update event state';
         try {
             my $cleanup = $self->reacted ? $self->event->event_def->cleanup_success : $self->event->event_def->cleanup_failure;
-            $self->cleanedup(
-                OpenILS::Application::Trigger::ModRunner::Cleanup
-                    ->new( $cleanup, $env)
-                    ->run
-                    ->final_result
-            );
+            if($cleanup) {
+                $self->cleanedup(
+                    OpenILS::Application::Trigger::ModRunner::Cleanup
+                        ->new( $cleanup, $env)
+                        ->run
+                        ->final_result
+                );
+            } else {
+                $self->cleanedup(1);
+            }
         } otherwise {
             $log->error( shift() );
             $self->update_state( 'error' ) || die 'Unable to update event state';
