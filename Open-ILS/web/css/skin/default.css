@@ -63,8 +63,9 @@ table { border-collapse: collapse; }
 /* ----------------------------------------------------------------- */
 
 
-.oils-fm-edit-dialog { margin: 5px; }
-.oils-fm-edit-dialog td { padding: 5px; border:1px solid #999;}
+.oils-fm-edit-pane { margin: 5px; }
+.oils-fm-edit-pane td { padding: 5px; }
+.oils-fm-edit-dialog td { border:1px solid #999;}
 .oils-header-panel {
     width:100%;
     margin-top:20px;

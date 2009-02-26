@@ -80,6 +80,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 }
                 if(!this.hideActionButtons)
                     this.buildActionButtons(tbody);
+
+                openils.Util.addCSSClass(this.editPane.table, 'oils-fm-edit-pane');
             },
 
             applySaveOnEnter : function(widget) {
