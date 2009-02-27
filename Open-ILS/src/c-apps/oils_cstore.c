@@ -467,6 +467,15 @@ int osrfAppChildInit() {
     return 0;
 }
 
+/*
+  This function is a sleazy hack intended *only* for testing and
+  debugging.  Any real server process should initialize the 
+  database connection by calling osrfAppChildInit().
+*/
+void set_cstore_dbi_conn( dbi_conn conn ) {
+	dbhandle = writehandle = conn;
+}
+
 void userDataFree( void* blob ) {
     osrfHashFree( (osrfHash*)blob );
     return;
@@ -1793,7 +1802,7 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 					OSRF_BUFFER_ADD_CHAR( sql_buf, ',' );
 					OSRF_BUFFER_ADD( sql_buf, val );
         		} else {
-	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 					free(transform_subcolumn);
 					free(field_transform);
 					free(val);

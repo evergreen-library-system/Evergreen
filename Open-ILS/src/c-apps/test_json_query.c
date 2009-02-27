@@ -45,11 +45,13 @@ Scott McKellar <scott@esilibrary.com>
 #include <opensrf/osrf_application.h>
 #include <opensrf/osrf_app_session.h>
 #include <openils/oils_idl.h>
+#include <dbi/dbi.h>
 
 #define DISABLE_I18N	2
 #define SELECT_DISTINCT 1
 
-// Prototype for SELECT(), which is not in any header
+// Prototypes for two functions in oils_cstore.c, which
+// are not defined in any header
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
@@ -62,6 +64,7 @@ char* SELECT (
 		/* OFFSET   */ jsonObject* offset,
 		/* flags    */ int flags
 );
+void set_cstore_dbi_conn( dbi_conn conn );
 
 static int obj_is_true( const jsonObject* obj );
 static int test_json_query( const char* json_query );
@@ -149,9 +152,33 @@ int main( int argc, char* argv[] ) {
 	osrfLogSetLevel( OSRF_LOG_WARNING );    // Suppress informational messages
 	(void) oilsIDLInit( idl_file_name );    // Load IDL into memory
 
+	// Load a database driver, connect to it, and install the connection in
+	// the cstore module.  We don't actually connect to a database, but we
+	// need the driver to process quoted strings correctly.
+	if( dbi_initialize( NULL ) < 0 ) {
+		printf( "Unable to load database driver\n" );
+		return EXIT_FAILURE;
+	};
+	
+	dbi_conn conn = dbi_conn_new( "pgsql" );  // change string if ever necessary
+	if( !conn ) {
+		printf( "Unable to establish dbi connection\n" );
+		dbi_shutdown();
+		return EXIT_FAILURE;
+	}
+
+	set_cstore_dbi_conn( conn );
+
+	// The foregoing is an inelegant kludge.  The true, proper, and uniquely
+	// correct thing to do is to load the system settings and then call
+	// osrfAppInitialize() and osrfAppChildInit().  Maybe we'll actually
+	// do that some day, but this will do for now.
+
 	// Translate the JSON into SQL
 	int rc = test_json_query( json_query );
 
+	dbi_conn_close( conn );
+	dbi_shutdown();
 	if( loaded_json )
 		free( loaded_json );
 
