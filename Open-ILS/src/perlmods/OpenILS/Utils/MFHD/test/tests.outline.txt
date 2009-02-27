@@ -21,17 +21,29 @@ indexes.
 *** Monthly, issue # continuous, Calendar change: Jan, Jul
 853 ## $86$av.$bno.$u6$vc$i(year)$j(month)$wm$x01,07
 
-*** Monthly, issue # restarts, Calendar change: Jan, Combined issue: Jul/Aug
-853 ## $87$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm07/08
-
 *** Monthly, issue # restarts, Calendar change: Jan, Combined issue: Jan/Feb
 853 ## $88$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm01/02
 
 *** Monthly, iss # restarts, Calendar change: Jan, Combined iss: Nov/Dec
-853 ## $88$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm11/12
+853 ## $89$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm11/12
 
-*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: Nov/Dec, Jan/Feb
-853 ## $88$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12
+*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: Jan/Feb, Nov/Dec
+853 ## $810$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12
+
+*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: May/Jun, Jul/Aug
+853 ## $811$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm05/06,07/08
+
+*** Monthly, issue # restarts, Calendar change: Jan, Combined issue: 1/2 Jan/Feb 
+853 ## $812$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm01/02$yce21/2
+
+*** Monthly, iss # restarts, Calendar change: Jan, Combined iss: 11/12 Nov/Dec
+853 ## $813$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm11/12$yce211/12
+
+*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: 1/2 Jan/Feb, 11/12 Nov/Dec
+853 ## $814$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12$yce21/2,11/12
+
+*** Monthly, iss # restarts, Cal. change: Jan, Combined iss: 5/6 May/Jun, 7/8 Jul/Aug 
+853 ## $815$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm05/06,07/08$yce25/6,7/8
 
 ** Calculating the publication info for the next issue
 *** Calcuating enumeration (volume, issue)
@@ -80,18 +92,64 @@ indexes.
 ******** multiple volumes per year
 863 ## $86.1$a1$b6$i1990$j09$xMiddle of year, end of vol.
 
-***** subsequent issue is combined
+***** subsequent issue is combined dates (v.1:no.5 1990:May/Jun)
 ****** in same volume
+863 ## $89.1$a1$b10$i1990$j10
+
 ****** in next volume
+863 ## $88.1$a1$b11$i1990$j11
+
+***** subsequent issue is combined issue # (v.1:no.5/6 1990:May/Jun)
+****** in same volume
+863 ## $813.1$a1$b10$i1990$j10
+****** in next volume
+863 ## $812.1$a1$b12$i1990$j12
+
 ***** Omitted issue number
 does this happen in a way that is worth recording in a pattern?
-**** current issue is combined
+
+**** current issue is combined dates
 ***** subsequent issue is normal
 ****** In same volume
+863 ## $88.2$a2$b1$i1991$j01/02
+
 ****** In next volume
-***** subsequent issue is combined
+863 ## $89.2$a1$b11$i1990$j11/12
+
+***** subsequent issue is combined dates
+****** In same volume
+863 ## $811.1$a1$b5$i1990$j05/06
+
+****** In next volume
+863 ## $810.1$a1$b10$i1990$j11/12
+
+***** subsequent issue is combined issue #
+****** In same volume
+863 ## $815.1$a1$b5/6$i1990$j05/06
+****** In next volume
+863 ## $814.1$a1$b11/12$i1990$j11/12
+***** Omitted issue number
+**** current issue is combined issue #
+***** subsequent issue is normal
+****** In same volume
+863 ## $812.2$a2$b1/2$i1991$j01/02
+
+****** In next volume
+863 ## $813.2$a1$b11/12$i1990$j11/12
+
+***** subsequent issue is combined dates
+
+Does this happen? Having no.10/11 (Nov/Dec) followed by no.1 (Jan/Feb)?!?
+
 ****** In same volume
 ****** In next volume
+***** subsequent issue is combined issue #
+****** In same volume
+863 ## $815.2$a1$b5/6$i1990$j05/06
+
+****** In next volume
+863 ## $814.2$a1$b11/12$i1990$j11/12
+
 ***** Omitted issue number
 *** Calculating date
 **** Simple date patterns
