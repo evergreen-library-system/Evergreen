@@ -188,6 +188,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 }
             }
 
+            if(!vfield) 
+                throw new Error("'" + linkClass + "' has no '" + self.idlField.key + "' field!");
+
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
