@@ -945,7 +945,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="item_circ_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="usr_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="requestor_grp" reltype="has_a" key="id" map="" class="pgt"/>
-			<link field="circ_modifier" reltype="has_a" key="id" map="" class="ccm"/>
+			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
@@ -986,8 +986,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
-			<link field="circ_modifier" reltype="has_a" key="id" map="" class="ccm"/>
-			<link field="marc_type" reltype="has_a" key="id" map="" class="ccm"/>
+			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
@@ -1009,7 +1008,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
-			<link field="circ_mod" reltype="has_a" key="id" map="" class="ccm"/>
+			<link field="circ_mod" reltype="has_a" key="code" map="" class="ccm"/>
 		</links>
 	</class>
 
