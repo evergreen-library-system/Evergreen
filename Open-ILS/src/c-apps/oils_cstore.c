@@ -1778,7 +1778,7 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 // node comes from the method parameter, and represents an entry in the SELECT list
 static char* searchFieldTransform (const char* class, osrfHash* field, const jsonObject* node) {
 	growing_buffer* sql_buf = buffer_init(32);
-	
+
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
 	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
 
@@ -1787,31 +1787,40 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 
 	if (field_transform) {
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
-	    const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
+		const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
 
-        if (array) {
-        	int func_item_index = 0;
-        	jsonObject* func_item;
-        	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
+		if (array) {
+			if( array->type != JSON_ARRAY ) {
+				osrfLogError( OSRF_LOG_MARK,
+					"%s: Expected JSON_ARRAY for function params; found %s",
+					MODULENAME, json_type( array->type ) );
+				free( transform_subcolumn );
+				free( field_transform );
+				buffer_free( sql_buf );
+				return NULL;
+			}
+			int func_item_index = 0;
+			jsonObject* func_item;
+			while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
-	        	char* val = jsonObjectToSimpleString(func_item);
+				char* val = jsonObjectToSimpleString(func_item);
 
-       		    if ( !val ) {
-	    		    buffer_add( sql_buf, ",NULL" );
-       		    } else if ( dbi_conn_quote_string(dbhandle, &val) ) {
+				if ( !val ) {
+					buffer_add( sql_buf, ",NULL" );
+				} else if ( dbi_conn_quote_string(dbhandle, &val) ) {
 					OSRF_BUFFER_ADD_CHAR( sql_buf, ',' );
 					OSRF_BUFFER_ADD( sql_buf, val );
-        		} else {
+				} else {
 					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 					free(transform_subcolumn);
 					free(field_transform);
 					free(val);
-        			buffer_free(sql_buf);
-	        		return NULL;
-    	    	}
+					buffer_free(sql_buf);
+					return NULL;
+    			}
 				free(val);
 			}
-        }
+		}
 
 		buffer_add( sql_buf, " )" );
 
@@ -1819,9 +1828,9 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
 	}
 
-    if (transform_subcolumn)
-        buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
- 
+	if (transform_subcolumn)
+		buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
+
 	if (field_transform) free(field_transform);
 	if (transform_subcolumn) free(transform_subcolumn);
 
@@ -2896,19 +2905,41 @@ char* SELECT (
 
 					if (jsonObjectGetKeyConst( selfield, "transform" )) {
 						char* transform_str = searchFieldTransform(cname, field_def, selfield);
-						buffer_fadd(select_buf, " %s AS \"%s\"", transform_str, _alias);
-						free(transform_str);
+						if( transform_str ) {
+							buffer_fadd(select_buf, " %s AS \"%s\"", transform_str, _alias);
+							free(transform_str);
+						} else {
+							if( ctx )
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Unable to generate transform function in JSON query"
+								);
+							jsonIteratorFree( select_itr );
+							jsonIteratorFree( selclass_itr );
+							//jsonObjectFree( is_agg );
+							buffer_free( sql_buf );
+							buffer_free( select_buf );
+							buffer_free( order_buf );
+							buffer_free( group_buf );
+							buffer_free( having_buf );
+							if( defaultselhash ) jsonObjectFree( defaultselhash );
+							free( core_class );
+							return NULL;
+						}
 					} else {
 
-                        if (locale) {
-                		    const char* i18n;
-			                if (flags & DISABLE_I18N)
-                                i18n = NULL;
+						if (locale) {
+							const char* i18n;
+							if (flags & DISABLE_I18N)
+								i18n = NULL;
 							else
 								i18n = osrfHashGet(field_def, "i18n");
 
 							if( str_is_true( i18n ) ) {
-                                buffer_fadd( select_buf,
+								buffer_fadd( select_buf,
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
 		 							class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, _alias);
                             } else {
