@@ -11,9 +11,9 @@ use base 'OpenILS::Application::Trigger::Reactor';
 my $log = 'OpenSRF::Utils::Logger';
 
 my $default_template = <<TT;
-To: [%- params.recipient -%]
-From: [%- params.sender -%]
-Subject: [%- params.subject -%]
+To: [%- params.recipient %]
+From: [%- params.sender %]
+Subject: [%- params.subject %]
 
 [% params.body %]
 TT
