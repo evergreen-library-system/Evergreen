@@ -2,7 +2,7 @@ package OpenILS::Application::Trigger::Reactor::StaticEmail;
 use Email::Send;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:logger/;
 
 use base 'OpenILS::Application::Trigger::Reactor';
 
