@@ -897,7 +897,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="id"/>
 			<field reporter:label="Format" name="value" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -918,11 +918,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Matchpoint ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Active?" name="active" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="User Home Library" name="user_home_ou" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Request Library" name="request_ou" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Pickup Library" name="pickup_ou" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Owning Library" name="item_owning_ou" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Item Circ Library" name="item_circ_ou" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="User Home Library" name="user_home_ou" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Library" name="request_ou" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Pickup Library" name="pickup_ou" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Owning Library" name="item_owning_ou" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Circ Library" name="item_circ_ou" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 			<field reporter:label="User Permission Group" name="usr_grp" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_obj:array_position="12" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -968,7 +968,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Matchpoint ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
 			<field reporter:label="Active?" name="active" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Org Unit" name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Org Unit" name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_obj:array_position="7" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_obj:array_position="8" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -1635,7 +1635,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="extended" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="interval"/>
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="id" reporter:selector="name"/>
 			<field name="max_renewals" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="interval"/>
@@ -2503,7 +2503,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Item Type Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Item Type Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="text"/>
 			<field reporter:label="Item Type" name="value" oils_obj:array_position="4" oils_persist:virtual="false"  reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
