@@ -16,7 +16,7 @@ sub run_TT {
     my $output = '';
     my $tt = Template->new;
 
-    $tt->process($env->{template}, $env, \$output) or 
+    $tt->process(\$env->{template}, $env, \$output) or 
         $logger->error("Error processing Trigger template: " . $tt->error);
 
     return $output;
