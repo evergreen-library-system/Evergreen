@@ -1,4 +1,6 @@
 package OpenILS::Application::Trigger::Reactor::StaticEmail;
+use Error qw/:try/;
+use Data::Dumper;
 use Email::Send;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
