@@ -1,7 +1,7 @@
 package OpenILS::Application::Trigger::Event;
 use OpenSRF::EX qw/:try/;
 
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:logger/;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -363,15 +363,15 @@ sub build_environment {
     
         for my $e ( @{$self->event->event_def->env} ) {
             my (@label, @path);
-            @path = split('.', $e->path) if ($e->path);
-            @label = split('.', $e->label) if ($e->label);
+            @path = split(/\./, $e->path) if ($e->path);
+            @label = split(/\./, $e->label) if ($e->label);
     
-            $self->_object_by_path( $self->event->target, $e->collector, \@label, \@path );
+            $self->_object_by_path( $self->target, $e->collector, \@label, \@path );
         }
 
         if ($self->event->event_def->group_field) {
-            my @group_path = split('.', $self->event->event_def->group_field);
-            my $group_object = $self->_object_by_path( $self->event->target, undef, [], \@group_path );
+            my @group_path = split(/\./, $self->event->event_def->group_field);
+            my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path );
         }
     
         $self->environment->{complete} = 1;
