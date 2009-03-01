@@ -26,19 +26,21 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
             editPane : null, // reference to our EditPane object
 
             constructor : function(args) {
-                this.editPane = new openils.widget.EditPane(args);
+                args = args || {};
+                this.editPane = args.editPane || new openils.widget.EditPane(args);
                 var self = this;
 
+                var onCancel = args.onCancel || this.editPane.onCancel;
+                var onSubmit = args.onSubmit || this.editPane.onSubmit;
+
                 this.editPane.onCancel = function() { 
-                    if(args.onCancel)
-                        args.onCancel();
+                    if(onCancel) onCancel();
                     self.hide(); 
                 }
 
                 this.editPane.onPostSubmit = function(r) { 
                     self.hide(); 
-                    if(args.onPostSubmit)
-                        args.onPostSubmit(r);
+                    if(onSubmit) onSubmit(r);
                 }
             },
 
