@@ -418,7 +418,7 @@ sub _object_by_path {
     my $meth = 'retrieve_';
     my $multi = 0;
     my $lfield = $step;
-    if ($rtype eq 'has_many') {
+    if ($rtype ne 'has_a') {
         $meth = 'search_';
         $multi = 1;
         $lfield = $context->Identity;
@@ -442,7 +442,7 @@ sub _object_by_path {
 
         $self->_object_by_path( $_, $collector, $label, $path ) for (@$obj_list);
 
-        $obj = $$obj_list[0] if (!$multi);
+        $obj = $$obj_list[0] if (!$multi || $rtype eq 'might_have');
         $context->$step( $obj ) if ($obj && (!$label || !@$label));
 
     } else {
