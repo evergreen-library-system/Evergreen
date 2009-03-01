@@ -428,7 +428,11 @@ sub _object_by_path {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/;
 
-    my $obj = $self->editor->$meth( 
+    my $ed = grep( /open-ils.cstore/, @{$fclass->Controller} ) ?
+            $self->editor :
+            new_rstore_editor();
+
+    my $obj = $ed->$meth( 
         ($multi) ? { $ffield => $context->$lfield() } : $context->$lfield() );
 
     if (@$path) {

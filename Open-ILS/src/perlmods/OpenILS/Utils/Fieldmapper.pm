@@ -59,6 +59,7 @@ sub import {
 		$$fieldmap{$n}{hint} = $c;
 		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} && $idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
 		$$fieldmap{$n}{table} = $idl->{$c}{'oils_persist:tablename'};
+		$$fieldmap{$n}{controller} = [ split ' ', $idl->{$c}{'controller'} ];
 		$$fieldmap{$n}{restrict_primary} = $idl->{$c}{'oils_persist:restrict_primary'};
 		$$fieldmap{$n}{sequence} = $idl->{$c}{fields}{'oils_persist:sequence'};
 		$$fieldmap{$n}{identity} = $idl->{$c}{fields}{'oils_persist:primary'};
@@ -190,6 +191,11 @@ sub Sequence {
 sub Table {
 	my $self = shift;
 	return $$fieldmap{$self->class_name}{table};
+}
+
+sub Controller {
+	my $self = shift;
+	return $$fieldmap{$self->class_name}{controller};
 }
 
 sub class_name {
