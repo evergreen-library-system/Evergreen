@@ -443,7 +443,7 @@ sub _object_by_path {
         $self->_object_by_path( $_, $collector, $label, $path ) for (@$obj_list);
 
         $obj = $$obj_list[0] if (!$multi);
-        $context->$step( $obj ) if ($obj && !$label);
+        $context->$step( $obj ) if ($obj && (!$label || !@$label));
 
     } else {
 
@@ -467,9 +467,9 @@ sub _object_by_path {
             }
         }
 
-        if ($label) {
+        if ($label && @$label) {
             my $node = $self->environment;
-            my $i = 0; my $max = scalar(@$label) - 1;
+            my $i = 0; my $max = scalar(@$label);
             for (; $i < $max; $i++) {
                 my $part = $$label[$i];
                 $$node{$part} ||= {};
