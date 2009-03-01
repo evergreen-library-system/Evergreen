@@ -428,7 +428,8 @@ sub _object_by_path {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/;
 
-    my $obj = $self->editor->$meth( { $ffield => $context->$lfield() } );
+    my $obj = $self->editor->$meth( 
+        ($multi) ? { $ffield => $context->$lfield() } : $context->$lfield() );
 
     if (@$path) {
 
