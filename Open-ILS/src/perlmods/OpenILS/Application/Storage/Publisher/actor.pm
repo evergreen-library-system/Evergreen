@@ -461,10 +461,10 @@ sub patron_search {
 	# group 1 = address
 	# group 2 = phone, ident
 
-	my $usr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my $usr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 	my @usrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 
-	my $addr = join ' AND ', map { "LOWER($_) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my $addr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 	my @addrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 
 	my $pv = $$search{phone}{value};
@@ -533,8 +533,8 @@ sub patron_search {
 		return undef;
 	}
 
-	my $order_by = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ') ' . (split / /,$_)[1] } @$sort;
-	my $distinct_list = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ')' } @$sort;
+	my $order_by = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
+	my $distinct_list = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
 
 	if ($inactive) {
 		$inactive = '';
