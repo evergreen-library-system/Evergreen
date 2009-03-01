@@ -15,6 +15,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             /* if true, pop up an edit dialog when user hits Enter on a give row */
             editOnEnter : false, 
             defaultCellWidth : null,
+            editStyle : 'dialog',
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -92,7 +93,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 dojo.connect(this, 'onRowDblClick',
                     function(e) {
-                        this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
+                        if(this.editStyle == 'pane')
+                            this._drawEditPane(this.selection.getFirstSelected(), this.focus.rowIndex);
+                        else
+                            this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
                     }
                 );
 
@@ -101,7 +105,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         if(e.keyCode == dojo.keys.ENTER) {
                             this.selection.deselectAll();
                             this.selection.select(this.focus.rowIndex);
-                            this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
+                            if(this.editStyle == 'pane')
+                                this._drawEditPane(this.selection.getFirstSelected(), this.focus.rowIndex);
+                            else
+                                this._drawEditDialog(this.selection.getFirstSelected(), this.focus.rowIndex);
                         }
                     }
                 );
@@ -191,6 +198,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editDialog = new openils.widget.EditDialog({editPane:pane});
                 this.editDialog.startup();
                 this.editDialog.show();
+            },
+
+            _drawEditPane : function(storeItem, rowIndex) {
+                var self = this;
+                var done = function() { self.hidePane(); };
+                this.editPane = this._makeEditPane(storeItem, rowIndex, done, done);
+                this.editPane.startup();
+                this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
+                dojo.style(this.domNode, 'display', 'none');
             },
 
             showCreatePane : function() {
