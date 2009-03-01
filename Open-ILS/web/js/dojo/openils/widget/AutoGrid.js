@@ -3,6 +3,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('dojox.grid.DataGrid');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
+    dojo.require('openils.widget.EditPane');
     dojo.require('openils.widget.EditDialog');
     dojo.require('openils.Util');
 
@@ -106,11 +107,12 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 );
             },
 
-            _drawEditDialog : function(storeItem, rowIndex) {
+            _makeEditPane : function(storeItem, rowIndex) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
-                var dialog = new openils.widget.EditDialog({
+
+                var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
                     overrideWidgets : this.overrideEditWidgets,
                     onPostSubmit : function() {
@@ -120,7 +122,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 continue; // don't try to edit an identifier field
                             grid.store.setValue(storeItem, field, fmObject[field]());
                         }
-                        dialog.destroy();
+                        pane.destroy();
 
                         if(self.onPostUpdate)
                             self.onPostUpdate(storeItem, rowIndex);
@@ -138,15 +140,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             grid.views.views[0].getCellNode(rowIndex, 0).focus();},200);
                     }
                 });
-                dialog.editPane.fieldOrder = this.fieldOrder;
-                dialog.editPane.mode = 'update';
-                dialog.startup();
-                dialog.show();
+
+                pane.fieldOrder = this.fieldOrder;
+                pane.mode = 'update';
+                return pane;
             },
 
-            showCreateDialog : function() {
+            _makeCreatePane : function() {
                 var grid = this;
-                var dialog = new openils.widget.EditDialog({
+                var pane = new openils.widget.EditPane({
                     fmClass : this.fmClass,
                     overrideWidgets : this.overrideEditWidgets,
                     onPostSubmit : function(r) {
@@ -164,8 +166,22 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         },200);
                     },
                 });
-                dialog.editPane.fieldOrder = this.fieldOrder;
-                dialog.editPane.mode = 'create';
+                pane.fieldOrder = this.fieldOrder;
+                pane.mode = 'create';
+                return pane;
+            },
+
+
+            _drawEditDialog : function(storeItem, rowIndex) {
+                var pane = this._makeEditPane(storeItem, rowIndex);
+                var dialog = new openils.widget.EditDialog({editPane:pane});
+                dialog.startup();
+                dialog.show();
+            },
+
+            showCreateDialog : function() {
+                var pane = this._makeCreatePane();
+                var dialog = new openils.widget.EditDialog({editPane:pane});
                 dialog.startup();
                 dialog.show();
             },
