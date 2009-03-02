@@ -1089,7 +1089,7 @@ msgstr "Odstranit tento rámec"
 #: staff.cat.opac.view_holds.accesskey
 msgctxt "staff.cat.opac.view_holds.label staff.cat.opac.view_holds.accesskey"
 msgid "View Hold&s"
-msgstr "Zobrazit rezervaci/e&"
+msgstr "Zobrazit &rezervaci"
 
 #: staff.cat.popup.add_to_bucket
 msgctxt "staff.cat.popup.add_to_bucket"
@@ -1444,7 +1444,7 @@ msgstr "&Prezenční výpůjčka"
 #: staff.circ.offline.cmd_checkin.label
 #: staff.circ.offline.cmd_checkin.accesskey
 msgid "Check &In"
-msgstr "Vrátit&"
+msgstr "&Vrátit"
 
 #: staff.circ.offline.cmd_register_patron.label
 #: staff.circ.offline.cmd_register_patron.accesskey
@@ -7885,7 +7885,7 @@ msgstr "Filtr knihovny"
 #: staff.cat.copy_editor.copy_notes.label
 #: staff.cat.copy_editor.copy_notes.accesskey
 msgid "Copy &Notes"
-msgstr "Kopie Poznámky&"
+msgstr "Kopie &Poznámky"
 
 #: staff.cat.copy_editor.save.label
 #: staff.cat.copy_editor.save.accesskey
