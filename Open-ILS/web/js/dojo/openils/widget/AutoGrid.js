@@ -264,6 +264,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editPane.destroy();
                 delete this.editPane;
                 dojo.style(this.domNode, 'display', 'block');
+                this.update();
             },
             
             resetStore : function() {
