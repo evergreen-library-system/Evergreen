@@ -23,19 +23,25 @@ var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
 function drawSurvey(svyId) {
     today = new Date();    
     var surveyTable = dojo.byId('edit-pane');
-    var surveyHead = dojo.create('thead', {style: "background-color: #99CCFF"}, surveyTable);
+    var surveyHead = dojo.create('thead', {style: "background-color: #99CCFF"},  surveyTable);
+    var headRow = dojo.create('tr', null,  surveyHead);
+    var headCell = dojo.create('td', {innerHTML: dojo.string.substitute(localeStrings.SURVEY_ID, [svyId]), style: "width: 100%"}, headRow);
     var pcrud = new openils.PermaCrud();
     var survey = pcrud.retrieve('asv', svyId);
     startDate = dojo.date.stamp.fromISOString(survey.start_date());
     endDate = dojo.date.stamp.fromISOString(survey.end_date());
     var pane = new openils.widget.EditPane({fmObject : survey, hideActionButtons:false}, dojo.byId('edit-pane'));
     if ( endDate > today) {
-        var buttonBody = dojo.create( 'tbody', {innerHTML: "End Survey Now"}, surveyTable);
+        var buttonBody = dojo.create( 'td', null, headRow);
         var endButton = new dijit.form.Button({label: localeStrings.END_SURVEY, onClick:function() {endSurvey(survey.id())} }, buttonBody);
-    }       
+    }   
     pane.fieldOrder = ['id', 'name', 'description', 'owner', 'start_date', 'end_date'];
     pane.onCancel = cancelEdit;
     pane.startup();
+    var surveyFoot = dojo.create('tfoot', {style: "background-color: #99CCFF"}, surveyTable);
+    var footRow = dojo.create('tr', { style: "width: 100%"}, surveyFoot);  
+    var footLabel = dojo.create('td', {innerHTML: localeStrings.SURVEY_FOOT_LABEL, style: "width: 100%"}, footRow);
+    var footCell = dojo.create('td', {innerHTML: "<hr>", style: "width: 100%"}, footRow);
     getQuestions(svyId, survey);
 
 }
@@ -77,11 +83,11 @@ function newQuestionBody(svyId) {
     var surveyTable = dojo.byId("survey_table");
     var surveyBody = dojo.create('tbody', {style: "background-color: #d9e8f9"}, surveyTable);
     var questionRow = dojo.create('tr', null, surveyBody);
-    var questionLabel = dojo.create('td',{ innerHTML: localeStrings.QUESTION}, questionRow, "first");
+    var questionLabel = dojo.create('td',{ innerHTML: localeStrings.SURVEY_QUESTION}, questionRow, "first");
     var questionTextbox = dojo.create('td', null, questionRow, "second");
     var qInput = new dijit.form.TextBox(null, questionTextbox);
     var questionButton = dojo.create('td', null , questionRow);
-    var qButton = new dijit.form.Button({ label: localeStrings.SAVE_ADD, onClick:function() {newQuestion(svyId, qInput.getValue(), questionRow)} }, questionButton);
+    var qButton = new dijit.form.Button({ label: localeStrings.SURVEY_SAVE_ADD, onClick:function() {newQuestion(svyId, qInput.getValue(), questionRow)} }, questionButton);
     
 }
 
@@ -90,15 +96,15 @@ function drawQuestionBody(question, answers, survey){
     var surveyTable = dojo.byId('survey_table');
     var surveyBody = dojo.create( 'tbody', {quid:question.id(), id:("q" + question.id()), style: "background-color: #d9e8f9"}, surveyTable);
     var questionRow = dojo.create('tr', {quid:question.id()}, surveyBody);
-    var questionLabel = dojo.create('td', {quid:question.id(), innerHTML: localeStrings.QUESTION}, questionRow, "first");
+    var questionLabel = dojo.create('td', {quid:question.id(), innerHTML: localeStrings.SURVEY_QUESTION}, questionRow, "first");
     var questionTextbox = dojo.create('td', {quid: question.id() }, questionRow, "second");
     var qInput = new dijit.form.TextBox(null, questionTextbox);
     qInput.attr('value', question.question());
     if (startDate > today){
         var questionButton = dojo.create('td', {quid: question.id()}, questionRow);
-        var qButton = new dijit.form.Button({label: localeStrings.DELETE_QUESTION, onClick:function() {deleteQuestion(question.id(), surveyBody) }}, questionButton);
+        var qButton = new dijit.form.Button({label: localeStrings.SURVEY_DELETE_QUESTION, onClick:function() {deleteQuestion(question.id(), surveyBody) }}, questionButton);
         var qChangesButton = dojo.create('td', {quid: question.id()}, questionRow);
-        var qcButton = new dijit.form.Button({label: localeStrings.SAVE_CHANGES, onClick:function() {changeQuestion(question.id(), qInput.attr('value')) }}, qChangesButton);
+        var qcButton = new dijit.form.Button({label: localeStrings.SURVEY_SAVE_CHANGES, onClick:function() {changeQuestion(question.id(), qInput.attr('value')) }}, qChangesButton);
        
     }
     for (var i in answers) {
@@ -154,7 +160,7 @@ function drawAnswer(answer, qid, surveyBody, survey) {
     var surveyBody = dojo.byId(("q" + qid)); 
     var answerRow = dojo.create('tr', {anid: answer.id(), style: "background-color: #FFF"}, surveyBody);
     var answerSpacer =  dojo.create('td', {anid: answer.id()}, answerRow, "first");
-    var answerLabel =  dojo.create('td', {anid: answer.id(), style: "float: right", innerHTML: localeStrings.ANSWER }, answerRow, "second");
+    var answerLabel =  dojo.create('td', {anid: answer.id(), style: "float: right", innerHTML: localeStrings.SURVEY_ANSWER }, answerRow, "second");
     var answerTextbox = dojo.create('td', {anid: answer.id() }, answerRow, "third");
     var input = new dijit.form.TextBox(null, answerTextbox);
     input.attr('value', answer.answer());
@@ -162,20 +168,20 @@ function drawAnswer(answer, qid, surveyBody, survey) {
         var answerSpacer =  dojo.create('td', {anid: answer.id()}, answerRow);
         var delanswerButton = dojo.create('td', {anid: answer.id()}, answerRow);
         var aid = answer.id();
-        var aButton = new dijit.form.Button({label: localeStrings.DELETE_ANSWER, onClick:function(){deleteAnswer(aid);answerRow.parentNode.removeChild(answerRow)} }, delanswerButton);
+        var aButton = new dijit.form.Button({label: localeStrings.SURVEY_DELETE_ANSWER, onClick:function(){deleteAnswer(aid);answerRow.parentNode.removeChild(answerRow)} }, delanswerButton);
         var aChangesButton = dojo.create('td', {anid: qid}, answerRow);
-        var acButton = new dijit.form.Button({label: localeStrings.SAVE_CHANGES, onClick:function() {changeAnswer(answer.id(), input.attr('value')) }}, aChangesButton);
+        var acButton = new dijit.form.Button({label: localeStrings.SURVEY_SAVE_CHANGES, onClick:function() {changeAnswer(answer.id(), input.attr('value')) }}, aChangesButton);
     }
 }
 
 function drawNewAnswerRow(qid, surveyBody) {
     var answerRow = dojo.create('tr', {quid: qid, style: "background-color: #FFF"}, surveyBody);
     var answerSpacer =  dojo.create('td', {quid: qid}, answerRow, "first");
-    var answerLabel =  dojo.create('td', {quid: qid, innerHTML: localeStrings.ANSWER, style: "float:right" }, answerRow, "second");
+    var answerLabel =  dojo.create('td', {quid: qid, innerHTML: localeStrings.SURVEY_ANSWER, style: "float:right" }, answerRow, "second");
     var answerTextbox = dojo.create('td', {quid: qid }, answerRow, "third");
     var input = new dijit.form.TextBox(null, answerTextbox);
     var answerButton = dojo.create('td', {anid: qid}, answerRow);
-    var aButton = new dijit.form.Button({label: localeStrings.ADD_ANSWER, onClick:function() {newAnswer(qid, input.attr('value'), answerRow, surveyBody)} }, answerButton);
+    var aButton = new dijit.form.Button({label: localeStrings.SURVEY_ADD_ANSWER, onClick:function() {newAnswer(qid, input.attr('value'), answerRow, surveyBody)} }, answerButton);
 
 }
 

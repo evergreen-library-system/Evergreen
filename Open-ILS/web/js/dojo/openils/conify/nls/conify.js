@@ -73,14 +73,17 @@
 	"SUCCESS_SAVING_HOO": "Hours of Operation updated for ${0}",
 	"SUCCESS_SAVING_ILL": "Saved changes to the ILL Address of ${0}",
 	"SUCCESS_SAVING_MAILING": "Saved changes to the Mailing Address of ${0}",
-    "SUCCESS_SAVING_PHYSICAL": "Saved changes to the Physical Address of ${0}",
-    "TRANSLATION": "Translation",
-    "END_SURVEY": "End Survey Now",
-    "SAVE_ADD": "Save Question & Add Answer",
-    "DELETE_QUESTION": "Delete Question & Answers",
-    "DELETE_ANSWER": "Delete Answer",
-    "SAVE_CHANGES": "Save Changes",
-    "ADD_ANSWER": "Add Answer",
-    "ANSWER": "Answer:",
-    "QUESTION": "Question:"
+        "SUCCESS_SAVING_PHYSICAL": "Saved changes to the Physical Address of ${0}",
+        "TRANSLATION": "Translation",
+        "END_SURVEY": "End Survey Now",
+        "SURVEY_SAVE_ADD": "Save Question & Add Answer",
+        "SURVEY_DELETE_QUESTION": "Delete Question & Answers",
+        "SURVEY_DELETE_ANSWER": "Delete Answer",
+        "SURVEY_SAVE_CHANGES": "Save Changes",
+        "SURVEY_ADD_ANSWER": "Add Answer",
+        "SURVEY_ANSWER": "Answer:",
+        "SURVEY_QUESTION": "Question:",
+        "SURVEY_ID": "<h3>Survey ID # ${0}</h3>",
+        "SURVEY_FOOT_LABEL": "<h3>Questions & Answers</h3>"
 }
+
