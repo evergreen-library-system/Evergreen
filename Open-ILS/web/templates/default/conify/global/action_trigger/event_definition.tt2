@@ -1,50 +1,61 @@
 [% WRAPPER default/base.tt2 %]
-<script>
-    dojo.require('dijit.layout.TabContainer');
-    dojo.require('openils.widget.AutoGrid');
-    var loaded = {'tab-atevdef' : true};
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'> </script>
 
-    openils.Util.addOnLoad(
-        function() { 
-            edGrid.loadAll({order_by:{atevdef : 'hook'}}); 
-            dojo.connect(tabs,'selectChild', 
-                function(child) { 
-                    if(loaded[child.id]) return;
-                    loaded[child.id] = true;
-                    switch(child.id) {
-                        case 'tab-ath': 
-                            thGrid.loadAll({order_by:{ath : 'key'}}); 
-                            break;
-                        case 'tab-atreact': 
-                            trGrid.loadAll({order_by:{atreact : 'module'}}); 
-                            break;
-                        case 'tab-atval': 
-                            tvGrid.loadAll({order_by:{atval : 'module'}}); 
-                            break;
-                    }
-                }
-            );
-        }
-    );
-</script>
-
-<div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='tabs'>
+<div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 
     <div dojoType="dijit.layout.ContentPane" title='Event Definitions' selected='true' id='tab-atevdef'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Event Definitions</div>
-            <div><button dojoType='dijit.form.Button' onClick='edGrid.showCreateDialog()'>New</button></div>
+            <div><button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button></div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="edGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['id', 'owner', 'hook', 'active', 'delay', 'validator', 'reactor']"
+                    suppressFields="['template']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
+                    defaultCellWidth='8'
+                    editStyle='pane'
                     editOnEnter='true'>
             </table>
         </div>
     </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='Event Parameters' id='tab-atevparam'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Event Parameters</div>
+            <div><button dojoType='dijit.form.Button' onClick='tepGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="tepGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['id', 'event_def', 'param', 'value']"
+                    query="{id: '*'}" 
+                    fmClass='atevparam'
+                    defaultCellWidth='20'
+                    editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title='Event Environment' id='tab-atenv'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Trigger Event Environment</div>
+            <div><button dojoType='dijit.form.Button' onClick='teeGrid.showCreateDialog()'>New</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <table  jsId="teeGrid" 
+                    dojoType="openils.widget.AutoGrid" 
+                    fieldOrder="['id', 'event_def', 'path', 'collector', 'label']"
+                    query="{id: '*'}" 
+                    fmClass='atenv'
+                    defaultCellWidth='20'
+                    editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
 
     <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
@@ -57,7 +68,6 @@
                     fieldOrder="['key', 'core_type', 'description', 'passive']"
                     query="{key: '*'}" 
                     fmClass='ath'
-                    fmClass='atval'
                     defaultCellWidth='12'
                     editOnEnter='true'>
             </table>
@@ -74,7 +84,6 @@
                     dojoType="openils.widget.AutoGrid" 
                     query="{module: '*'}" 
                     fmClass='atreact'
-                    fmClass='atval'
                     editOnEnter='true'>
                 <thead>
                     <tr>
