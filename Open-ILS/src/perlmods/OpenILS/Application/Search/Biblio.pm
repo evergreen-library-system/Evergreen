@@ -238,6 +238,72 @@ sub biblio_id_to_copy {
 
 
 __PACKAGE__->register_method(
+	method	=> "biblio_id_to_uris",
+	api_name=> "open-ils.search.asset.uri.retrieve_by_bib",
+	argc	=> 2, 
+    stream  => 1,
+    signature => q#
+        @param BibID Which bib record contains the URIs
+        @param OrgID Where to look for URIs
+        @param OrgDepth Range adjustment for OrgID
+        @return A stream or list of 'auri' objects
+    #
+
+);
+sub biblio_id_to_uris { 
+	my( $self, $client, $bib, $org, $depth ) = @_;
+    die "Org ID required" unless defined($org);
+    die "Bib ID required" unless defined($bib);
+
+    my @params;
+    push @params, $depth if (defined $depth);
+
+	my $ids = $U->cstorereq( "open-ils.cstore.json_query.atomic",
+        {   select  => { auri => [ 'id' ] },
+            from    => {
+                acn => {
+                    auricnm => {
+                        field   => 'call_number',
+                        fkey    => 'id',
+                        join    => {
+                            auri    => {
+                                field => 'id',
+                                fkey => 'uri',
+                                filter  => { active => 't' }
+                            }
+                        }
+                    }
+                }
+            },
+            where   => {
+                '+acn'  => {
+                    record      => $bib,
+                    owning_lib  => {
+                        in  => {
+                            select  => { aou => [ { column => 'id', transform => 'actor.org_unit_descendants', params => \@params, result_field => 'id' } ] },
+                            from    => 'aou',
+                            where   => { id => $org },
+                            distinct=> 1
+                        }
+                    }
+                }
+            },
+            distinct=> 1,
+        }
+    );
+
+	my $uris = $U->cstorereq(
+		"open-ils.cstore.direct.asset.uri.search.atomic",
+        { id => [ map { (values %$_) } @$ids ] }
+    );
+
+    $client->respond($_) for (@$uris);
+
+    return undef;
+}
+
+
+__PACKAGE__->register_method(
 	method	=> "copy_retrieve", 
 	api_name	=> "open-ils.search.asset.copy.retrieve",);
 sub copy_retrieve {

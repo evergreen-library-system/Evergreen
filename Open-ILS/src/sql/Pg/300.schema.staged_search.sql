@@ -423,6 +423,40 @@ BEGIN
             CONTINUE;
         END IF;
 
+        PERFORM 1
+          FROM  asset.call_number cn
+                JOIN asset.uri_call_number_map map ON (map.call_number = cn.id)
+                JOIN asset.uri uri ON (map.uri = uri.id)
+          WHERE NOT cn.deleted
+                AND cn.label = '##URI##'
+                AND uri.active
+                AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                AND cn.owning_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+          LIMIT 1;
+
+        IF FOUND THEN
+            -- RAISE NOTICE ' % have at least one URI ... ', core_result.records;
+            visible_count := visible_count + 1;
+
+            current_res.id = core_result.id;
+            current_res.rel = core_result.rel;
+
+            tmp_int := 1;
+            IF metarecord THEN
+                SELECT COUNT(DISTINCT s.source) INTO tmp_int FROM metabib.metarecord_source_map s WHERE s.metarecord = core_result.id;
+            END IF;
+
+            IF tmp_int = 1 THEN
+                current_res.record = core_result.records[1];
+            ELSE
+                current_res.record = NULL;
+            END IF;
+
+            RETURN NEXT current_res;
+
+            CONTINUE;
+        END IF;
+
         IF param_statuses IS NOT NULL AND array_upper(param_statuses, 1) > 0 THEN
 
             PERFORM 1

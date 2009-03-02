@@ -2,16 +2,6 @@
 
 DROP SCHEMA serial CASCADE;
 
-CREATE TABLE asset.uri (
-	id	SERIAL	PRIMARY KEY,
-	href	TEXT	NOT NULL,
-	label	TEXT,
-	use	TEXT,
-	active	BOOL	NOT NULL DEFAULT TRUE
-);
-
-ALTER TABLE asset.call_number ADD COLUMN uri INT REFERENCES asset.uri (id) DEFERRABLE INITIALLY DEFERRED;
-
 BEGIN;
 
 CREATE SCHEMA serial;

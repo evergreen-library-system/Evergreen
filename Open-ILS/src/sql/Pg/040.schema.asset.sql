@@ -133,6 +133,14 @@ CREATE TABLE asset.copy_note (
 	value		TEXT				NOT NULL
 );
 
+CREATE TABLE asset.uri (
+    id  SERIAL  PRIMARY KEY,
+    href    TEXT    NOT NULL,
+    label   TEXT,
+    use TEXT,
+    active  BOOL    NOT NULL DEFAULT TRUE
+);
+
 CREATE TABLE asset.call_number (
 	id		bigserial PRIMARY KEY,
 	creator		BIGINT				NOT NULL,
@@ -151,6 +159,13 @@ CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_numbe
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (upper(label),id,owning_lib);
 CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted IS FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
+
+CREATE TABLE asset.uri_call_number_map (
+    id          BIGSERIAL   PRIMARY KEY,
+    uri         INT         NOT NULL REFERENCES asset.uri (id),
+    call_number INT         NOT NULL REFERENCES asset.call_number (id),
+    CONSTRAINT uri_cn_once UNIQUE (uri,call_number)
+);
 
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,

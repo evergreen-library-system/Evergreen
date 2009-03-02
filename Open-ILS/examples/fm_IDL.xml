@@ -1486,6 +1486,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="auri" controller="open-ils.cstore" oils_obj:fieldmapper="asset::uri" oils_persist:tablename="asset.uri" reporter:label="Electronic Access URI">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="URI ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="URI" name="href" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Use Information" name="use" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Active" name="active" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+		</fields>
+		<links/>
+	</class>
+	<class id="auricnm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::uri_call_number_map" oils_persist:tablename="asset.uri_call_number_map" reporter:label="Electronic Access URI to Call Number Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="URI" name="uri" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Call Number" name="call_number" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="uri" reltype="has_a" key="id" map="" class="auri"/>
+			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
+		</links>
+	</class>
 	<class id="cst" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

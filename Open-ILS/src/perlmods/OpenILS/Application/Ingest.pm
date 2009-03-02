@@ -129,9 +129,64 @@ sub rw_biblio_ingest_single_object {
 	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 
 	my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+    my $tmp;
+
+	# update uri stuff ...
+
+    # gather URI call numbers for this record
+    my $uri_cns = $u->{call_number} = $cstore->request(
+        'open-ils.cstore.direct.asset.call_number.id_list.atomic' => { record => $bib->id, label => '##URI##' }
+    )->gather(1);
+
+    # gather the maps for those call numbers
+    my $uri_maps = $u->{call_number} = $cstore->request(
+        'open-ils.cstore.direct.asset.uri_call_number_map.id_list.atomic' => { call_number => $uri_cns }
+    )->gather(1);
+
+    # delete the old maps
+    $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.delete' => $_ )->gather(1) for (@$uri_maps);
+
+    # and delete the call numbers if there are no more URIs
+    if (!@{ $blob->{uri} }) {
+        $cstore->request( 'open-ils.cstore.direct.asset.call_number.delete' => $_ )->gather(1) for (@$uri_cns);
+    }
+
+    # now, add CNs, URIs and maps
+    my %new_cns_by_owner;
+    my %new_uris_by_owner;
+    for my $u ( @{ $blob->{uri} } ) {
+
+        my $owner = $u->{call_number}->owning_lib;
+
+        if ($u->{call_number}->isnew) {
+            if ($new_cns_by_owner{$owner}) {
+                $u->{call_number} = $new_cns_by_owner{$owner};
+            } else {
+    	        $u->{call_number} = $new_cns_by_owner{$owner} = $cstore->request(
+                    'open-ils.cstore.direct.asset.call_number.create' => $u->{call_number}
+                )->gather(1);
+            }
+        }
+
+        if ($u->{uri}->isnew) {
+            if ($new_uris_by_owner{$owner}) {
+	            $u->{uri} = $new_uris_by_owner{$owner};
+            } else {
+	            $u->{uri} = $new_uris_by_owner{$owner} = $cstore->request(
+                    'open-ils.cstore.direct.asset.uri.create' => $u->{uri}
+                )->gather(1);
+            }
+        }
+
+        my $umap = Fieldmapper::asset::uri_call_number_map->new;
+        $umap->uri($u->{uri}->id);
+        $umap->call_number($u->{call_number}->id);
+
+	    $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.create' => $umap )->gather(1) if (!$tmp);
+    }
 
 	# update full_rec stuff ...
-	my $tmp = $cstore->request(
+	$tmp = $cstore->request(
 		'open-ils.cstore.direct.metabib.full_rec.id_list.atomic',
 		{ record => $bib->id }
 	)->gather(1);
@@ -346,6 +401,7 @@ sub ro_biblio_ingest_single_object {
 
 	my $document = $parser->parse_string($xml);
 
+	my @uris = $self->method_lookup("open-ils.ingest.856_uri.object")->run($bib);
 	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
 	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
 	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
@@ -355,7 +411,7 @@ sub ro_biblio_ingest_single_object {
 	$_->record($bib->id) for (@mfr);
 	$rd->record($bib->id) if ($rd);
 
-	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
+	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd, uri => \@uris };
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.ingest.full.biblio.object.readonly",
@@ -1018,6 +1074,133 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 	stream		=> 1,
 );                      
+
+
+# --------------------------------------------------------------------------------
+# URI extraction
+
+package OpenILS::Application::Ingest::Biblio::URI;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
+use OpenSRF::EX qw/:try/;
+
+
+sub _extract_856_uris {
+
+    my $recid   = shift;
+	my $marcxml = shift;
+	my @objects;
+	
+	my @nodes = $marcxml->findnodes('//*[local-name()="datafield" and @tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]');
+
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+
+    for my $node (@nodes) {
+        # first, is there a URI?
+        my $href = $node->findvalue('[local-name()="subfield" and @code="u"]/text()');
+        next unless ($href);
+
+        # now, find the best possible label
+        my $label = $node->findvalue('[local-name()="subfield" and @code="y"]/text()');
+        $label ||= $node->findvalue('[local-name()="subfield" and @code="3"]/text()');
+        $label ||= $href;
+
+        # look for use info
+        my $use = $node->findvalue('[local-name()="subfield" and @code="z"]/text()');
+        $use ||= $node->findvalue('[local-name()="subfield" and @code="2"]/text()');
+        $use ||= $node->findvalue('[local-name()="subfield" and @code="n"]/text()');
+
+        # moving on to the URI owner
+        my $owner = $node->findvalue('[local-name()="subfield" and @code="w"]/text()');
+        $owner ||= $node->findvalue('[local-name()="subfield" and @code="n"]/text()');
+        $owner ||= $node->findvalue('[local-name()="subfield" and @code="9"]/text()'); # Evergreen special sauce
+
+        $owner =~ s/^.*?\((\w+)\).*$/$1/o; # unwrap first paren-enclosed string and then ...
+
+        # no owner? skip it :(
+        next unless ($owner);
+
+    	my $org = $cstore
+            ->request( 'open-ils.cstore.direct.actor.org_unit.search' => { shortname => $owner} )
+			->gather(1);
+
+        next unless ($org);
+
+        # now we can construct the uri object
+    	my $uri = $cstore
+            ->request( 'open-ils.cstore.direct.asset.uri.search' => { label => $label, href => $href, use => $use, active => 't' } )
+			->gather(1);
+
+        if (!$uri) {
+            $uri = Fieldmapper::asset::uri->new;
+            $uri->isnew( 1 );
+            $uri->label($label);
+            $uri->href($href);
+            $uri->use($use);
+        }
+
+        # see if we need to create a call number
+    	my $cn = $cstore
+            ->request( 'open-ils.cstore.direct.asset.call_number.search' => { owner => $org->id, record => $recid, label => '##URI##' } )
+			->gather(1);
+
+        if (!$cn) {
+            $cn = Fieldmapper::asset::call_number->new;
+            $cn->isnew( 1 );
+            $cn->owner( $org->id );
+            $cn->record( $recid );
+            $cn->label( '##URI##' );
+        }
+
+        push @objects, { uri => $uri, call_number => $cn };
+    }
+
+	$log->debug("Returning ".scalar(@objects)." URI nodes for record $recid");
+	return @objects;
+}
+
+sub get_uris_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::Ingest->post_init();
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request( "open-ils.cstore.direct.biblio.record_entry.retrieve" => $rec )
+			->gather(1);
+
+	return undef unless ($r and $r->marc);
+
+	$client->respond($_) for (_extract_856_uris($r->id, $r->marc));
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.856_uri.record",
+	method		=> "get_uris_record",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+sub get_uris_object {
+	my $self = shift;
+	my $client = shift;
+	my $obj = shift;
+
+	return undef unless ($obj and $obj->marc);
+
+	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc));
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.856_uri.object",
+	method		=> "get_uris_object",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
 
 # --------------------------------------------------------------------------------
 # Fingerprinting
