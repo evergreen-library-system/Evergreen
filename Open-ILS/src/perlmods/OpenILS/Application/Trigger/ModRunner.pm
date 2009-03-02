@@ -57,7 +57,7 @@ sub load {
     my $loaded = $m->use;
 
     if (!$loaded) {
-        $builtin_m = $self->prefix . "::$m";
+        my $builtin_m = $self->prefix . "::$m";
         $loaded = $builtin_m->use;
 
         if (!$loaded) {

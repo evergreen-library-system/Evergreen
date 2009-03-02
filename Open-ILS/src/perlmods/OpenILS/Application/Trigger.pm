@@ -172,13 +172,13 @@ sub grouped_events {
     for my $e_id ( @$events ) {
         my $e = OpenILS::Application::Trigger::Event->new($e_id);
         if ($e->validate->valid) {
-            if (my $group = $event->event->event_def->group_field) {
+            if (my $group = $e->event->event_def->group_field) {
 
                 # split the grouping link steps
                 my @steps = split '.', $group;
 
                 # find the grouping object
-                my $node = $event->target;
+                my $node = $e->target;
                 $node = $node->$_() for ( @steps );
 
                 # get the pkey value for the grouping object on this event

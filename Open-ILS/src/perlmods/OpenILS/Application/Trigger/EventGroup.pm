@@ -184,6 +184,7 @@ sub update_state {
     $self->editor->xact_begin || return undef;
 
     my @oks;
+    my $ok;
     for my $event ( @{ $self->events } ) {
         my $e = $self->editor->retrieve_action_trigger_event( $event->id );
         $e->start_time( 'now' ) unless $e->start_time;
@@ -223,16 +224,16 @@ sub build_environment {
     my $self = shift;
     my $env = $self->environment;
 
-    $$evn{target} = [];
-    $$evn{event} = [];
+    $$env{target} = [];
+    $$env{event} = [];
     for my $e ( @{ $self->events } ) {
-        for my $evn_part ( keys %{ $e->environment } ) {
+        for my $env_part ( keys %{ $e->environment } ) {
             if ($env_part eq 'target') {
-                push @{ $$evn{target} }, $e->environment->{target};
+                push @{ $$env{target} }, $e->environment->{target};
             } elsif ($env_part eq 'event') {
-                push @{ $$evn{event} }, $e->environment->{event};
+                push @{ $$env{event} }, $e->environment->{event};
             } else {
-                $$evn{$evn_part} = $e->environment->{$evn_part};
+                $$env{$env_part} = $e->environment->{$env_part};
             }
         }
     }
