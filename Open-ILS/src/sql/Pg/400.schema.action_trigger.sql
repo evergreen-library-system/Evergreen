@@ -62,6 +62,7 @@ INSERT INTO action_trigger.validator (module,description) VALUES ('NOOP_True','A
 INSERT INTO action_trigger.validator (module,description) VALUES ('NOOP_False','Always returns false -- validation always fails');
 INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOpen','Check that the circulation is still open');
 INSERT INTO action_trigger.validator (module,description) VALUES ('HoldIsAvailable','Check that an item is on the hold shelf');
+INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOverdue','Check that the circulation is overdue');
 
 -- After an event passes validation (action_trigger.validator), the reactor processes it.
 CREATE TABLE action_trigger.reactor (
