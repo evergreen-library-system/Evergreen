@@ -25,7 +25,7 @@ function drawSurvey(svyId) {
     var surveyTable = dojo.byId('edit-pane');
     var surveyHead = dojo.create('thead', {style: "background-color: #99CCFF"},  surveyTable);
     var headRow = dojo.create('tr', null,  surveyHead);
-    var headCell = dojo.create('td', {innerHTML: dojo.string.substitute(localeStrings.SURVEY_ID, [svyId]), style: "width: 100%"}, headRow);
+    var headCell = dojo.create('td', {innerHTML: "<h3>" +dojo.string.substitute(localeStrings.SURVEY_ID, [svyId])+"</h3>", style: "width: 100%"}, headRow);
     var pcrud = new openils.PermaCrud();
     var survey = pcrud.retrieve('asv', svyId);
     startDate = dojo.date.stamp.fromISOString(survey.start_date());
@@ -40,7 +40,7 @@ function drawSurvey(svyId) {
     pane.startup();
     var surveyFoot = dojo.create('tfoot', {style: "background-color: #99CCFF"}, surveyTable);
     var footRow = dojo.create('tr', { style: "width: 100%"}, surveyFoot);  
-    var footLabel = dojo.create('td', {innerHTML: localeStrings.SURVEY_FOOT_LABEL, style: "width: 100%"}, footRow);
+    var footLabel = dojo.create('td', {innerHTML: "<h3>"+localeStrings.SURVEY_FOOT_LABEL+"</h3>", style: "width: 100%"}, footRow);
     var footCell = dojo.create('td', {innerHTML: "<hr>", style: "width: 100%"}, footRow);
     getQuestions(svyId, survey);
 

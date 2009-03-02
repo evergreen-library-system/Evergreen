@@ -83,7 +83,7 @@
         "SURVEY_ADD_ANSWER": "Add Answer",
         "SURVEY_ANSWER": "Answer:",
         "SURVEY_QUESTION": "Question:",
-        "SURVEY_ID": "<h3>Survey ID # ${0}</h3>",
-        "SURVEY_FOOT_LABEL": "<h3>Questions & Answers</h3>"
+        "SURVEY_ID": "Survey ID # ${0}",
+        "SURVEY_FOOT_LABEL": "Questions & Answers"
 }
 
