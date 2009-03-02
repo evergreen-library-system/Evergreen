@@ -432,13 +432,20 @@ sub _object_by_path {
             $self->editor :
             new_rstore_editor();
 
-    my $obj = $ed->$meth( 
-        ($multi) ? { $ffield => $context->$lfield() } : $context->$lfield() );
+    my $obj = $context->$step(); 
+
+    if (!ref $obj) {
+        $obj = $ed->$meth( 
+            ($multi) ?
+                { $ffield => $context->$lfield() } :
+                $context->$lfield()
+        );
+    }
 
     if (@$path) {
 
         my $obj_list = [];
-        if (!$multi) {
+        if (!$multi || $rtype eq 'might_have') {
             $obj_list = [$obj] if ($obj);
         } else {
             $obj_list = $obj;
