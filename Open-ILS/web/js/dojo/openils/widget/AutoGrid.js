@@ -189,6 +189,25 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return pane;
             },
 
+            // .startup() is called within
+            _makeClonePane : function(storeItem, rowIndex, onPostSubmit, onCancel) {
+                var clonePane = this._makeCreatePane(onPostSubmit, onCancel);
+                var origPane = this._makeEditPane(this.selection.getFirstSelected(), this.focus.rowIndex);
+                clonePane.startup();
+                origPane.startup();
+                dojo.forEach(origPane.fieldList,
+                    function(field) {
+                        if(field.widget.widget.attr('disabled')) return;
+                        var w = clonePane.fieldList.filter(
+                            function(i) { return (i.name == field.name) })[0];
+                        w.widget.baseWidgetValue(field.widget.widgetValue); // sync widgets
+                        w.widget.onload = function(){w.widget.baseWidgetValue(field.widget.widgetValue)}; // async widgets
+                    }
+                );
+                origPane.destroy();
+                return clonePane;
+            },
+
 
             _drawEditDialog : function(storeItem, rowIndex) {
                 var self = this;
@@ -213,6 +232,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var done = function() { self.hidePane(); };
                 this.editPane = this._makeEditPane(storeItem, rowIndex, done, done);
                 this.editPane.startup();
+                this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
+                dojo.style(this.domNode, 'display', 'none');
+            },
+
+            showClonePane : function(storeItem, rowIndex) {
+                var self = this;
+                var done = function() { self.hidePane(); };
+                this.editPane = this._makeClonePane(storeItem, rowIndex, done, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
                 dojo.style(this.domNode, 'display', 'none');
             },
