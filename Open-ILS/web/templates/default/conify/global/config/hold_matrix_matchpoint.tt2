@@ -1,22 +1,46 @@
-[% ctc.page_title = 'Circulation Policy Configuration' %]
 [% WRAPPER default/base.tt2 %]
-<script>
-    dojo.require('dijit.layout.ContentPane');
-    dojo.require('dijit.form.Button');
-    dojo.require('openils.widget.AutoGrid');
-</script>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-    <div>Circulation Policy Configuration</div>
-    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New</button></div>
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/hold_matrix_matchpoint.js'> </script>
+<h1>Hold Matrix Matchpoint</h1> <br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+
+    <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
+     
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+        <table jsId="hmGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+            <thead>
+                <tr>
+                    <th field="id">Matchpoint ID</th>
+                    <th field="active" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Active?</th>
+                    <th field="user_home_ou" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>User Home Library</th>
+                    <th field="request_ou" width='auto' editable='true' 
+                        cellType='dojox.grid.cells.Select' get='getOrgInfo'>Request Library</th>
+                    <th field="pickup_ou" editable='true' cellType='dojox.grid.cells.Select' get='getOrgInfo'>Pickup Library</th>
+                    <th field="item_owning_ou" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>Owning Library</th>
+                         <th field="item_circ_ou" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getOrgInfo'>Item Circ Library</th>
+                         <th field="usr_grp" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getGroupName'>User Permission Group</th>
+                         <th field="requestor_grp" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getGroupName'>Requestor Permission Group</th>
+                        <th field="circ_modifier" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Circulation Modifier</th>
+                         <th field="marc_type" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getMarcType'>MARC Type</th>
+                         <th field="marc_form" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getMarcForm'>MARC Format</th>
+                         <th field="marc_vr_format" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' get='getVrForm'>Videorecording Format</th>
+                         <th field="ref_flag" width='auto' editable='true' 
+                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox' formatter='formatReference'>Reference?</th>
+                        
+                </tr>
+            </thead>
+        </table>    
+    </div>
 </div>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-    <table  jsId="cmGrid" 
-            dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'active', 'org_unit', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound']"
-            defaultCellWidth='12'
-            query="{id: '*'}" 
-            fmClass='ccmm' 
-            editOnEnter='true'>
-    </table>
-</div>
+
 [% END %]

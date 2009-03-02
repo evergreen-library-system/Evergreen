@@ -1,10 +1,9 @@
 package OpenILS::Application::Trigger::EventGroup;
 use OpenILS::Application::Trigger::Event;
 use base 'OpenILS::Application::Trigger::Event';
-use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 
-use OpenSRF::Utils::Logger qw/:logger/;
+use OpenSRF::Utils::Logger qw/:level/;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;

@@ -231,18 +231,3 @@ COMMENT ON FUNCTION actor.org_unit_ancestor_setting( TEXT, INT) IS $$
 */
 $$;
 
-
-CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_all( org_id INT ) RETURNS SETOF actor.org_unit_setting AS $$
-DECLARE
-    setting RECORD;
-    name TEXT;
-BEGIN
-    FOR name IN SELECT DISTINCT(name) FROM actor.org_unit_setting LOOP
-        SELECT INTO setting * FROM actor.org_unit_ancestor_setting(name, org_id);
-        IF FOUND THEN
-            RETURN NEXT setting;
-        END IF;
-    END LOOP;
-END;
-$$ LANGUAGE plpgsql;
-
