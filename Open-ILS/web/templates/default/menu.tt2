@@ -101,6 +101,8 @@
                                 onClick="location.href = '[% ctx.base_uri %]/conify/global/config/circ_modifier';">Circulation Modifiers</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                                 onClick="location.href = '[% ctx.base_uri %]/conify/global/action_trigger/event_definition';">Action Trigger</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
+                             onClick="location.href = '[% ctx.base_uri %]/conify/global/action/survey';">Surveys</div>
                     </div>
                 </div>
             </div>
