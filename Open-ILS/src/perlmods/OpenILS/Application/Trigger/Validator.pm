@@ -1,4 +1,6 @@
 package OpenILS::Application::Trigger::Validator;
+use DateTime;
+use DateTime::Format::ISO8601;
 sub fourty_two { return 42 }
 sub NOOP_True { return 1 }
 sub NOOP_False { return 0 }
@@ -8,6 +10,16 @@ sub CircIsOpen {
     my $env = shift;
 
     return defined($env->{target}->checkin_time) ? 0 : 1;
+}
+
+sub CircIsOverdue {
+    my $self;
+    my $env;
+    my $circ = $env->{target};
+    return 0 if $circ->checkin_time;
+    return 0 if $circ->stop_fines and not $circ->stop_fines =~ /MAXFINES|LONGOVERDUE/;
+    return 0 if DateTime::Format::ISO8601->new->parse_datetime($circ->due_date) < DateTime->now;
+    return 1;
 }
 
 sub HoldIsAvailable {
