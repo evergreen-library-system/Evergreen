@@ -6,7 +6,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Event Definitions' selected='true' id='tab-atevdef'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Event Definitions</div>
-            <div><button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane()'>Clone Selected</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="edGrid" 
