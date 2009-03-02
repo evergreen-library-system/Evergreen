@@ -5,6 +5,7 @@ use Email::Send;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
 use OpenSRF::Utils::Logger qw/:logger/;
+$Data::Dumper::Indent = 0;
 
 use base 'OpenILS::Application::Trigger::Reactor';
 
