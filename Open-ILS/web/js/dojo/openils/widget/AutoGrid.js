@@ -230,27 +230,27 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             _drawEditPane : function(storeItem, rowIndex) {
                 var self = this;
                 var done = function() { self.hidePane(); };
+                dojo.style(this.domNode, 'display', 'none');
                 this.editPane = this._makeEditPane(storeItem, rowIndex, done, done);
                 this.editPane.startup();
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
-                dojo.style(this.domNode, 'display', 'none');
             },
 
             showClonePane : function(storeItem, rowIndex) {
                 var self = this;
                 var done = function() { self.hidePane(); };
+                dojo.style(this.domNode, 'display', 'none');
                 this.editPane = this._makeClonePane(storeItem, rowIndex, done, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
-                dojo.style(this.domNode, 'display', 'none');
             },
 
             showCreatePane : function() {
                 var self = this;
                 var done = function() { self.hidePane(); };
+                dojo.style(this.domNode, 'display', 'none');
                 this.editPane = this._makeCreatePane(done, done);
                 this.editPane.startup();
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
-                dojo.style(this.domNode, 'display', 'none');
             },
 
             hideDialog : function() {
