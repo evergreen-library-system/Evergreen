@@ -1,4 +1,5 @@
 package OpenILS::Application::Trigger::Reactor;
+use strict; use warnings;
 use Template;
 use OpenSRF::Utils::Logger qw(:logger);
 

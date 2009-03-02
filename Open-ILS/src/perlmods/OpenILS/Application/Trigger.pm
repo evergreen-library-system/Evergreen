@@ -1,4 +1,5 @@
 package OpenILS::Application::Trigger;
+use strict; use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 

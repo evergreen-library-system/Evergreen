@@ -1,4 +1,5 @@
 package OpenILS::Application::Trigger::Reactor::SendEmail;
+use strict; use warnings;
 use Error qw/:try/;
 use Data::Dumper;
 use Email::Send;

@@ -1,4 +1,5 @@
 package OpenILS::Application::Trigger::Event;
+use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 
 use OpenSRF::Utils::Logger qw/:logger/;

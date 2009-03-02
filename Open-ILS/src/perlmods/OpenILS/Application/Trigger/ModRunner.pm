@@ -1,4 +1,5 @@
 package OpenILS::Application::Trigger::ModLoader;
+use strict; use warnings;
 use UNIVERSAL::require;
 
 sub prefix { return 'OpenILS::Application::Trigger' }
