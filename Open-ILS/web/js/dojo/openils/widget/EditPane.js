@@ -44,6 +44,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(!this.overrideWidgets)
                     this.overrideWidgets = {};
 
+                if(!this.overrideWidgetClass)
+                    this.overrideWidgetClass = {};
+
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
@@ -71,7 +74,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         parentNode : valSpan,
                         orgLimitPerms : this.limitPerms,
                         readOnly : this.readOnly,
-                        widget : this.overrideWidgets[field.name]
+                        widget : this.overrideWidgets[field.name],
+                        widgetClass : this.overrideWidgetClass[field.name]
                     });
 
                     widget.build();

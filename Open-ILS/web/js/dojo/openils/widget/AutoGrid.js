@@ -16,6 +16,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
             defaultCellWidth : null,
             editStyle : 'dialog',
+            suppressFields : null,
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -27,6 +28,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.setStructure(this._compileStructure());
                 this.setStore(this.buildAutoStore());
                 this.overrideEditWidgets = {};
+                this.overrideEditWidgetClass = {};
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
                 else if(this.singleEditStyle) 
@@ -40,6 +42,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 var self = this;
                 function pushEntry(entry) {
+                    if(self.suppressFields) {
+                        if(dojo.indexOf(self.suppressFields, entry.field) != -1)
+                            return;
+                    }
                     if(!entry.get) 
                         entry.get = openils.widget.AutoGrid.defaultGetter
                     if(!entry.width && self.defaultCellWidth)
@@ -122,6 +128,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
                     overrideWidgets : this.overrideEditWidgets,
+                    overrideWidgetClass : this.overrideEditWidgetClass,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -157,6 +164,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var pane = new openils.widget.EditPane({
                     fmClass : this.fmClass,
                     overrideWidgets : this.overrideEditWidgets,
+                    overrideWidgetClass : this.overrideEditWidgetClass,
                     onPostSubmit : function(r) {
                         var fmObject = openils.Util.readResponse(r);
                         if(fmObject) 
