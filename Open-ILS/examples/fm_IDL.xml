@@ -669,7 +669,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="atenv" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::environment" oils_persist:tablename="action_trigger.environment" reporter:label="Trigger Event Environment Entry">
+	<class id="atenv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::environment" oils_persist:tablename="action_trigger.environment" reporter:label="Trigger Event Environment Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -684,6 +684,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
 			<link field="collector" reltype="has_a" key="id" map="" class="atcol"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </create>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </retrieve>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </update>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF">
+                    <context link="event_def" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="atevdef" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_definition" oils_persist:tablename="action_trigger.event_definition" reporter:label="Trigger Event Definition">
