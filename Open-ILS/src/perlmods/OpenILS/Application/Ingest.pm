@@ -1104,12 +1104,14 @@ use OpenSRF::EX qw/:try/;
 
 sub _extract_856_uris {
 
-    my $recid   = shift;
-	my $marcxml = shift;
+    my $rec   = shift;
 	my $max_cn = shift;
 	my $max_uri = shift;
 	my @objects;
 	
+    my $recid = $rec->id;
+    my $marcxml = $rec->marc;
+
 	my $document = $parser->parse_string($marcxml);
 	my @nodes = $document->findnodes('//*[local-name()="datafield" and @tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]');
 
@@ -1157,6 +1159,7 @@ sub _extract_856_uris {
             $uri->id( $$max_uri++ );
             $uri->label($label);
             $uri->href($href);
+            $uri->active('t');
             $uri->use_restriction($use);
         }
 
@@ -1166,11 +1169,16 @@ sub _extract_856_uris {
 			->gather(1);
 
         if (!$cn) {
-            $cn = Fieldmapper::asset::call_number->new;
+            $c = Fieldmapper::asset::call_number->new;
             $cn->isnew( 1 );
+            $cn->deleted('f');
             $cn->id( $$max_cn++ );
             $cn->owning_lib( $org->id );
             $cn->record( $recid );
+            $cn->create_date( 'now' );
+            $cn->creator( $rec->creator );
+            $cn->editor( $rec->editor );
+            $cn->edit_date( 'now' );
             $cn->label( '##URI##' );
         }
 
@@ -1194,7 +1202,7 @@ sub get_uris_record {
 
 	return undef unless ($r and $r->marc);
 
-	$client->respond($_) for (_extract_856_uris($r->id, $r->marc));
+	$client->respond($_) for (_extract_856_uris($r));
 	return undef;
 }
 __PACKAGE__->register_method(  
@@ -1214,7 +1222,7 @@ sub get_uris_object {
 
 	return undef unless ($obj and $obj->marc);
 
-	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc, \$max_cn, \$max_uri));
+	$client->respond($_) for (_extract_856_uris($obj, \$max_cn, \$max_uri));
 	return undef;
 }
 __PACKAGE__->register_method(  
