@@ -1091,7 +1091,8 @@ sub _extract_856_uris {
 	my $marcxml = shift;
 	my @objects;
 	
-	my @nodes = $marcxml->findnodes('//*[local-name()="datafield" and @tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]');
+	my $document = $parser->parse_string($marcxml);
+	my @nodes = $document->findnodes('//*[local-name()="datafield" and @tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]');
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 
