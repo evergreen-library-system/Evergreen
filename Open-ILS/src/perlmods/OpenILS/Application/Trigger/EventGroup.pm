@@ -128,7 +128,7 @@ sub event {
     my $self = shift;
     return undef unless (ref $self);
 
-    return $self->{events}[0];
+    return $self->{events}[0]->event;
 }
 
 sub events {
