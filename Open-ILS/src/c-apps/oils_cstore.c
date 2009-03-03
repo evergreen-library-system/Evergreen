@@ -2628,7 +2628,6 @@ char* SELECT (
 
 		// Now build the actual select list
 	    int sel_pos = 1;
-	    //jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
 	    first = 1;
 	    gfirst = 1;
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
@@ -2654,7 +2653,6 @@ char* SELECT (
 						"Selected class is not defined"
 					);
 				jsonIteratorFree( selclass_itr );
-				//jsonObjectFree( is_agg );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
 				buffer_free( order_buf );
@@ -2720,7 +2718,6 @@ char* SELECT (
 						"Selected class not in FROM clause in JSON query"
 					);
 				jsonIteratorFree( selclass_itr );
-				//jsonObjectFree( is_agg );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
 				buffer_free( order_buf );
@@ -2773,7 +2770,6 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
@@ -2801,7 +2797,6 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
@@ -2856,7 +2851,6 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
@@ -2884,7 +2878,6 @@ char* SELECT (
 							);
 						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
-						//jsonObjectFree( is_agg );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
 						buffer_free( order_buf );
@@ -2919,7 +2912,6 @@ char* SELECT (
 								);
 							jsonIteratorFree( select_itr );
 							jsonIteratorFree( selclass_itr );
-							//jsonObjectFree( is_agg );
 							buffer_free( sql_buf );
 							buffer_free( select_buf );
 							buffer_free( order_buf );
@@ -2971,7 +2963,6 @@ char* SELECT (
 						);
 					jsonIteratorFree( select_itr );
 					jsonIteratorFree( selclass_itr );
-					//jsonObjectFree( is_agg );
 					buffer_free( sql_buf );
 					buffer_free( select_buf );
 					buffer_free( order_buf );
@@ -2983,10 +2974,9 @@ char* SELECT (
 				}
 
 				const jsonObject* agg_obj = jsonObjectGetKey( selfield, "aggregate" );
-				if( agg_obj )
+				if( obj_is_true( agg_obj ) )
 					aggregate_found = 1;
-
-				if( ( ! agg_obj ) || ( ! obj_is_true( agg_obj ) ) ) {
+				else {
 					// Append a comma (except for the first one)
 					// and add the column to a GROUP BY clause
 					if (gfirst)
@@ -3034,8 +3024,6 @@ char* SELECT (
 	    } // end while -- iterating across classes
 
         jsonIteratorFree(selclass_itr);
-
-	    //if (is_agg) jsonObjectFree(is_agg);
     }
 
 
