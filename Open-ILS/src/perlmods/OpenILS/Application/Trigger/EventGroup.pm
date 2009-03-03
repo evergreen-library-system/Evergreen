@@ -185,6 +185,7 @@ sub update_state {
 
     my @oks;
     my $ok;
+    my $last_updated;
     for my $event ( @{ $self->events } ) {
         my $e = $self->editor->retrieve_action_trigger_event( $event->id );
         $e->start_time( 'now' ) unless $e->start_time;
@@ -197,6 +198,7 @@ sub update_state {
         my $ok = $self->editor->update_action_trigger_event( $e );
         if ($ok) {
             push @oks, $ok;
+            $last_updated = $e->id;
         }
     }
 
@@ -207,13 +209,14 @@ sub update_state {
         $ok = $self->editor->xact_commit;
     }
 
+    my $updated = $self->editor->retrieve_action_trigger_event($last_updated);
     if ($ok) {
         for my $event ( @{ $self->events } ) {
-            my $updated = $self->editor->data;
-            $event->start_time( $updated->start_time );
-            $event->update_time( $updated->update_time );
-            $event->update_process( $updated->update_process );
-            $event->state( $updated->state );
+            my $e = $event->event;
+            $e->start_time( $updated->start_time );
+            $e->update_time( $updated->update_time );
+            $e->update_process( $updated->update_process );
+            $e->state( $updated->state );
         }
     }
 
