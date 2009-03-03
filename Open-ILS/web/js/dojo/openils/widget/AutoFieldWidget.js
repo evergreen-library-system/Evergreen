@@ -51,7 +51,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'timestamp':
                     return dojo.date.stamp.toISOString(value);
                 default:
-                    return (value == '') ? null : value;
+                    return (value === '') ? null : value;
             }
         },
 
