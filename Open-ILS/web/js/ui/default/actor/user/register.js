@@ -9,6 +9,7 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.Button');
 dojo.require('dojo.date');
+dojo.require('openils.CGI');
 
 var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
@@ -25,12 +26,14 @@ var uEditAddrVirtId = -1;
 var orgSettings = {};
 var tbody;
 var addrTemplateRows;
+var cgi;
 
 
 function load() {
     staff = new openils.User().user;
     pcrud = new openils.PermaCrud();
-    uEditNewPatron(); /* XXX */
+    cgi = new openils.CGI();
+    uEditLoadUser(cgi.param('usr'));
 
     orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
         'global.juvenile_age_threshold',
@@ -56,9 +59,19 @@ function load() {
     surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
     loadStaticFields();
-    uEditNewAddr(null, uEditAddrVirtId);
+    if(patron.isnew()) 
+        uEditNewAddr(null, uEditAddrVirtId);
+    else loadAllAddrs();
     loadStatCats();
     loadSurveys();
+}
+
+function uEditLoadUser(userId) {
+    if(!userId) return uEditNewPatron();
+    patron = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
+        {params : [openils.User.authtoken, cgi.param('usr')]}
+    );
 }
 
 function loadStaticFields() {
@@ -69,6 +82,14 @@ function loadStaticFields() {
         if(!fmcls) continue;
         fleshFMRow(row, fmcls);
     }
+}
+
+function loadAllAddrs() {
+    dojo.forEach(patron.addresses(),
+        function(addr) {
+            uEditNewAddr(null, addr.id());
+        }
+    );
 }
 
 function loadStatCats() {
@@ -96,6 +117,11 @@ function loadStatCats() {
         comboBox._wtype = 'statcat';
         comboBox._statcat = stat.id();
         widgetPile.push(comboBox); 
+
+        // populate existing cats
+        var map = patron.stat_cat_entries().filter(
+            function(mp) { return (mp.stat_cat() == stat.id()) })[0];
+        if(map) comboBox.attr('value', map.stat_cat_entry()); 
 
     }
 }
@@ -165,9 +191,19 @@ function fleshFMRow(row, fmcls, args) {
     span = document.createElement('span');
     wtd.appendChild(span);
 
+    var fmObject = null;
+    switch(fmcls) {
+        case 'au' : fmObject = patron; break;
+        case 'ac' : fmObject = patron.card(); break;
+        case 'aua' : 
+            fmObject = patron.addresses().filter(
+                function(i) { return (i.id() == args.addr) })[0];
+            break;
+    }
+    
     var widget = new openils.widget.AutoFieldWidget({
         idlField : fieldIdl,
-        fmObject : null, // XXX
+        fmObject : fmObject,
         fmClass : fmcls,
         parentNode : span,
         widgetClass : wclass,
@@ -250,11 +286,11 @@ function uEditNewPatron() {
     card.isnew(1);
     patron.card(card);
     patron.cards([card]);
-    //patron.net_access_level(defaultNetLevel);
+    //patron.net_access_level(defaultNetLevel); XXX
     patron.stat_cat_entries([]);
     patron.survey_responses([]);
     patron.addresses([]);
-    //patron.home_ou(USER.ws_ou());
+    //patron.home_ou(USER.ws_ou()); XXX
     uEditMakeRandomPw(patron);
 }
 
@@ -292,13 +328,19 @@ function uEditSave() {
 
             case 'aua':
                 var addr = patron.addresses().filter(function(i){return (i.id() == w._addr)})[0];
+                var val = uEditWidgetVal(w);
+                //console.log('addr ' + w._addr + ' : ' + addr);
                 if(!addr) {
                     addr = new fieldmapper.aua();
                     addr.id(w._addr);
                     addr.isnew(1);
+                    addr.usr(patron.id());
                     patron.addresses().push(addr);
+                } else {
+                    if(addr[w._fmfield]() != val)
+                        addr.ischanged(1);
                 }
-                addr[w._fmfield](uEditWidgetVal(w));
+                addr[w._fmfield](val);
                 break;
 
             case 'survey':
@@ -316,8 +358,20 @@ function uEditSave() {
             case 'statcat':
                 var val = uEditWidgetVal(w);
                 if(val == null) break;
-                var map = new fieldmapper.actscecm();
-                map.isnew(1);
+
+                var map = patron.stat_cat_entries().filter(
+                    function(m){
+                        return (m.stat_cat() == w._statcat) })[0];
+
+                if(map) {
+                    if(map.stat_cat_entry() == val) 
+                        break;
+                    map.ischanged(1);
+                } else {
+                    map = new fieldmapper.actscecm();
+                    map.isnew(1);
+                }
+
                 map.stat_cat(w._statcat);
                 map.stat_cat_entry(val);
                 map.target_usr(patron.id());
@@ -333,6 +387,7 @@ function uEditSave() {
             oncomplete: function(r) {
                 patron = openils.Util.readResponse(r);
                 if(patron) {
+                    //alert('done');
                     uEditRefresh();
                 } 
             }
