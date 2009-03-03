@@ -1169,7 +1169,18 @@ INSERT INTO permission.perm_list VALUES
     (178, 'DELETE_RECORD', oils_i18n_gettext(178, 'Allow a staff member to directly remove a bibliographic record', 'ppl', 'description')),
     (179, 'ADMIN_CURRENCY_TYPE', oils_i18n_gettext(179, 'Allow a user to create/view/update/delete a currency_type', 'ppl', 'description')),
     (180, 'MARK_BAD_DEBT', oils_i18n_gettext(180, 'Allow a user to mark a transaction as bad (unrecoverable) debt', 'ppl', 'description')),
-    (181, 'VIEW_BILLING_TYPE', oils_i18n_gettext(181, 'Allow a user to view billing types', 'ppl', 'description'));
+    (181, 'VIEW_BILLING_TYPE', oils_i18n_gettext(181, 'Allow a user to view billing types', 'ppl', 'description')),
+    (182, 'MARK_ITEM_AVAILABLE', oils_i18n_gettext(182, 'Allow a user to mark an item status as ''available''', 'ppl', 'description')),
+    (183, 'MARK_ITEM_CHECKED_OUT', oils_i18n_gettext(183, 'Allow a user to mark an item status as ''checked out''', 'ppl', 'description')),
+    (184, 'MARK_ITEM_BINDERY', oils_i18n_gettext(184, 'Allow a user to mark an item status as ''bindery''', 'ppl', 'description')),
+    (185, 'MARK_ITEM_LOST', oils_i18n_gettext(185, 'Allow a user to mark an item status as ''lost''', 'ppl', 'description')),
+    (186, 'MARK_ITEM_MISSING', oils_i18n_gettext(186, 'Allow a user to mark an item status as ''missing''', 'ppl', 'description')),
+    (187, 'MARK_ITEM_IN_PROCESS', oils_i18n_gettext(187, 'Allow a user to mark an item status as ''in process''', 'ppl', 'description')),
+    (188, 'MARK_ITEM_IN_TRANSIT', oils_i18n_gettext(188, 'Allow a user to mark an item status as ''in transit''', 'ppl', 'description')),
+    (189, 'MARK_ITEM_RESHELVING', oils_i18n_gettext(189, 'Allow a user to mark an item status as ''reshelving''', 'ppl', 'description')),
+    (190, 'MARK_ITEM_ON_HOLDS_SHELF', oils_i18n_gettext(190, 'Allow a user to mark an item status as ''on holds shelf''', 'ppl', 'description')),
+    (191, 'MARK_ITEM_ON_ORDER', oils_i18n_gettext(191, 'Allow a user to mark an item status as ''on order''', 'ppl', 'description')),
+    (192, 'MARK_ITEM_ILL', oils_i18n_gettext(192, 'Allow a user to mark an item status as ''inter-library loan''', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 

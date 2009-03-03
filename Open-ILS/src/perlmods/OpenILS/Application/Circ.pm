@@ -105,7 +105,7 @@ __PACKAGE__->register_method(
 	method	=> "checkouts_by_user",
 	api_name	=> "open-ils.circ.actor.user.checked_out",
 	NOTES		=> <<"	NOTES");
-	Returns a list of open circulations as a pile of objects.  each object
+	Returns a list of open circulations as a pile of objects.  Each object
 	contains the relevant copy, circ, and record
 	NOTES
 
@@ -927,10 +927,82 @@ sub copy_details {
 __PACKAGE__->register_method(
 	method => 'mark_item',
 	api_name => 'open-ils.circ.mark_item_damaged',
+	signature	=> q/
+		Changes the status of a copy to "damaged". Requires MARK_ITEM_DAMAGED permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as damaged
+		@return 1 on success - Event otherwise.
+		/
 );
 __PACKAGE__->register_method(
 	method => 'mark_item',
 	api_name => 'open-ils.circ.mark_item_missing',
+	signature	=> q/
+		Changes the status of a copy to "missing". Requires MARK_ITEM_MISSING permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as missing 
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_bindery',
+	signature	=> q/
+		Changes the status of a copy to "bindery". Requires MARK_ITEM_BINDERY permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as bindery
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_on_order',
+	signature	=> q/
+		Changes the status of a copy to "on order". Requires MARK_ITEM_ON_ORDER permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as on order 
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_ill',
+	signature	=> q/
+		Changes the status of a copy to "inter-library loan". Requires MARK_ITEM_ILL permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as inter-library loan
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_cataloging',
+	signature	=> q/
+		Changes the status of a copy to "cataloging". Requires MARK_ITEM_CATALOGING permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as cataloging 
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_reserves',
+	signature	=> q/
+		Changes the status of a copy to "reserves". Requires MARK_ITEM_RESERVES permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as reserves
+		@return 1 on success - Event otherwise.
+		/
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_discard',
+	signature	=> q/
+		Changes the status of a copy to "discard". Requires MARK_ITEM_DISCARD permission.
+		@param authtoken The login session key
+		@param copy_id The ID of the copy to mark as discard
+		@return 1 on success - Event otherwise.
+		/
 );
 
 sub mark_item {
@@ -944,6 +1016,24 @@ sub mark_item {
 	if( $self->api_name =~ /damaged/ ) {
 		$perm = 'MARK_ITEM_DAMAGED';
 		$stat = OILS_COPY_STATUS_DAMAGED;
+	} elsif ( $self->api_name =~ /bindery/ ) {
+		$perm = 'MARK_ITEM_BINDERY';
+		$stat = OILS_COPY_STATUS_BINDERY;
+	} elsif ( $self->api_name =~ /on_order/ ) {
+		$perm = 'MARK_ITEM_ON_ORDER';
+		$stat = OILS_COPY_STATUS_ON_ORDER;
+	} elsif ( $self->api_name =~ /ill/ ) {
+		$perm = 'MARK_ITEM_ILL';
+		$stat = OILS_COPY_STATUS_ILL;
+	} elsif ( $self->api_name =~ /cataloging/ ) {
+		$perm = 'MARK_ITEM_CATALOGING';
+		$stat = OILS_COPY_STATUS_CATALOGING;
+	} elsif ( $self->api_name =~ /reserves/ ) {
+		$perm = 'MARK_ITEM_RESERVES';
+		$stat = OILS_COPY_STATUS_RESERVES;
+	} elsif ( $self->api_name =~ /discard/ ) {
+		$perm = 'MARK_ITEM_DISCARD';
+		$stat = OILS_COPY_STATUS_DISCARD;
 	}
 
 	my $copy = $e->retrieve_asset_copy($copy_id)
@@ -965,7 +1055,7 @@ sub mark_item {
 
 	$e->commit;
 
-	$logger->debug("reseting holds that target the marked copy");
+	$logger->debug("resetting holds that target the marked copy");
 	OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
 
 	return 1;
@@ -995,7 +1085,7 @@ sub magic_fetch {
 	# Is the call allowed to fetch this type of object?
 	return undef unless grep { $_ eq $hint } @FETCH_ALLOWED;
 
-	# Find the class the iplements the given hint
+	# Find the class the implements the given hint
 	my ($class) = grep { 
 		$Fieldmapper::fieldmap->{$_}{hint} eq $hint } Fieldmapper->classes;
 
