@@ -399,16 +399,26 @@ sub ro_biblio_ingest_single_object {
 	my $client = shift;
 	my $bib = shift;
 	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
+    my $max_cn = shift;
+    my $max_uri = shift;
 
 	my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
-	my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef } }, { limit => 1, order_by => { acn => 'id desc' } } )->gather(1);
-    $cstore->disconnect;
 
-    my $max_cn = int($cn->id) + 1000;
+    if (!$max_cn) {
+    	my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef } }, { limit => 1, order_by => { acn => 'id desc' } } )->gather(1);
+        $max_cn = int($cn->id) + 1000;
+    }
+
+    if (!$max_uri) {
+    	my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef } }, { limit => 1, order_by => { acn => 'id desc' } } )->gather(1);
+        $max_uri = int($cn->id) + 1000;
+    }
+
+    $cstore->disconnect;
 
 	my $document = $parser->parse_string($xml);
 
-	my @uris = $self->method_lookup("open-ils.ingest.856_uri.object")->run($bib, $max_cn);
+	my @uris = $self->method_lookup("open-ils.ingest.856_uri.object")->run($bib, $max_cn, $max_uri);
 	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
 	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
 	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
@@ -1097,6 +1107,7 @@ sub _extract_856_uris {
     my $recid   = shift;
 	my $marcxml = shift;
 	my $max_cn = shift;
+	my $max_uri = shift;
 	my @objects;
 	
 	my $document = $parser->parse_string($marcxml);
@@ -1143,6 +1154,7 @@ sub _extract_856_uris {
         if (!$uri) {
             $uri = Fieldmapper::asset::uri->new;
             $uri->isnew( 1 );
+            $uri->id( $$max_uri++ );
             $uri->label($label);
             $uri->href($href);
             $uri->use_restriction($use);
@@ -1198,10 +1210,11 @@ sub get_uris_object {
 	my $client = shift;
 	my $obj = shift;
 	my $max_cn = shift;
+	my $max_uri = shift;
 
 	return undef unless ($obj and $obj->marc);
 
-	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc, \$max_cn));
+	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc, \$max_cn, \$max_uri));
 	return undef;
 }
 __PACKAGE__->register_method(  
