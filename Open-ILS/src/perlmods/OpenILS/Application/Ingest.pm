@@ -1129,7 +1129,7 @@ sub _extract_856_uris {
 
         # now we can construct the uri object
     	my $uri = $cstore
-            ->request( 'open-ils.cstore.direct.asset.uri.search' => { label => $label, href => $href, use => $use, active => 't' } )
+            ->request( 'open-ils.cstore.direct.asset.uri.search' => { label => $label, href => $href, use_restriction => $use, active => 't' } )
 			->gather(1);
 
         if (!$uri) {
@@ -1137,7 +1137,7 @@ sub _extract_856_uris {
             $uri->isnew( 1 );
             $uri->label($label);
             $uri->href($href);
-            $uri->use($use);
+            $uri->use_restriction($use);
         }
 
         # see if we need to create a call number

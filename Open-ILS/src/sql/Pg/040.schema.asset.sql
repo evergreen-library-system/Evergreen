@@ -137,7 +137,7 @@ CREATE TABLE asset.uri (
     id  SERIAL  PRIMARY KEY,
     href    TEXT    NOT NULL,
     label   TEXT,
-    use TEXT,
+    use_restriction TEXT,
     active  BOOL    NOT NULL DEFAULT TRUE
 );
 
