@@ -76,11 +76,15 @@ static char* getSourceDefinition( osrfHash* );
 static int str_is_true( const char* str );
 static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
+static const char* get_primitive( osrfHash* field );
+static const char* get_datatype( osrfHash* field );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
 #endif
+
+static int child_initialized = 0;   /* boolean */
 
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
@@ -464,6 +468,7 @@ int osrfAppChildInit() {
 
     osrfStringArrayFree(classes);
 
+	child_initialized = 1;
     return 0;
 }
 
@@ -1410,14 +1415,15 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		if (!field_object || field_object->type == JSON_NULL) {
 			buffer_add( val_buf, "DEFAULT" );
 			
-		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-			if ( !strcmp(osrfHashGet(field, "datatype"), "INT8") ) {
+		} else if ( !strcmp(get_primitive( field ), "number") ) {
+			const char* numtype = get_datatype( field );
+			if ( !strcmp( numtype, "INT8") ) {
 				buffer_fadd( val_buf, "%lld", atoll(value) );
 				
-			} else if ( !strcmp(osrfHashGet(field, "datatype"), "INT") ) {
+			} else if ( !strcmp( numtype, "INT") ) {
 				buffer_fadd( val_buf, "%d", atoi(value) );
 				
-			} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+			} else if ( !strcmp( numtype, "NUMERIC") ) {
 				buffer_fadd( val_buf, "%f", atof(value) );
 			}
 		} else {
@@ -1612,8 +1618,9 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init(32);
+	const char* numtype = get_datatype( field );
 
-	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
+	if ( !strncmp( numtype, "INT", 3 ) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
 		else {
 			char* val_str = jsonObjectToSimpleString(value);
@@ -1621,7 +1628,7 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 			free(val_str);
 		}
 
-	} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+	} else if ( !strcmp( numtype, "NUMERIC" ) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
 		else {
 			char* val_str = jsonObjectToSimpleString(value);
@@ -1681,7 +1688,7 @@ static char* searchINPredicate (const char* class, osrfHash* field,
     		else
     			buffer_add(sql_buf, ", ");
     
-    		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+    		if ( !strcmp( get_primitive( field ), "number") ) {
     			char* val = jsonNumberToDBString( field, in_item );
     			OSRF_BUFFER_ADD( sql_buf, val );
     			free(val);
@@ -1848,7 +1855,7 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 	} else if (jsonObjectGetKeyConst( node, "value" )->type == JSON_HASH) {
 		value = searchWHERE( jsonObjectGetKeyConst( node, "value" ), osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 	} else if (jsonObjectGetKeyConst( node, "value" )->type != JSON_NULL) {
-		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		if ( !strcmp( get_primitive( field ), "number") ) {
 			value = jsonNumberToDBString( field, jsonObjectGetKeyConst( node, "value" ) );
 		} else {
 			value = jsonObjectToSimpleString(jsonObjectGetKeyConst( node, "value" ));
@@ -1883,7 +1890,7 @@ static char* searchSimplePredicate (const char* orig_op, const char* class,
 	char* val = NULL;
 
 	if (node->type != JSON_NULL) {
-		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		if ( !strcmp( get_primitive( field ), "number") ) {
 			val = jsonNumberToDBString( field, node );
 		} else {
 			val = jsonObjectToSimpleString(node);
@@ -1910,7 +1917,7 @@ static char* searchWriteSimplePredicate ( const char* class, osrfHash* field,
 		else
 			op = strdup("IS");
 
-	} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+	} else if ( !strcmp( get_primitive( field ), "number") ) {
 		val = strdup(right);
 		op = strdup(orig_op);
 
@@ -1937,7 +1944,7 @@ static char* searchBETWEENPredicate (const char* class, osrfHash* field, jsonObj
 	char* x_string;
 	char* y_string;
 
-	if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+	if ( !strcmp( get_primitive( field ), "number") ) {
 		x_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,0));
 		y_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,1));
 
@@ -4056,17 +4063,18 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 				buffer_fadd( sql, " %s = NULL", field_name );
 			}
 			
-		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		} else if ( !strcmp( get_primitive( field ), "number") ) {
 			if (first) first = 0;
 			else OSRF_BUFFER_ADD_CHAR(sql, ',');
 
-			if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
+			const char* numtype = get_datatype( field );
+			if ( !strncmp( numtype, "INT", 3 ) ) {
 				buffer_fadd( sql, " %s = %ld", field_name, atol(value) );
-			} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+			} else if ( !strcmp( numtype, "NUMERIC" ) ) {
 				buffer_fadd( sql, " %s = %f", field_name, atof(value) );
 			}
 
-			osrfLogDebug( OSRF_LOG_MARK, "%s is of type %s", field_name, osrfHashGet(field, "datatype"));
+			osrfLogDebug( OSRF_LOG_MARK, "%s is of type %s", field_name, numtype );
 
 		} else {
 			if ( dbi_conn_quote_string(dbhandle, &value) ) {
@@ -4097,7 +4105,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 
 	jsonObject* obj = jsonNewObject(id);
 
-	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
+	if ( strcmp( get_primitive( osrfHashGet( osrfHashGet(meta, "fields"), pkey ) ), "number" ) )
 		dbi_conn_quote_string(dbhandle, &id);
 
 	buffer_fadd( sql, " WHERE %s = %s;", pkey, id );
@@ -4196,7 +4204,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 
 	obj = jsonNewObject(id);
 
-	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
+	if ( strcmp( get_primitive( osrfHashGet( osrfHashGet(meta, "fields"), pkey ) ), "number" ) )
 		dbi_conn_quote_string(writehandle, &id);
 
 	dbi_result result = dbi_conn_queryf(writehandle, "DELETE FROM %s WHERE %s = %s;", osrfHashGet(meta, "tablename"), pkey, id);
@@ -4468,4 +4476,43 @@ static const char* json_type( int code ) {
 		default :
 			return "(unrecognized)";
 	}
+}
+
+// Extract the "primitive" attribute from an IDL field definition.
+// If we haven't initialized the app, then we must be running in
+// some kind of testbed.  In that case, default to "string".
+static const char* get_primitive( osrfHash* field ) {
+	const char* s = osrfHashGet( field, "primitive" );
+	if( !s ) {
+		if( child_initialized )
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s ERROR No \"datatype\" attribute for field \"%s\"",
+				MODULENAME,
+				osrfHashGet( field, "name" )
+			);
+		else
+			s = "string";
+	}
+	return s;
+}
+
+// Extract the "datatype" attribute from an IDL field definition.
+// If we haven't initialized the app, then we must be running in
+// some kind of testbed.  In that case, default to to NUMERIC,
+// since we look at the datatype only for numbers.
+static const char* get_datatype( osrfHash* field ) {
+	const char* s = osrfHashGet( field, "datatype" );
+	if( !s ) {
+		if( child_initialized )
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s ERROR No \"datatype\" attribute for field \"%s\"",
+				MODULENAME,
+				osrfHashGet( field, "name" )
+			);
+		else
+			s = "NUMERIC";
+	}
+	return s;
 }
