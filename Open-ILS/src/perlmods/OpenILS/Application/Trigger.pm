@@ -133,7 +133,7 @@ sub fire_event_group {
         valid     => $e->valid,
         reacted   => $e->reacted,
         cleanedup => $e->cleanedup,
-        events    => $e->events
+        events    => [map { $_->event } @{$e->events}]
     };
 }
 __PACKAGE__->register_method(
