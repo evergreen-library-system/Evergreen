@@ -400,7 +400,10 @@ sub ro_biblio_ingest_single_object {
 	my $bib = shift;
 	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
 
+	my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
 	my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef }, { limit => 1 } } )->gather(1);
+    $cstore->disconnect;
+
     my $max_cn = int($cn->id) + 1000;
 
 	my $document = $parser->parse_string($xml);
