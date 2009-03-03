@@ -1098,23 +1098,23 @@ sub _extract_856_uris {
 
     for my $node (@nodes) {
         # first, is there a URI?
-        my $href = $node->findvalue('[local-name()="subfield" and @code="u"]/text()');
+        my $href = $node->findvalue('*[local-name()="subfield" and @code="u"]/text()');
         next unless ($href);
 
         # now, find the best possible label
-        my $label = $node->findvalue('[local-name()="subfield" and @code="y"]/text()');
-        $label ||= $node->findvalue('[local-name()="subfield" and @code="3"]/text()');
+        my $label = $node->findvalue('*[local-name()="subfield" and @code="y"]/text()');
+        $label ||= $node->findvalue('*[local-name()="subfield" and @code="3"]/text()');
         $label ||= $href;
 
         # look for use info
-        my $use = $node->findvalue('[local-name()="subfield" and @code="z"]/text()');
-        $use ||= $node->findvalue('[local-name()="subfield" and @code="2"]/text()');
-        $use ||= $node->findvalue('[local-name()="subfield" and @code="n"]/text()');
+        my $use = $node->findvalue('*[local-name()="subfield" and @code="z"]/text()');
+        $use ||= $node->findvalue('*[local-name()="subfield" and @code="2"]/text()');
+        $use ||= $node->findvalue('*[local-name()="subfield" and @code="n"]/text()');
 
         # moving on to the URI owner
-        my $owner = $node->findvalue('[local-name()="subfield" and @code="w"]/text()');
-        $owner ||= $node->findvalue('[local-name()="subfield" and @code="n"]/text()');
-        $owner ||= $node->findvalue('[local-name()="subfield" and @code="9"]/text()'); # Evergreen special sauce
+        my $owner = $node->findvalue('*[local-name()="subfield" and @code="w"]/text()');
+        $owner ||= $node->findvalue('*[local-name()="subfield" and @code="n"]/text()');
+        $owner ||= $node->findvalue('*[local-name()="subfield" and @code="9"]/text()'); # Evergreen special sauce
 
         $owner =~ s/^.*?\((\w+)\).*$/$1/o; # unwrap first paren-enclosed string and then ...
 
