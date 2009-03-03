@@ -469,7 +469,7 @@ patron.items.prototype = {
 				msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.plural',
 					[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
 			} else {
-				msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.singular'
+				msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.singular',
 					[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
 			}
 			var r = window.confirm(msg);
