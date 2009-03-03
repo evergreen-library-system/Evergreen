@@ -53,6 +53,9 @@ $meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
 
 $meth = OpenILS::Application::Ingest->method_lookup( $meth );
 
+my $max_cn = 0;
+my $max_uri = 0;
+
 my $count = 0;
 my $starttime = time;
 while (my $rec = <>) {
@@ -62,7 +65,7 @@ while (my $rec = <>) {
 	my $data;
 
 	try {
-		($data) = $meth->run( $bib );
+		($data) = $meth->run( $bib => $max_cn => $max_uri );
 	} catch Error with {
 		my $e = shift;
 		warn "Couldn't process record: $e\n >>> $rec\n";
@@ -88,6 +91,7 @@ sub postprocess {
 	my $field_entries = $data->{ingest_data}->{field_entries} unless ($auth);
 	my $fp = $data->{ingest_data}->{fingerprint} unless ($auth);
 	my $rd = $data->{ingest_data}->{descriptor} unless ($auth);
+	my $uri = $data->{ingest_data}->{uri} unless ($auth);
 
 	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
 	$bib->quality( $fp->{quality} ) unless ($auth);
@@ -96,6 +100,18 @@ sub postprocess {
 	unless ($auth) {
 		print( OpenSRF::Utils::JSON->perl2JSON($rd)."\n" );
 		print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$field_entries);
+		for my $u (@$uri) {
+			print( OpenSRF::Utils::JSON->perl2JSON($u->{call_number})."\n" ) if $u->{call_number}->isnew;
+			print( OpenSRF::Utils::JSON->perl2JSON($u->{uri})."\n" ) if $u->{uri}->isnew;
+
+			my $umap = Fieldmapper::asset::uri_call_number_map->new;
+			$umap->uri($u->{uri}->id);
+			$umap->call_number($u->{call_number}->id);
+			print( OpenSRF::Utils::JSON->perl2JSON($umap)."\n" );
+
+			$max_cn = $u->{call_number}->id if $u->{call_number}->isnew;
+			$max_uri = $u->{uri}->id if $u->{uri}->isnew;
+		}
 	}
 
 	print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$full_rec);
