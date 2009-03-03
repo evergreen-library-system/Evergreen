@@ -59,6 +59,8 @@ sub handler {
         return 1;
     } else {
         $logger->warn("SendEmail Reactor: unable to send email: ".Dumper($stat));
+        $text =~ s/\n//og;
+        $logger->warn("SendEmail Reactor: failed email template: $text");
         return 0;
     }
 
