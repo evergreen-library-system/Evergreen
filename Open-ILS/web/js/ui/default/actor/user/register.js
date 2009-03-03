@@ -309,27 +309,26 @@ function uEditMakeRandomPw(patron) {
 
 function uEditWidgetVal(w) {
     var val = (w.getFormattedValue) ? w.getFormattedValue() : w.attr('value');
-    if(val == '') val = null;
+    if(val === '') val = null;
     return val;
 }
 
 function uEditSave() {
     for(var idx in widgetPile) {
         var w = widgetPile[idx];
+        var val = uEditWidgetVal(w);
 
         switch(w._wtype) {
             case 'au':
-                patron[w._fmfield](uEditWidgetVal(w));
+                patron[w._fmfield](val);
                 break;
 
             case 'ac':
-                patron.card()[w._fmfield](uEditWidgetVal(w));
+                patron.card()[w._fmfield](val);
                 break;
 
             case 'aua':
                 var addr = patron.addresses().filter(function(i){return (i.id() == w._addr)})[0];
-                var val = uEditWidgetVal(w);
-                //console.log('addr ' + w._addr + ' : ' + addr);
                 if(!addr) {
                     addr = new fieldmapper.aua();
                     addr.id(w._addr);
@@ -344,7 +343,6 @@ function uEditSave() {
                 break;
 
             case 'survey':
-                var val = uEditWidgetVal(w);
                 if(val == null) break;
                 var resp = new fieldmapper.asvr();
                 resp.isnew(1);
@@ -356,7 +354,6 @@ function uEditSave() {
                 break;
 
             case 'statcat':
-                var val = uEditWidgetVal(w);
                 if(val == null) break;
 
                 var map = patron.stat_cat_entries().filter(
@@ -380,6 +377,7 @@ function uEditSave() {
         }
     }
 
+    patron.ischanged(1);
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.patron.update'],
         {   async: true,
@@ -387,7 +385,6 @@ function uEditSave() {
             oncomplete: function(r) {
                 patron = openils.Util.readResponse(r);
                 if(patron) {
-                    //alert('done');
                     uEditRefresh();
                 } 
             }
