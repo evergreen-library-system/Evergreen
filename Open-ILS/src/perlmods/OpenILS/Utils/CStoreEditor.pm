@@ -196,6 +196,7 @@ sub session {
 # -----------------------------------------------------------------------------
 sub xact_begin {
     my $self = shift;
+    return $self->{xact_id} if $self->{xact_id};
     $self->session->connect unless $self->session->state == OpenSRF::AppSession::CONNECTED();
 	$self->log(D, "starting new database transaction");
 	my $stat = $self->request($self->app . '.transaction.begin') unless $self->{xact_id};
