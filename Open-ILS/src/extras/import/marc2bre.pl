@@ -162,7 +162,6 @@ my $count = 0;
 PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
 
-    warn $rec->as_formatted;
 	$count++;
 
 	# Skip records that don't contain a required field (like '245', for example)
