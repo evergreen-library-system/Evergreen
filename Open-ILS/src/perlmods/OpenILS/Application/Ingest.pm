@@ -1142,13 +1142,13 @@ sub _extract_856_uris {
 
         # see if we need to create a call number
     	my $cn = $cstore
-            ->request( 'open-ils.cstore.direct.asset.call_number.search' => { owner => $org->id, record => $recid, label => '##URI##' } )
+            ->request( 'open-ils.cstore.direct.asset.call_number.search' => { owning_lib => $org->id, record => $recid, label => '##URI##' } )
 			->gather(1);
 
         if (!$cn) {
             $cn = Fieldmapper::asset::call_number->new;
             $cn->isnew( 1 );
-            $cn->owner( $org->id );
+            $cn->owning_lib( $org->id );
             $cn->record( $recid );
             $cn->label( '##URI##' );
         }
