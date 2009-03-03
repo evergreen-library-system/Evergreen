@@ -162,6 +162,7 @@ sub rw_biblio_ingest_single_object {
             if ($new_cns_by_owner{$owner}) {
                 $u->{call_number} = $new_cns_by_owner{$owner};
             } else {
+                $u->{call_number}->clear_id;
     	        $u->{call_number} = $new_cns_by_owner{$owner} = $cstore->request(
                     'open-ils.cstore.direct.asset.call_number.create' => $u->{call_number}
                 )->gather(1);
@@ -399,9 +400,12 @@ sub ro_biblio_ingest_single_object {
 	my $bib = shift;
 	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
 
+	my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef }, { limit => 1 } } )->gather(1);
+    my $max_cn = int($cn->id) + 1000;
+
 	my $document = $parser->parse_string($xml);
 
-	my @uris = $self->method_lookup("open-ils.ingest.856_uri.object")->run($bib);
+	my @uris = $self->method_lookup("open-ils.ingest.856_uri.object")->run($bib, $max_cn);
 	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
 	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
 	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
@@ -1089,6 +1093,7 @@ sub _extract_856_uris {
 
     my $recid   = shift;
 	my $marcxml = shift;
+	my $max_cn = shift;
 	my @objects;
 	
 	my $document = $parser->parse_string($marcxml);
@@ -1148,6 +1153,7 @@ sub _extract_856_uris {
         if (!$cn) {
             $cn = Fieldmapper::asset::call_number->new;
             $cn->isnew( 1 );
+            $cn->id( $$max_cn++ );
             $cn->owning_lib( $org->id );
             $cn->record( $recid );
             $cn->label( '##URI##' );
@@ -1188,10 +1194,11 @@ sub get_uris_object {
 	my $self = shift;
 	my $client = shift;
 	my $obj = shift;
+	my $max_cn = shift;
 
 	return undef unless ($obj and $obj->marc);
 
-	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc));
+	$client->respond($_) for (_extract_856_uris($obj->id, $obj->marc, \$max_cn));
 	return undef;
 }
 __PACKAGE__->register_method(  
