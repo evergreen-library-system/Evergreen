@@ -622,7 +622,8 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_merge.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 
-			var loc = urls.XUL_PATRON_SEARCH_FORM; 
+		    var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+			var loc = horizontal_interface ? urls.XUL_PATRON_HORIZONTAL_SEARCH_FORM : urls.XUL_PATRON_SEARCH_FORM; 
 			var my_xulG = {
 				'clear_left_deck' : function() {
 					setTimeout( function() {

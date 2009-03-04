@@ -305,6 +305,7 @@ const urls = {
 	'XUL_PATRON_INFO_GROUP' : '/xul/server/patron/info_group.xul',
 	'XUL_PATRON_ITEMS' : '/xul/server/patron/items.xul',
 	'XUL_PATRON_SEARCH_FORM' : '/xul/server/patron/search_form.xul',
+	'XUL_PATRON_HORIZONTAL_SEARCH_FORM' : '/xul/server/patron/search_form_horiz.xul',
 	'XUL_PATRON_SEARCH_RESULT' : '/xul/server/patron/search_result.xul',
 	'XUL_PATRON_SUMMARY' : '/xul/server/patron/summary.xul',
 	'XUL_PRE_CAT' : '/xul/server/circ/pre_cat_fields.xul',
