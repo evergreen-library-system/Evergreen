@@ -116,39 +116,41 @@ use base qw/OpenILS::Application::Ingest/;
 use Unicode::Normalize;
 
 sub rw_biblio_ingest_single_object {
-	my $self = shift;
-	my $client = shift;
-	my $bib = shift;
+    my $self = shift;
+    my $client = shift;
+    my $bib = shift;
 
-	my ($blob) = $self->method_lookup("open-ils.ingest.full.biblio.object.readonly")->run($bib);
-	return undef unless ($blob);
+    my ($blob) = $self->method_lookup("open-ils.ingest.full.biblio.object.readonly")->run($bib);
+    return undef unless ($blob);
 
-	$bib->fingerprint( $blob->{fingerprint}->{fingerprint} );
-	$bib->quality( $blob->{fingerprint}->{quality} );
+    $bib->fingerprint( $blob->{fingerprint}->{fingerprint} );
+    $bib->quality( $blob->{fingerprint}->{quality} );
 
-	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 
-	my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+    my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
     my $tmp;
 
-	# update uri stuff ...
+    # update uri stuff ...
 
     # gather URI call numbers for this record
     my $uri_cns = $u->{call_number} = $cstore->request(
         'open-ils.cstore.direct.asset.call_number.id_list.atomic' => { record => $bib->id, label => '##URI##' }
     )->gather(1);
 
-    # gather the maps for those call numbers
-    my $uri_maps = $u->{call_number} = $cstore->request(
-        'open-ils.cstore.direct.asset.uri_call_number_map.id_list.atomic' => { call_number => $uri_cns }
-    )->gather(1);
-
-    # delete the old maps
-    $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.delete' => $_ )->gather(1) for (@$uri_maps);
-
-    # and delete the call numbers if there are no more URIs
-    if (!@{ $blob->{uri} }) {
-        $cstore->request( 'open-ils.cstore.direct.asset.call_number.delete' => $_ )->gather(1) for (@$uri_cns);
+    if (@$uri_cns) {
+        # gather the maps for those call numbers
+        my $uri_maps = $u->{call_number} = $cstore->request(
+            'open-ils.cstore.direct.asset.uri_call_number_map.id_list.atomic' => { call_number => $uri_cns }
+        )->gather(1);
+    
+        # delete the old maps
+        $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.delete' => $_ )->gather(1) for (@$uri_maps);
+    
+        # and delete the call numbers if there are no more URIs
+        if (!@{ $blob->{uri} }) {
+            $cstore->request( 'open-ils.cstore.direct.asset.call_number.delete' => $_ )->gather(1) for (@$uri_cns);
+        }
     }
 
     # now, add CNs, URIs and maps
