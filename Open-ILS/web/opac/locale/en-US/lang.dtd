@@ -1566,8 +1566,6 @@
 <!ENTITY staff.server.admin.org_settings.cat.bib.alert_on_empty.desc "Alert staff when the last copy for a record is being deleted">
 <!ENTITY staff.server.admin.org_settings.patron.password.use_phone "Patron: password from phone #">
 <!ENTITY staff.server.admin.org_settings.patron.password.use_phone.desc "Use the last 4 digits of the patrons phone number as the default password when creating new users">
-<!ENTITY staff.server.admin.org_settings.circ.mark_lost_overdue_interval "Mark lost overdue interval">
-<!ENTITY staff.server.admin.org_settings.circ.mark_lost_overdue_interval.desc "Items overdue for this long are marked as lost">
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return "Void lost item fine when returned">
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc "Void lost item fine when returned">
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval "Void lost item fine when returned before interval">
