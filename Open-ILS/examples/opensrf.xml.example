@@ -136,8 +136,33 @@ vim:et:ts=4:sw=4:
 
 
         <z3950>
-            <default>oclc</default>
+            <default>biblios</default>
             <services>
+                <biblios>
+                    <!-- biblios does not require username/password -->
+                    <name>‡biblios.net</name>
+                    <host>z3950.biblios.net</host>
+                    <port>210</port>
+                    <db>bibliographic</db>
+                    <!-- fetch the full record with no holdings. FI is the most common choice -->
+                    <record_format>FI</record_format> 
+
+                    <!-- Record transmission format from the server.  Supported -->
+                    <!-- formats include usmarc and xml (for marcxml).         -->
+                    <transmission_format>usmarc</transmission_format> 
+
+                    <attrs>
+                        <tcn><code>12</code><format>1</format></tcn>
+                        <isbn><code>7</code><format>6</format></isbn>
+                        <lccn><code>9</code><format>1</format></lccn>
+                        <author><code>1003</code><format>6</format></author>
+                        <title><code>4</code><format>6</format></title>
+                        <issn><code>8</code><format>1</format></issn>
+                        <publisher><code>1018</code><format>6</format></publisher>
+                        <pubdate><code>31</code><format>1</format></pubdate>
+                        <item_type><code>1001</code><format>1</format></item_type>
+                    </attrs>
+                </biblios>
 
                 <loc>
                     <!-- LoC does not require username/password -->
