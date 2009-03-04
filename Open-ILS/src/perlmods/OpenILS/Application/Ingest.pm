@@ -1169,7 +1169,7 @@ sub _extract_856_uris {
 			->gather(1);
 
         if (!$cn) {
-            $c = Fieldmapper::asset::call_number->new;
+            $cn = Fieldmapper::asset::call_number->new;
             $cn->isnew( 1 );
             $cn->deleted('f');
             $cn->id( $$max_cn++ );
