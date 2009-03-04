@@ -54,6 +54,7 @@
 	<command id="cmd_manage_offline_xacts" />
 	<command id="cmd_download_patrons" />
 	<command id="cmd_local_admin" />
+	<command id="cmd_toggle_buttonbar" />
 
 	<command id="cmd_extension_manager"/>
 	<command id="cmd_theme_manager"/>
@@ -98,7 +99,6 @@
 	<key id="retrieve_last_patron_key" keycode="VK_F8" command="cmd_retrieve_last_patron"/>
 	<key id="retrieve_last_record_key" keycode="VK_F8" modifiers="shift" command="cmd_retrieve_last_record"/>
 </keyset>
-
 
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&staff.main.menu.file.label;" accesskey="&staff.main.menu.file.accesskey;" >
@@ -206,6 +206,7 @@
 		<menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
 		<menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
 		<menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
+		<menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
 		<menuseparator />
 		<menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">
 			<menupopup id="main.menu.admin.sub.popup">

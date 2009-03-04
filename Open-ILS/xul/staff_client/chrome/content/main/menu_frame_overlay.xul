@@ -75,6 +75,34 @@
 		<menu id="main.menu.admin" />
 		<menu id="main.menu.help" />
 	</menubar>
+    <toolbar id="main_toolbar" hidden="true">
+        <toolbarbutton id="tb_checkout" 
+            command="cmd_circ_checkout" 
+            image="chrome://open_ils_staff_client/skin/media/images/Arrow-rightup-small.png" 
+            label="&staff.main.button_bar.check_out.label;" 
+            accesskey="&staff.main.button_bar.check_out.accesskey;" />
+        <toolbarbutton id="tb_checkin" 
+            command="cmd_circ_checkin" 
+            image="chrome://open_ils_staff_client/skin/media/images/center.png" 
+            label="&staff.main.button_bar.check_in.label;" 
+            accesskey="&staff.main.button_bar.check_in.accesskey;" />
+        <toolbarbutton id="tb_item_status" 
+            command="cmd_copy_status" 
+            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_libro_32x32.png" 
+            label="&staff.main.button_bar.item_status.label;" 
+            accesskey="&staff.main.button_bar.item_status.accesskey;" />
+        <toolbarseparator />
+        <toolbarbutton id="tb_patron_search" 
+            command="cmd_patron_search" 
+            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_lente_32x32.png" 
+            label="&staff.main.button_bar.patron_search.label;" 
+            accesskey="&staff.main.button_bar.patron_search.accesskey;" />
+        <toolbarbutton id="tb_patron_registration" 
+            command="cmd_patron_register" 
+            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_famiglia_32x32.png" 
+            label="&staff.main.button_bar.patron_registration.label;" 
+            accesskey="&staff.main.button_bar.patron_registration.accesskey;" />
+    </toolbar>
 </toolbox>
 
 </overlay>

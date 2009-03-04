@@ -54,6 +54,12 @@ main.menu.prototype = {
 
 		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
+        var button_bar = String( obj.data.hash.aous['ui.general.button_bar'] ) == 'true';
+        if (button_bar) {
+            var x = document.getElementById('main_toolbar');
+            if (x) x.setAttribute('hidden','false');
+        }
+
 		var cmd_map = {
 			'cmd_broken' : [
 				['oncommand'],
@@ -400,6 +406,14 @@ main.menu.prototype = {
 
 				}
 			],
+
+            'cmd_toggle_buttonbar' : [
+                ['oncommand'],
+                function() {
+                    var x = document.getElementById('main_toolbar');
+                    if (x) x.hidden = ! x.hidden;
+                }
+            ],
 
 			'cmd_open_vandelay' : [
 				['oncommand'],

@@ -587,6 +587,16 @@
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
 <!ENTITY staff.main.auth.workstation "Workstation">
+<!ENTITY staff.main.button_bar.check_out.label "Check Out">
+<!ENTITY staff.main.button_bar.check_out.accesskey "">
+<!ENTITY staff.main.button_bar.check_in.label "Check In">
+<!ENTITY staff.main.button_bar.check_in.accesskey "">
+<!ENTITY staff.main.button_bar.item_status.label "Item Status">
+<!ENTITY staff.main.button_bar.item_status.accesskey "">
+<!ENTITY staff.main.button_bar.patron_search.label "Patron Search">
+<!ENTITY staff.main.button_bar.patron_search.accesskey "">
+<!ENTITY staff.main.button_bar.patron_registration.label "Patron Registration">
+<!ENTITY staff.main.button_bar.patron_registration.accesskey "">
 <!ENTITY staff.main.menu.acquisitions.accesskey "q">
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.accesskey "-">
@@ -636,6 +646,8 @@
 <!ENTITY staff.main.menu.admin.xuleditor.label "XUL Test">
 <!ENTITY staff.main.menu.admin.venkman.label "Venkman">
 <!ENTITY staff.main.menu.admin.ping "Ping Server">
+<!ENTITY staff.main.menu.admin.toggle_buttonbar.accesskey "B">
+<!ENTITY staff.main.menu.admin.toggle_buttonbar.label "Toggle Button Bar">
 <!ENTITY staff.main.menu.cat.accesskey "g">
 <!ENTITY staff.main.menu.cat.add_bib.key "B">
 <!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">
@@ -2666,5 +2678,7 @@
 <!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
 <!ENTITY staff.portal.title "Evergreen Staff Client Portal Page">
 <!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">
-<!ENTITY ui.circ.patron_summary.horizontal "Alternative Horizontal Patron Summary Panel">
+<!ENTITY ui.circ.patron_summary.horizontal "GUI: Alternative Horizontal Patron Summary Panel">
 <!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
+<!ENTITY ui.general.button_bar "GUI: Above-Tab Button Bar">
+<!ENTITY ui.general.button_bar.desc "This enables a row of buttons and/or icons between the top-level menu system and the tabbed interfaces.">
