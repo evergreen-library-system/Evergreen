@@ -26,13 +26,15 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($auth, $config, $quiet) =
-	(0, '/openils/conf/opensrf_core.xml');
+my ($max_uri, $max_cn, $auth, $config, $quiet) =
+	(0, 0, 0, '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,
 	'authority'	=> \$auth,
 	'quiet'		=> \$quiet,
+	'max_uri=i'	=> \$max_uri,	
+	'max_cn=i'	=> \$max_cn,	
 );
 
 my @ses;
@@ -52,9 +54,6 @@ my $meth = 'open-ils.ingest.full.biblio.object.readonly';
 $meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
 
 $meth = OpenILS::Application::Ingest->method_lookup( $meth );
-
-my $max_cn = 0;
-my $max_uri = 0;
 
 my $count = 0;
 my $starttime = time;
@@ -109,8 +108,8 @@ sub postprocess {
 			$umap->call_number($u->{call_number}->id);
 			print( OpenSRF::Utils::JSON->perl2JSON($umap)."\n" );
 
-			$max_cn = $u->{call_number}->id if $u->{call_number}->isnew;
-			$max_uri = $u->{uri}->id if $u->{uri}->isnew;
+			$max_cn = $u->{call_number}->id + 1 if $u->{call_number}->isnew;
+			$max_uri = $u->{uri}->id + 1 if $u->{uri}->isnew;
 		}
 	}
 
