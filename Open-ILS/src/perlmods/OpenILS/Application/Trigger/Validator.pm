@@ -24,7 +24,7 @@ sub CircIsOverdue {
     return 0 if $circ->stop_fines and not $circ->stop_fines =~ /MAXFINES|LONGOVERDUE/;
 
     my $due_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
-    return 0 if $due_date < DateTime->now;
+    return 0 if $due_date > DateTime->now;
 
     return 1;
 }
