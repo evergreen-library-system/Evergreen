@@ -1175,6 +1175,7 @@ sub make_mbts {
 	my $self = shift;
     my $e = shift;
 	my @xacts = @_;
+	return () if (!@xacts);
     return @{$e->search_money_billable_transaction_summary({id => [ map { $_->id } @xacts ]})};
 }
 		
