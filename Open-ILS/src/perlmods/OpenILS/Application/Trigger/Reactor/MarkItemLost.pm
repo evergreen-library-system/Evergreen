@@ -5,6 +5,7 @@ use Error qw/:try/;
 use Data::Dumper;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Application::Cat::AssetCommon;
 $Data::Dumper::Indent = 0;
 
 
@@ -26,6 +27,14 @@ sub handler {
     my $self = shift;
     my $env = shift;
     my $e = new_editor(xact => 1);
+    $e->requestor($e->retrieve_actor_user($$env{params}{editor}));
+
+    my $evt = OpenILS::Application::Cat::AssetCommon->set_item_lost($e, $$env{target}->target_copy);
+    if($evt) {
+        $logger->error("trigger: MarkItemLost failed with event ".$evt->{textcode});
+        return 0;
+    }
+
     $e->commit;
     return 1;
 }
