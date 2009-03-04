@@ -74,6 +74,7 @@ INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_True','Alw
 INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_False','Always returns false -- reaction always fails');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('SendEmail','Send an email based on a user-defined template');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('GenerateBatchOverduePDF','Output a batch PDF of overdue notices for printing');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('MarkItemLost','Marks a circulation and associated item as lost');
 
 -- After an event is reacted to (either succes or failure) a cleanup module is run against the resulting environment
 CREATE TABLE action_trigger.cleanup (
