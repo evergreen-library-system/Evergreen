@@ -872,9 +872,22 @@ __PACKAGE__->register_method(
 );
 
 sub mark_item {
-	my( $self, $conn, $auth, $copy_id ) = @_;
+	my( $self, $conn, $auth, $copy_id, $args ) = @_;
 	my $e = new_editor(authtoken=>$auth, xact =>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
+    $args ||= {};
+
+    my $copy = $e->retrieve_asset_copy([
+        $copy_id,
+        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])->[0] 
+            or return $e->die_event;
+
+    my $owning_lib = 
+        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
+            $copy->circ_lib : $copy->call_number->owning_lib;
+
+    return $e->die_event unless $e->allowed('UPDATE_COPY', $owning_lib);
+
 
 	my $perm = 'MARK_ITEM_MISSING';
 	my $stat = OILS_COPY_STATUS_MISSING;
@@ -882,6 +895,9 @@ sub mark_item {
 	if( $self->api_name =~ /damaged/ ) {
 		$perm = 'MARK_ITEM_DAMAGED';
 		$stat = OILS_COPY_STATUS_DAMAGED;
+        my $evt = handle_mark_damaged($e, $copy, $owning_lib, $args);
+        return $evt if $evt;
+
 	} elsif ( $self->api_name =~ /bindery/ ) {
 		$perm = 'MARK_ITEM_BINDERY';
 		$stat = OILS_COPY_STATUS_BINDERY;
@@ -902,14 +918,12 @@ sub mark_item {
 		$stat = OILS_COPY_STATUS_DISCARD;
 	}
 
-	my $copy = $e->retrieve_asset_copy($copy_id)
-		or return $e->event;
+
 	$copy->status($stat);
 	$copy->edit_date('now');
 	$copy->editor($e->requestor->id);
 
-	$e->update_asset_copy($copy) or return $e->event;
-
+	$e->update_asset_copy($copy) or return $e->die_event;
 
 	my $holds = $e->search_action_hold_request(
 		{ 
@@ -925,6 +939,60 @@ sub mark_item {
 	OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
 
 	return 1;
+}
+
+sub handle_mark_damaged {
+    my($e, $copy, $owning_lib, $args) = @_;
+
+    my $apply = $args->{apply_fines} || '';
+    return undef if $apply eq 'noapply';
+
+    # grab the last circulation
+    my $circ = $e->search_action_circulation([
+        {   target_copy => $copy->id}, 
+        {   limit => 1, 
+            order_by => {circ => "xact_start DESC"},
+            flesh => 1,
+            flesh_fields => {circ => ['target_copy', 'usr']}
+        }
+    ])->[0];
+
+    return undef unless $circ;
+
+    my $charge_price = $U->ou_ancestor_setting_value(
+        $owning_lib, 'circ.charge_on_damaged', $e);
+
+    my $proc_fee = $U->ou_ancestor_setting_value(
+        $owning_lib, 'circ.damaged_item_processing_fee', $e) || 0;
+
+    return undef unless $charge_price or $proc_fee;
+
+    my $copy_price = ($charge_price) ? $U->get_copy_price($e, $copy) : 0;
+    my $total = $copy_price + $proc_fee;
+    my $apply = $args->{apply_fines};
+
+    if($apply) {
+        
+        if($charge_price and $copy_price) {
+            my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+                $e, $copy_price, 7, 'Damaged Item', $circ->id);
+            return $evt if $evt;
+        }
+
+        if($proc_fee) {
+            my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+                $e, $proc_fee, 8, 'Damaged Item Processing Fee', $circ->id);
+            return $evt if $evt;
+        }
+
+        my $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
+        return $evt if $evt;
+        return undef;
+
+    } else {
+        return new OpenILS::Event->('DAMAGE_CHARGE', 
+            {usr => $circ->usr->id, charge => $total});
+    }
 }
 
 

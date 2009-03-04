@@ -864,6 +864,10 @@ INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 5, oils_i18n_gettext(5, 'System: Deposit', 'cbt', 'name'), 1);
 INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 6, oils_i18n_gettext(6, 'System: Rental', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 7, oils_i18n_gettext(7, 'Damaged Item', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+	( 8, oils_i18n_gettext(8, 'Damaged Item Processing Fee', 'cbt', 'name'), 1);
 
 SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
 
