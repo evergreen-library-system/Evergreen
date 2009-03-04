@@ -37,12 +37,12 @@ sub format_date {
     $date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($date));
     return sprintf(
         "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
-        $due->hour,
-        $due->minute,
-        $due->second,
-        $due->day,
-        $due->month,
-        $due->year
+        $date->hour,
+        $date->minute,
+        $date->second,
+        $date->day,
+        $date->month,
+        $date->year
     );
 }
 
