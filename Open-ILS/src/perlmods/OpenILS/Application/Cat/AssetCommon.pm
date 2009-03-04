@@ -9,6 +9,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
 use OpenSRF::AppSession;
 use OpenILS::Event;
+use OpenILS::Application::Circ::CircCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -401,4 +402,75 @@ sub copy_perm_org {
 	}
 	$logger->debug("using copy perm org $org");
 	return $org;
+}
+
+
+sub set_item_lost {
+    my($class, $e, $copy_id) = @_;
+
+    my $copy = $e->retrieve_asset_copy([
+        $copy_id, 
+        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])
+            or return $e->die_event;
+
+    my $owning_lib = 
+        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
+            $copy->circ_lib : $copy->call_number->owning_lib;
+
+    my $circ = $e->search_action_circulation(
+        {checkin_time => undef, target_copy => $copy->id} )->[0]
+            or return $e->die_event;
+
+    $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
+
+    return OpenILS::Event->new('COPY_MARKED_LOST')
+	    if $copy->status == OILS_COPY_STATUS_LOST;
+
+    # ---------------------------------------------------------------------
+    # fetch the related org settings
+    my $proc_fee = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
+    my $void_overdue = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
+
+    # ---------------------------------------------------------------------
+    # move the copy into LOST status
+    $copy->status(OILS_COPY_STATUS_LOST);
+    $copy->editor($e->requestor->id);
+    $copy->edit_date('now');
+    $e->update_asset_copy($copy) or return $e->die_event;
+
+    my $price = $U->get_copy_price($e, $copy, $copy->call_number);
+
+    if( $price > 0 ) {
+        my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+            $e, $price, 3, 'Lost Materials', $circ->id);
+        return $evt if $evt;
+    }
+
+    # ---------------------------------------------------------------------
+    # if there is a processing fee, charge that too
+    if( $proc_fee > 0 ) {
+        my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+            $e, $proc_fee, 4, 'Lost Materials Processing Fee', $circ->id);
+        return $evt if $evt;
+    }
+
+    # ---------------------------------------------------------------------
+    # mark the circ as lost and stop the fines
+    $circ->stop_fines(OILS_STOP_FINES_LOST);
+    $circ->stop_fines_time('now') unless $circ->stop_fines_time;
+    $e->update_action_circulation($circ) or return $e->die_event;
+
+    # ---------------------------------------------------------------------
+    # void all overdue fines on this circ if configured
+    if( $void_overdue ) {
+        my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ);
+        return $evt if $evt;
+    }
+
+    my $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
+    return $evt if $evt;
+
+    return undef;
 }

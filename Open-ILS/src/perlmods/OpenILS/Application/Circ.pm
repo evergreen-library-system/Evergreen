@@ -11,6 +11,7 @@ use OpenILS::Application::Circ::HoldNotify;
 use OpenILS::Application::Circ::Money;
 use OpenILS::Application::Circ::NonCat;
 use OpenILS::Application::Circ::CopyLocations;
+use OpenILS::Application::Circ::CircCommon;
 
 use DateTime;
 use DateTime::Format::ISO8601;
@@ -27,6 +28,7 @@ use OpenILS::Utils::Editor;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
+use OpenILS::Application::Cat::AssetCommon;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -273,148 +275,12 @@ sub new_set_circ_lost {
 
     $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
 
-    return OpenILS::Event->new('COPY_MARKED_LOST')
-	    if $copy->status == OILS_COPY_STATUS_LOST;
-
-    # ---------------------------------------------------------------------
-    # fetch the related org settings
-    my $proc_fee = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
-    my $void_overdue = $U->ou_ancestor_setting_value(
-        $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
-
-    # ---------------------------------------------------------------------
-    # move the copy into LOST status
-    $copy->status(OILS_COPY_STATUS_LOST);
-    $copy->editor($e->requestor->id);
-    $copy->edit_date('now');
-    $e->update_asset_copy($copy) or return $e->die_event;
-
-    my $price = $U->get_copy_price($e, $copy, $copy->call_number);
-
-    if( $price > 0 ) {
-        my $evt = create_bill($e, $price, 3, 'Lost Materials', $circ->id);
-        return $evt if $evt;
-    }
-
-    # ---------------------------------------------------------------------
-    # if there is a processing fee, charge that too
-    if( $proc_fee > 0 ) {
-        my $evt = create_bill($e, $proc_fee, 4, 'Lost Materials Processing Fee', $circ->id);
-        return $evt if $evt;
-    }
-
-    # ---------------------------------------------------------------------
-    # mark the circ as lost and stop the fines
-    $circ->stop_fines(OILS_STOP_FINES_LOST);
-    $circ->stop_fines_time('now') unless $circ->stop_fines_time;
-    $e->update_action_circulation($circ) or return $e->die_event;
-
-    # ---------------------------------------------------------------------
-    # void all overdue fines on this circ if configured
-    if( $void_overdue ) {
-        my $evt = void_overdues($e, $circ);
-        return $evt if $evt;
-    }
-
-    my $evt = reopen_xact($e, $circ->id);
+    my $evt = OpenILS::Application::Cat::AssetCommon->set_item_lost($e, $copy->id);
     return $evt if $evt;
 
     $e->commit;
     return 1;
 }
-
-sub reopen_xact {
-    my($e, $xactid) = @_;
-
-    # -----------------------------------------------------------------
-    # make sure the transaction is not closed
-    my $xact = $e->retrieve_money_billable_transaction($xactid)
-        or return $e->die_event;
-
-    if( $xact->xact_finish ) {
-        my ($mbts) = $U->fetch_mbts($xactid, $e);
-        if( $mbts->balance_owed != 0 ) {
-            $logger->info("* re-opening xact $xactid, orig xact_finish is ".$xact->xact_finish);
-            $xact->clear_xact_finish;
-            $e->update_money_billable_transaction($xact)
-                or return $e->die_event;
-        } 
-    }
-
-    return undef;
-}
-
-
-sub create_bill {
-	my( $e, $amount, $btype, $type, $xactid ) = @_;
-
-	$logger->info("The system is charging $amount [$type] on xact $xactid");
-
-    # -----------------------------------------------------------------
-    # now create the billing
-	my $bill = Fieldmapper::money::billing->new;
-	$bill->xact($xactid);
-	$bill->amount($amount);
-	$bill->billing_type($type); 
-	$bill->btype($btype); 
-	$bill->note('SYSTEM GENERATED');
-    $e->create_money_billing($bill) or return $e->die_event;
-
-	return undef;
-}
-
-
-
-# -----------------------------------------------------------------
-# Voids overdue fines on the given circ.  if a backdate is 
-# provided, then we only void back to the backdate
-# -----------------------------------------------------------------
-sub void_overdues {
-    my( $e, $circ, $backdate ) = @_;
-
-    my $bill_search = { 
-        xact => $circ->id, 
-        btype => 1 
-    };
-
-    if( $backdate ) {
-        # ------------------------------------------------------------------
-        # Fines for overdue materials are assessed up to, but not including,
-        # one fine interval after the fines are applicable.  Here, we add
-        # one fine interval to the backdate to ensure that we are not 
-        # voiding fines that were applicable before the backdate.
-        # ------------------------------------------------------------------
-
-        # if there is a raw time component (e.g. from postgres), 
-        # turn it into an interval that interval_to_seconds can parse
-        my $duration = $circ->fine_interval;
-        $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
-        my $interval = OpenSRF::Utils->interval_to_seconds($duration);
-
-        my $date = DateTime::Format::ISO8601->parse_datetime($backdate);
-        $backdate = $U->epoch2ISO8601($date->epoch + $interval);
-        $logger->info("applying backdate $backdate in overdue voiding");
-        $$bill_search{billing_ts} = {'>=' => $backdate};
-    }
-
-    my $bills = $e->search_money_billing($bill_search);
-    
-    for my $bill (@$bills) {
-        next if $U->is_true($bill->voided);
-        $logger->info("voiding overdue bill ".$bill->id);
-        $bill->voided('t');
-        $bill->void_time('now');
-        $bill->voider($e->requestor->id);
-        my $n = $bill->note || "";
-        $bill->note("$n\nSystem: VOIDED FOR BACKDATE");
-        $e->update_money_billing($bill) or return $e->die_event;
-    }
-
-	return undef;
-}
-
-
 
 
 __PACKAGE__->register_method(
@@ -457,7 +323,7 @@ sub set_circ_claims_returned {
     if( $backdate ) {
         # make it look like the circ stopped at the cliams returned time
         $circ->stop_fines_time(clense_ISO8601($backdate));
-        my $evt = void_overdues($e, $circ, $backdate);
+        my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ, $backdate);
         return $evt if $evt;
     }
 
