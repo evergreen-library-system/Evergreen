@@ -926,7 +926,7 @@ patron.holds.prototype = {
                                     'url_prefix' : xulG.url_prefix,
                                     'url' : xulG.url_prefix( urls.browser )
                                 };
-                                xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER, {}, content_params);
+                                xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER + '?patron_hold=1', {}, content_params);
                             } catch(E) {
                                 obj.error.sdump('D_ERROR','cmd_search_opac: ' + E);
                             }

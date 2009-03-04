@@ -233,7 +233,7 @@ patron.display.prototype = {
 								}
 
 							obj.right_deck.set_iframe(
-								urls.XUL_REMOTE_BROWSER,
+								urls.XUL_REMOTE_BROWSER + '?patron_edit=1',
 								//+ '?url=' + window.escape( 
 								//	urls.XUL_PATRON_EDIT
 								//	+ '?ses=' + window.escape( ses() )
