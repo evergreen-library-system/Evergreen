@@ -746,7 +746,7 @@ INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 	VALUES ('oclc', oils_i18n_gettext('oclc', 'OCLC', 'czs', 'label'), 'zcat.oclc.org', 210, 'OLUCWorldCat', TRUE);
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
-	VALUES ('biblios', oils_i18n_gettext('‡biblios.net', 'czs', 'label'), 'z3950.biblios.net', 210, 'bibliographic', FALSE);
+	VALUES ('biblios', oils_i18n_gettext('biblios','‡biblios.net', 'czs', 'label'), 'z3950.biblios.net', 210, 'bibliographic', FALSE);
 
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (1, 'loc','tcn', oils_i18n_gettext(1, 'Title Control Number', 'cza', 'label'), 12, 1);
