@@ -4,18 +4,24 @@
     dojo.require('dijit.layout.ContentPane');
     dojo.require('dijit.form.Button');
     dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad(
+        function(){
+            cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
+        }
+    );
 </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
     <div>Circulation Policy Configuration</div>
-    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New</button></div>
+    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
     <table  jsId="cmGrid" 
             dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'active', 'org_unit', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound']"
+            fieldOrder="['id', 'active', 'org_unit', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
             defaultCellWidth='12'
             query="{id: '*'}" 
             fmClass='ccmm' 
+            editStyle='pane'
             editOnEnter='true'>
     </table>
 </div>
