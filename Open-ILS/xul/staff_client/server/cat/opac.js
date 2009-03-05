@@ -169,7 +169,7 @@ function set_opac() {
 
 				win.attachEvt("rdetail", "nextPrevDrawn",
 					function(rIndex,rCount){
-						$('record_pos').setAttribute('value', document.getElementById('offlineStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount : rCount : 1]));
+						$('record_pos').setAttribute('value', document.getElementById('offlineStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount ? rCount : 1]));
 						if (win.rdetailNext) {
 							g.f_record_next = function() { 
 								g.view_override = g.view; 
