@@ -24,7 +24,7 @@ my $log = 'OpenSRF::Utils::Logger';
 sub initialize {}
 sub child_init {}
 
-sub create_events_for_object {
+sub create_active_events_for_object {
     my $self = shift;
     my $client = shift;
     my $key = shift;
@@ -45,13 +45,12 @@ sub create_events_for_object {
     my %hook_hash = map { ($_->key, $_) } @$hooks;
 
     my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location ] });
-    my $defs = $editor->search_action_trigger_event_definition([
+    my $defs = $editor->search_action_trigger_event_definition(
         { hook   => [ keys %hook_hash ],
           owner  => [ map { $_->{id} } @$orgs  ],
           active => 't'
-        },
-        { idlist => 1 }
-    ]);
+        }
+    );
 
     for my $def ( @$defs ) {
 
@@ -86,7 +85,103 @@ sub create_events_for_object {
 }
 __PACKAGE__->register_method(
     api_name => 'open-ils.trigger.event.autocreate',
-    method   => 'create_events_for_object',
+    method   => 'create_active_events_for_object',
+    api_level=> 1,
+    stream   => 1,
+    argc     => 3
+);
+
+sub _fm_class_by_hint {
+    my $hint = shift;
+
+    my ($class) = grep {
+        Fieldmapper->publish_fieldmapper->{$_}->{hint} eq $hint
+    } keys %{ Fieldmapper->publish_fieldmapper };
+
+    return $class;
+}
+
+sub create_passive_events {
+    my $self = shift;
+    my $client = shift;
+    my $key = shift;
+    my $location_field = shift; # where to look for event_def.owner filtering ... circ_lib, for instance, where hook.core_type = circ
+    my $filter = shift || {};
+
+    return undef unless ($key && $location_field);
+
+    my $editor = new_editor(xact=>1);
+    my $hooks = $editor->search_action_trigger_hook(
+        { passive => 't', key => $key }
+    );
+
+    my %hook_hash = map { ($_->key, $_) } @$hooks;
+
+    my $defs = $editor->search_action_trigger_event_definition(
+        { hook   => [ keys %hook_hash ], active => 't' },
+    );
+
+    for my $def ( @$defs ) {
+
+        my $date = DateTime->now->subtract( seconds => interval_to_seconds($def->delay) );
+
+        my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location_field ] });
+
+        # we may need to do some work to backport this to 1.2
+        $filter->{ $location_field } = { 'in' =>
+            {
+                select  => { aou => [{ column => 'id', transform => 'actor.org_unit_descendents', result_field => 'id' }] },
+                from    => 'aou',
+                where   => { id => $def->owner }
+            }
+        };
+
+        $filter->{ $def->delay_field } = {
+            '<=' => DateTime
+                ->now
+                ->subtract( seconds => interval_to_seconds($def->delay) )
+                ->strftime( '%F %T%z' )
+        };
+
+        my $class = _fm_class_by_hint($hook_hash{$def->hook}->core_type);
+        $class =~ s/^Fieldmapper:://o;
+        $class =~ s/::/_/go;
+
+        my $method = 'search_'. $class;
+        my $objects = $editor->$method( $filter );
+
+        for my $o (@$objects) {
+
+            my $ident = $o->Identity;
+            my $ident_value = $o->$ident();
+
+            my $previous = $editor->search_action_trigger_event({
+                event_def => $def->id,
+                target    => $ident_value
+            });
+
+
+            # only allow one event of type $def for each target
+            next if (@$previous);
+
+            my $event = Fieldmapper::action_trigger::event->new();
+            $event->target( $ident_value );
+            $event->event_def( $def->id );
+            $event->run_time( 'now' );
+
+            $editor->create_action_trigger_event( $event );
+
+            $client->respond( $event->id );
+        }
+    }
+
+    $editor->commit;
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.passive.event.autocreate',
+    method   => 'create_passive_events',
     api_level=> 1,
     stream   => 1,
     argc     => 3
