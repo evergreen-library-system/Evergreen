@@ -79,7 +79,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     return dojo.date.locale.format(date, {formatLength:'short'});
                 case 'org_unit':
                     return fieldmapper.aou.findOrgUnit(value).shortname();
+                case 'int':
+                case 'float':
+                    if(isNaN(value)) value = 0;
                 default:
+                    if(value === undefined || value === null)
+                        value = '';
                     return value+'';
             }
         },
