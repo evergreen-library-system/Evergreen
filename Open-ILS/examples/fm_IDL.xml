@@ -977,7 +977,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="ccmm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_matchpoint" oils_persist:tablename="config.circ_matrix_matchpoint" reporter:label="Circulation Matrix Matchpoint">
+	<class id="ccmm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_matchpoint" oils_persist:tablename="config.circ_matrix_matchpoint" reporter:label="Circulation Matrix Matchpoint">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_matchpoint_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1010,6 +1010,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="max_fine_rule" reltype="has_a" key="id" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="id" map="" class="crrf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <retrieve permission="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field='org_unit'/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="ccmcmt" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test" oils_persist:tablename="config.circ_matrix_circ_mod_test" reporter:label="Circulation Matrix Circulation Modifier Subtest">
