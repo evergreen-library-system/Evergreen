@@ -824,8 +824,7 @@ patron.holds.prototype = {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
 									var patron_id = obj.retrieve_ids[i].usr;
 									if (seen[patron_id]) continue; seen[patron_id] = true;
-									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_PATRON_DISPLAY), // + '?id=' + patron_id, 
+									xulG.new_patron_tab(
 										{}, 
 										{ 'id' : patron_id }
 									);

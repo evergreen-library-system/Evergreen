@@ -866,10 +866,8 @@ admin.offline_manage_xacts.prototype = {
 			for (var barcode in patrons) {
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					try {
-						var url = urls.XUL_PATRON_DISPLAY;
-							//+ '?barcode=' + window.escape( error.command.patron_barcode );
-						window.xulG.new_tab(
-							url, {}, { 'barcode' : barcode }
+						window.xulG.new_patron_tab(
+							{}, { 'barcode' : barcode }
 						);
 					} catch(E) {
 						alert(E);

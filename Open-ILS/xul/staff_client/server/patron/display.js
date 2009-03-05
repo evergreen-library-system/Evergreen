@@ -27,9 +27,9 @@ patron.display.prototype = {
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 		
-		var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
-		document.getElementById('ui.circ.patron_summary.horizontal').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
-		document.getElementById('pdms1').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
+		//var horizontal_interface = String( obj.OpenILS.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+		//document.getElementById('ui.circ.patron_summary.horizontal').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
+		//document.getElementById('pdms1').setAttribute('orient', horizontal_interface ? 'vertical' : 'horizontal');
 		
 		JSAN.use('util.deck'); 
 		obj.right_deck = new util.deck('patron_right_deck');
@@ -91,9 +91,8 @@ patron.display.prototype = {
 							if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {	
 									try {
-										var url = urls.XUL_PATRON_DISPLAY; //+ '?id=' + window.escape( obj.retrieve_ids[i] );
-										window.xulG.new_tab(
-											url, {}, { 'id' : obj.retrieve_ids[i] }
+										window.xulG.new_patron_tab(
+											{}, { 'id' : obj.retrieve_ids[i] }
 										);
 									} catch(E) {
 										alert(E);
@@ -201,9 +200,7 @@ patron.display.prototype = {
 								function spawn_search(s) {
 									obj.error.sdump('D_TRACE', $("commonStrings").getFormattedString('staff.patron.display.cmd_patron_edit.edit_search', [js2JSON(s)]) ); 
 									obj.OpenILS.data.stash_retrieve();
-									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
-									//loc += '?doit=1&query=' + window.escape(js2JSON(s));
-									xulG.new_tab( loc, {}, { 'doit' : 1, 'query' : s } );
+									xulG.new_patron_tab( {}, { 'doit' : 1, 'query' : s } );
 								}
 
 								function spawn_editor(p) {

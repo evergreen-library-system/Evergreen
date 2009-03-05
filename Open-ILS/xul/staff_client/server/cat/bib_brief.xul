@@ -188,10 +188,8 @@ vim: noet:sw=4:ts=4:
 
 		function spawn_patron(span) {
             try {
-                var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
-
-                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
-                    window.xulG.set_tab( loc, {}, { 'id' : span.getAttribute('au_id') } );
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_patron_tab == 'function') {
+                    window.xulG.set_patron_tab( {}, { 'id' : span.getAttribute('au_id') } );
                 } else {
 					copy_to_clipboard( span.textContent );
 				}

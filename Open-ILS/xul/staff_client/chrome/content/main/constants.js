@@ -295,6 +295,7 @@ const urls = {
 	'XUL_PATRON_BILL_HISTORY' : '/xul/server/patron/bill_history.xul',
 	'XUL_PATRON_BILL_WIZARD' : '/xul/server/patron/bill_wizard.xul',
 	'XUL_PATRON_DISPLAY' : '/xul/server/patron/display.xul',
+	'XUL_PATRON_HORIZ_DISPLAY' : '/xul/server/patron/display_horiz.xul',
 	'XUL_PATRON_EDIT' : '/xul/server/patron/ue.xhtml',
 	'XUL_USER_PERM_EDITOR' : '/xul/server/patron/user_edit.xhtml',
 	'XUL_PATRON_HOLDS' : '/xul/server/patron/holds.xul',

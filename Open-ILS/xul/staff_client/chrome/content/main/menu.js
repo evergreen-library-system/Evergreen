@@ -197,8 +197,7 @@ main.menu.prototype = {
 			'cmd_patron_search' : [
 				['oncommand'],
 				function() {
-					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY),{},{});
+                    obj.set_patron_tab();
 				}
 			],
 			'cmd_search_opac' : [
@@ -970,7 +969,18 @@ main.menu.prototype = {
             }
         }
     },
-
+    'set_patron_tab' : function(params,content_params) {
+        var obj = this;
+        var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+        var url = obj.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
+        obj.set_tab(url,params ? params : {},content_params ? content_params : {});
+    },
+    'new_patron_tab' : function(params,content_params) {
+        var obj = this;
+        var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+        var url = obj.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
+        obj.new_tab(url,params ? params : {},content_params ? content_params : {});
+    },
 	'set_tab' : function(url,params,content_params) {
 		var obj = this;
 		if (!url) url = '/xul/server/';
@@ -986,6 +996,8 @@ main.menu.prototype = {
 
 		content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
 		content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
+		content_params.new_patron_tab = function(a,b) { return obj.new_patron_tab(a,b); };
+		content_params.set_patron_tab = function(a,b) { return obj.set_patron_tab(a,b); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
 		content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
 		content_params.url_prefix = function(url) { return obj.url_prefix(url); };

@@ -72,8 +72,7 @@ circ.util.show_copy_details = function(copy_id) {
 		for (var j = 0; j < patrons.length; j++) {
 			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 				try {
-					var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
-					window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
+					window.xulG.new_patron_tab( {}, { 'id' : patrons[j] } );
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_patron.failure'), E);
 				}
@@ -104,8 +103,7 @@ circ.util.show_last_few_circs = function(selection_list) {
 			for (var j = 0; j < patrons.length; j++) {
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					try {
-						var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
-						window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
+						window.xulG.new_patron_tab( {}, { 'id' : patrons[j] } );
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_patron.failure') ,E);
 					}

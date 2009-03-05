@@ -94,8 +94,7 @@ function verify_init() {
                     alert (req.desc);
                     document.getElementById('name_prompt').focus();
                 } else {
-                    var url = xulG.url_prefix( urls.XUL_PATRON_DISPLAY ); 
-                    xulG.set_tab( url, {}, { 'id' : req } );
+                    xulG.set_patron_tab( {}, { 'id' : req } );
                 }
             },
             false

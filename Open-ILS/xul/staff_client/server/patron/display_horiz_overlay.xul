@@ -31,15 +31,15 @@
 		<label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;"/>
 		<label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
 	</hbox>
-	<hbox id="PatronNotNavBar" flex="1" class="my_bg">
-        <vbox id="pdm3z" flex="1" persist="width"> 
+	<vbox id="PatronNotNavBar" flex="1" class="my_bg">
+        <vbox id="pdm3y" flex="1" persist="height"> 
             <deck id="patron_left_deck"/>
         </vbox>
-        <splitter id="pdms1z" orient="horizontal" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
-        <vbox id="pdm4z" flex="3" persist="width">
+        <splitter id="pdms1y" orient="vertical" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
+        <vbox id="pdm4y" flex="8" persist="height">
             <deck id="patron_right_deck"/>
         </vbox>
-	</hbox>
+	</vbox>
 </vbox>
 </box>
 

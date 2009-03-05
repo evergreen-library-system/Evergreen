@@ -143,7 +143,7 @@ circ.checkin.prototype = {
 								}
 							}
 							for (var i in patrons) {
-								xulG.new_tab(urls.XUL_PATRON_DISPLAY,{},{'id' : i});
+								xulG.new_patron_tab({},{'id' : i});
 							}
 						}
 					],
