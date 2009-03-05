@@ -1582,6 +1582,10 @@
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc "Void lost item fine when returned">
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval "Void lost item fine when returned before interval">
 <!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval.desc "Void lost item fine when returned before interval">
+<!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged "Charge item price when marked damaged">
+<!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged.desc "Charge item price when marked damaged">
+<!ENTITY staff.server.admin.org_settings.circ.damaged_item_processing_fee "Charge processing fee for damaged items">
+<!ENTITY staff.server.admin.org_settings.circ.damaged_item_processing_fee.desc "Charge processing fee for damaged items">
 
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
