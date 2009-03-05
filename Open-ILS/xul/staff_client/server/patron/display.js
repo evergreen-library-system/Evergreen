@@ -37,7 +37,7 @@ patron.display.prototype = {
 
 		function spawn_checkout_interface() {
 	            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
-			obj.reset_nav_styling('cmd_patron_checkout');
+                obj.reset_nav_styling('cmd_patron_checkout',true);
 			var frame = obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT,
 				{},
@@ -172,7 +172,10 @@ patron.display.prototype = {
 					],
 					'cmd_patron_checkout' : [
 						['command'],
-						spawn_checkout_interface
+                        function(ev) {
+    			            obj.reset_nav_styling('cmd_patron_checkout');
+                            spawn_checkout_interface();
+                        }
 					],
 					'cmd_patron_items' : [
 						['command'],
@@ -647,7 +650,7 @@ patron.display.prototype = {
 		}
 	},
 
-	'reset_nav_styling' : function(btn) {
+	'reset_nav_styling' : function(btn,dont_hide_summary) {
         try {
             this.controller.view.cmd_patron_checkout.setAttribute('style','');
             this.controller.view.cmd_patron_items.setAttribute('style','');
@@ -657,6 +660,10 @@ patron.display.prototype = {
             this.controller.view.cmd_patron_bills.setAttribute('style','');
             this.controller.view.cmd_standing_penalties.setAttribute('style','');
             this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
+            var x = document.getElementById('left_deck_vbox'); 
+            if (x && ! dont_hide_summary) {
+                x.hidden = true;
+            }
         } catch(E) {
             alert(E);
         }
