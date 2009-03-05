@@ -30,6 +30,7 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/patron/items.js"/>
 	<script>
 	<![CDATA[
 		function my_init() {
