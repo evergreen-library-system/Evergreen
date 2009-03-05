@@ -10,6 +10,7 @@ dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.Button');
 dojo.require('dojo.date');
 dojo.require('openils.CGI');
+dojo.require('openils.XUL');
 
 var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
@@ -27,13 +28,34 @@ var orgSettings = {};
 var tbody;
 var addrTemplateRows;
 var cgi;
+var cloneUser;
+
+if(!window.xulG) var xulG = null;
 
 
 function load() {
     staff = new openils.User().user;
     pcrud = new openils.PermaCrud();
     cgi = new openils.CGI();
-    uEditLoadUser(cgi.param('usr'));
+    cloneUser = cgi.param('clone');
+    var userId = cgi.param('usr');
+
+    if(xulG) {
+	    if(xulG.ses) openils.User.authtoken = xulG.ses;
+	    if(xulG.clone !== null) cloneUser = xulG.clone;
+        if(xulG.usr !== null) userId = xulG.usr
+        if(xulG.params) {
+            var parms = xulG.params;
+	        if(parms.ses) 
+                openils.User.authtoken = parms.ses;
+	        if(parms.clone) 
+                cloneUser = parms.clone;
+            if(parms.usr !== null)
+                userId = parms.usr
+        }
+    }
+
+    uEditLoadUser(userId);
 
     orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
         'global.juvenile_age_threshold',
@@ -70,7 +92,7 @@ function uEditLoadUser(userId) {
     if(!userId) return uEditNewPatron();
     patron = fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
-        {params : [openils.User.authtoken, cgi.param('usr')]}
+        {params : [openils.User.authtoken, userId]}
     );
 }
 
@@ -313,7 +335,11 @@ function uEditWidgetVal(w) {
     return val;
 }
 
-function uEditSave() {
+function uEditSave() { _uEditSave(); }
+function uEditSaveClone() { _uEditSave(true); }
+
+function _uEditSave(doClone) {
+
     for(var idx in widgetPile) {
         var w = widgetPile[idx];
         var val = uEditWidgetVal(w);
@@ -383,20 +409,48 @@ function uEditSave() {
         {   async: true,
             params: [openils.User.authtoken, patron],
             oncomplete: function(r) {
-                patron = openils.Util.readResponse(r);
-                if(patron) {
-                    uEditRefresh();
-                } 
+                newPatron = openils.Util.readResponse(r);
+                if(newPatron) uEditFinishSave(newPatron, doClone);
             }
         }
     );
 }
 
+function uEditFinishSave(newPatron, doClone) {
+
+    if(doClone &&cloneUser == null)
+        cloneUser = newPatron.id();
+
+	if( doClone ) {
+
+		if(xulG && typeof xulG.spawn_editor == 'function' && !patron.isnew() ) {
+            window.xulG.spawn_editor({ses:openils.User.authtoken,clone:cloneUser});
+            uEditRefresh();
+
+		} else {
+			location.href = href.replace(/\?.*/, '') + '?clone=' + cloneUser;
+		}
+
+	} else {
+
+		uEditRefresh();
+	}
+
+	uEditRefreshXUL(newPatron);
+}
+
 function uEditRefresh() {
-    var href = location.href;
-    href = href.replace(/\&?clone=\d+/, '');
+    var usr = cgi.param('usr');
+    var href = location.href.replace(/\?.*/, '');
+    href += ((usr) ? '?usr=' + usr : '');
     location.href = href;
 }
+
+function uEditRefreshXUL(newuser) {
+	if (window.xulG && typeof window.xulG.on_save == 'function') 
+		window.xulG.on_save(newuser);
+}
+
 
 function uEditNewAddr(evt, id) {
     if(id == null) id = --uEditAddrVirtId;
