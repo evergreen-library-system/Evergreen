@@ -78,6 +78,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     var date = dojo.date.stamp.fromISOString(value);
                     return dojo.date.locale.format(date, {formatLength:'short'});
                 case 'org_unit':
+                    if(value === null || value === undefined) return '';
                     return fieldmapper.aou.findOrgUnit(value).shortname();
                 case 'int':
                 case 'float':
