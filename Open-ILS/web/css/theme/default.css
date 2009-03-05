@@ -2,7 +2,7 @@
 @import "default/acq.css";
 @import "default/admin.css";
 
-body { font-size: 80%; }
+body { font-size: 80%; background-color:#FFF; }
 
 #oils-base-body-block {}
 /*
