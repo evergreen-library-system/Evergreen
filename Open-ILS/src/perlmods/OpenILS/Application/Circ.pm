@@ -255,25 +255,8 @@ sub new_set_circ_lost {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
-    my $barcode = $$args{barcode};
-    $logger->info("marking item lost $barcode");
-
-    # ---------------------------------------------------------------------
-    # gather the pieces
-    my $copy = $e->search_asset_copy([
-        {barcode=>$barcode, deleted=>'f'},
-        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])->[0] 
-            or return $e->die_event;
-
-    my $owning_lib = 
-        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
-            $copy->circ_lib : $copy->call_number->owning_lib;
-
-    my $circ = $e->search_action_circulation(
-        {checkin_time => undef, target_copy => $copy->id} )->[0]
-            or return $e->die_event;
-
-    $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
+    my $copy = $e->search_asset_copy({barcode=>$$args{barcode}, deleted=>'f'})->[0]
+        or return $e->die_event;
 
     my $evt = OpenILS::Application::Cat::AssetCommon->set_item_lost($e, $copy->id);
     return $evt if $evt;
