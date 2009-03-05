@@ -95,7 +95,10 @@
 		<command id="cmd_patron_holds" />
 		<command id="cmd_patron_bills" />
 		<command id="cmd_patron_edit" />
-		<command id="cmd_patron_info" />
+		<command id="cmd_patron_info_notes" />
+		<command id="cmd_patron_info_stats" />
+		<command id="cmd_patron_info_surveys" />
+		<command id="cmd_patron_info_groups" />
 		<command id="cmd_patron_other" />
 		<command id="cmd_patron_alert" />
 		<command id="cmd_patron_exit" />

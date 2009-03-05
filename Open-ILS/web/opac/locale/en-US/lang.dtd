@@ -1196,8 +1196,6 @@
 <!ENTITY staff.patron_navbar.edit.accesskey 'E'>
 <!ENTITY staff.patron_navbar.holds 'Holds'>
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
-<!ENTITY staff.patron_navbar.info 'Display Info'>
-<!ENTITY staff.patron_navbar.info.accesskey 'o'>
 <!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
 <!ENTITY staff.patron_navbar.alert.accesskey 'A'>
 <!ENTITY staff.patron_navbar.other 'Other'>
@@ -1211,7 +1209,7 @@
 <!ENTITY staff.patron_navbar.retrieve.accesskey 'R'>
 <!ENTITY staff.patron_navbar.actions.menu.label 'Actions for this Patron'>
 <!ENTITY staff.patron_navbar.actions.menu.accesskey 'A'>
-<!ENTITY staff.patron_navbar.actions.menu.standing_penalties.label 'Modify Blocks/Standing Penalties'>
+<!ENTITY staff.patron_navbar.actions.menu.standing_penalties.label 'Messages'>
 <!ENTITY staff.patron_navbar.actions.menu.standing_penalties.accesskey 'M'>
 <!ENTITY staff.patron_register_interface_label "New Patron">
 <!ENTITY staff.patron_search_form.caption 'Search for Patron'>

@@ -87,18 +87,19 @@
                                 label="&staff.patron_navbar.bills;" accesskey="&staff.patron_navbar.bills.accesskey;"/>
                             <button id="PatronNavBar_edit" command="cmd_patron_edit" class="nav"
                                 label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
+                            <button id="PatronNavBar_messages" label="&staff.patron_navbar.actions.menu.standing_penalties.label;" accesskey="&staff.patron_navbar.actions.menu.standing_penalties.accesskey;" command="cmd_standing_penalties" class="nav"/>
                             <button id="PatronNavBar_other" command="cmd_patron_other" class="nav" label="&staff.patron_navbar.other;" accesskey="&staff.patron_navbar.other.accesskey;" type="menu">
                                 <menupopup>
                                     <menuitem label="&staff.patron_navbar.alert;" accesskey="&staff.patron_navbar.alert.accesskey;" command="cmd_patron_alert"/>
-                                    <menuitem label="&staff.patron_navbar.info;" conflicting_accesskey="&staff.patron_navbar.info.accesskey;" command="cmd_patron_info"/>
+                                    <menuitem label="&staff.patron.info.notes.label;" accesskey="&staff.patron.info.notes.accesskey;" command="cmd_patron_info_notes"/>
+                                    <menuitem label="&staff.patron.info.stat_cats.label;" accesskey="&staff.patron.info.stat_cats.accesskey;" command="cmd_patron_info_stats"/>
+                                    <menuitem label="&staff.patron.info.surveys.label;" accesskey="&staff.patron.info.surveys.accesskey;" command="cmd_patron_info_surveys"/>
+                                    <menuitem label="&staff.patron.info.group.label;" accesskey="&staff.patron.info.group.accesskey;" command="cmd_patron_info_groups"/>
                                     <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                                     <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>
-                                    <menuitem label="&staff.patron_navbar.actions.menu.standing_penalties.label;" accesskey="&staff.patron_navbar.actions.menu.standing_penalties.accesskey;" 
-                                        command="cmd_standing_penalties"/>
+                                    <menuitem label="&staff.patron.display_overlay.exit.label;" accesskey="&staff.patron.display_overlay.exit.accesskey;" command="cmd_patron_exit"/>
                                 </menupopup>
                             </button>
-                            <button id="PatronNavBar_exit" command="cmd_patron_exit" class="nav"
-                                label="&staff.patron.display_overlay.exit.label;" accesskey="&staff.patron.display_overlay.exit.accesskey;"/>
                         </row>
                         <row>
                             <label id="under_refresh"/>

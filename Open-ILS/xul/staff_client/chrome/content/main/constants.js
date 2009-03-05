@@ -298,7 +298,6 @@ const urls = {
 	'XUL_PATRON_EDIT' : '/xul/server/patron/ue.xhtml',
 	'XUL_USER_PERM_EDITOR' : '/xul/server/patron/user_edit.xhtml',
 	'XUL_PATRON_HOLDS' : '/xul/server/patron/holds.xul',
-	'XUL_PATRON_INFO' : '/xul/server/patron/info.xul',
 	'XUL_PATRON_INFO_NOTES' : '/xul/server/patron/info_notes.xul',
 	'XUL_PATRON_INFO_STAT_CATS' : '/xul/server/patron/info_stat_cats.xul',
 	'XUL_PATRON_INFO_SURVEYS' : '/xul/server/patron/info_surveys.xul',

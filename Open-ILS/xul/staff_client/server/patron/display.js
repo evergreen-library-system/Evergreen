@@ -274,11 +274,53 @@ patron.display.prototype = {
                             try { document.getElementById('PatronNavBar_other').firstChild.showPopup(); } catch(E) {};
                         }
                     ],
-					'cmd_patron_info' : [
+					'cmd_patron_info_notes' : [
 						['command'],
 						function(ev) {
 							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_INFO, // + '?patron_id=' + window.escape( obj.patron.id() ),
+                                urls.XUL_PATRON_INFO_NOTES,
+								{},
+								{
+									'patron_id' : obj.patron.id(),
+									'url_prefix' : xulG.url_prefix,
+									'new_tab' : xulG.new_tab
+								}
+							);
+						}
+					],
+					'cmd_patron_info_stats' : [
+						['command'],
+						function(ev) {
+							obj.right_deck.set_iframe(
+                                urls.XUL_PATRON_INFO_STAT_CATS,
+								{},
+								{
+									'patron_id' : obj.patron.id(),
+									'url_prefix' : xulG.url_prefix,
+									'new_tab' : xulG.new_tab
+								}
+							);
+						}
+					],
+					'cmd_patron_info_surveys' : [
+						['command'],
+						function(ev) {
+							obj.right_deck.set_iframe(
+                                urls.XUL_PATRON_INFO_SURVEYS,
+								{},
+								{
+									'patron_id' : obj.patron.id(),
+									'url_prefix' : xulG.url_prefix,
+									'new_tab' : xulG.new_tab
+								}
+							);
+						}
+					],
+					'cmd_patron_info_groups' : [
+						['command'],
+						function(ev) {
+							obj.right_deck.set_iframe(
+                                urls.XUL_PATRON_INFO_GROUP,
 								{},
 								{
 									'patron_id' : obj.patron.id(),
@@ -402,6 +444,8 @@ patron.display.prototype = {
                         ['command'],
                         function() {
                             function penalty_interface() {
+                                try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_messages" ) ); } catch(E) {};
+							    obj.reset_nav_styling('cmd_standing_penalties');
                                 return obj.right_deck.reset_iframe(
                                     urls.XUL_STANDING_PENALTIES,
                                     {},
@@ -434,7 +478,7 @@ patron.display.prototype = {
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
         var x = document.getElementById("PatronNavBar_bills");
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
-        var x = document.getElementById("PatronNavBar_exit");
+        var x = document.getElementById("PatronNavBar_messages");
         x.addEventListener( 'focus', function(xx) { return function() { try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible(xx); } catch(E) {}; } }(x), false);
 
 		if (obj.barcode || obj.id) {
@@ -605,6 +649,7 @@ patron.display.prototype = {
             this.controller.view.cmd_patron_other.setAttribute('style','');
             this.controller.view.cmd_patron_holds.setAttribute('style','');
             this.controller.view.cmd_patron_bills.setAttribute('style','');
+            this.controller.view.cmd_standing_penalties.setAttribute('style','');
             this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
         } catch(E) {
             alert(E);
