@@ -50,6 +50,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     return (value) ? 't' : 'f'
                 case 'timestamp':
                     return dojo.date.stamp.toISOString(value);
+                case 'int':
+                case 'float':
+                    if(isNaN(value)) value = 0;
                 default:
                     return (value === '') ? null : value;
             }
