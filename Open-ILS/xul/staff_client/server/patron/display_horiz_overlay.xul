@@ -32,13 +32,13 @@
 		<label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
 	</hbox>
 	<vbox id="PatronNotNavBar" flex="1" class="my_bg">
-        <vbox id="pdm3y" flex="1" persist="height"> 
-            <deck id="patron_left_deck"/>
-        </vbox>
-        <splitter id="pdms1y" orient="vertical" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
-        <vbox id="pdm4y" flex="8" persist="height">
-            <deck id="patron_right_deck"/>
-        </vbox>
+        <hbox id="left_deck_vbox" flex="1" persist="height"> 
+            <deck id="patron_left_deck" persist="height"/>
+        </hbox>
+        <splitter id="pdms1y" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
+        <hbox id="right_deck_vbox" flex="8" persist="height">
+            <deck id="patron_right_deck" persist="height"/>
+        </hbox>
 	</vbox>
 </vbox>
 </box>
@@ -96,7 +96,7 @@
                                     <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                                     <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>
                                     <menuitem label="&staff.patron.display_overlay.exit.label;" accesskey="&staff.patron.display_overlay.exit.accesskey;" command="cmd_patron_exit"/>
-                                    <menuitem label="&staff.patron_display.toggle_summary.label;" accesskey="&staff.patron_display.toggle_summary.label;" oncommand="document.getElementById('patron_left_deck').hidden = ! document.getElementById('patron_left_deck').hidden;"/>
+                                    <menuitem label="&staff.patron_display.toggle_summary.label;" accesskey="&staff.patron_display.toggle_summary.label;" command="cmd_patron_toggle_summary"/>
                                 </menupopup>
                             </button>
                         </row>

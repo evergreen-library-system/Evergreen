@@ -32,6 +32,7 @@
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/patron/display.js"/>
 	<script>
 	<![CDATA[
 		function $(id) { return document.getElementById(id); }
@@ -104,6 +105,7 @@
 		<command id="cmd_patron_exit" />
 		<command id="cmd_patron_retrieve" />
 		<command id="cmd_patron_merge" />
+		<command id="cmd_patron_toggle_summary" />
 		<command id="cmd_search_form" />
 		<command id="cmd_verify_credentials" />
 		<command id="cmd_perm_editor" />
