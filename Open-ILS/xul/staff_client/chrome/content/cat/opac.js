@@ -205,6 +205,9 @@ function set_opac() {
 		};
 		if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
 		browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+        /* // Remember to use the REMOTE_BROWSER if we ever try to move this to remote xul again
+		browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog', {}, content_params);
+        */
 	} catch(E) {
 		g.error.sdump('D_ERROR','set_opac: ' + E);
 	}
