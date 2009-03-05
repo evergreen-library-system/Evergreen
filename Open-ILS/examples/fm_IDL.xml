@@ -3327,7 +3327,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="crrf" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::recuring_fine" oils_persist:tablename="config.rule_recuring_fine">
+	<class id="crrf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::recuring_fine" oils_persist:tablename="config.rule_recuring_fine">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_recuring_fine_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3340,6 +3340,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="recurance_interval" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="interval"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_RECURING_FINE_RULE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_RECURING_FINE_RULE" global_required="true"/>
+                <delete permission="ADMIN_RECURING_FINE_RULE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mckp" controller="open-ils.cstore" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment" reporter:label="Check Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
@@ -3454,7 +3462,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="crmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
+	<class id="crmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_max_fine_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -3465,6 +3473,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Percent" name="is_percent" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_MAX_FINE_RULE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_MAX_FINE_RULE" global_required="true"/>
+                <delete permission="ADMIN_MAX_FINE_RULE" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="pgt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
