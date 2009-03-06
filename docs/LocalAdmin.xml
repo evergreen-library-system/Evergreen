@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
- <chapter xmlns='http://docbook.org/ns/docbook'
- xml:id="sample_chapter" version="5.0"
+ <chapter xmlns="http://docbook.org/ns/docbook" version="5.0"
  
- 		 xmlns:xlink="http://www.w3.org/1999/xlink/"
+ 	   xmlns:xlink="http://www.w3.org/1999/xlink/"
          xmlns:xi="http://www.w3.org/2001/XInclude"
          xmlns:ns6="http://www.w3.org/1999/xlink"
          xmlns:ns5="http://www.w3.org/2000/svg"
          xmlns:ns4="http://www.w3.org/1998/Math/MathML"
          xmlns:ns3="http://www.w3.org/1999/xhtml"
-         xmlns:ns="http://docbook.org/ns/docbook" >		
+          >		
  
- 
-<!-- <chapter xmlns='http://docbook.org/ns/docbook'
- xml:id="sample_chapter" version="5.0"> -->
-<!-- The following declarations have been removed from the <chapter> tag:
-		scratch pad for swapping namespace xmlns declarations in and out to debug warning 
-		("cannot add @xml.base to node set root element. Relative paths may not work.)
 
-
--->
 		 
-  <title>Administration</title>
+  <title>Local Administration</title>
 
 <author><personname><firstname>Betty</firstname><surname>Ing</surname></personname></author>
 
@@ -229,7 +220,15 @@
 	<!--			  	
 				  <itemizedlist>
 					<listitem>
-					  <para><link linkend="permissions">http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list</link></para>
+
+<para>
+
+<!-- kgs modified link per http://www.sagehill.net/docbookxsl/Db5Tools.html -->
+
+<link xlink:href="http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list">User Permissions in Evergreen</link>
+
+</para>
+
 					</listitem>
 
 				  </itemizedlist>
@@ -290,7 +289,10 @@
 				<section xml:id="credit_card_payments_ref">
 				  <title>References for Credit Card Payments</title>
 
-					  <para>http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list</para>
+					  <para>
+
+<ulink url="http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list">
+User Permissions in Evergreen</ulink></para>
 				
 				</section>				
 				
