@@ -446,7 +446,7 @@ sub _object_by_path {
     if (@$path) {
 
         my $obj_list = [];
-        if (!$multi || $rtype eq 'might_have') {
+        if (!$multi) {
             $obj_list = [$obj] if ($obj);
         } else {
             $obj_list = $obj;
@@ -489,6 +489,7 @@ sub _object_by_path {
             }
             $$node{$$label[-1]} = $obj;
         } else {
+            $obj = $$obj[0] if $rtype eq 'might_have';
             $context->$step( $obj ) if ($obj);
         }
     }
