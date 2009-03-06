@@ -91,7 +91,7 @@ var OILS_RPT_TRANSFORMS = {
 		label : rpt_strings.TRANSFORMS_UPPER
 	},
 
-	firt5 : {
+	first5 : {
 		datatype : [ OILS_RPT_DTYPE_STRING ],
 		label : rpt_strings.TRANSFORMS_FIRST5
 	},
