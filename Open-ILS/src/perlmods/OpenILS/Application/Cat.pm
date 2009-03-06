@@ -160,12 +160,20 @@ sub biblio_record_replace_marc  {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
+    my $no_ingest = 1;
+
     my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
         $e, $recid, $newxml, $source, 
         $self->api_name =~ /replace/o,
-        $self->api_name =~ /override/o);
+        $self->api_name =~ /override/o,
+	$no_ingest
+    );
 
     $e->commit unless $U->event_code($res);
+
+    my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+    $ses->request('open-ils.ingest.full.biblio.record', $recid);
+
     return $res;
 }
 
