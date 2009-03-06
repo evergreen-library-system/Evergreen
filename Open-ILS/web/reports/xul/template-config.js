@@ -804,7 +804,7 @@ function save_template () {
 				alertILSEvent(res);
 			} else {
 				if( res && res != '0' ) {
-					confirm(dojo.string.substitute( rpt_strings.TEMPLATE_CONF_SUCCESS_SAVE, [tmpl.name()] ));
+					alert(dojo.string.substitute( rpt_strings.TEMPLATE_CONF_SUCCESS_SAVE, [tmpl.name()] ));
 					_l('../oils_rpt.xhtml');
 				}
 			}
