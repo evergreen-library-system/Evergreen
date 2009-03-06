@@ -935,8 +935,8 @@ sub handle_mark_damaged {
         {   target_copy => $copy->id}, 
         {   limit => 1, 
             order_by => {circ => "xact_start DESC"},
-            flesh => 1,
-            flesh_fields => {circ => ['target_copy', 'usr']}
+            flesh => 2,
+            flesh_fields => {circ => ['target_copy', 'usr'], au => ['card']}
         }
     ])->[0];
 
