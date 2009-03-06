@@ -14,7 +14,7 @@
 		 
   <title>Local Administration</title>
 
-<author><personname><firstname>Betty</firstname><surname>Ing</surname></personname></author>
+<!-- Betty Ing 030509 -->
 
 
   <para>This chapter describes administrative features on the staff
@@ -216,16 +216,17 @@
 				<section xml:id="alert_empty_bib_records__ref">                                                                                                                                                                                                               
 				  <title>References for the Alert on Empty Bib Records</title>
 				  
-				  <para>http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list</para>
+<para>
+
+<link xlink:href="http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list">User Permissions in Evergreen</link>
+</para>
 	<!--			  	
 				  <itemizedlist>
 					<listitem>
 
 <para>
+ .
 
-<!-- kgs modified link per http://www.sagehill.net/docbookxsl/Db5Tools.html -->
-
-<link xlink:href="http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:permission_list">User Permissions in Evergreen</link>
 
 </para>
 
