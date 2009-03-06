@@ -952,7 +952,6 @@ sub handle_mark_damaged {
 
     my $copy_price = ($charge_price) ? $U->get_copy_price($e, $copy) : 0;
     my $total = $copy_price + $proc_fee;
-    my $apply = $args->{apply_fines};
 
     if($apply) {
         
@@ -974,7 +973,11 @@ sub handle_mark_damaged {
 
     } else {
         return OpenILS::Event->new('DAMAGE_CHARGE', 
-            payload => {usr => $circ->usr->id, charge => $total});
+            payload => {
+                circ => $circ,
+                charge => $total
+            }
+        );
     }
 }
 
