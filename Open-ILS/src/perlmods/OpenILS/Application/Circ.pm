@@ -974,7 +974,7 @@ sub handle_mark_damaged {
 
     } else {
         return OpenILS::Event->new('DAMAGE_CHARGE', 
-            usr => $circ->usr->id, charge => $total);
+            payload => {usr => $circ->usr->id, charge => $total});
     }
 }
 
