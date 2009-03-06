@@ -141,6 +141,7 @@ sub event {
 sub die_event {
 	my $self = shift;
 	$self->rollback;
+    $self->died(1);
 	return $self->event;
 }
 
@@ -151,6 +152,12 @@ sub die_event {
 sub clear_event {
 	my $self = shift;
 	$self->{event} = undef;
+}
+
+sub died {
+    my($self, $died) = @_;
+    $self->{died} = $died if defined $died;
+    return $self->{died};
 }
 
 sub authtoken {
@@ -614,7 +621,7 @@ sub runmethod {
 			$self->event(_mk_not_found($type, $arg));
 			return undef;
 		} elsif( ref($arg) =~ /Fieldmapper/ ) {
-			$self->log(E,"$action $type called with an object.. attempting ID retrieval..");
+			$self->log(D,"$action $type called with an object.. attempting ID retrieval..");
 			$arg = $arg->id;
 		}
 	}
