@@ -3150,6 +3150,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Payment Line Items" name="payments" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Summary" name="summary" oils_obj:array_position="14" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
@@ -3159,6 +3160,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
 			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+			<link field="summary" reltype="might_have" key="id" map="" class="mbts"/>
 		</links>
 	</class>
 	<class id="actsce" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry" reporter:label="User Stat Cat Entry">
