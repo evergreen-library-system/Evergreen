@@ -12,10 +12,10 @@ const PERMS_DIR      = 0755;
 
 const my_constants = {
 	'magical_statuses' : {
-		'1' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Checked out    | t */
-		'3' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Lost           | f */
-		'6' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | In transit     | t */
-		'8' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : false } /* | On holds shelf | t */
+		'1' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Checked out    | t */
+		'3' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Lost           | f */
+		'6' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | In transit     | t */
+		'8' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : false } /* | On holds shelf | t */
 	}
 }
 

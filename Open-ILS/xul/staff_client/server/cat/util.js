@@ -283,7 +283,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
 		for (var i = 0; i < copies.length; i++) {
 			var status = copies[i].status(); if (typeof status == 'object') status = status.id();
 			if (typeof my_constants.magical_statuses[ status ] != 'undefined') 
-				if (my_constants.magical_statuses[ status ].block_mark_item_action) magic_status = true;
+				if (my_constants.magical_statuses[ status ].block_mark_item_damaged) magic_status = true;
 		}
 		if (magic_status) {
 		
@@ -304,6 +304,49 @@ cat.util.mark_item_damaged = function(copy_ids) {
 				var count = 0;
 				for (var i = 0; i < copies.length; i++) {
 					try {
+
+                        var my_circ = network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),copies[i].id(),1]);
+                        if (typeof my_circ.ilsevent == 'undefined') { 
+                            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+                            my_circ = my_circ[0];
+                            if (typeof my_circ != 'undefined') {
+                                if (! my_circ.checkin_time() ) {
+                                    var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
+                                    var auto_checkin = String( data.hash.aous['circ.auto_checkin_on_mark_damage'] ) == 'true';
+                                    JSAN.use('patron.util');
+                                    var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), my_circ.usr() );
+                                    var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
+                                        patron_obj.family_name() + ', ' +
+                                        patron_obj.first_given_name() + ' ' +
+                                        ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
+                                        ( patron_obj.suffix() ? patron_obj.suffix() : '')
+                                        + ' : ' + patron_obj.card().barcode()
+                                    var msg = $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.item_circulating_to_patron', [ 
+                                        copies[i].barcode(),
+                                        patron_name,
+                                        my_circ.due_date().substr(0,10)]); // FIXME: need to replace date handling
+                                    JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
+                                    var r2 = auto_checkin ? 1 : error.yns_alert(
+                                        msg,
+                                        document.getElementById('catStrings').getString('staff.cat.util.mark_item_damaged.checkin.title'),
+                                        document.getElementById('catStrings').getString('staff.cat.util.mark_item_damaged.checkin.no_checkin'),
+                                        document.getElementById('catStrings').getString('staff.cat.util.mark_item_damaged.checkin.normal_checkin'),
+                                        due_date ? (today > due_date ? document.getElementById('catStrings').getString('staff.cat.util.mark_item_damaged.checkin.forgiving_checkin') : null) : null,
+                                        document.getElementById('catStrings').getString('staff.cat.util.mark_item_damaged.checkin.confirm_action')
+                                    );
+                                    JSAN.use('circ.util');
+                                    switch(r2) {
+                                        case 1:
+                                            circ.util.checkin_via_barcode( ses(), { 'barcode' : copies[i].barcode(), 'noop' : 1 } );
+                                        break;
+                                        case 2:
+                                            circ.util.checkin_via_barcode( ses(), { 'barcode' : copies[i].barcode(), 'noop' : 1 }, due_date );
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
 						var robj = network.simple_request('MARK_ITEM_DAMAGED',[ses(),copies[i].id()]);
 						if (typeof robj.ilsevent != 'undefined') {
                             switch(robj.textcode) {
