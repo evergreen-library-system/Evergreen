@@ -973,8 +973,8 @@ sub handle_mark_damaged {
         return undef;
 
     } else {
-        return new OpenILS::Event->('DAMAGE_CHARGE', 
-            {usr => $circ->usr->id, charge => $total});
+        return OpenILS::Event->new('DAMAGE_CHARGE', 
+            usr => $circ->usr->id, charge => $total);
     }
 }
 
