@@ -332,8 +332,8 @@ CREATE TABLE actor.org_unit (
 	holds_address	INT,
 	mailing_address	INT,
 	billing_address	INT,
-	shortname	TEXT	NOT NULL,
-	name		TEXT	NOT NULL,
+	shortname	TEXT	NOT NULL UNIQUE,
+	name		TEXT	NOT NULL UNIQUE,
 	email		TEXT,
 	phone		TEXT,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE
