@@ -87,6 +87,7 @@ sub validate {
         }
         $self->valid(1) if (@valid_events);
         $self->{events} = \@valid_events;
+        $self->{ids} = [ map { $_->id } @valid_events ];
         $self->editor->xact_commit;
     } otherwise {
         $log->error( shift() );
