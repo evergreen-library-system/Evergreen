@@ -6,6 +6,7 @@ use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub fourty_two { return 42 }
@@ -51,7 +52,7 @@ my $_TT_helpers = {
     # returns the calculated copy price
     get_copy_price => sub {
         my $copy_id = shift;
-        return $U->get_copy_price($copy_id);
+        return $U->get_copy_price(new_editor(), $copy_id);
     },
 
     # returns the org unit setting value
