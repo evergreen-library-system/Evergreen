@@ -472,5 +472,8 @@ sub set_item_lost {
     my $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
     return $evt if $evt;
 
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', 'lost', $circ, $circ->circ_lib);
+
     return undef;
 }
