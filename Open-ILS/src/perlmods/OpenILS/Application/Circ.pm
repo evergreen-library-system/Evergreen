@@ -862,7 +862,7 @@ sub mark_item {
 
     my $copy = $e->retrieve_asset_copy([
         $copy_id,
-        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])->[0] 
+        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])
             or return $e->die_event;
 
     my $owning_lib = 
