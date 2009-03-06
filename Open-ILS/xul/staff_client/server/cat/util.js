@@ -305,7 +305,31 @@ cat.util.mark_item_damaged = function(copy_ids) {
 				for (var i = 0; i < copies.length; i++) {
 					try {
 						var robj = network.simple_request('MARK_ITEM_DAMAGED',[ses(),copies[i].id()]);
-						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						if (typeof robj.ilsevent != 'undefined') {
+                            switch(robj.textcode) {
+                                case 'DAMAGE_CHARGE' :
+                                    JSAN.use('patron.util'); JSAN.use('util.money');
+                                    var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), robj.payload.usr );
+                                    var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
+                                        patron_obj.family_name() + ', ' +
+                                        patron_obj.first_given_name() + ' ' +
+                                        ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
+                                        ( patron_obj.suffix() ? patron_obj.suffix() : '')
+                                        + ' : ' + patron_obj.card().barcode()
+
+                                    var r1 = error.yns_alert(
+                                        $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [ copies[i].barcode(), patron_name, util.money.sanitize(robj.payload.charge) ]),
+                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.title'),
+                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label'),
+                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label'), null,
+                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action'));
+
+                                    robj = network.simple_request('MARK_ITEM_DAMAGED',[ ses(), copies[i].id(), {'apply_fines' : r1 == 0 ? 'apply' : 'noapply'} ]);
+						            if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                                    break;
+                                default: throw(robj);
+                            }
+                        }
 						count++;
 					} catch(E) {
 						error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.marking_error', [copies[i].barcode()]),E);
