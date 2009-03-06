@@ -308,8 +308,9 @@ cat.util.mark_item_damaged = function(copy_ids) {
 						if (typeof robj.ilsevent != 'undefined') {
                             switch(robj.textcode) {
                                 case 'DAMAGE_CHARGE' :
-                                    JSAN.use('patron.util'); JSAN.use('util.money');
-                                    var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), robj.payload.usr );
+                                    JSAN.use('util.money');
+                                    var circ_obj = robj.payload.circ;
+                                    var patron_obj = circ_obj.usr();
                                     var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
                                         patron_obj.family_name() + ', ' +
                                         patron_obj.first_given_name() + ' ' +
@@ -318,7 +319,11 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                         + ' : ' + patron_obj.card().barcode()
 
                                     var r1 = error.yns_alert(
-                                        $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [ copies[i].barcode(), patron_name, util.money.sanitize(robj.payload.charge) ]),
+                                        $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [ 
+                                            copies[i].barcode(), 
+                                            patron_name, 
+                                            circ_obj.checkin_time().substr(0,10), // FIXME: need to replace with something better
+                                            util.money.sanitize(robj.payload.charge) ]),
                                         $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.title'),
                                         $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label'),
                                         $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label'), null,
