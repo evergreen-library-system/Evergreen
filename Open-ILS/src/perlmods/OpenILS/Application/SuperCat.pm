@@ -143,6 +143,18 @@ sub child_init {
 	# and stash a transformer
 	$record_xslt{rss2}{xslt} = $_xslt->parse_stylesheet( $rss_xslt );
 
+	# parse the FGDC xslt ...
+	my $fgdc_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2FGDC.xsl"
+	);
+	# and stash a transformer
+	$record_xslt{fgdc}{xslt} = $_xslt->parse_stylesheet( $fgdc_xslt );
+	$record_xslt{fgdc}{docs} = 'http://www.fgdc.gov/metadata/csdgm/index_html';
+	$record_xslt{fgdc}{schema_location} = 'http://www.fgdc.gov/metadata/fgdc-std-001-1998.xsd';
+
 	register_record_transforms();
 
 	return 1;
