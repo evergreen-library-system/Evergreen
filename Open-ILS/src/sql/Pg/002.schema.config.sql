@@ -138,7 +138,7 @@ CREATE TABLE config.metabib_field (
 	name		TEXT	NOT NULL,
 	xpath		TEXT	NOT NULL,
 	weight		INT	NOT NULL DEFAULT 1,
-	format		TEXT	NOT NULL DEFAULT 'mods32',
+	format		TEXT	NOT NULL DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
 	facet_field	BOOL	NOT NULL DEFAULT FALSE
 );
