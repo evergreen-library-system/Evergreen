@@ -6,6 +6,8 @@
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'></script>
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/cn_browse.js'></script>
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'></script>
+	<script src='http://www.google.com/jsapi' type='text/javascript' language='javascript'></script>
+	<script type='text/javascript' src='http://books.google.com/books/api.js?key=notsupplied&amp;v=0&amp;callback=google.loader.callbacks.books'></script>
 
 	<script language='javascript' type='text/javascript'>
 		config.ids.rdetail = {};
