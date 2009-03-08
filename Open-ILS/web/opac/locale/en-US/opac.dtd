@@ -529,6 +529,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.extras.reviews "Reviews">
 <!ENTITY rdetail.extras.toc "Table of Contents">
 <!ENTITY rdetail.extras.excerpt "Excerpt">
+<!ENTITY rdetail.extras.preview "Preview">
 <!ENTITY rdetail.extras.author.notes "Author Notes">
 <!ENTITY rdetail.extras.annotation "Annotation">
 <!ENTITY rdetail.extras.marc "MARC Record">

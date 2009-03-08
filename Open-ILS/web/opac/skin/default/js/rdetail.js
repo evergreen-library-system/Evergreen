@@ -24,7 +24,7 @@ var cachedRecords;
 
 var rdetailShowLocal = true;
 var rdetailShowCopyLocation = true;
-
+var googleBookPreview = true;
 
 
 var nextContainerIndex;
@@ -349,6 +349,7 @@ function rdetailShowExtra(type, args) {
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_anotes_div'));
 	hideMe($('rdetail_excerpt_div'));
+	hideMe($('rdetail_preview_div'));
 	hideMe($('rdetail_marc_div'));
 	hideMe($('cn_browse'));
 	hideMe($('rdetail_cn_browse_div'));
@@ -359,6 +360,7 @@ function rdetailShowExtra(type, args) {
 	removeCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_preview_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
@@ -375,10 +377,14 @@ function rdetailShowExtra(type, args) {
 			unHideMe($('rdetail_reviews_div')); 
 			break;
 
-
 		case "excerpt": 
 			addCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_excerpt_div'));
+			break;
+
+		case "preview": 
+			addCSSClass($('rdetail_preview_link'), 'rdetail_extras_selected');
+			unHideMe($('rdetail_preview_div'));
 			rdetailDisplayPreview();
 			break;
 
@@ -811,10 +817,11 @@ function _rdetailSortStatuses(a, b) {
 
 function rdetailCheckForPreview() {
   
+  if (!googleBookPreview) return;
   var p = document.createElement('p');
   p.appendChild( document.createTextNode('Loading... ' ) );
   p.id = 'loading';
-  $('rdetail_excerpt_div').appendChild(p);
+  $('rdetail_preview_div').appendChild(p);
   searchForPreview( cleanISBN(record.isbn()) );
 
 }
@@ -853,7 +860,7 @@ function searchForPreview( isbn ) {
  */
 function previewCallback(bookInfo) {
   // Clear any old data to prepare to display the Loading... message.
-  var div = document.getElementById("rdetail_excerpt_div");
+  var div = document.getElementById("rdetail_preview_div");
   var book;
   
   for ( i in bookInfo ) {
@@ -866,8 +873,8 @@ function previewCallback(bookInfo) {
 
   if ( book.preview != "noview" ) {
     if ( book.preview == 'full' ) {
-      setText( $('rdetail_excerpt_link_a'), 'Full Text' );
-      $('rdetail_excerpt_link_a').title = 'See the full text of this book.';      
+      setText( $('rdetail_preview_link'), 'Full Text' );
+      $('rdetail_preview_link_a').title = 'See the full text of this book.';      
     }
 
     // Add a button below the book cover image to load the preview.
@@ -876,12 +883,12 @@ function previewCallback(bookInfo) {
     badge.title = 'Show a preview of this book from Google Book Search';
     badge.style.border = 0;
     badgelink = document.createElement( 'a' );
-    badgelink.href = 'javascript:rdetailShowExtra("excerpt");';
+    badgelink.href = 'javascript:rdetailShowExtra("preview");';
     badgelink.appendChild( badge );
     $('rdetail_image_cell').appendChild( badgelink );
 
-    unHideMe( $('rdetail_excerpt_link' ) );
-    $('rdetail_excerpt_div').style.height = 600;
+    unHideMe( $('rdetail_preview_link' ) );
+    $('rdetail_preview_div').style.height = 600;
   }
 }
 
@@ -890,16 +897,16 @@ function previewCallback(bookInfo) {
  *  a preview is available from Google if this link was made visible.
  */
 function rdetailDisplayPreview() {
-  previewPane = $('rdetail_excerpt_div');
-  if ( $('rdetail_excerpt_div').getAttribute('loaded') == null ||  $('rdetail_excerpt_div').getAttribute('loaded') == "false" ) {
+  previewPane = $('rdetail_preview_div');
+  if ( $('rdetail_preview_div').getAttribute('loaded') == null ||  $('rdetail_preview_div').getAttribute('loaded') == "false" ) {
     google.load("books", "0", {"callback" : rdetailViewerLoadCallback, "language": "hy"} );
-    $('rdetail_excerpt_div').setAttribute('loaded', 'true');
+    $('rdetail_preview_div').setAttribute('loaded', 'true');
   }
 }
 
 function rdetailViewerLoadCallback() {
 
-  var viewer = new google.books.DefaultViewer(document.getElementById('rdetail_excerpt_div'));
+  var viewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
   viewer.load('ISBN:' + cleanISBN(record.isbn()) );
 
 }
