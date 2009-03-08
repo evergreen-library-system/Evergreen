@@ -1,4 +1,4 @@
-<body onload='init(); getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
+<body class="tundra">
 
 	<noscript>
 		<style type="text/css">#toptable { display: none; }</style>
