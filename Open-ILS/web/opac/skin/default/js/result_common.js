@@ -3,7 +3,7 @@ var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
 var isbnList = '';
-var googleBooks = true;
+var googleBooksLink = true;
 
 var resultFetchAllRecords = false;
 var resultCompiledSearch = null;
@@ -15,7 +15,7 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
       resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
-	  fetchGoogleBooks);
+	  fetchGoogleBooksLink);
 
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
@@ -414,11 +414,11 @@ function buildunAPISpan (span, type, id) {
 	);
 }
 
-function unhideGoogleBooks (data) {
+function unhideGoogleBooksLink (data) {
     for ( var i in data ) {
         //if (data[i].preview == 'noview') continue;
 
-        var gbspan = $n(document.documentElement, 'googleBooks-' + i);
+        var gbspan = $n(document.documentElement, 'googleBooksLink-' + i);
         var gba = $n(gbspan, "googleBooks-link");
 
         gba.setAttribute(
@@ -440,8 +440,8 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var r = table.rows[pos + 1];
     var currentISBN = cleanISBN(rec.isbn());
 
-    if (googleBooks) {
-	    var gbspan = $n(r, "googleBooks");
+    if (googleBooksLink) {
+	    var gbspan = $n(r, "googleBooksLink");
         if (currentISBN) {
             gbspan.setAttribute(
                 'name',
@@ -598,13 +598,13 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 	}
 }
 
-function fetchGoogleBooks () {
-    if (isbnList && googleBooks) {
+function fetchGoogleBooksLink () {
+    if (isbnList && googleBooksLink) {
         var scriptElement = document.createElement("script");
         scriptElement.setAttribute("id", "jsonScript");
         scriptElement.setAttribute("src",
             "http://books.google.com/books?bibkeys=" + 
-            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooks");
+            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooksLink");
         scriptElement.setAttribute("type", "text/javascript");
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);
