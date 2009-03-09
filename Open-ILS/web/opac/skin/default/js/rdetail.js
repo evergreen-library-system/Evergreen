@@ -815,14 +815,17 @@ function _rdetailSortStatuses(a, b) {
 	return parseInt(a.id()) - parseInt(b.id());
 }
 
-function rdetailCheckForPreview() {
+/**
+ * XXX Need to adopt a more typical approach to showing loading status
+ */
+function rdetailCheckForGBPreview() {
   
   if (!googleBookPreview) return;
-  var p = document.createElement('p');
-  p.appendChild( document.createTextNode('Loading... ' ) );
-  p.id = 'loading';
-  $('rdetail_preview_div').appendChild(p);
-  searchForPreview( cleanISBN(record.isbn()) );
+  var GBPp = document.createElement('p');
+  GBPp.appendChild( document.createTextNode('Loading... ' ) );
+  GBPp.id = 'loading';
+  $('rdetail_preview_div').appendChild(GBPp);
+  searchForGBPreview( cleanISBN(record.isbn()) );
 
 }
  
@@ -831,61 +834,63 @@ function rdetailCheckForPreview() {
  * @param {DOM object} query The form element containing the
  *                     input parameters "isbns"
  */
-function searchForPreview( isbn ) {
+function searchForGBPreview( isbn ) {
 
   // Delete any previous Google Booksearch JSON queries.
-  var jsonScript = document.getElementById("jsonScript");
-  if (jsonScript) {
-    jsonScript.parentNode.removeChild(jsonScript);
+  var GBPJsonScript = document.getElementById("GBPJsonScript");
+  if (GBPJsonScript) {
+    GBPJsonScript.parentNode.removeChild(GBPJsonScript);
   }
   // Add a script element with the src as the user's Google Booksearch query. 
   // JSON output is specified by including the alt=json-in-script argument
   // and the callback function is also specified as a URI argument.
-  var scriptElement = document.createElement("script");
+  var GBPScriptElement = document.createElement("script");
 
-  scriptElement.setAttribute("id", "jsonScript");
-  scriptElement.setAttribute("src",
+  GBPScriptElement.setAttribute("id", "GBPJsonScript");
+  GBPScriptElement.setAttribute("src",
       "http://books.google.com/books?bibkeys=" + 
-      isbn + "&jscmd=viewapi&callback=previewCallback");
-  scriptElement.setAttribute("type", "text/javascript");
+      isbn + "&jscmd=viewapi&callback=GBPreviewCallback");
+  GBPScriptElement.setAttribute("type", "text/javascript");
   // make the request to Google booksearch
-  document.documentElement.firstChild.appendChild(scriptElement);
+  document.documentElement.firstChild.appendChild(GBPScriptElement);
 }
 
 /**
  * This function is the call-back function for the JSON scripts which 
  * executes a Google book search response.
  *
+ * XXX I18N of text needed
+ *
  * @param {JSON} booksInfo is the JSON object pulled from the Google books service.
  */
-function previewCallback(bookInfo) {
+function GBPreviewCallback(GBPBookInfo) {
   // Clear any old data to prepare to display the Loading... message.
-  var div = document.getElementById("rdetail_preview_div");
-  var book;
+  var GBPreviewDiv = document.getElementById("rdetail_preview_div");
+  var GBPBook;
   
-  for ( i in bookInfo ) {
-    book = bookInfo[i];
+  for ( i in GBPBookInfo ) {
+    GBPBook = GBPBookInfo[i];
   }
 
-  if ( !book ) {
+  if ( !GBPBook ) {
     return;
   }
 
-  if ( book.preview != "noview" ) {
-    if ( book.preview == 'full' ) {
+  if ( GBPBook.preview != "noview" ) {
+    if ( GBPBook.preview == 'full' ) {
       setText( $('rdetail_preview_link'), 'Full Text' );
       $('rdetail_preview_link_a').title = 'See the full text of this book.';      
     }
 
     // Add a button below the book cover image to load the preview.
-    badge = document.createElement( 'img' );
-    badge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
-    badge.title = 'Show a preview of this book from Google Book Search';
-    badge.style.border = 0;
-    badgelink = document.createElement( 'a' );
-    badgelink.href = 'javascript:rdetailShowExtra("preview");';
-    badgelink.appendChild( badge );
-    $('rdetail_image_cell').appendChild( badgelink );
+    GBPBadge = document.createElement( 'img' );
+    GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
+    GBPBadge.title = 'Show a preview of this book from Google Book Search';
+    GBPBadge.style.border = 0;
+    GBPBadgelink = document.createElement( 'a' );
+    GBPBadgelink.href = 'javascript:rdetailShowExtra("preview");';
+    GBPBadgelink.appendChild( GBPBadge );
+    $('rdetail_image_cell').appendChild( GBPBadgelink );
 
     unHideMe( $('rdetail_preview_link' ) );
     $('rdetail_preview_div').style.height = 600;
@@ -893,20 +898,21 @@ function previewCallback(bookInfo) {
 }
 
 /**
- *  This is called when the user clicks on the 'Excerpt' link.  We assume
+ *  This is called when the user clicks on the 'Preview' link.  We assume
  *  a preview is available from Google if this link was made visible.
+ *
+ * XXX I18N of Google Book Preview language attribute needed
  */
-function rdetailDisplayPreview() {
-  previewPane = $('rdetail_preview_div');
-  if ( $('rdetail_preview_div').getAttribute('loaded') == null ||  $('rdetail_preview_div').getAttribute('loaded') == "false" ) {
-    google.load("books", "0", {"callback" : rdetailViewerLoadCallback, "language": "hy"} );
-    $('rdetail_preview_div').setAttribute('loaded', 'true');
+function rdetailDisplayGBPreview() {
+  GBPreviewPane = $('rdetail_preview_div');
+  if ( GBPreviewPane.getAttribute('loaded') == null ||  GBPreviewPane.getAttribute('loaded') == "false" ) {
+    google.load("books", "0", {"callback" : rdetailGBPViewerLoadCallback, "language": "en"} );
+    GBPreviewPane.setAttribute('loaded', 'true');
   }
 }
 
-function rdetailViewerLoadCallback() {
-
-  var viewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
-  viewer.load('ISBN:' + cleanISBN(record.isbn()) );
+function rdetailGBPViewerLoadCallback() {
+  var GBPViewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
+  GBPViewer.load('ISBN:' + cleanISBN(record.isbn()) );
 
 }
