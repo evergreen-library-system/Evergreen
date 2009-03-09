@@ -18,9 +18,10 @@ var numStatuses = null;
 var defaultCN;
 var callnumberCache = {};
 var rdetailLocalOnly = true;
-var globalCNCache	= {};
+var globalCNCache = {};
 var localTOC;
 var cachedRecords;
+var _statusPositions = {};
 
 var rdetailShowLocal = true;
 var rdetailShowCopyLocation = true;
@@ -47,7 +48,7 @@ var rdetailEnd = null;
 
 
 /* looks to see if we have a next and/or previous record in the
-record cache, if so, set up the nav links */
+   record cache, if so, set up the nav links */
 function rdetailSetPaging(ids) {
 
 	cachedRecords = {};
@@ -137,9 +138,9 @@ function buildunAPISpan (span, type, id) {
 	addCSSClass(span,'unapi-id');
 
 	span.setAttribute(
-		'title', 'tag:' + cgi.server_name + ',' +
-		d.getFullYear() + ':' + type + '/' + id
-	);
+			'title', 'tag:' + cgi.server_name + ',' +
+			d.getFullYear() + ':' + type + '/' + id
+			);
 }
 
 function rdetailViewMarc(r,id) {
@@ -185,27 +186,27 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.pubdate.appendChild(text(record.pubdate()));
 	G.ui.rdetail.publisher.appendChild(text(record.publisher()));
 	$('rdetail_physical_desc').appendChild(text(record.physical_description()));
-    r = record.types_of_resource();
-    if(r) {
-        G.ui.rdetail.tor.appendChild(text(r[0]));
-	    setResourcePic( G.ui.rdetail.tor_pic, r[0]);
-    }
+	r = record.types_of_resource();
+	if(r) {
+		G.ui.rdetail.tor.appendChild(text(r[0]));
+		setResourcePic( G.ui.rdetail.tor_pic, r[0]);
+	}
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
-    try{
-        if(record.isbn()) {
-            if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
-                unHideMe($('rdetail.jacket_attrib_div'));
-                var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
-                $('rdetail.jacket_attrib_link').setAttribute('href', href);
-            }
-            rdetailCheckForPreview();
-		
-        } else {
-            hideMe($("rdetail.jacket_attrib_div"));
-            hideMe($("rdetail_img_link"));
-        }
-    } catch(E) {}
+	try{
+		if(record.isbn()) {
+			if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
+				unHideMe($('rdetail.jacket_attrib_div'));
+				var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
+				$('rdetail.jacket_attrib_link').setAttribute('href', href);
+			}
+			rdetailCheckForPreview();
+
+		} else {
+			hideMe($("rdetail.jacket_attrib_div"));
+			hideMe($("rdetail_img_link"));
+		}
+	} catch(E) {}
 
 
 	// see if the record has any external links 
@@ -254,7 +255,7 @@ function _rdetailDraw(r) {
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
 	$('rdetail_place_hold').setAttribute(
-		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
+			'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 
 	$('rdetail_img_link').setAttribute('href', buildISBNSrc(cleanISBN(record.isbn()), 'large'));
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
@@ -291,7 +292,7 @@ function rdetailSetExtrasSelector() {
 	unHideMe($('rdetail_more_actions'));
 
 	var req = new Request( 
-		FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
+			FETCH_CONTAINERS, G.user.session, G.user.id(), 'biblio', 'bookbag' );
 	req.callback(rdetailAddBookbags);
 	req.send();
 }
@@ -308,7 +309,7 @@ function rdetailAddBookbags(r) {
 		found = true;
 		var container = containers[i];
 		insertSelectorVal( selector, index++, container.name(), 
-			"container_" + container.id(), rdetailAddToBookbag,  1 );
+				"container_" + container.id(), rdetailAddToBookbag,  1 );
 	}
 
 	nextContainerIndex = index;
@@ -324,7 +325,7 @@ function rdetailNewBookbag() {
 		alert($('rdetail_bb_success').innerHTML);
 		var selector = $('rdetail_more_actions_selector');
 		insertSelectorVal( selector, nextContainerIndex++, name, 
-			"container_" + id, rdetailAddToBookbag, 1 );
+				"container_" + id, rdetailAddToBookbag, 1 );
 		setSelector( selector, 'start' );
 	}
 }
@@ -393,7 +394,6 @@ function rdetailShowExtra(type, args) {
 			unHideMe($('rdetail_anotes_div'));
 			break;
 
-
 		case "toc": 
 			addCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_toc_div'));
@@ -425,7 +425,6 @@ function rdetailVolumeDetails(args) {
 	cpdBuild( tbody, row, record, args.cn, args.org, args.depth, args.copy_location );
 	return;
 }
-
 
 function rdetailBuildCNList() {
 
@@ -462,7 +461,7 @@ function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 		hideMe($('rdetail_cn_browse_select_div'));
 		return;
 	}
-		
+
 	unHideMe($('rdetail_cn_browse_select_div'));
 	rdetailBuildCNList();
 	setSelector( $('cn_browse_selector'), cn );
@@ -528,13 +527,12 @@ function rdetailShowTOC(r) {
 	}
 }
 
-
 function rdetailBuildInfoRows() {
 	var req;
-    var method = FETCH_COPY_COUNTS_SUMMARY;
-    if (rdetailShowCopyLocation)
-        method = FETCH_COPY_LOCATION_COUNTS_SUMMARY;
-        
+	var method = FETCH_COPY_COUNTS_SUMMARY;
+	if (rdetailShowCopyLocation)
+		method = FETCH_COPY_LOCATION_COUNTS_SUMMARY;
+
 	if( rdetailShowLocal ) 
 		req = new Request(method, record.doc_id(), getLocation(), getDepth())
 	else
@@ -546,14 +544,10 @@ function rdetailBuildInfoRows() {
 function _rdetailRows(node) {
 
 	if( rdetailShowLocal && getLocation() != globalOrgTree.id() ) {
-
 		var loc = findOrgUnit(getLocation());
-
 		if( node ) {
 			if( !orgIsMine(node, loc) ) return;
-
 		} else {
-
 			for( var i = 0; i < globalOrgTree.children().length; i++ ) {
 				var org = findOrgUnit(globalOrgTree.children()[i]);
 				if( orgIsMine(org, loc) ) {
@@ -564,15 +558,15 @@ function _rdetailRows(node) {
 		} 
 	}
 
-    if(!node && findOrgType(globalOrgTree.ou_type()).can_have_vols())
-        node = globalOrgTree;
+	if(!node && findOrgType(globalOrgTree.ou_type()).can_have_vols())
+		node = globalOrgTree;
 
 
-    /* don't show hidden orgs */
+	/* don't show hidden orgs */
 
 	if(node) {
 
-        if(!isXUL() && !isTrue(node.opac_visible())) return;
+		if(!isXUL() && !isTrue(node.opac_visible())) return;
 
 		var row = copyRow.cloneNode(true);
 		row.id = "cp_info_" + node.id();
@@ -581,11 +575,11 @@ function _rdetailRows(node) {
 		var cntd  = findNodeByName( row, config.names.rdetail.cn_cell );
 		var cpctd = findNodeByName( row, config.names.rdetail.cp_count_cell );
 		var actions = $n(row, 'rdetail_actions_cell');
-	
+
 		var p = libtd.getElementsByTagName('a')[0];
 		libtd.insertBefore(text(node.name()), p);
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
-	
+
 		if(!findOrgType(node.ou_type()).can_have_vols()) {
 
 			row.removeChild(cntd);
@@ -597,7 +591,7 @@ function _rdetailRows(node) {
 			libtd.colSpan = numStatuses + 3;
 			addCSSClass(row, 'copy_info_region_row');
 		} 
-	
+
 		copyRowParent.appendChild(row);
 
 	} else { node = globalOrgTree; }
@@ -618,8 +612,8 @@ var localCNFound = false;
 var ctr = 0;
 function _rdetailBuildInfoRows(r) {
 
-    if (rdetailShowCopyLocation)
-	    unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header' ) );
+	if (rdetailShowCopyLocation)
+		unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header' ) );
 
 	removeChildren(copyRowParent);
 
@@ -640,19 +634,19 @@ function _rdetailBuildInfoRows(r) {
 		if(rowNode.getAttribute("used")) {
 
 			if( rowNode.nextSibling ) {
-                sib = rowNode.nextSibling;
-                o ='cp_info_'+thisOrg.id()+'_';
-                /* push the new row on as the last row for this org unit */
-                while( sib && sib.id.match(o) ) {
-                    sib = sib.nextSibling;
-                }
-                if(sib)
-				    rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), sib);
-                else
-                    rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
-            } else {
+				sib = rowNode.nextSibling;
+				o ='cp_info_'+thisOrg.id()+'_';
+				/* push the new row on as the last row for this org unit */
+				while( sib && sib.id.match(o) ) {
+					sib = sib.nextSibling;
+				}
+				if(sib)
+					rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), sib);
+				else
+					rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
+			} else {
 				rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
-            }
+			}
 
 			var n = findNodeByName( rowNode, config.names.rdetail.lib_cell );
 			n.appendChild(text(thisOrg.name()));
@@ -664,14 +658,14 @@ function _rdetailBuildInfoRows(r) {
 		}
 
 		var cpc_temp = rowNode.removeChild(
-			findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
+				findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
 		var statuses = arr[2];
 		var cl = '';
-        if (rdetailShowCopyLocation) {
-            cl = arr[2];
-            statuses = arr[3];
-        }
+		if (rdetailShowCopyLocation) {
+			cl = arr[2];
+			statuses = arr[3];
+		}
 
 
 		rdetailApplyStatuses(rowNode, cpc_temp, statuses);
@@ -698,7 +692,6 @@ function _rdetailBuildInfoRows(r) {
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
 }
 
-
 function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 
 	if(local) {
@@ -715,37 +708,35 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 	if (rdetailShowCopyLocation) {
 		var cl_cell = $n(row, 'rdetail_copylocation_cell');
 		cl_cell.appendChild(text(cl));
-
 		unHideMe(cl_cell);
 	}
 
 	_debug('setting action clicks for cn ' + cn);
 
 	var dHref = 'javascript:rdetailVolumeDetails('+
-		'{copy_location : "'+cl+'", rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
+			'{copy_location : "'+cl+'", rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
 
 	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", '+orgNode.id()+', "'+depth+'");'; 
 
 	unHideMe( $n(row, 'details') )
-	$n(row, 'details').setAttribute('href', dHref);
+		$n(row, 'details').setAttribute('href', dHref);
 	unHideMe( $n(row, 'browse') )
-	$n(row, 'browse').setAttribute('href', bHref);
+		$n(row, 'browse').setAttribute('href', bHref);
 
 	if(isXUL()) {
 		unHideMe($n(row, 'hold_div'));
 		$n(row, 'hold').onclick = function() {
 			var req = new Request(FETCH_VOLUME_BY_INFO, cn, record.doc_id(), orgNode.id());
 			req.callback(
-				function(r) {
+					function(r) {
 					var vol = r.getResultObject();
 					holdsDrawEditor({type: 'V', volumeObject : vol});
-				}
-			);
+					}
+				    );
 			req.send();
 		};
 	}
 }
-
 
 // sets the path to org as 'active' and displays the path if it's local 
 function rdetailSetPath(org, local) {
@@ -756,10 +747,7 @@ function rdetailSetPath(org, local) {
 	rdetailSetPath(findOrgUnit(org.parent_ou()), local);
 }
 
-
-
-
-//Append all the statuses for a give summary to the 
+//Append all the statuses for a given summary to the 
 //copy summary table 
 function rdetailApplyStatuses( row, template, statuses ) {
 	for( var j in _statusPositions ) {
@@ -768,16 +756,12 @@ function rdetailApplyStatuses( row, template, statuses ) {
 		var nn = template.cloneNode(true);
 		if(val) nn.appendChild(text(val));
 		else nn.appendChild(text(0));
-		row.appendChild(nn);	
+		row.appendChild(nn);
 	}
 }
 
-
-var _statusPositions = {};
-
 //Add one td (creating a new column) to the copy summary
 //table for each opac_visible copy status
-
 function rdetailBuildStatusColumns() {
 
 	rdetailGrabCopyStatuses();
@@ -793,7 +777,7 @@ function rdetailBuildStatusColumns() {
 			_statusPositions[i] = c;
 			var node = template.cloneNode(true);
 			var data = findNodeByName( node, config.names.rdetail.cp_status);
-	
+
 			data.appendChild(text(name));
 			parent.appendChild(node);
 		}
@@ -805,8 +789,8 @@ function rdetailBuildStatusColumns() {
 
 function rdetailGrabCopyStatuses() {
 	if(cp_statuses) return cp_statuses;
-   var req = new Request(FETCH_COPY_STATUSES);
-   req.send(true);
+	var req = new Request(FETCH_COPY_STATUSES);
+	req.send(true);
 	cp_statuses = req.result();
 	cp_statuses = cp_statuses.sort(_rdetailSortStatuses);
 }
@@ -819,16 +803,16 @@ function _rdetailSortStatuses(a, b) {
  * XXX Need to adopt a more typical approach to showing loading status
  */
 function rdetailCheckForGBPreview() {
-  
-  if (!googleBookPreview) return;
-  var GBPp = document.createElement('p');
-  GBPp.appendChild( document.createTextNode('Loading... ' ) );
-  GBPp.id = 'loading';
-  $('rdetail_preview_div').appendChild(GBPp);
-  searchForGBPreview( cleanISBN(record.isbn()) );
+
+	if (!googleBookPreview) return;
+	var GBPp = document.createElement('p');
+	GBPp.appendChild( document.createTextNode('Loading... ' ) );
+	GBPp.id = 'loading';
+	$('rdetail_preview_div').appendChild(GBPp);
+	searchForGBPreview( cleanISBN(record.isbn()) );
 
 }
- 
+
 /**
  *
  * @param {DOM object} query The form element containing the
@@ -836,23 +820,25 @@ function rdetailCheckForGBPreview() {
  */
 function searchForGBPreview( isbn ) {
 
-  // Delete any previous Google Booksearch JSON queries.
-  var GBPJsonScript = document.getElementById("GBPJsonScript");
-  if (GBPJsonScript) {
-    GBPJsonScript.parentNode.removeChild(GBPJsonScript);
-  }
-  // Add a script element with the src as the user's Google Booksearch query. 
-  // JSON output is specified by including the alt=json-in-script argument
-  // and the callback function is also specified as a URI argument.
-  var GBPScriptElement = document.createElement("script");
+	// Delete any previous Google Booksearch JSON queries.
+	var GBPJsonScript = document.getElementById("GBPJsonScript");
+	if (GBPJsonScript) {
+		GBPJsonScript.parentNode.removeChild(GBPJsonScript);
+	}
 
-  GBPScriptElement.setAttribute("id", "GBPJsonScript");
-  GBPScriptElement.setAttribute("src",
-      "http://books.google.com/books?bibkeys=" + 
-      isbn + "&jscmd=viewapi&callback=GBPreviewCallback");
-  GBPScriptElement.setAttribute("type", "text/javascript");
-  // make the request to Google booksearch
-  document.documentElement.firstChild.appendChild(GBPScriptElement);
+	// Add a script element with the src as the user's Google Booksearch query. 
+	// JSON output is specified by including the alt=json-in-script argument
+	// and the callback function is also specified as a URI argument.
+	var GBPScriptElement = document.createElement("script");
+
+	GBPScriptElement.setAttribute("id", "GBPJsonScript");
+	GBPScriptElement.setAttribute("src",
+			"http://books.google.com/books?bibkeys=" + 
+			isbn + "&jscmd=viewapi&callback=GBPreviewCallback");
+	GBPScriptElement.setAttribute("type", "text/javascript");
+
+	// make the request to Google booksearch
+	document.documentElement.firstChild.appendChild(GBPScriptElement);
 }
 
 /**
@@ -864,37 +850,37 @@ function searchForGBPreview( isbn ) {
  * @param {JSON} booksInfo is the JSON object pulled from the Google books service.
  */
 function GBPreviewCallback(GBPBookInfo) {
-  // Clear any old data to prepare to display the Loading... message.
-  var GBPreviewDiv = document.getElementById("rdetail_preview_div");
-  var GBPBook;
-  
-  for ( i in GBPBookInfo ) {
-    GBPBook = GBPBookInfo[i];
-  }
+	// Clear any old data to prepare to display the Loading... message.
+	var GBPreviewDiv = document.getElementById("rdetail_preview_div");
+	var GBPBook;
 
-  if ( !GBPBook ) {
-    return;
-  }
+	for ( i in GBPBookInfo ) {
+		GBPBook = GBPBookInfo[i];
+	}
 
-  if ( GBPBook.preview != "noview" ) {
-    if ( GBPBook.preview == 'full' ) {
-      setText( $('rdetail_preview_link'), 'Full Text' );
-      $('rdetail_preview_link_a').title = 'See the full text of this book.';      
-    }
+	if ( !GBPBook ) {
+		return;
+	}
 
-    // Add a button below the book cover image to load the preview.
-    GBPBadge = document.createElement( 'img' );
-    GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
-    GBPBadge.title = 'Show a preview of this book from Google Book Search';
-    GBPBadge.style.border = 0;
-    GBPBadgelink = document.createElement( 'a' );
-    GBPBadgelink.href = 'javascript:rdetailShowExtra("preview");';
-    GBPBadgelink.appendChild( GBPBadge );
-    $('rdetail_image_cell').appendChild( GBPBadgelink );
+	if ( GBPBook.preview != "noview" ) {
+		if ( GBPBook.preview == 'full' ) {
+			setText( $('rdetail_preview_link'), 'Full Text' );
+			$('rdetail_preview_link_a').title = 'See the full text of this book.';      
+		}
 
-    unHideMe( $('rdetail_preview_link' ) );
-    $('rdetail_preview_div').style.height = 600;
-  }
+		// Add a button below the book cover image to load the preview.
+		GBPBadge = document.createElement( 'img' );
+		GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
+		GBPBadge.title = 'Show a preview of this book from Google Book Search';
+		GBPBadge.style.border = 0;
+		GBPBadgelink = document.createElement( 'a' );
+		GBPBadgelink.href = 'javascript:rdetailShowExtra("preview");';
+		GBPBadgelink.appendChild( GBPBadge );
+		$('rdetail_image_cell').appendChild( GBPBadgelink );
+
+		unHideMe( $('rdetail_preview_link' ) );
+		$('rdetail_preview_div').style.height = 600;
+	}
 }
 
 /**
@@ -904,15 +890,16 @@ function GBPreviewCallback(GBPBookInfo) {
  * XXX I18N of Google Book Preview language attribute needed
  */
 function rdetailDisplayGBPreview() {
-  GBPreviewPane = $('rdetail_preview_div');
-  if ( GBPreviewPane.getAttribute('loaded') == null ||  GBPreviewPane.getAttribute('loaded') == "false" ) {
-    google.load("books", "0", {"callback" : rdetailGBPViewerLoadCallback, "language": "en"} );
-    GBPreviewPane.setAttribute('loaded', 'true');
-  }
+	GBPreviewPane = $('rdetail_preview_div');
+	if ( GBPreviewPane.getAttribute('loaded') == null ||
+		GBPreviewPane.getAttribute('loaded') == "false" ) {
+		google.load("books", "0", {"callback" : rdetailGBPViewerLoadCallback, "language": "en"} );
+		GBPreviewPane.setAttribute('loaded', 'true');
+	}
 }
 
 function rdetailGBPViewerLoadCallback() {
-  var GBPViewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
-  GBPViewer.load('ISBN:' + cleanISBN(record.isbn()) );
+	var GBPViewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
+	GBPViewer.load('ISBN:' + cleanISBN(record.isbn()) );
 
 }
