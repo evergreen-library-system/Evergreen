@@ -75,7 +75,7 @@
 <hbox id="record_query_top_ui">
     <label id="record_query_label" value="&staff.cat.record_buckets_overlay.record_query.label;"
         accesskey="&staff.cat.record_buckets_overlay.record_query.accesskey;" control="record_query_input"/>
-    <textbox id="record_query_input" flex="1"/>
+    <textbox id="record_query_input" flex="1" context="clipboard"/>
     <button command="cmd_submit_query" label="&staff.cat.record_buckets_overlay.cmd_submit_query.button.label;"
         accesskey="&staff.cat.record_buckets_overlay.cmd_submit_query.button.accesskey;"/>
     <button id="query_help" label="&staff.cat.record_buckets_overlay.query_help.button.label;"

@@ -32,7 +32,7 @@
 -->
 	<hbox id="checkout_menu_placeholder" flex="0"/>
 	<label accesskey="&staff.circ.checkout_overlay.barcode.accesskey;" control="checkout_barcode_entry_textbox"/>
-	<textbox id="checkout_barcode_entry_textbox"/>
+	<textbox id="checkout_barcode_entry_textbox" context="clipboard"/>
 	<button id="checkout_submit_barcode_button" 
 		label="&staff.patron_display.checkout.submit.label;" 
 		command="cmd_checkout_submit"

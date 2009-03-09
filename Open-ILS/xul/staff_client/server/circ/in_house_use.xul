@@ -93,9 +93,9 @@
 
 	<hbox id="in_house_use_top_ui">
 		<label id="in_house_use_multiplier_label" value="&staff.circ.in_house_use.multiplier.label;" control="in_house_use_multiplier_textbox" accesskey="&staff.circ.in_house_use.multiplier.accesskey;" hidden="false"/>
-		<textbox id="in_house_use_multiplier_textbox" value="1" hidden="false" size="2" cols="2"/>
+		<textbox id="in_house_use_multiplier_textbox" value="1" hidden="false" size="2" cols="2" context="clipboard"/>
 		<hbox id="in_house_use_menu_placeholder" flex="0"/>
-		<textbox id="in_house_use_barcode_entry_textbox"/>
+		<textbox id="in_house_use_barcode_entry_textbox" context="clipboard"/>
 		<button id="in_house_use_submit_barcode_button" 
 			label="&staff.circ.in_house_use.submit.label;"
 			command="cmd_in_house_use_submit_barcode"

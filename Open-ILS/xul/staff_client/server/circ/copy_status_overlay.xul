@@ -95,7 +95,7 @@
 		value="&staff.circ.copy_status_overlay.copy_status_scan_barcode.label;"
 		accesskey="&staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey;"
 		control="copy_status_barcode_entry_textbox"/>
-	<textbox id="copy_status_barcode_entry_textbox"/>
+	<textbox id="copy_status_barcode_entry_textbox" context="clipboard"/>
 	<button id="copy_status_submit_barcode_button" 
 		label="&staff.circ.copy_status_overlay.copy_status_submit_barcode.label;"
 		accesskey="&staff.circ.copy_status_overlay.copy_status_submit_barcode.accesskey;"

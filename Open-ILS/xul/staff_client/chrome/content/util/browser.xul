@@ -13,7 +13,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
 
 <window id="util_browser_win" 
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"

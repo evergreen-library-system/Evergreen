@@ -111,15 +111,15 @@
 			<vbox flex="1">
 				<groupbox flex="1">
 					<caption label="&staff.circ.print_list.header.label;"/>
-					<textbox id="header" multiline="true" flex="1"/>
+					<textbox id="header" multiline="true" flex="1" context="clipboard"/>
 				</groupbox>
 				<groupbox flex="1">
 					<caption label="&staff.circ.print_list.line_item.label;"/>
-					<textbox id="line_item" multiline="true" flex="1"/>
+					<textbox id="line_item" multiline="true" flex="1" context="clipboard"/>
 				</groupbox>
 				<groupbox flex="1">
 					<caption label="&staff.circ.print_list.footer.label;"/>
-					<textbox id="footer" multiline="true" flex="1"/>
+					<textbox id="footer" multiline="true" flex="1" context="clipboard"/>
 				</groupbox>
 			</vbox>
 		</hbox>

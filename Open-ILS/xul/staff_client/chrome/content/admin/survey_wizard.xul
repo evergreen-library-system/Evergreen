@@ -4,7 +4,7 @@
 
 	<!-- Overlays for this XUL file -->
 	<?xul-overlay href="chrome://open_ils_staff_client/content/admin/survey_overlay.xul"?>
-	<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+	<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
 
 <!-- This DTD declaration needs to be fixed for Mozilla locales -->
 <!DOCTYPE wizard SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
