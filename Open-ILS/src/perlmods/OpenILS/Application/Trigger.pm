@@ -91,6 +91,148 @@ __PACKAGE__->register_method(
     argc     => 3
 );
 
+
+# Retrieves events by object, or object type + filter
+#  $object : a target object or object type (class hint)
+#
+#  $filter : an optional hash of filters ... top level keys:
+#     event
+#        filters on the atev objects, such as states or null-ness of timing
+#        fields. contains the effective default of:
+#          { state => 'pending' }
+#        an example, which overrides the default, and will find
+#        stale 'found' events:
+#          { state => 'found', update_time => { '<' => 'yesterday' } }
+#
+#      event_def
+#        filters on the atevdef object. contains the effective default of:
+#          { active => 't' }
+#
+#      hook
+#        filters on the hook object. no defaults, but there is a pinned,
+#        unchangeable filter based on the passed hint or object type (see
+#        $object above). an example for finding passive events:
+#          { passive => 't' }
+#
+#     target
+#        filters against the target field on the event. this can contain
+#        either an array of target ids (if you passed an object type, and
+#        not an object) or can contain a json_query that will return exactly
+#        a list of target-type ids.  If you pass an object, the pkey value of
+#        that object will be used as a filter in addition to the filter passed
+#        in here.  example filter for circs of user 1234 that are open:
+#          { select => { circ => ['id'] },
+#            from => 'circ',
+#            where => {
+#              usr => 1234,
+#              checkin_time => undef, 
+#              '-or' => [
+#                { stop_fines => undef },
+#                { stop_fines => { 'not in' => ['LOST','LONGOVERDUE','CLAIMSRETURNED'] } }
+#              ]
+#            }
+
+sub events_by_target {
+    my $self = shift;
+    my $client = shift;
+    my $object = shift;
+    my $filter = shift || {};
+
+    my $obj_class = ref($object) || _fm_class_by_hint($object);
+
+    my $object_ident_field = $obj_class->Identity;
+
+    my $query = {
+        select => { atev => ["id"] },
+        from   => {
+            atev => {
+                atevdef => {
+                    field => "id",
+                    fkey => "event_def",
+                    join => {
+                        ath => { field => "key", fkey => "hook" }
+                    }
+                }
+            }
+        },
+        where  => {
+            "+ath"  => { core_type=> $object_ident_field },
+            "+atevdef" => { active => 't' },
+            "+atev" => { state => 'pending' }
+        },
+        order_by => { "+atev" => [ 'run_time' ] },
+        distinct => 1
+    };
+
+
+    # allow multiple 'target' filters
+    $query->{where}->{'+atev'}->{'-and'} = [];
+
+    # if we got a real object, filter on its pkey value
+    if (ref($object)) { # pass an object, require that target
+        push @{ $query->{where}->{'+atev'}->{'-and'} },
+            { target => $object->$object_ident_field }
+    }
+
+    # we have a fancy complex target filter or a list of target ids
+    if ($$filter{target}) {
+        push @{ $query->{where}->{'+atev'}->{'-and'} },
+            { target => {in => $$filter{target} } };
+    }
+
+    # pass no target filter or object, you get no events
+    if (!@{ $query->{where}->{'+atev'}->{'-and'} }) {
+        return undef; 
+    }
+
+    # any hook filters, other than the required core_type filter
+    if ($$filter{hook}) {
+        $query->{where}->{'+ath'}->{$_} = $$filter{hook}{$_}
+            for (grep { $_ ne 'core_type' } keys %{$$filter{hook}});
+    }
+
+    # any event_def filters.  defaults to { active => 't' }
+    if ($$filter{event_def}) {
+        $query->{where}->{'+atevdef'}->{$_} = $$filter{event_def}{$_}
+            for (keys %{$$filter{event_def}});
+    }
+
+    # any event filters.  defaults to { state => 'pending' }.
+    # don't overwrite '-and' used for multiple target filters above
+    if ($$filter{event}) {
+        $query->{where}->{'+atev'}->{$_} = $$filter{event}{$_}
+            for (grep { $_ ne '-and' } keys %{$$filter{event}});
+    }
+
+    my $e = new_editor();
+
+    my $events = $e->json_query($query);
+
+    for my $id (@$events) {
+        my $event = $e->retrieve_action_trigger_event([
+            $id->{id},
+            {flesh => 1, flesh_fields => {atev => ['event_def']}}
+        ]);
+
+        (my $meth = $obj_class) =~ s/^Fieldmapper:://o;
+        $meth =~ s/::/_/go;
+        $meth = 'retrieve_'.$meth;
+
+        $event->target($e->$meth($event->target));
+        $client->respond($event);
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.events_by_target',
+    method   => 'events_by_target',
+    api_level=> 1,
+    stream   => 1,
+    argc     => 2
+);
+ 
+
 sub _fm_class_by_hint {
     my $hint = shift;
 
@@ -124,8 +266,6 @@ sub create_passive_events {
     for my $def ( @$defs ) {
 
         my $date = DateTime->now->subtract( seconds => interval_to_seconds($def->delay) );
-
-        my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location_field ] });
 
         # we may need to do some work to backport this to 1.2
         $filter->{ $location_field } = { 'in' =>
@@ -184,7 +324,7 @@ __PACKAGE__->register_method(
     method   => 'create_passive_events',
     api_level=> 1,
     stream   => 1,
-    argc     => 3
+    argc     => 2
 );
 
 
