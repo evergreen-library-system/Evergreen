@@ -24,7 +24,7 @@
 <groupbox flex="0">
 	<caption label="&staff.cat.marcedit.options.label;"/>
 	<hbox flex="1">
-		<checkbox persist="checked" accesskey='&staff.cat.marcedit.stackSubfields.accesskey;' label="&staff.cat.marcedit.stackSubfields.label;" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
+		<checkbox persist="checked" accesskey='&staff.cat.marcedit.stackSubfields.accesskey;' label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
 		<button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
 		<button id="save-button" accesskey="&staff.cat.marcedit.save-button.accesskey;"/>
 		<button label="&staff.cat.marcedit.help.label;" accesskey="&staff.cat.marcedit.help.accesskey;"

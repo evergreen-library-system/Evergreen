@@ -1229,7 +1229,7 @@ function stackSubfields(checkbox) {
 	var list = document.getElementsByAttribute('name','sf_box');
 
 	var o = 'vertical';
-	if (checkbox.checked) o = 'horizontal';
+	if (!checkbox.checked /* this property gets changed after the oncommand handler, so we're testing for the opposite value */) o = 'horizontal';
 	
 	for (var i = 0; i < list.length; i++) {
 		if (list[i]) list[i].setAttribute('orient',o);
