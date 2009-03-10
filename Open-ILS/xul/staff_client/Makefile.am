@@ -59,6 +59,7 @@ stamp:
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xml' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 
 bundle:
+	@rm -f build/build.tar
 	@tar cf build.tar build/
 	@mv build.tar build/
 
