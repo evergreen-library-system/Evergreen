@@ -81,10 +81,10 @@ function xml_escape_unicode ( str ) {
 function my_init() {
 	try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-        JSAN.errorLevel = "die"; // none, warn, or die
-        JSAN.addRepository('/xul/server/');
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+		JSAN.errorLevel = "die"; // none, warn, or die
+		JSAN.addRepository('/xul/server/');
 
 		// Fake xulG for standalone...
 		try {
@@ -1003,10 +1003,15 @@ function recordType (rec) {
 		for (var t in rec_type) {
 			if (_t.match(rec_type[t].Type) && _b.match(rec_type[t].BLvl)) {
 				document.getElementById('recordTypeLabel').value = t;
-			_record_type = t;
+				_record_type = t;
 				return t;
 			}
 		}
+
+		// in case we don't have a valid record type ...
+		_record_type = 'BKS';
+		return _record_type;
+
 	} catch(E) {
 		alert('FIXME, MARC Editor, recordType: ' + E);
 	}
