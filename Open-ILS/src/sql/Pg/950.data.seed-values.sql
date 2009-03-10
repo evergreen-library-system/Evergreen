@@ -922,7 +922,7 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'Allow a user may view another user''s transactions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (49, 'DELETE_CONTAINER', oils_i18n_gettext(49, 'Allow a user to delete another user container', 'ppl', 'description'));
+    (49, 'DELETE_CONTAINER', oils_i18n_gettext(49, 'Allow a user to delete another user''s container', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (50, 'CREATE_CONTAINER_ITEM', oils_i18n_gettext(50, 'Allow a user to create a container item for another user', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
