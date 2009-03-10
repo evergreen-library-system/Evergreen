@@ -109,7 +109,7 @@ function my_init() {
 		document.getElementById('save-button').setAttribute('oncommand',
 			'mangle_005(); ' + 
 			'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
-			'window.xulG.save.func( xml_string ); ' +
+			'save_attempt( xml_string ); ' +
 			'loadRecord(xml_record);'
 		);
 
@@ -241,6 +241,11 @@ function my_init() {
 		req.send(null);
 
 		loadRecord(xml_record);
+
+        if (! xulG.fast_add_item) {
+            document.getElementById('fastItemAdd_checkbox').hidden = true;
+        }
+        document.getElementById('fastItemAdd_textboxes').hidden = document.getElementById('fastItemAdd_checkbox').hidden || !document.getElementById('fastItemAdd_checkbox').checked;
 
 	} catch(E) {
 		alert('FIXME, MARC Editor, my_init: ' + E);
@@ -1229,11 +1234,46 @@ function stackSubfields(checkbox) {
 	var list = document.getElementsByAttribute('name','sf_box');
 
 	var o = 'vertical';
-	if (!checkbox.checked /* this property gets changed after the oncommand handler, so we're testing for the opposite value */) o = 'horizontal';
+	if (!checkbox.checked) o = 'horizontal';
 	
 	for (var i = 0; i < list.length; i++) {
 		if (list[i]) list[i].setAttribute('orient',o);
 	}
+}
+
+function fastItemAdd_toggle(checkbox) {
+    var x = document.getElementById('fastItemAdd_textboxes');
+    if (checkbox.checked) {
+        x.hidden = false;
+        document.getElementById('fastItemAdd_callnumber').focus();
+        document.getElementById('fastItemAdd_callnumber').select();
+    } else {
+        x.hidden = true;
+    }
+}
+
+function fastItemAdd_attempt(doc_id) {
+    try {
+        if (typeof window.xulG.fast_add_item != 'function') { return; }
+        if (!document.getElementById('fastItemAdd_checkbox').checked) { return; }
+        if (!document.getElementById('fastItemAdd_callnumber').value) { return; }
+        if (!document.getElementById('fastItemAdd_barcode').value) { return; }
+        window.xulG.fast_add_item( doc_id, document.getElementById('fastItemAdd_callnumber').value, document.getElementById('fastItemAdd_barcode').value );
+    } catch(E) {
+        alert('fastItemAdd_attempt: ' + E);
+    }
+}
+
+function save_attempt(xml_string) {
+    try {
+        var result = window.xulG.save.func( xml_string );   
+        if (result) {
+            if (result.id) fastItemAdd_attempt(result.id);
+            if (typeof result.on_complete == 'function') result.on_complete();
+        }
+    } catch(E) {
+        alert('save_attempt: ' + E);
+    }
 }
 
 function marcDatafield (field) {

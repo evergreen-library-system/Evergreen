@@ -7,7 +7,7 @@ cat.util = {};
 
 cat.util.EXPORT_OK	= [ 
 	'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
-	'mark_item_missing', 'mark_item_damaged', 'replace_barcode',
+	'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add'
 ];
 cat.util.EXPORT_TAGS	= { ':all' : cat.util.EXPORT_OK };
 
@@ -443,5 +443,48 @@ cat.util.mark_item_missing = function(copy_ids) {
 	}
 }
 
+cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
+	var error;
+	try {
 
+		JSAN.use('util.error'); error = new util.error();
+		JSAN.use('util.network'); var network = new util.network();
+
+        var acn_id = network.simple_request(
+            'FM_ACN_FIND_OR_CREATE',
+            [ ses(), cn_label, doc_id, ses('ws_ou') ]
+        );
+
+        if (typeof acn_id.ilsevent != 'undefined') {
+            error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.stash_and_close.problem_with_volume', [cn]), acn_id);
+            return;
+        }
+
+        var copy_obj = new acp();
+        copy_obj.id( -1 );
+        copy_obj.isnew('1');
+        copy_obj.barcode( cp_barcode );
+        copy_obj.call_number( acn_id );
+        copy_obj.circ_lib( ses('ws_ou') );
+        /* FIXME -- use constants */
+        copy_obj.deposit(0);
+        copy_obj.price(0);
+        copy_obj.deposit_amount(0);
+        copy_obj.fine_level(2);
+        copy_obj.loan_duration(2);
+        copy_obj.location(1);
+        copy_obj.status(0);
+        copy_obj.circulate(get_db_true());
+        copy_obj.holdable(get_db_true());
+        copy_obj.opac_visible(get_db_true());
+        copy_obj.ref(get_db_false());
+
+		JSAN.use('util.window'); var win = new util.window();
+        JSAN.use('cat.util');
+        return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+
+	} catch(E) {
+		if (error) error.standard_unexpected_error_alert('cat.util.fast_item_add',E); else alert('FIXME: ' + E);
+	}
+}
 dump('exiting cat/util.js\n');

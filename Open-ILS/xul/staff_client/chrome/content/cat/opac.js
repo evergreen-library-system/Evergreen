@@ -19,6 +19,9 @@ function my_init() {
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 		XML_HTTP_SERVER = g.data.server_unadorned;
 
+        //JSAN.addRepository('http://' + g.data.server_unadorned + '/xul/server/');
+        //JSAN._loadJSFromUrl('http://' + g.data.server_unadorned + '/xul/server/cat/util.js');
+
 		JSAN.use('util.network'); g.network = new util.network();
 
 		g.cgi = new CGI();
@@ -73,6 +76,15 @@ function set_marc_edit() {
 	var b =	{};
 	var c =	{
 			'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+            /* // FIXME - disable this until we find a good way of pulling remote JSAN libraries into chrome
+            'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                try {
+                    JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                } catch(E) {
+                    alert(E);
+                }
+            },
+            */
 			'save' : {
 				'label' : document.getElementById('offlineStrings').getString('cat.save_record'),
 				'func' : function (new_marcxml) {
@@ -85,6 +97,10 @@ function set_marc_edit() {
 							throw(r);
 						} else {
 							alert(document.getElementById('offlineStrings').getString("cat.save.success"));
+                            return {
+                                'id' : r.id(),
+                                'oncomplete' : function() {}
+                            };
 						}
 					} catch(E) {
 							g.error.standard_unexpected_error_alert(document.getElementById('offlineStrings').getString("cat.save.failure"), E);

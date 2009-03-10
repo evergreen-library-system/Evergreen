@@ -595,6 +595,13 @@ cat.z3950.prototype = {
 			{ 'tab_name' : 'MARC Editor' }, 
 			{ 
 				'record' : { 'marc' : my_marcxml },
+                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                    try {
+                        JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                    } catch(E) {
+                        alert(E);
+                    }
+                },
 				'save' : {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
@@ -632,7 +639,16 @@ cat.z3950.prototype = {
 													throw(r3);
 												} else {
 													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
-													obj.replace_tab_with_opac(r3.id());
+                                                    return {
+                                                        'id' : r3.id(),
+                                                        'on_complete' : function() {
+                                                            try {
+                                                                obj.replace_tab_with_opac(r3.id());
+                                                            } catch(E) {
+                                                                alert(E);
+                                                            }
+                                                        }
+                                                    };
 												}
 											break;
 											case 1:
@@ -645,7 +661,16 @@ cat.z3950.prototype = {
 													throw(r2);
 												} else {
 													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
-													obj.replace_tab_with_opac(r2.id());
+                                                    return {
+                                                        'id' : r2.id(),
+                                                        'on_complete' : function() {
+                                                            try {
+                                                                obj.replace_tab_with_opac(r2.id());
+                                                            } catch(E) {
+                                                                alert(E);
+                                                            }
+                                                        }
+                                                    };
 												}
 											break;
 											case 2:
@@ -660,7 +685,16 @@ cat.z3950.prototype = {
 								}
 							} else {
 								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
-								obj.replace_tab_with_opac(r.id());
+								return {
+                                    'id' : r.id(),
+                                    'on_complete' : function() {
+                                        try {
+                                            obj.replace_tab_with_opac(r.id());
+                                        } catch(E) {
+                                            alert(E);
+                                        }
+                                    }
+                                };
 							}
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
@@ -722,6 +756,13 @@ cat.z3950.prototype = {
 			{ 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
 			{ 
 				'record' : { 'marc' : my_marcxml },
+                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                    try {
+                        JSAN.use('cat.util'); cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                    } catch(E) {
+                        alert(E);
+                    }
+                },
 				'save' : {
 					'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
 					'func' : function (new_marcxml) {
@@ -762,7 +803,16 @@ cat.z3950.prototype = {
 													throw(r2);
 												} else {
 													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
-													obj.replace_tab_with_opac(r2.id());
+													return {
+                                                        'id' : r2.id(),
+                                                        'on_complete' : function() {
+                                                            try {
+                                                                obj.replace_tab_with_opac(r2.id());
+                                                            } catch(E) {
+                                                                alert(E);
+                                                            }
+                                                        }
+                                                    };
 												}
 											break;
 											case 1:
@@ -777,7 +827,16 @@ cat.z3950.prototype = {
 								}
 							} else {
 								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
-								obj.replace_tab_with_opac(r.id());
+                                return {
+                                    'id' : r.id(),
+                                    'on_complete' : function() {
+                                        try {
+                                            obj.replace_tab_with_opac(r.id());
+                                        } catch(E) {
+                                            alert(E);
+                                        }
+                                    }
+                                };
 							}
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);

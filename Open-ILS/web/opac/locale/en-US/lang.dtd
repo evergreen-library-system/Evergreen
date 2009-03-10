@@ -2044,6 +2044,12 @@
 <!ENTITY staff.cat.marcedit.options.label "Options">
 <!ENTITY staff.cat.marcedit.stackSubfields.label "Stack subfields">
 <!ENTITY staff.cat.marcedit.stackSubfields.accesskey "s">
+<!ENTITY staff.cat.marcedit.fastItemAdd.label "Fast Item Add">
+<!ENTITY staff.cat.marcedit.fastItemAdd.accesskey "A">
+<!ENTITY staff.cat.marcedit.fastItemAdd_callnumber.label "Call Number">
+<!ENTITY staff.cat.marcedit.fastItemAdd_callnumber.accesskey "C">
+<!ENTITY staff.cat.marcedit.fastItemAdd_barcode.label "Item Barcode">
+<!ENTITY staff.cat.marcedit.fastItemAdd_barcode.accesskey "B">
 <!ENTITY staff.cat.marcedit.validate.label "Validate">
 <!ENTITY staff.cat.marcedit.validate.accesskey "V">
 <!ENTITY staff.cat.marcedit.save-button.accesskey "d">

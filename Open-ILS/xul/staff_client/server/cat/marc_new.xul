@@ -91,6 +91,13 @@
 							var url = urls.XUL_MARC_EDIT;
 							var params = {
 								'record' : { 'marc' : marc },
+                                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                                    try {
+                                        JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                                    } catch(E) {
+                                        alert(E);
+                                    }
+                                },
 								'save' : {
 									'label' : catStrings.getString('staff.cat.marc_new.create_record.label'),
 									'func' : function(new_marcxml) {
@@ -110,11 +117,20 @@
 												'authtime' : ses('authtime'),
 												'opac_url' : opac_url
 											};
-											xulG.set_tab(
-												xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
-												{'tab_name': catStrings.getString('staff.cat.marc_new.retrieving.label')},
-												content_params
-											);
+                                            return { 
+                                                'id' : robj.id(), 
+                                                'on_complete' : function() {
+                                                    try {
+                                                        xulG.set_tab(
+                                                            xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                                                            {'tab_name': catStrings.getString('staff.cat.marc_new.retrieving.label')},
+                                                            content_params
+                                                        );
+                                                    } catch(E) {
+                                                        alert(E);
+                                                    } 
+                                                }
+                                            };
 
 										} catch(E) {
 											g.error.standard_unexpected_error_alert(

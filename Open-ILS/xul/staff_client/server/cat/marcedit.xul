@@ -24,7 +24,14 @@
 <groupbox flex="0">
 	<caption label="&staff.cat.marcedit.options.label;"/>
 	<hbox flex="1">
-		<checkbox persist="checked" accesskey='&staff.cat.marcedit.stackSubfields.accesskey;' label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
+		<checkbox persist="checked" accesskey="&staff.cat.marcedit.stackSubfields.accesskey;" label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
+        <checkbox persist="checked" accesskey="&staff.cat.marcedit.fastItemAdd.accesskey;" label="&staff.cat.marcedit.fastItemAdd.label;" oncommand="fastItemAdd_toggle(this);" checked="false" id="fastItemAdd_checkbox"/>
+        <hbox id="fastItemAdd_textboxes">
+            <label control="fastItemAdd_callnumber" accesskey="&staff.cat.marcedit.fastItemAdd_callnumber.accesskey;" value="&staff.cat.marcedit.fastItemAdd_callnumber.label;" />
+            <textbox id="fastItemAdd_callnumber" persist="value" onchange="this.setAttribute('value',this.value);"/>
+            <label control="fastItemAdd_barcode" accesskey="&staff.cat.marcedit.fastItemAdd_barcode.accesskey;" value="&staff.cat.marcedit.fastItemAdd_barcode.label;" />
+            <textbox id="fastItemAdd_barcode"/>
+        </hbox>
 		<button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
 		<button id="save-button" accesskey="&staff.cat.marcedit.save-button.accesskey;"/>
 		<button label="&staff.cat.marcedit.help.label;" accesskey="&staff.cat.marcedit.help.accesskey;"
