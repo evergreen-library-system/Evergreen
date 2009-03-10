@@ -17,6 +17,7 @@ cat.copy_browser.prototype = {
 	'map_acn' : {},
 	'map_acp' : {},
 	'sel_list' : [],
+    'funcs' : [],
 
 	'init' : function( params ) {
 
@@ -962,6 +963,8 @@ cat.copy_browser.prototype = {
 
 			obj.show_my_libs( ml.value );
 
+            JSAN.use('util.exec'); var exec = new util.exec(20); exec.timer(obj.funcs,100);
+
 			obj.show_consortial_count();
 
 		} catch(E) {
@@ -1000,15 +1003,13 @@ cat.copy_browser.prototype = {
 		
 			var p_org = obj.data.hash.aou[ org.parent_ou() ];
 			if (p_org) {
-				JSAN.use('util.exec'); var exec = new util.exec();
-				var funcs = [];
-				funcs.push( function() { 
+				obj.funcs.push( function() { 
 					document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
 					document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 					document.getElementById('lib_menu').setAttribute('disabled','true'); 
 				} );
 				for (var i = 0; i < p_org.children().length; i++) {
-					funcs.push(
+					obj.funcs.push(
 						function(o) {
 							return function() {
 								obj.show_libs( o, false );
@@ -1016,12 +1017,11 @@ cat.copy_browser.prototype = {
 						}( p_org.children()[i] )
 					);
 				}
-				funcs.push( function() { 
+				obj.funcs.push( function() { 
 					document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
 					document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 					document.getElementById('lib_menu').setAttribute('disabled','false'); 
 				} );
-				exec.chain( funcs );
 			}
 		} catch(E) {
 			alert(E);
@@ -1035,16 +1035,14 @@ cat.copy_browser.prototype = {
 
 			obj.show_libs( obj.data.tree.aou );
 
-			JSAN.use('util.exec'); var exec = new util.exec();
-			var funcs = [];
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 
 			for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
-				funcs.push(
+				obj.funcs.push(
 					function(o) {
 						return function() {
 							obj.show_libs( o );
@@ -1052,13 +1050,12 @@ cat.copy_browser.prototype = {
 					}( obj.data.tree.aou.children()[i] )
 				);
 			}
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
 
-			exec.chain( funcs );
 		} catch(E) {
 			alert(E);
 		}
@@ -1067,7 +1064,6 @@ cat.copy_browser.prototype = {
 	'show_libs_with_copies' : function() {
 		var obj = this;
 		try {
-			JSAN.use('util.exec'); var exec = new util.exec();
 			JSAN.use('util.functional');
 
 			var orgs = util.functional.map_list(
@@ -1080,15 +1076,14 @@ cat.copy_browser.prototype = {
 					return 0;
 				}
 			);
-			var funcs = [];
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 
 			for (var i = 0; i < orgs.length; i++) {
-				funcs.push(
+				obj.funcs.push(
 					function(o) {
 						return function() {
 							obj.show_libs(o,false);
@@ -1096,13 +1091,12 @@ cat.copy_browser.prototype = {
 					}( orgs[i] )
 				);
 			}
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
 
-			exec.chain( funcs );
 		} catch(E) {
 			alert(E);
 		}
@@ -1113,9 +1107,7 @@ cat.copy_browser.prototype = {
 		try {
 			if (!start_aou) throw('show_libs: Need a start_aou');
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-			JSAN.use('util.functional'); JSAN.use('util.exec'); var exec = new util.exec();
-
-			var funcs = [];
+			JSAN.use('util.functional'); 
 
 			var parents = [];
 			var temp_aou = start_aou;
@@ -1126,33 +1118,29 @@ cat.copy_browser.prototype = {
 			parents.reverse();
 
 			for (var i = 0; i < parents.length; i++) {
-				funcs.push(
+				obj.funcs.push(
 					function(o,p) {
 						return function() { 
-							if (show_open) {
-								obj.append_org(o,p,{'container':'true','open':'true'}); 
-							} else {
-								obj.append_org(o,p,{'container':'true'}); 
-							}
+                            obj.append_org(o,p,{'container':'true','open':'true'}); 
 						};
 					}(parents[i], obj.data.hash.aou[ parents[i].parent_ou() ])
 				);
 			}
 
-			funcs.push(
+			obj.funcs.push(
 				function(o,p) {
 					return function() { obj.append_org(o,p); };
 				}(start_aou,obj.data.hash.aou[ start_aou.parent_ou() ])
 			);
 
-			funcs.push(
+			obj.funcs.push(
 				function() {
 					if (start_aou.children()) {
 						var x = obj.map_tree[ 'aou_' + start_aou.id() ];
 						x.setAttribute('container','true');
 						if (show_open) x.setAttribute('open','true');
 						for (var i = 0; i < start_aou.children().length; i++) {
-							funcs.push(
+							obj.funcs.push(
 								function(o,p) {
 									return function() { obj.append_org(o,p); };
 								}( start_aou.children()[i], start_aou )
@@ -1161,8 +1149,6 @@ cat.copy_browser.prototype = {
 					}
 				}
 			);
-
-			exec.chain( funcs );
 
 		} catch(E) {
 			alert(E);
@@ -1188,15 +1174,14 @@ cat.copy_browser.prototype = {
 		var obj = this;
 		try {
 			var acn_tree = obj.map_acp[ 'acn_' + acn_id ];
-			var funcs = [];
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 			if (acn_tree.copies()) {
 				for (var i = 0; i < acn_tree.copies().length; i++) {
-					funcs.push(
+					obj.funcs.push(
 						function(c,a) {
 							return function() {
 								obj.append_acp(c,a);
@@ -1205,13 +1190,11 @@ cat.copy_browser.prototype = {
 					)
 				}
 			}
-			funcs.push( function() { 
+			obj.funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
 				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
-			JSAN.use('util.exec'); var exec = new util.exec();
-			exec.chain( funcs );
 		} catch(E) {
 			alert(E);
 		}
@@ -1221,15 +1204,14 @@ cat.copy_browser.prototype = {
 		var obj = this;
 		var org = obj.data.hash.aou[ org_id ];
         if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
-		var funcs = [];
-		funcs.push( function() { 
+		obj.funcs.push( function() { 
 			document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
 			document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 			document.getElementById('lib_menu').setAttribute('disabled','true'); 
 		} );
 		if (org.children()) {
 			for (var i = 0; i < org.children().length; i++) {
-				funcs.push(
+				obj.funcs.push(
 					function(o,p) {
 						return function() {
 							obj.append_org(o,p)
@@ -1240,7 +1222,7 @@ cat.copy_browser.prototype = {
 		} 
 		if (obj.map_acn[ 'aou_' + org_id ]) {
 			for (var i = 0; i < obj.map_acn[ 'aou_' + org_id ].length; i++) {
-				funcs.push(
+				obj.funcs.push(
 					function(o,a) {
 						return function() {
 							obj.append_acn(o,a);
@@ -1249,13 +1231,11 @@ cat.copy_browser.prototype = {
 				);
 			}
 		}
-		funcs.push( function() { 
+		obj.funcs.push( function() { 
 			document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
 			document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 			document.getElementById('lib_menu').setAttribute('disabled','false'); 
 		} );
-		JSAN.use('util.exec'); var exec = new util.exec();
-		exec.chain( funcs );
 	},
 
 	'append_org' : function (org,parent_org,params) {
@@ -1341,7 +1321,7 @@ cat.copy_browser.prototype = {
 			if (document.getElementById('show_acns').checked) {
                 if (! ( obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) )) {
 					node.setAttribute('open','true');
-					setTimeout( function() { obj.on_select_org( org.id() ); }, 0 );
+					obj.funcs.push( function() { obj.on_select_org( org.id() ); } );
 				}
 			}
 
@@ -1394,7 +1374,7 @@ cat.copy_browser.prototype = {
 			}
 			if (document.getElementById('show_acps').checked) {
 				node.setAttribute('open','true');
-				setTimeout( function() { obj.on_select_acn( acn_tree.id() ); }, 0 );
+				obj.funcs.push( function() { obj.on_select_acn( acn_tree.id() ); } );
 			}
 
 		} catch(E) {
@@ -1521,9 +1501,8 @@ cat.copy_browser.prototype = {
 
 						var row = params.row;
 
-						var funcs = [];
 					/*	
-						if (!row.my.mvr) funcs.push(
+						if (!row.my.mvr) obj.funcs.push(
 							function() {
 
 								row.my.mvr = obj.network.request(
@@ -1535,7 +1514,7 @@ cat.copy_browser.prototype = {
 							}
 						);
 						if (!row.my.acp) {
-							funcs.push(	
+							obj.funcs.push(	
 								function() {
 
 									row.my.acp = obj.network.request(
@@ -1552,7 +1531,7 @@ cat.copy_browser.prototype = {
 							params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
 						}
 					*/
-						funcs.push(
+						obj.funcs.push(
 							function() {
 
 								if (typeof params.on_retrieve == 'function') {
@@ -1561,14 +1540,6 @@ cat.copy_browser.prototype = {
 
 							}
 						);
-
-						JSAN.use('util.exec'); var exec = new util.exec();
-						exec.on_error = function(E) {
-							var err = 'items chain: ' + js2JSON(E);
-							obj.error.sdump('D_ERROR',err);
-							return true; /* keep going */
-						}
-						exec.chain( funcs );
 
 						return row;
 					},

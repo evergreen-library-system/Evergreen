@@ -34,6 +34,7 @@ vim:noet:sw=4:ts=4:
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/cat/copy_browser.js"/>
 	<script>
 	<![CDATA[
 		function my_init() {
