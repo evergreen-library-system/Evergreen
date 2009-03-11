@@ -17,7 +17,7 @@ util.exec.prototype = {
             function() {
                 var i = obj.chunk_size;
                 while (funcs.length > 0 && i > 0) {
-                    funcs.shift()();
+                    funcs.shift()(); i--;
                 }
             },
             interval
