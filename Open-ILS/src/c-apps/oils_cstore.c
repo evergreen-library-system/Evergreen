@@ -54,9 +54,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext*, osrfHash*,
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result, osrfHash* );
 static jsonObject* oilsMakeJSONFromResult( dbi_result );
 
-static char* searchWriteSimplePredicate ( const char*, osrfHash*,
-        const char*, const char*, const char* );
-static char* searchSimplePredicate ( const char*, const char*, osrfHash*, const jsonObject* );
+static char* searchSimplePredicate ( const char* op, const char* class, 
+				osrfHash* field, const jsonObject* node );
 static char* searchFunctionPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
 static char* searchFieldTransform ( const char*, osrfHash*, const jsonObject*);
 static char* searchFieldTransformPredicate ( const char*, osrfHash*, jsonObject*, const char* );
@@ -1323,7 +1322,11 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfLogDebug( OSRF_LOG_MARK, "Object seems to be of the correct type" );
 
-	if (!ctx->session || !ctx->session->userData || !osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	char* trans_id = NULL;
+	if( ctx->session && ctx->session->userData )
+		trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
+
+	if ( !trans_id ) {
 		osrfLogError( OSRF_LOG_MARK, "No active transaction -- required for CREATE" );
 
 		osrfAppSessionStatus(
@@ -1351,10 +1354,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-
-	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
-
-        // Set the last_xact_id
+	// Set the last_xact_id
 	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
 	if (index > -1) {
 		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
@@ -1677,23 +1677,29 @@ static char* searchINPredicate (const char* class, osrfHash* field,
         free(subpred);
 
     } else if (node->type == JSON_ARRAY) {
-        // litteral value list
+        // literal value list
     	int in_item_index = 0;
     	int in_item_first = 1;
-    	jsonObject* in_item;
+    	const jsonObject* in_item;
     	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
-    
-    		if (in_item_first)
-    			in_item_first = 0;
-    		else
-    			buffer_add(sql_buf, ", ");
-    
-    		if ( !strcmp( get_primitive( field ), "number") ) {
-    			char* val = jsonNumberToDBString( field, in_item );
-    			OSRF_BUFFER_ADD( sql_buf, val );
-    			free(val);
-    
-    		} else {
+
+			if (in_item_first)
+				in_item_first = 0;
+			else
+				buffer_add(sql_buf, ", ");
+
+			// Append the literal value -- quoted if not a number
+			if ( JSON_NUMBER == in_item->type ) {
+				char* val = jsonNumberToDBString( field, in_item );
+				OSRF_BUFFER_ADD( sql_buf, val );
+				free(val);
+
+			} else if ( !strcmp( get_primitive( field ), "number") ) {
+				char* val = jsonNumberToDBString( field, in_item );
+				OSRF_BUFFER_ADD( sql_buf, val );
+				free(val);
+
+			} else {
     			char* key_string = jsonObjectToSimpleString(in_item);
     			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
     				OSRF_BUFFER_ADD( sql_buf, key_string );
@@ -1848,17 +1854,20 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 	char* field_transform = searchFieldTransform( class, field, node );
 	char* value = NULL;
 
-	if (!jsonObjectGetKeyConst( node, "value" )) {
+	const jsonObject* value_obj = jsonObjectGetKeyConst( node, "value" );
+	if ( ! value_obj ) {
 		value = searchWHERE( node, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
-	} else if (jsonObjectGetKeyConst( node, "value" )->type == JSON_ARRAY) {
-		value = searchValueTransform(jsonObjectGetKeyConst( node, "value" ));
-	} else if (jsonObjectGetKeyConst( node, "value" )->type == JSON_HASH) {
-		value = searchWHERE( jsonObjectGetKeyConst( node, "value" ), osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
-	} else if (jsonObjectGetKeyConst( node, "value" )->type != JSON_NULL) {
+	} else if ( value_obj->type == JSON_ARRAY ) {
+		value = searchValueTransform( value_obj );
+	} else if ( value_obj->type == JSON_HASH ) {
+		value = searchWHERE( value_obj, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
+	} else if ( value_obj->type == JSON_NUMBER ) {
+		value = jsonNumberToDBString( field, value_obj );
+	} else if ( value_obj->type != JSON_NULL ) {
 		if ( !strcmp( get_primitive( field ), "number") ) {
-			value = jsonNumberToDBString( field, jsonObjectGetKeyConst( node, "value" ) );
+			value = jsonNumberToDBString( field, value_obj );
 		} else {
-			value = jsonObjectToSimpleString(jsonObjectGetKeyConst( node, "value" ));
+			value = jsonObjectToSimpleString( value_obj );
 			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, value);
 				free(value);
@@ -1884,59 +1893,47 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 	return buffer_release(sql_buf);
 }
 
-static char* searchSimplePredicate (const char* orig_op, const char* class,
+static char* searchSimplePredicate (const char* op, const char* class,
 		osrfHash* field, const jsonObject* node) {
 
 	char* val = NULL;
 
+	// Get the value to which we are comparing the specified column
 	if (node->type != JSON_NULL) {
-		if ( !strcmp( get_primitive( field ), "number") ) {
+		if ( node->type == JSON_NUMBER ) {
+			val = jsonNumberToDBString( field, node );
+		} else if ( !strcmp( get_primitive( field ), "number" ) ) {
 			val = jsonNumberToDBString( field, node );
 		} else {
 			val = jsonObjectToSimpleString(node);
 		}
 	}
 
-	char* pred = searchWriteSimplePredicate( class, field, osrfHashGet(field, "name"), orig_op, val );
-
-	if (val) free(val);
-
-	return pred;
-}
-
-static char* searchWriteSimplePredicate ( const char* class, osrfHash* field,
-	const char* left, const char* orig_op, const char* right ) {
-
-	char* val = NULL;
-	char* op = NULL;
-	if (right == NULL) {
-		val = strdup("NULL");
-
-		if (strcmp( orig_op, "=" ))
-			op = strdup("IS NOT");
-		else
-			op = strdup("IS");
-
-	} else if ( !strcmp( get_primitive( field ), "number") ) {
-		val = strdup(right);
-		op = strdup(orig_op);
-
-	} else {
-		val = strdup(right);
-		if ( !dbi_conn_quote_string(dbhandle, &val) ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-			free(val);
-			return NULL;
+	if( val ) {
+		if( JSON_NUMBER != node->type && strcmp( get_primitive( field ), "number") ) {
+			// Value is not numeric; enclose it in quotes
+			if ( !dbi_conn_quote_string( dbhandle, &val ) ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val );
+				free( val );
+				return NULL;
+			}
 		}
-		op = strdup(orig_op);
+	} else {
+		// Compare to a null value
+		val = strdup( "NULL" );
+		if (strcmp( op, "=" ))
+			op = "IS NOT";
+		else
+			op = "IS";
 	}
 
-	growing_buffer* sql_buf = buffer_init(16);
-	buffer_fadd( sql_buf, "\"%s\".%s %s %s", class, left, op, val );
-	free(val);
-	free(op);
+	growing_buffer* sql_buf = buffer_init(32);
+	buffer_fadd( sql_buf, "\"%s\".%s %s %s", class, osrfHashGet(field, "name"), op, val );
+	char* pred = buffer_release( sql_buf );
 
-	return buffer_release(sql_buf);
+	free(val);
+
+	return pred;
 }
 
 static char* searchBETWEENPredicate (const char* class, osrfHash* field, jsonObject* node) {
@@ -4044,6 +4041,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
+		int value_is_numeric = 0;    // boolean
 		char* value;
 		if (field_object && field_object->classname) {
 			value = oilsFMGetString(
@@ -4052,6 +4050,8 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
             );
 		} else {
 			value = jsonObjectToSimpleString( field_object );
+			if( field_object && JSON_NUMBER == field_object->type )
+				value_is_numeric = 1;
 		}
 
 		osrfLogDebug( OSRF_LOG_MARK, "Updating %s object with %s = %s", osrfHashGet(meta, "fieldmapper"), field_name, value);
@@ -4063,7 +4063,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 				buffer_fadd( sql, " %s = NULL", field_name );
 			}
 			
-		} else if ( !strcmp( get_primitive( field ), "number") ) {
+		} else if ( value_is_numeric || !strcmp( get_primitive( field ), "number") ) {
 			if (first) first = 0;
 			else OSRF_BUFFER_ADD_CHAR(sql, ',');
 
