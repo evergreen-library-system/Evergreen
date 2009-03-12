@@ -692,7 +692,7 @@ patron.bills.prototype = {
             var columns = patron.util.mbts_columns({});
             var template = 'bills_main_view';
             var params = { 
-                'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+                'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id), 
                 'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
                 'staff' : obj.data.list.au[0],
                 'header' : obj.data.print_list_templates[template].header,
