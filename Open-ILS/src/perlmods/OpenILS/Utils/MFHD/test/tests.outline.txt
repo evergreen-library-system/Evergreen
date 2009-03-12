@@ -45,6 +45,9 @@ indexes.
 *** Monthly, iss # restarts, Cal. change: Jan, Combined iss: 5/6 May/Jun, 7/8 Jul/Aug 
 853 ## $815$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm05/06,07/08$yce25/6,7/8
 
+*** Monthly, iss # restarts, Cal change: Jan, July issue omitted
+853 ## $816$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$yom07
+
 ** Calculating the publication info for the next issue
 *** Calcuating enumeration (volume, issue)
 **** current issue is 'normal'

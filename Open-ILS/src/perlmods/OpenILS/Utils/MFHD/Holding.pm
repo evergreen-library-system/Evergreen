@@ -7,54 +7,53 @@ use DateTime;
 
 use Data::Dumper;
 
-use MARC::Record;
+use MARC::Field;
+
+our @ISA = qw(MARC::Field);
 
 sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my $seqno = shift;
-    my $holding = shift;
+    my $self = shift;
     my $caption = shift;
-    my $self = {};
     my $last_enum = undef;
 
-    $self->{SEQNO} = $seqno;
-    $self->{HOLDING} = $holding;
-    $self->{CAPTION} = $caption;
-    $self->{SUBFIELDS} = {};
-    $self->{DESCR} = {};
-    $self->{COPY} = undef;
-    $self->{BREAK} = undef;
-    $self->{NOTES} = {};
-    $self->{COPYRIGHT} = [];
+    $self->{_mfhdh_SEQNO} = $seqno;
+    $self->{_mfhdh_CAPTION} = $caption;
+    $self->{_mfhdh_DESCR} = {};
+    $self->{_mfhdh_COPY} = undef;
+    $self->{_mfhdh_BREAK} = undef;
+    $self->{_mfhdh_NOTES} = {};
+    $self->{_mfhdh_COPYRIGHT} = [];
 
-    foreach my $subfield ($holding->subfields) {
+    foreach my $subfield ($self->subfields) {
 	my ($key, $val) = @$subfield;
 	if ($key =~ /[a-h]/) {
 	    # Enumeration details of holdings
-	    $self->{SUBFIELDS}->{$key} = {HOLDINGS => $val,
-				     UNIT     => undef,};
+	    $self->{_mfhdh_SUBFIELDS}->{$key} = {HOLDINGS => $val,
+						 UNIT     => undef,};
 	    $last_enum = $key;
 	} elsif ($key =~ /[i-m]/) {
-	    $self->{SUBFIELDS}->{$key} = $val;
-	    if (!exists $caption->{CHRONS}->{$key}) {
+	    $self->{_mfhdh_SUBFIELDS}->{$key} = $val;
+	    if (!$caption->capstr($key)) {
 		warn "Holding '$seqno' specified enumeration level '$key' not included in caption $caption->{LINK}";
 	    }
 	} elsif ($key eq 'o') {
 	    warn '$o specified prior to first enumeration'
 	      unless defined($last_enum);
-	    $self->{SUBFIELDS}->{$last_enum}->{UNIT} = $val;
+	    $self->{_mfhdh_SUBFIELDS}->{$last_enum}->{UNIT} = $val;
 	    $last_enum = undef;
 	} elsif ($key =~ /[npq]/) {
-	    $self->{DESCR}->{$key} = $val;
+	    $self->{_mfhdh_DESCR}->{$key} = $val;
 	} elsif ($key eq 's') {
-	    push @{$self->{COPYRIGHT}}, $val;
+	    push @{$self->{_mfhdh_COPYRIGHT}}, $val;
 	} elsif ($key eq 't') {
-	    $self->{COPY} = $val;
+	    $self->{_mfhdh_COPY} = $val;
 	} elsif ($key eq 'w') {
 	    carp "Unrecognized break indicator '$val'"
 	      unless $val =~ /^[gn]$/;
-	    $self->{BREAK} = $val;
+	    $self->{_mfhdh_BREAK} = $val;
 	}
     }
 
@@ -62,9 +61,21 @@ sub new {
     return $self;
 }
 
+sub seqno {
+    my $self = shift;
+
+    return $self->{_mfhdh_SEQNO};
+}
+
+sub caption {
+    my $self = shift;
+
+    return $self->{_mfhdh_CAPTION};
+}
+
 sub format_chron {
     my $self = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
     my @keys;
     my $str = '';
     my %month = ( '01' => 'Jan.', '02' => 'Feb.', '03' => 'Mar.',
@@ -81,9 +92,9 @@ sub format_chron {
 	my $chron;
 	my $sep;
 
-	last if !defined $caption->caption($key);
+	last if !defined $caption->capstr($key);
 
-	$capstr = $caption->caption($key);
+	$capstr = $caption->capstr($key);
 	if (substr($capstr,0,1) eq '(') {
 	    # a caption enclosed in parentheses is not displayed
 	    $capstr = '';
@@ -92,10 +103,10 @@ sub format_chron {
 	# If this is the second level of chronology, then it's
 	# likely to be a month or season, so we should use the
 	# string name rather than the number given.
-	if (($i == 1) && exists $month{$self->{SUBFIELDS}->{$key}}) {
-	    $chron = $month{$self->{SUBFIELDS}->{$key}};
+	if (($i == 1) && exists $month{$self->{_mfhdh_SUBFIELDS}->{$key}}) {
+	    $chron = $month{$self->{_mfhdh_SUBFIELDS}->{$key}};
 	} else {
-	    $chron = $self->{SUBFIELDS}->{$key};
+	    $chron = $self->{_mfhdh_SUBFIELDS}->{$key};
 	}
 
 
@@ -107,7 +118,7 @@ sub format_chron {
 
 sub format {
     my $self = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
     my $str = "";
 
     if ($caption->enumeration_is_chronology) {
@@ -125,53 +136,53 @@ sub format {
 	    my $chron;
 	    my $sep;
 
-	    last if !defined $caption->caption($key);
+	    last if !defined $caption->capstr($key);
 
-	    # 	printf("fmt %s: '%s'\n", $key, $caption->caption($key));
+	    # 	printf("fmt %s: '%s'\n", $key, $caption->capstr($key));
 
-	    $capstr = $caption->caption($key);
+	    $capstr = $caption->capstr($key);
 	    if (substr($capstr, 0, 1) eq '(') {
 		# a caption enclosed in parentheses is not displayed
 		$capstr = '';
 	    }
-	    $str .= ($key eq 'a' ? "" : ':') . $capstr . $self->{SUBFIELDS}->{$key}->{HOLDINGS};
+	    $str .= ($key eq 'a' ? "" : ':') . $capstr . $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS};
 	}
 
 	# Chronology
-	if (defined $caption->caption('i')) {
+	if (defined $caption->capstr('i')) {
 	    $str .= '(';
 	    $str .= $self->format_chron('i'..'l');
 	    $str .= ')';
 	}
 
-	if (exists $caption->{ENUMS}->{'g'}) {
+	if ($caption->capstr('g')) {
 	    # There's at least one level of alternative enumeration
 	    $str .= '=';
 	    foreach my $key ('g', 'h') {
-		$str .= ($key eq 'g' ? '' : ':') . $caption->caption($key) . $self->{SUBFIELDS}->{$key}->{HOLDINGS};
+		$str .= ($key eq 'g' ? '' : ':') . $caption->capstr($key) . $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS};
 	    }
 
 	    # This assumes that alternative chronology is only ever
 	    # provided if there is an alternative enumeration.
-	    if (exists $caption->{CHRONS}->{m}) {
+	    if ($caption->capstr('m')) {
 		# Alternative Chronology
 		$str .= '(';
-		$str .= $caption->caption('m') . $self->{SUBFIELDS}->{m}->{HOLDINGS};
+		$str .= $caption->capstr('m') . $self->{_mfhdh_SUBFIELDS}->{m}->{HOLDINGS};
 		$str .= ')';
 	    }
 	}
     }
 
     # Public Note
-    $str .= ' '. $caption->{ENUMS}->{'z'} if (defined $caption->caption('z'));
+    $str .= ' '. $caption->capstr('z') if (defined $caption->capstr('z'));
 
     # Breaks in the sequence
-    if ($self->{BREAK} eq 'n') {
+    if ($self->{_mfhdh_BREAK} eq 'n') {
 	$str .= ' non-gap break';
-    } elsif ($self->{BREAK} eq 'g') {
+    } elsif ($self->{_mfhdh_BREAK} eq 'g') {
 	$str .= ' gap';
-    } elsif ($self->{BREAK}) {
-	warn "unrecognized break indicator '$self->{BREAK}'";
+    } elsif ($self->{_mfhdh_BREAK}) {
+	warn "unrecognized break indicator '$self->{_mfhdh_BREAK}'";
     }
 
     return $str;
@@ -257,14 +268,14 @@ sub next_date {
     my @new;
     my $incr;
 
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
     my $reg = $caption->{REGULARITY};
     my $pattern = $caption->{PATTERN};
     my $freq = $pattern->{w};
 
     foreach my $i (0..@keys) {
-	$new[$i] = $cur[$i] = $self->{SUBFIELDS}->{$keys[$i]}
-	  if exists $self->{SUBFIELDS}->{$keys[$i]};
+	$new[$i] = $cur[$i] = $self->{_mfhdh_SUBFIELDS}->{$keys[$i]}
+	  if exists $self->{_mfhdh_SUBFIELDS}->{$keys[$i]};
     }
 
     if (is_combined($new[-1])) {
@@ -289,19 +300,19 @@ sub next_date {
 sub next_alt_enum {
     my $self = shift;
     my $next = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
 
     # First handle any "alternative enumeration", since they're
     # a lot simpler, and don't depend on the the calendar
     foreach my $key ('h', 'g') {
 	next if !exists $next->{$key};
-	if (!exists $caption->{ENUMS}->{$key}) {
+	if (!$caption->capstr($key)) {
 	    warn "Holding data exists for $key, but no caption specified";
 	    $next->{$key} += 1;
 	    last;
 	}
 
-	my $cap = $caption->{ENUMS}->{$key};
+	my $cap = $caption->capfield($key);
 	if ($cap->{RESTART} && $cap->{COUNT}
 	    && ($next->{$key} == $cap->{COUNT})) {
 	    $next->{$key} = 1;
@@ -315,7 +326,7 @@ sub next_alt_enum {
 sub next_enum {
     my $self = shift;
     my $next = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
     my $carry;
 
     # $carry keeps track of whether we need to carry into the next
@@ -331,7 +342,7 @@ sub next_enum {
     $carry = 0;
     foreach my $key (reverse('b'.. 'f')) {
 	next if !exists $next->{$key};
-	if (!exists $caption->{ENUMS}->{$key}) {
+	if (!$caption->capstr($key)) {
 	    # Just assume that it increments continuously and give up
 	    warn "Holding data exists for $key, but no caption specified";
 	    $next->{$key} += 1;
@@ -339,7 +350,7 @@ sub next_enum {
 	    last;
 	}
 
-	my $cap = $caption->{ENUMS}->{$key};
+	my $cap = $caption->capfield($key);
 	if ($cap->{RESTART} && $cap->{COUNT}
 	    && ($next->{$key} eq $cap->{COUNT})) {
 	    $next->{$key} = 1;
@@ -362,7 +373,7 @@ sub next_enum {
     # 2) Increment the highest level of enumeration (either by date
     #    or because $carry is set because of the above loop
 
-    if (!%{$caption->{CHRONS}}) {
+    if (!%{$caption->{_mfhdc_CHRONS}}) {
 	# The simple case: if there is no chronology specified
 	# then just check $carry and return
 	$next->{'a'} += $carry;
@@ -379,20 +390,20 @@ sub next_enum {
 #
 sub next {
     my $self = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
     my $next = {};
     my $carry;
 
     # Initialize $next with current enumeration & chronology, then
     # we can just operate on $next, based on the contents of the caption
     foreach my $key ('a' .. 'h') {
-	$next->{$key} = $self->{SUBFIELDS}->{$key}->{HOLDINGS}
-	  if exists $self->{SUBFIELDS}->{$key};
+	$next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS}
+	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
     }
 
     foreach my $key ('i'..'m') {
-	$next->{$key} = $self->{SUBFIELDS}->{$key}
-	  if exists $self->{SUBFIELDS}->{$key};
+	$next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}
+	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
     }
 
     if ($caption->enumeration_is_chronology) {
@@ -417,7 +428,7 @@ sub next {
 sub match {
     my $self = shift;
     my $pat = shift;
-    my $caption = $self->{CAPTION};
+    my $caption = $self->{_mfhdh_CAPTION};
 
     foreach my $key ('a'..'f') {
 	my $nextkey;
@@ -426,14 +437,14 @@ sub match {
 	# If the next smaller enumeration exists, and is numbered
 	# continuously, then we don't need to check this one, because
 	# gaps in issue numbering matter, not changes in volume numbering
-	next if (exists $self->{SUBFIELDS}->{$nextkey}
-		 && !$caption->{ENUMS}->{$nextkey}->{RESTART});
+	next if (exists $self->{_mfhdh_SUBFIELDS}->{$nextkey}
+		 && !$caption->capfield($nextkey)->{RESTART});
 
 	# If a subfield exists in $self but not in $pat, or vice versa
 	# or if the field has different values, then fail
-	if (exists($self->{SUBFIELDS}->{$key}) != exists($pat->{$key})
+	if (exists($self->{_mfhdh_SUBFIELDS}->{$key}) != exists($pat->{$key})
 	    || (exists $pat->{$key}
-		&& ($self->{SUBFIELDS}->{$key}->{HOLDINGS} ne $pat->{$key}))) {
+		&& ($self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS} ne $pat->{$key}))) {
 	    return 0;
 	}
     }
@@ -447,8 +458,8 @@ sub match {
 sub validate {
     my $self = shift;
 
-    foreach my $key (keys %{$self->{SUBFIELDS}}) {
-	if (!exists $self->{CAPTION}->{ENUMS}->{$key}) {
+    foreach my $key (keys %{$self->{_mfhdh_SUBFIELDS}}) {
+	if (!$self->{_mfhdh_CAPTION}->capfield($key)) {
 	    return 0;
 	}
     }

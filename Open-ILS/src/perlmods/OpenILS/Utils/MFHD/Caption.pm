@@ -4,33 +4,33 @@ use integer;
 use Carp;
 
 use DateTime;
-use MARC::Record;
+use MARC::Field;
+
+our @ISA = qw(MARC::Field);
 
 sub new
 {
     my $proto = shift;
     my $class = ref($proto) || $proto;
-    my $caption = shift;
-    my $self = {};
+    my $self = shift;
     my $last_enum = undef;
 
-    $self->{CAPTION} = $caption;
-    $self->{ENUMS} = {};
-    $self->{CHRONS} = {};
-    $self->{PATTERN} = {};
-    $self->{COPY} = undef;
-    $self->{UNIT} = undef;
-    $self->{COMPRESSIBLE} = 1;	# until proven otherwise
+    $self->{_mfhdc_ENUMS} = {};
+    $self->{_mfhdc_CHRONS} = {};
+    $self->{_mfhdc_PATTERN} = {};
+    $self->{_mfhdc_COPY} = undef;
+    $self->{_mfhdc_UNIT} = undef;
+    $self->{_mfhdc_COMPRESSIBLE} = 1;	# until proven otherwise
 
-    foreach my $subfield ($caption->subfields) {
+    foreach my $subfield ($self->subfields) {
 	my ($key, $val) = @$subfield;
 	if ($key eq '8') {
 	    $self->{LINK} = $val;
 	} elsif ($key =~ /[a-h]/) {
 	    # Enumeration Captions
-	    $self->{ENUMS}->{$key} = {CAPTION => $val,
-				      COUNT => undef,
-				      RESTART => undef};
+	    $self->{_mfhdc_ENUMS}->{$key} = {CAPTION => $val,
+					     COUNT => undef,
+					     RESTART => undef};
 	    if ($key =~ /[ag]/) {
 		$last_enum = undef;
 	    } else {
@@ -38,28 +38,28 @@ sub new
 	    }
 	} elsif ($key =~ /[i-m]/) {
 	    # Chronology captions
-	    $self->{CHRONS}->{$key} = $val;
+	    $self->{_mfhdc_CHRONS}->{$key} = $val;
 	} elsif ($key eq 'u') {
 	    # Bib units per next higher enumeration level
 	    carp('$u specified for top-level enumeration')
 	      unless defined($last_enum);
-	    $self->{ENUMS}->{$last_enum}->{COUNT} = $val;
+	    $self->{_mfhdc_ENUMS}->{$last_enum}->{COUNT} = $val;
 	} elsif ($key eq 'v') {
 	    carp '$v specified for top-level enumeration'
 	      unless defined($last_enum);
-	    $self->{ENUMS}->{$last_enum}->{RESTART} = ($val eq 'r');
+	    $self->{_mfhdc_ENUMS}->{$last_enum}->{RESTART} = ($val eq 'r');
 	} elsif ($key =~ /[npwxz]/) {
 	    # Publication Pattern ('o' == type of unit, 'q'..'t' undefined)
-	    $self->{PATTERN}->{$key} = $val;
+	    $self->{_mfhdc_PATTERN}->{$key} = $val;
 	} elsif ($key eq 'y') {
 	    # Publication pattern: 'y' is repeatable
-	    $self->{PATTERN}->{y} = [] if (!defined $self->{PATTERN}->{y});
-	    push @{$self->{PATTERN}->{y}}, $val;
+	    $self->{_mfhdc_PATTERN}->{y} = [] if (!defined $self->{_mfhdc_PATTERN}->{y});
+	    push @{$self->{_mfhdc_PATTERN}->{y}}, $val;
 	} elsif ($key eq 'o') {
 	    # Type of unit
-	    $self->{UNIT} = $val;
+	    $self->{_mfhdc_UNIT} = $val;
 	} elsif ($key eq 't') {
-	    $self->{COPY} = $val;
+	    $self->{_mfhdc_COPY} = $val;
 	} else {
 	    carp "Unknown caption subfield '$key'";
 	}
@@ -70,25 +70,25 @@ sub new
     # of "issues" per "volume", or whether numbering of issues
     # restarts, then we can't compress.
     foreach my $key ('b', 'c', 'd', 'e', 'f', 'h') {
-	if (exists $self->{ENUMS}->{$key}) {
-	    my $pattern = $self->{ENUMS}->{$key};
+	if (exists $self->{_mfhdc_ENUMS}->{$key}) {
+	    my $pattern = $self->{_mfhdc_ENUMS}->{$key};
 	    if (!$pattern->{RESTART} || !$pattern->{COUNT}
 		|| ($pattern->{COUNT} eq 'var')
 		|| ($pattern->{COUNT} eq 'und')) {
-		$self->{COMPRESSIBLE} = 0;
+		$self->{_mfhdc_COMPRESSIBLE} = 0;
 		last;
 	    }
 	}
     }
 
     # If there's a $x subfield and a $j, then it's compressible
-    if (exists $self->{PATTERN}->{x} && exists $self->{CHRONS}->{'j'}) {
-	$self->{COMPRESSIBLE} = 1;
+    if (exists $self->{_mfhdc_PATTERN}->{x} && exists $self->{_mfhdc_CHRONS}->{'j'}) {
+	$self->{_mfhdc_COMPRESSIBLE} = 1;
     }
 
     bless ($self, $class);
 
-    if (exists $self->{PATTERN}->{y}) {
+    if (exists $self->{_mfhdc_PATTERN}->{y}) {
 	$self->decode_pattern;
     }
 
@@ -97,7 +97,7 @@ sub new
 
 sub decode_pattern {
     my $self = shift;
-    my $pattern = $self->{PATTERN}->{y};
+    my $pattern = $self->{_mfhdc_PATTERN}->{y};
 
     # XXX WRITE ME (?)
 }
@@ -105,24 +105,42 @@ sub decode_pattern {
 sub compressible {
     my $self = shift;
 
-    return $self->{COMPRESSIBLE};
+    return $self->{_mfhdc_COMPRESSIBLE};
 }
 
-sub caption {
+sub chrons {
     my $self = shift;
-    my $key;
+    my $key = shift;
 
-    if (@_) {
-	$key = shift;
-	if (exists $self->{ENUMS}->{$key}) {
-	    return $self->{ENUMS}->{$key}->{CAPTION};
-	} elsif (exists $self->{CHRONS}->{$key}) {
-	    return $self->{CHRONS}->{$key};
-	} else {
-	    return undef;
-	}
+    if (exists $self->{_mfhdc_CHRONS}->{$key}) {
+	return $self->{_mfhdc_CHRONS}->{$key};
     } else {
-	return $self->{CAPTION};
+	return undef;
+    }
+}
+
+sub capfield {
+    my $self = shift;
+    my $key = shift;
+
+    if (exists $self->{_mfhdc_ENUMS}->{$key}) {
+	return $self->{_mfhdc_ENUMS}->{$key};
+    } elsif (exists $self->{_mfhdc_CHRONS}->{$key}) {
+	return $self->{_mfhdc_CHRONS}->{$key};
+    } else {
+	return undef;
+    }
+}
+
+sub capstr {
+    my $self = shift;
+    my $key = shift;
+    my $val = $self->capfield($key);
+
+    if (ref $val) {
+	return $val->{CAPTION};
+    } else {
+	return $val;
     }
 }
 
@@ -138,18 +156,18 @@ sub enumeration_is_chronology {
     my $self = shift;
 
     # There is always a '$a' subfield in well-formed fields.
-    return 0 if exists $self->{CHRONS}->{i};
+    return 0 if exists $self->{_mfhdc_CHRONS}->{i};
 
     foreach my $key ('a' .. 'f') {
 	my $enum;
 
-	last if !exists $self->{ENUMS}->{$key};
+	last if !exists $self->{_mfhdc_ENUMS}->{$key};
 
-	$enum = $self->{ENUMS}->{$key};
+	$enum = $self->{_mfhdc_ENUMS}->{$key};
 	return 0 if defined $enum->{COUNT} || defined $enum->{RESTART};
     }
 
-    return (exists $self->{PATTERN}->{w} && exists $self->{PATTERN}->{y});
+    return (exists $self->{_mfhdc_PATTERN}->{w} && exists $self->{_mfhdc_PATTERN}->{y});
 }
 
 my %daynames = (
@@ -325,7 +343,7 @@ sub regularity_match {
     my $pubcode = shift;
     my @date = @_;
 
-    foreach my $regularity ($self->{PATTERN}->{y}) {
+    foreach my $regularity ($self->{_mfhdc_PATTERN}->{y}) {
 	next unless $regularity =~ m/^$pubcode/;
 
 	my $chroncode= substr($regularity, 1, 1);

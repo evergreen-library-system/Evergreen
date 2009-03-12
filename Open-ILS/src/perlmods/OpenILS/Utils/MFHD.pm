@@ -8,31 +8,36 @@ use MARC::Record;
 use MFHD::Caption;
 use MFHD::Holding;
 
+our @ISA;
+
+@ISA = qw(MARC::Record);
+
 sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;
-    my $self = {};
-    my $rec = shift;
+    my $self = shift;
 
-    $self->{RECORD} = $rec;
-    $self->{CAPTIONS} = {};
-    $self->{COMPRESSIBLE} = (substr($rec->leader, 17, 1) =~ /[45]/);
+    $self->{_mfhd_CAPTIONS} = {};
+    $self->{_mfhd_COMPRESSIBLE} = (substr($self->leader, 17, 1) =~ /[45]/);
 
     foreach my $field ('853', '854', '855') {
 	my $captions = {};
-	foreach my $caption ($rec->field($field)) {
+	foreach my $caption ($self->field($field)) {
 	    my $cap_id;
 
 	    $cap_id = $caption->subfield('8') || '0';
+	    print "handling caption '$cap_id'\n";
+
 	    if (exists $captions->{$cap_id}) {
-		carp "Multiple unlabelled MFHD captions";
+		carp "Multiple MFHD captions with label '$cap_id'";
 	    }
+
 	    $captions->{$cap_id} = new MFHD::Caption($caption);
-	    if ($self->{COMPRESSIBLE}) {
-		$self->{COMPRESSIBLE} &&= $captions->{$cap_id}->compressible;
+	    if ($self->{_mfhd_COMPRESSIBLE}) {
+		$self->{_mfhd_COMPRESSIBLE} &&= $captions->{$cap_id}->compressible;
 	    }
 	}
-	$self->{CAPTIONS}->{$field} = $captions;
+	$self->{_mfhd_CAPTIONS}->{$field} = $captions;
     }
 
     foreach my $field ('863', '864', '865') {
@@ -41,9 +46,8 @@ sub new {
 
 	($cap_field = $field) =~ s/6/5/;
 
-	foreach my $hfield ($rec->field($field)) {
-	    my $linkage;
-	    my ($link_id, $seqno);
+	foreach my $hfield ($self->field($field)) {
+	    my ($linkage, $link_id, $seqno);
 	    my $holding;
 
 	    $linkage = $hfield->subfield('8');
@@ -53,14 +57,14 @@ sub new {
 		$holdings->{$link_id} = {};
 	    }
 	    $holding = new MFHD::Holding($seqno, $hfield,
-					 $self->{CAPTIONS}->{$cap_field}->{$link_id});
+					 $self->{_mfhd_CAPTIONS}->{$cap_field}->{$link_id});
 	    $holdings->{$link_id}->{$seqno} = $holding;
 
-	    if ($self->{COMPRESSIBLE}) {
-		$self->{COMPRESSIBLE} &&= $holding->validate;
+	    if ($self->{_mfhd_COMPRESSIBLE}) {
+		$self->{_mfhd_COMPRESSIBLE} &&= $holding->validate;
 	    }
 	}
-	$self->{HOLDINGS}->{$field} = $holdings;
+	$self->{_mfhd_HOLDINGS}->{$field} = $holdings;
     }
 
     bless ($self, $class);
@@ -70,14 +74,14 @@ sub new {
 sub compressible {
     my $self = shift;
 
-    return $self->{COMPRESSIBLE};
+    return $self->{_mfhd_COMPRESSIBLE};
 }
 
 sub captions {
     my $self = shift;
     my $field = shift;
 
-    return sort keys %{$self->{CAPTIONS}->{$field}}
+    return sort keys %{$self->{_mfhd_CAPTIONS}->{$field}}
 }
 
 sub holdings {
@@ -85,7 +89,7 @@ sub holdings {
     my $field = shift;
     my $capid = shift;
 
-    return sort {$a->{SEQNO} <=> $b->{SEQNO}} values %{$self->{HOLDINGS}->{$field}->{$capid}};
+    return sort {$a->seqno <=> $b->seqno} values %{$self->{_mfhd_HOLDINGS}->{$field}->{$capid}};
 }
 
 1;
