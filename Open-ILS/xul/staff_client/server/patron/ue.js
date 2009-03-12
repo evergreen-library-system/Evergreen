@@ -664,7 +664,7 @@ function uEditCancel() {
 	if (xulG) if (xulG.usr) id = xulG.usr;
 	if (xulG) if (xulG.params) if (xulG.params.usr) id = xulG.params.usr;
 	/* reload the current user if available */
-	if( id ) href += "&usr=" + id;
+	if( id ) href += (href.match(/\?/) ? "&" : "?") + "usr=" + id;
 	location.href = href;
 }
 
