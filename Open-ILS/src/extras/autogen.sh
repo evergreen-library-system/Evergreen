@@ -81,11 +81,11 @@ echo "Updating web_fieldmapper";
 perl fieldmapper.pl "$CONFIG" "web_core"	> "$JSDIR/fmcore.js";
 
 echo "Updating OrgTree";
-perl org_tree_js.pl "$CONFIG" > "$JSDIR/OrgTree.js";
-cp "$JSDIR/OrgTree.js" "$FMDOJODIR/"
+perl org_tree_js.pl "$CONFIG" "$JSDIR" "OrgTree.js";
+cp "$JSDIR/en-US/OrgTree.js" "$FMDOJODIR/"
 
 echo "Updating OrgTree HTML";
-perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
+perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR" "lib_list.inc";
 
 echo "Updating locales selection HTML";
 perl locale_html_options.pl "$CONFIG" "$SLIMPACDIR/locales.inc";
