@@ -108,6 +108,14 @@ vim:et:ts=4:sw=4:
                     <user>postgres</user>
                     <pw>postgres</pw>
                 </database>
+                <state_store>
+                    <driver>Pg</driver>
+                    <host>localhost</host>
+                    <port>5432</port>
+                    <db>evergreen</db>
+                    <user>postgres</user>
+                    <pw>postgres</pw>
+                </state_store>
                 <files>
                     <!-- successful report outputs go here -->
                     <output_base>LOCALSTATEDIR/web/reporter</output_base>

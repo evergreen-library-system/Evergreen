@@ -45,20 +45,38 @@ if (-e $lockfile) {
 
 OpenSRF::System->bootstrap_client( config_file => $config );
 
-# XXX Get this stuff from the settings server
-my $sc = OpenSRF::Utils::SettingsClient->new;
-my $db_driver = $sc->config_value( reporter => setup => database => 'driver' );
-my $db_host = $sc->config_value( reporter => setup => database => 'host' );
-my $db_port = $sc->config_value( reporter => setup => database => 'port' );
-my $db_name = $sc->config_value( reporter => setup => database => 'db' );
-if (!$db_name) {
-    $db_name = $sc->config_value( reporter => setup => database => 'name' );
-    print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name; 
-}
-my $db_user = $sc->config_value( reporter => setup => database => 'user' );
-my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
+my (%data_db, %state_db);
 
-die "Unable to retrieve database connection information from the settings server" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
+my $sc = OpenSRF::Utils::SettingsClient->new;
+
+$data_db{db_driver} = $sc->config_value( reporter => setup => database => 'driver' );
+$data_db{db_host} = $sc->config_value( reporter => setup => database => 'host' );
+$data_db{db_port} = $sc->config_value( reporter => setup => database => 'port' );
+$data_db{db_name} = $sc->config_value( reporter => setup => database => 'db' );
+if (!$data_db{db_name}) {
+    $data_db{db_name} = $sc->config_value( reporter => setup => database => 'name' );
+    print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $data_db{db_name}; 
+}
+$data_db{db_user} = $sc->config_value( reporter => setup => database => 'user' );
+$data_db{db_pw} = $sc->config_value( reporter => setup => database => 'pw' );
+
+
+
+# Fetch the optional state database connection info
+$state_db{db_driver} = $sc->config_value( reporter => setup => state_store => 'driver' ) || $data_db{db_driver};
+$state_db{db_host} = $sc->config_value( reporter => setup => state_store => 'host' ) || $data_db{db_host};
+$state_db{db_port} = $sc->config_value( reporter => setup => state_store => 'port' ) || $data_db{db_port};
+$state_db{db_name} = $sc->config_value( reporter => setup => state_store => 'db' );
+if (!$state_db{db_name}) {
+    $state_db{db_name} = $sc->config_value( reporter => setup => state_store => 'name' ) || $data_db{db_name};
+}
+$state_db{db_user} = $sc->config_value( reporter => setup => state_store => 'user' ) || $data_db{db_user};
+$state_db{db_pw} = $sc->config_value( reporter => setup => state_store => 'pw' ) || $data_db{db_pw};
+
+
+die "Unable to retrieve database connection information from the settings server"
+    unless ($state_db{db_driver} && $state_db{db_host} && $state_db{db_port} && $state_db{db_name} && $state_db{db_user} &&
+        $data_db{db_driver} && $data_db{db_host} && $data_db{db_port} && $data_db{db_name} && $data_db{db_user});
 
 my $email_server = $sc->config_value( email_notify => 'smtp_server' );
 my $email_sender = $sc->config_value( email_notify => 'sender_address' );
@@ -69,7 +87,8 @@ my $output_base = $sc->config_value( reporter => setup => files => 'output_base'
 
 my $base_uri = $sc->config_value( reporter => setup => 'base_uri' );
 
-my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
+my $state_dsn = "dbi:" . $state_db{db_driver} . ":dbname=" . $state_db{db_name} .';host=' . $state_db{db_host} . ';port=' . $state_db{db_port};
+my $data_dsn = "dbi:" . $data_db{db_driver} . ":dbname=" . $data_db{db_name} .';host=' . $data_db{db_host} . ';port=' . $data_db{db_port};
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
@@ -83,7 +102,7 @@ if ($daemon) {
 
 DAEMON:
 
-$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
+$dbh = DBI->connect($state_dsn,$state_db{db_user},$state_db{db_pw}, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
 $current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 
@@ -156,17 +175,18 @@ for my $r ( @reports ) {
 	# This is the child (runner) process;
 	daemonize("Clark Kent reporting: $r->{report}->{name}");
 
-	$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
+	my $state_dbh = DBI->connect($state_dsn,$state_db{db_user},$state_db{db_pw}, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
+	my $data_dbh = DBI->connect($data_dsn,$data_db{db_user},$data_db{db_pw}, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
 	try {
-		$dbh->do(<<'		SQL',{}, $r->{id});
+		$state_dbh->do(<<'		SQL',{}, $r->{id});
 			UPDATE	reporter.schedule
 			  SET	start_time = now()
 			  WHERE	id = ?;
 		SQL
 
 	    $logger->debug('Report SQL: ' . $r->{resultset}->toSQL);
-		$sth = $dbh->prepare($r->{resultset}->toSQL);
+		$sth = $data_dbh->prepare($r->{resultset}->toSQL);
 
 		$sth->execute;
 		$r->{data} = $sth->fetchall_arrayref;
@@ -210,7 +230,7 @@ for my $r ( @reports ) {
 
 		build_html("$output_dir/report-data.html", $r);
 
-		$dbh->begin_work;
+		$state_dbh->begin_work;
 
 		if ($r->{report}->{recur} ) {
 			my $sql = <<'			SQL';
@@ -229,7 +249,7 @@ for my $r ( @reports ) {
 					VALUES ( ?, ?, ?, ?::TIMESTAMPTZ + ?, ?, ?, ?, ?, ?, ?, ? );
 			SQL
 
-			$dbh->do(
+			$state_dbh->do(
 				$sql,
 				{},
 				$r->{report}->{id},
@@ -247,15 +267,15 @@ for my $r ( @reports ) {
 			);
 		}
 
-		$dbh->do(<<'		SQL',{}, $r->{id});
+		$state_dbh->do(<<'		SQL',{}, $r->{id});
 			UPDATE	reporter.schedule
 			  SET	complete_time = now()
 			  WHERE	id = ?;
 		SQL
 
-		$dbh->commit;
+		$state_dbh->commit;
 
-		my $new_r = $dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
+		my $new_r = $state_dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
 			SELECT * FROM reporter.schedule WHERE id = ?;
 		SQL
 
@@ -269,10 +289,10 @@ for my $r ( @reports ) {
 	} otherwise {
 		my $e = shift;
 		$r->{error_text} = ''.$e;
-		if (!$dbh->{AutoCommit}) {
-			$dbh->rollback;
+		if (!$state_dbh->{AutoCommit}) {
+			$state_dbh->rollback;
 		}
-		$dbh->do(<<'		SQL',{}, $e, $r->{id});
+		$state_dbh->do(<<'		SQL',{}, $e, $r->{id});
 			UPDATE	reporter.schedule
 			  SET	error_text = ?,
 			  	complete_time = now(),
@@ -280,7 +300,7 @@ for my $r ( @reports ) {
 			  WHERE	id = ?;
 		SQL
 
-		my $new_r = $dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
+		my $new_r = $state_dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
 			SELECT * FROM reporter.schedule WHERE id = ?;
 		SQL
 
@@ -293,7 +313,8 @@ for my $r ( @reports ) {
 
 	};
 
-	$dbh->disconnect;
+	$state_dbh->disconnect;
+	$data_dbh->disconnect;
 
 	exit; # leave the child
 }
