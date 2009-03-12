@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
 #include "opensrf/osrf_message.h"
@@ -77,6 +78,7 @@ static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
 static const char* get_primitive( osrfHash* field );
 static const char* get_datatype( osrfHash* field );
+static int is_identifier( const char* s);
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -2263,6 +2265,16 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 { +class : { -or|-and : [ { field : { op : value }, ... }, ...] ... }, ... }
 [ { +class : { -or|-and : [ { field : { op : value }, ... }, ...] ... }, ... }, ... ]
 
+Generate code to express a set of conditions, as for a WHERE clause.  Parameters:
+
+search_hash is the JSON expression of the conditions.
+meta is the class definition from the IDL, for the relevant table.
+opjoin_type indicates whether multiple conditions, if present, should be
+	connected by AND or OR.
+osrfMethodContext is loaded with all sorts of stuff, but all we do with it here is
+	to pass it to other functions -- and all they do with it is to use the session
+	and request members to send error messages back to the client.
+
 */
 
 static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int opjoin_type, osrfMethodContext* ctx ) {
@@ -2311,11 +2323,23 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                 else buffer_add(sql_buf, " AND ");
             }
 
-            if ( !strncmp("+",search_itr->key,1) ) {
-                if ( node->type == JSON_STRING ) {
-                    char* subpred = jsonObjectToSimpleString( node );
-                    buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
-                    free(subpred);
+			if ( '+' == search_itr->key[ 0 ] ) {
+				if ( node->type == JSON_STRING ) {
+					// Intended purpose; to allow reference to a Boolean column.
+					// Verify that the string looks like an identifier.
+					const char* subpred = jsonObjectGetString( node );
+					if( ! is_identifier( subpred ) ) {
+						osrfLogError(
+							 OSRF_LOG_MARK,
+							"%s: Invalid boolean identifier in WHERE clause: \"%s\"",
+							MODULENAME,
+							subpred
+						);
+						jsonIteratorFree( search_itr );
+						buffer_free( sql_buf );
+						return NULL;
+					}
+					buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
                 } else {
                     char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN, ctx );
                     buffer_fadd(sql_buf, "( %s )", subpred);
@@ -4515,4 +4539,61 @@ static const char* get_datatype( osrfHash* field ) {
 			s = "NUMERIC";
 	}
 	return s;
+}
+
+/*
+If the input string is potentially a valid SQL identifier, return 1.
+Otherwise return 0.
+
+Purpose: to prevent certain kinds of SQL injection.  To that end we
+don't necessarily need to follow all the rules exactly, such as requiring
+that the first character not be a digit.
+
+We allow leading and trailing white space.  In between, we do not allow
+punctuation (except for underscores and dollar signs), control 
+characters, or embedded white space.
+
+More pedantically we should allow quoted identifiers containing arbitrary
+characters, but for the foreseeable future such quoted identifiers are not
+likely to be an issue.
+*/
+static int is_identifier( const char* s) {
+	if( !s )
+		return 0;
+
+	// Skip leading white space
+	while( isspace( (unsigned char) *s ) )
+		++s;
+
+	if( !s )
+		return 0;   // Nothing but white space?  Not okay.
+
+	// Check each character until we reach white space or
+	// end-of-string.  Letters, digits, underscores, and 
+	// dollar signs are okay.  Control characters and other
+	// punctuation characters are not okay.  Anything else
+	// is okay -- it could for example be part of a multibyte
+	// UTF8 character such as a letter with diacritical marks,
+	// and those are allowed.
+	do {
+		if( isalnum( (unsigned char) *s )
+			|| '_' == *s
+			|| '$' == *s )
+			;  // Fine; keep going
+		else if(   ispunct( (unsigned char) *s )
+				|| iscntrl( (unsigned char) *s ) )
+			return 0;
+			++s;
+	} while( *s && ! isspace( (unsigned char) *s ) );
+
+	// If we found any white space in the above loop,
+	// the rest had better be all white space.
+	
+	while( isspace( (unsigned char) *s ) )
+		++s;
+
+	if( *s )
+		return 0;   // White space was embedded within non-white space
+
+	return 1;
 }
