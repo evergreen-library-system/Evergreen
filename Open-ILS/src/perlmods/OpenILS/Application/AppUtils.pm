@@ -1377,12 +1377,15 @@ sub get_org_types {
 }
 
 sub get_org_tree {
-	my $cache_diff = shift || '';
+	my $self = shift;
+	my $locale = shift || '';
 	my $cache = OpenSRF::Utils::Cache->new("global", 0);
-	my $tree = $cache->get_cache("orgtree.$cache_diff");
+	my $tree = $cache->get_cache("orgtree.$locale");
 	return $tree if $tree;
 
-	$tree = OpenILS::Utils::CStoreEditor->new->search_actor_org_unit( 
+	my $ses = OpenILS::Utils::CStoreEditor->new;
+	$ses->session->session_locale($locale);
+	$tree = $ses->search_actor_org_unit( 
 		[
 			{"parent_ou" => undef },
 			{
@@ -1393,7 +1396,7 @@ sub get_org_tree {
 		]
 	)->[0];
 
-	$cache->put_cache("orgtree.$cache_diff", $tree);
+	$cache->put_cache("orgtree.$locale", $tree);
 	return $tree;
 }
 
