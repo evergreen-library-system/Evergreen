@@ -9,31 +9,45 @@ use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
+use File::Spec;
 
-die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
+die "usage: perl org_tree_js.pl <bootstrap_config> <path> <filename>" unless $ARGV[2];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
-my $locale = $ARGV[1] || '';
+my $path = $ARGV[1];
+my $filename = $ARGV[2];
 
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
 # must be loaded after the IDL is parsed
 require OpenILS::Utils::CStoreEditor;
 
-warn "removing OrgTree from the cache...\n";
-my $cache = OpenSRF::Utils::Cache->new;
-$cache->delete_cache("orgtree.$locale");
+# Get our list of locales
+my $session = OpenSRF::AppSession->create("open-ils.cstore");
+my $locales = $session->request("open-ils.cstore.direct.config.i18n_locale.search.atomic", {"code" => {"!=" => undef}}, {"order_by" => {"i18n_l" => "name"}})->gather();
+$session->disconnect();
 
-# fetch the org_unit's and org_unit_type's
-my $e = OpenILS::Utils::CStoreEditor->new;
-$e->session->session_locale($locale) if ($locale);
+foreach my $locale (@$locales) {
+	warn "removing OrgTree from the cache for locale " . $locale->code . "...\n";
+	my $cache = OpenSRF::Utils::Cache->new;
+	$cache->delete_cache("orgtree.$locale->code");
 
-my $types = $e->retrieve_all_actor_org_unit_type;
-my $tree = $e->request(
-    'open-ils.cstore.direct.actor.org_unit.search.atomic',
-    {id => {"!=" => undef}},
-    {order_by => {aou => 'name'}, no_i18n => $locale ? 0 : 1 }
-);
+	# fetch the org_unit's and org_unit_type's
+	my $e = OpenILS::Utils::CStoreEditor->new;
+	$e->session->session_locale($locale->code) if ($locale->code);
+
+	my $types = $e->retrieve_all_actor_org_unit_type;
+	my $tree = $e->request(
+		'open-ils.cstore.direct.actor.org_unit.search.atomic',
+		{id => {"!=" => undef}},
+		{order_by => {aou => 'name'}, no_i18n => $locale->code ? 0 : 1 }
+	);
+	my $dir = File::Spec->catdir($path, $locale->code);
+	if (!-d $dir) {
+		mkdir($dir);
+	}
+	build_tree_js($types, $tree, File::Spec->catfile($dir, $filename));
+}
 
 
 sub val {
@@ -50,28 +64,36 @@ sub val {
     return "\"$v\"";
 }
 
-my $pile = "var _l = [";
+sub build_tree_js {
+	my $types = shift;
+	my $tree = shift;
+	my $outfile = shift;
 
-my @array;
-for my $o (@$tree) {
-	my ($i,$t,$p,$n,$v,$s) = ($o->id,$o->ou_type,$o->parent_ou,val($o->name),val($o->opac_visible),val($o->shortname));
-    $p ||= 'null';
-	push @array, "[$i,$t,$p,$n,$v,$s]";
+	my $pile = "var _l = [";
+
+	my @array;
+	for my $o (@$tree) {
+		my ($i,$t,$p,$n,$v,$s) = ($o->id,$o->ou_type,$o->parent_ou,val($o->name),val($o->opac_visible),val($o->shortname));
+		$p ||= 'null';
+		push @array, "[$i,$t,$p,$n,$v,$s]";
+	}
+
+	$pile .= join ',', @array;
+	$pile .= "]; /* Org Units */ \n";
+
+
+	$pile .= 'var globalOrgTypes = [';
+	for my $t (@$types) {
+		my ($u,$v,$d,$i,$n,$o,$p) = (val($t->can_have_users),val($t->can_have_vols),$t->depth,$t->id,val($t->name),val($t->opac_label),$t->parent);
+		$p ||= 'null';
+		$pile .= "new aout([null,null,null,null,$u,$v,$d,$i,$n,$o,$p]), ";
+	}
+	$pile =~ s/, $//; # remove trailing comma
+		$pile .= ']; /* OU Types */';
+	open(OUTFH, '>', $outfile) or die "Could not open $outfile : $!";
+	print OUTFH "$pile\n";
+	close(OUTFH);
 }
 
-$pile .= join ',', @array;
-$pile .= "]; /* Org Units */ \n";
-
-
-$pile .= 'var globalOrgTypes = [';
-for my $t (@$types) {
-    my ($u,$v,$d,$i,$n,$o,$p) = (val($t->can_have_users),val($t->can_have_vols),$t->depth,$t->id,val($t->name),val($t->opac_label),$t->parent);
-    $p ||= 'null';
-    $pile .= "new aout([null,null,null,null,$u,$v,$d,$i,$n,$o,$p]), ";
-}
-$pile =~ s/, $//; # remove trailing comma
-$pile .= ']; /* OU Types */';
-
-print "$pile\n";
 
 
