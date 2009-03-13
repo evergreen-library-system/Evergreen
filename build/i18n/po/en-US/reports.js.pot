@@ -400,3 +400,19 @@ msgstr ""
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
 msgid "Field does not match one of list (comma separated):"
 msgstr ""
+
+#: reports.js:LINK_NULLABLE_LEFT
+msgid "Child"
+msgstr ""
+
+#: reports.js:LINK_NULLABLE_RIGHT
+msgid "Parent"
+msgstr ""
+
+#: reports.js:LINK_NULLABLE_BOTH
+msgid "Both"
+msgstr ""
+
+#: reports.js:LINK_NULLABLE_NONE
+msgid "None"
+msgstr ""

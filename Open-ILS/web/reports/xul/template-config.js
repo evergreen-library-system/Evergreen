@@ -77,19 +77,21 @@ function addReportAtoms () {
 		var field_class = item.getAttribute('idlclass');
 		var datatype = item.getAttribute('datatype');
 		var colname = item.getAttribute('idlfield');
+		var jointype = item.getAttribute('join');
 		var field_label = item.firstChild.firstChild.getAttribute('label');
 
 		var table_name = getSourceDefinition(field_class);
 
 		if ( !rpt_rel_cache[relation_alias] ) {
 			rpt_rel_cache[relation_alias] =
-				{ label : class_label,
-				  alias : relation_alias,
-				  path  : class_path,
-				  reltype  : reltype,
+				{ label     : class_label,
+				  alias     : relation_alias,
+				  path      : class_path,
+				  join      : jointype,
+				  reltype   : reltype,
 				  idlclass  : field_class,
-				  table : table_name,
-				  fields: { dis_tab : {}, filter_tab : {}, aggfilter_tab : {} }
+				  table     : table_name,
+				  fields    : { dis_tab : {}, filter_tab : {}, aggfilter_tab : {} }
 				};
 		}
 
@@ -101,6 +103,7 @@ function addReportAtoms () {
 				  params    : transform && transform.getAttribute('params'),
 				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
+				  join      : jointype,
 				  datatype  : datatype,
 				  op        : '=',
 				  op_label  : rpt_strings.TEMPLATE_CONF_EQUALS,
@@ -121,6 +124,7 @@ function addReportAtoms () {
 				  params    : transform && transform.getAttribute('params'),
 				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
+				  join      : jointype,
 				  datatype  : datatype,
 				  op        : '=',
 				  op_label  : rpt_strings.TEMPLATE_CONF_EQUALS,
@@ -824,36 +828,58 @@ function fleshFromPath ( template, rel ) {
 	var current_obj = template.from;
 	var link;
 	while (link = table_path.shift()) {
+
+		if (prev_link != '') {
+			var prev_class = getIDLClass( prev_link.split(/-/)[0] );
+			var prev_field = prev_link.split(/-/)[1];
+
+			var prev_join = prev_field;
+
+			prev_field = prev_field.split(/>/)[0];
+			prev_join = prev_join.split(/>/)[1];
+
+			var current_link = getIDLLink( prev_class, prev_field );
+			current_obj.key = current_link.getAttribute('key');
+
+            //console.log("prev_link in fleshFromPath is: " + prev_link);
+            //console.log("prev_join in fleshFromPath is: " + prev_join);
+
+            if (prev_join) current_obj.type = prev_join
+			else if ( 
+				(
+					current_link.getAttribute('reltype') != 'has_a' ||
+					prev_type == 'left' ||
+					rel.reltype != 'has_a'
+
+// This disallows outer joins when the item is used in a filter
+//				) && (
+//					getKeys(rel.fields.filter_tab).length == 0 &&
+//					getKeys(rel.fields.aggfitler_tab).length == 0
+
+				)
+			) current_obj.type = 'left';
+
+			prev_type = current_obj.type; 
+
+		}
+
 		if (current_path) current_path += '-';
-		current_path += link;
+		current_path += link.split(/>/)[0];
 
 		var leaf = table_path.length == 0 ? true : false;
 
 		current_obj.path = current_path;
 		current_obj.table = getSourceDefinition( link.split(/-/)[0] );
 
-		if (prev_link != '') {
-			var prev_class = getIDLClass( prev_link.split(/-/)[0] );
-			var prev_field = prev_link.split(/-/)[1];
-
-			var current_link = getIDLLink( prev_class, prev_field );
-			current_obj.key = current_link.getAttribute('key');
-
-			if (
-				(
-					current_link.getAttribute('reltype') != 'has_a' ||
-					prev_type == 'left' ||
-					rel.reltype != 'has_a'
-//				) && (
-//					getKeys(rel.fields.filter_tab).length == 0 &&
-//					getKeys(rel.fields.aggfitler_tab).length == 0
-				)
-			) current_obj.type = 'left';
-
-			prev_type = current_obj.type; 
-		}
 
 		if (leaf) {
+
+    		var join_type = link.split(/-/)[1];
+            if (join_type) {
+	        	join_type = join_type.split(/>/)[1];
+			    if (join_type && join_type != 'undefined') current_obj.type = join_type;
+            }
+
 			current_obj.label = rel.label;
 			current_obj.alias = rel.alias;
 			current_obj.idlclass = rel.idlclass;
@@ -861,6 +887,13 @@ function fleshFromPath ( template, rel ) {
 		} else {
 			var current_class = getIDLClass( link.split(/-/)[0] );
 			var join_field = link.split(/-/)[1];
+			var join_type = join_field;
+
+			join_field = join_field.split(/>/)[0];
+			join_type = join_type.split(/>/)[1];
+
+            //console.log("join_field in fleshFromPath is: " + join_field);
+
 			var join_link = getIDLLink(current_class, join_field);
 
 			if (join_link.getAttribute('reltype') != 'has_a') {

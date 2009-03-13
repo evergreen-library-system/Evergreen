@@ -195,6 +195,7 @@ function populateSourcesTree (idlclass) {
 			},
 			createTreeRow(
 				{ },
+				createTreeCell( { label : '' } ),
 				createTreeCell( { label : name } )
 			),
 			createTreeChildren( { alternatingbackground : true } )
@@ -218,11 +219,13 @@ function populateSourcesSubtree (tcNode, classList) {
 				  key : obj.key,
 				  field : obj.field,
 				  link : obj.link,
+				  join : obj['join'],
 				  reltype : obj.reltype,
 				  fullpath : obj.fullpath
 				},
 				createTreeRow(
 					{ },
+					createTreeCell( { label : obj.nullable } ),
 					createTreeCell( { label : obj.name } )
 				),
 				createTreeChildren( { alternatingbackground : true } )
@@ -257,11 +260,27 @@ function populateDetailTree (tcNode, c, item) {
 		var _label = _cname; 
 
 		if (atom.length > 1 && k == steps.length - 1) {
-			var _f = getIDLField(classNode, atom[1]);
+            var field_name = atom[1];
+            var join_type = field_name;
+
+            field_name = field_name.split(/>/)[0];
+            join_type = join_type.split(/>/)[1];
+
+			var _f = getIDLField(classNode, field_name);
 			var _fname = _f.getAttributeNS(rptNS, 'label');
 			if (!_fname) _fname = _f.getAttribute('name');
 			if (_fname) _label += ' :: ' + _fname; 
-		}
+			if (join_type) _label += ' (' + join_type + ')'; 
+            
+		} else if (atom[1]){
+            var field_name = atom[1];
+            var join_type = field_name;
+
+            field_name = field_name.split(/>/)[0];
+            join_type = join_type.split(/>/)[1];
+
+			if (join_type) _label += ' (' + join_type + ')'; 
+        }
 
 		path_label.push(_label); 
 	}
