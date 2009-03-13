@@ -121,8 +121,16 @@ while ( my $rec = <> ) {
 	$count++;
 }
 
+for my $hint (@order) {
+    next if (grep { $_ eq $hint} @auto);
+    next unless ($fieldcache{$hint}{sequence});
+    $main_out->print("SELECT setval('$fieldcache{$hint}{sequence}'::TEXT, (SELECT MAX($fieldcache{$hint}{pkey}) FROM $fieldcache{$hint}{table}), TRUE);\n\n");
+}
+
 if (grep /^mfr$/, %out_files) {
 	$main_out->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
 }
+
 $main_out->print("COMMIT;\n\n");
 $main_out->close; 
+
