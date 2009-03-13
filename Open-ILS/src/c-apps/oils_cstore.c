@@ -1859,10 +1859,20 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 	const jsonObject* value_obj = jsonObjectGetKeyConst( node, "value" );
 	if ( ! value_obj ) {
 		value = searchWHERE( node, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
+		if( !value ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building condition for field transform", MODULENAME, value);
+			free(field_transform);
+			return NULL;
+		}
 	} else if ( value_obj->type == JSON_ARRAY ) {
 		value = searchValueTransform( value_obj );
 	} else if ( value_obj->type == JSON_HASH ) {
 		value = searchWHERE( value_obj, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
+		if( !value ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform", MODULENAME, value);
+			free(field_transform);
+			return NULL;
+		}
 	} else if ( value_obj->type == JSON_NUMBER ) {
 		value = jsonNumberToDBString( field, value_obj );
 	} else if ( value_obj->type != JSON_NULL ) {
@@ -2220,7 +2230,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
 		if (filter) {
-			char* filter_op = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "filter_op" ) );
+			const char* filter_op = jsonObjectGetString( jsonObjectGetKeyConst( snode, "filter_op" ) );
 			if (filter_op) {
 				if (!strcasecmp("or",filter_op)) {
 					buffer_add( join_buf, " OR " );
@@ -2232,10 +2242,24 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			}
 
 			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN, NULL );
-			OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
-			OSRF_BUFFER_ADD( join_buf, jpred );
-			free(jpred);
-			free(filter_op);
+			if( jpred ) {
+				OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+				OSRF_BUFFER_ADD( join_buf, jpred );
+				free(jpred);
+			} else {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: JOIN failed.  Invalid conditional expression.",
+					MODULENAME
+				);
+				free( field );
+				free( fkey );
+				jsonIteratorFree( search_itr );
+				buffer_free( join_buf );
+				if( freeable_hash )
+					jsonObjectFree( freeable_hash );
+				return NULL;
+			}
 		}
 
 		buffer_add(join_buf, " ) ");
@@ -2317,8 +2341,14 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
             }
 
             char* subpred = searchWHERE( node, meta, opjoin_type, ctx );
-            buffer_fadd(sql_buf, "( %s )", subpred);
-            free(subpred);
+			if( subpred ) {
+            	buffer_fadd(sql_buf, "( %s )", subpred);
+            	free(subpred);
+			} else {
+				jsonIteratorFree( search_itr );
+				buffer_free( sql_buf );
+				return NULL;
+			}
         }
         jsonIteratorFree(search_itr);
 
@@ -2362,19 +2392,36 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 						return NULL;
 					}
 					buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
-                } else {
-                    char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN, ctx );
-                    buffer_fadd(sql_buf, "( %s )", subpred);
-                    free(subpred);
-                }
-            } else if ( !strcasecmp("-or",search_itr->key) ) {
-                char* subpred = searchWHERE( node, meta, OR_OP_JOIN, ctx );
-                buffer_fadd(sql_buf, "( %s )", subpred);
-                free(subpred);
-            } else if ( !strcasecmp("-and",search_itr->key) ) {
-                char* subpred = searchWHERE( node, meta, AND_OP_JOIN, ctx );
-                buffer_fadd(sql_buf, "( %s )", subpred);
-                free(subpred);
+				} else {
+					char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN, ctx );
+					if( subpred ) {
+						buffer_fadd(sql_buf, "( %s )", subpred);
+						free(subpred);
+					} else {
+						jsonIteratorFree( search_itr );
+						buffer_free( sql_buf );
+						return NULL;
+					}
+				}
+			} else if ( !strcasecmp("-or",search_itr->key) ) {
+				char* subpred = searchWHERE( node, meta, OR_OP_JOIN, ctx );
+				if( subpred ) {
+					buffer_fadd(sql_buf, "( %s )", subpred);
+					free( subpred );
+				} else {
+					buffer_free( sql_buf );
+					return NULL;
+				}
+				free(subpred);
+			} else if ( !strcasecmp("-and",search_itr->key) ) {
+				char* subpred = searchWHERE( node, meta, AND_OP_JOIN, ctx );
+				if( subpred ) {
+					buffer_fadd(sql_buf, "( %s )", subpred);
+					free( subpred );
+				} else {
+					buffer_free( sql_buf );
+					return NULL;
+				}
             } else if ( !strcasecmp("-exists",search_itr->key) ) {
                 char* subpred = SELECT(
                     ctx,
