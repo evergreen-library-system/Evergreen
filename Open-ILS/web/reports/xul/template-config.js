@@ -751,7 +751,7 @@ function save_template () {
 	param_count = 0;
 
 	var template = {
-		version    : 2,
+		version    : 3,
 		core_class : $('sources-treetop').getElementsByTagName('treeitem')[0].getAttribute('idlclass'),
 		select     : [],
 		from       : {},
