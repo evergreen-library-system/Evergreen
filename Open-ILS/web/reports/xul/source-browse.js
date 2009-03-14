@@ -45,7 +45,7 @@ function sourceTreeHandler (ev, dbl) {
 				if (map) continue;
 
 				var pathList = [];
-				findAnscestorStack( item, 'treeitem', pathList );
+				findAncestorStack( item, 'treeitem', pathList );
 
 				var fullpath = '';
 

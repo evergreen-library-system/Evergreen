@@ -46,16 +46,16 @@ function getSelectedItems(tree) {
         return itemList;
 }
 
-function findAnscestor (node, name) {
+function findAncestor (node, name) {
         if (node.nodeName == name) return node;
         if (!node.parentNode) return null;
-        return findAnscestor(node.parentNode, name);
+        return findAncestor(node.parentNode, name);
 }       
 
-function findAnscestorStack (node, name, stack) {
+function findAncestorStack (node, name, stack) {
         if (node.nodeName == name) stack.push(node);
         if (!node.parentNode) return null;
-        findAnscestorStack(node.parentNode, name, stack);
+        findAncestorStack(node.parentNode, name, stack);
 }               
 
 function filterByAttribute(nodes,attrN,attrV) {
