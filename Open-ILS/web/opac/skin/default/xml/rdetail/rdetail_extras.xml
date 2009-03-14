@@ -31,7 +31,7 @@
 				<td id='rdetail_excerpt_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("excerpt");' 
-						class='classic_link'>&rdetail.extras.preview;</a>
+						class='classic_link'>&rdetail.extras.excerpt;</a>
 				</td>
 
 				<td id='rdetail_preview_link' class='hide_me rdetail_extras_td'

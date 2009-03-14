@@ -200,7 +200,7 @@ function _rdetailDraw(r) {
 				var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
 				$('rdetail.jacket_attrib_link').setAttribute('href', href);
 			}
-			rdetailCheckForPreview();
+			rdetailCheckForGBPreview();
 
 		} else {
 			hideMe($("rdetail.jacket_attrib_div"));
@@ -386,7 +386,7 @@ function rdetailShowExtra(type, args) {
 		case "preview": 
 			addCSSClass($('rdetail_preview_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_preview_div'));
-			rdetailDisplayPreview();
+			rdetailDisplayGBPreview();
 			break;
 
 		case "anotes": 
