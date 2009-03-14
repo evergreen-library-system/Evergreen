@@ -66,7 +66,7 @@ function sourceTreeHandler (ev, dbl) {
 
 				subtreeList.push(
 					{ name : name,
-					  nullable : 'Default',
+					  nullable : rpt_strings.LINK_NULLABLE_DEFAULT,
 					  idlclass : idlclass,
 					  map : map,
 					  key : key,
@@ -77,67 +77,67 @@ function sourceTreeHandler (ev, dbl) {
 					}
 				);
 
-				if ($('nullable-source-control').checked) {
-					if (reltype == 'has_a') {
-						subtreeList.push(
-							{ name : name,
-							  nullable : 'Parent', //rpt_strings.LINK_NULLABLE_RIGHT,
-							  idlclass : idlclass,
-							  map : map,
-							  key : key,
-							  join : 'right',
-							  field : field.getAttribute('name'),
-							  reltype : reltype,
-							  link : link,
-							  fullpath : fullpath + '>right'
-							}
-						);
+                if ($('nullable-source-control').checked) {
+	                if (reltype == 'has_a') {
+	    				subtreeList.push(
+		    				{ name : name,
+	                          nullable : rpt_strings.LINK_NULLABLE_RIGHT,
+			    			  idlclass : idlclass,
+				    		  map : map,
+					    	  key : key,
+						      join : 'right',
+	    					  field : field.getAttribute('name'),
+		    				  reltype : reltype,
+			    			  link : link,
+				    		  fullpath : fullpath + '>right'
+					    	}
+	    				);
 	
-						subtreeList.push(
-							{ name : name,
-							  nullable : 'None',  //rpt_strings.LINK_NULLABLE_NONE
-							  idlclass : idlclass,
-							  map : map,
-							  key : key,
-							  join : 'inner',
-							  field : field.getAttribute('name'),
-							  reltype : reltype,
-							  link : link,
-							  fullpath : fullpath + '>inner'
-							}
-						);
-
-					} else {
-						subtreeList.push(
-							{ name : name,
-							  nullable : 'Child', //rpt_strings.LINK_NULLABLE_LEFT,
-							  idlclass : idlclass,
-							  map : map,
-							  key : key,
-							  join : 'left',
-							  field : field.getAttribute('name'),
-							  reltype : reltype,
-							  link : link,
-							  fullpath : fullpath + '>left'
-							}
-						);
+	    				subtreeList.push(
+		    				{ name : name,
+	                          nullable : rpt_strings.LINK_NULLABLE_NONE,
+				    		  idlclass : idlclass,
+					    	  map : map,
+						      key : key,
+						      join : 'inner',
+	    					  field : field.getAttribute('name'),
+		    				  reltype : reltype,
+			    			  link : link,
+				    		  fullpath : fullpath + '>inner'
+					    	}
+	    				);
 	
-						subtreeList.push(
-							{ name : name,
-							  nullable : 'None',  //rpt_strings.LINK_NULLABLE_NONE
-							  idlclass : idlclass,
-							  map : map,
-							  key : key,
-							  join : 'inner',
-							  field : field.getAttribute('name'),
-							  reltype : reltype,
-							  link : link,
-							  fullpath : fullpath + '>inner'
-							}
-						);
+	                } else{
+	    				subtreeList.push(
+		    				{ name : name,
+	                          nullable : rpt_strings.LINK_NULLABLE_LEFT,
+			    			  idlclass : idlclass,
+				    		  map : map,
+					    	  key : key,
+						      join : 'left',
+	    					  field : field.getAttribute('name'),
+		    				  reltype : reltype,
+			    			  link : link,
+				    		  fullpath : fullpath + '>left'
+					    	}
+	    				);
 	
-					}
-				}
+	    				subtreeList.push(
+		    				{ name : name,
+	                          nullable : rpt_strings.LINK_NULLABLE_NONE,
+				    		  idlclass : idlclass,
+					    	  map : map,
+						      key : key,
+						      join : 'inner',
+	    					  field : field.getAttribute('name'),
+		    				  reltype : reltype,
+			    			  link : link,
+				    		  fullpath : fullpath + '>inner'
+					    	}
+	    				);
+	
+	                }
+                }
 			}
 
 			populateSourcesSubtree( item.lastChild, subtreeList );

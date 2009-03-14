@@ -1,5 +1,10 @@
 {
 	"RPT_BUILDER_CONFIRM_SAVE": "Name : ${0}\nDescription: ${1}\nSave Template?",
+
+    "LINK_NULLABLE_DEFAULT": "Default",
+    "LINK_NULLABLE_RIGHT": "Parent",
+    "LINK_NULLABLE_LEFT": "Child",
+    "LINK_NULLABLE_NONE": "None",
 	
 	"FILTERS_LABEL_EQUALS":"Equals",
 	"FILTERS_LABEL_LIKE": "Contains Matching substring",

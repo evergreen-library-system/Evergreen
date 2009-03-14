@@ -276,10 +276,17 @@ function populateDetailTree (tcNode, c, item) {
 			var field_name = atom[1];
 			var join_type = field_name;
 
-			field_name = field_name.split(/>/)[0];
-			join_type = join_type.split(/>/)[1];
-
-			if (join_type) _label += ' (' + join_type + ')'; 
+			switch (join_type) {
+				case 'right':
+					_label += ' (' + rpt_strings.LINK_NULLABLE_RIGHT + ')'; 
+					break;
+				case 'left':
+					_label += ' (' + rpt_strings.LINK_NULLABLE_LEFT + ')'; 
+					break;
+				case 'inner':
+					_label += ' (' + rpt_strings.LINK_NULLABLE_NONE + ')'; 
+					break;
+			}
 		}
 
 		path_label.push(_label); 

@@ -180,6 +180,8 @@
 <!ENTITY reports.xul.template_builder.db_source_browser.label "Database Source Browser">
 <!ENTITY reports.xul.template_builder.sources_menulist.label "Sources">
 <!ENTITY reports.xul.template_builder.source_name.label "Source Name">
+<!ENTITY reports.xul.template_builder.source_nullable.label "Nullable">
+<!ENTITY reports.xul.template_builder.nullability_select.label "Enable nullability seletion">
 <!ENTITY reports.xul.template_builder.source_specifier.label "Source Specifier:">
 <!ENTITY reports.xul.template_builder.field_name.label "Field Name">
 <!ENTITY reports.xul.template_builder.data_type.label "Data Type">

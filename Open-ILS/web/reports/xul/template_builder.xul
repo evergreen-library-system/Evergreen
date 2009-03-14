@@ -76,12 +76,12 @@
 					ondblclick="sourceTreeHandlerDblClick(event)"
 				>
 					<treecols>
-						<treecol label="Nullable" flex="0"/>
+						<treecol label="&reports.xul.template_builder.source_nullable.label;" flex="0"/>
 						<treecol primary="true" label="&reports.xul.template_builder.source_name.label;" flex="1"/>
 					</treecols>
 					<treechildren id="sources-treetop" alternatingbackground="true" />
 				</tree>
-                <checkbox id="nullable-source-control" label="Enable nullability seletion"/>
+                <checkbox id="nullable-source-control" label="&reports.xul.template_builder.nullability_select.label;"/>
 			</vbox>
 		</hbox>
 
