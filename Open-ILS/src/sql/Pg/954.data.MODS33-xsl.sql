@@ -19,10 +19,8 @@ UPDATE config.xml_transform SET xslt=$$<xsl:stylesheet xmlns="http://www.loc.gov
 
 
 	
-	<!--
-MARC21slim2MODS3-3.xsl
-2008/10/16
-
+	<!--MARC21slim2MODS3-3.xsl
+Revision 1.27 - Mapped 648 to <subject> 2009/03/13 tmee
 Revision 1.26 - Added subfield $s mapping for 130/240/730  2008/10/16 tmee
 Revision 1.25 - Mapped 040e to <descriptiveStandard> and Leader/18 to <descriptive standard>aacr2  2008/09/18 tmee
 Revision 1.24 - Mapped 852 subfields $h, $i, $j, $k, $l, $m, $t to <shelfLocation> and 852 subfield $u to <physicalLocation> with @xlink 2008/09/17 tmee
@@ -47,7 +45,6 @@ Revision 1.6 - Various validation fixes 2004/02/20 ntra
 Revision 1.5 - MODS2 to MODS3 updates, language unstacking and de-duping, chopPunctuation expanded  2003/10/02 16:18:58  ntra
 Revision 1.3 - Additional Changes not related to MODS Version 2.0 by ntra
 Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
-
 -->
 	<xsl:template match="/">
 		<xsl:choose>
@@ -168,6 +165,11 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 				<!--09/01/04 Added subfield $y-->
 				<xsl:for-each select="marc:subfield[@code='y']">
 					<xsl:attribute name="lang">
+						<xsl:value-of select="text()"/>
+					</xsl:attribute>
+				</xsl:for-each>
+				<xsl:for-each select="marc:subfield[@code='i']">
+					<xsl:attribute name="displayLabel">
 						<xsl:value-of select="text()"/>
 					</xsl:attribute>
 				</xsl:for-each>
@@ -1506,10 +1508,6 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 				<xsl:value-of select="substring($str,1,string-length($str)-1)"/>
 			</note>
 		</xsl:for-each>
-
-
-
-
 
 		<xsl:for-each
 			select="marc:datafield[@tag=501 or @tag=502 or @tag=504 or @tag=507 or @tag=508 or  @tag=513 or @tag=514 or @tag=515 or @tag=516 or @tag=522 or @tag=524 or @tag=525 or @tag=526 or @tag=535 or @tag=536 or @tag=540 or @tag=541 or @tag=544 or @tag=545 or @tag=546 or @tag=547 or @tag=550 or @tag=552 or @tag=555 or @tag=556 or @tag=561 or @tag=562 or @tag=565 or @tag=567 or @tag=580 or @tag=581 or @tag=584 or @tag=585 or @tag=586]">
@@ -2942,6 +2940,30 @@ Revision 1.2 - Added Log Comment  2003/03/24 19:37:42  ckeith
 				<xsl:call-template name="part"/>
 			</titleInfo>
 			<xsl:call-template name="subjectAnyOrder"/>
+		</subject>
+	</xsl:template>
+	<!-- 1.27 648 tmee-->
+	<xsl:template match="marc:datafield[@tag=648]">
+		<subject>
+			<xsl:if test="marc:subfield[@code=2]">
+				<xsl:attribute name="authority">
+					<xsl:value-of select="marc:subfield[@code=2]"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:call-template name="uri"/>
+
+			<xsl:call-template name="subjectAuthority"/>
+			<temporal>
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString">
+						<xsl:call-template name="subfieldSelect">
+							<xsl:with-param name="codes">abcd</xsl:with-param>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</temporal>
+			<xsl:call-template name="subjectAnyOrder"/>
+
 		</subject>
 	</xsl:template>
 	<xsl:template match="marc:datafield[@tag=650]">
