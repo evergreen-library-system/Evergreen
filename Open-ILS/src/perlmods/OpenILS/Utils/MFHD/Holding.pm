@@ -186,7 +186,7 @@ sub format {
     return $str;
 }
 
-my %increments = {
+my %increments = (
 		  a => {years => 1}, # annual
 		  b => {months => 2}, # bimonthly
 		  c => {days => 3}, # semiweekly
@@ -204,7 +204,7 @@ my %increments = {
 		  t => {months => 4}, # three times / year
 		  w => {weeks => 1},  # weekly
 		  # x => completely irregular
-};
+);
 
 sub is_combined {
     my $str = shift;
@@ -237,6 +237,7 @@ sub incr_date {
 		$new[0] += 1;
 		$new[1] -= 12;
 	    }
+	    $new[1] = '0' . $new[1] if ($new[1] < 10);
 	}
     } elsif (scalar(@new) == 3) {
 	# Year, Month, Day: now it gets complicated.
@@ -261,19 +262,19 @@ sub incr_date {
 sub next_date {
     my $self = shift;
     my $next = shift;
+    my $carry = shift;
     my @keys = @_;
     my @cur;
     my @new;
     my $incr;
 
     my $caption = $self->{_mfhdh_CAPTION};
-    my $reg = $caption->{REGULARITY};
-    my $pattern = $caption->{PATTERN};
+    my $reg = $caption->{_mfhdc_REGULARITY};
+    my $pattern = $caption->{_mfhdc_PATTERN};
     my $freq = $pattern->{w};
 
-    foreach my $i (0..@keys) {
-	$new[$i] = $cur[$i] = $self->{_mfhdh_SUBFIELDS}->{$keys[$i]}
-	  if exists $self->{_mfhdh_SUBFIELDS}->{$keys[$i]};
+    foreach my $i (0..$#keys) {
+	$new[$i] = $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
     }
 
     if (is_combined($new[-1])) {
@@ -285,14 +286,29 @@ sub next_date {
     # lists the dates of publication. Use that that list to find the next
     # date following the current one.
     # XXX: the code doesn't handle this case yet.
-
-    if (defined $freq && exists $increments{$freq}) {
+    if (!defined($freq)) {
+	carp "Undefined frequency in next_date!";
+    } elsif (!exists $increments{$freq}) {
+	carp "Don't know how to deal with frequency '$freq'!";
+    } else {
+	#
+	# One of the standard defined issue frequencies
+	#
 	@new = incr_date($increments{$freq}, @new);
 
 	while ($caption->is_omitted(@new)) {
 	    @new = incr_date($increments{$freq}, @new);
 	}
     }
+
+    for my $i (0..$#new) {
+	$next->{$keys[$i]} = $new[$i];
+    }
+
+    # Figure out if we need to adust volume number
+    # right now just use the $carry that was passed in.
+    # in long run, need to base this on ($carry or date_change)
+    $next->{'a'} += $carry;
 }
 
 sub next_alt_enum {
@@ -338,8 +354,9 @@ sub next_enum {
     # 2) it's the right time of the year.
     #
     $carry = 0;
-    foreach my $key (reverse('b'.. 'f')) {
+    foreach my $key (reverse('b'..'f')) {
 	next if !exists $next->{$key};
+
 	if (!$caption->capstr($key)) {
 	    # Just assume that it increments continuously and give up
 	    warn "Holding data exists for $key, but no caption specified";
@@ -371,19 +388,19 @@ sub next_enum {
     # 2) Increment the highest level of enumeration (either by date
     #    or because $carry is set because of the above loop
 
-    if (!%{$caption->{_mfhdc_CHRONS}}) {
+    if (!$caption->subfield('i')) {
 	# The simple case: if there is no chronology specified
 	# then just check $carry and return
 	$next->{'a'} += $carry;
     } else {
 	# Figure out date of next issue, then decide if we need
 	# to adjust top level enumeration based on that
-	$self->next_date($next, ('i'..'m'));
+	$self->next_date($next, $carry, ('i'..'m'));
     }
 }
 
 
-# next: Given a holding statement, return a hash containing the 
+# next: Given a holding statement, return a hash containing the
 # enumeration values for the next issues, whether we hold it or not
 #
 sub next {

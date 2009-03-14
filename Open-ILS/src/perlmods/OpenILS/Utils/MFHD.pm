@@ -23,7 +23,6 @@ sub new {
 	    my $cap_id;
 
 	    $cap_id = $caption->subfield('8') || '0';
-	    print "handling caption '$cap_id'\n";
 
 	    if (exists $captions->{$cap_id}) {
 		carp "Multiple MFHD captions with label '$cap_id'";
