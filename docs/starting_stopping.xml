@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <chapter version="5.0" xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xlink="http://www.w3.org/1999/xlink/">
+  xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Starting and stopping the Evergreen services</title>
     <para>
       This chapter tells you how to start and stop the Evergreen services.
     </para> 
-  <section id="starting_stopping_intro">
+  <section xml:id="starting_stopping_intro">
     <title>Introduction</title>
     <para>
       We may talk a bit about how Evergreen is built on OpenSRF and uses
@@ -15,14 +15,14 @@
       <link xlink:href="http://blah.com">further documentation</link>.
     </para>
   </section>
-  <section id="starting_stopping_start">
+  <section xml:id="starting_stopping_start">
     <title>Starting the Evergreen services</title>
     <para>
       To start all of the Evergreen services on a given server, issue
       the following command as the opensrf user:
-    </para>
-    <userinput><![CDATA[
+      <userinput><![CDATA[
 osrf_ctl.sh -a start_all
 ]]></userinput>
+    </para>
   </section>
 </chapter>
