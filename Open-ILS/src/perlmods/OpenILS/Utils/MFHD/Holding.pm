@@ -7,9 +7,7 @@ use DateTime;
 
 use Data::Dumper;
 
-use MARC::Field;
-
-our @ISA = qw(MARC::Field);
+use base 'MARC::Field';
 
 sub new {
     my $proto = shift;
@@ -119,7 +117,7 @@ sub format_chron {
 sub format {
     my $self = shift;
     my $caption = $self->{_mfhdh_CAPTION};
-    my $str = "";
+    my $str = '';
 
     if ($caption->enumeration_is_chronology) {
 	# if issues are identified by chronology only, then the
@@ -145,7 +143,7 @@ sub format {
 		# a caption enclosed in parentheses is not displayed
 		$capstr = '';
 	    }
-	    $str .= ($key eq 'a' ? "" : ':') . $capstr . $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS};
+	    $str .= ($key eq 'a' ? '' : ':') . $capstr . $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS};
 	}
 
 	# Chronology

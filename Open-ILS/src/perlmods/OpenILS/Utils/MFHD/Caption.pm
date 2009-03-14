@@ -4,9 +4,8 @@ use integer;
 use Carp;
 
 use DateTime;
-use MARC::Field;
 
-our @ISA = qw(MARC::Field);
+use base 'MARC::Field';
 
 sub new
 {
@@ -189,7 +188,7 @@ my $seasonpat = '(21|22|23|24)';
 # Initialize $weeknopat to be '(01|02|03|...|51|52|53)'
 $weeknopat = '(';
 foreach my $weekno (1..52) {
-    $weeknopat .= sprintf("%02d|", $weekno);
+    $weeknopat .= sprintf('%02d|', $weekno);
 }
 $weeknopat .= '53)';
 

@@ -4,13 +4,10 @@ use integer;
 use Carp;
 use Data::Dumper;
 
-use MARC::Record;
-use MFHD::Caption;
-use MFHD::Holding;
+use base 'MARC::Record';
 
-our @ISA;
-
-@ISA = qw(MARC::Record);
+use OpenILS::Utils::MFHD::Caption;
+use OpenILS::Utils::MFHD::Holding;
 
 sub new {
     my $proto = shift;
