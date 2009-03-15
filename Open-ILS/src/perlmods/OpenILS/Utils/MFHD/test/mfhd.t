@@ -115,14 +115,14 @@ __END__
 853 20 $83$av.$bno.$u12$vc$i(year)$j(month)$wm$x01
 863 41 $83.1$a1$b6$i1990$j06$x|a1|b7|i1990|j07$zMiddle of year, middle of vol.
 863 41 $83.2$a1$b11$i1990$j11$x|a1|b12|i1990|j12$zEnd of year, end of vol.
-863 41 $83.3$a1$b12$i1190$j12$x|a2|b13|i1991|j01$zTODO wrap vol @ end of year
+863 41 $83.3$a1$b12$i1990$j12$x|a2|b13|i1991|j01$zwrap vol @ end of year
 
 245 00 $aMonthly, issue no. continuous, calendar change: Mar
 853 20 $84$av.$bno.$u12$vc$i(year)$j(month)$wm$x03
 863 41 $84.1$a1$b6$i1990$j08$x|a1|b7|i1990|j09$zMiddle of year, middle of vol.
 863 41 $84.2$a1$b10$i1990$j12$x|a1|b11|i1991|j01$zEnd of year, middle of vol.
 863 41 $84.3$a1$b11$i1991$j01$x|a1|b12|i1991|j02$zMiddle of year, end of vol.
-863 41 $84.3$a1$b12$i1991$j02$x|a2|b13|i1991|j03$zTODO wrap vol mid-year
+863 41 $84.4$a1$b12$i1991$j02$x|a2|b13|i1991|j03$zwrap vol mid-year
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Jul
 853 20 $85$av.$bno.$u6$vr$i(year)$j(month)$wm$x01,07
@@ -134,7 +134,7 @@ __END__
 853 20 $86$av.$bno.$u6$vc$i(year)$j(month)$wm$x01,07
 863 41 $86.1$a1$b5$i1990$j05$x|a1|b6|i1990|j06$zMiddle of year, end of vol.
 863 41 $86.2$a1$b6$i1990$j06$x|a2|b7|i1990|j07$zTODO Middle of year, end of vol.
-863 41 $86.3$a2$b12$i1990$j12$x|a3|b13|i1991|j01$zTODO End of year, end of vol.
+863 41 $86.3$a2$b12$i1990$j12$x|a3|b13|i1991|j01$zEnd of year, end of vol.
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Combined issue: Jan/Feb
 853 20 $87$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm01/02
