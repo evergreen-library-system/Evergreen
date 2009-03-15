@@ -259,6 +259,15 @@ sub incr_date {
     return @new;
 }
 
+# Test to see if $m1/$d1 is on or after $m2/$d2
+# if $d2 is undefined, test is based on just months
+sub on_or_after {
+    my ($m1, $d1, $m2, $d2) = @_;
+
+    return (($m1 > $m2)
+	    || ($m1 == $m2 && ((!defined $d2) || ($d1 >= $d2))));
+}
+
 sub next_date {
     my $self = shift;
     my $next = shift;
@@ -308,7 +317,51 @@ sub next_date {
     # Figure out if we need to adust volume number
     # right now just use the $carry that was passed in.
     # in long run, need to base this on ($carry or date_change)
-    $next->{'a'} += $carry;
+    if ($carry) {
+	# if $carry is set, the date doesn't matter: we're not
+	# going to increment the v. number twice at year-change.
+	$next->{a} += $carry;
+    } elsif ($caption->subfield('x')) {
+	my $cal_change = $caption->subfield('x');
+	my $month;
+	my $day;
+	my $cur_before;
+	my $new_on_or_after;
+
+	# A calendar change is defined, need to check if it applies
+	if ((scalar(@new) == 2 && $new[1] > 20) || (scalar(@new) == 1)) {
+	    carp "Can't calculate date change for ", $caption->as_string;
+	    return;
+	}
+
+	if (length($cal_change) == 2) {
+	    $month = $cal_change;
+	} elsif (length($cal_change) == 4) {
+	    ($month, $day) = unpack("a2a2", $cal_change);
+	}
+
+# 	print "# next_date: month = '$month', day = '$day'\n";
+# 	print "# next_date: cur[0] = '$cur[0]', cur[1] = '$cur[1]'\n";
+# 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
+
+	if ($cur[0] == $new[0]) {
+	    # Same year, so a 'simple' month/day comparison will be fine
+	    $next->{a} += (!on_or_after($cur[1], $cur[2], $month, $day)
+			   && on_or_after($new[1], $new[2], $month, $day));
+	} else {
+	    # @cur is in the year before @new. There are
+	    # two possible cases for the calendar change date that
+	    # indicate that it's time to change the volume:
+	    # (1) the change date is AFTER @cur in the year, or
+	    # (2) the change date is BEFORE @new in the year.
+	    # 
+	    #  -------|------|------X------|------|
+	    #       @cur    (1)   Jan 1   (2)   @new
+
+	    $next->{a} += (on_or_after($new[1], $new[2], $month, $day)
+			   || !on_or_after($cur[1], $cur[2], $month, $day));
+	}
+    }
 }
 
 sub next_alt_enum {
