@@ -46,6 +46,7 @@
     </script>
 
     <script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
+    <script type="text/javascript" src='/js/dojo/opensrf/opensrf.js'></script>
 
     <script language="javascript" type="text/javascript">
         dojo.require("dijit._Calendar");
