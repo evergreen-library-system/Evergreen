@@ -314,6 +314,7 @@ RETURNS SETOF INTEGER AS $$
 -- by a DISTINCT clause.
 --
 DECLARE
+	b_super       BOOLEAN;
 	n_perm        INTEGER;
 	n_min_depth   INTEGER; 
 	n_work_ou     INTEGER;
@@ -321,6 +322,34 @@ DECLARE
 	n_depth       INTEGER;
 	n_curr_depth  INTEGER;
 BEGIN
+	--
+	-- Check for superuser
+	--
+	SELECT INTO b_super
+		super_user
+	FROM
+		actor.usr
+	WHERE
+		id = user_id;
+	--
+	IF NOT FOUND THEN
+		return;				-- No user?  No permissions.
+	ELSIF b_super THEN
+		--
+		-- Super user has all permissions everywhere
+		--
+		FOR n_work_ou IN
+			SELECT
+				id
+			FROM
+				actor.org_unit
+			WHERE
+				parent_ou IS NULL
+		LOOP
+			RETURN NEXT n_work_ou; 
+		END LOOP;
+		RETURN;
+	END IF;
 	--
 	-- Translate the permission name
 	-- to a numeric permission id
