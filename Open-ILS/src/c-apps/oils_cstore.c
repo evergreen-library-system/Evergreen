@@ -556,27 +556,26 @@ int setSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
+	const char* spName = jsonObjectGetString(jsonObjectGetIndex(ctx->params, spNamePos));
 
-    dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
-    if (!result) {
-        osrfLogError(
-                OSRF_LOG_MARK,
-                "%s: Error creating savepoint %s in transaction %s",
-                MODULENAME,
-                spName,
-                osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
-                );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error creating savepoint" );
-        free(spName);
-        return -1;
-    } else {
-        jsonObject* ret = jsonNewObject(spName);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
-    }
-    free(spName);
-    return 0;
+	dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error creating savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, 
+				"osrfMethodException", ctx->request, "Error creating savepoint" );
+		return -1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
 }
 
 int releaseSavepoint ( osrfMethodContext* ctx ) {
@@ -604,7 +603,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
+	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
     dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
     if (!result) {
@@ -615,15 +614,14 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
                 spName,
                 osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
                 );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error releasing savepoint" );
-        free(spName);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "Error releasing savepoint" );
         return -1;
     } else {
         jsonObject* ret = jsonNewObject(spName);
         osrfAppRespondComplete( ctx, ret );
         jsonObjectFree(ret);
     }
-    free(spName);
     return 0;
 }
 
@@ -652,7 +650,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, spNamePos));
+	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
     dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
     if (!result) {
@@ -663,15 +661,14 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
                 spName,
                 osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
                 );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back savepoint" );
-        free(spName);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, 
+				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
         return -1;
     } else {
         jsonObject* ret = jsonNewObject(spName);
         osrfAppRespondComplete( ctx, ret );
         jsonObjectFree(ret);
     }
-    free(spName);
     return 0;
 }
 
@@ -888,7 +885,7 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 #ifdef PCRUD
 
 static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
-    char* auth = jsonObjectToSimpleString( jsonObjectGetIndex( ctx->params, 0 ) );
+	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
     jsonObject* auth_object = jsonNewObject(auth);
     jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
     jsonObjectFree(auth_object);
@@ -911,7 +908,6 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
         user = jsonNULL;
     }
 
-    free(auth);
     return user;
 
 }
@@ -1247,7 +1243,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
                     if (dbi_result_first_row(result)) {
                         jsonObject* return_val = oilsMakeJSONFromResult( result );
-                        char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
+						const char* has_perm = jsonObjectGetString( jsonObjectGetKeyConst(return_val, "has_perm") );
 
         	            osrfLogDebug(
                             OSRF_LOG_MARK,
@@ -1261,7 +1257,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         );
 
                         if ( *has_perm == 't' ) OK = 1;
-                        free(has_perm); 
                         jsonObjectFree(return_val);
                     }
 
@@ -1279,20 +1274,21 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 atoi(context_org)
             );
 
-            if (result) {
-	            osrfLogDebug( OSRF_LOG_MARK, "Received a result for permission [%s] for user %d at org %d", perm, userid, atoi(context_org) );
-                if (dbi_result_first_row(result)) {
-                    jsonObject* return_val = oilsMakeJSONFromResult( result );
-                    char* has_perm = jsonObjectToSimpleString( jsonObjectGetKeyConst(return_val, "has_perm") );
-	                osrfLogDebug( OSRF_LOG_MARK, "Status of permission [%s] for user %d at org %d is [%s]", perm, userid, atoi(context_org), has_perm );
-                    if ( *has_perm == 't' ) OK = 1;
-                    free(has_perm); 
-                    jsonObjectFree(return_val);
-                }
+			if (result) {
+				osrfLogDebug( OSRF_LOG_MARK, "Received a result for permission [%s] for user %d at org %d",
+						perm, userid, atoi(context_org) );
+				if ( dbi_result_first_row(result) ) {
+					jsonObject* return_val = oilsMakeJSONFromResult( result );
+					const char* has_perm = jsonObjectGetString( jsonObjectGetKeyConst(return_val, "has_perm") );
+					osrfLogDebug( OSRF_LOG_MARK, "Status of permission [%s] for user %d at org %d is [%s]",
+							perm, userid, atoi(context_org), has_perm );
+					if ( *has_perm == 't' ) OK = 1;
+					jsonObjectFree(return_val);
+				}
 
-                dbi_result_free(result); 
-                if (OK) break;
-            }
+				dbi_result_free(result); 
+				if (OK) break;
+			}
 
         }
         if (OK) break;
@@ -1504,11 +1500,11 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		}
 
 		// Find quietness specification, if present
-		char* quiet_str = NULL;
+		const char* quiet_str = NULL;
 		if ( options ) {
 			const jsonObject* quiet_obj = jsonObjectGetKeyConst( options, "quiet" );
 			if( quiet_obj )
-				quiet_str = jsonObjectToSimpleString( quiet_obj );
+				quiet_str = jsonObjectGetString( quiet_obj );
 		}
 
 		if( str_is_true( quiet_str ) ) {  // if quietness is specified
@@ -1538,7 +1534,6 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			jsonObjectFree( fake_params );
 		}
 
-		if(quiet_str) free(quiet_str);
 		free(id);
 	}
 
@@ -1561,7 +1556,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
-	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, id_pos));
+	const char* id = jsonObjectGetString(jsonObjectGetIndex(ctx->params, id_pos));
 	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, order_pos);
 
 	osrfLogDebug(
@@ -1571,7 +1566,6 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		osrfHashGet(meta, "fieldmapper"),
 		id
 	);
-	free(id);
 
 	jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
 	jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH));
@@ -1625,17 +1619,28 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 	if ( !strncmp( numtype, "INT", 3 ) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
 		else {
-			char* val_str = jsonObjectToSimpleString(value);
+			const char* val_str = jsonObjectGetString( value );
 			buffer_fadd( val_buf, "%ld", atol(val_str) );
-			free(val_str);
 		}
 
 	} else if ( !strcmp( numtype, "NUMERIC" ) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
 		else {
-			char* val_str = jsonObjectToSimpleString(value);
+			const char* val_str = jsonObjectGetString( value );
 			buffer_fadd( val_buf, "%f", atof(val_str) );
-			free(val_str);
+		}
+
+	} else {
+		// Presumably this was really intended ot be a string, so quote it
+		char* str = jsonObjectToSimpleString( value );
+		if ( dbi_conn_quote_string(dbhandle, &str) ) {
+			OSRF_BUFFER_ADD( val_buf, str );
+			free(str);
+		} else {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, str);
+			free(str);
+			buffer_free(val_buf);
+			return NULL;
 		}
 	}
 
@@ -1702,20 +1707,20 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 				free(val);
 
 			} else {
-    			char* key_string = jsonObjectToSimpleString(in_item);
-    			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
-    				OSRF_BUFFER_ADD( sql_buf, key_string );
-    				free(key_string);
-    			} else {
-    				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
-    				free(key_string);
-    				buffer_free(sql_buf);
-    				return NULL;
-    			}
-    		}
-    	}
-    }
-    
+				char* key_string = jsonObjectToSimpleString(in_item);
+				if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
+					OSRF_BUFFER_ADD( sql_buf, key_string );
+					free(key_string);
+				} else {
+					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+					free(key_string);
+					buffer_free(sql_buf);
+					return NULL;
+				}
+			}
+		}
+	}
+
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
 
 	return buffer_release(sql_buf);
@@ -1726,16 +1731,13 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 static char* searchValueTransform( const jsonObject* array ) {
 	growing_buffer* sql_buf = buffer_init(32);
 
-	char* val = NULL;
 	jsonObject* func_item;
 	
 	// Get the function name
 	if( array->size > 0 ) {
 		func_item = jsonObjectGetIndex( array, 0 );
-		val = jsonObjectToSimpleString( func_item );
-		OSRF_BUFFER_ADD( sql_buf, val );
+		OSRF_BUFFER_ADD( sql_buf, jsonObjectGetString( func_item ) );
 		OSRF_BUFFER_ADD( sql_buf, "( " );
-		free(val);
 	}
 	
 	// Get the parameters
@@ -1750,7 +1752,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 		if (func_item->type == JSON_NULL) {
 			buffer_add( sql_buf, "NULL" );
 		} else {
-			val = jsonObjectToSimpleString(func_item);
+			char* val = jsonObjectToSimpleString(func_item);
 			if ( dbi_conn_quote_string(dbhandle, &val) ) {
 				OSRF_BUFFER_ADD( sql_buf, val );
 				free(val);
@@ -1794,8 +1796,8 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 static char* searchFieldTransform (const char* class, osrfHash* field, const jsonObject* node) {
 	growing_buffer* sql_buf = buffer_init(32);
 
-	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
-	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
+	const char* field_transform = jsonObjectGetString( jsonObjectGetKeyConst( node, "transform" ) );
+	const char* transform_subcolumn = jsonObjectGetString( jsonObjectGetKeyConst( node, "result_field" ) );
 
 	if(transform_subcolumn)
 		OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );    // enclose transform in parentheses
@@ -1809,8 +1811,6 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 				osrfLogError( OSRF_LOG_MARK,
 					"%s: Expected JSON_ARRAY for function params; found %s",
 					MODULENAME, json_type( array->type ) );
-				free( transform_subcolumn );
-				free( field_transform );
 				buffer_free( sql_buf );
 				return NULL;
 			}
@@ -1827,8 +1827,6 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 					OSRF_BUFFER_ADD( sql_buf, val );
 				} else {
 					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-					free(transform_subcolumn);
-					free(field_transform);
 					free(val);
 					buffer_free(sql_buf);
 					return NULL;
@@ -1845,9 +1843,6 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 
 	if (transform_subcolumn)
 		buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
-
-	if (field_transform) free(field_transform);
-	if (transform_subcolumn) free(transform_subcolumn);
 
 	return buffer_release(sql_buf);
 }
@@ -2052,10 +2047,9 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 	if (join_hash->type == JSON_STRING) {
 		// create a wrapper around a copy of the original
-		char* _tmp = jsonObjectToSimpleString( join_hash );
+		const char* _tmp = jsonObjectGetString( join_hash );
 		freeable_hash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey(freeable_hash, _tmp, NULL);
-		free(_tmp);
 		working_hash = freeable_hash;
 	}
 	else {
@@ -2093,11 +2087,11 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			return NULL;
 		}
 
-		char* fkey = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "fkey" ) );
-		char* field = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "field" ) );
+		const char* fkey = jsonObjectGetString( jsonObjectGetKeyConst( snode, "fkey" ) );
+		const char* field = jsonObjectGetString( jsonObjectGetKeyConst( snode, "field" ) );
 
 		if (field && !fkey) {
-			fkey = (char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
+			fkey = (const char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
 			if (!fkey) {
 				osrfLogError(
 					OSRF_LOG_MARK,
@@ -2110,14 +2104,12 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				buffer_free(join_buf);
 				if(freeable_hash)
 					jsonObjectFree(freeable_hash);
-				free(field);
 				jsonIteratorFree(search_itr);
 				return NULL;
 			}
-			fkey = strdup( fkey );
 
 		} else if (!field && fkey) {
-			field = (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey );
+			field = (const char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey );
 			if (!field) {
 				osrfLogError(
 					OSRF_LOG_MARK,
@@ -2130,11 +2122,10 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				buffer_free(join_buf);
 				if(freeable_hash)
 					jsonObjectFree(freeable_hash);
-				free(fkey);
 				jsonIteratorFree(search_itr);
 				return NULL;
 			}
-			field = strdup( field );
+			field = field;
 
 		} else if (!field && !fkey) {
 			osrfHash* _links = oilsIDL_links( leftclass );
@@ -2148,9 +2139,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				if( other_class && !strcmp( other_class, class ) ) {
 
 					// Found a link between the classes
-					fkey = strdup( osrfHashIteratorKey( itr ) );
-					const char* other_key = osrfHashGet( curr_link, "key" );
-					field = other_key ? strdup( other_key ) : NULL;
+					fkey = osrfHashIteratorKey( itr );
+					field = osrfHashGet( curr_link, "key" );
 					break;
 				}
 			}
@@ -2169,9 +2159,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					if( other_class && !strcmp( other_class, leftclass ) ) {
 
 						// Found a link between the classes
-						fkey = strdup( osrfHashIteratorKey( itr ) );
-						const char* other_key = osrfHashGet( curr_link, "key" );
-						field = other_key ? strdup( other_key ) : NULL;
+						fkey = osrfHashIteratorKey( itr );
+						field = osrfHashGet( curr_link, "key" );
 						break;
 					}
 				}
@@ -2186,8 +2175,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass,
 					class
 				);
-				free( fkey );
-				free( field );
 				buffer_free(join_buf);
 				if(freeable_hash)
 					jsonObjectFree(freeable_hash);
@@ -2197,7 +2184,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 		}
 
-		char* type = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode, "type" ) );
+		const char* type = jsonObjectGetString( jsonObjectGetKeyConst( snode, "type" ) );
 		if (type) {
 			if ( !strcasecmp(type,"left") ) {
 				buffer_add(join_buf, " LEFT JOIN");
@@ -2211,12 +2198,9 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		} else {
 			buffer_add(join_buf, " INNER JOIN");
 		}
-		free(type);
 
 		char* table = getSourceDefinition(idlClass);
 		if( !table ) {
-			free( field );
-			free( fkey );
 			jsonIteratorFree( search_itr );
 			buffer_free( join_buf );
 			if( freeable_hash )
@@ -2231,12 +2215,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
 		if (filter) {
 			const char* filter_op = jsonObjectGetString( jsonObjectGetKeyConst( snode, "filter_op" ) );
-			if (filter_op) {
-				if (!strcasecmp("or",filter_op)) {
-					buffer_add( join_buf, " OR " );
-				} else {
-					buffer_add( join_buf, " AND " );
-				}
+			if ( filter_op && !strcasecmp("or",filter_op) ) {
+				buffer_add( join_buf, " OR " );
 			} else {
 				buffer_add( join_buf, " AND " );
 			}
@@ -2252,8 +2232,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					"%s: JOIN failed.  Invalid conditional expression.",
 					MODULENAME
 				);
-				free( field );
-				free( fkey );
 				jsonIteratorFree( search_itr );
 				buffer_free( join_buf );
 				if( freeable_hash )
@@ -2271,9 +2249,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			OSRF_BUFFER_ADD( join_buf, jpred );
 			free(jpred);
 		}
-
-		free(fkey);
-		free(field);
 	}
 
 	if(freeable_hash)
@@ -2377,7 +2352,20 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
 			if ( '+' == search_itr->key[ 0 ] ) {
 				if ( node->type == JSON_STRING ) {
-					// Intended purpose; to allow reference to a Boolean column.
+					// Intended purpose; to allow reference to a Boolean column
+
+					// Verify that the class alias is not empty
+					if( '\0' == search_itr->key[ 1 ] ) {
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Table alias is empty",
+							MODULENAME
+						);
+						jsonIteratorFree( search_itr );
+						buffer_free( sql_buf );
+						return NULL;
+					}
+
 					// Verify that the string looks like an identifier.
 					const char* subpred = jsonObjectGetString( node );
 					if( ! is_identifier( subpred ) ) {
@@ -2391,6 +2379,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 						buffer_free( sql_buf );
 						return NULL;
 					}
+
 					buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
 				} else {
 					char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), AND_OP_JOIN, ctx );
@@ -2682,12 +2671,11 @@ char* SELECT (
 		free( core_class );
 		return NULL;
 	} else if ( (tmp_const = jsonObjectGetKeyConst( selhash, core_class )) && tmp_const->type == JSON_STRING ) {
-		char* _x = jsonObjectToSimpleString( tmp_const );
+		const char* _x = jsonObjectGetString( tmp_const );
 		if (!strncmp( "*", _x, 1 )) {
 			jsonObjectRemoveKey( selhash, core_class );
 			jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
 		}
-		free(_x);
 	}
 
 	// the query buffer
@@ -2782,12 +2770,11 @@ char* SELECT (
 					class_in_from_clause = 0;
 				else if (join_hash->type == JSON_STRING) {
 					// There's only one class in the FROM clause
-					string = jsonObjectToSimpleString(join_hash);
-					if ( strcmp( string, cname ) )
+					const char* str = jsonObjectGetString(join_hash);
+					if ( strcmp( str, cname ) )
 						class_in_from_clause = 0;    // This isn't it
 					else 
 						class_in_from_clause = 1;    // This is it
-					free( string );
 				} else {
 					jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
 					if ( 0 == found->size )
@@ -2846,7 +2833,7 @@ char* SELECT (
 				if (selfield->type == JSON_STRING) {
 
 					// Look up the field in the IDL
-					const char* col_name = selfield->value.s;
+					const char* col_name = jsonObjectGetString( selfield );
 					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
 					if ( !field_def ) {
 						// No such field in current class
@@ -2925,7 +2912,7 @@ char* SELECT (
 				// ... but it could be an object, in which case we check for a Field Transform
 				} else if (selfield->type == JSON_HASH) {
 
-					char* col_name = jsonObjectToSimpleString( jsonObjectGetKeyConst( selfield, "column" ) );
+					const char* col_name = jsonObjectGetString( jsonObjectGetKeyConst( selfield, "column" ) );
 
 					// Get the field definition from the IDL
 					osrfHash* field_def = osrfHashGet( class_field_set, col_name );
@@ -2986,9 +2973,9 @@ char* SELECT (
 					}
 
 					// Decide what to use as a column alias
-					char* _alias;
+					const char* _alias;
 					if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
-						_alias = jsonObjectToSimpleString( tmp_const );
+						_alias = jsonObjectGetString( tmp_const );
 					} else {         // Use field name as the alias
 						_alias = col_name;
 					}
@@ -3031,18 +3018,14 @@ char* SELECT (
 								buffer_fadd( select_buf,
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
 		 							class_tname, cname, col_name, class_pkey, cname, class_pkey, locale, _alias);
-                            } else {
-					            buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
-                            }
-                        } else {
-					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
-                        }
-				    }
-
-					if( _alias != col_name )
-					    free(_alias);
-					free( col_name );
-			    }
+							} else {
+								buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
+							}
+						} else {
+							buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, _alias);
+						}
+					}
+				}
 				else {
 					osrfLogError(
 						OSRF_LOG_MARK,
@@ -3252,12 +3235,12 @@ char* SELECT (
 		        jsonIterator* order_itr = jsonNewIterator( snode );
 			    while ( (onode = jsonIteratorNext( order_itr )) ) {
 
-				    if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
-					    continue;
+					if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
+						continue;
 
-				    char* direction = NULL;
-				    if ( onode->type == JSON_HASH ) {
-					    if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
+					const char* direction = NULL;
+					if ( onode->type == JSON_HASH ) {
+						if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
 						    string = searchFieldTransform(
 							    class_itr->key,
 							    oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
@@ -3269,28 +3252,24 @@ char* SELECT (
 						    string = buffer_release(field_buf);
 					    }
 
-					    if ( (tmp_const = jsonObjectGetKeyConst( onode, "direction" )) ) {
-						    direction = jsonObjectToSimpleString(tmp_const);
-						    if (!strncasecmp(direction, "d", 1)) {
-							    free(direction);
-							    direction = " DESC";
-						    } else {
-							    free(direction);
-							    direction = " ASC";
-						    }
-					    }
+						if ( (tmp_const = jsonObjectGetKeyConst( onode, "direction" )) ) {
+							const char* dir = jsonObjectGetString(tmp_const);
+							if (!strncasecmp(dir, "d", 1)) {
+								direction = " DESC";
+							} else {
+								direction = " ASC";
+							}
+						}
 
-				    } else {
-					    string = strdup(order_itr->key);
-					    direction = jsonObjectToSimpleString(onode);
-					    if (!strncasecmp(direction, "d", 1)) {
-						    free(direction);
-						    direction = " DESC";
-					    } else {
-						    free(direction);
-						    direction = " ASC";
-					    }
-				    }
+					} else {
+						string = strdup(order_itr->key);
+						const char* dir = jsonObjectGetString(onode);
+						if (!strncasecmp(dir, "d", 1)) {
+							direction = " DESC";
+						} else {
+							direction = " ASC";
+						}
+					}
 
 				    if (first) {
 					    first = 0;
@@ -3313,21 +3292,20 @@ char* SELECT (
 		        jsonIterator* order_itr = jsonNewIterator( snode );
 			    while ( (onode = jsonIteratorNext( order_itr )) ) {
 
-				    char* _f = jsonObjectToSimpleString( onode );
+					const char* _f = jsonObjectGetString( onode );
 
-				    if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, _f))
-					    continue;
+					if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, _f))
+						continue;
 
-				    if (first) {
-					    first = 0;
-				    } else {
-					    buffer_add(order_buf, ", ");
-				    }
+					if (first) {
+						first = 0;
+					} else {
+						buffer_add(order_buf, ", ");
+					}
 
-				    buffer_add(order_buf, _f);
-				    free(_f);
+					buffer_add(order_buf, _f);
 
-			    } // end while
+				} // end while
                 // jsonIteratorFree(order_itr);
 
 
@@ -3387,15 +3365,13 @@ char* SELECT (
 	free(string);
 
 	if ( limit ){
-		string = jsonObjectToSimpleString(limit);
-		buffer_fadd( sql_buf, " LIMIT %d", atoi(string) );
-		free(string);
+		const char* str = jsonObjectGetString(limit);
+		buffer_fadd( sql_buf, " LIMIT %d", atoi(str) );
 	}
 
 	if (offset) {
-		string = jsonObjectToSimpleString(offset);
-		buffer_fadd( sql_buf, " OFFSET %d", atoi(string) );
-		free(string);
+		const char* str = jsonObjectGetString(offset);
+		buffer_fadd( sql_buf, " OFFSET %d", atoi(str) );
 	}
 
 	if (!(flags & SUBSELECT)) OSRF_BUFFER_ADD_CHAR(sql_buf, ';');
@@ -3468,9 +3444,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 		jsonIterator* select_itr = jsonNewIterator( snode );
 		while ( (node = jsonIteratorNext( select_itr )) ) {
-			char* item_str = jsonObjectToSimpleString(node);
+			const char* item_str = jsonObjectGetString( node );
 			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), item_str );
-			free(item_str);
 			char* fname = osrfHashGet(field, "name");
 
 			if (!field) continue;
@@ -3581,24 +3556,20 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 							}
 
 							if ( (_tmp = jsonObjectGetKeyConst( onode, "direction" )) ) {
-								direction = jsonObjectToSimpleString(_tmp);
-								if (!strncasecmp(direction, "d", 1)) {
-									free(direction);
+								const char* dir = jsonObjectGetString(_tmp);
+								if (!strncasecmp(dir, "d", 1)) {
 									direction = " DESC";
 								} else {
 									free(direction);
-									direction = " ASC";
 								}
 							}
 
 						} else {
 							string = strdup(order_itr->key);
-							direction = jsonObjectToSimpleString(onode);
-							if (!strncasecmp(direction, "d", 1)) {
-								free(direction);
+							const char* dir = jsonObjectGetString(onode);
+							if (!strncasecmp(dir, "d", 1)) {
 								direction = " DESC";
 							} else {
-								free(direction);
 								direction = " ASC";
 							}
 						}
@@ -3621,15 +3592,14 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
                     jsonIteratorFree(order_itr);
 
 				} else {
-					string = jsonObjectToSimpleString(snode);
-					buffer_add(order_buf, string);
-					free(string);
+					const char* str = jsonObjectGetString(snode);
+					buffer_add(order_buf, str);
 					break;
 				}
 
 			}
 
-            jsonIteratorFree(class_itr);
+			jsonIteratorFree(class_itr);
 
 			string = buffer_release(order_buf);
 
@@ -3642,24 +3612,22 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		}
 
 		if ( (_tmp = jsonObjectGetKeyConst( order_hash, "limit" )) ){
-			string = jsonObjectToSimpleString(_tmp);
+			const char* str = jsonObjectGetString(_tmp);
 			buffer_fadd(
 				sql_buf,
 				" LIMIT %d",
-				atoi(string)
+				atoi(str)
 			);
-			free(string);
 		}
 
 		_tmp = jsonObjectGetKeyConst( order_hash, "offset" );
 		if (_tmp) {
-			string = jsonObjectToSimpleString(_tmp);
+			const char* str = jsonObjectGetString(_tmp);
 			buffer_fadd(
 				sql_buf,
 				" OFFSET %d",
-				atoi(string)
+				atoi(str)
 			);
-			free(string);
 		}
 	}
 
@@ -3838,9 +3806,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 				if (flesh_fields) {
 					if (flesh_fields->size == 1) {
-						char* _t = jsonObjectToSimpleString( jsonObjectGetIndex( flesh_fields, 0 ) );
+						const char* _t = jsonObjectGetString( jsonObjectGetIndex( flesh_fields, 0 ) );
 						if (!strcmp(_t,"*")) link_fields = osrfHashKeys( links );
-						free(_t);
 					}
 
 					if (!link_fields) {
@@ -3848,7 +3815,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						link_fields = osrfNewStringArray(1);
 						jsonIterator* _i = jsonNewIterator( flesh_fields );
 						while ((_f = jsonIteratorNext( _i ))) {
-							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f ) );
+							osrfStringArrayAdd( link_fields, jsonObjectGetString( _f ) );
 						}
                         jsonIteratorFree(_i);
 					}
@@ -3915,8 +3882,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 						osrfLogDebug(OSRF_LOG_MARK, "Creating dummy params object...");
 
-						char* search_key =
-						jsonObjectToSimpleString(
+						const char* search_key = jsonObjectGetString(
 							jsonObjectGetIndex(
 								cur,
 								atoi( osrfHashGet(value_field, "array_position") )
@@ -3927,15 +3893,12 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							osrfLogDebug(OSRF_LOG_MARK, "Nothing to search for!");
 							continue;
 						}
-							
+
 						jsonObjectSetKey(
 							jsonObjectGetIndex(fake_params, 0),
 							osrfHashGet(kid_link, "key"),
 							jsonNewObject( search_key )
 						);
-
-						free(search_key);
-
 
 						jsonObjectSetKey(
 							jsonObjectGetIndex(fake_params, 1),
@@ -4165,6 +4128,25 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 				buffer_fadd( sql, " %s = %ld", field_name, atol(value) );
 			} else if ( !strcmp( numtype, "NUMERIC" ) ) {
 				buffer_fadd( sql, " %s = %f", field_name, atof(value) );
+			} else {
+				// Must really be intended as a string, so quote it
+				if ( dbi_conn_quote_string(dbhandle, &value) ) {
+					buffer_fadd( sql, " %s = %s", field_name, value );
+				} else {
+					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", MODULENAME, value);
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Error quoting string -- please see the error log for more details"
+					);
+					free(value);
+					free(id);
+					buffer_free(sql);
+					*err = -1;
+					return jsonNULL;
+				}
 			}
 
 			osrfLogDebug( OSRF_LOG_MARK, "%s is of type %s", field_name, numtype );
