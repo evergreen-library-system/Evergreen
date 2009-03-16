@@ -83,6 +83,12 @@ econst OILS_SETTING_HOLD_SOFT_BOUNDARY => 'circ.hold_boundary.soft';
 econst OILS_SETTING_HOLD_HARD_BOUNDARY => 'circ.hold_boundary.hard';
 econst OILS_SETTING_HOLD_EXPIRE => 'circ.hold_expire_interval';
 econst OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL => 'circ.hold_estimate_wait_interval';
+econst OILS_SETTING_VOID_LOST_ON_CHECKIN                => 'circ.void_lost_on_checkin';
+econst OILS_SETTING_MAX_ACCEPT_RETURN_OF_LOST           => 'circ.max_accept_return_of_lost';
+econst OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN    => 'circ.void_lost_proc_fee_on_checkin';
+econst OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN      => 'circ.restore_overdue_on_lost_return';
+econst OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE          => 'circ.lost_immediately_available';
+
 
 
 

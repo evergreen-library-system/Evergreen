@@ -318,6 +318,8 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::Circ::ScriptBuilder;
 use OpenILS::Const qw/:const/;
 use OpenILS::Utils::Penalty;
+use OpenILS::Application::Circ::CircCommon;
+use Time::Local;
 
 my $holdcode    = "OpenILS::Application::Circ::Holds";
 my $transcode   = "OpenILS::Application::Circ::Transit";
@@ -2085,8 +2087,6 @@ sub process_received_transit {
 
 sub checkin_handle_circ {
    my $self = shift;
-    $U->logmark;
-
    my $circ = $self->circ;
    my $copy = $self->copy;
    my $evt;
@@ -2107,33 +2107,95 @@ sub checkin_handle_circ {
 
    # see if there are any fines owed on this circ.  if not, close it
     ($obt) = $U->fetch_mbts($circ->id, $self->editor);
-   $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
+    $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
 
     $logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
 
-   # Set the checkin vars since we have the item
+    # Set the checkin vars since we have the item
     $circ->checkin_time( ($self->backdate) ? $self->backdate : 'now' );
 
-   $circ->checkin_staff($self->editor->requestor->id);
-   $circ->checkin_lib($self->editor->requestor->ws_ou);
+    $circ->checkin_staff($self->editor->requestor->id);
+    $circ->checkin_lib($self->editor->requestor->ws_ou);
 
     my $circ_lib = (ref $self->copy->circ_lib) ?  
         $self->copy->circ_lib->id : $self->copy->circ_lib;
     my $stat = $U->copy_status($self->copy->status)->id;
 
-    # If the item is lost/missing and it needs to be sent home, don't 
-    # reshelve the copy, leave it lost/missing so the recipient will know
-    if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING)
-        and ($circ_lib != $self->editor->requestor->ws_ou) ) {
-        $logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
+    # immediately available keeps items lost or missing items from going home before being handled
+    my $lost_immediately_available = $U->ou_ancestor_setting_value(
+        $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
+
+
+    if ( (!$lost_immediately_available) && ($circ_lib != $self->editor->requestor->ws_ou) ) {
+
+        if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING) ) {
+            $logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
+        } else {
+            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+            $self->update_copy;
+        }
+
+    } elsif ($stat == OILS_COPY_STATUS_LOST) {
+
+        $self->checkin_handle_lost($circ_lib);
 
     } else {
+
         $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
         $self->update_copy;
     }
 
     return $self->bail_on_events($self->editor->event)
         unless $self->editor->update_action_circulation($circ);
+
+    # make sure the circ isn't closed if we just voided some fines
+    $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($self->editor, $circ->id);
+    return $self->bail_on_events($evt) if $evt;
+
+    return undef;
+}
+
+
+# ------------------------------------------------------------------
+# See if we need to void billings for lost checkin
+# ------------------------------------------------------------------
+sub checkin_handle_lost {
+    my $self = shift;
+    my $circ_lib = shift;
+    my $circ = $self->circ;
+
+    my $max_return = $U->ou_ancestor_setting_value(
+        $circ_lib, OILS_SETTING_MAX_ACCEPT_RETURN_OF_LOST, $self->editor) || 0;
+
+    if ($max_return) {
+
+        my $today = time();
+        my @tm = reverse($circ->due_date =~ /([\d\.]+)/og);
+        $tm[5] -= 1 if $tm[5] > 0;
+        my $due = timelocal(int($tm[1]), int($tm[2]), int($tm[3]), int($tm[4]), int($tm[5]), int($tm[6]));
+
+        my $last_chance = OpenSRF::Utils->interval_to_seconds($max_return) + int($due);
+        $logger->info("MAX OD: ".$max_return."  DUEDATE: ".$circ->due_date."  TODAY: ".$today."  DUE: ".$due."  LAST: ".$last_chance);
+
+        $max_return = 0 if $today < $last_chance;
+    }
+
+    if (!$max_return){  # there's either no max time to accept returns defined or we're within that time
+
+        my $void_lost = $U->ou_ancestor_setting_value(
+            $circ_lib, OILS_SETTING_VOID_LOST_ON_CHECKIN, $self->editor) || 0;
+        my $void_lost_fee = $U->ou_ancestor_setting_value(
+            $circ_lib, OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN, $self->editor) || 0;
+        my $restore_od = $U->ou_ancestor_setting_value(
+            $circ_lib, OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN, $self->editor) || 0;
+
+        $self->checkin_handle_lost_now_found(3) if $void_lost;
+        $self->checkin_handle_lost_now_found(4) if $void_lost_fee;
+        $self->checkin_handle_lost_now_found_restore_od() if $restore_od;
+    }
+
+    $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+    $self->update_copy;
 }
 
 
@@ -2434,5 +2496,66 @@ sub make_trigger_events {
     # ignore response
 }
 
+
+
+sub checkin_handle_lost_now_found {
+    my ($self, $bill_type) = @_;
+
+    # ------------------------------------------------------------------
+    # remove charge from patron's account if lost item is returned
+    # ------------------------------------------------------------------
+
+    my $bills = $self->editor->search_money_billing(
+        {
+            xact => $self->circ->id,
+            btype => $bill_type
+        }
+    );
+
+    $logger->debug("voiding lost item charge of  ".scalar(@$bills));
+    for my $bill (@$bills) {
+        if( !$U->is_true($bill->voided) ) {
+            $logger->info("lost item returned - voiding bill ".$bill->id);
+            $bill->voided('t');
+            $bill->void_time('now');
+            $bill->voider($self->editor->requestor->id);
+            my $note = ($bill->note) ? $bill->note . "\n" : '';
+            $bill->note("${note}System: VOIDED FOR LOST ITEM RETURNED");
+
+            $self->bail_on_events($self->editor->event)
+                unless $self->editor->update_money_billing($bill);
+        }
+    }
+}
+
+sub checkin_handle_lost_now_found_restore_od {
+    my $self = shift;
+
+    # ------------------------------------------------------------------
+    # restore those overdue charges voided when item was set to lost
+    # ------------------------------------------------------------------
+
+    my $ods = $self->editor->search_money_billing(
+        {
+                xact => $self->circ->id,
+                btype => 1
+        }
+    );
+
+    $logger->debug("returning overdue charges pre-lost  ".scalar(@$ods));
+    for my $bill (@$ods) {
+        if( $U->is_true($bill->voided) ) {
+                $logger->info("lost item returned - restoring overdue ".$bill->id);
+                $bill->voided('f');
+                $bill->clear_void_time;
+                $bill->voider($self->editor->requestor->id);
+                my $note = ($bill->note) ? $bill->note . "\n" : '';
+                $bill->note("${note}System: LOST RETURNED - OVERDUES REINSTATED");
+
+                $self->bail_on_events($self->editor->event)
+                        unless $self->editor->update_money_billing($bill);
+        }
+    }
+}
 
 
