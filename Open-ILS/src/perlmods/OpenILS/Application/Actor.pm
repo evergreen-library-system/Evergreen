@@ -3178,5 +3178,47 @@ sub update_user_pending_address {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'user_events',
+	api_name    => 'open-ils.actor.user.events.circ',
+    stream      => 1,
+);
+__PACKAGE__->register_method (
+	method		=> 'user_events',
+	api_name    => 'open-ils.actor.user.events.ahr',
+    stream      => 1,
+);
+
+sub user_events {
+    my($self, $conn, $auth, $user_id, $filters) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    (my $obj_type = $self->api_name) =~ s/.*\.([a-z]+)$/$1/;
+    my $user_field = 'usr';
+
+    $filters ||= {};
+    $filters->{target} = { 
+        select => { $obj_type => ['id'] },
+        from => $obj_type,
+        where => {usr => $user_id}
+    };
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+    if($e->requestor->id != $user_id) {
+        return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    }
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    my $req = $ses->request('open-ils.trigger.events_by_target', $obj_type, $filters);
+    while(my $resp = $req->recv) {
+        my $val = $resp->content;
+        $conn->respond($val) if $val;
+    }
+
+    return undef;
+}
+
+
 1;
 
