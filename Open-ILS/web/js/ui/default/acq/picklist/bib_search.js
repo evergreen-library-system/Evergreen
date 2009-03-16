@@ -78,8 +78,14 @@ function clearSearchForm() {
     }
 }
 
+var resultRow;
 function doSearch(values) {
-    dojo.style('oils-acq-pl-loading', 'visibility', 'visible');
+    showDiv('oils-acq-pl-loading');
+
+    var tbody = dojo.byId('plist-tbody');
+    if(!resultRow) 
+        resultRow = tbody.removeChild(dojo.byId('plist-row')); 
+    while(tbody.childNodes[0]) tbody.removeChild(tbody.childNodes[0]);
 
     search = {
         service : [],
@@ -116,37 +122,60 @@ function doSearch(values) {
     );
 }
 
-function setRowAttr(row, liWrapper, field) {
-    var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition') || '';
-    dojo.query('[name='+field+']', row)[0].appendChild(document.createTextNode(val));
+var selectState = false;
+function toggleSelect() {
+    var inputs = dojo.query('[name=selectbox]', dojo.byId('plist-tbody'));
+    if(selectState)
+        dojo.forEach(inputs, function(i){i.checked = false});
+    else
+        dojo.forEach(inputs, function(i){i.checked = true});
+    selectState = !selectState;
 }
 
-var resultRow;
+function getSelected() {
+    var inputs = dojo.query('[name=selectbox]', dojo.byId('plist-tbody'));
+    var selected = [];
+    dojo.forEach(inputs, function(i) { 
+        if(i.checked) 
+            selected.push(liCache[i.parentNode.parentNode.getAttribute('li')]);
+    });
+    return selected;
+}
+
+function setRowAttr(td, liWrapper, field) {
+    var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition') || '';
+    td.appendChild(document.createTextNode(val));
+}
+
 function handleResult(r) {
     var result = openils.Util.readResponse(r);
     dojo.style('oils-acq-pl-search-results', 'display', 'block');
-    dojo.style('oils-acq-search-block', 'display', 'none');
-
     var tbody = dojo.byId('plist-tbody');
-    if(!resultRow) 
-        resultRow = tbody.removeChild(dojo.byId('plist-row')); 
 
     if(result.lineitem) {
         var li = result.lineitem;
         liCache[li.id()] = li;
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
         var row = resultRow.cloneNode(true);
-        var tds = dojo.query('[name]', row);
-        dojo.forEach(tds, function(td) {setRowAttr(row, liWrapper, td.getAttribute('name'));});
+        row.setAttribute('li', li.id());
+        var tds = dojo.query('[attr]', row);
+        dojo.forEach(tds, function(td) {setRowAttr(td, liWrapper, td.getAttribute('attr'));});
+        dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
         tbody.appendChild(row);
     }
+
+    if(result.complete) // hide the loading image
+        showDiv('oils-acq-pl-search-results');
 }
 
 
-function showPlForm() {
-    dojo.style('oils-acq-pl-search-results', 'display', 'none');
-    dojo.style('oils-acq-search-block', 'display', 'block');
-    dojo.style('oils-acq-pl-loading', 'visibility', 'hidden');
+function showDiv(div) {
+    var divs = [
+        'oils-acq-pl-search-results',
+        'oils-acq-search-block', 
+        'oils-acq-pl-loading' ];
+    dojo.forEach(divs, function(d) {dojo.style(d,'display', 'none')});
+    dojo.style(div, 'display', 'block');
 }
 
 function loadPLSelect() {
@@ -173,20 +202,8 @@ function loadPLSelect() {
 function saveResults(values) {
     selectedLIs = resultLIs;
 
-    if(values.which == 'selected') {
-        selectedLIs = [];
-        var selected = plResultGrid.selection.getSelected();
-        for(var idx = 0; idx < selected.length; idx++) {
-            var rowIdx = selected[idx];
-            var id = plResultGrid.model.getRow(rowIdx).id;
-            for(var i = 0; i < resultLIs.length; i++) {
-                var pl = resultLIs[i];
-                if(pl.id() == id) {
-                    selectedLIs.push(pl);
-                }
-            }
-        }
-    }
+    if(values.which == 'selected') 
+        selectedLIs = getSelected();
         
     if(values.new_name && values.new_name != '') {
         // save selected lineitems to a new picklist

@@ -11,8 +11,8 @@
 
 /* bib search */
 #oils-acq-search-container { width:100%; }
-#oils-acq-search-sources-block { width:32%; vertical-align: top; float: left; margin-right: 10px;}
-#oils-acq-search-form-block { width:63%; vertical-align: top; float:right; }
+#oils-acq-search-sources-block { vertical-align: top; margin-top: 20px;}
+#oils-acq-search-form-block { vertical-align: top; margin-top: 20px;}
 #oils-acq-search-sources-selector { padding: 2px; }
 #oils-acq-search-sources-selector option { margin-bottom: 2px; }
 .oils-acq-search-form-row { width: 100%; }
@@ -25,7 +25,8 @@
 .oils-acq-search-subsources-label { margin-top: 5px; }
 #oils-acq-search-sources-label { margin-bottom: 10px; }
 #oils-acq-search-fields-label { margin-bottom: 10px; }
-#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
+/*#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}*/
+#oils-acq-search-fields-submit-block { margin: 5px; }
 #oils-acq-search-progress {width: 100%; text-align: center;}
 #oils-acq-search-source-select option {padding: 5px;}
 #oils-acq-search-fields-tbody td {padding: 3px;}
@@ -92,5 +93,5 @@
 
 
 #oila-acq-picklist-result-table {width:100%}
-#oila-acq-picklist-result-table th {font-weight: bold; border-bottom:1px solid #888;}
-#oila-acq-picklist-result-table td {padding:6px; border-bottom:1px solid #888;}
+#oila-acq-picklist-result-table th {padding:5px; font-weight: bold; border-bottom:1px solid #888;}
+#oila-acq-picklist-result-table td {padding:5px; border-bottom:1px solid #888; height:3em;}

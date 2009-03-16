@@ -19,7 +19,7 @@
             <div id='oils-acq-search-sources-label'>Search Sources</div>
             <select style='overflow-y:auto;' id='oils-acq-search-source-select' 
                     multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
-                <option value='native-evergreen-catalog'>Evergreen Catalog</option>
+                <option selected='selected' value='native-evergreen-catalog'>Evergreen Catalog</option>
             </select>
         </div>
         <div id='oils-acq-search-form-block'>
@@ -40,27 +40,21 @@
                             value='10'></input>
                         </td>
                     </tr>
+                    <tr id='oils-acq-search-fields-submit-block'>
+                        <td><div dojoType='dijit.form.Button' type='submit'>Submit</div></td>
+                        <td><div dojoType='dijit.form.Button' onclick='clearSearchForm()'>Clear Form</div></td>
+                    </tr>
                 </tbody>
             </table>
-            <div id='oils-acq-search-fields-submit-block'>
-                <div dojoType='dijit.form.Button' type='submit'>Submit</div>
-                
-                <div dojoType='dijit.form.Button' onclick='clearSearchForm()'>Clear Form</div>
-            </div>
         </div>
     </form>
-
-    <div id='oils-acq-pl-loading' style='visibility:hidden'>
-        <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif'/>
-    </div>
 </div>
-
 
 <div id='oils-acq-pl-search-results'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Search Results</div>
         <div>
-            <div dojoType='dijit.form.Button' onClick='showPlForm'>New Search</div>
+            <div dojoType='dijit.form.Button' onClick='showDiv("oils-acq-search-block");'>New Search</div>
             <div dojoType="dijit.form.DropDownButton">
                 <span>Save Results</span>
                 <div dojoType="dijit.TooltipDialog" execute="saveResults(arguments[0]);">
@@ -102,24 +96,33 @@
         <table id='oila-acq-picklist-result-table'>
             <thead>
                 <tr>
-                    <th>Select</th><th>Title</th><th>Author</th><th>ISBN</th><th>ISSN</th><th>Edition</th><th>Pubdate</th><th>Publisher</th>
+                    <th><a href='javascript:toggleSelect();'>Select</a></th>
+                    <th>Title</th><th>Author</th><th>ISBN</th>
+                    <th>ISSN</th><th>Edition</th><th>Pubdate</th>
+                    <th>Publisher</th><th>Source</th>
                 </tr>
             </thead>
             <tbody id='plist-tbody'>
                 <tr id='plist-row'>
                     <td name='selector'><input type='checkbox' name='selectbox'/></td>
-                    <td name='title'/>
-                    <td name='author'/>
-                    <td name='isbn'/>
-                    <td name='issn'/>
-                    <td name='edition'/>
-                    <td name='pubdate'/>
-                    <td name='publisher'/>
+                    <td attr='title'/>
+                    <td attr='author'/>
+                    <td attr='isbn'/>
+                    <td attr='issn'/>
+                    <td attr='edition'/>
+                    <td attr='pubdate'/>
+                    <td attr='publisher'/>
+                    <td name='source_label'/>
                 </tr>
             </tbody>
         </table>    
     </div>
 </div>
+
+<div id='oils-acq-pl-loading' style='width:100%;margin-top:100px;display:none;text-align:center'>
+    <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif'/>
+</div>
+
 <script>dojo.style('oils-acq-pl-search-results', 'display', 'none');</script>
 [% END %]
 
