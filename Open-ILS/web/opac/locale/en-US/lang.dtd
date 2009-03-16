@@ -1578,14 +1578,29 @@
 <!ENTITY staff.server.admin.org_settings.cat.bib.alert_on_empty.desc "Alert staff when the last copy for a record is being deleted">
 <!ENTITY staff.server.admin.org_settings.patron.password.use_phone "Patron: password from phone #">
 <!ENTITY staff.server.admin.org_settings.patron.password.use_phone.desc "Use the last 4 digits of the patrons phone number as the default password when creating new users">
-<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return "Void lost item fine when returned">
-<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc "Void lost item fine when returned">
-<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval "Void lost item fine when returned before interval">
-<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval.desc "Void lost item fine when returned before interval">
 <!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged "Charge item price when marked damaged">
 <!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged.desc "Charge item price when marked damaged">
 <!ENTITY staff.server.admin.org_settings.circ.damaged_item_processing_fee "Charge processing fee for damaged items">
 <!ENTITY staff.server.admin.org_settings.circ.damaged_item_processing_fee.desc "Charge processing fee for damaged items">
+
+
+
+<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return "Void lost item fine when returned">
+<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return.desc "Void lost item fine when returned">
+<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval "Void lost item fine when returned before interval">
+<!ENTITY staff.server.admin.org_settings.circ.void_item_billing_on_lost_return_before_interval.desc "Void lost item fine when returned before interval">
+
+<!ENTITY staff.server.admin.org_settings.circ.void_lost_on_checkin "Circ: Void lost item billing when returned">
+<!ENTITY staff.server.admin.org_settings.circ.void_lost_on_checkin.desc "Void lost item billing when returned">
+<!ENTITY staff.server.admin.org_settings.circ.max_accept_return_of_lost "Circ: Void lost max interval">
+<!ENTITY staff.server.admin.org_settings.circ.max_accept_return_of_lost.desc "Items that have been lost this long will not result in voided billings when returned.  E.g. \'6 months\'">
+<!ENTITY staff.server.admin.org_settings.circ.void_lost_proc_fee_on_checkin "Circ: Void processing fee on lost item return">
+<!ENTITY staff.server.admin.org_settings.circ.void_lost_proc_fee_on_checkin.desc "Void processing fee when lost item returned">
+<!ENTITY staff.server.admin.org_settings.circ.restore_overdue_on_lost_return "Circ: Restore overdues on lost item return">
+<!ENTITY staff.server.admin.org_settings.circ.restore_overdue_on_lost_return.desc "Restore overdue fines on lost item return">
+<!ENTITY staff.server.admin.org_settings.circ.lost_immediately_available "Circ: Lost items usable on checkin">
+<!ENTITY staff.server.admin.org_settings.circ.lost_immediately_available.desc "Lost items are usable on checkin instead of going \'home\' first">
+
 
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
