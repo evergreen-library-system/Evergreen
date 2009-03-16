@@ -374,14 +374,14 @@ sub retrieve_copies {
 	}
 
 	if( $self->api_name =~ /global/ ) {
-		return _build_volume_list( { record => $docid, deleted => 'f' } );
+		return _build_volume_list( { record => $docid, deleted => 'f', label => { '<>' => '##URI##' } } );
 
 	} else {
 
 		my @all_vols;
 		for my $orgid (@org_ids) {
 			my $vols = _build_volume_list( 
-					{ record => $docid, owning_lib => $orgid, deleted => 'f' } );
+					{ record => $docid, owning_lib => $orgid, deleted => 'f', label => { '<>' => '##URI##' } } );
 			push( @all_vols, @$vols );
 		}
 		
