@@ -24,7 +24,7 @@ function oilsSetupUser() {
         });
         return;
     }
-    dojo.cookie('ses', authtoken, {path : oilsCookieBase});
+    dojo.cookie('ses', authtoken, {path : oilsBasePath});
     openils.User.authtoken = authtoken;
     openils.User.workstation = dojo.cookie('oils.ws');
 }
@@ -36,7 +36,7 @@ function oilsDoLogin() {
         passwd: dojo.byId('oils-login-password').value,
         type: 'staff' // hardcode for now
     });
-    dojo.cookie('ses', user.authtoken, {path : oilsCookieBase});
+    dojo.cookie('ses', user.authtoken, {path : oilsBasePath});
     location.href = location.href;
     return false;
 }

@@ -10,7 +10,7 @@
             djConfig="parseOnLoad: true, isDebug:true"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
         <script>
-            var oilsCookieBase = '[% ctx.base_uri %]';
+            var oilsBasePath = '[% ctx.base_uri %]';
         </script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/base.js"></script>
     </head>
