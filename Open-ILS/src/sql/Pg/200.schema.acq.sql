@@ -128,6 +128,8 @@ CREATE TABLE acq.fund_allocation (
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	creator         INT                             NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor          INT                             NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	name		TEXT				NOT NULL,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
@@ -138,7 +140,9 @@ CREATE TABLE acq.picklist (
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
-	ordering_agency		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	creator         INT                             NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor          INT                             NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	ordering_agency INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	provider	INT				NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
@@ -161,7 +165,9 @@ CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
 
 CREATE TABLE acq.lineitem (
 	id                  BIGSERIAL                   PRIMARY KEY,
-	selector            INT                         NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	creator             INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor              INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	selector            INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	provider            INT                         REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
 	purchase_order      INT                         REFERENCES acq.purchase_order (id) DEFERRABLE INITIALLY DEFERRED,
 	picklist            INT                         REFERENCES acq.picklist (id) DEFERRABLE INITIALLY DEFERRED,
@@ -190,15 +196,15 @@ CREATE TABLE acq.lineitem_note (
 CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 
 CREATE TABLE acq.lineitem_detail (
-	id		BIGSERIAL			PRIMARY KEY,
-	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
-	fund		INT				REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
-	fund_debit	INT				REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
-	eg_copy_id	BIGINT			REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	id		BIGSERIAL	PRIMARY KEY,
+	lineitem	INT		NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
+	fund		INT		REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
+	fund_debit	INT		REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
+	eg_copy_id	BIGINT		REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	barcode		TEXT,
 	cn_label	TEXT,
-    owning_lib  INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-    location    INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+        owning_lib      INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+        location        INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	recv_time	TIMESTAMP WITH TIME ZONE
 );
 
