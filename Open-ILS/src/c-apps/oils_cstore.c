@@ -2401,7 +2401,6 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 					buffer_free( sql_buf );
 					return NULL;
 				}
-				free(subpred);
 			} else if ( !strcasecmp("-and",search_itr->key) ) {
 				char* subpred = searchWHERE( node, meta, AND_OP_JOIN, ctx );
 				if( subpred ) {
@@ -2486,7 +2485,6 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
         free(predicate_string);
         return NULL;
     }
-
 
 	return buffer_release(sql_buf);
 }
