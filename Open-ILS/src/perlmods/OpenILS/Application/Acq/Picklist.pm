@@ -66,6 +66,8 @@ sub update_picklist {
     }
     return OpenILS::Event->new('BAD_PARAMS') unless $o_picklist->org_unit == $picklist->org_unit;
 
+    $picklist->edit_time('now');
+    $picklist->editor($e->requestor->id);
     $e->update_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
     return 1;
@@ -428,9 +430,17 @@ sub zsearch {
     unless($picklist) {
         $picklist = Fieldmapper::acq::picklist->new;
         $picklist->owner($e->requestor->id);
+        $picklist->creator($e->requestor->id);
+        $picklist->editor($e->requestor->id);
+        $picklist->edit_time('now');
         $picklist->name($name);
         $picklist->org_unit($e->requestor->ws_ou);
         $e->create_acq_picklist($picklist) or return $e->die_event;
+
+    } else {
+        $picklist->editor($e->requestor->id);
+        $picklist->edit_time('now');
+        $e->update_acq_picklist($picklist) or return $e->die_event;
     }
 
     my $ses = OpenSRF::AppSession->create('open-ils.search');
@@ -439,8 +449,6 @@ sub zsearch {
     while(my $resp = $req->recv(timeout=>60)) {
 
         my $result = $resp->content;
-        #use Data::Dumper;
-        #$logger->info("results = ".Dumper($resp));
         my $count = $result->{count};
         my $total = (($count < $search->{limit}) ? $count : $search->{limit})+1;
         my $ctr = 0;
@@ -451,6 +459,10 @@ sub zsearch {
             $li->picklist($picklist->id);
             $li->source_label($result->{service});
             $li->selector($e->requestor->id);
+            $li->creator($e->requestor->id);
+            $li->editor($e->requestor->id);
+            $li->edit_time('now');
+            $li->create_time('now');
             $li->marc($rec->{marcxml});
             $li->eg_bib_id($rec->{bibid}) if $rec->{bibid};
             $e->create_acq_lineitem($li) or return $e->die_event;

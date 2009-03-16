@@ -547,7 +547,10 @@ sub create_purchase_order {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
+    $p_order->creator($e->requestor->id);
+    $p_order->editor($e->requestor->id);
     $p_order->owner($e->requestor->id);
+    $p_order->edit_time('now');
     $p_order->ordering_agency($e->requestor->ws_ou);
     return $e->die_event unless 
         $e->allowed('CREATE_PURCHASE_ORDER', $p_order->ordering_agency);

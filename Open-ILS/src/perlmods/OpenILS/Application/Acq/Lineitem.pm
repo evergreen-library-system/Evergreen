@@ -42,6 +42,7 @@ sub create_lineitem {
     
         # indicate the picklist was updated
         $picklist->edit_time('now');
+        $picklist->editor($e->requestor->id);
         $e->update_acq_picklist($picklist) or return $e->die_event;
     }
 
@@ -155,6 +156,8 @@ sub create_lineitem_assets_impl {
             return $record;
         }
 
+        $li->editor($e->requestor->id);
+        $li->edit_time('now');
         $li->eg_bib_id($record->id);
         $e->update_acq_lineitem($li) or return $e->die_event;
     }
@@ -361,6 +364,8 @@ sub update_lineitem {
     $li->marc($e->retrieve_acq_lineitem($li->id)->marc)
         unless $li->marc;
 
+    $li->editor($e->requestor->id);
+    $li->edit_time('now');
     $e->update_acq_lineitem($li) or return $e->die_event;
     $e->commit;
     return 1;
@@ -597,6 +602,7 @@ sub update_li_edit_time {
 #    return OpenILS::Event->new('ACQ_LINEITEM_APPROVED', payload => $li->id)
 #        if $li->state eq 'approved';
     $li->edit_time('now');
+    $li->editor($e->requestor->id);
     $e->update_acq_lineitem($li) or return $e->die_event;
     return undef;
 }
