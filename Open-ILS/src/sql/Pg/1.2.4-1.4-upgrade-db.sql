@@ -17,6 +17,8 @@
 
 \set ON_ERROR_STOP 1
 
+ALTER TABLE auditor.asset_copy_history ALTER COLUMN price DROP NOT NULL; -- Price is nullable in 1.4+, auditor triggers complain when it's not informed of this
+
 BEGIN;
 
 -- To avoid any updates while we're doin' our thing...
