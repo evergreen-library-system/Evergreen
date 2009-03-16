@@ -139,6 +139,7 @@ sub events_by_target {
     my $filter = shift || {};
 
     my $obj_class = ref($object) || _fm_class_by_hint($object);
+    my $obj_hint = ref($object) ? _fm_hint_by_class(ref($object)) : $object;
 
     my $object_ident_field = $obj_class->Identity;
 
@@ -156,7 +157,7 @@ sub events_by_target {
             }
         },
         where  => {
-            "+ath"  => { core_type=> $object_ident_field },
+            "+ath"  => { core_type => $obj_hint },
             "+atevdef" => { active => 't' },
             "+atev" => { state => 'pending' }
         },
@@ -232,6 +233,10 @@ __PACKAGE__->register_method(
     argc     => 2
 );
  
+sub _fm_hint_by_class {
+    my $class = shift;
+    return Fieldmapper->publish_fieldmapper->{$class}->{hint};
+}
 
 sub _fm_class_by_hint {
     my $hint = shift;
