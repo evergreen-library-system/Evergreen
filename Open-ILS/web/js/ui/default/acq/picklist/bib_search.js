@@ -1,6 +1,7 @@
+dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.Dialog');
 dojo.require('dojox.form.CheckedMultiSelect');
 dojo.require('fieldmapper.Fieldmapper');
-dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.NumberSpinner');
@@ -18,6 +19,7 @@ var recvCount = 0;
 var sourceCount = 0; // how many sources are we searching
 var user = new openils.User();
 var searchLimit = 10;
+var liCache = {};
 
 function drawForm() {
     fieldmapper.standardRequest(
@@ -77,8 +79,7 @@ function clearSearchForm() {
 }
 
 function doSearch(values) {
-    dojo.style('searchProgress', 'visibility', 'visible');
-    searchProgress.update({progress: 0});
+    dojo.style('oils-acq-pl-loading', 'visibility', 'visible');
 
     search = {
         service : [],
@@ -109,34 +110,43 @@ function doSearch(values) {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.search.z3950'],
         {   async: true,
-            params: [user.authtoken, search],
+            params: [user.authtoken, search, null, {respond_li:1, flesh_attrs:1, clear_marc:1}],
             onresponse: handleResult,
         }
     );
 }
 
-function handleResult(r) {
-    var result = r.recv().content();
-    if(openils.Event.parse(result)) {
-        alert(openils.Event.parse(result));
-        dojo.style('searchProgress', 'visibility', 'hidden');
-        return;
-    }
-    if(result.complete)
-        return viewResults(result.picklist_id);
-    searchProgress.update({maximum: result.total, progress: result.progress});
+function setRowAttr(row, liWrapper, field) {
+    var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition') || '';
+    dojo.query('[name='+field+']', row)[0].appendChild(document.createTextNode(val));
 }
 
-function viewResults(plId) {
-    var plist = new openils.acq.Picklist(plId,
-        function(model) {
-            resultLIs = plist._items;
-            dojo.style('oils-acq-pl-search-results', 'visibility', 'visible');
-            JUBGrid.populate(plResultGrid, model, plist._items);
-        },
-        {flesh_attrs:1, clear_marc:1, limit: searchLimit}
-    );
-    resultPicklist = plist._plist;
+var resultRow;
+function handleResult(r) {
+    var result = openils.Util.readResponse(r);
+    dojo.style('oils-acq-pl-search-results', 'display', 'block');
+    dojo.style('oils-acq-search-block', 'display', 'none');
+
+    var tbody = dojo.byId('plist-tbody');
+    if(!resultRow) 
+        resultRow = tbody.removeChild(dojo.byId('plist-row')); 
+
+    if(result.lineitem) {
+        var li = result.lineitem;
+        liCache[li.id()] = li;
+        var liWrapper = new openils.acq.Lineitem({lineitem:li});
+        var row = resultRow.cloneNode(true);
+        var tds = dojo.query('[name]', row);
+        dojo.forEach(tds, function(td) {setRowAttr(row, liWrapper, td.getAttribute('name'));});
+        tbody.appendChild(row);
+    }
+}
+
+
+function showPlForm() {
+    dojo.style('oils-acq-pl-search-results', 'display', 'none');
+    dojo.style('oils-acq-search-block', 'display', 'block');
+    dojo.style('oils-acq-pl-loading', 'visibility', 'hidden');
 }
 
 function loadPLSelect() {

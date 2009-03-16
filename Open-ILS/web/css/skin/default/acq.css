@@ -91,4 +91,6 @@
 #oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
 
 
-
+#oila-acq-picklist-result-table {width:100%}
+#oila-acq-picklist-result-table th {font-weight: bold; border-bottom:1px solid #888;}
+#oila-acq-picklist-result-table td {padding:6px; border-bottom:1px solid #888;}

@@ -9,6 +9,7 @@
 </script>
 
 <div id='oils-acq-search-block' class='container'>
+
     <form dojoType='dijit.form.Form' action='' method=''>
         <script type="dojo/method" event="onSubmit">
             doSearch(this.getValues());
@@ -20,10 +21,6 @@
                     multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
                 <option value='native-evergreen-catalog'>Evergreen Catalog</option>
             </select>
-            <div id='oils-acq-search-progress'>
-                <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
-            </div>
-            <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
         </div>
         <div id='oils-acq-search-form-block'>
             <div id='oils-acq-search-fields-label'>Search Fields</div>
@@ -52,50 +49,77 @@
             </div>
         </div>
     </form>
+
+    <div id='oils-acq-pl-loading' style='visibility:hidden'>
+        <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif'/>
+    </div>
 </div>
-<div id='oils-acq-pl-search-results' style='height:100%'>
-    <script>
-        dojo.require('dijit.form.FilteringSelect');
-        dojo.require('dijit.Dialog');
-    </script>
-    <div dojoType="dijit.form.DropDownButton">
-        <span>Save Results</span>
-        <div dojoType="dijit.TooltipDialog" execute="saveResults(arguments[0]);">
-            <script type='dojo/connect' event='onOpen'>
-                loadPLSelect(); 
-            </script>
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td colspan='2'>
-                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
-                        <label for="name">Save selected</label>
-                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
-                        <label for="name">Save all</label>
-                    </td>
-                </tr>
-                <tr><td colspan='2'><hr/></td></tr>
-                <tr>
-                    <td><label for="new_name">Save as Selection List: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="new_name"/></td>
-                </tr>
-                <tr>
-                    <td><label for="existing_pl">Add to Selection List: </label></td>
-                    <td>
-                        <input jsId='plAddExistingSelect' dojoType="dijit.form.FilteringSelect" 
-                            name="existing_pl" searchAttr='name' displayAttr='name'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' type="submit">Save</button>
-                    </td>
-                </tr>
-            </table>
+
+
+<div id='oils-acq-pl-search-results'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Search Results</div>
+        <div>
+            <div dojoType='dijit.form.Button' onClick='showPlForm'>New Search</div>
+            <div dojoType="dijit.form.DropDownButton">
+                <span>Save Results</span>
+                <div dojoType="dijit.TooltipDialog" execute="saveResults(arguments[0]);">
+                    <script type='dojo/connect' event='onOpen'>
+                        loadPLSelect(); 
+                    </script>
+                    <table class='dijitTooltipTable'>
+                        <tr>
+                            <td colspan='2'>
+                                <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                                <label for="name">Save selected</label>
+                                <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                                <label for="name">Save all</label>
+                            </td>
+                        </tr>
+                        <tr><td colspan='2'><hr/></td></tr>
+                        <tr>
+                            <td><label for="new_name">Save as Selection List: </label></td>
+                            <td><input dojoType="dijit.form.TextBox" name="new_name"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="existing_pl">Add to Selection List: </label></td>
+                            <td>
+                                <input jsId='plAddExistingSelect' dojoType="dijit.form.FilteringSelect" 
+                                    name="existing_pl" searchAttr='name' displayAttr='name'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='2' align='center'>
+                                <button dojoType='dijit.form.Button' type="submit">Save</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
         </div>
-    </div> 
-    [% grid_jsid = 'plResultGrid'; domprefix = 'oils-acq-lineitem'; hide_details = 1 %]
-    [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
+    </div>
+    <div dojoType='dijit.layout.ContentPane' layoutAlign='client'>
+        <table id='oila-acq-picklist-result-table'>
+            <thead>
+                <tr>
+                    <th>Select</th><th>Title</th><th>Author</th><th>ISBN</th><th>ISSN</th><th>Edition</th><th>Pubdate</th><th>Publisher</th>
+                </tr>
+            </thead>
+            <tbody id='plist-tbody'>
+                <tr id='plist-row'>
+                    <td name='selector'><input type='checkbox' name='selectbox'/></td>
+                    <td name='title'/>
+                    <td name='author'/>
+                    <td name='isbn'/>
+                    <td name='issn'/>
+                    <td name='edition'/>
+                    <td name='pubdate'/>
+                    <td name='publisher'/>
+                </tr>
+            </tbody>
+        </table>    
+    </div>
 </div>
-<script>dojo.style('oils-acq-pl-search-results', 'visibility', 'hidden');</script>
+<script>dojo.style('oils-acq-pl-search-results', 'display', 'none');</script>
 [% END %]
 
