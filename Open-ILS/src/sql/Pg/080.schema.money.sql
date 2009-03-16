@@ -314,7 +314,7 @@ DECLARE
 BEGIN
 
 	SELECT * INTO old_billing FROM money.billing WHERE xact = NEW.xact AND NOT voided ORDER BY billing_ts DESC LIMIT 1;
-	SELECT * INTO old_voided FROM money.payment_view WHERE xact = NEW.xact ORDER BY payment_ts DESC LIMIT 1;
+	SELECT * INTO old_voided FROM money.billing WHERE xact = NEW.xact ORDER BY billing_ts DESC LIMIT 1;
 
 	IF NEW.voided AND NOT OLD.voided THEN
 		IF OLD.id = old_voided.id THEN
