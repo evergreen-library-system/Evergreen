@@ -4484,8 +4484,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Edit Time" name="edit_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Entries" name="entries" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Entry Count" name="entry_count" oils_obj:array_position="10" oils_persist:virtual="true"/>
+			<field reporter:label="Creator" name="creator" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Editor" name="editor" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link" />
 		</fields>
 		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="entries" reltype="has_many" key="picklist" map="" class="jub"/>
@@ -4504,11 +4508,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="State" name="state" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Ordering Agency" name="ordering_agency" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Count" name="lineitem_count" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Creator" name="creator" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Owner" name="owner" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Line Items" name="lineitems" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Count" name="lineitem_count" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="default_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
@@ -4542,7 +4550,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Lineitem ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Selecting Org Unit" name="selector" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Selecting User" name="selector" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Picklist" name="picklist" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Purchase Order" name="purchase_order" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
@@ -4553,13 +4561,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Source Label" name="source_label" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Expected Receive Date" name="expected_recv_time" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="State" name="state" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text" />
-			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="15" oils_persist:virtual="true" reporter:datatype="int" />
-			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Creator" name="creator" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Editor" name="editor" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Item Count" name="item_count" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="int" />
+			<field reporter:label="Descriptive Attributes" name="attributes" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Details" name="lineitem_details" oils_obj:array_position="19" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_obj:array_position="20" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
-			<link field="selector" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="selector" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl"/>
