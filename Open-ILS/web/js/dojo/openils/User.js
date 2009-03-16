@@ -212,7 +212,7 @@ if(!dojo._hasResource["openils.User"]) {
             };
 
             fieldmapper.standardRequest(
-                ['open-ils.actor', 'open-ils.actor.user.user_has_work_perm_at.batch'],
+                ['open-ils.actor', 'open-ils.actor.user.has_work_perm_at.batch'],
                 {   async: true,
                     params: [this.authtoken, permList],
                     oncomplete: oncomplete
