@@ -288,7 +288,7 @@ sub delete_picklist {
     }
 
     # remove any picklist-specific object perms
-    my $ops = $e->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => $picklist->id});
+    my $ops = $e->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => "".$picklist->id});
     for my $op (@$ops) {
         $e->delete_usr_object_perm_map($op) or return $e->die_event;
     }
@@ -409,12 +409,13 @@ __PACKAGE__->register_method(
 );
 
 sub zsearch {
-    my($self, $conn, $auth, $search, $name) = @_;
+    my($self, $conn, $auth, $search, $name, $options) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST');
 
     $search->{limit} ||= 10;
+    $options ||= {};
 
     $name ||= '';
     my $picklist = $e->search_acq_picklist({owner=>$e->requestor->id, name=>$name})->[0];
@@ -453,7 +454,17 @@ sub zsearch {
             $li->marc($rec->{marcxml});
             $li->eg_bib_id($rec->{bibid}) if $rec->{bibid};
             $e->create_acq_lineitem($li) or return $e->die_event;
-            $conn->respond({total=>$total, progress=>++$ctr});
+
+            my $response = {total => $total, progress => ++$ctr};
+
+            if($$options{respond_li}) {
+                $response->{lineitem} = $li;
+                $li->attributes($e->search_acq_lineitem_attr({lineitem => $li->id}))
+                    if $$options{flesh_attrs};
+                $li->clear_marc if $$options{clear_marc};
+            }
+
+            $conn->respond($response);
         }
     }
 
