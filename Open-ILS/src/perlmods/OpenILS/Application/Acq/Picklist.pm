@@ -219,7 +219,7 @@ sub retrieve_all_user_picklist {
         {owner=>$e->requestor->id, name=>{'!='=>''}}, {idlist=>1});
 
     my $picklist_ids = $e->objects_allowed('VIEW_PICKLIST', 'acqpl');
-    my $p_orgs = $U->find_highest_work_orgs($e, 'VIEW_PICKLIST', {descendants =>1});
+    my $p_orgs = $U->user_has_work_perm_at($e, 'VIEW_PICKLIST', {descendants =>1});
     my $picklist_ids_2 = $e->search_acq_picklist(
         {name=>{'!='=>''}, org_unit => $p_orgs}, {idlist=>1});
 

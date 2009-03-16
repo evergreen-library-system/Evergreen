@@ -90,7 +90,7 @@ sub retrieve_org_providers {
         unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_PROVIDER/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
-        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
+        $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
     $conn->respond($_) for @{$e->search_acq_provider({owner => $org_ids})};

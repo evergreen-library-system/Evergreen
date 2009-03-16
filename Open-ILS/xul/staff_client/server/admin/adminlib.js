@@ -62,7 +62,7 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 function fetchHighestWorkPermOrgs(session, userId, perms, onload) {
     var req = new RemoteRequest(
         'open-ils.actor',
-        'open-ils.actor.user.work_perm.highest_org_set.batch',
+        'open-ils.actor.user.user_has_work_perm_at.batch',
         session, perms);
     if(onload) {
         req.setCompleteCallback(function(r){

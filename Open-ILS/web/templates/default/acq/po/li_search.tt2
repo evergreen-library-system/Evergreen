@@ -53,7 +53,6 @@
                     }
                 );
                 new openils.User().buildPermOrgSelector('CREATE_PURCHASE_ORDER', orderingAgencySelect);
-                //new openils.User().buildPermOrgTreePicker('CREATE_PURCHAE_ORDER', 'treee');
             </script>
             <table class='dijitTooltipTable'>
                 <tr>

@@ -126,7 +126,7 @@ sub retrieve_org_funding_sources {
         unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUNDING_SOURCE/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
-        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
+        $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
     my $sources = $e->search_acq_funding_source({owner => $org_ids});
@@ -295,7 +295,7 @@ sub retrieve_org_funds {
         unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
-        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
+        $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
     return undef unless @$org_ids;
     my $funds = $e->search_acq_fund({org => $org_ids});
 
@@ -718,7 +718,7 @@ sub retrieve_all_user_purchase_order {
     $options ||= {};
 
     # grab purchase orders I have 
-    my $perm_orgs = $U->find_highest_work_orgs($e, 'MANAGE_PROVIDER', {descendants =>1});
+    my $perm_orgs = $U->user_has_work_perm_at($e, 'MANAGE_PROVIDER', {descendants =>1});
 	return OpenILS::Event->new('PERM_FAILURE', ilsperm => 'MANAGE_PROVIDER')
         unless @$perm_orgs;
     my $provider_ids = $e->search_acq_provider({owner => $perm_orgs}, {idlist=>1});

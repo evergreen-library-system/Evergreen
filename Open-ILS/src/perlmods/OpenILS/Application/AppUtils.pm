@@ -1224,64 +1224,21 @@ sub find_highest_perm_org {
 }
 
 
-sub find_highest_work_orgs {
+# returns the org_unit ID's 
+sub user_has_work_perm_at {
     my($self, $e, $perm, $options) = @_;
-    my $work_orgs = $self->get_user_work_ou_ids($e, $e->requestor->id);
-    $logger->debug("found work orgs @$work_orgs");
-	$options ||= {};
+    $options ||= {};
 
-    my @allowed_orgs;
-	my $org_tree = $self->get_org_tree();
-    my $org_types = $self->get_org_types();
+    my $func = 'permission.usr_has_perm_at';
+    $func = $func.'_all' if $$options{descendents};
 
-    # use the first work org to determine the highest depth at which 
-    # the user has the requested permission
-    my $first_org = shift @$work_orgs;
-    my $high_org_id = $self->find_highest_perm_org($perm, $e->requestor->id, $first_org, $org_tree);
-    $logger->debug("found highest work org $high_org_id");
+    my $orgs = $e->json_query({from => [$func, $e->requestor->id, $perm]});
+    $orgs = [map { $_->{'permission.usr_has_perm_at'} } @$orgs];
 
-    
-    return [] if $high_org_id == -1; # not allowed anywhere
+    return $orgs unless $$options{objects};
 
-    my $high_org = $self->find_org($org_tree, $high_org_id);
-    my ($high_org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
-    my $org_depth = $high_org_type->depth;
-
-	if($$options{descendants}) {
-		push(@allowed_orgs, @{$self->get_org_descendants($high_org_id, $org_depth)});
-	} else {
-		push(@allowed_orgs, $high_org_id);
-	}
-
-	return \@allowed_orgs if $org_depth == 0;
-
-    for my $org (@$work_orgs) {
-
-        $logger->debug("work org looking at $org");
-		my $org_list = $self->get_org_full_path($org, $org_depth);
-
-		my $found = 0;
-        for my $sub_org (@$org_list) {
-			if(not $found) {
-				$logger->debug("work org looking at sub-org $sub_org");
-				my $org_unit = $self->find_org($org_tree, $sub_org);
-				my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
-				if($ou_type->depth >= $org_depth) {
-					push(@allowed_orgs, $sub_org);
-					$found = 1;
-				}
-			} else {
-				last unless $$options{descendants}; 
-				push(@allowed_orgs, $sub_org);
-			}
-        }
-    }
-
-    my %de_dupe;
-    $de_dupe{$_} = 1 for @allowed_orgs;
-    return [keys %de_dupe];
+    return $e->search_actor_org_unit({id => $orgs});
 }
-
 
 sub get_user_work_ou_ids {
     my($self, $e, $userid) = @_;
