@@ -78,7 +78,13 @@ function buildMergedOrgSelector(orgList) {
             fieldmapper.aou.descendantNodeList(orgList[i]));
     }
 
-    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgNodeList)});
+    var list = [];
+    dojo.forEach(orgNodeList, function(item) {
+        if(list.filter(function(i){return (i.id() == item.id())}).length == 0)
+            list.push(item);
+    });
+
+    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(list)});
     osContextSelector.store = store;
     osContextSelector.startup();
     osContextSelector.setValue(user.user.ws_ou());
@@ -155,7 +161,10 @@ function osGetEditLink(rowIdx) {
 function osLaunchEditor(name) {
     osEditDialog._osattr = name;
     osEditDialog.show();
-    user.buildPermOrgSelector('UPDATE_ORG_UNIT_SETTING.' + name, osEditContextSelector, osSettings[name].context);
+    user.buildPermOrgSelector(
+        ['UPDATE_ORG_UNIT_SETTING.' + name, 'UPDATE_ORG_UNIT_SETTING_ALL'],
+        osEditContextSelector, osSettings[name].context
+    );
     dojo.byId('os-edit-name').innerHTML = osSettings[name].label;
     dojo.byId('os-edit-desc').innerHTML = osSettings[name].desc || '';
 
