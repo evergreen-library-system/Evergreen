@@ -1,11 +1,6 @@
 [% WRAPPER 'default/base.tt2' %]
-<script type='text/javascript'>
-    dojo.require('dijit.layout.LayoutContainer');
-    dojo.require('dijit.layout.ContentPane');
-    dojo.require('openils.acq.Picklist');
-</script>
-
-<div dojoType="dijit.layout.LayoutContainer" style="height:100%">
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view.js'> </script>
+<div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div class='container'>
         <div id='oils-acq-picklist-header'>
                 Picklist
@@ -18,24 +13,8 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-            dojo.require('openils.Util');
-            var plist = null;
-            function loadPL() {
-		        plist = new openils.acq.Picklist([% ctx.page_args.0 %],
-				    function(model) {
-				        dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
-				        dojo.byId("oils-acq-picklist-attr-cdate").innerHTML = plist.create_time();
-				        dojo.byId("oils-acq-picklist-attr-edate").innerHTML = plist.edit_time();
-				        dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner();
-				        JUBGrid.populate(pickListGrid, model, plist._items);
-				    }
-                );
-            }
-	        openils.Util.addOnLoad(loadPL);
-    </script>
-    [% grid_jsid = 'pickListGrid'; domprefix = 'oils-acq-picklist' %]
-    [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
+    <script type="text/javascript">var plId = '[% ctx.page_args.0 %]';</script>
+    [% INCLUDE 'default/acq/common/li_table.tt2' %]
 </div>
 [% END %]
 
