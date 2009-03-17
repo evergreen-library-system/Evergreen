@@ -414,41 +414,25 @@ __PACKAGE__->register_method(
 
 sub zsearch {
     my($self, $conn, $auth, $search, $name, $options) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_PICKLIST');
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('CREATE_PICKLIST');
 
     $search->{limit} ||= 10;
     $options ||= {};
 
-    $name ||= '';
-    my $picklist = $e->search_acq_picklist({owner=>$e->requestor->id, name=>$name})->[0];
-    if($name eq '' and $picklist) {
-        my $evt = delete_picklist($self, $conn, $auth, $picklist->id);
-        return $evt unless $evt == 1;
-        $picklist = undef;
-    }
-
-    unless($picklist) {
-        $picklist = Fieldmapper::acq::picklist->new;
-        $picklist->owner($e->requestor->id);
-        $picklist->creator($e->requestor->id);
-        $picklist->editor($e->requestor->id);
-        $picklist->edit_time('now');
-        $picklist->name($name);
-        $picklist->org_unit($e->requestor->ws_ou);
-        $e->create_acq_picklist($picklist) or return $e->die_event;
-
-    } else {
-        $picklist->editor($e->requestor->id);
-        $picklist->edit_time('now');
-        $e->update_acq_picklist($picklist) or return $e->die_event;
-    }
-
     my $ses = OpenSRF::AppSession->create('open-ils.search');
     my $req = $ses->request('open-ils.search.z3950.search_class', $auth, $search);
 
+    my $first = 1;
+    my $picklist;
     while(my $resp = $req->recv(timeout=>60)) {
+
+        if($first) {
+            $e = new_editor(requestor=>$e->requestor, xact=>1);
+            $picklist = zsearch_build_pl($self, $conn, $auth, $e, $name);
+            $first = 0;
+        }
 
         my $result = $resp->content;
         my $count = $result->{count};
@@ -486,6 +470,37 @@ sub zsearch {
     $e->commit;
     return {complete=>1, picklist_id=>$picklist->id};
 }
+
+sub zsearch_build_pl {
+    my($self, $conn, $auth, $e, $name) = @_;
+
+    $name ||= '';
+    my $picklist = $e->search_acq_picklist({owner=>$e->requestor->id, name=>$name})->[0];
+    if($name eq '' and $picklist) {
+        my $evt = delete_picklist($self, $conn, $auth, $picklist->id);
+        return $evt unless $evt == 1;
+        $picklist = undef;
+    }
+
+    unless($picklist) {
+        $picklist = Fieldmapper::acq::picklist->new;
+        $picklist->owner($e->requestor->id);
+        $picklist->creator($e->requestor->id);
+        $picklist->editor($e->requestor->id);
+        $picklist->edit_time('now');
+        $picklist->name($name);
+        $picklist->org_unit($e->requestor->ws_ou);
+        $e->create_acq_picklist($picklist) or return $e->die_event;
+
+    } else {
+        $picklist->editor($e->requestor->id);
+        $picklist->edit_time('now');
+        $e->update_acq_picklist($picklist) or return $e->die_event;
+    }
+
+    return $picklist;
+}
+
 
 
 
