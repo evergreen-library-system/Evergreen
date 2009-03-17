@@ -36,6 +36,7 @@
         </table>
     </div>
     <div id='acq-lit-info-div' class='hidden'>
+        <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
         <table>
             <tbody id='acq-lit-info-tbody'>
                 <tr id='acq-lit-info-row'><td name='label'/><td name='value'/></tr>

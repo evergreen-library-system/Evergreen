@@ -97,4 +97,5 @@
 #acq-lit-table td {padding:2px;}
 .acq-lit-row { border-bottom: 1px solid #AAA; }
 .acq-lit-alt-row td:first-child { width:30px; }
+#acq-lit-info-tbody td {padding:5px;}
 
