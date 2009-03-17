@@ -19,6 +19,27 @@ function AcqLiTable() {
             self.tbody.removeChild(self.tbody.childNodes[0]);
         self.selectors = [];
     };
+    
+    this.setNext = function(handler) {
+        var link = dojo.byId('acq-lit-next');
+        if(handler) {
+            dojo.style(link, 'visibility', 'visible');
+            link.onclick = handler;
+        } else {
+            dojo.style(link, 'visibility', 'hidden');
+        }
+    };
+
+    this.setPrev = function(handler) {
+        var link = dojo.byId('acq-lit-prev');
+        if(handler) {
+            dojo.style(link, 'visibility', 'visible'); 
+            link.onclick = handler; 
+        } else {
+            dojo.style(link, 'visibility', 'hidden');
+        }
+    };
+
 
     this.showTable = function() {
         dojo.style(dojo.byId('acq-lit-table-div'), 'display', 'block');

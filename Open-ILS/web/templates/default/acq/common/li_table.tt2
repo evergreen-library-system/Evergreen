@@ -4,7 +4,17 @@
         <table id='acq-lit-table'>
             <thead>
                 <tr>
-                    <th colspan='0'><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></th>
+                    <th colspan='0'>
+                        <table style='width:100%;'><tr>
+                            <td><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></td>
+                            <td>
+                                <div style='width:100%;text-align:right;'>
+                                    <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
+                                    <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
+                                </div>
+                            </td>
+                        </tr></table>
+                    </th>
                 </tr>
             </thead>
             <tbody id='acq-lit-tbody'>

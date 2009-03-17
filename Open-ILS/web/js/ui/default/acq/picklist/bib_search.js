@@ -82,8 +82,8 @@ function clearSearchForm() {
 
 var resultRow;
 function doSearch(values) {
-    showDiv('oils-acq-pl-loading');
     liTable.reset();
+    showDiv('oils-acq-pl-loading');
 
     search = {
         service : [],

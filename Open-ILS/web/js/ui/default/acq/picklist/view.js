@@ -30,6 +30,7 @@ function drawPl() {
 
     dojo.byId("oils-acq-picklist-name").innerHTML = plist.name();
     dojo.byId("oils-acq-picklist-attr-owner").innerHTML = plist.owner().usrname();
+    dojo.byId("oils-acq-picklist-attr-count").innerHTML = plist.entry_count();
 
     dojo.byId("oils-acq-picklist-attr-cdate").innerHTML =
          dojo.date.locale.format(
@@ -42,6 +43,35 @@ function drawPl() {
             dojo.date.stamp.fromISOString(plist.edit_time()), 
             {selector:'date'}
         );
+
+    loadLIs();
+}
+
+function loadLIs() {
+    liTable.reset();
+
+    if(plist.entry_count() > (plOffset + plLimit)) {
+        liTable.setNext(
+            function() { 
+                plOffset += plLimit;
+                loadLIs();
+            }
+        );
+    } else {
+        liTable.setNext(null);
+    }
+
+    if(plOffset > 0) {
+        liTable.setPrev(
+            function() { 
+                plOffset -= plLimit;
+                loadLIs();
+            }
+        );
+    } else {
+        liTable.setPrev(null);
+    }
+
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
