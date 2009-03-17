@@ -24,6 +24,7 @@ dojo.require('dojox.grid.compat._data.model');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
 dojo.require('openils.Event');
+dojo.require('openils.Util');
 
 /** Declare the Lineitem class with dojo */
 dojo.declare('openils.acq.Lineitem', null, {
@@ -101,6 +102,25 @@ dojo.declare('openils.acq.Lineitem', null, {
 	return this.lineitem.id();
     },
 });
+
+openils.acq.Lineitem.attrDefs = null;
+
+openils.acq.Lineitem.fetchAttrDefs = function(onload) {
+    if(openils.acq.Lineitem.attrDefs)
+        return onload(openils.acq.Lineitem.attrDefs);
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_attr_definition.retrieve.all'],
+        {   async: true, 
+            params: [openils.User.authtoken],
+            oncomplete: function(r) {
+                openils.acq.Lineitem.attrDefs = 
+                    openils.Util.readResponse(r);
+                onload(openils.acq.Lineitem.attrDefs);
+            }
+        }
+    );
+}
+
 
 openils.acq.Lineitem.ModelCache = {};
 openils.acq.Lineitem.acqlidCache = {};
