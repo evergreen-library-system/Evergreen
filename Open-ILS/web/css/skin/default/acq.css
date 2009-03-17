@@ -92,6 +92,9 @@
 #oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
 
 
-#oila-acq-picklist-result-table {width:100%}
-#oila-acq-picklist-result-table th {padding:5px; font-weight: bold; border-bottom:1px solid #888;}
-#oila-acq-picklist-result-table td {padding:5px; border-bottom:1px solid #888; height:3em;}
+#acq-lit-table {width:100%}
+#acq-lit-table th {padding:5px; font-weight: bold;}
+#acq-lit-table td {padding:2px;}
+.acq-lit-row { border-bottom: 1px solid #AAA; }
+.acq-lit-alt-row td:first-child { width:30px; }
+
