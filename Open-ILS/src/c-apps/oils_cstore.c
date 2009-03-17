@@ -2410,7 +2410,16 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 					buffer_free( sql_buf );
 					return NULL;
 				}
-            } else if ( !strcasecmp("-exists",search_itr->key) ) {
+			} else if ( !strcasecmp("-not",search_itr->key) ) {
+				char* subpred = searchWHERE( node, meta, AND_OP_JOIN, ctx );
+				if( subpred ) {
+					buffer_fadd(sql_buf, " NOT ( %s )", subpred);
+					free( subpred );
+				} else {
+					buffer_free( sql_buf );
+					return NULL;
+				}
+			} else if ( !strcasecmp("-exists",search_itr->key) ) {
                 char* subpred = SELECT(
                     ctx,
                     jsonObjectGetKey( node, "select" ),
