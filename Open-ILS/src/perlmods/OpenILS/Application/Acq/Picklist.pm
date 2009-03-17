@@ -466,6 +466,7 @@ sub zsearch {
             $li->edit_time('now');
             $li->create_time('now');
             $li->marc($rec->{marcxml});
+            $li->state('new');
             $li->eg_bib_id($rec->{bibid}) if $rec->{bibid};
             $e->create_acq_lineitem($li) or return $e->die_event;
 
