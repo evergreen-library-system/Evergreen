@@ -321,8 +321,8 @@ sub next_date {
 	# if $carry is set, the date doesn't matter: we're not
 	# going to increment the v. number twice at year-change.
 	$next->{a} += $carry;
-    } elsif ($caption->subfield('x')) {
-	my $cal_change = $caption->subfield('x');
+    } elsif (defined $caption->calendar_change) {
+	my $cal_change = $caption->calendar_change;
 	my $month;
 	my $day;
 	my $cur_before;
@@ -334,32 +334,41 @@ sub next_date {
 	    return;
 	}
 
-	if (length($cal_change) == 2) {
-	    $month = $cal_change;
-	} elsif (length($cal_change) == 4) {
-	    ($month, $day) = unpack("a2a2", $cal_change);
-	}
+	foreach my $change (@{$cal_change}) {
+	    my $incr;
 
-# 	print "# next_date: month = '$month', day = '$day'\n";
-# 	print "# next_date: cur[0] = '$cur[0]', cur[1] = '$cur[1]'\n";
-# 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
+	    if (length($change) == 2) {
+		$month = $change;
+	    } elsif (length($change) == 4) {
+		($month, $day) = unpack("a2a2", $change);
+	    }
 
-	if ($cur[0] == $new[0]) {
-	    # Same year, so a 'simple' month/day comparison will be fine
-	    $next->{a} += (!on_or_after($cur[1], $cur[2], $month, $day)
-			   && on_or_after($new[1], $new[2], $month, $day));
-	} else {
-	    # @cur is in the year before @new. There are
-	    # two possible cases for the calendar change date that
-	    # indicate that it's time to change the volume:
-	    # (1) the change date is AFTER @cur in the year, or
-	    # (2) the change date is BEFORE @new in the year.
-	    # 
-	    #  -------|------|------X------|------|
-	    #       @cur    (1)   Jan 1   (2)   @new
+	    # 	print "# next_date: month = '$month', day = '$day'\n";
+	    # 	print "# next_date: cur[0] = '$cur[0]', cur[1] = '$cur[1]'\n";
+	    # 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
 
-	    $next->{a} += (on_or_after($new[1], $new[2], $month, $day)
-			   || !on_or_after($cur[1], $cur[2], $month, $day));
+	    if ($cur[0] == $new[0]) {
+		# Same year, so a 'simple' month/day comparison will be fine
+		$incr = (!on_or_after($cur[1], $cur[2], $month, $day)
+			 && on_or_after($new[1], $new[2], $month, $day));
+	    } else {
+		# @cur is in the year before @new. There are
+		# two possible cases for the calendar change date that
+		# indicate that it's time to change the volume:
+		# (1) the change date is AFTER @cur in the year, or
+		# (2) the change date is BEFORE @new in the year.
+		# 
+		#  -------|------|------X------|------|
+		#       @cur    (1)   Jan 1   (2)   @new
+
+		$incr = (on_or_after($new[1], $new[2], $month, $day)
+			 || !on_or_after($cur[1], $cur[2], $month, $day));
+	    }
+	    if ($incr) {
+		# We've got a match, we can stop checking
+		$next->{a} += 1;
+		last;
+	    }
 	}
     }
 }

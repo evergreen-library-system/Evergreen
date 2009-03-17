@@ -47,9 +47,12 @@ sub new
 	    carp '$v specified for top-level enumeration'
 	      unless defined($last_enum);
 	    $self->{_mfhdc_ENUMS}->{$last_enum}->{RESTART} = ($val eq 'r');
-	} elsif ($key =~ /[npwxz]/) {
-	    # Publication Pattern ('o' == type of unit, 'q'..'t' undefined)
+	} elsif ($key =~ /[npwz]/) {
+	    # Publication Pattern info ('o' == type of unit, 'q'..'t' undefined)
 	    $self->{_mfhdc_PATTERN}->{$key} = $val;
+	} elsif ($key =~ /x/) {
+	    # Calendar change can have multiple comma-separated values
+	    $self->{_mfhdc_PATTERN}->{x} = [split /,/, $val];
 	} elsif ($key eq 'y') {
 	    # Publication pattern: 'y' is repeatable
 	    $self->{_mfhdc_PATTERN}->{y} = [] if (!defined $self->{_mfhdc_PATTERN}->{y});
@@ -141,6 +144,12 @@ sub capstr {
     } else {
 	return $val;
     }
+}
+
+sub calendar_change {
+    my $self = shift;
+
+    return $self->{_mfhdc_PATTERN}->{x};
 }
 
 # If items are identified by chronology only, with no separate

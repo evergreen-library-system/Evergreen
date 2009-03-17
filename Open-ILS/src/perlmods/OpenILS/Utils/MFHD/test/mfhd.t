@@ -85,7 +85,7 @@ while ($rec = load_MARC_rec) {
 		local $TODO = "unimplemented"
 		  if ($field->subfield('z') =~ /^TODO/);
 		is_deeply($field->next, right_answer($field),
-			  $field->subfield('8'));
+			  $field->subfield('8') . ': ' . $field->subfield('z'));
 	    }
 	}
     }
@@ -133,7 +133,7 @@ __END__
 245 00 $aMonthly, issue no. continuous, Calendar change: Jan, Jul
 853 20 $86$av.$bno.$u6$vc$i(year)$j(month)$wm$x01,07
 863 41 $86.1$a1$b5$i1990$j05$x|a1|b6|i1990|j06$zMiddle of year, end of vol.
-863 41 $86.2$a1$b6$i1990$j06$x|a2|b7|i1990|j07$zTODO Middle of year, end of vol.
+863 41 $86.2$a1$b6$i1990$j06$x|a2|b7|i1990|j07$zMiddle of year, end of vol.
 863 41 $86.3$a2$b12$i1990$j12$x|a3|b13|i1991|j01$zEnd of year, end of vol.
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Combined issue: Jan/Feb
