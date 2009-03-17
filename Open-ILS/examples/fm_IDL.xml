@@ -4252,7 +4252,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Funding Source ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Funding Source ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" reporter:selector='code'/>
 			<field reporter:label="Funding Source Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
 			<field reporter:label="Owner" name="owner" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="org_unit" />
 			<field reporter:label="Currency" name="currency_type" oils_obj:array_position="6" oils_persist:virtual="false" oils_persist:primitive="string" reporter:datatype="link" />
@@ -4311,12 +4311,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqf" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund">
+	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Fund ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fund ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" reporter:selector='code'/>
 			<field reporter:label="Org Unit" name="org" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="org_unit" />
 			<field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Year" name="year" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
@@ -4332,6 +4332,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <link field="allocations" reltype="has_many" key="fund" map="" class="acqfa"/>
             <link field="debits" reltype="has_many" key="fund" map="" class="acqfdeb"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_ACQ_FUND" context_field="org"/>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND" context_field="org"/>
+                <update permission="ADMIN_ACQ_FUND" context_field="org"/>
+                <delete permission="ADMIN_ACQ_FUND" context_field="org"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqfat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_allocation_total">
@@ -4633,7 +4641,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Actual Receive Date" name="recv_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Fund" name="fund" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Fund Debit" name="fund_debit" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="org_unit" />
 			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link" />
 		</fields>
 		<links>
