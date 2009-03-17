@@ -29,6 +29,8 @@ sub create_picklist {
     my($self, $conn, $auth, $picklist) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $picklist->creator($e->requestor->id);
+    $picklist->editor($e->requestor->id);
     $picklist->org_unit($e->requestor->ws_ou) unless $picklist->org_unit;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST', $picklist->org_unit);
     return OpenILS::Event->new('BAD_PARAMS')
