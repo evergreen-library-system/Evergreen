@@ -217,5 +217,20 @@ if(!dojo._hasResource["openils.Util"]) {
             d = dojo.date.add(d, parts[i+1].replace(/s?,?$/,''), Number(parts[i]));
         return Number((d.getTime() - start) / 1000);
     };
+
+    openils.Util.hide = function(node) {
+        if(typeof node == 'string')
+            node = dojo.byId(node);
+        dojo.style(node, 'display', 'none');
+        dojo.style(node, 'visibility', 'hidden');
+    };
+
+    openils.Util.show = function(node) {
+        if(typeof node == 'string')
+            node = dojo.byId(node);
+        dojo.style(node, 'display', 'block');
+        dojo.style(node, 'visibility', 'visible');
+    };
+
 }
 
