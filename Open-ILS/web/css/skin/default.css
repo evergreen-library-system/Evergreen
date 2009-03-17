@@ -21,7 +21,7 @@ table { border-collapse: collapse; }
 .container:after {content: ""; display: block; height: 0; clear: both; }
 
 .invisible { visibility: hidden; }
-.hidden { display: none; visibility: hidden; }
+.hidden { display: none; }
 .display { display: block; visibility: visible; }
 .oils-login-dialog td { padding: 5px; }
 
