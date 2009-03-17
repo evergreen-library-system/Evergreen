@@ -1,6 +1,9 @@
+dojo.require('dijit.form.Button');
+dojo.require('dijit.form.TextBox');
 dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require('openils.acq.Lineitem');
+dojo.require('openils.widget.AutoFieldWidget');
 
 function AcqLiTable() {
 
@@ -9,10 +12,13 @@ function AcqLiTable() {
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
-    this.rowTemplate = this.tbody.removeChild(dojo.byId('acq-lit-row'));
     this.authtoken = openils.User.authtoken;
+    this.rowTemplate = this.tbody.removeChild(dojo.byId('acq-lit-row'));
+    this.copyTbody = dojo.byId('acq-lit-li-details-tbody');
+    this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
+
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
-    dojo.byId('acq-lit-info-back-button').onclick = function(){self.showTable()};
+    dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
 
     this.reset = function() {
         while(self.tbody.childNodes[0])
@@ -40,20 +46,26 @@ function AcqLiTable() {
         }
     };
 
+    this.show = function(div) {
+        openils.Util.hide('acq-lit-table-div');
+        openils.Util.hide('acq-lit-info-div');
+        openils.Util.hide('acq-lit-li-details');
+        switch(div){
+            case 'list':
+                openils.Util.show('acq-lit-table-div');
+                break;
+            case 'info':
+                openils.Util.show('acq-lit-info-div');
+                break;
+            case 'copies':
+                openils.Util.show('acq-lit-li-details');
+                break;
+            }
+    }
 
-    this.showTable = function() {
-        dojo.style(dojo.byId('acq-lit-table-div'), 'display', 'block');
-        dojo.style(dojo.byId('acq-lit-info-div'), 'display', 'none');
-    };
-
-    this.hideTable = function() {
-        dojo.style(dojo.byId('acq-lit-table-div'), 'display', 'none');
-    };
-
-    this.showInfo = function() {
-        self.hideTable();
-        dojo.style(dojo.byId('acq-lit-info-div'), 'display', 'block');
-    };
+    this.hide = function() {
+        this.show(null);
+    }
 
     this.toggleSelect = function() {
         if(self.toggleState) 
@@ -93,19 +105,27 @@ function AcqLiTable() {
             // XXX media prefix for added content
             dojo.query('[name=jacket]', row)[0].setAttribute('src', '/opac/extras/ac/jacket/small/' + isbn);
         }
-        dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
+        dojo.query('[name=infolink]', row)[0].onclick = function() {self.drawInfo(li.id())};
+        dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
 
     this.drawInfo = function(liId) {
-        this.showInfo();
+        this.show('info');
         openils.acq.Lineitem.fetchAttrDefs(
-            function() { self._fetchLineitem(liId); } 
+            function() { 
+                self._fetchLineitem(liId, function(li){self._drawInfo(li);}); 
+            } 
         );
     };
 
-    this._fetchLineitem = function(liId) {
+    this._fetchLineitem = function(liId, handler) {
+
+        if(this.liCache[liId] && this.liCache[liId].marc()) {
+            return handler(this.liCache[liId]);
+        }
+        
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.retrieve'],
             {   async: true,
@@ -118,7 +138,7 @@ function AcqLiTable() {
 
                 oncomplete: function(r) {
                     var li = openils.Util.readResponse(r);
-                    self._drawInfo(li);
+                    handler(li)
                 }
             }
         );
@@ -159,6 +179,52 @@ function AcqLiTable() {
                 }
             }
         );
+    }
+
+    this.drawCopies = function(liId) {
+        this.show('copies');
+        openils.acq.Lineitem.fetchAttrDefs(
+            function() { 
+                self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
+            } 
+        );
+    };
+
+
+    this._drawCopies = function(li) {
+        acqLitAddCopyCount.onClick = function() { 
+            var count = acqLitCopyCountInput.attr('value');
+            for(var i = 0; i < count; i++)
+                self.addCopy(li); 
+        }
+        dojo.forEach(li.lineitem_details(),
+            function(copy) {
+                self.addCopy(copy);
+            }
+        );
+    };
+
+    this.addCopy = function(li, copy) {
+        var row = this.copyRow.cloneNode(true);
+        this.copyTbody.appendChild(row);
+
+        dojo.forEach(['fund', 'owning_lib', 'location'],
+            function(field) {
+                var widget = new openils.widget.AutoFieldWidget({
+                    fmObject : copy,
+                    fmField : field,
+                    fmClass : 'acqlid',
+                    parentNode : dojo.query('[name='+field+']', row)[0],
+                    orgLimitPerms : ['CREATE_PICKLIST'],
+                });
+                widget.build();
+            }
+        );
+
+        if(copy) {
+            dojo.query('[name=barcode]', row)[0].value = copy.barcode();
+            dojo.query('[name=cn_label]', row)[0].value = copy.cn_label();
+        }
     }
 }
 

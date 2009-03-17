@@ -129,7 +129,7 @@ function setRowAttr(td, liWrapper, field) {
 
 function handleResult(r) {
     var result = openils.Util.readResponse(r);
-    liTable.showTable();
+    liTable.show('list');
     dojo.style(dojo.byId('oils-acq-pl-search-results'), 'display', 'block');
     var tbody = dojo.byId('plist-tbody');
     if(result.lineitem) 
@@ -144,7 +144,7 @@ function showDiv(div) {
         'oils-acq-search-block', 
         'oils-acq-pl-loading' ];
     dojo.forEach(divs, function(d) {dojo.style(d,'display', 'none')});
-    liTable.hideTable();
+    liTable.hide();
     dojo.style(div, 'display', 'block');
 }
 

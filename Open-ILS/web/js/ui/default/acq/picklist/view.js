@@ -79,7 +79,7 @@ function loadLIs() {
             params: [openils.User.authtoken, plId, 
                 {flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
             onresponse: function(r) {
-                liTable.showTable();
+                liTable.show('list');
                 liTable.addLineitem(openils.Util.readResponse(r));
             }
         }

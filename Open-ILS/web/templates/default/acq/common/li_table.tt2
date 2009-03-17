@@ -20,25 +20,29 @@
             <tbody id='acq-lit-tbody'>
                 <tr id='acq-lit-row' class='acq-lit-row'>
                     <td name='selector'><input type='checkbox' name='selectbox'/></td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td rowspan='3'><img style='width:40px;height:65px;' name='jacket'/></td>
-                                <td colspan='0'><a href='javascript:void(0);' attr='title'></a></td>
-                            </tr>
-                            <tr class='acq-lit-alt-row'>
-                                <td/>
-                                <td attr='author'/>
-                                <td attr='isbn'/>
-                                <td attr='issn'/>
-                                <td attr='edition'/>
-                                <td attr='pubdate'/>
-                                <td attr='publisher'/>
-                            </tr>
-                            <tr class='acq-lit-alt-row'>
-                                <td/>
-                                <td name='source_label' colspan='0'/>
-                            </tr>
+                    <td style='width:100%;'>
+                        <table style='width:100%;'>
+                            <tbody>
+                                <tr>
+                                    <td rowspan='2'><img style='width:40px;height:65px;' name='jacket'/></td>
+                                    <td attr='title' style='width:70%;font-weight:bold;'/>
+                                    <td style='text-align:right'>
+                                        <a name='infolink' href='javascript:void(0);'>Details</a>
+                                        <a name='copieslink' href='javascript:void(0);'>Copies</a>
+                                    </td>
+                                </tr>
+                                <tr class='acq-lit-alt-row'>
+                                    <td colspan='0'>
+                                        <span attr='author'></span>
+                                        <span attr='isbn'></span>
+                                        <span attr='issn'></span>
+                                        <span attr='edition'></span>
+                                        <span attr='pubdate'></span>
+                                        <span attr='publisher'></span>
+                                        <span name='source_label'/>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </td>
                 </tr>
@@ -57,6 +61,37 @@
             <h3>MARC Record</h3>
             <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
         </div>
+    </div>
+
+    <div id='acq-lit-li-details' class='hidden'>
+        <h2>Copies</h2>
+        <table id='acq-lit-li-details-table'>
+            <thead>
+                <tr>
+                    <th>Owning Branch</th>
+                    <th>Shelving Location</th>
+                    <th>Fund</th>
+                    <th>Barcode</th>
+                    <th>Callnumber</th>
+                    <th style='text-align:right;width:30%'>
+                        Add items to order:
+                        <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
+                            constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
+                        <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id='acq-lit-li-details-tbody'>
+                <tr id='acq-lit-li-details-row'>
+                    <td><div name='owning_lib'/></td>
+                    <td><div name='location'/></td>
+                    <td><div name='fund'/></td>
+                    <td><input type='text' name='barcode'/></td>
+                    <td><input type='text'  name='cn_label'/></td>
+                    <td/>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
