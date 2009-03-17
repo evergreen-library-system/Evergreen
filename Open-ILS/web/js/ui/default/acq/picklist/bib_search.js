@@ -20,8 +20,10 @@ var sourceCount = 0; // how many sources are we searching
 var user = new openils.User();
 var searchLimit = 10;
 var liCache = {};
+var liTable;
 
 function drawForm() {
+    liTable = new AcqLiTable();
     fieldmapper.standardRequest(
         ['open-ils.search', 'open-ils.search.z3950.retrieve_services'], 
         {   async: true,
@@ -82,11 +84,6 @@ var resultRow;
 function doSearch(values) {
     showDiv('oils-acq-pl-loading');
 
-    var tbody = dojo.byId('plist-tbody');
-    if(!resultRow) 
-        resultRow = tbody.removeChild(dojo.byId('plist-row')); 
-    while(tbody.childNodes[0]) tbody.removeChild(tbody.childNodes[0]);
-
     search = {
         service : [],
         username : [],
@@ -122,25 +119,6 @@ function doSearch(values) {
     );
 }
 
-var selectState = false;
-function toggleSelect() {
-    var inputs = dojo.query('[name=selectbox]', dojo.byId('plist-tbody'));
-    if(selectState)
-        dojo.forEach(inputs, function(i){i.checked = false});
-    else
-        dojo.forEach(inputs, function(i){i.checked = true});
-    selectState = !selectState;
-}
-
-function getSelected() {
-    var inputs = dojo.query('[name=selectbox]', dojo.byId('plist-tbody'));
-    var selected = [];
-    dojo.forEach(inputs, function(i) { 
-        if(i.checked) 
-            selected.push(liCache[i.parentNode.parentNode.getAttribute('li')]);
-    });
-    return selected;
-}
 
 function setRowAttr(td, liWrapper, field) {
     var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition') || '';
@@ -149,32 +127,22 @@ function setRowAttr(td, liWrapper, field) {
 
 function handleResult(r) {
     var result = openils.Util.readResponse(r);
-    dojo.style('oils-acq-pl-search-results', 'display', 'block');
+    liTable.showTable();
+    dojo.style(dojo.byId('oils-acq-pl-search-results'), 'display', 'block');
     var tbody = dojo.byId('plist-tbody');
-
-    if(result.lineitem) {
-        var li = result.lineitem;
-        liCache[li.id()] = li;
-        var liWrapper = new openils.acq.Lineitem({lineitem:li});
-        var row = resultRow.cloneNode(true);
-        row.setAttribute('li', li.id());
-        var tds = dojo.query('[attr]', row);
-        dojo.forEach(tds, function(td) {setRowAttr(td, liWrapper, td.getAttribute('attr'));});
-        dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
-        tbody.appendChild(row);
-    }
-
+    if(result.lineitem) 
+        liTable.addLineitem(result.lineitem);
     if(result.complete) // hide the loading image
-        showDiv('oils-acq-pl-search-results');
+        dojo.style('oils-acq-pl-loading','display', 'none');
 }
 
 
 function showDiv(div) {
     var divs = [
-        'oils-acq-pl-search-results',
         'oils-acq-search-block', 
         'oils-acq-pl-loading' ];
     dojo.forEach(divs, function(d) {dojo.style(d,'display', 'none')});
+    liTable.hideTable();
     dojo.style(div, 'display', 'block');
 }
 
@@ -203,8 +171,8 @@ function saveResults(values) {
     selectedLIs = resultLIs;
 
     if(values.which == 'selected') 
-        selectedLIs = getSelected();
-        
+        selectedLIs = liTable.getSelected();
+
     if(values.new_name && values.new_name != '') {
         // save selected lineitems to a new picklist
         if(values.which = 'selected') {

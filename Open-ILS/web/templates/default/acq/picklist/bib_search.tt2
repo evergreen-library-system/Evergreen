@@ -93,29 +93,7 @@
         </div>
     </div>
     <div dojoType='dijit.layout.ContentPane' layoutAlign='client'>
-        <table id='oila-acq-picklist-result-table'>
-            <thead>
-                <tr>
-                    <th><a href='javascript:toggleSelect();'>Select</a></th>
-                    <th>Title</th><th>Author</th><th>ISBN</th>
-                    <th>ISSN</th><th>Edition</th><th>Pubdate</th>
-                    <th>Publisher</th><th>Source</th>
-                </tr>
-            </thead>
-            <tbody id='plist-tbody'>
-                <tr id='plist-row'>
-                    <td name='selector'><input type='checkbox' name='selectbox'/></td>
-                    <td attr='title'/>
-                    <td attr='author'/>
-                    <td attr='isbn'/>
-                    <td attr='issn'/>
-                    <td attr='edition'/>
-                    <td attr='pubdate'/>
-                    <td attr='publisher'/>
-                    <td name='source_label'/>
-                </tr>
-            </tbody>
-        </table>    
+        [% INCLUDE 'default/acq/common/li_table.tt2' %]
     </div>
 </div>
 

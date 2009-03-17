@@ -1,0 +1,38 @@
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
+<div id='acq-lit-table-container'>
+    <div id='acq-lit-table-div' class='hidden'>
+        <table id='acq-lit-table'>
+            <thead>
+                <tr>
+                    <th colspan='0'><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></th>
+                </tr>
+            </thead>
+            <tbody id='acq-lit-tbody'>
+                <tr id='acq-lit-row' class='acq-lit-row'>
+                    <td name='selector'><input type='checkbox' name='selectbox'/></td>
+                    <td>
+                        <table>
+                            <tr><td attr='title' colspan='0'/></tr>
+                            <tr class='acq-lit-alt-row'>
+                                <td/>
+                                <td attr='author'/>
+                                <td attr='isbn'/>
+                                <td attr='issn'/>
+                                <td attr='edition'/>
+                                <td attr='pubdate'/>
+                                <td attr='publisher'/>
+                            </tr>
+                            <tr class='acq-lit-alt-row'>
+                                <td/>
+                                <td name='source_label' colspan='0'/>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id='acq-lit-info-div' class='hidden'>
+    </div>
+</div>
+
