@@ -63,12 +63,13 @@ function AcqLiTable() {
         self.toggleState = !self.toggleState;
     };
 
-    this.getSelected = function() {
+    /** @param all If true, assume all are selected */
+    this.getSelected = function(all) {
         var selected = [];
         dojo.forEach(self.selectors, 
             function(i) { 
-                if(!i.checked) return;
-                selected.push(self.liCache[i.parentNode.parentNode.getAttribute('li')]);
+                if(i.checked || all)
+                    selected.push(self.liCache[i.parentNode.parentNode.getAttribute('li')]);
             }
         );
         return selected;

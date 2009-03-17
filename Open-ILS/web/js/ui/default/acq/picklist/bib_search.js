@@ -1,4 +1,5 @@
 dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.ProgressBar');
 dojo.require('dijit.Dialog');
 dojo.require('dojox.form.CheckedMultiSelect');
 dojo.require('fieldmapper.Fieldmapper');
@@ -169,10 +170,8 @@ function loadPLSelect() {
 
 
 function saveResults(values) {
-    selectedLIs = resultLIs;
-
-    if(values.which == 'selected') 
-        selectedLIs = liTable.getSelected();
+    openils.Util.show('oils-acq-update-li-progress');
+    selectedLIs = liTable.getSelected( (values.which == 'all') );
 
     if(values.new_name && values.new_name != '') {
         // save selected lineitems to a new picklist
@@ -201,10 +200,13 @@ function saveResults(values) {
 }
 
 function updateLiList(pl, list, idx, oncomplete) {
-    if(idx >= list.length)
+    if(idx >= list.length) {
+        openils.Util.hide('oils-acq-update-li-progress');
         return oncomplete();
+    }
     var li = selectedLIs[idx];
     li.picklist(pl);
+    liUpdateProgress.update({maximum: list.length, progress: idx});
     new openils.acq.Lineitem({lineitem:li}).update(
         function(r) {
             updateLiList(pl, list, ++idx, oncomplete);
@@ -213,3 +215,5 @@ function updateLiList(pl, list, idx, oncomplete) {
 }
 
 openils.Util.addOnLoad(drawForm);
+
+

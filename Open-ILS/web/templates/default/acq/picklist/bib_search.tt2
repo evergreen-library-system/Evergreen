@@ -54,6 +54,9 @@
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Search Results</div>
         <div>
+            <div id='oils-acq-update-li-progress' class='hidden'>
+                <div dojoType="dijit.ProgressBar" style="width:300px" jsId="liUpdateProgress"></div>
+            </div>
             <div dojoType='dijit.form.Button' onClick='showDiv("oils-acq-search-block");'>New Search</div>
             <div dojoType="dijit.form.DropDownButton">
                 <span>Save Results</span>

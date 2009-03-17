@@ -23,7 +23,7 @@
                     <td>
                         <table>
                             <tr>
-                                <td rowspan='3'><img style='width:40px;height:65px;' name='jacket' onerror='dojo.style(this, "display", "none")'/></td>
+                                <td rowspan='3'><img style='width:40px;height:65px;' name='jacket'/></td>
                                 <td colspan='0'><a href='javascript:void(0);' attr='title'></a></td>
                             </tr>
                             <tr class='acq-lit-alt-row'>
@@ -45,6 +45,7 @@
             </tbody>
         </table>
     </div>
+
     <div id='acq-lit-info-div' class='hidden'>
         <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
         <table>
@@ -54,8 +55,9 @@
         </table>
         <div style='margin-top:40px;'>
             <h3>MARC Record</h3>
-            <div id='acq-lit-marc-div' style='margin-top:20px;'/>
+            <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
         </div>
     </div>
+
 </div>
 
