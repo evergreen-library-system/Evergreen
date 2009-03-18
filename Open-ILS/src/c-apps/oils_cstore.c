@@ -79,6 +79,7 @@ static const char* json_type( int code );
 static const char* get_primitive( osrfHash* field );
 static const char* get_datatype( osrfHash* field );
 static int is_identifier( const char* s);
+static int is_good_operator( const char* op );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -1918,6 +1919,11 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field,
 static char* searchSimplePredicate (const char* op, const char* class,
 		osrfHash* field, const jsonObject* node) {
 
+	if( ! is_good_operator( op ) ) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", MODULENAME, op );
+		return NULL;
+	}
+
 	char* val = NULL;
 
 	// Get the value to which we are comparing the specified column
@@ -1960,18 +1966,31 @@ static char* searchSimplePredicate (const char* op, const char* class,
 
 static char* searchBETWEENPredicate (const char* class, osrfHash* field, const jsonObject* node) {
 
+	const jsonObject* x_node = jsonObjectGetIndex( node, 0 );
+	const jsonObject* y_node = jsonObjectGetIndex( node, 1 );
+	
+	if( NULL == y_node ) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Not enough operands for BETWEEN operator", MODULENAME );
+		return NULL;
+	}
+	else if( NULL != jsonObjectGetIndex( node, 2 ) ) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Too many operands for BETWEEN operator", MODULENAME );
+		return NULL;
+	}
+	
 	char* x_string;
 	char* y_string;
 
 	if ( !strcmp( get_primitive( field ), "number") ) {
-		x_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,0));
-		y_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,1));
+		x_string = jsonNumberToDBString(field, x_node);
+		y_string = jsonNumberToDBString(field, y_node);
 
 	} else {
-		x_string = jsonObjectToSimpleString(jsonObjectGetIndex(node,0));
-		y_string = jsonObjectToSimpleString(jsonObjectGetIndex(node,1));
+		x_string = jsonObjectToSimpleString(x_node);
+		y_string = jsonObjectToSimpleString(y_node);
 		if ( !(dbi_conn_quote_string(dbhandle, &x_string) && dbi_conn_quote_string(dbhandle, &y_string)) ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key strings [%s] and [%s]", MODULENAME, x_string, y_string);
+			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key strings [%s] and [%s]",
+					MODULENAME, x_string, y_string);
 			free(x_string);
 			free(y_string);
 			return NULL;
@@ -4681,5 +4700,40 @@ static int is_identifier( const char* s) {
 	if( *s )
 		return 0;   // White space was embedded within non-white space
 
+	return 1;
+}
+
+/*
+Determine whether to accept a character string as a comparison operator.
+Return 1 if it's good, or 0 if it's bad.
+
+We don't validate it for real.  We just make sure that it doesn't contain
+any semicolons or white space (with a special exception for the
+"SIMILAR TO" operator).  The idea is to block certain kinds of SQL
+injection.  If it has no semicolons or white space but it's still not a
+valid operator, then the database will complain.
+
+Another approach would be to compare the string against a short list of
+approved operators.  We don't do that because we want to allow custom
+operators like ">100*", which would be difficult or impossible to
+express otherwise in a JSON query.
+*/
+static int is_good_operator( const char* op ) {
+	if( !op ) return 0;   // Sanity check
+
+	const char* s = op;
+	while( *s ) {
+		if( isspace( (unsigned char) *s ) ) {
+			// Special exception for SIMILAR TO.  Someday we might make
+			// exceptions for IS DISTINCT FROM and IS NOT DISTINCT FROM.
+			if( !strcasecmp( op, "similar to" ) )
+				return 1;
+			else
+				return 0;
+		}
+		else if( ';' == *s )
+			return 0;
+		++s;
+	}
 	return 1;
 }
