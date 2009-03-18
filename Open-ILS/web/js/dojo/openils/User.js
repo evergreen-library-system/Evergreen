@@ -54,7 +54,7 @@ if(!dojo._hasResource["openils.User"]) {
             else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
 
-            var id = this.id || (this.user) ? this.user.id() : null;
+            var id = this.id || (this.user && this.user.id) ? this.user.id() : null;
             if(id && !this.permOrgCache[id])
                 this.permOrgCache[id] = {};
         },
