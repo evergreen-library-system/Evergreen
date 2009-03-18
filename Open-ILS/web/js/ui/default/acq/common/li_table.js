@@ -134,7 +134,6 @@ function AcqLiTable() {
                 params: [self.authtoken, liId, {
                     flesh_attrs: true,
                     flesh_li_details: true,
-                    flesh_fund: true,
                     flesh_fund_debit: true }],
 
                 oncomplete: function(r) {
@@ -239,7 +238,11 @@ function AcqLiTable() {
                 });
                 widget.build();
                 dojo.connect(widget.widget, 'onChange', 
-                    function() { copy[field](widget.getFormattedValue()) });
+                    function() { 
+                        copy[field](widget.getFormattedValue()) 
+                        copy.ischanged(true);
+                    }
+                );
             }
         );
 
