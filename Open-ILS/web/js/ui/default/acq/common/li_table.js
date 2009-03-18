@@ -238,9 +238,12 @@ function AcqLiTable() {
                 });
                 widget.build();
                 dojo.connect(widget.widget, 'onChange', 
-                    function() { 
-                        copy[field](widget.getFormattedValue()) 
-                        copy.ischanged(true);
+                    function(val) { 
+                        if(val != copy[field]()) {
+                            // prevent setting ischanged() automatically on widget load
+                            copy[field](widget.getFormattedValue()) 
+                            copy.ischanged(true);
+                        }
                     }
                 );
             }
