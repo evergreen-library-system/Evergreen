@@ -608,7 +608,6 @@ sub create_lineitem_detail_impl {
 
     $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
 
-    $e->commit;
     return $li_detail if $$options{return_obj};
     return $li_detail->id
 }
@@ -655,7 +654,6 @@ sub update_lineitem_detail_impl {
     return $evt if $evt;
 
     $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
-    $e->commit;
     return 1;
 }
 
@@ -715,7 +713,6 @@ sub delete_lineitem_detail_impl {
     # XXX check lineitem perms
 
     $e->delete_acq_lineitem_detail($li_detail) or return $e->die_event;
-    $e->commit;
     return 1;
 }
 
