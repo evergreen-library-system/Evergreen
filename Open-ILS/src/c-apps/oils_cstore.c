@@ -1999,7 +1999,12 @@ static char* searchPredicate ( const char* class, osrfHash* field,
 					MODULENAME, osrfHashGet(field, "name") );
 		} else {
 			jsonObject* pred_node = jsonIteratorNext( pred_itr );
-			if ( !(strcasecmp( pred_itr->key,"between" )) )
+
+			// Verify that there are no additional predicates
+			if( jsonIteratorHasNext( pred_itr ) ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"", 
+						MODULENAME, osrfHashGet(field, "name") );
+			} else if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class, field, pred_node );
 			else if ( !(strcasecmp( pred_itr->key,"in" )) || !(strcasecmp( pred_itr->key,"not in" )) )
 				pred = searchINPredicate( class, field, pred_node, pred_itr->key, ctx );
