@@ -522,6 +522,59 @@ sub create_lineitem_detail {
     my($self, $conn, $auth, $li_detail, $options) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    my $res = create_lineitem_detail_impl($self, $conn, $e, $li_detail, $options);
+    return $e->event if $e->died;
+    $e->commit;
+    return $res;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'lineitem_detail_CUD_batch',
+	api_name => 'open-ils.acq.lineitem_detail.cud.batch',
+    stream => 1,
+	signature => {
+        desc => q/Creates a new purchase order line item detail.  
+            Additionally creates the associated fund_debit/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'List of lineitem_details to create', type => 'array'},
+        ],
+        return => {desc => 'Streaming response of current position in the array'}
+    }
+);
+
+sub lineitem_detail_CUD_batch {
+    my($self, $conn, $auth, $li_details, $options) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $pos = 0;
+    my $total = scalar(@$li_details);
+    for my $li_detail (@$li_details) {
+        my $res;
+
+        use Data::Dumper;
+        $logger->info(Dumper($li_detail));
+        $logger->info('lid id ' . $li_detail->id);
+        $logger->info('lineitem ' . $li_detail->lineitem);
+
+        if($li_detail->isnew) {
+            $res = create_lineitem_detail_impl($self, $conn, $e, $li_detail, $options);
+        } elsif($li_detail->ischanged) {
+            $res = update_lineitem_detail_impl($self, $conn, $e, $li_detail);
+        } elsif($li_detail->isdeleted) {
+            $res = delete_lineitem_detail_impl($self, $conn, $e, $li_detail->id);
+        }
+        return $e->event if $e->died;
+        $conn->respond({maximum => $total, progress => $pos++, li => $res});
+    }
+    $e->commit;
+    return {complete => 1};
+}
+
+
+sub create_lineitem_detail_impl {
+    my($self, $conn, $e, $li_detail, $options) = @_;
     $options ||= {};
 
     my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
@@ -560,6 +613,8 @@ sub create_lineitem_detail {
     return $li_detail->id
 }
 
+
+
 __PACKAGE__->register_method(
 	method => 'update_lineitem_detail',
 	api_name	=> 'open-ils.acq.lineitem_detail.update',
@@ -577,6 +632,14 @@ sub update_lineitem_detail {
     my($self, $conn, $auth, $li_detail) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    my $res = update_lineitem_detail_impl($self, $conn, $e, $li_detail);
+    return $e->event if $e->died;
+    $e->commit;
+    return $res;
+}
+
+sub update_lineitem_detail_impl {
+    my($self, $conn, $e, $li_detail) = @_;
 
     if($li_detail->fund) {
         my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
@@ -625,6 +688,15 @@ sub delete_lineitem_detail {
     my($self, $conn, $auth, $li_detail_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    my $res = delete_lineitem_detail_impl($self, $conn, $e, $li_detail_id);
+    return $e->event if $e->died;
+    $e->commit;
+    return $res;
+}
+
+sub delete_lineitem_detail_impl {
+    my($self, $conn, $e, $li_detail_id) = @_;
+
     my $li_detail = $e->retrieve_acq_lineitem_detail([
         $li_detail_id,
         {   flesh => 1,
