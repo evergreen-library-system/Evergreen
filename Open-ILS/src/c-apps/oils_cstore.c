@@ -59,8 +59,8 @@ static char* searchSimplePredicate ( const char* op, const char* class,
 				osrfHash* field, const jsonObject* node );
 static char* searchFunctionPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
 static char* searchFieldTransform ( const char*, osrfHash*, const jsonObject*);
-static char* searchFieldTransformPredicate ( const char*, osrfHash*, jsonObject*, const char* );
-static char* searchBETWEENPredicate ( const char*, osrfHash*, jsonObject* );
+static char* searchFieldTransformPredicate ( const char*, osrfHash*, const jsonObject*, const char* );
+static char* searchBETWEENPredicate ( const char*, osrfHash*, const jsonObject* );
 static char* searchINPredicate ( const char*, osrfHash*,
 								 jsonObject*, const char*, osrfMethodContext* );
 static char* searchPredicate ( const char*, osrfHash*, jsonObject*, osrfMethodContext* );
@@ -1719,6 +1719,12 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 				}
 			}
 		}
+
+		if( in_item_first ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Empty IN list", MODULENAME );
+			buffer_free( sql_buf );
+			return NULL;
+		}
 	}
 
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
@@ -1772,10 +1778,12 @@ static char* searchValueTransform( const jsonObject* array ) {
 
 static char* searchFunctionPredicate (const char* class, osrfHash* field,
 		const jsonObject* node, const char* node_key) {
-	growing_buffer* sql_buf = buffer_init(32);
 
 	char* val = searchValueTransform(node);
+	if( !val )
+		return NULL;
 	
+	growing_buffer* sql_buf = buffer_init(32);
 	buffer_fadd(
 		sql_buf,
 		"\"%s\".%s %s %s",
@@ -1847,7 +1855,8 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	return buffer_release(sql_buf);
 }
 
-static char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObject* node, const char* node_key) {
+static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
+		const jsonObject* node, const char* node_key) {
 	char* field_transform = searchFieldTransform( class, field, node );
 	char* value = NULL;
 
@@ -1861,6 +1870,12 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 		}
 	} else if ( value_obj->type == JSON_ARRAY ) {
 		value = searchValueTransform( value_obj );
+		if( !value ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building value transform for field transform",
+					MODULENAME, value);
+			free( field_transform );
+			return NULL;
+		}
 	} else if ( value_obj->type == JSON_HASH ) {
 		value = searchWHERE( value_obj, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 		if( !value ) {
@@ -1943,7 +1958,7 @@ static char* searchSimplePredicate (const char* op, const char* class,
 	return pred;
 }
 
-static char* searchBETWEENPredicate (const char* class, osrfHash* field, jsonObject* node) {
+static char* searchBETWEENPredicate (const char* class, osrfHash* field, const jsonObject* node) {
 
 	char* x_string;
 	char* y_string;
@@ -1978,9 +1993,12 @@ static char* searchPredicate ( const char* class, osrfHash* field,
 	if (node->type == JSON_ARRAY) { // equality IN search
 		pred = searchINPredicate( class, field, node, NULL, ctx );
 	} else if (node->type == JSON_HASH) { // non-equality search
-		jsonObject* pred_node;
 		jsonIterator* pred_itr = jsonNewIterator( node );
-		while ( (pred_node = jsonIteratorNext( pred_itr )) ) {
+		if( !jsonIteratorHasNext( pred_itr ) ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Empty predicate for field \"%s\"", 
+					MODULENAME, osrfHashGet(field, "name") );
+		} else {
+			jsonObject* pred_node = jsonIteratorNext( pred_itr );
 			if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class, field, pred_node );
 			else if ( !(strcasecmp( pred_itr->key,"in" )) || !(strcasecmp( pred_itr->key,"not in" )) )
@@ -1989,12 +2007,11 @@ static char* searchPredicate ( const char* class, osrfHash* field,
 				pred = searchFunctionPredicate( class, field, pred_node, pred_itr->key );
 			else if ( pred_node->type == JSON_HASH )
 				pred = searchFieldTransformPredicate( class, field, pred_node, pred_itr->key );
-			else 
+			else
 				pred = searchSimplePredicate( pred_itr->key, class, field, pred_node );
-
-			break;
 		}
-        jsonIteratorFree(pred_itr);
+		jsonIteratorFree(pred_itr);
+
 	} else if (node->type == JSON_NULL) { // IS NULL search
 		growing_buffer* _p = buffer_init(64);
 		buffer_fadd(
@@ -2472,14 +2489,20 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     free(table);
 					jsonIteratorFree(search_itr);
 					return NULL;
-                }
+				}
 
-                char* subpred = searchPredicate( class, field, node, ctx );
-                buffer_add( sql_buf, subpred );
-                free(subpred);
-            }
-        }
-	    jsonIteratorFree(search_itr);
+				char* subpred = searchPredicate( class, field, node, ctx );
+				if( subpred ) {
+					buffer_add( sql_buf, subpred );
+					free(subpred);
+				} else {
+					buffer_free(sql_buf);
+					jsonIteratorFree(search_itr);
+					return NULL;
+				}
+			}
+		}
+		jsonIteratorFree(search_itr);
 
     } else {
         // ERROR ... only hash and array allowed at this level
