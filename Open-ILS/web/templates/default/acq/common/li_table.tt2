@@ -105,8 +105,8 @@
                     <td><div name='owning_lib'/></td>
                     <td><div name='location'/></td>
                     <td><div name='fund'/></td>
-                    <td><input type='text' name='barcode'/></td>
-                    <td><input type='text'  name='cn_label'/></td>
+                    <td><div name='barcode'/></td>
+                    <td><div name='cn_label'/></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>

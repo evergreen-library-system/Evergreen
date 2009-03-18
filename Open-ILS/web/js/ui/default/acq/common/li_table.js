@@ -227,7 +227,7 @@ function AcqLiTable() {
         this.copyCache[copy.id()] = copy;
         row.setAttribute('copy_id', copy.id());
 
-        dojo.forEach(['fund', 'owning_lib', 'location'],
+        dojo.forEach(['fund', 'owning_lib', 'location', 'barcode', 'cn_label'],
             function(field) {
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
@@ -248,11 +248,6 @@ function AcqLiTable() {
                 );
             }
         );
-
-        if(!copy.isnew()) {
-            dojo.query('[name=barcode]', row)[0].value = copy.barcode();
-            dojo.query('[name=cn_label]', row)[0].value = copy.cn_label();
-        }
 
         var self = this;
         dojo.query('[name=delete]', row)[0].onclick = 
