@@ -17,3 +17,6 @@
 
 INSERT INTO config.upgrade_log (version) VALUES ('1.4.0.3');
 
+-- Set a work_ou for the Administrator user
+INSERT INTO permission.usr_work_ou_map (usr, work_ou) VALUES (1, 1);
+
