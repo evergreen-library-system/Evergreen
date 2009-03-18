@@ -1,6 +1,8 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <div id='acq-lit-table-container'>
     <div id='acq-lit-table-div' class='hidden'>
+
+        <!-- Lineitem (bib record) list -->
         <table id='acq-lit-table'>
             <thead>
                 <tr>
@@ -50,6 +52,7 @@
         </table>
     </div>
 
+    <!-- Bib record / Lineitem details table -->
     <div id='acq-lit-info-div' class='hidden'>
         <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
         <table>
@@ -63,32 +66,50 @@
         </div>
     </div>
 
+    <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
         <h2>Copies</h2>
-        <table id='acq-lit-li-details-table'>
-            <thead>
+        <table style='width:100%;'>
+            <tbody>
                 <tr>
-                    <th>Owning Branch</th>
-                    <th>Shelving Location</th>
-                    <th>Fund</th>
-                    <th>Barcode</th>
-                    <th>Callnumber</th>
-                    <th style='text-align:right;width:30%'>
-                        Add items to order:
-                        <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
-                            constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
-                        <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody id='acq-lit-li-details-tbody'>
-                <tr id='acq-lit-li-details-row'>
-                    <td><div name='owning_lib'/></td>
-                    <td><div name='location'/></td>
-                    <td><div name='fund'/></td>
-                    <td><input type='text' name='barcode'/></td>
-                    <td><input type='text'  name='cn_label'/></td>
-                    <td/>
+                    <td style='width:75%'>
+                        <table id='acq-lit-li-details-table'>
+                            <thead>
+                                <tr>
+                                    <th>Owning Branch</th>
+                                    <th>Shelving Location</th>
+                                    <th>Fund</th>
+                                    <th>Barcode</th>
+                                    <th>Callnumber</th>
+                                    <th/>
+                                </tr>
+                            </thead>
+                            <tbody id='acq-lit-li-details-tbody'>
+                                <tr id='acq-lit-li-details-row'>
+                                    <td><div name='owning_lib'/></td>
+                                    <td><div name='location'/></td>
+                                    <td><div name='fund'/></td>
+                                    <td><input type='text' name='barcode'/></td>
+                                    <td><input type='text'  name='cn_label'/></td>
+                                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td style='vertical-align:top;text-align:center;'>
+                        <div style='border:1px solid #999;'>
+                            Add items to order:
+                            <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
+                                constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
+                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
+                        </div>
+                        <div style='border:1px solid #999;margin-top:20px;'>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
+                        </div>
+                        <div id='acq-lit-update-copies-progress' class='hidden'>
+                            <div dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></div>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
