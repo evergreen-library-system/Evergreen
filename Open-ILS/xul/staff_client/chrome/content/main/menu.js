@@ -160,7 +160,8 @@ main.menu.prototype = {
 	
 						var new_bc = window.prompt(offlineStrings.getString('menu.cmd_replace_barcode.replacement.prompt'),'',offlineStrings.getString('menu.cmd_replace_barcode.replacement.label'));
 						new_bc = String( new_bc ).replace(/\s/g,'');
-						if (!new_bc) {
+						/* Casting a possibly null input value to a String turns it into "null" */
+						if (!new_bc || new_bc == 'null') {
 							alert(offlineStrings.getString('menu.cmd_replace_barcode.blank.error'));
 							return;
 						}
