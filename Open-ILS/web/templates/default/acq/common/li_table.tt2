@@ -69,47 +69,45 @@
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
         <h2>Copies</h2>
-        <table style='width:100%;'>
-            <tbody>
+
+        <table style='width:100%;border:1px solid #999;padding:5px;'>
+            <tr>
+                <td style='text-align:left;'>
+                    Add items:
+                    <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
+                        constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
+                    <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
+                </td>
+                <td style='text-align:right'>
+                    <span id='acq-lit-update-copies-progress' class='hidden'>
+                        <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
+                    </span>
+                    <span>
+                        <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+        <table id='acq-lit-li-details-table'>
+            <thead>
                 <tr>
-                    <td style='width:75%'>
-                        <table id='acq-lit-li-details-table'>
-                            <thead>
-                                <tr>
-                                    <th>Owning Branch</th>
-                                    <th>Shelving Location</th>
-                                    <th>Fund</th>
-                                    <th>Barcode</th>
-                                    <th>Callnumber</th>
-                                    <th/>
-                                </tr>
-                            </thead>
-                            <tbody id='acq-lit-li-details-tbody'>
-                                <tr id='acq-lit-li-details-row'>
-                                    <td><div name='owning_lib'/></td>
-                                    <td><div name='location'/></td>
-                                    <td><div name='fund'/></td>
-                                    <td><input type='text' name='barcode'/></td>
-                                    <td><input type='text'  name='cn_label'/></td>
-                                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td style='vertical-align:top;text-align:center;'>
-                        <div style='border:1px solid #999;'>
-                            Add items to order:
-                            <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
-                                constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
-                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
-                        </div>
-                        <div style='border:1px solid #999;margin-top:20px;'>
-                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
-                        </div>
-                        <div id='acq-lit-update-copies-progress' class='hidden'>
-                            <div dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></div>
-                        </div>
-                    </td>
+                    <th>Owning Branch</th>
+                    <th>Shelving Location</th>
+                    <th>Fund</th>
+                    <th>Barcode</th>
+                    <th>Callnumber</th>
+                    <th/>
+                </tr>
+            </thead>
+            <tbody id='acq-lit-li-details-tbody'>
+                <tr id='acq-lit-li-details-row'>
+                    <td><div name='owning_lib'/></td>
+                    <td><div name='location'/></td>
+                    <td><div name='fund'/></td>
+                    <td><input type='text' name='barcode'/></td>
+                    <td><input type='text'  name='cn_label'/></td>
+                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>
         </table>
