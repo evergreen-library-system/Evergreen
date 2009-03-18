@@ -35,6 +35,8 @@ if(!dojo._hasResource["openils.User"]) {
         authtoken : null,
         authtime : null,
         workstation : null,
+        permOrgCache : {},
+        sessionCache : {},
     
         constructor : function ( kwargs ) {
             kwargs = kwargs || {};
@@ -51,12 +53,23 @@ if(!dojo._hasResource["openils.User"]) {
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
+
+            var id = this.id || (this.user) ? this.user.id() : null;
+            if(id && !this.permOrgCache[id])
+                this.permOrgCache[id] = {};
         },
 
         getBySession : function(onComplete) {
             var _u = this;
             var req = ['open-ils.auth', 'open-ils.auth.session.retrieve'];
             var params = [_u.authtoken];
+
+            if(this.sessionCache[this.authtoken]) {
+                this.user = this.sessionCache[this.authtoken];
+				if (!openils.User.user) 
+                    openils.User.user = this.user;
+                return this.user;
+            }
 
             if(onComplete) {
                 fieldmapper.standardRequest(
@@ -66,6 +79,7 @@ if(!dojo._hasResource["openils.User"]) {
                         oncomplete : function(r) {
                             var user = r.recv().content();
                             _u.user = user;
+                            _u.sessionCache[_u.authtoken] = user;
 					        if (!openils.User.user) openils.User.user = _u.user;
                             if(onComplete)
                                 onComplete(user);
@@ -75,6 +89,7 @@ if(!dojo._hasResource["openils.User"]) {
             } else {
                 _u.user = fieldmapper.standardRequest(req, params);
 				if (!openils.User.user) openils.User.user = _u.user;
+                _u.sessionCache[_u.authtoken] = _u.user;
                 return _u.user;
             }
         },
@@ -185,12 +200,15 @@ if(!dojo._hasResource["openils.User"]) {
         getPermOrgList : function(permList, onload, includeDescendents, idlist) {
             if(typeof permList == 'string') permList = [permList];
 
-            console.log('loading org perms ' + permList + ' for user ' + this.user.id());
+            var self = this;
             var oncomplete = function(r) {
-                var permMap = openils.Util.readResponse(r);
+                var permMap = {};
+                if(r) permMap = openils.Util.readResponse(r);
                 var orgList = [];
-                for(var perm in permMap) {
-                    var permOrgList = permMap[perm];
+                for(var i = 0; i < permList.length; i++) {
+                    var perm = permList[i];
+                    var permOrgList = permMap[perm] || self.permOrgCache[self.user.id()][perm];
+                    self.permOrgCache[self.user.id()][perm] = permOrgList;
                     for(var i in permOrgList) {
                         if(includeDescendents) {
                             orgList = orgList.concat(
@@ -211,10 +229,19 @@ if(!dojo._hasResource["openils.User"]) {
                 onload(trimmed);
             };
 
+            var fetchList = [];
+            for(var i = 0; i < permList.length; i++) {
+                if(!self.permOrgCache[self.user.id()][permList[i]])
+                    fetchList.push(permList[i]);
+            }
+
+            if(fetchList.length == 0) 
+                return oncomplete();
+
             fieldmapper.standardRequest(
                 ['open-ils.actor', 'open-ils.actor.user.has_work_perm_at.batch'],
                 {   async: true,
-                    params: [this.authtoken, permList],
+                    params: [this.authtoken, fetchList],
                     oncomplete: oncomplete
                 }
             );

@@ -203,18 +203,28 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
-            new openils.PermaCrud().retrieveAll(linkClass, {   
-                async : true,
-                oncomplete : function(r) {
-                    var list = openils.Util.readResponse(r, false, true);
-                    if(list) {
-                        self.widget.store = 
-                            new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
-                    }
-                    self.widget.startup();
-                    self._widgetLoaded();
+            var oncomplete = function(list) {
+                if(list) {
+                    self.widget.store = 
+                        new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
+                    self.cache[linkClass] = list;
                 }
-            });
+                self.widget.startup();
+                self._widgetLoaded();
+            };
+
+            if(this.cache[linkClass]) {
+                oncomplete(this.cache[linkClass]);
+
+            } else {
+                new openils.PermaCrud().retrieveAll(linkClass, {   
+                    async : true,
+                    oncomplete : function(r) {
+                        var list = openils.Util.readResponse(r, false, true);
+                        oncomplete(list);
+                    }
+                });
+            }
 
             return true;
         },
