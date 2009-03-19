@@ -25,7 +25,11 @@ our $_loaded = 1;
 
 sub flush_forced_xacts {
     for my $k ( keys %xact_ed_cache ) {
-        $xact_ed_cache{$k}->rollback;
+        try {
+            $xact_ed_cache{$k}->rollback;
+        } catch Error with {
+            # rollback failed
+        };
         delete $xact_ed_cache{$k};
     }
 }
