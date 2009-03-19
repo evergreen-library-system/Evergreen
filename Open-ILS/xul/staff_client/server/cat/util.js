@@ -50,7 +50,8 @@ cat.util.replace_barcode = function(old_bc) {
 			'',
 			$("catStrings").getString('staff.cat.util.replace_barcode.new_bc_window_prompt.title'));
 		new_bc = String( new_bc ).replace(/\s/g,'');
-		if (!new_bc) {
+		/* Casting a possibly null input value to a String turns it into "null" */
+		if (!new_bc || new_bc == 'null') {
 			alert($("catStrings").getString('staff.cat.util.replace_barcode.new_bc.failed'));
 			return old_bc;
 		}
