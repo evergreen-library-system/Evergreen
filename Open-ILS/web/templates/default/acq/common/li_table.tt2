@@ -29,8 +29,8 @@
                                     <td rowspan='2'><img style='width:40px;height:65px;' name='jacket'/></td>
                                     <td attr='title' style='width:70%;font-weight:bold;'/>
                                     <td style='text-align:right'>
-                                        <a name='infolink' href='javascript:void(0);'>Details</a>
-                                        <a name='copieslink' href='javascript:void(0);'>Copies</a>
+                                        <a name='infolink' href='javascript:void(0);' style='margin-right:10px;'>Details</a>
+                                        <a name='copieslink' href='javascript:void(0);' style='margin-right:10px;'>Copies</a>
                                     </td>
                                 </tr>
                                 <tr class='acq-lit-alt-row'>
@@ -54,7 +54,9 @@
 
     <!-- Bib record / Lineitem details table -->
     <div id='acq-lit-info-div' class='hidden'>
-        <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
+        <div class='acq-lit-li-menu-bar'>
+            <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
+        </div>
         <table>
             <tbody id='acq-lit-info-tbody'>
                 <tr id='acq-lit-info-row'><td name='label'/><td name='value'/></tr>
@@ -69,25 +71,29 @@
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
         <h2>Copies</h2>
-
-        <table style='width:100%;border:1px solid #999;padding:5px;'>
-            <tr>
-                <td style='text-align:left;'>
-                    Add items:
-                    <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
-                        constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
-                    <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
-                </td>
-                <td style='text-align:right'>
-                    <span id='acq-lit-update-copies-progress' class='hidden'>
-                        <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
-                    </span>
-                    <span>
-                        <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
-                    </span>
-                </td>
-            </tr>
-        </table>
+        <div class='acq-lit-li-menu-bar'>
+            <table style='width:100%'>
+                <tr>
+                    <td style='text-align:left;'>
+                        <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button'>&#x2196; Return</div>
+                        <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
+                            Add items:
+                            <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
+                                constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
+                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
+                        </span>
+                    </td>
+                    <td style='text-align:right;'>
+                        <span id='acq-lit-update-copies-progress' class='hidden'>
+                            <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
+                        </span>
+                        <span>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <table id='acq-lit-li-details-table'>
             <thead>

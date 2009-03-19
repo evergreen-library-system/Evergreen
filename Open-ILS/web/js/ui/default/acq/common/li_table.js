@@ -20,6 +20,7 @@ function AcqLiTable() {
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
+    dojo.byId('acq-lit-copies-back-button').onclick = function(){self.show('list')};
 
     this.reset = function() {
         while(self.tbody.childNodes[0])
