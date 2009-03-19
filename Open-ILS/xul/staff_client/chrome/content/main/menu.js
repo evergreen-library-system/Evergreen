@@ -400,7 +400,7 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name' : offlineStrings.getString('menu.cmd_local_admin.tab'), 'browser' : true }, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_local_admin.tab'), 'browser' : false }, 
 						{ 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 
@@ -422,7 +422,7 @@ main.menu.prototype = {
                         window.escape(urls.VANDELAY+'?ses='+window.escape(ses()));
 					obj.set_tab( 
 						loc, 
-						{'tab_name' : offlineStrings.getString('menu.cmd_open_vandelay.tab'), 'browser' : true }, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_open_vandelay.tab'), 'browser' : false }, 
 						{'no_xulG' : false, 'show_print_button' : false } 
 					);
 
@@ -436,7 +436,7 @@ main.menu.prototype = {
                         window.escape(urls.CONIFY+'?ses='+window.escape(ses()));
 					obj.set_tab( 
 						loc, 
-						{'tab_name' : offlineStrings.getString('menu.cmd_open_conify.tab'), 'browser' : true }, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_open_conify.tab'), 'browser' : false }, 
 						{'no_xulG' : false, 'show_print_button' : false } 
 					);
 
@@ -652,7 +652,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?ses='+window.escape(ses()),{ 'browser' : true },{});
+					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?ses='+window.escape(ses()),{ 'browser' : false },{});
 				}
 			],
 			'cmd_console' : [
@@ -694,7 +694,7 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : true}, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : false}, 
 						{ 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 				}
@@ -1008,7 +1008,8 @@ main.menu.prototype = {
 		
 		var frame;
 		try {
-			if (params && typeof params.browser != 'undefined') {
+            if (typeof params.browser == 'undefined') params.browser = false;
+			if (params.browser) {
 				obj.id_incr++;
 				frame = this.w.document.createElement('browser');
 				frame.setAttribute('flex','1');

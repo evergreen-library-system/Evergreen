@@ -371,7 +371,7 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 			_debug("launching report output view at URL: " + url);
 			if(isXUL()) 
 				xulG.new_tab('/xul/server/util/rbrowser.xul?url=' + url,  /* this comes from urls.XUL_REMOTE_BROWSER */
-					{tab_name: dojo.string.substitute( rpt_strings.FOLDER_WINDOW_REPORT_OUTPUT, [r.name()] ), browser:true},
+					{tab_name: dojo.string.substitute( rpt_strings.FOLDER_WINDOW_REPORT_OUTPUT, [r.name()] ), browser:false},
 					{no_xulG:false, show_nav_buttons:true, show_print_button:true});
 			else {
 				//goTo(url);
