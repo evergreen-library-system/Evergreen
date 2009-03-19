@@ -3,7 +3,7 @@
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div class='container'>
         <div id='oils-acq-picklist-header'>
-            Picklist <span id='oils-acq-picklist-name'> </span>
+            Selection list <span id='oils-acq-picklist-name'> </span>
             <div class='oils-acq-picklist-attributes'>
                 <div>Create date: <span id="oils-acq-picklist-attr-cdate"></span></div>
                 <div>Last updated: <span id="oils-acq-picklist-attr-edate"></span></div>
