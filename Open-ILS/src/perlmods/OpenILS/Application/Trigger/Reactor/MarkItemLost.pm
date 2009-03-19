@@ -29,13 +29,18 @@ sub handler {
     my $e = new_editor(xact => 1);
     $e->requestor($e->retrieve_actor_user($$env{params}{editor}));
 
-    my $evt = OpenILS::Application::Cat::AssetCommon->set_item_lost($e, $$env{target}->target_copy);
+    my $circ = $$env{target};
+    my $evt = OpenILS::Application::Cat::AssetCommon->set_item_lost($e, $circ->target_copy);
     if($evt) {
         $logger->error("trigger: MarkItemLost failed with event ".$evt->{textcode});
         return 0;
     }
 
     $e->commit;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', 'lost.auto', $circ, $circ->circ_lib);
+
     return 1;
 }
 

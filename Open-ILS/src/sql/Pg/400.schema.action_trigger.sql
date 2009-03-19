@@ -30,6 +30,7 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout','
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkin','circ','Item checked in');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('lost','circ','Circulating Item marked Lost');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('lost.found','circ','Lost Circulating Item checked in');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('lost.auto','circ','Circulating Item automatically marked lost');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('claims_returned','circ','Circulating Item marked Claims Returned');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('claims_returned.found','circ','Claims Returned Circulating Item is checked in');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('missing','acp','Item marked Missing');
