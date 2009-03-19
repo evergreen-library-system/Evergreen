@@ -3220,5 +3220,62 @@ sub user_events {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'update_events',
+	api_name    => 'open-ils.actor.user.event.cancel.batch',
+    stream      => 1,
+);
+__PACKAGE__->register_method (
+	method		=> 'update_events',
+	api_name    => 'open-ils.actor.user.event.reset.batch',
+    stream      => 1,
+);
+
+sub update_events {
+    my($self, $conn, $auth, $event_ids) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $x = 1;
+    for my $id (@$event_ids) {
+
+        # do a little dance to determine what user we are ultimately affecting
+        my $event = 
+        my $def = $e->retrieve_action_trigger_event([
+            $id,
+            {   flesh => 2,
+                flesh_fields => {atev => ['event_def'], atevdef => ['hook']}
+            }
+        ]) or return $e->die_event;
+
+        my $user_id;
+        if($event->event_def->hook->core_type eq 'circ') {
+            $user_id = $e->retrieve_action_circulation($event->target)->usr;
+        } elsif($event->event_def->hook->core_type eq 'ahr') {
+            $user_id = $e->retrieve_action_hold_request($event->target)->usr;
+        } else {
+            return 0;
+        }
+
+        my $user = $e->retrieve_actor_user($user_id);
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+
+        if($self->api_name =~ /cancel/) {
+            $event->state('invalid');
+        } elsif($self->api_name =~ /reset/) {
+            $event->clear_start_time;
+            $event->clear_update_time;
+            $event->state('pending');
+        }
+
+        $e->update_action_trigger_event($event) or return $e->die_event;
+        $conn->respond({maximum => scalar(@$event_ids), progress => $x++});
+    }
+
+    $e->commit;
+    return {complete => 1};
+}
+
+
 1;
 
