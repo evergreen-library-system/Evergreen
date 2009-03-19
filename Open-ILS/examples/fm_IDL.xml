@@ -766,7 +766,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="atevparam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
-		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_params_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
