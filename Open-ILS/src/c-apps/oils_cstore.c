@@ -1696,6 +1696,14 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 			else
 				buffer_add(sql_buf, ", ");
 
+			// Sanity check
+			if ( in_item->type != JSON_STRING && in_item->type != JSON_NUMBER ) {
+				osrfLogError(OSRF_LOG_MARK, "%s: Expected string or number within IN list; found %s",
+						MODULENAME, json_type( in_item->type ) );
+									buffer_free(sql_buf);
+				return NULL;
+			}
+			
 			// Append the literal value -- quoted if not a number
 			if ( JSON_NUMBER == in_item->type ) {
 				char* val = jsonNumberToDBString( field, in_item );
@@ -1726,6 +1734,11 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 			buffer_free( sql_buf );
 			return NULL;
 		}
+	} else {
+		osrfLogError(OSRF_LOG_MARK, "%s: Expected object or array for IN clause; found %s",
+			MODULENAME, json_type( node->type ) );
+		buffer_free(sql_buf);
+		return NULL;
 	}
 
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
