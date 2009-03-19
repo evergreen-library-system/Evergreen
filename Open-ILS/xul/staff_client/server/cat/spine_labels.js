@@ -270,7 +270,7 @@
 						'show_print_button' : 1,
 						'alternate_print' : 1,
 						'no_xulG' : 1,
-						'title' : $("catStrings").('staff.cat.spine_labels.preview.title'),
+						'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
 						'on_url_load' : function(b) { 
 							try { 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
