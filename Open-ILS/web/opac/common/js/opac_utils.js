@@ -1,5 +1,6 @@
 /* - Request ------------------------------------------------------------- */
 
+
 /* define it again here for pages that don't load RemoteRequest */
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
@@ -754,12 +755,12 @@ function doLogout() {
 	G.user = null;
 
 	/* remove any cached data */
-	//cookieManager.remove(COOKIE_IDS);
-	//cookieManager.remove(COOKIE_SRIDS);
-	cookieManager.remove(COOKIE_RIDS);
-	cookieManager.remove(COOKIE_SES);
-	cookieManager.remove(COOKIE_SKIN);
-	cookieManager.remove(COOKIE_SEARCH);
+    dojo.require('dojo.cookie');
+    dojo.cookie(COOKIE_SES, '', {expires:-1});
+    dojo.cookie(COOKIE_RIDS, '', {expires:-1});
+    dojo.cookie(COOKIE_SKIN, '', {expires:-1});
+    dojo.cookie(COOKIE_SEARCH, '', {expires:-1});
+
 
 	checkUserSkin("default");
 	COUNT = 10;
