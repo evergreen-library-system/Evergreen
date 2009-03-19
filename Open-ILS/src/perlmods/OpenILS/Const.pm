@@ -113,6 +113,9 @@ econst OILS_PENALTY_PATRON_EXCEEDS_FINES => 1;
 econst OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT => 2;
 
 
+econst OILS_BILLING_TYPE_NOTIFICATION_FEE => 9;
+
+
 
 # ---------------------------------------------------------------------
 # finally, export all the constants
