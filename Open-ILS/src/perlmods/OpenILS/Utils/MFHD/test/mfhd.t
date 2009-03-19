@@ -138,25 +138,25 @@ __END__
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Combined issue: Jan/Feb
 853 20 $87$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm01/02
-863 41 $87.1$a1$b11$i1990$j12$x|a2|b1|i1991|j01/02$zTODO End of year, end of vol.
-863 41 $87.2$a2$b1$i1991$j01/02$x|a2|b2|i1991|j03$zTODO Beginning of year, beginning of vol.
+863 41 $87.1$a1$b11$i1990$j12$x|a2|b1|i1991|j01/02$z End of year, end of vol.
+863 41 $87.2$a2$b1$i1991$j01/02$x|a2|b2|i1991|j03$z Beginning of year, beginning of vol.
 
 245 00 $aMonthly, iss no. restarts, Calendar change: Jan, Combined iss: Nov/Dec
 853 20 $88$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$ycm11/12
-863 41 $88.1$a1$b10$i1990$j10$x|a1|b11|i1990|j11/12$zTODO end of year, end of vol.
-863 41 $88.2$a1$b11$i1990$j11/12$x|a2|b1|i1991|j01$zTODO wrap vol at year end
+863 41 $88.1$a1$b10$i1990$j10$x|a1|b11|i1990|j11/12$z end of year, end of vol.
+863 41 $88.2$a1$b11$i1990$j11/12$x|a2|b1|i1991|j01$z wrap vol at year end
 
 245 00 $aMonthly, iss no. restarts, Cal. change: Jan, Combined iss: Jan/Feb, Nov/Dec
 853 20 $89$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12
-863 41 $89.1$a1$b1$i1990$j01/02$x|a1|b2|i1990|j03$zTODO beg. of year, beg. of vol.
-863 41 $89.2$a1$b9$i1990$j10$x|a1|b10|i1990|j11/12$zTODO end of year, end of vol.
-863 41 $89.3$a1$b10$i1990$j11/12$x|a2|b1|i1991|j01/02$zTODO zwrap vol at year end
+863 41 $89.1$a1$b1$i1990$j01/02$x|a1|b2|i1990|j03$z beg. of year, beg. of vol.
+863 41 $89.2$a1$b9$i1990$j10$x|a1|b10|i1990|j11/12$z end of year, end of vol.
+863 41 $89.3$a1$b10$i1990$j11/12$x|a2|b1|i1991|j01/02$z zwrap vol at year end
 
 245 00 $aMonthly, iss no. restarts, Cal. change: Jan, Combined iss: May/Jun, Jul/Aug
 853 20 $810$av.$bno.$u10$vr$i(year)$j(month)$wm$x01$ycm05/06,07/08
-863 41 $810.1$a1$b4$i1990$j04$x|a1|b5|i1990|j05/06$zTODO next iss is combined.
-863 41 $810.2$a1$b5$i1990$j05/06$x|a1|b6|i1990|j07/08$zTODO combined to combined
-863 41 $810.3$a1$b6$i1990$j07/08$x|a1|b7|i1990|j09$zTODO combined to reg
+863 41 $810.1$a1$b4$i1990$j04$x|a1|b5|i1990|j05/06$z next iss is combined.
+863 41 $810.2$a1$b5$i1990$j05/06$x|a1|b6|i1990|j07/08$z combined to combined
+863 41 $810.3$a1$b6$i1990$j07/08$x|a1|b7|i1990|j09$z combined to reg
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Combined issue: 1/2 Jan/Feb 
 853 20 $811$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm01/02$yce21/2

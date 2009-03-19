@@ -337,10 +337,20 @@ sub match_year {
     my @date = @_;
 
     # XXX WRITE ME
+    return 0;
+}
+
+sub match_issue {
+    my $pat = shift;
+    my @date = @_;
+
+    # XXX WRITE ME
+    return 0;
 }
 
 my %dispatch = (
 		'd' => \&match_day,
+		'e' => \&match_issue, # not really a "chron" code
 		'w' => \&match_week,
 		'm' => \&match_month,
 		's' => \&match_season,
@@ -351,7 +361,9 @@ sub regularity_match {
     my $pubcode = shift;
     my @date = @_;
 
-    foreach my $regularity ($self->{_mfhdc_PATTERN}->{y}) {
+    return 0 if !exists $self->{_mfhdc_PATTERN}->{y};
+
+    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}}) {
 	next unless $regularity =~ m/^$pubcode/;
 
 	my $chroncode= substr($regularity, 1, 1);
@@ -359,6 +371,7 @@ sub regularity_match {
 
 	# XXX WRITE ME
 	foreach my $pat (@pats) {
+	    $pat =~ s|/.+||;	# If it's a combined date, match the start
 	    if ($dispatch{$chroncode}->($pat, @date)) {
 		return 1;
 	    }

@@ -206,12 +206,6 @@ my %increments = (
 		  # x => completely irregular
 );
 
-sub is_combined {
-    my $str = shift;
-
-    return $str =~ m;.+/.+;
-}
-
 sub incr_date {
     my $incr = shift;
     my @new = @_;
@@ -286,8 +280,8 @@ sub next_date {
 	$new[$i] = $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
     }
 
-    if (is_combined($new[-1])) {
-	$new[-1] =~ s/^[^\/]+//;
+    if ($new[-1] =~ m;.+/.+;) {
+	$new[-1] =~ s|^[^/]+/||;
     }
 
     # If $frequency is not one of the standard codes defined in %increments
@@ -307,6 +301,14 @@ sub next_date {
 
 	while ($caption->is_omitted(@new)) {
 	    @new = incr_date($increments{$freq}, @new);
+	}
+
+	if ($caption->is_combined(@new)) {
+	    my @second_date = incr_date($increments{$freq}, @new);
+
+	    # I am cheating: This code assumes that only the smallest
+	    # time increment is combined. So, no "Apr 15/May 1" allowed.
+	    @new[-1] = @new[-1] . '/' . @second_date[-1];
 	}
     }
 
