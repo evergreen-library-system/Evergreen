@@ -1,4 +1,4 @@
-/*  */
+/* */
 
 
 detachAllEvt('common', 'run');
@@ -349,7 +349,6 @@ function rdetailShowExtra(type, args) {
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_anotes_div'));
-	hideMe($('rdetail_performer_notes_div'));
 	hideMe($('rdetail_excerpt_div'));
 	hideMe($('rdetail_preview_div'));
 	hideMe($('rdetail_marc_div'));
@@ -364,7 +363,6 @@ function rdetailShowExtra(type, args) {
 	removeCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_preview_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
-	removeCSSClass($('rdetail_performer_notes_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
 
@@ -394,11 +392,6 @@ function rdetailShowExtra(type, args) {
 		case "anotes": 
 			addCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_anotes_div'));
-			break;
-
-		case "performer_notes": 
-			addCSSClass($('rdetail_performer_notes_link'), 'rdetail_extras_selected');
-			unHideMe($('rdetail_performer_notes_div'));
 			break;
 
 		case "toc": 
@@ -492,9 +485,6 @@ function rdetailhandleAC(data) {
 	if( data.toc.html ) {
 		$('rdetail_toc_div').innerHTML = data.toc.html;
 		unHideMe($('rdetail_toc_link'));
-	} else if( record.toc() ) {
-		$('rdetail_toc_div').innerHTML = record.toc();
-		unHideMe($('rdetail_toc_link'));
 	}
 
 	if( data.excerpt.html ) {
@@ -505,11 +495,6 @@ function rdetailhandleAC(data) {
 	if( data.anotes.html ) {
 		$('rdetail_anotes_div').innerHTML = data.anotes.html;
 		unHideMe($('rdetail_anotes_link'));
-	}
-
-	if( record.performer_notes() ) {
-		$('rdetail_performer_notes_div').innerHTML = record.performer_notes();
-		unHideMe($('rdetail_performer_notes_link'));
 	}
 }
 
