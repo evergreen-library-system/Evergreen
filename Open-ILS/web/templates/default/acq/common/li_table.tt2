@@ -6,13 +6,23 @@
         <table id='acq-lit-table'>
             <thead>
                 <tr>
-                    <th colspan='0'>
+                    <th colspan='0' style='border:1px solid #aaa;'>
                         <table style='width:100%;'><tr>
                             <td><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></td>
                             <td>
                                 <div style='width:100%;text-align:right;'>
-                                    <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
-                                    <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
+                                    <span>
+                                        <select dojoType='dijit.form.FilteringSelect' value='_'>
+                                            <option value='_'>--Actions--</option>
+                                            <option value='selector_ready'>Mark Ready for Selector</option>
+                                            <option value='order_ready'>Mark Ready for Order</option>
+                                            <option value='create_order'>Create Purchase Order</option>
+                                        </select>
+                                    </span>
+                                    <span style='padding-right:15px;'>
+                                        <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
+                                        <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
+                                    </span>
                                 </div>
                             </td>
                         </tr></table>
@@ -28,9 +38,10 @@
                                 <tr>
                                     <td rowspan='2'><img style='width:40px;height:65px;' name='jacket'/></td>
                                     <td attr='title' style='width:70%;font-weight:bold;'/>
-                                    <td style='text-align:right'>
+                                    <td rowspan='2' style='text-align:right'>
                                         <a name='infolink' href='javascript:void(0);' style='margin-right:10px;'>Details</a>
-                                        <a name='copieslink' href='javascript:void(0);' style='margin-right:10px;'>Copies</a>
+                                        <a name='copieslink' href='javascript:void(0);' 
+                                            style='margin-right:20px;'>Copies(<span name='count'></span>)</a>
                                     </td>
                                 </tr>
                                 <tr class='acq-lit-alt-row'>

@@ -1,5 +1,6 @@
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.ProgressBar');
 dojo.require('openils.User');
 dojo.require('openils.Util');
@@ -109,6 +110,7 @@ function AcqLiTable() {
         }
         dojo.query('[name=infolink]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
+        dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
