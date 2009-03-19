@@ -285,7 +285,7 @@
 						}
 					};
 			} catch(E) {
-				g.error.standard_unexpected_error_alert($("catStrings").('staff.cat.spine_labels.preview.std_unexpected_err'),E);
+				g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.preview.std_unexpected_err'),E);
 			}
 		}
 
