@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="util/fmall.js" />
 		<script type="text/javascript" src="util/fmgen.js" />
 		<script type="text/javascript" src="util/RemoteRequest.js" />
-		<script type="text/javascript" src="util/OrgTree.js" />
+		<script type='text/javascript' src='util/en-US/OrgTree.js' />
 		<script type="text/javascript" src="util/org_utils.js" />   
 		<script type="text/javascript" src="global_util.js" />   
 		<messagecatalog id="offlineStrings" src='chrome://open_ils_staff_client/locale/offline.properties'/>
