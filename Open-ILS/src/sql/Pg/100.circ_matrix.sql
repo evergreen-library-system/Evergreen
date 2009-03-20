@@ -362,13 +362,14 @@ $func$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION actor.calculate_system_penalties( match_user INT, context_org INT ) RETURNS SETOF actor.usr_standing_penalty AS $func$
 DECLARE
     user_object         actor.usr%ROWTYPE;
-    new_sp_row             actor.usr_standing_penalty%ROWTYPE;
-    existing_sp_row        actor.usr_standing_penalty%ROWTYPE;
+    new_sp_row          actor.usr_standing_penalty%ROWTYPE;
+    existing_sp_row     actor.usr_standing_penalty%ROWTYPE;
+    collections_fines   permission.grp_penalty_threshold%ROWTYPE;
     max_fines           permission.grp_penalty_threshold%ROWTYPE;
     max_overdue         permission.grp_penalty_threshold%ROWTYPE;
     max_items_out       permission.grp_penalty_threshold%ROWTYPE;
-    tmp_grp              INT;
-    items_overdue        INT;
+    tmp_grp             INT;
+    items_overdue       INT;
     items_out           INT;
     context_org_list    INT[];
     current_fines        NUMERIC(8,2) := 0.0;
@@ -419,31 +420,20 @@ BEGIN
             RETURN NEXT existing_sp_row;
         END LOOP;
 
-        FOR tmp_groc IN
-                SELECT  *
-                  FROM  money.grocery g
-                        JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
-                  WHERE usr = match_user
-                        AND xact_finish IS NULL
-                LOOP
-            SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_groc.id AND NOT voided;
-            current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-            SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_groc.id AND NOT voided;
-            current_fines = current_fines - COALESCE(tmp_fines, 0.0);
-        END LOOP;
-
-        FOR tmp_circ IN
-                SELECT  *
-                  FROM  action.circulation circ
-                        JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
-                  WHERE usr = match_user
-                        AND xact_finish IS NULL
-                LOOP
-            SELECT INTO tmp_fines SUM( amount ) FROM money.billing WHERE xact = tmp_circ.id AND NOT voided;
-            current_fines = current_fines + COALESCE(tmp_fines, 0.0);
-            SELECT INTO tmp_fines SUM( amount ) FROM money.payment WHERE xact = tmp_circ.id AND NOT voided;
-            current_fines = current_fines - COALESCE(tmp_fines, 0.0);
-        END LOOP;
+        SELECT  SUM(f.balance_owed) INTO current_fines
+          FROM  money.materialized_billable_xact_summary f
+                JOIN (
+                    SELECT  g.id
+                      FROM  money.grocery g
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
+                    SELECT  circ.id
+                      FROM  action.circulation circ
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL ) l USING (id);
 
         IF current_fines >= max_fines.threshold THEN
             new_sp_row.usr := match_user;
@@ -566,6 +556,70 @@ BEGIN
             RETURN NEXT new_sp_row;
            END IF;
     END IF;
+
+    -- Start over for collections warning
+    SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+
+    -- Fail if the user has a collections-level fine balance
+    LOOP
+        tmp_grp := user_object.profile;
+        LOOP
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 4 AND org_unit = tmp_org.id;
+
+            IF max_fines.threshold IS NULL THEN
+                SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+            ELSE
+                EXIT;
+            END IF;
+
+            IF tmp_grp IS NULL THEN
+                EXIT;
+            END IF;
+        END LOOP;
+
+        IF max_fines.threshold IS NOT NULL OR tmp_org.parent_ou IS NULL THEN
+            EXIT;
+        END IF;
+
+        SELECT * INTO tmp_org FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+
+    END LOOP;
+
+    IF max_fines.threshold IS NOT NULL THEN
+
+        FOR existing_sp_row IN
+                SELECT  *
+                  FROM  actor.usr_standing_penalty
+                  WHERE usr = match_user
+                        AND org_unit = max_fines.org_unit
+                        AND standing_penalty = 1
+                LOOP
+            RETURN NEXT existing_sp_row;
+        END LOOP;
+
+        SELECT  SUM(f.balance_owed) INTO current_fines
+          FROM  money.materialized_billable_xact_summary f
+                JOIN (
+                    SELECT  g.id
+                      FROM  money.grocery g
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
+                    SELECT  circ.id
+                      FROM  action.circulation circ
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL ) l USING (id);
+
+        IF current_fines >= max_fines.threshold THEN
+            new_sp_row.usr := match_user;
+            new_sp_row.org_unit := max_fines.org_unit;
+            new_sp_row.standing_penalty := 1;
+            RETURN NEXT new_sp_row;
+        END IF;
+    END IF;
+
 
     RETURN;
 END;

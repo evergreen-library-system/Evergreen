@@ -25,6 +25,10 @@ sub calculate_penalties {
 
     my $penalties = $e->json_query({from => ['actor.calculate_system_penalties',$user_id, $context_org]});
 
+    my $user = $e->retrieve_actor_user( $user_id );
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger') if (@$penalties);
+
+    my %csp;
     for my $pen_obj (@$penalties) {
 
         next if grep { # leave duplicate penalties in place
@@ -40,6 +44,19 @@ sub calculate_penalties {
 
         } else {
             $e->create_actor_user_standing_penalty($pen) or return $e->die_event;
+
+            my $csp_obj = $csp{$pen->{standing_penalty}} ||
+                $e->retrieve_config_standing_penalty( $pen->{standing_penalty} );
+
+            # cache for later
+            $csp{$pen->{standing_penalty}} = $csp_obj;
+
+            $ses->request(
+                'open-ils.trigger.event.autocreate',
+                'penalty.' . $csp_obj->name,
+                $user,
+                $pen->{org_unit}
+            );
         }
     }
 
