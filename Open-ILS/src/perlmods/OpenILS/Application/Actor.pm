@@ -3240,8 +3240,7 @@ sub update_events {
     for my $id (@$event_ids) {
 
         # do a little dance to determine what user we are ultimately affecting
-        my $event = 
-        my $def = $e->retrieve_action_trigger_event([
+        my $event = $e->retrieve_action_trigger_event([
             $id,
             {   flesh => 2,
                 flesh_fields => {atev => ['event_def'], atevdef => ['hook']}
