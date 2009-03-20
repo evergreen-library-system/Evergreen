@@ -38,7 +38,7 @@ msgstr "Vše"
 
 #: common.currency
 msgid "$"
-msgstr "%"
+msgstr "&#x25;"
 
 #: common.language
 msgid "Language: "

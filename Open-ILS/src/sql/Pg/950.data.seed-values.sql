@@ -721,6 +721,9 @@ INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('s
 
 -- available locales
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('cs-CZ', 'cze', oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'name'),
+	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'English (US)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
