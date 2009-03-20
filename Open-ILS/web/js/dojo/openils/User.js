@@ -205,16 +205,18 @@ if(!dojo._hasResource["openils.User"]) {
                 var permMap = {};
                 if(r) permMap = openils.Util.readResponse(r);
                 var orgList = [];
+
                 for(var i = 0; i < permList.length; i++) {
                     var perm = permList[i];
                     var permOrgList = permMap[perm] || self.permOrgCache[self.user.id()][perm];
                     self.permOrgCache[self.user.id()][perm] = permOrgList;
-                    for(var i in permOrgList) {
+
+                    for(var j in permOrgList) {
                         if(includeDescendents) {
                             orgList = orgList.concat(
-                                fieldmapper.aou.descendantNodeList(permOrgList[i]));
+                                fieldmapper.aou.descendantNodeList(permOrgList[j]));
                         } else {
-                            orgList = orgList.concat(fieldmapper.aou.findOrgUnit(permOrgList[i]));
+                            orgList = orgList.concat(fieldmapper.aou.findOrgUnit(permOrgList[j]));
                         }
                     }
                 }
