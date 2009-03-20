@@ -273,6 +273,30 @@ INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUE
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
 
 
+CREATE TABLE acq.distribution_formula (
+	id		SERIAL PRIMARY KEY,
+	owner	INT NOT NULL
+			REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+	name	TEXT NOT NULL,
+	skip_count 	INT NOT NULL DEFAULT 0,
+	CONSTRAINT acqdf_name_once_per_owner UNIQUE (name, owner)
+);
+
+CREATE TABLE acq.distribution_formula_entry (
+	id			SERIAL PRIMARY KEY,
+	formula		INTEGER NOT NULL REFERENCES acq.distribution_formula(id)
+				DEFERRABLE INITIALLY DEFERRED,
+	position	INTEGER NOT NULL,
+	item_count	INTEGER NOT NULL,
+	owning_lib	INTEGER REFERENCES actor.org_unit(id)
+				DEFERRABLE INITIALLY DEFERRED,
+	location	INTEGER REFERENCES asset.copy_location(id),
+	CONSTRAINT acqdfe_lib_once_per_formula UNIQUE( formula, position ),
+	CONSTRAINT acqdfe_must_be_somewhere
+				CHECK( owning_lib IS NOT NULL OR location IS NOT NULL ) 
+);
+
+
 -- Functions
 
 
