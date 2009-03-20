@@ -2,18 +2,16 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
 <script> var providerId = '[% ctx.page_args.0 %]';</script>
 
-<div id='provider-list-div' class='hidden'>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Provider</div>
-        <div><button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New</button></div>
-    </div>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table  jsId="pListGrid" 
-                dojoType="openils.widget.AutoGrid" 
-                fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']" 
+
+<div id='provider-list-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div>Provider <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Provider</button></div>
+        <table  jsId="pListGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
+                query="{id: '*'}"
                 defaultCellWidth='12'
-                query="{id: '*'}" 
-                fmClass='acqpro' 
+                fmClass='acqpro'
                 editOnEnter='true'>
             <thead>
                 <tr><th field='name' get='getProviderName'/></tr>
@@ -21,9 +19,58 @@
         </table>
     </div>
 </div>
-<div id='provider-details-div' class='hidden'>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <div id='provider-summary-pane'/>
+
+
+
+<div id='provider-details-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+        <div id='provider-summary-pane'/> 
+    </div>   
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Provider Address</div>
+            <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100px'>
+            <table  jsId="paListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['id', 'address_type', 'provider', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                    query="{id: '*'}"
+                    fmClass='acqpa'
+                    editOnEnter='true'>
+            </table>
+        </div>
+
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Provider Contact</div>
+            <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+            <table  jsId="pcListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['id', 'name', 'provider', 'role', 'email']"
+                    defaultCellWidth='12'
+                    query="{id: '*'}"
+                    fmClass='acqpc'
+                    editOnEnter='true'>
+            </table>  
+        </div>
+
+
+
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Contact Address</div>
+            <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+            <table  jsId="pcaListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['id', 'address_type', 'provider', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                    query="{id: '*'}"
+                    fmClass='acqpca'
+                    editOnEnter='true'>
+                
+            </table>
+        </div>
     </div>
 </div>
 [% END %]
