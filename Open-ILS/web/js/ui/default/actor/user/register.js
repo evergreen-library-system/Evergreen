@@ -62,7 +62,8 @@ function load() {
         'patron.password.use_phone',
     ]);
     for(k in orgSettings)
-        orgSettings[k] = orgSettings[k].value;
+        if(orgSettings[k])
+            orgSettings[k] = orgSettings[k].value;
 
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
     for(var i in list) {
