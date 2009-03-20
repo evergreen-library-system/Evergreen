@@ -1924,7 +1924,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 				],
 				'text' : {
 					'1203' : function(r) {
-						return r.payload.status().name();
+						return typeof r.payload.status() == 'object' ? r.payload.status().name() : data.hash.ccs[ r.payload.status() ].name();
 					},
 					'1234' : function(r) {
 						return document.getElementById('circStrings').getString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
@@ -2396,7 +2396,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					'7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7004' : function(r) {
-						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [barcode, r.payload.status().name()]);
+						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [barcode, typeof r.payload.status() == 'object' ? r.payload.status().name() : obj.data.hash.ccs[ r.payload.status() ].name()]);
 					},
 					'7006' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
 					'7007' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
