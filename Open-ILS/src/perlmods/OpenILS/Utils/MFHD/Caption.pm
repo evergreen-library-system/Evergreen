@@ -356,11 +356,13 @@ my %dispatch = (
 		's' => \&match_season,
 		'y' => \&match_year,
 );
+
 sub regularity_match {
     my $self = shift;
     my $pubcode = shift;
     my @date = @_;
 
+    # we can't match something that doesn't exist.
     return 0 if !exists $self->{_mfhdc_PATTERN}->{y};
 
     foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}}) {
@@ -368,6 +370,11 @@ sub regularity_match {
 
 	my $chroncode= substr($regularity, 1, 1);
 	my @pats = split(/,/, substr($regularity, 2));
+
+	if (!exists $dispatch{$chroncode}) {
+	    carp "Unrecognized chroncode '$chroncode'";
+	    return 0;
+	}
 
 	# XXX WRITE ME
 	foreach my $pat (@pats) {
