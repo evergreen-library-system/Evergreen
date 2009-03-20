@@ -5444,6 +5444,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <link field="owner" reltype="has_a" key="id" map="" class="aou"/>
             <link field="entries" reltype="has_many" key="formula" map="" class="acqdfe"/>
         </links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+    		<actions>
+        		<create permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
+        		<retrieve permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
+        		<update permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
+        		<delete permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
+    		</actions>
+		</permacrud>
 	</class>
 	<class id="acqdfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula_entry" oils_persist:tablename="acq.distribution_formula_entry">
         <fields oils_persist:primary="id">
@@ -5462,6 +5470,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
             <link field="location" reltype="has_a" key="id" map="" class="acpl"/>
         </links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+    		<actions>
+        		<create permission="ADMIN_ACQ_DISTRIB_FORMULA">
+            		<context link="formula" field="owner"/>
+        		</create>
+        		<retrieve permission="ADMIN_ACQ_DISTRIB_FORMULA">
+            		<context link="formula" field="owner"/>
+        		</retrieve>
+        		<update permission="ADMIN_ACQ_DISTRIB_FORMULA">
+            		<context link="formula" field="owner"/>
+        		</update>
+        		<delete permission="ADMIN_ACQ_DISTRIB_FORMULA">
+            		<context link="formula" field="owner"/>
+        		</delete>
+    		</actions>
+		</permacrud>
 	</class>
 
 
