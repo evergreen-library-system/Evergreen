@@ -248,18 +248,24 @@ sub _fm_class_by_hint {
     return $class;
 }
 
-sub create_passive_events {
+sub create_batch_events {
     my $self = shift;
     my $client = shift;
     my $key = shift;
     my $location_field = shift; # where to look for event_def.owner filtering ... circ_lib, for instance, where hook.core_type = circ
     my $filter = shift || {};
 
+    my $active = ($self->api_name =~ /active/o) ? 1 : 0;
+    if ($active && !keys(%$filter)) {
+        $log->info("Active batch event creation requires a target filter but none was supplied to create_batch_events");
+        return undef;
+    }
+
     return undef unless ($key && $location_field);
 
     my $editor = new_editor(xact=>1);
     my $hooks = $editor->search_action_trigger_hook(
-        { passive => 't', key => $key }
+        { passive => $active ? 'f' : 't', key => $key }
     );
 
     my %hook_hash = map { ($_->key, $_) } @$hooks;
@@ -281,12 +287,22 @@ sub create_passive_events {
             }
         };
 
-        $filter->{ $def->delay_field } = {
-            '<=' => DateTime
-                ->now
-                ->subtract( seconds => interval_to_seconds($def->delay) )
-                ->strftime( '%F %T%z' )
-        };
+        my $run_time = 'now';
+        if ($active) {
+            $run_time = {
+                '<=' => DateTime
+                    ->now
+                    ->add( seconds => interval_to_seconds($def->delay) )
+                    ->strftime( '%F %T%z' )
+            };
+        } else {
+            $filter->{ $def->delay_field } = {
+                '<=' => DateTime
+                    ->now
+                    ->subtract( seconds => interval_to_seconds($def->delay) )
+                    ->strftime( '%F %T%z' )
+            };
+        }
 
         my $class = _fm_class_by_hint($hook_hash{$def->hook}->core_type);
         $class =~ s/^Fieldmapper:://o;
@@ -300,19 +316,30 @@ sub create_passive_events {
             my $ident = $o->Identity;
             my $ident_value = $o->$ident();
 
-            my $previous = $editor->search_action_trigger_event({
-                event_def => $def->id,
-                target    => $ident_value
-            });
+            my $previous;
+            if ($active) {
+                # only allow one pending event of type $def for each target
+                $previous = $editor->search_action_trigger_event({
+                    event_def => $def->id,
+                    target    => $ident_value,
+                    state     => 'pending'
+                });
 
+            } else {
+                # only allow one event of type $def for each target
+                $previous = $editor->search_action_trigger_event({
+                    event_def => $def->id,
+                    target    => $ident_value
+                });
 
-            # only allow one event of type $def for each target
-            next if (@$previous);
+            }
+
+            next if (ref($previous) && @$previous);
 
             my $event = Fieldmapper::action_trigger::event->new();
             $event->target( $ident_value );
             $event->event_def( $def->id );
-            $event->run_time( 'now' );
+            $event->run_time( $run_time );
 
             $editor->create_action_trigger_event( $event );
 
@@ -325,8 +352,16 @@ sub create_passive_events {
     return undef;
 }
 __PACKAGE__->register_method(
-    api_name => 'open-ils.trigger.passive.event.autocreate',
-    method   => 'create_passive_events',
+    api_name => 'open-ils.trigger.passive.event.autocreate.batch',
+    method   => 'create_batch_events',
+    api_level=> 1,
+    stream   => 1,
+    argc     => 2
+);
+
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.active.event.autocreate.batch',
+    method   => 'create_batch_events',
     api_level=> 1,
     stream   => 1,
     argc     => 2
