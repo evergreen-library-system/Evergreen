@@ -43,6 +43,10 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.captur
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.start','ahtc','A hold-captured Item is placed into transit');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.finish','ahtc','A hold-captured Item is received from a transit');
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('checkout.due','circ','Checked out Item is Due',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_FINES','au','Patron has exceeded allowed fines');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','au','Patron has exceeded allowed overdue count');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','au','Patron has exceeded allowed checkout count');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','au','Patron has exceeded maximum fine amount for collections department warning');
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
