@@ -1749,16 +1749,18 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 // Receive a JSON_ARRAY representing a function call.  The first
 // entry in the array is the function name.  The rest are parameters.
 static char* searchValueTransform( const jsonObject* array ) {
+	
+	if( array->size < 1 ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Empty array for value transform", MODULENAME);
+		return NULL;
+	}
+	
 	growing_buffer* sql_buf = buffer_init(32);
 
-	jsonObject* func_item;
-	
 	// Get the function name
-	if( array->size > 0 ) {
-		func_item = jsonObjectGetIndex( array, 0 );
-		OSRF_BUFFER_ADD( sql_buf, jsonObjectGetString( func_item ) );
-		OSRF_BUFFER_ADD( sql_buf, "( " );
-	}
+	jsonObject* func_item = jsonObjectGetIndex( array, 0 );
+	OSRF_BUFFER_ADD( sql_buf, jsonObjectGetString( func_item ) );
+	OSRF_BUFFER_ADD( sql_buf, "( " );
 	
 	// Get the parameters
 	int func_item_index = 1;   // We already grabbed the zeroth entry
@@ -1791,8 +1793,13 @@ static char* searchValueTransform( const jsonObject* array ) {
 }
 
 static char* searchFunctionPredicate (const char* class, osrfHash* field,
-		const jsonObject* node, const char* node_key) {
+		const jsonObject* node, const char* op) {
 
+	if( ! is_good_operator( op ) ) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", MODULENAME, op );
+		return NULL;
+	}
+	
 	char* val = searchValueTransform(node);
 	if( !val )
 		return NULL;
@@ -1803,7 +1810,7 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 		"\"%s\".%s %s %s",
 		class,
 		osrfHashGet(field, "name"),
-		node_key,
+		op,
 		val
 	);
 
