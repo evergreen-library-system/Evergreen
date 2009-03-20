@@ -285,6 +285,7 @@ CREATE TABLE acq.distribution_formula (
 CREATE TABLE acq.distribution_formula_entry (
 	id			SERIAL PRIMARY KEY,
 	formula		INTEGER NOT NULL REFERENCES acq.distribution_formula(id)
+				ON DELETE CASCADE
 				DEFERRABLE INITIALLY DEFERRED,
 	position	INTEGER NOT NULL,
 	item_count	INTEGER NOT NULL,
