@@ -262,6 +262,56 @@ sub on_or_after {
 	    || ($m1 == $m2 && ((!defined $d2) || ($d1 >= $d2))));
 }
 
+sub calendar_increment {
+    my $caption = shift;
+    my $cur = shift;
+    my @new = @_;
+    my $cal_change = $caption->calendar_change;
+    my $month;
+    my $day;
+    my $cur_before;
+    my $new_on_or_after;
+
+    # A calendar change is defined, need to check if it applies
+    if ((scalar(@new) == 2 && $new[1] > 20) || (scalar(@new) == 1)) {
+	carp "Can't calculate date change for ", $caption->as_string;
+	return;
+    }
+
+    foreach my $change (@{$cal_change}) {
+	my $incr;
+
+	if (length($change) == 2) {
+	    $month = $change;
+	} elsif (length($change) == 4) {
+	    ($month, $day) = unpack("a2a2", $change);
+	}
+
+	# 	print "# next_date: month = '$month', day = '$day'\n";
+	# 	print "# next_date: cur[0] = '$cur->[0]', cur[1] = '$cur->[1]'\n";
+	# 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
+
+	if ($cur->[0] == $new[0]) {
+	    # Same year, so a 'simple' month/day comparison will be fine
+	    $incr = (!on_or_after($cur->[1], $cur->[2], $month, $day)
+		     && on_or_after($new[1], $new[2], $month, $day));
+	} else {
+	    # @cur is in the year before @new. There are
+	    # two possible cases for the calendar change date that
+	    # indicate that it's time to change the volume:
+	    # (1) the change date is AFTER @cur in the year, or
+	    # (2) the change date is BEFORE @new in the year.
+	    # 
+	    #  -------|------|------X------|------|
+	    #       @cur    (1)   Jan 1   (2)   @new
+
+	    $incr = (on_or_after($new[1], $new[2], $month, $day)
+		     || !on_or_after($cur->[1], $cur->[2], $month, $day));
+	}
+	return $incr if $incr;
+    }
+}
+
 sub next_date {
     my $self = shift;
     my $next = shift;
@@ -324,54 +374,7 @@ sub next_date {
 	# going to increment the v. number twice at year-change.
 	$next->{a} += $carry;
     } elsif (defined $caption->calendar_change) {
-	my $cal_change = $caption->calendar_change;
-	my $month;
-	my $day;
-	my $cur_before;
-	my $new_on_or_after;
-
-	# A calendar change is defined, need to check if it applies
-	if ((scalar(@new) == 2 && $new[1] > 20) || (scalar(@new) == 1)) {
-	    carp "Can't calculate date change for ", $caption->as_string;
-	    return;
-	}
-
-	foreach my $change (@{$cal_change}) {
-	    my $incr;
-
-	    if (length($change) == 2) {
-		$month = $change;
-	    } elsif (length($change) == 4) {
-		($month, $day) = unpack("a2a2", $change);
-	    }
-
-	    # 	print "# next_date: month = '$month', day = '$day'\n";
-	    # 	print "# next_date: cur[0] = '$cur[0]', cur[1] = '$cur[1]'\n";
-	    # 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
-
-	    if ($cur[0] == $new[0]) {
-		# Same year, so a 'simple' month/day comparison will be fine
-		$incr = (!on_or_after($cur[1], $cur[2], $month, $day)
-			 && on_or_after($new[1], $new[2], $month, $day));
-	    } else {
-		# @cur is in the year before @new. There are
-		# two possible cases for the calendar change date that
-		# indicate that it's time to change the volume:
-		# (1) the change date is AFTER @cur in the year, or
-		# (2) the change date is BEFORE @new in the year.
-		# 
-		#  -------|------|------X------|------|
-		#       @cur    (1)   Jan 1   (2)   @new
-
-		$incr = (on_or_after($new[1], $new[2], $month, $day)
-			 || !on_or_after($cur[1], $cur[2], $month, $day));
-	    }
-	    if ($incr) {
-		# We've got a match, we can stop checking
-		$next->{a} += 1;
-		last;
-	    }
-	}
+	$next->{a} += calendar_increment($caption, \@cur, @new);
     }
 }
 
