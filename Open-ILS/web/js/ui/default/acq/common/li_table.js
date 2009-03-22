@@ -19,6 +19,7 @@ function AcqLiTable() {
     this.copyTbody = dojo.byId('acq-lit-li-details-tbody');
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
     this.copyBatchRow = dojo.byId('acq-lit-li-details-batch-row');
+    this.copyBatchWidgets = {};
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
@@ -190,7 +191,7 @@ function AcqLiTable() {
         var self = this;
         this.copyCache = {};
         this.copyWidgetCache = {};
-        this.copyBatchWidgets = {};
+
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
         acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
 
@@ -198,21 +199,24 @@ function AcqLiTable() {
             this.copyTbody.removeChild(this.copyTbody.childNodes[0]);
 
         var row = this.copyBatchRow;
-        if(!this.copyBatchRowDrawn) {
-            dojo.forEach(['fund', 'owning_lib', 'location'],
-                function(field) {
+        dojo.forEach(['fund', 'owning_lib', 'location'],
+            function(field) {
+                if(self.copyBatchRowDrawn) {
+                    self.copyBatchWidgets[field].attr('value', null);
+                } else {
                     var widget = new openils.widget.AutoFieldWidget({
                         fmField : field,
                         fmClass : 'acqlid',
                         parentNode : dojo.query('[name='+field+']', row)[0],
                         orgLimitPerms : ['CREATE_PICKLIST'],
+                        dijitArgs : {required:false}
                     });
                     widget.build();
                     self.copyBatchWidgets[field] = widget.widget;
                 }
-            );
-            this.copyBatchRowDrawn = true;
-        };
+            }
+        );
+        this.copyBatchRowDrawn = true;
 
 
         openils.acq.Lineitem.fetchAttrDefs(

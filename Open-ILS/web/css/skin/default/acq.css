@@ -97,7 +97,8 @@
 .acq-lit-row { border-bottom: 1px solid #AAA; }
 .acq-lit-alt-row td { padding-left:30px; }
 #acq-lit-info-tbody td {padding:5px;}
-#acq-lit-li-details-table {margin-top:25px;}
+#acq-lit-li-details-table {margin-top:20px;}
 #acq-lit-li-details-table td {padding:0px 10px 0px 10px;}
 #acq-lit-li-details-table th {padding:0px 10px 0px 10px; font-weight:bold;}
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
+.acq-lit-table-spacer { height:20px; }

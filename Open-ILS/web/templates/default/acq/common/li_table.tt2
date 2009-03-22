@@ -118,7 +118,7 @@
                     </td>
                 </tr>
             </tbody>
-            <tbody><tr><td colspan='0' style='height:20px;'/></tr></tbody>
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
             <tbody style='font-weight:bold;'>
                 <tr>
                     <td style='margin-top:30px;'>Owning Branch</td>
