@@ -18,6 +18,7 @@ function AcqLiTable() {
     this.rowTemplate = this.tbody.removeChild(dojo.byId('acq-lit-row'));
     this.copyTbody = dojo.byId('acq-lit-li-details-tbody');
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
+    this.copyBatchRow = dojo.byId('acq-lit-li-details-batch-row');
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
@@ -186,10 +187,34 @@ function AcqLiTable() {
 
     this.drawCopies = function(liId) {
         this.show('copies');
+        var self = this;
         this.copyCache = {};
+        this.copyWidgetCache = {};
+        this.copyBatchWidgets = {};
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
+        acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
+
         while(this.copyTbody.childNodes[0])
             this.copyTbody.removeChild(this.copyTbody.childNodes[0]);
+
+        var row = this.copyBatchRow;
+        if(!this.copyBatchRowDrawn) {
+            dojo.forEach(['fund', 'owning_lib', 'location'],
+                function(field) {
+                    var widget = new openils.widget.AutoFieldWidget({
+                        fmField : field,
+                        fmClass : 'acqlid',
+                        parentNode : dojo.query('[name='+field+']', row)[0],
+                        orgLimitPerms : ['CREATE_PICKLIST'],
+                    });
+                    widget.build();
+                    self.copyBatchWidgets[field] = widget.widget;
+                }
+            );
+            this.copyBatchRowDrawn = true;
+        };
+
+
         openils.acq.Lineitem.fetchAttrDefs(
             function() { 
                 self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
@@ -197,6 +222,17 @@ function AcqLiTable() {
         );
     };
 
+    this.batchCopyUpdate = function() {
+        var self = this;
+        var fields = ['fund', 'owning_lib', 'location'];
+        for(var k in this.copyWidgetCache) {
+            var cache = this.copyWidgetCache[k];
+            dojo.forEach(fields, function(f) {
+                var newval = self.copyBatchWidgets[f].attr('value');
+                if(newval) cache[f].attr('value', newval);
+            });
+        }
+    };
 
     this._drawCopies = function(li) {
         acqLitAddCopyCount.onClick = function() { 
@@ -219,6 +255,7 @@ function AcqLiTable() {
     this.addCopy = function(li, copy) {
         var row = this.copyRow.cloneNode(true);
         this.copyTbody.appendChild(row);
+        var self = this;
 
         if(!copy) {
             copy = new fieldmapper.acqlid();
@@ -229,6 +266,7 @@ function AcqLiTable() {
 
         this.copyCache[copy.id()] = copy;
         row.setAttribute('copy_id', copy.id());
+        self.copyWidgetCache[copy.id()] = {};
 
         dojo.forEach(['fund', 'owning_lib', 'location', 'barcode', 'cn_label'],
             function(field) {
@@ -249,10 +287,10 @@ function AcqLiTable() {
                         }
                     }
                 );
+                self.copyWidgetCache[copy.id()][field] = widget.widget;
             }
         );
 
-        var self = this;
         dojo.query('[name=delete]', row)[0].onclick = 
             function() { self.deleteCopy(row) };
     };
