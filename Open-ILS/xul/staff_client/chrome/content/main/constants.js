@@ -1,5 +1,20 @@
 dump('Loading constants.js\n');
 
+/* Get locale from preferences */
+var LOCALE = '';
+try {
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+	LOCALE = pref.getCharPref('general.useragent.locale');
+} catch (E) {
+	dump("Failed to fetch a locale from preferences: " + E + "\n");
+}
+
+/* Fall back to ' + LOCALE + ' if we didn't get a locale from the preferences */
+if (!LOCALE) {
+	LOCALE = '' + LOCALE + '';
+}
+
 const MODE_RDONLY   = 0x01;
 const MODE_WRONLY   = 0x02;
 const MODE_CREATE   = 0x08;
@@ -222,11 +237,11 @@ const api = {
 
 const urls = {
 
-	'opac' : '/opac/en-US/skin/default/xml/advanced.xml?nps=1',
-	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
-	'opac_rresult' : '/opac/en-US/skin/default/xml/rresult.xml',
-	'org_tree' : '/opac/common/js/en-US/OrgTree.js',
-	'browser' : '/opac/en-US/skin/default/xml/advanced.xml?nps=1',
+	'opac' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
+	'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml',
+	'opac_rresult' : '/opac/' + LOCALE + '/skin/default/xml/rresult.xml',
+	'org_tree' : '/opac/common/js/' + LOCALE + '/OrgTree.js',
+	'browser' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
 	'fieldmapper' : '/opac/common/js/fmall.js',
 	'isodate_lib_remote' : '/opac/common/js/DP_DateExtensions.js',
 	'isodate_lib_local' : 'chrome://open_ils_staff_client/content/OpenILS/util/DP_DateExtensions.js',
@@ -315,5 +330,5 @@ const urls = {
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : '/xul/server/main/test.xul',
     'VANDELAY' : '/vandelay/vandelay.xml', /* XXX how can we get the locale? */
-    'CONIFY' : '/conify/en-US/global/admin.html' /* XXX how can we get the locale? */
+    'CONIFY' : '/conify/' + LOCALE + '/global/admin.html'
 }
