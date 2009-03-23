@@ -10,9 +10,9 @@ try {
 	dump("Failed to fetch a locale from preferences: " + E + "\n");
 }
 
-/* Fall back to ' + LOCALE + ' if we didn't get a locale from the preferences */
+/* Fall back to en-US if we didn't get a locale from the preferences */
 if (!LOCALE) {
-	LOCALE = '' + LOCALE + '';
+	LOCALE = 'en-US';
 }
 
 const MODE_RDONLY   = 0x01;
