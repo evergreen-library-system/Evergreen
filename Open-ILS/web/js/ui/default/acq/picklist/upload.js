@@ -69,7 +69,7 @@ function acqUploadRecords() {
             }
         });
     } else {
-        acqSendUploadForm({});
+        acqSendUploadForm({picklist:null});
     }
 }
 
@@ -92,7 +92,6 @@ function acqSendUploadForm(args) {
 
 
 function acqHandlePostUpload(key) {
-    openils.Util.hide('acq-pl-upload-progress');
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.process_upload_records'],
         {   async: true,
@@ -103,7 +102,7 @@ function acqHandlePostUpload(key) {
                     if(resp.picklist) {
                         location.href = location.href + '/../view/' + resp.picklist.id();
                     } else {
-                        location.href = location.href + '/../../po/view/' + resp.purchase_order.id;
+                        location.href = location.href + '/../../po/view/' + resp.purchase_order.id();
                     }
                 } else {
                     dojo.byId('acq-pl-upload-count').innerHTML = resp.count;

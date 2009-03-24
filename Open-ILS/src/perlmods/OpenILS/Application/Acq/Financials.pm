@@ -546,12 +546,22 @@ sub create_purchase_order {
     my($self, $conn, $auth, $p_order) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $p_order->ordering_agency($e->requestor->ws_ou);
+    my $evt = create_purchase_order_impl($e, $p_order);
+    return $evt if $evt;
+    $e->commit;
+    return $p_order->id;
+}
+
+
+sub create_purchase_order_impl {
+    my($e, $p_order) = @_;
 
     $p_order->creator($e->requestor->id);
     $p_order->editor($e->requestor->id);
     $p_order->owner($e->requestor->id);
     $p_order->edit_time('now');
-    $p_order->ordering_agency($e->requestor->ws_ou);
+
     return $e->die_event unless 
         $e->allowed('CREATE_PURCHASE_ORDER', $p_order->ordering_agency);
 
@@ -561,9 +571,7 @@ sub create_purchase_order {
         $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
 
     $e->create_acq_purchase_order($p_order) or return $e->die_event;
-
-    $e->commit;
-    return $p_order->id;
+    return undef;
 }
 
 

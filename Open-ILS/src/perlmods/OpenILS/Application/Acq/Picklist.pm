@@ -16,6 +16,7 @@ use MARC::Batch;
 use MARC::File::XML;
 use MIME::Base64;
 use Digest::MD5 qw/md5_hex/;
+use OpenILS::Application::Acq::Financials;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -577,9 +578,11 @@ sub upload_records {
     }
 
     if($create_po) {
-        return $e->die_event unless 
-            $e->allowed('CREATE_PURCHASE_ORDER', $ordering_agency);
-        # $purchase_order = 
+        $purchase_order = Fieldmapper::acq::purchase_order->new;
+        $purchase_order->provider($provider);
+        $purchase_order->ordering_agency($ordering_agency);
+        my $evt = OpenILS::Application::Acq::Financials::create_purchase_order_impl($e, $purchase_order);
+        return $evt if $evt;
     }
 
     $logger->info("acq processing MARC file=$filename");
