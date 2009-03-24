@@ -251,11 +251,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.searchAttr = 'shortname';
             this.widget.labelAttr = 'shortname';
             this.widget.parentField = 'parent_ou';
+            var user = new openils.User();
+            if(this.widgetValue == null) 
+                this.widgetValue = user.user.ws_ou();
             
             // if we have a limit perm, find the relevent orgs (async)
             if(this.orgLimitPerms && this.orgLimitPerms.length > 0) {
                 this.async = true;
-                var user = new openils.User();
                 var self = this;
                 user.getPermOrgList(this.orgLimitPerms, 
                     function(orgList) {
