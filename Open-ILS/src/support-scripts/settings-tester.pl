@@ -63,48 +63,36 @@ use Data::Dumper;
 use DBI;
 
 (my $conf_dir = $core_config) =~ s#(.*)/.*#$1#;
-
-
 OpenSRF::Utils::Config->load(config_file => $core_config);
 my $conf = OpenSRF::Utils::Config->current;
-my $j_username    = $conf->bootstrap->username;
-my $j_password    = $conf->bootstrap->passwd;
-my $j_port    = $conf->bootstrap->port;
-# We should check for a domains element to catch likely upgrade errors
-my $j_domain    = $conf->bootstrap->domain;
 my $settings_config = $conf->bootstrap->settings_config;
 my $logfile    = $conf->bootstrap->logfile;
 (my $log_dir = $logfile) =~ s#(.*)/.*#$1#;
 
-
-print "\nChecking Jabber connection\n";
-# connect to jabber 
-my $client = OpenSRF::Transport::SlimJabber::Client->new(
-    port => $j_port, 
-    username => $j_username, 
-    password => $j_password,
-    host => $j_domain,
-    resource => 'test123'
-);
-
-
-my $je = undef;
-try {
-    unless($client->initialize()) {
-        $je = "* Unable to connect to jabber server $j_domain\n";
-        warn "* Unable to connect to jabber server $j_domain\n";
-    }
-} catch Error with {
-    $je = "* Error connecting to jabber:\n" . shift() . "\n";
-    warn "* Error connecting to jabber:\n" . shift() . "\n";
-};
-
-print "* Jabber successfully connected\n" unless ($je);
-$output .= ($je) ? $je : "* Jabber successfully connected\n";
-
 my $xmlparser = XML::LibXML->new();
-my $osrfxml = $xmlparser->parse_file($settings_config);
+my $confxml = $xmlparser->parse_file($core_config);
+my $confxpc = XML::LibXML::XPathContext->new($confxml);
 
+foreach my $section (qw/opensrf gateway/) {
+	my $j_username = $confxpc->find("/config/$section/username");
+	my $j_password = $confxpc->find("/config/$section/passwd");
+	my $j_port = $confxpc->find("/config/$section/port");
+	# We should check for a domains element to catch likely upgrade errors
+	my $j_domain = $confxpc->find("/config/$section/domain");
+	check_jabber($j_username, $j_password, $j_domain, $j_port);
+}
+
+my @routers = $confxpc->findnodes("/config/routers/router");
+foreach my $router (@routers) {
+	my $j_username = $router->findvalue("./transport/username");
+	my $j_password = $router->findvalue("./transport/password");
+	my $j_port = $router->findvalue("./transport/port");
+	# We should check for a domains element to catch likely upgrade errors
+	my $j_domain = $router->findvalue("./transport/server");
+	check_jabber($j_username, $j_password, $j_domain, $j_port);
+}
+
+my $osrfxml = $xmlparser->parse_file($settings_config);
 print "\nChecking database connections\n";
 # Check database connections
 my @databases = $osrfxml->findnodes('//database');
@@ -117,11 +105,11 @@ foreach my $database (@databases) {
 	my $db_port = $database->findvalue("./port");	
 	my $db_user = $database->findvalue("./user");	
 	my $db_pw = $database->findvalue("./pw");	
-    if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
-        $db_pw = $database->findvalue("./password");
-        warn "* WARNING: Deprecated <password> element used for the <reporter> entry.  ".
-            "Please use <pw> instead.\n" if ($db_pw);
-    }
+	if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
+		$db_pw = $database->findvalue("./password");
+		warn "* WARNING: Deprecated <password> element used for the <reporter> entry.  " .
+			"Please use <pw> instead.\n" if ($db_pw);
+	}
 
 	my $osrf_xpath;
 	foreach my $node ($database->findnodes("ancestor::node()")) {
@@ -282,6 +270,35 @@ sub check_db_langs {
 	}
 
 	return $errors;
+}
+
+sub check_jabber {
+	my ($j_username, $j_password, $j_domain, $j_port) = @_;
+	print "\nChecking Jabber connection for user $j_username, domain $j_domain\n";
+
+	# connect to jabber 
+	my $client = OpenSRF::Transport::SlimJabber::Client->new(
+		port => $j_port, 
+		username => $j_username, 
+		password => $j_password,
+		host => $j_domain,
+		resource => 'test123'
+	);
+
+
+	my $je = undef;
+	try {
+		unless($client->initialize()) {
+			$je = "* Unable to connect to jabber server $j_domain\n";
+			warn "* Unable to connect to jabber server $j_domain\n";
+		}
+	} catch Error with {
+		$je = "* Error connecting to jabber:\n" . shift() . "\n";
+		warn "* Error connecting to jabber:\n" . shift() . "\n";
+	};
+
+	print "* Jabber successfully connected\n" unless ($je);
+	$output .= ($je) ? $je : "* Jabber successfully connected\n";
 }
 
 sub check_libdbd {
