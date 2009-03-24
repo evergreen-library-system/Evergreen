@@ -26,12 +26,13 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($max_uri, $max_cn, $auth, $config, $quiet) =
-	(0, 0, 0, '/openils/conf/opensrf_core.xml');
+my ($max_uri, $max_cn, $auth, $mfhd, $config, $quiet) =
+	(0, 0, 0, 0, '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,
 	'authority'	=> \$auth,
+	'serial'	=> \$mfhd,
 	'quiet'		=> \$quiet,
 	'max_uri=i'	=> \$max_uri,	
 	'max_cn=i'	=> \$max_cn,	
@@ -52,6 +53,7 @@ OpenILS::Application::Ingest->use;
 
 my $meth = 'open-ils.ingest.full.biblio.object.readonly';
 $meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
+$meth = 'open-ils.ingest.full.serial.object.readonly' if ($mfhd);
 
 $meth = OpenILS::Application::Ingest->method_lookup( $meth );
 
@@ -84,19 +86,23 @@ while (my $rec = <>) {
 sub postprocess {
 	my $data = shift;
 
+	my ($field_entries, $fp, $rd, $uri);
+
 	my $bib = $data->{bib};
 	my $full_rec = $data->{ingest_data}->{full_rec};
 
-	my $field_entries = $data->{ingest_data}->{field_entries} unless ($auth);
-	my $fp = $data->{ingest_data}->{fingerprint} unless ($auth);
-	my $rd = $data->{ingest_data}->{descriptor} unless ($auth);
-	my $uri = $data->{ingest_data}->{uri} unless ($auth);
+	if (!$auth && !$mfhd) {
+		$field_entries = $data->{ingest_data}->{field_entries};
+		$fp = $data->{ingest_data}->{fingerprint};
+		$rd = $data->{ingest_data}->{descriptor};
+		$uri = $data->{ingest_data}->{uri};
 
-	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
-	$bib->quality( $fp->{quality} ) unless ($auth);
+		$bib->fingerprint( $fp->{fingerprint} );
+		$bib->quality( $fp->{quality} );
+	}
 
 	print( OpenSRF::Utils::JSON->perl2JSON($bib)."\n" );
-	unless ($auth) {
+	if (!$auth && !$mfhd) {
 		print( OpenSRF::Utils::JSON->perl2JSON($rd)."\n" );
 		print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$field_entries);
 		for my $u (@$uri) {

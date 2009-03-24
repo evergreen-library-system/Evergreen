@@ -1017,7 +1017,7 @@ __PACKAGE__->register_method(
 sub get_org_tree {
 	my $self = shift;
 	my $client = shift;
-    return $U->get_org_tree($client->session->session_locale);
+	return $U->get_org_tree($client->session->session_locale);
 }
 
 

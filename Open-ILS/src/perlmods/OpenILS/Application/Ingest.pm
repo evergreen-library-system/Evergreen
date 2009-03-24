@@ -9,6 +9,7 @@ use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:level/;
 
+use OpenILS::Application::AppUtils;
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::JSON;
@@ -99,20 +100,6 @@ sub post_init {
             }
         }
     }
-}
-
-sub entityize {
-    my $stuff = shift;
-    my $form = shift;
-
-    if ($form eq 'D') {
-        $stuff = NFD($stuff);
-    } else {
-        $stuff = NFC($stuff);
-    }
-
-    $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-    return $stuff;
 }
 
 # --------------------------------------------------------------------------------
@@ -407,7 +394,7 @@ sub ro_biblio_ingest_single_object {
     my $self = shift;
     my $client = shift;
     my $bib = shift;
-    my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
+    my $xml = OpenILS::Application::AppUtils->entityize($bib->marc);
     my $max_cn = shift;
     my $max_uri = shift;
 
@@ -449,7 +436,7 @@ __PACKAGE__->register_method(
 sub ro_biblio_ingest_single_xml {
     my $self = shift;
     my $client = shift;
-    my $xml = OpenILS::Application::Ingest::entityize(shift);
+    my $xml = OpenILS::Application::AppUtils->entityize(shift);
 
     my $document = $parser->parse_string($xml);
 
@@ -597,7 +584,7 @@ sub ro_authority_ingest_single_object {
     my $self = shift;
     my $client = shift;
     my $bib = shift;
-    my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
+    my $xml = OpenILS::Application::AppUtils->entityize($bib->marc);
 
     my $document = $parser->parse_string($xml);
 
@@ -613,11 +600,18 @@ __PACKAGE__->register_method(
     api_level    => 1,
     argc        => 1,
 );                      
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.object.readonly",
+    method        => "ro_authority_ingest_single_object",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
 
 sub ro_authority_ingest_single_xml {
     my $self = shift;
     my $client = shift;
-    my $xml = OpenILS::Application::Ingest::entityize(shift);
+    my $xml = OpenILS::Application::AppUtils->entityize(shift);
 
     my $document = $parser->parse_string($xml);
 
@@ -747,6 +741,167 @@ __PACKAGE__->register_method(
     stream        => 1,
 );                      
 
+# --------------------------------------------------------------------------------
+# Serial ingest
+
+package OpenILS::Application::Ingest::Serial;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
+
+sub ro_serial_ingest_single_object {
+    my $self = shift;
+    my $client = shift;
+    my $bib = shift;
+    my $xml = OpenILS::Application::AppUtils->entityize($bib->marc);
+
+    my $document = $parser->parse_string($xml);
+
+    my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.serial.xml")->run($document);
+
+    $_->record($bib->id) for (@mfr);
+
+    return { full_rec => \@mfr };
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.object.readonly",
+    method        => "ro_serial_ingest_single_object",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
+sub ro_serial_ingest_single_xml {
+    my $self = shift;
+    my $client = shift;
+    my $xml = OpenILS::Application::AppUtils->entityize(shift);
+
+    my $document = $parser->parse_string($xml);
+
+    my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.serial.xml")->run($document);
+
+    return { full_rec => \@mfr };
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.xml.readonly",
+    method        => "ro_serial_ingest_single_xml",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
+sub ro_serial_ingest_single_record {
+    my $self = shift;
+    my $client = shift;
+    my $rec = shift;
+
+    OpenILS::Application::Ingest->post_init();
+    my $r = OpenSRF::AppSession
+            ->create('open-ils.cstore')
+            ->request( 'open-ils.cstore.direct.serial.record_entry.retrieve' => $rec )
+            ->gather(1);
+
+    return undef unless ($r and @$r);
+
+    my ($res) = $self->method_lookup("open-ils.ingest.full.serial.xml.readonly")->run($r->marc);
+
+    $_->record($rec) for (@{$res->{full_rec}});
+    $res->{descriptor}->record($rec);
+
+    return $res;
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.record.readonly",
+    method        => "ro_serial_ingest_single_record",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
+sub ro_serial_ingest_stream_record {
+    my $self = shift;
+    my $client = shift;
+
+    OpenILS::Application::Ingest->post_init();
+
+    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+    while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+    
+        my $rec = $resp->content;
+        last unless (defined $rec);
+
+        $log->debug("Running open-ils.ingest.full.serial.record.readonly ...");
+        my ($res) = $self->method_lookup("open-ils.ingest.full.serial.record.readonly")->run($rec);
+
+        $_->record($rec) for (@{$res->{full_rec}});
+
+        $client->respond( $res );
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.record_stream.readonly",
+    method        => "ro_serial_ingest_stream_record",
+    api_level    => 1,
+    stream        => 1,
+);                      
+
+sub ro_serial_ingest_stream_xml {
+    my $self = shift;
+    my $client = shift;
+
+    OpenILS::Application::Ingest->post_init();
+
+    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+    while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+    
+        my $xml = $resp->content;
+        last unless (defined $xml);
+
+        $log->debug("Running open-ils.ingest.full.serial.xml.readonly ...");
+        my ($res) = $self->method_lookup("open-ils.ingest.full.serial.xml.readonly")->run($xml);
+
+        $client->respond( $res );
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.xml_stream.readonly",
+    method        => "ro_serial_ingest_stream_xml",
+    api_level    => 1,
+    stream        => 1,
+);                      
+
+sub rw_serial_ingest_stream_import {
+    my $self = shift;
+    my $client = shift;
+
+    OpenILS::Application::Ingest->post_init();
+
+    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+    while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+    
+        my $bib = $resp->content;
+        last unless (defined $bib);
+
+        $log->debug("Running open-ils.ingest.full.serial.xml.readonly ...");
+        my ($res) = $self->method_lookup("open-ils.ingest.full.serial.xml.readonly")->run($bib->marc);
+
+        $_->record($bib->id) for (@{$res->{full_rec}});
+
+        $client->respond( $res );
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.serial.bib_stream.import",
+    method        => "rw_serial_ingest_stream_import",
+    api_level    => 1,
+    stream        => 1,
+);                      
+
 
 # --------------------------------------------------------------------------------
 # MARC index extraction
@@ -798,7 +953,7 @@ sub class_index_string_xml {
     my @classes = @_;
 
     OpenILS::Application::Ingest->post_init();
-    $xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
+    $xml = $parser->parse_string(OpenILS::Application::AppUtils->entityize($xml)) unless (ref $xml);
 
     my %transform_cache;
     
@@ -1037,10 +1192,11 @@ sub flat_marc_xml {
 
     $log->debug("processing [$xml]");
 
-    $xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
+    $xml = $parser->parse_string(OpenILS::Application::AppUtils->entityize($xml)) unless (ref $xml);
 
     my $type = 'metabib';
     $type = 'authority' if ($self->api_name =~ /authority/o);
+    $type = 'serial' if ($self->api_name =~ /serial/o);
 
     OpenILS::Application::Ingest->post_init();
 
@@ -1061,6 +1217,13 @@ __PACKAGE__->register_method(
     argc        => 1,
     stream        => 1,
 );                      
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.flat_marc.serial.xml",
+    method        => "flat_marc_xml",
+    api_level    => 1,
+    argc        => 1,
+    stream        => 1,
+);                      
 
 sub flat_marc_record {
     my $self = shift;
@@ -1069,6 +1232,7 @@ sub flat_marc_record {
 
     my $type = 'biblio';
     $type = 'authority' if ($self->api_name =~ /authority/o);
+    $type = 'serial' if ($self->api_name =~ /serial/o);
 
     OpenILS::Application::Ingest->post_init();
     my $r = OpenSRF::AppSession
@@ -1100,7 +1264,13 @@ __PACKAGE__->register_method(
     argc        => 1,
     stream        => 1,
 );                      
-
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.flat_marc.serial.record_entry",
+    method        => "flat_marc_record",
+    api_level    => 1,
+    argc        => 1,
+    stream        => 1,
+);                      
 
 # --------------------------------------------------------------------------------
 # URI extraction
@@ -1289,7 +1459,7 @@ our $fp_script;
 sub biblio_fingerprint {
     my $self = shift;
     my $client = shift;
-    my $xml = OpenILS::Application::Ingest::entityize(shift);
+    my $xml = OpenILS::Application::AppUtils->entityize(shift);
 
     $log->internal("Got MARC [$xml]");
 
@@ -1327,7 +1497,7 @@ our $rd_script;
 sub biblio_descriptor {
     my $self = shift;
     my $client = shift;
-    my $xml = OpenILS::Application::Ingest::entityize(shift);
+    my $xml = OpenILS::Application::AppUtils->entityize(shift);
 
     $log->internal("Got MARC [$xml]");
 

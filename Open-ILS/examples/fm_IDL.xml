@@ -2534,6 +2534,137 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="sre" controller="open-ils.cstore" oils_obj:fieldmapper="serial::record_entry" oils_persist:tablename="serial.record_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.record_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Bib Record" name="record" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="create_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field name="creator" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field name="edit_date" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field name="editor" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="last_xact_id" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="marc" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="13" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="sfr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::full_rec" oils_persist:tablename="serial.full_rec">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.full_rec_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="subfield" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="tag" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="sre"/>
+		</links>
+	</class>
+	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Call Number" name="call_number" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="URI" name="uri" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Start date" name="start_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="End date" name="end_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="call_number" reltype="might_have" key="id" map="" class="acn"/>
+			<link field="uri" reltype="might_have" key="id" map="" class="auri"/>
+		</links>
+	</class>
+	<class id="sbu" controller="open-ils.cstore" oils_obj:fieldmapper="serial::binding_unit" oils_persist:tablename="serial.binding_unit">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.binding_unit_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Subscription" name="subscription" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+		</links>
+	</class>
+	<class id="siss" controller="open-ils.cstore" oils_obj:fieldmapper="serial::issuance" oils_persist:tablename="serial.issuance">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.issuance_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="subscription" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="location" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="binding_unit" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="label" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="target_copy" reltype="might_have" key="id" map="" class="acp"/>
+			<link field="location" reltype="might_have" key="id" map="" class="acpl"/>
+			<link field="binding_unit" reltype="might_have" key="id" map="" class="sbu"/>
+		</links>
+	</class>
+	<class id="sbsum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::bib_summary" oils_persist:tablename="serial.bib_summary">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.bib_summary_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="subscription" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="generated_coverage" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="textual_holdings" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+		</links>
+	</class>
+	<class id="sssum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::sup_summary" oils_persist:tablename="serial.sup_summary">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.sup_summary_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="subscription" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="generated_coverage" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="textual_holdings" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+		</links>
+	</class>
+	<class id="sisum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::index_summary" oils_persist:tablename="serial.index_summary">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.index_summary_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="subscription" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="generated_coverage" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="textual_holdings" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+		</links>
+	</class>
+
 	<class id="ascecm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
