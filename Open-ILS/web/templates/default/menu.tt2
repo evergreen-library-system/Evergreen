@@ -25,6 +25,10 @@
                             onClick="location.href = '[% ctx.base_uri %]/acq/picklist/bib_search';">
                             Title Search
                         </div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
+                            onClick="location.href = '[% ctx.base_uri %]/acq/picklist/upload';">
+                            Load Records
+                        </div>
                     </div>
                 </div>
 

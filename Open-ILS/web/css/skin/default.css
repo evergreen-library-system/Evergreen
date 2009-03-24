@@ -50,6 +50,9 @@ table { border-collapse: collapse; }
 
 .label { margin: 1px; }
 
+.oils-generic-table th { padding:5px; font-weight: bold; }
+.oils-generic-table td { padding:5px; }
+
 
 /* local dojo style enhancements ----------------------------------- */
 /*

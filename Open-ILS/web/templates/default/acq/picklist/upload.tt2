@@ -1,0 +1,51 @@
+[% WRAPPER 'default/base.tt2' %]
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
+
+<h1>Upload</h1><br/>
+<form id="acq-pl-upload-form" enctype="multipart/form-data">
+    <input type='hidden' name='ses' id='acq-pl-upload-ses'/>
+    <table class='oils-generic-table'>
+        <tbody>
+            <tr>
+                <td>Create Purchase Order</td>
+                <td>
+                    <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadToPo' name='create_po'></input>
+                </td>
+            </tr>
+            <tr>
+                <td>Provider</td>
+                <td><div id='acq-pl-upload-provider'></div></td>
+            </tr>
+            <tr id='acq-pl-upload-agency-row'>
+                <td>Context Org Unit</td>
+                <td><div id='acq-pl-upload-agency'></div></td>
+            </tr>
+            <tr id='acq-pl-upload-picklist'>
+                <td>Add to Picklist</td>
+                <td>
+                    <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Records File</td>
+                <td><input size='36' type="file" name="marc_upload"></input></td>
+            </tr>
+            <tr>
+                <td align='center' colspan='2'>
+                    <button dojoType="dijit.form.Button" onClick="acqUploadRecords()">Upload</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+    <div id="acq-pl-upload-progress" class='hidden'>
+        <div>
+            <span>Processing...</span>
+            <span id='acq-pl-upload-count'></span>
+        </div>
+        <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
+    </div>
+</form>
+[% END %]
