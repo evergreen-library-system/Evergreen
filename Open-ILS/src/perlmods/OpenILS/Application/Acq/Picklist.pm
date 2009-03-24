@@ -2,6 +2,7 @@ package OpenILS::Application::Acq::Picklist;
 use base qw/OpenILS::Application/;
 use strict; use warnings;
 
+use OpenSRF::EX q/:try/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -9,6 +10,13 @@ use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::Cache;
+use MARC::Record;
+use MARC::Batch;
+use MARC::File::XML;
+use MIME::Base64;
+use Digest::MD5 qw/md5_hex/;
+
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -529,6 +537,115 @@ sub ranged_distrib_formulas {
     ]);
     $conn->respond($_) for @$forms;
     return undef;
+}
+
+__PACKAGE__->register_method(
+    method => 'upload_records',
+    api_name => 'open-ils.acq.process_upload_records',
+    stream => 1,
+);
+
+sub upload_records {
+    my($self, $conn, $auth, $key) = @_;
+	my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $cache = OpenSRF::Utils::Cache->new;
+
+    my $data = $cache->get_cache("vandelay_import_spool_$key");
+	my $purpose = $data->{purpose};
+    my $filename = $data->{path};
+    my $provider = $data->{provider};
+    my $picklist = $data->{picklist};
+    my $create_po = $data->{create_po};
+    my $ordering_agency = $data->{ordering_agency};
+    my $purchase_order;
+
+    unless(-r $filename) {
+        $logger->error("unable to read MARC file $filename");
+        $e->rollback;
+        return OpenILS::Event->new('FILE_UPLOAD_ERROR', payload => {filename => $filename});
+    }
+
+    $provider = $e->retrieve_acq_provider($provider) or return $e->die_event;
+
+    if($picklist) {
+        $picklist = $e->retrieve_acq_picklist($picklist) or return $e->die_event;
+        if($picklist->owner != $e->requestor->id) {
+            return $e->die_event unless 
+                $e->allowed('CREATE_PICKLIST', $picklist->org_unit, $picklist);
+        }
+    }
+
+    if($create_po) {
+        return $e->die_event unless 
+            $e->allowed('CREATE_PURCHASE_ORDER', $ordering_agency);
+        # $purchase_order = 
+    }
+
+    $logger->info("acq processing MARC file=$filename");
+
+    my $marctype = 'USMARC'; # ?
+	my $batch = new MARC::Batch ($marctype, $filename);
+	$batch->strict_off;
+
+	my $count = 0;
+
+	while(1) {
+
+	    my $r;
+		$logger->info("processing record $count");
+
+        try { 
+            $r = $batch->next 
+        } catch Error with { $r = -1; };
+
+        last unless $r;
+        
+        if($r == -1) {
+			$logger->warn("Proccessing of record $count in set $key failed.  Skipping this record");
+			$count++;
+            next;
+		}
+
+		try {
+
+			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
+			$xml =~ s/^<\?xml.+\?\s*>//go;
+			$xml =~ s/>\s+</></go;
+			$xml =~ s/\p{Cc}//go;
+			$xml = $U->entityize($xml);
+			$xml =~ s/[\x00-\x1f]//go;
+
+            my $li = Fieldmapper::acq::lineitem->new;
+            $li->picklist($picklist->id) if $picklist;
+            $li->purchase_order($purchase_order->id) if $purchase_order;
+            $li->source_label($provider->code); # XXX ??
+            $li->selector($e->requestor->id);
+            $li->creator($e->requestor->id);
+            $li->editor($e->requestor->id);
+            $li->edit_time('now');
+            $li->create_time('now');
+            $li->marc($xml);
+            $li->state('on-order') if $purchase_order;
+            $e->create_acq_lineitem($li) or die $e->die_event;
+
+			$conn->respond({count => $count}) if (++$count % 5) == 0;
+
+		} catch Error with {
+			my $error = shift;
+			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
+		}
+	}
+
+	$e->commit;
+    unlink($filename);
+    $cache->delete_cache('vandelay_import_spool_' . $key);
+
+	return {
+        complete => 1, 
+        purchase_order => $purchase_order, 
+        picklist => $picklist
+    };
 }
 
 
