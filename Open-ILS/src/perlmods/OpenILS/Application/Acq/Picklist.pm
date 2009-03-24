@@ -178,8 +178,10 @@ sub retrieve_user_picklist {
     return $e->die_event unless $e->checkauth;
 
     # don't grab the PL with name == "", because that is the designated temporary picklist
-    my $list = $e->search_acq_picklist(
-        {owner=>$e->requestor->id, name=>{'!='=>''}},
+    my $list = $e->search_acq_picklist([
+            {owner=>$e->requestor->id, name=>{'!='=>''}},
+            {order_by => {acqpl => 'name'}}
+        ],
         {idlist=>1}
     );
 
@@ -499,6 +501,34 @@ sub zsearch_build_pl {
     }
 
     return $picklist;
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'ranged_distrib_formulas',
+	api_name	=> 'open-ils.acq.distribution_formula.ranged.retrieve',
+    stream => 1,
+	signature => {
+        desc => 'Ranged distribution formulas, fleshed with entries',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+        ],
+        return => {desc => 'List of distribution formulas'}
+    }
+);
+
+sub ranged_distrib_formulas {
+    my($self, $conn, $auth) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $orgs = $U->user_has_work_perm_at($e, 'CREATE_PICKLIST', {descendants =>1});
+    my $forms = $e->search_acq_distribution_formula([
+        {owner => $orgs},
+        {flesh => 1, flesh_fields => {acqdf => ['entries']}}
+    ]);
+    $conn->respond($_) for @$forms;
+    return undef;
 }
 
 
