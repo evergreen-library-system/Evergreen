@@ -800,17 +800,11 @@ function _rdetailSortStatuses(a, b) {
 }
 
 /**
- * XXX Need to adopt a more typical approach to showing loading status
+ * Check for a Google Book preview 
  */
 function rdetailCheckForGBPreview() {
-
 	if (!googleBookPreview) return;
-	var GBPp = document.createElement('p');
-	GBPp.appendChild( document.createTextNode('Loading... ' ) );
-	GBPp.id = 'loading';
-	$('rdetail_preview_div').appendChild(GBPp);
 	searchForGBPreview( cleanISBN(record.isbn()) );
-
 }
 
 /**
@@ -850,7 +844,6 @@ function searchForGBPreview( isbn ) {
  * @param {JSON} booksInfo is the JSON object pulled from the Google books service.
  */
 function GBPreviewCallback(GBPBookInfo) {
-	// Clear any old data to prepare to display the Loading... message.
 	var GBPreviewDiv = document.getElementById("rdetail_preview_div");
 	var GBPBook;
 
@@ -864,22 +857,23 @@ function GBPreviewCallback(GBPBookInfo) {
 
 	if ( GBPBook.preview != "noview" ) {
 		if ( GBPBook.preview == 'full' ) {
-			setText( $('rdetail_preview_link'), 'Full Text' );
-			$('rdetail_preview_link_a').title = 'See the full text of this book.';      
+			setText( $('rdetail_preview_link'), $('rdetail_preview_full_text').innerHTML );
+			$('rdetail_preview_link_a').title = $('rdetail_preview_title').innerHTML;      
 		}
 
 		// Add a button below the book cover image to load the preview.
 		GBPBadge = document.createElement( 'img' );
 		GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
-		GBPBadge.title = 'Show a preview of this book from Google Book Search';
+		GBPBadge.title = $('rdetail_preview_badge').innerHTML;
 		GBPBadge.style.border = 0;
 		GBPBadgelink = document.createElement( 'a' );
 		GBPBadgelink.href = 'javascript:rdetailShowExtra("preview");';
 		GBPBadgelink.appendChild( GBPBadge );
 		$('rdetail_image_cell').appendChild( GBPBadgelink );
-
-		unHideMe( $('rdetail_preview_link' ) );
 		$('rdetail_preview_div').style.height = 600;
+
+		/* Display the "Preview" tab in the Extras section */
+		unHideMe( $('rdetail_preview_link' ) );
 	}
 }
 
@@ -890,6 +884,7 @@ function GBPreviewCallback(GBPBookInfo) {
  * XXX I18N of Google Book Preview language attribute needed
  */
 function rdetailDisplayGBPreview() {
+	unHideMe($('rdetail_extras_loading'));
 	GBPreviewPane = $('rdetail_preview_div');
 	if ( GBPreviewPane.getAttribute('loaded') == null ||
 		GBPreviewPane.getAttribute('loaded') == "false" ) {
@@ -899,6 +894,7 @@ function rdetailDisplayGBPreview() {
 }
 
 function rdetailGBPViewerLoadCallback() {
+	hideMe($('rdetail_extras_loading'));
 	var GBPViewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
 	GBPViewer.load('ISBN:' + cleanISBN(record.isbn()) );
 

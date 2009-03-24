@@ -535,6 +535,9 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.extras.marc "MARC Record">
 <!ENTITY rdetail.extras.call.null "There are no call numbers for this item at this location.">
 <!ENTITY rdetail.extras.call.local "Local Call Numbers:">
+<!ENTITY rdetail.extras.preview.fulltext "Full text">
+<!ENTITY rdetail.extras.preview.title "See the full text of this book.">
+<!ENTITY rdetail.extras.preview.badge "Show a preview of this book from Google Book Search">
 <!ENTITY rdetail.loading "Loading copy infomation...">
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.summary.online "Online Resources">
