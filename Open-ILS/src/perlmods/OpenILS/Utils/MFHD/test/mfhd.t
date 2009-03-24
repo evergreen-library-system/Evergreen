@@ -182,3 +182,7 @@ __END__
 
 245 00 $aMonthly, iss no. restarts, Cal change: Jan, July issue omitted
 853 20 $815$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$yom07
+
+245 00 $aQuarterly, chronology in enumeration fields
+853 20 $816$a(year)$b(season)$wq$x21$yps21,22,23,24
+863 41 $816.1$a2007$b21$x|a2007|b22$zSimple case: quarterly in mid-volume

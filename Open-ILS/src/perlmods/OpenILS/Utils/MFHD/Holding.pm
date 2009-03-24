@@ -27,16 +27,16 @@ sub new {
 
     foreach my $subfield ($self->subfields) {
 	my ($key, $val) = @$subfield;
-	if ($key =~ /[a-h]/) {
+
+	if (($caption->enumeration_is_chronology && $key =~ /[a-h]/) || $key =~ /[i-m]/) {
+	    # Chronology
+	    $self->{_mfhdh_SUBFIELDS}->{$key} = $val;
+	} elsif ($key =~ /[a-h]/) {
 	    # Enumeration details of holdings
 	    $self->{_mfhdh_SUBFIELDS}->{$key} = {HOLDINGS => $val,
 						 UNIT     => undef,};
 	    $last_enum = $key;
 	} elsif ($key =~ /[i-m]/) {
-	    $self->{_mfhdh_SUBFIELDS}->{$key} = $val;
-	    if (!$caption->capstr($key)) {
-		warn "Holding '$seqno' specified enumeration level '$key' not included in caption $caption->{LINK}";
-	    }
 	} elsif ($key eq 'o') {
 	    warn '$o specified prior to first enumeration'
 	      unless defined($last_enum);
@@ -358,7 +358,7 @@ sub next_date {
 
 	    # I am cheating: This code assumes that only the smallest
 	    # time increment is combined. So, no "Apr 15/May 1" allowed.
-	    @new[-1] = @new[-1] . '/' . @second_date[-1];
+	    $new[-1] = $new[-1] . '/' . $second_date[-1];
 	}
     }
 
@@ -478,6 +478,17 @@ sub next {
 
     # Initialize $next with current enumeration & chronology, then
     # we can just operate on $next, based on the contents of the caption
+
+    if ($caption->enumeration_is_chronology) {
+	foreach my $key ('a' .. 'h') {
+	    $next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}
+	      if exists $self->{_mfhdh_SUBFIELDS}->{$key};
+	}
+	$self->next_date($next, ('a' .. 'h'));
+
+	return $next;
+    }
+
     foreach my $key ('a' .. 'h') {
 	$next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS}
 	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
@@ -488,15 +499,11 @@ sub next {
 	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
     }
 
-    if ($caption->enumeration_is_chronology) {
-	$self->next_date($next, ('a'..'h'));
-    } else {
-	if (exists $next->{'h'}) {
-	    $self->next_alt_enum($next);
-	}
-
-	$self->next_enum($next);
+    if (exists $next->{'h'}) {
+	$self->next_alt_enum($next);
     }
+
+    $self->next_enum($next);
 
     return($next);
 }
