@@ -20,7 +20,7 @@ function init() {
     new openils.widget.AutoFieldWidget({
         fmClass : 'acqpo',
         fmField : 'provider',
-        limitPerms : ['CREATE_PICKLIST'],
+        orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
         parentNode : dojo.byId('acq-pl-upload-provider'),
     }).build(
         function(w) { providerWidget = w }
@@ -29,7 +29,7 @@ function init() {
     new openils.widget.AutoFieldWidget({
         fmClass : 'acqpo',
         fmField : 'ordering_agency',
-        limitPerms : ['CREATE_PURCHASE_ORDER'],
+        orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
         parentNode : dojo.byId('acq-pl-upload-agency'),
     }).build(
         function(w) { orderAgencyWidget = w }
