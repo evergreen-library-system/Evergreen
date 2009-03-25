@@ -63,7 +63,7 @@
 				<button id="create" label="&staff.server.admin.offline.xacts.create.label;" disabled="true"/>
 				<button id="execute" label="&staff.server.admin.offline.xacts.execute.label;" disabled="true"/>
 				<spacer flex="1"/>
-				<button id="upload" label="&staff.server.admin.offline.xacts.update.label;" disabled="true"/>
+				<button id="upload" label="&staff.server.admin.offline.xacts.upload.label;" disabled="true"/>
 			</hbox>
 			<tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 		</groupbox>
