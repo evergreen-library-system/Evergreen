@@ -1241,7 +1241,7 @@
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
 <!ENTITY staff.server.admin.offline.xacts.execute.label "Process">
-<!ENTITY staff.server.admin.offline.xacts.update.label "Update">
+<!ENTITY staff.server.admin.offline.xacts.upload.label "Upload">
 <!ENTITY staff.server.admin.offline.xacts.status.label "Uploaded Transaction Files">
 <!ENTITY staff.server.admin.offline.xacts.status.desc "The transactions from the following workstations have been uploaded, but not processed.  When all expected workstations are present here, use the Process button above.">
 <!ENTITY staff.server.admin.offline.xacts.errors.label "Exceptions">
