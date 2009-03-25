@@ -5561,7 +5561,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
     </class>
 	<class id="acqdf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula" oils_persist:tablename="acq.distribution_formula">
-        <fields oils_persist:primary="id">
+        <fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_id_seq">
             <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
             <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
             <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
@@ -5585,7 +5585,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 	<class id="acqdfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula_entry" oils_persist:tablename="acq.distribution_formula_entry">
-        <fields oils_persist:primary="id">
+        <fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_entry_id_seq">
             <field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
             <field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
             <field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
