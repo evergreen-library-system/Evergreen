@@ -85,6 +85,8 @@
                                 onClick="location.href = '[% ctx.base_uri %]/acq/currency_type/list';">Currency Types</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                                 onClick="location.href = '[% ctx.base_uri %]/acq/exchange_rate';">Exchange Rates</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
+                                onClick="location.href = '[% ctx.base_uri %]/conify/global/acq/distribution_formula';">Distribution Formulas</div>
                     </div>
                 </div>
                 <div dojoType="dijit.PopupMenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy">

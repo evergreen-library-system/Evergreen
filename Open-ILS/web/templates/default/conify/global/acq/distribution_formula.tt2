@@ -1,0 +1,57 @@
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'> </script>
+<script> var formulaId = '[% ctx.page_args.0 %]';</script>
+
+
+<div id='formula-list-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Distribution Formulas</div>
+        <div><button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button></div>
+        </div>
+        <table  jsId="fListGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'owner', 'item_count', 'skip_count']"
+                query="{id: '*'}"
+                defaultCellWidth='12'
+                fmClass='acqdf'
+                editOnEnter='true'>
+            <thead>
+                <tr><th field='name' get='getFormulaName'/>
+                   
+                    <th field='item_count'  get='getItemCount'/
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+
+<div id='formula-entry-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+        <div id='formula-summary-pane'/>
+    </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div id="formula_head"></div>
+           <div> <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button></div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
+            <table  jsId="dfeListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['id','formula', 'owning_lib', 'location', 'item_count', 'position']"
+                    suppressFields="['formula']"
+                    query="{id: '*'}"
+                    defaultCellWidth='12'
+                    fmClass='acqdfe'
+                    editOnEnter='true'>
+                <thead>
+                    <tr> <th field='formula' get='getFormulaId'/>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+[% END %]
+
