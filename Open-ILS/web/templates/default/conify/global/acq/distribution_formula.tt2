@@ -6,8 +6,8 @@
 <div id='formula-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>Distribution Formulas</div>
-        <div><button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button></div>
+            <div>Distribution Formulas</div>
+            <div><button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button></div>
         </div>
         <table  jsId="fListGrid"
                 dojoType="openils.widget.AutoGrid"
@@ -17,9 +17,9 @@
                 fmClass='acqdf'
                 editOnEnter='true'>
             <thead>
-                <tr><th field='name' get='getFormulaName'/>
-                   
-                    <th field='item_count'  get='getItemCount'/
+                <tr>
+                    <th field='name' get='getFormulaName'/>
+                    <th field='item_count' get='getItemCount'/>
                 </tr>
             </thead>
         </table>
@@ -46,7 +46,8 @@
                     fmClass='acqdfe'
                     editOnEnter='true'>
                 <thead>
-                    <tr> <th field='formula' get='getFormulaId'/>
+                    <tr> 
+                        <th field='formula' get='getFormulaId'/>
                     </tr>
                 </thead>
             </table>
