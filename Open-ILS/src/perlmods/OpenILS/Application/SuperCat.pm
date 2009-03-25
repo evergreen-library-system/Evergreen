@@ -23,6 +23,8 @@ use OpenSRF::Utils::Logger qw($logger);
 # ... and this is our OpenILS object (en|de)coder and psuedo-ORM package.
 use OpenILS::Utils::Fieldmapper;
 
+# ... and this has some handy common methods
+use OpenILS::Application::AppUtils;
 
 # We'll be working with XML, so...
 use XML::LibXML;
@@ -38,6 +40,8 @@ our (
   %metarecord_xslt,
   %holdings_data_cache,
 );
+
+my $U = 'OpenILS::Application::AppUtils';
 
 sub child_init {
 	# we need an XML parser
@@ -215,13 +219,6 @@ sub register_record_transforms {
 				}
 		);
 	}
-}
-
-
-sub entityize {
-	my $stuff = NFC(shift());
-	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-	return $stuff;
 }
 
 sub tree_walker {
@@ -880,7 +877,7 @@ sub retrieve_record_marcxml {
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rid )->gather(1);
-	return entityize( $record->marc ) if ($record);
+	return $U->entityize( $record->marc ) if ($record);
 	return undef;
 }
 
@@ -920,7 +917,7 @@ sub retrieve_isbn_marcxml {
 	return undef unless (@$recs);
 
 	my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $recs->[0]->record )->gather(1);
-	return entityize( $record->marc ) if ($record);
+	return $U->entityize( $record->marc ) if ($record);
 	return undef;
 }
 
@@ -962,7 +959,7 @@ sub retrieve_record_transform {
 
 	return undef unless ($record);
 
-	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
+	return $U->entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
 }
 
 sub retrieve_isbn_transform {
@@ -985,7 +982,7 @@ sub retrieve_isbn_transform {
 
 	return undef unless ($record);
 
-	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
+	return $U->entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
 }
 
 sub retrieve_record_objects {
@@ -1215,7 +1212,7 @@ sub retrieve_metarecord_mods {
 
 	$_storage->disconnect;
 
-	return entityize($mods->toString);
+	return $U->entityize($mods->toString);
 
 }
 __PACKAGE__->register_method(

@@ -1399,6 +1399,22 @@ sub entityize {
 	return $string;
 }
 
+# x0000-x0008 isn't legal in XML documents
+# XXX Perhaps this should just go into our standard entityize method
+sub strip_ctrl_chars {
+	my ($self, $string) = @_;
+
+	$string =~ s/([\x{0000}-\x{0008}])//sgoe; 
+	return $string;
+}
+
+# Ampersands are special, mmmkay?
+# XXX Perhaps this should go into our standard entityize method
+sub ampersize {
+	my $stuff = shift();
+	$stuff =~ s/&(?!\S+;)/&amp;/gso;
+	return $stuff;
+}
 
 sub get_copy_price {
 	my($self, $e, $copy, $volume) = @_;

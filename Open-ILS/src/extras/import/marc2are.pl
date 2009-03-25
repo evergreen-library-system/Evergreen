@@ -69,7 +69,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
-	$xml = entityize($xml,'D');
+	$xml = OpenILS::Application::AppUtils->entityize($xml,'D');
 	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::authority::record_entry;
@@ -123,18 +123,4 @@ sub login {
 
         return $authtoken;
 }       
-
-sub entityize {
-        my $stuff = shift;
-        my $form = shift;
-
-        if ($form and $form eq 'D') {
-                $stuff = NFD($stuff);
-        } else {
-                $stuff = NFC($stuff);
-        }
-
-        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-        return $stuff;
-}
 

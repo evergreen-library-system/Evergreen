@@ -8,6 +8,7 @@ use Error qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use OpenSRF::Utils::JSON;
+use OpenILS::Application::AppUtils;
 use Data::Dumper;
 use Unicode::Normalize;
 use Encode;
@@ -260,7 +261,7 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
-	$xml = entityize($xml,'D');
+	$xml = OpenILS::Application::AppUtils->entityize($xml,'D');
 	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::biblio::record_entry;
@@ -390,20 +391,6 @@ sub preprocess {
 	);
 
 	return ($field901, $tcn_value, $tcn_source);
-}
-
-sub entityize {
-        my $stuff = shift;
-        my $form = shift;
-
-        if ($form and $form eq 'D') {
-                $stuff = NFD($stuff);
-        } else {
-                $stuff = NFC($stuff);
-        }
-
-        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-        return $stuff;
 }
 
 sub despace {

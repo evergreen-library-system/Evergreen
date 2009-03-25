@@ -25,11 +25,13 @@ use Unicode::Normalize;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Application::AppUtils;
 
 use MARC::Record;
 use MARC::File::XML;
 
 my $log = 'OpenSRF::Utils::Logger';
+my $U = 'OpenILS::Application::AppUtils';
 
 # set the bootstrap config when this module is loaded
 my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
@@ -72,7 +74,7 @@ $browse_types{call_number}{xml} = sub {
 
 		my $r_doc = $parser->parse_string($cn->record->marc);
 		$r_doc->documentElement->setAttribute( id => $rec_tag );
-		$content .= entityize($r_doc->documentElement->toString);
+		$content .= $U->entityize($U->ampersize($r_doc->documentElement->toString));
 
 		$content .= "</hold:volume>";
 	}
@@ -101,13 +103,13 @@ $browse_types{call_number}{html} = sub {
 
 	return (
 		"Content-type: text/html\n\n",
-		entityize(
+		$U->entityize($U->ampersize(
 			$cn_browse_xslt->transform(
 				$parser->parse_string( $xml ),
 				'prev' => "'$p'",
 				'next' => "'$n'"
 			)->toString(1)
-		)
+		))
 	);
 };
 
@@ -451,7 +453,7 @@ sub unapi {
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-		print entityize($feed->toString) . "\n";
+		print $U->entityize($U->ampersize($feed->toString)) . "\n";
 
 		return Apache2::Const::OK;
 	}
@@ -697,7 +699,7 @@ sub supercat {
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-		print entityize($feed->toString) . "\n";
+		print $U->entityize($U->ampersize($feed->toString)) . "\n";
 
 		return Apache2::Const::OK;
 	}
@@ -722,7 +724,7 @@ sub supercat {
 	}
 
 	print "Content-type: application/xml; charset=utf-8\n\n";
-	print entityize( $parser->parse_string( $req->gather(1) )->documentElement->toString );
+	print $U->entityize($U->ampersize( $parser->parse_string( $req->gather(1) )->documentElement->toString ));
 
 	return Apache2::Const::OK;
 }
@@ -798,7 +800,7 @@ sub bookbag_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print entityize($feed->toString) . "\n";
+	print $U->entityize($U->ampersize($feed->toString)) . "\n";
 
 	return Apache2::Const::OK;
 }
@@ -867,7 +869,7 @@ sub changes_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print entityize($feed->toString) . "\n";
+	print $U->entityize($U->ampersize($feed->toString)) . "\n";
 
 	return Apache2::Const::OK;
 }
@@ -1242,13 +1244,6 @@ sub create_record_feed {
 	}
 
 	return $feed;
-}
-
-sub entityize {
-	my $stuff = NFC(shift());
-	$stuff =~ s/&(?!\S+;)/&amp;/gso;
-	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-	return $stuff;
 }
 
 sub string_browse {
@@ -1636,7 +1631,7 @@ sub sru_search {
 	}
 
    	print $cgi->header( -type => 'application/xml' );
-   	print entityize($resp->asXML) . "\n";
+   	print $U->entityize($U->ampersize($resp->asXML)) . "\n";
     return Apache2::Const::OK;
 }
 

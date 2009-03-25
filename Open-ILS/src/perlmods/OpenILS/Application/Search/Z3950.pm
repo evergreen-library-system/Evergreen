@@ -379,9 +379,11 @@ sub process_results {
                 die "Unsupported record transmission format $tformat"
             }
 
-			$marcs	= entityize($marc->as_xml_record);
+			$marcs	= $U->entityize($marc->as_xml_record);
+			$marcs	= $U->strip_ctrl_chars($marcs);
 			my $doc	= XML::LibXML->new->parse_string($marcs);
-			$marcxml = entityize( $doc->documentElement->toString );
+			$marcxml = $U->entityize($doc->documentElement->toString);
+			$marcxml = $U->strip_ctrl_chars($marcxml);
 	
 			my $u = OpenILS::Utils::ModsParser->new();
 			$u->start_mods_batch( $marcxml );
@@ -433,29 +435,5 @@ sub compile_query {
 	}
 	return $str;
 }
-
-
-
-# -------------------------------------------------------------------
-# Handles the unicode
-# -------------------------------------------------------------------
-sub entityize {
-	my $stuff = shift;
-	my $form = shift || "";
-	
-	if ($form eq 'D') {
-		$stuff = NFD($stuff);
-	} else {
-		$stuff = NFC($stuff);
-	}
-	
-	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-
-	# strip some other unfriendly chars that may leak in
-   $stuff =~ s/([\x{0000}-\x{0008}])//sgoe; 
-
-	return $stuff;
-}
-
 
 1;
