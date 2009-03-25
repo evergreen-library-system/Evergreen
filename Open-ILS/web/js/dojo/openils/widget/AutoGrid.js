@@ -72,7 +72,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     if(fields.filter(function(i){return (i.field == field.name)})[0]) 
                         continue;
 
-
                     if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
                         continue; 
                     var entry = existing.filter(function(i){return (i.field == field.name)})[0];
@@ -80,6 +79,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     else entry = {field:field.name, name:field.label};
                     pushEntry(entry);
                 }
+
+                if(this.fieldOrder) {
+                    /* append any explicit non-IDL grid fields to the end */
+                    for(var e in existing) {
+                        var entry = existing[e];
+                        var field = fields.filter(
+                            function(i){return (i.field == entry.field)})[0];
+                        if(field) continue; // don't duplicate
+                        pushEntry(entry);
+                    }
+                }
+
 
                 return [{cells: [fields]}];
             },
