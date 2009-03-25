@@ -29,7 +29,7 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var G;</script>
-	<script>dump('Loading OpenILS/util_overlay.xul\n');</script>
+	<script>dump('Loading main/main.xul\n');</script>
 	<scripts id="openils_util_scripts">
 		<script type="text/javascript" src="constants.js" />
 		<script type="text/javascript" src="../OpenILS/util/utils.js" />
@@ -46,7 +46,7 @@
 		-->
 		<script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
 	</scripts>
-	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
+	<script>dump('Loaded main/main.xul\n');</script>
 
 
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
