@@ -56,7 +56,7 @@ util.controller.prototype = {
 					this.render_list[i][1](param);
 				}
 			} catch(E) {
-				var error = 'Problem in circ.checkout.render with\n' 
+				var error = 'Problem in util.controller.render with\n' 
 					+ this.render_list[i] + '\n\n' + js2JSON(E);
 				this.error.sdump('D_ERROR',error);
 			}
