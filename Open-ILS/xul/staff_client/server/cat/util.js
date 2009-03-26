@@ -314,6 +314,8 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                 if (! my_circ.checkin_time() ) {
                                     var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
                                     var auto_checkin = String( data.hash.aous['circ.auto_checkin_on_mark_damage'] ) == 'true';
+                                    /* short-circuit this behavior.  We don't want to mark an item damaged and still have it circulating.  At least for now.  Wait until someone asks for it. */
+                                    auto_checkin = true; 
                                     JSAN.use('patron.util');
                                     var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), my_circ.usr() );
                                     var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
