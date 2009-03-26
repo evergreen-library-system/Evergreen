@@ -10,6 +10,20 @@ util.exec = function(chunk_size) {
 };
 
 util.exec.prototype = {
+    // This will create a timer that polls the specified array and shifts off functions to execute
+    'timer' : function(funcs,interval) {
+        var obj = this;
+        var intervalId = window.setInterval(
+            function() {
+                var i = obj.chunk_size;
+                while (funcs.length > 0 && i > 0) {
+                    funcs.shift()();
+                }
+            },
+            interval
+        );
+        window.addEventListener('unload',function() { window.clearInterval(intervalId); },false);
+    },
 	// This executes a series of functions, but tries to give other events/functions a chance to
 	// execute between each one.
 	'chain' : function () {
