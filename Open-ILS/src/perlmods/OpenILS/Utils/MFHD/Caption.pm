@@ -157,14 +157,14 @@ sub calendar_change {
 # recorded in the enumeration subfields $a - $f.  We can tell
 # that this is the case if there are $a - $f subfields and no
 # chronology subfields ($i-$k), and none of the $a-$f subfields
-# have associated $u or $v subfields, but there are $w and $y
-# subfields.
+# have associated $u or $v subfields, but there's a $w and no $x
 
 sub enumeration_is_chronology {
     my $self = shift;
 
     # There is always a '$a' subfield in well-formed fields.
-    return 0 if exists $self->{_mfhdc_CHRONS}->{i};
+    return 0 if exists $self->{_mfhdc_CHRONS}->{i}
+      || exists $self->{_mfhdc_PATTERN}->{x};
 
     foreach my $key ('a' .. 'f') {
 	my $enum;
@@ -175,7 +175,7 @@ sub enumeration_is_chronology {
 	return 0 if defined $enum->{COUNT} || defined $enum->{RESTART};
     }
 
-    return (exists $self->{_mfhdc_PATTERN}->{w} && exists $self->{_mfhdc_PATTERN}->{y});
+    return (exists $self->{_mfhdc_PATTERN}->{w});
 }
 
 my %daynames = (

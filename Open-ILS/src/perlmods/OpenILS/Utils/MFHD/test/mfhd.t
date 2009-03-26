@@ -184,5 +184,11 @@ __END__
 853 20 $815$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$yom07
 
 245 00 $aQuarterly, chronology in enumeration fields
-853 20 $816$a(year)$b(season)$wq$x21$yps21,22,23,24
+853 20 $816$a(year)$b(season)$wq$yps21,22,23,24
 863 41 $816.1$a2007$b21$x|a2007|b22$zSimple case: quarterly in mid-volume
+863 41 $816.2$a2007$b24$x|a2008|b21$zRoll over to new year
+
+245 00 $aFour issues a year, chronology in enum fields, combined Sum/Fall issue
+853 20 $817$a(year)$b(season)$wq$ycs22/23
+863 41 $817.1$a2007$b21$x|a2007|b22/23$zSpring to Summer/Fall
+863 41 $817.2$a2007$b22/23$x|a2007|b24$zSummer/Fall to Winter

@@ -136,8 +136,6 @@ sub format {
 
 	    last if !defined $caption->capstr($key);
 
-	    # 	printf("fmt %s: '%s'\n", $key, $caption->capstr($key));
-
 	    $capstr = $caption->capstr($key);
 	    if (substr($capstr, 0, 1) eq '(') {
 		# a caption enclosed in parentheses is not displayed
@@ -221,7 +219,7 @@ sub incr_date {
 	    if ($new[1] > 24) {
 		# carry
 		$new[0] += 1;
-		$new[1] -= 24;
+		$new[1] -= 4;	# 25 - 4 == 21 == Spring after Winter
 	    }
 	} else {
 	    # month
@@ -286,10 +284,6 @@ sub calendar_increment {
 	} elsif (length($change) == 4) {
 	    ($month, $day) = unpack("a2a2", $change);
 	}
-
-	# 	print "# next_date: month = '$month', day = '$day'\n";
-	# 	print "# next_date: cur[0] = '$cur->[0]', cur[1] = '$cur->[1]'\n";
-	# 	print "# next_date: new[0] = '$new[0]', new[1] = '$new[1]'\n";
 
 	if ($cur->[0] == $new[0]) {
 	    # Same year, so a 'simple' month/day comparison will be fine
@@ -474,7 +468,7 @@ sub next {
     my $self = shift;
     my $caption = $self->{_mfhdh_CAPTION};
     my $next = {};
-    my $carry;
+    my $carry = 0;
 
     # Initialize $next with current enumeration & chronology, then
     # we can just operate on $next, based on the contents of the caption
@@ -484,7 +478,7 @@ sub next {
 	    $next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}
 	      if exists $self->{_mfhdh_SUBFIELDS}->{$key};
 	}
-	$self->next_date($next, ('a' .. 'h'));
+	$self->next_date($next, $carry, ('a' .. 'h'));
 
 	return $next;
     }
