@@ -534,7 +534,11 @@ sub ranged_distrib_formulas {
     my $orgs = $U->user_has_work_perm_at($e, 'CREATE_PICKLIST', {descendants =>1});
     my $forms = $e->search_acq_distribution_formula([
         {owner => $orgs},
-        {flesh => 1, flesh_fields => {acqdf => ['entries']}}
+        {
+            flesh => 1, 
+            flesh_fields => {acqdf => ['entries']},
+            order_by => {acqdfe => ['position']}
+        }
     ]);
     $conn->respond($_) for @$forms;
     return undef;
