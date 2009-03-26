@@ -12,8 +12,9 @@
                             <td>
                                 <div style='width:100%;text-align:right;'>
                                     <span>
-                                        <select dojoType='dijit.form.FilteringSelect' value='_'>
+                                        <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
                                             <option value='_'>--Actions--</option>
+                                            <option value='delete_selected'>Delete Selected Items</option>
                                             <option value='selector_ready'>Mark Ready for Selector</option>
                                             <option value='order_ready'>Mark Ready for Order</option>
                                             <option value='create_order'>Create Purchase Order</option>
@@ -36,10 +37,12 @@
                         <table style='width:100%;'>
                             <tbody>
                                 <tr>
-                                    <td rowspan='2'><img style='width:40px;height:65px;' name='jacket'/></td>
-                                    <td attr='title' style='width:70%;font-weight:bold;'/>
+                                    <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></img></td>
+                                    <td style='width:70%;font-weight:bold;'><a attr='title' href='javascript:void(0);'></a></td>
                                     <td rowspan='2' style='text-align:right'>
+                                        <!--
                                         <a name='infolink' href='javascript:void(0);' style='margin-right:10px;'>Details</a>
+                                        -->
                                         <a name='copieslink' href='javascript:void(0);' 
                                             style='margin-right:20px;'>Copies(<span name='count'></span>)</a>
                                     </td>
@@ -116,6 +119,20 @@
                     <td colspan='3' style='text-align:left;'>
                         <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies'>Batch Update</div>
                     </td>
+                </tr>
+            </tbody>
+            <!--
+            <tbody><tr>
+                <td colspan='0'>
+                    <a href='javascript:void(0);' 
+                        onclick='openils.Util.toggle("acq-lit-distrib-formula-tbody");'>Distribution Formulas</a>
+                </td>
+            </tr></tbody>
+            -->
+            <tbody id='acq-lit-distrib-formula-tbody' class='hidden'>
+                <tr id='acq-lit-distrib-form-row'>
+                    <td name='selector'/>
+                    <td name='setbutton'/>
                 </tr>
             </tbody>
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>

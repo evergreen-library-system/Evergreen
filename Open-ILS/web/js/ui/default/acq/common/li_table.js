@@ -6,6 +6,7 @@ dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require('openils.acq.Lineitem');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('dojo.data.ItemFileReadStore');
 
 function AcqLiTable() {
 
@@ -20,6 +21,11 @@ function AcqLiTable() {
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
     this.copyBatchRow = dojo.byId('acq-lit-li-details-batch-row');
     this.copyBatchWidgets = {};
+    dojo.connect(acqLitLiActionsSelector, 'onChange', 
+        function() { 
+            self.applySelectedLiAction(this.attr('value')) 
+            acqLitLiActionsSelector.attr('value', '_');
+        });
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
@@ -80,6 +86,7 @@ function AcqLiTable() {
         self.toggleState = !self.toggleState;
     };
 
+
     /** @param all If true, assume all are selected */
     this.getSelected = function(all) {
         var selected = [];
@@ -110,12 +117,21 @@ function AcqLiTable() {
             // XXX media prefix for added content
             dojo.query('[name=jacket]', row)[0].setAttribute('src', '/opac/extras/ac/jacket/small/' + isbn);
         }
-        dojo.query('[name=infolink]', row)[0].onclick = function() {self.drawInfo(li.id())};
+        //dojo.query('[name=infolink]', row)[0].onclick = function() {self.drawInfo(li.id())};
+        dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
+
+    this.removeLineitem = function(liId) {
+        console.log(liId);
+        console.log('[li='+liId+']');
+        console.log(dojo.query('[li='+liId+']', this.tbody)[0]);
+        this.tbody.removeChild(dojo.query('[li='+liId+']', this.tbody)[0]);
+        delete this.liCache[liId];
+    }
 
     this.drawInfo = function(liId) {
         this.show('info');
@@ -198,6 +214,41 @@ function AcqLiTable() {
         while(this.copyTbody.childNodes[0])
             this.copyTbody.removeChild(this.copyTbody.childNodes[0]);
 
+        this._drawBatchCopyWidgets();
+
+        this._fetchDistribFormulas(
+            function() {
+                openils.acq.Lineitem.fetchAttrDefs(
+                    function() { 
+                        self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
+                    } 
+                );
+            }
+        );
+    };
+
+    this._fetchDistribFormulas = function(onload) {
+        if(this.distribForms) {
+            onload();
+        } else {
+            var self = this;
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.distribution_formula.ranged.retrieve.atomic'],
+                {   async: true,
+                    params: [openils.User.authtoken],
+                    oncomplete: function(r) {
+                        self.distribForms = openils.Util.readResponse(r);
+                        self.distribFormulaStore = 
+                            new dojo.data.ItemFileReadStore(
+                                {data:acqdf.toStoreData(self.distribForms)});
+                        onload();
+                    }
+                }
+            );
+        }
+    }
+
+    this._drawBatchCopyWidgets = function() {
         var row = this.copyBatchRow;
         dojo.forEach(['fund', 'owning_lib', 'location'],
             function(field) {
@@ -217,13 +268,6 @@ function AcqLiTable() {
             }
         );
         this.copyBatchRowDrawn = true;
-
-
-        openils.acq.Lineitem.fetchAttrDefs(
-            function() { 
-                self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
-            } 
-        );
     };
 
     this.batchCopyUpdate = function() {
@@ -335,6 +379,30 @@ function AcqLiTable() {
                 oncomplete: function() {
                     openils.Util.hide('acq-lit-update-copies-progress');
                     self.drawCopies(liId); 
+                }
+            }
+        );
+    }
+
+    this.applySelectedLiAction = function(action) {
+        switch(action) {
+            case 'delete_selected':
+                self._deleteLiList(self.getSelected());
+                break;
+        }
+    }
+
+    this._deleteLiList = function(list, idx) {
+        if(idx == null) idx = 0;
+        if(idx >= list.length) return;
+        var liId = list[idx].id();
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.delete'],
+            {   async: true,
+                params: [openils.User.authtoken, liId],
+                oncomplete: function(r) {
+                    self.removeLineitem(liId);
+                    self._deleteLiList(list, ++idx);
                 }
             }
         );
