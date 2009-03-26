@@ -1395,6 +1395,9 @@ sub entityize {
 		$string = NFC($string);
 	}
 
+	# Convert raw ampersands to ampersand entities
+	$string =~ s/&(?!\S+;)/&amp;/gso;
+
 	$string =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $string;
 }
@@ -1406,14 +1409,6 @@ sub strip_ctrl_chars {
 
 	$string =~ s/([\x{0000}-\x{0008}])//sgoe; 
 	return $string;
-}
-
-# Ampersands are special, mmmkay?
-# XXX Perhaps this should go into our standard entityize method
-sub ampersize {
-	my $stuff = shift();
-	$stuff =~ s/&(?!\S+;)/&amp;/gso;
-	return $stuff;
 }
 
 sub get_copy_price {

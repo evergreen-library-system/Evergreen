@@ -74,7 +74,7 @@ $browse_types{call_number}{xml} = sub {
 
 		my $r_doc = $parser->parse_string($cn->record->marc);
 		$r_doc->documentElement->setAttribute( id => $rec_tag );
-		$content .= $U->entityize($U->ampersize($r_doc->documentElement->toString));
+		$content .= $U->entityize($r_doc->documentElement->toString);
 
 		$content .= "</hold:volume>";
 	}
@@ -103,13 +103,13 @@ $browse_types{call_number}{html} = sub {
 
 	return (
 		"Content-type: text/html\n\n",
-		$U->entityize($U->ampersize(
+		$U->entityize(
 			$cn_browse_xslt->transform(
 				$parser->parse_string( $xml ),
 				'prev' => "'$p'",
 				'next' => "'$n'"
 			)->toString(1)
-		))
+		)
 	);
 };
 
@@ -453,7 +453,7 @@ sub unapi {
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-		print $U->entityize($U->ampersize($feed->toString)) . "\n";
+		print $U->entityize($feed->toString) . "\n";
 
 		return Apache2::Const::OK;
 	}
@@ -699,7 +699,7 @@ sub supercat {
 		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-		print $U->entityize($U->ampersize($feed->toString)) . "\n";
+		print $U->entityize($feed->toString) . "\n";
 
 		return Apache2::Const::OK;
 	}
@@ -724,7 +724,7 @@ sub supercat {
 	}
 
 	print "Content-type: application/xml; charset=utf-8\n\n";
-	print $U->entityize($U->ampersize( $parser->parse_string( $req->gather(1) )->documentElement->toString ));
+	print $U->entityize( $parser->parse_string( $req->gather(1) )->documentElement->toString );
 
 	return Apache2::Const::OK;
 }
@@ -800,7 +800,7 @@ sub bookbag_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print $U->entityize($U->ampersize($feed->toString)) . "\n";
+	print $U->entityize($feed->toString) . "\n";
 
 	return Apache2::Const::OK;
 }
@@ -869,7 +869,7 @@ sub changes_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print $U->entityize($U->ampersize($feed->toString)) . "\n";
+	print $U->entityize($feed->toString) . "\n";
 
 	return Apache2::Const::OK;
 }
@@ -1631,7 +1631,7 @@ sub sru_search {
 	}
 
    	print $cgi->header( -type => 'application/xml' );
-   	print $U->entityize($U->ampersize($resp->asXML)) . "\n";
+   	print $U->entityize($resp->asXML) . "\n";
     return Apache2::Const::OK;
 }
 
