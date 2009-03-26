@@ -5,6 +5,7 @@ dojo.require('dijit.ProgressBar');
 dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require('openils.acq.Lineitem');
+dojo.require('openils.acq.PO');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 
@@ -26,6 +27,11 @@ function AcqLiTable() {
             self.applySelectedLiAction(this.attr('value')) 
             acqLitLiActionsSelector.attr('value', '_');
         });
+
+    acqLitCreatePoSubmit.onClick = function() {
+        acqLitPoCreateDialog.hide();
+        self._createPO(acqLitPoCreateDialog.getValues());
+    }
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
@@ -99,8 +105,8 @@ function AcqLiTable() {
         return selected;
     };
 
-    this.setRowAttr = function(td, liWrapper, field) {
-        var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition') || '';
+    this.setRowAttr = function(td, liWrapper, field, type) {
+        var val = liWrapper.findAttr(field, type || 'lineitem_marc_attr_definition') || '';
         td.appendChild(document.createTextNode(val));
     };
 
@@ -110,17 +116,21 @@ function AcqLiTable() {
         var row = self.rowTemplate.cloneNode(true);
         row.setAttribute('li', li.id());
         var tds = dojo.query('[attr]', row);
-        dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'));});
+        dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
         dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
+
         var isbn = liWrapper.findAttr('isbn', 'lineitem_marc_attr_definition');
         if(isbn) {
             // XXX media prefix for added content
             dojo.query('[name=jacket]', row)[0].setAttribute('src', '/opac/extras/ac/jacket/small/' + isbn);
         }
-        //dojo.query('[name=infolink]', row)[0].onclick = function() {self.drawInfo(li.id())};
+
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
+        dojo.query('[name=estimated_price]', row)[0].value =  
+            liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition');
+
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
@@ -389,12 +399,107 @@ function AcqLiTable() {
     }
 
     this.applySelectedLiAction = function(action) {
+        var self = this;
         switch(action) {
             case 'delete_selected':
-                self._deleteLiList(self.getSelected());
+                this._deleteLiList(self.getSelected());
+                break;
+            case 'create_order':
+
+                if(!this.createPoProviderSelector) {
+                    var widget = new openils.widget.AutoFieldWidget({
+                        fmField : 'provider',
+                        fmClass : 'acqpo',
+                        parentNode : dojo.byId('acq-lit-po-provider'),
+                        orgLimitPerms : ['CREATE_PURCHASE_ORDER'],
+                    });
+                    widget.build(
+                        function(w) { self.createPoProviderSelector = w; }
+                    );
+                }
+         
+                acqLitPoCreateDialog.show();
                 break;
         }
     }
+
+    this._createPO = function(fields) {
+        var po = new fieldmapper.acqpo();
+        po.provider(this.createPoProviderSelector.attr('value'));
+
+        var selected = this.getSelected( (fields.create_from == 'all') );
+        console.log("creating PO for " + selected.length + ' items');
+        if(selected.length == 0) return;
+
+        openils.acq.PO.create(po, function(poId) { po.id(poId); self.postPoCreateActions(po, selected) });
+    }
+
+    this.postPoCreateActions = function(po, liList) {
+        var self = this; 
+        var count = liList.length;
+        var seen = 0;
+        console.log("Created PO " + po.id());
+
+        // Attach the lineitems to the PO
+        dojo.forEach(liList, 
+            function(li) {
+                console.log("updatig LI " + li.id());
+                li.purchase_order(po.id());
+                li.provider(po.provider());
+                new openils.acq.Lineitem({lineitem:li}).update(
+                    function(stat) {
+                        console.log("LI update stat " + stat);
+                        if(++seen == count) 
+                            self.createPoAssets(po);
+                    }
+                );
+            }
+        );
+    }
+
+    this.createPoAssets = function(po) {
+
+        console.log("creating PO assets");
+
+        /*
+        searchProgress.update({progress: 0});
+        dojo.style('searchProgress', 'visibility', 'visible');
+        */
+
+        function onresponse(r) {
+            openils.Util.readResponse(r);
+            //searchProgress.update({maximum: stat.total, progress: stat.progress});
+        }
+
+        function oncomplete(r) {
+            //dojo.style('searchProgress', 'visibility', 'hidden');
+            self.createPoDebits(po);
+        }
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq','open-ils.acq.purchase_order.assets.create'],
+            {   async: true,
+                params: [openils.User.authtoken, po.id()],
+                onresponse : onresponse,
+                oncomplete : oncomplete
+            }
+        );
+    }
+
+    this.createPoDebits = function (po) {
+        console.log("Creating PO debits");
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.debits.create'],
+            {   async: true,
+                params: [openils.User.authtoken, po.id(), {encumbrance:true}],
+                oncomplete : function(r) {
+                    openils.Util.readResponse(r);
+                    location.href = oilsBasePath + '/eg/acq/po/view/' + po.id();
+                }
+            }
+        );
+    }
+     
 
     this._deleteLiList = function(list, idx) {
         if(idx == null) idx = 0;

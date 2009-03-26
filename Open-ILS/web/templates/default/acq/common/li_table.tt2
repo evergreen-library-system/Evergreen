@@ -6,11 +6,10 @@
         <table id='acq-lit-table'>
             <thead>
                 <tr>
-                    <th colspan='0' style='border:1px solid #aaa;'>
-                        <table style='width:100%;'><tr>
-                            <td><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></td>
-                            <td>
-                                <div style='width:100%;text-align:right;'>
+                    <th style='border:1px solid #aaa;' colspan='0'>
+                        <table style='width:100%;'>
+                            <tr>
+                                <td>
                                     <span>
                                         <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
                                             <option value='_'>--Actions--</option>
@@ -20,16 +19,29 @@
                                             <option value='create_order'>Create Purchase Order</option>
                                         </select>
                                     </span>
-                                    <span style='padding-right:15px;'>
-                                        <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
-                                        <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr></table>
+                                </td>
+                                <td>
+                                    <div style='width:100%;text-align:right;'>
+                                        <span style='padding-right:15px;'>
+                                            <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
+                                            <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </th>
                 </tr>
             </thead>
+            <tbody><tr><td colspan='0' style='height:20px;'/></tr></tbody>
+            <tbody style='font-weight:bold;border:1px solid #aaa;'>
+                <tr>
+                    <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></span></td>
+                    <td>Line Items</td>
+                    <td>Estimated Price</td>
+                    <td>Copies</td>
+                </tr>
+            </tbody>
             <tbody id='acq-lit-tbody'>
                 <tr id='acq-lit-row' class='acq-lit-row'>
                     <td name='selector'><input type='checkbox' name='selectbox'/></td>
@@ -40,11 +52,6 @@
                                     <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></img></td>
                                     <td style='width:70%;font-weight:bold;'><a attr='title' href='javascript:void(0);'></a></td>
                                     <td rowspan='2' style='text-align:right'>
-                                        <!--
-                                        <a name='infolink' href='javascript:void(0);' style='margin-right:10px;'>Details</a>
-                                        -->
-                                        <a name='copieslink' href='javascript:void(0);' 
-                                            style='margin-right:20px;'>Copies(<span name='count'></span>)</a>
                                     </td>
                                 </tr>
                                 <tr class='acq-lit-alt-row'>
@@ -60,6 +67,13 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </td>
+                    <td>
+                        <input type='text' size='8' name='estimated_price'/>
+                    </td>
+                    <td>
+                        <a name='copieslink' href='javascript:void(0);' 
+                            style='margin-right:20px;'>Copies(<span name='count'></span>)</a>
                     </td>
                 </tr>
             </tbody>
@@ -160,6 +174,30 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class='hidden'>
+        <div dojoType='dijit.Dialog' jsId='acqLitPoCreateDialog'>
+            <table class='oils-generic-table'>
+                <tr>
+                    <td>Provider</td>
+                    <td><div name='provider' id='acq-lit-po-provider'/></td>
+                </tr>
+                <tr>
+                    <td>All Lineitems</td>
+                    <td><button name='create_from' value='all' dojoType='dijit.form.RadioButton'/></td>
+                </tr>
+                <tr>
+                    <td>Selected Lineitems</td>
+                    <td><button name='create_from' value='selected' dojoType='dijit.form.RadioButton'/></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <div dojoType='dijit.form.Button' type='submit' jsId='acqLitCreatePoSubmit'>Submit</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </div>
