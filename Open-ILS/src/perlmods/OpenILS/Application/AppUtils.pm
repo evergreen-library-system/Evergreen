@@ -1510,6 +1510,9 @@ sub entityize {
 		$string = NFC($string);
 	}
 
+	# Convert raw ampersands to ampersand entities
+	$string =~ s/&(?!\S+;)/&amp;/gso;
+
 	$string =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $string;
 }
