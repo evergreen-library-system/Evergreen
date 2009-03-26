@@ -1,0 +1,28 @@
+[% ctx.page_title = 'Events' %]
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/actor/user/trigger_events.js'> </script>
+<script>patronId = '[% ctx.page_args.0 %]'</script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>User Events</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='evtCancelSelected()'>Cancel Selected Events</button>
+    </div>
+</div>
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100%;'> 
+    <table jsId="evtGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}">
+        <thead> 
+            <tr> 
+                <th field="state" get='getField' width='12em'>State</th> 
+                <th field="hook" get='getField' width='12em'>Hook</th> 
+                <th field="reactor" get='getField' width='12em'>Reactor</th> 
+                <th field="validator" get='getField' width='12em'>Validator</th> 
+                <th field="target" get='getField' width='12em'>Target</th> 
+            </tr> 
+        </thead> 
+    </table>     
+</div>
+
+[% END %]
