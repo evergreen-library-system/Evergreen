@@ -3210,7 +3210,9 @@ sub user_events {
     }
 
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    my $req = $ses->request('open-ils.trigger.events_by_target', $obj_type, $filters);
+    my $req = $ses->request('open-ils.trigger.events_by_target', 
+        $obj_type, $filters, {atevdef => ['reactor', 'validator']}, 2);
+
     while(my $resp = $req->recv) {
         my $val = $resp->content;
         $conn->respond($val) if $val;

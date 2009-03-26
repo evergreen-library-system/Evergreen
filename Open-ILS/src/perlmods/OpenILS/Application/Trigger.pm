@@ -137,6 +137,8 @@ sub events_by_target {
     my $client = shift;
     my $object = shift;
     my $filter = shift || {};
+    my $flesh_fields = shift || {};
+    my $flesh_depth = shift || 1;
 
     my $obj_class = ref($object) || _fm_class_by_hint($object);
     my $obj_hint = ref($object) ? _fm_hint_by_class(ref($object)) : $object;
@@ -209,10 +211,12 @@ sub events_by_target {
 
     my $events = $e->json_query($query);
 
+    $flesh_fields->{atev} = ['event_def'] unless $flesh_fields->{atev};
+
     for my $id (@$events) {
         my $event = $e->retrieve_action_trigger_event([
             $id->{id},
-            {flesh => 1, flesh_fields => {atev => ['event_def']}}
+            {flesh => $flesh_depth, flesh_fields => $flesh_fields}
         ]);
 
         (my $meth = $obj_class) =~ s/^Fieldmapper:://o;
