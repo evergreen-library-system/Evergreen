@@ -38,6 +38,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     if(fields[f].name == this.fmField)
                         this.idlField = fields[f];
             }
+
+            if(!this.idlField) 
+                throw new Error("AutoFieldWidget could not determine which field to render.  We need more information.");
         },
 
         /**
