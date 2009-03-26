@@ -78,6 +78,9 @@
         </table>
         <div style='margin-top:40px;'>
             <h3>MARC Record</h3>
+            <div>
+                <div dojoType='dijit.form.Button' jsId='acqLitEditMarc'>Edit MARC Record</div>
+            </div>
             <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
         </div>
     </div>

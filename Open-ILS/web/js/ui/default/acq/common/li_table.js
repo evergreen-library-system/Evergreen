@@ -166,12 +166,16 @@ function AcqLiTable() {
     };
 
     this._drawInfo = function(li) {
+
+        acqLitEditMarc.onClick = function() { self.editMarc(li); }
         this.drawMarcHTML(li);
         this.infoTbody = dojo.byId('acq-lit-info-tbody');
+
         if(!this.infoRow)
             this.infoRow = this.infoTbody.removeChild(dojo.byId('acq-lit-info-row'));
         while(this.infoTbody.childNodes[0])
             this.infoTbody.removeChild(this.infoTbody.childNodes[0]);
+
         for(var i = 0; i < li.attributes().length; i++) {
             var attr = li.attributes()[i];
             var row = this.infoRow.cloneNode(true);
@@ -406,6 +410,37 @@ function AcqLiTable() {
                 }
             }
         );
+    }
+
+    this.editMarc = function(li) {
+
+        /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
+            to true in about:config */
+
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+
+        var self = this;
+        win.xulG = {
+            record : {marc : li.marc()},
+            save : {
+                label: 'Save Record', // XXX I18N
+                func: function(xmlString) {
+                    li.marc(xmlString);
+                    fieldmapper.standardRequest(
+                        ['open-ils.acq', 'open-ils.acq.lineitem.update'],
+                        {   async: true,
+                            params: [openils.User.authtoken, li],
+                            oncomplete: function(r) {
+                                openils.Util.readResponse(r);
+                                win.close();
+                                self.drawInfo(li.id())
+                            }
+                        }
+                    );
+                },
+            }
+        };
     }
 }
 
