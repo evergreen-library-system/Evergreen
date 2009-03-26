@@ -3215,6 +3215,16 @@ sub user_events {
 
     while(my $resp = $req->recv) {
         my $val = $resp->content;
+        my $tgt = $val->target;
+
+        if($obj_type eq 'circ') {
+            $tgt->target_copy($e->retrieve_asset_copy($tgt->target_copy));
+
+        } elsif($obj_type eq 'ahr') {
+            $tgt->current_copy($e->retrieve_asset_copy($tgt->current_copy))
+                if $tgt->current_copy;
+        }
+
         $conn->respond($val) if $val;
     }
 
