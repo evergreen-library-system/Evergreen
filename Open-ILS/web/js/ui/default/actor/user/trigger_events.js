@@ -59,6 +59,18 @@ function getField(rowIdx, item) {
 }
 
 function evtCancelSelected() {
+    var selected = evtGrid.selection.getSelected();
+    if(selected.length == 0) return;
+    var eventIds = selected.map(
+        function(item) { return evtGrid.store.getValue(item, 'id') } );
+    alert(eventIds);
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.event.cancel.batch'],
+        {   async: true,
+            params: [openils.User.authtoken, eventIds],
+            oncomplete : init
+        }
+    );
 }
 
 openils.Util.addOnLoad(init);
