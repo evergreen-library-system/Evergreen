@@ -70,6 +70,8 @@ CREATE TABLE authority.full_rec (
 	index_vector	tsvector	NOT NULL
 );
 CREATE INDEX authority_full_rec_record_idx ON authority.full_rec (record);
+CREATE index authority_full_rec_subfield_idx ON authority.full_rec (subfield);
+CREATE index authority_full_rec_tag_idx ON authority.full_rec (tag);
 CREATE INDEX authority_full_rec_tag_part_idx ON authority.full_rec (SUBSTRING(tag FROM 2));
 CREATE TRIGGER authority_full_rec_fti_trigger
 	BEFORE UPDATE OR INSERT ON authority.full_rec
