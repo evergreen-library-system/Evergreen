@@ -9,6 +9,8 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Cat::BibCommon;
+use OpenILS::Application::Cat::AssetCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -59,165 +61,6 @@ sub create_lineitem {
     $e->commit;
     return $li->id;
 }
-
-__PACKAGE__->register_method(
-	method => 'create_po_assets',
-	api_name	=> 'open-ils.acq.purchase_order.assets.create',
-	signature => {
-        desc => q/Creates assets for each lineitem in the purchase order/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'The purchase order id', type => 'number'},
-            {desc => q/Options hash./}
-        ],
-        return => {desc => 'Streams a total versus completed counts object, event on error'}
-    }
-);
-
-sub create_po_assets {
-    my($self, $conn, $auth, $po_id, $options) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
-
-    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
-    return $e->die_event unless 
-        $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
-
-    my $li_ids = $e->search_acq_lineitem({purchase_order=>$po_id},{idlist=>1});
-    my $total = @$li_ids;
-    my $count = 0;
-
-    for my $li_id (@$li_ids) {
-        my $resp = create_lineitem_assets_impl($e, $auth, $li_id);
-        if($U->event_code($resp)) {
-            $e->rollback;
-            return $resp;
-        }
-        $conn->respond({total=>$count, progress=>++$count});
-    }
-
-    $po->edit_time('now');
-    $e->update_acq_purchase_order($po) or return $e->die_event;
-    $e->commit;
-
-    return {complete=>1};
-}
-
-__PACKAGE__->register_method(
-	method => 'create_lineitem_assets',
-	api_name	=> 'open-ils.acq.lineitem.assets.create',
-	signature => {
-        desc => q/Creates the bibliographic data, volume, and copies associated with a lineitem./,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'The lineitem id', type => 'number'},
-            {desc => q/Options hash./}
-        ],
-        return => {desc => 'ID of newly created bib record, Event on error'}
-    }
-);
-
-sub create_lineitem_assets {
-    my($self, $conn, $auth, $li_id, $options) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
-    my $resp = create_lineitem_assets_impl($e, $auth, $li_id, $options);
-    if($U->event_code($resp)) {
-        $e->rollback;
-        return $resp;
-    }
-    $e->commit;
-    return $resp;
-}
-
-sub create_lineitem_assets_impl {
-    my($e, $auth, $li_id, $options) = @_;
-    my $li = $e->retrieve_acq_lineitem([
-        $li_id,
-        {   flesh => 1,
-            flesh_fields => {jub => ['purchase_order']}
-        }
-    ]) or return $e->die_event;
-
-    return OpenILS::Event->new('BAD_PARAMS') # make this perm-based, not owner-based
-        unless $li->purchase_order->owner == $e->requestor->id;
-
-    # -----------------------------------------------------------------
-    # first, create the bib record if necessary
-    # -----------------------------------------------------------------
-    unless($li->eg_bib_id) {
-        my $record = $U->simplereq(
-            'open-ils.cat', 
-            'open-ils.cat.biblio.record.xml.import',
-            $auth, $li->marc, $li->source_label);
-
-        if($U->event_code($record)) {
-            $e->rollback;
-            return $record;
-        }
-
-        $li->editor($e->requestor->id);
-        $li->edit_time('now');
-        $li->eg_bib_id($record->id);
-        $e->update_acq_lineitem($li) or return $e->die_event;
-    }
-
-    my $li_details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
-
-    # -----------------------------------------------------------------
-    # for each lineitem_detail, create the volume if necessary, create 
-    # a copy, and link them all together.
-    # -----------------------------------------------------------------
-    my %volcache;
-    for my $li_detail_id (@{$li_details}) {
-
-        my $li_detail = $e->retrieve_acq_lineitem_detail($li_detail_id)
-            or return $e->die_event;
-
-        my $volume = $volcache{$li_detail->cn_label};
-        unless($volume and $volume->owning_lib == $li_detail->owning_lib) {
-            my $vol_id = $U->simplereq(
-                'open-ils.cat',
-                'open-ils.cat.call_number.find_or_create',
-                $auth, $li_detail->cn_label, $li->eg_bib_id, $li_detail->owning_lib);
-            $volume = $e->retrieve_asset_call_number($vol_id) or return $e->die_event;
-            $volcache{$vol_id} = $volume;
-        }
-
-        if($U->event_code($volume)) {
-            $e->rollback;
-            return $volume;
-        }
-
-        my $copy = Fieldmapper::asset::copy->new;
-        $copy->isnew(1);
-        $copy->loan_duration(2);
-        $copy->fine_level(2);
-        $copy->status(OILS_COPY_STATUS_ON_ORDER);
-        $copy->barcode($li_detail->barcode);
-        $copy->location($li_detail->location);
-        $copy->call_number($volume->id);
-        $copy->circ_lib($volume->owning_lib);
-
-        my $stat = $U->simplereq(
-            'open-ils.cat',
-            'open-ils.cat.asset.copy.fleshed.batch.update', $auth, [$copy]);
-
-        if($U->event_code($stat)) {
-            $e->rollback;
-            return $stat;
-        }
-
-        my $new_copy = $e->search_asset_copy({deleted=>'f', barcode=>$copy->barcode})->[0]
-            or return $e->die_event;
-
-        $li_detail->eg_copy_id($new_copy->id);
-        $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
-    }
-
-    return 1;
-}
-
 
 
 __PACKAGE__->register_method(
@@ -352,6 +195,14 @@ sub update_lineitem {
     my($self, $conn, $auth, $li) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    my $evt = update_lineitem_impl($e, $li);
+    return $evt if $evt;
+    $e->commit;
+    return 1;
+}
+
+sub update_lineitem_impl {
+    my($e, $li) = @_;
 
     my $orig_li = $e->retrieve_acq_lineitem([
         $li->id,
@@ -367,8 +218,7 @@ sub update_lineitem {
     $li->editor($e->requestor->id);
     $li->edit_time('now');
     $e->update_acq_lineitem($li) or return $e->die_event;
-    $e->commit;
-    return 1;
+    return undef;
 }
 
 __PACKAGE__->register_method(

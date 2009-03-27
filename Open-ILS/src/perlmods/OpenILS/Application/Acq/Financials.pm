@@ -9,6 +9,7 @@ use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Acq::Lineitem;
 my $U = 'OpenILS::Application::AppUtils';
 
 # ----------------------------------------------------------------------------
@@ -543,15 +544,211 @@ __PACKAGE__->register_method(
 );
 
 sub create_purchase_order {
-    my($self, $conn, $auth, $p_order) = @_;
+    my($self, $conn, $auth, $po, $args) = @_;
+    $args ||= {};
+
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    $p_order->ordering_agency($e->requestor->ws_ou);
-    my $evt = create_purchase_order_impl($e, $p_order);
+    return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    # create the PO
+    $po->ordering_agency($e->requestor->ws_ou);
+    my $evt = create_purchase_order_impl($e, $po);
     return $evt if $evt;
+
+    my $progress = 0;
+    my $total_debits = 0;
+    my $total_copies = 0;
+
+    my $respond = sub {
+        $conn->respond({
+            @_,
+            progress => ++$progress, 
+            total_debits => $total_debits,
+            total_copies => $total_copies,
+        });
+    };
+
+    if($$args{lineitems}) {
+
+        for my $li_id (@{$$args{lineitems}}) {
+
+            my $li = $e->retrieve_acq_lineitem([
+                $li_id,
+                {flesh => 1, flesh_fields => {jub => ['attributes']}}
+            ]) or return $e->die_event;
+
+            # point the lineitems at the new PO
+            $li->purchase_order($po->id);
+            $li->editor($e->requestor->id);
+            $li->edit_time('now');
+            $e->update_acq_lineitem($li) or return $e->die_event;
+        
+            # create the bibs/volumes/copies in the Evergreen database
+            if($$args{create_assets}) {
+                # args = {circ_modifier => code}
+                my ($count, $evt) = create_lineitem_assets_impl($e, $li_id, $args);
+                return $evt if $evt;
+                $total_copies+= $count;
+                $respond->(action => 'create_assets');
+            }
+
+            # create the debits
+            if($$args{create_debits}) {
+                # args = {encumberance => true}
+                my ($total, $evt) = create_li_debit_impl($e, $li, $args);
+                return $evt if $evt;
+                $total_debits += $total;
+                $respond->(action => 'create_debit');
+            }
+        }
+    }
+
     $e->commit;
-    return $p_order->id;
+    $respond->(complete => 1, purchase_order => $po->id);
+    return undef;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'create_po_assets',
+	api_name	=> 'open-ils.acq.purchase_order.assets.create',
+	signature => {
+        desc => q/Creates assets for each lineitem in the purchase order/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The purchase order id', type => 'number'},
+            {desc => q/Options hash./}
+        ],
+        return => {desc => 'Streams a total versus completed counts object, event on error'}
+    }
+);
+
+sub create_po_assets {
+    my($self, $conn, $auth, $po_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order=>$po_id},{idlist=>1});
+    my $total = @$li_ids;
+    my $count = 0;
+
+    for my $li_id (@$li_ids) {
+        my ($num, $evt) = create_lineitem_assets_impl($e, $li_id);
+        return $evt if $evt;
+        $conn->respond({total=>$count, progress=>++$count});
+    }
+
+    $po->edit_time('now');
+    $e->update_acq_purchase_order($po) or return $e->die_event;
+    $e->commit;
+
+    return {complete=>1};
+}
+
+__PACKAGE__->register_method(
+	method => 'create_lineitem_assets',
+	api_name	=> 'open-ils.acq.lineitem.assets.create',
+	signature => {
+        desc => q/Creates the bibliographic data, volume, and copies associated with a lineitem./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The lineitem id', type => 'number'},
+            {desc => q/Options hash./}
+        ],
+        return => {desc => 'ID of newly created bib record, Event on error'}
+    }
+);
+
+sub create_lineitem_assets {
+    my($self, $conn, $auth, $li_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    my ($count, $resp) = create_lineitem_assets_impl($e, $li_id, $options);
+    return $resp if $resp;
+    $e->commit;
+    return $count;
+}
+
+sub create_lineitem_assets_impl {
+    my($e, $li_id, $options) = @_;
+    $options ||= {};
+    my $evt;
+
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id,
+        {   flesh => 1,
+            flesh_fields => {jub => ['purchase_order', 'attributes']}
+        }
+    ]) or return (undef, $e->die_event);
+
+    # -----------------------------------------------------------------
+    # first, create the bib record if necessary
+    # -----------------------------------------------------------------
+    unless($li->eg_bib_id) {
+
+       my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+            $e, $li->marc, undef, undef, undef, 1); #$rec->bib_source
+
+        if($U->event_code($record)) {
+            $e->rollback;
+            return (undef, $record);
+        }
+
+        $li->editor($e->requestor->id);
+        $li->edit_time('now');
+        $li->eg_bib_id($record->id);
+        $e->update_acq_lineitem($li) or return (undef, $e->die_event);
+    }
+
+    my $li_details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
+
+    # -----------------------------------------------------------------
+    # for each lineitem_detail, create the volume if necessary, create 
+    # a copy, and link them all together.
+    # -----------------------------------------------------------------
+    my %volcache;
+    for my $li_detail_id (@{$li_details}) {
+
+        my $li_detail = $e->retrieve_acq_lineitem_detail($li_detail_id)
+            or return (undef, $e->die_event);
+
+        # Create the volume object if necessary
+        my $volume = $volcache{$li_detail->cn_label};
+        unless($volume and $volume->owning_lib == $li_detail->owning_lib) {
+            ($volume, $evt) =
+                OpenILS::Application::Cat::AssetCommon->find_or_create_volume(
+                    $e, $li_detail->cn_label, $li->eg_bib_id, $li_detail->owning_lib);
+            return (undef, $evt) if $evt;
+            $volcache{$volume->id} = $volume;
+        }
+
+        my $copy = Fieldmapper::asset::copy->new;
+        $copy->isnew(1);
+        $copy->loan_duration(2);
+        $copy->fine_level(2);
+        $copy->status(OILS_COPY_STATUS_ON_ORDER);
+        $copy->barcode($li_detail->barcode);
+        $copy->location($li_detail->location);
+        $copy->call_number($volume->id);
+        $copy->circ_lib($volume->owning_lib);
+        $copy->circ_modifier($$options{circ_modifier} || 'book');
+
+        $evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $volume, $copy);
+        return (undef, $evt) if $evt;
+ 
+        $li_detail->eg_copy_id($copy->id);
+        $e->update_acq_lineitem_detail($li_detail) or return (undef, $e->die_event);
+    }
+
+    return (scalar @{$li_details});
+}
+
+
 
 
 sub create_purchase_order_impl {
@@ -625,9 +822,7 @@ sub create_purchase_order_debits {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     
-    my $total = 0;
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
-    # XXX which perms?
 
     my $li_ids = $e->search_acq_lineitem(
         {purchase_order => $po_id},
@@ -642,57 +837,69 @@ sub create_purchase_order_debits {
             }
         ]);
 
-        my ($price, $ptype) = get_li_price($li);
-        unless($price) {
-            $e->rollback;
-            return OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id);
-        }
+        my ($total, $evt) = create_li_debit_impl($e, $li);
+        return $evt if $evt;
+    }
+    $e->commit;
+    return 1;
+}
 
-        unless($li->provider) {
-            $e->rollback;
-            return OpenILS::Event->new('ACQ_LINEITEM_NO_PROVIDER', payload => $li->id);
-        }
+sub create_li_debit_impl {
+    my($e, $li, $args) = @_;
+    $args ||= {};
 
-        my $lid_ids = $e->search_acq_lineitem_detail(
-            {lineitem => $li->id}, 
-            {idlist=>1}
-        );
+    my ($price, $ptype) = get_li_price($li);
 
-        for my $lid_id (@$lid_ids) {
-            my $lid = $e->retrieve_acq_lineitem_detail([
-                $lid_id,
-                {   flesh => 1, 
-                    flesh_fields => {acqlid => ['fund']}
-                }
-            ]);
-
-            my $debit = Fieldmapper::acq::fund_debit->new;
-            $debit->fund($lid->fund->id);
-            $debit->origin_amount($price);
-
-            if($ptype == 2) { # price from vendor
-                $debit->origin_currency_type($li->provider->currency_type);
-                $debit->amount(currency_conversion_impl(
-                    $li->provider->currency_type, $lid->fund->currency_type, $price));
-            } else {
-                $debit->origin_currency_type($lid->fund->currency_type);
-                $debit->amount($price);
-            }
-
-            $debit->encumbrance($args->{encumbrance});
-            $debit->debit_type('purchase');
-            $e->create_acq_fund_debit($debit) or return $e->die_event;
-
-            # point the lineitem detail at the fund debit object
-            $lid->fund_debit($debit->id);
-            $lid->fund($lid->fund->id);
-            $e->update_acq_lineitem_detail($lid) or return $e->die_event;
-            $total += $debit->amount;
-        }
+    unless($price) {
+        $e->rollback;
+        return (undef, OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
     }
 
-    $e->commit;
-    return $total;
+    unless($li->provider) {
+        $e->rollback;
+        return (undef, OpenILS::Event->new('ACQ_LINEITEM_NO_PROVIDER', payload => $li->id));
+    }
+
+    my $lid_ids = $e->search_acq_lineitem_detail(
+        {lineitem => $li->id}, 
+        {idlist=>1}
+    );
+
+    my $total = 0;
+    for my $lid_id (@$lid_ids) {
+
+        my $lid = $e->retrieve_acq_lineitem_detail([
+            $lid_id,
+            {   flesh => 1, 
+                flesh_fields => {acqlid => ['fund']}
+            }
+        ]);
+
+        my $debit = Fieldmapper::acq::fund_debit->new;
+        $debit->fund($lid->fund->id);
+        $debit->origin_amount($price);
+
+        if($ptype == 2) { # price from vendor
+            $debit->origin_currency_type($li->provider->currency_type);
+            $debit->amount(currency_conversion_impl(
+                $li->provider->currency_type, $lid->fund->currency_type, $price));
+        } else {
+            $debit->origin_currency_type($lid->fund->currency_type);
+            $debit->amount($price);
+        }
+
+        $debit->encumbrance($args->{encumbrance});
+        $debit->debit_type('purchase');
+        $e->create_acq_fund_debit($debit) or return (undef, $e->die_event);
+
+        # point the lineitem detail at the fund debit object
+        $lid->fund_debit($debit->id);
+        $lid->fund($lid->fund->id);
+        $e->update_acq_lineitem_detail($lid) or return (undef, $e->die_event);
+        $total += $debit->amount;
+    }
+
+    return ($total);
 }
 
 
