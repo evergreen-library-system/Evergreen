@@ -154,9 +154,9 @@ function AcqLiTable() {
 
     this._fetchLineitem = function(liId, handler) {
 
-        if(this.liCache[liId] && this.liCache[liId].marc()) {
-            return handler(this.liCache[liId]);
-        }
+        var li = this.liCache[liId];
+        if(li && li.marc() && li.lineitem_details())
+            return handler(li);
         
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.retrieve'],
@@ -338,6 +338,7 @@ function AcqLiTable() {
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST'],
+                    readOnly : self.isPO
                 });
                 widget.build();
                 dojo.connect(widget.widget, 'onChange', 
@@ -353,8 +354,12 @@ function AcqLiTable() {
             }
         );
 
-        dojo.query('[name=delete]', row)[0].onclick = 
-            function() { self.deleteCopy(row) };
+        if(this.isPO) {
+            openils.Util.hide(dojo.query('[name=delete]', row)[0].parentNode);
+        } else {
+            dojo.query('[name=delete]', row)[0].onclick = 
+                function() { self.deleteCopy(row) };
+        }
     };
 
     this.deleteCopy = function(row) {

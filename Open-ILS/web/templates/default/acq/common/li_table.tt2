@@ -3,7 +3,7 @@
     <div id='acq-lit-table-div' class='hidden'>
 
         <!-- Lineitem (bib record) list -->
-        <table id='acq-lit-table'>
+        <table id='acq-lit-table' class='oils-generic-table'>
             <thead>
                 <tr>
                     <th style='border:1px solid #aaa;' colspan='0'>
@@ -17,6 +17,7 @@
                                             <option value='selector_ready'>Mark Ready for Selector</option>
                                             <option value='order_ready'>Mark Ready for Order</option>
                                             <option value='create_order'>Create Purchase Order</option>
+                                            <option value='print_po'>Print Purchase Order</option>
                                         </select>
                                     </span>
                                 </td>
