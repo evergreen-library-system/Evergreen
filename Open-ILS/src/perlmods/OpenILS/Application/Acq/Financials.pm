@@ -579,10 +579,12 @@ sub create_purchase_order {
             ]) or return $e->die_event;
 
             # point the lineitems at the new PO
+            $li->provider($po->provider);
             $li->purchase_order($po->id);
             $li->editor($e->requestor->id);
             $li->edit_time('now');
             $e->update_acq_lineitem($li) or return $e->die_event;
+            $respond->(action => 'update_lineitem');
         
             # create the bibs/volumes/copies in the Evergreen database
             if($$args{create_assets}) {
