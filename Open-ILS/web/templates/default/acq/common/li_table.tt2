@@ -176,6 +176,23 @@
         </table>
     </div>
 
+    <div class='hidden' id='acq-lit-create-po-progress'>
+        <table class='oils-generic-table'>
+            <tr>
+                <td>Encumbered Funds:</td>
+                <td><span id='acq-lit-po-encumbered'></span></td>
+            </tr>
+            <tr>
+                <td>Copies Created:</td>
+                <td><span id='acq-lit-po-copies'></span></td>
+            </tr>
+            <tr>
+                <td>Total Progress: </td>
+                <td><span dojoType="dijit.ProgressBar" style="width:300px" jsId="litPoTotalProgress"></span></td>
+            </tr>
+        </table>
+    </div>
+
     <div class='hidden'>
         <div dojoType='dijit.Dialog' jsId='acqLitPoCreateDialog'>
             <table class='oils-generic-table'>
@@ -185,11 +202,11 @@
                 </tr>
                 <tr>
                     <td>All Lineitems</td>
-                    <td><button name='create_from' value='all' dojoType='dijit.form.RadioButton'/></td>
+                    <td><input checked='checked' name='create_from' value='all' dojoType='dijit.form.RadioButton'/></td>
                 </tr>
                 <tr>
                     <td>Selected Lineitems</td>
-                    <td><button name='create_from' value='selected' dojoType='dijit.form.RadioButton'/></td>
+                    <td><input name='create_from' value='selected' dojoType='dijit.form.RadioButton'/></td>
                 </tr>
                 <tr>
                     <td colspan='2'>

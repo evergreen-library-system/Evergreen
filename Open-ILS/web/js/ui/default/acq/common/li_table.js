@@ -77,7 +77,10 @@ function AcqLiTable() {
             case 'copies':
                 openils.Util.show('acq-lit-li-details');
                 break;
-            }
+            default:
+                if(div) 
+                    openils.Util.show(div);
+        }
     }
 
     this.hide = function() {
@@ -136,9 +139,6 @@ function AcqLiTable() {
     };
 
     this.removeLineitem = function(liId) {
-        console.log(liId);
-        console.log('[li='+liId+']');
-        console.log(dojo.query('[li='+liId+']', this.tbody)[0]);
         this.tbody.removeChild(dojo.query('[li='+liId+']', this.tbody)[0]);
         delete this.liCache[liId];
     }
@@ -424,82 +424,39 @@ function AcqLiTable() {
     }
 
     this._createPO = function(fields) {
+        this.show('acq-lit-create-po-progress');
         var po = new fieldmapper.acqpo();
         po.provider(this.createPoProviderSelector.attr('value'));
 
         var selected = this.getSelected( (fields.create_from == 'all') );
-        console.log("creating PO for " + selected.length + ' items');
         if(selected.length == 0) return;
 
-        openils.acq.PO.create(po, function(poId) { po.id(poId); self.postPoCreateActions(po, selected) });
-    }
+        var max = selected.length * 3;
 
-    this.postPoCreateActions = function(po, liList) {
-        var self = this; 
-        var count = liList.length;
-        var seen = 0;
-        console.log("Created PO " + po.id());
-
-        // Attach the lineitems to the PO
-        dojo.forEach(liList, 
-            function(li) {
-                console.log("updatig LI " + li.id());
-                li.purchase_order(po.id());
-                li.provider(po.provider());
-                new openils.acq.Lineitem({lineitem:li}).update(
-                    function(stat) {
-                        console.log("LI update stat " + stat);
-                        if(++seen == count) 
-                            self.createPoAssets(po);
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.create'],
+            {   async: true,
+                params: [
+                    openils.User.authtoken, 
+                    po, 
+                    {
+                        lineitems : selected.map(function(li) { return li.id() }),
+                        create_assets : true,
+                        create_debits : true,
+                        circ_modifier : 'book', /* XXX */
                     }
-                );
-            }
-        );
-    }
-
-    this.createPoAssets = function(po) {
-
-        console.log("creating PO assets");
-
-        /*
-        searchProgress.update({progress: 0});
-        dojo.style('searchProgress', 'visibility', 'visible');
-        */
-
-        function onresponse(r) {
-            openils.Util.readResponse(r);
-            //searchProgress.update({maximum: stat.total, progress: stat.progress});
-        }
-
-        function oncomplete(r) {
-            //dojo.style('searchProgress', 'visibility', 'hidden');
-            self.createPoDebits(po);
-        }
-
-        fieldmapper.standardRequest(
-            ['open-ils.acq','open-ils.acq.purchase_order.assets.create'],
-            {   async: true,
-                params: [openils.User.authtoken, po.id()],
-                onresponse : onresponse,
-                oncomplete : oncomplete
-            }
-        );
-    }
-
-    this.createPoDebits = function (po) {
-        console.log("Creating PO debits");
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.purchase_order.debits.create'],
-            {   async: true,
-                params: [openils.User.authtoken, po.id(), {encumbrance:true}],
-                oncomplete : function(r) {
-                    openils.Util.readResponse(r);
-                    location.href = oilsBasePath + '/eg/acq/po/view/' + po.id();
+                ],
+                onresponse : function(r) {
+                    var resp = openils.Util.readResponse(r);
+                    openils.Util.appendClear('acq-lit-po-encumbered', document.createTextNode(resp.total_debits));
+                    openils.Util.appendClear('acq-lit-po-copies', document.createTextNode(resp.total_copies));
+                    litPoTotalProgress.update({maximum:max, progress:resp.progress});
+                    if(resp.complete) 
+                        location.href = oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order;
                 }
             }
         );
     }
-     
 
     this._deleteLiList = function(list, idx) {
         if(idx == null) idx = 0;
