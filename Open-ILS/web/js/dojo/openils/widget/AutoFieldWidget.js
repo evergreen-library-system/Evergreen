@@ -8,6 +8,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
         async : false,
         cache : {},
+        cacheSingle : {},
 
         /**
          * args:
@@ -109,6 +110,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.readOnly) {
                 dojo.require('dijit.layout.ContentPane');
                 this.widget = new dijit.layout.ContentPane(this.dijitArgs, this.parentNode);
+                this._tryLinkedDisplayField();
 
             } else if(this.widgetClass) {
                 dojo.require(this.widgetClass);
@@ -171,41 +173,100 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             return this.widget;
         },
 
-        _buildLinkSelector : function() {
+        // we want to display the value for our widget.  However, instead of displaying
+        // an ID, for exmaple, display the value for the 'selector' field on the object
+        // the ID points to
+        _tryLinkedDisplayField : function() {
 
-            /* verify we can and should grab the related class */
+            if(this.idlField.datatype == 'org_unit')
+                return false; // we already handle org_units, no need to re-fetch
+
+            var linkInfo = this._getLinkSelector();
+            if(!linkInfo || !linkInfo.vfield) return false;
+            var lclass = linkInfo.linkClass;
+
+            // first try the object list cache
+            if(this.cache[lclass]) {
+                for(var k in this.cache[lclass]) {
+                    var cc = this.cache[lclass][k];
+                    if(cc[linkInfo.vfield.name]() == this.widgetValue) {
+                        console.log("serving " + this.idlField.name + " from list cache");
+                        this.widgetValue = cc[linkInfo.vfield.selector]();
+                        return;
+                    }
+                }
+            }
+
+            // then try the single object cache
+            if(this.cacheSingle[lclass] && this.cacheSingle[lclass][this.widgetValue]) {
+                console.log("serving " + this.idlField.name + " from cacheSingle");
+                this.widgetValue = this.cacheSingle[lclass][this.widgetValue];
+                return;
+            }
+
+            // if those fail, fetch the linked object
+            dojo.require('openils.PermaCrud');
+            this.async = true;
+            var self = this;
+            new openils.PermaCrud().retrieve(lclass, this.widgetValue, {   
+                async : true,
+                oncomplete : function(r) {
+                    var item = openils.Util.readResponse(r);
+                    if(!self.cacheSingle[lclass])
+                        self.cacheSingle[lclass] = {};
+                    self.widgetValue = item[linkInfo.vfield.selector]();
+                    self.cacheSingle[lclass][self.widgetValue] = item;
+                    self.widget.startup();
+                    self._widgetLoaded();
+                }
+            });
+        },
+
+        _getLinkSelector : function() {
             var linkClass = this.idlField['class'];
             if(this.idlField.reltype != 'has_a')  return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 
-            dojo.require('openils.PermaCrud');
-            dojo.require('dojo.data.ItemFileReadStore');
-            dojo.require('dijit.form.FilteringSelect');
-
-            var self = this;
             var vfield;
             var rclassIdl = fieldmapper.IDL.fmclasses[linkClass];
 
-            if(linkClass == 'pgt')
-                return self._buildPermGrpSelector();
-
-            this.async = true;
-            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
-
             for(var f in rclassIdl.fields) {
-                if(self.idlField.key == rclassIdl.fields[f].name) {
+                if(this.idlField.key == rclassIdl.fields[f].name) {
                     vfield = rclassIdl.fields[f];
                     break;
                 }
             }
 
             if(!vfield) 
-                throw new Error("'" + linkClass + "' has no '" + self.idlField.key + "' field!");
+                throw new Error("'" + linkClass + "' has no '" + this.idlField.key + "' field!");
 
+            return {
+                linkClass : linkClass,
+                vfield : vfield
+            };
+        },
+
+        _buildLinkSelector : function() {
+            var selectorInfo = this._getLinkSelector();
+            if(!selectorInfo) return false;
+            var linkClass = selectorInfo.linkClass;
+            var vfield = selectorInfo.vfield;
+
+            this.async = true;
+
+            if(linkClass == 'pgt')
+                return this._buildPermGrpSelector();
+
+            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
+            dojo.require('openils.PermaCrud');
+            dojo.require('dojo.data.ItemFileReadStore');
+            dojo.require('dijit.form.FilteringSelect');
+
+            var self = this;
             var oncomplete = function(list) {
                 if(list) {
                     self.widget.store = 
