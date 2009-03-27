@@ -242,6 +242,13 @@ if(!dojo._hasResource["openils.Util"]) {
             openils.Util.hide(node);
     };
 
+    openils.Util.appendClear = function(node, child) {
+        if(typeof node == 'string')
+            node = dojo.byId(node);
+        while(node.childNodes[0])
+            node.removeChild(node.childNodes[0]);
+        node.appendChild(child);
+    };
 
 }
 
