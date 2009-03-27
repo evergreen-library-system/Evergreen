@@ -15,9 +15,35 @@
  */
 
 
-\set ON_ERROR_STOP 1
 
 ALTER TABLE auditor.asset_copy_history ALTER COLUMN price DROP NOT NULL; -- Price is nullable in 1.4+, auditor triggers complain when it's not informed of this
+
+-- Get rid of embedded slashes from old ingest
+UPDATE metabib.title_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.author_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.subject_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.series_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.keyword_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.full_rec
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+\set ON_ERROR_STOP 1
 
 BEGIN;
 
