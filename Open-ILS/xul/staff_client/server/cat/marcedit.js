@@ -987,13 +987,17 @@ function recordType (rec) {
 		for (var t in rec_type) {
 			if (_t.match(rec_type[t].Type) && _b.match(rec_type[t].BLvl)) {
 				document.getElementById('recordTypeLabel').value = t;
-			_record_type = t;
+				_record_type = t;
 				return t;
 			}
 		}
 	} catch(E) {
 		alert('FIXME, MARC Editor, recordType: ' + E);
 	}
+
+	// in case we don't have a valid record type ... 
+	_record_type = 'BKS'; 
+	return _record_type; 
 }
 
 function toggleFFE () {
