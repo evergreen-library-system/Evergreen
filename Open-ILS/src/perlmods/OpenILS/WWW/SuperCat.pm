@@ -970,6 +970,9 @@ sub opensearch_feed {
 	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
+	if ($class && $terms !~ m/^$class:/o) {
+		$terms =~ s{^(\S*:)?\s*}{$class: }o;
+	}
 	$class ||= '-';
 
 	$type = $cgi->param('responseType') if $cgi->param('responseType');
