@@ -73,7 +73,7 @@ function rresultCollectIds() {
 		case RTYPE_MRID :
 		case null :
 		case "" :
-		defaut:
+		default:
 			var form = rresultGetForm();
 			var args = { format : form, org : getLocation(), depth : rresultGetDepth() };
 
