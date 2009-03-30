@@ -6,6 +6,7 @@ dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require('openils.acq.Lineitem');
 dojo.require('openils.acq.PO');
+dojo.require('openils.acq.Picklist');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 
@@ -22,6 +23,7 @@ function AcqLiTable() {
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
     this.copyBatchRow = dojo.byId('acq-lit-li-details-batch-row');
     this.copyBatchWidgets = {};
+
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
             self.applySelectedLiAction(this.attr('value')) 
@@ -31,6 +33,11 @@ function AcqLiTable() {
     acqLitCreatePoSubmit.onClick = function() {
         acqLitPoCreateDialog.hide();
         self._createPO(acqLitPoCreateDialog.getValues());
+    }
+
+    acqLitSavePlButton.onClick = function() {
+        acqLitSavePlDialog.hide();
+        self._savePl(acqLitSavePlDialog.getValues());
     }
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
@@ -340,11 +347,14 @@ function AcqLiTable() {
                     orgLimitPerms : ['CREATE_PICKLIST'],
                     readOnly : self.isPO
                 });
-                widget.build();
+                widget.build(
+                    // make sure we capture the value from any async widgets
+                    function(w, ww) { copy[field](ww.getFormattedValue()) }
+                );
                 dojo.connect(widget.widget, 'onChange', 
                     function(val) { 
-                        if(val != copy[field]()) {
-                            // prevent setting ischanged() automatically on widget load
+                        if(copy.isnew() || val != copy[field]()) {
+                            // prevent setting ischanged() automatically on widget load for existing copies
                             copy[field](widget.getFormattedValue()) 
                             copy.ischanged(true);
                         }
@@ -406,9 +416,11 @@ function AcqLiTable() {
     this.applySelectedLiAction = function(action) {
         var self = this;
         switch(action) {
+
             case 'delete_selected':
                 this._deleteLiList(self.getSelected());
                 break;
+
             case 'create_order':
 
                 if(!this.createPoProviderSelector) {
@@ -424,6 +436,11 @@ function AcqLiTable() {
                 }
          
                 acqLitPoCreateDialog.show();
+                break;
+
+            case 'save_picklist':
+                this._loadPLSelect();
+                acqLitSavePlDialog.show();
                 break;
         }
     }
@@ -508,6 +525,65 @@ function AcqLiTable() {
                 },
             }
         };
+    }
+
+
+    this._savePl = function(values) {
+        var self = this;
+        var selected = this.getSelected( (values.which == 'all') );
+        openils.Util.show('acq-lit-generic-progress');
+
+        if(values.new_name) {
+            openils.acq.Picklist.create(
+                {name: values.new_name}, 
+                function(id) {
+                    self._updateLiList(id, selected, 0, 
+                        function(){
+                            location.href = oilsBasePath + '/eg/acq/picklist/view/' + id;
+                        });
+                }
+            );
+        } else if(values.existing_pl) {
+            // update lineitems to use an existing picklist
+            self._updateLiList(values.existing_pl, selected, 0, 
+                function(){
+                    location.href = oilsBasePath + '/eg/acq/picklist/view/' + values.existing_pl;
+                });
+        }
+    }
+
+    this._updateLiList = function(pl, list, idx, oncomplete) {
+        if(idx >= list.length) return oncomplete();
+        var li = list[idx];
+        li.picklist(pl);
+        litGenericProgress.update({maximum: list.length, progress: idx});
+        new openils.acq.Lineitem({lineitem:li}).update(
+            function(r) {
+                self._updateLiList(pl, list, ++idx, oncomplete);
+            }
+        );
+    }
+
+    this._loadPLSelect = function() {
+        if(this._plSelectLoaded) return;
+        var plList = [];
+        function handleResponse(r) {
+            plList.push(r.recv().content());
+        }
+        var method = 'open-ils.acq.picklist.user.retrieve';
+        fieldmapper.standardRequest(
+            ['open-ils.acq', method],
+            {   async: true,
+                params: [this.authtoken],
+                onresponse: handleResponse,
+                oncomplete: function() {
+                    self._plSelectLoaded = true;
+                    acqLitAddExistingSelect.store = 
+                        new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(plList)});
+                    acqLitAddExistingSelect.setValue();
+                }
+            }
+        );
     }
 }
 

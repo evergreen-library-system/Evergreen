@@ -14,11 +14,15 @@
                                         <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
                                             <option value='_'>--Actions--</option>
                                             <option value='delete_selected'>Delete Selected Items</option>
+                                            <option value='save_picklist'>Save Items To Selection List</option>
                                             <option value='selector_ready'>Mark Ready for Selector</option>
                                             <option value='order_ready'>Mark Ready for Order</option>
                                             <option value='create_order'>Create Purchase Order</option>
                                             <option value='print_po'>Print Purchase Order</option>
                                         </select>
+                                    </span>
+                                    <span id='acq-lit-generic-progress' class='hidden'>
+                                        <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litGenericProgress"></span>
                                     </span>
                                 </td>
                                 <td>
@@ -216,6 +220,36 @@
                 </tr>
             </table>
         </div>
+    </div>
+
+    <div dojoType="dijit.Dialog" jsId='acqLitSavePlDialog'>
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td colspan='2'>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                    <label for="name">Save selected</label>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                    <label for="name">Save all</label>
+                </td>
+            </tr>
+            <tr><td colspan='2'><hr/></td></tr>
+            <tr>
+                <td><label for="new_name">Save as Selection List: </label></td>
+                <td><input dojoType="dijit.form.TextBox" name="new_name"/></td>
+            </tr>
+            <tr>
+                <td><label for="existing_pl">Add to Selection List: </label></td>
+                <td>
+                    <input jsId='acqLitAddExistingSelect' dojoType="dijit.form.FilteringSelect" 
+                        name="existing_pl" searchAttr='name' displayAttr='name'/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType='dijit.form.Button' type="submit" jsId='acqLitSavePlButton'>Save</button>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </div>
