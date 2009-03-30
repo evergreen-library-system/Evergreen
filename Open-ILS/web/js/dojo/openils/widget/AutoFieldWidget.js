@@ -305,7 +305,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     this.widget.attr('disabled', true); 
             }
             if(this.onload)
-                this.onload(this.widget, self);
+                this.onload(this.widget, this);
         },
 
         _buildOrgSelector : function() {
