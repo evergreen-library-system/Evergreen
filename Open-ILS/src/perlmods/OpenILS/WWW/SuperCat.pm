@@ -1008,9 +1008,6 @@ sub opensearch_feed {
 	$terms .= $cgi->param('searchTerms') if $cgi->param('searchTerms');
 
 	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
-	if ($class && $terms !~ m/^$class:/o) {
-		$terms =~ s{^(\S*:)?\s*}{$class: }o;
-	}
 	$class ||= '-';
 
 	$type = $cgi->param('responseType') if $cgi->param('responseType');
@@ -1075,6 +1072,7 @@ sub opensearch_feed {
 			limit		=> $limit,
 			sort		=> $sort,
 			sort_dir	=> $sortdir,
+            default_class => $class,
 			($lang ?    ( 'language' => $lang    ) : ()),
 		} => $safe_terms => 1
 	)->gather(1);
