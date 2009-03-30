@@ -14,11 +14,11 @@
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="edGrid" 
                     dojoType="openils.widget.AutoGrid" 
-                    fieldOrder="['id', 'owner', 'hook', 'active', 'delay', 'validator', 'reactor']"
-                    suppressFields="['template']"
+                    fieldOrder="['id', 'owner', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'validator', 'reactor']"
+                    suppressFields="['template', 'cleanup_failure', 'cleanup_success']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
-                    defaultCellWidth='8'
+                    defaultCellWidth='9'
                     editStyle='pane'
                     editOnEnter='true'>
             </table>
