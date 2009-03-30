@@ -2581,9 +2581,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Call Number" name="call_number" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="URI" name="uri" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Start date" name="start_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label="End date" name="end_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="URI" name="uri" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Start date" name="start_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="End date" name="end_date" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="call_number" reltype="might_have" key="id" map="" class="acn"/>
