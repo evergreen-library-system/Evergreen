@@ -1069,6 +1069,51 @@ sub fleshed_circ_retrieve {
 	};
 }
 
+
+
+__PACKAGE__->register_method(
+	method	=> "test_batch_circ_events",
+	api_name	=> "open-ils.circ.trigger_event_by_def_and_barcode.fire"
+);
+
+#  method for testing the behavior of a given event definition
+sub test_batch_circ_events {
+    my($self, $conn, $auth, $event_def, $barcode) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+
+    my $def = $e->retrieve_action_trigger_event_definition($event_def)
+        or return $e->event;
+
+    my $copy = $e->search_asset_copy({barcode => $barcode, deleted => 'f'})->[0]
+        or return $e->event;
+
+    my $circ = $e->search_action_circulation(
+        {target_copy => $copy->id, checkin_time => undef})->[0]
+        or return $e->event;
+        
+    return undef unless $circ;
+
+    my $event_id = $U->simplereq(
+        'open-ils.trigger',
+        'open-ils.trigger.event.autocreate.by_definition', 
+        $event_def, $circ, $e->requestor->ws_ou);
+
+    my $fire = 'open-ils.trigger.event.fire';
+
+    if($def->group_field) {
+        $fire =~ s/event/event_group/o;
+        $event_id = [$event_id];
+    }
+
+    return $U->simplereq('open-ils.trigger', $fire, $event_id);
+}
+
+
+
+
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
 
 
