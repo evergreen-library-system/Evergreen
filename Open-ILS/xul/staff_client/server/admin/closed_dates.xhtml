@@ -10,32 +10,27 @@
 
 	<head>
 		<title>&staff.server.admin.closed_dates.title;</title>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script>
-		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-	
-		<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/init.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='/opac/common/js/Date.W3CDTF.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
-		<script language='javascript' src='closed_dates.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/utils.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/config.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/CGI.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/JSON_v1.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/fmall.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/init.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script type='text/javascript' src='/opac/common/js/Date.W3CDTF.js'> </script>
+		<script type='text/javascript' src='adminlib.js'> </script>
+		<script type='text/javascript' src='closed_dates.js'> </script>
 
 		<link rel="stylesheet" type="text/css" media="all" 
 			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
 		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
 		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
 		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
-
-
-
 
 		<link type='text/css' rel='stylesheet' href='admin.css'/>
 
@@ -110,11 +105,11 @@
 				<tr>
 					<td width='100%' align='center' style='border: 1px solid #F0E0F0;'>
 						<button id='cd_new_allday' 
-							onclick='cdShowEditRow("cd_edit_allday_row");'>&staff.server.admin.closed_dates.add.allday;</button>
+							onclick="cdShowEditRow('cd_edit_allday_row');">&staff.server.admin.closed_dates.add.allday;</button>
 						<button id='cd_new_multiday' 
-							onclick='cdShowEditRow("cd_edit_allmultiday_row");'>&staff.server.admin.closed_dates.add.multiday;</button>
+							onclick="cdShowEditRow('cd_edit_allmultiday_row');">&staff.server.admin.closed_dates.add.multiday;</button>
 						<button id='cd_new' 
-							onclick='cdShowEditRow("cd_edit_row");'>&staff.server.admin.closed_dates.add.detailed;</button>
+							onclick="cdShowEditRow('cd_edit_row');">&staff.server.admin.closed_dates.add.detailed;</button>
 					</td>
 				</tr>
 			</table>
@@ -123,6 +118,7 @@
 				<tbody id='cd_edit_tbody'>
 		
 					<tr id='cd_edit_row' class='hide_me'>
+						<td>
 						<table class='data_grid data_grid_center' style='width: 100%;'>
 							<thead>
 								<tr>
@@ -175,6 +171,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</td>
 					</tr>
 		
 					<tr id='cd_edit_allday_row' class='hide_me'>
@@ -233,5 +230,4 @@
 		</center>
 	</body>
 </html>
-
 
