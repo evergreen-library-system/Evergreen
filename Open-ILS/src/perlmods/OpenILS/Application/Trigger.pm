@@ -91,6 +91,82 @@ __PACKAGE__->register_method(
     argc     => 3
 );
 
+sub create_event_for_object_and_def {
+    my $self = shift;
+    my $client = shift;
+    my $definitions = shift;
+    my $target = shift;
+    my $location = shift;
+
+    my $ident = $target->Identity;
+    my $ident_value = $target->$ident();
+
+    my @active = ($self->api_name =~ /inactive/o) ? () : ( active => 't' );
+
+    my $editor = new_editor(xact=>1);
+
+    my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location ] });
+    my $defs = $editor->search_action_trigger_event_definition(
+        { id => $definitions,
+          owner  => [ map { $_->{id} } @$orgs  ],
+          $active
+        }
+    );
+
+    my $hooks = $editor->search_action_trigger_hook(
+        { key       => [ map { $_->hook } @$defs ],
+          core_type => $target->json_hint
+        }
+    );
+
+    my %hook_hash = map { ($_->key, $_) } @$hooks;
+
+    for my $def ( @$defs ) {
+
+        my $date = DateTime->now;
+
+        if ($hook_hash{$def->hook}->passive eq 'f') {
+
+            if (my $dfield = $def->delay_field) {
+                if ($target->$dfield()) {
+                    $date = DateTime::Format::ISO8601->new->parse_datetime( clense_ISO8601($target->$dfield) );
+                } else {
+                    next;
+                }
+            }
+
+            $date->add( seconds => interval_to_seconds($def->delay) );
+        }
+
+        my $event = Fieldmapper::action_trigger::event->new();
+        $event->target( $ident_value );
+        $event->event_def( $def->id );
+        $event->run_time( $date->strftime( '%F %T%z' ) );
+
+        $editor->create_action_trigger_event( $event );
+
+        $client->respond( $event->id );
+    }
+
+    $editor->commit;
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.event.autocreate.by_definition',
+    method   => 'create_event_for_object_and_def',
+    api_level=> 1,
+    stream   => 1,
+    argc     => 3
+);
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.event.autocreate.by_definition.include_inactive',
+    method   => 'create_event_for_object_and_def',
+    api_level=> 1,
+    stream   => 1,
+    argc     => 3
+);
+
 
 # Retrieves events by object, or object type + filter
 #  $object : a target object or object type (class hint)
