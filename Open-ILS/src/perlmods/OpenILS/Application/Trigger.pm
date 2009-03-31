@@ -285,7 +285,7 @@ sub create_batch_events {
         # we may need to do some work to backport this to 1.2
         $filter->{ $location_field } = { 'in' =>
             {
-                select  => { aou => [{ column => 'id', transform => 'actor.org_unit_descendents', result_field => 'id' }] },
+                select  => { aou => [{ column => 'id', transform => 'actor.org_unit_descendants', result_field => 'id' }] },
                 from    => 'aou',
                 where   => { id => $def->owner }
             }
@@ -293,12 +293,11 @@ sub create_batch_events {
 
         my $run_time = 'now';
         if ($active) {
-            $run_time = {
-                '<=' => DateTime
+            $run_time = 
+                DateTime
                     ->now
                     ->add( seconds => interval_to_seconds($def->delay) )
-                    ->strftime( '%F %T%z' )
-            };
+                    ->strftime( '%F %T%z' );
         } else {
             $filter->{ $def->delay_field } = {
                 '<=' => DateTime
