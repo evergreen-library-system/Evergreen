@@ -581,7 +581,8 @@ sub __arg_to_string {
 	my $arg = shift;
 	return "" unless defined $arg;
 	if( UNIVERSAL::isa($arg, "Fieldmapper") ) {
-		return (defined $arg->id) ? $arg->id : '<new object>';
+        my $idf = $arg->Identity;
+		return (defined $arg->$idf) ? $arg->$idf : '<new object>';
 	}
 	return OpenSRF::Utils::JSON->perl2JSON($arg);
 	return "";
@@ -625,8 +626,9 @@ sub runmethod {
 			$self->event(_mk_not_found($type, $arg));
 			return undef;
 		} elsif( ref($arg) =~ /Fieldmapper/ ) {
-			$self->log(D,"$action $type called with an object.. attempting ID retrieval..");
-			$arg = $arg->id;
+			$self->log(D,"$action $type called with an object.. attempting Identity retrieval..");
+            my $idf = $arg->Identity;
+			$arg = $arg->$idf;
 		}
 	}
 
@@ -729,8 +731,9 @@ sub runmethod {
 	}
 
 	if( $action eq 'create' ) {
-		$self->log(I, "created a new $type object with ID " . $obj->id);
-		$arg->id($obj->id);
+        my $idf = $obj->Identity;
+		$self->log(I, "created a new $type object with Identity " . $obj->$idf);
+		$arg->$idf($obj->$idf);
 	}
 
 	$self->data($obj); # cache the data for convenience
