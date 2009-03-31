@@ -67,6 +67,7 @@ my $_TT_helpers = {
 sub run_TT {
     my $self = shift;
     my $env = shift;
+    my $nostore = shift;
     return undef unless $env->{template};
 
     my $output = '';
