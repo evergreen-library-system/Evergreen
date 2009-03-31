@@ -1414,7 +1414,7 @@ sub strip_ctrl_chars {
 sub get_copy_price {
 	my($self, $e, $copy, $volume) = @_;
 
-	$copy->price(0) if $copy->price < 0;
+	$copy->price(0) if $copy->price and $copy->price < 0;
 
 	return $copy->price if $copy->price and $copy->price > 0;
 
