@@ -83,7 +83,9 @@ sub run_TT {
 
         $env->{EventProcessor}->editor->xact_begin;
         $t_o = $env->{EventProcessor}->editor->create_action_trigger_template_output( $t_o );
-        $env->{EventProcessor}->update_state( $env->{event}->state, { template_output => $t_o->id } );
+
+        my $state = (ref $$env{event} eq 'ARRAY') ? $$env{event}->[0]->state : $env->{event}->state;
+        $env->{EventProcessor}->update_state( $state, { template_output => $t_o->id } );
     }
 	
     return $output;
