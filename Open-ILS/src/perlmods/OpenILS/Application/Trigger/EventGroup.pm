@@ -182,6 +182,8 @@ sub update_state {
     my $state = shift;
     return undef unless ($state);
 
+    my $fields = shift;
+
     $self->editor->xact_begin || return undef;
 
     my @oks;
@@ -193,9 +195,13 @@ sub update_state {
         $e->update_time( 'now' );
         $e->update_process( $$ );
         $e->state( $state );
-    
+
         $e->clear_start_time() if ($e->state eq 'pending');
-    
+
+        if ($fields && ref($fields)) {
+            $e->$_($$fields{$_}) for (keys %$fields);
+        }
+
         my $ok = $self->editor->update_action_trigger_event( $e );
         if ($ok) {
             push @oks, $ok;
@@ -228,10 +234,12 @@ sub build_environment {
     my $self = shift;
     my $env = $self->environment;
 
+    $$env{EventProcessor} = $self;
     $$env{target} = [];
     $$env{event} = [];
     for my $e ( @{ $self->events } ) {
         for my $env_part ( keys %{ $e->environment } ) {
+            next if ($env_part eq 'EventProcessor');
             if ($env_part eq 'target') {
                 push @{ $$env{target} }, $e->environment->{target};
             } elsif ($env_part eq 'event') {

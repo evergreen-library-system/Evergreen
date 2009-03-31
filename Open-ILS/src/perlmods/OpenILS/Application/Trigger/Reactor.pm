@@ -76,6 +76,15 @@ sub run_TT {
     $tt->process(\$env->{template}, $env, \$output) or 
         $logger->error("Error processing Trigger template: " . $tt->error);
 
+    if (!$nostore && $output) {
+        my $t_o = Fieldmapper::action_trigger::template_output->new;
+        $t_o->data( $output );
+
+        $env->{EventProcessor}->editor->xact_begin;
+        $t_o = $env->{EventProcessor}->editor->create_action_trigger_template_output( $t_o );
+        $env->{EventProcessor}->update_state( $env->{event}->state, { template_output => $t_o->id } );
+    }
+	
     return $output;
 }
 

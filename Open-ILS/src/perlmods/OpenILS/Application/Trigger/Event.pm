@@ -356,6 +356,7 @@ sub build_environment {
 
     try {
    
+        $self->environment->{EventProcessor} = $self;
         $self->environment->{target} = $self->target;
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
