@@ -1023,8 +1023,12 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
-    my $recs = $search->request(
-        'open-ils.search.biblio.multiclass.query' => {
+	# Apostrophes break search and get indexed as spaces anyway
+	my $safe_terms = $terms;
+	$safe_terms =~ s{'}{ }go;
+
+	my $recs = $search->request(
+		'open-ils.search.biblio.multiclass.query' => {
 			org_unit	=> $org_unit->[0]->id,
 			offset		=> $offset,
 			limit		=> $limit,
@@ -1032,7 +1036,7 @@ sub opensearch_feed {
 			sort_dir	=> $sortdir,
             default_class => $class,
 			($lang ?    ( 'language' => $lang    ) : ()),
-		} => $terms => 1
+		} => $safe_terms => 1
 	)->gather(1);
 
 	$log->debug("Hits for [$terms]: $recs->{count}");
@@ -1050,7 +1054,7 @@ sub opensearch_feed {
 
 	$feed->root($root);
 	$feed->lib($org);
-	$feed->search($terms);
+	$feed->search($safe_terms);
 	$feed->class($class);
 
 	$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
