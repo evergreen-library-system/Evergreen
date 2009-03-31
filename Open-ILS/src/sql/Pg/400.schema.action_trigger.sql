@@ -131,8 +131,14 @@ CREATE TABLE action_trigger.event (
     complete_time   TIMESTAMPTZ,
     update_process  INT,
     state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','invalid','found','collecting','collected','validating','valid','reacting','reacted','cleaning','complete','error')),
-    template_output TEXT,
+    template_output BIGINT      REFERENCES action_trigger.event_output (id),
     error_output    TEXT
+);
+
+CREATE TABLE action_trigger.event_output (
+    id              BIGSERIAL   PRIMARY KEY,
+    create_time     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    data            TEXT        NOT NULL
 );
 
 CREATE TABLE action_trigger.event_params (
