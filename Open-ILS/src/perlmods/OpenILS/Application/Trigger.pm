@@ -109,7 +109,7 @@ sub create_event_for_object_and_def {
     my $defs = $editor->search_action_trigger_event_definition(
         { id => $definitions,
           owner  => [ map { $_->{id} } @$orgs  ],
-          $active
+          @active
         }
     );
 
