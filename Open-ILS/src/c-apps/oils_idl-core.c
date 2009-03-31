@@ -61,7 +61,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				osrfLogDebug(OSRF_LOG_MARK, "Using table '%s' for class %s", prop_str, current_class_name );
 				osrfHashSet(
 					class_def_hash,
-					strdup( prop_str ),
+					prop_str,
 					"tablename"
 				);
 			}
@@ -70,7 +70,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				osrfLogDebug(OSRF_LOG_MARK, "Delete restriction policy set at '%s' for pkey of class %s", prop_str, current_class_name );
 				osrfHashSet(
 					class_def_hash,
-					strdup( prop_str ),
+					prop_str,
 					"restrict_primary"
 				);
 			}
@@ -78,7 +78,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 			if ((prop_str = (char*)xmlGetNsProp(kid, BAD_CAST "virtual", BAD_CAST PERSIST_NS))) {
 				osrfHashSet(
 					class_def_hash,
-					strdup( prop_str ),
+					prop_str,
 					"virtual"
 				);
 			}
@@ -88,11 +88,11 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 			if( prop_str )
 				osrfLogDebug(OSRF_LOG_MARK, "Controller list is %s", prop_str );
 			osrfStringArray* controller = osrfStringArrayTokenize( prop_str, ' ' );
+			xmlFree( prop_str );
 			osrfHashSet( class_def_hash, controller, "controller");
 
 			osrfHash* current_links_hash = osrfNewHash();
 			osrfHash* current_fields_hash = osrfNewHash();
-			osrfHash* pcrud = osrfNewHash();
 
 			osrfHashSet( class_def_hash, current_fields_hash, "fields" );
 			osrfHashSet( class_def_hash, current_links_hash, "links" );
@@ -106,7 +106,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 					if( (prop_str = (char*)xmlGetNsProp(_cur, BAD_CAST "primary", BAD_CAST PERSIST_NS)) ) {
 						osrfHashSet(
 							class_def_hash,
-							strdup( prop_str ),
+							prop_str,
 							"primarykey"
 						);
 					}
@@ -114,7 +114,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 					if( (prop_str = (char*)xmlGetNsProp(_cur, BAD_CAST "sequence", BAD_CAST PERSIST_NS)) ) {
 						osrfHashSet(
 							class_def_hash,
-							strdup( prop_str ),
+							prop_str,
 							"sequence"
 						);
 					}
@@ -132,7 +132,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "array_position", BAD_CAST OBJECT_NS)) ) {
 							osrfHashSet(
 								field_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"array_position"
 							);
 						}
@@ -140,7 +140,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "i18n", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								field_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"i18n"
 							);
 						}
@@ -148,7 +148,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "virtual", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								field_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"virtual"
 							);
 						}
@@ -156,7 +156,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "primitive", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								field_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"primitive"
 							);
 						}
@@ -164,7 +164,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetProp(_f, BAD_CAST "name")) ) {
 							osrfHashSet(
 								field_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"name"
 							);
 							osrfLogDebug(OSRF_LOG_MARK, 
@@ -196,7 +196,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetProp(_l, BAD_CAST "reltype")) ) {
 							osrfHashSet(
 								link_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"reltype"
 							);
 							osrfLogDebug(OSRF_LOG_MARK, "Adding link with reltype %s", prop_str );
@@ -206,7 +206,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetProp(_l, BAD_CAST "key")) ) {
 							osrfHashSet(
 								link_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"key"
 							);
 							osrfLogDebug(OSRF_LOG_MARK, "Link fkey is %s", prop_str );
@@ -216,7 +216,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						if( (prop_str = (char*)xmlGetProp(_l, BAD_CAST "class")) ) {
 							osrfHashSet(
 								link_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"class"
 							);
 							osrfLogDebug(OSRF_LOG_MARK, "Link fclass is %s", prop_str );
@@ -229,11 +229,12 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfLogDebug(OSRF_LOG_MARK, "Link mapping list is %s", prop_str );
 						osrfStringArray* map = osrfStringArrayTokenize( prop_str, ' ' );
 						osrfHashSet( link_def_hash, map, "map");
+						xmlFree( prop_str );
 
 						if( (prop_str = (char*)xmlGetProp(_l, BAD_CAST "field")) ) {
 							osrfHashSet(
 								link_def_hash,
-								strdup( prop_str ),
+								prop_str,
 								"field"
 							);
 							osrfLogDebug(OSRF_LOG_MARK, "Link fclass is %s", prop_str );
@@ -267,6 +268,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 **** Structure of permacrud in memory ****/
 
 				if (!strcmp( (char*)_cur->name, "permacrud" )) {
+					osrfHash* pcrud = osrfNewHash();
 					osrfHashSet( class_def_hash, pcrud, "permacrud" );
 					xmlNodePtr _l = _cur->children;
 
@@ -303,6 +305,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									"Permacrud permission list is %s", prop_str );
 							osrfStringArray* map = osrfStringArrayTokenize( prop_str, ' ' );
 							osrfHashSet( action_def_hash, map, "permission");
+							xmlFree( prop_str );
 
 					    	osrfHashSet( action_def_hash,
 								(char*)xmlGetNoNsProp(_a, BAD_CAST "global_required"), "global_required");
@@ -314,6 +317,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									"Permacrud context_field list is %s", prop_str );
 							map = osrfStringArrayTokenize( prop_str, ' ' );
 							osrfHashSet( action_def_hash, map, "local_context");
+							xmlFree( prop_str );
 
 							osrfHash* foreign_context = osrfNewHash();
 							osrfHashSet( action_def_hash, foreign_context, "foreign_context");
@@ -337,17 +341,20 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									osrfHash* _flink = osrfHashGet( current_links_hash, prop_str );
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
+									xmlFree( prop_str );
 
 								    if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "jump")) )
 									    osrfHashSet( _tmp_fcontext, osrfStringArrayTokenize( prop_str, '.' ), "jump" );
+									xmlFree( prop_str );
 
 									// Tokenize field attribute into an osrfStringArray
-									const char * field_list = (char*) xmlGetProp(_f, BAD_CAST "field");
+									char * field_list = (char*) xmlGetProp(_f, BAD_CAST "field");
 									if( field_list )
 										osrfLogDebug(OSRF_LOG_MARK,
 											"Permacrud foreign context field list is %s", field_list );
 									map = osrfStringArrayTokenize( field_list, ' ' );
 									osrfHashSet( _tmp_fcontext, map, "context");
+									xmlFree( field_list );
 
 									// Insert the new hash into a hash attached to the parent node
 									osrfHashSet( foreign_context, _tmp_fcontext, osrfHashGet( _flink, "class" ) );
@@ -355,7 +362,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 								} else {
 
 									if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "field") )) {
-										char* map_list = strdup( prop_str );
+										char* map_list = prop_str;
 										osrfLogDebug(OSRF_LOG_MARK,
 											"Permacrud local context field list is %s", prop_str );
 			
@@ -370,7 +377,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 													osrfHashGet( action_def_hash, "local_context"), _map_class);
 											}
 										}
-										free(map_list);
+										xmlFree(map_list);
 									}
 
 								}
@@ -383,13 +390,13 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 				}
 
 				if (!strcmp( (char*)_cur->name, "source_definition" )) {
-					const char* content_str;
+					char* content_str;
 					if( (content_str = (char*)xmlNodeGetContent(_cur)) ) {
 						osrfLogDebug(OSRF_LOG_MARK, "Using source definition '%s' for class %s",
 							content_str, current_class_name );
 						osrfHashSet(
 							class_def_hash,
-							strdup( content_str ),
+							content_str,
 							"source_definition"
 						);
 					}
