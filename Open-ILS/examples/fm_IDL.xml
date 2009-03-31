@@ -592,7 +592,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
             <link field="events" reltype="has_many" key="template_output" map="" class="atev"/>
-		<links/>
+		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve/>
