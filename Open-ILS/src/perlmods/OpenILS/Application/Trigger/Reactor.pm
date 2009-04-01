@@ -70,22 +70,28 @@ sub run_TT {
     my $nostore = shift;
     return undef unless $env->{template};
 
+    my $error;
     my $output = '';
     my $tt = Template->new;
     $env->{helpers} = $_TT_helpers;
 
-    $tt->process(\$env->{template}, $env, \$output) or 
-        $logger->error("Error processing Trigger template: " . $tt->error);
+    unless( $tt->process(\$env->{template}, $env, \$output) ) {
+        $output = undef;
+        ($error = $tt->error) =~ s/\n/ /og;
+        $logger->error("Error processing Trigger template: $error");
+    }
 
-    if (!$nostore && $output) {
-        my $t_o = Fieldmapper::action_trigger::template_output->new;
-        $t_o->data( $output );
+    if ( $error or (!$nostore && $output) ) {
+        my $t_o = Fieldmapper::action_trigger::event_output->new;
+        $t_o->data( ($error) ? $error : $output );
+        $t_o->is_error( ($error) ? 't' : 'f' );
 
         $env->{EventProcessor}->editor->xact_begin;
-        $t_o = $env->{EventProcessor}->editor->create_action_trigger_template_output( $t_o );
+        $t_o = $env->{EventProcessor}->editor->create_action_trigger_event_output( $t_o );
 
         my $state = (ref $$env{event} eq 'ARRAY') ? $$env{event}->[0]->state : $env->{event}->state;
-        $env->{EventProcessor}->update_state( $state, { template_output => $t_o->id } );
+        my $key = ($error) ? 'error_output' : 'template_output';
+        $env->{EventProcessor}->update_state( $state, { $key => $t_o->id } );
     }
 	
     return $output;
