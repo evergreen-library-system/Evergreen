@@ -1,23 +1,27 @@
 [% WRAPPER default/base.tt2 %]
 <script>
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('dijit.form.Button');
     dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.Util');
     openils.Util.addOnLoad(
         function() { 
-            grid.loadAll({order_by:{acqct : 'code'}}); 
+            ctGrid.loadAll({order_by:{ccm : 'name'}});
         }
     );
 </script>
+
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
     <div>Currency Type</div>
-    <div><button dojoType='dijit.form.Button' onClick='grid.showCreateDialog()'>New</button></div>
+    <div><button dojoType='dijit.form.Button' onClick='ctGrid.showCreateDialog()'>New</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-    <table  jsId="grid" 
-            dojoType="openils.widget.AutoGrid" 
+    <table  jsId="ctGrid"
+            dojoType="openils.widget.AutoGrid"
             fieldOrder="['code', 'label']"
-            defaultCellWidth='12'
-            query="{code: '*'}" 
-            fmClass='acqct' 
+            defaultCellWidth='25'
+            query="{code: '*'}"
+            fmClass='acqct'
             editOnEnter='true'>
     </table>
 </div>
