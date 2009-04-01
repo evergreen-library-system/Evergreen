@@ -120,6 +120,12 @@ CREATE TABLE action_trigger.environment (
     CONSTRAINT env_event_label_once UNIQUE (event_def,label)
 );
 
+CREATE TABLE action_trigger.event_output (
+    id              BIGSERIAL   PRIMARY KEY,
+    create_time     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    data            TEXT        NOT NULL
+);
+
 CREATE TABLE action_trigger.event (
     id              BIGSERIAL   PRIMARY KEY,
     target          BIGINT      NOT NULL, -- points at the id from class defined by event_def.hook.core_type
@@ -133,12 +139,6 @@ CREATE TABLE action_trigger.event (
     state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','invalid','found','collecting','collected','validating','valid','reacting','reacted','cleaning','complete','error')),
     template_output BIGINT      REFERENCES action_trigger.event_output (id),
     error_output    TEXT
-);
-
-CREATE TABLE action_trigger.event_output (
-    id              BIGSERIAL   PRIMARY KEY,
-    create_time     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    data            TEXT        NOT NULL
 );
 
 CREATE TABLE action_trigger.event_params (
