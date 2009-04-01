@@ -47,7 +47,8 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PAT
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','au','Patron has exceeded allowed overdue count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','au','Patron has exceeded allowed checkout count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','au','Patron has exceeded maximum fine amount for collections department warning');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po','acqpo','Formats a Purchase Order according to the configured template');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po.jedi','acqpo','Formats a Purchase Order as a JEDI document');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po.print','acqpo','Formats a Purchase Order for printing');
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
