@@ -123,7 +123,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     case 'id':
                         dojo.require('dijit.form.TextBox');
                         this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
-                        this.widget.attr('disabled', true); // never allow editing of IDs
                         break;
 
                     case 'org_unit':
