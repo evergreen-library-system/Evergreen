@@ -3,104 +3,76 @@
 <h1>Circulation Modifier</h1> <br/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-    <div dojoType="dijit.form.DropDownButton">
-        <span>New Circulation Modifier</span>
-        <div dojoType="dijit.TooltipDialog" execute="cmCreate(arguments[0]);">
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td><label for="code">Code: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="code"/></td>
-                </tr>
-                <tr>
-                    <td><label for="name">Name: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
-                </tr>
-                <tr>
-                    <td><label for="description">Description: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="description"/></td>
-                </tr>
-                <tr>
-                    <td><label for="sip2_media_type">SIP2 Media Type: </label></td>
-                    <td>
-                        <select dojoType="dijit.form.FilteringSelect" name="sip2_media_type">
-                            <option value='000'>Other</option>
-                            <option value='001'>Book</option>
-                            <option value='002'>Magazine</option>
-                            <option value='003'>Bound Journal</option>
-                            <option value='004'>Audio Tape</option>
-                            <option value='005'>Video Tape</option>
-                            <option value='006'>CD/CDROM</option>
-                            <option value='007'>Diskette</option>
-                            <option value='008'>Book with diskette</option>
-                            <option value='009'>Book with CD</option>
-                            <option value='010'>Book with audio tape</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="magnetic_media">Magnetic Media: </label></td>
-                    <td><input dojoType="dijit.form.CheckBox" name="magnetic_media"/> 
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <button dojoType='dijit.form.Button' type="submit">Create</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div> 
-
-    <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
-    <button dojoType='dijit.form.Button' onclick='saveChanges();' disabled='disabled' jsId='cmSaveButton'>Save Changes</button>
-
     <script type ="text/javascript">
         function formatSIPMediaType(inDatum) {
-            switch (inDatum) {
-                case '000':
-                    return 'Other';
-                case '001':
-                    return 'Book';
-                case '002':
-                    return 'Magazine';
-                case '003':
-                    return 'Bound Journal';
-                case '004':
-                    return 'Audio Tape';
-                case '005':
-                    return 'Video Tape';
-                case '006':
-                    return 'CD/CDROM';
-                case '007':
-                    return 'Diskette';
-                case '008':
-                    return 'Book with diskette';
-                case '009':
-                    return 'Book with CD';
-                case '010':
-                    return 'Book with audio tape';
-            }
-        }   
+        switch (inDatum) {
+        case '000':
+        return 'Other';
+        case '001':
+        return 'Book';
+        case '002':
+        return 'Magazine';
+        case '003':
+        return 'Bound Journal';
+        case '004':
+        return 'Audio Tape';
+        case '005':
+        return 'Video Tape';
+        case '006':
+        return 'CD/CDROM';
+        case '007':
+        return 'Diskette';
+        case '008':
+        return 'Book with diskette';
+        case '009':
+        return 'Book with CD';
+        case '010':
+        return 'Book with audio tape';
+        }
+        }
+
     </script>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="cmGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>
+    <div class="hidden"> <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
+            <option value='000'>Other</option>
+            <option value='001' selected='selected'>Book</option>
+            <option value='002'>Magazine</option>
+            <option value='003'>Bound Journal</option>
+            <option value='004'>Audio Tape</option>
+            <option value='005'>Video Tape</option>
+            <option value='006'>CD/CDROM</option>
+            <option value='007'>Diskette</option>
+            <option value='008'>Book with diskette</option>
+            <option value='009'>Book with CD</option>
+            <option value='010'>Book with audio tape</option>
+        </select>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Circulation Modifier</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New Circ Modifier</button>
+            </div>
+        </div>
+
+        <table  jsId="cmGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['code', 'name', 'description', 'sip2_media_type', 'magnetic_media']"
+                query="{name: '*'}"
+                defaultCellWidth='20'
+                fmClass='ccm'
+                editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field="code">Code</th>
-                    <th field="name" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
-                    <th field="description" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Description</th>
-                    <th field="sip2_media_type" width='auto' editable='true' 
-                        cellType='dojox.grid.cells.Select' 
-                        options='Other,Book,Magazine,Bound Journal,Audio Tape,Video Tape,CD/CDROM,Diskette,Book with Diskette,Book with CD,Book with Audio Tape' 
-                        values='000,001,002,003,004,005,006,007,008,009,010' 
-                        formatter='formatSIPMediaType'>SIP2 Media Type</th>
-                    <th field="magnetic_media" editable='true' cellType='dojox.grid.cells.Select' 
-                        options='No,Yes' values='f,t' formatter='formatMagneticMedia'>Magnetic Media</th>
+                    <th field="magnetic_media"
+                        options='No,Yes' values='f,t'
+                        formatter='formatMagneticMedia'/>
+                    <th field="sip2_media_type" formatter='formatSIPMediaType'/>
+
                 </tr>
+
             </thead>
-        </table>    
+        </table>
     </div>
 </div>
-
 [% END %]
