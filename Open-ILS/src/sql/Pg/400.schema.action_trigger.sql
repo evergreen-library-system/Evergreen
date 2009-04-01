@@ -47,6 +47,7 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PAT
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','au','Patron has exceeded allowed overdue count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','au','Patron has exceeded allowed checkout count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','au','Patron has exceeded maximum fine amount for collections department warning');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po','acqpo','Formats a Purchase Order according to the configured template');
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
@@ -81,6 +82,7 @@ INSERT INTO action_trigger.reactor (module,description) VALUES ('SendEmail','Sen
 INSERT INTO action_trigger.reactor (module,description) VALUES ('GenerateBatchOverduePDF','Output a batch PDF of overdue notices for printing');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('MarkItemLost','Marks a circulation and associated item as lost');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyCircFee','Applies a billing with a pre-defined amount to a circulation');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('ProcessTemplate', 'Processes the configured template');
 
 -- After an event is reacted to (either succes or failure) a cleanup module is run against the resulting environment
 CREATE TABLE action_trigger.cleanup (
