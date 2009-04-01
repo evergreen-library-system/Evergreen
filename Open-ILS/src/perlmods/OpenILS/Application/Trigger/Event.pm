@@ -410,7 +410,7 @@ sub _object_by_path {
     my $path = shift;
 
     my $step = shift(@$path);
-    
+
     my $fhint = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
     my $fclass = $self->_fm_class_by_hint( $fhint );
 
@@ -453,7 +453,10 @@ sub _object_by_path {
             $obj_list = $obj;
         }
 
-        $self->_object_by_path( $_, $collector, $label, $path ) for (@$obj_list);
+        for (@$obj_list) {
+            my @path_clone = @$path;
+            $self->_object_by_path( $_, $collector, $label, \@path_clone );
+        }
 
         $obj = $$obj_list[0] if (!$multi || $rtype eq 'might_have');
         $context->$step( $obj ) if ($obj && (!$label || !@$label));
