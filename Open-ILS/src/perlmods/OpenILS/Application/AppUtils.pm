@@ -1230,7 +1230,7 @@ sub user_has_work_perm_at {
     $options ||= {};
 
     my $func = 'permission.usr_has_perm_at';
-    $func = $func.'_all' if $$options{descendents};
+    $func = $func.'_all' if $$options{descendants};
 
     my $orgs = $e->json_query({from => [$func, $e->requestor->id, $perm]});
     $orgs = [map { $_->{'permission.usr_has_perm_at'} } @$orgs];
