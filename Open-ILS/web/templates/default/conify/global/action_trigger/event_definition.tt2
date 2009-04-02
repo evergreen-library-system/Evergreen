@@ -19,7 +19,7 @@
                     suppressFields="['template', 'cleanup_failure', 'cleanup_success']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
-                    defaultCellWidth='9'
+                    defaultCellWidth='"auto"'
                     editStyle='pane'
                     editOnEnter='true'>
             </table>
