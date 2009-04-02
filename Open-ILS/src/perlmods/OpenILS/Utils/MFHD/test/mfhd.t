@@ -53,15 +53,19 @@ sub load_MARC_rec {
 
 	my ($fieldno, $indicators, $rest) = split(/ /, $line, 3);
 	my @inds = unpack('cc', $indicators);
-	my $field = MARC::Field->new($fieldno, $inds[0], $inds[1],
-				     a => 'scratch');
+	my $field;
+	my @subfields;
 
+	@subfields = ();
 	foreach my $subfield (split(/\$/, $rest)) {
 	    next unless $subfield;
 
 	    my ($key, $val) = unpack('aa*', $subfield);
-	    $field->update($key => $val);
+	    push @subfields, $key, $val;
 	}
+
+	$field = MARC::Field->new($fieldno, $inds[0], $inds[1],
+				  a => 'scratch', @subfields);
 
 	$marc->append_fields($field);
 
@@ -160,35 +164,36 @@ __END__
 
 245 00 $aMonthly, issue no. restarts, Calendar change: Jan, Combined issue: 1/2 Jan/Feb 
 853 20 $811$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm01/02$yce21/2
-863 41 $811.1$a1$b12$i1990$j12$x|a2|b1/2|i1991|j01/02$zTODO new vol at year end regular iss to combined
-863 41 $811.2$a2$b1/2$i1991$j01/02$x|a2|b3|i1991|j03$zTODO combined iss to regular
+863 41 $811.1$a1$b12$i1990$j12$x|a2|b1/2|i1991|j01/02$znew vol at year end regular iss to combined
+863 41 $811.2$a2$b1/2$i1991$j01/02$x|a2|b3|i1991|j03$zcombined iss to regular
 
 245 00 $aMonthly, iss no. restarts, Calendar change: Jan, Combined iss: 11/12 Nov/Dec
 853 20 $812$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm11/12$yce211/12
-863 41 $812.1$a1$b10$i1990$j10$x|a1|b11/12|i1990|j11/12$zTODO regular to combined iss
-863 41 $812.2$a1$b11/12$i1990$j11/12$x|a2|b1|i1991|j01$zTODO end of vol: combined to regular issue
+863 41 $812.1$a1$b10$i1990$j10$x|a1|b11/12|i1990|j11/12$zregular to combined iss
+863 41 $812.2$a1$b11/12$i1990$j11/12$x|a2|b1|i1991|j01$zend of vol: combined to regular issue
 
 245 00 $aMonthly, iss no. restarts, Cal. change: Jan, Combined iss: 1/2 Jan/Feb, 11/12 Nov/Dec
 853 20 $813$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm01/02,11/12$yce21/2,11/12
-863 41 $813.1$a1$b10$i1990$j10$x|a1|b11/12|i1990|j11/12$zTODO end of vol regular to combined iss
-863 41 $813.2$a1$b11/12$i1990$j11/12$x|a2|b1/2|i1991|j01/02$zTODO wrap at volume end: combined to combined
-863 41 $813.3$a2$b1/2$i1991$j01/02$x|a2|b3|i1991|j03$zTODO beginning of vol: combined to regular
+863 41 $813.1$a1$b10$i1990$j10$x|a1|b11/12|i1990|j11/12$zend of vol regular to combined iss
+863 41 $813.2$a1$b11/12$i1990$j11/12$x|a2|b1/2|i1991|j01/02$zwrap at volume end: combined to combined
+863 41 $813.3$a2$b1/2$i1991$j01/02$x|a2|b3|i1991|j03$zbeginning of vol: combined to regular
 
 245 00 $aMonthly, iss no. restarts, Cal. change: Jan, Combined iss: 5/6 May/Jun, 7/8 Jul/Aug 
 853 20 $814$av.$bno.$u12$vr$i(year)$j(month)$wm$x01$ycm05/06,07/08$yce25/6,7/8
-863 41 $814.1$a1$b4$i1990$j04$x|a1|b5/6|i1990|j05/06$zTODO mid year: reg to combined
-863 41 $814.2$a1$b5/6$i1990$j05/06$x|a1|b7/8|i1990|j07/08$zTODO mid year: combined to combined
-863 41 $814.3$a1$b7/8$i1990$j07/08$x|a1|b9|i1990|j09$zTODO mid year: combined to regular
+863 41 $814.1$a1$b4$i1990$j04$x|a1|b5/6|i1990|j05/06$zmid year: reg to combined
+863 41 $814.2$a1$b5/6$i1990$j05/06$x|a1|b7/8|i1990|j07/08$zmid year: combined to combined
+863 41 $814.3$a1$b7/8$i1990$j07/08$x|a1|b9|i1990|j09$zmid year: combined to regular
 
 245 00 $aMonthly, iss no. restarts, Cal change: Jan, July issue omitted
 853 20 $815$av.$bno.$u11$vr$i(year)$j(month)$wm$x01$yom07
+863 41 $815.1$a1$b6$i1990$j06$x|a1|b7|i1990|j08$zskip july issue
 
 245 00 $aQuarterly, chronology in enumeration fields
 853 20 $816$a(year)$b(season)$wq$yps21,22,23,24
-863 41 $816.1$a2007$b21$x|a2007|b22$zSimple case: quarterly in mid-volume
-863 41 $816.2$a2007$b24$x|a2008|b21$zRoll over to new year
+863 41 $816.1$a2007$b21$x|a2007|b22$zChron in enum: simple case: quarterly in mid-volume
+863 41 $816.2$a2007$b24$x|a2008|b21$zChron in enum: Roll over to new year
 
 245 00 $aFour issues a year, chronology in enum fields, combined Sum/Fall issue
 853 20 $817$a(year)$b(season)$wq$ycs22/23
-863 41 $817.1$a2007$b21$x|a2007|b22/23$zSpring to Summer/Fall
-863 41 $817.2$a2007$b22/23$x|a2007|b24$zSummer/Fall to Winter
+863 41 $817.1$a2007$b21$x|a2007|b22/23$zChron in enum: Spring to Summer/Fall
+863 41 $817.2$a2007$b22/23$x|a2007|b24$zChron in enum: Summer/Fall to Winter
