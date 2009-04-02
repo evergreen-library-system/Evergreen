@@ -25,6 +25,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             startup : function() {
                 this.selectionMode = 'single';
+                this.sequence = openils.widget.AutoGrid.sequence++;
+                openils.widget.AutoGrid.gridCache[this.sequence] = this;
                 this.inherited(arguments);
                 this.initAutoEnv();
                 this.setStructure(this._compileStructure());
@@ -35,8 +37,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     this._applyEditOnEnter();
                 else if(this.singleEditStyle) 
                     this._applySingleEditStyle();
-                this.sequence = openils.widget.AutoGrid.sequence++;
-                openils.widget.AutoGrid.gridCache[this.sequence] = this;
+
+                if(!this.hideSelector) {
+                    var header = this.layout.cells[0].view.getHeaderCellNode(0);
+                    var self = this;
+                    header.onclick = function() { self.toggleSelectAll(); }
+                }
+            },
+
+            /* Don't allow sorting on the selector column */
+            canSort : function(rowIdx) {
+                if(rowIdx == 1 && !this.hideSelector)
+                    return false;
+                return true;
             },
 
             _compileStructure : function() {
@@ -63,9 +76,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         field : '+selector',
                         get : function(rowIdx, item) { return self._buildRowSelectInput(rowIdx, item); },
                         width : this.selectorWidth,
-                        name : '&#x2713;'
+                        name : '&#x2713'
                     });
                 }
+
 
                 if(!this.fieldOrder) {
                     /* no order defined, start with any explicit grid fields */
@@ -108,8 +122,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return [{cells: [fields]}];
             },
 
+            toggleSelectAll : function() {
+                var selected = this.getSelectedRows();
+                for(var i = 0; i < this.rowCount; i++) {
+                    if(selected[0])
+                        this.deSelectRow(i);
+                    else
+                        this.selectRow(i);
+                }
+            },
+
             getSelectedRows : function() {
-                var rows = []; dojo.forEach(
+                var rows = []; 
+                dojo.forEach(
                     dojo.query('[name=autogrid.selector]', this.domNode),
                     function(input) {
                         if(input.checked)
@@ -193,10 +218,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
-                        if(dojo.keys.UP_ARROW) {
-                            console.log("up arrow");
-                            console.log(this.getSelectedRows() + ' : ' + this.focus.rowIndex);
-                        }
                         if(e.keyCode == dojo.keys.ENTER) {
                             this.selection.deselectAll();
                             this.selection.select(this.focus.rowIndex);
