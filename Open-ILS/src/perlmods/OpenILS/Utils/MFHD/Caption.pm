@@ -3,6 +3,8 @@ use strict;
 use integer;
 use Carp;
 
+use Data::Dumper;
+
 use DateTime;
 
 use base 'MARC::Field';
@@ -54,8 +56,8 @@ sub new
 	    # Calendar change can have multiple comma-separated values
 	    $self->{_mfhdc_PATTERN}->{x} = [split /,/, $val];
 	} elsif ($key eq 'y') {
-	    # Publication pattern: 'y' is repeatable
-	    $self->{_mfhdc_PATTERN}->{y} = [] if (!defined $self->{_mfhdc_PATTERN}->{y});
+	    $self->{_mfhdc_PATTERN}->{y} = []
+	      unless exists $self->{_mfhdc_PATTERN}->{y};
 	    push @{$self->{_mfhdc_PATTERN}->{y}}, $val;
 	} elsif ($key eq 'o') {
 	    # Type of unit
@@ -344,7 +346,9 @@ sub match_issue {
     my $pat = shift;
     my @date = @_;
 
-    # XXX WRITE ME
+    # We handle enumeration patterns separately. This just
+    # ensures that when we're processing chronological patterns
+    # we don't match an enumeration pattern.
     return 0;
 }
 
@@ -409,4 +413,25 @@ sub is_combined {
     return $self->regularity_match('c', @date);
 }
 
+sub enum_is_combined {
+    my $self = shift;
+    my $subfield = shift;
+    my $iss = shift;
+    my $level = ord($subfield) - ord('a') + 1;
+
+    return 0 if !exists $self->{_mfhdc_PATTERN}->{y};
+
+    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}}) {
+	next unless $regularity =~ m/^ce$level/o;
+
+	my @pats = split(/,/, substr($regularity, 3));
+
+	foreach my $pat (@pats) {
+	    $pat =~ s|/.+||;	# if it's a combined issue, match the start
+	    return 1 if ($iss eq $pat);
+	}
+    }
+
+    return 0;
+}
 1;

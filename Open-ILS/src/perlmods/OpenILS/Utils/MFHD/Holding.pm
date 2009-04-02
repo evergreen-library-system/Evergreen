@@ -324,9 +324,10 @@ sub next_date {
 	$new[$i] = $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
     }
 
-    if ($new[-1] =~ m;.+/.+;) {
-	$new[-1] =~ s|^[^/]+/||;
-    }
+    # If the current issue has a combined date (eg, May/June)
+    # get rid of the first date and base the calculation
+    # on the final date in the combined issue.
+    $new[-1] =~ s|^[^/]+/||;
 
     # If $frequency is not one of the standard codes defined in %increments
     # then there has to be a $yp publication regularity pattern that
@@ -426,6 +427,13 @@ sub next_enum {
 	    last;
 	}
 
+	# If the current issue has a combined issue number (eg, 2/3)
+	# get rid of the first issue number and base the calculation
+	# on the final issue number in the combined issue.
+	if ($next->{$key} =~ m|/|) {
+	    $next->{$key} =~ s|^[^/]+/||;
+	}
+
 	my $cap = $caption->capfield($key);
 	if ($cap->{RESTART} && $cap->{COUNT}
 	    && ($next->{$key} eq $cap->{COUNT})) {
@@ -436,12 +444,17 @@ sub next_enum {
 	    # this level of the enumeration and stop looping, since the
 	    # "next" hash has been initialized with the current values
 
-	    # NOTE: This DOES NOT take into account the incrementing
-	    # of enumerations based on the calendar. (eg: The Economist)
 	    $next->{$key} += 1;
 	    $carry = 0;
-	    last;
 	}
+
+	# You can't have a combined issue that spans two volumes: no.12/1
+	# is forbidden
+	if ($caption->enum_is_combined($key, $next->{$key})) {
+	    $next->{$key} .= '/' . ($next->{$key} + 1);
+	}
+
+	last if !$carry;
     }
 
     # The easy part is done. There are two things left to do:
