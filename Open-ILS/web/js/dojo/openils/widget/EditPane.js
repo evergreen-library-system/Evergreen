@@ -75,7 +75,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         orgLimitPerms : this.limitPerms,
                         readOnly : this.readOnly,
                         widget : this.overrideWidgets[field.name],
-                        widgetClass : this.overrideWidgetClass[field.name]
+                        widgetClass : this.overrideWidgetClass[field.name],
+                        disableWidgetTest : this.disableWidgetTest
                     });
 
                     widget.build();

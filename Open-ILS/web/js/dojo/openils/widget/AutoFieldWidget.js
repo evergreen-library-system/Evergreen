@@ -302,6 +302,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.baseWidgetValue(this.widgetValue);
                 if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
                     this.widget.attr('disabled', true); 
+                if(this.disableWidgetTest && this.disableWidgetTest(this.idlField.name, this.fmObject))
+                    this.widget.attr('disabled', true); 
             }
             if(this.onload)
                 this.onload(this.widget, this);
