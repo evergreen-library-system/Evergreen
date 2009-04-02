@@ -197,3 +197,10 @@ __END__
 853 20 $817$a(year)$b(season)$wq$ycs22/23
 863 41 $817.1$a2007$b21$x|a2007|b22/23$zChron in enum: Spring to Summer/Fall
 863 41 $817.2$a2007$b22/23$x|a2007|b24$zChron in enum: Summer/Fall to Winter
+
+245 00 $aLibrary Journal: 20 times a year, semimonthly except Jan, Jul, Aug, Dec
+853 20 $818$av.$bno.$u20$vr$i(year)$j(month)$k(day)$ws$x01$ypd01,15$yod0115,0715,0815,1215
+863 41 $818.1$a132$b20$i2007$j12$k1$x|a133|b1|i2008|j01|k01$zSkipping over missed date to beginning of next year/volume.
+863 41 $818.2$a133$b1$i2008$j01$k01$x|a133|b2|i2008|j02|k01$zSkipping over missed date at beginning of year
+863 41 $818.3$a133$b2$i2008$j02$k01$x|a133|b3|i2008|j02|k15$zPublished semimonthly, going from 1st to 15th
+863 41 $818.4$a133$b3$i2008$j02$k15$x|a133|b4|i2008|j03|k01$zPublished semimonthly, going from 15th to 1st
