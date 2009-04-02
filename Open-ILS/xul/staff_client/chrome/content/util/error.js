@@ -325,7 +325,7 @@ util.error.prototype = {
 		this.sound.bad();
 
 
-		//FIMXE - is that good enough of an escape job?
+		//FIXME - is that good enough of an escape job?
 		s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
@@ -394,7 +394,7 @@ util.error.prototype = {
 		this.sound.bad();
 
 
-		//FIMXE - is that good enough of an escape job?
+		//FIXME - is that good enough of an escape job?
 		s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
@@ -473,9 +473,27 @@ util.error.prototype = {
 		// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
 		// particular button. The last two arguments are for an optional check box.
 		var check = {};
-		var rv = promptService.confirmEx(window,title, s, flags, b1, b2, b3, c, check);
+		
+		// promptService.confirmEx does not offer scrollbars for long
+		// content, so trim error lines to avoid spilling offscreen
+		//
+		// There's probably a better way of doing this.
+
+		var maxlines = 30;
+		var ss = '';
+		var linefeeds = 0;
+		for (var i = 0; linefeeds < maxlines && i < s.length; i++) {
+			t = s.charAt(i);
+			if (t == "\n") {
+				linefeeds++;
+			}	
+			ss = ss + t;
+			i++;
+		}
+		
+		var rv = promptService.confirmEx(window,title, ss, flags, b1, b2, b3, c, check);
 		if (c && !check.value) {
-			return this.yns_alert(s,title,b1,b2,b3,c);
+			return this.yns_alert(ss,title,b1,b2,b3,c);
 		}
 		return rv;
 	},
