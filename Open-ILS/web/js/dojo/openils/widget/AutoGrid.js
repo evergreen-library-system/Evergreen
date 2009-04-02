@@ -17,6 +17,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             defaultCellWidth : null,
             editStyle : 'dialog',
             suppressFields : null,
+            hideSelector : false,
+            selectorWidth : '1.5',
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -33,6 +35,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     this._applyEditOnEnter();
                 else if(this.singleEditStyle) 
                     this._applySingleEditStyle();
+                this.sequence = openils.widget.AutoGrid.sequence++;
+                openils.widget.AutoGrid.gridCache[this.sequence] = this;
             },
 
             _compileStructure : function() {
@@ -51,6 +55,16 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     if(!entry.width && self.defaultCellWidth)
                         entry.width = self.defaultCellWidth;
                     fields.push(entry);
+                }
+
+                if(!this.hideSelector) {
+                    // insert the selector column
+                    pushEntry({
+                        field : '+selector',
+                        get : function(rowIdx, item) { return self._buildRowSelectInput(rowIdx, item); },
+                        width : this.selectorWidth,
+                        name : '&#x2713;'
+                    });
                 }
 
                 if(!this.fieldOrder) {
@@ -91,8 +105,68 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     }
                 }
 
-
                 return [{cells: [fields]}];
+            },
+
+            getSelectedRows : function() {
+                var rows = []; dojo.forEach(
+                    dojo.query('[name=autogrid.selector]', this.domNode),
+                    function(input) {
+                        if(input.checked)
+                            rows.push(input.getAttribute('row'));
+                    }
+                );
+                return rows;
+            },
+
+            getFirstSelectedRow : function() {
+                return this.getSelectedRows()[0];
+            },
+
+            getSelectedItems : function() {
+                var items = [];
+                var self = this;
+                dojo.forEach(this.getSelectedRows(), function(idx) { items.push(self.getItem(idx)); });
+                return items;
+            },
+
+            selectRow : function(rowIdx) {
+                var inputs = dojo.query('[name=autogrid.selector]', this.domNode);
+                for(var i = 0; i < inputs.length; i++) {
+                    if(inputs[i].getAttribute('row') == rowIdx) {
+                        inputs[i].checked = true;
+                        break;
+                    }
+                }
+            },
+
+            deSelectRow : function(rowIdx) {
+                var inputs = dojo.query('[name=autogrid.selector]', this.domNode);
+                for(var i = 0; i < inputs.length; i++) {
+                    if(inputs[i].getAttribute('row') == rowIdx) {
+                        inputs[i].checked = false;
+                        break;
+                    }
+                }
+            },
+
+            deleteSelected : function() {
+                var items = this.getSelectedItems();
+                var total = items.length;
+                var self = this;
+                dojo.require('openils.PermaCrud');
+                var pcrud = new openils.PermaCrud();
+                dojo.forEach(items,
+                    function(item) {
+                        var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
+                        pcrud['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                    }
+                );
+            },
+
+            _buildRowSelectInput : function(rowIdx, item) {
+                if(!item) return '';
+                return "<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>";
             },
 
             _applySingleEditStyle : function() {
@@ -119,6 +193,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 dojo.connect(this, 'onKeyDown',
                     function(e) {
+                        if(dojo.keys.UP_ARROW) {
+                            console.log("up arrow");
+                            console.log(this.getSelectedRows() + ' : ' + this.focus.rowIndex);
+                        }
                         if(e.keyCode == dojo.keys.ENTER) {
                             this.selection.deselectAll();
                             this.selection.select(this.focus.rowIndex);
@@ -205,7 +283,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             // .startup() is called within
             _makeClonePane : function(storeItem, rowIndex, onPostSubmit, onCancel) {
                 var clonePane = this._makeCreatePane(onPostSubmit, onCancel);
-                var origPane = this._makeEditPane(this.selection.getFirstSelected(), this.focus.rowIndex);
+                var origPane = this._makeEditPane(storeItem, rowIndex);
                 clonePane.startup();
                 origPane.startup();
                 dojo.forEach(origPane.fieldList,
@@ -249,11 +327,13 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
             },
 
-            showClonePane : function(storeItem, rowIndex) {
+            showClonePane : function() {
                 var self = this;
                 var done = function() { self.hidePane(); };
+                var row = this.getFirstSelectedRow();
+                if(!row) return;
                 dojo.style(this.domNode, 'display', 'none');
-                this.editPane = this._makeClonePane(storeItem, rowIndex, done, done);
+                this.editPane = this._makeClonePane(this.getItem(row), row, done, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
             },
 
@@ -303,6 +383,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             }
         } 
     );
+
+    // static ID generater seed
+    openils.widget.AutoGrid.sequence = 0;
+    openils.widget.AutoGrid.gridCache = {};
+
     openils.widget.AutoGrid.markupFactory = dojox.grid.DataGrid.markupFactory;
 
     openils.widget.AutoGrid.defaultGetter = function(rowIndex, item) {
