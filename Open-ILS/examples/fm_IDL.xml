@@ -4431,10 +4431,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create   permission="CREATE_ACQ_FUNDING_SOURCE" context_field="owner"/>
-                <retrieve permission="VIEW_ACQ_FUNDING_SOURCE"   context_field="owner"/>
-                <update   permission="UPDATE_ACQ_FUNDING_SOURCE" context_field="owner"/>
-                <delete   permission="DELETE_ACQ_FUNDING_SOURCE" context_field="owner"/>
+                <create   permission="ADMIN_FUNDING_SOURCE" context_field="owner"/>
+                <retrieve permission="ADMIN_FUNDING_SOURCE MANAGE_FUNDING_SOURCE VIEW_FUNDING_SOURCE" context_field="owner"/>
+                <update   permission="ADMIN_FUNDING_SOURCE" context_field="owner"/>
+                <delete   permission="ADMIN_FUNDING_SOURCE" context_field="owner"/>
             </actions>
         </permacrud>
 	</class>
