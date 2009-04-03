@@ -200,7 +200,7 @@ for my $lib ( actor::org_unit->search( {parent_ou=>undef} ) ) {
 	last;
 }
 
-for my $lib ( actor::org_unit->search_like( {parent_ou => '%'}, {order_by => 'name'} ) ) {
+for my $lib ( actor::org_unit->search_where ( {parent_ou => { '>' => -1 } }, {order_by => 'name'} ) ) {
 	my $name = $lib->name;
 	$name =~ s/'/\\'/og;
 	my $parent = $lib->parent_ou;
