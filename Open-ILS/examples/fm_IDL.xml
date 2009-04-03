@@ -4482,7 +4482,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Org Unit" name="org" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="org_unit" />
 			<field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Year" name="year" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Currency Type" name="currency_type" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Currency Type" name="currency_type" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Code" name="code" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
 			<field name="summary" oils_obj:array_position="9" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
