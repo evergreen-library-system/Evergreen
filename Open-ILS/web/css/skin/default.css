@@ -85,3 +85,8 @@ table { border-collapse: collapse; }
     text-align:right;
     float:right;
 }
+
+
+.oils-progress-dialog { width: 300px; }
+
+

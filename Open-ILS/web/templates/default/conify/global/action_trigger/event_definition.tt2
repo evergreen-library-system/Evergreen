@@ -120,6 +120,40 @@
         </div>
     </div>
 
+    <div dojoType="dijit.layout.ContentPane" title='Test' id='tab-test'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Event Definition Tests</div>
+            <div></div>
+        </div>
+        <br/>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+            <div style='border:1px solid #aaa;'>
+                <h2>Test Circulation</h2>
+                <table class='oils-generic-table'>
+                    <tr>
+                        <td>Trigger Hook</td>
+                        <td><div dojoType='dijit.form.FilteringSelect' jsId='circTestHookSelector'/></td>
+                    </tr>
+                    <tr>
+                        <td>Trigger Event Definition</td>
+                        <td><div dojoType='dijit.form.FilteringSelect' jsId='circTestDefSelector'/></td>
+                    </tr>
+                    <tr>
+                        <td>Barcode of Circulating Copy</td>
+                        <td><div dojoType='dijit.form.TextBox' jsId='circTestBarcode'/></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'><button dojoType='dijit.form.Button' onclick='evtTestCirc'>Go</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id='test-event-output' style='width:90%;margin:20px;border:1px solid #aaa;' class='hidden'>
+            </div>
+            <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' indeterminate='true'></div>
+        </div>
+    </div>
+
 </div>
 
 [% END %]
