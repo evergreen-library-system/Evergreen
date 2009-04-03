@@ -1,11 +1,11 @@
 <html>
 <head>
-<style>
+<style type='text/css'>
 .marc_subfield_code { color: blue; padding-left: 5px; padding-right: 5px }
 </style>
-<script src="/xul/server/main/constants.js"></script>
-<script>
-<!--
+<script type='text/javascript' src='/xul/server/main/constants.js'></script>
+<script type='text/javascript'>
+<![CDATA[
 
 	var xsltProcessor;
 
@@ -45,12 +45,12 @@
 
 	function my_init() {
 		if (!xsl_marc2html_init()) return;
-		document.body.innerHTML = "<button onclick='window.print()'>Print Page</button>";
+		document.body.innerHTML = "<button onclick='window.print()'>Print Page<\/button>";
 		if (typeof xulG != 'undefined' && xulG.marcxml) apply_xsl_marc2html(xulG.marcxml);
 		document.body.firstChild.focus();
 	}
 
--->
+]]>
 </script>
 </head>
 <body onload="try { my_init(); } catch(E) { alert(E); }">
