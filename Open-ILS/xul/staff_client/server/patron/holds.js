@@ -1031,7 +1031,15 @@ patron.holds.prototype = {
                     holds = holds.sort();
                 }
 			} else {
-				holds = robj == null ? [] : robj;
+                if (robj == null ) {
+                    holds = [];
+                } else {
+                    if (typeof robj.length == 'undefined') {
+                        holds = [ robj ];
+                    } else {
+                        holds = robj;
+                    }
+                }
 			}
 			//alert('method = ' + method + ' params = ' + js2JSON(params));
 		}
