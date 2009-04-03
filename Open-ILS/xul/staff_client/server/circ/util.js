@@ -2211,9 +2211,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			if (!auto_print) {
 				rv = error.yns_alert_formatted(
 					msg,
-					document.getElementById('circStrings').getString('staff.circ.utils.hold_slip'),
-					document.getElementById('circStrings').getString('staff.circ.utils.hold_slip.print.yes'),
-					document.getElementById('circStrings').getString('staff.circ.utils.hold_slip.print.no'),
+					document.getElementById('circStrings').getString('staff.circ.utils.transit_slip'),
+					document.getElementById('circStrings').getString('staff.circ.utils.transit_slip.print.yes'),
+					document.getElementById('circStrings').getString('staff.circ.utils.transit_slip.print.no'),
 					null,
 					document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
 					'/xul/server/skin/media/images/turtle.gif'
