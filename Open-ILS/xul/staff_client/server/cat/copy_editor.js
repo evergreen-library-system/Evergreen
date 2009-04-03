@@ -183,7 +183,7 @@ g.retrieve_templates = function() {
 			g.templates = robj['staff_client.copy_editor.templates'];
 		}
 		util.widgets.remove_children('template_placeholder');
-		var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
+		var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } ).sort();
 
 		g.template_menu = util.widgets.make_menulist( list );
         g.template_menu.setAttribute('id','template_menu');
