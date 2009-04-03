@@ -76,7 +76,7 @@ function evtTestCirc() {
             if(!output) output = evt.error_output();
             var pre = document.createElement('pre');
             pre.innerHTML = output.data();
-            dojo.byId('test-event-output').appendChild(pre);
+            openils.Util.appendClear('test-event-output', pre);
             openils.Util.show('test-event-output');
         }
     }
