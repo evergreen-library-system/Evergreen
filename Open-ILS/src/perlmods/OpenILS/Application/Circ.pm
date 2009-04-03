@@ -1108,7 +1108,14 @@ sub test_batch_circ_events {
         $event_id = [$event_id];
     }
 
-    return $U->simplereq('open-ils.trigger', $fire, $event_id);
+    my $resp = $U->simplereq('open-ils.trigger', $fire, $event_id);
+    return 0 unless $resp and ($resp->{event} or $resp->{events});
+    my $evt = $resp->{event} ? $resp->{event} : $resp->{events}->[0];
+
+    return $e->retrieve_action_trigger_event([
+        $evt->id,
+        {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+    ]);
 }
 
 
