@@ -1588,7 +1588,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="money.collections_tracker.create" context_field="location"/>
-                <retrieve/>
+                <retrieve permission="money.collections_tracker.create" context_field="location"/> 
                 <delete permission="money.collections_tracker.create" context_field="location"/>
             </actions>
         </permacrud>
