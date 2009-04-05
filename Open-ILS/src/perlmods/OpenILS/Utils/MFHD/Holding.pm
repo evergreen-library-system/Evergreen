@@ -244,6 +244,8 @@ sub incr_date {
 	    $new[1] = $dt->month;
 	    $new[2] = $dt->day;
 	}
+	$new[1] = '0' . $new[1] if ($new[1] < 10);
+	$new[2] = '0' . $new[2] if ($new[2] < 10);
     } else {
 	warn("Don't know how to cope with @new");
     }
