@@ -139,12 +139,31 @@ function AcqLiTable() {
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
-        dojo.query('[name=estimated_price]', row)[0].value =  
-            liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition');
+
+        var priceInput = dojo.query('[name=estimated_price]', row)[0];
+        priceInput.value = liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition') || '';
+        priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
+
+    self.updateLiPrice = function(input, li) {
+        var price = input.value;
+        var liWrapper = new openils.acq.Lineitem({lineitem:li});
+        var oldPrice = liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition') || null;
+        if(price == oldPrice) return;
+        console.log("setting price " + price + " for " + li.id());
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem_local_attr.set'],
+            {   async : true,
+                params : [this.authtoken, li.id(), 'estimated_price', price],
+                oncomplete : function(r) {
+                    openils.Util.readResponse(r);
+                }
+            }
+        );
+    }
 
     this.removeLineitem = function(liId) {
         this.tbody.removeChild(dojo.query('[li='+liId+']', this.tbody)[0]);
