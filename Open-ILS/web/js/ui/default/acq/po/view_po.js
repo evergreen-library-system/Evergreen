@@ -8,7 +8,7 @@ var liTable;
 function init() {
     liTable = new AcqLiTable();
     liTable.reset();
-    liTable.isPO = true;
+    liTable.isPO = poId;
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],

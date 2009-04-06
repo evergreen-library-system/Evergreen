@@ -9,6 +9,7 @@ dojo.require('openils.acq.PO');
 dojo.require('openils.acq.Picklist');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('openils.widget.ProgressDialog');
 
 function AcqLiTable() {
 
@@ -442,7 +443,31 @@ function AcqLiTable() {
                 this._loadPLSelect();
                 acqLitSavePlDialog.show();
                 break;
+
+            case 'print_po':
+                this.printPO();
+                break;
         }
+    }
+
+    this.printPO = function() {
+        if(!this.isPO) return;
+        progressDialog.show();
+        console.log("printing PO " + this.isPO);
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.format'],
+            {   async: true,
+                params: [this.authtoken, this.isPO, 'html'],
+                oncomplete: function(r) {
+                    progressDialog.hide();
+                    var evt = openils.Util.readResponse(r);
+                    if(evt && evt.template_output()) {
+                        win = window.open('','', 'resizable,width=700,height=500,scrollbars=1');
+                        win.document.body.innerHTML = evt.template_output().data();
+                    }
+                }
+            }
+        );
     }
 
     this._createPO = function(fields) {

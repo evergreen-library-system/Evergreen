@@ -252,5 +252,7 @@
         </table>
     </div>
 
+    <div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog' indeterminate='true'/></div>
+
 </div>
 
