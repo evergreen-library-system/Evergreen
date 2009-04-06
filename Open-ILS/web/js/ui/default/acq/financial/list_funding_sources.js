@@ -8,6 +8,7 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojox.grid.DataGrid');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
+dojo.require('openils.widget.AutoGrid');
 
 function getOrgInfo(rowIndex, item) {
     if(!item) return ''; 
@@ -23,18 +24,14 @@ function getBalanceInfo(rowIndex, item) {
 }
 
 function loadFSGrid() {
-    var store = new dojo.data.ItemFileWriteStore({data:acqfs.initStoreData()});
-    fundingSourceListGrid.setStore(store);
-    fundingSourceListGrid.render();
-
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.funding_source.org.retrieve'],
         {   async: true,
             params: [openils.User.authtoken, null, {flesh_summary:1}],
-            onresponse : function(r) { /* request object */
+                onresponse : function(r) { /* request object*/ 
                 if(fs = openils.Util.readResponse(r)) {
                     openils.acq.FundingSource.cache[fs.id()] = fs;
-                    store.newItem(acqfs.toStoreItem(fs));
+                    fsGrid.store.newItem(acqfs.toStoreItem(fs));
                 }
             }
         }

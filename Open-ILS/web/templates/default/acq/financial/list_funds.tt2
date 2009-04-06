@@ -1,9 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
 
-<div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>Funds</div>
-</div>
-
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
 
@@ -26,65 +22,7 @@
     }
 </script>
 
-<div class='oils-acq-actions-div'>
-    <div dojoType="dijit.form.DropDownButton">
-        <span>New Fund</span>
-
-        <div dojoType="dijit.TooltipDialog" execute="createFund(arguments[0]);">
-            <script type='dojo/connect' event='onOpen'>
-                openils.acq.CurrencyType.loadSelectWidget(fundCurrencySelector);
-                new openils.User().buildPermOrgSelector('ADMIN_FUND', fundOwnerSelect);
-            </script>
-
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td><label for="name">Name: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
-                </tr>
-                <tr>
-                    <td><label for="name">Code: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="code"/></td>
-                </tr>
-                <tr>
-                    <td><label for="year">Year: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="year"/></td>
-                </tr>
-                <tr>
-                    <td><label for="currency_type">Currency Type: </label></td>
-                    <td>
-                        <input jsId='fundCurrencySelector' name="currency_type" 
-                               dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
-                        </input>
-                    </td>
-                </tr>
-                <tr>
-                    <td valign='top'><label for="org">Owning Location: </label></td>
-                    <td>
-                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='fundOwnerSelect'
-                               searchAttr="shortname" name="org" autocomplete="true" labelAttr='shortname'> </input>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Create</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div> 
-
-    <button dojoType="dijit.form.Button" 
-            onclick="openils.acq.Fund.deleteFromGrid(
-                     fundListGrid, function(){location.href = location.href})">
-        Delete Selected
-    </button>
-
-    <label>Year</label>
-    <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();' style='width:100px;'
-            jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
-</div>
-
-<!-- The main grid lives here -->
+  <!-- The main grid lives here -->
 <script>
     function getName(rowIndex, item) {
         if(!item) return;
@@ -93,22 +31,34 @@
         return '<a href="[% ctx.base_uri %]/acq/fund/view/'+id+'">'+name+'</a>';
     }
 </script> 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-        <table jsId="fundListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
-            <thead> 
-                <tr> 
-                    <th field="id">ID</th> 
-                    <th field="name" width='auto' get='getName'>Name</th> 
-                    <th field="code">Code</th> 
-                    <th field="year">Year</th> 
-                    <th field="org" get='getOrgInfo'>Location</th> 
-                    <th field="currency_type">Currency Type</th> 
-                    <th field="combined_balance" get='getBalanceInfo'>Combined Balance</th>
-                </tr> 
-            </thead> 
-        </table>     
-    </div> 
-</div> 
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Funding Types</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
+            </div>
+        </div>
+        <label>Year</label>
+        <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();' style='width:100px;'
+                jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
+
+
+        <table  jsId="lfGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'code', 'year', 'org', 'currency_type', 'combined_balance']"
+                query="{id: '*'}"
+                defaultCellWidth='20'
+                fmClass='acqf'
+                editOnEnter='true'>
+            <thead>
+                <tr><th field='owner' get='getOrgInfo'/>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
 [% END %]
 

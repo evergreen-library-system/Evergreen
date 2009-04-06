@@ -1,104 +1,44 @@
 [% WRAPPER 'default/base.tt2' %]
-<div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-list-header-label'>Funding Sources</div>
-</div>
 
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'> </script>
-
-<script type="text/javascript">
-    function createFS(fields) {
-        /** Creates a new funding source */
-        openils.acq.FundingSource.create(
-            fields, 
-            function(fsId) {
-                var evt = openils.Event.parse(fsId);
-                if(evt) {
-                    alert(evt); /* XXX */
-                    return;
-                } else {
-                    location.href =  /* go to the details page for this fs */
-                        '[% ctx.base_uri %]/acq/funding_source/view/'+fsId;
-                }
-            }
-        );
-    }
-</script>
-
-<div class='oils-acq-actions-div'>
-    <div dojoType="dijit.form.DropDownButton">
-        <span>New Funding Source</span>
-
-        <div dojoType="dijit.TooltipDialog" execute="createFS(arguments[0]);">
-            <script type='dojo/connect' event='onOpen'>
-                openils.acq.CurrencyType.loadSelectWidget(fsCurrencySelector);
-                new openils.User().buildPermOrgSelector('ADMIN_FUNDING_SOURCE', fsOwnerSelect);
-            </script>
-
-            <table class='dijitTooltipTable'>
-                <tr>
-                    <td><label for="name">Name: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
-                </tr>
-                <tr>
-                    <td><label for="name">Code: </label></td>
-                    <td><input dojoType="dijit.form.TextBox" name="code"/></td>
-                </tr>
-                <tr>
-                    <td><label for="currency_type">Currency Type:</label></td>
-                    <td>
-                        <input jsId='fsCurrencySelector' name="currency_type" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
-                        </input>
-                    </td>
-                </tr>
-                <tr>
-                    <td valign='top'><label for="owner">Owning Location:</label></td>
-                    <td>
-                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='fsOwnerSelect'
-                            searchAttr="shortname" name="owner" autocomplete="true" labelAttr='shortname'> </input>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <button dojoType=dijit.form.Button type="submit">Create</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div> 
-
-    <button dojoType="dijit.form.Button" 
-            onclick="openils.acq.FundingSource.deleteFromGrid(
-                fundingSourceListGrid, function(){location.href = location.href})">
-        Delete Selected
-    </button>
-</div>
 
 <!-- The main grid lives here -->
 <script>
     function getName(rowIndex, item) {
         if(!item) return '';
-        var name = this.grid.store.getValue(item, 'name');        
+        var name = this.grid.store.getValue(item, 'name');
         var id = this.grid.store.getValue(item, 'id');
         return '<a href="[% ctx.base_uri %]/acq/funding_source/view/'+id+'">'+name+'</a>';
     }
 </script>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-         <table jsId="fundingSourceListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
-            <thead> 
-                <tr> 
-                    <th field="id">ID</th> 
-                    <th field="name" width='auto' get='getName'>Name</th> 
-                    <th field="owner" width='auto'get='getOrgInfo'>Owner</th> 
-                    <th field="code" width='auto'>Code</th>
-                    <th field="currency_type" width='auto'>Currency Type</th> 
-                    <th field="balance" width='auto' get='getBalanceInfo'>Balance</th> 
-                </tr> 
-            </thead> 
-        </table>     
-    </div> 
-</div> 
- 
+
+ <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Funding Sources</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
+            </div>
+        </div>
+
+        <table  jsId="fsGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'owner', 'code', 'currency_type', 'balance']"
+                query="{name: '*'}"
+                defaultCellWidth='20'
+                fmClass='acqfs'
+                editOnEnter='true'>
+            <thead>
+                <tr>
+                    <th field="name" get='getName'/>
+                    <th field="owner" get='getOrgInfo'/>
+                    <th field="balance" get='getBalanceInfo'/>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+
 [% END %]

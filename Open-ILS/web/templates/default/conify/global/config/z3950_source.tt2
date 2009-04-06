@@ -1,69 +1,23 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/z3950_source.js'> </script>
-<h1>Z39.50 Servers</h1><br/>
 
-<div dojoType="dijit.form.DropDownButton">
-    <span>Z39.50 Servers</span>
-    <div dojoType="dijit.TooltipDialog" execute="zsCreate(arguments[0]);">
-        <table class='dijitTooltipTable'>
-            <tr>
-                <td><label for="name">Name: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="name"/></td>
-            </tr>
-            <tr>
-                <td><label for="label">Label: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="label"/></td>
-            </tr>
-            <tr>
-                <td><label for="host">Host: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="host"/></td>
-            </tr>
-            <tr>
-                <td><label for="port">Port: </label></td>
-                <td><input dojoType="dijit.form.NumberTextBox" name="port"/></td>
-            </tr>
-            <tr>
-                <td><label for="db">Database: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="db"/></td>
-            </tr>
-            <tr>
-                <td><label for="record_format">Record Format: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="record_format"/></td>
-            </tr>
-            <tr>
-                <td><label for="transmission_format">Transmission Format: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="transmission_format"/></td>
-            </tr>
-            <tr>
-                <td><label for="auth">Requires Authentication: </label></td>
-                <td><input dojoType="dijit.form.CheckBox" name="auth"/></td>
-            </tr>
-            <tr>
-                <td colspan='2' align='center'>
-                    <button dojoType='dijit.form.Button' type="submit">Create</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="zsGrid" dojoType="dojox.grid.DataGrid" query="{name: '*'}" rowSelector='20px'>
-            <thead>
-                <tr>
-                    <th field="name">Name</th>
-                    <th field="label" width='auto'>Label</th>
-                    <th field="host" width='auto'>Host</th>
-                    <th field="port">Port</th>
-                    <th field="db" width='auto'>Database</th>
-                    <th field="record_format" width='auto'>Record Format</th>
-                    <th field="transmission_format" width='auto'>Transmission Format</th>
-                    <th field="auth" width='auto'>Requires Authentication</th>
-                </tr>
-            </thead>
-        </table>    
-    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Z39.50 Servers</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='zsGrid.showCreateDialog()'>New Z39.50 Server</button>
+        </div>
+    </div>       
+
+    <table  jsId="zsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label', 'host', 'port', 'db', 'record_format', 'transmission_format', 'auth']"
+            query="{name: '*'}"
+            defaultCellWidth='15'
+            fmClass='czs'
+            editOnEnter='true'>
+    </table>
 </div>
 
 [% END %]

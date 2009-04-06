@@ -8,6 +8,7 @@ dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.acq.Fund');
+dojo.require('openils.widget.AutoGrid');
 
 function getOrgInfo(rowIndex, item) {
      
@@ -24,9 +25,6 @@ function getBalanceInfo(rowIndex, item) {
 }
 
 function loadFundGrid() {
-    var store = new dojo.data.ItemFileWriteStore({data:acqf.initStoreData()});
-    fundListGrid.setStore(store);
-    fundListGrid.render();
     var yearStore = {identifier:'year', name:'year', items:[]};
     var yearsAdded = {}; /* don't duplicate the years in the selector */
     
@@ -37,7 +35,7 @@ function loadFundGrid() {
             onresponse : function(r) {
                 if(lf = openils.Util.readResponse(r)) {
                     openils.acq.Fund.cache[lf.id()] = lf;
-                    store.newItem(acqf.toStoreItem(lf));
+                   lfGrid.store.newItem(acqf.toStoreItem(lf));
                     var year = lf.year();
                     if(!(year in yearsAdded)) {
                         yearStore.items.push({year:year});
@@ -58,12 +56,15 @@ function loadFundGrid() {
 }
 
 function filterGrid() {
+    console.log('filtergrid called');
     var year = fundFilterYearSelect.getValue();
+    console.log(year);
     if(year) 
-        fundListGrid.query = {year:year};
+        lfGrid.setQuery({year:year});
     else
-        fundListGrid.query = {id:'*'};
-        fundListGrid.update();
+        lfGrid.setQuery({id:'*'});
+    
+    lfGrid.update();
 }
 
 openils.Util.addOnLoad(loadFundGrid);

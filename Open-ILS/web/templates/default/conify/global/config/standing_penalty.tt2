@@ -6,6 +6,7 @@
 <h1>Standing Penalty Types</h1><br/>
 
 <script>
+  
     if(!dojo._hasResource['openils.widget.StandingPenaltyBlockedSelector']) {
         dojo.provide('openils.widget.StandingPenaltyBlockedSelector');
         dojo.require('dojox.form.CheckedMultiSelect');
@@ -34,56 +35,32 @@
             } 
         );
     }
-</script>
 
-<div dojoType="dijit.form.DropDownButton">
-    <span>New Standing Penalty</span>
-    <div dojoType="dijit.TooltipDialog" execute="spCreate(arguments[0]);">
-        <table class='dijitTooltipTable'>
-            <tr>
-                <td><label for="name">Code: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="name"/></td>
-            </tr>
-            <tr>
-                <td><label for="label">Label: </label></td>
-                <td><input dojoType="dijit.form.TextBox" name="label"/></td>
-            </tr>
-            <tr>
-                <td><label for="block_list">Blocked Actions: </label></td>
-                <td>
-                    <select style='overflow-y:auto;' multiple='true' dojoType="openils.widget.StandingPenaltyBlockedSelector" name="block_list">
-                </td>
-            </tr>
-            <tr>
-                <td colspan='2' align='center'>
-                    <button dojoType='dijit.form.Button' type="submit">Create</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div> 
- 
- <button dojoType='dijit.form.Button' onClick="deleteFromGrid();">Delete Selected</button>
- <button dojoType='dijit.form.Button' onclick='saveChanges();' disabled='disabled' jsId='spSaveButton'>Save Changes</button>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="spGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+</script>
+  <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Standing Penalty Types</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='spGrid.showCreateDialog()'>New Penalty Type</button>
+            </div>
+        </div>
+
+        <table  jsId="spGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'label', 'block_list']"
+                query="{name: '*'}"
+                defaultCellWidth='15'
+                fmClass='csp'
+                editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field="id" width='auto' formatter='formatId'>ID</th>
-                    <th field="name" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Name</th>
-                    <th field="label" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget' widgetClass='dijit.form.TextBox'>Label</th>
-                    <th field="block_list" width='auto' editable='true' 
-                        cellType='dojox.grid.cells._Widget'
-                        widgetClass='openils.widget.StandingPenaltyBlockedSelector'>Block List</th>
+                    <th field="id" formatter='formatId'/>
                 </tr>
+
             </thead>
-        </table>    
+        </table>
     </div>
 </div>
-
 [% END %]
 
 
