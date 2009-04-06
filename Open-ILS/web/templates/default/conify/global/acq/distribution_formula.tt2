@@ -7,7 +7,10 @@
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Distribution Formulas</div>
-            <div><button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <table  jsId="fListGrid"
                 dojoType="openils.widget.AutoGrid"
@@ -34,7 +37,10 @@
     </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div id="formula_head"></div>
-           <div> <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button></div>
+            <div> 
+                <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button>
+                <button dojoType='dijit.form.Button' onClick='dfeListGrid.deleteSelected()'>Delete Selected</button> 
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
             <table  jsId="dfeListGrid"
@@ -46,7 +52,7 @@
                     fmClass='acqdfe'
                     editOnEnter='true'>
                 <thead>
-                    <tr> 
+                    <tr>
                         <th field='formula' get='getFormulaId'/>
                     </tr>
                 </thead>

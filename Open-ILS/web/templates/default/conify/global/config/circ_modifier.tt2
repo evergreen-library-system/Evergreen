@@ -52,6 +52,7 @@
             <div>Circulation Modifier</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New Circ Modifier</button>
+                <button dojoType='dijit.form.Button' onClick='cmGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
 

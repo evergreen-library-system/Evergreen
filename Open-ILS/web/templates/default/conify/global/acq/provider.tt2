@@ -5,7 +5,12 @@
 
 <div id='provider-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <div>Provider <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Provider</button></div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Provider</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Provider</button>
+            <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> </div>
+        </div>
         <table  jsId="pListGrid"
                 dojoType="openils.widget.AutoGrid"
                 fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
@@ -24,8 +29,8 @@
 
 <div id='provider-details-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-        <div id='provider-summary-pane'/> 
-    </div>   
+        <div id='provider-summary-pane'/>
+    </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Provider Address</div>
             <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
@@ -52,7 +57,7 @@
                     query="{id: '*'}"
                     fmClass='acqpc'
                     editOnEnter='true'>
-            </table>  
+            </table>
         </div>
 
 
@@ -68,7 +73,7 @@
                     query="{id: '*'}"
                     fmClass='acqpca'
                     editOnEnter='true'>
-                
+
             </table>
         </div>
     </div>

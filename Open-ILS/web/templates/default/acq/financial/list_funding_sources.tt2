@@ -18,6 +18,7 @@
             <div>Funding Sources</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
+                <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
 
