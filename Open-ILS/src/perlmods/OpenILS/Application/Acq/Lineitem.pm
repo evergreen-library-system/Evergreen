@@ -1,4 +1,4 @@
-package OpenILS::Application::Acq::Picklist;
+package OpenILS::Application::Acq::Lineitem;
 use base qw/OpenILS::Application/;
 use strict; use warnings;
 
@@ -668,7 +668,7 @@ sub receive_lineitem_detail {
 }
 
 sub receive_lineitem_detail_impl {
-    my($e, $lid_id) = @_;
+    my($e, $lid_id, $skip_complete_check) = @_;
 
     my $lid = $e->retrieve_acq_lineitem_detail([
         $lid_id,
@@ -697,6 +697,8 @@ sub receive_lineitem_detail_impl {
         $lid->fund_debit->encumbrance('f');
         $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
     }
+
+    return undef if $skip_complete_check;
 
     # -------------------------------------------------------------
     # if all of the lineitem details for this lineitem have 

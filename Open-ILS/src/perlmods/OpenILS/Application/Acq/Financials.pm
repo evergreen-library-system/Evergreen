@@ -1090,5 +1090,50 @@ sub format_po {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'receive_po',
+	api_name	=> 'open-ils.acq.purchase_order.receive'
+);
+
+sub receive_po {
+    my($self, $conn, $auth, $po_id) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1});
+
+    my $progress = 0;
+    for my $li_id (@$li_ids) {
+        my $li = $e->retrieve_acq_lineitem($li_id);
+        my $lid_ids = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist => 1});
+
+        for my $lid_id (@$lid_ids) {
+            my $evt = OpenILS::Application::Acq::Lineitem::receive_lineitem_detail_impl($e, $lid_id, 1);
+            return $evt if $evt;
+            $conn->respond({progress => ++$progress});
+        }
+
+        $li->state('received');
+        $li->edit_time('now');
+        $li->editor($e->requestor->id);
+        $e->update_acq_lineitem($li) or return $e->die_event;
+        $conn->respond({progress => ++$progress});
+    }
+
+    $po->state('received');
+    $po->edit_time('now');
+    $po->editor($e->requestor->id);
+    $e->update_acq_purchase_order($po) or return $e->die_event;
+
+    $e->commit;
+
+    return {complete => 1, progress => ++$progress};
+}
+
+
+
 1;
 
