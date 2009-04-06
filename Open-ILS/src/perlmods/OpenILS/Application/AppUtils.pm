@@ -1469,5 +1469,59 @@ sub xact_org {
     return $loc->[0]->{billing_location};
 }
 
+
+# If an event_def ID is not provided, use the hook and context org to find the 
+# most appropriate event.  create the event, fire it, then return the resulting
+# event with fleshed template_output and error_output
+sub fire_object_event {
+    my($self, $event_def, $hook, $object, $context_org) = @_;
+
+    my $e = OpenILS::Utils::CStoreEditor->new;
+    my $def;
+
+    if($event_def) {
+        $def = $e->retrieve_action_trigger_event_definition($event_def)
+            or return $e->event;
+
+    } else {
+        # find the most appropriate event def depending on context org
+        my $orgs = $self->get_org_ancestors($context_org);
+        $orgs = $e->search_actor_org_unit(
+            [{id => $orgs}, {flesh => 1, flesh_fields => {aou => ['ou_type']}}]);
+        $orgs = [ sort { $a->ou_type->depth cmp $b->ou_type->depth } @$orgs ];
+
+        for my $org (reverse @$orgs) { 
+            $def = $e->search_action_trigger_event_definition(
+                {hook => $hook, owner => $org->id}
+            )->[0];
+            last if $def;
+        }
+
+        return $e->event unless $def;
+    }
+
+    my $event_id = $self->simplereq(
+        'open-ils.trigger',
+        'open-ils.trigger.event.autocreate.by_definition', 
+        $def->id, $object, $context_org);
+
+    my $fire = 'open-ils.trigger.event.fire';
+
+    if($def->group_field) {
+        $fire =~ s/event/event_group/o;
+        $event_id = [$event_id];
+    }
+
+    my $resp = $self->simplereq('open-ils.trigger', $fire, $event_id);
+    return 0 unless $resp and ($resp->{event} or $resp->{events});
+    my $evt = $resp->{event} ? $resp->{event} : $resp->{events}->[0];
+
+    return $e->retrieve_action_trigger_event([
+        $evt->id,
+        {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+    ]);
+}
+
+
 1;
 

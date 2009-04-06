@@ -1072,5 +1072,23 @@ sub retrieve_purchase_order_impl {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'format_po',
+	api_name	=> 'open-ils.acq.purchase_order.format'
+);
+
+sub format_po {
+    my($self, $conn, $auth, $po_id, $format) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $hook = "format.po.$format";
+    return $U->fire_object_event(undef, $hook, $po, $po->ordering_agency);
+}
+
+
 1;
 

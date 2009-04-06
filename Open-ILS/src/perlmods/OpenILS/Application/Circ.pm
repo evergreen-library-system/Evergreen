@@ -1084,9 +1084,6 @@ sub test_batch_circ_events {
 	return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 
-    my $def = $e->retrieve_action_trigger_event_definition($event_def)
-        or return $e->event;
-
     my $copy = $e->search_asset_copy({barcode => $barcode, deleted => 'f'})->[0]
         or return $e->event;
 
@@ -1096,26 +1093,7 @@ sub test_batch_circ_events {
         
     return undef unless $circ;
 
-    my $event_id = $U->simplereq(
-        'open-ils.trigger',
-        'open-ils.trigger.event.autocreate.by_definition', 
-        $event_def, $circ, $e->requestor->ws_ou);
-
-    my $fire = 'open-ils.trigger.event.fire';
-
-    if($def->group_field) {
-        $fire =~ s/event/event_group/o;
-        $event_id = [$event_id];
-    }
-
-    my $resp = $U->simplereq('open-ils.trigger', $fire, $event_id);
-    return 0 unless $resp and ($resp->{event} or $resp->{events});
-    my $evt = $resp->{event} ? $resp->{event} : $resp->{events}->[0];
-
-    return $e->retrieve_action_trigger_event([
-        $evt->id,
-        {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
-    ]);
+    return $U->fire_object_event($event_def, undef, $circ, $e->requestor->ws_ou)
 }
 
 
