@@ -583,7 +583,7 @@ sub upload_records {
 
     if($create_po) {
         $purchase_order = Fieldmapper::acq::purchase_order->new;
-        $purchase_order->provider($provider);
+        $purchase_order->provider($provider->id);
         $purchase_order->ordering_agency($ordering_agency);
         my $evt = OpenILS::Application::Acq::Financials::create_purchase_order_impl($e, $purchase_order);
         return $evt if $evt;
@@ -627,6 +627,7 @@ sub upload_records {
             $li->picklist($picklist->id) if $picklist;
             $li->purchase_order($purchase_order->id) if $purchase_order;
             $li->source_label($provider->code); # XXX ??
+            $li->provider($provider->id);
             $li->selector($e->requestor->id);
             $li->creator($e->requestor->id);
             $li->editor($e->requestor->id);
