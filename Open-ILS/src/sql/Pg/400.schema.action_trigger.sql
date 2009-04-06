@@ -47,8 +47,9 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PAT
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','au','Patron has exceeded allowed overdue count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','au','Patron has exceeded allowed checkout count');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','au','Patron has exceeded maximum fine amount for collections department warning');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po.jedi','acqpo','Formats a Purchase Order as a JEDI document');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po.print','acqpo','Formats a Purchase Order for printing');
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.jedi','acqpo','Formats a Purchase Order as a JEDI document',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.html','acqpo','Formats a Purchase Order as an HTML document',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.pdf','acqpo','Formats a Purchase Order as a PDF document',TRUE);
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
