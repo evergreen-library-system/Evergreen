@@ -13,13 +13,13 @@
                                     <span>
                                         <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
                                             <option value='_'>--Actions--</option>
-                                            <option value='delete_selected'>Delete Selected Items</option>
                                             <option value='save_picklist'>Save Items To Selection List</option>
                                             <option value='selector_ready'>Mark Ready for Selector</option>
                                             <option value='order_ready'>Mark Ready for Order</option>
                                             <option value='create_order'>Create Purchase Order</option>
-                                            <option value='print_po'>Print Purchase Order</option>
                                             <option value='receive_po'>Mark Purchase Order as Received</option>
+                                            <option value='print_po'>Print Purchase Order</option>
+                                            <option value='delete_selected'>Delete Selected Items</option>
                                         </select>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>
@@ -42,7 +42,7 @@
             <tbody><tr><td colspan='0' style='height:20px;'/></tr></tbody>
             <tbody style='font-weight:bold;border:1px solid #aaa;'>
                 <tr>
-                    <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>Select</a></span></td>
+                    <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>Line Items</td>
                     <td>Estimated Price</td>
                     <td>Copies</td>

@@ -102,3 +102,4 @@
 #acq-lit-li-details-table th {padding:0px 10px 0px 10px; font-weight:bold;}
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-lit-table-spacer { height:20px; }
+.acq-lit-row td[name="selector"] { width:1.5em; font-weight:bold; color:blue; font-size:110%;}
