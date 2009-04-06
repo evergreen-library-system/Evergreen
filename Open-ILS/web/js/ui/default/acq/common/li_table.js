@@ -447,19 +447,22 @@ function AcqLiTable() {
             case 'print_po':
                 this.printPO();
                 break;
+
+            case 'receive_po':
+                this.receivePO();
+                break;
         }
     }
 
     this.printPO = function() {
         if(!this.isPO) return;
-        progressDialog.show();
-        console.log("printing PO " + this.isPO);
+        progressDialogInd.show();
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.format'],
             {   async: true,
                 params: [this.authtoken, this.isPO, 'html'],
                 oncomplete: function(r) {
-                    progressDialog.hide();
+                    progressDialogInd.hide();
                     var evt = openils.Util.readResponse(r);
                     if(evt && evt.template_output()) {
                         win = window.open('','', 'resizable,width=700,height=500,scrollbars=1');
@@ -469,6 +472,35 @@ function AcqLiTable() {
             }
         );
     }
+
+
+    this.receivePO = function() {
+        if(!this.isPO) return;
+        progressDialog.show();
+        var maximum = 1;
+        dojo.forEach(this.liCache, function(){maximum += 1; });
+        dojo.forEach(this.copyCache, function(){maximum += 1; });
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.receive'],
+            {   async: true,
+                params: [this.authtoken, this.isPO],
+                onresponse : function(r) {
+                    var stat = openils.Util.readResponse(r);
+                    
+                    // we don't know the total amount of items to be processed
+                    // since we only have 1 page of data
+                    if(stat.progress > maximum) maximum *= 2;
+
+                    progressDialog.update({maximum:maximum, progress:stat.progress});
+                    if(stat.complete) {
+                        // XXX
+                        location.href = location.href;
+                    }
+                },
+            }
+        );
+    }
+
 
     this._createPO = function(fields) {
         this.show('acq-lit-create-po-progress');

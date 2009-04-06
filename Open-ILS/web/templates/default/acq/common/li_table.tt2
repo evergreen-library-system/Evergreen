@@ -19,6 +19,7 @@
                                             <option value='order_ready'>Mark Ready for Order</option>
                                             <option value='create_order'>Create Purchase Order</option>
                                             <option value='print_po'>Print Purchase Order</option>
+                                            <option value='receive_po'>Mark Purchase Order as Received</option>
                                         </select>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>
@@ -252,7 +253,10 @@
         </table>
     </div>
 
-    <div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog' indeterminate='true'/></div>
+    <div class='hidden'>
+        <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
+        <div dojoType='openils.widget.ProgressDialog' jsId='progressDialogInd' indeterminate='true'/>
+    </div>
 
 </div>
 
