@@ -85,14 +85,25 @@ sub new
 	}
     }
 
+    my $pat = $self->{_mfhdc_PATTERN};
+
+    # Sanity check publication frequency vs publication pattern:
+    # if the frequency is a number, then the pattern better
+    # have that number of values associated with it.
+    if (exists($pat->{w}) && ($pat->{w} =~ /^\d+$/)
+	&& ($pat->{w} != scalar(@{$pat->{y}}))) {
+	carp("Caption::new: publication frequency '$pat->{w}' != publication pattern @{$pat->{y}}");
+    }
+
+
     # If there's a $x subfield and a $j, then it's compressible
-    if (exists $self->{_mfhdc_PATTERN}->{x} && exists $self->{_mfhdc_CHRONS}->{'j'}) {
+    if (exists $pat->{x} && exists $self->{_mfhdc_CHRONS}->{'j'}) {
 	$self->{_mfhdc_COMPRESSIBLE} = 1;
     }
 
     bless ($self, $class);
 
-    if (exists $self->{_mfhdc_PATTERN}->{y}) {
+    if (exists $pat->{y}) {
 	$self->decode_pattern;
     }
 
