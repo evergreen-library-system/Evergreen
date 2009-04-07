@@ -187,43 +187,13 @@ sub format {
 
 # next: Given a holding statement, return a hash containing the
 # enumeration values for the next issues, whether we hold it or not
+# Just pass through to Caption::next
 #
 sub next {
     my $self = shift;
     my $caption = $self->{_mfhdh_CAPTION};
-    my $next = {};
-    my $carry = 0;
 
-    # Initialize $next with current enumeration & chronology, then
-    # we can just operate on $next, based on the contents of the caption
-
-    if ($caption->enumeration_is_chronology) {
-	foreach my $key ('a' .. 'h') {
-	    $next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}
-	      if exists $self->{_mfhdh_SUBFIELDS}->{$key};
-	}
-	$caption->next_date($next, $carry, ('a' .. 'h'));
-
-	return $next;
-    }
-
-    foreach my $key ('a' .. 'h') {
-	$next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS}
-	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
-    }
-
-    foreach my $key ('i'..'m') {
-	$next->{$key} = $self->{_mfhdh_SUBFIELDS}->{$key}
-	  if exists $self->{_mfhdh_SUBFIELDS}->{$key};
-    }
-
-    if (exists $next->{'h'}) {
-	$caption->next_alt_enum($next);
-    }
-
-    $caption->next_enum($next);
-
-    return($next);
+    return $caption->next($self);
 }
 
 # match($pat): check to see if $self matches the enumeration passed

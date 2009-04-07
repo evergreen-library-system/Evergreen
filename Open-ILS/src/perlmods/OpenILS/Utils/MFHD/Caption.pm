@@ -724,4 +724,41 @@ sub next_enum {
     }
 }
 
+sub next {
+    my $self = shift;
+    my $holding = shift;
+    my $next = {};
+
+    # Initialize $next with current enumeration & chronology, then
+    # we can just operate on $next, based on the contents of the caption
+
+    if ($self->enumeration_is_chronology) {
+	foreach my $key ('a' .. 'h') {
+	    $next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}
+	      if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
+	}
+	$self->next_date($next, 0, ('a' .. 'h'));
+
+	return $next;
+    }
+
+    foreach my $key ('a' .. 'h') {
+	$next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS}
+	  if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
+    }
+
+    foreach my $key ('i'..'m') {
+	$next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}
+	  if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
+    }
+
+    if (exists $next->{'h'}) {
+	$self->next_alt_enum($next);
+    }
+
+    $self->next_enum($next);
+
+    return($next);
+}
+
 1;
