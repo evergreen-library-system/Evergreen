@@ -41,6 +41,7 @@ CREATE TABLE biblio.record_entry (
 	marc		TEXT		NOT NULL,
 	last_xact_id	TEXT		NOT NULL
 );
+CREATE UNIQUE INDEX biblio_record_entry_unique ON biblio.record_entry ( id );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );
 CREATE INDEX biblio_record_entry_editor_idx ON biblio.record_entry ( editor );
