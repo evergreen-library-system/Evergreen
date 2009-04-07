@@ -30,12 +30,21 @@ INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','C
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
 
 CREATE TABLE acq.provider (
-	id		SERIAL	PRIMARY KEY,
-	name		TEXT	NOT NULL,
-	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-	code		TEXT	UNIQUE,
-	CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
+    id                  SERIAL  PRIMARY KEY,
+    name                TEXT    NOT NULL,
+    owner               INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    currency_type       TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
+    code                TEXT    UNIQUE,
+    holding_tag         TEXT,
+    CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
+);
+
+CREATE TABLE acq.provider_holding_subfield_map (
+    id          SERIAL  PRIMARY KEY,
+    provider    INT     NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+    name        TEXT    NOT NULL, -- barcode, price, etc
+    subfield    TEXT    NOT NULL,
+    CONSTRAINT name_once_per_provider UNIQUE (provider,name)
 );
 
 CREATE TABLE acq.provider_address (
@@ -196,16 +205,16 @@ CREATE TABLE acq.lineitem_note (
 CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 
 CREATE TABLE acq.lineitem_detail (
-	id		BIGSERIAL	PRIMARY KEY,
-	lineitem	INT		NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
-	fund		INT		REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
-	fund_debit	INT		REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
-	eg_copy_id	BIGINT		REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	barcode		TEXT,
-	cn_label	TEXT,
-        owning_lib      INT             REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-        location        INT             REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	recv_time	TIMESTAMP WITH TIME ZONE
+    id          BIGSERIAL	PRIMARY KEY,
+    lineitem    INT         NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
+    fund        INT         REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
+    fund_debit  INT         REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
+    eg_copy_id  BIGINT      REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    barcode     TEXT,
+    cn_label    TEXT,
+    owning_lib  INT         REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    location    INT         REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    recv_time   TIMESTAMP WITH TIME ZONE
 );
 
 CREATE INDEX li_detail_li_idx ON acq.lineitem_detail (lineitem);
@@ -300,6 +309,74 @@ CREATE TABLE acq.distribution_formula_entry (
 
 -- Functions
 
+CREATE TYPE acq.flat_lineitem_holding_subfield AS (lineitem int, holding int, subfield text, data text);
+CREATE OR REPLACE FUNCTION acq.extract_holding_attr_table (lineitem int, tag text) RETURNS SETOF acq.flat_lineitem_holding_subfield AS $$
+DECLARE
+    counter INT;
+    lida    acq.flat_lineitem_holding_subfield%ROWTYPE;
+BEGIN
+
+    SELECT  COUNT(*) INTO counter
+      FROM  xpath_table(
+                'id',
+                'marc',
+                'acq.lineitem',
+                '//*[@tag="' || tag || '"]',
+                'id=' || lineitem
+            ) as t(i int,c text);
+
+    FOR i IN 1 .. counter LOOP
+        FOR lida IN
+            SELECT  * 
+              FROM  (   SELECT  id,i,t,v
+                          FROM  xpath_table(
+                                    'id',
+                                    'marc',
+                                    'acq.lineitem',
+                                    '//*[@tag="' || tag || '"][position()=' || i || ']/*/@code|' ||
+                                        '//*[@tag="' || tag || '"][position()=' || i || ']/*[@code]',
+                                    'id=' || lineitem
+                                ) as t(id int,t text,v text)
+                    )x
+        LOOP
+            RETURN NEXT lida;
+        END LOOP;
+    END LOOP;
+
+    RETURN;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TYPE acq.flat_lineitem_detail AS (lineitem int, holding int, attr text, data text);
+CREATE OR REPLACE FUNCTION acq.extract_provider_holding_data ( lineitem_i int ) RETURNS SETOF acq.flat_lineitem_detail AS $$
+DECLARE
+    prov_i  INT;
+    tag_t   TEXT;
+    lida    acq.flat_lineitem_detail%ROWTYPE;
+BEGIN
+    SELECT provider INTO prov_i FROM acq.lineitem WHERE id = lineitem_i;
+    IF NOT FOUND THEN RETURN; END IF;
+
+    SELECT holding_tag INTO tag_t FROM acq.provider WHERE id = prov_i;
+    IF NOT FOUND OR tag_t IS NULL THEN RETURN; END IF;
+
+    FOR lida IN
+        SELECT  lineitem_i,
+                h.holding,
+                a.name,
+                h.data
+          FROM  acq.extract_holding_attr_table( lineitem_i, tag_t ) h
+                JOIN acq.provider_holding_subfield_map a USING (subfield)
+          WHERE a.provider = prov_i
+    LOOP
+        RETURN NEXT lida;
+    END LOOP;
+
+    RETURN;
+END;
+$$ LANGUAGE PLPGSQL;
+
+-- select * from acq.extract_provider_holding_data(699);
 
 CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT, TEXT) RETURNS TEXT AS $$
 	SELECT public.extract_marc_field('acq.lineitem', $1, $2, $3);
