@@ -1681,8 +1681,13 @@ static char* searchINPredicate (const char* class, osrfHash* field,
             SUBSELECT
         );
 
-        buffer_add(sql_buf, subpred);
-        free(subpred);
+		if( subpred ) {
+			buffer_add(sql_buf, subpred);
+			free(subpred);
+		} else {
+			buffer_free( sql_buf );
+			return NULL;
+		}
 
     } else if (node->type == JSON_ARRAY) {
         // literal value list
@@ -1755,10 +1760,16 @@ static char* searchValueTransform( const jsonObject* array ) {
 		return NULL;
 	}
 	
-	growing_buffer* sql_buf = buffer_init(32);
-
 	// Get the function name
 	jsonObject* func_item = jsonObjectGetIndex( array, 0 );
+	if( func_item->type != JSON_STRING ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error: expected function name, found %s",
+			MODULENAME, json_type( func_item->type ) );
+		return NULL;
+	}
+	
+	growing_buffer* sql_buf = buffer_init(32);
+
 	OSRF_BUFFER_ADD( sql_buf, jsonObjectGetString( func_item ) );
 	OSRF_BUFFER_ADD( sql_buf, "( " );
 	
@@ -1821,7 +1832,7 @@ static char* searchFunctionPredicate (const char* class, osrfHash* field,
 
 // class is a class name
 // field is a field definition as stored in the IDL
-// node comes from the method parameter, and represents an entry in the SELECT list
+// node comes from the method parameter, and may represent an entry in the SELECT list
 static char* searchFieldTransform (const char* class, osrfHash* field, const jsonObject* node) {
 	growing_buffer* sql_buf = buffer_init(32);
 
@@ -1876,37 +1887,53 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	return buffer_release(sql_buf);
 }
 
-static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
-		const jsonObject* node, const char* node_key) {
+static char* searchFieldTransformPredicate (const char* class, osrfHash* field,
+		const jsonObject* node, const char* op ) {
+
+	if( ! is_good_operator( op ) ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error: Invalid operator %s", MODULENAME, op);
+		return NULL;
+	}
+
 	char* field_transform = searchFieldTransform( class, field, node );
 	char* value = NULL;
+	int extra_parens = 0;   // boolean
 
 	const jsonObject* value_obj = jsonObjectGetKeyConst( node, "value" );
 	if ( ! value_obj ) {
 		value = searchWHERE( node, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 		if( !value ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error building condition for field transform", MODULENAME, value);
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building condition for field transform", MODULENAME);
 			free(field_transform);
 			return NULL;
 		}
+		extra_parens = 1;
 	} else if ( value_obj->type == JSON_ARRAY ) {
 		value = searchValueTransform( value_obj );
 		if( !value ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error building value transform for field transform",
-					MODULENAME, value);
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building value transform for field transform", MODULENAME);
 			free( field_transform );
 			return NULL;
 		}
 	} else if ( value_obj->type == JSON_HASH ) {
 		value = searchWHERE( value_obj, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN, NULL );
 		if( !value ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform", MODULENAME, value);
+			osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform", MODULENAME);
 			free(field_transform);
 			return NULL;
 		}
+		extra_parens = 1;
 	} else if ( value_obj->type == JSON_NUMBER ) {
 		value = jsonNumberToDBString( field, value_obj );
-	} else if ( value_obj->type != JSON_NULL ) {
+	} else if ( value_obj->type == JSON_NULL ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform: null value", MODULENAME);
+		free(field_transform);
+		return NULL;
+	} else if ( value_obj->type == JSON_BOOL ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform: boolean value", MODULENAME);
+		free(field_transform);
+		return NULL;
+	} else {
 		if ( !strcmp( get_primitive( field ), "number") ) {
 			value = jsonNumberToDBString( field, value_obj );
 		} else {
@@ -1920,14 +1947,26 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field,
 		}
 	}
 
+	const char* left_parens  = "";
+	const char* right_parens = "";
+
+	if( extra_parens ) {
+		left_parens  = "(";
+		right_parens = ")";
+	}
+
 	growing_buffer* sql_buf = buffer_init(32);
-	
+
 	buffer_fadd(
 		sql_buf,
-		"%s %s %s",
+		"%s%s %s %s %s %s%s",
+		left_parens,
 		field_transform,
-		node_key,
-		value
+		op,
+		left_parens,
+		value,
+		right_parens,
+		right_parens
 	);
 
 	free(value);
@@ -2031,7 +2070,7 @@ static char* searchPredicate ( const char* class, osrfHash* field,
 	char* pred = NULL;
 	if (node->type == JSON_ARRAY) { // equality IN search
 		pred = searchINPredicate( class, field, node, NULL, ctx );
-	} else if (node->type == JSON_HASH) { // non-equality search
+	} else if (node->type == JSON_HASH) { // other search
 		jsonIterator* pred_itr = jsonNewIterator( node );
 		if( !jsonIteratorHasNext( pred_itr ) ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Empty predicate for field \"%s\"", 
@@ -2493,8 +2532,13 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     SUBSELECT
                 );
 
-                buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
-                free(subpred);
+				if( subpred ) {
+					buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
+					free(subpred);
+				} else {
+					buffer_free( sql_buf );
+					return NULL;
+				}
             } else if ( !strcasecmp("-not-exists",search_itr->key) ) {
                 char* subpred = SELECT(
                     ctx,
@@ -2508,8 +2552,14 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     SUBSELECT
                 );
 
-                buffer_fadd(sql_buf, "NOT EXISTS ( %s )", subpred);
-                free(subpred);
+				if( subpred ) {
+					buffer_fadd(sql_buf, "NOT EXISTS ( %s )", subpred);
+					free(subpred);
+				} else {
+					buffer_free( sql_buf );
+					return NULL;
+				}
+
             } else {
 
                 char* class = osrfHashGet(meta, "classname");
@@ -2523,11 +2573,11 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 						table = strdup( "(?)" );
                     osrfLogError(
                         OSRF_LOG_MARK,
-                        "%s: Attempt to reference non-existent column %s on %s (%s)",
+                        "%s: Attempt to reference non-existent column \"%s\" on %s (%s)",
                         MODULENAME,
                         search_itr->key,
                         table,
-                        class
+                        class ? class : "?"
                     );
                     buffer_free(sql_buf);
                     free(table);
