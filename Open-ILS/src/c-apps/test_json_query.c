@@ -187,7 +187,7 @@ int main( int argc, char* argv[] ) {
 
 static int test_json_query( const char* json_query ) {
 
-	jsonObject* hash = jsonParseString( json_query );
+	jsonObject* hash = jsonParse( json_query );
 	if( !hash ) {
 		fprintf( stderr, "Invalid JSON\n" );
 		return -1;
