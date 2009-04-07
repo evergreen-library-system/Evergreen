@@ -14,6 +14,7 @@ sub new {
         picklist => undef,
         complete => 0
     };
+    $self->{cache} = {};
     return $self;
 }
 
@@ -24,6 +25,9 @@ sub conn {
 }
 sub respond {
     my($self, %other_args) = @_;
+    if($self->throttle and not %other_args) {
+        return unless ($self->progress % $self->throttle) == 0;
+    }
     $self->conn->respond({ %{$self->{args}}, %other_args });
 }
 sub respond_complete {
@@ -82,6 +86,13 @@ sub complete {
     return $self;
 }
 
+sub cache {
+    my($self, $org, $key, $val) = @_;
+    $self->{cache}->{$org} = {} unless $self->{cache}->{org};
+    $self->{cache}->{$org}->{$key} = $val if defined $val;
+    return $self->{cache}->{$org}->{$key};
+}
+
 
 package OpenILS::Application::Acq::Order;
 use base qw/OpenILS::Application/;
@@ -95,9 +106,13 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
+use OpenSRF::EX q/:try/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AssetCommon;
+use MARC::Record;
+use MARC::Batch;
+use MARC::File::XML;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -259,7 +274,7 @@ sub create_purchase_order {
     $po->create_time('now');
     $po->ordering_agency($mgr->editor->requestor->ws_ou);
     $po->$_($args{$_}) for keys %args;
-    return $mgr->editor->create_acq_purchase_order($po);
+    return $mgr->purchase_order($mgr->editor->create_acq_purchase_order($po));
 }
 
 
@@ -291,17 +306,16 @@ sub create_lineitem_assets {
     # for each lineitem_detail, create the volume if necessary, create 
     # a copy, and link them all together.
     # -----------------------------------------------------------------
-    my %cache;
     for my $lid_id (@{$li_details}) {
 
         my $lid = $mgr->editor->retrieve_acq_lineitem_detail($lid_id) or return 0;
         my $org = $lid->owning_lib;
         my $label = $lid->cn_label;
 
-        $cache{$org} = {} unless $cache{$org};
-        my $volume = $cache{$org}{$label};
+        my $volume = $mgr->cache($org, "cn.$label");
         unless($volume) {
-            $volume = $cache{$org}{$label} = create_volume($li, $lid) or return 0;
+            $volume = create_volume($li, $lid) or return 0;
+            $mgr->cache($org, "cn.$label", $volume);
         }
         create_copy($mgr, $volume, $lid) or return 0;
     }
@@ -478,7 +492,8 @@ sub upload_records {
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(
+        editor => $e, conn => $conn, throttle => 5);
 
     my $cache = OpenSRF::Utils::Cache->new;
     my $evt;
@@ -509,11 +524,10 @@ sub upload_records {
     }
 
     if($create_po) {
-        $purchase_order = Fieldmapper::acq::purchase_order->new;
-        $purchase_order->provider($provider->id);
-        $purchase_order->ordering_agency($ordering_agency);
-        $evt = OpenILS::Application::Acq::Financials::create_purchase_order_impl($e, $purchase_order);
-        return $evt if $evt;
+        my $po = create_purchase_order($mgr, 
+            ordering_agency => $ordering_agency,
+            provider => $provider->id
+        ) or return $mgr->editor->die_event;
     }
 
     $logger->info("acq processing MARC file=$filename");
@@ -527,6 +541,7 @@ sub upload_records {
 	while(1) {
 
 	    my $r;
+		$count++;
 		$logger->info("processing record $count");
 
         try { 
@@ -534,14 +549,18 @@ sub upload_records {
         } catch Error with { $r = -1; };
 
         last unless $r;
+
+		$logger->info("found record $count");
         
         if($r == -1) {
 			$logger->warn("Proccessing of record $count in set $key failed.  Skipping this record");
-			$count++;
             next;
 		}
+		$logger->info("HERE 1 $count");
 
 		try {
+
+		    $logger->info("HERE 2 $count");
 
 			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
 			$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -550,37 +569,39 @@ sub upload_records {
 			$xml = $U->entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
 
-            my $li = Fieldmapper::acq::lineitem->new;
-            $li->picklist($picklist->id) if $picklist;
-            $li->purchase_order($purchase_order->id) if $purchase_order;
-            $li->source_label($provider->code); # XXX ??
-            $li->provider($provider->id);
-            $li->selector($e->requestor->id);
-            $li->creator($e->requestor->id);
-            $li->editor($e->requestor->id);
-            $li->edit_time('now');
-            $li->create_time('now');
-            $li->marc($xml);
-            $li->state('on-order') if $purchase_order;
-            $e->create_acq_lineitem($li) or die $e->die_event;
+		    $logger->info("extracted xml for record $count : $xml");
 
-			$conn->respond({count => $count}) if (++$count % 5) == 0;
-            
-            $evt = create_lineitem_details($conn, \$count, $e, $ordering_agency, $li, $purchase_order);
-            die $evt if $evt; # caught below
+            my %args = (
+                source_label => $provider->code,
+                provider => $provider->id,
+                marc => $xml,
+            );
+
+            $args{picklist} = $picklist->id if $picklist;
+            if($purchase_order) {
+                $args{purchase_order} = $purchase_order->id;
+                $args{state} = 'on-order';
+            }
+
+            my $li = create_lineitem($mgr, %args);
+            $mgr->respond;
+		    $logger->info("created lineitem");
+
+            # XXX XXX
+            #$evt = create_lineitem_details($conn, \$count, $e, $ordering_agency, $li, $purchase_order);
+            #die $evt if $evt; # caught below
 
 		} catch Error with {
 			my $error = shift;
 			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
-		}
+		};
+
+        return $e->event if $e->died;
 	}
 
 	$e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
-
-    # clear the cached funds
-    delete $fund_code_map{$_} for keys %fund_code_map;
 
 	return {
         complete => 1, 
@@ -589,6 +610,7 @@ sub upload_records {
     };
 }
 
+=head WUT WUT?
 sub create_lineitem_details {
     my($conn, $countref, $e, $ordering_agency, $li, $purchase_order) = @_;
 
@@ -663,5 +685,6 @@ sub extract_lineitem_detail_data {
     return \%compiled;
 }
 
+=cut
 
 1;
