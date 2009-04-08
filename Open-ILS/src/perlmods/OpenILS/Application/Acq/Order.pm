@@ -199,6 +199,40 @@ sub delete_lineitem_detail {
     return $mgr->editor->delete_acq_lineitem_detail($lid);
 }
 
+
+# ----------------------------------------------------------------------------
+# Lineitem Attr
+# ----------------------------------------------------------------------------
+sub set_lineitem_attr {
+    my($mgr, %args) = @_;
+    my $attr_type = $args{attr_type};
+
+    # first, see if it's already set.  May just need to overwrite it
+    my $attr = $mgr->editor->search_acq_lineitem_attr({
+        lineitem => $args{lineitem},
+        attr_type => $args{attr_type},
+        attr_name => $args{attr_name}
+    })->[0];
+
+    if($attr) {
+        $attr->attr_value($args{attr_value});
+        return $attr if $mgr->editor->update_acq_lineitem_attr($attr);
+        return undef;
+
+    } else {
+
+        $attr = Fieldmapper::acq::lineitem_attr->new;
+        $attr->$_($args{$_}) for keys %args;
+        
+        unless($attr->definition) {
+            my $find = "search_acq_" . $attr->$attr_type;
+            my $attr_def_id = $mgr->editor->$find({code => $attr->attr_name}, {idlist=>1})->[0] or return 0;
+            $attr->definition($attr_def_id);
+        }
+        return $mgr->editor->create_acq_lineitem_attr($attr);
+    }
+}
+
 # ----------------------------------------------------------------------------
 # Picklist
 # ----------------------------------------------------------------------------
@@ -274,7 +308,8 @@ sub create_purchase_order {
     $po->create_time('now');
     $po->ordering_agency($mgr->editor->requestor->ws_ou);
     $po->$_($args{$_}) for keys %args;
-    return $mgr->purchase_order($mgr->editor->create_acq_purchase_order($po));
+    $mgr->purchase_order($po);
+    return $mgr->editor->create_acq_purchase_order($po);
 }
 
 
@@ -369,7 +404,7 @@ sub create_copy {
     $copy->location($lid->location);
     $copy->call_number($volume->id);
     $copy->circ_lib($volume->owning_lib);
-    $copy->circ_modifier('book'); # XXX
+    $copy->circ_modifier($lid->circ_modifier);
 
     my $evt = OpenILS::Application::Cat::AssetCommon->create_copy($mgr->editor, $volume, $copy);
     if($evt) {
@@ -486,7 +521,6 @@ __PACKAGE__->register_method(
     stream => 1,
 );
 
-my %fund_code_map;
 sub upload_records {
     my($self, $conn, $auth, $key) = @_;
 
@@ -540,27 +574,22 @@ sub upload_records {
 
 	while(1) {
 
-	    my $r;
+        my $r;
+	    my $err;
 		$count++;
-		$logger->info("processing record $count");
 
         try { 
-            $r = $batch->next 
-        } catch Error with { $r = -1; };
+            $r = $batch->next;
+        } catch Error with { $err = shift; };
 
         last unless $r;
 
-		$logger->info("found record $count");
-        
-        if($r == -1) {
-			$logger->warn("Proccessing of record $count in set $key failed.  Skipping this record");
+        if($err) {
+			$logger->warn("Proccessing of record $count in set $key failed with error $err.  Skipping this record");
             next;
 		}
-		$logger->info("HERE 1 $count");
 
 		try {
-
-		    $logger->info("HERE 2 $count");
 
 			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
 			$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -568,8 +597,6 @@ sub upload_records {
 			$xml =~ s/\p{Cc}//go;
 			$xml = $U->entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
-
-		    $logger->info("extracted xml for record $count : $xml");
 
             my %args = (
                 source_label => $provider->code,
@@ -585,106 +612,146 @@ sub upload_records {
 
             my $li = create_lineitem($mgr, %args);
             $mgr->respond;
-		    $logger->info("created lineitem");
 
-            # XXX XXX
-            #$evt = create_lineitem_details($conn, \$count, $e, $ordering_agency, $li, $purchase_order);
-            #die $evt if $evt; # caught below
+            import_lineitem_details($mgr, $ordering_agency, $li) 
+                or die $mgr->editor->event; # caught below
 
 		} catch Error with {
-			my $error = shift;
-			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
+			$err = shift;
+			$logger->warn("Error importing ACQ record $count : $err");
 		};
 
-        return $e->event if $e->died;
+        return $e->event if $err or $e->died;
 	}
 
 	$e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
 
-	return {
-        complete => 1, 
-        purchase_order => $purchase_order, 
-        picklist => $picklist
-    };
+    return $mgr->respond_complete;
 }
 
-=head WUT WUT?
-sub create_lineitem_details {
-    my($conn, $countref, $e, $ordering_agency, $li, $purchase_order) = @_;
+sub import_lineitem_details {
+    my($mgr, $ordering_agency, $li) = @_;
 
-    my $holdings = $e->json_query({from => ['acq.extract_provider_holding_data', $li->id]});
-    return undef unless @$holdings;
+    my $holdings = $mgr->editor->json_query({from => ['acq.extract_provider_holding_data', $li->id]});
+    return 1 unless @$holdings;
     my $org_path = $U->get_org_ancestors($ordering_agency);
+    $org_path = [ reverse (@$org_path) ];
+    my $price;
 
     my $idx = 1;
     while(1) {
-        my $compiled = extract_lineitem_detail_data($e, $org_path, $holdings, $idx);
+        my $compiled = extract_lineitem_detail_data($mgr, $org_path, $holdings, $idx);
         last unless $compiled;
 
         for(1..$$compiled{quantity}) {
-            my $lid = Fieldmapper::acq::lineitem_detail->new;
-            $lid->lineitem($li->id);
-            $lid->owning_lib($$compiled{owning_lib});
-            $lid->cn_label($$compiled{call_number});
-            $lid->fund($$compiled{fund});
-
-            if($purchase_order) {
-            }
-
+            create_lineitem_detail($mgr, 
+                lineitem => $li->id,
+                owning_lib => $$compiled{owning_lib},
+                cn_label => $$compiled{call_number}.
+                fund => $$compiled{fund},
+                circ_modifier => $$compiled{circ_modifier},
+                note => $$compiled{note}
+            ) or return 0;
         }
 
+        $mgr->respond;
         $idx++;
     }
-    return undef;
+
+    set_lineitem_attr(
+        $mgr, 
+        attr_name => 'estimated_price',
+        attr_type => 'lineitem_provider_attr_definition',
+        attr_value => $price,
+        lineitem => $li->id
+    ) or return 0;
+
+    if($li->purchase_order) {
+        create_lineitem_assets($mgr, $li->id) or return 0;
+    }
+
+    return 1;
 }
 
 sub extract_lineitem_detail_data {
-    my($e, $org_path, $holdings, $holding_index) = @_;
+    my($mgr, $org_path, $holdings, $index) = @_;
 
-    my @data_list = { grep { $_->holding eq $holding_index } @$holdings };
+    my @data_list = { grep { $_->holding eq $index } @$holdings };
     my %compiled = map { $_->{attr} => $_->{data} } @data_list;
-    my $err_evt = OpenILS::Event->new('ACQ_IMPORT_ERROR');
+    my $base_org = $$org_path[0];
+
+    my $killme = sub {
+        my $msg = shift;
+        $logger->error("Item import extraction error: $msg");
+        $mgr->editor->rollback;
+        $mgr->editor->event(OpenILS::Event->new('ACQ_IMPORT_ERROR', payload => $msg));
+        return 0;
+    };
 
     $compiled{quantity} ||= 1;
 
-    # ----------------------------------------------------
-    # find the fund
-    if(my $code = $compiled{fund_code}) {
+    # ---------------------------------------------------------------------
+    # Fund
+    my $code = $compiled{fund_code};
+    return $killme->("no fund code provided") unless $code;
 
-        my $fund = $fund_code_map{$code};
-        unless($fund) {
-            # search up the org tree for the most appropriate fund
-            for my $org (@$org_path) {
-                $fund = $e->search_acq_fund({org => $org, code => $code, year => DateTime->now->year})->[0];
-                last if $fund;
-            }
-            unless($fund) {
-                $logger->error("Import error: there is no fund with code $code at orgs $org_path");
-                $e->rollback;
-                return $err_evt;
-            }
+    my $fund = $mgr->cache($base_org, "fund.$code");
+    unless($fund) {
+        # search up the org tree for the most appropriate fund
+        for my $org (@$org_path) {
+            $fund = $mgr->editor->search_acq_fund(
+                {org => $org, code => $code, year => DateTime->now->year}, {idlist => 1})->[0];
+            last if $fund;
         }
-        $compiled{fund} = $fund->id;
-        $fund_code_map{$code} = $fund;
-
-    } else {
-        # XXX perhaps a default fund?
-        $logger->error("Import error: no fund code provided");
-        $e->rollback;
-        return $err_evt;
     }
+    return $killme->("no fund with code $code at orgs [@$org_path]") unless $fund;
+    $compiled{fund} = $fund;
+    $mgr->cache($base_org, "fund.$code", $fund);
 
-    $compiled{owning_lib} = $e->search_actor_org_unit({shortname => $compiled{owning_lib}})->[0]
-        or return $e->die_event;
 
-    # ----------------------------------------------------
-    # find the collection code 
+    # ---------------------------------------------------------------------
+    # Owning lib
+    my $sn = $compiled{owning_lib};
+    return $killme->("no owning_lib defined") unless $sn;
+    my $org_id = 
+        $mgr->cache($base_org, "orgsn.$sn") ||
+            $mgr->editor->search_actor_org_unit({shortname => $sn}, {idlist => 1})->[0];
+    return $killme->("invalid owning_lib defined: $sn") unless $org_id;
+    $compiled{owning_lib} = $org_id;
+    $mgr->cache($$org_path[0], "orgsn.$sn", $org_id);
+
+
+    # ---------------------------------------------------------------------
+    # Circ Modifier
+    my $name = $compiled{circ_modifier};
+    return $killme->("no circ_modifier defined") unless $name;
+    my $mod = 
+        $mgr->cache($base_org, "mod.$name") ||
+            $mgr->editor->search_config_circ_modifier({code => $name, {idlist => 1}})->[0];
+    return $killme->("invlalid circ_modifier $name") unless $mod;
+    $compiled{circ_modifier} = $mod;
+    $mgr->cache($base_org, "mod.$name", $mod);
+
+    # ---------------------------------------------------------------------
+    # Shelving Location
+    $name = $compiled{copy_location};
+    return $killme->("no copy_location defined") unless $name;
+    my $loc = $mgr->cache($base_org, "copy_loc.$name");
+    unless($loc) {
+        for my $org (@$org_path) {
+            $loc = $mgr->editor->search_asset_copy_location(
+                {owning_lib => $org, name => $name}, {idlist => 1})->[0];
+            last if $loc;
+        }
+    }
+    return $killme->("Invalid copy location $name") unless $loc;
+    $compiled{copy_location} = $loc;
+    $mgr->cache($base_org, "copy_loc.$name", $loc);
 
     return \%compiled;
 }
 
-=cut
 
 1;
