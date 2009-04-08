@@ -371,7 +371,7 @@ sub rw_biblio_ingest_record_list {
     my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
     $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
 
-    my $r = $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.search.atomic' => { id => $rec } )->gather(1);
+    my $r = $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.search.atomic' => { id => \@rec } )->gather(1);
 
     $cstore->request('open-ils.cstore.transaction.rollback')->gather(1);
     $cstore->disconnect;
@@ -379,8 +379,11 @@ sub rw_biblio_ingest_record_list {
     return undef unless ($r and @$r);
 
     my $count = 0;
-    $count += ($self->method_lookup("open-ils.ingest.full.biblio.object")->run($_))[0] for (@$r);
-
+    for (@$r) {
+        if (($self->method_lookup("open-ils.ingest.full.biblio.object")->run($_))[0]) {
+            $count++
+        }
+    }
     return $count;
 }
 __PACKAGE__->register_method(  
