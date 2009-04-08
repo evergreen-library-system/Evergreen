@@ -4874,7 +4874,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqliuad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_usr_attr_definition" oils_persist:tablename="acq.lineitem_usr_attr_definition">
+	<class id="acqlipad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_provider_attr_definition" oils_persist:tablename="acq.lineitem_provider_attr_definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -4882,11 +4882,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Definition ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
 			<field reporter:label="Code" name="code" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Description" name="description" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="User" name="usr" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="XPath" name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Is Identifier?" name="ident" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+	</class>
+
+	<class id="acqphsm" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::provider_holding_subfield_map" oils_persist:tablename="acq.provider_holding_subfield_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_holding_subfield_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Provider" name="provider" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Subfield" name="subfield" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 		</links>
 	</class>
 
