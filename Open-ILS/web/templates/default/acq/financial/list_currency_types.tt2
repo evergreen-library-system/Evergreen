@@ -6,7 +6,7 @@
     dojo.require('openils.Util');
     openils.Util.addOnLoad(
         function() {
-            ctGrid.loadAll({order_by:{ccm : 'name'}});
+            ctGrid.loadAll({order_by:{acqct : 'code'}});
         }
     );
 </script>
