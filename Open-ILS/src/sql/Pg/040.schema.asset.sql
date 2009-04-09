@@ -84,12 +84,12 @@ CREATE TABLE asset.copy_transparency (
 	CONSTRAINT scte_name_once_per_lib UNIQUE (owner,name)
 );
 
-CREATE TABLE asset.copy_tranparency_map (
+CREATE TABLE asset.copy_transparency_map (
 	id		BIGSERIAL	PRIMARY KEY,
-	tansparency	INT	NOT NULL REFERENCES asset.copy_transparency (id) DEFERRABLE INITIALLY DEFERRED,
+	transparency	INT	NOT NULL REFERENCES asset.copy_transparency (id) DEFERRABLE INITIALLY DEFERRED,
 	target_copy	INT	NOT NULL UNIQUE REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED
 );
-CREATE INDEX cp_tr_cp_idx ON asset.copy_tranparency_map (tansparency);
+CREATE INDEX cp_tr_cp_idx ON asset.copy_transparency_map (transparency);
 
 CREATE TABLE asset.stat_cat_entry_transparency_map (
 	id			BIGSERIAL	PRIMARY KEY,
