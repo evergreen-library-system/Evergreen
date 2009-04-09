@@ -173,12 +173,14 @@ sub format {
     $str .= ' '. $caption->capstr('z') if (defined $caption->capstr('z'));
 
     # Breaks in the sequence
-    if ($self->{_mfhdh_BREAK} eq 'n') {
-	$str .= ' non-gap break';
-    } elsif ($self->{_mfhdh_BREAK} eq 'g') {
-	$str .= ' gap';
-    } elsif ($self->{_mfhdh_BREAK}) {
-	warn "unrecognized break indicator '$self->{_mfhdh_BREAK}'";
+    if (defined($self->{_mfhdh_BREAK})) {
+        if ($self->{_mfhdh_BREAK} eq 'n') {
+            $str .= ' non-gap break';
+        } elsif ($self->{_mfhdh_BREAK} eq 'g') {
+            $str .= ' gap';
+        } else {
+            warn "unrecognized break indicator '$self->{_mfhdh_BREAK}'";
+        }
     }
 
     return $str;
