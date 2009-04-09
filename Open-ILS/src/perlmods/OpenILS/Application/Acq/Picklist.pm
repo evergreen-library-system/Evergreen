@@ -442,3 +442,4 @@ sub ranged_distrib_formulas {
     return undef;
 }
 
+1;
