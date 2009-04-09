@@ -192,10 +192,10 @@
 			<label value="&staff.main.ws_info.name;" control="wsname"/>
 			<textbox id="wsname"  context="clipboard"/>
 		</hbox>
-		<hbox>
+		<vbox>
 			<hbox id="placeholder"/>
 			<button id="register_btn" label="&staff.main.ws_info.register_btn.label;" accesskey="&staff.main.ws_info.register_btn.accesskey;" oncommand="register();"/>
-		</hbox>
+		</vbox>
 	</vbox>
 </window>
 
